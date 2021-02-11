@@ -6,56 +6,71 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
-    interface MyComponent {
-        /**
-          * The first name
-         */
-        "first": string;
-        /**
-          * The last name
-         */
-        "last": string;
-        /**
-          * The middle name
-         */
-        "middle": string;
+    interface SolutionConfiguration {
+    }
+    interface SolutionInventory {
+    }
+    interface SolutionItem {
+    }
+    interface SolutionSpatialRef {
     }
 }
 declare global {
-    interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
+    interface HTMLSolutionConfigurationElement extends Components.SolutionConfiguration, HTMLStencilElement {
     }
-    var HTMLMyComponentElement: {
-        prototype: HTMLMyComponentElement;
-        new (): HTMLMyComponentElement;
+    var HTMLSolutionConfigurationElement: {
+        prototype: HTMLSolutionConfigurationElement;
+        new (): HTMLSolutionConfigurationElement;
+    };
+    interface HTMLSolutionInventoryElement extends Components.SolutionInventory, HTMLStencilElement {
+    }
+    var HTMLSolutionInventoryElement: {
+        prototype: HTMLSolutionInventoryElement;
+        new (): HTMLSolutionInventoryElement;
+    };
+    interface HTMLSolutionItemElement extends Components.SolutionItem, HTMLStencilElement {
+    }
+    var HTMLSolutionItemElement: {
+        prototype: HTMLSolutionItemElement;
+        new (): HTMLSolutionItemElement;
+    };
+    interface HTMLSolutionSpatialRefElement extends Components.SolutionSpatialRef, HTMLStencilElement {
+    }
+    var HTMLSolutionSpatialRefElement: {
+        prototype: HTMLSolutionSpatialRefElement;
+        new (): HTMLSolutionSpatialRefElement;
     };
     interface HTMLElementTagNameMap {
-        "my-component": HTMLMyComponentElement;
+        "solution-configuration": HTMLSolutionConfigurationElement;
+        "solution-inventory": HTMLSolutionInventoryElement;
+        "solution-item": HTMLSolutionItemElement;
+        "solution-spatial-ref": HTMLSolutionSpatialRefElement;
     }
 }
 declare namespace LocalJSX {
-    interface MyComponent {
-        /**
-          * The first name
-         */
-        "first"?: string;
-        /**
-          * The last name
-         */
-        "last"?: string;
-        /**
-          * The middle name
-         */
-        "middle"?: string;
+    interface SolutionConfiguration {
+    }
+    interface SolutionInventory {
+    }
+    interface SolutionItem {
+    }
+    interface SolutionSpatialRef {
     }
     interface IntrinsicElements {
-        "my-component": MyComponent;
+        "solution-configuration": SolutionConfiguration;
+        "solution-inventory": SolutionInventory;
+        "solution-item": SolutionItem;
+        "solution-spatial-ref": SolutionSpatialRef;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
+            "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
+            "solution-inventory": LocalJSX.SolutionInventory & JSXBase.HTMLAttributes<HTMLSolutionInventoryElement>;
+            "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;
+            "solution-spatial-ref": LocalJSX.SolutionSpatialRef & JSXBase.HTMLAttributes<HTMLSolutionSpatialRefElement>;
         }
     }
 }

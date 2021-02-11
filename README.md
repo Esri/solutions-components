@@ -24,7 +24,13 @@ To interactively transpile components and update the display of src/index.html:
 ```bash
 npm start
 ```
+Note this feature excessively caches; sometimes you have to rebuild manually and force a refresh.
 
+To add a component, run
+```bash
+npm run generate
+```
+with the new component's name as an argument.
 
 To build the component for production, run:
 

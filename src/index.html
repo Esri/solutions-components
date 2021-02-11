@@ -1,13 +1,52 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
-    <title>Stencil Component Starter</title>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+  <title>Solutions Components</title>
 
-    <script type="module" src="../dist/solutions/solutions.esm.js"></script>
-  </head>
-  <body>
-    <my-component first="Stencil" last="'Don't call me a framework' JS"></my-component>
-  </body>
+  <link rel="stylesheet" href="css/calcite-web.min.css" type="text/css">
+  <link rel="stylesheet" href="css/esri-global-nav.css" type="text/css" />
+  <link rel="stylesheet" href="css/styles.css" type="text/css" />
+  <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" type="text/css" />
+  <style>
+  .fullHeight {
+    height: 100%
+  }
+  </style>
+
+  <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
+  <script type="module" src="../dist/solutions/solutions.esm.js"></script>
+</head>
+
+<body>
+  <main>
+    <div class="content fullHeight">
+      <div class="wrapper">
+        <div id="alert-area" class="alert-area"></div>
+        <div id="uiContainer" class="uiContainer">
+          <!----------------------------------------------------------------------------------------------------------->
+          <div id="elmContainer">
+            <div class="grid-container">
+              <calcite-modal aria-labelledby="solutions-modal-title" intl-close="Cancel" fullscreen="" active="" aria-modal="true"
+                background-color="white">
+                <h3 slot="header" id="solutions-modal-title">Configure: Solution Name</h3>
+                <div slot="content" tabindex="0" class="solutions-modal-content fullHeight" style="position:relative;overflow:hidden;" id="solutions-modal-content">
+                  <!--------------------------------------------------------------------------------------------------->
+
+                  <solution-configuration></solution-configuration>
+
+                  <!--------------------------------------------------------------------------------------------------->
+                </div>
+                <calcite-button slot="secondary" width="full" appearance="outline">Cancel</calcite-button>
+                <calcite-button slot="primary" width="full">Save</calcite-button>
+              </calcite-modal>
+            </div>
+          </div>
+          <!----------------------------------------------------------------------------------------------------------->
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
 </html>

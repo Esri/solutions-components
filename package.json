@@ -28,6 +28,7 @@
     "puppeteer": "^5.5.0"
   },
   "dependencies": {
+    "@esri/calcite-components": "^1.0.0-beta.49",
     "@stencil/core": "^2.0.1"
   },
   "contributors": [

@@ -1,0 +1,43 @@
+.spatial-ref-switch {
+  margin-right: 8px;
+}
+html[dir="rtl"] .spatial-ref-switch {
+  margin-left: 8px;
+  margin-right: 0;
+}
+
+.spatial-ref-switch-title {
+  margin-top: 24px;
+  margin-left: 50px;
+}
+html[dir="rtl"] .spatial-ref-switch-title {
+  margin-left: 0;
+  margin-right: 50px;
+}
+
+.spatial-ref-default {
+  margin: 0;
+}
+
+.spatial-ref-current {
+  margin-top: -14px;
+  font-size: 12px;
+}
+
+.spatial-ref-item-title {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.spatial-ref-item-switch {
+  margin-right: 8px;
+}
+html[dir="rtl"] .spatial-ref-item-switch {
+  margin-left: 8px;
+  margin-right: 0;
+}
+
+.switch-label {
+  margin: 4px;
+  font-size: 14px;
+}
