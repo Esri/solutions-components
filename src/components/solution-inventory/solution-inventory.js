@@ -7,6 +7,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Component, Host, h } from '@stencil/core';
 import "@esri/calcite-components";
 let SolutionInventory = class SolutionInventory {
+    //--------------------------------------------------------------------------
+    //
+    //  Lifecycle
+    //
+    //--------------------------------------------------------------------------
     render() {
         return (h(Host, null,
             h("calcite-tree", null,
@@ -56,7 +61,7 @@ SolutionInventory = __decorate([
     Component({
         tag: 'solution-inventory',
         styleUrl: 'solution-inventory.css',
-        shadow: false,
+        shadow: false
     })
 ], SolutionInventory);
 export { SolutionInventory };

@@ -7,12 +7,18 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface SolutionConfiguration {
+        "translations": any;
+        "value": any;
     }
     interface SolutionInventory {
     }
     interface SolutionItem {
+        "translations": any;
+        "value": any;
     }
     interface SolutionSpatialRef {
+        "translations": any;
+        "value": any;
     }
 }
 declare global {
@@ -49,12 +55,18 @@ declare global {
 }
 declare namespace LocalJSX {
     interface SolutionConfiguration {
+        "translations"?: any;
+        "value"?: any;
     }
     interface SolutionInventory {
     }
     interface SolutionItem {
+        "translations"?: any;
+        "value"?: any;
     }
     interface SolutionSpatialRef {
+        "translations"?: any;
+        "value"?: any;
     }
     interface IntrinsicElements {
         "solution-configuration": SolutionConfiguration;

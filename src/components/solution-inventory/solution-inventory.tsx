@@ -4,10 +4,15 @@ import "@esri/calcite-components";
 @Component({
   tag: 'solution-inventory',
   styleUrl: 'solution-inventory.css',
-  shadow: false,
+  shadow: false
 })
 export class SolutionInventory {
 
+  //--------------------------------------------------------------------------
+  //
+  //  Lifecycle
+  //
+  //--------------------------------------------------------------------------
   render(): VNode {
     return (
       <Host>

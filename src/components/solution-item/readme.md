@@ -5,6 +5,14 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property       | Attribute      | Description | Type  | Default                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| -------------- | -------------- | ----------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `translations` | `translations` |             | `any` | `{     "itemDetailsTab": "Item Details",     "dataTab": "Data",     "propertiesTab": "Properties",     "groupDetailsTab": "Group Details",     "sharingTab": "Sharing",      // Item details     "item_details": {       "editThumbnail": "Edit Thumbnail",       "description": "Description",       "tags": "Tags",       "credits": "Credits",       "termsOfUse": "Terms of Use",       "snippetCountPattern": "{{n}} of 250"     },      "json_editing": {       "startEditing": "Start editing", // start modifying JSON in its editor       "search": "Search" // search within JSON editor     }   }` |
+| `value`        | `value`        |             | `any` | `{}`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+
+
 ## Dependencies
 
 ### Used by

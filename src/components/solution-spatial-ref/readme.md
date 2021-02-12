@@ -5,6 +5,14 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property       | Attribute      | Description | Type  | Default                                                                                                                                                           |
+| -------------- | -------------- | ----------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `translations` | `translations` |             | `any` | `{     "specifyParam": "Spatial Reference Parameter",     "defaultSpatialRef": "Default Spatial Reference",     "featureServicesHeading": "Feature Services"   }` |
+| `value`        | `value`        |             | `any` | `{}`                                                                                                                                                              |
+
+
 ## Dependencies
 
 ### Used by
