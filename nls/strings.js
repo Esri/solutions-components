@@ -216,7 +216,7 @@ define({
             "sharingTab": "Sharing",
 
             // Item details
-            "item_details": {
+            "itemDetails": {
               "editThumbnail": "Edit Thumbnail",
               "description": "Description",
               "tags": "Tags",
@@ -225,7 +225,7 @@ define({
               "snippetCountPattern": "{{n}} of 250"
             },
 
-            "json_editing": {
+            "jsonEditing": {
               "startEditing": "Start editing", // start modifying JSON in its editor
               "search": "Search" // search within JSON editor
             }

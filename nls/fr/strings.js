@@ -205,7 +205,7 @@ define({
           "groupDetailsTab": "Détails du groupe",
           "sharingTab": "Partage",
 
-          "item_details": {
+          "itemDetails": {
             "editThumbnail": "Mettre à jour la miniature",
             "description": "Description",
             "tags": "Balises",
@@ -214,7 +214,7 @@ define({
             "snippetCountPattern": "{{n}} sur 250"
           },
 
-          "json_editing": {
+          "jsonEditing": {
             "startEditing": "Commencer l'édition",
             "search": "Chercher"
           }
