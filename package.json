@@ -17,6 +17,7 @@
   "scripts": {
     "build": "stencil build --docs",
     "start": "stencil build --dev --watch --serve",
+    "clean:src": "rm -rf src/components/**/*.{d.ts,js,js.map} && rm -rf src/utils/**/*.{d.ts,js,js.map}",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate"
@@ -25,6 +26,7 @@
     "@types/jest": "^26.0.20",
     "@types/puppeteer": "^5.4.2",
     "jest": "^26.6.3",
+    "jest-cli": "^26.6.3",
     "puppeteer": "^5.5.0"
   },
   "dependencies": {
