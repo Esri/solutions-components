@@ -1,0 +1,69 @@
+.inputBottomSeparation {
+  margin: 0 0 1.5rem 0;
+}
+
+.icon-inline--on-left, .esriRtl .icon-inline--on-right {
+  margin-right: 6px;
+  margin-left: 0;
+}
+
+.icon-inline--on-left, .icon-inline--on-right {
+  display: inline;
+  margin-top: -.15em;
+}
+
+.font-size--3 {
+  font-size: 0.8125rem;
+  line-height: 1.5
+}
+
+.scale-down {
+  object-fit: scale-down;
+}
+
+.btn-link {
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+  color: #6e6e6e;
+  background: transparent
+}
+
+.btn-link: hover {
+  text-decoration: underline;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.flex {
+  display: flex;
+}
+
+.img-container {
+  display: inline;
+  flex-grow: 0;
+}
+
+.summary-count-container {
+  display: inline;
+  flex-grow: 1;
+  margin-left: 12px;
+}
+
+.parent-container {
+  max-width: 100%;
+  margin: 1rem;
+}
+
+.display-none {
+  display: none;
+}
+
+label {
+  position: relative;
+  display: block;
+  margin: 0 0 1.5rem 0;
+}

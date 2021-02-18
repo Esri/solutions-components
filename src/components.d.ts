@@ -16,6 +16,10 @@ export namespace Components {
         "translations": any;
         "value": any;
     }
+    interface SolutionItemDetails {
+        "translations": any;
+        "value": any;
+    }
     interface SolutionSpatialRef {
         "translations": any;
         "value": any;
@@ -40,6 +44,12 @@ declare global {
         prototype: HTMLSolutionItemElement;
         new (): HTMLSolutionItemElement;
     };
+    interface HTMLSolutionItemDetailsElement extends Components.SolutionItemDetails, HTMLStencilElement {
+    }
+    var HTMLSolutionItemDetailsElement: {
+        prototype: HTMLSolutionItemDetailsElement;
+        new (): HTMLSolutionItemDetailsElement;
+    };
     interface HTMLSolutionSpatialRefElement extends Components.SolutionSpatialRef, HTMLStencilElement {
     }
     var HTMLSolutionSpatialRefElement: {
@@ -50,6 +60,7 @@ declare global {
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-inventory": HTMLSolutionInventoryElement;
         "solution-item": HTMLSolutionItemElement;
+        "solution-item-details": HTMLSolutionItemDetailsElement;
         "solution-spatial-ref": HTMLSolutionSpatialRefElement;
     }
 }
@@ -64,6 +75,10 @@ declare namespace LocalJSX {
         "translations"?: any;
         "value"?: any;
     }
+    interface SolutionItemDetails {
+        "translations"?: any;
+        "value"?: any;
+    }
     interface SolutionSpatialRef {
         "translations"?: any;
         "value"?: any;
@@ -72,6 +87,7 @@ declare namespace LocalJSX {
         "solution-configuration": SolutionConfiguration;
         "solution-inventory": SolutionInventory;
         "solution-item": SolutionItem;
+        "solution-item-details": SolutionItemDetails;
         "solution-spatial-ref": SolutionSpatialRef;
     }
 }
@@ -82,6 +98,7 @@ declare module "@stencil/core" {
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
             "solution-inventory": LocalJSX.SolutionInventory & JSXBase.HTMLAttributes<HTMLSolutionInventoryElement>;
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;
+            "solution-item-details": LocalJSX.SolutionItemDetails & JSXBase.HTMLAttributes<HTMLSolutionItemDetailsElement>;
             "solution-spatial-ref": LocalJSX.SolutionSpatialRef & JSXBase.HTMLAttributes<HTMLSolutionSpatialRefElement>;
         }
     }

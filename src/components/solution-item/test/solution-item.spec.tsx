@@ -19,7 +19,7 @@ describe('solution-item', () => {
               </calcite-tab-nav>
 
               <calcite-tab class="config-tab" active>
-                solution-item-details/solution-item-details
+                <solution-item-details></solution-item-details>
               </calcite-tab>
               <calcite-tab class="config-tab">
                 solution-item-json/solution-item-json

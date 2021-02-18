@@ -13,6 +13,8 @@ Supported browsers are the latest versions of Google Chrome, Apple Safari, Mozil
 
 ## Getting Started
 
+The repository is set up to use [Volta](https://docs.volta.sh/guide/getting-started) for standardizing the versions of NodeJS and npm. Please install and use this app to get the supported versions.
+
 Set up:
 
 ```bash
