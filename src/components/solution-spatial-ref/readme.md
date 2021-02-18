@@ -10,7 +10,7 @@
 | Property       | Attribute      | Description | Type  | Default                                                                                                                                                           |
 | -------------- | -------------- | ----------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `translations` | `translations` |             | `any` | `{     "specifyParam": "Spatial Reference Parameter",     "defaultSpatialRef": "Default Spatial Reference",     "featureServicesHeading": "Feature Services"   }` |
-| `value`        | `value`        |             | `any` | `{}`                                                                                                                                                              |
+| `value`        | `value`        |             | `any` | `null`                                                                                                                                                            |
 
 
 ## Dependencies

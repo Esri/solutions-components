@@ -78,7 +78,7 @@ export class SolutionItemDetails {
                 <img id="item-image" class="scale-down" width="200" height="133" />
               </div>
               <div class="summary-count-container">
-                <calcite-input id="item-summary" ref={(el) => {this.itemSummary = el; el.maxlength = 250;}} type="textarea"></calcite-input>
+                <calcite-input id="item-summary" ref={(el) => { this.itemSummary = el; el.maxlength = 250; }} type="textarea"></calcite-input>
                 <label id="item-summary-count" ref={(el) => (this.itemSummaryCount = el)} class="font-size--3"></label>
               </div>
             </div>

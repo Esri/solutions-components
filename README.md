@@ -40,9 +40,10 @@ To build the component for production, run:
 npm run build
 ```
 
-To run the unit tests for the components, run:
+To run the unit tests for the components, stop automatic compilation (e.g., Visual Studio) and run:
 
 ```bash
+npm run clean:src
 npm test
 ```
 

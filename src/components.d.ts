@@ -5,6 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { ISpatialRefRepresentation } from "./components/solution-spatial-ref/solution-spatial-ref";
 export namespace Components {
     interface SolutionConfiguration {
         "translations": any;
@@ -21,8 +22,20 @@ export namespace Components {
         "value": any;
     }
     interface SolutionSpatialRef {
+        /**
+          * Exposes private method `_createSpatialRefDisplay` for testing.
+         */
+        "createSpatialRefDisplay": (value: string) => Promise<ISpatialRefRepresentation>;
+        /**
+          * Exposes private variable `spatialRef` for testing.
+         */
+        "getSpatialRef": () => Promise<ISpatialRefRepresentation>;
         "translations": any;
-        "value": any;
+        "value": string;
+        /**
+          * Exposes private method `_wkidToDisplay` for testing.
+         */
+        "wkidToDisplay": (wkid: number) => Promise<string>;
     }
 }
 declare global {
@@ -81,7 +94,7 @@ declare namespace LocalJSX {
     }
     interface SolutionSpatialRef {
         "translations"?: any;
-        "value"?: any;
+        "value"?: string;
     }
     interface IntrinsicElements {
         "solution-configuration": SolutionConfiguration;
