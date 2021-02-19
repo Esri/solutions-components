@@ -29,7 +29,7 @@ export interface ISpatialRefRepresentation {
 @Component({
   tag: 'solution-spatial-ref',
   styleUrl: 'solution-spatial-ref.css',
-  shadow: true
+  shadow: false
 })
 export class SolutionSpatialRef {
 
