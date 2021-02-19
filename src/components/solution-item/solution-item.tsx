@@ -108,7 +108,7 @@ export class SolutionItem {
   //
   //--------------------------------------------------------------------------
 
-  itemDetails: HTMLSolutionItemDetailsElement;
+  private itemDetails: HTMLSolutionItemDetailsElement;
 
   //--------------------------------------------------------------------------
   //

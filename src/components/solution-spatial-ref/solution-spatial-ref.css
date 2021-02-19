@@ -23,12 +23,17 @@ html[dir="rtl"] .spatial-ref-switch {
 }
 
 .spatial-ref-switch-title {
-  margin-top: 24px;
-  margin-left: 50px;
+  margin-top: 10px;
+  margin-left: 42px;
 }
 html[dir="rtl"] .spatial-ref-switch-title {
   margin-left: 0;
-  margin-right: 50px;
+  margin-right: 42px;
+}
+
+#spatialRefDefn .sc-calcite-label-h label.sc-calcite-label {
+  margin: 0;
+  background-color: lightpurple;
 }
 
 .spatial-ref-default {
@@ -36,7 +41,6 @@ html[dir="rtl"] .spatial-ref-switch-title {
 }
 
 .spatial-ref-current {
-  margin-top: -14px;
   font-size: 12px;
 }
 

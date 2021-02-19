@@ -29,7 +29,7 @@ export interface ISpatialRefRepresentation {
 @Component({
   tag: 'solution-spatial-ref',
   styleUrl: 'solution-spatial-ref.css',
-  shadow: false
+  shadow: true
 })
 export class SolutionSpatialRef {
 
@@ -46,17 +46,26 @@ export class SolutionSpatialRef {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * When true, all but the main switch are disabled to prevent interaction.
+   */
+  @Prop({ mutable: true, reflect: true }) locked: boolean = false; // can't start with `true` because of https://github.com/Esri/calcite-components/issues/1575
+
+  /**
+   * Contains the translations for this component.
+   */
   @Prop({ mutable: true }) translations: any = {
     "specifyParam": "Spatial Reference Parameter",
     "defaultSpatialRef": "Default Spatial Reference",
     "featureServicesHeading": "Feature Services"
   };
 
-  @Prop({ mutable: true }) value: string = null;
-  @Watch("value") valueHandler(a): void {
-    console.log("valuehandler a", a);
-    console.log("value", this.value);
-    this.spatialRef = this._createSpatialRefDisplay(this.value);
+  /**
+   * Contains the public value for this component.
+   */
+  @Prop({ mutable: true, reflect: true }) value: string = null;
+  @Watch("value") valueChanged(newValue: string): void {
+    this.spatialRef = this._createSpatialRefDisplay(newValue);
   }
 
   //--------------------------------------------------------------------------
@@ -72,13 +81,16 @@ export class SolutionSpatialRef {
   render() {
     return (
       <Host>
-        <label class="switch-label"><calcite-switch scale="s" class="spatial-ref-switch"></calcite-switch>{this.translations.specifyParam}</label>
+        <label class="switch-label"><calcite-switch switched={!this.locked} scale="s" class="spatial-ref-switch" onCalciteSwitchChange={(event) => this._updateLocked(event)}></calcite-switch>{this.translations.specifyParam}</label>
         <div id="spatialRefDefn" class="spatial-ref-switch-title">
-          <calcite-label>{this.translations.defaultSpatialRef}<label id="item-description-label" class="spatial-ref-default"><calcite-input id="item-description"></calcite-input></label></calcite-label>
+          <calcite-label>{this.translations.defaultSpatialRef}<label class="spatial-ref-default"><calcite-input disabled={this.locked}></calcite-input></label></calcite-label>
           <label class="spatial-ref-current">{this.spatialRef.display}</label>
+          <br/><br/>
           <label class="spatial-ref-item-title">{this.translations.featureServicesHeading}</label>
-          <label class="switch-label"><calcite-switch scale="s" class="spatial-ref-item-switch"></calcite-switch>Feature Service 1</label>
-          <label class="switch-label"><calcite-switch scale="s" class="spatial-ref-item-switch"></calcite-switch>Feature Service 2</label>
+          <br/>
+          <label class="switch-label"><calcite-switch disabled={this.locked} scale="s" class="spatial-ref-item-switch"></calcite-switch>Feature Service 1</label>
+          <br/>
+          <label class="switch-label"><calcite-switch disabled={this.locked} scale="s" class="spatial-ref-item-switch"></calcite-switch>Feature Service 2</label>
         </div>
       </Host>
     );
@@ -90,7 +102,12 @@ export class SolutionSpatialRef {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Internal representation of component's value for display purposes.
+   */
   @State() private spatialRef: ISpatialRefRepresentation;
+
+  //private spatialRefEntry: HTMLCalciteInputElement;
 
   //--------------------------------------------------------------------------
   //
@@ -111,7 +128,11 @@ export class SolutionSpatialRef {
   //--------------------------------------------------------------------------
 
   /**
-   * Exposes private method `_createSpatialRefDisplay` for testing.
+   * Returns the spatial reference description of the supplied value.
+   * (Exposes private method `_createSpatialRefDisplay` for testing.)
+   *
+   * @param value WKID or WKT or null for default
+   * @returns If component is using a WKID, description using WKID; otherwise, the WKT; defaults to 102100
    */
   @Method()
   createSpatialRefDisplay(value: string): Promise<ISpatialRefRepresentation> {
@@ -127,7 +148,11 @@ export class SolutionSpatialRef {
   }
 
   /**
-   * Exposes private method `_wkidToDisplay` for testing.
+   * Converts a WKID into a spatial reference description.
+   * (Exposes private method `_wkidToDisplay` for testing.)
+   *
+   * @param wkid WKID to look up
+   * @returns Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
    */
   @Method()
   wkidToDisplay(wkid: number): Promise<string> {
@@ -141,10 +166,10 @@ export class SolutionSpatialRef {
   //--------------------------------------------------------------------------
 
   /**
-   *  Returns the spatial reference description of the supplied value.
+   * Returns the spatial reference description of the supplied value.
    *
    * @param value WKID or WKT or null for default
-   * @return If component is using a WKID, description using WKID; otherwise, the WKT; defaults to 102100
+   * @returns If component is using a WKID, description using WKID; otherwise, the WKT; defaults to 102100
    */
   _createSpatialRefDisplay(value: string): ISpatialRefRepresentation {
     let spatialRef: ISpatialRefRepresentation;
@@ -179,10 +204,17 @@ export class SolutionSpatialRef {
   }
 
   /**
+   * Toggles the ability to set the default spatial reference.
+   */
+  _updateLocked(event): void {
+    this.locked = !event.detail.switched;
+  };
+
+  /**
    * Converts a WKID into a spatial reference description.
    *
    * @param wkid WKID to look up
-   * @return Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
+   * @returns Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
    */
   _wkidToDisplay(wkid: number): string {
     const description: IWkidDescription = wkids[wkid];

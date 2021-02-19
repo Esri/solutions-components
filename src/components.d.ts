@@ -23,17 +23,31 @@ export namespace Components {
     }
     interface SolutionSpatialRef {
         /**
-          * Exposes private method `_createSpatialRefDisplay` for testing.
+          * Returns the spatial reference description of the supplied value. (Exposes private method `_createSpatialRefDisplay` for testing.)
+          * @param value WKID or WKT or null for default
+          * @returns If component is using a WKID, description using WKID; otherwise, the WKT; defaults to 102100
          */
         "createSpatialRefDisplay": (value: string) => Promise<ISpatialRefRepresentation>;
         /**
           * Exposes private variable `spatialRef` for testing.
          */
         "getSpatialRef": () => Promise<ISpatialRefRepresentation>;
+        /**
+          * When true, all but the main switch are disabled to prevent interaction.
+         */
+        "locked": boolean;
+        /**
+          * Contains the translations for this component.
+         */
         "translations": any;
+        /**
+          * Contains the public value for this component.
+         */
         "value": string;
         /**
-          * Exposes private method `_wkidToDisplay` for testing.
+          * Converts a WKID into a spatial reference description. (Exposes private method `_wkidToDisplay` for testing.)
+          * @param wkid WKID to look up
+          * @returns Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
          */
         "wkidToDisplay": (wkid: number) => Promise<string>;
     }
@@ -93,7 +107,17 @@ declare namespace LocalJSX {
         "value"?: any;
     }
     interface SolutionSpatialRef {
+        /**
+          * When true, all but the main switch are disabled to prevent interaction.
+         */
+        "locked"?: boolean;
+        /**
+          * Contains the translations for this component.
+         */
         "translations"?: any;
+        /**
+          * Contains the public value for this component.
+         */
         "value"?: string;
     }
     interface IntrinsicElements {
