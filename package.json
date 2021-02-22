@@ -30,7 +30,7 @@
     "puppeteer": "^5.5.0"
   },
   "dependencies": {
-    "@esri/calcite-components": "^1.0.0-beta.49",
+    "@esri/calcite-components": "^1.0.0-next.92",
     "@stencil/core": "^2.0.1"
   },
   "contributors": [
