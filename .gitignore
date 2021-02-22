@@ -25,4 +25,4 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 .env
 
-src/*.js
+src/**/*.js
