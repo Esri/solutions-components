@@ -83,13 +83,10 @@ export class SolutionSpatialRef {
       <Host>
         <label class="switch-label"><calcite-switch switched={!this.locked} scale="s" class="spatial-ref-switch" onCalciteSwitchChange={(event) => this._updateLocked(event)}></calcite-switch>{this.translations.specifyParam}</label>
         <div id="spatialRefDefn" class="spatial-ref-switch-title">
-          <calcite-label>{this.translations.defaultSpatialRef}<label class="spatial-ref-default"><calcite-input disabled={this.locked}></calcite-input></label></calcite-label>
+          <calcite-label>{this.translations.defaultSpatialRef}<label class="spatial-ref-default"><calcite-input disabled={this.locked} ref={(el) => { this.spatialRefEntry = el}} onCalciteInputBlur={() => this._updateSpatialRef()}></calcite-input></label></calcite-label>
           <label class="spatial-ref-current">{this.spatialRef.display}</label>
-          <br/><br/>
           <label class="spatial-ref-item-title">{this.translations.featureServicesHeading}</label>
-          <br/>
           <label class="switch-label"><calcite-switch disabled={this.locked} scale="s" class="spatial-ref-item-switch"></calcite-switch>Feature Service 1</label>
-          <br/>
           <label class="switch-label"><calcite-switch disabled={this.locked} scale="s" class="spatial-ref-item-switch"></calcite-switch>Feature Service 2</label>
         </div>
       </Host>
@@ -107,7 +104,7 @@ export class SolutionSpatialRef {
    */
   @State() private spatialRef: ISpatialRefRepresentation;
 
-  //private spatialRefEntry: HTMLCalciteInputElement;
+  private spatialRefEntry: HTMLCalciteInputElement;
 
   //--------------------------------------------------------------------------
   //
@@ -209,6 +206,10 @@ export class SolutionSpatialRef {
   _updateLocked(event): void {
     this.locked = !event.detail.switched;
   };
+
+  _updateSpatialRef(): void {
+    this.spatialRef = this._createSpatialRefDisplay(this.spatialRefEntry.value);
+  }
 
   /**
    * Converts a WKID into a spatial reference description.
