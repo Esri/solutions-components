@@ -29,7 +29,7 @@ export namespace Components {
          */
         "createSpatialRefDisplay": (value: string) => Promise<ISpatialRefRepresentation>;
         /**
-          * Exposes private variable `spatialRef` for testing.
+          * Returns the current spatial reference description. (Exposes private variable `spatialRef` for testing.)
          */
         "getSpatialRef": () => Promise<ISpatialRefRepresentation>;
         /**

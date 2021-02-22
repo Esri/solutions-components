@@ -137,7 +137,8 @@ export class SolutionSpatialRef {
   }
 
   /**
-   * Exposes private variable `spatialRef` for testing.
+   * Returns the current spatial reference description.
+   * (Exposes private variable `spatialRef` for testing.)
    */
   @Method()
   getSpatialRef(): Promise<ISpatialRefRepresentation> {
@@ -207,7 +208,11 @@ export class SolutionSpatialRef {
     this.locked = !event.detail.switched;
   };
 
+  /**
+   * Updates the spatial reference value and display using the current value of the spatial reference input field.
+   */
   _updateSpatialRef(): void {
+    this.value = this.spatialRefEntry.value.toString();
     this.spatialRef = this._createSpatialRefDisplay(this.spatialRefEntry.value);
   }
 
