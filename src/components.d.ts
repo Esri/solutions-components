@@ -5,6 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { IInventoryItem } from "./components/solution-inventory/solution-inventory";
 import { IItemDetails } from "./components/solution-item-details/solution-item-details";
 import { ISpatialRefRepresentation } from "./components/solution-spatial-ref/solution-spatial-ref";
 export namespace Components {
@@ -26,7 +27,7 @@ export namespace Components {
         /**
           * Contains the public value for this component.
          */
-        "value": any;
+        "value": IInventoryItem[];
     }
     interface SolutionItem {
         "translations": any;
@@ -120,6 +121,7 @@ declare namespace LocalJSX {
         "value"?: any;
     }
     interface SolutionInventory {
+        "onSolutionItemSelected"?: (event: CustomEvent<any>) => void;
         /**
           * Contains the translations for this component.
          */
@@ -127,7 +129,7 @@ declare namespace LocalJSX {
         /**
           * Contains the public value for this component.
          */
-        "value"?: any;
+        "value"?: IInventoryItem[];
     }
     interface SolutionItem {
         "translations"?: any;

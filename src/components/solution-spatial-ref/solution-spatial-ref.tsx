@@ -176,7 +176,7 @@ export class SolutionSpatialRef {
    * @param value WKID or WKT or null for default
    * @returns If component is using a WKID, description using WKID; otherwise, the WKT; defaults to 102100
    */
-  _createSpatialRefDisplay(value: string): ISpatialRefRepresentation {
+  private _createSpatialRefDisplay(value: string): ISpatialRefRepresentation {
     let spatialRef: ISpatialRefRepresentation;
 
     if (!value) {
@@ -211,14 +211,14 @@ export class SolutionSpatialRef {
   /**
    * Toggles the ability to set the default spatial reference.
    */
-  _updateLocked(event): void {
+  private _updateLocked(event): void {
     this.locked = !event.detail.switched;
   };
 
   /**
    * Updates the spatial reference value and display using the current value of the spatial reference input field.
    */
-  _updateSpatialRef(): void {
+  private _updateSpatialRef(): void {
     this.value = this.spatialRefInput.value.toString();
     this.spatialRef = this._createSpatialRefDisplay(this.spatialRefInput.value);
   }
@@ -229,7 +229,7 @@ export class SolutionSpatialRef {
    * @param wkid WKID to look up
    * @returns Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
    */
-  _wkidToDisplay(wkid: number): string {
+  private _wkidToDisplay(wkid: number): string {
     const description: IWkidDescription = wkids[wkid];
     if (description) {
       return description.label + " (" + wkid.toString() + ")";

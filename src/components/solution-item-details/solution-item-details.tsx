@@ -213,7 +213,7 @@ export class SolutionItemDetails {
    * Opens image file browse dialog.
    *
    */
-  _getThumbnail(): void {
+  private _getThumbnail(): void {
     console.log("_getThumbnail");
     this.browseForThumbnail.click();
   }
@@ -223,7 +223,7 @@ export class SolutionItemDetails {
    * relative to the max number of characters supported.
    *
    */
-  _updateLengthLabel(phrase: string): void {
+  private _updateLengthLabel(phrase: string): void {
     this.itemSnippetCount.innerText =
       this.translations.snippetCountPattern.replace("{{n}}", phrase.length.toString());
   }
@@ -232,7 +232,7 @@ export class SolutionItemDetails {
    * Gets and displays image result from browse.
    *
    */
-  _updateThumbnail(
+  private _updateThumbnail(
     event: any
   ): void {
     console.log("_updateThumbnail");
