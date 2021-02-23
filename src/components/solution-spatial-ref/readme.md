@@ -29,7 +29,8 @@ Type: `Promise<ISpatialRefRepresentation>`
 
 ### `getSpatialRef() => Promise<ISpatialRefRepresentation>`
 
-Exposes private variable `spatialRef` for testing.
+Returns the current spatial reference description.
+(Exposes private variable `spatialRef` for testing.)
 
 #### Returns
 
