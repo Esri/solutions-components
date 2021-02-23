@@ -5,6 +5,14 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property       | Attribute      | Description                                   | Type  | Default |
+| -------------- | -------------- | --------------------------------------------- | ----- | ------- |
+| `translations` | `translations` | Contains the translations for this component. | `any` | `{   }` |
+| `value`        | `value`        | Contains the public value for this component. | `any` | `{}`    |
+
+
 ## Dependencies
 
 ### Used by

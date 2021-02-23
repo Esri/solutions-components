@@ -9,10 +9,24 @@ import { IItemDetails } from "./components/solution-item-details/solution-item-d
 import { ISpatialRefRepresentation } from "./components/solution-spatial-ref/solution-spatial-ref";
 export namespace Components {
     interface SolutionConfiguration {
+        /**
+          * Contains the translations for this component.
+         */
         "translations": any;
+        /**
+          * Contains the public value for this component.
+         */
         "value": any;
     }
     interface SolutionInventory {
+        /**
+          * Contains the translations for this component.
+         */
+        "translations": any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value": any;
     }
     interface SolutionItem {
         "translations": any;
@@ -96,10 +110,24 @@ declare global {
 }
 declare namespace LocalJSX {
     interface SolutionConfiguration {
+        /**
+          * Contains the translations for this component.
+         */
         "translations"?: any;
+        /**
+          * Contains the public value for this component.
+         */
         "value"?: any;
     }
     interface SolutionInventory {
+        /**
+          * Contains the translations for this component.
+         */
+        "translations"?: any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value"?: any;
     }
     interface SolutionItem {
         "translations"?: any;

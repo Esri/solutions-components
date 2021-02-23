@@ -16,7 +16,6 @@
 
 import { Component, Element, h, Host, Prop, VNode } from '@stencil/core';
 import "@esri/calcite-components";
-import "../../components";
 
 @Component({
   tag: 'solution-configuration',
@@ -38,6 +37,9 @@ export class SolutionConfiguration {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Contains the translations for this component.
+   */
   @Prop({ mutable: true }) translations: any = {
     "definitionTab": "Definition", // for tab to edit definition of an item or group
     "spatialReferenceTab": "Spatial Reference", // for tab to edit the spatial reference of an item
@@ -73,6 +75,9 @@ export class SolutionConfiguration {
     }
   };
 
+  /**
+   * Contains the public value for this component.
+   */
   @Prop({ mutable: true }) value: any = {};
 
   //--------------------------------------------------------------------------
@@ -131,8 +136,15 @@ export class SolutionConfiguration {
   //
   //--------------------------------------------------------------------------
 
-  item: HTMLSolutionItemElement;
-  spatialRef: HTMLSolutionSpatialRefElement;
+  /**
+   * Handle to the item component.
+   */
+  private item: HTMLSolutionItemElement;
+
+  /**
+   * Handle to the spatial reference component.
+   */
+  private spatialRef: HTMLSolutionSpatialRefElement;
 
   //--------------------------------------------------------------------------
   //
@@ -149,6 +161,12 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
   //
   //  Public Methods (async)
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Private Methods
   //
   //--------------------------------------------------------------------------
 
