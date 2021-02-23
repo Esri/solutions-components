@@ -5,6 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { IItemDetails } from "./components/solution-item-details/solution-item-details";
 import { ISpatialRefRepresentation } from "./components/solution-spatial-ref/solution-spatial-ref";
 export namespace Components {
     interface SolutionConfiguration {
@@ -18,8 +19,14 @@ export namespace Components {
         "value": any;
     }
     interface SolutionItemDetails {
+        /**
+          * Contains the translations for this component.
+         */
         "translations": any;
-        "value": any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value": IItemDetails;
     }
     interface SolutionSpatialRef {
         /**
@@ -103,8 +110,14 @@ declare namespace LocalJSX {
         "value"?: any;
     }
     interface SolutionItemDetails {
+        /**
+          * Contains the translations for this component.
+         */
         "translations"?: any;
-        "value"?: any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value"?: IItemDetails;
     }
     interface SolutionSpatialRef {
         /**

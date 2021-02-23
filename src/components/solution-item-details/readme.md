@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property       | Attribute      | Description | Type  | Default                                                                                                                                                                                                    |
-| -------------- | -------------- | ----------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `translations` | `translations` |             | `any` | `{     "editThumbnail": "Edit Thumbnail",     "description": "Description",     "tags": "Tags",     "credits": "Credits",     "termsOfUse": "Terms of Use",     "snippetCountPattern": "{{n}} of 250"   }` |
-| `value`        | `value`        |             | `any` | `{}`                                                                                                                                                                                                       |
+| Property       | Attribute      | Description                                   | Type           | Default                                                                                                                                                                                                    |
+| -------------- | -------------- | --------------------------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `translations` | `translations` | Contains the translations for this component. | `any`          | `{     "editThumbnail": "Edit Thumbnail",     "description": "Description",     "tags": "Tags",     "credits": "Credits",     "termsOfUse": "Terms of Use",     "snippetCountPattern": "{{n}} of 250"   }` |
+| `value`        | --             | Contains the public value for this component. | `IItemDetails` | `{     thumbnail: null,     title: "title",     snippet: "snippet",     description: "description",     tags: "tags",     credits: "credits",     termsOfUse: "termsOfUse"   }`                            |
 
 
 ## Dependencies
