@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Prop, VNode } from '@stencil/core';
+import { Component, Element, h, Host, Listen, Prop, VNode } from '@stencil/core';
 import "@esri/calcite-components";
 
 @Component({
@@ -151,6 +151,11 @@ export class SolutionConfiguration {
   //  Event Listeners
   //
   //--------------------------------------------------------------------------
+
+  @Listen("solutionItemSelected")
+  solutionItemSelected(event: CustomEvent): void {
+    console.log('Received the custom solutionItemSelected event: ', event.detail.itemId);
+  }
 
   //--------------------------------------------------------------------------
   //

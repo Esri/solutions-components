@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
-import { Component, Host, h, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode } from '@stencil/core';
 import "@esri/calcite-components";
+
+export interface IInventoryItem {
+  id: string;
+  title: string;
+  dependencies?: IInventoryItem[];
+}
 
 @Component({
   tag: 'solution-inventory',
@@ -26,63 +32,107 @@ export class SolutionInventory {
 
   //--------------------------------------------------------------------------
   //
+  //  Host element access
+  //
+  //--------------------------------------------------------------------------
+
+  @Element() el: HTMLElement;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (public)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   */
+  @Prop({ mutable: true }) translations: any = {
+  };
+
+  /**
+   * Contains the public value for this component.
+   */
+  @Prop() value: IInventoryItem[] = [];
+
+  //--------------------------------------------------------------------------
+  //
   //  Lifecycle
   //
   //--------------------------------------------------------------------------
+
   render(): VNode {
     return (
       <Host>
         <calcite-tree>
-
-          <calcite-tree-item><a>Dashboard 1</a>
-            <calcite-tree slot="children">
-              <calcite-tree-item><a><i>dependencies</i></a></calcite-tree-item>
-            </calcite-tree>
-          </calcite-tree-item>
-
-          <calcite-tree-item><a>Dashboard 2</a>
-            <calcite-tree slot="children">
-              <calcite-tree-item><a>Map 1</a>
-                <calcite-tree slot="children">
-                  <calcite-tree-item><a>View 1</a>
-                    <calcite-tree slot="children">
-                      <calcite-tree-item><a>Feature Service 1</a></calcite-tree-item>
-                    </calcite-tree>
-                  </calcite-tree-item>
-                </calcite-tree>
-              </calcite-tree-item>
-            </calcite-tree>
-          </calcite-tree-item>
-
-          <calcite-tree-item><a>Application 1</a>
-            <calcite-tree slot="children">
-              <calcite-tree-item><a>Group 1</a>
-                <calcite-tree slot="children">
-                  <calcite-tree-item><a>Map 2</a>
-                    <calcite-tree slot="children">
-                      <calcite-tree-item><a>Feature Service 2</a></calcite-tree-item>
-                    </calcite-tree>
-                  </calcite-tree-item>
-                </calcite-tree>
-              </calcite-tree-item>
-            </calcite-tree>
-          </calcite-tree-item>
-
-          <calcite-tree-item><a>Notebook 1</a>
-            <calcite-tree slot="children">
-              <calcite-tree-item><a><i>dependencies</i></a></calcite-tree-item>
-            </calcite-tree>
-          </calcite-tree-item>
-
-          <calcite-tree-item><a>Survey 1</a>
-            <calcite-tree slot="children">
-              <calcite-tree-item><a><i>dependencies</i></a></calcite-tree-item>
-            </calcite-tree>
-          </calcite-tree-item>
-
+          {this.renderHierarchy(this.value)}
         </calcite-tree>
       </Host>
     );
   }
 
+  renderHierarchy(objs: IInventoryItem[]): VNode[] {
+    const hierarchy = objs.map(obj => {
+      if (obj.dependencies && obj.dependencies.length > 0) {
+        return (
+          <calcite-tree-item onClick={() => this._treeItemSelected(obj.id)}>
+            {obj.title}
+            <calcite-tree slot="children">
+              {this.renderHierarchy(obj.dependencies)}
+            </calcite-tree>
+          </calcite-tree-item>
+        );
+      } else {
+        return (
+          <calcite-tree-item onClick={() => this._treeItemSelected(obj.id)}>
+            {obj.title}
+          </calcite-tree-item>
+        );
+      }
+    });
+    return hierarchy;
+  }
+
+  //--------------------------------------------------------------------------
+  //
+  //  Variables (private)
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Event Listeners
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Events
+  //
+  //--------------------------------------------------------------------------
+
+  @Event() solutionItemSelected: EventEmitter;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Public Methods (async)
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Private Methods
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * Publishes the `solutionItemSelected` event containing `itemId`, the id of the selected item.
+   *
+   * @param id Item id as reported by click event
+   */
+  private _treeItemSelected(id: string): void {
+    this.solutionItemSelected.emit({
+      itemId: id
+    });
+  }
 }
