@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Method, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, h, Host, Method, Prop, State, Watch, VNode } from '@stencil/core';
 import "@esri/calcite-components";
-import "../../components";
 import { IWkidDescription, wkids } from "./spatialreferences";
 
 export interface ISpatialRefRepresentation {
@@ -78,7 +77,7 @@ export class SolutionSpatialRef {
     this.locked = false; // can't start with `true` because of https://github.com/Esri/calcite-components/issues/1575
   }
 
-  render() {
+  render(): VNode {
     return (
       <Host>
         <label class="switch-label"><calcite-switch switched={!this.locked} scale="s" class="spatial-ref-switch" onCalciteSwitchChange={(event) => this._updateLocked(event)}></calcite-switch>{this.translations.specifyParam}</label>

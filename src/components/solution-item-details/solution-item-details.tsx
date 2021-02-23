@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Listen, Prop } from '@stencil/core';
+import { Component, Element, h, Host, Listen, Prop, VNode } from '@stencil/core';
 import "@esri/calcite-components";
-import "../../components";
 
 export interface IItemDetails {
   thumbnail: string;
@@ -80,7 +79,7 @@ export class SolutionItemDetails {
   //
   //--------------------------------------------------------------------------
 
-  render() {
+  render(): VNode {
     return (
       <Host>
         <div class="parent-container">
