@@ -7,11 +7,10 @@
 
 ## Properties
 
-| Property       | Attribute      | Description                                                             | Type      | Default                                                                                                                                                           |
-| -------------- | -------------- | ----------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `locked`       | `locked`       | When true, all but the main switch are disabled to prevent interaction. | `boolean` | `false`                                                                                                                                                           |
-| `translations` | `translations` | Contains the translations for this component.                           | `any`     | `{     "specifyParam": "Spatial Reference Parameter",     "defaultSpatialRef": "Default Spatial Reference",     "featureServicesHeading": "Feature Services"   }` |
-| `value`        | `value`        | Contains the public value for this component.                           | `string`  | `null`                                                                                                                                                            |
+| Property       | Attribute      | Description                                   | Type     | Default                                                                                                                                                           |
+| -------------- | -------------- | --------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `translations` | `translations` | Contains the translations for this component. | `any`    | `{     "specifyParam": "Spatial Reference Parameter",     "defaultSpatialRef": "Default Spatial Reference",     "featureServicesHeading": "Feature Services"   }` |
+| `value`        | `value`        | Contains the public value for this component. | `string` | `null`                                                                                                                                                            |
 
 
 ## Methods

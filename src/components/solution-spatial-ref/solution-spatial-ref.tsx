@@ -48,11 +48,6 @@ export class SolutionSpatialRef {
   //--------------------------------------------------------------------------
 
   /**
-   * When true, all but the main switch are disabled to prevent interaction.
-   */
-  @Prop({ mutable: true, reflect: true }) locked: boolean = false; // can't start with `true` because of https://github.com/Esri/calcite-components/issues/1575
-
-  /**
    * Contains the translations for this component.
    */
   @Prop({ mutable: true }) translations: any = {
@@ -77,6 +72,10 @@ export class SolutionSpatialRef {
 
   constructor() {
     this.spatialRef = this._createSpatialRefDisplay(this.value);
+
+    // TODO
+    //this.locked = this.value === null;
+    this.locked = false; // can't start with `true` because of https://github.com/Esri/calcite-components/issues/1575
   }
 
   render() {
@@ -99,6 +98,11 @@ export class SolutionSpatialRef {
   //  Variables (private)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * When true, all but the main switch are disabled to prevent interaction.
+   */
+  @State() private locked: boolean;
 
   /**
    * Internal representation of component's value for display purposes.
