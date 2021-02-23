@@ -146,17 +146,17 @@ export class SolutionItemDetails {
   /**
    * Handle to the element for browsing for a file.
    */
-  browseForThumbnail: HTMLInputElement;
+  private browseForThumbnail: HTMLInputElement;
 
   /**
    * Handle to the snippet character-count feedback.
    */
-  itemSnippetCount: HTMLLabelElement;
+  private itemSnippetCount: HTMLLabelElement;
 
   /**
    * Handle to the thumbnail image display.
    */
-  thumbnail: HTMLImageElement;
+  private thumbnail: HTMLImageElement;
 
   //--------------------------------------------------------------------------
   //

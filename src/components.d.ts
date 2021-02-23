@@ -40,10 +40,6 @@ export namespace Components {
          */
         "getSpatialRef": () => Promise<ISpatialRefRepresentation>;
         /**
-          * When true, all but the main switch are disabled to prevent interaction.
-         */
-        "locked": boolean;
-        /**
           * Contains the translations for this component.
          */
         "translations": any;
@@ -120,10 +116,6 @@ declare namespace LocalJSX {
         "value"?: IItemDetails;
     }
     interface SolutionSpatialRef {
-        /**
-          * When true, all but the main switch are disabled to prevent interaction.
-         */
-        "locked"?: boolean;
         /**
           * Contains the translations for this component.
          */
