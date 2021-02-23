@@ -18,6 +18,16 @@ import { Component, Element, h, Host, Listen, Prop } from '@stencil/core';
 import "@esri/calcite-components";
 import "../../components";
 
+export interface IItemDetails {
+  thumbnail: string;
+  title: string;
+  snippet: string;
+  description: string;
+  tags: string;
+  credits: string;
+  termsOfUse: string;
+}
+
 @Component({
   tag: 'solution-item-details',
   styleUrl: 'solution-item-details.css',
@@ -30,6 +40,7 @@ export class SolutionItemDetails {
   //  Host element access
   //
   //--------------------------------------------------------------------------
+
   @Element() el: HTMLElement;
 
   //--------------------------------------------------------------------------
@@ -38,6 +49,9 @@ export class SolutionItemDetails {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Contains the translations for this component.
+   */
   @Prop({ mutable: true }) translations: any = {
     "editThumbnail": "Edit Thumbnail",
     "description": "Description",
@@ -47,7 +61,18 @@ export class SolutionItemDetails {
     "snippetCountPattern": "{{n}} of 250"
   };
 
-  @Prop({ mutable: true }) value: any = {};
+  /**
+   * Contains the public value for this component.
+   */
+  @Prop({ mutable: true }) value: IItemDetails = {
+    thumbnail: null,
+    title: "",
+    snippet: "",
+    description: "",
+    tags: "",
+    credits: "",
+    termsOfUse: ""
+  };
 
   //--------------------------------------------------------------------------
   //
@@ -60,14 +85,14 @@ export class SolutionItemDetails {
       <Host>
         <div class="parent-container">
           <div class="inputBottomSeparation">
-            <calcite-input id="item-name"></calcite-input>
+            <calcite-input id="item-title" value={this.value.title}></calcite-input>
           </div>
 
           <div class="inputBottomSeparation">
 
-            <input id="browse-for-thumbnail" class="display-none" type="file" accept=".jpg,.gif,.png,image/jpg,image/gif,image/png" />
+            <input ref={(el) => (this.browseForThumbnail = el)} onChange={(event) => (this._updateThumbnail(event))} class="display-none" type="file" accept=".jpg,.gif,.png,image/jpg,image/gif,image/png" />
 
-            <button id="item-thumbnail-label" data-action="thumbnail" data-edit-id="thumbnail" class="font-size--3 btn-link inline-block">
+            <button onClick={() => this._getThumbnail()} class="font-size--3 btn-link inline-block">
               <svg viewBox="0 0 16 16" width="16" height="16" class="icon-inline icon-inline--on-left">
                 <path d="M14.792 2.666l-1.414-1.413a.965.965 0 0 0-1.385-.03l-1.444 1.444-8.763 8.72L.03 15.481a.371.371 0 0 0 .488.488l4.096-1.756 8.763-8.72-.001-.001.002.002 1.443-1.444a.965.965 0 0 0-.03-1.385zM1.569 14.431l.554-1.293.74.739zm2.338-.924l-1.414-1.414 7.963-7.92 1.414 1.415zm8.67-8.626l-1.413-1.414 1.29-1.29a.306.306 0 0 1 .433 0l.981.98a.306.306 0 0 1 0 .433z"></path>
               </svg> {this.translations.editThumbnail}
@@ -75,71 +100,41 @@ export class SolutionItemDetails {
 
             <div class="flex">
               <div class="img-container">
-                <img id="item-image" class="scale-down" width="200" height="133" />
+                <img ref={(el) => (this.thumbnail = el)} class="scale-down" width="200" height="133" />
               </div>
               <div class="summary-count-container">
-                <calcite-input id="item-summary" ref={(el) => { this.itemSummary = el; el.maxlength = 250; }} type="textarea"></calcite-input>
-                <label id="item-summary-count" ref={(el) => (this.itemSummaryCount = el)} class="font-size--3"></label>
+                <calcite-input id="item-snippet" maxlength={250} type="textarea" value={this.value.snippet}></calcite-input>
+                <label id="item-snippet-count" ref={(el) => (this.itemSnippetCount = el)} class="font-size--3"></label>
               </div>
             </div>
           </div>
 
           <calcite-label>{this.translations.description}
             <label id="item-description-label">
-              <calcite-input id="item-description" type="textarea"></calcite-input>
+              <calcite-input id="item-description" type="textarea" value={this.value.description}></calcite-input>
             </label>
           </calcite-label>
 
           <calcite-label>{this.translations.tags}
             <label id="item-tags-label">
-              <calcite-input id="item-tags"></calcite-input>
+              <calcite-input id="item-tags" value={this.value.tags}></calcite-input>
             </label>
           </calcite-label>
 
           <calcite-label>{this.translations.credits}
             <label id="item-credits-label">
-              <calcite-input id="item-credits"></calcite-input>
+              <calcite-input id="item-credits" value={this.value.credits}></calcite-input>
             </label>
           </calcite-label>
 
           <calcite-label>
             <label id="item-terms-label">{this.translations.termsOfUse}
-              <calcite-input id="item-terms" type="textarea"></calcite-input>
+              <calcite-input id="item-terms" type="textarea" value={this.value.termsOfUse}></calcite-input>
             </label>
           </calcite-label>
         </div>
       </Host>
     );
-  }
-
-  componentDidLoad(): void {
-    /*
-    this.itemSummaryLengthHandler = this.itemSummaryLengthHandler || this._getNode('#item-summary')
-      .addEventListener('calciteInputInput', () => this._updateLengthLabel());
-
-    this.itemThumbnailClickHandler = this._getNode('#item-thumbnail-label')
-      .addEventListener('click', () => this._getThumbnail());
-
-    this.thumbnailUploadHandler = this._getNode('#browse-for-thumbnail')
-      .addEventListener('change', () => this._updateThumbnail());
-    */
-  }
-
-  /**
-   * Removes event handlers when the component is removed
-   *
-   */
-  disconnectedCallback(): void {
-    /*
-    this._getNode('#item-summary').removeEventListener(
-      'calciteInputInput', this.itemSummaryLengthHandler);
-
-    this._getNode('#item-thumbnail-label').removeEventListener(
-      'click', this.itemThumbnailClickHandler);
-
-    this._getNode('#browse-for-thumbnail').removeEventListener(
-      'change', this.thumbnailUploadHandler);
-    */
   }
 
   //--------------------------------------------------------------------------
@@ -148,12 +143,20 @@ export class SolutionItemDetails {
   //
   //--------------------------------------------------------------------------
 
-  itemJson: any;
-  itemSummary: HTMLCalciteInputElement;
-  itemSummaryCount: HTMLLabelElement;
-  /*itemSummaryLengthHandler: any;
-  itemThumbnailClickHandler: any;
-  thumbnailUploadHandler: any;*/
+  /**
+   * Handle to the element for browsing for a file.
+   */
+  browseForThumbnail: HTMLInputElement;
+
+  /**
+   * Handle to the snippet character-count feedback.
+   */
+  itemSnippetCount: HTMLLabelElement;
+
+  /**
+   * Handle to the thumbnail image display.
+   */
+  thumbnail: HTMLImageElement;
 
   //--------------------------------------------------------------------------
   //
@@ -161,10 +164,32 @@ export class SolutionItemDetails {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Updates the component's value with changes to the input fields.
+   */
   @Listen("calciteInputInput")
-  itemSummaryLengthHandler(event: any): void {
-    console.log("calciteInputInput event", event);//???
-    this._updateLengthLabel();
+  inputReceivedHandler(event: any): void {
+    switch(event.target.id) {
+    case "item-title":
+      this.value.title = event.target.value;
+      break;
+    case "item-snippet":
+      this.value.snippet = event.target.value;
+      this._updateLengthLabel(this.value.snippet);
+      break;
+    case "item-description":
+      this.value.description = event.target.value;
+      break;
+    case "item-tags":
+      this.value.tags = event.target.value;
+      break;
+    case "item-credits":
+      this.value.credits = event.target.value;
+      break;
+    case "item-terms":
+      this.value.termsOfUse = event.target.value;
+      break;
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -186,58 +211,40 @@ export class SolutionItemDetails {
   //--------------------------------------------------------------------------
 
   /**
-   * Updates the length label to reflect the current number of characters
-   * relative to the max number of characters supported
-   *
-   */
-  _updateLengthLabel(): void {
-    console.log("_updateLengthLabel");//???
-    //const summaryText = this._getNode("#item-summary");
-    //const summaryTextCount = this._getNode("#item-summary-count");
-    this.itemSummaryCount.innerText =
-      this.translations.snippetCountPattern.replace("{{n}}", this.itemSummary.value.length.toString());
-  }
-
-  /**
-   * Open image file browse dialog
+   * Opens image file browse dialog.
    *
    */
   _getThumbnail(): void {
-    console.log("_updateLengthLabel");
-    /*
-    this._getNode('#browse-for-thumbnail').click();
-    */
+    console.log("_getThumbnail");
+    this.browseForThumbnail.click();
   }
 
   /**
-   * Get and display image result from browse
+   * Updates the length label to reflect the current number of characters
+   * relative to the max number of characters supported.
+   *
+   */
+  _updateLengthLabel(phrase: string): void {
+    this.itemSnippetCount.innerText =
+      this.translations.snippetCountPattern.replace("{{n}}", phrase.length.toString());
+  }
+
+  /**
+   * Gets and displays image result from browse.
    *
    */
   _updateThumbnail(
-    //evt: any
+    event: any
   ): void {
-    console.log("_updateLengthLabel");
-    /*
-    const files = evt.currentTarget.files;
-    const img = this._getNode('#item-image');
-    if (files && files[0] && img) {
+    console.log("_updateThumbnail");
+    const files = event.currentTarget.files;
+    if (files && files[0]) {
       var reader = new FileReader();
       reader.onloadend = () => {
-        img.src = reader.result;
+        this.thumbnail.src = reader.result as string;
       }
       reader.readAsDataURL(files[0]);
     }
-    */
-  }
-
-  /**
-   * Get an element based on id
-   *
-   */
-  _getNode(
-    id: string
-  ): any {
-    return document.getElementById(id);
   }
 
 }
