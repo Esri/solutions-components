@@ -22,6 +22,7 @@ describe('solution-item', () => {
     const page = await newSpecPage({
       components: [SolutionItem],
       html: `<solution-item></solution-item>`,
+      supportsShadowDom: false
     });
     expect(page.root).toEqualHtml(`
       <solution-item>

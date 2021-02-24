@@ -22,24 +22,75 @@ describe('solution-inventory', () => {
     const page = await newSpecPage({
       components: [SolutionInventory],
       html: `<solution-inventory></solution-inventory>`,
+      supportsShadowDom: false
     });
+    page.root.value =
+      [{
+        "id": "1",
+        "title": "Dashboard 1"
+      }, {
+        "id": "2",
+         "title": "Dashboard 2",
+        "dependencies": [{
+          "id": "3",
+          "title": "Map 1",
+          "dependencies": [{
+            "id": "4",
+            "title": "View 1",
+            "dependencies": [{
+              "id": "5",
+              "title": "Feature Service 1"
+            }]
+          }]
+        }]
+      }, {
+        "id": "6",
+         "title": "Application 1",
+        "dependencies": [{
+          "id": "7",
+          "title": "Group 1",
+          "dependencies": [{
+            "id": "8",
+            "title": "Map 2",
+            "dependencies": [{
+              "id": "9",
+              "title": "Feature Service 2"
+            }, {
+              "id": "10",
+              "title": "Feature Service 3"
+            }, {
+              "id": "11",
+              "title": "Map 3",
+              "dependencies": [{
+                "id": "12",
+                "title": "Feature Service 4"
+              }]
+            }]
+          }]
+        }]
+      }, {
+        "id": "13",
+        "title": "Notebook 1"
+      }, {
+        "id": "14",
+        "title": "Survey 1"
+      }];
+    await page.waitForChanges();
+
     expect(page.root).toEqualHtml(`
       <solution-inventory>
         <calcite-tree>
 
-          <calcite-tree-item><a>Dashboard 1</a>
-            <calcite-tree slot="children">
-              <calcite-tree-item><a><i>dependencies</i></a></calcite-tree-item>
-            </calcite-tree>
+          <calcite-tree-item>Dashboard 1
           </calcite-tree-item>
 
-          <calcite-tree-item><a>Dashboard 2</a>
+          <calcite-tree-item>Dashboard 2
             <calcite-tree slot="children">
-              <calcite-tree-item><a>Map 1</a>
+              <calcite-tree-item>Map 1
                 <calcite-tree slot="children">
-                  <calcite-tree-item><a>View 1</a>
+                  <calcite-tree-item>View 1
                     <calcite-tree slot="children">
-                      <calcite-tree-item><a>Feature Service 1</a></calcite-tree-item>
+                      <calcite-tree-item>Feature Service 1</calcite-tree-item>
                     </calcite-tree>
                   </calcite-tree-item>
                 </calcite-tree>
@@ -47,13 +98,19 @@ describe('solution-inventory', () => {
             </calcite-tree>
           </calcite-tree-item>
 
-          <calcite-tree-item><a>Application 1</a>
+          <calcite-tree-item>Application 1
             <calcite-tree slot="children">
-              <calcite-tree-item><a>Group 1</a>
+              <calcite-tree-item>Group 1
                 <calcite-tree slot="children">
-                  <calcite-tree-item><a>Map 2</a>
+                  <calcite-tree-item>Map 2
                     <calcite-tree slot="children">
-                      <calcite-tree-item><a>Feature Service 2</a></calcite-tree-item>
+                      <calcite-tree-item>Feature Service 2</calcite-tree-item>
+                      <calcite-tree-item>Feature Service 3</calcite-tree-item>
+                      <calcite-tree-item>Map 3
+                        <calcite-tree slot="children">
+                          <calcite-tree-item>Feature Service 4</calcite-tree-item>
+                        </calcite-tree>
+                      </calcite-tree-item>
                     </calcite-tree>
                   </calcite-tree-item>
                 </calcite-tree>
@@ -61,16 +118,10 @@ describe('solution-inventory', () => {
             </calcite-tree>
           </calcite-tree-item>
 
-          <calcite-tree-item><a>Notebook 1</a>
-            <calcite-tree slot="children">
-              <calcite-tree-item><a><i>dependencies</i></a></calcite-tree-item>
-            </calcite-tree>
+          <calcite-tree-item>Notebook 1
           </calcite-tree-item>
 
-          <calcite-tree-item><a>Survey 1</a>
-            <calcite-tree slot="children">
-              <calcite-tree-item><a><i>dependencies</i></a></calcite-tree-item>
-            </calcite-tree>
+          <calcite-tree-item>Survey 1
           </calcite-tree-item>
 
         </calcite-tree>

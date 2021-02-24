@@ -22,6 +22,7 @@ describe('solution-spatial-ref', () => {
     const page = await newSpecPage({
       components: [SolutionSpatialRef],
       html: `<solution-spatial-ref></solution-spatial-ref>`,
+      supportsShadowDom: false
     });
     expect(page.root).toEqualHtml(`
       <solution-spatial-ref>

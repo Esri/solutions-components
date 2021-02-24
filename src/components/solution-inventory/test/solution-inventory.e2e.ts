@@ -17,11 +17,71 @@
 import { newE2EPage } from '@stencil/core/testing';
 
 describe('solution-inventory', () => {
-  it('renders', async () => {
+  it('renders without a solution', async () => {
     const page = await newE2EPage();
     await page.setContent('<solution-inventory></solution-inventory>');
 
     const element = await page.find('solution-inventory');
     expect(element).toHaveClass('hydrated');
+  });
+
+  it('renders with a solution', async () => {
+    const page = await newE2EPage();
+    await page.setContent('<solution-inventory></solution-inventory>');
+
+    const element = await page.find('solution-inventory');
+    element.setProperty("value",
+      [{
+        "id": "1",
+        "title": "Dashboard 1"
+      }, {
+        "id": "2",
+         "title": "Dashboard 2",
+        "dependencies": [{
+          "id": "3",
+          "title": "Map 1",
+          "dependencies": [{
+            "id": "4",
+            "title": "View 1",
+            "dependencies": [{
+              "id": "5",
+              "title": "Feature Service 1"
+            }]
+          }]
+        }]
+      }, {
+        "id": "6",
+         "title": "Application 1",
+        "dependencies": [{
+          "id": "7",
+          "title": "Group 1",
+          "dependencies": [{
+            "id": "8",
+            "title": "Map 2",
+            "dependencies": [{
+              "id": "9",
+              "title": "Feature Service 2"
+            }, {
+              "id": "10",
+              "title": "Feature Service 3"
+            }, {
+              "id": "11",
+              "title": "Map 3",
+              "dependencies": [{
+                "id": "12",
+                "title": "Feature Service 4"
+              }]
+            }]
+          }]
+        }]
+      }, {
+        "id": "13",
+        "title": "Notebook 1"
+      }, {
+        "id": "14",
+        "title": "Survey 1"
+      }]
+    );
+    await page.waitForChanges();
   });
 });

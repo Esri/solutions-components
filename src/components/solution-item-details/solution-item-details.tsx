@@ -63,7 +63,7 @@ export class SolutionItemDetails {
   /**
    * Contains the public value for this component.
    */
-  @Prop({ mutable: true }) value: IItemDetails = {
+  @Prop({ mutable: true, reflect: true }) value: IItemDetails = {
     thumbnail: null,
     title: "",
     snippet: "",
@@ -101,7 +101,7 @@ export class SolutionItemDetails {
               <div class="img-container">
                 <img ref={(el) => (this.thumbnail = el)} class="scale-down" width="200" height="133" />
               </div>
-              <div class="summary-count-container">
+              <div class="snippet-count-container">
                 <calcite-input id="item-snippet" maxlength={250} type="textarea" value={this.value.snippet}></calcite-input>
                 <label id="item-snippet-count" ref={(el) => (this.itemSnippetCount = el)} class="font-size--3"></label>
               </div>
