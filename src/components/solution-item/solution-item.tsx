@@ -37,6 +37,9 @@ export class SolutionItem {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Contains the translations for this component.
+   */
   @Prop({ mutable: true }) translations: any = {
     "itemDetailsTab": "Item Details",
     "dataTab": "Data",
@@ -60,7 +63,10 @@ export class SolutionItem {
     }
   };
 
-  @Prop({ mutable: true }) value: any = {};
+  /**
+   * Contains the public value for this component.
+   */
+  @Prop({ mutable: true, reflect: true }) value: any = {};
 
   //--------------------------------------------------------------------------
   //

@@ -30,7 +30,13 @@ export namespace Components {
         "value": IInventoryItem[];
     }
     interface SolutionItem {
+        /**
+          * Contains the translations for this component.
+         */
         "translations": any;
+        /**
+          * Contains the public value for this component.
+         */
         "value": any;
     }
     interface SolutionItemDetails {
@@ -132,7 +138,13 @@ declare namespace LocalJSX {
         "value"?: IInventoryItem[];
     }
     interface SolutionItem {
+        /**
+          * Contains the translations for this component.
+         */
         "translations"?: any;
+        /**
+          * Contains the public value for this component.
+         */
         "value"?: any;
     }
     interface SolutionItemDetails {

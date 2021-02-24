@@ -36,8 +36,8 @@ graph TD;
   solution-configuration --> solution-item
   solution-configuration --> solution-spatial-ref
   calcite-tab-title --> calcite-icon
-  solution-inventory --> calcite-tree-item
   solution-inventory --> calcite-tree
+  solution-inventory --> calcite-tree-item
   calcite-tree-item --> calcite-icon
   solution-item --> calcite-tabs
   solution-item --> calcite-tab-nav

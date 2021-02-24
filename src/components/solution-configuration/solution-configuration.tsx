@@ -78,7 +78,7 @@ export class SolutionConfiguration {
   /**
    * Contains the public value for this component.
    */
-  @Prop({ mutable: true }) value: any = {};
+  @Prop({ mutable: true, reflect: true }) value: any = {};
 
   //--------------------------------------------------------------------------
   //

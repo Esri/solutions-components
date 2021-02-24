@@ -21,18 +21,20 @@ Set up:
 npm install
 ```
 
-To interactively transpile components and update the display of src/index.html:
+To interactively transpile components and update the display of src/index.html via http://localhost:3333/src:
 
 ```bash
 npm start
 ```
 Note this feature excessively caches; sometimes you have to rebuild manually and force a refresh.
 
+One can also run index.html in the top-level directory, which is the same as src/index.html but for the path to the `dist` directory.
+
 To add a component, run
 ```bash
 npm run generate
 ```
-with the new component's name as an argument.
+with the new component's name as an argument (or specify the name when prompted).
 
 To build the component for production, run:
 
@@ -46,6 +48,7 @@ To run the unit tests for the components, stop automatic compilation (e.g., Visu
 npm run clean:src
 npm test
 ```
+`clean:src` must be run in a `bash` shell.
 
 ## Issues
 
