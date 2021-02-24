@@ -15,6 +15,8 @@ Supported browsers are the latest versions of Google Chrome, Apple Safari, Mozil
 
 The repository is set up to use [Volta](https://docs.volta.sh/guide/getting-started) for standardizing the versions of NodeJS and npm. Please install and use this app to get the supported versions.
 
+The repository uses [StencilJS](https://stenciljs.com/) to manage web component development; the project is a `web_component` project type.
+
 Set up:
 
 ```bash
@@ -48,7 +50,6 @@ To run the unit tests for the components, stop automatic compilation (e.g., Visu
 npm run clean:src
 npm test
 ```
-`clean:src` must be run in a `bash` shell.
 
 ## Issues
 

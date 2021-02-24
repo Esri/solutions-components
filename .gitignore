@@ -25,4 +25,10 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 .env
 
+# Tools, notes, outputs
+__*.*
+__*
+.vscode/
+
+# Temporary build products
 src/**/*.js
