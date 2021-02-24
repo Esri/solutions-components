@@ -34,6 +34,10 @@
     "@esri/calcite-components": "^1.0.0-next.92",
     "@stencil/core": "^2.0.1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArcGIS/solutions-components.git"
+  },
   "contributors": [
     {
       "name": "John Hauck",
