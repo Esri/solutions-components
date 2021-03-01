@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IInventoryItem } from "./components/solution-inventory/solution-inventory";
+import { IInventoryItem } from "./components/solution-contents/solution-contents";
 import { IItemDetails } from "./components/solution-item-details/solution-item-details";
 import { ISpatialRefRepresentation } from "./components/solution-spatial-ref/solution-spatial-ref";
 export namespace Components {
@@ -19,7 +19,7 @@ export namespace Components {
          */
         "value": any;
     }
-    interface SolutionInventory {
+    interface SolutionContents {
         /**
           * Contains the translations for this component.
          */
@@ -83,11 +83,11 @@ declare global {
         prototype: HTMLSolutionConfigurationElement;
         new (): HTMLSolutionConfigurationElement;
     };
-    interface HTMLSolutionInventoryElement extends Components.SolutionInventory, HTMLStencilElement {
+    interface HTMLSolutionContentsElement extends Components.SolutionContents, HTMLStencilElement {
     }
-    var HTMLSolutionInventoryElement: {
-        prototype: HTMLSolutionInventoryElement;
-        new (): HTMLSolutionInventoryElement;
+    var HTMLSolutionContentsElement: {
+        prototype: HTMLSolutionContentsElement;
+        new (): HTMLSolutionContentsElement;
     };
     interface HTMLSolutionItemElement extends Components.SolutionItem, HTMLStencilElement {
     }
@@ -109,7 +109,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "solution-configuration": HTMLSolutionConfigurationElement;
-        "solution-inventory": HTMLSolutionInventoryElement;
+        "solution-contents": HTMLSolutionContentsElement;
         "solution-item": HTMLSolutionItemElement;
         "solution-item-details": HTMLSolutionItemDetailsElement;
         "solution-spatial-ref": HTMLSolutionSpatialRefElement;
@@ -126,7 +126,7 @@ declare namespace LocalJSX {
          */
         "value"?: any;
     }
-    interface SolutionInventory {
+    interface SolutionContents {
         "onSolutionItemSelected"?: (event: CustomEvent<any>) => void;
         /**
           * Contains the translations for this component.
@@ -169,7 +169,7 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "solution-configuration": SolutionConfiguration;
-        "solution-inventory": SolutionInventory;
+        "solution-contents": SolutionContents;
         "solution-item": SolutionItem;
         "solution-item-details": SolutionItemDetails;
         "solution-spatial-ref": SolutionSpatialRef;
@@ -180,7 +180,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
-            "solution-inventory": LocalJSX.SolutionInventory & JSXBase.HTMLAttributes<HTMLSolutionInventoryElement>;
+            "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;
             "solution-item-details": LocalJSX.SolutionItemDetails & JSXBase.HTMLAttributes<HTMLSolutionItemDetailsElement>;
             "solution-spatial-ref": LocalJSX.SolutionSpatialRef & JSXBase.HTMLAttributes<HTMLSolutionSpatialRefElement>;

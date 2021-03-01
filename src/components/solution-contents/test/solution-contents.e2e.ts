@@ -16,20 +16,20 @@
 
 import { newE2EPage } from '@stencil/core/testing';
 
-describe('solution-inventory', () => {
+describe('solution-contents', () => {
   it('renders without a solution', async () => {
     const page = await newE2EPage();
-    await page.setContent('<solution-inventory></solution-inventory>');
+    await page.setContent('<solution-contents></solution-contents>');
 
-    const element = await page.find('solution-inventory');
+    const element = await page.find('solution-contents');
     expect(element).toHaveClass('hydrated');
   });
 
   it('renders with a solution', async () => {
     const page = await newE2EPage();
-    await page.setContent('<solution-inventory></solution-inventory>');
+    await page.setContent('<solution-contents></solution-contents>');
 
-    const element = await page.find('solution-inventory');
+    const element = await page.find('solution-contents');
     element.setProperty("value",
       [{
         "id": "1",

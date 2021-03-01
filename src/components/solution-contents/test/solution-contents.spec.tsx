@@ -15,13 +15,13 @@
  */
 
 import { newSpecPage } from '@stencil/core/testing';
-import { SolutionInventory } from '../solution-inventory';
+import { SolutionContents } from '../solution-contents';
 
-describe('solution-inventory', () => {
+describe('solution-contents', () => {
   it('renders', async () => {
     const page = await newSpecPage({
-      components: [SolutionInventory],
-      html: `<solution-inventory></solution-inventory>`,
+      components: [SolutionContents],
+      html: `<solution-contents></solution-contents>`,
       supportsShadowDom: false
     });
     page.root.value =
@@ -78,7 +78,7 @@ describe('solution-inventory', () => {
     await page.waitForChanges();
 
     expect(page.root).toEqualHtml(`
-      <solution-inventory>
+      <solution-contents>
         <calcite-tree>
 
           <calcite-tree-item>Dashboard 1
@@ -125,7 +125,7 @@ describe('solution-inventory', () => {
           </calcite-tree-item>
 
         </calcite-tree>
-      </solution-inventory>
+      </solution-contents>
     `);
   });
 });

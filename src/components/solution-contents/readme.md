@@ -34,11 +34,11 @@
 ### Graph
 ```mermaid
 graph TD;
-  solution-inventory --> calcite-tree
-  solution-inventory --> calcite-tree-item
+  solution-contents --> calcite-tree
+  solution-contents --> calcite-tree-item
   calcite-tree-item --> calcite-icon
-  solution-configuration --> solution-inventory
-  style solution-inventory fill:#f9f,stroke:#333,stroke-width:4px
+  solution-configuration --> solution-contents
+  style solution-contents fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------

@@ -24,11 +24,11 @@ export interface IInventoryItem {
 }
 
 @Component({
-  tag: 'solution-inventory',
-  styleUrl: 'solution-inventory.css',
+  tag: 'solution-contents',
+  styleUrl: 'solution-contents.css',
   shadow: false
 })
-export class SolutionInventory {
+export class SolutionContents {
 
   //--------------------------------------------------------------------------
   //
