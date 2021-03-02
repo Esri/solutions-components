@@ -1,0 +1,166 @@
+/** @license
+ * Copyright 2021 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { newSpecPage } from '@stencil/core/testing';
+import { SolutionSpatialRef } from '../solution-spatial-ref';
+
+describe('solution-spatial-ref', () => {
+  it('renders', async () => {
+    const page = await newSpecPage({
+      components: [SolutionSpatialRef],
+      html: `<solution-spatial-ref></solution-spatial-ref>`,
+      supportsShadowDom: false
+    });
+    expect(page.root).toEqualHtml(`
+      <solution-spatial-ref>
+        <label class="switch-label"><calcite-switch scale="s" class="spatial-ref-switch" switched=""></calcite-switch>Spatial Reference Parameter</label>
+        <div id="spatialRefDefn" class="spatial-ref-switch-title">
+          <calcite-label>Default Spatial Reference<label class="spatial-ref-default"><calcite-input></calcite-input></label></calcite-label>
+          <label class="spatial-ref-current">WGS 1984 Web Mercator Auxiliary Sphere (102100)</label>
+          <label class="spatial-ref-item-title">Feature Services</label>
+          <label class="switch-label"><calcite-switch scale="s" class="spatial-ref-item-switch"></calcite-switch>Feature Service 1</label>
+          <label class="switch-label"><calcite-switch scale="s" class="spatial-ref-item-switch"></calcite-switch>Feature Service 2</label>
+        </div>
+      </solution-spatial-ref>
+    `);
+  });
+
+  it('creates description for known WKID', async () => {
+    await newSpecPage({
+      components: [SolutionSpatialRef],
+      html: `<solution-spatial-ref></solution-spatial-ref>`,
+    });
+    const component = document.querySelector('solution-spatial-ref');
+    component.wkidToDisplay(4326)
+      .then(
+        result => expect(result).toEqual('GCS WGS 1984 (4326)')
+      );
+  });
+
+  it('creates description for unknown WKID', async () => {
+    await newSpecPage({
+      components: [SolutionSpatialRef],
+      html: `<solution-spatial-ref></solution-spatial-ref>`,
+    });
+    const component = document.querySelector('solution-spatial-ref');
+    component.wkidToDisplay(0)
+      .then(
+        result => expect(result).toEqual('WKID 0')
+      );
+  });
+
+  it('creates description for default component value', async () => {
+    await newSpecPage({
+      components: [SolutionSpatialRef],
+      html: `<solution-spatial-ref></solution-spatial-ref>`,
+    });
+    const component = document.querySelector('solution-spatial-ref');
+    component.createSpatialRefDisplay(null)
+      .then(
+        result => {
+          expect(result.display).toEqual('WGS 1984 Web Mercator Auxiliary Sphere (102100)');
+          expect(result.usingWkid).toBeTruthy();
+          expect(result.wkid).toEqual(102100);
+          expect(result.wkt).toEqual('');
+        }
+      );
+  });
+
+  it('creates description for WKID component value', async () => {
+    await newSpecPage({
+      components: [SolutionSpatialRef],
+      html: `<solution-spatial-ref></solution-spatial-ref>`,
+    });
+    const component = document.querySelector('solution-spatial-ref');
+    component.createSpatialRefDisplay("4151")
+      .then(
+        result => {
+          expect(result.display).toEqual('GCS Swiss TRF 1995 (4151)');
+          expect(result.usingWkid).toBeTruthy();
+          expect(result.wkid).toEqual(4151);
+          expect(result.wkt).toEqual('');
+        }
+      );
+  });
+
+  it('creates description for WKT component value', async () => {
+    await newSpecPage({
+      components: [SolutionSpatialRef],
+      html: `<solution-spatial-ref></solution-spatial-ref>`,
+    });
+    const component = document.querySelector('solution-spatial-ref');
+    component.createSpatialRefDisplay('PROJCS["Germany_Zone_5",GEOGCS["GCS_Deutsches_Hauptdreiecksnetz",DATUM["D_Deutsches_Hauptdreiecksnetz",SPHEROID["Bessel_1841",6377397.155,299.1528128]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["False_Easting",5500000.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",15.0],PARAMETER["Scale_Factor",1.0],PARAMETER["Latitude_Of_Origin",0.0],UNIT["Meter",1.0]]')
+      .then(
+        result => {
+          expect(result.display).toEqual('PROJCS["Germany_Zone_5",GEOGCS["GCS_Deutsches_Hauptdreiecksnetz",DATUM["D_Deutsches_Hauptdreiecksnetz",SPHEROID["Bessel_1841",6377397.155,299.1528128]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["False_Easting",5500000.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",15.0],PARAMETER["Scale_Factor",1.0],PARAMETER["Latitude_Of_Origin",0.0],UNIT["Meter",1.0]]');
+          expect(result.usingWkid).toBeFalsy();
+          expect(result.wkid).toEqual(0);
+          expect(result.wkt).toEqual('PROJCS["Germany_Zone_5",GEOGCS["GCS_Deutsches_Hauptdreiecksnetz",DATUM["D_Deutsches_Hauptdreiecksnetz",SPHEROID["Bessel_1841",6377397.155,299.1528128]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["False_Easting",5500000.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",15.0],PARAMETER["Scale_Factor",1.0],PARAMETER["Latitude_Of_Origin",0.0],UNIT["Meter",1.0]]');
+        }
+      );
+  });
+
+  it('sets default component value', async () => {
+    await newSpecPage({
+      components: [SolutionSpatialRef],
+      html: `<solution-spatial-ref></solution-spatial-ref>`,
+    });
+    const component = document.querySelector('solution-spatial-ref');
+    component.getSpatialRef()
+      .then(
+        result => {
+          expect(result.display).toEqual('WGS 1984 Web Mercator Auxiliary Sphere (102100)');
+          expect(result.usingWkid).toBeTruthy();
+          expect(result.wkid).toEqual(102100);
+          expect(result.wkt).toEqual('');
+        }
+      );
+  });
+
+  it('sets WKID component value', async () => {
+    await newSpecPage({
+      components: [SolutionSpatialRef],
+      html: `<solution-spatial-ref value="4151"></solution-spatial-ref>`,
+    });
+    const component = document.querySelector('solution-spatial-ref');
+    component.getSpatialRef()
+      .then(
+        result => {
+          expect(result.display).toEqual('GCS Swiss TRF 1995 (4151)');
+          expect(result.usingWkid).toBeTruthy();
+          expect(result.wkid).toEqual(4151);
+          expect(result.wkt).toEqual('');
+        }
+      );
+  });
+
+  it('sets WKT component value', async () => {
+    await newSpecPage({
+      components: [SolutionSpatialRef],
+      html: `<solution-spatial-ref value='PROJCS["Germany_Zone_5",GEOGCS["GCS_Deutsches_Hauptdreiecksnetz",DATUM["D_Deutsches_Hauptdreiecksnetz",SPHEROID["Bessel_1841",6377397.155,299.1528128]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["False_Easting",5500000.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",15.0],PARAMETER["Scale_Factor",1.0],PARAMETER["Latitude_Of_Origin",0.0],UNIT["Meter",1.0]]'></solution-spatial-ref>`,
+    });
+    const component = document.querySelector('solution-spatial-ref');
+    component.getSpatialRef()
+      .then(
+        result => {
+          expect(result.display).toEqual('PROJCS["Germany_Zone_5",GEOGCS["GCS_Deutsches_Hauptdreiecksnetz",DATUM["D_Deutsches_Hauptdreiecksnetz",SPHEROID["Bessel_1841",6377397.155,299.1528128]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["False_Easting",5500000.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",15.0],PARAMETER["Scale_Factor",1.0],PARAMETER["Latitude_Of_Origin",0.0],UNIT["Meter",1.0]]');
+          expect(result.usingWkid).toBeFalsy();
+          expect(result.wkid).toEqual(0);
+          expect(result.wkt).toEqual('PROJCS["Germany_Zone_5",GEOGCS["GCS_Deutsches_Hauptdreiecksnetz",DATUM["D_Deutsches_Hauptdreiecksnetz",SPHEROID["Bessel_1841",6377397.155,299.1528128]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["False_Easting",5500000.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",15.0],PARAMETER["Scale_Factor",1.0],PARAMETER["Latitude_Of_Origin",0.0],UNIT["Meter",1.0]]');
+        }
+      );
+  });
+});

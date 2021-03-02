@@ -17,6 +17,7 @@
   "scripts": {
     "build": "stencil build --docs",
     "start": "stencil build --dev --watch --serve",
+    "clean:src": "start cmd.exe /c \"del/s/q src\\components\\*.js\"",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate"
@@ -25,10 +26,17 @@
     "@types/jest": "^26.0.20",
     "@types/puppeteer": "^5.4.2",
     "jest": "^26.6.3",
-    "puppeteer": "^5.5.0"
+    "jest-cli": "^26.6.3",
+    "puppeteer": "^5.5.0",
+    "typescript": "^4.0.5"
   },
   "dependencies": {
-    "@stencil/core": "^2.0.1"
+    "@esri/calcite-components": "^1.0.0-next.92",
+    "@stencil/core": "2.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArcGIS/solutions-components.git"
   },
   "contributors": [
     {
@@ -40,5 +48,9 @@
       "email": "mtschudi@esri.com"
     }
   ],
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "volta": {
+    "node": "14.15.5",
+    "npm": "6.14.11"
+  }
 }

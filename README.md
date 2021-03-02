@@ -13,18 +13,30 @@ Supported browsers are the latest versions of Google Chrome, Apple Safari, Mozil
 
 ## Getting Started
 
+The repository is set up to use [Volta](https://docs.volta.sh/guide/getting-started) for standardizing the versions of NodeJS and npm. Please install and use this app to get the supported versions.
+
+The repository uses [StencilJS](https://stenciljs.com/) to manage web component development; the project is a `web_component` project type.
+
 Set up:
 
 ```bash
 npm install
 ```
 
-To interactively transpile components and update the display of src/index.html:
+To interactively transpile components and update the display of src/index.html via http://localhost:3333/src:
 
 ```bash
 npm start
 ```
+Note this feature excessively caches; sometimes you have to rebuild manually and force a refresh.
 
+One can also run index.html in the top-level directory, which is the same as src/index.html but for the path to the `dist` directory.
+
+To add a component, run
+```bash
+npm run generate
+```
+with the new component's name as an argument (or specify the name when prompted).
 
 To build the component for production, run:
 
@@ -32,9 +44,10 @@ To build the component for production, run:
 npm run build
 ```
 
-To run the unit tests for the components, run:
+To run the unit tests for the components, stop automatic compilation (e.g., Visual Studio) and run:
 
 ```bash
+npm run clean:src
 npm test
 ```
 
