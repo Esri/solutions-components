@@ -8,6 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IInventoryItem } from "./components/solution-contents/solution-contents";
 import { IItemDetails } from "./components/solution-item-details/solution-item-details";
 import { ISpatialRefRepresentation } from "./components/solution-spatial-ref/solution-spatial-ref";
+import { IVariableItem } from "./components/solution-variables/solution-variables";
 export namespace Components {
     interface SolutionConfiguration {
         /**
@@ -75,6 +76,16 @@ export namespace Components {
          */
         "wkidToDisplay": (wkid: number) => Promise<string>;
     }
+    interface SolutionVariables {
+        /**
+          * Contains the translations for this component.
+         */
+        "translations": any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value": IVariableItem[];
+    }
 }
 declare global {
     interface HTMLSolutionConfigurationElement extends Components.SolutionConfiguration, HTMLStencilElement {
@@ -107,12 +118,19 @@ declare global {
         prototype: HTMLSolutionSpatialRefElement;
         new (): HTMLSolutionSpatialRefElement;
     };
+    interface HTMLSolutionVariablesElement extends Components.SolutionVariables, HTMLStencilElement {
+    }
+    var HTMLSolutionVariablesElement: {
+        prototype: HTMLSolutionVariablesElement;
+        new (): HTMLSolutionVariablesElement;
+    };
     interface HTMLElementTagNameMap {
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-contents": HTMLSolutionContentsElement;
         "solution-item": HTMLSolutionItemElement;
         "solution-item-details": HTMLSolutionItemDetailsElement;
         "solution-spatial-ref": HTMLSolutionSpatialRefElement;
+        "solution-variables": HTMLSolutionVariablesElement;
     }
 }
 declare namespace LocalJSX {
@@ -167,12 +185,24 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    interface SolutionVariables {
+        "onSolutionVariableSelected"?: (event: CustomEvent<any>) => void;
+        /**
+          * Contains the translations for this component.
+         */
+        "translations"?: any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value"?: IVariableItem[];
+    }
     interface IntrinsicElements {
         "solution-configuration": SolutionConfiguration;
         "solution-contents": SolutionContents;
         "solution-item": SolutionItem;
         "solution-item-details": SolutionItemDetails;
         "solution-spatial-ref": SolutionSpatialRef;
+        "solution-variables": SolutionVariables;
     }
 }
 export { LocalJSX as JSX };
@@ -184,6 +214,7 @@ declare module "@stencil/core" {
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;
             "solution-item-details": LocalJSX.SolutionItemDetails & JSXBase.HTMLAttributes<HTMLSolutionItemDetailsElement>;
             "solution-spatial-ref": LocalJSX.SolutionSpatialRef & JSXBase.HTMLAttributes<HTMLSolutionSpatialRefElement>;
+            "solution-variables": LocalJSX.SolutionVariables & JSXBase.HTMLAttributes<HTMLSolutionVariablesElement>;
         }
     }
 }
