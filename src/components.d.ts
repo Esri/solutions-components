@@ -50,6 +50,16 @@ export namespace Components {
          */
         "value": IItemDetails;
     }
+    interface SolutionOrganizationVariables {
+        /**
+          * Contains the translations for this component.
+         */
+        "translations": any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value": any;
+    }
     interface SolutionSpatialRef {
         /**
           * Returns the spatial reference description of the supplied value. (Exposes private method `_createSpatialRefDisplay` for testing.)
@@ -75,6 +85,16 @@ export namespace Components {
           * @returns Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
          */
         "wkidToDisplay": (wkid: number) => Promise<string>;
+    }
+    interface SolutionTemplateData {
+        /**
+          * Contains the translations for this component.
+         */
+        "translations": any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value": any;
     }
     interface SolutionVariables {
         /**
@@ -112,11 +132,23 @@ declare global {
         prototype: HTMLSolutionItemDetailsElement;
         new (): HTMLSolutionItemDetailsElement;
     };
+    interface HTMLSolutionOrganizationVariablesElement extends Components.SolutionOrganizationVariables, HTMLStencilElement {
+    }
+    var HTMLSolutionOrganizationVariablesElement: {
+        prototype: HTMLSolutionOrganizationVariablesElement;
+        new (): HTMLSolutionOrganizationVariablesElement;
+    };
     interface HTMLSolutionSpatialRefElement extends Components.SolutionSpatialRef, HTMLStencilElement {
     }
     var HTMLSolutionSpatialRefElement: {
         prototype: HTMLSolutionSpatialRefElement;
         new (): HTMLSolutionSpatialRefElement;
+    };
+    interface HTMLSolutionTemplateDataElement extends Components.SolutionTemplateData, HTMLStencilElement {
+    }
+    var HTMLSolutionTemplateDataElement: {
+        prototype: HTMLSolutionTemplateDataElement;
+        new (): HTMLSolutionTemplateDataElement;
     };
     interface HTMLSolutionVariablesElement extends Components.SolutionVariables, HTMLStencilElement {
     }
@@ -129,7 +161,9 @@ declare global {
         "solution-contents": HTMLSolutionContentsElement;
         "solution-item": HTMLSolutionItemElement;
         "solution-item-details": HTMLSolutionItemDetailsElement;
+        "solution-organization-variables": HTMLSolutionOrganizationVariablesElement;
         "solution-spatial-ref": HTMLSolutionSpatialRefElement;
+        "solution-template-data": HTMLSolutionTemplateDataElement;
         "solution-variables": HTMLSolutionVariablesElement;
     }
 }
@@ -175,6 +209,16 @@ declare namespace LocalJSX {
          */
         "value"?: IItemDetails;
     }
+    interface SolutionOrganizationVariables {
+        /**
+          * Contains the translations for this component.
+         */
+        "translations"?: any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value"?: any;
+    }
     interface SolutionSpatialRef {
         /**
           * Contains the translations for this component.
@@ -184,6 +228,16 @@ declare namespace LocalJSX {
           * Contains the public value for this component.
          */
         "value"?: string;
+    }
+    interface SolutionTemplateData {
+        /**
+          * Contains the translations for this component.
+         */
+        "translations"?: any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value"?: any;
     }
     interface SolutionVariables {
         "onSolutionVariableSelected"?: (event: CustomEvent<any>) => void;
@@ -201,7 +255,9 @@ declare namespace LocalJSX {
         "solution-contents": SolutionContents;
         "solution-item": SolutionItem;
         "solution-item-details": SolutionItemDetails;
+        "solution-organization-variables": SolutionOrganizationVariables;
         "solution-spatial-ref": SolutionSpatialRef;
+        "solution-template-data": SolutionTemplateData;
         "solution-variables": SolutionVariables;
     }
 }
@@ -213,7 +269,9 @@ declare module "@stencil/core" {
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;
             "solution-item-details": LocalJSX.SolutionItemDetails & JSXBase.HTMLAttributes<HTMLSolutionItemDetailsElement>;
+            "solution-organization-variables": LocalJSX.SolutionOrganizationVariables & JSXBase.HTMLAttributes<HTMLSolutionOrganizationVariablesElement>;
             "solution-spatial-ref": LocalJSX.SolutionSpatialRef & JSXBase.HTMLAttributes<HTMLSolutionSpatialRefElement>;
+            "solution-template-data": LocalJSX.SolutionTemplateData & JSXBase.HTMLAttributes<HTMLSolutionTemplateDataElement>;
             "solution-variables": LocalJSX.SolutionVariables & JSXBase.HTMLAttributes<HTMLSolutionVariablesElement>;
         }
     }
