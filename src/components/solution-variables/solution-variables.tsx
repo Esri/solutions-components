@@ -3,14 +3,8 @@ import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode } from '@
 export interface IVariableItem {
   id: string;
   title: string;
-  type: varType; // May not be necessary...
-  value?: string; // May not be necessary...
+  value: string;
   dependencies?: IVariableItem[];
-}
-
-enum varType {
-  PARENT,
-  VARIABLE
 }
 
 @Component({
@@ -30,12 +24,91 @@ export class SolutionVariables {
    * Contains the translations for this component.
    */
   @Prop({ mutable: true }) translations: any = {
+    "solVariables": "Solution Varibles"
   };
 
   /**
    * Contains the public value for this component.
    */
-  @Prop() value: IVariableItem[] = [];
+  @Prop() value: IVariableItem[] = [{
+    id: "db1",
+    title: "Dashboard 1",
+    value: "{{Dashboard 1 value}}",
+    dependencies: [{
+      id: "db1ItemId",
+      title: "Item Id",
+      value: "{{db1ItemId value}}"
+    }, {
+      id: "db1Url",
+      title: "Url",
+      value: "{{db1Url value}}"
+    }]
+  }, {
+    id: "db2",
+    title: "Dashboard 2",
+    value: "Dashboard 2 value",
+    dependencies: [{
+      id: "db2ItemId",
+      title: "Item Id",
+      value: "{{db2ItemId value}}"
+    }, {
+      id: "db2Url",
+      title: "Url",
+      value: "{{db2Url value}}"
+    }]
+  }, {
+    id: "fs1",
+    title: "Feature Service 1",
+    value: "{{Feature Service 1 value}}",
+    dependencies: [{
+      id: "fs1ItemId",
+      title: "Item Id",
+      value: "{{fs1ItemId value}}"
+    }, {
+      id: "fs1Url",
+      title: "Url",
+      value: "{{fs1Url value}}"
+    }, {
+      id: "fs1Name",
+      title: "Name",
+      value: "{{fs1Name value}}"
+    }, {
+      id: "layer0",
+      title: "Layer 0",
+      value: "{{layer0 value}}",
+      dependencies: [{
+        id: "layer0Id",
+        title: "Id",
+        value: "{{layer0Id value}}"
+      }, {
+        id: "layer0Url",
+        title: "Url",
+        value: "{{layer0Url value}}"
+      }]
+    }, {
+      id: "layer1",
+      title: "Layer 1",
+      value: "{{layer1 value}}",
+      dependencies: [{
+        id: "layer1Id",
+        title: "Id",
+        value: "{{layer1Id value}}"
+      }, {
+        id: "layer1Url",
+        title: "Url",
+        value: "{{layer1Url value}}"
+      }]
+    }]
+  }, {
+    id: "grp1",
+    title: "Group 1",
+    value: "{{Group 1 value}}",
+    dependencies: [{
+      id: "group1Id",
+      title: "Group Id",
+      value: "{{group1Id value}}"
+    }]
+  }];
 
   //--------------------------------------------------------------------------
   //
@@ -46,9 +119,14 @@ export class SolutionVariables {
   render() {
     return (
       <Host>
-        <calcite-label id="variable-label">
-          {this.renderHierarchy(this.value)}
-        </calcite-label>
+        <div>
+          <h4 class="org-var-header">{this.translations.solVariables}</h4>
+        </div>
+        <div class="container-border">
+          <calcite-label id="variable-label">
+            {this.renderHierarchy(this.value)}
+          </calcite-label>
+        </div>
       </Host>
     );
   }
@@ -56,28 +134,16 @@ export class SolutionVariables {
   renderHierarchy(
     objs: IVariableItem[]
   ): VNode[] {
-    // just want the event 
     const hierarchy = objs.map(obj => {
       if (obj.dependencies && obj.dependencies.length > 0) {
-        if (obj.type === varType.PARENT) {
-          return (
-            <calcite-tree-item>
-              {obj.title}
-              <calcite-tree slot="children">
-                {this.renderHierarchy(obj.dependencies)}
-              </calcite-tree>
-            </calcite-tree-item>
-          );
-        } else {
-          return (
-            <calcite-tree-item onClick={() => this._treeItemSelected(obj.id, obj.value)}>
-              {obj.title}
-              <calcite-tree slot="children">
-                {this.renderHierarchy(obj.dependencies)}
-              </calcite-tree>
-            </calcite-tree-item>
-          );
-        }
+        return (
+          <calcite-tree-item>
+            {obj.title}
+            <calcite-tree slot="children">
+              {this.renderHierarchy(obj.dependencies)}
+            </calcite-tree>
+          </calcite-tree-item>
+        );
       } else {
         return (
           <calcite-tree-item onClick={() => this._treeItemSelected(obj.id, obj.value)}>

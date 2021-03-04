@@ -7,6 +7,7 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IInventoryItem } from "./components/solution-contents/solution-contents";
 import { IItemDetails } from "./components/solution-item-details/solution-item-details";
+import { IOrganizationVariableItem } from "./components/solution-organization-variables/solution-organization-variables";
 import { ISpatialRefRepresentation } from "./components/solution-spatial-ref/solution-spatial-ref";
 import { IVariableItem } from "./components/solution-variables/solution-variables";
 export namespace Components {
@@ -58,7 +59,7 @@ export namespace Components {
         /**
           * Contains the public value for this component.
          */
-        "value": any;
+        "value": IOrganizationVariableItem[];
     }
     interface SolutionSpatialRef {
         /**
@@ -210,6 +211,7 @@ declare namespace LocalJSX {
         "value"?: IItemDetails;
     }
     interface SolutionOrganizationVariables {
+        "onOrganizationVariableSelected"?: (event: CustomEvent<any>) => void;
         /**
           * Contains the translations for this component.
          */
@@ -217,7 +219,7 @@ declare namespace LocalJSX {
         /**
           * Contains the public value for this component.
          */
-        "value"?: any;
+        "value"?: IOrganizationVariableItem[];
     }
     interface SolutionSpatialRef {
         /**

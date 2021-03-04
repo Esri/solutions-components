@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode } from '@stencil/core';
+import { Component, Host, h, Prop } from '@stencil/core';
 
 @Component({
   tag: 'solution-template-data',
@@ -35,7 +35,7 @@ export class SolutionTemplateData {
       <Host>
         <div class="parent-container">
             <calcite-shell dir="ltr" theme="light">
-              <calcite-shell-center-row slot="center-row" position="start" height-scale="l" width-scale="l">
+              <calcite-shell-center-row slot="center-row" position="start" height-scale="l" width-scale="l" class="json-editor">
                 <div class="child-container">
                   <span>JSON Editor goes</span>
                 </div>
@@ -43,7 +43,7 @@ export class SolutionTemplateData {
               <calcite-shell-panel slot="contextual-panel" position="start" height-scale="l" width-scale="m">
                 <div class="child-container">
                   <solution-organization-variables></solution-organization-variables>
-                  <solution-solution-variables></solution-solution-variables>
+                  <solution-variables></solution-variables>
                 </div>
               </calcite-shell-panel>
             </calcite-shell>
@@ -51,5 +51,4 @@ export class SolutionTemplateData {
       </Host>
     );
   }
-
 }

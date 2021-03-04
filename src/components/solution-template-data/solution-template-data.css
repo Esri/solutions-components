@@ -9,10 +9,13 @@
 }
 
 .child-container {
-  width:100vw;
   margin: 1rem;
 }
 
 .inputBottomSeparation {
   margin: 0 0 1.5rem 0;
+}
+
+.json-editor {
+  width: -webkit-fill-available;
 }
