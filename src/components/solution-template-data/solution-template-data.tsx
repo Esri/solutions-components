@@ -1,12 +1,11 @@
-import { Component, Host, h, Prop } from '@stencil/core';
+import { Component, Host, h, Listen, Prop } from '@stencil/core';
 
 @Component({
   tag: 'solution-template-data',
   styleUrl: 'solution-template-data.css',
-  shadow: true,
+  shadow: false
 })
 export class SolutionTemplateData {
-
   //--------------------------------------------------------------------------
   //
   //  Properties (public)
@@ -37,7 +36,7 @@ export class SolutionTemplateData {
             <calcite-shell dir="ltr" theme="light">
               <calcite-shell-center-row slot="center-row" position="start" height-scale="l" width-scale="l" class="json-editor">
                 <div class="child-container">
-                  <span>JSON Editor goes</span>
+                  <span id="json-editor-span">JSON Editor goes</span>
                 </div>
               </calcite-shell-center-row>
               <calcite-shell-panel slot="contextual-panel" position="start" height-scale="l" width-scale="m">
@@ -51,4 +50,39 @@ export class SolutionTemplateData {
       </Host>
     );
   }
+
+    //--------------------------------------------------------------------------
+  //
+  //  Event Listeners
+  //
+  //--------------------------------------------------------------------------
+
+  @Listen("solutionVariableSelected")
+  solutionVariableSelected(event: CustomEvent): void {
+    const jsonEditor = document.getElementById("json-editor-span");
+    jsonEditor.innerHTML += `\n itemId: ${event.detail.itemId} value: ${event.detail.value}`;
+  }
+
+  @Listen("organizationVariableSelected")
+  organizationVariableSelected(event: CustomEvent): void {
+    const jsonEditor = document.getElementById("json-editor-span");
+    jsonEditor.innerHTML += `\n itemId: ${event.detail.itemId} value: ${event.detail.value}`;
+  }
+  //--------------------------------------------------------------------------
+  //
+  //  Events
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Public Methods (async)
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Private Methods
+  //
+  //--------------------------------------------------------------------------
 }
