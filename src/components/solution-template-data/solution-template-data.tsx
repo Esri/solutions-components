@@ -37,7 +37,7 @@ export class SolutionTemplateData {
   /**
    * Contains the public value for this component.
    */
-  @Prop() value: any = [];
+  @Prop({ mutable: true, reflect: true }) value: any = [];
 
   //--------------------------------------------------------------------------
   //

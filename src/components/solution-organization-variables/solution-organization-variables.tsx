@@ -47,7 +47,7 @@ export class SolutionOrganizationVariables {
   /**
    * Contains the public value for this component.
    */
-  @Prop() value: IOrganizationVariableItem[] = [{
+  @Prop({ mutable: true, reflect: true }) value: IOrganizationVariableItem[] = [{
     id: "id",
     title: "title",
     value: "value"

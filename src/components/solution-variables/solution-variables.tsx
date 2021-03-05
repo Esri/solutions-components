@@ -46,7 +46,7 @@ export class SolutionVariables {
   /**
    * Contains the public value for this component.
    */
-  @Prop() value: IVariableItem[] = [{
+  @Prop({ mutable: true, reflect: true }) value: IVariableItem[] = [{
     id: "db1",
     title: "Dashboard 1",
     value: "{{Dashboard 1 value}}",
