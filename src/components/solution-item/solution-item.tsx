@@ -90,10 +90,10 @@ export class SolutionItem {
                 <solution-item-details ref={(el) => (this.itemDetails = el)}></solution-item-details>
               </calcite-tab>
               <calcite-tab class="config-tab">
-                <solution-template-data></solution-template-data>
+                <solution-template-data isResource={true}></solution-template-data>
               </calcite-tab>
               <calcite-tab class="config-tab">
-                solution-item-json/solution-item-json
+                <solution-template-data></solution-template-data>
               </calcite-tab>
             </calcite-tabs>
           </div>

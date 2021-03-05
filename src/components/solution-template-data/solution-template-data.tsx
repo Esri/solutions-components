@@ -164,6 +164,8 @@ export class SolutionTemplateData {
     }
   };
 
+  @Prop({ mutable: true }) isResource: boolean = false;
+
   //--------------------------------------------------------------------------
   //
   //  Lifecycle
@@ -181,7 +183,7 @@ export class SolutionTemplateData {
   }
 
   renderTemplateData(data: ITemplateData): VNode {
-    return data.isJSON ? this._jsonData(data) : this._resourceData(data);
+    return this.isResource ? this._resourceData(data) : this._jsonData(data);
   }
 
   //--------------------------------------------------------------------------

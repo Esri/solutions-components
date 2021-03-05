@@ -99,6 +99,7 @@ export namespace Components {
         "wkidToDisplay": (wkid: number) => Promise<string>;
     }
     interface SolutionTemplateData {
+        "isResource": boolean;
         /**
           * Contains the translations for this component.
          */
@@ -260,6 +261,7 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface SolutionTemplateData {
+        "isResource"?: boolean;
         /**
           * Contains the translations for this component.
          */
