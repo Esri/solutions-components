@@ -141,7 +141,7 @@ export class SolutionResourceItem {
   /**
    * Handle to the progress element to show during upload/download
    */
-  private uploadProgress: HTMLCalciteProgressElement;
+  //private uploadProgress: HTMLCalciteProgressElement;
 
   //--------------------------------------------------------------------------
   //
@@ -204,7 +204,7 @@ export class SolutionResourceItem {
       }
       reader.readAsDataURL(files[0]);
     } else {
-      this.uploadProgress.classList.add('display-none');
+      //this.uploadProgress.classList.add('display-none');
     }
   }
 }
