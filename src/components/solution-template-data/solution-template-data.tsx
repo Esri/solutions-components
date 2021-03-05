@@ -18,12 +18,14 @@ import { VNode } from '@esri/calcite-components/dist/types/stencil-public-runtim
 import { Component, Host, h, Listen, Prop } from '@stencil/core';
 import { IOrganizationVariableItem } from '../solution-organization-variables/solution-organization-variables';
 import { IVariableItem } from '../solution-variables/solution-variables';
+import { IResourceItem } from '../solution-resource-item/solution-resource-item';
 
 interface ITemplateData {
   data: any,
   isJSON: boolean,
   orgVariables: IOrganizationVariableItem[],
-  solVariables: IVariableItem[]
+  solVariables: IVariableItem[],
+  resourceItem: IResourceItem
 }
 
 @Component({
@@ -51,7 +53,7 @@ export class SolutionTemplateData {
   // TODO not sure why I can't set the type here to be ITemplateData
   @Prop({ mutable: true, reflect: true }) value: any = {
     data: {},
-    isJSON: true,
+    isJSON: false,
     orgVariables: [{
       id: "id",
       title: "title",
@@ -155,7 +157,11 @@ export class SolutionTemplateData {
         title: "Group Id",
         value: "{{group1Id value}}"
       }]
-    }]
+    }],
+    resourceItem: {
+      name: "Survey1.zip",
+      url: ""
+    }
   };
 
   //--------------------------------------------------------------------------
@@ -230,9 +236,6 @@ export class SolutionTemplateData {
   }
 
   _resourceData(templateData: ITemplateData): any {
-    if (templateData.data) {
-      console.log("S")
-    }
-    return (<div>This will have file download stuff</div>);
+    return (<solution-resource-item value={templateData.resourceItem}></solution-resource-item>);
   }
 }

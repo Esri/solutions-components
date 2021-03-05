@@ -1,0 +1,24 @@
+:host {
+  display: block;
+}
+
+.resource-item {
+  padding: 1rem;
+  display: inline-block !important;
+}
+
+.resource-button {
+  margin-right: 1rem;
+}
+
+.resource-button[dir="rtl"] {
+  margin-left: 1rem;
+}
+
+.display-none {
+  display: none;
+}
+
+.resource-progress {
+  padding-top: 1rem;
+}

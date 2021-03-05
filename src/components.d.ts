@@ -8,6 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IInventoryItem } from "./components/solution-contents/solution-contents";
 import { IItemDetails } from "./components/solution-item-details/solution-item-details";
 import { IOrganizationVariableItem } from "./components/solution-organization-variables/solution-organization-variables";
+import { IResourceItem } from "./components/solution-resource-item/solution-resource-item";
 import { ISpatialRefRepresentation } from "./components/solution-spatial-ref/solution-spatial-ref";
 import { IVariableItem } from "./components/solution-variables/solution-variables";
 export namespace Components {
@@ -60,6 +61,16 @@ export namespace Components {
           * Contains the public value for this component.
          */
         "value": IOrganizationVariableItem[];
+    }
+    interface SolutionResourceItem {
+        /**
+          * Contains the translations for this component.
+         */
+        "translations": any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value": IResourceItem;
     }
     interface SolutionSpatialRef {
         /**
@@ -139,6 +150,12 @@ declare global {
         prototype: HTMLSolutionOrganizationVariablesElement;
         new (): HTMLSolutionOrganizationVariablesElement;
     };
+    interface HTMLSolutionResourceItemElement extends Components.SolutionResourceItem, HTMLStencilElement {
+    }
+    var HTMLSolutionResourceItemElement: {
+        prototype: HTMLSolutionResourceItemElement;
+        new (): HTMLSolutionResourceItemElement;
+    };
     interface HTMLSolutionSpatialRefElement extends Components.SolutionSpatialRef, HTMLStencilElement {
     }
     var HTMLSolutionSpatialRefElement: {
@@ -163,6 +180,7 @@ declare global {
         "solution-item": HTMLSolutionItemElement;
         "solution-item-details": HTMLSolutionItemDetailsElement;
         "solution-organization-variables": HTMLSolutionOrganizationVariablesElement;
+        "solution-resource-item": HTMLSolutionResourceItemElement;
         "solution-spatial-ref": HTMLSolutionSpatialRefElement;
         "solution-template-data": HTMLSolutionTemplateDataElement;
         "solution-variables": HTMLSolutionVariablesElement;
@@ -221,6 +239,16 @@ declare namespace LocalJSX {
          */
         "value"?: IOrganizationVariableItem[];
     }
+    interface SolutionResourceItem {
+        /**
+          * Contains the translations for this component.
+         */
+        "translations"?: any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value"?: IResourceItem;
+    }
     interface SolutionSpatialRef {
         /**
           * Contains the translations for this component.
@@ -258,6 +286,7 @@ declare namespace LocalJSX {
         "solution-item": SolutionItem;
         "solution-item-details": SolutionItemDetails;
         "solution-organization-variables": SolutionOrganizationVariables;
+        "solution-resource-item": SolutionResourceItem;
         "solution-spatial-ref": SolutionSpatialRef;
         "solution-template-data": SolutionTemplateData;
         "solution-variables": SolutionVariables;
@@ -272,6 +301,7 @@ declare module "@stencil/core" {
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;
             "solution-item-details": LocalJSX.SolutionItemDetails & JSXBase.HTMLAttributes<HTMLSolutionItemDetailsElement>;
             "solution-organization-variables": LocalJSX.SolutionOrganizationVariables & JSXBase.HTMLAttributes<HTMLSolutionOrganizationVariablesElement>;
+            "solution-resource-item": LocalJSX.SolutionResourceItem & JSXBase.HTMLAttributes<HTMLSolutionResourceItemElement>;
             "solution-spatial-ref": LocalJSX.SolutionSpatialRef & JSXBase.HTMLAttributes<HTMLSolutionSpatialRefElement>;
             "solution-template-data": LocalJSX.SolutionTemplateData & JSXBase.HTMLAttributes<HTMLSolutionTemplateDataElement>;
             "solution-variables": LocalJSX.SolutionVariables & JSXBase.HTMLAttributes<HTMLSolutionVariablesElement>;
