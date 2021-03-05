@@ -1,0 +1,22 @@
+:host {
+  display: flexbox;
+}
+
+.solution-data-container {
+  height: 100%;
+  max-width: 100%;
+  position: relative;
+}
+
+.solution-data-child-container {
+  height: 100%;
+  margin: 1rem;
+}
+
+.inputBottomSeparation {
+  margin: 0 0 1.5rem 0;
+}
+
+.json-editor {
+  width: -webkit-fill-available;
+}

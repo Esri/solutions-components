@@ -7,7 +7,9 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IInventoryItem } from "./components/solution-contents/solution-contents";
 import { IItemDetails } from "./components/solution-item-details/solution-item-details";
+import { IOrganizationVariableItem } from "./components/solution-organization-variables/solution-organization-variables";
 import { ISpatialRefRepresentation } from "./components/solution-spatial-ref/solution-spatial-ref";
+import { IVariableItem } from "./components/solution-variables/solution-variables";
 export namespace Components {
     interface SolutionConfiguration {
         /**
@@ -49,6 +51,16 @@ export namespace Components {
          */
         "value": IItemDetails;
     }
+    interface SolutionOrganizationVariables {
+        /**
+          * Contains the translations for this component.
+         */
+        "translations": any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value": IOrganizationVariableItem[];
+    }
     interface SolutionSpatialRef {
         /**
           * Returns the spatial reference description of the supplied value. (Exposes private method `_createSpatialRefDisplay` for testing.)
@@ -74,6 +86,26 @@ export namespace Components {
           * @returns Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
          */
         "wkidToDisplay": (wkid: number) => Promise<string>;
+    }
+    interface SolutionTemplateData {
+        /**
+          * Contains the translations for this component.
+         */
+        "translations": any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value": any;
+    }
+    interface SolutionVariables {
+        /**
+          * Contains the translations for this component.
+         */
+        "translations": any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value": IVariableItem[];
     }
 }
 declare global {
@@ -101,18 +133,39 @@ declare global {
         prototype: HTMLSolutionItemDetailsElement;
         new (): HTMLSolutionItemDetailsElement;
     };
+    interface HTMLSolutionOrganizationVariablesElement extends Components.SolutionOrganizationVariables, HTMLStencilElement {
+    }
+    var HTMLSolutionOrganizationVariablesElement: {
+        prototype: HTMLSolutionOrganizationVariablesElement;
+        new (): HTMLSolutionOrganizationVariablesElement;
+    };
     interface HTMLSolutionSpatialRefElement extends Components.SolutionSpatialRef, HTMLStencilElement {
     }
     var HTMLSolutionSpatialRefElement: {
         prototype: HTMLSolutionSpatialRefElement;
         new (): HTMLSolutionSpatialRefElement;
     };
+    interface HTMLSolutionTemplateDataElement extends Components.SolutionTemplateData, HTMLStencilElement {
+    }
+    var HTMLSolutionTemplateDataElement: {
+        prototype: HTMLSolutionTemplateDataElement;
+        new (): HTMLSolutionTemplateDataElement;
+    };
+    interface HTMLSolutionVariablesElement extends Components.SolutionVariables, HTMLStencilElement {
+    }
+    var HTMLSolutionVariablesElement: {
+        prototype: HTMLSolutionVariablesElement;
+        new (): HTMLSolutionVariablesElement;
+    };
     interface HTMLElementTagNameMap {
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-contents": HTMLSolutionContentsElement;
         "solution-item": HTMLSolutionItemElement;
         "solution-item-details": HTMLSolutionItemDetailsElement;
+        "solution-organization-variables": HTMLSolutionOrganizationVariablesElement;
         "solution-spatial-ref": HTMLSolutionSpatialRefElement;
+        "solution-template-data": HTMLSolutionTemplateDataElement;
+        "solution-variables": HTMLSolutionVariablesElement;
     }
 }
 declare namespace LocalJSX {
@@ -157,6 +210,17 @@ declare namespace LocalJSX {
          */
         "value"?: IItemDetails;
     }
+    interface SolutionOrganizationVariables {
+        "onOrganizationVariableSelected"?: (event: CustomEvent<any>) => void;
+        /**
+          * Contains the translations for this component.
+         */
+        "translations"?: any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value"?: IOrganizationVariableItem[];
+    }
     interface SolutionSpatialRef {
         /**
           * Contains the translations for this component.
@@ -167,12 +231,36 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    interface SolutionTemplateData {
+        /**
+          * Contains the translations for this component.
+         */
+        "translations"?: any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value"?: any;
+    }
+    interface SolutionVariables {
+        "onSolutionVariableSelected"?: (event: CustomEvent<any>) => void;
+        /**
+          * Contains the translations for this component.
+         */
+        "translations"?: any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value"?: IVariableItem[];
+    }
     interface IntrinsicElements {
         "solution-configuration": SolutionConfiguration;
         "solution-contents": SolutionContents;
         "solution-item": SolutionItem;
         "solution-item-details": SolutionItemDetails;
+        "solution-organization-variables": SolutionOrganizationVariables;
         "solution-spatial-ref": SolutionSpatialRef;
+        "solution-template-data": SolutionTemplateData;
+        "solution-variables": SolutionVariables;
     }
 }
 export { LocalJSX as JSX };
@@ -183,7 +271,10 @@ declare module "@stencil/core" {
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;
             "solution-item-details": LocalJSX.SolutionItemDetails & JSXBase.HTMLAttributes<HTMLSolutionItemDetailsElement>;
+            "solution-organization-variables": LocalJSX.SolutionOrganizationVariables & JSXBase.HTMLAttributes<HTMLSolutionOrganizationVariablesElement>;
             "solution-spatial-ref": LocalJSX.SolutionSpatialRef & JSXBase.HTMLAttributes<HTMLSolutionSpatialRefElement>;
+            "solution-template-data": LocalJSX.SolutionTemplateData & JSXBase.HTMLAttributes<HTMLSolutionTemplateDataElement>;
+            "solution-variables": LocalJSX.SolutionVariables & JSXBase.HTMLAttributes<HTMLSolutionVariablesElement>;
         }
     }
 }

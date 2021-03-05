@@ -1,0 +1,13 @@
+:host {
+  display: block;
+}
+
+.container-border {
+  border: 1px solid var(--calcite-ui-border-3);
+  max-height: 15vh;
+  overflow-y: auto;
+}
+
+.org-var-header {
+  margin: 0rem 0rem 1rem 0rem;
+}
