@@ -47,31 +47,7 @@ export class SolutionOrganizationVariables {
   /**
    * Contains the public value for this component.
    */
-  @Prop({ mutable: true, reflect: true }) value: IOrganizationVariableItem[] = [{
-    id: "id",
-    title: "title",
-    value: "value"
-  }, {
-    id: "id2",
-    title: "title2",
-    value: "value2"
-  }, {
-    id: "id3",
-    title: "title3",
-    value: "value3"
-  }, {
-    id: "id4",
-    title: "title4",
-    value: "value4"
-  }, {
-    id: "id5",
-    title: "title5",
-    value: "value5"
-  }, {
-    id: "id6",
-    title: "title6",
-    value: "value6"
-  }];
+  @Prop({ mutable: true, reflect: true }) value: IOrganizationVariableItem[] = [];
 
   //--------------------------------------------------------------------------
   //
