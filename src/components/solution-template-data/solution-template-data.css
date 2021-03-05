@@ -2,13 +2,13 @@
   display: flexbox;
 }
 
-.parent-container {
+.solution-data-container {
   height: 100%;
   max-width: 100%;
   position: relative;
 }
 
-.child-container {
+.solution-data-child-container {
   margin: 1rem;
 }
 
