@@ -8,11 +8,18 @@ describe('solution-organization-variables', () => {
       html: `<solution-organization-variables></solution-organization-variables>`,
     });
     expect(page.root).toEqualHtml(`
-      <solution-organization-variables>
-        <mock:shadow-root>
-          <slot></slot>
-        </mock:shadow-root>
-      </solution-organization-variables>
+    <solution-organization-variables>
+      <mock:shadow-root>
+        <div>
+          <h4 class="org-var-header">
+            Organization Varibles
+          </h4>
+        </div>
+        <div class="container-border">
+          <calcite-label id="variable-label"></calcite-label>
+        </div>
+      </mock:shadow-root>
+    </solution-organization-variables>
     `);
   });
 });
