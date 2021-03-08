@@ -3,7 +3,7 @@ node_js:
   - "lts/*"
 cache: npm
 script:
-  - yarn test:enviros
+  - npm run test
 env:
   - MOZ_HEADLESS=1
 addons:
