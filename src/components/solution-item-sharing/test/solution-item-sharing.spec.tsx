@@ -15,27 +15,20 @@
  */
 
 import { newSpecPage } from '@stencil/core/testing';
-import { SolutionOrganizationVariables } from '../solution-organization-variables';
+import { SolutionItemSharing } from '../solution-item-sharing';
 
-describe('solution-organization-variables', () => {
+describe('solution-item-sharing', () => {
   it('renders', async () => {
     const page = await newSpecPage({
-      components: [SolutionOrganizationVariables],
-      html: `<solution-organization-variables></solution-organization-variables>`,
+      components: [SolutionItemSharing],
+      html: `<solution-item-sharing></solution-item-sharing>`,
     });
     expect(page.root).toEqualHtml(`
-    <solution-organization-variables>
-      <mock:shadow-root>
-        <div>
-          <h4 class="org-var-header">
-            Organization Varibles
-          </h4>
-        </div>
-        <div class="container-border">
-          <calcite-label id="variable-label"></calcite-label>
-        </div>
-      </mock:shadow-root>
-    </solution-organization-variables>
+      <solution-item-sharing>
+        <mock:shadow-root>
+          <div class="container-border"></div>
+        </mock:shadow-root>
+      </solution-item-sharing>
     `);
   });
 });

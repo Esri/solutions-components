@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+  - "lts/*"
+cache: npm
+script:
+  - npm run test
+env:
+  - MOZ_HEADLESS=1
+addons:
+  chrome: stable
+  firefox: latest

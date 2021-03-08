@@ -24,11 +24,18 @@ describe('solution-variables', () => {
       html: `<solution-variables></solution-variables>`,
     });
     expect(page.root).toEqualHtml(`
-      <solution-variables>
-        <mock:shadow-root>
-          <slot></slot>
-        </mock:shadow-root>
-      </solution-variables>
+    <solution-variables>
+      <mock:shadow-root>
+        <div>
+          <h4 class="org-var-header">
+            Solution Varibles
+          </h4>
+        </div>
+        <div class="container-border">
+          <calcite-label id="variable-label"></calcite-label>
+        </div>
+      </mock:shadow-root>
+    </solution-variables>
     `);
   });
 });

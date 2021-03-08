@@ -25,6 +25,7 @@ export interface IItemDetails {
   tags: string;
   credits: string;
   termsOfUse: string;
+  isItem: boolean;
 }
 
 @Component({
@@ -70,7 +71,8 @@ export class SolutionItemDetails {
     description: "",
     tags: "",
     credits: "",
-    termsOfUse: ""
+    termsOfUse: "",
+    isItem: true
   };
 
   //--------------------------------------------------------------------------
@@ -120,17 +122,18 @@ export class SolutionItemDetails {
             </label>
           </calcite-label>
 
-          <calcite-label>{this.translations.credits}
+          {this.value.isItem ? <calcite-label>{this.translations.credits}
             <label id="item-credits-label">
               <calcite-input id="item-credits" value={this.value.credits}></calcite-input>
             </label>
-          </calcite-label>
+          </calcite-label> : null}
 
-          <calcite-label>
+          {this.value.isItem ? <calcite-label>
             <label id="item-terms-label">{this.translations.termsOfUse}
               <calcite-input id="item-terms" type="textarea" value={this.value.termsOfUse}></calcite-input>
             </label>
-          </calcite-label>
+          </calcite-label> : null}
+          
         </div>
       </Host>
     );
