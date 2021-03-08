@@ -39,7 +39,6 @@ export class SolutionItemSharing {
    * Contains the translations for this component.
    */
   @Prop({ mutable: true }) translations: any = {
-    "solVariables": "Solution Varibles"
   };
 
   /**
