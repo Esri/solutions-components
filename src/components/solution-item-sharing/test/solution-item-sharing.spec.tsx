@@ -10,7 +10,7 @@ describe('solution-item-sharing', () => {
     expect(page.root).toEqualHtml(`
       <solution-item-sharing>
         <mock:shadow-root>
-          <slot></slot>
+          <div class="container-border"></div>
         </mock:shadow-root>
       </solution-item-sharing>
     `);
