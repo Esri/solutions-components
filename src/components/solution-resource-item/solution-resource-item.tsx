@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, Watch } from '@stencil/core';
 
 export interface IResourceItem {
   name: string,
@@ -59,6 +59,11 @@ export class SolutionResourceItem {
   };
 
   @State() fileName: string;
+
+  @Watch('value')
+  valueWatchHandler(v: IResourceItem, oldV: IResourceItem) {
+    this.fileName = v.name !== oldV.name ? v.name : this.fileName;
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -190,16 +195,17 @@ export class SolutionResourceItem {
   private _updateFile(
     event: any
   ): void {
-    // progress goes so fast for the example this may not be necessary..but may be it will be when updating the actual resource
+    // progress goes so fast this may not be necessary
     //this.uploadProgress.classList.remove('display-none');
     const files = event.currentTarget.files;
     if (files && files[0]) {
-      const fileName: string = files[0].name;
+      const name: string = files[0].name;
       var reader = new FileReader();
-      reader.onloadend = () => {
-        this.value.name = fileName;
-        this.fileName = fileName;
-        // TODO need to understand what to do with the result
+      reader.onloadend = (r) => {
+        this.value = {
+          name,
+          url: typeof(r.target.result) === "string" ? r.target.result : ""
+        };
         //this.uploadProgress.classList.add('display-none');
       }
       reader.readAsDataURL(files[0]);
