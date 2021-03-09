@@ -25,6 +25,10 @@ export namespace Components {
     }
     interface SolutionContents {
         /**
+          * Contains the public value for this component.
+         */
+        "isPortal": boolean;
+        /**
           * Contains the translations for this component.
          */
         "translations": any;
@@ -217,6 +221,10 @@ declare namespace LocalJSX {
         "value"?: any;
     }
     interface SolutionContents {
+        /**
+          * Contains the public value for this component.
+         */
+        "isPortal"?: boolean;
         "onSolutionItemSelected"?: (event: CustomEvent<any>) => void;
         /**
           * Contains the translations for this component.
