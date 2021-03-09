@@ -1,5 +1,8 @@
+[![Build status][travis-img]][travis-url]
 [![Apache 2.0 licensed][license-img]][license-url]
 
+[travis-img]: https://img.shields.io/travis/Esri/solutions-components/develop.svg
+[travis-url]: https://travis-ci.org/Esri/solutions-components
 [license-img]: https://img.shields.io/badge/license-Apache%202.0-blue.svg
 [license-url]: #license
 
