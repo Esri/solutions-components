@@ -124,15 +124,18 @@ export namespace Components {
         "wkidToDisplay": (wkid: number) => Promise<string>;
     }
     interface SolutionTemplateData {
+        /**
+          * Should be set to true for items that store their data as a resource Will allow for upload and download of the resource
+         */
         "isResource": boolean;
         /**
           * Contains the translations for this component.
          */
         "translations": any;
         /**
-          * Contains the public value for this component.
+          * Contains the public value for this component.  When working with a resource item this should contain an IResourceItem  When working with a json type item this should contain the data and vars
          */
-        "value": any;
+        "value": ITemplateData;
     }
     interface SolutionVariables {
         /**
@@ -324,15 +327,18 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface SolutionTemplateData {
+        /**
+          * Should be set to true for items that store their data as a resource Will allow for upload and download of the resource
+         */
         "isResource"?: boolean;
         /**
           * Contains the translations for this component.
          */
         "translations"?: any;
         /**
-          * Contains the public value for this component.
+          * Contains the public value for this component.  When working with a resource item this should contain an IResourceItem  When working with a json type item this should contain the data and vars
          */
-        "value"?: any;
+        "value"?: ITemplateData;
     }
     interface SolutionVariables {
         "onSolutionVariableSelected"?: (event: CustomEvent<any>) => void;

@@ -54,7 +54,7 @@ export class SolutionResourceItem {
    * Contains the public value for this component.
    */
   @Prop({ mutable: true, reflect: true }) value: IResourceItem = {
-    name: "Survey.zip",
+    name: "",
     url: ""
   };
 

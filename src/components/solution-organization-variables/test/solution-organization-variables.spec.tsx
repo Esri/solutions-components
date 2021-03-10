@@ -23,6 +23,35 @@ describe('solution-organization-variables', () => {
       components: [SolutionOrganizationVariables],
       html: `<solution-organization-variables></solution-organization-variables>`,
     });
+
+    page.root.value = [{
+      id: "id",
+      title: "title",
+      value: "value"
+    }, {
+      id: "id2",
+      title: "title2",
+      value: "value2"
+    }, {
+      id: "id3",
+      title: "title3",
+      value: "value3"
+    }, {
+      id: "id4",
+      title: "title4",
+      value: "value4"
+    }, {
+      id: "id5",
+      title: "title5",
+      value: "value5"
+    }, {
+      id: "id6",
+      title: "title6",
+      value: "value6"
+    }];
+
+    await page.waitForChanges();
+
     expect(page.root).toEqualHtml(`
     <solution-organization-variables>
       <mock:shadow-root>
@@ -32,7 +61,26 @@ describe('solution-organization-variables', () => {
           </h4>
         </div>
         <div class="container-border">
-          <calcite-label id="variable-label"></calcite-label>
+          <calcite-label id="variable-label">
+            <calcite-tree-item>
+              title
+            </calcite-tree-item>
+            <calcite-tree-item>
+              title2
+            </calcite-tree-item>
+            <calcite-tree-item>
+              title3
+            </calcite-tree-item>
+            <calcite-tree-item>
+              title4
+            </calcite-tree-item>
+            <calcite-tree-item>
+              title5
+            </calcite-tree-item>
+            <calcite-tree-item>
+              title6
+            </calcite-tree-item>
+          </calcite-label>
         </div>
       </mock:shadow-root>
     </solution-organization-variables>

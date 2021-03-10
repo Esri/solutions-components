@@ -21,11 +21,10 @@ import { IVariableItem } from '../solution-variables/solution-variables';
 import { IResourceItem } from '../solution-resource-item/solution-resource-item';
 
 interface ITemplateData {
-  data: any,
-  isJSON: boolean,
-  orgVariables: IOrganizationVariableItem[],
-  solVariables: IVariableItem[],
-  resourceItem: IResourceItem
+  data?: any,
+  orgVariables?: IOrganizationVariableItem[],
+  solVariables?: IVariableItem[],
+  resourceItem?: IResourceItem
 }
 
 @Component({
@@ -49,121 +48,17 @@ export class SolutionTemplateData {
 
   /**
    * Contains the public value for this component.
+   * 
+   * When working with a resource item this should contain an IResourceItem
+   * 
+   * When working with a json type item this should contain the data and vars
    */
-  // TODO not sure why I can't set the type here to be ITemplateData
-  @Prop({ mutable: true, reflect: true }) value: any = {
-    data: {},
-    isJSON: false,
-    orgVariables: [{
-      id: "id",
-      title: "title",
-      value: "value"
-    }, {
-      id: "id2",
-      title: "title2",
-      value: "value2"
-    }, {
-      id: "id3",
-      title: "title3",
-      value: "value3"
-    }, {
-      id: "id4",
-      title: "title4",
-      value: "value4"
-    }, {
-      id: "id5",
-      title: "title5",
-      value: "value5"
-    }, {
-      id: "id6",
-      title: "title6",
-      value: "value6"
-    }],
-    solVariables: [{
-      id: "db1",
-      title: "Dashboard 1",
-      value: "{{Dashboard 1 value}}",
-      dependencies: [{
-        id: "db1ItemId",
-        title: "Item Id",
-        value: "{{db1ItemId value}}"
-      }, {
-        id: "db1Url",
-        title: "Url",
-        value: "{{db1Url value}}"
-      }]
-    }, {
-      id: "db2",
-      title: "Dashboard 2",
-      value: "Dashboard 2 value",
-      dependencies: [{
-        id: "db2ItemId",
-        title: "Item Id",
-        value: "{{db2ItemId value}}"
-      }, {
-        id: "db2Url",
-        title: "Url",
-        value: "{{db2Url value}}"
-      }]
-    }, {
-      id: "fs1",
-      title: "Feature Service 1",
-      value: "{{Feature Service 1 value}}",
-      dependencies: [{
-        id: "fs1ItemId",
-        title: "Item Id",
-        value: "{{fs1ItemId value}}"
-      }, {
-        id: "fs1Url",
-        title: "Url",
-        value: "{{fs1Url value}}"
-      }, {
-        id: "fs1Name",
-        title: "Name",
-        value: "{{fs1Name value}}"
-      }, {
-        id: "layer0",
-        title: "Layer 0",
-        value: "{{layer0 value}}",
-        dependencies: [{
-          id: "layer0Id",
-          title: "Id",
-          value: "{{layer0Id value}}"
-        }, {
-          id: "layer0Url",
-          title: "Url",
-          value: "{{layer0Url value}}"
-        }]
-      }, {
-        id: "layer1",
-        title: "Layer 1",
-        value: "{{layer1 value}}",
-        dependencies: [{
-          id: "layer1Id",
-          title: "Id",
-          value: "{{layer1Id value}}"
-        }, {
-          id: "layer1Url",
-          title: "Url",
-          value: "{{layer1Url value}}"
-        }]
-      }]
-    }, {
-      id: "grp1",
-      title: "Group 1",
-      value: "{{Group 1 value}}",
-      dependencies: [{
-        id: "group1Id",
-        title: "Group Id",
-        value: "{{group1Id value}}"
-      }]
-    }],
-    resourceItem: {
-      name: "Survey1.zip",
-      url: ""
-    }
-  };
+  @Prop({ mutable: true, reflect: true }) value: ITemplateData = {};
 
+  /**
+   * Should be set to true for items that store their data as a resource
+   * Will allow for upload and download of the resource
+   */
   @Prop({ mutable: true }) isResource: boolean = false;
 
   //--------------------------------------------------------------------------
