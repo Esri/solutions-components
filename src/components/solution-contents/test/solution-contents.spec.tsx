@@ -134,7 +134,17 @@ describe('solution-contents', () => {
                   "Service",
                   "Hosted Service"
                 ]
-              }]
+              }],
+              "type": "Web Map",
+              "typeKeywords": [
+                "ArcGIS Online",
+                "Collector",
+                "Data Editing",
+                "Explorer Web Map",
+                "Map",
+                "Online Map",
+                "Web Map"
+              ]
             }],
             "type": "Web Map",
             "typeKeywords": [
@@ -177,24 +187,24 @@ describe('solution-contents', () => {
         <calcite-tree>
 
           <calcite-tree-item>
-            <img class="item-type-icon item-type-icon-margin" height="16" src="/item-type-icons/dashboard16.png" width="16">
+            <solution-item-icon type="Dashboard"></solution-item-icon>
             Dashboard 1
           </calcite-tree-item>
           
           <calcite-tree-item>
-            <img class="item-type-icon item-type-icon-margin" height="16" src="/item-type-icons/dashboard16.png" width="16">
+            <solution-item-icon type="Dashboard"></solution-item-icon>
             Dashboard 2
             <calcite-tree slot="children">
               <calcite-tree-item>
-                <img class="item-type-icon item-type-icon-margin" height="16" src="/item-type-icons/maps16.png" width="16">
+                <solution-item-icon type="Web Map"></solution-item-icon>
                 Map 1
                 <calcite-tree slot="children">
                   <calcite-tree-item>
-                    <img class="item-type-icon item-type-icon-margin" height="16" src="/item-type-icons/featureshosted16.png" width="16">
+                    <solution-item-icon type="Feature Service"></solution-item-icon>
                     View 1
                     <calcite-tree slot="children">
                       <calcite-tree-item>
-                        <img class="item-type-icon item-type-icon-margin" height="16" src="/item-type-icons/featureshosted16.png" width="16">
+                        <solution-item-icon type="Feature Service"></solution-item-icon>
                         Feature Service 1
                       </calcite-tree-item>
                     </calcite-tree>
@@ -205,31 +215,31 @@ describe('solution-contents', () => {
           </calcite-tree-item>
 
           <calcite-tree-item>
-            <img class="item-type-icon item-type-icon-margin" height="16" src="/item-type-icons/quickcaptureproject16.png" width="16">
+            <solution-item-icon type="QuickCapture Project"></solution-item-icon>
             Application 1
             <calcite-tree slot="children">
               <calcite-tree-item>
-                <img class="item-type-icon item-type-icon-margin" height="16" src="/item-type-icons/maps16.png" width="16">
+                <solution-item-icon></solution-item-icon>
                 Group 1
                 <calcite-tree slot="children">
                   <calcite-tree-item>
-                    <img class="item-type-icon item-type-icon-margin" height="16" src="/item-type-icons/maps16.png" width="16">
+                    <solution-item-icon type="Web Map"></solution-item-icon>
                     Map 2
                     <calcite-tree slot="children">
                       <calcite-tree-item>
-                        <img class="item-type-icon item-type-icon-margin" height="16" src="/item-type-icons/featureshosted16.png" width="16">
+                        <solution-item-icon type="Feature Service"></solution-item-icon>
                         Feature Service 2
                       </calcite-tree-item>
                       <calcite-tree-item>
-                        <img class="item-type-icon item-type-icon-margin" height="16" src="/item-type-icons/featureshosted16.png" width="16">
+                        <solution-item-icon type="Feature Service"></solution-item-icon>
                         Feature Service 3
                       </calcite-tree-item>
                       <calcite-tree-item>
-                        <img class="item-type-icon item-type-icon-margin" height="16" src="/item-type-icons/maps16.png" width="16">
+                        <solution-item-icon type="Web Map"></solution-item-icon>
                         Map 3
                         <calcite-tree slot="children">
                           <calcite-tree-item>
-                            <img class="item-type-icon item-type-icon-margin" height="16" src="/item-type-icons/featureshosted16.png" width="16">
+                            <solution-item-icon type="Feature Service"></solution-item-icon>
                             Feature Service 4
                           </calcite-tree-item>
                         </calcite-tree>
@@ -242,12 +252,12 @@ describe('solution-contents', () => {
           </calcite-tree-item>
 
           <calcite-tree-item>
-            <img class="item-type-icon item-type-icon-margin" height="16" src="/item-type-icons/notebook16.png" width="16">
+            <solution-item-icon type="Notebook"></solution-item-icon>
             Notebook 1
           </calcite-tree-item>
 
           <calcite-tree-item>
-            <img class="item-type-icon item-type-icon-margin" height="16" src="/item-type-icons/datafilesgray16.png" width="16">
+            <solution-item-icon type="Form"></solution-item-icon>
             Survey 1
           </calcite-tree-item>
 
