@@ -23,9 +23,27 @@ describe('solution-item-icon', () => {
       components: [SolutionItemIcon],
       html: `<solution-item-icon></solution-item-icon>`,
     });
+
+    page.root.type = "Feature Service";
+    page.root.typeKeywords = [
+      "ArcGIS Server",
+      "Data",
+      "Feature Access",
+      "Feature Service",
+      "Multi Services View",
+      "Service",
+      "Singlelayer",
+      "Hosted Service",
+      "View Service"
+    ];
+
+    await page.waitForChanges();
+
     expect(page.root).toEqualHtml(`
       <solution-item-icon>
-        <img class="item-type-icon item-type-icon-margin" height="16" src="/item-icons/maps16.png" width="16">
+        <div title="Feature Service">
+          <img class="item-type-icon item-type-icon-margin" height="16" src="/item-icons/featureshosted16.png" width="16">
+        </div>
       </solution-item-icon>
     `);
   });

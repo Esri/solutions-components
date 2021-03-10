@@ -20,7 +20,7 @@ import { IOrganizationVariableItem } from '../solution-organization-variables/so
 import { IVariableItem } from '../solution-variables/solution-variables';
 import { IResourceItem } from '../solution-resource-item/solution-resource-item';
 
-interface ITemplateData {
+export interface ITemplateData {
   data?: any,
   orgVariables?: IOrganizationVariableItem[],
   solVariables?: IVariableItem[],

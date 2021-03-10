@@ -11,6 +11,7 @@ import { IItemShare } from "./components/solution-item-sharing/solution-item-sha
 import { IOrganizationVariableItem } from "./components/solution-organization-variables/solution-organization-variables";
 import { IResourceItem } from "./components/solution-resource-item/solution-resource-item";
 import { ISpatialRefRepresentation } from "./components/solution-spatial-ref/solution-spatial-ref";
+import { ITemplateData } from "./components/solution-template-data/solution-template-data";
 import { IVariableItem } from "./components/solution-variables/solution-variables";
 export namespace Components {
     interface SolutionConfiguration {

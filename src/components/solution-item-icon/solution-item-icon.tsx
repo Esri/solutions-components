@@ -51,12 +51,13 @@ export class SolutionItemIcon {
   //--------------------------------------------------------------------------
 
   render() {
-    return <img
-      src={this._getIconUrl(this.type, this.typeKeywords)}
-      width="16"
-      height="16"
-      class="item-type-icon item-type-icon-margin"
-    ></img>;
+    return <div title={this.type}>
+      <img src={this._getIconUrl(this.type, this.typeKeywords)}
+        width="16"
+        height="16"
+        class="item-type-icon item-type-icon-margin"
+      ></img>
+    </div>;
   }
 
     //--------------------------------------------------------------------------
@@ -284,6 +285,8 @@ export class SolutionItemIcon {
       imgName = "hubinitiativetemplate";
     } else if (itemType === "storymap theme") {
       imgName = "storymaptheme";
+    } else if (itemType === "group"){
+      imgName = "group"
     } else {
       imgName = "maps";
     }
