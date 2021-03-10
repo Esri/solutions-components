@@ -72,7 +72,7 @@ export class SolutionItem {
    * Contains the public type value for this component.
    * 
    */
-   @Prop({ mutable: true, reflect: true }) type: string = "Group";
+   @Prop({ mutable: true, reflect: true }) type: string = "";
 
   //--------------------------------------------------------------------------
   //
