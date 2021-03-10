@@ -40,6 +40,10 @@ export namespace Components {
          */
         "translations": any;
         /**
+          * Contains the public type value for this component.
+         */
+        "type": string;
+        /**
           * Contains the public value for this component.
          */
         "value": any;
@@ -49,6 +53,7 @@ export namespace Components {
           * Contains the translations for this component.
          */
         "translations": any;
+        "type": string;
         /**
           * Contains the public value for this component.
          */
@@ -258,6 +263,10 @@ declare namespace LocalJSX {
          */
         "translations"?: any;
         /**
+          * Contains the public type value for this component.
+         */
+        "type"?: string;
+        /**
           * Contains the public value for this component.
          */
         "value"?: any;
@@ -267,6 +276,7 @@ declare namespace LocalJSX {
           * Contains the translations for this component.
          */
         "translations"?: any;
+        "type"?: string;
         /**
           * Contains the public value for this component.
          */

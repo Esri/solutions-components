@@ -117,7 +117,7 @@ export class SolutionTemplateData {
   //--------------------------------------------------------------------------
 
   _jsonData(templateData: ITemplateData): any {
-    return (<calcite-shell dir="ltr" theme="light">
+    return <calcite-shell dir="ltr" theme="light">
       <calcite-shell-center-row slot="center-row" position="start" height-scale="l" width-scale="l" class="json-editor">
         <div class="solution-data-child-container">
           <span id="json-editor-span">JSON Editor goes</span>
@@ -129,10 +129,10 @@ export class SolutionTemplateData {
           <solution-variables value={templateData.solVariables}></solution-variables>
         </div>
       </calcite-shell-panel>
-    </calcite-shell>);
+    </calcite-shell>;
   }
 
   _resourceData(templateData: ITemplateData): any {
-    return (<solution-resource-item value={templateData.resourceItem}></solution-resource-item>);
+    return <solution-resource-item value={templateData.resourceItem}></solution-resource-item>;
   }
 }

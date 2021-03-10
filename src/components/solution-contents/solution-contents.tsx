@@ -78,7 +78,7 @@ export class SolutionContents {
     const hierarchy = objs.map(obj => {
       if (obj.dependencies && obj.dependencies.length > 0) {
         return (
-          <calcite-tree-item onClick={() => this._treeItemSelected(obj.id)}>
+          <calcite-tree-item onClick={() => this._treeItemSelected(obj.id, obj.type)}>
             <solution-item-icon type={obj.type} typeKeywords={obj.typeKeywords}></solution-item-icon>
             {obj.title}
             <calcite-tree slot="children">
@@ -88,7 +88,7 @@ export class SolutionContents {
         );
       } else {
         return (
-          <calcite-tree-item onClick={() => this._treeItemSelected(obj.id)}>
+          <calcite-tree-item onClick={() => this._treeItemSelected(obj.id, obj.type)}>
             <solution-item-icon type={obj.type} typeKeywords={obj.typeKeywords}></solution-item-icon>
             {obj.title}
           </calcite-tree-item>
@@ -134,10 +134,12 @@ export class SolutionContents {
    * Publishes the `solutionItemSelected` event containing `itemId`, the id of the selected item.
    *
    * @param id Item id as reported by click event
+   * @param type Item type to understand if it's an item or group
    */
-  private _treeItemSelected(id: string): void {
+  private _treeItemSelected(id: string, type: string): void {
     this.solutionItemSelected.emit({
-      itemId: id
+      itemId: id,
+      type
     });
   }
 }
