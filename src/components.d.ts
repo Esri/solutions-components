@@ -25,10 +25,6 @@ export namespace Components {
     }
     interface SolutionContents {
         /**
-          * Contains the public value for this component.
-         */
-        "isPortal": boolean;
-        /**
           * Contains the translations for this component.
          */
         "translations": any;
@@ -56,6 +52,20 @@ export namespace Components {
           * Contains the public value for this component.
          */
         "value": IItemDetails;
+    }
+    interface SolutionItemIcon {
+        /**
+          * Indicate if this is portal
+         */
+        "isPortal": boolean;
+        /**
+          * The type for the item
+         */
+        "type": string;
+        /**
+          * The typeKeywords for the item
+         */
+        "typeKeywords": string[];
     }
     interface SolutionItemSharing {
         /**
@@ -160,6 +170,12 @@ declare global {
         prototype: HTMLSolutionItemDetailsElement;
         new (): HTMLSolutionItemDetailsElement;
     };
+    interface HTMLSolutionItemIconElement extends Components.SolutionItemIcon, HTMLStencilElement {
+    }
+    var HTMLSolutionItemIconElement: {
+        prototype: HTMLSolutionItemIconElement;
+        new (): HTMLSolutionItemIconElement;
+    };
     interface HTMLSolutionItemSharingElement extends Components.SolutionItemSharing, HTMLStencilElement {
     }
     var HTMLSolutionItemSharingElement: {
@@ -201,6 +217,7 @@ declare global {
         "solution-contents": HTMLSolutionContentsElement;
         "solution-item": HTMLSolutionItemElement;
         "solution-item-details": HTMLSolutionItemDetailsElement;
+        "solution-item-icon": HTMLSolutionItemIconElement;
         "solution-item-sharing": HTMLSolutionItemSharingElement;
         "solution-organization-variables": HTMLSolutionOrganizationVariablesElement;
         "solution-resource-item": HTMLSolutionResourceItemElement;
@@ -221,10 +238,6 @@ declare namespace LocalJSX {
         "value"?: any;
     }
     interface SolutionContents {
-        /**
-          * Contains the public value for this component.
-         */
-        "isPortal"?: boolean;
         "onSolutionItemSelected"?: (event: CustomEvent<any>) => void;
         /**
           * Contains the translations for this component.
@@ -254,6 +267,20 @@ declare namespace LocalJSX {
           * Contains the public value for this component.
          */
         "value"?: IItemDetails;
+    }
+    interface SolutionItemIcon {
+        /**
+          * Indicate if this is portal
+         */
+        "isPortal"?: boolean;
+        /**
+          * The type for the item
+         */
+        "type"?: string;
+        /**
+          * The typeKeywords for the item
+         */
+        "typeKeywords"?: string[];
     }
     interface SolutionItemSharing {
         /**
@@ -323,6 +350,7 @@ declare namespace LocalJSX {
         "solution-contents": SolutionContents;
         "solution-item": SolutionItem;
         "solution-item-details": SolutionItemDetails;
+        "solution-item-icon": SolutionItemIcon;
         "solution-item-sharing": SolutionItemSharing;
         "solution-organization-variables": SolutionOrganizationVariables;
         "solution-resource-item": SolutionResourceItem;
@@ -339,6 +367,7 @@ declare module "@stencil/core" {
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;
             "solution-item-details": LocalJSX.SolutionItemDetails & JSXBase.HTMLAttributes<HTMLSolutionItemDetailsElement>;
+            "solution-item-icon": LocalJSX.SolutionItemIcon & JSXBase.HTMLAttributes<HTMLSolutionItemIconElement>;
             "solution-item-sharing": LocalJSX.SolutionItemSharing & JSXBase.HTMLAttributes<HTMLSolutionItemSharingElement>;
             "solution-organization-variables": LocalJSX.SolutionOrganizationVariables & JSXBase.HTMLAttributes<HTMLSolutionOrganizationVariablesElement>;
             "solution-resource-item": LocalJSX.SolutionResourceItem & JSXBase.HTMLAttributes<HTMLSolutionResourceItemElement>;
