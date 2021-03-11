@@ -29,9 +29,7 @@ describe('solution-template-data', () => {
         <calcite-shell dir="ltr" theme="light">
           <calcite-shell-center-row class="json-editor" height-scale="l" position="start" slot="center-row" width-scale="l">
             <div class="solution-data-child-container">
-              <span id="json-editor-span">
-                JSON Editor goes
-              </span>
+              <json-editor instanceid="this-will-be-the-solution-id" value="{a:'A'}"></json-editor>
             </div>
           </calcite-shell-center-row>
           <calcite-shell-panel height-scale="l" position="start" slot="contextual-panel" width-scale="m">

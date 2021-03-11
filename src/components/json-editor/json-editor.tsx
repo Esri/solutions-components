@@ -210,39 +210,41 @@ export class JsonEditor {
    */
   _initEditor(): void {
     // Set up embedded editor
-    this._editor = gAce.edit(this.instanceId + "-editor");
-    this._editor?.setOptions({
-      maxLines: Infinity,
-      mode: "ace/mode/json",
-      theme: "ace/theme/tomorrow",
-      readOnly: true
-    });
-    this._editor?.getSession().setUseWrapMode(true);
+    if (gAce) {
+      this._editor = gAce.edit(this.instanceId + "-editor");
+      this._editor?.setOptions({
+        maxLines: Infinity,
+        mode: "ace/mode/json",
+        theme: "ace/theme/tomorrow",
+        readOnly: true
+      });
+      this._editor?.getSession().setUseWrapMode(true);
 
-    // Initialize the content
-    if (this.value) {
-      this._editor?.setValue(this.value);
-      this._current = this.value;
-      this.original = this.value;
+      // Initialize the content
+      if (this.value) {
+        this._editor?.setValue(this.value);
+        this._current = this.value;
+        this.original = this.value;
+      }
+
+      // listen for changes in editor
+      this._editor?.on("change", this._validateSave.bind(this));
+
+      // errors are stored as annotations
+      // this will allow us to only enable save when no errors are present
+      // unsure why I couldn't use the on pattern
+      this._editor?.session.addEventListener("changeAnnotation", this._validateSave.bind(this));
+
+      // Provide an a11y way to get out of the edit window
+      this._editor?.commands.addCommand({
+        name: 'escape',
+        bindKey: { win: 'esc', mac: 'esc' },
+        exec: function (editor: any) {
+          editor.blur();
+        },
+        readOnly: false
+      });
     }
-
-    // listen for changes in editor
-    this._editor?.on("change", this._validateSave.bind(this));
-
-    // errors are stored as annotations
-    // this will allow us to only enable save when no errors are present
-    // unsure why I couldn't use the on pattern
-    this._editor?.session.addEventListener("changeAnnotation", this._validateSave.bind(this));
-
-    // Provide an a11y way to get out of the edit window
-    this._editor?.commands.addCommand({
-      name: 'escape',
-      bindKey: { win: 'esc', mac: 'esc' },
-      exec: function (editor: any) {
-        editor.blur();
-      },
-      readOnly: false
-    });
   }
 
   /**

@@ -25,9 +25,27 @@ describe('json-editor', () => {
     });
     expect(page.root).toEqualHtml(`
       <json-editor>
-        <mock:shadow-root>
-          <slot></slot>
-        </mock:shadow-root>
+        <div class="editor-container">
+          <div class="editor-controls">
+            <div class="editor-buttons">
+              <calcite-button appearance="solid" color="blue" id="undefined-startEditing" title="Start editing">
+                <calcite-icon icon="pencil" scale="s"></calcite-icon>
+              </calcite-button>
+              <calcite-button appearance="outline" color="blue" id="undefined-search" title="Search">
+                <calcite-icon icon="search" scale="s"></calcite-icon>
+              </calcite-button>
+              <calcite-button appearance="solid" color="blue" disabled="" id="undefined-cancelEdits" title="Cancel edits">
+                <calcite-icon icon="reset" scale="s"></calcite-icon>
+              </calcite-button>
+              <calcite-button appearance="solid" color="blue" disabled="" id="undefined-saveEdits" title="Save edits">
+                <calcite-icon icon="save" scale="s"></calcite-icon>
+              </calcite-button>
+            </div>
+          </div>
+          <div class="editor-text">
+            <div class="edit-height edit-width" id="undefined-editor"></div>
+          </div>
+        </div>
       </json-editor>
     `);
   });
