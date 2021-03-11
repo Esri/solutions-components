@@ -23,14 +23,22 @@ describe('solution-resource-item', () => {
       components: [SolutionResourceItem],
       html: `<solution-resource-item></solution-resource-item>`,
     });
+
+    page.root.value = {
+      name: "thename",
+      url: "theurl"
+    };
+    
+    await page.waitForChanges();
+
     expect(page.root).toEqualHtml(`
     <solution-resource-item>
       <mock:shadow-root>
         <div class="resource-item">
           <input accept=".zip" class="display-none" type="file">
-          <a class="display-none" download="" href=""></a>
+          <a class="display-none" download="" href="theurl"></a>
           <calcite-label>
-            Survey.zip
+            thename
           </calcite-label>
           <calcite-button appearance="solid" class="resource-button" color="blue" icon-start="download" scale="m">
             Download

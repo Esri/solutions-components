@@ -20,6 +20,8 @@ export interface IItemShare {
   id: string;
   title: string;
   shareItem: boolean;
+  type: string;
+  typeKeywords: string[];
 }
 
 @Component({
@@ -73,8 +75,10 @@ export class SolutionItemSharing {
             value="enabled"
             switched={item.shareItem}
             id={item.id}
+            scale="s"
             onCalciteSwitchChange={(event) => this._updateItem(event)}
           ></calcite-switch>
+          <solution-item-icon type={item.type} typeKeywords={item.typeKeywords}></solution-item-icon>
           {item.title}
         </calcite-label>
       );

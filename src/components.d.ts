@@ -11,6 +11,7 @@ import { IItemShare } from "./components/solution-item-sharing/solution-item-sha
 import { IOrganizationVariableItem } from "./components/solution-organization-variables/solution-organization-variables";
 import { IResourceItem } from "./components/solution-resource-item/solution-resource-item";
 import { ISpatialRefRepresentation } from "./components/solution-spatial-ref/solution-spatial-ref";
+import { ITemplateData } from "./components/solution-template-data/solution-template-data";
 import { IVariableItem } from "./components/solution-variables/solution-variables";
 export namespace Components {
     interface SolutionConfiguration {
@@ -39,6 +40,10 @@ export namespace Components {
          */
         "translations": any;
         /**
+          * Contains the public type value for this component.
+         */
+        "type": string;
+        /**
           * Contains the public value for this component.
          */
         "value": any;
@@ -48,10 +53,25 @@ export namespace Components {
           * Contains the translations for this component.
          */
         "translations": any;
+        "type": string;
         /**
           * Contains the public value for this component.
          */
         "value": IItemDetails;
+    }
+    interface SolutionItemIcon {
+        /**
+          * Indicate if this is portal
+         */
+        "isPortal": boolean;
+        /**
+          * The type for the item
+         */
+        "type": string;
+        /**
+          * The typeKeywords for the item
+         */
+        "typeKeywords": string[];
     }
     interface SolutionItemSharing {
         /**
@@ -110,15 +130,18 @@ export namespace Components {
         "wkidToDisplay": (wkid: number) => Promise<string>;
     }
     interface SolutionTemplateData {
+        /**
+          * Should be set to true for items that store their data as a resource Will allow for upload and download of the resource
+         */
         "isResource": boolean;
         /**
           * Contains the translations for this component.
          */
         "translations": any;
         /**
-          * Contains the public value for this component.
+          * Contains the public value for this component.  When working with a resource item this should contain an IResourceItem  When working with a json type item this should contain the data and vars
          */
-        "value": any;
+        "value": ITemplateData;
     }
     interface SolutionVariables {
         /**
@@ -155,6 +178,12 @@ declare global {
     var HTMLSolutionItemDetailsElement: {
         prototype: HTMLSolutionItemDetailsElement;
         new (): HTMLSolutionItemDetailsElement;
+    };
+    interface HTMLSolutionItemIconElement extends Components.SolutionItemIcon, HTMLStencilElement {
+    }
+    var HTMLSolutionItemIconElement: {
+        prototype: HTMLSolutionItemIconElement;
+        new (): HTMLSolutionItemIconElement;
     };
     interface HTMLSolutionItemSharingElement extends Components.SolutionItemSharing, HTMLStencilElement {
     }
@@ -197,6 +226,7 @@ declare global {
         "solution-contents": HTMLSolutionContentsElement;
         "solution-item": HTMLSolutionItemElement;
         "solution-item-details": HTMLSolutionItemDetailsElement;
+        "solution-item-icon": HTMLSolutionItemIconElement;
         "solution-item-sharing": HTMLSolutionItemSharingElement;
         "solution-organization-variables": HTMLSolutionOrganizationVariablesElement;
         "solution-resource-item": HTMLSolutionResourceItemElement;
@@ -233,6 +263,10 @@ declare namespace LocalJSX {
          */
         "translations"?: any;
         /**
+          * Contains the public type value for this component.
+         */
+        "type"?: string;
+        /**
           * Contains the public value for this component.
          */
         "value"?: any;
@@ -242,10 +276,25 @@ declare namespace LocalJSX {
           * Contains the translations for this component.
          */
         "translations"?: any;
+        "type"?: string;
         /**
           * Contains the public value for this component.
          */
         "value"?: IItemDetails;
+    }
+    interface SolutionItemIcon {
+        /**
+          * Indicate if this is portal
+         */
+        "isPortal"?: boolean;
+        /**
+          * The type for the item
+         */
+        "type"?: string;
+        /**
+          * The typeKeywords for the item
+         */
+        "typeKeywords"?: string[];
     }
     interface SolutionItemSharing {
         /**
@@ -289,15 +338,18 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface SolutionTemplateData {
+        /**
+          * Should be set to true for items that store their data as a resource Will allow for upload and download of the resource
+         */
         "isResource"?: boolean;
         /**
           * Contains the translations for this component.
          */
         "translations"?: any;
         /**
-          * Contains the public value for this component.
+          * Contains the public value for this component.  When working with a resource item this should contain an IResourceItem  When working with a json type item this should contain the data and vars
          */
-        "value"?: any;
+        "value"?: ITemplateData;
     }
     interface SolutionVariables {
         "onSolutionVariableSelected"?: (event: CustomEvent<any>) => void;
@@ -315,6 +367,7 @@ declare namespace LocalJSX {
         "solution-contents": SolutionContents;
         "solution-item": SolutionItem;
         "solution-item-details": SolutionItemDetails;
+        "solution-item-icon": SolutionItemIcon;
         "solution-item-sharing": SolutionItemSharing;
         "solution-organization-variables": SolutionOrganizationVariables;
         "solution-resource-item": SolutionResourceItem;
@@ -331,6 +384,7 @@ declare module "@stencil/core" {
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;
             "solution-item-details": LocalJSX.SolutionItemDetails & JSXBase.HTMLAttributes<HTMLSolutionItemDetailsElement>;
+            "solution-item-icon": LocalJSX.SolutionItemIcon & JSXBase.HTMLAttributes<HTMLSolutionItemIconElement>;
             "solution-item-sharing": LocalJSX.SolutionItemSharing & JSXBase.HTMLAttributes<HTMLSolutionItemSharingElement>;
             "solution-organization-variables": LocalJSX.SolutionOrganizationVariables & JSXBase.HTMLAttributes<HTMLSolutionOrganizationVariablesElement>;
             "solution-resource-item": LocalJSX.SolutionResourceItem & JSXBase.HTMLAttributes<HTMLSolutionResourceItemElement>;

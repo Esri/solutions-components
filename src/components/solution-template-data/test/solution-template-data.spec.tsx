@@ -45,4 +45,31 @@ describe('solution-template-data', () => {
     </solution-template-data>
     `);
   });
+
+  it('renders a resource type item', async () => {
+    const page = await newSpecPage({
+      components: [SolutionTemplateData],
+      html: `<solution-template-data></solution-template-data>`,
+    });
+
+    page.root.isResource = true;
+
+    page.root.value = {
+      resourceItem: {
+        name: "Survey1.zip",
+        url: ""
+      }
+    };
+
+    await page.waitForChanges();
+
+    expect(page.root).toEqualHtml(`
+    <solution-template-data>
+      <div class="solution-data-container">
+        <solution-resource-item></solution-resource-item>
+      </div>
+    </solution-template-data>
+    `);
+  });
+
 });

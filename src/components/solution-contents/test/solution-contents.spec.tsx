@@ -27,7 +27,9 @@ describe('solution-contents', () => {
     page.root.value =
       [{
         "id": "1",
-        "title": "Dashboard 1"
+        "title": "Dashboard 1",
+        "type": "Dashboard",
+        "typeKeywords": ["Dashboard", "Operations Dashboard"]
       }, {
         "id": "2",
          "title": "Dashboard 2",
@@ -39,13 +41,48 @@ describe('solution-contents', () => {
             "title": "View 1",
             "dependencies": [{
               "id": "5",
-              "title": "Feature Service 1"
-            }]
-          }]
-        }]
+              "title": "Feature Service 1",
+              "type": "Feature Service",
+              "typeKeywords": [
+                "ArcGIS Server",
+                "Data",
+                "Feature Access",
+                "Feature Service",
+                "Metadata",
+                "Multilayer",
+                "Service",
+                "Hosted Service"
+              ]
+            }],
+            "type": "Feature Service",
+            "typeKeywords": [
+              "ArcGIS Server",
+              "Data",
+              "Feature Access",
+              "Feature Service",
+              "Multi Services View",
+              "Service",
+              "Singlelayer",
+              "Hosted Service",
+              "View Service"
+            ]
+          }],
+          "type": "Web Map",
+          "typeKeywords": [
+            "ArcGIS Online",
+            "Collector",
+            "Data Editing",
+            "Explorer Web Map",
+            "Map",
+            "Online Map",
+            "Web Map"
+          ]
+        }],
+        "type": "Dashboard",
+        "typeKeywords": ["Dashboard", "Operations Dashboard"]
       }, {
         "id": "6",
-         "title": "Application 1",
+        "title": "Application 1",
         "dependencies": [{
           "id": "7",
           "title": "Group 1",
@@ -54,26 +91,94 @@ describe('solution-contents', () => {
             "title": "Map 2",
             "dependencies": [{
               "id": "9",
-              "title": "Feature Service 2"
+              "title": "Feature Service 2",
+              "type": "Feature Service",
+              "typeKeywords": [
+                "ArcGIS Server",
+                "Data",
+                "Feature Access",
+                "Feature Service",
+                "Metadata",
+                "Multilayer",
+                "Service",
+                "Hosted Service"
+              ]
             }, {
               "id": "10",
-              "title": "Feature Service 3"
+              "title": "Feature Service 3",
+              "type": "Feature Service",
+              "typeKeywords": [
+                "ArcGIS Server",
+                "Data",
+                "Feature Access",
+                "Feature Service",
+                "Metadata",
+                "Multilayer",
+                "Service",
+                "Hosted Service"
+              ]
             }, {
               "id": "11",
               "title": "Map 3",
               "dependencies": [{
                 "id": "12",
-                "title": "Feature Service 4"
-              }]
-            }]
+                "title": "Feature Service 4",
+                "type": "Feature Service",
+                "typeKeywords": [
+                  "ArcGIS Server",
+                  "Data",
+                  "Feature Access",
+                  "Feature Service",
+                  "Metadata",
+                  "Multilayer",
+                  "Service",
+                  "Hosted Service"
+                ]
+              }],
+              "type": "Web Map",
+              "typeKeywords": [
+                "ArcGIS Online",
+                "Collector",
+                "Data Editing",
+                "Explorer Web Map",
+                "Map",
+                "Online Map",
+                "Web Map"
+              ]
+            }],
+            "type": "Web Map",
+            "typeKeywords": [
+              "ArcGIS Online",
+              "Collector",
+              "Data Editing",
+              "Explorer Web Map",
+              "Map",
+              "Online Map",
+              "Web Map"
+            ]
           }]
-        }]
+        }],
+        "type": "QuickCapture Project",
+        "typeKeywords": [
+          "QuickCapture",
+          "QuickCapture Project"
+        ]
       }, {
         "id": "13",
-        "title": "Notebook 1"
+        "title": "Notebook 1",
+        "type": "Notebook",
+        "typeKeywords": []
       }, {
         "id": "14",
-        "title": "Survey 1"
+        "title": "Survey 1",
+        "type": "Form",
+        "typeKeywords": [
+          "Form",
+          "Ready To Use",
+          "Survey123",
+          "Survey123 Connect",
+          "xForm"
+        ]
       }];
     await page.waitForChanges();
 
@@ -81,16 +186,27 @@ describe('solution-contents', () => {
       <solution-contents>
         <calcite-tree>
 
-          <calcite-tree-item>Dashboard 1
+          <calcite-tree-item>
+            <solution-item-icon type="Dashboard"></solution-item-icon>
+            Dashboard 1
           </calcite-tree-item>
-
-          <calcite-tree-item>Dashboard 2
+          
+          <calcite-tree-item>
+            <solution-item-icon type="Dashboard"></solution-item-icon>
+            Dashboard 2
             <calcite-tree slot="children">
-              <calcite-tree-item>Map 1
+              <calcite-tree-item>
+                <solution-item-icon type="Web Map"></solution-item-icon>
+                Map 1
                 <calcite-tree slot="children">
-                  <calcite-tree-item>View 1
+                  <calcite-tree-item>
+                    <solution-item-icon type="Feature Service"></solution-item-icon>
+                    View 1
                     <calcite-tree slot="children">
-                      <calcite-tree-item>Feature Service 1</calcite-tree-item>
+                      <calcite-tree-item>
+                        <solution-item-icon type="Feature Service"></solution-item-icon>
+                        Feature Service 1
+                      </calcite-tree-item>
                     </calcite-tree>
                   </calcite-tree-item>
                 </calcite-tree>
@@ -98,17 +214,34 @@ describe('solution-contents', () => {
             </calcite-tree>
           </calcite-tree-item>
 
-          <calcite-tree-item>Application 1
+          <calcite-tree-item>
+            <solution-item-icon type="QuickCapture Project"></solution-item-icon>
+            Application 1
             <calcite-tree slot="children">
-              <calcite-tree-item>Group 1
+              <calcite-tree-item>
+                <solution-item-icon></solution-item-icon>
+                Group 1
                 <calcite-tree slot="children">
-                  <calcite-tree-item>Map 2
+                  <calcite-tree-item>
+                    <solution-item-icon type="Web Map"></solution-item-icon>
+                    Map 2
                     <calcite-tree slot="children">
-                      <calcite-tree-item>Feature Service 2</calcite-tree-item>
-                      <calcite-tree-item>Feature Service 3</calcite-tree-item>
-                      <calcite-tree-item>Map 3
+                      <calcite-tree-item>
+                        <solution-item-icon type="Feature Service"></solution-item-icon>
+                        Feature Service 2
+                      </calcite-tree-item>
+                      <calcite-tree-item>
+                        <solution-item-icon type="Feature Service"></solution-item-icon>
+                        Feature Service 3
+                      </calcite-tree-item>
+                      <calcite-tree-item>
+                        <solution-item-icon type="Web Map"></solution-item-icon>
+                        Map 3
                         <calcite-tree slot="children">
-                          <calcite-tree-item>Feature Service 4</calcite-tree-item>
+                          <calcite-tree-item>
+                            <solution-item-icon type="Feature Service"></solution-item-icon>
+                            Feature Service 4
+                          </calcite-tree-item>
                         </calcite-tree>
                       </calcite-tree-item>
                     </calcite-tree>
@@ -118,10 +251,14 @@ describe('solution-contents', () => {
             </calcite-tree>
           </calcite-tree-item>
 
-          <calcite-tree-item>Notebook 1
+          <calcite-tree-item>
+            <solution-item-icon type="Notebook"></solution-item-icon>
+            Notebook 1
           </calcite-tree-item>
 
-          <calcite-tree-item>Survey 1
+          <calcite-tree-item>
+            <solution-item-icon type="Form"></solution-item-icon>
+            Survey 1
           </calcite-tree-item>
 
         </calcite-tree>

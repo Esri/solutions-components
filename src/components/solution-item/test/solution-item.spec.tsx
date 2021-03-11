@@ -25,7 +25,7 @@ describe('solution-item', () => {
       supportsShadowDom: false
     });
     expect(page.root).toEqualHtml(`
-      <solution-item>
+      <solution-item type="">
         <div class="configuration-container">
           <div class="configuration">
             <calcite-tabs class="config-tabs">
@@ -36,7 +36,7 @@ describe('solution-item', () => {
               </calcite-tab-nav>
 
               <calcite-tab class="config-tab" active>
-                <solution-item-details></solution-item-details>
+                <solution-item-details type=""></solution-item-details>
               </calcite-tab>
               <calcite-tab class="config-tab">
                 <solution-template-data isresource=""></solution-template-data>
