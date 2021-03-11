@@ -120,7 +120,7 @@ export class SolutionTemplateData {
     return <calcite-shell dir="ltr" theme="light">
       <calcite-shell-center-row slot="center-row" position="start" height-scale="l" width-scale="l" class="json-editor">
         <div class="solution-data-child-container">
-          <span id="json-editor-span">JSON Editor goes</span>
+          <json-editor instanceId="this-will-be-the-solution-id" value="{a:'A'}"></json-editor>
         </div>
       </calcite-shell-center-row>
       <calcite-shell-panel slot="contextual-panel" position="start" height-scale="l" width-scale="m">

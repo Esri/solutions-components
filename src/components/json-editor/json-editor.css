@@ -15,25 +15,38 @@
  */
 
 :host {
-  display: flexbox;
+  display: block;
 }
 
-.solution-data-container {
-  height: 100%;
-  max-width: 100%;
+.editor-container {
   position: relative;
-}
-
-.solution-data-child-container {
   height: 100%;
+}
+
+.editor-controls {
+  height: 44px;
+  margin-bottom: 4px;
+}
+
+.editor-buttons {
+  float: right;
+}
+
+html[dir="rtl"] .editor-buttons {
+  float: left;
+}
+
+.editor-text {
+  overflow-y: auto;
+  background-color: white;
+  height: calc(100% - 48px);
   width: 100%;
-  margin: 1rem;
 }
 
-.inputBottomSeparation {
-  margin: 0 0 1.5rem 0;
+.edit-width {
+  width: 100%;
 }
 
-.json-editor {
-  width: -webkit-fill-available;
+.edit-height {
+  height: 100% !important;
 }

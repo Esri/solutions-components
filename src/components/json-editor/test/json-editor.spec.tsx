@@ -14,26 +14,21 @@
  * limitations under the License.
  */
 
-:host {
-  display: flexbox;
-}
+import { newSpecPage } from '@stencil/core/testing';
+import { JsonEditor } from '../json-editor';
 
-.solution-data-container {
-  height: 100%;
-  max-width: 100%;
-  position: relative;
-}
-
-.solution-data-child-container {
-  height: 100%;
-  width: 100%;
-  margin: 1rem;
-}
-
-.inputBottomSeparation {
-  margin: 0 0 1.5rem 0;
-}
-
-.json-editor {
-  width: -webkit-fill-available;
-}
+describe('json-editor', () => {
+  it('renders', async () => {
+    const page = await newSpecPage({
+      components: [JsonEditor],
+      html: `<json-editor></json-editor>`,
+    });
+    expect(page.root).toEqualHtml(`
+      <json-editor>
+        <mock:shadow-root>
+          <slot></slot>
+        </mock:shadow-root>
+      </json-editor>
+    `);
+  });
+});

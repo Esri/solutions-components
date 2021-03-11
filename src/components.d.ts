@@ -14,6 +14,20 @@ import { ISpatialRefRepresentation } from "./components/solution-spatial-ref/sol
 import { ITemplateData } from "./components/solution-template-data/solution-template-data";
 import { IVariableItem } from "./components/solution-variables/solution-variables";
 export namespace Components {
+    interface JsonEditor {
+        /**
+          * Contains the public id for this component.
+         */
+        "instanceId": string;
+        /**
+          * Contains the translations for this component.
+         */
+        "translations": any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value": string;
+    }
     interface SolutionConfiguration {
         /**
           * Contains the translations for this component.
@@ -155,6 +169,12 @@ export namespace Components {
     }
 }
 declare global {
+    interface HTMLJsonEditorElement extends Components.JsonEditor, HTMLStencilElement {
+    }
+    var HTMLJsonEditorElement: {
+        prototype: HTMLJsonEditorElement;
+        new (): HTMLJsonEditorElement;
+    };
     interface HTMLSolutionConfigurationElement extends Components.SolutionConfiguration, HTMLStencilElement {
     }
     var HTMLSolutionConfigurationElement: {
@@ -222,6 +242,7 @@ declare global {
         new (): HTMLSolutionVariablesElement;
     };
     interface HTMLElementTagNameMap {
+        "json-editor": HTMLJsonEditorElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-contents": HTMLSolutionContentsElement;
         "solution-item": HTMLSolutionItemElement;
@@ -236,6 +257,21 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface JsonEditor {
+        /**
+          * Contains the public id for this component.
+         */
+        "instanceId": string;
+        "onJsonEditorSaved"?: (event: CustomEvent<any>) => void;
+        /**
+          * Contains the translations for this component.
+         */
+        "translations"?: any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value": string;
+    }
     interface SolutionConfiguration {
         /**
           * Contains the translations for this component.
@@ -363,6 +399,7 @@ declare namespace LocalJSX {
         "value"?: IVariableItem[];
     }
     interface IntrinsicElements {
+        "json-editor": JsonEditor;
         "solution-configuration": SolutionConfiguration;
         "solution-contents": SolutionContents;
         "solution-item": SolutionItem;
@@ -380,6 +417,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;
