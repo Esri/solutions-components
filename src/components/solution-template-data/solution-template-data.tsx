@@ -15,7 +15,7 @@
  */
 
 import { VNode } from '@esri/calcite-components/dist/types/stencil-public-runtime';
-import { Component, Host, h, Listen, Prop } from '@stencil/core';
+import { Component, Host, h, Prop } from '@stencil/core';
 import { IOrganizationVariableItem } from '../solution-organization-variables/solution-organization-variables';
 import { IVariableItem } from '../solution-variables/solution-variables';
 import { IResourceItem } from '../solution-resource-item/solution-resource-item';
@@ -87,17 +87,6 @@ export class SolutionTemplateData {
   //
   //--------------------------------------------------------------------------
 
-  @Listen("solutionVariableSelected")
-  solutionVariableSelected(event: CustomEvent): void {
-    const jsonEditor = document.getElementById("json-editor-span");
-    jsonEditor.innerHTML += `itemId: ${event.detail.itemId} value: ${event.detail.value}`;
-  }
-
-  @Listen("organizationVariableSelected")
-  organizationVariableSelected(event: CustomEvent): void {
-    const jsonEditor = document.getElementById("json-editor-span");
-    jsonEditor.innerHTML += `itemId: ${event.detail.itemId} value: ${event.detail.value}`;
-  }
   //--------------------------------------------------------------------------
   //
   //  Events

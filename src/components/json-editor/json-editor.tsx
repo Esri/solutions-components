@@ -28,22 +28,19 @@
  *
  * @example
  *   <json-editor
- *     id="myEditor"
+ *     instanceId="a1f271c0de554604beed2adc1f244be1"
  *     content="{\"id\": \"12345\"}"
- *     start-editing="Commencer l'édition"
- *     search="Chercher"
- *     cancel-edits="Annuler les modifications"
- *     save-edits="Enregistrer les modifications"
+ *     translations={"startEditing": "Start editing"}
  *   ></json-editor>
  *
- * Only the `id` attribute is required
+ * `instanceId` attribute and `value` are required
  *
  * Component doesn't use the shadow root because of the way that Ace is loaded.
  *
  * N.B.: The search box on/off uses undocumented paths into the Ace library. Use care when upgrading Ace!
 */
 
-import { Component, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core';
+import { Component, Event, EventEmitter, Host, h, Listen, Prop, State } from '@stencil/core';
 import { Ace } from "../../../lib/ace/ace";
 const gAce = (window as any).ace;
 
@@ -60,7 +57,7 @@ export class JsonEditor {
   //--------------------------------------------------------------------------
 
   /**
-   * Contains the public type value for this component.
+   * Contains the original source item json as it was when the component was created.
    * 
    */
   @State() original: any = "";
@@ -79,28 +76,6 @@ export class JsonEditor {
    * Contains the public id for this component.
    */
   @Prop({ mutable: true, reflect: true }) instanceId!: string;
-  
-  /**
-   * Sets the contents of the editor.
-   *
-   */
-  // @Watch('value')
-  // valueWatchHandler(v: any, oldV: any) {
-  //   if (v === oldV) {
-  //     return;
-  //   }
-  //   this.original = this.original !== v ? v : this.original;
-  // }
-  //   //this.hasChanged = false;
-  //   //this.editor?.setValue(JSON.stringify(v));
-
-  //   // Clear display changes caused by setting the value
-  //   const saveEditsBtn = document.getElementById(this.instanceId + "-saveEdits");
-  //   if (saveEditsBtn) {
-  //     saveEditsBtn.setAttribute("disabled", "");
-  //   }
-  //   this.editor?.clearSelection();
-  // }
 
   /**
    * Verify if any of the values for the Item have changed
@@ -126,37 +101,41 @@ export class JsonEditor {
             <div class="editor-buttons">
               <calcite-button 
                 id={`${this.instanceId}-startEditing`}
-                color="light"
+                color="blue"
+                appearance="solid"
                 title={"Start editing"}
                 onClick={() => this._startEditing()}
               >
-                <calcite-icon icon="pencil" scale="m"></calcite-icon>
+                <calcite-icon icon="pencil" scale="s"></calcite-icon>
               </calcite-button>
               <calcite-button 
                 id={`${this.instanceId}-search`}
-                color="light"
+                appearance="outline"
+                color="blue"
                 title={"Search"}
                 onClick={() => this._search()}
               >
-                <calcite-icon icon="search" scale="m"></calcite-icon>
+                <calcite-icon icon="search" scale="s"></calcite-icon>
               </calcite-button>
               <calcite-button
                 id={`${this.instanceId}-cancelEdits`}
-                color="light"
+                color="blue"
+                appearance="solid"
                 disabled
                 title={"Cancel edits"}
                 onClick={() => this._cancelEdits()}
               >
-                <calcite-icon icon="reset" scale="m"></calcite-icon>
+                <calcite-icon icon="reset" scale="s"></calcite-icon>
               </calcite-button>
               <calcite-button 
                 id={`${this.instanceId}-saveEdits`}
-                color="light"
+                color="blue"
+                appearance="solid"
                 disabled
                 title={"Save edits"} 
                 onClick={() => this._saveEdits()}
               >
-                <calcite-icon icon="save" scale="m"></calcite-icon>
+                <calcite-icon icon="save" scale="s"></calcite-icon>
               </calcite-button>
             </div>
           </div>
@@ -169,51 +148,12 @@ export class JsonEditor {
   }
 
   componentDidLoad(): void {
-    // Set up embedded editor
-    this.editor = gAce.edit(this.instanceId + "-editor");
-    this.editor?.setOptions({
-      maxLines: Infinity,
-      mode: "ace/mode/json",
-      theme: "ace/theme/tomorrow",
-      readOnly: true
-    });
-    this.editor?.getSession().setUseWrapMode(true);
-
-    // Initialize the content
-    if (this.value) {
-      this.editor?.setValue(JSON.stringify(this.value));
-    }
-
-    this.editor?.on("change", () => {
-      this._enableButton(this.instanceId + "-saveEdits");
-      //this.hasChanged = true;
-    }).bind(this);
-
-    // Provide an a11y way to get out of the edit window
-    this.editor?.commands.addCommand({
-      name: 'escape',
-      bindKey: { win: 'esc', mac: 'esc' },
-      exec: function (editor: any) {
-        editor.blur();
-      },
-      readOnly: false
-    });
+    this._initEditor();
   }
   
-    /**
-     * Frees the editor events and memory when the web component is disconnected.
-     *
-     */
-    disconnectedCallback(): void {
-      this.startEditingBtnHandler.removeEventListener("click", this._startEditing);
-      this.searchBtnHandler.removeEventListener("click", this._search);
-      this.cancelEditsBtnHandler.removeEventListener("click", this._cancelEdits);
-      this.saveEditsBtnHandler.removeEventListener("click", this._saveEdits);
-  
-      this.editor?.container.remove();
-  
-      this.original = "";
-    }
+  disconnectedCallback(): void {
+    this._destroyEditor();
+  }
   
   //--------------------------------------------------------------------------
   //
@@ -221,18 +161,33 @@ export class JsonEditor {
   //
   //--------------------------------------------------------------------------
 
-  //private hasChanged: boolean = false;
-  private editor: Ace.Editor | undefined; // have to use `undefined` because we're not setting editor in constructor
-  private startEditingBtnHandler: any;
-  private searchBtnHandler: any;
-  private cancelEditsBtnHandler: any;
-  private saveEditsBtnHandler: any;
+  private _editor: Ace.Editor | undefined; // have to use `undefined` because we're not setting editor in constructor
+  private _startEditingBtnHandler: any;
+  private _searchBtnHandler: any;
+  private _cancelEditsBtnHandler: any;
+  private _saveEditsBtnHandler: any;
+  private _isEditing: boolean = false;
+  private _current: any; // Contains the source item json with any saved edits.
   
   //--------------------------------------------------------------------------
   //
   //  Event Listeners
   //
   //--------------------------------------------------------------------------
+
+  @Listen("organizationVariableSelected", { target: 'window' })
+  organizationVariableSelected(event: CustomEvent): void {
+    if (this._isEditing) {
+      this._editor.session.replace(this._editor.selection.getRange(), event.detail.value);
+    }
+  }
+
+  @Listen("solutionVariableSelected", { target: 'window' })
+  solutionVariableSelected(event: CustomEvent): void {
+    if (this._isEditing) {
+      this._editor.session.replace(this._editor.selection.getRange(), event.detail.value);
+    }
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -249,12 +204,88 @@ export class JsonEditor {
   //--------------------------------------------------------------------------
 
   /**
+   * Initializes the editor when the web component is connected.
+   *
+   * @protected
+   */
+  _initEditor(): void {
+    // Set up embedded editor
+    this._editor = gAce.edit(this.instanceId + "-editor");
+    this._editor?.setOptions({
+      maxLines: Infinity,
+      mode: "ace/mode/json",
+      theme: "ace/theme/tomorrow",
+      readOnly: true
+    });
+    this._editor?.getSession().setUseWrapMode(true);
+
+    // Initialize the content
+    if (this.value) {
+      this._editor?.setValue(this.value);
+      this._current = this.value;
+      this.original = this.value;
+    }
+
+    // listen for changes in editor
+    this._editor?.on("change", this._validateSave.bind(this));
+
+    // errors are stored as annotations
+    // this will allow us to only enable save when no errors are present
+    // unsure why I couldn't use the on pattern
+    this._editor?.session.addEventListener("changeAnnotation", this._validateSave.bind(this));
+
+    // Provide an a11y way to get out of the edit window
+    this._editor?.commands.addCommand({
+      name: 'escape',
+      bindKey: { win: 'esc', mac: 'esc' },
+      exec: function (editor: any) {
+        editor.blur();
+      },
+      readOnly: false
+    });
+  }
+
+  /**
+   * Only enable save when we are editing and json is valid
+   *
+   * @protected
+   */
+  _validateSave(): void {
+    if (this._isEditing) {
+      const annotations: Ace.Annotation[] = this._editor.session.getAnnotations();
+      if (annotations.some(e => e.type === "error")) {
+        this._disableButton(`${this.instanceId}-saveEdits`);
+      } else {
+        this._enableButton(`${this.instanceId}-saveEdits`);
+      }
+    }
+  }
+
+  /**
+   * Frees the editor events and memory when the web component is disconnected.
+   *
+   * @protected
+   */
+  _destroyEditor(): void {
+    this._startEditingBtnHandler.removeEventListener("click", this._startEditing);
+    this._searchBtnHandler.removeEventListener("click", this._search);
+    this._cancelEditsBtnHandler.removeEventListener("click", this._cancelEdits);
+    this._saveEditsBtnHandler.removeEventListener("click", this._saveEdits);
+
+    this._editor?.container.remove();
+
+    this._current = "";
+    this.original = "";
+  }
+
+  /**
    * Handles click on "Cancel edits" button.
    *
    * @protected
    */
    _cancelEdits(): void {
-    this.value = this.original;
+    this.value = this._current;
+    this._editor?.setValue(this._current);
     this._doneEditing();
   }
 
@@ -262,6 +293,7 @@ export class JsonEditor {
    * Disables a button.
    *
    * @param buttonId Id of button to disable
+   * 
     * @protected
    */
   _disableButton(buttonId: string): void {
@@ -277,20 +309,22 @@ export class JsonEditor {
     this._enableButton(`${this.instanceId}-startEditing`);
     this._disableButton(`${this.instanceId}-cancelEdits`);
     this._disableButton(`${this.instanceId}-saveEdits`);
-    //this.hasChanged = false;
 
-    if ((this.editor as any).searchBox) { // searchBox is created when search type-in box is opened
-      (this.editor as any).searchBox.hide();
+    if ((this._editor as any).searchBox) { // searchBox is created when search type-in box is opened
+      (this._editor as any).searchBox.hide();
     }
-    this.editor?.setTheme("ace/theme/tomorrow");
-    this.editor?.setReadOnly(true);
-    this.editor?.clearSelection();
+    this._editor?.setTheme("ace/theme/tomorrow");
+    this._editor?.setReadOnly(true);
+    this._editor?.clearSelection();
+
+    this._isEditing = false;
   }
 
   /**
    * Enables a button.
    *
    * @param buttonId Id of button to enable
+   * 
    * @protected
    */
   _enableButton(buttonId: string): void {
@@ -303,8 +337,8 @@ export class JsonEditor {
    * @protected
    */
   _saveEdits(): void {
-    this.value = this.editor?.getValue();
-    this.original = this.value;
+    this.value = this._editor?.getValue();
+    this._current = this.value;
     this._doneEditing();
 
     // not sure we need to do this since values will be grabbed elsewhere
@@ -315,9 +349,11 @@ export class JsonEditor {
 
   /**
    * Handles click on "Search" button.
+   * 
+   * @protected
    */
   _search(): void {
-    this.editor?.commands.byName.find.exec(this.editor);
+    this._editor?.commands.byName.find.exec(this._editor);
   }
 
   /**
@@ -329,10 +365,12 @@ export class JsonEditor {
     this._disableButton(`${this.instanceId}-startEditing`);
     this._enableButton(`${this.instanceId}-cancelEdits`);
 
-    this.editor?.setTheme("ace/theme/tomorrow_night");
-    this.editor?.setReadOnly(false);
-    this.editor?.focus();
-    this.editor?.clearSelection();
-    this.editor?.gotoLine(0, 0, false);
+    this._editor?.setTheme("ace/theme/tomorrow_night");
+    this._editor?.setReadOnly(false);
+    this._editor?.focus();
+    this._editor?.clearSelection();
+    this._editor?.gotoLine(0, 0, false);
+
+    this._isEditing = true;
   }
 }
