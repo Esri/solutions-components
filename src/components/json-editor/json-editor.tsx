@@ -105,6 +105,8 @@ export class JsonEditor {
                 appearance="solid"
                 title={"Start editing"}
                 onClick={() => this._startEditing()}
+                scale="s"
+                class="edit-button"
               >
                 <calcite-icon icon="pencil" scale="s"></calcite-icon>
               </calcite-button>
@@ -114,6 +116,8 @@ export class JsonEditor {
                 color="blue"
                 title={"Search"}
                 onClick={() => this._search()}
+                scale="s"
+                class="edit-button"
               >
                 <calcite-icon icon="search" scale="s"></calcite-icon>
               </calcite-button>
@@ -124,6 +128,8 @@ export class JsonEditor {
                 disabled
                 title={"Cancel edits"}
                 onClick={() => this._cancelEdits()}
+                scale="s"
+                class="edit-button"
               >
                 <calcite-icon icon="reset" scale="s"></calcite-icon>
               </calcite-button>
@@ -134,6 +140,8 @@ export class JsonEditor {
                 disabled
                 title={"Save edits"} 
                 onClick={() => this._saveEdits()}
+                scale="s"
+                class="edit-button"
               >
                 <calcite-icon icon="save" scale="s"></calcite-icon>
               </calcite-button>

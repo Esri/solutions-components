@@ -34,6 +34,15 @@
 
 html[dir="rtl"] .editor-buttons {
   float: left;
+  padding-right: .25rem
+}
+
+.edit-button {
+  padding-left: .25rem;
+}
+
+html[dir="rtl"] .edit-button {
+  padding-right: .25rem
 }
 
 .editor-text {
