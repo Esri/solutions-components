@@ -23,27 +23,29 @@ describe('json-editor', () => {
       components: [JsonEditor],
       html: `<json-editor></json-editor>`,
     });
+    page.root.instanceId = "ABC123";
+    await page.waitForChanges();
     expect(page.root).toEqualHtml(`
-      <json-editor>
+      <json-editor instance-id="ABC123">
         <div class="editor-container">
           <div class="editor-controls">
             <div class="editor-buttons">
-              <calcite-button appearance="solid" class="edit-button" color="blue" id="undefined-startEditing" scale="s" title="Start editing">
+              <calcite-button appearance="solid" class="edit-button" color="blue" id="ABC123-startEditing" scale="s" title="Start editing">
                 <calcite-icon icon="pencil" scale="s"></calcite-icon>
               </calcite-button>
-              <calcite-button appearance="outline" class="edit-button" color="blue" id="undefined-search" scale="s" title="Search">
+              <calcite-button appearance="outline" class="edit-button" color="blue" id="ABC123-search" scale="s" title="Search">
                 <calcite-icon icon="search" scale="s"></calcite-icon>
               </calcite-button>
-              <calcite-button appearance="solid" class="edit-button" color="blue" disabled="" id="undefined-cancelEdits" scale="s" title="Cancel edits">
+              <calcite-button appearance="solid" class="edit-button" color="blue" disabled="" id="ABC123-cancelEdits" scale="s" title="Cancel edits">
                 <calcite-icon icon="reset" scale="s"></calcite-icon>
               </calcite-button>
-              <calcite-button appearance="solid" class="edit-button" color="blue" disabled="" id="undefined-saveEdits" scale="s" title="Save edits">
+              <calcite-button appearance="solid" class="edit-button" color="blue" disabled="" id="ABC123-saveEdits" scale="s" title="Save edits">
                 <calcite-icon icon="save" scale="s"></calcite-icon>
               </calcite-button>
             </div>
           </div>
           <div class="editor-text">
-            <div class="edit-height edit-width" id="undefined-editor"></div>
+            <div class="edit-height edit-width" id="ABC123-editor"></div>
           </div>
         </div>
       </json-editor>
