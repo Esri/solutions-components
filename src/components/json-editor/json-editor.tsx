@@ -19,18 +19,13 @@
  * web component for JSON content.
  *
  * Attributes:
- * `id`: Id of component (required, because it's used to distinguish between multiple instances of component)
- * `content`: Initial content of editor
- * `start-editing`: Hover & a11y text for the start-editing button; default is "Start editing"
- * `search`: Hover & a11y text for the search button; default is "Search"
- * `cancel-edits`: Hover & a11y text for the cancel-edits button; default is "Cancel edits"
- * `save-edits`: Hover & a11y text for the save-edits button; default is "Save edits"
+ * `instanceId`: id of component (required, because it's used to distinguish between multiple instances of component)
+ * `value`: Initial content of editor
  *
  * @example
  *   <json-editor
  *     instanceId="a1f271c0de554604beed2adc1f244be1"
- *     content="{\"id\": \"12345\"}"
- *     translations={"startEditing": "Start editing"}
+ *     value="{\"id\": \"12345\"}"
  *   ></json-editor>
  *
  * `instanceId` attribute and `value` are required
