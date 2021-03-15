@@ -15,7 +15,7 @@
  */
 
 import { VNode } from '@esri/calcite-components/dist/types/stencil-public-runtime';
-import { Component, Host, h, Listen, Prop } from '@stencil/core';
+import { Component, Host, h, Prop } from '@stencil/core';
 import { IOrganizationVariableItem } from '../solution-organization-variables/solution-organization-variables';
 import { IVariableItem } from '../solution-variables/solution-variables';
 import { IResourceItem } from '../solution-resource-item/solution-resource-item';
@@ -87,17 +87,6 @@ export class SolutionTemplateData {
   //
   //--------------------------------------------------------------------------
 
-  @Listen("solutionVariableSelected")
-  solutionVariableSelected(event: CustomEvent): void {
-    const jsonEditor = document.getElementById("json-editor-span");
-    jsonEditor.innerHTML += `itemId: ${event.detail.itemId} value: ${event.detail.value}`;
-  }
-
-  @Listen("organizationVariableSelected")
-  organizationVariableSelected(event: CustomEvent): void {
-    const jsonEditor = document.getElementById("json-editor-span");
-    jsonEditor.innerHTML += `itemId: ${event.detail.itemId} value: ${event.detail.value}`;
-  }
   //--------------------------------------------------------------------------
   //
   //  Events
@@ -120,7 +109,7 @@ export class SolutionTemplateData {
     return <calcite-shell dir="ltr" theme="light">
       <calcite-shell-center-row slot="center-row" position="start" height-scale="l" width-scale="l" class="json-editor">
         <div class="solution-data-child-container">
-          <span id="json-editor-span">JSON Editor goes</span>
+          <json-editor instanceId="this-will-be-the-solution-id" value="{a:'A'}"></json-editor>
         </div>
       </calcite-shell-center-row>
       <calcite-shell-panel slot="contextual-panel" position="start" height-scale="l" width-scale="m">

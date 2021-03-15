@@ -14,26 +14,14 @@
  * limitations under the License.
  */
 
-:host {
-  display: flexbox;
-}
+import { newE2EPage } from '@stencil/core/testing';
 
-.solution-data-container {
-  height: 100%;
-  max-width: 100%;
-  position: relative;
-}
+describe('json-editor', () => {
+  it('renders', async () => {
+    const page = await newE2EPage();
+    await page.setContent('<json-editor></json-editor>');
 
-.solution-data-child-container {
-  height: 100%;
-  width: 100%;
-  margin: 1rem;
-}
-
-.inputBottomSeparation {
-  margin: 0 0 1.5rem 0;
-}
-
-.json-editor {
-  width: -webkit-fill-available;
-}
+    const element = await page.find('json-editor');
+    expect(element).toHaveClass('hydrated');
+  });
+});
