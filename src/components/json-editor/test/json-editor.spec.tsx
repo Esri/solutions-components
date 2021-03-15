@@ -24,9 +24,10 @@ describe('json-editor', () => {
       html: `<json-editor></json-editor>`,
     });
     page.root.instanceId = "ABC123";
+    page.root.value = "{a:'A'}";
     await page.waitForChanges();
     expect(page.root).toEqualHtml(`
-      <json-editor instance-id="ABC123">
+      <json-editor instance-id="ABC123" value="{a:'A'}">
         <div class="editor-container">
           <div class="editor-controls">
             <div class="editor-buttons">
