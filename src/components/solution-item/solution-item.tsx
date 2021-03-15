@@ -40,28 +40,7 @@ export class SolutionItem {
   /**
    * Contains the translations for this component.
    */
-  @Prop({ mutable: true }) translations: any = {
-    "itemDetailsTab": "Item Details",
-    "dataTab": "Data",
-    "propertiesTab": "Properties",
-    "groupDetailsTab": "Group Details",
-    "sharingTab": "Sharing",
-
-    // Item details
-    "itemDetails": {
-      "editThumbnail": "Edit Thumbnail",
-      "description": "Description",
-      "tags": "Tags",
-      "credits": "Credits",
-      "termsOfUse": "Terms of Use",
-      "snippetCountPattern": "{{n}} of 250"
-    },
-
-    "jsonEditing": {
-      "startEditing": "Start editing", // start modifying JSON in its editor
-      "search": "Search" // search within JSON editor
-    }
-  };
+  @Prop({ mutable: true }) translations: any = {};
 
   /**
    * Contains the public value for this component.
@@ -92,11 +71,6 @@ export class SolutionItem {
     );
   }
 
-  componentDidRender(): void {
-    // Forward the translations to children
-    this.itemDetails.translations = this.translations.itemDetails;
-  }
-
   _showGroupTabs(): VNode {
     return <calcite-tabs class="config-tabs">
       <calcite-tab-nav slot="tab-nav">
@@ -105,10 +79,10 @@ export class SolutionItem {
       </calcite-tab-nav>
 
       <calcite-tab class="config-tab" active>
-        <solution-item-details ref={(el) => (this.itemDetails = el)} type={this.type}></solution-item-details>
+        <solution-item-details translations={this.translations} type={this.type}></solution-item-details>
       </calcite-tab>
       <calcite-tab class="config-tab">
-        <solution-item-sharing></solution-item-sharing>
+        <solution-item-sharing translations={this.translations}></solution-item-sharing>
       </calcite-tab>
     </calcite-tabs>
   }
@@ -122,13 +96,13 @@ export class SolutionItem {
       </calcite-tab-nav>
 
       <calcite-tab class="config-tab" active>
-        <solution-item-details ref={(el) => (this.itemDetails = el)} type={this.type}></solution-item-details>
+        <solution-item-details translations={this.translations} type={this.type}></solution-item-details>
       </calcite-tab>
       <calcite-tab class="config-tab">
-        <solution-template-data isResource={true}></solution-template-data>
+        <solution-template-data translations={this.translations} isResource={true}></solution-template-data>
       </calcite-tab>
       <calcite-tab class="config-tab">
-        <solution-template-data></solution-template-data>
+        <solution-template-data translations={this.translations}></solution-template-data>
       </calcite-tab>
     </calcite-tabs>
   }
@@ -138,8 +112,6 @@ export class SolutionItem {
   //  Variables (private)
   //
   //--------------------------------------------------------------------------
-
-  private itemDetails: HTMLSolutionItemDetailsElement;
 
   //--------------------------------------------------------------------------
   //

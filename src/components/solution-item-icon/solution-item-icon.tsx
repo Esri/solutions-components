@@ -30,6 +30,11 @@ export class SolutionItemIcon {
   //--------------------------------------------------------------------------
 
   /**
+   * Contains the translations for this component.
+   */
+  @Prop({ mutable: true }) translations: any = {};
+
+  /**
    * Indicate if this is portal
    */
   @Prop() isPortal: boolean = false;
@@ -51,7 +56,7 @@ export class SolutionItemIcon {
   //--------------------------------------------------------------------------
 
   render() {
-    return <div title={this.type}>
+    return <div title={this.translations.itemTypes[this.type] || this.type}>
       <img src={this._getIconUrl(this.type, this.typeKeywords)}
         width="16"
         height="16"
@@ -60,7 +65,7 @@ export class SolutionItemIcon {
     </div>;
   }
 
-    //--------------------------------------------------------------------------
+  //--------------------------------------------------------------------------
   //
   //  Variables (private)
   //

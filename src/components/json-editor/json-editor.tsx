@@ -103,7 +103,7 @@ export class JsonEditor {
                 id={`${this.instanceId}-startEditing`}
                 color="blue"
                 appearance="solid"
-                title={"Start editing"}
+                title={this.translations.jsonEditor.startEditing}
                 onClick={() => this._startEditing()}
                 scale="s"
                 class="edit-button"
@@ -114,7 +114,7 @@ export class JsonEditor {
                 id={`${this.instanceId}-search`}
                 appearance="outline"
                 color="blue"
-                title={"Search"}
+                title={this.translations.jsonEditor.search}
                 onClick={() => this._search()}
                 scale="s"
                 class="edit-button"
@@ -126,7 +126,7 @@ export class JsonEditor {
                 color="blue"
                 appearance="solid"
                 disabled
-                title={"Cancel edits"}
+                title={this.translations.jsonEditor.cancelEdits}
                 onClick={() => this._cancelEdits()}
                 scale="s"
                 class="edit-button"
@@ -138,7 +138,7 @@ export class JsonEditor {
                 color="blue"
                 appearance="solid"
                 disabled
-                title={"Save edits"} 
+                title={this.translations.jsonEditor.saveEdits} 
                 onClick={() => this._saveEdits()}
                 scale="s"
                 class="edit-button"

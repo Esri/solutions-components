@@ -79,6 +79,10 @@ export namespace Components {
          */
         "isPortal": boolean;
         /**
+          * Contains the translations for this component.
+         */
+        "translations": any;
+        /**
           * The type for the item
          */
         "type": string;
@@ -323,6 +327,10 @@ declare namespace LocalJSX {
           * Indicate if this is portal
          */
         "isPortal"?: boolean;
+        /**
+          * Contains the translations for this component.
+         */
+        "translations"?: any;
         /**
           * The type for the item
          */

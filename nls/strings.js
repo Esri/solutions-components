@@ -200,41 +200,50 @@ define({
       // Pop-up for configuring a solution
       "configuration_modal": {
         "title": "Configure: {{solutionName}}", // modal title
-        "cancel": "Cancel" // reject changes
+        "cancel": "Cancel", // reject changes
         "save": "Save", // save changes
 
         "configuration": {
           "definitionTab": "Definition", // for tab to edit definition of an item or group
           "spatialReferenceTab": "Spatial Reference", // for tab to edit the spatial reference of an item
 
-          // Information about an item
-          "item": {
-            "itemDetailsTab": "Item Details",
-            "dataTab": "Data",
-            "propertiesTab": "Properties",
-            "groupDetailsTab": "Group Details",
-            "sharingTab": "Sharing",
+          "itemDetailsTab": "Item Details",
+          "dataTab": "Data",
+          "propertiesTab": "Properties",
+          "groupDetailsTab": "Group Details",
+          "sharingTab": "Sharing",
 
-            // Item details
-            "itemDetails": {
-              "editThumbnail": "Edit Thumbnail",
-              "description": "Description",
-              "tags": "Tags",
-              "credits": "Credits",
-              "termsOfUse": "Terms of Use",
-              "snippetCountPattern": "{{n}} of 250"
-            },
+          // Item details
+          "itemDetails": {
+            "editThumbnail": "Edit Thumbnail",
+            "description": "Description",
+            "tags": "Tags",
+            "credits": "Credits",
+            "termsOfUse": "Terms of Use",
+            "snippetCountPattern": "{{n}} of 250"
+          },
 
-            "jsonEditing": {
-              "startEditing": "Start editing", // start modifying JSON in its editor
-              "search": "Search" // search within JSON editor
-            }
+          "jsonEditor": {
+            "startEditing": "Start Editing",
+            "search": "Search",
+            "cancelEdits": "Cancel Edits",
+            "saveEdits": "Save Edits"
+          },
+    
+          "resourceItem": {
+            "update": "Update",
+            "download": "Download"
           },
 
           "spatialRef": {
             "specifyParam": "Spatial Reference Parameter",
             "defaultSpatialRef": "Default Spatial Reference",
             "featureServicesHeading": "Feature Services"
+          },
+
+          "variables": {
+            "orgVariables": "Organization Varibles",
+            "solVariables": "Solution Varibles"
           }
         }
       }
