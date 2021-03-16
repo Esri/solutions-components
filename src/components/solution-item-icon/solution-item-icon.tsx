@@ -56,7 +56,7 @@ export class SolutionItemIcon {
   //--------------------------------------------------------------------------
 
   render() {
-    return <div title={this.translations.itemTypes[this.type] || this.type}>
+    return <div title={this.type}>
       <img src={this._getIconUrl(this.type, this.typeKeywords)}
         width="16"
         height="16"
