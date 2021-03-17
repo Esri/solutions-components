@@ -30,12 +30,14 @@
 
 - calcite-tree
 - calcite-tree-item
+- [solution-item-icon](../solution-item-icon)
 
 ### Graph
 ```mermaid
 graph TD;
   solution-contents --> calcite-tree
   solution-contents --> calcite-tree-item
+  solution-contents --> solution-item-icon
   calcite-tree-item --> calcite-icon
   solution-configuration --> solution-contents
   style solution-contents fill:#f9f,stroke:#333,stroke-width:4px
