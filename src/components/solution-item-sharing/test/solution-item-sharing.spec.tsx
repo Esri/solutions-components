@@ -16,12 +16,16 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionItemSharing } from '../solution-item-sharing';
+import * as translations from '../../../../nls/Elm_strings.json';
+import { h } from '@stencil/core';
 
 describe('solution-item-sharing', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [SolutionItemSharing],
-      html: `<solution-item-sharing></solution-item-sharing>`,
+      template: () => (
+        <solution-item-sharing translations={translations.configuration_modal.configuration}></solution-item-sharing>
+      )
     });
     page.root.value = [{
       id: "A",

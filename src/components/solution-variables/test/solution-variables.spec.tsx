@@ -16,12 +16,16 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionVariables } from '../solution-variables';
+import * as translations from '../../../../nls/Elm_strings.json';
+import { h } from '@stencil/core';
 
 describe('solution-variables', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [SolutionVariables],
-      html: `<solution-variables></solution-variables>`,
+      template: () => (
+        <solution-variables translations={translations.configuration_modal.configuration}></solution-variables>
+      )
     });
 
     page.root.value = [{

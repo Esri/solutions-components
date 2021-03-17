@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property       | Attribute      | Description                                   | Type  | Default                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| -------------- | -------------- | --------------------------------------------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `translations` | `translations` | Contains the translations for this component. | `any` | `{     "definitionTab": "Definition", // for tab to edit definition of an item or group     "spatialReferenceTab": "Spatial Reference", // for tab to edit the spatial reference of an item      // Information about an item     "item": {       "itemDetailsTab": "Item Details",       "dataTab": "Data",       "propertiesTab": "Properties",       "groupDetailsTab": "Group Details",       "sharingTab": "Sharing",        // Item details       "itemDetails": {         "editThumbnail": "Edit Thumbnail",         "description": "Description",         "tags": "Tags",         "credits": "Credits",         "termsOfUse": "Terms of Use",         "snippetCountPattern": "{{n}} of 250"       },        "jsonEditing": {         "startEditing": "Start editing", // start modifying JSON in its editor         "search": "Search" // search within JSON editor       }     },      "spatialRef": {       "specifyParam": "Spatial Reference Parameter",       "defaultSpatialRef": "Default Spatial Reference",       "featureServicesHeading": "Feature Services"     }   }` |
-| `value`        | `value`        | Contains the public value for this component. | `any` | `{}`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| Property                    | Attribute      | Description                                   | Type  | Default     |
+| --------------------------- | -------------- | --------------------------------------------- | ----- | ----------- |
+| `translations` _(required)_ | `translations` | Contains the translations for this component. | `any` | `undefined` |
+| `value`                     | `value`        | Contains the public value for this component. | `any` | `{}`        |
 
 
 ## Dependencies
@@ -38,27 +38,40 @@ graph TD;
   calcite-tab-title --> calcite-icon
   solution-contents --> calcite-tree
   solution-contents --> calcite-tree-item
+  solution-contents --> solution-item-icon
   calcite-tree-item --> calcite-icon
   solution-item --> calcite-tabs
   solution-item --> calcite-tab-nav
   solution-item --> calcite-tab-title
   solution-item --> calcite-tab
   solution-item --> solution-item-details
+  solution-item --> solution-item-sharing
   solution-item --> solution-template-data
   solution-item-details --> calcite-input
   solution-item-details --> calcite-label
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
+  solution-item-sharing --> calcite-label
+  solution-item-sharing --> calcite-switch
+  solution-item-sharing --> solution-item-icon
   solution-template-data --> calcite-shell
   solution-template-data --> calcite-shell-center-row
+  solution-template-data --> json-editor
   solution-template-data --> calcite-shell-panel
   solution-template-data --> solution-organization-variables
   solution-template-data --> solution-variables
+  solution-template-data --> solution-resource-item
+  json-editor --> calcite-button
+  json-editor --> calcite-icon
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   solution-organization-variables --> calcite-label
   solution-organization-variables --> calcite-tree-item
   solution-variables --> calcite-label
   solution-variables --> calcite-tree-item
   solution-variables --> calcite-tree
+  solution-resource-item --> calcite-label
+  solution-resource-item --> calcite-button
   solution-spatial-ref --> calcite-switch
   solution-spatial-ref --> calcite-label
   solution-spatial-ref --> calcite-input

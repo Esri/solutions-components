@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property       | Attribute      | Description                                   | Type               | Default |
-| -------------- | -------------- | --------------------------------------------- | ------------------ | ------- |
-| `translations` | `translations` | Contains the translations for this component. | `any`              | `{   }` |
-| `value`        | --             | Contains the public value for this component. | `IInventoryItem[]` | `[]`    |
+| Property                    | Attribute      | Description                                   | Type               | Default     |
+| --------------------------- | -------------- | --------------------------------------------- | ------------------ | ----------- |
+| `translations` _(required)_ | `translations` | Contains the translations for this component. | `any`              | `undefined` |
+| `value`                     | --             | Contains the public value for this component. | `IInventoryItem[]` | `[]`        |
 
 
 ## Events
@@ -30,12 +30,14 @@
 
 - calcite-tree
 - calcite-tree-item
+- [solution-item-icon](../solution-item-icon)
 
 ### Graph
 ```mermaid
 graph TD;
   solution-contents --> calcite-tree
   solution-contents --> calcite-tree-item
+  solution-contents --> solution-item-icon
   calcite-tree-item --> calcite-icon
   solution-configuration --> solution-contents
   style solution-contents fill:#f9f,stroke:#333,stroke-width:4px

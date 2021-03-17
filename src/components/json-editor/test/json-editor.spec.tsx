@@ -16,31 +16,32 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { JsonEditor } from '../json-editor';
+import * as translations from '../../../../nls/Elm_strings.json';
+import { h } from '@stencil/core';
 
 describe('json-editor', () => {
-  it('renders', async () => {
+    it('renders', async () => {
     const page = await newSpecPage({
       components: [JsonEditor],
-      html: `<json-editor></json-editor>`,
+      template: () => (
+        <json-editor translations={translations.configuration_modal.configuration} instanceId="ABC123" value = "{a:'A'}"></json-editor>
+      )
     });
-    page.root.instanceId = "ABC123";
-    page.root.value = "{a:'A'}";
-    await page.waitForChanges();
     expect(page.root).toEqualHtml(`
       <json-editor instance-id="ABC123" value="{a:'A'}">
         <div class="editor-container">
           <div class="editor-controls">
             <div class="editor-buttons">
-              <calcite-button appearance="solid" class="edit-button" color="blue" id="ABC123-startEditing" scale="s" title="Start editing">
+              <calcite-button appearance="solid" class="edit-button" color="blue" id="ABC123-startEditing" scale="s" title="Start Editing">
                 <calcite-icon icon="pencil" scale="s"></calcite-icon>
               </calcite-button>
               <calcite-button appearance="outline" class="edit-button" color="blue" id="ABC123-search" scale="s" title="Search">
                 <calcite-icon icon="search" scale="s"></calcite-icon>
               </calcite-button>
-              <calcite-button appearance="solid" class="edit-button" color="blue" disabled="" id="ABC123-cancelEdits" scale="s" title="Cancel edits">
+              <calcite-button appearance="solid" class="edit-button" color="blue" disabled="" id="ABC123-cancelEdits" scale="s" title="Cancel Edits">
                 <calcite-icon icon="reset" scale="s"></calcite-icon>
               </calcite-button>
-              <calcite-button appearance="solid" class="edit-button" color="blue" disabled="" id="ABC123-saveEdits" scale="s" title="Save edits">
+              <calcite-button appearance="solid" class="edit-button" color="blue" disabled="" id="ABC123-saveEdits" scale="s" title="Save Edits">
                 <calcite-icon icon="save" scale="s"></calcite-icon>
               </calcite-button>
             </div>

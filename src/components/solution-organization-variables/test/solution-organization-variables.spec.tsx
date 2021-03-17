@@ -16,14 +16,17 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionOrganizationVariables } from '../solution-organization-variables';
+import * as translations from '../../../../nls/Elm_strings.json';
+import { h } from '@stencil/core';
 
 describe('solution-organization-variables', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [SolutionOrganizationVariables],
-      html: `<solution-organization-variables></solution-organization-variables>`,
+      template: () => (
+        <solution-organization-variables translations={translations.configuration_modal.configuration}></solution-organization-variables>
+      )
     });
-
     page.root.value = [{
       id: "id",
       title: "title",

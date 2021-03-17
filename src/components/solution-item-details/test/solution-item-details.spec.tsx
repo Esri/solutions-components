@@ -16,13 +16,17 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionItemDetails } from '../solution-item-details';
+import * as translations from '../../../../nls/Elm_strings.json';
+import { h } from '@stencil/core';
 
 describe('solution-item-details', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [SolutionItemDetails],
-      html: `<solution-item-details></solution-item-details>`,
-      supportsShadowDom: false
+      supportsShadowDom: false,
+      template: () => (
+        <solution-item-details translations={translations.configuration_modal.configuration}></solution-item-details>
+      )
     });
     expect(page.root).toEqualHtml(`
       <solution-item-details type="">
@@ -78,18 +82,16 @@ describe('solution-item-details', () => {
         </div>
       </solution-item-details>
     `);
-  });
+ });
 
   it('renders group details', async () => {
     const page = await newSpecPage({
       components: [SolutionItemDetails],
-      html: `<solution-item-details></solution-item-details>`,
-      supportsShadowDom: false
+      supportsShadowDom: false,
+      template: () => (
+        <solution-item-details translations={translations.configuration_modal.configuration} type="Group"></solution-item-details>
+      )
     });
-    page.root.type = "Group";
-    
-    await page.waitForChanges();
-
     expect(page.root).toEqualHtml(`
       <solution-item-details type="Group">
         <div class="parent-container">

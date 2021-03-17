@@ -16,14 +16,17 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionResourceItem } from '../solution-resource-item';
+import * as translations from '../../../../nls/Elm_strings.json';
+import { h } from '@stencil/core';
 
 describe('solution-resource-item', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [SolutionResourceItem],
-      html: `<solution-resource-item></solution-resource-item>`,
+      template: () => (
+        <solution-resource-item translations={translations.configuration_modal.configuration}></solution-resource-item>
+      )
     });
-
     page.root.value = {
       name: "thename",
       url: "theurl"

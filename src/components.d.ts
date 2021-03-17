@@ -270,7 +270,7 @@ declare namespace LocalJSX {
         /**
           * Contains the translations for this component.
          */
-        "translations"?: any;
+        "translations": any;
         /**
           * Contains the public value for this component.
          */
@@ -280,7 +280,7 @@ declare namespace LocalJSX {
         /**
           * Contains the translations for this component.
          */
-        "translations"?: any;
+        "translations": any;
         /**
           * Contains the public value for this component.
          */
@@ -291,7 +291,7 @@ declare namespace LocalJSX {
         /**
           * Contains the translations for this component.
          */
-        "translations"?: any;
+        "translations": any;
         /**
           * Contains the public value for this component.
          */
@@ -301,7 +301,7 @@ declare namespace LocalJSX {
         /**
           * Contains the translations for this component.
          */
-        "translations"?: any;
+        "translations": any;
         /**
           * Contains the public type value for this component.
          */
@@ -315,7 +315,7 @@ declare namespace LocalJSX {
         /**
           * Contains the translations for this component.
          */
-        "translations"?: any;
+        "translations": any;
         "type"?: string;
         /**
           * Contains the public value for this component.
@@ -344,7 +344,7 @@ declare namespace LocalJSX {
         /**
           * Contains the translations for this component.
          */
-        "translations"?: any;
+        "translations": any;
         /**
           * Contains the public value for this component.
          */
@@ -355,7 +355,7 @@ declare namespace LocalJSX {
         /**
           * Contains the translations for this component.
          */
-        "translations"?: any;
+        "translations": any;
         /**
           * Contains the public value for this component.
          */
@@ -365,7 +365,7 @@ declare namespace LocalJSX {
         /**
           * Contains the translations for this component.
          */
-        "translations"?: any;
+        "translations": any;
         /**
           * Contains the public value for this component.
          */
@@ -375,7 +375,7 @@ declare namespace LocalJSX {
         /**
           * Contains the translations for this component.
          */
-        "translations"?: any;
+        "translations": any;
         /**
           * Contains the public value for this component.
          */
@@ -389,7 +389,7 @@ declare namespace LocalJSX {
         /**
           * Contains the translations for this component.
          */
-        "translations"?: any;
+        "translations": any;
         /**
           * Contains the public value for this component.  When working with a resource item this should contain an IResourceItem  When working with a json type item this should contain the data and vars
          */
@@ -400,7 +400,7 @@ declare namespace LocalJSX {
         /**
           * Contains the translations for this component.
          */
-        "translations"?: any;
+        "translations": any;
         /**
           * Contains the public value for this component.
          */

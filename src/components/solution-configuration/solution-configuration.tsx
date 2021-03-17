@@ -40,7 +40,7 @@ export class SolutionConfiguration {
   /**
    * Contains the translations for this component.
    */
-  @Prop({ mutable: true }) translations: any = {};
+  @Prop({ mutable: true }) translations!: any;
 
   /**
    * Contains the public value for this component.
@@ -66,7 +66,7 @@ export class SolutionConfiguration {
               <calcite-tab class="config-tab" active>
                 <div class="config-solution">
                   <div class="config-inventory">
-                    <solution-contents id="configInventory"></solution-contents>
+                    <solution-contents id="configInventory" translations={this.translations}></solution-contents>
                   </div>
                   <div class="config-item">
                     <solution-item translations={this.translations}></solution-item>

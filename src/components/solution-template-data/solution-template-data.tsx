@@ -43,7 +43,7 @@ export class SolutionTemplateData {
   /**
    * Contains the translations for this component.
    */
-  @Prop({ mutable: true }) translations: any = {};
+  @Prop({ mutable: true }) translations!: any;
 
   /**
    * Contains the public value for this component.
