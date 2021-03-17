@@ -150,7 +150,7 @@ describe('solution-spatial-ref', () => {
     await newSpecPage({
       components: [SolutionSpatialRef],
       template: () => (
-        <solution-spatial-ref translations={translations.configuration_modal.configuration}></solution-spatial-ref>
+        <solution-spatial-ref translations={translations.configuration_modal.configuration} value="4151"></solution-spatial-ref>
       )
     });
     const component = document.querySelector('solution-spatial-ref');
