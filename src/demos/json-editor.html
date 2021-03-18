@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+  <title>JSON Editor</title>
+  <!--
+   | Copyright 2021 Esri
+   |
+   | Licensed under the Apache License, Version 2.0 (the "License");
+   | you may not use this file except in compliance with the License.
+   | You may obtain a copy of the License at
+   |
+   |    http://www.apache.org/licenses/LICENSE-2.0
+   |
+   | Unless required by applicable law or agreed to in writing, software
+   | distributed under the License is distributed on an "AS IS" BASIS,
+   | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   | See the License for the specific language governing permissions and
+   | limitations under the License.
+  -->
+
+  <link rel="stylesheet" href="../css/calcite-web.min.css" type="text/css">
+  <link rel="stylesheet" href="../css/esri-global-nav.css" type="text/css" />
+  <link rel="stylesheet" href="../css/styles.css" type="text/css" />
+  <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" type="text/css" />
+  <style>
+  .fullHeight {
+    height: 100%
+  }
+  </style>
+
+  <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
+  <script type="module" src="../dist/solutions/solutions.esm.js"></script>
+</head>
+
+<body>
+  <main id="appContainer">
+    <div class="content fullHeight">
+      <h1>JSON Editor</h1>
+      <json-editor></json-editor>
+    </div>
+  </main>
+
+  <script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
+  <script>
+    require(["../nls/fr/strings.js"],
+    function (translations) {
+      // Initialize the configuration content
+      const solutionConfiguration = document.getElementById("rosemary");
+      solutionConfiguration.translations = translations.elm.configuration_modal.configuration;
+
+      // Reveal the page
+      document.getElementById("appContainer").style.opacity = 1;
+    });
+  </script>
+</body>
+</html>
