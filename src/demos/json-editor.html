@@ -20,9 +20,9 @@
    | limitations under the License.
   -->
 
-  <link rel="stylesheet" href="../css/calcite-web.min.css" type="text/css">
-  <link rel="stylesheet" href="../css/esri-global-nav.css" type="text/css" />
-  <link rel="stylesheet" href="../css/styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/calcite-web.min.css" type="text/css">
+  <link rel="stylesheet" href="../../css/esri-global-nav.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/styles.css" type="text/css" />
   <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" type="text/css" />
   <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
   <style>
@@ -32,7 +32,7 @@
   </style>
 
   <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
-  <script type="module" src="../dist/solutions/solutions.esm.js"></script>
+  <script type="module" src="../../dist/solutions/solutions.esm.js"></script>
   <script src="../../lib/ace/ace.js"></script>
   <script src="../../lib/ace/mode-json.js"></script>
 </head>
@@ -47,14 +47,11 @@
 
   <script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
   <script>
-    require(["../nls/fr/strings.js"],
+    require(["../../nls/fr/strings.js"],
     function (translations) {
       // Initialize the configuration content
       const demo = document.getElementById("demo");
       demo.translations = translations.elm.configuration_modal.configuration;
-
-      // Reveal the page
-      //document.getElementById("appContainer").style.opacity = 1;
     });
   </script>
 </body>

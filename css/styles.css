@@ -30,7 +30,7 @@ h1 {
 }
 
 #appContainer {
-  opacity: 0;
+  padding: 2rem;
 }
 
 .wrapper {
