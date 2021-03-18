@@ -23,8 +23,8 @@ export interface IItemDetails {
   snippet: string;
   description: string;
   tags: string[];
-  credits: string;
-  termsOfUse: string;
+  credits?: string;
+  termsOfUse?: string;
 }
 
 @Component({

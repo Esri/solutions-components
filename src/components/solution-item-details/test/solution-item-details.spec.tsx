@@ -18,6 +18,7 @@ import { newSpecPage } from '@stencil/core/testing';
 import { SolutionItemDetails } from '../solution-item-details';
 import * as translations from '../../../../nls/Elm_strings.json';
 import { value } from '../../../demos/data/solution-item-details-data.json';
+import * as groupData from '../../../demos/data/solution-group-details-data.json';
 import { h } from '@stencil/core';
 
 describe('solution-item-details', () => {
@@ -90,14 +91,14 @@ describe('solution-item-details', () => {
       components: [SolutionItemDetails],
       supportsShadowDom: false,
       template: () => (
-        <solution-item-details translations={translations.configuration_modal.configuration} type="Group"></solution-item-details>
+        <solution-item-details translations={translations.configuration_modal.configuration} type="Group" value={groupData.value}></solution-item-details>
       )
     });
     expect(page.root).toEqualHtml(`
       <solution-item-details type="Group">
         <div class="parent-container">
           <div class="inputBottomSeparation">
-            <calcite-input id="item-title" value=""></calcite-input>
+            <calcite-input id="item-title" value="Election"></calcite-input>
           </div>
 
           <div class="inputBottomSeparation">
@@ -115,7 +116,7 @@ describe('solution-item-details', () => {
                 <img class="scale-down" width="200" height="133" />
               </div>
               <div class="snippet-count-container">
-                <calcite-input id="item-snippet" maxlength="250" type="textarea" value=""></calcite-input>
+                <calcite-input id="item-snippet" maxlength="250" type="textarea" value="A public group used by election staff to share information about election items."></calcite-input>
                 <label id="item-snippet-count" class="font-size--3"></label>
               </div>
             </div>
@@ -123,13 +124,13 @@ describe('solution-item-details', () => {
 
           <calcite-label>Description
             <label id="item-description-label">
-              <calcite-input id="item-description" type="textarea" value=""></calcite-input>
+              <calcite-input id="item-description" type="textarea" value="A public group used by election staff to share information about election items."></calcite-input>
             </label>
           </calcite-label>
 
           <calcite-label>Tags
             <label id="item-tags-label">
-              <calcite-input id="item-tags" value=""></calcite-input>
+              <calcite-input id="item-tags" value="Elections,Election Day"></calcite-input>
             </label>
           </calcite-label>
 
