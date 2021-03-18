@@ -22,7 +22,7 @@ export interface IItemDetails {
   title: string;
   snippet: string;
   description: string;
-  tags: string;
+  tags: string[];
   credits: string;
   termsOfUse: string;
 }
@@ -61,7 +61,7 @@ export class SolutionItemDetails {
     title: "",
     snippet: "",
     description: "",
-    tags: "",
+    tags: [],
     credits: "",
     termsOfUse: ""
   };
@@ -111,7 +111,7 @@ export class SolutionItemDetails {
 
           <calcite-label>{this.translations.itemDetails.tags}
             <label id="item-tags-label">
-              <calcite-input id="item-tags" value={this.value.tags}></calcite-input>
+              <calcite-input id="item-tags" value={this.value.tags.join(",")}></calcite-input>
             </label>
           </calcite-label>
 

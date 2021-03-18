@@ -1,0 +1,24 @@
+{
+  "value": {
+    "thumbnail": "",
+    "title": "ElectionGeography_public",
+    "snippet": "A public feature layer view used by election staff to share information about election geography with the public.",
+    "description": "A public feature layer view used by election staff to share information about election geography with the public.",
+    "tags": [
+      "Precincts",
+      "Polling Places",
+      "Voting",
+      "Early Voting",
+      "Ballots",
+      "Voting Centers",
+      "Elected Officials",
+      "Secretary of State",
+      "Elections",
+      "Election Day",
+      "Election Officials",
+      "Clerks"
+  ],
+    "credits": "Esri",
+    "termsOfUse": null
+  }
+}

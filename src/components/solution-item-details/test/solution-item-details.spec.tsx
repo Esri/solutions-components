@@ -17,6 +17,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionItemDetails } from '../solution-item-details';
 import * as translations from '../../../../nls/Elm_strings.json';
+import { value } from '../../../demos/data/solution-item-details-data.json';
 import { h } from '@stencil/core';
 
 describe('solution-item-details', () => {
@@ -25,14 +26,14 @@ describe('solution-item-details', () => {
       components: [SolutionItemDetails],
       supportsShadowDom: false,
       template: () => (
-        <solution-item-details translations={translations.configuration_modal.configuration}></solution-item-details>
+        <solution-item-details translations={translations.configuration_modal.configuration} value={value}></solution-item-details>
       )
     });
     expect(page.root).toEqualHtml(`
       <solution-item-details type="">
         <div class="parent-container">
           <div class="inputBottomSeparation">
-            <calcite-input id="item-title" value=""></calcite-input>
+            <calcite-input id="item-title" value="ElectionGeography_public"></calcite-input>
           </div>
 
           <div class="inputBottomSeparation">
@@ -50,7 +51,7 @@ describe('solution-item-details', () => {
                 <img class="scale-down" width="200" height="133" />
               </div>
               <div class="snippet-count-container">
-                <calcite-input id="item-snippet" maxlength="250" type="textarea" value=""></calcite-input>
+                <calcite-input id="item-snippet" maxlength="250" type="textarea" value="A public feature layer view used by election staff to share information about election geography with the public."></calcite-input>
                 <label id="item-snippet-count" class="font-size--3"></label>
               </div>
             </div>
@@ -58,25 +59,25 @@ describe('solution-item-details', () => {
 
           <calcite-label>Description
             <label id="item-description-label">
-              <calcite-input id="item-description" type="textarea" value=""></calcite-input>
+              <calcite-input id="item-description" type="textarea" value="A public feature layer view used by election staff to share information about election geography with the public."></calcite-input>
             </label>
           </calcite-label>
 
           <calcite-label>Tags
             <label id="item-tags-label">
-              <calcite-input id="item-tags" value=""></calcite-input>
+              <calcite-input id="item-tags" value="Precincts,Polling Places,Voting,Early Voting,Ballots,Voting Centers,Elected Officials,Secretary of State,Elections,Election Day,Election Officials,Clerks"></calcite-input>
             </label>
           </calcite-label>
 
           <calcite-label>Credits
             <label id="item-credits-label">
-              <calcite-input id="item-credits" value=""></calcite-input>
+              <calcite-input id="item-credits" value="Esri"></calcite-input>
             </label>
           </calcite-label>
 
           <calcite-label>
             <label id="item-terms-label">Terms of Use
-              <calcite-input id="item-terms" type="textarea" value=""></calcite-input>
+              <calcite-input id="item-terms" type="textarea"></calcite-input>
             </label>
           </calcite-label>
         </div>
