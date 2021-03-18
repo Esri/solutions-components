@@ -115,7 +115,7 @@ describe('solution-variables', () => {
       <mock:shadow-root>
         <div>
           <h4 class="org-var-header">
-            Solution Varibles
+            Solution Variables
           </h4>
         </div>
         <div class="container-border">

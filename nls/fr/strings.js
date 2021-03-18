@@ -232,8 +232,8 @@ define({
         },
 
         "variables": {
-          "orgVariables": "fr-Organization Varibles",
-          "solVariables": "fr-Solution Varibles"
+          "orgVariables": "fr-Organization Variables",
+          "solVariables": "fr-Solution Variables"
         }
       }
     }

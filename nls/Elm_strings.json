@@ -163,7 +163,7 @@
         "update": "Update",
         "download": "Download"
       },
-  
+
       "spatialRef": {
         "specifyParam": "Spatial Reference Parameter",
         "defaultSpatialRef": "Default Spatial Reference",
@@ -171,8 +171,8 @@
       },
 
       "variables": {
-        "orgVariables": "Organization Varibles",
-        "solVariables": "Solution Varibles"
+        "orgVariables": "Organization Variables",
+        "solVariables": "Solution Variables"
       }
     }
   }

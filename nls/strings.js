@@ -229,7 +229,7 @@ define({
             "cancelEdits": "Cancel Edits",
             "saveEdits": "Save Edits"
           },
-    
+
           "resourceItem": {
             "update": "Update",
             "download": "Download"
@@ -242,8 +242,8 @@ define({
           },
 
           "variables": {
-            "orgVariables": "Organization Varibles",
-            "solVariables": "Solution Varibles"
+            "orgVariables": "Organization Variables",
+            "solVariables": "Solution Variables"
           }
         }
       }

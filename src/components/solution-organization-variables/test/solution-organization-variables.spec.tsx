@@ -60,7 +60,7 @@ describe('solution-organization-variables', () => {
       <mock:shadow-root>
         <div>
           <h4 class="org-var-header">
-            Organization Varibles
+            Organization Variables
           </h4>
         </div>
         <div class="container-border">
