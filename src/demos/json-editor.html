@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="../css/esri-global-nav.css" type="text/css" />
   <link rel="stylesheet" href="../css/styles.css" type="text/css" />
   <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" type="text/css" />
+  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
   <style>
   .fullHeight {
     height: 100%
@@ -32,13 +33,15 @@
 
   <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
   <script type="module" src="../dist/solutions/solutions.esm.js"></script>
+  <script src="../../lib/ace/ace.js"></script>
+  <script src="../../lib/ace/mode-json.js"></script>
 </head>
 
 <body>
   <main id="appContainer">
     <div class="content fullHeight">
       <h1>JSON Editor</h1>
-      <json-editor></json-editor>
+      <json-editor id="demo"></json-editor>
     </div>
   </main>
 
@@ -47,11 +50,11 @@
     require(["../nls/fr/strings.js"],
     function (translations) {
       // Initialize the configuration content
-      const solutionConfiguration = document.getElementById("rosemary");
-      solutionConfiguration.translations = translations.elm.configuration_modal.configuration;
+      const demo = document.getElementById("demo");
+      demo.translations = translations.elm.configuration_modal.configuration;
 
       // Reveal the page
-      document.getElementById("appContainer").style.opacity = 1;
+      //document.getElementById("appContainer").style.opacity = 1;
     });
   </script>
 </body>

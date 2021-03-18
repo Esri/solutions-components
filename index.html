@@ -24,68 +24,81 @@
   <link rel="stylesheet" href="css/esri-global-nav.css" type="text/css" />
   <link rel="stylesheet" href="css/styles.css" type="text/css" />
   <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" type="text/css" />
+  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
   <style>
-  .fullHeight {
-    height: 100%
-  }
+    .fullHeight {
+      height: 100%
+    }
+    .demo {
+      display: flex;
+      align-items: flex-start;
+      padding-bottom: 4rem;
+    }
+    .demo-column {
+      flex: 1;
+      margin: 0 2rem;
+    }
+    .demo-column > * {
+      margin-top: 2rem;
+    }
+    .nav {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
   </style>
 
   <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
   <script type="module" src="dist/solutions/solutions.esm.js"></script>
-  <script src="./lib/ace/ace.js"></script>
-  <script src="./lib/ace/mode-json.js"></script>
+
 </head>
 
 <body>
-  <main id="appContainer">
+  <main id="appContainer" style="opacity: 1;">
     <div class="content fullHeight">
-      <div class="wrapper">
-        <div id="alert-area" class="alert-area"></div>
-        <div id="uiContainer" class="uiContainer">
-          <!----------------------------------------------------------------------------------------------------------->
-          <div id="elmContainer">
-            <div class="grid-container">
-              <calcite-modal id="solutions-modal" aria-labelledby="solutions-modal-title" intl-close="Cancel" fullscreen="" active="" aria-modal="true"
-                background-color="white">
-                <h3 slot="header" id="solutions-modal-title">Configure: Solution Name</h3>
-                <div id="modalContent" slot="content" tabindex="0" class="solutions-modal-content fullHeight" style="position:relative;overflow:hidden;" id="solutions-modal-content">
-                  <!--------------------------------------------------------------------------------------------------->
-
-                  <solution-configuration id="rosemary"></solution-configuration>
-
-                  <!--------------------------------------------------------------------------------------------------->
-                </div>
-                <calcite-button id="solutions-modal-cancel" slot="secondary" width="full" appearance="outline">Cancel</calcite-button>
-                <calcite-button id="solutions-modal-save" slot="primary" width="full">Save</calcite-button>
-              </calcite-modal>
-            </div>
-          </div>
-          <!----------------------------------------------------------------------------------------------------------->
-        </div>
+      <div class="demo-column">
+        <h2>Solutions Component Examples!</h2>
+        <ul class="nav">
+          <li>
+            <calcite-link href="./src/demos/json-editor.html">json-editor</calcite-link>
+          </li>
+          <li>
+            <calcite-link href="./src/demos/solution-configuration.html">solution-configuration</calcite-link>
+          </li>
+          <li>
+            <calcite-link href="./src/demos/solution-contents.html">solution-contents</calcite-link>
+          </li>
+          <li>
+            <calcite-link href="./src/demos/solution-item-details.html">solution-item-details</calcite-link>
+          </li>
+          <li>
+            <calcite-link href="./src/demos/solution-item-icon.html">solution-item-icon</calcite-link>
+          </li>
+          <li>
+            <calcite-link href="./src/demos/solution-item-sharing.html">solution-item-sharing</calcite-link>
+          </li>
+          <li>
+            <calcite-link href="./src/demos/solution-item.html">solution-item</calcite-link>
+          </li>
+          <li>
+            <calcite-link href="./src/demos/solution-organization-variables.html">solution-organization-variables</calcite-link>
+          </li>
+          <li>
+            <calcite-link href="./src/demos/solution-resource-item.html">solution-resource-item</calcite-link>
+          </li>
+          <li>
+            <calcite-link href="/demos/solution-spatial-ref.html">solution-spatial-ref</calcite-link>
+          </li>
+          <li>
+            <calcite-link href="./src/demos/solution-template-data.html">solution-template-data</calcite-link>
+          </li>
+          <li>
+            <calcite-link href="./src/demos/solution-variables.html">solution-variables</calcite-link>
+          </li>
+        </ul>
       </div>
     </div>
   </main>
-
-  <script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
-  <script>
-    require(["nls/fr/strings.js"],
-    function (translations) {
-
-      // Update the language for the modal
-      document.getElementById("solutions-modal-title").innerHTML =
-        translations.elm.configuration_modal.title.replace("{{solutionName}}", "Solution Name");
-      document.getElementById("solutions-modal").intlClose =
-        document.getElementById("solutions-modal-cancel").innerHTML = translations.elm.configuration_modal.cancel;
-      document.getElementById("solutions-modal-save").innerHTML = translations.elm.configuration_modal.save;
-
-      // Initialize the configuration content
-      const solutionConfiguration = document.getElementById("rosemary");
-      solutionConfiguration.translations = translations.elm.configuration_modal.configuration;
-
-      // Reveal the page
-      document.getElementById("appContainer").style.opacity = 1;
-
-    });
-  </script>
 </body>
 </html>

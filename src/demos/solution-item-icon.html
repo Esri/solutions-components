@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="../css/esri-global-nav.css" type="text/css" />
   <link rel="stylesheet" href="../css/styles.css" type="text/css" />
   <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" type="text/css" />
+  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
   <style>
   .fullHeight {
     height: 100%
@@ -38,21 +39,8 @@
   <main id="appContainer">
     <div class="content fullHeight">
       <h1>Solution Item Icon</h1>
-      <solution-item-icon></solution-item-icon>
+      <solution-item-icon id="demo"></solution-item-icon>
     </div>
   </main>
-
-  <script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
-  <script>
-    require(["../nls/fr/strings.js"],
-    function (translations) {
-      // Initialize the configuration content
-      const solutionConfiguration = document.getElementById("rosemary");
-      solutionConfiguration.translations = translations.elm.configuration_modal.configuration;
-
-      // Reveal the page
-      document.getElementById("appContainer").style.opacity = 1;
-    });
-  </script>
 </body>
 </html>

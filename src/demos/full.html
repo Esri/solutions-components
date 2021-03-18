@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+  <title>Solutions Components</title>
+  <!--
+   | Copyright 2021 Esri
+   |
+   | Licensed under the Apache License, Version 2.0 (the "License");
+   | you may not use this file except in compliance with the License.
+   | You may obtain a copy of the License at
+   |
+   |    http://www.apache.org/licenses/LICENSE-2.0
+   |
+   | Unless required by applicable law or agreed to in writing, software
+   | distributed under the License is distributed on an "AS IS" BASIS,
+   | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   | See the License for the specific language governing permissions and
+   | limitations under the License.
+  -->
+
+  <link rel="stylesheet" href="css/calcite-web.min.css" type="text/css">
+  <link rel="stylesheet" href="css/esri-global-nav.css" type="text/css" />
+  <link rel="stylesheet" href="css/styles.css" type="text/css" />
+  <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" type="text/css" />
+  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
+  <style>
+    .fullHeight {
+      height: 100%
+    }
+    .demo {
+      display: flex;
+      align-items: flex-start;
+      padding-bottom: 4rem;
+    }
+    .demo-column {
+      flex: 1;
+      margin: 0 2rem;
+    }
+    .demo-column > * {
+      margin-top: 2rem;
+    }
+    .nav {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
+  </style>
+
+  <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
+  <script type="module" src="dist/solutions/solutions.esm.js"></script>
+  <script src="./lib/ace/ace.js"></script>
+  <script src="./lib/ace/mode-json.js"></script>
+</head>
+
+<body>
+  <main id="appContainer">
+    <div class="content fullHeight">
+      <div class="wrapper">
+        <div id="alert-area" class="alert-area"></div>
+        <div id="uiContainer" class="uiContainer">
+          <!----------------------------------------------------------------------------------------------------------->
+          <div id="elmContainer">
+            <div class="grid-container">
+              <calcite-modal id="solutions-modal" aria-labelledby="solutions-modal-title" intl-close="Cancel" fullscreen="" active="" aria-modal="true"
+                background-color="white">
+                <h3 slot="header" id="solutions-modal-title">Configure: Solution Name</h3>
+                <div id="modalContent" slot="content" tabindex="0" class="solutions-modal-content fullHeight" style="position:relative;overflow:hidden;" id="solutions-modal-content">
+                  <!--------------------------------------------------------------------------------------------------->
+
+                  <solution-configuration id="rosemary"></solution-configuration>
+
+                  <!--------------------------------------------------------------------------------------------------->
+                </div>
+                <calcite-button id="solutions-modal-cancel" slot="secondary" width="full" appearance="outline">Cancel</calcite-button>
+                <calcite-button id="solutions-modal-save" slot="primary" width="full">Save</calcite-button>
+              </calcite-modal>
+            </div>
+          </div>
+          <!----------------------------------------------------------------------------------------------------------->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
+  <script>
+    require(["nls/fr/strings.js"],
+    function (translations) {
+
+      // Update the language for the modal
+      document.getElementById("solutions-modal-title").innerHTML =
+        translations.elm.configuration_modal.title.replace("{{solutionName}}", "Solution Name");
+      document.getElementById("solutions-modal").intlClose =
+        document.getElementById("solutions-modal-cancel").innerHTML = translations.elm.configuration_modal.cancel;
+      document.getElementById("solutions-modal-save").innerHTML = translations.elm.configuration_modal.save;
+
+      // Initialize the configuration content
+      const solutionConfiguration = document.getElementById("rosemary");
+      solutionConfiguration.translations = translations.elm.configuration_modal.configuration;
+
+      // Reveal the page
+      document.getElementById("appContainer").style.opacity = 1;
+
+    });
+  </script>
+</body>
+</html>

@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="../css/esri-global-nav.css" type="text/css" />
   <link rel="stylesheet" href="../css/styles.css" type="text/css" />
   <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" type="text/css" />
+  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
   <style>
   .fullHeight {
     height: 100%
@@ -38,7 +39,7 @@
   <main id="appContainer">
     <div class="content fullHeight">
       <h1>Solution Organization Variables</h1>
-      <solution-organization-variables></solution-organization-variables>
+      <solution-organization-variables id="demo"></solution-organization-variables>
     </div>
   </main>
 
@@ -47,8 +48,8 @@
     require(["../nls/fr/strings.js"],
     function (translations) {
       // Initialize the configuration content
-      const solutionConfiguration = document.getElementById("rosemary");
-      solutionConfiguration.translations = translations.elm.configuration_modal.configuration;
+      const demo = document.getElementById("demo");
+      demo.translations = translations.elm.configuration_modal.configuration;
 
       // Reveal the page
       document.getElementById("appContainer").style.opacity = 1;
