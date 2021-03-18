@@ -25,14 +25,9 @@ describe('solution-variables', () => {
     const page = await newSpecPage({
       components: [SolutionVariables],
       template: () => (
-        <solution-variables translations={translations.configuration_modal.configuration}></solution-variables>
+        <solution-variables translations={translations.configuration_modal.configuration} value={value}></solution-variables>
       )
     });
-
-    page.root.value = value;
-
-    await page.waitForChanges();
-
     expect(page.root).toEqualHtml(`
     <solution-variables>
       <mock:shadow-root>
