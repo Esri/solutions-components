@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property       | Attribute      | Description                                   | Type              | Default                                         |
-| -------------- | -------------- | --------------------------------------------- | ----------------- | ----------------------------------------------- |
-| `translations` | `translations` | Contains the translations for this component. | `any`             | `{     "solVariables": "Solution Varibles"   }` |
-| `value`        | --             | Contains the public value for this component. | `IVariableItem[]` | `[]`                                            |
+| Property                    | Attribute      | Description                                   | Type              | Default     |
+| --------------------------- | -------------- | --------------------------------------------- | ----------------- | ----------- |
+| `translations` _(required)_ | `translations` | Contains the translations for this component. | `any`             | `undefined` |
+| `value`                     | --             | Contains the public value for this component. | `IVariableItem[]` | `[]`        |
 
 
 ## Events

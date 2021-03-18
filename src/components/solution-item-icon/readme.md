@@ -7,11 +7,12 @@
 
 ## Properties
 
-| Property       | Attribute   | Description                   | Type       | Default |
-| -------------- | ----------- | ----------------------------- | ---------- | ------- |
-| `isPortal`     | `is-portal` | Indicate if this is portal    | `boolean`  | `false` |
-| `type`         | `type`      | The type for the item         | `string`   | `""`    |
-| `typeKeywords` | --          | The typeKeywords for the item | `string[]` | `[]`    |
+| Property       | Attribute      | Description                                   | Type       | Default |
+| -------------- | -------------- | --------------------------------------------- | ---------- | ------- |
+| `isPortal`     | `is-portal`    | Indicate if this is portal                    | `boolean`  | `false` |
+| `translations` | `translations` | Contains the translations for this component. | `any`      | `{}`    |
+| `type`         | `type`         | The type for the item                         | `string`   | `""`    |
+| `typeKeywords` | --             | The typeKeywords for the item                 | `string[]` | `[]`    |
 
 
 ## Dependencies

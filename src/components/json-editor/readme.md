@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property                  | Attribute      | Description                                   | Type     | Default     |
-| ------------------------- | -------------- | --------------------------------------------- | -------- | ----------- |
-| `instanceId` _(required)_ | `instance-id`  | Contains the public id for this component.    | `string` | `undefined` |
-| `translations`            | `translations` | Contains the translations for this component. | `any`    | `{}`        |
-| `value` _(required)_      | `value`        | Contains the public value for this component. | `string` | `undefined` |
+| Property                    | Attribute      | Description                                   | Type     | Default     |
+| --------------------------- | -------------- | --------------------------------------------- | -------- | ----------- |
+| `instanceId` _(required)_   | `instance-id`  | Contains the public id for this component.    | `string` | `undefined` |
+| `translations` _(required)_ | `translations` | Contains the translations for this component. | `any`    | `undefined` |
+| `value` _(required)_        | `value`        | Contains the public value for this component. | `string` | `undefined` |
 
 
 ## Events

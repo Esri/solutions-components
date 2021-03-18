@@ -198,32 +198,42 @@ define({
         "definitionTab": "Définition",
         "spatialReferenceTab": "Référence spatiale",
 
-        "item": {
-          "itemDetailsTab": "Détails de l'élément",
-          "dataTab": "Données",
-          "propertiesTab": "Propriétés",
-          "groupDetailsTab": "Détails du groupe",
-          "sharingTab": "Partage",
+        "itemDetailsTab": "Détails de l'élément",
+        "dataTab": "Données",
+        "propertiesTab": "Propriétés",
+        "groupDetailsTab": "Détails du groupe",
+        "sharingTab": "Partage",
 
-          "itemDetails": {
-            "editThumbnail": "Mettre à jour la miniature",
-            "description": "Description",
-            "tags": "Balises",
-            "credits": "Crédits (Attribution)",
-            "termsOfUse": "Conditions d’utilisation",
-            "snippetCountPattern": "{{n}} sur 250"
-          },
+        "itemDetails": {
+          "editThumbnail": "Mettre à jour la miniature",
+          "description": "Description",
+          "tags": "Balises",
+          "credits": "Crédits (Attribution)",
+          "termsOfUse": "Conditions d’utilisation",
+          "snippetCountPattern": "{{n}} sur 250"
+        },
 
-          "jsonEditing": {
-            "startEditing": "Commencer l'édition",
-            "search": "Chercher"
-          }
+        "jsonEditor": {
+          "startEditing": "Commencer l'édition",
+          "search": "Chercher",
+          "cancelEdits": "fr-Cancel Edits",
+          "saveEdits": "fr-Save Edits"
+        },
+
+        "resourceItem": {
+          "update": "fr-Update",
+          "download": "fr-Download"
         },
 
         "spatialRef": {
           "specifyParam": "Paramètre de référence spatiale",
           "defaultSpatialRef": "Référence spatiale par défaut",
           "featureServicesHeading": "Services de fonctionnalités"
+        },
+
+        "variables": {
+          "orgVariables": "fr-Organization Variables",
+          "solVariables": "fr-Solution Variables"
         }
       }
     }

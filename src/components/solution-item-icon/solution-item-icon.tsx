@@ -30,6 +30,11 @@ export class SolutionItemIcon {
   //--------------------------------------------------------------------------
 
   /**
+   * Contains the translations for this component.
+   */
+  @Prop({ mutable: true }) translations: any = {};
+
+  /**
    * Indicate if this is portal
    */
   @Prop() isPortal: boolean = false;
@@ -60,7 +65,7 @@ export class SolutionItemIcon {
     </div>;
   }
 
-    //--------------------------------------------------------------------------
+  //--------------------------------------------------------------------------
   //
   //  Variables (private)
   //

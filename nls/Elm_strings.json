@@ -137,32 +137,42 @@
       "definitionTab": "Definition",
       "spatialReferenceTab": "Spatial Reference",
 
-      "item": {
-        "itemDetailsTab": "Item Details",
-        "dataTab": "Data",
-        "propertiesTab": "Properties",
-        "groupDetailsTab": "Group Details",
-        "sharingTab": "Sharing",
+      "itemDetailsTab": "Item Details",
+      "dataTab": "Data",
+      "propertiesTab": "Properties",
+      "groupDetailsTab": "Group Details",
+      "sharingTab": "Sharing",
 
-        "itemDetails": {
-          "editThumbnail": "Edit Thumbnail",
-          "description": "Description",
-          "tags": "Tags",
-          "credits": "Credits",
-          "termsOfUse": "Terms of Use",
-          "snippetCountPattern": "{{n}} of 250"
-        },
+      "itemDetails": {
+        "editThumbnail": "Edit Thumbnail",
+        "description": "Description",
+        "tags": "Tags",
+        "credits": "Credits",
+        "termsOfUse": "Terms of Use",
+        "snippetCountPattern": "{{n}} of 250"
+      },
 
-        "jsonEditing": {
-          "startEditing": "Start editing",
-          "search": "Search"
-        }
+      "jsonEditor": {
+        "startEditing": "Start Editing",
+        "search": "Search",
+        "cancelEdits": "Cancel Edits",
+        "saveEdits": "Save Edits"
+      },
+
+      "resourceItem": {
+        "update": "Update",
+        "download": "Download"
       },
 
       "spatialRef": {
         "specifyParam": "Spatial Reference Parameter",
         "defaultSpatialRef": "Default Spatial Reference",
         "featureServicesHeading": "Feature Services"
+      },
+
+      "variables": {
+        "orgVariables": "Organization Variables",
+        "solVariables": "Solution Variables"
       }
     }
   }

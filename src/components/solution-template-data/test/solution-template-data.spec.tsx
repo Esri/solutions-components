@@ -16,12 +16,16 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionTemplateData } from '../solution-template-data';
+import * as translations from '../../../../nls/Elm_strings.json';
+import { h } from '@stencil/core';
 
 describe('solution-template-data', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [SolutionTemplateData],
-      html: `<solution-template-data></solution-template-data>`,
+      template: () => (
+        <solution-template-data translations={translations.configuration_modal.configuration}></solution-template-data>
+      )
     });
     expect(page.root).toEqualHtml(`
     <solution-template-data>
@@ -47,9 +51,10 @@ describe('solution-template-data', () => {
   it('renders a resource type item', async () => {
     const page = await newSpecPage({
       components: [SolutionTemplateData],
-      html: `<solution-template-data></solution-template-data>`,
+      template: () => (
+        <solution-template-data translations={translations.configuration_modal.configuration}></solution-template-data>
+      )
     });
-
     page.root.isResource = true;
 
     page.root.value = {
@@ -69,5 +74,4 @@ describe('solution-template-data', () => {
     </solution-template-data>
     `);
   });
-
 });

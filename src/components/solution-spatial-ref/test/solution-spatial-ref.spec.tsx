@@ -16,13 +16,17 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionSpatialRef } from '../solution-spatial-ref';
+import * as translations from '../../../../nls/Elm_strings.json';
+import { h } from '@stencil/core';
 
 describe('solution-spatial-ref', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [SolutionSpatialRef],
-      html: `<solution-spatial-ref></solution-spatial-ref>`,
-      supportsShadowDom: false
+      supportsShadowDom: false,
+      template: () => (
+        <solution-spatial-ref translations={translations.configuration_modal.configuration}></solution-spatial-ref>
+      )
     });
     expect(page.root).toEqualHtml(`
       <solution-spatial-ref>
@@ -41,7 +45,9 @@ describe('solution-spatial-ref', () => {
   it('creates description for known WKID', async () => {
     await newSpecPage({
       components: [SolutionSpatialRef],
-      html: `<solution-spatial-ref></solution-spatial-ref>`,
+      template: () => (
+        <solution-spatial-ref translations={translations.configuration_modal.configuration}></solution-spatial-ref>
+      )
     });
     const component = document.querySelector('solution-spatial-ref');
     component.wkidToDisplay(4326)
@@ -53,7 +59,9 @@ describe('solution-spatial-ref', () => {
   it('creates description for unknown WKID', async () => {
     await newSpecPage({
       components: [SolutionSpatialRef],
-      html: `<solution-spatial-ref></solution-spatial-ref>`,
+      template: () => (
+        <solution-spatial-ref translations={translations.configuration_modal.configuration}></solution-spatial-ref>
+      )
     });
     const component = document.querySelector('solution-spatial-ref');
     component.wkidToDisplay(0)
@@ -65,7 +73,9 @@ describe('solution-spatial-ref', () => {
   it('creates description for default component value', async () => {
     await newSpecPage({
       components: [SolutionSpatialRef],
-      html: `<solution-spatial-ref></solution-spatial-ref>`,
+      template: () => (
+        <solution-spatial-ref translations={translations.configuration_modal.configuration}></solution-spatial-ref>
+      )
     });
     const component = document.querySelector('solution-spatial-ref');
     component.createSpatialRefDisplay(null)
@@ -82,7 +92,9 @@ describe('solution-spatial-ref', () => {
   it('creates description for WKID component value', async () => {
     await newSpecPage({
       components: [SolutionSpatialRef],
-      html: `<solution-spatial-ref></solution-spatial-ref>`,
+      template: () => (
+        <solution-spatial-ref translations={translations.configuration_modal.configuration}></solution-spatial-ref>
+      )
     });
     const component = document.querySelector('solution-spatial-ref');
     component.createSpatialRefDisplay("4151")
@@ -99,7 +111,9 @@ describe('solution-spatial-ref', () => {
   it('creates description for WKT component value', async () => {
     await newSpecPage({
       components: [SolutionSpatialRef],
-      html: `<solution-spatial-ref></solution-spatial-ref>`,
+      template: () => (
+        <solution-spatial-ref translations={translations.configuration_modal.configuration}></solution-spatial-ref>
+      )
     });
     const component = document.querySelector('solution-spatial-ref');
     component.createSpatialRefDisplay('PROJCS["Germany_Zone_5",GEOGCS["GCS_Deutsches_Hauptdreiecksnetz",DATUM["D_Deutsches_Hauptdreiecksnetz",SPHEROID["Bessel_1841",6377397.155,299.1528128]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["False_Easting",5500000.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",15.0],PARAMETER["Scale_Factor",1.0],PARAMETER["Latitude_Of_Origin",0.0],UNIT["Meter",1.0]]')
@@ -116,7 +130,9 @@ describe('solution-spatial-ref', () => {
   it('sets default component value', async () => {
     await newSpecPage({
       components: [SolutionSpatialRef],
-      html: `<solution-spatial-ref></solution-spatial-ref>`,
+      template: () => (
+        <solution-spatial-ref translations={translations.configuration_modal.configuration}></solution-spatial-ref>
+      )
     });
     const component = document.querySelector('solution-spatial-ref');
     component.getSpatialRef()
@@ -133,7 +149,9 @@ describe('solution-spatial-ref', () => {
   it('sets WKID component value', async () => {
     await newSpecPage({
       components: [SolutionSpatialRef],
-      html: `<solution-spatial-ref value="4151"></solution-spatial-ref>`,
+      template: () => (
+        <solution-spatial-ref translations={translations.configuration_modal.configuration} value="4151"></solution-spatial-ref>
+      )
     });
     const component = document.querySelector('solution-spatial-ref');
     component.getSpatialRef()
@@ -148,9 +166,12 @@ describe('solution-spatial-ref', () => {
   });
 
   it('sets WKT component value', async () => {
+    const v: string = `PROJCS["Germany_Zone_5",GEOGCS["GCS_Deutsches_Hauptdreiecksnetz",DATUM["D_Deutsches_Hauptdreiecksnetz",SPHEROID["Bessel_1841",6377397.155,299.1528128]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["False_Easting",5500000.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",15.0],PARAMETER["Scale_Factor",1.0],PARAMETER["Latitude_Of_Origin",0.0],UNIT["Meter",1.0]]`;
     await newSpecPage({
       components: [SolutionSpatialRef],
-      html: `<solution-spatial-ref value='PROJCS["Germany_Zone_5",GEOGCS["GCS_Deutsches_Hauptdreiecksnetz",DATUM["D_Deutsches_Hauptdreiecksnetz",SPHEROID["Bessel_1841",6377397.155,299.1528128]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["False_Easting",5500000.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",15.0],PARAMETER["Scale_Factor",1.0],PARAMETER["Latitude_Of_Origin",0.0],UNIT["Meter",1.0]]'></solution-spatial-ref>`,
+      template: () => (
+        <solution-spatial-ref translations={translations.configuration_modal.configuration} value={v}></solution-spatial-ref>
+      )
     });
     const component = document.querySelector('solution-spatial-ref');
     component.getSpatialRef()

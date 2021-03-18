@@ -40,40 +40,7 @@ export class SolutionConfiguration {
   /**
    * Contains the translations for this component.
    */
-  @Prop({ mutable: true }) translations: any = {
-    "definitionTab": "Definition", // for tab to edit definition of an item or group
-    "spatialReferenceTab": "Spatial Reference", // for tab to edit the spatial reference of an item
-
-    // Information about an item
-    "item": {
-      "itemDetailsTab": "Item Details",
-      "dataTab": "Data",
-      "propertiesTab": "Properties",
-      "groupDetailsTab": "Group Details",
-      "sharingTab": "Sharing",
-
-      // Item details
-      "itemDetails": {
-        "editThumbnail": "Edit Thumbnail",
-        "description": "Description",
-        "tags": "Tags",
-        "credits": "Credits",
-        "termsOfUse": "Terms of Use",
-        "snippetCountPattern": "{{n}} of 250"
-      },
-
-      "jsonEditing": {
-        "startEditing": "Start editing", // start modifying JSON in its editor
-        "search": "Search" // search within JSON editor
-      }
-    },
-
-    "spatialRef": {
-      "specifyParam": "Spatial Reference Parameter",
-      "defaultSpatialRef": "Default Spatial Reference",
-      "featureServicesHeading": "Feature Services"
-    }
-  };
+  @Prop({ mutable: true }) translations!: any;
 
   /**
    * Contains the public value for this component.
@@ -96,25 +63,19 @@ export class SolutionConfiguration {
                 <calcite-tab-title>{this.translations.definitionTab}</calcite-tab-title>
                 <calcite-tab-title>{this.translations.spatialReferenceTab}</calcite-tab-title>
               </calcite-tab-nav>
-
               <calcite-tab class="config-tab" active>
                 <div class="config-solution">
-
                   <div class="config-inventory">
-                    <solution-contents id="configInventory"></solution-contents>
+                    <solution-contents id="configInventory" translations={this.translations}></solution-contents>
                   </div>
-
                   <div class="config-item">
-                    <solution-item ref={(el) => (this.item = el)}></solution-item>
+                    <solution-item translations={this.translations}></solution-item>
                   </div>
-
                 </div>
               </calcite-tab>
               <calcite-tab class="config-tab">
                 <div class="config-solution">
-
-                  <solution-spatial-ref ref={(el) => (this.spatialRef = el)}></solution-spatial-ref>
-
+                  <solution-spatial-ref translations={this.translations}></solution-spatial-ref>
                 </div>
               </calcite-tab>
             </calcite-tabs>
@@ -124,27 +85,11 @@ export class SolutionConfiguration {
     );
   }
 
-  componentDidRender(): void {
-    // Forward the translations to children
-    this.item.translations = this.translations.item;
-    this.spatialRef.translations = this.translations.spatialRef;
-  }
-
   //--------------------------------------------------------------------------
   //
   //  Variables (private)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Handle to the item component.
-   */
-  private item: HTMLSolutionItemElement;
-
-  /**
-   * Handle to the spatial reference component.
-   */
-  private spatialRef: HTMLSolutionSpatialRefElement;
 
   //--------------------------------------------------------------------------
   //

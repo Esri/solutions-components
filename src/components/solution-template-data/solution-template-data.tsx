@@ -43,8 +43,7 @@ export class SolutionTemplateData {
   /**
    * Contains the translations for this component.
    */
-  @Prop({ mutable: true }) translations: any = {
-  };
+  @Prop({ mutable: true }) translations!: any;
 
   /**
    * Contains the public value for this component.
@@ -109,19 +108,19 @@ export class SolutionTemplateData {
     return <calcite-shell dir="ltr" theme="light">
       <calcite-shell-center-row slot="center-row" position="start" height-scale="l" width-scale="l" class="json-editor">
         <div class="solution-data-child-container">
-          <json-editor instanceId="this-will-be-the-solution-id" value="{a:'A'}"></json-editor>
+          <json-editor instanceId="this-will-be-the-solution-id" translations={this.translations} value="{a:'A'}"></json-editor>
         </div>
       </calcite-shell-center-row>
       <calcite-shell-panel slot="contextual-panel" position="start" height-scale="l" width-scale="m">
         <div class="solution-data-child-container">
-          <solution-organization-variables value={templateData.orgVariables}></solution-organization-variables>
-          <solution-variables value={templateData.solVariables}></solution-variables>
+          <solution-organization-variables value={templateData.orgVariables} translations={this.translations}></solution-organization-variables>
+          <solution-variables value={templateData.solVariables} translations={this.translations}></solution-variables>
         </div>
       </calcite-shell-panel>
     </calcite-shell>;
   }
 
   _resourceData(templateData: ITemplateData): any {
-    return <solution-resource-item value={templateData.resourceItem}></solution-resource-item>;
+    return <solution-resource-item value={templateData.resourceItem} translations={this.translations}></solution-resource-item>;
   }
 }

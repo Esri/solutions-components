@@ -16,13 +16,17 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionContents } from '../solution-contents';
+import * as translations from '../../../../nls/Elm_strings.json';
+import { h } from '@stencil/core';
 
 describe('solution-contents', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [SolutionContents],
-      html: `<solution-contents></solution-contents>`,
-      supportsShadowDom: false
+      supportsShadowDom: false,
+      template: () => (
+        <solution-contents translations={translations.configuration_modal.configuration}></solution-contents>
+      )
     });
     page.root.value =
       [{

@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property       | Attribute      | Description                                   | Type            | Default                                                |
-| -------------- | -------------- | --------------------------------------------- | --------------- | ------------------------------------------------------ |
-| `translations` | `translations` | Contains the translations for this component. | `any`           | `{     update: "Update",     download: "Download"   }` |
-| `value`        | --             | Contains the public value for this component. | `IResourceItem` | `{     name: "",     url: ""   }`                      |
+| Property                    | Attribute      | Description                                   | Type            | Default                           |
+| --------------------------- | -------------- | --------------------------------------------- | --------------- | --------------------------------- |
+| `translations` _(required)_ | `translations` | Contains the translations for this component. | `any`           | `undefined`                       |
+| `value`                     | --             | Contains the public value for this component. | `IResourceItem` | `{     name: "",     url: ""   }` |
 
 
 ## Dependencies
