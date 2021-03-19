@@ -47,7 +47,7 @@ describe('json-editor', () => {
             </div>
           </div>
           <div class="editor-text">
-            <div class="edit-height edit-width" id="ABC123-editor"></div>
+            <div class="edit-width" id="ABC123-editor"></div>
           </div>
         </div>
       </json-editor>
