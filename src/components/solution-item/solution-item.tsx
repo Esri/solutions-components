@@ -15,7 +15,16 @@
  */
 
 import { Component, Element, h, Host, Prop, VNode } from '@stencil/core';
+import { ITemplateData } from '../solution-template-data/solution-template-data';
 import "@esri/calcite-components";
+
+export interface ISolutionItem {
+  itemDetails: any,
+  isResource: boolean, // this should be removed and determined from the data
+  data: ITemplateData,
+  properties: ITemplateData,
+  type: string
+}
 
 @Component({
   tag: 'solution-item',
@@ -45,13 +54,19 @@ export class SolutionItem {
   /**
    * Contains the public value for this component.
    */
-  @Prop({ mutable: true, reflect: true }) value: any = {};
+  @Prop({ mutable: true, reflect: true }) value: ISolutionItem = {
+    itemDetails: {},
+    isResource: false,
+    data: {},
+    properties: {},
+    type: ""
+  };
 
   /**
    * Contains the public type value for this component.
    * 
    */
-   @Prop({ mutable: true, reflect: true }) type: string = "";
+   //@Prop({ mutable: true, reflect: true }) type: string = "";
 
   //--------------------------------------------------------------------------
   //
@@ -64,7 +79,7 @@ export class SolutionItem {
       <Host>
         <div class="configuration-container">
           <div class="configuration">
-            {this.type === "Group" ? this._showGroupTabs() : this._showItemTabs()}
+            {this.value.type === "Group" ? this._showGroupTabs() : this._showItemTabs()}
           </div>
         </div>
       </Host>
@@ -79,7 +94,7 @@ export class SolutionItem {
       </calcite-tab-nav>
 
       <calcite-tab class="config-tab" active>
-        <solution-item-details translations={this.translations} type={this.type}></solution-item-details>
+        <solution-item-details translations={this.translations} type={this.value.type}></solution-item-details>
       </calcite-tab>
       <calcite-tab class="config-tab">
         <solution-item-sharing translations={this.translations}></solution-item-sharing>
@@ -96,13 +111,13 @@ export class SolutionItem {
       </calcite-tab-nav>
 
       <calcite-tab class="config-tab" active>
-        <solution-item-details translations={this.translations} type={this.type}></solution-item-details>
+        <solution-item-details translations={this.translations} type={this.value.type} value={this.value.itemDetails}></solution-item-details>
       </calcite-tab>
       <calcite-tab class="config-tab">
-        <solution-template-data translations={this.translations} isResource={true}></solution-template-data>
+        <solution-template-data translations={this.translations} isResource={this.value.isResource} value={this.value.data}></solution-template-data>
       </calcite-tab>
       <calcite-tab class="config-tab">
-        <solution-template-data translations={this.translations}></solution-template-data>
+        <solution-template-data translations={this.translations} value={this.value.properties}></solution-template-data>
       </calcite-tab>
     </calcite-tabs>
   }

@@ -33,14 +33,18 @@ describe('solution-template-data', () => {
       <div class="solution-data-container">
         <calcite-shell dir="ltr" theme="light">
           <calcite-shell-center-row class="json-editor" height-scale="l" position="start" slot="center-row" width-scale="l">
-            <div class="solution-data-child-container">
+            <div class="padding-1 solution-data-child-container">
               <json-editor instanceid="this-will-be-the-solution-id" value="{a:'A'}"></json-editor>
             </div>
           </calcite-shell-center-row>
           <calcite-shell-panel height-scale="l" position="start" slot="contextual-panel" width-scale="m">
             <div class="solution-data-child-container">
-              <solution-organization-variables></solution-organization-variables>
-              <solution-variables></solution-variables>
+              <div class="org-vars">
+                <solution-organization-variables></solution-organization-variables>
+              </div>
+              <div class="sol-vars">
+                <solution-variables></solution-variables>
+              </div>
             </div>
           </calcite-shell-panel>
         </calcite-shell>

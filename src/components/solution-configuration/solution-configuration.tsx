@@ -69,7 +69,8 @@ export class SolutionConfiguration {
                     <solution-contents id="configInventory" translations={this.translations}></solution-contents>
                   </div>
                   <div class="config-item">
-                    <solution-item translations={this.translations}></solution-item>
+                    {/* commented out until I get the values passed through */}
+                    {/* <solution-item translations={this.translations} value={{}}></solution-item> */}
                   </div>
                 </div>
               </calcite-tab>

@@ -46,7 +46,6 @@ describe('solution-configuration', () => {
                   </div>
 
                   <div class="config-item">
-                    <solution-item></solution-item>
                   </div>
 
                 </div>
