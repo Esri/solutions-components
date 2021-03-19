@@ -21,7 +21,7 @@ import { IVariableItem } from '../solution-variables/solution-variables';
 import { IResourceItem } from '../solution-resource-item/solution-resource-item';
 
 export interface ITemplateData {
-  data?: any,
+  value?: any,
   orgVariables?: IOrganizationVariableItem[],
   solVariables?: IVariableItem[],
   resourceItem?: IResourceItem
@@ -108,7 +108,7 @@ export class SolutionTemplateData {
     return <calcite-shell dir="ltr" theme="light">
       <calcite-shell-center-row slot="center-row" position="start" height-scale="l" width-scale="l" class="json-editor">
         <div class="solution-data-child-container">
-          <json-editor instanceId="this-will-be-the-solution-id" translations={this.translations} value="{a:'A'}"></json-editor>
+          <json-editor instanceId="this-will-be-the-solution-id" translations={this.translations} value={templateData.value}></json-editor>
         </div>
       </calcite-shell-center-row>
       <calcite-shell-panel slot="contextual-panel" position="start" height-scale="l" width-scale="m">
