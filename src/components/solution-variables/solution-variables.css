@@ -20,7 +20,6 @@
 
 .container-border {
   border: 1px solid var(--calcite-ui-border-3);
-  max-height: 30vh;
   overflow-y: auto;
 }
 

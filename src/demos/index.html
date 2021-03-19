@@ -20,22 +20,43 @@
    | limitations under the License.
   -->
 
-  <link rel="stylesheet" href="../css/calcite-web.min.css" type="text/css">
-  <link rel="stylesheet" href="../css/esri-global-nav.css" type="text/css" />
-  <link rel="stylesheet" href="../css/styles.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/calcite-web.min.css" type="text/css">
+  <link rel="stylesheet" href="../../css/esri-global-nav.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/styles.css" type="text/css" />
   <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" type="text/css" />
+  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
   <style>
-  .fullHeight {
-    height: 100%
-  }
+    .fullHeight {
+      height: 100%
+    }
+    .demo {
+      display: flex;
+      align-items: flex-start;
+      padding-bottom: 4rem;
+    }
+    .demo-column {
+      flex: 1;
+      margin: 0 2rem;
+    }
+    .demo-column > * {
+      margin-top: 2rem;
+    }
+    .nav {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
   </style>
 
   <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
-  <script type="module" src="../dist/solutions/solutions.esm.js"></script>
+  <script type="module" src="../../dist/solutions/solutions.esm.js"></script>
+  <script src="../../lib/ace/ace.js"></script>
+  <script src="../../lib/ace/mode-json.js"></script>
 </head>
 
 <body>
-  <main>
+  <main id="appContainer">
     <div class="content fullHeight">
       <div class="wrapper">
         <div id="alert-area" class="alert-area"></div>
@@ -66,7 +87,7 @@
 
   <script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
   <script>
-    require(["../nls/fr/strings.js"],
+    require(["../../nls/fr/strings.js"],
     function (translations) {
 
       // Update the language for the modal

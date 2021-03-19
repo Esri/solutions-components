@@ -17,6 +17,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionOrganizationVariables } from '../solution-organization-variables';
 import * as translations from '../../../../nls/Elm_strings.json';
+import { value } from '../../../demos/data/solution-organization-variables-data.json';
 import { h } from '@stencil/core';
 
 describe('solution-organization-variables', () => {
@@ -24,37 +25,9 @@ describe('solution-organization-variables', () => {
     const page = await newSpecPage({
       components: [SolutionOrganizationVariables],
       template: () => (
-        <solution-organization-variables translations={translations.configuration_modal.configuration}></solution-organization-variables>
+        <solution-organization-variables translations={translations.configuration_modal.configuration} value={value}></solution-organization-variables>
       )
     });
-    page.root.value = [{
-      id: "id",
-      title: "title",
-      value: "value"
-    }, {
-      id: "id2",
-      title: "title2",
-      value: "value2"
-    }, {
-      id: "id3",
-      title: "title3",
-      value: "value3"
-    }, {
-      id: "id4",
-      title: "title4",
-      value: "value4"
-    }, {
-      id: "id5",
-      title: "title5",
-      value: "value5"
-    }, {
-      id: "id6",
-      title: "title6",
-      value: "value6"
-    }];
-
-    await page.waitForChanges();
-
     expect(page.root).toEqualHtml(`
     <solution-organization-variables>
       <mock:shadow-root>
