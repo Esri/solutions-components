@@ -107,14 +107,18 @@ export class SolutionTemplateData {
   _jsonData(templateData: ITemplateData): any {
     return <calcite-shell dir="ltr" theme="light">
       <calcite-shell-center-row slot="center-row" position="start" height-scale="l" width-scale="l" class="json-editor">
-        <div class="solution-data-child-container">
+        <div class="solution-data-child-container padding-1">
           <json-editor instanceId="this-will-be-the-solution-id" translations={this.translations} value={templateData.value}></json-editor>
         </div>
       </calcite-shell-center-row>
       <calcite-shell-panel slot="contextual-panel" position="start" height-scale="l" width-scale="m">
         <div class="solution-data-child-container">
-          <solution-organization-variables value={templateData.orgVariables} translations={this.translations}></solution-organization-variables>
-          <solution-variables value={templateData.solVariables} translations={this.translations}></solution-variables>
+          <div class="org-vars">
+            <solution-organization-variables value={templateData.orgVariables} translations={this.translations}></solution-organization-variables>
+          </div>
+          <div class="sol-vars">
+            <solution-variables value={templateData.solVariables} translations={this.translations}></solution-variables>
+          </div>
         </div>
       </calcite-shell-panel>
     </calcite-shell>;

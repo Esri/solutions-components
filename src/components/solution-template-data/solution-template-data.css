@@ -27,7 +27,6 @@
 .solution-data-child-container {
   height: 100%;
   width: 100%;
-  margin: 1rem;
 }
 
 .inputBottomSeparation {
@@ -36,4 +35,16 @@
 
 .json-editor {
   width: -webkit-fill-available;
+}
+
+.org-vars {
+  padding: 1rem 1rem 0 1rem;
+}
+
+.sol-vars {
+  padding: 0 1rem 0 1rem;
+}
+
+.padding-1 {
+  padding: 1rem;
 }
