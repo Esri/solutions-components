@@ -11,7 +11,7 @@
 | --------------------------- | -------------- | --------------------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | `translations` _(required)_ | `translations` | Contains the translations for this component. | `any`          | `undefined`                                                                                                                         |
 | `type`                      | `type`         |                                               | `string`       | `""`                                                                                                                                |
-| `value`                     | --             | Contains the public value for this component. | `IItemDetails` | `{     thumbnail: null,     title: "",     snippet: "",     description: "",     tags: "",     credits: "",     termsOfUse: ""   }` |
+| `value`                     | --             | Contains the public value for this component. | `IItemDetails` | `{     thumbnail: null,     title: "",     snippet: "",     description: "",     tags: [],     credits: "",     termsOfUse: ""   }` |
 
 
 ## Dependencies
