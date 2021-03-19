@@ -15,7 +15,14 @@
  */
 
 import { Component, Element, h, Host, Prop, VNode } from '@stencil/core';
+import { IInventoryItem } from '../../../src/components/solution-contents/solution-contents';
+import { ISolutionItem } from '../../../src/components/solution-item/solution-item';
 import "@esri/calcite-components";
+
+export interface ISolutionConfiguration {
+  contents: IInventoryItem[],
+  item: ISolutionItem
+}
 
 @Component({
   tag: 'solution-configuration',
@@ -45,7 +52,16 @@ export class SolutionConfiguration {
   /**
    * Contains the public value for this component.
    */
-  @Prop({ mutable: true, reflect: true }) value: any = {};
+  @Prop({ mutable: true, reflect: true }) value: ISolutionConfiguration = {
+    contents: [],
+    item: {
+      itemDetails: {},
+      isResource: false,
+      data: {},
+      properties: {},
+      type: ""
+    }
+  };
 
   //--------------------------------------------------------------------------
   //
@@ -66,11 +82,10 @@ export class SolutionConfiguration {
               <calcite-tab class="config-tab" active>
                 <div class="config-solution">
                   <div class="config-inventory">
-                    <solution-contents id="configInventory" translations={this.translations}></solution-contents>
+                    <solution-contents id="configInventory" translations={this.translations} value={this.value.contents}></solution-contents>
                   </div>
                   <div class="config-item">
-                    {/* commented out until I get the values passed through */}
-                    {/* <solution-item translations={this.translations} value={{}}></solution-item> */}
+                    <solution-item translations={this.translations} value={this.value.item}></solution-item>
                   </div>
                 </div>
               </calcite-tab>
