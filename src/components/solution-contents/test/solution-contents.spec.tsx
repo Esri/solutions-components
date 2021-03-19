@@ -17,6 +17,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionContents } from '../solution-contents';
 import * as translations from '../../../../nls/Elm_strings.json';
+import { value } from '../../../demos/data/solution-contents-data.json';
 import { h } from '@stencil/core';
 
 describe('solution-contents', () => {
@@ -25,167 +26,9 @@ describe('solution-contents', () => {
       components: [SolutionContents],
       supportsShadowDom: false,
       template: () => (
-        <solution-contents translations={translations.configuration_modal.configuration}></solution-contents>
+        <solution-contents translations={translations.configuration_modal.configuration} value={value}></solution-contents>
       )
     });
-    page.root.value =
-      [{
-        "id": "1",
-        "title": "Dashboard 1",
-        "type": "Dashboard",
-        "typeKeywords": ["Dashboard", "Operations Dashboard"]
-      }, {
-        "id": "2",
-         "title": "Dashboard 2",
-        "dependencies": [{
-          "id": "3",
-          "title": "Map 1",
-          "dependencies": [{
-            "id": "4",
-            "title": "View 1",
-            "dependencies": [{
-              "id": "5",
-              "title": "Feature Service 1",
-              "type": "Feature Service",
-              "typeKeywords": [
-                "ArcGIS Server",
-                "Data",
-                "Feature Access",
-                "Feature Service",
-                "Metadata",
-                "Multilayer",
-                "Service",
-                "Hosted Service"
-              ]
-            }],
-            "type": "Feature Service",
-            "typeKeywords": [
-              "ArcGIS Server",
-              "Data",
-              "Feature Access",
-              "Feature Service",
-              "Multi Services View",
-              "Service",
-              "Singlelayer",
-              "Hosted Service",
-              "View Service"
-            ]
-          }],
-          "type": "Web Map",
-          "typeKeywords": [
-            "ArcGIS Online",
-            "Collector",
-            "Data Editing",
-            "Explorer Web Map",
-            "Map",
-            "Online Map",
-            "Web Map"
-          ]
-        }],
-        "type": "Dashboard",
-        "typeKeywords": ["Dashboard", "Operations Dashboard"]
-      }, {
-        "id": "6",
-        "title": "Application 1",
-        "dependencies": [{
-          "id": "7",
-          "title": "Group 1",
-          "dependencies": [{
-            "id": "8",
-            "title": "Map 2",
-            "dependencies": [{
-              "id": "9",
-              "title": "Feature Service 2",
-              "type": "Feature Service",
-              "typeKeywords": [
-                "ArcGIS Server",
-                "Data",
-                "Feature Access",
-                "Feature Service",
-                "Metadata",
-                "Multilayer",
-                "Service",
-                "Hosted Service"
-              ]
-            }, {
-              "id": "10",
-              "title": "Feature Service 3",
-              "type": "Feature Service",
-              "typeKeywords": [
-                "ArcGIS Server",
-                "Data",
-                "Feature Access",
-                "Feature Service",
-                "Metadata",
-                "Multilayer",
-                "Service",
-                "Hosted Service"
-              ]
-            }, {
-              "id": "11",
-              "title": "Map 3",
-              "dependencies": [{
-                "id": "12",
-                "title": "Feature Service 4",
-                "type": "Feature Service",
-                "typeKeywords": [
-                  "ArcGIS Server",
-                  "Data",
-                  "Feature Access",
-                  "Feature Service",
-                  "Metadata",
-                  "Multilayer",
-                  "Service",
-                  "Hosted Service"
-                ]
-              }],
-              "type": "Web Map",
-              "typeKeywords": [
-                "ArcGIS Online",
-                "Collector",
-                "Data Editing",
-                "Explorer Web Map",
-                "Map",
-                "Online Map",
-                "Web Map"
-              ]
-            }],
-            "type": "Web Map",
-            "typeKeywords": [
-              "ArcGIS Online",
-              "Collector",
-              "Data Editing",
-              "Explorer Web Map",
-              "Map",
-              "Online Map",
-              "Web Map"
-            ]
-          }]
-        }],
-        "type": "QuickCapture Project",
-        "typeKeywords": [
-          "QuickCapture",
-          "QuickCapture Project"
-        ]
-      }, {
-        "id": "13",
-        "title": "Notebook 1",
-        "type": "Notebook",
-        "typeKeywords": []
-      }, {
-        "id": "14",
-        "title": "Survey 1",
-        "type": "Form",
-        "typeKeywords": [
-          "Form",
-          "Ready To Use",
-          "Survey123",
-          "Survey123 Connect",
-          "xForm"
-        ]
-      }];
-    await page.waitForChanges();
-
     expect(page.root).toEqualHtml(`
       <solution-contents>
         <calcite-tree>
@@ -223,7 +66,7 @@ describe('solution-contents', () => {
             Application 1
             <calcite-tree slot="children">
               <calcite-tree-item>
-                <solution-item-icon></solution-item-icon>
+                <solution-item-icon type="Group"></solution-item-icon>
                 Group 1
                 <calcite-tree slot="children">
                   <calcite-tree-item>
