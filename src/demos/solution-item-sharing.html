@@ -51,6 +51,11 @@
       const demo = document.getElementById("demo");
       demo.translations = translations.elm.configuration_modal.configuration;
     });
+
+    // set the data
+    fetch("./data/solution-item-sharing-data.json")
+      .then(response => response.json())
+      .then(data => demo.value = data.value);
   </script>
 </body>
 </html>

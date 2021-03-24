@@ -41,7 +41,7 @@
   <main id="appContainer">
     <div class="content fullHeight">
       <h1>JSON Editor</h1>
-      <json-editor id="demo"></json-editor>
+      <json-editor id="demo" instanceId="2d2d176f5f3e43a985a31649e213aaf4"></json-editor>
     </div>
   </main>
 
@@ -52,6 +52,11 @@
       // Initialize the configuration content
       const demo = document.getElementById("demo");
       demo.translations = translations.elm.configuration_modal.configuration;
+
+      // set the data
+      fetch("./data/json-editor-data.json")
+        .then(response => response.json())
+        .then(data => demo.value =  JSON.stringify(data.value, null, '\t'));
     });
   </script>
 </body>

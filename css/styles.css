@@ -31,6 +31,8 @@ h1 {
 
 #appContainer {
   padding: 2rem;
+  opacity: 1;
+  height: 100%;
 }
 
 .wrapper {

@@ -143,7 +143,7 @@ export class JsonEditor {
             </div>
           </div>
           <div class="editor-text">
-            <div id={`${this.instanceId}-editor`} class="edit-width edit-height"></div>
+            <div id={`${this.instanceId}-editor`} class="edit-width"></div>
           </div>
         </div>
       </Host>

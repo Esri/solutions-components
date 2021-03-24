@@ -50,6 +50,21 @@
       // Initialize the configuration content
       const demo = document.getElementById("demo");
       demo.translations = translations.elm.configuration_modal.configuration;
+
+      // set the data
+      Promise.all([
+        fetch("./data/solution-template-data-data.json"),
+        fetch("./data/solution-variables-data.json"),
+        fetch("./data/solution-organization-variables-data.json")
+      ])
+        .then(results => Promise.all(results.map(r => r.json())))
+        .then(jsonResults => {
+          demo.value = {
+            value: jsonResults[0].value,
+            solVariables: jsonResults[1].value,
+            orgVariables: jsonResults[2].value
+          }
+        });
     });
   </script>
 </body>

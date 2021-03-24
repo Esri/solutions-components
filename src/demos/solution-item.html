@@ -50,6 +50,36 @@
       // Initialize the configuration content
       const demo = document.getElementById("demo");
       demo.translations = translations.elm.configuration_modal.configuration;
+
+      // set the data
+      Promise.all([
+        fetch("./data/solution-item-details-data.json"),
+        fetch("./data/solution-template-data-data.json"),
+        fetch("./data/solution-variables-data.json"),
+        fetch("./data/solution-organization-variables-data.json")
+      ])
+        .then(results => Promise.all(results.map(r => r.json())))
+        .then(jsonResults => {
+          const itemDetails = jsonResults[0].value;
+          const value = jsonResults[1].value;
+          const solVariables = jsonResults[2].value;
+          const orgVariables = jsonResults[3].value
+          demo.value = {
+            itemDetails,
+            data: {
+              value,
+              solVariables,
+              orgVariables
+            },
+            properties: {
+              value,
+              solVariables,
+              orgVariables
+            },
+            type: "Feature Service",
+            isResource: false
+          }
+        });
     });
   </script>
 </body>

@@ -17,6 +17,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionItemSharing } from '../solution-item-sharing';
 import * as translations from '../../../../nls/Elm_strings.json';
+import { value } from '../../../demos/data/solution-item-sharing-data.json';
 import { h } from '@stencil/core';
 
 describe('solution-item-sharing', () => {
@@ -24,55 +25,22 @@ describe('solution-item-sharing', () => {
     const page = await newSpecPage({
       components: [SolutionItemSharing],
       template: () => (
-        <solution-item-sharing translations={translations.configuration_modal.configuration}></solution-item-sharing>
+        <solution-item-sharing translations={translations.configuration_modal.configuration} value={value}></solution-item-sharing>
       )
     });
-    page.root.value = [{
-      id: "A",
-      title: "A",
-      shareItem: false,
-      type: "Feature Service",
-      typeKeywords: [
-        "ArcGIS Server",
-        "Data",
-        "Feature Access",
-        "Feature Service",
-        "Metadata",
-        "Multilayer",
-        "Service",
-        "Hosted Service"
-      ]
-    }, {
-      id: "B",
-      title: "B",
-      shareItem: true,
-      type: "Web Map",
-      typeKeywords: [
-        "ArcGIS Online",
-        "Collector",
-        "Data Editing",
-        "Explorer Web Map",
-        "Map",
-        "Online Map",
-        "Web Map"
-      ]
-    }];
-
-    await page.waitForChanges();
-
     expect(page.root).toEqualHtml(`
       <solution-item-sharing>
         <mock:shadow-root>
          <div class="container-border">
            <calcite-label layout="inline">
-             <calcite-switch id="A" name="setting" scale="s" value="enabled"></calcite-switch>
+             <calcite-switch id="A" name="setting" scale="s" switched="" value="enabled"></calcite-switch>
              <solution-item-icon type="Feature Service"></solution-item-icon>
-             A
+             ElectionGeography_public
            </calcite-label>
            <calcite-label layout="inline">
-             <calcite-switch id="B" name="setting" scale="s" switched="" value="enabled"></calcite-switch>
+             <calcite-switch id="B" name="setting" scale="s" value="enabled"></calcite-switch>
              <solution-item-icon type="Web Map"></solution-item-icon>
-             B
+             Election Polling Places
            </calcite-label>
          </div>
         </mock:shadow-root>

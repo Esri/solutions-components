@@ -16,29 +16,17 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionItemIcon } from '../solution-item-icon';
+import { value } from '../../../demos/data/solution-item-icon-data.json';
+import { h } from '@stencil/core';
 
 describe('solution-item-icon', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [SolutionItemIcon],
-      html: `<solution-item-icon></solution-item-icon>`,
+      template: () => (
+        <solution-item-icon type={value.type} typeKeywords={value.typeKeywords}></solution-item-icon>
+      )
     });
-
-    page.root.type = "Feature Service";
-    page.root.typeKeywords = [
-      "ArcGIS Server",
-      "Data",
-      "Feature Access",
-      "Feature Service",
-      "Multi Services View",
-      "Service",
-      "Singlelayer",
-      "Hosted Service",
-      "View Service"
-    ];
-
-    await page.waitForChanges();
-
     expect(page.root).toEqualHtml(`
       <solution-item-icon>
         <div title="Feature Service">

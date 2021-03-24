@@ -7,11 +7,10 @@
 
 ## Properties
 
-| Property                    | Attribute      | Description                                        | Type     | Default     |
-| --------------------------- | -------------- | -------------------------------------------------- | -------- | ----------- |
-| `translations` _(required)_ | `translations` | Contains the translations for this component.      | `any`    | `undefined` |
-| `type`                      | `type`         | Contains the public type value for this component. | `string` | `""`        |
-| `value`                     | `value`        | Contains the public value for this component.      | `any`    | `{}`        |
+| Property                    | Attribute      | Description                                   | Type            | Default                                                                                            |
+| --------------------------- | -------------- | --------------------------------------------- | --------------- | -------------------------------------------------------------------------------------------------- |
+| `translations` _(required)_ | `translations` | Contains the translations for this component. | `any`           | `undefined`                                                                                        |
+| `value`                     | --             | Contains the public value for this component. | `ISolutionItem` | `{     itemDetails: {},     isResource: false,     data: {},     properties: {},     type: ""   }` |
 
 
 ## Dependencies

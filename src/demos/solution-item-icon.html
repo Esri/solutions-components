@@ -42,5 +42,23 @@
       <solution-item-icon id="demo"></solution-item-icon>
     </div>
   </main>
+
+  <script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
+  <script>
+    require(["../../nls/fr/strings.js"],
+    function (translations) {
+      // Initialize the configuration content
+      const demo = document.getElementById("demo");
+      demo.translations = translations.elm.configuration_modal.configuration;
+
+      // set the data
+      fetch("./data/solution-item-icon-data.json")
+        .then(response => response.json())
+        .then(data => {
+          demo.type = data.value.type;
+          demo.typeKeywords = data.value.typeKeywords;
+        });
+    });
+  </script>
 </body>
 </html>

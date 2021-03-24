@@ -25,7 +25,6 @@
 
 .editor-controls {
   height: 44px;
-  margin-bottom: 4px;
 }
 
 .editor-buttons {
@@ -48,14 +47,9 @@ html[dir="rtl"] .edit-button {
 .editor-text {
   overflow-y: auto;
   background-color: white;
-  height: calc(100% - 48px);
   width: 100%;
 }
 
 .edit-width {
   width: 100%;
-}
-
-.edit-height {
-  height: 100% !important;
 }
