@@ -36,13 +36,14 @@
 */
 
 import { Component, Event, EventEmitter, Host, h, Listen, Prop, State } from '@stencil/core';
-import { Ace } from "../../../lib/ace/ace";
+import { Ace } from "./assets/json-editor/ace/ace";
 const gAce = (window as any).ace;
 
 @Component({
   tag: 'json-editor',
   styleUrl: 'json-editor.css',
-  shadow: false
+  shadow: false,
+  assetsDirs: ['assets']
 })
 export class JsonEditor {
   //--------------------------------------------------------------------------
@@ -53,7 +54,7 @@ export class JsonEditor {
 
   /**
    * Contains the original source item json as it was when the component was created.
-   * 
+   *
    */
   @State() original: any = "";
 
@@ -61,7 +62,7 @@ export class JsonEditor {
    * Contains the translations for this component.
    */
   @Prop({ mutable: true }) translations!: any;
-  
+
   /**
    * Contains the public value for this component.
    */
@@ -78,7 +79,7 @@ export class JsonEditor {
    */
   // TODO does this need to me a @Method?
   //@Method()
-   hasChanges(): boolean {
+  hasChanges(): boolean {
     return this.original !== this.value;
   }
 
@@ -94,7 +95,7 @@ export class JsonEditor {
         <div class="editor-container">
           <div class="editor-controls">
             <div class="editor-buttons">
-              <calcite-button 
+              <calcite-button
                 id={`${this.instanceId}-startEditing`}
                 color="blue"
                 appearance="solid"
@@ -105,7 +106,7 @@ export class JsonEditor {
               >
                 <calcite-icon icon="pencil" scale="s"></calcite-icon>
               </calcite-button>
-              <calcite-button 
+              <calcite-button
                 id={`${this.instanceId}-search`}
                 appearance="outline"
                 color="blue"
@@ -128,12 +129,12 @@ export class JsonEditor {
               >
                 <calcite-icon icon="reset" scale="s"></calcite-icon>
               </calcite-button>
-              <calcite-button 
+              <calcite-button
                 id={`${this.instanceId}-saveEdits`}
                 color="blue"
                 appearance="solid"
                 disabled
-                title={this.translations.jsonEditor.saveEdits} 
+                title={this.translations.jsonEditor.saveEdits}
                 onClick={() => this._saveEdits()}
                 scale="s"
                 class="edit-button"
@@ -153,11 +154,11 @@ export class JsonEditor {
   componentDidLoad(): void {
     this._initEditor();
   }
-  
+
   disconnectedCallback(): void {
     this._destroyEditor();
   }
-  
+
   //--------------------------------------------------------------------------
   //
   //  Variables (private)
@@ -171,7 +172,7 @@ export class JsonEditor {
   private _saveEditsBtnHandler: any;
   private _isEditing: boolean = false;
   private _current: any; // Contains the source item json with any saved edits.
-  
+
   //--------------------------------------------------------------------------
   //
   //  Event Listeners
@@ -288,7 +289,7 @@ export class JsonEditor {
    *
    * @protected
    */
-   _cancelEdits(): void {
+  _cancelEdits(): void {
     this.value = this._current;
     this._editor?.setValue(this._current);
     this._doneEditing();
@@ -298,7 +299,7 @@ export class JsonEditor {
    * Disables a button.
    *
    * @param buttonId Id of button to disable
-   * 
+   *
     * @protected
    */
   _disableButton(buttonId: string): void {
@@ -329,7 +330,7 @@ export class JsonEditor {
    * Enables a button.
    *
    * @param buttonId Id of button to enable
-   * 
+   *
    * @protected
    */
   _enableButton(buttonId: string): void {
@@ -354,7 +355,7 @@ export class JsonEditor {
 
   /**
    * Handles click on "Search" button.
-   * 
+   *
    * @protected
    */
   _search(): void {
