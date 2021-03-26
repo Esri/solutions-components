@@ -13,11 +13,12 @@
  | See the License for the specific language governing permissions and
  | limitations under the License.
  */
+
 /*
- | Note: this file uses two types of symbols to mark where values are inserted by the program:
- |   * under the "typescript" section:  ${insert_here}
- |   * under the "elm" section:  {{insert_here}}
+ | Note: this file uses "{{insert_here}}" to mark where values are inserted by the program; these
+ | should not be translated.
 */
+
 define({
   "configuration_modal": {
     "title": "Configurer: {{solutionName}}",
@@ -51,8 +52,8 @@ define({
       },
 
       "resourceItem": {
-        "update": "fr-Update",
-        "download": "fr-Download"
+        "update": "Mettre à jour",
+        "download": "Télécharger"
       },
 
       "spatialRef": {
@@ -62,8 +63,8 @@ define({
       },
 
       "variables": {
-        "orgVariables": "fr-Organization Variables",
-        "solVariables": "fr-Solution Variables"
+        "orgVariables": "Variables d'organisation",
+        "solVariables": "Variables de la solution"
       }
     }
   }

@@ -15,9 +15,8 @@
  */
 
 /*
- | Note: this file uses two types of symbols to mark where values are inserted by the program:
- |   * under the "typescript" section:  ${insert_here}
- |   * under the "elm" section:  {{insert_here}}
+ | Note: this file uses "{{insert_here}}" to mark where values are inserted by the program; these
+ | should not be translated.
 */
 
 define({
