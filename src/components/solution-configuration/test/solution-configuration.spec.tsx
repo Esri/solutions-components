@@ -16,7 +16,7 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionConfiguration } from '../solution-configuration';
-import * as translations from '../../../../nls/Elm_strings.json';
+import * as translations from '../../../assets/nls/strings.json';
 import { h } from '@stencil/core';
 
 describe('solution-configuration', () => {

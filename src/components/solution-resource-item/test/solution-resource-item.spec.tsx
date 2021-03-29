@@ -16,7 +16,7 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionResourceItem } from '../solution-resource-item';
-import * as translations from '../../../../nls/Elm_strings.json';
+import * as translations from '../../../assets/nls/strings.json';
 import { h } from '@stencil/core';
 
 describe('solution-resource-item', () => {
@@ -31,7 +31,7 @@ describe('solution-resource-item', () => {
       name: "thename",
       url: "theurl"
     };
-    
+
     await page.waitForChanges();
 
     expect(page.root).toEqualHtml(`
