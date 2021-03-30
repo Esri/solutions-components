@@ -30,45 +30,28 @@ define({
       "configuration": {
         "definitionTab": "Definition", // for tab to edit definition of an item or group
         "spatialReferenceTab": "Spatial Reference", // for tab to edit the spatial reference of an item
-
         "itemDetailsTab": "Item Details",
         "dataTab": "Data",
         "propertiesTab": "Properties",
         "groupDetailsTab": "Group Details",
         "sharingTab": "Sharing",
-
-        // Item details
-        "itemDetails": {
-          "editThumbnail": "Edit Thumbnail",
-          "description": "Description",
-          "tags": "Tags",
-          "credits": "Credits",
-          "termsOfUse": "Terms of Use",
-          "snippetCountPattern": "{{n}} of 250"
-        },
-
-        "jsonEditor": {
-          "startEditing": "Start Editing",
-          "search": "Search",
-          "cancelEdits": "Cancel Edits",
-          "saveEdits": "Save Edits"
-        },
-
-        "resourceItem": {
-          "update": "Update",
-          "download": "Download"
-        },
-
-        "spatialRef": {
-          "specifyParam": "Spatial Reference Parameter",
-          "defaultSpatialRef": "Default Spatial Reference",
-          "featureServicesHeading": "Feature Services"
-        },
-
-        "variables": {
-          "orgVariables": "Organization Variables",
-          "solVariables": "Solution Variables"
-        }
+        "editThumbnail": "Edit Thumbnail",
+        "description": "Description",
+        "tags": "Tags",
+        "credits": "Credits",
+        "termsOfUse": "Terms of Use",
+        "snippetCountPattern": "{{n}} of 250",
+        "startEditing": "Start Editing",
+        "search": "Search",
+        "cancelEdits": "Cancel Edits",
+        "saveEdits": "Save Edits",
+        "update": "Update",
+        "download": "Download",
+        "specifyParam": "Spatial Reference Parameter",
+        "defaultSpatialRef": "Default Spatial Reference",
+        "featureServicesHeading": "Feature Services",
+        "orgVariables": "Organization Variables",
+        "solVariables": "Solution Variables"
       }
     }
   }),

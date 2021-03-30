@@ -40,7 +40,7 @@ export class SolutionOrganizationVariables {
   /**
    * Contains the translations for this component.
    */
-  @Prop({ mutable: true }) translations!: any;
+  @Prop({ mutable: true }) translations: any = {};
 
   /**
    * Contains the public value for this component.
@@ -57,7 +57,7 @@ export class SolutionOrganizationVariables {
     return (
       <Host>
         <div>
-          <h4 class="org-var-header">{this.translations.variables.orgVariables}</h4>
+          <h4 class="org-var-header">{this.translations.orgVariables}</h4>
         </div>
         <div class="container-border">
           <calcite-label id="variable-label">
