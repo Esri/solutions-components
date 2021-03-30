@@ -28,44 +28,28 @@ define({
     "configuration": {
       "definitionTab": "Définition",
       "spatialReferenceTab": "Référence spatiale",
-
       "itemDetailsTab": "Détails de l'élément",
       "dataTab": "Données",
       "propertiesTab": "Propriétés",
       "groupDetailsTab": "Détails du groupe",
       "sharingTab": "Partage",
-
-      "itemDetails": {
-        "editThumbnail": "Mettre à jour la miniature",
-        "description": "Description",
-        "tags": "Balises",
-        "credits": "Crédits (Attribution)",
-        "termsOfUse": "Conditions d’utilisation",
-        "snippetCountPattern": "{{n}} sur 250"
-      },
-
-      "jsonEditor": {
-        "startEditing": "Commencer l'édition",
-        "search": "Chercher",
-        "cancelEdits": "fr-Cancel Edits",
-        "saveEdits": "fr-Save Edits"
-      },
-
-      "resourceItem": {
-        "update": "Mettre à jour",
-        "download": "Télécharger"
-      },
-
-      "spatialRef": {
-        "specifyParam": "Paramètre de référence spatiale",
-        "defaultSpatialRef": "Référence spatiale par défaut",
-        "featureServicesHeading": "Services de fonctionnalités"
-      },
-
-      "variables": {
-        "orgVariables": "Variables d'organisation",
-        "solVariables": "Variables de la solution"
-      }
+      "editThumbnail": "Mettre à jour la miniature",
+      "description": "Description",
+      "tags": "Balises",
+      "credits": "Crédits (Attribution)",
+      "termsOfUse": "Conditions d’utilisation",
+      "snippetCountPattern": "{{n}} sur 250",
+      "startEditing": "Commencer l'édition",
+      "search": "Chercher",
+      "cancelEdits": "fr-Cancel Edits",
+      "saveEdits": "fr-Save Edits",
+      "update": "Mettre à jour",
+      "download": "Télécharger",
+      "specifyParam": "Paramètre de référence spatiale",
+      "defaultSpatialRef": "Référence spatiale par défaut",
+      "featureServicesHeading": "Services de fonctionnalités",
+      "orgVariables": "Variables d'organisation",
+      "solVariables": "Variables de la solution"
     }
   }
 });
