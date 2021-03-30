@@ -16,7 +16,7 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionContents } from '../solution-contents';
-import * as translations from '../../../../nls/Elm_strings.json';
+import * as translations from '../../../assets/nls/strings.json';
 import { value } from '../../../demos/data/solution-contents-data.json';
 import { h } from '@stencil/core';
 
@@ -37,7 +37,7 @@ describe('solution-contents', () => {
             <solution-item-icon type="Dashboard"></solution-item-icon>
             Dashboard 1
           </calcite-tree-item>
-          
+
           <calcite-tree-item>
             <solution-item-icon type="Dashboard"></solution-item-icon>
             Dashboard 2

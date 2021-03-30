@@ -16,7 +16,7 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionSpatialRef } from '../solution-spatial-ref';
-import * as translations from '../../../../nls/Elm_strings.json';
+import * as translations from '../../../assets/nls/strings.json';
 import { h } from '@stencil/core';
 
 describe('solution-spatial-ref', () => {

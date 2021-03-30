@@ -32,3 +32,5 @@ __*
 
 # Temporary build products
 src/**/*.js
+!src/**/assets/**/*.js
+!src/demos/**/*.js

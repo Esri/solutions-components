@@ -2,16 +2,20 @@ import { Config } from '@stencil/core';
 
 export const config: Config = {
   namespace: 'solutions',
+  globalStyle: 'src/assets/styles/styles.css',
   outputTargets: [
     {
       type: 'dist',
-      esmLoaderPath: '../loader',
+      copy: [
+        { src: 'assets/nls' },
+        { src: 'demos' }
+      ]
     },
     {
-      type: 'dist-custom-elements-bundle',
+      type: 'dist-custom-elements-bundle'
     },
     {
-      type: 'docs-readme',
+      type: 'docs-readme'
     }
-  ],
+  ]
 };

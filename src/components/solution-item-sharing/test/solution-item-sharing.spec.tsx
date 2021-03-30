@@ -16,7 +16,7 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionItemSharing } from '../solution-item-sharing';
-import * as translations from '../../../../nls/Elm_strings.json';
+import * as translations from '../../../assets/nls/strings.json';
 import { value } from '../../../demos/data/solution-item-sharing-data.json';
 import { h } from '@stencil/core';
 

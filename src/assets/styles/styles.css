@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+@import "calcite-web.min.css";
+@import "esri-global-nav.css";
+
 /*#region Basic Overrides*/
 
 html, body {
@@ -30,9 +33,8 @@ h1 {
 }
 
 #appContainer {
-  padding: 2rem;
-  opacity: 1;
-  height: 100%;
+  opacity: 0;
+  transition: 1s;
 }
 
 .wrapper {
