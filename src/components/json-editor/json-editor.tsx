@@ -61,7 +61,7 @@ export class JsonEditor {
   /**
    * Contains the translations for this component.
    */
-  @Prop({ mutable: true }) translations!: any;
+  @Prop({ mutable: true }) translations: any = {};
 
   /**
    * Contains the public value for this component.
@@ -99,7 +99,7 @@ export class JsonEditor {
                 id={`${this.instanceId}-startEditing`}
                 color="blue"
                 appearance="solid"
-                title={this.translations.jsonEditor.startEditing}
+                title={this.translations.startEditing}
                 onClick={() => this._startEditing()}
                 scale="s"
                 class="edit-button"
@@ -110,7 +110,7 @@ export class JsonEditor {
                 id={`${this.instanceId}-search`}
                 appearance="outline"
                 color="blue"
-                title={this.translations.jsonEditor.search}
+                title={this.translations.search}
                 onClick={() => this._search()}
                 scale="s"
                 class="edit-button"
@@ -122,7 +122,7 @@ export class JsonEditor {
                 color="blue"
                 appearance="solid"
                 disabled
-                title={this.translations.jsonEditor.cancelEdits}
+                title={this.translations.cancelEdits}
                 onClick={() => this._cancelEdits()}
                 scale="s"
                 class="edit-button"
@@ -134,7 +134,7 @@ export class JsonEditor {
                 color="blue"
                 appearance="solid"
                 disabled
-                title={this.translations.jsonEditor.saveEdits}
+                title={this.translations.saveEdits}
                 onClick={() => this._saveEdits()}
                 scale="s"
                 class="edit-button"

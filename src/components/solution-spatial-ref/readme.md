@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property                    | Attribute      | Description                                   | Type     | Default     |
-| --------------------------- | -------------- | --------------------------------------------- | -------- | ----------- |
-| `translations` _(required)_ | `translations` | Contains the translations for this component. | `any`    | `undefined` |
-| `value`                     | `value`        | Contains the public value for this component. | `string` | `null`      |
+| Property       | Attribute      | Description                                   | Type     | Default |
+| -------------- | -------------- | --------------------------------------------- | -------- | ------- |
+| `translations` | `translations` | Contains the translations for this component. | `any`    | `{}`    |
+| `value`        | `value`        | Contains the public value for this component. | `string` | `null`  |
 
 
 ## Methods
