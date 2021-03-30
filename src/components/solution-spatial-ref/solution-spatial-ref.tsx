@@ -49,7 +49,7 @@ export class SolutionSpatialRef {
   /**
    * Contains the translations for this component.
    */
-  @Prop({ mutable: true }) translations!: any;
+  @Prop({ mutable: true }) translations: any = {};
 
   /**
    * Contains the public value for this component.
@@ -76,11 +76,11 @@ export class SolutionSpatialRef {
   render(): VNode {
     return (
       <Host>
-        <label class="switch-label"><calcite-switch switched={!this.locked} scale="s" class="spatial-ref-switch" onCalciteSwitchChange={(event) => this._updateLocked(event)}></calcite-switch>{this.translations.spatialRef.specifyParam}</label>
+        <label class="switch-label"><calcite-switch switched={!this.locked} scale="s" class="spatial-ref-switch" onCalciteSwitchChange={(event) => this._updateLocked(event)}></calcite-switch>{this.translations.specifyParam}</label>
         <div id="spatialRefDefn" class="spatial-ref-switch-title">
-          <calcite-label>{this.translations.spatialRef.defaultSpatialRef}<label class="spatial-ref-default"><calcite-input disabled={this.locked} ref={(el) => { this.spatialRefInput = el}} onCalciteInputBlur={() => this._updateSpatialRef()}></calcite-input></label></calcite-label>
+          <calcite-label>{this.translations.defaultSpatialRef}<label class="spatial-ref-default"><calcite-input disabled={this.locked} ref={(el) => { this.spatialRefInput = el}} onCalciteInputBlur={() => this._updateSpatialRef()}></calcite-input></label></calcite-label>
           <label class="spatial-ref-current">{this.spatialRef.display}</label>
-          <label class="spatial-ref-item-title">{this.translations.spatialRef.featureServicesHeading}</label>
+          <label class="spatial-ref-item-title">{this.translations.featureServicesHeading}</label>
           <label class="switch-label"><calcite-switch disabled={this.locked} scale="s" class="spatial-ref-item-switch"></calcite-switch>Feature Service 1</label>
           <label class="switch-label"><calcite-switch disabled={this.locked} scale="s" class="spatial-ref-item-switch"></calcite-switch>Feature Service 2</label>
         </div>

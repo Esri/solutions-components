@@ -45,7 +45,7 @@ export class SolutionResourceItem {
   /**
    * Contains the translations for this component.
    */
-  @Prop({ mutable: true }) translations!: any;
+  @Prop({ mutable: true }) translations: any = {};
 
   /**
    * Contains the public value for this component.
@@ -105,7 +105,7 @@ export class SolutionResourceItem {
             icon-start="download"
             onClick={() => this._downloadItem()}
           >
-            {this.translations.resourceItem.download}
+            {this.translations.download}
           </calcite-button>
 
           <calcite-button
@@ -116,7 +116,7 @@ export class SolutionResourceItem {
             icon-start="upload"
             onClick={() => this._updateItem()}
           >
-            {this.translations.resourceItem.update}
+            {this.translations.update}
           </calcite-button>
 
         </div>
