@@ -17,7 +17,7 @@
   "scripts": {
     "build": "stencil build",
     "start": "stencil build --dev --watch --serve",
-    "clean:src": "start cmd.exe /c \"del/s/q src\\components\\*.js\"",
+    "clean:src": "start cmd.exe /c cleanSrc.bat",
     "test": "stencil test --spec --e2e --detectOpenHandles",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate"
