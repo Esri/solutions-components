@@ -1,0 +1,35 @@
+  {
+    
+    "configuration_modal": {
+      "cancel": "Cancel", 
+      "save": "Save", 
+      "title": "Configure: {{solutionName}}", 
+
+      "configuration": {
+        "cancelEdits": "Cancel Edits",
+        "credits": "Credits",
+        "dataTab": "Data",
+        "defaultSpatialRef": "Default Spatial Reference",
+        "definitionTab": "Definition", 
+        "description": "Description",
+        "download": "Download",
+        "editThumbnail": "Edit Thumbnail",
+        "featureServicesHeading": "Feature Services",
+        "groupDetailsTab": "Group Details",
+        "itemDetailsTab": "Item Details",
+        "orgVariables": "Organization Variables",
+        "propertiesTab": "Properties",
+        "saveEdits": "Save Edits",
+        "search": "Search",
+        "sharingTab": "Sharing",
+        "snippetCountPattern": "{{n}} of 250",
+        "solVariables": "Solution Variables",
+        "spatialReferenceTab": "Spatial Reference", 
+        "specifyParam": "Spatial Reference Parameter",
+        "startEditing": "Start Editing",
+        "tags": "Tags",
+        "termsOfUse": "Terms of Use",
+        "update": "Update"
+      }
+    }
+  }

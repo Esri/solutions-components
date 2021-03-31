@@ -15,7 +15,7 @@
     "loader/"
   ],
   "scripts": {
-    "build": "stencil build",
+    "build": "start cmd.exe /c \"src\\testingAssets\\nlsJStoJSON src\\assets\\nls\\strings.js src\\testingAssets\" && stencil build",
     "start": "stencil build --dev --watch --serve",
     "clean:src": "start cmd.exe /c cleanSrc.bat",
     "test": "stencil test --spec --e2e --detectOpenHandles",
