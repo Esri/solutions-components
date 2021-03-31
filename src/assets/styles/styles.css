@@ -35,6 +35,7 @@ h1 {
 #appContainer {
   opacity: 0;
   transition: 1s;
+  height: 100%;
 }
 
 .wrapper {

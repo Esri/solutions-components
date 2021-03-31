@@ -16,7 +16,7 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionVariables } from '../solution-variables';
-import * as translations from '../../../assets/nls/strings.json';
+import * as translations from '../../../testingAssets/strings.json';
 import { value } from '../../../demos/data/solution-variables-data.json';
 import { h } from '@stencil/core';
 

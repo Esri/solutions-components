@@ -23,35 +23,35 @@ define({
   root: ({
     // Pop-up for configuring a solution
     "configuration_modal": {
-      "title": "Configure: {{solutionName}}", // modal title
       "cancel": "Cancel", // reject changes
       "save": "Save", // save changes
+      "title": "Configure: {{solutionName}}", // modal title
 
       "configuration": {
-        "definitionTab": "Definition", // for tab to edit definition of an item or group
-        "spatialReferenceTab": "Spatial Reference", // for tab to edit the spatial reference of an item
-        "itemDetailsTab": "Item Details",
-        "dataTab": "Data",
-        "propertiesTab": "Properties",
-        "groupDetailsTab": "Group Details",
-        "sharingTab": "Sharing",
-        "editThumbnail": "Edit Thumbnail",
-        "description": "Description",
-        "tags": "Tags",
-        "credits": "Credits",
-        "termsOfUse": "Terms of Use",
-        "snippetCountPattern": "{{n}} of 250",
-        "startEditing": "Start Editing",
-        "search": "Search",
         "cancelEdits": "Cancel Edits",
-        "saveEdits": "Save Edits",
-        "update": "Update",
-        "download": "Download",
-        "specifyParam": "Spatial Reference Parameter",
+        "credits": "Credits",
+        "dataTab": "Data",
         "defaultSpatialRef": "Default Spatial Reference",
+        "definitionTab": "Definition", // for tab to edit definition of an item or group
+        "description": "Description",
+        "download": "Download",
+        "editThumbnail": "Edit Thumbnail",
         "featureServicesHeading": "Feature Services",
+        "groupDetailsTab": "Group Details",
+        "itemDetailsTab": "Item Details",
         "orgVariables": "Organization Variables",
-        "solVariables": "Solution Variables"
+        "propertiesTab": "Properties",
+        "saveEdits": "Save Edits",
+        "search": "Search",
+        "sharingTab": "Sharing",
+        "snippetCountPattern": "{{n}} of 250",
+        "solVariables": "Solution Variables",
+        "spatialReferenceTab": "Spatial Reference", // for tab to edit the spatial reference of an item
+        "specifyParam": "Spatial Reference Parameter",
+        "startEditing": "Start Editing",
+        "tags": "Tags",
+        "termsOfUse": "Terms of Use",
+        "update": "Update"
       }
     }
   }),
