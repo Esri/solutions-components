@@ -19,6 +19,7 @@ import { ITemplateData } from '../solution-template-data/solution-template-data'
 import "@esri/calcite-components";
 
 export interface ISolutionItem {
+  itemId: string,
   itemDetails: any,
   isResource: boolean, // this should be removed and determined from the data
   data: ITemplateData,
@@ -55,6 +56,7 @@ export class SolutionItem {
    * Contains the public value for this component.
    */
   @Prop({ mutable: true, reflect: true }) value: ISolutionItem = {
+    itemId: "",
     itemDetails: {},
     isResource: false,
     data: {},
@@ -111,13 +113,26 @@ export class SolutionItem {
       </calcite-tab-nav>
 
       <calcite-tab class="config-tab" active>
-        <solution-item-details translations={this.translations} type={this.value.type} value={this.value.itemDetails}></solution-item-details>
+        <solution-item-details
+          translations={this.translations}
+          type={this.value.type}
+          value={this.value.itemDetails}
+        ></solution-item-details>
       </calcite-tab>
       <calcite-tab class="config-tab">
-        <solution-template-data translations={this.translations} isResource={this.value.isResource} value={this.value.data}></solution-template-data>
+        <solution-template-data
+          instanceId={`-data-${this.value.itemId}`}
+          isResource={this.value.isResource}
+          translations={this.translations}
+          value={this.value.data}
+        ></solution-template-data>
       </calcite-tab>
       <calcite-tab class="config-tab">
-        <solution-template-data translations={this.translations} value={this.value.properties}></solution-template-data>
+        <solution-template-data
+          instanceId={`-props-${this.value.itemId}`}
+          translations={this.translations} 
+          value={this.value.properties}
+        ></solution-template-data>
       </calcite-tab>
     </calcite-tabs>
   }

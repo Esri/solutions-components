@@ -9,6 +9,7 @@
 
 | Property       | Attribute      | Description                                                                                                                                                                                     | Type            | Default |
 | -------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- | ------- |
+| `instanceId`   | `instance-id`  | This needs to be unique for each item and also for the props vs data of an item                                                                                                                 | `string`        | `""`    |
 | `isResource`   | `is-resource`  | Should be set to true for items that store their data as a resource Will allow for upload and download of the resource                                                                          | `boolean`       | `false` |
 | `translations` | `translations` | Contains the translations for this component.                                                                                                                                                   | `any`           | `{}`    |
 | `value`        | --             | Contains the public value for this component.  When working with a resource item this should contain an IResourceItem  When working with a json type item this should contain the data and vars | `ITemplateData` | `{}`    |
