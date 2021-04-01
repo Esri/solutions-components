@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property       | Attribute      | Description                                   | Type                     | Default                                                                                                                                          |
-| -------------- | -------------- | --------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `translations` | `translations` | Contains the translations for this component. | `any`                    | `{}`                                                                                                                                             |
-| `value`        | --             | Contains the public value for this component. | `ISolutionConfiguration` | `{     contents: [],     item: {       itemDetails: {},       isResource: false,       data: {},       properties: {},       type: ""     }   }` |
+| Property       | Attribute      | Description                                   | Type                     | Default                                                                                                                                                            |
+| -------------- | -------------- | --------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `translations` | `translations` | Contains the translations for this component. | `any`                    | `{}`                                                                                                                                                               |
+| `value`        | --             | Contains the public value for this component. | `ISolutionConfiguration` | `{     contents: [],     item: {       itemId: "",       itemDetails: {},       isResource: false,       data: {},       properties: {},       type: ""     }   }` |
 
 
 ## Dependencies

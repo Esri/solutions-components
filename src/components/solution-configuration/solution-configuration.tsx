@@ -55,6 +55,7 @@ export class SolutionConfiguration {
   @Prop({ mutable: true, reflect: true }) value: ISolutionConfiguration = {
     contents: [],
     item: {
+      itemId: "",
       itemDetails: {},
       isResource: false,
       data: {},

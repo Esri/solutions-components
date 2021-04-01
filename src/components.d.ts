@@ -147,6 +147,10 @@ export namespace Components {
     }
     interface SolutionTemplateData {
         /**
+          * This needs to be unique for each item and also for the props vs data of an item
+         */
+        "instanceId": string;
+        /**
           * Should be set to true for items that store their data as a resource Will allow for upload and download of the resource
          */
         "isResource": boolean;
@@ -376,6 +380,10 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface SolutionTemplateData {
+        /**
+          * This needs to be unique for each item and also for the props vs data of an item
+         */
+        "instanceId"?: string;
         /**
           * Should be set to true for items that store their data as a resource Will allow for upload and download of the resource
          */

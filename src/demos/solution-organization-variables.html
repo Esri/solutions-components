@@ -24,8 +24,19 @@
   <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
   <link rel="stylesheet" href="../solutions.css" type="text/css">
   <style>
-  .fullHeight {
+  .full-height {
     height: 100%
+  }
+  .column {
+    width: 250px;
+    position: relative;
+    float: left;
+    margin: 1rem;
+    padding: 1rem;
+    border: 1px solid;
+  }
+  .bg {
+    background-color: white;
   }
   </style>
 
@@ -35,9 +46,16 @@
 
 <body>
   <main id="appContainer">
-    <div class="content fullHeight">
-      <h1>Solution Organization Variables</h1>
-      <solution-organization-variables id="demo"></solution-organization-variables>
+    <div class="content full-height">
+      <h1>Demo Solution Organization Variables</h1>
+      <div class="column">
+        <h3>Component</h3>
+        <solution-organization-variables id="demo" class="bg"></solution-organization-variables>
+      </div>
+      <div class="column">
+        <h3>Event</h3>
+        <textarea id="demo-event" ></textarea>
+      </div>
     </div>
   </main>
 
@@ -56,6 +74,10 @@
         .then(data => {
           demo.value = data.value;
           document.getElementById("appContainer").style.opacity = "1";
+
+          demo.addEventListener("organizationVariableSelected", (event) => {
+            document.getElementById("demo-event").innerText += event.detail.value;
+          });
         });
     });
   </script>

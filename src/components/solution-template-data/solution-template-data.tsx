@@ -21,10 +21,10 @@ import { IVariableItem } from '../solution-variables/solution-variables';
 import { IResourceItem } from '../solution-resource-item/solution-resource-item';
 
 export interface ITemplateData {
-  value?: any,
   orgVariables?: IOrganizationVariableItem[],
+  resourceItem?: IResourceItem,
   solVariables?: IVariableItem[],
-  resourceItem?: IResourceItem
+  value?: any
 }
 
 @Component({
@@ -59,6 +59,11 @@ export class SolutionTemplateData {
    * Will allow for upload and download of the resource
    */
   @Prop({ mutable: true }) isResource: boolean = false;
+
+  /**
+   * This needs to be unique for each item and also for the props vs data of an item
+   */
+   @Prop({ mutable: true }) instanceId: string = "";
 
   //--------------------------------------------------------------------------
   //
@@ -108,7 +113,7 @@ export class SolutionTemplateData {
     return <calcite-shell dir="ltr" theme="light">
       <calcite-shell-center-row slot="center-row" position="start" height-scale="l" width-scale="l" class="json-editor">
         <div class="solution-data-child-container padding-1">
-          <json-editor instanceId="this-will-be-the-solution-id" translations={this.translations} value={templateData.value}></json-editor>
+          <json-editor instanceId={this.instanceId} translations={this.translations} value={templateData.value}></json-editor>
         </div>
       </calcite-shell-center-row>
       <calcite-shell-panel slot="contextual-panel" position="start" height-scale="l" width-scale="m">
