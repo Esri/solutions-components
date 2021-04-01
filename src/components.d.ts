@@ -6,8 +6,9 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ISolutionConfiguration } from "./components/solution-configuration/solution-configuration";
-import { IInventoryItem } from "./components/solution-contents/solution-contents";
 import { ISolutionItem } from "./components/solution-item/solution-item";
+import { IInventoryItem } from "./components/solution-contents/solution-contents";
+import { ISolutionItem as ISolutionItem1 } from "./components/solution-item/solution-item";
 import { IItemDetails } from "./components/solution-item-details/solution-item-details";
 import { IItemShare } from "./components/solution-item-sharing/solution-item-sharing";
 import { IOrganizationVariableItem } from "./components/solution-organization-variables/solution-organization-variables";
@@ -31,6 +32,11 @@ export namespace Components {
         "value": string;
     }
     interface SolutionConfiguration {
+        /**
+          * Contains the current solution item we are working with
+         */
+        "item": ISolutionItem;
+        "templates": any[];
         /**
           * Contains the translations for this component.
          */
@@ -279,6 +285,11 @@ declare namespace LocalJSX {
         "value": string;
     }
     interface SolutionConfiguration {
+        /**
+          * Contains the current solution item we are working with
+         */
+        "item"?: ISolutionItem;
+        "templates"?: any[];
         /**
           * Contains the translations for this component.
          */

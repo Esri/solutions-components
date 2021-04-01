@@ -58,34 +58,42 @@
         fetch("./data/solution-item-details-data.json"),
         fetch("./data/solution-template-data-data.json"),
         fetch("./data/solution-variables-data.json"),
-        fetch("./data/solution-organization-variables-data.json")
+        fetch("./data/solution-organization-variables-data.json"),
+        fetch("./data/election-outreach.json")
       ])
         .then(results => Promise.all(results.map(r => r.json())))
         .then(jsonResults => {
-          const contents = jsonResults[0].value;
-          const itemDetails = jsonResults[1].value;
-          const value = jsonResults[2].value;
-          const solVariables = jsonResults[3].value;
-          const orgVariables = jsonResults[4].value
-          demo.value = {
-            contents,
-            item: {
-              itemId: "1",
-              itemDetails,
-              data: {
-                value,
-                solVariables,
-                orgVariables
-              },
-              properties: {
-                value,
-                solVariables,
-                orgVariables
-              },
-              type: "Feature Service",
-              isResource: false
-            }
-          };
+          
+          // const contents = jsonResults[0].value;
+          // const itemDetails = jsonResults[1].value;
+          // const value = jsonResults[2].value;
+          // const solVariables = jsonResults[3].value;
+          // const orgVariables = jsonResults[4].value
+          // demo.value = {
+          //   contents,
+          //   item: {
+          //     itemId: "1",
+          //     itemDetails,
+          //     data: {
+          //       value,
+          //       solVariables,
+          //       orgVariables
+          //     },
+          //     properties: {
+          //       value,
+          //       solVariables,
+          //       orgVariables
+          //     },
+          //     type: "Feature Service",
+          //     isResource: false
+          //   }
+          // };
+
+
+          ////
+          //sol vars and org vars may be able to live at a higher level rather than in the item...
+          demo.templates = jsonResults[5].templates;
+
           document.getElementById("appContainer").style.opacity = "1";
         });
     });

@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Prop, VNode } from '@stencil/core';
-import { IInventoryItem } from '../../../src/components/solution-contents/solution-contents';
-import { ISolutionItem } from '../../../src/components/solution-item/solution-item';
-import "@esri/calcite-components";
+import { Component, Element, h, Host, Listen, Prop, VNode, Watch } from '@stencil/core';
+import { IInventoryItem } from '../solution-contents/solution-contents';
+import { ISolutionItem } from '../solution-item/solution-item';
+import { getSolutionConfiguration } from '../../utils/templates';
+
+import '@esri/calcite-components';
 
 export interface ISolutionConfiguration {
-  contents: IInventoryItem[],
-  item: ISolutionItem
+  contents: IInventoryItem[]
 }
 
 @Component({
@@ -53,15 +54,46 @@ export class SolutionConfiguration {
    * Contains the public value for this component.
    */
   @Prop({ mutable: true, reflect: true }) value: ISolutionConfiguration = {
-    contents: [],
-    item: {
-      itemId: "",
-      itemDetails: {},
-      isResource: false,
-      data: {},
-      properties: {},
-      type: ""
+    contents: []
+  };
+
+  // @Watch('value')
+  // valueSet(newValue: string, oldValue: string) {
+  //   console.log(`Value set: (new: ${newValue}) (old: ${oldValue})`);
+  // }
+
+  @Watch('value')
+  valueSet(newValue: ISolutionConfiguration, oldValue: ISolutionConfiguration) {
+    //console.log(`Value set: (new: ${newValue}) (old: ${oldValue})`);
+    if (newValue !== oldValue) {
+      if (newValue && newValue.contents && newValue.contents.length > 0) {
+        this.item = newValue.contents[0].solutionItem;
+      }
     }
+  }
+
+
+
+  @Prop({mutable: true, reflect: true}) templates: any[] = [];
+
+  @Watch('templates')
+  templatesSet(newValue: any[], oldValue: any[]) {
+    //console.log(`Value set: (new: ${newValue}) (old: ${oldValue})`);
+    if (newValue !== oldValue) {
+      this.value = getSolutionConfiguration(newValue);
+    }
+  }
+
+  /**
+   * Contains the current solution item we are working with
+   */
+  @Prop({ mutable: true }) item: ISolutionItem = {
+    itemId: "",
+    itemDetails: {},
+    isResource: false,
+    data: {},
+    properties: {},
+    type: ""
   };
 
   //--------------------------------------------------------------------------
@@ -69,6 +101,19 @@ export class SolutionConfiguration {
   //  Lifecycle
   //
   //--------------------------------------------------------------------------
+
+  // Testing using watch now
+  // use this or maybe willLoad??
+  // if this doesn't work we could maybe use @Watch...to watch the value prop...then on first set...use the first item
+  // componentDidLoad() {
+  //   console.log(`componentDidLoad: ${JSON.stringify(this.value)}`);
+  //   // set the first item after the first load..
+  //   // need to make sure we can expct this to be set...
+  //   if (this.value && this.value.contents && this.value.contents.length > 0) {
+  //     this.item = this.value.contents[0].solutionItem;
+  //   }
+  // };
+
 
   render(): VNode {
     return (
@@ -86,7 +131,7 @@ export class SolutionConfiguration {
                     <solution-contents id="configInventory" translations={this.translations} value={this.value.contents}></solution-contents>
                   </div>
                   <div class="config-item">
-                    <solution-item translations={this.translations} value={this.value.item}></solution-item>
+                    <solution-item translations={this.translations} value={this.item}></solution-item>
                   </div>
                 </div>
               </calcite-tab>
@@ -114,6 +159,10 @@ export class SolutionConfiguration {
   //
   //--------------------------------------------------------------------------
 
+  @Listen("solutionItemSelected", { target: 'window' })
+  _solutionItemSelected(event: CustomEvent): void {
+    this.item = event.detail;
+  }
   //--------------------------------------------------------------------------
   //
   //  Events

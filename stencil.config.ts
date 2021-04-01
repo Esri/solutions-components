@@ -8,7 +8,8 @@ export const config: Config = {
       type: 'dist',
       copy: [
         { src: 'assets/nls' },
-        { src: 'demos' }
+        { src: 'demos' },
+        { src: 'utils' }
       ]
     },
     {
