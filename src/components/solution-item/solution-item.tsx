@@ -65,6 +65,16 @@ export class SolutionItem {
   };
 
   /**
+ * Contains the solution based variables
+ */
+  @Prop({ mutable: true, reflect: true }) solutionVariables: any[] = [];
+
+  /**
+   * Contains the organization based variables
+   */
+  @Prop({ mutable: true, reflect: true }) organizationVariables: any[] = [];
+
+  /**
    * Contains the public type value for this component.
    * 
    */
@@ -123,6 +133,8 @@ export class SolutionItem {
         <solution-template-data
           instanceId={`-data-${this.value.itemId}`}
           isResource={this.value.isResource}
+          solutionVariables={this.solutionVariables}
+          organizationVariables={this.organizationVariables}
           translations={this.translations}
           value={this.value.data}
         ></solution-template-data>
@@ -130,6 +142,8 @@ export class SolutionItem {
       <calcite-tab class="config-tab">
         <solution-template-data
           instanceId={`-props-${this.value.itemId}`}
+          solutionVariables={this.solutionVariables}
+          organizationVariables={this.organizationVariables}
           translations={this.translations} 
           value={this.value.properties}
         ></solution-template-data>

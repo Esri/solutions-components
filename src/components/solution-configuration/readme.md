@@ -7,12 +7,14 @@
 
 ## Properties
 
-| Property       | Attribute      | Description                                            | Type                     | Default                                                                                                            |
-| -------------- | -------------- | ------------------------------------------------------ | ------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| `item`         | --             | Contains the current solution item we are working with | `ISolutionItem`          | `{     itemId: "",     itemDetails: {},     isResource: false,     data: {},     properties: {},     type: ""   }` |
-| `templates`    | --             |                                                        | `any[]`                  | `[]`                                                                                                               |
-| `translations` | `translations` | Contains the translations for this component.          | `any`                    | `{}`                                                                                                               |
-| `value`        | --             | Contains the public value for this component.          | `ISolutionConfiguration` | `{     contents: []   }`                                                                                           |
+| Property                | Attribute      | Description                                            | Type                     | Default                                                                                                            |
+| ----------------------- | -------------- | ------------------------------------------------------ | ------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `item`                  | --             | Contains the current solution item we are working with | `ISolutionItem`          | `{     itemId: "",     itemDetails: {},     isResource: false,     data: {},     properties: {},     type: ""   }` |
+| `organizationVariables` | --             | Contains the organization based variables              | `any[]`                  | `[]`                                                                                                               |
+| `solutionVariables`     | --             | Contains the solution based variables                  | `any[]`                  | `[]`                                                                                                               |
+| `templates`             | --             | Contains the raw templates from the solution item      | `any[]`                  | `[]`                                                                                                               |
+| `translations`          | `translations` | Contains the translations for this component.          | `any`                    | `{}`                                                                                                               |
+| `value`                 | --             | Contains the public value for this component.          | `ISolutionConfiguration` | `{     contents: []   }`                                                                                           |
 
 
 ## Dependencies

@@ -67,8 +67,8 @@
           // const contents = jsonResults[0].value;
           // const itemDetails = jsonResults[1].value;
           // const value = jsonResults[2].value;
-          // const solVariables = jsonResults[3].value;
-          // const orgVariables = jsonResults[4].value
+          const solVariables = jsonResults[3].value;
+          const orgVariables = jsonResults[4].value
           // demo.value = {
           //   contents,
           //   item: {
@@ -89,7 +89,8 @@
           //   }
           // };
 
-
+          demo.solutionVariables = solVariables;
+          demo.organizationVariables = orgVariables;
           ////
           //sol vars and org vars may be able to live at a higher level rather than in the item...
           demo.templates = jsonResults[5].templates;

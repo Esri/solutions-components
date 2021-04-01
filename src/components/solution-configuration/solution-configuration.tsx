@@ -17,7 +17,9 @@
 import { Component, Element, h, Host, Listen, Prop, VNode, Watch } from '@stencil/core';
 import { IInventoryItem } from '../solution-contents/solution-contents';
 import { ISolutionItem } from '../solution-item/solution-item';
-import { getSolutionConfiguration } from '../../utils/templates';
+import { IOrganizationVariableItem } from '../solution-organization-variables/solution-organization-variables';
+import { IVariableItem } from '../solution-variables/solution-variables';
+import { getInventoryItems } from '../../utils/templates';
 
 import '@esri/calcite-components';
 
@@ -56,15 +58,8 @@ export class SolutionConfiguration {
   @Prop({ mutable: true, reflect: true }) value: ISolutionConfiguration = {
     contents: []
   };
-
-  // @Watch('value')
-  // valueSet(newValue: string, oldValue: string) {
-  //   console.log(`Value set: (new: ${newValue}) (old: ${oldValue})`);
-  // }
-
   @Watch('value')
   valueSet(newValue: ISolutionConfiguration, oldValue: ISolutionConfiguration) {
-    //console.log(`Value set: (new: ${newValue}) (old: ${oldValue})`);
     if (newValue !== oldValue) {
       if (newValue && newValue.contents && newValue.contents.length > 0) {
         this.item = newValue.contents[0].solutionItem;
@@ -72,17 +67,26 @@ export class SolutionConfiguration {
     }
   }
 
-
-
+  /**
+   * Contains the raw templates from the solution item
+   */
   @Prop({mutable: true, reflect: true}) templates: any[] = [];
-
   @Watch('templates')
   templatesSet(newValue: any[], oldValue: any[]) {
-    //console.log(`Value set: (new: ${newValue}) (old: ${oldValue})`);
     if (newValue !== oldValue) {
-      this.value = getSolutionConfiguration(newValue);
+      this.value.contents = getInventoryItems(newValue);
     }
   }
+
+  /**
+   * Contains the solution based variables
+   */
+  @Prop({mutable: true, reflect: true}) solutionVariables: any[] = [];
+
+  /**
+   * Contains the organization based variables
+   */
+  @Prop({mutable: true, reflect: true}) organizationVariables: any[] = [];
 
   /**
    * Contains the current solution item we are working with
@@ -128,10 +132,19 @@ export class SolutionConfiguration {
               <calcite-tab class="config-tab" active>
                 <div class="config-solution">
                   <div class="config-inventory">
-                    <solution-contents id="configInventory" translations={this.translations} value={this.value.contents}></solution-contents>
+                    <solution-contents
+                      id="configInventory"
+                      translations={this.translations}
+                      value={this.value.contents}
+                    ></solution-contents>
                   </div>
                   <div class="config-item">
-                    <solution-item translations={this.translations} value={this.item}></solution-item>
+                    <solution-item 
+                      translations={this.translations}
+                      value={this.item}
+                      solutionVariables={this.solutionVariables}
+                      organizationVariables={this.organizationVariables}
+                    ></solution-item>
                   </div>
                 </div>
               </calcite-tab>

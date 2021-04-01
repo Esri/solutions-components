@@ -19,21 +19,12 @@
 */
 
 import { IItemDetails } from "../components/solution-item-details/solution-item-details";
-import { ISolutionConfiguration } from "../components/solution-configuration/solution-configuration";
 import { IInventoryItem } from "../components/solution-contents/solution-contents";
 
 //TODO need to do some filtering
 // items that are dependencies should not be shown as top level items
 
-export function getSolutionConfiguration(
-  templates: any[]
-): ISolutionConfiguration {
-  console.log(JSON.stringify(_getInventoryItems(templates)));
-
-  return { contents: _getInventoryItems(templates) };
-}
-
-function _getInventoryItems(
+export function getInventoryItems(
   templates: any[]
 ): IInventoryItem[] {
   return templates.map(t => _getItemFromTemplate(t, templates));
@@ -72,7 +63,7 @@ function _getDependencies(
   }, []);
 }
 
-export function _getItemDetails(
+function _getItemDetails(
   item: any,
   isGroup: boolean
 ): IItemDetails {

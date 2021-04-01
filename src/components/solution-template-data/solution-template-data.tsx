@@ -21,9 +21,7 @@ import { IVariableItem } from '../solution-variables/solution-variables';
 import { IResourceItem } from '../solution-resource-item/solution-resource-item';
 
 export interface ITemplateData {
-  orgVariables?: IOrganizationVariableItem[],
   resourceItem?: IResourceItem,
-  solVariables?: IVariableItem[],
   value?: any
 }
 
@@ -64,6 +62,16 @@ export class SolutionTemplateData {
    * This needs to be unique for each item and also for the props vs data of an item
    */
    @Prop({ mutable: true }) instanceId: string = "";
+
+     /**
+   * Contains the solution based variables
+   */
+  @Prop({mutable: true, reflect: true}) solutionVariables: IVariableItem[] = [];
+
+  /**
+   * Contains the organization based variables
+   */
+  @Prop({mutable: true, reflect: true}) organizationVariables: IOrganizationVariableItem[] = [];
 
   //--------------------------------------------------------------------------
   //
@@ -113,16 +121,26 @@ export class SolutionTemplateData {
     return <calcite-shell dir="ltr" theme="light">
       <calcite-shell-center-row slot="center-row" position="start" height-scale="l" width-scale="l" class="json-editor">
         <div class="solution-data-child-container padding-1">
-          <json-editor instanceId={this.instanceId} translations={this.translations} value={templateData.value}></json-editor>
+          <json-editor
+            instanceId={this.instanceId}
+            translations={this.translations}
+            value={templateData.value}
+          ></json-editor>
         </div>
       </calcite-shell-center-row>
       <calcite-shell-panel slot="contextual-panel" position="start" height-scale="l" width-scale="m">
         <div class="solution-data-child-container">
           <div class="org-vars">
-            <solution-organization-variables value={templateData.orgVariables} translations={this.translations}></solution-organization-variables>
+            <solution-organization-variables
+              value={this.organizationVariables}
+              translations={this.translations}
+            ></solution-organization-variables>
           </div>
           <div class="sol-vars">
-            <solution-variables value={templateData.solVariables} translations={this.translations}></solution-variables>
+            <solution-variables
+              value={this.solutionVariables}
+              translations={this.translations}
+            ></solution-variables>
           </div>
         </div>
       </calcite-shell-panel>
