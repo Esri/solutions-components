@@ -66,14 +66,14 @@ export class JsonEditor {
   /**
    * Contains the public value for this component.
    */
-  @Prop({ mutable: true, reflect: true }) value: any = {};
-  
+  @Prop({ mutable: true, reflect: true }) value: any = undefined;
+
   @Watch('value')
   valueSet(newValue: any, oldValue: any) {
     if (newValue !== oldValue) {
-      this._setValue(newValue);
+      this._setEditorValue(newValue);
       this._current = newValue;
-      if (this.original === {}) {
+      if (this.original === undefined) {
         this.original = newValue;
       }
     }
@@ -284,8 +284,8 @@ export class JsonEditor {
 
     this._editor?.container.remove();
 
-    this._current = "";
-    this.original = "";
+    this._current = undefined;
+    this.original = undefined;
   }
 
   /**
@@ -295,7 +295,7 @@ export class JsonEditor {
    */
   _cancelEdits(): void {
     this.value = this._current;
-    this._setValue(this.value);
+    this._setEditorValue(this.value);
     this._doneEditing();
   }
 
@@ -347,7 +347,7 @@ export class JsonEditor {
    * @protected
    */
   _saveEdits(): void {
-    this.value = this._editor?.getValue();
+    this.value = JSON.parse(this._editor?.getValue());
     this._current = this.value;
     this._doneEditing();
 
@@ -389,7 +389,7 @@ export class JsonEditor {
    *
    * @protected
    */
-  _setValue(v: any): void {
+  _setEditorValue(v: any): void {
     if (this._editor && v) {
       this._editor?.setValue(JSON.stringify(v, null, '\t'));
     }

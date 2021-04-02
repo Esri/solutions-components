@@ -11,7 +11,7 @@
 | ------------------------- | -------------- | --------------------------------------------- | -------- | ----------- |
 | `instanceId` _(required)_ | `instance-id`  | Contains the public id for this component.    | `string` | `undefined` |
 | `translations`            | `translations` | Contains the translations for this component. | `any`    | `{}`        |
-| `value`                   | `value`        | Contains the public value for this component. | `any`    | `{}`        |
+| `value`                   | `value`        | Contains the public value for this component. | `any`    | `undefined` |
 
 
 ## Events
