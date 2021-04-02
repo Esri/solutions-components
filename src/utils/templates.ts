@@ -21,13 +21,16 @@
 import { IItemDetails } from "../components/solution-item-details/solution-item-details";
 import { IInventoryItem } from "../components/solution-contents/solution-contents";
 
-//TODO need to do some filtering
-// items that are dependencies should not be shown as top level items
-
 export function getInventoryItems(
   templates: any[]
 ): IInventoryItem[] {
-  return templates.map(t => _getItemFromTemplate(t, templates));
+  const topLevelItemIds = _getTopLevelItemIds(templates);
+  return templates.reduce((prev, cur) => {
+    if (topLevelItemIds.indexOf(cur.itemId) > -1) {
+      prev.push(_getItemFromTemplate(cur, templates))
+    }
+    return prev;
+  }, []);
 }
 
 function _getItemFromTemplate(
@@ -43,7 +46,7 @@ function _getItemFromTemplate(
     solutionItem: {
       itemId: t.itemId,
       itemDetails: _getItemDetails(t.item, t.type === "Group"),
-      isResource: false, // TODO this should be removed and determined from the data
+      isResource: _getIsResource(t),
       data: t.data,
       properties: t.properties,
       type: t.type
@@ -76,4 +79,26 @@ function _getItemDetails(
     credits: !isGroup ? item.accessInformation || "" : "",
     termsOfUse: !isGroup ? item.licenseInfo || "" : ""
   };
+}
+
+function _getIsResource(
+  template: any
+): boolean {
+  return template.type !== "Group" && JSON.stringify(template.data) === "{}";
+}
+
+function _getTopLevelItemIds(templates: any[]) {
+  // Find the top-level nodes. Start with all nodes, then remove those that other nodes depend on
+  const topLevelItemCandidateIds = templates.map((template) => template.itemId);
+  templates.forEach((template) => {
+    (template.dependencies || []).forEach((dependencyId) => {
+      const iNode = topLevelItemCandidateIds.indexOf(dependencyId);
+      if (iNode >= 0) {
+        // Node is somebody's dependency, so remove the node from the list of top-level nodes
+        // If iNode == -1, then it's a shared dependency and it has already been removed
+        topLevelItemCandidateIds.splice(iNode, 1);
+      }
+    });
+  });
+  return topLevelItemCandidateIds;
 }
