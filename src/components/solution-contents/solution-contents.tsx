@@ -140,7 +140,6 @@ export class SolutionContents {
   private _treeItemSelected(
     solutionItem: ISolutionItem
   ): void {
-    console.log(JSON.stringify(solutionItem))
     this.solutionItemSelected.emit(solutionItem);
   }
 }
