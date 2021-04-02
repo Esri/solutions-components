@@ -135,12 +135,13 @@ export class SolutionContents {
   /**
    * Publishes the `solutionItemSelected` event containing `itemId`, the id of the selected item.
    *
-   * @param id Item id as reported by click event
+   * @param solutionItem the 
    * @param type Item type to understand if it's an item or group
    */
   private _treeItemSelected(
     solutionItem: ISolutionItem
   ): void {
+    console.log(JSON.stringify(solutionItem))
     this.solutionItemSelected.emit(solutionItem);
   }
 }
