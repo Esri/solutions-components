@@ -136,7 +136,7 @@ export class SolutionItem {
           solutionVariables={this.solutionVariables}
           organizationVariables={this.organizationVariables}
           translations={this.translations}
-          value={this.value.data}
+          value={{value: this.value.data}}
         ></solution-template-data>
       </calcite-tab>
       <calcite-tab class="config-tab">
@@ -145,7 +145,7 @@ export class SolutionItem {
           solutionVariables={this.solutionVariables}
           organizationVariables={this.organizationVariables}
           translations={this.translations} 
-          value={this.value.properties}
+          value={{value: this.value.properties}}
         ></solution-template-data>
       </calcite-tab>
     </calcite-tabs>

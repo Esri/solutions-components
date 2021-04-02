@@ -81,12 +81,12 @@ export class SolutionConfiguration {
   /**
    * Contains the solution based variables
    */
-  @Prop({mutable: true, reflect: true}) solutionVariables: any[] = [];
+  @Prop({mutable: true, reflect: true}) solutionVariables: IVariableItem[] = [];
 
   /**
    * Contains the organization based variables
    */
-  @Prop({mutable: true, reflect: true}) organizationVariables: any[] = [];
+  @Prop({mutable: true, reflect: true}) organizationVariables: IOrganizationVariableItem[] = [];
 
   /**
    * Contains the current solution item we are working with

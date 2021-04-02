@@ -35,7 +35,7 @@
  * N.B.: The search box on/off uses undocumented paths into the Ace library. Use care when upgrading Ace!
 */
 
-import { Component, Event, EventEmitter, Host, h, Listen, Prop, State } from '@stencil/core';
+import { Component, Event, EventEmitter, Host, h, Listen, Prop, State, Watch } from '@stencil/core';
 import { Ace } from "./assets/json-editor/ace/ace";
 const gAce = (window as any).ace;
 
@@ -66,7 +66,18 @@ export class JsonEditor {
   /**
    * Contains the public value for this component.
    */
-  @Prop({ mutable: true, reflect: true }) value!: string;
+  @Prop({ mutable: true, reflect: true }) value: any = {};
+  
+  @Watch('value')
+  valueSet(newValue: any, oldValue: any) {
+    if (newValue !== oldValue) {
+      this._setValue(newValue);
+      this._current = newValue;
+      if (this.original === {}) {
+        this.original = newValue;
+      }
+    }
+  }
 
   /**
    * Contains the public id for this component.
@@ -224,13 +235,6 @@ export class JsonEditor {
       });
       this._editor?.getSession().setUseWrapMode(true);
 
-      // Initialize the content
-      if (this.value) {
-        this._editor?.setValue(this.value);
-        this._current = this.value;
-        this.original = this.value;
-      }
-
       // listen for changes in editor
       this._editor?.on("change", this._validateSave.bind(this));
 
@@ -291,7 +295,7 @@ export class JsonEditor {
    */
   _cancelEdits(): void {
     this.value = this._current;
-    this._editor?.setValue(this._current);
+    this._setValue(this.value);
     this._doneEditing();
   }
 
@@ -378,5 +382,16 @@ export class JsonEditor {
     this._editor?.gotoLine(0, 0, false);
 
     this._isEditing = true;
+  }
+
+  /**
+   * Handles setting the editors value
+   *
+   * @protected
+   */
+  _setValue(v: any): void {
+    if (this._editor && v) {
+      this._editor?.setValue(JSON.stringify(v, null, '\t'));
+    }
   }
 }
