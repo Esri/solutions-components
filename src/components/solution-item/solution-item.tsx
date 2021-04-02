@@ -16,7 +16,7 @@
 
 import { Component, Element, h, Host, Prop, VNode } from '@stencil/core';
 import { ITemplateData } from '../solution-template-data/solution-template-data';
-import "@esri/calcite-components";
+import '@esri/calcite-components';
 
 export interface ISolutionItem {
   itemId: string,

@@ -15,8 +15,8 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode } from '@stencil/core';
-import { ISolutionItem } from "../solution-item/solution-item";
-import "@esri/calcite-components";
+import { ISolutionItem } from '../solution-item/solution-item';
+import '@esri/calcite-components';
 
 export interface IInventoryItem {
   id: string;
@@ -24,8 +24,7 @@ export interface IInventoryItem {
   dependencies?: IInventoryItem[];
   type: string;
   typeKeywords: string[];
-  solutionItem: ISolutionItem // May be able to rethink this and just put props here
-  // for now I'll just leave so we have minimal changes to see this in action
+  solutionItem: ISolutionItem
 }
 
 @Component({

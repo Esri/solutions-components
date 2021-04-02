@@ -106,19 +106,6 @@ export class SolutionConfiguration {
   //
   //--------------------------------------------------------------------------
 
-  // Testing using watch now
-  // use this or maybe willLoad??
-  // if this doesn't work we could maybe use @Watch...to watch the value prop...then on first set...use the first item
-  // componentDidLoad() {
-  //   console.log(`componentDidLoad: ${JSON.stringify(this.value)}`);
-  //   // set the first item after the first load..
-  //   // need to make sure we can expct this to be set...
-  //   if (this.value && this.value.contents && this.value.contents.length > 0) {
-  //     this.item = this.value.contents[0].solutionItem;
-  //   }
-  // };
-
-
   render(): VNode {
     return (
       <Host>

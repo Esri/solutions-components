@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, h, Host, Listen, Prop, VNode } from '@stencil/core';
-import "@esri/calcite-components";
+import '@esri/calcite-components';
 
 export interface IItemDetails {
   thumbnail: string;

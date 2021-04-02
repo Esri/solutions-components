@@ -36,7 +36,7 @@
 */
 
 import { Component, Event, EventEmitter, Host, h, Listen, Prop, State, Watch } from '@stencil/core';
-import { Ace } from "./assets/json-editor/ace/ace";
+import { Ace } from './assets/json-editor/ace/ace';
 const gAce = (window as any).ace;
 
 @Component({

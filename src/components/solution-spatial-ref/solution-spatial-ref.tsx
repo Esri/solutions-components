@@ -15,8 +15,8 @@
  */
 
 import { Component, Element, h, Host, Method, Prop, State, Watch, VNode } from '@stencil/core';
-import "@esri/calcite-components";
-import { IWkidDescription, wkids } from "./spatialreferences";
+import '@esri/calcite-components';
+import { IWkidDescription, wkids } from './spatialreferences';
 
 export interface ISpatialRefRepresentation {
   display: string;
