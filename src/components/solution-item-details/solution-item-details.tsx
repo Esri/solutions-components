@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, h, Host, Listen, Prop, VNode } from '@stencil/core';
-import "@esri/calcite-components";
+import '@esri/calcite-components';
 
 export interface IItemDetails {
   thumbnail: string;
@@ -111,7 +111,7 @@ export class SolutionItemDetails {
 
           <calcite-label>{this.translations.tags}
             <label id="item-tags-label">
-              <calcite-input id="item-tags" value={(this.value.tags || []).join(",")}></calcite-input>
+              <calcite-input id="item-tags" value={(this.value.tags && Array.isArray(this.value.tags) ? this.value.tags : []).join(",")}></calcite-input>
             </label>
           </calcite-label>
 

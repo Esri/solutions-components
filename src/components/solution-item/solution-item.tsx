@@ -16,7 +16,7 @@
 
 import { Component, Element, h, Host, Prop, VNode } from '@stencil/core';
 import { ITemplateData } from '../solution-template-data/solution-template-data';
-import "@esri/calcite-components";
+import '@esri/calcite-components';
 
 export interface ISolutionItem {
   itemId: string,
@@ -63,6 +63,16 @@ export class SolutionItem {
     properties: {},
     type: ""
   };
+
+  /**
+ * Contains the solution based variables
+ */
+  @Prop({ mutable: true, reflect: true }) solutionVariables: any[] = [];
+
+  /**
+   * Contains the organization based variables
+   */
+  @Prop({ mutable: true, reflect: true }) organizationVariables: any[] = [];
 
   /**
    * Contains the public type value for this component.
@@ -123,15 +133,19 @@ export class SolutionItem {
         <solution-template-data
           instanceId={`-data-${this.value.itemId}`}
           isResource={this.value.isResource}
+          solutionVariables={this.solutionVariables}
+          organizationVariables={this.organizationVariables}
           translations={this.translations}
-          value={this.value.data}
+          value={{value: this.value.data}}
         ></solution-template-data>
       </calcite-tab>
       <calcite-tab class="config-tab">
         <solution-template-data
           instanceId={`-props-${this.value.itemId}`}
+          solutionVariables={this.solutionVariables}
+          organizationVariables={this.organizationVariables}
           translations={this.translations} 
-          value={this.value.properties}
+          value={{value: this.value.properties}}
         ></solution-template-data>
       </calcite-tab>
     </calcite-tabs>

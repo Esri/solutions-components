@@ -1,114 +1,104 @@
 {
-  "value": [{
-    "id": "1",
-    "title": "Dashboard 1",
-    "type": "Dashboard",
-    "typeKeywords": ["Dashboard", "Operations Dashboard"]
-  }, {
-    "id": "2",
-     "title": "Dashboard 2",
-    "dependencies": [{
-      "id": "3",
-      "title": "Map 1",
-      "dependencies": [{
-        "id": "4",
-        "title": "View 1",
-        "dependencies": [{
-          "id": "5",
-          "title": "Feature Service 1",
-          "type": "Feature Service",
-          "typeKeywords": [
-            "ArcGIS Server",
-            "Data",
-            "Feature Access",
-            "Feature Service",
-            "Metadata",
-            "Multilayer",
-            "Service",
-            "Hosted Service"
-          ]
-        }],
-        "type": "Feature Service",
-        "typeKeywords": [
-          "ArcGIS Server",
-          "Data",
-          "Feature Access",
-          "Feature Service",
-          "Multi Services View",
-          "Service",
-          "Singlelayer",
-          "Hosted Service",
-          "View Service"
-        ]
-      }],
-      "type": "Web Map",
+  "value": [
+    {
+      "id": "1",
+      "title": "Dashboard 1",
+      "type": "Dashboard",
       "typeKeywords": [
-        "ArcGIS Online",
-        "Collector",
-        "Data Editing",
-        "Explorer Web Map",
-        "Map",
-        "Online Map",
-        "Web Map"
-      ]
-    }],
-    "type": "Dashboard",
-    "typeKeywords": ["Dashboard", "Operations Dashboard"]
-  }, {
-    "id": "6",
-    "title": "Application 1",
-    "dependencies": [{
-      "id": "7",
-      "title": "Group 1",
-      "dependencies": [{
-        "id": "8",
-        "title": "Map 2",
-        "dependencies": [{
-          "id": "9",
-          "title": "Feature Service 2",
-          "type": "Feature Service",
-          "typeKeywords": [
-            "ArcGIS Server",
-            "Data",
-            "Feature Access",
-            "Feature Service",
-            "Metadata",
-            "Multilayer",
-            "Service",
-            "Hosted Service"
-          ]
-        }, {
-          "id": "10",
-          "title": "Feature Service 3",
-          "type": "Feature Service",
-          "typeKeywords": [
-            "ArcGIS Server",
-            "Data",
-            "Feature Access",
-            "Feature Service",
-            "Metadata",
-            "Multilayer",
-            "Service",
-            "Hosted Service"
-          ]
-        }, {
-          "id": "11",
-          "title": "Map 3",
-          "dependencies": [{
-            "id": "12",
-            "title": "Feature Service 4",
-            "type": "Feature Service",
-            "typeKeywords": [
-              "ArcGIS Server",
-              "Data",
-              "Feature Access",
-              "Feature Service",
-              "Metadata",
-              "Multilayer",
-              "Service",
-              "Hosted Service"
-            ]
-          }],
+        "Dashboard",
+        "Operations Dashboard"
+      ],
+      "solutionItem": {
+        "itemId": "1",
+        "itemDetails": {
+          "thumbnail": "*.png",
+          "title": "Dashboard 1",
+          "snippet": "",
+          "description": "",
+          "tags": [],
+          "credits": "",
+          "termsOfUse": ""
+        },
+        "isResource": false,
+        "data": null,
+        "properties": {},
+        "type": "Dashboard"
+      }
+    },
+    {
+      "id": "2",
+      "title": "Dashboard 2",
+      "dependencies": [
+        {
+          "id": "3",
+          "title": "Map 1",
+          "dependencies": [
+            {
+              "id": "4",
+              "title": "View 1",
+              "dependencies": [
+                {
+                  "id": "5",
+                  "title": "Feature Service 1",
+                  "type": "Feature Service",
+                  "typeKeywords": [
+                    "ArcGIS Server",
+                    "Data",
+                    "Feature Access",
+                    "Feature Service",
+                    "Metadata",
+                    "Multilayer",
+                    "Service",
+                    "Hosted Service"
+                  ],
+                  "solutionItem": {
+                    "itemId": "5",
+                    "itemDetails": {
+                      "thumbnail": "*.png",
+                      "title": "Feature Service 1",
+                      "snippet": "",
+                      "description": "",
+                      "tags": [],
+                      "credits": "",
+                      "termsOfUse": ""
+                    },
+                    "isResource": false,
+                    "data": null,
+                    "properties": {},
+                    "type": "Feature Service"
+                  }
+                }
+              ],
+              "type": "Feature Service",
+              "typeKeywords": [
+                "ArcGIS Server",
+                "Data",
+                "Feature Access",
+                "Feature Service",
+                "Multi Services View",
+                "Service",
+                "Singlelayer",
+                "Hosted Service",
+                "View Service"
+              ],
+              "solutionItem": {
+                "itemId": "4",
+                "itemDetails": {
+                  "thumbnail": "*.png",
+                  "title": "View 1",
+                  "snippet": "",
+                  "description": "",
+                  "tags": [],
+                  "credits": "",
+                  "termsOfUse": ""
+                },
+                "isResource": false,
+                "data": null,
+                "properties": {},
+                "type": "Feature Service"
+              }
+            }
+          ],
           "type": "Web Map",
           "typeKeywords": [
             "ArcGIS Online",
@@ -118,42 +108,304 @@
             "Map",
             "Online Map",
             "Web Map"
-          ]
-        }],
-        "type": "Web Map",
-        "typeKeywords": [
-          "ArcGIS Online",
-          "Collector",
-          "Data Editing",
-          "Explorer Web Map",
-          "Map",
-          "Online Map",
-          "Web Map"
-        ]
-      }],
-      "type": "Group",
-      "typeKeywords": []
-    }],
-    "type": "QuickCapture Project",
-    "typeKeywords": [
-      "QuickCapture",
-      "QuickCapture Project"
-    ]
-  }, {
-    "id": "13",
-    "title": "Notebook 1",
-    "type": "Notebook",
-    "typeKeywords": []
-  }, {
-    "id": "14",
-    "title": "Survey 1",
-    "type": "Form",
-    "typeKeywords": [
-      "Form",
-      "Ready To Use",
-      "Survey123",
-      "Survey123 Connect",
-      "xForm"
-    ]
-  }]
+          ],
+          "solutionItem": {
+            "itemId": "3",
+            "itemDetails": {
+              "thumbnail": "*.png",
+              "title": "Map 1",
+              "snippet": "",
+              "description": "",
+              "tags": [],
+              "credits": "",
+              "termsOfUse": ""
+            },
+            "isResource": false,
+            "data": null,
+            "properties": {},
+            "type": "Web Map"
+          }
+        }
+      ],
+      "type": "Dashboard",
+      "typeKeywords": [
+        "Dashboard",
+        "Operations Dashboard"
+      ],
+      "solutionItem": {
+        "itemId": "2",
+        "itemDetails": {
+          "thumbnail": "*.png",
+          "title": "Dashboard 2",
+          "snippet": "",
+          "description": "",
+          "tags": [],
+          "credits": "",
+          "termsOfUse": ""
+        },
+        "isResource": false,
+        "data": null,
+        "properties": {},
+        "type": "Dashboard"
+      }
+    },
+    {
+      "id": "6",
+      "title": "Application 1",
+      "dependencies": [
+        {
+          "id": "7",
+          "title": "Group 1",
+          "dependencies": [
+            {
+              "id": "8",
+              "title": "Map 2",
+              "dependencies": [
+                {
+                  "id": "9",
+                  "title": "Feature Service 2",
+                  "type": "Feature Service",
+                  "typeKeywords": [
+                    "ArcGIS Server",
+                    "Data",
+                    "Feature Access",
+                    "Feature Service",
+                    "Metadata",
+                    "Multilayer",
+                    "Service",
+                    "Hosted Service"
+                  ],
+                  "solutionItem": {
+                    "itemId": "9",
+                    "itemDetails": {
+                      "thumbnail": "*.png",
+                      "title": "Feature Service 1",
+                      "snippet": "",
+                      "description": "",
+                      "tags": [],
+                      "credits": "",
+                      "termsOfUse": ""
+                    },
+                    "isResource": false,
+                    "data": null,
+                    "properties": {},
+                    "type": "Feature Service"
+                  }
+                },
+                {
+                  "id": "10",
+                  "title": "Feature Service 3",
+                  "type": "Feature Service",
+                  "typeKeywords": [
+                    "ArcGIS Server",
+                    "Data",
+                    "Feature Access",
+                    "Feature Service",
+                    "Metadata",
+                    "Multilayer",
+                    "Service",
+                    "Hosted Service"
+                  ],
+                  "solutionItem": {
+                    "itemId": "10",
+                    "itemDetails": {
+                      "thumbnail": "*.png",
+                      "title": "Feature Service 3",
+                      "snippet": "",
+                      "description": "",
+                      "tags": [],
+                      "credits": "",
+                      "termsOfUse": ""
+                    },
+                    "isResource": false,
+                    "data": null,
+                    "properties": {},
+                    "type": "Feature Service"
+                  }
+                },
+                {
+                  "id": "11",
+                  "title": "Map 3",
+                  "dependencies": [
+                    {
+                      "id": "12",
+                      "title": "Feature Service 4",
+                      "type": "Feature Service",
+                      "typeKeywords": [
+                        "ArcGIS Server",
+                        "Data",
+                        "Feature Access",
+                        "Feature Service",
+                        "Metadata",
+                        "Multilayer",
+                        "Service",
+                        "Hosted Service"
+                      ],
+                      "solutionItem": {
+                        "itemId": "12",
+                        "itemDetails": {
+                          "thumbnail": "*.png",
+                          "title": "Feature Service 4",
+                          "snippet": "",
+                          "description": "",
+                          "tags": [],
+                          "credits": "",
+                          "termsOfUse": ""
+                        },
+                        "isResource": false,
+                        "data": null,
+                        "properties": {},
+                        "type": "Feature Service"
+                      }
+                    }
+                  ],
+                  "type": "Web Map",
+                  "typeKeywords": [
+                    "ArcGIS Online",
+                    "Collector",
+                    "Data Editing",
+                    "Explorer Web Map",
+                    "Map",
+                    "Online Map",
+                    "Web Map"
+                  ],
+                  "solutionItem": {
+                    "itemId": "9",
+                    "itemDetails": {
+                      "thumbnail": "*.png",
+                      "title": "Feature Service 1",
+                      "snippet": "",
+                      "description": "",
+                      "tags": [],
+                      "credits": "",
+                      "termsOfUse": ""
+                    },
+                    "isResource": false,
+                    "data": null,
+                    "properties": {},
+                    "type": "Feature Service"
+                  }
+                }
+              ],
+              "type": "Web Map",
+              "typeKeywords": [
+                "ArcGIS Online",
+                "Collector",
+                "Data Editing",
+                "Explorer Web Map",
+                "Map",
+                "Online Map",
+                "Web Map"
+              ],
+              "solutionItem": {
+                "itemId": "8",
+                "itemDetails": {
+                  "thumbnail": "*.png",
+                  "title": "Map 2",
+                  "snippet": "",
+                  "description": "",
+                  "tags": [],
+                  "credits": "",
+                  "termsOfUse": ""
+                },
+                "isResource": false,
+                "data": null,
+                "properties": {},
+                "type": "Web Map"
+              }
+            }
+          ],
+          "type": "Group",
+          "typeKeywords": [],
+          "solutionItem": {
+            "itemId": "7",
+            "itemDetails": {
+              "thumbnail": "*.png",
+              "title": "Group 1",
+              "snippet": "",
+              "description": "",
+              "tags": [],
+              "credits": "",
+              "termsOfUse": ""
+            },
+            "isResource": false,
+            "data": null,
+            "properties": {},
+            "type": "Group"
+          }
+        }
+      ],
+      "type": "QuickCapture Project",
+      "typeKeywords": [
+        "QuickCapture",
+        "QuickCapture Project"
+      ],
+      "solutionItem": {
+        "itemId": "6",
+        "itemDetails": {
+          "thumbnail": "*.png",
+          "title": "Application 1",
+          "snippet": "",
+          "description": "",
+          "tags": [],
+          "credits": "",
+          "termsOfUse": ""
+        },
+        "isResource": false,
+        "data": null,
+        "properties": {},
+        "type": "Quick Capture Project"
+      }
+    },
+    {
+      "id": "13",
+      "title": "Notebook 1",
+      "type": "Notebook",
+      "typeKeywords": [],
+      "solutionItem": {
+        "itemId": "13",
+        "itemDetails": {
+          "thumbnail": "*.png",
+          "title": "Notebook 1",
+          "snippet": "",
+          "description": "",
+          "tags": [],
+          "credits": "",
+          "termsOfUse": ""
+        },
+        "isResource": false,
+        "data": null,
+        "properties": {},
+        "type": "Notebook"
+      }
+    },
+    {
+      "id": "14",
+      "title": "Survey 1",
+      "type": "Form",
+      "typeKeywords": [
+        "Form",
+        "Ready To Use",
+        "Survey123",
+        "Survey123 Connect",
+        "xForm"
+      ],
+      "solutionItem": {
+        "itemId": "14",
+        "itemDetails": {
+          "thumbnail": "*.png",
+          "title": "Survey 1",
+          "snippet": "",
+          "description": "",
+          "tags": [],
+          "credits": "",
+          "termsOfUse": ""
+        },
+        "isResource": false,
+        "data": null,
+        "properties": {},
+        "type": "Form"
+      }
+    }
+  ]
 }

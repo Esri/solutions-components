@@ -60,11 +60,9 @@
       ])
         .then(results => Promise.all(results.map(r => r.json())))
         .then(jsonResults => {
-          demo.value = {
-            value: jsonResults[0].value,
-            solVariables: jsonResults[1].value,
-            orgVariables: jsonResults[2].value
-          };
+          demo.value = { value: jsonResults[0].value };
+          demo.solutionVariables = jsonResults[1].value;
+          demo.organizationVariables = jsonResults[2].value;
           document.getElementById("appContainer").style.opacity = "1";
         });
     });

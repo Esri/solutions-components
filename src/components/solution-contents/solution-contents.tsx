@@ -15,7 +15,8 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode } from '@stencil/core';
-import "@esri/calcite-components";
+import { ISolutionItem } from '../solution-item/solution-item';
+import '@esri/calcite-components';
 
 export interface IInventoryItem {
   id: string;
@@ -23,6 +24,7 @@ export interface IInventoryItem {
   dependencies?: IInventoryItem[];
   type: string;
   typeKeywords: string[];
+  solutionItem: ISolutionItem
 }
 
 @Component({
@@ -77,7 +79,7 @@ export class SolutionContents {
     const hierarchy = objs.map(obj => {
       if (obj.dependencies && obj.dependencies.length > 0) {
         return (
-          <calcite-tree-item onClick={() => this._treeItemSelected(obj.id, obj.type)}>
+          <calcite-tree-item onClick={() => this._treeItemSelected(obj.solutionItem)}>
             <solution-item-icon type={obj.type} typeKeywords={obj.typeKeywords}></solution-item-icon>
             {obj.title}
             <calcite-tree slot="children">
@@ -87,7 +89,7 @@ export class SolutionContents {
         );
       } else {
         return (
-          <calcite-tree-item onClick={() => this._treeItemSelected(obj.id, obj.type)}>
+          <calcite-tree-item onClick={() => this._treeItemSelected(obj.solutionItem)}>
             <solution-item-icon type={obj.type} typeKeywords={obj.typeKeywords}></solution-item-icon>
             {obj.title}
           </calcite-tree-item>
@@ -132,13 +134,12 @@ export class SolutionContents {
   /**
    * Publishes the `solutionItemSelected` event containing `itemId`, the id of the selected item.
    *
-   * @param id Item id as reported by click event
+   * @param solutionItem the 
    * @param type Item type to understand if it's an item or group
    */
-  private _treeItemSelected(id: string, type: string): void {
-    this.solutionItemSelected.emit({
-      itemId: id,
-      type
-    });
+  private _treeItemSelected(
+    solutionItem: ISolutionItem
+  ): void {
+    this.solutionItemSelected.emit(solutionItem);
   }
 }
