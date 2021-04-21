@@ -53,3 +53,48 @@ html[dir="rtl"] .edit-button {
 .edit-width {
   width: 100%;
 }
+
+/* NEW CSS FOR MONACO */
+.edit-parent {
+  width: 100vw;
+  height: calc(100vh - 16px);
+  margin: 0px;
+  padding: 1rem;
+  max-height: 100vh;
+  float: left;
+  box-sizing: border-box;
+}
+
+.edit-container {
+  width: 100%;
+  height: calc(100% - 100px);
+  border: 1px solid grey;
+}
+
+.btn-container {
+  width: 20%;
+  height: calc(100vh - 16px);
+  margin: 0px;
+  padding: 0px;
+  float: right;
+}
+
+.btn {
+  height: 25px;
+  width: 120px;
+  display: flex;
+  margin-bottom: 1rem;
+  justify-content: center;
+}
+
+.select-ctrl {
+  margin-bottom: 1rem;
+}
+
+.all-edits {
+  margin-top: 4rem;
+}
+
+.not-visible {
+  display: none;
+}

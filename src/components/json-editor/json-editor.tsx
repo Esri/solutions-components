@@ -15,7 +15,7 @@
  */
 
 /**
- * Encapsulates the Ace (Ajax.org Cloud9 Editor; https://github.com/ajaxorg/ace) editor into a
+ * Encapsulates the Monaco Editor (https://microsoft.github.io/monaco-editor/) into a
  * web component for JSON content.
  *
  * Attributes:
@@ -30,9 +30,7 @@
  *
  * `instanceId` attribute and `value` are required
  *
- * Component doesn't use the shadow root because of the way that Ace is loaded.
  *
- * N.B.: The search box on/off uses undocumented paths into the Ace library. Use care when upgrading Ace!
 */
 
 import { Component, Event, EventEmitter, Host, h, Listen, Prop, State, Watch } from '@stencil/core';
@@ -66,14 +64,26 @@ export class JsonEditor {
    */
   @Prop({ mutable: true, reflect: true }) value: any = undefined;
 
+  /**
+   * Contains a public value to indicate if the model has any errors
+   * that would prevent saving it.
+   */
+  @Prop({ mutable: true, reflect: true }) hasErrors: boolean = false;
+
+  /**
+   * Contains the public model for this component.
+   */
+  @Prop({ mutable: true, reflect: true }) model: monaco.editor.ITextModel;
+
   @Watch('value')
   valueSet(newValue: any, oldValue: any) {
     if (newValue !== oldValue) {
-      this._setEditorValue(newValue);
-      this._current = newValue;
-      if (this.original === undefined) {
+      // this._setEditorValue(newValue);
+      // this._current = newValue;
+      if (this.original === undefined || this.original === "") {
         this.original = newValue;
       }
+      this._initEditor();
     }
   }
 
@@ -115,6 +125,43 @@ export class JsonEditor {
               >
                 <calcite-icon icon="pencil" scale="s"></calcite-icon>
               </calcite-button>
+              {/* undo */}
+              <calcite-button
+                id={`${this.instanceId}-undo`}
+                color="blue"
+                appearance="solid"
+                title={this.translations.undo}
+                onClick={() => this._undo()}
+                scale="s"
+                class="edit-button"
+              >
+                <calcite-icon icon="undo" scale="s"></calcite-icon>
+              </calcite-button>
+              {/* redo */}
+              <calcite-button
+                id={`${this.instanceId}-redo`}
+                color="blue"
+                appearance="solid"
+                title={this.translations.redo}
+                onClick={() => this._redo()}
+                scale="s"
+                class="edit-button"
+              >
+                <calcite-icon icon="redo" scale="s"></calcite-icon>
+              </calcite-button>
+              {/* diff */}
+              <calcite-button
+                id={`${this.instanceId}-diff`}
+                color="blue"
+                appearance="solid"
+                title={this.translations.diff}
+                onClick={() => this._diff()}
+                scale="s"
+                class="edit-button"
+              >
+                <calcite-icon icon="compare" scale="s"></calcite-icon>
+              </calcite-button>
+
               <calcite-button
                 id={`${this.instanceId}-search`}
                 appearance="outline"
@@ -152,8 +199,9 @@ export class JsonEditor {
               </calcite-button>
             </div>
           </div>
-          <div class="editor-text">
-            <div id={`${this.instanceId}-editor`} class="edit-width"></div>
+          <div class="edit-parent">
+            <div id="container" class="edit-container"></div>
+            <div id="diff-container" class="edit-container not-visible"></div>
           </div>
         </div>
       </Host>
@@ -162,7 +210,6 @@ export class JsonEditor {
 
   componentDidLoad(): void {
     this._initEditor();
-    console.log(monaco.editor);
   }
 
   disconnectedCallback(): void {
@@ -175,7 +222,10 @@ export class JsonEditor {
   //
   //--------------------------------------------------------------------------
 
-  private _editor: Ace.Editor | undefined; // have to use `undefined` because we're not setting editor in constructor
+  private _editor: any;
+  private _diffEditor: any;
+  private _useDiffEditor: boolean = false;
+  private currentModel: any;
   private _startEditingBtnHandler: any;
   private _searchBtnHandler: any;
   private _cancelEditsBtnHandler: any;
@@ -192,14 +242,14 @@ export class JsonEditor {
   @Listen("organizationVariableSelected", { target: 'window' })
   organizationVariableSelected(event: CustomEvent): void {
     if (this._isEditing) {
-      this._editor.session.replace(this._editor.selection.getRange(), event.detail.value);
+      this._insertValue(event.detail.value);
     }
   }
 
   @Listen("solutionVariableSelected", { target: 'window' })
   solutionVariableSelected(event: CustomEvent): void {
     if (this._isEditing) {
-      this._editor.session.replace(this._editor.selection.getRange(), event.detail.value);
+      this._insertValue(event.detail.value);
     }
   }
 
@@ -224,34 +274,147 @@ export class JsonEditor {
    */
   _initEditor(): void {
     // Set up embedded editor
-    if (gAce) {
-      this._editor = gAce.edit(this.instanceId + "-editor");
-      this._editor?.setOptions({
-        maxLines: Infinity,
-        mode: "ace/mode/json",
-        theme: "ace/theme/tomorrow",
-        readOnly: true
-      });
-      this._editor?.getSession().setUseWrapMode(true);
+    // if (gAce) {
+    //   this._editor = gAce.edit(this.instanceId + "-editor");
+    //   this._editor?.setOptions({
+    //     maxLines: Infinity,
+    //     mode: "ace/mode/json",
+    //     theme: "ace/theme/tomorrow",
+    //     readOnly: true
+    //   });
+    //   this._editor?.getSession().setUseWrapMode(true);
 
-      // listen for changes in editor
-      this._editor?.on("change", this._validateSave.bind(this));
+    //   // listen for changes in editor
+    //   this._editor?.on("change", this._validateSave.bind(this));
 
-      // errors are stored as annotations
-      // this will allow us to only enable save when no errors are present
-      // unsure why I couldn't use the on pattern
-      this._editor?.session.addEventListener("changeAnnotation", this._validateSave.bind(this));
+    //   // errors are stored as annotations
+    //   // this will allow us to only enable save when no errors are present
+    //   // unsure why I couldn't use the on pattern
+    //   this._editor?.session.addEventListener("changeAnnotation", this._validateSave.bind(this));
 
-      // Provide an a11y way to get out of the edit window
-      this._editor?.commands.addCommand({
-        name: 'escape',
-        bindKey: { win: 'esc', mac: 'esc' },
-        exec: function (editor: any) {
-          editor.blur();
+    //   // Provide an a11y way to get out of the edit window
+    //   this._editor?.commands.addCommand({
+    //     name: 'escape',
+    //     bindKey: { win: 'esc', mac: 'esc' },
+    //     exec: function (editor: any) {
+    //       editor.blur();
+    //     },
+    //     readOnly: false
+    //   });
+    // }
+    ///////////////////////////////////////////////////////////////
+    if (monaco && monaco.editor && this.value) {
+      this.model = monaco.editor.createModel(JSON.stringify(JSON.parse(this.value), null, '\t'), "json")
+      this._editor = monaco.editor.create(document.getElementById('container'), {
+        model: this.model,
+        language: 'json',
+        readOnly: true,
+        theme: "vs-dark",
+        minimap: {
+          enabled: false
         },
-        readOnly: false
+        automaticLayout: true
+      });
+
+      //this._editor.updateOptions({ tabSize: 2 });
+
+      this.currentModel = this._editor.getModel();
+
+      this.currentModel.onDidChangeContent(this._onEditorChange);
+      this._editor.onDidChangeModelDecorations(this._onDecorationsChange);
+
+      //setup diff editor
+      this._diffEditor = monaco.editor.createDiffEditor(document.getElementById("diff-container"), {
+        automaticLayout: true
+      });
+      const v = JSON.stringify(JSON.parse(this.original), null, '\t');
+      this._diffEditor.setModel({
+        original: monaco.editor.createModel(v, "json"),
+        modified: this.currentModel
       });
     }
+  }
+
+  _onEditorChange(): void {
+    this._toggleUndoRedo();
+  }
+
+  _onDecorationsChange(): void {
+    const model = this._editor.getModel();
+    if (model === null) {
+      return;
+    }
+
+    const owner = model.getModeId();
+    const markers = monaco.editor.getModelMarkers({ owner });
+
+    this.hasErrors = markers.length > 0;
+  }
+
+  _undo(): void {
+    if (this.currentModel?.canUndo()) {
+      this.currentModel.undo();
+      this._toggleUndoRedo();
+    }
+  }
+
+  _redo(): void {
+    if (this.currentModel?.canRedo()) {
+      this.currentModel.redo();
+      this._toggleUndoRedo();
+    }
+  }
+
+  _diff(): void {
+    this._useDiffEditor = !this._useDiffEditor;
+    let diffContainer = document.getElementById("diff-container");
+    let container = document.getElementById("container");
+    if (this._useDiffEditor) {
+      this._diffEditor.setModel({
+        original: monaco.editor.createModel(JSON.stringify(JSON.parse(this.original), null, '\t'), "json"),
+        modified: this._editor.getModel()
+      });
+      diffContainer.classList.remove("not-visible");
+      container.classList.add("not-visible");
+    } else {
+      diffContainer.classList.add("not-visible");
+      container.classList.remove("not-visible");
+    }
+  }
+
+  _toggleUndoRedo(): void {
+    if (this.currentModel?.canUndo()) {
+      this._enableButton(`${this.instanceId}-undo`);
+      //this._enableButton(`${this.instanceId}-save`);
+    } else {
+      this._disableButton(`${this.instanceId}-undo`);
+    }
+
+    if (this.currentModel?.canRedo()) {
+      this._enableButton(`${this.instanceId}-redo`);
+    } else {
+      this._disableButton(`${this.instanceId}-redo`);
+    }
+
+    if (this.currentModel?.canUndo() || this.currentModel?.canRedo()) {
+      this._enableButton(`${this.instanceId}-reset`);
+    }
+  }
+
+  _insertValue(v): void {
+    const editor: any = this._getEditor();
+    const range = editor.getSelection();
+    // use pushEditOperations so it will push to the undo stack
+    this.currentModel.pushEditOperations([],[{
+      forceMoveMarkers: true,
+      text: v,
+      range
+    }]);
+    editor.revealRange(range);
+  }
+
+  _getEditor(): any {
+    return this._useDiffEditor ? this._diffEditor : this._editor;
   }
 
   /**
@@ -261,12 +424,12 @@ export class JsonEditor {
    */
   _validateSave(): void {
     if (this._isEditing) {
-      const annotations: Ace.Annotation[] = this._editor.session.getAnnotations();
-      if (annotations.some(e => e.type === "error")) {
-        this._disableButton(`${this.instanceId}-saveEdits`);
-      } else {
-        this._enableButton(`${this.instanceId}-saveEdits`);
-      }
+      // const annotations: Ace.Annotation[] = this._editor.session.getAnnotations();
+      // if (annotations.some(e => e.type === "error")) {
+      //   this._disableButton(`${this.instanceId}-saveEdits`);
+      // } else {
+      //   this._enableButton(`${this.instanceId}-saveEdits`);
+      // }
     }
   }
 
@@ -294,7 +457,7 @@ export class JsonEditor {
    */
   _cancelEdits(): void {
     this.value = this._current;
-    this._setEditorValue(this.value);
+    //this._setEditorValue(this.value);
     this._doneEditing();
   }
 
@@ -362,7 +525,11 @@ export class JsonEditor {
    * @protected
    */
   _search(): void {
-    this._editor?.commands.byName.find.exec(this._editor);
+    const editor: any = this._getEditor();
+    // force focus should likely just be a workaround
+    //https://github.com/microsoft/monaco-editor/issues/2355
+    editor.focus();
+    editor.trigger('toggleFind', 'actions.find');
   }
 
   /**
@@ -371,16 +538,32 @@ export class JsonEditor {
    * @protected
    */
   _startEditing(): void {
+    this._isEditing = true;
+
     this._disableButton(`${this.instanceId}-startEditing`);
     this._enableButton(`${this.instanceId}-cancelEdits`);
 
-    this._editor?.setTheme("ace/theme/tomorrow_night");
-    this._editor?.setReadOnly(false);
-    this._editor?.focus();
-    this._editor?.clearSelection();
-    this._editor?.gotoLine(0, 0, false);
+    // need to talk through this
+    // would like to disscard the start/stop/save idea
+    // would like to just have editing started automatically
+    // and support undo/redo/reset
+    // enableBtn("stop");
 
-    this._isEditing = true;
+    this._editor.updateOptions({ readOnly: false });
+    monaco.editor.setTheme('vs');
+
+    if (this.currentModel?.canUndo()) {
+      this._enableButton(`${this.instanceId}-undo`);
+    }
+
+    if (this.currentModel?.canRedo()) {
+      this._enableButton(`${this.instanceId}-redo`);
+    }
+
+    if (this.currentModel?.canUndo() || this.currentModel?.canRedo()) {
+      //enableBtn('reset');
+      //this._enableButton(`${this.instanceId}-reset`);
+    }
   }
 
   /**
@@ -388,9 +571,10 @@ export class JsonEditor {
    *
    * @protected
    */
-  _setEditorValue(v: any): void {
-    if (this._editor && v) {
-      this._editor?.setValue(JSON.stringify(v, null, '\t'));
-    }
-  }
+  // _setEditorValue(v: any): void {
+  //   if (this._editor && v) {
+  //     console.log(v)
+  //     //this._editor?.setValue(JSON.stringify(v, null, '\t'));
+  //   }
+  // }
 }

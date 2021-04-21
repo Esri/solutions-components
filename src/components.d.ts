@@ -21,9 +21,17 @@ import { IVariableItem as IVariableItem1 } from "./components/solution-variables
 export namespace Components {
     interface JsonEditor {
         /**
+          * Contains a public value to indicate if the model has any errors that would prevent saving it.
+         */
+        "hasErrors": boolean;
+        /**
           * Contains the public id for this component.
          */
         "instanceId": string;
+        /**
+          * Contains the public model for this component.
+         */
+        "model": monaco.editor.ITextModel;
         /**
           * Contains the translations for this component.
          */
@@ -300,9 +308,17 @@ declare global {
 declare namespace LocalJSX {
     interface JsonEditor {
         /**
+          * Contains a public value to indicate if the model has any errors that would prevent saving it.
+         */
+        "hasErrors"?: boolean;
+        /**
           * Contains the public id for this component.
          */
         "instanceId": string;
+        /**
+          * Contains the public model for this component.
+         */
+        "model"?: monaco.editor.ITextModel;
         "onJsonEditorSaved"?: (event: CustomEvent<any>) => void;
         /**
           * Contains the translations for this component.

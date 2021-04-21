@@ -58,7 +58,7 @@
       fetch("./data/json-editor-data.json")
         .then(response => response.json())
         .then(data => {
-          demo.value = JSON.stringify(data.value, null, '\t');
+          demo.value = JSON.stringify(data.value);
           document.getElementById("appContainer").style.opacity = "1";
         });
     });
