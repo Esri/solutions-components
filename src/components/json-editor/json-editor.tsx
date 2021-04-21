@@ -164,6 +164,7 @@ export class JsonEditor {
 
   componentDidLoad(): void {
     this._initEditor();
+    console.log(monaco.editor);
   }
 
   disconnectedCallback(): void {

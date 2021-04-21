@@ -1,0 +1,70 @@
+{
+  "_from": "monaco-editor",
+  "_id": "monaco-editor@0.23.0",
+  "_inBundle": false,
+  "_integrity": "sha512-q+CP5zMR/aFiMTE9QlIavGyGicKnG2v/H8qVvybLzeFsARM8f6G9fL0sMST2tyVYCwDKkGamZUI6647A0jR/Lg==",
+  "_location": "/monaco-editor",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "monaco-editor",
+    "name": "monaco-editor",
+    "escapedName": "monaco-editor",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.23.0.tgz",
+  "_shasum": "24844ba5640c7adb3a2a3ff3b520cf2d7170a6f0",
+  "_spec": "monaco-editor",
+  "_where": "C:\\Users\\john4818\\Documents\\GitHub\\solutions-components",
+  "author": {
+    "name": "Microsoft Corporation"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/monaco-editor/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "A browser based code editor",
+  "devDependencies": {
+    "clean-css": "^5.1.1",
+    "event-stream": "4.0.1",
+    "gulp": "^4.0.2",
+    "monaco-css": "3.3.0",
+    "monaco-editor-core": "0.23.0",
+    "monaco-html": "3.3.0",
+    "monaco-json": "3.4.0",
+    "monaco-languages": "2.3.0",
+    "monaco-typescript": "4.3.1",
+    "rimraf": "^3.0.2",
+    "typedoc": "^0.20.29",
+    "typescript": "4.2.3",
+    "uncss": "^0.17.3",
+    "vinyl": "^2.2.1",
+    "yaserver": "^0.3.0"
+  },
+  "homepage": "https://github.com/Microsoft/monaco-editor#readme",
+  "license": "MIT",
+  "module": "./esm/vs/editor/editor.main.js",
+  "name": "monaco-editor",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/monaco-editor.git"
+  },
+  "scripts": {
+    "build-website": "gulp build-website && npm run typedoc",
+    "release": "gulp release",
+    "simpleserver": "gulp simpleserver",
+    "typedoc": "cd typedoc && \"../node_modules/.bin/typedoc\" --options ./typedoc.json",
+    "website": "gulp website && npm run typedoc"
+  },
+  "typings": "./esm/vs/editor/editor.api.d.ts",
+  "version": "0.23.0"
+}
