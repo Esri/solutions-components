@@ -33,7 +33,7 @@
  *
 */
 
-import { Component, Event, EventEmitter, Host, h, Listen, Prop, Watch } from '@stencil/core';
+import { Component, Event, EventEmitter, Host, h, Listen, Prop, State, Watch } from '@stencil/core';
 
 @Component({
   tag: 'json-editor',
@@ -62,7 +62,21 @@ export class JsonEditor {
   /**
    * Contains the public value for this component.
    */
-  @Prop({ mutable: true, reflect: true }) value: any = undefined;
+  @Prop({ mutable: true }) value: any = undefined;
+
+  @Watch('value')
+  valueSet(newValue: any, oldValue: any) {
+    console.log("value set")
+    console.log(this.instanceId)
+    if (newValue !== oldValue) {
+      if (this.original === undefined || this.original === "") {
+        this.original = newValue;
+      }
+      if (this.instanceId && this.value) {
+        this.show = true;
+      }
+    }
+  }
 
   /**
    * Contains a public value to indicate if the model has any errors
@@ -75,23 +89,21 @@ export class JsonEditor {
    */
   @Prop({ mutable: true, reflect: true }) model: any; //monaco.editor.ITextModel;
 
-
-  @Watch('value')
-  valueSet(newValue: any, oldValue: any) {
-    if (newValue !== oldValue) {
-      // this._setEditorValue(newValue);
-      // this._current = newValue;
-      if (this.original === undefined || this.original === "") {
-        this.original = typeof(newValue) === "string" ? newValue : JSON.stringify(newValue);
-      }
-      this._initEditor();
-    }
-  }
-
   /**
    * Contains the public id for this component.
    */
   @Prop({ mutable: true, reflect: true, attribute: "instanceId" }) instanceId: any = "";
+
+  @Watch('instanceId')
+  instanceIdSet(newValue: any, oldValue: any) {
+    console.log("instanceId set")
+    if (newValue !== oldValue) {
+      // can only show when both are set
+      if (this.instanceId && this.value) {
+        this.show = true;
+      }
+    }
+  }
 
   /**
    * Verify if any of the values for the Item have changed
@@ -102,6 +114,10 @@ export class JsonEditor {
   hasChanges(): boolean {
     return this.original !== this.value;
   }
+
+  // change to this state will cause render
+  // show is only updated once we have the value and instanceId
+  @State() show: boolean = false;
 
   //--------------------------------------------------------------------------
   //
@@ -162,7 +178,6 @@ export class JsonEditor {
               >
                 <calcite-icon icon="compare" scale="s"></calcite-icon>
               </calcite-button>
-
               <calcite-button
                 id={`${this.instanceId}-search`}
                 appearance="outline"
@@ -209,8 +224,23 @@ export class JsonEditor {
     );
   }
 
-  componentDidLoad(): void {
-    this._initEditor();
+  componentDidRender(): void {
+    // show is only true when we have our value and instanceId
+    // we need a render to occur after these values are set so the child elements will
+    // have the appropriate ids...once they have the id and are rendered we can show the editor
+    if (this.show) {
+      this._initEditor();
+      this.show = false;
+    } else if (this.value && this.instanceId && !this._editor) {
+      // in some cases the watchers are not picking up that the values have been set
+      // init the editor but no need to change the show state as it's already false and would just
+      // cause an extra render
+      // Also make sure that original gets the inital value if the watch was not hit
+      if (this.original === undefined || this.original === "") {
+        this.original = this.value;
+      }
+      this._initEditor();
+    }
   }
 
   disconnectedCallback(): void {
@@ -232,7 +262,6 @@ export class JsonEditor {
   private _cancelEditsBtnHandler: any;
   private _saveEditsBtnHandler: any;
   private _isEditing: boolean = false;
-  private _current: any; // Contains the source item json with any saved edits.
 
   //--------------------------------------------------------------------------
   //
@@ -275,41 +304,9 @@ export class JsonEditor {
    */
   _initEditor(): void {
     // Set up embedded editor
-    // if (gAce) {
-    //   this._editor = gAce.edit(this.instanceId + "-editor");
-    //   this._editor?.setOptions({
-    //     maxLines: Infinity,
-    //     mode: "ace/mode/json",
-    //     theme: "ace/theme/tomorrow",
-    //     readOnly: true
-    //   });
-    //   this._editor?.getSession().setUseWrapMode(true);
-
-    //   // listen for changes in editor
-    //   this._editor?.on("change", this._validateSave.bind(this));
-
-    //   // errors are stored as annotations
-    //   // this will allow us to only enable save when no errors are present
-    //   // unsure why I couldn't use the on pattern
-    //   this._editor?.session.addEventListener("changeAnnotation", this._validateSave.bind(this));
-
-    //   // Provide an a11y way to get out of the edit window
-    //   this._editor?.commands.addCommand({
-    //     name: 'escape',
-    //     bindKey: { win: 'esc', mac: 'esc' },
-    //     exec: function (editor: any) {
-    //       editor.blur();
-    //     },
-    //     readOnly: false
-    //   });
-    // }
-    ///////////////////////////////////////////////////////////////
-    const value = typeof(this.value) === "string" ? this.value : JSON.stringify(this.value);
-    if (this.value && this.original !== value) {
-      this.original = value;
-    }
-    if (monaco && monaco.editor && this.value && this.original !== "" && this.instanceId && document.getElementById(`${this.instanceId}-container`)) {
-      
+    if (monaco && monaco.editor) {
+      const value = typeof(this.value) === "string" ? this.value : JSON.stringify(this.value);
+      // parse to clear any formatting...then auto format with tab
       this.model = monaco.editor.createModel(JSON.stringify(JSON.parse(value), null, '\t'), "json")
       this._editor = monaco.editor.create(document.getElementById(`${this.instanceId}-container`), {
         model: this.model,
@@ -333,7 +330,10 @@ export class JsonEditor {
       this._diffEditor = monaco.editor.createDiffEditor(document.getElementById(`${this.instanceId}-diff-container`), {
         automaticLayout: true
       });
-      const v = JSON.stringify(JSON.parse(this.original), null, '\t');
+
+      const original = typeof(this.original) === "string" ? this.original : JSON.stringify(this.original);
+      // parse to clear any formatting...then auto format with tab
+      const v = JSON.stringify(JSON.parse(original), null, '\t');
       this._diffEditor.setModel({
         original: monaco.editor.createModel(v, "json"),
         modified: this.currentModel
@@ -376,8 +376,9 @@ export class JsonEditor {
     let diffContainer = document.getElementById(`${this.instanceId}-diff-container`);
     let container = document.getElementById(`${this.instanceId}-container`);
     if (this._useDiffEditor) {
+      const original = typeof(this.original) === "string" ? this.original : JSON.stringify(this.original);
       this._diffEditor.setModel({
-        original: monaco.editor.createModel(JSON.stringify(JSON.parse(this.original), null, '\t'), "json"),
+        original: monaco.editor.createModel(JSON.stringify(JSON.parse(original), null, '\t'), "json"),
         modified: this._editor.getModel()
       });
       diffContainer.classList.remove("not-visible");
@@ -452,7 +453,6 @@ export class JsonEditor {
 
     this._editor?.container.remove();
 
-    this._current = undefined;
     this.original = undefined;
   }
 
@@ -462,8 +462,7 @@ export class JsonEditor {
    * @protected
    */
   _cancelEdits(): void {
-    this.value = this._current;
-    //this._setEditorValue(this.value);
+    this.value = this.original;
     this._doneEditing();
   }
 
@@ -488,13 +487,6 @@ export class JsonEditor {
     this._disableButton(`${this.instanceId}-cancelEdits`);
     this._disableButton(`${this.instanceId}-saveEdits`);
 
-    // if ((this._editor as any).searchBox) { // searchBox is created when search type-in box is opened
-    //   (this._editor as any).searchBox.hide();
-    // }
-    // this._editor?.setTheme("ace/theme/tomorrow");
-    // this._editor?.setReadOnly(true);
-    // this._editor?.clearSelection();
-
     this._isEditing = false;
   }
 
@@ -516,7 +508,6 @@ export class JsonEditor {
    */
   _saveEdits(): void {
     this.value = JSON.parse(this._editor?.getValue());
-    this._current = this.value;
     this._doneEditing();
 
     // not sure we need to do this since values will be grabbed elsewhere
@@ -571,16 +562,4 @@ export class JsonEditor {
       //this._enableButton(`${this.instanceId}-reset`);
     }
   }
-
-  /**
-   * Handles setting the editors value
-   *
-   * @protected
-   */
-  // _setEditorValue(v: any): void {
-  //   if (this._editor && v) {
-  //     console.log(v)
-  //     //this._editor?.setValue(JSON.stringify(v, null, '\t'));
-  //   }
-  // }
 }
