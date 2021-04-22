@@ -31,26 +31,23 @@
 
   <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
   <script type="module" src="../solutions.esm.js"></script>
-  <script src="../assets/json-editor/ace/ace.js"></script>
-  <script src="../assets/json-editor/ace/mode-json.js"></script>
 </head>
 
 <body>
   <h1>Demo Solution Item</h1>
   <main id="appContainer">
-    <div class="content full-height">
-      <solution-item id="demo"></solution-item>
+    <div id="sol-item" class="content full-height">
     </div>
   </main>
 
   <script src="./libs/require.js"></script>
   <script src="./libs/setLocale.js"></script>
   <script>
-    require(["i18n!../assets/nls/strings"],
+    require.config({ paths: { vs: '../assets/json-editor/monaco-editor/vs' } });
+    require(["i18n!../assets/nls/strings", 'vs/editor/editor.main'],
     function (translations) {
       // Initialize the configuration content
-      const demo = document.getElementById("demo");
-      demo.translations = translations.configuration_modal.configuration;
+      const demo = document.getElementById("sol-item");
 
       // set the data
       Promise.all([
@@ -61,27 +58,23 @@
       ])
         .then(results => Promise.all(results.map(r => r.json())))
         .then(jsonResults => {
+          const d = document.createElement("solution-item");
           const itemDetails = jsonResults[0].value;
           const value = jsonResults[1].value;
-          const solVariables = jsonResults[2].value;
-          const orgVariables = jsonResults[3].value
           const itemId = 1;
-          demo.value = {
+          d.value = {
             itemId,
             itemDetails,
-            data: {
-              value,
-              solVariables,
-              orgVariables
-            },
-            properties: {
-              value,
-              solVariables,
-              orgVariables
-            },
+            data: value,
+            properties: value,
             type: "Feature Service",
             isResource: false
           };
+          d.solutionVariables = jsonResults[2].value;
+          d.organizationVariables = jsonResults[3].value;
+          d.translations = translations.configuration_modal.configuration;
+          demo.appendChild(d);
+
           document.getElementById("appContainer").style.opacity = "1";
         });
     });

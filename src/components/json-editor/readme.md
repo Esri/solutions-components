@@ -7,13 +7,14 @@
 
 ## Properties
 
-| Property                  | Attribute      | Description                                                                                   | Type         | Default     |
-| ------------------------- | -------------- | --------------------------------------------------------------------------------------------- | ------------ | ----------- |
-| `hasErrors`               | `has-errors`   | Contains a public value to indicate if the model has any errors that would prevent saving it. | `boolean`    | `false`     |
-| `instanceId` _(required)_ | `instance-id`  | Contains the public id for this component.                                                    | `string`     | `undefined` |
-| `model`                   | --             | Contains the public model for this component.                                                 | `ITextModel` | `undefined` |
-| `translations`            | `translations` | Contains the translations for this component.                                                 | `any`        | `{}`        |
-| `value`                   | `value`        | Contains the public value for this component.                                                 | `any`        | `undefined` |
+| Property       | Attribute      | Description                                                                                   | Type      | Default     |
+| -------------- | -------------- | --------------------------------------------------------------------------------------------- | --------- | ----------- |
+| `hasErrors`    | `has-errors`   | Contains a public value to indicate if the model has any errors that would prevent saving it. | `boolean` | `false`     |
+| `instanceId`   | `instanceid`   | Contains the public id for this component.                                                    | `any`     | `""`        |
+| `model`        | `model`        | Contains the public model for this component.                                                 | `any`     | `undefined` |
+| `original`     | `original`     | Contains the original source item json as it was when the component was created.              | `any`     | `""`        |
+| `translations` | `translations` | Contains the translations for this component.                                                 | `any`     | `{}`        |
+| `value`        | `value`        | Contains the public value for this component.                                                 | `any`     | `undefined` |
 
 
 ## Events

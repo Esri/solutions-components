@@ -27,11 +27,15 @@ export namespace Components {
         /**
           * Contains the public id for this component.
          */
-        "instanceId": string;
+        "instanceId": any;
         /**
           * Contains the public model for this component.
          */
-        "model": monaco.editor.ITextModel;
+        "model": any;
+        /**
+          * Contains the original source item json as it was when the component was created.
+         */
+        "original": any;
         /**
           * Contains the translations for this component.
          */
@@ -314,12 +318,16 @@ declare namespace LocalJSX {
         /**
           * Contains the public id for this component.
          */
-        "instanceId": string;
+        "instanceId"?: any;
         /**
           * Contains the public model for this component.
          */
-        "model"?: monaco.editor.ITextModel;
+        "model"?: any;
         "onJsonEditorSaved"?: (event: CustomEvent<any>) => void;
+        /**
+          * Contains the original source item json as it was when the component was created.
+         */
+        "original"?: any;
         /**
           * Contains the translations for this component.
          */

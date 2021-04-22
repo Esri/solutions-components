@@ -56,7 +56,7 @@ html[dir="rtl"] .edit-button {
 
 /* NEW CSS FOR MONACO */
 .edit-parent {
-  width: 100vw;
+  width: 100%;
   height: calc(100vh - 16px);
   margin: 0px;
   padding: 1rem;
@@ -69,6 +69,14 @@ html[dir="rtl"] .edit-button {
   width: 100%;
   height: calc(100% - 100px);
   border: 1px solid grey;
+}
+
+.padding-right {
+  padding-right: 1rem;
+}
+
+html[dir="rtl"] .padding-right {
+  padding-left: 1rem;
 }
 
 .btn-container {

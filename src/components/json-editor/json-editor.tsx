@@ -33,7 +33,7 @@
  *
 */
 
-import { Component, Event, EventEmitter, Host, h, Listen, Prop, State, Watch } from '@stencil/core';
+import { Component, Event, EventEmitter, Host, h, Listen, Prop, Watch } from '@stencil/core';
 
 @Component({
   tag: 'json-editor',
@@ -52,7 +52,7 @@ export class JsonEditor {
    * Contains the original source item json as it was when the component was created.
    *
    */
-  @State() original: any = "";
+  @Prop({ mutable: true }) original: any = "";
 
   /**
    * Contains the translations for this component.
@@ -73,7 +73,8 @@ export class JsonEditor {
   /**
    * Contains the public model for this component.
    */
-  @Prop({ mutable: true, reflect: true }) model: monaco.editor.ITextModel;
+  @Prop({ mutable: true, reflect: true }) model: any; //monaco.editor.ITextModel;
+
 
   @Watch('value')
   valueSet(newValue: any, oldValue: any) {
@@ -81,7 +82,7 @@ export class JsonEditor {
       // this._setEditorValue(newValue);
       // this._current = newValue;
       if (this.original === undefined || this.original === "") {
-        this.original = newValue;
+        this.original = typeof(newValue) === "string" ? newValue : JSON.stringify(newValue);
       }
       this._initEditor();
     }
@@ -90,7 +91,7 @@ export class JsonEditor {
   /**
    * Contains the public id for this component.
    */
-  @Prop({ mutable: true, reflect: true }) instanceId!: string;
+  @Prop({ mutable: true, reflect: true, attribute: "instanceId" }) instanceId: any = "";
 
   /**
    * Verify if any of the values for the Item have changed
@@ -111,8 +112,8 @@ export class JsonEditor {
   render() {
     return (
       <Host>
-        <div class="editor-container">
-          <div class="editor-controls">
+        <div id={`${this.instanceId}-editor-container`} class="editor-container padding-right">
+          <div class="editor-controls padding-right">
             <div class="editor-buttons">
               <calcite-button
                 id={`${this.instanceId}-startEditing`}
@@ -200,8 +201,8 @@ export class JsonEditor {
             </div>
           </div>
           <div class="edit-parent">
-            <div id="container" class="edit-container"></div>
-            <div id="diff-container" class="edit-container not-visible"></div>
+            <div id={`${this.instanceId}-container`} class="edit-container"></div>
+            <div id={`${this.instanceId}-diff-container`} class="edit-container not-visible"></div>
           </div>
         </div>
       </Host>
@@ -303,9 +304,14 @@ export class JsonEditor {
     //   });
     // }
     ///////////////////////////////////////////////////////////////
-    if (monaco && monaco.editor && this.value) {
-      this.model = monaco.editor.createModel(JSON.stringify(JSON.parse(this.value), null, '\t'), "json")
-      this._editor = monaco.editor.create(document.getElementById('container'), {
+    const value = typeof(this.value) === "string" ? this.value : JSON.stringify(this.value);
+    if (this.value && this.original !== value) {
+      this.original = value;
+    }
+    if (monaco && monaco.editor && this.value && this.original !== "" && this.instanceId && document.getElementById(`${this.instanceId}-container`)) {
+      
+      this.model = monaco.editor.createModel(JSON.stringify(JSON.parse(value), null, '\t'), "json")
+      this._editor = monaco.editor.create(document.getElementById(`${this.instanceId}-container`), {
         model: this.model,
         language: 'json',
         readOnly: true,
@@ -320,11 +326,11 @@ export class JsonEditor {
 
       this.currentModel = this._editor.getModel();
 
-      this.currentModel.onDidChangeContent(this._onEditorChange);
-      this._editor.onDidChangeModelDecorations(this._onDecorationsChange);
+      this.currentModel.onDidChangeContent(this._onEditorChange.bind(this));
+      this._editor.onDidChangeModelDecorations(this._onDecorationsChange.bind(this));
 
       //setup diff editor
-      this._diffEditor = monaco.editor.createDiffEditor(document.getElementById("diff-container"), {
+      this._diffEditor = monaco.editor.createDiffEditor(document.getElementById(`${this.instanceId}-diff-container`), {
         automaticLayout: true
       });
       const v = JSON.stringify(JSON.parse(this.original), null, '\t');
@@ -367,8 +373,8 @@ export class JsonEditor {
 
   _diff(): void {
     this._useDiffEditor = !this._useDiffEditor;
-    let diffContainer = document.getElementById("diff-container");
-    let container = document.getElementById("container");
+    let diffContainer = document.getElementById(`${this.instanceId}-diff-container`);
+    let container = document.getElementById(`${this.instanceId}-container`);
     if (this._useDiffEditor) {
       this._diffEditor.setModel({
         original: monaco.editor.createModel(JSON.stringify(JSON.parse(this.original), null, '\t'), "json"),
@@ -439,10 +445,10 @@ export class JsonEditor {
    * @protected
    */
   _destroyEditor(): void {
-    this._startEditingBtnHandler.removeEventListener("click", this._startEditing);
-    this._searchBtnHandler.removeEventListener("click", this._search);
-    this._cancelEditsBtnHandler.removeEventListener("click", this._cancelEdits);
-    this._saveEditsBtnHandler.removeEventListener("click", this._saveEdits);
+    this._startEditingBtnHandler?.removeEventListener("click", this._startEditing);
+    this._searchBtnHandler?.removeEventListener("click", this._search);
+    this._cancelEditsBtnHandler?.removeEventListener("click", this._cancelEdits);
+    this._saveEditsBtnHandler?.removeEventListener("click", this._saveEdits);
 
     this._editor?.container.remove();
 
@@ -482,12 +488,12 @@ export class JsonEditor {
     this._disableButton(`${this.instanceId}-cancelEdits`);
     this._disableButton(`${this.instanceId}-saveEdits`);
 
-    if ((this._editor as any).searchBox) { // searchBox is created when search type-in box is opened
-      (this._editor as any).searchBox.hide();
-    }
-    this._editor?.setTheme("ace/theme/tomorrow");
-    this._editor?.setReadOnly(true);
-    this._editor?.clearSelection();
+    // if ((this._editor as any).searchBox) { // searchBox is created when search type-in box is opened
+    //   (this._editor as any).searchBox.hide();
+    // }
+    // this._editor?.setTheme("ace/theme/tomorrow");
+    // this._editor?.setReadOnly(true);
+    // this._editor?.clearSelection();
 
     this._isEditing = false;
   }

@@ -61,7 +61,7 @@ export class SolutionTemplateData {
   /**
    * This needs to be unique for each item and also for the props vs data of an item
    */
-   @Prop({ mutable: true }) instanceId: string = "";
+   @Prop({ mutable: true, reflect: true, attribute: "instanceId" }) instanceId: string = "";
 
      /**
    * Contains the solution based variables

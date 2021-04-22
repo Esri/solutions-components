@@ -12,6 +12,7 @@
         "defaultSpatialRef": "Default Spatial Reference",
         "definitionTab": "Definition", 
         "description": "Description",
+        "diff": "Toggle Diff Editor",
         "download": "Download",
         "editThumbnail": "Edit Thumbnail",
         "featureServicesHeading": "Feature Services",
@@ -19,6 +20,7 @@
         "itemDetailsTab": "Item Details",
         "orgVariables": "Organization Variables",
         "propertiesTab": "Properties",
+        "redo": "Redo",
         "saveEdits": "Save Edits",
         "search": "Search",
         "sharingTab": "Sharing",
@@ -29,7 +31,8 @@
         "startEditing": "Start Editing",
         "tags": "Tags",
         "termsOfUse": "Terms of Use",
-        "update": "Update"
+        "update": "Update",
+        "undo": "Undo"
       }
     }
   }
