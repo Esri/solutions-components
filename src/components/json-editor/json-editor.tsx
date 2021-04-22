@@ -213,8 +213,8 @@ export class JsonEditor {
             </div>
           </div>
           <div class="edit-parent">
-            <div id={`${this.instanceId}-container`} class="edit-container"></div>
-            <div id={`${this.instanceId}-diff-container`} class="edit-container not-visible"></div>
+            <div id={`${this.instanceId}-container`} class="json-edit-container"></div>
+            <div id={`${this.instanceId}-diff-container`} class="json-edit-container not-visible"></div>
           </div>
         </div>
       </Host>
@@ -448,7 +448,8 @@ export class JsonEditor {
     this._cancelEditsBtnHandler?.removeEventListener("click", this._cancelEdits);
     this._saveEditsBtnHandler?.removeEventListener("click", this._saveEdits);
 
-    this._editor?.container.remove();
+    this._editor?.container?.remove();
+    this._editor.dispose();
 
     this.original = undefined;
   }

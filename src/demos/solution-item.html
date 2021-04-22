@@ -37,6 +37,7 @@
   <h1>Demo Solution Item</h1>
   <main id="appContainer">
     <div id="sol-item" class="content full-height">
+      <solution-item id="demo"></solution-item>
     </div>
   </main>
 
@@ -47,7 +48,8 @@
     require(["i18n!../assets/nls/strings", 'vs/editor/editor.main'],
     function (translations) {
       // Initialize the configuration content
-      const demo = document.getElementById("sol-item");
+      const demo = document.getElementById("demo");
+      demo.translations = translations.configuration_modal.configuration;
 
       // set the data
       Promise.all([
@@ -58,22 +60,18 @@
       ])
         .then(results => Promise.all(results.map(r => r.json())))
         .then(jsonResults => {
-          const d = document.createElement("solution-item");
           const itemDetails = jsonResults[0].value;
           const value = jsonResults[1].value;
-          const itemId = 1;
-          d.value = {
-            itemId,
+          demo.value = {
+            itemId: itemDetails.itemId,
             itemDetails,
             data: value,
             properties: value,
             type: "Feature Service",
             isResource: false
           };
-          d.solutionVariables = jsonResults[2].value;
-          d.organizationVariables = jsonResults[3].value;
-          d.translations = translations.configuration_modal.configuration;
-          demo.appendChild(d);
+          demo.solutionVariables = jsonResults[2].value;
+          demo.organizationVariables = jsonResults[3].value;
 
           document.getElementById("appContainer").style.opacity = "1";
         });

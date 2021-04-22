@@ -36,7 +36,9 @@
 <body>
   <h1>Demo Solution Template Data</h1>
   <main id="appContainer">
-    <div id="template-data" class="content full-height"></div>
+    <div id="template-data" class="content full-height">
+      <solution-template-data id="demo" instanceId="2d2d176f5f3e43a985a31649e213aaf4"></solution-template-data>
+    </div>
   </main>
 
   <script src="./libs/require.js"></script>
@@ -46,7 +48,9 @@
     require(["i18n!../assets/nls/strings", 'vs/editor/editor.main'],
     function (translations) {
       // Initialize the configuration content
-      const demo = document.getElementById("template-data");
+      const demo = document.getElementById("demo");
+      demo.translations = translations.configuration_modal.configuration;
+
       // set the data
       Promise.all([
         fetch("./data/solution-template-data-data.json"),
@@ -55,15 +59,9 @@
       ])
         .then(results => Promise.all(results.map(r => r.json())))
         .then(jsonResults => {
-          const d = document.createElement("solution-template-data");
-          d.value = { value: jsonResults[0].value };
-          d.instanceId = "data";
-          d.solutionVariables = jsonResults[1].value;
-          d.organizationVariables = jsonResults[2].value;
-          d.translations = translations.configuration_modal.configuration;
-
-          demo.appendChild(d);
-
+          demo.value = { value: jsonResults[0].value };
+          demo.solutionVariables = jsonResults[1].value;
+          demo.organizationVariables = jsonResults[2].value;
           document.getElementById("appContainer").style.opacity = "1";
         });
     });
