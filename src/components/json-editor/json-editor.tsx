@@ -66,8 +66,6 @@ export class JsonEditor {
 
   @Watch('value')
   valueSet(newValue: any, oldValue: any) {
-    console.log("value set")
-    console.log(this.instanceId)
     if (newValue !== oldValue) {
       if (this.original === undefined || this.original === "") {
         this.original = newValue;
@@ -96,7 +94,6 @@ export class JsonEditor {
 
   @Watch('instanceId')
   instanceIdSet(newValue: any, oldValue: any) {
-    console.log("instanceId set")
     if (newValue !== oldValue) {
       // can only show when both are set
       if (this.instanceId && this.value) {
