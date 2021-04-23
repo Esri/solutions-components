@@ -33,7 +33,7 @@
  *
 */
 
-import { Component, Event, EventEmitter, Host, h, Listen, Prop, State, Watch } from '@stencil/core';
+import { Component, Event, EventEmitter, Host, h, Listen, Prop, Watch } from '@stencil/core';
 import state from '../../utils/editStore';
 
 @Component({
@@ -62,11 +62,22 @@ export class JsonEditor {
 
   /**
    * Contains the public value for this component.
+   * This should be an item Id for one of the models in the store.
    */
-  @Prop({ mutable: true }) value: any = undefined;
-  // TODO really the id is the key value we need now that the models are in the store...
+  @Prop({ mutable: true, reflect: true }) value: any = undefined;
 
-  @Prop({ mutable: true, reflect: true }) isData: boolean = false;
+  @Watch('value')
+  valueSet(newValue: any, oldValue: any) {
+    if (newValue !== oldValue && this.instanceid !== "") {
+      if (state && state.models) {
+        // store the current state
+        this._saveCurrentModel(oldValue);
+
+        // get the model and state from the store
+        this._setCurrentModel(newValue);
+      }
+    }
+  }
 
   /**
    * Contains a public value to indicate if the model has any errors
@@ -80,44 +91,13 @@ export class JsonEditor {
   @Prop({ mutable: true, reflect: true }) model: any; //monaco.editor.ITextModel;
 
   /**
-   * Contains the public id for this component.
+   * Contains a unique identifier for when we have multiple instances of the editor.
+   * For example when we want to show an items data as well as an items properties.
+   * 
+   * Need to rethink this..would like it to be more generic. 
+   * We are currently tied to either data or props as this helps us know how to get the correct model from the store. 
    */
-  // this is actually the dataType at the moment...
   @Prop({ mutable: true, reflect: true }) instanceid: any = "";
-
-  // @Watch('instanceid')
-  // instanceidSet(newValue: any, oldValue: any) {
-  //   alert("instanceidSet")
-  //   if (newValue !== oldValue && this.itemid !== "") {
-  //     // can only show when both are set
-  //     // if (this.instanceid && this.value) {
-  //     //   this.show = true;
-  //     // }
-
-  //     if (state && state.models) {
-  //       // store the current state
-  //       this._saveCurrentModel(oldValue);
-
-  //       // get the model and state from the store
-  //       this._setCurrentModel(newValue);
-  //     }
-  //   }
-  // }
-
-  @Prop({ mutable: true, reflect: true }) itemid: any = "";
-
-  @Watch('itemid')
-  itemIdSet(newValue: any, oldValue: any) {
-    if (newValue !== oldValue && this.instanceid !== "") {
-      if (state && state.models) {
-        // store the current state
-        this._saveCurrentModel(oldValue);
-
-        // get the model and state from the store
-        this._setCurrentModel(newValue);
-      }
-    }
-  }
 
   /**
    * Verify if any of the values for the Item have changed
@@ -128,10 +108,6 @@ export class JsonEditor {
   hasChanges(): boolean {
     return this.original !== this.value;
   }
-
-  // change to this state will cause render
-  // show is only updated once we have the value and instanceid
-  @State() show: boolean = false;
 
   //--------------------------------------------------------------------------
   //
@@ -186,7 +162,7 @@ export class JsonEditor {
                 color="blue"
                 appearance="solid"
                 title={this.translations.diff}
-                onClick={() => this._diff()}
+                onClick={() => this._toggleEditor()}
                 scale="s"
                 class="edit-button"
               >
@@ -324,20 +300,26 @@ export class JsonEditor {
       this._diffEditor = monaco.editor.createDiffEditor(document.getElementById(`${this.instanceid}-diff-container`), {
         automaticLayout: true
       });
-      // parse to clear any formatting...then auto format with tab
-      const v = JSON.stringify(JSON.parse(this.original), null, '\t');
-      this._diffEditor.setModel({
-        original: monaco.editor.createModel(v, "json"),
-        modified: this._editor.getModel()
-      });
+
+      this._setDiffModel();
     }
   }
 
 
+  /**
+   * Update the undo redo buttons as necessary
+   *
+   * @protected
+   */
   _onEditorChange(): void {
     this._toggleUndoRedo();
   }
 
+  /**
+   * Decorations are added when errors are found in the editor content
+   *
+   * @protected
+   */
   _onDecorationsChange(): void {
     const model = this._editor.getModel();
     if (model === null) {
@@ -350,6 +332,11 @@ export class JsonEditor {
     this.hasErrors = markers.length > 0;
   }
 
+  /**
+   * Undo the current edit operation
+   *
+   * @protected
+   */
   _undo(): void {
     if (this.currentModel?.canUndo()) {
       this.currentModel.undo();
@@ -357,6 +344,11 @@ export class JsonEditor {
     }
   }
 
+  /**
+   * Redo the previous edit operation
+   *
+   * @protected
+   */
   _redo(): void {
     if (this.currentModel?.canRedo()) {
       this.currentModel.redo();
@@ -364,15 +356,17 @@ export class JsonEditor {
     }
   }
 
-  _diff(): void {
+  /**
+   * Show/Hide the appropriate editor
+   *
+   * @protected
+   */
+  _toggleEditor(): void {
     this._useDiffEditor = !this._useDiffEditor;
     let diffContainer = document.getElementById(`${this.instanceid}-diff-container`);
     let container = document.getElementById(`${this.instanceid}-container`);
     if (this._useDiffEditor) {
-      this._diffEditor.setModel({
-        original: monaco.editor.createModel(JSON.stringify(JSON.parse(this.original), null, '\t'), "json"),
-        modified: this._editor.getModel()
-      });
+      this._setDiffModel();
       diffContainer.classList.remove("not-visible");
       container.classList.add("not-visible");
     } else {
@@ -381,6 +375,11 @@ export class JsonEditor {
     }
   }
 
+  /**
+   * Toggle the undo and redo buttons
+   *
+   * @protected
+   */
   _toggleUndoRedo(): void {
     if (this.currentModel?.canUndo()) {
       this._enableButton(`${this.instanceid}-undo`);
@@ -400,7 +399,12 @@ export class JsonEditor {
     }
   }
 
-  _insertValue(v): void {
+  /**
+   * Overrides the editors selection with the value passed in
+   *
+   * @protected
+   */
+  _insertValue(v: string): void {
     const editor: any = this._getEditor();
     const range = editor.getSelection();
     // use pushEditOperations so it will push to the undo stack
@@ -412,6 +416,11 @@ export class JsonEditor {
     editor.revealRange(range);
   }
 
+  /**
+   * Gets the current active editor for diff editor
+   *
+   * @protected
+   */
   _getEditor(): any {
     return this._useDiffEditor ? this._diffEditor : this._editor;
   }
@@ -556,6 +565,11 @@ export class JsonEditor {
     }
   }
 
+  /**
+   * Save the current model state to the store
+   *
+   * @protected
+   */
   _saveCurrentModel(id: string): void {
     if (this._editor && id && Object.keys(state.models).indexOf(id) > -1) {
       //save the current state
@@ -569,6 +583,11 @@ export class JsonEditor {
     }
   }
 
+  /**
+   * Change the editors model
+   *
+   * @protected
+   */
   _setCurrentModel(id): void {
     const data = state.models[id];
 
@@ -576,10 +595,7 @@ export class JsonEditor {
     this.model = isData ? data.dataModel : data.propsModel;
     this.original = isData ? data.dataOriginValue : data.propsOriginValue;
     
-    //this.currentModel = data.model;
-
     if (this._editor) {
-      // TODO look at this when diffEditor is active...need to handle that as well
       this._editor.setModel(this.model);
       if (data.state) {
         this._editor.restoreViewState(data.state);
@@ -591,18 +607,38 @@ export class JsonEditor {
       if (data.isEditing) {
         this._startEditing();
       } else {
-        console.log("stop would go here but I want to get rid of start/stop");
+        console.log("stop would go here but I want to get rid of start/stop/save");
       }
-      this._editor.focus();
+
+      if (this._useDiffEditor) {
+        this._setDiffModel();
+        this._diffEditor.focus();
+      } else {
+        this._editor.focus();
+      }
     } else {
       this._initEditor();
     }
 
+
+    // ?? do I really need this ??
     this.currentModel = this._editor.getModel();
 
     //this.currentModel.onDidChangeContent(this._onEditorChange.bind(this));
 
     // does this need to be done for each model change or can it be done once
     //this._editor.onDidChangeModelDecorations(this._onDecorationsChange.bind(this));
+  }
+
+  /**
+   * Set the models for the diff editor
+   *
+   * @protected
+   */
+  _setDiffModel(): void {
+    this._diffEditor.setModel({
+      original: monaco.editor.createModel(JSON.stringify(JSON.parse(this.original), null, '\t'), "json"),
+      modified: this._editor.getModel()
+    });
   }
 }

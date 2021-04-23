@@ -25,11 +25,9 @@ export namespace Components {
          */
         "hasErrors": boolean;
         /**
-          * Contains the public id for this component.
+          * Contains a unique identifier for when we have multiple instances of the editor. For example when we want to show an items data as well as an items properties.  Need to rethink this..would like it to be more generic.  We are currently tied to either data or props as this helps us know how to get the correct model from the store.
          */
         "instanceid": any;
-        "isData": boolean;
-        "itemid": any;
         /**
           * Contains the public model for this component.
          */
@@ -43,7 +41,7 @@ export namespace Components {
          */
         "translations": any;
         /**
-          * Contains the public value for this component.
+          * Contains the public value for this component. This should be an item Id for one of the models in the store.
          */
         "value": any;
     }
@@ -187,15 +185,17 @@ export namespace Components {
         "wkidToDisplay": (wkid: number) => Promise<string>;
     }
     interface SolutionTemplateData {
-        "dataType": string;
         /**
-          * This needs to be unique for each item and also for the props vs data of an item
+          * This needs to be unique for props vs data of an item
          */
         "instanceid": string;
         /**
           * Should be set to true for items that store their data as a resource Will allow for upload and download of the resource
          */
         "isResource": boolean;
+        /**
+          * A templates itemId. This is used to get the correct model from a store in the json-editor
+         */
         "itemid": string;
         /**
           * Contains the organization based variables
@@ -320,11 +320,9 @@ declare namespace LocalJSX {
          */
         "hasErrors"?: boolean;
         /**
-          * Contains the public id for this component.
+          * Contains a unique identifier for when we have multiple instances of the editor. For example when we want to show an items data as well as an items properties.  Need to rethink this..would like it to be more generic.  We are currently tied to either data or props as this helps us know how to get the correct model from the store.
          */
         "instanceid"?: any;
-        "isData"?: boolean;
-        "itemid"?: any;
         /**
           * Contains the public model for this component.
          */
@@ -339,7 +337,7 @@ declare namespace LocalJSX {
          */
         "translations"?: any;
         /**
-          * Contains the public value for this component.
+          * Contains the public value for this component. This should be an item Id for one of the models in the store.
          */
         "value"?: any;
     }
@@ -469,15 +467,17 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface SolutionTemplateData {
-        "dataType"?: string;
         /**
-          * This needs to be unique for each item and also for the props vs data of an item
+          * This needs to be unique for props vs data of an item
          */
         "instanceid"?: string;
         /**
           * Should be set to true for items that store their data as a resource Will allow for upload and download of the resource
          */
         "isResource"?: boolean;
+        /**
+          * A templates itemId. This is used to get the correct model from a store in the json-editor
+         */
         "itemid"?: string;
         /**
           * Contains the organization based variables
