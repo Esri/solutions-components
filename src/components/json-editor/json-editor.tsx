@@ -19,21 +19,22 @@
  * web component for JSON content.
  *
  * Attributes:
- * `instanceId`: id of component (required, because it's used to distinguish between multiple instances of component)
+ * `instanceid`: id of component (required, because it's used to distinguish between multiple instances of component)
  * `value`: Initial content of editor
  *
  * @example
  *   <json-editor
- *     instanceId="a1f271c0de554604beed2adc1f244be1"
+ *     instanceid="a1f271c0de554604beed2adc1f244be1"
  *     value="{\"id\": \"12345\"}"
  *   ></json-editor>
  *
- * `instanceId` attribute and `value` are required
+ * `instanceid` attribute and `value` are required
  *
  *
 */
 
 import { Component, Event, EventEmitter, Host, h, Listen, Prop, State, Watch } from '@stencil/core';
+import state from '../../utils/editStore';
 
 @Component({
   tag: 'json-editor',
@@ -63,18 +64,9 @@ export class JsonEditor {
    * Contains the public value for this component.
    */
   @Prop({ mutable: true }) value: any = undefined;
+  // TODO really the id is the key value we need now that the models are in the store...
 
-  @Watch('value')
-  valueSet(newValue: any, oldValue: any) {
-    if (newValue !== oldValue) {
-      if (this.original === undefined || this.original === "") {
-        this.original = newValue;
-      }
-      if (this.instanceId && this.value) {
-        this.show = true;
-      }
-    }
-  }
+  @Prop({ mutable: true, reflect: true }) isData: boolean = false;
 
   /**
    * Contains a public value to indicate if the model has any errors
@@ -90,14 +82,39 @@ export class JsonEditor {
   /**
    * Contains the public id for this component.
    */
-  @Prop({ mutable: true, reflect: true, attribute: "instanceId" }) instanceId: any = "";
+  // this is actually the dataType at the moment...
+  @Prop({ mutable: true, reflect: true }) instanceid: any = "";
 
-  @Watch('instanceId')
-  instanceIdSet(newValue: any, oldValue: any) {
-    if (newValue !== oldValue) {
-      // can only show when both are set
-      if (this.instanceId && this.value) {
-        this.show = true;
+  // @Watch('instanceid')
+  // instanceidSet(newValue: any, oldValue: any) {
+  //   alert("instanceidSet")
+  //   if (newValue !== oldValue && this.itemid !== "") {
+  //     // can only show when both are set
+  //     // if (this.instanceid && this.value) {
+  //     //   this.show = true;
+  //     // }
+
+  //     if (state && state.models) {
+  //       // store the current state
+  //       this._saveCurrentModel(oldValue);
+
+  //       // get the model and state from the store
+  //       this._setCurrentModel(newValue);
+  //     }
+  //   }
+  // }
+
+  @Prop({ mutable: true, reflect: true }) itemid: any = "";
+
+  @Watch('itemid')
+  itemIdSet(newValue: any, oldValue: any) {
+    if (newValue !== oldValue && this.instanceid !== "") {
+      if (state && state.models) {
+        // store the current state
+        this._saveCurrentModel(oldValue);
+
+        // get the model and state from the store
+        this._setCurrentModel(newValue);
       }
     }
   }
@@ -113,7 +130,7 @@ export class JsonEditor {
   }
 
   // change to this state will cause render
-  // show is only updated once we have the value and instanceId
+  // show is only updated once we have the value and instanceid
   @State() show: boolean = false;
 
   //--------------------------------------------------------------------------
@@ -125,11 +142,11 @@ export class JsonEditor {
   render() {
     return (
       <Host>
-        <div id={`${this.instanceId}-editor-container`} class="editor-container padding-right">
+        <div id={`${this.instanceid}-editor-container`} class="editor-container padding-right">
           <div class="editor-controls padding-right">
             <div class="editor-buttons">
               <calcite-button
-                id={`${this.instanceId}-startEditing`}
+                id={`${this.instanceid}-startEditing`}
                 color="blue"
                 appearance="solid"
                 title={this.translations.startEditing}
@@ -141,7 +158,7 @@ export class JsonEditor {
               </calcite-button>
               {/* undo */}
               <calcite-button
-                id={`${this.instanceId}-undo`}
+                id={`${this.instanceid}-undo`}
                 color="blue"
                 appearance="solid"
                 title={this.translations.undo}
@@ -153,7 +170,7 @@ export class JsonEditor {
               </calcite-button>
               {/* redo */}
               <calcite-button
-                id={`${this.instanceId}-redo`}
+                id={`${this.instanceid}-redo`}
                 color="blue"
                 appearance="solid"
                 title={this.translations.redo}
@@ -165,7 +182,7 @@ export class JsonEditor {
               </calcite-button>
               {/* diff */}
               <calcite-button
-                id={`${this.instanceId}-diff`}
+                id={`${this.instanceid}-diff`}
                 color="blue"
                 appearance="solid"
                 title={this.translations.diff}
@@ -175,8 +192,9 @@ export class JsonEditor {
               >
                 <calcite-icon icon="compare" scale="s"></calcite-icon>
               </calcite-button>
+              {/* search */}
               <calcite-button
-                id={`${this.instanceId}-search`}
+                id={`${this.instanceid}-search`}
                 appearance="outline"
                 color="blue"
                 title={this.translations.search}
@@ -186,8 +204,9 @@ export class JsonEditor {
               >
                 <calcite-icon icon="search" scale="s"></calcite-icon>
               </calcite-button>
+              {/* cancel */}
               <calcite-button
-                id={`${this.instanceId}-cancelEdits`}
+                id={`${this.instanceid}-cancelEdits`}
                 color="blue"
                 appearance="solid"
                 disabled
@@ -198,8 +217,9 @@ export class JsonEditor {
               >
                 <calcite-icon icon="reset" scale="s"></calcite-icon>
               </calcite-button>
+              {/* save */}
               <calcite-button
-                id={`${this.instanceId}-saveEdits`}
+                id={`${this.instanceid}-saveEdits`}
                 color="blue"
                 appearance="solid"
                 disabled
@@ -213,31 +233,12 @@ export class JsonEditor {
             </div>
           </div>
           <div class="edit-parent">
-            <div id={`${this.instanceId}-container`} class="json-edit-container"></div>
-            <div id={`${this.instanceId}-diff-container`} class="json-edit-container not-visible"></div>
+            <div id={`${this.instanceid}-container`} class="json-edit-container"></div>
+            <div id={`${this.instanceid}-diff-container`} class="json-edit-container not-visible"></div>
           </div>
         </div>
       </Host>
     );
-  }
-
-  componentDidRender(): void {
-    // show is only true when we have our value and instanceId
-    // we need a render to occur after these values are set so the child elements will
-    // have the appropriate ids...once they have the id and are rendered we can show the editor
-    if (this.show) {
-      this._initEditor();
-      this.show = false;
-    } else if (this.value && this.instanceId && !this._editor) {
-      // in some cases the watchers are not picking up that the values have been set
-      // init the editor but no need to change the show state as it's already false and would just
-      // cause an extra render
-      // Also make sure that original gets the inital value if the watch was not hit
-      if (this.original === undefined || this.original === "") {
-        this.original = this.value;
-      }
-      this._initEditor();
-    }
   }
 
   disconnectedCallback(): void {
@@ -299,13 +300,10 @@ export class JsonEditor {
    *
    * @protected
    */
-  _initEditor(): void {
+   _initEditor(): void {
     // Set up embedded editor
     if (monaco && monaco.editor) {
-      const value = typeof(this.value) === "string" ? this.value : JSON.stringify(this.value);
-      // parse to clear any formatting...then auto format with tab
-      this.model = monaco.editor.createModel(JSON.stringify(JSON.parse(value), null, '\t'), "json")
-      this._editor = monaco.editor.create(document.getElementById(`${this.instanceId}-container`), {
+      this._editor = monaco.editor.create(document.getElementById(`${this.instanceid}-container`), {
         model: this.model,
         language: 'json',
         readOnly: true,
@@ -318,25 +316,23 @@ export class JsonEditor {
 
       //this._editor.updateOptions({ tabSize: 2 });
 
-      this.currentModel = this._editor.getModel();
+      //this.currentModel = this._editor.getModel();
 
-      this.currentModel.onDidChangeContent(this._onEditorChange.bind(this));
-      this._editor.onDidChangeModelDecorations(this._onDecorationsChange.bind(this));
+      // this.currentModel.onDidChangeContent(this._onEditorChange.bind(this));
+      // this._editor.onDidChangeModelDecorations(this._onDecorationsChange.bind(this));
 
-      //setup diff editor
-      this._diffEditor = monaco.editor.createDiffEditor(document.getElementById(`${this.instanceId}-diff-container`), {
+      this._diffEditor = monaco.editor.createDiffEditor(document.getElementById(`${this.instanceid}-diff-container`), {
         automaticLayout: true
       });
-
-      const original = typeof(this.original) === "string" ? this.original : JSON.stringify(this.original);
       // parse to clear any formatting...then auto format with tab
-      const v = JSON.stringify(JSON.parse(original), null, '\t');
+      const v = JSON.stringify(JSON.parse(this.original), null, '\t');
       this._diffEditor.setModel({
         original: monaco.editor.createModel(v, "json"),
-        modified: this.currentModel
+        modified: this._editor.getModel()
       });
     }
   }
+
 
   _onEditorChange(): void {
     this._toggleUndoRedo();
@@ -370,12 +366,11 @@ export class JsonEditor {
 
   _diff(): void {
     this._useDiffEditor = !this._useDiffEditor;
-    let diffContainer = document.getElementById(`${this.instanceId}-diff-container`);
-    let container = document.getElementById(`${this.instanceId}-container`);
+    let diffContainer = document.getElementById(`${this.instanceid}-diff-container`);
+    let container = document.getElementById(`${this.instanceid}-container`);
     if (this._useDiffEditor) {
-      const original = typeof(this.original) === "string" ? this.original : JSON.stringify(this.original);
       this._diffEditor.setModel({
-        original: monaco.editor.createModel(JSON.stringify(JSON.parse(original), null, '\t'), "json"),
+        original: monaco.editor.createModel(JSON.stringify(JSON.parse(this.original), null, '\t'), "json"),
         modified: this._editor.getModel()
       });
       diffContainer.classList.remove("not-visible");
@@ -388,20 +383,20 @@ export class JsonEditor {
 
   _toggleUndoRedo(): void {
     if (this.currentModel?.canUndo()) {
-      this._enableButton(`${this.instanceId}-undo`);
-      //this._enableButton(`${this.instanceId}-save`);
+      this._enableButton(`${this.instanceid}-undo`);
+      //this._enableButton(`${this.instanceid}-save`);
     } else {
-      this._disableButton(`${this.instanceId}-undo`);
+      this._disableButton(`${this.instanceid}-undo`);
     }
 
     if (this.currentModel?.canRedo()) {
-      this._enableButton(`${this.instanceId}-redo`);
+      this._enableButton(`${this.instanceid}-redo`);
     } else {
-      this._disableButton(`${this.instanceId}-redo`);
+      this._disableButton(`${this.instanceid}-redo`);
     }
 
     if (this.currentModel?.canUndo() || this.currentModel?.canRedo()) {
-      this._enableButton(`${this.instanceId}-reset`);
+      this._enableButton(`${this.instanceid}-reset`);
     }
   }
 
@@ -430,9 +425,9 @@ export class JsonEditor {
     if (this._isEditing) {
       // const annotations: Ace.Annotation[] = this._editor.session.getAnnotations();
       // if (annotations.some(e => e.type === "error")) {
-      //   this._disableButton(`${this.instanceId}-saveEdits`);
+      //   this._disableButton(`${this.instanceid}-saveEdits`);
       // } else {
-      //   this._enableButton(`${this.instanceId}-saveEdits`);
+      //   this._enableButton(`${this.instanceid}-saveEdits`);
       // }
     }
   }
@@ -448,8 +443,8 @@ export class JsonEditor {
     this._cancelEditsBtnHandler?.removeEventListener("click", this._cancelEdits);
     this._saveEditsBtnHandler?.removeEventListener("click", this._saveEdits);
 
-    this._editor?.container?.remove();
-    this._editor.dispose();
+    //this._editor?.container?.remove();
+    this._editor?.dispose();
 
     this.original = undefined;
   }
@@ -481,9 +476,9 @@ export class JsonEditor {
    * @protected
    */
   _doneEditing(): void {
-    this._enableButton(`${this.instanceId}-startEditing`);
-    this._disableButton(`${this.instanceId}-cancelEdits`);
-    this._disableButton(`${this.instanceId}-saveEdits`);
+    this._enableButton(`${this.instanceid}-startEditing`);
+    this._disableButton(`${this.instanceid}-cancelEdits`);
+    this._disableButton(`${this.instanceid}-saveEdits`);
 
     this._isEditing = false;
   }
@@ -535,8 +530,8 @@ export class JsonEditor {
   _startEditing(): void {
     this._isEditing = true;
 
-    this._disableButton(`${this.instanceId}-startEditing`);
-    this._enableButton(`${this.instanceId}-cancelEdits`);
+    this._disableButton(`${this.instanceid}-startEditing`);
+    this._enableButton(`${this.instanceid}-cancelEdits`);
 
     // need to talk through this
     // would like to disscard the start/stop/save idea
@@ -548,16 +543,66 @@ export class JsonEditor {
     monaco.editor.setTheme('vs');
 
     if (this.currentModel?.canUndo()) {
-      this._enableButton(`${this.instanceId}-undo`);
+      this._enableButton(`${this.instanceid}-undo`);
     }
 
     if (this.currentModel?.canRedo()) {
-      this._enableButton(`${this.instanceId}-redo`);
+      this._enableButton(`${this.instanceid}-redo`);
     }
 
     if (this.currentModel?.canUndo() || this.currentModel?.canRedo()) {
       //enableBtn('reset');
-      //this._enableButton(`${this.instanceId}-reset`);
+      //this._enableButton(`${this.instanceid}-reset`);
     }
+  }
+
+  _saveCurrentModel(id: string): void {
+    if (this._editor && id && Object.keys(state.models).indexOf(id) > -1) {
+      //save the current state
+      state.models[id].state = this._editor.saveViewState();
+      state.models[id].isEditing = this._isEditing; // I want to get rid of this..
+
+      // TODO...should remove the event listener for the old model
+      // do I need to dispose onChange
+      //onChange = undefined;
+      //onDecorationsChange = undefined;
+    }
+  }
+
+  _setCurrentModel(id): void {
+    const data = state.models[id];
+
+    const isData = this.instanceid === "data";
+    this.model = isData ? data.dataModel : data.propsModel;
+    this.original = isData ? data.dataOriginValue : data.propsOriginValue;
+    
+    //this.currentModel = data.model;
+
+    if (this._editor) {
+      // TODO look at this when diffEditor is active...need to handle that as well
+      this._editor.setModel(this.model);
+      if (data.state) {
+        this._editor.restoreViewState(data.state);
+      }
+      // wire up event handlers
+      //onChange = currentModel.onDidChangeContent(_onEditorChange);
+      //onDecorationsChange = editor.onDidChangeModelDecorations(_onDecorationsChange);
+
+      if (data.isEditing) {
+        this._startEditing();
+      } else {
+        console.log("stop would go here but I want to get rid of start/stop");
+      }
+      this._editor.focus();
+    } else {
+      this._initEditor();
+    }
+
+    this.currentModel = this._editor.getModel();
+
+    //this.currentModel.onDidChangeContent(this._onEditorChange.bind(this));
+
+    // does this need to be done for each model change or can it be done once
+    //this._editor.onDidChangeModelDecorations(this._onDecorationsChange.bind(this));
   }
 }

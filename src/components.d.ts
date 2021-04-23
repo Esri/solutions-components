@@ -27,7 +27,9 @@ export namespace Components {
         /**
           * Contains the public id for this component.
          */
-        "instanceId": any;
+        "instanceid": any;
+        "isData": boolean;
+        "itemid": any;
         /**
           * Contains the public model for this component.
          */
@@ -185,14 +187,16 @@ export namespace Components {
         "wkidToDisplay": (wkid: number) => Promise<string>;
     }
     interface SolutionTemplateData {
+        "dataType": string;
         /**
           * This needs to be unique for each item and also for the props vs data of an item
          */
-        "instanceId": string;
+        "instanceid": string;
         /**
           * Should be set to true for items that store their data as a resource Will allow for upload and download of the resource
          */
         "isResource": boolean;
+        "itemid": string;
         /**
           * Contains the organization based variables
          */
@@ -318,7 +322,9 @@ declare namespace LocalJSX {
         /**
           * Contains the public id for this component.
          */
-        "instanceId"?: any;
+        "instanceid"?: any;
+        "isData"?: boolean;
+        "itemid"?: any;
         /**
           * Contains the public model for this component.
          */
@@ -463,14 +469,16 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface SolutionTemplateData {
+        "dataType"?: string;
         /**
           * This needs to be unique for each item and also for the props vs data of an item
          */
-        "instanceId"?: string;
+        "instanceid"?: string;
         /**
           * Should be set to true for items that store their data as a resource Will allow for upload and download of the resource
          */
         "isResource"?: boolean;
+        "itemid"?: string;
         /**
           * Contains the organization based variables
          */

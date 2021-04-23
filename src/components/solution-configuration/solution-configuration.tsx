@@ -20,6 +20,7 @@ import { ISolutionItem } from '../solution-item/solution-item';
 import { IOrganizationVariableItem } from '../solution-organization-variables/solution-organization-variables';
 import { IVariableItem } from '../solution-variables/solution-variables';
 import { getInventoryItems } from '../../utils/templates';
+import state from '../../utils/editStore';
 
 import '@esri/calcite-components';
 
@@ -75,6 +76,7 @@ export class SolutionConfiguration {
   templatesSet(newValue: any[], oldValue: any[]) {
     if (newValue !== oldValue) {
       this.value.contents = getInventoryItems(newValue);
+      state.models = this._getModels(newValue);
     }
   }
 
@@ -180,5 +182,22 @@ export class SolutionConfiguration {
   //  Private Methods
   //
   //--------------------------------------------------------------------------
-
+  _getModels(templates: any[]): any {
+    const ids: string[] = [];
+    const models: any = {};
+    templates.forEach(t => {
+      if (ids.indexOf(t.itemId) < 0) {
+        ids.push(t.itemId);
+        models[t.itemId] = {
+          dataModel: monaco.editor.createModel(JSON.stringify(t.data, null, '\t'), "json"),
+          dataOriginValue: JSON.stringify(t.data),
+          propsModel: monaco.editor.createModel(JSON.stringify(t.properties, null, '\t'), "json"),
+          propsOriginValue: JSON.stringify(t.properties),
+          state: undefined,
+          isEditing: false
+        };
+      }
+    });
+    return models;
+  }
 }

@@ -61,7 +61,12 @@ export class SolutionTemplateData {
   /**
    * This needs to be unique for each item and also for the props vs data of an item
    */
-   @Prop({ mutable: true, reflect: true, attribute: "instanceId" }) instanceId: string = "";
+   @Prop({ mutable: true, reflect: true }) instanceid: string = "";
+
+   @Prop({ mutable: true, reflect: true, attribute: "itemid" }) itemid: string = "";
+
+   // props or data
+   @Prop({ mutable: true, reflect: true, attribute: "dataType" }) dataType: string = "";
 
      /**
    * Contains the solution based variables
@@ -122,7 +127,8 @@ export class SolutionTemplateData {
       <calcite-shell-center-row slot="center-row" position="start" height-scale="l" width-scale="l" class="json-editor">
         <div class="solution-data-child-container padding-1">
           <json-editor
-            instanceId={this.instanceId}
+            instanceid={this.instanceid}
+            itemid={this.itemid}
             translations={this.translations}
             value={templateData.value}
           ></json-editor>

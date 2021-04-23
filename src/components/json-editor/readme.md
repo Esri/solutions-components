@@ -10,7 +10,9 @@
 | Property       | Attribute      | Description                                                                                   | Type      | Default     |
 | -------------- | -------------- | --------------------------------------------------------------------------------------------- | --------- | ----------- |
 | `hasErrors`    | `has-errors`   | Contains a public value to indicate if the model has any errors that would prevent saving it. | `boolean` | `false`     |
-| `instanceId`   | `instanceid`   | Contains the public id for this component.                                                    | `any`     | `""`        |
+| `instanceid`   | `instanceid`   | Contains the public id for this component.                                                    | `any`     | `""`        |
+| `isData`       | `is-data`      |                                                                                               | `boolean` | `false`     |
+| `itemid`       | `itemid`       |                                                                                               | `any`     | `""`        |
 | `model`        | `model`        | Contains the public model for this component.                                                 | `any`     | `undefined` |
 | `original`     | `original`     | Contains the original source item json as it was when the component was created.              | `any`     | `""`        |
 | `translations` | `translations` | Contains the translations for this component.                                                 | `any`     | `{}`        |
