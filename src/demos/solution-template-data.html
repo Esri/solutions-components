@@ -37,7 +37,8 @@
   <h1>Demo Solution Template Data</h1>
   <main id="appContainer">
     <div id="template-data" class="content full-height">
-      <solution-template-data id="demo" instanceId="2d2d176f5f3e43a985a31649e213aaf4"></solution-template-data>
+      <store-manager id="helper"></store-manager>
+      <solution-template-data id="demo" instanceId="data" itemid="2d2d176f5f3e43a985a31649e213aaf4"></solution-template-data>
     </div>
   </main>
 
@@ -47,21 +48,29 @@
     require.config({ paths: { vs: '../assets/json-editor/monaco-editor/min/vs' } });
     require(["i18n!../assets/nls/strings", 'vs/editor/editor.main'],
     function (translations) {
-      // Initialize the configuration content
+      // Initialize the content
       const demo = document.getElementById("demo");
       demo.translations = translations.configuration_modal.configuration;
+
+      const helper = document.getElementById("helper");
 
       // set the data
       Promise.all([
         fetch("./data/solution-template-data-data.json"),
         fetch("./data/solution-variables-data.json"),
-        fetch("./data/solution-organization-variables-data.json")
+        fetch("./data/solution-organization-variables-data.json"),
+        fetch("./data/election-outreach.json")
       ])
         .then(results => Promise.all(results.map(r => r.json())))
-        .then(jsonResults => {
+        .then(jsonResults => { 
+          const template = jsonResults[3].templates[0];
+          helper.value = template;
+
           demo.value = { value: jsonResults[0].value };
+          demo.itemid = "2d2d176f5f3e43a985a31649e213aaf4";
           demo.solutionVariables = jsonResults[1].value;
           demo.organizationVariables = jsonResults[2].value;
+
           document.getElementById("appContainer").style.opacity = "1";
         });
     });

@@ -69,7 +69,7 @@ export class JsonEditor {
   @Watch('value')
   valueSet(newValue: any, oldValue: any) {
     if (newValue !== oldValue && this.instanceid !== "") {
-      if (state && state.models) {
+      if (state && state.models && Object.keys(state.models).indexOf(newValue) > -1) {
         // store the current state
         this._saveCurrentModel(oldValue);
 
@@ -98,16 +98,6 @@ export class JsonEditor {
    * We are currently tied to either data or props as this helps us know how to get the correct model from the store. 
    */
   @Prop({ mutable: true, reflect: true }) instanceid: any = "";
-
-  /**
-   * Verify if any of the values for the Item have changed
-   *
-   */
-  // TODO does this need to me a @Method?
-  //@Method()
-  hasChanges(): boolean {
-    return this.original !== this.value;
-  }
 
   //--------------------------------------------------------------------------
   //

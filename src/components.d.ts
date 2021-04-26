@@ -224,6 +224,9 @@ export namespace Components {
          */
         "value": IVariableItem[];
     }
+    interface StoreManager {
+        "value": any;
+    }
 }
 declare global {
     interface HTMLJsonEditorElement extends Components.JsonEditor, HTMLStencilElement {
@@ -298,6 +301,12 @@ declare global {
         prototype: HTMLSolutionVariablesElement;
         new (): HTMLSolutionVariablesElement;
     };
+    interface HTMLStoreManagerElement extends Components.StoreManager, HTMLStencilElement {
+    }
+    var HTMLStoreManagerElement: {
+        prototype: HTMLStoreManagerElement;
+        new (): HTMLStoreManagerElement;
+    };
     interface HTMLElementTagNameMap {
         "json-editor": HTMLJsonEditorElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
@@ -311,6 +320,7 @@ declare global {
         "solution-spatial-ref": HTMLSolutionSpatialRefElement;
         "solution-template-data": HTMLSolutionTemplateDataElement;
         "solution-variables": HTMLSolutionVariablesElement;
+        "store-manager": HTMLStoreManagerElement;
     }
 }
 declare namespace LocalJSX {
@@ -507,6 +517,9 @@ declare namespace LocalJSX {
          */
         "value"?: IVariableItem[];
     }
+    interface StoreManager {
+        "value"?: any;
+    }
     interface IntrinsicElements {
         "json-editor": JsonEditor;
         "solution-configuration": SolutionConfiguration;
@@ -520,6 +533,7 @@ declare namespace LocalJSX {
         "solution-spatial-ref": SolutionSpatialRef;
         "solution-template-data": SolutionTemplateData;
         "solution-variables": SolutionVariables;
+        "store-manager": StoreManager;
     }
 }
 export { LocalJSX as JSX };
@@ -538,6 +552,7 @@ declare module "@stencil/core" {
             "solution-spatial-ref": LocalJSX.SolutionSpatialRef & JSXBase.HTMLAttributes<HTMLSolutionSpatialRefElement>;
             "solution-template-data": LocalJSX.SolutionTemplateData & JSXBase.HTMLAttributes<HTMLSolutionTemplateDataElement>;
             "solution-variables": LocalJSX.SolutionVariables & JSXBase.HTMLAttributes<HTMLSolutionVariablesElement>;
+            "store-manager": LocalJSX.StoreManager & JSXBase.HTMLAttributes<HTMLStoreManagerElement>;
         }
     }
 }
