@@ -12,6 +12,13 @@
 | `value`  | `value`   |             | `any` | `undefined` |
 
 
+## Events
+
+| Event         | Description | Type               |
+| ------------- | ----------- | ------------------ |
+| `stateLoaded` |             | `CustomEvent<any>` |
+
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

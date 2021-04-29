@@ -33,7 +33,7 @@ export function getInventoryItems(
   }, []);
 }
 
-export function getModels(templates: any[]): any {
+export async function getModels(templates: any[]): Promise<any> {
   const ids: string[] = [];
   const models: any = {};
   templates.forEach(t => {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Listen, Prop, VNode, Watch } from '@stencil/core';
+import { Component, Element, h, Host, Listen, Prop, State, VNode } from '@stencil/core';
 import { IInventoryItem } from '../solution-contents/solution-contents';
 import { ISolutionItem } from '../solution-item/solution-item';
 import { IOrganizationVariableItem } from '../solution-organization-variables/solution-organization-variables';
@@ -40,13 +40,15 @@ export class SolutionConfiguration {
   //  Host element access
   //
   //--------------------------------------------------------------------------
-  @Element() el: HTMLElement;
+  @Element() el: any;
 
   //--------------------------------------------------------------------------
   //
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  @State() modelsSet: boolean = false;
 
   /**
    * Contains the translations for this component.
@@ -59,26 +61,11 @@ export class SolutionConfiguration {
   @Prop({ mutable: true, reflect: true }) value: ISolutionConfiguration = {
     contents: []
   };
-  @Watch('value')
-  valueSet(newValue: ISolutionConfiguration, oldValue: ISolutionConfiguration) {
-    if (newValue !== oldValue) {
-      if (newValue && newValue.contents && newValue.contents.length > 0) {
-        this.item = newValue.contents[0].solutionItem;
-      }
-    }
-  }
 
   /**
    * Contains the raw templates from the solution item
    */
-  @Prop({mutable: true, reflect: true}) templates: any[] = [];
-  @Watch('templates')
-  templatesSet(newValue: any[], oldValue: any[]) {
-    if (newValue !== oldValue) {
-      this.value.contents = getInventoryItems(newValue);
-      state.models = getModels(newValue);
-    }
-  }
+  @Prop({mutable: true, reflect: true}) templates: string;
 
   /**
    * Contains the solution based variables
@@ -107,6 +94,10 @@ export class SolutionConfiguration {
   //  Lifecycle
   //
   //--------------------------------------------------------------------------
+
+  connectedCallback(): void {
+    this._initTemplatesObserver();
+  }
 
   render(): VNode {
     return (
@@ -155,6 +146,8 @@ export class SolutionConfiguration {
   //
   //--------------------------------------------------------------------------
 
+  private _templatesObserver: MutationObserver;
+
   //--------------------------------------------------------------------------
   //
   //  Event Listeners
@@ -165,6 +158,7 @@ export class SolutionConfiguration {
   _solutionItemSelected(event: CustomEvent): void {
     this.item = event.detail;
   }
+
   //--------------------------------------------------------------------------
   //
   //  Events
@@ -182,4 +176,23 @@ export class SolutionConfiguration {
   //  Private Methods
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Observe changes to the templates prop
+   */
+  private _initTemplatesObserver() {
+    this._templatesObserver = new MutationObserver(ml => {
+      ml.some(async mutation => {
+        if (mutation.type === 'attributes' && mutation.attributeName === "templates" &&
+          mutation.target[mutation.attributeName] !== mutation.oldValue) {
+          const v = JSON.parse(mutation.target[mutation.attributeName]);
+          this.value.contents = [...getInventoryItems(v)];
+          state.models = await getModels(v);
+          this.modelsSet = true;
+          return true;
+        }
+      })
+    });
+    this._templatesObserver.observe(this.el, { attributes: true, attributeOldValue: true });
+  }
 }

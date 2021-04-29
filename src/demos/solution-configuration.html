@@ -61,7 +61,8 @@
         .then(jsonResults => {
           demo.solutionVariables = jsonResults[0].value;
           demo.organizationVariables = jsonResults[1].value;
-          demo.templates = jsonResults[2].templates;
+          demo.templates = JSON.stringify(jsonResults[2].templates);
+
           document.getElementById("appContainer").style.opacity = "1";
         });
     });

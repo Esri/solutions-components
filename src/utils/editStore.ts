@@ -16,8 +16,18 @@
 
 import { createStore } from "@stencil/store";
 
-const { state } = createStore({
+const { state, onChange } = createStore({
   models: {}
+});
+
+const storeChangedEvent = new CustomEvent("storeChanged", {
+  bubbles: true,
+  cancelable: false,
+  composed: true
+});
+
+onChange('models', () => {
+  dispatchEvent(storeChangedEvent);
 });
 
 export default state;

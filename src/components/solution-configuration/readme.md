@@ -12,7 +12,7 @@
 | `item`                  | --             | Contains the current solution item we are working with | `ISolutionItem`               | `{     itemId: "",     itemDetails: {},     isResource: false,     data: {},     properties: {},     type: ""   }` |
 | `organizationVariables` | --             | Contains the organization based variables              | `IOrganizationVariableItem[]` | `[]`                                                                                                               |
 | `solutionVariables`     | --             | Contains the solution based variables                  | `IVariableItem[]`             | `[]`                                                                                                               |
-| `templates`             | --             | Contains the raw templates from the solution item      | `any[]`                       | `[]`                                                                                                               |
+| `templates`             | `templates`    | Contains the raw templates from the solution item      | `string`                      | `undefined`                                                                                                        |
 | `translations`          | `translations` | Contains the translations for this component.          | `any`                         | `{}`                                                                                                               |
 | `value`                 | --             | Contains the public value for this component.          | `ISolutionConfiguration`      | `{     contents: []   }`                                                                                           |
 

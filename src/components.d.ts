@@ -61,7 +61,7 @@ export namespace Components {
         /**
           * Contains the raw templates from the solution item
          */
-        "templates": any[];
+        "templates": string;
         /**
           * Contains the translations for this component.
          */
@@ -367,7 +367,7 @@ declare namespace LocalJSX {
         /**
           * Contains the raw templates from the solution item
          */
-        "templates"?: any[];
+        "templates"?: string;
         /**
           * Contains the translations for this component.
          */
@@ -518,6 +518,7 @@ declare namespace LocalJSX {
         "value"?: IVariableItem[];
     }
     interface StoreManager {
+        "onStateLoaded"?: (event: CustomEvent<any>) => void;
         "value"?: any;
     }
     interface IntrinsicElements {
