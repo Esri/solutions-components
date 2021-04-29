@@ -12,15 +12,15 @@ export class StoreManager {
   @Prop({ mutable: true, reflect: true }) value: any = undefined;
 
   @Watch('value')
-  async valueSet(newValue: any, oldValue: any) {
+  valueSet(newValue: any, oldValue: any) {
     if (newValue !== oldValue) {
-      state.models = await getModels(Array.isArray(newValue) ? newValue : [newValue]);
+      state.models = getModels(Array.isArray(newValue) ? newValue : [newValue]);
     }
   }
 
-  async componentWillRender(): Promise<any> {
+  componentWillRender(): Promise<any> {
     if (this.value) {
-      state.models = await getModels(Array.isArray(this.value) ? this.value : [this.value]);
+      state.models = getModels(Array.isArray(this.value) ? this.value : [this.value]);
     }
     this.stateLoaded.emit(state);
     return;

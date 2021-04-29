@@ -182,12 +182,12 @@ export class SolutionConfiguration {
    */
   private _initTemplatesObserver() {
     this._templatesObserver = new MutationObserver(ml => {
-      ml.some(async mutation => {
+      ml.some(mutation => {
         if (mutation.type === 'attributes' && mutation.attributeName === "templates" &&
           mutation.target[mutation.attributeName] !== mutation.oldValue) {
           const v = JSON.parse(mutation.target[mutation.attributeName]);
           this.value.contents = [...getInventoryItems(v)];
-          state.models = await getModels(v);
+          state.models = getModels(v);
           this.modelsSet = true;
           return true;
         }
