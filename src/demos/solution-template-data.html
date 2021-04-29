@@ -63,7 +63,7 @@
       ])
         .then(results => Promise.all(results.map(r => r.json())))
         .then(jsonResults => { 
-          const template = jsonResults[3].templates[0];
+          const template = JSON.stringify(jsonResults[3].templates[0]);
           helper.value = template;
 
           demo.value = { value: jsonResults[0].value };

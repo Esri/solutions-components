@@ -59,7 +59,7 @@
         .then(response => response.json())
         .then(data => {
           const template = data.templates[0];
-          helper.value = template;
+          helper.value = JSON.stringify(template);
 
           demo.value = template.itemId;
           document.getElementById("appContainer").style.opacity = "1";

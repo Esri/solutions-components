@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type  | Default     |
-| -------- | --------- | ----------- | ----- | ----------- |
-| `value`  | `value`   |             | `any` | `undefined` |
+| Property | Attribute | Description                      | Type     | Default |
+| -------- | --------- | -------------------------------- | -------- | ------- |
+| `value`  | `value`   | Contains source json as a string | `string` | `""`    |
 
 
 ## Events

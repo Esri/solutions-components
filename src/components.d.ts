@@ -225,7 +225,10 @@ export namespace Components {
         "value": IVariableItem[];
     }
     interface StoreManager {
-        "value": any;
+        /**
+          * Contains source json as a string
+         */
+        "value": string;
     }
 }
 declare global {
@@ -519,7 +522,10 @@ declare namespace LocalJSX {
     }
     interface StoreManager {
         "onStateLoaded"?: (event: CustomEvent<any>) => void;
-        "value"?: any;
+        /**
+          * Contains source json as a string
+         */
+        "value"?: string;
     }
     interface IntrinsicElements {
         "json-editor": JsonEditor;
