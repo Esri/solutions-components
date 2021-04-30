@@ -86,12 +86,11 @@
  
    private _initValueObserver() {
      this._valueObserver = new MutationObserver(ml => {
-       ml.some(async mutation => {
+       ml.some(mutation => {
          if (mutation.type === 'attributes' && mutation.attributeName === "value" &&
            mutation.target[mutation.attributeName] !== mutation.oldValue) {
-             console.log("WTF2")
            const v = JSON.parse(mutation.target[mutation.attributeName]);
-           state.models = await getModels(Array.isArray(v) ? v : [v]);
+           state.models = getModels(Array.isArray(v) ? v : [v]);
            this.stateLoaded.emit(state);
            return true;
          }
