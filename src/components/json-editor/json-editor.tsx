@@ -183,6 +183,9 @@ export class JsonEditor {
   }
 
   disconnectedCallback(): void {
+    // The doc makes me question what all we should do here
+    // StencilJS doc: Called every time the component is disconnected from the DOM, ie, it can
+    // be dispatched more than once, DO not confuse with a "onDestroy" kind of event.
     this._destroyEditor();
   }
 
@@ -200,6 +203,8 @@ export class JsonEditor {
   private _cancelEditsBtnHandler: any;
   private _loaded: boolean = false;
   private _valueObserver: MutationObserver;
+  private _contentChanged: any;
+  private _decorationsChanged: any;
 
   private _initValueObserver() {
       this._valueObserver = new MutationObserver(ml => {
@@ -212,9 +217,9 @@ export class JsonEditor {
                 this._saveCurrentModel(mutation.oldValue);
 
                 // get the model and state from the store
-                this._setCurrentModel(newValue);
+                this._setEditModel(newValue);
               } else if (!this._loaded) {
-                this._setCurrentModel(this.value);
+                this._setEditModel(this.value);
               }
             }
           }
@@ -222,9 +227,6 @@ export class JsonEditor {
       });
       this._valueObserver.observe(this.el, { attributes: true, attributeOldValue: true });
   }
-
-  // private _contentChanged: any;
-  // private _decorationsChanged: any;
 
   //--------------------------------------------------------------------------
   //
@@ -247,8 +249,15 @@ export class JsonEditor {
     if (!this._loaded && this.value) {
       if (state && state.models && Object.keys(state.models).indexOf(this.value) > -1) {
         //get the model and state from the store
-        this._setCurrentModel(this.value);
+        this._setEditModel(this.value);
       }
+    }
+  }
+
+  @Listen("solutionItemSelected", { target: 'window' })
+  _solutionItemSelected(event: CustomEvent): void {
+    if (this.value && event.detail.itemId !== this.value) {
+      this._saveCurrentModel(this.value)
     }
   }
 
@@ -286,19 +295,15 @@ export class JsonEditor {
       });
       this._currentModel = this._editor.getModel();
 
-      // this._contentChanged = this._currentModel.onDidChangeContent(this._onEditorChange.bind(this));
-      // this._decorationsChanged = this._editor.onDidChangeModelDecorations(this._onDecorationsChange.bind(this));
-      this._currentModel.onDidChangeContent(this._onEditorChange.bind(this));
-      this._editor.onDidChangeModelDecorations(this._onDecorationsChange.bind(this));
+      this._contentChanged = this._currentModel.onDidChangeContent(this._onEditorChange.bind(this));
+      this._decorationsChanged = this._editor.onDidChangeModelDecorations(this._onDecorationsChange.bind(this));
 
       this._diffEditor = monaco.editor.createDiffEditor(document.getElementById(`${this.instanceid}-diff-container`), {
         automaticLayout: true
       });
-
       this._setDiffModel();
 
       this._loaded = true;
-      console.log(this._loaded)
     }
   }
 
@@ -431,6 +436,11 @@ export class JsonEditor {
   _destroyEditor(): void {
     this._searchBtnHandler?.removeEventListener("click", this._search);
     this._cancelEditsBtnHandler?.removeEventListener("click", this._reset);
+  
+    this._valueObserver?.disconnect();
+
+    this._contentChanged?.dispose();
+    this._decorationsChanged?.dispose();
 
     this._editor?.dispose();
 
@@ -445,13 +455,14 @@ export class JsonEditor {
   _reset(): void {
     // update the store
     this.model = monaco.editor.createModel(JSON.stringify(JSON.parse(this.original), null, '\t'), "json");
-    state.models[this.instanceid === "data" ? "dataModel" : "propsModel"] = this.model;
+    state.models[this.value][this.instanceid === "data" ? "dataModel" : "propsModel"] = this.model;
     state.models[this.value].state = undefined;
 
     // update the editor
     this._editor.setModel(this.model);
-    this._currentModel = this._editor.getModel();
-    this._currentModel.onDidChangeContent(this._onEditorChange.bind(this));
+    this._setCurrentModel();
+    this._setDiffModel();
+    this._saveCurrentModel(this.value);
     this._setEditorFocus();
 
     // update the ui
@@ -500,6 +511,7 @@ export class JsonEditor {
    */
   _saveCurrentModel(id: string): void {
     if (this._editor && id && Object.keys(state.models).indexOf(id) > -1) {
+      state.models[id][this.instanceid === "data" ? "dataModel" : "propsModel"] = this.model;
       state.models[id].state = this._editor.saveViewState();
     }
   }
@@ -509,7 +521,7 @@ export class JsonEditor {
    *
    * @protected
    */
-  _setCurrentModel(id): void {
+  _setEditModel(id): void {
     const data = state.models[id];
 
     const isData = this.instanceid === "data";
@@ -521,23 +533,27 @@ export class JsonEditor {
       if (data.state) {
         this._editor.restoreViewState(data.state);
       }
-      // wire up event handlers
-      //onChange = this._currentModel.onDidChangeContent(_onEditorChange);
-      //onDecorationsChange = editor.onDidChangeModelDecorations(_onDecorationsChange);
-
       this._setEditorFocus();
     } else {
       this._initEditor();
     }
 
-    this._currentModel = this._editor.getModel();
-
-    //this._currentModel.onDidChangeContent(this._onEditorChange.bind(this));
-
-    // does this need to be done for each model change or can it be done once
-    //this._editor.onDidChangeModelDecorations(this._onDecorationsChange.bind(this));
+    this._setCurrentModel();
 
     this._toggleUndoRedo();
+  }
+
+  /**
+   * Set the current model and event handler
+   *
+   * @protected
+   */
+  _setCurrentModel(): void {
+    this._currentModel = this._editor.getModel();
+    if (this._contentChanged) {
+      this._contentChanged.dispose();
+    }
+    this._contentChanged = this._currentModel.onDidChangeContent(this._onEditorChange.bind(this));
   }
 
   /**
@@ -552,9 +568,13 @@ export class JsonEditor {
     });
   }
 
+  /**
+   * Set the models for the diff editor
+   *
+   * @protected
+   */
   _setEditorFocus(): void {
     if (this._useDiffEditor) {
-      this._setDiffModel();
       this._diffEditor.focus();
     } else {
       this._editor.focus();
