@@ -119,7 +119,7 @@ export class SolutionConfiguration {
                     ></solution-contents>
                   </div>
                   <div class="config-item">
-                    <solution-item 
+                    <solution-item
                       translations={this.translations}
                       value={this.item}
                       solutionVariables={this.solutionVariables}

@@ -19,6 +19,12 @@ import { SolutionConfiguration } from '../solution-configuration';
 import * as translations from '../../../testingAssets/strings.json';
 import { h } from '@stencil/core';
 
+// Mock MutationObserver because Jest environment doesn't have it
+const mutationObserverMock = jest.fn(function MutationObserver(callback) {
+  this.observe = jest.fn();
+});
+global.MutationObserver = mutationObserverMock;
+
 describe('solution-configuration', () => {
   it('renders', async () => {
     const page = await newSpecPage({
