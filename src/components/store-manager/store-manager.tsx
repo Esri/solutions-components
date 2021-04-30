@@ -87,9 +87,10 @@
    private _initValueObserver() {
      this._valueObserver = new MutationObserver(ml => {
        ml.some(mutation => {
+         const newValue = mutation.target[mutation.attributeName];
          if (mutation.type === 'attributes' && mutation.attributeName === "value" &&
-           mutation.target[mutation.attributeName] !== mutation.oldValue) {
-           const v = JSON.parse(mutation.target[mutation.attributeName]);
+           newValue !== mutation.oldValue && newValue !== "") {
+           const v = JSON.parse(newValue);
            state.models = getModels(Array.isArray(v) ? v : [v]);
            this.stateLoaded.emit(state);
            return true;
