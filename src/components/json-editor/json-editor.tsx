@@ -82,9 +82,9 @@ export class JsonEditor {
   /**
    * Contains a unique identifier for when we have multiple instances of the editor.
    * For example when we want to show an items data as well as an items properties.
-   * 
-   * Need to rethink this..would like it to be more generic. 
-   * We are currently tied to either data or props as this helps us know how to get the correct model from the store. 
+   *
+   * Need to rethink this..would like it to be more generic.
+   * We are currently tied to either data or props as this helps us know how to get the correct model from the store.
    */
   @Prop({ mutable: true, reflect: true }) instanceid: any = "";
 
@@ -177,7 +177,7 @@ export class JsonEditor {
       </Host>
     );
   }
-  
+
   componentWillLoad(): void {
     this._initValueObserver();
   }
@@ -527,7 +527,7 @@ export class JsonEditor {
     const isData = this.instanceid === "data";
     this.model = isData ? data.dataModel : data.propsModel;
     this.original = isData ? data.dataOriginValue : data.propsOriginValue;
-    
+
     if (this._editor) {
       this._editor.setModel(this.model);
       if (data.state) {

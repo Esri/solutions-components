@@ -19,20 +19,18 @@ import { JsonEditor } from '../json-editor';
 import * as translations from '../../../testingAssets/strings.json';
 import { h } from '@stencil/core';
 
-describe('json-editor', () => {
-  // has to be a better way..
-  global.MutationObserver = class {
-    constructor(callback) { }
-    disconnect() { }
-    observe(element, initObject) { }
-    takeRecords(): any[] { return [] }
-  };
+// Mock MutationObserver because Jest environment doesn't have it
+const mutationObserverMock = jest.fn(function MutationObserver(callback) {
+  this.observe = jest.fn();
+});
+global.MutationObserver = mutationObserverMock;
 
-    it('renders', async () => {
+describe('json-editor', () => {
+  it('renders', async () => {
     const page = await newSpecPage({
       components: [JsonEditor],
       template: () => (
-        <json-editor translations={translations.configuration_modal.configuration} instanceid="ABC123" value = "{a:'A'}"></json-editor>
+        <json-editor translations={translations.configuration_modal.configuration} instanceid="ABC123" value="{a:'A'}"></json-editor>
       )
     });
     

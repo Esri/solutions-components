@@ -25,7 +25,7 @@ export namespace Components {
          */
         "hasErrors": boolean;
         /**
-          * Contains a unique identifier for when we have multiple instances of the editor. For example when we want to show an items data as well as an items properties.  Need to rethink this..would like it to be more generic.  We are currently tied to either data or props as this helps us know how to get the correct model from the store.
+          * Contains a unique identifier for when we have multiple instances of the editor. For example when we want to show an items data as well as an items properties.  Need to rethink this..would like it to be more generic. We are currently tied to either data or props as this helps us know how to get the correct model from the store.
          */
         "instanceid": any;
         /**
@@ -333,7 +333,7 @@ declare namespace LocalJSX {
          */
         "hasErrors"?: boolean;
         /**
-          * Contains a unique identifier for when we have multiple instances of the editor. For example when we want to show an items data as well as an items properties.  Need to rethink this..would like it to be more generic.  We are currently tied to either data or props as this helps us know how to get the correct model from the store.
+          * Contains a unique identifier for when we have multiple instances of the editor. For example when we want to show an items data as well as an items properties.  Need to rethink this..would like it to be more generic. We are currently tied to either data or props as this helps us know how to get the correct model from the store.
          */
         "instanceid"?: any;
         /**
