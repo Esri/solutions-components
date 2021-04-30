@@ -20,6 +20,14 @@ import * as translations from '../../../testingAssets/strings.json';
 import { h } from '@stencil/core';
 
 describe('solution-configuration', () => {
+  // has to be a better way..
+  global.MutationObserver = class {
+    constructor(callback) { }
+    disconnect() { }
+    observe(element, initObject) { }
+    takeRecords(): any[] { return [] }
+  };
+  
   it('renders', async () => {
     const page = await newSpecPage({
       components: [SolutionConfiguration],

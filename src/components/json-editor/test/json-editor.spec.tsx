@@ -20,34 +20,47 @@ import * as translations from '../../../testingAssets/strings.json';
 import { h } from '@stencil/core';
 
 describe('json-editor', () => {
+  // has to be a better way..
+  global.MutationObserver = class {
+    constructor(callback) { }
+    disconnect() { }
+    observe(element, initObject) { }
+    takeRecords(): any[] { return [] }
+  };
+
     it('renders', async () => {
     const page = await newSpecPage({
       components: [JsonEditor],
       template: () => (
-        <json-editor translations={translations.configuration_modal.configuration} instanceId="ABC123" value = "{a:'A'}"></json-editor>
+        <json-editor translations={translations.configuration_modal.configuration} instanceid="ABC123" value = "{a:'A'}"></json-editor>
       )
     });
+    
     expect(page.root).toEqualHtml(`
-      <json-editor instance-id="ABC123" value="{a:'A'}">
-        <div class="editor-container">
-          <div class="editor-controls">
+      <json-editor instanceid="ABC123" value="{a:'A'}">
+        <div class="editor-container padding-right" id="ABC123-editor-container">
+          <div class="editor-controls padding-right">
             <div class="editor-buttons">
-              <calcite-button appearance="solid" class="edit-button" color="blue" id="ABC123-startEditing" scale="s" title="Start Editing">
-                <calcite-icon icon="pencil" scale="s"></calcite-icon>
+              <calcite-button appearance="solid" class="edit-button" color="blue" id="ABC123-undo" scale="s" title="Undo">
+                <calcite-icon icon="undo" scale="s"></calcite-icon>
+              </calcite-button>
+              <calcite-button appearance="solid" class="edit-button" color="blue" id="ABC123-redo" scale="s" title="Redo">
+                <calcite-icon icon="redo" scale="s"></calcite-icon>
+              </calcite-button>
+              <calcite-button appearance="solid" class="edit-button" color="blue" id="ABC123-diff" scale="s" title="Toggle Diff Editor">
+                <calcite-icon icon="compare" scale="s"></calcite-icon>
               </calcite-button>
               <calcite-button appearance="outline" class="edit-button" color="blue" id="ABC123-search" scale="s" title="Search">
                 <calcite-icon icon="search" scale="s"></calcite-icon>
               </calcite-button>
-              <calcite-button appearance="solid" class="edit-button" color="blue" disabled="" id="ABC123-cancelEdits" scale="s" title="Cancel Edits">
+              <calcite-button appearance="solid" class="edit-button" color="blue" disabled="" id="ABC123-reset" scale="s" title="Cancel Edits">
                 <calcite-icon icon="reset" scale="s"></calcite-icon>
-              </calcite-button>
-              <calcite-button appearance="solid" class="edit-button" color="blue" disabled="" id="ABC123-saveEdits" scale="s" title="Save Edits">
-                <calcite-icon icon="save" scale="s"></calcite-icon>
               </calcite-button>
             </div>
           </div>
-          <div class="editor-text">
-            <div class="edit-width" id="ABC123-editor"></div>
+          <div class="edit-parent">
+            <div class="json-edit-container" id="ABC123-container"></div>
+            <div class="json-edit-container not-visible" id="ABC123-diff-container"></div>
           </div>
         </div>
       </json-editor>
