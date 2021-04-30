@@ -392,6 +392,8 @@ export class JsonEditor {
 
     if (this._currentModel?.canUndo() || this._currentModel?.canRedo()) {
       this._enableButton(`${this.instanceid}-reset`);
+    } else {
+      this._disableButton(`${this.instanceid}-reset`);
     }
   }
 
@@ -432,21 +434,28 @@ export class JsonEditor {
 
     this._editor?.dispose();
 
-    this.original = undefined;
+    this.original = "";
   }
 
   /**
-   * Handles click on "Cancel edits" button.
+   * Resets the stored model to the original value.
    *
    * @protected
    */
-  _reset(): void { 
+  _reset(): void {
+    // update the store
     this.model = monaco.editor.createModel(JSON.stringify(JSON.parse(this.original), null, '\t'), "json");
     state.models[this.instanceid === "data" ? "dataModel" : "propsModel"] = this.model;
+    state.models[this.value].state = undefined;
+
+    // update the editor
     this._editor.setModel(this.model);
-    this._disableButton(`${this.instanceid}-reset`);
-    this._disableButton(`${this.instanceid}-undo`);
-    this._disableButton(`${this.instanceid}-redo`);
+    this._currentModel = this._editor.getModel();
+    this._currentModel.onDidChangeContent(this._onEditorChange.bind(this));
+    this._setEditorFocus();
+
+    // update the ui
+    this._toggleUndoRedo();
   }
 
   /**
@@ -492,11 +501,6 @@ export class JsonEditor {
   _saveCurrentModel(id: string): void {
     if (this._editor && id && Object.keys(state.models).indexOf(id) > -1) {
       state.models[id].state = this._editor.saveViewState();
-
-      // TODO...should remove the event listener for the old model
-      // do I need to dispose onChange
-      //onChange = undefined;
-      //onDecorationsChange = undefined;
     }
   }
 
@@ -521,12 +525,7 @@ export class JsonEditor {
       //onChange = this._currentModel.onDidChangeContent(_onEditorChange);
       //onDecorationsChange = editor.onDidChangeModelDecorations(_onDecorationsChange);
 
-      if (this._useDiffEditor) {
-        this._setDiffModel();
-        this._diffEditor.focus();
-      } else {
-        this._editor.focus();
-      }
+      this._setEditorFocus();
     } else {
       this._initEditor();
     }
@@ -551,5 +550,14 @@ export class JsonEditor {
       original: monaco.editor.createModel(JSON.stringify(JSON.parse(this.original), null, '\t'), "json"),
       modified: this._editor.getModel()
     });
+  }
+
+  _setEditorFocus(): void {
+    if (this._useDiffEditor) {
+      this._setDiffModel();
+      this._diffEditor.focus();
+    } else {
+      this._editor.focus();
+    }
   }
 }
