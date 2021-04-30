@@ -33,6 +33,7 @@ describe('json-editor', () => {
         <json-editor translations={translations.configuration_modal.configuration} instanceid="ABC123" value="{a:'A'}"></json-editor>
       )
     });
+    
     expect(page.root).toEqualHtml(`
       <json-editor instanceid="ABC123" value="{a:'A'}">
         <div class="editor-container padding-right" id="ABC123-editor-container">

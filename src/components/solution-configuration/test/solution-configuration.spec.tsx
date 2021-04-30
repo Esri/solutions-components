@@ -26,6 +26,14 @@ const mutationObserverMock = jest.fn(function MutationObserver(callback) {
 global.MutationObserver = mutationObserverMock;
 
 describe('solution-configuration', () => {
+  // has to be a better way..
+  global.MutationObserver = class {
+    constructor(callback) { }
+    disconnect() { }
+    observe(element, initObject) { }
+    takeRecords(): any[] { return [] }
+  };
+  
   it('renders', async () => {
     const page = await newSpecPage({
       components: [SolutionConfiguration],

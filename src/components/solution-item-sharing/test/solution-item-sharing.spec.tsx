@@ -33,12 +33,12 @@ describe('solution-item-sharing', () => {
         <mock:shadow-root>
          <div class="container-border">
            <calcite-label layout="inline">
-             <calcite-switch id="A" name="setting" scale="s" switched="" value="enabled"></calcite-switch>
+             <calcite-switch id="A" name="setting" scale="m" switched="" value="enabled"></calcite-switch>
              <solution-item-icon type="Feature Service"></solution-item-icon>
              ElectionGeography_public
            </calcite-label>
            <calcite-label layout="inline">
-             <calcite-switch id="B" name="setting" scale="s" value="enabled"></calcite-switch>
+             <calcite-switch id="B" name="setting" scale="m" value="enabled"></calcite-switch>
              <solution-item-icon type="Web Map"></solution-item-icon>
              Election Polling Places
            </calcite-label>

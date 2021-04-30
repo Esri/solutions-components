@@ -74,7 +74,7 @@ export class SolutionItemSharing {
             value="enabled"
             switched={item.shareItem}
             id={item.id}
-            scale="s"
+            scale="m"
             onCalciteSwitchChange={(event) => this._updateItem(event)}
           ></calcite-switch>
           <solution-item-icon type={item.type} typeKeywords={item.typeKeywords}></solution-item-icon>
