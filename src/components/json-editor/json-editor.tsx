@@ -49,7 +49,7 @@ export class JsonEditor {
   //  Host element access
   //
   //--------------------------------------------------------------------------
-  @Element() el: any;
+  @Element() el: HTMLJsonEditorElement;
 
   //--------------------------------------------------------------------------
   //

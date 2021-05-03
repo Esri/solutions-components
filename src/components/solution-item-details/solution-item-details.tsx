@@ -40,7 +40,7 @@ export class SolutionItemDetails {
   //
   //--------------------------------------------------------------------------
 
-  @Element() el: HTMLElement;
+  @Element() el: HTMLSolutionItemDetailsElement;
 
   //--------------------------------------------------------------------------
   //

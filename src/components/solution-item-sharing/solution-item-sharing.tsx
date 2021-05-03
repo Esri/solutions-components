@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Host, h, Prop, VNode } from '@stencil/core';
+import { Component, Element, h, Host, Prop, VNode } from '@stencil/core';
 
 export interface IItemShare {
   id: string;
@@ -30,6 +30,14 @@ export interface IItemShare {
   shadow: true,
 })
 export class SolutionItemSharing {
+
+  //--------------------------------------------------------------------------
+  //
+  //  Host element access
+  //
+  //--------------------------------------------------------------------------
+
+  @Element() el: HTMLSolutionItemSharingElement;
 
   //--------------------------------------------------------------------------
   //

@@ -34,7 +34,7 @@ export class SolutionResourceItem {
   //
   //--------------------------------------------------------------------------
 
-  @Element() el: HTMLElement;
+  @Element() el: HTMLSolutionResourceItemElement;
 
   //--------------------------------------------------------------------------
   //

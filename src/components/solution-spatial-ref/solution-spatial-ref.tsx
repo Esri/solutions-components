@@ -38,7 +38,7 @@ export class SolutionSpatialRef {
   //
   //--------------------------------------------------------------------------
 
-  @Element() el: HTMLElement;
+  @Element() el: HTMLSolutionSpatialRefElement;
 
   //--------------------------------------------------------------------------
   //

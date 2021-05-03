@@ -39,7 +39,7 @@ export class SolutionItem {
   //  Host element access
   //
   //--------------------------------------------------------------------------
-  @Element() el: HTMLElement;
+  @Element() el: HTMLSolutionItemElement;
 
   //--------------------------------------------------------------------------
   //

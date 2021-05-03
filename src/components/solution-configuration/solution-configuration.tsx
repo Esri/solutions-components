@@ -40,7 +40,7 @@ export class SolutionConfiguration {
   //  Host element access
   //
   //--------------------------------------------------------------------------
-  @Element() el: any;
+  @Element() el: HTMLSolutionConfigurationElement;
 
   //--------------------------------------------------------------------------
   //

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Event, EventEmitter, Host, h, Prop, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode } from '@stencil/core';
 
 export interface IVariableItem {
   id: string;
@@ -29,6 +29,14 @@ export interface IVariableItem {
   shadow: true,
 })
 export class SolutionVariables {
+
+  //--------------------------------------------------------------------------
+  //
+  //  Host element access
+  //
+  //--------------------------------------------------------------------------
+
+  @Element() el: HTMLSolutionVariablesElement;
 
   //--------------------------------------------------------------------------
   //

@@ -41,7 +41,7 @@ export class SolutionContents {
   //
   //--------------------------------------------------------------------------
 
-  @Element() el: HTMLElement;
+  @Element() el: HTMLSolutionContentsElement;
 
   //--------------------------------------------------------------------------
   //
