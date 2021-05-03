@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Event, EventEmitter, Host, h, Prop, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode } from '@stencil/core';
 
 export interface IOrganizationVariableItem {
   id: string;
@@ -30,6 +30,13 @@ export interface IOrganizationVariableItem {
 
 export class SolutionOrganizationVariables {
 
+  //--------------------------------------------------------------------------
+  //
+  //  Host element access
+  //
+  //--------------------------------------------------------------------------
+
+  @Element() el: HTMLSolutionOrganizationVariablesElement;
 
   //--------------------------------------------------------------------------
   //

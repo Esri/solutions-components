@@ -15,29 +15,26 @@
  */
 
 /**
- * Encapsulates the Ace (Ajax.org Cloud9 Editor; https://github.com/ajaxorg/ace) editor into a
+ * Encapsulates the Monaco Editor (https://microsoft.github.io/monaco-editor/) into a
  * web component for JSON content.
  *
  * Attributes:
- * `instanceId`: id of component (required, because it's used to distinguish between multiple instances of component)
+ * `instanceid`: id of component (required, because it's used to distinguish between multiple instances of component)
  * `value`: Initial content of editor
  *
  * @example
  *   <json-editor
- *     instanceId="a1f271c0de554604beed2adc1f244be1"
+ *     instanceid="a1f271c0de554604beed2adc1f244be1"
  *     value="{\"id\": \"12345\"}"
  *   ></json-editor>
  *
- * `instanceId` attribute and `value` are required
+ * `instanceid` attribute and `value` are required
  *
- * Component doesn't use the shadow root because of the way that Ace is loaded.
  *
- * N.B.: The search box on/off uses undocumented paths into the Ace library. Use care when upgrading Ace!
 */
 
-import { Component, Event, EventEmitter, Host, h, Listen, Prop, State, Watch } from '@stencil/core';
-import { Ace } from './assets/json-editor/ace/ace';
-const gAce = (window as any).ace;
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop } from '@stencil/core';
+import state from '../../utils/editStore';
 
 @Component({
   tag: 'json-editor',
@@ -46,6 +43,14 @@ const gAce = (window as any).ace;
   assetsDirs: ['assets']
 })
 export class JsonEditor {
+
+  //--------------------------------------------------------------------------
+  //
+  //  Host element access
+  //
+  //--------------------------------------------------------------------------
+  @Element() el: HTMLJsonEditorElement;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (public)
@@ -56,7 +61,7 @@ export class JsonEditor {
    * Contains the original source item json as it was when the component was created.
    *
    */
-  @State() original: any = "";
+  @Prop({ mutable: true }) original: any = "";
 
   /**
    * Contains the translations for this component.
@@ -65,34 +70,29 @@ export class JsonEditor {
 
   /**
    * Contains the public value for this component.
+   * This should be an item Id for one of the models in the store.
    */
   @Prop({ mutable: true, reflect: true }) value: any = undefined;
 
-  @Watch('value')
-  valueSet(newValue: any, oldValue: any) {
-    if (newValue !== oldValue) {
-      this._setEditorValue(newValue);
-      this._current = newValue;
-      if (this.original === undefined) {
-        this.original = newValue;
-      }
-    }
-  }
-
   /**
-   * Contains the public id for this component.
+   * Contains the public model for this component.
    */
-  @Prop({ mutable: true, reflect: true }) instanceId!: string;
+  @Prop({ mutable: true, reflect: true }) model: any; //monaco.editor.ITextModel;
 
   /**
-   * Verify if any of the values for the Item have changed
+   * Contains a unique identifier for when we have multiple instances of the editor.
+   * For example when we want to show an items data as well as an items properties.
    *
+   * Need to rethink this..would like it to be more generic.
+   * We are currently tied to either data or props as this helps us know how to get the correct model from the store.
    */
-  // TODO does this need to me a @Method?
-  //@Method()
-  hasChanges(): boolean {
-    return this.original !== this.value;
-  }
+  @Prop({ mutable: true, reflect: true }) instanceid: any = "";
+
+  /**
+   * Contains a public value to indicate if the model has any errors
+   * that would prevent saving it.
+   */
+  @Prop({ mutable: true, reflect: true }) hasErrors: boolean = false;
 
   //--------------------------------------------------------------------------
   //
@@ -103,22 +103,48 @@ export class JsonEditor {
   render() {
     return (
       <Host>
-        <div class="editor-container">
-          <div class="editor-controls">
+        <div id={`${this.instanceid}-editor-container`} class="editor-container padding-right">
+          <div class="editor-controls padding-right">
             <div class="editor-buttons">
+              {/* undo */}
               <calcite-button
-                id={`${this.instanceId}-startEditing`}
+                id={`${this.instanceid}-undo`}
                 color="blue"
                 appearance="solid"
-                title={this.translations.startEditing}
-                onClick={() => this._startEditing()}
+                title={this.translations.undo}
+                onClick={() => this._undo()}
                 scale="s"
                 class="edit-button"
               >
-                <calcite-icon icon="pencil" scale="s"></calcite-icon>
+                <calcite-icon icon="undo" scale="s"></calcite-icon>
               </calcite-button>
+              {/* redo */}
               <calcite-button
-                id={`${this.instanceId}-search`}
+                id={`${this.instanceid}-redo`}
+                color="blue"
+                appearance="solid"
+                title={this.translations.redo}
+                onClick={() => this._redo()}
+                scale="s"
+                class="edit-button"
+              >
+                <calcite-icon icon="redo" scale="s"></calcite-icon>
+              </calcite-button>
+              {/* diff */}
+              <calcite-button
+                id={`${this.instanceid}-diff`}
+                color="blue"
+                appearance="solid"
+                title={this.translations.diff}
+                onClick={() => this._toggleEditor()}
+                scale="s"
+                class="edit-button"
+              >
+                <calcite-icon icon="compare" scale="s"></calcite-icon>
+              </calcite-button>
+              {/* search */}
+              <calcite-button
+                id={`${this.instanceid}-search`}
                 appearance="outline"
                 color="blue"
                 title={this.translations.search}
@@ -128,45 +154,38 @@ export class JsonEditor {
               >
                 <calcite-icon icon="search" scale="s"></calcite-icon>
               </calcite-button>
+              {/* cancel */}
               <calcite-button
-                id={`${this.instanceId}-cancelEdits`}
+                id={`${this.instanceid}-reset`}
                 color="blue"
                 appearance="solid"
                 disabled
                 title={this.translations.cancelEdits}
-                onClick={() => this._cancelEdits()}
+                onClick={() => this._reset()}
                 scale="s"
                 class="edit-button"
               >
                 <calcite-icon icon="reset" scale="s"></calcite-icon>
               </calcite-button>
-              <calcite-button
-                id={`${this.instanceId}-saveEdits`}
-                color="blue"
-                appearance="solid"
-                disabled
-                title={this.translations.saveEdits}
-                onClick={() => this._saveEdits()}
-                scale="s"
-                class="edit-button"
-              >
-                <calcite-icon icon="save" scale="s"></calcite-icon>
-              </calcite-button>
             </div>
           </div>
-          <div class="editor-text">
-            <div id={`${this.instanceId}-editor`} class="edit-width"></div>
+          <div class="edit-parent">
+            <div id={`${this.instanceid}-container`} class="json-edit-container"></div>
+            <div id={`${this.instanceid}-diff-container`} class="json-edit-container not-visible"></div>
           </div>
         </div>
       </Host>
     );
   }
 
-  componentDidLoad(): void {
-    this._initEditor();
+  componentWillLoad(): void {
+    this._initValueObserver();
   }
 
   disconnectedCallback(): void {
+    // The doc makes me question what all we should do here
+    // StencilJS doc: Called every time the component is disconnected from the DOM, ie, it can
+    // be dispatched more than once, DO not confuse with a "onDestroy" kind of event.
     this._destroyEditor();
   }
 
@@ -176,13 +195,38 @@ export class JsonEditor {
   //
   //--------------------------------------------------------------------------
 
-  private _editor: Ace.Editor | undefined; // have to use `undefined` because we're not setting editor in constructor
-  private _startEditingBtnHandler: any;
+  private _editor: any;
+  private _diffEditor: any;
+  private _useDiffEditor: boolean = false;
+  private _currentModel: any;
   private _searchBtnHandler: any;
   private _cancelEditsBtnHandler: any;
-  private _saveEditsBtnHandler: any;
-  private _isEditing: boolean = false;
-  private _current: any; // Contains the source item json with any saved edits.
+  private _loaded: boolean = false;
+  private _valueObserver: MutationObserver;
+  private _contentChanged: any;
+  private _decorationsChanged: any;
+
+  private _initValueObserver() {
+      this._valueObserver = new MutationObserver(ml => {
+        ml.forEach(mutation => {
+          if (mutation.type === 'attributes' && mutation.attributeName === "value") {
+            if (state && state.models && Object.keys(state.models).indexOf(this.value) > -1) {
+              const newValue: string = mutation.target[mutation.attributeName];
+              if ((newValue !== mutation.oldValue && this._loaded)) {
+                // store the current state
+                this._saveCurrentModel(mutation.oldValue);
+
+                // get the model and state from the store
+                this._setEditModel(newValue);
+              } else if (!this._loaded) {
+                this._setEditModel(this.value);
+              }
+            }
+          }
+        });
+      });
+      this._valueObserver.observe(this.el, { attributes: true, attributeOldValue: true });
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -192,15 +236,28 @@ export class JsonEditor {
 
   @Listen("organizationVariableSelected", { target: 'window' })
   organizationVariableSelected(event: CustomEvent): void {
-    if (this._isEditing) {
-      this._editor.session.replace(this._editor.selection.getRange(), event.detail.value);
-    }
+    this._insertValue(event.detail.value);
   }
 
   @Listen("solutionVariableSelected", { target: 'window' })
   solutionVariableSelected(event: CustomEvent): void {
-    if (this._isEditing) {
-      this._editor.session.replace(this._editor.selection.getRange(), event.detail.value);
+    this._insertValue(event.detail.value);
+  }
+
+  @Listen("storeChanged", { target: 'window' })
+  _storeChanged(): void {
+    if (!this._loaded && this.value) {
+      if (state && state.models && Object.keys(state.models).indexOf(this.value) > -1) {
+        //get the model and state from the store
+        this._setEditModel(this.value);
+      }
+    }
+  }
+
+  @Listen("solutionItemSelected", { target: 'window' })
+  _solutionItemSelected(event: CustomEvent): void {
+    if (this.value && event.detail.itemId !== this.value) {
+      this._saveCurrentModel(this.value)
     }
   }
 
@@ -223,52 +280,152 @@ export class JsonEditor {
    *
    * @protected
    */
-  _initEditor(): void {
+   _initEditor(): void {
     // Set up embedded editor
-    if (gAce) {
-      this._editor = gAce.edit(this.instanceId + "-editor");
-      this._editor?.setOptions({
-        maxLines: Infinity,
-        mode: "ace/mode/json",
-        theme: "ace/theme/tomorrow",
-        readOnly: true
-      });
-      this._editor?.getSession().setUseWrapMode(true);
-
-      // listen for changes in editor
-      this._editor?.on("change", this._validateSave.bind(this));
-
-      // errors are stored as annotations
-      // this will allow us to only enable save when no errors are present
-      // unsure why I couldn't use the on pattern
-      this._editor?.session.addEventListener("changeAnnotation", this._validateSave.bind(this));
-
-      // Provide an a11y way to get out of the edit window
-      this._editor?.commands.addCommand({
-        name: 'escape',
-        bindKey: { win: 'esc', mac: 'esc' },
-        exec: function (editor: any) {
-          editor.blur();
+    if (monaco && monaco.editor) {
+      this._editor = monaco.editor.create(document.getElementById(`${this.instanceid}-container`), {
+        model: this.model,
+        language: 'json',
+        readOnly: false,
+        theme: "vs",
+        minimap: {
+          enabled: false
         },
-        readOnly: false
+        automaticLayout: true
       });
+      this._currentModel = this._editor.getModel();
+
+      this._contentChanged = this._currentModel.onDidChangeContent(this._onEditorChange.bind(this));
+      this._decorationsChanged = this._editor.onDidChangeModelDecorations(this._onDecorationsChange.bind(this));
+
+      this._diffEditor = monaco.editor.createDiffEditor(document.getElementById(`${this.instanceid}-diff-container`), {
+        automaticLayout: true
+      });
+      this._setDiffModel();
+
+      this._loaded = true;
+    }
+  }
+
+
+  /**
+   * Update the undo redo buttons as necessary
+   *
+   * @protected
+   */
+  _onEditorChange(): void {
+    this._toggleUndoRedo();
+  }
+
+  /**
+   * Decorations are added when errors are found in the editor content
+   *
+   * @protected
+   */
+  _onDecorationsChange(): void {
+    const model = this._editor.getModel();
+    if (model === null) {
+      return;
+    }
+
+    const owner = model.getModeId();
+    const markers = monaco.editor.getModelMarkers({ owner });
+
+    this.hasErrors = markers.length > 0;
+  }
+
+  /**
+   * Undo the current edit operation
+   *
+   * @protected
+   */
+  _undo(): void {
+    if (this._currentModel?.canUndo()) {
+      this._currentModel.undo();
+      this._toggleUndoRedo();
     }
   }
 
   /**
-   * Only enable save when we are editing and json is valid
+   * Redo the previous edit operation
    *
    * @protected
    */
-  _validateSave(): void {
-    if (this._isEditing) {
-      const annotations: Ace.Annotation[] = this._editor.session.getAnnotations();
-      if (annotations.some(e => e.type === "error")) {
-        this._disableButton(`${this.instanceId}-saveEdits`);
-      } else {
-        this._enableButton(`${this.instanceId}-saveEdits`);
-      }
+  _redo(): void {
+    if (this._currentModel?.canRedo()) {
+      this._currentModel.redo();
+      this._toggleUndoRedo();
     }
+  }
+
+  /**
+   * Show/Hide the appropriate editor
+   *
+   * @protected
+   */
+  _toggleEditor(): void {
+    this._useDiffEditor = !this._useDiffEditor;
+    let diffContainer = document.getElementById(`${this.instanceid}-diff-container`);
+    let container = document.getElementById(`${this.instanceid}-container`);
+    if (this._useDiffEditor) {
+      this._setDiffModel();
+      diffContainer.classList.remove("not-visible");
+      container.classList.add("not-visible");
+    } else {
+      diffContainer.classList.add("not-visible");
+      container.classList.remove("not-visible");
+    }
+  }
+
+  /**
+   * Toggle the undo and redo buttons
+   *
+   * @protected
+   */
+  _toggleUndoRedo(): void {
+    if (this._currentModel?.canUndo()) {
+      this._enableButton(`${this.instanceid}-undo`);
+    } else {
+      this._disableButton(`${this.instanceid}-undo`);
+    }
+
+    if (this._currentModel?.canRedo()) {
+      this._enableButton(`${this.instanceid}-redo`);
+    } else {
+      this._disableButton(`${this.instanceid}-redo`);
+    }
+
+    if (this._currentModel?.canUndo() || this._currentModel?.canRedo()) {
+      this._enableButton(`${this.instanceid}-reset`);
+    } else {
+      this._disableButton(`${this.instanceid}-reset`);
+    }
+  }
+
+  /**
+   * Overrides the editors selection with the value passed in
+   *
+   * @protected
+   */
+  _insertValue(v: string): void {
+    const editor: any = this._getEditor();
+    const range = editor.getSelection();
+    // use pushEditOperations so it will push to the undo stack
+    this._currentModel.pushEditOperations([],[{
+      forceMoveMarkers: true,
+      text: v,
+      range
+    }]);
+    editor.revealRange(range);
+  }
+
+  /**
+   * Gets the current active editor for diff editor
+   *
+   * @protected
+   */
+  _getEditor(): any {
+    return this._useDiffEditor ? this._diffEditor : this._editor;
   }
 
   /**
@@ -277,26 +434,39 @@ export class JsonEditor {
    * @protected
    */
   _destroyEditor(): void {
-    this._startEditingBtnHandler.removeEventListener("click", this._startEditing);
-    this._searchBtnHandler.removeEventListener("click", this._search);
-    this._cancelEditsBtnHandler.removeEventListener("click", this._cancelEdits);
-    this._saveEditsBtnHandler.removeEventListener("click", this._saveEdits);
+    this._searchBtnHandler?.removeEventListener("click", this._search);
+    this._cancelEditsBtnHandler?.removeEventListener("click", this._reset);
+  
+    this._valueObserver?.disconnect();
 
-    this._editor?.container.remove();
+    this._contentChanged?.dispose();
+    this._decorationsChanged?.dispose();
 
-    this._current = undefined;
-    this.original = undefined;
+    this._editor?.dispose();
+
+    this.original = "";
   }
 
   /**
-   * Handles click on "Cancel edits" button.
+   * Resets the stored model to the original value.
    *
    * @protected
    */
-  _cancelEdits(): void {
-    this.value = this._current;
-    this._setEditorValue(this.value);
-    this._doneEditing();
+  _reset(): void {
+    // update the store
+    this.model = monaco.editor.createModel(JSON.stringify(JSON.parse(this.original), null, '\t'), "json");
+    state.models[this.value][this.instanceid === "data" ? "dataModel" : "propsModel"] = this.model;
+    state.models[this.value].state = undefined;
+
+    // update the editor
+    this._editor.setModel(this.model);
+    this._setCurrentModel();
+    this._setDiffModel();
+    this._saveCurrentModel(this.value);
+    this._setEditorFocus();
+
+    // update the ui
+    this._toggleUndoRedo();
   }
 
   /**
@@ -311,26 +481,6 @@ export class JsonEditor {
   }
 
   /**
-   * Terminates editing.
-   *
-   * @protected
-   */
-  _doneEditing(): void {
-    this._enableButton(`${this.instanceId}-startEditing`);
-    this._disableButton(`${this.instanceId}-cancelEdits`);
-    this._disableButton(`${this.instanceId}-saveEdits`);
-
-    if ((this._editor as any).searchBox) { // searchBox is created when search type-in box is opened
-      (this._editor as any).searchBox.hide();
-    }
-    this._editor?.setTheme("ace/theme/tomorrow");
-    this._editor?.setReadOnly(true);
-    this._editor?.clearSelection();
-
-    this._isEditing = false;
-  }
-
-  /**
    * Enables a button.
    *
    * @param buttonId Id of button to enable
@@ -342,56 +492,92 @@ export class JsonEditor {
   }
 
   /**
-   * Handles click on "Save edits" button.
-   *
-   * @protected
-   */
-  _saveEdits(): void {
-    this.value = JSON.parse(this._editor?.getValue());
-    this._current = this.value;
-    this._doneEditing();
-
-    // not sure we need to do this since values will be grabbed elsewhere
-    this.jsonEditorSaved.emit({
-      detail: this.value
-    });
-  }
-
-  /**
    * Handles click on "Search" button.
    *
    * @protected
    */
   _search(): void {
-    this._editor?.commands.byName.find.exec(this._editor);
+    const editor: any = this._getEditor();
+    // force focus should likely just be a workaround
+    //https://github.com/microsoft/monaco-editor/issues/2355
+    editor.focus();
+    editor.trigger('toggleFind', 'actions.find');
   }
 
   /**
-   * Handles click on "Start editing" button.
+   * Save the current model state to the store
    *
    * @protected
    */
-  _startEditing(): void {
-    this._disableButton(`${this.instanceId}-startEditing`);
-    this._enableButton(`${this.instanceId}-cancelEdits`);
-
-    this._editor?.setTheme("ace/theme/tomorrow_night");
-    this._editor?.setReadOnly(false);
-    this._editor?.focus();
-    this._editor?.clearSelection();
-    this._editor?.gotoLine(0, 0, false);
-
-    this._isEditing = true;
+  _saveCurrentModel(id: string): void {
+    if (this._editor && id && Object.keys(state.models).indexOf(id) > -1) {
+      state.models[id][this.instanceid === "data" ? "dataModel" : "propsModel"] = this.model;
+      state.models[id].state = this._editor.saveViewState();
+    }
   }
 
   /**
-   * Handles setting the editors value
+   * Change the editors model
    *
    * @protected
    */
-  _setEditorValue(v: any): void {
-    if (this._editor && v) {
-      this._editor?.setValue(JSON.stringify(v, null, '\t'));
+  _setEditModel(id): void {
+    const data = state.models[id];
+
+    const isData = this.instanceid === "data";
+    this.model = isData ? data.dataModel : data.propsModel;
+    this.original = isData ? data.dataOriginValue : data.propsOriginValue;
+
+    if (this._editor) {
+      this._editor.setModel(this.model);
+      if (data.state) {
+        this._editor.restoreViewState(data.state);
+      }
+      this._setEditorFocus();
+    } else {
+      this._initEditor();
+    }
+
+    this._setCurrentModel();
+
+    this._toggleUndoRedo();
+  }
+
+  /**
+   * Set the current model and event handler
+   *
+   * @protected
+   */
+  _setCurrentModel(): void {
+    this._currentModel = this._editor.getModel();
+    if (this._contentChanged) {
+      this._contentChanged.dispose();
+    }
+    this._contentChanged = this._currentModel.onDidChangeContent(this._onEditorChange.bind(this));
+  }
+
+  /**
+   * Set the models for the diff editor
+   *
+   * @protected
+   */
+  _setDiffModel(): void {
+    this._diffEditor.setModel({
+      original: monaco.editor.createModel(JSON.stringify(JSON.parse(this.original), null, '\t'), "json"),
+      modified: this._editor.getModel()
+    });
+  }
+
+  /**
+   * Set the models for the diff editor
+   *
+   * @protected
+   */
+  _setEditorFocus(): void {
+    if (this._useDiffEditor) {
+      this._diffEditor.focus();
+    } else {
+      this._editor.focus();
     }
   }
 }

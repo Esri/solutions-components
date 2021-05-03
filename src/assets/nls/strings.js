@@ -34,6 +34,7 @@ define({
         "defaultSpatialRef": "Default Spatial Reference",
         "definitionTab": "Definition", // for tab to edit definition of an item or group
         "description": "Description",
+        "diff": "Toggle Diff Editor",
         "download": "Download",
         "editThumbnail": "Edit Thumbnail",
         "featureServicesHeading": "Feature Services",
@@ -41,6 +42,7 @@ define({
         "itemDetailsTab": "Item Details",
         "orgVariables": "Organization Variables",
         "propertiesTab": "Properties",
+        "redo": "Redo",
         "saveEdits": "Save Edits",
         "search": "Search",
         "sharingTab": "Sharing",
@@ -51,7 +53,8 @@ define({
         "startEditing": "Start Editing",
         "tags": "Tags",
         "termsOfUse": "Terms of Use",
-        "update": "Update"
+        "update": "Update",
+        "undo": "Undo"
       }
     }
   }),

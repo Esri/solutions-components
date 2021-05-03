@@ -43,10 +43,10 @@ describe('solution-item', () => {
                 <solution-item-details type=""></solution-item-details>
               </calcite-tab>
               <calcite-tab class="config-tab">
-                <solution-template-data instanceid="-data-"></solution-template-data>
+                <solution-template-data instanceid="data" itemid=""></solution-template-data>
               </calcite-tab>
               <calcite-tab class="config-tab">
-                <solution-template-data instanceid="-props-"></solution-template-data>
+                <solution-template-data instanceid="props" itemid=""></solution-template-data>
               </calcite-tab>
             </calcite-tabs>
           </div>

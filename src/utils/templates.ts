@@ -33,6 +33,25 @@ export function getInventoryItems(
   }, []);
 }
 
+export function getModels(templates: any[]): Promise<any> {
+  const ids: string[] = [];
+  const models: any = {};
+  templates.forEach(t => {
+    if (ids.indexOf(t.itemId) < 0) {
+      ids.push(t.itemId);
+      models[t.itemId] = {
+        dataModel: monaco.editor.createModel(JSON.stringify(t.data, null, '\t'), "json"),
+        dataOriginValue: JSON.stringify(t.data),
+        propsModel: monaco.editor.createModel(JSON.stringify(t.properties, null, '\t'), "json"),
+        propsOriginValue: JSON.stringify(t.properties),
+        state: undefined,
+        isEditing: false
+      };
+    }
+  });
+  return models;
+}
+
 function _getItemFromTemplate(
   t: any,
   templates: any[]

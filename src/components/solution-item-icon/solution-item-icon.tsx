@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Prop, getAssetPath, h } from '@stencil/core';
+import { Component, Element, getAssetPath, h, Prop } from '@stencil/core';
 
 @Component({
   tag: 'solution-item-icon',
@@ -22,6 +22,14 @@ import { Component, Prop, getAssetPath, h } from '@stencil/core';
   assetsDirs: ['item-icons']
 })
 export class SolutionItemIcon {
+
+  //--------------------------------------------------------------------------
+  //
+  //  Host element access
+  //
+  //--------------------------------------------------------------------------
+
+  @Element() el: HTMLSolutionItemIconElement;
 
   //--------------------------------------------------------------------------
   //

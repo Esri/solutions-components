@@ -1,3 +1,968 @@
 {
-  "value": "{a:'A'}"
+  "value": {
+    "tables": [
+      {
+        "id": 3,
+        "popupInfo": {
+          "title": "{pollingplacename}",
+          "mediaInfos": [],
+          "fieldInfos": [
+            {
+              "fieldName": "OBJECTID",
+              "visible": true,
+              "isEditable": false,
+              "label": "OBJECTID"
+            },
+            {
+              "fieldName": "facilityid",
+              "visible": true,
+              "isEditable": true,
+              "label": "Voting Location ID"
+            },
+            {
+              "fieldName": "name",
+              "visible": true,
+              "isEditable": true,
+              "label": "Voting Location Name"
+            },
+            {
+              "fieldName": "waittime",
+              "visible": true,
+              "isEditable": true,
+              "label": "Wait Time (Minutes)"
+            }
+          ],
+          "popupElements": [
+            {
+              "fieldInfos": [
+                {
+                  "fieldName": "OBJECTID",
+                  "visible": true,
+                  "isEditable": false,
+                  "label": "OBJECTID"
+                },
+                {
+                  "fieldName": "facilityid",
+                  "visible": true,
+                  "isEditable": true,
+                  "label": "Voting Location ID"
+                },
+                {
+                  "fieldName": "name",
+                  "visible": true,
+                  "isEditable": true,
+                  "label": "Voting Location Name"
+                },
+                {
+                  "fieldName": "waittime",
+                  "visible": true,
+                  "isEditable": true,
+                  "label": "Wait Time (Minutes)"
+                }
+              ],
+              "type": "fields"
+            }
+          ],
+          "expressionInfos": []
+        }
+      }
+    ],
+    "layers": [
+      {
+        "id": 0,
+        "popupInfo": {
+          "title": "<span style='font-size:medium'>{name}</span>",
+          "fieldInfos": [
+            {
+              "fieldName": "OBJECTID",
+              "visible": false,
+              "isEditable": false,
+              "label": "OBJECTID"
+            },
+            {
+              "fieldName": "facilityid",
+              "visible": true,
+              "isEditable": true,
+              "label": "Facility ID"
+            },
+            {
+              "fieldName": "type",
+              "visible": true,
+              "isEditable": true,
+              "label": "Voting Facility Type"
+            },
+            {
+              "fieldName": "name",
+              "visible": true,
+              "isEditable": true,
+              "label": "Name"
+            },
+            {
+              "fieldName": "fulladdr",
+              "visible": true,
+              "isEditable": true,
+              "label": "Address"
+            },
+            {
+              "fieldName": "municipality",
+              "visible": true,
+              "isEditable": true,
+              "label": "Municipality"
+            },
+            {
+              "fieldName": "pstlstate",
+              "visible": true,
+              "isEditable": true,
+              "label": "State"
+            },
+            {
+              "fieldName": "pstlzip5",
+              "visible": true,
+              "isEditable": true,
+              "label": "Zip Code"
+            },
+            {
+              "fieldName": "phone",
+              "visible": true,
+              "isEditable": true,
+              "label": "Phone"
+            },
+            {
+              "fieldName": "agencyurl",
+              "visible": true,
+              "isEditable": true,
+              "label": "Website"
+            },
+            {
+              "fieldName": "operdays",
+              "visible": true,
+              "isEditable": true,
+              "label": "Operational Days"
+            },
+            {
+              "fieldName": "handicap",
+              "visible": true,
+              "isEditable": true,
+              "label": "Handicap Accessible"
+            },
+            {
+              "fieldName": "pocname",
+              "visible": true,
+              "isEditable": true,
+              "label": "Contact Name"
+            },
+            {
+              "fieldName": "pocphone",
+              "visible": true,
+              "isEditable": true,
+              "label": "Contact Phone"
+            },
+            {
+              "fieldName": "pocemail",
+              "visible": true,
+              "isEditable": true,
+              "label": "Contact Email"
+            },
+            {
+              "fieldName": "nextelect",
+              "visible": true,
+              "isEditable": true,
+              "label": "Next Election Date",
+              "format": {
+                "dateFormat": "longMonthDayYear",
+                "timezone": "utc"
+              }
+            },
+            {
+              "fieldName": "regdate",
+              "visible": true,
+              "isEditable": true,
+              "label": "Voter Registration Deadline",
+              "format": {
+                "dateFormat": "longMonthDayYear",
+                "timezone": "utc"
+              }
+            },
+            {
+              "fieldName": "voteservices",
+              "visible": true,
+              "isEditable": true,
+              "label": "Election Services"
+            },
+            {
+              "fieldName": "dropbox",
+              "visible": true,
+              "isEditable": true,
+              "label": "Dropbox"
+            },
+            {
+              "fieldName": "boxlocation",
+              "visible": true,
+              "isEditable": true,
+              "label": "Box Location"
+            },
+            {
+              "fieldName": "comments",
+              "visible": true,
+              "isEditable": true,
+              "label": "Comments"
+            },
+            {
+              "fieldName": "GlobalID",
+              "label": "GlobalID",
+              "isEditable": false,
+              "visible": false
+            },
+            {
+              "fieldName": "CreationDate",
+              "label": "CreationDate",
+              "isEditable": false,
+              "visible": false,
+              "format": {
+                "dateFormat": "shortDateShortTime",
+                "timezone": "utc"
+              }
+            },
+            {
+              "fieldName": "Creator",
+              "label": "Creator",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "EditDate",
+              "label": "EditDate",
+              "isEditable": false,
+              "visible": false,
+              "format": {
+                "dateFormat": "shortDateShortTime",
+                "timezone": "utc"
+              }
+            },
+            {
+              "fieldName": "Editor",
+              "label": "Editor",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/OBJECTID",
+              "label": "OBJECTID",
+              "isEditable": false,
+              "visible": false
+            },
+            {
+              "fieldName": "relationships/0/precinctid",
+              "label": "Precinct ID",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/name",
+              "label": "Precinct Name",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/county",
+              "label": "County",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/pollingid",
+              "label": "Polling Place ID",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/GlobalID",
+              "label": "GlobalID",
+              "isEditable": false,
+              "visible": false
+            },
+            {
+              "fieldName": "relationships/0/CreationDate",
+              "label": "CreationDate",
+              "isEditable": false,
+              "visible": false,
+              "format": {
+                "dateFormat": "shortDateShortTime",
+                "timezone": "utc"
+              }
+            },
+            {
+              "fieldName": "relationships/0/Creator",
+              "label": "Creator",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/EditDate",
+              "label": "EditDate",
+              "isEditable": false,
+              "visible": false,
+              "format": {
+                "dateFormat": "shortDateShortTime",
+                "timezone": "utc"
+              }
+            },
+            {
+              "fieldName": "relationships/0/Editor",
+              "label": "Editor",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "expression/expr0",
+              "visible": false
+            },
+            {
+              "fieldName": "expression/expr1",
+              "visible": false
+            },
+            {
+              "fieldName": "expression/expr3",
+              "visible": false
+            },
+            {
+              "fieldName": "expression/expr4",
+              "visible": false
+            },
+            {
+              "fieldName": "earlyvoting",
+              "label": "Early Voting Available",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "earlyvotingdate",
+              "label": "Early Voting Date",
+              "isEditable": false,
+              "visible": false,
+              "format": {
+                "dateFormat": "shortDateShortTime",
+                "timezone": "utc"
+              }
+            },
+            {
+              "fieldName": "expression/expr5",
+              "visible": false
+            }
+          ],
+          "description": "<table cellpadding='0' style='text-align: center; font-size: medium; background-color: #464646; color: #FFFFFF; border-collapse: collapse; border-spacing: 0px; width: 100%; table-layout: fixed; margin: 0px -1px'>\n\t<tbody>\n\t\t<tr>\n\t\t\t<td style='display:{expression/expr1}; padding: 8px 0px; padding-bottom: 10px'>Today is Election Day! <br />{expression/expr0}\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style='display:{expression/expr3}; padding: 8px 0px; padding-bottom: 10px'>Next Election Day <br />{nextelect}\n\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n\n<table style='text-align: center; font-size: medium; color: #000000; width: 100%; margin: 8px 0px; border-collapse: separate; border-spacing: 0px 8px; table-layout: fixed;'>\n\t<tbody>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t{fulladdr}<br />\n\t\t\t\t{municipality}, {pstlstate} {pstlzip5}<br />\n\t\t\t\t<font color='#007AC2'>{expression/expr2}</font>\n\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n\n<table style='display: {expression/expr1}; text-align: center; font-size: medium; color: #000000; width: 100%; margin: 8px 0px; border-collapse: separate; border-spacing: 0px 8px; table-layout: fixed;'>\n\t<tbody>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\tHours<br />\n\t\t\t\t{expression/expr4}\n\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n\n<table style='display:{expression/expr3}; text-align: center; font-size: medium; color: #000000; width: 100%; margin: 8px 0px; border-collapse: separate; border-spacing: 0px 8px; table-layout: fixed;'>\n\t<tbody>\n\t\t<tr>\n\t\t\t<td style='padding-bottom: 10px'>\n\t\t\t\tHours<br />\n\t\t\t\t{expression/expr5}\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\tMust register to vote by:<br />\n\t\t\t\t{regdate}\n\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n\n\n<table style='text-align: center; font-size: medium; color: #000000; width: 100%; margin: 8px 0px; border-collapse: separate; border-spacing: 0px 8px; table-layout: fixed;'>\n\t<tbody>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\tFor more information, contact:<br /><a href='{agencyurl}' target='_blank'>{pocname}</a><br />\n\t\t\t\t{pocphone} <br /><a href='mailto: {pocemail}' target='_blank'>email</a>\n\t\t\t</td>\t\n\t\t</tr>\t\t\n\t</tbody>\n</table>",
+          "showAttachments": false,
+          "showLastEditInfo": false,
+          "relatedRecordsInfo": {
+            "showRelatedRecords": false
+          },
+          "expressionInfos": [
+            {
+              "name": "expr0",
+              "title": "WaitTimes",
+              "expression": "var electiondate = Date($feature.nextelect)\nvar current = Today()\n\nvar currentText = Text(current, 'MMM D YYYY');\nvar electiondateText = Text(electiondate, 'MMM D YYYY')\n\n\nif (currentText != electiondateText) {\n    return null;\n}\n\nvar waittimes = Filter(FeatureSetByName($datastore,\"Election Day Metrics\", ['waittime','CreationDate'], false), \"facilityid = '\" + $feature.facilityid+\"'\");\nvar waittime = null;\nvar maxdate = null;\nfor(var x in waittimes) {\n    if (maxdate == null || x.CreationDate > maxdate) {\n        waittime = x.waittime + \" minutes\";\n        maxdate = x.CreationDate ;\n    }\n}\n\nvar waittimedateText = Text(maxdate, 'MMM D YYYY')\n\nif (waittime == null || currentText != waittimedateText) {\n    return null;\n}\n\nreturn \"Approximate wait is \" + waittime;\n",
+              "returnType": "string"
+            },
+            {
+              "name": "expr1",
+              "title": "ElectionDay",
+              "expression": "var electiondate = Date($feature.nextelect)\nvar current = Today()\n\nvar currentText = Text(current, 'MMM D YYYY');\nvar electiondateText = Text(electiondate, 'MMM D YYYY')\n\n\nIIF(currentText == electiondateText, null, \"none\");\n\n",
+              "returnType": "string"
+            },
+            {
+              "name": "expr2",
+              "title": "HandicapAccessible",
+              "expression": "if ($feature.handicap == \"Yes\") {\r\n\treturn \"Handicap Accessible\" ; \r\n}\r\nreturn null",
+              "returnType": "string"
+            },
+            {
+              "name": "expr3",
+              "title": "NotElectionDay",
+              "expression": "var electiondate = Date($feature.nextelect)\nvar current = Today()\n\nvar currentText = Text(current, 'MMM D YYYY');\nvar electiondateText = Text(electiondate, 'MMM D YYYY')\n\n\nIIF(currentText != electiondateText, null, \"none\");",
+              "returnType": "string"
+            },
+            {
+              "name": "expr4",
+              "title": "OpenClosed",
+              "expression": "//Splits day list into an array with sub-arrays for each day\r\nfunction DayTime(field){\r\n    var x = 0\r\n\tvar array = []\r\n\tvar sp = split(replace(field,\")\",\"\"),\";\")\r\n\tvar num = count(sp)\r\n\t//Split data field into array\r\n\tfor (var y in sp){\r\n\t\tif(x < num){\r\n\t\t    var mid_v = split(sp[x],\"(\")\r\n\t\t\tvar addin = split(mid_v[1],\"-\")\r\n\t\t\tif(count(addin)==2){\r\n    \t\t\tmid_v[1]=addin[0]\r\n    \t\t\tmid_v[2]=addin[1]\r\n    \t\t\tvar final = mid_v\r\n    \t\t\tarray[x]=final\r\n    \t\t\tx+=1\r\n\t\t\t}else{\r\n\t\t\tarray[x]=mid_v\r\n\t\t\tx+=1\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\treturn array\r\n}\r\n\r\n//finds all days present in a range\r\nfunction range_finder(range){\r\n    var sp = split(range,\"-\")\r\n    var start = When(sp[0]==\"Su\",0, sp[0]==\"Mo\",1,sp[0]==\"Tu\",2,sp[0]==\"We\",3,sp[0]==\"Th\",4,sp[0]==\"Fr\",5,sp[0]==\"Sa\",6,7)\r\n    var end = When(sp[1]==\"Su\",0, sp[1]==\"Mo\",1,sp[1]==\"Tu\",2,sp[1]==\"We\",3,sp[1]==\"Th\",4,sp[1]==\"Fr\",5,sp[1]==\"Sa\",6,7)\r\n\tvar i = start\r\n\tvar y = 0\r\n\tvar weekend = end - start\r\n\tvar listed_day = []\r\n\t\r\n    if(weekend>0){\r\n        var days = [[\"Su\",0],[\"Mo\",1],[\"Tu\",2],[\"We\",3],[\"Th\",4],[\"Fr\",5],[\"Sa\",6]]\r\n    \tfor (var x in days){\r\n    \t    \tif((days[x][1] >= start) && (days[x][1] <= end) &&(start != 7) && (end != 7)){\r\n    \t\t    listed_day[y]=days[x][0]\r\n    \t\t    y+=1\r\n    \t\t    i+=1\r\n    \t\t    x+=1\r\n    \t\t} else if((days[x][1] <= start) && (days[x][1] >= end) &&(start != 7) && (end != 7)){\r\n    \t\t    listed_day[y]=days[x][0]\r\n    \t\t    y+=1\r\n    \t\t    i+=1\r\n    \t\t    x+=1\r\n    \t\t}\r\n    \t}\r\n    }else{\r\n        var days = [[\"Mo\",1],[\"Tu\",2],[\"We\",3],[\"Th\",4],[\"Fr\",5],[\"Sa\",6],[\"Su\",7],[\"Mo\",8],[\"Tu\",9],[\"We\",10],[\"Th\",11],[\"Fr\",12],[\"Sa\",13],[\"Su\",14]]\r\n        var start =When(sp[0]==\"Su\",0, sp[0]==\"Mo\",1,sp[0]==\"Tu\",2,sp[0]==\"We\",3,sp[0]==\"Th\",4,sp[0]==\"Fr\",5,sp[0]==\"Sa\",6, 7)\r\n        var end =When(sp[1]==\"Su\",7, sp[1]==\"Mo\",8,sp[1]==\"Tu\",9,sp[1]==\"We\",10,sp[1]==\"Th\",11,sp[1]==\"Fr\",12,sp[1]==\"Sa\",13,14)\r\n        for (var x in days){\r\n    \t    \tif((days[x][1] >= start) && (days[x][1] <= end) &&(start != 8) && (end != 15)){\r\n    \t\t    listed_day[y]=days[x][0]\r\n    \t\t    y+=1\r\n    \t\t    i+=1\r\n    \t\t    x+=1\r\n    \t\t} else if((days[x][1] <= start) && (days[x][1] >= end) &&(start != 8) && (end != 15)){\r\n    \t\t    listed_day[y]=days[x][0]\r\n    \t\t    y+=1\r\n    \t\t    i+=1\r\n    \t\t    x+=1\r\n    \t\t}\r\n        }\r\n    }\r\n\treturn listed_day\r\n}\r\n\r\n//Converts values with hyphens into array and replaces them in the list\r\nfunction Day_Splitter(list){\r\n    var new_days = []\r\n    var x = (count(list))\r\n    var t = 0\r\n\tfor (var z in list){\r\n\t    var f = 0\r\n\t\tif(find('-', list[z][0]) >1){\r\n\t\t   var range = range_finder(list[z][0])\r\n\t\t   var num_days=count(range)\r\n\t\t   for (var d in range){\r\n\t\t    \t   if (f <= num_days){\r\n                       if(count(list[z])==2){\r\n                          new_days[t] =[range[f], list[z][1]]//,list[z][2]]\r\n                          \r\n                       }else{\r\n                          new_days[t] =[range[f], list[z][1],list[z][2]] \r\n                       }\r\n             \t   x +=1\r\n\t\t\t\t   f +=1 \r\n\t\t\t\t   t +=1\r\n\t\t\t   }\r\n\t\t\t}\r\n\t\t}else{\r\n\t\t   new_days[t]= list[z]\r\n\t\t   x +=1\r\n\t\t   f +=1 \r\n\t\t   t +=1\r\n\t\t}\r\n\t}\r\n\treturn new_days\r\n}\r\n\r\n//Function to determine if time falls during open Hours\r\nfunction between(value,start,end){\r\n    var open = Date(Year(value),Month(value),day(value),(split(start,\":\")[0]),(split(start,\":\")[1]))\r\n    var close = Date(Year(value),Month(value),day(value),(split(end,\":\")[0]),(split(end,\":\")[1]))\r\n\t\r\n\tif(value >= open && value < close){\r\n\t\treturn \"Open\"\r\n\t}else{\r\n\t\treturn \"Closed\"\r\n\t}\r\n}\r\n\r\n//Reorder array to put sunday in place 0\r\nfunction reorder(array){\r\n\tvar days = [[\"Su\",0],[\"Mo\",1],[\"Tu\",2],[\"We\",3],[\"Th\",4],[\"Fr\",5],[\"Sa\",6]]\r\n\tvar list =[]\r\n\tvar old = array\r\n\tfor (var x in days){\r\n\t\tfor(var y in old){\r\n\t\t\tif(old[y][0]==days[x][0]){\r\n\t\t\t\tlist[x]=old[y]\r\n\t\t\t}\r\n\t\t}   \r\n\t}\r\n\treturn list\r\n}\r\n\r\n//Function to determine if the location is open\r\nfunction Open (times){\r\n    \r\n\t//Day and Hour Calcs for Locations\r\n    var schedule = reorder(Day_Splitter(DayTime(replace(times,\" \",\"\"))))\r\n    var date_now = now();\r\n\tvar day_schedule = schedule[weekday(date_now)];\r\n\t\r\n\tvar open_text = \"Closed\";\r\n\tif(count(day_schedule)==3){\r\n\t\t\r\n\t\tvar start = Date(Year(date_now),Month(date_now),Day(date_now),(split(day_schedule[1],\":\")[0]),(split(day_schedule[1],\":\")[1]))\r\n\t    var end = Date(Year(date_now),Month(date_now),Day(date_now),(split(day_schedule[2],\":\")[0]),(split(day_schedule[2],\":\")[1]))\r\n\t    var start_format = \"h:mmA\";\r\n\t    if (Minute(start) == 0) {\r\n\t\t    start_format = \"hA\"\r\n\t\t}\r\n\t\tvar end_format = \"h:mmA\";\r\n\t\tif (Minute(end) == 0) {\r\n\t\t    end_format = \"hA\"\r\n\t\t}\r\n\t    open_text = Text(start, start_format) + \" - \" + Text(end, end_format)\r\n\t\t\r\n\t\tif (between(date_now,day_schedule[1], day_schedule[2])==\"Open\"){\r\n\t\t\t//The next Value is returned if the location is open\r\n\t\t\topen_text += TextFormatting.NewLine + \"Open Now\";\r\n\t\t}\r\n\t\telse {\r\n\t\t\topen_text += TextFormatting.NewLine + \"Closed Now\"\r\n\t\t}\r\n\t\t\r\n\t}\r\n\treturn open_text;\r\n}\r\n\r\nOpen($feature.operdays)",
+              "returnType": "string"
+            },
+            {
+              "name": "expr5",
+              "title": "ElectionDayHours",
+              "expression": "//Splits day list into an array with sub-arrays for each day\r\nfunction DayTime(field){\r\n    var x = 0\r\n\tvar array = []\r\n\tvar sp = split(replace(field,\")\",\"\"),\";\")\r\n\tvar num = count(sp)\r\n\t//Split data field into array\r\n\tfor (var y in sp){\r\n\t\tif(x < num){\r\n\t\t    var mid_v = split(sp[x],\"(\")\r\n\t\t\tvar addin = split(mid_v[1],\"-\")\r\n\t\t\tif(count(addin)==2){\r\n    \t\t\tmid_v[1]=addin[0]\r\n    \t\t\tmid_v[2]=addin[1]\r\n    \t\t\tvar final = mid_v\r\n    \t\t\tarray[x]=final\r\n    \t\t\tx+=1\r\n\t\t\t}else{\r\n\t\t\tarray[x]=mid_v\r\n\t\t\tx+=1\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\treturn array\r\n}\r\n\r\n//finds all days present in a range\r\nfunction range_finder(range){\r\n    var sp = split(range,\"-\")\r\n    var start = When(sp[0]==\"Su\",0, sp[0]==\"Mo\",1,sp[0]==\"Tu\",2,sp[0]==\"We\",3,sp[0]==\"Th\",4,sp[0]==\"Fr\",5,sp[0]==\"Sa\",6,7)\r\n    var end = When(sp[1]==\"Su\",0, sp[1]==\"Mo\",1,sp[1]==\"Tu\",2,sp[1]==\"We\",3,sp[1]==\"Th\",4,sp[1]==\"Fr\",5,sp[1]==\"Sa\",6,7)\r\n\tvar i = start\r\n\tvar y = 0\r\n\tvar weekend = end - start\r\n\tvar listed_day = []\r\n\t\r\n    if(weekend>0){\r\n        var days = [[\"Su\",0],[\"Mo\",1],[\"Tu\",2],[\"We\",3],[\"Th\",4],[\"Fr\",5],[\"Sa\",6]]\r\n    \tfor (var x in days){\r\n    \t    \tif((days[x][1] >= start) && (days[x][1] <= end) &&(start != 7) && (end != 7)){\r\n    \t\t    listed_day[y]=days[x][0]\r\n    \t\t    y+=1\r\n    \t\t    i+=1\r\n    \t\t    x+=1\r\n    \t\t} else if((days[x][1] <= start) && (days[x][1] >= end) &&(start != 7) && (end != 7)){\r\n    \t\t    listed_day[y]=days[x][0]\r\n    \t\t    y+=1\r\n    \t\t    i+=1\r\n    \t\t    x+=1\r\n    \t\t}\r\n    \t}\r\n    }else{\r\n        var days = [[\"Mo\",1],[\"Tu\",2],[\"We\",3],[\"Th\",4],[\"Fr\",5],[\"Sa\",6],[\"Su\",7],[\"Mo\",8],[\"Tu\",9],[\"We\",10],[\"Th\",11],[\"Fr\",12],[\"Sa\",13],[\"Su\",14]]\r\n        var start =When(sp[0]==\"Su\",0, sp[0]==\"Mo\",1,sp[0]==\"Tu\",2,sp[0]==\"We\",3,sp[0]==\"Th\",4,sp[0]==\"Fr\",5,sp[0]==\"Sa\",6, 7)\r\n        var end =When(sp[1]==\"Su\",7, sp[1]==\"Mo\",8,sp[1]==\"Tu\",9,sp[1]==\"We\",10,sp[1]==\"Th\",11,sp[1]==\"Fr\",12,sp[1]==\"Sa\",13,14)\r\n        for (var x in days){\r\n    \t    \tif((days[x][1] >= start) && (days[x][1] <= end) &&(start != 8) && (end != 15)){\r\n    \t\t    listed_day[y]=days[x][0]\r\n    \t\t    y+=1\r\n    \t\t    i+=1\r\n    \t\t    x+=1\r\n    \t\t} else if((days[x][1] <= start) && (days[x][1] >= end) &&(start != 8) && (end != 15)){\r\n    \t\t    listed_day[y]=days[x][0]\r\n    \t\t    y+=1\r\n    \t\t    i+=1\r\n    \t\t    x+=1\r\n    \t\t}\r\n        }\r\n    }\r\n\treturn listed_day\r\n}\r\n\r\n//Converts values with hyphens into array and replaces them in the list\r\nfunction Day_Splitter(list){\r\n    var new_days = []\r\n    var x = (count(list))\r\n    var t = 0\r\n\tfor (var z in list){\r\n\t    var f = 0\r\n\t\tif(find('-', list[z][0]) >1){\r\n\t\t   var range = range_finder(list[z][0])\r\n\t\t   var num_days=count(range)\r\n\t\t   for (var d in range){\r\n\t\t    \t   if (f <= num_days){\r\n                       if(count(list[z])==2){\r\n                          new_days[t] =[range[f], list[z][1]]//,list[z][2]]\r\n                          \r\n                       }else{\r\n                          new_days[t] =[range[f], list[z][1],list[z][2]] \r\n                       }\r\n             \t   x +=1\r\n\t\t\t\t   f +=1 \r\n\t\t\t\t   t +=1\r\n\t\t\t   }\r\n\t\t\t}\r\n\t\t}else{\r\n\t\t   new_days[t]= list[z]\r\n\t\t   x +=1\r\n\t\t   f +=1 \r\n\t\t   t +=1\r\n\t\t}\r\n\t}\r\n\treturn new_days\r\n}\r\n\r\n//Function to determine if time falls during open Hours\r\nfunction between(value,start,end){\r\n    var open = Date(Year(value),Month(value),day(value),(split(start,\":\")[0]),(split(start,\":\")[1]))\r\n    var close = Date(Year(value),Month(value),day(value),(split(end,\":\")[0]),(split(end,\":\")[1]))\r\n\t\r\n\tif(value >= open && value < close){\r\n\t\treturn \"Open\"\r\n\t}else{\r\n\t\treturn \"Closed\"\r\n\t}\r\n}\r\n\r\n//Reorder array to put sunday in place 0\r\nfunction reorder(array){\r\n\tvar days = [[\"Su\",0],[\"Mo\",1],[\"Tu\",2],[\"We\",3],[\"Th\",4],[\"Fr\",5],[\"Sa\",6]]\r\n\tvar list =[]\r\n\tvar old = array\r\n\tfor (var x in days){\r\n\t\tfor(var y in old){\r\n\t\t\tif(old[y][0]==days[x][0]){\r\n\t\t\t\tlist[x]=old[y]\r\n\t\t\t}\r\n\t\t}   \r\n\t}\r\n\treturn list\r\n}\r\n\r\n//Function to determine if the location is open\r\nfunction Open (times){\r\n    \r\n\t//Day and Hour Calcs for Locations\r\n    var schedule = reorder(Day_Splitter(DayTime(replace(times,\" \",\"\"))))\r\n    var date_now = $feature.nextelect;\r\n\tvar day_schedule = schedule[weekday(date_now)];\r\n\t\r\n\tvar open_hours = null;\r\n\tif(count(day_schedule)==3){\r\n\t\t\r\n\t\tvar start = Date(Year(date_now),Month(date_now),Day(date_now),(split(day_schedule[1],\":\")[0]),(split(day_schedule[1],\":\")[1]))\r\n\t    var end = Date(Year(date_now),Month(date_now),Day(date_now),(split(day_schedule[2],\":\")[0]),(split(day_schedule[2],\":\")[1]))\r\n\t    var start_format = \"h:mmA\";\r\n\t    if (Minute(start) == 0) {\r\n\t\t    start_format = \"hA\"\r\n\t\t}\r\n\t\tvar end_format = \"h:mmA\";\r\n\t\tif (Minute(end) == 0) {\r\n\t\t    end_format = \"hA\"\r\n\t\t}\r\n\t    open_hours = Text(start, start_format) + \" - \" + Text(end, end_format)\r\n\t}\r\n\treturn open_hours;\r\n}\r\n\r\nOpen($feature.operdays)",
+              "returnType": "string"
+            }
+          ],
+          "mediaInfos": []
+        },
+        "layerDefinition": {
+          "defaultVisibility": true
+        }
+      },
+      {
+        "id": 1,
+        "popupInfo": {
+          "title": "<p style='font-size:16px'>Voting for Precinct: {precinctid}</p>",
+          "fieldInfos": [
+            {
+              "fieldName": "OBJECTID",
+              "visible": false,
+              "isEditable": false,
+              "label": "OBJECTID"
+            },
+            {
+              "fieldName": "precinctid",
+              "visible": true,
+              "isEditable": true,
+              "label": "Precinct ID"
+            },
+            {
+              "fieldName": "name",
+              "visible": true,
+              "isEditable": true,
+              "label": "Precinct Name"
+            },
+            {
+              "fieldName": "county",
+              "visible": true,
+              "isEditable": true,
+              "label": "County"
+            },
+            {
+              "fieldName": "pollingid",
+              "visible": true,
+              "isEditable": true,
+              "label": "Polling Place ID"
+            },
+            {
+              "fieldName": "GlobalID",
+              "visible": false,
+              "isEditable": false,
+              "label": "GlobalID"
+            },
+            {
+              "fieldName": "CreationDate",
+              "label": "CreationDate",
+              "isEditable": false,
+              "visible": false,
+              "format": {
+                "dateFormat": "shortDateShortTime",
+                "timezone": "utc"
+              }
+            },
+            {
+              "fieldName": "Creator",
+              "label": "Creator",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "EditDate",
+              "label": "EditDate",
+              "isEditable": false,
+              "visible": false,
+              "format": {
+                "dateFormat": "shortDateShortTime",
+                "timezone": "utc"
+              }
+            },
+            {
+              "fieldName": "Editor",
+              "label": "Editor",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/OBJECTID",
+              "label": "OBJECTID",
+              "isEditable": false,
+              "visible": false
+            },
+            {
+              "fieldName": "relationships/0/facilityid",
+              "label": "Facility ID",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/type",
+              "label": "Voting Facility Type",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/name",
+              "label": "Name",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/fulladdr",
+              "label": "Address",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/municipality",
+              "label": "Municipality",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/pstlstate",
+              "label": "State",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/pstlzip5",
+              "label": "Zip Code",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/phone",
+              "label": "Phone",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/agencyurl",
+              "label": "Website",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/operdays",
+              "label": "Operational Days",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/handicap",
+              "label": "Handicap Accessible",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/pocname",
+              "label": "Contact Name",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/pocphone",
+              "label": "Contact Phone",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/pocemail",
+              "label": "Contact Email",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/nextelect",
+              "label": "Next Election Date",
+              "isEditable": false,
+              "visible": false,
+              "format": {
+                "dateFormat": "shortDateShortTime",
+                "timezone": "utc"
+              }
+            },
+            {
+              "fieldName": "relationships/0/regdate",
+              "label": "Voter Registration Deadline",
+              "isEditable": false,
+              "visible": false,
+              "format": {
+                "dateFormat": "shortDateShortTime",
+                "timezone": "utc"
+              }
+            },
+            {
+              "fieldName": "relationships/0/voteservices",
+              "label": "Election Services",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/dropbox",
+              "label": "Dropbox",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/boxlocation",
+              "label": "Box Location",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/comments",
+              "label": "Comments",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/GlobalID",
+              "label": "GlobalID",
+              "isEditable": false,
+              "visible": false
+            },
+            {
+              "fieldName": "relationships/0/CreationDate",
+              "label": "CreationDate",
+              "isEditable": false,
+              "visible": false,
+              "format": {
+                "dateFormat": "shortDateShortTime",
+                "timezone": "utc"
+              }
+            },
+            {
+              "fieldName": "relationships/0/Creator",
+              "label": "Creator",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/EditDate",
+              "label": "EditDate",
+              "isEditable": false,
+              "visible": false,
+              "format": {
+                "dateFormat": "shortDateShortTime",
+                "timezone": "utc"
+              }
+            },
+            {
+              "fieldName": "relationships/0/Editor",
+              "label": "Editor",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/earlyvoting",
+              "label": "Early Voting Available",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "relationships/0/earlyvotingdate",
+              "label": "Early Voting Date",
+              "isEditable": false,
+              "visible": false,
+              "format": {
+                "dateFormat": "shortDateShortTime",
+                "timezone": "utc"
+              }
+            }
+          ],
+          "description": "<a href='https://www.dupageco.org/sampleballot/' target='_blank'><font color='#3366BB' size='3'>Review a Sample Ballot</font></a>",
+          "showAttachments": false,
+          "relatedRecordsInfo": {
+            "showRelatedRecords": true
+          },
+          "mediaInfos": []
+        },
+        "layerDefinition": {
+          "defaultVisibility": true
+        }
+      },
+      {
+        "id": 2,
+        "popupInfo": {
+          "title": "",
+          "fieldInfos": [
+            {
+              "fieldName": "OBJECTID",
+              "label": "OBJECTID",
+              "isEditable": false,
+              "visible": false
+            },
+            {
+              "fieldName": "electedoffice",
+              "label": "Elected Office",
+              "isEditable": true,
+              "visible": true,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "name",
+              "label": "District Name",
+              "isEditable": true,
+              "visible": true,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "districtid",
+              "label": "District ID",
+              "isEditable": true,
+              "visible": true,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "repname1",
+              "label": "Representative Name",
+              "isEditable": true,
+              "visible": true,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "repimageurl1",
+              "label": "Representative Image URL",
+              "isEditable": true,
+              "visible": true,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "party1",
+              "label": "Party",
+              "isEditable": true,
+              "visible": true,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "districturl1",
+              "label": "Website",
+              "isEditable": true,
+              "visible": true,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "repname2",
+              "label": "Representative Name",
+              "isEditable": true,
+              "visible": true,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "repimageurl2",
+              "label": "Representative Image URL",
+              "isEditable": true,
+              "visible": true,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "districturl2",
+              "label": "Website",
+              "isEditable": true,
+              "visible": true,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "repname3",
+              "label": "Representative Name",
+              "isEditable": true,
+              "visible": true,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "repimageurl3",
+              "label": "Representative Image URL",
+              "isEditable": true,
+              "visible": true,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "districturl3",
+              "label": "Website",
+              "isEditable": true,
+              "visible": true,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "GlobalID",
+              "label": "GlobalID",
+              "isEditable": false,
+              "visible": false
+            },
+            {
+              "fieldName": "expression/expr0",
+              "visible": false
+            },
+            {
+              "fieldName": "expression/expr1",
+              "visible": false
+            },
+            {
+              "fieldName": "expression/expr2",
+              "visible": false
+            },
+            {
+              "fieldName": "expression/expr3",
+              "visible": false
+            },
+            {
+              "fieldName": "expression/expr4",
+              "visible": false
+            },
+            {
+              "fieldName": "expression/expr5",
+              "visible": false
+            },
+            {
+              "fieldName": "expression/expr6",
+              "visible": false
+            },
+            {
+              "fieldName": "expression/expr7",
+              "visible": false
+            },
+            {
+              "fieldName": "expression/expr8",
+              "visible": false
+            },
+            {
+              "fieldName": "CreationDate",
+              "label": "CreationDate",
+              "isEditable": false,
+              "visible": false,
+              "format": {
+                "dateFormat": "shortDateShortTime",
+                "timezone": "utc"
+              }
+            },
+            {
+              "fieldName": "Creator",
+              "label": "Creator",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "EditDate",
+              "label": "EditDate",
+              "isEditable": false,
+              "visible": false,
+              "format": {
+                "dateFormat": "shortDateShortTime",
+                "timezone": "utc"
+              }
+            },
+            {
+              "fieldName": "Editor",
+              "label": "Editor",
+              "isEditable": false,
+              "visible": false,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "party2",
+              "label": "Party",
+              "isEditable": true,
+              "visible": true,
+              "stringFieldOption": "textbox"
+            },
+            {
+              "fieldName": "party3",
+              "label": "Party",
+              "isEditable": true,
+              "visible": true,
+              "stringFieldOption": "textbox"
+            }
+          ],
+          "description": "<table style='border-collapse: separate; font-size:14px; border-spacing: 0px 0px; width: 100%; table-layout: fixed; margin: 0px 0px;'>\n\n<tbody>\n                  \n<tr style='display:{expression/expr6}; text-align: left; vertical-align:top;  '>                  \n\n<td style='padding-left: 3px; padding-top: 3px; align: left; padding-bottom: 3px; width: 120px'>\n<img src='{repimageurl1}' width='100' /></td>\n\n<td style='padding-top: 5px; align:right; vertical-align:top'> <b>{repname1} \n<font color='{expression/expr3}'>{expression/expr0}</font> </b><br /><i>{electedoffice}</i><br />{name}<br /><a href='{districturl1}' target='_blank'>Website</a><br /></td>\n\n</tr>\n\n<tr style='display:{expression/expr7}; text-align: left; vertical-align:top; width: 100%'>  \n\n<td style='padding-left: 3px; padding-top: 3px; align: left; padding-bottom: 3px'>\n<img src='{repimageurl2}' width='100' /></td>\n\n<td style='padding-top: 5px; padding-bottom: 5px; align:right; vertical-align:top'><b>{repname2} <font color='{expression/expr4}'>{expression/expr1}</font></b><br /><i>{electedoffice}</i><br />{name}<br />\n<a href='{districturl2}' target='_blank'>Website</a><br /></td>\n\n</tr>     \n\n<tr style='display:{expression/expr8}; text-align: left; vertical-align:top; width: 100%'> \n\n<td style='padding-left: 3px; padding-top: 3px; align: left; padding-bottom: 3px'>\n<img src='{repimageurl3}' width='100' /></td>\n\n<td style='padding-top: 5px; padding-bottom: 5px; align:right; vertical-align:top'><b>{repname3} <font color='{expression/expr5}'>{expression/expr2}</font></b><br /><i>{electedoffice}</i><br />{name}<br />\n<a href='{districturl3}' target='_blank'>Website</a><br /></td>\n\n</tr>\n\n</tbody>\n</table>",
+          "showAttachments": false,
+          "showLastEditInfo": false,
+          "expressionInfos": [
+            {
+              "name": "expr0",
+              "title": "party1abbr",
+              "expression": "if ($feature.party1 == \"Democratic\") {\n    return \"(D)\" ; \n}\nif ($feature.party1 == \"Republican\") {\n    return \"(R)\";\n} \nif ($feature.party1 == \"Libertarian\") {\n    return \"(L)\";\n} \nif ($feature.party1 == \"Independent\") {\n    return \"(I)\";\n} \nreturn null",
+              "returnType": "string"
+            },
+            {
+              "name": "expr1",
+              "title": "party2abbr",
+              "expression": "if ($feature.party2 == \"Democratic\") {\n    return \"(D)\" ; \n}\nif ($feature.party2 == \"Republican\") {\n    return \"(R)\";\n} \nif ($feature.party2 == \"Libertarian\") {\n    return \"(L)\";\n} \nif ($feature.party2 == \"Independent\") {\n    return \"(I)\";\n} \nreturn null",
+              "returnType": "string"
+            },
+            {
+              "name": "expr2",
+              "title": "party3abbr",
+              "expression": "if ($feature.party3 == \"Democratic\") {\n    return \"(D)\" ; \n}\nif ($feature.party3 == \"Republican\") {\n    return \"(R)\";\n} \nif ($feature.party3 == \"Libertarian\") {\n    return \"(L)\";\n} \nif ($feature.party3 == \"Independent\") {\n    return \"(I)\";\n} \nreturn null",
+              "returnType": "string"
+            },
+            {
+              "name": "expr3",
+              "title": "party1color",
+              "expression": "if($feature.party1 == 'Republican') {\n    return '#DE0100' ;\n}\nif($feature.party1 == 'Democratic') {\n    return '#0015BC' ;\n}\nif($feature.party1 == 'Libertarian') {\n    return '#000000' ;\n}\nif($feature.party1 == 'Green') {\n    return '#008000' ;\n}\nif($feature.party1 == 'Independent') {\n    return '#000000' ;\n}\nreturn null",
+              "returnType": "string"
+            },
+            {
+              "name": "expr4",
+              "title": "party2color",
+              "expression": "if($feature.party2 == 'Republican') {\n    return '#DE0100' ;\n}\nif($feature.party2 == 'Democratic') {\n    return '#0015BC' ;\n}\nif($feature.party2 == 'Libertarian') {\n    return '#000000' ;\n}\nif($feature.party2 == 'Green') {\n    return '#008000' ;\n}\nif($feature.party2 == 'Independent') {\n    return '#000000' ;\n}\nreturn null",
+              "returnType": "string"
+            },
+            {
+              "name": "expr5",
+              "title": "party3color",
+              "expression": "if($feature.party3 == 'Republican') {\n    return '#DE0100' ;\n}\nif($feature.party3 == 'Democratic') {\n    return '#0015BC' ;\n}\nif($feature.party3 == 'Libertarian') {\n    return '#000000' ;\n}\nif($feature.party3 == 'Green') {\n    return '#008000' ;\n}\nif($feature.party3 == 'Independent') {\n    return '#000000' ;\n}\nreturn null",
+              "returnType": "string"
+            },
+            {
+              "name": "expr6",
+              "title": "repname1null",
+              "expression": "if ($feature.repname1 == null){\n    return \"none\";\n}\nif ($feature.repname1 == \"\"){\n    return \"none\";\n}\nreturn null",
+              "returnType": "string"
+            },
+            {
+              "name": "expr7",
+              "title": "repname2null",
+              "expression": "if ($feature.repname2 == null){\n    return \"none\";\n}\nif ($feature.repname2 == \"\"){\n    return \"none\";\n}\nreturn null",
+              "returnType": "string"
+            },
+            {
+              "name": "expr8",
+              "title": "repname3null",
+              "expression": "if ($feature.repname3 == null){\n    return \"none\";\n}\nif ($feature.repname3 == \"\"){\n    return \"none\";\n}\nreturn null",
+              "returnType": "string"
+            }
+          ],
+          "mediaInfos": []
+        },
+        "layerDefinition": {
+          "defaultVisibility": true
+        }
+      }
+    ]
+  }
 }

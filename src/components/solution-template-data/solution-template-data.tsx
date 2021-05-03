@@ -15,7 +15,7 @@
  */
 
 import { VNode } from '@esri/calcite-components/dist/types/stencil-public-runtime';
-import { Component, Host, h, Prop } from '@stencil/core';
+import { Component, Element, Host, h, Prop } from '@stencil/core';
 import { IOrganizationVariableItem } from '../solution-organization-variables/solution-organization-variables';
 import { IVariableItem } from '../solution-variables/solution-variables';
 import { IResourceItem } from '../solution-resource-item/solution-resource-item';
@@ -32,6 +32,15 @@ export interface ITemplateData {
 })
 
 export class SolutionTemplateData {
+
+  //--------------------------------------------------------------------------
+  //
+  //  Host element access
+  //
+  //--------------------------------------------------------------------------
+
+  @Element() el: HTMLSolutionTemplateDataElement;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (public)
@@ -59,11 +68,17 @@ export class SolutionTemplateData {
   @Prop({ mutable: true }) isResource: boolean = false;
 
   /**
-   * This needs to be unique for each item and also for the props vs data of an item
+   * This needs to be unique for props vs data of an item
    */
-   @Prop({ mutable: true }) instanceId: string = "";
+   @Prop({ mutable: true, reflect: true }) instanceid: string = "";
 
-     /**
+  /**
+   * A templates itemId.
+   * This is used to get the correct model from a store in the json-editor
+   */
+   @Prop({ mutable: true, reflect: true }) itemid: string = "";
+
+  /**
    * Contains the solution based variables
    */
   @Prop({mutable: true, reflect: true}) solutionVariables: IVariableItem[] = [];
@@ -90,7 +105,7 @@ export class SolutionTemplateData {
   }
 
   renderTemplateData(data: ITemplateData): VNode {
-    return this.isResource ? this._resourceData(data) : this._jsonData(data);
+    return this.isResource ? this._resourceData(data) : this._jsonData();
   }
 
   //--------------------------------------------------------------------------
@@ -117,14 +132,14 @@ export class SolutionTemplateData {
   //
   //--------------------------------------------------------------------------
 
-  _jsonData(templateData: ITemplateData): any {
+  _jsonData(): any {
     return <calcite-shell dir="ltr" theme="light">
       <calcite-shell-center-row slot="center-row" position="start" height-scale="l" width-scale="l" class="json-editor">
         <div class="solution-data-child-container padding-1">
           <json-editor
-            instanceId={this.instanceId}
+            instanceid={this.instanceid}
+            value={this.itemid}
             translations={this.translations}
-            value={templateData.value}
           ></json-editor>
         </div>
       </calcite-shell-center-row>

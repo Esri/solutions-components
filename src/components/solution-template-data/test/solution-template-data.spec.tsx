@@ -29,12 +29,12 @@ describe('solution-template-data', () => {
       )
     });
     expect(page.root).toEqualHtml(`
-    <solution-template-data>
+    <solution-template-data instanceid="" itemid="">
       <div class="solution-data-container">
         <calcite-shell dir="ltr" theme="light">
           <calcite-shell-center-row class="json-editor" height-scale="l" position="start" slot="center-row" width-scale="l">
             <div class="padding-1 solution-data-child-container">
-              <json-editor instanceid="" value="{a:'A'}"></json-editor>
+              <json-editor instanceid="" value=""></json-editor>
             </div>
           </calcite-shell-center-row>
           <calcite-shell-panel height-scale="l" position="start" slot="contextual-panel" width-scale="m">
@@ -72,7 +72,7 @@ describe('solution-template-data', () => {
     await page.waitForChanges();
 
     expect(page.root).toEqualHtml(`
-    <solution-template-data>
+    <solution-template-data instanceid="" itemid="">
       <div class="solution-data-container">
         <solution-resource-item></solution-resource-item>
       </div>

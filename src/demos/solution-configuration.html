@@ -24,21 +24,19 @@
   <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
   <link rel="stylesheet" href="../solutions.css" type="text/css">
   <style>
-  .fullHeight {
-    height: 100%
+  .full-height {
+    height: 100%;
   }
   </style>
 
   <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
   <script type="module" src="../solutions.esm.js"></script>
-  <script src="../assets/json-editor/ace/ace.js"></script>
-  <script src="../assets/json-editor/ace/mode-json.js"></script>
 </head>
 
 <body>
+  <h1>Demo Solution Configuration</h1>
   <main id="appContainer">
-    <div class="content fullHeight">
-      <h1>Demo Solution Configuration</h1>
+    <div class="content full-height">
       <solution-configuration id="demo"></solution-configuration>
     </div>
   </main>
@@ -46,7 +44,8 @@
   <script src="./libs/require.js"></script>
   <script src="./libs/setLocale.js"></script>
   <script>
-    require(["i18n!../assets/nls/strings"],
+    require.config({ paths: { vs: '../assets/json-editor/monaco-editor/min/vs' } });
+    require(["i18n!../assets/nls/strings", 'vs/editor/editor.main'],
     function (translations) {
       // Initialize the configuration content
       const demo = document.getElementById("demo");
@@ -62,7 +61,8 @@
         .then(jsonResults => {
           demo.solutionVariables = jsonResults[0].value;
           demo.organizationVariables = jsonResults[1].value;
-          demo.templates = jsonResults[2].templates;
+          demo.templates = JSON.stringify(jsonResults[2].templates);
+
           document.getElementById("appContainer").style.opacity = "1";
         });
     });

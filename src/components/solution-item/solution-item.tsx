@@ -39,7 +39,7 @@ export class SolutionItem {
   //  Host element access
   //
   //--------------------------------------------------------------------------
-  @Element() el: HTMLElement;
+  @Element() el: HTMLSolutionItemElement;
 
   //--------------------------------------------------------------------------
   //
@@ -131,7 +131,8 @@ export class SolutionItem {
       </calcite-tab>
       <calcite-tab class="config-tab">
         <solution-template-data
-          instanceId={`-data-${this.value.itemId}`}
+          instanceid="data"
+          itemid={this.value.itemId}
           isResource={this.value.isResource}
           solutionVariables={this.solutionVariables}
           organizationVariables={this.organizationVariables}
@@ -141,7 +142,8 @@ export class SolutionItem {
       </calcite-tab>
       <calcite-tab class="config-tab">
         <solution-template-data
-          instanceId={`-props-${this.value.itemId}`}
+          instanceid="props"
+          itemid={this.value.itemId}
           solutionVariables={this.solutionVariables}
           organizationVariables={this.organizationVariables}
           translations={this.translations} 

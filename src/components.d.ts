@@ -21,15 +21,27 @@ import { IVariableItem as IVariableItem1 } from "./components/solution-variables
 export namespace Components {
     interface JsonEditor {
         /**
-          * Contains the public id for this component.
+          * Contains a public value to indicate if the model has any errors that would prevent saving it.
          */
-        "instanceId": string;
+        "hasErrors": boolean;
+        /**
+          * Contains a unique identifier for when we have multiple instances of the editor. For example when we want to show an items data as well as an items properties.  Need to rethink this..would like it to be more generic. We are currently tied to either data or props as this helps us know how to get the correct model from the store.
+         */
+        "instanceid": any;
+        /**
+          * Contains the public model for this component.
+         */
+        "model": any;
+        /**
+          * Contains the original source item json as it was when the component was created.
+         */
+        "original": any;
         /**
           * Contains the translations for this component.
          */
         "translations": any;
         /**
-          * Contains the public value for this component.
+          * Contains the public value for this component. This should be an item Id for one of the models in the store.
          */
         "value": any;
     }
@@ -49,7 +61,7 @@ export namespace Components {
         /**
           * Contains the raw templates from the solution item
          */
-        "templates": any[];
+        "templates": string;
         /**
           * Contains the translations for this component.
          */
@@ -174,13 +186,17 @@ export namespace Components {
     }
     interface SolutionTemplateData {
         /**
-          * This needs to be unique for each item and also for the props vs data of an item
+          * This needs to be unique for props vs data of an item
          */
-        "instanceId": string;
+        "instanceid": string;
         /**
           * Should be set to true for items that store their data as a resource Will allow for upload and download of the resource
          */
         "isResource": boolean;
+        /**
+          * A templates itemId. This is used to get the correct model from a store in the json-editor
+         */
+        "itemid": string;
         /**
           * Contains the organization based variables
          */
@@ -207,6 +223,12 @@ export namespace Components {
           * Contains the public value for this component.
          */
         "value": IVariableItem[];
+    }
+    interface StoreManager {
+        /**
+          * Contains source json as a string
+         */
+        "value": string;
     }
 }
 declare global {
@@ -282,6 +304,12 @@ declare global {
         prototype: HTMLSolutionVariablesElement;
         new (): HTMLSolutionVariablesElement;
     };
+    interface HTMLStoreManagerElement extends Components.StoreManager, HTMLStencilElement {
+    }
+    var HTMLStoreManagerElement: {
+        prototype: HTMLStoreManagerElement;
+        new (): HTMLStoreManagerElement;
+    };
     interface HTMLElementTagNameMap {
         "json-editor": HTMLJsonEditorElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
@@ -295,21 +323,34 @@ declare global {
         "solution-spatial-ref": HTMLSolutionSpatialRefElement;
         "solution-template-data": HTMLSolutionTemplateDataElement;
         "solution-variables": HTMLSolutionVariablesElement;
+        "store-manager": HTMLStoreManagerElement;
     }
 }
 declare namespace LocalJSX {
     interface JsonEditor {
         /**
-          * Contains the public id for this component.
+          * Contains a public value to indicate if the model has any errors that would prevent saving it.
          */
-        "instanceId": string;
+        "hasErrors"?: boolean;
+        /**
+          * Contains a unique identifier for when we have multiple instances of the editor. For example when we want to show an items data as well as an items properties.  Need to rethink this..would like it to be more generic. We are currently tied to either data or props as this helps us know how to get the correct model from the store.
+         */
+        "instanceid"?: any;
+        /**
+          * Contains the public model for this component.
+         */
+        "model"?: any;
         "onJsonEditorSaved"?: (event: CustomEvent<any>) => void;
+        /**
+          * Contains the original source item json as it was when the component was created.
+         */
+        "original"?: any;
         /**
           * Contains the translations for this component.
          */
         "translations"?: any;
         /**
-          * Contains the public value for this component.
+          * Contains the public value for this component. This should be an item Id for one of the models in the store.
          */
         "value"?: any;
     }
@@ -329,7 +370,7 @@ declare namespace LocalJSX {
         /**
           * Contains the raw templates from the solution item
          */
-        "templates"?: any[];
+        "templates"?: string;
         /**
           * Contains the translations for this component.
          */
@@ -440,13 +481,17 @@ declare namespace LocalJSX {
     }
     interface SolutionTemplateData {
         /**
-          * This needs to be unique for each item and also for the props vs data of an item
+          * This needs to be unique for props vs data of an item
          */
-        "instanceId"?: string;
+        "instanceid"?: string;
         /**
           * Should be set to true for items that store their data as a resource Will allow for upload and download of the resource
          */
         "isResource"?: boolean;
+        /**
+          * A templates itemId. This is used to get the correct model from a store in the json-editor
+         */
+        "itemid"?: string;
         /**
           * Contains the organization based variables
          */
@@ -475,6 +520,13 @@ declare namespace LocalJSX {
          */
         "value"?: IVariableItem[];
     }
+    interface StoreManager {
+        "onStateLoaded"?: (event: CustomEvent<any>) => void;
+        /**
+          * Contains source json as a string
+         */
+        "value"?: string;
+    }
     interface IntrinsicElements {
         "json-editor": JsonEditor;
         "solution-configuration": SolutionConfiguration;
@@ -488,6 +540,7 @@ declare namespace LocalJSX {
         "solution-spatial-ref": SolutionSpatialRef;
         "solution-template-data": SolutionTemplateData;
         "solution-variables": SolutionVariables;
+        "store-manager": StoreManager;
     }
 }
 export { LocalJSX as JSX };
@@ -506,6 +559,7 @@ declare module "@stencil/core" {
             "solution-spatial-ref": LocalJSX.SolutionSpatialRef & JSXBase.HTMLAttributes<HTMLSolutionSpatialRefElement>;
             "solution-template-data": LocalJSX.SolutionTemplateData & JSXBase.HTMLAttributes<HTMLSolutionTemplateDataElement>;
             "solution-variables": LocalJSX.SolutionVariables & JSXBase.HTMLAttributes<HTMLSolutionVariablesElement>;
+            "store-manager": LocalJSX.StoreManager & JSXBase.HTMLAttributes<HTMLStoreManagerElement>;
         }
     }
 }
