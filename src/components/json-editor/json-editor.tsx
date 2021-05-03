@@ -236,12 +236,16 @@ export class JsonEditor {
 
   @Listen("organizationVariableSelected", { target: 'window' })
   organizationVariableSelected(event: CustomEvent): void {
-    this._insertValue(event.detail.value);
+    if (this._isTabActive()) {
+      this._insertValue(event.detail.value);
+    }
   }
 
   @Listen("solutionVariableSelected", { target: 'window' })
   solutionVariableSelected(event: CustomEvent): void {
-    this._insertValue(event.detail.value);
+    if (this._isTabActive()) {
+      this._insertValue(event.detail.value);
+    }
   }
 
   @Listen("storeChanged", { target: 'window' })
@@ -578,6 +582,22 @@ export class JsonEditor {
       this._diffEditor.focus();
     } else {
       this._editor.focus();
+    }
+  }
+
+  /**
+   * When the json-editor is embedded within a solition-item component we will have two tabs
+   * with the json editor. This provides a way for us to check if that parent tab is active 
+   * while inserting variables.
+   *
+   * @protected
+   */
+  _isTabActive(): boolean {
+    const tab = document.getElementById(`${this.instanceid}-tab`) as HTMLCalciteTabElement;
+    if (tab) {
+      return tab.active;
+    } else {
+      return true;
     }
   }
 }
