@@ -44,7 +44,16 @@
   <script src="./libs/require.js"></script>
   <script src="./libs/setLocale.js"></script>
   <script>
-    require.config({ paths: { vs: '../assets/json-editor/monaco-editor/min/vs' } });
+    // Set config for loading the Monaco editor
+    const requireConfig = { paths: { vs: '../assets/monaco-editor/min/vs' } };
+    const availableEditorLangs = "de|es|fr|it|ja|js|ko|ru|zh-cn|zh-tw";
+    if (availableEditorLangs.indexOf(locale) >= 0) {
+      requireConfig['vs/nls'] = { availableLanguages: { '*': locale } };
+    } else if (availableEditorLangs.indexOf(lang) >= 0) {
+      requireConfig['vs/nls'] = { availableLanguages: { '*': lang } };
+    }
+    require.config(requireConfig);
+
     require(["i18n!../assets/nls/strings", 'vs/editor/editor.main'],
     function (translations) {
       // Initialize the configuration content
