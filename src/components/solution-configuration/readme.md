@@ -17,6 +17,19 @@
 | `value`                 | --             | Contains the public value for this component.          | `ISolutionConfiguration`      | `{     contents: []   }`                                                                                           |
 
 
+## Methods
+
+### `getEditModels() => Promise<{}>`
+
+
+
+#### Returns
+
+Type: `Promise<{}>`
+
+
+
+
 ## Dependencies
 
 ### Depends on

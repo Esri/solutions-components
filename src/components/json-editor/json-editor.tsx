@@ -594,10 +594,6 @@ export class JsonEditor {
    */
   _isTabActive(): boolean {
     const tab = document.getElementById(`${this.instanceid}-tab`) as HTMLCalciteTabElement;
-    if (tab) {
-      return tab.active;
-    } else {
-      return true;
-    }
+    return tab ? tab.active : true;
   }
 }
