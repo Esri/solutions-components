@@ -171,6 +171,10 @@ export namespace Components {
          */
         "getSpatialRef": () => Promise<ISpatialRefRepresentation>;
         /**
+          * List of service names the spatial reference should apply to
+         */
+        "services": string[];
+        /**
           * Contains the translations for this component.
          */
         "translations": any;
@@ -471,6 +475,10 @@ declare namespace LocalJSX {
         "value"?: IResourceItem;
     }
     interface SolutionSpatialRef {
+        /**
+          * List of service names the spatial reference should apply to
+         */
+        "services"?: string[];
         /**
           * Contains the translations for this component.
          */

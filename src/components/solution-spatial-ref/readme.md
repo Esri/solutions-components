@@ -7,10 +7,11 @@
 
 ## Properties
 
-| Property       | Attribute      | Description                                   | Type     | Default |
-| -------------- | -------------- | --------------------------------------------- | -------- | ------- |
-| `translations` | `translations` | Contains the translations for this component. | `any`    | `{}`    |
-| `value`        | `value`        | Contains the public value for this component. | `string` | `null`  |
+| Property       | Attribute      | Description                                                 | Type       | Default |
+| -------------- | -------------- | ----------------------------------------------------------- | ---------- | ------- |
+| `services`     | --             | List of service names the spatial reference should apply to | `string[]` | `[]`    |
+| `translations` | `translations` | Contains the translations for this component.               | `any`      | `{}`    |
+| `value`        | `value`        | Contains the public value for this component.               | `string`   | `null`  |
 
 
 ## Methods

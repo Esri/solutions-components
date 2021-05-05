@@ -55,6 +55,21 @@ export function getModels(templates: any[]): Promise<any> {
   return models;
 }
 
+export function getFeatureServices(
+  templates: any[]
+): any[] {
+  return templates.reduce((prev, cur) => {
+    const name: string = cur.item.title || cur.item.name;
+    if (cur.type === "Feature Service" &&
+      cur.item.typeKeywords.indexOf("View Service") < 0 &&
+      prev.indexOf(name) < 0
+    ) {
+      prev.push(name)
+    }
+    return prev;
+  }, []);
+}
+
 function _getItemFromTemplate(
   t: any,
   templates: any[]

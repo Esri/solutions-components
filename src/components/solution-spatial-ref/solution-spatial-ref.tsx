@@ -59,6 +59,11 @@ export class SolutionSpatialRef {
     this.spatialRef = this._createSpatialRefDisplay(newValue);
   }
 
+  /**
+  * List of service names the spatial reference should apply to
+  */
+  @Prop({ mutable: true, reflect: true }) services: string[] = [];
+
   //--------------------------------------------------------------------------
   //
   //  Lifecycle
@@ -80,9 +85,7 @@ export class SolutionSpatialRef {
         <div id="spatialRefDefn" class="spatial-ref-switch-title">
           <calcite-label>{this.translations.defaultSpatialRef}<label class="spatial-ref-default"><calcite-input disabled={this.locked} ref={(el) => { this.spatialRefInput = el}} onCalciteInputBlur={() => this._updateSpatialRef()}></calcite-input></label></calcite-label>
           <label class="spatial-ref-current">{this.spatialRef.display}</label>
-          <label class="spatial-ref-item-title">{this.translations.featureServicesHeading}</label>
-          <label class="switch-label"><calcite-switch disabled={this.locked} scale="m" class="spatial-ref-item-switch"></calcite-switch>Feature Service 1</label>
-          <label class="switch-label"><calcite-switch disabled={this.locked} scale="m" class="spatial-ref-item-switch"></calcite-switch>Feature Service 2</label>
+          {this._getFeatureServices()}
         </div>
       </Host>
     );
@@ -234,4 +237,16 @@ export class SolutionSpatialRef {
     }
   }
 
+  private _getFeatureServices(): VNode {
+    return this.services && this.services.length > 0 ? (
+      <div>
+        <label class="spatial-ref-item-title">{this.translations.featureServicesHeading}</label>
+        {this.services.map(name => (
+          <label class="switch-label">
+            <calcite-switch disabled={this.locked} scale="m" class="spatial-ref-item-switch"></calcite-switch>{name}
+          </label>
+        ))}
+      </div>
+    ) : (null);
+  }
 }

@@ -17,7 +17,8 @@
 import { createStore } from "@stencil/store";
 
 const { state, onChange } = createStore({
-  models: {}
+  models: {},
+  featureServices: []
 });
 
 const storeChangedEvent = new CustomEvent("storeChanged", {

@@ -19,7 +19,7 @@ import { IInventoryItem } from '../solution-contents/solution-contents';
 import { ISolutionItem } from '../solution-item/solution-item';
 import { IOrganizationVariableItem } from '../solution-organization-variables/solution-organization-variables';
 import { IVariableItem } from '../solution-variables/solution-variables';
-import { getInventoryItems, getModels } from '../../utils/templates';
+import { getInventoryItems, getModels, getFeatureServices } from '../../utils/templates';
 import state from '../../utils/editStore';
 
 import '@esri/calcite-components';
@@ -130,7 +130,10 @@ export class SolutionConfiguration {
               </calcite-tab>
               <calcite-tab class="config-tab">
                 <div class="config-solution">
-                  <solution-spatial-ref translations={this.translations}></solution-spatial-ref>
+                  <solution-spatial-ref 
+                    translations={this.translations} 
+                    services={state.featureServices}
+                  ></solution-spatial-ref>
                 </div>
               </calcite-tab>
             </calcite-tabs>
@@ -193,6 +196,7 @@ export class SolutionConfiguration {
           const v = JSON.parse(mutation.target[mutation.attributeName]);
           this.value.contents = [...getInventoryItems(v)];
           state.models = getModels(v);
+          state.featureServices = getFeatureServices(v)
           this.modelsSet = true;
           return true;
         }
