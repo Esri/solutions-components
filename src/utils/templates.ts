@@ -45,7 +45,10 @@ export function getModels(templates: any[]): Promise<any> {
         propsModel: monaco.editor.createModel(JSON.stringify(t.properties, null, '\t'), "json"),
         propsOriginValue: JSON.stringify(t.properties),
         state: undefined,
-        isEditing: false
+        isEditing: false,
+        itemId: t.itemId,
+        name: t.item?.title || t.item?.name,
+        itemOriginValue: JSON.stringify(t.item)
       };
     }
   });

@@ -129,7 +129,7 @@ export class SolutionItem {
           value={this.value.itemDetails}
         ></solution-item-details>
       </calcite-tab>
-      <calcite-tab class="config-tab">
+      <calcite-tab id="data-tab" class="config-tab">
         <solution-template-data
           instanceid="data"
           itemid={this.value.itemId}
@@ -140,7 +140,7 @@ export class SolutionItem {
           value={{value: this.value.data}}
         ></solution-template-data>
       </calcite-tab>
-      <calcite-tab class="config-tab">
+      <calcite-tab id="props-tab" class="config-tab">
         <solution-template-data
           instanceid="props"
           itemid={this.value.itemId}

@@ -44,8 +44,8 @@
 
   <script src="./libs/require.js"></script>
   <script src="./libs/setLocale.js"></script>
+  <script src="./monacoConfig.js"></script>
   <script>
-    require.config({ paths: { vs: '../assets/json-editor/monaco-editor/min/vs' } });
     require(["i18n!../assets/nls/strings", 'vs/editor/editor.main'],
     function (translations) {
       // Initialize the configuration content

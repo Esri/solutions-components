@@ -46,6 +46,7 @@ export namespace Components {
         "value": any;
     }
     interface SolutionConfiguration {
+        "getEditModels": () => Promise<{}>;
         /**
           * Contains the current solution item we are working with
          */

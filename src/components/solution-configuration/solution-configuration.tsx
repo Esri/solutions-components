@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Listen, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, h, Host, Listen, Method, Prop, State, VNode } from '@stencil/core';
 import { IInventoryItem } from '../solution-contents/solution-contents';
 import { ISolutionItem } from '../solution-item/solution-item';
 import { IOrganizationVariableItem } from '../solution-organization-variables/solution-organization-variables';
@@ -170,6 +170,11 @@ export class SolutionConfiguration {
   //  Public Methods (async)
   //
   //--------------------------------------------------------------------------
+
+  @Method()
+  async getEditModels() {
+    return state.models;
+  }
 
   //--------------------------------------------------------------------------
   //
