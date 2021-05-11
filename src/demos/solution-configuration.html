@@ -78,51 +78,55 @@
     });
 
     async function getAllEdits() {
-				let hasChanges = false;
-				let hasDataErrors = false;
-        let hasPropsErrors = false;
-        const models = await demo.getEditModels();
-				Object.keys(models).forEach(k => {
-					const m = models[k];
-					// parse and stringify to avoid any formatting differences
-					let dataOriginValue, dataModelValue;
-          let propsOriginValue, propsModelValue;
-					try {
-						dataOriginValue = JSON.parse(m.dataOriginValue);
-						dataModelValue = JSON.parse(m.dataModel.getValue());
-					} catch (e) {
-            alert(`${m.name} (${m.itemId}):  has errors in data`);
-						hasDataErrors = true;
-						console.error(e);
-					}
+      let hasChanges = false;
+      let hasDataErrors = false;
+      let hasPropsErrors = false;
+      const models = await demo.getEditModels();
+      Object.keys(models).forEach(k => {
+        const m = models[k];
+        // parse and stringify to avoid any formatting differences
+        let dataOriginValue, dataModelValue;
+        let propsOriginValue, propsModelValue;
+        try {
+          dataOriginValue = JSON.parse(m.dataOriginValue);
+          dataModelValue = JSON.parse(m.dataModel.getValue());
+        } catch (e) {
+          alert(`${m.name} (${m.itemId}):  has errors in data`);
+          hasDataErrors = true;
+          console.error(e);
+        }
 
-          try {
-            propsOriginValue = JSON.parse(m.propsOriginValue);
-						propsModelValue = JSON.parse(m.propsModel.getValue());
-					} catch (e) {
-            alert(`${m.name} (${m.itemId}):  has errors in props`);
-						hasPropsErrors = true;
-						console.error(e);
-					}
+        try {
+          propsOriginValue = JSON.parse(m.propsOriginValue);
+          propsModelValue = JSON.parse(m.propsModel.getValue());
+        } catch (e) {
+          alert(`${m.name} (${m.itemId}):  has errors in props`);
+          hasPropsErrors = true;
+          console.error(e);
+        }
 
-					if(dataOriginValue && dataModelValue && propsOriginValue && propsModelValue) {
-            if (JSON.stringify(dataOriginValue) !== JSON.stringify(dataModelValue)) {
-              alert(`${m.name} (${m.itemId}):  has data changes`);
-						  hasChanges = true;
-            }
-            if (JSON.stringify(propsOriginValue) !== JSON.stringify(propsModelValue)) {
-              alert(`${m.name} (${m.itemId}):  has props changes`);
-						  hasChanges = true;
-            }
-					}
-				});
+        if (dataOriginValue && dataModelValue && propsOriginValue && propsModelValue) {
+          if (JSON.stringify(dataOriginValue) !== JSON.stringify(dataModelValue)) {
+            alert(`${m.name} (${m.itemId}):  has data changes`);
+            hasChanges = true;
+          }
+          if (JSON.stringify(propsOriginValue) !== JSON.stringify(propsModelValue)) {
+            alert(`${m.name} (${m.itemId}):  has props changes`);
+            hasChanges = true;
+          }
+        }
+      });
+      if (hasDataErrors || hasPropsErrors || (window.monaco.editor.getModelMarkers({}) || []).length > 0) {
+        alert("errors found..cannot get edits");
+      } else if (!hasChanges) {
+        alert("no JSON changes found");
+      }
 
-				if (hasDataErrors || hasPropsErrors || (window.monaco.editor.getModelMarkers({}) || []).length > 0) {
-          alert("errors found..cannot get edits");
-				} else if (!hasChanges) {
-					alert("no changes found");
-				}
-			}
+      const srInfo = await demo.getSpatialReferenceInfo();
+      if (srInfo && srInfo.enabled) {
+        alert(`sr param set (${srInfo.spatialReference.wkid}): ${JSON.stringify(srInfo.services)}`);
+      }
+    }
   </script>
 </body>
 </html>

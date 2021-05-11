@@ -29,6 +29,16 @@ Type: `Promise<{}>`
 
 
 
+### `getSpatialReferenceInfo() => Promise<{}>`
+
+
+
+#### Returns
+
+Type: `Promise<{}>`
+
+
+
 
 ## Dependencies
 

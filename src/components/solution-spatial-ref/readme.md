@@ -9,6 +9,7 @@
 
 | Property       | Attribute      | Description                                                 | Type       | Default |
 | -------------- | -------------- | ----------------------------------------------------------- | ---------- | ------- |
+| `locked`       | `locked`       |                                                             | `boolean`  | `true`  |
 | `services`     | --             | List of service names the spatial reference should apply to | `string[]` | `[]`    |
 | `translations` | `translations` | Contains the translations for this component.               | `any`      | `{}`    |
 | `value`        | `value`        | Contains the public value for this component.               | `string`   | `null`  |

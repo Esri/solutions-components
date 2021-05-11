@@ -33,7 +33,7 @@
  *
 */
 
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop } from '@stencil/core';
+import { Component, Element, Host, h, Listen, Prop } from '@stencil/core';
 import state from '../../utils/editStore';
 
 @Component({
@@ -248,8 +248,8 @@ export class JsonEditor {
     }
   }
 
-  @Listen("storeChanged", { target: 'window' })
-  _storeChanged(): void {
+  @Listen("modelsChanged", { target: 'window' })
+  _modelsChanged(): void {
     if (!this._loaded && this.value) {
       if (state && state.models && Object.keys(state.models).indexOf(this.value) > -1) {
         //get the model and state from the store
@@ -270,8 +270,6 @@ export class JsonEditor {
   //  Events
   //
   //--------------------------------------------------------------------------
-
-  @Event() jsonEditorSaved: EventEmitter;
 
   //--------------------------------------------------------------------------
   //
@@ -457,10 +455,9 @@ export class JsonEditor {
    * @protected
    */
   _reset(): void {
-    // update the store
-    this.model = monaco.editor.createModel(JSON.stringify(JSON.parse(this.original), null, '\t'), "json");
-    state.models[this.value][this.instanceid === "data" ? "dataModel" : "propsModel"] = this.model;
-    state.models[this.value].state = undefined;
+    // update the model
+    const org = this._getOriginalValue();
+    this.model = monaco.editor.createModel(JSON.stringify(JSON.parse(org), null, '\t'), "json");
 
     // update the editor
     this._editor.setModel(this.model);
@@ -515,7 +512,7 @@ export class JsonEditor {
    */
   _saveCurrentModel(id: string): void {
     if (this._editor && id && Object.keys(state.models).indexOf(id) > -1) {
-      state.models[id][this.instanceid === "data" ? "dataModel" : "propsModel"] = this.model;
+      state.models[id][this._isData() ? "dataModel" : "propsModel"] = this.model;
       state.models[id].state = this._editor.saveViewState();
     }
   }
@@ -528,9 +525,8 @@ export class JsonEditor {
   _setEditModel(id): void {
     const data = state.models[id];
 
-    const isData = this.instanceid === "data";
-    this.model = isData ? data.dataModel : data.propsModel;
-    this.original = isData ? data.dataOriginValue : data.propsOriginValue;
+    this.model = this._isData() ? data.dataModel : data.propsModel;
+    this.original = this._isData() ? data.dataOriginValue : data.propsOriginValue;
 
     if (this._editor) {
       this._editor.setModel(this.model);
@@ -595,5 +591,22 @@ export class JsonEditor {
   _isTabActive(): boolean {
     const tab = document.getElementById(`${this.instanceid}-tab`) as HTMLCalciteTabElement;
     return tab ? tab.active : true;
+  }
+
+  _isData(): boolean {
+    return this.instanceid === "data"
+  }
+
+  _getOriginalValue(): string{
+    let o;
+    const serviceName: string = state.models[this.value].name;
+    if (state.spatialReferenceInfo["services"] && 
+      Object.keys(state.spatialReferenceInfo["services"]).indexOf(serviceName) > -1 &&
+      state.spatialReferenceInfo["services"][serviceName] && state.spatialReferenceInfo["enabled"] && !this._isData()) {
+        o = state.models[this.value].propsDiffOriginValue;
+    } else {
+      o = this.original;
+    }
+    return o;
   }
 }

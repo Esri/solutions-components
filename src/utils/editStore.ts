@@ -18,17 +18,28 @@ import { createStore } from "@stencil/store";
 
 const { state, onChange } = createStore({
   models: {},
-  featureServices: []
+  featureServices: [],
+  spatialReferenceInfo: {}
 });
 
-const storeChangedEvent = new CustomEvent("storeChanged", {
+const modelsChangedEvent = new CustomEvent("modelsChanged", {
   bubbles: true,
   cancelable: false,
   composed: true
 });
 
 onChange('models', () => {
-  dispatchEvent(storeChangedEvent);
+  dispatchEvent(modelsChangedEvent);
+});
+
+const spatialReferenceChangedEvent = new CustomEvent("spatialReferenceChanged", {
+  bubbles: true,
+  cancelable: false,
+  composed: true
+});
+
+onChange('spatialReferenceInfo', () => {
+  dispatchEvent(spatialReferenceChangedEvent);
 });
 
 export default state;

@@ -47,6 +47,7 @@ export namespace Components {
     }
     interface SolutionConfiguration {
         "getEditModels": () => Promise<{}>;
+        "getSpatialReferenceInfo": () => Promise<{}>;
         /**
           * Contains the current solution item we are working with
          */
@@ -170,6 +171,7 @@ export namespace Components {
           * Returns the current spatial reference description. (Exposes private variable `spatialRef` for testing.)
          */
         "getSpatialRef": () => Promise<ISpatialRefRepresentation>;
+        "locked": boolean;
         /**
           * List of service names the spatial reference should apply to
          */
@@ -345,7 +347,6 @@ declare namespace LocalJSX {
           * Contains the public model for this component.
          */
         "model"?: any;
-        "onJsonEditorSaved"?: (event: CustomEvent<any>) => void;
         /**
           * Contains the original source item json as it was when the component was created.
          */
@@ -475,6 +476,7 @@ declare namespace LocalJSX {
         "value"?: IResourceItem;
     }
     interface SolutionSpatialRef {
+        "locked"?: boolean;
         /**
           * List of service names the spatial reference should apply to
          */
