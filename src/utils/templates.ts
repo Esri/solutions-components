@@ -44,15 +44,46 @@ export function getModels(templates: any[]): Promise<any> {
         dataOriginValue: JSON.stringify(t.data),
         propsModel: monaco.editor.createModel(JSON.stringify(t.properties, null, '\t'), "json"),
         propsOriginValue: JSON.stringify(t.properties),
+        propsDiffOriginValue: JSON.stringify(t.properties),
         state: undefined,
         isEditing: false,
         itemId: t.itemId,
         name: t.item?.title || t.item?.name,
-        itemOriginValue: JSON.stringify(t.item)
+        itemOriginValue: JSON.stringify(t.item),
+        spatialReference: t.properties?.service?.spatialReference
       };
     }
   });
   return models;
+}
+
+export function getFeatureServices(
+  templates: any[]
+): any[] {
+  return templates.reduce((prev, cur) => {
+    const name: string = cur.item.title || cur.item.name;
+    if (cur.type === "Feature Service" &&
+      cur.item.typeKeywords.indexOf("View Service") < 0 &&
+      prev.indexOf(name) < 0
+    ) {
+      prev.push(name)
+    }
+    return prev;
+  }, []);
+}
+
+export function getSpatialReferenceInfo(
+  services: string[]
+): any {
+  const defaultServices: any = {};
+  services.forEach(service => {
+    defaultServices[service] = true;
+  });
+  return {
+    enabled: false,
+    services: defaultServices,
+    spatialReference: undefined
+  }
 }
 
 function _getItemFromTemplate(

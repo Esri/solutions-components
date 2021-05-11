@@ -27,7 +27,7 @@
 
  import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
  import state from '../../utils/editStore';
- import { getModels } from '../../utils/templates';
+ import { getModels, getFeatureServices } from '../../utils/templates';
  
  @Component({
    tag: 'store-manager',
@@ -92,6 +92,7 @@
            newValue !== mutation.oldValue && newValue !== "") {
            const v = JSON.parse(newValue);
            state.models = getModels(Array.isArray(v) ? v : [v]);
+           state.featureServices = getFeatureServices(Array.isArray(v) ? v : [v])
            this.stateLoaded.emit(state);
            return true;
          }
