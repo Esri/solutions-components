@@ -35,6 +35,7 @@
 
 import { Component, Element, Host, h, Listen, Prop } from '@stencil/core';
 import state from '../../utils/editStore';
+import { getProp } from '../../utils/common';
 
 @Component({
   tag: 'json-editor',
@@ -593,20 +594,31 @@ export class JsonEditor {
     return tab ? tab.active : true;
   }
 
+  /**
+   * When the json-editor is embedded within a solition-item component we will have two tabs
+   * with the json editor. One for the data section of the item and one for the props section.
+   * This provides a way to check what one we are working with.
+   *
+   * @protected
+   */
   _isData(): boolean {
     return this.instanceid === "data"
   }
 
+  /**
+   * When the json-editor is embedded within a solition-item component it needs to be aware
+   * if the spatial reference control has modified the data.
+   * Edits from the spatial reference control do not add to the undo/redo stack and are not removed on reset as
+   * they are only controlled via the spatial reference control.
+   * This allows us to use the true original value or the one that has been modified by the spatial ref control
+   * when using the diff editor or resetting.
+   *
+   * @protected
+   */
   _getOriginalValue(): string{
-    let o;
-    const serviceName: string = state.models[this.value].name;
-    if (state.spatialReferenceInfo["services"] && 
-      Object.keys(state.spatialReferenceInfo["services"]).indexOf(serviceName) > -1 &&
-      state.spatialReferenceInfo["services"][serviceName] && state.spatialReferenceInfo["enabled"] && !this._isData()) {
-        o = state.models[this.value].propsDiffOriginValue;
-    } else {
-      o = this.original;
-    }
-    return o;
+    const m: any = state.models[this.value];
+    const serviceActive = getProp(state, `spatialReferenceInfo.services.${m?.name}`);
+    const srEnabled = getProp(state, 'spatialReferenceInfo.enabled');
+    return (serviceActive && srEnabled && !this._isData()) ? m.propsDiffOriginValue : this.original;
   }
 }

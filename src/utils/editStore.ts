@@ -32,14 +32,4 @@ onChange('models', () => {
   dispatchEvent(modelsChangedEvent);
 });
 
-const spatialReferenceChangedEvent = new CustomEvent("spatialReferenceChanged", {
-  bubbles: true,
-  cancelable: false,
-  composed: true
-});
-
-onChange('spatialReferenceInfo', () => {
-  dispatchEvent(spatialReferenceChangedEvent);
-});
-
 export default state;

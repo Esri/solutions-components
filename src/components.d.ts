@@ -171,6 +171,9 @@ export namespace Components {
           * Returns the current spatial reference description. (Exposes private variable `spatialRef` for testing.)
          */
         "getSpatialRef": () => Promise<ISpatialRefRepresentation>;
+        /**
+          * When true, all but the main switch are disabled to prevent interaction.
+         */
         "locked": boolean;
         /**
           * List of service names the spatial reference should apply to
@@ -476,6 +479,9 @@ declare namespace LocalJSX {
         "value"?: IResourceItem;
     }
     interface SolutionSpatialRef {
+        /**
+          * When true, all but the main switch are disabled to prevent interaction.
+         */
         "locked"?: boolean;
         /**
           * List of service names the spatial reference should apply to

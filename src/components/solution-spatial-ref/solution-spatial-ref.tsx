@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Listen, Method, Prop, State, Watch, VNode } from '@stencil/core';
+import { Component, Element, h, Host, Method, Prop, State, Watch, VNode } from '@stencil/core';
 import '@esri/calcite-components';
 import { IWkidDescription, wkids } from './spatialreferences';
 import state from '../../utils/editStore';
+import { getProp } from '../../utils/common';
 
 export interface ISpatialRefRepresentation {
   display: string;
@@ -47,9 +48,9 @@ export class SolutionSpatialRef {
   //
   //--------------------------------------------------------------------------
 
-  // /**
-  //  * When true, all but the main switch are disabled to prevent interaction.
-  //  */
+  /**
+  * When true, all but the main switch are disabled to prevent interaction.
+  */
   @Prop({ mutable: true, reflect: true }) locked: boolean = true;
 
   /**
@@ -111,7 +112,7 @@ export class SolutionSpatialRef {
             </label>
           </calcite-label>
           <label class="spatial-ref-current">{this.spatialRef.display}</label>
-          {this._getFeatureServices()}
+          {this._getFeatureServices(this.services)}
         </div>
       </Host>
     );
@@ -128,6 +129,9 @@ export class SolutionSpatialRef {
    */
   @State() private spatialRef: ISpatialRefRepresentation;
 
+  /**
+   * Used to show the enabled/disabled state of the feature services
+   */
   @State() private serviceDisplay: any = undefined;
 
   /**
@@ -140,11 +144,6 @@ export class SolutionSpatialRef {
   //  Event Listeners
   //
   //--------------------------------------------------------------------------
-
-  @Listen("spatialReferenceChanged", { target: 'window' })
-  _spatialReferenceChanged(): void {
-    this._updateEditModels();
-  }
 
   //--------------------------------------------------------------------------
   //
@@ -266,11 +265,17 @@ export class SolutionSpatialRef {
     }
   }
 
-  private _getFeatureServices(): VNode {
-    return this.services && this.services.length > 0 ? (
+  /**
+   * Create a switch control for each of the services
+   *
+   * @param services List of feature services
+   * @returns a node to control each feature service
+   */
+  private _getFeatureServices(services: string[]): VNode {
+    return services && services.length > 0 ? (
       <div>
         <label class="spatial-ref-item-title">{this.translations.featureServicesHeading}</label>
-        {this.services.map(name => (
+        {services.map(name => (
           <label class="switch-label">
             <calcite-switch
               disabled={this.locked}
@@ -285,40 +290,72 @@ export class SolutionSpatialRef {
     ) : (null);
   }
 
+  /**
+   * Updates the enabled and spatialReference prop in spatialReferenceInfo.
+   */
   private _updateStore(): void {
     state.spatialReferenceInfo["enabled"] = !this.locked;
     state.spatialReferenceInfo["spatialReference"] = this.spatialRef;
     this._updateEditModels();
   }
 
+  /**
+   * Updates the enabled/disabled state of the service in spatialReferenceInfo.
+   */
   private _updateEnabledServices(event, name): void {
     state.spatialReferenceInfo["services"][name] = event.detail.switched;
-    this._updateEditModels();
+    this._updateEditModels(name);
   }
 
-  private _updateEditModels(): void {
-    if (state.models) {
-      Object.keys(state.models).forEach(k => {
-        const updateModel = state.models[k].propsModel.getValue();
-        // need to update the propsModel
+  /**
+   * When the spatial reference param is enabled/disabled..we need to handle all feature services that
+   * are listed in state.services.
+   * When an individual service is enabled/disabled we only need to handle it.
+   *
+   * @param services List of feature services
+   */
+  private _updateEditModels(name?: any): void {
+    Object.keys(state.models || {}).forEach(k => {
+      const m: any = state.models[k];
+      const nameMatch: boolean = name && name === m.name;
+      const serviceMatch: boolean = name === undefined && 
+        Object.keys(state.spatialReferenceInfo["services"]).indexOf(m.name) > -1;
+      if (nameMatch || serviceMatch) {
+        const updateModel = m.propsModel.getValue();
         if (updateModel) {
-          const data = this._updateData(updateModel, k);
-          state.models[k].propsModel.setValue(JSON.stringify(data, null, '\t'));
+          const active = getProp(state, `spatialReferenceInfo.services.${m?.name}`) || false;
+          const enabled = getProp(state, 'spatialReferenceInfo.enabled') || false;
 
-          const data2 = this._updateData(state.models[k].propsDiffOriginValue, k);
-          state.models[k].propsDiffOriginValue = JSON.stringify(data2);
+          m.propsModel.setValue(JSON.stringify(
+            this._updateData(updateModel, enabled, active, m.spatialReference), null, '\t')
+          );
+          m.propsDiffOriginValue = JSON.stringify(
+            this._updateData(m.propsDiffOriginValue, enabled, active, m.spatialReference)
+          );
         }
-      });
-    }
+      }
+    });
   }
 
-  private _updateData(updateModel, k): any {
-    const srInfo: any = state.spatialReferenceInfo;
-    const mName: string = state.models[k].name;
+  /**
+   * Updates the services spatial reference by setting the wkid param value and removing latestWkid when enabled and active
+   * OR
+   * Sets the spatial reference back to the original spatialReference when disabled
+   *
+   * @param updateModel The model to update
+   * @param enabled Is the param enabled
+   * @param active Is the service enabled
+   * @param spatialReference The original source spatial reference
+   */
+  private _updateData(
+    updateModel: any,
+    enabled: boolean,
+    active: boolean,
+    spatialReference: any
+  ): any {
     const data = typeof (updateModel) === "string" ? JSON.parse(updateModel) : updateModel;
-
-    if (Object.keys(srInfo.services).indexOf(mName) > -1 && srInfo.enabled && srInfo.services[mName]) {
-      const wkid = state.models[k].spatialReference.wkid;
+    if (enabled && active) {
+      const wkid = spatialReference.wkid;
       if (wkid) {
         data.service.spatialReference.wkid = `{{params.wkid||${wkid}}}`;
         if (data.service.spatialReference.latestWkid) {
@@ -326,10 +363,8 @@ export class SolutionSpatialRef {
         }
       }
     } else if (data.service?.spatialReference) {
-      // This needs to have a better check...
-      data.service.spatialReference = state.models[k].spatialReference;
-    }
-    
+      data.service.spatialReference = spatialReference;
+    } 
     return data;
   }
 }
