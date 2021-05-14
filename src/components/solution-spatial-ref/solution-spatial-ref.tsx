@@ -87,10 +87,11 @@ export class SolutionSpatialRef {
   }
 
   async componentWillRender(): Promise<any> {
-    if (this.serviceDisplay === undefined && state.spatialReferenceInfo["services"]) {
-      this.serviceDisplay = state.spatialReferenceInfo["services"];
-    }
     this._content = await this._getTreeContent();
+    if (this._autoSelect) {
+      this._selectFirstChild(false);
+      this._autoSelect = false;
+    }
   }
 
   render(): VNode {
@@ -113,7 +114,7 @@ export class SolutionSpatialRef {
                 placeholder = {this.translations.spatialReferencePlaceholder}
                 disabled={this.locked}
                 onCalciteInputInput={(evt) => this._searchSpatialReferences(evt)}
-                onKeyDown={(evt) => this._selectFirst(evt)}
+                onKeyDown={(evt) => this._inputKeyDown(evt)}
               ></calcite-input>
             </label>
           </calcite-label>
@@ -138,11 +139,6 @@ export class SolutionSpatialRef {
    * Internal representation of component's value for display purposes.
    */
   @State() private spatialRef: ISpatialRefRepresentation;
-
-  /**
-   * Used to show the enabled/disabled state of the feature services
-   */
-  @State() private serviceDisplay: any = undefined;
 
   @State() private _srSearchText: string;
 
@@ -286,7 +282,7 @@ export class SolutionSpatialRef {
             <calcite-switch
               disabled={this.locked}
               scale="m" 
-              switched={this.serviceDisplay[name]}
+              switched={state.spatialReferenceInfo["services"][name]}
               class="spatial-ref-item-switch"
               onCalciteSwitchChange={(event) => this._updateEnabledServices(event, name)}
             ></calcite-switch>{name}
@@ -374,33 +370,52 @@ export class SolutionSpatialRef {
     return data;
   }
 
-  private _selectFirst(
+  private _inputKeyDown(
     event: KeyboardEvent
-  ) {
-    this._autoSelect = event.key === "Enter" || this._srSearchText === "";
+  ): void {
+    if (event.key === "Enter") {
+      this._selectFirstChild(true);
+    }
+  }
+
+  private _selectFirstChild(
+    autoFocus: boolean
+  ): void {
+    const wkidContainer = document.getElementById("solution-wkid-container");
+    if (wkidContainer && wkidContainer.firstChild) {
+      const firstChild = wkidContainer.firstChild as HTMLCalciteTreeItemElement;
+      firstChild.selected = true;
+      this._setSpatialRef(firstChild.id);
+      if (autoFocus) {
+        firstChild.focus();
+      }
+    }
   }
 
   private _searchSpatialReferences(
     event: CustomEvent
-  ) {
+  ): void {
     this._srSearchText = event.detail.value;
   }
 
   private _getTreeContent(): Promise<VNode> {
     return new Promise(resolve => {
+      const id: string = "solution-wkid-container";
+      const containerClass: string = "spatial-ref-container";
       if (this._srSearchText && this._srSearchText !== "" && this._srSearchText.length > 1) {
         const regEx: RegExp = new RegExp(`${this._srSearchText}`, 'gi');
         const matches = Object.keys(wkids).filter(wkid => {
           return regEx.test(wkid.toString()) || regEx.test(wkids[wkid].label);
         });
         resolve(matches.length > 0 ? (
-          <div class="spatial-ref-container">
-            {matches.map((wkid, i) => this._getTreeItem(wkid, this._autoSelect && i === 0))}
+          <div class={containerClass} id={id}>
+            {matches.map((wkid) => this._getTreeItem(wkid, false))}
           </div>
         ) : (null));
       } else {
+        this._autoSelect = true;
         resolve((
-          <div class="spatial-ref-container">
+          <div class={containerClass} id={id}>
             {this._getTreeItem(this.defaultWkid.toString(), true)}
           </div>
         ));
@@ -414,9 +429,10 @@ export class SolutionSpatialRef {
   ): VNode {
     return (
       <calcite-tree-item
-        onClick={() => this._setSpatialRef(wkid)}
+        onCalciteTreeItemSelect={() => this._setSpatialRef(wkid)}
         selected={selected}
-        aria-selected={selected} 
+        aria-selected={selected}
+        id={wkid}
       >
         <div>{`${wkids[wkid].label} (${wkid})`}</div>
       </calcite-tree-item>
