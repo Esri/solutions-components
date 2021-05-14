@@ -48,6 +48,8 @@ export class SolutionSpatialRef {
   //
   //--------------------------------------------------------------------------
 
+  @Prop({ mutable: true, reflect: true }) defaultWkid: number = 102100;
+
   /**
   * When true, all but the main switch are disabled to prevent interaction.
   */
@@ -64,6 +66,7 @@ export class SolutionSpatialRef {
   @Prop({ mutable: true, reflect: true }) value: string = null;
   @Watch("value") valueChanged(newValue: string): void {
     this.spatialRef = this._createSpatialRefDisplay(newValue);
+    this._updateStore();
   }
 
   /**
@@ -80,12 +83,14 @@ export class SolutionSpatialRef {
   constructor() {
     this.spatialRef = this._createSpatialRefDisplay(this.value);
     this.locked = true;
+    this._autoSelect = false;
   }
 
-  componentWillRender(): void {
+  async componentWillRender(): Promise<any> {
     if (this.serviceDisplay === undefined && state.spatialReferenceInfo["services"]) {
       this.serviceDisplay = state.spatialReferenceInfo["services"];
     }
+    this._content = await this._getTreeContent();
   }
 
   render(): VNode {
@@ -102,16 +107,21 @@ export class SolutionSpatialRef {
         </label>
         <div id="spatialRefDefn" class="spatial-ref-switch-title">
           <calcite-label>
-            {this.translations.defaultSpatialRef}
+            {this.translations.spatialReferenceInfo}
             <label class="spatial-ref-default">
-              <calcite-input 
+              <calcite-input
+                placeholder = {this.translations.spatialReferencePlaceholder}
                 disabled={this.locked}
-                ref={(el) => { this.spatialRefInput = el}} 
-                onCalciteInputBlur={() => this._updateSpatialRef()}
+                onCalciteInputInput={(evt) => this._searchSpatialReferences(evt)}
+                onKeyDown={(evt) => this._selectFirst(evt)}
               ></calcite-input>
             </label>
           </calcite-label>
-          <label class="spatial-ref-current">{this.spatialRef.display}</label>
+          <div class={this.locked ? 'disabled-div' : ''}>
+            <calcite-tree id="calcite-sr-tree" slot="children">
+              {this._content}
+            </calcite-tree>
+          </div>
           {this._getFeatureServices(this.services)}
         </div>
       </Host>
@@ -134,10 +144,10 @@ export class SolutionSpatialRef {
    */
   @State() private serviceDisplay: any = undefined;
 
-  /**
-   * Handle to the spatial reference input box.
-   */
-  private spatialRefInput: HTMLCalciteInputElement;
+  @State() private _srSearchText: string;
+
+  private _autoSelect: boolean;
+  private _content: any = (null);
 
   //--------------------------------------------------------------------------
   //
@@ -207,9 +217,9 @@ export class SolutionSpatialRef {
 
     if (!value) {
       spatialRef = {
-        display: this._wkidToDisplay(102100),
+        display: this._wkidToDisplay(this.defaultWkid),
         usingWkid: true,
-        wkid: 102100,
+        wkid: this.defaultWkid,
         wkt: ""
       }
     } else {
@@ -242,12 +252,8 @@ export class SolutionSpatialRef {
     this._updateStore();
   };
 
-  /**
-   * Updates the spatial reference value and display using the current value of the spatial reference input field.
-   */
-  private _updateSpatialRef(): void {
-    this.value = this.spatialRefInput.value.toString();
-    this.spatialRef = this._createSpatialRefDisplay(this.spatialRefInput.value);
+  private _setSpatialRef(wkid: string): void {
+    this.value = wkid;
   }
 
   /**
@@ -355,7 +361,7 @@ export class SolutionSpatialRef {
   ): any {
     const data = typeof (updateModel) === "string" ? JSON.parse(updateModel) : updateModel;
     if (enabled && active) {
-      const wkid = spatialReference.wkid;
+      const wkid = this.spatialRef.wkid;
       if (wkid) {
         data.service.spatialReference.wkid = `{{params.wkid||${wkid}}}`;
         if (data.service.spatialReference.latestWkid) {
@@ -366,5 +372,54 @@ export class SolutionSpatialRef {
       data.service.spatialReference = spatialReference;
     } 
     return data;
+  }
+
+  private _selectFirst(
+    event: KeyboardEvent
+  ) {
+    this._autoSelect = event.key === "Enter" || this._srSearchText === "";
+  }
+
+  private _searchSpatialReferences(
+    event: CustomEvent
+  ) {
+    this._srSearchText = event.detail.value;
+  }
+
+  private _getTreeContent(): Promise<VNode> {
+    return new Promise(resolve => {
+      if (this._srSearchText && this._srSearchText !== "" && this._srSearchText.length > 1) {
+        const regEx: RegExp = new RegExp(`${this._srSearchText}`, 'gi');
+        const matches = Object.keys(wkids).filter(wkid => {
+          return regEx.test(wkid.toString()) || regEx.test(wkids[wkid].label);
+        });
+        resolve(matches.length > 0 ? (
+          <div class="spatial-ref-container">
+            {matches.map((wkid, i) => this._getTreeItem(wkid, this._autoSelect && i === 0))}
+          </div>
+        ) : (null));
+      } else {
+        resolve((
+          <div class="spatial-ref-container">
+            {this._getTreeItem(this.defaultWkid.toString(), true)}
+          </div>
+        ));
+      }
+    });
+  }
+
+  private _getTreeItem(
+    wkid: string,
+    selected: boolean
+  ): VNode {
+    return (
+      <calcite-tree-item
+        onClick={() => this._setSpatialRef(wkid)}
+        selected={selected}
+        aria-selected={selected} 
+      >
+        <div>{`${wkids[wkid].label} (${wkid})`}</div>
+      </calcite-tree-item>
+    )
   }
 }

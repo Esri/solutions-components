@@ -102,6 +102,8 @@ graph TD;
   solution-spatial-ref --> calcite-switch
   solution-spatial-ref --> calcite-label
   solution-spatial-ref --> calcite-input
+  solution-spatial-ref --> calcite-tree
+  solution-spatial-ref --> calcite-tree-item
   style solution-configuration fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

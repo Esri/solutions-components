@@ -17,6 +17,7 @@
 .spatial-ref-switch {
   margin-right: 8px;
 }
+
 html[dir="rtl"] .spatial-ref-switch {
   margin-left: 8px;
   margin-right: 0;
@@ -40,10 +41,6 @@ html[dir="rtl"] .spatial-ref-switch-title {
   margin: 0;
 }
 
-.spatial-ref-current {
-  font-size: 12px;
-}
-
 .spatial-ref-item-title {
   margin-bottom: 8px;
   font-size: 14px;
@@ -52,6 +49,7 @@ html[dir="rtl"] .spatial-ref-switch-title {
 .spatial-ref-item-switch {
   margin-right: 8px;
 }
+
 html[dir="rtl"] .spatial-ref-item-switch {
   margin-left: 8px;
   margin-right: 0;
@@ -60,4 +58,15 @@ html[dir="rtl"] .spatial-ref-item-switch {
 .switch-label {
   margin: 4px;
   font-size: 14px;
+}
+
+.disabled-div {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.spatial-ref-container {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
 }

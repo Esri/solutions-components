@@ -31,7 +31,6 @@ define({
         "cancelEdits": "Cancel Edits",
         "credits": "Credits",
         "dataTab": "Data",
-        "defaultSpatialRef": "Default Spatial Reference",
         "definitionTab": "Definition", // for tab to edit definition of an item or group
         "description": "Description",
         "diff": "Toggle Diff Editor",
@@ -50,6 +49,9 @@ define({
         "solVariables": "Solution Variables",
         "spatialReferenceTab": "Spatial Reference", // for tab to edit the spatial reference of an item
         "specifyParam": "Spatial Reference Parameter",
+        "spatialReferencePlaceholder": "Search for spatial reference using name or WKID",
+        "spatialReferenceInfo": "Select the spatial reference of the feature layers deployed with the solution.",
+        "learnMore": "Learn more",
         "startEditing": "Start Editing",
         "tags": "Tags",
         "termsOfUse": "Terms of Use",
