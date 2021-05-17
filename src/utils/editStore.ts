@@ -16,10 +16,11 @@
 
 import { createStore } from "@stencil/store";
 
-const { state, onChange } = createStore({
+const { state, onChange, dispose } = createStore({
   models: {},
   featureServices: [],
-  spatialReferenceInfo: {}
+  spatialReferenceInfo: {},
+  dispose: () => dispose()
 });
 
 const modelsChangedEvent = new CustomEvent("modelsChanged", {

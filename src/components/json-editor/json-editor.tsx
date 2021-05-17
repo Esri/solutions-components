@@ -534,6 +534,7 @@ export class JsonEditor {
       if (data.state) {
         this._editor.restoreViewState(data.state);
       }
+      this._setDiffModel();
       this._setEditorFocus();
     } else {
       this._initEditor();
@@ -563,10 +564,12 @@ export class JsonEditor {
    * @protected
    */
   _setDiffModel(): void {
-    this._diffEditor.setModel({
-      original: monaco.editor.createModel(JSON.stringify(JSON.parse(this.original), null, '\t'), "json"),
-      modified: this._editor.getModel()
-    });
+    if (this._diffEditor) {
+      this._diffEditor.setModel({
+        original: monaco.editor.createModel(JSON.stringify(JSON.parse(this.original), null, '\t'), "json"),
+        modified: this._editor.getModel()
+      });
+    }
   }
 
   /**

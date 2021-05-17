@@ -22,6 +22,7 @@ import state from '../../../utils/editStore';
 
 describe('solution-spatial-ref', () => {
   beforeEach(() => {
+    state.dispose();
     state.models = {};
     state.spatialReferenceInfo = {
       services: {
@@ -40,11 +41,25 @@ describe('solution-spatial-ref', () => {
       )
     });
     expect(page.root).toEqualHtml(`
-      <solution-spatial-ref locked="">
+      <solution-spatial-ref default-wkid="102100" locked="">
         <label class="switch-label"><calcite-switch scale="m" class="spatial-ref-switch"></calcite-switch>Spatial Reference Parameter</label>
         <div id="spatialRefDefn" class="spatial-ref-switch-title">
-          <calcite-label>Default Spatial Reference<label class="spatial-ref-default"><calcite-input disabled=""></calcite-input></label></calcite-label>
-          <label class="spatial-ref-current">WGS 1984 Web Mercator Auxiliary Sphere (102100)</label>
+          <calcite-label>Select the spatial reference of the feature layers deployed with the solution.
+            <label class="spatial-ref-default">
+              <calcite-input disabled="" placeholder="Search for spatial reference using name or WKID"></calcite-input>
+            </label>
+          </calcite-label>
+          <div class="disabled-div">
+            <calcite-tree id="calcite-sr-tree" slot="children">
+              <div class="spatial-ref-container" id="solution-wkid-container">
+                <calcite-tree-item aria-selected="" id="102100" selected="">
+                  <div>
+                    WGS 1984 Web Mercator Auxiliary Sphere (102100)
+                  </div>
+                </calcite-tree-item>
+              </div>
+            </calcite-tree>
+          </div>
           <div>
             <label class="spatial-ref-item-title">Feature Services</label>
             <label class="switch-label"><calcite-switch disabled="" scale="m" switched="" class="spatial-ref-item-switch"></calcite-switch>Feature Service 1</label>

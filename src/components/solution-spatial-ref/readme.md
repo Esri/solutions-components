@@ -7,12 +7,13 @@
 
 ## Properties
 
-| Property       | Attribute      | Description                                                             | Type       | Default |
-| -------------- | -------------- | ----------------------------------------------------------------------- | ---------- | ------- |
-| `locked`       | `locked`       | When true, all but the main switch are disabled to prevent interaction. | `boolean`  | `true`  |
-| `services`     | --             | List of service names the spatial reference should apply to             | `string[]` | `[]`    |
-| `translations` | `translations` | Contains the translations for this component.                           | `any`      | `{}`    |
-| `value`        | `value`        | Contains the public value for this component.                           | `string`   | `null`  |
+| Property       | Attribute      | Description                                                                     | Type       | Default  |
+| -------------- | -------------- | ------------------------------------------------------------------------------- | ---------- | -------- |
+| `defaultWkid`  | `default-wkid` | The wkid that will be used as the default when no user selection has been made. | `number`   | `102100` |
+| `locked`       | `locked`       | When true, all but the main switch are disabled to prevent interaction.         | `boolean`  | `true`   |
+| `services`     | --             | List of service names the spatial reference should apply to                     | `string[]` | `[]`     |
+| `translations` | `translations` | Contains the translations for this component.                                   | `any`      | `{}`     |
+| `value`        | `value`        | Contains the public value for this component.                                   | `string`   | `null`   |
 
 
 ## Methods
@@ -62,6 +63,8 @@ Type: `Promise<string>`
 - calcite-switch
 - calcite-label
 - calcite-input
+- calcite-tree
+- calcite-tree-item
 
 ### Graph
 ```mermaid
@@ -69,8 +72,11 @@ graph TD;
   solution-spatial-ref --> calcite-switch
   solution-spatial-ref --> calcite-label
   solution-spatial-ref --> calcite-input
+  solution-spatial-ref --> calcite-tree
+  solution-spatial-ref --> calcite-tree-item
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
+  calcite-tree-item --> calcite-icon
   solution-configuration --> solution-spatial-ref
   style solution-spatial-ref fill:#f9f,stroke:#333,stroke-width:4px
 ```

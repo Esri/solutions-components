@@ -168,6 +168,10 @@ export namespace Components {
          */
         "createSpatialRefDisplay": (value: string) => Promise<ISpatialRefRepresentation>;
         /**
+          * The wkid that will be used as the default when no user selection has been made.
+         */
+        "defaultWkid": number;
+        /**
           * Returns the current spatial reference description. (Exposes private variable `spatialRef` for testing.)
          */
         "getSpatialRef": () => Promise<ISpatialRefRepresentation>;
@@ -479,6 +483,10 @@ declare namespace LocalJSX {
         "value"?: IResourceItem;
     }
     interface SolutionSpatialRef {
+        /**
+          * The wkid that will be used as the default when no user selection has been made.
+         */
+        "defaultWkid"?: number;
         /**
           * When true, all but the main switch are disabled to prevent interaction.
          */

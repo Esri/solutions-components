@@ -18,7 +18,7 @@ import { Component, Element, h, Host, Method, Prop, State, Watch, VNode } from '
 import '@esri/calcite-components';
 import { IWkidDescription, wkids } from './spatialreferences';
 import state from '../../utils/editStore';
-import { getProp } from '../../utils/common';
+import { getProp, nodeListToArray } from '../../utils/common';
 
 export interface ISpatialRefRepresentation {
   display: string;
@@ -49,6 +49,11 @@ export class SolutionSpatialRef {
   //--------------------------------------------------------------------------
 
   /**
+  * The wkid that will be used as the default when no user selection has been made.
+  */
+  @Prop({ mutable: true, reflect: true }) defaultWkid: number = 102100;
+
+  /**
   * When true, all but the main switch are disabled to prevent interaction.
   */
   @Prop({ mutable: true, reflect: true }) locked: boolean = true;
@@ -64,6 +69,7 @@ export class SolutionSpatialRef {
   @Prop({ mutable: true, reflect: true }) value: string = null;
   @Watch("value") valueChanged(newValue: string): void {
     this.spatialRef = this._createSpatialRefDisplay(newValue);
+    this._updateStore();
   }
 
   /**
@@ -82,12 +88,6 @@ export class SolutionSpatialRef {
     this.locked = true;
   }
 
-  componentWillRender(): void {
-    if (this.serviceDisplay === undefined && state.spatialReferenceInfo["services"]) {
-      this.serviceDisplay = state.spatialReferenceInfo["services"];
-    }
-  }
-
   render(): VNode {
     return (
       <Host>
@@ -102,16 +102,21 @@ export class SolutionSpatialRef {
         </label>
         <div id="spatialRefDefn" class="spatial-ref-switch-title">
           <calcite-label>
-            {this.translations.defaultSpatialRef}
+            {this.translations.spatialReferenceInfo}
             <label class="spatial-ref-default">
-              <calcite-input 
+              <calcite-input
+                placeholder = {this.translations.spatialReferencePlaceholder}
                 disabled={this.locked}
-                ref={(el) => { this.spatialRefInput = el}} 
-                onCalciteInputBlur={() => this._updateSpatialRef()}
+                onCalciteInputInput={(evt) => this._searchSpatialReferences(evt)}
+                onKeyDown={(evt) => this._inputKeyDown(evt)}
               ></calcite-input>
             </label>
           </calcite-label>
-          <label class="spatial-ref-current">{this.spatialRef.display}</label>
+          <div class={this.locked ? 'disabled-div' : ''}>
+            <calcite-tree id="calcite-sr-tree" slot="children">
+              {this._getTreeContent()}
+            </calcite-tree>
+          </div>
           {this._getFeatureServices(this.services)}
         </div>
       </Host>
@@ -130,14 +135,9 @@ export class SolutionSpatialRef {
   @State() private spatialRef: ISpatialRefRepresentation;
 
   /**
-   * Used to show the enabled/disabled state of the feature services
+   * Current text that is being used to filter the list of spatial references.
    */
-  @State() private serviceDisplay: any = undefined;
-
-  /**
-   * Handle to the spatial reference input box.
-   */
-  private spatialRefInput: HTMLCalciteInputElement;
+  @State() private _srSearchText: string;
 
   //--------------------------------------------------------------------------
   //
@@ -207,9 +207,9 @@ export class SolutionSpatialRef {
 
     if (!value) {
       spatialRef = {
-        display: this._wkidToDisplay(102100),
+        display: this._wkidToDisplay(this.defaultWkid),
         usingWkid: true,
-        wkid: 102100,
+        wkid: this.defaultWkid,
         wkt: ""
       }
     } else {
@@ -243,11 +243,12 @@ export class SolutionSpatialRef {
   };
 
   /**
-   * Updates the spatial reference value and display using the current value of the spatial reference input field.
+   * Stores the wkid as the components value.
    */
-  private _updateSpatialRef(): void {
-    this.value = this.spatialRefInput.value.toString();
-    this.spatialRef = this._createSpatialRefDisplay(this.spatialRefInput.value);
+  private _setSpatialRef(wkid: string): void {
+    if (this.value !== wkid) {
+      this.value = wkid;
+    }
   }
 
   /**
@@ -280,7 +281,7 @@ export class SolutionSpatialRef {
             <calcite-switch
               disabled={this.locked}
               scale="m" 
-              switched={this.serviceDisplay[name]}
+              switched={state.spatialReferenceInfo["services"][name]}
               class="spatial-ref-item-switch"
               onCalciteSwitchChange={(event) => this._updateEnabledServices(event, name)}
             ></calcite-switch>{name}
@@ -355,7 +356,7 @@ export class SolutionSpatialRef {
   ): any {
     const data = typeof (updateModel) === "string" ? JSON.parse(updateModel) : updateModel;
     if (enabled && active) {
-      const wkid = spatialReference.wkid;
+      const wkid = this.spatialRef.wkid;
       if (wkid) {
         data.service.spatialReference.wkid = `{{params.wkid||${wkid}}}`;
         if (data.service.spatialReference.latestWkid) {
@@ -366,5 +367,119 @@ export class SolutionSpatialRef {
       data.service.spatialReference = spatialReference;
     } 
     return data;
+  }
+
+  /**
+   * Select the first child on Enter key click
+   * OR 
+   * Clear any selection while user is entering values and use the default wkid
+   *
+   * @param event The keyboard event
+   */
+  private _inputKeyDown(
+    event: KeyboardEvent
+  ): void {
+    if (event.key === "Enter") {
+      this._selectFirstChild(true);
+    } else {
+      if (this._srSearchText?.length > 1) {
+        this._clearSelection();
+        this._setSpatialRef(this.defaultWkid.toString());
+      }
+    }
+  }
+
+  /**
+   * Clear any selected items in the elements tree.
+   *
+   */
+  private _clearSelection(): void {
+    const selectedItems = nodeListToArray(
+      this.el.querySelectorAll("calcite-tree-item[selected]")
+    ) as HTMLCalciteTreeItemElement[];
+    selectedItems.forEach((treeItem) => {
+      treeItem.selected = false;
+    });
+  }
+
+  /**
+   * Select the first child from the tree.
+   * 
+   * @param autoFocus Boolean to indicate if focus should also be shifted to the first child.
+   *
+   */
+  private _selectFirstChild(
+    autoFocus: boolean
+  ): void {
+    const wkidContainer = document.getElementById("solution-wkid-container");
+    if (wkidContainer && wkidContainer.firstChild) {
+      const firstChild = wkidContainer.firstChild as HTMLCalciteTreeItemElement;
+      firstChild.selected = true;
+      this._setSpatialRef(firstChild.id);
+      if (autoFocus) {
+        firstChild.focus();
+      }
+    }
+  }
+
+  /**
+   * Set the search text State and cause render.
+   * 
+   * @param event the event to get the value from
+   *
+   */
+  private _searchSpatialReferences(
+    event: CustomEvent
+  ): void {
+    this._srSearchText = event.detail.value;
+  }
+
+  /**
+   * Get the tree items for the current spatial reference search
+   * 
+   */
+  private _getTreeContent(): VNode {
+      const id: string = "solution-wkid-container";
+      const containerClass: string = "spatial-ref-container";
+      if (this._srSearchText && this._srSearchText !== "" && this._srSearchText.length > 1) {
+        const regEx: RegExp = new RegExp(`${this._srSearchText}`, 'gi');
+        const matches = Object.keys(wkids).filter(wkid => {
+          return regEx.test(wkid.toString()) || regEx.test(wkids[wkid].label);
+        });
+        return matches.length > 0 ? (
+          <div class={containerClass} id={id}>
+            {matches.map((wkid) => this._getTreeItem(wkid, false))}
+          </div>
+        ) : (null);
+      } else {
+        return (
+          <div class={containerClass} id={id}>
+            {this._getTreeItem(this.defaultWkid.toString(), true)}
+          </div>
+        );
+      }
+  }
+
+  /**
+   * Get the individual spatial reference tree item
+   * 
+   * @param wkid The wkid for the spatial reference that will be displayed.
+   * @param selected Should the item be selected by default.
+   *
+   */
+  private _getTreeItem(
+    wkid: string,
+    selected: boolean
+  ): VNode {
+    return (
+      <calcite-tree-item
+        onCalciteTreeItemSelect={() => this._setSpatialRef(wkid)}
+        selected={selected}
+        aria-selected={selected}
+        id={wkid}
+      >
+        <div>{`${wkids[wkid].label} (${wkid})`}</div>
+      </calcite-tree-item>
+    )
   }
 }
