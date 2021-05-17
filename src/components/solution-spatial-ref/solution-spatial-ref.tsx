@@ -48,6 +48,9 @@ export class SolutionSpatialRef {
   //
   //--------------------------------------------------------------------------
 
+  /**
+  * The wkid that will be used as the default when no user selection has been made.
+  */
   @Prop({ mutable: true, reflect: true }) defaultWkid: number = 102100;
 
   /**
@@ -131,6 +134,9 @@ export class SolutionSpatialRef {
    */
   @State() private spatialRef: ISpatialRefRepresentation;
 
+  /**
+   * Current text that is being used to filter the list of spatial references.
+   */
   @State() private _srSearchText: string;
 
   //--------------------------------------------------------------------------
@@ -236,8 +242,13 @@ export class SolutionSpatialRef {
     this._updateStore();
   };
 
+  /**
+   * Stores the wkid as the components value.
+   */
   private _setSpatialRef(wkid: string): void {
-    this.value = wkid;
+    if (this.value !== wkid) {
+      this.value = wkid;
+    }
   }
 
   /**
@@ -358,19 +369,30 @@ export class SolutionSpatialRef {
     return data;
   }
 
+  /**
+   * Select the first child on Enter key click
+   * OR 
+   * Clear any selection while user is entering values and use the default wkid
+   *
+   * @param event The keyboard event
+   */
   private _inputKeyDown(
     event: KeyboardEvent
   ): void {
     if (event.key === "Enter") {
       this._selectFirstChild(true);
     } else {
-      if (this._srSearchText.length > 1) {
+      if (this._srSearchText?.length > 1) {
         this._clearSelection();
         this._setSpatialRef(this.defaultWkid.toString());
       }
     }
   }
 
+  /**
+   * Clear any selected items in the elements tree.
+   *
+   */
   private _clearSelection(): void {
     const selectedItems = nodeListToArray(
       this.el.querySelectorAll("calcite-tree-item[selected]")
@@ -380,6 +402,12 @@ export class SolutionSpatialRef {
     });
   }
 
+  /**
+   * Select the first child from the tree.
+   * 
+   * @param autoFocus Boolean to indicate if focus should also be shifted to the first child.
+   *
+   */
   private _selectFirstChild(
     autoFocus: boolean
   ): void {
@@ -394,12 +422,22 @@ export class SolutionSpatialRef {
     }
   }
 
+  /**
+   * Set the search text State and cause render.
+   * 
+   * @param event the event to get the value from
+   *
+   */
   private _searchSpatialReferences(
     event: CustomEvent
   ): void {
     this._srSearchText = event.detail.value;
   }
 
+  /**
+   * Get the tree items for the current spatial reference search
+   * 
+   */
   private _getTreeContent(): VNode {
       const id: string = "solution-wkid-container";
       const containerClass: string = "spatial-ref-container";
@@ -414,7 +452,6 @@ export class SolutionSpatialRef {
           </div>
         ) : (null);
       } else {
-        this._setSpatialRef(this.defaultWkid.toString())
         return (
           <div class={containerClass} id={id}>
             {this._getTreeItem(this.defaultWkid.toString(), true)}
@@ -423,6 +460,13 @@ export class SolutionSpatialRef {
       }
   }
 
+  /**
+   * Get the individual spatial reference tree item
+   * 
+   * @param wkid The wkid for the spatial reference that will be displayed.
+   * @param selected Should the item be selected by default.
+   *
+   */
   private _getTreeItem(
     wkid: string,
     selected: boolean
