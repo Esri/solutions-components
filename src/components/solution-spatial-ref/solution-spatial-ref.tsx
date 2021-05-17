@@ -18,7 +18,7 @@ import { Component, Element, h, Host, Method, Prop, State, Watch, VNode } from '
 import '@esri/calcite-components';
 import { IWkidDescription, wkids } from './spatialreferences';
 import state from '../../utils/editStore';
-import { getProp } from '../../utils/common';
+import { getProp, nodeListToArray } from '../../utils/common';
 
 export interface ISpatialRefRepresentation {
   display: string;
@@ -83,15 +83,6 @@ export class SolutionSpatialRef {
   constructor() {
     this.spatialRef = this._createSpatialRefDisplay(this.value);
     this.locked = true;
-    this._autoSelect = false;
-  }
-
-  async componentWillRender(): Promise<any> {
-    this._content = await this._getTreeContent();
-    if (this._autoSelect) {
-      this._selectFirstChild(false);
-      this._autoSelect = false;
-    }
   }
 
   render(): VNode {
@@ -120,7 +111,7 @@ export class SolutionSpatialRef {
           </calcite-label>
           <div class={this.locked ? 'disabled-div' : ''}>
             <calcite-tree id="calcite-sr-tree" slot="children">
-              {this._content}
+              {this._getTreeContent()}
             </calcite-tree>
           </div>
           {this._getFeatureServices(this.services)}
@@ -141,9 +132,6 @@ export class SolutionSpatialRef {
   @State() private spatialRef: ISpatialRefRepresentation;
 
   @State() private _srSearchText: string;
-
-  private _autoSelect: boolean;
-  private _content: any = (null);
 
   //--------------------------------------------------------------------------
   //
@@ -375,7 +363,21 @@ export class SolutionSpatialRef {
   ): void {
     if (event.key === "Enter") {
       this._selectFirstChild(true);
+    } else {
+      if (this._srSearchText.length > 1) {
+        this._clearSelection();
+        this._setSpatialRef(this.defaultWkid.toString());
+      }
     }
+  }
+
+  private _clearSelection(): void {
+    const selectedItems = nodeListToArray(
+      this.el.querySelectorAll("calcite-tree-item[selected]")
+    ) as HTMLCalciteTreeItemElement[];
+    selectedItems.forEach((treeItem) => {
+      treeItem.selected = false;
+    });
   }
 
   private _selectFirstChild(
@@ -398,8 +400,7 @@ export class SolutionSpatialRef {
     this._srSearchText = event.detail.value;
   }
 
-  private _getTreeContent(): Promise<VNode> {
-    return new Promise(resolve => {
+  private _getTreeContent(): VNode {
       const id: string = "solution-wkid-container";
       const containerClass: string = "spatial-ref-container";
       if (this._srSearchText && this._srSearchText !== "" && this._srSearchText.length > 1) {
@@ -407,20 +408,19 @@ export class SolutionSpatialRef {
         const matches = Object.keys(wkids).filter(wkid => {
           return regEx.test(wkid.toString()) || regEx.test(wkids[wkid].label);
         });
-        resolve(matches.length > 0 ? (
+        return matches.length > 0 ? (
           <div class={containerClass} id={id}>
             {matches.map((wkid) => this._getTreeItem(wkid, false))}
           </div>
-        ) : (null));
+        ) : (null);
       } else {
-        this._autoSelect = true;
-        resolve((
+        this._setSpatialRef(this.defaultWkid.toString())
+        return (
           <div class={containerClass} id={id}>
             {this._getTreeItem(this.defaultWkid.toString(), true)}
           </div>
-        ));
+        );
       }
-    });
   }
 
   private _getTreeItem(

@@ -95,3 +95,12 @@ export function setProp(obj: any, path: string, value: any) {
     }, obj);
   }
 }
+
+/**
+ * Get an array from a list of nodes
+ *
+ * @param nodeList list of nodes 
+ */
+export function nodeListToArray<T extends Element>(nodeList: HTMLCollectionOf<T> | NodeListOf<T> | T[]): T[] {
+  return Array.isArray(nodeList) ? nodeList : Array.from(nodeList);
+}
