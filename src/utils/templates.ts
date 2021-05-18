@@ -36,13 +36,14 @@ export function getInventoryItems(
 export function getModels(templates: any[]): Promise<any> {
   const ids: string[] = [];
   const models: any = {};
+  const monacoDefined = typeof(monaco) !== "undefined";
   templates.forEach(t => {
     if (ids.indexOf(t.itemId) < 0) {
       ids.push(t.itemId);
       models[t.itemId] = {
-        dataModel: monaco.editor.createModel(JSON.stringify(t.data, null, '\t'), "json"),
+        dataModel: monacoDefined ? monaco.editor.createModel(JSON.stringify(t.data, null, '\t'), "json") : undefined,
         dataOriginValue: JSON.stringify(t.data),
-        propsModel: monaco.editor.createModel(JSON.stringify(t.properties, null, '\t'), "json"),
+        propsModel: monacoDefined ? monaco.editor.createModel(JSON.stringify(t.properties, null, '\t'), "json") : undefined,
         propsOriginValue: JSON.stringify(t.properties),
         propsDiffOriginValue: JSON.stringify(t.properties),
         state: undefined,

@@ -123,8 +123,22 @@
       }
 
       const srInfo = await demo.getSpatialReferenceInfo();
-      if (srInfo && srInfo.enabled) {
+      const serviceEnabled = Object.keys(srInfo.services).some(k => srInfo.services[k]);
+      if (srInfo && srInfo.enabled && serviceEnabled) {
         alert(`sr param set (${srInfo.spatialReference.wkid}): ${JSON.stringify(srInfo.services)}`);
+        const paramToAdd = {
+          "params": {
+            "wkid": {
+              "label": "Spatial Reference",
+              "default": srInfo.spatialReference.wkid.toString(),
+              "valueType": "spatialReference",
+              "attributes": {
+                "required": "true"
+              }
+            }
+          }
+        };
+        alert(`Add this to the solution item: ${JSON.stringify(paramToAdd)}`);
       }
     }
   </script>
