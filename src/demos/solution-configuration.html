@@ -84,6 +84,10 @@
       const models = await demo.getEditModels();
       Object.keys(models).forEach(k => {
         const m = models[k];
+        if (m.updateItemValues && Object.keys(m.updateItemValues).length > 0) {
+          alert(`item: ${m.itemId} has item updates ${JSON.stringify(m.updateItemValues)}`)
+        }
+
         // parse and stringify to avoid any formatting differences
         let dataOriginValue, dataModelValue;
         let propsOriginValue, propsModelValue;
@@ -122,6 +126,10 @@
         alert("no JSON changes found");
       }
 
+      await getSRChanges();
+    }
+
+    async function getSRChanges() {
       const srInfo = await demo.getSpatialReferenceInfo();
       const serviceEnabled = Object.keys(srInfo.services).some(k => srInfo.services[k]);
       if (srInfo && srInfo.enabled && serviceEnabled) {

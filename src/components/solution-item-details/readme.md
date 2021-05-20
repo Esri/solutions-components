@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property       | Attribute      | Description                                   | Type           | Default                                                                                                                             |
-| -------------- | -------------- | --------------------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `translations` | `translations` | Contains the translations for this component. | `any`          | `{}`                                                                                                                                |
-| `type`         | `type`         |                                               | `string`       | `""`                                                                                                                                |
-| `value`        | --             | Contains the public value for this component. | `IItemDetails` | `{     thumbnail: null,     title: "",     snippet: "",     description: "",     tags: [],     credits: "",     termsOfUse: ""   }` |
+| Property       | Attribute      | Description                                   | Type           | Default                                                                                                                                                        |
+| -------------- | -------------- | --------------------------------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `translations` | `translations` | Contains the translations for this component. | `any`          | `{}`                                                                                                                                                           |
+| `type`         | `type`         |                                               | `string`       | `""`                                                                                                                                                           |
+| `value`        | --             | Contains the public value for this component. | `IItemDetails` | `{     thumbnail: null,     title: "",     snippet: "",     description: "",     tags: [],     accessInformation: "",     licenseInfo: "",     itemId: ""   }` |
 
 
 ## Dependencies
