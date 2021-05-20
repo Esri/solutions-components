@@ -257,13 +257,15 @@ export class SolutionItemDetails {
    */
   private _validateValue(): void {
     const m: any = getProp(state, `models.${this.value.itemId}`);
-    Object.keys(this.value).forEach(k => {
-      if (m.updateItemValues.hasOwnProperty(k)) {
-        this.value[k] = m.updateItemValues[k];
-      } else if (m.originalItemValues.hasOwnProperty(k)) {
-        this.value[k] = m.originalItemValues[k];
-      }
-    });
+    if (m) {
+      Object.keys(this.value).forEach(k => {
+        if (m.updateItemValues.hasOwnProperty(k)) {
+          this.value[k] = m.updateItemValues[k];
+        } else if (m.originalItemValues.hasOwnProperty(k)) {
+          this.value[k] = m.originalItemValues[k];
+        }
+      });
+    }
   }
 
   /**
