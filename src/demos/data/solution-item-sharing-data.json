@@ -3,7 +3,7 @@
     "id": "A",
     "title": "ElectionGeography_public",
     "isShared": true,
-    "shareItem": false,
+    "shareItem": true,
     "type": "Feature Service",
     "typeKeywords": [
       "ArcGIS Server",
