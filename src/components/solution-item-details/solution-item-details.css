@@ -43,10 +43,10 @@
   padding: 0;
   border: none;
   color: #6e6e6e;
-  background: transparent
+  background: transparent;
 }
 
-.btn-link: hover {
+.btn-link:hover {
   text-decoration: underline;
 }
 

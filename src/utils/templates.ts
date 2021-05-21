@@ -21,6 +21,27 @@
 import { IItemDetails } from "../components/solution-item-details/solution-item-details";
 import { IInventoryItem } from "../components/solution-contents/solution-contents";
 
+export interface ISolutionModel {
+  dataModel: monaco.editor.ITextModel;
+  dataOriginValue: string;
+  propsModel: monaco.editor.ITextModel;
+  propsOriginValue: string;
+  propsDiffOriginValue: string;
+  state: any;
+  isEditing: boolean;
+  itemId: string;
+  updateItemValues: any;
+  originalItemValues: any;
+  name: string;
+  title: string;
+  itemOriginValue: string;
+  spatialReference: any;
+}
+
+interface ISolutionModels {
+  [key: string]: ISolutionModel;
+} 
+
 export function getInventoryItems(
   templates: any[]
 ): IInventoryItem[] {
@@ -33,22 +54,26 @@ export function getInventoryItems(
   }, []);
 }
 
-export function getModels(templates: any[]): Promise<any> {
+export function getModels(templates: any[]): ISolutionModels {
   const ids: string[] = [];
-  const models: any = {};
+  const models: ISolutionModels = {};
+  const monacoDefined = typeof(monaco) !== "undefined";
   templates.forEach(t => {
     if (ids.indexOf(t.itemId) < 0) {
       ids.push(t.itemId);
       models[t.itemId] = {
-        dataModel: monaco.editor.createModel(JSON.stringify(t.data, null, '\t'), "json"),
+        dataModel: monacoDefined ? monaco.editor.createModel(JSON.stringify(t.data, null, '\t'), "json") : undefined,
         dataOriginValue: JSON.stringify(t.data),
-        propsModel: monaco.editor.createModel(JSON.stringify(t.properties, null, '\t'), "json"),
+        propsModel: monacoDefined ? monaco.editor.createModel(JSON.stringify(t.properties, null, '\t'), "json") : undefined,
         propsOriginValue: JSON.stringify(t.properties),
         propsDiffOriginValue: JSON.stringify(t.properties),
         state: undefined,
         isEditing: false,
         itemId: t.itemId,
-        name: t.item?.title || t.item?.name,
+        updateItemValues: {},
+        originalItemValues: {},
+        name: t.item?.name,
+        title: t.item?.title,
         itemOriginValue: JSON.stringify(t.item),
         spatialReference: t.properties?.service?.spatialReference
       };
@@ -98,7 +123,7 @@ function _getItemFromTemplate(
     typeKeywords: t.item.typeKeywords || [],
     solutionItem: {
       itemId: t.itemId,
-      itemDetails: _getItemDetails(t.item, t.type === "Group"),
+      itemDetails: _getItemDetails(t.item, t.type === "Group", t.itemId),
       isResource: _getIsResource(t),
       data: t.data,
       properties: t.properties,
@@ -121,16 +146,18 @@ function _getDependencies(
 
 function _getItemDetails(
   item: any,
-  isGroup: boolean
+  isGroup: boolean,
+  itemId: string
 ): IItemDetails {
   return {
+    itemId,
     thumbnail: item.thumbnail || "",
     title: item.title || "",
     snippet: item.snippet || "",
     description: item.description || "",
     tags: item.tags || [],
-    credits: !isGroup ? item.accessInformation || "" : "",
-    termsOfUse: !isGroup ? item.licenseInfo || "" : ""
+    accessInformation: !isGroup ? item.accessInformation || "" : "",
+    licenseInfo: !isGroup ? item.licenseInfo || "" : ""
   };
 }
 

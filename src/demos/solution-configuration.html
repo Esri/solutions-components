@@ -84,6 +84,10 @@
       const models = await demo.getEditModels();
       Object.keys(models).forEach(k => {
         const m = models[k];
+        if (m.updateItemValues && Object.keys(m.updateItemValues).length > 0) {
+          alert(`item: ${m.itemId} has item updates ${JSON.stringify(m.updateItemValues)}`)
+        }
+
         // parse and stringify to avoid any formatting differences
         let dataOriginValue, dataModelValue;
         let propsOriginValue, propsModelValue;
@@ -122,9 +126,27 @@
         alert("no JSON changes found");
       }
 
+      await getSRChanges();
+    }
+
+    async function getSRChanges() {
       const srInfo = await demo.getSpatialReferenceInfo();
-      if (srInfo && srInfo.enabled) {
+      const serviceEnabled = Object.keys(srInfo.services).some(k => srInfo.services[k]);
+      if (srInfo && srInfo.enabled && serviceEnabled) {
         alert(`sr param set (${srInfo.spatialReference.wkid}): ${JSON.stringify(srInfo.services)}`);
+        const paramToAdd = {
+          "params": {
+            "wkid": {
+              "label": "Spatial Reference",
+              "default": srInfo.spatialReference.wkid.toString(),
+              "valueType": "spatialReference",
+              "attributes": {
+                "required": "true"
+              }
+            }
+          }
+        };
+        alert(`Add this to the solution item: ${JSON.stringify(paramToAdd)}`);
       }
     }
   </script>

@@ -25,9 +25,9 @@
  *
 */
 
- import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
+ import { Component, Element, Event, EventEmitter, Prop } from '@stencil/core';
  import state from '../../utils/editStore';
- import { getModels, getFeatureServices } from '../../utils/templates';
+ import { getModels, getFeatureServices, getSpatialReferenceInfo } from '../../utils/templates';
  
  @Component({
    tag: 'store-manager',
@@ -65,7 +65,7 @@
    }
  
    render() {
-     return (<Host><div></div></Host>);
+     return (null);
    }
  
   //--------------------------------------------------------------------------
@@ -93,6 +93,7 @@
            const v = JSON.parse(newValue);
            state.models = getModels(Array.isArray(v) ? v : [v]);
            state.featureServices = getFeatureServices(Array.isArray(v) ? v : [v])
+           state.spatialReferenceInfo = getSpatialReferenceInfo(state.featureServices);
            this.stateLoaded.emit(state);
            return true;
          }
