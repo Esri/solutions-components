@@ -132,6 +132,10 @@ export namespace Components {
     }
     interface SolutionItemSharing {
         /**
+          * Contains the public id for the group these items will be shared or un-shared with.
+         */
+        "groupId": string;
+        /**
           * Contains the translations for this component.
          */
         "translations": any;
@@ -452,6 +456,10 @@ declare namespace LocalJSX {
         "typeKeywords"?: string[];
     }
     interface SolutionItemSharing {
+        /**
+          * Contains the public id for the group these items will be shared or un-shared with.
+         */
+        "groupId"?: string;
         /**
           * Contains the translations for this component.
          */

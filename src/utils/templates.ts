@@ -20,6 +20,7 @@
 
 import { IItemDetails } from "../components/solution-item-details/solution-item-details";
 import { IInventoryItem } from "../components/solution-contents/solution-contents";
+import { IItemShare } from "../components/solution-item-sharing/solution-item-sharing";
 
 export interface ISolutionModel {
   dataModel: monaco.editor.ITextModel;
@@ -28,6 +29,7 @@ export interface ISolutionModel {
   propsOriginValue: string;
   propsDiffOriginValue: string;
   state: any;
+  shareInfo: any;
   isEditing: boolean;
   itemId: string;
   updateItemValues: any;
@@ -68,6 +70,7 @@ export function getModels(templates: any[]): ISolutionModels {
         propsOriginValue: JSON.stringify(t.properties),
         propsDiffOriginValue: JSON.stringify(t.properties),
         state: undefined,
+        shareInfo: undefined,
         isEditing: false,
         itemId: t.itemId,
         updateItemValues: {},
@@ -127,7 +130,8 @@ function _getItemFromTemplate(
       isResource: _getIsResource(t),
       data: t.data,
       properties: t.properties,
-      type: t.type
+      type: t.type,
+      groupDetails: _getGroupDetails(t, templates)
     }
   };
 }
@@ -159,6 +163,25 @@ function _getItemDetails(
     accessInformation: !isGroup ? item.accessInformation || "" : "",
     licenseInfo: !isGroup ? item.licenseInfo || "" : ""
   };
+}
+
+function _getGroupDetails(
+  t: any,
+  templates: any[]
+): IItemShare[] {
+  return t.type === "Group" ? templates.reduce((prev, cur) => {
+    if (cur.itemId !== t.itemId && cur.type !== "Group") {
+      prev.push({
+        id: cur.itemId,
+        title: cur.item.name || cur.item.title,
+        isShared: (cur.groups || []).indexOf(t.itemId) > -1,
+        shareItem: (cur.groups || []).indexOf(t.itemId) > -1,
+        type: cur.type,
+        typeKeywords: cur.item.typeKeywords
+      });
+    }
+    return prev;
+  }, []) : [];
 }
 
 function _getIsResource(

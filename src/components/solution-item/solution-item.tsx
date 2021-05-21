@@ -17,14 +17,16 @@
 import { Component, Element, h, Host, Prop, VNode } from '@stencil/core';
 import { ITemplateData } from '../solution-template-data/solution-template-data';
 import '@esri/calcite-components';
+import { IItemShare } from '../solution-item-sharing/solution-item-sharing';
 
 export interface ISolutionItem {
   itemId: string,
-  itemDetails: any,
+  itemDetails: any, //use the interface
   isResource: boolean, // this should be removed and determined from the data
   data: ITemplateData,
   properties: ITemplateData,
-  type: string
+  type: string,
+  groupDetails?: IItemShare[]
 }
 
 @Component({
@@ -61,7 +63,8 @@ export class SolutionItem {
     isResource: false,
     data: {},
     properties: {},
-    type: ""
+    type: "",
+    groupDetails: undefined
   };
 
   /**
@@ -106,10 +109,18 @@ export class SolutionItem {
       </calcite-tab-nav>
 
       <calcite-tab class="config-tab" active>
-        <solution-item-details translations={this.translations} type={this.value.type}></solution-item-details>
+        <solution-item-details 
+          translations={this.translations}
+          type={this.value.type}
+          value={this.value.itemDetails}
+        ></solution-item-details>
       </calcite-tab>
       <calcite-tab class="config-tab">
-        <solution-item-sharing translations={this.translations}></solution-item-sharing>
+        <solution-item-sharing
+          translations={this.translations}
+          value={this.value.groupDetails}
+          groupId={this.value.itemId}
+        ></solution-item-sharing>
       </calcite-tab>
     </calcite-tabs>
   }
