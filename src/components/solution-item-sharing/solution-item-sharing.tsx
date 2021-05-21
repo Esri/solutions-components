@@ -15,10 +15,12 @@
  */
 
 import { Component, Element, h, Host, Prop, VNode } from '@stencil/core';
+import state from '../../utils/editStore';
 
 export interface IItemShare {
   id: string;
   title: string;
+  isShared: boolean;
   shareItem: boolean;
   type: string;
   typeKeywords: string[];
@@ -54,6 +56,11 @@ export class SolutionItemSharing {
    * Contains the public value for this component.
    */
   @Prop({ mutable: true, reflect: true }) value: IItemShare[] = [];
+
+  /**
+   * Contains the public id for the group these items will be shared or un-shared with.
+   */
+  @Prop({ mutable: true, reflect: true }) groupId: string;
 
   //--------------------------------------------------------------------------
   //
@@ -131,9 +138,20 @@ export class SolutionItemSharing {
     const id: string = event.target.id;
     this.value = this.value.map(item => {
       if (item.id === id) {
+        // update the item
         item.shareItem = event.target.switched;
+        // update the store
+        if (state && state.models) {
+          let shareInfo = undefined;
+          if (item.isShared && !event.target.switched) {
+            shareInfo = { type: "unshare", groupId: this.groupId };
+          } else if (!item.isShared && event.target.switched) {
+            shareInfo = { type: "share", groupId: this.groupId };
+          }
+          state.models[id].shareInfo = shareInfo;
+        }
       }
       return item;
-    });  
+    });
   }
 }

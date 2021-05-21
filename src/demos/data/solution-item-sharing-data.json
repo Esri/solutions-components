@@ -2,7 +2,8 @@
   "value": [{
     "id": "A",
     "title": "ElectionGeography_public",
-    "shareItem": true,
+    "isShared": true,
+    "shareItem": false,
     "type": "Feature Service",
     "typeKeywords": [
       "ArcGIS Server",
@@ -17,6 +18,7 @@
   }, {
     "id": "B",
     "title": "Election Polling Places",
+    "isShared": false,
     "shareItem": false,
     "type": "Web Map",
     "typeKeywords": [

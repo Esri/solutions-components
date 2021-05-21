@@ -119,6 +119,12 @@
             hasChanges = true;
           }
         }
+
+        //share info
+        if (m.shareInfo) {
+          alert(`${m.name || m.title} should be ${m.shareInfo.type}d with group: ${m.shareInfo.groupId}`)
+        }
+
       });
       if (hasDataErrors || hasPropsErrors || (window.monaco.editor.getModelMarkers({}) || []).length > 0) {
         alert("errors found..cannot get edits");
