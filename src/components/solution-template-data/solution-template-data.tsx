@@ -133,17 +133,18 @@ export class SolutionTemplateData {
   //--------------------------------------------------------------------------
 
   _jsonData(): any {
-    return <calcite-shell dir="ltr" theme="light">
-      <calcite-shell-center-row slot="center-row" position="start" height-scale="l" width-scale="l" class="json-editor">
-        <div class="solution-data-child-container padding-1">
+    return <calcite-shell dir="ltr" class="light">
+      <calcite-panel class="json-editor">
+        <div class="solution-data-child-container calcite-match-height">
           <json-editor
             instanceid={this.instanceid}
             value={this.itemid}
             translations={this.translations}
           ></json-editor>
         </div>
-      </calcite-shell-center-row>
-      <calcite-shell-panel slot="contextual-panel" position="start" height-scale="l" width-scale="m">
+      </calcite-panel>
+
+      <calcite-shell-panel slot="contextual-panel" position="end" height-scale="l" width-scale="m">
         <div class="solution-data-child-container">
           <div class="org-vars">
             <solution-organization-variables

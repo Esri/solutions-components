@@ -103,9 +103,9 @@ export class JsonEditor {
 
   render() {
     return (
-      <Host>
+      <Host class="json-editor-position">
         <div id={`${this.instanceid}-editor-container`} class="editor-container padding-right">
-          <div class="editor-controls padding-right">
+        <div class="editor-controls">
             <div class="editor-buttons">
               {/* undo */}
               <calcite-button
@@ -294,7 +294,8 @@ export class JsonEditor {
         minimap: {
           enabled: false
         },
-        automaticLayout: true
+        automaticLayout: true,
+        scrollBeyondLastLine: false
       });
       this._currentModel = this._editor.getModel();
 

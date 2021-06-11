@@ -82,12 +82,19 @@ graph TD;
   solution-item-sharing --> calcite-switch
   solution-item-sharing --> solution-item-icon
   solution-template-data --> calcite-shell
-  solution-template-data --> calcite-shell-center-row
+  solution-template-data --> calcite-panel
   solution-template-data --> json-editor
   solution-template-data --> calcite-shell-panel
   solution-template-data --> solution-organization-variables
   solution-template-data --> solution-variables
   solution-template-data --> solution-resource-item
+  calcite-panel --> calcite-action
+  calcite-panel --> calcite-popover
+  calcite-panel --> calcite-scrim
+  calcite-action --> calcite-loader
+  calcite-action --> calcite-icon
+  calcite-popover --> calcite-icon
+  calcite-scrim --> calcite-loader
   json-editor --> calcite-button
   json-editor --> calcite-icon
   calcite-button --> calcite-loader

@@ -35,6 +35,7 @@
 
 .json-editor {
   width: -webkit-fill-available;
+  margin: 1rem;
 }
 
 .org-vars {
@@ -47,4 +48,8 @@
 
 .padding-1 {
   padding: 1rem;
+}
+
+.light {
+  background-color: #F4F4F4;
 }

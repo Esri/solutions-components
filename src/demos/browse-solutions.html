@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+  <title>Browse Solutions</title>
+  <!--
+   | Copyright 2021 Esri
+   |
+   | Licensed under the Apache License, Version 2.0 (the "License");
+   | you may not use this file except in compliance with the License.
+   | You may obtain a copy of the License at
+   |
+   |    http://www.apache.org/licenses/LICENSE-2.0
+   |
+   | Unless required by applicable law or agreed to in writing, software
+   | distributed under the License is distributed on an "AS IS" BASIS,
+   | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   | See the License for the specific language governing permissions and
+   | limitations under the License.
+  -->
+
+  <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" type="text/css" />
+  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
+  <link rel="stylesheet" href="../solutions.css" type="text/css">
+  <style>
+  .full-height {
+    height: 100%;
+  }
+  .demo-button {
+    position: relative;
+    align-self: center;
+  }
+  .list {
+    padding-right: 100px;
+  }
+  .flex {
+    display: flex;
+  }
+  .combo-list {
+    width: 330px;
+  }
+  </style>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es5%2Cfetch%2CPromise"></script>
+  <script src="https://unpkg.com/@esri/arcgis-rest-request@3.1.1/dist/umd/request.umd.js"></script>
+  <script src="https://unpkg.com/@esri/arcgis-rest-auth@3.1.1/dist/umd/auth.umd.min.js"></script>
+  <script src="https://unpkg.com/@esri/arcgis-rest-portal@3.1.1/dist/umd/portal.umd.min.js"></script>
+  <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
+  <script type="module" src="../solutions.esm.js"></script>
+</head>
+
+<body>
+  <!-- <h1>Browse Solutions</h1> -->
+  <div class="list flex">
+    <calcite-combobox
+      id="solution-ids"
+      label="demo combobox"
+      selection-mode="single"
+      placeholder="Select Solution ID"
+      scale="m"
+      max-items="0"
+      class="combo-list"
+    >
+    </calcite-combobox>
+    <calcite-button
+      color="blue"
+      appearance="solid"
+      onClick="getAllEdits()"
+      class="demo-button"
+    >Get All Edits</calcite-button>
+  </div>
+  <main id="appContainer">
+    <div class="content full-height">
+      <solution-configuration id="demo"></solution-configuration>
+    </div>
+  </main>
+
+  <script src="./libs/require.js"></script>
+  <script src="./libs/setLocale.js"></script>
+  <script src="./monacoConfig.js"></script>
+  <script>
+    require(["i18n!../assets/nls/strings", 'vs/editor/editor.main'],
+    function (translations) {
+      // Initialize the configuration content
+      const demo = document.getElementById("demo");
+      demo.translations = translations.configuration_modal.configuration;
+
+      const portal = "http://www.arcgis.com/sharing/rest"
+      // get the user session 
+      const authentication = new arcgisRest.UserSession({
+        portal
+      });
+
+      const groupId = "478e18c821f547978fb401105af4fad1";
+      const q = "type:Solution typekeywords:Solution,Template ";
+      const params = {
+        sortField:"relevance",
+        sortOrder:"desc",
+        num: 100
+      };
+
+      const opts = {
+        groupId,
+        q,
+        params,
+        authentication,
+        portal
+      };
+
+      // set the data
+      Promise.all([
+        fetch("./data/solution-variables-data.json"),
+        fetch("./data/solution-organization-variables-data.json"),
+        arcgisRest.searchGroupContent(opts)
+      ])
+        .then(results => Promise.all(results.map(r => r.json ? r.json() : r)))
+        .then(jsonResults => {
+          demo.solutionVariables = jsonResults[0].value;
+          demo.organizationVariables = jsonResults[1].value;
+          
+          const idList = document.getElementById("solution-ids");
+
+          jsonResults[2].results.forEach(result => {
+            const i = document.createElement("calcite-combobox-item");
+            i.setAttribute("value", result.id);
+            i.setAttribute("text-label", result.title);
+            i.setAttribute("dir", "ltr");
+            i.setAttribute("scale", "m");
+            idList.appendChild(i);
+          });
+
+          idList.addEventListener("calciteComboboxItemChange", (event) => {
+            arcgisRest.getItemData(event.detail.value, {
+              authentication,
+              portal
+            }).then(r => {
+              demo.templates = JSON.stringify(r.templates);
+            });
+          });
+
+          document.getElementById("appContainer").style.opacity = "1";
+        });
+    });
+
+    async function getAllEdits() {
+      let hasChanges = false;
+      let hasDataErrors = false;
+      let hasPropsErrors = false;
+      const models = await demo.getEditModels();
+      Object.keys(models).forEach(k => {
+        const m = models[k];
+        if (m.updateItemValues && Object.keys(m.updateItemValues).length > 0) {
+          alert(`item: ${m.itemId} has item updates ${JSON.stringify(m.updateItemValues)}`)
+        }
+
+        // parse and stringify to avoid any formatting differences
+        let dataOriginValue, dataModelValue;
+        let propsOriginValue, propsModelValue;
+        try {
+          dataOriginValue = JSON.parse(m.dataOriginValue);
+          dataModelValue = JSON.parse(m.dataModel.getValue());
+        } catch (e) {
+          alert(`${m.name} (${m.itemId}):  has errors in data`);
+          hasDataErrors = true;
+          console.error(e);
+        }
+
+        try {
+          propsOriginValue = JSON.parse(m.propsOriginValue);
+          propsModelValue = JSON.parse(m.propsModel.getValue());
+        } catch (e) {
+          alert(`${m.name} (${m.itemId}):  has errors in props`);
+          hasPropsErrors = true;
+          console.error(e);
+        }
+
+        if (dataOriginValue && dataModelValue && propsOriginValue && propsModelValue) {
+          if (JSON.stringify(dataOriginValue) !== JSON.stringify(dataModelValue)) {
+            alert(`${m.name} (${m.itemId}):  has data changes`);
+            hasChanges = true;
+          }
+          if (JSON.stringify(propsOriginValue) !== JSON.stringify(propsModelValue)) {
+            alert(`${m.name} (${m.itemId}):  has props changes`);
+            hasChanges = true;
+          }
+        }
+
+        //share info
+        if (m.shareInfo) {
+          alert(`${m.name || m.title} should be ${m.shareInfo.type}d with group: ${m.shareInfo.groupId}`)
+        }
+
+      });
+      if (hasDataErrors || hasPropsErrors || (window.monaco.editor.getModelMarkers({}) || []).length > 0) {
+        alert("errors found..cannot get edits");
+      } else if (!hasChanges) {
+        alert("no JSON changes found");
+      }
+
+      await getSRChanges();
+    }
+
+    async function getSRChanges() {
+      const srInfo = await demo.getSpatialReferenceInfo();
+      const serviceEnabled = Object.keys(srInfo.services).some(k => srInfo.services[k]);
+      if (srInfo && srInfo.enabled && serviceEnabled) {
+        alert(`sr param set (${srInfo.spatialReference.wkid}): ${JSON.stringify(srInfo.services)}`);
+        const paramToAdd = {
+          "params": {
+            "wkid": {
+              "label": "Spatial Reference",
+              "default": srInfo.spatialReference.wkid.toString(),
+              "valueType": "spatialReference",
+              "attributes": {
+                "required": "true"
+              }
+            }
+          }
+        };
+        alert(`Add this to the solution item: ${JSON.stringify(paramToAdd)}`);
+      }
+    }
+  </script>
+</body>
+</html>
