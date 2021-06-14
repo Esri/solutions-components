@@ -68,7 +68,7 @@ describe('solution-configuration', () => {
               <calcite-tab class="config-tab">
                 <div class="config-solution">
 
-                  <solution-spatial-ref></solution-spatial-ref>
+                  <solution-spatial-ref id="configure-solution-spatial-ref"></solution-spatial-ref>
 
                 </div>
               </calcite-tab>
