@@ -27,6 +27,9 @@
 .solution-data-child-container {
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
 }
 
 .inputBottomSeparation {
@@ -40,10 +43,12 @@
 
 .org-vars {
   padding: 1rem 1rem 0 1rem;
+  min-height: 45%;
 }
 
 .sol-vars {
   padding: 0 1rem 0 1rem;
+  min-height: 45%;
 }
 
 .padding-1 {
