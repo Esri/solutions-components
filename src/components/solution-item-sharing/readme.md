@@ -7,10 +7,11 @@
 
 ## Properties
 
-| Property       | Attribute      | Description                                   | Type           | Default |
-| -------------- | -------------- | --------------------------------------------- | -------------- | ------- |
-| `translations` | `translations` | Contains the translations for this component. | `any`          | `{}`    |
-| `value`        | --             | Contains the public value for this component. | `IItemShare[]` | `[]`    |
+| Property       | Attribute      | Description                                                                        | Type           | Default     |
+| -------------- | -------------- | ---------------------------------------------------------------------------------- | -------------- | ----------- |
+| `groupId`      | `group-id`     | Contains the public id for the group these items will be shared or un-shared with. | `string`       | `undefined` |
+| `translations` | `translations` | Contains the translations for this component.                                      | `any`          | `{}`        |
+| `value`        | --             | Contains the public value for this component.                                      | `IItemShare[]` | `[]`        |
 
 
 ## Dependencies

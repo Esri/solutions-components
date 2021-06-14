@@ -47,6 +47,7 @@ export namespace Components {
     }
     interface SolutionConfiguration {
         "getEditModels": () => Promise<{}>;
+        "getSpatialReferenceInfo": () => Promise<{}>;
         /**
           * Contains the current solution item we are working with
          */
@@ -131,6 +132,10 @@ export namespace Components {
     }
     interface SolutionItemSharing {
         /**
+          * Contains the public id for the group these items will be shared or un-shared with.
+         */
+        "groupId": string;
+        /**
           * Contains the translations for this component.
          */
         "translations": any;
@@ -167,9 +172,21 @@ export namespace Components {
          */
         "createSpatialRefDisplay": (value: string) => Promise<ISpatialRefRepresentation>;
         /**
+          * The wkid that will be used as the default when no user selection has been made.
+         */
+        "defaultWkid": number;
+        /**
           * Returns the current spatial reference description. (Exposes private variable `spatialRef` for testing.)
          */
         "getSpatialRef": () => Promise<ISpatialRefRepresentation>;
+        /**
+          * When true, all but the main switch are disabled to prevent interaction.
+         */
+        "locked": boolean;
+        /**
+          * List of service names the spatial reference should apply to
+         */
+        "services": string[];
         /**
           * Contains the translations for this component.
          */
@@ -341,7 +358,6 @@ declare namespace LocalJSX {
           * Contains the public model for this component.
          */
         "model"?: any;
-        "onJsonEditorSaved"?: (event: CustomEvent<any>) => void;
         /**
           * Contains the original source item json as it was when the component was created.
          */
@@ -441,6 +457,10 @@ declare namespace LocalJSX {
     }
     interface SolutionItemSharing {
         /**
+          * Contains the public id for the group these items will be shared or un-shared with.
+         */
+        "groupId"?: string;
+        /**
           * Contains the translations for this component.
          */
         "translations"?: any;
@@ -471,6 +491,18 @@ declare namespace LocalJSX {
         "value"?: IResourceItem;
     }
     interface SolutionSpatialRef {
+        /**
+          * The wkid that will be used as the default when no user selection has been made.
+         */
+        "defaultWkid"?: number;
+        /**
+          * When true, all but the main switch are disabled to prevent interaction.
+         */
+        "locked"?: boolean;
+        /**
+          * List of service names the spatial reference should apply to
+         */
+        "services"?: string[];
         /**
           * Contains the translations for this component.
          */

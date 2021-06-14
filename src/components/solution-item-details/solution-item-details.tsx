@@ -16,6 +16,8 @@
 
 import { Component, Element, h, Host, Listen, Prop, VNode } from '@stencil/core';
 import '@esri/calcite-components';
+import state from '../../utils/editStore';
+import { getProp } from '../../utils/common';
 
 export interface IItemDetails {
   thumbnail: string;
@@ -23,8 +25,9 @@ export interface IItemDetails {
   snippet: string;
   description: string;
   tags: string[];
-  credits?: string;
-  termsOfUse?: string;
+  accessInformation?: string;
+  licenseInfo?: string;
+  itemId: string
 }
 
 @Component({
@@ -62,8 +65,9 @@ export class SolutionItemDetails {
     snippet: "",
     description: "",
     tags: [],
-    credits: "",
-    termsOfUse: ""
+    accessInformation: "",
+    licenseInfo: "",
+    itemId: ""
   };
 
   @Prop({ mutable: true, reflect: true }) type: string = "";
@@ -75,6 +79,7 @@ export class SolutionItemDetails {
   //--------------------------------------------------------------------------
 
   render(): VNode {
+    this._validateValue();
     return (
       <Host>
         <div class="parent-container">
@@ -111,19 +116,19 @@ export class SolutionItemDetails {
 
           <calcite-label>{this.translations.tags}
             <label id="item-tags-label">
-              <calcite-input id="item-tags" value={(this.value.tags && Array.isArray(this.value.tags) ? this.value.tags : []).join(",")}></calcite-input>
+              <calcite-input id="item-tags" value={(this.value.tags && Array.isArray(this.value.tags) ? this.value.tags : [this.value.tags]).join(",")}></calcite-input>
             </label>
           </calcite-label>
 
           {this.type !== "Group" ? <calcite-label>{this.translations.credits}
             <label id="item-credits-label">
-              <calcite-input id="item-credits" value={this.value.credits}></calcite-input>
+              <calcite-input id="item-credits" value={this.value.accessInformation}></calcite-input>
             </label>
           </calcite-label> : null}
 
           {this.type !== "Group" ? <calcite-label>
             <label id="item-terms-label">{this.translations.termsOfUse}
-              <calcite-input id="item-terms" type="textarea" value={this.value.termsOfUse}></calcite-input>
+              <calcite-input id="item-terms" type="textarea" value={this.value.licenseInfo}></calcite-input>
             </label>
           </calcite-label> : null}
           
@@ -164,26 +169,32 @@ export class SolutionItemDetails {
    */
   @Listen("calciteInputInput")
   inputReceivedHandler(event: any): void {
-    switch(event.target.id) {
-    case "item-title":
-      this.value.title = event.target.value;
-      break;
-    case "item-snippet":
-      this.value.snippet = event.target.value;
-      this._updateLengthLabel(this.value.snippet);
-      break;
-    case "item-description":
-      this.value.description = event.target.value;
-      break;
-    case "item-tags":
-      this.value.tags = event.target.value;
-      break;
-    case "item-credits":
-      this.value.credits = event.target.value;
-      break;
-    case "item-terms":
-      this.value.termsOfUse = event.target.value;
-      break;
+    switch (event.target.id) {
+      case "item-title":  
+        this.value.title = event.target.value;
+        this._updateStore("title", event.target.value);
+        break;
+      case "item-snippet":
+        this.value.snippet = event.target.value;
+        this._updateLengthLabel(this.value.snippet);
+        this._updateStore("snippet", event.target.value);
+        break;
+      case "item-description":
+        this.value.description = event.target.value;
+        this._updateStore("description", event.target.value);
+        break;
+      case "item-tags":
+        this.value.tags = event.target.value;
+        this._updateStore("tags", event.target.value);
+        break;
+      case "item-credits":
+        this.value.accessInformation = event.target.value;
+        this._updateStore("accessInformation", event.target.value);
+        break;
+      case "item-terms":
+        this.value.licenseInfo = event.target.value;
+        this._updateStore("licenseInfo", event.target.value);
+        break;
     }
   }
 
@@ -210,7 +221,6 @@ export class SolutionItemDetails {
    *
    */
   private _getThumbnail(): void {
-    console.log("_getThumbnail");
     this.browseForThumbnail.click();
   }
 
@@ -231,7 +241,6 @@ export class SolutionItemDetails {
   private _updateThumbnail(
     event: any
   ): void {
-    console.log("_updateThumbnail");
     const files = event.currentTarget.files;
     if (files && files[0]) {
       var reader = new FileReader();
@@ -242,4 +251,46 @@ export class SolutionItemDetails {
     }
   }
 
+  /**
+   * Use the value from the store if it exists
+   *
+   */
+  private _validateValue(): void {
+    const m: any = getProp(state, `models.${this.value.itemId}`);
+    if (m) {
+      Object.keys(this.value).forEach(k => {
+        if (m.updateItemValues.hasOwnProperty(k)) {
+          this.value[k] = m.updateItemValues[k];
+        } else if (m.originalItemValues.hasOwnProperty(k)) {
+          this.value[k] = m.originalItemValues[k];
+        }
+      });
+    }
+  }
+
+  /**
+   * Add or remove the value from the store
+   *
+   */
+  private _updateStore(
+    prop: string,
+    v: string
+  ): void {
+    const model: any = getProp(state, `models.${this.value.itemId}`);
+    if (model.itemOriginValue) {
+      const item = JSON.parse(model.itemOriginValue);
+      if (item.hasOwnProperty(prop)) {
+        // store when it matches
+        if (item[prop] !== v) {
+          if (!model.originalItemValues.hasOwnProperty(prop)) {
+            model.originalItemValues[prop] = item[prop];
+          }
+          model.updateItemValues[prop] = v;
+        } else {
+          // remove when it doesn't
+          delete(model.updateItemValues[prop]);
+        }
+      }
+    }
+  }
 }

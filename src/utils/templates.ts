@@ -20,6 +20,29 @@
 
 import { IItemDetails } from "../components/solution-item-details/solution-item-details";
 import { IInventoryItem } from "../components/solution-contents/solution-contents";
+import { IItemShare } from "../components/solution-item-sharing/solution-item-sharing";
+
+export interface ISolutionModel {
+  dataModel: monaco.editor.ITextModel;
+  dataOriginValue: string;
+  propsModel: monaco.editor.ITextModel;
+  propsOriginValue: string;
+  propsDiffOriginValue: string;
+  state: any;
+  shareInfo: any;
+  isEditing: boolean;
+  itemId: string;
+  updateItemValues: any;
+  originalItemValues: any;
+  name: string;
+  title: string;
+  itemOriginValue: string;
+  spatialReference: any;
+}
+
+interface ISolutionModels {
+  [key: string]: ISolutionModel;
+} 
 
 export function getInventoryItems(
   templates: any[]
@@ -33,26 +56,62 @@ export function getInventoryItems(
   }, []);
 }
 
-export function getModels(templates: any[]): Promise<any> {
+export function getModels(templates: any[]): ISolutionModels {
   const ids: string[] = [];
-  const models: any = {};
+  const models: ISolutionModels = {};
+  const monacoDefined = typeof(monaco) !== "undefined";
   templates.forEach(t => {
     if (ids.indexOf(t.itemId) < 0) {
       ids.push(t.itemId);
       models[t.itemId] = {
-        dataModel: monaco.editor.createModel(JSON.stringify(t.data, null, '\t'), "json"),
+        dataModel: monacoDefined ? monaco.editor.createModel(JSON.stringify(t.data, null, '\t'), "json") : undefined,
         dataOriginValue: JSON.stringify(t.data),
-        propsModel: monaco.editor.createModel(JSON.stringify(t.properties, null, '\t'), "json"),
+        propsModel: monacoDefined ? monaco.editor.createModel(JSON.stringify(t.properties, null, '\t'), "json") : undefined,
         propsOriginValue: JSON.stringify(t.properties),
+        propsDiffOriginValue: JSON.stringify(t.properties),
         state: undefined,
+        shareInfo: undefined,
         isEditing: false,
         itemId: t.itemId,
-        name: t.item?.title || t.item?.name,
-        itemOriginValue: JSON.stringify(t.item)
+        updateItemValues: {},
+        originalItemValues: {},
+        name: t.item?.name,
+        title: t.item?.title,
+        itemOriginValue: JSON.stringify(t.item),
+        spatialReference: t.properties?.service?.spatialReference
       };
     }
   });
   return models;
+}
+
+export function getFeatureServices(
+  templates: any[]
+): any[] {
+  return templates.reduce((prev, cur) => {
+    const name: string = cur.item.title || cur.item.name;
+    if (cur.type === "Feature Service" &&
+      cur.item.typeKeywords.indexOf("View Service") < 0 &&
+      prev.indexOf(name) < 0
+    ) {
+      prev.push(name)
+    }
+    return prev;
+  }, []);
+}
+
+export function getSpatialReferenceInfo(
+  services: string[]
+): any {
+  const defaultServices: any = {};
+  services.forEach(service => {
+    defaultServices[service] = true;
+  });
+  return {
+    enabled: false,
+    services: defaultServices,
+    spatialReference: undefined
+  }
 }
 
 function _getItemFromTemplate(
@@ -67,11 +126,12 @@ function _getItemFromTemplate(
     typeKeywords: t.item.typeKeywords || [],
     solutionItem: {
       itemId: t.itemId,
-      itemDetails: _getItemDetails(t.item, t.type === "Group"),
+      itemDetails: _getItemDetails(t.item, t.type === "Group", t.itemId),
       isResource: _getIsResource(t),
       data: t.data,
       properties: t.properties,
-      type: t.type
+      type: t.type,
+      groupDetails: _getGroupDetails(t, templates)
     }
   };
 }
@@ -90,17 +150,38 @@ function _getDependencies(
 
 function _getItemDetails(
   item: any,
-  isGroup: boolean
+  isGroup: boolean,
+  itemId: string
 ): IItemDetails {
   return {
+    itemId,
     thumbnail: item.thumbnail || "",
     title: item.title || "",
     snippet: item.snippet || "",
     description: item.description || "",
     tags: item.tags || [],
-    credits: !isGroup ? item.accessInformation || "" : "",
-    termsOfUse: !isGroup ? item.licenseInfo || "" : ""
+    accessInformation: !isGroup ? item.accessInformation || "" : "",
+    licenseInfo: !isGroup ? item.licenseInfo || "" : ""
   };
+}
+
+function _getGroupDetails(
+  t: any,
+  templates: any[]
+): IItemShare[] {
+  return t.type === "Group" ? templates.reduce((prev, cur) => {
+    if (cur.itemId !== t.itemId && cur.type !== "Group") {
+      prev.push({
+        id: cur.itemId,
+        title: cur.item.name || cur.item.title,
+        isShared: (cur.groups || []).indexOf(t.itemId) > -1,
+        shareItem: (cur.groups || []).indexOf(t.itemId) > -1,
+        type: cur.type,
+        typeKeywords: cur.item.typeKeywords
+      });
+    }
+    return prev;
+  }, []) : [];
 }
 
 function _getIsResource(
