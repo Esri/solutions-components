@@ -6,17 +6,17 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ISolutionConfiguration } from "./components/solution-configuration/solution-configuration";
-import { IVariableItem } from "./components/solution-variables/solution-variables";
-import { IOrganizationVariableItem } from "./components/solution-organization-variables/solution-organization-variables";
 import { ISolutionItem } from "./components/solution-item/solution-item";
 import { IInventoryItem } from "./components/solution-contents/solution-contents";
 import { ISolutionItem as ISolutionItem1 } from "./components/solution-item/solution-item";
 import { IItemDetails } from "./components/solution-item-details/solution-item-details";
 import { IItemShare } from "./components/solution-item-sharing/solution-item-sharing";
-import { IOrganizationVariableItem as IOrganizationVariableItem1 } from "./components/solution-organization-variables/solution-organization-variables";
+import { IOrganizationVariableItem } from "./components/solution-organization-variables/solution-organization-variables";
 import { IResourceItem } from "./components/solution-resource-item/solution-resource-item";
 import { ISpatialRefRepresentation } from "./components/solution-spatial-ref/solution-spatial-ref";
 import { ITemplateData } from "./components/solution-template-data/solution-template-data";
+import { IVariableItem } from "./components/solution-variables/solution-variables";
+import { IOrganizationVariableItem as IOrganizationVariableItem1 } from "./components/solution-organization-variables/solution-organization-variables";
 import { IVariableItem as IVariableItem1 } from "./components/solution-variables/solution-variables";
 export namespace Components {
     interface JsonEditor {
@@ -52,14 +52,6 @@ export namespace Components {
           * Contains the current solution item we are working with
          */
         "item": ISolutionItem;
-        /**
-          * Contains the organization based variables
-         */
-        "organizationVariables": IOrganizationVariableItem[];
-        /**
-          * Contains the solution based variables
-         */
-        "solutionVariables": IVariableItem[];
         /**
           * Contains the raw templates from the solution item
          */
@@ -376,14 +368,6 @@ declare namespace LocalJSX {
           * Contains the current solution item we are working with
          */
         "item"?: ISolutionItem;
-        /**
-          * Contains the organization based variables
-         */
-        "organizationVariables"?: IOrganizationVariableItem[];
-        /**
-          * Contains the solution based variables
-         */
-        "solutionVariables"?: IVariableItem[];
         /**
           * Contains the raw templates from the solution item
          */

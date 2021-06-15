@@ -21,6 +21,8 @@
 import { IItemDetails } from "../components/solution-item-details/solution-item-details";
 import { IInventoryItem } from "../components/solution-contents/solution-contents";
 import { IItemShare } from "../components/solution-item-sharing/solution-item-sharing";
+import { IVariableItem } from "../components/solution-variables/solution-variables";
+import { IOrganizationVariableItem } from "../components/solution-organization-variables/solution-organization-variables";
 
 export interface ISolutionModel {
   dataModel: monaco.editor.ITextModel;
@@ -54,6 +56,96 @@ export function getInventoryItems(
     }
     return prev;
   }, []);
+}
+
+export function getSolutionVariables(
+  templates: any[],
+  translations: any
+): IVariableItem[] {
+  const vars: IVariableItem[] = [];
+  templates.forEach(t => {
+    const item = {
+      id: t.itemId,
+      title: t.item.title || t.item.name,
+      type: t.type,
+      value: undefined,
+      dependencies: [{
+        id: t.itemId,
+        title: translations.itemId,
+        value: `{{${t.itemId}.itemId}}`,
+      }]
+    };
+    if (t.item.url) {
+      item.dependencies.push({
+        id: t.itemId,
+        title: translations.url,
+        value: `{{${t.itemId}.url}}`,
+      });
+    }
+    if (t.type === "Feature Service") {
+      // TODO need to set source service name var...
+      // TODO need to set soure service shape field name "{{d05b3cf1ffcb4a4fa677627dfb18609e.name}}.Shape"
+      item.dependencies.push({
+        id: t.itemId,
+        title: translations.solutionExtent,
+        value: `{{${t.itemId}.solutionExtent}}`,
+      })
+      _addLayersOrTables(t.properties.layers || [], item, t, translations);
+      _addLayersOrTables(t.properties.tables || [], item, t, translations);
+    }
+    vars.push(item);
+  })
+
+  return vars;
+}
+
+function _addLayersOrTables(
+  children: any[],
+  item: any,
+  t: any,
+  translations: any
+): void {
+  children.forEach(l => {
+    const name = l.name && l.name.indexOf("||") > -1 ? l.name.split("||")[1].replace("}}", "").trim() : l.name;
+
+    item.dependencies.push({
+      id: t.itemId,
+      title: `${name} (${translations.id})`,
+      value: `{{${t.itemId}.layer${l.id}.id}}`,
+    });
+    item.dependencies.push({
+      id: t.itemId,
+      title: `${name} (${translations.name})`,
+      value: `{{${t.itemId}.layer${l.id}.name||${name}}}`,
+    });
+  });
+} 
+
+export function getOrganizationVariables(
+  translations: any
+): IOrganizationVariableItem[] {
+  const orgVars: IOrganizationVariableItem[] = [{
+    id: "",
+    title: translations.geocodeUrl,
+    value: "{{organization.helperServices.geocode:getDefaultLocatorURL}}"
+  }, {
+    id: "",
+    title: translations.geometryUrl,
+    value: "{{organization.helperServices.geometry.url}}"
+  }, {
+    id: "",
+    title: translations.portalBaseUrl,
+    value: "{{portalBaseUrl}}"
+  }, {
+    id: "",
+    title: translations.routeUrl,
+    value: "{{organization.helperServices.route.url}}"
+  }, {
+    id: "",
+    title: translations.solutionItemExtent,
+    value: "{{solutionItemExtent}}"
+  }];
+  return orgVars;
 }
 
 export function getModels(templates: any[]): ISolutionModels {

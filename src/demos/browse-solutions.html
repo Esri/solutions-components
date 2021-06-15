@@ -108,19 +108,11 @@
       };
 
       // set the data
-      Promise.all([
-        fetch("./data/solution-variables-data.json"),
-        fetch("./data/solution-organization-variables-data.json"),
-        arcgisRest.searchGroupContent(opts)
-      ])
-        .then(results => Promise.all(results.map(r => r.json ? r.json() : r)))
-        .then(jsonResults => {
-          demo.solutionVariables = jsonResults[0].value;
-          demo.organizationVariables = jsonResults[1].value;
-          
+      arcgisRest.searchGroupContent(opts)
+        .then(jsonResults => {    
           const idList = document.getElementById("solution-ids");
 
-          jsonResults[2].results.forEach(result => {
+          jsonResults.results.forEach(result => {
             const i = document.createElement("calcite-combobox-item");
             i.setAttribute("value", result.id);
             i.setAttribute("text-label", result.title);

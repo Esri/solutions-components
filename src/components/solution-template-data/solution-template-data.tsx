@@ -133,7 +133,7 @@ export class SolutionTemplateData {
   //--------------------------------------------------------------------------
 
   _jsonData(): any {
-    return <calcite-shell dir="ltr" class="light">
+    return <calcite-shell dir="ltr" class="light var-container">
       <calcite-panel class="json-editor">
         <div class="solution-data-child-container calcite-match-height">
           <json-editor

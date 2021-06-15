@@ -72,6 +72,7 @@ graph TD;
   calcite-tree-item --> calcite-icon
   solution-variables --> calcite-label
   solution-variables --> calcite-tree-item
+  solution-variables --> solution-item-icon
   solution-variables --> calcite-tree
   solution-resource-item --> calcite-label
   solution-resource-item --> calcite-button

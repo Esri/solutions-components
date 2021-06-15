@@ -37,15 +37,24 @@ define({
         "download": "Download",
         "editThumbnail": "Edit Thumbnail",
         "featureServicesHeading": "Feature Services",
+        "geocodeUrl": "Geocode URL",
+        "geometryUrl": "Geometry URL",
         "groupDetailsTab": "Group Details",
+        "id": "ID",
+        "itemId": "Item Id",
         "itemDetailsTab": "Item Details",
+        "name": "Name",
         "orgVariables": "Organization Variables",
+        "portalBaseUrl": "Portal Base Url",
         "propertiesTab": "Properties",
+        "routeUrl": "Route URL",
         "redo": "Redo",
         "saveEdits": "Save Edits",
         "search": "Search",
         "sharingTab": "Sharing",
         "snippetCountPattern": "{{n}} of 250",
+        "solutionExtent": "Solution Extent",
+        "solutionItemExtent": "Solution Item Extent",
         "solVariables": "Solution Variables",
         "spatialReferenceTab": "Spatial Reference", // for tab to edit the spatial reference of an item
         "specifyParam": "Spatial Reference Parameter",
@@ -56,7 +65,8 @@ define({
         "tags": "Tags",
         "termsOfUse": "Terms of Use",
         "update": "Update",
-        "undo": "Undo"
+        "undo": "Undo",
+        "url": "URL"
       }
     }
   }),

@@ -7,14 +7,12 @@
 
 ## Properties
 
-| Property                | Attribute      | Description                                            | Type                          | Default                                                                                                            |
-| ----------------------- | -------------- | ------------------------------------------------------ | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `item`                  | --             | Contains the current solution item we are working with | `ISolutionItem`               | `{     itemId: "",     itemDetails: {},     isResource: false,     data: {},     properties: {},     type: ""   }` |
-| `organizationVariables` | --             | Contains the organization based variables              | `IOrganizationVariableItem[]` | `[]`                                                                                                               |
-| `solutionVariables`     | --             | Contains the solution based variables                  | `IVariableItem[]`             | `[]`                                                                                                               |
-| `templates`             | `templates`    | Contains the raw templates from the solution item      | `string`                      | `undefined`                                                                                                        |
-| `translations`          | `translations` | Contains the translations for this component.          | `any`                         | `{}`                                                                                                               |
-| `value`                 | --             | Contains the public value for this component.          | `ISolutionConfiguration`      | `{     contents: []   }`                                                                                           |
+| Property       | Attribute      | Description                                            | Type                     | Default                                                                                                            |
+| -------------- | -------------- | ------------------------------------------------------ | ------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `item`         | --             | Contains the current solution item we are working with | `ISolutionItem`          | `{     itemId: "",     itemDetails: {},     isResource: false,     data: {},     properties: {},     type: ""   }` |
+| `templates`    | `templates`    | Contains the raw templates from the solution item      | `string`                 | `undefined`                                                                                                        |
+| `translations` | `translations` | Contains the translations for this component.          | `any`                    | `{}`                                                                                                               |
+| `value`        | --             | Contains the public value for this component.          | `ISolutionConfiguration` | `{     contents: []   }`                                                                                           |
 
 
 ## Methods
@@ -103,6 +101,7 @@ graph TD;
   solution-organization-variables --> calcite-tree-item
   solution-variables --> calcite-label
   solution-variables --> calcite-tree-item
+  solution-variables --> solution-item-icon
   solution-variables --> calcite-tree
   solution-resource-item --> calcite-label
   solution-resource-item --> calcite-button
