@@ -35,12 +35,16 @@ describe('solution-item-sharing', () => {
            <calcite-label layout="inline">
              <calcite-switch id="A" name="setting" scale="m" switched="" value="enabled"></calcite-switch>
              <solution-item-icon type="Feature Service"></solution-item-icon>
-             ElectionGeography_public
+             <span class="icon-text" title="ElectionGeography_public">
+              ElectionGeography_public
+             </span>
            </calcite-label>
            <calcite-label layout="inline">
              <calcite-switch id="B" name="setting" scale="m" value="enabled"></calcite-switch>
              <solution-item-icon type="Web Map"></solution-item-icon>
-             Election Polling Places
+             <span class="icon-text" title="Election Polling Places">
+              Election Polling Places
+             </span>
            </calcite-label>
          </div>
         </mock:shadow-root>

@@ -31,13 +31,13 @@ describe('solution-template-data', () => {
     expect(page.root).toEqualHtml(`
     <solution-template-data instanceid="" itemid="">
       <div class="solution-data-container">
-        <calcite-shell dir="ltr" theme="light">
-          <calcite-shell-center-row class="json-editor" height-scale="l" position="start" slot="center-row" width-scale="l">
-            <div class="padding-1 solution-data-child-container">
+        <calcite-shell class="light var-container" dir="ltr">
+          <calcite-panel class="json-editor">
+            <div class="calcite-match-height solution-data-child-container">
               <json-editor instanceid="" value=""></json-editor>
             </div>
-          </calcite-shell-center-row>
-          <calcite-shell-panel height-scale="l" position="start" slot="contextual-panel" width-scale="m">
+          </calcite-panel>
+          <calcite-shell-panel height-scale="l" position="end" slot="contextual-panel" width-scale="m">
             <div class="solution-data-child-container">
               <div class="org-vars">
                 <solution-organization-variables></solution-organization-variables>

@@ -39,70 +39,88 @@ describe('solution-variables', () => {
         <div class="container-border">
         <calcite-label id="variable-label">
           <calcite-tree-item>
+          <solution-item-icon></solution-item-icon>
+          <span class="icon-text" title="Dashboard 1">
             Dashboard 1
-            <calcite-tree slot="children">
-              <calcite-tree-item>
-                Item Id
-              </calcite-tree-item>
-              <calcite-tree-item>
-                Url
-              </calcite-tree-item>
-            </calcite-tree>
+          </span>
+          <calcite-tree slot="children">
+            <calcite-tree-item>
+              Item Id
+            </calcite-tree-item>
+            <calcite-tree-item>
+              Url
+            </calcite-tree-item>
+          </calcite-tree>
           </calcite-tree-item>
           <calcite-tree-item>
+          <solution-item-icon></solution-item-icon>
+          <span class="icon-text" title="Dashboard 2">
             Dashboard 2
-            <calcite-tree slot="children">
-              <calcite-tree-item>
-                Item Id
-              </calcite-tree-item>
-              <calcite-tree-item>
-                Url
-              </calcite-tree-item>
-            </calcite-tree>
+          </span>
+          <calcite-tree slot="children">
+            <calcite-tree-item>
+              Item Id
+            </calcite-tree-item>
+            <calcite-tree-item>
+              Url
+            </calcite-tree-item>
+          </calcite-tree>
           </calcite-tree-item>
           <calcite-tree-item>
+          <solution-item-icon></solution-item-icon>
+          <span class="icon-text" title="Feature Service 1">
             Feature Service 1
-            <calcite-tree slot="children">
-              <calcite-tree-item>
-                Item Id
-              </calcite-tree-item>
-              <calcite-tree-item>
-                Url
-              </calcite-tree-item>
-              <calcite-tree-item>
-                Name
-              </calcite-tree-item>
-              <calcite-tree-item>
+          </span>
+          <calcite-tree slot="children">
+            <calcite-tree-item>
+              Item Id
+            </calcite-tree-item>
+            <calcite-tree-item>
+              Url
+            </calcite-tree-item>
+            <calcite-tree-item>
+              Name
+            </calcite-tree-item>
+            <calcite-tree-item>
+            <solution-item-icon></solution-item-icon>
+              <span class="icon-text" title="Layer 0">
                 Layer 0
-                <calcite-tree slot="children">
-                  <calcite-tree-item>
-                    Id
-                  </calcite-tree-item>
-                  <calcite-tree-item>
-                    Url
-                  </calcite-tree-item>
-                </calcite-tree>
-              </calcite-tree-item>
-              <calcite-tree-item>
+              </span>
+              <calcite-tree slot="children">
+                <calcite-tree-item>
+                  Id
+                </calcite-tree-item>
+                <calcite-tree-item>
+                  Url
+                </calcite-tree-item>
+              </calcite-tree>
+            </calcite-tree-item>
+            <calcite-tree-item>
+              <solution-item-icon></solution-item-icon>
+              <span class="icon-text" title="Layer 1">
                 Layer 1
-                <calcite-tree slot="children">
-                  <calcite-tree-item>
-                    Id
-                  </calcite-tree-item>
-                  <calcite-tree-item>
-                    Url
-                  </calcite-tree-item>
-                </calcite-tree>
-              </calcite-tree-item>
-            </calcite-tree>
+              </span>
+              <calcite-tree slot="children">
+                <calcite-tree-item>
+                  Id
+                </calcite-tree-item>
+                <calcite-tree-item>
+                  Url
+                </calcite-tree-item>
+              </calcite-tree>
+            </calcite-tree-item>
+          </calcite-tree>
           </calcite-tree-item>
           <calcite-tree-item>
+          <solution-item-icon></solution-item-icon>
+          <span class="icon-text" title="Group 1">
             Group 1
-            <calcite-tree slot="children">
-              <calcite-tree-item>
-                Group Id
-              </calcite-tree-item>
-            </calcite-tree>
+          </span>
+          <calcite-tree slot="children">
+            <calcite-tree-item>
+              Group Id
+            </calcite-tree-item>
+          </calcite-tree>
           </calcite-tree-item>
         </calcite-label>
         </div>
