@@ -29,6 +29,7 @@ define({
 
       "configuration": {
         "cancelEdits": "Cancel Edits",
+        "cancel": "Cancel",
         "credits": "Credits",
         "dataTab": "Data",
         "definitionTab": "Definition", // for tab to edit definition of an item or group
@@ -49,6 +50,7 @@ define({
         "propertiesTab": "Properties",
         "routeUrl": "Route URL",
         "redo": "Redo",
+        "save": "Save",
         "saveEdits": "Save Edits",
         "search": "Search",
         "sharingTab": "Sharing",

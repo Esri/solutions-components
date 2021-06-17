@@ -20,6 +20,7 @@ import { ISolutionItem } from '../solution-item/solution-item';
 import { IOrganizationVariableItem } from '../solution-organization-variables/solution-organization-variables';
 import { IVariableItem } from '../solution-variables/solution-variables';
 import * as utils from '../../utils/templates';
+import { saveEdits } from '../../utils/saveHelpers';
 import state from '../../utils/editStore';
 
 import '@esri/calcite-components';
@@ -49,6 +50,21 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
 
   @State() modelsSet: boolean = false;
+
+  /**
+   * True when the modal should be displayed
+   */
+  @Prop() active: boolean = false;
+
+   /**
+    * True when the modal should be displayed
+    */
+  @Prop() canSave: boolean = false;
+
+  /**
+   * 
+   */
+  @Prop() modalTitle: string = "";
 
   /**
    * Contains the translations for this component.
@@ -92,44 +108,77 @@ export class SolutionConfiguration {
   render(): VNode {
     return (
       <Host>
-        <div class="configuration-container">
-          <div class="configuration">
-            <calcite-tabs class="config-tabs">
-              <calcite-tab-nav slot="tab-nav">
-                <calcite-tab-title>{this.translations.definitionTab}</calcite-tab-title>
-                <calcite-tab-title>{this.translations.spatialReferenceTab}</calcite-tab-title>
-              </calcite-tab-nav>
-              <calcite-tab class="config-tab" active>
-                <div class="config-solution">
-                  <div class="config-inventory">
-                    <solution-contents
-                      id="configInventory"
-                      translations={this.translations}
-                      value={this.value.contents}
-                    ></solution-contents>
+        <calcite-modal 
+          id={this.item.itemId}
+          active={this.active}
+          fullscreen={true}
+          beforeClose={() => this._beforeClose()}
+        >
+        <h3 slot="header">
+          {this.modalTitle}
+        </h3>
+          <div slot="content" class="configuration-container">
+            <div class="configuration">
+              <calcite-tabs class="config-tabs">
+                <calcite-tab-nav slot="tab-nav">
+                  <calcite-tab-title>{this.translations.definitionTab}</calcite-tab-title>
+                  <calcite-tab-title>{this.translations.spatialReferenceTab}</calcite-tab-title>
+                </calcite-tab-nav>
+                <calcite-tab class="config-tab" active>
+                  <div class="config-solution">
+                    <div class="config-inventory">
+                      <solution-contents
+                        id="configInventory"
+                        translations={this.translations}
+                        value={this.value.contents}
+                      ></solution-contents>
+                    </div>
+                    <div class="config-item">
+                      <solution-item
+                        translations={this.translations}
+                        value={this.item}
+                        solutionVariables={this._solutionVariables}
+                        organizationVariables={this._organizationVariables}
+                      ></solution-item>
+                    </div>
                   </div>
-                  <div class="config-item">
-                    <solution-item
+                </calcite-tab>
+                <calcite-tab class="config-tab">
+                  <div class="config-solution">
+                    <solution-spatial-ref
+                      id="configure-solution-spatial-ref"
                       translations={this.translations}
-                      value={this.item}
-                      solutionVariables={this._solutionVariables}
-                      organizationVariables={this._organizationVariables}
-                    ></solution-item>
+                      services={state.featureServices}
+                    ></solution-spatial-ref>
                   </div>
-                </div>
-              </calcite-tab>
-              <calcite-tab class="config-tab">
-                <div class="config-solution">
-                  <solution-spatial-ref
-                    id="configure-solution-spatial-ref"
-                    translations={this.translations} 
-                    services={state.featureServices}
-                  ></solution-spatial-ref>
-                </div>
-              </calcite-tab>
-            </calcite-tabs>
+                </calcite-tab>
+              </calcite-tabs>
+            </div>
           </div>
-        </div>
+          <calcite-button
+            slot="secondary"
+            width="full"
+            appearance="outline"
+            color="blue"
+            alignment="center"
+            scale="m"
+            onClick={() => this._cancel()}
+          >
+            {this.translations.cancel}
+          </calcite-button>
+          <calcite-button
+            slot="primary"
+            width="full"
+            appearance="solid"
+            color="blue"
+            alignment="center"
+            scale="m"
+            disabled={this.canSave}
+            onClick={() => this._save()}
+          >
+            {this.translations.save}
+          </calcite-button>
+        </calcite-modal>
       </Host>
     );
   }
@@ -183,6 +232,10 @@ export class SolutionConfiguration {
   //
   //--------------------------------------------------------------------------
 
+  private async _beforeClose() {
+    this.active = false;
+  }
+
   /**
    * Observe changes to the templates prop
    */
@@ -204,5 +257,15 @@ export class SolutionConfiguration {
       })
     });
     this._templatesObserver.observe(this.el, { attributes: true, attributeOldValue: true });
+  }
+
+  private _cancel() {
+    this.active = false;
+  }
+
+  private async _save() {
+    const models = await this.getEditModels();
+    const srInfo = await this.getSpatialReferenceInfo()
+    saveEdits(srInfo, models);
   }
 }

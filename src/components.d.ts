@@ -46,12 +46,21 @@ export namespace Components {
         "value": any;
     }
     interface SolutionConfiguration {
+        /**
+          * True when the modal should be displayed
+         */
+        "active": boolean;
+        /**
+          * True when the modal should be displayed
+         */
+        "canSave": boolean;
         "getEditModels": () => Promise<{}>;
         "getSpatialReferenceInfo": () => Promise<{}>;
         /**
           * Contains the current solution item we are working with
          */
         "item": ISolutionItem;
+        "modalTitle": string;
         /**
           * Contains the raw templates from the solution item
          */
@@ -365,9 +374,18 @@ declare namespace LocalJSX {
     }
     interface SolutionConfiguration {
         /**
+          * True when the modal should be displayed
+         */
+        "active"?: boolean;
+        /**
+          * True when the modal should be displayed
+         */
+        "canSave"?: boolean;
+        /**
           * Contains the current solution item we are working with
          */
         "item"?: ISolutionItem;
+        "modalTitle"?: string;
         /**
           * Contains the raw templates from the solution item
          */

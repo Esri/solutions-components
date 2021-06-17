@@ -7,6 +7,7 @@
 
       "configuration": {
         "cancelEdits": "Cancel Edits",
+        "cancel": "Cancel",
         "credits": "Credits",
         "dataTab": "Data",
         "definitionTab": "Definition", 
@@ -27,6 +28,7 @@
         "propertiesTab": "Properties",
         "routeUrl": "Route URL",
         "redo": "Redo",
+        "save": "Save",
         "saveEdits": "Save Edits",
         "search": "Search",
         "sharingTab": "Sharing",

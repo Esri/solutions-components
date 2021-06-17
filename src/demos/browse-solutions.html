@@ -33,6 +33,11 @@
   }
   .list {
     padding-right: 100px;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
   }
   .flex {
     display: flex;
@@ -62,12 +67,6 @@
       class="combo-list"
     >
     </calcite-combobox>
-    <calcite-button
-      color="blue"
-      appearance="solid"
-      onClick="getAllEdits()"
-      class="demo-button"
-    >Get All Edits</calcite-button>
   </div>
   <main id="appContainer">
     <div class="content full-height">
@@ -114,7 +113,7 @@
 
           jsonResults.results.forEach(result => {
             const i = document.createElement("calcite-combobox-item");
-            i.setAttribute("value", result.id);
+            i.setAttribute("value", JSON.stringify({id: result.id, title: result.title}));
             i.setAttribute("text-label", result.title);
             i.setAttribute("dir", "ltr");
             i.setAttribute("scale", "m");
@@ -122,11 +121,14 @@
           });
 
           idList.addEventListener("calciteComboboxItemChange", (event) => {
-            arcgisRest.getItemData(event.detail.value, {
+            const eventResponse = JSON.parse(event.detail.value);
+            arcgisRest.getItemData(eventResponse.id, {
               authentication,
               portal
             }).then(r => {
+              demo.modalTitle = eventResponse.title;
               demo.templates = JSON.stringify(r.templates);
+              demo.active = true;
             });
           });
 
@@ -212,6 +214,7 @@
         alert(`Add this to the solution item: ${JSON.stringify(paramToAdd)}`);
       }
     }
+  
   </script>
 </body>
 </html>

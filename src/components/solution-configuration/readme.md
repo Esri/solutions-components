@@ -9,7 +9,10 @@
 
 | Property       | Attribute      | Description                                            | Type                     | Default                                                                                                            |
 | -------------- | -------------- | ------------------------------------------------------ | ------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `active`       | `active`       | True when the modal should be displayed                | `boolean`                | `false`                                                                                                            |
+| `canSave`      | `can-save`     | True when the modal should be displayed                | `boolean`                | `false`                                                                                                            |
 | `item`         | --             | Contains the current solution item we are working with | `ISolutionItem`          | `{     itemId: "",     itemDetails: {},     isResource: false,     data: {},     properties: {},     type: ""   }` |
+| `modalTitle`   | `modal-title`  |                                                        | `string`                 | `""`                                                                                                               |
 | `templates`    | `templates`    | Contains the raw templates from the solution item      | `string`                 | `undefined`                                                                                                        |
 | `translations` | `translations` | Contains the translations for this component.          | `any`                    | `{}`                                                                                                               |
 | `value`        | --             | Contains the public value for this component.          | `ISolutionConfiguration` | `{     contents: []   }`                                                                                           |
@@ -42,6 +45,7 @@ Type: `Promise<{}>`
 
 ### Depends on
 
+- calcite-modal
 - calcite-tabs
 - calcite-tab-nav
 - calcite-tab-title
@@ -49,10 +53,12 @@ Type: `Promise<{}>`
 - [solution-contents](../solution-contents)
 - [solution-item](../solution-item)
 - [solution-spatial-ref](../solution-spatial-ref)
+- calcite-button
 
 ### Graph
 ```mermaid
 graph TD;
+  solution-configuration --> calcite-modal
   solution-configuration --> calcite-tabs
   solution-configuration --> calcite-tab-nav
   solution-configuration --> calcite-tab-title
@@ -60,6 +66,10 @@ graph TD;
   solution-configuration --> solution-contents
   solution-configuration --> solution-item
   solution-configuration --> solution-spatial-ref
+  solution-configuration --> calcite-button
+  calcite-modal --> calcite-scrim
+  calcite-modal --> calcite-icon
+  calcite-scrim --> calcite-loader
   calcite-tab-title --> calcite-icon
   solution-contents --> calcite-tree
   solution-contents --> calcite-tree-item
@@ -92,7 +102,6 @@ graph TD;
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
   calcite-popover --> calcite-icon
-  calcite-scrim --> calcite-loader
   json-editor --> calcite-button
   json-editor --> calcite-icon
   calcite-button --> calcite-loader
