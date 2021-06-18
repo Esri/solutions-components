@@ -35,24 +35,34 @@ describe('solution-contents', () => {
 
           <calcite-tree-item>
             <solution-item-icon type="Dashboard"></solution-item-icon>
-            Dashboard 1
+            <span class="icon-text" title="Dashboard 1">
+              Dashboard 1
+            </span>
           </calcite-tree-item>
 
           <calcite-tree-item>
             <solution-item-icon type="Dashboard"></solution-item-icon>
-            Dashboard 2
+            <span class="icon-text" title="Dashboard 2">
+              Dashboard 2
+            </span>
             <calcite-tree slot="children">
               <calcite-tree-item>
                 <solution-item-icon type="Web Map"></solution-item-icon>
-                Map 1
+                <span class="icon-text" title="Map 1">
+                  Map 1
+                </span>
                 <calcite-tree slot="children">
                   <calcite-tree-item>
                     <solution-item-icon type="Feature Service"></solution-item-icon>
-                    View 1
+                    <span class="icon-text" title="View 1">
+                      View 1
+                    </span>
                     <calcite-tree slot="children">
                       <calcite-tree-item>
                         <solution-item-icon type="Feature Service"></solution-item-icon>
-                        Feature Service 1
+                        <span class="icon-text" title="Feature Service 1">
+                          Feature Service 1
+                        </span>
                       </calcite-tree-item>
                     </calcite-tree>
                   </calcite-tree-item>
@@ -63,31 +73,45 @@ describe('solution-contents', () => {
 
           <calcite-tree-item>
             <solution-item-icon type="QuickCapture Project"></solution-item-icon>
-            Application 1
+            <span class="icon-text" title="Application 1">
+              Application 1
+            </span>
             <calcite-tree slot="children">
               <calcite-tree-item>
                 <solution-item-icon type="Group"></solution-item-icon>
-                Group 1
+                <span class="icon-text" title="Group 1">
+                  Group 1
+                </span>
                 <calcite-tree slot="children">
                   <calcite-tree-item>
                     <solution-item-icon type="Web Map"></solution-item-icon>
-                    Map 2
+                    <span class="icon-text" title="Map 2">
+                      Map 2
+                    </span>
                     <calcite-tree slot="children">
                       <calcite-tree-item>
                         <solution-item-icon type="Feature Service"></solution-item-icon>
-                        Feature Service 2
+                        <span class="icon-text" title="Feature Service 2">
+                          Feature Service 2
+                        </span>
                       </calcite-tree-item>
                       <calcite-tree-item>
                         <solution-item-icon type="Feature Service"></solution-item-icon>
-                        Feature Service 3
+                        <span class="icon-text" title="Feature Service 3">
+                          Feature Service 3
+                        </span>
                       </calcite-tree-item>
                       <calcite-tree-item>
                         <solution-item-icon type="Web Map"></solution-item-icon>
-                        Map 3
+                        <span class="icon-text" title="Map 3">
+                          Map 3
+                        </span>
                         <calcite-tree slot="children">
                           <calcite-tree-item>
                             <solution-item-icon type="Feature Service"></solution-item-icon>
-                            Feature Service 4
+                            <span class="icon-text" title="Feature Service 4">
+                              Feature Service 4
+                            </span>
                           </calcite-tree-item>
                         </calcite-tree>
                       </calcite-tree-item>
@@ -100,12 +124,16 @@ describe('solution-contents', () => {
 
           <calcite-tree-item>
             <solution-item-icon type="Notebook"></solution-item-icon>
-            Notebook 1
+            <span class="icon-text" title="Notebook 1">
+              Notebook 1
+            </span>
           </calcite-tree-item>
 
           <calcite-tree-item>
             <solution-item-icon type="Form"></solution-item-icon>
-            Survey 1
+            <span class="icon-text" title="Survey 1">
+              Survey 1
+            </span>
           </calcite-tree-item>
 
         </calcite-tree>

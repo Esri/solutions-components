@@ -93,7 +93,7 @@ export class SolutionItemSharing {
             onCalciteSwitchChange={(event) => this._updateItem(event)}
           ></calcite-switch>
           <solution-item-icon type={item.type} typeKeywords={item.typeKeywords}></solution-item-icon>
-          {item.title}
+          <span class="icon-text" title={item.title}>{item.title}</span>
         </calcite-label>
       );
     }) : null;

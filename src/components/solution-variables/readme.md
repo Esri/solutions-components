@@ -30,6 +30,7 @@
 
 - calcite-label
 - calcite-tree-item
+- [solution-item-icon](../solution-item-icon)
 - calcite-tree
 
 ### Graph
@@ -37,6 +38,7 @@
 graph TD;
   solution-variables --> calcite-label
   solution-variables --> calcite-tree-item
+  solution-variables --> solution-item-icon
   solution-variables --> calcite-tree
   calcite-tree-item --> calcite-icon
   solution-template-data --> solution-variables

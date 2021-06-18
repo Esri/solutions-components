@@ -19,6 +19,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode } from '@
 export interface IVariableItem {
   id: string;
   title: string;
+  type?: string;
   value: string;
   dependencies?: IVariableItem[];
 }
@@ -82,7 +83,8 @@ export class SolutionVariables {
       if (obj.dependencies && obj.dependencies.length > 0) {
         return (
           <calcite-tree-item>
-            {obj.title}
+            <solution-item-icon type={obj.type}></solution-item-icon>
+            <span class="icon-text" title={obj.title}>{obj.title}</span>
             <calcite-tree slot="children">
               {this.renderHierarchy(obj.dependencies)}
             </calcite-tree>

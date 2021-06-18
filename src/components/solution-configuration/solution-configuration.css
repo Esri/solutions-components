@@ -53,6 +53,7 @@
   display: inline;
   flex-grow: 0;
   overflow-y: auto;
+  max-width: min-content;
 }
 
 .config-item {

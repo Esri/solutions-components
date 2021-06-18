@@ -35,9 +35,9 @@ describe('json-editor', () => {
     });
     
     expect(page.root).toEqualHtml(`
-      <json-editor instanceid="ABC123" value="{a:'A'}">
+      <json-editor class="json-editor-position" instanceid="ABC123" value="{a:'A'}">
         <div class="editor-container padding-right" id="ABC123-editor-container">
-          <div class="editor-controls padding-right">
+          <div class="editor-controls">
             <div class="editor-buttons">
               <calcite-button appearance="solid" class="edit-button" color="blue" id="ABC123-undo" scale="s" title="Undo">
                 <calcite-icon icon="undo" scale="s"></calcite-icon>

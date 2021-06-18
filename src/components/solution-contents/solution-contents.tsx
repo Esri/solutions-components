@@ -81,7 +81,7 @@ export class SolutionContents {
         return (
           <calcite-tree-item onClick={() => this._treeItemSelected(obj.solutionItem)}>
             <solution-item-icon type={obj.type} typeKeywords={obj.typeKeywords}></solution-item-icon>
-            {obj.title}
+            <span class="icon-text" title={obj.title}>{obj.title}</span>
             <calcite-tree slot="children">
               {this.renderHierarchy(obj.dependencies)}
             </calcite-tree>
@@ -91,7 +91,7 @@ export class SolutionContents {
         return (
           <calcite-tree-item onClick={() => this._treeItemSelected(obj.solutionItem)}>
             <solution-item-icon type={obj.type} typeKeywords={obj.typeKeywords}></solution-item-icon>
-            {obj.title}
+            <span class="icon-text" title={obj.title}>{obj.title}</span>
           </calcite-tree-item>
         );
       }

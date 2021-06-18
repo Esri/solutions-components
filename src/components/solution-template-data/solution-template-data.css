@@ -27,6 +27,9 @@
 .solution-data-child-container {
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
 }
 
 .inputBottomSeparation {
@@ -35,16 +38,23 @@
 
 .json-editor {
   width: -webkit-fill-available;
+  margin: 1rem;
 }
 
 .org-vars {
   padding: 1rem 1rem 0 1rem;
+  max-height: 45%;
 }
 
 .sol-vars {
   padding: 0 1rem 0 1rem;
+  min-height: 45%;
 }
 
 .padding-1 {
   padding: 1rem;
+}
+
+.light {
+  background-color: #F4F4F4;
 }

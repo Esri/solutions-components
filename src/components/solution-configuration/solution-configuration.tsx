@@ -19,7 +19,7 @@ import { IInventoryItem } from '../solution-contents/solution-contents';
 import { ISolutionItem } from '../solution-item/solution-item';
 import { IOrganizationVariableItem } from '../solution-organization-variables/solution-organization-variables';
 import { IVariableItem } from '../solution-variables/solution-variables';
-import { getInventoryItems, getModels, getFeatureServices, getSpatialReferenceInfo } from '../../utils/templates';
+import * as utils from '../../utils/templates';
 import state from '../../utils/editStore';
 
 import '@esri/calcite-components';
@@ -68,16 +68,6 @@ export class SolutionConfiguration {
   @Prop({mutable: true, reflect: true}) templates: string;
 
   /**
-   * Contains the solution based variables
-   */
-  @Prop({mutable: true, reflect: true}) solutionVariables: IVariableItem[] = [];
-
-  /**
-   * Contains the organization based variables
-   */
-  @Prop({mutable: true, reflect: true}) organizationVariables: IOrganizationVariableItem[] = [];
-
-  /**
    * Contains the current solution item we are working with
    */
   @Prop({ mutable: true }) item: ISolutionItem = {
@@ -122,8 +112,8 @@ export class SolutionConfiguration {
                     <solution-item
                       translations={this.translations}
                       value={this.item}
-                      solutionVariables={this.solutionVariables}
-                      organizationVariables={this.organizationVariables}
+                      solutionVariables={this._solutionVariables}
+                      organizationVariables={this._organizationVariables}
                     ></solution-item>
                   </div>
                 </div>
@@ -151,6 +141,8 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
 
   private _templatesObserver: MutationObserver;
+  private _solutionVariables: IVariableItem[];
+  private _organizationVariables: IOrganizationVariableItem[];
 
   //--------------------------------------------------------------------------
   //
@@ -200,10 +192,12 @@ export class SolutionConfiguration {
         if (mutation.type === 'attributes' && mutation.attributeName === "templates" &&
           mutation.target[mutation.attributeName] !== mutation.oldValue) {
           const v = JSON.parse(mutation.target[mutation.attributeName]);
-          this.value.contents = [...getInventoryItems(v)];
-          state.models = getModels(v);
-          state.featureServices = getFeatureServices(v);
-          state.spatialReferenceInfo = getSpatialReferenceInfo(state.featureServices);
+          this.value.contents = [...utils.getInventoryItems(v)];
+          this._solutionVariables = utils.getSolutionVariables(v, this.translations);
+          this._organizationVariables = utils.getOrganizationVariables(this.translations);
+          state.models = utils.getModels(v);
+          state.featureServices = utils.getFeatureServices(v);
+          state.spatialReferenceInfo = utils.getSpatialReferenceInfo(state.featureServices);
           this.modelsSet = true;
           return true;
         }
