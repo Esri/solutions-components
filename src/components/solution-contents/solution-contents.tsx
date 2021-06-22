@@ -75,28 +75,26 @@ export class SolutionContents {
     );
   }
 
-  renderHierarchy(objs: IInventoryItem[]): VNode[] {
-    const hierarchy = objs.map(obj => {
-      if (obj.dependencies && obj.dependencies.length > 0) {
-        return (
+  renderHierarchy(objs: IInventoryItem[]): HTMLCalciteTreeItemElement[] {
+    return objs.map((obj) => {
+      return (obj.dependencies && obj.dependencies.length > 0) ?
+        (
           <calcite-tree-item onClick={() => this._treeItemSelected(obj.solutionItem)}>
             <solution-item-icon type={obj.type} typeKeywords={obj.typeKeywords}></solution-item-icon>
             <span class="icon-text" title={obj.title}>{obj.title}</span>
-            <calcite-tree slot="children">
+            <calcite-tree slot="children" >
               {this.renderHierarchy(obj.dependencies)}
             </calcite-tree>
           </calcite-tree-item>
-        );
-      } else {
-        return (
+        )
+      :
+        (
           <calcite-tree-item onClick={() => this._treeItemSelected(obj.solutionItem)}>
             <solution-item-icon type={obj.type} typeKeywords={obj.typeKeywords}></solution-item-icon>
             <span class="icon-text" title={obj.title}>{obj.title}</span>
           </calcite-tree-item>
         );
-      }
     });
-    return hierarchy;
   }
 
   //--------------------------------------------------------------------------
@@ -134,7 +132,7 @@ export class SolutionContents {
   /**
    * Publishes the `solutionItemSelected` event containing `itemId`, the id of the selected item.
    *
-   * @param solutionItem the 
+   * @param solutionItem the
    * @param type Item type to understand if it's an item or group
    */
   private _treeItemSelected(

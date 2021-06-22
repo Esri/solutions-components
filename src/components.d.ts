@@ -53,6 +53,10 @@ export namespace Components {
          */
         "item": ISolutionItem;
         /**
+          * Contains the current solution item id
+         */
+        "solutionItemId": string;
+        /**
           * Contains the raw templates from the solution item
          */
         "templates": string;
@@ -368,6 +372,10 @@ declare namespace LocalJSX {
           * Contains the current solution item we are working with
          */
         "item"?: ISolutionItem;
+        /**
+          * Contains the current solution item id
+         */
+        "solutionItemId"?: string;
         /**
           * Contains the raw templates from the solution item
          */
