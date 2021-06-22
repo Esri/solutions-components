@@ -200,17 +200,39 @@ export class SolutionConfiguration {
         if (mutation.type === 'attributes' && mutation.attributeName === "templates" &&
           mutation.target[mutation.attributeName] !== mutation.oldValue) {
           const v = JSON.parse(mutation.target[mutation.attributeName]);
-          this.value.contents = [...utils.getInventoryItems(v)];
-          this._solutionVariables = utils.getSolutionVariables(v, this.translations);
-          this._organizationVariables = utils.getOrganizationVariables(this.translations);
-          state.models = utils.getModels(v);
-          state.featureServices = utils.getFeatureServices(v);
-          state.spatialReferenceInfo = utils.getSpatialReferenceInfo(state.featureServices);
-          this.modelsSet = true;
+          this._initProps(v);
+          this._initState(v);
           return true;
         }
       })
     });
     this._templatesObserver.observe(this.el, { attributes: true, attributeOldValue: true });
+  }
+
+  /**
+   * Update the store with the initial value
+   */
+  private _initState(v: any): void {
+    state.models = utils.getModels(v);
+    state.featureServices = utils.getFeatureServices(v);
+    state.spatialReferenceInfo = utils.getSpatialReferenceInfo(state.featureServices);
+    this.modelsSet = true;
+  }
+
+  /**
+   * Update the Props with the initial values
+   */
+  private _initProps(v: any): void {
+    this.value.contents = [...utils.getInventoryItems(v)];
+    this._solutionVariables = utils.getSolutionVariables(v, this.translations);
+    this._organizationVariables = utils.getOrganizationVariables(this.translations);
+    this.item = {
+      itemId: "",
+      itemDetails: {},
+      isResource: false,
+      data: {},
+      properties: {},
+      type: ""
+    };
   }
 }
