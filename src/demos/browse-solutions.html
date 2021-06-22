@@ -50,18 +50,15 @@
 </head>
 
 <body>
-  <!-- <h1>Browse Solutions</h1> -->
   <div class="list flex">
-    <calcite-combobox
+    <calcite-select
       id="solution-ids"
       label="demo combobox"
-      selection-mode="single"
       placeholder="Select Solution ID"
       scale="m"
-      max-items="0"
       class="combo-list"
     >
-    </calcite-combobox>
+    </calcite-select>
     <calcite-button
       color="blue"
       appearance="solid"
@@ -82,7 +79,7 @@
     require(["i18n!../assets/nls/strings", 'vs/editor/editor.main'],
     function (translations) {
       // Initialize the configuration content
-      const demo = document.getElementById("demo");
+      let demo = document.getElementById("demo");
       demo.translations = translations.configuration_modal.configuration;
 
       const portal = "http://www.arcgis.com/sharing/rest"
@@ -113,26 +110,29 @@
           const idList = document.getElementById("solution-ids");
 
           jsonResults.results.forEach(result => {
-            const i = document.createElement("calcite-combobox-item");
+            const i = document.createElement("calcite-option");
             i.setAttribute("value", result.id);
-            i.setAttribute("text-label", result.title);
+            i.setAttribute("label", result.title);
             i.setAttribute("dir", "ltr");
             i.setAttribute("scale", "m");
             idList.appendChild(i);
           });
 
-          idList.addEventListener("calciteComboboxItemChange", (event) => {
-            arcgisRest.getItemData(event.detail.value, {
-              authentication,
-              portal
-            }).then(r => {
-              demo.templates = JSON.stringify(r.templates);
-            });
-          });
-
+          idList.addEventListener("calciteSelectChange", (event) => this.itemChanged(event, authentication, portal, idList));
           document.getElementById("appContainer").style.opacity = "1";
         });
     });
+
+    function itemChanged(event, authentication, portal, self) {
+      arcgisRest.getItemData(self.selectedOption.value, {
+        authentication,
+        portal
+      }).then(r => {
+        const demo = document.getElementById("demo");
+        demo.solutionItemId = self.selectedOption.value
+        demo.templates = JSON.stringify(r.templates);
+      });
+    }
 
     async function getAllEdits() {
       let hasChanges = false;

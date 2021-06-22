@@ -79,6 +79,11 @@ export class SolutionConfiguration {
     type: ""
   };
 
+  /**
+   * Contains the current solution item id
+   */
+  @Prop({ mutable: true }) solutionItemId: string;
+
   //--------------------------------------------------------------------------
   //
   //  Lifecycle
@@ -106,6 +111,7 @@ export class SolutionConfiguration {
                       id="configInventory"
                       translations={this.translations}
                       value={this.value.contents}
+                      key={`${this.solutionItemId }-contents`}
                     ></solution-contents>
                   </div>
                   <div class="config-item">
@@ -114,6 +120,7 @@ export class SolutionConfiguration {
                       value={this.item}
                       solutionVariables={this._solutionVariables}
                       organizationVariables={this._organizationVariables}
+                      key={`${this.solutionItemId}-item`}
                     ></solution-item>
                   </div>
                 </div>
@@ -124,6 +131,7 @@ export class SolutionConfiguration {
                     id="configure-solution-spatial-ref"
                     translations={this.translations} 
                     services={state.featureServices}
+                    key={`${this.solutionItemId}-spatial-ref`}
                   ></solution-spatial-ref>
                 </div>
               </calcite-tab>
