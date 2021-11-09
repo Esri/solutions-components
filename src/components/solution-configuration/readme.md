@@ -13,6 +13,7 @@
 | `solutionItemId` | `solution-item-id` | Contains the current solution item id                  | `string`                 | `undefined`                                                                                                        |
 | `templates`      | `templates`        | Contains the raw templates from the solution item      | `string`                 | `undefined`                                                                                                        |
 | `translations`   | `translations`     | Contains the translations for this component.          | `any`                    | `{}`                                                                                                               |
+| `treeOpen`       | `tree-open`        | Used to show/hide the content tree                     | `boolean`                | `true`                                                                                                             |
 | `value`          | --                 | Contains the public value for this component.          | `ISolutionConfiguration` | `{     contents: []   }`                                                                                           |
 
 
@@ -48,6 +49,7 @@ Type: `Promise<{}>`
 - calcite-tab-title
 - calcite-tab
 - [solution-contents](../solution-contents)
+- calcite-button
 - [solution-item](../solution-item)
 - [solution-spatial-ref](../solution-spatial-ref)
 
@@ -59,6 +61,7 @@ graph TD;
   solution-configuration --> calcite-tab-title
   solution-configuration --> calcite-tab
   solution-configuration --> solution-contents
+  solution-configuration --> calcite-button
   solution-configuration --> solution-item
   solution-configuration --> solution-spatial-ref
   calcite-tab-title --> calcite-icon
@@ -66,6 +69,8 @@ graph TD;
   solution-contents --> calcite-tree-item
   solution-contents --> solution-item-icon
   calcite-tree-item --> calcite-icon
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   solution-item --> calcite-tabs
   solution-item --> calcite-tab-nav
   solution-item --> calcite-tab-title
@@ -84,6 +89,7 @@ graph TD;
   solution-template-data --> calcite-panel
   solution-template-data --> json-editor
   solution-template-data --> calcite-shell-panel
+  solution-template-data --> calcite-button
   solution-template-data --> solution-organization-variables
   solution-template-data --> solution-variables
   solution-template-data --> solution-resource-item
@@ -96,8 +102,6 @@ graph TD;
   calcite-scrim --> calcite-loader
   json-editor --> calcite-button
   json-editor --> calcite-icon
-  calcite-button --> calcite-loader
-  calcite-button --> calcite-icon
   solution-organization-variables --> calcite-label
   solution-organization-variables --> calcite-tree-item
   solution-variables --> calcite-label
