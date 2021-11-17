@@ -84,6 +84,11 @@ export class SolutionConfiguration {
    */
   @Prop({ mutable: true }) solutionItemId: string;
 
+  /**
+   * Used to show/hide the content tree
+   */
+  @Prop({ mutable: true }) treeOpen: boolean = true;
+
   //--------------------------------------------------------------------------
   //
   //  Lifecycle
@@ -106,7 +111,7 @@ export class SolutionConfiguration {
               </calcite-tab-nav>
               <calcite-tab class="config-tab" active>
                 <div class="config-solution">
-                  <div class="config-inventory">
+                  <div class={this.treeOpen ? "config-inventory" : "config-inventory-hide"}>
                     <solution-contents
                       id="configInventory"
                       translations={this.translations}
@@ -114,6 +119,15 @@ export class SolutionConfiguration {
                       key={`${this.solutionItemId }-contents`}
                     ></solution-contents>
                   </div>
+                  <calcite-button
+                    id="collapse-vars"
+                    class="collapse-btn"
+                    icon-start={this.treeOpen ? "chevrons-left" : "chevrons-right"}
+                    appearance="transparent"
+                    title={this.translations.cancelEdits}
+                    onClick={() => this._toggleTree()}
+                    scale="s"
+                  ></calcite-button>
                   <div class="config-item">
                     <solution-item
                       translations={this.translations}
@@ -234,5 +248,12 @@ export class SolutionConfiguration {
       properties: {},
       type: ""
     };
+  }
+
+  /**
+   * Toggle treeOpen prop to show/hide content tree
+   */
+  private _toggleTree(): void {
+    this.treeOpen = !this.treeOpen;
   }
 }

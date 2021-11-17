@@ -58,7 +58,7 @@ describe('solution-configuration', () => {
                   <div class="config-inventory">
                     <solution-contents id="configInventory"></solution-contents>
                   </div>
-
+                  <calcite-button appearance="transparent" class="collapse-btn" icon-start="chevrons-left" id="collapse-vars" scale="s" title="Cancel Edits"></calcite-button>
                   <div class="config-item">
                     <solution-item></solution-item>
                   </div>

@@ -65,6 +65,10 @@ export namespace Components {
          */
         "translations": any;
         /**
+          * Used to show/hide the content tree
+         */
+        "treeOpen": boolean;
+        /**
           * Contains the public value for this component.
          */
         "value": ISolutionConfiguration;
@@ -227,6 +231,10 @@ export namespace Components {
           * Contains the public value for this component.  When working with a resource item this should contain an IResourceItem  When working with a json type item this should contain the data and vars
          */
         "value": ITemplateData;
+        /**
+          * Used to show/hide the variable containers
+         */
+        "varsOpen": boolean;
     }
     interface SolutionVariables {
         /**
@@ -385,6 +393,10 @@ declare namespace LocalJSX {
          */
         "translations"?: any;
         /**
+          * Used to show/hide the content tree
+         */
+        "treeOpen"?: boolean;
+        /**
           * Contains the public value for this component.
          */
         "value"?: ISolutionConfiguration;
@@ -533,6 +545,10 @@ declare namespace LocalJSX {
           * Contains the public value for this component.  When working with a resource item this should contain an IResourceItem  When working with a json type item this should contain the data and vars
          */
         "value"?: ITemplateData;
+        /**
+          * Used to show/hide the variable containers
+         */
+        "varsOpen"?: boolean;
     }
     interface SolutionVariables {
         "onSolutionVariableSelected"?: (event: CustomEvent<any>) => void;

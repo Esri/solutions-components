@@ -88,6 +88,11 @@ export class SolutionTemplateData {
    */
   @Prop({mutable: true, reflect: true}) organizationVariables: IOrganizationVariableItem[] = [];
 
+  /**
+   * Used to show/hide the variable containers
+   */
+  @Prop({mutable: true, reflect: true}) varsOpen: boolean = true;
+
   //--------------------------------------------------------------------------
   //
   //  Lifecycle
@@ -144,15 +149,24 @@ export class SolutionTemplateData {
         </div>
       </calcite-panel>
 
-      <calcite-shell-panel slot="contextual-panel" position="end" height-scale="l" width-scale="m">
-        <div class="solution-data-child-container">
-          <div class="org-vars">
+      <calcite-shell-panel slot="contextual-panel" position="end" height-scale="l" width-scale="xs">
+        <div class={this.varsOpen ? "solution-data-child-container" : "solution-data-child-container-collapsed"}>
+          <calcite-button
+            id="collapse-vars"
+            class="collapse-btn"
+            icon-start={this.varsOpen ? "chevrons-right" : "chevrons-left"}
+            appearance="transparent"
+            title={this.translations.cancelEdits}
+            onClick={() => this._toggleVars()}
+            scale="s"
+          ></calcite-button>
+          <div id="orgVars" class={this.varsOpen ? "org-vars" : "org-vars hide"}>
             <solution-organization-variables
               value={this.organizationVariables}
               translations={this.translations}
             ></solution-organization-variables>
           </div>
-          <div class="sol-vars">
+          <div id="solVars" class={this.varsOpen ? "sol-vars" : "sol-vars hide"}>
             <solution-variables
               value={this.solutionVariables}
               translations={this.translations}
@@ -165,5 +179,12 @@ export class SolutionTemplateData {
 
   _resourceData(templateData: ITemplateData): any {
     return <solution-resource-item value={templateData.resourceItem} translations={this.translations}></solution-resource-item>;
+  }
+
+  /**
+   * Toggle varsOpen prop to show/hide variable containers
+   */
+  _toggleVars(): void {
+    this.varsOpen = !this.varsOpen;
   }
 }
