@@ -32,6 +32,14 @@
   overflow: auto;
 }
 
+.solution-data-child-container-collapsed {
+  height: 100%;
+  width: 50px;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
 .inputBottomSeparation {
   margin: 0 0 1.5rem 0;
 }
@@ -39,6 +47,10 @@
 .json-editor {
   width: -webkit-fill-available;
   margin: 1rem;
+}
+
+.collapse-btn {
+  padding: 1rem 1rem 0 1rem;
 }
 
 .org-vars {
@@ -57,4 +69,8 @@
 
 .light {
   background-color: #F4F4F4;
+}
+
+.hide {
+  display: none;
 }
