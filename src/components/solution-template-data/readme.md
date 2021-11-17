@@ -16,6 +16,7 @@
 | `solutionVariables`     | --             | Contains the solution based variables                                                                                                                                                           | `IVariableItem[]`             | `[]`    |
 | `translations`          | `translations` | Contains the translations for this component.                                                                                                                                                   | `any`                         | `{}`    |
 | `value`                 | --             | Contains the public value for this component.  When working with a resource item this should contain an IResourceItem  When working with a json type item this should contain the data and vars | `ITemplateData`               | `{}`    |
+| `varsOpen`              | `vars-open`    | Used to show/hide the variable containers                                                                                                                                                       | `boolean`                     | `true`  |
 
 
 ## Dependencies
@@ -30,6 +31,7 @@
 - calcite-panel
 - [json-editor](../json-editor)
 - calcite-shell-panel
+- calcite-button
 - [solution-organization-variables](../solution-organization-variables)
 - [solution-variables](../solution-variables)
 - [solution-resource-item](../solution-resource-item)
@@ -41,6 +43,7 @@ graph TD;
   solution-template-data --> calcite-panel
   solution-template-data --> json-editor
   solution-template-data --> calcite-shell-panel
+  solution-template-data --> calcite-button
   solution-template-data --> solution-organization-variables
   solution-template-data --> solution-variables
   solution-template-data --> solution-resource-item

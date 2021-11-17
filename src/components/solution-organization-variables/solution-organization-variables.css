@@ -19,7 +19,6 @@
 }
 
 .container-border {
-  border: 1px solid var(--calcite-ui-border-3);
   overflow-y: auto;
 }
 

@@ -53,6 +53,7 @@ graph TD;
   solution-template-data --> calcite-panel
   solution-template-data --> json-editor
   solution-template-data --> calcite-shell-panel
+  solution-template-data --> calcite-button
   solution-template-data --> solution-organization-variables
   solution-template-data --> solution-variables
   solution-template-data --> solution-resource-item
