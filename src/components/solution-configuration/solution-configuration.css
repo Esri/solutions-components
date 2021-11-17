@@ -56,6 +56,13 @@
   max-width: min-content;
 }
 
+.config-inventory-hide {
+  display: none;
+  flex-grow: 0;
+  overflow-y: auto;
+  max-width: min-content;
+}
+
 .config-item {
   display: inline;
   margin-left: 8px;

@@ -29,7 +29,7 @@ describe('solution-template-data', () => {
       )
     });
     expect(page.root).toEqualHtml(`
-    <solution-template-data instanceid="" itemid="">
+    <solution-template-data instanceid="" itemid="" vars-open="">
       <div class="solution-data-container">
         <calcite-shell class="light var-container" dir="ltr">
           <calcite-panel class="json-editor">
@@ -37,12 +37,13 @@ describe('solution-template-data', () => {
               <json-editor instanceid="" value=""></json-editor>
             </div>
           </calcite-panel>
-          <calcite-shell-panel height-scale="l" position="end" slot="contextual-panel" width-scale="m">
+          <calcite-shell-panel height-scale="l" position="end" slot="contextual-panel" width-scale="xs">
             <div class="solution-data-child-container">
-              <div class="org-vars">
+              <calcite-button appearance="transparent" class="collapse-btn" icon-start="chevrons-right" id="collapse-vars" scale="s" title="Cancel Edits"></calcite-button>
+              <div class="org-vars" id="orgVars">
                 <solution-organization-variables></solution-organization-variables>
               </div>
-              <div class="sol-vars">
+              <div class="sol-vars" id="solVars">
                 <solution-variables></solution-variables>
               </div>
             </div>
@@ -72,7 +73,7 @@ describe('solution-template-data', () => {
     await page.waitForChanges();
 
     expect(page.root).toEqualHtml(`
-    <solution-template-data instanceid="" itemid="">
+    <solution-template-data instanceid="" itemid="" vars-open="">
       <div class="solution-data-container">
         <solution-resource-item></solution-resource-item>
       </div>
