@@ -3,6 +3,7 @@ import { Config } from '@stencil/core';
 export const config: Config = {
   namespace: 'solutions',
   globalStyle: 'src/assets/styles/styles.css',
+  sourceMap: true,
   outputTargets: [
     {
       type: 'dist',

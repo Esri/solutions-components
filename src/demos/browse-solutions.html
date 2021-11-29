@@ -85,7 +85,7 @@
   <script>
     require(["i18n!../assets/nls/strings", 'vs/editor/editor.main'],
     function (translations) {
-      const portal = "http://www.arcgis.com/sharing/rest"
+      const portal = "https://www.arcgis.com/sharing/rest";
       // get the user session
       // TODO think through UI for this..
       const authentication = new arcgisRest.UserSession({
@@ -119,7 +119,7 @@
 
       // set the data
       arcgisRest.searchGroupContent(opts)
-        .then(jsonResults => {    
+        .then(jsonResults => {
           const idList = document.getElementById("solution-ids");
 
           let value = undefined;

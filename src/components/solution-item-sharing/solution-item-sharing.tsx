@@ -141,7 +141,7 @@ export class SolutionItemSharing {
         // update the item
         item.shareItem = event.target.switched;
         // update the store
-        if (state && state.models) {
+        if (state?.models[id]) {
           let shareInfo = undefined;
           if (item.isShared && !event.target.switched) {
             shareInfo = { type: "unshare", groupId: this.groupId };

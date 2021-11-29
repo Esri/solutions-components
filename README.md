@@ -41,6 +41,12 @@ npm run generate
 ```
 with the new component's name as an argument (or specify the name when prompted).
 
+To build the component for debugging, run:
+
+```bash
+npm run build:debug
+```
+
 To build the component for production, run:
 
 ```bash
