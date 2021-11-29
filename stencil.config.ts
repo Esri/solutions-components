@@ -18,5 +18,6 @@ export const config: Config = {
     {
       type: 'docs-readme'
     }
-  ]
+  ],
+  preamble: 'Copyright 2021 Esri\nLicensed under the Apache License, Version 2.0\nhttp://www.apache.org/licenses/LICENSE-2.0'
 };
