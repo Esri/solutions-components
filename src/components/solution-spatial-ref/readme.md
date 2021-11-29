@@ -27,7 +27,7 @@ Returns the spatial reference description of the supplied value.
 
 Type: `Promise<ISpatialRefRepresentation>`
 
-
+If component is using a WKID, description using WKID; otherwise, the WKT; defaults to 102100
 
 ### `getSpatialRef() => Promise<ISpatialRefRepresentation>`
 
@@ -49,7 +49,7 @@ Converts a WKID into a spatial reference description.
 
 Type: `Promise<string>`
 
-
+Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
 
 
 ## Dependencies
