@@ -18,6 +18,10 @@
  | Helper functions from solutions-common
 */
 
+import { IItemUpdate, UserSession, updateItem } from "@esri/solution-common";
+import { getItemData as portalGetItemData } from "@esri/arcgis-rest-portal";
+import { IResponse } from "./interfaces";
+
 /**
  * Gets a property out of a deeply nested object.
  * Does not handle anything but nested object graph
@@ -103,4 +107,47 @@ export function setProp(obj: any, path: string, value: any) {
  */
 export function nodeListToArray<T extends Element>(nodeList: HTMLCollectionOf<T> | NodeListOf<T> | T[]): T[] {
   return Array.isArray(nodeList) ? nodeList : Array.from(nodeList);
+}
+
+export async function getItemData(
+  id: string,
+  authentication: UserSession
+) {
+  return await portalGetItemData(id, {
+    authentication
+  });
+}
+
+export async function save(
+  templates: any[],
+  thumbnailurl: any,
+  id: string,
+  data: any,
+  authentication: UserSession,
+  translations: any
+) {
+  // need to update the solution item with the new templates array
+  data.templates = templates;
+
+  const itemInfo: IItemUpdate = { id };
+
+  const params: any = {
+    text: data
+  };
+
+  if (thumbnailurl) {
+    params.thumbnail = thumbnailurl;
+  }
+
+  const updateResults = await updateItem(
+    itemInfo,
+    authentication,
+    undefined,
+    params
+  );
+
+  return {
+    success: updateResults.success,
+    message: updateResults.success ? translations.editsSaved : translations.saveFailed
+  } as IResponse;
 }

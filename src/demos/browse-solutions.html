@@ -62,9 +62,16 @@
     <calcite-button
       color="blue"
       appearance="solid"
-      onClick="getAllEdits()"
+      onClick="showAllEdits()"
       class="demo-button"
     >Get All Edits</calcite-button>
+    <calcite-button
+      color="blue"
+      appearance="solid"
+      onClick="save()"
+      class="demo-button"
+      id="saveBtn"
+    >Save</calcite-button>
   </div>
   <main id="appContainer">
     <div class="content full-height">
@@ -78,17 +85,23 @@
   <script>
     require(["i18n!../assets/nls/strings", 'vs/editor/editor.main'],
     function (translations) {
+      const portal = "http://www.arcgis.com/sharing/rest"
+      // get the user session
+      // TODO think through UI for this..
+      const authentication = new arcgisRest.UserSession({
+        portal,
+        username: "",
+        password: ""
+      });
+
       // Initialize the configuration content
       let demo = document.getElementById("demo");
       demo.translations = translations.configuration_modal.configuration;
+      demo.authentication = authentication;
 
-      const portal = "http://www.arcgis.com/sharing/rest"
-      // get the user session 
-      const authentication = new arcgisRest.UserSession({
-        portal
-      });
+      // DO NOT USE REEL SOLUTION ITEMS WHILE SAVE EDITS WORK IS IN PROGRESS...CAN DESTROY THE SOLUTION ITEM
+      const groupId = "";
 
-      const groupId = "478e18c821f547978fb401105af4fad1";
       const q = "type:Solution typekeywords:Solution,Template ";
       const params = {
         sortField:"relevance",
@@ -109,6 +122,7 @@
         .then(jsonResults => {    
           const idList = document.getElementById("solution-ids");
 
+          let value = undefined;
           jsonResults.results.forEach(result => {
             const i = document.createElement("calcite-option");
             i.setAttribute("value", result.id);
@@ -116,25 +130,29 @@
             i.setAttribute("dir", "ltr");
             i.setAttribute("scale", "m");
             idList.appendChild(i);
+            if (!value) {
+              value = result.id
+            }
           });
 
           idList.addEventListener("calciteSelectChange", (event) => this.itemChanged(event, authentication, portal, idList));
           document.getElementById("appContainer").style.opacity = "1";
+
+          // select the first one
+          if (value) {
+            this.itemChanged({}, authentication, portal, {
+              selectedOption: { value }
+            });
+          }
         });
     });
 
     function itemChanged(event, authentication, portal, self) {
-      arcgisRest.getItemData(self.selectedOption.value, {
-        authentication,
-        portal
-      }).then(r => {
-        const demo = document.getElementById("demo");
-        demo.solutionItemId = self.selectedOption.value
-        demo.templates = JSON.stringify(r.templates);
-      });
+      const demo = document.getElementById("demo");
+      demo.itemid = self.selectedOption.value;
     }
 
-    async function getAllEdits() {
+    async function showAllEdits() {
       let hasChanges = false;
       let hasDataErrors = false;
       let hasPropsErrors = false;
@@ -211,6 +229,15 @@
         };
         alert(`Add this to the solution item: ${JSON.stringify(paramToAdd)}`);
       }
+    }
+
+    async function save() {
+      const saveBtn = document.getElementById("saveBtn");
+      saveBtn.setAttribute("loading", true);
+      const demo = document.getElementById("demo");
+      demo.save().then(() => {
+        saveBtn.setAttribute("loading", false);
+      });
     }
   </script>
 </body>

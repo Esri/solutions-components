@@ -246,6 +246,7 @@ export class SolutionItemDetails {
       var reader = new FileReader();
       reader.onloadend = () => {
         this.thumbnail.src = reader.result as string;
+        this._updateStore("thumbnail", this.thumbnail.src);
       }
       reader.readAsDataURL(files[0]);
     }

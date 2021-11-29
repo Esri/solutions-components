@@ -21,7 +21,9 @@ import { IOrganizationVariableItem } from '../solution-organization-variables/so
 import { IVariableItem } from '../solution-variables/solution-variables';
 import * as utils from '../../utils/templates';
 import state from '../../utils/editStore';
-
+import { getItemData, save } from '../../utils/common';
+import { IResponse } from '../../utils/interfaces';
+import { generateSourceThumbnailUrl, UserSession, cloneObject } from '@esri/solution-common';
 import '@esri/calcite-components';
 
 export interface ISolutionConfiguration {
@@ -51,6 +53,11 @@ export class SolutionConfiguration {
   @State() modelsSet: boolean = false;
 
   /**
+   * Credentials for requests
+   */
+   @Prop({ mutable: true }) authentication: UserSession;
+
+  /**
    * Contains the translations for this component.
    */
   @Prop({ mutable: true }) translations: any = {};
@@ -65,7 +72,7 @@ export class SolutionConfiguration {
   /**
    * Contains the raw templates from the solution item
    */
-  @Prop({mutable: true, reflect: true}) templates: string;
+  @Prop({mutable: true, reflect: true}) templates: any[];
 
   /**
    * Contains the current solution item we are working with
@@ -82,12 +89,17 @@ export class SolutionConfiguration {
   /**
    * Contains the current solution item id
    */
-  @Prop({ mutable: true }) solutionItemId: string;
+  @Prop({ mutable: true, reflect: true }) itemid: string = "";
 
   /**
    * Used to show/hide the content tree
    */
   @Prop({ mutable: true }) treeOpen: boolean = true;
+
+  /**
+  * Contains the current solution item id
+  */
+  @Prop({ mutable: true }) sourceItemData: any = {};
 
   //--------------------------------------------------------------------------
   //
@@ -96,7 +108,7 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
 
   connectedCallback(): void {
-    this._initTemplatesObserver();
+    this._initObserver();
   }
 
   render(): VNode {
@@ -116,7 +128,7 @@ export class SolutionConfiguration {
                       id="configInventory"
                       translations={this.translations}
                       value={this.value.contents}
-                      key={`${this.solutionItemId }-contents`}
+                      key={`${this.itemid}-contents`}
                     ></solution-contents>
                   </div>
                   <calcite-button
@@ -134,7 +146,7 @@ export class SolutionConfiguration {
                       value={this.item}
                       solutionVariables={this._solutionVariables}
                       organizationVariables={this._organizationVariables}
-                      key={`${this.solutionItemId}-item`}
+                      key={`${this.itemid}-item`}
                     ></solution-item>
                   </div>
                 </div>
@@ -145,7 +157,7 @@ export class SolutionConfiguration {
                     id="configure-solution-spatial-ref"
                     translations={this.translations} 
                     services={state.featureServices}
-                    key={`${this.solutionItemId}-spatial-ref`}
+                    key={`${this.itemid}-spatial-ref`}
                   ></solution-spatial-ref>
                 </div>
               </calcite-tab>
@@ -199,6 +211,21 @@ export class SolutionConfiguration {
     return state.spatialReferenceInfo;
   }
 
+  @Method()
+  async getSourceTemplates() {
+    return this.templates;
+  }
+
+  @Method()
+  async getUpdatedTemplates() {
+    return this._getUpdates();
+  }
+
+  @Method()
+  async save() {
+    return this._save();
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Private Methods
@@ -206,19 +233,23 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
 
   /**
-   * Observe changes to the templates prop
+   * Observe changes to the props
    */
-  private _initTemplatesObserver() {
+  private _initObserver() {
     this._templatesObserver = new MutationObserver(ml => {
       ml.some(mutation => {
-        if (mutation.type === 'attributes' && mutation.attributeName === "templates" &&
-          mutation.target[mutation.attributeName] !== mutation.oldValue) {
-          const v = JSON.parse(mutation.target[mutation.attributeName]);
-          this._initProps(v);
-          this._initState(v);
+        const v = mutation.target[mutation.attributeName];
+        if (mutation.type === 'attributes' && mutation.attributeName === "itemid" && v && v !== mutation.oldValue) {
+          getItemData(v, this.authentication).then(data => {
+            this.sourceItemData = data;
+            this.templates = data.templates;
+
+            this._initProps(this.templates);
+            this._initState(this.templates);
+          });
           return true;
         }
-      })
+      });
     });
     this._templatesObserver.observe(this.el, { attributes: true, attributeOldValue: true });
   }
@@ -250,10 +281,92 @@ export class SolutionConfiguration {
     };
   }
 
+  private _getUpdates(): any[] {
+    return [];
+  }
+
+  private async _getTemplateItemUpdates() {
+    const templateItemUpdates = {};
+    const models = await this.getEditModels();
+    Object.keys(models).forEach(k => {
+      const m = models[k];
+      if (m.updateItemValues && Object.keys(m.updateItemValues).length > 0) {
+        templateItemUpdates[m.itemId] = m.updateItemValues;
+      }
+    });
+    return templateItemUpdates;
+  }
+
+  private async _getUpdatedTemplates(
+    templateItemUpdates: any
+  ) {
+    let templates;
+    let thumbnailurl;
+    const updateKeys = Object.keys(templateItemUpdates);
+    if (updateKeys.length > 0) {
+      templates = cloneObject(this.templates);
+
+      Object.keys(templateItemUpdates).forEach(k => {
+        templates.some(t => {
+          if (t.itemId === k) {
+            Object.keys(templateItemUpdates[k]).forEach(p => {
+              const update = templateItemUpdates[k][p];
+              if (p !== "thumbnail") {
+                t.item[p] = update;
+              } else {
+                // need to understand the difference in how these are stored for items within templates...
+                // still trying to figure this one out
+                thumbnailurl = generateSourceThumbnailUrl(
+                  this.authentication.portal,
+                  t.itemId,
+                  update,
+                  t.item.type === "Group"
+                );
+              }
+            });
+            return true;
+          } else {
+            return false;
+          }
+        });
+      });
+    }
+
+    return {
+      templates,
+      thumbnailurl
+    };
+  }
+
   /**
    * Toggle treeOpen prop to show/hide content tree
    */
   private _toggleTree(): void {
     this.treeOpen = !this.treeOpen;
+  }
+
+  /**
+   * Save all edits from the current configuration
+   */
+  private async _save() {
+    const templateItemUpdates = await this._getTemplateItemUpdates();
+    const templates = await this._getUpdatedTemplates(templateItemUpdates);
+
+    if (templates) {
+      return save(
+        templates.templates,
+        templates.thumbnailurl,
+        this.itemid,
+        this.sourceItemData,
+        this.authentication,
+        this.translations
+      );
+    } else {
+      // TODO remove this once we have an event that will enable/disable edit button
+      return {
+        success: true,
+        message: "No edits to save."
+      } as IResponse;
+    }
   }
 }
