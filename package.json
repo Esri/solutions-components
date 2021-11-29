@@ -16,6 +16,7 @@
   ],
   "scripts": {
     "build": "start/b cmd.exe /c \"src\\testingAssets\\nlsJStoJSON src\\assets\\nls\\strings.js src\\testingAssets\" && stencil build",
+    "build:debug": "start/b cmd.exe /c \"src\\testingAssets\\nlsJStoJSON src\\assets\\nls\\strings.js src\\testingAssets\" && stencil build -c stencil.debugconfig.ts",
     "start": "stencil build --dev --watch --serve",
     "clean:src": "start cmd.exe /c cleanSrc.bat",
     "test": "stencil test --spec --e2e --detectOpenHandles",

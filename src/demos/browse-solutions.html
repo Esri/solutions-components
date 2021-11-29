@@ -82,8 +82,8 @@
       let demo = document.getElementById("demo");
       demo.translations = translations.configuration_modal.configuration;
 
-      const portal = "http://www.arcgis.com/sharing/rest"
-      // get the user session 
+      const portal = "https://www.arcgis.com/sharing/rest"
+      // get the user session
       const authentication = new arcgisRest.UserSession({
         portal
       });
@@ -106,7 +106,7 @@
 
       // set the data
       arcgisRest.searchGroupContent(opts)
-        .then(jsonResults => {    
+        .then(jsonResults => {
           const idList = document.getElementById("solution-ids");
 
           jsonResults.results.forEach(result => {

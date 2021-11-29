@@ -92,10 +92,10 @@ export class SolutionSpatialRef {
     return (
       <Host>
         <label class="switch-label">
-          <calcite-switch 
-            switched={!this.locked} 
-            scale="m" 
-            class="spatial-ref-switch" 
+          <calcite-switch
+            switched={!this.locked}
+            scale="m"
+            class="spatial-ref-switch"
             onCalciteSwitchChange={(event) => this._updateLocked(event)}
           ></calcite-switch>
           {this.translations.specifyParam}
@@ -280,7 +280,7 @@ export class SolutionSpatialRef {
           <label class="switch-label">
             <calcite-switch
               disabled={this.locked}
-              scale="m" 
+              scale="m"
               switched={state.spatialReferenceInfo["services"][name]}
               class="spatial-ref-item-switch"
               onCalciteSwitchChange={(event) => this._updateEnabledServices(event, name)}
@@ -319,10 +319,10 @@ export class SolutionSpatialRef {
     Object.keys(state.models || {}).forEach(k => {
       const m: any = state.models[k];
       const nameMatch: boolean = name && name === m.name;
-      const serviceMatch: boolean = name === undefined && 
+      const serviceMatch: boolean = name === undefined &&
         Object.keys(state.spatialReferenceInfo["services"]).indexOf(m.name) > -1;
       if (nameMatch || serviceMatch) {
-        const updateModel = m.propsModel.getValue();
+        const updateModel = m.propsModel?.getValue();
         if (updateModel) {
           const active = getProp(state, `spatialReferenceInfo.services.${m?.name}`) || false;
           const enabled = getProp(state, 'spatialReferenceInfo.enabled') || false;
@@ -365,13 +365,13 @@ export class SolutionSpatialRef {
       }
     } else if (data.service?.spatialReference) {
       data.service.spatialReference = spatialReference;
-    } 
+    }
     return data;
   }
 
   /**
    * Select the first child on Enter key click
-   * OR 
+   * OR
    * Clear any selection while user is entering values and use the default wkid
    *
    * @param event The keyboard event
@@ -404,7 +404,7 @@ export class SolutionSpatialRef {
 
   /**
    * Select the first child from the tree.
-   * 
+   *
    * @param autoFocus Boolean to indicate if focus should also be shifted to the first child.
    *
    */
@@ -424,7 +424,7 @@ export class SolutionSpatialRef {
 
   /**
    * Set the search text State and cause render.
-   * 
+   *
    * @param event the event to get the value from
    *
    */
@@ -436,7 +436,7 @@ export class SolutionSpatialRef {
 
   /**
    * Get the tree items for the current spatial reference search
-   * 
+   *
    */
   private _getTreeContent(): VNode {
       const id: string = "solution-wkid-container";
@@ -462,7 +462,7 @@ export class SolutionSpatialRef {
 
   /**
    * Get the individual spatial reference tree item
-   * 
+   *
    * @param wkid The wkid for the spatial reference that will be displayed.
    * @param selected Should the item be selected by default.
    *
