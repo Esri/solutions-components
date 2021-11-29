@@ -109,6 +109,12 @@ export function nodeListToArray<T extends Element>(nodeList: HTMLCollectionOf<T>
   return Array.isArray(nodeList) ? nodeList : Array.from(nodeList);
 }
 
+/**
+ * Gets the items data
+ *
+ * @param id for the item being requested
+ * @param authentication credentials for the request
+ */
 export async function getItemData(
   id: string,
   authentication: UserSession
@@ -118,6 +124,16 @@ export async function getItemData(
   });
 }
 
+/**
+ * Saves any updated templates to the current solution item
+ *
+ * @param templates the updated templates array
+ * @param thumbnailurl url for the items thumbnail
+ * @param id for the solution item
+ * @param data the current solution items data
+ * @param authentication credentials for the request
+ * @param translations translated strings for messages
+ */
 export async function save(
   templates: any[],
   thumbnailurl: any,

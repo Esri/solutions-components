@@ -281,10 +281,16 @@ export class SolutionConfiguration {
     };
   }
 
+  /**
+   * Get updates from the store
+   */
   private _getUpdates(): any[] {
     return [];
   }
 
+  /**
+   * Get item updates from the store
+   */
   private async _getTemplateItemUpdates() {
     const templateItemUpdates = {};
     const models = await this.getEditModels();
@@ -297,6 +303,9 @@ export class SolutionConfiguration {
     return templateItemUpdates;
   }
 
+  /**
+   * Get templates that have updates from the store
+   */
   private async _getUpdatedTemplates(
     templateItemUpdates: any
   ) {
