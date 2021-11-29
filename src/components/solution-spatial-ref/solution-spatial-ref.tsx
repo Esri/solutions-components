@@ -473,7 +473,7 @@ export class SolutionSpatialRef {
   ): VNode {
     return (
       <calcite-tree-item
-        onCalciteTreeItemSelect={() => this._setSpatialRef(wkid)}
+        onChange={() => this._setSpatialRef(wkid)}
         selected={selected}
         aria-selected={selected}
         id={wkid}

@@ -39,6 +39,7 @@ graph TD;
   solution-contents --> calcite-tree-item
   solution-contents --> solution-item-icon
   calcite-tree-item --> calcite-icon
+  calcite-tree-item --> calcite-checkbox
   solution-configuration --> solution-contents
   style solution-contents fill:#f9f,stroke:#333,stroke-width:4px
 ```
