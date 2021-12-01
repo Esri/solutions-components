@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-export interface IWkidDescription {
-  label: string;
-  defaultExtent: string;
-};
+import { IWkidDescription } from '../../utils/interfaces';
 
 export const wkids: Record<number, IWkidDescription> = {
   2000: {

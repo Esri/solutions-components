@@ -15,19 +15,8 @@
  */
 
 import { Component, Element, h, Host, Prop, VNode } from '@stencil/core';
-import { ITemplateData } from '../solution-template-data/solution-template-data';
+import { ISolutionItem } from '../../utils/interfaces';
 import '@esri/calcite-components';
-import { IItemShare } from '../solution-item-sharing/solution-item-sharing';
-
-export interface ISolutionItem {
-  itemId: string,
-  itemDetails: any, //use the interface
-  isResource: boolean, // this should be removed and determined from the data
-  data: ITemplateData,
-  properties: ITemplateData,
-  type: string,
-  groupDetails?: IItemShare[]
-}
 
 @Component({
   tag: 'solution-item',

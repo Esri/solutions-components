@@ -15,14 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode } from '@stencil/core';
-
-export interface IVariableItem {
-  id: string;
-  title: string;
-  type?: string;
-  value: string;
-  dependencies?: IVariableItem[];
-}
+import { IVariableItem } from '../../utils/interfaces';
 
 @Component({
   tag: 'solution-variables',

@@ -6,20 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { UserSession } from "@esri/solution-common";
-import { ISolutionConfiguration } from "./components/solution-configuration/solution-configuration";
-import { ISolutionItem } from "./components/solution-item/solution-item";
-import { IResponse } from "./utils/interfaces";
-import { IInventoryItem } from "./components/solution-contents/solution-contents";
-import { ISolutionItem as ISolutionItem1 } from "./components/solution-item/solution-item";
-import { IItemDetails } from "./components/solution-item-details/solution-item-details";
-import { IItemShare } from "./components/solution-item-sharing/solution-item-sharing";
-import { IOrganizationVariableItem } from "./components/solution-organization-variables/solution-organization-variables";
-import { IResourceItem } from "./components/solution-resource-item/solution-resource-item";
-import { ISpatialRefRepresentation } from "./components/solution-spatial-ref/solution-spatial-ref";
-import { ITemplateData } from "./components/solution-template-data/solution-template-data";
-import { IVariableItem } from "./components/solution-variables/solution-variables";
-import { IOrganizationVariableItem as IOrganizationVariableItem1 } from "./components/solution-organization-variables/solution-organization-variables";
-import { IVariableItem as IVariableItem1 } from "./components/solution-variables/solution-variables";
+import { IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourceItem, IResponse, ISolutionConfiguration, ISolutionItem, ISpatialRefRepresentation, ITemplateData, IVariableItem } from "./utils/interfaces";
 export namespace Components {
     interface JsonEditor {
         /**

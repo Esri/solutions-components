@@ -15,20 +15,12 @@
  */
 
 import { Component, Element, h, Host, Listen, Method, Prop, State, VNode } from '@stencil/core';
-import { IInventoryItem } from '../solution-contents/solution-contents';
-import { ISolutionItem } from '../solution-item/solution-item';
-import { IOrganizationVariableItem } from '../solution-organization-variables/solution-organization-variables';
-import { IVariableItem } from '../solution-variables/solution-variables';
+import { IOrganizationVariableItem, IResponse, ISolutionConfiguration, ISolutionItem, IVariableItem } from '../../utils/interfaces';
 import * as utils from '../../utils/templates';
 import state from '../../utils/editStore';
 import { getItemData, save } from '../../utils/common';
-import { IResponse } from '../../utils/interfaces';
 import { generateSourceThumbnailUrl, UserSession, cloneObject } from '@esri/solution-common';
 import '@esri/calcite-components';
-
-export interface ISolutionConfiguration {
-  contents: IInventoryItem[]
-}
 
 @Component({
   tag: 'solution-configuration',
