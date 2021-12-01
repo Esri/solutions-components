@@ -23,8 +23,10 @@
   <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" type="text/css" />
   <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
   <link rel="stylesheet" href="../solutions.css" type="text/css">
-  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
   <style>
+    body {
+      overflow-y: auto;
+    }
     .full-height {
       height: 100%;
     }
@@ -36,9 +38,6 @@
     .demo-column {
       flex: 1;
       margin: 0 2rem;
-    }
-    .demo-column > * {
-      margin-top: 2rem;
     }
     .nav {
       list-style: none;
@@ -56,51 +55,44 @@
   <h2>Solutions Component Examples!</h2>
   <main>
     <div class="content full-height">
-      <div class="demo-column">    
+      <div class="demo-column">
         <ul class="nav">
-          <li>
-            <calcite-link href="./browse-solutions.html" target="_blank">browse-solutions</calcite-link>
-          </li>
-          <li>
-            <calcite-link href="./json-editor.html" target="_blank">json-editor</calcite-link>
-          </li>
-          <li>
-            <calcite-link href="./solution-configuration.html" target="_blank">solution-configuration</calcite-link>
-          </li>
-          <li>
-            <calcite-link href="./solution-contents.html" target="_blank">solution-contents</calcite-link>
-          </li>
-          <li>
-            <calcite-link href="./solution-item-details.html" target="_blank">solution-item-details</calcite-link>
-          </li>
-          <li>
-            <calcite-link href="./solution-group-details.html" target="_blank">solution-group-details</calcite-link>
-          </li>
-          <li>
-            <calcite-link href="./solution-item-icon.html" target="_blank">solution-item-icon</calcite-link>
-          </li>
-          <li>
-            <calcite-link href="./solution-item-sharing.html" target="_blank">solution-item-sharing</calcite-link>
-          </li>
-          <li>
-            <calcite-link href="./solution-item.html" target="_blank">solution-item</calcite-link>
-          </li>
-          <li>
-            <calcite-link href="./solution-organization-variables.html" target="_blank">solution-organization-variables</calcite-link>
-          </li>
-          <li>
-            <calcite-link href="./solution-resource-item.html" target="_blank">solution-resource-item</calcite-link>
-          </li>
-          <li>
-            <calcite-link href="./solution-spatial-ref.html" target="_blank">solution-spatial-ref</calcite-link>
-          </li>
-          <li>
-            <calcite-link href="./solution-template-data.html" target="_blank">solution-template-data</calcite-link>
-          </li>
-          <li>
-            <calcite-link href="./solution-variables.html" target="_blank">solution-variables</calcite-link>
+          <li><calcite-link href="./solution-configuration.html" target="_blank">&lt;solution-configuration&gt;</calcite-link>
+            <ul>
+              <li><calcite-link href="./solution-contents.html" target="_blank">&lt;solution-contents&gt;</calcite-link>
+                <ul>
+                  <li><calcite-link href="./solution-item-icon.html" target="_blank">&lt;solution-item-icon&gt;</calcite-link></li>
+                </ul>
+              </li>
+              <li><calcite-link href="./solution-item.html" target="_blank">&lt;solution-item&gt;</calcite-link>
+                <ul>
+                  <li><calcite-link href="./solution-item-details.html" target="_blank">&lt;solution-item-details&gt; (item)</calcite-link>, <calcite-link href="./solution-group-details.html" target="_blank">&lt;solution-item-details&gt; (group)</calcite-link>
+                  </li>
+                  <li><calcite-link href="./solution-item-sharing.html" target="_blank">&lt;solution-item-sharing&gt;</calcite-link>
+                    <ul>
+                      <li><calcite-link href="./solution-item-icon.html" target="_blank">&lt;solution-item-icon&gt;</calcite-link></li>
+                    </ul>
+                  </li>
+                  <li><calcite-link href="./solution-template-data.html" target="_blank">&lt;solution-item-template-data&gt;</calcite-link>
+                    <ul>
+                      <li><calcite-link href="./json-editor.html" target="_blank">&lt;json-editor&gt;</calcite-link></li>
+                      <li><calcite-link href="./solution-organization-variables.html" target="_blank">&lt;solution-organization-variables&gt;</calcite-link></li>
+                      <li><calcite-link href="./solution-variables.html" target="_blank">&lt;solution-variables&gt;</calcite-link>
+                        <ul>
+                          <li><calcite-link href="./solution-item-icon.html" target="_blank">&lt;solution-item-icon&gt;</calcite-link></li>
+                        </ul>
+                      </li>
+                      <li><calcite-link href="./solution-resource-item.html" target="_blank">&lt;solution-resource-item&gt;</calcite-link></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li><calcite-link href="./solution-spatial-ref.html" target="_blank">&lt;solution-spatial-ref&gt;</calcite-link></li>
+            </ul>
           </li>
         </ul>
+        <br>
+        <calcite-link href="./browse-solutions.html" target="_blank">Solution Browser</calcite-link>
       </div>
     </div>
   </main>
