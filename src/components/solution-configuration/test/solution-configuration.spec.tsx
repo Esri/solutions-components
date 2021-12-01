@@ -43,7 +43,7 @@ describe('solution-configuration', () => {
       )
     });
     expect(page.root).toEqualHtml(`
-      <solution-configuration>
+      <solution-configuration itemid="">
         <div class="configuration-container">
           <div class="configuration">
             <calcite-tabs class="config-tabs">
