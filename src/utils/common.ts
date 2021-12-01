@@ -18,7 +18,15 @@
  | Helper functions from solutions-common
 */
 
-import { IItemUpdate, UserSession, updateItem } from "@esri/solution-common";
+import {
+  IItemUpdate,
+  UserSession,
+  updateItem,
+  getProp as commonGetProp,
+  getProps as commonGetProps,
+  setCreateProp as commonSetCreateProps,
+  setProp as commonSetProp
+} from "@esri/solution-common";
 import { getItemData as portalGetItemData } from "@esri/arcgis-rest-portal";
 import { IResponse } from "./interfaces";
 
@@ -32,10 +40,7 @@ import { IResponse } from "./interfaces";
  * @return Value at end of path
  */
  export function getProp(obj: { [index: string]: any }, path: string): any {
-  return path.split(".").reduce(function(prev, curr) {
-    /* istanbul ignore next no need to test undefined scenario */
-    return prev ? prev[curr] : undefined;
-  }, obj);
+  return commonGetProp(obj, path);
 }
 
 /**
@@ -46,13 +51,7 @@ import { IResponse } from "./interfaces";
  * @return Array of the values plucked from the object; only defined values are returned
  */
 export function getProps(obj: any, props: string[]): any {
-  return props.reduce((a, p) => {
-    const v = getProp(obj, p);
-    if (v) {
-      a.push(v);
-    }
-    return a;
-  }, [] as any[]);
+  return commonGetProps(obj, props);
 }
 
 /**
@@ -63,19 +62,8 @@ export function getProps(obj: any, props: string[]): any {
  * @param path Path into an object, e.g., "data.values.webmap", where "data" is a top-level property in obj
  * @param value The value to set at the end of the path
  */
-export function setCreateProp(obj: any, path: string, value: any) {
-  const pathParts: string[] = path.split(".");
-  pathParts.reduce((a: any, b: any, c: any) => {
-    if (c === pathParts.length - 1) {
-      a[b] = value;
-      return value;
-    } else {
-      if (!a[b]) {
-        a[b] = {};
-      }
-      return a[b];
-    }
-  }, obj);
+export function setCreateProp(obj: any, path: string, value: any): void {
+  commonSetCreateProps(obj, path, value);
 }
 
 /**
@@ -86,18 +74,8 @@ export function setCreateProp(obj: any, path: string, value: any) {
  * @param path Path into an object, e.g., "data.values.webmap", where "data" is a top-level property in obj
  * @param value The value to set at the end of the path
  */
-export function setProp(obj: any, path: string, value: any) {
-  if (getProp(obj, path)) {
-    const pathParts: string[] = path.split(".");
-    pathParts.reduce((a: any, b: any, c: any) => {
-      if (c === pathParts.length - 1) {
-        a[b] = value;
-        return value;
-      } else {
-        return a[b];
-      }
-    }, obj);
-  }
+export function setProp(obj: any, path: string, value: any): void {
+  commonSetProp(obj, path, value);
 }
 
 /**
