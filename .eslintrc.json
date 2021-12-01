@@ -1,4 +1,5 @@
 {
+  "root": true,
   "env": {
     "jest/globals": true
   },
@@ -19,6 +20,7 @@
   },
   "plugins": ["@esri/calcite-components", "@typescript-eslint", "eslint-plugin-react", "jest", "prettier", "unicorn"],
   "rules": {
+    "@stencil/ban-prefix": "off",
     "@stencil/decorators-context": "off",
     "@stencil/decorators-style": "warn",
     "@stencil/no-unused-watch": "off",
@@ -46,6 +48,12 @@
       }
     ],
     "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unsafe-argument": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-return": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
     "curly": "error",
     "jest/expect-expect": "off",
     "jest/no-export": "warn",
@@ -53,6 +61,7 @@
     "no-multiple-empty-lines": ["error", { "max": 1 }],
     "no-unneeded-ternary": "error",
     "no-unused-vars": "error",
+    "react/jsx-no-bind": [ "error", { "ignoreDOMComponents": true } ],
     "react/jsx-sort-props": "error",
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
