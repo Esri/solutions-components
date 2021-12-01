@@ -17,7 +17,7 @@
 import { Component, Element, h, Host, Listen, Prop, VNode } from '@stencil/core';
 import '@esri/calcite-components';
 import state from '../../utils/editStore';
-import { getProp } from '../../utils/common';
+import { getProp } from '@esri/solution-common';
 import { IItemDetails } from '../../utils/interfaces';
 
 @Component({

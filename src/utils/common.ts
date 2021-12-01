@@ -21,62 +21,10 @@
 import {
   IItemUpdate,
   UserSession,
-  updateItem,
-  getProp as commonGetProp,
-  getProps as commonGetProps,
-  setCreateProp as commonSetCreateProps,
-  setProp as commonSetProp
+  updateItem
 } from "@esri/solution-common";
 import { getItemData as portalGetItemData } from "@esri/arcgis-rest-portal";
 import { IResponse } from "./interfaces";
-
-/**
- * Gets a property out of a deeply nested object.
- * Does not handle anything but nested object graph
- *
- * @param obj Object to retrieve value from
- * @param path Path into an object, e.g., "data.values.webmap", where "data" is a top-level property
- *             in obj
- * @return Value at end of path
- */
- export function getProp(obj: { [index: string]: any }, path: string): any {
-  return commonGetProp(obj, path);
-}
-
-/**
- * Returns an array of values from an object based on an array of property paths.
- *
- * @param obj Object to retrieve values from
- * @param props Array of paths into the object e.g., "data.values.webmap", where "data" is a top-level property
- * @return Array of the values plucked from the object; only defined values are returned
- */
-export function getProps(obj: any, props: string[]): any {
-  return commonGetProps(obj, props);
-}
-
-/**
- * Sets a deeply nested property of an object.
- * Creates the full path if it does not exist.
- *
- * @param obj Object to set value of
- * @param path Path into an object, e.g., "data.values.webmap", where "data" is a top-level property in obj
- * @param value The value to set at the end of the path
- */
-export function setCreateProp(obj: any, path: string, value: any): void {
-  commonSetCreateProps(obj, path, value);
-}
-
-/**
- * Sets a deeply nested property of an object.
- * Does nothing if the full path does not exist.
- *
- * @param obj Object to set value of
- * @param path Path into an object, e.g., "data.values.webmap", where "data" is a top-level property in obj
- * @param value The value to set at the end of the path
- */
-export function setProp(obj: any, path: string, value: any): void {
-  commonSetProp(obj, path, value);
-}
 
 /**
  * Get an array from a list of nodes

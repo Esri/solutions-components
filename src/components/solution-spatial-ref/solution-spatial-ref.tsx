@@ -18,7 +18,8 @@ import { Component, Element, h, Host, Method, Prop, State, Watch, VNode } from '
 import '@esri/calcite-components';
 import { wkids } from './spatialreferences';
 import state from '../../utils/editStore';
-import { getProp, nodeListToArray } from '../../utils/common';
+import { nodeListToArray } from '../../utils/common';
+import { getProp } from '@esri/solution-common';
 import { ISpatialRefRepresentation, IWkidDescription } from '../../utils/interfaces';
 
 @Component({
