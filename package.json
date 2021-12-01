@@ -19,22 +19,35 @@
     "build:debug": "start/b cmd.exe /c \"src\\testingAssets\\nlsJStoJSON src\\assets\\nls\\strings.js src\\testingAssets\" && stencil build -c stencil.debugconfig.ts",
     "start": "stencil build --dev --watch --serve",
     "clean:src": "start cmd.exe /c cleanSrc.bat",
+    "lint:ts": "eslint --ext .ts,.tsx src/components src/utils",
+    "lint:ts:fix": "eslint --ext .ts,.tsx --fix src/components src/utils",
+    "lint:ts:prettier": "prettier --write \"**/*.ts?(x)\"",
     "test": "stencil test --spec --e2e --detectOpenHandles",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.20",
+    "@esri/eslint-plugin-calcite-components": "0.1.1",
+    "@stencil/eslint-plugin": "0.4.0",
+    "@types/jest": "26.0.21",
     "@types/puppeteer": "^5.4.2",
+    "@typescript-eslint/eslint-plugin": "5.4.0",
+    "@typescript-eslint/parser": "5.4.0",
+    "eslint": "^8.3.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-jest": "25.3.0",
+    "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-react": "7.27.1",
+    "eslint-plugin-unicorn": "39.0.0",
     "jest": "^26.6.3",
     "jest-cli": "^26.6.3",
+    "prettier": "2.4.1",
     "puppeteer": "^11.0.0",
-    "typescript": "^4.4.4"
+    "stencil-eslint-core": "0.1.0",
+    "typescript": "4.4.4"
   },
   "dependencies": {
-    "@esri/calcite-components": "^1.0.0-beta.69",
-    "@stencil/core": "2.11.0",
-    "@stencil/store": "^1.5.0",
+    "@esri/calcite-components": "^1.0.0-beta.70",
     "monaco-editor": "^0.30.1"
   },
   "repository": {
