@@ -45,12 +45,12 @@ export class SolutionItemIcon {
   /**
    * Indicate if this is portal
    */
-  @Prop() isPortal: boolean = false;
+  @Prop() isPortal = false;
 
   /**
    * The type for the item
    */
-  @Prop() type: string = "";
+  @Prop() type = "";
 
   /**
    * The typeKeywords for the item
@@ -65,11 +65,11 @@ export class SolutionItemIcon {
 
   render() {
     return <div title={this.type}>
-      <img src={this._getIconUrl(this.type, this.typeKeywords)}
-        width="16"
+      <img class="item-type-icon item-type-icon-margin"
         height="16"
-        class="item-type-icon item-type-icon-margin"
-      ></img>
+        src={this._getIconUrl(this.type, this.typeKeywords)}
+        width="16"
+       />
     </div>;
   }
 

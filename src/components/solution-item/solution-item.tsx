@@ -108,19 +108,19 @@ export class SolutionItem {
         <calcite-tab-title>{this.translations.sharingTab}</calcite-tab-title>
       </calcite-tab-nav>
 
-      <calcite-tab class="config-tab" active>
+      <calcite-tab active class="config-tab">
         <solution-item-details 
           translations={this.translations}
           type={this.value.type}
           value={this.value.itemDetails}
-        ></solution-item-details>
+         />
       </calcite-tab>
       <calcite-tab class="config-tab">
         <solution-item-sharing
+          groupId={this.value.itemId}
           translations={this.translations}
           value={this.value.groupDetails}
-          groupId={this.value.itemId}
-        ></solution-item-sharing>
+         />
       </calcite-tab>
     </calcite-tabs>
   }
@@ -133,33 +133,33 @@ export class SolutionItem {
         <calcite-tab-title>{this.translations.propertiesTab}</calcite-tab-title>
       </calcite-tab-nav>
 
-      <calcite-tab class="config-tab" active>
+      <calcite-tab active class="config-tab">
         <solution-item-details
           translations={this.translations}
           type={this.value.type}
           value={this.value.itemDetails}
-        ></solution-item-details>
+         />
       </calcite-tab>
-      <calcite-tab id="data-tab" class="config-tab">
+      <calcite-tab class="config-tab" id="data-tab">
         <solution-template-data
           instanceid="data"
-          itemid={this.value.itemId}
           isResource={this.value.isResource}
-          solutionVariables={this.solutionVariables}
+          itemid={this.value.itemId}
           organizationVariables={this.organizationVariables}
+          solutionVariables={this.solutionVariables}
           translations={this.translations}
           value={{value: this.value.data}}
-        ></solution-template-data>
+         />
       </calcite-tab>
-      <calcite-tab id="props-tab" class="config-tab">
+      <calcite-tab class="config-tab" id="props-tab">
         <solution-template-data
           instanceid="props"
           itemid={this.value.itemId}
-          solutionVariables={this.solutionVariables}
           organizationVariables={this.organizationVariables}
+          solutionVariables={this.solutionVariables}
           translations={this.translations} 
           value={{value: this.value.properties}}
-        ></solution-template-data>
+         />
       </calcite-tab>
     </calcite-tabs>
   }

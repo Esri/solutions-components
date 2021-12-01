@@ -48,7 +48,7 @@ export class SolutionConfiguration {
   //
   //--------------------------------------------------------------------------
 
-  @State() modelsSet: boolean = false;
+  @State() modelsSet = false;
 
   /**
    * Contains the translations for this component.
@@ -87,7 +87,7 @@ export class SolutionConfiguration {
   /**
    * Used to show/hide the content tree
    */
-  @Prop({ mutable: true }) treeOpen: boolean = true;
+  @Prop({ mutable: true }) treeOpen = true;
 
   //--------------------------------------------------------------------------
   //
@@ -109,33 +109,33 @@ export class SolutionConfiguration {
                 <calcite-tab-title>{this.translations.definitionTab}</calcite-tab-title>
                 <calcite-tab-title>{this.translations.spatialReferenceTab}</calcite-tab-title>
               </calcite-tab-nav>
-              <calcite-tab class="config-tab" active>
+              <calcite-tab active class="config-tab">
                 <div class="config-solution">
                   <div class={this.treeOpen ? "config-inventory" : "config-inventory-hide"}>
                     <solution-contents
                       id="configInventory"
+                      key={`${this.solutionItemId }-contents`}
                       translations={this.translations}
                       value={this.value.contents}
-                      key={`${this.solutionItemId }-contents`}
-                    ></solution-contents>
+                     />
                   </div>
                   <calcite-button
-                    id="collapse-vars"
+                    appearance="transparent"
                     class="collapse-btn"
                     icon-start={this.treeOpen ? "chevrons-left" : "chevrons-right"}
-                    appearance="transparent"
-                    title={this.translations.cancelEdits}
+                    id="collapse-vars"
                     onClick={() => this._toggleTree()}
                     scale="s"
-                  ></calcite-button>
+                    title={this.translations.cancelEdits}
+                   />
                   <div class="config-item">
                     <solution-item
+                      key={`${this.solutionItemId}-item`}
+                      organizationVariables={this._organizationVariables}
+                      solutionVariables={this._solutionVariables}
                       translations={this.translations}
                       value={this.item}
-                      solutionVariables={this._solutionVariables}
-                      organizationVariables={this._organizationVariables}
-                      key={`${this.solutionItemId}-item`}
-                    ></solution-item>
+                     />
                   </div>
                 </div>
               </calcite-tab>
@@ -143,10 +143,10 @@ export class SolutionConfiguration {
                 <div class="config-solution">
                   <solution-spatial-ref
                     id="configure-solution-spatial-ref"
-                    translations={this.translations} 
+                    key={`${this.solutionItemId}-spatial-ref`} 
                     services={state.featureServices}
-                    key={`${this.solutionItemId}-spatial-ref`}
-                  ></solution-spatial-ref>
+                    translations={this.translations}
+                   />
                 </div>
               </calcite-tab>
             </calcite-tabs>
@@ -163,7 +163,9 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
 
   private _templatesObserver: MutationObserver;
+
   private _solutionVariables: IVariableItem[];
+
   private _organizationVariables: IOrganizationVariableItem[];
 
   //--------------------------------------------------------------------------
