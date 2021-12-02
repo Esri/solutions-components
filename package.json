@@ -23,7 +23,7 @@
     "lint:ts:fix": "eslint --ext .ts,.tsx --fix src/components src/utils",
     "lint:ts:prettier": "prettier --write \"**/*.ts?(x)\"",
     "test": "stencil test --spec --e2e --detectOpenHandles",
-    "test:clean": "npm run clean:src && stencil test --spec --e2e --detectOpenHandles",
+    "test:clean": "npm run clean:src && npm run lint:ts:fix && stencil test --spec --e2e --detectOpenHandles",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate"
   },
