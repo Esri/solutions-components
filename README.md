@@ -60,6 +60,13 @@ npm run clean:src
 npm test
 ```
 
+To publish to npm and GitHub, run:
+
+```bash
+npm release:publish
+```
+
+
 ## Issues
 
 Find a bug or want to request a new feature?  Please let us know by submitting an issue.
