@@ -68,7 +68,8 @@ export class SolutionSpatialRef {
    */
   @Prop({ mutable: true, reflect: true }) value: string = null;
 
-  @Watch("value") valueChanged(newValue: string): void {
+  @Watch("value")
+  valueChanged(newValue: string): void {
     this.spatialRef = this._createSpatialRefDisplay(newValue);
     this._updateStore();
   }
@@ -390,7 +391,7 @@ export class SolutionSpatialRef {
     const selectedItems = nodeListToArray(
       this.el.querySelectorAll("calcite-tree-item[selected]")
     ) ;
-    selectedItems.forEach((treeItem) => {
+    selectedItems.forEach((treeItem: HTMLCalciteTreeItemElement) => {
       treeItem.selected = false;
     });
   }
@@ -468,7 +469,7 @@ export class SolutionSpatialRef {
       <calcite-tree-item
         aria-selected={selected}
         id={wkid}
-        onCalciteTreeItemSelect={() => this._setSpatialRef(wkid)}
+        onClick={() => this._setSpatialRef(wkid)}
         selected={selected}
       >
         <div>{`${wkids[wkid].label} (${wkid})`}</div>

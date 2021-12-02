@@ -143,7 +143,7 @@ export class SolutionConfiguration {
                 <div class="config-solution">
                   <solution-spatial-ref
                     id="configure-solution-spatial-ref"
-                    key={`${this.solutionItemId}-spatial-ref`} 
+                    key={`${this.solutionItemId}-spatial-ref`}
                     services={state.featureServices}
                     translations={this.translations}
                    />
@@ -192,13 +192,13 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
 
   @Method()
-  async getEditModels() {
-    return state.models;
+  async getEditModels(): Promise<any> {
+    return Promise.resolve(state.models);
   }
 
   @Method()
-  async getSpatialReferenceInfo() {
-    return state.spatialReferenceInfo;
+  async getSpatialReferenceInfo(): Promise<any> {
+    return Promise.resolve(state.spatialReferenceInfo);
   }
 
   //--------------------------------------------------------------------------

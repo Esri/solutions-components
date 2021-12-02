@@ -22,13 +22,14 @@
     "lint:ts": "eslint --ext .ts,.tsx src/components src/utils",
     "lint:ts:fix": "eslint --ext .ts,.tsx --fix src/components src/utils",
     "lint:ts:prettier": "prettier --write \"**/*.ts?(x)\"",
-    "test": "stencil test --spec --e2e --detectOpenHandles",
+    "test": "npm run clean:src && stencil test --spec --e2e --detectOpenHandles",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate"
   },
   "devDependencies": {
     "@esri/eslint-plugin-calcite-components": "0.1.1",
     "@stencil/eslint-plugin": "0.4.0",
+    "@stencil/store": "^1.5.0",
     "@types/jest": "26.0.21",
     "@types/puppeteer": "^5.4.2",
     "@typescript-eslint/eslint-plugin": "5.4.0",
@@ -39,6 +40,7 @@
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-react": "7.27.1",
     "eslint-plugin-unicorn": "39.0.0",
+    "form-request-submit-polyfill": "^2.0.0",
     "jest": "^26.6.3",
     "jest-cli": "^26.6.3",
     "prettier": "2.4.1",

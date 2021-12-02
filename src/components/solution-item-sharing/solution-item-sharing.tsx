@@ -134,6 +134,7 @@ export class SolutionItemSharing {
    *
    * @param event onCalciteSwitchChange event
    */
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   _updateItem(event): void {
     const id: string = event.target.id;
     this.value = this.value.map(item => {

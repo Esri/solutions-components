@@ -27,7 +27,7 @@ export interface IResourceItem {
   shadow: true
 })
 export class SolutionResourceItem {
-  
+
   //--------------------------------------------------------------------------
   //
   //  Host element access
@@ -58,7 +58,7 @@ export class SolutionResourceItem {
   @State() fileName: string;
 
   @Watch('value')
-  valueWatchHandler(v: IResourceItem, oldV: IResourceItem) {
+  valueWatchHandler(v: IResourceItem, oldV: IResourceItem): void {
     this.fileName = v.name !== oldV.name ? v.name : this.fileName;
   }
 
@@ -173,7 +173,7 @@ export class SolutionResourceItem {
    * Download file from url.
    *
    */
-  _downloadItem() {
+  _downloadItem(): void {
     this.downloadFile.click();
   }
 
@@ -181,7 +181,7 @@ export class SolutionResourceItem {
    * Opens file browse dialog.
    *
    */
-  _updateItem() {
+  _updateItem(): void {
     this.browseForFile.click();
   }
 
