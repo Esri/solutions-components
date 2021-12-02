@@ -62,7 +62,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ArcGIS/solutions-components.git"
+    "url": "git+https://github.com/Esri/solutions-components.git"
   },
   "contributors": [
     {
