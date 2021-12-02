@@ -16,6 +16,7 @@
 
 import { createStore } from "@stencil/store";
 
+// eslint-disable-next-line @typescript-eslint/unbound-method
 const { state, onChange, dispose } = createStore({
   models: {},
   featureServices: [],

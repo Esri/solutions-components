@@ -52,7 +52,7 @@
    * Contains source json as a string
    *
    */
-   @Prop({ mutable: true, reflect: true }) value: string = "";
+   @Prop({ mutable: true, reflect: true }) value = "";
  
   //--------------------------------------------------------------------------
   //

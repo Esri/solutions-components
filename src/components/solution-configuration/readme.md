@@ -19,23 +19,23 @@
 
 ## Methods
 
-### `getEditModels() => Promise<{}>`
+### `getEditModels() => Promise<any>`
 
 
 
 #### Returns
 
-Type: `Promise<{}>`
+Type: `Promise<any>`
 
 
 
-### `getSpatialReferenceInfo() => Promise<{}>`
+### `getSpatialReferenceInfo() => Promise<any>`
 
 
 
 #### Returns
 
-Type: `Promise<{}>`
+Type: `Promise<any>`
 
 
 
@@ -69,6 +69,7 @@ graph TD;
   solution-contents --> calcite-tree-item
   solution-contents --> solution-item-icon
   calcite-tree-item --> calcite-icon
+  calcite-tree-item --> calcite-checkbox
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   solution-item --> calcite-tabs
@@ -94,10 +95,14 @@ graph TD;
   solution-template-data --> solution-variables
   solution-template-data --> solution-resource-item
   calcite-panel --> calcite-action
-  calcite-panel --> calcite-popover
+  calcite-panel --> calcite-action-menu
   calcite-panel --> calcite-scrim
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
+  calcite-action-menu --> calcite-action
+  calcite-action-menu --> calcite-tooltip-manager
+  calcite-action-menu --> calcite-popover
+  calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
   calcite-scrim --> calcite-loader
   json-editor --> calcite-button

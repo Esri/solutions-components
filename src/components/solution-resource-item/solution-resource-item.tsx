@@ -27,7 +27,7 @@ export interface IResourceItem {
   shadow: true
 })
 export class SolutionResourceItem {
-  
+
   //--------------------------------------------------------------------------
   //
   //  Host element access
@@ -58,7 +58,7 @@ export class SolutionResourceItem {
   @State() fileName: string;
 
   @Watch('value')
-  valueWatchHandler(v: IResourceItem, oldV: IResourceItem) {
+  valueWatchHandler(v: IResourceItem, oldV: IResourceItem): void {
     this.fileName = v.name !== oldV.name ? v.name : this.fileName;
   }
 
@@ -78,14 +78,14 @@ export class SolutionResourceItem {
         <div class="resource-item">
 
           <input
-            ref={(el) => (this.browseForFile = el)}
-            onChange={(event) => (this._updateFile(event))}
-            class="display-none"
-            type="file"
             accept=".zip"
+            class="display-none"
+            onChange={(event) => (this._updateFile(event))}
+            ref={(el) => (this.browseForFile = el)}
+            type="file"
           />
 
-          <a ref={(el) => (this.downloadFile = el)} href={this.value.url} download class="display-none"></a>
+          <a class="display-none" download href={this.value.url} ref={(el) => (this.downloadFile = el)} />
 
           <calcite-label>
             {this.fileName}
@@ -98,23 +98,23 @@ export class SolutionResourceItem {
           ></calcite-progress> */}
 
           <calcite-button
-            class="resource-button"
             appearance="solid"
+            class="resource-button"
             color="blue"
-            scale="m"
             icon-start="download"
             onClick={() => this._downloadItem()}
+            scale="m"
           >
             {this.translations.download}
           </calcite-button>
 
           <calcite-button
-            class="resource-button"
             appearance="solid"
+            class="resource-button"
             color="blue"
-            scale="m"
             icon-start="upload"
             onClick={() => this._updateItem()}
+            scale="m"
           >
             {this.translations.update}
           </calcite-button>
@@ -173,7 +173,7 @@ export class SolutionResourceItem {
    * Download file from url.
    *
    */
-  _downloadItem() {
+  _downloadItem(): void {
     this.downloadFile.click();
   }
 
@@ -181,7 +181,7 @@ export class SolutionResourceItem {
    * Opens file browse dialog.
    *
    */
-  _updateItem() {
+  _updateItem(): void {
     this.browseForFile.click();
   }
 
@@ -197,7 +197,7 @@ export class SolutionResourceItem {
     const files = event.currentTarget.files;
     if (files && files[0]) {
       const name: string = files[0].name;
-      var reader = new FileReader();
+      const reader = new FileReader();
       reader.onloadend = (r) => {
         this.value = {
           name,

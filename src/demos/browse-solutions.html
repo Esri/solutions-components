@@ -194,7 +194,8 @@
 
     async function getSRChanges() {
       const srInfo = await demo.getSpatialReferenceInfo();
-      const serviceEnabled = Object.keys(srInfo.services).some(k => srInfo.services[k]);
+      const serviceEnabled = typeof srInfo?.services === 'undefined' ?
+        false : Object.keys(srInfo.services).some(k => srInfo.services[k]);
       if (srInfo && srInfo.enabled && serviceEnabled) {
         alert(`sr param set (${srInfo.spatialReference.wkid}): ${JSON.stringify(srInfo.services)}`);
         const paramToAdd = {

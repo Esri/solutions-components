@@ -51,12 +51,12 @@ export class SolutionSpatialRef {
   /**
   * The wkid that will be used as the default when no user selection has been made.
   */
-  @Prop({ mutable: true, reflect: true }) defaultWkid: number = 102100;
+  @Prop({ mutable: true, reflect: true }) defaultWkid = 102100;
 
   /**
   * When true, all but the main switch are disabled to prevent interaction.
   */
-  @Prop({ mutable: true, reflect: true }) locked: boolean = true;
+  @Prop({ mutable: true, reflect: true }) locked = true;
 
   /**
    * Contains the translations for this component.
@@ -67,7 +67,9 @@ export class SolutionSpatialRef {
    * Contains the public value for this component.
    */
   @Prop({ mutable: true, reflect: true }) value: string = null;
-  @Watch("value") valueChanged(newValue: string): void {
+
+  @Watch("value")
+  valueChanged(newValue: string): void {
     this.spatialRef = this._createSpatialRefDisplay(newValue);
     this._updateStore();
   }
@@ -93,23 +95,23 @@ export class SolutionSpatialRef {
       <Host>
         <label class="switch-label">
           <calcite-switch
-            switched={!this.locked}
-            scale="m"
             class="spatial-ref-switch"
             onCalciteSwitchChange={(event) => this._updateLocked(event)}
-          ></calcite-switch>
+            scale="m"
+            switched={!this.locked}
+           />
           {this.translations.specifyParam}
         </label>
-        <div id="spatialRefDefn" class="spatial-ref-switch-title">
+        <div class="spatial-ref-switch-title" id="spatialRefDefn">
           <calcite-label>
             {this.translations.spatialReferenceInfo}
             <label class="spatial-ref-default">
               <calcite-input
-                placeholder = {this.translations.spatialReferencePlaceholder}
                 disabled={this.locked}
                 onCalciteInputInput={(evt) => this._searchSpatialReferences(evt)}
                 onKeyDown={(evt) => this._inputKeyDown(evt)}
-              ></calcite-input>
+                placeholder = {this.translations.spatialReferencePlaceholder}
+               />
             </label>
           </calcite-label>
           <div class={this.locked ? 'disabled-div' : ''}>
@@ -214,21 +216,17 @@ export class SolutionSpatialRef {
       }
     } else {
       const wkid = Number.parseInt(value);
-      if (isNaN(wkid)) {
-        spatialRef = {
+      spatialRef = isNaN(wkid) ? {
           display: value,
           usingWkid: false,
           wkid: 0,
           wkt: value
-        }
-      } else {
-        spatialRef = {
+        } : {
           display: this._wkidToDisplay(wkid),
           usingWkid: true,
           wkid: wkid,
           wkt: ""
-        }
-      }
+        };
     }
 
     return spatialRef;
@@ -259,11 +257,7 @@ export class SolutionSpatialRef {
    */
   private _wkidToDisplay(wkid: number): string {
     const description: IWkidDescription = wkids[wkid];
-    if (description) {
-      return description.label + " (" + wkid.toString() + ")";
-    } else {
-      return "WKID " + wkid.toString();
-    }
+    return description ? description.label + " (" + wkid.toString() + ")" : "WKID " + wkid.toString();
   }
 
   /**
@@ -279,12 +273,12 @@ export class SolutionSpatialRef {
         {services.map(name => (
           <label class="switch-label">
             <calcite-switch
+              class="spatial-ref-item-switch"
               disabled={this.locked}
+              onCalciteSwitchChange={(event) => this._updateEnabledServices(event, name)}
               scale="m"
               switched={state.spatialReferenceInfo["services"][name]}
-              class="spatial-ref-item-switch"
-              onCalciteSwitchChange={(event) => this._updateEnabledServices(event, name)}
-            ></calcite-switch>{name}
+             />{name}
           </label>
         ))}
       </div>
@@ -396,8 +390,8 @@ export class SolutionSpatialRef {
   private _clearSelection(): void {
     const selectedItems = nodeListToArray(
       this.el.querySelectorAll("calcite-tree-item[selected]")
-    ) as HTMLCalciteTreeItemElement[];
-    selectedItems.forEach((treeItem) => {
+    ) ;
+    selectedItems.forEach((treeItem: HTMLCalciteTreeItemElement) => {
       treeItem.selected = false;
     });
   }
@@ -439,10 +433,10 @@ export class SolutionSpatialRef {
    *
    */
   private _getTreeContent(): VNode {
-      const id: string = "solution-wkid-container";
-      const containerClass: string = "spatial-ref-container";
+      const id = "solution-wkid-container";
+      const containerClass = "spatial-ref-container";
       if (this._srSearchText && this._srSearchText !== "" && this._srSearchText.length > 1) {
-        const regEx: RegExp = new RegExp(`${this._srSearchText}`, 'gi');
+        const regEx = new RegExp(`${this._srSearchText}`, 'gi');
         const matches = Object.keys(wkids).filter(wkid => {
           return regEx.test(wkid.toString()) || regEx.test(wkids[wkid].label);
         });
@@ -473,10 +467,10 @@ export class SolutionSpatialRef {
   ): VNode {
     return (
       <calcite-tree-item
-        onCalciteTreeItemSelect={() => this._setSpatialRef(wkid)}
-        selected={selected}
         aria-selected={selected}
         id={wkid}
+        onClick={() => this._setSpatialRef(wkid)}
+        selected={selected}
       >
         <div>{`${wkids[wkid].label} (${wkid})`}</div>
       </calcite-tree-item>

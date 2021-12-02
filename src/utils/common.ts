@@ -59,7 +59,7 @@ export function getProps(obj: any, props: string[]): any {
  * @param path Path into an object, e.g., "data.values.webmap", where "data" is a top-level property in obj
  * @param value The value to set at the end of the path
  */
-export function setCreateProp(obj: any, path: string, value: any) {
+export function setCreateProp(obj: any, path: string, value: any): any {
   const pathParts: string[] = path.split(".");
   pathParts.reduce((a: any, b: any, c: any) => {
     if (c === pathParts.length - 1) {
@@ -82,7 +82,7 @@ export function setCreateProp(obj: any, path: string, value: any) {
  * @param path Path into an object, e.g., "data.values.webmap", where "data" is a top-level property in obj
  * @param value The value to set at the end of the path
  */
-export function setProp(obj: any, path: string, value: any) {
+export function setProp(obj: any, path: string, value: any): any {
   if (getProp(obj, path)) {
     const pathParts: string[] = path.split(".");
     pathParts.reduce((a: any, b: any, c: any) => {
@@ -99,7 +99,7 @@ export function setProp(obj: any, path: string, value: any) {
 /**
  * Get an array from a list of nodes
  *
- * @param nodeList list of nodes 
+ * @param nodeList list of nodes
  */
 export function nodeListToArray<T extends Element>(nodeList: HTMLCollectionOf<T> | NodeListOf<T> | T[]): T[] {
   return Array.isArray(nodeList) ? nodeList : Array.from(nodeList);

@@ -46,8 +46,8 @@ export namespace Components {
         "value": any;
     }
     interface SolutionConfiguration {
-        "getEditModels": () => Promise<{}>;
-        "getSpatialReferenceInfo": () => Promise<{}>;
+        "getEditModels": () => Promise<any>;
+        "getSpatialReferenceInfo": () => Promise<any>;
         /**
           * Contains the current solution item we are working with
          */

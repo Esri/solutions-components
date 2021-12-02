@@ -58,10 +58,14 @@ graph TD;
   solution-template-data --> solution-variables
   solution-template-data --> solution-resource-item
   calcite-panel --> calcite-action
-  calcite-panel --> calcite-popover
+  calcite-panel --> calcite-action-menu
   calcite-panel --> calcite-scrim
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
+  calcite-action-menu --> calcite-action
+  calcite-action-menu --> calcite-tooltip-manager
+  calcite-action-menu --> calcite-popover
+  calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
   calcite-scrim --> calcite-loader
   json-editor --> calcite-button
@@ -71,6 +75,7 @@ graph TD;
   solution-organization-variables --> calcite-label
   solution-organization-variables --> calcite-tree-item
   calcite-tree-item --> calcite-icon
+  calcite-tree-item --> calcite-checkbox
   solution-variables --> calcite-label
   solution-variables --> calcite-tree-item
   solution-variables --> solution-item-icon
