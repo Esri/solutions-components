@@ -21,13 +21,13 @@
 
 ## Methods
 
-### `getEditModels() => Promise<{}>`
+### `getEditModels() => Promise<any>`
 
 
 
 #### Returns
 
-Type: `Promise<{}>`
+Type: `Promise<any>`
 
 
 
@@ -41,13 +41,13 @@ Type: `Promise<any[]>`
 
 
 
-### `getSpatialReferenceInfo() => Promise<{}>`
+### `getSpatialReferenceInfo() => Promise<any>`
 
 
 
 #### Returns
 
-Type: `Promise<{}>`
+Type: `Promise<any>`
 
 
 

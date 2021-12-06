@@ -1,0 +1,76 @@
+{
+  "root": true,
+  "env": {
+    "jest/globals": true
+  },
+  "extends": [
+    "plugin:@esri/calcite-components/recommended",
+    "plugin:@stencil/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:jest/recommended",
+    "prettier"
+  ],
+  "ignorePatterns": ["assets", "test", "json-editor"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig-eslint.json",
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": ["@esri/calcite-components", "@typescript-eslint", "eslint-plugin-react", "jest", "prettier", "unicorn"],
+  "rules": {
+    "@stencil/ban-prefix": "off",
+    "@stencil/decorators-context": "off",
+    "@stencil/decorators-style": "warn",
+    "@stencil/no-unused-watch": "off",
+    "@stencil/own-methods-must-be-private": "off",
+    "@stencil/own-props-must-be-private": "off",
+    "@stencil/prefer-vdom-listener": "warn",
+    "@stencil/required-jsdoc": "off",
+    "@stencil/strict-boolean-conditions": "off",
+    "@typescript-eslint/ban-types": "warn",
+    "@typescript-eslint/explicit-module-boundary-types": [
+      "error",
+      {
+        "allowArgumentsExplicitlyTypedAsAny": true,
+        "allowedNames": [
+          "connectedCallback",
+          "disconnectedCallback",
+          "componentWillRender",
+          "componentDidRender",
+          "componentWillLoad",
+          "componentDidLoad",
+          "componentWillUpdate",
+          "componentDidUpdate",
+          "render"
+        ]
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unsafe-argument": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-return": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "curly": "error",
+    "jest/expect-expect": "off",
+    "jest/no-export": "warn",
+    "lines-between-class-members": ["error", "always"],
+    "no-multiple-empty-lines": ["error", { "max": 1 }],
+    "no-unneeded-ternary": "error",
+    "no-unused-vars": "error",
+    "react/jsx-no-bind": [ "error", { "ignoreDOMComponents": true } ],
+    "react/jsx-sort-props": "error",
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
+    "react/self-closing-comp": "error",
+    "unicorn/prefer-ternary": "error"
+  },
+  "settings": {
+    "react": {
+      "pragma": "h"
+    }
+  }
+}

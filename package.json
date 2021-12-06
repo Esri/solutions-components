@@ -1,6 +1,6 @@
 {
-  "name": "solutions-components",
-  "version": "0.0.1",
+  "name": "@esri/solutions-components",
+  "version": "0.0.2",
   "description": "Web Components for Esri's Solutions Applications",
   "main": "dist/index.cjs.js",
   "module": "dist/custom-elements/index.js",
@@ -19,28 +19,52 @@
     "build:debug": "start/b cmd.exe /c \"src\\testingAssets\\nlsJStoJSON src\\assets\\nls\\strings.js src\\testingAssets\" && stencil build -c stencil.debugconfig.ts",
     "start": "stencil build --dev --watch --serve",
     "clean:src": "start cmd.exe /c cleanSrc.bat",
+    "lint:ts": "eslint --ext .ts,.tsx src/components src/utils",
+    "lint:ts:fix": "eslint --ext .ts,.tsx --fix src/components src/utils",
+    "lint:ts:prettier": "prettier --write \"**/*.ts?(x)\"",
+    "release:publish": "npm publish --access public && ts-node ./support/releaseToGitHub.ts",
     "test": "stencil test --spec --e2e --detectOpenHandles",
+    "test:clean": "npm run clean:src && npm run lint:ts:fix && stencil test --spec --e2e --detectOpenHandles",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.20",
+    "@esri/eslint-plugin-calcite-components": "0.1.1",
+    "@stencil/eslint-plugin": "0.4.0",
+    "@stencil/store": "^1.5.0",
+    "@types/jest": "26.0.21",
+    "@types/node": "^16.11.11",
     "@types/puppeteer": "^5.4.2",
+    "@typescript-eslint/eslint-plugin": "5.4.0",
+    "@typescript-eslint/parser": "5.4.0",
+    "dotenv": "^10.0.0",
+    "eslint": "^8.3.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-jest": "25.3.0",
+    "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-react": "7.27.1",
+    "eslint-plugin-unicorn": "39.0.0",
+    "form-request-submit-polyfill": "^2.0.0",
+    "gh-release": "^6.0.1",
     "jest": "^26.6.3",
     "jest-cli": "^26.6.3",
+    "pify": "^5.0.0",
+    "prettier": "2.4.1",
     "puppeteer": "^11.0.0",
-    "typescript": "^4.4.4"
+    "rimraf": "^3.0.2",
+    "stencil-eslint-core": "0.1.0",
+    "ts-node": "^10.4.0",
+    "typescript": "4.4.4"
   },
   "dependencies": {
     "@esri/calcite-components": "^1.0.0-beta.70",
     "@stencil/core": "2.11.0",
-    "@stencil/store": "^1.5.0",
-    "monaco-editor": "^0.30.1",
-    "@esri/solution-common": "^1.1.5"
+    "@esri/solution-common": "^1.1.5",
+    "monaco-editor": "^0.30.1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ArcGIS/solutions-components.git"
+    "url": "git+https://github.com/Esri/solutions-components.git"
   },
   "contributors": [
     {

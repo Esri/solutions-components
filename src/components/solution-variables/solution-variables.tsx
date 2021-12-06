@@ -73,23 +73,19 @@ export class SolutionVariables {
     objs: IVariableItem[]
   ): VNode[] {
     const hierarchy = objs.map(obj => {
-      if (obj.dependencies && obj.dependencies.length > 0) {
-        return (
+      return obj.dependencies && obj.dependencies.length > 0 ? (
           <calcite-tree-item>
-            <solution-item-icon type={obj.type}></solution-item-icon>
+            <solution-item-icon type={obj.type} />
             <span class="icon-text" title={obj.title}>{obj.title}</span>
             <calcite-tree slot="children">
               {this.renderHierarchy(obj.dependencies)}
             </calcite-tree>
           </calcite-tree-item>
-        );
-      } else {
-        return (
+        ) : (
           <calcite-tree-item onClick={() => this._treeItemSelected(obj.id, obj.value)}>
             {obj.title}
           </calcite-tree-item>
         );
-      }
     });
     return hierarchy;
   }

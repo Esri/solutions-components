@@ -58,18 +58,18 @@ export class SolutionTemplateData {
    * Should be set to true for items that store their data as a resource
    * Will allow for upload and download of the resource
    */
-  @Prop({ mutable: true }) isResource: boolean = false;
+  @Prop({ mutable: true }) isResource = false;
 
   /**
    * This needs to be unique for props vs data of an item
    */
-   @Prop({ mutable: true, reflect: true }) instanceid: string = "";
+   @Prop({ mutable: true, reflect: true }) instanceid = "";
 
   /**
    * A templates itemId.
    * This is used to get the correct model from a store in the json-editor
    */
-   @Prop({ mutable: true, reflect: true }) itemid: string = "";
+   @Prop({ mutable: true, reflect: true }) itemid = "";
 
   /**
    * Contains the solution based variables
@@ -84,7 +84,7 @@ export class SolutionTemplateData {
   /**
    * Used to show/hide the variable containers
    */
-  @Prop({mutable: true, reflect: true}) varsOpen: boolean = true;
+  @Prop({mutable: true, reflect: true}) varsOpen = true;
 
   //--------------------------------------------------------------------------
   //
@@ -131,39 +131,39 @@ export class SolutionTemplateData {
   //--------------------------------------------------------------------------
 
   _jsonData(): any {
-    return <calcite-shell dir="ltr" class="light var-container">
+    return <calcite-shell class="light var-container" dir="ltr">
       <calcite-panel class="json-editor">
         <div class="solution-data-child-container calcite-match-height">
           <json-editor
             instanceid={this.instanceid}
-            value={this.itemid}
             translations={this.translations}
-          ></json-editor>
+            value={this.itemid}
+           />
         </div>
       </calcite-panel>
 
-      <calcite-shell-panel slot="contextual-panel" position="end" height-scale="l" width-scale="xs">
+      <calcite-shell-panel height-scale="l" position="end" slot="contextual-panel" width-scale="xs">
         <div class={this.varsOpen ? "solution-data-child-container" : "solution-data-child-container-collapsed"}>
           <calcite-button
-            id="collapse-vars"
+            appearance="transparent"
             class="collapse-btn"
             icon-start={this.varsOpen ? "chevrons-right" : "chevrons-left"}
-            appearance="transparent"
-            title={this.translations.cancelEdits}
+            id="collapse-vars"
             onClick={() => this._toggleVars()}
             scale="s"
-          ></calcite-button>
-          <div id="orgVars" class={this.varsOpen ? "org-vars" : "org-vars hide"}>
+            title={this.translations.cancelEdits}
+           />
+          <div class={this.varsOpen ? "org-vars" : "org-vars hide"} id="orgVars">
             <solution-organization-variables
+              translations={this.translations}
               value={this.organizationVariables}
-              translations={this.translations}
-            ></solution-organization-variables>
+             />
           </div>
-          <div id="solVars" class={this.varsOpen ? "sol-vars" : "sol-vars hide"}>
+          <div class={this.varsOpen ? "sol-vars" : "sol-vars hide"} id="solVars">
             <solution-variables
-              value={this.solutionVariables}
               translations={this.translations}
-            ></solution-variables>
+              value={this.solutionVariables}
+             />
           </div>
         </div>
       </calcite-shell-panel>
@@ -171,7 +171,7 @@ export class SolutionTemplateData {
   }
 
   _resourceData(templateData: ITemplateData): any {
-    return <solution-resource-item value={templateData.resourceItem} translations={this.translations}></solution-resource-item>;
+    return <solution-resource-item translations={this.translations} value={templateData.resourceItem} />;
   }
 
   /**

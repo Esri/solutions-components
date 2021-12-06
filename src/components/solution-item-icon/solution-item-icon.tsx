@@ -45,12 +45,12 @@ export class SolutionItemIcon {
   /**
    * Indicate if this is portal
    */
-  @Prop() isPortal: boolean = false;
+  @Prop() isPortal = false;
 
   /**
    * The type for the item
    */
-  @Prop() type: string = "";
+  @Prop() type = "";
 
   /**
    * The typeKeywords for the item
@@ -65,11 +65,11 @@ export class SolutionItemIcon {
 
   render() {
     return <div title={this.type}>
-      <img src={this._getIconUrl(this.type, this.typeKeywords)}
-        width="16"
+      <img class="item-type-icon item-type-icon-margin"
         height="16"
-        class="item-type-icon item-type-icon-margin"
-      ></img>
+        src={this._getIconUrl(this.type, this.typeKeywords)}
+        width="16"
+       />
     </div>;
   }
 
@@ -105,9 +105,9 @@ export class SolutionItemIcon {
 
   /**
    * This function was copied and slightly modified from the arcgis-portal-app.
-   * 
-   * This will construct the path to the icon based on type and typeKeyword info. 
-   * 
+   *
+   * This will construct the path to the icon based on type and typeKeyword info.
+   *
    * @param type The item type
    * @param typeKeywords The item typeKeywords
    */
@@ -115,10 +115,11 @@ export class SolutionItemIcon {
     type: string,
     typeKeywords: string[]
   ): string {
-    var itemType = (type && type.toLowerCase()) || "",
-      typeKeywords = typeKeywords || [],
+    const 
+      itemType = (type && type.toLowerCase()) || "",
       imgDir = "./item-icons/",
-      size = "16",  //for now we only support 16x16 pixel images
+      size = "16";  //for now we only support 16x16 pixel images
+    let 
       isHosted = false,
       isRouteLayer = false,
       isMarkupLayer = false,
@@ -126,6 +127,7 @@ export class SolutionItemIcon {
       isSpatiotemporal = false,
       isRelational = false,
       imgName = "";
+    typeKeywords = typeKeywords || [];
 
     if (itemType.indexOf("service") > 0 || itemType === "feature collection" || itemType === "kml" || itemType === "wms" || itemType === "wmts" || itemType === "wfs") {
       isHosted = typeKeywords.indexOf("Hosted Service") > -1;

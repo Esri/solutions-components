@@ -60,6 +60,14 @@ npm run clean:src
 npm test
 ```
 
+To publish to npm and GitHub,
+1. Edit package.json to have the new version number
+2. Run `npm install`
+3. Edit CHANGELOG.md to show the new release number and connect it to previous releases
+4. Commit and push changes to GitHub
+5. Run: `npm release:publish`
+
+
 ## Issues
 
 Find a bug or want to request a new feature?  Please let us know by submitting an issue.
