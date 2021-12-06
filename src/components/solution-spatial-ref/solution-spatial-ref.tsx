@@ -464,7 +464,7 @@ export class SolutionSpatialRef {
       <calcite-tree-item
         aria-selected={selected}
         id={wkid}
-        onChange={() => this._setSpatialRef(wkid)}
+        onClick={() => this._setSpatialRef(wkid)}
         selected={selected}
       >
         <div>{`${wkids[wkid].label} (${wkid})`}</div>
