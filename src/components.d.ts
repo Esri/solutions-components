@@ -39,9 +39,9 @@ export namespace Components {
           * Credentials for requests
          */
         "authentication": UserSession;
-        "getEditModels": () => Promise<{}>;
+        "getEditModels": () => Promise<any>;
         "getSourceTemplates": () => Promise<any[]>;
-        "getSpatialReferenceInfo": () => Promise<{}>;
+        "getSpatialReferenceInfo": () => Promise<any>;
         "getUpdatedTemplates": () => Promise<any[]>;
         /**
           * Contains the current solution item we are working with
