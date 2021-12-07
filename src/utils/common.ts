@@ -23,7 +23,6 @@ import {
   UserSession,
   updateItem
 } from "@esri/solution-common";
-import { getItemData as portalGetItemData } from "@esri/arcgis-rest-portal";
 import { IResponse } from "./interfaces";
 
 /**
@@ -31,23 +30,8 @@ import { IResponse } from "./interfaces";
  *
  * @param nodeList list of nodes 
  */
-export function nodeListToArray<T extends Element>(nodeList: HTMLCollectionOf<T> | NodeListOf<T> | T[]): T[] {
+ export function nodeListToArray<T extends Element>(nodeList: HTMLCollectionOf<T> | NodeListOf<T> | T[]): T[] {
   return Array.isArray(nodeList) ? nodeList : Array.from(nodeList);
-}
-
-/**
- * Gets the items data
- *
- * @param id for the item being requested
- * @param authentication credentials for the request
- */
-export async function getItemData(
-  id: string,
-  authentication: UserSession
-) {
-  return await portalGetItemData(id, {
-    authentication
-  });
 }
 
 /**
@@ -68,7 +52,6 @@ export async function save(
   authentication: UserSession,
   translations: any
 ) {
-  // need to update the solution item with the new templates array
   data.templates = templates;
 
   const itemInfo: IItemUpdate = { id };

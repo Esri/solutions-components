@@ -51,16 +51,6 @@ Type: `Promise<any>`
 
 
 
-### `getUpdatedTemplates() => Promise<any[]>`
-
-
-
-#### Returns
-
-Type: `Promise<any[]>`
-
-
-
 ### `save() => Promise<IResponse>`
 
 

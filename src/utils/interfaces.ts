@@ -22,7 +22,7 @@ export interface IItemDetails {
   tags: string[];
   accessInformation?: string;
   licenseInfo?: string;
-  itemId: string
+  itemId: string;
 }
 
 export interface IInventoryItem {
@@ -31,7 +31,7 @@ export interface IInventoryItem {
   dependencies?: IInventoryItem[];
   type: string;
   typeKeywords: string[];
-  solutionItem: ISolutionItem
+  solutionItem: ISolutionItem;
 }
 
 export interface IItemShare {
@@ -50,27 +50,27 @@ export interface IOrganizationVariableItem {
 }
 
 export interface IResourceItem {
-  name: string,
-  url: string
+  name: string;
+  url: string;
 }
 
 export interface IResponse {
-  success: boolean,
-  message: string
+  success: boolean;
+  message: string;
 }
 
 export interface ISolutionConfiguration {
-  contents: IInventoryItem[]
+  contents: IInventoryItem[];
 }
 
 export interface ISolutionItem {
-  itemId: string,
-  itemDetails: any, //use the interface
-  isResource: boolean, // this should be removed and determined from the data
-  data: ITemplateData,
-  properties: ITemplateData,
-  type: string,
-  groupDetails?: IItemShare[]
+  itemId: string;
+  itemDetails: any; //use the interface
+  isResource: boolean; // this should be removed and determined from the data
+  data: ITemplateData;
+  properties: ITemplateData;
+  type: string;
+  groupDetails?: IItemShare[];
 }
 
 export interface ISolutionModel {
@@ -103,8 +103,13 @@ export interface ISpatialRefRepresentation {
 }
 
 export interface ITemplateData {
-  resourceItem?: IResourceItem,
-  value?: any
+  resourceItem?: IResourceItem;
+  value?: any;
+}
+
+export interface IUpdateTemplateResponse {
+  templates: any[];
+  errors: string[];
 }
 
 export interface IVariableItem {

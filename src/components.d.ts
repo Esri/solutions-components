@@ -42,7 +42,6 @@ export namespace Components {
         "getEditModels": () => Promise<any>;
         "getSourceTemplates": () => Promise<any[]>;
         "getSpatialReferenceInfo": () => Promise<any>;
-        "getUpdatedTemplates": () => Promise<any[]>;
         /**
           * Contains the current solution item we are working with
          */

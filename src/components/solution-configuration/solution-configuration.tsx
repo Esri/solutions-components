@@ -18,8 +18,9 @@ import { Component, Element, h, Host, Listen, Method, Prop, State, VNode } from 
 import { IOrganizationVariableItem, IResponse, ISolutionConfiguration, ISolutionItem, IVariableItem } from '../../utils/interfaces';
 import * as utils from '../../utils/templates';
 import state from '../../utils/editStore';
-import { getItemData, save } from '../../utils/common';
-import { generateSourceThumbnailUrl, UserSession, cloneObject } from '@esri/solution-common';
+import { save } from '../../utils/common';
+import { cloneObject, getItemDataAsJson, setProp, UserSession } from '@esri/solution-common';
+//import { generateSourceThumbnailUrl } from '@esri/solution-common';
 import '@esri/calcite-components';
 
 @Component({
@@ -211,11 +212,6 @@ export class SolutionConfiguration {
   }
 
   @Method()
-  async getUpdatedTemplates() {
-    return this._getUpdates();
-  }
-
-  @Method()
   async save() {
     return this._save();
   }
@@ -234,7 +230,7 @@ export class SolutionConfiguration {
       ml.some(mutation => {
         const v = mutation.target[mutation.attributeName];
         if (mutation.type === 'attributes' && mutation.attributeName === "itemid" && v && v !== mutation.oldValue) {
-          getItemData(v, this.authentication).then(data => {
+          getItemDataAsJson(v, this.authentication).then(data => {
             this.sourceItemData = data;
             this.templates = data.templates;
 
@@ -276,72 +272,6 @@ export class SolutionConfiguration {
   }
 
   /**
-   * Get updates from the store
-   */
-  private _getUpdates(): any[] {
-    return [];
-  }
-
-  /**
-   * Get item updates from the store
-   */
-  private async _getTemplateItemUpdates() {
-    const templateItemUpdates = {};
-    const models = await this.getEditModels();
-    Object.keys(models).forEach(k => {
-      const m = models[k];
-      if (m.updateItemValues && Object.keys(m.updateItemValues).length > 0) {
-        templateItemUpdates[m.itemId] = m.updateItemValues;
-      }
-    });
-    return templateItemUpdates;
-  }
-
-  /**
-   * Get templates that have updates from the store
-   */
-  private async _getUpdatedTemplates(
-    templateItemUpdates: any
-  ) {
-    let templates;
-    let thumbnailurl;
-    const updateKeys = Object.keys(templateItemUpdates);
-    if (updateKeys.length > 0) {
-      templates = cloneObject(this.templates);
-
-      Object.keys(templateItemUpdates).forEach(k => {
-        templates.some(t => {
-          if (t.itemId === k) {
-            Object.keys(templateItemUpdates[k]).forEach(p => {
-              const update = templateItemUpdates[k][p];
-              if (p !== "thumbnail") {
-                t.item[p] = update;
-              } else {
-                // need to understand the difference in how these are stored for items within templates...
-                // still trying to figure this one out
-                thumbnailurl = generateSourceThumbnailUrl(
-                  this.authentication.portal,
-                  t.itemId,
-                  update,
-                  t.item.type === "Group"
-                );
-              }
-            });
-            return true;
-          } else {
-            return false;
-          }
-        });
-      });
-    }
-
-    return {
-      templates,
-      thumbnailurl
-    };
-  }
-
-  /**
    * Toggle treeOpen prop to show/hide content tree
    */
   private _toggleTree(): void {
@@ -352,24 +282,105 @@ export class SolutionConfiguration {
    * Save all edits from the current configuration
    */
   private async _save() {
-    const templateItemUpdates = await this._getTemplateItemUpdates();
-    const templates = await this._getUpdatedTemplates(templateItemUpdates);
-
-    if (templates) {
+    const templateUpdates = await this._updateTemplates();
+    if (templateUpdates.errors.length === 0) {
       return save(
-        templates.templates,
-        templates.thumbnailurl,
+        templateUpdates.templates,
+        "",
         this.itemid,
         this.sourceItemData,
         this.authentication,
         this.translations
       );
     } else {
-      // TODO remove this once we have an event that will enable/disable edit button
       return {
-        success: true,
-        message: "No edits to save."
+        success: false,
+        message: `The following templates have errors: ${templateUpdates.errors.join(", ")}`
       } as IResponse;
+    }
+  }
+
+  /**
+   * Get item updates from the store
+   */
+  private async _updateTemplates() {
+    const errors = [];
+    const models = await this.getEditModels();
+    let templates = cloneObject(this.templates);
+    Object.keys(models).forEach(k => {
+      const m = models[k];
+      templates = templates.map(t => {
+        if (t.itemId === m.itemId) {
+          this._setItem(t, m);
+          const hasDataError = this._setData(t, m);
+          const hasPropError = this._setProps(t, m);
+
+          if (hasDataError || hasPropError) {
+            errors.push(m.itemId);
+          }
+        }
+        return t;
+      });
+    });
+    return {
+      templates,
+      errors
+    };
+  }
+
+  private _setData(
+    template: any,
+    model: any
+  ): boolean {
+    return this._setTemplateProp(
+      template,
+      model.dataOriginValue,
+      model.dataModel.getValue(),
+      "data"
+    );
+  }
+
+  private _setProps(
+    template: any,
+    model: any
+  ): boolean {
+    return this._setTemplateProp(
+      template,
+      model.propsOriginValue,
+      model.propsModel.getValue(),
+      "properties"
+    );
+  }
+
+  private _setTemplateProp(
+    template: any,
+    originValue: any,
+    modelValue: any,
+    path: string
+  ): boolean {
+    let hasError = false;
+    try {
+      const _originValue = JSON.parse(originValue);
+      const _modelValue = JSON.parse(modelValue);
+
+      if (_originValue && _modelValue && (JSON.stringify(_originValue) !== JSON.stringify(_modelValue))) {
+        setProp(template, path, _modelValue);
+      }
+    } catch (e) {
+      console.error(e);
+      hasError = true;
+    }
+    return hasError;
+  }
+
+  private _setItem(
+    template: any,
+    model: any
+  ): void {
+    if (model.updateItemValues && Object.keys(model.updateItemValues).length > 0) {
+      Object.keys(model.updateItemValues).forEach(k => {
+        template.item[k] = model.updateItemValues[k];
+      });
     }
   }
 }
