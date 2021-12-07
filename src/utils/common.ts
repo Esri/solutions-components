@@ -51,7 +51,7 @@ export async function save(
   data: any,
   authentication: UserSession,
   translations: any
-) {
+): Promise<IResponse> {
   data.templates = templates;
 
   const itemInfo: IItemUpdate = { id };

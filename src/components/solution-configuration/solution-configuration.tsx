@@ -15,12 +15,11 @@
  */
 
 import { Component, Element, h, Host, Listen, Method, Prop, State, VNode } from '@stencil/core';
-import { IOrganizationVariableItem, IResponse, ISolutionConfiguration, ISolutionItem, IVariableItem } from '../../utils/interfaces';
+import { IOrganizationVariableItem, IResponse, ISolutionConfiguration, ISolutionItem, IUpdateTemplateResponse, IVariableItem } from '../../utils/interfaces';
 import * as utils from '../../utils/templates';
 import state from '../../utils/editStore';
 import { save } from '../../utils/common';
 import { cloneObject, getItemDataAsJson, setProp, UserSession } from '@esri/solution-common';
-//import { generateSourceThumbnailUrl } from '@esri/solution-common';
 import '@esri/calcite-components';
 
 @Component({
@@ -281,6 +280,8 @@ export class SolutionConfiguration {
 
   /**
    * Save all edits from the current configuration
+   * 
+   * @returns a response that will indicate success or failure and any associated messages
    */
   private async _save() {
     const templateUpdates = await this._updateTemplates();
@@ -298,9 +299,11 @@ export class SolutionConfiguration {
   }
 
   /**
-   * Get item updates from the store
+   * Update the solutions templates based on the stored changes
+   * 
+   * @returns an object that contains the updated templates as well as any errors that were found
    */
-  private async _updateTemplates() {
+  private async _updateTemplates(): Promise<IUpdateTemplateResponse> {
     const errors = [];
     const models = await this.getEditModels();
     let templates = cloneObject(this.templates);
@@ -319,12 +322,20 @@ export class SolutionConfiguration {
         return t;
       });
     });
-    return {
+    return Promise.resolve({
       templates,
       errors
-    };
+    });
   }
 
+  /**
+   * Set a templates data property with changes from the models
+   * 
+   * @param template the current template to update
+   * @param model the corresponding model for the current template (stores any user changes)
+   * 
+   * @returns a boolean that indicates if any errors were detected
+   */
   private _setData(
     template: any,
     model: any
@@ -337,6 +348,14 @@ export class SolutionConfiguration {
     );
   }
 
+  /**
+   * Set a templates properties property with changes from the models
+   * 
+   * @param template the current template to update
+   * @param model the corresponding model for the current template (stores any user changes)
+   * 
+   * @returns a boolean that indicates if any errors were detected
+   */
   private _setProps(
     template: any,
     model: any
@@ -349,6 +368,16 @@ export class SolutionConfiguration {
     );
   }
 
+  /**
+   * Generic function used to set properties or data property on a given template
+   * 
+   * @param template the current template to update
+   * @param originValue the original value from the solution template
+   * @param modelValue the current value from the model (will contain any edits that have been made)
+   * @param path the path to the property we should update if any changes are found
+   * 
+   * @returns a boolean that indicates if any errors were detected
+   */
   private _setTemplateProp(
     template: any,
     originValue: any,
@@ -370,6 +399,14 @@ export class SolutionConfiguration {
     return hasError;
   }
 
+  /**
+   * Set a templates item property with changes from the models
+   * 
+   * @param template the current template to update
+   * @param model the corresponding model for the current template (stores any user changes)
+   * 
+   * This function will update the template argument when edits are found
+   */
   private _setItem(
     template: any,
     model: any
