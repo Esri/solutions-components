@@ -31,13 +31,13 @@ Type: `Promise<any>`
 
 
 
-### `getSourceTemplates() => Promise<any[]>`
+### `getSourceTemplates() => Promise<any>`
 
 
 
 #### Returns
 
-Type: `Promise<any[]>`
+Type: `Promise<any>`
 
 
 
@@ -51,13 +51,13 @@ Type: `Promise<any>`
 
 
 
-### `save() => Promise<IResponse>`
+### `save() => Promise<any>`
 
 
 
 #### Returns
 
-Type: `Promise<IResponse>`
+Type: `Promise<any>`
 
 
 
