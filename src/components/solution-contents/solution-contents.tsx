@@ -51,7 +51,7 @@ export class SolutionContents {
   @Prop() value: IInventoryItem[] = [];
 
   @Watch('value')
-  valueWatchHandler(v: any, oldV: any) {
+  valueWatchHandler(v: any, oldV: any): void {
     if (v && v !== oldV && Array.isArray(v) && v.length > 0) {
       this._treeItemSelected(v[0].solutionItem);
     }

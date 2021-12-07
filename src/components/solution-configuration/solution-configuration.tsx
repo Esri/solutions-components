@@ -82,7 +82,7 @@ export class SolutionConfiguration {
   /**
    * Contains the current solution item id
    */
-  @Prop({ mutable: true, reflect: true }) itemid: string = "";
+  @Prop({ mutable: true, reflect: true }) itemid = "";
 
   /**
    * Used to show/hide the content tree
@@ -207,13 +207,13 @@ export class SolutionConfiguration {
   }
 
   @Method()
-  async getSourceTemplates() {
-    return this.templates;
+  async getSourceTemplates(): Promise<any> {
+    return Promise.resolve(this.templates);
   }
 
   @Method()
-  async save() {
-    return this._save();
+  async save(): Promise<any> {
+    return Promise.resolve(this._save());
   }
 
   //--------------------------------------------------------------------------
@@ -230,6 +230,7 @@ export class SolutionConfiguration {
       ml.some(mutation => {
         const v = mutation.target[mutation.attributeName];
         if (mutation.type === 'attributes' && mutation.attributeName === "itemid" && v && v !== mutation.oldValue) {
+          // eslint-disable-next-line @typescript-eslint/no-floating-promises
           getItemDataAsJson(v, this.authentication).then(data => {
             this.sourceItemData = data;
             this.templates = data.templates;
@@ -283,21 +284,17 @@ export class SolutionConfiguration {
    */
   private async _save() {
     const templateUpdates = await this._updateTemplates();
-    if (templateUpdates.errors.length === 0) {
-      return save(
-        templateUpdates.templates,
-        "",
-        this.itemid,
-        this.sourceItemData,
-        this.authentication,
-        this.translations
-      );
-    } else {
-      return {
-        success: false,
-        message: `The following templates have errors: ${templateUpdates.errors.join(", ")}`
-      } as IResponse;
-    }
+    return templateUpdates.errors.length === 0 ? save(
+      templateUpdates.templates,
+      "",
+      this.itemid,
+      this.sourceItemData,
+      this.authentication,
+      this.translations
+    ) : {
+      success: false,
+      message: `The following templates have errors: ${templateUpdates.errors.join(", ")}`
+    } as IResponse;
   }
 
   /**
