@@ -81,7 +81,7 @@ export class SolutionConfiguration {
   /**
    * Contains the current solution item id
    */
-  @Prop({ mutable: true, reflect: true }) itemid: string = "";
+  @Prop({ mutable: true, reflect: true }) itemid = "";
 
   /**
    * Used to show/hide the content tree
@@ -206,18 +206,18 @@ export class SolutionConfiguration {
   }
 
   @Method()
-  async getSourceTemplates() {
-    return this.templates;
+  async getSourceTemplates(): Promise<any> {
+    return Promise.resolve(this.templates);
   }
 
   @Method()
-  async getUpdatedTemplates() {
-    return this._getUpdates();
+  async getUpdatedTemplates(): Promise<any> {
+    return Promise.resolve(this._getUpdates());
   }
 
   @Method()
-  async save() {
-    return this._save();
+  async save(): Promise<any> {
+    return Promise.resolve(this._save());
   }
 
   //--------------------------------------------------------------------------
@@ -234,6 +234,7 @@ export class SolutionConfiguration {
       ml.some(mutation => {
         const v = mutation.target[mutation.attributeName];
         if (mutation.type === 'attributes' && mutation.attributeName === "itemid" && v && v !== mutation.oldValue) {
+          // eslint-disable-next-line @typescript-eslint/no-floating-promises
           getItemData(v, this.authentication).then(data => {
             this.sourceItemData = data;
             this.templates = data.templates;
@@ -300,9 +301,12 @@ export class SolutionConfiguration {
   /**
    * Get templates that have updates from the store
    */
-  private async _getUpdatedTemplates(
+  private _getUpdatedTemplates(
     templateItemUpdates: any
-  ) {
+  ): {
+    templates: any[],
+    thumbnailurl: string
+  } {
     let templates;
     let thumbnailurl;
     const updateKeys = Object.keys(templateItemUpdates);
@@ -353,23 +357,18 @@ export class SolutionConfiguration {
    */
   private async _save() {
     const templateItemUpdates = await this._getTemplateItemUpdates();
-    const templates = await this._getUpdatedTemplates(templateItemUpdates);
+    const templates = this._getUpdatedTemplates(templateItemUpdates);
 
-    if (templates) {
-      return save(
+    return templates ? save(
         templates.templates,
         templates.thumbnailurl,
         this.itemid,
         this.sourceItemData,
         this.authentication,
         this.translations
-      );
-    } else {
-      // TODO remove this once we have an event that will enable/disable edit button
-      return {
+      ) : {
         success: true,
         message: "No edits to save."
       } as IResponse;
-    }
   }
 }
