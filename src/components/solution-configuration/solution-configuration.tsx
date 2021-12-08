@@ -19,7 +19,7 @@ import { IOrganizationVariableItem, IResponse, ISolutionConfiguration, ISolution
 import * as utils from '../../utils/templates';
 import state from '../../utils/editStore';
 import { save } from '../../utils/common';
-import { cloneObject, getItemDataAsJson, setProp, UserSession } from '@esri/solution-common';
+import { cloneObject, getItemDataAsJson, getProp, setProp, setCreateProp, UserSession } from '@esri/solution-common';
 import '@esri/calcite-components';
 
 @Component({
@@ -285,11 +285,12 @@ export class SolutionConfiguration {
    */
   private async _save() {
     const templateUpdates = await this._updateTemplates();
+    const data = this._setSrInfo();
     return templateUpdates.errors.length === 0 ? save(
       templateUpdates.templates,
       "",
       this.itemid,
-      this.sourceItemData,
+      data,
       this.authentication,
       this.translations
     ) : {
@@ -322,6 +323,7 @@ export class SolutionConfiguration {
         return t;
       });
     });
+    errors.push(window.monaco.editor.getModelMarkers({}));
     return Promise.resolve({
       templates,
       errors
@@ -416,5 +418,41 @@ export class SolutionConfiguration {
         template.item[k] = model.updateItemValues[k];
       });
     }
+  }
+
+  /**
+   * Set spatial reference info in the solutions data
+   * 
+   * @returns a cloned copy of the solutions data that has been updated with spatial reference info
+   * 
+   */
+  private _setSrInfo(): any {
+    const srInfo: any = state.spatialReferenceInfo;
+
+    const serviceEnabled = typeof srInfo?.services === 'undefined' ?
+      false : Object.keys(srInfo.services).some(k => srInfo.services[k]);
+
+    const data = cloneObject(this.sourceItemData);
+    if (srInfo && srInfo.enabled && serviceEnabled) {
+      const wkid = srInfo.spatialReference.wkid.toString();
+
+      const wkidParam = {
+        "label": "Spatial Reference",
+        "default": wkid,
+        "valueType": "spatialReference",
+        "attributes": {
+          "required": "true"
+        }
+      };
+
+      const params = getProp(data, "params");
+      const hasWkid = params && params.wkid;
+      setCreateProp(
+        data,
+        hasWkid ? "params.wkid.default" : "params.wkid",
+        hasWkid ? wkid : params ? wkidParam : wkid
+      );
+    }
+    return data;
   }
 }
