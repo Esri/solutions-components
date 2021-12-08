@@ -18,89 +18,61 @@
  | Helper functions from solutions-common
 */
 
-/**
- * Gets a property out of a deeply nested object.
- * Does not handle anything but nested object graph
- *
- * @param obj Object to retrieve value from
- * @param path Path into an object, e.g., "data.values.webmap", where "data" is a top-level property
- *             in obj
- * @return Value at end of path
- */
- export function getProp(obj: { [index: string]: any }, path: string): any {
-  return path.split(".").reduce(function(prev, curr) {
-    /* istanbul ignore next no need to test undefined scenario */
-    return prev ? prev[curr] : undefined;
-  }, obj);
-}
-
-/**
- * Returns an array of values from an object based on an array of property paths.
- *
- * @param obj Object to retrieve values from
- * @param props Array of paths into the object e.g., "data.values.webmap", where "data" is a top-level property
- * @return Array of the values plucked from the object; only defined values are returned
- */
-export function getProps(obj: any, props: string[]): any {
-  return props.reduce((a, p) => {
-    const v = getProp(obj, p);
-    if (v) {
-      a.push(v);
-    }
-    return a;
-  }, [] as any[]);
-}
-
-/**
- * Sets a deeply nested property of an object.
- * Creates the full path if it does not exist.
- *
- * @param obj Object to set value of
- * @param path Path into an object, e.g., "data.values.webmap", where "data" is a top-level property in obj
- * @param value The value to set at the end of the path
- */
-export function setCreateProp(obj: any, path: string, value: any): any {
-  const pathParts: string[] = path.split(".");
-  pathParts.reduce((a: any, b: any, c: any) => {
-    if (c === pathParts.length - 1) {
-      a[b] = value;
-      return value;
-    } else {
-      if (!a[b]) {
-        a[b] = {};
-      }
-      return a[b];
-    }
-  }, obj);
-}
-
-/**
- * Sets a deeply nested property of an object.
- * Does nothing if the full path does not exist.
- *
- * @param obj Object to set value of
- * @param path Path into an object, e.g., "data.values.webmap", where "data" is a top-level property in obj
- * @param value The value to set at the end of the path
- */
-export function setProp(obj: any, path: string, value: any): any {
-  if (getProp(obj, path)) {
-    const pathParts: string[] = path.split(".");
-    pathParts.reduce((a: any, b: any, c: any) => {
-      if (c === pathParts.length - 1) {
-        a[b] = value;
-        return value;
-      } else {
-        return a[b];
-      }
-    }, obj);
-  }
-}
+import {
+  IItemUpdate,
+  UserSession,
+  updateItem
+} from "@esri/solution-common";
+import { IResponse } from "./interfaces";
 
 /**
  * Get an array from a list of nodes
  *
- * @param nodeList list of nodes
+ * @param nodeList list of nodes 
  */
-export function nodeListToArray<T extends Element>(nodeList: HTMLCollectionOf<T> | NodeListOf<T> | T[]): T[] {
+ export function nodeListToArray<T extends Element>(nodeList: HTMLCollectionOf<T> | NodeListOf<T> | T[]): T[] {
   return Array.isArray(nodeList) ? nodeList : Array.from(nodeList);
+}
+
+/**
+ * Saves any updated templates to the current solution item
+ *
+ * @param templates the updated templates array
+ * @param thumbnailurl url for the items thumbnail
+ * @param id for the solution item
+ * @param data the current solution items data
+ * @param authentication credentials for the request
+ * @param translations translated strings for messages
+ */
+export async function save(
+  templates: any[],
+  thumbnailurl: any,
+  id: string,
+  data: any,
+  authentication: UserSession,
+  translations: any
+): Promise<IResponse> {
+  data.templates = templates;
+
+  const itemInfo: IItemUpdate = { id };
+
+  const params: any = {
+    text: data
+  };
+
+  if (thumbnailurl) {
+    params.thumbnail = thumbnailurl;
+  }
+
+  const updateResults = await updateItem(
+    itemInfo,
+    authentication,
+    undefined,
+    params
+  );
+
+  return {
+    success: updateResults.success,
+    message: updateResults.success ? translations.editsSaved : translations.saveFailed
+  } as IResponse;
 }

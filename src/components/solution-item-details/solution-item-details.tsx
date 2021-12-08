@@ -17,18 +17,8 @@
 import { Component, Element, h, Host, Listen, Prop, VNode } from '@stencil/core';
 import '@esri/calcite-components';
 import state from '../../utils/editStore';
-import { getProp } from '../../utils/common';
-
-export interface IItemDetails {
-  thumbnail: string;
-  title: string;
-  snippet: string;
-  description: string;
-  tags: string[];
-  accessInformation?: string;
-  licenseInfo?: string;
-  itemId: string
-}
+import { getProp } from '@esri/solution-common';
+import { IItemDetails } from '../../utils/interfaces';
 
 @Component({
   tag: 'solution-item-details',
@@ -246,6 +236,7 @@ export class SolutionItemDetails {
       const reader = new FileReader();
       reader.onloadend = () => {
         this.thumbnail.src = reader.result as string;
+        this._updateStore("thumbnail", this.thumbnail.src);
       }
       reader.readAsDataURL(files[0]);
     }

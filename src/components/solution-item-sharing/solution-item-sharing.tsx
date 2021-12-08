@@ -16,15 +16,7 @@
 
 import { Component, Element, h, Host, Prop, VNode } from '@stencil/core';
 import state from '../../utils/editStore';
-
-export interface IItemShare {
-  id: string;
-  title: string;
-  isShared: boolean;
-  shareItem: boolean;
-  type: string;
-  typeKeywords: string[];
-}
+import { IItemShare } from '../../utils/interfaces';
 
 @Component({
   tag: 'solution-item-sharing',

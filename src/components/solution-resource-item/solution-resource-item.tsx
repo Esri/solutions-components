@@ -15,11 +15,7 @@
  */
 
 import { Component, Element, Host, h, Prop, State, Watch } from '@stencil/core';
-
-export interface IResourceItem {
-  name: string,
-  url: string
-}
+import { IResourceItem } from '../../utils/interfaces';
 
 @Component({
   tag: 'solution-resource-item',

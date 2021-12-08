@@ -17,34 +17,14 @@
 /*
  | Helper functions to get required values from solutions templates
 */
-
-import { IItemDetails } from "../components/solution-item-details/solution-item-details";
-import { IInventoryItem } from "../components/solution-contents/solution-contents";
-import { IItemShare } from "../components/solution-item-sharing/solution-item-sharing";
-import { IVariableItem } from "../components/solution-variables/solution-variables";
-import { IOrganizationVariableItem } from "../components/solution-organization-variables/solution-organization-variables";
-
-export interface ISolutionModel {
-  dataModel: monaco.editor.ITextModel;
-  dataOriginValue: string;
-  propsModel: monaco.editor.ITextModel;
-  propsOriginValue: string;
-  propsDiffOriginValue: string;
-  state: any;
-  shareInfo: any;
-  isEditing: boolean;
-  itemId: string;
-  updateItemValues: any;
-  originalItemValues: any;
-  name: string;
-  title: string;
-  itemOriginValue: string;
-  spatialReference: any;
-}
-
-interface ISolutionModels {
-  [key: string]: ISolutionModel;
-} 
+import { 
+  IInventoryItem,
+  IItemDetails,
+  IItemShare,
+  IOrganizationVariableItem,
+  ISolutionModels,
+  IVariableItem
+} from '../utils/interfaces';
 
 export function getInventoryItems(
   templates: any[]

@@ -15,18 +15,12 @@
  */
 
 import { Component, Element, h, Host, Listen, Method, Prop, State, VNode } from '@stencil/core';
-import { IInventoryItem } from '../solution-contents/solution-contents';
-import { ISolutionItem } from '../solution-item/solution-item';
-import { IOrganizationVariableItem } from '../solution-organization-variables/solution-organization-variables';
-import { IVariableItem } from '../solution-variables/solution-variables';
+import { IOrganizationVariableItem, IResponse, ISolutionConfiguration, ISolutionItem, IUpdateTemplateResponse, IVariableItem } from '../../utils/interfaces';
 import * as utils from '../../utils/templates';
 import state from '../../utils/editStore';
-
+import { save } from '../../utils/common';
+import { cloneObject, getItemDataAsJson, setProp, UserSession } from '@esri/solution-common';
 import '@esri/calcite-components';
-
-export interface ISolutionConfiguration {
-  contents: IInventoryItem[]
-}
 
 @Component({
   tag: 'solution-configuration',
@@ -51,6 +45,11 @@ export class SolutionConfiguration {
   @State() modelsSet = false;
 
   /**
+   * Credentials for requests
+   */
+   @Prop({ mutable: true }) authentication: UserSession;
+
+  /**
    * Contains the translations for this component.
    */
   @Prop({ mutable: true }) translations: any = {};
@@ -65,7 +64,7 @@ export class SolutionConfiguration {
   /**
    * Contains the raw templates from the solution item
    */
-  @Prop({mutable: true, reflect: true}) templates: string;
+  @Prop({mutable: true, reflect: true}) templates: any[];
 
   /**
    * Contains the current solution item we are working with
@@ -82,12 +81,17 @@ export class SolutionConfiguration {
   /**
    * Contains the current solution item id
    */
-  @Prop({ mutable: true }) solutionItemId: string;
+  @Prop({ mutable: true, reflect: true }) itemid = "";
 
   /**
    * Used to show/hide the content tree
    */
   @Prop({ mutable: true }) treeOpen = true;
+
+  /**
+  * Contains the current solution item id
+  */
+  @Prop({ mutable: true }) sourceItemData: any = {};
 
   //--------------------------------------------------------------------------
   //
@@ -96,7 +100,7 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
 
   connectedCallback(): void {
-    this._initTemplatesObserver();
+    this._initObserver();
   }
 
   render(): VNode {
@@ -114,10 +118,10 @@ export class SolutionConfiguration {
                   <div class={this.treeOpen ? "config-inventory" : "config-inventory-hide"}>
                     <solution-contents
                       id="configInventory"
-                      key={`${this.solutionItemId }-contents`}
+                      key={`${this.itemid }-contents`}
                       translations={this.translations}
                       value={this.value.contents}
-                     />
+                    />
                   </div>
                   <calcite-button
                     appearance="transparent"
@@ -130,12 +134,12 @@ export class SolutionConfiguration {
                    />
                   <div class="config-item">
                     <solution-item
-                      key={`${this.solutionItemId}-item`}
+                      key={`${this.itemid}-item`}
                       organizationVariables={this._organizationVariables}
                       solutionVariables={this._solutionVariables}
                       translations={this.translations}
                       value={this.item}
-                     />
+                    />
                   </div>
                 </div>
               </calcite-tab>
@@ -143,10 +147,10 @@ export class SolutionConfiguration {
                 <div class="config-solution">
                   <solution-spatial-ref
                     id="configure-solution-spatial-ref"
-                    key={`${this.solutionItemId}-spatial-ref`}
+                    key={`${this.itemid}-spatial-ref`}
                     services={state.featureServices}
                     translations={this.translations}
-                   />
+                  />
                 </div>
               </calcite-tab>
             </calcite-tabs>
@@ -201,6 +205,16 @@ export class SolutionConfiguration {
     return Promise.resolve(state.spatialReferenceInfo);
   }
 
+  @Method()
+  async getSourceTemplates(): Promise<any> {
+    return Promise.resolve(this.templates);
+  }
+
+  @Method()
+  async save(): Promise<any> {
+    return Promise.resolve(this._save());
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Private Methods
@@ -208,19 +222,24 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
 
   /**
-   * Observe changes to the templates prop
+   * Observe changes to the props
    */
-  private _initTemplatesObserver() {
+  private _initObserver() {
     this._templatesObserver = new MutationObserver(ml => {
       ml.some(mutation => {
-        if (mutation.type === 'attributes' && mutation.attributeName === "templates" &&
-          mutation.target[mutation.attributeName] !== mutation.oldValue) {
-          const v = JSON.parse(mutation.target[mutation.attributeName]);
-          this._initProps(v);
-          this._initState(v);
+        const v = mutation.target[mutation.attributeName];
+        if (mutation.type === 'attributes' && mutation.attributeName === "itemid" && v && v !== mutation.oldValue) {
+          // eslint-disable-next-line @typescript-eslint/no-floating-promises
+          getItemDataAsJson(v, this.authentication).then(data => {
+            this.sourceItemData = data;
+            this.templates = data.templates;
+
+            this._initProps(this.templates);
+            this._initState(this.templates);
+          });
           return true;
         }
-      })
+      });
     });
     this._templatesObserver.observe(this.el, { attributes: true, attributeOldValue: true });
   }
@@ -257,5 +276,145 @@ export class SolutionConfiguration {
    */
   private _toggleTree(): void {
     this.treeOpen = !this.treeOpen;
+  }
+
+  /**
+   * Save all edits from the current configuration
+   * 
+   * @returns a response that will indicate success or failure and any associated messages
+   */
+  private async _save() {
+    const templateUpdates = await this._updateTemplates();
+    return templateUpdates.errors.length === 0 ? save(
+      templateUpdates.templates,
+      "",
+      this.itemid,
+      this.sourceItemData,
+      this.authentication,
+      this.translations
+    ) : {
+      success: false,
+      message: `The following templates have errors: ${templateUpdates.errors.join(", ")}`
+    } as IResponse;
+  }
+
+  /**
+   * Update the solutions templates based on the stored changes
+   * 
+   * @returns an object that contains the updated templates as well as any errors that were found
+   */
+  private async _updateTemplates(): Promise<IUpdateTemplateResponse> {
+    const errors = [];
+    const models = await this.getEditModels();
+    let templates = cloneObject(this.templates);
+    Object.keys(models).forEach(k => {
+      const m = models[k];
+      templates = templates.map(t => {
+        if (t.itemId === m.itemId) {
+          this._setItem(t, m);
+          const hasDataError = this._setData(t, m);
+          const hasPropError = this._setProps(t, m);
+
+          if (hasDataError || hasPropError) {
+            errors.push(m.itemId);
+          }
+        }
+        return t;
+      });
+    });
+    return Promise.resolve({
+      templates,
+      errors
+    });
+  }
+
+  /**
+   * Set a templates data property with changes from the models
+   * 
+   * @param template the current template to update
+   * @param model the corresponding model for the current template (stores any user changes)
+   * 
+   * @returns a boolean that indicates if any errors were detected
+   */
+  private _setData(
+    template: any,
+    model: any
+  ): boolean {
+    return this._setTemplateProp(
+      template,
+      model.dataOriginValue,
+      model.dataModel.getValue(),
+      "data"
+    );
+  }
+
+  /**
+   * Set a templates properties property with changes from the models
+   * 
+   * @param template the current template to update
+   * @param model the corresponding model for the current template (stores any user changes)
+   * 
+   * @returns a boolean that indicates if any errors were detected
+   */
+  private _setProps(
+    template: any,
+    model: any
+  ): boolean {
+    return this._setTemplateProp(
+      template,
+      model.propsOriginValue,
+      model.propsModel.getValue(),
+      "properties"
+    );
+  }
+
+  /**
+   * Generic function used to set properties or data property on a given template
+   * 
+   * @param template the current template to update
+   * @param originValue the original value from the solution template
+   * @param modelValue the current value from the model (will contain any edits that have been made)
+   * @param path the path to the property we should update if any changes are found
+   * 
+   * @returns a boolean that indicates if any errors were detected
+   */
+  private _setTemplateProp(
+    template: any,
+    originValue: any,
+    modelValue: any,
+    path: string
+  ): boolean {
+    let hasError = false;
+    try {
+      const _originValue = JSON.parse(originValue);
+      const _modelValue = JSON.parse(modelValue);
+
+      if (_originValue && _modelValue && (JSON.stringify(_originValue) !== JSON.stringify(_modelValue))) {
+        setProp(template, path, _modelValue);
+      }
+    } catch (e) {
+      console.error(e);
+      hasError = true;
+    }
+    return hasError;
+  }
+
+  /**
+   * Set a templates item property with changes from the models
+   * 
+   * @param template the current template to update
+   * @param model the corresponding model for the current template (stores any user changes)
+   * 
+   * This function will update the template argument when edits are found
+   */
+  private _setItem(
+    template: any,
+    model: any
+  ): void {
+    if (model.updateItemValues && Object.keys(model.updateItemValues).length > 0) {
+      Object.keys(model.updateItemValues).forEach(k => {
+        template.item[k] = model.updateItemValues[k];
+      });
+    }
   }
 }

@@ -15,12 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode } from '@stencil/core';
-
-export interface IOrganizationVariableItem {
-  id: string;
-  title: string;
-  value: string;
-}
+import { IOrganizationVariableItem } from '../../utils/interfaces';
 
 @Component({
   tag: 'solution-organization-variables',
