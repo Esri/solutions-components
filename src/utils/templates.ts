@@ -25,6 +25,9 @@ import {
   ISolutionModels,
   IVariableItem
 } from '../utils/interfaces';
+import {
+  getProp
+} from '@esri/solution-common';
 
 export function getInventoryItems(
   templates: any[]
@@ -173,16 +176,18 @@ export function getFeatureServices(
 }
 
 export function getSpatialReferenceInfo(
-  services: string[]
+  services: string[],
+  data: any
 ): any {
   const defaultServices: any = {};
   services.forEach(service => {
     defaultServices[service] = true;
   });
+  const wkid = getProp(data, "params.wkid.default");
   return {
-    enabled: false,
+    enabled: wkid ? true : false,
     services: defaultServices,
-    spatialReference: undefined
+    spatialReference: wkid ? { wkid } : undefined
   }
 }
 

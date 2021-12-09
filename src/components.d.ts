@@ -246,6 +246,13 @@ export namespace Components {
         "value": IVariableItem[];
     }
     interface StoreManager {
+        /**
+          * Credentials for requests
+         */
+        "authentication": UserSession;
+        /**
+          * Templates for the current solution
+         */
         "templates": any[];
         /**
           * Contains source json as a string
@@ -570,7 +577,14 @@ declare namespace LocalJSX {
         "value"?: IVariableItem[];
     }
     interface StoreManager {
+        /**
+          * Credentials for requests
+         */
+        "authentication"?: UserSession;
         "onStateLoaded"?: (event: CustomEvent<any>) => void;
+        /**
+          * Templates for the current solution
+         */
         "templates"?: any[];
         /**
           * Contains source json as a string

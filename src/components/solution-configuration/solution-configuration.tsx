@@ -150,6 +150,8 @@ export class SolutionConfiguration {
                     key={`${this.itemid}-spatial-ref`}
                     services={state.featureServices}
                     translations={this.translations}
+                    locked={getProp(state.spatialReferenceInfo, "spatialReference.wkid") ? false : true}
+                    defaultWkid={getProp(state.spatialReferenceInfo, "spatialReference.wkid")}
                   />
                 </div>
               </calcite-tab>
@@ -250,7 +252,7 @@ export class SolutionConfiguration {
   private _initState(v: any): void {
     state.models = utils.getModels(v);
     state.featureServices = utils.getFeatureServices(v);
-    state.spatialReferenceInfo = utils.getSpatialReferenceInfo(state.featureServices);
+    state.spatialReferenceInfo = utils.getSpatialReferenceInfo(state.featureServices, this.sourceItemData);
     this.modelsSet = true;
   }
 
