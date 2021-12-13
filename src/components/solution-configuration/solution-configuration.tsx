@@ -148,7 +148,7 @@ export class SolutionConfiguration {
                   <solution-spatial-ref
                     id="configure-solution-spatial-ref"
                     key={`${this.itemid}-spatial-ref`}
-                    services={state.featureServices}
+                    services={state.featureServices.map(fs => fs.name)}
                     translations={this.translations}
                     locked={getProp(state.spatialReferenceInfo, "spatialReference.wkid") ? false : true}
                     defaultWkid={getProp(state.spatialReferenceInfo, "spatialReference.wkid")}
@@ -287,14 +287,13 @@ export class SolutionConfiguration {
    */
   private async _save() {
     const templateUpdates = await this._updateTemplates();
-    const data = this._setSrInfo();
+    const data = this._setSrInfo(templateUpdates.templates);
     return templateUpdates.errors.length === 0 ? save(
-      templateUpdates.templates,
-      "",
       this.itemid,
       data,
       this.authentication,
-      this.translations
+      this.translations,
+      ""
     ) : {
       success: false,
       message: `The following templates have errors: ${templateUpdates.errors.join(", ")}`
@@ -325,7 +324,7 @@ export class SolutionConfiguration {
         return t;
       });
     });
-    errors.push(window.monaco.editor.getModelMarkers({}));
+    errors.concat(window.monaco.editor.getModelMarkers({}));
     return Promise.resolve({
       templates,
       errors
@@ -428,13 +427,16 @@ export class SolutionConfiguration {
    * @returns a cloned copy of the solutions data that has been updated with spatial reference info
    * 
    */
-  private _setSrInfo(): any {
+  private _setSrInfo(
+    templates: any[]
+  ): any {
     const srInfo: any = state.spatialReferenceInfo;
 
     const serviceEnabled = typeof srInfo?.services === 'undefined' ?
       false : Object.keys(srInfo.services).some(k => srInfo.services[k]);
 
     const data = cloneObject(this.sourceItemData);
+    data.templates = templates;
     if (srInfo && srInfo.enabled && serviceEnabled) {
       const wkid = srInfo.spatialReference.wkid.toString();
 
@@ -454,6 +456,10 @@ export class SolutionConfiguration {
         hasWkid ? "params.wkid.default" : "params.wkid",
         hasWkid ? wkid : params ? wkidParam : wkid
       );
+    } else if (!srInfo.enabled) {
+      if (getProp(data, "params.wkid")) {
+        delete(data.params.wkid);
+      }
     }
     return data;
   }

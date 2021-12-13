@@ -179,6 +179,10 @@ export namespace Components {
          */
         "getSpatialRef": () => Promise<ISpatialRefRepresentation>;
         /**
+          * Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services.
+         */
+        "loaded": boolean;
+        /**
           * When true, all but the main switch are disabled to prevent interaction.
          */
         "locked": boolean;
@@ -515,9 +519,14 @@ declare namespace LocalJSX {
          */
         "defaultWkid"?: number;
         /**
+          * Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services.
+         */
+        "loaded"?: boolean;
+        /**
           * When true, all but the main switch are disabled to prevent interaction.
          */
         "locked"?: boolean;
+        "onFeatureServiceSpatialReferenceChange"?: (event: CustomEvent<any>) => void;
         /**
           * List of service names the spatial reference should apply to
          */

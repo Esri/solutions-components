@@ -169,19 +169,20 @@ export function getFeatureServices(
       cur.item.typeKeywords.indexOf("View Service") < 0 &&
       prev.indexOf(name) < 0
     ) {
-      prev.push(name)
+      const wkid = getProp(cur, "properties.service.spatialReference.wkid");
+      prev.push({ name, enabled: wkid.toString().startsWith("{{params.wkid||")});
     }
     return prev;
   }, []);
 }
 
 export function getSpatialReferenceInfo(
-  services: string[],
+  services: any[],
   data: any
 ): any {
   const defaultServices: any = {};
   services.forEach(service => {
-    defaultServices[service] = true;
+    defaultServices[service.name] = service.enabled;
   });
   const wkid = getProp(data, "params.wkid.default");
   return {

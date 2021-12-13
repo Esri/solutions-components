@@ -52,7 +52,7 @@
       demo.translations = translations.configuration_modal.configuration;
 
       window.addEventListener("stateLoaded", (r) => {
-        demo.services = r.detail.featureServices;
+        demo.services = r.detail.featureServices.map(fs => fs.name);
         document.getElementById("appContainer").style.opacity = "1";
       });
 
