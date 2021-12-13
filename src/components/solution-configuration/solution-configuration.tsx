@@ -104,6 +104,7 @@ export class SolutionConfiguration {
   }
 
   render(): VNode {
+    const wkid = getProp(state.spatialReferenceInfo, "spatialReference.wkid");
     return (
       <Host>
         <div class="configuration-container">
@@ -146,12 +147,12 @@ export class SolutionConfiguration {
               <calcite-tab class="config-tab">
                 <div class="config-solution">
                   <solution-spatial-ref
+                    defaultWkid={wkid}
                     id="configure-solution-spatial-ref"
                     key={`${this.itemid}-spatial-ref`}
+                    locked={!wkid}
                     services={state.featureServices.map(fs => fs.name)}
                     translations={this.translations}
-                    locked={getProp(state.spatialReferenceInfo, "spatialReference.wkid") ? false : true}
-                    defaultWkid={getProp(state.spatialReferenceInfo, "spatialReference.wkid")}
                   />
                 </div>
               </calcite-tab>
