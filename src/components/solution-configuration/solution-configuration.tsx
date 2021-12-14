@@ -232,14 +232,7 @@ export class SolutionConfiguration {
       ml.some(mutation => {
         const v = mutation.target[mutation.attributeName];
         if (mutation.type === 'attributes' && mutation.attributeName === "itemid" && v && v !== mutation.oldValue) {
-          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          getItemDataAsJson(v, this.authentication).then(data => {
-            this.sourceItemData = data;
-            this.templates = data.templates;
-
-            this._initProps(this.templates);
-            this._initState(this.templates);
-          });
+          this._getItemData(v);
           return true;
         }
       });
@@ -247,13 +240,38 @@ export class SolutionConfiguration {
     this._templatesObserver.observe(this.el, { attributes: true, attributeOldValue: true });
   }
 
+  private _getItemData(
+    id: string,
+    isReset: boolean = false
+  ): Promise<any> {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    return getItemDataAsJson(id, this.authentication).then(data => {
+      this.sourceItemData = data;
+      this.templates = data.templates;
+
+      this._initProps(this.templates);
+      this._initState(this.templates, isReset);
+    });
+  }
+
   /**
    * Update the store with the initial value
    */
-  private _initState(v: any): void {
+  private _initState(v: any, isReset: boolean = false): void {
+    if (isReset) {
+      // clear models and state so we can refresh after save
+      this.modelsSet = false;
+      state.reset();
+    }
     state.models = utils.getModels(v);
     state.featureServices = utils.getFeatureServices(v);
     state.spatialReferenceInfo = utils.getSpatialReferenceInfo(state.featureServices, this.sourceItemData);
+
+    if (isReset) {
+      // reset for undo/redo stack and diff editor tracking
+      const jsonEditors = Array.from(this.el.getElementsByTagName("json-editor"));
+      jsonEditors.forEach(e => e.reset());
+    }
     this.modelsSet = true;
   }
 
@@ -289,16 +307,24 @@ export class SolutionConfiguration {
   private async _save() {
     const templateUpdates = await this._updateTemplates();
     const data = this._setSrInfo(templateUpdates.templates);
-    return templateUpdates.errors.length === 0 ? save(
-      this.itemid,
-      data,
-      this.authentication,
-      this.translations,
-      ""
-    ) : {
-      success: false,
-      message: `The following templates have errors: ${templateUpdates.errors.join(", ")}`
-    } as IResponse;
+    if (templateUpdates.errors.length === 0) {
+      return save(
+        this.itemid,
+        data,
+        this.authentication,
+        this.translations,
+        ""
+      ).then(saveResult => {
+        return this._getItemData(this.itemid, true).then(() => {
+          return saveResult;
+        }, Promise.reject);
+      });
+    } else {
+      return Promise.reject({
+        success: false,
+        message: `The following templates have errors: ${templateUpdates.errors.join(", ")}`
+      } as IResponse);
+    }
   }
 
   /**
@@ -309,7 +335,7 @@ export class SolutionConfiguration {
   private async _updateTemplates(): Promise<IUpdateTemplateResponse> {
     const errors = [];
     const models = await this.getEditModels();
-    let templates = cloneObject(this.templates);
+    let templates = this.templates;
     Object.keys(models).forEach(k => {
       const m = models[k];
       templates = templates.map(t => {
