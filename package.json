@@ -40,7 +40,6 @@
   },
   "devDependencies": {
     "@esri/calcite-components": "^1.0.0-beta.71",
-    "@esri/eslint-plugin-calcite-components": "0.1.1",
     "@stencil/eslint-plugin": "0.4.0",
     "@stencil/store": "^1.5.0",
     "@types/jest": "^27.0.3",
@@ -73,6 +72,7 @@
   },
   "dependencies": {
     "@stencil/core": "^2.11.0",
+    "@esri/solution-common": "^1.1.5",
     "monaco-editor": "^0.30.1"
   },
   "repository": {

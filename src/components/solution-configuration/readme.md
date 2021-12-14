@@ -9,9 +9,11 @@
 
 | Property         | Attribute          | Description                                            | Type                     | Default                                                                                                            |
 | ---------------- | ------------------ | ------------------------------------------------------ | ------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `authentication` | --                 | Credentials for requests                               | `UserSession`            | `undefined`                                                                                                        |
 | `item`           | --                 | Contains the current solution item we are working with | `ISolutionItem`          | `{     itemId: "",     itemDetails: {},     isResource: false,     data: {},     properties: {},     type: ""   }` |
-| `solutionItemId` | `solution-item-id` | Contains the current solution item id                  | `string`                 | `undefined`                                                                                                        |
-| `templates`      | `templates`        | Contains the raw templates from the solution item      | `string`                 | `undefined`                                                                                                        |
+| `itemid`         | `itemid`           | Contains the current solution item id                  | `string`                 | `""`                                                                                                               |
+| `sourceItemData` | `source-item-data` | Contains the current solution item id                  | `any`                    | `{}`                                                                                                               |
+| `templates`      | --                 | Contains the raw templates from the solution item      | `any[]`                  | `undefined`                                                                                                        |
 | `translations`   | `translations`     | Contains the translations for this component.          | `any`                    | `{}`                                                                                                               |
 | `treeOpen`       | `tree-open`        | Used to show/hide the content tree                     | `boolean`                | `true`                                                                                                             |
 | `value`          | --                 | Contains the public value for this component.          | `ISolutionConfiguration` | `{     contents: []   }`                                                                                           |
@@ -29,7 +31,27 @@ Type: `Promise<any>`
 
 
 
+### `getSourceTemplates() => Promise<any>`
+
+
+
+#### Returns
+
+Type: `Promise<any>`
+
+
+
 ### `getSpatialReferenceInfo() => Promise<any>`
+
+
+
+#### Returns
+
+Type: `Promise<any>`
+
+
+
+### `save() => Promise<any>`
 
 
 

@@ -5,19 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ISolutionConfiguration } from "./components/solution-configuration/solution-configuration";
-import { ISolutionItem } from "./components/solution-item/solution-item";
-import { IInventoryItem } from "./components/solution-contents/solution-contents";
-import { ISolutionItem as ISolutionItem1 } from "./components/solution-item/solution-item";
-import { IItemDetails } from "./components/solution-item-details/solution-item-details";
-import { IItemShare } from "./components/solution-item-sharing/solution-item-sharing";
-import { IOrganizationVariableItem } from "./components/solution-organization-variables/solution-organization-variables";
-import { IResourceItem } from "./components/solution-resource-item/solution-resource-item";
-import { ISpatialRefRepresentation } from "./components/solution-spatial-ref/solution-spatial-ref";
-import { ITemplateData } from "./components/solution-template-data/solution-template-data";
-import { IVariableItem } from "./components/solution-variables/solution-variables";
-import { IOrganizationVariableItem as IOrganizationVariableItem1 } from "./components/solution-organization-variables/solution-organization-variables";
-import { IVariableItem as IVariableItem1 } from "./components/solution-variables/solution-variables";
+import { UserSession } from "@esri/solution-common";
+import { IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourceItem, ISolutionConfiguration, ISolutionItem, ISpatialRefRepresentation, ITemplateData, IVariableItem } from "./utils/interfaces";
 export namespace Components {
     interface JsonEditor {
         /**
@@ -46,7 +35,12 @@ export namespace Components {
         "value": any;
     }
     interface SolutionConfiguration {
+        /**
+          * Credentials for requests
+         */
+        "authentication": UserSession;
         "getEditModels": () => Promise<any>;
+        "getSourceTemplates": () => Promise<any>;
         "getSpatialReferenceInfo": () => Promise<any>;
         /**
           * Contains the current solution item we are working with
@@ -55,11 +49,16 @@ export namespace Components {
         /**
           * Contains the current solution item id
          */
-        "solutionItemId": string;
+        "itemid": string;
+        "save": () => Promise<any>;
+        /**
+          * Contains the current solution item id
+         */
+        "sourceItemData": any;
         /**
           * Contains the raw templates from the solution item
          */
-        "templates": string;
+        "templates": any[];
         /**
           * Contains the translations for this component.
          */
@@ -247,6 +246,7 @@ export namespace Components {
         "value": IVariableItem[];
     }
     interface StoreManager {
+        "templates": any[];
         /**
           * Contains source json as a string
          */
@@ -377,17 +377,25 @@ declare namespace LocalJSX {
     }
     interface SolutionConfiguration {
         /**
+          * Credentials for requests
+         */
+        "authentication"?: UserSession;
+        /**
           * Contains the current solution item we are working with
          */
         "item"?: ISolutionItem;
         /**
           * Contains the current solution item id
          */
-        "solutionItemId"?: string;
+        "itemid"?: string;
+        /**
+          * Contains the current solution item id
+         */
+        "sourceItemData"?: any;
         /**
           * Contains the raw templates from the solution item
          */
-        "templates"?: string;
+        "templates"?: any[];
         /**
           * Contains the translations for this component.
          */
@@ -563,6 +571,7 @@ declare namespace LocalJSX {
     }
     interface StoreManager {
         "onStateLoaded"?: (event: CustomEvent<any>) => void;
+        "templates"?: any[];
         /**
           * Contains source json as a string
          */

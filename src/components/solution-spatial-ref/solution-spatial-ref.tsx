@@ -16,16 +16,11 @@
 
 import { Component, Element, h, Host, Method, Prop, State, Watch, VNode } from '@stencil/core';
 import '@esri/calcite-components';
-import { IWkidDescription, wkids } from './spatialreferences';
+import { wkids } from './spatialreferences';
 import state from '../../utils/editStore';
-import { getProp, nodeListToArray } from '../../utils/common';
-
-export interface ISpatialRefRepresentation {
-  display: string;
-  usingWkid: boolean;
-  wkid: number;
-  wkt: string;
-}
+import { nodeListToArray } from '../../utils/common';
+import { getProp } from '@esri/solution-common';
+import { ISpatialRefRepresentation, IWkidDescription } from '../../utils/interfaces';
 
 @Component({
   tag: 'solution-spatial-ref',

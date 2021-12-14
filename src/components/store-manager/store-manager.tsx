@@ -53,6 +53,8 @@
    *
    */
    @Prop({ mutable: true, reflect: true }) value = "";
+
+   @Prop({ mutable: true, reflect: true }) templates: any[] = [];
  
   //--------------------------------------------------------------------------
   //
@@ -94,6 +96,7 @@
            state.models = getModels(Array.isArray(v) ? v : [v]);
            state.featureServices = getFeatureServices(Array.isArray(v) ? v : [v])
            state.spatialReferenceInfo = getSpatialReferenceInfo(state.featureServices);
+           this.templates = v;
            this.stateLoaded.emit(state);
            return true;
          }

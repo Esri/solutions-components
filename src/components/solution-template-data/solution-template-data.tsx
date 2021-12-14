@@ -16,14 +16,7 @@
 
 import { VNode } from '@esri/calcite-components/dist/types/stencil-public-runtime';
 import { Component, Element, Host, h, Prop } from '@stencil/core';
-import { IOrganizationVariableItem } from '../solution-organization-variables/solution-organization-variables';
-import { IVariableItem } from '../solution-variables/solution-variables';
-import { IResourceItem } from '../solution-resource-item/solution-resource-item';
-
-export interface ITemplateData {
-  resourceItem?: IResourceItem,
-  value?: any
-}
+import { IOrganizationVariableItem, ITemplateData, IVariableItem } from '../../utils/interfaces';
 
 @Component({
   tag: 'solution-template-data',

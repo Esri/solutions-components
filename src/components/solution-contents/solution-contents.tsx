@@ -14,18 +14,9 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode } from '@stencil/core';
-import { ISolutionItem } from '../solution-item/solution-item';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Watch } from '@stencil/core';
+import { IInventoryItem, ISolutionItem } from '../../utils/interfaces';
 import '@esri/calcite-components';
-
-export interface IInventoryItem {
-  id: string;
-  title: string;
-  dependencies?: IInventoryItem[];
-  type: string;
-  typeKeywords: string[];
-  solutionItem: ISolutionItem
-}
 
 @Component({
   tag: 'solution-contents',
@@ -58,6 +49,13 @@ export class SolutionContents {
    * Contains the public value for this component.
    */
   @Prop() value: IInventoryItem[] = [];
+
+  @Watch('value')
+  valueWatchHandler(v: any, oldV: any): void {
+    if (v && v !== oldV && Array.isArray(v) && v.length > 0) {
+      this._treeItemSelected(v[0].solutionItem);
+    }
+  }
 
   //--------------------------------------------------------------------------
   //

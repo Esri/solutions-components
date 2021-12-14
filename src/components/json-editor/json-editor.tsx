@@ -35,7 +35,7 @@
 
 import { Component, Element, Host, h, Listen, Prop } from '@stencil/core';
 import state from '../../utils/editStore';
-import { getProp } from '../../utils/common';
+import { getProp } from '@esri/solution-common';
 
 @Component({
   tag: 'json-editor',
