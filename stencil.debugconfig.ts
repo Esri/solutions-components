@@ -1,8 +1,9 @@
 import { Config } from '@stencil/core';
 
 export const config: Config = {
-  namespace: 'solutions',
+  namespace: 'solutions-components',
   globalStyle: 'src/assets/styles/styles.css',
+  buildEs5: 'prod',
   sourceMap: true,
   outputTargets: [
     {
@@ -14,7 +15,8 @@ export const config: Config = {
       ]
     },
     {
-      type: 'dist-custom-elements-bundle'
+       type: 'dist-custom-elements',
+       autoDefineCustomElements: true
     },
     {
       type: 'docs-readme'
