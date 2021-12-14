@@ -45,15 +45,12 @@ import { IResponse } from "./interfaces";
  * @param translations translated strings for messages
  */
 export async function save(
-  templates: any[],
-  thumbnailurl: any,
   id: string,
   data: any,
   authentication: UserSession,
-  translations: any
+  translations: any,
+  thumbnailurl: any,
 ): Promise<IResponse> {
-  data.templates = templates;
-
   const itemInfo: IItemUpdate = { id };
 
   const params: any = {

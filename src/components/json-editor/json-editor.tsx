@@ -266,6 +266,13 @@ export class JsonEditor {
     }
   }
 
+  @Listen("featureServiceSpatialReferenceChange", { target: 'window' })
+  featureServiceSpatialReferenceChange(event: CustomEvent): void {
+    if (this.instanceid === "props" && state.models[this.value].title === event.detail.name) {
+      this._setFeatureServiceWkid(event.detail.enabled);
+    }
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Events
@@ -624,5 +631,36 @@ export class JsonEditor {
     const serviceActive = getProp(state, `spatialReferenceInfo.services.${m?.name}`);
     const srEnabled = getProp(state, 'spatialReferenceInfo.enabled');
     return (serviceActive && srEnabled && !this._isData()) ? m.propsDiffOriginValue : this.original;
+  }
+
+  /**
+   * Update the current feature service models wkid
+   * 
+   * This functions responds to events fired from the spatial reference control.
+   * 
+   * @param enabled does the given service support the wkid variable (true) or the current wkid (false)
+   *
+   * @protected
+   */
+  _setFeatureServiceWkid(
+    enabled: boolean
+  ): void {
+    const editor = this._getEditor();
+    const m = editor.getModel();
+    const model = this._useDiffEditor ? m.modified : m;
+    const matches = model.findMatches(/["]wkid["].*[,]/, false, true, true, null, true);
+    if (matches.length > 0) {
+      const range = matches[0].range;
+      const currentText = model.getValueInRange(range);
+      const endsWith = currentText.indexOf(",") > -1 ? "," : "";
+      const wkid = /[0-9]+/.exec(currentText);
+      const wkidVar = enabled ? `"{{params.wkid||${wkid}}}"` : wkid;
+      const text = `"wkid": ${wkidVar}${endsWith}`;
+      model.pushEditOperations([],[{
+        forceMoveMarkers: true,
+        text,
+        range
+      }]);
+    }
   }
 }

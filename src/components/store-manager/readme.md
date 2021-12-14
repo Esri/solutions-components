@@ -7,10 +7,11 @@
 
 ## Properties
 
-| Property    | Attribute | Description                      | Type     | Default |
-| ----------- | --------- | -------------------------------- | -------- | ------- |
-| `templates` | --        |                                  | `any[]`  | `[]`    |
-| `value`     | `value`   | Contains source json as a string | `string` | `""`    |
+| Property         | Attribute | Description                        | Type          | Default     |
+| ---------------- | --------- | ---------------------------------- | ------------- | ----------- |
+| `authentication` | --        | Credentials for requests           | `UserSession` | `undefined` |
+| `templates`      | --        | Templates for the current solution | `any[]`       | `[]`        |
+| `value`          | `value`   | Contains source json as a string   | `string`      | `""`        |
 
 
 ## Events

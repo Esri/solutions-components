@@ -28,6 +28,7 @@
  import { Component, Element, Event, EventEmitter, Prop } from '@stencil/core';
  import state from '../../utils/editStore';
  import { getModels, getFeatureServices, getSpatialReferenceInfo } from '../../utils/templates';
+ import { getItemDataAsJson, UserSession } from '@esri/solution-common';
  
  @Component({
    tag: 'store-manager',
@@ -54,7 +55,15 @@
    */
    @Prop({ mutable: true, reflect: true }) value = "";
 
+  /**
+   * Templates for the current solution
+   */
    @Prop({ mutable: true, reflect: true }) templates: any[] = [];
+
+  /**
+   * Credentials for requests
+   */
+   @Prop({ mutable: true }) authentication: UserSession;
  
   //--------------------------------------------------------------------------
   //
@@ -93,11 +102,14 @@
          if (mutation.type === 'attributes' && mutation.attributeName === "value" &&
            newValue !== mutation.oldValue && newValue !== "") {
            const v = JSON.parse(newValue);
-           state.models = getModels(Array.isArray(v) ? v : [v]);
-           state.featureServices = getFeatureServices(Array.isArray(v) ? v : [v])
-           state.spatialReferenceInfo = getSpatialReferenceInfo(state.featureServices);
-           this.templates = v;
-           this.stateLoaded.emit(state);
+           // eslint-disable-next-line @typescript-eslint/no-floating-promises
+           getItemDataAsJson(v, this.authentication).then(data => {
+             state.models = getModels(Array.isArray(v) ? v : [v]);
+             state.featureServices = getFeatureServices(Array.isArray(v) ? v : [v])
+             state.spatialReferenceInfo = getSpatialReferenceInfo(state.featureServices, data);
+             this.templates = v;
+             this.stateLoaded.emit(state);
+           });
            return true;
          }
        })

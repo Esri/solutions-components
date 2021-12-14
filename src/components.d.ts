@@ -179,6 +179,10 @@ export namespace Components {
          */
         "getSpatialRef": () => Promise<ISpatialRefRepresentation>;
         /**
+          * Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services.
+         */
+        "loaded": boolean;
+        /**
           * When true, all but the main switch are disabled to prevent interaction.
          */
         "locked": boolean;
@@ -246,6 +250,13 @@ export namespace Components {
         "value": IVariableItem[];
     }
     interface StoreManager {
+        /**
+          * Credentials for requests
+         */
+        "authentication": UserSession;
+        /**
+          * Templates for the current solution
+         */
         "templates": any[];
         /**
           * Contains source json as a string
@@ -508,9 +519,14 @@ declare namespace LocalJSX {
          */
         "defaultWkid"?: number;
         /**
+          * Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services.
+         */
+        "loaded"?: boolean;
+        /**
           * When true, all but the main switch are disabled to prevent interaction.
          */
         "locked"?: boolean;
+        "onFeatureServiceSpatialReferenceChange"?: (event: CustomEvent<any>) => void;
         /**
           * List of service names the spatial reference should apply to
          */
@@ -570,7 +586,14 @@ declare namespace LocalJSX {
         "value"?: IVariableItem[];
     }
     interface StoreManager {
+        /**
+          * Credentials for requests
+         */
+        "authentication"?: UserSession;
         "onStateLoaded"?: (event: CustomEvent<any>) => void;
+        /**
+          * Templates for the current solution
+         */
         "templates"?: any[];
         /**
           * Contains source json as a string
