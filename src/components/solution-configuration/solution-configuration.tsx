@@ -233,13 +233,7 @@ export class SolutionConfiguration {
         const v = mutation.target[mutation.attributeName];
         if (mutation.type === 'attributes' && mutation.attributeName === "itemid" && v && v !== mutation.oldValue) {
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          getItemDataAsJson(v, this.authentication).then(data => {
-            this.sourceItemData = data;
-            this.templates = data.templates;
-
-            this._initProps(this.templates);
-            this._initState(this.templates);
-          });
+          this._getItemData(v);
           return true;
         }
       });
@@ -248,21 +242,57 @@ export class SolutionConfiguration {
   }
 
   /**
-   * Update the store with the initial value
+   * Get the solution items data
+   * 
+   * @param id the solution items id
+   * @param isReset (defaults to false) indicates if we are resetting the controls after save
    */
-  private _initState(v: any): void {
-    state.models = utils.getModels(v);
-    state.featureServices = utils.getFeatureServices(v);
+  private _getItemData(
+    id: string,
+    isReset = false
+  ): Promise<any> {
+    return getItemDataAsJson(id, this.authentication).then(data => {
+      this.sourceItemData = data;
+      this.templates = data.templates;
+
+      this._initProps(this.templates);
+      this._initState(this.templates, isReset);
+    });
+  }
+
+  /**
+   * Update the store with the initial value
+   * 
+   * @param templates the solution items templates
+   * @param isReset (defaults to false) indicates if we are resetting the controls after save
+   */
+  private _initState(templates: any[], isReset = false): void {
+    if (isReset) {
+      // clear models and state so we can refresh after save
+      this.modelsSet = false;
+      state.reset();
+    }
+    state.models = utils.getModels(templates);
+    state.featureServices = utils.getFeatureServices(templates);
     state.spatialReferenceInfo = utils.getSpatialReferenceInfo(state.featureServices, this.sourceItemData);
+
+    if (isReset) {
+      // reset for undo/redo stack and diff editor tracking
+      const jsonEditors = Array.from(this.el.getElementsByTagName("json-editor"));
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      jsonEditors.forEach(e => void e.reset());
+    }
     this.modelsSet = true;
   }
 
   /**
    * Update the Props with the initial values
+   * 
+   * @param templates the solution items templates
    */
-  private _initProps(v: any): void {
-    this.value.contents = [...utils.getInventoryItems(v)];
-    this._solutionVariables = utils.getSolutionVariables(v, this.translations);
+  private _initProps(templates: any[]): void {
+    this.value.contents = [...utils.getInventoryItems(templates)];
+    this._solutionVariables = utils.getSolutionVariables(templates, this.translations);
     this._organizationVariables = utils.getOrganizationVariables(this.translations);
     this.item = {
       itemId: "",
@@ -290,15 +320,19 @@ export class SolutionConfiguration {
     const templateUpdates = await this._updateTemplates();
     const data = this._setSrInfo(templateUpdates.templates);
     return templateUpdates.errors.length === 0 ? save(
-      this.itemid,
-      data,
-      this.authentication,
-      this.translations,
-      ""
-    ) : {
-      success: false,
-      message: `The following templates have errors: ${templateUpdates.errors.join(", ")}`
-    } as IResponse;
+        this.itemid,
+        data,
+        this.authentication,
+        this.translations,
+        ""
+      ).then(saveResult => {
+        return this._getItemData(this.itemid, true).then(() => {
+          return saveResult;
+        }, e => Promise.reject(e));
+      }) : Promise.reject({
+        success: false,
+        message: `The following templates have errors: ${templateUpdates.errors.join(", ")}`
+      } as IResponse);
   }
 
   /**
@@ -309,7 +343,7 @@ export class SolutionConfiguration {
   private async _updateTemplates(): Promise<IUpdateTemplateResponse> {
     const errors = [];
     const models = await this.getEditModels();
-    let templates = cloneObject(this.templates);
+    let templates = this.templates;
     Object.keys(models).forEach(k => {
       const m = models[k];
       templates = templates.map(t => {
@@ -424,6 +458,8 @@ export class SolutionConfiguration {
 
   /**
    * Set spatial reference info in the solutions data
+   * 
+   * @param templates a list of item templates from the solution
    * 
    * @returns a cloned copy of the solutions data that has been updated with spatial reference info
    * 

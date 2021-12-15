@@ -17,6 +17,19 @@
 | `value`        | `value`        | Contains the public value for this component. This should be an item Id for one of the models in the store.                                                                                                                                                                                                                              | `any`     | `undefined` |
 
 
+## Methods
+
+### `reset() => Promise<any>`
+
+
+
+#### Returns
+
+Type: `Promise<any>`
+
+
+
+
 ## Dependencies
 
 ### Used by

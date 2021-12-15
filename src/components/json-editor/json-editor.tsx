@@ -33,7 +33,7 @@
  *
 */
 
-import { Component, Element, Host, h, Listen, Prop } from '@stencil/core';
+import { Component, Element, Host, h, Listen, Method, Prop } from '@stencil/core';
 import state from '../../utils/editStore';
 import { getProp } from '@esri/solution-common';
 
@@ -278,6 +278,25 @@ export class JsonEditor {
   //  Events
   //
   //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Public Methods (async)
+  //
+  //--------------------------------------------------------------------------
+
+  @Method()
+  async reset(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this._setEditModel(this.value);
+        this._reset();
+        resolve({ success: true });
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
 
   //--------------------------------------------------------------------------
   //

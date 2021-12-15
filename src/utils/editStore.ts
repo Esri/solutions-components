@@ -17,11 +17,12 @@
 import { createStore } from "@stencil/store";
 
 // eslint-disable-next-line @typescript-eslint/unbound-method
-const { state, onChange, dispose } = createStore({
+const { state, onChange, dispose, reset } = createStore({
   models: {},
   featureServices: [],
   spatialReferenceInfo: {},
-  dispose: () => dispose()
+  dispose: () => dispose(),
+  reset: () => reset()
 });
 
 const modelsChangedEvent = new CustomEvent("modelsChanged", {
