@@ -232,6 +232,7 @@ export class SolutionConfiguration {
       ml.some(mutation => {
         const v = mutation.target[mutation.attributeName];
         if (mutation.type === 'attributes' && mutation.attributeName === "itemid" && v && v !== mutation.oldValue) {
+          // eslint-disable-next-line @typescript-eslint/no-floating-promises
           this._getItemData(v);
           return true;
         }
@@ -242,9 +243,8 @@ export class SolutionConfiguration {
 
   private _getItemData(
     id: string,
-    isReset: boolean = false
+    isReset = false
   ): Promise<any> {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     return getItemDataAsJson(id, this.authentication).then(data => {
       this.sourceItemData = data;
       this.templates = data.templates;
@@ -257,7 +257,7 @@ export class SolutionConfiguration {
   /**
    * Update the store with the initial value
    */
-  private _initState(v: any, isReset: boolean = false): void {
+  private _initState(v: any, isReset = false): void {
     if (isReset) {
       // clear models and state so we can refresh after save
       this.modelsSet = false;
@@ -270,7 +270,8 @@ export class SolutionConfiguration {
     if (isReset) {
       // reset for undo/redo stack and diff editor tracking
       const jsonEditors = Array.from(this.el.getElementsByTagName("json-editor"));
-      jsonEditors.forEach(e => e.reset());
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      jsonEditors.forEach(e => void e.reset());
     }
     this.modelsSet = true;
   }
@@ -307,8 +308,7 @@ export class SolutionConfiguration {
   private async _save() {
     const templateUpdates = await this._updateTemplates();
     const data = this._setSrInfo(templateUpdates.templates);
-    if (templateUpdates.errors.length === 0) {
-      return save(
+    return templateUpdates.errors.length === 0 ? save(
         this.itemid,
         data,
         this.authentication,
@@ -317,14 +317,11 @@ export class SolutionConfiguration {
       ).then(saveResult => {
         return this._getItemData(this.itemid, true).then(() => {
           return saveResult;
-        }, Promise.reject);
-      });
-    } else {
-      return Promise.reject({
+        }, e => Promise.reject(e));
+      }) : Promise.reject({
         success: false,
         message: `The following templates have errors: ${templateUpdates.errors.join(", ")}`
       } as IResponse);
-    }
   }
 
   /**
