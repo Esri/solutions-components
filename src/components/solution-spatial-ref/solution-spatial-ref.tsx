@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Method, Prop, State, Watch, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, h, Host, Method, Prop, State, Watch, VNode } from '@stencil/core';
 import '@esri/calcite-components';
 import { wkids } from './spatialreferences';
 import state from '../../utils/editStore';
 import { nodeListToArray } from '../../utils/common';
-import { getProp } from '@esri/solution-common';
 import { ISpatialRefRepresentation, IWkidDescription } from '../../utils/interfaces';
 
 @Component({
@@ -47,6 +46,12 @@ export class SolutionSpatialRef {
   * The wkid that will be used as the default when no user selection has been made.
   */
   @Prop({ mutable: true, reflect: true }) defaultWkid = 102100;
+
+  /**
+  * Indicates if the control has been enabled.
+  * The first time Spatial Reference has been enabled it should enable all feature services.
+  */
+   @Prop({ mutable: true, reflect: true }) loaded = false;
 
   /**
   * When true, all but the main switch are disabled to prevent interaction.
@@ -148,6 +153,9 @@ export class SolutionSpatialRef {
   //
   //--------------------------------------------------------------------------
 
+  //featureServiceSpatialReferenceChange
+  @Event() featureServiceSpatialReferenceChange: EventEmitter;
+
   //--------------------------------------------------------------------------
   //
   //  Public Methods (async)
@@ -233,7 +241,30 @@ export class SolutionSpatialRef {
   private _updateLocked(event): void {
     this.locked = !event.detail.switched;
     this._updateStore();
+    if (!this.loaded) {
+      // when this is switched on when loading we have reloaded a solution that
+      // has a custom wkid param and we should honor the settings they already have in the templates
+      if (event.detail.switched) {
+        // By default enable all Feature Services on first load
+        this._setFeatureServiceDefaults(this.services);
+      }
+      this.loaded = true;
+    }
   };
+
+  /**
+   * Enable spatial reference variable for all feature services.
+   * 
+   * @param services list of service names
+   */
+  private _setFeatureServiceDefaults(
+    services: string[]
+  ): void {
+    // switch all spatial-ref-item-switch
+    const fsNodes = nodeListToArray(this.el.getElementsByClassName("spatial-ref-item-switch"));
+    fsNodes.forEach((node: any) => node.checked = true);
+    services.forEach(name => this._updateEnabledServices({detail: { switched: true }}, name));
+  }
 
   /**
    * Stores the wkid as the components value.
@@ -286,7 +317,6 @@ export class SolutionSpatialRef {
   private _updateStore(): void {
     state.spatialReferenceInfo["enabled"] = !this.locked;
     state.spatialReferenceInfo["spatialReference"] = this.spatialRef;
-    this._updateEditModels();
   }
 
   /**
@@ -294,68 +324,10 @@ export class SolutionSpatialRef {
    */
   private _updateEnabledServices(event, name): void {
     state.spatialReferenceInfo["services"][name] = event.detail.switched;
-    this._updateEditModels(name);
-  }
-
-  /**
-   * When the spatial reference param is enabled/disabled..we need to handle all feature services that
-   * are listed in state.services.
-   * When an individual service is enabled/disabled we only need to handle it.
-   *
-   * @param services List of feature services
-   */
-  private _updateEditModels(name?: any): void {
-    Object.keys(state.models || {}).forEach(k => {
-      const m: any = state.models[k];
-      const nameMatch: boolean = name && name === m.name;
-      const serviceMatch: boolean = name === undefined &&
-        Object.keys(state.spatialReferenceInfo["services"]).indexOf(m.name) > -1;
-      if (nameMatch || serviceMatch) {
-        const updateModel = m.propsModel?.getValue();
-        if (updateModel) {
-          const active = getProp(state, `spatialReferenceInfo.services.${m?.name}`) || false;
-          const enabled = getProp(state, 'spatialReferenceInfo.enabled') || false;
-
-          m.propsModel.setValue(JSON.stringify(
-            this._updateData(updateModel, enabled, active, m.spatialReference), null, '\t')
-          );
-          m.propsDiffOriginValue = JSON.stringify(
-            this._updateData(m.propsDiffOriginValue, enabled, active, m.spatialReference)
-          );
-        }
-      }
+    this.featureServiceSpatialReferenceChange.emit({
+      name,
+      enabled: event.detail.switched
     });
-  }
-
-  /**
-   * Updates the services spatial reference by setting the wkid param value and removing latestWkid when enabled and active
-   * OR
-   * Sets the spatial reference back to the original spatialReference when disabled
-   *
-   * @param updateModel The model to update
-   * @param enabled Is the param enabled
-   * @param active Is the service enabled
-   * @param spatialReference The original source spatial reference
-   */
-  private _updateData(
-    updateModel: any,
-    enabled: boolean,
-    active: boolean,
-    spatialReference: any
-  ): any {
-    const data = typeof (updateModel) === "string" ? JSON.parse(updateModel) : updateModel;
-    if (enabled && active) {
-      const wkid = this.spatialRef.wkid;
-      if (wkid) {
-        data.service.spatialReference.wkid = `{{params.wkid||${wkid}}}`;
-        if (data.service.spatialReference.latestWkid) {
-          delete (data.service.spatialReference.latestWkid);
-        }
-      }
-    } else if (data.service?.spatialReference) {
-      data.service.spatialReference = spatialReference;
-    }
-    return data;
   }
 
   /**

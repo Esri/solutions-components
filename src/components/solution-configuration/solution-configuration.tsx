@@ -19,7 +19,7 @@ import { IOrganizationVariableItem, IResponse, ISolutionConfiguration, ISolution
 import * as utils from '../../utils/templates';
 import state from '../../utils/editStore';
 import { save } from '../../utils/common';
-import { cloneObject, getItemDataAsJson, setProp, UserSession } from '@esri/solution-common';
+import { cloneObject, getItemDataAsJson, getProp, setProp, setCreateProp, UserSession } from '@esri/solution-common';
 import '@esri/calcite-components';
 
 @Component({
@@ -104,6 +104,7 @@ export class SolutionConfiguration {
   }
 
   render(): VNode {
+    const wkid = getProp(state.spatialReferenceInfo, "spatialReference.wkid");
     return (
       <Host>
         <div class="configuration-container">
@@ -146,9 +147,11 @@ export class SolutionConfiguration {
               <calcite-tab class="config-tab">
                 <div class="config-solution">
                   <solution-spatial-ref
+                    defaultWkid={wkid}
                     id="configure-solution-spatial-ref"
                     key={`${this.itemid}-spatial-ref`}
-                    services={state.featureServices}
+                    locked={!wkid}
+                    services={state.featureServices.map(fs => fs.name)}
                     translations={this.translations}
                   />
                 </div>
@@ -250,7 +253,7 @@ export class SolutionConfiguration {
   private _initState(v: any): void {
     state.models = utils.getModels(v);
     state.featureServices = utils.getFeatureServices(v);
-    state.spatialReferenceInfo = utils.getSpatialReferenceInfo(state.featureServices);
+    state.spatialReferenceInfo = utils.getSpatialReferenceInfo(state.featureServices, this.sourceItemData);
     this.modelsSet = true;
   }
 
@@ -285,13 +288,13 @@ export class SolutionConfiguration {
    */
   private async _save() {
     const templateUpdates = await this._updateTemplates();
+    const data = this._setSrInfo(templateUpdates.templates);
     return templateUpdates.errors.length === 0 ? save(
-      templateUpdates.templates,
-      "",
       this.itemid,
-      this.sourceItemData,
+      data,
       this.authentication,
-      this.translations
+      this.translations,
+      ""
     ) : {
       success: false,
       message: `The following templates have errors: ${templateUpdates.errors.join(", ")}`
@@ -322,6 +325,7 @@ export class SolutionConfiguration {
         return t;
       });
     });
+    errors.concat(window.monaco.editor.getModelMarkers({}));
     return Promise.resolve({
       templates,
       errors
@@ -416,5 +420,48 @@ export class SolutionConfiguration {
         template.item[k] = model.updateItemValues[k];
       });
     }
+  }
+
+  /**
+   * Set spatial reference info in the solutions data
+   * 
+   * @returns a cloned copy of the solutions data that has been updated with spatial reference info
+   * 
+   */
+  private _setSrInfo(
+    templates: any[]
+  ): any {
+    const srInfo: any = state.spatialReferenceInfo;
+
+    const serviceEnabled = typeof srInfo?.services === 'undefined' ?
+      false : Object.keys(srInfo.services).some(k => srInfo.services[k]);
+
+    const data = cloneObject(this.sourceItemData);
+    data.templates = templates;
+    if (srInfo && srInfo.enabled && serviceEnabled) {
+      const wkid = srInfo.spatialReference.wkid.toString();
+
+      const wkidParam = {
+        "label": "Spatial Reference",
+        "default": wkid,
+        "valueType": "spatialReference",
+        "attributes": {
+          "required": "true"
+        }
+      };
+
+      const params = getProp(data, "params");
+      const hasWkid = params && params.wkid;
+      setCreateProp(
+        data,
+        hasWkid ? "params.wkid.default" : "params.wkid",
+        hasWkid ? wkid : params ? wkidParam : wkid
+      );
+    } else if (!srInfo.enabled) {
+      if (getProp(data, "params.wkid")) {
+        delete(data.params.wkid);
+      }
+    }
+    return data;
   }
 }

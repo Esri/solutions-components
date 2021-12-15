@@ -292,7 +292,7 @@
       saveBtn.setAttribute("loading", true);
       const demo = document.getElementById("demo");
       demo.save().then(() => {
-        saveBtn.setAttribute("loading", false);
+        saveBtn.removeAttribute("loading");
       });
     }
   </script>
