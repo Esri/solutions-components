@@ -25,6 +25,7 @@ export namespace Components {
           * Contains the original source item json as it was when the component was created.
          */
         "original": any;
+        "reset": () => Promise<any>;
         /**
           * Contains the translations for this component.
          */
