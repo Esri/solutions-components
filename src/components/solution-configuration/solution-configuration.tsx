@@ -241,6 +241,12 @@ export class SolutionConfiguration {
     this._templatesObserver.observe(this.el, { attributes: true, attributeOldValue: true });
   }
 
+  /**
+   * Get the solution items data
+   * 
+   * @param id the solution items id
+   * @param isReset (defaults to false) indicates if we are resetting the controls after save
+   */
   private _getItemData(
     id: string,
     isReset = false
@@ -256,15 +262,18 @@ export class SolutionConfiguration {
 
   /**
    * Update the store with the initial value
+   * 
+   * @param templates the solution items templates
+   * @param isReset (defaults to false) indicates if we are resetting the controls after save
    */
-  private _initState(v: any, isReset = false): void {
+  private _initState(templates: any[], isReset = false): void {
     if (isReset) {
       // clear models and state so we can refresh after save
       this.modelsSet = false;
       state.reset();
     }
-    state.models = utils.getModels(v);
-    state.featureServices = utils.getFeatureServices(v);
+    state.models = utils.getModels(templates);
+    state.featureServices = utils.getFeatureServices(templates);
     state.spatialReferenceInfo = utils.getSpatialReferenceInfo(state.featureServices, this.sourceItemData);
 
     if (isReset) {
@@ -278,10 +287,12 @@ export class SolutionConfiguration {
 
   /**
    * Update the Props with the initial values
+   * 
+   * @param templates the solution items templates
    */
-  private _initProps(v: any): void {
-    this.value.contents = [...utils.getInventoryItems(v)];
-    this._solutionVariables = utils.getSolutionVariables(v, this.translations);
+  private _initProps(templates: any[]): void {
+    this.value.contents = [...utils.getInventoryItems(templates)];
+    this._solutionVariables = utils.getSolutionVariables(templates, this.translations);
     this._organizationVariables = utils.getOrganizationVariables(this.translations);
     this.item = {
       itemId: "",
@@ -447,6 +458,8 @@ export class SolutionConfiguration {
 
   /**
    * Set spatial reference info in the solutions data
+   * 
+   * @param templates a list of item templates from the solution
    * 
    * @returns a cloned copy of the solutions data that has been updated with spatial reference info
    * 
