@@ -29,6 +29,19 @@ import {
   getProp
 } from '@esri/solution-common';
 
+//--------------------------------------------------------------------------
+//
+//  Public Functions
+//
+//--------------------------------------------------------------------------
+
+/**
+ * Sort the solution items
+ * 
+ * @param templates a list of item templates from the solution
+ * 
+ * @returns a sorted list of solution items
+ */
 export function getInventoryItems(
   templates: any[]
 ): IInventoryItem[] {
@@ -41,6 +54,14 @@ export function getInventoryItems(
   }, []);
 }
 
+/**
+ * Explore the solution item templates for variables we will allow users to insert at runtime
+ * 
+ * @param templates a list of item templates from the solution
+ * @param translations nls translation object
+ * 
+ * @returns a list of variables from the solution item templates
+ */
 export function getSolutionVariables(
   templates: any[],
   translations: any
@@ -82,28 +103,13 @@ export function getSolutionVariables(
   return vars;
 }
 
-function _addLayersOrTables(
-  children: any[],
-  item: any,
-  t: any,
-  translations: any
-): void {
-  children.forEach(l => {
-    const name = l.name && l.name.indexOf("||") > -1 ? l.name.split("||")[1].replace("}}", "").trim() : l.name;
-
-    item.dependencies.push({
-      id: t.itemId,
-      title: `${name} (${translations.id})`,
-      value: `{{${t.itemId}.layer${l.id}.id}}`,
-    });
-    item.dependencies.push({
-      id: t.itemId,
-      title: `${name} (${translations.name})`,
-      value: `{{${t.itemId}.layer${l.id}.name||${name}}}`,
-    });
-  });
-} 
-
+/**
+ * Set key organization variables we will allow users to insert at runtime
+ * 
+ * @param translations nls translation object
+ * 
+ * @returns a list of variables for the organization
+ */
 export function getOrganizationVariables(
   translations: any
 ): IOrganizationVariableItem[] {
@@ -131,6 +137,14 @@ export function getOrganizationVariables(
   return orgVars;
 }
 
+/**
+ * Create and store text models for the editor as well as other key values such as the original values
+ * that can be used to clear any temp edits.
+ * 
+ * @param templates a list of item templates from the solution
+ * 
+ * @returns a list of models and key values
+ */
 export function getModels(templates: any[]): ISolutionModels {
   const ids: string[] = [];
   const models: ISolutionModels = {};
@@ -160,6 +174,15 @@ export function getModels(templates: any[]): ISolutionModels {
   return models;
 }
 
+/**
+ * Gets a list of Feature Services that are not views along with an enabled property that indicates
+ * if the service currently uses a spatial reference variable.
+ * 
+ * @param templates a list of item templates from the solution
+ * 
+ * @returns a list of feature service names and an enabled property to indicate
+ * if they currently use a spatial reference variable.
+ */
 export function getFeatureServices(
   templates: any[]
 ): any[] {
@@ -176,6 +199,16 @@ export function getFeatureServices(
   }, []);
 }
 
+/**
+ * Stores basic spatial reference information that is used to determine if a custom spatial reference parameter will
+ * be exposed while deploying this solution and if so what feature services will support it and what will the default wkid be
+ * 
+ * @param services a list of objects with service name and enabled property (indicates if they currently use a spatial reference var)
+ * @param data the data object of a solution item
+ * 
+ * @returns an object that stores if a custom spatial reference parameter is enabled/disabled, 
+ * a list of services and if they are enabled/disabled, and the default wkid
+ */
 export function getSpatialReferenceInfo(
   services: any[],
   data: any
@@ -192,28 +225,82 @@ export function getSpatialReferenceInfo(
   }
 }
 
+//--------------------------------------------------------------------------
+//
+//  Private Functions
+//
+//--------------------------------------------------------------------------
+
+/**
+ * Explore a solution item template for variables we will allow users to insert at runtime.
+ * This function will update the item argument that is passed in with the var details.
+ * 
+ * @param children a list of layers or tables from a template
+ * @param item an object that store key details for a given variable
+ * @param template one of the templates from the current solution
+ * @param translations nls translations object
+ *
+ */
+function _addLayersOrTables(
+  children: any[],
+  item: any,
+  template: any,
+  translations: any
+): void {
+  children.forEach(l => {
+    const name = l.name && l.name.indexOf("||") > -1 ? l.name.split("||")[1].replace("}}", "").trim() : l.name;
+
+    item.dependencies.push({
+      id: template.itemId,
+      title: `${name} (${translations.id})`,
+      value: `{{${template.itemId}.layer${l.id}.id}}`,
+    });
+    item.dependencies.push({
+      id: template.itemId,
+      title: `${name} (${translations.name})`,
+      value: `{{${template.itemId}.layer${l.id}.name||${name}}}`,
+    });
+  });
+}
+
+/**
+ * Capture key details from the solution item template
+ * 
+ * @param template one of the templates from the current solution
+ * @param templates full list of templates
+ *
+ * @returns an IInventoryItem that is used by other components to work with this template
+ */
 function _getItemFromTemplate(
-  t: any,
+  template: any,
   templates: any[]
 ): IInventoryItem {
   return {
-    id: t.itemId || "",
-    title: t.item.title || "",
-    dependencies: _getDependencies(t.dependencies || [], templates),
-    type: t.item.type || "",
-    typeKeywords: t.item.typeKeywords || [],
+    id: template.itemId || "",
+    title: template.item.title || "",
+    dependencies: _getDependencies(template.dependencies || [], templates),
+    type: template.item.type || "",
+    typeKeywords: template.item.typeKeywords || [],
     solutionItem: {
-      itemId: t.itemId,
-      itemDetails: _getItemDetails(t.item, t.type === "Group", t.itemId),
-      isResource: _getIsResource(t),
-      data: t.data,
-      properties: t.properties,
-      type: t.type,
-      groupDetails: _getGroupDetails(t, templates)
+      itemId: template.itemId,
+      itemDetails: _getItemDetails(template.item, template.type === "Group", template.itemId),
+      isResource: _getIsResource(template),
+      data: template.data,
+      properties: template.properties,
+      type: template.type,
+      groupDetails: _getGroupDetails(template, templates)
     }
   };
 }
 
+/**
+ * Capture key details from the solution item template
+ * 
+ * @param dependencies list of dependencies from a template
+ * @param templates full list of templates
+ *
+ * @returns a list of IInventoryItem that are used by other components to work with the templates
+ */
 function _getDependencies(
   dependencies: string[],
   templates: any[]
@@ -226,6 +313,15 @@ function _getDependencies(
   }, []);
 }
 
+/**
+ * Capture the key item details for a given template
+ * 
+ * @param item the templates item
+ * @param isGroup boolean to indicate if the item is a group
+ * @param itemId the item id of the template
+ *
+ * @returns a IItemDetails object for the current item
+ */
 function _getItemDetails(
   item: any,
   isGroup: boolean,
@@ -243,17 +339,25 @@ function _getItemDetails(
   };
 }
 
+/**
+ * Capture the key item details for a given group template
+ * 
+ * @param template one of the templates from the current solution
+ * @param templates full list of templates
+ *
+ * @returns a list of IItemShare objects
+ */
 function _getGroupDetails(
-  t: any,
+  template: any,
   templates: any[]
 ): IItemShare[] {
-  return t.type === "Group" ? templates.reduce((prev, cur) => {
-    if (cur.itemId !== t.itemId && cur.type !== "Group") {
+  return template.type === "Group" ? templates.reduce((prev, cur) => {
+    if (cur.itemId !== template.itemId && cur.type !== "Group") {
       prev.push({
         id: cur.itemId,
         title: cur.item.name || cur.item.title,
-        isShared: (cur.groups || []).indexOf(t.itemId) > -1,
-        shareItem: (cur.groups || []).indexOf(t.itemId) > -1,
+        isShared: (cur.groups || []).indexOf(template.itemId) > -1,
+        shareItem: (cur.groups || []).indexOf(template.itemId) > -1,
         type: cur.type,
         typeKeywords: cur.item.typeKeywords
       });
@@ -262,12 +366,26 @@ function _getGroupDetails(
   }, []) : [];
 }
 
+/**
+ * Used to understand if we are dealing with a binary object that will support upload/download
+ * 
+ * @param template one of the templates from the current solution
+ *
+ * @returns true if this item supports upload/download
+ */
 function _getIsResource(
   template: any
 ): boolean {
   return template.type !== "Group" && JSON.stringify(template.data) === "{}";
 }
 
+/**
+ * Sort the template ids based on their dependencies
+ * 
+ * @param templates full list of templates
+ *
+ * @returns a list of Itop level item ids
+ */
 function _getTopLevelItemIds(templates: any[]) {
   // Find the top-level nodes. Start with all nodes, then remove those that other nodes depend on
   const topLevelItemCandidateIds = templates.map((template) => template.itemId);
