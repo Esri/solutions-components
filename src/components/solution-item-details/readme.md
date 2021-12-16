@@ -10,7 +10,7 @@
 | Property       | Attribute      | Description                                   | Type           | Default                                                                                                                                                        |
 | -------------- | -------------- | --------------------------------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `translations` | `translations` | Contains the translations for this component. | `any`          | `{}`                                                                                                                                                           |
-| `type`         | `type`         |                                               | `string`       | `""`                                                                                                                                                           |
+| `type`         | `type`         | Contains the public type for this component.  | `string`       | `""`                                                                                                                                                           |
 | `value`        | --             | Contains the public value for this component. | `IItemDetails` | `{     thumbnail: null,     title: "",     snippet: "",     description: "",     tags: [],     accessInformation: "",     licenseInfo: "",     itemId: ""   }` |
 
 
