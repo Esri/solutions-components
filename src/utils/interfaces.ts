@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * Key details from the templates item
+ */
 export interface IItemDetails {
   thumbnail: string;
   title: string;
@@ -25,6 +28,9 @@ export interface IItemDetails {
   itemId: string;
 }
 
+/**
+ * Key details used to show solution contents
+ */
 export interface IInventoryItem {
   id: string;
   title: string;
@@ -34,6 +40,9 @@ export interface IInventoryItem {
   solutionItem: ISolutionItem;
 }
 
+/**
+ * A templates share details
+ */
 export interface IItemShare {
   id: string;
   title: string;
@@ -43,26 +52,41 @@ export interface IItemShare {
   typeKeywords: string[];
 }
 
+/**
+ * Organization based variables the user can insert at runtime
+ */
 export interface IOrganizationVariableItem {
   id: string;
   title: string;
   value: string;
 }
 
+/**
+ * Key details for items that support upload/download
+ */
 export interface IResourceItem {
   name: string;
   url: string;
 }
 
+/**
+ * Standardized response type for promises
+ */
 export interface IResponse {
   success: boolean;
   message: string;
 }
 
+/**
+ * Solution configuration details used to display solution contents
+ */
 export interface ISolutionConfiguration {
   contents: IInventoryItem[];
 }
 
+/**
+ * Details used to display and store information about the item
+ */
 export interface ISolutionItem {
   itemId: string;
   itemDetails: any; //use the interface
@@ -73,6 +97,9 @@ export interface ISolutionItem {
   groupDetails?: IItemShare[];
 }
 
+/**
+ * Key state info for a solution template
+ */
 export interface ISolutionModel {
   dataModel: monaco.editor.ITextModel;
   dataOriginValue: string;
@@ -91,10 +118,16 @@ export interface ISolutionModel {
   spatialReference: any;
 }
 
+/**
+ * A list of solution models for each template in a solution
+ */
 export interface ISolutionModels {
   [key: string]: ISolutionModel;
 }
 
+/**
+ * Key spatial reference information
+ */
 export interface ISpatialRefRepresentation {
   display: string;
   usingWkid: boolean;
@@ -102,16 +135,25 @@ export interface ISpatialRefRepresentation {
   wkt: string;
 }
 
+/**
+ * Stores the data object for a template and indicator if it supports upload/download
+ */
 export interface ITemplateData {
   resourceItem?: IResourceItem;
   value?: any;
 }
 
+/**
+ * Stores updated templates that contain runtime changes from the user
+ */
 export interface IUpdateTemplateResponse {
   templates: any[];
   errors: string[];
 }
 
+/**
+ * Solution template based variables that the user can insert at runtime
+ */
 export interface IVariableItem {
   id: string;
   title: string;
@@ -120,6 +162,9 @@ export interface IVariableItem {
   dependencies?: IVariableItem[];
 }
 
+/**
+ * WKID label and extent
+ */
 export interface IWkidDescription {
   label: string;
   defaultExtent: string;

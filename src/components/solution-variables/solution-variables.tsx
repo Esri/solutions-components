@@ -62,32 +62,11 @@ export class SolutionVariables {
         </div>
         <div class="container-border">
           <calcite-label id="variable-label">
-            {this.renderHierarchy(this.value)}
+            {this._renderHierarchy(this.value)}
           </calcite-label>
         </div>
       </Host>
     );
-  }
-
-  renderHierarchy(
-    objs: IVariableItem[]
-  ): VNode[] {
-    const hierarchy = objs.map(obj => {
-      return obj.dependencies && obj.dependencies.length > 0 ? (
-          <calcite-tree-item>
-            <solution-item-icon type={obj.type} />
-            <span class="icon-text" title={obj.title}>{obj.title}</span>
-            <calcite-tree slot="children">
-              {this.renderHierarchy(obj.dependencies)}
-            </calcite-tree>
-          </calcite-tree-item>
-        ) : (
-          <calcite-tree-item onClick={() => this._treeItemSelected(obj.id, obj.value)}>
-            {obj.title}
-          </calcite-tree-item>
-        );
-    });
-    return hierarchy;
   }
 
   //--------------------------------------------------------------------------
@@ -121,6 +100,32 @@ export class SolutionVariables {
   //  Private Methods
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Render the solution item variables that the user can insert into temaplates at runtime.
+   *
+   * @param objs a list of variable items that have been gathered from the solutions templates
+   */
+  _renderHierarchy(
+    objs: IVariableItem[]
+  ): VNode[] {
+    const hierarchy = objs.map(obj => {
+      return obj.dependencies && obj.dependencies.length > 0 ? (
+          <calcite-tree-item>
+            <solution-item-icon type={obj.type} />
+            <span class="icon-text" title={obj.title}>{obj.title}</span>
+            <calcite-tree slot="children">
+              {this._renderHierarchy(obj.dependencies)}
+            </calcite-tree>
+          </calcite-tree-item>
+        ) : (
+          <calcite-tree-item onClick={() => this._treeItemSelected(obj.id, obj.value)}>
+            {obj.title}
+          </calcite-tree-item>
+        );
+    });
+    return hierarchy;
+  }
 
   /**
    * Publishes the `solutionVariableSelected` event containing `itemId`, the id of the selected variable and the value of the variable.

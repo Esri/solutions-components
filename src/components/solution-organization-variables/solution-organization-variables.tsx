@@ -63,24 +63,11 @@ export class SolutionOrganizationVariables {
         </div>
         <div class="container-border">
           <calcite-label id="variable-label">
-            {this.renderHierarchy(this.value)}
+            {this._renderHierarchy(this.value)}
           </calcite-label>
         </div>
       </Host>
     );
-  }
-
-  renderHierarchy(
-    objs: IOrganizationVariableItem[]
-  ): VNode[] {
-    const hierarchy = objs.map(obj => {
-      return (
-        <calcite-tree-item onClick={() => this._treeItemSelected(obj.id, obj.value)}>
-          {obj.title}
-        </calcite-tree-item>
-      );
-    });
-    return hierarchy;
   }
 
   //--------------------------------------------------------------------------
@@ -114,6 +101,24 @@ export class SolutionOrganizationVariables {
   //  Private Methods
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Renders the organization based variable items the user can insert at runtime
+   *
+   * @param objs a list of organization variables to render
+   */
+  _renderHierarchy(
+    objs: IOrganizationVariableItem[]
+  ): VNode[] {
+    const hierarchy = objs.map(obj => {
+      return (
+        <calcite-tree-item onClick={() => this._treeItemSelected(obj.id, obj.value)}>
+          {obj.title}
+        </calcite-tree-item>
+      );
+    });
+    return hierarchy;
+  }
 
   /**
    * Publishes the `organizationVariableSelected` event containing `itemId`, the id of the selected variable and the value of the variable.

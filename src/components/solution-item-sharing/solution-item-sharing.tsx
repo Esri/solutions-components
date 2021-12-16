@@ -64,31 +64,10 @@ export class SolutionItemSharing {
     return (
       <Host>
         <div class="container-border">
-            {this.renderItems(this.value)}
+            {this._renderItems(this.value)}
         </div>
       </Host>
     );
-  }
-
-  renderItems(
-    objs: IItemShare[]
-  ): VNode[] {
-    return objs.length > 0 ? objs.map(item => {
-      return (
-        <calcite-label layout="inline">
-          <calcite-switch
-            id={item.id}
-            name="setting"
-            onCalciteSwitchChange={(event) => this._updateItem(event)}
-            scale="m"
-            switched={item.shareItem}
-            value="enabled"
-           />
-          <solution-item-icon type={item.type} typeKeywords={item.typeKeywords} />
-          <span class="icon-text" title={item.title}>{item.title}</span>
-        </calcite-label>
-      );
-    }) : null;
   }
 
   //--------------------------------------------------------------------------
@@ -120,6 +99,32 @@ export class SolutionItemSharing {
   //  Private Methods
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Render share options based on the list of share details
+   *
+   * @param objs list of IItemShare objects that are used to expose and store share info for the solutions items
+   */
+  _renderItems(
+    objs: IItemShare[]
+  ): VNode[] {
+    return objs.length > 0 ? objs.map(item => {
+      return (
+        <calcite-label layout="inline">
+          <calcite-switch
+            id={item.id}
+            name="setting"
+            onCalciteSwitchChange={(event) => this._updateItem(event)}
+            scale="m"
+            switched={item.shareItem}
+            value="enabled"
+           />
+          <solution-item-icon type={item.type} typeKeywords={item.typeKeywords} />
+          <span class="icon-text" title={item.title}>{item.title}</span>
+        </calcite-label>
+      );
+    }) : null;
+  }
 
   /**
    * Update the items share prop based on the switch state

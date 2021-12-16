@@ -60,6 +60,9 @@ export class SolutionItemDetails {
     itemId: ""
   };
 
+  /**
+   * Contains the public type for this component.
+   */
   @Prop({ mutable: true, reflect: true }) type = "";
 
   //--------------------------------------------------------------------------
