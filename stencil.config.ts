@@ -18,9 +18,6 @@ export const config: Config = {
       autoDefineCustomElements: true
     },
     {
-      type: 'dist-custom-elements-bundle'
-    },
-    {
       type: 'docs-readme'
     }
   ],
