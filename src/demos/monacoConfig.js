@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-    
+
 // Set config for loading the Monaco editor
 const requireConfig = { paths: { vs: '../assets/monaco-editor/min/vs' } };
 const availableEditorLangs = "de|es|fr|it|ja|js|ko|ru|zh-cn|zh-tw";
@@ -22,4 +22,4 @@ if (availableEditorLangs.indexOf(locale) >= 0) {
 } else if (availableEditorLangs.indexOf(lang) >= 0) {
   requireConfig['vs/nls'] = { availableLanguages: { '*': lang } };
 }
-require.config(requireConfig);
+requirejs.config(requireConfig);
