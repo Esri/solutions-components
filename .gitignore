@@ -34,3 +34,4 @@ __*
 src/**/*.js
 !src/**/assets/**/*.js
 !src/demos/**/*.js
+storybook-static/
