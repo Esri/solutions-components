@@ -75,7 +75,8 @@ export class SolutionConfiguration {
     isResource: false,
     data: {},
     properties: {},
-    type: ""
+    type: "",
+    groupDetails: undefined
   };
 
   /**
@@ -343,7 +344,7 @@ export class SolutionConfiguration {
   private async _updateTemplates(): Promise<IUpdateTemplateResponse> {
     const errors = [];
     const models = await this.getEditModels();
-    let templates = this.templates;
+    let templates = this._updateGroupDependencies(models, this.templates);
     Object.keys(models).forEach(k => {
       const m = models[k];
       templates = templates.map(t => {
@@ -351,7 +352,6 @@ export class SolutionConfiguration {
           this._setItem(t, m);
           const hasDataError = this._setData(t, m);
           const hasPropError = this._setProps(t, m);
-
           if (hasDataError || hasPropError) {
             errors.push(m.itemId);
           }
@@ -364,6 +364,101 @@ export class SolutionConfiguration {
       templates,
       errors
     });
+  }
+
+  /**
+   * Review all models and store itemIds that should be added or removed from group dependencies
+   * 
+   * @param models the corresponding models for the current templates
+   * 
+   * @returns group info (an object with keys of groupIds and 
+   * arrays of itemIds that should be added or removed from group dependencies)
+   */
+  private _getGroupInfo(
+    models: any
+  ): any {
+    const groupInfo = {}
+    Object.keys(models).forEach(k => {
+      const m = models[k];
+      if (m.shareInfo) {
+        const groupId = m.shareInfo.groupId;
+        const type = m.shareInfo.shared ? "share" : "unshare";
+        if (groupInfo[groupId]) {
+          groupInfo[groupId][type].push(m.itemId);
+        } else {
+          groupInfo[groupId] = {};
+          groupInfo[groupId][type] = [m.itemId];
+          if (m.shareInfo.shared) {
+            groupInfo[groupId]["unshare"] = [];
+          } else {
+            groupInfo[groupId]["share"] = [];
+          }
+        }
+      }
+    });
+    return groupInfo;
+  }
+
+  /**
+   * Updates group dependency arrays by adding or removing itemIds
+   * 
+   * @param templates the current templates to update
+   * @param models the corresponding models for the current templates
+   * 
+   * @returns updated templates array
+   */
+  private _updateGroupDependencies(
+    models: any,
+    templates: any[]
+  ): any[] {
+    const groupInfo = this._getGroupInfo(models);
+    Object.keys(groupInfo).forEach(k => {
+      templates.some(t => {
+        if (t.itemId === k) {
+          // add share items as deps
+          groupInfo[k].share.forEach(s => {
+            if (t.dependencies.indexOf(s) < 0) {
+              t.dependencies.push(s);
+            }
+          });
+
+          // remove unshare items from deps
+          groupInfo[k].unshare.forEach(s => {
+            const index = t.dependencies.indexOf(s);
+            if (index > -1) {
+              t.dependencies.splice(index, 1);
+            }
+          });
+          return true;
+        } else {
+          return false;
+        }
+      })
+    })
+    return templates;
+  }
+
+  /**
+   * Add group IDs to items that should be shared
+   * This function will update the provided template when shareInfo is available
+   * 
+   * @param template the current template to update
+   * @param shareInfo the corresponding shareInfo from the model for the current template
+   * 
+   */
+  private _updateItemGroups(
+    template: any,
+    shareInfo: any
+  ): void {
+    if (shareInfo) {
+      const groupIndex = template.groups.indexOf(shareInfo.groupId);
+      if (groupIndex < 0 && shareInfo.shared) {
+        template.groups.push(shareInfo.groupId);
+      }
+      if (groupIndex > -1 && !shareInfo.shared) {
+        template.groups.splice(groupIndex, 1);
+      }
+    }
   }
 
   /**
@@ -449,6 +544,7 @@ export class SolutionConfiguration {
     template: any,
     model: any
   ): void {
+    this._updateItemGroups(template, model.shareInfo);
     if (model.updateItemValues && Object.keys(model.updateItemValues).length > 0) {
       Object.keys(model.updateItemValues).forEach(k => {
         template.item[k] = model.updateItemValues[k];

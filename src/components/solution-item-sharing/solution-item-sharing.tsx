@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Prop, VNode } from '@stencil/core';
+import { Component, Element, h, Host, Method, Prop, VNode } from '@stencil/core';
 import state from '../../utils/editStore';
 import { IItemShare } from '../../utils/interfaces';
 
@@ -94,6 +94,12 @@ export class SolutionItemSharing {
   //
   //--------------------------------------------------------------------------
 
+  @Method()
+  async getShareInfo(): Promise<any> {
+    return Promise.resolve(this.value);
+  }
+
+
   //--------------------------------------------------------------------------
   //
   //  Private Methods
@@ -137,16 +143,12 @@ export class SolutionItemSharing {
     this.value = this.value.map(item => {
       if (item.id === id) {
         // update the item
-        item.shareItem = event.target.switched;
+        item.shareItem = event.detail.switched;
         // update the store
         if (state?.models[id]) {
-          let shareInfo = undefined;
-          if (item.isShared && !event.target.switched) {
-            shareInfo = { type: "unshare", groupId: this.groupId };
-          } else if (!item.isShared && event.target.switched) {
-            shareInfo = { type: "share", groupId: this.groupId };
-          }
-          state.models[id].shareInfo = shareInfo;
+          state.models[id].shareInfo =
+            (item.isShared && !item.shareItem) ? { groupId: this.groupId, shared: false } :
+            (!item.isShared && item.shareItem) ? { groupId: this.groupId, shared: true } : undefined;
         }
       }
       return item;

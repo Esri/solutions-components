@@ -134,6 +134,7 @@ export namespace Components {
         "typeKeywords": string[];
     }
     interface SolutionItemSharing {
+        "getShareInfo": () => Promise<any>;
         /**
           * Contains the public id for the group these items will be shared or un-shared with.
          */
