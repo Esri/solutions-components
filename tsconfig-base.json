@@ -9,7 +9,7 @@
     "importsNotUsedAsValues": "preserve",
     "jsx": "react",
     "jsxFactory": "h",
-    "lib": ["dom", "es2020"],
+    "lib": ["dom", "es2017"],
     "module": "esnext",
     "moduleResolution": "node",
     "noUnusedLocals": true,
@@ -17,7 +17,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": false,
-    "target": "es2020"
+    "target": "es2017"
   },
   "exclude": [
     "node_modules"
