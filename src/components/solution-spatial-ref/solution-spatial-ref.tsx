@@ -153,7 +153,6 @@ export class SolutionSpatialRef {
   //
   //--------------------------------------------------------------------------
 
-  //featureServiceSpatialReferenceChange
   @Event() featureServiceSpatialReferenceChange: EventEmitter;
 
   //--------------------------------------------------------------------------

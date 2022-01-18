@@ -96,14 +96,10 @@ export class SolutionTemplateData {
     return (
       <Host>
         <div class="solution-data-container">
-          {this.renderTemplateData(this.value)}
+          {this._renderTemplateData(this.value)}
         </div>
       </Host>
     );
-  }
-
-  renderTemplateData(data: ITemplateData): VNode {
-    return this.isResource ? this._resourceData(data) : this._jsonData();
   }
 
   //--------------------------------------------------------------------------
@@ -130,6 +126,9 @@ export class SolutionTemplateData {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Render the JSON data in an editor that the user can interact with at runtime
+   */
   _jsonData(): any {
     return <calcite-shell class="light var-container" dir="ltr">
       <calcite-panel class="json-editor">
@@ -170,6 +169,16 @@ export class SolutionTemplateData {
     </calcite-shell>;
   }
 
+  /**
+   * Render resource or template data
+   */
+  _renderTemplateData(data: ITemplateData): VNode {
+    return this.isResource ? this._resourceData(data) : this._jsonData();
+  }
+
+  /**
+   * Render the resource data so the end user can upload/download
+   */
   _resourceData(templateData: ITemplateData): any {
     return <solution-resource-item translations={this.translations} value={templateData.resourceItem} />;
   }

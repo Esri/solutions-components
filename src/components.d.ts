@@ -122,6 +122,9 @@ export namespace Components {
           * Contains the translations for this component.
          */
         "translations": any;
+        /**
+          * Contains the public type for this component.
+         */
         "type": string;
         /**
           * Contains the public value for this component.
@@ -147,6 +150,7 @@ export namespace Components {
         "typeKeywords": string[];
     }
     interface SolutionItemSharing {
+        "getShareInfo": () => Promise<any>;
         /**
           * Contains the public id for the group these items will be shared or un-shared with.
          */
@@ -497,6 +501,9 @@ declare namespace LocalJSX {
           * Contains the translations for this component.
          */
         "translations"?: any;
+        /**
+          * Contains the public type for this component.
+         */
         "type"?: string;
         /**
           * Contains the public value for this component.

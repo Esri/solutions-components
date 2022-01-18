@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Prop, VNode } from '@stencil/core';
+import { Component, Element, h, Host, Method, Prop, VNode } from '@stencil/core';
 import state from '../../utils/editStore';
 import { IItemShare } from '../../utils/interfaces';
 
@@ -64,31 +64,10 @@ export class SolutionItemSharing {
     return (
       <Host>
         <div class="container-border">
-            {this.renderItems(this.value)}
+            {this._renderItems(this.value)}
         </div>
       </Host>
     );
-  }
-
-  renderItems(
-    objs: IItemShare[]
-  ): VNode[] {
-    return objs.length > 0 ? objs.map(item => {
-      return (
-        <calcite-label layout="inline">
-          <calcite-switch
-            id={item.id}
-            name="setting"
-            onCalciteSwitchChange={(event) => this._updateItem(event)}
-            scale="m"
-            switched={item.shareItem}
-            value="enabled"
-           />
-          <solution-item-icon type={item.type} typeKeywords={item.typeKeywords} />
-          <span class="icon-text" title={item.title}>{item.title}</span>
-        </calcite-label>
-      );
-    }) : null;
   }
 
   //--------------------------------------------------------------------------
@@ -115,11 +94,43 @@ export class SolutionItemSharing {
   //
   //--------------------------------------------------------------------------
 
+  @Method()
+  async getShareInfo(): Promise<any> {
+    return Promise.resolve(this.value);
+  }
+
+
   //--------------------------------------------------------------------------
   //
   //  Private Methods
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Render share options based on the list of share details
+   *
+   * @param objs list of IItemShare objects that are used to expose and store share info for the solutions items
+   */
+  _renderItems(
+    objs: IItemShare[]
+  ): VNode[] {
+    return objs.length > 0 ? objs.map(item => {
+      return (
+        <calcite-label layout="inline">
+          <calcite-switch
+            id={item.id}
+            name="setting"
+            onCalciteSwitchChange={(event) => this._updateItem(event)}
+            scale="m"
+            switched={item.shareItem}
+            value="enabled"
+           />
+          <solution-item-icon type={item.type} typeKeywords={item.typeKeywords} />
+          <span class="icon-text" title={item.title}>{item.title}</span>
+        </calcite-label>
+      );
+    }) : null;
+  }
 
   /**
    * Update the items share prop based on the switch state
@@ -132,16 +143,12 @@ export class SolutionItemSharing {
     this.value = this.value.map(item => {
       if (item.id === id) {
         // update the item
-        item.shareItem = event.target.switched;
+        item.shareItem = event.detail.switched;
         // update the store
         if (state?.models[id]) {
-          let shareInfo = undefined;
-          if (item.isShared && !event.target.switched) {
-            shareInfo = { type: "unshare", groupId: this.groupId };
-          } else if (!item.isShared && event.target.switched) {
-            shareInfo = { type: "share", groupId: this.groupId };
-          }
-          state.models[id].shareInfo = shareInfo;
+          state.models[id].shareInfo =
+            (item.isShared && !item.shareItem) ? { groupId: this.groupId, shared: false } :
+            (!item.isShared && item.shareItem) ? { groupId: this.groupId, shared: true } : undefined;
         }
       }
       return item;

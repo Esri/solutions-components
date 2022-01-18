@@ -32,7 +32,23 @@ describe('solution-item', () => {
       <solution-item>
         <div class="configuration-container">
           <div class="configuration">
-            <calcite-tabs class="config-tabs">
+            <calcite-tabs class="config-tabs" style="display: none;">
+              <calcite-tab-nav slot="tab-nav">
+                <calcite-tab-title>
+                  Group Details
+                </calcite-tab-title>
+                <calcite-tab-title>
+                  Sharing
+                </calcite-tab-title>
+              </calcite-tab-nav>
+              <calcite-tab active="" class="config-tab" id="group-tab">
+                <solution-item-details type=""></solution-item-details>
+              </calcite-tab>
+              <calcite-tab class="config-tab" id="share-tab">
+                <solution-item-sharing groupid=""></solution-item-sharing>
+              </calcite-tab>
+            </calcite-tabs>
+            <calcite-tabs class="config-tabs" style="display: inherit;">
               <calcite-tab-nav slot="tab-nav">
                 <calcite-tab-title>Item Details</calcite-tab-title>
                 <calcite-tab-title>Data</calcite-tab-title>

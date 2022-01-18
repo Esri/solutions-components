@@ -66,12 +66,6 @@ export class SolutionItem {
    */
   @Prop({ mutable: true, reflect: true }) organizationVariables: any[] = [];
 
-  /**
-   * Contains the public type value for this component.
-   * 
-   */
-   //@Prop({ mutable: true, reflect: true }) type: string = "";
-
   //--------------------------------------------------------------------------
   //
   //  Lifecycle
@@ -83,28 +77,68 @@ export class SolutionItem {
       <Host>
         <div class="configuration-container">
           <div class="configuration">
-            {this.value.type === "Group" ? this._showGroupTabs() : this._showItemTabs()}
+            {/* Using this rather than ternary operator as I was getting a tabIndex error
+                when switching between item and group type tab.
+                It was also not a smooth transition when the 3rd tab of an item was selected and you would switch to a group.
+             */}
+            {this._showGroupTabs(this.value.type === "Group")}
+            {this._showItemTabs(this.value.type !== "Group")}
           </div>
         </div>
       </Host>
     );
   }
 
-  _showGroupTabs(): VNode {
-    return <calcite-tabs class="config-tabs">
+  //--------------------------------------------------------------------------
+  //
+  //  Variables (private)
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Event Listeners
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Events
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Public Methods (async)
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Public Methods
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * Render tabs based on group item types
+   */
+  _showGroupTabs(
+    visible: boolean
+  ): VNode {
+    return <calcite-tabs class="config-tabs" style={{ display: visible ? "inherit" : "none"}}>
       <calcite-tab-nav slot="tab-nav">
         <calcite-tab-title>{this.translations.groupDetailsTab}</calcite-tab-title>
         <calcite-tab-title>{this.translations.sharingTab}</calcite-tab-title>
       </calcite-tab-nav>
 
-      <calcite-tab active class="config-tab">
+      <calcite-tab active class="config-tab" id="group-tab">
         <solution-item-details 
           translations={this.translations}
           type={this.value.type}
           value={this.value.itemDetails}
          />
       </calcite-tab>
-      <calcite-tab class="config-tab">
+      <calcite-tab class="config-tab" id="share-tab">
         <solution-item-sharing
           groupId={this.value.itemId}
           translations={this.translations}
@@ -114,8 +148,13 @@ export class SolutionItem {
     </calcite-tabs>
   }
 
-  _showItemTabs(): VNode {
-    return <calcite-tabs class="config-tabs">
+  /**
+   * Render tabs based for an items details, data, and props section from a template
+   */
+  _showItemTabs(
+    visible: boolean
+  ): VNode {
+    return <calcite-tabs class="config-tabs" style={{ display: visible ? "inherit" : "none"}}>
       <calcite-tab-nav slot="tab-nav">
         <calcite-tab-title>{this.translations.itemDetailsTab}</calcite-tab-title>
         <calcite-tab-title>{this.translations.dataTab}</calcite-tab-title>
@@ -152,29 +191,5 @@ export class SolutionItem {
       </calcite-tab>
     </calcite-tabs>
   }
-
-  //--------------------------------------------------------------------------
-  //
-  //  Variables (private)
-  //
-  //--------------------------------------------------------------------------
-
-  //--------------------------------------------------------------------------
-  //
-  //  Event Listeners
-  //
-  //--------------------------------------------------------------------------
-
-  //--------------------------------------------------------------------------
-  //
-  //  Events
-  //
-  //--------------------------------------------------------------------------
-
-  //--------------------------------------------------------------------------
-  //
-  //  Public Methods (async)
-  //
-  //--------------------------------------------------------------------------
 
 }

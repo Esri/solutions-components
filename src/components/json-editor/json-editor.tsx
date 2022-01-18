@@ -213,28 +213,6 @@ export class JsonEditor {
   private _contentChanged: any;
   private _decorationsChanged: any;
 
-  private _initValueObserver() {
-      this._valueObserver = new MutationObserver(ml => {
-        ml.forEach(mutation => {
-          if (mutation.type === 'attributes' && mutation.attributeName === "value") {
-            if (state && state.models && Object.keys(state.models).indexOf(this.value) > -1) {
-              const newValue: string = mutation.target[mutation.attributeName];
-              if ((newValue !== mutation.oldValue && this._loaded)) {
-                // store the current state
-                this._saveCurrentModel(mutation.oldValue);
-
-                // get the model and state from the store
-                this._setEditModel(newValue);
-              } else if (!this._loaded) {
-                this._setEditModel(this.value);
-              }
-            }
-          }
-        });
-      });
-      this._valueObserver.observe(this.el, { attributes: true, attributeOldValue: true });
-  }
-
   //--------------------------------------------------------------------------
   //
   //  Event Listeners
@@ -343,6 +321,32 @@ export class JsonEditor {
     }
   }
 
+  /**
+   * Initializes the observer that will monitor and respond to changes of the value
+   *
+   * @protected
+   */
+  private _initValueObserver() {
+    this._valueObserver = new MutationObserver(ml => {
+      ml.forEach(mutation => {
+        if (mutation.type === 'attributes' && mutation.attributeName === "value") {
+          if (state && state.models && Object.keys(state.models).indexOf(this.value) > -1) {
+            const newValue: string = mutation.target[mutation.attributeName];
+            if ((newValue !== mutation.oldValue && this._loaded)) {
+              // store the current state
+              this._saveCurrentModel(mutation.oldValue);
+
+              // get the model and state from the store
+              this._setEditModel(newValue);
+            } else if (!this._loaded) {
+              this._setEditModel(this.value);
+            }
+          }
+        }
+      });
+    });
+    this._valueObserver.observe(this.el, { attributes: true, attributeOldValue: true });
+  }
 
   /**
    * Update the undo redo buttons as necessary

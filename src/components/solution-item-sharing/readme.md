@@ -14,6 +14,19 @@
 | `value`        | --             | Contains the public value for this component.                                      | `IItemShare[]` | `[]`        |
 
 
+## Methods
+
+### `getShareInfo() => Promise<any>`
+
+
+
+#### Returns
+
+Type: `Promise<any>`
+
+
+
+
 ## Dependencies
 
 ### Used by
