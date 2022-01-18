@@ -123,7 +123,7 @@
         },
         {
           "name": "type",
-          "description": ""
+          "description": "Contains the public type for this component."
         }
       ]
     },
