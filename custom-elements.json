@@ -1,0 +1,279 @@
+{
+  "version": 1.1,
+  "tags": [
+    {
+      "name": "arcgis-hub-input-color",
+      "description": {
+        "kind": "markdown",
+        "value": ""
+      },
+      "attributes": [
+        {
+          "name": "disabled",
+          "description": "A boolean value indicating whether the control is disabled"
+        },
+        {
+          "name": "placeholder",
+          "description": ""
+        },
+        {
+          "name": "required",
+          "description": "A boolean value indicating whether the control should consider empty values valid"
+        },
+        {
+          "name": "value",
+          "description": "The color"
+        }
+      ]
+    },
+    {
+      "name": "json-editor",
+      "description": {
+        "kind": "markdown",
+        "value": ""
+      },
+      "attributes": [
+        {
+          "name": "has-errors",
+          "description": "Contains a public value to indicate if the model has any errors\r\nthat would prevent saving it."
+        },
+        {
+          "name": "instanceid",
+          "description": "Contains a unique identifier for when we have multiple instances of the editor.\r\nFor example when we want to show an items data as well as an items properties.\r\n\r\nNeed to rethink this..would like it to be more generic.\r\nWe are currently tied to either data or props as this helps us know how to get the correct model from the store."
+        },
+        {
+          "name": "model",
+          "description": "Contains the public model for this component."
+        },
+        {
+          "name": "original",
+          "description": "Contains the original source item json as it was when the component was created."
+        },
+        {
+          "name": "translations",
+          "description": "Contains the translations for this component."
+        },
+        {
+          "name": "value",
+          "description": "Contains the public value for this component.\r\nThis should be an item Id for one of the models in the store."
+        }
+      ]
+    },
+    {
+      "name": "solution-configuration",
+      "description": {
+        "kind": "markdown",
+        "value": ""
+      },
+      "attributes": [
+        {
+          "name": "itemid",
+          "description": "Contains the current solution item id"
+        },
+        {
+          "name": "source-item-data",
+          "description": "Contains the current solution item id"
+        },
+        {
+          "name": "translations",
+          "description": "Contains the translations for this component."
+        },
+        {
+          "name": "tree-open",
+          "description": "Used to show/hide the content tree"
+        }
+      ]
+    },
+    {
+      "name": "solution-contents",
+      "description": {
+        "kind": "markdown",
+        "value": ""
+      },
+      "attributes": [
+        {
+          "name": "translations",
+          "description": "Contains the translations for this component."
+        }
+      ]
+    },
+    {
+      "name": "solution-item",
+      "description": {
+        "kind": "markdown",
+        "value": ""
+      },
+      "attributes": [
+        {
+          "name": "translations",
+          "description": "Contains the translations for this component."
+        }
+      ]
+    },
+    {
+      "name": "solution-item-details",
+      "description": {
+        "kind": "markdown",
+        "value": ""
+      },
+      "attributes": [
+        {
+          "name": "translations",
+          "description": "Contains the translations for this component."
+        },
+        {
+          "name": "type",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "solution-item-icon",
+      "description": {
+        "kind": "markdown",
+        "value": ""
+      },
+      "attributes": [
+        {
+          "name": "is-portal",
+          "description": "Indicate if this is portal"
+        },
+        {
+          "name": "translations",
+          "description": "Contains the translations for this component."
+        },
+        {
+          "name": "type",
+          "description": "The type for the item"
+        }
+      ]
+    },
+    {
+      "name": "solution-item-sharing",
+      "description": {
+        "kind": "markdown",
+        "value": ""
+      },
+      "attributes": [
+        {
+          "name": "group-id",
+          "description": "Contains the public id for the group these items will be shared or un-shared with."
+        },
+        {
+          "name": "translations",
+          "description": "Contains the translations for this component."
+        }
+      ]
+    },
+    {
+      "name": "solution-organization-variables",
+      "description": {
+        "kind": "markdown",
+        "value": ""
+      },
+      "attributes": [
+        {
+          "name": "translations",
+          "description": "Contains the translations for this component."
+        }
+      ]
+    },
+    {
+      "name": "solution-resource-item",
+      "description": {
+        "kind": "markdown",
+        "value": ""
+      },
+      "attributes": [
+        {
+          "name": "translations",
+          "description": "Contains the translations for this component."
+        }
+      ]
+    },
+    {
+      "name": "solution-spatial-ref",
+      "description": {
+        "kind": "markdown",
+        "value": ""
+      },
+      "attributes": [
+        {
+          "name": "default-wkid",
+          "description": "The wkid that will be used as the default when no user selection has been made."
+        },
+        {
+          "name": "loaded",
+          "description": "Indicates if the control has been enabled.\r\nThe first time Spatial Reference has been enabled it should enable all feature services."
+        },
+        {
+          "name": "locked",
+          "description": "When true, all but the main switch are disabled to prevent interaction."
+        },
+        {
+          "name": "translations",
+          "description": "Contains the translations for this component."
+        },
+        {
+          "name": "value",
+          "description": "Contains the public value for this component."
+        }
+      ]
+    },
+    {
+      "name": "solution-template-data",
+      "description": {
+        "kind": "markdown",
+        "value": ""
+      },
+      "attributes": [
+        {
+          "name": "instanceid",
+          "description": "This needs to be unique for props vs data of an item"
+        },
+        {
+          "name": "is-resource",
+          "description": "Should be set to true for items that store their data as a resource\r\nWill allow for upload and download of the resource"
+        },
+        {
+          "name": "itemid",
+          "description": "A templates itemId.\r\nThis is used to get the correct model from a store in the json-editor"
+        },
+        {
+          "name": "translations",
+          "description": "Contains the translations for this component."
+        },
+        {
+          "name": "vars-open",
+          "description": "Used to show/hide the variable containers"
+        }
+      ]
+    },
+    {
+      "name": "solution-variables",
+      "description": {
+        "kind": "markdown",
+        "value": ""
+      },
+      "attributes": [
+        {
+          "name": "translations",
+          "description": "Contains the translations for this component."
+        }
+      ]
+    },
+    {
+      "name": "store-manager",
+      "description": {
+        "kind": "markdown",
+        "value": ""
+      },
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Contains source json as a string"
+        }
+      ]
+    }
+  ]
+}

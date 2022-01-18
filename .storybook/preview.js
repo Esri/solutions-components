@@ -1,21 +1,24 @@
 import { withDirection } from './decorators/direction';
 import { withLocale } from './decorators/locale';
 import { withTheme } from './addons/theme/apply-theme';
-
-//import { defineCustomElements } from '../dist/esm/loader.js';
-//import { setAssetPath } from '../dist/components';
-import { defineCustomElements, setAssetPath } from '../dist/custom-elements';//???
-
+import { defineCustomElements } from '../dist/esm/loader';
 import { extractArgTypes, extractComponentDescription, setStencilDocJson } from '@pxtrn/storybook-addon-docs-stencil';
 import docJson from '../dist/docs.json';
 import { defaultTheme } from './addons/theme/themes';
 
-// TODO: revisit this...
-// this is so calcite-components assets can be loaded when running locally and when deployed to gh-pages
+// get the URL that the application is deployed to
+// when running locally or when deployed to gh-pages
 const url = new URL(document.currentScript.src);
 url.pathname = url.pathname.startsWith('/solutions-components/') ? '/solutions-components/' : '/';
-setAssetPath(`${url.href}solutions-components/solutions-components`);
-defineCustomElements();
+
+// initialize hub components
+defineCustomElements(window, {
+  // NOTE: in this case /solutions-components refers to the subfolder
+  // where the assets are output during the build
+  // see this comment on why it's not just solutions-components
+  // https://github.com/ArcGIS/opendata-ui/blob/c0ead8e71203bb855202310fcda13fdc00631e6d/packages/opendata-ui/app/initializers/solutions-components.js#L7-L11
+  resourcesUrl: `${url.href}solutions-components/assets`
+});
 
 setStencilDocJson(docJson);
 

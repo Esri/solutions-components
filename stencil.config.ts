@@ -38,25 +38,47 @@ export const config: Config = {
   outputTargets: [
     {
       type: "dist",
-      esmLoaderPath: "../loader",
       copy: [
         { src: "assets/nls" },
         { src: "demos" },
         { src: "utils" }
       ]
     },
-    {
-      type: "dist-custom-elements",
-    },
-    {
-      type: "dist-custom-elements-bundle",
-    },
+    // dist-custom-elements: not currently in use
+    // we could re-enable if we have the use case of a framework app
+    // that needs a highly tree-shakable build of only one or a few components
+    // {
+    //   type: "dist-custom-elements",
+    // },
     {
       type: "docs-readme"
     },
     {
       type: "docs-json",
       file: "dist/docs.json",
+    },
+    {
+      type: "docs-vscode",
+      file: "custom-elements.json",
+    },
+    {
+      type: "www",
+      serviceWorker: null, // disable service workers
+      copy: [
+        {
+          src: "./html/**/*.html",
+        },
+        {
+          src: "../node_modules/@esri/calcite-components/dist/calcite",
+          dest: "calcite",
+        },
+        { src: "**/*.i18n.*.json", dest: "assets/i18n" },
+        {
+          src:
+            "../node_modules/@esri/calcite-components/dist/calcite/assets/calcite-date-picker/nls",
+          dest: "calcite-date-picker/nls",
+        },
+      ],
     }
   ],
   rollupPlugins,

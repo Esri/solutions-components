@@ -11,8 +11,7 @@
   "collection:main": "./dist/collection/index.js",
   "unpkg": "./dist/solutions-components/solutions-components.js",
   "files": [
-    "dist/",
-    "loader/"
+    "dist/"
   ],
   "browserslist": [
     "last 2 and_chr versions",
@@ -80,7 +79,9 @@
     "@esri/calcite-ui-icons": "^3.14.1",
     "@esri/eslint-plugin-calcite-components": "^0.1.1",
     "@esri/hub-common": "9.12.0",
+    "@esri/hub-initiatives": "9.12.0",
     "@esri/hub-sites": "9.12.0",
+    "@esri/hub-teams": "9.12.0",
     "@esri/solution-common": "^1.2.0",
     "@jest/core": "^26.6.3",
     "@pxtrn/storybook-addon-docs-stencil": "^1.0.0",
@@ -163,7 +164,9 @@
     "@esri/calcite-components": "1.0.0-beta.74",
     "@esri/calcite-ui-icons": "^3.14.0",
     "@esri/hub-common": "9.12.0",
+    "@esri/hub-initiatives": "9.12.0",
     "@esri/hub-sites": "9.12.0",
+    "@esri/hub-teams": "9.12.0",
     "@esri/solution-common": "^1.2.0",
     "esri-loader": "^3.0.0"
   },
