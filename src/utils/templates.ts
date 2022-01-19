@@ -45,13 +45,87 @@ import {
 export function getInventoryItems(
   templates: any[]
 ): IInventoryItem[] {
-  const topLevelItemIds = _getTopLevelItemIds(templates);
+  const hierarchy = getItemHierarchy(templates);
+  const ids = hierarchy.reduce((prev, cur) => {
+    prev.push(cur.id);
+    return prev;
+  }, []);
   return templates.reduce((prev, cur) => {
-    if (topLevelItemIds.indexOf(cur.itemId) > -1) {
-      prev.push(_getItemFromTemplate(cur, templates))
+    if (ids.indexOf(cur.itemId) > -1) {
+      const hierarchyItems = hierarchy.filter(hi => hi.id === cur.itemId);
+      prev.push(_getItemFromTemplate(cur, templates, hierarchyItems[0].dependencies));
     }
     return prev;
   }, []);
+}
+
+/**
+ * Create item hierarchy that will avoid issues from cylical dependencies
+ * 
+ * @param templates a list of item templates from the solution
+ * 
+ * @returns a hierarchy for item and item dependency display
+ */
+export function getItemHierarchy(
+  templates: any[]
+): any[] {
+  const hierarchy = [];
+
+  // Get the template specified by id out of a list of templates
+  function getTemplateInSolution(templates, id) {
+    const iTemplate = templates.findIndex((template) => id === template.itemId);
+    return iTemplate >= 0 ? templates[iTemplate] : null;
+  }
+
+  // Hierarchically list the dependencies of specified node
+  function traceItemId(id, accumulatedHierarchy, alreadyVisitedIds = []) {
+    // Get the dependencies of the node
+    const template = getTemplateInSolution(templates, id);
+    /* istanbul ignore else */
+    if (template) {
+      const templateEntry = {
+        id,
+        dependencies: []
+      };
+
+      // Visit each dependency, but only if this template is not in the alreadyVisitedIds list to avoid infinite loops
+      /* istanbul ignore else */
+      if (alreadyVisitedIds.indexOf(id) < 0) {
+        // Add dependency to alreadyVisitedIds list
+        alreadyVisitedIds.push(id);
+
+        template.dependencies.forEach((dependencyId) => {
+          // Remove dependency from list of templates to visit in the top-level loop
+          const iDependencyTemplate = templateItemIds.indexOf(dependencyId);
+          /* istanbul ignore else */
+          if (iDependencyTemplate >= 0) {
+            templateItemIds.splice(iDependencyTemplate, 1);
+          }
+
+          traceItemId(dependencyId, templateEntry.dependencies, alreadyVisitedIds);
+        });
+      }
+      accumulatedHierarchy.push(templateEntry);
+    }
+  }
+
+  // Start with top-level nodes and add in the rest of the nodes to catch cycles without top-level nodes
+  let templateItemIds: string[] = _getTopLevelItemIds(templates);
+
+  const otherItems = templates
+    .filter((template) => templateItemIds.indexOf(template.itemId) < 0) // only keep non-top-level nodes
+    .sort((a, b) => b.dependencies.length - a.dependencies.length); // sort so that nodes with more dependencies come first--reduces stubs
+
+  templateItemIds = templateItemIds.concat(otherItems.map((template) => template.itemId));
+
+  // Step through the list of nodes; we'll also remove nodes as we visit them
+  let itemId = templateItemIds.shift();
+  while (typeof itemId !== "undefined") {
+    traceItemId(itemId, hierarchy);
+    itemId = templateItemIds.shift();
+  }
+
+  return hierarchy;
 }
 
 /**
@@ -268,17 +342,19 @@ function _addLayersOrTables(
  * 
  * @param template one of the templates from the current solution
  * @param templates full list of templates
+ * @param dependencies list of hierarchical dependencies
  *
  * @returns an IInventoryItem that is used by other components to work with this template
  */
 function _getItemFromTemplate(
   template: any,
-  templates: any[]
+  templates: any[],
+  dependencies: any[]
 ): IInventoryItem {
   return {
     id: template.itemId || "",
     title: template.item.title || "",
-    dependencies: _getDependencies(template.dependencies || [], templates),
+    dependencies: _getDependencies(dependencies, templates),
     type: template.item.type || "",
     typeKeywords: template.item.typeKeywords || [],
     solutionItem: {
@@ -302,12 +378,19 @@ function _getItemFromTemplate(
  * @returns a list of IInventoryItem that are used by other components to work with the templates
  */
 function _getDependencies(
-  dependencies: string[],
+  dependencies: any[],
   templates: any[]
 ): IInventoryItem[] {
+  const dependencyItems = [];
+  const depIds = dependencies.reduce((prev, cur) => {
+    prev.push(cur.id)
+    dependencyItems.push(cur)
+    return prev;
+  }, []);
   return templates.reduce((prev, curr) => {
-    if (dependencies.indexOf(curr.itemId) > -1) {
-      prev.push(_getItemFromTemplate(curr, templates))
+    const i = depIds.indexOf(curr.itemId);
+    if (i > -1) {
+      prev.push(_getItemFromTemplate(curr, templates, dependencyItems[i].dependencies));
     }
     return prev;
   }, []);
