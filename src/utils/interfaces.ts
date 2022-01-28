@@ -18,7 +18,6 @@
  * Key details from the templates item
  */
 export interface IItemDetails {
-  thumbnail: string;
   title: string;
   snippet: string;
   description: string;
@@ -116,6 +115,9 @@ export interface ISolutionModel {
   title: string;
   itemOriginValue: string;
   spatialReference: any;
+  resourceFilePaths: any[];
+  thumbnailOrigin: any;
+  thumbnailNew: any;
 }
 
 /**

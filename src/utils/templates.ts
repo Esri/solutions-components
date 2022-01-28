@@ -26,7 +26,10 @@ import {
   IVariableItem
 } from '../utils/interfaces';
 import {
-  getProp
+  generateStorageFilePaths,
+  getProp,
+  getThumbnailFromStorageItem,
+  UserSession
 } from '@esri/solution-common';
 
 //--------------------------------------------------------------------------
@@ -219,7 +222,11 @@ export function getOrganizationVariables(
  * 
  * @returns a list of models and key values
  */
-export function getModels(templates: any[]): ISolutionModels {
+export function getModels(
+  templates: any[],
+  authentication: UserSession,
+  solutionId: string
+): Promise<ISolutionModels> {
   const ids: string[] = [];
   const models: ISolutionModels = {};
   const monacoDefined = typeof(monaco) !== "undefined";
@@ -241,11 +248,19 @@ export function getModels(templates: any[]): ISolutionModels {
         name: t.item?.name,
         title: t.item?.title,
         itemOriginValue: JSON.stringify(t.item),
-        spatialReference: t.properties?.service?.spatialReference
+        spatialReference: t.properties?.service?.spatialReference,
+        resourceFilePaths: generateStorageFilePaths(
+          authentication.portal,
+          solutionId,
+          t.resources,
+          1
+        ),
+        thumbnailNew: undefined,// retain thumbnails in store as they get messed up if you emit them in events
+        thumbnailOrigin: undefined
       };
     }
   });
-  return models;
+  return _getThumbnails(models, authentication);
 }
 
 /**
@@ -304,6 +319,38 @@ export function getSpatialReferenceInfo(
 //  Private Functions
 //
 //--------------------------------------------------------------------------
+
+/**
+ * Fetch thumbnails from the item resources
+ * 
+ * @param models the list of models for the current solution item
+ * @param authentication credentials for any requests
+ *
+ */
+function _getThumbnails(
+  models: any,
+  authentication: UserSession
+): Promise<ISolutionModels> {
+  const thumbnailPromoses = [];
+  const _ids = [];
+  Object.keys(models).forEach(k => {
+    thumbnailPromoses.push(
+      models[k].resourceFilePaths.length > 0 ?
+        getThumbnailFromStorageItem(authentication, models[k].resourceFilePaths) :
+        Promise.resolve()
+    );
+    _ids.push(k);
+  });
+  thumbnailPromoses.push(Promise.resolve());
+  return Promise.all(thumbnailPromoses).then(r => {
+    r.forEach((thumbnail, i) => {
+      if (thumbnail) {
+        models[_ids[i]].thumbnailOrigin = thumbnail;
+      }
+    })
+    return Promise.resolve(models);
+  });
+}
 
 /**
  * Explore a solution item template for variables we will allow users to insert at runtime.
@@ -412,7 +459,6 @@ function _getItemDetails(
 ): IItemDetails {
   return {
     itemId,
-    thumbnail: item.thumbnail || "",
     title: item.title || "",
     snippet: item.snippet || "",
     description: item.description || "",

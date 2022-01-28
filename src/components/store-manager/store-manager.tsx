@@ -108,7 +108,7 @@
            const v = JSON.parse(newValue);
            // eslint-disable-next-line @typescript-eslint/no-floating-promises
            getItemDataAsJson(v, this.authentication).then(data => {
-             state.models = getModels(Array.isArray(v) ? v : [v]);
+             state.models = getModels(Array.isArray(v) ? v : [v], this.authentication, v);
              state.featureServices = getFeatureServices(Array.isArray(v) ? v : [v])
              state.spatialReferenceInfo = getSpatialReferenceInfo(state.featureServices, data);
              this.templates = v;

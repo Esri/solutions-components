@@ -19,6 +19,13 @@
 | `value`          | --                 | Contains the public value for this component.          | `ISolutionConfiguration` | `{     contents: []   }`                                                                                                                        |
 
 
+## Events
+
+| Event            | Description | Type               |
+| ---------------- | ----------- | ------------------ |
+| `solutionLoaded` |             | `CustomEvent<any>` |
+
+
 ## Methods
 
 ### `getEditModels() => Promise<any>`

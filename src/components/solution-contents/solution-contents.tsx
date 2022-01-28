@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Listen, Watch } from '@stencil/core';
 import { IInventoryItem, ISolutionItem } from '../../utils/interfaces';
 import '@esri/calcite-components';
 
@@ -106,6 +106,11 @@ export class SolutionContents {
   //  Event Listeners
   //
   //--------------------------------------------------------------------------
+
+  @Listen("solutionLoaded", { target: 'window' })
+  _solutionLoaded(): void {
+    this._treeItemSelected(this.value[0].solutionItem)
+  }
 
   //--------------------------------------------------------------------------
   //

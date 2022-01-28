@@ -50,7 +50,6 @@ export class SolutionItemDetails {
    * Contains the public value for this component.
    */
   @Prop({ mutable: true, reflect: true }) value: IItemDetails = {
-    thumbnail: null,
     title: "",
     snippet: "",
     description: "",
@@ -82,7 +81,7 @@ export class SolutionItemDetails {
 
           <div class="inputBottomSeparation">
 
-            <input accept=".jpg,.gif,.png,image/jpg,image/gif,image/png" class="display-none" onChange={(event) => (this._updateThumbnail(event))} ref={(el) => (this.browseForThumbnail = el)} type="file" />
+            <input accept=".jpg,.gif,.png,image/jpg,image/gif,image/png" class="display-none" onChange={(event) => (this._updateThumbnail(event, true))} ref={(el) => (this.browseForThumbnail = el)} type="file" />
 
             <button class="font-size--3 btn-link inline-block" onClick={() => this._getThumbnail()}>
               <svg class="icon-inline icon-inline--on-left" height="16" viewBox="0 0 16 16" width="16">
@@ -156,6 +155,22 @@ export class SolutionItemDetails {
   //  Event Listeners
   //
   //--------------------------------------------------------------------------
+
+  @Listen("solutionItemSelected", { target: 'window' })
+  _solutionItemSelected(event: CustomEvent): void {
+    if (event.detail.itemId) {
+      const thumbnailNew = getProp(state, `models.${event.detail.itemId}.thumbnailNew`);
+      const thumbnailOrigin = getProp(state, `models.${event.detail.itemId}.thumbnailOrigin`); 
+      if (thumbnailNew) {
+        this.thumbnail.src = thumbnailNew;
+      } else if (thumbnailOrigin) {
+        this._updateThumbnail(
+          { currentTarget: { files: [thumbnailOrigin] } },
+          false
+        );
+      }
+    }
+  }
 
   /**
    * Updates the component's value with changes to the input fields.
@@ -232,15 +247,18 @@ export class SolutionItemDetails {
    *
    */
   private _updateThumbnail(
-    event: any
+    event: any,
+    updateStore: boolean
   ): void {
     const files = event.currentTarget.files;
     if (files && files[0]) {
       const reader = new FileReader();
       reader.onloadend = () => {
         this.thumbnail.src = reader.result as string;
-        this._updateStore("thumbnail", this.thumbnail.src);
-      }
+        if (updateStore) {
+          this._updateStore("thumbnailNew", this.thumbnail.src);
+        }
+      }      
       reader.readAsDataURL(files[0]);
     }
   }
@@ -271,7 +289,9 @@ export class SolutionItemDetails {
     v: string
   ): void {
     const model: any = getProp(state, `models.${this.value.itemId}`);
-    if (model.itemOriginValue) {
+    if (prop === "thumbnailNew") {
+      model[prop] = v;
+    } else if (model.itemOriginValue) {
       const item = JSON.parse(model.itemOriginValue);
       if (item.hasOwnProperty(prop)) {
         // store when it matches

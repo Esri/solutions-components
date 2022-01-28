@@ -404,6 +404,7 @@ declare namespace LocalJSX {
           * Contains the current solution item id
          */
         "itemid"?: string;
+        "onSolutionLoaded"?: (event: CustomEvent<any>) => void;
         /**
           * Contains the current solution item id
          */

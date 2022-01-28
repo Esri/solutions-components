@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Listen, Method, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, h, Host, Listen, Method, Prop, State, VNode, Watch, EventEmitter, Event } from '@stencil/core';
 import { IOrganizationVariableItem, IResponse, ISolutionConfiguration, ISolutionItem, IUpdateTemplateResponse, IVariableItem } from '../../utils/interfaces';
 import * as utils from '../../utils/templates';
 import state from '../../utils/editStore';
@@ -47,7 +47,7 @@ export class SolutionConfiguration {
   /**
    * Credentials for requests
    */
-   @Prop({ mutable: true }) authentication: UserSession;
+  @Prop({ mutable: true }) authentication: UserSession;
 
   /**
    * Contains the translations for this component.
@@ -99,9 +99,27 @@ export class SolutionConfiguration {
   //  Lifecycle
   //
   //--------------------------------------------------------------------------
+  @Event() solutionLoaded: EventEmitter;
 
-  connectedCallback(): void {
-    this._initObserver();
+  componentWillRender(): Promise<any> {
+    return new Promise((resolve) => {
+      if (this._fetchData) {
+        this._fetchData = false;
+        this._isLoading = true;
+        this._getItemData(this.itemid).then(() => {
+          resolve(undefined);
+        }); 
+      } else {
+        resolve(undefined);
+      }
+    });
+  }
+
+  componentDidRender() {
+    if (this._isLoading) {
+      this._isLoading = false;
+      this.solutionLoaded.emit();
+    }
   }
 
   render(): VNode {
@@ -170,11 +188,13 @@ export class SolutionConfiguration {
   //
   //--------------------------------------------------------------------------
 
-  private _templatesObserver: MutationObserver;
-
   private _solutionVariables: IVariableItem[];
 
   private _organizationVariables: IOrganizationVariableItem[];
+
+  private _fetchData: boolean = false;
+
+  private _isLoading: boolean = false;
 
   //--------------------------------------------------------------------------
   //
@@ -219,28 +239,17 @@ export class SolutionConfiguration {
     return Promise.resolve(this._save());
   }
 
+  @Watch('itemid')
+  valueWatchHandler(v: any, oldV: any): void {
+    if (v && v !== oldV) {
+      this._fetchData = true;
+    }
+  }
   //--------------------------------------------------------------------------
   //
   //  Private Methods
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Observe changes to the props
-   */
-  private _initObserver() {
-    this._templatesObserver = new MutationObserver(ml => {
-      ml.some(mutation => {
-        const v = mutation.target[mutation.attributeName];
-        if (mutation.type === 'attributes' && mutation.attributeName === "itemid" && v && v !== mutation.oldValue) {
-          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          this._getItemData(v);
-          return true;
-        }
-      });
-    });
-    this._templatesObserver.observe(this.el, { attributes: true, attributeOldValue: true });
-  }
 
   /**
    * Get the solution items data
@@ -257,7 +266,7 @@ export class SolutionConfiguration {
       this.templates = data.templates;
 
       this._initProps(this.templates);
-      this._initState(this.templates, isReset);
+      return this._initState(this.templates, isReset);
     });
   }
 
@@ -267,23 +276,30 @@ export class SolutionConfiguration {
    * @param templates the solution items templates
    * @param isReset (defaults to false) indicates if we are resetting the controls after save
    */
-  private _initState(templates: any[], isReset = false): void {
-    if (isReset) {
-      // clear models and state so we can refresh after save
-      this.modelsSet = false;
-      state.reset();
-    }
-    state.models = utils.getModels(templates);
-    state.featureServices = utils.getFeatureServices(templates);
-    state.spatialReferenceInfo = utils.getSpatialReferenceInfo(state.featureServices, this.sourceItemData);
-
-    if (isReset) {
-      // reset for undo/redo stack and diff editor tracking
-      const jsonEditors = Array.from(this.el.getElementsByTagName("json-editor"));
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      jsonEditors.forEach(e => void e.reset());
-    }
-    this.modelsSet = true;
+  private _initState(templates: any[], isReset = false): Promise<any> {
+    return new Promise((resolve) => {
+      if (isReset) {
+        // clear models and state so we can refresh after save
+        this.modelsSet = false;
+        state.reset();
+      }
+      utils.getModels(templates, this.authentication, this.itemid).then(models => {
+        state.models = models;
+  
+        state.featureServices = utils.getFeatureServices(templates);
+        state.spatialReferenceInfo = utils.getSpatialReferenceInfo(state.featureServices, this.sourceItemData);
+    
+        if (isReset) {
+          // reset for undo/redo stack and diff editor tracking
+          const jsonEditors = Array.from(this.el.getElementsByTagName("json-editor"));
+          // eslint-disable-next-line @typescript-eslint/no-floating-promises
+          jsonEditors.forEach(e => void e.reset());
+        }
+  
+        this.modelsSet = true;
+        resolve(true);
+      });
+    });
   }
 
   /**
