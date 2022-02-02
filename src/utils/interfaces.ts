@@ -115,9 +115,11 @@ export interface ISolutionModel {
   title: string;
   itemOriginValue: string;
   spatialReference: any;
+  resources: string[];
   resourceFilePaths: any[];
   thumbnailOrigin: any;
   thumbnailNew: any;
+  type: string;
 }
 
 /**

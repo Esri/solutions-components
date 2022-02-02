@@ -19,11 +19,10 @@
 */
 
 import {
-  IItemUpdate,
-  UserSession,
-  updateItem
+  UserSession
 } from "@esri/solution-common";
-import { IResponse } from "./interfaces";
+import { IResponse, ISolutionModel } from "./interfaces";
+import { IItemResourceOptions, updateItemResource } from "@esri/arcgis-rest-portal";
 
 /**
  * Get an array from a list of nodes
@@ -47,11 +46,11 @@ import { IResponse } from "./interfaces";
 export async function save(
   id: string,
   data: any,
+  models: any,
   authentication: UserSession,
   translations: any,
   thumbnailurl: any,
 ): Promise<IResponse> {
-  const itemInfo: IItemUpdate = { id };
 
   const params: any = {
     text: data
@@ -61,15 +60,48 @@ export async function save(
     params.thumbnail = thumbnailurl;
   }
 
-  const updateResults = await updateItem(
-    itemInfo,
-    authentication,
-    undefined,
-    params
-  );
+  const updateResults = { success: true }
 
-  return {
+  await _updateThumbnailResources(id, models, authentication);
+
+  return Promise.resolve({
     success: updateResults.success,
     message: updateResults.success ? translations.editsSaved : translations.saveFailed
-  } as IResponse;
+  });
+}
+
+export async function _updateThumbnailResources(
+  solutionId: string,
+  models: any,
+  authentication: UserSession
+): Promise<any> {
+  return new Promise<any>((resolve, reject) => {
+    const promises = [];
+    Object.keys(models).forEach(itemId => {
+      const model: ISolutionModel = models[itemId];
+      if (model.thumbnailNew) {
+        const name: string = model.thumbnailOrigin.name;
+
+        const opts: IItemResourceOptions = {
+          id: solutionId,
+          authentication,
+          resource: model.thumbnailNew,
+          name
+        };
+
+        const resources = model.resources.filter(r => r.endsWith(name));
+        if (resources.length === 1) {
+          const nameParts = resources[0].split("/");
+          if (nameParts.length === 2) {
+            opts.prefix = nameParts[0];
+          }
+        }
+        promises.push(updateItemResource(opts))
+      }
+    });
+
+    Promise.all(promises).then(results => {
+      resolve(results);
+    }, reject);
+  })
 }

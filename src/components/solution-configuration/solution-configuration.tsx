@@ -339,6 +339,7 @@ export class SolutionConfiguration {
     return templateUpdates.errors.length === 0 ? save(
         this.itemid,
         data,
+        state.models,
         this.authentication,
         this.translations,
         ""

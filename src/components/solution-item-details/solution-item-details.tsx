@@ -160,14 +160,9 @@ export class SolutionItemDetails {
   _solutionItemSelected(event: CustomEvent): void {
     if (event.detail.itemId) {
       const thumbnailNew = getProp(state, `models.${event.detail.itemId}.thumbnailNew`);
-      const thumbnailOrigin = getProp(state, `models.${event.detail.itemId}.thumbnailOrigin`); 
-      if (thumbnailNew) {
-        this.thumbnail.src = thumbnailNew;
-      } else if (thumbnailOrigin) {
-        this._updateThumbnail(
-          { currentTarget: { files: [thumbnailOrigin] } },
-          false
-        );
+      const thumbnailOrigin = getProp(state, `models.${event.detail.itemId}.thumbnailOrigin`);
+      if (this.thumbnail) {
+        this.thumbnail.src = URL.createObjectURL(thumbnailNew || thumbnailOrigin);
       }
     }
   }
@@ -250,16 +245,14 @@ export class SolutionItemDetails {
     event: any,
     updateStore: boolean
   ): void {
-    const files = event.currentTarget.files;
+    const files = event.target.files;
     if (files && files[0]) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        this.thumbnail.src = reader.result as string;
-        if (updateStore) {
-          this._updateStore("thumbnailNew", this.thumbnail.src);
-        }
-      }      
-      reader.readAsDataURL(files[0]);
+      if (this.thumbnail) {
+        this.thumbnail.src = URL.createObjectURL(files[0]);
+      }
+      if (updateStore) {
+        this._updateStore("thumbnailNew", files[0]);
+      }
     }
   }
 

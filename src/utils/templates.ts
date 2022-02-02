@@ -247,8 +247,10 @@ export function getModels(
         originalItemValues: {},
         name: t.item?.name,
         title: t.item?.title,
+        type: t.type,
         itemOriginValue: JSON.stringify(t.item),
         spatialReference: t.properties?.service?.spatialReference,
+        resources: t.resources,
         resourceFilePaths: generateStorageFilePaths(
           authentication.portal,
           solutionId,
@@ -331,24 +333,26 @@ function _getThumbnails(
   models: any,
   authentication: UserSession
 ): Promise<ISolutionModels> {
-  const thumbnailPromoses = [];
-  const _ids = [];
-  Object.keys(models).forEach(k => {
-    thumbnailPromoses.push(
-      models[k].resourceFilePaths.length > 0 ?
-        getThumbnailFromStorageItem(authentication, models[k].resourceFilePaths) :
-        Promise.resolve()
-    );
-    _ids.push(k);
-  });
-  thumbnailPromoses.push(Promise.resolve());
-  return Promise.all(thumbnailPromoses).then(r => {
-    r.forEach((thumbnail, i) => {
-      if (thumbnail) {
-        models[_ids[i]].thumbnailOrigin = thumbnail;
-      }
-    })
-    return Promise.resolve(models);
+  return new Promise<any>((resolve, reject) => {
+    const thumbnailPromoses = [];
+    const _ids = [];
+    Object.keys(models).forEach(k => {
+      thumbnailPromoses.push(
+        models[k].resourceFilePaths.length > 0 ?
+          getThumbnailFromStorageItem(authentication, models[k].resourceFilePaths) :
+          Promise.resolve()
+      );
+      _ids.push(k);
+    });
+    thumbnailPromoses.push(Promise.resolve());
+    Promise.all(thumbnailPromoses).then(r => {
+      r.forEach((thumbnail, i) => {
+        if (thumbnail) {
+          models[_ids[i]].thumbnailOrigin = thumbnail;
+        }
+      })
+      resolve(models);
+    }, reject);
   });
 }
 
