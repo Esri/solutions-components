@@ -20,7 +20,6 @@
 
 .resource-item {
   padding: 1rem;
-  display: inline-block !important;
 }
 
 .resource-button {
@@ -37,4 +36,16 @@
 
 .resource-progress {
   padding-top: 1rem;
+}
+
+.resources-container {
+  border: 1px gray solid;
+}
+
+.success {
+  color: var(--calcite-ui-success);
+}
+
+.danger {
+  color: var(--calcite-ui-danger);
 }

@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Host, h, Prop } from '@stencil/core';
 import { IResourceItem } from '../../utils/interfaces';
+import { getItemResources } from '@esri/arcgis-rest-portal';
+import { UserSession } from '@esri/solution-common';
 
 @Component({
   tag: 'solution-resource-item',
@@ -39,6 +41,16 @@ export class SolutionResourceItem {
   //--------------------------------------------------------------------------
 
   /**
+   * A templates itemId.
+   * This is used to get the correct model from a store in the json-editor
+   */
+   @Prop({ mutable: true, reflect: true }) itemid = "";
+
+   @Prop({ mutable: true, reflect: true }) resources = [];
+
+   @Prop({ mutable: true, reflect: true }) resourceFilePaths = [];
+
+  /**
    * Contains the translations for this component.
    */
   @Prop({ mutable: true }) translations: any = {};
@@ -51,12 +63,13 @@ export class SolutionResourceItem {
     url: ""
   };
 
-  @State() fileName: string;
+  /**
+ * Credentials for requests
+ */
+  @Prop({ mutable: true }) authentication: UserSession;
 
-  @Watch('value')
-  valueWatchHandler(v: IResourceItem, oldV: IResourceItem): void {
-    this.fileName = v.name !== oldV.name ? v.name : this.fileName;
-  }
+  // should these be here or in the state.model
+  @Prop({ mutable: true, reflect: true }) deleted: string[] = [];
 
   //--------------------------------------------------------------------------
   //
@@ -64,57 +77,29 @@ export class SolutionResourceItem {
   //
   //--------------------------------------------------------------------------
 
-  componentWillLoad(): void {
-    this.fileName = this.value.name;
+  async componentWillRender() {
+    await this._getResources(this.itemid, this.authentication)
+  }
+
+  private async _getResources(
+    id: string,
+    authentication: UserSession
+  ) {
+    try {
+     await getItemResources(id, { authentication });
+    }
+    catch (e) {
+      console.log(e)
+    }
   }
 
   render() {
     return (
       <Host>
         <div class="resource-item">
-
-          <input
-            accept=".zip"
-            class="display-none"
-            onChange={(event) => (this._updateFile(event))}
-            ref={(el) => (this.browseForFile = el)}
-            type="file"
-          />
-
-          <a class="display-none" download href={this.value.url} ref={(el) => (this.downloadFile = el)} />
-
-          <calcite-label>
-            {this.fileName}
-          </calcite-label>
-
-          {/* <calcite-progress
-            class="display-none resource-progress"
-            ref={(el) => (this.uploadProgress = el)}
-            type="indeterminate"
-          ></calcite-progress> */}
-
-          <calcite-button
-            appearance="solid"
-            class="resource-button"
-            color="blue"
-            icon-start="download"
-            onClick={() => this._downloadItem()}
-            scale="m"
-          >
-            {this.translations.download}
-          </calcite-button>
-
-          <calcite-button
-            appearance="solid"
-            class="resource-button"
-            color="blue"
-            icon-start="upload"
-            onClick={() => this._updateItem()}
-            scale="m"
-          >
-            {this.translations.update}
-          </calcite-button>
-
+          <div class="resources-container">
+            {this._renderResourceList()}
+          </div>
         </div>
       </Host>
     );
@@ -130,16 +115,6 @@ export class SolutionResourceItem {
    * Handle to the element for browsing for a file.
    */
   private browseForFile: HTMLInputElement;
-
-  /**
-   * Handle to the element for downloading a file.
-   */
-  private downloadFile: HTMLAnchorElement;
-
-  /**
-   * Handle to the progress element to show during upload/download
-   */
-  //private uploadProgress: HTMLCalciteProgressElement;
 
   //--------------------------------------------------------------------------
   //
@@ -165,45 +140,130 @@ export class SolutionResourceItem {
   //
   //--------------------------------------------------------------------------
 
-  /**
-   * Download file from url.
-   *
-   */
-  _downloadItem(): void {
-    this.downloadFile.click();
+  _renderResourceList(): HTMLCalciteValueListElement {
+    return (
+      <calcite-value-list multiple>
+        {
+          this.resourceFilePaths.reduce((prev, cur) => {
+            // TODO clarify how to distinguish if this is the templates thumbnail vs some other image..
+            //if (cur.type < 4) {
+              prev.push(this._renderResource(cur))
+            //}
+            return prev;
+          }, [])
+        }
+      </calcite-value-list>
+    )
   }
 
+  _renderResource(
+    resource: any
+  ): HTMLCalciteValueListItemElement {
+    const disabled = this.deleted.indexOf(resource.filename) > -1;
+    
+    return (
+      <calcite-value-list-item 
+        label={resource.filename}
+        value={resource.url}
+        metadata={resource.url}
+        class={disabled ? "disabled" : ""}>
+        <calcite-action-group slot="actions-end" layout="horizontal" expand-disabled="true">
+          <calcite-action 
+            disabled={disabled}
+            scale="m"
+            text="Download"
+            label="Download"
+            icon="download"
+            onClick={() => this._download(resource.url, resource.filename)}>
+          </calcite-action>
+          <calcite-action 
+            disabled={disabled}
+            scale="m"
+            text="Upload"
+            label="Upload"
+            icon="upload-to"
+            onClick={() => this._upload()}>
+            <input
+              accept=".zip"
+              class="display-none"
+              onChange={(event) => (this._updateResource(event))}
+              ref={(el) => (this.browseForFile = el)}
+              type="file"
+            />
+          </calcite-action>
+          <calcite-action 
+            disabled={disabled}
+            scale="m"
+            text="Delete"
+            label="Delete"
+            icon="trash"
+            onClick={()=> this._delete(resource.filename)}>
+          </calcite-action>
+          {disabled ? <calcite-action 
+            scale="m"
+            text="Delete"
+            label="Reset"
+            icon="reset"
+            onClick={()=> this._reset(resource.filename)}>
+          </calcite-action> : <div class="display-none"></div>}
+        </calcite-action-group>
+      </calcite-value-list-item>
+    );
+  }
+
+  _delete(name: string): void {
+    if (this.deleted.indexOf(name) < 0) {
+      this.deleted = [
+        ...this.deleted,
+        name
+      ]
+    }
+  }
+
+  _reset(name: string): void {
+    // reset icon...
+    const idx = this.deleted.indexOf(name);
+    if (idx > -1) {
+      this.deleted = this.deleted.filter(n => n !== name)
+    }
+  }
+
+  _download(url: string, name: string): void {
+    const imageExtensions: string[] = ['jpg', 'jpeg', 'gif', 'png'];
+    const _url: string = `${url}?token=${this.authentication.token}`;
+    if (imageExtensions.some(ext => url.endsWith(ext))) {
+      this.downloadImage(_url, name);
+    } else {
+      this.downloadFile(_url, name);
+    }
+  }
+
+  downloadFile(url: string, name: string): void {
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = name;
+    link.click();
+  }
+
+  async downloadImage(url: string, name: string): Promise<void> {
+    const image = await fetch(url);
+    const b = await image.blob();
+    const bURL = URL.createObjectURL(b);
+    this.downloadFile(bURL, name);
+  }
+  
   /**
    * Opens file browse dialog.
    *
    */
-  _updateItem(): void {
+  _upload(): void {
     this.browseForFile.click();
   }
 
-  /**
-   * Gets and displays image result from browse.
-   *
-   */
-  private _updateFile(
-    event: any
-  ): void {
-    // progress goes so fast this may not be necessary
-    //this.uploadProgress.classList.remove('display-none');
-    const files = event.currentTarget.files;
+  _updateResource(event: any): void {
+    const files = event.target.files;
     if (files && files[0]) {
-      const name: string = files[0].name;
-      const reader = new FileReader();
-      reader.onloadend = (r) => {
-        this.value = {
-          name,
-          url: typeof(r.target.result) === "string" ? r.target.result : ""
-        };
-        //this.uploadProgress.classList.add('display-none');
-      }
-      reader.readAsDataURL(files[0]);
-    } else {
-      //this.uploadProgress.classList.add('display-none');
+      alert(files[0])
     }
   }
 }

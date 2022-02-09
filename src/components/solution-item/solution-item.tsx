@@ -17,6 +17,7 @@
 import { Component, Element, h, Host, Prop, VNode } from '@stencil/core';
 import { ISolutionItem } from '../../utils/interfaces';
 import '@esri/calcite-components';
+import { UserSession } from '@esri/solution-common';
 
 @Component({
   tag: 'solution-item',
@@ -37,6 +38,11 @@ export class SolutionItem {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Credentials for requests
+   */
+  @Prop({ mutable: true }) authentication: UserSession;
 
   /**
    * Contains the translations for this component.
@@ -177,6 +183,7 @@ export class SolutionItem {
           solutionVariables={this.solutionVariables}
           translations={this.translations}
           value={{value: this.value.data}}
+          authentication={this.authentication}
          />
       </calcite-tab>
       <calcite-tab class="config-tab" id="props-tab">
@@ -187,6 +194,7 @@ export class SolutionItem {
           solutionVariables={this.solutionVariables}
           translations={this.translations} 
           value={{value: this.value.properties}}
+          authentication={this.authentication}
          />
       </calcite-tab>
     </calcite-tabs>

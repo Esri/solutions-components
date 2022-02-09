@@ -85,6 +85,10 @@ export namespace Components {
     }
     interface SolutionItem {
         /**
+          * Credentials for requests
+         */
+        "authentication": UserSession;
+        /**
           * Contains the organization based variables
          */
         "organizationVariables": any[];
@@ -160,6 +164,17 @@ export namespace Components {
     }
     interface SolutionResourceItem {
         /**
+          * Credentials for requests
+         */
+        "authentication": UserSession;
+        "deleted": string[];
+        /**
+          * A templates itemId. This is used to get the correct model from a store in the json-editor
+         */
+        "itemid": string;
+        "resourceFilePaths": any[];
+        "resources": any[];
+        /**
           * Contains the translations for this component.
          */
         "translations": any;
@@ -211,6 +226,10 @@ export namespace Components {
         "wkidToDisplay": (wkid: number) => Promise<string>;
     }
     interface SolutionTemplateData {
+        /**
+          * Credentials for requests
+         */
+        "authentication": UserSession;
         /**
           * This needs to be unique for props vs data of an item
          */
@@ -439,6 +458,10 @@ declare namespace LocalJSX {
     }
     interface SolutionItem {
         /**
+          * Credentials for requests
+         */
+        "authentication"?: UserSession;
+        /**
           * Contains the organization based variables
          */
         "organizationVariables"?: any[];
@@ -514,6 +537,17 @@ declare namespace LocalJSX {
     }
     interface SolutionResourceItem {
         /**
+          * Credentials for requests
+         */
+        "authentication"?: UserSession;
+        "deleted"?: string[];
+        /**
+          * A templates itemId. This is used to get the correct model from a store in the json-editor
+         */
+        "itemid"?: string;
+        "resourceFilePaths"?: any[];
+        "resources"?: any[];
+        /**
           * Contains the translations for this component.
          */
         "translations"?: any;
@@ -550,6 +584,10 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface SolutionTemplateData {
+        /**
+          * Credentials for requests
+         */
+        "authentication"?: UserSession;
         /**
           * This needs to be unique for props vs data of an item
          */

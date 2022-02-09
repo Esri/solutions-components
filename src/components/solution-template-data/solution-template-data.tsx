@@ -17,6 +17,8 @@
 import { VNode } from '@esri/calcite-components/dist/types/stencil-public-runtime';
 import { Component, Element, Host, h, Prop } from '@stencil/core';
 import { IOrganizationVariableItem, ITemplateData, IVariableItem } from '../../utils/interfaces';
+import state from '../../utils/editStore';
+import { UserSession } from '@esri/solution-common';
 
 @Component({
   tag: 'solution-template-data',
@@ -39,6 +41,11 @@ export class SolutionTemplateData {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+* Credentials for requests
+*/
+  @Prop({ mutable: true }) authentication: UserSession;
 
   /**
    * Contains the translations for this component.
@@ -96,7 +103,7 @@ export class SolutionTemplateData {
     return (
       <Host>
         <div class="solution-data-container">
-          {this._renderTemplateData(this.value)}
+          {this._renderTemplateData()}
         </div>
       </Host>
     );
@@ -172,15 +179,23 @@ export class SolutionTemplateData {
   /**
    * Render resource or template data
    */
-  _renderTemplateData(data: ITemplateData): VNode {
-    return this.isResource ? this._resourceData(data) : this._jsonData();
+  _renderTemplateData(): VNode {
+    return this.isResource ? this._resourceData() : this._jsonData();
   }
 
   /**
    * Render the resource data so the end user can upload/download
    */
-  _resourceData(templateData: ITemplateData): any {
-    return <solution-resource-item translations={this.translations} value={templateData.resourceItem} />;
+  _resourceData(): any {
+    const model = state.models[this.itemid];
+    return <solution-resource-item 
+      translations={this.translations}
+      itemid={this.itemid}
+      resources={model.resources}
+      resourceFilePaths={model.resourceFilePaths}
+      authentication={this.authentication}
+      class="solutions-resource-container"
+    />;
   }
 
   /**

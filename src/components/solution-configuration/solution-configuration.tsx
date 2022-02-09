@@ -159,6 +159,7 @@ export class SolutionConfiguration {
                       solutionVariables={this._solutionVariables}
                       translations={this.translations}
                       value={this.item}
+                      authentication={this.authentication}
                     />
                   </div>
                 </div>
