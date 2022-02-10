@@ -173,3 +173,10 @@ export interface IWkidDescription {
   label: string;
   defaultExtent: string;
 }
+
+export interface IResourcePath {
+  url: string;
+  type: number;
+  filename: string;
+  blob?: any;
+}

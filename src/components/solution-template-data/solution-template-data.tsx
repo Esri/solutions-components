@@ -191,7 +191,6 @@ export class SolutionTemplateData {
     return <solution-resource-item 
       translations={this.translations}
       itemid={this.itemid}
-      resources={model.resources}
       resourceFilePaths={model.resourceFilePaths}
       authentication={this.authentication}
       class="solutions-resource-container"

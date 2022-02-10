@@ -28,6 +28,7 @@ define({
       "title": "Configure: {{solutionName}}", // modal title
 
       "configuration": {
+        "addResource": "Add New Resource",
         "cancelEdits": "Cancel Edits",
         "credits": "Credits",
         "dataTab": "Data",
@@ -35,6 +36,7 @@ define({
         "description": "Description",
         "diff": "Toggle Diff Editor",
         "download": "Download",
+        "downloadAll": "Download All",
         "editThumbnail": "Edit Thumbnail",
         "editsSaved": "Edits Saved Successfully",
         "featureServicesHeading": "Feature Services",

@@ -7,15 +7,14 @@
 
 ## Properties
 
-| Property            | Attribute      | Description                                                                               | Type            | Default                           |
-| ------------------- | -------------- | ----------------------------------------------------------------------------------------- | --------------- | --------------------------------- |
-| `authentication`    | --             | Credentials for requests                                                                  | `UserSession`   | `undefined`                       |
-| `deleted`           | --             |                                                                                           | `string[]`      | `[]`                              |
-| `itemid`            | `itemid`       | A templates itemId. This is used to get the correct model from a store in the json-editor | `string`        | `""`                              |
-| `resourceFilePaths` | --             |                                                                                           | `any[]`         | `[]`                              |
-| `resources`         | --             |                                                                                           | `any[]`         | `[]`                              |
-| `translations`      | `translations` | Contains the translations for this component.                                             | `any`           | `{}`                              |
-| `value`             | --             | Contains the public value for this component.                                             | `IResourceItem` | `{     name: "",     url: ""   }` |
+| Property            | Attribute      | Description                                                                               | Type              | Default     |
+| ------------------- | -------------- | ----------------------------------------------------------------------------------------- | ----------------- | ----------- |
+| `authentication`    | --             | Credentials for requests                                                                  | `UserSession`     | `undefined` |
+| `deleted`           | --             |                                                                                           | `string[]`        | `[]`        |
+| `itemid`            | `itemid`       | A templates itemId. This is used to get the correct model from a store in the json-editor | `string`          | `""`        |
+| `resourceFilePaths` | --             |                                                                                           | `IResourcePath[]` | `[]`        |
+| `resources`         | --             |                                                                                           | `{}`              | `{}`        |
+| `translations`      | `translations` | Contains the translations for this component.                                             | `any`             | `{}`        |
 
 
 ## Dependencies
@@ -26,6 +25,7 @@
 
 ### Depends on
 
+- calcite-button
 - calcite-value-list
 - calcite-value-list-item
 - calcite-action-group
@@ -34,10 +34,13 @@
 ### Graph
 ```mermaid
 graph TD;
+  solution-resource-item --> calcite-button
   solution-resource-item --> calcite-value-list
   solution-resource-item --> calcite-value-list-item
   solution-resource-item --> calcite-action-group
   solution-resource-item --> calcite-action
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   calcite-value-list-item --> calcite-icon
   calcite-value-list-item --> calcite-pick-list-item
   calcite-pick-list-item --> calcite-icon

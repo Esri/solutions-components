@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Host, h, Prop } from '@stencil/core';
-import { IResourceItem } from '../../utils/interfaces';
+import { IResourcePath } from '../../utils/interfaces';
 import { getItemResources } from '@esri/arcgis-rest-portal';
 import { UserSession } from '@esri/solution-common';
 
@@ -41,32 +41,29 @@ export class SolutionResourceItem {
   //--------------------------------------------------------------------------
 
   /**
+   * Credentials for requests
+   */
+   @Prop({ mutable: true }) authentication: UserSession;
+
+  /**
    * A templates itemId.
    * This is used to get the correct model from a store in the json-editor
    */
    @Prop({ mutable: true, reflect: true }) itemid = "";
 
-   @Prop({ mutable: true, reflect: true }) resources = [];
+  // todo...may be able to consolidate resources and resourceFilePaths and store extra prop for current, new, deleted type thing
 
-   @Prop({ mutable: true, reflect: true }) resourceFilePaths = [];
+  // active resources...includes new...does not include deleted
+   @Prop({ mutable: true, reflect: true }) resources = {};
+
+   // includes only the source paths..can be used to reconstruct any that have been temp deleted
+   @Prop({ mutable: true, reflect: true }) resourceFilePaths: IResourcePath[] = [];
 
   /**
    * Contains the translations for this component.
    */
   @Prop({ mutable: true }) translations: any = {};
 
-  /**
-   * Contains the public value for this component.
-   */
-  @Prop({ mutable: true, reflect: true }) value: IResourceItem = {
-    name: "",
-    url: ""
-  };
-
-  /**
- * Credentials for requests
- */
-  @Prop({ mutable: true }) authentication: UserSession;
 
   // should these be here or in the state.model
   @Prop({ mutable: true, reflect: true }) deleted: string[] = [];
@@ -86,7 +83,8 @@ export class SolutionResourceItem {
     authentication: UserSession
   ) {
     try {
-     await getItemResources(id, { authentication });
+      // this would need to make sure it doesn't add duplicates and can handle new and deleted 
+      await getItemResources(id, { authentication });
     }
     catch (e) {
       console.log(e)
@@ -97,6 +95,21 @@ export class SolutionResourceItem {
     return (
       <Host>
         <div class="resource-item">
+        <div class="margin-bottom-1">
+            <calcite-button
+              color="blue"
+              appearance="solid"
+              onClick={() => this._addNewResource()}
+              class="resource-button"
+              >{this.translations.addResource}
+            </calcite-button>
+            <calcite-button
+              color="blue"
+              appearance="solid"
+              onClick={() => this._downloadAll()}
+              >{this.translations.downloadAll}
+            </calcite-button>
+          </div>
           <div class="resources-container">
             {this._renderResourceList()}
           </div>
@@ -145,9 +158,15 @@ export class SolutionResourceItem {
       <calcite-value-list multiple>
         {
           this.resourceFilePaths.reduce((prev, cur) => {
-            // TODO clarify how to distinguish if this is the templates thumbnail vs some other image..
+            if (Object.keys(this.resources).indexOf(cur.url) < 0) {
+              this.resources[cur.url] = cur;
+            }
+            // Ask Mike what would be best to understand this
+            // right now just show them all so we can have multiple in the list
+            //if (cur.url.indexOf("_info_thumbnail") > -1) {
             //if (cur.type < 4) {
               prev.push(this._renderResource(cur))
+            //}
             //}
             return prev;
           }, [])
@@ -159,8 +178,7 @@ export class SolutionResourceItem {
   _renderResource(
     resource: any
   ): HTMLCalciteValueListItemElement {
-    const disabled = this.deleted.indexOf(resource.filename) > -1;
-    
+    const disabled = this.deleted.indexOf(resource.filename) > -1;  
     return (
       <calcite-value-list-item 
         label={resource.filename}
@@ -183,6 +201,7 @@ export class SolutionResourceItem {
             label="Upload"
             icon="upload-to"
             onClick={() => this._upload()}>
+              {/* set the accept based on the curent type I suppose */}
             <input
               accept=".zip"
               class="display-none"
@@ -228,13 +247,25 @@ export class SolutionResourceItem {
     }
   }
 
+  _downloadAll(): void {
+    Object.keys(this.resources).forEach(r => {
+      const resource: IResourcePath = this.resources[r];
+      this._download(resource.url, resource.filename);
+    });
+  }
+
   _download(url: string, name: string): void {
-    const imageExtensions: string[] = ['jpg', 'jpeg', 'gif', 'png'];
-    const _url: string = `${url}?token=${this.authentication.token}`;
-    if (imageExtensions.some(ext => url.endsWith(ext))) {
-      this.downloadImage(_url, name);
+    // images that have been added manually do not need to be requested from the item
+    if (url.startsWith("blob")) {
+      this.downloadFile(url, name);
     } else {
-      this.downloadFile(_url, name);
+      const imageExtensions: string[] = ['jpg', 'jpeg', 'gif', 'png'];
+      const _url: string = `${url}?token=${this.authentication.token}`;
+      if (imageExtensions.some(ext => url.endsWith(ext))) {
+        this.downloadImage(_url, name);
+      } else {
+        this.downloadFile(_url, name);
+      }
     }
   }
 
@@ -264,6 +295,36 @@ export class SolutionResourceItem {
     const files = event.target.files;
     if (files && files[0]) {
       alert(files[0])
+    }
+  }
+
+  _addNewResource(): void {
+    const _input = document.createElement("input");
+    _input.accept = ".jpg,.gif,.png,image/jpg,image/gif,image/png";
+    _input.classList.add("display-none");
+    _input.onchange = this._add.bind(this);
+    _input.type = "file";
+    _input.click();
+  }
+
+  _add(event: any) {
+    const files = event.target.files;
+    if (files && files[0]) {
+      const url = URL.createObjectURL(files[0]);
+      const filename = files[0].name;
+      // TODO need to know how to actually set this
+      const type = 4;
+      if (!this.resourceFilePaths.some(r => r.filename === filename && r.url === url)) {
+        this.resourceFilePaths = [
+          ...this.resourceFilePaths,
+          {
+            url,
+            type,
+            filename,
+            blob: files[0]
+          }
+        ]
+      }
     }
   }
 }

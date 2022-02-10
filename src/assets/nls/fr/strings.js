@@ -26,6 +26,7 @@ define({
     "title": "Configurer: {{solutionName}}",
 
     "configuration": {
+      "addResource": "fr-Add New Resource",
       "cancelEdits": "fr-Cancel Edits",
       "credits": "Crédits (Attribution)",
       "dataTab": "Données",
@@ -33,6 +34,7 @@ define({
       "description": "fr-Description",
       "diff": "fr-Toggle Diff Editor",
       "download": "Télécharger",
+      "downloadAll": "fr-Download All",
       "editThumbnail": "Mettre à jour la miniature",
       "editsSaved": "fr-Edits Saved Successfully",
       "featureServicesHeading": "Services de fonctionnalités",

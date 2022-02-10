@@ -71,6 +71,7 @@ graph TD;
   solution-variables --> calcite-tree-item
   solution-variables --> solution-item-icon
   solution-variables --> calcite-tree
+  solution-resource-item --> calcite-button
   solution-resource-item --> calcite-value-list
   solution-resource-item --> calcite-value-list-item
   solution-resource-item --> calcite-action-group

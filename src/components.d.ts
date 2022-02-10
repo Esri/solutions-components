@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { UserSession } from "@esri/solution-common";
-import { IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourceItem, ISolutionConfiguration, ISolutionItem, ISpatialRefRepresentation, ITemplateData, IVariableItem } from "./utils/interfaces";
+import { IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISolutionConfiguration, ISolutionItem, ISpatialRefRepresentation, ITemplateData, IVariableItem } from "./utils/interfaces";
 export namespace Components {
     interface JsonEditor {
         /**
@@ -172,16 +172,12 @@ export namespace Components {
           * A templates itemId. This is used to get the correct model from a store in the json-editor
          */
         "itemid": string;
-        "resourceFilePaths": any[];
-        "resources": any[];
+        "resourceFilePaths": IResourcePath[];
+        "resources": {};
         /**
           * Contains the translations for this component.
          */
         "translations": any;
-        /**
-          * Contains the public value for this component.
-         */
-        "value": IResourceItem;
     }
     interface SolutionSpatialRef {
         /**
@@ -545,16 +541,12 @@ declare namespace LocalJSX {
           * A templates itemId. This is used to get the correct model from a store in the json-editor
          */
         "itemid"?: string;
-        "resourceFilePaths"?: any[];
-        "resources"?: any[];
+        "resourceFilePaths"?: IResourcePath[];
+        "resources"?: {};
         /**
           * Contains the translations for this component.
          */
         "translations"?: any;
-        /**
-          * Contains the public value for this component.
-         */
-        "value"?: IResourceItem;
     }
     interface SolutionSpatialRef {
         /**
