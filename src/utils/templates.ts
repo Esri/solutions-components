@@ -251,7 +251,14 @@ export function getModels(
         itemOriginValue: JSON.stringify(t.item),
         spatialReference: t.properties?.service?.spatialReference,
         resources: t.resources,
+        // will contain updates
         resourceFilePaths: generateStorageFilePaths(
+          authentication.portal,
+          solutionId,
+          t.resources,
+          1
+        ),
+        sourceResourceFilePaths: generateStorageFilePaths(
           authentication.portal,
           solutionId,
           t.resources,

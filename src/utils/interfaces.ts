@@ -116,7 +116,8 @@ export interface ISolutionModel {
   itemOriginValue: string;
   spatialReference: any;
   resources: string[];
-  resourceFilePaths: any[];
+  resourceFilePaths: IResourcePath[];
+  sourceResourceFilePaths: IResourcePath[];
   thumbnailOrigin: any;
   thumbnailNew: any;
   type: string;

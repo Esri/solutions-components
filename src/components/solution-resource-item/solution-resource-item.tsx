@@ -51,13 +51,11 @@ export class SolutionResourceItem {
    */
    @Prop({ mutable: true, reflect: true }) itemid = "";
 
-  // todo...may be able to consolidate resources and resourceFilePaths and store extra prop for current, new, deleted type thing
-
   // active resources...includes new...does not include deleted
    @Prop({ mutable: true, reflect: true }) resources = {};
 
-   // includes only the source paths..can be used to reconstruct any that have been temp deleted
-   @Prop({ mutable: true, reflect: true }) resourceFilePaths: IResourcePath[] = [];
+   // when this changes update the model
+  @Prop({ mutable: true, reflect: true }) resourceFilePaths: IResourcePath[] = [];
 
   /**
    * Contains the translations for this component.
@@ -75,7 +73,9 @@ export class SolutionResourceItem {
   //--------------------------------------------------------------------------
 
   async componentWillRender() {
-    await this._getResources(this.itemid, this.authentication)
+    if (!this._isLoaded) {
+      await this._getResources(this.itemid, this.authentication)
+    }
   }
 
   private async _getResources(
@@ -85,6 +85,7 @@ export class SolutionResourceItem {
     try {
       // this would need to make sure it doesn't add duplicates and can handle new and deleted 
       await getItemResources(id, { authentication });
+      this._isLoaded = true;
     }
     catch (e) {
       console.log(e)
@@ -122,12 +123,11 @@ export class SolutionResourceItem {
   //
   //  Variables (private)
   //
-  //--------------------------------------------------------------------------
+  //--------------------------------------------------------------------------\
 
-  /**
-   * Handle to the element for browsing for a file.
-   */
-  private browseForFile: HTMLInputElement;
+  private _removedResources: any = {};
+
+  private _isLoaded: boolean = false;
 
   //--------------------------------------------------------------------------
   //
@@ -200,15 +200,7 @@ export class SolutionResourceItem {
             text="Upload"
             label="Upload"
             icon="upload-to"
-            onClick={() => this._upload()}>
-              {/* set the accept based on the curent type I suppose */}
-            <input
-              accept=".zip"
-              class="display-none"
-              onChange={(event) => (this._updateResource(event))}
-              ref={(el) => (this.browseForFile = el)}
-              type="file"
-            />
+            onClick={() => this._upload(resource.url)}>
           </calcite-action>
           <calcite-action 
             disabled={disabled}
@@ -247,9 +239,8 @@ export class SolutionResourceItem {
     }
   }
 
-  _downloadAll(): void {
-    Object.keys(this.resources).forEach(r => {
-      const resource: IResourcePath = this.resources[r];
+  _downloadAll(): void {   
+    this.resourceFilePaths.forEach((resource: IResourcePath) => {
       this._download(resource.url, resource.filename);
     });
   }
@@ -284,27 +275,52 @@ export class SolutionResourceItem {
   }
   
   /**
-   * Opens file browse dialog.
+   * Opens file browse dialog and update the resource when a file is selected
    *
    */
-  _upload(): void {
-    this.browseForFile.click();
-  }
-
-  _updateResource(event: any): void {
-    const files = event.target.files;
-    if (files && files[0]) {
-      alert(files[0])
-    }
+  _upload(url: string): void {
+    const _input = document.createElement("input");
+    _input.classList.add("display-none");
+    _input.onchange = this._updateResource.bind(this, url);
+    _input.type = "file";
+    _input.click();
   }
 
   _addNewResource(): void {
     const _input = document.createElement("input");
-    _input.accept = ".jpg,.gif,.png,image/jpg,image/gif,image/png";
     _input.classList.add("display-none");
     _input.onchange = this._add.bind(this);
     _input.type = "file";
     _input.click();
+  }
+
+  _updateResource(currentUrl: string, event: any): void {
+    const files = event.target.files;
+    if (files && files[0]) {
+      const url = URL.createObjectURL(files[0]);
+      const filename = files[0].name;
+
+      let currentIndex;
+      this.resourceFilePaths.some((r, i) => {
+        currentIndex = i;
+        return r.url === currentUrl;
+      });
+
+      this._removedResources[filename] = this.resourceFilePaths[currentIndex];
+
+      // TODO need to know how to actually set this
+      const type = 4;
+      this.resourceFilePaths[currentIndex] = {
+        url,
+        type,
+        filename,
+        blob: files[0]
+      }
+
+      this.resourceFilePaths = [
+        ...this.resourceFilePaths
+      ];
+    }
   }
 
   _add(event: any) {
