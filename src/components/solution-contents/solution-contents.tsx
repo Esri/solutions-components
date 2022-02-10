@@ -85,7 +85,7 @@ export class SolutionContents {
             </calcite-tree>
           </calcite-tree-item>
         )
-      :
+        :
         (
           <calcite-tree-item onClick={() => this._treeItemSelected(obj.solutionItem)}>
             <solution-item-icon type={obj.type} typeKeywords={obj.typeKeywords} />

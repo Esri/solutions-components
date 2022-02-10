@@ -43,18 +43,22 @@ export class SolutionResourceItem {
   /**
    * Credentials for requests
    */
-   @Prop({ mutable: true }) authentication: UserSession;
+  @Prop({ mutable: true }) authentication: UserSession;
 
   /**
-   * A templates itemId.
+   * The templates itemId.
    * This is used to get the correct model from a store in the json-editor
    */
-   @Prop({ mutable: true, reflect: true }) itemid = "";
+  @Prop({ mutable: true, reflect: true }) itemid = "";
 
-  // active resources...includes new...does not include deleted
-   @Prop({ mutable: true, reflect: true }) resources = {};
+  /**
+   * The templates resources.
+   */
+  @Prop({ mutable: true, reflect: true }) resources = {};
 
-   // when this changes update the model
+  /**
+   * The templates resourceFilePaths.
+   */
   @Prop({ mutable: true, reflect: true }) resourceFilePaths: IResourcePath[] = [];
 
   /**
@@ -62,8 +66,10 @@ export class SolutionResourceItem {
    */
   @Prop({ mutable: true }) translations: any = {};
 
-
-  // should these be here or in the state.model
+  /**
+   * An array used to avoid rendering deleted resources
+   *  while still retaining them in case the user chooses to reset the resource
+   */
   @Prop({ mutable: true, reflect: true }) deleted: string[] = [];
 
   //--------------------------------------------------------------------------
@@ -83,7 +89,6 @@ export class SolutionResourceItem {
     authentication: UserSession
   ) {
     try {
-      // this would need to make sure it doesn't add duplicates and can handle new and deleted 
       await getItemResources(id, { authentication });
       this._isLoaded = true;
     }
@@ -96,19 +101,19 @@ export class SolutionResourceItem {
     return (
       <Host>
         <div class="resource-item">
-        <div class="margin-bottom-1">
+          <div class="margin-bottom-1">
             <calcite-button
               color="blue"
               appearance="solid"
               onClick={() => this._addNewResource()}
               class="resource-button"
-              >{this.translations.addResource}
+            >{this.translations.addResource}
             </calcite-button>
             <calcite-button
               color="blue"
               appearance="solid"
               onClick={() => this._downloadAll()}
-              >{this.translations.downloadAll}
+            >{this.translations.downloadAll}
             </calcite-button>
           </div>
           <div class="resources-container">
@@ -153,6 +158,10 @@ export class SolutionResourceItem {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Render resources while avoiding thumbnail resoures that are managed by solution-item
+   *
+   */
   _renderResourceList(): HTMLCalciteValueListElement {
     return (
       <calcite-value-list multiple>
@@ -161,13 +170,9 @@ export class SolutionResourceItem {
             if (Object.keys(this.resources).indexOf(cur.url) < 0) {
               this.resources[cur.url] = cur;
             }
-            // Ask Mike what would be best to understand this
-            // right now just show them all so we can have multiple in the list
-            //if (cur.url.indexOf("_info_thumbnail") > -1) {
-            //if (cur.type < 4) {
+            if (cur.url.indexOf("_info_thumbnail") > -1) {
               prev.push(this._renderResource(cur))
-            //}
-            //}
+            }
             return prev;
           }, [])
         }
@@ -175,53 +180,64 @@ export class SolutionResourceItem {
     )
   }
 
+  /**
+   * Render the resource and supporting actions for download/update/delete/(reset..if deleted)
+   *
+   * @param resource the filename and url used to interact with the resource
+   */
   _renderResource(
     resource: any
   ): HTMLCalciteValueListItemElement {
-    const disabled = this.deleted.indexOf(resource.filename) > -1;  
+    const disabled = this.deleted.indexOf(resource.filename) > -1;
     return (
-      <calcite-value-list-item 
+      <calcite-value-list-item
         label={resource.filename}
         value={resource.url}
         metadata={resource.url}
         class={disabled ? "disabled" : ""}>
         <calcite-action-group slot="actions-end" layout="horizontal" expand-disabled="true">
-          <calcite-action 
+          <calcite-action
             disabled={disabled}
             scale="m"
-            text="Download"
-            label="Download"
+            text={this.translations.download}
+            label={this.translations.download}
             icon="download"
             onClick={() => this._download(resource.url, resource.filename)}>
           </calcite-action>
-          <calcite-action 
+          <calcite-action
             disabled={disabled}
             scale="m"
-            text="Upload"
-            label="Upload"
+            text={this.translations.update}
+            label={this.translations.update}
             icon="upload-to"
             onClick={() => this._upload(resource.url)}>
           </calcite-action>
-          <calcite-action 
+          <calcite-action
             disabled={disabled}
             scale="m"
-            text="Delete"
-            label="Delete"
+            text={this.translations.delete}
+            label={this.translations.delete}
             icon="trash"
-            onClick={()=> this._delete(resource.filename)}>
+            onClick={() => this._delete(resource.filename)}>
           </calcite-action>
-          {disabled ? <calcite-action 
+          {disabled ? <calcite-action
             scale="m"
-            text="Delete"
-            label="Reset"
+            text={this.translations.reset}
+            label={this.translations.reset}
             icon="reset"
-            onClick={()=> this._reset(resource.filename)}>
+            onClick={() => this._reset(resource.filename)}>
           </calcite-action> : <div class="display-none"></div>}
         </calcite-action-group>
       </calcite-value-list-item>
     );
   }
 
+  /**
+   * Adds the name to the deleted array so it will be skipped while rendering
+   *  but still exist if the user chooses to reset
+   *
+   * @param name the name to be added to the deleted array
+   */
   _delete(name: string): void {
     if (this.deleted.indexOf(name) < 0) {
       this.deleted = [
@@ -231,21 +247,38 @@ export class SolutionResourceItem {
     }
   }
 
+  /**
+   * Remove the name from the deleted array so it will again be rendered
+   *
+   * @param name the name to be added to the deleted array
+   */
   _reset(name: string): void {
-    // reset icon...
     const idx = this.deleted.indexOf(name);
     if (idx > -1) {
-      this.deleted = this.deleted.filter(n => n !== name)
+      this.deleted = this.deleted.filter(n => n !== name);
     }
   }
 
-  _downloadAll(): void {   
+  /**
+   * Download all of the templates resources
+   *
+   */
+  _downloadAll(): void {
     this.resourceFilePaths.forEach((resource: IResourcePath) => {
       this._download(resource.url, resource.filename);
     });
   }
 
-  _download(url: string, name: string): void {
+  /**
+   * Download the current resource
+   *
+   * @param url the resource url
+   * @param name the resource name
+   */
+  _download(
+    url: string,
+    name: string
+  ): void {
     // images that have been added manually do not need to be requested from the item
     if (url.startsWith("blob")) {
       this.downloadFile(url, name);
@@ -260,23 +293,39 @@ export class SolutionResourceItem {
     }
   }
 
-  downloadFile(url: string, name: string): void {
+  /**
+   * Dynamically creates an anchor and downloads the file
+   *
+   * @param url the url of the resource
+   * @param name the name of the resource
+   */
+  downloadFile(
+    url: string,
+    name: string
+  ): void {
     const link = document.createElement("a");
     link.href = url;
     link.download = name;
     link.click();
   }
 
+  /**
+   * Fetches and downloads the resource from the solution
+   *
+   * @param url the url of the resource
+   * @param name the name of the resource
+   */
   async downloadImage(url: string, name: string): Promise<void> {
     const image = await fetch(url);
     const b = await image.blob();
     const bURL = URL.createObjectURL(b);
     this.downloadFile(bURL, name);
   }
-  
+
   /**
-   * Opens file browse dialog and update the resource when a file is selected
+   * Create an input element to support the uploading of the resource and upload the resource
    *
+   * @param url the url of the resource
    */
   _upload(url: string): void {
     const _input = document.createElement("input");
@@ -286,6 +335,10 @@ export class SolutionResourceItem {
     _input.click();
   }
 
+  /**
+   * Create an input element to support the uploading of a resource and add the new resource
+   *
+   */
   _addNewResource(): void {
     const _input = document.createElement("input");
     _input.classList.add("display-none");
@@ -294,7 +347,16 @@ export class SolutionResourceItem {
     _input.click();
   }
 
-  _updateResource(currentUrl: string, event: any): void {
+  /**
+   * Replace the resource file path when update action is used
+   *
+   * @param currentUrl the url for the item to replace
+   * @param event the input event that contains the file
+   */
+  _updateResource(
+    currentUrl: string,
+    event: any
+  ): void {
     const files = event.target.files;
     if (files && files[0]) {
       const url = URL.createObjectURL(files[0]);
@@ -308,7 +370,6 @@ export class SolutionResourceItem {
 
       this._removedResources[filename] = this.resourceFilePaths[currentIndex];
 
-      // TODO need to know how to actually set this
       const type = 4;
       this.resourceFilePaths[currentIndex] = {
         url,
@@ -323,12 +384,16 @@ export class SolutionResourceItem {
     }
   }
 
+  /**
+   * Add the new resource to the resource file paths
+   *
+   * @param event the inputs event that contains the new file
+   */
   _add(event: any) {
     const files = event.target.files;
     if (files && files[0]) {
       const url = URL.createObjectURL(files[0]);
       const filename = files[0].name;
-      // TODO need to know how to actually set this
       const type = 4;
       if (!this.resourceFilePaths.some(r => r.filename === filename && r.url === url)) {
         this.resourceFilePaths = [

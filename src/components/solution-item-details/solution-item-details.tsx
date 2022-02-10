@@ -123,7 +123,7 @@ export class SolutionItemDetails {
               <calcite-input id="item-terms" type="textarea" value={this.value.licenseInfo} />
             </label>
           </calcite-label> : null}
-          
+
         </div>
       </Host>
     );
@@ -173,7 +173,7 @@ export class SolutionItemDetails {
   @Listen("calciteInputInput")
   inputReceivedHandler(event: any): void {
     switch (event.target.id) {
-      case "item-title":  
+      case "item-title":
         this.value.title = event.target.value;
         this._updateStore("title", event.target.value);
         break;
@@ -231,6 +231,7 @@ export class SolutionItemDetails {
    * Updates the length label to reflect the current number of characters
    * relative to the max number of characters supported.
    *
+   * @param phrase the current phrase from the control
    */
   private _updateLengthLabel(phrase: string): void {
     this.itemSnippetCount.innerText =
@@ -239,7 +240,10 @@ export class SolutionItemDetails {
 
   /**
    * Gets and displays image result from browse.
-   *
+   * 
+   * @param event The input controls event that contains the new file
+   * @param updateStore boolean that controls if the new value is written to the store
+   *  should be false on the initial load but true the rest of the time
    */
   private _updateThumbnail(
     event: any,
@@ -276,6 +280,8 @@ export class SolutionItemDetails {
   /**
    * Add or remove the value from the store
    *
+   * @param prop The model prop to update with new values
+   * @param v The new value to store
    */
   private _updateStore(
     prop: string,
@@ -295,7 +301,7 @@ export class SolutionItemDetails {
           model.updateItemValues[prop] = v;
         } else {
           // remove when it doesn't
-          delete(model.updateItemValues[prop]);
+          delete (model.updateItemValues[prop]);
         }
       }
     }

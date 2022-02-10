@@ -33,6 +33,7 @@ define({
         "credits": "Credits",
         "dataTab": "Data",
         "definitionTab": "Definition", // for tab to edit definition of an item or group
+        "delete": "Delete",
         "description": "Description",
         "diff": "Toggle Diff Editor",
         "download": "Download",
@@ -53,6 +54,7 @@ define({
         "propertiesTab": "Properties",
         "routeUrl": "Route URL",
         "redo": "Redo",
+        "reset": "Reset",
         "saveEdits": "Save Edits",
         "saveFailed": "Save Edits Failed",
         "search": "Search",

@@ -105,7 +105,7 @@ export class JsonEditor {
     return (
       <Host class="json-editor-position">
         <div id={`${this.instanceid}-editor-container`} class="editor-container padding-right">
-        <div class="editor-controls">
+          <div class="editor-controls">
             <div class="editor-buttons">
               {/* undo */}
               <calcite-button
@@ -287,7 +287,7 @@ export class JsonEditor {
    *
    * @protected
    */
-   _initEditor(): void {
+  _initEditor(): void {
     // Set up embedded editor
     if (monaco && monaco.editor) {
       this._editor = monaco.editor.create(document.getElementById(`${this.instanceid}-container`), {
@@ -445,7 +445,7 @@ export class JsonEditor {
     const editor: any = this._getEditor();
     const range = editor.getSelection();
     // use pushEditOperations so it will push to the undo stack
-    this._currentModel.pushEditOperations([],[{
+    this._currentModel.pushEditOperations([], [{
       forceMoveMarkers: true,
       text: v,
       range
@@ -470,7 +470,7 @@ export class JsonEditor {
   _destroyEditor(): void {
     this._searchBtnHandler?.removeEventListener("click", this._search);
     this._cancelEditsBtnHandler?.removeEventListener("click", this._reset);
-  
+
     this._valueObserver?.disconnect();
 
     this._contentChanged?.dispose();
@@ -649,7 +649,7 @@ export class JsonEditor {
    *
    * @protected
    */
-  _getOriginalValue(): string{
+  _getOriginalValue(): string {
     const m: any = state.models[this.value];
     const serviceActive = getProp(state, `spatialReferenceInfo.services.${m?.name}`);
     const srEnabled = getProp(state, 'spatialReferenceInfo.enabled');
@@ -679,7 +679,7 @@ export class JsonEditor {
       const wkid = /[0-9]+/.exec(currentText);
       const wkidVar = enabled ? `"{{params.wkid||${wkid}}}"` : wkid;
       const text = `"wkid": ${wkidVar}${endsWith}`;
-      model.pushEditOperations([],[{
+      model.pushEditOperations([], [{
         forceMoveMarkers: true,
         text,
         range

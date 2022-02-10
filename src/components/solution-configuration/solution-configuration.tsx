@@ -64,7 +64,7 @@ export class SolutionConfiguration {
   /**
    * Contains the raw templates from the solution item
    */
-  @Prop({mutable: true, reflect: true}) templates: any[];
+  @Prop({ mutable: true, reflect: true }) templates: any[];
 
   /**
    * Contains the current solution item we are working with
@@ -90,7 +90,7 @@ export class SolutionConfiguration {
   @Prop({ mutable: true }) treeOpen = true;
 
   /**
-  * Contains the current solution item id
+  * Contains the current solution item data
   */
   @Prop({ mutable: true }) sourceItemData: any = {};
 
@@ -108,7 +108,7 @@ export class SolutionConfiguration {
         this._isLoading = true;
         this._getItemData(this.itemid).then(() => {
           resolve(undefined);
-        }); 
+        });
       } else {
         resolve(undefined);
       }
@@ -138,7 +138,7 @@ export class SolutionConfiguration {
                   <div class={this.treeOpen ? "config-inventory" : "config-inventory-hide"}>
                     <solution-contents
                       id="configInventory"
-                      key={`${this.itemid }-contents`}
+                      key={`${this.itemid}-contents`}
                       translations={this.translations}
                       value={this.value.contents}
                     />
@@ -151,7 +151,7 @@ export class SolutionConfiguration {
                     onClick={() => this._toggleTree()}
                     scale="s"
                     title={this.translations.cancelEdits}
-                   />
+                  />
                   <div class="config-item">
                     <solution-item
                       key={`${this.itemid}-item`}
@@ -277,7 +277,10 @@ export class SolutionConfiguration {
    * @param templates the solution items templates
    * @param isReset (defaults to false) indicates if we are resetting the controls after save
    */
-  private _initState(templates: any[], isReset = false): Promise<any> {
+  private _initState(
+    templates: any[],
+    isReset = false
+  ): Promise<any> {
     return new Promise((resolve) => {
       if (isReset) {
         // clear models and state so we can refresh after save
@@ -286,17 +289,17 @@ export class SolutionConfiguration {
       }
       utils.getModels(templates, this.authentication, this.itemid).then(models => {
         state.models = models;
-  
+
         state.featureServices = utils.getFeatureServices(templates);
         state.spatialReferenceInfo = utils.getSpatialReferenceInfo(state.featureServices, this.sourceItemData);
-    
+
         if (isReset) {
           // reset for undo/redo stack and diff editor tracking
           const jsonEditors = Array.from(this.el.getElementsByTagName("json-editor"));
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
           jsonEditors.forEach(e => void e.reset());
         }
-  
+
         this.modelsSet = true;
         resolve(true);
       });
@@ -304,7 +307,7 @@ export class SolutionConfiguration {
   }
 
   /**
-   * Update the Props with the initial values
+   * Set Props with the initial values
    * 
    * @param templates the solution items templates
    */
@@ -338,20 +341,20 @@ export class SolutionConfiguration {
     const templateUpdates = await this._updateTemplates();
     const data = this._setSrInfo(templateUpdates.templates);
     return templateUpdates.errors.length === 0 ? save(
-        this.itemid,
-        data,
-        state.models,
-        this.authentication,
-        this.translations,
-        ""
-      ).then(saveResult => {
-        return this._getItemData(this.itemid, true).then(() => {
-          return saveResult;
-        }, e => Promise.reject(e));
-      }) : Promise.reject({
-        success: false,
-        message: `The following templates have errors: ${templateUpdates.errors.join(", ")}`
-      } as IResponse);
+      this.itemid,
+      data,
+      state.models,
+      this.authentication,
+      this.translations,
+      ""
+    ).then(saveResult => {
+      return this._getItemData(this.itemid, true).then(() => {
+        return saveResult;
+      }, e => Promise.reject(e));
+    }) : Promise.reject({
+      success: false,
+      message: `The following templates have errors: ${templateUpdates.errors.join(", ")}`
+    } as IResponse);
   }
 
   /**
@@ -609,7 +612,7 @@ export class SolutionConfiguration {
       );
     } else if (!srInfo.enabled) {
       if (getProp(data, "params.wkid")) {
-        delete(data.params.wkid);
+        delete (data.params.wkid);
       }
     }
     return data;

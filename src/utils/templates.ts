@@ -17,7 +17,7 @@
 /*
  | Helper functions to get required values from solutions templates
 */
-import { 
+import {
   IInventoryItem,
   IItemDetails,
   IItemShare,
@@ -229,7 +229,7 @@ export function getModels(
 ): Promise<ISolutionModels> {
   const ids: string[] = [];
   const models: ISolutionModels = {};
-  const monacoDefined = typeof(monaco) !== "undefined";
+  const monacoDefined = typeof (monaco) !== "undefined";
   templates.forEach(t => {
     if (ids.indexOf(t.itemId) < 0) {
       ids.push(t.itemId);
@@ -291,7 +291,7 @@ export function getFeatureServices(
       prev.indexOf(name) < 0
     ) {
       const wkid = getProp(cur, "properties.service.spatialReference.wkid");
-      prev.push({ name, enabled: wkid.toString().startsWith("{{params.wkid||")});
+      prev.push({ name, enabled: wkid.toString().startsWith("{{params.wkid||") });
     }
     return prev;
   }, []);

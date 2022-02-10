@@ -29,7 +29,7 @@ import { IItemResourceOptions, updateItemResource } from "@esri/arcgis-rest-port
  *
  * @param nodeList list of nodes 
  */
- export function nodeListToArray<T extends Element>(nodeList: HTMLCollectionOf<T> | NodeListOf<T> | T[]): T[] {
+export function nodeListToArray<T extends Element>(nodeList: HTMLCollectionOf<T> | NodeListOf<T> | T[]): T[] {
   return Array.isArray(nodeList) ? nodeList : Array.from(nodeList);
 }
 

@@ -69,7 +69,7 @@ export class SolutionItemIcon {
         height="16"
         src={this._getIconUrl(this.type, this.typeKeywords)}
         width="16"
-       />
+      />
     </div>;
   }
 
@@ -115,11 +115,11 @@ export class SolutionItemIcon {
     type: string,
     typeKeywords: string[]
   ): string {
-    const 
+    const
       itemType = (type && type.toLowerCase()) || "",
       imgDir = "./item-icons/",
       size = "16";  //for now we only support 16x16 pixel images
-    let 
+    let
       isHosted = false,
       isRouteLayer = false,
       isMarkupLayer = false,
@@ -300,7 +300,7 @@ export class SolutionItemIcon {
       imgName = "hubinitiativetemplate";
     } else if (itemType === "storymap theme") {
       imgName = "storymaptheme";
-    } else if (itemType === "group"){
+    } else if (itemType === "group") {
       imgName = "group"
     } else {
       imgName = "maps";

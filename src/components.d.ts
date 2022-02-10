@@ -53,7 +53,7 @@ export namespace Components {
         "itemid": string;
         "save": () => Promise<any>;
         /**
-          * Contains the current solution item id
+          * Contains the current solution item data
          */
         "sourceItemData": any;
         /**
@@ -167,12 +167,21 @@ export namespace Components {
           * Credentials for requests
          */
         "authentication": UserSession;
+        /**
+          * An array used to avoid rendering deleted resources  while still retaining them in case the user chooses to reset the resource
+         */
         "deleted": string[];
         /**
-          * A templates itemId. This is used to get the correct model from a store in the json-editor
+          * The templates itemId. This is used to get the correct model from a store in the json-editor
          */
         "itemid": string;
+        /**
+          * The templates resourceFilePaths.
+         */
         "resourceFilePaths": IResourcePath[];
+        /**
+          * The templates resources.
+         */
         "resources": {};
         /**
           * Contains the translations for this component.
@@ -421,7 +430,7 @@ declare namespace LocalJSX {
         "itemid"?: string;
         "onSolutionLoaded"?: (event: CustomEvent<any>) => void;
         /**
-          * Contains the current solution item id
+          * Contains the current solution item data
          */
         "sourceItemData"?: any;
         /**
@@ -536,12 +545,21 @@ declare namespace LocalJSX {
           * Credentials for requests
          */
         "authentication"?: UserSession;
+        /**
+          * An array used to avoid rendering deleted resources  while still retaining them in case the user chooses to reset the resource
+         */
         "deleted"?: string[];
         /**
-          * A templates itemId. This is used to get the correct model from a store in the json-editor
+          * The templates itemId. This is used to get the correct model from a store in the json-editor
          */
         "itemid"?: string;
+        /**
+          * The templates resourceFilePaths.
+         */
         "resourceFilePaths"?: IResourcePath[];
+        /**
+          * The templates resources.
+         */
         "resources"?: {};
         /**
           * Contains the translations for this component.
