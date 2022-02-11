@@ -16,7 +16,6 @@
 
 import { Component, Element, Host, h, Prop } from '@stencil/core';
 import { IResourcePath } from '../../utils/interfaces';
-import { getItemResources } from '@esri/arcgis-rest-portal';
 import { UserSession } from '@esri/solution-common';
 
 @Component({
@@ -78,25 +77,6 @@ export class SolutionResourceItem {
   //
   //--------------------------------------------------------------------------
 
-  async componentWillRender() {
-    if (!this._isLoaded) {
-      await this._getResources(this.itemid, this.authentication)
-    }
-  }
-
-  private async _getResources(
-    id: string,
-    authentication: UserSession
-  ) {
-    try {
-      await getItemResources(id, { authentication });
-      this._isLoaded = true;
-    }
-    catch (e) {
-      console.log(e)
-    }
-  }
-
   render() {
     return (
       <Host>
@@ -131,8 +111,6 @@ export class SolutionResourceItem {
   //--------------------------------------------------------------------------\
 
   private _removedResources: any = {};
-
-  private _isLoaded: boolean = false;
 
   //--------------------------------------------------------------------------
   //
@@ -170,7 +148,7 @@ export class SolutionResourceItem {
             if (Object.keys(this.resources).indexOf(cur.url) < 0) {
               this.resources[cur.url] = cur;
             }
-            if (cur.url.indexOf("_info_thumbnail") > -1) {
+            if (cur.url.indexOf("_info_thumbnail") < 0) {
               prev.push(this._renderResource(cur))
             }
             return prev;
