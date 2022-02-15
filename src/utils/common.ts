@@ -92,15 +92,15 @@ export async function _updateResources(
   authentication: UserSession
 ): Promise<any> {
   return new Promise<any>((resolve, reject) => {
-    const promises = [Promise.resolve()];
+    const promises = [];
     Object.keys(models).forEach(itemId => {
       const model: ISolutionModel = models[itemId];
-      _updateThumbnailResources(
+      promises.push(_updateThumbnailResource(
         solutionId,
         model,
-        promises,
+        data,
         authentication
-      );
+      ));
       _updateFileResources(
         solutionId,
         model,
@@ -110,35 +110,54 @@ export async function _updateResources(
       );
     });
 
-    Promise.all(promises).then(resolve, reject);
+    if (promises.length > 0) {
+      Promise.all(promises).then(resolve, reject);
+    } else {
+      resolve({success: true})
+    }
   })
 }
 
-function _updateThumbnailResources(
+function _updateThumbnailResource(
   solutionId: string,
   model: ISolutionModel,
-  promises: Promise<any>[],
+  data: any,
   authentication: UserSession
-): void {
-  if (model.thumbnailNew) {
-    const name: string = model.thumbnailOrigin.name;
+): Promise<any> {
+  return new Promise<any>((resolve, reject) => {
+    if (model.thumbnailNew) {
+      const name: string = model.thumbnailOrigin.name;
 
-    const opts: IItemResourceOptions = {
-      id: solutionId,
-      authentication,
-      resource: model.thumbnailNew,
-      name
-    };
+      const opts: IItemResourceOptions = {
+        id: solutionId,
+        authentication,
+        resource: model.thumbnailNew,
+        name
+      };
 
-    const resources = model.resources.filter(r => r.endsWith(name));
-    if (resources.length === 1) {
-      const nameParts = resources[0].split("/");
-      if (nameParts.length === 2) {
-        opts.prefix = nameParts[0];
+      const resources = model.resources.filter(r => r.endsWith(name));
+      if (resources.length === 1) {
+        const nameParts = resources[0].split("/");
+        if (nameParts.length === 2) {
+          opts.prefix = nameParts[0];
+        }
       }
+      updateItemResource(opts).then(results => {
+        if (results.success) {
+          _updateTemplateResourcePaths(
+            data,
+            model.itemId,
+            EUpdateType.Update,
+            opts.prefix ? `${opts.prefix}/${name}` : name,
+            ""
+          );
+        }
+        resolve(results);
+      }, reject);
+    } else {
+      resolve({success: true});
     }
-    promises.push(updateItemResource(opts));
-  }
+  });
 }
 
 function _updateFileResources(
@@ -187,7 +206,127 @@ function _updateFileResources(
   });
 }
 
-function _updateDataResources(
+function _add(
+  solutionId: string,
+  model: ISolutionModel,
+  data: any,
+  resourceFilePath: IResourcePath,
+  authentication: UserSession
+): Promise<any> {
+  return new Promise<any>((resolve, reject) => {
+    const storageName = convertItemResourceToStorageResource(
+      model.itemId +
+      ((resourceFilePath.blob as File).name === resourceFilePath.filename
+        ? "_info_data"
+        : "_info_dataz"),
+      (resourceFilePath.blob as File).name,
+      SolutionTemplateFormatVersion
+    );
+
+    const opts: IItemResourceOptions = {
+      id: solutionId,
+      authentication,
+      resource: resourceFilePath.blob,
+      name: storageName.filename,
+      params: {}
+    };
+
+    if (storageName.folder) {
+      opts.params = {
+        resourcesPrefix: storageName.folder
+      };
+    }
+
+    addItemResource(opts).then(results => {
+      if (results.success) {
+        _updateTemplateResourcePaths(
+          data,
+          model.itemId,
+          EUpdateType.Add,
+          opts.params?.resourcesPrefix ? `${opts.params.resourcesPrefix}/${opts.name}` : opts.name,
+          ""
+        );
+      }
+      resolve(results);
+    }, reject)
+  });
+}
+
+function _remove(
+  solutionId: string,
+  model: ISolutionModel,
+  data: any,
+  resourceFilePath: IResourcePath,
+  authentication: UserSession
+): Promise<any> {
+  return new Promise<any>((resolve, reject) => {
+    const name: string = resourceFilePath.filename;
+    const resources = model.resources.filter(r => r.endsWith(name));
+    if (resources.length > 0) {
+      const opts: IItemResourceOptions = {
+        id: solutionId,
+        authentication,
+        resource: resources[0]
+      };
+      removeItemResource(opts).then(results => {
+        if (results.success) {
+          _updateTemplateResourcePaths(
+            data,
+            model.itemId,
+            EUpdateType.Remove,
+            resources[0],
+            ""
+          );
+        }
+        resolve(results);
+      }, reject);
+    } else {
+      resolve({ success: false })
+    }
+  });
+}
+
+function _update(
+  solutionId: string,
+  model: ISolutionModel,
+  data: any,
+  resourceFilePath: IResourcePath,
+  authentication: UserSession
+): Promise<any> {
+  return new Promise<any>((resolve, reject) => {
+    const name: string = resourceFilePath.sourceFileName;
+
+    const opts: IItemResourceOptions = {
+      id: solutionId,
+      authentication,
+      resource: resourceFilePath.blob,
+      name
+    };
+
+    const resources = model.resources.filter(r => r.endsWith(name));
+    if (resources.length === 1) {
+      const nameParts = resources[0].split("/");
+      if (nameParts.length === 2) {
+        opts.prefix = nameParts[0];
+      }
+    }
+
+    updateItemResource(opts).then(results => {
+      if (results.success) {
+        _updateTemplateResourcePaths(
+          data,
+          model.itemId,
+          EUpdateType.Update,
+          opts.prefix ? `${opts.prefix}/${name}` : name,
+          ""
+        );
+      }
+      resolve(results);
+    }, reject)
+  });
+}
+
+function _updateTemplateResourcePaths(
   data: any,
   id: string,
   updateType: EUpdateType,
@@ -216,110 +355,4 @@ function _updateDataResources(
     }
     return t;
   })
-}
-
-function _add(
-  solutionId: string,
-  model: ISolutionModel,
-  data: any,
-  resourceFilePath: IResourcePath,
-  authentication: UserSession
-): Promise<any> {
-  const storageName = convertItemResourceToStorageResource(
-    model.itemId +
-    ((resourceFilePath.blob as File).name === resourceFilePath.filename
-      ? "_info_data"
-      : "_info_dataz"),
-    (resourceFilePath.blob as File).name,
-    SolutionTemplateFormatVersion
-  );
-
-  const opts: IItemResourceOptions = {
-    id: solutionId,
-    authentication,
-    resource: resourceFilePath.blob,
-    name: storageName.filename,
-    params: {}
-  };
-
-  if (storageName.folder) {
-    opts.params = {
-      resourcesPrefix: storageName.folder
-    };
-  }
-
-  // set the tempate resources to match what we will add
-  _updateDataResources(
-    data,
-    model.itemId,
-    EUpdateType.Add,
-    opts.params?.resourcesPrefix ? `${opts.params.resourcesPrefix}/${opts.name}` : opts.name,
-    ""
-  );
-
-  return addItemResource(opts);
-}
-
-function _update(
-  solutionId: string,
-  model: ISolutionModel,
-  data: any,
-  resourceFilePath: IResourcePath,
-  authentication: UserSession
-): Promise<any> {
-  const name: string = resourceFilePath.sourceFileName;
-
-  const opts: IItemResourceOptions = {
-    id: solutionId,
-    authentication,
-    resource: resourceFilePath.blob,
-    name
-  };
-
-  const resources = model.resources.filter(r => r.endsWith(name));
-  if (resources.length === 1) {
-    const nameParts = resources[0].split("/");
-    if (nameParts.length === 2) {
-      opts.prefix = nameParts[0];
-    }
-  }
-
-  // set the tempate resources to match what we will add
-  _updateDataResources(
-    data,
-    model.itemId,
-    EUpdateType.Update,
-    `${opts.prefix}/${name}`,
-    ""
-  );
-
-  return updateItemResource(opts);
-}
-
-function _remove(
-  solutionId: string,
-  model: ISolutionModel,
-  data: any,
-  resourceFilePath: IResourcePath,
-  authentication: UserSession
-): Promise<any> {
-  const name: string = resourceFilePath.filename;
-  const resources = model.resources.filter(r => r.endsWith(name));
-
-  // set the tempate resources to match what we will add
-  _updateDataResources(
-    data,
-    model.itemId,
-    EUpdateType.Remove,
-    resources[0],
-    ""
-  );
-
-  const opts: IItemResourceOptions = {
-    id: solutionId,
-    authentication,
-    resource: resources[0]
-  };
-
-  return removeItemResource(opts);
 }
