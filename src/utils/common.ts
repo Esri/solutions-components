@@ -98,7 +98,6 @@ export async function _updateResources(
       promises.push(_updateThumbnailResource(
         solutionId,
         model,
-        data,
         authentication
       ));
       _updateFileResources(
@@ -109,7 +108,6 @@ export async function _updateResources(
         authentication
       );
     });
-
     if (promises.length > 0) {
       Promise.all(promises).then(resolve, reject);
     } else {
@@ -121,7 +119,6 @@ export async function _updateResources(
 function _updateThumbnailResource(
   solutionId: string,
   model: ISolutionModel,
-  data: any,
   authentication: UserSession
 ): Promise<any> {
   return new Promise<any>((resolve, reject) => {
@@ -142,18 +139,7 @@ function _updateThumbnailResource(
           opts.prefix = nameParts[0];
         }
       }
-      updateItemResource(opts).then(results => {
-        if (results.success) {
-          _updateTemplateResourcePaths(
-            data,
-            model.itemId,
-            EUpdateType.Update,
-            opts.prefix ? `${opts.prefix}/${name}` : name,
-            ""
-          );
-        }
-        resolve(results);
-      }, reject);
+      updateItemResource(opts).then(resolve, reject);
     } else {
       resolve({success: true});
     }
@@ -194,7 +180,6 @@ function _updateFileResources(
         promises.push(_update(
           solutionId,
           model,
-          data,
           resourceFilePath,
           authentication
         ));
@@ -289,41 +274,27 @@ function _remove(
 function _update(
   solutionId: string,
   model: ISolutionModel,
-  data: any,
   resourceFilePath: IResourcePath,
   authentication: UserSession
 ): Promise<any> {
-  return new Promise<any>((resolve, reject) => {
-    const name: string = resourceFilePath.sourceFileName;
+  const sourceFileName: string = resourceFilePath.sourceFileName;
 
-    const opts: IItemResourceOptions = {
-      id: solutionId,
-      authentication,
-      resource: resourceFilePath.blob,
-      name
-    };
+  const opts: IItemResourceOptions = {
+    id: solutionId,
+    authentication,
+    resource: resourceFilePath.blob,
+    name: sourceFileName
+  };
 
-    const resources = model.resources.filter(r => r.endsWith(name));
-    if (resources.length === 1) {
-      const nameParts = resources[0].split("/");
-      if (nameParts.length === 2) {
-        opts.prefix = nameParts[0];
-      }
+  const resources = model.resources.filter(r => r.endsWith(sourceFileName));
+  if (resources.length === 1) {
+    const nameParts = resources[0].split("/");
+    if (nameParts.length === 2) {
+      opts.prefix = nameParts[0];
     }
+  }
 
-    updateItemResource(opts).then(results => {
-      if (results.success) {
-        _updateTemplateResourcePaths(
-          data,
-          model.itemId,
-          EUpdateType.Update,
-          opts.prefix ? `${opts.prefix}/${name}` : name,
-          ""
-        );
-      }
-      resolve(results);
-    }, reject)
-  });
+  return updateItemResource(opts)
 }
 
 function _updateTemplateResourcePaths(
@@ -340,11 +311,8 @@ function _updateTemplateResourcePaths(
           t.resources.push(path);
           break;
         case EUpdateType.Update:
-          // for update the filename may need to be changed to match...
-          // otherwise we may need to do an remove/add
-          // t.resources = t.resources.filter(r => r.indexOf(sourceFileName) < 0);
-          // t.resources.push(path);
-          console.log(sourceFileName)
+          t.resources = t.resources.filter(r => r.indexOf(sourceFileName) < 0);
+          t.resources.push(path);          
           break;
         case EUpdateType.Remove:
           t.resources = t.resources.filter(r => r.indexOf(path) < 0);

@@ -64,6 +64,13 @@ export class SolutionItemDetails {
    */
   @Prop({ mutable: true, reflect: true }) type = "";
 
+  componentDidRender() {
+    if (this.loadThumb) {
+      this.loadThumb = false;
+      this._loadThumb(this.value.itemId)
+    }
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Lifecycle
@@ -150,6 +157,8 @@ export class SolutionItemDetails {
    */
   private thumbnail: HTMLImageElement;
 
+  private loadThumb: boolean = false;
+
   //--------------------------------------------------------------------------
   //
   //  Event Listeners
@@ -158,13 +167,8 @@ export class SolutionItemDetails {
 
   @Listen("solutionItemSelected", { target: 'window' })
   _solutionItemSelected(event: CustomEvent): void {
-    if (event.detail.itemId) {
-      const thumbnailNew = getProp(state, `models.${event.detail.itemId}.thumbnailNew`);
-      const thumbnailOrigin = getProp(state, `models.${event.detail.itemId}.thumbnailOrigin`);
-      if (this.thumbnail) {
-        this.thumbnail.src = URL.createObjectURL(thumbnailNew || thumbnailOrigin);
-      }
-    }
+    this.value = event.detail;
+    this._loadThumb(event?.detail?.itemId);
   }
 
   /**
@@ -218,6 +222,18 @@ export class SolutionItemDetails {
   //  Private Methods
   //
   //--------------------------------------------------------------------------
+
+  private _loadThumb(id: string): void {
+    if (id) {
+      const thumbnailNew = getProp(state, `models.${id}.thumbnailNew`);
+      const thumbnailOrigin = getProp(state, `models.${id}.thumbnailOrigin`);
+      if (this.thumbnail) {
+        this.thumbnail.src = URL.createObjectURL(thumbnailNew || thumbnailOrigin);
+      } else {
+        this.loadThumb = true;
+      }
+    }
+  }
 
   /**
    * Opens image file browse dialog.

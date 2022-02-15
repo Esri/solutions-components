@@ -114,7 +114,7 @@ export class SolutionItemSharing {
   _renderItems(
     objs: IItemShare[]
   ): VNode[] {
-    return objs.length > 0 ? objs.map(item => {
+    return objs && objs.length > 0 ? objs.map(item => {
       return (
         <calcite-label layout="inline">
           <calcite-switch
