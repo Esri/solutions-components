@@ -168,10 +168,6 @@ export namespace Components {
          */
         "authentication": UserSession;
         /**
-          * An array used to avoid rendering deleted resources  while still retaining them in case the user chooses to reset the resource
-         */
-        "deleted": string[];
-        /**
           * The templates itemId. This is used to get the correct model from a store in the json-editor
          */
         "itemid": string;
@@ -545,10 +541,6 @@ declare namespace LocalJSX {
           * Credentials for requests
          */
         "authentication"?: UserSession;
-        /**
-          * An array used to avoid rendering deleted resources  while still retaining them in case the user chooses to reset the resource
-         */
-        "deleted"?: string[];
         /**
           * The templates itemId. This is used to get the correct model from a store in the json-editor
          */

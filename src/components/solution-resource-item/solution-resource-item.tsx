@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop } from '@stencil/core';
-import { IResourcePath } from '../../utils/interfaces';
-import { UserSession } from '@esri/solution-common';
+import { Component, Element, Host, h, Prop, Watch } from '@stencil/core';
+import { EUpdateType, IResourcePath, ISolutionModel } from '../../utils/interfaces';
+import { EFileType, UserSession } from '@esri/solution-common';
+import state from '../../utils/editStore';
 
 @Component({
   tag: 'solution-resource-item',
@@ -59,17 +60,17 @@ export class SolutionResourceItem {
    * The templates resourceFilePaths.
    */
   @Prop({ mutable: true, reflect: true }) resourceFilePaths: IResourcePath[] = [];
-
+  @Watch('resourceFilePaths')
+  resourceFilePathsWatchHandler(v: any, oldV: any): void {
+    if (v && v !== oldV) {
+      const m: ISolutionModel = state.models[this.itemid];
+      m.resourceFilePaths = this.resourceFilePaths;
+    }
+  }
   /**
    * Contains the translations for this component.
    */
   @Prop({ mutable: true }) translations: any = {};
-
-  /**
-   * An array used to avoid rendering deleted resources
-   *  while still retaining them in case the user chooses to reset the resource
-   */
-  @Prop({ mutable: true, reflect: true }) deleted: string[] = [];
 
   //--------------------------------------------------------------------------
   //
@@ -164,14 +165,13 @@ export class SolutionResourceItem {
    * @param resource the filename and url used to interact with the resource
    */
   _renderResource(
-    resource: any
+    resource: IResourcePath
   ): HTMLCalciteValueListItemElement {
-    const disabled = this.deleted.indexOf(resource.filename) > -1;
+    const disabled = resource.updateType === EUpdateType.Remove;
     return (
       <calcite-value-list-item
         label={resource.filename}
         value={resource.url}
-        metadata={resource.url}
         class={disabled ? "disabled" : ""}>
         <calcite-action-group slot="actions-end" layout="horizontal" expand-disabled="true">
           <calcite-action
@@ -217,12 +217,12 @@ export class SolutionResourceItem {
    * @param name the name to be added to the deleted array
    */
   _delete(name: string): void {
-    if (this.deleted.indexOf(name) < 0) {
-      this.deleted = [
-        ...this.deleted,
-        name
-      ]
-    }
+    this.resourceFilePaths = this.resourceFilePaths.map(p => {
+      if (p.filename === name) {
+        p.updateType = EUpdateType.Remove;
+      }
+      return p;
+    })
   }
 
   /**
@@ -231,9 +231,22 @@ export class SolutionResourceItem {
    * @param name the name to be added to the deleted array
    */
   _reset(name: string): void {
-    const idx = this.deleted.indexOf(name);
-    if (idx > -1) {
-      this.deleted = this.deleted.filter(n => n !== name);
+    // need to make sure I know if this reset is from the source or a new one
+    const m: ISolutionModel = state.models[this.itemid];
+    if (m.sourceResourceFilePaths.some(fp => fp.filename === name)) {
+      this.resourceFilePaths = this.resourceFilePaths.map(p => {
+        if (p.filename === name) {
+          p.updateType = EUpdateType.None;
+        }
+        return p;
+      });
+    } else {
+      this.resourceFilePaths = this.resourceFilePaths.map(p => {
+        if (p.filename === name) {
+          p.updateType = EUpdateType.Add;
+        }
+        return p;
+      });
     }
   }
 
@@ -340,25 +353,34 @@ export class SolutionResourceItem {
       const url = URL.createObjectURL(files[0]);
       const filename = files[0].name;
 
-      let currentIndex;
+      let currentIndex = -1;
+      let sourceFileName;
       this.resourceFilePaths.some((r, i) => {
-        currentIndex = i;
-        return r.url === currentUrl;
+        if (r.url === currentUrl) {
+          currentIndex = i;
+          sourceFileName = r.sourceFileName || r.filename;
+          return true;
+        } else {
+          return false;
+        }
       });
 
-      this._removedResources[filename] = this.resourceFilePaths[currentIndex];
+      if (currentIndex > -1) {
+        this._removedResources[filename] = this.resourceFilePaths[currentIndex];
 
-      const type = 4;
-      this.resourceFilePaths[currentIndex] = {
-        url,
-        type,
-        filename,
-        blob: files[0]
+        this.resourceFilePaths[currentIndex] = {
+          url,
+          type: EFileType.Data,
+          filename,
+          blob: files[0],
+          sourceFileName,
+          updateType: EUpdateType.Update
+        }
+  
+        this.resourceFilePaths = [
+          ...this.resourceFilePaths
+        ];
       }
-
-      this.resourceFilePaths = [
-        ...this.resourceFilePaths
-      ];
     }
   }
 
@@ -372,15 +394,15 @@ export class SolutionResourceItem {
     if (files && files[0]) {
       const url = URL.createObjectURL(files[0]);
       const filename = files[0].name;
-      const type = 4;
       if (!this.resourceFilePaths.some(r => r.filename === filename && r.url === url)) {
         this.resourceFilePaths = [
           ...this.resourceFilePaths,
           {
             url,
-            type,
+            type: EFileType.Data,
             filename,
-            blob: files[0]
+            blob: files[0],
+            updateType: EUpdateType.Add
           }
         ]
       }

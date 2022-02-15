@@ -345,12 +345,12 @@ export class SolutionConfiguration {
       data,
       state.models,
       this.authentication,
-      this.translations,
-      ""
-    ).then(saveResult => {
-      return this._getItemData(this.itemid, true).then(() => {
-        return saveResult;
-      }, e => Promise.reject(e));
+      this.translations
+    ).then(saveResult => { 
+      // need to trigger re-render...and re-fetch
+      this._fetchData = true;
+      this.modelsSet = false;
+      Promise.resolve(saveResult)
     }) : Promise.reject({
       success: false,
       message: `The following templates have errors: ${templateUpdates.errors.join(", ")}`

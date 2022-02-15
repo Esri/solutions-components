@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+ export enum EUpdateType {
+  Add,
+  Update,
+  Remove,
+  None
+}
+
 /**
  * Key details from the templates item
  */
@@ -179,5 +186,7 @@ export interface IResourcePath {
   url: string;
   type: number;
   filename: string;
-  blob?: any;
+  blob?: any; // This will only be set when a new file is uploaded (add or update)
+  sourceFileName?: string; // This will only be set when a file is being updated
+  updateType: EUpdateType
 }

@@ -18,18 +18,22 @@
  | Helper functions to get required values from solutions templates
 */
 import {
+  EUpdateType,
   IInventoryItem,
   IItemDetails,
   IItemShare,
   IOrganizationVariableItem,
+  IResourcePath,
   ISolutionModels,
   IVariableItem
 } from '../utils/interfaces';
 import {
+  IDeployFileCopyPath,
   generateStorageFilePaths,
   getProp,
   getThumbnailFromStorageItem,
-  UserSession
+  UserSession,
+  cloneObject
 } from '@esri/solution-common';
 
 //--------------------------------------------------------------------------
@@ -233,6 +237,11 @@ export function getModels(
   templates.forEach(t => {
     if (ids.indexOf(t.itemId) < 0) {
       ids.push(t.itemId);
+      const resourceFilePaths: IResourcePath[] = _getResourceFilePaths(
+        solutionId,
+        t,
+        authentication
+      );
       models[t.itemId] = {
         dataModel: monacoDefined ? monaco.editor.createModel(JSON.stringify(t.data, null, '\t'), "json") : undefined,
         dataOriginValue: JSON.stringify(t.data),
@@ -252,18 +261,9 @@ export function getModels(
         spatialReference: t.properties?.service?.spatialReference,
         resources: t.resources,
         // will contain updates
-        resourceFilePaths: generateStorageFilePaths(
-          authentication.portal,
-          solutionId,
-          t.resources,
-          1
-        ),
-        sourceResourceFilePaths: generateStorageFilePaths(
-          authentication.portal,
-          solutionId,
-          t.resources,
-          1
-        ),
+        resourceFilePaths: resourceFilePaths,
+        // could be used to compare
+        sourceResourceFilePaths: cloneObject(resourceFilePaths),
         thumbnailNew: undefined,// retain thumbnails in store as they get messed up if you emit them in events
         thumbnailOrigin: undefined
       };
@@ -328,6 +328,23 @@ export function getSpatialReferenceInfo(
 //  Private Functions
 //
 //--------------------------------------------------------------------------
+
+function _getResourceFilePaths(
+  solutionId: string,
+  template: any,
+  authentication: UserSession
+): IResourcePath[] {
+  const resourceFilePaths: IDeployFileCopyPath[] = generateStorageFilePaths(
+    authentication.portal,
+    solutionId,
+    template.resources,
+    1
+  );
+  return resourceFilePaths.map((fp: any) => {
+    fp.updateType = EUpdateType.None;
+    return fp;
+  }) as IResourcePath[];
+}
 
 /**
  * Fetch thumbnails from the item resources
