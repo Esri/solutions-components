@@ -1,0 +1,17 @@
+export default {
+  title: 'Components/{{uppercasedName}}',
+  component: '{{name}}',
+};
+
+const defaultArgs = {
+  argOne: 'arg-one-value'
+};
+
+export const Default = args => `
+  <{{name}}
+    arg-one="${args.argOne}"
+  ></{{name}}>
+`;
+
+Default.args = { ...defaultArgs };
+Default.storyName = '{{uppercasedName}}';

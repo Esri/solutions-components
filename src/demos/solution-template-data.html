@@ -22,7 +22,7 @@
 
   <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" type="text/css" />
   <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
-  <link rel="stylesheet" href="../solutions.css" type="text/css">
+  <link rel="stylesheet" href="../solutions-components.css" type="text/css">
   <style>
   .full-height {
     height: 100%;
@@ -30,7 +30,7 @@
   </style>
 
   <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
-  <script type="module" src="../solutions.esm.js"></script>
+  <script type="module" src="../solutions-components.esm.js"></script>
 </head>
 
 <body>
@@ -44,8 +44,8 @@
 
   <script src="./libs/require.js"></script>
   <script src="./libs/setLocale.js"></script>
-  <script src="./monacoConfig.js"></script>
   <script>
+    requirejs.config(localeConfig);
     require(["i18n!../assets/nls/strings", 'vs/editor/editor.main'],
     function (translations) {
       // Initialize the content
@@ -62,7 +62,7 @@
         fetch("./data/election-outreach.json")
       ])
         .then(results => Promise.all(results.map(r => r.json())))
-        .then(jsonResults => { 
+        .then(jsonResults => {
           const template = JSON.stringify(jsonResults[3].templates[0]);
           helper.value = template;
 

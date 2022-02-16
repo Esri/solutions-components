@@ -30,6 +30,12 @@
  *
  * `instanceid` attribute and `value` are required
  *
+ * The calling app needs to load the editor by
+ * 1. defining the loader's
+ *    a. "paths.vs" to dist/solutions-components/assets/monaco-editor/min/vs
+ *    b. "vs/nls.availableLanguages.* to one of the editor's supported languages (de|es|fr|it|ja|js|ko|ru|zh-cn|zh-tw)
+ *       If property is omitted, "en" is used.
+ * 2. requiring dist/solutions-components/assets/monaco-editor/min/vs/editor/editor.main
  *
 */
 
@@ -618,7 +624,7 @@ export class JsonEditor {
 
   /**
    * When the json-editor is embedded within a solition-item component we will have two tabs
-   * with the json editor. This provides a way for us to check if that parent tab is active 
+   * with the json editor. This provides a way for us to check if that parent tab is active
    * while inserting variables.
    *
    * @protected
@@ -658,9 +664,9 @@ export class JsonEditor {
 
   /**
    * Update the current feature service models wkid
-   * 
+   *
    * This functions responds to events fired from the spatial reference control.
-   * 
+   *
    * @param enabled does the given service support the wkid variable (true) or the current wkid (false)
    *
    * @protected

@@ -3,15 +3,23 @@
     "allowSyntheticDefaultImports": true,
     "allowUnreachableCode": false,
     "declaration": false,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "importsNotUsedAsValues": "preserve",
+    "jsx": "react",
+    "jsxFactory": "h",
     "lib": ["dom", "es2017"],
-    "moduleResolution": "node",
     "module": "esnext",
-    "target": "es2017",
-    "resolveJsonModule": true,
+    "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "jsx": "react",
-    "jsxFactory": "h"
-  }
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "target": "es2017"
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -22,7 +22,7 @@
 
   <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" type="text/css" />
   <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
-  <link rel="stylesheet" href="../solutions.css" type="text/css">
+  <link rel="stylesheet" href="../solutions-components.css" type="text/css">
   <style>
   .full-height {
     height: 100%;
@@ -69,7 +69,7 @@
   <script src="https://unpkg.com/@esri/arcgis-rest-auth@3.1.1/dist/umd/auth.umd.min.js"></script>
   <script src="https://unpkg.com/@esri/arcgis-rest-portal@3.1.1/dist/umd/portal.umd.min.js"></script>
   <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
-  <script type="module" src="../solutions.esm.js"></script>
+  <script type="module" src="../solutions-components.esm.js"></script>
 </head>
 
 <body>
@@ -94,7 +94,7 @@
     <button id="connectBtn fader" onclick="connectFcn()">Connect</button>
   </div>
   <div class="list flex not-visible margin-bottom-1 margin-side-1" id="componentContainer">
-    <calcite-select 
+    <calcite-select
       id="solution-ids"
       label="demo combobox"
       placeholder="Select Solution ID"
@@ -110,12 +110,10 @@
 
   <script src="./libs/require.js"></script>
   <script src="./libs/setLocale.js"></script>
-  <script src="./monacoConfig.js"></script>
   <script>
+    requirejs.config(localeConfig);
     require(["i18n!../assets/nls/strings", 'vs/editor/editor.main'],
     function (translations) {
-
-
       connectFcn = getSolutions;
 
       authentication = null;
@@ -125,7 +123,7 @@
         authentication = new arcgisRest.UserSession({
           username: document.getElementById("username").value || undefined,
           password: document.getElementById("password").value || undefined,
-          portal 
+          portal
         });
 
         // Initialize the configuration content
