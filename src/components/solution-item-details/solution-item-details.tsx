@@ -50,7 +50,6 @@ export class SolutionItemDetails {
    * Contains the public value for this component.
    */
   @Prop({ mutable: true, reflect: true }) value: IItemDetails = {
-    thumbnail: null,
     title: "",
     snippet: "",
     description: "",
@@ -64,6 +63,13 @@ export class SolutionItemDetails {
    * Contains the public type for this component.
    */
   @Prop({ mutable: true, reflect: true }) type = "";
+
+  componentDidRender() {
+    if (this.loadThumb) {
+      this.loadThumb = false;
+      this._loadThumb(this.value.itemId)
+    }
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -82,7 +88,7 @@ export class SolutionItemDetails {
 
           <div class="inputBottomSeparation">
 
-            <input accept=".jpg,.gif,.png,image/jpg,image/gif,image/png" class="display-none" onChange={(event) => (this._updateThumbnail(event))} ref={(el) => (this.browseForThumbnail = el)} type="file" />
+            <input accept=".jpg,.gif,.png,image/jpg,image/gif,image/png" class="display-none" onChange={(event) => (this._updateThumbnail(event, true))} ref={(el) => (this.browseForThumbnail = el)} type="file" />
 
             <button class="font-size--3 btn-link inline-block" onClick={() => this._getThumbnail()}>
               <svg class="icon-inline icon-inline--on-left" height="16" viewBox="0 0 16 16" width="16">
@@ -124,7 +130,7 @@ export class SolutionItemDetails {
               <calcite-input id="item-terms" type="textarea" value={this.value.licenseInfo} />
             </label>
           </calcite-label> : null}
-          
+
         </div>
       </Host>
     );
@@ -151,11 +157,19 @@ export class SolutionItemDetails {
    */
   private thumbnail: HTMLImageElement;
 
+  private loadThumb: boolean = false;
+
   //--------------------------------------------------------------------------
   //
   //  Event Listeners
   //
   //--------------------------------------------------------------------------
+
+  @Listen("solutionItemSelected", { target: 'window' })
+  _solutionItemSelected(event: CustomEvent): void {
+    this.value = event.detail;
+    this._loadThumb(event?.detail?.itemId);
+  }
 
   /**
    * Updates the component's value with changes to the input fields.
@@ -163,7 +177,7 @@ export class SolutionItemDetails {
   @Listen("calciteInputInput")
   inputReceivedHandler(event: any): void {
     switch (event.target.id) {
-      case "item-title":  
+      case "item-title":
         this.value.title = event.target.value;
         this._updateStore("title", event.target.value);
         break;
@@ -209,6 +223,18 @@ export class SolutionItemDetails {
   //
   //--------------------------------------------------------------------------
 
+  private _loadThumb(id: string): void {
+    if (id) {
+      const thumbnailNew = getProp(state, `models.${id}.thumbnailNew`);
+      const thumbnailOrigin = getProp(state, `models.${id}.thumbnailOrigin`);
+      if (this.thumbnail) {
+        this.thumbnail.src = URL.createObjectURL(thumbnailNew || thumbnailOrigin);
+      } else {
+        this.loadThumb = true;
+      }
+    }
+  }
+
   /**
    * Opens image file browse dialog.
    *
@@ -221,6 +247,7 @@ export class SolutionItemDetails {
    * Updates the length label to reflect the current number of characters
    * relative to the max number of characters supported.
    *
+   * @param phrase the current phrase from the control
    */
   private _updateLengthLabel(phrase: string): void {
     this.itemSnippetCount.innerText =
@@ -229,19 +256,23 @@ export class SolutionItemDetails {
 
   /**
    * Gets and displays image result from browse.
-   *
+   * 
+   * @param event The input controls event that contains the new file
+   * @param updateStore boolean that controls if the new value is written to the store
+   *  should be false on the initial load but true the rest of the time
    */
   private _updateThumbnail(
-    event: any
+    event: any,
+    updateStore: boolean
   ): void {
-    const files = event.currentTarget.files;
+    const files = event.target.files;
     if (files && files[0]) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        this.thumbnail.src = reader.result as string;
-        this._updateStore("thumbnail", this.thumbnail.src);
+      if (this.thumbnail) {
+        this.thumbnail.src = URL.createObjectURL(files[0]);
       }
-      reader.readAsDataURL(files[0]);
+      if (updateStore) {
+        this._updateStore("thumbnailNew", files[0]);
+      }
     }
   }
 
@@ -265,13 +296,17 @@ export class SolutionItemDetails {
   /**
    * Add or remove the value from the store
    *
+   * @param prop The model prop to update with new values
+   * @param v The new value to store
    */
   private _updateStore(
     prop: string,
     v: string
   ): void {
     const model: any = getProp(state, `models.${this.value.itemId}`);
-    if (model.itemOriginValue) {
+    if (prop === "thumbnailNew") {
+      model[prop] = v;
+    } else if (model.itemOriginValue) {
       const item = JSON.parse(model.itemOriginValue);
       if (item.hasOwnProperty(prop)) {
         // store when it matches
@@ -282,7 +317,7 @@ export class SolutionItemDetails {
           model.updateItemValues[prop] = v;
         } else {
           // remove when it doesn't
-          delete(model.updateItemValues[prop]);
+          delete (model.updateItemValues[prop]);
         }
       }
     }

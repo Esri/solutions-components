@@ -9,6 +9,7 @@
 
 | Property                | Attribute      | Description                                   | Type            | Default                                                                                                                                         |
 | ----------------------- | -------------- | --------------------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `authentication`        | --             | Credentials for requests                      | `UserSession`   | `undefined`                                                                                                                                     |
 | `organizationVariables` | --             | Contains the organization based variables     | `any[]`         | `[]`                                                                                                                                            |
 | `solutionVariables`     | --             | Contains the solution based variables         | `any[]`         | `[]`                                                                                                                                            |
 | `translations`          | `translations` | Contains the translations for this component. | `any`           | `{}`                                                                                                                                            |
@@ -80,8 +81,17 @@ graph TD;
   solution-variables --> calcite-tree-item
   solution-variables --> solution-item-icon
   solution-variables --> calcite-tree
-  solution-resource-item --> calcite-label
   solution-resource-item --> calcite-button
+  solution-resource-item --> calcite-value-list
+  solution-resource-item --> calcite-value-list-item
+  solution-resource-item --> calcite-action-group
+  solution-resource-item --> calcite-action
+  calcite-value-list-item --> calcite-icon
+  calcite-value-list-item --> calcite-pick-list-item
+  calcite-pick-list-item --> calcite-icon
+  calcite-pick-list-item --> calcite-action
+  calcite-action-group --> calcite-action-menu
+  calcite-action-group --> calcite-action
   solution-configuration --> solution-item
   style solution-item fill:#f9f,stroke:#333,stroke-width:4px
 ```

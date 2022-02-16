@@ -25,24 +25,24 @@
  *
 */
 
- import { Component, Element, Event, EventEmitter, Prop } from '@stencil/core';
- import state from '../../utils/editStore';
- import { getModels, getFeatureServices, getSpatialReferenceInfo } from '../../utils/templates';
- import { getItemDataAsJson, UserSession } from '@esri/solution-common';
- 
- @Component({
-   tag: 'store-manager',
-   shadow: false
- })
- export class StoreManager {
- 
-   //--------------------------------------------------------------------------
-   //
-   //  Host element access
-   //
-   //--------------------------------------------------------------------------
-   @Element() el: HTMLStoreManagerElement;
- 
+import { Component, Element, Event, EventEmitter, Prop } from '@stencil/core';
+import state from '../../utils/editStore';
+import { getModels, getFeatureServices, getSpatialReferenceInfo } from '../../utils/templates';
+import { getItemDataAsJson, UserSession } from '@esri/solution-common';
+
+@Component({
+  tag: 'store-manager',
+  shadow: false
+})
+export class StoreManager {
+
+  //--------------------------------------------------------------------------
+  //
+  //  Host element access
+  //
+  //--------------------------------------------------------------------------
+  @Element() el: HTMLStoreManagerElement;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (public)
@@ -53,71 +53,71 @@
    * Contains source json as a string
    *
    */
-   @Prop({ mutable: true, reflect: true }) value = "";
+  @Prop({ mutable: true, reflect: true }) value = "";
 
   /**
    * Templates for the current solution
    */
-   @Prop({ mutable: true, reflect: true }) templates: any[] = [];
+  @Prop({ mutable: true, reflect: true }) templates: any[] = [];
 
   /**
    * Credentials for requests
    */
-   @Prop({ mutable: true }) authentication: UserSession;
- 
+  @Prop({ mutable: true }) authentication: UserSession;
+
   //--------------------------------------------------------------------------
   //
   //  Lifecycle
   //
   //--------------------------------------------------------------------------
 
-   connectedCallback(): void {
-     this._initValueObserver();
-   }
- 
-   render() {
-     return (null);
-   }
- 
+  connectedCallback(): void {
+    this._initValueObserver();
+  }
+
+  render() {
+    return (null);
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Events
   //
   //--------------------------------------------------------------------------
 
-   @Event() stateLoaded: EventEmitter;
- 
+  @Event() stateLoaded: EventEmitter;
+
   //--------------------------------------------------------------------------
   //
   //  Private Methods
   //
   //--------------------------------------------------------------------------
 
-   private _valueObserver;
- 
+  private _valueObserver;
+
   /**
    * Initialize the observer that will monitor and respond to changes in the value.
    * When we get a new value we are dealinmg with a new solution and need to fetch the items data and load the state.
    */
-   private _initValueObserver() {
-     this._valueObserver = new MutationObserver(ml => {
-       ml.some(mutation => {
-         const newValue = mutation.target[mutation.attributeName];
-         if (mutation.type === 'attributes' && mutation.attributeName === "value" &&
-           newValue !== mutation.oldValue && newValue !== "") {
-           const v = JSON.parse(newValue);
-           // eslint-disable-next-line @typescript-eslint/no-floating-promises
-           getItemDataAsJson(v, this.authentication).then(data => {
-             state.models = getModels(Array.isArray(v) ? v : [v]);
-             state.featureServices = getFeatureServices(Array.isArray(v) ? v : [v])
-             state.spatialReferenceInfo = getSpatialReferenceInfo(state.featureServices, data);
-             this.templates = v;
-             this.stateLoaded.emit(state);
-           });
-           return true;
-         }
-       })
-     });
-     this._valueObserver.observe(this.el, { attributes: true, attributeOldValue: true });
-   }
- }
+  private _initValueObserver() {
+    this._valueObserver = new MutationObserver(ml => {
+      ml.some(mutation => {
+        const newValue = mutation.target[mutation.attributeName];
+        if (mutation.type === 'attributes' && mutation.attributeName === "value" &&
+          newValue !== mutation.oldValue && newValue !== "") {
+          const v = JSON.parse(newValue);
+          // eslint-disable-next-line @typescript-eslint/no-floating-promises
+          getItemDataAsJson(v, this.authentication).then(data => {
+            state.models = getModels(Array.isArray(v) ? v : [v], this.authentication, v);
+            state.featureServices = getFeatureServices(Array.isArray(v) ? v : [v])
+            state.spatialReferenceInfo = getSpatialReferenceInfo(state.featureServices, data);
+            this.templates = v;
+            this.stateLoaded.emit(state);
+          });
+          return true;
+        }
+      })
+    });
+    this._valueObserver.observe(this.el, { attributes: true, attributeOldValue: true });
+  }
+}

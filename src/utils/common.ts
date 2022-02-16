@@ -19,18 +19,27 @@
 */
 
 import {
+  convertItemResourceToStorageResource,
   IItemUpdate,
+  updateItem,
   UserSession,
-  updateItem
+  SolutionTemplateFormatVersion
 } from "@esri/solution-common";
-import { IResponse } from "./interfaces";
+import { EUpdateType, IResourcePath, IResponse, ISolutionModel, ISolutionModels } from "./interfaces";
+// May add to solution-common..??
+import {
+  addItemResource,
+  IItemResourceOptions,
+  removeItemResource,
+  updateItemResource
+} from "@esri/arcgis-rest-portal";
 
 /**
  * Get an array from a list of nodes
  *
  * @param nodeList list of nodes 
  */
- export function nodeListToArray<T extends Element>(nodeList: HTMLCollectionOf<T> | NodeListOf<T> | T[]): T[] {
+export function nodeListToArray<T extends Element>(nodeList: HTMLCollectionOf<T> | NodeListOf<T> | T[]): T[] {
   return Array.isArray(nodeList) ? nodeList : Array.from(nodeList);
 }
 
@@ -47,20 +56,22 @@ import { IResponse } from "./interfaces";
 export async function save(
   id: string,
   data: any,
+  models: ISolutionModels,
   authentication: UserSession,
-  translations: any,
-  thumbnailurl: any,
+  translations: any
 ): Promise<IResponse> {
+
   const itemInfo: IItemUpdate = { id };
 
   const params: any = {
     text: data
   };
 
-  if (thumbnailurl) {
-    params.thumbnail = thumbnailurl;
-  }
+  await _updateResources(id, models, data, authentication);
 
+  // TODO compare data with the source data in the model...should be able to
+  // understand if it has changes
+  // TODO...only update if has changes
   const updateResults = await updateItem(
     itemInfo,
     authentication,
@@ -68,8 +79,248 @@ export async function save(
     params
   );
 
-  return {
+  return Promise.resolve({
     success: updateResults.success,
     message: updateResults.success ? translations.editsSaved : translations.saveFailed
-  } as IResponse;
+  });
+}
+
+export async function _updateResources(
+  solutionId: string,
+  models: ISolutionModels,
+  data: any,
+  authentication: UserSession
+): Promise<any> {
+  return new Promise<any>((resolve, reject) => {
+    const promises = [];
+    Object.keys(models).forEach(itemId => {
+      const model: ISolutionModel = models[itemId];
+      promises.push(_updateThumbnailResource(
+        solutionId,
+        model,
+        authentication
+      ));
+      _updateFileResources(
+        solutionId,
+        model,
+        data,
+        promises,
+        authentication
+      );
+    });
+    if (promises.length > 0) {
+      Promise.all(promises).then(resolve, reject);
+    } else {
+      resolve({success: true})
+    }
+  })
+}
+
+function _updateThumbnailResource(
+  solutionId: string,
+  model: ISolutionModel,
+  authentication: UserSession
+): Promise<any> {
+  return new Promise<any>((resolve, reject) => {
+    if (model.thumbnailNew) {
+      const name: string = model.thumbnailOrigin.name;
+
+      const opts: IItemResourceOptions = {
+        id: solutionId,
+        authentication,
+        resource: model.thumbnailNew,
+        name
+      };
+
+      const resources = model.resources.filter(r => r.endsWith(name));
+      if (resources.length === 1) {
+        const nameParts = resources[0].split("/");
+        if (nameParts.length === 2) {
+          opts.prefix = nameParts[0];
+        }
+      }
+      updateItemResource(opts).then(resolve, reject);
+    } else {
+      resolve({success: true});
+    }
+  });
+}
+
+function _updateFileResources(
+  solutionId: string,
+  model: ISolutionModel,
+  data: any,
+  promises: Promise<any>[],
+  authentication: UserSession
+): void {
+  // add/remove/update resources
+  model.resourceFilePaths.forEach(resourceFilePath => {
+    switch (resourceFilePath.updateType) {
+      case EUpdateType.Add:
+        promises.push(_add(
+          solutionId,
+          model,
+          data,
+          resourceFilePath,
+          authentication
+        ));
+        break;
+
+      case EUpdateType.Remove:
+        promises.push(_remove(
+          solutionId,
+          model,
+          data,
+          resourceFilePath,
+          authentication
+        ));
+        break;
+
+      case EUpdateType.Update:
+        promises.push(_update(
+          solutionId,
+          model,
+          resourceFilePath,
+          authentication
+        ));
+        break;
+
+      default:
+        break;
+    }
+  });
+}
+
+function _add(
+  solutionId: string,
+  model: ISolutionModel,
+  data: any,
+  resourceFilePath: IResourcePath,
+  authentication: UserSession
+): Promise<any> {
+  return new Promise<any>((resolve, reject) => {
+    const storageName = convertItemResourceToStorageResource(
+      model.itemId +
+      ((resourceFilePath.blob as File).name === resourceFilePath.filename
+        ? "_info_data"
+        : "_info_dataz"),
+      (resourceFilePath.blob as File).name,
+      SolutionTemplateFormatVersion
+    );
+
+    const opts: IItemResourceOptions = {
+      id: solutionId,
+      authentication,
+      resource: resourceFilePath.blob,
+      name: storageName.filename,
+      params: {}
+    };
+
+    if (storageName.folder) {
+      opts.params = {
+        resourcesPrefix: storageName.folder
+      };
+    }
+
+    addItemResource(opts).then(results => {
+      if (results.success) {
+        _updateTemplateResourcePaths(
+          data,
+          model.itemId,
+          EUpdateType.Add,
+          opts.params?.resourcesPrefix ? `${opts.params.resourcesPrefix}/${opts.name}` : opts.name,
+          ""
+        );
+      }
+      resolve(results);
+    }, reject)
+  });
+}
+
+function _remove(
+  solutionId: string,
+  model: ISolutionModel,
+  data: any,
+  resourceFilePath: IResourcePath,
+  authentication: UserSession
+): Promise<any> {
+  return new Promise<any>((resolve, reject) => {
+    const name: string = resourceFilePath.filename;
+    const resources = model.resources.filter(r => r.endsWith(name));
+    if (resources.length > 0) {
+      const opts: IItemResourceOptions = {
+        id: solutionId,
+        authentication,
+        resource: resources[0]
+      };
+      removeItemResource(opts).then(results => {
+        if (results.success) {
+          _updateTemplateResourcePaths(
+            data,
+            model.itemId,
+            EUpdateType.Remove,
+            resources[0],
+            ""
+          );
+        }
+        resolve(results);
+      }, reject);
+    } else {
+      resolve({ success: false })
+    }
+  });
+}
+
+function _update(
+  solutionId: string,
+  model: ISolutionModel,
+  resourceFilePath: IResourcePath,
+  authentication: UserSession
+): Promise<any> {
+  const sourceFileName: string = resourceFilePath.sourceFileName;
+
+  const opts: IItemResourceOptions = {
+    id: solutionId,
+    authentication,
+    resource: resourceFilePath.blob,
+    name: sourceFileName
+  };
+
+  const resources = model.resources.filter(r => r.endsWith(sourceFileName));
+  if (resources.length === 1) {
+    const nameParts = resources[0].split("/");
+    if (nameParts.length === 2) {
+      opts.prefix = nameParts[0];
+    }
+  }
+
+  return updateItemResource(opts)
+}
+
+function _updateTemplateResourcePaths(
+  data: any,
+  id: string,
+  updateType: EUpdateType,
+  path: string,
+  sourceFileName: string
+): void {
+  data.templates = data.templates.map(t => {
+    if (t.itemId === id) {
+      switch (updateType) {
+        case EUpdateType.Add:
+          t.resources.push(path);
+          break;
+        case EUpdateType.Update:
+          t.resources = t.resources.filter(r => r.indexOf(sourceFileName) < 0);
+          t.resources.push(path);          
+          break;
+        case EUpdateType.Remove:
+          t.resources = t.resources.filter(r => r.indexOf(path) < 0);
+          break;
+        default:
+          break;
+      }
+    }
+    return t;
+  })
 }

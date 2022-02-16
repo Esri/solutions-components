@@ -17,6 +17,7 @@
 import { Component, Element, h, Host, Prop, VNode } from '@stencil/core';
 import { ISolutionItem } from '../../utils/interfaces';
 import '@esri/calcite-components';
+import { UserSession } from '@esri/solution-common';
 
 @Component({
   tag: 'solution-item',
@@ -37,6 +38,11 @@ export class SolutionItem {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Credentials for requests
+   */
+  @Prop({ mutable: true }) authentication: UserSession;
 
   /**
    * Contains the translations for this component.
@@ -121,40 +127,44 @@ export class SolutionItem {
 
   /**
    * Render tabs based on group item types
+   * 
+   * @param visible Should the current tab be visible
    */
   _showGroupTabs(
     visible: boolean
   ): VNode {
-    return <calcite-tabs class="config-tabs" style={{ display: visible ? "inherit" : "none"}}>
+    return <calcite-tabs class="config-tabs" style={{ display: visible ? "inherit" : "none" }}>
       <calcite-tab-nav slot="tab-nav">
         <calcite-tab-title>{this.translations.groupDetailsTab}</calcite-tab-title>
         <calcite-tab-title>{this.translations.sharingTab}</calcite-tab-title>
       </calcite-tab-nav>
 
       <calcite-tab active class="config-tab" id="group-tab">
-        <solution-item-details 
+        <solution-item-details
           translations={this.translations}
           type={this.value.type}
           value={this.value.itemDetails}
-         />
+        />
       </calcite-tab>
       <calcite-tab class="config-tab" id="share-tab">
         <solution-item-sharing
           groupId={this.value.itemId}
           translations={this.translations}
           value={this.value.groupDetails}
-         />
+        />
       </calcite-tab>
     </calcite-tabs>
   }
 
   /**
    * Render tabs based for an items details, data, and props section from a template
+   * 
+   * @param visible Should the current tab be visible
    */
   _showItemTabs(
     visible: boolean
   ): VNode {
-    return <calcite-tabs class="config-tabs" style={{ display: visible ? "inherit" : "none"}}>
+    return <calcite-tabs class="config-tabs" style={{ display: visible ? "inherit" : "none" }}>
       <calcite-tab-nav slot="tab-nav">
         <calcite-tab-title>{this.translations.itemDetailsTab}</calcite-tab-title>
         <calcite-tab-title>{this.translations.dataTab}</calcite-tab-title>
@@ -166,7 +176,7 @@ export class SolutionItem {
           translations={this.translations}
           type={this.value.type}
           value={this.value.itemDetails}
-         />
+        />
       </calcite-tab>
       <calcite-tab class="config-tab" id="data-tab">
         <solution-template-data
@@ -176,8 +186,9 @@ export class SolutionItem {
           organizationVariables={this.organizationVariables}
           solutionVariables={this.solutionVariables}
           translations={this.translations}
-          value={{value: this.value.data}}
-         />
+          value={{ value: this.value.data }}
+          authentication={this.authentication}
+        />
       </calcite-tab>
       <calcite-tab class="config-tab" id="props-tab">
         <solution-template-data
@@ -185,11 +196,11 @@ export class SolutionItem {
           itemid={this.value.itemId}
           organizationVariables={this.organizationVariables}
           solutionVariables={this.solutionVariables}
-          translations={this.translations} 
-          value={{value: this.value.properties}}
-         />
+          translations={this.translations}
+          value={{ value: this.value.properties }}
+          authentication={this.authentication}
+        />
       </calcite-tab>
     </calcite-tabs>
   }
-
 }

@@ -17,6 +17,8 @@
 import { VNode } from '@esri/calcite-components/dist/types/stencil-public-runtime';
 import { Component, Element, Host, h, Prop } from '@stencil/core';
 import { IOrganizationVariableItem, ITemplateData, IVariableItem } from '../../utils/interfaces';
+import state from '../../utils/editStore';
+import { UserSession } from '@esri/solution-common';
 
 @Component({
   tag: 'solution-template-data',
@@ -41,6 +43,11 @@ export class SolutionTemplateData {
   //--------------------------------------------------------------------------
 
   /**
+   * Credentials for requests
+   */
+  @Prop({ mutable: true }) authentication: UserSession;
+
+  /**
    * Contains the translations for this component.
    */
   @Prop({ mutable: true }) translations: any = {};
@@ -63,28 +70,28 @@ export class SolutionTemplateData {
   /**
    * This needs to be unique for props vs data of an item
    */
-   @Prop({ mutable: true, reflect: true }) instanceid = "";
+  @Prop({ mutable: true, reflect: true }) instanceid = "";
 
   /**
    * A templates itemId.
    * This is used to get the correct model from a store in the json-editor
    */
-   @Prop({ mutable: true, reflect: true }) itemid = "";
+  @Prop({ mutable: true, reflect: true }) itemid = "";
 
   /**
    * Contains the solution based variables
    */
-  @Prop({mutable: true, reflect: true}) solutionVariables: IVariableItem[] = [];
+  @Prop({ mutable: true, reflect: true }) solutionVariables: IVariableItem[] = [];
 
   /**
    * Contains the organization based variables
    */
-  @Prop({mutable: true, reflect: true}) organizationVariables: IOrganizationVariableItem[] = [];
+  @Prop({ mutable: true, reflect: true }) organizationVariables: IOrganizationVariableItem[] = [];
 
   /**
    * Used to show/hide the variable containers
    */
-  @Prop({mutable: true, reflect: true}) varsOpen = true;
+  @Prop({ mutable: true, reflect: true }) varsOpen = true;
 
   //--------------------------------------------------------------------------
   //
@@ -96,7 +103,7 @@ export class SolutionTemplateData {
     return (
       <Host>
         <div class="solution-data-container">
-          {this._renderTemplateData(this.value)}
+          {this._renderTemplateData()}
         </div>
       </Host>
     );
@@ -137,7 +144,7 @@ export class SolutionTemplateData {
             instanceid={this.instanceid}
             translations={this.translations}
             value={this.itemid}
-           />
+          />
         </div>
       </calcite-panel>
 
@@ -151,18 +158,18 @@ export class SolutionTemplateData {
             onClick={() => this._toggleVars()}
             scale="s"
             title={this.translations.cancelEdits}
-           />
+          />
           <div class={this.varsOpen ? "org-vars" : "org-vars hide"} id="orgVars">
             <solution-organization-variables
               translations={this.translations}
               value={this.organizationVariables}
-             />
+            />
           </div>
           <div class={this.varsOpen ? "sol-vars" : "sol-vars hide"} id="solVars">
             <solution-variables
               translations={this.translations}
               value={this.solutionVariables}
-             />
+            />
           </div>
         </div>
       </calcite-shell-panel>
@@ -172,15 +179,22 @@ export class SolutionTemplateData {
   /**
    * Render resource or template data
    */
-  _renderTemplateData(data: ITemplateData): VNode {
-    return this.isResource ? this._resourceData(data) : this._jsonData();
+  _renderTemplateData(): VNode {
+    return this.isResource ? this._resourceData() : this._jsonData();
   }
 
   /**
    * Render the resource data so the end user can upload/download
    */
-  _resourceData(templateData: ITemplateData): any {
-    return <solution-resource-item translations={this.translations} value={templateData.resourceItem} />;
+  _resourceData(): any {
+    const model = state.models[this.itemid];
+    return <solution-resource-item
+      translations={this.translations}
+      itemid={this.itemid}
+      resourceFilePaths={model.resourceFilePaths}
+      authentication={this.authentication}
+      class="solutions-resource-container"
+    />;
   }
 
   /**

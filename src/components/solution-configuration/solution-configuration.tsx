@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Listen, Method, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, h, Host, Listen, Method, Prop, State, VNode, Watch, EventEmitter, Event } from '@stencil/core';
 import { IOrganizationVariableItem, IResponse, ISolutionConfiguration, ISolutionItem, IUpdateTemplateResponse, IVariableItem } from '../../utils/interfaces';
 import * as utils from '../../utils/templates';
 import state from '../../utils/editStore';
@@ -47,7 +47,7 @@ export class SolutionConfiguration {
   /**
    * Credentials for requests
    */
-   @Prop({ mutable: true }) authentication: UserSession;
+  @Prop({ mutable: true }) authentication: UserSession;
 
   /**
    * Contains the translations for this component.
@@ -64,7 +64,7 @@ export class SolutionConfiguration {
   /**
    * Contains the raw templates from the solution item
    */
-  @Prop({mutable: true, reflect: true}) templates: any[];
+  @Prop({ mutable: true, reflect: true }) templates: any[];
 
   /**
    * Contains the current solution item we are working with
@@ -90,7 +90,7 @@ export class SolutionConfiguration {
   @Prop({ mutable: true }) treeOpen = true;
 
   /**
-  * Contains the current solution item id
+  * Contains the current solution item data
   */
   @Prop({ mutable: true }) sourceItemData: any = {};
 
@@ -99,9 +99,27 @@ export class SolutionConfiguration {
   //  Lifecycle
   //
   //--------------------------------------------------------------------------
+  @Event() solutionLoaded: EventEmitter;
 
-  connectedCallback(): void {
-    this._initObserver();
+  componentWillRender(): Promise<any> {
+    return new Promise((resolve) => {
+      if (this._fetchData) {
+        this._fetchData = false;
+        this._isLoading = true;
+        this._getItemData(this.itemid).then(() => {
+          resolve(undefined);
+        });
+      } else {
+        resolve(undefined);
+      }
+    });
+  }
+
+  componentDidRender() {
+    if (this._isLoading) {
+      this._isLoading = false;
+      this.solutionLoaded.emit();
+    }
   }
 
   render(): VNode {
@@ -120,7 +138,7 @@ export class SolutionConfiguration {
                   <div class={this.treeOpen ? "config-inventory" : "config-inventory-hide"}>
                     <solution-contents
                       id="configInventory"
-                      key={`${this.itemid }-contents`}
+                      key={`${this.itemid}-contents`}
                       translations={this.translations}
                       value={this.value.contents}
                     />
@@ -133,7 +151,7 @@ export class SolutionConfiguration {
                     onClick={() => this._toggleTree()}
                     scale="s"
                     title={this.translations.cancelEdits}
-                   />
+                  />
                   <div class="config-item">
                     <solution-item
                       key={`${this.itemid}-item`}
@@ -141,6 +159,7 @@ export class SolutionConfiguration {
                       solutionVariables={this._solutionVariables}
                       translations={this.translations}
                       value={this.item}
+                      authentication={this.authentication}
                     />
                   </div>
                 </div>
@@ -170,11 +189,13 @@ export class SolutionConfiguration {
   //
   //--------------------------------------------------------------------------
 
-  private _templatesObserver: MutationObserver;
-
   private _solutionVariables: IVariableItem[];
 
   private _organizationVariables: IOrganizationVariableItem[];
+
+  private _fetchData: boolean = false;
+
+  private _isLoading: boolean = false;
 
   //--------------------------------------------------------------------------
   //
@@ -219,28 +240,17 @@ export class SolutionConfiguration {
     return Promise.resolve(this._save());
   }
 
+  @Watch('itemid')
+  valueWatchHandler(v: any, oldV: any): void {
+    if (v && v !== oldV) {
+      this._fetchData = true;
+    }
+  }
   //--------------------------------------------------------------------------
   //
   //  Private Methods
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Observe changes to the props
-   */
-  private _initObserver() {
-    this._templatesObserver = new MutationObserver(ml => {
-      ml.some(mutation => {
-        const v = mutation.target[mutation.attributeName];
-        if (mutation.type === 'attributes' && mutation.attributeName === "itemid" && v && v !== mutation.oldValue) {
-          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          this._getItemData(v);
-          return true;
-        }
-      });
-    });
-    this._templatesObserver.observe(this.el, { attributes: true, attributeOldValue: true });
-  }
 
   /**
    * Get the solution items data
@@ -257,7 +267,7 @@ export class SolutionConfiguration {
       this.templates = data.templates;
 
       this._initProps(this.templates);
-      this._initState(this.templates, isReset);
+      return this._initState(this.templates, isReset);
     });
   }
 
@@ -267,27 +277,37 @@ export class SolutionConfiguration {
    * @param templates the solution items templates
    * @param isReset (defaults to false) indicates if we are resetting the controls after save
    */
-  private _initState(templates: any[], isReset = false): void {
-    if (isReset) {
-      // clear models and state so we can refresh after save
-      this.modelsSet = false;
-      state.reset();
-    }
-    state.models = utils.getModels(templates);
-    state.featureServices = utils.getFeatureServices(templates);
-    state.spatialReferenceInfo = utils.getSpatialReferenceInfo(state.featureServices, this.sourceItemData);
+  private _initState(
+    templates: any[],
+    isReset = false
+  ): Promise<any> {
+    return new Promise((resolve) => {
+      if (isReset) {
+        // clear models and state so we can refresh after save
+        this.modelsSet = false;
+        state.reset();
+      }
+      utils.getModels(templates, this.authentication, this.itemid).then(models => {
+        state.models = models;
 
-    if (isReset) {
-      // reset for undo/redo stack and diff editor tracking
-      const jsonEditors = Array.from(this.el.getElementsByTagName("json-editor"));
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      jsonEditors.forEach(e => void e.reset());
-    }
-    this.modelsSet = true;
+        state.featureServices = utils.getFeatureServices(templates);
+        state.spatialReferenceInfo = utils.getSpatialReferenceInfo(state.featureServices, this.sourceItemData);
+
+        if (isReset) {
+          // reset for undo/redo stack and diff editor tracking
+          const jsonEditors = Array.from(this.el.getElementsByTagName("json-editor"));
+          // eslint-disable-next-line @typescript-eslint/no-floating-promises
+          jsonEditors.forEach(e => void e.reset());
+        }
+
+        this.modelsSet = true;
+        resolve(true);
+      });
+    });
   }
 
   /**
-   * Update the Props with the initial values
+   * Set Props with the initial values
    * 
    * @param templates the solution items templates
    */
@@ -321,19 +341,20 @@ export class SolutionConfiguration {
     const templateUpdates = await this._updateTemplates();
     const data = this._setSrInfo(templateUpdates.templates);
     return templateUpdates.errors.length === 0 ? save(
-        this.itemid,
-        data,
-        this.authentication,
-        this.translations,
-        ""
-      ).then(saveResult => {
-        return this._getItemData(this.itemid, true).then(() => {
-          return saveResult;
-        }, e => Promise.reject(e));
-      }) : Promise.reject({
-        success: false,
-        message: `The following templates have errors: ${templateUpdates.errors.join(", ")}`
-      } as IResponse);
+      this.itemid,
+      data,
+      state.models,
+      this.authentication,
+      this.translations
+    ).then(saveResult => { 
+      // need to trigger re-render...and re-fetch
+      this._fetchData = true;
+      this.modelsSet = false;
+      Promise.resolve(saveResult)
+    }) : Promise.reject({
+      success: false,
+      message: `The following templates have errors: ${templateUpdates.errors.join(", ")}`
+    } as IResponse);
   }
 
   /**
@@ -591,7 +612,7 @@ export class SolutionConfiguration {
       );
     } else if (!srInfo.enabled) {
       if (getProp(data, "params.wkid")) {
-        delete(data.params.wkid);
+        delete (data.params.wkid);
       }
     }
     return data;

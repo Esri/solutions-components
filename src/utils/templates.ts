@@ -17,16 +17,23 @@
 /*
  | Helper functions to get required values from solutions templates
 */
-import { 
+import {
+  EUpdateType,
   IInventoryItem,
   IItemDetails,
   IItemShare,
   IOrganizationVariableItem,
+  IResourcePath,
   ISolutionModels,
   IVariableItem
 } from '../utils/interfaces';
 import {
-  getProp
+  IDeployFileCopyPath,
+  generateStorageFilePaths,
+  getProp,
+  getThumbnailFromStorageItem,
+  UserSession,
+  cloneObject
 } from '@esri/solution-common';
 
 //--------------------------------------------------------------------------
@@ -219,13 +226,22 @@ export function getOrganizationVariables(
  * 
  * @returns a list of models and key values
  */
-export function getModels(templates: any[]): ISolutionModels {
+export function getModels(
+  templates: any[],
+  authentication: UserSession,
+  solutionId: string
+): Promise<ISolutionModels> {
   const ids: string[] = [];
   const models: ISolutionModels = {};
-  const monacoDefined = typeof(monaco) !== "undefined";
+  const monacoDefined = typeof (monaco) !== "undefined";
   templates.forEach(t => {
     if (ids.indexOf(t.itemId) < 0) {
       ids.push(t.itemId);
+      const resourceFilePaths: IResourcePath[] = _getResourceFilePaths(
+        solutionId,
+        t,
+        authentication
+      );
       models[t.itemId] = {
         dataModel: monacoDefined ? monaco.editor.createModel(JSON.stringify(t.data, null, '\t'), "json") : undefined,
         dataOriginValue: JSON.stringify(t.data),
@@ -240,12 +256,20 @@ export function getModels(templates: any[]): ISolutionModels {
         originalItemValues: {},
         name: t.item?.name,
         title: t.item?.title,
+        type: t.type,
         itemOriginValue: JSON.stringify(t.item),
-        spatialReference: t.properties?.service?.spatialReference
+        spatialReference: t.properties?.service?.spatialReference,
+        resources: t.resources,
+        // will contain updates
+        resourceFilePaths: resourceFilePaths,
+        // could be used to compare
+        sourceResourceFilePaths: cloneObject(resourceFilePaths),
+        thumbnailNew: undefined,// retain thumbnails in store as they get messed up if you emit them in events
+        thumbnailOrigin: undefined
       };
     }
   });
-  return models;
+  return _getThumbnails(models, authentication);
 }
 
 /**
@@ -267,7 +291,7 @@ export function getFeatureServices(
       prev.indexOf(name) < 0
     ) {
       const wkid = getProp(cur, "properties.service.spatialReference.wkid");
-      prev.push({ name, enabled: wkid.toString().startsWith("{{params.wkid||")});
+      prev.push({ name, enabled: wkid.toString().startsWith("{{params.wkid||") });
     }
     return prev;
   }, []);
@@ -304,6 +328,57 @@ export function getSpatialReferenceInfo(
 //  Private Functions
 //
 //--------------------------------------------------------------------------
+
+function _getResourceFilePaths(
+  solutionId: string,
+  template: any,
+  authentication: UserSession
+): IResourcePath[] {
+  const resourceFilePaths: IDeployFileCopyPath[] = generateStorageFilePaths(
+    authentication.portal,
+    solutionId,
+    template.resources,
+    1
+  );
+  return resourceFilePaths.map((fp: any) => {
+    fp.updateType = EUpdateType.None;
+    return fp;
+  }) as IResourcePath[];
+}
+
+/**
+ * Fetch thumbnails from the item resources
+ * 
+ * @param models the list of models for the current solution item
+ * @param authentication credentials for any requests
+ *
+ */
+function _getThumbnails(
+  models: any,
+  authentication: UserSession
+): Promise<ISolutionModels> {
+  return new Promise<any>((resolve, reject) => {
+    const thumbnailPromoses = [];
+    const _ids = [];
+    Object.keys(models).forEach(k => {
+      thumbnailPromoses.push(
+        models[k].resourceFilePaths.length > 0 ?
+          getThumbnailFromStorageItem(authentication, models[k].resourceFilePaths) :
+          Promise.resolve()
+      );
+      _ids.push(k);
+    });
+    thumbnailPromoses.push(Promise.resolve());
+    Promise.all(thumbnailPromoses).then(r => {
+      r.forEach((thumbnail, i) => {
+        if (thumbnail) {
+          models[_ids[i]].thumbnailOrigin = thumbnail;
+        }
+      })
+      resolve(models);
+    }, reject);
+  });
+}
 
 /**
  * Explore a solution item template for variables we will allow users to insert at runtime.
@@ -412,7 +487,6 @@ function _getItemDetails(
 ): IItemDetails {
   return {
     itemId,
-    thumbnail: item.thumbnail || "",
     title: item.title || "",
     snippet: item.snippet || "",
     description: item.description || "",

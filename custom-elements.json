@@ -72,7 +72,7 @@
         },
         {
           "name": "source-item-data",
-          "description": "Contains the current solution item id"
+          "description": "Contains the current solution item data"
         },
         {
           "name": "translations",
@@ -185,6 +185,10 @@
         "value": ""
       },
       "attributes": [
+        {
+          "name": "itemid",
+          "description": "The templates itemId.\r\nThis is used to get the correct model from a store in the json-editor"
+        },
         {
           "name": "translations",
           "description": "Contains the translations for this component."
