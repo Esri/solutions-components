@@ -35,20 +35,20 @@ describe('solution-resource-item', () => {
     await page.waitForChanges();
 
     expect(page.root).toEqualHtml(`
-    <solution-resource-item>
+    <solution-resource-item itemid="">
       <mock:shadow-root>
         <div class="resource-item">
-          <input accept=".zip" class="display-none" type="file">
-          <a class="display-none" download="" href="theurl"></a>
-          <calcite-label>
-            thename
-          </calcite-label>
-          <calcite-button appearance="solid" class="resource-button" color="blue" icon-start="download" scale="m">
-            Download
-          </calcite-button>
-          <calcite-button appearance="solid" class="resource-button" color="blue" icon-start="upload" scale="m">
-            Update
-          </calcite-button>
+          <div class="margin-bottom-1">
+            <calcite-button appearance="solid" class="resource-button" color="blue">
+              Add New Resource
+            </calcite-button>
+            <calcite-button appearance="solid" color="blue">
+              Download All
+            </calcite-button>
+          </div>
+          <div class="resources-container">
+            <calcite-value-list multiple=""></calcite-value-list>
+          </div>
         </div>
       </mock:shadow-root>
     </solution-resource-item>

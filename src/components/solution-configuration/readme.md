@@ -12,11 +12,18 @@
 | `authentication` | --                 | Credentials for requests                               | `UserSession`            | `undefined`                                                                                                                                     |
 | `item`           | --                 | Contains the current solution item we are working with | `ISolutionItem`          | `{     itemId: "",     itemDetails: {},     isResource: false,     data: {},     properties: {},     type: "",     groupDetails: undefined   }` |
 | `itemid`         | `itemid`           | Contains the current solution item id                  | `string`                 | `""`                                                                                                                                            |
-| `sourceItemData` | `source-item-data` | Contains the current solution item id                  | `any`                    | `{}`                                                                                                                                            |
+| `sourceItemData` | `source-item-data` | Contains the current solution item data                | `any`                    | `{}`                                                                                                                                            |
 | `templates`      | --                 | Contains the raw templates from the solution item      | `any[]`                  | `undefined`                                                                                                                                     |
 | `translations`   | `translations`     | Contains the translations for this component.          | `any`                    | `{}`                                                                                                                                            |
 | `treeOpen`       | `tree-open`        | Used to show/hide the content tree                     | `boolean`                | `true`                                                                                                                                          |
 | `value`          | --                 | Contains the public value for this component.          | `ISolutionConfiguration` | `{     contents: []   }`                                                                                                                        |
+
+
+## Events
+
+| Event            | Description | Type               |
+| ---------------- | ----------- | ------------------ |
+| `solutionLoaded` |             | `CustomEvent<any>` |
 
 
 ## Methods
@@ -135,8 +142,17 @@ graph TD;
   solution-variables --> calcite-tree-item
   solution-variables --> solution-item-icon
   solution-variables --> calcite-tree
-  solution-resource-item --> calcite-label
   solution-resource-item --> calcite-button
+  solution-resource-item --> calcite-value-list
+  solution-resource-item --> calcite-value-list-item
+  solution-resource-item --> calcite-action-group
+  solution-resource-item --> calcite-action
+  calcite-value-list-item --> calcite-icon
+  calcite-value-list-item --> calcite-pick-list-item
+  calcite-pick-list-item --> calcite-icon
+  calcite-pick-list-item --> calcite-action
+  calcite-action-group --> calcite-action-menu
+  calcite-action-group --> calcite-action
   solution-spatial-ref --> calcite-switch
   solution-spatial-ref --> calcite-label
   solution-spatial-ref --> calcite-input

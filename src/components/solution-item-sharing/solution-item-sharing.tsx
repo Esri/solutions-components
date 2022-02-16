@@ -64,7 +64,7 @@ export class SolutionItemSharing {
     return (
       <Host>
         <div class="container-border">
-            {this._renderItems(this.value)}
+          {this._renderItems(this.value)}
         </div>
       </Host>
     );
@@ -114,7 +114,7 @@ export class SolutionItemSharing {
   _renderItems(
     objs: IItemShare[]
   ): VNode[] {
-    return objs.length > 0 ? objs.map(item => {
+    return objs && objs.length > 0 ? objs.map(item => {
       return (
         <calcite-label layout="inline">
           <calcite-switch
@@ -124,7 +124,7 @@ export class SolutionItemSharing {
             scale="m"
             switched={item.shareItem}
             value="enabled"
-           />
+          />
           <solution-item-icon type={item.type} typeKeywords={item.typeKeywords} />
           <span class="icon-text" title={item.title}>{item.title}</span>
         </calcite-label>
@@ -148,7 +148,7 @@ export class SolutionItemSharing {
         if (state?.models[id]) {
           state.models[id].shareInfo =
             (item.isShared && !item.shareItem) ? { groupId: this.groupId, shared: false } :
-            (!item.isShared && item.shareItem) ? { groupId: this.groupId, shared: true } : undefined;
+              (!item.isShared && item.shareItem) ? { groupId: this.groupId, shared: true } : undefined;
         }
       }
       return item;

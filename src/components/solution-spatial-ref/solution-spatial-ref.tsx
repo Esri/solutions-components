@@ -51,7 +51,7 @@ export class SolutionSpatialRef {
   * Indicates if the control has been enabled.
   * The first time Spatial Reference has been enabled it should enable all feature services.
   */
-   @Prop({ mutable: true, reflect: true }) loaded = false;
+  @Prop({ mutable: true, reflect: true }) loaded = false;
 
   /**
   * When true, all but the main switch are disabled to prevent interaction.
@@ -99,7 +99,7 @@ export class SolutionSpatialRef {
             onCalciteSwitchChange={(event) => this._updateLocked(event)}
             scale="m"
             switched={!this.locked}
-           />
+          />
           {this.translations.specifyParam}
         </label>
         <div class="spatial-ref-switch-title" id="spatialRefDefn">
@@ -110,8 +110,8 @@ export class SolutionSpatialRef {
                 disabled={this.locked}
                 onCalciteInputInput={(evt) => this._searchSpatialReferences(evt)}
                 onKeyDown={(evt) => this._inputKeyDown(evt)}
-                placeholder = {this.translations.spatialReferencePlaceholder}
-               />
+                placeholder={this.translations.spatialReferencePlaceholder}
+              />
             </label>
           </calcite-label>
           <div class={this.locked ? 'disabled-div' : ''}>
@@ -219,16 +219,16 @@ export class SolutionSpatialRef {
     } else {
       const wkid = Number.parseInt(value);
       spatialRef = isNaN(wkid) ? {
-          display: value,
-          usingWkid: false,
-          wkid: 0,
-          wkt: value
-        } : {
-          display: this._wkidToDisplay(wkid),
-          usingWkid: true,
-          wkid: wkid,
-          wkt: ""
-        };
+        display: value,
+        usingWkid: false,
+        wkid: 0,
+        wkt: value
+      } : {
+        display: this._wkidToDisplay(wkid),
+        usingWkid: true,
+        wkid: wkid,
+        wkt: ""
+      };
     }
 
     return spatialRef;
@@ -262,7 +262,7 @@ export class SolutionSpatialRef {
     // switch all spatial-ref-item-switch
     const fsNodes = nodeListToArray(this.el.getElementsByClassName("spatial-ref-item-switch"));
     fsNodes.forEach((node: any) => node.checked = true);
-    services.forEach(name => this._updateEnabledServices({detail: { switched: true }}, name));
+    services.forEach(name => this._updateEnabledServices({ detail: { switched: true } }, name));
   }
 
   /**
@@ -303,7 +303,7 @@ export class SolutionSpatialRef {
               onCalciteSwitchChange={(event) => this._updateEnabledServices(event, name)}
               scale="m"
               switched={state.spatialReferenceInfo["services"][name]}
-             />{name}
+            />{name}
           </label>
         ))}
       </div>
@@ -356,7 +356,7 @@ export class SolutionSpatialRef {
   private _clearSelection(): void {
     const selectedItems = nodeListToArray(
       this.el.querySelectorAll("calcite-tree-item[selected]")
-    ) ;
+    );
     selectedItems.forEach((treeItem: HTMLCalciteTreeItemElement) => {
       treeItem.selected = false;
     });
@@ -399,25 +399,25 @@ export class SolutionSpatialRef {
    *
    */
   private _getTreeContent(): VNode {
-      const id = "solution-wkid-container";
-      const containerClass = "spatial-ref-container";
-      if (this._srSearchText && this._srSearchText !== "" && this._srSearchText.length > 1) {
-        const regEx = new RegExp(`${this._srSearchText}`, 'gi');
-        const matches = Object.keys(wkids).filter(wkid => {
-          return regEx.test(wkid.toString()) || regEx.test(wkids[wkid].label);
-        });
-        return matches.length > 0 ? (
-          <div class={containerClass} id={id}>
-            {matches.map((wkid) => this._getTreeItem(wkid, false))}
-          </div>
-        ) : (null);
-      } else {
-        return (
-          <div class={containerClass} id={id}>
-            {this._getTreeItem(this.defaultWkid.toString(), true)}
-          </div>
-        );
-      }
+    const id = "solution-wkid-container";
+    const containerClass = "spatial-ref-container";
+    if (this._srSearchText && this._srSearchText !== "" && this._srSearchText.length > 1) {
+      const regEx = new RegExp(`${this._srSearchText}`, 'gi');
+      const matches = Object.keys(wkids).filter(wkid => {
+        return regEx.test(wkid.toString()) || regEx.test(wkids[wkid].label);
+      });
+      return matches.length > 0 ? (
+        <div class={containerClass} id={id}>
+          {matches.map((wkid) => this._getTreeItem(wkid, false))}
+        </div>
+      ) : (null);
+    } else {
+      return (
+        <div class={containerClass} id={id}>
+          {this._getTreeItem(this.defaultWkid.toString(), true)}
+        </div>
+      );
+    }
   }
 
   /**
