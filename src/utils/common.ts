@@ -85,6 +85,14 @@ export async function save(
   });
 }
 
+/**
+ * Updates the solutions thumbnail and data resources 
+ *
+ * @param solutionId id for the solution
+ * @param models the models for the solutions templates
+ * @param data the current data object for the solution
+ * @param authentication credentials for the request
+ */
 export async function _updateResources(
   solutionId: string,
   models: ISolutionModels,
@@ -116,6 +124,13 @@ export async function _updateResources(
   })
 }
 
+/**
+ * Updates the solutions thumbnail and data resources 
+ *
+ * @param solutionId id for the solution
+ * @param model the model for the current solution template
+ * @param authentication credentials for the request
+ */
 function _updateThumbnailResource(
   solutionId: string,
   model: ISolutionModel,
@@ -146,6 +161,15 @@ function _updateThumbnailResource(
   });
 }
 
+/**
+ * Updates the solutions data resources 
+ *
+ * @param solutionId id for the solution
+ * @param model the model for the current solution template
+ * @param data the current data object for the solution
+ * @param promises list of add/remove/update promises
+ * @param authentication credentials for the request
+ */
 function _updateFileResources(
   solutionId: string,
   model: ISolutionModel,
@@ -191,6 +215,15 @@ function _updateFileResources(
   });
 }
 
+/**
+ * Generates add resource request
+ *
+ * @param solutionId id for the solution
+ * @param model the model for the current solution template
+ * @param data the current data object for the solution
+ * @param resourceFilePath resource file info
+ * @param authentication credentials for the request
+ */
 function _add(
   solutionId: string,
   model: ISolutionModel,
@@ -237,6 +270,15 @@ function _add(
   });
 }
 
+/**
+ * Generates add resource request
+ *
+ * @param solutionId id for the solution
+ * @param model the model for the current solution template
+ * @param data the current data object for the solution
+ * @param resourceFilePath resource file info
+ * @param authentication credentials for the request
+ */
 function _remove(
   solutionId: string,
   model: ISolutionModel,
@@ -271,6 +313,14 @@ function _remove(
   });
 }
 
+/**
+ * Generates update resource request
+ *
+ * @param solutionId id for the solution
+ * @param model the model for the current solution template
+ * @param resourceFilePath resource file info
+ * @param authentication credentials for the request
+ */
 function _update(
   solutionId: string,
   model: ISolutionModel,
@@ -297,6 +347,15 @@ function _update(
   return updateItemResource(opts)
 }
 
+/**
+ * Update the resources paths for a given template
+ *
+ * @param data the current data object for the solution
+ * @param id the id of the current template
+ * @param updateType add/update/remove
+ * @param path the resource prefix/name
+ * @param sourceFileName from the current resourceFilePath
+ */
 function _updateTemplateResourcePaths(
   data: any,
   id: string,

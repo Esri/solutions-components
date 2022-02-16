@@ -246,6 +246,7 @@ export class SolutionConfiguration {
       this._fetchData = true;
     }
   }
+
   //--------------------------------------------------------------------------
   //
   //  Private Methods
@@ -272,7 +273,7 @@ export class SolutionConfiguration {
   }
 
   /**
-   * Update the store with the initial value
+   * Update the store with the initial values
    * 
    * @param templates the solution items templates
    * @param isReset (defaults to false) indicates if we are resetting the controls after save

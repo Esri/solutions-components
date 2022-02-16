@@ -329,6 +329,14 @@ export function getSpatialReferenceInfo(
 //
 //--------------------------------------------------------------------------
 
+/**
+ * Generate storage file paths from the solution template
+ * 
+ * @param solutionId the id of the current solution
+ * @param template the current template from the solution
+ * @param authentication credentials for any requests
+ *
+ */
 function _getResourceFilePaths(
   solutionId: string,
   template: any,
