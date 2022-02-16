@@ -19,7 +19,7 @@ import { createStore } from "@stencil/store";
 // Used to share state across components
 
 // eslint-disable-next-line @typescript-eslint/unbound-method
-const { state, onChange, dispose, reset } = createStore({
+export const { state, onChange, dispose, reset } = createStore({
   models: {},
   featureServices: [],
   spatialReferenceInfo: {},

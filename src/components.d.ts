@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { UserSession } from "@esri/solution-common";
-import { IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourceItem, ISolutionConfiguration, ISolutionItem, ISpatialRefRepresentation, ITemplateData, IVariableItem } from "./utils/interfaces";
+import { IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISolutionConfiguration, ISolutionItem, ISpatialRefRepresentation, ITemplateData, IVariableItem } from "./utils/interfaces";
 export namespace Components {
     interface JsonEditor {
         /**
@@ -53,7 +53,7 @@ export namespace Components {
         "itemid": string;
         "save": () => Promise<any>;
         /**
-          * Contains the current solution item id
+          * Contains the current solution item data
          */
         "sourceItemData": any;
         /**
@@ -84,6 +84,10 @@ export namespace Components {
         "value": IInventoryItem[];
     }
     interface SolutionItem {
+        /**
+          * Credentials for requests
+         */
+        "authentication": UserSession;
         /**
           * Contains the organization based variables
          */
@@ -160,13 +164,25 @@ export namespace Components {
     }
     interface SolutionResourceItem {
         /**
+          * Credentials for requests
+         */
+        "authentication": UserSession;
+        /**
+          * The templates itemId. This is used to get the correct model from a store in the json-editor
+         */
+        "itemid": string;
+        /**
+          * The templates resourceFilePaths.
+         */
+        "resourceFilePaths": IResourcePath[];
+        /**
+          * The templates resources.
+         */
+        "resources": {};
+        /**
           * Contains the translations for this component.
          */
         "translations": any;
-        /**
-          * Contains the public value for this component.
-         */
-        "value": IResourceItem;
     }
     interface SolutionSpatialRef {
         /**
@@ -211,6 +227,10 @@ export namespace Components {
         "wkidToDisplay": (wkid: number) => Promise<string>;
     }
     interface SolutionTemplateData {
+        /**
+          * Credentials for requests
+         */
+        "authentication": UserSession;
         /**
           * This needs to be unique for props vs data of an item
          */
@@ -404,8 +424,9 @@ declare namespace LocalJSX {
           * Contains the current solution item id
          */
         "itemid"?: string;
+        "onSolutionLoaded"?: (event: CustomEvent<any>) => void;
         /**
-          * Contains the current solution item id
+          * Contains the current solution item data
          */
         "sourceItemData"?: any;
         /**
@@ -437,6 +458,10 @@ declare namespace LocalJSX {
         "value"?: IInventoryItem[];
     }
     interface SolutionItem {
+        /**
+          * Credentials for requests
+         */
+        "authentication"?: UserSession;
         /**
           * Contains the organization based variables
          */
@@ -513,13 +538,25 @@ declare namespace LocalJSX {
     }
     interface SolutionResourceItem {
         /**
+          * Credentials for requests
+         */
+        "authentication"?: UserSession;
+        /**
+          * The templates itemId. This is used to get the correct model from a store in the json-editor
+         */
+        "itemid"?: string;
+        /**
+          * The templates resourceFilePaths.
+         */
+        "resourceFilePaths"?: IResourcePath[];
+        /**
+          * The templates resources.
+         */
+        "resources"?: {};
+        /**
           * Contains the translations for this component.
          */
         "translations"?: any;
-        /**
-          * Contains the public value for this component.
-         */
-        "value"?: IResourceItem;
     }
     interface SolutionSpatialRef {
         /**
@@ -549,6 +586,10 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface SolutionTemplateData {
+        /**
+          * Credentials for requests
+         */
+        "authentication"?: UserSession;
         /**
           * This needs to be unique for props vs data of an item
          */

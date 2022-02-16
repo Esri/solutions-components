@@ -19,6 +19,11 @@ import { SolutionTemplateData } from '../solution-template-data';
 import * as translations from '../../../testingAssets/strings.json';
 import * as data from '../../../demos/data/solution-template-data-data.json';
 import { h } from '@stencil/core';
+import { state, dispose } from '../../../utils/editStore';
+
+beforeEach(async () => {
+  dispose();
+});
 
 describe('solution-template-data', () => {
   it('renders', async () => {
@@ -58,26 +63,29 @@ describe('solution-template-data', () => {
     const page = await newSpecPage({
       components: [SolutionTemplateData],
       template: () => (
-        <solution-template-data translations={translations.configuration_modal.configuration}></solution-template-data>
+        <solution-template-data translations={translations.configuration_modal.configuration} itemid="0"></solution-template-data>
       )
     });
     page.root.isResource = true;
 
-    page.root.value = {
-      resourceItem: {
-        name: "Survey1.zip",
-        url: ""
+    state.models = {
+      "0": {
+        resourceFilePaths: [{
+          filename: "Survey1.zip",
+          url: "http://pathToTheResource",
+          type: 0
+        }]
       }
     };
 
     await page.waitForChanges();
 
     expect(page.root).toEqualHtml(`
-    <solution-template-data instanceid="" itemid="" vars-open="">
-      <div class="solution-data-container">
-        <solution-resource-item></solution-resource-item>
-      </div>
-    </solution-template-data>
+      <solution-template-data instanceid="" itemid="0" vars-open="">
+        <div class="solution-data-container">
+          <solution-resource-item class="solutions-resource-container" itemid="0"></solution-resource-item>
+        </div>
+      </solution-template-data>
     `);
   });
 });

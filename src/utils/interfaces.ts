@@ -14,11 +14,17 @@
  * limitations under the License.
  */
 
+ export enum EUpdateType {
+  Add,
+  Update,
+  Remove,
+  None
+}
+
 /**
  * Key details from the templates item
  */
 export interface IItemDetails {
-  thumbnail: string;
   title: string;
   snippet: string;
   description: string;
@@ -116,6 +122,12 @@ export interface ISolutionModel {
   title: string;
   itemOriginValue: string;
   spatialReference: any;
+  resources: string[];
+  resourceFilePaths: IResourcePath[];
+  sourceResourceFilePaths: IResourcePath[];
+  thumbnailOrigin: any;
+  thumbnailNew: any;
+  type: string;
 }
 
 /**
@@ -168,4 +180,13 @@ export interface IVariableItem {
 export interface IWkidDescription {
   label: string;
   defaultExtent: string;
+}
+
+export interface IResourcePath {
+  url: string;
+  type: number;
+  filename: string;
+  blob?: any; // This will only be set when a new file is uploaded (add or update)
+  sourceFileName?: string; // This will only be set when a file is being updated
+  updateType: EUpdateType
 }
