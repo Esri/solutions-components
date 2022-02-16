@@ -5,25 +5,9 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IChangeEventDetail } from "./components/arcgis-hub-input-color/arcgis-hub-input-color";
 import { UserSession } from "@esri/solution-common";
 import { IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISolutionConfiguration, ISolutionItem, ISpatialRefRepresentation, ITemplateData, IVariableItem } from "./utils/interfaces";
 export namespace Components {
-    interface ArcgisHubInputColor {
-        /**
-          * A boolean value indicating whether the control is disabled
-         */
-        "disabled": boolean;
-        "placeholder": string;
-        /**
-          * A boolean value indicating whether the control should consider empty values valid
-         */
-        "required": boolean;
-        /**
-          * The color
-         */
-        "value": string;
-    }
     interface JsonEditor {
         /**
           * Contains a public value to indicate if the model has any errors that would prevent saving it.
@@ -306,12 +290,6 @@ export namespace Components {
     }
 }
 declare global {
-    interface HTMLArcgisHubInputColorElement extends Components.ArcgisHubInputColor, HTMLStencilElement {
-    }
-    var HTMLArcgisHubInputColorElement: {
-        prototype: HTMLArcgisHubInputColorElement;
-        new (): HTMLArcgisHubInputColorElement;
-    };
     interface HTMLJsonEditorElement extends Components.JsonEditor, HTMLStencilElement {
     }
     var HTMLJsonEditorElement: {
@@ -391,7 +369,6 @@ declare global {
         new (): HTMLStoreManagerElement;
     };
     interface HTMLElementTagNameMap {
-        "arcgis-hub-input-color": HTMLArcgisHubInputColorElement;
         "json-editor": HTMLJsonEditorElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-contents": HTMLSolutionContentsElement;
@@ -408,25 +385,6 @@ declare global {
     }
 }
 declare namespace LocalJSX {
-    interface ArcgisHubInputColor {
-        /**
-          * A boolean value indicating whether the control is disabled
-         */
-        "disabled"?: boolean;
-        /**
-          * This custom event is emitted when the color is changed.
-         */
-        "onArcgisHubInputColorChange"?: (event: CustomEvent<IChangeEventDetail>) => void;
-        "placeholder"?: string;
-        /**
-          * A boolean value indicating whether the control should consider empty values valid
-         */
-        "required"?: boolean;
-        /**
-          * The color
-         */
-        "value"?: string;
-    }
     interface JsonEditor {
         /**
           * Contains a public value to indicate if the model has any errors that would prevent saving it.
@@ -692,7 +650,6 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface IntrinsicElements {
-        "arcgis-hub-input-color": ArcgisHubInputColor;
         "json-editor": JsonEditor;
         "solution-configuration": SolutionConfiguration;
         "solution-contents": SolutionContents;
@@ -712,7 +669,6 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "arcgis-hub-input-color": LocalJSX.ArcgisHubInputColor & JSXBase.HTMLAttributes<HTMLArcgisHubInputColorElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;

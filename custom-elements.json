@@ -2,31 +2,6 @@
   "version": 1.1,
   "tags": [
     {
-      "name": "arcgis-hub-input-color",
-      "description": {
-        "kind": "markdown",
-        "value": ""
-      },
-      "attributes": [
-        {
-          "name": "disabled",
-          "description": "A boolean value indicating whether the control is disabled"
-        },
-        {
-          "name": "placeholder",
-          "description": ""
-        },
-        {
-          "name": "required",
-          "description": "A boolean value indicating whether the control should consider empty values valid"
-        },
-        {
-          "name": "value",
-          "description": "The color"
-        }
-      ]
-    },
-    {
       "name": "json-editor",
       "description": {
         "kind": "markdown",
