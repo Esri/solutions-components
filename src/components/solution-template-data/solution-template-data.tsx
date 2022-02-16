@@ -187,11 +187,12 @@ export class SolutionTemplateData {
    * Render the resource data so the end user can upload/download
    */
   _resourceData(): any {
-    const model = state.models[this.itemid];
+    const resourceFilePaths = Object.keys(state.models).indexOf(this.itemid) > -1 ? 
+      state.models[this.itemid].resourceFilePaths : [];
     return <solution-resource-item
       translations={this.translations}
       itemid={this.itemid}
-      resourceFilePaths={model.resourceFilePaths}
+      resourceFilePaths={resourceFilePaths}
       authentication={this.authentication}
       class="solutions-resource-container"
     />;

@@ -124,6 +124,7 @@ export class SolutionConfiguration {
 
   render(): VNode {
     const wkid = getProp(state.spatialReferenceInfo, "spatialReference.wkid");
+    const hasServices: boolean = state.featureServices.length > 0;
     return (
       <Host>
         <div class="configuration-container">
@@ -131,7 +132,10 @@ export class SolutionConfiguration {
             <calcite-tabs class="config-tabs">
               <calcite-tab-nav slot="tab-nav">
                 <calcite-tab-title>{this.translations.definitionTab}</calcite-tab-title>
-                <calcite-tab-title>{this.translations.spatialReferenceTab}</calcite-tab-title>
+                {hasServices ?
+                  <calcite-tab-title>{this.translations.spatialReferenceTab}</calcite-tab-title> :
+                  null
+                }
               </calcite-tab-nav>
               <calcite-tab active class="config-tab">
                 <div class="config-solution">
@@ -164,18 +168,22 @@ export class SolutionConfiguration {
                   </div>
                 </div>
               </calcite-tab>
-              <calcite-tab class="config-tab">
-                <div class="config-solution">
-                  <solution-spatial-ref
-                    defaultWkid={wkid}
-                    id="configure-solution-spatial-ref"
-                    key={`${this.itemid}-spatial-ref`}
-                    locked={!wkid}
-                    services={state.featureServices.map(fs => fs.name)}
-                    translations={this.translations}
-                  />
-                </div>
-              </calcite-tab>
+              {
+                hasServices ?
+                  <calcite-tab class="config-tab">
+                    <div class="config-solution">
+                      <solution-spatial-ref
+                        defaultWkid={wkid}
+                        id="configure-solution-spatial-ref"
+                        key={`${this.itemid}-spatial-ref`}
+                        locked={!wkid}
+                        services={state.featureServices.map(fs => fs.name)}
+                        translations={this.translations}
+                      />
+                    </div>
+                  </calcite-tab>
+                  : null
+              }
             </calcite-tabs>
           </div>
         </div>
@@ -205,6 +213,8 @@ export class SolutionConfiguration {
 
   @Listen("solutionItemSelected", { target: 'window' })
   _solutionItemSelected(event: CustomEvent): void {
+    console.log("_solutionItemSelected solution-config")
+    console.log(event.detail)
     this.item = event.detail;
   }
 

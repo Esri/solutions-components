@@ -167,7 +167,7 @@ export class SolutionItemDetails {
 
   @Listen("solutionItemSelected", { target: 'window' })
   _solutionItemSelected(event: CustomEvent): void {
-    this.value = event.detail;
+    this.value = event.detail.itemDetails;
     this._loadThumb(event?.detail?.itemId);
   }
 

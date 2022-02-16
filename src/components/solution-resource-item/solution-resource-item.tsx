@@ -62,11 +62,12 @@ export class SolutionResourceItem {
   @Prop({ mutable: true, reflect: true }) resourceFilePaths: IResourcePath[] = [];
   @Watch('resourceFilePaths')
   resourceFilePathsWatchHandler(v: any, oldV: any): void {
-    if (v && v !== oldV) {
+    if (v && v !== oldV && Object.keys(state.models).indexOf(this.itemid) > -1) {
       const m: ISolutionModel = state.models[this.itemid];
       m.resourceFilePaths = this.resourceFilePaths;
     }
   }
+
   /**
    * Contains the translations for this component.
    */
