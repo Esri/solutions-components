@@ -141,6 +141,22 @@ export interface ISolutionModels {
 }
 
 /**
+ * Hash of service name: enabled (should it honor the user defined spatial reference)
+ */
+export interface IServiceInfo {
+  [key: string]: boolean;
+}
+
+/**
+ * Key spatial reference information for the solution
+ */
+export interface ISolutionSpatialReferenceInfo {
+  enabled: boolean;
+  services: IServiceInfo[];
+  spatialReference: any;
+}
+
+/**
  * Key spatial reference information
  */
 export interface ISpatialRefRepresentation {

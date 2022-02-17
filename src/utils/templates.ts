@@ -25,6 +25,7 @@ import {
   IOrganizationVariableItem,
   IResourcePath,
   ISolutionModels,
+  ISolutionSpatialReferenceInfo,
   IVariableItem
 } from '../utils/interfaces';
 import {
@@ -310,7 +311,7 @@ export function getFeatureServices(
 export function getSpatialReferenceInfo(
   services: any[],
   data: any
-): any {
+): ISolutionSpatialReferenceInfo {
   const defaultServices: any = {};
   services.forEach(service => {
     defaultServices[service.name] = service.enabled;
