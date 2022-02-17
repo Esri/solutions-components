@@ -185,6 +185,9 @@ export interface IWkidDescription {
   defaultExtent: string;
 }
 
+/**
+ * Key details to manage resources
+ */
 export interface IResourcePath {
   url: string;
   type: number;
