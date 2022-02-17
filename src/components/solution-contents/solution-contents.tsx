@@ -39,6 +39,11 @@ export class SolutionContents {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+  
+  /**
+   * Contains the current item that is selected.
+   */
+   @Prop({ mutable: true, reflect: true }) selectedItem: ISolutionItem;
 
   /**
    * Contains the translations for this component.
@@ -75,9 +80,10 @@ export class SolutionContents {
 
   renderHierarchy(objs: IInventoryItem[]): HTMLCalciteTreeItemElement[] {
     return objs.map((obj) => {
+      const selected: boolean = this.selectedItem?.itemId && this.selectedItem?.itemId === obj.solutionItem.itemId;
       return (obj.dependencies && obj.dependencies.length > 0) ?
         (
-          <calcite-tree-item onClick={() => this._treeItemSelected(obj.solutionItem)}>
+          <calcite-tree-item onClick={() => this._treeItemSelected(obj.solutionItem)} selected={selected}>
             <solution-item-icon type={obj.type} typeKeywords={obj.typeKeywords} />
             <span class="icon-text" title={obj.title}>{obj.title}</span>
             <calcite-tree slot="children" >
@@ -87,7 +93,7 @@ export class SolutionContents {
         )
         :
         (
-          <calcite-tree-item onClick={() => this._treeItemSelected(obj.solutionItem)}>
+          <calcite-tree-item onClick={() => this._treeItemSelected(obj.solutionItem)} selected={selected}>
             <solution-item-icon type={obj.type} typeKeywords={obj.typeKeywords} />
             <span class="icon-text" title={obj.title}>{obj.title}</span>
           </calcite-tree-item>
@@ -109,7 +115,7 @@ export class SolutionContents {
 
   @Listen("solutionLoaded", { target: 'window' })
   _solutionLoaded(): void {
-    this._treeItemSelected(this.value[0].solutionItem)
+    this._treeItemSelected(this.value[0].solutionItem);
   }
 
   //--------------------------------------------------------------------------
@@ -141,6 +147,7 @@ export class SolutionContents {
   private _treeItemSelected(
     solutionItem: ISolutionItem
   ): void {
+    this.selectedItem = solutionItem;
     this.solutionItemSelected.emit(solutionItem);
   }
 }

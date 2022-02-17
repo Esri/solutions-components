@@ -74,6 +74,7 @@ export namespace Components {
         "value": ISolutionConfiguration;
     }
     interface SolutionContents {
+        "selectedItem": ISolutionItem;
         /**
           * Contains the translations for this component.
          */
@@ -448,6 +449,7 @@ declare namespace LocalJSX {
     }
     interface SolutionContents {
         "onSolutionItemSelected"?: (event: CustomEvent<any>) => void;
+        "selectedItem"?: ISolutionItem;
         /**
           * Contains the translations for this component.
          */
