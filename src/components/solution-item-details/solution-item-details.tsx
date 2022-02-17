@@ -64,18 +64,18 @@ export class SolutionItemDetails {
    */
   @Prop({ mutable: true, reflect: true }) type = "";
 
+  //--------------------------------------------------------------------------
+  //
+  //  Lifecycle
+  //
+  //--------------------------------------------------------------------------
+
   componentDidRender() {
     if (this.loadThumb) {
       this.loadThumb = false;
       this._loadThumb(this.value.itemId)
     }
   }
-
-  //--------------------------------------------------------------------------
-  //
-  //  Lifecycle
-  //
-  //--------------------------------------------------------------------------
 
   render(): VNode {
     this._validateValue();
@@ -167,7 +167,7 @@ export class SolutionItemDetails {
 
   @Listen("solutionItemSelected", { target: 'window' })
   _solutionItemSelected(event: CustomEvent): void {
-    this.value = event.detail;
+    this.value = event.detail.itemDetails;
     this._loadThumb(event?.detail?.itemId);
   }
 
@@ -223,6 +223,12 @@ export class SolutionItemDetails {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Load the templates thumbnail 
+   * 
+   * @param id the current template is
+   *
+   */
   private _loadThumb(id: string): void {
     if (id) {
       const thumbnailNew = getProp(state, `models.${id}.thumbnailNew`);

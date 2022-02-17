@@ -7,10 +7,11 @@
 
 ## Properties
 
-| Property       | Attribute      | Description                                   | Type               | Default |
-| -------------- | -------------- | --------------------------------------------- | ------------------ | ------- |
-| `translations` | `translations` | Contains the translations for this component. | `any`              | `{}`    |
-| `value`        | --             | Contains the public value for this component. | `IInventoryItem[]` | `[]`    |
+| Property       | Attribute      | Description                                   | Type               | Default     |
+| -------------- | -------------- | --------------------------------------------- | ------------------ | ----------- |
+| `selectedItem` | --             |                                               | `ISolutionItem`    | `undefined` |
+| `translations` | `translations` | Contains the translations for this component. | `any`              | `{}`        |
+| `value`        | --             | Contains the public value for this component. | `IInventoryItem[]` | `[]`        |
 
 
 ## Events

@@ -124,6 +124,7 @@ export class SolutionConfiguration {
 
   render(): VNode {
     const wkid = getProp(state.spatialReferenceInfo, "spatialReference.wkid");
+    const hasServices: boolean = state.featureServices.length > 0;
     return (
       <Host>
         <div class="configuration-container">
@@ -131,7 +132,10 @@ export class SolutionConfiguration {
             <calcite-tabs class="config-tabs">
               <calcite-tab-nav slot="tab-nav">
                 <calcite-tab-title>{this.translations.definitionTab}</calcite-tab-title>
-                <calcite-tab-title>{this.translations.spatialReferenceTab}</calcite-tab-title>
+                {hasServices ?
+                  <calcite-tab-title>{this.translations.spatialReferenceTab}</calcite-tab-title> :
+                  null
+                }
               </calcite-tab-nav>
               <calcite-tab active class="config-tab">
                 <div class="config-solution">
@@ -164,18 +168,22 @@ export class SolutionConfiguration {
                   </div>
                 </div>
               </calcite-tab>
-              <calcite-tab class="config-tab">
-                <div class="config-solution">
-                  <solution-spatial-ref
-                    defaultWkid={wkid}
-                    id="configure-solution-spatial-ref"
-                    key={`${this.itemid}-spatial-ref`}
-                    locked={!wkid}
-                    services={state.featureServices.map(fs => fs.name)}
-                    translations={this.translations}
-                  />
-                </div>
-              </calcite-tab>
+              {
+                hasServices ?
+                  <calcite-tab class="config-tab">
+                    <div class="config-solution">
+                      <solution-spatial-ref
+                        defaultWkid={wkid}
+                        id="configure-solution-spatial-ref"
+                        key={`${this.itemid}-spatial-ref`}
+                        locked={!wkid}
+                        services={state.featureServices.map(fs => fs.name)}
+                        translations={this.translations}
+                      />
+                    </div>
+                  </calcite-tab>
+                  : null
+              }
             </calcite-tabs>
           </div>
         </div>
@@ -246,6 +254,7 @@ export class SolutionConfiguration {
       this._fetchData = true;
     }
   }
+
   //--------------------------------------------------------------------------
   //
   //  Private Methods
@@ -272,7 +281,7 @@ export class SolutionConfiguration {
   }
 
   /**
-   * Update the store with the initial value
+   * Update the store with the initial values
    * 
    * @param templates the solution items templates
    * @param isReset (defaults to false) indicates if we are resetting the controls after save

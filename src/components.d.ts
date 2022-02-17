@@ -75,6 +75,10 @@ export namespace Components {
     }
     interface SolutionContents {
         /**
+          * Contains the current item that is selected.
+         */
+        "selectedItem": ISolutionItem;
+        /**
           * Contains the translations for this component.
          */
         "translations": any;
@@ -448,6 +452,10 @@ declare namespace LocalJSX {
     }
     interface SolutionContents {
         "onSolutionItemSelected"?: (event: CustomEvent<any>) => void;
+        /**
+          * Contains the current item that is selected.
+         */
+        "selectedItem"?: ISolutionItem;
         /**
           * Contains the translations for this component.
          */

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * Resource update types
+ */
  export enum EUpdateType {
   Add,
   Update,
