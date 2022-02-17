@@ -213,8 +213,6 @@ export class SolutionConfiguration {
 
   @Listen("solutionItemSelected", { target: 'window' })
   _solutionItemSelected(event: CustomEvent): void {
-    console.log("_solutionItemSelected solution-config")
-    console.log(event.detail)
     this.item = event.detail;
   }
 
