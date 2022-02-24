@@ -234,7 +234,8 @@ export class SolutionItemDetails {
       const thumbnailNew = getProp(state, `models.${id}.thumbnailNew`);
       const thumbnailOrigin = getProp(state, `models.${id}.thumbnailOrigin`);
       if (this.thumbnail) {
-        this.thumbnail.src = URL.createObjectURL(thumbnailNew || thumbnailOrigin);
+        this.thumbnail.src = (thumbnailNew || thumbnailOrigin) ?
+          URL.createObjectURL(thumbnailNew || thumbnailOrigin) : "";
       } else {
         this.loadThumb = true;
       }
