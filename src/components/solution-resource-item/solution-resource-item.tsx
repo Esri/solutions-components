@@ -271,14 +271,14 @@ export class SolutionResourceItem {
     url: string,
     name: string
   ): void {
-    // images that have been added manually do not need to be requested from the item
+    // files that have been added manually do not need to be requested from the item
     if (url.startsWith("blob")) {
       this.downloadFile(url, name);
     } else {
-      const imageExtensions: string[] = ['jpg', 'jpeg', 'gif', 'png'];
+      const fileExtensions: string[] = ['jpg', 'jpeg', 'gif', 'png', 'json'];
       const _url: string = `${url}?token=${this.authentication.token}`;
-      if (imageExtensions.some(ext => url.endsWith(ext))) {
-        this.downloadImage(_url, name);
+      if (fileExtensions.some(ext => url.endsWith(ext))) {
+        this.fetchAndDownload(_url, name);
       } else {
         this.downloadFile(_url, name);
       }
@@ -307,7 +307,7 @@ export class SolutionResourceItem {
    * @param url the url of the resource
    * @param name the name of the resource
    */
-  async downloadImage(url: string, name: string): Promise<void> {
+  async fetchAndDownload(url: string, name: string): Promise<void> {
     const image = await fetch(url);
     const b = await image.blob();
     const bURL = URL.createObjectURL(b);
