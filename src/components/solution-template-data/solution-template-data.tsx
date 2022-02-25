@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-import { VNode } from '@esri/calcite-components/dist/types/stencil-public-runtime';
 import { Component, Element, Host, h, Prop } from '@stencil/core';
 import { IOrganizationVariableItem, ITemplateData, IVariableItem } from '../../utils/interfaces';
-import state from '../../utils/editStore';
 import { UserSession } from '@esri/solution-common';
 
 @Component({
@@ -62,12 +60,6 @@ export class SolutionTemplateData {
   @Prop({ mutable: true, reflect: true }) value: ITemplateData = {};
 
   /**
-   * Should be set to true for items that store their data as a resource
-   * Will allow for upload and download of the resource
-   */
-  @Prop({ mutable: true }) isResource = false;
-
-  /**
    * This needs to be unique for props vs data of an item
    */
   @Prop({ mutable: true, reflect: true }) instanceid = "";
@@ -103,7 +95,43 @@ export class SolutionTemplateData {
     return (
       <Host>
         <div class="solution-data-container">
-          {this._renderTemplateData()}
+          <calcite-shell class="light var-container" dir="ltr">
+            <calcite-panel class="json-editor">
+              <div class="solution-data-child-container calcite-match-height">
+                <json-editor
+                  instanceid={this.instanceid}
+                  translations={this.translations}
+                  value={this.itemid}
+                />
+              </div>
+            </calcite-panel>
+
+            <calcite-shell-panel height-scale="l" position="end" slot="contextual-panel" width-scale="xs">
+              <div class={this.varsOpen ? "solution-data-child-container" : "solution-data-child-container-collapsed"}>
+                <calcite-button
+                  appearance="transparent"
+                  class="collapse-btn"
+                  icon-start={this.varsOpen ? "chevrons-right" : "chevrons-left"}
+                  id="collapse-vars"
+                  onClick={() => this._toggleVars()}
+                  scale="s"
+                  title={this.translations.cancelEdits}
+                />
+                <div class={this.varsOpen ? "org-vars" : "org-vars hide"} id="orgVars">
+                  <solution-organization-variables
+                    translations={this.translations}
+                    value={this.organizationVariables}
+                  />
+                </div>
+                <div class={this.varsOpen ? "sol-vars" : "sol-vars hide"} id="solVars">
+                  <solution-variables
+                    translations={this.translations}
+                    value={this.solutionVariables}
+                  />
+                </div>
+              </div>
+            </calcite-shell-panel>
+          </calcite-shell>
         </div>
       </Host>
     );
@@ -132,71 +160,6 @@ export class SolutionTemplateData {
   //  Private Methods
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Render the JSON data in an editor that the user can interact with at runtime
-   */
-  _jsonData(): any {
-    return <calcite-shell class="light var-container" dir="ltr">
-      <calcite-panel class="json-editor">
-        <div class="solution-data-child-container calcite-match-height">
-          <json-editor
-            instanceid={this.instanceid}
-            translations={this.translations}
-            value={this.itemid}
-          />
-        </div>
-      </calcite-panel>
-
-      <calcite-shell-panel height-scale="l" position="end" slot="contextual-panel" width-scale="xs">
-        <div class={this.varsOpen ? "solution-data-child-container" : "solution-data-child-container-collapsed"}>
-          <calcite-button
-            appearance="transparent"
-            class="collapse-btn"
-            icon-start={this.varsOpen ? "chevrons-right" : "chevrons-left"}
-            id="collapse-vars"
-            onClick={() => this._toggleVars()}
-            scale="s"
-            title={this.translations.cancelEdits}
-          />
-          <div class={this.varsOpen ? "org-vars" : "org-vars hide"} id="orgVars">
-            <solution-organization-variables
-              translations={this.translations}
-              value={this.organizationVariables}
-            />
-          </div>
-          <div class={this.varsOpen ? "sol-vars" : "sol-vars hide"} id="solVars">
-            <solution-variables
-              translations={this.translations}
-              value={this.solutionVariables}
-            />
-          </div>
-        </div>
-      </calcite-shell-panel>
-    </calcite-shell>;
-  }
-
-  /**
-   * Render resource or template data
-   */
-  _renderTemplateData(): VNode {
-    return this.isResource ? this._resourceData() : this._jsonData();
-  }
-
-  /**
-   * Render the resource data so the end user can upload/download
-   */
-  _resourceData(): any {
-    const resourceFilePaths = Object.keys(state.models).indexOf(this.itemid) > -1 ? 
-      state.models[this.itemid].resourceFilePaths : [];
-    return <solution-resource-item
-      translations={this.translations}
-      itemid={this.itemid}
-      resourceFilePaths={resourceFilePaths}
-      authentication={this.authentication}
-      class="solutions-resource-container"
-    />;
-  }
 
   /**
    * Toggle varsOpen prop to show/hide variable containers

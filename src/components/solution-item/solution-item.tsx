@@ -18,6 +18,7 @@ import { Component, Element, h, Host, Prop, VNode } from '@stencil/core';
 import { ISolutionItem } from '../../utils/interfaces';
 import '@esri/calcite-components';
 import { UserSession } from '@esri/solution-common';
+import state from '../../utils/editStore';
 
 @Component({
   tag: 'solution-item',
@@ -167,8 +168,9 @@ export class SolutionItem {
     return <calcite-tabs class="config-tabs" style={{ display: visible ? "inherit" : "none" }}>
       <calcite-tab-nav slot="tab-nav">
         <calcite-tab-title>{this.translations.itemDetailsTab}</calcite-tab-title>
-        <calcite-tab-title>{this.value.isResource ? this.translations.resourcesTab : this.translations.dataTab }</calcite-tab-title>
+        <calcite-tab-title>{this.translations.dataTab}</calcite-tab-title>
         <calcite-tab-title>{this.translations.propertiesTab}</calcite-tab-title>
+        <calcite-tab-title>{this.translations.resourcesTab}</calcite-tab-title>
       </calcite-tab-nav>
 
       <calcite-tab active class="config-tab">
@@ -181,7 +183,6 @@ export class SolutionItem {
       <calcite-tab class="config-tab" id="data-tab">
         <solution-template-data
           instanceid="data"
-          isResource={this.value.isResource}
           itemid={this.value.itemId}
           organizationVariables={this.organizationVariables}
           solutionVariables={this.solutionVariables}
@@ -201,6 +202,20 @@ export class SolutionItem {
           authentication={this.authentication}
         />
       </calcite-tab>
+      <calcite-tab class="config-tab" id="resources-tab">
+        <solution-resource-item
+          translations={this.translations}
+          itemid={this.value.itemId}
+          resourceFilePaths={
+            Object.keys(state.models).indexOf(this.value.itemId) > -1 ?
+              state.models[this.value.itemId].resourceFilePaths : []
+          }
+          authentication={this.authentication}
+          class="solutions-resource-container"
+        />
+      </calcite-tab>
     </calcite-tabs>
   }
+
+
 }

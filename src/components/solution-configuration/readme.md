@@ -108,6 +108,7 @@ graph TD;
   solution-item --> solution-item-details
   solution-item --> solution-item-sharing
   solution-item --> solution-template-data
+  solution-item --> solution-resource-item
   solution-item-details --> calcite-input
   solution-item-details --> calcite-label
   calcite-input --> calcite-progress
@@ -122,7 +123,6 @@ graph TD;
   solution-template-data --> calcite-button
   solution-template-data --> solution-organization-variables
   solution-template-data --> solution-variables
-  solution-template-data --> solution-resource-item
   calcite-panel --> calcite-action
   calcite-panel --> calcite-action-menu
   calcite-panel --> calcite-scrim

@@ -80,6 +80,7 @@ export class SolutionResourceItem {
   //--------------------------------------------------------------------------
 
   render() {
+    const hasValidResources = this._hasValidResources();
     return (
       <Host>
         <div class="resource-item">
@@ -95,10 +96,11 @@ export class SolutionResourceItem {
               color="blue"
               appearance="solid"
               onClick={() => this._downloadAll()}
+              disabled={!hasValidResources}
             >{this.translations.downloadAll}
             </calcite-button>
           </div>
-          <div class="resources-container">
+          <div class="resources-container" style={{ display: hasValidResources ? "inherit" : "none" }}>
             {this._renderResourceList()}
           </div>
         </div>
@@ -151,7 +153,7 @@ export class SolutionResourceItem {
               this.resources[cur.url] = cur;
             }
             if (cur.url.indexOf("_info_thumbnail") < 0) {
-              prev.push(this._renderResource(cur))
+              prev.push(this._renderResource(cur));
             }
             return prev;
           }, [])
@@ -299,6 +301,15 @@ export class SolutionResourceItem {
     link.href = url;
     link.download = name;
     link.click();
+  }
+
+  /**
+   * Check if the template resources have any non-thumbnail resources
+   *
+   * @returns true if we have data resources and false if only thumbnail
+   */
+  _hasValidResources() : boolean {
+    return this.resourceFilePaths.some(r => r.url.indexOf("_info_thumbnail") < 0);
   }
 
   /**
