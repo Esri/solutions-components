@@ -46,6 +46,7 @@
 
 .json-editor {
   width: -webkit-fill-available;
+  width: -moz-available;
   margin: 1rem;
 }
 
