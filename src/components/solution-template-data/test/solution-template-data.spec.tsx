@@ -58,34 +58,4 @@ describe('solution-template-data', () => {
     </solution-template-data>
     `);
   });
-
-  it('renders a resource type item', async () => {
-    const page = await newSpecPage({
-      components: [SolutionTemplateData],
-      template: () => (
-        <solution-template-data translations={translations.configuration_modal.configuration} itemid="0"></solution-template-data>
-      )
-    });
-    page.root.isResource = true;
-
-    state.models = {
-      "0": {
-        resourceFilePaths: [{
-          filename: "Survey1.zip",
-          url: "http://pathToTheResource",
-          type: 0
-        }]
-      }
-    };
-
-    await page.waitForChanges();
-
-    expect(page.root).toEqualHtml(`
-      <solution-template-data instanceid="" itemid="0" vars-open="">
-        <div class="solution-data-container">
-          <solution-resource-item class="solutions-resource-container" itemid="0"></solution-resource-item>
-        </div>
-      </solution-template-data>
-    `);
-  });
 });

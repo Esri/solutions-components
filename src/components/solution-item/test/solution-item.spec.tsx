@@ -53,6 +53,7 @@ describe('solution-item', () => {
                 <calcite-tab-title>Item Details</calcite-tab-title>
                 <calcite-tab-title>Data</calcite-tab-title>
                 <calcite-tab-title>Properties</calcite-tab-title>
+                <calcite-tab-title>Resources</calcite-tab-title>
               </calcite-tab-nav>
 
               <calcite-tab class="config-tab" active>
@@ -63,6 +64,9 @@ describe('solution-item', () => {
               </calcite-tab>
               <calcite-tab class="config-tab" id="props-tab">
                 <solution-template-data instanceid="props" itemid=""></solution-template-data>
+              </calcite-tab>
+              <calcite-tab class="config-tab" id="resources-tab">
+                <solution-resource-item class="solutions-resource-container" itemid=""></solution-resource-item>
               </calcite-tab>
             </calcite-tabs>
           </div>
