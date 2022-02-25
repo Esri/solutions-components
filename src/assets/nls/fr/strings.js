@@ -53,6 +53,7 @@ define({
       "routeUrl": "fr-Route URL",
       "redo": "fr-Redo",
       "reset": "fr-Reset",
+      "resourcesTab": "fr-Resources",
       "saveEdits": "fr-Save Edits",
       "saveFailed": "fr-Save Edits Failed",
       "search": "Chercher",

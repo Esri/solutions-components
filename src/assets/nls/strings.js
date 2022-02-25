@@ -55,6 +55,7 @@ define({
         "routeUrl": "Route URL",
         "redo": "Redo",
         "reset": "Reset",
+        "resourcesTab": "Resources",
         "saveEdits": "Save Edits",
         "saveFailed": "Save Edits Failed",
         "search": "Search",
