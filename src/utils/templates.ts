@@ -541,7 +541,8 @@ function _getGroupDetails(
 function _getIsResource(
   template: any
 ): boolean {
-  return template.type !== "Group" && template.data === null;
+  return template.type !== "Group" && template.resources.some(r => r.indexOf("_info_thumbnail") < 0) &&
+    (template.data === null || JSON.stringify(template.data) === "{}");
 }
 
 /**
