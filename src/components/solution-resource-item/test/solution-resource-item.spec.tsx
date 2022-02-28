@@ -42,11 +42,11 @@ describe('solution-resource-item', () => {
             <calcite-button appearance="solid" class="resource-button" color="blue">
               Add New Resource
             </calcite-button>
-            <calcite-button appearance="solid" color="blue">
+            <calcite-button appearance="solid" color="blue" disabled="">
               Download All
             </calcite-button>
           </div>
-          <div class="resources-container">
+          <div class="resources-container" style="display: none;">
             <calcite-value-list multiple=""></calcite-value-list>
           </div>
         </div>

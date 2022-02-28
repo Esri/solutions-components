@@ -240,10 +240,6 @@ export namespace Components {
          */
         "instanceid": string;
         /**
-          * Should be set to true for items that store their data as a resource Will allow for upload and download of the resource
-         */
-        "isResource": boolean;
-        /**
           * A templates itemId. This is used to get the correct model from a store in the json-editor
          */
         "itemid": string;
@@ -602,10 +598,6 @@ declare namespace LocalJSX {
           * This needs to be unique for props vs data of an item
          */
         "instanceid"?: string;
-        /**
-          * Should be set to true for items that store their data as a resource Will allow for upload and download of the resource
-         */
-        "isResource"?: boolean;
         /**
           * A templates itemId. This is used to get the correct model from a store in the json-editor
          */

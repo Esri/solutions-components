@@ -31,6 +31,7 @@
 - [solution-item-details](../solution-item-details)
 - [solution-item-sharing](../solution-item-sharing)
 - [solution-template-data](../solution-template-data)
+- [solution-resource-item](../solution-resource-item)
 
 ### Graph
 ```mermaid
@@ -42,6 +43,7 @@ graph TD;
   solution-item --> solution-item-details
   solution-item --> solution-item-sharing
   solution-item --> solution-template-data
+  solution-item --> solution-resource-item
   calcite-tab-title --> calcite-icon
   solution-item-details --> calcite-input
   solution-item-details --> calcite-label
@@ -57,7 +59,6 @@ graph TD;
   solution-template-data --> calcite-button
   solution-template-data --> solution-organization-variables
   solution-template-data --> solution-variables
-  solution-template-data --> solution-resource-item
   calcite-panel --> calcite-action
   calcite-panel --> calcite-action-menu
   calcite-panel --> calcite-scrim

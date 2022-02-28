@@ -20,6 +20,7 @@
 
 import {
   convertItemResourceToStorageResource,
+  EFileType,
   IItemUpdate,
   updateItem,
   UserSession,
@@ -111,6 +112,7 @@ export async function _updateResources(
       promises.push(_updateThumbnailResource(
         solutionId,
         model,
+        data,
         authentication
       ));
       _updateFileResources(
@@ -141,27 +143,41 @@ export async function _updateResources(
 function _updateThumbnailResource(
   solutionId: string,
   model: ISolutionModel,
+  data: any,
   authentication: UserSession
 ): Promise<any> {
   return new Promise<any>((resolve, reject) => {
     if (model.thumbnailNew) {
-      const name: string = model.thumbnailOrigin.name;
+      if (model.thumbnailOrigin) {
+        const name: string = model.thumbnailOrigin.name;
 
-      const opts: IItemResourceOptions = {
-        id: solutionId,
-        authentication,
-        resource: model.thumbnailNew,
-        name
-      };
-
-      const resources = model.resources.filter(r => r.endsWith(name));
-      if (resources.length === 1) {
-        const nameParts = resources[0].split("/");
-        if (nameParts.length === 2) {
-          opts.prefix = nameParts[0];
+        const opts: IItemResourceOptions = {
+          id: solutionId,
+          authentication,
+          resource: model.thumbnailNew,
+          name
+        };
+  
+        const resources = model.resources.filter(r => r.endsWith(name));
+        if (resources.length === 1) {
+          const nameParts = resources[0].split("/");
+          if (nameParts.length === 2) {
+            opts.prefix = nameParts[0];
+          }
         }
+        updateItemResource(opts).then(resolve, reject);
+      } else {
+        // if the item does not have an origin thumb we need to add rather than update
+        const resourceFilePath: IResourcePath = {
+          url: "",
+          blob: model.thumbnailNew,
+          type: EFileType.Thumbnail,
+          filename: model.thumbnailNew.name,
+          updateType: EUpdateType.Add
+        };
+
+        _add(solutionId, model, data, resourceFilePath, authentication, true).then(resolve, reject);
       }
-      updateItemResource(opts).then(resolve, reject);
     } else {
       resolve({success: true});
     }
@@ -240,14 +256,15 @@ function _add(
   model: ISolutionModel,
   data: any,
   resourceFilePath: IResourcePath,
-  authentication: UserSession
+  authentication: UserSession,
+  isThumbnail: boolean = false
 ): Promise<any> {
   return new Promise<any>((resolve, reject) => {
     const storageName = convertItemResourceToStorageResource(
-      model.itemId +
-      ((resourceFilePath.blob as File).name === resourceFilePath.filename
-        ? "_info_data"
-        : "_info_dataz"),
+      model.itemId + isThumbnail ? "_info_thumbnail" :
+        ((resourceFilePath.blob as File).name === resourceFilePath.filename
+          ? "_info_data"
+          : "_info_dataz"),
       (resourceFilePath.blob as File).name,
       SolutionTemplateFormatVersion
     );
@@ -277,7 +294,7 @@ function _add(
         );
       }
       resolve(results);
-    }, reject)
+    }, reject);
   });
 }
 

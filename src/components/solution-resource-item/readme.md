@@ -20,7 +20,7 @@
 
 ### Used by
 
- - [solution-template-data](../solution-template-data)
+ - [solution-item](../solution-item)
 
 ### Depends on
 
@@ -53,7 +53,7 @@ graph TD;
   calcite-action-menu --> calcite-popover
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
-  solution-template-data --> solution-resource-item
+  solution-item --> solution-resource-item
   style solution-resource-item fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
