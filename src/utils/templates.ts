@@ -25,6 +25,7 @@ import {
   IOrganizationVariableItem,
   IResourcePath,
   ISolutionModels,
+  ISolutionSpatialReferenceInfo,
   IVariableItem
 } from '../utils/interfaces';
 import {
@@ -224,7 +225,7 @@ export function getOrganizationVariables(
  * 
  * @param templates a list of item templates from the solution
  * 
- * @returns a list of models and key values
+ * @returns a promise that resolves a list of models and key values
  */
 export function getModels(
   templates: any[],
@@ -310,7 +311,7 @@ export function getFeatureServices(
 export function getSpatialReferenceInfo(
   services: any[],
   data: any
-): any {
+): ISolutionSpatialReferenceInfo {
   const defaultServices: any = {};
   services.forEach(service => {
     defaultServices[service.name] = service.enabled;
@@ -336,6 +337,7 @@ export function getSpatialReferenceInfo(
  * @param template the current template from the solution
  * @param authentication credentials for any requests
  *
+ * @returns a list of resource file infos
  */
 function _getResourceFilePaths(
   solutionId: string,
@@ -360,6 +362,7 @@ function _getResourceFilePaths(
  * @param models the list of models for the current solution item
  * @param authentication credentials for any requests
  *
+ * @return A promise which resolves to ISolutionModels with hydrated thumbnails
  */
 function _getThumbnails(
   models: any,
