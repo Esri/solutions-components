@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, h, Host, Listen, Method, Prop, State, VNode, Watch, EventEmitter, Event } from '@stencil/core';
-import { IOrganizationVariableItem, IResponse, ISolutionConfiguration, ISolutionItem, IUpdateTemplateResponse, IVariableItem } from '../../utils/interfaces';
+import { IOrganizationVariableItem, IResponse, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, IUpdateTemplateResponse, IVariableItem } from '../../utils/interfaces';
 import * as utils from '../../utils/templates';
 import state from '../../utils/editStore';
 import { save } from '../../utils/common';
@@ -82,12 +82,12 @@ export class SolutionConfiguration {
   /**
    * Contains the current solution item id
    */
-  @Prop({ mutable: true, reflect: true }) itemid = "";
+  @Prop({ mutable: true, reflect: true }) itemid: string = "";
 
   /**
    * Used to show/hide the content tree
    */
-  @Prop({ mutable: true }) treeOpen = true;
+  @Prop({ mutable: true }) treeOpen: boolean = true;
 
   /**
   * Contains the current solution item data
@@ -234,7 +234,7 @@ export class SolutionConfiguration {
   }
 
   @Method()
-  async getSpatialReferenceInfo(): Promise<any> {
+  async getSpatialReferenceInfo(): Promise<ISolutionSpatialReferenceInfo> {
     return Promise.resolve(state.spatialReferenceInfo);
   }
 

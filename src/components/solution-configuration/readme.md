@@ -48,13 +48,13 @@ Type: `Promise<any>`
 
 
 
-### `getSpatialReferenceInfo() => Promise<any>`
+### `getSpatialReferenceInfo() => Promise<ISolutionSpatialReferenceInfo>`
 
 
 
 #### Returns
 
-Type: `Promise<any>`
+Type: `Promise<ISolutionSpatialReferenceInfo>`
 
 
 

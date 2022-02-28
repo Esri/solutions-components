@@ -22,7 +22,11 @@ import { createStore } from "@stencil/store";
 export const { state, onChange, dispose, reset } = createStore({
   models: {},
   featureServices: [],
-  spatialReferenceInfo: {},
+  spatialReferenceInfo: {
+    enabled: false,
+    services: [],
+    spatialReference: undefined
+  },
   dispose: () => dispose(),
   reset: () => reset()
 });

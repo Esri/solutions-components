@@ -27,7 +27,6 @@ import {
   SolutionTemplateFormatVersion
 } from "@esri/solution-common";
 import { EUpdateType, IResourcePath, IResponse, ISolutionModel, ISolutionModels } from "./interfaces";
-// May add to solution-common..??
 import {
   addItemResource,
   IItemResourceOptions,
@@ -38,7 +37,9 @@ import {
 /**
  * Get an array from a list of nodes
  *
- * @param nodeList list of nodes 
+ * @param nodeList list of nodes
+ * 
+ * @returns array of nodes
  */
 export function nodeListToArray<T extends Element>(nodeList: HTMLCollectionOf<T> | NodeListOf<T> | T[]): T[] {
   return Array.isArray(nodeList) ? nodeList : Array.from(nodeList);
@@ -53,6 +54,8 @@ export function nodeListToArray<T extends Element>(nodeList: HTMLCollectionOf<T>
  * @param data the current solution items data
  * @param authentication credentials for the request
  * @param translations translated strings for messages
+ * 
+ * @returns a promise that will resolve with a success true/false response
  */
 export async function save(
   id: string,
@@ -93,6 +96,8 @@ export async function save(
  * @param models the models for the solutions templates
  * @param data the current data object for the solution
  * @param authentication credentials for the request
+ * 
+ * @returns a promise that will resolve with response results
  */
 export async function _updateResources(
   solutionId: string,
@@ -132,6 +137,8 @@ export async function _updateResources(
  * @param solutionId id for the solution
  * @param model the model for the current solution template
  * @param authentication credentials for the request
+ * 
+ * @returns a promise that will resolve with response results
  */
 function _updateThumbnailResource(
   solutionId: string,
@@ -178,7 +185,9 @@ function _updateThumbnailResource(
 }
 
 /**
- * Updates the solutions data resources 
+ * Updates the solutions data resources
+ * 
+ * This function will update the provided promises argument by adding add/remove/update promises
  *
  * @param solutionId id for the solution
  * @param model the model for the current solution template
@@ -239,6 +248,8 @@ function _updateFileResources(
  * @param data the current data object for the solution
  * @param resourceFilePath resource file info
  * @param authentication credentials for the request
+ * 
+ * @returns a promise that will resolve to a response with success true/false
  */
 function _add(
   solutionId: string,
@@ -295,6 +306,8 @@ function _add(
  * @param data the current data object for the solution
  * @param resourceFilePath resource file info
  * @param authentication credentials for the request
+ * 
+ * @returns a promise that will resolve to a response with success true/false
  */
 function _remove(
   solutionId: string,
@@ -337,6 +350,8 @@ function _remove(
  * @param model the model for the current solution template
  * @param resourceFilePath resource file info
  * @param authentication credentials for the request
+ * 
+ * @returns a promise that will resolve to a response with success true/false
  */
 function _update(
   solutionId: string,
@@ -366,12 +381,15 @@ function _update(
 
 /**
  * Update the resources paths for a given template
+ * 
+ * This function will update the provided data argument with any new or removed resource paths
  *
  * @param data the current data object for the solution
  * @param id the id of the current template
  * @param updateType add/update/remove
  * @param path the resource prefix/name
  * @param sourceFileName from the current resourceFilePath
+ * 
  */
 function _updateTemplateResourcePaths(
   data: any,

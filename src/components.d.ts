@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { UserSession } from "@esri/solution-common";
-import { IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISolutionConfiguration, ISolutionItem, ISpatialRefRepresentation, ITemplateData, IVariableItem } from "./utils/interfaces";
+import { IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem } from "./utils/interfaces";
 export namespace Components {
     interface JsonEditor {
         /**
@@ -42,7 +42,7 @@ export namespace Components {
         "authentication": UserSession;
         "getEditModels": () => Promise<any>;
         "getSourceTemplates": () => Promise<any>;
-        "getSpatialReferenceInfo": () => Promise<any>;
+        "getSpatialReferenceInfo": () => Promise<ISolutionSpatialReferenceInfo>;
         /**
           * Contains the current solution item we are working with
          */
