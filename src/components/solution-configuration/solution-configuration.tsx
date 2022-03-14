@@ -82,12 +82,12 @@ export class SolutionConfiguration {
   /**
    * Contains the current solution item id
    */
-  @Prop({ mutable: true, reflect: true }) itemid: string = "";
+  @Prop({ mutable: true, reflect: true }) itemid = "";
 
   /**
    * Used to show/hide the content tree
    */
-  @Prop({ mutable: true }) treeOpen: boolean = true;
+  @Prop({ mutable: true }) treeOpen = true;
 
   /**
   * Contains the current solution item data
@@ -108,7 +108,7 @@ export class SolutionConfiguration {
         this._isLoading = true;
         this._getItemData(this.itemid).then(() => {
           resolve(undefined);
-        });
+        }, () => resolve(undefined));
       } else {
         resolve(undefined);
       }
@@ -158,12 +158,12 @@ export class SolutionConfiguration {
                   />
                   <div class="config-item">
                     <solution-item
+                      authentication={this.authentication}
                       key={`${this.itemid}-item`}
                       organizationVariables={this._organizationVariables}
                       solutionVariables={this._solutionVariables}
                       translations={this.translations}
                       value={this.item}
-                      authentication={this.authentication}
                     />
                   </div>
                 </div>
@@ -201,9 +201,9 @@ export class SolutionConfiguration {
 
   private _organizationVariables: IOrganizationVariableItem[];
 
-  private _fetchData: boolean = false;
+  private _fetchData = false;
 
-  private _isLoading: boolean = false;
+  private _isLoading = false;
 
   //--------------------------------------------------------------------------
   //
@@ -290,7 +290,7 @@ export class SolutionConfiguration {
     templates: any[],
     isReset = false
   ): Promise<any> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       if (isReset) {
         // clear models and state so we can refresh after save
         this.modelsSet = false;
@@ -311,7 +311,7 @@ export class SolutionConfiguration {
 
         this.modelsSet = true;
         resolve(true);
-      });
+      }, () => reject);
     });
   }
 
@@ -359,8 +359,8 @@ export class SolutionConfiguration {
       // need to trigger re-render...and re-fetch
       this._fetchData = true;
       this.modelsSet = false;
-      Promise.resolve(saveResult)
-    }) : Promise.reject({
+      return Promise.resolve(saveResult)
+    }).catch(() => Promise.reject()) : Promise.reject({
       success: false,
       message: `The following templates have errors: ${templateUpdates.errors.join(", ")}`
     } as IResponse);

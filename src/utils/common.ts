@@ -257,11 +257,11 @@ function _add(
   data: any,
   resourceFilePath: IResourcePath,
   authentication: UserSession,
-  isThumbnail: boolean = false
+  isThumbnail = false
 ): Promise<any> {
   return new Promise<any>((resolve, reject) => {
     const storageName = convertItemResourceToStorageResource(
-      model.itemId + isThumbnail ? "_info_thumbnail" :
+      model.itemId + isThumbnail.toString() ? "_info_thumbnail" :
         ((resourceFilePath.blob as File).name === resourceFilePath.filename
           ? "_info_data"
           : "_info_dataz"),
