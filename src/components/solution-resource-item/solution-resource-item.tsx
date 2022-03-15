@@ -60,6 +60,7 @@ export class SolutionResourceItem {
    * The templates resourceFilePaths.
    */
   @Prop({ mutable: true, reflect: true }) resourceFilePaths: IResourcePath[] = [];
+
   @Watch('resourceFilePaths')
   resourceFilePathsWatchHandler(v: any, oldV: any): void {
     if (v && v !== oldV && Object.keys(state.models).indexOf(this.itemid) > -1) {
@@ -86,17 +87,17 @@ export class SolutionResourceItem {
         <div class="resource-item">
           <div class="margin-bottom-1">
             <calcite-button
-              color="blue"
               appearance="solid"
-              onClick={() => this._addNewResource()}
               class="resource-button"
+              color="blue"
+              onClick={() => this._addNewResource()}
             >{this.translations.addResource}
             </calcite-button>
             <calcite-button
-              color="blue"
               appearance="solid"
-              onClick={() => this._downloadAll()}
+              color="blue"
               disabled={!hasValidResources}
+              onClick={() => this._downloadAll()}
             >{this.translations.downloadAll}
             </calcite-button>
           </div>
@@ -173,41 +174,43 @@ export class SolutionResourceItem {
     const disabled = resource.updateType === EUpdateType.Remove;
     return (
       <calcite-value-list-item
+        class={disabled ? "disabled" : ""}
         label={resource.filename}
+        nonInteractive={true}
         value={resource.url}
-        class={disabled ? "disabled" : ""}>
-        <calcite-action-group slot="actions-end" layout="horizontal" expand-disabled="true">
+        >
+        <calcite-action-group expand-disabled="true" layout="horizontal" slot="actions-end">
           <calcite-action
             disabled={disabled}
+            icon="download"
+            label={this.translations.download}
+            onClick={() => this._download(resource.url, resource.filename)}
             scale="m"
             text={this.translations.download}
-            label={this.translations.download}
-            icon="download"
-            onClick={() => this._download(resource.url, resource.filename)}>
-          </calcite-action>
+          />
           <calcite-action
             disabled={disabled}
+            icon="upload-to"
+            label={this.translations.update}
+            onClick={() => this._upload(resource.url)}
             scale="m"
             text={this.translations.update}
-            label={this.translations.update}
-            icon="upload-to"
-            onClick={() => this._upload(resource.url)}>
-          </calcite-action>
+          />
           <calcite-action
             disabled={disabled}
+            icon="trash"
+            label={this.translations.delete}
+            onClick={() => this._delete(resource.filename)}
             scale="m"
             text={this.translations.delete}
-            label={this.translations.delete}
-            icon="trash"
-            onClick={() => this._delete(resource.filename)}>
-          </calcite-action>
+          />
           {disabled ? <calcite-action
+            icon="reset"
+            label={this.translations.reset}
+            onClick={() => this._reset(resource.filename)}
             scale="m"
             text={this.translations.reset}
-            label={this.translations.reset}
-            icon="reset"
-            onClick={() => this._reset(resource.filename)}>
-          </calcite-action> : <div class="display-none"></div>}
+          /> : <div class="display-none"/>}
         </calcite-action-group>
       </calcite-value-list-item>
     );
@@ -236,21 +239,19 @@ export class SolutionResourceItem {
   _reset(name: string): void {
     // need to make sure I know if this reset is from the source or a new one
     const m: ISolutionModel = state.models[this.itemid];
-    if (m.sourceResourceFilePaths.some(fp => fp.filename === name)) {
+    this.resourceFilePaths = m.sourceResourceFilePaths.some(fp => fp.filename === name) ?
       this.resourceFilePaths = this.resourceFilePaths.map(p => {
         if (p.filename === name) {
           p.updateType = EUpdateType.None;
         }
         return p;
-      });
-    } else {
+      }) :
       this.resourceFilePaths = this.resourceFilePaths.map(p => {
         if (p.filename === name) {
           p.updateType = EUpdateType.Add;
         }
         return p;
       });
-    }
   }
 
   /**
@@ -278,9 +279,9 @@ export class SolutionResourceItem {
       this.downloadFile(url, name);
     } else {
       const fileExtensions: string[] = ['jpg', 'jpeg', 'gif', 'png', 'json'];
-      const _url: string = `${url}?token=${this.authentication.token}`;
+      const _url = `${url}?token=${this.authentication.token}`;
       if (fileExtensions.some(ext => url.endsWith(ext))) {
-        this.fetchAndDownload(_url, name);
+        void this.fetchAndDownload(_url, name);
       } else {
         this.downloadFile(_url, name);
       }
@@ -401,7 +402,7 @@ export class SolutionResourceItem {
    *
    * @param event the inputs event that contains the new file
    */
-  _add(event: any) {
+  _add(event: any): void {
     const files = event.target.files;
     if (files && files[0]) {
       const url = URL.createObjectURL(files[0]);

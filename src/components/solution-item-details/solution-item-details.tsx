@@ -157,7 +157,7 @@ export class SolutionItemDetails {
    */
   private thumbnail: HTMLImageElement;
 
-  private loadThumb: boolean = false;
+  private loadThumb = false;
 
   //--------------------------------------------------------------------------
   //
