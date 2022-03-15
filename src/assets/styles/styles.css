@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@import url(c:\Users\john4818\Documents\GitHub\solutions-components\src\assets\styles\calcite-web.min.css);
-@import url(c:\Users\john4818\Documents\GitHub\solutions-components\src\assets\styles\esri-global-nav.css);
+@use "calcite-web.min.css";
+@use "esri-global-nav.css";
 /*#region Basic Overrides*/
 html, body {
   width: 100%;
