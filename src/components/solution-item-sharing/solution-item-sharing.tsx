@@ -99,7 +99,6 @@ export class SolutionItemSharing {
     return Promise.resolve(this.value);
   }
 
-
   //--------------------------------------------------------------------------
   //
   //  Private Methods

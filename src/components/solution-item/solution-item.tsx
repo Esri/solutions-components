@@ -182,40 +182,38 @@ export class SolutionItem {
       </calcite-tab>
       <calcite-tab class="config-tab" id="data-tab">
         <solution-template-data
+          authentication={this.authentication}
           instanceid="data"
           itemid={this.value.itemId}
           organizationVariables={this.organizationVariables}
           solutionVariables={this.solutionVariables}
           translations={this.translations}
           value={{ value: this.value.data }}
-          authentication={this.authentication}
         />
       </calcite-tab>
       <calcite-tab class="config-tab" id="props-tab">
         <solution-template-data
+          authentication={this.authentication}
           instanceid="props"
           itemid={this.value.itemId}
           organizationVariables={this.organizationVariables}
           solutionVariables={this.solutionVariables}
           translations={this.translations}
           value={{ value: this.value.properties }}
-          authentication={this.authentication}
         />
       </calcite-tab>
       <calcite-tab class="config-tab" id="resources-tab">
         <solution-resource-item
-          translations={this.translations}
+          authentication={this.authentication}
+          class="solutions-resource-container"
           itemid={this.value.itemId}
           resourceFilePaths={
             Object.keys(state.models).indexOf(this.value.itemId) > -1 ?
               state.models[this.value.itemId].resourceFilePaths : []
           }
-          authentication={this.authentication}
-          class="solutions-resource-container"
+          translations={this.translations}
         />
       </calcite-tab>
     </calcite-tabs>
   }
-
-
 }
