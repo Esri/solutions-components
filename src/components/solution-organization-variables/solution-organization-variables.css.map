@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA;;;;;;;;;;;;;;GAcG;AAEH,AAAA,KAAK,CAAC;EACJ,OAAO,EAAE,KAAK;CACf;;AAED,AAAA,iBAAiB,CAAC;EAChB,UAAU,EAAE,IAAI;CACjB;;AAED,AAAA,eAAe,CAAC;EACd,MAAM,EAAE,mBAAmB;CAC5B",
+    "sources": [
+        "solution-organization-variables.scss"
+    ],
+    "names": [],
+    "file": "solution-organization-variables.css"
+}

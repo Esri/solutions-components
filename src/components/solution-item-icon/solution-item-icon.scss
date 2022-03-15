@@ -13,43 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-:host {
+
+ .item-type-icon {
+  margin-top: .15em !important;
+  height: 16px;
+  margin-top: 4px;
+  min-width: 16px;
+  display: inline;
+  fill: currentColor;
+  pointer-events: none;
+  vertical-align: middle;
   display: block;
+  transform: rotate(
+    360deg
+    );
 }
 
-.resource-item {
-  padding: 1rem;
+.item-type-icon-margin {
+  margin-right: 6px;
+  margin-left: 0;
 }
 
-.resource-button {
-  margin-right: 1rem;
+.item-type-icon-margin[dir="rtl"] {
+  margin-right: 0;
+  margin-left: 6px;
 }
-
-.resource-button[dir="rtl"] {
-  margin-left: 1rem;
-}
-
-.display-none {
-  display: none;
-}
-
-.resource-progress {
-  padding-top: 1rem;
-}
-
-.resources-container {
-  border: 1px gray solid;
-}
-
-.success {
-  color: var(--calcite-ui-success);
-}
-
-.danger {
-  color: var(--calcite-ui-danger);
-}
-
-.margin-bottom-1 {
-  margin-bottom: 1rem;
-}
-/*# sourceMappingURL=solution-resource-item.css.map */

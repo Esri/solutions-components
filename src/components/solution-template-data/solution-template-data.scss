@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 :host {
   display: flexbox;
 }
@@ -26,26 +27,16 @@
 .solution-data-child-container {
   height: 100%;
   width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   overflow: auto;
 }
 
 .solution-data-child-container-collapsed {
   height: 100%;
   width: 50px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   overflow: auto;
 }
 
@@ -84,4 +75,3 @@
 .hide {
   display: none;
 }
-/*# sourceMappingURL=solution-template-data.css.map */

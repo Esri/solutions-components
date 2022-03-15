@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
- .item-type-icon {
+.item-type-icon {
   margin-top: .15em !important;
   height: 16px;
   margin-top: 4px;
@@ -24,9 +23,8 @@
   pointer-events: none;
   vertical-align: middle;
   display: block;
-  transform: rotate(
-    360deg
-    );
+  -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
 }
 
 .item-type-icon-margin {
@@ -38,3 +36,4 @@
   margin-right: 0;
   margin-left: 6px;
 }
+/*# sourceMappingURL=solution-item-icon.css.map */

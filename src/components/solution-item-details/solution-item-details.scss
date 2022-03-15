@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 .inputBottomSeparation {
   margin: 0 0 1.5rem 0;
 }
@@ -29,12 +30,11 @@
 
 .font-size--3 {
   font-size: 0.8125rem;
-  line-height: 1.5;
+  line-height: 1.5
 }
 
 .scale-down {
-  -o-object-fit: scale-down;
-     object-fit: scale-down;
+  object-fit: scale-down;
 }
 
 .btn-link {
@@ -55,8 +55,6 @@
 }
 
 .flex {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
 
@@ -76,9 +74,7 @@ html[dir="rtl"] .margin-right-1 {
 
 .summary-count-container {
   display: inline;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  flex-grow: 1;
   margin-left: 12px;
 }
 
@@ -100,4 +96,3 @@ label {
   display: block;
   margin: 0 0 1.5rem 0;
 }
-/*# sourceMappingURL=solution-item-details.css.map */

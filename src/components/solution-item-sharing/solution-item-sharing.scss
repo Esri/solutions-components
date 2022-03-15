@@ -13,43 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 :host {
   display: block;
 }
 
-.resource-item {
+.container-border {
   padding: 1rem;
 }
 
-.resource-button {
-  margin-right: 1rem;
+.icon-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
-
-.resource-button[dir="rtl"] {
-  margin-left: 1rem;
-}
-
-.display-none {
-  display: none;
-}
-
-.resource-progress {
-  padding-top: 1rem;
-}
-
-.resources-container {
-  border: 1px gray solid;
-}
-
-.success {
-  color: var(--calcite-ui-success);
-}
-
-.danger {
-  color: var(--calcite-ui-danger);
-}
-
-.margin-bottom-1 {
-  margin-bottom: 1rem;
-}
-/*# sourceMappingURL=solution-resource-item.css.map */

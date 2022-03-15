@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 .configuration-container {
   position: relative;
   width: 100%;
@@ -26,6 +25,8 @@
   right: 0;
   bottom: 0;
   left: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   padding: 8px;
   border: 1px gray solid;
@@ -45,31 +46,44 @@
   right: -1px;
   bottom: -1px;
   left: -1px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   padding: 8px;
 }
 
 .config-inventory {
   display: inline;
-  flex-grow: 0;
+  -webkit-box-flex: 0;
+      -ms-flex-positive: 0;
+          flex-grow: 0;
   overflow-y: auto;
+  max-width: -webkit-min-content;
+  max-width: -moz-min-content;
   max-width: min-content;
 }
 
 .config-inventory-hide {
   display: none;
-  flex-grow: 0;
+  -webkit-box-flex: 0;
+      -ms-flex-positive: 0;
+          flex-grow: 0;
   overflow-y: auto;
+  max-width: -webkit-min-content;
+  max-width: -moz-min-content;
   max-width: min-content;
 }
 
 .config-item {
   display: inline;
   margin-left: 8px;
-  flex-grow: 1;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
   overflow-y: auto;
   position: relative;
 }
+
 html[dir="rtl"] .config-item {
   margin-left: 0;
   margin-right: 8px;
@@ -91,3 +105,4 @@ solution-spatial-ref {
   position: relative;
   overflow-y: auto;
 }
+/*# sourceMappingURL=solution-configuration.css.map */

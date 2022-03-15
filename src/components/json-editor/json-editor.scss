@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-:host {
+
+ :host {
   display: block;
 }
 
@@ -24,7 +25,7 @@
 
 .editor-controls {
   height: 44px;
-  background-color: #F4F4F4;
+  background-color: #F4F4F4
 }
 
 .editor-buttons {
@@ -33,7 +34,7 @@
 
 html[dir="rtl"] .editor-buttons {
   float: left;
-  padding-right: .25rem;
+  padding-right: .25rem
 }
 
 .edit-button {
@@ -59,8 +60,7 @@ html[dir="rtl"] .edit-button {
   width: 100%;
   /* adjust for edit buttons and border */
   height: calc(100% - 46px);
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .json-edit-container {
@@ -89,13 +89,9 @@ html[dir="rtl"] .padding-right {
 .btn {
   height: 25px;
   width: 120px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   margin-bottom: 1rem;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
 }
 
 .select-ctrl {
@@ -121,4 +117,3 @@ html[dir="rtl"] .padding-right {
   padding: 0;
   overflow: hidden;
 }
-/*# sourceMappingURL=json-editor.css.map */
