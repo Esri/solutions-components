@@ -360,7 +360,7 @@ export class SolutionConfiguration {
       this._fetchData = true;
       this.modelsSet = false;
       return Promise.resolve(saveResult)
-    }).catch(() => Promise.reject()) : Promise.reject({
+    }).catch(e => Promise.reject(e)) : Promise.reject({
       success: false,
       message: `The following templates have errors: ${templateUpdates.errors.join(", ")}`
     } as IResponse);
