@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@import url(c:\Users\john4818\Documents\GitHub\solutions-components\src\assets\styles\calcite-web.min.css);
-@import url(c:\Users\john4818\Documents\GitHub\solutions-components\src\assets\styles\esri-global-nav.css);
+
+@import "calcite-web.min.css";
+@import "esri-global-nav.css";
+
 /*#region Basic Overrides*/
+
 html, body {
   width: 100%;
   height: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   background-color: #F4F4F4;
   overflow-y: hidden;
@@ -33,7 +34,6 @@ h1 {
 
 #appContainer {
   opacity: 0;
-  -webkit-transition: 1s;
   transition: 1s;
   height: 100%;
 }
@@ -54,17 +54,12 @@ h1 {
 }
 
 .esri-header-brand-link {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
 }
 
 .esri-header-menus-item > .is-active {
-  -webkit-box-shadow: inset 0 -3px 0 0 #0079c1;
-          box-shadow: inset 0 -3px 0 0 #0079c1;
+  box-shadow: inset 0 -3px 0 0 #0079c1;
 }
 
 .footer {
@@ -92,8 +87,7 @@ html[dir="rtl"] .margin-right-50 {
   color: inherit;
   background: #fff;
   cursor: pointer;
-  -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 0 16px 0 rgba(0, 0, 0, 0.05);
-          box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 0 16px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.1), 0 0 16px 0 rgba(0,0,0,0.05);
   text-align: inherit;
 }
 
@@ -112,14 +106,14 @@ html[dir="rtl"] .margin-right-50 {
 
 .flex {
   display: -webkit-box;
+  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
 .filters-container {
   width: 280px;
-  -ms-flex-negative: 0;
-      flex-shrink: 0;
+  flex-shrink: 0;
   z-index: 98;
   opacity: 1;
 }
@@ -130,17 +124,19 @@ html[dir="rtl"] .margin-right-50 {
 }
 
 .solutions-card-area-container {
+  -webkit-flex: 1 1 auto;
   -moz-flex: 1 1 auto;
   -ms-flex: 1 1 auto;
   -o-flex: 1 1 auto;
-  -webkit-box-flex: 1;
-          flex: 1 1 auto;
+  flex: 1 1 auto;
   width: 100%;
   min-width: 0;
 }
 
 /*#endregion */
+
 /*#region GlobalNav overrides */
+
 [data-header-is-open] {
   position: relative;
 }
@@ -167,11 +163,14 @@ html[dir="rtl"] .margin-right-50 {
 }
 
 /*#endregion */
+
 /*#region Calcite overrides */
+
 /* .thumbnail-height{
   max-height: 225px;
   overflow: hidden;
 } */
+
 .grid-container, .esri-header.-web {
   max-width: 1472px;
   padding-right: 16px;
@@ -227,11 +226,13 @@ html[dir="rtl"] .margin-right-50 {
     flex-basis: calc(50% - 1.5rem);
     width: calc(50% - 1.5rem);
   }
+
   .sm-screen-block-group-3-2 > .block {
     -ms-flex-preferred-size: calc(33.33333% - 1.5rem);
     flex-basis: calc(33.33333% - 1.5rem);
     width: calc(33.33333% - 1.5rem);
   }
+
   .tablet-leader-1 {
     margin-top: 0px;
   }
@@ -243,6 +244,7 @@ html[dir="rtl"] .margin-right-50 {
     margin-right: 0px;
     margin-left: 0px;
   }
+
   .filters-label {
     margin-bottom: 1.0125rem;
   }
@@ -262,40 +264,38 @@ html[dir="rtl"] .margin-right-50 {
     flex-basis: calc(100% - 1.5rem);
     width: calc(100% - 1.5rem);
   }
+
   .solutions-modal-content {
     padding: 1.125rem;
   }
+
   .solution-thumbnail-wrap-direction {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    flex-direction: column;
   }
+
   .solution-thumbnail-wrap {
     width: 100% !important;
     padding-right: 0px !important;
     padding-left: 0px !important;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
   }
+
   .solution-thumbnail {
     width: 100% !important;
-    -webkit-box-flex: unset !important;
-        -ms-flex: unset !important;
-            flex: unset !important;
+    flex: unset !important;
   }
+
   .solution-snippet-wrap {
     max-width: 100% !important;
     margin-top: 0.75rem;
   }
 }
 
-calcite-tree-item[highlight] > div {
+calcite-tree-item[highlight] > div{
   font-weight: 700;
 }
 
-calcite-tree-item[childselected] > div {
+calcite-tree-item[childselected] > div{
   font-weight: 700;
 }
 
@@ -359,9 +359,7 @@ html[dir="rtl"] .esri-header-brand {
 }
 
 .clear-btn {
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
+  align-self: center;
 }
 
 html:not([dir="rtl"]) .clear-btn {
@@ -373,9 +371,7 @@ html[dir="rtl"] .clear-btn {
 }
 
 .filter-btn {
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
+  align-self: center;
 }
 
 html:not([dir="rtl"]) .filter-btn {
@@ -391,41 +387,36 @@ html[dir="rtl"] .filter-btn {
 }
 
 @media screen and (max-width: 530px) {
-  .tooltip:after {
-    /* issue #212 */
+  .tooltip:after {  /* issue #212 */
     padding: 0.375rem 0.3rem;
   }
 }
 
 input.input-group-input, .input-group-input {
   width: unset;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-flex: 1;
-      -ms-flex: auto;
-          flex: auto;
+  flex: auto;
 }
 
 /*#endregion */
+
 /*#region Google Chrome overrides */
+
 ::-webkit-search-cancel-button {
   display: none !important;
 }
 
 /*#endregion */
+
 /*#region Filter Chips */
 .count-container {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   position: relative;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
 
 @-moz-document url-prefix() {
+
   html[dir="rtl"] #category-tree {
     padding-right: 4px !important;
   }
@@ -433,6 +424,7 @@ input.input-group-input, .input-group-input {
     padding-left: 4px !important;
   }
 }
+
 
 .filter-chip {
   border: 1px solid #56a5d8;
@@ -448,6 +440,7 @@ input.input-group-input, .input-group-input {
   overflow: hidden;
   max-width: 100%;
   -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
   vertical-align: middle;
   white-space: break-spaces;
@@ -463,14 +456,9 @@ html[dir="rtl"] .filter-chip {
 }
 
 .filter-chips {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  align-items: flex-start;
+  flex-wrap:  wrap;
 }
 
 html:not([dir="rtl"]) .filter-chips {
@@ -508,7 +496,7 @@ html[dir="rtl"] .filter-chips-label {
 }
 
 .solutions-briefcase > path {
-  fill: #ccc;
+  fill: #ccc
 }
 
 .card-loader-parent {
@@ -561,12 +549,8 @@ html[dir="rtl"] .filter-clear-all {
   top: 50%;
   position: relative;
   overflow-wrap: normal;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
 }
 
 .filter-chip--remove {
@@ -592,6 +576,7 @@ html[dir="rtl"] .filter-chip--remove {
 }
 
 /*#endregion */
+
 /*#region Filter Tree*/
 .filters-text {
   font-size: 1rem;
@@ -610,21 +595,20 @@ html[dir="rtl"] .filter-chip--remove {
 }
 
 /*#endregion Filter Tree*/
+
 /*#region Solution Info Panel*/
+
 .link-blue {
   cursor: pointer;
 }
 
 .solution-thumbnail-wrap-direction {
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  flex-direction: row;
 }
 
 .solution-info-close-link:hover {
   color: #005e95;
-  cursor: pointer;
+  cursor:pointer;
 }
 
 .solution-thumbnail-wrap {
@@ -632,11 +616,8 @@ html[dir="rtl"] .filter-chip--remove {
 }
 
 .snippet-area {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 .solution-snippet-wrap {
@@ -653,13 +634,9 @@ html[dir="rtl"] .filter-chip--remove {
   max-width: 100%;
   min-width: 0;
   min-height: 0;
-  -o-object-fit: contain;
-     object-fit: contain;
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 auto;
-          flex: 0 0 auto;
-  -ms-flex-item-align: start;
-      align-self: flex-start;
+  object-fit: contain;
+  flex: 0 0 auto;
+  align-self: flex-start;
   border: 1px solid #ddd;
 }
 
@@ -691,12 +668,8 @@ html[dir="rtl"] .solution-info-close-icon {
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
   margin: -1.5rem;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
 }
 
 .solution-info-title {
@@ -741,10 +714,11 @@ html[dir="rtl"] .solution-info-title {
 }
 
 /*#endregion Solution Info*/
+
 /*#region My solutions Tab*/
+
 .solutions-search {
-  -webkit-box-shadow: 0 1px 0 0 #e0e0e0;
-          box-shadow: 0 1px 0 0 #e0e0e0;
+  box-shadow: 0 1px 0 0 #e0e0e0;
   background-color: #fff;
   width: 100%;
 }
@@ -763,18 +737,12 @@ html[dir="rtl"] .solution-info-title {
 
 .input-group-override {
   margin-top: 0px !important;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
 
 .sort-control-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-flex: 0;
-      -ms-flex: none;
-          flex: none;
+  flex: none;
   white-space: nowrap;
 }
 
@@ -783,9 +751,7 @@ html[dir="rtl"] .solution-info-title {
   display: block;
   height: 44px;
   width: 0;
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
+  align-self: center;
 }
 
 html:not([dir="rtl"]) .sort-control-container:before {
@@ -808,13 +774,13 @@ html[dir="rtl"] .sort-control-container:before {
 }
 
 .sort-control-dropdown {
-  -ms-flex-item-align: center !important;
-      -ms-grid-row-align: center !important;
-      align-self: center !important;
+  align-self: center !important;
 }
 
 /*#endregion My solutions Tab*/
+
 /*#region Template Card gallery */
+
 .solutions-card-area {
   overflow-y: auto;
   overflow-x: hidden;
@@ -844,22 +810,19 @@ html[dir="rtl"] .sort-control-container:before {
 }
 
 html:not([dir="rtl"]) .tooltip-bottom:after {
-  -webkit-transform: translate(30px);
-          transform: translate(30px);
+  transform: translate(30px);
   line-height: 1;
 }
 
 html[dir="rtl"] .tooltip-bottom:after {
-  -webkit-transform: translate(100%) translate(-30px);
-          transform: translate(100%) translate(-30px);
+  transform: translate(100%) translate(-30px);
   line-height: 1;
 }
 
 .card-obverse-side:hover {
   border: 1px solid #005e95;
   cursor: pointer;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .card-title-link {
@@ -896,17 +859,16 @@ html[dir="rtl"] .tooltip-bottom:after {
 }
 
 .card-obverse-side:hover .card-action-deploy {
-  background: rgba(100, 100, 100, 0.9) none repeat scroll 0 0;
+  background: rgba(100,100,100,0.9) none repeat scroll 0 0;
 }
 
 .card-action-deploying {
-  background: rgba(100, 100, 100, 0.9) none repeat scroll 0 0;
+  background: rgba(100,100,100, 0.9) none repeat scroll 0 0;
 }
 
 .card-obverse-side-deploying {
   border: 1px solid transparent;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
   height: 100%;
   margin: -1px;
 }
@@ -928,12 +890,8 @@ html[dir="rtl"] .tooltip-bottom:after {
 
 .centerer {
   height: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  display : flex;
+  align-items : center;
 }
 
 .card-content-bottom-spacing {
@@ -1063,7 +1021,9 @@ html[dir="rtl"] .progress-bar {
 }
 
 /*#endregion Template Card gallery */
+
 /*#region Loader Icon */
+
 .sow-loader {
   --calcite-loader-spot: #FFFFFF;
   --calcite-ui-blue-1:  #FFFFFF;
@@ -1073,7 +1033,7 @@ html[dir="rtl"] .progress-bar {
 }
 
 body .sow-loader {
-  color: #FFFFFF !important;
+  color:  #FFFFFF !important;
 }
 
 .spinner {
@@ -1088,20 +1048,17 @@ body .sow-loader {
   position: absolute;
   fill: none;
   stroke-dasharray: 50%,350%;
-  -webkit-animation: 2s linear 0s infinite normal none running spinner-clockwise;
-          animation: 2s linear 0s infinite normal none running spinner-clockwise;
+  animation: 2s linear 0s infinite normal none running spinner-clockwise;
 }
 
 .spinner .square-2 {
   stroke-dasharray: 100%,225%,50%,25%;
-  -webkit-animation: 1s linear 0s infinite normal none running spinner-clockwise;
-          animation: 1s linear 0s infinite normal none running spinner-clockwise;
+  animation: 1s linear 0s infinite normal none running spinner-clockwise;
 }
 
 .spinner .square-3 {
   stroke-dasharray: 50%,50%,75%,225%;
-  -webkit-animation: 1.85s linear 0s infinite normal none running spinner-clockwise;
-          animation: 1.85s linear 0s infinite normal none running spinner-clockwise;
+  animation: 1.85s linear 0s infinite normal none running spinner-clockwise;
 }
 
 .w-16 {
@@ -1112,65 +1069,39 @@ body .sow-loader {
   height: 4rem;
 }
 
-@-webkit-keyframes spinner-color-shift {
-  0% {
-    stroke: white;
-  }
-  100% {
-    stroke: white;
-  }
-}
-
 @keyframes spinner-color-shift {
   0% {
-    stroke: white;
+      stroke: white;
   }
-  100% {
-    stroke: white;
-  }
-}
 
-@-webkit-keyframes spinner-clockwise {
-  0% {
-    stroke-dashoffset: 0;
-  }
   100% {
-    stroke-dashoffset: -400%;
+      stroke: white;
   }
 }
 
 @keyframes spinner-clockwise {
   0% {
-    stroke-dashoffset: 0;
+      stroke-dashoffset: 0;
   }
-  100% {
-    stroke-dashoffset: -400%;
-  }
-}
 
-@-webkit-keyframes spinner-counter-clockwise {
-  0% {
-    stroke-dashoffset: 0;
-  }
   100% {
-    stroke-dashoffset: 400%;
+      stroke-dashoffset: -400%;
   }
 }
 
 @keyframes spinner-counter-clockwise {
   0% {
-    stroke-dashoffset: 0;
+      stroke-dashoffset: 0;
   }
+
   100% {
-    stroke-dashoffset: 400%;
+      stroke-dashoffset: 400%;
   }
 }
-
 /*#endregion Loader Icon*/
+
 /*#region Alerts*/
 .alert-solution {
   font-weight: 700;
 }
-
 /*#endregion Alerts*/
-/*# sourceMappingURL=styles.css.map */
