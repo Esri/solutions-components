@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "AAAA;;;;;;;;;;;;;;GAcG;AAEH,AAAA,KAAK,CAAC;EACJ,OAAO,EAAE,KAAK;CACf;;AAED,AAAA,iBAAiB,CAAC;EAChB,UAAU,EAAE,IAAI;CACjB;;AAED,AAAA,eAAe,CAAC;EACd,MAAM,EAAE,mBAAmB;CAC5B;;AAED,AAAA,UAAU,CAAC;EACT,QAAQ,EAAE,MAAM;EAChB,WAAW,EAAE,MAAM;EACnB,aAAa,EAAE,QAAQ;CACxB",
-    "sources": [
-        "solution-variables.scss"
-    ],
-    "names": [],
-    "file": "solution-variables.css"
-}

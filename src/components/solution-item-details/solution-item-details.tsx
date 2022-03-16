@@ -22,7 +22,7 @@ import { IItemDetails } from '../../utils/interfaces';
 
 @Component({
   tag: 'solution-item-details',
-  styleUrl: 'solution-item-details.css',
+  styleUrl: 'solution-item-details.scss',
   shadow: false,
 })
 export class SolutionItemDetails {

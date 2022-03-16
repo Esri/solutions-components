@@ -20,7 +20,7 @@ import '@esri/calcite-components';
 
 @Component({
   tag: 'solution-contents',
-  styleUrl: 'solution-contents.css',
+  styleUrl: 'solution-contents.scss',
   shadow: false,
   assetsDirs: ['item-type-icons']
 })

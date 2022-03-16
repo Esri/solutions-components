@@ -19,7 +19,7 @@ import { IOrganizationVariableItem } from '../../utils/interfaces';
 
 @Component({
   tag: 'solution-organization-variables',
-  styleUrl: 'solution-organization-variables.css',
+  styleUrl: 'solution-organization-variables.scss',
   shadow: true,
 })
 

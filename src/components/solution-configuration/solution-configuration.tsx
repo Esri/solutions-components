@@ -24,7 +24,7 @@ import '@esri/calcite-components';
 
 @Component({
   tag: 'solution-configuration',
-  styleUrl: 'solution-configuration.css',
+  styleUrl: 'solution-configuration.scss',
   shadow: false
 })
 export class SolutionConfiguration {

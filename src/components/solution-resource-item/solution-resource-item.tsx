@@ -21,7 +21,7 @@ import state from '../../utils/editStore';
 
 @Component({
   tag: 'solution-resource-item',
-  styleUrl: 'solution-resource-item.css',
+  styleUrl: 'solution-resource-item.scss',
   shadow: true
 })
 export class SolutionResourceItem {

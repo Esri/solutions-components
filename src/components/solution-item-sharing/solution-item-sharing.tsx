@@ -20,7 +20,7 @@ import { IItemShare } from '../../utils/interfaces';
 
 @Component({
   tag: 'solution-item-sharing',
-  styleUrl: 'solution-item-sharing.css',
+  styleUrl: 'solution-item-sharing.scss',
   shadow: true,
 })
 export class SolutionItemSharing {

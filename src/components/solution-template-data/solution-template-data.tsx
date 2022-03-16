@@ -20,7 +20,7 @@ import { UserSession } from '@esri/solution-common';
 
 @Component({
   tag: 'solution-template-data',
-  styleUrl: 'solution-template-data.css',
+  styleUrl: 'solution-template-data.scss',
   shadow: false
 })
 

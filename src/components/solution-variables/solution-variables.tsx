@@ -19,7 +19,7 @@ import { IVariableItem } from '../../utils/interfaces';
 
 @Component({
   tag: 'solution-variables',
-  styleUrl: 'solution-variables.css',
+  styleUrl: 'solution-variables.scss',
   shadow: true,
 })
 export class SolutionVariables {
