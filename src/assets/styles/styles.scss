@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-@use "calcite-web.min.css";
-@use "esri-global-nav.css";
+@import "calcite-web.min";
+@import "esri-global-nav";
 
 /*#region Basic Overrides*/
 
@@ -23,7 +23,7 @@ html, body {
   width: 100%;
   height: 100%;
   display: flex;
-  background-color: #F4F4F4;
+  background-color: $solutions-background-color;
   overflow-y: hidden;
 }
 
@@ -59,7 +59,7 @@ h1 {
 }
 
 .esri-header-menus-item > .is-active {
-  box-shadow: inset 0 -3px 0 0 #0079c1;
+  box-shadow: inset 0 -3px 0 0 $solutions-blue;
 }
 
 .footer {
@@ -607,8 +607,8 @@ html[dir="rtl"] .filter-chip--remove {
 }
 
 .solution-info-close-link:hover {
-  color: #005e95;
-  cursor:pointer;
+  color: $solutions-hover-blue;
+  cursor: pointer;
 }
 
 .solution-thumbnail-wrap {
@@ -641,11 +641,11 @@ html[dir="rtl"] .filter-chip--remove {
 }
 
 .solution-info-close-link {
-  color: #0079c1;
+  color: $solutions-blue;
 }
 
 .solution-info-close-icon {
-  fill: #0079c1;
+  fill: $solutions-blue;
   pointer-events: none;
   display: inline-block;
   width: 24px;
@@ -820,7 +820,7 @@ html[dir="rtl"] .tooltip-bottom:after {
 }
 
 .card-obverse-side:hover {
-  border: 1px solid #005e95;
+  border: 1px solid $solutions-hover-blue;
   cursor: pointer;
   box-shadow: none;
 }
@@ -863,7 +863,7 @@ html[dir="rtl"] .tooltip-bottom:after {
 }
 
 .card-action-deploying {
-  background: rgba(100,100,100, 0.9) none repeat scroll 0 0;
+  background: rgba(100,100,100,0.9) none repeat scroll 0 0;
 }
 
 .card-obverse-side-deploying {
