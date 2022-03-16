@@ -47,7 +47,7 @@ html[dir="rtl"] .edit-button {
 
 .editor-text {
   overflow-y: auto;
-  background-color: white;
+  background-color: $solutions-white;
   width: 100%;
 }
 
@@ -66,7 +66,7 @@ html[dir="rtl"] .edit-button {
 .json-edit-container {
   width: 100%;
   height: 100%;
-  border: 1px solid grey;
+  border: 1px solid $solutions-light-gray;
 }
 
 .padding-right {

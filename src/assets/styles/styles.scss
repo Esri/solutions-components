@@ -85,7 +85,7 @@ html[dir="rtl"] .margin-right-50 {
   border: none;
   font: inherit;
   color: inherit;
-  background: #fff;
+  background: $solutions-white;
   cursor: pointer;
   box-shadow: 0 0 0 1px rgba(0,0,0,0.1), 0 0 16px 0 rgba(0,0,0,0.05);
   text-align: inherit;
@@ -431,7 +431,7 @@ input.input-group-input, .input-group-input {
   border-radius: 4px;
   margin-top: 1px;
   margin-bottom: 1px;
-  background-color: #ffffff;
+  background-color: $solutions-white;
   display: inline-block;
   color: #4a4a4a;
   font-size: 14px;
@@ -719,7 +719,7 @@ html[dir="rtl"] .solution-info-title {
 
 .solutions-search {
   box-shadow: 0 1px 0 0 #e0e0e0;
-  background-color: #fff;
+  background-color: $solutions-white;
   width: 100%;
 }
 
@@ -1025,15 +1025,15 @@ html[dir="rtl"] .progress-bar {
 /*#region Loader Icon */
 
 .sow-loader {
-  --calcite-loader-spot: #FFFFFF;
-  --calcite-ui-blue-1:  #FFFFFF;
-  --calcite-ui-blue-2:  #FFFFFF;
-  --calcite-ui-blue-3: #FFFFFF;
-  --calcite-ui-text-1: #FFFFFF !important;
+  --calcite-loader-spot: $solutions-white;
+  --calcite-ui-blue-1: $solutions-white;
+  --calcite-ui-blue-2: $solutions-white;
+  --calcite-ui-blue-3: $solutions-white;
+  --calcite-ui-text-1: $solutions-white !important;
 }
 
 body .sow-loader {
-  color:  #FFFFFF !important;
+  color: $solutions-white !important;
 }
 
 .spinner {
