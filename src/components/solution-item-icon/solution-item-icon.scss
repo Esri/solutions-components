@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
- .item-type-icon {
+.item-type-icon {
   margin-top: .15em !important;
   height: 16px;
   margin-top: 4px;
   min-width: 16px;
-  display: inline;
+  // display: inline;
   fill: currentColor;
   pointer-events: none;
-  vertical-align: middle;
+  // vertical-align: middle;
   display: block;
   transform: rotate(
     360deg

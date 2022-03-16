@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
- :host {
+:host {
   display: block;
 }
 
@@ -34,7 +34,7 @@
 
 html[dir="rtl"] .editor-buttons {
   float: left;
-  padding-right: .25rem
+  padding-right: .25rem;
 }
 
 .edit-button {
@@ -70,7 +70,6 @@ html[dir="rtl"] .edit-button {
 }
 
 .padding-right {
-  /* padding for border */
   padding-right: 2px;
 }
 

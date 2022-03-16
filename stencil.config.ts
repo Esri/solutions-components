@@ -22,7 +22,7 @@ export const config: Config = {
   ],
   plugins: [
     sass({
-      injectGlobalPaths: ["src/assets/styles/variables.scss"]
+      injectGlobalPaths: ["src/assets/styles/includes.scss"]
     })
   ],
   preamble: 'Copyright 2021 Esri\nLicensed under the Apache License, Version 2.0\nhttp://www.apache.org/licenses/LICENSE-2.0'
