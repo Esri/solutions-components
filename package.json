@@ -30,6 +30,7 @@
   "devDependencies": {
     "@esri/eslint-plugin-calcite-components": "^0.1.1",
     "@stencil/eslint-plugin": "0.4.0",
+    "@stencil/sass": "1.5.2",
     "@stencil/store": "^1.5.0",
     "@types/jest": "26.0.21",
     "@types/node": "^16.11.11",

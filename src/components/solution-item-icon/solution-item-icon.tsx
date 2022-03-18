@@ -18,7 +18,7 @@ import { Component, Element, getAssetPath, h, Prop } from '@stencil/core';
 
 @Component({
   tag: 'solution-item-icon',
-  styleUrl: 'solution-item-icon.css',
+  styleUrl: 'solution-item-icon.scss',
   assetsDirs: ['item-icons']
 })
 export class SolutionItemIcon {

@@ -19,11 +19,9 @@
 }
 
 .container-border {
-  padding: 1rem;
+  overflow-y: auto;
 }
 
-.icon-text {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+.org-var-header {
+  margin: 0rem 0rem 1rem 0rem;
 }

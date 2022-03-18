@@ -23,7 +23,7 @@ import { ISpatialRefRepresentation, IWkidDescription } from '../../utils/interfa
 
 @Component({
   tag: 'solution-spatial-ref',
-  styleUrl: 'solution-spatial-ref.css',
+  styleUrl: 'solution-spatial-ref.scss',
   shadow: false
 })
 export class SolutionSpatialRef {

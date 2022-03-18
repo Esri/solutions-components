@@ -14,29 +14,27 @@
  * limitations under the License.
  */
 
-.configuration-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
+.item-type-icon {
+  margin-top: .15em !important;
+  height: 16px;
+  margin-top: 4px;
+  min-width: 16px;
+  // display: inline;
+  fill: currentColor;
+  pointer-events: none;
+  // vertical-align: middle;
+  display: block;
+  transform: rotate(
+    360deg
+  );
 }
 
-.configuration {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  padding: 8px;
-  border: 1px gray solid;
+.item-type-icon-margin {
+  margin-right: 6px;
+  margin-left: 0;
 }
 
-.config-tabs {
-  width: 100%;
-}
-
-.config-tab {
-  width: 100%;
-  overflow-y: auto;
-  height: inherit;
+.item-type-icon-margin[dir="rtl"] {
+  margin-right: 0;
+  margin-left: 6px;
 }

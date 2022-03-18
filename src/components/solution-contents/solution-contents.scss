@@ -14,27 +14,8 @@
  * limitations under the License.
  */
 
- .item-type-icon {
-  margin-top: .15em !important;
-  height: 16px;
-  margin-top: 4px;
-  min-width: 16px;
-  display: inline;
-  fill: currentColor;
-  pointer-events: none;
-  vertical-align: middle;
-  display: block;
-  transform: rotate(
-    360deg
-    );
-}
-
-.item-type-icon-margin {
-  margin-right: 6px;
-  margin-left: 0;
-}
-
-.item-type-icon-margin[dir="rtl"] {
-  margin-right: 0;
-  margin-left: 6px;
+.icon-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

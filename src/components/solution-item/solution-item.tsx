@@ -22,7 +22,7 @@ import state from '../../utils/editStore';
 
 @Component({
   tag: 'solution-item',
-  styleUrl: 'solution-item.css',
+  styleUrl: 'solution-item.scss',
   shadow: false
 })
 export class SolutionItem {

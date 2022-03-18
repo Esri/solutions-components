@@ -39,7 +39,7 @@ import { getProp } from '@esri/solution-common';
 
 @Component({
   tag: 'json-editor',
-  styleUrl: 'json-editor.css',
+  styleUrl: 'json-editor.scss',
   shadow: false,
   assetsDirs: ['assets']
 })
