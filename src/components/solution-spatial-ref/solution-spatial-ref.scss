@@ -15,21 +15,12 @@
  */
 
 .spatial-ref-switch {
-  margin-right: 8px;
-}
-
-html[dir="rtl"] .spatial-ref-switch {
-  margin-left: 8px;
-  margin-right: 0;
+  margin-inline-end: 8px;
 }
 
 .spatial-ref-switch-title {
   margin-top: 10px;
-  margin-left: 42px;
-}
-html[dir="rtl"] .spatial-ref-switch-title {
-  margin-left: 0;
-  margin-right: 42px;
+  margin-inline-start: 42px;
 }
 
 #spatialRefDefn .sc-calcite-label-h label.sc-calcite-label {
@@ -47,12 +38,7 @@ html[dir="rtl"] .spatial-ref-switch-title {
 }
 
 .spatial-ref-item-switch {
-  margin-right: 8px;
-}
-
-html[dir="rtl"] .spatial-ref-item-switch {
-  margin-left: 8px;
-  margin-right: 0;
+  margin-inline-end: 8px;
 }
 
 .switch-label {
