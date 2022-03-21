@@ -70,14 +70,9 @@ h1 {
   line-height: 2rem;
 }
 
-html:not([dir="rtl"]) .margin-right-50 {
-  margin-right: 50px;
-  padding-right: 0px;
-}
-
-html[dir="rtl"] .margin-right-50 {
-  margin-left: 50px;
-  padding-left: 0px;
+html .margin-right-50 {
+  margin-inline-end: 50px;
+  padding-inline-end: 0px;
 }
 
 .button-reset-style {
@@ -173,14 +168,14 @@ html[dir="rtl"] .margin-right-50 {
 
 .grid-container, .esri-header.-web {
   max-width: 1472px;
-  padding-right: 16px;
-  padding-left: 16px;
+  padding-inline-end: 16px;
+  padding-inline-start: 16px;
   width: unset;
 }
 
 .block-group {
-  margin-left: -0.6875rem;
-  margin-right: -0.6875rem;
+  margin-inline-start: -0.6875rem;
+  margin-inline-end: -0.6875rem;
 }
 
 .input-search, .search-input {
@@ -199,8 +194,8 @@ html[dir="rtl"] .margin-right-50 {
 
 @media screen and (max-width: 1023px) {
   .esri-header.-web {
-    padding-right: 0px;
-    padding-left: 0px;
+    padding-inline-end: 0px;
+    padding-inline-start: 0px;
   }
 }
 
@@ -241,8 +236,8 @@ html[dir="rtl"] .margin-right-50 {
 @media screen and (max-width: 860px) {
   .filters-container {
     width: 100%;
-    margin-right: 0px;
-    margin-left: 0px;
+    margin-inline-end: 0px;
+    margin-inline-start: 0px;
   }
 
   .filters-label {
@@ -275,8 +270,8 @@ html[dir="rtl"] .margin-right-50 {
 
   .solution-thumbnail-wrap {
     width: 100% !important;
-    padding-right: 0px !important;
-    padding-left: 0px !important;
+    padding-inline-end: 0px !important;
+    padding-inline-start: 0px !important;
     display: flex;
   }
 
@@ -324,24 +319,16 @@ calcite-tree a {
   vertical-align: middle;
 }
 
-html:not([dir="rtl"]) .action-icon > a.tooltip:before {
-  margin-right: -2px;
-}
-
-html[dir="rtl"] .action-icon > a.tooltip:before {
-  margin-left: -2px;
+html .action-icon > a.tooltip:before {
+  margin-inline-end: -2px;
 }
 
 .esri-header-brand-image {
   height: 32px;
 }
 
-html:not([dir="rtl"]) .esri-header-brand {
-  padding-left: 0px !important;
-}
-
-html[dir="rtl"] .esri-header-brand {
-  padding-right: 0px !important;
+html .esri-header-brand {
+  padding-inline-start: 0px !important;
 }
 
 #solutions-modal-title {
@@ -362,24 +349,16 @@ html[dir="rtl"] .esri-header-brand {
   align-self: center;
 }
 
-html:not([dir="rtl"]) .clear-btn {
-  padding-right: 10px;
-}
-
-html[dir="rtl"] .clear-btn {
-  padding-left: 10px;
+html .clear-btn {
+  padding-inline-end: 10px;
 }
 
 .filter-btn {
   align-self: center;
 }
 
-html:not([dir="rtl"]) .filter-btn {
-  margin-left: 10px;
-}
-
-html[dir="rtl"] .filter-btn {
-  margin-right: 10px;
+html .filter-btn {
+  margin-inline-start: 10px;
 }
 
 .filter-btn[active] {
@@ -416,12 +395,8 @@ input.input-group-input, .input-group-input {
 }
 
 @-moz-document url-prefix() {
-
-  html[dir="rtl"] #category-tree {
-    padding-right: 4px !important;
-  }
-  html:not([dir="rtl"]) #category-tree {
-    padding-left: 4px !important;
+  html #category-tree {
+    padding-inline-start: 4px !important;
   }
 }
 
@@ -447,12 +422,11 @@ input.input-group-input, .input-group-input {
   word-break: break-word;
 }
 
-html:not([dir="rtl"]) .filter-chip {
-  padding: 2px 8px 2px 10px;
-}
-
-html[dir="rtl"] .filter-chip {
-  padding: 2px 10px 2px 8px;
+html .filter-chip {
+  padding-top: 2px;
+  padding-inline-end: 8px;
+  padding-bottom: 2px;
+  padding-inline-start: 10px;
 }
 
 .filter-chips {
@@ -461,14 +435,9 @@ html[dir="rtl"] .filter-chip {
   flex-wrap:  wrap;
 }
 
-html:not([dir="rtl"]) .filter-chips {
-  border-left: 1px solid #ccc;
-  padding-left: 1rem;
-}
-
-html[dir="rtl"] .filter-chips {
-  border-right: 1px solid #ccc;
-  padding-right: 1rem;
+html .filter-chips {
+  border-inline-start: 1px solid #ccc;
+  padding-inline-start: 1rem;
 }
 
 .filter-chips-label {
@@ -476,12 +445,11 @@ html[dir="rtl"] .filter-chips {
   margin-bottom: 1px;
 }
 
-html:not([dir="rtl"]) .filter-chips-label {
-  padding: 3px 8px 3px 0rem;
-}
-
-html[dir="rtl"] .filter-chips-label {
-  padding: 3px 0rem 3px 8px;
+html .filter-chips-label {
+  padding-top: 3px;
+  padding-inline-end: 8px;
+  padding-bottom: 3px;
+  padding-inline-start: 0rem;
 }
 
 .spacer {
@@ -537,12 +505,11 @@ html[dir="rtl"] .filter-chips-label {
   margin-bottom: 1px;
 }
 
-html:not([dir="rtl"]) .filter-clear-all {
-  padding: 3px 8px 3px 0px;
-}
-
-html[dir="rtl"] .filter-clear-all {
-  padding: 3px 0px 3px 8px;
+html .filter-clear-all {
+  padding-top: 3px;
+  padding-inline-end: 8px;
+  padding-bottom: 3px;
+  padding-inline-start: 0px;
 }
 
 .filter-chip-wrap {
@@ -567,12 +534,8 @@ html[dir="rtl"] .filter-clear-all {
   outline: 2px solid black;
 }
 
-html:not([dir="rtl"]) .filter-chip--remove {
-  margin-left: 4px;
-}
-
-html[dir="rtl"] .filter-chip--remove {
-  margin-right: 4px;
+html .filter-chip--remove {
+  margin-inline-start: 4px;
 }
 
 /*#endregion */
@@ -653,18 +616,14 @@ html[dir="rtl"] .filter-chip--remove {
   vertical-align: middle;
 }
 
-html:not([dir="rtl"]) .solution-info-close-icon {
-  padding-right: .15em;
-}
-
-html[dir="rtl"] .solution-info-close-icon {
-  padding-left: .15em;
+html .solution-info-close-icon {
+  padding-inline-end: .15em;
 }
 
 .solution-info-header {
   background-color: #efefef;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  padding-inline-start: 1.5rem;
+  padding-inline-end: 1.5rem;
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
   margin: -1.5rem;
@@ -681,12 +640,8 @@ html[dir="rtl"] .solution-info-close-icon {
   font-weight: 500;
 }
 
-html:not([dir="rtl"]) .solution-info-title {
-  padding-right: 2rem;
-}
-
-html[dir="rtl"] .solution-info-title {
-  padding-left: 2rem;
+html .solution-info-title {
+  padding-inline-end: 2rem;
 }
 
 .solution-info-actions {
@@ -732,7 +687,7 @@ html[dir="rtl"] .solution-info-title {
 }
 
 .solutions-search-large:focus {
-  padding-right: 10px;
+  padding-inline-end: 10px;
 }
 
 .input-group-override {
@@ -754,14 +709,9 @@ html[dir="rtl"] .solution-info-title {
   align-self: center;
 }
 
-html:not([dir="rtl"]) .sort-control-container:before {
-  border-left: 1px solid #dddddd;
-  margin-right: 10px;
-}
-
-html[dir="rtl"] .sort-control-container:before {
-  border-right: 1px solid #dddddd;
-  margin-left: 10px;
+html .sort-control-container:before {
+  border-inline-start: 1px solid #dddddd;
+  margin-inline-end: 10px;
 }
 
 .sort-control {
@@ -918,12 +868,11 @@ html[dir="rtl"] .tooltip-bottom:after {
   height: 32px;
 }
 
-html:not([dir="rtl"]) .card-bottom-row {
-  padding: 0 .5rem 0 1rem;
-}
-
-html[dir="rtl"] .card-bottom-row {
-  padding: 0 1rem 0 .5rem;
+html .card-bottom-row {
+  padding-top: 0;
+  padding-inline-end: .5rem;
+  padding-bottom: 0;
+  padding-inline-start: 1rem;
 }
 
 .card-bottom-row-tags {
@@ -951,12 +900,8 @@ html[dir="rtl"] .card-bottom-row-icons {
   float: left;
 }
 
-html:not([dir="rtl"]) .card-bottom-row-icons::before {
-  padding-right: 0;
-}
-
-html[dir="rtl"] .card-bottom-row-icons::before {
-  padding-left: 0;
+html .card-bottom-row-icons::before {
+  padding-inline-end: 0;
 }
 
 .thumbnail-download-icon {
@@ -984,12 +929,8 @@ html[dir="rtl"] .card-bottom-row-icons::before {
   border: none;
 }
 
-html:not([dir="rtl"]) .card-status-icon {
-  padding-right: 0.5rem;
-}
-
-html[dir="rtl"] .card-status-icon {
-  padding-left: 0.5rem;
+html .card-status-icon {
+  padding-inline-end: 0.5rem;
 }
 
 .action-icon-disabled {
