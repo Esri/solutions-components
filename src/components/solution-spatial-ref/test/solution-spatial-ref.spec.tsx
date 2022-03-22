@@ -65,7 +65,7 @@ describe('solution-spatial-ref', () => {
           </div>
           <div>
             <label class="spatial-ref-item-title">Feature Services</label>
-            <label class="switch-label"><calcite-switch disabled="" scale="m" switched="" class="spatial-ref-item-switch"></calcite-switch>Feature Service 1</label>
+            <label class="switch-label"><calcite-switch disabled="" scale="m" class="spatial-ref-item-switch"></calcite-switch>Feature Service 1</label>
             <label class="switch-label"><calcite-switch disabled="" scale="m" class="spatial-ref-item-switch"></calcite-switch>Feature Service 2</label>
           </div>
         </div>
