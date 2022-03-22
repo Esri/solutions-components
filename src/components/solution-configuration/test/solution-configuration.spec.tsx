@@ -21,17 +21,17 @@ import { h } from '@stencil/core';
 import state from '../../../utils/editStore';
 
 // Mock MutationObserver because Jest environment doesn't have it
-const mutationObserverMock = jest.fn(function MutationObserver(callback) {
+const mutationObserverMock = jest.fn(function MutationObserver() {
   this.observe = jest.fn();
 });
-global.MutationObserver = mutationObserverMock;
+global.MutationObserver = mutationObserverMock as any;
 
 describe('solution-configuration', () => {
   // has to be a better way..
   global.MutationObserver = class {
-    constructor(callback) { }
+    constructor() { }
     disconnect() { }
-    observe(element, initObject) { }
+    observe() { }
     takeRecords(): any[] { return [] }
   };
 
