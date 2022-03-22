@@ -21,7 +21,8 @@
 .icon-inline--on-left, .icon-inline--on-right {
   margin-inline-end: 6px;
   display: inline;
-  margin-top: -.15em;
+  vertical-align: middle;
+  fill: $solutions-blue;
 }
 
 .font-size--3 {
