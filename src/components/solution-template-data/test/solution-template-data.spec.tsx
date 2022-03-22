@@ -19,7 +19,7 @@ import { SolutionTemplateData } from '../solution-template-data';
 import * as translations from '../../../testingAssets/strings.json';
 import * as data from '../../../demos/data/solution-template-data-data.json';
 import { h } from '@stencil/core';
-import { state, dispose } from '../../../utils/editStore';
+import { dispose } from '../../../utils/editStore';
 
 beforeEach(async () => {
   dispose();

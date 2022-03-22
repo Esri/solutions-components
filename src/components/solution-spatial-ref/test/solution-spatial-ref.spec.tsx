@@ -25,10 +25,13 @@ describe('solution-spatial-ref', () => {
     state.dispose();
     state.models = {};
     state.spatialReferenceInfo = {
-      services: {
-        "Feature Service 1": true,
+      enabled: true,
+      services: [{
+        "Feature Service 1": true
+      }, {
         "Feature Service 2": false
-      }
+      }],
+      spatialReference: undefined
     };
     state.featureServices = [];
   });
