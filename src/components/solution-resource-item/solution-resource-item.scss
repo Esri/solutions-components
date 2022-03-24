@@ -15,11 +15,11 @@
  */
 
 :host {
-  display: block;
+  @apply block;
 }
 
 .resource-item {
-  padding: 1rem;
+  @apply p-4;
 }
 
 .resource-button {
@@ -31,7 +31,7 @@
 }
 
 .resource-progress {
-  padding-top: 1rem;
+  @apply pt-4;
 }
 
 .resources-container {
@@ -47,5 +47,5 @@
 }
 
 .margin-bottom-1 {
-  margin-bottom: 1rem;
+  @apply mb-4;
 }
