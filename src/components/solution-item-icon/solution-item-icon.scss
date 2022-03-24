@@ -15,12 +15,13 @@
  */
 
 .item-type-icon {
+  @apply block
+    h-4
+    pointer-events-none;
+    
   margin-top: .15em !important;
-  height: 16px;
   min-width: 16px;
   fill: currentColor;
-  pointer-events: none;
-  display: block;
   transform: rotate(
     360deg
   );
