@@ -19,22 +19,22 @@
 }
 
 .spatial-ref-switch-title {
-  margin-top: 10px;
+  @apply mt-2.5;
   margin-inline-start: 42px;
 }
 
 #spatialRefDefn .sc-calcite-label-h label.sc-calcite-label {
-  margin: 0;
+  @apply m-0;
   background-color: $solutions-light-purple;
 }
 
 .spatial-ref-default {
-  margin: 0;
+  @apply m-0;
 }
 
 .spatial-ref-item-title {
-  margin-bottom: 8px;
-  font-size: 14px;
+  @apply mb-2
+    text-sm;
 }
 
 .spatial-ref-item-switch {
@@ -42,17 +42,17 @@
 }
 
 .switch-label {
-  margin: 4px;
-  font-size: 14px;
+  @apply m-1
+    text-sm;
 }
 
 .disabled-div {
-  pointer-events: none;
-  opacity: 0.4;
+  @apply pointer-events-none
+    opacity-40;
 }
 
 .spatial-ref-container {
   max-height: 200px;
-  overflow-y: auto;
-  margin-bottom: 1rem;
+  @apply overflow-y-auto
+    mb-4;
 }
