@@ -28,7 +28,10 @@ export const config: Config = {
       injectGlobalPaths: ["src/assets/styles/includes.scss"]
     }),
     postcss({
-      plugins: [tailwindcss(tailwindConfig), autoprefixer()]
+      plugins: [
+        tailwindcss(tailwindConfig),
+        autoprefixer()
+      ]
     })
   ],
   preamble: 'Copyright 2021 Esri\nLicensed under the Apache License, Version 2.0\nhttp://www.apache.org/licenses/LICENSE-2.0'
