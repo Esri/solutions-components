@@ -15,11 +15,11 @@
  */
 
 :host {
-  display: block;
+  @apply block;
 }
 
 .container-border {
-  overflow-y: auto;
+  @apply overflow-y-auto;
 }
 
 .org-var-header {
