@@ -15,7 +15,7 @@
  */
 
 :host {
-  display: flexbox;
+  @apply flexbox;
 }
 
 .solution-data-container {
@@ -37,31 +37,36 @@
     flex
     flex-col
     overflow-auto;
-
   width: 50px;
 }
 
 .inputBottomSeparation {
-  margin: 0 0 1.5rem 0;
+  @apply mt-0
+    mx-0
+    mb-6;
 }
 
 .json-editor {
-  @apply m-4;
-  width: -webkit-fill-available;
-  width: -moz-available;
+  @apply m-4
+    fill-available;
 }
 
 .collapse-btn {
-  padding: 1rem 1rem 0 1rem;
+  @apply pt-4
+    pb-0
+    px-4;
 }
 
 .org-vars {
-  padding: 1rem 1rem 0 1rem;
+  @apply pt-4
+    pb-0
+    px-4;
   max-height: 45%;
 }
 
 .sol-vars {
-  padding: 0 1rem 0 1rem;
+  @apply py-0
+    px-4;
   min-height: 45%;
 }
 
@@ -71,8 +76,4 @@
 
 .light {
   background-color: $solutions-background-color;
-}
-
-.hide {
-  display: none;
 }

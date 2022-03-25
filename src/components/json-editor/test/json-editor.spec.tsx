@@ -58,7 +58,7 @@ describe('json-editor', () => {
           </div>
           <div class="edit-parent">
             <div class="json-edit-container" id="ABC123-container"></div>
-            <div class="json-edit-container not-visible" id="ABC123-diff-container"></div>
+            <div class="json-edit-container display-none" id="ABC123-diff-container"></div>
           </div>
         </div>
       </json-editor>

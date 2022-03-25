@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
+$snippet-width: 400px;
+
 .inputBottomSeparation {
-  margin: 0 0 1.5rem 0;
+  @apply mt-0
+    mx-0
+    mb-6;
 }
 
 .icon-inline--on-left, .icon-inline--on-right {
@@ -32,7 +36,7 @@
 .img-container {
   @apply inline
     m-inline-end-4;
-  max-width: 400px;
+  max-width: $snippet-width;
 }
 
 .summary-count-container {
@@ -42,7 +46,7 @@
 }
 
 .snippet-count-container {
-  width: calc(100vw - 400px);
+  width: calc(100vw - $snippet-width);
 }
 
 .parent-container {
@@ -52,6 +56,8 @@
 
 label {
   @apply relative
-    block;
-  margin: 0 0 1.5rem 0;
+    block
+    mt-0
+    mx-0
+    mb-6;
 }

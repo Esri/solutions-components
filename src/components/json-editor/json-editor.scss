@@ -37,9 +37,8 @@ html[dir="rtl"] .editor-buttons {
 }
 
 .edit-button {
-  @apply pt-1;
-  padding-inline-start: .5rem;
-  
+  @apply pt-1
+    p-inline-start-2;
 }
 
 .editor-text {
@@ -62,12 +61,12 @@ html[dir="rtl"] .editor-buttons {
 
 .json-edit-container {
   @apply w-full
-    h-full;
-  border: 1px solid $solutions-light-gray;
+    h-full
+    border-lightgray;
 }
 
 .padding-right {
-  padding-inline-end: 2px;
+  @apply p-inline-end-0.5;
 }
 
 .btn {
@@ -84,10 +83,6 @@ html[dir="rtl"] .editor-buttons {
 
 .all-edits {
   @apply mt-16;
-}
-
-.not-visible {
-  display: none;
 }
 
 .json-editor-position {

@@ -31,15 +31,7 @@
 }
 
 .resources-container {
-  border: 1px $solutions-light-gray solid;
-}
-
-.success {
-  color: var(--calcite-ui-success);
-}
-
-.danger {
-  color: var(--calcite-ui-danger);
+  @apply border-lightgray;
 }
 
 .margin-bottom-1 {

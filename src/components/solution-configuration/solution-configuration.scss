@@ -27,8 +27,8 @@
     bottom-0
     left-0
     flex
-    p-2;
-  border: 1px $solutions-light-gray solid;
+    p-2
+    border-lightgray;
 }
 
 .config-tabs {
@@ -36,7 +36,7 @@
 }
 
 .config-tab {
-  width: 100%;
+  @apply w-full;
 }
 
 .config-solution {
@@ -60,8 +60,8 @@
 .config-inventory-hide {
   @apply flex-grow-0
     overflow-y-auto
-    max-w-min;
-  display: none;
+    max-w-min
+    display-none;
 }
 
 .config-item {

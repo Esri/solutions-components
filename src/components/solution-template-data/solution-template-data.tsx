@@ -117,13 +117,13 @@ export class SolutionTemplateData {
                   scale="s"
                   title={this.translations.cancelEdits}
                 />
-                <div class={this.varsOpen ? "org-vars" : "org-vars hide"} id="orgVars">
+                <div class={this.varsOpen ? "org-vars" : "org-vars display-none"} id="orgVars">
                   <solution-organization-variables
                     translations={this.translations}
                     value={this.organizationVariables}
                   />
                 </div>
-                <div class={this.varsOpen ? "sol-vars" : "sol-vars hide"} id="solVars">
+                <div class={this.varsOpen ? "sol-vars" : "sol-vars display-none"} id="solVars">
                   <solution-variables
                     translations={this.translations}
                     value={this.solutionVariables}

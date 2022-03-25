@@ -23,7 +23,8 @@
 }
 
 .org-var-header {
-  margin: 1rem 0rem 1rem 0rem;
+  @apply my-4
+    mx-0;
 }
 
 .icon-text {

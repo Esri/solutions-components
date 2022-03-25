@@ -37,10 +37,6 @@ h1 {
   transition: 1s;
 }
 
-.display-none {
-  display: none;
-}
-
 /*#endregion */
 
 /*#region Calcite overrides */
@@ -62,7 +58,7 @@ calcite-tree-item > a:hover {
 }
 
 calcite-switch > input {
-  display: none;
+  @apply display-none;
 }
 
 calcite-switch {

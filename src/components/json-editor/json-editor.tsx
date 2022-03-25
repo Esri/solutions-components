@@ -172,7 +172,7 @@ export class JsonEditor {
           </div>
           <div class="edit-parent">
             <div id={`${this.instanceid}-container`} class="json-edit-container"></div>
-            <div id={`${this.instanceid}-diff-container`} class="json-edit-container not-visible"></div>
+            <div id={`${this.instanceid}-diff-container`} class="json-edit-container display-none"></div>
           </div>
         </div>
       </Host>
@@ -403,11 +403,11 @@ export class JsonEditor {
     let container = document.getElementById(`${this.instanceid}-container`);
     if (this._useDiffEditor) {
       this._setDiffModel();
-      diffContainer.classList.remove("not-visible");
-      container.classList.add("not-visible");
+      diffContainer.classList.remove("display-none");
+      container.classList.add("display-none");
     } else {
-      diffContainer.classList.add("not-visible");
-      container.classList.remove("not-visible");
+      diffContainer.classList.add("display-none");
+      container.classList.remove("display-none");
     }
   }
 

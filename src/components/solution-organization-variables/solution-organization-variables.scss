@@ -23,5 +23,7 @@
 }
 
 .org-var-header {
-  margin: 0rem 0rem 1rem 0rem;
+  @apply mx-0
+    mt-0
+    mb-4;
 }
