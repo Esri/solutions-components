@@ -25,10 +25,13 @@ describe('solution-spatial-ref', () => {
     state.dispose();
     state.models = {};
     state.spatialReferenceInfo = {
-      services: {
-        "Feature Service 1": true,
+      enabled: true,
+      services: [{
+        "Feature Service 1": true
+      }, {
         "Feature Service 2": false
-      }
+      }],
+      spatialReference: undefined
     };
     state.featureServices = [];
   });
@@ -62,7 +65,7 @@ describe('solution-spatial-ref', () => {
           </div>
           <div>
             <label class="spatial-ref-item-title">Feature Services</label>
-            <label class="switch-label"><calcite-switch disabled="" scale="m" switched="" class="spatial-ref-item-switch"></calcite-switch>Feature Service 1</label>
+            <label class="switch-label"><calcite-switch disabled="" scale="m" class="spatial-ref-item-switch"></calcite-switch>Feature Service 1</label>
             <label class="switch-label"><calcite-switch disabled="" scale="m" class="spatial-ref-item-switch"></calcite-switch>Feature Service 2</label>
           </div>
         </div>

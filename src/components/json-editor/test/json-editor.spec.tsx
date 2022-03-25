@@ -20,10 +20,10 @@ import * as translations from '../../../testingAssets/strings.json';
 import { h } from '@stencil/core';
 
 // Mock MutationObserver because Jest environment doesn't have it
-const mutationObserverMock = jest.fn(function MutationObserver(callback) {
+const mutationObserverMock = jest.fn(function MutationObserver() {
   this.observe = jest.fn();
 });
-global.MutationObserver = mutationObserverMock;
+global.MutationObserver = mutationObserverMock as any;
 
 describe('json-editor', () => {
   it('renders', async () => {

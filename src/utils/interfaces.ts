@@ -17,12 +17,14 @@
 /**
  * Resource update types
  */
- export enum EUpdateType {
+/* eslint-disable no-unused-vars */
+export enum EUpdateType {
   Add,
   Update,
   Remove,
   None
 }
+/* eslint-enable no-unused-vars */
 
 /**
  * Key details from the templates item

@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import { newE2EPage } from '@stencil/core/testing';
-
 describe('solution-item-icon', () => {
   it('renders', async () => {
     // const page = await newE2EPage();
