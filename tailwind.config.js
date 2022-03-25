@@ -17,7 +17,6 @@ module.exports =  {
         ".border-lightgray": { "border": "1px #808080 solid" },
         ".fill-available": { "width": "-webkit-fill-available", "width": "-moz-available" }, 
         ".flexbox": { "display": "flexbox" },
-        ".display-none": { "display": "none" },
         // logical margin start
         ".m-inline-start-1": { "margin-inline-start": "0.25rem" /* 4px */ },
         ".m-inline-start-2": { "margin-inline-start": "0.5rem" /* 8px */ },

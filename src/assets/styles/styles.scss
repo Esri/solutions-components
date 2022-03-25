@@ -58,7 +58,7 @@ calcite-tree-item > a:hover {
 }
 
 calcite-switch > input {
-  @apply display-none;
+  @apply hidden;
 }
 
 calcite-switch {
@@ -76,3 +76,7 @@ input.input-group-input, .input-group-input {
 }
 
 /*#endregion */
+
+.display-none {
+  @apply hidden;
+}
