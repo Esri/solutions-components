@@ -23,7 +23,7 @@
 }
 
 .resource-button {
-  margin-inline-end: 1rem;
+  @apply m-inline-end-4;
 }
 
 .resource-progress {

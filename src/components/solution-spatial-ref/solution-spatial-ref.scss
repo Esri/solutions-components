@@ -15,12 +15,12 @@
  */
 
 .spatial-ref-switch {
-  margin-inline-end: 8px;
+  @apply m-inline-end-2;
 }
 
 .spatial-ref-switch-title {
-  @apply mt-2.5;
-  margin-inline-start: 42px;
+  @apply mt-2.5
+    m-inline-start-10;
 }
 
 #spatialRefDefn .sc-calcite-label-h label.sc-calcite-label {
@@ -38,7 +38,7 @@
 }
 
 .spatial-ref-item-switch {
-  margin-inline-end: 8px;
+  @apply m-inline-end-2;
 }
 
 .switch-label {

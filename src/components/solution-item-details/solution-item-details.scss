@@ -20,8 +20,8 @@
 
 .icon-inline--on-left, .icon-inline--on-right {
   @apply inline
-    align-middle;
-  margin-inline-end: 6px;
+    align-middle
+    m-inline-end-1.5;
   fill: $solutions-blue;
 }
 
@@ -30,15 +30,15 @@
 }
 
 .img-container {
-  @apply inline;
+  @apply inline
+    m-inline-end-4;
   max-width: 400px;
-  margin-inline-end: 1rem;
 }
 
 .summary-count-container {
   @apply inline
-    flex-grow;
-  margin-inline-start: 12px;
+    flex-grow
+    m-inline-start-3;
 }
 
 .snippet-count-container {
