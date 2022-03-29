@@ -14,73 +14,50 @@
  * limitations under the License.
  */
 
+$snippet-width: 400px;
+
 .inputBottomSeparation {
-  margin: 0 0 1.5rem 0;
+  @apply mt-0
+    mx-0
+    mb-6;
 }
 
 .icon-inline--on-left, .icon-inline--on-right {
-  margin-inline-end: 6px;
-  display: inline;
-  margin-top: -.15em;
-}
-
-.font-size--3 {
-  font-size: 0.8125rem;
-  line-height: 1.5
+  @apply inline
+    align-middle
+    m-inline-end-1.5;
+  fill: $solutions-blue;
 }
 
 .scale-down {
-  object-fit: scale-down;
-}
-
-.btn-link {
-  -webkit-appearance: none;
-  cursor: pointer;
-  padding: 0;
-  border: none;
-  color: $solutions-dark-gray;
-  background: transparent;
-}
-
-.btn-link:hover {
-  text-decoration: underline;
-}
-
-.inline-block {
-  display: inline-block;
-}
-
-.flex {
-  display: flex;
+  @apply object-scale-down;
 }
 
 .img-container {
-  display: inline;
-  max-width: 400px;
-  margin-inline-end: 1rem;
+  @apply inline
+    m-inline-end-4;
+  max-width: $snippet-width;
 }
 
 .summary-count-container {
-  display: inline;
-  flex-grow: 1;
-  margin-inline-start: 12px;
+  @apply inline
+    flex-grow
+    m-inline-start-3;
 }
 
 .snippet-count-container {
-  width: calc(100vw - 400px);
+  width: calc(100vw - $snippet-width);
 }
 
 .parent-container {
-  max-width: 100%;
-  margin: 1rem;
-}
-
-.display-none {
-  display: none;
+  @apply max-w-full
+    m-4;
 }
 
 label {
-  position: relative;
-  display: block;
-  margin: 0 0 1.5rem 0;
+  @apply relative
+    block
+    mt-0
+    mx-0
+    mb-6;
 }

@@ -15,37 +15,25 @@
  */
 
 :host {
-  display: block;
+  @apply block;
 }
 
 .resource-item {
-  padding: 1rem;
+  @apply p-4;
 }
 
 .resource-button {
-  margin-inline-end: 1rem;
-}
-
-.display-none {
-  display: none;
+  @apply m-inline-end-4;
 }
 
 .resource-progress {
-  padding-top: 1rem;
+  @apply pt-4;
 }
 
 .resources-container {
-  border: 1px $solutions-light-gray solid;
-}
-
-.success {
-  color: var(--calcite-ui-success);
-}
-
-.danger {
-  color: var(--calcite-ui-danger);
+  @apply border-lightgray;
 }
 
 .margin-bottom-1 {
-  margin-bottom: 1rem;
+  @apply mb-4;
 }

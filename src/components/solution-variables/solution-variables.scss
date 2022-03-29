@@ -15,19 +15,18 @@
  */
 
 :host {
-  display: block;
+  @apply block;
 }
 
 .container-border {
-  overflow-y: auto;
+  @apply overflow-y-hidden;
 }
 
 .org-var-header {
-  margin: 1rem 0rem 1rem 0rem;
+  @apply my-4
+    mx-0;
 }
 
 .icon-text {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  @apply truncate;
 }

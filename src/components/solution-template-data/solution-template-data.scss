@@ -15,63 +15,65 @@
  */
 
 :host {
-  display: flexbox;
+  @apply flexbox;
 }
 
 .solution-data-container {
-  height: 100%;
-  max-width: 100%;
-  position: relative;
+  @apply h-full 
+    w-full
+    relative;
 }
 
 .solution-data-child-container {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
+  @apply h-full
+    w-full
+    flex
+    flex-col
+    overflow-auto;
 }
 
 .solution-data-child-container-collapsed {
-  height: 100%;
+  @apply h-full
+    flex
+    flex-col
+    overflow-auto;
   width: 50px;
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
 }
 
 .inputBottomSeparation {
-  margin: 0 0 1.5rem 0;
+  @apply mt-0
+    mx-0
+    mb-6;
 }
 
 .json-editor {
-  width: -webkit-fill-available;
-  width: -moz-available;
-  margin: 1rem;
+  @apply m-4
+    fill-available;
 }
 
 .collapse-btn {
-  padding: 1rem 1rem 0 1rem;
+  @apply pt-4
+    pb-0
+    px-4;
 }
 
 .org-vars {
-  padding: 1rem 1rem 0 1rem;
+  @apply pt-4
+    pb-0
+    px-4;
   max-height: 45%;
 }
 
 .sol-vars {
-  padding: 0 1rem 0 1rem;
+  @apply py-0
+    px-4;
   min-height: 45%;
 }
 
 .padding-1 {
-  padding: 1rem;
+  @apply p-4;
 }
 
 .light {
   background-color: $solutions-background-color;
-}
-
-.hide {
-  display: none;
 }

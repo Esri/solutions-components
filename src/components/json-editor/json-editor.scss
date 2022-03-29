@@ -15,96 +15,84 @@
  */
 
 :host {
-  display: block;
+  @apply block;
 }
 
 .editor-container {
-  position: relative;
-  height: 100%;
+  @apply relative
+    h-full;
 }
 
 .editor-controls {
-  height: 44px;
+  @apply h-11;
   background-color: $solutions-background-color;
 }
 
 .editor-buttons {
-  float: right;
+  @apply float-right;
 }
 
 html[dir="rtl"] .editor-buttons {
-  float: left;
+  @apply float-left;
 }
 
 .edit-button {
-  padding-top: .25rem;
-  padding-inline-start: .5rem;
+  @apply pt-1
+    p-inline-start-2;
 }
 
 .editor-text {
-  overflow-y: auto;
+  @apply w-full
+    overflow-y-auto;
   background-color: $solutions-white;
-  width: 100%;
 }
 
 .edit-width {
-  width: 100%;
+  @apply w-full;
 }
 
 /* NEW CSS FOR MONACO */
 .edit-parent {
-  width: 100%;
+  @apply w-full
+    box-border;
   /* adjust for edit buttons and border */
   height: calc(100% - 46px);
-  box-sizing: border-box;
 }
 
 .json-edit-container {
-  width: 100%;
-  height: 100%;
-  border: 1px solid $solutions-light-gray;
+  @apply w-full
+    h-full
+    border-lightgray;
 }
 
 .padding-right {
-  padding-inline-end: 2px;
-}
-
-.btn-container {
-  width: 20%;
-  height: calc(100vh - 16px);
-  margin: 0px;
-  padding: 0px;
-  float: right;
+  @apply p-inline-end-0.5;
 }
 
 .btn {
+  @apply flex 
+    mb-4
+    content-center;
   height: 25px;
   width: 120px;
-  display: flex;
-  margin-bottom: 1rem;
-  justify-content: center;
 }
 
 .select-ctrl {
-  margin-bottom: 1rem;
+  @apply mb-4;
 }
 
 .all-edits {
-  margin-top: 4rem;
-}
-
-.not-visible {
-  display: none;
+  @apply mt-16;
 }
 
 .json-editor-position {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+  @apply absolute
+    left-0
+    top-0
+    w-full
+    h-full
+    m-0
+    p-0
+    overflow-hidden;
   max-height: 100% !important;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
 }

@@ -15,15 +15,13 @@
  */
 
 :host {
-  display: block;
+  @apply block;
 }
 
 .container-border {
-  padding: 1rem;
+  @apply p-4;
 }
 
 .icon-text {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  @apply truncate;
 }
