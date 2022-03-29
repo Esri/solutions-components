@@ -63,6 +63,9 @@
   .not-visible {
     visibility: hidden;
   }
+  .entry-label {
+    min-width: min-content !important;
+  }
   </style>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es5%2Cfetch%2CPromise"></script>
   <script src="https://unpkg.com/@esri/arcgis-rest-request@3.1.1/dist/umd/request.umd.js"></script>
@@ -75,19 +78,19 @@
 <body>
   <div class="margin-top-1 margin-side-1">
     <div class="labeled-item align-baseline">
-      <label for="username">Username:&nbsp;</label>
+      <label class="entry-label" for="username">Username:&nbsp;</label>
       <input type="text" id="username" placeholder="anonymous">
     </div>
     <div class="labeled-item align-baseline">
-      <label for="password">Password:&nbsp;</label>
+      <label class="entry-label" for="password">Password:&nbsp;</label>
       <input type="password" id="password">
     </div>
     <div class="labeled-item align-baseline">
-      <label for="portal">Portal:&nbsp;</label>
+      <label class="entry-label" for="portal">Portal:&nbsp;</label>
       <input type="text" id="portal" style="width:256px" placeholder="https://www.arcgis.com">
     </div>
     <div class="labeled-item align-baseline">
-      <label for="group">Group ID:&nbsp;</label>
+      <label class="entry-label" for="group">Group ID:&nbsp;</label>
       <input type="text" id="group" style="width:256px" placeholder="aa0b71e70e5b464187879db8fad7d939">
     </div>
     <button id="connectBtn fader" onclick="connectFcn()">Connect</button>
