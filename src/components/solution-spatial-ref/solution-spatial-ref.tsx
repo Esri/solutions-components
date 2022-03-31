@@ -292,10 +292,14 @@ export class SolutionSpatialRef {
    * @returns a node to control each feature service
    */
   private _getFeatureServices(services: string[]): VNode {
-    return services && services.length > 0 ? (
+    // verify they are in state
+    const _services = services.filter(s => {
+      return state.spatialReferenceInfo["services"].some(stateService => stateService.hasOwnProperty(s))
+    });
+    return _services && _services.length > 0 ? (
       <div>
         <label class="spatial-ref-item-title">{this.translations.featureServicesHeading}</label>
-        {services.map(name => (
+        {_services.map(name => (
           <label class="switch-label">
             <calcite-switch
               class="spatial-ref-item-switch"
