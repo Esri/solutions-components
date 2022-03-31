@@ -9,7 +9,7 @@
   "types": "dist/custom-elements/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/solutions/solutions.esm.js",
+  "unpkg": "dist/solutions/solutions.js",
   "files": [
     "dist/"
   ],
