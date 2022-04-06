@@ -4,11 +4,14 @@ import { sass } from "@stencil/sass";
 import { postcss } from "@stencil/postcss";
 import tailwindcss from "tailwindcss";
 import tailwindConfig from "./tailwind.config";
+import { generatePreactTypes } from "./support/preact";
 
 export const config: Config = {
+  buildEs5: "prod",
   namespace: 'solutions',
   globalStyle: 'src/assets/styles/styles.scss',
   outputTargets: [
+    { type: "dist-hydrate-script" },
     {
       type: 'dist',
       copy: [
@@ -21,7 +24,8 @@ export const config: Config = {
     { type: "dist-custom-elements", autoDefineCustomElements: true },
     {
       type: 'docs-readme'
-    }
+    },
+    { type: "custom", name: "preact", generator: generatePreactTypes },
   ],
   plugins: [
     sass({
