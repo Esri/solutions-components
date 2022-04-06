@@ -154,7 +154,7 @@ export interface IServiceInfo {
  */
 export interface ISolutionSpatialReferenceInfo {
   enabled: boolean;
-  services: IServiceInfo[];
+  services: IServiceInfo;
   spatialReference: any;
 }
 

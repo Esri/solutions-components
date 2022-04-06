@@ -24,7 +24,7 @@ export const { state, onChange, dispose, reset } = createStore({
   featureServices: [],
   spatialReferenceInfo: {
     enabled: false,
-    services: [],
+    services: {},
     spatialReference: undefined
   },
   dispose: () => dispose(),
