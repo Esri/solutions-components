@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const plugin = require('tailwindcss/plugin');
+import plugin from "tailwindcss/plugin";
 
-module.exports =  {
+export default {
   content: ["./src/components/**/*.scss"],
   theme: {
     screens: {
@@ -15,7 +15,7 @@ module.exports =  {
     plugin(function ({ addUtilities }) {
       addUtilities({
         ".border-lightgray": { "border": "1px #808080 solid" },
-        ".fill-available": { "width": "-webkit-fill-available", "width": "-moz-available" }, 
+        ".fill-available": { "width": "-webkit-fill-available -moz-available" }, 
         ".flexbox": { "display": "flexbox" },
         // logical margin start
         ".m-inline-start-1": { "margin-inline-start": "0.25rem" /* 4px */ },
