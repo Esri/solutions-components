@@ -53779,7 +53779,7 @@ class SolutionSpatialRef {
   _getFeatureServices(services) {
     // verify they are in state
     const _services = services.filter(s => {
-      return state.spatialReferenceInfo["services"].some(stateService => stateService.hasOwnProperty(s));
+      return Object.keys(state.spatialReferenceInfo["services"]).some(stateService => stateService === s);
     });
     return _services && _services.length > 0 ? (hAsync("div", null, hAsync("label", { class: "spatial-ref-item-title" }, this.translations.featureServicesHeading), _services.map(name => (hAsync("label", { class: "switch-label" }, hAsync("calcite-switch", { class: "spatial-ref-item-switch", disabled: this.locked, onCalciteSwitchChange: (event) => this._updateEnabledServices(event, name), scale: "m", switched: state.spatialReferenceInfo["services"][name] }), name))))) : (null);
   }

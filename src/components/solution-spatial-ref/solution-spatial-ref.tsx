@@ -294,7 +294,7 @@ export class SolutionSpatialRef {
   private _getFeatureServices(services: string[]): VNode {
     // verify they are in state
     const _services = services.filter(s => {
-      return state.spatialReferenceInfo["services"].some(stateService => stateService.hasOwnProperty(s))
+      return Object.keys(state.spatialReferenceInfo["services"]).some(stateService => stateService === s)
     });
     return _services && _services.length > 0 ? (
       <div>
