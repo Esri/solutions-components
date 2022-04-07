@@ -102,7 +102,7 @@ export interface SerializeDocumentOptions extends HydrateDocumentOptions {
 	 * Sets an approximate line width the HTML should attempt to stay within.
 	 * Note that this is "approximate", in that HTML may often not be able
 	 * to be split at an exact line width. Additionally, new lines created
-	 * is where HTML naturally already has whitespce, such as before an
+	 * is where HTML naturally already has whitespace, such as before an
 	 * attribute or spaces between words. Defaults to `100`.
 	 */
 	approximateLineWidth?: number;
