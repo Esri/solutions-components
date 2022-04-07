@@ -103,7 +103,7 @@ export class SolutionConfiguration {
 
   componentWillRender(): Promise<any> {
     return new Promise((resolve) => {
-      if (this._fetchData) {
+      if (this.itemid && (this._fetchData || !this.modelsSet)) {
         this._fetchData = false;
         this._isLoading = true;
         this._getItemData(this.itemid).then(() => {
