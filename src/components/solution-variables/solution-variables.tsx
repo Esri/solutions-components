@@ -111,7 +111,7 @@ export class SolutionVariables {
   ): VNode[] {
     const hierarchy = objs.map(obj => {
       return obj.dependencies && obj.dependencies.length > 0 ? (
-        <calcite-tree-item>
+        <calcite-tree-item onClick={(evt) => this._toggleExpand(evt)}>
           <solution-item-icon type={obj.type} />
           <span class="icon-text" title={obj.title}>{obj.title}</span>
           <calcite-tree slot="children">
@@ -141,5 +141,19 @@ export class SolutionVariables {
       itemId: id,
       value
     });
+  }
+
+  /**
+   * Toggle the tree item that was clicked
+   *
+   * @param evt the clicks mouse event
+   */
+  private _toggleExpand(
+    evt: any = undefined
+  ): void {
+    const treeItem = evt?.target?.closest("calcite-tree-item");
+    if (treeItem) {
+      treeItem.expanded = !treeItem?.expanded;
+    }
   }
 }
