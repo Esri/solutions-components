@@ -11,7 +11,6 @@ export const config: Config = {
   namespace: 'solutions',
   globalStyle: 'src/assets/styles/styles.scss',
   outputTargets: [
-    { type: "dist-hydrate-script" },
     {
       type: 'dist',
       copy: [

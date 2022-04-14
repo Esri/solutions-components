@@ -1,6 +1,0 @@
-{
-  "name": "@esri/solutions-components/hydrate",
-  "description": "solutions component hydration app.",
-  "main": "index.js",
-  "types": "index.d.ts"
-}
