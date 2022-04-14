@@ -153,7 +153,7 @@ export class SolutionVariables {
   ): void {
     const treeItem = evt?.target?.closest("calcite-tree-item");
     if (treeItem) {
-      treeItem.expanded = !treeItem?.expanded;
+      treeItem.expanded = !treeItem.expanded;
     }
   }
 }

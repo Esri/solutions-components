@@ -143,7 +143,7 @@ export class SolutionContents {
    * 
    * Also toggles the expanded state of the tree item.
    *
-   * @param solutionItem the
+   * @param solutionItem the selected solution item to emit
    * @param evt MouseEvent or undefined
    */
   private _treeItemSelected(
