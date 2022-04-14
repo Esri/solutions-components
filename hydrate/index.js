@@ -31134,6 +31134,10 @@ class SolutionConfiguration {
     * Contains the current solution item data
     */
     this.sourceItemData = {};
+    /**
+    * Used to show/hide loading indicator
+    */
+    this.showLoading = false;
     this._fetchData = false;
     this._isLoading = false;
   }
@@ -31160,7 +31164,7 @@ class SolutionConfiguration {
   render() {
     const wkid = getProp(state.spatialReferenceInfo, "spatialReference.wkid");
     const hasServices = state.featureServices.length > 0;
-    return (hAsync(Host, null, hAsync("div", { class: "configuration-container" }, hAsync("div", { class: "configuration" }, hAsync("calcite-tabs", { class: "config-tabs" }, hAsync("calcite-tab-nav", { slot: "tab-nav" }, hAsync("calcite-tab-title", null, this.translations.definitionTab), hasServices ?
+    return this.showLoading ? (hAsync(Host, null, hAsync("calcite-loader", { active: true, label: '' }))) : (hAsync(Host, null, hAsync("div", { class: "configuration-container" }, hAsync("div", { class: "configuration" }, hAsync("calcite-tabs", { class: "config-tabs" }, hAsync("calcite-tab-nav", { slot: "tab-nav" }, hAsync("calcite-tab-title", null, this.translations.definitionTab), hasServices ?
       hAsync("calcite-tab-title", null, this.translations.spatialReferenceTab) :
       null), hAsync("calcite-tab", { active: true, class: "config-tab" }, hAsync("div", { class: "config-solution" }, hAsync("div", { class: this.treeOpen ? "config-inventory" : "config-inventory-hide" }, hAsync("solution-contents", { id: "configInventory", key: `${this.itemid}-contents`, translations: this.translations, value: this.value.contents })), hAsync("calcite-button", { appearance: "transparent", class: "collapse-btn", "icon-start": this.treeOpen ? "chevrons-left" : "chevrons-right", id: "collapse-vars", onClick: () => this._toggleTree(), scale: "s", title: this.translations.cancelEdits }), hAsync("div", { class: "config-item" }, hAsync("solution-item", { authentication: this.authentication, key: `${this.itemid}-item`, organizationVariables: this._organizationVariables, solutionVariables: this._solutionVariables, translations: this.translations, value: this.item })))), hasServices ?
       hAsync("calcite-tab", { class: "config-tab" }, hAsync("div", { class: "config-solution" }, hAsync("solution-spatial-ref", { defaultWkid: wkid, id: "configure-solution-spatial-ref", key: `${this.itemid}-spatial-ref`, locked: !wkid, services: state.featureServices.map(fs => fs.name), translations: this.translations })))
@@ -31520,6 +31524,7 @@ class SolutionConfiguration {
       "itemid": [1537],
       "treeOpen": [1028, "tree-open"],
       "sourceItemData": [1032, "source-item-data"],
+      "showLoading": [1028, "show-loading"],
       "modelsSet": [32],
       "getEditModels": [64],
       "getSpatialReferenceInfo": [64],
