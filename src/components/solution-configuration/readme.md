@@ -12,6 +12,7 @@
 | `authentication` | --                 | Credentials for requests                               | `UserSession`            | `undefined`                                                                                                                                     |
 | `item`           | --                 | Contains the current solution item we are working with | `ISolutionItem`          | `{     itemId: "",     itemDetails: {},     isResource: false,     data: {},     properties: {},     type: "",     groupDetails: undefined   }` |
 | `itemid`         | `itemid`           | Contains the current solution item id                  | `string`                 | `""`                                                                                                                                            |
+| `showLoading`    | `show-loading`     | Used to show/hide loading indicator                    | `boolean`                | `false`                                                                                                                                         |
 | `sourceItemData` | `source-item-data` | Contains the current solution item data                | `any`                    | `{}`                                                                                                                                            |
 | `templates`      | --                 | Contains the raw templates from the solution item      | `any[]`                  | `undefined`                                                                                                                                     |
 | `translations`   | `translations`     | Contains the translations for this component.          | `any`                    | `{}`                                                                                                                                            |
@@ -73,6 +74,7 @@ Type: `Promise<any>`
 
 ### Depends on
 
+- calcite-loader
 - calcite-tabs
 - calcite-tab-nav
 - calcite-tab-title
@@ -85,6 +87,7 @@ Type: `Promise<any>`
 ### Graph
 ```mermaid
 graph TD;
+  solution-configuration --> calcite-loader
   solution-configuration --> calcite-tabs
   solution-configuration --> calcite-tab-nav
   solution-configuration --> calcite-tab-title

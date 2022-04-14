@@ -53,6 +53,10 @@ export namespace Components {
         "itemid": string;
         "save": () => Promise<any>;
         /**
+          * Used to show/hide loading indicator
+         */
+        "showLoading": boolean;
+        /**
           * Contains the current solution item data
          */
         "sourceItemData": any;
@@ -425,6 +429,10 @@ declare namespace LocalJSX {
          */
         "itemid"?: string;
         "onSolutionLoaded"?: (event: CustomEvent<any>) => void;
+        /**
+          * Used to show/hide loading indicator
+         */
+        "showLoading"?: boolean;
         /**
           * Contains the current solution item data
          */

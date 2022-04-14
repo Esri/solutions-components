@@ -94,6 +94,11 @@ export class SolutionConfiguration {
   */
   @Prop({ mutable: true }) sourceItemData: any = {};
 
+  /**
+  * Used to show/hide loading indicator
+  */
+  @Prop({ mutable: true }) showLoading = false;
+
   //--------------------------------------------------------------------------
   //
   //  Lifecycle
@@ -125,7 +130,11 @@ export class SolutionConfiguration {
   render(): VNode {
     const wkid = getProp(state.spatialReferenceInfo, "spatialReference.wkid");
     const hasServices: boolean = state.featureServices.length > 0;
-    return (
+    return this.showLoading ? (
+      <Host>
+        <calcite-loader active label='' />
+      </Host>
+    ) : (
       <Host>
         <div class="configuration-container">
           <div class="configuration">

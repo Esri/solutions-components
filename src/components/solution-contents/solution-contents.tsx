@@ -83,7 +83,7 @@ export class SolutionContents {
       const selected: boolean = this.selectedItem?.itemId && this.selectedItem?.itemId === obj.solutionItem.itemId;
       return (obj.dependencies && obj.dependencies.length > 0) ?
         (
-          <calcite-tree-item onClick={() => this._treeItemSelected(obj.solutionItem)} selected={selected}>
+          <calcite-tree-item onClick={(evt) => this._treeItemSelected(obj.solutionItem, evt)} selected={selected}>
             <solution-item-icon type={obj.type} typeKeywords={obj.typeKeywords} />
             <span class="icon-text" title={obj.title}>{obj.title}</span>
             <calcite-tree slot="children" >
@@ -93,7 +93,7 @@ export class SolutionContents {
         )
         :
         (
-          <calcite-tree-item onClick={() => this._treeItemSelected(obj.solutionItem)} selected={selected}>
+          <calcite-tree-item onClick={(evt) => this._treeItemSelected(obj.solutionItem, evt)} selected={selected}>
             <solution-item-icon type={obj.type} typeKeywords={obj.typeKeywords} />
             <span class="icon-text" title={obj.title}>{obj.title}</span>
           </calcite-tree-item>
@@ -139,14 +139,21 @@ export class SolutionContents {
   //--------------------------------------------------------------------------
 
   /**
-   * Publishes the `solutionItemSelected` event containing `itemId`, the id of the selected item.
+   * Publishes the `solutionItemSelected` event containing `solutionItem` of the selected item.
+   * 
+   * Also toggles the expanded state of the tree item.
    *
-   * @param solutionItem the
-   * @param type Item type to understand if it's an item or group
+   * @param solutionItem the selected solution item to emit
+   * @param evt MouseEvent or undefined
    */
   private _treeItemSelected(
-    solutionItem: ISolutionItem
+    solutionItem: ISolutionItem,
+    evt: any = undefined
   ): void {
+    const treeItem = evt?.target?.closest("calcite-tree-item");
+    if (treeItem) {
+      treeItem.expanded = !treeItem?.expanded;
+    }
     this.selectedItem = solutionItem;
     this.solutionItemSelected.emit(solutionItem);
   }
