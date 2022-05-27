@@ -35,6 +35,40 @@ export namespace Components {
          */
         "value": any;
     }
+    interface MapDrawTools {
+    }
+    interface MapLayerPicker {
+    }
+    interface MapSearch {
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.SceneView;
+        /**
+          * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
+         */
+        "portal": __esri.Portal;
+        /**
+          * Contains the translations for this component.
+         */
+        "translations": any;
+    }
+    interface PdfDownload {
+    }
+    interface PublicNotification {
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
+         */
+        "portal": __esri.Portal;
+        /**
+          * Contains the translations for this component.
+         */
+        "translations": any;
+    }
     interface SolutionConfiguration {
         /**
           * Credentials for requests
@@ -300,6 +334,36 @@ declare global {
         prototype: HTMLJsonEditorElement;
         new (): HTMLJsonEditorElement;
     };
+    interface HTMLMapDrawToolsElement extends Components.MapDrawTools, HTMLStencilElement {
+    }
+    var HTMLMapDrawToolsElement: {
+        prototype: HTMLMapDrawToolsElement;
+        new (): HTMLMapDrawToolsElement;
+    };
+    interface HTMLMapLayerPickerElement extends Components.MapLayerPicker, HTMLStencilElement {
+    }
+    var HTMLMapLayerPickerElement: {
+        prototype: HTMLMapLayerPickerElement;
+        new (): HTMLMapLayerPickerElement;
+    };
+    interface HTMLMapSearchElement extends Components.MapSearch, HTMLStencilElement {
+    }
+    var HTMLMapSearchElement: {
+        prototype: HTMLMapSearchElement;
+        new (): HTMLMapSearchElement;
+    };
+    interface HTMLPdfDownloadElement extends Components.PdfDownload, HTMLStencilElement {
+    }
+    var HTMLPdfDownloadElement: {
+        prototype: HTMLPdfDownloadElement;
+        new (): HTMLPdfDownloadElement;
+    };
+    interface HTMLPublicNotificationElement extends Components.PublicNotification, HTMLStencilElement {
+    }
+    var HTMLPublicNotificationElement: {
+        prototype: HTMLPublicNotificationElement;
+        new (): HTMLPublicNotificationElement;
+    };
     interface HTMLSolutionConfigurationElement extends Components.SolutionConfiguration, HTMLStencilElement {
     }
     var HTMLSolutionConfigurationElement: {
@@ -374,6 +438,11 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "json-editor": HTMLJsonEditorElement;
+        "map-draw-tools": HTMLMapDrawToolsElement;
+        "map-layer-picker": HTMLMapLayerPickerElement;
+        "map-search": HTMLMapSearchElement;
+        "pdf-download": HTMLPdfDownloadElement;
+        "public-notification": HTMLPublicNotificationElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-contents": HTMLSolutionContentsElement;
         "solution-item": HTMLSolutionItemElement;
@@ -414,6 +483,40 @@ declare namespace LocalJSX {
           * Contains the public value for this component. This should be an item Id for one of the models in the store.
          */
         "value"?: any;
+    }
+    interface MapDrawTools {
+    }
+    interface MapLayerPicker {
+    }
+    interface MapSearch {
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.SceneView;
+        /**
+          * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
+         */
+        "portal"?: __esri.Portal;
+        /**
+          * Contains the translations for this component.
+         */
+        "translations"?: any;
+    }
+    interface PdfDownload {
+    }
+    interface PublicNotification {
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
+         */
+        "portal"?: __esri.Portal;
+        /**
+          * Contains the translations for this component.
+         */
+        "translations"?: any;
     }
     interface SolutionConfiguration {
         /**
@@ -659,6 +762,11 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "json-editor": JsonEditor;
+        "map-draw-tools": MapDrawTools;
+        "map-layer-picker": MapLayerPicker;
+        "map-search": MapSearch;
+        "pdf-download": PdfDownload;
+        "public-notification": PublicNotification;
         "solution-configuration": SolutionConfiguration;
         "solution-contents": SolutionContents;
         "solution-item": SolutionItem;
@@ -678,6 +786,11 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
+            "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
+            "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
+            "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
+            "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
+            "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;
