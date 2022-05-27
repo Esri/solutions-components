@@ -30,6 +30,15 @@ graph TD;
   public-notification --> map-draw-tools
   public-notification --> map-layer-picker
   public-notification --> pdf-download
+  pdf-download --> calcite-combobox
+  pdf-download --> calcite-button
+  pdf-download --> calcite-combobox-item
+  calcite-combobox --> calcite-chip
+  calcite-combobox --> calcite-icon
+  calcite-chip --> calcite-icon
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
+  calcite-combobox-item --> calcite-icon
   style public-notification fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

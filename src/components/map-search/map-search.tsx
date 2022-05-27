@@ -37,8 +37,7 @@ export class MapSearch {
       const searchWidget = new Search({
         view: this.mapView
       });
-      console.log(searchWidget)
-  
+
       // Add the search widget to the top right corner of the view
       this.mapView.ui.add(searchWidget, {
         position: "top-right"
@@ -59,7 +58,6 @@ export class MapSearch {
   render() {
     return (
       <Host>
-        {/* <searchWidget/> */}
         <slot/>
       </Host>
     );
