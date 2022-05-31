@@ -1,3 +1,19 @@
+/** @license
+ * Copyright 2021 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import { Component, Host, h } from '@stencil/core';
 
 @Component({
@@ -10,7 +26,13 @@ export class MapDrawTools {
   render() {
     return (
       <Host>
-        <slot></slot>
+        <div style={{"display":"flex", "padding-bottom": "1rem"}}>
+          <calcite-button appearance="outline" icon-end="pin" style={{"padding-right":"1rem"}}/>
+          <calcite-button appearance="outline" icon-end="line" style={{"padding-right":"1rem"}}/>
+          <calcite-button appearance="outline" icon-end="polygon-area" style={{"padding-right":"1rem"}}/>
+          <calcite-button color="red" icon-end="trash" style={{"padding-right":"1rem"}}/>
+        </div>
+        <slot/>
       </Host>
     );
   }
