@@ -36,6 +36,19 @@ export namespace Components {
         "value": any;
     }
     interface MapDrawTools {
+        "graphicsLayer": __esri.GraphicsLayer;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
+         */
+        "portal": __esri.Portal;
+        /**
+          * Contains the translations for this component.
+         */
+        "translations": any;
     }
     interface MapLayerPicker {
     }
@@ -485,6 +498,19 @@ declare namespace LocalJSX {
         "value"?: any;
     }
     interface MapDrawTools {
+        "graphicsLayer"?: __esri.GraphicsLayer;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
+         */
+        "portal"?: __esri.Portal;
+        /**
+          * Contains the translations for this component.
+         */
+        "translations"?: any;
     }
     interface MapLayerPicker {
     }

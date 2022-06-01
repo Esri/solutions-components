@@ -27,12 +27,12 @@ export class PdfDownload {
   render() {
     return (
       <Host>
-        <div style={{ "padding-bottom": "1rem" }}>
+        <div class="download-container">
           <calcite-combobox label="Format">
             {this._renderItems()}
           </calcite-combobox>
           <slot />
-          <calcite-button label="Download" style={{ "padding-top": "1rem", "float": "right" }}>Download</calcite-button>
+          <calcite-button class="download-btn" label="Download">Download</calcite-button>
         </div>
      </Host>
     );

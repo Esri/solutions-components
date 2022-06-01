@@ -1,3 +1,12 @@
 :host {
   display: block;
 }
+
+.download-container {
+  padding-bottom: 1rem;
+}
+
+.download-btn {
+  padding-top: 1rem;
+  float: right;
+}

@@ -30,15 +30,24 @@ graph TD;
   public-notification --> map-draw-tools
   public-notification --> map-layer-picker
   public-notification --> pdf-download
-  pdf-download --> calcite-combobox
-  pdf-download --> calcite-button
-  pdf-download --> calcite-combobox-item
+  map-search --> calcite-label
+  map-search --> calcite-input
+  map-search --> calcite-combobox
+  map-search --> calcite-combobox-item
+  calcite-input --> calcite-progress
+  calcite-input --> calcite-icon
   calcite-combobox --> calcite-chip
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
+  calcite-combobox-item --> calcite-icon
+  map-draw-tools --> calcite-button
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
-  calcite-combobox-item --> calcite-icon
+  map-layer-picker --> calcite-combobox
+  map-layer-picker --> calcite-combobox-item
+  pdf-download --> calcite-combobox
+  pdf-download --> calcite-button
+  pdf-download --> calcite-combobox-item
   style public-notification fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

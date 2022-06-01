@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Host, h } from '@stencil/core';
+import { Component, Element, Host, h, Prop } from '@stencil/core';
 
 @Component({
   tag: 'map-draw-tools',
@@ -22,6 +22,54 @@ import { Component, Host, h } from '@stencil/core';
   shadow: true,
 })
 export class MapDrawTools {
+    //--------------------------------------------------------------------------
+  //
+  //  Host element access
+  //
+  //--------------------------------------------------------------------------
+  @Element() el: HTMLPublicNotificationElement;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (public)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * Credentials for requests
+   */
+  //@Prop({ mutable: true }) authentication: UserSession;
+
+  /**
+   * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   */
+  @Prop() mapView: __esri.MapView;
+
+  @Prop() graphicsLayer: __esri.GraphicsLayer;
+
+  //@Watch('mapView')
+  //mapViewWatchHandler(v: any, oldV: any): void {
+    // if (v && v !== oldV) {
+    //   const searchWidget = new Search({
+    //     view: this.mapView
+    //   });
+
+    //   // Add the search widget to the top right corner of the view
+    //   this.mapView.ui.add(searchWidget, {
+    //     position: "top-right"
+    //   });
+    // }
+  //}
+
+  /**
+   * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
+   */
+  @Prop() portal: __esri.Portal;
+
+  /**
+   * Contains the translations for this component.
+   */
+  @Prop({ mutable: true }) translations: any = {};
 
   render() {
     return (

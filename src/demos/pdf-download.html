@@ -5,16 +5,7 @@
       name="viewport"
       content="initial-scale=1,maximum-scale=1,user-scalable=no"
     />
-    <title>Map Search</title>
-
-    <style>
-      #viewDiv {
-        padding: 0;
-        margin: 0;
-        height: 100%;
-        width: 100%;
-      }
-    </style>
+    <title>Pdf Download</title>
 
     <link
       rel="stylesheet"
@@ -27,30 +18,9 @@
     <script src="https://js.arcgis.com/4.23/"></script>
     <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
     <script type="module" src="../solutions.esm.js"></script>
-
-    <script>
-      require(["esri/Map", "esri/views/SceneView"], (
-        Map,
-        SceneView,
-        Search
-      ) => {
-        const map = new Map({
-          basemap: "satellite",
-          ground: "world-elevation"
-        });
-
-        const demo = document.getElementById("demo");
-        demo.mapView = new SceneView({
-          scale: 123456789,
-          container: "viewDiv",
-          map: map
-        });
-      });
-    </script>
   </head>
 
   <body>
-    <div id="viewDiv"></div>
-    <map-search id="demo"></map-search>
+    <pdf-download id="demo"></pdf-download>
   </body>
 </html>

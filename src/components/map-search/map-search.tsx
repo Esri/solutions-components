@@ -74,9 +74,21 @@ export class MapSearch {
   render() {
     return (
       <Host>
+        <calcite-label>Search Distance
+          <calcite-input placeholder="0"/>
+          <calcite-combobox label=''>
+            {this._addUnits()}
+          </calcite-combobox>
+        </calcite-label>
         <slot/>
       </Host>
     );
   }
 
+  _addUnits(): any {
+    const UNITS: string [] = ["Feet", "Meters", "Miles", "Kilometers"];
+    return UNITS.map(u => {
+      (<calcite-combobox-item textLabel={u} value={u} />)
+    });
+  }
 }

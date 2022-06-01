@@ -20,9 +20,26 @@
 
  - [public-notification](../public-notification)
 
+### Depends on
+
+- calcite-label
+- calcite-input
+- calcite-combobox
+- calcite-combobox-item
+
 ### Graph
 ```mermaid
 graph TD;
+  map-search --> calcite-label
+  map-search --> calcite-input
+  map-search --> calcite-combobox
+  map-search --> calcite-combobox-item
+  calcite-input --> calcite-progress
+  calcite-input --> calcite-icon
+  calcite-combobox --> calcite-chip
+  calcite-combobox --> calcite-icon
+  calcite-chip --> calcite-icon
+  calcite-combobox-item --> calcite-icon
   public-notification --> map-search
   style map-search fill:#f9f,stroke:#333,stroke-width:4px
 ```

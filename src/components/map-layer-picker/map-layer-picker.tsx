@@ -27,13 +27,18 @@ export class MapLayerPicker {
     return (
       <Host>
         <calcite-combobox label="Addresses Layer">
-          <calcite-combobox-item textLabel="Layer 1" value="Layer 1"/>
-          <calcite-combobox-item textLabel="Layer 2" value="Layer 2"/>
-          <calcite-combobox-item textLabel="Layer 3" value="Layer 3"/>
-          <calcite-combobox-item textLabel="Layer 4" value="Layer 4"/>
+          {this._addMapLayers(["Layer 1", "Layer 2", "Layer 3", "Layer 4"])}
         </calcite-combobox>
       </Host>
     );
+  }
+
+  _addMapLayers(
+    layers: string[]
+  ): any {
+    return layers.map(u => {
+      (<calcite-combobox-item textLabel={u} value={u} />)
+    });
   }
 
 }

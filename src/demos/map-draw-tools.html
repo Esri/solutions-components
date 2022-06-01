@@ -5,7 +5,7 @@
       name="viewport"
       content="initial-scale=1,maximum-scale=1,user-scalable=no"
     />
-    <title>Map Search</title>
+    <title>Map Draw Tools</title>
 
     <style>
       #viewDiv {
@@ -29,21 +29,20 @@
     <script type="module" src="../solutions.esm.js"></script>
 
     <script>
-      require(["esri/Map", "esri/views/SceneView"], (
+      require(["esri/Map", "esri/views/MapView"], (
         Map,
-        SceneView,
-        Search
+        MapView
       ) => {
         const map = new Map({
-          basemap: "satellite",
-          ground: "world-elevation"
+          basemap: "topo-vector"
         });
 
         const demo = document.getElementById("demo");
-        demo.mapView = new SceneView({
-          scale: 123456789,
+        demo.mapView = new MapView({
           container: "viewDiv",
-          map: map
+          map: map,
+          zoom: 5,
+          center: [-98, 42]
         });
       });
     </script>
@@ -51,6 +50,6 @@
 
   <body>
     <div id="viewDiv"></div>
-    <map-search id="demo"></map-search>
+    <map-draw-tools id="demo"></map-draw-tools>
   </body>
 </html>

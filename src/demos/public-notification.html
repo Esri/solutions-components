@@ -5,7 +5,7 @@
       name="viewport"
       content="initial-scale=1,maximum-scale=1,user-scalable=no"
     />
-    <title>Map Search</title>
+    <title>Public Notification</title>
 
     <style>
       #viewDiv {
@@ -13,6 +13,28 @@
         margin: 0;
         height: 100%;
         width: 100%;
+      }
+      .map-container {
+        width: calc(100% - 300px);
+        position: relative;
+        float: left;
+        margin: 1rem;
+        padding: 1rem;
+        border: 1px solid;
+      }
+      .column {
+        width: 300px;
+        margin: 1rem;
+        padding: 1rem;
+        border: 1px solid;
+      }
+      .column[dir="rtl"] {
+        float: left;
+      }
+      .pn {
+        position: absolute;
+        right: 0px;
+        background-color: #F4F4F4;
       }
     </style>
 
@@ -29,21 +51,20 @@
     <script type="module" src="../solutions.esm.js"></script>
 
     <script>
-      require(["esri/Map", "esri/views/SceneView"], (
+      require(["esri/Map", "esri/views/MapView"], (
         Map,
-        SceneView,
-        Search
+        MapView
       ) => {
         const map = new Map({
-          basemap: "satellite",
-          ground: "world-elevation"
+          basemap: "topo-vector"
         });
 
         const demo = document.getElementById("demo");
-        demo.mapView = new SceneView({
-          scale: 123456789,
+        demo.mapView = new MapView({
           container: "viewDiv",
-          map: map
+          map: map,
+          zoom: 5,
+          center: [-98, 42]
         });
       });
     </script>
@@ -51,6 +72,6 @@
 
   <body>
     <div id="viewDiv"></div>
-    <map-search id="demo"></map-search>
+    <public-notification id="demo" class="column pn"></public-notification>
   </body>
 </html>
