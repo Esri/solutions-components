@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Host, h } from '@stencil/core';
+import { Component, Element, Host, h, Prop } from '@stencil/core';
 
 @Component({
   tag: 'map-layer-picker',
@@ -22,23 +22,60 @@ import { Component, Host, h } from '@stencil/core';
   shadow: true,
 })
 export class MapLayerPicker {
+  //--------------------------------------------------------------------------
+  //
+  //  Host element access
+  //
+  //--------------------------------------------------------------------------
+  @Element() el: HTMLMapLayerPickerElement;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (public)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * Credentials for requests
+   */
+  //@Prop({ mutable: true }) authentication: UserSession;
+
+  /**
+   * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   */
+  @Prop() mapView: __esri.MapView;
+
+  /**
+   * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
+   */
+  @Prop() portal: __esri.Portal;
+
+  /**
+   * Contains the translations for this component.
+   */
+  @Prop({ mutable: true }) translations: any = {};
+
+  // onComponentDidLoad() {
+  //   this.el.
+  // }
 
   render() {
     return (
       <Host>
-        <calcite-combobox label="Addresses Layer">
-          {this._addMapLayers(["Layer 1", "Layer 2", "Layer 3", "Layer 4"])}
-        </calcite-combobox>
+        <div class="padding-bottom-1">
+          <calcite-label>Addressee Layer</calcite-label>
+          <calcite-combobox label="Addressee Layer">
+            {this._addMapLayers()}
+          </calcite-combobox>
+        </div>
       </Host>
     );
   }
 
-  _addMapLayers(
-    layers: string[]
-  ): any {
-    return layers.map(u => {
-      (<calcite-combobox-item textLabel={u} value={u} />)
-    });
+  // shouldn't really do this on every render...
+  _addMapLayers(): any {
+    return this.mapView.layerViews.length > 0 ? this.mapView.layerViews.map(lv => {
+      return (<calcite-combobox-item textLabel={lv.layer.title} value={lv.layer.id} />)
+    }) : undefined;
   }
-
 }

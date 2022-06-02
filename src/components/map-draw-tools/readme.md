@@ -19,7 +19,7 @@
 
 ### Used by
 
- - [public-notification](../public-notification)
+ - [map-search](../map-search)
 
 ### Depends on
 
@@ -31,7 +31,7 @@ graph TD;
   map-draw-tools --> calcite-button
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
-  public-notification --> map-draw-tools
+  map-search --> map-draw-tools
   style map-draw-tools fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

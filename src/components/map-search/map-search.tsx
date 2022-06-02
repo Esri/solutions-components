@@ -74,9 +74,10 @@ export class MapSearch {
   render() {
     return (
       <Host>
-        <div class="search-widget-container-div">
+        <div class="padding-bottom-1">
           <div class="search-widget" ref={(el) => { this._searchDiv = el }} />
         </div>
+        <map-draw-tools mapView={this.mapView}/>
         <calcite-label>Search Distance</calcite-label>
         <div class="control-container">
           <calcite-input

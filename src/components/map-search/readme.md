@@ -23,6 +23,7 @@
 
 ### Depends on
 
+- [map-draw-tools](../map-draw-tools)
 - calcite-label
 - calcite-input
 - calcite-combobox
@@ -31,10 +32,14 @@
 ### Graph
 ```mermaid
 graph TD;
+  map-search --> map-draw-tools
   map-search --> calcite-label
   map-search --> calcite-input
   map-search --> calcite-combobox
   map-search --> calcite-combobox-item
+  map-draw-tools --> calcite-button
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-combobox --> calcite-chip

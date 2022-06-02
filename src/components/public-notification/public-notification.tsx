@@ -19,7 +19,7 @@ import { Component, Element, Host, h, Prop } from '@stencil/core';
 @Component({
   tag: 'public-notification',
   styleUrl: 'public-notification.css',
-  shadow: true,
+  shadow: false,
 })
 export class PublicNotification {
   //--------------------------------------------------------------------------
@@ -56,13 +56,13 @@ export class PublicNotification {
   @Prop({ mutable: true }) translations: any = {};
 
   render() {
+    console.log('pn render')
+    console.log(this.mapView)
     return (
       <Host>
         <div>
-          <map-search />
-          <map-draw-tools />
-          <map-search-distance />
-          <map-layer-picker />
+          <map-search mapView={this.mapView}/>
+          <map-layer-picker mapView={this.mapView}/>
           <pdf-download />
         </div>
         <slot />

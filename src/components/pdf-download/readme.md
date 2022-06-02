@@ -13,6 +13,7 @@
 
 ### Depends on
 
+- calcite-label
 - calcite-combobox
 - calcite-button
 - calcite-combobox-item
@@ -20,6 +21,7 @@
 ### Graph
 ```mermaid
 graph TD;
+  pdf-download --> calcite-label
   pdf-download --> calcite-combobox
   pdf-download --> calcite-button
   pdf-download --> calcite-combobox-item

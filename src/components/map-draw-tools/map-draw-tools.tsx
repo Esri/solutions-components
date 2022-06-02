@@ -47,20 +47,6 @@ export class MapDrawTools {
 
   @Prop() graphicsLayer: __esri.GraphicsLayer;
 
-  //@Watch('mapView')
-  //mapViewWatchHandler(v: any, oldV: any): void {
-    // if (v && v !== oldV) {
-    //   const searchWidget = new Search({
-    //     view: this.mapView
-    //   });
-
-    //   // Add the search widget to the top right corner of the view
-    //   this.mapView.ui.add(searchWidget, {
-    //     position: "top-right"
-    //   });
-    // }
-  //}
-
   /**
    * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
    */

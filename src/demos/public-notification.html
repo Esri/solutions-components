@@ -14,13 +14,10 @@
         height: 100%;
         width: 100%;
       }
-      .map-container {
-        width: calc(100% - 300px);
-        position: relative;
-        float: left;
-        margin: 1rem;
-        padding: 1rem;
-        border: 1px solid;
+      .over-map {
+        position: absolute;
+        right: 0px;
+        background-color: #F4F4F4;
       }
       .column {
         width: 300px;
@@ -30,11 +27,6 @@
       }
       .column[dir="rtl"] {
         float: left;
-      }
-      .over-map {
-        position: absolute;
-        right: 0px;
-        background-color: #F4F4F4;
       }
     </style>
 
@@ -72,6 +64,6 @@
 
   <body>
     <div id="viewDiv"></div>
-    <public-notification id="demo" class="column over-map"></public-notification>
+    <public-notification id="demo" class="over-map column"></public-notification>
   </body>
 </html>

@@ -28,20 +28,40 @@ export class PdfDownload {
     return (
       <Host>
         <div class="download-container">
-          <calcite-combobox label="Format">
-            {this._renderItems()}
-          </calcite-combobox>
-          <slot />
-          <calcite-button class="download-btn" label="Download">Download</calcite-button>
+          <calcite-label>Format
+            <calcite-combobox label="Format" selection-mode="single">
+              {this._renderItems()}
+            </calcite-combobox>
+          </calcite-label>
+          <slot name='numFound'/>
+          <calcite-button 
+            class="download-btn"
+            label="Download"
+            onClick={() => this._download()}
+          >Download</calcite-button>
         </div>
      </Host>
     );
   }
 
+  private _perPage = 0;
+
   _renderItems(): VNode[] {
     const s: any = libs;
     return (s.default || s).map((l) => {
-      return (<calcite-combobox-item 
+      // no idea what all will actually be checked and what would even be safe to check
+      // just adding some generic checks here for POC work
+      let addSelected = this._perPage === l.descriptionPDF.labelsPerPage;
+      if (this._perPage === 0) {
+        this._perPage = l.descriptionPDF.labelsPerPage;
+        addSelected = true;
+      }
+      return addSelected ? (<calcite-combobox-item 
+        onClick={() => this._itemClicked(l)}
+        selected
+        textLabel={`PDF label ${l.descriptionPDF.labelsPerPage} per page`}
+        value={l}/>
+      ) : (<calcite-combobox-item 
         onClick={() => this._itemClicked(l)} 
         textLabel={`PDF label ${l.descriptionPDF.labelsPerPage} per page`}
         value={l}/>
@@ -51,6 +71,10 @@ export class PdfDownload {
 
   _itemClicked(v: any): void {
     console.log(v)
+  }
+
+  _download(): void {
+    alert("Download the stuff");
   }
 
 }
