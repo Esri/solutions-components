@@ -15,13 +15,15 @@
  */
 
 import { Component, Element, Host, h, Prop, Watch } from '@stencil/core';
-//import MapView from '@arcgis/core/Map';
 import Search from "@arcgis/core/widgets/Search";
+import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
+import Graphic from "@arcgis/core/Graphic";
+import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 
 @Component({
   tag: 'map-search',
   styleUrl: 'map-search.css',
-  shadow: true,
+  shadow: false,
 })
 export class MapSearch {
   //--------------------------------------------------------------------------
@@ -38,28 +40,21 @@ export class MapSearch {
   //--------------------------------------------------------------------------
 
   /**
-   * Credentials for requests
-   */
-  //@Prop({ mutable: true }) authentication: UserSession;
-
-  /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
-  @Prop() mapView: __esri.SceneView;
-
+  @Prop() mapView: __esri.MapView;
+  
   @Watch('mapView')
   mapViewWatchHandler(v: any, oldV: any): void {
     if (v && v !== oldV) {
-      const searchWidget = new Search({
-        view: this.mapView
-      });
-
-      // Add the search widget to the top right corner of the view
-      this.mapView.ui.add(searchWidget, {
-        position: "top-right"
-      });
+      this._initSearchWidget();
     }
   }
+
+  /**
+   * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
+   */
+  @Prop() searchWidget: Search;
 
   /**
    * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
@@ -71,24 +66,150 @@ export class MapSearch {
    */
   @Prop({ mutable: true }) translations: any = {};
 
+  componentDidLoad() {
+    this._initSearchWidget();
+    this._initGraphicsLayer();
+  }
+
   render() {
     return (
       <Host>
-        <calcite-label>Search Distance
-          <calcite-input placeholder="0"/>
-          <calcite-combobox label=''>
+        <div class="search-widget-container-div">
+          <div class="search-widget" ref={(el) => { this._searchDiv = el }} />
+        </div>
+        <calcite-label>Search Distance</calcite-label>
+        <div class="control-container">
+          <calcite-input
+            class="padding-end-1"
+            number-button-type="vertical"
+            onCalciteInputInput={(evt) => this._setDistance(evt)}
+            placeholder="0"
+            type="number"/>
+          <calcite-combobox
+            label='label?'
+            placeholder="unit"
+            selection-mode="single">
             {this._addUnits()}
           </calcite-combobox>
-        </calcite-label>
+        </div>
         <slot/>
       </Host>
     );
   }
 
+  private _searchDiv: HTMLElement;
+
+  private _searchGeom: any;
+
+  private _unit = "";
+
+  private _distance = 0;
+
+  private _bufferGraphicsLayer: __esri.GraphicsLayer;
+
   _addUnits(): any {
-    const UNITS: string [] = ["Feet", "Meters", "Miles", "Kilometers"];
+    const UNITS: string [] = ["feet", "meters", "miles", "kilometers"];
     return UNITS.map(u => {
-      (<calcite-combobox-item textLabel={u} value={u} />)
+      if (this._unit === "") {
+        this._unit = u;
+      }
+      // gotta be a better way to just add selected without needing to duplicate all that
+      return this._unit === u ? (<calcite-combobox-item
+        onCalciteComboboxItemChange={(evt) => this._setUnit(evt)}
+        selected
+        textLabel={u}
+        value={u} />
+      ) : (<calcite-combobox-item
+        onCalciteComboboxItemChange={(evt) => this._setUnit(evt)}
+        textLabel={u}
+        value={u.toLowerCase()} />
+      );
     });
+  }
+
+  _initSearchWidget(): void {
+    if (this.mapView && this._searchDiv) {
+      this.searchWidget = new Search({
+        view: this.mapView,
+        container: this._searchDiv
+      });
+
+      this.searchWidget.on('search-clear', () => {
+        this._searchGeom = undefined;
+        this._bufferGraphicsLayer.removeAll();
+      });
+
+      this.searchWidget.on('select-result', (searchResults) => {
+        if (searchResults.result) {
+          this._searchGeom = searchResults.result.feature.geometry;
+          this._buffer();
+        }
+      })
+    }
+  }
+
+  _initGraphicsLayer(): void {
+    this._bufferGraphicsLayer = new GraphicsLayer();
+    this.mapView.map.layers.add(this._bufferGraphicsLayer);
+  }
+
+  _setDistance(
+    event: CustomEvent
+  ): void {
+    this._distance = event.detail.value;
+    this._buffer();
+  }
+
+  _setUnit(
+    event: CustomEvent
+  ): void {
+    this._unit = event.detail.value;
+    this._buffer();
+  }
+
+  _buffer(): void {
+    if (this._searchGeom && this._unit !== "" && this._distance > 0) {
+      try {
+        console.log(__esri.LinearUnit['feet'])
+      } catch (error) {
+        
+      }
+      try {
+        console.log(__esri.LinearUnit[0])
+      } catch (error) {
+        
+      }
+      try {
+        const lCu = this._unit.toLowerCase();
+        const bufferResults4 = geometryEngine.geodesicBuffer(
+          this._searchGeom,
+          this._distance,
+          lCu === 'feet' ? 'feet' : lCu === 'kilometers' ? 'kilometers' : lCu === 'meters' ? 'meters' : lCu === 'miles' ? 'miles' : 'feet'
+        );
+
+        // Create a symbol for rendering the graphic
+        const fillSymbol = {
+          type: "simple-fill",
+          color: [227, 139, 79, 0.8],
+          outline: {
+            color: [255, 255, 255],
+            width: 1
+          }
+        };
+
+        // Add the geometry and symbol to a new graphic
+        const polygonGraphic = new Graphic({
+          geometry: Array.isArray(bufferResults4) ? bufferResults4[0] : bufferResults4,
+          symbol: fillSymbol
+        });
+
+        this._bufferGraphicsLayer.removeAll();
+        this._bufferGraphicsLayer.add(polygonGraphic);
+        void this.mapView.goTo(polygonGraphic.geometry.extent);
+
+      } catch (err) {
+        console.log(err)
+      }
+    }
   }
 }

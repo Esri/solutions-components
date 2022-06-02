@@ -1,3 +1,19 @@
 :host {
   display: block;
 }
+
+.search-widget-container-div {
+  padding-bottom: 1rem;
+}
+
+.search-widget {
+  width: 100% !important;
+}
+
+.control-container {
+  display: inline-flex;
+}
+
+.padding-end-1 {
+  padding-inline-end: 1rem;
+}

@@ -7,11 +7,12 @@
 
 ## Properties
 
-| Property       | Attribute      | Description                                                                                               | Type        | Default     |
-| -------------- | -------------- | --------------------------------------------------------------------------------------------------------- | ----------- | ----------- |
-| `mapView`      | --             | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html    | `SceneView` | `undefined` |
-| `portal`       | --             | esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html | `Portal`    | `undefined` |
-| `translations` | `translations` | Contains the translations for this component.                                                             | `any`       | `{}`        |
+| Property       | Attribute      | Description                                                                                                 | Type            | Default     |
+| -------------- | -------------- | ----------------------------------------------------------------------------------------------------------- | --------------- | ----------- |
+| `mapView`      | --             | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html      | `MapView`       | `undefined` |
+| `portal`       | --             | esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html   | `Portal`        | `undefined` |
+| `searchWidget` | --             | esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html | `widgetsSearch` | `undefined` |
+| `translations` | `translations` | Contains the translations for this component.                                                               | `any`           | `{}`        |
 
 
 ## Dependencies

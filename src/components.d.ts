@@ -56,11 +56,15 @@ export namespace Components {
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
-        "mapView": __esri.SceneView;
+        "mapView": __esri.MapView;
         /**
           * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
          */
         "portal": __esri.Portal;
+        /**
+          * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
+         */
+        "searchWidget": Search;
         /**
           * Contains the translations for this component.
          */
@@ -518,11 +522,15 @@ declare namespace LocalJSX {
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
-        "mapView"?: __esri.SceneView;
+        "mapView"?: __esri.MapView;
         /**
           * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
          */
         "portal"?: __esri.Portal;
+        /**
+          * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
+         */
+        "searchWidget"?: Search;
         /**
           * Contains the translations for this component.
          */
