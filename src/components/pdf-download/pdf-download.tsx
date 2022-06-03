@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Host, h, VNode } from '@stencil/core';
+import { Component, Host, h, Prop, VNode } from '@stencil/core';
 import * as libs from '../../../../solutions-libraries/generatePDF/dist/labelFormats.json';
 import '@esri/calcite-components';
 
@@ -24,6 +24,12 @@ import '@esri/calcite-components';
   shadow: true,
 })
 export class PdfDownload {
+
+  /**
+   * Contains the translations for this component.
+   */
+  @Prop({ mutable: true }) translations: any = {};
+
   render() {
     return (
       <Host>

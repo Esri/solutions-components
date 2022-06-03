@@ -8,6 +8,7 @@
 
 .search-widget {
   width: 100% !important;
+  border: 1px solid var(--calcite-ui-border-input);
 }
 
 .control-container {

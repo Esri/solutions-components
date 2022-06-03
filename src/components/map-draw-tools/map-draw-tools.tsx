@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop } from '@stencil/core';
+import { Component, Element, Host, h, Prop, Watch } from '@stencil/core';
+import Sketch from "@arcgis/core/widgets/Sketch";
+import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 
 @Component({
   tag: 'map-draw-tools',
   styleUrl: 'map-draw-tools.css',
-  shadow: true,
+  shadow: false,
 })
 export class MapDrawTools {
     //--------------------------------------------------------------------------
@@ -45,7 +47,21 @@ export class MapDrawTools {
    */
   @Prop() mapView: __esri.MapView;
 
-  @Prop() graphicsLayer: __esri.GraphicsLayer;
+  @Watch('mapView')
+  mapViewWatchHandler(v: any, oldV: any): void {
+    if (v && v !== oldV) {
+      void this.mapView.when(() => {
+        this._initGraphicsLayer();
+        this._initDrawTools();
+      });
+      
+    }
+  }
+
+  /**
+   * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
+   */
+  @Prop() sketchWidget: Sketch;
 
   /**
    * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
@@ -57,18 +73,48 @@ export class MapDrawTools {
    */
   @Prop({ mutable: true }) translations: any = {};
 
+  componentDidLoad() {
+    void this.mapView.when(() => {
+      this._initGraphicsLayer();
+      this._initDrawTools();
+    });
+  }
+
   render() {
     return (
       <Host>
-        <div style={{"display":"flex", "padding-bottom": "1rem"}}>
-          <calcite-button appearance="outline" icon-end="pin" style={{"padding-right":"1rem"}}/>
-          <calcite-button appearance="outline" icon-end="line" style={{"padding-right":"1rem"}}/>
-          <calcite-button appearance="outline" icon-end="polygon-area" style={{"padding-right":"1rem"}}/>
-          <calcite-button color="red" icon-end="trash" style={{"padding-right":"1rem"}}/>
+        <div class="padding-bottom-1">
+          <div ref={(el) => { this._sketchDiv = el }} />
         </div>
-        <slot/>
       </Host>
     );
+  }
+
+  private _sketchDiv: HTMLElement;
+
+  private _sketchGraphicsLayer: __esri.GraphicsLayer;
+
+  _initGraphicsLayer(): void {
+    this._sketchGraphicsLayer = new GraphicsLayer();
+    this.mapView.map.layers.add(this._sketchGraphicsLayer);
+  }
+
+  _initDrawTools(): void {
+    if (this.mapView && this._sketchDiv) {
+      this.sketchWidget = new Sketch({
+        layer: this._sketchGraphicsLayer,
+        view: this.mapView,
+        container: this._sketchDiv,
+        creationMode: "update"
+      });
+
+      this.sketchWidget.visibleElements = {
+        selectionTools:{
+          "lasso-selection": false,
+          "rectangle-selection": false
+        }
+      }
+    }
   }
 
 }

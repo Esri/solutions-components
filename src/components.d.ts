@@ -36,7 +36,6 @@ export namespace Components {
         "value": any;
     }
     interface MapDrawTools {
-        "graphicsLayer": __esri.GraphicsLayer;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -45,6 +44,10 @@ export namespace Components {
           * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
          */
         "portal": __esri.Portal;
+        /**
+          * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
+         */
+        "sketchWidget": Sketch;
         /**
           * Contains the translations for this component.
          */
@@ -83,6 +86,10 @@ export namespace Components {
         "translations": any;
     }
     interface PdfDownload {
+        /**
+          * Contains the translations for this component.
+         */
+        "translations": any;
     }
     interface PublicNotification {
         /**
@@ -514,7 +521,6 @@ declare namespace LocalJSX {
         "value"?: any;
     }
     interface MapDrawTools {
-        "graphicsLayer"?: __esri.GraphicsLayer;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -523,6 +529,10 @@ declare namespace LocalJSX {
           * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
          */
         "portal"?: __esri.Portal;
+        /**
+          * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
+         */
+        "sketchWidget"?: Sketch;
         /**
           * Contains the translations for this component.
          */
@@ -561,6 +571,10 @@ declare namespace LocalJSX {
         "translations"?: any;
     }
     interface PdfDownload {
+        /**
+          * Contains the translations for this component.
+         */
+        "translations"?: any;
     }
     interface PublicNotification {
         /**

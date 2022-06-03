@@ -78,21 +78,22 @@ export class MapSearch {
           <div class="search-widget" ref={(el) => { this._searchDiv = el }} />
         </div>
         <map-draw-tools mapView={this.mapView}/>
-        <calcite-label>Search Distance</calcite-label>
-        <div class="control-container">
-          <calcite-input
-            class="padding-end-1"
-            number-button-type="vertical"
-            onCalciteInputInput={(evt) => this._setDistance(evt)}
-            placeholder="0"
-            type="number"/>
-          <calcite-combobox
-            label='label?'
-            placeholder="unit"
-            selection-mode="single">
-            {this._addUnits()}
-          </calcite-combobox>
-        </div>
+        <calcite-label>Search Distance
+          <div class="control-container">
+            <calcite-input
+              class="padding-end-1"
+              number-button-type="vertical"
+              onCalciteInputInput={(evt) => this._setDistance(evt)}
+              placeholder="0"
+              type="number" />
+            <calcite-combobox
+              label='label?'
+              placeholder="unit"
+              selection-mode="single">
+              {this._addUnits()}
+            </calcite-combobox>
+          </div>
+        </calcite-label>
         <slot/>
       </Host>
     );
@@ -109,7 +110,7 @@ export class MapSearch {
   private _bufferGraphicsLayer: __esri.GraphicsLayer;
 
   _addUnits(): any {
-    const UNITS: string [] = ["feet", "meters", "miles", "kilometers"];
+    const UNITS: string [] = ["Feet", "Meters", "Miles", "Kilometers"];
     return UNITS.map(u => {
       if (this._unit === "") {
         this._unit = u;

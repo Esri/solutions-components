@@ -17,7 +17,13 @@
       .over-map {
         position: absolute;
         right: 0px;
-        background-color: #F4F4F4;
+        background-color: var(--calcite-ui-foreground-1);
+      }
+      .column {
+        min-width: 300px;
+        margin: 1rem;
+        padding: 1rem;
+        border: 1px solid;
       }
     </style>
 
@@ -55,6 +61,6 @@
 
   <body>
     <div id="viewDiv"></div>
-    <map-draw-tools id="demo" class="over-map"></map-draw-tools>
+    <map-draw-tools id="demo" class="over-map column"></map-draw-tools>
   </body>
 </html>

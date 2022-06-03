@@ -63,10 +63,11 @@ export class MapLayerPicker {
     return (
       <Host>
         <div class="padding-bottom-1">
-          <calcite-label>Addressee Layer</calcite-label>
-          <calcite-combobox label="Addressee Layer">
-            {this._addMapLayers()}
-          </calcite-combobox>
+          <calcite-label>Addressee Layer
+            <calcite-combobox label="Addressee Layer">
+              {this._addMapLayers()}
+            </calcite-combobox>
+          </calcite-label>
         </div>
       </Host>
     );

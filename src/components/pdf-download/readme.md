@@ -5,6 +5,13 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property       | Attribute      | Description                                   | Type  | Default |
+| -------------- | -------------- | --------------------------------------------- | ----- | ------- |
+| `translations` | `translations` | Contains the translations for this component. | `any` | `{}`    |
+
+
 ## Dependencies
 
 ### Used by

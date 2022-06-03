@@ -33,9 +33,6 @@ graph TD;
   map-search --> calcite-input
   map-search --> calcite-combobox
   map-search --> calcite-combobox-item
-  map-draw-tools --> calcite-button
-  calcite-button --> calcite-loader
-  calcite-button --> calcite-icon
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-combobox --> calcite-chip
@@ -49,6 +46,8 @@ graph TD;
   pdf-download --> calcite-combobox
   pdf-download --> calcite-button
   pdf-download --> calcite-combobox-item
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   style public-notification fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
