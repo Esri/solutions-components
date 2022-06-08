@@ -8,6 +8,14 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { UserSession } from "@esri/solution-common";
 import { IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem } from "./utils/interfaces";
 export namespace Components {
+    interface DemoMap {
+        "center": string;
+        "drawing": boolean;
+        "mapExtent": any;
+        "showFullscreen": boolean;
+        "webmap": string;
+        "zoom": number;
+    }
     interface JsonEditor {
         /**
           * Contains a public value to indicate if the model has any errors that would prevent saving it.
@@ -47,7 +55,7 @@ export namespace Components {
         /**
           * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
          */
-        "sketchWidget": Sketch;
+        "sketchWidget": __esri.Sketch;
         /**
           * Contains the translations for this component.
          */
@@ -364,6 +372,12 @@ export namespace Components {
     }
 }
 declare global {
+    interface HTMLDemoMapElement extends Components.DemoMap, HTMLStencilElement {
+    }
+    var HTMLDemoMapElement: {
+        prototype: HTMLDemoMapElement;
+        new (): HTMLDemoMapElement;
+    };
     interface HTMLJsonEditorElement extends Components.JsonEditor, HTMLStencilElement {
     }
     var HTMLJsonEditorElement: {
@@ -473,6 +487,7 @@ declare global {
         new (): HTMLStoreManagerElement;
     };
     interface HTMLElementTagNameMap {
+        "demo-map": HTMLDemoMapElement;
         "json-editor": HTMLJsonEditorElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
@@ -494,6 +509,15 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface DemoMap {
+        "center"?: string;
+        "drawing"?: boolean;
+        "mapExtent"?: any;
+        "onDrawingComplete"?: (event: CustomEvent<any>) => void;
+        "showFullscreen"?: boolean;
+        "webmap"?: string;
+        "zoom"?: number;
+    }
     interface JsonEditor {
         /**
           * Contains a public value to indicate if the model has any errors that would prevent saving it.
@@ -532,7 +556,7 @@ declare namespace LocalJSX {
         /**
           * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
          */
-        "sketchWidget"?: Sketch;
+        "sketchWidget"?: __esri.Sketch;
         /**
           * Contains the translations for this component.
          */
@@ -833,6 +857,7 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface IntrinsicElements {
+        "demo-map": DemoMap;
         "json-editor": JsonEditor;
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
@@ -857,6 +882,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "demo-map": LocalJSX.DemoMap & JSXBase.HTMLAttributes<HTMLDemoMapElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;

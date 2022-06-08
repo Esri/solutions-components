@@ -15,8 +15,7 @@
  */
 
 import { Component, Element, Host, h, Prop, Watch } from '@stencil/core';
-import Sketch from "@arcgis/core/widgets/Sketch";
-import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
+import { loadModules } from "../../utils/loadModules";
 
 @Component({
   tag: 'map-draw-tools',
@@ -38,11 +37,6 @@ export class MapDrawTools {
   //--------------------------------------------------------------------------
 
   /**
-   * Credentials for requests
-   */
-  //@Prop({ mutable: true }) authentication: UserSession;
-
-  /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
@@ -50,18 +44,14 @@ export class MapDrawTools {
   @Watch('mapView')
   mapViewWatchHandler(v: any, oldV: any): void {
     if (v && v !== oldV) {
-      void this.mapView.when(() => {
-        this._initGraphicsLayer();
-        this._initDrawTools();
-      });
-      
+      this._init();
     }
   }
 
   /**
    * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
    */
-  @Prop() sketchWidget: Sketch;
+  @Prop() sketchWidget: __esri.Sketch;
 
   /**
    * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
@@ -73,11 +63,16 @@ export class MapDrawTools {
    */
   @Prop({ mutable: true }) translations: any = {};
 
+  GraphicsLayer: typeof __esri.GraphicsLayer;
+  
+  Sketch: typeof __esri.Sketch;
+
+  async componentWillLoad() {
+    await this._initModules();
+  }
+
   componentDidLoad() {
-    void this.mapView.when(() => {
-      this._initGraphicsLayer();
-      this._initDrawTools();
-    });
+    this._init();
   }
 
   render() {
@@ -94,25 +89,44 @@ export class MapDrawTools {
 
   private _sketchGraphicsLayer: __esri.GraphicsLayer;
 
+  async _initModules(): Promise<void> {
+    const [GraphicsLayer, Sketch]: [
+      __esri.GraphicsLayerConstructor,
+      __esri.SketchConstructor
+    ] = await loadModules([
+      "esri/layers/GraphicsLayer",
+      "esri/widgets/Sketch"
+    ]);
+    this.GraphicsLayer = GraphicsLayer;
+    this.Sketch = Sketch;
+  }
+
+  _init(): void {
+    if (this.mapView && this._sketchDiv) {
+      this._initGraphicsLayer();
+      this._initDrawTools();
+    }
+  }
+
   _initGraphicsLayer(): void {
-    this._sketchGraphicsLayer = new GraphicsLayer();
+    this._sketchGraphicsLayer = new this.GraphicsLayer({
+      title: "Sketch Layer"
+    });
     this.mapView.map.layers.add(this._sketchGraphicsLayer);
   }
 
   _initDrawTools(): void {
-    if (this.mapView && this._sketchDiv) {
-      this.sketchWidget = new Sketch({
-        layer: this._sketchGraphicsLayer,
-        view: this.mapView,
-        container: this._sketchDiv,
-        creationMode: "update"
-      });
+    this.sketchWidget = new this.Sketch({
+      layer: this._sketchGraphicsLayer,
+      view: this.mapView,
+      container: this._sketchDiv,
+      creationMode: "update"
+    });
 
-      this.sketchWidget.visibleElements = {
-        selectionTools:{
-          "lasso-selection": false,
-          "rectangle-selection": false
-        }
+    this.sketchWidget.visibleElements = {
+      selectionTools: {
+        "lasso-selection": false,
+        "rectangle-selection": false
       }
     }
   }
