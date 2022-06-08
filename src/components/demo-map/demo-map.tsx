@@ -1,5 +1,5 @@
-import { Component, State, Host, Prop, h, Element } from "@stencil/core";
-import { loadModules } from "esri-loader";
+import { Component, State, Host, Prop, h, Element, Watch } from "@stencil/core";
+import { loadModules } from "../../utils/loadModules";
 
 @Component({
   tag: "demo-map",
@@ -10,61 +10,37 @@ export class DemoMap {
 
   @Element() hostElement: HTMLElement;
 
-  @Prop({ mutable: true, reflect: true }) webmap: string;
+  @Prop({ mutable: true, reflect: true }) webmapid: string;
+
+  @Watch('webmapid')
+  webMapIdWatchHandler(v: any, oldV: any): void {
+    if (v && v !== oldV) {
+      this._init();
+    }
+  }
 
   @Prop({ mutable: true, reflect: true }) zoom = 4;
 
   @State() mapCenter: [number, number] = [-107, 38.9];
+
+  protected Map: typeof __esri.Map;
   
-  protected esriMapOptions = {
-    url: `https://js.arcgis.com/4.23/`
-  };
+  protected MapView: typeof __esri.MapView;
 
-  protected esriMap: __esri.Map;
+  protected WebMap: typeof __esri.WebMap;
 
-  protected esriMapView: __esri.MapView;
+  protected map: __esri.Map;
+
+  protected mapView: __esri.MapView;
 
   private _mapDiv: HTMLDivElement;
 
-  constructor() {
-    void loadModules(
-      ["esri/Map"],
-      this.esriMapOptions
-    ).then(
-      ([EsriMap]: [
-        __esri.MapConstructor
-      ]) => {
-        this.esriMap = new EsriMap({
-          basemap: "topo-vector"
-        });
-      }
-    );
+  async componentWillLoad() {
+    await this._initModules();
   }
-
-  componentDidLoad() {
-    void this.createEsriMapView();
-  }
-
-  createEsriMapView(): Promise<any> {
-    return loadModules(["esri/WebMap", "esri/views/MapView"], this.esriMapOptions).then(
-      ([WebMap, MapView]: [__esri.WebMapConstructor, __esri.MapViewConstructor]) => {
-        const mapOptions: __esri.MapViewProperties = { container: this._mapDiv }
-
-        // Check how the map is initally set
-        mapOptions.map = this.webmap ? new WebMap({
-          portalItem: {
-            id: this.webmap
-          }
-        }) : this.esriMap;
-        
-        if (this.mapCenter && this.zoom) {
-          mapOptions.center = this.mapCenter;
-          mapOptions.zoom = this.zoom;
-        }
   
-        this.esriMapView = new MapView( mapOptions );
-      }
-    );
+  componentDidLoad() {
+    this._init();
   }
 
   render() {
@@ -75,5 +51,52 @@ export class DemoMap {
         </div>
       </Host>
     )
+  }
+
+  async _initModules(): Promise<void> {
+    const [Map, MapView, WebMap]: [
+      __esri.MapConstructor,
+      __esri.MapViewConstructor,
+      __esri.WebMapConstructor
+    ] = await loadModules([
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/WebMap"
+    ]);
+    this.Map = Map;
+    this.MapView = MapView;
+    this.WebMap = WebMap;
+  }
+
+  _init(): void {
+    this._initMap();
+    this.initMapView();
+  }
+
+  _initMap(): void {
+    this.map = new this.Map({
+      basemap: "topo-vector"
+    });
+  }
+
+  initMapView(): void {
+    const mapOptions: __esri.MapViewProperties = { 
+      container: this._mapDiv 
+    };
+
+    // Check how the map is initally set
+    // TODO add regex to validate its an itemid
+    mapOptions.map = this.webmapid ? new this.WebMap({
+      portalItem: {
+        id: this.webmapid
+      }
+    }) : this.map;
+    
+    if (this.mapCenter && this.zoom) {
+      mapOptions.center = this.mapCenter;
+      mapOptions.zoom = this.zoom;
+    }
+
+    this.mapView = new this.MapView(mapOptions);
   }
 }

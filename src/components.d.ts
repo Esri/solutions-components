@@ -9,11 +9,7 @@ import { UserSession } from "@esri/solution-common";
 import { IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem } from "./utils/interfaces";
 export namespace Components {
     interface DemoMap {
-        "center": string;
-        "drawing": boolean;
-        "mapExtent": any;
-        "showFullscreen": boolean;
-        "webmap": string;
+        "webmapid": string;
         "zoom": number;
     }
     interface JsonEditor {
@@ -87,7 +83,7 @@ export namespace Components {
         /**
           * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
          */
-        "searchWidget": Search;
+        "searchWidget": __esri.widgetsSearch;
         /**
           * Contains the translations for this component.
          */
@@ -510,12 +506,7 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DemoMap {
-        "center"?: string;
-        "drawing"?: boolean;
-        "mapExtent"?: any;
-        "onDrawingComplete"?: (event: CustomEvent<any>) => void;
-        "showFullscreen"?: boolean;
-        "webmap"?: string;
+        "webmapid"?: string;
         "zoom"?: number;
     }
     interface JsonEditor {
@@ -588,7 +579,7 @@ declare namespace LocalJSX {
         /**
           * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
          */
-        "searchWidget"?: Search;
+        "searchWidget"?: __esri.widgetsSearch;
         /**
           * Contains the translations for this component.
          */

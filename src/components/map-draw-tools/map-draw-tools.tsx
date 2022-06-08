@@ -39,7 +39,7 @@ export class MapDrawTools {
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
-  @Prop() mapView: __esri.MapView;
+  @Prop({ mutable: true, reflect: true }) mapView: __esri.MapView;
 
   @Watch('mapView')
   mapViewWatchHandler(v: any, oldV: any): void {
@@ -63,9 +63,9 @@ export class MapDrawTools {
    */
   @Prop({ mutable: true }) translations: any = {};
 
-  GraphicsLayer: typeof __esri.GraphicsLayer;
+  protected GraphicsLayer: typeof __esri.GraphicsLayer;
   
-  Sketch: typeof __esri.Sketch;
+  protected Sketch: typeof __esri.Sketch;
 
   async componentWillLoad() {
     await this._initModules();

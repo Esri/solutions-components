@@ -15,9 +15,7 @@
  */
 
 import { Component, Element, Host, h, Prop, Watch } from '@stencil/core';
-import Search from "@arcgis/core/widgets/Search";
-import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
-import Graphic from "@arcgis/core/Graphic";
+import { loadModules } from "../../utils/loadModules";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 
 @Component({
@@ -47,14 +45,14 @@ export class MapSearch {
   @Watch('mapView')
   mapViewWatchHandler(v: any, oldV: any): void {
     if (v && v !== oldV) {
-      this._initSearchWidget();
+      this._init();
     }
   }
 
   /**
    * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
    */
-  @Prop() searchWidget: Search;
+  @Prop() searchWidget: __esri.widgetsSearch;
 
   /**
    * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
@@ -66,9 +64,18 @@ export class MapSearch {
    */
   @Prop({ mutable: true }) translations: any = {};
 
+  protected GraphicsLayer: typeof __esri.GraphicsLayer;
+  
+  protected Graphic: typeof __esri.Graphic;
+
+  protected Search: typeof __esri.widgetsSearch;
+
+  async componentWillLoad() {
+    await this._initModules();
+  }
+
   componentDidLoad() {
-    this._initSearchWidget();
-    this._initGraphicsLayer();
+    this._init()
   }
 
   render() {
@@ -109,6 +116,56 @@ export class MapSearch {
 
   private _bufferGraphicsLayer: __esri.GraphicsLayer;
 
+  async _initModules(): Promise<void> {
+    const [GraphicsLayer, Graphic, Search]: [
+      __esri.GraphicsLayerConstructor,
+      __esri.GraphicConstructor,
+      __esri.widgetsSearchConstructor
+    ] = await loadModules([
+      "esri/layers/GraphicsLayer",
+      "esri/Graphic",
+      "esri/widgets/Search"
+    ]);
+    this.GraphicsLayer = GraphicsLayer;
+    this.Graphic = Graphic;
+    this.Search = Search;
+  }
+
+  _init(): void {
+    this._initSearchWidget();
+    this._initGraphicsLayer();
+  }
+
+  _initSearchWidget(): void {
+    if (this.mapView && this._searchDiv) {
+      const searchOptions: __esri.widgetsSearchProperties = {
+        view: this.mapView,
+        container: this._searchDiv
+      };
+
+      this.searchWidget = new this.Search(searchOptions);
+
+      this.searchWidget.on('search-clear', () => {
+        this._searchGeom = undefined;
+        this._bufferGraphicsLayer.removeAll();
+      });
+
+      this.searchWidget.on('select-result', (searchResults) => {
+        if (searchResults.result) {
+          this._searchGeom = searchResults.result.feature.geometry;
+          this._buffer();
+        }
+      });
+    }
+  }
+
+  _initGraphicsLayer(): void {
+    this._bufferGraphicsLayer = new this.GraphicsLayer({
+      title: "Buffer Layer"
+    });
+    this.mapView.map.layers.add(this._bufferGraphicsLayer);
+  }
+
   _addUnits(): any {
     const UNITS: string [] = ["Feet", "Meters", "Miles", "Kilometers"];
     return UNITS.map(u => {
@@ -127,32 +184,6 @@ export class MapSearch {
         value={u.toLowerCase()} />
       );
     });
-  }
-
-  _initSearchWidget(): void {
-    if (this.mapView && this._searchDiv) {
-      this.searchWidget = new Search({
-        view: this.mapView,
-        container: this._searchDiv
-      });
-
-      this.searchWidget.on('search-clear', () => {
-        this._searchGeom = undefined;
-        this._bufferGraphicsLayer.removeAll();
-      });
-
-      this.searchWidget.on('select-result', (searchResults) => {
-        if (searchResults.result) {
-          this._searchGeom = searchResults.result.feature.geometry;
-          this._buffer();
-        }
-      })
-    }
-  }
-
-  _initGraphicsLayer(): void {
-    this._bufferGraphicsLayer = new GraphicsLayer();
-    this.mapView.map.layers.add(this._bufferGraphicsLayer);
   }
 
   _setDistance(
@@ -200,7 +231,7 @@ export class MapSearch {
         };
 
         // Add the geometry and symbol to a new graphic
-        const polygonGraphic = new Graphic({
+        const polygonGraphic = new this.Graphic({
           geometry: Array.isArray(bufferResults4) ? bufferResults4[0] : bufferResults4,
           symbol: fillSymbol
         });
