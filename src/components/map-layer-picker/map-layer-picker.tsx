@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
 
 @Component({
   tag: 'map-layer-picker',
@@ -36,35 +36,30 @@ export class MapLayerPicker {
   //--------------------------------------------------------------------------
 
   /**
-   * Credentials for requests
-   */
-  //@Prop({ mutable: true }) authentication: UserSession;
-
-  /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
-
-  /**
-   * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
-   */
-  @Prop() portal: __esri.Portal;
 
   /**
    * Contains the translations for this component.
    */
   @Prop({ mutable: true }) translations: any = {};
 
-  // onComponentDidLoad() {
-  //   this.el.
-  // }
+  @Prop({ mutable: true }) layerNames: string[] = [];
+
+  @Event() layerSelectionChange: EventEmitter;
+
+  componentDidLoad() {
+    this._setLayers();
+  }
 
   render() {
     return (
       <Host>
         <div class="padding-bottom-1">
           <calcite-label>Addressee Layer
-            <calcite-combobox label="Addressee Layer">
+            <calcite-combobox label="Addressee Layer"
+              onCalciteComboboxChange={(evt) => this._layerSelectionChange(evt)}>
               {this._addMapLayers()}
             </calcite-combobox>
           </calcite-label>
@@ -73,10 +68,28 @@ export class MapLayerPicker {
     );
   }
 
-  // shouldn't really do this on every render...
   _addMapLayers(): any {
-    return this.mapView.layerViews.length > 0 ? this.mapView.layerViews.map(lv => {
-      return (<calcite-combobox-item textLabel={lv.layer.title} value={lv.layer.id} />)
-    }) : undefined;
+    return this.layerNames.map(name => {
+      return (<calcite-combobox-item textLabel={name} value={name} />)
+    });
+  }
+
+  _setLayers(): void {
+    if (this.mapView) {
+      void this.mapView.when().then(() => {
+        this.layerNames = this.mapView.map.layers.toArray().map((l) => {
+          return l.title;
+        });
+      });
+    }
+  }
+
+  _layerSelectionChange(evt: CustomEvent): void {
+    const layerNames = evt.detail.selectedItems ? evt.detail.selectedItems.map(
+      (item: HTMLCalciteComboboxItemElement) => {
+        return item.value;
+      }
+    ) : [];
+    this.layerSelectionChange.emit(layerNames)
   }
 }

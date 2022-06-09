@@ -43,18 +43,20 @@
     <script type="module" src="../solutions.esm.js"></script>
 
     <script>
-      require(["esri/Map", "esri/views/MapView"], (
-        Map,
+      require(["esri/WebMap", "esri/views/MapView"], (
+        WebMap,
         MapView
       ) => {
-        const map = new Map({
-          basemap: "topo-vector"
+        var webMap = new WebMap({
+          portalItem: {
+            id: "6a55f6678208461bb7a26d9e418a00bc"
+          }
         });
 
         const demo = document.getElementById("demo");
         demo.mapView = new MapView({
           container: "viewDiv",
-          map: map,
+          map: webMap,
           zoom: 5,
           center: [-98, 42]
         });

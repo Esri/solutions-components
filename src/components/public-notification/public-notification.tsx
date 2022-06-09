@@ -56,18 +56,20 @@ export class PublicNotification {
   @Prop({ mutable: true }) translations: any = {};
 
   render() {
-    console.log('pn render')
-    console.log(this.mapView)
     return (
       <Host>
         <div>
           <map-search mapView={this.mapView}/>
-          <map-layer-picker mapView={this.mapView}/>
+          <map-layer-picker mapView={this.mapView} onLayerSelectionChange={(r) => this._layerSelectionChange(r)}/>
           <pdf-download />
         </div>
         <slot />
       </Host>
     );
+  }
+
+  _layerSelectionChange(r: CustomEvent): void {
+    console.log(r.detail);
   }
 
 }

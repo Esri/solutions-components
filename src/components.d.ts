@@ -58,14 +58,11 @@ export namespace Components {
         "translations": any;
     }
     interface MapLayerPicker {
+        "layerNames": string[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
-        /**
-          * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
-         */
-        "portal": __esri.Portal;
         /**
           * Contains the translations for this component.
          */
@@ -554,14 +551,12 @@ declare namespace LocalJSX {
         "translations"?: any;
     }
     interface MapLayerPicker {
+        "layerNames"?: string[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        /**
-          * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
-         */
-        "portal"?: __esri.Portal;
+        "onLayerSelectionChange"?: (event: CustomEvent<any>) => void;
         /**
           * Contains the translations for this component.
          */
