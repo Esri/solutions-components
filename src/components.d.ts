@@ -8,6 +8,13 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { UserSession } from "@esri/solution-common";
 import { IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem } from "./utils/interfaces";
 export namespace Components {
+    interface ConfigPublicNotification {
+        "isOpen": boolean;
+        /**
+          * Contains the translations for this component.
+         */
+        "translations": any;
+    }
     interface DemoMap {
         "webmapid": string;
         "zoom": number;
@@ -359,6 +366,12 @@ export namespace Components {
     }
 }
 declare global {
+    interface HTMLConfigPublicNotificationElement extends Components.ConfigPublicNotification, HTMLStencilElement {
+    }
+    var HTMLConfigPublicNotificationElement: {
+        prototype: HTMLConfigPublicNotificationElement;
+        new (): HTMLConfigPublicNotificationElement;
+    };
     interface HTMLDemoMapElement extends Components.DemoMap, HTMLStencilElement {
     }
     var HTMLDemoMapElement: {
@@ -474,6 +487,7 @@ declare global {
         new (): HTMLStoreManagerElement;
     };
     interface HTMLElementTagNameMap {
+        "config-public-notification": HTMLConfigPublicNotificationElement;
         "demo-map": HTMLDemoMapElement;
         "json-editor": HTMLJsonEditorElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
@@ -496,6 +510,13 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface ConfigPublicNotification {
+        "isOpen"?: boolean;
+        /**
+          * Contains the translations for this component.
+         */
+        "translations"?: any;
+    }
     interface DemoMap {
         "webmapid"?: string;
         "zoom"?: number;
@@ -834,6 +855,7 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface IntrinsicElements {
+        "config-public-notification": ConfigPublicNotification;
         "demo-map": DemoMap;
         "json-editor": JsonEditor;
         "map-draw-tools": MapDrawTools;
@@ -859,6 +881,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "config-public-notification": LocalJSX.ConfigPublicNotification & JSXBase.HTMLAttributes<HTMLConfigPublicNotificationElement>;
             "demo-map": LocalJSX.DemoMap & JSXBase.HTMLAttributes<HTMLDemoMapElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;

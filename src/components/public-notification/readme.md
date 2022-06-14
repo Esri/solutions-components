@@ -21,6 +21,7 @@
 - [map-search](../map-search)
 - [map-layer-picker](../map-layer-picker)
 - [pdf-download](../pdf-download)
+- [config-public-notification](../config-public-notification)
 
 ### Graph
 ```mermaid
@@ -28,6 +29,7 @@ graph TD;
   public-notification --> map-search
   public-notification --> map-layer-picker
   public-notification --> pdf-download
+  public-notification --> config-public-notification
   map-search --> map-draw-tools
   map-search --> calcite-label
   map-search --> calcite-input
@@ -48,6 +50,11 @@ graph TD;
   pdf-download --> calcite-combobox-item
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
+  config-public-notification --> calcite-modal
+  config-public-notification --> calcite-button
+  calcite-modal --> calcite-scrim
+  calcite-modal --> calcite-icon
+  calcite-scrim --> calcite-loader
   style public-notification fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
