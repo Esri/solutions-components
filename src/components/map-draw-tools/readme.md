@@ -15,6 +15,13 @@
 | `translations` | `translations` | Contains the translations for this component.                                                               | `any`     | `{}`        |
 
 
+## Events
+
+| Event                  | Description | Type               |
+| ---------------------- | ----------- | ------------------ |
+| `sketchGraphicsChange` |             | `CustomEvent<any>` |
+
+
 ## Dependencies
 
 ### Used by

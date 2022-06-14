@@ -73,10 +73,7 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
-        /**
-          * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
-         */
-        "portal": __esri.Portal;
+        "searchLayers": __esri.Layer[];
         /**
           * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
          */
@@ -97,10 +94,7 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
-        /**
-          * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
-         */
-        "portal": __esri.Portal;
+        "selectionLayers": __esri.Layer[];
         /**
           * Contains the translations for this component.
          */
@@ -537,6 +531,7 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        "onSketchGraphicsChange"?: (event: CustomEvent<any>) => void;
         /**
           * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
          */
@@ -567,10 +562,9 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        /**
-          * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
-         */
-        "portal"?: __esri.Portal;
+        "onSearchDistanceChange"?: (event: CustomEvent<any>) => void;
+        "onSearchGraphicsChange"?: (event: CustomEvent<any>) => void;
+        "searchLayers"?: __esri.Layer[];
         /**
           * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
          */
@@ -591,10 +585,7 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        /**
-          * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
-         */
-        "portal"?: __esri.Portal;
+        "selectionLayers"?: __esri.Layer[];
         /**
           * Contains the translations for this component.
          */

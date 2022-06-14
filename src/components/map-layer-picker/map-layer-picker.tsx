@@ -19,7 +19,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil
 @Component({
   tag: 'map-layer-picker',
   styleUrl: 'map-layer-picker.css',
-  shadow: true,
+  shadow: false,
 })
 export class MapLayerPicker {
   //--------------------------------------------------------------------------
@@ -76,7 +76,7 @@ export class MapLayerPicker {
 
   _setLayers(): void {
     if (this.mapView) {
-      void this.mapView.when().then(() => {
+      void this.mapView.when(() => {
         this.layerNames = this.mapView.map.layers.toArray().map((l) => {
           return l.title;
         });

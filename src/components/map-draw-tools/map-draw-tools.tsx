@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 
 @Component({
@@ -62,6 +62,8 @@ export class MapDrawTools {
    * Contains the translations for this component.
    */
   @Prop({ mutable: true }) translations: any = {};
+
+  @Event() sketchGraphicsChange: EventEmitter;
 
   protected GraphicsLayer: typeof __esri.GraphicsLayer;
   
@@ -129,6 +131,13 @@ export class MapDrawTools {
         "rectangle-selection": false
       }
     }
+
+    this.sketchWidget.on("update", (evt) => {
+      if (evt.state === "complete") {
+        const graphics = this._sketchGraphicsLayer.graphics;
+        this.sketchGraphicsChange.emit(graphics);
+      }
+    })
   }
 
 }

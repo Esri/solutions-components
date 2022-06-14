@@ -46,21 +46,21 @@ export class PublicNotification {
   @Prop() mapView: __esri.MapView;
 
   /**
-   * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
-   */
-  @Prop() portal: __esri.Portal;
-
-  /**
    * Contains the translations for this component.
    */
   @Prop({ mutable: true }) translations: any = {};
+
+  @Prop() selectionLayers: __esri.Layer[];
 
   render() {
     return (
       <Host>
         <div>
-          <map-search mapView={this.mapView}/>
-          <map-layer-picker mapView={this.mapView} onLayerSelectionChange={(r) => this._layerSelectionChange(r)}/>
+          <map-search mapView={this.mapView} searchLayers={this.selectionLayers}/>
+          <map-layer-picker 
+            mapView={this.mapView}
+            onLayerSelectionChange={(r) => this._layerSelectionChange(r)}
+          />
           <pdf-download />
         </div>
         <slot />
@@ -68,8 +68,9 @@ export class PublicNotification {
     );
   }
 
-  _layerSelectionChange(r: CustomEvent): void {
-    console.log(r.detail);
+  _layerSelectionChange(evt: CustomEvent): void {
+    // Loop through the names and get layers....or have the layer picker emit the layer
+    console.log(evt.detail)
   }
 
 }

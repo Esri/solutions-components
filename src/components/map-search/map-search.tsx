@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 
@@ -41,28 +41,27 @@ export class MapSearch {
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
-  
-  @Watch('mapView')
-  mapViewWatchHandler(v: any, oldV: any): void {
-    if (v && v !== oldV) {
-      this._init();
-    }
-  }
 
   /**
    * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
    */
   @Prop() searchWidget: __esri.widgetsSearch;
 
-  /**
-   * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
-   */
-  @Prop() portal: __esri.Portal;
+  @Prop() searchLayers: __esri.Layer[];
 
   /**
    * Contains the translations for this component.
    */
   @Prop({ mutable: true }) translations: any = {};
+
+  @Event() searchGraphicsChange: EventEmitter;
+
+  @Event() searchDistanceChange: EventEmitter;
+
+  @Listen("sketchGraphicsChange", { target: 'window' })
+  sketchGraphicsChange(event: CustomEvent): void {
+    this.searchGraphicsChange.emit(event.detail)
+  }
 
   protected GraphicsLayer: typeof __esri.GraphicsLayer;
   
