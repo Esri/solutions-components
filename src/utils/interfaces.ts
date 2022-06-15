@@ -214,3 +214,13 @@ export interface IResourcePath {
   sourceFileName?: string; // This will only be set when a file is being updated
   updateType: EUpdateType
 }
+
+/**
+ * A templates share details
+ */
+ export interface ISearchConfig {
+  layers: string[];
+  layerUrl: string;
+  locators: string[];
+  locatorUrl: string;
+}

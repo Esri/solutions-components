@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+
+.tab-padding {
+  padding-inline-start: 0.5rem;
+}
+
+.pick-list-padding {
+  padding-inline-start: 1rem;
+}

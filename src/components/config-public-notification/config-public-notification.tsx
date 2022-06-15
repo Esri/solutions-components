@@ -1,4 +1,5 @@
-import { Component, Host, h, Prop, VNode } from '@stencil/core';
+import { Component, Event, EventEmitter, Host, h, Prop, VNode } from '@stencil/core';
+import { getMapLayerNames } from '../../utils/mapViewUtils';
 
 @Component({
   tag: 'config-public-notification',
@@ -8,11 +9,24 @@ import { Component, Host, h, Prop, VNode } from '@stencil/core';
 export class ConfigPublicNotification {
 
   /**
+   * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   */
+  @Prop() mapView: __esri.MapView;
+
+  /**
    * Contains the translations for this component.
    */
   @Prop({ mutable: true }) translations: any = {};
 
   @Prop({ mutable: true }) isOpen = false;
+
+  @Prop({ mutable: true }) layerNames: string[] = [];
+
+  @Event() configSaved: EventEmitter;
+
+  async componentDidLoad() {
+    await this._setLayers();
+  }
 
   render() {
     return (
@@ -22,11 +36,13 @@ export class ConfigPublicNotification {
     );
   }
 
+  protected _searchConfig: HTMLConfigMapSearchElement;
+
   _renderModal(): VNode {
     return (<calcite-modal active aria-labelledby="modal-title" disable-close-button fullscreen>
       <div id="modal-title" slot="header">Modal title</div>
       <div slot="content">
-        Config options go here
+        <config-map-search layers={this.layerNames} ref={(el) => { this._searchConfig = el }}/>
       </div>
       <calcite-button
         appearance="outline"
@@ -52,6 +68,12 @@ export class ConfigPublicNotification {
     />);
   }
 
+  async _setLayers(): Promise<void> {
+    if (this.mapView) {
+      this.layerNames = await getMapLayerNames(this.mapView);
+    }
+  }
+
   _closeSettings(): void {
     this.isOpen = false;
   }
@@ -61,9 +83,10 @@ export class ConfigPublicNotification {
   }
 
   _saveSettings(): void {
-    //do save stuff
-
-    this._closeSettings();
+    this._searchConfig.getConfig().then((searchConfig) => {
+      this.configSaved.emit(searchConfig);
+      this._closeSettings();
+    })
   }
 
 }

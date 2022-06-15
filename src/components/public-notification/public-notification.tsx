@@ -62,7 +62,7 @@ export class PublicNotification {
             onLayerSelectionChange={(r) => this._layerSelectionChange(r)}
           />
           <pdf-download />
-          <config-public-notification class="config-btn"/>
+          <config-public-notification class="config-btn" mapView={this.mapView}/>
         </div>
         <slot />
       </Host>
@@ -72,10 +72,6 @@ export class PublicNotification {
   _layerSelectionChange(evt: CustomEvent): void {
     // Loop through the names and get layers....or have the layer picker emit the layer
     console.log(evt.detail)
-  }
-
-  _openSettings(): void {
-    alert("open settings dialog")
   }
 
 }

@@ -15,6 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
+import { getMapLayerNames } from '../../utils/mapViewUtils';
 
 @Component({
   tag: 'map-layer-picker',
@@ -49,8 +50,8 @@ export class MapLayerPicker {
 
   @Event() layerSelectionChange: EventEmitter;
 
-  componentDidLoad() {
-    this._setLayers();
+  async componentDidLoad() {
+    await this._setLayers();
   }
 
   render() {
@@ -74,13 +75,9 @@ export class MapLayerPicker {
     });
   }
 
-  _setLayers(): void {
+  async _setLayers(): Promise<void> {
     if (this.mapView) {
-      void this.mapView.when(() => {
-        this.layerNames = this.mapView.map.layers.toArray().map((l) => {
-          return l.title;
-        });
-      });
+      this.layerNames = await getMapLayerNames(this.mapView);
     }
   }
 

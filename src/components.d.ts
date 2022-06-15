@@ -5,11 +5,22 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchConfig, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
-import { IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem } from "./utils/interfaces";
 export namespace Components {
+    interface ConfigMapSearch {
+        "getConfig": () => Promise<ISearchConfig>;
+        "layers": any[];
+        "useLayerUrl": boolean;
+        "useLocatorUrl": boolean;
+    }
     interface ConfigPublicNotification {
         "isOpen": boolean;
+        "layerNames": string[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
         /**
           * Contains the translations for this component.
          */
@@ -366,6 +377,12 @@ export namespace Components {
     }
 }
 declare global {
+    interface HTMLConfigMapSearchElement extends Components.ConfigMapSearch, HTMLStencilElement {
+    }
+    var HTMLConfigMapSearchElement: {
+        prototype: HTMLConfigMapSearchElement;
+        new (): HTMLConfigMapSearchElement;
+    };
     interface HTMLConfigPublicNotificationElement extends Components.ConfigPublicNotification, HTMLStencilElement {
     }
     var HTMLConfigPublicNotificationElement: {
@@ -487,6 +504,7 @@ declare global {
         new (): HTMLStoreManagerElement;
     };
     interface HTMLElementTagNameMap {
+        "config-map-search": HTMLConfigMapSearchElement;
         "config-public-notification": HTMLConfigPublicNotificationElement;
         "demo-map": HTMLDemoMapElement;
         "json-editor": HTMLJsonEditorElement;
@@ -510,8 +528,19 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface ConfigMapSearch {
+        "layers"?: any[];
+        "useLayerUrl"?: boolean;
+        "useLocatorUrl"?: boolean;
+    }
     interface ConfigPublicNotification {
         "isOpen"?: boolean;
+        "layerNames"?: string[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        "onConfigSaved"?: (event: CustomEvent<any>) => void;
         /**
           * Contains the translations for this component.
          */
@@ -855,6 +884,7 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface IntrinsicElements {
+        "config-map-search": ConfigMapSearch;
         "config-public-notification": ConfigPublicNotification;
         "demo-map": DemoMap;
         "json-editor": JsonEditor;
@@ -881,6 +911,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "config-map-search": LocalJSX.ConfigMapSearch & JSXBase.HTMLAttributes<HTMLConfigMapSearchElement>;
             "config-public-notification": LocalJSX.ConfigPublicNotification & JSXBase.HTMLAttributes<HTMLConfigPublicNotificationElement>;
             "demo-map": LocalJSX.DemoMap & JSXBase.HTMLAttributes<HTMLDemoMapElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
