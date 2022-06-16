@@ -118,6 +118,13 @@ export namespace Components {
          */
         "translations": any;
     }
+    interface PublicNotificationTwo {
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        "selectionLayers": __esri.Layer[];
+    }
     interface SolutionConfiguration {
         /**
           * Credentials for requests
@@ -431,6 +438,12 @@ declare global {
         prototype: HTMLPublicNotificationElement;
         new (): HTMLPublicNotificationElement;
     };
+    interface HTMLPublicNotificationTwoElement extends Components.PublicNotificationTwo, HTMLStencilElement {
+    }
+    var HTMLPublicNotificationTwoElement: {
+        prototype: HTMLPublicNotificationTwoElement;
+        new (): HTMLPublicNotificationTwoElement;
+    };
     interface HTMLSolutionConfigurationElement extends Components.SolutionConfiguration, HTMLStencilElement {
     }
     var HTMLSolutionConfigurationElement: {
@@ -513,6 +526,7 @@ declare global {
         "map-search": HTMLMapSearchElement;
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
+        "public-notification-two": HTMLPublicNotificationTwoElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-contents": HTMLSolutionContentsElement;
         "solution-item": HTMLSolutionItemElement;
@@ -640,6 +654,13 @@ declare namespace LocalJSX {
           * Contains the translations for this component.
          */
         "translations"?: any;
+    }
+    interface PublicNotificationTwo {
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        "selectionLayers"?: __esri.Layer[];
     }
     interface SolutionConfiguration {
         /**
@@ -893,6 +914,7 @@ declare namespace LocalJSX {
         "map-search": MapSearch;
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
+        "public-notification-two": PublicNotificationTwo;
         "solution-configuration": SolutionConfiguration;
         "solution-contents": SolutionContents;
         "solution-item": SolutionItem;
@@ -920,6 +942,7 @@ declare module "@stencil/core" {
             "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
+            "public-notification-two": LocalJSX.PublicNotificationTwo & JSXBase.HTMLAttributes<HTMLPublicNotificationTwoElement>;
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;

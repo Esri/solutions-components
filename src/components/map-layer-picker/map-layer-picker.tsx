@@ -60,7 +60,9 @@ export class MapLayerPicker {
         <div class="padding-bottom-1">
           <calcite-label>Addressee Layer
             <calcite-combobox label="Addressee Layer"
-              onCalciteComboboxChange={(evt) => this._layerSelectionChange(evt)}>
+              onCalciteComboboxChange={(evt) => this._layerSelectionChange(evt)}
+              selectionMode={'single'}
+            >
               {this._addMapLayers()}
             </calcite-combobox>
           </calcite-label>

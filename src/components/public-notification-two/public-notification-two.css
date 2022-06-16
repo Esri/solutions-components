@@ -1,0 +1,8 @@
+:host {
+  display: block;
+}
+
+.main-container {
+  min-width: 20em;
+  min-height: 20em;
+}

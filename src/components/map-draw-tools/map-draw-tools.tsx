@@ -122,13 +122,19 @@ export class MapDrawTools {
       layer: this._sketchGraphicsLayer,
       view: this.mapView,
       container: this._sketchDiv,
-      creationMode: "update"
+      creationMode: "update",
+      defaultCreateOptions: {
+        "mode": "hybrid"
+      }
     });
 
     this.sketchWidget.visibleElements = {
       selectionTools: {
         "lasso-selection": false,
         "rectangle-selection": false
+      }, createTools: {
+        "circle": false,
+        "point": false
       }
     }
 

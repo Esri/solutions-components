@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>Public Notification Two</title>
+
+    <style>
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+      .over-map {
+        position: absolute;
+        right: 0px;
+        background-color: var(--calcite-ui-foreground-1);
+      }
+      .column {
+        min-width: 300px;
+        margin: 1rem;
+        padding: 1rem;
+        border: 1px solid;
+      }
+      .column[dir="rtl"] {
+        float: left;
+      }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.23/esri/themes/light/main.css"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" type="text/css" />
+    <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
+    <link rel="stylesheet" href="../solutions.css" type="text/css">
+
+    <script src="https://js.arcgis.com/4.23/"></script>
+    <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
+    <script type="module" src="../solutions.esm.js"></script>
+
+    <script>
+      require(["esri/WebMap", "esri/views/MapView"], (
+        WebMap,
+        MapView
+      ) => {
+        var webMap = new WebMap({
+          portalItem: {
+            id: "6a55f6678208461bb7a26d9e418a00bc"
+          }
+        });
+
+        const demo = document.getElementById("demo");
+        demo.mapView = new MapView({
+          container: "viewDiv",
+          map: webMap,
+          zoom: 5,
+          center: [-98, 42]
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="viewDiv"></div>
+    <public-notification-two id="demo" class="over-map column"></public-notification-two>
+  </body>
+</html>
