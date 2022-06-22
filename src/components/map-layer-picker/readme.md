@@ -26,6 +26,7 @@
 ### Used by
 
  - [public-notification](../public-notification)
+ - [public-notification-two](../public-notification-two)
 
 ### Depends on
 
@@ -44,6 +45,7 @@ graph TD;
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
   public-notification --> map-layer-picker
+  public-notification-two --> map-layer-picker
   style map-layer-picker fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

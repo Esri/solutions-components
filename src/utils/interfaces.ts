@@ -24,6 +24,22 @@ export enum EUpdateType {
   Remove,
   None
 }
+
+export enum EExportType {
+  PDF,
+  CSV
+}
+
+export enum EPageType {
+  LIST,
+  SELECT
+}
+
+export enum EWorkflowType {
+  DRAW,
+  SEARCH,
+  SELECT
+}
 /* eslint-enable no-unused-vars */
 
 /**
@@ -218,9 +234,14 @@ export interface IResourcePath {
 /**
  * A templates share details
  */
- export interface ISearchConfig {
+export interface ISearchConfig {
   layers: string[];
   layerUrl: string;
   locators: string[];
   locatorUrl: string;
+}
+
+export interface ISelectionSet {
+  label: string;
+  selectedFeatures: any[];
 }

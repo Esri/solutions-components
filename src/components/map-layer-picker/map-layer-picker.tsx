@@ -57,7 +57,7 @@ export class MapLayerPicker {
   render() {
     return (
       <Host>
-        <div class="padding-bottom-1">
+        <div class="background-w padding-bottom-1-2">
           <calcite-label>Addressee Layer
             <calcite-combobox label="Addressee Layer"
               onCalciteComboboxChange={(evt) => this._layerSelectionChange(evt)}

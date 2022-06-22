@@ -17,6 +17,7 @@
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
+import { EWorkflowType } from '../../utils/interfaces';
 
 @Component({
   tag: 'map-search',
@@ -49,6 +50,12 @@ export class MapSearch {
 
   @Prop() searchLayers: __esri.Layer[];
 
+  // @Prop() showDrawTools = false;
+
+  // @Prop() showSearch = true;
+
+  @Prop({mutable: true}) workflowType: EWorkflowType;
+
   /**
    * Contains the translations for this component.
    */
@@ -70,6 +77,7 @@ export class MapSearch {
   protected Search: typeof __esri.widgetsSearch;
 
   async componentWillLoad() {
+    this.workflowType = EWorkflowType.SEARCH;
     await this._initModules();
   }
 
@@ -78,13 +86,25 @@ export class MapSearch {
   }
 
   render() {
+    const searchEnabled = this.workflowType === EWorkflowType.SEARCH;
+    const showSearchClass = searchEnabled ? " div-visible-search" : " div-not-visible";
+
+    const drawEnabled = this.workflowType === EWorkflowType.DRAW;
+    const showDrawToolsClass = drawEnabled ? " div-visible" : " div-not-visible";
     return (
       <Host>
-        <div class="padding-bottom-1">
+        <div style={{ "padding-bottom": "1rem" }}>
+          <calcite-radio-group onCalciteRadioGroupChange={(evt) => this._workflowChange(evt)} style={{"width": "100%"}}>
+            <calcite-radio-group-item checked={drawEnabled} style={{"width": "50%"}} value={EWorkflowType.DRAW}>Draw</calcite-radio-group-item>
+            <calcite-radio-group-item checked={searchEnabled} style={{"width": "50%"}} value={EWorkflowType.SEARCH}>Search</calcite-radio-group-item>
+            {/* <calcite-radio-group-item checked value={EWorkflowType.SELECT}>Select</calcite-radio-group-item> */}
+          </calcite-radio-group>
+        </div>
+        <div class={showSearchClass}>
           <div class="search-widget" ref={(el) => { this._searchDiv = el }} />
         </div>
-        <map-draw-tools mapView={this.mapView}/>
-        <calcite-label>Search Distance
+        <map-draw-tools class={showDrawToolsClass} mapView={this.mapView} />
+        <calcite-label style={{"display": "flex", "padding-top": "1rem"}}>Search Distance
           <div class="control-container">
             <calcite-input
               class="padding-end-1"
@@ -100,7 +120,7 @@ export class MapSearch {
             </calcite-combobox>
           </div>
         </calcite-label>
-        <slot/>
+        <slot />
       </Host>
     );
   }
@@ -243,5 +263,9 @@ export class MapSearch {
         console.log(err)
       }
     }
+  }
+
+  _workflowChange(evt: CustomEvent): void {
+    this.workflowType = evt.detail;
   }
 }

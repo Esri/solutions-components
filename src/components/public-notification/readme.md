@@ -30,11 +30,14 @@ graph TD;
   public-notification --> map-layer-picker
   public-notification --> pdf-download
   public-notification --> config-public-notification
+  map-search --> calcite-radio-group
+  map-search --> calcite-radio-group-item
   map-search --> map-draw-tools
   map-search --> calcite-label
   map-search --> calcite-input
   map-search --> calcite-combobox
   map-search --> calcite-combobox-item
+  calcite-radio-group-item --> calcite-icon
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-combobox --> calcite-chip

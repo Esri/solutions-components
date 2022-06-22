@@ -7,10 +7,13 @@
 
 ## Properties
 
-| Property          | Attribute | Description                                                                                            | Type      | Default     |
-| ----------------- | --------- | ------------------------------------------------------------------------------------------------------ | --------- | ----------- |
-| `mapView`         | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView` | `undefined` |
-| `selectionLayers` | --        |                                                                                                        | `Layer[]` | `undefined` |
+| Property              | Attribute               | Description                                                                                            | Type      | Default     |
+| --------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------ | --------- | ----------- |
+| `downloadEnabled`     | `download-enabled`      |                                                                                                        | `boolean` | `false`     |
+| `hasSelectedFeatures` | `has-selected-features` |                                                                                                        | `boolean` | `false`     |
+| `mapView`             | --                      | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView` | `undefined` |
+| `selectionActive`     | `selection-active`      |                                                                                                        | `boolean` | `false`     |
+| `selectionLayers`     | --                      |                                                                                                        | `Layer[]` | `undefined` |
 
 
 ## Dependencies
@@ -24,6 +27,9 @@
 - calcite-action
 - calcite-list
 - calcite-list-item
+- calcite-input-message
+- [map-layer-picker](../map-layer-picker)
+- [map-search](../map-search)
 
 ### Graph
 ```mermaid
@@ -35,6 +41,9 @@ graph TD;
   public-notification-two --> calcite-action
   public-notification-two --> calcite-list
   public-notification-two --> calcite-list-item
+  public-notification-two --> calcite-input-message
+  public-notification-two --> map-layer-picker
+  public-notification-two --> map-search
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
@@ -45,6 +54,24 @@ graph TD;
   calcite-action --> calcite-icon
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
+  calcite-input-message --> calcite-icon
+  map-layer-picker --> calcite-label
+  map-layer-picker --> calcite-combobox
+  map-layer-picker --> calcite-combobox-item
+  calcite-combobox --> calcite-chip
+  calcite-combobox --> calcite-icon
+  calcite-chip --> calcite-icon
+  calcite-combobox-item --> calcite-icon
+  map-search --> calcite-radio-group
+  map-search --> calcite-radio-group-item
+  map-search --> map-draw-tools
+  map-search --> calcite-label
+  map-search --> calcite-input
+  map-search --> calcite-combobox
+  map-search --> calcite-combobox-item
+  calcite-radio-group-item --> calcite-icon
+  calcite-input --> calcite-progress
+  calcite-input --> calcite-icon
   style public-notification-two fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

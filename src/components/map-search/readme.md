@@ -7,12 +7,13 @@
 
 ## Properties
 
-| Property       | Attribute      | Description                                                                                                 | Type            | Default     |
-| -------------- | -------------- | ----------------------------------------------------------------------------------------------------------- | --------------- | ----------- |
-| `mapView`      | --             | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html      | `MapView`       | `undefined` |
-| `searchLayers` | --             |                                                                                                             | `Layer[]`       | `undefined` |
-| `searchWidget` | --             | esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html | `widgetsSearch` | `undefined` |
-| `translations` | `translations` | Contains the translations for this component.                                                               | `any`           | `{}`        |
+| Property       | Attribute       | Description                                                                                                 | Type                                                                 | Default     |
+| -------------- | --------------- | ----------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | ----------- |
+| `mapView`      | --              | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html      | `MapView`                                                            | `undefined` |
+| `searchLayers` | --              |                                                                                                             | `Layer[]`                                                            | `undefined` |
+| `searchWidget` | --              | esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html | `widgetsSearch`                                                      | `undefined` |
+| `translations` | `translations`  | Contains the translations for this component.                                                               | `any`                                                                | `{}`        |
+| `workflowType` | `workflow-type` |                                                                                                             | `EWorkflowType.DRAW \| EWorkflowType.SEARCH \| EWorkflowType.SELECT` | `undefined` |
 
 
 ## Events
@@ -28,9 +29,12 @@
 ### Used by
 
  - [public-notification](../public-notification)
+ - [public-notification-two](../public-notification-two)
 
 ### Depends on
 
+- calcite-radio-group
+- calcite-radio-group-item
 - [map-draw-tools](../map-draw-tools)
 - calcite-label
 - calcite-input
@@ -40,11 +44,14 @@
 ### Graph
 ```mermaid
 graph TD;
+  map-search --> calcite-radio-group
+  map-search --> calcite-radio-group-item
   map-search --> map-draw-tools
   map-search --> calcite-label
   map-search --> calcite-input
   map-search --> calcite-combobox
   map-search --> calcite-combobox-item
+  calcite-radio-group-item --> calcite-icon
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-combobox --> calcite-chip
@@ -52,6 +59,7 @@ graph TD;
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
   public-notification --> map-search
+  public-notification-two --> map-search
   style map-search fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

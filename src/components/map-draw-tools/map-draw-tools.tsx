@@ -80,7 +80,7 @@ export class MapDrawTools {
   render() {
     return (
       <Host>
-        <div class="padding-bottom-1">
+        <div>
           <div ref={(el) => { this._sketchDiv = el }} />
         </div>
       </Host>

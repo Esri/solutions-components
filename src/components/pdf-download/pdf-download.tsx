@@ -40,11 +40,13 @@ export class PdfDownload {
             </calcite-combobox>
           </calcite-label>
           <slot name='numFound'/>
+          <div style={{"display": "table", "margin": "0 auto"}}>
           <calcite-button 
             class="download-btn"
             label="Download"
             onClick={() => this._download()}
           >Download</calcite-button>
+          </div>
         </div>
      </Host>
     );

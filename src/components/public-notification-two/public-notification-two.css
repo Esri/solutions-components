@@ -4,5 +4,13 @@
 
 .main-container {
   min-width: 20em;
-  min-height: 20em;
+  min-height: 15em;
+}
+
+.background-w {
+  background-color: white;
+}
+
+.padding-top-1-2 {
+  padding-top: 0.5rem;
 }
