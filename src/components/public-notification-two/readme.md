@@ -12,6 +12,7 @@
 | `downloadEnabled`     | `download-enabled`      |                                                                                                        | `boolean` | `false`     |
 | `hasSelectedFeatures` | `has-selected-features` |                                                                                                        | `boolean` | `false`     |
 | `mapView`             | --                      | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView` | `undefined` |
+| `renderPage`          | `render-page`           |                                                                                                        | `boolean` | `false`     |
 | `selectionActive`     | `selection-active`      |                                                                                                        | `boolean` | `false`     |
 | `selectionLayers`     | --                      |                                                                                                        | `Layer[]` | `undefined` |
 
@@ -30,6 +31,10 @@
 - calcite-input-message
 - [map-layer-picker](../map-layer-picker)
 - [map-search](../map-search)
+- calcite-accordion
+- calcite-accordion-item
+- calcite-value-list
+- calcite-value-list-item
 
 ### Graph
 ```mermaid
@@ -44,6 +49,10 @@ graph TD;
   public-notification-two --> calcite-input-message
   public-notification-two --> map-layer-picker
   public-notification-two --> map-search
+  public-notification-two --> calcite-accordion
+  public-notification-two --> calcite-accordion-item
+  public-notification-two --> calcite-value-list
+  public-notification-two --> calcite-value-list-item
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
@@ -72,6 +81,11 @@ graph TD;
   calcite-radio-group-item --> calcite-icon
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
+  calcite-accordion-item --> calcite-icon
+  calcite-value-list-item --> calcite-icon
+  calcite-value-list-item --> calcite-pick-list-item
+  calcite-pick-list-item --> calcite-icon
+  calcite-pick-list-item --> calcite-action
   style public-notification-two fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

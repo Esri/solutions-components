@@ -32,7 +32,8 @@ export enum EExportType {
 
 export enum EPageType {
   LIST,
-  SELECT
+  SELECT,
+  REFINE
 }
 
 export enum EWorkflowType {

@@ -3,8 +3,7 @@
 }
 
 .main-container {
-  min-width: 20em;
-  min-height: 15em;
+  min-width: 25em;
 }
 
 .background-w {
@@ -13,4 +12,10 @@
 
 .padding-top-1-2 {
   padding-top: 0.5rem;
+}
+
+.page-container {
+  padding: 1rem;
+  flex: 1 1 auto;
+  box-sizing: border-box;
 }
