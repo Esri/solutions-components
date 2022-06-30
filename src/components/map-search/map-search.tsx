@@ -77,7 +77,7 @@ export class MapSearch {
   protected Search: typeof __esri.widgetsSearch;
 
   async componentWillLoad() {
-    this.workflowType = EWorkflowType.SEARCH;
+    this.workflowType = EWorkflowType.DRAW;
     await this._initModules();
   }
 
@@ -93,13 +93,26 @@ export class MapSearch {
     const showDrawToolsClass = drawEnabled ? " div-visible" : " div-not-visible";
     return (
       <Host>
-        <div style={{ "padding-bottom": "1rem" }}>
-          <calcite-radio-group onCalciteRadioGroupChange={(evt) => this._workflowChange(evt)} style={{"width": "100%"}}>
-            <calcite-radio-group-item checked={drawEnabled} style={{"width": "50%"}} value={EWorkflowType.DRAW}>Draw</calcite-radio-group-item>
-            <calcite-radio-group-item checked={searchEnabled} style={{"width": "50%"}} value={EWorkflowType.SEARCH}>Search</calcite-radio-group-item>
-            {/* <calcite-radio-group-item checked value={EWorkflowType.SELECT}>Select</calcite-radio-group-item> */}
-          </calcite-radio-group>
-        </div>
+        <calcite-radio-group onCalciteRadioGroupChange={(evt) => this._workflowChange(evt)} style={{ "width": "100%" }}>
+          <calcite-radio-group-item
+            checked={searchEnabled}
+            style={{ "width": "50%" }}
+            value={EWorkflowType.SEARCH}>
+            Search
+          </calcite-radio-group-item>
+          <calcite-radio-group-item
+            checked={drawEnabled}
+            style={{ "width": "50%" }}
+            value={EWorkflowType.SELECT}>
+            Select
+          </calcite-radio-group-item>
+          <calcite-radio-group-item
+            checked={drawEnabled}
+            style={{ "width": "50%" }}
+            value={EWorkflowType.DRAW}>
+            Sketch
+          </calcite-radio-group-item>
+        </calcite-radio-group>
         <div class={showSearchClass}>
           <div class="search-widget" ref={(el) => { this._searchDiv = el }} />
         </div>
