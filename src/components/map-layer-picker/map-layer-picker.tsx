@@ -59,12 +59,9 @@ export class MapLayerPicker {
       <Host>
         <div class="background-w padding-bottom-1-2">
           <calcite-label>Addressee Layer
-            <calcite-combobox label="Addressee Layer"
-              onCalciteComboboxChange={(evt) => this._layerSelectionChange(evt)}
-              selectionMode={'single'}
-            >
+            <calcite-select label="" onCalciteSelectChange={(evt) => this._layerSelectionChange(evt)}>
               {this._addMapLayers()}
-            </calcite-combobox>
+            </calcite-select>
           </calcite-label>
         </div>
       </Host>
@@ -73,7 +70,7 @@ export class MapLayerPicker {
 
   _addMapLayers(): any {
     return this.layerNames.map(name => {
-      return (<calcite-combobox-item textLabel={name} value={name} />)
+      return (<calcite-option>{name}</calcite-option>)
     });
   }
 
@@ -85,7 +82,7 @@ export class MapLayerPicker {
 
   _layerSelectionChange(evt: CustomEvent): void {
     const layerNames = evt.detail.selectedItems ? evt.detail.selectedItems.map(
-      (item: HTMLCalciteComboboxItemElement) => {
+      (item: HTMLCalciteOptionElement) => {
         return item.value;
       }
     ) : [];
