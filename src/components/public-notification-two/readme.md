@@ -29,7 +29,7 @@
 - [map-layer-picker](../map-layer-picker)
 - calcite-list
 - calcite-list-item
-- [map-search](../map-search)
+- [map-select-tools](../map-select-tools)
 
 ### Graph
 ```mermaid
@@ -43,7 +43,7 @@ graph TD;
   public-notification-two --> map-layer-picker
   public-notification-two --> calcite-list
   public-notification-two --> calcite-list-item
-  public-notification-two --> map-search
+  public-notification-two --> map-select-tools
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
@@ -59,13 +59,13 @@ graph TD;
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-option
   calcite-select --> calcite-icon
-  map-search --> calcite-radio-group
-  map-search --> calcite-radio-group-item
-  map-search --> map-draw-tools
-  map-search --> calcite-label
-  map-search --> calcite-input
-  map-search --> calcite-combobox
-  map-search --> calcite-combobox-item
+  map-select-tools --> calcite-radio-group
+  map-select-tools --> calcite-radio-group-item
+  map-select-tools --> map-draw-tools
+  map-select-tools --> calcite-label
+  map-select-tools --> calcite-input
+  map-select-tools --> calcite-combobox
+  map-select-tools --> calcite-combobox-item
   calcite-radio-group-item --> calcite-icon
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon

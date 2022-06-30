@@ -56,7 +56,7 @@ export class PublicNotification {
     return (
       <Host>
         <div>
-          <map-search mapView={this.mapView} searchLayers={this.selectionLayers}/>
+          <map-select-tools mapView={this.mapView} searchLayers={this.selectionLayers}/>
           <map-layer-picker 
             mapView={this.mapView}
             onLayerSelectionChange={(r) => this._layerSelectionChange(r)}

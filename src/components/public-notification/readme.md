@@ -18,7 +18,7 @@
 
 ### Depends on
 
-- [map-search](../map-search)
+- [map-select-tools](../map-select-tools)
 - [map-layer-picker](../map-layer-picker)
 - [pdf-download](../pdf-download)
 - [config-public-notification](../config-public-notification)
@@ -26,17 +26,17 @@
 ### Graph
 ```mermaid
 graph TD;
-  public-notification --> map-search
+  public-notification --> map-select-tools
   public-notification --> map-layer-picker
   public-notification --> pdf-download
   public-notification --> config-public-notification
-  map-search --> calcite-radio-group
-  map-search --> calcite-radio-group-item
-  map-search --> map-draw-tools
-  map-search --> calcite-label
-  map-search --> calcite-input
-  map-search --> calcite-combobox
-  map-search --> calcite-combobox-item
+  map-select-tools --> calcite-radio-group
+  map-select-tools --> calcite-radio-group-item
+  map-select-tools --> map-draw-tools
+  map-select-tools --> calcite-label
+  map-select-tools --> calcite-input
+  map-select-tools --> calcite-combobox
+  map-select-tools --> calcite-combobox-item
   calcite-radio-group-item --> calcite-icon
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon

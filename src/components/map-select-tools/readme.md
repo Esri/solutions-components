@@ -1,4 +1,4 @@
-# map-search
+# map-select-tools
 
 
 
@@ -44,13 +44,13 @@
 ### Graph
 ```mermaid
 graph TD;
-  map-search --> calcite-radio-group
-  map-search --> calcite-radio-group-item
-  map-search --> map-draw-tools
-  map-search --> calcite-label
-  map-search --> calcite-input
-  map-search --> calcite-combobox
-  map-search --> calcite-combobox-item
+  map-select-tools --> calcite-radio-group
+  map-select-tools --> calcite-radio-group-item
+  map-select-tools --> map-draw-tools
+  map-select-tools --> calcite-label
+  map-select-tools --> calcite-input
+  map-select-tools --> calcite-combobox
+  map-select-tools --> calcite-combobox-item
   calcite-radio-group-item --> calcite-icon
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
@@ -58,9 +58,9 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
-  public-notification --> map-search
-  public-notification-two --> map-search
-  style map-search fill:#f9f,stroke:#333,stroke-width:4px
+  public-notification --> map-select-tools
+  public-notification-two --> map-select-tools
+  style map-select-tools fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------

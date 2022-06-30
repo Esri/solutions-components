@@ -86,7 +86,7 @@ export namespace Components {
          */
         "translations": any;
     }
-    interface MapSearch {
+    interface MapSelectTools {
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -424,11 +424,11 @@ declare global {
         prototype: HTMLMapLayerPickerElement;
         new (): HTMLMapLayerPickerElement;
     };
-    interface HTMLMapSearchElement extends Components.MapSearch, HTMLStencilElement {
+    interface HTMLMapSelectToolsElement extends Components.MapSelectTools, HTMLStencilElement {
     }
-    var HTMLMapSearchElement: {
-        prototype: HTMLMapSearchElement;
-        new (): HTMLMapSearchElement;
+    var HTMLMapSelectToolsElement: {
+        prototype: HTMLMapSelectToolsElement;
+        new (): HTMLMapSelectToolsElement;
     };
     interface HTMLPdfDownloadElement extends Components.PdfDownload, HTMLStencilElement {
     }
@@ -527,7 +527,7 @@ declare global {
         "json-editor": HTMLJsonEditorElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
-        "map-search": HTMLMapSearchElement;
+        "map-select-tools": HTMLMapSelectToolsElement;
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
         "public-notification-two": HTMLPublicNotificationTwoElement;
@@ -625,7 +625,7 @@ declare namespace LocalJSX {
          */
         "translations"?: any;
     }
-    interface MapSearch {
+    interface MapSelectTools {
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -919,7 +919,7 @@ declare namespace LocalJSX {
         "json-editor": JsonEditor;
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
-        "map-search": MapSearch;
+        "map-select-tools": MapSelectTools;
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
         "public-notification-two": PublicNotificationTwo;
@@ -947,7 +947,7 @@ declare module "@stencil/core" {
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
-            "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
+            "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
             "public-notification-two": LocalJSX.PublicNotificationTwo & JSXBase.HTMLAttributes<HTMLPublicNotificationTwoElement>;

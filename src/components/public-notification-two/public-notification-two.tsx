@@ -158,7 +158,7 @@ export class PublicNotificationTwo {
       case EPageType.SELECT:
         page = (
           <div class="background-w padding-1-2 list-border">
-            <map-search
+            <map-select-tools
               mapView={this.mapView}
               searchLayers={this.selectionLayers}
             />

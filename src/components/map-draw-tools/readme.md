@@ -26,12 +26,12 @@
 
 ### Used by
 
- - [map-search](../map-search)
+ - [map-select-tools](../map-select-tools)
 
 ### Graph
 ```mermaid
 graph TD;
-  map-search --> map-draw-tools
+  map-select-tools --> map-draw-tools
   style map-draw-tools fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
