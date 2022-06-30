@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop, VNode } from '@stencil/core';
-import { EExportType, ISelectionSet, EPageType } from '../../utils/interfaces';
+import { ISelectionSet, EPageType } from '../../utils/interfaces';
 
 @Component({
   tag: 'public-notification-two',
@@ -15,26 +15,22 @@ export class PublicNotificationTwo {
 
   @Prop() selectionLayers: __esri.Layer[];
 
-  @Prop({mutable: true}) selectionActive = false;
+  @Prop({mutable: true}) downloadEnabled = true;
 
-  @Prop({mutable: true}) downloadEnabled = false;
-
-  @Prop({mutable: true}) hasSelectedFeatures = false;
-
-  @Prop({mutable: true}) renderPage = false;
+  @Prop({mutable: true}) pageType: EPageType = EPageType.SELECT;
 
   render() {
     return (
       <Host>
         <div class="main-container page-container">
           <calcite-shell>
-            <calcite-shell-panel collapsed={true} detached position="start" slot='primary-panel'>
+            <calcite-shell-panel collapsed={true} position="start" slot='primary-panel'>
               <calcite-action-bar position="start" slot="action-bar">
                 {this._getActions()}
               </calcite-action-bar>
             </calcite-shell-panel>
             <div class="page-container" slot="center-row">
-              {this._getPage(this._pageType)}
+              {this._getPage()}
             </div>
           </calcite-shell>
         </div>
@@ -43,86 +39,120 @@ export class PublicNotificationTwo {
   }
 
   // TODO still thinking through this
-  protected _selectionLists: ISelectionSet[];
-
-  // I think it would make more sense to have this as a prop so it would force render
-  protected _pageType: EPageType = EPageType.LIST;
+  protected _selectionLists: ISelectionSet[] = [
+    // {
+    //   selectedFeatures: [{}, {}, {}, {}, {}, {}],
+    //   label: "Allen School District | No Buffer"
+    // }, {
+    //   selectedFeatures: [{}, {}],
+    //   label: "Sketch 500 ft"
+    // }
+  ];
 
   _getActions(): VNode {
-    return this.selectionActive ? (
-      <calcite-action-group>
-        <calcite-action icon="chevron-left" onClick={() => {this._showSelectionPage(false)}} text="Back"/>
-        {this._getSaveAction(false)}
-      </calcite-action-group>
-    ) : (
-      <calcite-action-group>
-        <calcite-action icon="plus" label='Add' onClick={() => {this._showSelectionPage(true)}} text="Add"/>
-        {/* <calcite-action disabled icon="file-magnifying-glass" label='Refine Selection' onClick={() => {this._showSelectionPage(true)}} text="Refine Selection"/> */}
-        <calcite-action disabled icon="test-data" label='Refine Selection' onClick={() => {this._showRefineSelection()}} text="Refine Selection"/>
-        {/* <calcite-action disabled icon="view-visible" label='Refine Selection' onClick={() => {this._showSelectionPage(true)}} text="Refine Selection"/> */}
-        {this._getDownloadAction(EExportType.PDF)}
-        {this._getDownloadAction(EExportType.CSV)}
-      </calcite-action-group>
-    );
-  }
-
-  _getDownloadAction(type: EExportType): VNode {
-    let action: VNode;
-    switch (type) {
-      case EExportType.PDF:
-        action = this.downloadEnabled ? 
-          (<calcite-action icon="file-pdf" text="Download PDF"/>) :
-          (<calcite-action disabled icon="file-pdf" text="Download PDF"/>)
+    let actions: VNode;
+    switch (this.pageType) {
+      case EPageType.LIST:
+        actions = (
+          <calcite-action-group>
+            {this._getAction(true, "plus", "Add", (): void => this._setPageType(EPageType.SELECT))}
+            {this._getAction(this.downloadEnabled, "test-data", "Refine Selection", (): void => this._setPageType(EPageType.REFINE))}
+            {this._getAction(this.downloadEnabled, "file-pdf", "Download PDF", (): void => this._downloadPDF())}
+            {this._getAction(this.downloadEnabled, "file-csv", "Download CSV", (): void => this._downloadCSV())}
+            {this._getAction(this.downloadEnabled, "reset", "Reset", (): void => this._reset())}
+          </calcite-action-group>
+        )
         break;
-    
-      case EExportType.CSV:
-        action = this.downloadEnabled ? 
-          (<calcite-action icon="file-csv" text="Download CSV"/>) :
-          (<calcite-action disabled icon="file-csv" text="Download CSV"/>)
+      case EPageType.SELECT:
+        actions = (
+          <calcite-action-group>
+            <calcite-action icon="chevron-left" onClick={() => {this._setPageType(EPageType.LIST)}} text="Back"/>
+            <calcite-action active icon="search" onClick={() => {this._setPageType(EPageType.LIST)}} text="Search"/>
+            <calcite-action icon="pencil" onClick={() => {this._setPageType(EPageType.LIST)}} text="Sketch"/>
+            {this._getAction(false, "save", "Save", (): void => this._saveSelection())}
+          </calcite-action-group>
+        );
+        break;
+      case EPageType.REFINE:
+        actions = (
+          <calcite-action-group>
+            <calcite-action icon="chevron-left" onClick={() => {this._setPageType(EPageType.LIST)}} text="Back"/>
+          </calcite-action-group>
+        );
         break;
     }
-    return action;
+    return actions;
   }
 
-  _getSaveAction(saveEnabled: boolean): VNode {
-    return saveEnabled ? 
-      (<calcite-action icon="save" text="Save"/>) :
-      (<calcite-action disabled icon="save" text="Save"/>);
-  }
-
-  _showSelectionPage(show: boolean): void {
-    this._pageType = show ? EPageType.SELECT : EPageType.LIST;
-    this.selectionActive = show;
+  _getAction(
+    enabled: boolean,
+    icon: string,
+    text: string,
+    onClick: any,
+    active?: boolean
+  ): VNode {
+    // wish I knew a better way to do this
+    // would do these inline I think if I could use ternary to handle disabled
+    return enabled ? 
+      (
+        <calcite-action
+          active={active || false}
+          icon={icon}
+          onClick={onClick}
+          text={text}/>
+      ) : (
+        <calcite-action
+          disabled
+          icon={icon}
+          onClick={onClick} 
+          text={text}/>
+        );
   }
 
   // TODO may just do this as a seperate component..may get a little messy over here..still exploring
-  _getPage(pageType: EPageType): VNode {
+  _getPage(): VNode {
     let page: VNode;
-    switch (pageType) {
+    switch (this.pageType) {
       case EPageType.LIST:
-        page = this.hasSelectedFeatures ?
+        page = this._selectionLists.length > 0 ?
           (
-            <calcite-list>
-              {this._selectionLists.map(ss => {
-                (
-                  <calcite-list-item description={`${ss.selectedFeatures.length} selected features`} label={ss.label}>
-                    <calcite-action icon="pencil" slot="actions-end" text='' />
-                    <calcite-action icon="x" slot="actions-end" text='' />
-                  </calcite-list-item>
-                )
-              })} 
-            </calcite-list>
+            <div>
+              <calcite-input-message active class="start-message list-border background-w">
+                <div style={{ "width": "100%" }}>
+                  <map-layer-picker mapView={this.mapView} />
+                </div>
+              </calcite-input-message>
+              <br />
+              <calcite-list class="list-border">
+                {this._selectionLists.map(ss => {
+                  return (
+                    <calcite-list-item description={`${ss.selectedFeatures.length}
+                    selected features`} label={ss.label}>
+                      <calcite-action icon="pencil" slot="actions-end" text='' />
+                      <calcite-action icon="x" slot="actions-end" text='' />
+                    </calcite-list-item>
+                  )
+                })}
+              </calcite-list>
+            </div>
           ) :
           (
-            <calcite-input-message active style={{"padding": "1rem"}} >
-              Use the Add button to create a notification list.
-            </calcite-input-message>
+            <div>
+              <calcite-input-message active class="start-message list-border background-w">
+                <div style={{ "width": "100%" }}>
+                  <map-layer-picker mapView={this.mapView} />
+                </div>
+              </calcite-input-message>
+              <br/>
+              <calcite-input-message active class="start-message list-border background-w">
+                Use the '+' button to create a notification list from Parcels.
+              </calcite-input-message>
+            </div>
           )
         break;
       case EPageType.SELECT:
         page = (
-          <div class="background-w padding-top-1-2">
-            <map-layer-picker mapView={this.mapView} />
+          <div class="background-w padding-1-2 list-border">
             <map-search
               mapView={this.mapView}
               searchLayers={this.selectionLayers}
@@ -132,47 +162,34 @@ export class PublicNotificationTwo {
         break;
       case EPageType.REFINE:
         page = (
-          <calcite-accordion>
-            <calcite-accordion-item icon="layer" item-title="Parcels">
-              <calcite-value-list filter-enabled>
-                <calcite-value-list-item
-                  description="Some other helpful attribute" 
-                  label="11-18-0002-0016-00-9"
-                  value="11-18-0002-0016-00-9">
-                  <calcite-action icon="flash" slot="actions-end" text=""/>
-                  <calcite-action icon="magnifying-glass-plus" slot="actions-end" text=""/>
-                  <calcite-action icon="x" slot="actions-end" text=""/>
-                </calcite-value-list-item>
-                <calcite-value-list-item
-                  description="Some other helpful attribute"
-                  label="11-18-0003-0017-00-9"
-                  value="mountains">
-                  <calcite-action icon="flash" slot="actions-end" text=""/>
-                  <calcite-action icon="magnifying-glass-plus" slot="actions-end" text=""/>
-                  <calcite-action icon="x" slot="actions-end" text=""/>
-                </calcite-value-list-item>
-                <calcite-value-list-item
-                  description="Some other helpful attribute"
-                  label="11-18-0004-0018-00-9"
-                  value="lakes">
-                  <calcite-action icon="flash" slot="actions-end" text=""/>
-                  <calcite-action icon="magnifying-glass-plus" slot="actions-end" text=""/>
-                  <calcite-action icon="x" slot="actions-end" text=""/>
-                </calcite-value-list-item>
-              </calcite-value-list>
-            </calcite-accordion-item>
-            <calcite-accordion-item icon="layer" item-title="Counties">
-              Example accordion item content
-            </calcite-accordion-item>
-          </calcite-accordion>
+          <div>Allow you to interactively Add/Remove and preview without user created selection graphics and buffers.</div>
         )
         break;
     }
     return page;
   }
 
-  _showRefineSelection(): void {
-    this._pageType = EPageType.REFINE;
-    this.renderPage = !this.renderPage;
+  _setPageType(pageType: EPageType): void {
+    this.pageType = pageType;
+  }
+
+  _downloadCSV(): void {
+    alert("Download CSV");
+  }
+
+  _downloadPDF(): void {
+    alert("Download PDF");
+  }
+
+  _reset(): void {
+    alert("Reset");
+  }
+
+  _saveSelection(): void {
+    alert("Save Selection");
+  }
+
+  _zoomToExtent(): void {
+    alert("Zoom To Extent");
   }
 }
