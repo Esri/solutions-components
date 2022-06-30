@@ -45,8 +45,9 @@ graph TD;
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
   map-layer-picker --> calcite-label
-  map-layer-picker --> calcite-combobox
-  map-layer-picker --> calcite-combobox-item
+  map-layer-picker --> calcite-select
+  map-layer-picker --> calcite-option
+  calcite-select --> calcite-icon
   pdf-download --> calcite-label
   pdf-download --> calcite-combobox
   pdf-download --> calcite-button

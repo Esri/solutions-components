@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchConfig, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem } from "./utils/interfaces";
+import { EPageType, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchConfig, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface ConfigMapSearch {
@@ -121,13 +121,11 @@ export namespace Components {
     }
     interface PublicNotificationTwo {
         "downloadEnabled": boolean;
-        "hasSelectedFeatures": boolean;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
-        "renderPage": boolean;
-        "selectionActive": boolean;
+        "pageType": EPageType;
         "selectionLayers": __esri.Layer[];
     }
     interface SolutionConfiguration {
@@ -663,13 +661,11 @@ declare namespace LocalJSX {
     }
     interface PublicNotificationTwo {
         "downloadEnabled"?: boolean;
-        "hasSelectedFeatures"?: boolean;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        "renderPage"?: boolean;
-        "selectionActive"?: boolean;
+        "pageType"?: EPageType;
         "selectionLayers"?: __esri.Layer[];
     }
     interface SolutionConfiguration {
