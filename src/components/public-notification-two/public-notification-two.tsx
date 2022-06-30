@@ -15,9 +15,11 @@ export class PublicNotificationTwo {
 
   @Prop() selectionLayers: __esri.Layer[];
 
-  @Prop({mutable: true}) downloadEnabled = true;
+  @Prop({mutable: true}) downloadEnabled = false;
 
-  @Prop({mutable: true}) pageType: EPageType = EPageType.SELECT;
+  @Prop({mutable: true}) pageType: EPageType = EPageType.LIST;
+
+  @Prop({mutable: true}) message = "";
 
   render() {
     return (
@@ -140,12 +142,15 @@ export class PublicNotificationTwo {
             <div>
               <calcite-input-message active class="start-message list-border background-w">
                 <div style={{ "width": "100%" }}>
-                  <map-layer-picker mapView={this.mapView} />
+                  <map-layer-picker
+                    mapView={this.mapView}
+                    onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
+                  />
                 </div>
               </calcite-input-message>
               <br/>
               <calcite-input-message active class="start-message list-border background-w">
-                Use the '+' button to create a notification list from Parcels.
+                {this.message}
               </calcite-input-message>
             </div>
           )
@@ -167,6 +172,11 @@ export class PublicNotificationTwo {
         break;
     }
     return page;
+  }
+
+  _layerSelectionChange(evt: CustomEvent): void {
+    // Needs to come from NLS
+    this.message = `Use the '+' button to create a ${evt.detail} notification list.`
   }
 
   _setPageType(pageType: EPageType): void {

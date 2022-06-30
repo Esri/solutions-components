@@ -7,12 +7,13 @@
 
 ## Properties
 
-| Property          | Attribute          | Description                                                                                            | Type                                                     | Default            |
-| ----------------- | ------------------ | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------- | ------------------ |
-| `downloadEnabled` | `download-enabled` |                                                                                                        | `boolean`                                                | `true`             |
-| `mapView`         | --                 | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                                                | `undefined`        |
-| `pageType`        | `page-type`        |                                                                                                        | `EPageType.LIST \| EPageType.REFINE \| EPageType.SELECT` | `EPageType.SELECT` |
-| `selectionLayers` | --                 |                                                                                                        | `Layer[]`                                                | `undefined`        |
+| Property          | Attribute          | Description                                                                                            | Type                                                     | Default          |
+| ----------------- | ------------------ | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------- | ---------------- |
+| `downloadEnabled` | `download-enabled` |                                                                                                        | `boolean`                                                | `false`          |
+| `mapView`         | --                 | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                                                | `undefined`      |
+| `message`         | `message`          |                                                                                                        | `string`                                                 | `""`             |
+| `pageType`        | `page-type`        |                                                                                                        | `EPageType.LIST \| EPageType.REFINE \| EPageType.SELECT` | `EPageType.LIST` |
+| `selectionLayers` | --                 |                                                                                                        | `Layer[]`                                                | `undefined`      |
 
 
 ## Dependencies

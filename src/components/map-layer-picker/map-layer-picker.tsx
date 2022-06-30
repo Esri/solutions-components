@@ -52,6 +52,8 @@ export class MapLayerPicker {
 
   async componentDidLoad() {
     await this._setLayers();
+    // emit the first name on load
+    this.layerSelectionChange.emit(this.layerNames[0]);
   }
 
   render() {
@@ -81,11 +83,8 @@ export class MapLayerPicker {
   }
 
   _layerSelectionChange(evt: CustomEvent): void {
-    const layerNames = evt.detail.selectedItems ? evt.detail.selectedItems.map(
-      (item: HTMLCalciteOptionElement) => {
-        return item.value;
-      }
-    ) : [];
-    this.layerSelectionChange.emit(layerNames)
+    this.layerSelectionChange.emit(
+      (evt.target as HTMLCalciteSelectElement).selectedOption.value
+    );
   }
 }
