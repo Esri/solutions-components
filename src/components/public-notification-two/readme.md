@@ -14,6 +14,7 @@
 | `message`         | `message`          |                                                                                                        | `string`                                                 | `""`             |
 | `pageType`        | `page-type`        |                                                                                                        | `EPageType.LIST \| EPageType.REFINE \| EPageType.SELECT` | `EPageType.LIST` |
 | `selectionLayers` | --                 |                                                                                                        | `Layer[]`                                                | `undefined`      |
+| `selectionSet`    | --                 |                                                                                                        | `any[]`                                                  | `[]`             |
 
 
 ## Dependencies
@@ -62,6 +63,8 @@ graph TD;
   map-select-tools --> calcite-radio-group
   map-select-tools --> calcite-radio-group-item
   map-select-tools --> map-draw-tools
+  map-select-tools --> map-layer-picker
+  map-select-tools --> calcite-action
   map-select-tools --> calcite-label
   map-select-tools --> calcite-input
   map-select-tools --> calcite-combobox

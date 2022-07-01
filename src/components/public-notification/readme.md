@@ -33,21 +33,25 @@ graph TD;
   map-select-tools --> calcite-radio-group
   map-select-tools --> calcite-radio-group-item
   map-select-tools --> map-draw-tools
+  map-select-tools --> map-layer-picker
+  map-select-tools --> calcite-action
   map-select-tools --> calcite-label
   map-select-tools --> calcite-input
   map-select-tools --> calcite-combobox
   map-select-tools --> calcite-combobox-item
   calcite-radio-group-item --> calcite-icon
+  map-layer-picker --> calcite-label
+  map-layer-picker --> calcite-select
+  map-layer-picker --> calcite-option
+  calcite-select --> calcite-icon
+  calcite-action --> calcite-loader
+  calcite-action --> calcite-icon
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-combobox --> calcite-chip
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
-  map-layer-picker --> calcite-label
-  map-layer-picker --> calcite-select
-  map-layer-picker --> calcite-option
-  calcite-select --> calcite-icon
   pdf-download --> calcite-label
   pdf-download --> calcite-combobox
   pdf-download --> calcite-button
@@ -75,8 +79,6 @@ graph TD;
   calcite-tab-title --> calcite-icon
   calcite-pick-list-item --> calcite-icon
   calcite-pick-list-item --> calcite-action
-  calcite-action --> calcite-loader
-  calcite-action --> calcite-icon
   style public-notification fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

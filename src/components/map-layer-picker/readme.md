@@ -25,6 +25,7 @@
 
 ### Used by
 
+ - [map-select-tools](../map-select-tools)
  - [public-notification](../public-notification)
  - [public-notification-two](../public-notification-two)
 
@@ -41,6 +42,7 @@ graph TD;
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-option
   calcite-select --> calcite-icon
+  map-select-tools --> map-layer-picker
   public-notification --> map-layer-picker
   public-notification-two --> map-layer-picker
   style map-layer-picker fill:#f9f,stroke:#333,stroke-width:4px

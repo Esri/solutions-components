@@ -50,25 +50,27 @@ export class MapSelectTools {
 
   @Prop() searchLayers: __esri.Layer[];
 
-  // @Prop() showDrawTools = false;
+  @Prop({ mutable: true }) workflowType: EWorkflowType = EWorkflowType.SEARCH;
 
-  // @Prop() showSearch = true;
-
-  @Prop({ mutable: true }) workflowType: EWorkflowType;
-
-  /**
-   * Contains the translations for this component.
-   */
   @Prop({ mutable: true }) translations: any = {};
 
+  // think this should not be necessary
   @Event() searchGraphicsChange: EventEmitter;
 
+  // think this should not be necessary
   @Event() searchDistanceChange: EventEmitter;
+
+  @Event() selectionSetChange: EventEmitter;
 
   @Listen("sketchGraphicsChange", { target: 'window' })
   sketchGraphicsChange(event: CustomEvent): void {
-    this.searchGraphicsChange.emit(event.detail)
+    // I think I will need to listen to this but I think I only need to emit if it would 
+    // chnage the underlying selection set
+    this.searchGraphicsChange.emit(event.detail);
+    this.selectionSetChange.emit(this._selectionSet);
   }
+
+  protected _selectionSet: any[] = [];
 
   protected GraphicsLayer: typeof __esri.GraphicsLayer;
 
@@ -77,7 +79,6 @@ export class MapSelectTools {
   protected Search: typeof __esri.widgetsSearch;
 
   async componentWillLoad() {
-    this.workflowType = EWorkflowType.DRAW;
     await this._initModules();
   }
 
@@ -89,34 +90,56 @@ export class MapSelectTools {
     const searchEnabled = this.workflowType === EWorkflowType.SEARCH;
     const showSearchClass = searchEnabled ? " div-visible-search" : " div-not-visible";
 
-    const drawEnabled = this.workflowType === EWorkflowType.DRAW;
+    const drawEnabled = this.workflowType === EWorkflowType.SKETCH;
     const showDrawToolsClass = drawEnabled ? " div-visible" : " div-not-visible";
+
+    const selectEnabled = this.workflowType === EWorkflowType.SELECT;
+    const showSelectToolsClass = selectEnabled ? " div-visible" : " div-not-visible";
+
     return (
       <Host>
-        <calcite-radio-group onCalciteRadioGroupChange={(evt) => this._workflowChange(evt)} style={{ "width": "100%" }}>
-          <calcite-radio-group-item
-            checked={searchEnabled}
-            style={{ "width": "50%" }}
-            value={EWorkflowType.SEARCH}>
-            Search
-          </calcite-radio-group-item>
-          <calcite-radio-group-item
-            checked={drawEnabled}
-            style={{ "width": "50%" }}
-            value={EWorkflowType.SELECT}>
-            Select
-          </calcite-radio-group-item>
-          <calcite-radio-group-item
-            checked={drawEnabled}
-            style={{ "width": "50%" }}
-            value={EWorkflowType.DRAW}>
-            Sketch
-          </calcite-radio-group-item>
-        </calcite-radio-group>
+        <div class="padding-bottom-1">
+          <calcite-radio-group
+            onCalciteRadioGroupChange={(evt) => this._workflowChange(evt)}
+            style={{ "width": "100%" }}
+          >
+            <calcite-radio-group-item
+              checked={searchEnabled}
+              style={{ "width": "50%" }}
+              value={EWorkflowType.SEARCH} />
+            <calcite-radio-group-item
+              checked={selectEnabled}
+              style={{ "width": "50%" }}
+              value={EWorkflowType.SELECT} />
+            <calcite-radio-group-item
+              checked={drawEnabled}
+              style={{ "width": "50%" }}
+              value={EWorkflowType.SKETCH} />
+          </calcite-radio-group>
+        </div>
         <div class={showSearchClass}>
           <div class="search-widget" ref={(el) => { this._searchDiv = el }} />
         </div>
         <map-draw-tools class={showDrawToolsClass} mapView={this.mapView} />
+        <div class={showSelectToolsClass}>
+          <map-layer-picker mapView={this.mapView}/>
+          <div class={"esri-sketch esri-widget"}>
+            <div class={"esri-sketch__panel"}>
+              <div class={"esri-sketch__tool-section esri-sketch__section"}>
+                <calcite-action icon="select" scale="s" text="Select" />
+              </div>
+              <div class={"esri-sketch__tool-section esri-sketch__section"}>
+                <calcite-action icon="line" scale="s" text="Select by line" />
+                <calcite-action icon="polygon" scale="s" text="Select by polygon" />
+                <calcite-action icon="rectangle" scale="s" text="Select by rectangle" />
+              </div>
+              <div class={"esri-sketch__tool-section esri-sketch__section"}>
+                <calcite-action icon="undo" scale="s" text="Undo" />
+                <calcite-action icon="redo" scale="s" text="Redo" />
+              </div>
+            </div>
+          </div>
+        </div>
         <calcite-label style={{ "display": "flex", "padding-top": "1rem" }}>Search Distance
           <div class="control-container">
             <calcite-input

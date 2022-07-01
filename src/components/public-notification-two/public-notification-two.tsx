@@ -21,6 +21,8 @@ export class PublicNotificationTwo {
 
   @Prop({mutable: true}) message = "";
 
+  @Prop({mutable: true}) selectionSet = [];
+
   render() {
     return (
       <Host>
@@ -69,8 +71,6 @@ export class PublicNotificationTwo {
         actions = (
           <calcite-action-group>
             <calcite-action icon="chevron-left" onClick={() => {this._setPageType(EPageType.LIST)}} text="Back"/>
-            <calcite-action active icon="search" onClick={() => {this._setPageType(EPageType.LIST)}} text="Search"/>
-            <calcite-action icon="pencil" onClick={() => {this._setPageType(EPageType.LIST)}} text="Sketch"/>
             {this._getAction(false, "save", "Save", (): void => this._saveSelection())}
           </calcite-action-group>
         );

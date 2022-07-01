@@ -37,9 +37,9 @@ export enum EPageType {
 }
 
 export enum EWorkflowType {
-  DRAW,
-  SEARCH,
-  SELECT
+  SEARCH="SEARCH",
+  SELECT="SELECT",
+  SKETCH="SKETCH"
 }
 /* eslint-enable no-unused-vars */
 

@@ -96,9 +96,6 @@ export namespace Components {
           * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
          */
         "searchWidget": __esri.widgetsSearch;
-        /**
-          * Contains the translations for this component.
-         */
         "translations": any;
         "workflowType": EWorkflowType;
     }
@@ -128,6 +125,7 @@ export namespace Components {
         "message": string;
         "pageType": EPageType;
         "selectionLayers": __esri.Layer[];
+        "selectionSet": any[];
     }
     interface SolutionConfiguration {
         /**
@@ -632,14 +630,12 @@ declare namespace LocalJSX {
         "mapView"?: __esri.MapView;
         "onSearchDistanceChange"?: (event: CustomEvent<any>) => void;
         "onSearchGraphicsChange"?: (event: CustomEvent<any>) => void;
+        "onSelectionSetChange"?: (event: CustomEvent<any>) => void;
         "searchLayers"?: __esri.Layer[];
         /**
           * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
          */
         "searchWidget"?: __esri.widgetsSearch;
-        /**
-          * Contains the translations for this component.
-         */
         "translations"?: any;
         "workflowType"?: EWorkflowType;
     }
@@ -669,6 +665,7 @@ declare namespace LocalJSX {
         "message"?: string;
         "pageType"?: EPageType;
         "selectionLayers"?: __esri.Layer[];
+        "selectionSet"?: any[];
     }
     interface SolutionConfiguration {
         /**
