@@ -78,6 +78,8 @@ export class MapSelectTools {
 
   protected Search: typeof __esri.widgetsSearch;
 
+  protected _selectionLayerNames: string[] = []
+
   async componentWillLoad() {
     await this._initModules();
   }
@@ -106,15 +108,21 @@ export class MapSelectTools {
             <calcite-radio-group-item
               checked={searchEnabled}
               style={{ "width": "50%" }}
-              value={EWorkflowType.SEARCH} />
+              value={EWorkflowType.SEARCH}>
+                Search
+              </calcite-radio-group-item>
             <calcite-radio-group-item
               checked={selectEnabled}
               style={{ "width": "50%" }}
-              value={EWorkflowType.SELECT} />
+              value={EWorkflowType.SELECT}>
+                Select
+              </calcite-radio-group-item>
             <calcite-radio-group-item
               checked={drawEnabled}
               style={{ "width": "50%" }}
-              value={EWorkflowType.SKETCH} />
+              value={EWorkflowType.SKETCH}>
+                Sketch
+              </calcite-radio-group-item>
           </calcite-radio-group>
         </div>
         <div class={showSearchClass}>
@@ -122,20 +130,21 @@ export class MapSelectTools {
         </div>
         <map-draw-tools class={showDrawToolsClass} mapView={this.mapView} />
         <div class={showSelectToolsClass}>
-          <map-layer-picker mapView={this.mapView}/>
+          <map-layer-picker label="Select Layer(s)" mapView={this.mapView} selectionMode={"multi"}/>
+
           <div class={"esri-sketch esri-widget"}>
             <div class={"esri-sketch__panel"}>
               <div class={"esri-sketch__tool-section esri-sketch__section"}>
-                <calcite-action icon="select" scale="s" text="Select" />
+                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="select" scale="s" text="Select" />
               </div>
               <div class={"esri-sketch__tool-section esri-sketch__section"}>
-                <calcite-action icon="line" scale="s" text="Select by line" />
-                <calcite-action icon="polygon" scale="s" text="Select by polygon" />
-                <calcite-action icon="rectangle" scale="s" text="Select by rectangle" />
+                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="line" scale="s" text="Select by line" />
+                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="polygon" scale="s" text="Select by polygon" />
+                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="rectangle" scale="s" text="Select by rectangle" />
               </div>
               <div class={"esri-sketch__tool-section esri-sketch__section"}>
-                <calcite-action icon="undo" scale="s" text="Undo" />
-                <calcite-action icon="redo" scale="s" text="Redo" />
+                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="undo" scale="s" text="Undo" />
+                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="redo" scale="s" text="Redo" />
               </div>
             </div>
           </div>
@@ -151,7 +160,8 @@ export class MapSelectTools {
             <calcite-combobox
               label='label?'
               placeholder="unit"
-              selection-mode="single">
+              selection-mode="single"
+              style={{"flex": "1"}}>
               {this._addUnits()}
             </calcite-combobox>
           </div>

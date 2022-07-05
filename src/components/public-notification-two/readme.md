@@ -7,14 +7,14 @@
 
 ## Properties
 
-| Property          | Attribute          | Description                                                                                            | Type                                                     | Default          |
-| ----------------- | ------------------ | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------- | ---------------- |
-| `downloadEnabled` | `download-enabled` |                                                                                                        | `boolean`                                                | `false`          |
-| `mapView`         | --                 | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                                                | `undefined`      |
-| `message`         | `message`          |                                                                                                        | `string`                                                 | `""`             |
-| `pageType`        | `page-type`        |                                                                                                        | `EPageType.LIST \| EPageType.REFINE \| EPageType.SELECT` | `EPageType.LIST` |
-| `selectionLayers` | --                 |                                                                                                        | `Layer[]`                                                | `undefined`      |
-| `selectionSet`    | --                 |                                                                                                        | `any[]`                                                  | `[]`             |
+| Property          | Attribute          | Description                                                                                            | Type                                                                                       | Default          |
+| ----------------- | ------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ---------------- |
+| `downloadEnabled` | `download-enabled` |                                                                                                        | `boolean`                                                                                  | `false`          |
+| `mapView`         | --                 | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                                                                                  | `undefined`      |
+| `message`         | `message`          |                                                                                                        | `string`                                                                                   | `""`             |
+| `pageType`        | `page-type`        |                                                                                                        | `EPageType.CSV \| EPageType.LIST \| EPageType.PDF \| EPageType.REFINE \| EPageType.SELECT` | `EPageType.LIST` |
+| `selectionLayers` | --                 |                                                                                                        | `Layer[]`                                                                                  | `undefined`      |
+| `selectionSet`    | --                 |                                                                                                        | `any[]`                                                                                    | `[]`             |
 
 
 ## Dependencies
@@ -31,6 +31,10 @@
 - calcite-list
 - calcite-list-item
 - [map-select-tools](../map-select-tools)
+- calcite-radio-group
+- calcite-radio-group-item
+- calcite-select
+- calcite-option
 
 ### Graph
 ```mermaid
@@ -45,6 +49,10 @@ graph TD;
   public-notification-two --> calcite-list
   public-notification-two --> calcite-list-item
   public-notification-two --> map-select-tools
+  public-notification-two --> calcite-radio-group
+  public-notification-two --> calcite-radio-group-item
+  public-notification-two --> calcite-select
+  public-notification-two --> calcite-option
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
@@ -58,8 +66,14 @@ graph TD;
   calcite-input-message --> calcite-icon
   map-layer-picker --> calcite-label
   map-layer-picker --> calcite-select
+  map-layer-picker --> calcite-combobox
+  map-layer-picker --> calcite-combobox-item
   map-layer-picker --> calcite-option
   calcite-select --> calcite-icon
+  calcite-combobox --> calcite-chip
+  calcite-combobox --> calcite-icon
+  calcite-chip --> calcite-icon
+  calcite-combobox-item --> calcite-icon
   map-select-tools --> calcite-radio-group
   map-select-tools --> calcite-radio-group-item
   map-select-tools --> map-draw-tools
@@ -72,10 +86,6 @@ graph TD;
   calcite-radio-group-item --> calcite-icon
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
-  calcite-combobox --> calcite-chip
-  calcite-combobox --> calcite-icon
-  calcite-chip --> calcite-icon
-  calcite-combobox-item --> calcite-icon
   style public-notification-two fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

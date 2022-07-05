@@ -33,7 +33,9 @@ export enum EExportType {
 export enum EPageType {
   LIST,
   SELECT,
-  REFINE
+  REFINE,
+  PDF,
+  CSV
 }
 
 export enum EWorkflowType {
@@ -42,6 +44,8 @@ export enum EWorkflowType {
   SKETCH="SKETCH"
 }
 /* eslint-enable no-unused-vars */
+
+export type SelectionMode = "single" | "multi";
 
 /**
  * Key details from the templates item

@@ -23,7 +23,7 @@ import { loadModules } from "../../utils/loadModules";
   shadow: false,
 })
 export class MapDrawTools {
-    //--------------------------------------------------------------------------
+  //--------------------------------------------------------------------------
   //
   //  Host element access
   //

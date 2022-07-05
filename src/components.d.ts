@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { EPageType, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchConfig, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem } from "./utils/interfaces";
+import { EPageType, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchConfig, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface ConfigMapSearch {
@@ -76,11 +76,14 @@ export namespace Components {
         "translations": any;
     }
     interface MapLayerPicker {
+        "label": string;
         "layerNames": string[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        "selectedLayers": string[];
+        "selectionMode": SelectionMode;
         /**
           * Contains the translations for this component.
          */
@@ -612,12 +615,15 @@ declare namespace LocalJSX {
         "translations"?: any;
     }
     interface MapLayerPicker {
+        "label"?: string;
         "layerNames"?: string[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         "onLayerSelectionChange"?: (event: CustomEvent<any>) => void;
+        "selectedLayers"?: string[];
+        "selectionMode"?: SelectionMode;
         /**
           * Contains the translations for this component.
          */

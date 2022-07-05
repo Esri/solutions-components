@@ -27,7 +27,7 @@ export class PublicNotificationTwo {
     return (
       <Host>
         <div class="main-container page-container">
-          <calcite-shell>
+          <calcite-shell style={{"display": "table"}}>
             <calcite-shell-panel collapsed={true} position="start" slot='primary-panel'>
               <calcite-action-bar position="start" slot="action-bar">
                 {this._getActions()}
@@ -50,6 +50,9 @@ export class PublicNotificationTwo {
     // }, {
     //   selectedFeatures: [{}, {}],
     //   label: "Sketch 500 ft"
+    // }, {
+    //   selectedFeatures: [{}, {},{}, {}, {}, {}, {}, {}],
+    //   label: "Counties | No Buffer"
     // }
   ];
 
@@ -63,7 +66,7 @@ export class PublicNotificationTwo {
             {this._getAction(this.downloadEnabled, "test-data", "Refine Selection", (): void => this._setPageType(EPageType.REFINE))}
             {this._getAction(this.downloadEnabled, "file-pdf", "Download PDF", (): void => this._downloadPDF())}
             {this._getAction(this.downloadEnabled, "file-csv", "Download CSV", (): void => this._downloadCSV())}
-            {this._getAction(this.downloadEnabled, "reset", "Reset", (): void => this._reset())}
+            {/* {this._getAction(this.downloadEnabled, "reset", "Reset", (): void => this._reset())} */}
           </calcite-action-group>
         )
         break;
@@ -79,6 +82,14 @@ export class PublicNotificationTwo {
         actions = (
           <calcite-action-group>
             <calcite-action icon="chevron-left" onClick={() => {this._setPageType(EPageType.LIST)}} text="Back"/>
+          </calcite-action-group>
+        );
+        break;
+      case EPageType.PDF:
+        actions = (
+          <calcite-action-group>
+            <calcite-action icon="chevron-left" onClick={() => {this._setPageType(EPageType.LIST)}} text="Back"/>
+            <calcite-action icon="download-to" onClick={() => {this._setPageType(EPageType.LIST)}} text="Back"/>
           </calcite-action-group>
         );
         break;
@@ -116,44 +127,44 @@ export class PublicNotificationTwo {
     let page: VNode;
     switch (this.pageType) {
       case EPageType.LIST:
-        page = this._selectionLists.length > 0 ?
-          (
-            <div>
-              <calcite-input-message active class="start-message list-border background-w">
-                <div style={{ "width": "100%" }}>
-                  <map-layer-picker mapView={this.mapView} />
-                </div>
-              </calcite-input-message>
-              <br />
-              <calcite-list class="list-border">
-                {this._selectionLists.map(ss => {
-                  return (
-                    <calcite-list-item description={`${ss.selectedFeatures.length}
-                    selected features`} label={ss.label}>
-                      <calcite-action icon="pencil" slot="actions-end" text='' />
-                      <calcite-action icon="x" slot="actions-end" text='' />
-                    </calcite-list-item>
-                  )
-                })}
-              </calcite-list>
-            </div>
-          ) :
-          (
-            <div>
-              <calcite-input-message active class="start-message list-border background-w">
-                <div style={{ "width": "100%" }}>
-                  <map-layer-picker
-                    mapView={this.mapView}
-                    onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
-                  />
-                </div>
-              </calcite-input-message>
-              <br/>
-              <calcite-input-message active class="start-message list-border background-w">
-                {this.message}
-              </calcite-input-message>
-            </div>
-          )
+        page = (
+          <div>
+            <calcite-input-message active class="start-message list-border background-w">
+              <div style={{ "width": "100%" }}>
+                <map-layer-picker
+                  label='Addressee Layer'
+                  mapView={this.mapView}
+                  onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
+                  selectionMode={"single"}
+                />
+              </div>
+            </calcite-input-message>
+            <br />
+            {
+              this._selectionLists.length > 0 ? (
+                <calcite-list class="list-border">
+                  {
+                    this._selectionLists.map(ss => {
+                      return (
+                        <calcite-list-item 
+                          description={`${ss.selectedFeatures.length} selected features`} 
+                          label={ss.label}
+                        >
+                          <calcite-action icon="pencil" slot="actions-end" text='' />
+                          <calcite-action icon="x" slot="actions-end" text='' />
+                        </calcite-list-item>
+                      )
+                    })
+                  }
+                </calcite-list>
+              ) : (
+                <calcite-input-message active class="start-message list-border background-w">
+                  {this.message}
+                </calcite-input-message>
+              )
+            }
+          </div>
+        )
         break;
       case EPageType.SELECT:
         page = (
@@ -167,7 +178,47 @@ export class PublicNotificationTwo {
         break;
       case EPageType.REFINE:
         page = (
-          <div>Allow you to interactively Add/Remove and preview without user created selection graphics and buffers.</div>
+          <div class="background-w padding-1-2 list-border">
+            <calcite-radio-group>
+              <calcite-radio-group-item
+                checked={true}
+                style={{ "width": "50%" }}
+                value="Add">Add</calcite-radio-group-item>
+              <calcite-radio-group-item
+                checked={false}
+                style={{ "width": "50%" }}
+                value="Remove">
+                Remove
+              </calcite-radio-group-item>
+            </calcite-radio-group>
+            <div class={"esri-sketch esri-widget"}>
+              <div class={"esri-sketch__panel"}>
+                <div class={"esri-sketch__tool-section esri-sketch__section"}>
+                  <calcite-action icon="select" scale="s" text="Select" />
+                </div>
+                <div class={"esri-sketch__tool-section esri-sketch__section"}>
+                  <calcite-action icon="line" scale="s" text="Select by line" />
+                  <calcite-action icon="polygon" scale="s" text="Select by polygon" />
+                  <calcite-action icon="rectangle" scale="s" text="Select by rectangle" />
+                </div>
+                <div class={"esri-sketch__tool-section esri-sketch__section"}>
+                  <calcite-action icon="undo" scale="s" text="Undo" />
+                  <calcite-action icon="redo" scale="s" text="Redo" />
+                </div>
+              </div>
+            </div>
+          </div>
+        )
+        break;
+      case EPageType.PDF:
+        page = (
+          <div class="background-w padding-1-2 list-border">
+          <calcite-select label="">
+            <calcite-option>PDF label 30 per page</calcite-option>
+            <calcite-option>Rivers</calcite-option>
+            <calcite-option>Lakes</calcite-option>
+          </calcite-select>
+          </div>
         )
         break;
     }
@@ -176,7 +227,7 @@ export class PublicNotificationTwo {
 
   _layerSelectionChange(evt: CustomEvent): void {
     // Needs to come from NLS
-    this.message = `Use the '+' button to create a ${evt.detail} notification list.`
+    this.message = `Use the '+' button to create a ${evt?.detail?.length > 0 ? evt.detail[0] : ""} notification list.`
   }
 
   _setPageType(pageType: EPageType): void {
@@ -188,7 +239,7 @@ export class PublicNotificationTwo {
   }
 
   _downloadPDF(): void {
-    alert("Download PDF");
+    this._setPageType(EPageType.PDF);
   }
 
   _reset(): void {

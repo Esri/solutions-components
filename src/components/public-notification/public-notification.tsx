@@ -60,6 +60,7 @@ export class PublicNotification {
           <map-layer-picker 
             mapView={this.mapView}
             onLayerSelectionChange={(r) => this._layerSelectionChange(r)}
+            selectionMode={"single"}
           />
           <pdf-download />
           <config-public-notification class="config-btn" mapView={this.mapView}/>

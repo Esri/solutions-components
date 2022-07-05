@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode } from '@stencil/core';
 import { getMapLayerNames } from '../../utils/mapViewUtils';
+import { SelectionMode } from '../../utils/interfaces';
 
 @Component({
   tag: 'map-layer-picker',
@@ -48,31 +49,67 @@ export class MapLayerPicker {
 
   @Prop({ mutable: true }) layerNames: string[] = [];
 
+  @Prop({ mutable: true }) label = "";
+
+  @Prop({ mutable: true }) selectionMode: SelectionMode = "single";
+
+  @Prop({ mutable: true }) selectedLayers: string[] = [];
+
   @Event() layerSelectionChange: EventEmitter;
 
   async componentDidLoad() {
     await this._setLayers();
-    // emit the first name on load
-    this.layerSelectionChange.emit(this.layerNames[0]);
+    if (this.selectionMode === "single") {
+      this.layerSelectionChange.emit([this.layerNames[0]]);
+    }
   }
 
   render() {
+    console.log("render")
     return (
       <Host>
-        <div class="background-w padding-bottom-1-2">
-          <calcite-label>Addressee Layer
-            <calcite-select label="" onCalciteSelectChange={(evt) => this._layerSelectionChange(evt)}>
-              {this._addMapLayers()}
-            </calcite-select>
+        <div class="background-w">
+          <calcite-label>{this.label}
+            {this.selectionMode === "multi" ? this._getCombobox() : this._getSelect()}
           </calcite-label>
         </div>
       </Host>
     );
   }
 
-  _addMapLayers(): any {
+  protected _layerSelect: HTMLCalciteSelectElement;
+
+  // Use Select when something should always be selected
+  _getSelect(): VNode {
+    return (           
+      <calcite-select
+        label=''
+        onCalciteSelectChange={(evt) => this._layerSelectionChange(evt)}
+        ref={(el) => { this._layerSelect = el }}
+      >
+        {this._addMapLayersOptions()}
+      </calcite-select>
+    );
+  }
+
+  // Use combbox for multi selection
+  _getCombobox(): VNode {
+    return (           
+      <calcite-combobox
+        label=''
+        onCalciteComboboxChange={(evt) => this._layerSelectionChange(evt)}
+        selection-mode={this.selectionMode}
+      >
+        {this._addMapLayersOptions()}
+      </calcite-combobox>
+    );
+  }
+
+  _addMapLayersOptions(): any {
     return this.layerNames.map(name => {
-      return (<calcite-option>{name}</calcite-option>)
+      return this.selectionMode === "multi" ?
+        (<calcite-combobox-item textLabel={name} value={name}/>) :
+        (<calcite-option label={name} value={name}/>);
     });
   }
 
@@ -83,8 +120,13 @@ export class MapLayerPicker {
   }
 
   _layerSelectionChange(evt: CustomEvent): void {
-    this.layerSelectionChange.emit(
-      (evt.target as HTMLCalciteSelectElement).selectedOption.value
-    );
+    this.selectedLayers = this.selectionMode === "single" ?
+      [this._layerSelect.value] : evt.detail?.selectedItems.map(
+        (item: HTMLCalciteComboboxItemElement) => {
+          console.log(item)
+          return item.value;
+        }
+      ) || [];
+    this.layerSelectionChange.emit(this.selectedLayers);
   }
 }
