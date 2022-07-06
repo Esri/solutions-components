@@ -34,4 +34,4 @@ __*
 src/**/*.js
 !src/**/assets/**/*.js
 !src/demos/**/*.js
-solutions-libraries/
+arcgis-pdf-creator/

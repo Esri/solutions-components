@@ -15,7 +15,7 @@
  */
 
 import { Component, Host, h, Prop, VNode } from '@stencil/core';
-import * as libs from '../../../../solutions-libraries/generatePDF/dist/labelFormats.json';
+import * as pdfUtils from '../../../arcgis-pdf-creator/data/labelFormats.json';
 import '@esri/calcite-components';
 
 @Component({
@@ -55,7 +55,7 @@ export class PdfDownload {
   private _perPage = 0;
 
   _renderItems(): VNode[] {
-    const s: any = libs;
+    const s: any = pdfUtils;
     return (s.default || s).map((l) => {
       // no idea what all will actually be checked and what would even be safe to check
       // just adding some generic checks here for POC work
