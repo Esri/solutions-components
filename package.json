@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@esri/eslint-plugin-calcite-components": "^0.1.1",
+    "@esri/hub-common": "9.2.0",
     "@stencil/eslint-plugin": "^0.4.0",
     "@stencil/postcss": "2.1.0",
     "@stencil/sass": "1.5.2",
@@ -69,7 +70,6 @@
     "@esri/arcgis-rest-request": "^3.4.2",
     "@esri/arcgis-rest-service-admin": "^3.4.2",
     "@esri/calcite-components": "^1.0.0-next.437",
-    "@esri/hub-common": "9.2.0",
     "@esri/solution-common": "^1.1.5",
     "monaco-editor": "^0.30.1"
   },

@@ -75,6 +75,39 @@ define({
         "undo": "Undo",
         "url": "URL"
       }
+    },
+    "common": {
+      "search": "Search",
+      "select": "Select",
+      "sketch": "Sketch",
+      "selectLine": "Select by line",
+      "selectPolygon": "Select by polygon",
+      "selectRectangle": "Select by rectangle",
+      "selectLayers": "Select Layer(s)",
+      "undo": "Undo",
+      "redo": "Redo",
+      "searchDistance": "Search Distance",
+      "bufferLayer": "Buffer Layer",
+      "sketchLayer": "Sketch Layer",
+      "format": "Format",
+      "download": "Download",
+      "pdfLabel": "PDF label {{n}} per page",
+      "add": "Add",
+      "remove": "Remove",
+      "refineSelection": "Refine Selection",
+      "downloadPDF": "Download PDF",
+      "downloadCSV": "Download CSV",
+      "back": "Back",
+      "save": "Save",
+      "addresseeLayer": "Addressee Layer",
+      "selectedFeatures": "{{n}} selected features",
+      "startMessage": "Use the '+' button to create a {{n}} notification list.",
+      "units": {
+        "feet": "Feet",
+        "meters": "Meters",
+        "miles": "Miles",
+        "kilometers": "Kilometers"
+      }
     }
   }),
   "fr": 1

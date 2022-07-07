@@ -129,6 +129,7 @@ export namespace Components {
         "pageType": EPageType;
         "selectionLayers": __esri.Layer[];
         "selectionSet": any[];
+        "translations": any;
     }
     interface SolutionConfiguration {
         /**
@@ -672,6 +673,7 @@ declare namespace LocalJSX {
         "pageType"?: EPageType;
         "selectionLayers"?: __esri.Layer[];
         "selectionSet"?: any[];
+        "translations"?: any;
     }
     interface SolutionConfiguration {
         /**

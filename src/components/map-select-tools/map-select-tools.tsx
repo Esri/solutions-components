@@ -108,48 +108,54 @@ export class MapSelectTools {
             <calcite-radio-group-item
               checked={searchEnabled}
               style={{ "width": "50%" }}
-              value={EWorkflowType.SEARCH}>
-                Search
-              </calcite-radio-group-item>
+              value={EWorkflowType.SEARCH}
+            >
+              {this.translations?.search}
+            </calcite-radio-group-item>
             <calcite-radio-group-item
               checked={selectEnabled}
               style={{ "width": "50%" }}
-              value={EWorkflowType.SELECT}>
-                Select
-              </calcite-radio-group-item>
+              value={EWorkflowType.SELECT}
+            >
+              {this.translations?.select}
+            </calcite-radio-group-item>
             <calcite-radio-group-item
               checked={drawEnabled}
               style={{ "width": "50%" }}
-              value={EWorkflowType.SKETCH}>
-                Sketch
-              </calcite-radio-group-item>
+              value={EWorkflowType.SKETCH}
+            >
+              {this.translations?.sketch}
+            </calcite-radio-group-item>
           </calcite-radio-group>
         </div>
         <div class={showSearchClass}>
           <div class="search-widget" ref={(el) => { this._searchDiv = el }} />
         </div>
-        <map-draw-tools class={showDrawToolsClass} mapView={this.mapView} />
+        <map-draw-tools class={showDrawToolsClass} mapView={this.mapView} translations={this.translations}/>
         <div class={showSelectToolsClass}>
-          <map-layer-picker label="Select Layer(s)" mapView={this.mapView} selectionMode={"multi"}/>
-
+          <map-layer-picker label={this.translations?.selectLayers} mapView={this.mapView} selectionMode={"multi"} translations={this.translations}/>
+          {
+            // do this as seperate component
+          }
           <div class={"esri-sketch esri-widget"}>
             <div class={"esri-sketch__panel"}>
               <div class={"esri-sketch__tool-section esri-sketch__section"}>
-                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="select" scale="s" text="Select" />
+                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="select" scale="s" text={this.translations?.select}/>
               </div>
               <div class={"esri-sketch__tool-section esri-sketch__section"}>
-                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="line" scale="s" text="Select by line" />
-                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="polygon" scale="s" text="Select by polygon" />
-                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="rectangle" scale="s" text="Select by rectangle" />
+                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="line" scale="s" text={this.translations?.selectLine} />
+                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="polygon" scale="s" text={this.translations?.selectPolygon} />
+                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="rectangle" scale="s" text={this.translations?.selectRectangle} />
               </div>
               <div class={"esri-sketch__tool-section esri-sketch__section"}>
-                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="undo" scale="s" text="Undo" />
-                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="redo" scale="s" text="Redo" />
+                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="undo" scale="s" text={this.translations?.undo} />
+                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="redo" scale="s" text={this.translations?.redo} />
               </div>
             </div>
           </div>
         </div>
-        <calcite-label style={{ "display": "flex", "padding-top": "1rem" }}>Search Distance
+        <calcite-label style={{ "display": "flex", "padding-top": "1rem" }}>
+          {this.translations?.searchDistance}
           <div class="control-container">
             <calcite-input
               class="padding-end-1"
@@ -158,7 +164,7 @@ export class MapSelectTools {
               placeholder="0"
               type="number" />
             <calcite-combobox
-              label='label?'
+              label='label'
               placeholder="unit"
               selection-mode="single"
               style={{"flex": "1"}}>
@@ -232,7 +238,12 @@ export class MapSelectTools {
   }
 
   _addUnits(): any {
-    const UNITS: string[] = ["Feet", "Meters", "Miles", "Kilometers"];
+    const UNITS: string[] = [
+      this.translations?.units.feet,
+      this.translations?.units.meters,
+      this.translations?.units.miles,
+      this.translations?.units.kilometers
+    ];
     return UNITS.map(u => {
       if (this._unit === "") {
         this._unit = u;

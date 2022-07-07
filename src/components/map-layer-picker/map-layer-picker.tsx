@@ -65,7 +65,6 @@ export class MapLayerPicker {
   }
 
   render() {
-    console.log("render")
     return (
       <Host>
         <div class="background-w">
@@ -123,7 +122,6 @@ export class MapLayerPicker {
     this.selectedLayers = this.selectionMode === "single" ?
       [this._layerSelect.value] : evt.detail?.selectedItems.map(
         (item: HTMLCalciteComboboxItemElement) => {
-          console.log(item)
           return item.value;
         }
       ) || [];

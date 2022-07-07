@@ -34,8 +34,9 @@ export class PdfDownload {
     return (
       <Host>
         <div class="download-container">
-          <calcite-label>Format
-            <calcite-combobox label="Format" selection-mode="single">
+          <calcite-label>
+            {this.translations?.format}
+            <calcite-combobox label={this.translations?.format} selection-mode="single">
               {this._renderItems()}
             </calcite-combobox>
           </calcite-label>
@@ -43,9 +44,11 @@ export class PdfDownload {
           <div style={{"display": "table", "margin": "0 auto"}}>
           <calcite-button 
             class="download-btn"
-            label="Download"
+            label={this.translations?.download}
             onClick={() => this._download()}
-          >Download</calcite-button>
+          >
+            {this.translations?.download}
+          </calcite-button>
           </div>
         </div>
      </Host>
@@ -64,14 +67,15 @@ export class PdfDownload {
         this._perPage = l.descriptionPDF.labelsPerPage;
         addSelected = true;
       }
+      const textLabel = this.translations?.pdfLabel.replace("{{n}}", l.descriptionPDF.labelsPerPage);
       return addSelected ? (<calcite-combobox-item 
         onClick={() => this._itemClicked(l)}
         selected
-        textLabel={`PDF label ${l.descriptionPDF.labelsPerPage} per page`}
+        textLabel={textLabel}
         value={l}/>
       ) : (<calcite-combobox-item 
         onClick={() => this._itemClicked(l)} 
-        textLabel={`PDF label ${l.descriptionPDF.labelsPerPage} per page`}
+        textLabel={textLabel}
         value={l}/>
       );
     });

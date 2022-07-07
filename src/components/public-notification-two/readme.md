@@ -15,6 +15,7 @@
 | `pageType`        | `page-type`        |                                                                                                        | `EPageType.CSV \| EPageType.LIST \| EPageType.PDF \| EPageType.REFINE \| EPageType.SELECT` | `EPageType.LIST` |
 | `selectionLayers` | --                 |                                                                                                        | `Layer[]`                                                                                  | `undefined`      |
 | `selectionSet`    | --                 |                                                                                                        | `any[]`                                                                                    | `[]`             |
+| `translations`    | `translations`     |                                                                                                        | `any`                                                                                      | `{}`             |
 
 
 ## Dependencies

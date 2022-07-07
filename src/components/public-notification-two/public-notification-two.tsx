@@ -23,6 +23,8 @@ export class PublicNotificationTwo {
 
   @Prop({mutable: true}) selectionSet = [];
 
+  @Prop() translations: any = {};
+
   render() {
     return (
       <Host>
@@ -62,34 +64,33 @@ export class PublicNotificationTwo {
       case EPageType.LIST:
         actions = (
           <calcite-action-group>
-            {this._getAction(true, "plus", "Add", (): void => this._setPageType(EPageType.SELECT))}
-            {this._getAction(this.downloadEnabled, "test-data", "Refine Selection", (): void => this._setPageType(EPageType.REFINE))}
-            {this._getAction(this.downloadEnabled, "file-pdf", "Download PDF", (): void => this._downloadPDF())}
-            {this._getAction(this.downloadEnabled, "file-csv", "Download CSV", (): void => this._downloadCSV())}
-            {/* {this._getAction(this.downloadEnabled, "reset", "Reset", (): void => this._reset())} */}
+            {this._getAction(true, "plus", this.translations?.add, (): void => this._setPageType(EPageType.SELECT))}
+            {this._getAction(this.downloadEnabled, "test-data", this.translations?.refineSelection, (): void => this._setPageType(EPageType.REFINE))}
+            {this._getAction(this.downloadEnabled, "file-pdf", this.translations?.downloadPDF, (): void => this._downloadPDF())}
+            {this._getAction(this.downloadEnabled, "file-csv", this.translations?.downloadCSV, (): void => this._downloadCSV())}
           </calcite-action-group>
         )
         break;
       case EPageType.SELECT:
         actions = (
           <calcite-action-group>
-            <calcite-action icon="chevron-left" onClick={() => {this._setPageType(EPageType.LIST)}} text="Back"/>
-            {this._getAction(false, "save", "Save", (): void => this._saveSelection())}
+            <calcite-action icon="chevron-left" onClick={() => {this._setPageType(EPageType.LIST)}} text={this.translations?.back}/>
+            {this._getAction(false, "save", this.translations?.save, (): void => this._saveSelection())}
           </calcite-action-group>
         );
         break;
       case EPageType.REFINE:
         actions = (
           <calcite-action-group>
-            <calcite-action icon="chevron-left" onClick={() => {this._setPageType(EPageType.LIST)}} text="Back"/>
+            <calcite-action icon="chevron-left" onClick={() => {this._setPageType(EPageType.LIST)}} text={this.translations?.back}/>
           </calcite-action-group>
         );
         break;
       case EPageType.PDF:
         actions = (
           <calcite-action-group>
-            <calcite-action icon="chevron-left" onClick={() => {this._setPageType(EPageType.LIST)}} text="Back"/>
-            <calcite-action icon="download-to" onClick={() => {this._setPageType(EPageType.LIST)}} text="Back"/>
+            <calcite-action icon="chevron-left" onClick={() => {this._setPageType(EPageType.LIST)}} text={this.translations?.back}/>
+            <calcite-action icon="download-to" onClick={() => {this._setPageType(EPageType.LIST)}} text={this.translations?.download}/>
           </calcite-action-group>
         );
         break;
@@ -132,10 +133,11 @@ export class PublicNotificationTwo {
             <calcite-input-message active class="start-message list-border background-w">
               <div style={{ "width": "100%" }}>
                 <map-layer-picker
-                  label='Addressee Layer'
+                  label={this.translations?.addresseeLayer}
                   mapView={this.mapView}
                   onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
                   selectionMode={"single"}
+                  translations={this.translations}
                 />
               </div>
             </calcite-input-message>
@@ -147,7 +149,7 @@ export class PublicNotificationTwo {
                     this._selectionLists.map(ss => {
                       return (
                         <calcite-list-item 
-                          description={`${ss.selectedFeatures.length} selected features`} 
+                          description={this.translations?.selectedFeatures.replace('{{n}}', ss.selectedFeatures.length)} 
                           label={ss.label}
                         >
                           <calcite-action icon="pencil" slot="actions-end" text='' />
@@ -172,6 +174,7 @@ export class PublicNotificationTwo {
             <map-select-tools
               mapView={this.mapView}
               searchLayers={this.selectionLayers}
+              translations={this.translations}
             />
           </div>
         );
@@ -183,27 +186,34 @@ export class PublicNotificationTwo {
               <calcite-radio-group-item
                 checked={true}
                 style={{ "width": "50%" }}
-                value="Add">Add</calcite-radio-group-item>
+                value="Add"
+              >
+                {this.translations?.add}
+              </calcite-radio-group-item>
               <calcite-radio-group-item
                 checked={false}
                 style={{ "width": "50%" }}
-                value="Remove">
-                Remove
+                value="Remove"
+              >
+                {this.translations?.remove}
               </calcite-radio-group-item>
             </calcite-radio-group>
+            {
+              // Create seperate component for these
+            }
             <div class={"esri-sketch esri-widget"}>
               <div class={"esri-sketch__panel"}>
                 <div class={"esri-sketch__tool-section esri-sketch__section"}>
-                  <calcite-action icon="select" scale="s" text="Select" />
+                  <calcite-action icon="select" scale="s" text={this.translations?.select} />
                 </div>
                 <div class={"esri-sketch__tool-section esri-sketch__section"}>
-                  <calcite-action icon="line" scale="s" text="Select by line" />
-                  <calcite-action icon="polygon" scale="s" text="Select by polygon" />
-                  <calcite-action icon="rectangle" scale="s" text="Select by rectangle" />
+                  <calcite-action icon="line" scale="s" text={this.translations?.selectLine} />
+                  <calcite-action icon="polygon" scale="s" text={this.translations?.selectPolygon} />
+                  <calcite-action icon="rectangle" scale="s" text={this.translations?.selectRectangle} />
                 </div>
                 <div class={"esri-sketch__tool-section esri-sketch__section"}>
-                  <calcite-action icon="undo" scale="s" text="Undo" />
-                  <calcite-action icon="redo" scale="s" text="Redo" />
+                  <calcite-action icon="undo" scale="s" text={this.translations?.undo} />
+                  <calcite-action icon="redo" scale="s" text={this.translations?.redo} />
                 </div>
               </div>
             </div>
@@ -227,7 +237,7 @@ export class PublicNotificationTwo {
 
   _layerSelectionChange(evt: CustomEvent): void {
     // Needs to come from NLS
-    this.message = `Use the '+' button to create a ${evt?.detail?.length > 0 ? evt.detail[0] : ""} notification list.`
+    this.message = this.translations?.startMessage.replace("{{n}}", evt?.detail?.length > 0 ? evt.detail[0] : "");
   }
 
   _setPageType(pageType: EPageType): void {
