@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Watch } from '@stencil/core';
 import { getMapLayerNames } from '../../utils/mapViewUtils';
 import { SelectionMode } from '../../utils/interfaces';
+import state from '../../utils/publicNotificationStore';
 
 @Component({
   tag: 'map-layer-picker',
@@ -42,27 +43,37 @@ export class MapLayerPicker {
    */
   @Prop() mapView: __esri.MapView;
 
+  @Watch('mapView')
+  async watchStateHandler(newValue: boolean, oldValue: boolean) {
+    if (newValue !== oldValue) {
+     await this._setLayers();
+     if (this.selectionMode === "single") {
+       this.layerSelectionChange.emit([this.layerNames[0]]);
+     }
+    }
+  }
+
+  async componentWillLoad() {
+    await this._setLayers();
+    if (this.selectionMode === "single" && this.layerNames.length > 0) {
+      this.layerSelectionChange.emit([this.layerNames[0]]);
+    }
+  }
+
   /**
    * Contains the translations for this component.
    */
-  @Prop({ mutable: true }) translations: any = {};
+  @Prop() translations: any = {};
 
   @Prop({ mutable: true }) layerNames: string[] = [];
 
-  @Prop({ mutable: true }) label = "";
+  @Prop({ mutable: true, reflect: true }) label = "";
 
-  @Prop({ mutable: true }) selectionMode: SelectionMode = "single";
+  @Prop({ mutable: true, reflect: true }) selectionMode: SelectionMode = "single";
 
   @Prop({ mutable: true }) selectedLayers: string[] = [];
 
   @Event() layerSelectionChange: EventEmitter;
-
-  async componentDidLoad() {
-    await this._setLayers();
-    if (this.selectionMode === "single") {
-      this.layerSelectionChange.emit([this.layerNames[0]]);
-    }
-  }
 
   render() {
     return (
@@ -105,11 +116,16 @@ export class MapLayerPicker {
   }
 
   _addMapLayersOptions(): any {
-    return this.layerNames.map(name => {
-      return this.selectionMode === "multi" ?
-        (<calcite-combobox-item textLabel={name} value={name}/>) :
-        (<calcite-option label={name} value={name}/>);
-    });
+    return this.layerNames.reduce((prev, cur) => {
+      if (state.managedLayers.indexOf(cur) < 0) {
+        prev.push(
+          this.selectionMode === "multi" ?
+            (<calcite-combobox-item textLabel={cur} value={cur} />) :
+            (<calcite-option label={cur} value={cur} />)
+        );
+      }
+      return prev;
+    }, []);
   }
 
   async _setLayers(): Promise<void> {

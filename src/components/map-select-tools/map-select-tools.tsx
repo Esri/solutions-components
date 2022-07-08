@@ -18,6 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop } from '
 import { loadModules } from "../../utils/loadModules";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 import { EWorkflowType } from '../../utils/interfaces';
+import state from "../../utils/publicNotificationStore";
 
 @Component({
   tag: 'map-select-tools',
@@ -231,9 +232,9 @@ export class MapSelectTools {
   }
 
   _initGraphicsLayer(): void {
-    this._bufferGraphicsLayer = new this.GraphicsLayer({
-      title: "Buffer Layer"
-    });
+    const title = "Buffer Layer";
+    this._bufferGraphicsLayer = new this.GraphicsLayer({title});
+    state.managedLayers.push(title);
     this.mapView.map.layers.add(this._bufferGraphicsLayer);
   }
 

@@ -170,12 +170,19 @@ export class PublicNotificationTwo {
         break;
       case EPageType.SELECT:
         page = (
-          <div class="background-w padding-1-2 list-border">
-            <map-select-tools
-              mapView={this.mapView}
-              searchLayers={this.selectionLayers}
-              translations={this.translations}
-            />
+          <div>
+            <div class="background-w padding-1-2 list-border">
+              <map-select-tools
+                mapView={this.mapView}
+                searchLayers={this.selectionLayers}
+                translations={this.translations}
+              />
+            </div>
+            {/* TODO add this later */}
+            {/* <br />
+            <calcite-input-message active class="start-message list-border background-w">
+              20 selected features
+            </calcite-input-message> */}
           </div>
         );
         break;

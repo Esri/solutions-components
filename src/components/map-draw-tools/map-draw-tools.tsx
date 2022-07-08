@@ -16,6 +16,7 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
+import state from "../../utils/publicNotificationStore";
 
 @Component({
   tag: 'map-draw-tools',
@@ -111,9 +112,9 @@ export class MapDrawTools {
   }
 
   _initGraphicsLayer(): void {
-    this._sketchGraphicsLayer = new this.GraphicsLayer({
-      title: "Sketch Layer"
-    });
+    const title = "Sketch Layer";
+    this._sketchGraphicsLayer = new this.GraphicsLayer({title});
+    state.managedLayers.push(title);
     this.mapView.map.layers.add(this._sketchGraphicsLayer);
   }
 
