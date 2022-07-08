@@ -132,16 +132,16 @@ export class MapSelectTools {
         <div class={showSearchClass}>
           <div class="search-widget" ref={(el) => { this._searchDiv = el }} />
         </div>
-        <map-draw-tools class={showDrawToolsClass} mapView={this.mapView} translations={this.translations}/>
+        <map-draw-tools class={showDrawToolsClass} mapView={this.mapView} translations={this.translations} />
         <div class={showSelectToolsClass}>
-          <map-layer-picker label={this.translations?.selectLayers} mapView={this.mapView} selectionMode={"multi"} translations={this.translations}/>
+          <map-layer-picker label={this.translations?.selectLayers} mapView={this.mapView} selectionMode={"multi"} translations={this.translations} />
           {
             // do this as seperate component
           }
           <div class={"esri-sketch esri-widget"}>
             <div class={"esri-sketch__panel"}>
               <div class={"esri-sketch__tool-section esri-sketch__section"}>
-                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="select" scale="s" text={this.translations?.select}/>
+                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="select" scale="s" text={this.translations?.select} />
               </div>
               <div class={"esri-sketch__tool-section esri-sketch__section"}>
                 <calcite-action disabled={this._selectionLayerNames.length > 0} icon="line" scale="s" text={this.translations?.selectLine} />
@@ -168,7 +168,7 @@ export class MapSelectTools {
               label='label'
               placeholder="unit"
               selection-mode="single"
-              style={{"flex": "1"}}>
+              style={{ "flex": "1" }}>
               {this._addUnits()}
             </calcite-combobox>
           </div>
@@ -233,7 +233,7 @@ export class MapSelectTools {
 
   _initGraphicsLayer(): void {
     const title = "Buffer Layer";
-    this._bufferGraphicsLayer = new this.GraphicsLayer({title});
+    this._bufferGraphicsLayer = new this.GraphicsLayer({ title });
     state.managedLayers.push(title);
     this.mapView.map.layers.add(this._bufferGraphicsLayer);
   }

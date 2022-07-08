@@ -15,13 +15,13 @@ export class PublicNotificationTwo {
 
   @Prop() selectionLayers: __esri.Layer[];
 
-  @Prop({mutable: true}) downloadEnabled = false;
+  @Prop({ mutable: true }) downloadEnabled = false;
 
-  @Prop({mutable: true}) pageType: EPageType = EPageType.LIST;
+  @Prop({ mutable: true }) pageType: EPageType = EPageType.LIST;
 
-  @Prop({mutable: true}) message = "";
+  @Prop({ mutable: true }) message = "";
 
-  @Prop({mutable: true}) selectionSet = [];
+  @Prop({ mutable: true }) selectionSet = [];
 
   @Prop() translations: any = {};
 
@@ -29,7 +29,7 @@ export class PublicNotificationTwo {
     return (
       <Host>
         <div class="main-container page-container">
-          <calcite-shell style={{"display": "table"}}>
+          <calcite-shell style={{ "display": "table" }}>
             <calcite-shell-panel collapsed={true} position="start" slot='primary-panel'>
               <calcite-action-bar position="start" slot="action-bar">
                 {this._getActions()}
@@ -74,7 +74,7 @@ export class PublicNotificationTwo {
       case EPageType.SELECT:
         actions = (
           <calcite-action-group>
-            <calcite-action icon="chevron-left" onClick={() => {this._setPageType(EPageType.LIST)}} text={this.translations?.back}/>
+            <calcite-action icon="chevron-left" onClick={() => { this._setPageType(EPageType.LIST) }} text={this.translations?.back} />
             {this._getAction(false, "save", this.translations?.save, (): void => this._saveSelection())}
           </calcite-action-group>
         );
@@ -82,15 +82,15 @@ export class PublicNotificationTwo {
       case EPageType.REFINE:
         actions = (
           <calcite-action-group>
-            <calcite-action icon="chevron-left" onClick={() => {this._setPageType(EPageType.LIST)}} text={this.translations?.back}/>
+            <calcite-action icon="chevron-left" onClick={() => { this._setPageType(EPageType.LIST) }} text={this.translations?.back} />
           </calcite-action-group>
         );
         break;
       case EPageType.PDF:
         actions = (
           <calcite-action-group>
-            <calcite-action icon="chevron-left" onClick={() => {this._setPageType(EPageType.LIST)}} text={this.translations?.back}/>
-            <calcite-action icon="download-to" onClick={() => {this._setPageType(EPageType.LIST)}} text={this.translations?.download}/>
+            <calcite-action icon="chevron-left" onClick={() => { this._setPageType(EPageType.LIST) }} text={this.translations?.back} />
+            <calcite-action icon="download-to" onClick={() => { this._setPageType(EPageType.LIST) }} text={this.translations?.download} />
           </calcite-action-group>
         );
         break;
@@ -107,20 +107,20 @@ export class PublicNotificationTwo {
   ): VNode {
     // wish I knew a better way to do this
     // would do these inline I think if I could use ternary to handle disabled
-    return enabled ? 
+    return enabled ?
       (
         <calcite-action
           active={active || false}
           icon={icon}
           onClick={onClick}
-          text={text}/>
+          text={text} />
       ) : (
         <calcite-action
           disabled
           icon={icon}
-          onClick={onClick} 
-          text={text}/>
-        );
+          onClick={onClick}
+          text={text} />
+      );
   }
 
   // TODO may just do this as a seperate component..may get a little messy over here..still exploring
@@ -148,8 +148,8 @@ export class PublicNotificationTwo {
                   {
                     this._selectionLists.map(ss => {
                       return (
-                        <calcite-list-item 
-                          description={this.translations?.selectedFeatures.replace('{{n}}', ss.selectedFeatures.length)} 
+                        <calcite-list-item
+                          description={this.translations?.selectedFeatures.replace('{{n}}', ss.selectedFeatures.length)}
                           label={ss.label}
                         >
                           <calcite-action icon="pencil" slot="actions-end" text='' />
@@ -230,11 +230,11 @@ export class PublicNotificationTwo {
       case EPageType.PDF:
         page = (
           <div class="background-w padding-1-2 list-border">
-          <calcite-select label="">
-            <calcite-option>PDF label 30 per page</calcite-option>
-            <calcite-option>Rivers</calcite-option>
-            <calcite-option>Lakes</calcite-option>
-          </calcite-select>
+            <calcite-select label="">
+              <calcite-option>PDF label 30 per page</calcite-option>
+              <calcite-option>Rivers</calcite-option>
+              <calcite-option>Lakes</calcite-option>
+            </calcite-select>
           </div>
         )
         break;

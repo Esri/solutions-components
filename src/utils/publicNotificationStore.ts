@@ -17,17 +17,17 @@
 import { createStore } from "@stencil/store";
 
 const { state, onChange } = createStore({
-  managedLayers: []
+    managedLayers: []
 });
 
 const managedLayersChangedEvent = new CustomEvent("managedLayersChanged", {
     bubbles: true,
     cancelable: false,
     composed: true
-  });
-  
-  onChange('managedLayers', () => {
+});
+
+onChange('managedLayers', () => {
     dispatchEvent(managedLayersChangedEvent);
-  });
+});
 
 export default state;

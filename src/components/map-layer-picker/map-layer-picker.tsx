@@ -46,10 +46,10 @@ export class MapLayerPicker {
   @Watch('mapView')
   async watchStateHandler(newValue: boolean, oldValue: boolean) {
     if (newValue !== oldValue) {
-     await this._setLayers();
-     if (this.selectionMode === "single") {
-       this.layerSelectionChange.emit([this.layerNames[0]]);
-     }
+      await this._setLayers();
+      if (this.selectionMode === "single") {
+        this.layerSelectionChange.emit([this.layerNames[0]]);
+      }
     }
   }
 
@@ -91,7 +91,7 @@ export class MapLayerPicker {
 
   // Use Select when something should always be selected
   _getSelect(): VNode {
-    return (           
+    return (
       <calcite-select
         label=''
         onCalciteSelectChange={(evt) => this._layerSelectionChange(evt)}
@@ -104,7 +104,7 @@ export class MapLayerPicker {
 
   // Use combbox for multi selection
   _getCombobox(): VNode {
-    return (           
+    return (
       <calcite-combobox
         label=''
         onCalciteComboboxChange={(evt) => this._layerSelectionChange(evt)}

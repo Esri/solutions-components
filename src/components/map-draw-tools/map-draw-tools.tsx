@@ -67,7 +67,7 @@ export class MapDrawTools {
   @Event() sketchGraphicsChange: EventEmitter;
 
   protected GraphicsLayer: typeof __esri.GraphicsLayer;
-  
+
   protected Sketch: typeof __esri.Sketch;
 
   async componentWillLoad() {
@@ -113,7 +113,7 @@ export class MapDrawTools {
 
   _initGraphicsLayer(): void {
     const title = "Sketch Layer";
-    this._sketchGraphicsLayer = new this.GraphicsLayer({title});
+    this._sketchGraphicsLayer = new this.GraphicsLayer({ title });
     state.managedLayers.push(title);
     this.mapView.map.layers.add(this._sketchGraphicsLayer);
   }
