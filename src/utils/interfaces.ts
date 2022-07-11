@@ -43,17 +43,14 @@ export enum ERefineMode {
   REMOVE="REMOVE"
 }
 
-export enum ESelectionMode {
-  SINGLE="SINGLE",
-  MULTI="MULTI"
-}
-
 export enum EWorkflowType {
   SEARCH="SEARCH",
   SELECT="SELECT",
   SKETCH="SKETCH"
 }
 /* eslint-enable no-unused-vars */
+
+export type SelectionMode = "single" | "multi";
 
 /**
  * Key details from the templates item

@@ -17,7 +17,6 @@
 import { Component, Host, h, Prop, VNode } from '@stencil/core';
 import * as pdfUtils from '../../../arcgis-pdf-creator/data/labelFormats.json';
 import '@esri/calcite-components';
-import { ESelectionMode } from '../../utils/interfaces';
 
 @Component({
   tag: 'pdf-download',
@@ -37,12 +36,12 @@ export class PdfDownload {
         <div class="download-container">
           <calcite-label>
             {this.translations?.format}
-            <calcite-combobox label={this.translations?.format} selection-mode={ESelectionMode.SINGLE}>
+            <calcite-combobox label={this.translations?.format} selection-mode="single">
               {this._renderItems()}
             </calcite-combobox>
           </calcite-label>
           <slot name='numFound' />
-          <div class="download-btn-container">
+          <div style={{ "display": "table", "margin": "0 auto" }}>
             <calcite-button
               class="download-btn"
               label={this.translations?.download}

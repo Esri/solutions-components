@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop, VNode } from '@stencil/core';
-import { ISelectionSet, EPageType, ERefineMode, ESelectionMode } from '../../utils/interfaces';
+import { ISelectionSet, EPageType, ERefineMode } from '../../utils/interfaces';
 
 @Component({
   tag: 'public-notification-two',
@@ -136,7 +136,7 @@ export class PublicNotificationTwo {
                   label={this.translations?.addresseeLayer}
                   mapView={this.mapView}
                   onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
-                  selectionMode={ESelectionMode.SINGLE}
+                  selectionMode={"single"}
                   translations={this.translations}
                 />
               </div>

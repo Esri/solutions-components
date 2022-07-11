@@ -15,7 +15,6 @@
  */
 
 import { Component, Element, Host, h, Prop } from '@stencil/core';
-import { ESelectionMode } from '../../utils/interfaces';
 
 @Component({
   tag: 'public-notification',
@@ -61,7 +60,7 @@ export class PublicNotification {
           <map-layer-picker 
             mapView={this.mapView}
             onLayerSelectionChange={(r) => this._layerSelectionChange(r)}
-            selectionMode={ESelectionMode.SINGLE}
+            selectionMode={"single"}
           />
           <pdf-download />
           <config-public-notification class="config-btn" mapView={this.mapView}/>
