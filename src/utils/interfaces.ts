@@ -38,6 +38,11 @@ export enum EPageType {
   CSV
 }
 
+export enum ERefineMode {
+  ADD="ADD",
+  REMOVE="REMOVE"
+}
+
 export enum EWorkflowType {
   SEARCH="SEARCH",
   SELECT="SELECT",

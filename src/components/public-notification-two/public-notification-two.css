@@ -29,3 +29,7 @@
   padding: 1rem;
   background-color: var(--calcite-ui-foreground-3);
 }
+
+.w-100 {
+  width: 100%;
+}

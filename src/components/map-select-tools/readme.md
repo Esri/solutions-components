@@ -38,7 +38,7 @@
 - calcite-radio-group-item
 - [map-draw-tools](../map-draw-tools)
 - [map-layer-picker](../map-layer-picker)
-- calcite-action
+- [refine-selection-tools](../refine-selection-tools)
 - calcite-label
 - calcite-input
 - calcite-combobox
@@ -51,7 +51,7 @@ graph TD;
   map-select-tools --> calcite-radio-group-item
   map-select-tools --> map-draw-tools
   map-select-tools --> map-layer-picker
-  map-select-tools --> calcite-action
+  map-select-tools --> refine-selection-tools
   map-select-tools --> calcite-label
   map-select-tools --> calcite-input
   map-select-tools --> calcite-combobox
@@ -67,6 +67,7 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
+  refine-selection-tools --> calcite-action
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
   calcite-input --> calcite-progress

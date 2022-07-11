@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop, VNode } from '@stencil/core';
-import { ISelectionSet, EPageType } from '../../utils/interfaces';
+import { ISelectionSet, EPageType, ERefineMode } from '../../utils/interfaces';
 
 @Component({
   tag: 'public-notification-two',
@@ -189,41 +189,31 @@ export class PublicNotificationTwo {
       case EPageType.REFINE:
         page = (
           <div class="background-w padding-1-2 list-border">
-            <calcite-radio-group>
+            <calcite-radio-group 
+              class="w-100"
+              onCalciteRadioGroupChange={(evt) => this._modeChanged(evt)}
+            >
               <calcite-radio-group-item
-                checked={true}
+                checked={this.addEnabled}
                 style={{ "width": "50%" }}
-                value="Add"
+                value={ERefineMode.ADD}
               >
                 {this.translations?.add}
               </calcite-radio-group-item>
               <calcite-radio-group-item
-                checked={false}
+                checked={!this.addEnabled}
                 style={{ "width": "50%" }}
-                value="Remove"
+                value={ERefineMode.REMOVE}
               >
                 {this.translations?.remove}
               </calcite-radio-group-item>
             </calcite-radio-group>
-            {
-              // Create seperate component for these
-            }
-            <div class={"esri-sketch esri-widget"}>
-              <div class={"esri-sketch__panel"}>
-                <div class={"esri-sketch__tool-section esri-sketch__section"}>
-                  <calcite-action icon="select" scale="s" text={this.translations?.select} />
-                </div>
-                <div class={"esri-sketch__tool-section esri-sketch__section"}>
-                  <calcite-action icon="line" scale="s" text={this.translations?.selectLine} />
-                  <calcite-action icon="polygon" scale="s" text={this.translations?.selectPolygon} />
-                  <calcite-action icon="rectangle" scale="s" text={this.translations?.selectRectangle} />
-                </div>
-                <div class={"esri-sketch__tool-section esri-sketch__section"}>
-                  <calcite-action icon="undo" scale="s" text={this.translations?.undo} />
-                  <calcite-action icon="redo" scale="s" text={this.translations?.redo} />
-                </div>
-              </div>
-            </div>
+            <refine-selection-tools
+              mapView={this.mapView}
+              mode={this.addEnabled ? ERefineMode.ADD : ERefineMode.REMOVE}
+              searchLayers={this.selectionLayers}
+              translations={this.translations}
+            />
           </div>
         )
         break;
@@ -240,6 +230,12 @@ export class PublicNotificationTwo {
         break;
     }
     return page;
+  }
+
+  protected addEnabled = true;
+
+  _modeChanged(evt: CustomEvent): void {
+    this.addEnabled = evt.detail === ERefineMode.ADD;
   }
 
   _layerSelectionChange(evt: CustomEvent): void {

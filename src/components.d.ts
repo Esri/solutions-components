@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { EPageType, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchConfig, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
+import { EPageType, ERefineMode, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchConfig, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface ConfigMapSearch {
@@ -129,6 +129,12 @@ export namespace Components {
         "pageType": EPageType;
         "selectionLayers": __esri.Layer[];
         "selectionSet": any[];
+        "translations": any;
+    }
+    interface RefineSelectionTools {
+        "mapView": __esri.MapView;
+        "mode": ERefineMode;
+        "searchLayers": __esri.Layer[];
         "translations": any;
     }
     interface SolutionConfiguration {
@@ -450,6 +456,12 @@ declare global {
         prototype: HTMLPublicNotificationTwoElement;
         new (): HTMLPublicNotificationTwoElement;
     };
+    interface HTMLRefineSelectionToolsElement extends Components.RefineSelectionTools, HTMLStencilElement {
+    }
+    var HTMLRefineSelectionToolsElement: {
+        prototype: HTMLRefineSelectionToolsElement;
+        new (): HTMLRefineSelectionToolsElement;
+    };
     interface HTMLSolutionConfigurationElement extends Components.SolutionConfiguration, HTMLStencilElement {
     }
     var HTMLSolutionConfigurationElement: {
@@ -533,6 +545,7 @@ declare global {
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
         "public-notification-two": HTMLPublicNotificationTwoElement;
+        "refine-selection-tools": HTMLRefineSelectionToolsElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-contents": HTMLSolutionContentsElement;
         "solution-item": HTMLSolutionItemElement;
@@ -673,6 +686,12 @@ declare namespace LocalJSX {
         "pageType"?: EPageType;
         "selectionLayers"?: __esri.Layer[];
         "selectionSet"?: any[];
+        "translations"?: any;
+    }
+    interface RefineSelectionTools {
+        "mapView"?: __esri.MapView;
+        "mode"?: ERefineMode;
+        "searchLayers"?: __esri.Layer[];
         "translations"?: any;
     }
     interface SolutionConfiguration {
@@ -928,6 +947,7 @@ declare namespace LocalJSX {
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
         "public-notification-two": PublicNotificationTwo;
+        "refine-selection-tools": RefineSelectionTools;
         "solution-configuration": SolutionConfiguration;
         "solution-contents": SolutionContents;
         "solution-item": SolutionItem;
@@ -956,6 +976,7 @@ declare module "@stencil/core" {
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
             "public-notification-two": LocalJSX.PublicNotificationTwo & JSXBase.HTMLAttributes<HTMLPublicNotificationTwoElement>;
+            "refine-selection-tools": LocalJSX.RefineSelectionTools & JSXBase.HTMLAttributes<HTMLRefineSelectionToolsElement>;
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;

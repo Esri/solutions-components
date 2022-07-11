@@ -17,7 +17,7 @@
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
-import { EWorkflowType } from '../../utils/interfaces';
+import { EWorkflowType, ERefineMode } from '../../utils/interfaces';
 import state from "../../utils/publicNotificationStore";
 
 @Component({
@@ -103,8 +103,8 @@ export class MapSelectTools {
       <Host>
         <div class="padding-bottom-1">
           <calcite-radio-group
+            class="w-100"
             onCalciteRadioGroupChange={(evt) => this._workflowChange(evt)}
-            style={{ "width": "100%" }}
           >
             <calcite-radio-group-item
               checked={searchEnabled}
@@ -135,25 +135,12 @@ export class MapSelectTools {
         <map-draw-tools class={showDrawToolsClass} mapView={this.mapView} translations={this.translations} />
         <div class={showSelectToolsClass}>
           <map-layer-picker label={this.translations?.selectLayers} mapView={this.mapView} selectionMode={"multi"} translations={this.translations} />
-          {
-            // do this as seperate component
-          }
-          <div class={"esri-sketch esri-widget"}>
-            <div class={"esri-sketch__panel"}>
-              <div class={"esri-sketch__tool-section esri-sketch__section"}>
-                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="select" scale="s" text={this.translations?.select} />
-              </div>
-              <div class={"esri-sketch__tool-section esri-sketch__section"}>
-                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="line" scale="s" text={this.translations?.selectLine} />
-                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="polygon" scale="s" text={this.translations?.selectPolygon} />
-                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="rectangle" scale="s" text={this.translations?.selectRectangle} />
-              </div>
-              <div class={"esri-sketch__tool-section esri-sketch__section"}>
-                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="undo" scale="s" text={this.translations?.undo} />
-                <calcite-action disabled={this._selectionLayerNames.length > 0} icon="redo" scale="s" text={this.translations?.redo} />
-              </div>
-            </div>
-          </div>
+          <refine-selection-tools
+              mapView={this.mapView}
+              mode={ERefineMode.ADD}
+              searchLayers={this.searchLayers}
+              translations={this.translations}
+            />
         </div>
         <calcite-label style={{ "display": "flex", "padding-top": "1rem" }}>
           {this.translations?.searchDistance}

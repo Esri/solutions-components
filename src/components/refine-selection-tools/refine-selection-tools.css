@@ -1,0 +1,39 @@
+:host {
+  display: block;
+}
+
+/* COPY FROM JS */
+.esri-sketch {
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.esri-widget {
+  box-sizing: border-box;
+  color: #323232;
+  font-size: 14px;
+  font-family: "Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+  line-height: 1.3em;
+  background-color: #fff;
+}
+
+/* DIV CHILD */
+.esri-sketch__panel {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  padding: 0;
+} */
+
+/* DIV CHILD CHILD */
+.esri-sketch__tool-section {
+  border-right: 1px solid rgba(110,110,110,.3);
+}
+
+.esri-sketch__section {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  padding: 0 7px;
+  margin: 6px 0;
+}
