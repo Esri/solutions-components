@@ -108,21 +108,21 @@ export class MapSelectTools {
           >
             <calcite-radio-group-item
               checked={searchEnabled}
-              style={{ "width": "50%" }}
+              class="w-50"
               value={EWorkflowType.SEARCH}
             >
               {this.translations?.search}
             </calcite-radio-group-item>
             <calcite-radio-group-item
               checked={selectEnabled}
-              style={{ "width": "50%" }}
+              class="w-50"
               value={EWorkflowType.SELECT}
             >
               {this.translations?.select}
             </calcite-radio-group-item>
             <calcite-radio-group-item
               checked={drawEnabled}
-              style={{ "width": "50%" }}
+              class="w-50"
               value={EWorkflowType.SKETCH}
             >
               {this.translations?.sketch}
@@ -142,7 +142,7 @@ export class MapSelectTools {
               translations={this.translations}
             />
         </div>
-        <calcite-label style={{ "display": "flex", "padding-top": "1rem" }}>
+        <calcite-label class="search-distance-container">
           {this.translations?.searchDistance}
           <div class="control-container">
             <calcite-input
@@ -152,10 +152,10 @@ export class MapSelectTools {
               placeholder="0"
               type="number" />
             <calcite-combobox
+              class="flex-1"
               label='label'
               placeholder="unit"
-              selection-mode="single"
-              style={{ "flex": "1" }}>
+              selection-mode="single">
               {this._addUnits()}
             </calcite-combobox>
           </div>

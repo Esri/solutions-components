@@ -41,7 +41,7 @@ export class PdfDownload {
             </calcite-combobox>
           </calcite-label>
           <slot name='numFound' />
-          <div style={{ "display": "table", "margin": "0 auto" }}>
+          <div class="download-btn-container">
             <calcite-button
               class="download-btn"
               label={this.translations?.download}

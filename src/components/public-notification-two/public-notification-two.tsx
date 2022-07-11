@@ -29,7 +29,7 @@ export class PublicNotificationTwo {
     return (
       <Host>
         <div class="main-container page-container">
-          <calcite-shell style={{ "display": "table" }}>
+          <calcite-shell class="main-shell">
             <calcite-shell-panel collapsed={true} position="start" slot='primary-panel'>
               <calcite-action-bar position="start" slot="action-bar">
                 {this._getActions()}
@@ -131,7 +131,7 @@ export class PublicNotificationTwo {
         page = (
           <div>
             <calcite-input-message active class="start-message list-border background-w">
-              <div style={{ "width": "100%" }}>
+              <div class="w-100">
                 <map-layer-picker
                   label={this.translations?.addresseeLayer}
                   mapView={this.mapView}
@@ -195,14 +195,14 @@ export class PublicNotificationTwo {
             >
               <calcite-radio-group-item
                 checked={this.addEnabled}
-                style={{ "width": "50%" }}
+                class="w-50"
                 value={ERefineMode.ADD}
               >
                 {this.translations?.add}
               </calcite-radio-group-item>
               <calcite-radio-group-item
                 checked={!this.addEnabled}
-                style={{ "width": "50%" }}
+                class="w-50"
                 value={ERefineMode.REMOVE}
               >
                 {this.translations?.remove}
