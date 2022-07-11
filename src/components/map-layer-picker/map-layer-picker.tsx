@@ -16,7 +16,7 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Watch } from '@stencil/core';
 import { getMapLayerNames } from '../../utils/mapViewUtils';
-import { SelectionMode } from '../../utils/interfaces';
+import { ESelectionMode } from '../../utils/interfaces';
 import state from '../../utils/publicNotificationStore';
 
 @Component({
@@ -47,7 +47,7 @@ export class MapLayerPicker {
   async watchStateHandler(newValue: boolean, oldValue: boolean) {
     if (newValue !== oldValue) {
       await this._setLayers();
-      if (this.selectionMode === "single") {
+      if (this.selectionMode === ESelectionMode.SINGLE) {
         this.layerSelectionChange.emit([this.layerNames[0]]);
       }
     }
@@ -55,7 +55,7 @@ export class MapLayerPicker {
 
   async componentWillLoad() {
     await this._setLayers();
-    if (this.selectionMode === "single" && this.layerNames.length > 0) {
+    if (this.selectionMode === ESelectionMode.SINGLE && this.layerNames.length > 0) {
       this.layerSelectionChange.emit([this.layerNames[0]]);
     }
   }
@@ -69,7 +69,7 @@ export class MapLayerPicker {
 
   @Prop({ mutable: true, reflect: true }) label = "";
 
-  @Prop({ mutable: true, reflect: true }) selectionMode: SelectionMode = "single";
+  @Prop({ mutable: true, reflect: true }) selectionMode: ESelectionMode = ESelectionMode.SINGLE;
 
   @Prop({ mutable: true }) selectedLayers: string[] = [];
 
@@ -80,7 +80,7 @@ export class MapLayerPicker {
       <Host>
         <div class="background-w">
           <calcite-label>{this.label}
-            {this.selectionMode === "multi" ? this._getCombobox() : this._getSelect()}
+            {this.selectionMode === ESelectionMode.MULTI ? this._getCombobox() : this._getSelect()}
           </calcite-label>
         </div>
       </Host>
@@ -119,7 +119,7 @@ export class MapLayerPicker {
     return this.layerNames.reduce((prev, cur) => {
       if (state.managedLayers.indexOf(cur) < 0) {
         prev.push(
-          this.selectionMode === "multi" ?
+          this.selectionMode === ESelectionMode.MULTI ?
             (<calcite-combobox-item textLabel={cur} value={cur} />) :
             (<calcite-option label={cur} value={cur} />)
         );
@@ -135,7 +135,7 @@ export class MapLayerPicker {
   }
 
   _layerSelectionChange(evt: CustomEvent): void {
-    this.selectedLayers = this.selectionMode === "single" ?
+    this.selectedLayers = this.selectionMode === ESelectionMode.SINGLE ?
       [this._layerSelect.value] : evt.detail?.selectedItems.map(
         (item: HTMLCalciteComboboxItemElement) => {
           return item.value;

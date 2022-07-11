@@ -7,14 +7,14 @@
 
 ## Properties
 
-| Property         | Attribute        | Description                                                                                            | Type                  | Default     |
-| ---------------- | ---------------- | ------------------------------------------------------------------------------------------------------ | --------------------- | ----------- |
-| `label`          | `label`          |                                                                                                        | `string`              | `""`        |
-| `layerNames`     | --               |                                                                                                        | `string[]`            | `[]`        |
-| `mapView`        | --               | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`             | `undefined` |
-| `selectedLayers` | --               |                                                                                                        | `string[]`            | `[]`        |
-| `selectionMode`  | `selection-mode` |                                                                                                        | `"multi" \| "single"` | `"single"`  |
-| `translations`   | `translations`   | Contains the translations for this component.                                                          | `any`                 | `{}`        |
+| Property         | Attribute        | Description                                                                                            | Type                                            | Default                 |
+| ---------------- | ---------------- | ------------------------------------------------------------------------------------------------------ | ----------------------------------------------- | ----------------------- |
+| `label`          | `label`          |                                                                                                        | `string`                                        | `""`                    |
+| `layerNames`     | --               |                                                                                                        | `string[]`                                      | `[]`                    |
+| `mapView`        | --               | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                                       | `undefined`             |
+| `selectedLayers` | --               |                                                                                                        | `string[]`                                      | `[]`                    |
+| `selectionMode`  | `selection-mode` |                                                                                                        | `ESelectionMode.MULTI \| ESelectionMode.SINGLE` | `ESelectionMode.SINGLE` |
+| `translations`   | `translations`   | Contains the translations for this component.                                                          | `any`                                           | `{}`                    |
 
 
 ## Events

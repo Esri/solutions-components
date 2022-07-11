@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { EPageType, ERefineMode, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchConfig, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
+import { EPageType, ERefineMode, ESelectionMode, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchConfig, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface ConfigMapSearch {
@@ -83,7 +83,7 @@ export namespace Components {
          */
         "mapView": __esri.MapView;
         "selectedLayers": string[];
-        "selectionMode": SelectionMode;
+        "selectionMode": ESelectionMode;
         /**
           * Contains the translations for this component.
          */
@@ -637,7 +637,7 @@ declare namespace LocalJSX {
         "mapView"?: __esri.MapView;
         "onLayerSelectionChange"?: (event: CustomEvent<any>) => void;
         "selectedLayers"?: string[];
-        "selectionMode"?: SelectionMode;
+        "selectionMode"?: ESelectionMode;
         /**
           * Contains the translations for this component.
          */

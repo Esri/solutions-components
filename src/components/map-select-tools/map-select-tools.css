@@ -37,3 +37,16 @@
 .w-100 {
   width: 100%;
 }
+
+.w-50 {
+  width: 50%;
+}
+
+.search-distance-label { 
+  display: "flex";
+  padding-top: "1rem";
+}
+
+.flex-1 {
+  flex: 1;
+}

@@ -17,7 +17,7 @@
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
-import { EWorkflowType, ERefineMode } from '../../utils/interfaces';
+import { EWorkflowType, ERefineMode, ESelectionMode } from '../../utils/interfaces';
 import state from "../../utils/publicNotificationStore";
 
 @Component({
@@ -108,21 +108,21 @@ export class MapSelectTools {
           >
             <calcite-radio-group-item
               checked={searchEnabled}
-              style={{ "width": "50%" }}
+              class="w-50"
               value={EWorkflowType.SEARCH}
             >
               {this.translations?.search}
             </calcite-radio-group-item>
             <calcite-radio-group-item
               checked={selectEnabled}
-              style={{ "width": "50%" }}
+              class="w-50"
               value={EWorkflowType.SELECT}
             >
               {this.translations?.select}
             </calcite-radio-group-item>
             <calcite-radio-group-item
               checked={drawEnabled}
-              style={{ "width": "50%" }}
+              class="w-50"
               value={EWorkflowType.SKETCH}
             >
               {this.translations?.sketch}
@@ -134,7 +134,7 @@ export class MapSelectTools {
         </div>
         <map-draw-tools class={showDrawToolsClass} mapView={this.mapView} translations={this.translations} />
         <div class={showSelectToolsClass}>
-          <map-layer-picker label={this.translations?.selectLayers} mapView={this.mapView} selectionMode={"multi"} translations={this.translations} />
+          <map-layer-picker label={this.translations?.selectLayers} mapView={this.mapView} selectionMode={ESelectionMode.MULTI} translations={this.translations} />
           <refine-selection-tools
               mapView={this.mapView}
               mode={ERefineMode.ADD}
@@ -142,7 +142,7 @@ export class MapSelectTools {
               translations={this.translations}
             />
         </div>
-        <calcite-label style={{ "display": "flex", "padding-top": "1rem" }}>
+        <calcite-label class="search-distance-label">
           {this.translations?.searchDistance}
           <div class="control-container">
             <calcite-input
@@ -152,10 +152,10 @@ export class MapSelectTools {
               placeholder="0"
               type="number" />
             <calcite-combobox
+              class="flex-1"
               label='label'
               placeholder="unit"
-              selection-mode="single"
-              style={{ "flex": "1" }}>
+              selection-mode={ESelectionMode.SINGLE}>
               {this._addUnits()}
             </calcite-combobox>
           </div>
