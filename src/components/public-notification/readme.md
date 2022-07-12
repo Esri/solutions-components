@@ -37,8 +37,8 @@ graph TD;
   map-select-tools --> refine-selection-tools
   map-select-tools --> calcite-label
   map-select-tools --> calcite-input
-  map-select-tools --> calcite-combobox
-  map-select-tools --> calcite-combobox-item
+  map-select-tools --> calcite-select
+  map-select-tools --> calcite-option
   calcite-radio-group-item --> calcite-icon
   map-layer-picker --> calcite-label
   map-layer-picker --> calcite-select

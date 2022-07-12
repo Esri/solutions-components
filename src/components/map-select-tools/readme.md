@@ -12,6 +12,7 @@
 | `mapView`      | --              | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html      | `MapView`                                                              | `undefined`            |
 | `searchLayers` | --              |                                                                                                             | `Layer[]`                                                              | `undefined`            |
 | `searchWidget` | --              | esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html | `widgetsSearch`                                                        | `undefined`            |
+| `selectLayer`  | --              |                                                                                                             | `FeatureLayer`                                                         | `undefined`            |
 | `translations` | `translations`  |                                                                                                             | `any`                                                                  | `{}`                   |
 | `workflowType` | `workflow-type` |                                                                                                             | `EWorkflowType.SEARCH \| EWorkflowType.SELECT \| EWorkflowType.SKETCH` | `EWorkflowType.SEARCH` |
 
@@ -41,8 +42,8 @@
 - [refine-selection-tools](../refine-selection-tools)
 - calcite-label
 - calcite-input
-- calcite-combobox
-- calcite-combobox-item
+- calcite-select
+- calcite-option
 
 ### Graph
 ```mermaid
@@ -54,8 +55,8 @@ graph TD;
   map-select-tools --> refine-selection-tools
   map-select-tools --> calcite-label
   map-select-tools --> calcite-input
-  map-select-tools --> calcite-combobox
-  map-select-tools --> calcite-combobox-item
+  map-select-tools --> calcite-select
+  map-select-tools --> calcite-option
   calcite-radio-group-item --> calcite-icon
   map-layer-picker --> calcite-label
   map-layer-picker --> calcite-select

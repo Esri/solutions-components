@@ -16,7 +16,6 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
-import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 import { EWorkflowType, ERefineMode } from '../../utils/interfaces';
 import state from "../../utils/publicNotificationStore";
 
@@ -51,6 +50,8 @@ export class MapSelectTools {
 
   @Prop() searchLayers: __esri.Layer[];
 
+  @Prop() selectLayer: __esri.FeatureLayer;
+
   @Prop({ mutable: true }) workflowType: EWorkflowType = EWorkflowType.SEARCH;
 
   @Prop({ mutable: true }) translations: any = {};
@@ -79,7 +80,11 @@ export class MapSelectTools {
 
   protected Search: typeof __esri.widgetsSearch;
 
+  protected Geometry: typeof __esri.Geometry;
+
   protected _selectionLayerNames: string[] = []
+
+  protected _unitSelect: HTMLCalciteSelectElement;
 
   async componentWillLoad() {
     await this._initModules();
@@ -150,14 +155,16 @@ export class MapSelectTools {
               number-button-type="vertical"
               onCalciteInputInput={(evt) => this._setDistance(evt)}
               placeholder="0"
-              type="number" />
-            <calcite-combobox
+              type="number"
+            />
+            <calcite-select
               class="flex-1"
               label='label'
-              placeholder="unit"
-              selection-mode="single">
+              onCalciteSelectChange={() => this._setUnit()}
+              ref={(el) => { this._unitSelect = el }}
+            >
               {this._addUnits()}
-            </calcite-combobox>
+            </calcite-select>
           </div>
         </calcite-label>
         <slot />
@@ -169,25 +176,35 @@ export class MapSelectTools {
 
   private _searchGeom: any;
 
-  private _unit = "";
+  private _unit: __esri.LinearUnits;
 
   private _distance = 0;
 
   private _bufferGraphicsLayer: __esri.GraphicsLayer;
 
+  private geometryEngine:  __esri.geometryEngine;
+
+  private bufferGeometry: __esri.Geometry;
+
   async _initModules(): Promise<void> {
-    const [GraphicsLayer, Graphic, Search]: [
+    const [GraphicsLayer, Graphic, Search, Geometry, geometryEngine]: [
       __esri.GraphicsLayerConstructor,
       __esri.GraphicConstructor,
-      __esri.widgetsSearchConstructor
+      __esri.widgetsSearchConstructor,
+      __esri.GeometryConstructor,
+      __esri.geometryEngine
     ] = await loadModules([
       "esri/layers/GraphicsLayer",
       "esri/Graphic",
-      "esri/widgets/Search"
+      "esri/widgets/Search",
+      "esri/geometry/Geometry",
+      "esri/geometry/geometryEngine"
     ]);
     this.GraphicsLayer = GraphicsLayer;
     this.Graphic = Graphic;
     this.Search = Search;
+    this.Geometry = Geometry;
+    this.geometryEngine = geometryEngine;
   }
 
   _init(): void {
@@ -226,27 +243,18 @@ export class MapSelectTools {
   }
 
   _addUnits(): any {
-    const UNITS: string[] = [
-      this.translations?.units.feet,
-      this.translations?.units.meters,
-      this.translations?.units.miles,
-      this.translations?.units.kilometers
-    ];
-    return UNITS.map(u => {
-      if (this._unit === "") {
-        this._unit = u;
+    const units = {
+      'feet': this.translations?.units.feet || 'Feet',
+      'meters': this.translations?.units.meters || 'Meters',
+      'miles': this.translations?.units.miles || 'Miles',
+      'kilometers': this.translations?.units.kilometers || 'Kilometers'
+    };
+
+    return Object.keys(units).map(u => {
+      if (this._unit) {
+        this._unit = u as __esri.LinearUnits;
       }
-      // gotta be a better way to just add selected without needing to duplicate all that
-      return this._unit === u ? (<calcite-combobox-item
-        onCalciteComboboxItemChange={(evt) => this._setUnit(evt)}
-        selected
-        textLabel={u}
-        value={u} />
-      ) : (<calcite-combobox-item
-        onCalciteComboboxItemChange={(evt) => this._setUnit(evt)}
-        textLabel={u}
-        value={u.toLowerCase()} />
-      );
+      return (<calcite-option label={units[u]} value={u} />);
     });
   }
 
@@ -257,31 +265,19 @@ export class MapSelectTools {
     this._buffer();
   }
 
-  _setUnit(
-    event: CustomEvent
-  ): void {
-    this._unit = event.detail.value;
+  _setUnit(): void {
+    this._unit = this._unitSelect.value as __esri.LinearUnits;
     this._buffer();
   }
 
   _buffer(): void {
-    if (this._searchGeom && this._unit !== "" && this._distance > 0) {
+    // needs to be wgs 84 or Web Mercator
+    if (this._searchGeom && this._unit && this._distance > 0) {
       try {
-        console.log(__esri.LinearUnit['feet'])
-      } catch (error) {
-
-      }
-      try {
-        console.log(__esri.LinearUnit[0])
-      } catch (error) {
-
-      }
-      try {
-        const lCu = this._unit.toLowerCase();
-        const bufferResults4 = geometryEngine.geodesicBuffer(
+        const bufferResults4 = this.geometryEngine.geodesicBuffer(
           this._searchGeom,
           this._distance,
-          lCu === 'feet' ? 'feet' : lCu === 'kilometers' ? 'kilometers' : lCu === 'meters' ? 'meters' : lCu === 'miles' ? 'miles' : 'feet'
+          this._unit
         );
 
         // Create a symbol for rendering the graphic
@@ -294,15 +290,19 @@ export class MapSelectTools {
           }
         };
 
+        this.bufferGeometry = Array.isArray(bufferResults4) ? bufferResults4[0] : bufferResults4; 
+
         // Add the geometry and symbol to a new graphic
         const polygonGraphic = new this.Graphic({
-          geometry: Array.isArray(bufferResults4) ? bufferResults4[0] : bufferResults4,
+          geometry: this.bufferGeometry,
           symbol: fillSymbol
         });
 
         this._bufferGraphicsLayer.removeAll();
         this._bufferGraphicsLayer.add(polygonGraphic);
         void this.mapView.goTo(polygonGraphic.geometry.extent);
+
+        this._selectFeatures();
 
       } catch (err) {
         console.log(err)
@@ -312,5 +312,9 @@ export class MapSelectTools {
 
   _workflowChange(evt: CustomEvent): void {
     this.workflowType = evt.detail;
+  }
+
+  _selectFeatures(): void {
+    
   }
 }

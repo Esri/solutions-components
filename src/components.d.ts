@@ -99,6 +99,7 @@ export namespace Components {
           * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
          */
         "searchWidget": __esri.widgetsSearch;
+        "selectLayer": __esri.FeatureLayer;
         "translations": any;
         "workflowType": EWorkflowType;
     }
@@ -656,6 +657,7 @@ declare namespace LocalJSX {
           * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
          */
         "searchWidget"?: __esri.widgetsSearch;
+        "selectLayer"?: __esri.FeatureLayer;
         "translations"?: any;
         "workflowType"?: EWorkflowType;
     }
