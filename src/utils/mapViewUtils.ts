@@ -25,3 +25,16 @@ export async function getMapLayerNames(
   });
   return layerNames;
 }
+
+export async function getMapLayer(
+  mapView: __esri.MapView,
+  title: string
+): Promise<__esri.FeatureLayer> {
+  let layerNames = [];
+  await mapView.when(() => {
+    layerNames = mapView.map.layers.toArray().filter((l) => {
+      return l.title === title;
+    });
+  });
+  return layerNames.length > 0 ? layerNames[0] : undefined;
+}

@@ -7,14 +7,13 @@
 
 ## Properties
 
-| Property       | Attribute       | Description                                                                                                 | Type                                                                   | Default                |
-| -------------- | --------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------- |
-| `mapView`      | --              | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html      | `MapView`                                                              | `undefined`            |
-| `searchLayers` | --              |                                                                                                             | `Layer[]`                                                              | `undefined`            |
-| `searchWidget` | --              | esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html | `widgetsSearch`                                                        | `undefined`            |
-| `selectLayer`  | --              |                                                                                                             | `FeatureLayer`                                                         | `undefined`            |
-| `translations` | `translations`  |                                                                                                             | `any`                                                                  | `{}`                   |
-| `workflowType` | `workflow-type` |                                                                                                             | `EWorkflowType.SEARCH \| EWorkflowType.SELECT \| EWorkflowType.SKETCH` | `EWorkflowType.SEARCH` |
+| Property       | Attribute       | Description                                                                                            | Type                                                                   | Default                |
+| -------------- | --------------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- | ---------------------- |
+| `mapView`      | --              | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                                                              | `undefined`            |
+| `searchLayers` | --              |                                                                                                        | `Layer[]`                                                              | `undefined`            |
+| `selectLayer`  | --              |                                                                                                        | `FeatureLayer`                                                         | `undefined`            |
+| `translations` | `translations`  |                                                                                                        | `any`                                                                  | `{}`                   |
+| `workflowType` | `workflow-type` |                                                                                                        | `EWorkflowType.SEARCH \| EWorkflowType.SELECT \| EWorkflowType.SKETCH` | `EWorkflowType.SEARCH` |
 
 
 ## Events
@@ -24,6 +23,49 @@
 | `searchDistanceChange` |             | `CustomEvent<any>` |
 | `searchGraphicsChange` |             | `CustomEvent<any>` |
 | `selectionSetChange`   |             | `CustomEvent<any>` |
+
+
+## Methods
+
+### `clearSelection() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `getSelectType() => Promise<EWorkflowType>`
+
+
+
+#### Returns
+
+Type: `Promise<EWorkflowType>`
+
+
+
+### `getSelectedFeatures() => Promise<__esri.Graphic[]>`
+
+
+
+#### Returns
+
+Type: `Promise<Graphic[]>`
+
+
+
+### `getSelectionLabel() => Promise<string>`
+
+
+
+#### Returns
+
+Type: `Promise<string>`
+
+
 
 
 ## Dependencies

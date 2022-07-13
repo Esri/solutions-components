@@ -90,15 +90,15 @@ export namespace Components {
         "translations": any;
     }
     interface MapSelectTools {
+        "clearSelection": () => Promise<void>;
+        "getSelectType": () => Promise<EWorkflowType>;
+        "getSelectedFeatures": () => Promise<__esri.Graphic[]>;
+        "getSelectionLabel": () => Promise<string>;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
         "searchLayers": __esri.Layer[];
-        /**
-          * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
-         */
-        "searchWidget": __esri.widgetsSearch;
         "selectLayer": __esri.FeatureLayer;
         "translations": any;
         "workflowType": EWorkflowType;
@@ -121,13 +121,16 @@ export namespace Components {
         "translations": any;
     }
     interface PublicNotificationTwo {
+        "addresseeLayer": __esri.FeatureLayer;
         "downloadEnabled": boolean;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
         "message": string;
+        "numSelected": number;
         "pageType": EPageType;
+        "saveEnabled": boolean;
         "selectionLayers": __esri.Layer[];
         "selectionSet": any[];
         "translations": any;
@@ -653,10 +656,6 @@ declare namespace LocalJSX {
         "onSearchGraphicsChange"?: (event: CustomEvent<any>) => void;
         "onSelectionSetChange"?: (event: CustomEvent<any>) => void;
         "searchLayers"?: __esri.Layer[];
-        /**
-          * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
-         */
-        "searchWidget"?: __esri.widgetsSearch;
         "selectLayer"?: __esri.FeatureLayer;
         "translations"?: any;
         "workflowType"?: EWorkflowType;
@@ -679,13 +678,16 @@ declare namespace LocalJSX {
         "translations"?: any;
     }
     interface PublicNotificationTwo {
+        "addresseeLayer"?: __esri.FeatureLayer;
         "downloadEnabled"?: boolean;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         "message"?: string;
+        "numSelected"?: number;
         "pageType"?: EPageType;
+        "saveEnabled"?: boolean;
         "selectionLayers"?: __esri.Layer[];
         "selectionSet"?: any[];
         "translations"?: any;

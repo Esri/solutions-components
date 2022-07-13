@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import { EWorkflowType, ERefineMode } from '../../utils/interfaces';
 import state from "../../utils/publicNotificationStore";
@@ -43,11 +43,6 @@ export class MapSelectTools {
    */
   @Prop() mapView: __esri.MapView;
 
-  /**
-   * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
-   */
-  @Prop() searchWidget: __esri.widgetsSearch;
-
   @Prop() searchLayers: __esri.Layer[];
 
   @Prop() selectLayer: __esri.FeatureLayer;
@@ -69,10 +64,8 @@ export class MapSelectTools {
     // I think I will need to listen to this but I think I only need to emit if it would 
     // chnage the underlying selection set
     this.searchGraphicsChange.emit(event.detail);
-    this.selectionSetChange.emit(this._selectionSet);
+    //this.selectionSetChange.emit(this._selectedFeatures);
   }
-
-  protected _selectionSet: any[] = [];
 
   protected GraphicsLayer: typeof __esri.GraphicsLayer;
 
@@ -82,15 +75,57 @@ export class MapSelectTools {
 
   protected Geometry: typeof __esri.Geometry;
 
-  protected _selectionLayerNames: string[] = []
+  private _searchDiv: HTMLElement;
 
-  protected _unitSelect: HTMLCalciteSelectElement;
+  protected _unitDiv: HTMLCalciteSelectElement;
+
+  protected _searchWidget: __esri.widgetsSearch;
+
+  protected _selectionLabel = "";
+
+  protected _selectType: EWorkflowType;
+
+  protected _selectedFeatures: __esri.Graphic[] = [];
+
+  private _searchGeom: any;
+
+  private _unit: __esri.LinearUnits;
+
+  private _distance = 0;
+
+  private _bufferGraphicsLayer: __esri.GraphicsLayer;
+
+  private geometryEngine:  __esri.geometryEngine;
+
+  private bufferGeometry: __esri.Geometry;
+
+  private _layerView: __esri.FeatureLayerView;
+
+  @Method()
+  async getSelectedFeatures() {
+    return this._selectedFeatures;
+  }
+
+  @Method()
+  async getSelectionLabel() {
+    return this._selectionLabel;
+  }
+
+  @Method()
+  async getSelectType() {
+    return this._selectType;
+  }
+
+  @Method()
+  async clearSelection() {
+    return this._clearResults();
+  }
 
   async componentWillLoad() {
     await this._initModules();
   }
 
-  componentDidLoad() {
+  async componentDidLoad() {
     this._init()
   }
 
@@ -147,44 +182,31 @@ export class MapSelectTools {
               translations={this.translations}
             />
         </div>
-        <calcite-label class="search-distance-container">
+        {/* TODO thinking about moving this to seperate...simple buffer tool that will take geom and give buffer */}
+        <calcite-label disable-spacing={true} style={{"display": "flex", "padding-top": "1rem"}}>
           {this.translations?.searchDistance}
-          <div class="control-container">
-            <calcite-input
-              class="padding-end-1"
-              number-button-type="vertical"
-              onCalciteInputInput={(evt) => this._setDistance(evt)}
-              placeholder="0"
-              type="number"
-            />
-            <calcite-select
-              class="flex-1"
-              label='label'
-              onCalciteSelectChange={() => this._setUnit()}
-              ref={(el) => { this._unitSelect = el }}
-            >
-              {this._addUnits()}
-            </calcite-select>
-          </div>
         </calcite-label>
+        <div class="c-container">
+          <calcite-input
+            class="padding-end-1"
+            number-button-type="vertical"
+            onCalciteInputInput={(evt) => this._setDistance(evt)}
+            placeholder="0"
+            type="number"
+          />
+          <calcite-select
+            class="flex-1"
+            label='label'
+            onCalciteSelectChange={() => this._setUnit()}
+            ref={(el) => { this._unitDiv = el }}
+          >
+            {this._addUnits()}
+          </calcite-select>
+        </div>
         <slot />
       </Host>
     );
   }
-
-  private _searchDiv: HTMLElement;
-
-  private _searchGeom: any;
-
-  private _unit: __esri.LinearUnits;
-
-  private _distance = 0;
-
-  private _bufferGraphicsLayer: __esri.GraphicsLayer;
-
-  private geometryEngine:  __esri.geometryEngine;
-
-  private bufferGeometry: __esri.Geometry;
 
   async _initModules(): Promise<void> {
     const [GraphicsLayer, Graphic, Search, Geometry, geometryEngine]: [
@@ -207,9 +229,10 @@ export class MapSelectTools {
     this.geometryEngine = geometryEngine;
   }
 
-  _init(): void {
+  async _init() {
     this._initSearchWidget();
     this._initGraphicsLayer();
+    this._layerView = await this.mapView.whenLayerView(this.selectLayer);
   }
 
   _initSearchWidget(): void {
@@ -219,16 +242,18 @@ export class MapSelectTools {
         container: this._searchDiv
       };
 
-      this.searchWidget = new this.Search(searchOptions);
+      this._searchWidget = new this.Search(searchOptions);
 
-      this.searchWidget.on('search-clear', () => {
-        this._searchGeom = undefined;
-        this._bufferGraphicsLayer.removeAll();
+      this._searchWidget.on('search-clear', () => {
+        this._clearResults(false);
       });
 
-      this.searchWidget.on('select-result', (searchResults) => {
+      this._searchWidget.on('select-result', (searchResults) => {
+        this._clearResults(false);
+        this._selectionLabel = searchResults?.result?.name || "Search Result NOT named";
         if (searchResults.result) {
           this._searchGeom = searchResults.result.feature.geometry;
+          this._selectType = this.workflowType;
           this._buffer();
         }
       });
@@ -266,47 +291,42 @@ export class MapSelectTools {
   }
 
   _setUnit(): void {
-    this._unit = this._unitSelect.value as __esri.LinearUnits;
+    this._unit = this._unitDiv.value as __esri.LinearUnits;
     this._buffer();
   }
 
   _buffer(): void {
     // needs to be wgs 84 or Web Mercator
     if (this._searchGeom && this._unit && this._distance > 0) {
-      try {
-        const bufferResults4 = this.geometryEngine.geodesicBuffer(
-          this._searchGeom,
-          this._distance,
-          this._unit
-        );
+      const bufferResults4 = this.geometryEngine.geodesicBuffer(
+        this._searchGeom,
+        this._distance,
+        this._unit
+      );
 
-        // Create a symbol for rendering the graphic
-        const fillSymbol = {
-          type: "simple-fill",
-          color: [227, 139, 79, 0.8],
-          outline: {
-            color: [255, 255, 255],
-            width: 1
-          }
-        };
+      // Create a symbol for rendering the graphic
+      const fillSymbol = {
+        type: "simple-fill",
+        color: [227, 139, 79, 0.8],
+        outline: {
+          color: [255, 255, 255],
+          width: 1
+        }
+      };
 
-        this.bufferGeometry = Array.isArray(bufferResults4) ? bufferResults4[0] : bufferResults4; 
+      this.bufferGeometry = Array.isArray(bufferResults4) ? bufferResults4[0] : bufferResults4;
 
-        // Add the geometry and symbol to a new graphic
-        const polygonGraphic = new this.Graphic({
-          geometry: this.bufferGeometry,
-          symbol: fillSymbol
-        });
+      // Add the geometry and symbol to a new graphic
+      const polygonGraphic = new this.Graphic({
+        geometry: this.bufferGeometry,
+        symbol: fillSymbol
+      });
 
-        this._bufferGraphicsLayer.removeAll();
-        this._bufferGraphicsLayer.add(polygonGraphic);
-        void this.mapView.goTo(polygonGraphic.geometry.extent);
+      this._bufferGraphicsLayer.removeAll();
+      this._bufferGraphicsLayer.add(polygonGraphic);
+      void this.mapView.goTo(polygonGraphic.geometry.extent);
 
-        this._selectFeatures();
-
-      } catch (err) {
-        console.log(err)
-      }
+      void this._selectFeatures();
     }
   }
 
@@ -314,7 +334,43 @@ export class MapSelectTools {
     this.workflowType = evt.detail;
   }
 
-  _selectFeatures(): void {
-    
+  async _selectFeatures(): Promise<void> {
+    await this.queryPage(0);
+    this._layerView.highlight(this._selectedFeatures);
+    this.selectionSetChange.emit(this._selectedFeatures.length);
   }
+
+  async queryPage(page: number) {
+    const num = this.selectLayer.capabilities.query.maxRecordCount;
+    const query = {
+      start: page,
+      num,
+      outFields: ["*"],
+      returnGeometry: true,
+      geometry: this.bufferGeometry
+    };
+    const r = await this.selectLayer.queryFeatures(query);
+    this._selectedFeatures = this._selectedFeatures.concat(r.features);
+
+    if (r.exceededTransferLimit) {
+      return this.queryPage(page += num)
+    }
+  }
+
+  _clearResults(
+    clearSearchWidget: boolean = true
+  ) {
+    this._selectedFeatures = [];
+    this._searchGeom = undefined;
+    this._selectionLabel = "";
+    this._bufferGraphicsLayer.removeAll();
+    this.bufferGeometry = undefined;
+
+    if (clearSearchWidget) {
+      this._searchWidget.clear();
+    }
+
+    this.selectionSetChange.emit(this._selectedFeatures.length);
+  }
+
 }

@@ -26,7 +26,7 @@
   border: 1px solid var(--calcite-ui-border-input);
 }
 
-.control-container {
+.c-container {
   display: inline-flex;
 }
 
@@ -43,8 +43,7 @@
 }
 
 .search-distance-container {
-  display: "flex"; 
-  padding-top: "1rem";
+  padding-top: "1rem" !important;
 }
 
 .flex-1 {

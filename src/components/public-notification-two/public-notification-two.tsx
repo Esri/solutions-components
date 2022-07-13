@@ -1,5 +1,6 @@
 import { Component, Host, h, Prop, VNode } from '@stencil/core';
 import { ISelectionSet, EPageType, ERefineMode } from '../../utils/interfaces';
+import { getMapLayer } from '../../utils/mapViewUtils';
 
 @Component({
   tag: 'public-notification-two',
@@ -15,13 +16,19 @@ export class PublicNotificationTwo {
 
   @Prop() selectionLayers: __esri.Layer[];
 
+  @Prop() addresseeLayer: __esri.FeatureLayer;
+
   @Prop({ mutable: true }) downloadEnabled = false;
+
+  @Prop() saveEnabled = false;
 
   @Prop({ mutable: true }) pageType: EPageType = EPageType.LIST;
 
   @Prop({ mutable: true }) message = "";
 
   @Prop({ mutable: true }) selectionSet = [];
+
+  @Prop() numSelected = 0;
 
   @Prop() translations: any = {};
 
@@ -58,6 +65,8 @@ export class PublicNotificationTwo {
     // }
   ];
 
+  protected _selectTools: HTMLMapSelectToolsElement;
+
   _getActions(): VNode {
     let actions: VNode;
     switch (this.pageType) {
@@ -75,7 +84,7 @@ export class PublicNotificationTwo {
         actions = (
           <calcite-action-group>
             <calcite-action icon="chevron-left" onClick={() => { this._setPageType(EPageType.LIST) }} text={this.translations?.back} />
-            {this._getAction(false, "save", this.translations?.save, (): void => this._saveSelection())}
+            {this._getAction(this.saveEnabled, "save", this.translations?.save, (): Promise<void> => this._saveSelection())}
           </calcite-action-group>
         );
         break;
@@ -152,7 +161,7 @@ export class PublicNotificationTwo {
                           description={this.translations?.selectedFeatures.replace('{{n}}', ss.selectedFeatures.length)}
                           label={ss.label}
                         >
-                          <calcite-action icon="pencil" slot="actions-end" text='' />
+                          <calcite-action icon="pencil" slot="actions-end" text='' onClick={() => this._openSelection(ss)} />
                           <calcite-action icon="x" slot="actions-end" text='' />
                         </calcite-list-item>
                       )
@@ -174,15 +183,23 @@ export class PublicNotificationTwo {
             <div class="background-w padding-1-2 list-border">
               <map-select-tools
                 mapView={this.mapView}
+                onSelectionSetChange={(evt) => this._updateForSelection(evt)}
+                ref={(el) => { this._selectTools = el }}
                 searchLayers={this.selectionLayers}
+                selectLayer={this.addresseeLayer}
                 translations={this.translations}
               />
             </div>
-            {/* TODO add this later */}
-            {/* <br />
-            <calcite-input-message active class="start-message list-border background-w">
-              20 selected features
-            </calcite-input-message> */}
+            {
+              this.numSelected > 0 ? (
+                <div>
+                  <br />
+                  <calcite-input-message active class="start-message list-border background-w">
+                    {this.translations.selectedFeatures.replace("{{n}}", this.numSelected)}
+                  </calcite-input-message>
+                </div>
+              ) : (<div />)
+            }
           </div>
         );
         break;
@@ -238,9 +255,16 @@ export class PublicNotificationTwo {
     this.addEnabled = evt.detail === ERefineMode.ADD;
   }
 
-  _layerSelectionChange(evt: CustomEvent): void {
+  async _layerSelectionChange(evt: CustomEvent): Promise<void> {
+    const title: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
+    this.addresseeLayer = await getMapLayer(this.mapView, title);
     // Needs to come from NLS
     this.message = this.translations?.startMessage.replace("{{n}}", evt?.detail?.length > 0 ? evt.detail[0] : "");
+  }
+
+  _updateForSelection(evt: CustomEvent) {
+    this.numSelected = evt.detail;
+    this.saveEnabled = this.numSelected > 0;
   }
 
   _setPageType(pageType: EPageType): void {
@@ -259,8 +283,29 @@ export class PublicNotificationTwo {
     alert("Reset");
   }
 
-  _saveSelection(): void {
-    alert("Save Selection");
+  async _saveSelection(): Promise<void> {
+    const selectedFeatures = await this._selectTools.getSelectedFeatures();
+    const label = await this._selectTools.getSelectionLabel();
+    // TODO...need to work through what happens when you have a selection and
+    // switch workflow type
+    const workflowType = this._selectTools.workflowType;
+
+    this._selectionLists.push({
+      label,
+      selectedFeatures,
+      workflowType,
+      
+    });
+
+    this.pageType = EPageType.LIST;
+
+    this._selectTools.clearSelection();
+  }
+
+  _openSelection(selectionSet: ISelectionSet) {
+    // need to be able to pass this back
+    // may need to keep track of other state things like type so we can repopulate appropriately
+    console.log(selectionSet)
   }
 
   _zoomToExtent(): void {

@@ -254,4 +254,8 @@ export interface ISearchConfig {
 export interface ISelectionSet {
   label: string;
   selectedFeatures: any[];
+  workflowType: EWorkflowType;
+  // searchResult: any;
+  // bufferGeom: __esri.Geometry;
+  // searchGeom: __esri.Geometry;
 }
