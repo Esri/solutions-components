@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+.c-container {
+  display: inline-flex;
+}
+
+.flex-1 {
+  flex: "1";
+}
+
+.padding-end-1 {
+  padding-inline-end: 1rem;
+}

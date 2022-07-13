@@ -9,6 +9,7 @@
 
 | Property       | Attribute       | Description                                                                                            | Type                                                                   | Default                |
 | -------------- | --------------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- | ---------------------- |
+| `geometries`   | --              |                                                                                                        | `Geometry[]`                                                           | `undefined`            |
 | `mapView`      | --              | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                                                              | `undefined`            |
 | `searchLayers` | --              |                                                                                                        | `Layer[]`                                                              | `undefined`            |
 | `selectLayer`  | --              |                                                                                                        | `FeatureLayer`                                                         | `undefined`            |
@@ -82,10 +83,7 @@ Type: `Promise<string>`
 - [map-draw-tools](../map-draw-tools)
 - [map-layer-picker](../map-layer-picker)
 - [refine-selection-tools](../refine-selection-tools)
-- calcite-label
-- calcite-input
-- calcite-select
-- calcite-option
+- [buffer-tools](../buffer-tools)
 
 ### Graph
 ```mermaid
@@ -95,10 +93,7 @@ graph TD;
   map-select-tools --> map-draw-tools
   map-select-tools --> map-layer-picker
   map-select-tools --> refine-selection-tools
-  map-select-tools --> calcite-label
-  map-select-tools --> calcite-input
-  map-select-tools --> calcite-select
-  map-select-tools --> calcite-option
+  map-select-tools --> buffer-tools
   calcite-radio-group-item --> calcite-icon
   map-layer-picker --> calcite-label
   map-layer-picker --> calcite-select
@@ -113,6 +108,10 @@ graph TD;
   refine-selection-tools --> calcite-action
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
+  buffer-tools --> calcite-label
+  buffer-tools --> calcite-input
+  buffer-tools --> calcite-select
+  buffer-tools --> calcite-option
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   public-notification --> map-select-tools

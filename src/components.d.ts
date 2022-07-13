@@ -8,6 +8,11 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { EPageType, ERefineMode, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchConfig, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
+    interface BufferTools {
+        "geometries": __esri.Geometry[];
+        "translations": any;
+        "unionResults": boolean;
+    }
     interface ConfigMapSearch {
         "getConfig": () => Promise<ISearchConfig>;
         "layers": any[];
@@ -91,6 +96,7 @@ export namespace Components {
     }
     interface MapSelectTools {
         "clearSelection": () => Promise<void>;
+        "geometries": __esri.Geometry[];
         "getSelectType": () => Promise<EWorkflowType>;
         "getSelectedFeatures": () => Promise<__esri.Graphic[]>;
         "getSelectionLabel": () => Promise<string>;
@@ -400,6 +406,12 @@ export namespace Components {
     }
 }
 declare global {
+    interface HTMLBufferToolsElement extends Components.BufferTools, HTMLStencilElement {
+    }
+    var HTMLBufferToolsElement: {
+        prototype: HTMLBufferToolsElement;
+        new (): HTMLBufferToolsElement;
+    };
     interface HTMLConfigMapSearchElement extends Components.ConfigMapSearch, HTMLStencilElement {
     }
     var HTMLConfigMapSearchElement: {
@@ -539,6 +551,7 @@ declare global {
         new (): HTMLStoreManagerElement;
     };
     interface HTMLElementTagNameMap {
+        "buffer-tools": HTMLBufferToolsElement;
         "config-map-search": HTMLConfigMapSearchElement;
         "config-public-notification": HTMLConfigPublicNotificationElement;
         "demo-map": HTMLDemoMapElement;
@@ -565,6 +578,12 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface BufferTools {
+        "geometries"?: __esri.Geometry[];
+        "onBufferComplete"?: (event: CustomEvent<any>) => void;
+        "translations"?: any;
+        "unionResults"?: boolean;
+    }
     interface ConfigMapSearch {
         "layers"?: any[];
         "useLayerUrl"?: boolean;
@@ -648,6 +667,7 @@ declare namespace LocalJSX {
         "translations"?: any;
     }
     interface MapSelectTools {
+        "geometries"?: __esri.Geometry[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -941,6 +961,7 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface IntrinsicElements {
+        "buffer-tools": BufferTools;
         "config-map-search": ConfigMapSearch;
         "config-public-notification": ConfigPublicNotification;
         "demo-map": DemoMap;
@@ -970,6 +991,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
             "config-map-search": LocalJSX.ConfigMapSearch & JSXBase.HTMLAttributes<HTMLConfigMapSearchElement>;
             "config-public-notification": LocalJSX.ConfigPublicNotification & JSXBase.HTMLAttributes<HTMLConfigPublicNotificationElement>;
             "demo-map": LocalJSX.DemoMap & JSXBase.HTMLAttributes<HTMLDemoMapElement>;

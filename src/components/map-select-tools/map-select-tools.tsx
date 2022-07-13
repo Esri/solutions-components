@@ -51,6 +51,8 @@ export class MapSelectTools {
 
   @Prop({ mutable: true }) translations: any = {};
 
+  @Prop() geometries: __esri.Geometry[];
+
   // think this should not be necessary
   @Event() searchGraphicsChange: EventEmitter;
 
@@ -77,8 +79,6 @@ export class MapSelectTools {
 
   private _searchDiv: HTMLElement;
 
-  protected _unitDiv: HTMLCalciteSelectElement;
-
   protected _searchWidget: __esri.widgetsSearch;
 
   protected _selectionLabel = "";
@@ -87,19 +87,13 @@ export class MapSelectTools {
 
   protected _selectedFeatures: __esri.Graphic[] = [];
 
-  private _searchGeom: any;
-
-  private _unit: __esri.LinearUnits;
-
-  private _distance = 0;
-
   private _bufferGraphicsLayer: __esri.GraphicsLayer;
 
-  private geometryEngine:  __esri.geometryEngine;
-
-  private bufferGeometry: __esri.Geometry;
+  private _bufferGeometry: __esri.Geometry;
 
   private _layerView: __esri.FeatureLayerView;
+
+  private _highlightHandle: __esri.Handle;
 
   @Method()
   async getSelectedFeatures() {
@@ -182,51 +176,32 @@ export class MapSelectTools {
               translations={this.translations}
             />
         </div>
-        {/* TODO thinking about moving this to seperate...simple buffer tool that will take geom and give buffer */}
-        <calcite-label disable-spacing={true} style={{"display": "flex", "padding-top": "1rem"}}>
-          {this.translations?.searchDistance}
-        </calcite-label>
-        <div class="c-container">
-          <calcite-input
-            class="padding-end-1"
-            number-button-type="vertical"
-            onCalciteInputInput={(evt) => this._setDistance(evt)}
-            placeholder="0"
-            type="number"
-          />
-          <calcite-select
-            class="flex-1"
-            label='label'
-            onCalciteSelectChange={() => this._setUnit()}
-            ref={(el) => { this._unitDiv = el }}
-          >
-            {this._addUnits()}
-          </calcite-select>
-        </div>
+        <buffer-tools
+          translations={this.translations}
+          geometries={this.geometries}
+          onBufferComplete={(evt) => this._bufferComplete(evt)}
+        ></buffer-tools>
         <slot />
       </Host>
     );
   }
 
   async _initModules(): Promise<void> {
-    const [GraphicsLayer, Graphic, Search, Geometry, geometryEngine]: [
+    const [GraphicsLayer, Graphic, Search, Geometry]: [
       __esri.GraphicsLayerConstructor,
       __esri.GraphicConstructor,
       __esri.widgetsSearchConstructor,
-      __esri.GeometryConstructor,
-      __esri.geometryEngine
+      __esri.GeometryConstructor
     ] = await loadModules([
       "esri/layers/GraphicsLayer",
       "esri/Graphic",
       "esri/widgets/Search",
-      "esri/geometry/Geometry",
-      "esri/geometry/geometryEngine"
+      "esri/geometry/Geometry"
     ]);
     this.GraphicsLayer = GraphicsLayer;
     this.Graphic = Graphic;
     this.Search = Search;
     this.Geometry = Geometry;
-    this.geometryEngine = geometryEngine;
   }
 
   async _init() {
@@ -252,9 +227,8 @@ export class MapSelectTools {
         this._clearResults(false);
         this._selectionLabel = searchResults?.result?.name || "Search Result NOT named";
         if (searchResults.result) {
-          this._searchGeom = searchResults.result.feature.geometry;
+          this.geometries = [searchResults.result.feature.geometry];
           this._selectType = this.workflowType;
-          this._buffer();
         }
       });
     }
@@ -267,76 +241,17 @@ export class MapSelectTools {
     this.mapView.map.layers.add(this._bufferGraphicsLayer);
   }
 
-  _addUnits(): any {
-    const units = {
-      'feet': this.translations?.units.feet || 'Feet',
-      'meters': this.translations?.units.meters || 'Meters',
-      'miles': this.translations?.units.miles || 'Miles',
-      'kilometers': this.translations?.units.kilometers || 'Kilometers'
-    };
-
-    return Object.keys(units).map(u => {
-      if (this._unit) {
-        this._unit = u as __esri.LinearUnits;
-      }
-      return (<calcite-option label={units[u]} value={u} />);
-    });
-  }
-
-  _setDistance(
-    event: CustomEvent
-  ): void {
-    this._distance = event.detail.value;
-    this._buffer();
-  }
-
-  _setUnit(): void {
-    this._unit = this._unitDiv.value as __esri.LinearUnits;
-    this._buffer();
-  }
-
-  _buffer(): void {
-    // needs to be wgs 84 or Web Mercator
-    if (this._searchGeom && this._unit && this._distance > 0) {
-      const bufferResults4 = this.geometryEngine.geodesicBuffer(
-        this._searchGeom,
-        this._distance,
-        this._unit
-      );
-
-      // Create a symbol for rendering the graphic
-      const fillSymbol = {
-        type: "simple-fill",
-        color: [227, 139, 79, 0.8],
-        outline: {
-          color: [255, 255, 255],
-          width: 1
-        }
-      };
-
-      this.bufferGeometry = Array.isArray(bufferResults4) ? bufferResults4[0] : bufferResults4;
-
-      // Add the geometry and symbol to a new graphic
-      const polygonGraphic = new this.Graphic({
-        geometry: this.bufferGeometry,
-        symbol: fillSymbol
-      });
-
-      this._bufferGraphicsLayer.removeAll();
-      this._bufferGraphicsLayer.add(polygonGraphic);
-      void this.mapView.goTo(polygonGraphic.geometry.extent);
-
-      void this._selectFeatures();
-    }
-  }
-
   _workflowChange(evt: CustomEvent): void {
     this.workflowType = evt.detail;
   }
 
   async _selectFeatures(): Promise<void> {
+    this._selectedFeatures = [];
+    if (this._highlightHandle) {
+      this._highlightHandle.remove();
+    }
     await this.queryPage(0);
-    this._layerView.highlight(this._selectedFeatures);
+    this._highlightHandle = this._layerView.highlight(this._selectedFeatures);
     this.selectionSetChange.emit(this._selectedFeatures.length);
   }
 
@@ -347,7 +262,7 @@ export class MapSelectTools {
       num,
       outFields: ["*"],
       returnGeometry: true,
-      geometry: this.bufferGeometry
+      geometry: this._bufferGeometry
     };
     const r = await this.selectLayer.queryFeatures(query);
     this._selectedFeatures = this._selectedFeatures.concat(r.features);
@@ -357,20 +272,52 @@ export class MapSelectTools {
     }
   }
 
+  _bufferComplete(evt: CustomEvent) {
+    this._bufferGeometry = evt.detail[0];
+
+    // Create a symbol for rendering the graphic
+    const symbol = {
+      type: "simple-fill",
+      color: [227, 139, 79, 0.8],
+      outline: {
+        color: [255, 255, 255],
+        width: 1
+      }
+    };
+
+    // Add the geometry and symbol to a new graphic
+    const polygonGraphic = new this.Graphic({
+      geometry: this._bufferGeometry,
+      symbol
+    });
+
+    this._bufferGraphicsLayer.removeAll();
+    this._bufferGraphicsLayer.add(polygonGraphic);
+    void this._selectFeatures();
+    void this.mapView.goTo(polygonGraphic.geometry.extent);
+  }
+  
+  rem() {
+    this._highlightHandle.remove();
+  }
+
   _clearResults(
     clearSearchWidget: boolean = true
   ) {
     this._selectedFeatures = [];
-    this._searchGeom = undefined;
+    //this._searchGeom = undefined;
     this._selectionLabel = "";
     this._bufferGraphicsLayer.removeAll();
-    this.bufferGeometry = undefined;
+    //this.bufferGeometry = undefined;
 
     if (clearSearchWidget) {
       this._searchWidget.clear();
     }
 
+    if (this._highlightHandle) {
+      this._highlightHandle.remove();
+    }
+
     this.selectionSetChange.emit(this._selectedFeatures.length);
   }
-
 }

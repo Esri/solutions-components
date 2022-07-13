@@ -85,12 +85,13 @@ graph TD;
   map-select-tools --> map-draw-tools
   map-select-tools --> map-layer-picker
   map-select-tools --> refine-selection-tools
-  map-select-tools --> calcite-label
-  map-select-tools --> calcite-input
-  map-select-tools --> calcite-select
-  map-select-tools --> calcite-option
+  map-select-tools --> buffer-tools
   calcite-radio-group-item --> calcite-icon
   refine-selection-tools --> calcite-action
+  buffer-tools --> calcite-label
+  buffer-tools --> calcite-input
+  buffer-tools --> calcite-select
+  buffer-tools --> calcite-option
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   style public-notification-two fill:#f9f,stroke:#333,stroke-width:4px
