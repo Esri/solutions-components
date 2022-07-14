@@ -77,7 +77,7 @@ export class MapSelectTools {
 
   protected Geometry: typeof __esri.Geometry;
 
-  private _searchDiv: HTMLElement;
+  protected _searchDiv: HTMLElement;
 
   protected _searchWidget: __esri.widgetsSearch;
 
@@ -87,13 +87,15 @@ export class MapSelectTools {
 
   protected _selectedFeatures: __esri.Graphic[] = [];
 
-  private _bufferGraphicsLayer: __esri.GraphicsLayer;
+  protected _bufferGraphicsLayer: __esri.GraphicsLayer;
 
-  private _bufferGeometry: __esri.Geometry;
+  protected _bufferGeometry: __esri.Geometry;
 
-  private _layerView: __esri.FeatureLayerView;
+  protected _layerView: __esri.FeatureLayerView;
 
-  private _highlightHandle: __esri.Handle;
+  protected _highlightHandle: __esri.Handle;
+
+  protected selectTimeout: NodeJS.Timeout;
 
   @Method()
   async getSelectedFeatures() {
@@ -246,16 +248,22 @@ export class MapSelectTools {
   }
 
   async _selectFeatures(): Promise<void> {
-    this._selectedFeatures = [];
-    if (this._highlightHandle) {
-      this._highlightHandle.remove();
+    if (this.selectTimeout) {
+      clearTimeout(this.selectTimeout);
     }
-    await this.queryPage(0);
-    this._highlightHandle = this._layerView.highlight(this._selectedFeatures);
-    this.selectionSetChange.emit(this._selectedFeatures.length);
+
+    this.selectTimeout = setTimeout(async () => {
+      this._selectedFeatures = [];
+      if (this._highlightHandle) {
+        this._highlightHandle.remove();
+      }
+      await this._queryPage(0);
+      this._highlightHandle = this._layerView.highlight(this._selectedFeatures);
+      this.selectionSetChange.emit(this._selectedFeatures.length);
+    }, 100);
   }
 
-  async queryPage(page: number) {
+  async _queryPage(page: number) {
     const num = this.selectLayer.capabilities.query.maxRecordCount;
     const query = {
       start: page,
@@ -268,7 +276,7 @@ export class MapSelectTools {
     this._selectedFeatures = this._selectedFeatures.concat(r.features);
 
     if (r.exceededTransferLimit) {
-      return this.queryPage(page += num)
+      return this._queryPage(page += num)
     }
   }
 
@@ -295,10 +303,6 @@ export class MapSelectTools {
     this._bufferGraphicsLayer.add(polygonGraphic);
     void this._selectFeatures();
     void this.mapView.goTo(polygonGraphic.geometry.extent);
-  }
-  
-  rem() {
-    this._highlightHandle.remove();
   }
 
   _clearResults(

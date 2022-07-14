@@ -83,7 +83,7 @@ export class PublicNotificationTwo {
       case EPageType.SELECT:
         actions = (
           <calcite-action-group>
-            <calcite-action icon="chevron-left" onClick={() => { this._setPageType(EPageType.LIST) }} text={this.translations?.back} />
+            <calcite-action icon="chevron-left" onClick={() => { this._clearSelection() }} text={this.translations?.back} />
             {this._getAction(this.saveEnabled, "save", this.translations?.save, (): Promise<void> => this._saveSelection())}
           </calcite-action-group>
         );
@@ -268,6 +268,10 @@ export class PublicNotificationTwo {
   }
 
   _setPageType(pageType: EPageType): void {
+    // TODO may handle this elsewhere
+    if (pageType === EPageType.LIST) {
+      this.numSelected = 0;
+    }
     this.pageType = pageType;
   }
 
@@ -300,6 +304,11 @@ export class PublicNotificationTwo {
     this.pageType = EPageType.LIST;
 
     this._selectTools.clearSelection();
+  }
+
+  _clearSelection () {
+    this._selectTools.clearSelection();
+    this._setPageType(EPageType.LIST)
   }
 
   _openSelection(selectionSet: ISelectionSet) {
