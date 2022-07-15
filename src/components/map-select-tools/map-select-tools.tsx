@@ -16,7 +16,7 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
-import { EWorkflowType, ERefineMode } from '../../utils/interfaces';
+import { EWorkflowType, ERefineMode, ISelectionSet } from '../../utils/interfaces';
 import state from "../../utils/publicNotificationStore";
 
 @Component({
@@ -52,6 +52,12 @@ export class MapSelectTools {
   @Prop({ mutable: true }) translations: any = {};
 
   @Prop() geometries: __esri.Geometry[];
+
+  @Prop() searchTerm: string;
+
+  @Prop({reflect: false}) selectionSet: ISelectionSet;
+
+  @Prop() isUpdate = false;
 
   // think this should not be necessary
   @Event() searchGraphicsChange: EventEmitter;
@@ -91,11 +97,15 @@ export class MapSelectTools {
 
   protected _bufferGeometry: __esri.Geometry;
 
+  protected _bufferTools: HTMLBufferToolsElement;
+
   protected _layerView: __esri.FeatureLayerView;
 
   protected _highlightHandle: __esri.Handle;
 
   protected selectTimeout: NodeJS.Timeout;
+
+  protected _searchResult: any;
 
   @Method()
   async getSelectedFeatures() {
@@ -115,6 +125,26 @@ export class MapSelectTools {
   @Method()
   async clearSelection() {
     return this._clearResults();
+  }
+
+  @Method()
+  async getSelection(): Promise<ISelectionSet> {
+    return {
+      id: this.isUpdate ? this.selectionSet.id : Date.now(),
+      workflowType: this._selectType,
+      selectLayers: [{
+        layer: {},
+        oids: []
+      }],
+      searchResult: this._searchResult,
+      graphics: this._bufferGraphicsLayer.graphics || [], // seems like I need this or just the buffer geom...not both
+      buffer: this._bufferGeometry,
+      distance: this._bufferTools.distance,
+      unit: this._bufferTools.unit,
+      numSelected: this._selectedFeatures.length,
+      label: this._selectionLabel,
+      selectedFeatures: this._selectedFeatures
+    } as ISelectionSet;
   }
 
   async componentWillLoad() {
@@ -182,6 +212,9 @@ export class MapSelectTools {
           translations={this.translations}
           geometries={this.geometries}
           onBufferComplete={(evt) => this._bufferComplete(evt)}
+          ref={(el) => this._bufferTools = el}
+          unit={this.selectionSet?.unit}
+          distance={this.selectionSet?.distance}
         ></buffer-tools>
         <slot />
       </Host>
@@ -207,16 +240,30 @@ export class MapSelectTools {
   }
 
   async _init() {
-    this._initSearchWidget();
     this._initGraphicsLayer();
+    this._initSelectionSet();
+    this._initSearchWidget();
     this._layerView = await this.mapView.whenLayerView(this.selectLayer);
+  }
+
+  _initSelectionSet() {
+    if (this.selectionSet) {
+      this.searchTerm = this.selectionSet?.searchResult?.name;
+      this._selectionLabel = this.selectionSet?.label;
+      this._selectType = this.selectionSet?.workflowType;
+      this._searchResult = this.selectionSet?.searchResult;
+      this._bufferComplete({
+        detail: this.selectionSet.buffer
+      } as CustomEvent)
+    }
   }
 
   _initSearchWidget(): void {
     if (this.mapView && this._searchDiv) {
       const searchOptions: __esri.widgetsSearchProperties = {
         view: this.mapView,
-        container: this._searchDiv
+        container: this._searchDiv,
+        searchTerm: this.searchTerm
       };
 
       this._searchWidget = new this.Search(searchOptions);
@@ -229,6 +276,7 @@ export class MapSelectTools {
         this._clearResults(false);
         this._selectionLabel = searchResults?.result?.name || "Search Result NOT named";
         if (searchResults.result) {
+          this._searchResult = searchResults.result;
           this.geometries = [searchResults.result.feature.geometry];
           this._selectType = this.workflowType;
         }
@@ -281,7 +329,12 @@ export class MapSelectTools {
   }
 
   _bufferComplete(evt: CustomEvent) {
-    this._bufferGeometry = evt.detail[0];
+    this._bufferGeometry = Array.isArray(evt.detail) ?
+      evt.detail[0] : evt.detail;
+
+    if (Array.isArray(evt.detail) && evt.detail.length > 1) {
+      alert("Can this happen when I union results?")
+    }
 
     // Create a symbol for rendering the graphic
     const symbol = {

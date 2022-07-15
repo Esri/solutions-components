@@ -252,10 +252,15 @@ export interface ISearchConfig {
 }
 
 export interface ISelectionSet {
-  label: string;
-  selectedFeatures: any[];
+  id: number; // Date.Now() when the item is created...used to update a selection set
   workflowType: EWorkflowType;
-  // searchResult: any;
-  // bufferGeom: __esri.Geometry;
-  // searchGeom: __esri.Geometry;
+  searchResult: any;
+  selectLayers: any;
+  graphics: __esri.Graphic[];
+  buffer: __esri.Geometry;
+  distance: number;
+  unit: __esri.LinearUnits;
+  numSelected: number;
+  label: string;
+  selectedFeatures: __esri.Graphic[]
 }

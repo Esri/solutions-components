@@ -5,13 +5,15 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { EPageType, ERefineMode, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchConfig, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
+import { EPageType, ERefineMode, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchConfig, ISelectionSet, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BufferTools {
+        "distance": number;
         "geometries": __esri.Geometry[];
         "translations": any;
         "unionResults": boolean;
+        "unit": __esri.LinearUnits;
     }
     interface ConfigMapSearch {
         "getConfig": () => Promise<ISearchConfig>;
@@ -99,13 +101,17 @@ export namespace Components {
         "geometries": __esri.Geometry[];
         "getSelectType": () => Promise<EWorkflowType>;
         "getSelectedFeatures": () => Promise<__esri.Graphic[]>;
+        "getSelection": () => Promise<ISelectionSet>;
         "getSelectionLabel": () => Promise<string>;
+        "isUpdate": boolean;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
         "searchLayers": __esri.Layer[];
+        "searchTerm": string;
         "selectLayer": __esri.FeatureLayer;
+        "selectionSet": ISelectionSet;
         "translations": any;
         "workflowType": EWorkflowType;
     }
@@ -128,7 +134,6 @@ export namespace Components {
     }
     interface PublicNotificationTwo {
         "addresseeLayer": __esri.FeatureLayer;
-        "downloadEnabled": boolean;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -138,7 +143,7 @@ export namespace Components {
         "pageType": EPageType;
         "saveEnabled": boolean;
         "selectionLayers": __esri.Layer[];
-        "selectionSet": any[];
+        "selectionSets": ISelectionSet[];
         "translations": any;
     }
     interface RefineSelectionTools {
@@ -579,10 +584,12 @@ declare global {
 }
 declare namespace LocalJSX {
     interface BufferTools {
+        "distance"?: number;
         "geometries"?: __esri.Geometry[];
         "onBufferComplete"?: (event: CustomEvent<any>) => void;
         "translations"?: any;
         "unionResults"?: boolean;
+        "unit"?: __esri.LinearUnits;
     }
     interface ConfigMapSearch {
         "layers"?: any[];
@@ -668,6 +675,7 @@ declare namespace LocalJSX {
     }
     interface MapSelectTools {
         "geometries"?: __esri.Geometry[];
+        "isUpdate"?: boolean;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -676,7 +684,9 @@ declare namespace LocalJSX {
         "onSearchGraphicsChange"?: (event: CustomEvent<any>) => void;
         "onSelectionSetChange"?: (event: CustomEvent<any>) => void;
         "searchLayers"?: __esri.Layer[];
+        "searchTerm"?: string;
         "selectLayer"?: __esri.FeatureLayer;
+        "selectionSet"?: ISelectionSet;
         "translations"?: any;
         "workflowType"?: EWorkflowType;
     }
@@ -699,7 +709,6 @@ declare namespace LocalJSX {
     }
     interface PublicNotificationTwo {
         "addresseeLayer"?: __esri.FeatureLayer;
-        "downloadEnabled"?: boolean;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -709,7 +718,7 @@ declare namespace LocalJSX {
         "pageType"?: EPageType;
         "saveEnabled"?: boolean;
         "selectionLayers"?: __esri.Layer[];
-        "selectionSet"?: any[];
+        "selectionSets"?: ISelectionSet[];
         "translations"?: any;
     }
     interface RefineSelectionTools {

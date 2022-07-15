@@ -14,6 +14,10 @@ export class BufferTools {
 
   @Prop() unionResults = true;
 
+  @Prop() unit: __esri.LinearUnits;
+
+  @Prop() distance = 0;
+
   @Watch('geometries')
   geometriesWatchHandler(v: any, oldV: any): void {
     if (v && v !== oldV) {
@@ -24,10 +28,6 @@ export class BufferTools {
   @Event() bufferComplete: EventEmitter;
 
   private geometryEngine:  __esri.geometryEngine;
-
-  private _unit: __esri.LinearUnits;
-
-  private _distance = 0;
 
   protected _unitDiv: HTMLCalciteSelectElement;
 
@@ -48,6 +48,7 @@ export class BufferTools {
             onCalciteInputInput={(evt) => this._setDistance(evt)}
             placeholder="0"
             type="number"
+            value={this.distance ? this.distance.toString() : undefined}
           />
           <calcite-select
             class="flex-1"
@@ -79,35 +80,38 @@ export class BufferTools {
       'kilometers': this.translations?.units.kilometers || 'Kilometers'
     };
     return Object.keys(units).map(u => {
-      if (!this._unit) {
-        this._unit = u as __esri.LinearUnits;
-        
+      let selected = true;
+      if (!this.unit) {
+        this.unit = u as __esri.LinearUnits;
+      } else if (this.unit !== u) {
+        selected = false;
       }
-      return (<calcite-option label={units[u]} value={u} />);
+      return (<calcite-option label={units[u]} selected={selected} value={u} />);
     });
   }
 
   _setDistance(
     event: CustomEvent
   ): void {
-    this._distance = event.detail.value;
+    this.distance = event.detail.value;
     this._buffer();
   }
 
   _setUnit(): void {
-    this._unit = this._unitDiv.value as __esri.LinearUnits;
+    this.unit = this._unitDiv.value as __esri.LinearUnits;
     this._buffer();
   }
 
   _buffer(): void {
     // needs to be wgs 84 or Web Mercator
-    if (this.geometries.length > 0 && this._unit && this._distance > 0) {
-       this.bufferComplete.emit(this.geometryEngine.geodesicBuffer(
+    if (this.geometries.length > 0 && this.unit && this.distance > 0) {
+      const buffer = this.geometryEngine.geodesicBuffer(
         this.geometries,
-        this._distance,
-        this._unit,
+        this.distance,
+        this.unit,
         this.unionResults
-      ));
+      );
+      this.bufferComplete.emit(buffer);
     }
   }
 }

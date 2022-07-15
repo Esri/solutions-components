@@ -10,9 +10,12 @@
 | Property       | Attribute       | Description                                                                                            | Type                                                                   | Default                |
 | -------------- | --------------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- | ---------------------- |
 | `geometries`   | --              |                                                                                                        | `Geometry[]`                                                           | `undefined`            |
+| `isUpdate`     | `is-update`     |                                                                                                        | `boolean`                                                              | `false`                |
 | `mapView`      | --              | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                                                              | `undefined`            |
 | `searchLayers` | --              |                                                                                                        | `Layer[]`                                                              | `undefined`            |
+| `searchTerm`   | `search-term`   |                                                                                                        | `string`                                                               | `undefined`            |
 | `selectLayer`  | --              |                                                                                                        | `FeatureLayer`                                                         | `undefined`            |
+| `selectionSet` | --              |                                                                                                        | `ISelectionSet`                                                        | `undefined`            |
 | `translations` | `translations`  |                                                                                                        | `any`                                                                  | `{}`                   |
 | `workflowType` | `workflow-type` |                                                                                                        | `EWorkflowType.SEARCH \| EWorkflowType.SELECT \| EWorkflowType.SKETCH` | `EWorkflowType.SEARCH` |
 
@@ -55,6 +58,16 @@ Type: `Promise<EWorkflowType>`
 #### Returns
 
 Type: `Promise<Graphic[]>`
+
+
+
+### `getSelection() => Promise<ISelectionSet>`
+
+
+
+#### Returns
+
+Type: `Promise<ISelectionSet>`
 
 
 

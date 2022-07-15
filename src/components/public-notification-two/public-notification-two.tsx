@@ -18,19 +18,21 @@ export class PublicNotificationTwo {
 
   @Prop() addresseeLayer: __esri.FeatureLayer;
 
-  @Prop({ mutable: true }) downloadEnabled = false;
-
   @Prop() saveEnabled = false;
 
   @Prop({ mutable: true }) pageType: EPageType = EPageType.LIST;
 
   @Prop({ mutable: true }) message = "";
 
-  @Prop({ mutable: true }) selectionSet = [];
+  @Prop({ mutable: true }) selectionSets: ISelectionSet[] = [];
 
   @Prop() numSelected = 0;
 
   @Prop() translations: any = {};
+
+  protected _selectTools: HTMLMapSelectToolsElement;
+
+  protected activeSelection: ISelectionSet;
 
   render() {
     return (
@@ -51,22 +53,6 @@ export class PublicNotificationTwo {
     );
   }
 
-  // TODO still thinking through this
-  protected _selectionLists: ISelectionSet[] = [
-    // {
-    //   selectedFeatures: [{}, {}, {}, {}, {}, {}],
-    //   label: "Allen School District | No Buffer"
-    // }, {
-    //   selectedFeatures: [{}, {}],
-    //   label: "Sketch 500 ft"
-    // }, {
-    //   selectedFeatures: [{}, {},{}, {}, {}, {}, {}, {}],
-    //   label: "Counties | No Buffer"
-    // }
-  ];
-
-  protected _selectTools: HTMLMapSelectToolsElement;
-
   _getActions(): VNode {
     let actions: VNode;
     switch (this.pageType) {
@@ -74,9 +60,9 @@ export class PublicNotificationTwo {
         actions = (
           <calcite-action-group>
             {this._getAction(true, "plus", this.translations?.add, (): void => this._setPageType(EPageType.SELECT))}
-            {this._getAction(this.downloadEnabled, "test-data", this.translations?.refineSelection, (): void => this._setPageType(EPageType.REFINE))}
-            {this._getAction(this.downloadEnabled, "file-pdf", this.translations?.downloadPDF, (): void => this._downloadPDF())}
-            {this._getAction(this.downloadEnabled, "file-csv", this.translations?.downloadCSV, (): void => this._downloadCSV())}
+            {this._getAction(this.selectionSets.length > 0, "test-data", this.translations?.refineSelection, (): void => this._setPageType(EPageType.REFINE))}
+            {this._getAction(this.selectionSets.length > 0, "file-pdf", this.translations?.downloadPDF, (): void => this._downloadPDF())}
+            {this._getAction(this.selectionSets.length > 0, "file-csv", this.translations?.downloadCSV, (): void => this._downloadCSV())}
           </calcite-action-group>
         )
         break;
@@ -132,7 +118,6 @@ export class PublicNotificationTwo {
       );
   }
 
-  // TODO may just do this as a seperate component..may get a little messy over here..still exploring
   _getPage(): VNode {
     let page: VNode;
     switch (this.pageType) {
@@ -152,17 +137,17 @@ export class PublicNotificationTwo {
             </calcite-input-message>
             <br />
             {
-              this._selectionLists.length > 0 ? (
+              this.selectionSets.length > 0 ? (
                 <calcite-list class="list-border">
                   {
-                    this._selectionLists.map(ss => {
+                    this.selectionSets.map((ss, i) => {
                       return (
                         <calcite-list-item
                           description={this.translations?.selectedFeatures.replace('{{n}}', ss.selectedFeatures.length)}
                           label={ss.label}
                         >
                           <calcite-action icon="pencil" slot="actions-end" text='' onClick={() => this._openSelection(ss)} />
-                          <calcite-action icon="x" slot="actions-end" text='' />
+                          <calcite-action icon="x" slot="actions-end" text='' onClick={() => this._deleteSelection(i)} />
                         </calcite-list-item>
                       )
                     })
@@ -188,6 +173,8 @@ export class PublicNotificationTwo {
                 searchLayers={this.selectionLayers}
                 selectLayer={this.addresseeLayer}
                 translations={this.translations}
+                selectionSet={this.activeSelection}
+                isUpdate={this.activeSelection ? true : false}
               />
             </div>
             {
@@ -258,7 +245,6 @@ export class PublicNotificationTwo {
   async _layerSelectionChange(evt: CustomEvent): Promise<void> {
     const title: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
     this.addresseeLayer = await getMapLayer(this.mapView, title);
-    // Needs to come from NLS
     this.message = this.translations?.startMessage.replace("{{n}}", evt?.detail?.length > 0 ? evt.detail[0] : "");
   }
 
@@ -288,33 +274,41 @@ export class PublicNotificationTwo {
   }
 
   async _saveSelection(): Promise<void> {
-    const selectedFeatures = await this._selectTools.getSelectedFeatures();
-    const label = await this._selectTools.getSelectionLabel();
-    // TODO...need to work through what happens when you have a selection and
-    // switch workflow type
-    const workflowType = this._selectTools.workflowType;
+    const results = await this._selectTools.getSelection();
+    const isUpdate = this._selectTools.isUpdate;
 
-    this._selectionLists.push({
-      label,
-      selectedFeatures,
-      workflowType,
-      
-    });
+    if (isUpdate) {
+      this.selectionSets = this.selectionSets.map(ss => {
+        return ss.id === results.id ? results : ss;
+      });
+    } else {
+      this.selectionSets = [
+        ...this.selectionSets,
+        results
+      ]
+    }
 
-    this.pageType = EPageType.LIST;
-
-    this._selectTools.clearSelection();
+    this._clearSelection();
   }
 
   _clearSelection () {
     this._selectTools.clearSelection();
+    this.numSelected = 0;
+    this.activeSelection = undefined;
     this._setPageType(EPageType.LIST)
   }
 
+  _deleteSelection(index: number) {
+    this.selectionSets = this.selectionSets.filter((ss, i) => {
+      if (i !== index) {
+        return ss;
+      }
+    });
+  }
+
   _openSelection(selectionSet: ISelectionSet) {
-    // need to be able to pass this back
-    // may need to keep track of other state things like type so we can repopulate appropriately
-    console.log(selectionSet)
+    this.activeSelection = selectionSet;
+    this.pageType = EPageType.SELECT;
   }
 
   _zoomToExtent(): void {

@@ -7,11 +7,13 @@
 
 ## Properties
 
-| Property       | Attribute       | Description | Type         | Default     |
-| -------------- | --------------- | ----------- | ------------ | ----------- |
-| `geometries`   | --              |             | `Geometry[]` | `undefined` |
-| `translations` | `translations`  |             | `any`        | `{}`        |
-| `unionResults` | `union-results` |             | `boolean`    | `true`      |
+| Property       | Attribute       | Description | Type                                                                                     | Default     |
+| -------------- | --------------- | ----------- | ---------------------------------------------------------------------------------------- | ----------- |
+| `distance`     | `distance`      |             | `number`                                                                                 | `0`         |
+| `geometries`   | --              |             | `Geometry[]`                                                                             | `undefined` |
+| `translations` | `translations`  |             | `any`                                                                                    | `{}`        |
+| `unionResults` | `union-results` |             | `boolean`                                                                                | `true`      |
+| `unit`         | `unit`          |             | `"feet" \| "kilometers" \| "meters" \| "miles" \| "nautical-miles" \| "yards" \| number` | `undefined` |
 
 
 ## Events
