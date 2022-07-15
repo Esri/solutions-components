@@ -143,7 +143,8 @@ export class MapSelectTools {
       unit: this._bufferTools.unit,
       numSelected: this._selectedFeatures.length,
       label: this._selectionLabel,
-      selectedFeatures: this._selectedFeatures
+      selectedFeatures: this._selectedFeatures,
+      layerView: this._layerView
     } as ISelectionSet;
   }
 
@@ -336,36 +337,42 @@ export class MapSelectTools {
       alert("Can this happen when I union results?")
     }
 
-    // Create a symbol for rendering the graphic
-    const symbol = {
-      type: "simple-fill",
-      color: [227, 139, 79, 0.8],
-      outline: {
-        color: [255, 255, 255],
-        width: 1
-      }
-    };
+    if (this._bufferGeometry) {
+      // Create a symbol for rendering the graphic
+      const symbol = {
+        type: "simple-fill",
+        color: [227, 139, 79, 0.8],
+        outline: {
+          color: [255, 255, 255],
+          width: 1
+        }
+      };
 
-    // Add the geometry and symbol to a new graphic
-    const polygonGraphic = new this.Graphic({
-      geometry: this._bufferGeometry,
-      symbol
-    });
+      // Add the geometry and symbol to a new graphic
+      const polygonGraphic = new this.Graphic({
+        geometry: this._bufferGeometry,
+        symbol
+      });
 
-    this._bufferGraphicsLayer.removeAll();
-    this._bufferGraphicsLayer.add(polygonGraphic);
-    void this._selectFeatures();
-    void this.mapView.goTo(polygonGraphic.geometry.extent);
+      this._bufferGraphicsLayer.removeAll();
+      this._bufferGraphicsLayer.add(polygonGraphic);
+      void this._selectFeatures();
+      void this.mapView.goTo(polygonGraphic.geometry.extent);
+    } else {
+      this._clearResults(false, false);
+    }
   }
 
   _clearResults(
-    clearSearchWidget: boolean = true
+    clearSearchWidget: boolean = true,
+    clearLabel: boolean = true
   ) {
     this._selectedFeatures = [];
-    //this._searchGeom = undefined;
-    this._selectionLabel = "";
+
+    if (clearLabel) {
+      this._selectionLabel = "";
+    }
     this._bufferGraphicsLayer.removeAll();
-    //this.bufferGeometry = undefined;
 
     if (clearSearchWidget) {
       this._searchWidget.clear();

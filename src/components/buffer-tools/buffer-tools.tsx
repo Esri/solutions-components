@@ -31,6 +31,8 @@ export class BufferTools {
 
   protected _unitDiv: HTMLCalciteSelectElement;
 
+  protected bufferTimeout: NodeJS.Timeout;
+
   async componentWillLoad() {
     await this._initModules();
   }
@@ -94,7 +96,11 @@ export class BufferTools {
     event: CustomEvent
   ): void {
     this.distance = event.detail.value;
-    this._buffer();
+    if (this.distance > 0) {
+      this._buffer();
+    } else {
+      this.bufferComplete.emit(undefined);
+    }
   }
 
   _setUnit(): void {
@@ -103,15 +109,21 @@ export class BufferTools {
   }
 
   _buffer(): void {
-    // needs to be wgs 84 or Web Mercator
-    if (this.geometries.length > 0 && this.unit && this.distance > 0) {
-      const buffer = this.geometryEngine.geodesicBuffer(
-        this.geometries,
-        this.distance,
-        this.unit,
-        this.unionResults
-      );
-      this.bufferComplete.emit(buffer);
+    if (this.bufferTimeout) {
+      clearTimeout(this.bufferTimeout);
     }
+
+    this.bufferTimeout = setTimeout(async () => {
+      // needs to be wgs 84 or Web Mercator
+      if (this.geometries.length > 0 && this.unit && this.distance > 0) {
+        const buffer = this.geometryEngine.geodesicBuffer(
+          this.geometries,
+          this.distance,
+          this.unit,
+          this.unionResults
+        );
+        this.bufferComplete.emit(buffer);
+      }
+    }, 200);
   }
 }

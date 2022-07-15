@@ -145,6 +145,7 @@ export class PublicNotificationTwo {
                         <calcite-list-item
                           description={this.translations?.selectedFeatures.replace('{{n}}', ss.selectedFeatures.length)}
                           label={ss.label}
+                          onClick={() => this._flashSelection(ss)}
                         >
                           <calcite-action icon="pencil" slot="actions-end" text='' onClick={() => this._openSelection(ss)} />
                           <calcite-action icon="x" slot="actions-end" text='' onClick={() => this._deleteSelection(i)} />
@@ -309,6 +310,24 @@ export class PublicNotificationTwo {
   _openSelection(selectionSet: ISelectionSet) {
     this.activeSelection = selectionSet;
     this.pageType = EPageType.SELECT;
+  }
+
+  _flashSelection(
+    selectionSet: ISelectionSet
+  ) {
+    const objectIds = selectionSet.selectedFeatures.map(f => f.getObjectId());
+    const featureFilter = {
+      objectIds
+    } as __esri.FeatureFilter;
+    selectionSet.layerView.featureEffect = {
+      filter: featureFilter,
+      includedEffect: "bloom(1.3, 0.1px, 5%)",
+      excludedEffect: "blur(5px) grayscale(90%) opacity(40%)"
+    } as __esri.FeatureEffect;
+
+    setTimeout(() => {
+      selectionSet.layerView.featureEffect = undefined;
+    }, 1300);
   }
 
   _zoomToExtent(): void {
