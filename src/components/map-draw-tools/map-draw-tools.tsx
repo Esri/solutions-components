@@ -29,7 +29,7 @@ export class MapDrawTools {
   //  Host element access
   //
   //--------------------------------------------------------------------------
-  @Element() el: HTMLPublicNotificationElement;
+  @Element() el: HTMLElement;
 
   //--------------------------------------------------------------------------
   //
@@ -58,6 +58,12 @@ export class MapDrawTools {
    * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
    */
   @Prop() portal: __esri.Portal;
+
+  @Prop({ mutable: true }) pointSymbol: any;
+
+  @Prop({ mutable: true }) polylineSymbol: any;
+
+  @Prop({ mutable: true }) polygonSymbol: any;
 
   /**
    * Contains the translations for this component.
@@ -154,6 +160,10 @@ export class MapDrawTools {
         "mode": "hybrid"
       }
     });
+
+    this.pointSymbol = this.sketchWidget.viewModel.pointSymbol;
+    this.polylineSymbol = this.sketchWidget.viewModel.polylineSymbol;
+    this.polygonSymbol = this.sketchWidget.viewModel.polygonSymbol;
 
     this.sketchWidget.visibleElements = {
       selectionTools: {

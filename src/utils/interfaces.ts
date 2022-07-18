@@ -265,5 +265,8 @@ export interface ISelectionSet {
   selectedFeatures: __esri.Graphic[],
   layerView: __esri.FeatureLayerView,
   geometries: __esri.Geometry[],
-  sketchGraphics: __esri.Graphic[]
+  //sketchGraphics: __esri.Geometry[],
+  polylineSymbol: any,
+  pointSymbol: any,
+  polygonSymbol: any
 }

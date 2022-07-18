@@ -14,10 +14,6 @@
 
 ## Dependencies
 
-### Used by
-
- - [public-notification](../public-notification)
-
 ### Depends on
 
 - calcite-label
@@ -38,7 +34,6 @@ graph TD;
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   calcite-combobox-item --> calcite-icon
-  public-notification --> pdf-download
   style pdf-download fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

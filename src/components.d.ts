@@ -71,6 +71,9 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        "pointSymbol": any;
+        "polygonSymbol": any;
+        "polylineSymbol": any;
         /**
           * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
          */
@@ -118,17 +121,6 @@ export namespace Components {
         "workflowType": EWorkflowType;
     }
     interface PdfDownload {
-        /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
-    }
-    interface PublicNotification {
-        /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView": __esri.MapView;
-        "selectionLayers": __esri.Layer[];
         /**
           * Contains the translations for this component.
          */
@@ -467,12 +459,6 @@ declare global {
         prototype: HTMLPdfDownloadElement;
         new (): HTMLPdfDownloadElement;
     };
-    interface HTMLPublicNotificationElement extends Components.PublicNotification, HTMLStencilElement {
-    }
-    var HTMLPublicNotificationElement: {
-        prototype: HTMLPublicNotificationElement;
-        new (): HTMLPublicNotificationElement;
-    };
     interface HTMLPublicNotificationTwoElement extends Components.PublicNotificationTwo, HTMLStencilElement {
     }
     var HTMLPublicNotificationTwoElement: {
@@ -567,7 +553,6 @@ declare global {
         "map-layer-picker": HTMLMapLayerPickerElement;
         "map-select-tools": HTMLMapSelectToolsElement;
         "pdf-download": HTMLPdfDownloadElement;
-        "public-notification": HTMLPublicNotificationElement;
         "public-notification-two": HTMLPublicNotificationTwoElement;
         "refine-selection-tools": HTMLRefineSelectionToolsElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
@@ -648,6 +633,9 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         "onSketchGraphicsChange"?: (event: CustomEvent<any>) => void;
+        "pointSymbol"?: any;
+        "polygonSymbol"?: any;
+        "polylineSymbol"?: any;
         /**
           * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
          */
@@ -692,17 +680,6 @@ declare namespace LocalJSX {
         "workflowType"?: EWorkflowType;
     }
     interface PdfDownload {
-        /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
-    }
-    interface PublicNotification {
-        /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView"?: __esri.MapView;
-        "selectionLayers"?: __esri.Layer[];
         /**
           * Contains the translations for this component.
          */
@@ -980,7 +957,6 @@ declare namespace LocalJSX {
         "map-layer-picker": MapLayerPicker;
         "map-select-tools": MapSelectTools;
         "pdf-download": PdfDownload;
-        "public-notification": PublicNotification;
         "public-notification-two": PublicNotificationTwo;
         "refine-selection-tools": RefineSelectionTools;
         "solution-configuration": SolutionConfiguration;
@@ -1010,7 +986,6 @@ declare module "@stencil/core" {
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
-            "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
             "public-notification-two": LocalJSX.PublicNotificationTwo & JSXBase.HTMLAttributes<HTMLPublicNotificationTwoElement>;
             "refine-selection-tools": LocalJSX.RefineSelectionTools & JSXBase.HTMLAttributes<HTMLRefineSelectionToolsElement>;
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;

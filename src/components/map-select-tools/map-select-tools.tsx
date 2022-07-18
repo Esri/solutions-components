@@ -30,7 +30,7 @@ export class MapSelectTools {
   //  Host element access
   //
   //--------------------------------------------------------------------------
-  @Element() el: HTMLPublicNotificationElement;
+  @Element() el: HTMLElement;
 
   //--------------------------------------------------------------------------
   //
@@ -65,9 +65,6 @@ export class MapSelectTools {
   sketchGraphicsChange(event: CustomEvent): void {
     this._selectionLabel = `${this.translations?.sketch} ${this._bufferTools.distance} ${this._bufferTools.unit}`;
     this._selectType = EWorkflowType.SKETCH;
-    this._sketchGraphics = [
-      ...event.detail
-    ];
     this.geometries = Array.isArray(event.detail) ? event.detail.map(g => g.geometry) : this.geometries;
   }
 
@@ -104,8 +101,6 @@ export class MapSelectTools {
   protected _searchResult: any;
 
   protected _drawTools: HTMLMapDrawToolsElement;
-
-  protected _sketchGraphics: __esri.Graphic[];
 
   @Method()
   async getSelectedFeatures() {
@@ -146,7 +141,9 @@ export class MapSelectTools {
       selectedFeatures: this._selectedFeatures,
       layerView: this._layerView,
       geometries: this.geometries,
-      sketchGraphics: this._sketchGraphics
+      polylineSymbol: this._drawTools.polylineSymbol,
+      pointSymbol: this._drawTools.pointSymbol,
+      polygonSymbol: this._drawTools.polygonSymbol
     } as ISelectionSet;
   }
 
@@ -264,9 +261,16 @@ export class MapSelectTools {
       this.geometries = [
         ...this.selectionSet?.geometries
       ];
-      this._drawTools.graphics = [
-          ...this.selectionSet?.sketchGraphics
-      ];
+      this._drawTools.graphics = this.geometries.map(sg => {
+        let props = {
+          'geometry': sg,
+          'symbol': sg.type === 'point' ? 
+            this.selectionSet?.pointSymbol : sg.type === 'polyline' ? 
+            this.selectionSet?.polylineSymbol : sg.type === 'polygon' ? 
+            this.selectionSet?.polygonSymbol : undefined
+        };
+        return new this.Graphic(props)
+      });
     }
   }
 
