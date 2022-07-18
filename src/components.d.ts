@@ -65,6 +65,8 @@ export namespace Components {
         "value": any;
     }
     interface MapDrawTools {
+        "clear": () => Promise<void>;
+        "graphics": __esri.Graphic[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -640,6 +642,7 @@ declare namespace LocalJSX {
         "value"?: any;
     }
     interface MapDrawTools {
+        "graphics"?: __esri.Graphic[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -680,8 +683,6 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        "onSearchDistanceChange"?: (event: CustomEvent<any>) => void;
-        "onSearchGraphicsChange"?: (event: CustomEvent<any>) => void;
         "onSelectionSetChange"?: (event: CustomEvent<any>) => void;
         "searchLayers"?: __esri.Layer[];
         "searchTerm"?: string;

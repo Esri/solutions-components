@@ -22,11 +22,9 @@
 
 ## Events
 
-| Event                  | Description | Type               |
-| ---------------------- | ----------- | ------------------ |
-| `searchDistanceChange` |             | `CustomEvent<any>` |
-| `searchGraphicsChange` |             | `CustomEvent<any>` |
-| `selectionSetChange`   |             | `CustomEvent<any>` |
+| Event                | Description | Type               |
+| -------------------- | ----------- | ------------------ |
+| `selectionSetChange` |             | `CustomEvent<any>` |
 
 
 ## Methods

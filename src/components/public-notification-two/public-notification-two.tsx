@@ -288,7 +288,6 @@ export class PublicNotificationTwo {
         results
       ]
     }
-
     this._clearSelection();
   }
 

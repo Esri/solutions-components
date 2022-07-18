@@ -59,20 +59,16 @@ export class MapSelectTools {
 
   @Prop() isUpdate = false;
 
-  // think this should not be necessary
-  @Event() searchGraphicsChange: EventEmitter;
-
-  // think this should not be necessary
-  @Event() searchDistanceChange: EventEmitter;
-
   @Event() selectionSetChange: EventEmitter;
 
   @Listen("sketchGraphicsChange", { target: 'window' })
   sketchGraphicsChange(event: CustomEvent): void {
-    // I think I will need to listen to this but I think I only need to emit if it would 
-    // chnage the underlying selection set
-    this.searchGraphicsChange.emit(event.detail);
-    //this.selectionSetChange.emit(this._selectedFeatures);
+    this._selectionLabel = `${this.translations?.sketch} ${this._bufferTools.distance} ${this._bufferTools.unit}`;
+    this._selectType = EWorkflowType.SKETCH;
+    this._sketchGraphics = [
+      ...event.detail
+    ];
+    this.geometries = Array.isArray(event.detail) ? event.detail.map(g => g.geometry) : this.geometries;
   }
 
   protected GraphicsLayer: typeof __esri.GraphicsLayer;
@@ -106,6 +102,10 @@ export class MapSelectTools {
   protected selectTimeout: NodeJS.Timeout;
 
   protected _searchResult: any;
+
+  protected _drawTools: HTMLMapDrawToolsElement;
+
+  protected _sketchGraphics: __esri.Graphic[];
 
   @Method()
   async getSelectedFeatures() {
@@ -144,7 +144,9 @@ export class MapSelectTools {
       numSelected: this._selectedFeatures.length,
       label: this._selectionLabel,
       selectedFeatures: this._selectedFeatures,
-      layerView: this._layerView
+      layerView: this._layerView,
+      geometries: this.geometries,
+      sketchGraphics: this._sketchGraphics
     } as ISelectionSet;
   }
 
@@ -199,7 +201,12 @@ export class MapSelectTools {
         <div class={showSearchClass}>
           <div class="search-widget" ref={(el) => { this._searchDiv = el }} />
         </div>
-        <map-draw-tools class={showDrawToolsClass} mapView={this.mapView} translations={this.translations} />
+        <map-draw-tools 
+          class={showDrawToolsClass}
+          mapView={this.mapView} 
+          translations={this.translations}
+          ref={(el) => { this._drawTools = el}}
+        />
         <div class={showSelectToolsClass}>
           <map-layer-picker label={this.translations?.selectLayers} mapView={this.mapView} selectionMode={"multi"} translations={this.translations} />
           <refine-selection-tools
@@ -251,11 +258,15 @@ export class MapSelectTools {
     if (this.selectionSet) {
       this.searchTerm = this.selectionSet?.searchResult?.name;
       this._selectionLabel = this.selectionSet?.label;
+      this.workflowType = this.selectionSet?.workflowType;
       this._selectType = this.selectionSet?.workflowType;
       this._searchResult = this.selectionSet?.searchResult;
-      this._bufferComplete({
-        detail: this.selectionSet.buffer
-      } as CustomEvent)
+      this.geometries = [
+        ...this.selectionSet?.geometries
+      ];
+      this._drawTools.graphics = [
+          ...this.selectionSet?.sketchGraphics
+      ];
     }
   }
 
@@ -286,10 +297,21 @@ export class MapSelectTools {
   }
 
   _initGraphicsLayer(): void {
-    const title = "Buffer Layer";
-    this._bufferGraphicsLayer = new this.GraphicsLayer({ title });
-    state.managedLayers.push(title);
-    this.mapView.map.layers.add(this._bufferGraphicsLayer);
+    const title = this.translations?.bufferLayer;
+
+    const bufferIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
+    if (bufferIndex > -1) {
+      this._bufferGraphicsLayer = this.mapView.map.layers.getItemAt(bufferIndex) as __esri.GraphicsLayer;
+    } else {
+      this._bufferGraphicsLayer = new this.GraphicsLayer({ title });
+      state.managedLayers.push(title);
+      const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === this.translations?.sketchLayer);
+      if (sketchIndex > -1) {
+        this.mapView.map.layers.add(this._bufferGraphicsLayer, sketchIndex);
+      } else {
+        this.mapView.map.layers.add(this._bufferGraphicsLayer);
+      }
+    }
   }
 
   _workflowChange(evt: CustomEvent): void {
@@ -381,6 +403,9 @@ export class MapSelectTools {
     if (this._highlightHandle) {
       this._highlightHandle.remove();
     }
+
+    // for sketch
+    this._drawTools.clear();
 
     this.selectionSetChange.emit(this._selectedFeatures.length);
   }

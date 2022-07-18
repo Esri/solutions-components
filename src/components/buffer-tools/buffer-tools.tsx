@@ -115,7 +115,7 @@ export class BufferTools {
 
     this.bufferTimeout = setTimeout(async () => {
       // needs to be wgs 84 or Web Mercator
-      if (this.geometries.length > 0 && this.unit && this.distance > 0) {
+      if (this.geometries?.length > 0 && this.unit && this.distance > 0) {
         const buffer = this.geometryEngine.geodesicBuffer(
           this.geometries,
           this.distance,
