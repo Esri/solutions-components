@@ -7,12 +7,25 @@
 
 ## Properties
 
-| Property       | Attribute      | Description | Type                                    | Default     |
-| -------------- | -------------- | ----------- | --------------------------------------- | ----------- |
-| `mapView`      | --             |             | `MapView`                               | `undefined` |
-| `mode`         | `mode`         |             | `ERefineMode.ADD \| ERefineMode.REMOVE` | `undefined` |
-| `searchLayers` | --             |             | `Layer[]`                               | `undefined` |
-| `translations` | `translations` |             | `any`                                   | `{}`        |
+| Property        | Attribute        | Description | Type                                                                                        | Default     |
+| --------------- | ---------------- | ----------- | ------------------------------------------------------------------------------------------- | ----------- |
+| `active`        | `active`         |             | `boolean`                                                                                   | `false`     |
+| `geometries`    | --               |             | `Geometry[]`                                                                                | `[]`        |
+| `graphics`      | --               |             | `Graphic[]`                                                                                 | `undefined` |
+| `layers`        | --               |             | `Layer[]`                                                                                   | `[]`        |
+| `mapView`       | --               |             | `MapView`                                                                                   | `undefined` |
+| `mode`          | `mode`           |             | `ERefineMode.ADD \| ERefineMode.REMOVE`                                                     | `undefined` |
+| `searchLayers`  | --               |             | `Layer[]`                                                                                   | `undefined` |
+| `selectEnbaled` | `select-enbaled` |             | `boolean`                                                                                   | `false`     |
+| `selectionMode` | `selection-mode` |             | `ESelectionMode.LINE \| ESelectionMode.POINT \| ESelectionMode.POLY \| ESelectionMode.RECT` | `undefined` |
+| `translations`  | `translations`   |             | `any`                                                                                       | `{}`        |
+
+
+## Events
+
+| Event                   | Description | Type               |
+| ----------------------- | ----------- | ------------------ |
+| `refineSelectionChange` |             | `CustomEvent<any>` |
 
 
 ## Dependencies
@@ -24,12 +37,24 @@
 
 ### Depends on
 
+- [map-layer-picker](../map-layer-picker)
 - calcite-action
 
 ### Graph
 ```mermaid
 graph TD;
+  refine-selection-tools --> map-layer-picker
   refine-selection-tools --> calcite-action
+  map-layer-picker --> calcite-label
+  map-layer-picker --> calcite-select
+  map-layer-picker --> calcite-combobox
+  map-layer-picker --> calcite-combobox-item
+  map-layer-picker --> calcite-option
+  calcite-select --> calcite-icon
+  calcite-combobox --> calcite-chip
+  calcite-combobox --> calcite-icon
+  calcite-chip --> calcite-icon
+  calcite-combobox-item --> calcite-icon
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
   map-select-tools --> refine-selection-tools

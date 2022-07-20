@@ -28,8 +28,8 @@
 
 ### Used by
 
- - [map-select-tools](../map-select-tools)
  - [public-notification-two](../public-notification-two)
+ - [refine-selection-tools](../refine-selection-tools)
 
 ### Depends on
 
@@ -52,8 +52,8 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
-  map-select-tools --> map-layer-picker
   public-notification-two --> map-layer-picker
+  refine-selection-tools --> map-layer-picker
   style map-layer-picker fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

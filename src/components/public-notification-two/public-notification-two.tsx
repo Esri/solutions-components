@@ -245,7 +245,7 @@ export class PublicNotificationTwo {
 
   async _layerSelectionChange(evt: CustomEvent): Promise<void> {
     const title: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
-    this.addresseeLayer = await getMapLayer(this.mapView, title);
+    this.addresseeLayer = await getMapLayer(this.mapView, title) as __esri.FeatureLayer;
     this.message = this.translations?.startMessage.replace("{{n}}", evt?.detail?.length > 0 ? evt.detail[0] : "");
   }
 

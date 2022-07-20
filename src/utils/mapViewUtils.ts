@@ -29,7 +29,7 @@ export async function getMapLayerNames(
 export async function getMapLayer(
   mapView: __esri.MapView,
   title: string
-): Promise<__esri.FeatureLayer> {
+): Promise<__esri.Layer> {
   let layerNames = [];
   await mapView.when(() => {
     layerNames = mapView.map.layers.toArray().filter((l) => {

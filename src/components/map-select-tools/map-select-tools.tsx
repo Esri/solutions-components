@@ -63,11 +63,28 @@ export class MapSelectTools {
 
   @Listen("sketchGraphicsChange", { target: 'window' })
   sketchGraphicsChange(event: CustomEvent): void {
-    this._selectionLabel = `${this.translations?.sketch} ${this._bufferTools.distance} ${this._bufferTools.unit}`;
+    this._selectionLabel = this.translations?.sketch;
     this._selectType = EWorkflowType.SKETCH;
     this.geometries = Array.isArray(event.detail) ? event.detail.map(g => g.geometry) : this.geometries;
   }
 
+  @Listen("refineSelectionChange", { target: 'window' })
+  refineSelectionChange(event: CustomEvent): void {
+    this._selectionLabel = this.translations?.select;
+    this._selectType = EWorkflowType.SELECT;
+    // This doesn't seem to work well with points..but fine once a buffer is in the mix
+    this.geometries = Array.isArray(event.detail) ? event.detail.map(g => g.geometry) : this.geometries;
+    // Using OIDs to avoid issue with points
+    const oids = Array.isArray(event.detail) ? event.detail.map(g => g.attributes[g?.layer?.objectIdField]) : [];
+    this._highlightFeatures(oids);
+  }
+
+  // _updateSelection(
+  //   type
+  // ) {
+
+  // }
+  
   protected GraphicsLayer: typeof __esri.GraphicsLayer;
 
   protected Graphic: typeof __esri.Graphic;
@@ -101,6 +118,10 @@ export class MapSelectTools {
   protected _searchResult: any;
 
   protected _drawTools: HTMLMapDrawToolsElement;
+
+  protected _refineTools: HTMLRefineSelectionToolsElement;
+
+  protected _refineSelectLayers: __esri.Layer[];
 
   @Method()
   async getSelectedFeatures() {
@@ -137,13 +158,15 @@ export class MapSelectTools {
       distance: this._bufferTools.distance,
       unit: this._bufferTools.unit,
       numSelected: this._selectedFeatures.length,
-      label: this._selectionLabel,
+      label: this._selectType === EWorkflowType.SEARCH ?
+        this._selectionLabel : `${this._selectionLabel} ${this._bufferTools.distance} ${this._bufferTools.unit}`,
       selectedFeatures: this._selectedFeatures,
       layerView: this._layerView,
       geometries: this.geometries,
       polylineSymbol: this._drawTools.polylineSymbol,
       pointSymbol: this._drawTools.pointSymbol,
-      polygonSymbol: this._drawTools.polygonSymbol
+      polygonSymbol: this._drawTools.polygonSymbol,
+      refineSelectLayers: this._refineTools.layers
     } as ISelectionSet;
   }
 
@@ -204,15 +227,16 @@ export class MapSelectTools {
           translations={this.translations}
           ref={(el) => { this._drawTools = el}}
         />
-        <div class={showSelectToolsClass}>
-          <map-layer-picker label={this.translations?.selectLayers} mapView={this.mapView} selectionMode={"multi"} translations={this.translations} />
-          <refine-selection-tools
-              mapView={this.mapView}
-              mode={ERefineMode.ADD}
-              searchLayers={this.searchLayers}
-              translations={this.translations}
-            />
-        </div>
+        <refine-selection-tools
+          active={selectEnabled}
+          class={showSelectToolsClass}
+          layers={this._refineSelectLayers}
+          mapView={this.mapView}
+          mode={ERefineMode.ADD}
+          ref={(el) => { this._refineTools = el }}
+          searchLayers={this.searchLayers}
+          translations={this.translations}
+        />
         <buffer-tools
           translations={this.translations}
           geometries={this.geometries}
@@ -258,6 +282,7 @@ export class MapSelectTools {
       this.workflowType = this.selectionSet?.workflowType;
       this._selectType = this.selectionSet?.workflowType;
       this._searchResult = this.selectionSet?.searchResult;
+      this._refineSelectLayers = this.selectionSet?.refineSelectLayers;
       this.geometries = [
         ...this.selectionSet?.geometries
       ];
@@ -322,6 +347,16 @@ export class MapSelectTools {
     this.workflowType = evt.detail;
   }
 
+  _highlightFeatures(
+    target: number | number[] | __esri.Graphic | __esri.Graphic[]
+  ) {
+    if (this._highlightHandle) {
+      this._highlightHandle.remove();
+    }
+    this._highlightHandle = this._layerView.highlight(target);
+    this.selectionSetChange.emit((Array.isArray(target) ? target : [target]).length);
+  }
+
   async _selectFeatures(): Promise<void> {
     if (this.selectTimeout) {
       clearTimeout(this.selectTimeout);
@@ -333,12 +368,13 @@ export class MapSelectTools {
         this._highlightHandle.remove();
       }
       await this._queryPage(0);
-      this._highlightHandle = this._layerView.highlight(this._selectedFeatures);
-      this.selectionSetChange.emit(this._selectedFeatures.length);
+      this._highlightFeatures(this._selectedFeatures)
     }, 100);
   }
 
-  async _queryPage(page: number) {
+  async _queryPage(
+    page: number
+  ) {
     const num = this.selectLayer.capabilities.query.maxRecordCount;
     const query = {
       start: page,
@@ -358,10 +394,6 @@ export class MapSelectTools {
   _bufferComplete(evt: CustomEvent) {
     this._bufferGeometry = Array.isArray(evt.detail) ?
       evt.detail[0] : evt.detail;
-
-    if (Array.isArray(evt.detail) && evt.detail.length > 1) {
-      alert("Can this happen when I union results?")
-    }
 
     if (this._bufferGeometry) {
       // Create a symbol for rendering the graphic

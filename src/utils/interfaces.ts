@@ -48,6 +48,13 @@ export enum EWorkflowType {
   SELECT="SELECT",
   SKETCH="SKETCH"
 }
+
+export enum ESelectionMode {
+  POINT="POINT",
+  LINE="LINE",
+  POLY="POLY",
+  RECT="RECT"
+}
 /* eslint-enable no-unused-vars */
 
 export type SelectionMode = "single" | "multi";
@@ -268,5 +275,6 @@ export interface ISelectionSet {
   //sketchGraphics: __esri.Geometry[],
   polylineSymbol: any,
   pointSymbol: any,
-  polygonSymbol: any
+  polygonSymbol: any,
+  refineSelectLayers: __esri.Layer[]
 }

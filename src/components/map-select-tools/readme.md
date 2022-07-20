@@ -91,7 +91,6 @@ Type: `Promise<string>`
 - calcite-radio-group
 - calcite-radio-group-item
 - [map-draw-tools](../map-draw-tools)
-- [map-layer-picker](../map-layer-picker)
 - [refine-selection-tools](../refine-selection-tools)
 - [buffer-tools](../buffer-tools)
 
@@ -101,10 +100,11 @@ graph TD;
   map-select-tools --> calcite-radio-group
   map-select-tools --> calcite-radio-group-item
   map-select-tools --> map-draw-tools
-  map-select-tools --> map-layer-picker
   map-select-tools --> refine-selection-tools
   map-select-tools --> buffer-tools
   calcite-radio-group-item --> calcite-icon
+  refine-selection-tools --> map-layer-picker
+  refine-selection-tools --> calcite-action
   map-layer-picker --> calcite-label
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
@@ -115,7 +115,6 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
-  refine-selection-tools --> calcite-action
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
   buffer-tools --> calcite-label

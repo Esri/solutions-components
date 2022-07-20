@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { EPageType, ERefineMode, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchConfig, ISelectionSet, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
+import { EPageType, ERefineMode, ESelectionMode, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchConfig, ISelectionSet, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BufferTools {
@@ -141,9 +141,15 @@ export namespace Components {
         "translations": any;
     }
     interface RefineSelectionTools {
+        "active": boolean;
+        "geometries": __esri.Geometry[];
+        "graphics": __esri.Graphic[];
+        "layers": __esri.Layer[];
         "mapView": __esri.MapView;
         "mode": ERefineMode;
         "searchLayers": __esri.Layer[];
+        "selectEnbaled": boolean;
+        "selectionMode": ESelectionMode;
         "translations": any;
     }
     interface SolutionConfiguration {
@@ -700,9 +706,16 @@ declare namespace LocalJSX {
         "translations"?: any;
     }
     interface RefineSelectionTools {
+        "active"?: boolean;
+        "geometries"?: __esri.Geometry[];
+        "graphics"?: __esri.Graphic[];
+        "layers"?: __esri.Layer[];
         "mapView"?: __esri.MapView;
         "mode"?: ERefineMode;
+        "onRefineSelectionChange"?: (event: CustomEvent<any>) => void;
         "searchLayers"?: __esri.Layer[];
+        "selectEnbaled"?: boolean;
+        "selectionMode"?: ESelectionMode;
         "translations"?: any;
     }
     interface SolutionConfiguration {

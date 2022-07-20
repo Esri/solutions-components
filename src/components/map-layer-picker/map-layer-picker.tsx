@@ -107,6 +107,7 @@ export class MapLayerPicker {
     return (
       <calcite-combobox
         label=''
+        
         onCalciteComboboxChange={(evt) => this._layerSelectionChange(evt)}
         selection-mode={this.selectionMode}
       >
@@ -119,9 +120,11 @@ export class MapLayerPicker {
     return this.layerNames.reduce((prev, cur) => {
       if (state.managedLayers.indexOf(cur) < 0) {
         prev.push(
-          this.selectionMode === "multi" ?
-            (<calcite-combobox-item textLabel={cur} value={cur} />) :
-            (<calcite-option label={cur} value={cur} />)
+          this.selectionMode === "multi" && this.selectedLayers.indexOf(cur) > -1 ?
+            (<calcite-combobox-item selected textLabel={cur} value={cur} />) :
+            this.selectionMode === "multi" ?
+              (<calcite-combobox-item textLabel={cur} value={cur} />) :
+              (<calcite-option label={cur} value={cur} />)
         );
       }
       return prev;
