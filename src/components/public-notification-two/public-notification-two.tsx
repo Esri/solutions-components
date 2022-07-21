@@ -143,7 +143,7 @@ export class PublicNotificationTwo {
                     this.selectionSets.map((ss, i) => {
                       return (
                         <calcite-list-item
-                          description={this.translations?.selectedFeatures.replace('{{n}}', ss.selectedFeatures.length)}
+                          description={this.translations?.selectedFeatures.replace('{{n}}', ss.selectedIds.length)}
                           label={ss.label}
                           onClick={() => this._flashSelection(ss)}
                         >
@@ -314,7 +314,7 @@ export class PublicNotificationTwo {
   _flashSelection(
     selectionSet: ISelectionSet
   ) {
-    const objectIds = selectionSet.selectedFeatures.map(f => f.getObjectId());
+    const objectIds = selectionSet.selectedIds;
     const featureFilter = {
       objectIds
     } as __esri.FeatureFilter;

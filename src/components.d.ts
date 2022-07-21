@@ -105,7 +105,7 @@ export namespace Components {
         "clearSelection": () => Promise<void>;
         "geometries": __esri.Geometry[];
         "getSelectType": () => Promise<EWorkflowType>;
-        "getSelectedFeatures": () => Promise<__esri.Graphic[]>;
+        "getSelectedIds": () => Promise<number[]>;
         "getSelection": () => Promise<ISelectionSet>;
         "getSelectionLabel": () => Promise<string>;
         "isUpdate": boolean;

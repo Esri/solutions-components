@@ -269,7 +269,8 @@ export interface ISelectionSet {
   unit: __esri.LinearUnits;
   numSelected: number;
   label: string;
-  selectedFeatures: __esri.Graphic[],
+  //selectedFeatures: __esri.Graphic[],
+  selectedIds: number[],
   layerView: __esri.FeatureLayerView,
   geometries: __esri.Geometry[],
   //sketchGraphics: __esri.Geometry[],

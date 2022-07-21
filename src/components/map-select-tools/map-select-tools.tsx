@@ -117,7 +117,7 @@ export class MapSelectTools {
 
   protected _selectType: EWorkflowType;
 
-  protected _selectedFeatures: __esri.Graphic[] = [];
+  protected _selectedIds: number[] = [];
 
   protected _bufferGraphicsLayer: __esri.GraphicsLayer;
 
@@ -140,8 +140,8 @@ export class MapSelectTools {
   protected _refineSelectLayers: __esri.Layer[];
 
   @Method()
-  async getSelectedFeatures() {
-    return this._selectedFeatures;
+  async getSelectedIds() {
+    return this._selectedIds;
   }
 
   @Method()
@@ -173,10 +173,10 @@ export class MapSelectTools {
       buffer: this._bufferGeometry,
       distance: this._bufferTools.distance,
       unit: this._bufferTools.unit,
-      numSelected: this._selectedFeatures.length,
+      numSelected: this._selectedIds.length,
       label: this._selectType === EWorkflowType.SEARCH ?
         this._selectionLabel : `${this._selectionLabel} ${this._bufferTools.distance} ${this._bufferTools.unit}`,
-      selectedFeatures: this._selectedFeatures,
+      selectedIds: this._selectedIds,
       layerView: this._layerView,
       geometries: this.geometries,
       polylineSymbol: this._drawTools.polylineSymbol,
@@ -384,36 +384,27 @@ export class MapSelectTools {
     if (this.selectTimeout) {
       clearTimeout(this.selectTimeout);
     }
-
     this.selectTimeout = setTimeout(async () => {
-      this._selectedFeatures = [];
+      this._selectedIds = [];
       if (this._highlightHandle) {
         this._highlightHandle.remove();
       }
-      await this._query(0, geometry);
-      this._highlightFeatures(this._selectedFeatures);
+      await this._query(geometry);
+      this._highlightFeatures(this._selectedIds);
     }, 100);
   }
 
+  // the queryObjectIds result does not contain exceededTransferLimit
+  // so I don't believe these will need page idea
   async _query(
-    page: number,
     geometry: __esri.Geometry
   ) {
-    const num = this.selectLayer.capabilities.query.maxRecordCount;
-    //switch this to OID query...no need for geoms at this point
     const query = {
-      start: page,
-      num,
-      outFields: ["*"],
-      returnGeometry: true,
       geometry
     };
-    const r = await this.selectLayer.queryFeatures(query);
-    this._selectedFeatures = this._selectedFeatures.concat(r.features);
-
-    if (r.exceededTransferLimit) {
-      return this._query(page += num, geometry)
-    }
+    this._selectedIds = this._selectedIds.concat(
+      await this.selectLayer.queryObjectIds(query)
+    );
   }
 
   _bufferComplete(evt: CustomEvent) {
@@ -450,7 +441,7 @@ export class MapSelectTools {
     clearSearchWidget: boolean = true,
     clearLabel: boolean = true
   ) {
-    this._selectedFeatures = [];
+    this._selectedIds = [];
 
     if (clearLabel) {
       this._selectionLabel = "";
@@ -468,6 +459,6 @@ export class MapSelectTools {
     // for sketch
     this._drawTools.clear();
 
-    this.selectionSetChange.emit(this._selectedFeatures.length);
+    this.selectionSetChange.emit(this._selectedIds.length);
   }
 }

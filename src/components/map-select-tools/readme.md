@@ -49,13 +49,13 @@ Type: `Promise<EWorkflowType>`
 
 
 
-### `getSelectedFeatures() => Promise<__esri.Graphic[]>`
+### `getSelectedIds() => Promise<number[]>`
 
 
 
 #### Returns
 
-Type: `Promise<Graphic[]>`
+Type: `Promise<number[]>`
 
 
 
