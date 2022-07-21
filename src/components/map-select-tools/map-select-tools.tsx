@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import { EWorkflowType, ERefineMode, ISelectionSet } from '../../utils/interfaces';
 import state from "../../utils/publicNotificationStore";
@@ -53,6 +53,20 @@ export class MapSelectTools {
 
   @Prop() geometries: __esri.Geometry[];
 
+  @Watch('geometries')
+  async watchGeometriesHandler(
+    newValue: __esri.Geometry[],
+    oldValue: __esri.Geometry[]
+  ) {
+    if (newValue !== oldValue) {
+      if (this._bufferTools?.distance <= 0) {
+        const queryGeom = newValue.length > 1 ?
+          this.geometryEngine.union(newValue) : newValue[0];
+        this._selectFeatures(queryGeom);
+      }
+    }
+  }
+
   @Prop() searchTerm: string;
 
   @Prop({reflect: false}) selectionSet: ISelectionSet;
@@ -63,27 +77,27 @@ export class MapSelectTools {
 
   @Listen("sketchGraphicsChange", { target: 'window' })
   sketchGraphicsChange(event: CustomEvent): void {
-    this._selectionLabel = this.translations?.sketch;
-    this._selectType = EWorkflowType.SKETCH;
-    this.geometries = Array.isArray(event.detail) ? event.detail.map(g => g.geometry) : this.geometries;
+    this._updateSelection(EWorkflowType.SKETCH, event.detail, this.translations?.sketch);
   }
 
   @Listen("refineSelectionChange", { target: 'window' })
   refineSelectionChange(event: CustomEvent): void {
-    this._selectionLabel = this.translations?.select;
-    this._selectType = EWorkflowType.SELECT;
-    // This doesn't seem to work well with points..but fine once a buffer is in the mix
-    this.geometries = Array.isArray(event.detail) ? event.detail.map(g => g.geometry) : this.geometries;
+    this._updateSelection(EWorkflowType.SELECT, event.detail, this.translations?.select);
     // Using OIDs to avoid issue with points
     const oids = Array.isArray(event.detail) ? event.detail.map(g => g.attributes[g?.layer?.objectIdField]) : [];
     this._highlightFeatures(oids);
   }
 
-  // _updateSelection(
-  //   type
-  // ) {
-
-  // }
+  _updateSelection(
+    type: EWorkflowType,
+    graphics: __esri.Graphic[],
+    label: string
+  ) {
+    // This doesn't seem to work well with points for Select..but fine once a buffer is in the mix
+    this.geometries = Array.isArray(graphics) ? graphics.map(g => g.geometry) : this.geometries;
+    this._selectType = type;
+    this._selectionLabel = label;
+  }
   
   protected GraphicsLayer: typeof __esri.GraphicsLayer;
 
@@ -92,6 +106,8 @@ export class MapSelectTools {
   protected Search: typeof __esri.widgetsSearch;
 
   protected Geometry: typeof __esri.Geometry;
+
+  private geometryEngine:  __esri.geometryEngine;
 
   protected _searchDiv: HTMLElement;
 
@@ -251,21 +267,24 @@ export class MapSelectTools {
   }
 
   async _initModules(): Promise<void> {
-    const [GraphicsLayer, Graphic, Search, Geometry]: [
+    const [GraphicsLayer, Graphic, Search, Geometry, geometryEngine]: [
       __esri.GraphicsLayerConstructor,
       __esri.GraphicConstructor,
       __esri.widgetsSearchConstructor,
-      __esri.GeometryConstructor
+      __esri.GeometryConstructor,
+      __esri.geometryEngine
     ] = await loadModules([
       "esri/layers/GraphicsLayer",
       "esri/Graphic",
       "esri/widgets/Search",
-      "esri/geometry/Geometry"
+      "esri/geometry/Geometry",
+      "esri/geometry/geometryEngine"
     ]);
     this.GraphicsLayer = GraphicsLayer;
     this.Graphic = Graphic;
     this.Search = Search;
     this.Geometry = Geometry;
+    this.geometryEngine = geometryEngine;
   }
 
   async _init() {
@@ -315,11 +334,13 @@ export class MapSelectTools {
 
       this._searchWidget.on('select-result', (searchResults) => {
         this._clearResults(false);
-        this._selectionLabel = searchResults?.result?.name || "Search Result NOT named";
         if (searchResults.result) {
           this._searchResult = searchResults.result;
-          this.geometries = [searchResults.result.feature.geometry];
-          this._selectType = this.workflowType;
+          this._updateSelection(
+            EWorkflowType.SEARCH,
+            [searchResults.result.feature],
+            searchResults?.result?.name
+          );
         }
       });
     }
@@ -357,7 +378,9 @@ export class MapSelectTools {
     this.selectionSetChange.emit((Array.isArray(target) ? target : [target]).length);
   }
 
-  async _selectFeatures(): Promise<void> {
+  async _selectFeatures(
+    geometry: __esri.Geometry
+  ): Promise<void> {
     if (this.selectTimeout) {
       clearTimeout(this.selectTimeout);
     }
@@ -367,27 +390,29 @@ export class MapSelectTools {
       if (this._highlightHandle) {
         this._highlightHandle.remove();
       }
-      await this._queryPage(0);
-      this._highlightFeatures(this._selectedFeatures)
+      await this._query(0, geometry);
+      this._highlightFeatures(this._selectedFeatures);
     }, 100);
   }
 
-  async _queryPage(
-    page: number
+  async _query(
+    page: number,
+    geometry: __esri.Geometry
   ) {
     const num = this.selectLayer.capabilities.query.maxRecordCount;
+    //switch this to OID query...no need for geoms at this point
     const query = {
       start: page,
       num,
       outFields: ["*"],
       returnGeometry: true,
-      geometry: this._bufferGeometry
+      geometry
     };
     const r = await this.selectLayer.queryFeatures(query);
     this._selectedFeatures = this._selectedFeatures.concat(r.features);
 
     if (r.exceededTransferLimit) {
-      return this._queryPage(page += num)
+      return this._query(page += num, geometry)
     }
   }
 
@@ -414,7 +439,7 @@ export class MapSelectTools {
 
       this._bufferGraphicsLayer.removeAll();
       this._bufferGraphicsLayer.add(polygonGraphic);
-      void this._selectFeatures();
+      void this._selectFeatures(this._bufferGeometry);
       void this.mapView.goTo(polygonGraphic.geometry.extent);
     } else {
       this._clearResults(false, false);
