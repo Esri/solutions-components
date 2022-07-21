@@ -59,10 +59,12 @@ export class MapSelectTools {
     oldValue: __esri.Geometry[]
   ) {
     if (newValue !== oldValue) {
-      if (this._bufferTools?.distance <= 0) {
+      if (this._bufferTools?.distance <= 0 && newValue.length > 0) {
         const queryGeom = newValue.length > 1 ?
           this.geometryEngine.union(newValue) : newValue[0];
         this._selectFeatures(queryGeom);
+      } else if (newValue.length === 0) {
+        this._clearResults(true, true);
       }
     }
   }
@@ -164,12 +166,7 @@ export class MapSelectTools {
     return {
       id: this.isUpdate ? this.selectionSet.id : Date.now(),
       workflowType: this._selectType,
-      selectLayers: [{
-        layer: {},
-        oids: []
-      }],
       searchResult: this._searchResult,
-      graphics: this._bufferGraphicsLayer.graphics || [], // seems like I need this or just the buffer geom...not both
       buffer: this._bufferGeometry,
       distance: this._bufferTools.distance,
       unit: this._bufferTools.unit,
@@ -403,7 +400,7 @@ export class MapSelectTools {
       geometry
     };
     this._selectedIds = this._selectedIds.concat(
-      await this.selectLayer.queryObjectIds(query)
+      await this._layerView.queryObjectIds(query)
     );
   }
 

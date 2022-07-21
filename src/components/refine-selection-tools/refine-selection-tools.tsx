@@ -1,4 +1,4 @@
-import { Component, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
+import { Component, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core';
 import { ERefineMode, ESelectionMode } from '../../utils/interfaces';
 import { getMapLayer } from '../../utils/mapViewUtils';
 import state from "../../utils/publicNotificationStore";
@@ -45,6 +45,18 @@ export class RefineSelectionTools {
   protected _sketchGeometry: __esri.Geometry;
 
   @Prop() layers: __esri.Layer[] = [];
+
+  @Watch('layers')
+  async watchGeometriesHandler(
+    newValue: __esri.Layer[],
+    oldValue: __esri.Layer[]
+  ) {
+    if (newValue !== oldValue) {
+      this._initLayerViews();
+    }
+  }
+
+  protected _layerViews: __esri.FeatureLayerView[] = [];
 
   protected _hitTestHandle: __esri.Handle;
 
@@ -142,8 +154,21 @@ export class RefineSelectionTools {
   }
 
   async _init() {
+    await this._initLayerViews();
     this._initGraphicsLayer();
-    this._initSketchViewModel(); 
+    this._initSketchViewModel();
+  }
+
+  async _initLayerViews() {
+    const layerViewPromises = this.layers.reduce((prev, cur) => {
+      if (cur.type === 'feature') {
+        prev.push(this.mapView.whenLayerView(cur))
+      }
+      return prev;
+    }, []);
+    Promise.all(layerViewPromises).then(results => {
+      this._layerViews = results;
+    })
   }
 
   _initSketchViewModel(): void {
@@ -158,6 +183,8 @@ export class RefineSelectionTools {
 
     this._sketchViewModel.on("create", (event) => {
       if (event.state === "complete" && this.active) {
+        this.aaa = {};
+        this.refineSelectionChange.emit([]);
         this._sketchGeometry = event.graphic.geometry;
         this._selectFeatures(this._sketchGeometry);
       }
@@ -257,8 +284,8 @@ export class RefineSelectionTools {
   _selectFeatures(
     geom: __esri.Geometry
   ) {
-    const queryFeaturePromises = this.layers.map(l => {
-      this.aaa[l.title] = [];
+    const queryFeaturePromises = this._layerViews.map(l => {
+      this.aaa[l.layer.title] = [];
       return this._queryPage(0, l, geom)
     })
 
@@ -277,11 +304,10 @@ export class RefineSelectionTools {
 
   async _queryPage(
     page: number,
-    layer: __esri.Layer,
+    layerView: __esri.FeatureLayerView,
     geom: __esri.Geometry
   ) {
-    const l: __esri.FeatureLayer = layer as __esri.FeatureLayer;
-    const num = l.capabilities.query.maxRecordCount;
+    const num = layerView.layer.capabilities.query.maxRecordCount;
     const query = {
       start: page,
       num,
@@ -290,11 +316,11 @@ export class RefineSelectionTools {
       geometry: geom
     };
     
-    const r = await l.queryFeatures(query);
-    this.aaa[layer.title] = this.aaa[layer.title].concat(r.features);
+    const r = await layerView.queryFeatures(query);
+    this.aaa[layerView.layer.title] = this.aaa[layerView.layer.title].concat(r.features);
 
     if (r.exceededTransferLimit) {
-      return this._queryPage(page += num, layer, geom)
+      return this._queryPage(page += num, layerView, geom)
     }
     return this.aaa;
   }

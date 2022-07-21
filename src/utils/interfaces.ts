@@ -262,18 +262,14 @@ export interface ISelectionSet {
   id: number; // Date.Now() when the item is created...used to update a selection set
   workflowType: EWorkflowType;
   searchResult: any;
-  selectLayers: any;
-  graphics: __esri.Graphic[];
   buffer: __esri.Geometry;
   distance: number;
   unit: __esri.LinearUnits;
   numSelected: number;
   label: string;
-  //selectedFeatures: __esri.Graphic[],
   selectedIds: number[],
   layerView: __esri.FeatureLayerView,
   geometries: __esri.Geometry[],
-  //sketchGraphics: __esri.Geometry[],
   polylineSymbol: any,
   pointSymbol: any,
   polygonSymbol: any,

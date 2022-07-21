@@ -255,7 +255,6 @@ export class PublicNotificationTwo {
   }
 
   _setPageType(pageType: EPageType): void {
-    // TODO may handle this elsewhere
     if (pageType === EPageType.LIST) {
       this.numSelected = 0;
     }
