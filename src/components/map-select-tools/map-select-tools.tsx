@@ -234,7 +234,8 @@ export class MapSelectTools {
         <div class={showSearchClass}>
           <div class="search-widget" ref={(el) => { this._searchDiv = el }} />
         </div>
-        <map-draw-tools 
+        <map-draw-tools
+          active={drawEnabled}
           class={showDrawToolsClass}
           mapView={this.mapView} 
           translations={this.translations}

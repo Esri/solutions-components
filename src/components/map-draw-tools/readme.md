@@ -9,6 +9,7 @@
 
 | Property         | Attribute         | Description                                                                                                 | Type        | Default     |
 | ---------------- | ----------------- | ----------------------------------------------------------------------------------------------------------- | ----------- | ----------- |
+| `active`         | `active`          |                                                                                                             | `boolean`   | `false`     |
 | `graphics`       | --                |                                                                                                             | `Graphic[]` | `undefined` |
 | `mapView`        | --                | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html      | `MapView`   | `undefined` |
 | `pointSymbol`    | `point-symbol`    |                                                                                                             | `any`       | `undefined` |

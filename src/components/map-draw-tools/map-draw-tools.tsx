@@ -37,6 +37,9 @@ export class MapDrawTools {
   //
   //--------------------------------------------------------------------------
 
+  // sketch is used by multiple components...need a way to know who should respond...
+  @Prop() active = false;
+
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
@@ -176,7 +179,7 @@ export class MapDrawTools {
     }
 
     this.sketchWidget.on("update", (evt) => {
-      if (evt.state === "complete") {
+      if (evt.state === "complete" && this.active) {
         this.graphics = this._sketchGraphicsLayer.graphics.toArray();
         this.sketchGraphicsChange.emit(this.graphics);
       }

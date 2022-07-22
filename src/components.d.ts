@@ -65,6 +65,7 @@ export namespace Components {
         "value": any;
     }
     interface MapDrawTools {
+        "active": boolean;
         "clear": () => Promise<void>;
         "graphics": __esri.Graphic[];
         /**
@@ -633,6 +634,7 @@ declare namespace LocalJSX {
         "value"?: any;
     }
     interface MapDrawTools {
+        "active"?: boolean;
         "graphics"?: __esri.Graphic[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
