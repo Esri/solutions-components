@@ -7,18 +7,19 @@
 
 ## Properties
 
-| Property        | Attribute        | Description | Type                                                                                        | Default     |
-| --------------- | ---------------- | ----------- | ------------------------------------------------------------------------------------------- | ----------- |
-| `active`        | `active`         |             | `boolean`                                                                                   | `false`     |
-| `geometries`    | --               |             | `Geometry[]`                                                                                | `[]`        |
-| `graphics`      | --               |             | `Graphic[]`                                                                                 | `undefined` |
-| `layers`        | --               |             | `Layer[]`                                                                                   | `[]`        |
-| `mapView`       | --               |             | `MapView`                                                                                   | `undefined` |
-| `mode`          | `mode`           |             | `ERefineMode.ADD \| ERefineMode.REMOVE`                                                     | `undefined` |
-| `searchLayers`  | --               |             | `Layer[]`                                                                                   | `undefined` |
-| `selectEnbaled` | `select-enbaled` |             | `boolean`                                                                                   | `false`     |
-| `selectionMode` | `selection-mode` |             | `ESelectionMode.LINE \| ESelectionMode.POINT \| ESelectionMode.POLY \| ESelectionMode.RECT` | `undefined` |
-| `translations`  | `translations`   |             | `any`                                                                                       | `{}`        |
+| Property         | Attribute          | Description | Type                                                                                        | Default     |
+| ---------------- | ------------------ | ----------- | ------------------------------------------------------------------------------------------- | ----------- |
+| `active`         | `active`           |             | `boolean`                                                                                   | `false`     |
+| `graphics`       | --                 |             | `Graphic[]`                                                                                 | `undefined` |
+| `ids`            | --                 |             | `number[]`                                                                                  | `[]`        |
+| `layerView`      | --                 |             | `FeatureLayerView`                                                                          | `undefined` |
+| `layerViews`     | --                 |             | `FeatureLayerView[]`                                                                        | `[]`        |
+| `mapView`        | --                 |             | `MapView`                                                                                   | `undefined` |
+| `mode`           | `mode`             |             | `ERefineMode.ADD \| ERefineMode.REMOVE`                                                     | `undefined` |
+| `selectEnbaled`  | `select-enbaled`   |             | `boolean`                                                                                   | `false`     |
+| `selectionMode`  | `selection-mode`   |             | `ESelectionMode.LINE \| ESelectionMode.POINT \| ESelectionMode.POLY \| ESelectionMode.RECT` | `undefined` |
+| `translations`   | `translations`     |             | `any`                                                                                       | `{}`        |
+| `useLayerPicker` | `use-layer-picker` |             | `boolean`                                                                                   | `true`      |
 
 
 ## Events

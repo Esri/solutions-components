@@ -1,6 +1,6 @@
-import { Component, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
 import { ERefineMode, ESelectionMode } from '../../utils/interfaces';
-import { getMapLayer } from '../../utils/mapViewUtils';
+import { getMapLayerView } from '../../utils/mapViewUtils';
 import state from "../../utils/publicNotificationStore";
 import { loadModules } from "../../utils/loadModules";
 
@@ -11,6 +11,13 @@ import { loadModules } from "../../utils/loadModules";
 })
 export class RefineSelectionTools {
 
+  //--------------------------------------------------------------------------
+  //
+  //  Host element access
+  //
+  //--------------------------------------------------------------------------
+  @Element() el: HTMLRefineSelectionToolsElement;
+
   // sketch is used by multiple components...need a way to know who should respond...
   @Prop() active = false;
 
@@ -20,13 +27,18 @@ export class RefineSelectionTools {
 
   @Prop() mapView: __esri.MapView;
 
-  @Prop() searchLayers: __esri.Layer[];
-
   @Prop() selectEnbaled = false;
 
   @Prop() selectionMode: ESelectionMode;
 
-  @Prop() geometries: __esri.Geometry[] = [];
+  // TODO this is not needed for building selection sets
+  // Still considering if I should do this or emit a different event for Ids
+  // I can't seem to get the ids watch to fire...so would need to emit on render and that seems bad
+  @Prop() layerView: __esri.FeatureLayerView;
+
+  @Prop() ids: number[] = [];
+
+  @Prop() useLayerPicker = true;
 
   @Prop({ mutable: true }) graphics: __esri.Graphic[];
 
@@ -44,19 +56,7 @@ export class RefineSelectionTools {
 
   protected _sketchGeometry: __esri.Geometry;
 
-  @Prop() layers: __esri.Layer[] = [];
-
-  @Watch('layers')
-  async watchGeometriesHandler(
-    newValue: __esri.Layer[],
-    oldValue: __esri.Layer[]
-  ) {
-    if (newValue !== oldValue) {
-      this._initLayerViews();
-    }
-  }
-
-  protected _layerViews: __esri.FeatureLayerView[] = [];
+  @Prop() layerViews: __esri.FeatureLayerView[] = [];
 
   protected _hitTestHandle: __esri.Handle;
 
@@ -71,13 +71,19 @@ export class RefineSelectionTools {
   }
 
   render() {
+    if (this.ids.length > 0) {
+      this.selectEnbaled = true;
+      this._highlightFeatures(this.ids)
+    }
+    const showLayerPickerClass = this.useLayerPicker ? "div-visible" : "div-not-visible";
     return (
       <Host>
         <div>
           <map-layer-picker
+            class={showLayerPickerClass}
             label={this.translations?.selectLayers}
             mapView={this.mapView}
-            selectedLayers={this.layers.map(l => l.title)}
+            selectedLayers={this.layerViews.map(l => l.layer.title)}
             selectionMode={"multi"}
             translations={this.translations}
             onLayerSelectionChange={(evt) => { this._layerSelectionChange(evt) }}
@@ -154,21 +160,8 @@ export class RefineSelectionTools {
   }
 
   async _init() {
-    await this._initLayerViews();
     this._initGraphicsLayer();
     this._initSketchViewModel();
-  }
-
-  async _initLayerViews() {
-    const layerViewPromises = this.layers.reduce((prev, cur) => {
-      if (cur.type === 'feature') {
-        prev.push(this.mapView.whenLayerView(cur))
-      }
-      return prev;
-    }, []);
-    Promise.all(layerViewPromises).then(results => {
-      this._layerViews = results;
-    })
   }
 
   _initSketchViewModel(): void {
@@ -220,7 +213,7 @@ export class RefineSelectionTools {
     this._hitTestHandle = this.mapView.on("click", (event) => {
       event.stopPropagation();
       const opts = {
-        include: this.layers
+        include: this.layerViews.map(lv => lv.layer)
       };
       this.mapView.hitTest(event, opts).then((response) => {
         let graphics = [];
@@ -244,11 +237,11 @@ export class RefineSelectionTools {
     if (Array.isArray(evt.detail) && evt.detail.length > 0) {
       this.selectEnbaled = true;
       const layerPromises = evt.detail.map(title => {
-        return getMapLayer(this.mapView, title)
+        return getMapLayerView(this.mapView, title)
       });
 
-      Promise.all(layerPromises).then((layers) => {
-        this.layers = layers;
+      Promise.all(layerPromises).then((layerViews) => {
+        this.layerViews = layerViews;
       });
     } else {
       this.selectEnbaled = false;
@@ -284,7 +277,7 @@ export class RefineSelectionTools {
   _selectFeatures(
     geom: __esri.Geometry
   ) {
-    const queryFeaturePromises = this._layerViews.map(l => {
+    const queryFeaturePromises = this.layerViews.map(l => {
       this.aaa[l.layer.title] = [];
       return this._queryPage(0, l, geom)
     })
@@ -323,6 +316,12 @@ export class RefineSelectionTools {
       return this._queryPage(page += num, layerView, geom)
     }
     return this.aaa;
+  }
+
+  _highlightFeatures(
+    ids: number[]
+  ) {
+    this.layerView.highlight(ids);
   }
 
   _undo() {

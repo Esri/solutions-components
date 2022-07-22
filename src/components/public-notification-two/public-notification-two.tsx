@@ -1,6 +1,6 @@
 import { Component, Host, h, Prop, VNode } from '@stencil/core';
 import { ISelectionSet, EPageType, ERefineMode } from '../../utils/interfaces';
-import { getMapLayer } from '../../utils/mapViewUtils';
+import { getMapLayerView } from '../../utils/mapViewUtils';
 
 @Component({
   tag: 'public-notification-two',
@@ -16,7 +16,7 @@ export class PublicNotificationTwo {
 
   @Prop() selectionLayers: __esri.Layer[];
 
-  @Prop() addresseeLayer: __esri.FeatureLayer;
+  @Prop() addresseeLayer: __esri.FeatureLayerView;
 
   @Prop() saveEnabled = false;
 
@@ -214,10 +214,12 @@ export class PublicNotificationTwo {
               </calcite-radio-group-item>
             </calcite-radio-group>
             <refine-selection-tools
+              ids={[...this._getSelectionIds(this.selectionSets)]}
+              layerView={this.addresseeLayer}
               mapView={this.mapView}
               mode={this.addEnabled ? ERefineMode.ADD : ERefineMode.REMOVE}
-              searchLayers={this.selectionLayers}
               translations={this.translations}
+              useLayerPicker={false}
             />
           </div>
         )
@@ -237,6 +239,17 @@ export class PublicNotificationTwo {
     return page;
   }
 
+  _getSelectionIds(
+    selectionSets: ISelectionSet[]
+  ): number[] {
+    return Object.keys(selectionSets).reduce((prev, cur) => {
+      return [
+        ...prev,
+        ...selectionSets[cur].selectedIds
+      ]
+    }, []);
+  }
+
   protected addEnabled = true;
 
   _modeChanged(evt: CustomEvent): void {
@@ -245,7 +258,7 @@ export class PublicNotificationTwo {
 
   async _layerSelectionChange(evt: CustomEvent): Promise<void> {
     const title: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
-    this.addresseeLayer = await getMapLayer(this.mapView, title) as __esri.FeatureLayer;
+    this.addresseeLayer = await getMapLayerView(this.mapView, title);
     this.message = this.translations?.startMessage.replace("{{n}}", evt?.detail?.length > 0 ? evt.detail[0] : "");
   }
 

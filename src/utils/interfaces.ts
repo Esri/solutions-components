@@ -273,5 +273,5 @@ export interface ISelectionSet {
   polylineSymbol: any,
   pointSymbol: any,
   polygonSymbol: any,
-  refineSelectLayers: __esri.Layer[]
+  refineSelectLayers: __esri.FeatureLayerView[]
 }

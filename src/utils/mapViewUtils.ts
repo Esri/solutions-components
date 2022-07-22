@@ -26,15 +26,28 @@ export async function getMapLayerNames(
   return layerNames;
 }
 
+export async function getMapLayerView(
+  mapView: __esri.MapView,
+  title: string
+): Promise<__esri.FeatureLayerView> {
+  let layers = [];
+  await mapView.when(() => {
+    layers = mapView.allLayerViews.toArray().filter((l) => {
+      return l.layer.title === title;
+    });
+  });
+  return layers.length > 0 ? layers[0] : undefined;
+}
+
 export async function getMapLayer(
   mapView: __esri.MapView,
   title: string
-): Promise<__esri.Layer> {
-  let layerNames = [];
+): Promise<__esri.FeatureLayer> {
+  let layers = [];
   await mapView.when(() => {
-    layerNames = mapView.map.layers.toArray().filter((l) => {
+    layers = mapView.map.layers.toArray().filter((l) => {
       return l.title === title;
     });
   });
-  return layerNames.length > 0 ? layerNames[0] : undefined;
+  return layers.length > 0 ? layers[0] : undefined;
 }

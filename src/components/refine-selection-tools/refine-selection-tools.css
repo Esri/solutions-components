@@ -2,6 +2,14 @@
   display: block;
 }
 
+.div-visible {
+  display: inherit;
+}
+
+.div-not-visible {
+  display: none;
+}
+
 /* COPY FROM JS */
 .esri-sketch {
   display: flex;

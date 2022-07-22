@@ -116,7 +116,7 @@ export namespace Components {
         "mapView": __esri.MapView;
         "searchLayers": __esri.Layer[];
         "searchTerm": string;
-        "selectLayer": __esri.FeatureLayer;
+        "selectLayer": __esri.FeatureLayerView;
         "selectionSet": ISelectionSet;
         "translations": any;
         "workflowType": EWorkflowType;
@@ -128,7 +128,7 @@ export namespace Components {
         "translations": any;
     }
     interface PublicNotificationTwo {
-        "addresseeLayer": __esri.FeatureLayer;
+        "addresseeLayer": __esri.FeatureLayerView;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -143,15 +143,16 @@ export namespace Components {
     }
     interface RefineSelectionTools {
         "active": boolean;
-        "geometries": __esri.Geometry[];
         "graphics": __esri.Graphic[];
-        "layers": __esri.Layer[];
+        "ids": number[];
+        "layerView": __esri.FeatureLayerView;
+        "layerViews": __esri.FeatureLayerView[];
         "mapView": __esri.MapView;
         "mode": ERefineMode;
-        "searchLayers": __esri.Layer[];
         "selectEnbaled": boolean;
         "selectionMode": ESelectionMode;
         "translations": any;
+        "useLayerPicker": boolean;
     }
     interface SolutionConfiguration {
         /**
@@ -682,7 +683,7 @@ declare namespace LocalJSX {
         "onSelectionSetChange"?: (event: CustomEvent<any>) => void;
         "searchLayers"?: __esri.Layer[];
         "searchTerm"?: string;
-        "selectLayer"?: __esri.FeatureLayer;
+        "selectLayer"?: __esri.FeatureLayerView;
         "selectionSet"?: ISelectionSet;
         "translations"?: any;
         "workflowType"?: EWorkflowType;
@@ -694,7 +695,7 @@ declare namespace LocalJSX {
         "translations"?: any;
     }
     interface PublicNotificationTwo {
-        "addresseeLayer"?: __esri.FeatureLayer;
+        "addresseeLayer"?: __esri.FeatureLayerView;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -709,16 +710,17 @@ declare namespace LocalJSX {
     }
     interface RefineSelectionTools {
         "active"?: boolean;
-        "geometries"?: __esri.Geometry[];
         "graphics"?: __esri.Graphic[];
-        "layers"?: __esri.Layer[];
+        "ids"?: number[];
+        "layerView"?: __esri.FeatureLayerView;
+        "layerViews"?: __esri.FeatureLayerView[];
         "mapView"?: __esri.MapView;
         "mode"?: ERefineMode;
         "onRefineSelectionChange"?: (event: CustomEvent<any>) => void;
-        "searchLayers"?: __esri.Layer[];
         "selectEnbaled"?: boolean;
         "selectionMode"?: ESelectionMode;
         "translations"?: any;
+        "useLayerPicker"?: boolean;
     }
     interface SolutionConfiguration {
         /**

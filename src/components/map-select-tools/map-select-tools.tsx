@@ -45,7 +45,7 @@ export class MapSelectTools {
 
   @Prop() searchLayers: __esri.Layer[];
 
-  @Prop() selectLayer: __esri.FeatureLayer;
+  @Prop() selectLayer: __esri.FeatureLayerView;
 
   @Prop({ mutable: true }) workflowType: EWorkflowType = EWorkflowType.SEARCH;
 
@@ -127,8 +127,6 @@ export class MapSelectTools {
 
   protected _bufferTools: HTMLBufferToolsElement;
 
-  protected _layerView: __esri.FeatureLayerView;
-
   protected _highlightHandle: __esri.Handle;
 
   protected selectTimeout: NodeJS.Timeout;
@@ -139,7 +137,7 @@ export class MapSelectTools {
 
   protected _refineTools: HTMLRefineSelectionToolsElement;
 
-  protected _refineSelectLayers: __esri.Layer[];
+  protected _refineSelectLayers: __esri.FeatureLayerView[];
 
   @Method()
   async getSelectedIds() {
@@ -174,12 +172,12 @@ export class MapSelectTools {
       label: this._selectType === EWorkflowType.SEARCH ?
         this._selectionLabel : `${this._selectionLabel} ${this._bufferTools.distance} ${this._bufferTools.unit}`,
       selectedIds: this._selectedIds,
-      layerView: this._layerView,
+      layerView: this.selectLayer,
       geometries: this.geometries,
       polylineSymbol: this._drawTools.polylineSymbol,
       pointSymbol: this._drawTools.pointSymbol,
       polygonSymbol: this._drawTools.polygonSymbol,
-      refineSelectLayers: this._refineTools.layers
+      refineSelectLayers: this._refineTools.layerViews
     } as ISelectionSet;
   }
 
@@ -244,11 +242,10 @@ export class MapSelectTools {
         <refine-selection-tools
           active={selectEnabled}
           class={showSelectToolsClass}
-          layers={this._refineSelectLayers}
+          layerViews={this._refineSelectLayers}
           mapView={this.mapView}
           mode={ERefineMode.ADD}
           ref={(el) => { this._refineTools = el }}
-          searchLayers={this.searchLayers}
           translations={this.translations}
         />
         <buffer-tools
@@ -289,7 +286,6 @@ export class MapSelectTools {
     this._initGraphicsLayer();
     this._initSelectionSet();
     this._initSearchWidget();
-    this._layerView = await this.mapView.whenLayerView(this.selectLayer);
   }
 
   _initSelectionSet() {
@@ -372,7 +368,7 @@ export class MapSelectTools {
     if (this._highlightHandle) {
       this._highlightHandle.remove();
     }
-    this._highlightHandle = this._layerView.highlight(target);
+    this._highlightHandle = this.selectLayer.highlight(target);
     this.selectionSetChange.emit((Array.isArray(target) ? target : [target]).length);
   }
 
@@ -401,7 +397,7 @@ export class MapSelectTools {
       geometry
     };
     this._selectedIds = this._selectedIds.concat(
-      await this._layerView.queryObjectIds(query)
+      await this.selectLayer.queryObjectIds(query)
     );
   }
 
