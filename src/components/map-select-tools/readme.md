@@ -7,17 +7,17 @@
 
 ## Properties
 
-| Property       | Attribute       | Description                                                                                            | Type                                                                   | Default                |
-| -------------- | --------------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- | ---------------------- |
-| `geometries`   | --              |                                                                                                        | `Geometry[]`                                                           | `undefined`            |
-| `isUpdate`     | `is-update`     |                                                                                                        | `boolean`                                                              | `false`                |
-| `mapView`      | --              | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                                                              | `undefined`            |
-| `searchLayers` | --              |                                                                                                        | `Layer[]`                                                              | `undefined`            |
-| `searchTerm`   | `search-term`   |                                                                                                        | `string`                                                               | `undefined`            |
-| `selectLayer`  | --              |                                                                                                        | `FeatureLayerView`                                                     | `undefined`            |
-| `selectionSet` | --              |                                                                                                        | `ISelectionSet`                                                        | `undefined`            |
-| `translations` | `translations`  |                                                                                                        | `any`                                                                  | `{}`                   |
-| `workflowType` | `workflow-type` |                                                                                                        | `EWorkflowType.SEARCH \| EWorkflowType.SELECT \| EWorkflowType.SKETCH` | `EWorkflowType.SEARCH` |
+| Property          | Attribute       | Description                                                                                            | Type                                                                                           | Default                |
+| ----------------- | --------------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------- | ---------------------- |
+| `geometries`      | --              |                                                                                                        | `Geometry[]`                                                                                   | `undefined`            |
+| `isUpdate`        | `is-update`     |                                                                                                        | `boolean`                                                                                      | `false`                |
+| `mapView`         | --              | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                                                                                      | `undefined`            |
+| `searchLayers`    | --              |                                                                                                        | `Layer[]`                                                                                      | `undefined`            |
+| `searchTerm`      | `search-term`   |                                                                                                        | `string`                                                                                       | `undefined`            |
+| `selectLayerView` | --              |                                                                                                        | `FeatureLayerView`                                                                             | `undefined`            |
+| `selectionSet`    | --              |                                                                                                        | `ISelectionSet`                                                                                | `undefined`            |
+| `translations`    | `translations`  |                                                                                                        | `any`                                                                                          | `{}`                   |
+| `workflowType`    | `workflow-type` |                                                                                                        | `EWorkflowType.REFINE \| EWorkflowType.SEARCH \| EWorkflowType.SELECT \| EWorkflowType.SKETCH` | `EWorkflowType.SEARCH` |
 
 
 ## Events

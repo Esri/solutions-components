@@ -15,9 +15,10 @@
 | `layerView`      | --                 |             | `FeatureLayerView`                                                                          | `undefined` |
 | `layerViews`     | --                 |             | `FeatureLayerView[]`                                                                        | `[]`        |
 | `mapView`        | --                 |             | `MapView`                                                                                   | `undefined` |
-| `mode`           | `mode`             |             | `ERefineMode.ADD \| ERefineMode.REMOVE`                                                     | `undefined` |
+| `mode`           | `mode`             |             | `ESelectionMode.ADD \| ESelectionMode.REMOVE`                                               | `undefined` |
+| `refineMode`     | `refine-mode`      |             | `ERefineMode.ALL \| ERefineMode.SUBSET`                                                     | `undefined` |
 | `selectEnbaled`  | `select-enbaled`   |             | `boolean`                                                                                   | `false`     |
-| `selectionMode`  | `selection-mode`   |             | `ESelectionMode.LINE \| ESelectionMode.POINT \| ESelectionMode.POLY \| ESelectionMode.RECT` | `undefined` |
+| `selectionMode`  | `selection-mode`   |             | `ESelectionType.LINE \| ESelectionType.POINT \| ESelectionType.POLY \| ESelectionType.RECT` | `undefined` |
 | `translations`   | `translations`     |             | `any`                                                                                       | `{}`        |
 | `useLayerPicker` | `use-layer-picker` |             | `boolean`                                                                                   | `true`      |
 

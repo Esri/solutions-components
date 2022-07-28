@@ -39,6 +39,11 @@ export enum EPageType {
 }
 
 export enum ERefineMode {
+  ALL="ALL",
+  SUBSET="SUBSET"
+}
+
+export enum ESelectionMode {
   ADD="ADD",
   REMOVE="REMOVE"
 }
@@ -46,10 +51,11 @@ export enum ERefineMode {
 export enum EWorkflowType {
   SEARCH="SEARCH",
   SELECT="SELECT",
-  SKETCH="SKETCH"
+  SKETCH="SKETCH",
+  REFINE="REFINE"
 }
 
-export enum ESelectionMode {
+export enum ESelectionType {
   POINT="POINT",
   LINE="LINE",
   POLY="POLY",

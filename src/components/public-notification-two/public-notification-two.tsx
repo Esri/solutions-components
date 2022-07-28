@@ -1,5 +1,5 @@
-import { Component, Host, h, Prop, VNode } from '@stencil/core';
-import { ISelectionSet, EPageType, ERefineMode } from '../../utils/interfaces';
+import { Component, Host, h, Listen, Prop, VNode } from '@stencil/core';
+import { ISelectionSet, EPageType, ESelectionMode, EWorkflowType } from '../../utils/interfaces';
 import { getMapLayerView } from '../../utils/mapViewUtils';
 
 @Component({
@@ -33,6 +33,61 @@ export class PublicNotificationTwo {
   protected _selectTools: HTMLMapSelectToolsElement;
 
   protected activeSelection: ISelectionSet;
+
+  @Listen("refineSelectionChange", { target: 'window' })
+  refineSelectionChange(event: CustomEvent): void {
+    const idUpdates = event.detail.idUpdates;
+    //const graphics = event.detail.graphics;
+
+    if (idUpdates?.removeIds.length > 0) {
+      const removeSets = [];
+      this.selectionSets = this.selectionSets.reduce((prev, cur) => {
+        cur.selectedIds = cur.selectedIds.filter(id => idUpdates.removeIds.indexOf(id) < 0);
+        if (cur.selectedIds.length === 0) {
+          removeSets.push(cur.id);
+        }
+        prev.push(cur);
+        return prev;
+      }, []);
+
+      if (removeSets.length > 0) {
+        this.selectionSets = this.selectionSets.filter(selSet => removeSets.indexOf(selSet.id) < 0);
+      }
+    }
+
+    if (idUpdates?.ids.length > 0) {
+      let selectionSet: ISelectionSet;
+      this.selectionSets.some(ss => {
+        if (ss.workflowType === EWorkflowType.REFINE) {
+          selectionSet = ss;
+          return true;
+        }
+      });
+
+      if (selectionSet) {
+        selectionSet.selectedIds = selectionSet.selectedIds.concat(idUpdates.ids);
+        selectionSet.numSelected = selectionSet.selectedIds.length;
+      } else {
+        this.selectionSets.push({
+          buffer: undefined,
+          distance: 0,
+          geometries: [],
+          id: Date.now(),
+          label: "Refine",
+          layerView: this.addresseeLayer,
+          numSelected: idUpdates.ids.length,
+          pointSymbol: undefined,
+          polylineSymbol: undefined,
+          polygonSymbol: undefined,
+          refineSelectLayers: [],
+          searchResult: undefined,
+          selectedIds: idUpdates.ids,
+          unit: "feet",
+          workflowType: EWorkflowType.REFINE
+        });
+      }
+    }
+  }
 
   render() {
     return (
@@ -69,7 +124,7 @@ export class PublicNotificationTwo {
       case EPageType.SELECT:
         actions = (
           <calcite-action-group>
-            <calcite-action icon="chevron-left" onClick={() => { this._clearSelection() }} text={this.translations?.back} />
+            <calcite-action icon="chevron-left" onClick={() => { this._home() }} text={this.translations?.back} />
             {this._getAction(this.saveEnabled, "save", this.translations?.save, (): Promise<void> => this._saveSelection())}
           </calcite-action-group>
         );
@@ -77,7 +132,7 @@ export class PublicNotificationTwo {
       case EPageType.REFINE:
         actions = (
           <calcite-action-group>
-            <calcite-action icon="chevron-left" onClick={() => { this._setPageType(EPageType.LIST) }} text={this.translations?.back} />
+            <calcite-action icon="chevron-left" onClick={() => { this._home() }} text={this.translations?.back} />
           </calcite-action-group>
         );
         break;
@@ -172,7 +227,7 @@ export class PublicNotificationTwo {
                 onSelectionSetChange={(evt) => this._updateForSelection(evt)}
                 ref={(el) => { this._selectTools = el }}
                 searchLayers={this.selectionLayers}
-                selectLayer={this.addresseeLayer}
+                selectLayerView={this.addresseeLayer}
                 translations={this.translations}
                 selectionSet={this.activeSelection}
                 isUpdate={this.activeSelection ? true : false}
@@ -201,23 +256,26 @@ export class PublicNotificationTwo {
               <calcite-radio-group-item
                 checked={this.addEnabled}
                 class="w-50"
-                value={ERefineMode.ADD}
+                onClick={() => this._setSelectionMode(ESelectionMode.ADD)}
+                value={ESelectionMode.ADD}
               >
                 {this.translations?.add}
               </calcite-radio-group-item>
               <calcite-radio-group-item
                 checked={!this.addEnabled}
                 class="w-50"
-                value={ERefineMode.REMOVE}
+                onClick={() => this._setSelectionMode(ESelectionMode.REMOVE)}
+                value={ESelectionMode.REMOVE}
               >
                 {this.translations?.remove}
               </calcite-radio-group-item>
             </calcite-radio-group>
             <refine-selection-tools
               ids={[...this._getSelectionIds(this.selectionSets)]}
-              layerView={this.addresseeLayer}
+              layerViews={[this.addresseeLayer]}
               mapView={this.mapView}
-              mode={this.addEnabled ? ERefineMode.ADD : ERefineMode.REMOVE}
+              mode={this.addEnabled ? ESelectionMode.ADD : ESelectionMode.REMOVE}
+              ref={(el) => { this._refineTools = el }}
               translations={this.translations}
               useLayerPicker={false}
             />
@@ -239,6 +297,12 @@ export class PublicNotificationTwo {
     return page;
   }
 
+  _setSelectionMode(
+    mode: ESelectionMode
+  ): void {
+    this._refineTools.mode = mode;
+  }
+
   _getSelectionIds(
     selectionSets: ISelectionSet[]
   ): number[] {
@@ -250,10 +314,12 @@ export class PublicNotificationTwo {
     }, []);
   }
 
+  protected _refineTools: HTMLRefineSelectionToolsElement;
+
   protected addEnabled = true;
 
   _modeChanged(evt: CustomEvent): void {
-    this.addEnabled = evt.detail === ERefineMode.ADD;
+    this.addEnabled = evt.detail === ESelectionMode.ADD;
   }
 
   async _layerSelectionChange(evt: CustomEvent): Promise<void> {
@@ -267,11 +333,16 @@ export class PublicNotificationTwo {
     this.saveEnabled = this.numSelected > 0;
   }
 
+  _home(): void {
+    this._clearSelection();
+    this._setPageType(EPageType.LIST);
+  }
+
   _setPageType(pageType: EPageType): void {
+    this.pageType = pageType;
     if (pageType === EPageType.LIST) {
       this.numSelected = 0;
     }
-    this.pageType = pageType;
   }
 
   _downloadCSV(): void {
@@ -300,14 +371,13 @@ export class PublicNotificationTwo {
         results
       ]
     }
-    this._clearSelection();
+    this._home();
   }
 
   _clearSelection () {
-    this._selectTools.clearSelection();
+    this._selectTools?.clearSelection();
     this.numSelected = 0;
     this.activeSelection = undefined;
-    this._setPageType(EPageType.LIST)
   }
 
   _deleteSelection(index: number) {

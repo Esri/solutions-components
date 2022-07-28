@@ -30,13 +30,8 @@ export async function getMapLayerView(
   mapView: __esri.MapView,
   title: string
 ): Promise<__esri.FeatureLayerView> {
-  let layers = [];
-  await mapView.when(() => {
-    layers = mapView.allLayerViews.toArray().filter((l) => {
-      return l.layer.title === title;
-    });
-  });
-  return layers.length > 0 ? layers[0] : undefined;
+  const layer = await getMapLayer(mapView, title);
+  return layer ? await mapView.whenLayerView(layer) : undefined;
 }
 
 export async function getMapLayer(

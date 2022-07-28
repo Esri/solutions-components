@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { EPageType, ERefineMode, ESelectionMode, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchConfig, ISelectionSet, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
+import { EPageType, ERefineMode, ESelectionMode, ESelectionType, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchConfig, ISelectionSet, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BufferTools {
@@ -116,7 +116,7 @@ export namespace Components {
         "mapView": __esri.MapView;
         "searchLayers": __esri.Layer[];
         "searchTerm": string;
-        "selectLayer": __esri.FeatureLayerView;
+        "selectLayerView": __esri.FeatureLayerView;
         "selectionSet": ISelectionSet;
         "translations": any;
         "workflowType": EWorkflowType;
@@ -148,9 +148,10 @@ export namespace Components {
         "layerView": __esri.FeatureLayerView;
         "layerViews": __esri.FeatureLayerView[];
         "mapView": __esri.MapView;
-        "mode": ERefineMode;
+        "mode": ESelectionMode;
+        "refineMode": ERefineMode;
         "selectEnbaled": boolean;
-        "selectionMode": ESelectionMode;
+        "selectionMode": ESelectionType;
         "translations": any;
         "useLayerPicker": boolean;
     }
@@ -412,6 +413,54 @@ export namespace Components {
         "value": string;
     }
 }
+export interface BufferToolsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLBufferToolsElement;
+}
+export interface ConfigPublicNotificationCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLConfigPublicNotificationElement;
+}
+export interface MapDrawToolsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapDrawToolsElement;
+}
+export interface MapLayerPickerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapLayerPickerElement;
+}
+export interface MapSelectToolsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapSelectToolsElement;
+}
+export interface RefineSelectionToolsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLRefineSelectionToolsElement;
+}
+export interface SolutionConfigurationCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSolutionConfigurationElement;
+}
+export interface SolutionContentsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSolutionContentsElement;
+}
+export interface SolutionOrganizationVariablesCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSolutionOrganizationVariablesElement;
+}
+export interface SolutionSpatialRefCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSolutionSpatialRefElement;
+}
+export interface SolutionVariablesCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSolutionVariablesElement;
+}
+export interface StoreManagerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLStoreManagerElement;
+}
 declare global {
     interface HTMLBufferToolsElement extends Components.BufferTools, HTMLStencilElement {
     }
@@ -581,7 +630,7 @@ declare namespace LocalJSX {
     interface BufferTools {
         "distance"?: number;
         "geometries"?: __esri.Geometry[];
-        "onBufferComplete"?: (event: CustomEvent<any>) => void;
+        "onBufferComplete"?: (event: BufferToolsCustomEvent<any>) => void;
         "translations"?: any;
         "unionResults"?: boolean;
         "unit"?: __esri.LinearUnits;
@@ -598,7 +647,7 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        "onConfigSaved"?: (event: CustomEvent<any>) => void;
+        "onConfigSaved"?: (event: ConfigPublicNotificationCustomEvent<any>) => void;
         /**
           * Contains the translations for this component.
          */
@@ -641,7 +690,7 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        "onSketchGraphicsChange"?: (event: CustomEvent<any>) => void;
+        "onSketchGraphicsChange"?: (event: MapDrawToolsCustomEvent<any>) => void;
         "pointSymbol"?: any;
         "polygonSymbol"?: any;
         "polylineSymbol"?: any;
@@ -665,7 +714,7 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        "onLayerSelectionChange"?: (event: CustomEvent<any>) => void;
+        "onLayerSelectionChange"?: (event: MapLayerPickerCustomEvent<any>) => void;
         "selectedLayers"?: string[];
         "selectionMode"?: SelectionMode;
         /**
@@ -680,10 +729,10 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        "onSelectionSetChange"?: (event: CustomEvent<any>) => void;
+        "onSelectionSetChange"?: (event: MapSelectToolsCustomEvent<any>) => void;
         "searchLayers"?: __esri.Layer[];
         "searchTerm"?: string;
-        "selectLayer"?: __esri.FeatureLayerView;
+        "selectLayerView"?: __esri.FeatureLayerView;
         "selectionSet"?: ISelectionSet;
         "translations"?: any;
         "workflowType"?: EWorkflowType;
@@ -715,10 +764,11 @@ declare namespace LocalJSX {
         "layerView"?: __esri.FeatureLayerView;
         "layerViews"?: __esri.FeatureLayerView[];
         "mapView"?: __esri.MapView;
-        "mode"?: ERefineMode;
-        "onRefineSelectionChange"?: (event: CustomEvent<any>) => void;
+        "mode"?: ESelectionMode;
+        "onRefineSelectionChange"?: (event: RefineSelectionToolsCustomEvent<any>) => void;
+        "refineMode"?: ERefineMode;
         "selectEnbaled"?: boolean;
-        "selectionMode"?: ESelectionMode;
+        "selectionMode"?: ESelectionType;
         "translations"?: any;
         "useLayerPicker"?: boolean;
     }
@@ -735,7 +785,7 @@ declare namespace LocalJSX {
           * Contains the current solution item id
          */
         "itemid"?: string;
-        "onSolutionLoaded"?: (event: CustomEvent<any>) => void;
+        "onSolutionLoaded"?: (event: SolutionConfigurationCustomEvent<any>) => void;
         /**
           * Used to show/hide loading indicator
          */
@@ -762,7 +812,7 @@ declare namespace LocalJSX {
         "value"?: ISolutionConfiguration;
     }
     interface SolutionContents {
-        "onSolutionItemSelected"?: (event: CustomEvent<any>) => void;
+        "onSolutionItemSelected"?: (event: SolutionContentsCustomEvent<any>) => void;
         /**
           * Contains the current item that is selected.
          */
@@ -845,7 +895,7 @@ declare namespace LocalJSX {
         "value"?: IItemShare[];
     }
     interface SolutionOrganizationVariables {
-        "onOrganizationVariableSelected"?: (event: CustomEvent<any>) => void;
+        "onOrganizationVariableSelected"?: (event: SolutionOrganizationVariablesCustomEvent<any>) => void;
         /**
           * Contains the translations for this component.
          */
@@ -890,7 +940,7 @@ declare namespace LocalJSX {
           * When true, all but the main switch are disabled to prevent interaction.
          */
         "locked"?: boolean;
-        "onFeatureServiceSpatialReferenceChange"?: (event: CustomEvent<any>) => void;
+        "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<any>) => void;
         /**
           * List of service names the spatial reference should apply to
          */
@@ -939,7 +989,7 @@ declare namespace LocalJSX {
         "varsOpen"?: boolean;
     }
     interface SolutionVariables {
-        "onSolutionVariableSelected"?: (event: CustomEvent<any>) => void;
+        "onSolutionVariableSelected"?: (event: SolutionVariablesCustomEvent<any>) => void;
         /**
           * Contains the translations for this component.
          */
@@ -954,7 +1004,7 @@ declare namespace LocalJSX {
           * Credentials for requests
          */
         "authentication"?: UserSession;
-        "onStateLoaded"?: (event: CustomEvent<any>) => void;
+        "onStateLoaded"?: (event: StoreManagerCustomEvent<any>) => void;
         /**
           * Templates for the current solution
          */

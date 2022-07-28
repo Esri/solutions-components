@@ -1,5 +1,5 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
-import { ERefineMode, ESelectionMode } from '../../utils/interfaces';
+import { ERefineMode, ESelectionMode, ESelectionType } from '../../utils/interfaces';
 import { getMapLayerView } from '../../utils/mapViewUtils';
 import state from "../../utils/publicNotificationStore";
 import { loadModules } from "../../utils/loadModules";
@@ -21,7 +21,9 @@ export class RefineSelectionTools {
   // sketch is used by multiple components...need a way to know who should respond...
   @Prop() active = false;
 
-  @Prop() mode: ERefineMode;
+  @Prop() mode: ESelectionMode;
+
+  @Prop() refineMode: ERefineMode;
 
   @Prop() translations: any = {};
 
@@ -29,7 +31,7 @@ export class RefineSelectionTools {
 
   @Prop() selectEnbaled = false;
 
-  @Prop() selectionMode: ESelectionMode;
+  @Prop() selectionMode: ESelectionType;
 
   // TODO this is not needed for building selection sets
   // Still considering if I should do this or emit a different event for Ids
@@ -60,7 +62,13 @@ export class RefineSelectionTools {
 
   protected _hitTestHandle: __esri.Handle;
 
+  protected _highlightHandle: __esri.Handle;
+
   protected aaa: any = {};
+
+  protected _addIds: number[] = [];
+
+  protected _removeIds: number[] = [];
 
   async componentWillLoad() {
     await this._initModules();
@@ -70,11 +78,20 @@ export class RefineSelectionTools {
     this._init();
   }
 
-  render() {
+  disconnectedCallback() {
+    this.active = false;
+    this._clearHighlight();
+  }
+
+  connectedCallback() {
+    this.active = true;
     if (this.ids.length > 0) {
       this.selectEnbaled = true;
       this._highlightFeatures(this.ids)
     }
+  }
+
+  render() {
     const showLayerPickerClass = this.useLayerPicker ? "div-visible" : "div-not-visible";
     return (
       <Host>
@@ -95,7 +112,7 @@ export class RefineSelectionTools {
                   <calcite-action 
                     disabled={!this.selectEnbaled}
                     icon="select"
-                    onClick={() => this._setSelectionMode(ESelectionMode.POINT)}
+                    onClick={() => this._setSelectionMode(ESelectionType.POINT)}
                     scale="s"
                     text={this.translations?.select}
                   />
@@ -104,21 +121,21 @@ export class RefineSelectionTools {
                   <calcite-action
                     disabled={!this.selectEnbaled}
                     icon="line"
-                    onClick={() => this._setSelectionMode(ESelectionMode.LINE)}
+                    onClick={() => this._setSelectionMode(ESelectionType.LINE)}
                     scale="s"
                     text={this.translations?.selectLine}
                   />
                   <calcite-action
                     disabled={!this.selectEnbaled}
                     icon="polygon"
-                    onClick={() => this._setSelectionMode(ESelectionMode.POLY)}
+                    onClick={() => this._setSelectionMode(ESelectionType.POLY)}
                     scale="s"
                     text={this.translations?.selectPolygon}
                   />
                   <calcite-action 
                     disabled={!this.selectEnbaled}
                     icon="rectangle"
-                    onClick={() => this._setSelectionMode(ESelectionMode.RECT)}
+                    onClick={() => this._setSelectionMode(ESelectionType.RECT)}
                     scale="s"
                     text={this.translations?.selectRectangle}
                   />
@@ -177,7 +194,7 @@ export class RefineSelectionTools {
     this._sketchViewModel.on("create", (event) => {
       if (event.state === "complete" && this.active) {
         this.aaa = {};
-        this.refineSelectionChange.emit([]);
+        this.refineSelectionChange.emit({graphics: [], idUpdates: { ids: [], removeIds: [] }});
         this._sketchGeometry = event.graphic.geometry;
         this._selectFeatures(this._sketchGeometry);
       }
@@ -226,7 +243,7 @@ export class RefineSelectionTools {
             return prev;
           }, []);
         }
-        this.refineSelectionChange.emit(graphics);
+        this.refineSelectionChange.emit({graphics, idUpdates: { ids: [], removeIds: [] }});
         this._clear();
       });
     });
@@ -249,7 +266,7 @@ export class RefineSelectionTools {
   }
 
   _setSelectionMode(
-    mode: ESelectionMode
+    mode: ESelectionType
   ) {
     this.selectionMode = mode;
 
@@ -258,17 +275,17 @@ export class RefineSelectionTools {
     }
 
     switch (this.selectionMode) {
-      case ESelectionMode.POINT:
+      case ESelectionType.POINT:
         //this._sketchViewModel.create("point");
         this._initHitTest();
         break;
-      case ESelectionMode.LINE:
+      case ESelectionType.LINE:
         this._sketchViewModel.create("polyline");
         break;
-      case ESelectionMode.POLY:
+      case ESelectionType.POLY:
         this._sketchViewModel.create("polygon");
         break;
-      case ESelectionMode.RECT:
+      case ESelectionType.RECT:
         this._sketchViewModel.create("rectangle");
         break;
     }
@@ -288,11 +305,33 @@ export class RefineSelectionTools {
         Object.keys(r).forEach(k => {
           graphics = graphics.concat(r[k]);
         })
-      })
+      });
 
-      this.refineSelectionChange.emit(graphics);
+      if (this.refineMode === ERefineMode.SUBSET) {
+        this.refineSelectionChange.emit({graphics, idUpdates: { ids: [], removeIds: [] }});
+      } else {
+        const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
+        let idUpdates = { ids: [], removeIds: [] };
+        if (this.mode === ESelectionMode.ADD) {
+          this._addIds = this._addIds.concat(oids);
+          idUpdates.ids = this._addIds;
+        } else {
+          this.ids.forEach(id => {
+            if (oids.indexOf(id) < 0) {
+              console.log('has it...still thinkng ')
+            } else {
+              this._removeIds.push(id)
+            }
+          });
+          idUpdates.removeIds = this._removeIds;
+        }
+        this.ids = this.ids.concat(idUpdates.ids);
+        this._highlightFeatures(this.ids);
+        this.refineSelectionChange.emit({graphics: [], idUpdates});
+      }
       this._clear();
-    })
+    });
+
   }
 
   async _queryPage(
@@ -321,7 +360,14 @@ export class RefineSelectionTools {
   _highlightFeatures(
     ids: number[]
   ) {
-    this.layerView.highlight(ids);
+    this._clearHighlight();
+    this._highlightHandle = this.layerViews[0].highlight(ids);
+  }
+
+  _clearHighlight() {
+    if (this._highlightHandle) {
+      this._highlightHandle.remove();
+    }
   }
 
   _undo() {

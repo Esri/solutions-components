@@ -16,7 +16,7 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
-import { EWorkflowType, ERefineMode, ISelectionSet } from '../../utils/interfaces';
+import { EWorkflowType, ESelectionMode, ISelectionSet } from '../../utils/interfaces';
 import state from "../../utils/publicNotificationStore";
 
 @Component({
@@ -45,7 +45,7 @@ export class MapSelectTools {
 
   @Prop() searchLayers: __esri.Layer[];
 
-  @Prop() selectLayer: __esri.FeatureLayerView;
+  @Prop() selectLayerView: __esri.FeatureLayerView;
 
   @Prop({ mutable: true }) workflowType: EWorkflowType = EWorkflowType.SEARCH;
 
@@ -84,9 +84,12 @@ export class MapSelectTools {
 
   @Listen("refineSelectionChange", { target: 'window' })
   refineSelectionChange(event: CustomEvent): void {
-    this._updateSelection(EWorkflowType.SELECT, event.detail, this.translations?.select);
+    //const ids = event.detail.idUpdates.ids;
+    const graphics = event.detail.graphics;
+
+    this._updateSelection(EWorkflowType.SELECT, graphics, this.translations?.select);
     // Using OIDs to avoid issue with points
-    const oids = Array.isArray(event.detail) ? event.detail.map(g => g.attributes[g?.layer?.objectIdField]) : [];
+    const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
     this._highlightFeatures(oids);
   }
 
@@ -172,7 +175,7 @@ export class MapSelectTools {
       label: this._selectType === EWorkflowType.SEARCH ?
         this._selectionLabel : `${this._selectionLabel} ${this._bufferTools.distance} ${this._bufferTools.unit}`,
       selectedIds: this._selectedIds,
-      layerView: this.selectLayer,
+      layerView: this.selectLayerView,
       geometries: this.geometries,
       polylineSymbol: this._drawTools.polylineSymbol,
       pointSymbol: this._drawTools.pointSymbol,
@@ -186,7 +189,7 @@ export class MapSelectTools {
   }
 
   async componentDidLoad() {
-    this._init()
+    this._init();
   }
 
   render() {
@@ -244,7 +247,7 @@ export class MapSelectTools {
           class={showSelectToolsClass}
           layerViews={this._refineSelectLayers}
           mapView={this.mapView}
-          mode={ERefineMode.ADD}
+          mode={ESelectionMode.ADD}
           ref={(el) => { this._refineTools = el }}
           translations={this.translations}
         />
@@ -368,7 +371,7 @@ export class MapSelectTools {
     if (this._highlightHandle) {
       this._highlightHandle.remove();
     }
-    this._highlightHandle = this.selectLayer.highlight(target);
+    this._highlightHandle = this.selectLayerView.highlight(target);
     this.selectionSetChange.emit((Array.isArray(target) ? target : [target]).length);
   }
 
@@ -388,8 +391,6 @@ export class MapSelectTools {
     }, 100);
   }
 
-  // the queryObjectIds result does not contain exceededTransferLimit
-  // so I don't believe these will need page idea
   async _query(
     geometry: __esri.Geometry
   ) {
@@ -397,7 +398,7 @@ export class MapSelectTools {
       geometry
     };
     this._selectedIds = this._selectedIds.concat(
-      await this.selectLayer.queryObjectIds(query)
+      await this.selectLayerView.queryObjectIds(query)
     );
   }
 
@@ -440,9 +441,12 @@ export class MapSelectTools {
     if (clearLabel) {
       this._selectionLabel = "";
     }
-    this._bufferGraphicsLayer.removeAll();
 
-    if (clearSearchWidget) {
+    if (this._bufferGraphicsLayer) {
+      this._bufferGraphicsLayer.removeAll();
+    }
+
+    if (clearSearchWidget && this._searchWidget) {
       this._searchWidget.clear();
     }
 
@@ -451,7 +455,9 @@ export class MapSelectTools {
     }
 
     // for sketch
-    this._drawTools.clear();
+    if (this._drawTools) {
+      this._drawTools.clear();
+    }
 
     this.selectionSetChange.emit(this._selectedIds.length);
   }
