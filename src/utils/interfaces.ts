@@ -271,13 +271,9 @@ export interface ISelectionSet {
   buffer: __esri.Geometry;
   distance: number;
   unit: __esri.LinearUnits;
-  numSelected: number;
   label: string;
   selectedIds: number[],
   layerView: __esri.FeatureLayerView,
   geometries: __esri.Geometry[],
-  polylineSymbol: any,
-  pointSymbol: any,
-  polygonSymbol: any,
   refineSelectLayers: __esri.FeatureLayerView[]
 }

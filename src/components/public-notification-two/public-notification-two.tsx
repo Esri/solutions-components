@@ -66,7 +66,6 @@ export class PublicNotificationTwo {
 
       if (selectionSet) {
         selectionSet.selectedIds = selectionSet.selectedIds.concat(idUpdates.ids);
-        selectionSet.numSelected = selectionSet.selectedIds.length;
       } else {
         this.selectionSets.push({
           buffer: undefined,
@@ -75,10 +74,6 @@ export class PublicNotificationTwo {
           id: Date.now(),
           label: "Refine",
           layerView: this.addresseeLayer,
-          numSelected: idUpdates.ids.length,
-          pointSymbol: undefined,
-          polylineSymbol: undefined,
-          polygonSymbol: undefined,
           refineSelectLayers: [],
           searchResult: undefined,
           selectedIds: idUpdates.ids,

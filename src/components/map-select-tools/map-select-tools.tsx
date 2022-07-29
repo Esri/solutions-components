@@ -171,15 +171,11 @@ export class MapSelectTools {
       buffer: this._bufferGeometry,
       distance: this._bufferTools.distance,
       unit: this._bufferTools.unit,
-      numSelected: this._selectedIds.length,
       label: this._selectType === EWorkflowType.SEARCH ?
         this._selectionLabel : `${this._selectionLabel} ${this._bufferTools.distance} ${this._bufferTools.unit}`,
       selectedIds: this._selectedIds,
       layerView: this.selectLayerView,
       geometries: this.geometries,
-      polylineSymbol: this._drawTools.polylineSymbol,
-      pointSymbol: this._drawTools.pointSymbol,
-      polygonSymbol: this._drawTools.polygonSymbol,
       refineSelectLayers: this._refineTools.layerViews
     } as ISelectionSet;
   }
@@ -306,9 +302,9 @@ export class MapSelectTools {
         let props = {
           'geometry': sg,
           'symbol': sg.type === 'point' ? 
-            this.selectionSet?.pointSymbol : sg.type === 'polyline' ? 
-            this.selectionSet?.polylineSymbol : sg.type === 'polygon' ? 
-            this.selectionSet?.polygonSymbol : undefined
+            this._drawTools?.pointSymbol : sg.type === 'polyline' ? 
+            this._drawTools?.polylineSymbol : sg.type === 'polygon' ? 
+            this._drawTools?.polygonSymbol : undefined
         };
         return new this.Graphic(props)
       });
@@ -458,7 +454,6 @@ export class MapSelectTools {
     if (this._drawTools) {
       this._drawTools.clear();
     }
-
     this.selectionSetChange.emit(this._selectedIds.length);
   }
 }

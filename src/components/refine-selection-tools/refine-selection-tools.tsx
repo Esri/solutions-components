@@ -68,8 +68,6 @@ export class RefineSelectionTools {
 
   protected _addIds: number[] = [];
 
-  protected _removeIds: number[] = [];
-
   async componentWillLoad() {
     await this._initModules();
   }
@@ -194,7 +192,6 @@ export class RefineSelectionTools {
     this._sketchViewModel.on("create", (event) => {
       if (event.state === "complete" && this.active) {
         this.aaa = {};
-        this.refineSelectionChange.emit({graphics: [], idUpdates: { ids: [], removeIds: [] }});
         this._sketchGeometry = event.graphic.geometry;
         this._selectFeatures(this._sketchGeometry);
       }
@@ -315,17 +312,19 @@ export class RefineSelectionTools {
         if (this.mode === ESelectionMode.ADD) {
           this._addIds = this._addIds.concat(oids);
           idUpdates.ids = this._addIds;
+          this.ids = this.ids.concat(idUpdates.ids);
         } else {
           this.ids.forEach(id => {
             if (oids.indexOf(id) < 0) {
               console.log('has it...still thinkng ')
             } else {
-              this._removeIds.push(id)
+              idUpdates.removeIds.push(id)
             }
           });
-          idUpdates.removeIds = this._removeIds;
+          this.ids = this.ids.filter(id => {
+            return idUpdates.removeIds.indexOf(id) < 0;
+          });
         }
-        this.ids = this.ids.concat(idUpdates.ids);
         this._highlightFeatures(this.ids);
         this.refineSelectionChange.emit({graphics: [], idUpdates});
       }
