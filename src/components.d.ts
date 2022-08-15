@@ -170,7 +170,7 @@ export namespace Components {
     }
     interface PdfDownload {
         /**
-          * Contains the translations for this component.
+          * Contains the translations for this component. All UI strings should be defined here.
          */
         "translations": any;
     }
@@ -833,7 +833,7 @@ declare namespace LocalJSX {
     }
     interface PdfDownload {
         /**
-          * Contains the translations for this component.
+          * Contains the translations for this component. All UI strings should be defined here.
          */
         "translations"?: any;
     }

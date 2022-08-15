@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property       | Attribute      | Description                                   | Type  | Default |
-| -------------- | -------------- | --------------------------------------------- | ----- | ------- |
-| `translations` | `translations` | Contains the translations for this component. | `any` | `{}`    |
+| Property       | Attribute      | Description                                                                          | Type  | Default |
+| -------------- | -------------- | ------------------------------------------------------------------------------------ | ----- | ------- |
+| `translations` | `translations` | Contains the translations for this component. All UI strings should be defined here. | `any` | `{}`    |
 
 
 ## Dependencies
