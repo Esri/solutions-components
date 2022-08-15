@@ -174,7 +174,7 @@ export namespace Components {
          */
         "translations": any;
     }
-    interface PublicNotificationTwo {
+    interface PublicNotification {
         /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
@@ -623,11 +623,11 @@ declare global {
         prototype: HTMLPdfDownloadElement;
         new (): HTMLPdfDownloadElement;
     };
-    interface HTMLPublicNotificationTwoElement extends Components.PublicNotificationTwo, HTMLStencilElement {
+    interface HTMLPublicNotificationElement extends Components.PublicNotification, HTMLStencilElement {
     }
-    var HTMLPublicNotificationTwoElement: {
-        prototype: HTMLPublicNotificationTwoElement;
-        new (): HTMLPublicNotificationTwoElement;
+    var HTMLPublicNotificationElement: {
+        prototype: HTMLPublicNotificationElement;
+        new (): HTMLPublicNotificationElement;
     };
     interface HTMLRefineSelectionToolsElement extends Components.RefineSelectionTools, HTMLStencilElement {
     }
@@ -717,7 +717,7 @@ declare global {
         "map-layer-picker": HTMLMapLayerPickerElement;
         "map-select-tools": HTMLMapSelectToolsElement;
         "pdf-download": HTMLPdfDownloadElement;
-        "public-notification-two": HTMLPublicNotificationTwoElement;
+        "public-notification": HTMLPublicNotificationElement;
         "refine-selection-tools": HTMLRefineSelectionToolsElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-contents": HTMLSolutionContentsElement;
@@ -897,7 +897,7 @@ declare namespace LocalJSX {
          */
         "translations"?: any;
     }
-    interface PublicNotificationTwo {
+    interface PublicNotification {
         /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
@@ -1238,7 +1238,7 @@ declare namespace LocalJSX {
         "map-layer-picker": MapLayerPicker;
         "map-select-tools": MapSelectTools;
         "pdf-download": PdfDownload;
-        "public-notification-two": PublicNotificationTwo;
+        "public-notification": PublicNotification;
         "refine-selection-tools": RefineSelectionTools;
         "solution-configuration": SolutionConfiguration;
         "solution-contents": SolutionContents;
@@ -1267,7 +1267,7 @@ declare module "@stencil/core" {
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
-            "public-notification-two": LocalJSX.PublicNotificationTwo & JSXBase.HTMLAttributes<HTMLPublicNotificationTwoElement>;
+            "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
             "refine-selection-tools": LocalJSX.RefineSelectionTools & JSXBase.HTMLAttributes<HTMLRefineSelectionToolsElement>;
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;

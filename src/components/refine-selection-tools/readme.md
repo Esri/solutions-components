@@ -35,7 +35,7 @@
 ### Used by
 
  - [map-select-tools](../map-select-tools)
- - [public-notification-two](../public-notification-two)
+ - [public-notification](../public-notification)
 
 ### Depends on
 
@@ -60,7 +60,7 @@ graph TD;
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
   map-select-tools --> refine-selection-tools
-  public-notification-two --> refine-selection-tools
+  public-notification --> refine-selection-tools
   style refine-selection-tools fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

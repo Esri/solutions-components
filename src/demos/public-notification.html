@@ -23,7 +23,9 @@
         min-width: 300px;
         margin: 1rem;
         padding: 1rem;
-        border: 1px solid;
+        border: 1px solid var(--calcite-ui-border-2);
+        max-height: -webkit-fill-available;
+        min-height: 16em;
       }
       .column[dir="rtl"] {
         float: left;
@@ -43,7 +45,8 @@
     <script type="module" src="../solutions.esm.js"></script>
 
     <script>
-      require(["esri/WebMap", "esri/views/MapView"], (
+      require(["i18n!../assets/nls/strings.js", "esri/WebMap", "esri/views/MapView"], (
+        translations,
         WebMap,
         MapView
       ) => {
@@ -54,6 +57,7 @@
         });
 
         const demo = document.getElementById("demo");
+        demo.translations = translations.common;
         demo.mapView = new MapView({
           container: "viewDiv",
           map: webMap,

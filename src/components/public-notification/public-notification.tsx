@@ -3,8 +3,8 @@ import { ISelectionSet, EPageType, ESelectionMode, EWorkflowType } from '../../u
 import { getMapLayerView } from '../../utils/mapViewUtils';
 
 @Component({
-  tag: 'public-notification-two',
-  styleUrl: 'public-notification-two.css',
+  tag: 'public-notification',
+  styleUrl: 'public-notification.css',
   shadow: false,
 })
 export class PublicNotificationTwo {

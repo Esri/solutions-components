@@ -1,4 +1,4 @@
-# public-notification-two
+# public-notification
 
 
 
@@ -43,21 +43,21 @@
 ### Graph
 ```mermaid
 graph TD;
-  public-notification-two --> calcite-shell
-  public-notification-two --> calcite-shell-panel
-  public-notification-two --> calcite-action-bar
-  public-notification-two --> calcite-action-group
-  public-notification-two --> calcite-action
-  public-notification-two --> calcite-input-message
-  public-notification-two --> map-layer-picker
-  public-notification-two --> calcite-list
-  public-notification-two --> calcite-list-item
-  public-notification-two --> map-select-tools
-  public-notification-two --> calcite-radio-group
-  public-notification-two --> calcite-radio-group-item
-  public-notification-two --> refine-selection-tools
-  public-notification-two --> calcite-select
-  public-notification-two --> calcite-option
+  public-notification --> calcite-shell
+  public-notification --> calcite-shell-panel
+  public-notification --> calcite-action-bar
+  public-notification --> calcite-action-group
+  public-notification --> calcite-action
+  public-notification --> calcite-input-message
+  public-notification --> map-layer-picker
+  public-notification --> calcite-list
+  public-notification --> calcite-list-item
+  public-notification --> map-select-tools
+  public-notification --> calcite-radio-group
+  public-notification --> calcite-radio-group-item
+  public-notification --> refine-selection-tools
+  public-notification --> calcite-select
+  public-notification --> calcite-option
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
@@ -92,7 +92,7 @@ graph TD;
   buffer-tools --> calcite-option
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
-  style public-notification-two fill:#f9f,stroke:#333,stroke-width:4px
+  style public-notification fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------
