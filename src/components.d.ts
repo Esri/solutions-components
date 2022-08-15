@@ -100,16 +100,28 @@ export namespace Components {
         "translations": any;
     }
     interface MapLayerPicker {
+        /**
+          * string: The label to render above the combobox.
+         */
         "label": string;
+        /**
+          * string[]: list of layer names from the map
+         */
         "layerNames": string[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * string[]: list of layers that have been selected by the end user
+         */
         "selectedLayers": string[];
+        /**
+          * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
+         */
         "selectionMode": SelectionMode;
         /**
-          * Contains the translations for this component.
+          * Contains the translations for this component. All UI strings should be defined here.
          */
         "translations": any;
     }
@@ -730,17 +742,29 @@ declare namespace LocalJSX {
         "translations"?: any;
     }
     interface MapLayerPicker {
+        /**
+          * string: The label to render above the combobox.
+         */
         "label"?: string;
+        /**
+          * string[]: list of layer names from the map
+         */
         "layerNames"?: string[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         "onLayerSelectionChange"?: (event: MapLayerPickerCustomEvent<any>) => void;
+        /**
+          * string[]: list of layers that have been selected by the end user
+         */
         "selectedLayers"?: string[];
+        /**
+          * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
+         */
         "selectionMode"?: SelectionMode;
         /**
-          * Contains the translations for this component.
+          * Contains the translations for this component. All UI strings should be defined here.
          */
         "translations"?: any;
     }

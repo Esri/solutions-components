@@ -43,6 +43,48 @@ export class MapLayerPicker {
    */
   @Prop() mapView: __esri.MapView;
 
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @Prop() translations: any = {};
+
+  /**
+   * string[]: list of layer names from the map
+   */
+  @Prop({ mutable: true }) layerNames: string[] = [];
+
+  /**
+   * string: The label to render above the combobox.
+   */
+  @Prop({ mutable: true, reflect: true }) label = "";
+
+  /**
+   * SelectionMode: "single" | "multi"
+   * 
+   * Should the component support selection against a single layer or multiple layers.
+   */
+  @Prop({ mutable: true, reflect: true }) selectionMode: SelectionMode = "single";
+
+  /**
+   * string[]: list of layers that have been selected by the end user
+   */
+  @Prop({ mutable: true }) selectedLayers: string[] = [];
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (private)
+  //
+  //--------------------------------------------------------------------------
+
+  protected _layerSelect: HTMLCalciteSelectElement;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Watch handlers
+  //
+  //--------------------------------------------------------------------------
+
   @Watch('mapView')
   async watchStateHandler(newValue: boolean, oldValue: boolean) {
     if (newValue !== oldValue) {
@@ -53,27 +95,32 @@ export class MapLayerPicker {
     }
   }
 
+  //--------------------------------------------------------------------------
+  //
+  //  Methods (public)
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Events (public)
+  //
+  //--------------------------------------------------------------------------
+
+  @Event() layerSelectionChange: EventEmitter;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (lifecycle)
+  //
+  //--------------------------------------------------------------------------
+
   async componentWillLoad() {
     await this._setLayers();
     if (this.selectionMode === "single" && this.layerNames.length > 0) {
       this.layerSelectionChange.emit([this.layerNames[0]]);
     }
   }
-
-  /**
-   * Contains the translations for this component.
-   */
-  @Prop() translations: any = {};
-
-  @Prop({ mutable: true }) layerNames: string[] = [];
-
-  @Prop({ mutable: true, reflect: true }) label = "";
-
-  @Prop({ mutable: true, reflect: true }) selectionMode: SelectionMode = "single";
-
-  @Prop({ mutable: true }) selectedLayers: string[] = [];
-
-  @Event() layerSelectionChange: EventEmitter;
 
   render() {
     return (
@@ -87,7 +134,11 @@ export class MapLayerPicker {
     );
   }
 
-  protected _layerSelect: HTMLCalciteSelectElement;
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (private)
+  //
+  //--------------------------------------------------------------------------
 
   // Use Select when something should always be selected
   _getSelect(): VNode {

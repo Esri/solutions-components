@@ -7,14 +7,14 @@
 
 ## Properties
 
-| Property         | Attribute        | Description                                                                                            | Type                  | Default     |
-| ---------------- | ---------------- | ------------------------------------------------------------------------------------------------------ | --------------------- | ----------- |
-| `label`          | `label`          |                                                                                                        | `string`              | `""`        |
-| `layerNames`     | --               |                                                                                                        | `string[]`            | `[]`        |
-| `mapView`        | --               | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`             | `undefined` |
-| `selectedLayers` | --               |                                                                                                        | `string[]`            | `[]`        |
-| `selectionMode`  | `selection-mode` |                                                                                                        | `"multi" \| "single"` | `"single"`  |
-| `translations`   | `translations`   | Contains the translations for this component.                                                          | `any`                 | `{}`        |
+| Property         | Attribute        | Description                                                                                                           | Type                  | Default     |
+| ---------------- | ---------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------- | ----------- |
+| `label`          | `label`          | string: The label to render above the combobox.                                                                       | `string`              | `""`        |
+| `layerNames`     | --               | string[]: list of layer names from the map                                                                            | `string[]`            | `[]`        |
+| `mapView`        | --               | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                | `MapView`             | `undefined` |
+| `selectedLayers` | --               | string[]: list of layers that have been selected by the end user                                                      | `string[]`            | `[]`        |
+| `selectionMode`  | `selection-mode` | SelectionMode: "single" \| "multi"  Should the component support selection against a single layer or multiple layers. | `"multi" \| "single"` | `"single"`  |
+| `translations`   | `translations`   | Contains the translations for this component. All UI strings should be defined here.                                  | `any`                 | `{}`        |
 
 
 ## Events
