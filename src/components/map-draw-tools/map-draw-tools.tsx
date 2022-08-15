@@ -29,7 +29,7 @@ export class MapDrawTools {
   //  Host element access
   //
   //--------------------------------------------------------------------------
-  @Element() el: HTMLElement;
+  @Element() el: HTMLMapDrawToolsElement;
 
   //--------------------------------------------------------------------------
   //
@@ -37,7 +37,9 @@ export class MapDrawTools {
   //
   //--------------------------------------------------------------------------
 
-  // sketch is used by multiple components...need a way to know who should respond...
+  /**
+   * boolean: sketch is used by multiple components...need a way to know who should respond...
+   */
   @Prop() active = false;
 
   /**
@@ -45,35 +47,68 @@ export class MapDrawTools {
    */
   @Prop({ mutable: true, reflect: true }) mapView: __esri.MapView;
 
-  @Watch('mapView')
-  mapViewWatchHandler(v: any, oldV: any): void {
-    if (v && v !== oldV) {
-      this._init();
-    }
-  }
-
   /**
    * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
    */
   @Prop() sketchWidget: __esri.Sketch;
 
   /**
-   * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
+   * esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
    */
-  @Prop() portal: __esri.Portal;
+  @Prop({ mutable: true }) pointSymbol: __esri.SimpleMarkerSymbol;
 
-  @Prop({ mutable: true }) pointSymbol: any;
+  /**
+   * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+   */
+  @Prop({ mutable: true }) polylineSymbol: __esri.SimpleLineSymbol;
 
-  @Prop({ mutable: true }) polylineSymbol: any;
-
-  @Prop({ mutable: true }) polygonSymbol: any;
+  /**
+   * esri/symbols/SimpleFillSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+   */
+  @Prop({ mutable: true }) polygonSymbol: __esri.SimpleFillSymbol;
 
   /**
    * Contains the translations for this component.
+   * All UI strings should be defined here.
    */
   @Prop({ mutable: true }) translations: any = {};
 
+  /**
+   * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   */
   @Prop({ mutable: true }) graphics: __esri.Graphic[];
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (private)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html?#constructors-summary
+   */
+  protected GraphicsLayer: typeof __esri.GraphicsLayer;
+
+  /**
+   * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html#constructors-summary
+   */
+  protected Sketch: typeof __esri.Sketch;
+
+  /**
+   * The container div for the sketch widget
+   */
+  private _sketchDiv: HTMLElement;
+
+  /**
+   * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
+   */
+  private _sketchGraphicsLayer: __esri.GraphicsLayer;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Watch handlers
+  //
+  //--------------------------------------------------------------------------
 
   @Watch('graphics')
   graphicsWatchHandler(v: any, oldV: any): void {
@@ -85,20 +120,37 @@ export class MapDrawTools {
     }
   }
 
-  @Event() sketchGraphicsChange: EventEmitter;
+  @Watch('mapView')
+  mapViewWatchHandler(v: any, oldV: any): void {
+    if (v && v !== oldV) {
+      this._init();
+    }
+  }
+
+  //--------------------------------------------------------------------------
+  //
+  //  Methods (public)
+  //
+  //--------------------------------------------------------------------------
 
   @Method()
   async clear() {
     return this._clearSketch();
   }
 
-  protected GraphicsLayer: typeof __esri.GraphicsLayer;
+  //--------------------------------------------------------------------------
+  //
+  //  Events (public)
+  //
+  //--------------------------------------------------------------------------
 
-  protected Sketch: typeof __esri.Sketch;
+  @Event() sketchGraphicsChange: EventEmitter;
 
-  private _sketchDiv: HTMLElement;
-
-  private _sketchGraphicsLayer: __esri.GraphicsLayer;
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (lifecycle)
+  //
+  //--------------------------------------------------------------------------
 
   async componentWillLoad() {
     await this._initModules();
@@ -117,6 +169,12 @@ export class MapDrawTools {
       </Host>
     );
   }
+
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (private)
+  //
+  //--------------------------------------------------------------------------
 
   async _initModules(): Promise<void> {
     const [GraphicsLayer, Sketch]: [
@@ -164,9 +222,9 @@ export class MapDrawTools {
       }
     });
 
-    this.pointSymbol = this.sketchWidget.viewModel.pointSymbol;
-    this.polylineSymbol = this.sketchWidget.viewModel.polylineSymbol;
-    this.polygonSymbol = this.sketchWidget.viewModel.polygonSymbol;
+    this.pointSymbol = this.sketchWidget.viewModel.pointSymbol as __esri.SimpleMarkerSymbol;
+    this.polylineSymbol = this.sketchWidget.viewModel.polylineSymbol as __esri.SimpleLineSymbol;
+    this.polygonSymbol = this.sketchWidget.viewModel.polygonSymbol as __esri.SimpleFillSymbol;
 
     this.sketchWidget.visibleElements = {
       selectionTools: {

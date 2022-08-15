@@ -65,26 +65,37 @@ export namespace Components {
         "value": any;
     }
     interface MapDrawTools {
+        /**
+          * boolean: sketch is used by multiple components...need a way to know who should respond...
+         */
         "active": boolean;
         "clear": () => Promise<void>;
+        /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
         "graphics": __esri.Graphic[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
-        "pointSymbol": any;
-        "polygonSymbol": any;
-        "polylineSymbol": any;
         /**
-          * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
+          * esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
          */
-        "portal": __esri.Portal;
+        "pointSymbol": __esri.SimpleMarkerSymbol;
+        /**
+          * esri/symbols/SimpleFillSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+         */
+        "polygonSymbol": __esri.SimpleFillSymbol;
+        /**
+          * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+         */
+        "polylineSymbol": __esri.SimpleLineSymbol;
         /**
           * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
          */
         "sketchWidget": __esri.Sketch;
         /**
-          * Contains the translations for this component.
+          * Contains the translations for this component. All UI strings should be defined here.
          */
         "translations": any;
     }
@@ -684,26 +695,37 @@ declare namespace LocalJSX {
         "value"?: any;
     }
     interface MapDrawTools {
+        /**
+          * boolean: sketch is used by multiple components...need a way to know who should respond...
+         */
         "active"?: boolean;
+        /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
         "graphics"?: __esri.Graphic[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         "onSketchGraphicsChange"?: (event: MapDrawToolsCustomEvent<any>) => void;
-        "pointSymbol"?: any;
-        "polygonSymbol"?: any;
-        "polylineSymbol"?: any;
         /**
-          * esri/portal/Portal: https://developers.arcgis.com/javascript/latest/api-reference/esri-portal-Portal.html
+          * esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
          */
-        "portal"?: __esri.Portal;
+        "pointSymbol"?: __esri.SimpleMarkerSymbol;
+        /**
+          * esri/symbols/SimpleFillSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+         */
+        "polygonSymbol"?: __esri.SimpleFillSymbol;
+        /**
+          * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+         */
+        "polylineSymbol"?: __esri.SimpleLineSymbol;
         /**
           * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
          */
         "sketchWidget"?: __esri.Sketch;
         /**
-          * Contains the translations for this component.
+          * Contains the translations for this component. All UI strings should be defined here.
          */
         "translations"?: any;
     }
