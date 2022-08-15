@@ -18,33 +18,81 @@ export class RefineSelectionTools {
   //--------------------------------------------------------------------------
   @Element() el: HTMLRefineSelectionToolsElement;
 
-  // sketch is used by multiple components...need a way to know who should respond...
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (public)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * boolean: sketch is used by multiple components...need a way to know who should respond...
+   */
   @Prop() active = false;
 
+  /**
+   * utils/interfaces/ESelectionMode: ADD, REMOVE
+   */
   @Prop() mode: ESelectionMode;
 
+  /**
+   * utils/interfaces/ERefineMode: ALL, SUBSET
+   */
   @Prop() refineMode: ERefineMode;
 
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
   @Prop() translations: any = {};
 
+  /**
+   * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   */
   @Prop() mapView: __esri.MapView;
 
+  /**
+   * boolean: Is selected enabled
+   */
   @Prop() selectEnbaled = false;
 
+  /**
+   * utils/interfaces/ESelectionType: POINT, LINE, POLY, RECT
+   */
   @Prop() selectionMode: ESelectionType;
 
   // TODO this is not needed for building selection sets
   // Still considering if I should do this or emit a different event for Ids
   // I can't seem to get the ids watch to fire...so would need to emit on render and that seems bad
+  /**
+   * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
+   */
   @Prop() layerView: __esri.FeatureLayerView;
 
+  /**
+   * number: The oids of the selected features
+   */
   @Prop() ids: number[] = [];
 
+  /**
+   * boolean: Used to control the visibility of the layer picker
+   */
   @Prop() useLayerPicker = true;
 
+  /**
+   * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   */
   @Prop({ mutable: true }) graphics: __esri.Graphic[];
 
-  @Event() refineSelectionChange: EventEmitter;
+  /**
+   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   */
+  @Prop() layerViews: __esri.FeatureLayerView[] = [];
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (private)
+  //
+  //--------------------------------------------------------------------------
 
   protected _excludeEffect = "blur(5px) grayscale(90%) opacity(40%)";
 
@@ -58,8 +106,6 @@ export class RefineSelectionTools {
 
   protected _sketchGeometry: __esri.Geometry;
 
-  @Prop() layerViews: __esri.FeatureLayerView[] = [];
-
   protected _hitTestHandle: __esri.Handle;
 
   protected _highlightHandle: __esri.Handle;
@@ -67,6 +113,32 @@ export class RefineSelectionTools {
   protected aaa: any = {};
 
   protected _addIds: number[] = [];
+
+  //--------------------------------------------------------------------------
+  //
+  //  Watch handlers
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Methods (public)
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Events (public)
+  //
+  //--------------------------------------------------------------------------
+
+  @Event() refineSelectionChange: EventEmitter;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (lifecycle)
+  //
+  //--------------------------------------------------------------------------
 
   async componentWillLoad() {
     await this._initModules();
@@ -161,6 +233,12 @@ export class RefineSelectionTools {
       </Host>
     );
   }
+
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (private)
+  //
+  //--------------------------------------------------------------------------
 
   async _initModules(): Promise<void> {
     const [GraphicsLayer, SketchViewModel]: [

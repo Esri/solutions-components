@@ -213,17 +213,53 @@ export namespace Components {
         "translations": any;
     }
     interface RefineSelectionTools {
+        /**
+          * boolean: sketch is used by multiple components...need a way to know who should respond...
+         */
         "active": boolean;
+        /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
         "graphics": __esri.Graphic[];
+        /**
+          * number: The oids of the selected features
+         */
         "ids": number[];
+        /**
+          * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
+         */
         "layerView": __esri.FeatureLayerView;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
         "layerViews": __esri.FeatureLayerView[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
         "mapView": __esri.MapView;
+        /**
+          * utils/interfaces/ESelectionMode: ADD, REMOVE
+         */
         "mode": ESelectionMode;
+        /**
+          * utils/interfaces/ERefineMode: ALL, SUBSET
+         */
         "refineMode": ERefineMode;
+        /**
+          * boolean: Is selected enabled
+         */
         "selectEnbaled": boolean;
+        /**
+          * utils/interfaces/ESelectionType: POINT, LINE, POLY, RECT
+         */
         "selectionMode": ESelectionType;
+        /**
+          * Contains the translations for this component. All UI strings should be defined here.
+         */
         "translations": any;
+        /**
+          * boolean: Used to control the visibility of the layer picker
+         */
         "useLayerPicker": boolean;
     }
     interface SolutionConfiguration {
@@ -900,18 +936,54 @@ declare namespace LocalJSX {
         "translations"?: any;
     }
     interface RefineSelectionTools {
+        /**
+          * boolean: sketch is used by multiple components...need a way to know who should respond...
+         */
         "active"?: boolean;
+        /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
         "graphics"?: __esri.Graphic[];
+        /**
+          * number: The oids of the selected features
+         */
         "ids"?: number[];
+        /**
+          * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
+         */
         "layerView"?: __esri.FeatureLayerView;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
         "layerViews"?: __esri.FeatureLayerView[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
         "mapView"?: __esri.MapView;
+        /**
+          * utils/interfaces/ESelectionMode: ADD, REMOVE
+         */
         "mode"?: ESelectionMode;
         "onRefineSelectionChange"?: (event: RefineSelectionToolsCustomEvent<any>) => void;
+        /**
+          * utils/interfaces/ERefineMode: ALL, SUBSET
+         */
         "refineMode"?: ERefineMode;
+        /**
+          * boolean: Is selected enabled
+         */
         "selectEnbaled"?: boolean;
+        /**
+          * utils/interfaces/ESelectionType: POINT, LINE, POLY, RECT
+         */
         "selectionMode"?: ESelectionType;
+        /**
+          * Contains the translations for this component. All UI strings should be defined here.
+         */
         "translations"?: any;
+        /**
+          * boolean: Used to control the visibility of the layer picker
+         */
         "useLayerPicker"?: boolean;
     }
     interface SolutionConfiguration {
