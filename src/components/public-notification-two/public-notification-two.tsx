@@ -1,4 +1,4 @@
-import { Component, Host, h, Listen, Prop, VNode } from '@stencil/core';
+import { Component, Element, Host, h, Listen, Prop, VNode } from '@stencil/core';
 import { ISelectionSet, EPageType, ESelectionMode, EWorkflowType } from '../../utils/interfaces';
 import { getMapLayerView } from '../../utils/mapViewUtils';
 
@@ -8,31 +8,96 @@ import { getMapLayerView } from '../../utils/mapViewUtils';
   shadow: false,
 })
 export class PublicNotificationTwo {
+  //--------------------------------------------------------------------------
+  //
+  //  Host element access
+  //
+  //--------------------------------------------------------------------------
+  @Element() el: HTMLMapDrawToolsElement;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (public)
+  //
+  //--------------------------------------------------------------------------
 
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
 
+  /**
+   * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
+   */
   @Prop() selectionLayers: __esri.Layer[];
 
+  /**
+   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   */
   @Prop() addresseeLayer: __esri.FeatureLayerView;
 
+  /**
+   * boolean: Save is enabled when we have 1 or more selected features
+   */
   @Prop() saveEnabled = false;
 
+  /**
+   * utils/interfaces/EPageType: LIST, SELECT, REFINE, PDF, CSV
+   */
   @Prop({ mutable: true }) pageType: EPageType = EPageType.LIST;
 
+  /**
+   * string: Default message to show when we have no selection sets
+   */
   @Prop({ mutable: true }) message = "";
 
+  /**
+   * utils/interfaces/ISelectionSet[]: An array of user defined selection sets
+   */
   @Prop({ mutable: true }) selectionSets: ISelectionSet[] = [];
 
+  /**
+   * number: The number of selected features
+   */
   @Prop() numSelected = 0;
 
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
   @Prop() translations: any = {};
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (private)
+  //
+  //--------------------------------------------------------------------------
 
   protected _selectTools: HTMLMapSelectToolsElement;
 
   protected activeSelection: ISelectionSet;
+
+  protected _refineTools: HTMLRefineSelectionToolsElement;
+
+  protected addEnabled = true;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Watch handlers
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Methods (public)
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Events (public)
+  //
+  //--------------------------------------------------------------------------
 
   @Listen("refineSelectionChange", { target: 'window' })
   refineSelectionChange(event: CustomEvent): void {
@@ -84,6 +149,12 @@ export class PublicNotificationTwo {
     }
   }
 
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (lifecycle)
+  //
+  //--------------------------------------------------------------------------
+
   render() {
     return (
       <Host>
@@ -102,6 +173,12 @@ export class PublicNotificationTwo {
       </Host>
     );
   }
+
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (private)
+  //
+  //--------------------------------------------------------------------------
 
   _getActions(): VNode {
     let actions: VNode;
@@ -308,10 +385,6 @@ export class PublicNotificationTwo {
       ]
     }, []);
   }
-
-  protected _refineTools: HTMLRefineSelectionToolsElement;
-
-  protected addEnabled = true;
 
   _modeChanged(evt: CustomEvent): void {
     this.addEnabled = evt.detail === ESelectionMode.ADD;

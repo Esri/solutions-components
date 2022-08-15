@@ -175,17 +175,41 @@ export namespace Components {
         "translations": any;
     }
     interface PublicNotificationTwo {
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
         "addresseeLayer": __esri.FeatureLayerView;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * string: Default message to show when we have no selection sets
+         */
         "message": string;
+        /**
+          * number: The number of selected features
+         */
         "numSelected": number;
+        /**
+          * utils/interfaces/EPageType: LIST, SELECT, REFINE, PDF, CSV
+         */
         "pageType": EPageType;
+        /**
+          * boolean: Save is enabled when we have 1 or more selected features
+         */
         "saveEnabled": boolean;
+        /**
+          * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
+         */
         "selectionLayers": __esri.Layer[];
+        /**
+          * utils/interfaces/ISelectionSet[]: An array of user defined selection sets
+         */
         "selectionSets": ISelectionSet[];
+        /**
+          * Contains the translations for this component. All UI strings should be defined here.
+         */
         "translations": any;
     }
     interface RefineSelectionTools {
@@ -838,17 +862,41 @@ declare namespace LocalJSX {
         "translations"?: any;
     }
     interface PublicNotificationTwo {
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
         "addresseeLayer"?: __esri.FeatureLayerView;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * string: Default message to show when we have no selection sets
+         */
         "message"?: string;
+        /**
+          * number: The number of selected features
+         */
         "numSelected"?: number;
+        /**
+          * utils/interfaces/EPageType: LIST, SELECT, REFINE, PDF, CSV
+         */
         "pageType"?: EPageType;
+        /**
+          * boolean: Save is enabled when we have 1 or more selected features
+         */
         "saveEnabled"?: boolean;
+        /**
+          * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
+         */
         "selectionLayers"?: __esri.Layer[];
+        /**
+          * utils/interfaces/ISelectionSet[]: An array of user defined selection sets
+         */
         "selectionSets"?: ISelectionSet[];
+        /**
+          * Contains the translations for this component. All UI strings should be defined here.
+         */
         "translations"?: any;
     }
     interface RefineSelectionTools {
