@@ -43,15 +43,154 @@ export class MapSelectTools {
    */
   @Prop() mapView: __esri.MapView;
 
+  /**
+   * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
+   */
   @Prop() searchLayers: __esri.Layer[];
 
+  /**
+   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   */
   @Prop() selectLayerView: __esri.FeatureLayerView;
 
+  /**
+   * EWorkflowType: "SEARCH", "SELECT", "SKETCH", "REFINE"
+   */
   @Prop({ mutable: true }) workflowType: EWorkflowType = EWorkflowType.SEARCH;
 
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
   @Prop({ mutable: true }) translations: any = {};
 
+  /**
+   * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
+   */
   @Prop() geometries: __esri.Geometry[];
+
+  /**
+   * string: Text entered by the end user.
+   * Used to search against the locator.
+   */
+  @Prop() searchTerm: string;
+
+  /**
+   * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
+   */
+  @Prop({reflect: false}) selectionSet: ISelectionSet;
+
+  /**
+   * boolean: When true a new label is not generated for the stored selection set
+   */
+  @Prop() isUpdate = false;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (private)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
+   */
+  protected GraphicsLayer: typeof __esri.GraphicsLayer;
+
+  /**
+   * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   */
+  protected Graphic: typeof __esri.Graphic;
+
+  /**
+   * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
+   */
+  protected Search: typeof __esri.widgetsSearch;
+
+  /**
+   * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
+   */
+  protected Geometry: typeof __esri.Geometry;
+
+  /**
+   * esri/geometry/geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
+   */
+  private geometryEngine:  __esri.geometryEngine;
+
+  /**
+   * HTMLElement: The container div for the search widget
+   */
+  protected _searchDiv: HTMLElement;
+
+  /**
+   * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
+   */
+  protected _searchWidget: __esri.widgetsSearch;
+
+  /**
+   * string: A label to help uniquely identify the selection set
+   */
+  protected _selectionLabel = "";
+
+  /**
+   * utils/interfaces/EWorkflowType: "SEARCH", "SELECT", "SKETCH", "REFINE"
+   */
+  protected _selectType: EWorkflowType;
+
+  /**
+   * number[]: the oids of the selected features
+   */
+  protected _selectedIds: number[] = [];
+
+  /**
+   * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
+   */
+  protected _bufferGraphicsLayer: __esri.GraphicsLayer;
+
+  /**
+   * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
+   */
+  protected _bufferGeometry: __esri.Geometry;
+
+  /**
+   * HTMLBufferToolsElement: The container div for the buffer tools
+   */
+  protected _bufferTools: HTMLBufferToolsElement;
+
+  /**
+   * Handle: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Handles.html#Handle
+   */
+  protected _highlightHandle: __esri.Handle;
+
+  /**
+   * Timeout: Used to add a slight delay when selecting features.
+   */
+  protected selectTimeout: NodeJS.Timeout;
+
+  /**
+   * An array of objects representing the results of search
+   */
+  protected _searchResult: any;
+
+  /**
+   * HTMLMapDrawToolsElement: The container div for the sketch widget
+   */
+  protected _drawTools: HTMLMapDrawToolsElement;
+
+  /**
+   * HTMLRefineSelectionToolsElement: The container div for the sketch widget
+   */
+  protected _refineTools: HTMLRefineSelectionToolsElement;
+
+  /**
+   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   */
+  protected _refineSelectLayers: __esri.FeatureLayerView[];
+
+  //--------------------------------------------------------------------------
+  //
+  //  Watch handlers
+  //
+  //--------------------------------------------------------------------------
 
   @Watch('geometries')
   async watchGeometriesHandler(
@@ -69,78 +208,11 @@ export class MapSelectTools {
     }
   }
 
-  @Prop() searchTerm: string;
-
-  @Prop({reflect: false}) selectionSet: ISelectionSet;
-
-  @Prop() isUpdate = false;
-
-  @Event() selectionSetChange: EventEmitter;
-
-  @Listen("sketchGraphicsChange", { target: 'window' })
-  sketchGraphicsChange(event: CustomEvent): void {
-    this._updateSelection(EWorkflowType.SKETCH, event.detail, this.translations?.sketch);
-  }
-
-  @Listen("refineSelectionChange", { target: 'window' })
-  refineSelectionChange(event: CustomEvent): void {
-    //const ids = event.detail.idUpdates.ids;
-    const graphics = event.detail.graphics;
-
-    this._updateSelection(EWorkflowType.SELECT, graphics, this.translations?.select);
-    // Using OIDs to avoid issue with points
-    const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
-    this._highlightFeatures(oids);
-  }
-
-  _updateSelection(
-    type: EWorkflowType,
-    graphics: __esri.Graphic[],
-    label: string
-  ) {
-    // This doesn't seem to work well with points for Select..but fine once a buffer is in the mix
-    this.geometries = Array.isArray(graphics) ? graphics.map(g => g.geometry) : this.geometries;
-    this._selectType = type;
-    this._selectionLabel = label;
-  }
-  
-  protected GraphicsLayer: typeof __esri.GraphicsLayer;
-
-  protected Graphic: typeof __esri.Graphic;
-
-  protected Search: typeof __esri.widgetsSearch;
-
-  protected Geometry: typeof __esri.Geometry;
-
-  private geometryEngine:  __esri.geometryEngine;
-
-  protected _searchDiv: HTMLElement;
-
-  protected _searchWidget: __esri.widgetsSearch;
-
-  protected _selectionLabel = "";
-
-  protected _selectType: EWorkflowType;
-
-  protected _selectedIds: number[] = [];
-
-  protected _bufferGraphicsLayer: __esri.GraphicsLayer;
-
-  protected _bufferGeometry: __esri.Geometry;
-
-  protected _bufferTools: HTMLBufferToolsElement;
-
-  protected _highlightHandle: __esri.Handle;
-
-  protected selectTimeout: NodeJS.Timeout;
-
-  protected _searchResult: any;
-
-  protected _drawTools: HTMLMapDrawToolsElement;
-
-  protected _refineTools: HTMLRefineSelectionToolsElement;
-
-  protected _refineSelectLayers: __esri.FeatureLayerView[];
+  //--------------------------------------------------------------------------
+  //
+  //  Methods (public)
+  //
+  //--------------------------------------------------------------------------
 
   @Method()
   async getSelectedIds() {
@@ -179,6 +251,35 @@ export class MapSelectTools {
       refineSelectLayers: this._refineTools.layerViews
     } as ISelectionSet;
   }
+
+  //--------------------------------------------------------------------------
+  //
+  //  Events (public)
+  //
+  //--------------------------------------------------------------------------
+
+  @Event() selectionSetChange: EventEmitter;
+
+  @Listen("sketchGraphicsChange", { target: 'window' })
+  sketchGraphicsChange(event: CustomEvent): void {
+    this._updateSelection(EWorkflowType.SKETCH, event.detail, this.translations?.sketch);
+  }
+
+  @Listen("refineSelectionChange", { target: 'window' })
+  refineSelectionChange(event: CustomEvent): void {
+    const graphics = event.detail.graphics;
+
+    this._updateSelection(EWorkflowType.SELECT, graphics, this.translations?.select);
+    // Using OIDs to avoid issue with points
+    const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
+    this._highlightFeatures(oids);
+  }
+
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (lifecycle)
+  //
+  //--------------------------------------------------------------------------
 
   async componentWillLoad() {
     await this._initModules();
@@ -259,6 +360,12 @@ export class MapSelectTools {
       </Host>
     );
   }
+
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (private)
+  //
+  //--------------------------------------------------------------------------
 
   async _initModules(): Promise<void> {
     const [GraphicsLayer, Graphic, Search, Geometry, geometryEngine]: [
@@ -455,5 +562,16 @@ export class MapSelectTools {
       this._drawTools.clear();
     }
     this.selectionSetChange.emit(this._selectedIds.length);
+  }
+
+  _updateSelection(
+    type: EWorkflowType,
+    graphics: __esri.Graphic[],
+    label: string
+  ) {
+    // This doesn't seem to work well with points for Select..but fine once a buffer is in the mix
+    this.geometries = Array.isArray(graphics) ? graphics.map(g => g.geometry) : this.geometries;
+    this._selectType = type;
+    this._selectionLabel = label;
   }
 }

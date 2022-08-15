@@ -127,21 +127,45 @@ export namespace Components {
     }
     interface MapSelectTools {
         "clearSelection": () => Promise<void>;
+        /**
+          * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
+         */
         "geometries": __esri.Geometry[];
         "getSelectType": () => Promise<EWorkflowType>;
         "getSelectedIds": () => Promise<number[]>;
         "getSelection": () => Promise<ISelectionSet>;
         "getSelectionLabel": () => Promise<string>;
+        /**
+          * boolean: When true a new label is not generated for the stored selection set
+         */
         "isUpdate": boolean;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
+         */
         "searchLayers": __esri.Layer[];
+        /**
+          * string: Text entered by the end user. Used to search against the locator.
+         */
         "searchTerm": string;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
         "selectLayerView": __esri.FeatureLayerView;
+        /**
+          * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
+         */
         "selectionSet": ISelectionSet;
+        /**
+          * Contains the translations for this component. All UI strings should be defined here.
+         */
         "translations": any;
+        /**
+          * EWorkflowType: "SEARCH", "SELECT", "SKETCH", "REFINE"
+         */
         "workflowType": EWorkflowType;
     }
     interface PdfDownload {
@@ -769,18 +793,42 @@ declare namespace LocalJSX {
         "translations"?: any;
     }
     interface MapSelectTools {
+        /**
+          * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
+         */
         "geometries"?: __esri.Geometry[];
+        /**
+          * boolean: When true a new label is not generated for the stored selection set
+         */
         "isUpdate"?: boolean;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         "onSelectionSetChange"?: (event: MapSelectToolsCustomEvent<any>) => void;
+        /**
+          * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
+         */
         "searchLayers"?: __esri.Layer[];
+        /**
+          * string: Text entered by the end user. Used to search against the locator.
+         */
         "searchTerm"?: string;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
         "selectLayerView"?: __esri.FeatureLayerView;
+        /**
+          * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
+         */
         "selectionSet"?: ISelectionSet;
+        /**
+          * Contains the translations for this component. All UI strings should be defined here.
+         */
         "translations"?: any;
+        /**
+          * EWorkflowType: "SEARCH", "SELECT", "SKETCH", "REFINE"
+         */
         "workflowType"?: EWorkflowType;
     }
     interface PdfDownload {
