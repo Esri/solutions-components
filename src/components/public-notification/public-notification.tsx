@@ -182,37 +182,39 @@ export class PublicNotificationTwo {
 
   _getActions(): VNode {
     let actions: VNode;
+    const hasSelections = this.selectionSets.length > 0;
+    const trans = this.translations;
     switch (this.pageType) {
       case EPageType.LIST:
         actions = (
           <calcite-action-group>
-            {this._getAction(true, "plus", this.translations?.add, (): void => this._setPageType(EPageType.SELECT))}
-            {this._getAction(this.selectionSets.length > 0, "test-data", this.translations?.refineSelection, (): void => this._setPageType(EPageType.REFINE))}
-            {this._getAction(this.selectionSets.length > 0, "file-pdf", this.translations?.downloadPDF, (): void => this._downloadPDF())}
-            {this._getAction(this.selectionSets.length > 0, "file-csv", this.translations?.downloadCSV, (): void => this._downloadCSV())}
+            {this._getAction(true, "plus", trans?.add, (): void => this._setPageType(EPageType.SELECT))}
+            {this._getAction(hasSelections, "test-data", trans?.refineSelection, (): void => this._setPageType(EPageType.REFINE), hasSelections)}
+            {this._getAction(hasSelections, "file-pdf", trans?.downloadPDF, (): void => this._downloadPDF())}
+            {this._getAction(hasSelections, "file-csv", trans?.downloadCSV, (): void => this._downloadCSV())}
           </calcite-action-group>
         )
         break;
       case EPageType.SELECT:
         actions = (
           <calcite-action-group>
-            <calcite-action icon="chevron-left" onClick={() => { this._home() }} text={this.translations?.back} />
-            {this._getAction(this.saveEnabled, "save", this.translations?.save, (): Promise<void> => this._saveSelection())}
+            {this._getAction(true, "chevron-left", trans?.back, (): void => this._home())}
+            {this._getAction(this.saveEnabled, "save", trans?.save, (): Promise<void> => this._saveSelection())}
           </calcite-action-group>
         );
         break;
       case EPageType.REFINE:
         actions = (
           <calcite-action-group>
-            <calcite-action icon="chevron-left" onClick={() => { this._home() }} text={this.translations?.back} />
+            {this._getAction(true, "chevron-left", trans?.back, (): void => this._home())}
           </calcite-action-group>
         );
         break;
       case EPageType.PDF:
         actions = (
           <calcite-action-group>
-            <calcite-action icon="chevron-left" onClick={() => { this._setPageType(EPageType.LIST) }} text={this.translations?.back} />
-            <calcite-action icon="download-to" onClick={() => { this._setPageType(EPageType.LIST) }} text={this.translations?.download} />
+            {this._getAction(true, "chevron-left", trans?.back, (): void => this._setPageType(EPageType.LIST))}
+            {this._getAction(true, "download-to", trans?.download, (): void => this._setPageType(EPageType.LIST))}
           </calcite-action-group>
         );
         break;
@@ -225,24 +227,18 @@ export class PublicNotificationTwo {
     icon: string,
     text: string,
     onClick: any,
-    active?: boolean
+    indicator: boolean = false,
+    slot: string = ""
   ): VNode {
-    // wish I knew a better way to do this
-    // would do these inline I think if I could use ternary to handle disabled
-    return enabled ?
-      (
-        <calcite-action
-          active={active || false}
-          icon={icon}
-          onClick={onClick}
-          text={text} />
-      ) : (
-        <calcite-action
-          disabled
-          icon={icon}
-          onClick={onClick}
-          text={text} />
-      );
+    return (
+      <calcite-action
+        disabled={!enabled}
+        icon={icon}
+        indicator={indicator}
+        onClick={onClick}
+        slot={slot}
+        text={text} />
+    );
   }
 
   _getPage(): VNode {
@@ -274,8 +270,8 @@ export class PublicNotificationTwo {
                           label={ss.label}
                           onClick={() => this._flashSelection(ss)}
                         >
-                          <calcite-action icon="pencil" slot="actions-end" text='' onClick={() => this._openSelection(ss)} />
-                          <calcite-action icon="x" slot="actions-end" text='' onClick={() => this._deleteSelection(i)} />
+                          {this._getAction(true, "pencil", "", (): void => this._openSelection(ss), false, "actions-end")}
+                          {this._getAction(true, "x", "", (): void => this._deleteSelection(i), false, "actions-end")}
                         </calcite-list-item>
                       )
                     })
