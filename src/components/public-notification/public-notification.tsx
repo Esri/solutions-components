@@ -105,14 +105,6 @@ export class PublicNotificationTwo {
     const idUpdates = event.detail.idUpdates;
     //const graphics = event.detail.graphics;
 
-    let selectionSet: ISelectionSet;
-    this.selectionSets.some(ss => {
-      if (ss.workflowType === EWorkflowType.REFINE) {
-        selectionSet = ss;
-        return true;
-      }
-    });
-
     if (idUpdates?.removeIds.length > 0) {
       const removeSets = [];
       this.selectionSets = this.selectionSets.reduce((prev, cur) => {
@@ -128,6 +120,14 @@ export class PublicNotificationTwo {
         this.selectionSets = this.selectionSets.filter(selSet => removeSets.indexOf(selSet.id) < 0);
       }
     }
+
+    let selectionSet: ISelectionSet;
+    this.selectionSets.some(ss => {
+      if (ss.workflowType === EWorkflowType.REFINE) {
+        selectionSet = ss;
+        return true;
+      }
+    });
 
     if (selectionSet) {
       selectionSet.selectedIds = idUpdates?.ids.length > 0 ?
