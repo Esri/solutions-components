@@ -7,6 +7,7 @@ import { getMapLayerView } from '../../utils/mapViewUtils';
   styleUrl: 'public-notification.css',
   shadow: false,
 })
+
 export class PublicNotificationTwo {
   //--------------------------------------------------------------------------
   //
@@ -184,12 +185,15 @@ export class PublicNotificationTwo {
     let actions: VNode;
     const hasSelections = this.selectionSets.length > 0;
     const trans = this.translations;
+    const hasRefine = this.selectionSets.some(selectionSet => {
+      return selectionSet.workflowType === EWorkflowType.REFINE && selectionSet.selectedIds.length > 0;
+    });
     switch (this.pageType) {
       case EPageType.LIST:
         actions = (
           <calcite-action-group>
             {this._getAction(true, "plus", trans?.add, (): void => this._setPageType(EPageType.SELECT))}
-            {this._getAction(hasSelections, "test-data", trans?.refineSelection, (): void => this._setPageType(EPageType.REFINE), hasSelections)}
+            {this._getAction(hasSelections, "test-data", trans?.refineSelection, (): void => this._setPageType(EPageType.REFINE), hasRefine)}
             {this._getAction(hasSelections, "file-pdf", trans?.downloadPDF, (): void => this._downloadPDF())}
             {this._getAction(hasSelections, "file-csv", trans?.downloadCSV, (): void => this._downloadCSV())}
           </calcite-action-group>
@@ -263,18 +267,23 @@ export class PublicNotificationTwo {
               this.selectionSets.length > 0 ? (
                 <calcite-list class="list-border">
                   {
-                    this.selectionSets.map((ss, i) => {
-                      return (
-                        <calcite-list-item
-                          description={this.translations?.selectedFeatures.replace('{{n}}', ss.selectedIds.length)}
-                          label={ss.label}
-                          onClick={() => this._flashSelection(ss)}
-                        >
-                          {this._getAction(true, "pencil", "", (): void => this._openSelection(ss), false, "actions-end")}
-                          {this._getAction(true, "x", "", (): void => this._deleteSelection(i), false, "actions-end")}
-                        </calcite-list-item>
-                      )
-                    })
+                    // REFINE is handled seperately from the core selection sets
+                    // You can only access after clicking the refine action
+                    this.selectionSets.reduce((prev, cur, i) => {
+                      if (cur.workflowType !== EWorkflowType.REFINE) {
+                        prev.push((
+                          <calcite-list-item
+                            description={this.translations?.selectedFeatures.replace('{{n}}', cur.selectedIds.length)}
+                            label={cur.label}
+                            onClick={() => this._flashSelection(cur)}
+                          >
+                            {this._getAction(true, "pencil", "", (): void => this._openSelection(cur), false, "actions-end")}
+                            {this._getAction(true, "x", "", (): void => this._deleteSelection(i), false, "actions-end")}
+                          </calcite-list-item>
+                        ));
+                      }
+                      return prev;
+                    }, [])
                   }
                 </calcite-list>
               ) : (
