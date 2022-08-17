@@ -105,6 +105,14 @@ export class PublicNotificationTwo {
     const idUpdates = event.detail.idUpdates;
     //const graphics = event.detail.graphics;
 
+    let selectionSet: ISelectionSet;
+    this.selectionSets.some(ss => {
+      if (ss.workflowType === EWorkflowType.REFINE) {
+        selectionSet = ss;
+        return true;
+      }
+    });
+
     if (idUpdates?.removeIds.length > 0) {
       const removeSets = [];
       this.selectionSets = this.selectionSets.reduce((prev, cur) => {
@@ -121,32 +129,24 @@ export class PublicNotificationTwo {
       }
     }
 
-    if (idUpdates?.ids.length > 0) {
-      let selectionSet: ISelectionSet;
-      this.selectionSets.some(ss => {
-        if (ss.workflowType === EWorkflowType.REFINE) {
-          selectionSet = ss;
-          return true;
-        }
+    if (selectionSet) {
+      selectionSet.selectedIds = idUpdates?.ids.length > 0 ?
+        selectionSet.selectedIds.concat(idUpdates.ids) :
+        selectionSet.selectedIds.filter(id => idUpdates.removeIds.indexOf(id) < 0);
+    } else {
+      this.selectionSets.push({
+        buffer: undefined,
+        distance: 0,
+        geometries: [],
+        id: Date.now(),
+        label: "Refine",
+        layerView: this.addresseeLayer,
+        refineSelectLayers: [],
+        searchResult: undefined,
+        selectedIds: idUpdates.ids,
+        unit: "feet",
+        workflowType: EWorkflowType.REFINE
       });
-
-      if (selectionSet) {
-        selectionSet.selectedIds = selectionSet.selectedIds.concat(idUpdates.ids);
-      } else {
-        this.selectionSets.push({
-          buffer: undefined,
-          distance: 0,
-          geometries: [],
-          id: Date.now(),
-          label: "Refine",
-          layerView: this.addresseeLayer,
-          refineSelectLayers: [],
-          searchResult: undefined,
-          selectedIds: idUpdates.ids,
-          unit: "feet",
-          workflowType: EWorkflowType.REFINE
-        });
-      }
     }
   }
 
@@ -186,7 +186,7 @@ export class PublicNotificationTwo {
     const hasSelections = this.selectionSets.length > 0;
     const trans = this.translations;
     const hasRefine = this.selectionSets.some(selectionSet => {
-      return selectionSet.workflowType === EWorkflowType.REFINE && selectionSet.selectedIds.length > 0;
+      return selectionSet.workflowType === EWorkflowType.REFINE;
     });
     switch (this.pageType) {
       case EPageType.LIST:

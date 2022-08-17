@@ -372,7 +372,7 @@ export class RefineSelectionTools {
     const queryFeaturePromises = this.layerViews.map(l => {
       this.aaa[l.layer.title] = [];
       return this._queryPage(0, l, geom)
-    })
+    });
 
     Promise.all(queryFeaturePromises).then(response => {
       let graphics = [];
