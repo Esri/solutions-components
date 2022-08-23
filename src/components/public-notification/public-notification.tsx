@@ -100,54 +100,15 @@ export class PublicNotificationTwo {
   //
   //--------------------------------------------------------------------------
 
-  @Listen("refineSelectionChange", { target: 'window' })
-  refineSelectionChange(event: CustomEvent): void {
-    const idUpdates = event.detail.idUpdates;
-    //const graphics = event.detail.graphics;
+  @Listen("refineSelectionIdsChange", { target: 'window' })
+  refineSelectionIdsChange(event: CustomEvent): void {
+    const idUpdates = event.detail;
+    const addIds = idUpdates?.addIds || [];
+    const removeIds = idUpdates?.removeIds || [];
 
-    if (idUpdates?.removeIds.length > 0) {
-      const removeSets = [];
-      this.selectionSets = this.selectionSets.reduce((prev, cur) => {
-        cur.selectedIds = cur.selectedIds.filter(id => idUpdates.removeIds.indexOf(id) < 0);
-        if (cur.selectedIds.length === 0) {
-          removeSets.push(cur.id);
-        }
-        prev.push(cur);
-        return prev;
-      }, []);
-
-      if (removeSets.length > 0) {
-        this.selectionSets = this.selectionSets.filter(selSet => removeSets.indexOf(selSet.id) < 0);
-      }
-    }
-
-    let selectionSet: ISelectionSet;
-    this.selectionSets.some(ss => {
-      if (ss.workflowType === EWorkflowType.REFINE) {
-        selectionSet = ss;
-        return true;
-      }
-    });
-
-    if (selectionSet) {
-      selectionSet.selectedIds = idUpdates?.ids.length > 0 ?
-        selectionSet.selectedIds.concat(idUpdates.ids) :
-        selectionSet.selectedIds.filter(id => idUpdates.removeIds.indexOf(id) < 0);
-    } else {
-      this.selectionSets.push({
-        buffer: undefined,
-        distance: 0,
-        geometries: [],
-        id: Date.now(),
-        label: "Refine",
-        layerView: this.addresseeLayer,
-        refineSelectLayers: [],
-        searchResult: undefined,
-        selectedIds: idUpdates.ids,
-        unit: "feet",
-        workflowType: EWorkflowType.REFINE
-      });
-    }
+    this._updateSelectionSetsForRemoveIds(removeIds);
+  
+    this._updateRefineSelectionSet(addIds, removeIds);
   }
 
   //--------------------------------------------------------------------------
@@ -247,6 +208,7 @@ export class PublicNotificationTwo {
 
   _getPage(): VNode {
     let page: VNode;
+    const layerTitle = this.addresseeLayer?.layer?.title;
     switch (this.pageType) {
       case EPageType.LIST:
         page = (
@@ -259,12 +221,13 @@ export class PublicNotificationTwo {
                   onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
                   selectionMode={"single"}
                   translations={this.translations}
+                  selectedLayers={layerTitle ? [layerTitle] : []}
                 />
               </div>
             </calcite-input-message>
             <br />
             {
-              this.selectionSets.length > 0 ? (
+              this.selectionSets.filter(ss => ss.workflowType !== EWorkflowType.REFINE).length > 0 ? (
                 <calcite-list class="list-border">
                   {
                     // REFINE is handled seperately from the core selection sets
@@ -325,6 +288,7 @@ export class PublicNotificationTwo {
         break;
       case EPageType.REFINE:
         page = (
+          <div>
           <div class="background-w padding-1-2 list-border">
             <calcite-radio-group 
               class="w-100"
@@ -357,6 +321,15 @@ export class PublicNotificationTwo {
               useLayerPicker={false}
             />
           </div>
+          <br />
+            {
+              (
+                <calcite-list class="list-border">
+                  {this._getRefineSelectionSetList()}
+                </calcite-list>
+              )
+            }
+          </div>
         )
         break;
       case EPageType.PDF:
@@ -364,14 +337,147 @@ export class PublicNotificationTwo {
           <div class="background-w padding-1-2 list-border">
             <calcite-select label="">
               <calcite-option>PDF label 30 per page</calcite-option>
-              <calcite-option>Rivers</calcite-option>
-              <calcite-option>Lakes</calcite-option>
+              <calcite-option>PDF label 40 per page</calcite-option>
+              <calcite-option>PDF label 50 per page</calcite-option>
             </calcite-select>
           </div>
         )
         break;
     }
     return page;
+  }
+
+  _updateSelectionSetsForRemoveIds(
+    removeIds: number[]
+  ) {
+    if (removeIds.length > 0) {
+      // update the selection sets selectedIds and remove any selection sets that have no selected features
+      this.selectionSets = this.selectionSets.reduce((prev, cur) => {
+        cur.selectedIds = cur.selectedIds.filter(id => removeIds.indexOf(id) < 0);
+        if (cur.selectedIds.length > 0) {
+          prev.push(cur);
+        }
+        return prev;
+      }, []);
+    }
+  }
+
+  _getRefineSelectionSet() {
+    let refineSelectionSet: ISelectionSet;
+    this.selectionSets.some(ss => {
+      if (ss.workflowType === EWorkflowType.REFINE) {
+        refineSelectionSet = ss;
+        return true;
+      }
+    });
+    return refineSelectionSet;
+  }
+
+  _updateRefineSelectionSet(
+    addIds: number[],
+    removeIds: number[]
+  ) {
+    const selectionSet = this._getRefineSelectionSet()
+    if (selectionSet) {
+      const _addIds = [...new Set(selectionSet.refineIds.addIds.concat(addIds))];
+      const _removeIds = [...new Set(selectionSet.refineIds.removeIds.concat(removeIds))];
+      selectionSet.refineIds = {
+        addIds: _addIds.filter(id => _removeIds.indexOf(id) < 0),
+        removeIds: _removeIds.filter(id => _addIds.indexOf(id) < 0)
+      }
+      selectionSet.selectedIds = selectionSet.refineIds.addIds.length > 0 ?
+        [...new Set(selectionSet.selectedIds.concat(selectionSet.refineIds.addIds))] :
+        selectionSet.selectedIds.filter(id => selectionSet.refineIds.removeIds.indexOf(id) < 0);
+
+      this.selectionSets = this.selectionSets.map(ss => {
+        if (ss.workflowType === EWorkflowType.REFINE) {
+          return selectionSet;
+        } else {
+          return ss;
+        }
+      })
+    } else {
+      this.selectionSets = [
+        ...this.selectionSets,
+        ({
+          buffer: undefined,
+          distance: 0,
+          geometries: [],
+          id: Date.now(),
+          label: "Refine",
+          layerView: this.addresseeLayer,
+          refineSelectLayers: [],
+          searchResult: undefined,
+          selectedIds: addIds,
+          unit: "feet",
+          workflowType: EWorkflowType.REFINE,
+          refineIds: {
+            addIds: addIds,
+            removeIds: removeIds
+          }
+        })
+      ];
+    }
+  }
+
+  _getRefineSelectionSetList() {
+    const refineSets = this.selectionSets.filter(ss => ss.workflowType === EWorkflowType.REFINE);
+    
+    const hasRefineSet = refineSets.length > 0;
+    const refineSet = hasRefineSet ? refineSets[0] : undefined;
+    
+    const total = this.selectionSets.reduce((prev, cur) => {
+      return prev += cur.selectedIds.length
+    }, 0);
+
+    const numAdded = hasRefineSet ? refineSet.refineIds.addIds.length : 0;
+    const numRemoved = hasRefineSet ? refineSet.refineIds.removeIds.length : 0;
+
+    return [(
+      <calcite-list-item
+        label={this.translations?.featuresAdded?.replace('{{n}}', numAdded)}
+        // onClick={() => this._flashSelection(refineSet)}
+      >
+        {this._getAction(numAdded > 0, "reset", "", (): void => this._revertSelection(refineSet, true), false, "actions-end")}
+      </calcite-list-item>
+    ),(
+      <calcite-list-item
+        label={this.translations?.featuresRemoved?.replace('{{n}}', numRemoved)}
+        // onClick={() => this._flashSelection(refineSet)}
+      >
+        {this._getAction(numRemoved > 0, "reset", "", (): void => this._revertSelection(refineSet, false), false, "actions-end")}
+      </calcite-list-item>
+    ), (
+      <calcite-list-item
+        label={this.translations?.totalSelected?.replace('{{n}}', total)}
+        // onClick={() => this._flashSelection(refineSet)}
+      />
+    )];
+  }
+
+  _revertSelection(
+    refineSet: ISelectionSet,
+    isAdd: boolean
+  ) {
+    if (isAdd) {
+      refineSet.selectedIds = refineSet.selectedIds.filter(id => refineSet.refineIds.addIds.indexOf(id) < 0)
+      refineSet.refineIds.addIds = [];
+    } else {
+      refineSet.refineIds.addIds = refineSet.refineIds.removeIds;
+      refineSet.selectedIds = [...new Set([
+        ...refineSet.selectedIds,
+        ...refineSet.refineIds.addIds
+      ])]
+      refineSet.refineIds.removeIds = [];
+    }
+    this._refineTools.reset().then(() => {
+      this.selectionSets = this.selectionSets.map(ss => {
+        if (ss.workflowType === EWorkflowType.REFINE) {
+          ss = refineSet;
+        }
+        return ss;
+      });
+    });
   }
 
   _setSelectionMode(

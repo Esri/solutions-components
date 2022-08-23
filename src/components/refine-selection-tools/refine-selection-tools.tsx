@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, Watch } from '@stencil/core';
 import { ERefineMode, ESelectionMode, ESelectionType } from '../../utils/interfaces';
 import { getMapLayerView } from '../../utils/mapViewUtils';
 import state from "../../utils/publicNotificationStore";
@@ -60,9 +60,6 @@ export class RefineSelectionTools {
    */
   @Prop() selectionMode: ESelectionType;
 
-  // TODO this is not needed for building selection sets
-  // Still considering if I should do this or emit a different event for Ids
-  // I can't seem to get the ids watch to fire...so would need to emit on render and that seems bad
   /**
    * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
    */
@@ -120,11 +117,25 @@ export class RefineSelectionTools {
   //
   //--------------------------------------------------------------------------
 
+  @Watch('ids')
+  idsWatchHandler(v: any, oldV: any): void {
+    if (v && v !== oldV) {
+      this._highlightFeatures(v);
+    }
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
   //
   //--------------------------------------------------------------------------
+
+  @Method()
+  reset() {
+    this._addIds = [];
+    this.ids = [];
+    return Promise.resolve();
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -132,7 +143,9 @@ export class RefineSelectionTools {
   //
   //--------------------------------------------------------------------------
 
-  @Event() refineSelectionChange: EventEmitter;
+  @Event() refineSelectionGraphicsChange: EventEmitter;
+
+  @Event() refineSelectionIdsChange: EventEmitter;
 
   //--------------------------------------------------------------------------
   //
@@ -157,7 +170,7 @@ export class RefineSelectionTools {
     this.active = true;
     if (this.ids.length > 0) {
       this.selectEnbaled = true;
-      this._highlightFeatures(this.ids)
+      this._highlightFeatures(this.ids);
     }
   }
 
@@ -318,7 +331,7 @@ export class RefineSelectionTools {
             return prev;
           }, []);
         }
-        this.refineSelectionChange.emit({graphics, idUpdates: { ids: [], removeIds: [] }});
+        this.refineSelectionGraphicsChange.emit(graphics);
         this._clear();
       });
     });
@@ -383,14 +396,14 @@ export class RefineSelectionTools {
       });
 
       if (this.refineMode === ERefineMode.SUBSET) {
-        this.refineSelectionChange.emit({graphics, idUpdates: { ids: [], removeIds: [] }});
+        this.refineSelectionGraphicsChange.emit(graphics);
       } else {
         const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
-        let idUpdates = { ids: [], removeIds: [] };
+        let idUpdates = { addIds: [], removeIds: [] };
         if (this.mode === ESelectionMode.ADD) {
           this._addIds = this._addIds.concat(oids);
-          idUpdates.ids = this._addIds;
-          this.ids = this.ids.concat(idUpdates.ids);
+          idUpdates.addIds = this._addIds;
+          this.ids = [...new Set([...this.ids, ...idUpdates.addIds])];
         } else {
           this.ids.forEach(id => {
             if (oids.indexOf(id) < 0) {
@@ -404,7 +417,7 @@ export class RefineSelectionTools {
           });
         }
         this._highlightFeatures(this.ids);
-        this.refineSelectionChange.emit({graphics: [], idUpdates});
+        this.refineSelectionIdsChange.emit(idUpdates);
       }
       this._clear();
     });
@@ -435,10 +448,22 @@ export class RefineSelectionTools {
   }
 
   _highlightFeatures(
-    ids: number[]
+    ids: number[],
+    updateExtent: boolean = false
   ) {
     this._clearHighlight();
-    this._highlightHandle = this.layerViews[0].highlight(ids);
+
+    if (ids.length > 0) {
+      this._highlightHandle = this.layerViews[0].highlight(ids);
+
+      if (updateExtent) {
+        const query = this.layerViews[0].createQuery();
+        query.objectIds = this.ids;
+        this.layerViews[0].queryExtent(query).then((result) => {
+          this.mapView.goTo(result.extent);
+        });
+      }
+    }
   }
 
   _clearHighlight() {

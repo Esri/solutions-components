@@ -101,6 +101,9 @@ define({
       "save": "Save",
       "addresseeLayer": "Addressee Layer",
       "selectedFeatures": "{{n}} selected features",
+      "featuresAdded": "Features Added: {{n}}",
+      "featuresRemoved": "Features Removed: {{n}}",
+      "totalSelected": "Total Selected: {{n}}",
       "startMessage": "Use the '+' button to create a {{n}} notification list.",
       "units": {
         "feet": "Feet",

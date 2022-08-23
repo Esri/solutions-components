@@ -199,9 +199,7 @@ export class MapSelectTools {
   ) {
     if (newValue !== oldValue) {
       if (this._bufferTools?.distance <= 0 && newValue.length > 0) {
-        const queryGeom = newValue.length > 1 ?
-          this.geometryEngine.union(newValue) : newValue[0];
-        this._selectFeatures(queryGeom);
+        this._geomQuery(this.geometries);
       } else if (newValue.length === 0) {
         this._clearResults(true, true);
       }
@@ -265,9 +263,9 @@ export class MapSelectTools {
     this._updateSelection(EWorkflowType.SKETCH, event.detail, this.translations?.sketch);
   }
 
-  @Listen("refineSelectionChange", { target: 'window' })
-  refineSelectionChange(event: CustomEvent): void {
-    const graphics = event.detail.graphics;
+  @Listen("refineSelectionGraphicsChange", { target: 'window' })
+  refineSelectionGraphicsChange(event: CustomEvent): void {
+    const graphics = event.detail;
 
     this._updateSelection(EWorkflowType.SELECT, graphics, this.translations?.select);
     // Using OIDs to avoid issue with points
@@ -501,7 +499,7 @@ export class MapSelectTools {
       geometry
     };
     this._selectedIds = this._selectedIds.concat(
-      await this.selectLayerView.queryObjectIds(query)
+      await this.selectLayerView?.queryObjectIds(query)
     );
   }
 
@@ -531,8 +529,19 @@ export class MapSelectTools {
       void this._selectFeatures(this._bufferGeometry);
       void this.mapView.goTo(polygonGraphic.geometry.extent);
     } else {
-      this._clearResults(false, false);
+      if (this._bufferGraphicsLayer) {
+        this._bufferGraphicsLayer.removeAll();
+      }
+      this._geomQuery(this.geometries);
     }
+  }
+
+  _geomQuery(
+    geometries: __esri.Geometry[]
+  ) {
+    const queryGeom = geometries.length > 1 ?
+      this.geometryEngine.union(geometries) : geometries[0];
+    this._selectFeatures(queryGeom);
   }
 
   _clearResults(

@@ -245,6 +245,7 @@ export namespace Components {
           * utils/interfaces/ERefineMode: ALL, SUBSET
          */
         "refineMode": ERefineMode;
+        "reset": () => Promise<void>;
         /**
           * boolean: Is selected enabled
          */
@@ -964,7 +965,8 @@ declare namespace LocalJSX {
           * utils/interfaces/ESelectionMode: ADD, REMOVE
          */
         "mode"?: ESelectionMode;
-        "onRefineSelectionChange"?: (event: RefineSelectionToolsCustomEvent<any>) => void;
+        "onRefineSelectionGraphicsChange"?: (event: RefineSelectionToolsCustomEvent<any>) => void;
+        "onRefineSelectionIdsChange"?: (event: RefineSelectionToolsCustomEvent<any>) => void;
         /**
           * utils/interfaces/ERefineMode: ALL, SUBSET
          */

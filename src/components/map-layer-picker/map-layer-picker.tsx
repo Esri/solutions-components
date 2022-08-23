@@ -117,8 +117,10 @@ export class MapLayerPicker {
 
   async componentWillLoad() {
     await this._setLayers();
-    if (this.selectionMode === "single" && this.layerNames.length > 0) {
-      this.layerSelectionChange.emit([this.layerNames[0]]);
+    if (this.selectionMode === "single" && (this.layerNames.length > 0 || this.selectedLayers.length === 1)) {
+      this.layerSelectionChange.emit(
+        this.selectedLayers.length === 1 ? [this.selectedLayers[0]] : [this.layerNames[0]]
+      );
     }
   }
 
@@ -175,6 +177,8 @@ export class MapLayerPicker {
             (<calcite-combobox-item selected textLabel={cur} value={cur} />) :
             this.selectionMode === "multi" ?
               (<calcite-combobox-item textLabel={cur} value={cur} />) :
+              this.selectedLayers.indexOf(cur) > -1 ?
+              (<calcite-option label={cur} selected={true} value={cur} />) :
               (<calcite-option label={cur} value={cur} />)
         );
       }

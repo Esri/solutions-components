@@ -25,9 +25,23 @@
 
 ## Events
 
-| Event                   | Description | Type               |
-| ----------------------- | ----------- | ------------------ |
-| `refineSelectionChange` |             | `CustomEvent<any>` |
+| Event                           | Description | Type               |
+| ------------------------------- | ----------- | ------------------ |
+| `refineSelectionGraphicsChange` |             | `CustomEvent<any>` |
+| `refineSelectionIdsChange`      |             | `CustomEvent<any>` |
+
+
+## Methods
+
+### `reset() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 
 ## Dependencies

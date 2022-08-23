@@ -275,5 +275,11 @@ export interface ISelectionSet {
   selectedIds: number[],
   layerView: __esri.FeatureLayerView,
   geometries: __esri.Geometry[],
-  refineSelectLayers: __esri.FeatureLayerView[]
+  refineSelectLayers: __esri.FeatureLayerView[],
+  refineIds: IRefineIds
+}
+
+export interface IRefineIds {
+  addIds: number[],
+  removeIds: number[]
 }

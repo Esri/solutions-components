@@ -1,4 +1,4 @@
-import { Component, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 
 @Component({
@@ -7,16 +7,62 @@ import { loadModules } from "../../utils/loadModules";
   shadow: true,
 })
 export class BufferTools {
+  //--------------------------------------------------------------------------
+  //
+  //  Host element access
+  //
+  //--------------------------------------------------------------------------
+  @Element() el: HTMLBufferToolsElement;
 
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (public)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
   @Prop() translations: any = {};
 
+  /**
+   * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
+   */
   @Prop() geometries: __esri.Geometry[];
 
+  /**
+   * boolean: option to control if buffer results should be unioned
+   */
   @Prop() unionResults = true;
 
+  /**
+   * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
+   */
   @Prop() unit: __esri.LinearUnits;
 
+  /**
+   * number: The distance used for buffer
+   */
   @Prop() distance = 0;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (private)
+  //
+  //--------------------------------------------------------------------------
+
+  private geometryEngine:  __esri.geometryEngine;
+
+  protected _unitDiv: HTMLCalciteSelectElement;
+
+  protected bufferTimeout: NodeJS.Timeout;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Watch handlers
+  //
+  //--------------------------------------------------------------------------
 
   @Watch('geometries')
   geometriesWatchHandler(v: any, oldV: any): void {
@@ -25,13 +71,25 @@ export class BufferTools {
     }
   }
 
+  //--------------------------------------------------------------------------
+  //
+  //  Methods (public)
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Events (public)
+  //
+  //--------------------------------------------------------------------------
+
   @Event() bufferComplete: EventEmitter;
 
-  private geometryEngine:  __esri.geometryEngine;
-
-  protected _unitDiv: HTMLCalciteSelectElement;
-
-  protected bufferTimeout: NodeJS.Timeout;
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (lifecycle)
+  //
+  //--------------------------------------------------------------------------
 
   async componentWillLoad() {
     await this._initModules();
@@ -64,6 +122,12 @@ export class BufferTools {
       </Host>
     );
   }
+
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (private)
+  //
+  //--------------------------------------------------------------------------
 
   async _initModules(): Promise<void> {
     const [geometryEngine]: [
@@ -124,6 +188,6 @@ export class BufferTools {
         );
         this.bufferComplete.emit(buffer);
       }
-    }, 200);
+    }, 400);
   }
 }
