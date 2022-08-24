@@ -7,33 +7,36 @@
 
 ## Properties
 
-| Property       | Attribute      | Description                                                                          | Type  | Default |
-| -------------- | -------------- | ------------------------------------------------------------------------------------ | ----- | ------- |
-| `translations` | `translations` | Contains the translations for this component. All UI strings should be defined here. | `any` | `{}`    |
+| Property                 | Attribute                  | Description                                                                          | Type               | Default     |
+| ------------------------ | -------------------------- | ------------------------------------------------------------------------------------ | ------------------ | ----------- |
+| `filterDuplicates`       | `filter-duplicates`        |                                                                                      | `boolean`          | `false`     |
+| `layerView`              | --                         |                                                                                      | `FeatureLayerView` | `undefined` |
+| `removeDuplicateEnabled` | `remove-duplicate-enabled` |                                                                                      | `boolean`          | `false`     |
+| `translations`           | `translations`             | Contains the translations for this component. All UI strings should be defined here. | `any`              | `{}`        |
 
 
 ## Dependencies
 
+### Used by
+
+ - [public-notification](../public-notification)
+
 ### Depends on
 
+- calcite-select
 - calcite-label
-- calcite-combobox
-- calcite-button
-- calcite-combobox-item
+- calcite-switch
+- calcite-option
 
 ### Graph
 ```mermaid
 graph TD;
+  pdf-download --> calcite-select
   pdf-download --> calcite-label
-  pdf-download --> calcite-combobox
-  pdf-download --> calcite-button
-  pdf-download --> calcite-combobox-item
-  calcite-combobox --> calcite-chip
-  calcite-combobox --> calcite-icon
-  calcite-chip --> calcite-icon
-  calcite-button --> calcite-loader
-  calcite-button --> calcite-icon
-  calcite-combobox-item --> calcite-icon
+  pdf-download --> calcite-switch
+  pdf-download --> calcite-option
+  calcite-select --> calcite-icon
+  public-notification --> pdf-download
   style pdf-download fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

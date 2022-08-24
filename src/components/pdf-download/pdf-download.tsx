@@ -41,7 +41,13 @@ export class PdfDownload {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-   @Prop({ mutable: true }) translations: any = {};
+   @Prop() translations: any = {};
+
+   @Prop() layerView: __esri.FeatureLayerView;
+
+   @Prop({ mutable: true }) filterDuplicates: boolean = false;
+
+   @Prop() removeDuplicateEnabled: boolean = false;
 
   //--------------------------------------------------------------------------
   //
@@ -49,7 +55,9 @@ export class PdfDownload {
   //
   //--------------------------------------------------------------------------
 
-  private _perPage = 0;
+  //private _perPage = 0;
+
+  protected _duplicateSelect: HTMLCalciteSelectElement;
 
   //--------------------------------------------------------------------------
   //
@@ -78,24 +86,12 @@ export class PdfDownload {
   render() {
     return (
       <Host>
-        <div class="download-container">
-          <calcite-label>
-            {this.translations?.format}
-            <calcite-combobox label={this.translations?.format} selection-mode="single">
-              {this._renderItems()}
-            </calcite-combobox>
-          </calcite-label>
-          <slot name='numFound' />
-          <div class="download-btn-container">
-            <calcite-button
-              class="download-btn"
-              label={this.translations?.download}
-              onClick={() => this._download()}
-            >
-              {this.translations?.download}
-            </calcite-button>
-          </div>
+        <div class="background-w padding-1-2 list-border">
+          <calcite-select label="">
+            {this._renderItems()}
+          </calcite-select>
         </div>
+        {this._renderRemoveDuplicate()}
       </Host>
     );
   }
@@ -106,27 +102,43 @@ export class PdfDownload {
   //
   //--------------------------------------------------------------------------
 
+  _renderRemoveDuplicate(): VNode {
+    return this.removeDuplicateEnabled ? (
+      <div class="background-w padding-1-2 list-border margin-top-1">
+        <calcite-label layout="inline">
+          <calcite-switch
+            onCalciteSwitchChange={(evt) => this._removeDuplicatesChanged(evt)}
+            scale="m"
+          />
+          <span class="icon-text" title={"Remove duplicates by value"}>{"Remove duplicates by value"}</span>
+        </calcite-label>
+
+        <calcite-label>
+          <calcite-select
+            label=""
+            disabled={!this.filterDuplicates}
+            onCalciteSelectChange={(evt) => this._duplicateFieldChanged(evt)}
+            ref={(el) => { this._duplicateSelect = el }}
+          >
+            {this._getFieldNames()}
+          </calcite-select>
+        </calcite-label>
+      </div>
+    ): (<div/>);
+  }
+
   _renderItems(): VNode[] {
     const s: any = pdfUtils;
-    return (s.default || s).map((l) => {
-      // no idea what all will actually be checked and what would even be safe to check
-      // just adding some generic checks here for POC work
-      let addSelected = this._perPage === l.descriptionPDF.labelsPerPage;
-      if (this._perPage === 0) {
-        this._perPage = l.descriptionPDF.labelsPerPage;
-        addSelected = true;
-      }
-      const textLabel = this.translations?.pdfLabel.replace("{{n}}", l.descriptionPDF.labelsPerPage);
-      return addSelected ? (<calcite-combobox-item
-        onClick={() => this._itemClicked(l)}
-        selected
-        textLabel={textLabel}
-        value={l} />
-      ) : (<calcite-combobox-item
-        onClick={() => this._itemClicked(l)}
-        textLabel={textLabel}
-        value={l} />
-      );
+    const sortedPdfIndo = (s.default || s).sort((a, b) => {
+      const _a = parseInt(a.descriptionPDF.labelsPerPageDisplay, 10);
+      const _b = parseInt(b.descriptionPDF.labelsPerPageDisplay, 10);
+      return _a < _b ? -1 : _a > _b ? 1 : 0
+    });
+    return sortedPdfIndo.map((l) => {
+      console.log(l)
+      const textLabel = this.translations?.pdfLabel.replace("{{n}}", l.descriptionPDF.labelsPerPageDisplay);
+      console.log(textLabel);
+      return (<calcite-option value={l}>{textLabel}</calcite-option>)
     });
   }
 
@@ -136,6 +148,27 @@ export class PdfDownload {
 
   _download(): void {
     alert("Download the stuff");
+  }
+
+  _removeDuplicatesChanged(
+    evt: CustomEvent
+  ) {
+    this.filterDuplicates = evt.detail.switched;
+  }
+
+  _getFieldNames(): VNode[] {
+    return this.layerView.layer.fields.map(f => {
+      return (<calcite-option>{f.alias}</calcite-option>)
+    });
+  }
+
+  _duplicateFieldChanged(
+    evt: CustomEvent
+  ) {
+    console.log(evt);
+    console.log(this._duplicateSelect.value)
+    console.log(this._duplicateSelect.selectedOption)
+    console.log(this._duplicateSelect.selectedOption.value)
   }
 
 }

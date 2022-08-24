@@ -184,7 +184,7 @@ export class RefineSelectionTools {
             label={this.translations?.selectLayers}
             mapView={this.mapView}
             selectedLayers={this.layerViews.map(l => l.layer.title)}
-            selectionMode={"multi"}
+            selectionMode={"single"}
             translations={this.translations}
             onLayerSelectionChange={(evt) => { this._layerSelectionChange(evt) }}
           />

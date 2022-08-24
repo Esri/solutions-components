@@ -184,6 +184,9 @@ export namespace Components {
         "workflowType": EWorkflowType;
     }
     interface PdfDownload {
+        "filterDuplicates": boolean;
+        "layerView": __esri.FeatureLayerView;
+        "removeDuplicateEnabled": boolean;
         /**
           * Contains the translations for this component. All UI strings should be defined here.
          */
@@ -923,6 +926,9 @@ declare namespace LocalJSX {
         "workflowType"?: EWorkflowType;
     }
     interface PdfDownload {
+        "filterDuplicates"?: boolean;
+        "layerView"?: __esri.FeatureLayerView;
+        "removeDuplicateEnabled"?: boolean;
         /**
           * Contains the translations for this component. All UI strings should be defined here.
          */

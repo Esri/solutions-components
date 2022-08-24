@@ -37,8 +37,7 @@
 - calcite-radio-group
 - calcite-radio-group-item
 - [refine-selection-tools](../refine-selection-tools)
-- calcite-select
-- calcite-option
+- [pdf-download](../pdf-download)
 
 ### Graph
 ```mermaid
@@ -56,8 +55,7 @@ graph TD;
   public-notification --> calcite-radio-group
   public-notification --> calcite-radio-group-item
   public-notification --> refine-selection-tools
-  public-notification --> calcite-select
-  public-notification --> calcite-option
+  public-notification --> pdf-download
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
@@ -92,6 +90,10 @@ graph TD;
   buffer-tools --> calcite-option
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
+  pdf-download --> calcite-select
+  pdf-download --> calcite-label
+  pdf-download --> calcite-switch
+  pdf-download --> calcite-option
   style public-notification fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

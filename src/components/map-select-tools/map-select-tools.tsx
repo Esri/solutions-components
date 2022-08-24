@@ -16,7 +16,7 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
-import { EWorkflowType, ESelectionMode, ISelectionSet } from '../../utils/interfaces';
+import { EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode } from '../../utils/interfaces';
 import state from "../../utils/publicNotificationStore";
 
 @Component({
@@ -198,7 +198,7 @@ export class MapSelectTools {
     oldValue: __esri.Geometry[]
   ) {
     if (newValue !== oldValue) {
-      if (this._bufferTools?.distance <= 0 && newValue.length > 0) {
+      if (newValue.length > 0) {
         this._geomQuery(this.geometries);
       } else if (newValue.length === 0) {
         this._clearResults(true, true);
@@ -344,6 +344,7 @@ export class MapSelectTools {
           mapView={this.mapView}
           mode={ESelectionMode.ADD}
           ref={(el) => { this._refineTools = el }}
+          refineMode={ERefineMode.SUBSET}
           translations={this.translations}
         />
         <buffer-tools
@@ -498,11 +499,11 @@ export class MapSelectTools {
   async _query(
     geometry: __esri.Geometry
   ) {
-    const query = {
-      geometry
-    };
+    const q = this.selectLayerView.layer.createQuery();
+    q.spatialRelationship = "intersects";
+    q.geometry = geometry;
     this._selectedIds = this._selectedIds.concat(
-      await this.selectLayerView?.queryObjectIds(query)
+      await this.selectLayerView?.layer?.queryObjectIds(q)
     );
   }
 

@@ -2,16 +2,18 @@
   display: block;
 }
 
-.download-container {
-  padding-bottom: 1rem;
+.background-w {
+  background-color: white;
 }
 
-.download-btn {
-  padding-top: 1rem;
-  float: right;
+.padding-1-2 {
+  padding: 0.5rem;
 }
 
-.download-btn-container {
-  display: "table";
-  margin: "0 auto";
+.margin-top-1 {
+  margin-top: 1rem;
+}
+
+.list-border {
+  border: 1px solid var(--calcite-ui-border-2);
 }

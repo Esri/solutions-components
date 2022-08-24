@@ -334,13 +334,11 @@ export class PublicNotificationTwo {
         break;
       case EPageType.PDF:
         page = (
-          <div class="background-w padding-1-2 list-border">
-            <calcite-select label="">
-              <calcite-option>PDF label 30 per page</calcite-option>
-              <calcite-option>PDF label 40 per page</calcite-option>
-              <calcite-option>PDF label 50 per page</calcite-option>
-            </calcite-select>
-          </div>
+          <pdf-download
+            layerView={this.addresseeLayer}
+            removeDuplicateEnabled={false}
+            translations={this.translations}
+          />
         )
         break;
     }
