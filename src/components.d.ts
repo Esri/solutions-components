@@ -9,10 +9,25 @@ import { EPageType, ERefineMode, ESelectionMode, ESelectionType, EWorkflowType, 
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BufferTools {
+        /**
+          * number: The distance used for buffer
+         */
         "distance": number;
+        /**
+          * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
+         */
         "geometries": __esri.Geometry[];
+        /**
+          * Contains the translations for this component. All UI strings should be defined here.
+         */
         "translations": any;
+        /**
+          * boolean: option to control if buffer results should be unioned
+         */
         "unionResults": boolean;
+        /**
+          * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
+         */
         "unit": __esri.LinearUnits;
     }
     interface ConfigMapSearch {
@@ -736,11 +751,26 @@ declare global {
 }
 declare namespace LocalJSX {
     interface BufferTools {
+        /**
+          * number: The distance used for buffer
+         */
         "distance"?: number;
+        /**
+          * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
+         */
         "geometries"?: __esri.Geometry[];
         "onBufferComplete"?: (event: BufferToolsCustomEvent<any>) => void;
+        /**
+          * Contains the translations for this component. All UI strings should be defined here.
+         */
         "translations"?: any;
+        /**
+          * boolean: option to control if buffer results should be unioned
+         */
         "unionResults"?: boolean;
+        /**
+          * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
+         */
         "unit"?: __esri.LinearUnits;
     }
     interface ConfigMapSearch {

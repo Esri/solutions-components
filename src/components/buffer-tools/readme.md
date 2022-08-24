@@ -7,13 +7,13 @@
 
 ## Properties
 
-| Property       | Attribute       | Description | Type                                                                                     | Default     |
-| -------------- | --------------- | ----------- | ---------------------------------------------------------------------------------------- | ----------- |
-| `distance`     | `distance`      |             | `number`                                                                                 | `0`         |
-| `geometries`   | --              |             | `Geometry[]`                                                                             | `undefined` |
-| `translations` | `translations`  |             | `any`                                                                                    | `{}`        |
-| `unionResults` | `union-results` |             | `boolean`                                                                                | `true`      |
-| `unit`         | `unit`          |             | `"feet" \| "kilometers" \| "meters" \| "miles" \| "nautical-miles" \| "yards" \| number` | `undefined` |
+| Property       | Attribute       | Description                                                                                                              | Type                                                                                     | Default     |
+| -------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- | ----------- |
+| `distance`     | `distance`      | number: The distance used for buffer                                                                                     | `number`                                                                                 | `0`         |
+| `geometries`   | --              | esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html        | `Geometry[]`                                                                             | `undefined` |
+| `translations` | `translations`  | Contains the translations for this component. All UI strings should be defined here.                                     | `any`                                                                                    | `{}`        |
+| `unionResults` | `union-results` | boolean: option to control if buffer results should be unioned                                                           | `boolean`                                                                                | `true`      |
+| `unit`         | `unit`          | LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits | `"feet" \| "kilometers" \| "meters" \| "miles" \| "nautical-miles" \| "yards" \| number` | `undefined` |
 
 
 ## Events

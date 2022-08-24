@@ -395,7 +395,6 @@ export class MapSelectTools {
   _initSelectionSet() {
     if (this.selectionSet) {
       this.searchTerm = this.selectionSet?.searchResult?.name;
-      this._selectionLabel = this.selectionSet?.label;
       this.workflowType = this.selectionSet?.workflowType;
       this._selectType = this.selectionSet?.workflowType;
       this._searchResult = this.selectionSet?.searchResult;
@@ -413,6 +412,10 @@ export class MapSelectTools {
         };
         return new this.Graphic(props)
       });
+      // reset selection label base
+      this._selectionLabel = this.workflowType === EWorkflowType.SKETCH ?
+        this.translations?.sketch : this.workflowType === EWorkflowType.SELECT ?
+        this.translations?.select : this.selectionSet?.label;
     }
   }
 
