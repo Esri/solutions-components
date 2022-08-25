@@ -481,7 +481,7 @@ export class MapSelectTools {
   }
 
   async _selectFeatures(
-    geometry: __esri.Geometry
+    geometries: __esri.Geometry[]
   ): Promise<void> {
     if (this.selectTimeout) {
       clearTimeout(this.selectTimeout);
@@ -491,8 +491,16 @@ export class MapSelectTools {
       if (this._highlightHandle) {
         this._highlightHandle.remove();
       }
-      await this._query(geometry);
-      this._highlightFeatures(this._selectedIds);
+      const queryDefs = geometries.map(g => this._query(g))
+      Promise.all(queryDefs).then((results) => {
+        results.forEach(r => {
+          this._selectedIds = [
+            ...this._selectedIds,
+            ...r
+          ]
+        });
+        this._highlightFeatures(this._selectedIds);
+      });
     }, 100);
   }
 
@@ -502,9 +510,7 @@ export class MapSelectTools {
     const q = this.selectLayerView.layer.createQuery();
     q.spatialRelationship = "intersects";
     q.geometry = geometry;
-    this._selectedIds = this._selectedIds.concat(
-      await this.selectLayerView?.layer?.queryObjectIds(q)
-    );
+    return this.selectLayerView?.layer?.queryObjectIds(q);
   }
 
   _bufferComplete(evt: CustomEvent) {
@@ -530,7 +536,7 @@ export class MapSelectTools {
 
       this._bufferGraphicsLayer.removeAll();
       this._bufferGraphicsLayer.add(polygonGraphic);
-      void this._selectFeatures(this._bufferGeometry);
+      void this._selectFeatures([this._bufferGeometry]);
       void this.mapView.goTo(polygonGraphic.geometry.extent);
     } else {
       if (this._bufferGraphicsLayer) {
@@ -543,9 +549,22 @@ export class MapSelectTools {
   _geomQuery(
     geometries: __esri.Geometry[]
   ) {
-    const queryGeom = geometries.length > 1 ?
-      this.geometryEngine.union(geometries) : geometries[0];
-    this._selectFeatures(queryGeom);
+    // sort by geom type so we have a single geom for each type to query with
+    const queryGeoms = [
+      ...this._getQueryGeoms(geometries, "polygon"),
+      ...this._getQueryGeoms(geometries, "polyline"),
+      ...this._getQueryGeoms(geometries, "point")
+    ];
+
+    this._selectFeatures(queryGeoms);
+  }
+
+  _getQueryGeoms(
+    geometries: __esri.Geometry[],
+    type: string
+  ): __esri.Geometry[] {
+    const geoms = geometries.filter(g => g.type === type);
+    return geoms.length <= 1 ? geoms : [this.geometryEngine.union(geoms)];
   }
 
   _clearResults(

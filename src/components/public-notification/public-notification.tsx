@@ -1,4 +1,4 @@
-import { Component, Element, Host, h, Listen, Prop, VNode } from '@stencil/core';
+import { Component, Element, Host, h, Listen, Prop, VNode, Watch } from '@stencil/core';
 import { ISelectionSet, EPageType, ESelectionMode, EWorkflowType } from '../../utils/interfaces';
 import { getMapLayerView } from '../../utils/mapViewUtils';
 
@@ -88,6 +88,19 @@ export class PublicNotificationTwo {
   //
   //--------------------------------------------------------------------------
 
+  @Watch('selectionSets')
+  selectionSetsWatchHandler(
+    v: ISelectionSet[],
+    oldV: ISelectionSet[]
+  ): void {
+    if (v && v !== oldV && v.length > 0) {
+      const nonRefineSets = v.filter(ss => ss.workflowType !== EWorkflowType.REFINE)
+      if (nonRefineSets.length === 0) {
+        this.selectionSets = []
+      }
+    }
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
@@ -144,11 +157,9 @@ export class PublicNotificationTwo {
 
   _getActions(): VNode {
     let actions: VNode;
-    const hasSelections = this.selectionSets.length > 0;
+    const hasSelections = this.selectionSets.filter(ss => ss.workflowType !== EWorkflowType.REFINE).length > 0;
     const trans = this.translations;
-    const hasRefine = this.selectionSets.some(selectionSet => {
-      return selectionSet.workflowType === EWorkflowType.REFINE;
-    });
+    const hasRefine = this._hasRefine();
     switch (this.pageType) {
       case EPageType.LIST:
         actions = (
@@ -343,6 +354,13 @@ export class PublicNotificationTwo {
         break;
     }
     return page;
+  }
+
+  _hasRefine(): boolean {
+    return this.selectionSets.some(selectionSet => {
+      return selectionSet.workflowType === EWorkflowType.REFINE &&
+        (selectionSet.refineIds.addIds.length > 0 || selectionSet.refineIds.removeIds.length > 0);
+    });
   }
 
   _updateSelectionSetsForRemoveIds(
