@@ -108,11 +108,7 @@ export class PublicNotificationTwo {
   ) {
     await this._clearHighlight();
     if (v === EPageType.LIST) {
-      state.highlightHandle = await highlightFeatures(
-        this.mapView,
-        this.addresseeLayer,
-        this._getSelectionIds(this.selectionSets)
-      );
+      this._highlightFeatures();
     }
   }
 
@@ -593,11 +589,21 @@ export class PublicNotificationTwo {
         return ss;
       }
     });
+    this._highlightFeatures();
   }
 
   _openSelection(selectionSet: ISelectionSet) {
     this.activeSelection = selectionSet;
     this.pageType = EPageType.SELECT;
+  }
+
+  async _highlightFeatures() {
+    await this._clearHighlight();
+    state.highlightHandle = await highlightFeatures(
+      this.mapView,
+      this.addresseeLayer,
+      this._getSelectionIds(this.selectionSets)
+    );
   }
 
   async _clearHighlight() {
