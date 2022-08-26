@@ -16,6 +16,7 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
+import { highlightFeatures } from '../../utils/mapViewUtils';
 import { EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode } from '../../utils/interfaces';
 import state from "../../utils/publicNotificationStore";
 
@@ -155,11 +156,6 @@ export class MapSelectTools {
    * HTMLBufferToolsElement: The container div for the buffer tools
    */
   protected _bufferTools: HTMLBufferToolsElement;
-
-  /**
-   * Handle: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Handles.html#Handle
-   */
-  protected _highlightHandle: __esri.Handle;
 
   /**
    * Timeout: Used to add a slight delay when selecting features.
@@ -470,14 +466,19 @@ export class MapSelectTools {
     this.workflowType = evt.detail;
   }
 
-  _highlightFeatures(
-    target: number | number[] | __esri.Graphic | __esri.Graphic[]
+  async _highlightFeatures(
+    ids: number[]
   ) {
-    if (this._highlightHandle) {
-      this._highlightHandle.remove();
+    if (state.highlightHandle) {
+      state.highlightHandle?.remove();
     }
-    this._highlightHandle = this.selectLayerView.highlight(target);
-    this.selectionSetChange.emit((Array.isArray(target) ? target : [target]).length);
+
+    state.highlightHandle = await highlightFeatures(
+      this.mapView,
+      this.selectLayerView,
+      ids
+    );
+    this.selectionSetChange.emit(ids.length);
   }
 
   async _selectFeatures(
@@ -488,9 +489,6 @@ export class MapSelectTools {
     }
     this.selectTimeout = setTimeout(async () => {
       this._selectedIds = [];
-      if (this._highlightHandle) {
-        this._highlightHandle.remove();
-      }
       const queryDefs = geometries.map(g => this._query(g))
       Promise.all(queryDefs).then((results) => {
         results.forEach(r => {
@@ -585,8 +583,8 @@ export class MapSelectTools {
       this._searchWidget.clear();
     }
 
-    if (this._highlightHandle) {
-      this._highlightHandle.remove();
+    if (state.highlightHandle) {
+      state.highlightHandle.remove();
     }
 
     // for sketch

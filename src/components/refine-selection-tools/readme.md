@@ -33,6 +33,16 @@
 
 ## Methods
 
+### `clearHighlight() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `reset() => Promise<void>`
 
 

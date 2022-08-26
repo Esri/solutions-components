@@ -222,7 +222,7 @@ export namespace Components {
          */
         "selectionLayers": __esri.Layer[];
         /**
-          * utils/interfaces/ISelectionSet[]: An array of user defined selection sets
+          * utils/interfaces/ISelectionSet: An array of user defined selection sets
          */
         "selectionSets": ISelectionSet[];
         /**
@@ -235,6 +235,7 @@ export namespace Components {
           * boolean: sketch is used by multiple components...need a way to know who should respond...
          */
         "active": boolean;
+        "clearHighlight": () => Promise<void>;
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
@@ -964,7 +965,7 @@ declare namespace LocalJSX {
          */
         "selectionLayers"?: __esri.Layer[];
         /**
-          * utils/interfaces/ISelectionSet[]: An array of user defined selection sets
+          * utils/interfaces/ISelectionSet: An array of user defined selection sets
          */
         "selectionSets"?: ISelectionSet[];
         /**

@@ -16,7 +16,7 @@
 | `pageType`        | `page-type`    | utils/interfaces/EPageType: LIST, SELECT, REFINE, PDF, CSV                                                                                | `EPageType.CSV \| EPageType.LIST \| EPageType.PDF \| EPageType.REFINE \| EPageType.SELECT` | `EPageType.LIST` |
 | `saveEnabled`     | `save-enabled` | boolean: Save is enabled when we have 1 or more selected features                                                                         | `boolean`                                                                                  | `false`          |
 | `selectionLayers` | --             | esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html                                   | `Layer[]`                                                                                  | `undefined`      |
-| `selectionSets`   | --             | utils/interfaces/ISelectionSet[]: An array of user defined selection sets                                                                 | `ISelectionSet[]`                                                                          | `[]`             |
+| `selectionSets`   | --             | utils/interfaces/ISelectionSet: An array of user defined selection sets                                                                   | `ISelectionSet[]`                                                                          | `[]`             |
 | `translations`    | `translations` | Contains the translations for this component. All UI strings should be defined here.                                                      | `any`                                                                                      | `{}`             |
 
 

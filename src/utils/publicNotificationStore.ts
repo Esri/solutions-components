@@ -17,7 +17,10 @@
 import { createStore } from "@stencil/store";
 
 const { state, onChange } = createStore({
-    managedLayers: []
+    // List of layers added and managed by the component
+    managedLayers: [],
+    // Handle: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Handles.html#Handle
+    highlightHandle: undefined
 });
 
 const managedLayersChangedEvent = new CustomEvent("managedLayersChanged", {

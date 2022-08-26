@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { ISelectionSet } from './interfaces';
 
 export async function getMapLayerNames(
   mapView: __esri.MapView
@@ -45,4 +46,42 @@ export async function getMapLayer(
     });
   });
   return layers.length > 0 ? layers[0] : undefined;
+}
+
+export async function highlightFeatures(
+  mapView: __esri.MapView,
+  layer: __esri.FeatureLayerView,
+  ids: number[],
+  updateExtent: boolean = false
+): Promise<__esri.Handle> {
+  if (ids.length > 0) {
+    if (updateExtent) {
+      const query = layer.createQuery();
+      query.objectIds = ids;
+      await layer.queryExtent(query).then((result) => {
+        mapView.goTo(result.extent);
+      });
+    }
+    return layer.highlight(ids);
+  } else {
+    return undefined;
+  }
+}
+
+export function flashSelection(
+  selectionSet: ISelectionSet
+): void {
+  const objectIds = selectionSet.selectedIds;
+  const featureFilter = {
+    objectIds
+  } as __esri.FeatureFilter;
+  selectionSet.layerView.featureEffect = {
+    filter: featureFilter,
+    includedEffect: "bloom(1.3, 0.1px, 5%)",
+    excludedEffect: "blur(5px) grayscale(90%) opacity(40%)"
+  } as __esri.FeatureEffect;
+
+  setTimeout(() => {
+    selectionSet.layerView.featureEffect = undefined;
+  }, 1300);
 }

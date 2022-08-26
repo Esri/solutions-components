@@ -1,6 +1,6 @@
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, Watch } from '@stencil/core';
 import { ERefineMode, ESelectionMode, ESelectionType } from '../../utils/interfaces';
-import { getMapLayerView } from '../../utils/mapViewUtils';
+import { getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
 import state from "../../utils/publicNotificationStore";
 import { loadModules } from "../../utils/loadModules";
 
@@ -105,8 +105,6 @@ export class RefineSelectionTools {
 
   protected _hitTestHandle: __esri.Handle;
 
-  protected _highlightHandle: __esri.Handle;
-
   protected aaa: any = {};
 
   protected _addIds: number[] = [];
@@ -137,6 +135,11 @@ export class RefineSelectionTools {
     return Promise.resolve();
   }
 
+  @Method()
+  async clearHighlight() {
+    this._clearHighlight();
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Events (public)
@@ -163,7 +166,6 @@ export class RefineSelectionTools {
 
   disconnectedCallback() {
     this.active = false;
-    this._clearHighlight();
   }
 
   connectedCallback() {
@@ -379,7 +381,7 @@ export class RefineSelectionTools {
     }
   }
 
-  _selectFeatures(
+  async _selectFeatures(
     geom: __esri.Geometry
   ) {
     const queryFeaturePromises = this.layerViews.map(l => {
@@ -416,8 +418,10 @@ export class RefineSelectionTools {
             return idUpdates.removeIds.indexOf(id) < 0;
           });
         }
-        this._highlightFeatures(this.ids);
-        this.refineSelectionIdsChange.emit(idUpdates);
+        this._highlightFeatures(this.ids).then(() => {
+          this.refineSelectionIdsChange.emit(idUpdates);
+        })
+        
       }
       this._clear();
     });
@@ -447,28 +451,17 @@ export class RefineSelectionTools {
     return this.aaa;
   }
 
-  _highlightFeatures(
+  async _highlightFeatures(
     ids: number[],
     updateExtent: boolean = false
   ) {
     this._clearHighlight();
-
-    if (ids.length > 0) {
-      this._highlightHandle = this.layerViews[0].highlight(ids);
-
-      if (updateExtent) {
-        const query = this.layerViews[0].createQuery();
-        query.objectIds = this.ids;
-        this.layerViews[0].queryExtent(query).then((result) => {
-          this.mapView.goTo(result.extent);
-        });
-      }
-    }
+    state.highlightHandle = await highlightFeatures(this.mapView, this.layerViews[0], ids, updateExtent)
   }
 
   _clearHighlight() {
-    if (this._highlightHandle) {
-      this._highlightHandle.remove();
+    if (state.highlightHandle) {
+      state.highlightHandle.remove();
     }
   }
 

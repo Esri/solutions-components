@@ -1,6 +1,7 @@
 import { Component, Element, Host, h, Listen, Prop, VNode, Watch } from '@stencil/core';
 import { ISelectionSet, EPageType, ESelectionMode, EWorkflowType } from '../../utils/interfaces';
-import { getMapLayerView } from '../../utils/mapViewUtils';
+import { flashSelection, getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
+import state from "../../utils/publicNotificationStore";
 
 @Component({
   tag: 'public-notification',
@@ -53,7 +54,7 @@ export class PublicNotificationTwo {
   @Prop({ mutable: true }) message = "";
 
   /**
-   * utils/interfaces/ISelectionSet[]: An array of user defined selection sets
+   * utils/interfaces/ISelectionSet: An array of user defined selection sets
    */
   @Prop({ mutable: true }) selectionSets: ISelectionSet[] = [];
 
@@ -89,15 +90,29 @@ export class PublicNotificationTwo {
   //--------------------------------------------------------------------------
 
   @Watch('selectionSets')
-  selectionSetsWatchHandler(
+  async selectionSetsWatchHandler(
     v: ISelectionSet[],
     oldV: ISelectionSet[]
-  ): void {
+  ) {
     if (v && v !== oldV && v.length > 0) {
       const nonRefineSets = v.filter(ss => ss.workflowType !== EWorkflowType.REFINE)
       if (nonRefineSets.length === 0) {
         this.selectionSets = []
       }
+    }
+  }
+
+  @Watch('pageType')
+  async pageTypeWatchHandler(
+    v: EPageType
+  ) {
+    await this._clearHighlight();
+    if (v === EPageType.LIST) {
+      state.highlightHandle = await highlightFeatures(
+        this.mapView,
+        this.addresseeLayer,
+        this._getSelectionIds(this.selectionSets)
+      );
     }
   }
 
@@ -174,7 +189,7 @@ export class PublicNotificationTwo {
       case EPageType.SELECT:
         actions = (
           <calcite-action-group>
-            {this._getAction(true, "chevron-left", trans?.back, (): void => this._home())}
+            {this._getAction(true, "chevron-left", trans?.back, (): Promise<void> => this._home())}
             {this._getAction(this.saveEnabled, "save", trans?.save, (): Promise<void> => this._saveSelection())}
           </calcite-action-group>
         );
@@ -182,7 +197,7 @@ export class PublicNotificationTwo {
       case EPageType.REFINE:
         actions = (
           <calcite-action-group>
-            {this._getAction(true, "chevron-left", trans?.back, (): void => this._home())}
+            {this._getAction(true, "chevron-left", trans?.back, (): Promise<void> => this._home())}
           </calcite-action-group>
         );
         break;
@@ -249,7 +264,7 @@ export class PublicNotificationTwo {
                           <calcite-list-item
                             description={this.translations?.selectedFeatures.replace('{{n}}', cur.selectedIds.length)}
                             label={cur.label}
-                            onClick={() => this._flashSelection(cur)}
+                            onClick={() => flashSelection(cur)}
                           >
                             {this._getAction(true, "pencil", "", (): void => this._openSelection(cur), false, "actions-end")}
                             {this._getAction(true, "x", "", (): void => this._deleteSelection(i), false, "actions-end")}
@@ -323,7 +338,7 @@ export class PublicNotificationTwo {
               </calcite-radio-group-item>
             </calcite-radio-group>
             <refine-selection-tools
-              ids={[...this._getSelectionIds(this.selectionSets)]}
+              ids={this._getSelectionIds(this.selectionSets)}
               layerViews={[this.addresseeLayer]}
               mapView={this.mapView}
               mode={this.addEnabled ? ESelectionMode.ADD : ESelectionMode.REMOVE}
@@ -452,21 +467,18 @@ export class PublicNotificationTwo {
     return [(
       <calcite-list-item
         label={this.translations?.featuresAdded?.replace('{{n}}', numAdded)}
-        // onClick={() => this._flashSelection(refineSet)}
       >
         {this._getAction(numAdded > 0, "reset", "", (): void => this._revertSelection(refineSet, true), false, "actions-end")}
       </calcite-list-item>
     ),(
       <calcite-list-item
         label={this.translations?.featuresRemoved?.replace('{{n}}', numRemoved)}
-        // onClick={() => this._flashSelection(refineSet)}
       >
         {this._getAction(numRemoved > 0, "reset", "", (): void => this._revertSelection(refineSet, false), false, "actions-end")}
       </calcite-list-item>
     ), (
       <calcite-list-item
         label={this.translations?.totalSelected?.replace('{{n}}', total)}
-        // onClick={() => this._flashSelection(refineSet)}
       />
     )];
   }
@@ -528,8 +540,8 @@ export class PublicNotificationTwo {
     this.saveEnabled = this.numSelected > 0;
   }
 
-  _home(): void {
-    this._clearSelection();
+  async _home() {
+    await this._clearSelection();
     this._setPageType(EPageType.LIST);
   }
 
@@ -569,8 +581,8 @@ export class PublicNotificationTwo {
     this._home();
   }
 
-  _clearSelection () {
-    this._selectTools?.clearSelection();
+  async _clearSelection () {
+    await this._selectTools?.clearSelection();
     this.numSelected = 0;
     this.activeSelection = undefined;
   }
@@ -588,25 +600,9 @@ export class PublicNotificationTwo {
     this.pageType = EPageType.SELECT;
   }
 
-  _flashSelection(
-    selectionSet: ISelectionSet
-  ) {
-    const objectIds = selectionSet.selectedIds;
-    const featureFilter = {
-      objectIds
-    } as __esri.FeatureFilter;
-    selectionSet.layerView.featureEffect = {
-      filter: featureFilter,
-      includedEffect: "bloom(1.3, 0.1px, 5%)",
-      excludedEffect: "blur(5px) grayscale(90%) opacity(40%)"
-    } as __esri.FeatureEffect;
-
-    setTimeout(() => {
-      selectionSet.layerView.featureEffect = undefined;
-    }, 1300);
-  }
-
-  _zoomToExtent(): void {
-    alert("Zoom To Extent");
+  async _clearHighlight() {
+    if (state.highlightHandle) {
+      state.highlightHandle.remove();
+    }
   }
 }
