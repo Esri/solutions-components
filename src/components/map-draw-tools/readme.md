@@ -15,7 +15,6 @@
 | `pointSymbol`    | --             | esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html | `SimpleMarkerSymbol` | `undefined` |
 | `polygonSymbol`  | --             | esri/symbols/SimpleFillSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html     | `SimpleFillSymbol`   | `undefined` |
 | `polylineSymbol` | --             | esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html     | `SimpleLineSymbol`   | `undefined` |
-| `sketchWidget`   | --             | esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html                         | `Sketch`             | `undefined` |
 | `translations`   | `translations` | Contains the translations for this component. All UI strings should be defined here.                                                | `any`                | `{}`        |
 
 

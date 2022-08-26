@@ -1,4 +1,4 @@
-import { Component, Element, Host, h, Listen, Prop, VNode, Watch } from '@stencil/core';
+import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from '@stencil/core';
 import { ISelectionSet, EPageType, ESelectionMode, EWorkflowType } from '../../utils/interfaces';
 import { flashSelection, getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
 import state from "../../utils/publicNotificationStore";
@@ -39,29 +39,9 @@ export class PublicNotificationTwo {
   @Prop() addresseeLayer: __esri.FeatureLayerView;
 
   /**
-   * boolean: Save is enabled when we have 1 or more selected features
-   */
-  @Prop() saveEnabled = false;
-
-  /**
-   * utils/interfaces/EPageType: LIST, SELECT, REFINE, PDF, CSV
-   */
-  @Prop({ mutable: true }) pageType: EPageType = EPageType.LIST;
-
-  /**
    * string: Default message to show when we have no selection sets
    */
   @Prop({ mutable: true }) message = "";
-
-  /**
-   * utils/interfaces/ISelectionSet: An array of user defined selection sets
-   */
-  @Prop({ mutable: true }) selectionSets: ISelectionSet[] = [];
-
-  /**
-   * number: The number of selected features
-   */
-  @Prop() numSelected = 0;
 
   /**
    * Contains the translations for this component.
@@ -74,6 +54,26 @@ export class PublicNotificationTwo {
   //  Properties (private)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * boolean: Save is enabled when we have 1 or more selected features
+   */
+  @State() saveEnabled = false;
+
+  /**
+   * utils/interfaces/EPageType: LIST, SELECT, REFINE, PDF, CSV
+   */
+  @State() pageType: EPageType = EPageType.LIST;
+
+  /**
+   * utils/interfaces/ISelectionSet: An array of user defined selection sets
+   */
+  @State() selectionSets: ISelectionSet[] = [];
+
+  /**
+   * number: The number of selected features
+   */
+  @State() numSelected = 0;
 
   protected _selectTools: HTMLMapSelectToolsElement;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop, State, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import { highlightFeatures } from '../../utils/mapViewUtils';
 import { EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode } from '../../utils/interfaces';
@@ -55,11 +55,6 @@ export class MapSelectTools {
   @Prop() selectLayerView: __esri.FeatureLayerView;
 
   /**
-   * EWorkflowType: "SEARCH", "SELECT", "SKETCH", "REFINE"
-   */
-  @Prop({ mutable: true }) workflowType: EWorkflowType = EWorkflowType.SEARCH;
-
-  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
@@ -69,12 +64,6 @@ export class MapSelectTools {
    * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
    */
   @Prop() geometries: __esri.Geometry[];
-
-  /**
-   * string: Text entered by the end user.
-   * Used to search against the locator.
-   */
-  @Prop() searchTerm: string;
 
   /**
    * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
@@ -91,6 +80,17 @@ export class MapSelectTools {
   //  Properties (private)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * string: Text entered by the end user.
+   * Used to search against the locator.
+   */
+  @State() searchTerm: string;
+
+  /**
+   * EWorkflowType: "SEARCH", "SELECT", "SKETCH", "REFINE"
+   */
+  @State() workflowType: EWorkflowType = EWorkflowType.SEARCH;
 
   /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
@@ -115,7 +115,7 @@ export class MapSelectTools {
   /**
    * esri/geometry/geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
    */
-  private geometryEngine:  __esri.geometryEngine;
+  protected geometryEngine:  __esri.geometryEngine;
 
   /**
    * HTMLElement: The container div for the search widget

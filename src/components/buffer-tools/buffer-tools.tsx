@@ -52,7 +52,7 @@ export class BufferTools {
   //
   //--------------------------------------------------------------------------
 
-  private geometryEngine:  __esri.geometryEngine;
+  protected geometryEngine:  __esri.geometryEngine;
 
   protected _unitDiv: HTMLCalciteSelectElement;
 

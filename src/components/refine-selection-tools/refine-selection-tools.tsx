@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, Watch } from '@stencil/core';
 import { ERefineMode, ESelectionMode, ESelectionType } from '../../utils/interfaces';
 import { getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
 import state from "../../utils/publicNotificationStore";
@@ -51,16 +51,6 @@ export class RefineSelectionTools {
   @Prop() mapView: __esri.MapView;
 
   /**
-   * boolean: Is selected enabled
-   */
-  @Prop() selectEnbaled = false;
-
-  /**
-   * utils/interfaces/ESelectionType: POINT, LINE, POLY, RECT
-   */
-  @Prop() selectionMode: ESelectionType;
-
-  /**
    * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
    */
   @Prop() layerView: __esri.FeatureLayerView;
@@ -90,6 +80,17 @@ export class RefineSelectionTools {
   //  Properties (private)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * boolean: Is selected enabled
+   */
+  @State() selectEnbaled = false;
+
+  /**
+   * utils/interfaces/ESelectionType: POINT, LINE, POLY, RECT
+   */
+  @State() selectionMode: ESelectionType;
+
 
   protected _excludeEffect = "blur(5px) grayscale(90%) opacity(40%)";
 

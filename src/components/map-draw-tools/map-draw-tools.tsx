@@ -45,12 +45,7 @@ export class MapDrawTools {
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
-  @Prop({ mutable: true, reflect: true }) mapView: __esri.MapView;
-
-  /**
-   * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
-   */
-  @Prop() sketchWidget: __esri.Sketch;
+  @Prop({ mutable: true }) mapView: __esri.MapView;
 
   /**
    * esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
@@ -95,14 +90,19 @@ export class MapDrawTools {
   protected Sketch: typeof __esri.Sketch;
 
   /**
+   * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
+   */
+  protected _sketchWidget: __esri.Sketch;
+
+  /**
    * The container div for the sketch widget
    */
-  private _sketchDiv: HTMLElement;
+  protected _sketchDiv: HTMLElement;
 
   /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
    */
-  private _sketchGraphicsLayer: __esri.GraphicsLayer;
+  protected _sketchGraphicsLayer: __esri.GraphicsLayer;
 
   //--------------------------------------------------------------------------
   //
@@ -212,7 +212,7 @@ export class MapDrawTools {
   }
 
   _initDrawTools(): void {
-    this.sketchWidget = new this.Sketch({
+    this._sketchWidget = new this.Sketch({
       layer: this._sketchGraphicsLayer,
       view: this.mapView,
       container: this._sketchDiv,
@@ -222,11 +222,11 @@ export class MapDrawTools {
       }
     });
 
-    this.pointSymbol = this.sketchWidget.viewModel.pointSymbol as __esri.SimpleMarkerSymbol;
-    this.polylineSymbol = this.sketchWidget.viewModel.polylineSymbol as __esri.SimpleLineSymbol;
-    this.polygonSymbol = this.sketchWidget.viewModel.polygonSymbol as __esri.SimpleFillSymbol;
+    this.pointSymbol = this._sketchWidget.viewModel.pointSymbol as __esri.SimpleMarkerSymbol;
+    this.polylineSymbol = this._sketchWidget.viewModel.polylineSymbol as __esri.SimpleLineSymbol;
+    this.polygonSymbol = this._sketchWidget.viewModel.polygonSymbol as __esri.SimpleFillSymbol;
 
-    this.sketchWidget.visibleElements = {
+    this._sketchWidget.visibleElements = {
       selectionTools: {
         "lasso-selection": false,
         "rectangle-selection": false
@@ -236,7 +236,7 @@ export class MapDrawTools {
       }
     }
 
-    this.sketchWidget.on("update", (evt) => {
+    this._sketchWidget.on("update", (evt) => {
       if (evt.state === "complete" && this.active) {
         this.graphics = this._sketchGraphicsLayer.graphics.toArray();
         this.sketchGraphicsChange.emit(this.graphics);

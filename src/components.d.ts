@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { EPageType, ERefineMode, ESelectionMode, ESelectionType, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchConfig, ISelectionSet, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
+import { ERefineMode, ESelectionMode, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchConfig, ISelectionSet, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BufferTools {
@@ -106,10 +106,6 @@ export namespace Components {
          */
         "polylineSymbol": __esri.SimpleLineSymbol;
         /**
-          * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
-         */
-        "sketchWidget": __esri.Sketch;
-        /**
           * Contains the translations for this component. All UI strings should be defined here.
          */
         "translations": any;
@@ -163,10 +159,6 @@ export namespace Components {
          */
         "searchLayers": __esri.Layer[];
         /**
-          * string: Text entered by the end user. Used to search against the locator.
-         */
-        "searchTerm": string;
-        /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
         "selectLayerView": __esri.FeatureLayerView;
@@ -178,10 +170,6 @@ export namespace Components {
           * Contains the translations for this component. All UI strings should be defined here.
          */
         "translations": any;
-        /**
-          * EWorkflowType: "SEARCH", "SELECT", "SKETCH", "REFINE"
-         */
-        "workflowType": EWorkflowType;
     }
     interface PdfDownload {
         "filterDuplicates": boolean;
@@ -206,25 +194,9 @@ export namespace Components {
          */
         "message": string;
         /**
-          * number: The number of selected features
-         */
-        "numSelected": number;
-        /**
-          * utils/interfaces/EPageType: LIST, SELECT, REFINE, PDF, CSV
-         */
-        "pageType": EPageType;
-        /**
-          * boolean: Save is enabled when we have 1 or more selected features
-         */
-        "saveEnabled": boolean;
-        /**
           * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
          */
         "selectionLayers": __esri.Layer[];
-        /**
-          * utils/interfaces/ISelectionSet: An array of user defined selection sets
-         */
-        "selectionSets": ISelectionSet[];
         /**
           * Contains the translations for this component. All UI strings should be defined here.
          */
@@ -265,14 +237,6 @@ export namespace Components {
          */
         "refineMode": ERefineMode;
         "reset": () => Promise<void>;
-        /**
-          * boolean: Is selected enabled
-         */
-        "selectEnbaled": boolean;
-        /**
-          * utils/interfaces/ESelectionType: POINT, LINE, POLY, RECT
-         */
-        "selectionMode": ESelectionType;
         /**
           * Contains the translations for this component. All UI strings should be defined here.
          */
@@ -852,10 +816,6 @@ declare namespace LocalJSX {
          */
         "polylineSymbol"?: __esri.SimpleLineSymbol;
         /**
-          * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
-         */
-        "sketchWidget"?: __esri.Sketch;
-        /**
           * Contains the translations for this component. All UI strings should be defined here.
          */
         "translations"?: any;
@@ -906,10 +866,6 @@ declare namespace LocalJSX {
          */
         "searchLayers"?: __esri.Layer[];
         /**
-          * string: Text entered by the end user. Used to search against the locator.
-         */
-        "searchTerm"?: string;
-        /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
         "selectLayerView"?: __esri.FeatureLayerView;
@@ -921,10 +877,6 @@ declare namespace LocalJSX {
           * Contains the translations for this component. All UI strings should be defined here.
          */
         "translations"?: any;
-        /**
-          * EWorkflowType: "SEARCH", "SELECT", "SKETCH", "REFINE"
-         */
-        "workflowType"?: EWorkflowType;
     }
     interface PdfDownload {
         "filterDuplicates"?: boolean;
@@ -949,25 +901,9 @@ declare namespace LocalJSX {
          */
         "message"?: string;
         /**
-          * number: The number of selected features
-         */
-        "numSelected"?: number;
-        /**
-          * utils/interfaces/EPageType: LIST, SELECT, REFINE, PDF, CSV
-         */
-        "pageType"?: EPageType;
-        /**
-          * boolean: Save is enabled when we have 1 or more selected features
-         */
-        "saveEnabled"?: boolean;
-        /**
           * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
          */
         "selectionLayers"?: __esri.Layer[];
-        /**
-          * utils/interfaces/ISelectionSet: An array of user defined selection sets
-         */
-        "selectionSets"?: ISelectionSet[];
         /**
           * Contains the translations for this component. All UI strings should be defined here.
          */
@@ -1008,14 +944,6 @@ declare namespace LocalJSX {
           * utils/interfaces/ERefineMode: ALL, SUBSET
          */
         "refineMode"?: ERefineMode;
-        /**
-          * boolean: Is selected enabled
-         */
-        "selectEnbaled"?: boolean;
-        /**
-          * utils/interfaces/ESelectionType: POINT, LINE, POLY, RECT
-         */
-        "selectionMode"?: ESelectionType;
         /**
           * Contains the translations for this component. All UI strings should be defined here.
          */
