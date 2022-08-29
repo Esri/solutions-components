@@ -55,8 +55,7 @@ export class PdfDownload {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State()
-  translations: typeof PdfDownload_T9n;
+  @State() translations: typeof PdfDownload_T9n;
 
   protected _duplicateSelect: HTMLCalciteSelectElement;
 

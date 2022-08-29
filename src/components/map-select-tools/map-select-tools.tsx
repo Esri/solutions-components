@@ -87,8 +87,7 @@ export class MapSelectTools {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State()
-  translations: typeof MapSelectTools_T9n;
+  @State() translations: typeof MapSelectTools_T9n;
 
   /**
    * EWorkflowType: "SEARCH", "SELECT", "SKETCH", "REFINE"

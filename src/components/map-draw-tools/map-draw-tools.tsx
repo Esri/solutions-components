@@ -79,8 +79,7 @@ export class MapDrawTools {
  * Contains the translations for this component.
  * All UI strings should be defined here.
  */
-  @State()
-  translations: typeof MapDrawTools_T9n;
+  @State() translations: typeof MapDrawTools_T9n;
 
   /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html?#constructors-summary

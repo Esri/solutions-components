@@ -55,8 +55,7 @@ export class PublicNotificationTwo {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State()
-  translations: typeof PublicNotification_T9n;
+  @State() translations: typeof PublicNotification_T9n;
 
   /**
    * boolean: Save is enabled when we have 1 or more selected features

@@ -77,8 +77,7 @@ export class MapLayerPicker {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State()
-  translations: typeof MapLayerPicker_T9n;
+  @State() translations: typeof MapLayerPicker_T9n;
 
   protected _layerSelect: HTMLCalciteSelectElement;
 
