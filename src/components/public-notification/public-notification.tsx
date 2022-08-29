@@ -231,6 +231,10 @@ export class PublicNotificationTwo {
   _getPage(): VNode {
     let page: VNode;
     const layerTitle = this.addresseeLayer?.layer?.title;
+    const total = this._getTotal();
+    const layerPickerLabel = total > 0 ?
+      this.translations?.addresseeLayer + ` (${this.translations?.totalSelected.replace("{{n}}", total)})` :
+      this.translations?.addresseeLayer;
     switch (this.pageType) {
       case EPageType.LIST:
         page = (
@@ -238,7 +242,7 @@ export class PublicNotificationTwo {
             <calcite-input-message active class="start-message list-border background-w">
               <div class="w-100">
                 <map-layer-picker
-                  label={this.translations?.addresseeLayer}
+                  label={layerPickerLabel}
                   mapView={this.mapView}
                   onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
                   selectionMode={"single"}
@@ -508,6 +512,10 @@ export class PublicNotificationTwo {
     mode: ESelectionMode
   ): void {
     this._refineTools.mode = mode;
+  }
+
+  _getTotal(): Number {
+    return [...new Set(this._getSelectionIds(this.selectionSets))].length;
   }
 
   _getSelectionIds(
