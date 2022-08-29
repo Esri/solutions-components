@@ -1,0 +1,6 @@
+{
+    "specifyParam": "Spatial Reference Parameter",
+    "spatialReferencePlaceholder": "Search for spatial reference using name or WKID",
+    "spatialReferenceInfo": "Select the spatial reference of the feature layers deployed with the solution.",
+    "featureServicesHeading": "Feature Services"
+}

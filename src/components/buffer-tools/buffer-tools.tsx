@@ -1,5 +1,7 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
+import Popover_T9n from '../../assets/t9n/buffer-tools/resources.json';
+import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'buffer-tools',
@@ -24,7 +26,6 @@ export class BufferTools {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @Prop() translations: any = {};
 
   /**
    * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
@@ -51,6 +52,13 @@ export class BufferTools {
   //  Properties (private)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State()
+  translations: typeof Popover_T9n;
 
   protected geometryEngine:  __esri.geometryEngine;
 
@@ -93,6 +101,10 @@ export class BufferTools {
 
   async componentWillLoad() {
     await this._initModules();
+  }
+
+  componentDidLoad() {
+    this._getTranslations();
   }
 
   render() {
@@ -140,10 +152,10 @@ export class BufferTools {
 
   _addUnits(): any {
     const units = {
-      'feet': this.translations?.units.feet || 'Feet',
-      'meters': this.translations?.units.meters || 'Meters',
-      'miles': this.translations?.units.miles || 'Miles',
-      'kilometers': this.translations?.units.kilometers || 'Kilometers'
+      'feet': this.translations?.feet || 'Feet',
+      'meters': this.translations?.meters || 'Meters',
+      'miles': this.translations?.miles || 'Miles',
+      'kilometers': this.translations?.kilometers || 'Kilometers'
     };
     return Object.keys(units).map(u => {
       let selected = true;
@@ -190,4 +202,10 @@ export class BufferTools {
       }
     }, 400);
   }
+
+  async _getTranslations() {
+    const messages = await getLocaleComponentStrings(this.el);
+    this.translations = messages[0] as typeof Popover_T9n;
+  }
+
 }

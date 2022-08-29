@@ -16,7 +16,6 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionContents } from '../solution-contents';
-import * as translations from '../../../testingAssets/strings.json';
 import { value } from '../../../demos/data/solution-contents-data.json';
 import { h } from '@stencil/core';
 
@@ -26,7 +25,7 @@ describe('solution-contents', () => {
       components: [SolutionContents],
       supportsShadowDom: false,
       template: () => (
-        <solution-contents translations={translations.configuration_modal.configuration} value={value}></solution-contents>
+        <solution-contents value={value}></solution-contents>
       )
     });
     expect(page.root).toEqualHtml(`

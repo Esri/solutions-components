@@ -7,15 +7,14 @@
 
 ## Properties
 
-| Property          | Attribute      | Description                                                                                                                               | Type               | Default     |
-| ----------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
-| `geometries`      | --             | esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html                                           | `Geometry[]`       | `undefined` |
-| `isUpdate`        | `is-update`    | boolean: When true a new label is not generated for the stored selection set                                                              | `boolean`          | `false`     |
-| `mapView`         | --             | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`          | `undefined` |
-| `searchLayers`    | --             | esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html                                   | `Layer[]`          | `undefined` |
-| `selectLayerView` | --             | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
-| `selectionSet`    | --             | utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.                                       | `ISelectionSet`    | `undefined` |
-| `translations`    | `translations` | Contains the translations for this component. All UI strings should be defined here.                                                      | `any`              | `{}`        |
+| Property          | Attribute   | Description                                                                                                                               | Type               | Default     |
+| ----------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
+| `geometries`      | --          | esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html                                           | `Geometry[]`       | `undefined` |
+| `isUpdate`        | `is-update` | boolean: When true a new label is not generated for the stored selection set                                                              | `boolean`          | `false`     |
+| `mapView`         | --          | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`          | `undefined` |
+| `searchLayers`    | --          | esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html                                   | `Layer[]`          | `undefined` |
+| `selectLayerView` | --          | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
+| `selectionSet`    | --          | utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.                                       | `ISelectionSet`    | `undefined` |
 
 
 ## Events

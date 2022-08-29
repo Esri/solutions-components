@@ -45,8 +45,7 @@
     <script type="module" src="../solutions.esm.js"></script>
 
     <script>
-      require(["i18n!../assets/nls/strings.js", "esri/WebMap", "esri/views/MapView"], (
-        translations,
+      require(["esri/WebMap", "esri/views/MapView"], (
         WebMap,
         MapView
       ) => {
@@ -58,7 +57,6 @@
         });
 
         const demo = document.getElementById("demo");
-        demo.translations = translations.common;
         demo.mapView = new MapView({
           container: "viewDiv",
           map: webMap

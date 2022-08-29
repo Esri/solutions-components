@@ -16,7 +16,6 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionConfiguration } from '../solution-configuration';
-import * as translations from '../../../testingAssets/strings.json';
 import { h } from '@stencil/core';
 import state from '../../../utils/editStore';
 
@@ -50,7 +49,7 @@ describe('solution-configuration', () => {
       components: [SolutionConfiguration],
       supportsShadowDom: false,
       template: () => (
-        <solution-configuration translations={translations.configuration_modal.configuration}></solution-configuration>
+        <solution-configuration></solution-configuration>
       )
     });
     expect(page.root).toEqualHtml(`
@@ -93,7 +92,7 @@ describe('solution-configuration', () => {
       components: [SolutionConfiguration],
       supportsShadowDom: false,
       template: () => (
-        <solution-configuration translations={translations.configuration_modal.configuration}></solution-configuration>
+        <solution-configuration></solution-configuration>
       )
     });
     expect(page.root).toEqualHtml(`

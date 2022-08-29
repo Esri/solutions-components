@@ -3,6 +3,8 @@ import { ERefineMode, ESelectionMode, ESelectionType } from '../../utils/interfa
 import { getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
 import state from "../../utils/publicNotificationStore";
 import { loadModules } from "../../utils/loadModules";
+import RefineSelectionTools_T9n from '../../assets/t9n/refine-selection-tools/resources.json';
+import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'refine-selection-tools',
@@ -38,12 +40,6 @@ export class RefineSelectionTools {
    * utils/interfaces/ERefineMode: ALL, SUBSET
    */
   @Prop() refineMode: ERefineMode;
-
-  /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-  @Prop() translations: any = {};
 
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -91,6 +87,11 @@ export class RefineSelectionTools {
    */
   @State() selectionMode: ESelectionType;
 
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() translations: typeof RefineSelectionTools_T9n;
 
   protected _excludeEffect = "blur(5px) grayscale(90%) opacity(40%)";
 
@@ -162,6 +163,7 @@ export class RefineSelectionTools {
   }
 
   async componentDidLoad() {
+    this._getTranslations();
     this._init();
   }
 
@@ -188,7 +190,6 @@ export class RefineSelectionTools {
             mapView={this.mapView}
             selectedLayers={this.layerViews.map(l => l.layer.title)}
             selectionMode={"single"}
-            translations={this.translations}
             onLayerSelectionChange={(evt) => { this._layerSelectionChange(evt) }}
           />
           <div>
@@ -472,5 +473,10 @@ export class RefineSelectionTools {
 
   _redo() {
     console.log("REDO")
+  }
+
+  async _getTranslations() {
+    const translations = await getLocaleComponentStrings(this.el);
+    this.translations = translations[0] as typeof RefineSelectionTools_T9n;
   }
 }

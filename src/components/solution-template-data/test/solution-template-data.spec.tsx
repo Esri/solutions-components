@@ -16,7 +16,6 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionTemplateData } from '../solution-template-data';
-import * as translations from '../../../testingAssets/strings.json';
 import * as data from '../../../demos/data/solution-template-data-data.json';
 import { h } from '@stencil/core';
 import { dispose } from '../../../utils/editStore';
@@ -30,7 +29,7 @@ describe('solution-template-data', () => {
     const page = await newSpecPage({
       components: [SolutionTemplateData],
       template: () => (
-        <solution-template-data translations={translations.configuration_modal.configuration} value={data}></solution-template-data>
+        <solution-template-data value={data}></solution-template-data>
       )
     });
     expect(page.root).toEqualHtml(`

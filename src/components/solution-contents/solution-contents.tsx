@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Listen, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Listen, State, Watch } from '@stencil/core';
 import { IInventoryItem, ISolutionItem } from '../../utils/interfaces';
 import '@esri/calcite-components';
+import SolutionContents_T9n from '../../assets/t9n/solution-contents/resources.json';
+import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'solution-contents',
@@ -46,11 +48,6 @@ export class SolutionContents {
    @Prop({ mutable: true, reflect: true }) selectedItem: ISolutionItem;
 
   /**
-   * Contains the translations for this component.
-   */
-  @Prop({ mutable: true }) translations: any = {};
-
-  /**
    * Contains the public value for this component.
    */
   @Prop() value: IInventoryItem[] = [];
@@ -67,6 +64,10 @@ export class SolutionContents {
   //  Lifecycle
   //
   //--------------------------------------------------------------------------
+
+  componentDidLoad() {
+    this._getTranslations();
+  }
 
   render(): VNode {
     return (
@@ -106,6 +107,12 @@ export class SolutionContents {
   //  Variables (private)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() translations: typeof SolutionContents_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -156,5 +163,10 @@ export class SolutionContents {
     }
     this.selectedItem = solutionItem;
     this.solutionItemSelected.emit(solutionItem);
+  }
+
+  async _getTranslations() {
+    const translations = await getLocaleComponentStrings(this.el);
+    this.translations = translations[0] as typeof SolutionContents_T9n;
   }
 }

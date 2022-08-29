@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, Watch } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, Watch } from '@stencil/core';
 import { EUpdateType, IResourcePath, ISolutionModel } from '../../utils/interfaces';
 import { EFileType, UserSession } from '@esri/solution-common';
 import state from '../../utils/editStore';
+import SolutionResourceItem_T9n from '../../assets/t9n/solution-resource-item/resources.json';
+import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'solution-resource-item',
@@ -69,17 +71,16 @@ export class SolutionResourceItem {
     }
   }
 
-  /**
-   * Contains the translations for this component.
-   */
-  @Prop({ mutable: true }) translations: any = {};
-
   //--------------------------------------------------------------------------
   //
   //  Lifecycle
   //
   //--------------------------------------------------------------------------
 
+  componentDidLoad() {
+    this._getTranslations();
+  }
+  
   render() {
     const hasValidResources = this._hasValidResources();
     return (
@@ -113,7 +114,13 @@ export class SolutionResourceItem {
   //
   //  Variables (private)
   //
-  //--------------------------------------------------------------------------\
+  //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() translations: typeof SolutionResourceItem_T9n;
 
   private _removedResources: any = {};
 
@@ -420,5 +427,10 @@ export class SolutionResourceItem {
         ]
       }
     }
+  }
+
+  async _getTranslations() {
+    const translations = await getLocaleComponentStrings(this.el);
+    this.translations = translations[0] as typeof SolutionResourceItem_T9n;
   }
 }

@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Method, Prop, VNode } from '@stencil/core';
+import { Component, Element, h, Host, Method, Prop, State, VNode } from '@stencil/core';
 import state from '../../utils/editStore';
 import { IItemShare } from '../../utils/interfaces';
+import SolutionItemSharing_T9n from '../../assets/t9n/solution-item-sharing/resources.json';
+import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'solution-item-sharing',
@@ -40,11 +42,6 @@ export class SolutionItemSharing {
   //--------------------------------------------------------------------------
 
   /**
-   * Contains the translations for this component.
-   */
-  @Prop({ mutable: true }) translations: any = {};
-
-  /**
    * Contains the public value for this component.
    */
   @Prop({ mutable: true, reflect: true }) value: IItemShare[] = [];
@@ -59,6 +56,10 @@ export class SolutionItemSharing {
   //  Lifecycle
   //
   //--------------------------------------------------------------------------
+
+  componentDidLoad() {
+    this._getTranslations();
+  }
 
   render() {
     return (
@@ -75,6 +76,12 @@ export class SolutionItemSharing {
   //  Variables (private)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() translations: typeof SolutionItemSharing_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -152,5 +159,10 @@ export class SolutionItemSharing {
       }
       return item;
     });
+  }
+
+  async _getTranslations() {
+    const translations = await getLocaleComponentStrings(this.el);
+    this.translations = translations[0] as typeof SolutionItemSharing_T9n;
   }
 }

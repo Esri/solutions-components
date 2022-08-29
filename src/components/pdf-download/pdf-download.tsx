@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, VNode } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
 import * as pdfUtils from '../../../arcgis-pdf-creator/data/labelFormats.json';
 import '@esri/calcite-components';
+import PdfDownload_T9n from '../../assets/t9n/pdf-download/resources.json';
+import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'pdf-download',
@@ -37,17 +39,11 @@ export class PdfDownload {
   //
   //--------------------------------------------------------------------------
 
-  /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-   @Prop() translations: any = {};
+  @Prop() layerView: __esri.FeatureLayerView;
 
-   @Prop() layerView: __esri.FeatureLayerView;
+  @Prop({ mutable: true }) filterDuplicates: boolean = false;
 
-   @Prop({ mutable: true }) filterDuplicates: boolean = false;
-
-   @Prop() removeDuplicateEnabled: boolean = false;
+  @Prop() removeDuplicateEnabled: boolean = false;
 
   //--------------------------------------------------------------------------
   //
@@ -55,7 +51,12 @@ export class PdfDownload {
   //
   //--------------------------------------------------------------------------
 
-  //private _perPage = 0;
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State()
+  translations: typeof PdfDownload_T9n;
 
   protected _duplicateSelect: HTMLCalciteSelectElement;
 
@@ -82,6 +83,10 @@ export class PdfDownload {
   //  Functions (lifecycle)
   //
   //--------------------------------------------------------------------------
+
+  componentDidLoad() {
+    this._getTranslations();
+  }
 
   render() {
     return (
@@ -169,6 +174,11 @@ export class PdfDownload {
     console.log(this._duplicateSelect.value)
     console.log(this._duplicateSelect.selectedOption)
     console.log(this._duplicateSelect.selectedOption.value)
+  }
+
+  async _getTranslations() {
+    const translations = await getLocaleComponentStrings(this.el);
+    this.translations = translations[0] as typeof PdfDownload_T9n;
   }
 
 }

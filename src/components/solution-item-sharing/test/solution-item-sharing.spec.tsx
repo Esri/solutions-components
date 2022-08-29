@@ -16,7 +16,6 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionItemSharing } from '../solution-item-sharing';
-import * as translations from '../../../testingAssets/strings.json';
 import { value } from '../../../demos/data/solution-item-sharing-data.json';
 import { h } from '@stencil/core';
 
@@ -25,7 +24,7 @@ describe('solution-item-sharing', () => {
     const page = await newSpecPage({
       components: [SolutionItemSharing],
       template: () => (
-        <solution-item-sharing translations={translations.configuration_modal.configuration} value={value}></solution-item-sharing>
+        <solution-item-sharing value={value}></solution-item-sharing>
       )
     });
     expect(page.root).toEqualHtml(`

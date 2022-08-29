@@ -7,13 +7,12 @@
 
 ## Properties
 
-| Property          | Attribute      | Description                                                                                                                               | Type               | Default     |
-| ----------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
-| `addresseeLayer`  | --             | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
-| `mapView`         | --             | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`          | `undefined` |
-| `message`         | `message`      | string: Default message to show when we have no selection sets                                                                            | `string`           | `""`        |
-| `selectionLayers` | --             | esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html                                   | `Layer[]`          | `undefined` |
-| `translations`    | `translations` | Contains the translations for this component. All UI strings should be defined here.                                                      | `any`              | `{}`        |
+| Property          | Attribute | Description                                                                                                                               | Type               | Default     |
+| ----------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
+| `addresseeLayer`  | --        | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
+| `mapView`         | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`          | `undefined` |
+| `message`         | `message` | string: Default message to show when we have no selection sets                                                                            | `string`           | `""`        |
+| `selectionLayers` | --        | esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html                                   | `Layer[]`          | `undefined` |
 
 
 ## Dependencies

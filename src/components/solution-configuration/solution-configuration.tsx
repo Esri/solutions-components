@@ -21,6 +21,8 @@ import state from '../../utils/editStore';
 import { save } from '../../utils/common';
 import { cloneObject, getItemDataAsJson, getProp, setProp, setCreateProp, UserSession } from '@esri/solution-common';
 import '@esri/calcite-components';
+import SolutionConfiguration_T9n from '../../assets/t9n/solution-configuration/resources.json';
+import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'solution-configuration',
@@ -48,11 +50,6 @@ export class SolutionConfiguration {
    * Credentials for requests
    */
   @Prop({ mutable: true }) authentication: UserSession;
-
-  /**
-   * Contains the translations for this component.
-   */
-  @Prop({ mutable: true }) translations: any = {};
 
   /**
    * Contains the public value for this component.
@@ -106,6 +103,10 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
   @Event() solutionLoaded: EventEmitter;
 
+  componentDidLoad() {
+    this._getTranslations();
+  }
+
   componentWillRender(): Promise<any> {
     return new Promise((resolve) => {
       if (this.itemid && (this._fetchData || !this.modelsSet)) {
@@ -152,7 +153,6 @@ export class SolutionConfiguration {
                     <solution-contents
                       id="configInventory"
                       key={`${this.itemid}-contents`}
-                      translations={this.translations}
                       value={this.value.contents}
                     />
                   </div>
@@ -171,7 +171,6 @@ export class SolutionConfiguration {
                       key={`${this.itemid}-item`}
                       organizationVariables={this._organizationVariables}
                       solutionVariables={this._solutionVariables}
-                      translations={this.translations}
                       value={this.item}
                     />
                   </div>
@@ -187,7 +186,6 @@ export class SolutionConfiguration {
                         key={`${this.itemid}-spatial-ref`}
                         locked={!wkid}
                         services={state.featureServices.map(fs => fs.name)}
-                        translations={this.translations}
                       />
                     </div>
                   </calcite-tab>
@@ -205,6 +203,12 @@ export class SolutionConfiguration {
   //  Variables (private)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() translations: typeof SolutionConfiguration_T9n;
 
   private _solutionVariables: IVariableItem[];
 
@@ -634,5 +638,10 @@ export class SolutionConfiguration {
       }
     }
     return data;
+  }
+
+  async _getTranslations() {
+    const translations = await getLocaleComponentStrings(this.el);
+    this.translations = translations[0] as typeof SolutionConfiguration_T9n;
   }
 }

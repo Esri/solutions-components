@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, State, Watch } from '@stencil/core';
 import { getMapLayerNames } from '../../utils/mapViewUtils';
 import { SelectionMode } from '../../utils/interfaces';
 import state from '../../utils/publicNotificationStore';
+import MapLayerPicker_T9n from '../../assets/t9n/map-layer-picker/resources.json';
+import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'map-layer-picker',
@@ -42,12 +44,6 @@ export class MapLayerPicker {
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
-
-  /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-  @Prop() translations: any = {};
 
   /**
    * string[]: list of layer names from the map
@@ -76,6 +72,13 @@ export class MapLayerPicker {
   //  Properties (private)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State()
+  translations: typeof MapLayerPicker_T9n;
 
   protected _layerSelect: HTMLCalciteSelectElement;
 
@@ -122,6 +125,10 @@ export class MapLayerPicker {
         this.selectedLayers.length === 1 ? [this.selectedLayers[0]] : [this.layerNames[0]]
       );
     }
+  }
+
+  componentDidLoad() {
+    this._getTranslations();
   }
 
   render() {
@@ -200,5 +207,10 @@ export class MapLayerPicker {
         }
       ) || [];
     this.layerSelectionChange.emit(this.selectedLayers);
+  }
+
+  async _getTranslations() {
+    const translations = await getLocaleComponentStrings(this.el);
+    this.translations = translations[0] as typeof MapLayerPicker_T9n;
   }
 }

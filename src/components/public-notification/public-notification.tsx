@@ -2,6 +2,8 @@ import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from '
 import { ISelectionSet, EPageType, ESelectionMode, EWorkflowType } from '../../utils/interfaces';
 import { flashSelection, getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
 import state from "../../utils/publicNotificationStore";
+import PublicNotification_T9n from '../../assets/t9n/public-notification/resources.json';
+import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'public-notification',
@@ -43,17 +45,18 @@ export class PublicNotificationTwo {
    */
   @Prop({ mutable: true }) message = "";
 
-  /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-  @Prop() translations: any = {};
-
   //--------------------------------------------------------------------------
   //
   //  Properties (private)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State()
+  translations: typeof PublicNotification_T9n;
 
   /**
    * boolean: Save is enabled when we have 1 or more selected features
@@ -140,6 +143,10 @@ export class PublicNotificationTwo {
   //  Functions (lifecycle)
   //
   //--------------------------------------------------------------------------
+
+  componentDidLoad() {
+    this._getTranslations();
+  }
 
   render() {
     return (
@@ -233,7 +240,7 @@ export class PublicNotificationTwo {
     const layerTitle = this.addresseeLayer?.layer?.title;
     const total = this._getTotal();
     const layerPickerLabel = total > 0 ?
-      this.translations?.addresseeLayer + ` (${this.translations?.totalSelected.replace("{{n}}", total)})` :
+      this.translations?.addresseeLayer + ` (${this.translations?.totalSelected.replace("{{n}}", total.toString())})` :
       this.translations?.addresseeLayer;
     switch (this.pageType) {
       case EPageType.LIST:
@@ -246,7 +253,6 @@ export class PublicNotificationTwo {
                   mapView={this.mapView}
                   onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
                   selectionMode={"single"}
-                  translations={this.translations}
                   selectedLayers={layerTitle ? [layerTitle] : []}
                 />
               </div>
@@ -262,7 +268,7 @@ export class PublicNotificationTwo {
                       if (cur.workflowType !== EWorkflowType.REFINE) {
                         prev.push((
                           <calcite-list-item
-                            description={this.translations?.selectedFeatures.replace('{{n}}', cur.selectedIds.length)}
+                            description={this.translations?.selectedFeatures.replace('{{n}}', cur.selectedIds.length.toString())}
                             label={cur.label}
                             onClick={() => flashSelection(cur)}
                           >
@@ -294,7 +300,6 @@ export class PublicNotificationTwo {
                 ref={(el) => { this._selectTools = el }}
                 searchLayers={this.selectionLayers}
                 selectLayerView={this.addresseeLayer}
-                translations={this.translations}
                 selectionSet={this.activeSelection}
                 isUpdate={this.activeSelection ? true : false}
               />
@@ -304,7 +309,7 @@ export class PublicNotificationTwo {
                 <div>
                   <br />
                   <calcite-input-message active class="start-message list-border background-w">
-                    {this.translations.selectedFeatures.replace("{{n}}", this.numSelected)}
+                    {this.translations.selectedFeatures.replace("{{n}}", this.numSelected.toString())}
                   </calcite-input-message>
                 </div>
               ) : (<div />)
@@ -343,7 +348,6 @@ export class PublicNotificationTwo {
               mapView={this.mapView}
               mode={this.addEnabled ? ESelectionMode.ADD : ESelectionMode.REMOVE}
               ref={(el) => { this._refineTools = el }}
-              translations={this.translations}
               useLayerPicker={false}
             />
           </div>
@@ -363,7 +367,6 @@ export class PublicNotificationTwo {
           <pdf-download
             layerView={this.addresseeLayer}
             removeDuplicateEnabled={false}
-            translations={this.translations}
           />
         )
         break;
@@ -466,19 +469,19 @@ export class PublicNotificationTwo {
 
     return [(
       <calcite-list-item
-        label={this.translations?.featuresAdded?.replace('{{n}}', numAdded)}
+        label={this.translations?.featuresAdded?.replace('{{n}}', numAdded.toString())}
       >
         {this._getAction(numAdded > 0, "reset", "", (): void => this._revertSelection(refineSet, true), false, "actions-end")}
       </calcite-list-item>
     ),(
       <calcite-list-item
-        label={this.translations?.featuresRemoved?.replace('{{n}}', numRemoved)}
+        label={this.translations?.featuresRemoved?.replace('{{n}}', numRemoved.toString())}
       >
         {this._getAction(numRemoved > 0, "reset", "", (): void => this._revertSelection(refineSet, false), false, "actions-end")}
       </calcite-list-item>
     ), (
       <calcite-list-item
-        label={this.translations?.totalSelected?.replace('{{n}}', total)}
+        label={this.translations?.totalSelected?.replace('{{n}}', total.toString())}
       />
     )];
   }
@@ -618,5 +621,10 @@ export class PublicNotificationTwo {
     if (state.highlightHandle) {
       state.highlightHandle.remove();
     }
+  }
+
+  async _getTranslations() {
+    const translations = await getLocaleComponentStrings(this.el);
+    this.translations = translations[0] as typeof PublicNotification_T9n;
   }
 }

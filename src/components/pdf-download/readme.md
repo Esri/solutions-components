@@ -7,12 +7,11 @@
 
 ## Properties
 
-| Property                 | Attribute                  | Description                                                                          | Type               | Default     |
-| ------------------------ | -------------------------- | ------------------------------------------------------------------------------------ | ------------------ | ----------- |
-| `filterDuplicates`       | `filter-duplicates`        |                                                                                      | `boolean`          | `false`     |
-| `layerView`              | --                         |                                                                                      | `FeatureLayerView` | `undefined` |
-| `removeDuplicateEnabled` | `remove-duplicate-enabled` |                                                                                      | `boolean`          | `false`     |
-| `translations`           | `translations`             | Contains the translations for this component. All UI strings should be defined here. | `any`              | `{}`        |
+| Property                 | Attribute                  | Description | Type               | Default     |
+| ------------------------ | -------------------------- | ----------- | ------------------ | ----------- |
+| `filterDuplicates`       | `filter-duplicates`        |             | `boolean`          | `false`     |
+| `layerView`              | --                         |             | `FeatureLayerView` | `undefined` |
+| `removeDuplicateEnabled` | `remove-duplicate-enabled` |             | `boolean`          | `false`     |
 
 
 ## Dependencies

@@ -46,11 +46,10 @@
   <script src="./libs/setLocale.js"></script>
   <script src="./monacoConfig.js"></script>
   <script>
-    require(["i18n!../assets/nls/strings", 'vs/editor/editor.main'],
-    function (translations) {
+    require(['vs/editor/editor.main'],
+    function () {
       // Initialize the content
       const demo = document.getElementById("demo");
-      demo.translations = translations.configuration_modal.configuration;
 
       const helper = document.getElementById("helper");
 

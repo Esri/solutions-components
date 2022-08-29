@@ -1,0 +1,7 @@
+{
+    "undo": "Undo",
+    "redo": "Redo",
+    "diff": "Toggle Diff Editor",
+    "search": "Search",
+    "cancelEdits": "Cancel Edits"
+}

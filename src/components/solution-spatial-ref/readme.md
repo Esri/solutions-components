@@ -7,14 +7,13 @@
 
 ## Properties
 
-| Property       | Attribute      | Description                                                                                                                         | Type       | Default  |
-| -------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ---------- | -------- |
-| `defaultWkid`  | `default-wkid` | The wkid that will be used as the default when no user selection has been made.                                                     | `number`   | `102100` |
-| `loaded`       | `loaded`       | Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services. | `boolean`  | `false`  |
-| `locked`       | `locked`       | When true, all but the main switch are disabled to prevent interaction.                                                             | `boolean`  | `true`   |
-| `services`     | --             | List of service names the spatial reference should apply to                                                                         | `string[]` | `[]`     |
-| `translations` | `translations` | Contains the translations for this component.                                                                                       | `any`      | `{}`     |
-| `value`        | `value`        | Contains the public value for this component.                                                                                       | `string`   | `null`   |
+| Property      | Attribute      | Description                                                                                                                         | Type       | Default  |
+| ------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ---------- | -------- |
+| `defaultWkid` | `default-wkid` | The wkid that will be used as the default when no user selection has been made.                                                     | `number`   | `102100` |
+| `loaded`      | `loaded`       | Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services. | `boolean`  | `false`  |
+| `locked`      | `locked`       | When true, all but the main switch are disabled to prevent interaction.                                                             | `boolean`  | `true`   |
+| `services`    | --             | List of service names the spatial reference should apply to                                                                         | `string[]` | `[]`     |
+| `value`       | `value`        | Contains the public value for this component.                                                                                       | `string`   | `null`   |
 
 
 ## Events

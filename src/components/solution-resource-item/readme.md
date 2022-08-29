@@ -7,13 +7,12 @@
 
 ## Properties
 
-| Property            | Attribute      | Description                                                                                 | Type              | Default     |
-| ------------------- | -------------- | ------------------------------------------------------------------------------------------- | ----------------- | ----------- |
-| `authentication`    | --             | Credentials for requests                                                                    | `UserSession`     | `undefined` |
-| `itemid`            | `itemid`       | The templates itemId. This is used to get the correct model from a store in the json-editor | `string`          | `""`        |
-| `resourceFilePaths` | --             | The templates resourceFilePaths.                                                            | `IResourcePath[]` | `[]`        |
-| `resources`         | --             | The templates resources.                                                                    | `{}`              | `{}`        |
-| `translations`      | `translations` | Contains the translations for this component.                                               | `any`             | `{}`        |
+| Property            | Attribute | Description                                                                                 | Type              | Default     |
+| ------------------- | --------- | ------------------------------------------------------------------------------------------- | ----------------- | ----------- |
+| `authentication`    | --        | Credentials for requests                                                                    | `UserSession`     | `undefined` |
+| `itemid`            | `itemid`  | The templates itemId. This is used to get the correct model from a store in the json-editor | `string`          | `""`        |
+| `resourceFilePaths` | --        | The templates resourceFilePaths.                                                            | `IResourcePath[]` | `[]`        |
+| `resources`         | --        | The templates resources.                                                                    | `{}`              | `{}`        |
 
 
 ## Dependencies

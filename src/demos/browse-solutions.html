@@ -129,8 +129,8 @@
   <script src="./monacoConfig.js"></script>
   <script>
     let continueFcn, authentication;
-    require(["i18n!../assets/nls/strings", 'vs/editor/editor.main'],
-    function (translations) {
+    require(['vs/editor/editor.main'],
+    function () {
 
       connectFcn = getSolutions;
 
@@ -146,7 +146,6 @@
 
         // Initialize the configuration content
         let demo = document.getElementById("demo");
-        demo.translations = translations.configuration_modal.configuration;
         demo.authentication = authentication;
 
         // DO NOT USE REAL SOLUTION ITEMS WHILE SAVE EDITS WORK IS IN PROGRESS...CAN DESTROY THE SOLUTION ITEM

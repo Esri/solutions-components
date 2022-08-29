@@ -47,11 +47,10 @@
   <script src="./libs/require.js"></script>
   <script src="./libs/setLocale.js"></script>
   <script>
-    require(["i18n!../assets/nls/strings"],
-    function (translations) {
+    require([],
+    function () {
       // Initialize the configuration content
       const demo = document.getElementById("demo");
-      demo.translations = translations.configuration_modal.configuration;
 
       // set the data
       fetch("./data/solution-item-icon-data.json")

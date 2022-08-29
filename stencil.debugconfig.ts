@@ -9,7 +9,10 @@ export const config: Config = {
     {
       type: 'dist',
       copy: [
-        { src: 'assets/nls' },
+        { 
+          src: 'assets/t9n',
+          dest: '../assets/t9n'
+        },
         { src: 'demos' },
         { src: 'utils' }
       ]

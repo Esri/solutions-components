@@ -19,6 +19,8 @@ import { loadModules } from "../../utils/loadModules";
 import { highlightFeatures } from '../../utils/mapViewUtils';
 import { EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode } from '../../utils/interfaces';
 import state from "../../utils/publicNotificationStore";
+import MapSelectTools_T9n from '../../assets/t9n/map-select-tools/resources.json';
+import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'map-select-tools',
@@ -55,12 +57,6 @@ export class MapSelectTools {
   @Prop() selectLayerView: __esri.FeatureLayerView;
 
   /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-  @Prop({ mutable: true }) translations: any = {};
-
-  /**
    * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
    */
   @Prop() geometries: __esri.Geometry[];
@@ -86,6 +82,13 @@ export class MapSelectTools {
    * Used to search against the locator.
    */
   @State() searchTerm: string;
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State()
+  translations: typeof MapSelectTools_T9n;
 
   /**
    * EWorkflowType: "SEARCH", "SELECT", "SKETCH", "REFINE"
@@ -280,6 +283,7 @@ export class MapSelectTools {
   }
 
   async componentDidLoad() {
+    this._getTranslations();
     this._init();
   }
 
@@ -330,7 +334,6 @@ export class MapSelectTools {
           active={drawEnabled}
           class={showDrawToolsClass}
           mapView={this.mapView} 
-          translations={this.translations}
           ref={(el) => { this._drawTools = el}}
         />
         <refine-selection-tools
@@ -341,10 +344,8 @@ export class MapSelectTools {
           mode={ESelectionMode.ADD}
           ref={(el) => { this._refineTools = el }}
           refineMode={ERefineMode.SUBSET}
-          translations={this.translations}
         />
         <buffer-tools
-          translations={this.translations}
           geometries={this.geometries}
           onBufferComplete={(evt) => this._bufferComplete(evt)}
           ref={(el) => this._bufferTools = el}
@@ -603,5 +604,10 @@ export class MapSelectTools {
     this.geometries = Array.isArray(graphics) ? graphics.map(g => g.geometry) : this.geometries;
     this._selectType = type;
     this._selectionLabel = label;
+  }
+
+  async _getTranslations() {
+    const translations = await getLocaleComponentStrings(this.el);
+    this.translations = translations[0] as typeof MapSelectTools_T9n;
   }
 }

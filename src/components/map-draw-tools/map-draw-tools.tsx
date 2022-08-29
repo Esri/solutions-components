@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import state from "../../utils/publicNotificationStore";
+import MapDrawTools_T9n from '../../assets/t9n/map-draw-tools/resources.json';
+import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'map-draw-tools',
@@ -63,12 +65,6 @@ export class MapDrawTools {
   @Prop({ mutable: true }) polygonSymbol: __esri.SimpleFillSymbol;
 
   /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-  @Prop({ mutable: true }) translations: any = {};
-
-  /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
   @Prop({ mutable: true }) graphics: __esri.Graphic[];
@@ -78,6 +74,13 @@ export class MapDrawTools {
   //  Properties (private)
   //
   //--------------------------------------------------------------------------
+
+  /**
+ * Contains the translations for this component.
+ * All UI strings should be defined here.
+ */
+  @State()
+  translations: typeof MapDrawTools_T9n;
 
   /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html?#constructors-summary
@@ -157,6 +160,7 @@ export class MapDrawTools {
   }
 
   componentDidLoad() {
+    this._getTranslations();
     this._init();
   }
 
@@ -249,4 +253,8 @@ export class MapDrawTools {
     this._sketchGraphicsLayer.removeAll();
   }
 
+  async _getTranslations() {
+    const translations = await getLocaleComponentStrings(this.el);
+    this.translations = translations[0] as typeof MapDrawTools_T9n;
+  }
 }

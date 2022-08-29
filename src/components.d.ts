@@ -18,10 +18,6 @@ export namespace Components {
          */
         "geometries": __esri.Geometry[];
         /**
-          * Contains the translations for this component. All UI strings should be defined here.
-         */
-        "translations": any;
-        /**
           * boolean: option to control if buffer results should be unioned
          */
         "unionResults": boolean;
@@ -71,10 +67,6 @@ export namespace Components {
         "original": any;
         "reset": () => Promise<any>;
         /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
-        /**
           * Contains the public value for this component. This should be an item Id for one of the models in the store.
          */
         "value": any;
@@ -105,10 +97,6 @@ export namespace Components {
           * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
          */
         "polylineSymbol": __esri.SimpleLineSymbol;
-        /**
-          * Contains the translations for this component. All UI strings should be defined here.
-         */
-        "translations": any;
     }
     interface MapLayerPicker {
         /**
@@ -131,10 +119,6 @@ export namespace Components {
           * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
          */
         "selectionMode": SelectionMode;
-        /**
-          * Contains the translations for this component. All UI strings should be defined here.
-         */
-        "translations": any;
     }
     interface MapSelectTools {
         "clearSelection": () => Promise<void>;
@@ -166,19 +150,11 @@ export namespace Components {
           * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
          */
         "selectionSet": ISelectionSet;
-        /**
-          * Contains the translations for this component. All UI strings should be defined here.
-         */
-        "translations": any;
     }
     interface PdfDownload {
         "filterDuplicates": boolean;
         "layerView": __esri.FeatureLayerView;
         "removeDuplicateEnabled": boolean;
-        /**
-          * Contains the translations for this component. All UI strings should be defined here.
-         */
-        "translations": any;
     }
     interface PublicNotification {
         /**
@@ -197,10 +173,6 @@ export namespace Components {
           * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
          */
         "selectionLayers": __esri.Layer[];
-        /**
-          * Contains the translations for this component. All UI strings should be defined here.
-         */
-        "translations": any;
     }
     interface RefineSelectionTools {
         /**
@@ -238,10 +210,6 @@ export namespace Components {
         "refineMode": ERefineMode;
         "reset": () => Promise<void>;
         /**
-          * Contains the translations for this component. All UI strings should be defined here.
-         */
-        "translations": any;
-        /**
           * boolean: Used to control the visibility of the layer picker
          */
         "useLayerPicker": boolean;
@@ -276,10 +244,6 @@ export namespace Components {
          */
         "templates": any[];
         /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
-        /**
           * Used to show/hide the content tree
          */
         "treeOpen": boolean;
@@ -293,10 +257,6 @@ export namespace Components {
           * Contains the current item that is selected.
          */
         "selectedItem": ISolutionItem;
-        /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
         /**
           * Contains the public value for this component.
          */
@@ -316,19 +276,11 @@ export namespace Components {
          */
         "solutionVariables": any[];
         /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
-        /**
           * Contains the public value for this component.
          */
         "value": ISolutionItem;
     }
     interface SolutionItemDetails {
-        /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
         /**
           * Contains the public type for this component.
          */
@@ -343,10 +295,6 @@ export namespace Components {
           * Indicate if this is portal
          */
         "isPortal": boolean;
-        /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
         /**
           * The type for the item
          */
@@ -363,19 +311,11 @@ export namespace Components {
          */
         "groupId": string;
         /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
-        /**
           * Contains the public value for this component.
          */
         "value": IItemShare[];
     }
     interface SolutionOrganizationVariables {
-        /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
         /**
           * Contains the public value for this component.
          */
@@ -398,10 +338,6 @@ export namespace Components {
           * The templates resources.
          */
         "resources": {};
-        /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
     }
     interface SolutionSpatialRef {
         /**
@@ -430,10 +366,6 @@ export namespace Components {
           * List of service names the spatial reference should apply to
          */
         "services": string[];
-        /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
         /**
           * Contains the public value for this component.
          */
@@ -467,10 +399,6 @@ export namespace Components {
          */
         "solutionVariables": IVariableItem[];
         /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
-        /**
           * Contains the public value for this component.  When working with a resource item this should contain an IResourceItem  When working with a json type item this should contain the data and vars
          */
         "value": ITemplateData;
@@ -480,10 +408,6 @@ export namespace Components {
         "varsOpen": boolean;
     }
     interface SolutionVariables {
-        /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
         /**
           * Contains the public value for this component.
          */
@@ -729,10 +653,6 @@ declare namespace LocalJSX {
         "geometries"?: __esri.Geometry[];
         "onBufferComplete"?: (event: BufferToolsCustomEvent<any>) => void;
         /**
-          * Contains the translations for this component. All UI strings should be defined here.
-         */
-        "translations"?: any;
-        /**
           * boolean: option to control if buffer results should be unioned
          */
         "unionResults"?: boolean;
@@ -781,10 +701,6 @@ declare namespace LocalJSX {
          */
         "original"?: any;
         /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
-        /**
           * Contains the public value for this component. This should be an item Id for one of the models in the store.
          */
         "value"?: any;
@@ -815,10 +731,6 @@ declare namespace LocalJSX {
           * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
          */
         "polylineSymbol"?: __esri.SimpleLineSymbol;
-        /**
-          * Contains the translations for this component. All UI strings should be defined here.
-         */
-        "translations"?: any;
     }
     interface MapLayerPicker {
         /**
@@ -842,10 +754,6 @@ declare namespace LocalJSX {
           * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
          */
         "selectionMode"?: SelectionMode;
-        /**
-          * Contains the translations for this component. All UI strings should be defined here.
-         */
-        "translations"?: any;
     }
     interface MapSelectTools {
         /**
@@ -873,19 +781,11 @@ declare namespace LocalJSX {
           * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
          */
         "selectionSet"?: ISelectionSet;
-        /**
-          * Contains the translations for this component. All UI strings should be defined here.
-         */
-        "translations"?: any;
     }
     interface PdfDownload {
         "filterDuplicates"?: boolean;
         "layerView"?: __esri.FeatureLayerView;
         "removeDuplicateEnabled"?: boolean;
-        /**
-          * Contains the translations for this component. All UI strings should be defined here.
-         */
-        "translations"?: any;
     }
     interface PublicNotification {
         /**
@@ -904,10 +804,6 @@ declare namespace LocalJSX {
           * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
          */
         "selectionLayers"?: __esri.Layer[];
-        /**
-          * Contains the translations for this component. All UI strings should be defined here.
-         */
-        "translations"?: any;
     }
     interface RefineSelectionTools {
         /**
@@ -945,10 +841,6 @@ declare namespace LocalJSX {
          */
         "refineMode"?: ERefineMode;
         /**
-          * Contains the translations for this component. All UI strings should be defined here.
-         */
-        "translations"?: any;
-        /**
           * boolean: Used to control the visibility of the layer picker
          */
         "useLayerPicker"?: boolean;
@@ -980,10 +872,6 @@ declare namespace LocalJSX {
          */
         "templates"?: any[];
         /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
-        /**
           * Used to show/hide the content tree
          */
         "treeOpen"?: boolean;
@@ -998,10 +886,6 @@ declare namespace LocalJSX {
           * Contains the current item that is selected.
          */
         "selectedItem"?: ISolutionItem;
-        /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
         /**
           * Contains the public value for this component.
          */
@@ -1021,19 +905,11 @@ declare namespace LocalJSX {
          */
         "solutionVariables"?: any[];
         /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
-        /**
           * Contains the public value for this component.
          */
         "value"?: ISolutionItem;
     }
     interface SolutionItemDetails {
-        /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
         /**
           * Contains the public type for this component.
          */
@@ -1049,10 +925,6 @@ declare namespace LocalJSX {
          */
         "isPortal"?: boolean;
         /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
-        /**
           * The type for the item
          */
         "type"?: string;
@@ -1067,20 +939,12 @@ declare namespace LocalJSX {
          */
         "groupId"?: string;
         /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
-        /**
           * Contains the public value for this component.
          */
         "value"?: IItemShare[];
     }
     interface SolutionOrganizationVariables {
         "onOrganizationVariableSelected"?: (event: SolutionOrganizationVariablesCustomEvent<any>) => void;
-        /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
         /**
           * Contains the public value for this component.
          */
@@ -1103,10 +967,6 @@ declare namespace LocalJSX {
           * The templates resources.
          */
         "resources"?: {};
-        /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
     }
     interface SolutionSpatialRef {
         /**
@@ -1126,10 +986,6 @@ declare namespace LocalJSX {
           * List of service names the spatial reference should apply to
          */
         "services"?: string[];
-        /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
         /**
           * Contains the public value for this component.
          */
@@ -1157,10 +1013,6 @@ declare namespace LocalJSX {
          */
         "solutionVariables"?: IVariableItem[];
         /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
-        /**
           * Contains the public value for this component.  When working with a resource item this should contain an IResourceItem  When working with a json type item this should contain the data and vars
          */
         "value"?: ITemplateData;
@@ -1171,10 +1023,6 @@ declare namespace LocalJSX {
     }
     interface SolutionVariables {
         "onSolutionVariableSelected"?: (event: SolutionVariablesCustomEvent<any>) => void;
-        /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
         /**
           * Contains the public value for this component.
          */

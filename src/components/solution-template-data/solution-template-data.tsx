@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State } from '@stencil/core';
 import { IOrganizationVariableItem, ITemplateData, IVariableItem } from '../../utils/interfaces';
 import { UserSession } from '@esri/solution-common';
+import SolutionTemplateData_T9n from '../../assets/t9n/solution-template-data/resources.json';
+import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'solution-template-data',
@@ -44,11 +46,6 @@ export class SolutionTemplateData {
    * Credentials for requests
    */
   @Prop({ mutable: true }) authentication: UserSession;
-
-  /**
-   * Contains the translations for this component.
-   */
-  @Prop({ mutable: true }) translations: any = {};
 
   /**
    * Contains the public value for this component.
@@ -91,6 +88,10 @@ export class SolutionTemplateData {
   //
   //--------------------------------------------------------------------------
 
+  componentDidLoad() {
+    this._getTranslations();
+  }
+
   render() {
     return (
       <Host>
@@ -100,7 +101,6 @@ export class SolutionTemplateData {
               <div class="solution-data-child-container calcite-match-height">
                 <json-editor
                   instanceid={this.instanceid}
-                  translations={this.translations}
                   value={this.itemid}
                 />
               </div>
@@ -119,13 +119,11 @@ export class SolutionTemplateData {
                 />
                 <div class={this.varsOpen ? "org-vars" : "org-vars display-none"} id="orgVars">
                   <solution-organization-variables
-                    translations={this.translations}
                     value={this.organizationVariables}
                   />
                 </div>
                 <div class={this.varsOpen ? "sol-vars" : "sol-vars display-none"} id="solVars">
                   <solution-variables
-                    translations={this.translations}
                     value={this.solutionVariables}
                   />
                 </div>
@@ -136,6 +134,18 @@ export class SolutionTemplateData {
       </Host>
     );
   }
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (private)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() translations: typeof SolutionTemplateData_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -166,5 +176,10 @@ export class SolutionTemplateData {
    */
   _toggleVars(): void {
     this.varsOpen = !this.varsOpen;
+  }
+
+  async _getTranslations() {
+    const translations = await getLocaleComponentStrings(this.el);
+    this.translations = translations[0] as typeof SolutionTemplateData_T9n;
   }
 }

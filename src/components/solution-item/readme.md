@@ -7,13 +7,12 @@
 
 ## Properties
 
-| Property                | Attribute      | Description                                   | Type            | Default                                                                                                                                         |
-| ----------------------- | -------------- | --------------------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `authentication`        | --             | Credentials for requests                      | `UserSession`   | `undefined`                                                                                                                                     |
-| `organizationVariables` | --             | Contains the organization based variables     | `any[]`         | `[]`                                                                                                                                            |
-| `solutionVariables`     | --             | Contains the solution based variables         | `any[]`         | `[]`                                                                                                                                            |
-| `translations`          | `translations` | Contains the translations for this component. | `any`           | `{}`                                                                                                                                            |
-| `value`                 | --             | Contains the public value for this component. | `ISolutionItem` | `{     itemId: "",     itemDetails: {},     isResource: false,     data: {},     properties: {},     type: "",     groupDetails: undefined   }` |
+| Property                | Attribute | Description                                   | Type            | Default                                                                                                                                         |
+| ----------------------- | --------- | --------------------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `authentication`        | --        | Credentials for requests                      | `UserSession`   | `undefined`                                                                                                                                     |
+| `organizationVariables` | --        | Contains the organization based variables     | `any[]`         | `[]`                                                                                                                                            |
+| `solutionVariables`     | --        | Contains the solution based variables         | `any[]`         | `[]`                                                                                                                                            |
+| `value`                 | --        | Contains the public value for this component. | `ISolutionItem` | `{     itemId: "",     itemDetails: {},     isResource: false,     data: {},     properties: {},     type: "",     groupDetails: undefined   }` |
 
 
 ## Dependencies

@@ -16,7 +16,6 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionSpatialRef } from '../solution-spatial-ref';
-import * as translations from '../../../testingAssets/strings.json';
 import { h } from '@stencil/core';
 import state from '../../../utils/editStore';
 
@@ -39,7 +38,7 @@ describe('solution-spatial-ref', () => {
       components: [SolutionSpatialRef],
       supportsShadowDom: false,
       template: () => (
-        <solution-spatial-ref translations={translations.configuration_modal.configuration} services={["Feature Service 1", "Feature Service 2"]}></solution-spatial-ref>
+        <solution-spatial-ref services={["Feature Service 1", "Feature Service 2"]}></solution-spatial-ref>
       )
     });
     expect(page.root).toEqualHtml(`
@@ -76,7 +75,7 @@ describe('solution-spatial-ref', () => {
     await newSpecPage({
       components: [SolutionSpatialRef],
       template: () => (
-        <solution-spatial-ref translations={translations.configuration_modal.configuration}></solution-spatial-ref>
+        <solution-spatial-ref></solution-spatial-ref>
       )
     });
     const component = document.querySelector('solution-spatial-ref');
@@ -90,7 +89,7 @@ describe('solution-spatial-ref', () => {
     await newSpecPage({
       components: [SolutionSpatialRef],
       template: () => (
-        <solution-spatial-ref translations={translations.configuration_modal.configuration}></solution-spatial-ref>
+        <solution-spatial-ref></solution-spatial-ref>
       )
     });
     const component = document.querySelector('solution-spatial-ref');
@@ -104,7 +103,7 @@ describe('solution-spatial-ref', () => {
     await newSpecPage({
       components: [SolutionSpatialRef],
       template: () => (
-        <solution-spatial-ref translations={translations.configuration_modal.configuration}></solution-spatial-ref>
+        <solution-spatial-ref></solution-spatial-ref>
       )
     });
     const component = document.querySelector('solution-spatial-ref');
@@ -123,7 +122,7 @@ describe('solution-spatial-ref', () => {
     await newSpecPage({
       components: [SolutionSpatialRef],
       template: () => (
-        <solution-spatial-ref translations={translations.configuration_modal.configuration}></solution-spatial-ref>
+        <solution-spatial-ref></solution-spatial-ref>
       )
     });
     const component = document.querySelector('solution-spatial-ref');
@@ -142,7 +141,7 @@ describe('solution-spatial-ref', () => {
     await newSpecPage({
       components: [SolutionSpatialRef],
       template: () => (
-        <solution-spatial-ref translations={translations.configuration_modal.configuration}></solution-spatial-ref>
+        <solution-spatial-ref></solution-spatial-ref>
       )
     });
     const component = document.querySelector('solution-spatial-ref');
@@ -161,7 +160,7 @@ describe('solution-spatial-ref', () => {
     await newSpecPage({
       components: [SolutionSpatialRef],
       template: () => (
-        <solution-spatial-ref translations={translations.configuration_modal.configuration}></solution-spatial-ref>
+        <solution-spatial-ref></solution-spatial-ref>
       )
     });
     const component = document.querySelector('solution-spatial-ref');
@@ -180,7 +179,7 @@ describe('solution-spatial-ref', () => {
     await newSpecPage({
       components: [SolutionSpatialRef],
       template: () => (
-        <solution-spatial-ref translations={translations.configuration_modal.configuration} value="4151"></solution-spatial-ref>
+        <solution-spatial-ref value="4151"></solution-spatial-ref>
       )
     });
     const component = document.querySelector('solution-spatial-ref');
@@ -200,7 +199,7 @@ describe('solution-spatial-ref', () => {
     await newSpecPage({
       components: [SolutionSpatialRef],
       template: () => (
-        <solution-spatial-ref translations={translations.configuration_modal.configuration} value={v}></solution-spatial-ref>
+        <solution-spatial-ref value={v}></solution-spatial-ref>
       )
     });
     const component = document.querySelector('solution-spatial-ref');
