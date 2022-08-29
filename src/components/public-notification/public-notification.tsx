@@ -239,22 +239,22 @@ export class PublicNotificationTwo {
     let page: VNode;
     const layerTitle = this.addresseeLayer?.layer?.title;
     const total = this._getTotal();
-    const layerPickerLabel = total > 0 ?
-      this.translations?.addresseeLayer + ` (${this.translations?.totalSelected.replace("{{n}}", total.toString())})` :
-      this.translations?.addresseeLayer;
+    const totalSelected = this.translations?.totalSelected.replace("{{n}}", total.toString())
+    const layerPickerLabel = total > 0 ? `${totalSelected}` : '';
     switch (this.pageType) {
       case EPageType.LIST:
         page = (
           <div>
-            <calcite-input-message active class="start-message list-border background-w">
+            <calcite-input-message active class="layer-picker-container list-border background-w">
               <div class="w-100">
                 <map-layer-picker
-                  label={layerPickerLabel}
+                  label={this.translations?.addresseeLayer}
                   mapView={this.mapView}
                   onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
                   selectionMode={"single"}
                   selectedLayers={layerTitle ? [layerTitle] : []}
                 />
+                <calcite-label scale='s'>{layerPickerLabel}</calcite-label>
               </div>
             </calcite-input-message>
             <br />

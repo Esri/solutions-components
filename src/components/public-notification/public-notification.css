@@ -31,6 +31,14 @@
   margin-top: 0px !important;
 }
 
+.layer-picker-container {
+  padding-inline-end: 1rem;
+  padding-inline-start: 1rem;
+  padding-top: 1rem;
+  background-color: var(--calcite-ui-foreground-3);
+  margin-top: 0px !important;
+}
+
 .w-100 {
   width: 100%;
 }

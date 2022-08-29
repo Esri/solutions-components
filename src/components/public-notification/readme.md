@@ -26,6 +26,7 @@
 - calcite-action
 - calcite-input-message
 - [map-layer-picker](../map-layer-picker)
+- calcite-label
 - calcite-list
 - calcite-list-item
 - [map-select-tools](../map-select-tools)
@@ -44,6 +45,7 @@ graph TD;
   public-notification --> calcite-action
   public-notification --> calcite-input-message
   public-notification --> map-layer-picker
+  public-notification --> calcite-label
   public-notification --> calcite-list
   public-notification --> calcite-list-item
   public-notification --> map-select-tools
