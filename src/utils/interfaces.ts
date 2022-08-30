@@ -1,5 +1,5 @@
 /** @license
- * Copyright 2021 Esri
+ * Copyright 2022 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,46 @@ export enum EUpdateType {
   Remove,
   None
 }
+
+export enum EExportType {
+  PDF,
+  CSV
+}
+
+export enum EPageType {
+  LIST,
+  SELECT,
+  REFINE,
+  PDF,
+  CSV
+}
+
+export enum ERefineMode {
+  ALL="ALL",
+  SUBSET="SUBSET"
+}
+
+export enum ESelectionMode {
+  ADD="ADD",
+  REMOVE="REMOVE"
+}
+
+export enum EWorkflowType {
+  SEARCH="SEARCH",
+  SELECT="SELECT",
+  SKETCH="SKETCH",
+  REFINE="REFINE"
+}
+
+export enum ESelectionType {
+  POINT="POINT",
+  LINE="LINE",
+  POLY="POLY",
+  RECT="RECT"
+}
 /* eslint-enable no-unused-vars */
+
+export type SelectionMode = "single" | "multi";
 
 /**
  * Key details from the templates item
@@ -213,4 +252,34 @@ export interface IResourcePath {
   blob?: any; // This will only be set when a new file is uploaded (add or update)
   sourceFileName?: string; // This will only be set when a file is being updated
   updateType: EUpdateType
+}
+
+/**
+ * A templates share details
+ */
+export interface ISearchConfig {
+  layers: string[];
+  layerUrl: string;
+  locators: string[];
+  locatorUrl: string;
+}
+
+export interface ISelectionSet {
+  id: number; // Date.Now() when the item is created...used to update a selection set
+  workflowType: EWorkflowType;
+  searchResult: any;
+  buffer: __esri.Geometry;
+  distance: number;
+  unit: __esri.LinearUnits;
+  label: string;
+  selectedIds: number[],
+  layerView: __esri.FeatureLayerView,
+  geometries: __esri.Geometry[],
+  refineSelectLayers: __esri.FeatureLayerView[],
+  refineIds: IRefineIds
+}
+
+export interface IRefineIds {
+  addIds: number[],
+  removeIds: number[]
 }

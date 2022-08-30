@@ -1,0 +1,16 @@
+{
+    "refineSelection": "Refine Selection",
+    "downloadPDF": "Download PDF",
+    "downloadCSV": "Download CSV",
+    "add": "Add",
+    "remove": "Remove",
+    "back": "Back",
+    "save": "Save",
+    "download": "Download",
+    "addresseeLayer": "Addressee Layer",
+    "selectedFeatures": "{{n}} selected features",
+    "featuresAdded": "Features Added: {{n}}",
+    "featuresRemoved": "Features Removed: {{n}}",
+    "totalSelected": "Total Selected: {{n}}",
+    "startMessage": "Use the '+' button to create a {{n}} notification list."
+}

@@ -5,9 +5,27 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { ERefineMode, ESelectionMode, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISelectionSet, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
-import { IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem } from "./utils/interfaces";
 export namespace Components {
+    interface BufferTools {
+        /**
+          * number: The distance used for buffer
+         */
+        "distance": number;
+        /**
+          * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
+         */
+        "geometries": __esri.Geometry[];
+        /**
+          * boolean: option to control if buffer results should be unioned
+         */
+        "unionResults": boolean;
+        /**
+          * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
+         */
+        "unit": __esri.LinearUnits;
+    }
     interface JsonEditor {
         /**
           * Contains a public value to indicate if the model has any errors that would prevent saving it.
@@ -27,13 +45,150 @@ export namespace Components {
         "original": any;
         "reset": () => Promise<any>;
         /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
-        /**
           * Contains the public value for this component. This should be an item Id for one of the models in the store.
          */
         "value": any;
+    }
+    interface MapDrawTools {
+        /**
+          * boolean: sketch is used by multiple components...need a way to know who should respond...
+         */
+        "active": boolean;
+        "clear": () => Promise<void>;
+        /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "graphics": __esri.Graphic[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+         */
+        "pointSymbol": __esri.SimpleMarkerSymbol;
+        /**
+          * esri/symbols/SimpleFillSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+         */
+        "polygonSymbol": __esri.SimpleFillSymbol;
+        /**
+          * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+         */
+        "polylineSymbol": __esri.SimpleLineSymbol;
+    }
+    interface MapLayerPicker {
+        /**
+          * string: The label to render above the combobox.
+         */
+        "label": string;
+        /**
+          * string[]: list of layer names from the map
+         */
+        "layerNames": string[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * string[]: list of layers that have been selected by the end user
+         */
+        "selectedLayers": string[];
+        /**
+          * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
+         */
+        "selectionMode": SelectionMode;
+    }
+    interface MapSelectTools {
+        "clearSelection": () => Promise<void>;
+        /**
+          * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
+         */
+        "geometries": __esri.Geometry[];
+        "getSelectType": () => Promise<EWorkflowType>;
+        "getSelectedIds": () => Promise<number[]>;
+        "getSelection": () => Promise<ISelectionSet>;
+        "getSelectionLabel": () => Promise<string>;
+        /**
+          * boolean: When true a new label is not generated for the stored selection set
+         */
+        "isUpdate": boolean;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
+         */
+        "searchLayers": __esri.Layer[];
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "selectLayerView": __esri.FeatureLayerView;
+        /**
+          * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
+         */
+        "selectionSet": ISelectionSet;
+    }
+    interface PdfDownload {
+        "layerView": __esri.FeatureLayerView;
+    }
+    interface PublicNotification {
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "addresseeLayer": __esri.FeatureLayerView;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * string: Default message to show when we have no selection sets
+         */
+        "message": string;
+        /**
+          * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
+         */
+        "selectionLayers": __esri.Layer[];
+    }
+    interface RefineSelectionTools {
+        /**
+          * boolean: sketch is used by multiple components...need a way to know who should respond...
+         */
+        "active": boolean;
+        "clearHighlight": () => Promise<void>;
+        /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "graphics": __esri.Graphic[];
+        /**
+          * number: The oids of the selected features
+         */
+        "ids": number[];
+        /**
+          * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
+         */
+        "layerView": __esri.FeatureLayerView;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "layerViews": __esri.FeatureLayerView[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * utils/interfaces/ESelectionMode: ADD, REMOVE
+         */
+        "mode": ESelectionMode;
+        /**
+          * utils/interfaces/ERefineMode: ALL, SUBSET
+         */
+        "refineMode": ERefineMode;
+        "reset": () => Promise<void>;
+        /**
+          * boolean: Used to control the visibility of the layer picker
+         */
+        "useLayerPicker": boolean;
     }
     interface SolutionConfiguration {
         /**
@@ -65,10 +220,6 @@ export namespace Components {
          */
         "templates": any[];
         /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
-        /**
           * Used to show/hide the content tree
          */
         "treeOpen": boolean;
@@ -82,10 +233,6 @@ export namespace Components {
           * Contains the current item that is selected.
          */
         "selectedItem": ISolutionItem;
-        /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
         /**
           * Contains the public value for this component.
          */
@@ -105,19 +252,11 @@ export namespace Components {
          */
         "solutionVariables": any[];
         /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
-        /**
           * Contains the public value for this component.
          */
         "value": ISolutionItem;
     }
     interface SolutionItemDetails {
-        /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
         /**
           * Contains the public type for this component.
          */
@@ -132,10 +271,6 @@ export namespace Components {
           * Indicate if this is portal
          */
         "isPortal": boolean;
-        /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
         /**
           * The type for the item
          */
@@ -152,19 +287,11 @@ export namespace Components {
          */
         "groupId": string;
         /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
-        /**
           * Contains the public value for this component.
          */
         "value": IItemShare[];
     }
     interface SolutionOrganizationVariables {
-        /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
         /**
           * Contains the public value for this component.
          */
@@ -187,10 +314,6 @@ export namespace Components {
           * The templates resources.
          */
         "resources": {};
-        /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
     }
     interface SolutionSpatialRef {
         /**
@@ -219,10 +342,6 @@ export namespace Components {
           * List of service names the spatial reference should apply to
          */
         "services": string[];
-        /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
         /**
           * Contains the public value for this component.
          */
@@ -256,10 +375,6 @@ export namespace Components {
          */
         "solutionVariables": IVariableItem[];
         /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
-        /**
           * Contains the public value for this component.  When working with a resource item this should contain an IResourceItem  When working with a json type item this should contain the data and vars
          */
         "value": ITemplateData;
@@ -269,10 +384,6 @@ export namespace Components {
         "varsOpen": boolean;
     }
     interface SolutionVariables {
-        /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
         /**
           * Contains the public value for this component.
          */
@@ -293,12 +404,98 @@ export namespace Components {
         "value": string;
     }
 }
+export interface BufferToolsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLBufferToolsElement;
+}
+export interface MapDrawToolsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapDrawToolsElement;
+}
+export interface MapLayerPickerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapLayerPickerElement;
+}
+export interface MapSelectToolsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapSelectToolsElement;
+}
+export interface RefineSelectionToolsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLRefineSelectionToolsElement;
+}
+export interface SolutionConfigurationCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSolutionConfigurationElement;
+}
+export interface SolutionContentsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSolutionContentsElement;
+}
+export interface SolutionOrganizationVariablesCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSolutionOrganizationVariablesElement;
+}
+export interface SolutionSpatialRefCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSolutionSpatialRefElement;
+}
+export interface SolutionVariablesCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSolutionVariablesElement;
+}
+export interface StoreManagerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLStoreManagerElement;
+}
 declare global {
+    interface HTMLBufferToolsElement extends Components.BufferTools, HTMLStencilElement {
+    }
+    var HTMLBufferToolsElement: {
+        prototype: HTMLBufferToolsElement;
+        new (): HTMLBufferToolsElement;
+    };
     interface HTMLJsonEditorElement extends Components.JsonEditor, HTMLStencilElement {
     }
     var HTMLJsonEditorElement: {
         prototype: HTMLJsonEditorElement;
         new (): HTMLJsonEditorElement;
+    };
+    interface HTMLMapDrawToolsElement extends Components.MapDrawTools, HTMLStencilElement {
+    }
+    var HTMLMapDrawToolsElement: {
+        prototype: HTMLMapDrawToolsElement;
+        new (): HTMLMapDrawToolsElement;
+    };
+    interface HTMLMapLayerPickerElement extends Components.MapLayerPicker, HTMLStencilElement {
+    }
+    var HTMLMapLayerPickerElement: {
+        prototype: HTMLMapLayerPickerElement;
+        new (): HTMLMapLayerPickerElement;
+    };
+    interface HTMLMapSelectToolsElement extends Components.MapSelectTools, HTMLStencilElement {
+    }
+    var HTMLMapSelectToolsElement: {
+        prototype: HTMLMapSelectToolsElement;
+        new (): HTMLMapSelectToolsElement;
+    };
+    interface HTMLPdfDownloadElement extends Components.PdfDownload, HTMLStencilElement {
+    }
+    var HTMLPdfDownloadElement: {
+        prototype: HTMLPdfDownloadElement;
+        new (): HTMLPdfDownloadElement;
+    };
+    interface HTMLPublicNotificationElement extends Components.PublicNotification, HTMLStencilElement {
+    }
+    var HTMLPublicNotificationElement: {
+        prototype: HTMLPublicNotificationElement;
+        new (): HTMLPublicNotificationElement;
+    };
+    interface HTMLRefineSelectionToolsElement extends Components.RefineSelectionTools, HTMLStencilElement {
+    }
+    var HTMLRefineSelectionToolsElement: {
+        prototype: HTMLRefineSelectionToolsElement;
+        new (): HTMLRefineSelectionToolsElement;
     };
     interface HTMLSolutionConfigurationElement extends Components.SolutionConfiguration, HTMLStencilElement {
     }
@@ -373,7 +570,14 @@ declare global {
         new (): HTMLStoreManagerElement;
     };
     interface HTMLElementTagNameMap {
+        "buffer-tools": HTMLBufferToolsElement;
         "json-editor": HTMLJsonEditorElement;
+        "map-draw-tools": HTMLMapDrawToolsElement;
+        "map-layer-picker": HTMLMapLayerPickerElement;
+        "map-select-tools": HTMLMapSelectToolsElement;
+        "pdf-download": HTMLPdfDownloadElement;
+        "public-notification": HTMLPublicNotificationElement;
+        "refine-selection-tools": HTMLRefineSelectionToolsElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-contents": HTMLSolutionContentsElement;
         "solution-item": HTMLSolutionItemElement;
@@ -389,6 +593,25 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface BufferTools {
+        /**
+          * number: The distance used for buffer
+         */
+        "distance"?: number;
+        /**
+          * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
+         */
+        "geometries"?: __esri.Geometry[];
+        "onBufferComplete"?: (event: BufferToolsCustomEvent<any>) => void;
+        /**
+          * boolean: option to control if buffer results should be unioned
+         */
+        "unionResults"?: boolean;
+        /**
+          * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
+         */
+        "unit"?: __esri.LinearUnits;
+    }
     interface JsonEditor {
         /**
           * Contains a public value to indicate if the model has any errors that would prevent saving it.
@@ -407,13 +630,147 @@ declare namespace LocalJSX {
          */
         "original"?: any;
         /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
-        /**
           * Contains the public value for this component. This should be an item Id for one of the models in the store.
          */
         "value"?: any;
+    }
+    interface MapDrawTools {
+        /**
+          * boolean: sketch is used by multiple components...need a way to know who should respond...
+         */
+        "active"?: boolean;
+        /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "graphics"?: __esri.Graphic[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        "onSketchGraphicsChange"?: (event: MapDrawToolsCustomEvent<any>) => void;
+        /**
+          * esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+         */
+        "pointSymbol"?: __esri.SimpleMarkerSymbol;
+        /**
+          * esri/symbols/SimpleFillSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+         */
+        "polygonSymbol"?: __esri.SimpleFillSymbol;
+        /**
+          * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+         */
+        "polylineSymbol"?: __esri.SimpleLineSymbol;
+    }
+    interface MapLayerPicker {
+        /**
+          * string: The label to render above the combobox.
+         */
+        "label"?: string;
+        /**
+          * string[]: list of layer names from the map
+         */
+        "layerNames"?: string[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        "onLayerSelectionChange"?: (event: MapLayerPickerCustomEvent<any>) => void;
+        /**
+          * string[]: list of layers that have been selected by the end user
+         */
+        "selectedLayers"?: string[];
+        /**
+          * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
+         */
+        "selectionMode"?: SelectionMode;
+    }
+    interface MapSelectTools {
+        /**
+          * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
+         */
+        "geometries"?: __esri.Geometry[];
+        /**
+          * boolean: When true a new label is not generated for the stored selection set
+         */
+        "isUpdate"?: boolean;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        "onSelectionSetChange"?: (event: MapSelectToolsCustomEvent<any>) => void;
+        /**
+          * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
+         */
+        "searchLayers"?: __esri.Layer[];
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "selectLayerView"?: __esri.FeatureLayerView;
+        /**
+          * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
+         */
+        "selectionSet"?: ISelectionSet;
+    }
+    interface PdfDownload {
+        "layerView"?: __esri.FeatureLayerView;
+    }
+    interface PublicNotification {
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "addresseeLayer"?: __esri.FeatureLayerView;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * string: Default message to show when we have no selection sets
+         */
+        "message"?: string;
+        /**
+          * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
+         */
+        "selectionLayers"?: __esri.Layer[];
+    }
+    interface RefineSelectionTools {
+        /**
+          * boolean: sketch is used by multiple components...need a way to know who should respond...
+         */
+        "active"?: boolean;
+        /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "graphics"?: __esri.Graphic[];
+        /**
+          * number: The oids of the selected features
+         */
+        "ids"?: number[];
+        /**
+          * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
+         */
+        "layerView"?: __esri.FeatureLayerView;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "layerViews"?: __esri.FeatureLayerView[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * utils/interfaces/ESelectionMode: ADD, REMOVE
+         */
+        "mode"?: ESelectionMode;
+        "onRefineSelectionGraphicsChange"?: (event: RefineSelectionToolsCustomEvent<any>) => void;
+        "onRefineSelectionIdsChange"?: (event: RefineSelectionToolsCustomEvent<any>) => void;
+        /**
+          * utils/interfaces/ERefineMode: ALL, SUBSET
+         */
+        "refineMode"?: ERefineMode;
+        /**
+          * boolean: Used to control the visibility of the layer picker
+         */
+        "useLayerPicker"?: boolean;
     }
     interface SolutionConfiguration {
         /**
@@ -428,7 +785,7 @@ declare namespace LocalJSX {
           * Contains the current solution item id
          */
         "itemid"?: string;
-        "onSolutionLoaded"?: (event: CustomEvent<any>) => void;
+        "onSolutionLoaded"?: (event: SolutionConfigurationCustomEvent<any>) => void;
         /**
           * Used to show/hide loading indicator
          */
@@ -442,10 +799,6 @@ declare namespace LocalJSX {
          */
         "templates"?: any[];
         /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
-        /**
           * Used to show/hide the content tree
          */
         "treeOpen"?: boolean;
@@ -455,15 +808,11 @@ declare namespace LocalJSX {
         "value"?: ISolutionConfiguration;
     }
     interface SolutionContents {
-        "onSolutionItemSelected"?: (event: CustomEvent<any>) => void;
+        "onSolutionItemSelected"?: (event: SolutionContentsCustomEvent<any>) => void;
         /**
           * Contains the current item that is selected.
          */
         "selectedItem"?: ISolutionItem;
-        /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
         /**
           * Contains the public value for this component.
          */
@@ -483,19 +832,11 @@ declare namespace LocalJSX {
          */
         "solutionVariables"?: any[];
         /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
-        /**
           * Contains the public value for this component.
          */
         "value"?: ISolutionItem;
     }
     interface SolutionItemDetails {
-        /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
         /**
           * Contains the public type for this component.
          */
@@ -511,10 +852,6 @@ declare namespace LocalJSX {
          */
         "isPortal"?: boolean;
         /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
-        /**
           * The type for the item
          */
         "type"?: string;
@@ -529,20 +866,12 @@ declare namespace LocalJSX {
          */
         "groupId"?: string;
         /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
-        /**
           * Contains the public value for this component.
          */
         "value"?: IItemShare[];
     }
     interface SolutionOrganizationVariables {
-        "onOrganizationVariableSelected"?: (event: CustomEvent<any>) => void;
-        /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
+        "onOrganizationVariableSelected"?: (event: SolutionOrganizationVariablesCustomEvent<any>) => void;
         /**
           * Contains the public value for this component.
          */
@@ -565,10 +894,6 @@ declare namespace LocalJSX {
           * The templates resources.
          */
         "resources"?: {};
-        /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
     }
     interface SolutionSpatialRef {
         /**
@@ -583,15 +908,11 @@ declare namespace LocalJSX {
           * When true, all but the main switch are disabled to prevent interaction.
          */
         "locked"?: boolean;
-        "onFeatureServiceSpatialReferenceChange"?: (event: CustomEvent<any>) => void;
+        "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<any>) => void;
         /**
           * List of service names the spatial reference should apply to
          */
         "services"?: string[];
-        /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
         /**
           * Contains the public value for this component.
          */
@@ -619,10 +940,6 @@ declare namespace LocalJSX {
          */
         "solutionVariables"?: IVariableItem[];
         /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
-        /**
           * Contains the public value for this component.  When working with a resource item this should contain an IResourceItem  When working with a json type item this should contain the data and vars
          */
         "value"?: ITemplateData;
@@ -632,11 +949,7 @@ declare namespace LocalJSX {
         "varsOpen"?: boolean;
     }
     interface SolutionVariables {
-        "onSolutionVariableSelected"?: (event: CustomEvent<any>) => void;
-        /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
+        "onSolutionVariableSelected"?: (event: SolutionVariablesCustomEvent<any>) => void;
         /**
           * Contains the public value for this component.
          */
@@ -647,7 +960,7 @@ declare namespace LocalJSX {
           * Credentials for requests
          */
         "authentication"?: UserSession;
-        "onStateLoaded"?: (event: CustomEvent<any>) => void;
+        "onStateLoaded"?: (event: StoreManagerCustomEvent<any>) => void;
         /**
           * Templates for the current solution
          */
@@ -658,7 +971,14 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface IntrinsicElements {
+        "buffer-tools": BufferTools;
         "json-editor": JsonEditor;
+        "map-draw-tools": MapDrawTools;
+        "map-layer-picker": MapLayerPicker;
+        "map-select-tools": MapSelectTools;
+        "pdf-download": PdfDownload;
+        "public-notification": PublicNotification;
+        "refine-selection-tools": RefineSelectionTools;
         "solution-configuration": SolutionConfiguration;
         "solution-contents": SolutionContents;
         "solution-item": SolutionItem;
@@ -677,7 +997,14 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
+            "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
+            "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
+            "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
+            "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
+            "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
+            "refine-selection-tools": LocalJSX.RefineSelectionTools & JSXBase.HTMLAttributes<HTMLRefineSelectionToolsElement>;
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;

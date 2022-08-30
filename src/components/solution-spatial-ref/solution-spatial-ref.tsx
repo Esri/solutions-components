@@ -1,5 +1,5 @@
 /** @license
- * Copyright 2021 Esri
+ * Copyright 2022 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@ import { wkids } from './spatialreferences';
 import state from '../../utils/editStore';
 import { nodeListToArray } from '../../utils/common';
 import { ISpatialRefRepresentation, IWkidDescription } from '../../utils/interfaces';
+import SolutionSpatialRef_T9n from '../../assets/t9n/solution-spatial-ref/resources.json';
+import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'solution-spatial-ref',
@@ -59,11 +61,6 @@ export class SolutionSpatialRef {
   @Prop({ mutable: true, reflect: true }) locked = true;
 
   /**
-   * Contains the translations for this component.
-   */
-  @Prop({ mutable: true }) translations: any = {};
-
-  /**
    * Contains the public value for this component.
    */
   @Prop({ mutable: true, reflect: true }) value: string = null;
@@ -88,6 +85,10 @@ export class SolutionSpatialRef {
   constructor() {
     this.spatialRef = this._createSpatialRefDisplay(this.value);
     this.locked = true;
+  }
+
+  componentDidLoad() {
+    this._getTranslations();
   }
 
   render(): VNode {
@@ -140,6 +141,12 @@ export class SolutionSpatialRef {
    * Current text that is being used to filter the list of spatial references.
    */
   @State() private _srSearchText: string;
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() translations: typeof SolutionSpatialRef_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -445,5 +452,10 @@ export class SolutionSpatialRef {
         <div>{`${wkids[wkid].label} (${wkid})`}</div>
       </calcite-tree-item>
     )
+  }
+
+  async _getTranslations() {
+    const translations = await getLocaleComponentStrings(this.el);
+    this.translations = translations[0] as typeof SolutionSpatialRef_T9n;
   }
 }

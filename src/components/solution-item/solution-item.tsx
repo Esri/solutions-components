@@ -1,5 +1,5 @@
 /** @license
- * Copyright 2021 Esri
+ * Copyright 2022 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Prop, VNode } from '@stencil/core';
+import { Component, Element, h, Host, Prop, State, VNode } from '@stencil/core';
 import { ISolutionItem } from '../../utils/interfaces';
 import '@esri/calcite-components';
 import { UserSession } from '@esri/solution-common';
 import state from '../../utils/editStore';
+import SolutionItem_T9n from '../../assets/t9n/solution-item/resources.json';
+import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'solution-item',
@@ -44,11 +46,6 @@ export class SolutionItem {
    * Credentials for requests
    */
   @Prop({ mutable: true }) authentication: UserSession;
-
-  /**
-   * Contains the translations for this component.
-   */
-  @Prop({ mutable: true }) translations: any = {};
 
   /**
    * Contains the public value for this component.
@@ -79,6 +76,10 @@ export class SolutionItem {
   //
   //--------------------------------------------------------------------------
 
+  componentDidLoad() {
+    this._getTranslations();
+  }
+  
   render(): VNode {
     return (
       <Host>
@@ -101,6 +102,12 @@ export class SolutionItem {
   //  Variables (private)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() translations: typeof SolutionItem_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -142,7 +149,6 @@ export class SolutionItem {
 
       <calcite-tab active class="config-tab" id="group-tab">
         <solution-item-details
-          translations={this.translations}
           type={this.value.type}
           value={this.value.itemDetails}
         />
@@ -150,7 +156,6 @@ export class SolutionItem {
       <calcite-tab class="config-tab" id="share-tab">
         <solution-item-sharing
           groupId={this.value.itemId}
-          translations={this.translations}
           value={this.value.groupDetails}
         />
       </calcite-tab>
@@ -175,7 +180,6 @@ export class SolutionItem {
 
       <calcite-tab active class="config-tab">
         <solution-item-details
-          translations={this.translations}
           type={this.value.type}
           value={this.value.itemDetails}
         />
@@ -187,7 +191,6 @@ export class SolutionItem {
           itemid={this.value.itemId}
           organizationVariables={this.organizationVariables}
           solutionVariables={this.solutionVariables}
-          translations={this.translations}
           value={{ value: this.value.data }}
         />
       </calcite-tab>
@@ -198,7 +201,6 @@ export class SolutionItem {
           itemid={this.value.itemId}
           organizationVariables={this.organizationVariables}
           solutionVariables={this.solutionVariables}
-          translations={this.translations}
           value={{ value: this.value.properties }}
         />
       </calcite-tab>
@@ -211,9 +213,13 @@ export class SolutionItem {
             Object.keys(state.models).indexOf(this.value.itemId) > -1 ?
               state.models[this.value.itemId].resourceFilePaths : []
           }
-          translations={this.translations}
         />
       </calcite-tab>
     </calcite-tabs>
+  }
+
+  async _getTranslations() {
+    const translations = await getLocaleComponentStrings(this.el);
+    this.translations = translations[0] as typeof SolutionItem_T9n;
   }
 }

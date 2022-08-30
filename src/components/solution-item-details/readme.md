@@ -7,11 +7,10 @@
 
 ## Properties
 
-| Property       | Attribute      | Description                                   | Type           | Default                                                                                                                                   |
-| -------------- | -------------- | --------------------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `translations` | `translations` | Contains the translations for this component. | `any`          | `{}`                                                                                                                                      |
-| `type`         | `type`         | Contains the public type for this component.  | `string`       | `""`                                                                                                                                      |
-| `value`        | --             | Contains the public value for this component. | `IItemDetails` | `{     title: "",     snippet: "",     description: "",     tags: [],     accessInformation: "",     licenseInfo: "",     itemId: ""   }` |
+| Property | Attribute | Description                                   | Type           | Default                                                                                                                                   |
+| -------- | --------- | --------------------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`   | `type`    | Contains the public type for this component.  | `string`       | `""`                                                                                                                                      |
+| `value`  | --        | Contains the public value for this component. | `IItemDetails` | `{     title: "",     snippet: "",     description: "",     tags: [],     accessInformation: "",     licenseInfo: "",     itemId: ""   }` |
 
 
 ## Dependencies

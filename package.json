@@ -15,8 +15,8 @@
     "dist/"
   ],
   "scripts": {
-    "build": "start/b cmd.exe /c \"src\\testingAssets\\nlsJStoJSON src\\assets\\nls\\strings.js src\\testingAssets\" && stencil build",
-    "build:debug": "start/b cmd.exe /c \"src\\testingAssets\\nlsJStoJSON src\\assets\\nls\\strings.js src\\testingAssets\" && stencil build -c stencil.debugconfig.ts",
+    "build": "stencil build --docs",
+    "build:debug": "stencil build -c stencil.debugconfig.ts",
     "start": "stencil build --dev --watch --serve",
     "clean:src": "start cmd.exe /c cleanSrc.bat",
     "lint:ts": "eslint --ext .ts,.tsx src/components src/utils",
@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@esri/eslint-plugin-calcite-components": "^0.1.1",
+    "@esri/hub-common": "9.2.0",
     "@stencil/eslint-plugin": "^0.4.0",
     "@stencil/postcss": "2.1.0",
     "@stencil/sass": "1.5.2",
@@ -47,6 +48,7 @@
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-react": "7.27.1",
     "eslint-plugin-unicorn": "39.0.0",
+    "esri-loader": "3.4.0",
     "form-request-submit-polyfill": "^2.0.0",
     "gh-release": "^6.0.3",
     "jest": "^26.6.3",
@@ -61,14 +63,15 @@
     "typescript": "4.4.4"
   },
   "dependencies": {
+    "@arcgis/core": "^4.23.7",
     "@esri/arcgis-rest-auth": "^3.4.2",
     "@esri/arcgis-rest-feature-layer": "^3.4.2",
     "@esri/arcgis-rest-portal": "^3.4.2",
     "@esri/arcgis-rest-request": "^3.4.2",
     "@esri/arcgis-rest-service-admin": "^3.4.2",
-    "@esri/hub-common": "9.2.0",
-    "@esri/calcite-components": "^1.0.0-next.437",
+    "@esri/calcite-components": "1.0.0-beta.86",
     "@esri/solution-common": "^1.1.5",
+    "@types/arcgis-js-api": "^4.24.0",
     "monaco-editor": "^0.30.1"
   },
   "repository": {

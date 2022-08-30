@@ -7,13 +7,12 @@
 
 ## Properties
 
-| Property            | Attribute      | Description                                                                                 | Type              | Default     |
-| ------------------- | -------------- | ------------------------------------------------------------------------------------------- | ----------------- | ----------- |
-| `authentication`    | --             | Credentials for requests                                                                    | `UserSession`     | `undefined` |
-| `itemid`            | `itemid`       | The templates itemId. This is used to get the correct model from a store in the json-editor | `string`          | `""`        |
-| `resourceFilePaths` | --             | The templates resourceFilePaths.                                                            | `IResourcePath[]` | `[]`        |
-| `resources`         | --             | The templates resources.                                                                    | `{}`              | `{}`        |
-| `translations`      | `translations` | Contains the translations for this component.                                               | `any`             | `{}`        |
+| Property            | Attribute | Description                                                                                 | Type              | Default     |
+| ------------------- | --------- | ------------------------------------------------------------------------------------------- | ----------------- | ----------- |
+| `authentication`    | --        | Credentials for requests                                                                    | `UserSession`     | `undefined` |
+| `itemid`            | `itemid`  | The templates itemId. This is used to get the correct model from a store in the json-editor | `string`          | `""`        |
+| `resourceFilePaths` | --        | The templates resourceFilePaths.                                                            | `IResourcePath[]` | `[]`        |
+| `resources`         | --        | The templates resources.                                                                    | `{}`              | `{}`        |
 
 
 ## Dependencies
@@ -49,7 +48,6 @@ graph TD;
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
   calcite-action-menu --> calcite-action
-  calcite-action-menu --> calcite-tooltip-manager
   calcite-action-menu --> calcite-popover
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon

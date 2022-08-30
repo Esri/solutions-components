@@ -15,7 +15,6 @@
 | `showLoading`    | `show-loading`     | Used to show/hide loading indicator                    | `boolean`                | `false`                                                                                                                                         |
 | `sourceItemData` | `source-item-data` | Contains the current solution item data                | `any`                    | `{}`                                                                                                                                            |
 | `templates`      | --                 | Contains the raw templates from the solution item      | `any[]`                  | `undefined`                                                                                                                                     |
-| `translations`   | `translations`     | Contains the translations for this component.          | `any`                    | `{}`                                                                                                                                            |
 | `treeOpen`       | `tree-open`        | Used to show/hide the content tree                     | `boolean`                | `true`                                                                                                                                          |
 | `value`          | --                 | Contains the public value for this component.          | `ISolutionConfiguration` | `{     contents: []   }`                                                                                                                        |
 
@@ -132,7 +131,6 @@ graph TD;
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
   calcite-action-menu --> calcite-action
-  calcite-action-menu --> calcite-tooltip-manager
   calcite-action-menu --> calcite-popover
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon

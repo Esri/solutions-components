@@ -1,5 +1,5 @@
 /** @license
- * Copyright 2021 Esri
+ * Copyright 2022 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionVariables } from '../solution-variables';
-import * as translations from '../../../testingAssets/strings.json';
 import { value } from '../../../demos/data/solution-variables-data.json';
 import { h } from '@stencil/core';
 
@@ -25,7 +24,7 @@ describe('solution-variables', () => {
     const page = await newSpecPage({
       components: [SolutionVariables],
       template: () => (
-        <solution-variables translations={translations.configuration_modal.configuration} value={value}></solution-variables>
+        <solution-variables value={value}></solution-variables>
       )
     });
     expect(page.root).toEqualHtml(`

@@ -14,7 +14,10 @@ export const config: Config = {
     {
       type: 'dist',
       copy: [
-        { src: 'assets/nls' },
+        { 
+          src: 'assets/t9n',
+          dest: '../assets/t9n'
+        },
         { src: 'demos' },
         { src: 'utils' }
       ]
@@ -37,5 +40,5 @@ export const config: Config = {
       ]
     })
   ],
-  preamble: 'Copyright 2021 Esri\nLicensed under the Apache License, Version 2.0\nhttp://www.apache.org/licenses/LICENSE-2.0'
+  preamble: 'Copyright 2022 Esri\nLicensed under the Apache License, Version 2.0\nhttp://www.apache.org/licenses/LICENSE-2.0'
 };

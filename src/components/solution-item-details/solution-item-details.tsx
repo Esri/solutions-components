@@ -1,5 +1,5 @@
 /** @license
- * Copyright 2021 Esri
+ * Copyright 2022 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Listen, Prop, VNode } from '@stencil/core';
+import { Component, Element, h, Host, Listen, Prop, State, VNode } from '@stencil/core';
 import '@esri/calcite-components';
 import state from '../../utils/editStore';
 import { getProp } from '@esri/solution-common';
 import { IItemDetails } from '../../utils/interfaces';
+import SolutionItemDetails_T9n from '../../assets/t9n/solution-item-details/resources.json';
+import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'solution-item-details',
@@ -40,11 +42,6 @@ export class SolutionItemDetails {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Contains the translations for this component.
-   */
-  @Prop({ mutable: true }) translations: any = {};
 
   /**
    * Contains the public value for this component.
@@ -69,6 +66,10 @@ export class SolutionItemDetails {
   //  Lifecycle
   //
   //--------------------------------------------------------------------------
+
+  componentDidLoad() {
+    this._getTranslations();
+  }
 
   componentDidRender() {
     if (this.loadThumb) {
@@ -141,6 +142,12 @@ export class SolutionItemDetails {
   //  Variables (private)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() translations: typeof SolutionItemDetails_T9n;
 
   /**
    * Handle to the element for browsing for a file.
@@ -328,5 +335,10 @@ export class SolutionItemDetails {
         }
       }
     }
+  }
+
+  async _getTranslations() {
+    const translations = await getLocaleComponentStrings(this.el);
+    this.translations = translations[0] as typeof SolutionItemDetails_T9n;
   }
 }

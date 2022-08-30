@@ -1,5 +1,5 @@
 /** @license
- * Copyright 2021 Esri
+ * Copyright 2022 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { JsonEditor } from '../json-editor';
-import * as translations from '../../../testingAssets/strings.json';
 import { h } from '@stencil/core';
 
 // Mock MutationObserver because Jest environment doesn't have it
@@ -30,7 +29,7 @@ describe('json-editor', () => {
     const page = await newSpecPage({
       components: [JsonEditor],
       template: () => (
-        <json-editor translations={translations.configuration_modal.configuration} instanceid="ABC123" value="{a:'A'}"></json-editor>
+        <json-editor instanceid="ABC123" value="{a:'A'}"></json-editor>
       )
     });
     

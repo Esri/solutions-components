@@ -7,10 +7,9 @@
 
 ## Properties
 
-| Property       | Attribute      | Description                                   | Type                          | Default |
-| -------------- | -------------- | --------------------------------------------- | ----------------------------- | ------- |
-| `translations` | `translations` | Contains the translations for this component. | `any`                         | `{}`    |
-| `value`        | --             | Contains the public value for this component. | `IOrganizationVariableItem[]` | `[]`    |
+| Property | Attribute | Description                                   | Type                          | Default |
+| -------- | --------- | --------------------------------------------- | ----------------------------- | ------- |
+| `value`  | --        | Contains the public value for this component. | `IOrganizationVariableItem[]` | `[]`    |
 
 
 ## Events

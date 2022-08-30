@@ -1,5 +1,5 @@
 /** @license
- * Copyright 2021 Esri
+ * Copyright 2022 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode } from '@stencil/core';
 import { IOrganizationVariableItem } from '../../utils/interfaces';
+import SolutionOrganizationVariables_T9n from '../../assets/t9n/solution-organization-variables/resources.json';
+import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'solution-organization-variables',
@@ -40,11 +42,6 @@ export class SolutionOrganizationVariables {
   //--------------------------------------------------------------------------
 
   /**
-   * Contains the translations for this component.
-   */
-  @Prop({ mutable: true }) translations: any = {};
-
-  /**
    * Contains the public value for this component.
    */
   @Prop({ mutable: true, reflect: true }) value: IOrganizationVariableItem[] = [];
@@ -54,6 +51,10 @@ export class SolutionOrganizationVariables {
   //  Lifecycle
   //
   //--------------------------------------------------------------------------
+
+  componentDidLoad() {
+    this._getTranslations();
+  }
 
   render() {
     return (
@@ -75,6 +76,12 @@ export class SolutionOrganizationVariables {
   //  Variables (private)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+   @State() translations: typeof SolutionOrganizationVariables_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -136,4 +143,8 @@ export class SolutionOrganizationVariables {
     });
   }
 
+  async _getTranslations() {
+    const translations = await getLocaleComponentStrings(this.el);
+    this.translations = translations[0] as typeof SolutionOrganizationVariables_T9n;
+  }
 }

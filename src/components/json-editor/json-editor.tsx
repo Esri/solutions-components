@@ -1,5 +1,5 @@
 /** @license
- * Copyright 2021 Esri
+ * Copyright 2022 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,9 +33,11 @@
  *
 */
 
-import { Component, Element, Host, h, Listen, Method, Prop } from '@stencil/core';
+import { Component, Element, Host, h, Listen, Method, Prop, State } from '@stencil/core';
 import state from '../../utils/editStore';
 import { getProp } from '@esri/solution-common';
+import JsonEditor_T9n from '../../assets/t9n/json-editor/resources.json';
+import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'json-editor',
@@ -65,11 +67,6 @@ export class JsonEditor {
   @Prop({ mutable: true }) original: any = "";
 
   /**
-   * Contains the translations for this component.
-   */
-  @Prop({ mutable: true }) translations: any = {};
-
-  /**
    * Contains the public value for this component.
    * This should be an item Id for one of the models in the store.
    */
@@ -95,11 +92,22 @@ export class JsonEditor {
    */
   @Prop({ mutable: true, reflect: true }) hasErrors: boolean = false;
 
+  /**
+ * Contains the translations for this component.
+ * All UI strings should be defined here.
+ */
+  @State()
+  translations: typeof JsonEditor_T9n;
+
   //--------------------------------------------------------------------------
   //
   //  Lifecycle
   //
   //--------------------------------------------------------------------------
+
+  componentDidLoad() {
+    this._getTranslations();
+  }
 
   render() {
     return (
@@ -685,5 +693,10 @@ export class JsonEditor {
         range
       }]);
     }
+  }
+
+  async _getTranslations() {
+    const translations = await getLocaleComponentStrings(this.el);
+    this.translations = translations[0] as typeof JsonEditor_T9n;
   }
 }

@@ -1,0 +1,3 @@
+[submodule "arcgis-pdf-creator"]
+	path = arcgis-pdf-creator
+	url = https://devtopia.esri.com/WebGIS/arcgis-pdf-creator.git

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
   <title>Solution Item Sharing</title>
   <!--
-   | Copyright 2021 Esri
+   | Copyright 2022 Esri
    |
    | Licensed under the Apache License, Version 2.0 (the "License");
    | you may not use this file except in compliance with the License.
@@ -44,11 +44,10 @@
   <script src="./libs/require.js"></script>
   <script src="./libs/setLocale.js"></script>
   <script>
-    require(["i18n!../assets/nls/strings"],
-    function (translations) {
+    require([],
+    function () {
       // Initialize the configuration content
       const demo = document.getElementById("demo");
-      demo.translations = translations.configuration_modal.configuration;
     });
 
     // set the data

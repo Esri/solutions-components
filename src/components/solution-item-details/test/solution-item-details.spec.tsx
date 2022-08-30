@@ -1,5 +1,5 @@
 /** @license
- * Copyright 2021 Esri
+ * Copyright 2022 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionItemDetails } from '../solution-item-details';
-import * as translations from '../../../testingAssets/strings.json';
 import { value } from '../../../demos/data/solution-item-details-data.json';
 import * as groupData from '../../../demos/data/solution-group-details-data.json';
 import { h } from '@stencil/core';
@@ -27,7 +26,7 @@ describe('solution-item-details', () => {
       components: [SolutionItemDetails],
       supportsShadowDom: false,
       template: () => (
-        <solution-item-details translations={translations.configuration_modal.configuration} value={value}></solution-item-details>
+        <solution-item-details value={value}></solution-item-details>
       )
     });
     expect(page.root).toEqualHtml(`
@@ -91,7 +90,7 @@ describe('solution-item-details', () => {
       components: [SolutionItemDetails],
       supportsShadowDom: false,
       template: () => (
-        <solution-item-details translations={translations.configuration_modal.configuration} type="Group" value={groupData.value}></solution-item-details>
+        <solution-item-details type="Group" value={groupData.value}></solution-item-details>
       )
     });
     expect(page.root).toEqualHtml(`

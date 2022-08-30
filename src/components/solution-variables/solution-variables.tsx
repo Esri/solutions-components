@@ -1,5 +1,5 @@
 /** @license
- * Copyright 2021 Esri
+ * Copyright 2022 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode } from '@stencil/core';
 import { IVariableItem } from '../../utils/interfaces';
+import SolutionVariables_T9n from '../../assets/t9n/solution-variables/resources.json';
+import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'solution-variables',
@@ -39,11 +41,6 @@ export class SolutionVariables {
   //--------------------------------------------------------------------------
 
   /**
-   * Contains the translations for this component.
-   */
-  @Prop({ mutable: true }) translations: any = {};
-
-  /**
    * Contains the public value for this component.
    */
   @Prop({ mutable: true, reflect: true }) value: IVariableItem[] = [];
@@ -53,6 +50,10 @@ export class SolutionVariables {
   //  Lifecycle
   //
   //--------------------------------------------------------------------------
+
+  componentDidLoad() {
+    this._getTranslations();
+  }
 
   render() {
     return (
@@ -74,6 +75,12 @@ export class SolutionVariables {
   //  Variables (private)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() translations: typeof SolutionVariables_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -155,5 +162,10 @@ export class SolutionVariables {
     if (treeItem) {
       treeItem.expanded = !treeItem.expanded;
     }
+  }
+
+  async _getTranslations() {
+    const translations = await getLocaleComponentStrings(this.el);
+    this.translations = translations[0] as typeof SolutionVariables_T9n;
   }
 }

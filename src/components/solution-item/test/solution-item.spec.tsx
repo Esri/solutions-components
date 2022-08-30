@@ -1,5 +1,5 @@
 /** @license
- * Copyright 2021 Esri
+ * Copyright 2022 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionItem } from '../solution-item';
-import * as translations from '../../../testingAssets/strings.json';
 import { h } from '@stencil/core';
 
 describe('solution-item', () => {
@@ -25,7 +24,7 @@ describe('solution-item', () => {
       components: [SolutionItem],
       supportsShadowDom: false,
       template: () => (
-        <solution-item translations={translations.configuration_modal.configuration}></solution-item>
+        <solution-item></solution-item>
       )
     });
     expect(page.root).toEqualHtml(`

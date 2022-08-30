@@ -7,16 +7,15 @@
 
 ## Properties
 
-| Property                | Attribute      | Description                                                                                                                                                                                     | Type                          | Default     |
-| ----------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- | ----------- |
-| `authentication`        | --             | Credentials for requests                                                                                                                                                                        | `UserSession`                 | `undefined` |
-| `instanceid`            | `instanceid`   | This needs to be unique for props vs data of an item                                                                                                                                            | `string`                      | `""`        |
-| `itemid`                | `itemid`       | A templates itemId. This is used to get the correct model from a store in the json-editor                                                                                                       | `string`                      | `""`        |
-| `organizationVariables` | --             | Contains the organization based variables                                                                                                                                                       | `IOrganizationVariableItem[]` | `[]`        |
-| `solutionVariables`     | --             | Contains the solution based variables                                                                                                                                                           | `IVariableItem[]`             | `[]`        |
-| `translations`          | `translations` | Contains the translations for this component.                                                                                                                                                   | `any`                         | `{}`        |
-| `value`                 | --             | Contains the public value for this component.  When working with a resource item this should contain an IResourceItem  When working with a json type item this should contain the data and vars | `ITemplateData`               | `{}`        |
-| `varsOpen`              | `vars-open`    | Used to show/hide the variable containers                                                                                                                                                       | `boolean`                     | `true`      |
+| Property                | Attribute    | Description                                                                                                                                                                                     | Type                          | Default     |
+| ----------------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- | ----------- |
+| `authentication`        | --           | Credentials for requests                                                                                                                                                                        | `UserSession`                 | `undefined` |
+| `instanceid`            | `instanceid` | This needs to be unique for props vs data of an item                                                                                                                                            | `string`                      | `""`        |
+| `itemid`                | `itemid`     | A templates itemId. This is used to get the correct model from a store in the json-editor                                                                                                       | `string`                      | `""`        |
+| `organizationVariables` | --           | Contains the organization based variables                                                                                                                                                       | `IOrganizationVariableItem[]` | `[]`        |
+| `solutionVariables`     | --           | Contains the solution based variables                                                                                                                                                           | `IVariableItem[]`             | `[]`        |
+| `value`                 | --           | Contains the public value for this component.  When working with a resource item this should contain an IResourceItem  When working with a json type item this should contain the data and vars | `ITemplateData`               | `{}`        |
+| `varsOpen`              | `vars-open`  | Used to show/hide the variable containers                                                                                                                                                       | `boolean`                     | `true`      |
 
 
 ## Dependencies
@@ -51,7 +50,6 @@ graph TD;
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
   calcite-action-menu --> calcite-action
-  calcite-action-menu --> calcite-tooltip-manager
   calcite-action-menu --> calcite-popover
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
