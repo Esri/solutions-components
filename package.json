@@ -71,8 +71,7 @@
     "@esri/arcgis-rest-service-admin": "^3.4.2",
     "@esri/calcite-components": "1.0.0-beta.86",
     "@esri/solution-common": "^1.1.5",
-    "@types/arcgis-js-api": "^4.24.0",
-    "monaco-editor": "^0.30.1"
+    "@types/arcgis-js-api": "^4.24.0"
   },
   "repository": {
     "type": "git",
