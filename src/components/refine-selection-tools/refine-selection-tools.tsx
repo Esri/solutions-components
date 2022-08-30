@@ -80,7 +80,7 @@ export class RefineSelectionTools {
   /**
    * boolean: Is selected enabled
    */
-  @State() selectEnbaled = false;
+  @State() selectEnabled = false;
 
   /**
    * utils/interfaces/ESelectionType: POINT, LINE, POLY, RECT
@@ -174,7 +174,7 @@ export class RefineSelectionTools {
   connectedCallback() {
     this.active = true;
     if (this.ids.length > 0) {
-      this.selectEnbaled = true;
+      this.selectEnabled = true;
       this._highlightFeatures(this.ids);
     }
   }
@@ -197,7 +197,7 @@ export class RefineSelectionTools {
               <div class={"esri-sketch__panel"}>
                 <div class={"esri-sketch__tool-section esri-sketch__section"}>
                   <calcite-action 
-                    disabled={!this.selectEnbaled}
+                    disabled={!this.selectEnabled}
                     icon="select"
                     onClick={() => this._setSelectionMode(ESelectionType.POINT)}
                     scale="s"
@@ -206,21 +206,21 @@ export class RefineSelectionTools {
                 </div>
                 <div class={"esri-sketch__tool-section esri-sketch__section"}>
                   <calcite-action
-                    disabled={!this.selectEnbaled}
+                    disabled={!this.selectEnabled}
                     icon="line"
                     onClick={() => this._setSelectionMode(ESelectionType.LINE)}
                     scale="s"
                     text={this.translations?.selectLine}
                   />
                   <calcite-action
-                    disabled={!this.selectEnbaled}
+                    disabled={!this.selectEnabled}
                     icon="polygon"
                     onClick={() => this._setSelectionMode(ESelectionType.POLY)}
                     scale="s"
                     text={this.translations?.selectPolygon}
                   />
                   <calcite-action 
-                    disabled={!this.selectEnbaled}
+                    disabled={!this.selectEnabled}
                     icon="rectangle"
                     onClick={() => this._setSelectionMode(ESelectionType.RECT)}
                     scale="s"
@@ -229,14 +229,14 @@ export class RefineSelectionTools {
                 </div>
                 <div class={"esri-sketch__tool-section esri-sketch__section"}>
                   <calcite-action
-                    disabled={!this.selectEnbaled}
+                    disabled={!this.selectEnabled}
                     icon="undo"
                     onClick={() => this._undo()}
                     scale="s"
                     text={this.translations?.undo}
                   />
                   <calcite-action
-                    disabled={!this.selectEnbaled}
+                    disabled={!this.selectEnabled}
                     icon="redo"
                     onClick={() => this._redo()}
                     scale="s"
@@ -344,7 +344,7 @@ export class RefineSelectionTools {
 
   async _layerSelectionChange(evt: CustomEvent) {
     if (Array.isArray(evt.detail) && evt.detail.length > 0) {
-      this.selectEnbaled = true;
+      this.selectEnabled = true;
       const layerPromises = evt.detail.map(title => {
         return getMapLayerView(this.mapView, title)
       });
@@ -353,7 +353,7 @@ export class RefineSelectionTools {
         this.layerViews = layerViews;
       });
     } else {
-      this.selectEnbaled = false;
+      this.selectEnabled = false;
     }
   }
 

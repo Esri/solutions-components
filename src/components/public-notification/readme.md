@@ -88,8 +88,6 @@ graph TD;
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   pdf-download --> calcite-select
-  pdf-download --> calcite-label
-  pdf-download --> calcite-switch
   pdf-download --> calcite-option
   style public-notification fill:#f9f,stroke:#333,stroke-width:4px
 ```

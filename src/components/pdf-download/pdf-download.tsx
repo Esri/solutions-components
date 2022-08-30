@@ -1,5 +1,5 @@
 /** @license
- * Copyright 2021 Esri
+ * Copyright 2022 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,10 +41,6 @@ export class PdfDownload {
 
   @Prop() layerView: __esri.FeatureLayerView;
 
-  @Prop({ mutable: true }) filterDuplicates: boolean = false;
-
-  @Prop() removeDuplicateEnabled: boolean = false;
-
   //--------------------------------------------------------------------------
   //
   //  Properties (private)
@@ -56,8 +52,6 @@ export class PdfDownload {
    * All UI strings should be defined here.
    */
   @State() translations: typeof PdfDownload_T9n;
-
-  protected _duplicateSelect: HTMLCalciteSelectElement;
 
   //--------------------------------------------------------------------------
   //
@@ -95,7 +89,6 @@ export class PdfDownload {
             {this._renderItems()}
           </calcite-select>
         </div>
-        {this._renderRemoveDuplicate()}
       </Host>
     );
   }
@@ -106,31 +99,6 @@ export class PdfDownload {
   //
   //--------------------------------------------------------------------------
 
-  _renderRemoveDuplicate(): VNode {
-    return this.removeDuplicateEnabled ? (
-      <div class="background-w padding-1-2 list-border margin-top-1">
-        <calcite-label layout="inline">
-          <calcite-switch
-            onCalciteSwitchChange={(evt) => this._removeDuplicatesChanged(evt)}
-            scale="m"
-          />
-          <span class="icon-text" title={"Remove duplicates by value"}>{"Remove duplicates by value"}</span>
-        </calcite-label>
-
-        <calcite-label>
-          <calcite-select
-            label=""
-            disabled={!this.filterDuplicates}
-            onCalciteSelectChange={(evt) => this._duplicateFieldChanged(evt)}
-            ref={(el) => { this._duplicateSelect = el }}
-          >
-            {this._getFieldNames()}
-          </calcite-select>
-        </calcite-label>
-      </div>
-    ): (<div/>);
-  }
-
   _renderItems(): VNode[] {
     const s: any = pdfUtils;
     const sortedPdfIndo = (s.default || s).sort((a, b) => {
@@ -139,9 +107,7 @@ export class PdfDownload {
       return _a < _b ? -1 : _a > _b ? 1 : 0
     });
     return sortedPdfIndo.map((l) => {
-      console.log(l)
       const textLabel = this.translations?.pdfLabel.replace("{{n}}", l.descriptionPDF.labelsPerPageDisplay);
-      console.log(textLabel);
       return (<calcite-option value={l}>{textLabel}</calcite-option>)
     });
   }
@@ -152,27 +118,6 @@ export class PdfDownload {
 
   _download(): void {
     alert("Download the stuff");
-  }
-
-  _removeDuplicatesChanged(
-    evt: CustomEvent
-  ) {
-    this.filterDuplicates = evt.detail.switched;
-  }
-
-  _getFieldNames(): VNode[] {
-    return this.layerView.layer.fields.map(f => {
-      return (<calcite-option>{f.alias}</calcite-option>)
-    });
-  }
-
-  _duplicateFieldChanged(
-    evt: CustomEvent
-  ) {
-    console.log(evt);
-    console.log(this._duplicateSelect.value)
-    console.log(this._duplicateSelect.selectedOption)
-    console.log(this._duplicateSelect.selectedOption.value)
   }
 
   async _getTranslations() {

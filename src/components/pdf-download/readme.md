@@ -7,11 +7,9 @@
 
 ## Properties
 
-| Property                 | Attribute                  | Description | Type               | Default     |
-| ------------------------ | -------------------------- | ----------- | ------------------ | ----------- |
-| `filterDuplicates`       | `filter-duplicates`        |             | `boolean`          | `false`     |
-| `layerView`              | --                         |             | `FeatureLayerView` | `undefined` |
-| `removeDuplicateEnabled` | `remove-duplicate-enabled` |             | `boolean`          | `false`     |
+| Property    | Attribute | Description | Type               | Default     |
+| ----------- | --------- | ----------- | ------------------ | ----------- |
+| `layerView` | --        |             | `FeatureLayerView` | `undefined` |
 
 
 ## Dependencies
@@ -23,16 +21,12 @@
 ### Depends on
 
 - calcite-select
-- calcite-label
-- calcite-switch
 - calcite-option
 
 ### Graph
 ```mermaid
 graph TD;
   pdf-download --> calcite-select
-  pdf-download --> calcite-label
-  pdf-download --> calcite-switch
   pdf-download --> calcite-option
   calcite-select --> calcite-icon
   public-notification --> pdf-download

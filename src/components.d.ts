@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ERefineMode, ESelectionMode, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchConfig, ISelectionSet, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
+import { ERefineMode, ESelectionMode, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISelectionSet, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BufferTools {
@@ -25,28 +25,6 @@ export namespace Components {
           * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
          */
         "unit": __esri.LinearUnits;
-    }
-    interface ConfigMapSearch {
-        "getConfig": () => Promise<ISearchConfig>;
-        "layers": any[];
-        "useLayerUrl": boolean;
-        "useLocatorUrl": boolean;
-    }
-    interface ConfigPublicNotification {
-        "isOpen": boolean;
-        "layerNames": string[];
-        /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView": __esri.MapView;
-        /**
-          * Contains the translations for this component.
-         */
-        "translations": any;
-    }
-    interface DemoMap {
-        "webmapid": string;
-        "zoom": number;
     }
     interface JsonEditor {
         /**
@@ -152,9 +130,7 @@ export namespace Components {
         "selectionSet": ISelectionSet;
     }
     interface PdfDownload {
-        "filterDuplicates": boolean;
         "layerView": __esri.FeatureLayerView;
-        "removeDuplicateEnabled": boolean;
     }
     interface PublicNotification {
         /**
@@ -432,10 +408,6 @@ export interface BufferToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLBufferToolsElement;
 }
-export interface ConfigPublicNotificationCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLConfigPublicNotificationElement;
-}
 export interface MapDrawToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapDrawToolsElement;
@@ -482,24 +454,6 @@ declare global {
     var HTMLBufferToolsElement: {
         prototype: HTMLBufferToolsElement;
         new (): HTMLBufferToolsElement;
-    };
-    interface HTMLConfigMapSearchElement extends Components.ConfigMapSearch, HTMLStencilElement {
-    }
-    var HTMLConfigMapSearchElement: {
-        prototype: HTMLConfigMapSearchElement;
-        new (): HTMLConfigMapSearchElement;
-    };
-    interface HTMLConfigPublicNotificationElement extends Components.ConfigPublicNotification, HTMLStencilElement {
-    }
-    var HTMLConfigPublicNotificationElement: {
-        prototype: HTMLConfigPublicNotificationElement;
-        new (): HTMLConfigPublicNotificationElement;
-    };
-    interface HTMLDemoMapElement extends Components.DemoMap, HTMLStencilElement {
-    }
-    var HTMLDemoMapElement: {
-        prototype: HTMLDemoMapElement;
-        new (): HTMLDemoMapElement;
     };
     interface HTMLJsonEditorElement extends Components.JsonEditor, HTMLStencilElement {
     }
@@ -617,9 +571,6 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "buffer-tools": HTMLBufferToolsElement;
-        "config-map-search": HTMLConfigMapSearchElement;
-        "config-public-notification": HTMLConfigPublicNotificationElement;
-        "demo-map": HTMLDemoMapElement;
         "json-editor": HTMLJsonEditorElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
@@ -660,28 +611,6 @@ declare namespace LocalJSX {
           * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
          */
         "unit"?: __esri.LinearUnits;
-    }
-    interface ConfigMapSearch {
-        "layers"?: any[];
-        "useLayerUrl"?: boolean;
-        "useLocatorUrl"?: boolean;
-    }
-    interface ConfigPublicNotification {
-        "isOpen"?: boolean;
-        "layerNames"?: string[];
-        /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView"?: __esri.MapView;
-        "onConfigSaved"?: (event: ConfigPublicNotificationCustomEvent<any>) => void;
-        /**
-          * Contains the translations for this component.
-         */
-        "translations"?: any;
-    }
-    interface DemoMap {
-        "webmapid"?: string;
-        "zoom"?: number;
     }
     interface JsonEditor {
         /**
@@ -783,9 +712,7 @@ declare namespace LocalJSX {
         "selectionSet"?: ISelectionSet;
     }
     interface PdfDownload {
-        "filterDuplicates"?: boolean;
         "layerView"?: __esri.FeatureLayerView;
-        "removeDuplicateEnabled"?: boolean;
     }
     interface PublicNotification {
         /**
@@ -1045,9 +972,6 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "buffer-tools": BufferTools;
-        "config-map-search": ConfigMapSearch;
-        "config-public-notification": ConfigPublicNotification;
-        "demo-map": DemoMap;
         "json-editor": JsonEditor;
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
@@ -1074,9 +998,6 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
-            "config-map-search": LocalJSX.ConfigMapSearch & JSXBase.HTMLAttributes<HTMLConfigMapSearchElement>;
-            "config-public-notification": LocalJSX.ConfigPublicNotification & JSXBase.HTMLAttributes<HTMLConfigPublicNotificationElement>;
-            "demo-map": LocalJSX.DemoMap & JSXBase.HTMLAttributes<HTMLDemoMapElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;

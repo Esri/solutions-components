@@ -1,6 +1,6 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
-import Popover_T9n from '../../assets/t9n/buffer-tools/resources.json';
+import BufferTools_T9n from '../../assets/t9n/buffer-tools/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
@@ -57,7 +57,7 @@ export class BufferTools {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof Popover_T9n;
+  @State() translations: typeof BufferTools_T9n;
 
   protected geometryEngine:  __esri.geometryEngine;
 
@@ -204,7 +204,7 @@ export class BufferTools {
 
   async _getTranslations() {
     const messages = await getLocaleComponentStrings(this.el);
-    this.translations = messages[0] as typeof Popover_T9n;
+    this.translations = messages[0] as typeof BufferTools_T9n;
   }
 
 }
