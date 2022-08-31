@@ -57,15 +57,15 @@ export class SolutionItemSharing {
   //
   //--------------------------------------------------------------------------
 
-  componentDidLoad() {
-    this._getTranslations();
+  async componentWillLoad() {
+    await this._getTranslations();
   }
 
   render() {
     return (
       <Host>
         <div class="container-border">
-          <calcite-label>{this.translations?.groupInfo}</calcite-label>
+          <calcite-label>{this.translations.groupInfo}</calcite-label>
           {this._renderItems(this.value)}
         </div>
       </Host>

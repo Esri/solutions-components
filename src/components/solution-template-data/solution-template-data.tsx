@@ -88,8 +88,8 @@ export class SolutionTemplateData {
   //
   //--------------------------------------------------------------------------
 
-  componentDidLoad() {
-    this._getTranslations();
+  async componentWillLoad() {
+    await this._getTranslations();
   }
 
   render() {
@@ -115,7 +115,7 @@ export class SolutionTemplateData {
                   id="collapse-vars"
                   onClick={() => this._toggleVars()}
                   scale="s"
-                  title={this.translations?.cancelEdits}
+                  title={this.translations.cancelEdits}
                 />
                 <div class={this.varsOpen ? "org-vars" : "org-vars display-none"} id="orgVars">
                   <solution-organization-variables

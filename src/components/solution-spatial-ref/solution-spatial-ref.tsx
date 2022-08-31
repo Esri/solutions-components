@@ -88,15 +88,15 @@ export class SolutionSpatialRef {
     this.locked = true;
   }
 
-  componentDidLoad() {
-    this._getTranslations();
+  async componentWillLoad() {
+    await this._getTranslations();
   }
 
   render(): VNode {
     return (
       <Host>
         <div class="spatial-ref-desc">
-          <calcite-label>{this.translations?.paramDescription}</calcite-label>
+          <calcite-label>{this.translations.paramDescription}</calcite-label>
         </div>
         <label class="switch-label">
           <calcite-switch
@@ -105,17 +105,17 @@ export class SolutionSpatialRef {
             scale="m"
             switched={!this.locked}
           />
-          {this.translations?.specifyParam}
+          {this.translations.specifyParam}
         </label>
         <div class="spatial-ref-switch-title" id="spatialRefDefn">
           <calcite-label>
-            {this.translations?.spatialReferenceInfo}
+            {this.translations.spatialReferenceInfo}
             <label class="spatial-ref-default">
               <calcite-input
                 disabled={this.locked}
                 onCalciteInputInput={(evt) => this._searchSpatialReferences(evt)}
                 onKeyDown={(evt) => this._inputKeyDown(evt)}
-                placeholder={this.translations?.spatialReferencePlaceholder}
+                placeholder={this.translations.spatialReferencePlaceholder}
               />
             </label>
           </calcite-label>
@@ -309,7 +309,7 @@ export class SolutionSpatialRef {
     });
     return _services && _services.length > 0 ? (
       <div>
-        <label class="spatial-ref-item-title">{this.translations?.featureServicesHeading}</label>
+        <label class="spatial-ref-item-title">{this.translations.featureServicesHeading}</label>
         {_services.map(name => (
           <label class="switch-label">
             <calcite-switch

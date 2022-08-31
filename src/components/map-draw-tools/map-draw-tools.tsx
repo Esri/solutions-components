@@ -155,11 +155,11 @@ export class MapDrawTools {
   //--------------------------------------------------------------------------
 
   async componentWillLoad() {
+    await this._getTranslations();
     await this._initModules();
   }
 
   componentDidLoad() {
-    this._getTranslations();
     this._init();
   }
 
@@ -199,7 +199,7 @@ export class MapDrawTools {
   }
 
   _initGraphicsLayer(): void {
-    const title = this.translations?.sketchLayer;
+    const title = this.translations.sketchLayer;
     const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
     if (sketchIndex > -1) {
       this._sketchGraphicsLayer = this.mapView.map.layers.getItemAt(sketchIndex) as __esri.GraphicsLayer;
