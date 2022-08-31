@@ -3,5 +3,5 @@
     "specifyParam": "Spatial Reference parameter",
     "spatialReferencePlaceholder": "Search for spatial reference using name or WKID",
     "spatialReferenceInfo": "Select the default spatial reference",
-    "featureServicesHeading": "Layers to apply on"
+    "featureServicesHeading": "Apply spatial reference to the following layers"
 }
