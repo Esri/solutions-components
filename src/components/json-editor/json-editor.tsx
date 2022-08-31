@@ -120,7 +120,7 @@ export class JsonEditor {
                 id={`${this.instanceid}-undo`}
                 color="blue"
                 appearance="solid"
-                title={this.translations.undo}
+                title={this.translations?.undo}
                 onClick={() => this._undo()}
                 scale="s"
                 class="edit-button"
@@ -132,7 +132,7 @@ export class JsonEditor {
                 id={`${this.instanceid}-redo`}
                 color="blue"
                 appearance="solid"
-                title={this.translations.redo}
+                title={this.translations?.redo}
                 onClick={() => this._redo()}
                 scale="s"
                 class="edit-button"
@@ -144,7 +144,7 @@ export class JsonEditor {
                 id={`${this.instanceid}-diff`}
                 color="blue"
                 appearance="solid"
-                title={this.translations.diff}
+                title={this.translations?.diff}
                 onClick={() => this._toggleEditor()}
                 scale="s"
                 class="edit-button"
@@ -156,7 +156,7 @@ export class JsonEditor {
                 id={`${this.instanceid}-search`}
                 appearance="outline"
                 color="blue"
-                title={this.translations.search}
+                title={this.translations?.search}
                 onClick={() => this._search()}
                 scale="s"
                 class="edit-button"
@@ -169,7 +169,7 @@ export class JsonEditor {
                 color="blue"
                 appearance="solid"
                 disabled
-                title={this.translations.cancelEdits}
+                title={this.translations?.cancelEdits}
                 onClick={() => this._reset()}
                 scale="s"
                 class="edit-button"

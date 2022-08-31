@@ -65,6 +65,7 @@ export class SolutionItemSharing {
     return (
       <Host>
         <div class="container-border">
+          <calcite-label>{this.translations?.groupInfo}</calcite-label>
           {this._renderItems(this.value)}
         </div>
       </Host>

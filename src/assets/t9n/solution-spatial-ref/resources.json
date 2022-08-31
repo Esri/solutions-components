@@ -1,6 +1,7 @@
 {
-    "specifyParam": "Spatial Reference Parameter",
+    "paramDescription": "Expose the Spatial Reference parameter and allow users to change the layers spatial reference when deploying the solution.",
+    "specifyParam": "Spatial Reference parameter",
     "spatialReferencePlaceholder": "Search for spatial reference using name or WKID",
-    "spatialReferenceInfo": "Select the spatial reference of the feature layers deployed with the solution.",
-    "featureServicesHeading": "Feature Services"
+    "spatialReferenceInfo": "Select the default spatial reference",
+    "featureServicesHeading": "Layers to apply on"
 }

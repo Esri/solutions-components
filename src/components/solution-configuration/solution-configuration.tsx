@@ -141,9 +141,9 @@ export class SolutionConfiguration {
           <div class="configuration">
             <calcite-tabs class="config-tabs">
               <calcite-tab-nav slot="tab-nav">
-                <calcite-tab-title>{this.translations.definitionTab}</calcite-tab-title>
+                <calcite-tab-title>{this.translations?.definitionTab}</calcite-tab-title>
                 {hasServices ?
-                  <calcite-tab-title>{this.translations.spatialReferenceTab}</calcite-tab-title> :
+                  <calcite-tab-title>{this.translations?.spatialReferenceTab}</calcite-tab-title> :
                   null
                 }
               </calcite-tab-nav>
@@ -163,7 +163,7 @@ export class SolutionConfiguration {
                     id="collapse-vars"
                     onClick={() => this._toggleTree()}
                     scale="s"
-                    title={this.translations.cancelEdits}
+                    title={this.translations?.cancelEdits}
                   />
                   <div class="config-item">
                     <solution-item

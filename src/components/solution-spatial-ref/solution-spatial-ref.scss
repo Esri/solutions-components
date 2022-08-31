@@ -56,3 +56,8 @@
   @apply overflow-y-auto
     mb-4;
 }
+
+.spatial-ref-desc {
+  padding-bottom: .5rem;
+  @apply p-inline-start-1;
+}

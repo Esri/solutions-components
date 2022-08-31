@@ -50,12 +50,6 @@ export class SolutionSpatialRef {
   @Prop({ mutable: true, reflect: true }) defaultWkid = 102100;
 
   /**
-  * Indicates if the control has been enabled.
-  * The first time Spatial Reference has been enabled it should enable all feature services.
-  */
-  @Prop({ mutable: true, reflect: true }) loaded = false;
-
-  /**
   * When true, all but the main switch are disabled to prevent interaction.
   */
   @Prop({ mutable: true, reflect: true }) locked = true;
@@ -76,6 +70,13 @@ export class SolutionSpatialRef {
   */
   @Prop({ mutable: true, reflect: true }) services: string[] = [];
 
+
+  /**
+  * Indicates if the control has been enabled.
+  * The first time Spatial Reference has been enabled it should enable all feature services.
+  */
+  @State() loaded = false;
+
   //--------------------------------------------------------------------------
   //
   //  Lifecycle
@@ -94,6 +95,9 @@ export class SolutionSpatialRef {
   render(): VNode {
     return (
       <Host>
+        <div class="spatial-ref-desc">
+          <calcite-label>{this.translations?.paramDescription}</calcite-label>
+        </div>
         <label class="switch-label">
           <calcite-switch
             class="spatial-ref-switch"
@@ -101,17 +105,17 @@ export class SolutionSpatialRef {
             scale="m"
             switched={!this.locked}
           />
-          {this.translations.specifyParam}
+          {this.translations?.specifyParam}
         </label>
         <div class="spatial-ref-switch-title" id="spatialRefDefn">
           <calcite-label>
-            {this.translations.spatialReferenceInfo}
+            {this.translations?.spatialReferenceInfo}
             <label class="spatial-ref-default">
               <calcite-input
                 disabled={this.locked}
                 onCalciteInputInput={(evt) => this._searchSpatialReferences(evt)}
                 onKeyDown={(evt) => this._inputKeyDown(evt)}
-                placeholder={this.translations.spatialReferencePlaceholder}
+                placeholder={this.translations?.spatialReferencePlaceholder}
               />
             </label>
           </calcite-label>
@@ -305,7 +309,7 @@ export class SolutionSpatialRef {
     });
     return _services && _services.length > 0 ? (
       <div>
-        <label class="spatial-ref-item-title">{this.translations.featureServicesHeading}</label>
+        <label class="spatial-ref-item-title">{this.translations?.featureServicesHeading}</label>
         {_services.map(name => (
           <label class="switch-label">
             <calcite-switch

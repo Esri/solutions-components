@@ -143,8 +143,8 @@ export class SolutionItem {
   ): VNode {
     return <calcite-tabs class="config-tabs" style={{ display: visible ? "inherit" : "none" }}>
       <calcite-tab-nav slot="tab-nav">
-        <calcite-tab-title>{this.translations.groupDetailsTab}</calcite-tab-title>
-        <calcite-tab-title>{this.translations.sharingTab}</calcite-tab-title>
+        <calcite-tab-title>{this.translations?.groupDetailsTab}</calcite-tab-title>
+        <calcite-tab-title>{this.translations?.sharingTab}</calcite-tab-title>
       </calcite-tab-nav>
 
       <calcite-tab active class="config-tab" id="group-tab">
@@ -172,10 +172,10 @@ export class SolutionItem {
   ): VNode {
     return <calcite-tabs class="config-tabs" style={{ display: visible ? "inherit" : "none" }}>
       <calcite-tab-nav slot="tab-nav">
-        <calcite-tab-title>{this.translations.itemDetailsTab}</calcite-tab-title>
-        <calcite-tab-title>{this.translations.dataTab}</calcite-tab-title>
-        <calcite-tab-title>{this.translations.propertiesTab}</calcite-tab-title>
-        <calcite-tab-title>{this.translations.resourcesTab}</calcite-tab-title>
+        <calcite-tab-title>{this.translations?.itemDetailsTab}</calcite-tab-title>
+        <calcite-tab-title>{this.translations?.dataTab}</calcite-tab-title>
+        <calcite-tab-title>{this.translations?.propertiesTab}</calcite-tab-title>
+        <calcite-tab-title>{this.translations?.resourcesTab}</calcite-tab-title>
       </calcite-tab-nav>
 
       <calcite-tab active class="config-tab">

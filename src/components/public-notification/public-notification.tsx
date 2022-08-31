@@ -324,7 +324,7 @@ export class PublicNotificationTwo {
                 <div>
                   <br />
                   <calcite-input-message active class="start-message list-border background-w">
-                    {this.translations.selectedFeatures.replace("{{n}}", this.numSelected.toString())}
+                    {this.translations?.selectedFeatures.replace("{{n}}", this.numSelected.toString())}
                   </calcite-input-message>
                 </div>
               ) : (<div />)

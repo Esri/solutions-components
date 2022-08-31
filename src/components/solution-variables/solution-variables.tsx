@@ -59,7 +59,7 @@ export class SolutionVariables {
     return (
       <Host>
         <div>
-          <h4 class="org-var-header">{this.translations.solVariables}</h4>
+          <h4 class="org-var-header">{this.translations?.solVariables}</h4>
         </div>
         <div class="container-border">
           <calcite-label id="variable-label">
