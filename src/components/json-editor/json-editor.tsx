@@ -106,7 +106,16 @@ export class JsonEditor {
   //--------------------------------------------------------------------------
 
   componentDidLoad() {
-    this._getTranslations();
+    const editorContainer = document.getElementById(`${this.instanceid}-container`);
+    if (editorContainer) {
+      /*const editor =*/ monaco.editor.create(
+        editorContainer,
+        {
+          value: ["{", "\ta: 1", "}"].join("\n"),
+          language: "json"
+        }
+      );
+    }
   }
 
   render() {
@@ -187,8 +196,10 @@ export class JsonEditor {
     );
   }
 
-  componentWillLoad(): void {
+  async componentWillLoad(): Promise<void> {
     this._initValueObserver();
+    await this._getTranslations();
+    return;
   }
 
   disconnectedCallback(): void {
@@ -626,7 +637,7 @@ export class JsonEditor {
 
   /**
    * When the json-editor is embedded within a solition-item component we will have two tabs
-   * with the json editor. This provides a way for us to check if that parent tab is active 
+   * with the json editor. This provides a way for us to check if that parent tab is active
    * while inserting variables.
    *
    * @protected
@@ -666,9 +677,9 @@ export class JsonEditor {
 
   /**
    * Update the current feature service models wkid
-   * 
+   *
    * This functions responds to events fired from the spatial reference control.
-   * 
+   *
    * @param enabled does the given service support the wkid variable (true) or the current wkid (false)
    *
    * @protected
