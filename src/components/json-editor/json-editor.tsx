@@ -108,13 +108,31 @@ export class JsonEditor {
   componentDidLoad() {
     const editorContainer = document.getElementById(`${this.instanceid}-container`);
     if (editorContainer) {
-      /*const editor =*/ monaco.editor.create(
+      this._editor = monaco.editor.create(
         editorContainer,
         {
-          value: ["{", "\ta: 1", "}"].join("\n"),
-          language: "json"
+          value: this.value,
+          language: "json",
+          theme: "vs",
+          minimap: {
+            enabled: false
+          },
+          automaticLayout: true,
+          scrollBeyondLastLine: false
         }
       );
+
+      this._currentModel = this._editor.getModel();
+
+      this._contentChanged = this._currentModel.onDidChangeContent(this._onEditorChange.bind(this));
+      /*this._decorationsChanged = this._editor.onDidChangeModelDecorations(this._onDecorationsChange.bind(this));
+
+      this._diffEditor = monaco.editor.createDiffEditor(document.getElementById(`${this.instanceid}-diff-container`), {
+        automaticLayout: true
+      });
+      this._setDiffModel();
+
+      this._loaded = true; */
     }
   }
 
