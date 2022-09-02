@@ -1,4 +1,5 @@
 {
+    "errorFlag": "Il y a une erreur dans le JSON",
     "undo": "Annuler",
     "redo": "Refaire",
     "diff": "Basculer l'éditeur de différences",

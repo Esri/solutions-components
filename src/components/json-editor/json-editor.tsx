@@ -33,9 +33,9 @@
  *
 */
 
-import { Component, Element, Host, h, Listen, Method, Prop, State } from '@stencil/core';
-import state from '../../utils/editStore';
-import { getProp } from '@esri/solution-common';
+import { Component, Element, Host, h, /*Listen,*/ Method, Prop, State } from '@stencil/core';
+//import state from '../../utils/editStore';
+//import { getProp } from '@esri/solution-common';
 import JsonEditor_T9n from '../../assets/t9n/json-editor/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
 
@@ -125,14 +125,19 @@ export class JsonEditor {
       this._currentModel = this._editor.getModel();
 
       this._contentChanged = this._currentModel.onDidChangeContent(this._onEditorChange.bind(this));
-      /*this._decorationsChanged = this._editor.onDidChangeModelDecorations(this._onDecorationsChange.bind(this));
 
+      this._decorationsChanged = this._editor.onDidChangeModelDecorations(this._onDecorationsChange.bind(this));
+
+      /*
       this._diffEditor = monaco.editor.createDiffEditor(document.getElementById(`${this.instanceid}-diff-container`), {
         automaticLayout: true
       });
       this._setDiffModel();
 
-      this._loaded = true; */
+      this._loaded = true;
+      */
+
+      this._toggleUndoRedo();
     }
   }
 
@@ -142,6 +147,14 @@ export class JsonEditor {
         <div id={`${this.instanceid}-editor-container`} class="editor-container padding-right">
           <div class="editor-controls">
             <div class="editor-buttons">
+              {/* errors flag */}
+              <calcite-icon
+                id={`${this.instanceid}-errorFlag`}
+                icon="exclamation-mark-triangle"
+                title={this.translations.errorFlag}
+                scale="s"
+                class="edit-error-flag"
+              ></calcite-icon>
               {/* undo */}
               <calcite-button
                 id={`${this.instanceid}-undo`}
@@ -167,7 +180,7 @@ export class JsonEditor {
                 <calcite-icon icon="redo" scale="s"></calcite-icon>
               </calcite-button>
               {/* diff */}
-              <calcite-button
+              {/*<calcite-button
                 id={`${this.instanceid}-diff`}
                 color="blue"
                 appearance="solid"
@@ -177,7 +190,7 @@ export class JsonEditor {
                 class="edit-button"
               >
                 <calcite-icon icon="compare" scale="s"></calcite-icon>
-              </calcite-button>
+              </calcite-button>*/}
               {/* search */}
               <calcite-button
                 id={`${this.instanceid}-search`}
@@ -215,7 +228,7 @@ export class JsonEditor {
   }
 
   async componentWillLoad(): Promise<void> {
-    this._initValueObserver();
+    //this._initValueObserver();
     await this._getTranslations();
     return;
   }
@@ -234,13 +247,13 @@ export class JsonEditor {
   //--------------------------------------------------------------------------
 
   private _editor: any;
-  private _diffEditor: any;
-  private _useDiffEditor: boolean = false;
+  //private _diffEditor: any;
+  //private _useDiffEditor: boolean = false;
   private _currentModel: any;
   private _searchBtnHandler: any;
   private _cancelEditsBtnHandler: any;
-  private _loaded: boolean = false;
-  private _valueObserver: MutationObserver;
+  //private _loaded: boolean = false;
+  //private _valueObserver: MutationObserver;
   private _contentChanged: any;
   private _decorationsChanged: any;
 
@@ -250,6 +263,7 @@ export class JsonEditor {
   //
   //--------------------------------------------------------------------------
 
+  /*
   @Listen("organizationVariableSelected", { target: 'window' })
   organizationVariableSelected(event: CustomEvent): void {
     if (this._isTabActive()) {
@@ -287,6 +301,7 @@ export class JsonEditor {
       this._setFeatureServiceWkid(event.detail.enabled);
     }
   }
+  */
 
   //--------------------------------------------------------------------------
   //
@@ -304,7 +319,7 @@ export class JsonEditor {
   async reset(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
-        this._setEditModel(this.value);
+        //this._setEditModel(this.value);
         this._reset();
         resolve({ success: true });
       } catch (e) {
@@ -324,6 +339,7 @@ export class JsonEditor {
    *
    * @protected
    */
+  /*
   _initEditor(): void {
     // Set up embedded editor
     if (monaco && monaco.editor) {
@@ -351,12 +367,14 @@ export class JsonEditor {
       this._loaded = true;
     }
   }
+  */
 
   /**
    * Initializes the observer that will monitor and respond to changes of the value
    *
    * @protected
    */
+  /*
   private _initValueObserver() {
     this._valueObserver = new MutationObserver(ml => {
       ml.forEach(mutation => {
@@ -378,6 +396,7 @@ export class JsonEditor {
     });
     this._valueObserver.observe(this.el, { attributes: true, attributeOldValue: true });
   }
+  */
 
   /**
    * Update the undo redo buttons as necessary
@@ -394,15 +413,16 @@ export class JsonEditor {
    * @protected
    */
   _onDecorationsChange(): void {
-    const model = this._editor.getModel();
-    if (model === null) {
-      return;
+    const setModelMarkers = monaco.editor.setModelMarkers;
+    const errorFlag = document.getElementById(`${this.instanceid}-errorFlag`);
+
+    monaco.editor.setModelMarkers = function(model, owner, markers) {
+      setModelMarkers.call(monaco.editor, model, owner, markers);
+      this.hasErrors = markers.length > 0;
+
+      // Show the error flag if there are errors
+      errorFlag.style.visibility = this.hasErrors ? "visible" : "hidden";
     }
-
-    const owner = model.getModeId();
-    const markers = monaco.editor.getModelMarkers({ owner });
-
-    this.hasErrors = markers.length > 0;
   }
 
   /**
@@ -434,6 +454,7 @@ export class JsonEditor {
    *
    * @protected
    */
+  /*
   _toggleEditor(): void {
     this._useDiffEditor = !this._useDiffEditor;
     let diffContainer = document.getElementById(`${this.instanceid}-diff-container`);
@@ -447,6 +468,7 @@ export class JsonEditor {
       container.classList.remove("display-none");
     }
   }
+  */
 
   /**
    * Toggle the undo and redo buttons
@@ -478,6 +500,7 @@ export class JsonEditor {
    *
    * @protected
    */
+  /*
   _insertValue(v: string): void {
     const editor: any = this._getEditor();
     const range = editor.getSelection();
@@ -489,15 +512,18 @@ export class JsonEditor {
     }]);
     editor.revealRange(range);
   }
+  */
 
   /**
    * Gets the current active editor for diff editor
    *
    * @protected
    */
+  /*
   _getEditor(): any {
     return this._useDiffEditor ? this._diffEditor : this._editor;
   }
+  */
 
   /**
    * Frees the editor events and memory when the web component is disconnected.
@@ -508,14 +534,14 @@ export class JsonEditor {
     this._searchBtnHandler?.removeEventListener("click", this._search);
     this._cancelEditsBtnHandler?.removeEventListener("click", this._reset);
 
-    this._valueObserver?.disconnect();
+    //this._valueObserver?.disconnect();
 
     this._contentChanged?.dispose();
     this._decorationsChanged?.dispose();
 
     this._editor?.dispose();
 
-    this.original = "";
+    //this.original = "";
   }
 
   /**
@@ -524,16 +550,21 @@ export class JsonEditor {
    * @protected
    */
   _reset(): void {
+    // Restore the original value
+    this._currentModel.setValue(this.value);
+
     // update the model
-    const org = this._getOriginalValue();
-    this.model = monaco.editor.createModel(JSON.stringify(JSON.parse(org), null, '\t'), "json");
+    //const org = this._getOriginalValue();
+    //this.model = monaco.editor.createModel(JSON.stringify(JSON.parse(org), null, '\t'), "json");
 
     // update the editor
+    /*
     this._editor.setModel(this.model);
     this._setCurrentModel();
     this._setDiffModel();
     this._saveCurrentModel(this.value);
     this._setEditorFocus();
+    */
 
     // update the ui
     this._toggleUndoRedo();
@@ -567,11 +598,13 @@ export class JsonEditor {
    * @protected
    */
   _search(): void {
-    const editor: any = this._getEditor();
+    this._editor.trigger('toggleFind', 'actions.find');
+
+    //const editor: any = this._getEditor();
     // force focus should likely just be a workaround
     //https://github.com/microsoft/monaco-editor/issues/2355
-    editor.focus();
-    editor.trigger('toggleFind', 'actions.find');
+    //editor.focus();
+    //editor.trigger('toggleFind', 'actions.find');
   }
 
   /**
@@ -579,18 +612,21 @@ export class JsonEditor {
    *
    * @protected
    */
+  /*
   _saveCurrentModel(id: string): void {
     if (this._editor && id && Object.keys(state.models).indexOf(id) > -1) {
       state.models[id][this._isData() ? "dataModel" : "propsModel"] = this.model;
       state.models[id].state = this._editor.saveViewState();
     }
   }
+  */
 
   /**
    * Change the editors model
    *
    * @protected
    */
+  /*
   _setEditModel(id): void {
     const data = state.models[id];
 
@@ -612,12 +648,14 @@ export class JsonEditor {
 
     this._toggleUndoRedo();
   }
+  */
 
   /**
    * Set the current model and event handler
    *
    * @protected
    */
+  /*
   _setCurrentModel(): void {
     this._currentModel = this._editor.getModel();
     if (this._contentChanged) {
@@ -625,12 +663,14 @@ export class JsonEditor {
     }
     this._contentChanged = this._currentModel.onDidChangeContent(this._onEditorChange.bind(this));
   }
+  */
 
   /**
    * Set the models for the diff editor
    *
    * @protected
    */
+  /*
   _setDiffModel(): void {
     if (this._diffEditor) {
       this._diffEditor.setModel({
@@ -639,12 +679,14 @@ export class JsonEditor {
       });
     }
   }
+  */
 
   /**
    * Set the models for the diff editor
    *
    * @protected
    */
+  /*
   _setEditorFocus(): void {
     if (this._useDiffEditor) {
       this._diffEditor.focus();
@@ -652,6 +694,7 @@ export class JsonEditor {
       this._editor.focus();
     }
   }
+  */
 
   /**
    * When the json-editor is embedded within a solition-item component we will have two tabs
@@ -660,10 +703,12 @@ export class JsonEditor {
    *
    * @protected
    */
+  /*
   _isTabActive(): boolean {
     const tab = document.getElementById(`${this.instanceid}-tab`) as HTMLCalciteTabElement;
     return tab ? tab.active : true;
   }
+  */
 
   /**
    * When the json-editor is embedded within a solition-item component we will have two tabs
@@ -672,9 +717,11 @@ export class JsonEditor {
    *
    * @protected
    */
+  /*
   _isData(): boolean {
     return this.instanceid === "data"
   }
+  */
 
   /**
    * When the json-editor is embedded within a solition-item component it needs to be aware
@@ -686,12 +733,14 @@ export class JsonEditor {
    *
    * @protected
    */
+  /*
   _getOriginalValue(): string {
     const m: any = state.models[this.value];
     const serviceActive = getProp(state, `spatialReferenceInfo.services.${m?.name}`);
     const srEnabled = getProp(state, 'spatialReferenceInfo.enabled');
     return (serviceActive && srEnabled && !this._isData()) ? m.propsDiffOriginValue : this.original;
   }
+  */
 
   /**
    * Update the current feature service models wkid
@@ -702,6 +751,7 @@ export class JsonEditor {
    *
    * @protected
    */
+  /*
   _setFeatureServiceWkid(
     enabled: boolean
   ): void {
@@ -723,6 +773,7 @@ export class JsonEditor {
       }]);
     }
   }
+  */
 
   async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);

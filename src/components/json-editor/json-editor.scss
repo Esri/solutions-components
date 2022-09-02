@@ -26,6 +26,7 @@
 .editor-controls {
   @apply h-11;
   background-color: $solutions-background-color;
+  padding-right: 8px;
 }
 
 .editor-buttons {
@@ -36,9 +37,14 @@ html[dir="rtl"] .editor-buttons {
   @apply float-left;
 }
 
+.edit-error-flag {
+  @apply pt-2;
+  color: red;
+  visibility: hidden;
+}
+
 .edit-button {
-  @apply pt-1
-    p-inline-start-2;
+  @apply p-inline-start-2;
 }
 
 .editor-text {
@@ -70,7 +76,7 @@ html[dir="rtl"] .editor-buttons {
 }
 
 .btn {
-  @apply flex 
+  @apply flex
     mb-4
     content-center;
   height: 25px;
