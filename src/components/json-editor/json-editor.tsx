@@ -316,6 +316,18 @@ export class JsonEditor {
   //--------------------------------------------------------------------------
 
   @Method()
+  async getValue(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        const currentValue = this._currentModel.getValue();
+        resolve(currentValue);
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+
+  @Method()
   async reset(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {

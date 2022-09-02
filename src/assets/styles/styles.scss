@@ -29,6 +29,15 @@ html, body {
 h1 {
   line-height: unset;
   margin: unset;
+  font-size: 2rem;
+  @apply pl-2;
+}
+
+.floating-title {
+  font-size: 2rem;
+  z-index: 100;
+  position: absolute;
+  left: 0.5rem;
 }
 
 #appContainer {

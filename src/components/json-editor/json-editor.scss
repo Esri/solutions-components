@@ -24,9 +24,9 @@
 }
 
 .editor-controls {
-  @apply h-11;
+  @apply h-11
+    pr-2;
   background-color: $solutions-background-color;
-  padding-right: 8px;
 }
 
 .editor-buttons {

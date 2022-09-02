@@ -34,18 +34,19 @@
 </head>
 
 <body>
-  <h1>Demo JSON Editor</h1>
+  <span class="floating-title">Demo JSON Editor <button id="getValue" onclick="hGetValue()" style="visibility:hidden">Get Value</button></span>
   <main id="appContainer">
     <div class="content full-height">
-      <store-manager id="helper"></store-manager>
+      <!--store-manager id="helper"></store-manager-->
       <json-editor id="demo" instanceId="data"></json-editor>
     </div>
   </main>
 
   <script src="./libs/require.js"></script>
   <script src="./libs/setLocale.js"></script>
-  <!--script src="./monacoConfig.js"></script-->
+  <script src="./monacoConfig.js"></script>
   <script>
+    var hGetValue;
     var package_path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
     require.config({
       "paths": {
@@ -57,17 +58,29 @@
       // Initialize the configuration content
       const demo = document.getElementById("demo");
 
-      const helper = document.getElementById("helper");
+      //const helper = document.getElementById("helper");
 
       // set the data
       fetch("./data/election-outreach.json")
         .then(response => response.json())
         .then(data => {
           const template = data.templates[0];
-          helper.value = JSON.stringify(template);
+          //helper.value = JSON.stringify(template);
 
           demo.value = JSON.stringify(template, null, "\t");
           document.getElementById("appContainer").style.opacity = "1";
+
+          // Set up the "Get Value" button
+          hGetValue = () => {
+            demo.getValue()
+            .then((value) => {
+              console.log(value);
+            })
+            .catch((e) => {
+              console.error(e);
+            });
+          }
+          document.getElementById("getValue").style.visibility = "visible";
         });
     });
   </script>

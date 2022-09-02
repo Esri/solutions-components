@@ -27,6 +27,7 @@ export namespace Components {
         "unit": __esri.LinearUnits;
     }
     interface JsonEditor {
+        "getValue": () => Promise<any>;
         /**
           * Contains a public value to indicate if the model has any errors that would prevent saving it.
          */
