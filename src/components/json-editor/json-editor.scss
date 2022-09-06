@@ -91,7 +91,7 @@ html[dir="rtl"] .editor-buttons {
   @apply mt-16;
 }
 
-.json-editor-position {
+.json-editor-position1 {
   @apply absolute
     left-0
     top-0
@@ -102,3 +102,28 @@ html[dir="rtl"] .editor-buttons {
     overflow-hidden;
   max-height: 100% !important;
 }
+
+.json-editor-position2a {
+  @apply absolute
+    left-0
+    top-0
+    w-1/2
+    h-full
+    m-0
+    p-0
+    overflow-hidden;
+  max-height: 100% !important;
+}
+
+.json-editor-position2b {
+  @apply absolute
+    right-0
+    top-0
+    w-1/2
+    h-full
+    m-0
+    p-0
+    overflow-hidden;
+  max-height: 100% !important;
+}
+

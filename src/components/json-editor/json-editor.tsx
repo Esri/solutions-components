@@ -64,7 +64,7 @@ export class JsonEditor {
    * Contains the original source item json as it was when the component was created.
    *
    */
-  @Prop({ mutable: true }) original: any = "";
+  //@Prop({ mutable: true }) original: any = "";
 
   /**
    * Contains the public value for this component.
@@ -75,7 +75,7 @@ export class JsonEditor {
   /**
    * Contains the public model for this component.
    */
-  @Prop({ mutable: true, reflect: true }) model: any; //monaco.editor.ITextModel;
+  //@Prop({ mutable: true, reflect: true }) model: any; //monaco.editor.ITextModel;
 
   /**
    * Contains a unique identifier for when we have multiple instances of the editor.
@@ -143,7 +143,7 @@ export class JsonEditor {
 
   render() {
     return (
-      <Host class="json-editor-position">
+      <Host>
         <div id={`${this.instanceid}-editor-container`} class="editor-container padding-right">
           <div class="editor-controls">
             <div class="editor-buttons">
