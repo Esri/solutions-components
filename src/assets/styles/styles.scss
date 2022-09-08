@@ -38,6 +38,7 @@ h1 {
   z-index: 100;
   position: absolute;
   left: 0.5rem;
+  pointer-events: none;
 }
 
 #appContainer {
