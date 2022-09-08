@@ -26,6 +26,16 @@ Type: `Promise<any>`
 
 
 
+### `replaceCurrentSelection(replacement: string) => Promise<any>`
+
+
+
+#### Returns
+
+Type: `Promise<any>`
+
+
+
 ### `reset() => Promise<any>`
 
 

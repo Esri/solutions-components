@@ -340,6 +340,16 @@ export class JsonEditor {
   }
 
   @Method()
+  async replaceCurrentSelection(
+    replacement: string
+  ): Promise<any> {
+    const currentSelection = this._editor.getSelection();
+    this._editor.executeEdits("", [
+     { range: currentSelection, text: replacement }
+    ]);
+  }
+
+  @Method()
   async reset(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {

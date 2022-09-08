@@ -36,6 +36,7 @@ export namespace Components {
           * Contains a unique identifier for when we have multiple instances of the editor. For example when we want to show an items data as well as an items properties.  Need to rethink this..would like it to be more generic. We are currently tied to either data or props as this helps us know how to get the correct model from the store.
          */
         "instanceid": any;
+        "replaceCurrentSelection": (replacement: string) => Promise<any>;
         "reset": () => Promise<any>;
         /**
           * Contains the public value for this component. This should be an item Id for one of the models in the store.

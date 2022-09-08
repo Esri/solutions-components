@@ -36,6 +36,7 @@
 <body>
   <span class="floating-title">Demo JSON Editor 1
     <button id="getValue" class="floating-title-button" onclick="hGetValue(1)" style="visibility:hidden">Get Value</button>
+    <button id="setValue" class="floating-title-button" onclick="hSetValue()" style="visibility:hidden">Insert/replace selection</button>
   </span>
   <main id="appContainer">
     <div class="content full-height">
@@ -48,6 +49,7 @@
   <script src="./monacoConfig.js"></script>
   <script>
     var hGetValue;
+    var hSetValue;
     var package_path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
     require.config({
       "paths": {
@@ -79,6 +81,16 @@
             });
           }
           document.getElementById("getValue").style.visibility = "visible";
+
+          // Set up the "Insert/replace using clipboard" button
+          hSetValue = () => {
+            const replacement = "I AM A REPLACEMENT";
+            editor1.replaceCurrentSelection(replacement)
+            .catch((e) => {
+              console.error(e);
+            });
+          }
+          document.getElementById("setValue").style.visibility = "visible";
         });
     });
   </script>
