@@ -126,7 +126,25 @@ export class JsonEditor {
 
       this._contentChanged = this._currentModel.onDidChangeContent(this._onEditorChange.bind(this));
 
-      this._decorationsChanged = this._editor.onDidChangeModelDecorations(this._onDecorationsChange.bind(this));
+      // Intercept the monaco function call that shows error markers to see if our content has errors
+      const setModelMarkers = monaco.editor.setModelMarkers;
+      const self = this;
+      monaco.editor.setModelMarkers = function(model, owner, markers) {
+        // Update the error flag if this call was for our model
+        if (model.id === self._currentModel.id) {
+          self.hasErrors = markers.length > 0;
+          const errorFlag = document.getElementById(`${self.instanceid}-errorFlag`);
+
+          // Show the error flag if there are errors
+          errorFlag.style.visibility = self.hasErrors ? "visible" : "hidden";
+        }
+
+        // Pass on the call to the next editor in a chain of intercepts or, finally, to monaco
+        setModelMarkers.call(monaco.editor, model, owner, markers);
+      }
+
+
+
 
       /*
       this._diffEditor = monaco.editor.createDiffEditor(document.getElementById(`${this.instanceid}-diff-container`), {
@@ -255,7 +273,6 @@ export class JsonEditor {
   //private _loaded: boolean = false;
   //private _valueObserver: MutationObserver;
   private _contentChanged: any;
-  private _decorationsChanged: any;
 
   //--------------------------------------------------------------------------
   //
@@ -369,7 +386,6 @@ export class JsonEditor {
       this._currentModel = this._editor.getModel();
 
       this._contentChanged = this._currentModel.onDidChangeContent(this._onEditorChange.bind(this));
-      this._decorationsChanged = this._editor.onDidChangeModelDecorations(this._onDecorationsChange.bind(this));
 
       this._diffEditor = monaco.editor.createDiffEditor(document.getElementById(`${this.instanceid}-diff-container`), {
         automaticLayout: true
@@ -417,24 +433,6 @@ export class JsonEditor {
    */
   _onEditorChange(): void {
     this._toggleUndoRedo();
-  }
-
-  /**
-   * Decorations are added when errors are found in the editor content
-   *
-   * @protected
-   */
-  _onDecorationsChange(): void {
-    const setModelMarkers = monaco.editor.setModelMarkers;
-    const errorFlag = document.getElementById(`${this.instanceid}-errorFlag`);
-
-    monaco.editor.setModelMarkers = function(model, owner, markers) {
-      setModelMarkers.call(monaco.editor, model, owner, markers);
-      this.hasErrors = markers.length > 0;
-
-      // Show the error flag if there are errors
-      errorFlag.style.visibility = this.hasErrors ? "visible" : "hidden";
-    }
   }
 
   /**
@@ -549,7 +547,6 @@ export class JsonEditor {
     //this._valueObserver?.disconnect();
 
     this._contentChanged?.dispose();
-    this._decorationsChanged?.dispose();
 
     this._editor?.dispose();
 
