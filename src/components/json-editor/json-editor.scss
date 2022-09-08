@@ -91,6 +91,18 @@ html[dir="rtl"] .editor-buttons {
   @apply mt-16;
 }
 
+.floating-title {
+  font-size: 2rem;
+  z-index: 100;
+  position: absolute;
+  left: 0.5rem;
+  pointer-events: none;
+}
+
+.floating-title-button {
+  pointer-events: auto;
+}
+
 .json-editor-position1 {
   @apply absolute
     left-0

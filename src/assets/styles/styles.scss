@@ -33,14 +33,6 @@ h1 {
   @apply pl-2;
 }
 
-.floating-title {
-  font-size: 2rem;
-  z-index: 100;
-  position: absolute;
-  left: 0.5rem;
-  pointer-events: none;
-}
-
 #appContainer {
   @apply h-full
     opacity-0;
