@@ -685,7 +685,7 @@ export class JsonEditor {
   _setDiffModel(): void {
     if (this._diffEditor) {
       this._diffEditor.setModel({
-        original: monaco.editor.createModel(JSON.stringify(JSON.parse(this.value), null, '\t'), "json"),
+        original: monaco.editor.createModel(this.value, "json"),
         modified: this._editor.getModel()
       });
     }
