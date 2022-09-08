@@ -143,17 +143,12 @@ export class JsonEditor {
         setModelMarkers.call(monaco.editor, model, owner, markers);
       }
 
-
-
-
-      /*
       this._diffEditor = monaco.editor.createDiffEditor(document.getElementById(`${this.instanceid}-diff-container`), {
         automaticLayout: true
       });
       this._setDiffModel();
 
-      this._loaded = true;
-      */
+      //this._loaded = true;
 
       this._toggleUndoRedo();
     }
@@ -198,7 +193,7 @@ export class JsonEditor {
                 <calcite-icon icon="redo" scale="s"></calcite-icon>
               </calcite-button>
               {/* diff */}
-              {/*<calcite-button
+              <calcite-button
                 id={`${this.instanceid}-diff`}
                 color="blue"
                 appearance="solid"
@@ -208,7 +203,7 @@ export class JsonEditor {
                 class="edit-button"
               >
                 <calcite-icon icon="compare" scale="s"></calcite-icon>
-              </calcite-button>*/}
+              </calcite-button>
               {/* search */}
               <calcite-button
                 id={`${this.instanceid}-search`}
@@ -265,8 +260,8 @@ export class JsonEditor {
   //--------------------------------------------------------------------------
 
   private _editor: any;
-  //private _diffEditor: any;
-  //private _useDiffEditor: boolean = false;
+  private _diffEditor: any;
+  private _useDiffEditor: boolean = false;
   private _currentModel: any;
   private _searchBtnHandler: any;
   private _cancelEditsBtnHandler: any;
@@ -464,7 +459,6 @@ export class JsonEditor {
    *
    * @protected
    */
-  /*
   _toggleEditor(): void {
     this._useDiffEditor = !this._useDiffEditor;
     let diffContainer = document.getElementById(`${this.instanceid}-diff-container`);
@@ -478,7 +472,6 @@ export class JsonEditor {
       container.classList.remove("display-none");
     }
   }
-  */
 
   /**
    * Toggle the undo and redo buttons
@@ -679,16 +672,14 @@ export class JsonEditor {
    *
    * @protected
    */
-  /*
   _setDiffModel(): void {
     if (this._diffEditor) {
       this._diffEditor.setModel({
-        original: monaco.editor.createModel(JSON.stringify(JSON.parse(this.original), null, '\t'), "json"),
+        original: monaco.editor.createModel(JSON.stringify(JSON.parse(this.value), null, '\t'), "json"),
         modified: this._editor.getModel()
       });
     }
   }
-  */
 
   /**
    * Set the models for the diff editor
