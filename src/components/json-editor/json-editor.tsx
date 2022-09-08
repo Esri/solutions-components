@@ -70,7 +70,7 @@ export class JsonEditor {
    * Contains the public value for this component.
    * This should be an item Id for one of the models in the store.
    */
-  @Prop({ mutable: true, reflect: true }) value: any = undefined;
+  @Prop({ mutable: true, reflect: true }) value: any = "";
 
   /**
    * Contains the public model for this component.
@@ -148,7 +148,7 @@ export class JsonEditor {
       });
       this._setDiffModel();
 
-      //this._loaded = true;
+      this._loaded = true;
 
       this._toggleUndoRedo();
     }
@@ -241,7 +241,7 @@ export class JsonEditor {
   }
 
   async componentWillLoad(): Promise<void> {
-    //this._initValueObserver();
+    this._initValueObserver();
     await this._getTranslations();
     return;
   }
@@ -265,8 +265,8 @@ export class JsonEditor {
   private _currentModel: any;
   private _searchBtnHandler: any;
   private _cancelEditsBtnHandler: any;
-  //private _loaded: boolean = false;
-  //private _valueObserver: MutationObserver;
+  private _loaded: boolean = false;
+  private _valueObserver: MutationObserver;
   private _contentChanged: any;
 
   //--------------------------------------------------------------------------
@@ -407,15 +407,16 @@ export class JsonEditor {
    *
    * @protected
    */
-  /*
   private _initValueObserver() {
     this._valueObserver = new MutationObserver(ml => {
       ml.forEach(mutation => {
         if (mutation.type === 'attributes' && mutation.attributeName === "value") {
-          if (state && state.models && Object.keys(state.models).indexOf(this.value) > -1) {
+          //if (state && state.models && Object.keys(state.models).indexOf(this.value) > -1) {
             const newValue: string = mutation.target[mutation.attributeName];
             if ((newValue !== mutation.oldValue && this._loaded)) {
-              // store the current state
+              this._currentModel.setValue(this.value);
+            }
+              /*// store the current state
               this._saveCurrentModel(mutation.oldValue);
 
               // get the model and state from the store
@@ -423,13 +424,12 @@ export class JsonEditor {
             } else if (!this._loaded) {
               this._setEditModel(this.value);
             }
-          }
+          }*/
         }
       });
     });
     this._valueObserver.observe(this.el, { attributes: true, attributeOldValue: true });
   }
-  */
 
   /**
    * Update the undo redo buttons as necessary
@@ -547,7 +547,7 @@ export class JsonEditor {
     this._searchBtnHandler?.removeEventListener("click", this._search);
     this._cancelEditsBtnHandler?.removeEventListener("click", this._reset);
 
-    //this._valueObserver?.disconnect();
+    this._valueObserver?.disconnect();
 
     this._contentChanged?.dispose();
 
