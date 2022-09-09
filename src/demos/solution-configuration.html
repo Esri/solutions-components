@@ -94,7 +94,7 @@
     <button id="connectBtn fader" onclick="connectFcn()">Connect</button>
   </div>
   <div class="list flex not-visible margin-bottom-1 margin-side-1" id="componentContainer">
-    <calcite-select 
+    <calcite-select
       id="solution-ids"
       label="demo combobox"
       placeholder="Select Solution ID"
@@ -112,6 +112,11 @@
   <script src="./libs/setLocale.js"></script>
   <script src="./monacoConfig.js"></script>
   <script>
+    require.config({
+      "paths": {
+        "vs": "./libs/monaco-editor"
+      }
+    });
     require(['vs/editor/editor.main'],
     function () {
 
@@ -125,7 +130,7 @@
         authentication = new arcgisRest.UserSession({
           username: document.getElementById("username").value || undefined,
           password: document.getElementById("password").value || undefined,
-          portal 
+          portal
         });
 
         // Initialize the configuration content

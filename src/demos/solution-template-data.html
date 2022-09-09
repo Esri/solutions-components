@@ -46,10 +46,9 @@
   <script src="./libs/setLocale.js"></script>
   <script src="./monacoConfig.js"></script>
   <script>
-    var package_path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
     require.config({
       "paths": {
-        "vs": package_path + "/libs/monaco-editor"
+        "vs": "./libs/monaco-editor"
       }
     });
     require(["vs/editor/editor.main"],
