@@ -35,7 +35,8 @@
 
 <body>
   <span class="floating-title">Demo JSON Editor 1
-    <button id="getValue" class="floating-title-button" onclick="hGetValue(1)" style="visibility:hidden">Get Value</button>
+    <button id="getValue" class="floating-title-button" onclick="hGetValue()" style="visibility:hidden">Get Value</button>
+    <button id="getEditorContents" class="floating-title-button" onclick="hGetEditorContents()" style="visibility:hidden">Get Editor Contents</button>
     <button id="setValue" class="floating-title-button" onclick="hSetValue()" style="visibility:hidden">Insert/replace selection</button>
   </span>
   <main id="appContainer">
@@ -49,11 +50,11 @@
   <script src="./monacoConfig.js"></script>
   <script>
     var hGetValue;
+    var hGetEditorContents;
     var hSetValue;
-    var package_path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
     require.config({
       "paths": {
-        "vs": package_path + "/libs/monaco-editor"
+        "vs": "./libs/monaco-editor"
       }
     });
     require(["vs/editor/editor.main"],
@@ -72,7 +73,13 @@
 
           // Set up the "Get Value" button
           hGetValue = () => {
-            editor1.getValue()
+            console.log(editor1.value);
+          }
+          document.getElementById("getValue").style.visibility = "visible";
+
+          // Set up the "Get Editor Contents" button
+          hGetEditorContents = () => {
+            editor1.getEditorContents()
             .then((value) => {
               console.log(value);
             })
@@ -80,7 +87,7 @@
               console.error(e);
             });
           }
-          document.getElementById("getValue").style.visibility = "visible";
+          document.getElementById("getEditorContents").style.visibility = "visible";
 
           // Set up the "Insert/replace using clipboard" button
           hSetValue = () => {

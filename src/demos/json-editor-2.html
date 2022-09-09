@@ -35,8 +35,8 @@
 
 <body>
   <span class="floating-title">Demo JSON Editor 2
-    <button id="getValue1" class="floating-title-button" onclick="hGetValue(1)" style="visibility:hidden">Get Value 1</button>
-    <button id="getValue2" class="floating-title-button" onclick="hGetValue(2)" style="visibility:hidden">Get Value 2</button>
+    <button id="getEditorContents1" class="floating-title-button" onclick="hGetEditorContents(1)" style="visibility:hidden">Get Editor Contents 1</button>
+    <button id="getEditorContents2" class="floating-title-button" onclick="hGetEditorContents(2)" style="visibility:hidden">Get Editor Contents 2</button>
   </span>
   <main id="appContainer">
     <div class="content full-height">
@@ -49,11 +49,10 @@
   <script src="./libs/setLocale.js"></script>
   <script src="./monacoConfig.js"></script>
   <script>
-    var hGetValue;
-    var package_path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+    var hGetEditorContents;
     require.config({
       "paths": {
-        "vs": package_path + "/libs/monaco-editor"
+        "vs": "./libs/monaco-editor"
       }
     });
     require(["vs/editor/editor.main"],
@@ -71,9 +70,9 @@
           editor1.value = editor2.value = JSON.stringify(template, null, "\t");
           document.getElementById("appContainer").style.opacity = "1";
 
-          // Set up the "Get Value" button
-          hGetValue = (editorNum) => {
-            (editorNum === 1 ? editor1 : editor2).getValue()
+          // Set up the "Get Editor Contents" button
+          hGetEditorContents = (editorNum) => {
+            (editorNum === 1 ? editor1 : editor2).getEditorContents()
             .then((value) => {
               console.log(value);
             })
@@ -81,8 +80,8 @@
               console.error(e);
             });
           }
-          document.getElementById("getValue1").style.visibility = "visible";
-          document.getElementById("getValue2").style.visibility = "visible";
+          document.getElementById("getEditorContents1").style.visibility = "visible";
+          document.getElementById("getEditorContents2").style.visibility = "visible";
         });
     });
   </script>

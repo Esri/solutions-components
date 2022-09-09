@@ -27,19 +27,32 @@ export namespace Components {
         "unit": __esri.LinearUnits;
     }
     interface JsonEditor {
-        "getValue": () => Promise<any>;
+        /**
+          * Gets the contents of the editor.
+          * @returns Promise resolving with the current contents of the editor
+         */
+        "getEditorContents": () => Promise<any>;
         /**
           * Contains a public value to indicate if the model has any errors that would prevent saving it.
          */
         "hasErrors": boolean;
         /**
-          * Contains a unique identifier for when we have multiple instances of the editor. For example when we want to show an items data as well as an items properties.  Need to rethink this..would like it to be more generic. We are currently tied to either data or props as this helps us know how to get the correct model from the store.
+          * Contains a unique identifier for when we have multiple instances of the editor. For example when we want to show an item's data as well as an item's properties.
          */
         "instanceid": any;
+        /**
+          * Replaces the current selection with the supplied text, inserting if nothing is selected.
+          * @param replacement Text to use for replacement or insertion
+          * @returns Promise resolving when function is done
+         */
         "replaceCurrentSelection": (replacement: string) => Promise<any>;
+        /**
+          * Resets the contents of the editor with the current `value`.
+          * @returns Promise resolving when function is done
+         */
         "reset": () => Promise<any>;
         /**
-          * Contains the public value for this component. This should be an item Id for one of the models in the store.
+          * Contains the public value for this component; it is not changed by the editor. When changed, the change overwrites the contents of the editor.
          */
         "value": any;
     }
@@ -608,11 +621,11 @@ declare namespace LocalJSX {
          */
         "hasErrors"?: boolean;
         /**
-          * Contains a unique identifier for when we have multiple instances of the editor. For example when we want to show an items data as well as an items properties.  Need to rethink this..would like it to be more generic. We are currently tied to either data or props as this helps us know how to get the correct model from the store.
+          * Contains a unique identifier for when we have multiple instances of the editor. For example when we want to show an item's data as well as an item's properties.
          */
         "instanceid"?: any;
         /**
-          * Contains the public value for this component. This should be an item Id for one of the models in the store.
+          * Contains the public value for this component; it is not changed by the editor. When changed, the change overwrites the contents of the editor.
          */
         "value"?: any;
     }
