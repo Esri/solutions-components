@@ -7,13 +7,12 @@
 
 ## Properties
 
-| Property      | Attribute      | Description                                                                                                                         | Type       | Default  |
-| ------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ---------- | -------- |
-| `defaultWkid` | `default-wkid` | The wkid that will be used as the default when no user selection has been made.                                                     | `number`   | `102100` |
-| `loaded`      | `loaded`       | Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services. | `boolean`  | `false`  |
-| `locked`      | `locked`       | When true, all but the main switch are disabled to prevent interaction.                                                             | `boolean`  | `true`   |
-| `services`    | --             | List of service names the spatial reference should apply to                                                                         | `string[]` | `[]`     |
-| `value`       | `value`        | Contains the public value for this component.                                                                                       | `string`   | `null`   |
+| Property      | Attribute      | Description                                                                     | Type       | Default  |
+| ------------- | -------------- | ------------------------------------------------------------------------------- | ---------- | -------- |
+| `defaultWkid` | `default-wkid` | The wkid that will be used as the default when no user selection has been made. | `number`   | `102100` |
+| `locked`      | `locked`       | When true, all but the main switch are disabled to prevent interaction.         | `boolean`  | `true`   |
+| `services`    | --             | List of service names the spatial reference should apply to                     | `string[]` | `[]`     |
+| `value`       | `value`        | Contains the public value for this component.                                   | `string`   | `null`   |
 
 
 ## Events
@@ -67,8 +66,8 @@ Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
 
 ### Depends on
 
-- calcite-switch
 - calcite-label
+- calcite-switch
 - calcite-input
 - calcite-tree
 - calcite-tree-item
@@ -76,8 +75,8 @@ Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
 ### Graph
 ```mermaid
 graph TD;
-  solution-spatial-ref --> calcite-switch
   solution-spatial-ref --> calcite-label
+  solution-spatial-ref --> calcite-switch
   solution-spatial-ref --> calcite-input
   solution-spatial-ref --> calcite-tree
   solution-spatial-ref --> calcite-tree-item

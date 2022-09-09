@@ -77,8 +77,8 @@ export class SolutionResourceItem {
   //
   //--------------------------------------------------------------------------
 
-  componentDidLoad() {
-    this._getTranslations();
+  async componentWillLoad() {
+    await this._getTranslations();
   }
   
   render() {

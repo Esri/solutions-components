@@ -77,8 +77,8 @@ export class PdfDownload {
   //
   //--------------------------------------------------------------------------
 
-  componentDidLoad() {
-    this._getTranslations();
+  async componentWillLoad() {
+    await this._getTranslations();
   }
 
   render() {
@@ -107,7 +107,7 @@ export class PdfDownload {
       return _a < _b ? -1 : _a > _b ? 1 : 0
     });
     return sortedPdfIndo.map((l) => {
-      const textLabel = this.translations?.pdfLabel.replace("{{n}}", l.descriptionPDF.labelsPerPageDisplay);
+      const textLabel = this.translations.pdfLabel.replace("{{n}}", l.descriptionPDF.labelsPerPageDisplay);
       return (<calcite-option value={l}>{textLabel}</calcite-option>)
     });
   }

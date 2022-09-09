@@ -115,18 +115,15 @@ export class BufferTools {
   //--------------------------------------------------------------------------
 
   async componentWillLoad() {
+    await this._getTranslations();
     await this._initModules();
-  }
-
-  componentDidLoad() {
-    this._getTranslations();
   }
 
   render() {
     return (
       <Host>
         <calcite-label disable-spacing={true} style={{ "display": "flex", "padding-top": "1rem" }}>
-          {this.translations?.searchDistance}
+          {this.translations.searchDistance}
         </calcite-label>
         <div class="c-container">
           <calcite-input
@@ -167,10 +164,10 @@ export class BufferTools {
 
   _addUnits(): any {
     const units = {
-      'feet': this.translations?.feet || 'Feet',
-      'meters': this.translations?.meters || 'Meters',
-      'miles': this.translations?.miles || 'Miles',
-      'kilometers': this.translations?.kilometers || 'Kilometers'
+      'feet': this.translations.feet || 'Feet',
+      'meters': this.translations.meters || 'Meters',
+      'miles': this.translations.miles || 'Miles',
+      'kilometers': this.translations.kilometers || 'Kilometers'
     };
     return Object.keys(units).map(u => {
       let selected = true;

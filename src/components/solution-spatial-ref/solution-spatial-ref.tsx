@@ -50,12 +50,6 @@ export class SolutionSpatialRef {
   @Prop({ mutable: true, reflect: true }) defaultWkid = 102100;
 
   /**
-  * Indicates if the control has been enabled.
-  * The first time Spatial Reference has been enabled it should enable all feature services.
-  */
-  @Prop({ mutable: true, reflect: true }) loaded = false;
-
-  /**
   * When true, all but the main switch are disabled to prevent interaction.
   */
   @Prop({ mutable: true, reflect: true }) locked = true;
@@ -76,6 +70,13 @@ export class SolutionSpatialRef {
   */
   @Prop({ mutable: true, reflect: true }) services: string[] = [];
 
+
+  /**
+  * Indicates if the control has been enabled.
+  * The first time Spatial Reference has been enabled it should enable all feature services.
+  */
+  @State() loaded = false;
+
   //--------------------------------------------------------------------------
   //
   //  Lifecycle
@@ -87,13 +88,16 @@ export class SolutionSpatialRef {
     this.locked = true;
   }
 
-  componentDidLoad() {
-    this._getTranslations();
+  async componentWillLoad() {
+    await this._getTranslations();
   }
 
   render(): VNode {
     return (
       <Host>
+        <div class="spatial-ref-desc">
+          <calcite-label>{this.translations.paramDescription}</calcite-label>
+        </div>
         <label class="switch-label">
           <calcite-switch
             class="spatial-ref-switch"
