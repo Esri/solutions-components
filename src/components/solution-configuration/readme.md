@@ -135,8 +135,8 @@ graph TD;
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
   calcite-scrim --> calcite-loader
-  json-editor --> calcite-button
   json-editor --> calcite-icon
+  json-editor --> calcite-button
   solution-organization-variables --> calcite-label
   solution-organization-variables --> calcite-tree-item
   solution-variables --> calcite-label

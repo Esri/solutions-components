@@ -29,6 +29,8 @@ html, body {
 h1 {
   line-height: unset;
   margin: unset;
+  font-size: 2rem;
+  @apply pl-2;
 }
 
 #appContainer {

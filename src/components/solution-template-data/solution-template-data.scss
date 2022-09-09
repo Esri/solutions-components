@@ -19,7 +19,7 @@
 }
 
 .solution-data-container {
-  @apply h-full 
+  @apply h-full
     w-full
     relative;
 }
@@ -29,7 +29,11 @@
     w-full
     flex
     flex-col
-    overflow-auto;
+    overflow-hidden;
+}
+
+.solution-data-editor-container {
+  @apply h-full;
 }
 
 .solution-data-child-container-collapsed {
@@ -48,7 +52,7 @@
 
 .json-editor {
   @apply m-4
-    w-auto  
+    w-auto
     fill-available;
 }
 

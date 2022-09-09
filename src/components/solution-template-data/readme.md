@@ -54,8 +54,8 @@ graph TD;
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
   calcite-scrim --> calcite-loader
-  json-editor --> calcite-button
   json-editor --> calcite-icon
+  json-editor --> calcite-button
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   solution-organization-variables --> calcite-label
