@@ -331,10 +331,6 @@ export namespace Components {
          */
         "getSpatialRef": () => Promise<ISpatialRefRepresentation>;
         /**
-          * Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services.
-         */
-        "loaded": boolean;
-        /**
           * When true, all but the main switch are disabled to prevent interaction.
          */
         "locked": boolean;
@@ -900,10 +896,6 @@ declare namespace LocalJSX {
           * The wkid that will be used as the default when no user selection has been made.
          */
         "defaultWkid"?: number;
-        /**
-          * Indicates if the control has been enabled. The first time Spatial Reference has been enabled it should enable all feature services.
-         */
-        "loaded"?: boolean;
         /**
           * When true, all but the main switch are disabled to prevent interaction.
          */

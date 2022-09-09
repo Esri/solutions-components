@@ -105,8 +105,9 @@ export class JsonEditor {
   //
   //--------------------------------------------------------------------------
 
-  componentDidLoad() {
-    this._getTranslations();
+  async componentWillLoad() {
+    await this._getTranslations();
+    this._initValueObserver();
   }
 
   render() {
@@ -185,10 +186,6 @@ export class JsonEditor {
         </div>
       </Host>
     );
-  }
-
-  componentWillLoad(): void {
-    this._initValueObserver();
   }
 
   disconnectedCallback(): void {

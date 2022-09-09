@@ -103,8 +103,8 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
   @Event() solutionLoaded: EventEmitter;
 
-  componentDidLoad() {
-    this._getTranslations();
+  async componentWillLoad() {
+    await this._getTranslations();
   }
 
   componentWillRender(): Promise<any> {

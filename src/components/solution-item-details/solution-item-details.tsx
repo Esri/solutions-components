@@ -67,8 +67,8 @@ export class SolutionItemDetails {
   //
   //--------------------------------------------------------------------------
 
-  componentDidLoad() {
-    this._getTranslations();
+  async componentWillLoad() {
+    await this._getTranslations();
   }
 
   componentDidRender() {

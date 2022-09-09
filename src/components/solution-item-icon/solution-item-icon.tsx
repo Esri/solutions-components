@@ -60,7 +60,7 @@ export class SolutionItemIcon {
   //
   //--------------------------------------------------------------------------
 
-  componentDidLoad() {
+  async componentWillLoad() {
     this._getTranslations();
   }
 

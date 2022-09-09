@@ -65,8 +65,8 @@ export class SolutionContents {
   //
   //--------------------------------------------------------------------------
 
-  componentDidLoad() {
-    this._getTranslations();
+  async componentWillLoad() {
+    await this._getTranslations();
   }
 
   render(): VNode {
