@@ -50,6 +50,9 @@
     display: inline-flex;
     margin-inline-end: 8px;
   }
+  .loginLabel {
+    min-width: unset;
+  }
   .margin-top-1 {
     margin-top: 1rem;
   }
@@ -76,19 +79,19 @@
   <h1>Demo Solution Configuration</h1>
   <div class="margin-top-1 margin-side-1">
     <div class="labeled-item align-baseline">
-      <label for="username">Username:&nbsp;</label>
+      <label class="loginLabel" for="username">Username:&nbsp;</label>
       <input type="text" id="username" placeholder="anonymous">
     </div>
     <div class="labeled-item align-baseline">
-      <label for="password">Password:&nbsp;</label>
+      <label class="loginLabel" for="password">Password:&nbsp;</label>
       <input type="password" id="password">
     </div>
     <div class="labeled-item align-baseline">
-      <label for="portal">Portal:&nbsp;</label>
+      <label class="loginLabel" for="portal">Portal:&nbsp;</label>
       <input type="text" id="portal" style="width:256px" placeholder="https://www.arcgis.com">
     </div>
     <div class="labeled-item align-baseline">
-      <label for="group">Group ID:&nbsp;</label>
+      <label class="loginLabel" for="group">Group ID:&nbsp;</label>
       <input type="text" id="group" style="width:300px">
     </div>
     <button id="connectBtn fader" onclick="connectFcn()">Connect</button>
