@@ -57,12 +57,17 @@ export class SolutionSpatialRef {
   /**
    * Contains the public value for this component.
    */
-  @Prop({ mutable: true, reflect: true }) value: string = null;
+  @Prop({ mutable: true, reflect: true }) value: string = this.defaultWkid.toString();
 
   @Watch("value")
   valueChanged(newValue: string): void {
     this.spatialRef = this._createSpatialRefDisplay(newValue);
     this._updateStore();
+    const searchBox = document.getElementById("calcite-sr-search") as HTMLCalciteInputElement;
+    if (searchBox) {
+      searchBox.value = this._srSearchText = "";
+    }
+    this._clearSelection();
   }
 
   /**
@@ -112,6 +117,7 @@ export class SolutionSpatialRef {
             {this.translations.spatialReferenceInfo}
             <label class="spatial-ref-default">
               <calcite-input
+                id="calcite-sr-search"
                 disabled={this.locked}
                 onCalciteInputInput={(evt) => this._searchSpatialReferences(evt)}
                 onKeyDown={(evt) => this._inputKeyDown(evt)}
@@ -264,7 +270,7 @@ export class SolutionSpatialRef {
 
   /**
    * Enable spatial reference variable for all feature services.
-   * 
+   *
    * @param services list of service names
    */
   private _setFeatureServiceDefaults(
@@ -429,7 +435,7 @@ export class SolutionSpatialRef {
     } else {
       return (
         <div class={containerClass} id={id}>
-          {this._getTreeItem(this.defaultWkid.toString(), true)}
+          {this._getTreeItem(this.value.toString(), true)}
         </div>
       );
     }
