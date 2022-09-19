@@ -125,8 +125,6 @@ export class RefineSelectionTools {
 
   protected aaa: any = {};
 
-  protected _addIds: number[] = [];
-
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -148,7 +146,6 @@ export class RefineSelectionTools {
 
   @Method()
   reset() {
-    this._addIds = [];
     this.ids = [];
     return Promise.resolve();
   }
@@ -421,17 +418,12 @@ export class RefineSelectionTools {
         const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
         let idUpdates = { addIds: [], removeIds: [] };
         if (this.mode === ESelectionMode.ADD) {
-          this._addIds = this._addIds.concat(oids);
-          idUpdates.addIds = this._addIds;
-          this.ids = [...new Set([...this.ids, ...idUpdates.addIds])];
-        } else {
-          this.ids.forEach(id => {
-            if (oids.indexOf(id) < 0) {
-              console.log('has it...still thinkng ')
-            } else {
-              idUpdates.removeIds.push(id)
-            }
+          idUpdates.addIds = oids.filter(id => {
+            return this.ids.indexOf(id) < 0;
           });
+          this.ids = [...this.ids, ...idUpdates.addIds];
+        } else {
+          idUpdates.removeIds = oids;
           this.ids = this.ids.filter(id => {
             return idUpdates.removeIds.indexOf(id) < 0;
           });
@@ -443,7 +435,6 @@ export class RefineSelectionTools {
       }
       this._clear();
     });
-
   }
 
   async _queryPage(
