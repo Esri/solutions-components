@@ -50,12 +50,6 @@ export class SolutionSpatialRef {
   @Prop({ mutable: true, reflect: true }) defaultWkid = 102100;
 
   /**
-  * Indicates if the control has been enabled.
-  * The first time Spatial Reference has been enabled it should enable all feature services.
-  */
-  @Prop({ mutable: true, reflect: true }) loaded = false;
-
-  /**
   * When true, all but the main switch are disabled to prevent interaction.
   */
   @Prop({ mutable: true, reflect: true }) locked = true;
@@ -63,18 +57,30 @@ export class SolutionSpatialRef {
   /**
    * Contains the public value for this component.
    */
-  @Prop({ mutable: true, reflect: true }) value: string = null;
+  @Prop({ mutable: true, reflect: true }) value: string = this.defaultWkid.toString();
 
   @Watch("value")
   valueChanged(newValue: string): void {
     this.spatialRef = this._createSpatialRefDisplay(newValue);
     this._updateStore();
+    const searchBox = document.getElementById("calcite-sr-search") as HTMLCalciteInputElement;
+    if (searchBox) {
+      searchBox.value = this._srSearchText = "";
+    }
+    this._clearSelection();
   }
 
   /**
   * List of service names the spatial reference should apply to
   */
   @Prop({ mutable: true, reflect: true }) services: string[] = [];
+
+
+  /**
+  * Indicates if the control has been enabled.
+  * The first time Spatial Reference has been enabled it should enable all feature services.
+  */
+  @State() loaded = false;
 
   //--------------------------------------------------------------------------
   //
@@ -87,13 +93,16 @@ export class SolutionSpatialRef {
     this.locked = true;
   }
 
-  componentDidLoad() {
-    this._getTranslations();
+  async componentWillLoad() {
+    await this._getTranslations();
   }
 
   render(): VNode {
     return (
       <Host>
+        <div class="spatial-ref-desc">
+          <calcite-label>{this.translations.paramDescription}</calcite-label>
+        </div>
         <label class="switch-label">
           <calcite-switch
             class="spatial-ref-switch"
@@ -108,6 +117,7 @@ export class SolutionSpatialRef {
             {this.translations.spatialReferenceInfo}
             <label class="spatial-ref-default">
               <calcite-input
+                id="calcite-sr-search"
                 disabled={this.locked}
                 onCalciteInputInput={(evt) => this._searchSpatialReferences(evt)}
                 onKeyDown={(evt) => this._inputKeyDown(evt)}
@@ -260,7 +270,7 @@ export class SolutionSpatialRef {
 
   /**
    * Enable spatial reference variable for all feature services.
-   * 
+   *
    * @param services list of service names
    */
   private _setFeatureServiceDefaults(
@@ -425,7 +435,7 @@ export class SolutionSpatialRef {
     } else {
       return (
         <div class={containerClass} id={id}>
-          {this._getTreeItem(this.defaultWkid.toString(), true)}
+          {this._getTreeItem(this.value.toString(), true)}
         </div>
       );
     }

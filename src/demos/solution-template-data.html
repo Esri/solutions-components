@@ -46,7 +46,12 @@
   <script src="./libs/setLocale.js"></script>
   <script src="./monacoConfig.js"></script>
   <script>
-    require(['vs/editor/editor.main'],
+    require.config({
+      "paths": {
+        "vs": "./libs/monaco-editor"
+      }
+    });
+    require(["vs/editor/editor.main"],
     function () {
       // Initialize the content
       const demo = document.getElementById("demo");
@@ -61,7 +66,7 @@
         fetch("./data/election-outreach.json")
       ])
         .then(results => Promise.all(results.map(r => r.json())))
-        .then(jsonResults => { 
+        .then(jsonResults => {
           const template = JSON.stringify(jsonResults[3].templates[0]);
           helper.value = template;
 

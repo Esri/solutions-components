@@ -258,14 +258,14 @@ export class MapSelectTools {
 
   @Listen("sketchGraphicsChange", { target: 'window' })
   sketchGraphicsChange(event: CustomEvent): void {
-    this._updateSelection(EWorkflowType.SKETCH, event.detail, this.translations?.sketch);
+    this._updateSelection(EWorkflowType.SKETCH, event.detail, this.translations.sketch);
   }
 
   @Listen("refineSelectionGraphicsChange", { target: 'window' })
   refineSelectionGraphicsChange(event: CustomEvent): void {
     const graphics = event.detail;
 
-    this._updateSelection(EWorkflowType.SELECT, graphics, this.translations?.select);
+    this._updateSelection(EWorkflowType.SELECT, graphics, this.translations.select);
     // Using OIDs to avoid issue with points
     const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
     this._highlightFeatures(oids);
@@ -278,11 +278,11 @@ export class MapSelectTools {
   //--------------------------------------------------------------------------
 
   async componentWillLoad() {
+    await this._getTranslations();
     await this._initModules();
   }
 
   async componentDidLoad() {
-    this._getTranslations();
     this._init();
   }
 
@@ -308,21 +308,21 @@ export class MapSelectTools {
               class="w-50"
               value={EWorkflowType.SEARCH}
             >
-              {this.translations?.search}
+              {this.translations.search}
             </calcite-radio-group-item>
             <calcite-radio-group-item
               checked={selectEnabled}
               class="w-50"
               value={EWorkflowType.SELECT}
             >
-              {this.translations?.select}
+              {this.translations.select}
             </calcite-radio-group-item>
             <calcite-radio-group-item
               checked={drawEnabled}
               class="w-50"
               value={EWorkflowType.SKETCH}
             >
-              {this.translations?.sketch}
+              {this.translations.sketch}
             </calcite-radio-group-item>
           </calcite-radio-group>
         </div>
@@ -411,8 +411,8 @@ export class MapSelectTools {
       });
       // reset selection label base
       this._selectionLabel = this.workflowType === EWorkflowType.SKETCH ?
-        this.translations?.sketch : this.workflowType === EWorkflowType.SELECT ?
-        this.translations?.select : this.selectionSet?.label;
+        this.translations.sketch : this.workflowType === EWorkflowType.SELECT ?
+        this.translations.select : this.selectionSet?.label;
     }
   }
 
@@ -445,7 +445,7 @@ export class MapSelectTools {
   }
 
   _initGraphicsLayer(): void {
-    const title = this.translations?.bufferLayer;
+    const title = this.translations.bufferLayer;
 
     const bufferIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
     if (bufferIndex > -1) {
@@ -453,7 +453,7 @@ export class MapSelectTools {
     } else {
       this._bufferGraphicsLayer = new this.GraphicsLayer({ title });
       state.managedLayers.push(title);
-      const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === this.translations?.sketchLayer);
+      const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === this.translations.sketchLayer);
       if (sketchIndex > -1) {
         this.mapView.map.layers.add(this._bufferGraphicsLayer, sketchIndex);
       } else {

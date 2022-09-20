@@ -24,7 +24,8 @@
 }
 
 .editor-controls {
-  @apply h-11;
+  @apply h-11
+    pr-2;
   background-color: $solutions-background-color;
 }
 
@@ -36,9 +37,14 @@ html[dir="rtl"] .editor-buttons {
   @apply float-left;
 }
 
+.edit-error-flag {
+  @apply pt-2;
+  color: red;
+  visibility: hidden;
+}
+
 .edit-button {
-  @apply pt-1
-    p-inline-start-2;
+  @apply p-inline-start-2;
 }
 
 .editor-text {
@@ -70,7 +76,7 @@ html[dir="rtl"] .editor-buttons {
 }
 
 .btn {
-  @apply flex 
+  @apply flex
     mb-4
     content-center;
   height: 25px;
@@ -85,7 +91,19 @@ html[dir="rtl"] .editor-buttons {
   @apply mt-16;
 }
 
-.json-editor-position {
+.floating-title {
+  font-size: 2rem;
+  z-index: 100;
+  position: absolute;
+  left: 0.5rem;
+  pointer-events: none;
+}
+
+.floating-title-button {
+  pointer-events: auto;
+}
+
+.json-editor-position1 {
   @apply absolute
     left-0
     top-0
@@ -96,3 +114,28 @@ html[dir="rtl"] .editor-buttons {
     overflow-hidden;
   max-height: 100% !important;
 }
+
+.json-editor-position2a {
+  @apply absolute
+    left-0
+    top-0
+    w-1/2
+    h-full
+    m-0
+    p-0
+    overflow-hidden;
+  max-height: 100% !important;
+}
+
+.json-editor-position2b {
+  @apply absolute
+    right-0
+    top-0
+    w-1/2
+    h-full
+    m-0
+    p-0
+    overflow-hidden;
+  max-height: 100% !important;
+}
+

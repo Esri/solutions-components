@@ -49,9 +49,9 @@ export class SolutionTemplateData {
 
   /**
    * Contains the public value for this component.
-   * 
+   *
    * When working with a resource item this should contain an IResourceItem
-   * 
+   *
    * When working with a json type item this should contain the data and vars
    */
   @Prop({ mutable: true, reflect: true }) value: ITemplateData = {};
@@ -88,8 +88,8 @@ export class SolutionTemplateData {
   //
   //--------------------------------------------------------------------------
 
-  componentDidLoad() {
-    this._getTranslations();
+  async componentWillLoad() {
+    await this._getTranslations();
   }
 
   render() {
@@ -102,6 +102,7 @@ export class SolutionTemplateData {
                 <json-editor
                   instanceid={this.instanceid}
                   value={this.itemid}
+                  class="solution-data-editor-container"
                 />
               </div>
             </calcite-panel>

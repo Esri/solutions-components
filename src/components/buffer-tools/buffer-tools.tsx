@@ -115,11 +115,8 @@ export class BufferTools {
   //--------------------------------------------------------------------------
 
   async componentWillLoad() {
+    await this._getTranslations();
     await this._initModules();
-  }
-
-  componentDidLoad() {
-    this._getTranslations();
   }
 
   render() {
@@ -167,10 +164,10 @@ export class BufferTools {
 
   _addUnits(): any {
     const units = {
-      'feet': this.translations?.feet || 'Feet',
-      'meters': this.translations?.meters || 'Meters',
-      'miles': this.translations?.miles || 'Miles',
-      'kilometers': this.translations?.kilometers || 'Kilometers'
+      'feet': this.translations.feet || 'Feet',
+      'meters': this.translations.meters || 'Meters',
+      'miles': this.translations.miles || 'Miles',
+      'kilometers': this.translations.kilometers || 'Kilometers'
     };
     return Object.keys(units).map(u => {
       let selected = true;

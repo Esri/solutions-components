@@ -18,7 +18,7 @@
  * The json-editor componet leverages a stencil/store to manage data.
  * If a component uses the json-editor but does not have logic to hydrate the store this component can be used.
  * It will create and hydrate the store based on the value provided.
- * 
+ *
  * The value must be a string so it can be observed by the MutationObserver implemented below.
  * The observer does not notify when passing complex attributes as you can with stencil.
  *
@@ -27,7 +27,7 @@
 
 import { Component, Element, Event, EventEmitter, Prop } from '@stencil/core';
 import state from '../../utils/editStore';
-import { getModels, getFeatureServices, getSpatialReferenceInfo } from '../../utils/templates';
+import { /*getModels,*/ getFeatureServices, getSpatialReferenceInfo } from '../../utils/templates';
 import { getItemDataAsJson, UserSession } from '@esri/solution-common';
 
 @Component({
@@ -100,6 +100,7 @@ export class StoreManager {
    * When we get a new value we are dealinmg with a new solution and need to fetch the items data and load the state.
    */
   private _initValueObserver() {
+    const self = this;
     this._valueObserver = new MutationObserver(ml => {
       ml.some(mutation => {
         const newValue = mutation.target[mutation.attributeName];
@@ -107,12 +108,12 @@ export class StoreManager {
           newValue !== mutation.oldValue && newValue !== "") {
           const v = JSON.parse(newValue);
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          getItemDataAsJson(v, this.authentication).then(data => {
-            state.models = getModels(Array.isArray(v) ? v : [v], this.authentication, v);
+          getItemDataAsJson(v, self.authentication).then(data => {
+            //state.models = getModels(Array.isArray(v) ? v : [v], self.authentication, v);
             state.featureServices = getFeatureServices(Array.isArray(v) ? v : [v])
             state.spatialReferenceInfo = getSpatialReferenceInfo(state.featureServices, data);
-            this.templates = v;
-            this.stateLoaded.emit(state);
+            self.templates = v;
+            self.stateLoaded.emit(state);
           });
           return true;
         }

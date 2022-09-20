@@ -129,6 +129,11 @@
   <script src="./monacoConfig.js"></script>
   <script>
     let continueFcn, authentication;
+    require.config({
+      "paths": {
+        "vs": "./libs/monaco-editor"
+      }
+    });
     require(['vs/editor/editor.main'],
     function () {
 
@@ -141,7 +146,7 @@
         authentication = new arcgisRest.UserSession({
           username: document.getElementById("username").value || undefined,
           password: document.getElementById("password").value || undefined,
-          portal 
+          portal
         });
 
         // Initialize the configuration content

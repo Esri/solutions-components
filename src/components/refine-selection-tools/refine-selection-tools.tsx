@@ -172,11 +172,11 @@ export class RefineSelectionTools {
   //--------------------------------------------------------------------------
 
   async componentWillLoad() {
+    await this._getTranslations();
     await this._initModules();
   }
 
   async componentDidLoad() {
-    this._getTranslations();
     this._init();
   }
 
@@ -199,7 +199,7 @@ export class RefineSelectionTools {
         <div>
           <map-layer-picker
             class={showLayerPickerClass}
-            label={this.translations?.selectLayers}
+            label={this.translations.selectLayers}
             mapView={this.mapView}
             selectedLayers={this.layerViews.map(l => l.layer.title)}
             selectionMode={"single"}
@@ -214,7 +214,7 @@ export class RefineSelectionTools {
                     icon="select"
                     onClick={() => this._setSelectionMode(ESelectionType.POINT)}
                     scale="s"
-                    text={this.translations?.select}
+                    text={this.translations.select}
                   />
                 </div>
                 <div class={"esri-sketch__tool-section esri-sketch__section"}>
@@ -223,21 +223,21 @@ export class RefineSelectionTools {
                     icon="line"
                     onClick={() => this._setSelectionMode(ESelectionType.LINE)}
                     scale="s"
-                    text={this.translations?.selectLine}
+                    text={this.translations.selectLine}
                   />
                   <calcite-action
                     disabled={!this.selectEnabled}
                     icon="polygon"
                     onClick={() => this._setSelectionMode(ESelectionType.POLY)}
                     scale="s"
-                    text={this.translations?.selectPolygon}
+                    text={this.translations.selectPolygon}
                   />
                   <calcite-action 
                     disabled={!this.selectEnabled}
                     icon="rectangle"
                     onClick={() => this._setSelectionMode(ESelectionType.RECT)}
                     scale="s"
-                    text={this.translations?.selectRectangle}
+                    text={this.translations.selectRectangle}
                   />
                 </div>
                 <div class={"esri-sketch__tool-section esri-sketch__section"}>
@@ -246,14 +246,14 @@ export class RefineSelectionTools {
                     icon="undo"
                     onClick={() => this._undo()}
                     scale="s"
-                    text={this.translations?.undo}
+                    text={this.translations.undo}
                   />
                   <calcite-action
                     disabled={!this.selectEnabled}
                     icon="redo"
                     onClick={() => this._redo()}
                     scale="s"
-                    text={this.translations?.redo}
+                    text={this.translations.redo}
                   />
                 </div>
               </div>
@@ -313,7 +313,7 @@ export class RefineSelectionTools {
   }
 
   _initGraphicsLayer(): void {
-    const title = this.translations?.sketchLayer;
+    const title = this.translations.sketchLayer;
     const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
     if (sketchIndex > -1) {
       this._sketchGraphicsLayer = this.mapView.map.layers.getItemAt(sketchIndex) as __esri.GraphicsLayer;

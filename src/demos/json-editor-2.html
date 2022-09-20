@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+  <title>JSON Editor with Two Windows</title>
+  <!--
+   | Copyright 2022 Esri
+   |
+   | Licensed under the Apache License, Version 2.0 (the "License");
+   | you may not use this file except in compliance with the License.
+   | You may obtain a copy of the License at
+   |
+   |    http://www.apache.org/licenses/LICENSE-2.0
+   |
+   | Unless required by applicable law or agreed to in writing, software
+   | distributed under the License is distributed on an "AS IS" BASIS,
+   | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   | See the License for the specific language governing permissions and
+   | limitations under the License.
+  -->
+
+  <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" type="text/css" />
+  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
+  <link rel="stylesheet" href="../solutions.css" type="text/css">
+  <style>
+  .full-height {
+    height: 100%;
+  }
+  </style>
+
+  <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
+  <script type="module" src="../solutions.esm.js"></script>
+</head>
+
+<body>
+  <span class="floating-title">Demo JSON Editor 2
+    <button id="getEditorContents1" class="floating-title-button" onclick="hGetEditorContents(1)" style="visibility:hidden">Get Editor Contents 1</button>
+    <button id="getEditorContents2" class="floating-title-button" onclick="hGetEditorContents(2)" style="visibility:hidden">Get Editor Contents 2</button>
+  </span>
+  <main id="appContainer">
+    <div class="content full-height">
+      <json-editor id="editor1" instanceId="editor1" class="json-editor-position2a"></json-editor>
+      <json-editor id="editor2" instanceId="editor2" class="json-editor-position2b"></json-editor>
+    </div>
+  </main>
+
+  <script src="./libs/require.js"></script>
+  <script src="./libs/setLocale.js"></script>
+  <script src="./monacoConfig.js"></script>
+  <script>
+    var hGetEditorContents;
+    require.config({
+      "paths": {
+        "vs": "./libs/monaco-editor"
+      }
+    });
+    require(["vs/editor/editor.main"],
+    function () {
+      // Initialize the configuration content
+      const editor1 = document.getElementById("editor1");
+      const editor2 = document.getElementById("editor2");
+
+      // set the data
+      fetch("./data/election-outreach.json")
+        .then(response => response.json())
+        .then(data => {
+          const template = data.templates[0];
+
+          editor1.value = editor2.value = JSON.stringify(template, null, "\t");
+          document.getElementById("appContainer").style.opacity = "1";
+
+          // Set up the "Get Editor Contents" button
+          hGetEditorContents = (editorNum) => {
+            (editorNum === 1 ? editor1 : editor2).getEditorContents()
+            .then((value) => {
+              console.log(value);
+            })
+            .catch((e) => {
+              console.error(e);
+            });
+          }
+          document.getElementById("getEditorContents1").style.visibility = "visible";
+          document.getElementById("getEditorContents2").style.visibility = "visible";
+        });
+    });
+  </script>
+</body>
+</html>

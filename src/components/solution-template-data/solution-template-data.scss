@@ -19,9 +19,15 @@
 }
 
 .solution-data-container {
-  @apply h-full 
-    w-full
-    relative;
+  position: absolute;
+  height: -moz-available;  /* This doesn't work in Firefox, but if we don't specify it and then override it with the next line, it gets automatically inserted */
+  height: calc(100% - 48px);
+  height: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+  height: stretch;
+  width: -moz-available;  /* This doesn't work in Firefox, but if we don't specify it and then override it with the next line, it gets automatically inserted */
+  width: 100%;
+  width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+  width: stretch;
 }
 
 .solution-data-child-container {
@@ -29,7 +35,11 @@
     w-full
     flex
     flex-col
-    overflow-auto;
+    overflow-hidden;
+}
+
+.solution-data-editor-container {
+  @apply h-full;
 }
 
 .solution-data-child-container-collapsed {
@@ -48,7 +58,7 @@
 
 .json-editor {
   @apply m-4
-    w-auto  
+    w-auto
     fill-available;
 }
 
