@@ -52,11 +52,13 @@ export class MapLayerPicker {
 
   /**
    * string: The label to render above the combobox.
+   * This label is positioned on the left side of the control.
    */
   @Prop({ mutable: true, reflect: true }) label = "";
 
   /**
    * string: The label to render above the combobox.
+   * This label is positioned on the right side of the control.
    */
   @Prop({ mutable: true, reflect: true }) trailingLabel = "";
 
