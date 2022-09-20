@@ -133,7 +133,7 @@ export class RefineSelectionTools {
 
   @Watch('ids')
   idsWatchHandler(v: any, oldV: any): void {
-    if (v && v !== oldV) {
+    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
       this._highlightFeatures(v);
     }
   }
@@ -418,20 +418,15 @@ export class RefineSelectionTools {
         const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
         let idUpdates = { addIds: [], removeIds: [] };
         if (this.mode === ESelectionMode.ADD) {
-          idUpdates.addIds = oids.filter(id => {
-            return this.ids.indexOf(id) < 0;
-          });
+          idUpdates.addIds = oids.filter(id => this.ids.indexOf(id) < 0);
           this.ids = [...this.ids, ...idUpdates.addIds];
         } else {
-          idUpdates.removeIds = oids;
-          this.ids = this.ids.filter(id => {
-            return idUpdates.removeIds.indexOf(id) < 0;
-          });
+          idUpdates.removeIds = oids.filter(id => this.ids.indexOf(id) > -1);
+          this.ids = this.ids.filter(id => idUpdates.removeIds.indexOf(id) < 0);
         }
         this._highlightFeatures(this.ids).then(() => {
           this.refineSelectionIdsChange.emit(idUpdates);
-        })
-        
+        });
       }
       this._clear();
     });
@@ -465,13 +460,13 @@ export class RefineSelectionTools {
     updateExtent: boolean = false
   ) {
     this._clearHighlight();
-    state.highlightHandle = await highlightFeatures(this.mapView, this.layerViews[0], ids, updateExtent)
+    if (ids.length > 0) {
+      state.highlightHandle = await highlightFeatures(this.mapView, this.layerViews[0], ids, updateExtent);
+    }
   }
 
   _clearHighlight() {
-    if (state.highlightHandle) {
-      state.highlightHandle.remove();
-    }
+    state.highlightHandle?.remove();
   }
 
   _undo() {

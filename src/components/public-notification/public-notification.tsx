@@ -124,9 +124,9 @@ export class PublicNotificationTwo {
   async pageTypeWatchHandler(
     v: EPageType
   ) {
-    await this._clearHighlight();
+    this._clearHighlight();
     if (v === EPageType.LIST) {
-      this._highlightFeatures();
+      await this._highlightFeatures();
     }
   }
 
@@ -505,7 +505,10 @@ export class PublicNotificationTwo {
     isAdd: boolean
   ) {
     if (isAdd) {
-      refineSet.selectedIds = refineSet.selectedIds.filter(id => refineSet.refineIds.addIds.indexOf(id) < 0)
+      refineSet.refineIds.removeIds = refineSet.refineIds.addIds;
+      refineSet.selectedIds = refineSet.selectedIds.filter(id => {
+        return refineSet.refineIds.addIds.indexOf(id) < 0;
+      });
       refineSet.refineIds.addIds = [];
     } else {
       refineSet.refineIds.addIds = refineSet.refineIds.removeIds;
@@ -623,18 +626,19 @@ export class PublicNotificationTwo {
   }
 
   async _highlightFeatures() {
-    await this._clearHighlight();
-    state.highlightHandle = await highlightFeatures(
-      this.mapView,
-      this.addresseeLayer,
-      this._getSelectionIds(this.selectionSets)
-    );
+    this._clearHighlight();
+    var ids = this._getSelectionIds(this.selectionSets);
+    if (ids.length > 0) {
+      state.highlightHandle = await highlightFeatures(
+        this.mapView,
+        this.addresseeLayer,
+        ids
+      );
+    }
   }
 
-  async _clearHighlight() {
-    if (state.highlightHandle) {
-      state.highlightHandle.remove();
-    }
+  _clearHighlight() {
+    state.highlightHandle?.remove();
   }
 
   async _getTranslations() {
