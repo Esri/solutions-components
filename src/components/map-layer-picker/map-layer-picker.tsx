@@ -56,6 +56,11 @@ export class MapLayerPicker {
   @Prop({ mutable: true, reflect: true }) label = "";
 
   /**
+   * string: The label to render above the combobox.
+   */
+  @Prop({ mutable: true, reflect: true }) trailingLabel = "";
+
+  /**
    * SelectionMode: "single" | "multi"
    * 
    * Should the component support selection against a single layer or multiple layers.
@@ -133,10 +138,16 @@ export class MapLayerPicker {
   render() {
     return (
       <Host>
-        <div class="background-w">
-          <calcite-label>{this.label}
+        <div class="background-w map-layer-picker-container">
+          <div class="main-label">
+            <calcite-label>{this.label}</calcite-label>
+          </div>
+          <div class="trailing-label">
+            <calcite-label scale="s">{this.trailingLabel}</calcite-label>
+          </div>
+          <div class="map-layer-picker">
             {this.selectionMode === "multi" ? this._getCombobox() : this._getSelect()}
-          </calcite-label>
+          </div>
         </div>
       </Host>
     );

@@ -97,6 +97,10 @@ export namespace Components {
           * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
          */
         "selectionMode": SelectionMode;
+        /**
+          * string: The label to render above the combobox.
+         */
+        "trailingLabel": string;
     }
     interface MapSelectTools {
         "clearSelection": () => Promise<void>;
@@ -683,6 +687,10 @@ declare namespace LocalJSX {
           * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
          */
         "selectionMode"?: SelectionMode;
+        /**
+          * string: The label to render above the combobox.
+         */
+        "trailingLabel"?: string;
     }
     interface MapSelectTools {
         /**

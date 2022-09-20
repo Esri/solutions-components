@@ -255,21 +255,20 @@ export class PublicNotificationTwo {
     const layerTitle = this.addresseeLayer?.layer?.title;
     const total = this._getTotal();
     const totalSelected = this.translations?.totalSelected.replace("{{n}}", total.toString())
-    const layerPickerLabel = total > 0 ? `${totalSelected}` : '';
     switch (this.pageType) {
       case EPageType.LIST:
         page = (
           <div>
             <calcite-input-message active class="layer-picker-container list-border background-w">
-              <div class="w-100">
+              <div class="w-100 padding-bottom-1">
                 <map-layer-picker
                   label={this.translations?.addresseeLayer}
                   mapView={this.mapView}
                   onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
                   selectionMode={"single"}
                   selectedLayers={layerTitle ? [layerTitle] : []}
+                  trailingLabel={total > 0 ? `${totalSelected}` : ''}
                 />
-                <calcite-label scale='s'>{layerPickerLabel}</calcite-label>
               </div>
             </calcite-input-message>
             <br />

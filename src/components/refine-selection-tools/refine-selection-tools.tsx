@@ -205,7 +205,7 @@ export class RefineSelectionTools {
             selectionMode={"single"}
             onLayerSelectionChange={(evt) => { this._layerSelectionChange(evt) }}
           />
-          <div>
+          <div class="padding-top-1-2">
             <div class={"esri-sketch esri-widget"}>
               <div class={"esri-sketch__panel"}>
                 <div class={"esri-sketch__tool-section esri-sketch__section"}>
