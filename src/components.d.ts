@@ -85,7 +85,7 @@ export namespace Components {
     }
     interface MapLayerPicker {
         /**
-          * string: The label to render above the combobox.
+          * string: The label to render above the combobox. This label is positioned on the left side of the control.
          */
         "label": string;
         /**
@@ -105,7 +105,7 @@ export namespace Components {
          */
         "selectionMode": SelectionMode;
         /**
-          * string: The label to render above the combobox.
+          * string: The label to render above the combobox. This label is positioned on the right side of the control.
          */
         "trailingLabel": string;
     }
@@ -139,6 +139,8 @@ export namespace Components {
           * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
          */
         "selectionSet": ISelectionSet;
+    }
+    interface NewPublicNotification {
     }
     interface PdfDownload {
         "layerView": __esri.FeatureLayerView;
@@ -486,6 +488,12 @@ declare global {
         prototype: HTMLMapSelectToolsElement;
         new (): HTMLMapSelectToolsElement;
     };
+    interface HTMLNewPublicNotificationElement extends Components.NewPublicNotification, HTMLStencilElement {
+    }
+    var HTMLNewPublicNotificationElement: {
+        prototype: HTMLNewPublicNotificationElement;
+        new (): HTMLNewPublicNotificationElement;
+    };
     interface HTMLPdfDownloadElement extends Components.PdfDownload, HTMLStencilElement {
     }
     var HTMLPdfDownloadElement: {
@@ -582,6 +590,7 @@ declare global {
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
         "map-select-tools": HTMLMapSelectToolsElement;
+        "new-public-notification": HTMLNewPublicNotificationElement;
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
         "refine-selection-tools": HTMLRefineSelectionToolsElement;
@@ -662,7 +671,7 @@ declare namespace LocalJSX {
     }
     interface MapLayerPicker {
         /**
-          * string: The label to render above the combobox.
+          * string: The label to render above the combobox. This label is positioned on the left side of the control.
          */
         "label"?: string;
         /**
@@ -683,7 +692,7 @@ declare namespace LocalJSX {
          */
         "selectionMode"?: SelectionMode;
         /**
-          * string: The label to render above the combobox.
+          * string: The label to render above the combobox. This label is positioned on the right side of the control.
          */
         "trailingLabel"?: string;
     }
@@ -713,6 +722,8 @@ declare namespace LocalJSX {
           * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
          */
         "selectionSet"?: ISelectionSet;
+    }
+    interface NewPublicNotification {
     }
     interface PdfDownload {
         "layerView"?: __esri.FeatureLayerView;
@@ -975,6 +986,7 @@ declare namespace LocalJSX {
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
         "map-select-tools": MapSelectTools;
+        "new-public-notification": NewPublicNotification;
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
         "refine-selection-tools": RefineSelectionTools;
@@ -1001,6 +1013,7 @@ declare module "@stencil/core" {
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
+            "new-public-notification": LocalJSX.NewPublicNotification & JSXBase.HTMLAttributes<HTMLNewPublicNotificationElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
             "refine-selection-tools": LocalJSX.RefineSelectionTools & JSXBase.HTMLAttributes<HTMLRefineSelectionToolsElement>;

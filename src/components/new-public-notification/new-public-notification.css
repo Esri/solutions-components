@@ -1,0 +1,61 @@
+:host {
+  display: block;
+}
+
+.border-bottom-1 {
+  border-width: 0px;
+  border-bottom-width: 1px;
+  border-style: solid;
+  border-color: var(--calcite-ui-border-3);
+}
+
+.action-bar-size {
+  height: 3.5rem;
+  width: 100%;
+}
+
+.action-center {
+  width: 33.3%;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-grid-row-align: center;
+  align-items: center;
+  -webkit-align-content: center;
+  align-content: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.width-full {
+  width: 100%;
+}
+
+.height-full {
+  height: 100%;
+}
+
+.add-container {
+  display: flex;
+}
+
+.padding-1 {
+  padding: 1rem;
+}
+
+.info-blue {
+  /* This would be better but not the right color in light theme */
+  /* color: var(--calcite-ui-info); */
+
+  /* This is --calcite-ui-info value for dark theme*/
+  color: #00A0FF;
+}
+
+.info-message {
+  justify-content: center;
+  display: grid;
+}
+
+.font-bold {
+  font-weight: bold;
+}
