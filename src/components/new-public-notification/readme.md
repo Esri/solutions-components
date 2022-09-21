@@ -13,6 +13,7 @@
 - calcite-action-bar
 - calcite-action-group
 - calcite-action
+- calcite-tooltip
 - calcite-panel
 - calcite-label
 - calcite-input-message
@@ -26,6 +27,7 @@ graph TD;
   new-public-notification --> calcite-action-bar
   new-public-notification --> calcite-action-group
   new-public-notification --> calcite-action
+  new-public-notification --> calcite-tooltip
   new-public-notification --> calcite-panel
   new-public-notification --> calcite-label
   new-public-notification --> calcite-input-message

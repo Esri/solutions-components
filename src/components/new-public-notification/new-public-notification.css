@@ -43,6 +43,12 @@
   padding: 1rem;
 }
 
+.padding-top-sides-1 {
+  padding-block-start: 1rem;
+  padding-inline-start: 1rem;
+  padding-inline-end: 1rem;
+}
+
 .info-blue {
   /* This would be better but not the right color in light theme */
   /* color: var(--calcite-ui-info); */
