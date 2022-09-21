@@ -54,18 +54,14 @@ export async function highlightFeatures(
   ids: number[],
   updateExtent: boolean = false
 ): Promise<__esri.Handle> {
-  if (ids.length > 0) {
-    if (updateExtent) {
-      const query = layer.createQuery();
-      query.objectIds = ids;
-      await layer.queryExtent(query).then((result) => {
-        mapView.goTo(result.extent);
-      });
-    }
-    return layer.highlight(ids);
-  } else {
-    return undefined;
+  if (updateExtent) {
+    const query = layer.createQuery();
+    query.objectIds = ids;
+    await layer.queryExtent(query).then((result) => {
+      mapView.goTo(result.extent);
+    });
   }
+  return layer.highlight(ids);
 }
 
 export function flashSelection(

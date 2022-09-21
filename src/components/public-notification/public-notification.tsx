@@ -124,9 +124,9 @@ export class PublicNotificationTwo {
   async pageTypeWatchHandler(
     v: EPageType
   ) {
-    await this._clearHighlight();
+    this._clearHighlight();
     if (v === EPageType.LIST) {
-      this._highlightFeatures();
+      await this._highlightFeatures();
     }
   }
 
@@ -254,22 +254,21 @@ export class PublicNotificationTwo {
     let page: VNode;
     const layerTitle = this.addresseeLayer?.layer?.title;
     const total = this._getTotal();
-    const totalSelected = this.translations.totalSelected.replace("{{n}}", total.toString())
-    const layerPickerLabel = total > 0 ? `${totalSelected}` : '';
+    const totalSelected = this.translations?.totalSelected.replace("{{n}}", total.toString())
     switch (this.pageType) {
       case EPageType.LIST:
         page = (
           <div>
             <calcite-input-message active class="layer-picker-container list-border background-w">
-              <div class="w-100">
+              <div class="w-100 padding-bottom-1">
                 <map-layer-picker
                   label={this.translations.addresseeLayer}
                   mapView={this.mapView}
                   onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
                   selectionMode={"single"}
                   selectedLayers={layerTitle ? [layerTitle] : []}
+                  trailingLabel={total > 0 ? `${totalSelected}` : ''}
                 />
-                <calcite-label scale='s'>{layerPickerLabel}</calcite-label>
               </div>
             </calcite-input-message>
             <br />
@@ -505,7 +504,10 @@ export class PublicNotificationTwo {
     isAdd: boolean
   ) {
     if (isAdd) {
-      refineSet.selectedIds = refineSet.selectedIds.filter(id => refineSet.refineIds.addIds.indexOf(id) < 0)
+      refineSet.refineIds.removeIds = refineSet.refineIds.addIds;
+      refineSet.selectedIds = refineSet.selectedIds.filter(id => {
+        return refineSet.refineIds.addIds.indexOf(id) < 0;
+      });
       refineSet.refineIds.addIds = [];
     } else {
       refineSet.refineIds.addIds = refineSet.refineIds.removeIds;
@@ -623,18 +625,19 @@ export class PublicNotificationTwo {
   }
 
   async _highlightFeatures() {
-    await this._clearHighlight();
-    state.highlightHandle = await highlightFeatures(
-      this.mapView,
-      this.addresseeLayer,
-      this._getSelectionIds(this.selectionSets)
-    );
+    this._clearHighlight();
+    var ids = this._getSelectionIds(this.selectionSets);
+    if (ids.length > 0) {
+      state.highlightHandle = await highlightFeatures(
+        this.mapView,
+        this.addresseeLayer,
+        ids
+      );
+    }
   }
 
-  async _clearHighlight() {
-    if (state.highlightHandle) {
-      state.highlightHandle.remove();
-    }
+  _clearHighlight() {
+    state.highlightHandle?.remove();
   }
 
   async _getTranslations() {
