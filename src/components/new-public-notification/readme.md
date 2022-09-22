@@ -5,6 +5,15 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property          | Attribute | Description                                                                                                                               | Type               | Default     |
+| ----------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
+| `addresseeLayer`  | --        | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
+| `mapView`         | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`          | `undefined` |
+| `selectionLayers` | --        | esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html                                   | `Layer[]`          | `undefined` |
+
+
 ## Dependencies
 
 ### Depends on
@@ -19,6 +28,8 @@
 - calcite-input-message
 - calcite-notice
 - calcite-button
+- [map-layer-picker](../map-layer-picker)
+- calcite-input
 
 ### Graph
 ```mermaid
@@ -33,6 +44,8 @@ graph TD;
   new-public-notification --> calcite-input-message
   new-public-notification --> calcite-notice
   new-public-notification --> calcite-button
+  new-public-notification --> map-layer-picker
+  new-public-notification --> calcite-input
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
@@ -50,6 +63,18 @@ graph TD;
   calcite-notice --> calcite-icon
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
+  map-layer-picker --> calcite-label
+  map-layer-picker --> calcite-select
+  map-layer-picker --> calcite-combobox
+  map-layer-picker --> calcite-combobox-item
+  map-layer-picker --> calcite-option
+  calcite-select --> calcite-icon
+  calcite-combobox --> calcite-chip
+  calcite-combobox --> calcite-icon
+  calcite-chip --> calcite-icon
+  calcite-combobox-item --> calcite-icon
+  calcite-input --> calcite-progress
+  calcite-input --> calcite-icon
   style new-public-notification fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

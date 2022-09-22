@@ -35,7 +35,8 @@ export enum EPageType {
   SELECT,
   REFINE,
   PDF,
-  CSV
+  CSV,
+  LAYER
 }
 
 export enum ERefineMode {

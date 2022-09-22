@@ -49,6 +49,15 @@
   padding-inline-end: 1rem;
 }
 
+.padding-sides-1 {
+  padding-inline-start: 1rem;
+  padding-inline-end: 1rem;
+}
+
+.padding-top-1-2 {
+  padding-block-start: .5rem;
+}
+
 .info-blue {
   /* This would be better but not the right color in light theme */
   /* color: var(--calcite-ui-info); */
@@ -64,4 +73,12 @@
 
 .font-bold {
   font-weight: bold;
+}
+
+.display-flex {
+  display: flex;
+}
+
+#map-layer-picker {
+  background-color: inherit !important;
 }
