@@ -26,11 +26,11 @@
 - calcite-panel
 - calcite-label
 - calcite-input-message
-- calcite-notice
 - calcite-button
 - [map-layer-picker](../map-layer-picker)
 - calcite-input
 - calcite-icon
+- calcite-notice
 
 ### Graph
 ```mermaid
@@ -43,11 +43,11 @@ graph TD;
   new-public-notification --> calcite-panel
   new-public-notification --> calcite-label
   new-public-notification --> calcite-input-message
-  new-public-notification --> calcite-notice
   new-public-notification --> calcite-button
   new-public-notification --> map-layer-picker
   new-public-notification --> calcite-input
   new-public-notification --> calcite-icon
+  new-public-notification --> calcite-notice
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
@@ -62,7 +62,6 @@ graph TD;
   calcite-panel --> calcite-scrim
   calcite-scrim --> calcite-loader
   calcite-input-message --> calcite-icon
-  calcite-notice --> calcite-icon
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   map-layer-picker --> calcite-label
@@ -77,6 +76,7 @@ graph TD;
   calcite-combobox-item --> calcite-icon
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
+  calcite-notice --> calcite-icon
   style new-public-notification fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
