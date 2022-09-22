@@ -31,7 +31,6 @@
 
 ### Depends on
 
-- calcite-label
 - calcite-input
 - calcite-select
 - calcite-option
@@ -39,7 +38,6 @@
 ### Graph
 ```mermaid
 graph TD;
-  buffer-tools --> calcite-label
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select
   buffer-tools --> calcite-option

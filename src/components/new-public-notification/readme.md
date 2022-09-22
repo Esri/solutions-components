@@ -84,7 +84,6 @@ graph TD;
   calcite-combobox-item --> calcite-icon
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
-  buffer-tools --> calcite-label
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select
   buffer-tools --> calcite-option

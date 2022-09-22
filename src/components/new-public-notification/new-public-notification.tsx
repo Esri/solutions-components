@@ -345,21 +345,25 @@ export class NewPublicNotification {
   }
 
   _getLabel(
-    label: string
+    label: string,
+    disableSpacing: boolean = false
   ): VNode {
     return (
       <div class="padding-top-sides-1">
-        <calcite-label class="font-bold">{label}</calcite-label>
+        <calcite-label class="font-bold" disable-spacing={disableSpacing}>{label}</calcite-label>
       </div>
     );
   }
 
   _getIconLabel(
-    label: string
+    label: string,
+    disableSpacing: boolean = false
   ): VNode {
+    // force small space between label and icon when general label space is disabled
+    const forceSpace = disableSpacing ? " padding-end-1-2" : "";
     return (
       <div class="padding-sides-1 padding-top-1-2">
-        <calcite-label class="font-bold" layout='inline'>
+        <calcite-label class={"font-bold" + forceSpace} disable-spacing={disableSpacing} layout='inline'>
           {label}
           <calcite-icon class="info-blue" icon="information" scale="s" />
         </calcite-label>
