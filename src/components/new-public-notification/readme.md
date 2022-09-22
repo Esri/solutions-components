@@ -30,6 +30,7 @@
 - calcite-button
 - [map-layer-picker](../map-layer-picker)
 - calcite-input
+- calcite-icon
 
 ### Graph
 ```mermaid
@@ -46,6 +47,7 @@ graph TD;
   new-public-notification --> calcite-button
   new-public-notification --> map-layer-picker
   new-public-notification --> calcite-input
+  new-public-notification --> calcite-icon
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action

@@ -19,8 +19,11 @@
     "myLists": "My Lists",
     "stepOne": "Step 1. Select an Addressee layer",
     "stepOneTip": "Choose an 'Addressee Layer' and give it a label.",
+    "stepTwo": "Step 2. Select an area/location",
+    "stepTwoTip": "Choose an area/location using the 'Search' tool or click on a location in the map.",
     "nameLabel": "Name label",
     "nameLabelPlaceholder": "Insert label here...",
     "next": "Next",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "search": "Search"
 }

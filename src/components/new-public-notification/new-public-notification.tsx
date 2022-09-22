@@ -89,19 +89,19 @@ export class NewPublicNotification {
         <calcite-shell>
           <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout='horizontal' slot="header">
             <calcite-action-group class="action-center" layout='horizontal'>
-              <calcite-action alignment='center' class="width-full height-full" compact={false} icon="list-check" id="pn-lists" onClick={() => { this._getListPage() }} text="" />
+              <calcite-action alignment='center' class="width-full height-full" compact={false} icon="list-check" id="pn-lists" onClick={() => { this._setPageType(EPageType.LIST) }} text="" />
               <calcite-tooltip label="" placement="bottom" reference-element="pn-lists">
                 <span>{this.translations?.myLists}</span>
               </calcite-tooltip>
             </calcite-action-group>
             <calcite-action-group class="action-center" layout='horizontal'>
-              <calcite-action alignment='center' class="width-full height-full" compact={false} id="pn-pdf" onClick={() => { this._getPDFPage() }} text="" icon="file-pdf" />
+              <calcite-action alignment='center' class="width-full height-full" compact={false} id="pn-pdf" onClick={() => { this._setPageType(EPageType.PDF) }} text="" icon="file-pdf" />
               <calcite-tooltip label="" placement="bottom" reference-element="pn-pdf">
                 <span>{this.translations?.downloadPDF}</span>
               </calcite-tooltip>
             </calcite-action-group>
             <calcite-action-group class="action-center" layout='horizontal'>
-              <calcite-action alignment='center' class="width-full height-full" compact={false} id="pn-csv" onClick={() => { this._getCSVPage() }} text="" icon="file-csv" />
+              <calcite-action alignment='center' class="width-full height-full" compact={false} id="pn-csv" onClick={() => { this._setPageType(EPageType.CSV) }} text="" icon="file-csv" />
               <calcite-tooltip label="" placement="bottom" reference-element="pn-csv">
                 <span>{this.translations?.downloadCSV}</span>
               </calcite-tooltip>
@@ -119,6 +119,12 @@ export class NewPublicNotification {
   //
   //--------------------------------------------------------------------------
 
+  _setPageType(
+    pageType: EPageType
+  ) {
+    this.pageType = pageType;
+  }
+
   _getPage(
     pageType: EPageType
   ): VNode {
@@ -130,6 +136,10 @@ export class NewPublicNotification {
 
       case EPageType.LAYER:
         page = this._getLayerPage();
+        break;
+
+      case EPageType.SEARCH:
+        page = this._getSearchPage();
         break;
 
       case EPageType.SELECT:
@@ -150,12 +160,6 @@ export class NewPublicNotification {
 
     }
     return page;
-  }
-
-  _setPageType(
-    pageType: EPageType
-  ) {
-    this.pageType = pageType;
   }
 
   _getListPage(): VNode {
@@ -206,6 +210,35 @@ export class NewPublicNotification {
           </calcite-label>
         </div>
         <div class="add-container padding-sides-1">
+          <calcite-button width="full" onClick={() => { this._setPageType(EPageType.SEARCH) }}>{this.translations?.next}</calcite-button>
+        </div>
+        <div class="add-container padding-top-1-2 padding-sides-1">
+          <calcite-button appearance='outline' width="full" onClick={() => { this._setPageType(EPageType.LIST) }}>{this.translations?.cancel}</calcite-button>
+        </div>
+      </calcite-panel>
+    );
+  }
+
+  _getSearchPage(): VNode {
+    return (
+      <calcite-panel>
+        <div class="padding-top-sides-1 display-flex">
+          <calcite-button iconStart='chevron-left' appearance='transparent'>{this.translations?.back}</calcite-button>
+        </div>
+        <div class="padding-top-sides-1">
+          <calcite-label class="font-bold">{this.translations?.stepTwo}</calcite-label>
+        </div>
+        <div class="padding-sides-1 padding-top-1-2">
+          <calcite-label class="font-bold" layout='inline'>
+            {this.translations?.search}
+            <calcite-icon class="info-blue" icon="information" scale="s"/>
+          </calcite-label>
+        </div>
+        <div class="padding-sides-1">Search Component here</div>
+        <calcite-notice active class="padding-1" color="green" icon="lightbulb">
+          <div slot="message">{this.translations?.stepTwoTip}</div>
+        </calcite-notice>
+        <div class="add-container padding-top-sides-1">
           <calcite-button width="full" onClick={() => { this._setPageType(EPageType.SELECT) }}>{this.translations?.next}</calcite-button>
         </div>
         <div class="add-container padding-top-1-2 padding-sides-1">
@@ -216,7 +249,40 @@ export class NewPublicNotification {
   }
 
   _getSelectPage(): VNode {
-    return (<div>select</div>);;
+    return (
+      <calcite-panel>
+        <div class="padding-top-sides-1 display-flex">
+          <calcite-button iconStart='chevron-left' appearance='transparent'>{this.translations?.back}</calcite-button>
+        </div>
+        <div class="padding-top-sides-1">
+          <calcite-label class="font-bold">{this.translations?.stepOne}</calcite-label>
+        </div>
+        <calcite-notice active class="padding-top-1-2 padding-sides-1" color="green" icon="lightbulb">
+          <div slot="message">{this.translations?.stepOneTip}</div>
+        </calcite-notice>
+        <div class="add-container padding-top-sides-1">
+          <map-layer-picker
+            label={this.translations?.addresseeLayer}
+            mapView={this.mapView}
+            //onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
+            selectionMode={"single"}
+            //selectedLayers={layerTitle ? [layerTitle] : []}
+            //trailingLabel={total > 0 ? `${totalSelected}` : ''}
+          />
+        </div>
+        <div class="padding-1">
+          <calcite-label class="font-bold">{this.translations?.nameLabel}
+            <calcite-input placeholder={this.translations?.nameLabelPlaceholder}></calcite-input>
+          </calcite-label>
+        </div>
+        <div class="add-container padding-sides-1">
+          <calcite-button width="full" onClick={() => { this._setPageType(EPageType.SELECT) }}>{this.translations?.next}</calcite-button>
+        </div>
+        <div class="add-container padding-top-1-2 padding-sides-1">
+          <calcite-button appearance='outline' width="full" onClick={() => { this._setPageType(EPageType.LIST) }}>{this.translations?.cancel}</calcite-button>
+        </div>
+      </calcite-panel>
+    );
   }
 
   _getRefinePage(): VNode {
