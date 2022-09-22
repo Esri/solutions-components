@@ -86,3 +86,11 @@
 .display-none {
   display: none;
 }
+
+.main-label {
+  float: left;
+}
+
+html[dir="rtl"] .main-label {
+  float: right;
+}

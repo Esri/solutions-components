@@ -72,7 +72,6 @@ graph TD;
   calcite-input-message --> calcite-icon
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
-  map-layer-picker --> calcite-label
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-combobox-item

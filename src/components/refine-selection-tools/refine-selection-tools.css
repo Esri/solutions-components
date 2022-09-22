@@ -30,6 +30,16 @@
   padding-top: .5rem;
 }
 
+.main-label {
+  display: flex;
+  float: left;
+}
+
+html[dir="rtl"] .main-label {
+  display: flex;
+  float: right;
+}
+
 /* COPY FROM JS */
 .esri-sketch {
   display: flex;

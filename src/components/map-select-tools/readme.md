@@ -102,9 +102,9 @@ graph TD;
   map-select-tools --> calcite-label
   map-select-tools --> buffer-tools
   calcite-radio-group-item --> calcite-icon
+  refine-selection-tools --> calcite-label
   refine-selection-tools --> map-layer-picker
   refine-selection-tools --> calcite-action
-  map-layer-picker --> calcite-label
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-combobox-item

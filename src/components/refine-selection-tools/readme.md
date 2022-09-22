@@ -60,15 +60,16 @@ Type: `Promise<void>`
 
 ### Depends on
 
+- calcite-label
 - [map-layer-picker](../map-layer-picker)
 - calcite-action
 
 ### Graph
 ```mermaid
 graph TD;
+  refine-selection-tools --> calcite-label
   refine-selection-tools --> map-layer-picker
   refine-selection-tools --> calcite-action
-  map-layer-picker --> calcite-label
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-combobox-item

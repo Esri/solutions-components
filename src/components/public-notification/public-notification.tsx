@@ -261,13 +261,17 @@ export class PublicNotificationTwo {
           <div>
             <calcite-input-message active class="layer-picker-container list-border background-w">
               <div class="w-100 padding-bottom-1">
+                <div class="main-label">
+                  <calcite-label>{this.translations.addresseeLayer}</calcite-label>
+                </div>
+                <div class="trailing-label">
+                  <calcite-label scale="s">{total > 0 ? `${totalSelected}` : ''}</calcite-label>
+                </div>
                 <map-layer-picker
-                  label={this.translations.addresseeLayer}
                   mapView={this.mapView}
                   onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
                   selectionMode={"single"}
                   selectedLayers={layerTitle ? [layerTitle] : []}
-                  trailingLabel={total > 0 ? `${totalSelected}` : ''}
                 />
               </div>
             </calcite-input-message>

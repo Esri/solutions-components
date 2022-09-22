@@ -187,17 +187,17 @@ export class NewPublicNotification {
         {this._getLabel(this.translations?.stepOne)}
         {this._getNotice(this.translations?.stepOneTip)}
         <div class="display-flex padding-top-sides-1">
-          <map-layer-picker
-            label={this.translations?.addresseeLayer}
-            mapView={this.mapView}
-            // onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
-            selectionMode={"single"}
-          //selectedLayers={layerTitle ? [layerTitle] : []}
-          //trailingLabel={total > 0 ? `${totalSelected}` : ''}
-          />
+          <calcite-label class="font-bold width-full">{this.translations?.addresseeLayer}
+            <map-layer-picker
+              mapView={this.mapView}
+              // onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
+              selectionMode={"single"}
+            //selectedLayers={layerTitle ? [layerTitle] : []}
+            />
+          </calcite-label>
         </div>
         <div class="padding-top-sides-1">
-          <calcite-label class="font-bold">{this.translations?.nameLabel}
+          <calcite-label class="font-bold width-full">{this.translations?.nameLabel}
             <calcite-input placeholder={this.translations?.nameLabelPlaceholder}></calcite-input>
           </calcite-label>
         </div>

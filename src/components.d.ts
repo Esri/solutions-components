@@ -85,10 +85,6 @@ export namespace Components {
     }
     interface MapLayerPicker {
         /**
-          * string: The label to render above the combobox. This label is positioned on the left side of the control.
-         */
-        "label": string;
-        /**
           * string[]: list of layer names from the map
          */
         "layerNames": string[];
@@ -104,10 +100,6 @@ export namespace Components {
           * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
          */
         "selectionMode": SelectionMode;
-        /**
-          * string: The label to render above the combobox. This label is positioned on the right side of the control.
-         */
-        "trailingLabel": string;
     }
     interface MapSearch {
         "clear": () => Promise<void>;
@@ -701,10 +693,6 @@ declare namespace LocalJSX {
     }
     interface MapLayerPicker {
         /**
-          * string: The label to render above the combobox. This label is positioned on the left side of the control.
-         */
-        "label"?: string;
-        /**
           * string[]: list of layer names from the map
          */
         "layerNames"?: string[];
@@ -721,10 +709,6 @@ declare namespace LocalJSX {
           * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
          */
         "selectionMode"?: SelectionMode;
-        /**
-          * string: The label to render above the combobox. This label is positioned on the right side of the control.
-         */
-        "trailingLabel"?: string;
     }
     interface MapSearch {
         /**

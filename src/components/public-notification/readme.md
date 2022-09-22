@@ -25,6 +25,7 @@
 - calcite-action-group
 - calcite-action
 - calcite-input-message
+- calcite-label
 - [map-layer-picker](../map-layer-picker)
 - calcite-list
 - calcite-list-item
@@ -43,6 +44,7 @@ graph TD;
   public-notification --> calcite-action-group
   public-notification --> calcite-action
   public-notification --> calcite-input-message
+  public-notification --> calcite-label
   public-notification --> map-layer-picker
   public-notification --> calcite-list
   public-notification --> calcite-list-item
@@ -61,7 +63,6 @@ graph TD;
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
   calcite-input-message --> calcite-icon
-  map-layer-picker --> calcite-label
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-combobox-item
@@ -78,6 +79,7 @@ graph TD;
   map-select-tools --> calcite-label
   map-select-tools --> buffer-tools
   calcite-radio-group-item --> calcite-icon
+  refine-selection-tools --> calcite-label
   refine-selection-tools --> map-layer-picker
   refine-selection-tools --> calcite-action
   buffer-tools --> calcite-input

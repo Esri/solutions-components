@@ -197,9 +197,11 @@ export class RefineSelectionTools {
     return (
       <Host>
         <div>
+          <div class="main-label">
+            <calcite-label>{this.translations.selectLayers}</calcite-label>
+          </div>
           <map-layer-picker
             class={showLayerPickerClass}
-            label={this.translations.selectLayers}
             mapView={this.mapView}
             selectedLayers={this.layerViews.map(l => l.layer.title)}
             selectionMode={"single"}
