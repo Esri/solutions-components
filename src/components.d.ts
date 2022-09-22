@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ERefineMode, ESelectionMode, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISelectionSet, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
+import { ERefineMode, ESelectionMode, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchResult, ISelectionSet, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BufferTools {
@@ -108,6 +108,13 @@ export namespace Components {
           * string: The label to render above the combobox. This label is positioned on the right side of the control.
          */
         "trailingLabel": string;
+    }
+    interface MapSearch {
+        "clear": () => Promise<void>;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
     }
     interface MapSelectTools {
         "clearSelection": () => Promise<void>;
@@ -437,6 +444,10 @@ export interface MapLayerPickerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapLayerPickerElement;
 }
+export interface MapSearchCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapSearchElement;
+}
 export interface MapSelectToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapSelectToolsElement;
@@ -493,6 +504,12 @@ declare global {
     var HTMLMapLayerPickerElement: {
         prototype: HTMLMapLayerPickerElement;
         new (): HTMLMapLayerPickerElement;
+    };
+    interface HTMLMapSearchElement extends Components.MapSearch, HTMLStencilElement {
+    }
+    var HTMLMapSearchElement: {
+        prototype: HTMLMapSearchElement;
+        new (): HTMLMapSearchElement;
     };
     interface HTMLMapSelectToolsElement extends Components.MapSelectTools, HTMLStencilElement {
     }
@@ -601,6 +618,7 @@ declare global {
         "json-editor": HTMLJsonEditorElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
+        "map-search": HTMLMapSearchElement;
         "map-select-tools": HTMLMapSelectToolsElement;
         "new-public-notification": HTMLNewPublicNotificationElement;
         "pdf-download": HTMLPdfDownloadElement;
@@ -707,6 +725,13 @@ declare namespace LocalJSX {
           * string: The label to render above the combobox. This label is positioned on the right side of the control.
          */
         "trailingLabel"?: string;
+    }
+    interface MapSearch {
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        "onSearchChange"?: (event: MapSearchCustomEvent<ISearchResult>) => void;
     }
     interface MapSelectTools {
         /**
@@ -1009,6 +1034,7 @@ declare namespace LocalJSX {
         "json-editor": JsonEditor;
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
+        "map-search": MapSearch;
         "map-select-tools": MapSelectTools;
         "new-public-notification": NewPublicNotification;
         "pdf-download": PdfDownload;
@@ -1036,6 +1062,7 @@ declare module "@stencil/core" {
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
+            "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
             "new-public-notification": LocalJSX.NewPublicNotification & JSXBase.HTMLAttributes<HTMLNewPublicNotificationElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;

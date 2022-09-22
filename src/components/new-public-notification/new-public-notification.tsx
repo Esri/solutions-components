@@ -217,7 +217,9 @@ export class NewPublicNotification {
             <calcite-icon class="info-blue" icon="information" scale="s"/>
           </calcite-label>
         </div>
-        <div class="padding-sides-1">Search Component here</div>
+        <div class="padding-sides-1">
+          <map-search mapView={this.mapView}></map-search>
+        </div>
         {this._getNotice(this.translations?.stepTwoTip)}
         {this._getPageNextCancel(EPageType.SELECT, EPageType.LIST)}
       </calcite-panel>

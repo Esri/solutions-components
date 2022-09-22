@@ -30,6 +30,7 @@
 - [map-layer-picker](../map-layer-picker)
 - calcite-input
 - calcite-icon
+- [map-search](../map-search)
 - calcite-notice
 
 ### Graph
@@ -47,6 +48,7 @@ graph TD;
   new-public-notification --> map-layer-picker
   new-public-notification --> calcite-input
   new-public-notification --> calcite-icon
+  new-public-notification --> map-search
   new-public-notification --> calcite-notice
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
