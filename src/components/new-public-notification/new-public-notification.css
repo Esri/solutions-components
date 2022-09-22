@@ -54,8 +54,16 @@
   padding-inline-end: 1rem;
 }
 
+.padding-end-1-2 {
+  padding-inline-end: .5rem;
+}
+
 .padding-top-1-2 {
   padding-block-start: .5rem;
+}
+
+.padding-bottom-1 {
+  padding-bottom: 1rem;
 }
 
 .info-blue {

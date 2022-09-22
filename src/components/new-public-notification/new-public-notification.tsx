@@ -201,7 +201,7 @@ export class NewPublicNotification {
             <calcite-input placeholder={this.translations?.nameLabelPlaceholder}></calcite-input>
           </calcite-label>
         </div>
-        {this._getPageNextCancel(EPageType.SEARCH, EPageType.LIST)}
+        {this._getPageNavButtons(this.translations?.next, EPageType.SELECT, this.translations?.cancel, EPageType.LIST)}
       </calcite-panel>
     );
   }
@@ -211,17 +211,12 @@ export class NewPublicNotification {
       <calcite-panel>
         {this._getPageBack(EPageType.LAYER)}
         {this._getStepLabel(this.translations?.stepTwo)}
-        <div class="padding-sides-1 padding-top-1-2">
-          <calcite-label class="font-bold" layout='inline'>
-            {this.translations?.search}
-            <calcite-icon class="info-blue" icon="information" scale="s"/>
-          </calcite-label>
-        </div>
+        {this._getControlLabel(this.translations?.search)}
         <div class="padding-sides-1">
           <map-search mapView={this.mapView}></map-search>
         </div>
         {this._getNotice(this.translations?.stepTwoTip)}
-        {this._getPageNextCancel(EPageType.SELECT, EPageType.LIST)}
+        {this._getPageNavButtons(this.translations?.next, EPageType.SELECT, this.translations?.cancel, EPageType.LIST)}
       </calcite-panel>
     );
   }
@@ -229,25 +224,28 @@ export class NewPublicNotification {
   _getSelectPage(): VNode {
     return (
       <calcite-panel>
-        {this._getPageBack(EPageType.SEARCH)}
-        {this._getStepLabel(this.translations?.stepOne)}
-        {this._getNotice(this.translations?.stepOneTip)}
-        <div class="add-container padding-sides-1">
-          <map-layer-picker
-            label={this.translations?.addresseeLayer}
-            mapView={this.mapView}
-            //onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
-            selectionMode={"single"}
-            //selectedLayers={layerTitle ? [layerTitle] : []}
-            //trailingLabel={total > 0 ? `${totalSelected}` : ''}
-          />
+        {this._getPageBack(EPageType.LAYER)}
+        {this._getStepLabel(this.translations?.stepThree)}
+        {this._getControlLabel(this.translations?.search)}
+        <div class="padding-sides-1">
+          <map-search mapView={this.mapView}></map-search>
         </div>
-        <div class="padding-1">
-          <calcite-label class="font-bold">{this.translations?.nameLabel}
-            <calcite-input placeholder={this.translations?.nameLabelPlaceholder}></calcite-input>
-          </calcite-label>
+        {this._getNotice(this.translations?.stepThreeTip)}
+        {this._getControlLabel(this.translations?.select)}
+        <div class="padding-sides-1">
+          <map-draw-tools mapView={this.mapView}></map-draw-tools>
         </div>
-        {this._getPageNextCancel(EPageType.SELECT, EPageType.LIST)}
+        {this._getControlLabel(this.translations?.searchDistance)}
+        <div class="padding-sides-1 padding-bottom-1">
+          <buffer-tools/>
+        </div>
+        <div class="padding-sides-1 padding-bottom-1" style={{"align-items": "end", "display": "flex"}}>
+          <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
+          <calcite-input-message active class="info-blue" scale='m'>
+            {this.translations?.selectedAddresses.replace('{{n}}', "0")}
+          </calcite-input-message>
+        </div>
+        {this._getPageNavButtons(this.translations?.done, EPageType.LIST, this.translations?.cancel, EPageType.LIST)}
       </calcite-panel>
     );
   }
@@ -264,8 +262,10 @@ export class NewPublicNotification {
     return (<div>csv</div>);
   }
 
-  _getPageNextCancel(
+  _getPageNavButtons(
+    nextLabel: string,
     nextPage: EPageType,
+    cancelLabel: string,
     cancelPage: EPageType
   ): VNode {
     return (
@@ -275,7 +275,7 @@ export class NewPublicNotification {
             width="full"
             onClick={() => { this._setPageType(nextPage) }}
           >
-            {this.translations?.next}
+            {nextLabel}
           </calcite-button>
         </div>
         <div class="add-container padding-top-1-2 padding-sides-1">
@@ -284,7 +284,7 @@ export class NewPublicNotification {
             width="full"
             onClick={() => { this._setPageType(cancelPage) }}
           >
-            {this.translations?.cancel}
+            {cancelLabel}
           </calcite-button>
         </div>
       </div>
@@ -323,6 +323,19 @@ export class NewPublicNotification {
     return (
       <div class="padding-top-sides-1">
         <calcite-label class="font-bold">{label}</calcite-label>
+      </div>
+    );
+  }
+
+  _getControlLabel(
+    label: string
+  ): VNode {
+    return (
+      <div class="padding-sides-1 padding-top-1-2">
+        <calcite-label class="font-bold" layout='inline'>
+          {label}
+          <calcite-icon class="info-blue" icon="information" scale="s" />
+        </calcite-label>
       </div>
     );
   }

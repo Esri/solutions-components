@@ -21,9 +21,15 @@
     "stepOneTip": "Choose an 'Addressee Layer' and give it a label.",
     "stepTwo": "Step 2. Select an area/location",
     "stepTwoTip": "Choose an area/location using the 'Search' tool or click on a location in the map.",
+    "stepThree": "Step 3. Select address",
+    "stepThreeTip": "Refine your search using the 'Select' or 'Search Distance' tools.",
     "nameLabel": "Name label",
     "nameLabelPlaceholder": "Insert label here...",
     "next": "Next",
     "cancel": "Cancel",
-    "search": "Search"
+    "search": "Search",
+    "select": "Select",
+    "searchDistance": "Search Distance",
+    "done": "Done",
+    "selectedAddresses": "{{n}} selected addresses"
 }
