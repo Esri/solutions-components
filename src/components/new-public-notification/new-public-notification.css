@@ -35,10 +35,6 @@
   height: 100%;
 }
 
-.add-container {
-  display: flex;
-}
-
 .padding-1 {
   padding: 1rem;
 }
@@ -87,6 +83,6 @@
   display: flex;
 }
 
-#map-layer-picker {
-  background-color: inherit !important;
+.display-none {
+  display: none;
 }

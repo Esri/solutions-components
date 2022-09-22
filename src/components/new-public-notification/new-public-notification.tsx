@@ -1,5 +1,5 @@
 import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
-import { EPageType } from '../../utils/interfaces';
+import { EExportType, EPageType } from '../../utils/interfaces';
 //import { flashSelection, getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
 import NewPublicNotification_T9n from '../../assets/t9n/new-public-notification/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
@@ -173,7 +173,7 @@ export class NewPublicNotification {
           <calcite-input-message active class="info-blue" scale='m'>{this.translations?.noNotifications}</calcite-input-message>
         </div>
         {this._getNotice(this.translations?.notice)}
-        <div class="add-container padding-1">
+        <div class="display-flex padding-1">
           <calcite-button width="full" onClick={() => { this._setPageType(EPageType.LAYER) }}>{this.translations?.add}</calcite-button>
         </div>
       </calcite-panel>
@@ -184,9 +184,9 @@ export class NewPublicNotification {
     return (
       <calcite-panel>
         {this._getPageBack(EPageType.LIST)}
-        {this._getStepLabel(this.translations?.stepOne)}
+        {this._getLabel(this.translations?.stepOne)}
         {this._getNotice(this.translations?.stepOneTip)}
-        <div class="add-container padding-top-sides-1">
+        <div class="display-flex padding-top-sides-1">
           <map-layer-picker
             label={this.translations?.addresseeLayer}
             mapView={this.mapView}
@@ -210,11 +210,9 @@ export class NewPublicNotification {
     return (
       <calcite-panel>
         {this._getPageBack(EPageType.LAYER)}
-        {this._getStepLabel(this.translations?.stepTwo)}
-        {this._getControlLabel(this.translations?.search)}
-        <div class="padding-sides-1">
-          <map-search mapView={this.mapView}></map-search>
-        </div>
+        {this._getLabel(this.translations?.stepTwo)}
+        {this._getIconLabel(this.translations?.search)}
+        {this._getMapSearch()}
         {this._getNotice(this.translations?.stepTwoTip)}
         {this._getPageNavButtons(this.translations?.next, EPageType.SELECT, this.translations?.cancel, EPageType.LIST)}
       </calcite-panel>
@@ -225,17 +223,15 @@ export class NewPublicNotification {
     return (
       <calcite-panel>
         {this._getPageBack(EPageType.LAYER)}
-        {this._getStepLabel(this.translations?.stepThree)}
-        {this._getControlLabel(this.translations?.search)}
-        <div class="padding-sides-1">
-          <map-search mapView={this.mapView}></map-search>
-        </div>
+        {this._getLabel(this.translations?.stepThree)}
+        {this._getIconLabel(this.translations?.search)}
+        {this._getMapSearch()}
         {this._getNotice(this.translations?.stepThreeTip)}
-        {this._getControlLabel(this.translations?.select)}
+        {this._getIconLabel(this.translations?.select)}
         <div class="padding-sides-1">
           <map-draw-tools mapView={this.mapView}></map-draw-tools>
         </div>
-        {this._getControlLabel(this.translations?.searchDistance)}
+        {this._getIconLabel(this.translations?.searchDistance)}
         <div class="padding-sides-1 padding-bottom-1">
           <buffer-tools/>
         </div>
@@ -255,11 +251,42 @@ export class NewPublicNotification {
   }
 
   _getPDFPage(): VNode {
-    return (<div>pdf</div>);
+    return this._getDownloadPage(EExportType.PDF);
   }
 
   _getCSVPage(): VNode {
-    return (<div>csv</div>);
+    return this._getDownloadPage(EExportType.CSV);
+  }
+
+  _getDownloadPage(
+    type: EExportType
+  ): VNode {
+    const isPdf = type === EExportType.PDF;
+    return (
+      <div>
+        <div class="padding-top-sides-1">
+          <calcite-label class="font-bold">
+            {isPdf ? this.translations?.pdfDownloads : this.translations?.csvDownloads}
+          </calcite-label>
+          <calcite-label>
+            {this.translations?.notifications}
+          </calcite-label>
+        </div>
+        {this._getSelectionLists()}
+        <div class={isPdf ? "" : "display-none"}>
+          {this._getLabel(this.translations?.selectPDFLabelOption)}
+          <pdf-download/>
+        </div>
+        <div class="padding-1 display-flex">
+          <calcite-button
+            width="full"
+            onClick={isPdf ? this._downloadPDF : this._downloadCSV}
+          >
+            {isPdf ? this.translations?.downloadPDF : this.translations?.downloadCSV}
+          </calcite-button>
+        </div>
+      </div>
+    );
   }
 
   _getPageNavButtons(
@@ -270,7 +297,7 @@ export class NewPublicNotification {
   ): VNode {
     return (
       <div>
-        <div class="add-container padding-top-sides-1">
+        <div class="display-flex padding-top-sides-1">
           <calcite-button
             width="full"
             onClick={() => { this._setPageType(nextPage) }}
@@ -278,7 +305,7 @@ export class NewPublicNotification {
             {nextLabel}
           </calcite-button>
         </div>
-        <div class="add-container padding-top-1-2 padding-sides-1">
+        <div class="display-flex padding-top-1-2 padding-sides-1">
           <calcite-button
             appearance='outline'
             width="full"
@@ -317,7 +344,7 @@ export class NewPublicNotification {
     );
   }
 
-  _getStepLabel(
+  _getLabel(
     label: string
   ): VNode {
     return (
@@ -327,7 +354,7 @@ export class NewPublicNotification {
     );
   }
 
-  _getControlLabel(
+  _getIconLabel(
     label: string
   ): VNode {
     return (
@@ -338,6 +365,26 @@ export class NewPublicNotification {
         </calcite-label>
       </div>
     );
+  }
+
+  _getSelectionLists(): VNode {
+    return (<div class="padding-sides-1">Selection lists go here</div>);
+  }
+
+  _getMapSearch(): VNode {
+    return (
+      <div class="padding-sides-1">
+        <map-search mapView={this.mapView}></map-search>
+      </div>
+    );
+  }
+
+  _downloadPDF() {
+    alert("download PDF")
+  }
+
+  _downloadCSV() {
+    alert("download CSV")
   }
 
   async _getTranslations() {

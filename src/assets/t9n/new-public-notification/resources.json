@@ -31,5 +31,8 @@
     "select": "Select",
     "searchDistance": "Search Distance",
     "done": "Done",
-    "selectedAddresses": "{{n}} selected addresses"
+    "selectedAddresses": "{{n}} selected addresses",
+    "pdfDownloads": "PDF Downloads",
+    "selectPDFLabelOption": "Select PDF label option",
+    "csvDownloads": "CSV Downloads"
 }
