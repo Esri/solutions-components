@@ -84,11 +84,9 @@ export class PdfDownload {
   render() {
     return (
       <Host>
-        <div class="background-w padding-1-2 list-border">
-          <calcite-select label="">
-            {this._renderItems()}
-          </calcite-select>
-        </div>
+        <calcite-select label="">
+          {this._renderItems()}
+        </calcite-select>
       </Host>
     );
   }

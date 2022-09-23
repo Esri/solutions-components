@@ -228,9 +228,10 @@ export class NewPublicNotification {
         {this._getMapSearch()}
         {this._getNotice(this.translations?.stepThreeTip)}
         {this._getIconLabel(this.translations?.select)}
-        <div class="padding-sides-1">
+        <div class="padding-sides-1 padding-bottom-1">
           <map-draw-tools mapView={this.mapView}></map-draw-tools>
         </div>
+        <div class="margin-side-1 padding-top-1-2 border-top"></div>
         {this._getIconLabel(this.translations?.searchDistance)}
         <div class="padding-sides-1 padding-bottom-1">
           <buffer-tools/>
@@ -274,8 +275,11 @@ export class NewPublicNotification {
         </div>
         {this._getSelectionLists()}
         <div class={isPdf ? "" : "display-none"}>
+          <div class="margin-side-1 padding-top-1 border-bottom"></div>
           {this._getLabel(this.translations?.selectPDFLabelOption)}
-          <pdf-download/>
+          <div class="padding-sides-1">
+            <pdf-download/>
+          </div>
         </div>
         <div class="padding-1 display-flex">
           <calcite-button
@@ -323,13 +327,16 @@ export class NewPublicNotification {
   ): VNode {
     return (
       <div class="padding-top-sides-1 display-flex">
-        <calcite-button
-          appearance='transparent'
-          iconStart='chevron-left'
+        <calcite-label
+          alignment="start"
+          class="back-label"
+          disable-spacing={true}
+          layout="inline-space-between"
           onClick={() => {this._setPageType(backPage)}}
         >
+          <calcite-icon icon="chevron-left" scale="s" />
           {this.translations?.back}
-        </calcite-button>
+        </calcite-label>
       </div>
     );
   }
@@ -377,7 +384,7 @@ export class NewPublicNotification {
 
   _getMapSearch(): VNode {
     return (
-      <div class="padding-sides-1">
+      <div class="padding-sides-1 padding-bottom-1 border-bottom">
         <map-search mapView={this.mapView}></map-search>
       </div>
     );

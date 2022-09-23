@@ -86,3 +86,11 @@ html[dir="rtl"] .trailing-label {
   display: flex;
   float: left;
 }
+
+.padding-1-2 {
+  padding: 0.5rem;
+}
+
+.list-border {
+  border: 1px solid var(--calcite-ui-border-2);
+}

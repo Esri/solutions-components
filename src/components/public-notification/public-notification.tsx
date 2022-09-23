@@ -382,9 +382,11 @@ export class PublicNotificationTwo {
         break;
       case EPageType.PDF:
         page = (
-          <pdf-download
-            layerView={this.addresseeLayer}
-          />
+          <div class="padding-1-2 list-border">
+            <pdf-download
+              layerView={this.addresseeLayer}
+            />
+          </div>
         )
         break;
     }

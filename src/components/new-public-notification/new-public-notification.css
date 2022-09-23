@@ -58,6 +58,10 @@
   padding-block-start: .5rem;
 }
 
+.padding-top-1 {
+  padding-top: 1rem;
+}
+
 .padding-bottom-1 {
   padding-bottom: 1rem;
 }
@@ -93,4 +97,22 @@
 
 html[dir="rtl"] .main-label {
   float: right;
+}
+
+.back-label:hover {
+  cursor: pointer;
+  color: var(--calcite-ui-brand-hover);
+}
+
+.border-bottom {
+  border-bottom: 1px solid var(--calcite-ui-border-2);
+}
+
+.margin-side-1 {
+  margin-inline-start: 1rem;
+  margin-inline-end: 1rem;
+}
+
+.border-top {
+  border-top: 1px solid var(--calcite-ui-border-2);
 }
