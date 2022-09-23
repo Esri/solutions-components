@@ -10,6 +10,10 @@ import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BufferTools {
         /**
+          * string: The appearance of display. Can be a slider or text inputs for distance/value
+         */
+        "appearance": "slider" | "text";
+        /**
           * number: The distance used for buffer
          */
         "distance": number;
@@ -17,6 +21,18 @@ export namespace Components {
           * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
          */
         "geometries": __esri.Geometry[];
+        /**
+          * number: The component's maximum selectable value.
+         */
+        "sliderMax": number;
+        /**
+          * number: The component's minimum selectable value.
+         */
+        "sliderMin": number;
+        /**
+          * number: Displays tick marks on the number line at a specified interval.
+         */
+        "sliderTicks": number;
         /**
           * boolean: option to control if buffer results should be unioned
          */
@@ -633,6 +649,10 @@ declare global {
 declare namespace LocalJSX {
     interface BufferTools {
         /**
+          * string: The appearance of display. Can be a slider or text inputs for distance/value
+         */
+        "appearance"?: "slider" | "text";
+        /**
           * number: The distance used for buffer
          */
         "distance"?: number;
@@ -641,6 +661,18 @@ declare namespace LocalJSX {
          */
         "geometries"?: __esri.Geometry[];
         "onBufferComplete"?: (event: BufferToolsCustomEvent<any>) => void;
+        /**
+          * number: The component's maximum selectable value.
+         */
+        "sliderMax"?: number;
+        /**
+          * number: The component's minimum selectable value.
+         */
+        "sliderMin"?: number;
+        /**
+          * number: Displays tick marks on the number line at a specified interval.
+         */
+        "sliderTicks"?: number;
         /**
           * boolean: option to control if buffer results should be unioned
          */

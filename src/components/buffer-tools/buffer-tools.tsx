@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import BufferTools_T9n from '../../assets/t9n/buffer-tools/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
@@ -56,12 +56,32 @@ export class BufferTools {
   /**
    * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
    */
-  @Prop() unit: __esri.LinearUnits;
+  @Prop() unit: __esri.LinearUnits = "meters";
 
   /**
    * number: The distance used for buffer
    */
   @Prop() distance = 0;
+
+  /**
+   * string: The appearance of display. Can be a slider or text inputs for distance/value
+   */
+  @Prop() appearance: "slider" | "text" = "text";
+
+  /**
+   * number: The component's maximum selectable value.
+   */
+  @Prop() sliderMax: number = 100;
+
+  /**
+   * number: The component's minimum selectable value.
+   */
+  @Prop() sliderMin: number = 0;
+
+  /**
+   * number: Displays tick marks on the number line at a specified interval.
+   */
+  @Prop() sliderTicks: number = 10;
 
   //--------------------------------------------------------------------------
   //
@@ -122,24 +142,7 @@ export class BufferTools {
   render() {
     return (
       <Host>
-        <div class="c-container">
-          <calcite-input
-            class="padding-end-1"
-            number-button-type="vertical"
-            onCalciteInputInput={(evt) => this._setDistance(evt)}
-            placeholder="0"
-            type="number"
-            value={this.distance ? this.distance.toString() : undefined}
-          />
-          <calcite-select
-            class="flex-1"
-            label='label'
-            onCalciteSelectChange={() => this._setUnit()}
-            ref={(el) => { this._unitDiv = el }}
-          >
-            {this._addUnits()}
-          </calcite-select>
-        </div>
+        {this.appearance === "text" ? this._getTextBoxDisplay() : this._getSliderDisplay()}
       </Host>
     );
   }
@@ -210,6 +213,42 @@ export class BufferTools {
         this.bufferComplete.emit(buffer);
       }
     }, 400);
+  }
+
+  _getTextBoxDisplay(): VNode {
+    return (
+      <div class="c-container">
+        <calcite-input
+          class="padding-end-1"
+          number-button-type="vertical"
+          onCalciteInputInput={(evt) => this._setDistance(evt)}
+          placeholder="0"
+          type="number"
+          value={this.distance ? this.distance.toString() : undefined}
+        />
+        <calcite-select
+          class="flex-1"
+          label='label'
+          onCalciteSelectChange={() => this._setUnit()}
+          ref={(el) => { this._unitDiv = el }}
+        >
+          {this._addUnits()}
+        </calcite-select>
+      </div>
+    );
+  }
+
+  _getSliderDisplay(): VNode {
+    return (
+      <div>
+        <calcite-slider
+          labelHandles={true}
+          min={this.sliderMin}
+          max={this.sliderMax}
+          ticks={this.sliderTicks}
+        />
+      </div>
+    );
   }
 
   async _getTranslations() {

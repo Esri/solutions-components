@@ -234,7 +234,7 @@ export class NewPublicNotification {
         <div class="margin-side-1 padding-top-1-2 border-top"></div>
         {this._getIconLabel(this.translations?.searchDistance)}
         <div class="padding-sides-1 padding-bottom-1">
-          <buffer-tools/>
+          <buffer-tools appearance='slider'/>
         </div>
         <div class="padding-sides-1 padding-bottom-1" style={{"align-items": "end", "display": "flex"}}>
           <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />

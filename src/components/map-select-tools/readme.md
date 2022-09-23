@@ -116,11 +116,13 @@ graph TD;
   calcite-combobox-item --> calcite-icon
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
+  buffer-tools --> calcite-option
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select
-  buffer-tools --> calcite-option
+  buffer-tools --> calcite-slider
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
+  calcite-slider --> calcite-graph
   public-notification --> map-select-tools
   style map-select-tools fill:#f9f,stroke:#333,stroke-width:4px
 ```

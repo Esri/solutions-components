@@ -82,11 +82,13 @@ graph TD;
   refine-selection-tools --> calcite-label
   refine-selection-tools --> map-layer-picker
   refine-selection-tools --> calcite-action
+  buffer-tools --> calcite-option
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select
-  buffer-tools --> calcite-option
+  buffer-tools --> calcite-slider
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
+  calcite-slider --> calcite-graph
   pdf-download --> calcite-select
   pdf-download --> calcite-option
   style public-notification fill:#f9f,stroke:#333,stroke-width:4px
