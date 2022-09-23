@@ -201,7 +201,7 @@ export class NewPublicNotification {
             <calcite-input placeholder={this.translations?.nameLabelPlaceholder}></calcite-input>
           </calcite-label>
         </div>
-        {this._getPageNavButtons(this.translations?.next, EPageType.SELECT, this.translations?.cancel, EPageType.LIST)}
+        {this._getPageNavButtons(this.translations?.next, EPageType.SEARCH, this.translations?.cancel, EPageType.LIST)}
       </calcite-panel>
     );
   }
