@@ -197,7 +197,7 @@ export class RefineSelectionTools {
     return (
       <Host>
         <div>
-          <div class="main-label">
+          <div class={"main-label " + showLayerPickerClass}>
             <calcite-label>{this.translations.selectLayers}</calcite-label>
           </div>
           <map-layer-picker

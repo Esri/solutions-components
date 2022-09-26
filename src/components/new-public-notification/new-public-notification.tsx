@@ -1,6 +1,6 @@
 import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
-import { EExportType, EPageType } from '../../utils/interfaces';
-//import { flashSelection, getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
+import { EExportType, EPageType, ESelectionMode, EWorkflowType, ISelectionSet } from '../../utils/interfaces';
+import { getMapLayerView } from '../../utils/mapViewUtils';
 import NewPublicNotification_T9n from '../../assets/t9n/new-public-notification/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
 
@@ -26,19 +26,19 @@ export class NewPublicNotification {
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
-   @Prop() mapView: __esri.MapView;
+  @Prop() mapView: __esri.MapView;
 
-   /**
-    * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
-    */
-   @Prop() selectionLayers: __esri.Layer[];
- 
-   /**
-    * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-    */
-   @Prop() addresseeLayer: __esri.FeatureLayerView;
+  /**
+   * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
+   */
+  @Prop() selectionLayers: __esri.Layer[];
 
-   @Prop() mode: "full" | "express" = "express"; 
+  /**
+   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   */
+  @Prop() addresseeLayer: __esri.FeatureLayerView;
+
+  @Prop() mode: "full" | "express" = "express";
 
   //--------------------------------------------------------------------------
   //
@@ -50,18 +50,64 @@ export class NewPublicNotification {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-   @State() translations: typeof NewPublicNotification_T9n;
+  @State() translations: typeof NewPublicNotification_T9n;
+
+  /**
+   * boolean: Save is enabled when we have 1 or more selected features
+   */
+  @State() saveEnabled = false;
 
   /**
    * utils/interfaces/EPageType: LIST, SELECT, REFINE, PDF, CSV
    */
-   @State() pageType: EPageType = EPageType.LIST;
+  @State() pageType: EPageType = EPageType.LIST;
+
+  /**
+   * utils/interfaces/ISelectionSet: An array of user defined selection sets
+   */
+  @State() selectionSets: ISelectionSet[] = [];
+
+  /**
+   * number: The number of selected features
+   */
+   @State() numSelected = 0;
+
+   protected _selectTools: HTMLMapSelectToolsElement;
+ 
+   protected activeSelection: ISelectionSet;
+ 
+   protected _refineTools: HTMLRefineSelectionToolsElement;
+ 
+   protected addEnabled = true;
 
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  // @Watch('selectionSets')
+  // async selectionSetsWatchHandler(
+  //   v: ISelectionSet[],
+  //   oldV: ISelectionSet[]
+  // ) {
+  //   if (v && v !== oldV && v.length > 0) {
+  //     const nonRefineSets = v.filter(ss => ss.workflowType !== EWorkflowType.REFINE)
+  //     if (nonRefineSets.length === 0) {
+  //       this.selectionSets = []
+  //     }
+  //   }
+  // }
+
+  // @Watch('pageType')
+  // async pageTypeWatchHandler(
+  //   v: EPageType
+  // ) {
+  //   this._clearHighlight();
+  //   if (v === EPageType.LIST) {
+  //     await this._highlightFeatures();
+  //   }
+  // }
 
   //--------------------------------------------------------------------------
   //
@@ -142,7 +188,7 @@ export class NewPublicNotification {
   _getPage(
     pageType: EPageType
   ): VNode {
-    let page: VNode; 
+    let page: VNode;
     switch (pageType) {
       case EPageType.LIST:
         page = this._getListPage();
@@ -205,7 +251,7 @@ export class NewPublicNotification {
           <calcite-label class="font-bold width-full">{this.translations?.addresseeLayer}
             <map-layer-picker
               mapView={this.mapView}
-              // onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
+              onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
               selectionMode={"single"}
             //selectedLayers={layerTitle ? [layerTitle] : []}
             />
@@ -267,14 +313,14 @@ export class NewPublicNotification {
             // ref={(el) => { this._selectTools = el }}
             // searchLayers={this.selectionLayers}
             selectLayerView={this.addresseeLayer}
-            // selectionSet={this.activeSelection}
-            // isUpdate={this.activeSelection ? true : false}
+          // selectionSet={this.activeSelection}
+          // isUpdate={this.activeSelection ? true : false}
           />
           <div class="display-block padding-top-1">
             {this._getNameLabel()}
           </div>
         </div>
-        <div class="padding-sides-1 padding-bottom-1" style={{"align-items": "end", "display": "flex"}}>
+        <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
           <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
           <calcite-input-message active class="info-blue" scale='m'>
             {this.translations?.selectedAddresses.replace('{{n}}', "0")}
@@ -286,7 +332,55 @@ export class NewPublicNotification {
   }
 
   _getRefinePage(): VNode {
-    return (<div>refine</div>);
+    return (
+      <calcite-panel>
+        {this._getPageBack(EPageType.LAYER)}
+        {this._getLabel(this.translations?.refineSelection)}
+        {this._getNotice(this.translations?.refineTip)}
+        <div class="padding-1">
+          <div>
+            <calcite-radio-group
+              class="w-100"
+              onCalciteRadioGroupChange={(evt) => this._modeChanged(evt)}
+            >
+              <calcite-radio-group-item
+                checked={this.addEnabled}
+                class="w-50"
+                onClick={() => this._setSelectionMode(ESelectionMode.ADD)}
+                value={ESelectionMode.ADD}
+              >
+                {this.translations.add}
+              </calcite-radio-group-item>
+              <calcite-radio-group-item
+                checked={!this.addEnabled}
+                class="w-50"
+                onClick={() => this._setSelectionMode(ESelectionMode.REMOVE)}
+                value={ESelectionMode.REMOVE}
+              >
+                {this.translations.remove}
+              </calcite-radio-group-item>
+            </calcite-radio-group>
+            <refine-selection-tools
+              ids={this._getSelectionIds(this.selectionSets)}
+              layerViews={[this.addresseeLayer]}
+              mapView={this.mapView}
+              mode={this.addEnabled ? ESelectionMode.ADD : ESelectionMode.REMOVE}
+              ref={(el) => { this._refineTools = el }}
+              useLayerPicker={false}
+            />
+          </div>
+          <br />
+          {
+            (
+              <calcite-list class="list-border">
+                {this._getRefineSelectionSetList()}
+              </calcite-list>
+            )
+          }
+        </div>
+        {this._getPageNavButtons(this.translations?.done, EPageType.LIST, this.translations?.cancel, EPageType.LIST)}
+      </calcite-panel>
+    );
   }
 
   _getPDFPage(): VNode {
@@ -316,7 +410,7 @@ export class NewPublicNotification {
           <div class="margin-side-1 padding-top-1 border-bottom"></div>
           {this._getLabel(this.translations?.selectPDFLabelOption)}
           <div class="padding-sides-1">
-            <pdf-download/>
+            <pdf-download />
           </div>
         </div>
         <div class="padding-1 display-flex">
@@ -370,7 +464,7 @@ export class NewPublicNotification {
           class="back-label"
           disable-spacing={true}
           layout="inline-space-between"
-          onClick={() => {this._setPageType(backPage)}}
+          onClick={() => { this._setPageType(backPage) }}
         >
           <calcite-icon icon="chevron-left" scale="s" />
           {this.translations?.back}
@@ -442,6 +536,112 @@ export class NewPublicNotification {
 
   _downloadCSV() {
     alert("download CSV")
+  }
+
+  _getRefineSelectionSetList() {
+    const refineSets = this.selectionSets.filter(ss => ss.workflowType === EWorkflowType.REFINE);
+    
+    const hasRefineSet = refineSets.length > 0;
+    const refineSet = hasRefineSet ? refineSets[0] : undefined;
+    
+    const total = this.selectionSets.reduce((prev, cur) => {
+      return prev += cur.selectedIds.length
+    }, 0);
+
+    const numAdded = hasRefineSet ? refineSet.refineIds.addIds.length : 0;
+    const numRemoved = hasRefineSet ? refineSet.refineIds.removeIds.length : 0;
+
+    return [(
+      <calcite-list-item
+        label={this.translations.featuresAdded?.replace('{{n}}', numAdded.toString())}
+      >
+        {this._getAction2(numAdded > 0, "reset", "", (): void => this._revertSelection(refineSet, true), false, "actions-end")}
+      </calcite-list-item>
+    ),(
+      <calcite-list-item
+        label={this.translations.featuresRemoved?.replace('{{n}}', numRemoved.toString())}
+      >
+        {this._getAction2(numRemoved > 0, "reset", "", (): void => this._revertSelection(refineSet, false), false, "actions-end")}
+      </calcite-list-item>
+    ), (
+      <calcite-list-item
+        label={this.translations.totalSelected?.replace('{{n}}', total.toString())}
+      />
+    )];
+  }
+
+  _getAction2(
+    enabled: boolean,
+    icon: string,
+    text: string,
+    onClick: any,
+    indicator: boolean = false,
+    slot: string = ""
+  ): VNode {
+    return (
+      <calcite-action
+        disabled={!enabled}
+        icon={icon}
+        indicator={indicator}
+        onClick={onClick}
+        slot={slot}
+        text={text} />
+    );
+  }
+
+  _revertSelection(
+    refineSet: ISelectionSet,
+    isAdd: boolean
+  ) {
+    if (isAdd) {
+      refineSet.refineIds.removeIds = refineSet.refineIds.addIds;
+      refineSet.selectedIds = refineSet.selectedIds.filter(id => {
+        return refineSet.refineIds.addIds.indexOf(id) < 0;
+      });
+      refineSet.refineIds.addIds = [];
+    } else {
+      refineSet.refineIds.addIds = refineSet.refineIds.removeIds;
+      refineSet.selectedIds = [...new Set([
+        ...refineSet.selectedIds,
+        ...refineSet.refineIds.addIds
+      ])]
+      refineSet.refineIds.removeIds = [];
+    }
+    this._refineTools.reset().then(() => {
+      this.selectionSets = this.selectionSets.map(ss => {
+        if (ss.workflowType === EWorkflowType.REFINE) {
+          ss = refineSet;
+        }
+        return ss;
+      });
+    });
+  }
+
+  _getSelectionIds(
+    selectionSets: ISelectionSet[]
+  ): number[] {
+    return Object.keys(selectionSets).reduce((prev, cur) => {
+      return [
+        ...prev,
+        ...selectionSets[cur].selectedIds
+      ]
+    }, []);
+  }
+
+  _modeChanged(evt: CustomEvent): void {
+    this.addEnabled = evt.detail === ESelectionMode.ADD;
+  }
+
+  _setSelectionMode(
+    mode: ESelectionMode
+  ): void {
+    this._refineTools.mode = mode;
+  }
+
+  async _layerSelectionChange(evt: CustomEvent): Promise<void> {
+    const title: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
+    this.addresseeLayer = await getMapLayerView(this.mapView, title);
+    //this.message = this.translations.startMessage.replace("{{n}}", evt?.detail?.length > 0 ? evt.detail[0] : "");
   }
 
   async _getTranslations() {

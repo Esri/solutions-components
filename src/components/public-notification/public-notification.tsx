@@ -338,38 +338,38 @@ export class PublicNotificationTwo {
       case EPageType.REFINE:
         page = (
           <div>
-          <div class="background-w padding-1-2 list-border">
-            <calcite-radio-group 
-              class="w-100"
-              onCalciteRadioGroupChange={(evt) => this._modeChanged(evt)}
-            >
-              <calcite-radio-group-item
-                checked={this.addEnabled}
-                class="w-50"
-                onClick={() => this._setSelectionMode(ESelectionMode.ADD)}
-                value={ESelectionMode.ADD}
+            <div class="background-w padding-1-2 list-border">
+              <calcite-radio-group
+                class="w-100"
+                onCalciteRadioGroupChange={(evt) => this._modeChanged(evt)}
               >
-                {this.translations.add}
-              </calcite-radio-group-item>
-              <calcite-radio-group-item
-                checked={!this.addEnabled}
-                class="w-50"
-                onClick={() => this._setSelectionMode(ESelectionMode.REMOVE)}
-                value={ESelectionMode.REMOVE}
-              >
-                {this.translations.remove}
-              </calcite-radio-group-item>
-            </calcite-radio-group>
-            <refine-selection-tools
-              ids={this._getSelectionIds(this.selectionSets)}
-              layerViews={[this.addresseeLayer]}
-              mapView={this.mapView}
-              mode={this.addEnabled ? ESelectionMode.ADD : ESelectionMode.REMOVE}
-              ref={(el) => { this._refineTools = el }}
-              useLayerPicker={false}
-            />
-          </div>
-          <br />
+                <calcite-radio-group-item
+                  checked={this.addEnabled}
+                  class="w-50"
+                  onClick={() => this._setSelectionMode(ESelectionMode.ADD)}
+                  value={ESelectionMode.ADD}
+                >
+                  {this.translations.add}
+                </calcite-radio-group-item>
+                <calcite-radio-group-item
+                  checked={!this.addEnabled}
+                  class="w-50"
+                  onClick={() => this._setSelectionMode(ESelectionMode.REMOVE)}
+                  value={ESelectionMode.REMOVE}
+                >
+                  {this.translations.remove}
+                </calcite-radio-group-item>
+              </calcite-radio-group>
+              <refine-selection-tools
+                ids={this._getSelectionIds(this.selectionSets)}
+                layerViews={[this.addresseeLayer]}
+                mapView={this.mapView}
+                mode={this.addEnabled ? ESelectionMode.ADD : ESelectionMode.REMOVE}
+                ref={(el) => { this._refineTools = el }}
+                useLayerPicker={false}
+              />
+            </div>
+            <br />
             {
               (
                 <calcite-list class="list-border">

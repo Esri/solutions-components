@@ -23,7 +23,7 @@
 }
 
 .div-not-visible {
-  display: none;
+  display: none !important;
 }
 
 .padding-top-1-2 {
