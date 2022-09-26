@@ -1,6 +1,7 @@
-import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Host, h, Prop, Listen, State, VNode, Watch } from '@stencil/core';
 import { EExportType, EPageType, ESelectionMode, EWorkflowType, ISelectionSet } from '../../utils/interfaces';
-import { getMapLayerView } from '../../utils/mapViewUtils';
+import { getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
+import state from "../../utils/publicNotificationStore";
 import NewPublicNotification_T9n from '../../assets/t9n/new-public-notification/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
 
@@ -86,28 +87,28 @@ export class NewPublicNotification {
   //
   //--------------------------------------------------------------------------
 
-  // @Watch('selectionSets')
-  // async selectionSetsWatchHandler(
-  //   v: ISelectionSet[],
-  //   oldV: ISelectionSet[]
-  // ) {
-  //   if (v && v !== oldV && v.length > 0) {
-  //     const nonRefineSets = v.filter(ss => ss.workflowType !== EWorkflowType.REFINE)
-  //     if (nonRefineSets.length === 0) {
-  //       this.selectionSets = []
-  //     }
-  //   }
-  // }
+  @Watch('selectionSets')
+  async selectionSetsWatchHandler(
+    v: ISelectionSet[],
+    oldV: ISelectionSet[]
+  ) {
+    if (v && v !== oldV && v.length > 0) {
+      const nonRefineSets = v.filter(ss => ss.workflowType !== EWorkflowType.REFINE)
+      if (nonRefineSets.length === 0) {
+        this.selectionSets = []
+      }
+    }
+  }
 
-  // @Watch('pageType')
-  // async pageTypeWatchHandler(
-  //   v: EPageType
-  // ) {
-  //   this._clearHighlight();
-  //   if (v === EPageType.LIST) {
-  //     await this._highlightFeatures();
-  //   }
-  // }
+  @Watch('pageType')
+  async pageTypeWatchHandler(
+    v: EPageType
+  ) {
+    this._clearHighlight();
+    if (v === EPageType.LIST) {
+      await this._highlightFeatures();
+    }
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -121,6 +122,17 @@ export class NewPublicNotification {
   //
   //--------------------------------------------------------------------------
 
+  @Listen("refineSelectionIdsChange", { target: 'window' })
+  refineSelectionIdsChange(event: CustomEvent): void {
+    const idUpdates = event.detail;
+    const addIds = idUpdates?.addIds || [];
+    const removeIds = idUpdates?.removeIds || [];
+
+    this._updateSelectionSetsForRemoveIds(removeIds);
+  
+    this._updateRefineSelectionSet(addIds, removeIds);
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -133,14 +145,15 @@ export class NewPublicNotification {
 
   render() {
     const refineClass = this.mode === "express" ? " display-none" : "";
+    const hasSelections = this.selectionSets.length > 0;
     return (
       <Host>
         <calcite-shell>
           <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout='horizontal' slot="header">
-            {this._getAction("list-check", EPageType.LIST, this.translations?.myLists)}
-            {this._getAction("test-data", EPageType.REFINE, this.translations?.refineSelection, refineClass)}
-            {this._getAction("file-pdf", EPageType.PDF, this.translations?.downloadPDF)}
-            {this._getAction("file-csv", EPageType.CSV, this.translations?.downloadCSV)}
+            {this._getAction("list-check", false, EPageType.LIST, this.translations?.myLists)}
+            {this._getAction("test-data", !hasSelections, EPageType.REFINE, this.translations?.refineSelection, refineClass)}
+            {this._getAction("file-pdf", !hasSelections, EPageType.PDF, this.translations?.downloadPDF)}
+            {this._getAction("file-csv", !hasSelections, EPageType.CSV, this.translations?.downloadCSV)}
           </calcite-action-bar>
           {this._getPage(this.pageType)}
         </calcite-shell>
@@ -156,6 +169,7 @@ export class NewPublicNotification {
 
   _getAction(
     icon: string,
+    disabled: boolean,
     pageType: EPageType,
     tip: string,
     showClass: string = ""
@@ -167,6 +181,7 @@ export class NewPublicNotification {
           alignment='center'
           class="width-full height-full"
           compact={false}
+          disabled={disabled}
           id={icon}
           onClick={() => { this._setPageType(pageType) }}
           text=""
@@ -260,7 +275,16 @@ export class NewPublicNotification {
         <div class={"padding-top-sides-1" + labelClass}>
           {this._getNameLabel()}
         </div>
-        {this._getPageNavButtons(this.translations?.next, EPageType.SEARCH, this.translations?.cancel, EPageType.LIST)}
+        {
+          this._getPageNavButtons(
+            this.translations?.next,
+            false,
+            () => { this._setPageType(EPageType.SEARCH) },
+            this.translations?.cancel,
+            false,
+            () => { this._setPageType(EPageType.LIST) }
+          )
+        }
       </calcite-panel>
     );
   }
@@ -273,7 +297,16 @@ export class NewPublicNotification {
         {this._getIconLabel(this.translations?.search)}
         {this._getMapSearch()}
         {this._getNotice(this.translations?.stepTwoTip)}
-        {this._getPageNavButtons(this.translations?.next, EPageType.SELECT, this.translations?.cancel, EPageType.LIST)}
+        {
+          this._getPageNavButtons(
+            this.translations?.next,
+            false,
+            () => { this._setPageType(EPageType.SELECT) },
+            this.translations?.cancel,
+            false,
+            () => { this._setPageType(EPageType.LIST) }
+          )
+        }
       </calcite-panel>
     );
   }
@@ -285,6 +318,7 @@ export class NewPublicNotification {
     const noticeText = isExpress ? this.translations?.stepThreeTip : `${this.translations?.stepTwoFullSearchTip} ${this.translations?.stepOptional}`;
     const hideClass = isExpress ? "" : " display-none";
     const showClass = isExpress ? " display-none" : "";
+    
     return (
       <calcite-panel>
         {this._getPageBack(EPageType.LAYER)}
@@ -309,12 +343,12 @@ export class NewPublicNotification {
           <map-select-tools
             class="font-bold"
             mapView={this.mapView}
-            // onSelectionSetChange={(evt) => this._updateForSelection(evt)}
-            // ref={(el) => { this._selectTools = el }}
-            // searchLayers={this.selectionLayers}
+            onSelectionSetChange={(evt) => this._updateForSelection(evt)}
+            ref={(el) => { this._selectTools = el }}
+            searchLayers={this.selectionLayers}
             selectLayerView={this.addresseeLayer}
-          // selectionSet={this.activeSelection}
-          // isUpdate={this.activeSelection ? true : false}
+            selectionSet={this.activeSelection}
+            isUpdate={this.activeSelection ? true : false}
           />
           <div class="display-block padding-top-1">
             {this._getNameLabel()}
@@ -323,10 +357,19 @@ export class NewPublicNotification {
         <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
           <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
           <calcite-input-message active class="info-blue" scale='m'>
-            {this.translations?.selectedAddresses.replace('{{n}}', "0")}
+            {this.translations?.selectedAddresses.replace('{{n}}', this.numSelected.toString())}
           </calcite-input-message>
         </div>
-        {this._getPageNavButtons(this.translations?.done, EPageType.LIST, this.translations?.cancel, EPageType.LIST)}
+        {
+          this._getPageNavButtons(
+            this.translations?.done,
+            this.numSelected === 0,
+            (): Promise<void> => this._saveSelection(),
+            this.translations?.cancel,
+            false,
+            () => { this._setPageType(EPageType.LIST) }
+          )
+        }
       </calcite-panel>
     );
   }
@@ -378,7 +421,16 @@ export class NewPublicNotification {
             )
           }
         </div>
-        {this._getPageNavButtons(this.translations?.done, EPageType.LIST, this.translations?.cancel, EPageType.LIST)}
+        {
+          this._getPageNavButtons(
+            this.translations?.done,
+            false,
+            () => { this._setPageType(EPageType.LIST) },
+            this.translations?.cancel,
+            false,
+            () => { this._setPageType(EPageType.LIST) }
+          )
+        }
       </calcite-panel>
     );
   }
@@ -427,16 +479,19 @@ export class NewPublicNotification {
 
   _getPageNavButtons(
     nextLabel: string,
-    nextPage: EPageType,
+    nextControlDisabled: boolean,
+    nextFunc: () => void,
     cancelLabel: string,
-    cancelPage: EPageType
+    cancelControlDisabled: boolean,
+    cancelFunc: () => void
   ): VNode {
     return (
       <div>
         <div class="display-flex padding-top-sides-1">
           <calcite-button
+            disabled={cancelControlDisabled}
             width="full"
-            onClick={() => { this._setPageType(nextPage) }}
+            onClick={nextFunc}
           >
             {nextLabel}
           </calcite-button>
@@ -444,8 +499,9 @@ export class NewPublicNotification {
         <div class="display-flex padding-top-1-2 padding-sides-1">
           <calcite-button
             appearance='outline'
+            disabled={nextControlDisabled}
             width="full"
-            onClick={() => { this._setPageType(cancelPage) }}
+            onClick={cancelFunc}
           >
             {cancelLabel}
           </calcite-button>
@@ -536,6 +592,86 @@ export class NewPublicNotification {
 
   _downloadCSV() {
     alert("download CSV")
+  }
+
+  _hasRefine(): boolean {
+    return this.selectionSets.some(selectionSet => {
+      return selectionSet.workflowType === EWorkflowType.REFINE &&
+        (selectionSet.refineIds.addIds.length > 0 || selectionSet.refineIds.removeIds.length > 0);
+    });
+  }
+
+  _updateSelectionSetsForRemoveIds(
+    removeIds: number[]
+  ) {
+    if (removeIds.length > 0) {
+      // update the selection sets selectedIds and remove any selection sets that have no selected features
+      this.selectionSets = this.selectionSets.reduce((prev, cur) => {
+        cur.selectedIds = cur.selectedIds.filter(id => removeIds.indexOf(id) < 0);
+        if (cur.selectedIds.length > 0) {
+          prev.push(cur);
+        }
+        return prev;
+      }, []);
+    }
+  }
+
+  _getRefineSelectionSet() {
+    let refineSelectionSet: ISelectionSet;
+    this.selectionSets.some(ss => {
+      if (ss.workflowType === EWorkflowType.REFINE) {
+        refineSelectionSet = ss;
+        return true;
+      }
+    });
+    return refineSelectionSet;
+  }
+
+  _updateRefineSelectionSet(
+    addIds: number[],
+    removeIds: number[]
+  ) {
+    const selectionSet = this._getRefineSelectionSet()
+    if (selectionSet) {
+      const _addIds = [...new Set(selectionSet.refineIds.addIds.concat(addIds))];
+      const _removeIds = [...new Set(selectionSet.refineIds.removeIds.concat(removeIds))];
+      selectionSet.refineIds = {
+        addIds: _addIds.filter(id => _removeIds.indexOf(id) < 0),
+        removeIds: _removeIds.filter(id => _addIds.indexOf(id) < 0)
+      }
+      selectionSet.selectedIds = selectionSet.refineIds.addIds.length > 0 ?
+        [...new Set(selectionSet.selectedIds.concat(selectionSet.refineIds.addIds))] :
+        selectionSet.selectedIds.filter(id => selectionSet.refineIds.removeIds.indexOf(id) < 0);
+
+      this.selectionSets = this.selectionSets.map(ss => {
+        if (ss.workflowType === EWorkflowType.REFINE) {
+          return selectionSet;
+        } else {
+          return ss;
+        }
+      })
+    } else {
+      this.selectionSets = [
+        ...this.selectionSets,
+        ({
+          buffer: undefined,
+          distance: 0,
+          geometries: [],
+          id: Date.now(),
+          label: "Refine",
+          layerView: this.addresseeLayer,
+          refineSelectLayers: [],
+          searchResult: undefined,
+          selectedIds: addIds,
+          unit: "feet",
+          workflowType: EWorkflowType.REFINE,
+          refineIds: {
+            addIds: addIds,
+            removeIds: removeIds
+          }
+        })
+      ];
+    }
   }
 
   _getRefineSelectionSetList() {
@@ -638,10 +774,77 @@ export class NewPublicNotification {
     this._refineTools.mode = mode;
   }
 
+  _getTotal(): Number {
+    return [...new Set(this._getSelectionIds(this.selectionSets))].length;
+  }
+
+  _updateForSelection(evt: CustomEvent) {
+    this.numSelected = evt.detail;
+    this.saveEnabled = this.numSelected > 0;
+  }
+
+  async _home() {
+    await this._clearSelection();
+    this._setPageType(EPageType.LIST);
+  }
+
   async _layerSelectionChange(evt: CustomEvent): Promise<void> {
     const title: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
     this.addresseeLayer = await getMapLayerView(this.mapView, title);
     //this.message = this.translations.startMessage.replace("{{n}}", evt?.detail?.length > 0 ? evt.detail[0] : "");
+  }
+
+  async _saveSelection(): Promise<void> {
+    const results = await this._selectTools?.getSelection();
+    const isUpdate = this._selectTools?.isUpdate;
+
+    if (isUpdate) {
+      this.selectionSets = this.selectionSets.map(ss => {
+        return ss.id === results.id ? results : ss;
+      });
+    } else {
+      this.selectionSets = [
+        ...this.selectionSets,
+        results
+      ]
+    }
+    this._home();
+  }
+
+  async _clearSelection () {
+    await this._selectTools?.clearSelection();
+    this.numSelected = 0;
+    this.activeSelection = undefined;
+  }
+
+  _deleteSelection(index: number) {
+    this.selectionSets = this.selectionSets.filter((ss, i) => {
+      if (i !== index) {
+        return ss;
+      }
+    });
+    this._highlightFeatures();
+  }
+
+  _openSelection(selectionSet: ISelectionSet) {
+    this.activeSelection = selectionSet;
+    this.pageType = EPageType.SELECT;
+  }
+
+  async _highlightFeatures() {
+    this._clearHighlight();
+    var ids = this._getSelectionIds(this.selectionSets);
+    if (ids.length > 0) {
+      state.highlightHandle = await highlightFeatures(
+        this.mapView,
+        this.addresseeLayer,
+        ids
+      );
+    }
+  }
+
+  _clearHighlight() {
+    state.highlightHandle?.remove();
   }
 
   async _getTranslations() {
