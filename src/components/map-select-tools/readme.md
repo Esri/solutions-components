@@ -81,6 +81,7 @@ Type: `Promise<string>`
 
 ### Used by
 
+ - [new-public-notification](../new-public-notification)
  - [public-notification](../public-notification)
 
 ### Depends on
@@ -123,6 +124,7 @@ graph TD;
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-slider --> calcite-graph
+  new-public-notification --> map-select-tools
   public-notification --> map-select-tools
   style map-select-tools fill:#f9f,stroke:#333,stroke-width:4px
 ```

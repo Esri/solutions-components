@@ -38,6 +38,8 @@ export class NewPublicNotification {
     */
    @Prop() addresseeLayer: __esri.FeatureLayerView;
 
+   @Prop() mode: "full" | "express" = "express"; 
+
   //--------------------------------------------------------------------------
   //
   //  Properties (private)
@@ -84,28 +86,15 @@ export class NewPublicNotification {
   }
 
   render() {
+    const refineClass = this.mode === "express" ? " display-none" : "";
     return (
       <Host>
         <calcite-shell>
           <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout='horizontal' slot="header">
-            <calcite-action-group class="action-center" layout='horizontal'>
-              <calcite-action alignment='center' class="width-full height-full" compact={false} icon="list-check" id="pn-lists" onClick={() => { this._setPageType(EPageType.LIST) }} text="" />
-              <calcite-tooltip label="" placement="bottom" reference-element="pn-lists">
-                <span>{this.translations?.myLists}</span>
-              </calcite-tooltip>
-            </calcite-action-group>
-            <calcite-action-group class="action-center" layout='horizontal'>
-              <calcite-action alignment='center' class="width-full height-full" compact={false} id="pn-pdf" onClick={() => { this._setPageType(EPageType.PDF) }} text="" icon="file-pdf" />
-              <calcite-tooltip label="" placement="bottom" reference-element="pn-pdf">
-                <span>{this.translations?.downloadPDF}</span>
-              </calcite-tooltip>
-            </calcite-action-group>
-            <calcite-action-group class="action-center" layout='horizontal'>
-              <calcite-action alignment='center' class="width-full height-full" compact={false} id="pn-csv" onClick={() => { this._setPageType(EPageType.CSV) }} text="" icon="file-csv" />
-              <calcite-tooltip label="" placement="bottom" reference-element="pn-csv">
-                <span>{this.translations?.downloadCSV}</span>
-              </calcite-tooltip>
-            </calcite-action-group>
+            {this._getAction("list-check", EPageType.LIST, this.translations?.myLists)}
+            {this._getAction("test-data", EPageType.REFINE, this.translations?.refineSelection, refineClass)}
+            {this._getAction("file-pdf", EPageType.PDF, this.translations?.downloadPDF)}
+            {this._getAction("file-csv", EPageType.CSV, this.translations?.downloadCSV)}
           </calcite-action-bar>
           {this._getPage(this.pageType)}
         </calcite-shell>
@@ -118,6 +107,31 @@ export class NewPublicNotification {
   //  Functions (private)
   //
   //--------------------------------------------------------------------------
+
+  _getAction(
+    icon: string,
+    pageType: EPageType,
+    tip: string,
+    showClass: string = ""
+  ): VNode {
+    const w = this.mode === "express" ? "w-1-3" : "w-1-4";
+    return (
+      <calcite-action-group class={"action-center " + w + showClass} layout='horizontal'>
+        <calcite-action
+          alignment='center'
+          class="width-full height-full"
+          compact={false}
+          id={icon}
+          onClick={() => { this._setPageType(pageType) }}
+          text=""
+          icon={icon}
+        />
+        <calcite-tooltip label="" placement="bottom" reference-element={icon}>
+          <span>{tip}</span>
+        </calcite-tooltip>
+      </calcite-action-group>
+    );
+  }
 
   _setPageType(
     pageType: EPageType
@@ -181,6 +195,7 @@ export class NewPublicNotification {
   }
 
   _getLayerPage(): VNode {
+    const labelClass = this.mode === "full" ? " display-none" : "";
     return (
       <calcite-panel>
         {this._getPageBack(EPageType.LIST)}
@@ -196,10 +211,8 @@ export class NewPublicNotification {
             />
           </calcite-label>
         </div>
-        <div class="padding-top-sides-1">
-          <calcite-label class="font-bold width-full">{this.translations?.nameLabel}
-            <calcite-input placeholder={this.translations?.nameLabelPlaceholder}></calcite-input>
-          </calcite-label>
+        <div class={"padding-top-sides-1" + labelClass}>
+          {this._getNameLabel()}
         </div>
         {this._getPageNavButtons(this.translations?.next, EPageType.SEARCH, this.translations?.cancel, EPageType.LIST)}
       </calcite-panel>
@@ -220,21 +233,46 @@ export class NewPublicNotification {
   }
 
   _getSelectPage(): VNode {
+    const isExpress = this.mode === "express";
+    // TODO the replace value and searchTip will need to change depending upon the selection mode
+    const stepLabel = isExpress ? this.translations?.stepThree : this.translations?.stepTwoFull.replace("{{n}}", this.translations?.stepTwoFullSearch);
+    const noticeText = isExpress ? this.translations?.stepThreeTip : `${this.translations?.stepTwoFullSearchTip} ${this.translations?.stepOptional}`;
+    const hideClass = isExpress ? "" : " display-none";
+    const showClass = isExpress ? " display-none" : "";
     return (
       <calcite-panel>
         {this._getPageBack(EPageType.LAYER)}
-        {this._getLabel(this.translations?.stepThree)}
-        {this._getIconLabel(this.translations?.search)}
-        {this._getMapSearch()}
-        {this._getNotice(this.translations?.stepThreeTip)}
-        {this._getIconLabel(this.translations?.select)}
-        <div class="padding-sides-1 padding-bottom-1">
-          <map-draw-tools mapView={this.mapView}></map-draw-tools>
+        {this._getLabel(stepLabel)}
+        <div class={hideClass}>
+          {this._getIconLabel(this.translations?.search)}
+          {this._getMapSearch()}
         </div>
-        <div class="margin-side-1 padding-top-1-2 border-top"></div>
-        {this._getIconLabel(this.translations?.searchDistance)}
-        <div class="padding-sides-1 padding-bottom-1">
-          <buffer-tools appearance='slider'/>
+        {this._getNotice(noticeText)}
+        <div class={hideClass}>
+          {this._getIconLabel(this.translations?.select)}
+          <div class="padding-sides-1 padding-bottom-1">
+            <map-draw-tools mapView={this.mapView}></map-draw-tools>
+          </div>
+          <div class="margin-side-1 padding-top-1-2 border-top"></div>
+          {this._getIconLabel(this.translations?.searchDistance)}
+          <div class="padding-sides-1 padding-bottom-1">
+            <buffer-tools appearance='slider' />
+          </div>
+        </div>
+        <div class={"padding-1" + showClass}>
+          <map-select-tools
+            class="font-bold"
+            mapView={this.mapView}
+            // onSelectionSetChange={(evt) => this._updateForSelection(evt)}
+            // ref={(el) => { this._selectTools = el }}
+            // searchLayers={this.selectionLayers}
+            selectLayerView={this.addresseeLayer}
+            // selectionSet={this.activeSelection}
+            // isUpdate={this.activeSelection ? true : false}
+          />
+          <div class="display-block padding-top-1">
+            {this._getNameLabel()}
+          </div>
         </div>
         <div class="padding-sides-1 padding-bottom-1" style={{"align-items": "end", "display": "flex"}}>
           <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
@@ -387,6 +425,14 @@ export class NewPublicNotification {
       <div class="padding-sides-1 padding-bottom-1 border-bottom">
         <map-search mapView={this.mapView}></map-search>
       </div>
+    );
+  }
+
+  _getNameLabel(): VNode {
+    return (
+      <calcite-label class="font-bold width-full">{this.translations?.nameLabel}
+        <calcite-input placeholder={this.translations?.nameLabelPlaceholder}></calcite-input>
+      </calcite-label>
     );
   }
 

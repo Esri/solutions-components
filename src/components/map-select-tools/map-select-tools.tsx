@@ -346,14 +346,14 @@ export class MapSelectTools {
         />
         <calcite-label disable-spacing={true} style={{ "display": "flex", "padding-top": ".5rem" }}>
           {this.translations?.searchDistance}
+          <buffer-tools
+            geometries={this.geometries}
+            onBufferComplete={(evt) => this._bufferComplete(evt)}
+            ref={(el) => this._bufferTools = el}
+            unit={this.selectionSet?.unit}
+            distance={this.selectionSet?.distance}
+          ></buffer-tools>
         </calcite-label>
-        <buffer-tools
-          geometries={this.geometries}
-          onBufferComplete={(evt) => this._bufferComplete(evt)}
-          ref={(el) => this._bufferTools = el}
-          unit={this.selectionSet?.unit}
-          distance={this.selectionSet?.distance}
-        ></buffer-tools>
         <slot />
       </Host>
     );
