@@ -305,14 +305,14 @@ export class MapSelectTools {
           >
             <calcite-radio-group-item
               checked={searchEnabled}
-              class="w-50"
+              class="w-50 end-border"
               value={EWorkflowType.SEARCH}
             >
               {this.translations.search}
             </calcite-radio-group-item>
             <calcite-radio-group-item
               checked={selectEnabled}
-              class="w-50"
+              class="w-50 end-border"
               value={EWorkflowType.SELECT}
             >
               {this.translations.select}
@@ -344,7 +344,7 @@ export class MapSelectTools {
           ref={(el) => { this._refineTools = el }}
           refineMode={ERefineMode.SUBSET}
         />
-        <calcite-label disable-spacing={true} style={{ "display": "flex", "padding-top": ".5rem" }}>
+        <calcite-label disable-spacing={true} style={{ "display": "flex", "padding-top": "1rem" }}>
           {this.translations?.searchDistance}
           <buffer-tools
             geometries={this.geometries}

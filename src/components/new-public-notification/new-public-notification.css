@@ -139,3 +139,12 @@ html[dir="rtl"] .main-label {
 .padding-1-2 {
   padding: 0.5rem;
 }
+
+.list-border {
+  border: 1px solid var(--calcite-ui-border-2);
+}
+
+.margin-sides-1 {
+  margin-inline-start: 1rem;
+  margin-inline-end: 1rem;
+}

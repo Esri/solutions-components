@@ -209,13 +209,13 @@ export class NewPublicNotification {
         page = this._getListPage();
         break;
 
-      case EPageType.LAYER:
-        page = this._getLayerPage();
-        break;
+      // case EPageType.LAYER:
+      //   page = this._getLayerPage();
+      //   break;
 
-      case EPageType.SEARCH:
-        page = this._getSearchPage();
-        break;
+      // case EPageType.SEARCH:
+      //   page = this._getSearchPage();
+      //   break;
 
       case EPageType.SELECT:
         page = this._getSelectPage();
@@ -238,31 +238,14 @@ export class NewPublicNotification {
   }
 
   _getListPage(): VNode {
+    const hasSets = this.selectionSets.filter(ss => ss.workflowType !== EWorkflowType.REFINE).length > 0;
     return (
       <calcite-panel>
         <div class="padding-top-sides-1">
           <calcite-label class="font-bold">{this.translations?.myLists}</calcite-label>
-          <calcite-label>{this.translations?.notifications}</calcite-label>
         </div>
-        <div class="info-message">
-          <calcite-input-message active class="info-blue" scale='m'>{this.translations?.noNotifications}</calcite-input-message>
-        </div>
-        {this._getNotice(this.translations?.notice)}
-        <div class="display-flex padding-1">
-          <calcite-button width="full" onClick={() => { this._setPageType(EPageType.LAYER) }}>{this.translations?.add}</calcite-button>
-        </div>
-      </calcite-panel>
-    );
-  }
-
-  _getLayerPage(): VNode {
-    const labelClass = this.mode === "full" ? " display-none" : "";
-    return (
-      <calcite-panel>
-        {this._getPageBack(EPageType.LIST)}
-        {this._getLabel(this.translations?.stepOne)}
-        {this._getNotice(this.translations?.stepOneTip)}
-        <div class="display-flex padding-top-sides-1">
+        {this._getNotice(this.translations?.notice, "padding-sides-1 padding-bottom")}
+        <div class="display-flex padding-sides-1">
           <calcite-label class="font-bold width-full">{this.translations?.addresseeLayer}
             <map-layer-picker
               mapView={this.mapView}
@@ -272,44 +255,104 @@ export class NewPublicNotification {
             />
           </calcite-label>
         </div>
-        <div class={"padding-top-sides-1" + labelClass}>
-          {this._getNameLabel()}
+        <div class="padding-sides-1">
+          <calcite-label>{this.translations?.notifications}</calcite-label>
         </div>
         {
-          this._getPageNavButtons(
-            this.translations?.next,
-            false,
-            () => { this._setPageType(EPageType.SEARCH) },
-            this.translations?.cancel,
-            false,
-            () => { this._setPageType(EPageType.LIST) }
+          hasSets ? this._getSelectionSetList() : (
+            <div class="info-message">
+              <calcite-input-message active class="info-blue" scale='m'>{this.translations?.noNotifications}</calcite-input-message>
+            </div>
           )
         }
+        <div class="display-flex padding-1">
+          <calcite-button width="full" onClick={() => { this._setPageType(EPageType.SELECT) }}>{this.translations?.add}</calcite-button>
+        </div>
       </calcite-panel>
     );
   }
 
-  _getSearchPage(): VNode {
+  _getSelectionSetList(): VNode {
     return (
-      <calcite-panel>
-        {this._getPageBack(EPageType.LAYER)}
-        {this._getLabel(this.translations?.stepTwo)}
-        {this._getIconLabel(this.translations?.search)}
-        {this._getMapSearch()}
-        {this._getNotice(this.translations?.stepTwoTip)}
+      <calcite-list class="list-border margin-sides-1">
         {
-          this._getPageNavButtons(
-            this.translations?.next,
-            false,
-            () => { this._setPageType(EPageType.SELECT) },
-            this.translations?.cancel,
-            false,
-            () => { this._setPageType(EPageType.LIST) }
-          )
+          // REFINE is handled seperately from the core selection sets
+          // You can only access after clicking the refine action
+          this.selectionSets.reduce((prev, cur, i) => {
+            if (cur.workflowType !== EWorkflowType.REFINE) {
+              prev.push((
+                <calcite-list-item
+                  description={this.translations.selectedFeatures.replace('{{n}}', cur.selectedIds.length.toString())}
+                  label={cur.label}
+                //onClick={() => flashSelection(cur)}
+                >
+                  {this._getAction2(true, "pencil", "", (): void => this._openSelection(cur), false, "actions-end")}
+                  {this._getAction2(true, "x", "", (): void => this._deleteSelection(i), false, "actions-end")}
+                </calcite-list-item>
+              ));
+            }
+            return prev;
+          }, [])
         }
-      </calcite-panel>
+      </calcite-list>
     );
   }
+
+  // _getLayerPage(): VNode {
+  //   const labelClass = this.mode === "full" ? " display-none" : "";
+  //   return (
+  //     <calcite-panel>
+  //       {this._getPageBack(EPageType.LIST)}
+  //       {this._getLabel(this.translations?.stepOne)}
+  //       {this._getNotice(this.translations?.stepOneTip)}
+  //       <div class="display-flex padding-top-sides-1">
+  //         <calcite-label class="font-bold width-full">{this.translations?.addresseeLayer}
+  //           <map-layer-picker
+  //             mapView={this.mapView}
+  //             onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
+  //             selectionMode={"single"}
+  //           //selectedLayers={layerTitle ? [layerTitle] : []}
+  //           />
+  //         </calcite-label>
+  //       </div>
+  //       <div class={"padding-top-sides-1" + labelClass}>
+  //         {this._getNameLabel()}
+  //       </div>
+  //       {
+  //         this._getPageNavButtons(
+  //           this.translations?.next,
+  //           false,
+  //           () => { this._setPageType(EPageType.SEARCH) },
+  //           this.translations?.cancel,
+  //           false,
+  //           () => { this._setPageType(EPageType.LIST) }
+  //         )
+  //       }
+  //     </calcite-panel>
+  //   );
+  // }
+
+  // _getSearchPage(): VNode {
+  //   return (
+  //     <calcite-panel>
+  //       {this._getPageBack(EPageType.LAYER)}
+  //       {this._getLabel(this.translations?.stepTwo)}
+  //       {this._getIconLabel(this.translations?.search)}
+  //       {this._getMapSearch()}
+  //       {this._getNotice(this.translations?.stepTwoTip)}
+  //       {
+  //         this._getPageNavButtons(
+  //           this.translations?.next,
+  //           false,
+  //           () => { this._setPageType(EPageType.SELECT) },
+  //           this.translations?.cancel,
+  //           false,
+  //           () => { this._setPageType(EPageType.LIST) }
+  //         )
+  //       }
+  //     </calcite-panel>
+  //   );
+  // }
 
   _getSelectPage(): VNode {
     const isExpress = this.mode === "express";
@@ -321,8 +364,11 @@ export class NewPublicNotification {
     
     return (
       <calcite-panel>
-        {this._getPageBack(EPageType.LAYER)}
-        {this._getLabel(stepLabel)}
+        {this._getPageBack(() => { 
+          this._clearSelection();
+          this._setPageType(EPageType.LIST)
+        })}
+        {this._getLabel(stepLabel, true)}
         <div class={hideClass}>
           {this._getIconLabel(this.translations?.search)}
           {this._getMapSearch()}
@@ -350,9 +396,9 @@ export class NewPublicNotification {
             selectionSet={this.activeSelection}
             isUpdate={this.activeSelection ? true : false}
           />
-          <div class="display-block padding-top-1">
+          {/* <div class="display-block padding-top-1">
             {this._getNameLabel()}
-          </div>
+          </div> */}
         </div>
         <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
           <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
@@ -367,7 +413,10 @@ export class NewPublicNotification {
             (): Promise<void> => this._saveSelection(),
             this.translations?.cancel,
             false,
-            () => { this._setPageType(EPageType.LIST) }
+            () => {
+              this._clearSelection();
+              this._setPageType(EPageType.LIST);
+            }
           )
         }
       </calcite-panel>
@@ -377,7 +426,7 @@ export class NewPublicNotification {
   _getRefinePage(): VNode {
     return (
       <calcite-panel>
-        {this._getPageBack(EPageType.LAYER)}
+        {this._getPageBack(() => {this._setPageType(EPageType.LAYER)})}
         {this._getLabel(this.translations?.refineSelection)}
         {this._getNotice(this.translations?.refineTip)}
         <div class="padding-1">
@@ -489,7 +538,7 @@ export class NewPublicNotification {
       <div>
         <div class="display-flex padding-top-sides-1">
           <calcite-button
-            disabled={cancelControlDisabled}
+            disabled={nextControlDisabled}
             width="full"
             onClick={nextFunc}
           >
@@ -499,7 +548,7 @@ export class NewPublicNotification {
         <div class="display-flex padding-top-1-2 padding-sides-1">
           <calcite-button
             appearance='outline'
-            disabled={nextControlDisabled}
+            disabled={cancelControlDisabled}
             width="full"
             onClick={cancelFunc}
           >
@@ -511,7 +560,7 @@ export class NewPublicNotification {
   }
 
   _getPageBack(
-    backPage: EPageType
+    backFunc: () => void
   ): VNode {
     return (
       <div class="padding-top-sides-1 display-flex">
@@ -520,7 +569,7 @@ export class NewPublicNotification {
           class="back-label"
           disable-spacing={true}
           layout="inline-space-between"
-          onClick={() => { this._setPageType(backPage) }}
+          onClick={backFunc}
         >
           <calcite-icon icon="chevron-left" scale="s" />
           {this.translations?.back}
@@ -530,10 +579,11 @@ export class NewPublicNotification {
   }
 
   _getNotice(
-    message: string
+    message: string,
+    noticeClass: string = "padding-1"
   ): VNode {
     return (
-      <calcite-notice active class="padding-1" color="green" icon="lightbulb">
+      <calcite-notice active class={noticeClass} color="green" icon="lightbulb">
         <div slot="message">{message}</div>
       </calcite-notice>
     );

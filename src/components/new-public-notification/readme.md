@@ -26,9 +26,11 @@
 - calcite-tooltip
 - calcite-panel
 - calcite-label
+- [map-layer-picker](../map-layer-picker)
 - calcite-input-message
 - calcite-button
-- [map-layer-picker](../map-layer-picker)
+- calcite-list
+- calcite-list-item
 - [map-draw-tools](../map-draw-tools)
 - [buffer-tools](../buffer-tools)
 - [map-select-tools](../map-select-tools)
@@ -36,12 +38,10 @@
 - calcite-radio-group
 - calcite-radio-group-item
 - [refine-selection-tools](../refine-selection-tools)
-- calcite-list
 - [pdf-download](../pdf-download)
 - calcite-notice
 - [map-search](../map-search)
 - calcite-input
-- calcite-list-item
 
 ### Graph
 ```mermaid
@@ -53,9 +53,11 @@ graph TD;
   new-public-notification --> calcite-tooltip
   new-public-notification --> calcite-panel
   new-public-notification --> calcite-label
+  new-public-notification --> map-layer-picker
   new-public-notification --> calcite-input-message
   new-public-notification --> calcite-button
-  new-public-notification --> map-layer-picker
+  new-public-notification --> calcite-list
+  new-public-notification --> calcite-list-item
   new-public-notification --> map-draw-tools
   new-public-notification --> buffer-tools
   new-public-notification --> map-select-tools
@@ -63,12 +65,10 @@ graph TD;
   new-public-notification --> calcite-radio-group
   new-public-notification --> calcite-radio-group-item
   new-public-notification --> refine-selection-tools
-  new-public-notification --> calcite-list
   new-public-notification --> pdf-download
   new-public-notification --> calcite-notice
   new-public-notification --> map-search
   new-public-notification --> calcite-input
-  new-public-notification --> calcite-list-item
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
@@ -82,9 +82,6 @@ graph TD;
   calcite-panel --> calcite-action-menu
   calcite-panel --> calcite-scrim
   calcite-scrim --> calcite-loader
-  calcite-input-message --> calcite-icon
-  calcite-button --> calcite-loader
-  calcite-button --> calcite-icon
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-combobox-item
@@ -94,6 +91,9 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
+  calcite-input-message --> calcite-icon
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   buffer-tools --> calcite-option
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select

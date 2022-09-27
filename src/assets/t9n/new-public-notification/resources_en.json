@@ -1,5 +1,5 @@
 {
-    "refineSelection": "Refine Selection",
+    "refineSelection": "Refine Selection Set(s)",
     "downloadPDF": "Download PDF",
     "downloadCSV": "Download CSV",
     "add": "Add",
@@ -23,7 +23,7 @@
     "stepTwoTip": "Choose an area/location using the 'Search' tool or click on a location in the map.",
     "stepThree": "Step 3. Select address",
     "stepThreeTip": "Refine your search using the 'Select' or 'Search Distance' tools.",
-    "stepTwoFull": "Step 2. Select features {{n}}",
+    "stepTwoFull": "Select features {{n}}",
     "stepTwoFullSearch": "by search",
     "stepTwoFullLayer": "using an existing layer",
     "stepTwoFullSketch": "using sketch tools",
