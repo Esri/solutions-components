@@ -39,13 +39,15 @@ export class NewPublicNotification {
    */
   @Prop() addresseeLayer: __esri.FeatureLayerView;
 
-  @Prop() mode: "full" | "express" = "express";
-
   //--------------------------------------------------------------------------
   //
   //  Properties (private)
   //
   //--------------------------------------------------------------------------
+
+  @State() activeTab = 0;
+
+  @State() downloadActive = true;
 
   /**
    * Contains the translations for this component.
@@ -71,15 +73,15 @@ export class NewPublicNotification {
   /**
    * number: The number of selected features
    */
-   @State() numSelected = 0;
+  @State() numSelected = 0;
 
-   protected _selectTools: HTMLMapSelectToolsElement;
- 
-   protected activeSelection: ISelectionSet;
- 
-   protected _refineTools: HTMLRefineSelectionToolsElement;
- 
-   protected addEnabled = true;
+  protected _selectTools: HTMLMapSelectToolsElement;
+
+  protected activeSelection: ISelectionSet;
+
+  protected _refineTools: HTMLRefineSelectionToolsElement;
+
+  protected addEnabled = true;
 
   //--------------------------------------------------------------------------
   //
@@ -144,14 +146,13 @@ export class NewPublicNotification {
   }
 
   render() {
-    const refineClass = this.mode === "express" ? " display-none" : "";
     const hasSelections = this.selectionSets.length > 0;
     return (
       <Host>
         <calcite-shell>
           <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout='horizontal' slot="header">
             {this._getAction("list-check", false, EPageType.LIST, this.translations?.myLists)}
-            {this._getAction("test-data", !hasSelections, EPageType.REFINE, this.translations?.refineSelection, refineClass)}
+            {this._getAction("test-data", !hasSelections, EPageType.REFINE, this.translations?.refineSelection)}
             {this._getAction("file-pdf", !hasSelections, EPageType.PDF, this.translations?.downloadPDF)}
             {this._getAction("file-csv", !hasSelections, EPageType.CSV, this.translations?.downloadCSV)}
           </calcite-action-bar>
@@ -171,14 +172,13 @@ export class NewPublicNotification {
     icon: string,
     disabled: boolean,
     pageType: EPageType,
-    tip: string,
-    showClass: string = ""
+    tip: string
   ): VNode {
-    const w = this.mode === "express" ? "w-1-3" : "w-1-4";
     return (
-      <calcite-action-group class={"action-center " + w + showClass} layout='horizontal'>
+      <calcite-action-group class={"action-center w-1-4"} layout='horizontal'>
         <calcite-action
           alignment='center'
+          active={this.pageType === pageType}
           class="width-full height-full"
           compact={false}
           disabled={disabled}
@@ -209,14 +209,6 @@ export class NewPublicNotification {
         page = this._getListPage();
         break;
 
-      // case EPageType.LAYER:
-      //   page = this._getLayerPage();
-      //   break;
-
-      // case EPageType.SEARCH:
-      //   page = this._getSearchPage();
-      //   break;
-
       case EPageType.SELECT:
         page = this._getSelectPage();
         break;
@@ -244,14 +236,14 @@ export class NewPublicNotification {
         <div class="padding-top-sides-1">
           <calcite-label class="font-bold">{this.translations?.myLists}</calcite-label>
         </div>
-        {this._getNotice(this.translations?.notice, "padding-sides-1 padding-bottom")}
+        {this._getNotice(this.translations?.notice, "padding-sides-1 padding-bottom-1")}
         <div class="display-flex padding-sides-1">
           <calcite-label class="font-bold width-full">{this.translations?.addresseeLayer}
             <map-layer-picker
               mapView={this.mapView}
               onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
               selectionMode={"single"}
-            //selectedLayers={layerTitle ? [layerTitle] : []}
+              //selectedLayers={layerTitle ? [layerTitle] : []}
             />
           </calcite-label>
         </div>
@@ -298,94 +290,17 @@ export class NewPublicNotification {
     );
   }
 
-  // _getLayerPage(): VNode {
-  //   const labelClass = this.mode === "full" ? " display-none" : "";
-  //   return (
-  //     <calcite-panel>
-  //       {this._getPageBack(EPageType.LIST)}
-  //       {this._getLabel(this.translations?.stepOne)}
-  //       {this._getNotice(this.translations?.stepOneTip)}
-  //       <div class="display-flex padding-top-sides-1">
-  //         <calcite-label class="font-bold width-full">{this.translations?.addresseeLayer}
-  //           <map-layer-picker
-  //             mapView={this.mapView}
-  //             onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
-  //             selectionMode={"single"}
-  //           //selectedLayers={layerTitle ? [layerTitle] : []}
-  //           />
-  //         </calcite-label>
-  //       </div>
-  //       <div class={"padding-top-sides-1" + labelClass}>
-  //         {this._getNameLabel()}
-  //       </div>
-  //       {
-  //         this._getPageNavButtons(
-  //           this.translations?.next,
-  //           false,
-  //           () => { this._setPageType(EPageType.SEARCH) },
-  //           this.translations?.cancel,
-  //           false,
-  //           () => { this._setPageType(EPageType.LIST) }
-  //         )
-  //       }
-  //     </calcite-panel>
-  //   );
-  // }
-
-  // _getSearchPage(): VNode {
-  //   return (
-  //     <calcite-panel>
-  //       {this._getPageBack(EPageType.LAYER)}
-  //       {this._getLabel(this.translations?.stepTwo)}
-  //       {this._getIconLabel(this.translations?.search)}
-  //       {this._getMapSearch()}
-  //       {this._getNotice(this.translations?.stepTwoTip)}
-  //       {
-  //         this._getPageNavButtons(
-  //           this.translations?.next,
-  //           false,
-  //           () => { this._setPageType(EPageType.SELECT) },
-  //           this.translations?.cancel,
-  //           false,
-  //           () => { this._setPageType(EPageType.LIST) }
-  //         )
-  //       }
-  //     </calcite-panel>
-  //   );
-  // }
-
   _getSelectPage(): VNode {
-    const isExpress = this.mode === "express";
     // TODO the replace value and searchTip will need to change depending upon the selection mode
-    const stepLabel = isExpress ? this.translations?.stepThree : this.translations?.stepTwoFull.replace("{{n}}", this.translations?.stepTwoFullSearch);
-    const noticeText = isExpress ? this.translations?.stepThreeTip : `${this.translations?.stepTwoFullSearchTip} ${this.translations?.stepOptional}`;
-    const hideClass = isExpress ? "" : " display-none";
-    const showClass = isExpress ? " display-none" : "";
+    const stepLabel = this.translations?.stepTwoFull.replace("{{n}}", this.translations?.stepTwoFullSearch);
+    const noticeText = `${this.translations?.stepTwoFullSearchTip} ${this.translations?.stepOptional}`;
     
     return (
       <calcite-panel>
-        {this._getPageBack(() => { 
-          this._clearSelection();
-          this._setPageType(EPageType.LIST)
-        })}
+        {this._getPageBack(() => { this._home() })}
         {this._getLabel(stepLabel, true)}
-        <div class={hideClass}>
-          {this._getIconLabel(this.translations?.search)}
-          {this._getMapSearch()}
-        </div>
         {this._getNotice(noticeText)}
-        <div class={hideClass}>
-          {this._getIconLabel(this.translations?.select)}
-          <div class="padding-sides-1 padding-bottom-1">
-            <map-draw-tools mapView={this.mapView}></map-draw-tools>
-          </div>
-          <div class="margin-side-1 padding-top-1-2 border-top"></div>
-          {this._getIconLabel(this.translations?.searchDistance)}
-          <div class="padding-sides-1 padding-bottom-1">
-            <buffer-tools appearance='slider' />
-          </div>
-        </div>
-        <div class={"padding-1" + showClass}>
+        <div class={"padding-1"}>
           <map-select-tools
             class="font-bold"
             mapView={this.mapView}
@@ -413,10 +328,7 @@ export class NewPublicNotification {
             (): Promise<void> => this._saveSelection(),
             this.translations?.cancel,
             false,
-            () => {
-              this._clearSelection();
-              this._setPageType(EPageType.LIST);
-            }
+            () => { this._home() }
           )
         }
       </calcite-panel>
@@ -426,7 +338,7 @@ export class NewPublicNotification {
   _getRefinePage(): VNode {
     return (
       <calcite-panel>
-        {this._getPageBack(() => {this._setPageType(EPageType.LAYER)})}
+        {this._getPageBack(() => {this._home()})}
         {this._getLabel(this.translations?.refineSelection)}
         {this._getNotice(this.translations?.refineTip)}
         <div class="padding-1">
@@ -502,20 +414,25 @@ export class NewPublicNotification {
           <calcite-label class="font-bold">
             {isPdf ? this.translations?.pdfDownloads : this.translations?.csvDownloads}
           </calcite-label>
-          <calcite-label>
-            {this.translations?.notifications}
-          </calcite-label>
+          <calcite-label>{this.translations?.notifications}</calcite-label>
         </div>
         {this._getSelectionLists()}
         <div class={isPdf ? "" : "display-none"}>
-          <div class="margin-side-1 padding-top-1 border-bottom"></div>
-          {this._getLabel(this.translations?.selectPDFLabelOption)}
+          <div class="margin-side-1 padding-top-1 border-bottom"></div>      
+          <div class="padding-top-sides-1">
+            <calcite-label layout='inline' disabled={!this.downloadActive}>
+              <calcite-checkbox disabled={!this.downloadActive} />
+              {this.translations?.removeDuplicate}
+            </calcite-label>
+          </div>
+          {this._getLabel(this.translations?.selectPDFLabelOption, false, !this.downloadActive)}
           <div class="padding-sides-1">
-            <pdf-download />
+            <pdf-download disabled={!this.downloadActive}/>
           </div>
         </div>
         <div class="padding-1 display-flex">
           <calcite-button
+            disabled={!this.downloadActive}
             width="full"
             onClick={isPdf ? this._downloadPDF : this._downloadCSV}
           >
@@ -591,11 +508,18 @@ export class NewPublicNotification {
 
   _getLabel(
     label: string,
-    disableSpacing: boolean = false
+    disableSpacing: boolean = false,
+    disabled: boolean = false
   ): VNode {
     return (
       <div class="padding-top-sides-1">
-        <calcite-label class="font-bold" disable-spacing={disableSpacing}>{label}</calcite-label>
+        <calcite-label
+          class="font-bold"
+          disabled={disabled}
+          disable-spacing={disableSpacing}
+        >
+          {label}
+        </calcite-label>
       </div>
     );
   }
@@ -617,7 +541,38 @@ export class NewPublicNotification {
   }
 
   _getSelectionLists(): VNode {
-    return (<div class="padding-sides-1">Selection lists go here</div>);
+    return this.selectionSets.reduce((prev, cur) => {
+      if (cur.workflowType !== EWorkflowType.REFINE) {
+        console.log(cur.download)
+        prev.push((
+          <div class="display-flex padding-sides-1 padding-bottom-1">
+            <calcite-checkbox checked={cur.download} onClick={() => {this._toggleDownload(cur.id)}}/>
+            <calcite-list id="download-list" class="list-border margin-start-1-2 w-100">
+              <calcite-list-item
+                description={this.translations.selectedFeatures.replace('{{n}}', cur.selectedIds.length.toString())}
+                disabled={!cur.download}
+                label={cur.label}
+                onClick={() => {this._toggleDownload(cur.id)}}
+              >
+              </calcite-list-item>
+            </calcite-list>
+          </div>
+        ));
+      }
+      return prev;
+    }, []) || (<div />);
+  }
+
+  _toggleDownload(
+    id: number
+  ) {
+    let isActive = false;
+    this.selectionSets = this.selectionSets.map(ss => {
+      ss.download = ss.id === id ? !ss.download : ss.download;
+      isActive = ss.download ? true : isActive;
+      return ss;
+    });
+    this.downloadActive = isActive;
   }
 
   _getMapSearch(): VNode {
@@ -681,7 +636,7 @@ export class NewPublicNotification {
     addIds: number[],
     removeIds: number[]
   ) {
-    const selectionSet = this._getRefineSelectionSet()
+    const selectionSet = this._getRefineSelectionSet();
     if (selectionSet) {
       const _addIds = [...new Set(selectionSet.refineIds.addIds.concat(addIds))];
       const _removeIds = [...new Set(selectionSet.refineIds.removeIds.concat(removeIds))];
@@ -706,6 +661,7 @@ export class NewPublicNotification {
         ({
           buffer: undefined,
           distance: 0,
+          download: true,
           geometries: [],
           id: Date.now(),
           label: "Refine",
@@ -725,17 +681,10 @@ export class NewPublicNotification {
   }
 
   _getRefineSelectionSetList() {
-    const refineSets = this.selectionSets.filter(ss => ss.workflowType === EWorkflowType.REFINE);
-    
-    const hasRefineSet = refineSets.length > 0;
-    const refineSet = hasRefineSet ? refineSets[0] : undefined;
-    
-    const total = this.selectionSets.reduce((prev, cur) => {
-      return prev += cur.selectedIds.length
-    }, 0);
-
-    const numAdded = hasRefineSet ? refineSet.refineIds.addIds.length : 0;
-    const numRemoved = hasRefineSet ? refineSet.refineIds.removeIds.length : 0;
+    const total = this._getTotal();
+    const refineSet = this._getRefineSelectionSet();
+    const numAdded = refineSet?.refineIds.addIds.length || 0;
+    const numRemoved = refineSet?.refineIds.removeIds.length || 0;
 
     return [(
       <calcite-list-item
@@ -841,7 +790,6 @@ export class NewPublicNotification {
   async _layerSelectionChange(evt: CustomEvent): Promise<void> {
     const title: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
     this.addresseeLayer = await getMapLayerView(this.mapView, title);
-    //this.message = this.translations.startMessage.replace("{{n}}", evt?.detail?.length > 0 ? evt.detail[0] : "");
   }
 
   async _saveSelection(): Promise<void> {

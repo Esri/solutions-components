@@ -42,13 +42,11 @@ Type: `Promise<void>`
 ### Used by
 
  - [map-select-tools](../map-select-tools)
- - [new-public-notification](../new-public-notification)
 
 ### Graph
 ```mermaid
 graph TD;
   map-select-tools --> map-draw-tools
-  new-public-notification --> map-draw-tools
   style map-draw-tools fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

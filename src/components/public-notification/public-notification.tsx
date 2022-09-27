@@ -455,6 +455,7 @@ export class PublicNotificationTwo {
         ({
           buffer: undefined,
           distance: 0,
+          download: true,
           geometries: [],
           id: Date.now(),
           label: "Refine",

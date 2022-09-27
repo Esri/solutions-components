@@ -7,12 +7,11 @@
 
 ## Properties
 
-| Property          | Attribute | Description                                                                                                                               | Type                  | Default     |
-| ----------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- | --------------------- | ----------- |
-| `addresseeLayer`  | --        | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView`    | `undefined` |
-| `mapView`         | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`             | `undefined` |
-| `mode`            | `mode`    |                                                                                                                                           | `"express" \| "full"` | `"express"` |
-| `selectionLayers` | --        | esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html                                   | `Layer[]`             | `undefined` |
+| Property          | Attribute | Description                                                                                                                               | Type               | Default     |
+| ----------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
+| `addresseeLayer`  | --        | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
+| `mapView`         | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`          | `undefined` |
+| `selectionLayers` | --        | esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html                                   | `Layer[]`          | `undefined` |
 
 
 ## Dependencies
@@ -31,13 +30,12 @@
 - calcite-button
 - calcite-list
 - calcite-list-item
-- [map-draw-tools](../map-draw-tools)
-- [buffer-tools](../buffer-tools)
 - [map-select-tools](../map-select-tools)
 - calcite-icon
 - calcite-radio-group
 - calcite-radio-group-item
 - [refine-selection-tools](../refine-selection-tools)
+- calcite-checkbox
 - [pdf-download](../pdf-download)
 - calcite-notice
 - [map-search](../map-search)
@@ -58,13 +56,12 @@ graph TD;
   new-public-notification --> calcite-button
   new-public-notification --> calcite-list
   new-public-notification --> calcite-list-item
-  new-public-notification --> map-draw-tools
-  new-public-notification --> buffer-tools
   new-public-notification --> map-select-tools
   new-public-notification --> calcite-icon
   new-public-notification --> calcite-radio-group
   new-public-notification --> calcite-radio-group-item
   new-public-notification --> refine-selection-tools
+  new-public-notification --> calcite-checkbox
   new-public-notification --> pdf-download
   new-public-notification --> calcite-notice
   new-public-notification --> map-search
@@ -94,13 +91,6 @@ graph TD;
   calcite-input-message --> calcite-icon
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
-  buffer-tools --> calcite-option
-  buffer-tools --> calcite-input
-  buffer-tools --> calcite-select
-  buffer-tools --> calcite-slider
-  calcite-input --> calcite-progress
-  calcite-input --> calcite-icon
-  calcite-slider --> calcite-graph
   map-select-tools --> calcite-radio-group
   map-select-tools --> calcite-radio-group-item
   map-select-tools --> map-draw-tools
@@ -111,6 +101,13 @@ graph TD;
   refine-selection-tools --> calcite-label
   refine-selection-tools --> map-layer-picker
   refine-selection-tools --> calcite-action
+  buffer-tools --> calcite-option
+  buffer-tools --> calcite-input
+  buffer-tools --> calcite-select
+  buffer-tools --> calcite-slider
+  calcite-input --> calcite-progress
+  calcite-input --> calcite-icon
+  calcite-slider --> calcite-graph
   pdf-download --> calcite-select
   pdf-download --> calcite-option
   calcite-notice --> calcite-icon

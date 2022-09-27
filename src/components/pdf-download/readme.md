@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property    | Attribute | Description | Type               | Default     |
-| ----------- | --------- | ----------- | ------------------ | ----------- |
-| `layerView` | --        |             | `FeatureLayerView` | `undefined` |
+| Property    | Attribute  | Description | Type               | Default     |
+| ----------- | ---------- | ----------- | ------------------ | ----------- |
+| `disabled`  | `disabled` |             | `boolean`          | `undefined` |
+| `layerView` | --         |             | `FeatureLayerView` | `undefined` |
 
 
 ## Dependencies

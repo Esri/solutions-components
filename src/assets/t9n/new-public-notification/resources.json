@@ -43,5 +43,6 @@
     "pdfDownloads": "PDF Downloads",
     "selectPDFLabelOption": "Select PDF label option",
     "csvDownloads": "CSV Downloads",
-    "refineTip": "Add or remove features to refine and finalize the selection using the sketch tools."
+    "refineTip": "Add or remove features to refine and finalize the selection using the sketch tools.",
+    "removeDuplicate": "Remove duplicate addresses"
 }

@@ -31,7 +31,6 @@
 ### Used by
 
  - [map-select-tools](../map-select-tools)
- - [new-public-notification](../new-public-notification)
 
 ### Depends on
 
@@ -52,7 +51,6 @@ graph TD;
   calcite-select --> calcite-icon
   calcite-slider --> calcite-graph
   map-select-tools --> buffer-tools
-  new-public-notification --> buffer-tools
   style buffer-tools fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

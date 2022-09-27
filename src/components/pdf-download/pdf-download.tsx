@@ -41,6 +41,8 @@ export class PdfDownload {
 
   @Prop() layerView: __esri.FeatureLayerView;
 
+  @Prop() disabled: boolean;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (private)
@@ -84,7 +86,7 @@ export class PdfDownload {
   render() {
     return (
       <Host>
-        <calcite-select label="">
+        <calcite-select disabled={this.disabled} label="">
           {this._renderItems()}
         </calcite-select>
       </Host>

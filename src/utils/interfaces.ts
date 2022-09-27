@@ -277,6 +277,7 @@ export interface ISelectionSet {
   searchResult: any;
   buffer: __esri.Geometry;
   distance: number;
+  download: boolean;
   unit: __esri.LinearUnits;
   label: string;
   selectedIds: number[],

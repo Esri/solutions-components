@@ -148,3 +148,7 @@ html[dir="rtl"] .main-label {
   margin-inline-start: 1rem;
   margin-inline-end: 1rem;
 }
+
+.margin-start-1-2 {
+  margin-inline-start: 0.5rem;
+}

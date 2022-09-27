@@ -164,13 +164,13 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
-        "mode": "full" | "express";
         /**
           * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
          */
         "selectionLayers": __esri.Layer[];
     }
     interface PdfDownload {
+        "disabled": boolean;
         "layerView": __esri.FeatureLayerView;
     }
     interface PublicNotification {
@@ -786,13 +786,13 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        "mode"?: "full" | "express";
         /**
           * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
          */
         "selectionLayers"?: __esri.Layer[];
     }
     interface PdfDownload {
+        "disabled"?: boolean;
         "layerView"?: __esri.FeatureLayerView;
     }
     interface PublicNotification {

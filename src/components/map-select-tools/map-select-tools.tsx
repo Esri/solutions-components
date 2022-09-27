@@ -238,6 +238,7 @@ export class MapSelectTools {
       searchResult: this._searchResult,
       buffer: this._bufferGeometry,
       distance: this._bufferTools.distance,
+      download: true,
       unit: this._bufferTools.unit,
       label: this._selectType === EWorkflowType.SEARCH ?
         this._selectionLabel : `${this._selectionLabel} ${this._bufferTools.distance} ${this._bufferTools.unit}`,

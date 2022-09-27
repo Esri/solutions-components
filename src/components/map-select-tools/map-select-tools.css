@@ -53,3 +53,7 @@
 .search-distance-container {
   padding-top: "1rem" !important;
 }
+
+.end-border {
+  border-inline-end: 1px solid var(--calcite-ui-border-2);
+}
