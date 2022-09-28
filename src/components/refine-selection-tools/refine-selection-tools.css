@@ -40,6 +40,14 @@ html[dir="rtl"] .main-label {
   float: right;
 }
 
+.border {
+  outline: 1px solid var(--calcite-ui-border-input);
+}
+
+.margin-top-1 {
+  margin-top: 1rem;
+}
+
 /* COPY FROM JS */
 .esri-sketch {
   display: flex;

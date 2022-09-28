@@ -334,12 +334,14 @@ export class MapSelectTools {
         </div>
         <map-draw-tools
           active={drawEnabled}
+          border={true}
           class={showDrawToolsClass}
           mapView={this.mapView} 
           ref={(el) => { this._drawTools = el}}
         />
         <refine-selection-tools
           active={selectEnabled}
+          border={true}
           class={showSelectToolsClass}
           layerViews={this._refineSelectLayers}
           mapView={this.mapView}

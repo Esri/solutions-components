@@ -87,6 +87,8 @@ export class RefineSelectionTools {
    */
   @Prop() layerViews: __esri.FeatureLayerView[] = [];
 
+  @Prop() border = false;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (private)
@@ -194,6 +196,7 @@ export class RefineSelectionTools {
 
   render() {
     const showLayerPickerClass = this.useLayerPicker ? "div-visible" : "div-not-visible";
+    const drawClass = this.border ? " border" : "";
     return (
       <Host>
         <div>
@@ -207,7 +210,7 @@ export class RefineSelectionTools {
             selectionMode={"single"}
             onLayerSelectionChange={(evt) => { this._layerSelectionChange(evt) }}
           />
-          <div class="padding-top-1-2">
+          <div class={"margin-top-1" + drawClass}>
             <div class={"esri-sketch esri-widget"}>
               <div class={"esri-sketch__panel"}>
                 <div class={"esri-sketch__tool-section esri-sketch__section"}>

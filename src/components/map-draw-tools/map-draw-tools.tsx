@@ -69,6 +69,8 @@ export class MapDrawTools {
    */
   @Prop({ mutable: true }) graphics: __esri.Graphic[];
 
+  @Prop() border = false;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (private)
@@ -164,9 +166,10 @@ export class MapDrawTools {
   }
 
   render() {
+    const drawClass = this.border ? "border" : "";
     return (
       <Host>
-        <div>
+        <div class={drawClass}>
           <div ref={(el) => { this._sketchDiv = el }} />
         </div>
       </Host>

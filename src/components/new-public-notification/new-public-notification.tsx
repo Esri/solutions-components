@@ -445,38 +445,40 @@ export class NewPublicNotification {
   ): VNode {
     const isPdf = type === EExportType.PDF;
     return (
-      <div>
-        <div class="padding-top-sides-1">
-          <calcite-label class="font-bold">
-            {isPdf ? this.translations?.pdfDownloads : this.translations?.csvDownloads}
-          </calcite-label>
-          <calcite-label>{this.translations?.notifications}</calcite-label>
-        </div>
-        {this._getSelectionLists()}
+      <calcite-panel>
+        <div>
+          <div class="padding-top-sides-1">
+            <calcite-label class="font-bold">
+              {isPdf ? this.translations?.pdfDownloads : this.translations?.csvDownloads}
+            </calcite-label>
+            <calcite-label>{this.translations?.notifications}</calcite-label>
+          </div>
+          {this._getSelectionLists()}
 
-        <div class="margin-side-1 padding-top-1 border-bottom"></div>
-        <div class="padding-top-sides-1">
-          <calcite-label layout='inline' disabled={!this.downloadActive}>
-            <calcite-checkbox disabled={!this.downloadActive} />
-            {this.translations?.removeDuplicate}
-          </calcite-label>
-        </div>
-        <div class={isPdf ? "" : "display-none"}>
-          {this._getLabel(this.translations?.selectPDFLabelOption, false, !this.downloadActive)}
-          <div class={"padding-sides-1"}>
-            <pdf-download disabled={!this.downloadActive} />
+          <div class="margin-side-1 padding-top-1 border-bottom"></div>
+          <div class="padding-top-sides-1">
+            <calcite-label layout='inline' disabled={!this.downloadActive}>
+              <calcite-checkbox disabled={!this.downloadActive} />
+              {this.translations?.removeDuplicate}
+            </calcite-label>
+          </div>
+          <div class={isPdf ? "" : "display-none"}>
+            {this._getLabel(this.translations?.selectPDFLabelOption, false, !this.downloadActive)}
+            <div class={"padding-sides-1"}>
+              <pdf-download disabled={!this.downloadActive} />
+            </div>
+          </div>
+          <div class="padding-1 display-flex">
+            <calcite-button
+              disabled={!this.downloadActive}
+              width="full"
+              onClick={isPdf ? this._downloadPDF : this._downloadCSV}
+            >
+              {isPdf ? this.translations?.downloadPDF : this.translations?.downloadCSV}
+            </calcite-button>
           </div>
         </div>
-        <div class="padding-1 display-flex">
-          <calcite-button
-            disabled={!this.downloadActive}
-            width="full"
-            onClick={isPdf ? this._downloadPDF : this._downloadCSV}
-          >
-            {isPdf ? this.translations?.downloadPDF : this.translations?.downloadCSV}
-          </calcite-button>
-        </div>
-      </div>
+      </calcite-panel>
     );
   }
 
