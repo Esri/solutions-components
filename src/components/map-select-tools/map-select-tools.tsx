@@ -257,6 +257,8 @@ export class MapSelectTools {
 
   @Event() selectionSetChange: EventEmitter;
 
+  @Event() workflowTypeChange: EventEmitter;
+
   @Listen("sketchGraphicsChange", { target: 'window' })
   sketchGraphicsChange(event: CustomEvent): void {
     this._updateSelection(EWorkflowType.SKETCH, event.detail, this.translations.sketch);
@@ -468,6 +470,7 @@ export class MapSelectTools {
 
   _workflowChange(evt: CustomEvent): void {
     this.workflowType = evt.detail;
+    this.workflowTypeChange.emit(this.workflowType)
   }
 
   async _highlightFeatures(

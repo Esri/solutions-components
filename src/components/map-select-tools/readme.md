@@ -22,6 +22,7 @@
 | Event                | Description | Type               |
 | -------------------- | ----------- | ------------------ |
 | `selectionSetChange` |             | `CustomEvent<any>` |
+| `workflowTypeChange` |             | `CustomEvent<any>` |
 
 
 ## Methods

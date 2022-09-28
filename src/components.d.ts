@@ -764,6 +764,7 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         "onSelectionSetChange"?: (event: MapSelectToolsCustomEvent<any>) => void;
+        "onWorkflowTypeChange"?: (event: MapSelectToolsCustomEvent<any>) => void;
         /**
           * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
          */

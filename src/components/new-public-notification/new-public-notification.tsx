@@ -49,6 +49,8 @@ export class NewPublicNotification {
 
   @State() downloadActive = true;
 
+  @State() selectionWorkflowType = EWorkflowType.SEARCH;
+
   /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
@@ -107,7 +109,7 @@ export class NewPublicNotification {
     v: EPageType
   ) {
     this._clearHighlight();
-    if (v === EPageType.LIST) {
+    if (v === EPageType.LIST || v === EPageType.REFINE || v === EPageType.PDF || v === EPageType.CSV) {
       await this._highlightFeatures();
     }
   }
@@ -231,19 +233,19 @@ export class NewPublicNotification {
 
   _getListPage(): VNode {
     const hasSets = this.selectionSets.filter(ss => ss.workflowType !== EWorkflowType.REFINE).length > 0;
-    return (
+    return hasSets ? (
       <calcite-panel>
         <div class="padding-top-sides-1">
           <calcite-label class="font-bold">{this.translations?.myLists}</calcite-label>
         </div>
-        {this._getNotice(this.translations?.notice, "padding-sides-1 padding-bottom-1")}
+        {this._getNotice(this.translations?.listHasSetsTip, "padding-sides-1 padding-bottom-1")}
         <div class="display-flex padding-sides-1">
           <calcite-label class="font-bold width-full">{this.translations?.addresseeLayer}
             <map-layer-picker
               mapView={this.mapView}
               onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
               selectionMode={"single"}
-              //selectedLayers={layerTitle ? [layerTitle] : []}
+            //selectedLayers={layerTitle ? [layerTitle] : []}
             />
           </calcite-label>
         </div>
@@ -257,6 +259,32 @@ export class NewPublicNotification {
             </div>
           )
         }
+        <div class="display-flex padding-1">
+          <calcite-button width="full" onClick={() => { this._setPageType(EPageType.SELECT) }}>{this.translations?.add}</calcite-button>
+        </div>
+      </calcite-panel>
+    ) : (
+      <calcite-panel>
+        <div class="padding-top-sides-1">
+          <calcite-label class="font-bold">{this.translations?.myLists}</calcite-label>
+        </div>
+        <div class="padding-sides-1">
+          <calcite-label>{this.translations?.notifications}</calcite-label>
+        </div>
+        <div class="info-message padding-bottom-1">
+          <calcite-input-message active class="info-blue" scale='m'>{this.translations?.noNotifications}</calcite-input-message>
+        </div>
+        {this._getNotice(this.translations?.selectLayerAndAdd, "padding-sides-1 padding-bottom-1")}
+        <div class="display-flex padding-sides-1">
+          <calcite-label class="font-bold width-full">{this.translations?.addresseeLayer}
+            <map-layer-picker
+              mapView={this.mapView}
+              onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
+              selectionMode={"single"}
+            //selectedLayers={layerTitle ? [layerTitle] : []}
+            />
+          </calcite-label>
+        </div>
         <div class="display-flex padding-1">
           <calcite-button width="full" onClick={() => { this._setPageType(EPageType.SELECT) }}>{this.translations?.add}</calcite-button>
         </div>
@@ -291,20 +319,24 @@ export class NewPublicNotification {
   }
 
   _getSelectPage(): VNode {
-    // TODO the replace value and searchTip will need to change depending upon the selection mode
-    const stepLabel = this.translations?.stepTwoFull.replace("{{n}}", this.translations?.stepTwoFullSearch);
-    const noticeText = `${this.translations?.stepTwoFullSearchTip} ${this.translations?.stepOptional}`;
+    const searchTip = `${this.translations?.selectSearchTip} ${this.translations?.optionalSearchDistance}`;
+    const selectTip = `${this.translations?.selectLayerTip} ${this.translations?.optionalSearchDistance}`;
+    const sketchTip = `${this.translations?.selectSketchTip} ${this.translations?.optionalSearchDistance}`;
+    
+    const noticeText = this.selectionWorkflowType === EWorkflowType.SELECT ? selectTip :
+      this.selectionWorkflowType === EWorkflowType.SKETCH ? sketchTip : searchTip;
     
     return (
       <calcite-panel>
         {this._getPageBack(() => { this._home() })}
-        {this._getLabel(stepLabel, true)}
+        {this._getLabel(this.translations?.stepTwoFull, true)}
         {this._getNotice(noticeText)}
         <div class={"padding-1"}>
           <map-select-tools
             class="font-bold"
             mapView={this.mapView}
             onSelectionSetChange={(evt) => this._updateForSelection(evt)}
+            onWorkflowTypeChange={(evt) => this._updateForWorkflowType(evt)}
             ref={(el) => { this._selectTools = el }}
             searchLayers={this.selectionLayers}
             selectLayerView={this.addresseeLayer}
@@ -340,7 +372,7 @@ export class NewPublicNotification {
       <calcite-panel>
         {this._getPageBack(() => {this._home()})}
         {this._getLabel(this.translations?.refineSelection)}
-        {this._getNotice(this.translations?.refineTip)}
+        {this._getNotice(this.translations?.refineTip, "padding-sides-1")}
         <div class="padding-1">
           <div>
             <calcite-radio-group
@@ -417,17 +449,18 @@ export class NewPublicNotification {
           <calcite-label>{this.translations?.notifications}</calcite-label>
         </div>
         {this._getSelectionLists()}
+
+        <div class="margin-side-1 padding-top-1 border-bottom"></div>
+        <div class="padding-top-sides-1">
+          <calcite-label layout='inline' disabled={!this.downloadActive}>
+            <calcite-checkbox disabled={!this.downloadActive} />
+            {this.translations?.removeDuplicate}
+          </calcite-label>
+        </div>
         <div class={isPdf ? "" : "display-none"}>
-          <div class="margin-side-1 padding-top-1 border-bottom"></div>      
-          <div class="padding-top-sides-1">
-            <calcite-label layout='inline' disabled={!this.downloadActive}>
-              <calcite-checkbox disabled={!this.downloadActive} />
-              {this.translations?.removeDuplicate}
-            </calcite-label>
-          </div>
           {this._getLabel(this.translations?.selectPDFLabelOption, false, !this.downloadActive)}
-          <div class="padding-sides-1">
-            <pdf-download disabled={!this.downloadActive}/>
+          <div class={"padding-sides-1"}>
+            <pdf-download disabled={!this.downloadActive} />
           </div>
         </div>
         <div class="padding-1 display-flex">
@@ -543,7 +576,9 @@ export class NewPublicNotification {
   _getSelectionLists(): VNode {
     return this.selectionSets.reduce((prev, cur) => {
       if (cur.workflowType !== EWorkflowType.REFINE) {
-        console.log(cur.download)
+        if (!this.downloadActive && cur.download) {
+          this.downloadActive = true;
+        } 
         prev.push((
           <div class="display-flex padding-sides-1 padding-bottom-1">
             <calcite-checkbox checked={cur.download} onClick={() => {this._toggleDownload(cur.id)}}/>
@@ -597,6 +632,12 @@ export class NewPublicNotification {
 
   _downloadCSV() {
     alert("download CSV")
+  }
+
+  _updateForWorkflowType(
+    evt: CustomEvent
+  ) {
+    this.selectionWorkflowType = evt.detail;
   }
 
   _hasRefine(): boolean {
