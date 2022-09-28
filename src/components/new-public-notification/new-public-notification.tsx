@@ -233,6 +233,7 @@ export class NewPublicNotification {
 
   _getListPage(): VNode {
     const hasSets = this.selectionSets.filter(ss => ss.workflowType !== EWorkflowType.REFINE).length > 0;
+    const total = this._getTotal();
     return hasSets ? (
       <calcite-panel>
         <div class="padding-top-sides-1">
@@ -249,8 +250,13 @@ export class NewPublicNotification {
             />
           </calcite-label>
         </div>
-        <div class="padding-sides-1">
-          <calcite-label>{this.translations?.notifications}</calcite-label>
+        <div class="padding-sides-1 height-1-1-2">
+          <div class="position-left">
+            <calcite-label alignment='start' class="font-bold">{this.translations?.notifications}</calcite-label>
+          </div>
+          <div class="position-right">
+            <calcite-input-message active class="info-blue margin-top-0" scale="m">{this.translations?.uniqueCout.replace("{{n}}", total.toString())}</calcite-input-message>
+          </div>
         </div>
         {
           hasSets ? this._getSelectionSetList() : (
@@ -328,7 +334,6 @@ export class NewPublicNotification {
     
     return (
       <calcite-panel>
-        {this._getPageBack(() => { this._home() })}
         {this._getLabel(this.translations?.stepTwoFull, true)}
         {this._getNotice(noticeText)}
         <div class={"padding-1"}>
@@ -370,7 +375,6 @@ export class NewPublicNotification {
   _getRefinePage(): VNode {
     return (
       <calcite-panel>
-        {this._getPageBack(() => {this._home()})}
         {this._getLabel(this.translations?.refineSelection)}
         {this._getNotice(this.translations?.refineTip, "padding-sides-1")}
         <div class="padding-1">
@@ -865,7 +869,9 @@ export class NewPublicNotification {
     this._highlightFeatures();
   }
 
-  _openSelection(selectionSet: ISelectionSet) {
+  _openSelection(
+    selectionSet: ISelectionSet
+  ) {
     this.activeSelection = selectionSet;
     this.pageType = EPageType.SELECT;
   }

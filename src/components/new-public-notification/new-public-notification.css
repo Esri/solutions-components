@@ -152,3 +152,31 @@ html[dir="rtl"] .main-label {
 .margin-start-1-2 {
   margin-inline-start: 0.5rem;
 }
+
+.position-right {
+  position: absolute;
+  right: 1rem;
+}
+
+.position-right[dir="rtl"] {
+  position: absolute;
+  left: 1rem;
+}
+
+.position-left {
+  position: absolute;
+  left: 1rem;
+}
+
+.position-left[dir="rtl"] {
+  position: absolute;
+  right: 1rem;
+}
+
+.margin-top-0 {
+  margin-block-start: 0 !important;
+}
+
+.height-1-1-2 {
+  height: 1.5rem;
+}

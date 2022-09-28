@@ -1,5 +1,5 @@
 {
-    "refineSelection": "Refine Selection Set(s)",
+    "refineSelection": "Refine Selection",
     "downloadPDF": "Download PDF",
     "downloadCSV": "Download CSV",
     "add": "Add",
@@ -50,5 +50,6 @@
     "selectLayerTip": "Select features using an existing layers' feature geometry. Choose the selection layer from the dropdown, draw using the sketch tools to define area of interest",
     "selectSketchTip": "Select features using sketch tools. Select a tool, draw a shape to define area of interest",
     "optionalSearchDistance": "and optionally add search distance.",
-    "listHasSetsTip": "For existing notification lists optionally edit or remove each list. Also, refine across all selection sets or export to PDF or CSV."
+    "listHasSetsTip": "For existing notification lists optionally edit or remove each list. Also, refine across all selection sets or export to PDF or CSV.",
+    "uniqueCout": "Unique Count: {{n}}"
 }
