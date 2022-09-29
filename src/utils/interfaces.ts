@@ -87,7 +87,7 @@ export interface IInventoryItem {
   dependencies?: IInventoryItem[];
   type: string;
   typeKeywords: string[];
-  solutionItem: ISolutionItem;
+  solutionItem: ICurrentEditItem;
 }
 
 /**
@@ -137,7 +137,7 @@ export interface ISolutionConfiguration {
 /**
  * Details used to display and store information about the item
  */
-export interface ISolutionItem {
+export interface ICurrentEditItem {
   itemId: string;
   itemDetails: any; //use the interface
   isResource: boolean; // this should be removed and determined from the data

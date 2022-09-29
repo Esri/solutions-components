@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ERefineMode, ESelectionMode, EWorkflowType, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISelectionSet, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
+import { ERefineMode, ESelectionMode, EWorkflowType, ICurrentEditItem, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISelectionSet, ISolutionConfiguration, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BufferTools {
@@ -212,7 +212,7 @@ export namespace Components {
         /**
           * Contains the current solution item we are working with
          */
-        "item": ISolutionItem;
+        "item": ICurrentEditItem;
         /**
           * Contains the current solution item id
          */
@@ -243,7 +243,7 @@ export namespace Components {
         /**
           * Contains the current item that is selected.
          */
-        "selectedItem": ISolutionItem;
+        "selectedItem": ICurrentEditItem;
         /**
           * Contains the public value for this component.
          */
@@ -265,7 +265,7 @@ export namespace Components {
         /**
           * Contains the public value for this component.
          */
-        "value": ISolutionItem;
+        "value": ICurrentEditItem;
     }
     interface SolutionItemDetails {
         /**
@@ -783,7 +783,7 @@ declare namespace LocalJSX {
         /**
           * Contains the current solution item we are working with
          */
-        "item"?: ISolutionItem;
+        "item"?: ICurrentEditItem;
         /**
           * Contains the current solution item id
          */
@@ -815,7 +815,7 @@ declare namespace LocalJSX {
         /**
           * Contains the current item that is selected.
          */
-        "selectedItem"?: ISolutionItem;
+        "selectedItem"?: ICurrentEditItem;
         /**
           * Contains the public value for this component.
          */
@@ -837,7 +837,7 @@ declare namespace LocalJSX {
         /**
           * Contains the public value for this component.
          */
-        "value"?: ISolutionItem;
+        "value"?: ICurrentEditItem;
     }
     interface SolutionItemDetails {
         /**
