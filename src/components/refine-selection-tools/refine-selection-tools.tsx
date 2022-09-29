@@ -125,8 +125,6 @@ export class RefineSelectionTools {
 
   protected aaa: any = {};
 
-  protected _addIds: number[] = [];
-
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -135,7 +133,7 @@ export class RefineSelectionTools {
 
   @Watch('ids')
   idsWatchHandler(v: any, oldV: any): void {
-    if (v && v !== oldV) {
+    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
       this._highlightFeatures(v);
     }
   }
@@ -148,7 +146,6 @@ export class RefineSelectionTools {
 
   @Method()
   reset() {
-    this._addIds = [];
     this.ids = [];
     return Promise.resolve();
   }
@@ -208,7 +205,7 @@ export class RefineSelectionTools {
             selectionMode={"single"}
             onLayerSelectionChange={(evt) => { this._layerSelectionChange(evt) }}
           />
-          <div>
+          <div class="padding-top-1-2">
             <div class={"esri-sketch esri-widget"}>
               <div class={"esri-sketch__panel"}>
                 <div class={"esri-sketch__tool-section esri-sketch__section"}>
@@ -421,29 +418,18 @@ export class RefineSelectionTools {
         const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
         let idUpdates = { addIds: [], removeIds: [] };
         if (this.mode === ESelectionMode.ADD) {
-          this._addIds = this._addIds.concat(oids);
-          idUpdates.addIds = this._addIds;
-          this.ids = [...new Set([...this.ids, ...idUpdates.addIds])];
+          idUpdates.addIds = oids.filter(id => this.ids.indexOf(id) < 0);
+          this.ids = [...this.ids, ...idUpdates.addIds];
         } else {
-          this.ids.forEach(id => {
-            if (oids.indexOf(id) < 0) {
-              console.log('has it...still thinkng ')
-            } else {
-              idUpdates.removeIds.push(id)
-            }
-          });
-          this.ids = this.ids.filter(id => {
-            return idUpdates.removeIds.indexOf(id) < 0;
-          });
+          idUpdates.removeIds = oids.filter(id => this.ids.indexOf(id) > -1);
+          this.ids = this.ids.filter(id => idUpdates.removeIds.indexOf(id) < 0);
         }
         this._highlightFeatures(this.ids).then(() => {
           this.refineSelectionIdsChange.emit(idUpdates);
-        })
-        
+        });
       }
       this._clear();
     });
-
   }
 
   async _queryPage(
@@ -474,13 +460,13 @@ export class RefineSelectionTools {
     updateExtent: boolean = false
   ) {
     this._clearHighlight();
-    state.highlightHandle = await highlightFeatures(this.mapView, this.layerViews[0], ids, updateExtent)
+    if (ids.length > 0) {
+      state.highlightHandle = await highlightFeatures(this.mapView, this.layerViews[0], ids, updateExtent);
+    }
   }
 
   _clearHighlight() {
-    if (state.highlightHandle) {
-      state.highlightHandle.remove();
-    }
+    state.highlightHandle?.remove();
   }
 
   _undo() {

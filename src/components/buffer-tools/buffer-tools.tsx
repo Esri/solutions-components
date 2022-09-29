@@ -122,8 +122,8 @@ export class BufferTools {
   render() {
     return (
       <Host>
-        <calcite-label disable-spacing={true} style={{ "display": "flex", "padding-top": "1rem" }}>
-          {this.translations.searchDistance}
+        <calcite-label disable-spacing={true} style={{ "display": "flex", "padding-top": ".5rem" }}>
+          {this.translations?.searchDistance}
         </calcite-label>
         <div class="c-container">
           <calcite-input

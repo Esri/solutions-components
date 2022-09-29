@@ -469,15 +469,14 @@ export class MapSelectTools {
   async _highlightFeatures(
     ids: number[]
   ) {
-    if (state.highlightHandle) {
-      state.highlightHandle?.remove();
+    state.highlightHandle?.remove();
+    if (ids.length > 0) {
+      state.highlightHandle = await highlightFeatures(
+        this.mapView,
+        this.selectLayerView,
+        ids
+      );
     }
-
-    state.highlightHandle = await highlightFeatures(
-      this.mapView,
-      this.selectLayerView,
-      ids
-    );
     this.selectionSetChange.emit(ids.length);
   }
 
@@ -583,10 +582,8 @@ export class MapSelectTools {
       this._searchWidget.clear();
     }
 
-    if (state.highlightHandle) {
-      state.highlightHandle.remove();
-    }
-
+    state.highlightHandle?.remove();
+    
     // for sketch
     if (this._drawTools) {
       this._drawTools.clear();
