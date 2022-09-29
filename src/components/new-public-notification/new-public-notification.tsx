@@ -348,9 +348,6 @@ export class NewPublicNotification {
             selectionSet={this.activeSelection}
             isUpdate={this.activeSelection ? true : false}
           />
-          {/* <div class="display-block padding-top-1">
-            {this._getNameLabel()}
-          </div> */}
         </div>
         <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
           <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
@@ -455,7 +452,6 @@ export class NewPublicNotification {
             <calcite-label>{this.translations?.notifications}</calcite-label>
           </div>
           {this._getSelectionLists()}
-
           <div class="margin-side-1 padding-top-1 border-bottom"></div>
           <div class="padding-top-sides-1">
             <calcite-label layout='inline' disabled={!this.downloadActive}>
@@ -622,14 +618,6 @@ export class NewPublicNotification {
       <div class="padding-sides-1 padding-bottom-1 border-bottom">
         <map-search mapView={this.mapView}></map-search>
       </div>
-    );
-  }
-
-  _getNameLabel(): VNode {
-    return (
-      <calcite-label class="font-bold width-full">{this.translations?.nameLabel}
-        <calcite-input placeholder={this.translations?.nameLabelPlaceholder}></calcite-input>
-      </calcite-label>
     );
   }
 
