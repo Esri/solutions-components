@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+import {
+  IDeployFileCopyPath
+} from '@esri/solution-common';
+
 /**
  * Resource update types
  */
@@ -277,10 +281,7 @@ export interface IWkidDescription {
 /**
  * Key details to manage resources
  */
-export interface IResourcePath {
-  url: string;
-  type: number;
-  filename: string;
+export interface IResourcePath extends IDeployFileCopyPath {
   blob?: any; // This will only be set when a new file is uploaded (add or update)
   sourceFileName?: string; // This will only be set when a file is being updated
   updateType: EUpdateType
