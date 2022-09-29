@@ -144,10 +144,6 @@ export namespace Components {
          */
         "mapView": __esri.MapView;
         /**
-          * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
-         */
-        "searchLayers": __esri.Layer[];
-        /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
         "selectLayerView": __esri.FeatureLayerView;
@@ -165,10 +161,6 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
-        /**
-          * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
-         */
-        "selectionLayers": __esri.Layer[];
     }
     interface PdfDownload {
         "disabled": boolean;
@@ -187,10 +179,6 @@ export namespace Components {
           * string: Default message to show when we have no selection sets
          */
         "message": string;
-        /**
-          * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
-         */
-        "selectionLayers": __esri.Layer[];
     }
     interface RefineSelectionTools {
         /**
@@ -769,10 +757,6 @@ declare namespace LocalJSX {
         "onSelectionSetChange"?: (event: MapSelectToolsCustomEvent<any>) => void;
         "onWorkflowTypeChange"?: (event: MapSelectToolsCustomEvent<any>) => void;
         /**
-          * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
-         */
-        "searchLayers"?: __esri.Layer[];
-        /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
         "selectLayerView"?: __esri.FeatureLayerView;
@@ -790,10 +774,6 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        /**
-          * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
-         */
-        "selectionLayers"?: __esri.Layer[];
     }
     interface PdfDownload {
         "disabled"?: boolean;
@@ -812,10 +792,6 @@ declare namespace LocalJSX {
           * string: Default message to show when we have no selection sets
          */
         "message"?: string;
-        /**
-          * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
-         */
-        "selectionLayers"?: __esri.Layer[];
     }
     interface RefineSelectionTools {
         /**

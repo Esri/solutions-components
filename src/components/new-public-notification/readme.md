@@ -7,11 +7,10 @@
 
 ## Properties
 
-| Property          | Attribute | Description                                                                                                                               | Type               | Default     |
-| ----------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
-| `addresseeLayer`  | --        | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
-| `mapView`         | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`          | `undefined` |
-| `selectionLayers` | --        | esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html                                   | `Layer[]`          | `undefined` |
+| Property         | Attribute | Description                                                                                                                               | Type               | Default     |
+| ---------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
+| `addresseeLayer` | --        | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
+| `mapView`        | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`          | `undefined` |
 
 
 ## Dependencies
@@ -39,7 +38,6 @@
 - [pdf-download](../pdf-download)
 - calcite-notice
 - [map-search](../map-search)
-- calcite-input
 
 ### Graph
 ```mermaid
@@ -65,7 +63,6 @@ graph TD;
   new-public-notification --> pdf-download
   new-public-notification --> calcite-notice
   new-public-notification --> map-search
-  new-public-notification --> calcite-input
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action

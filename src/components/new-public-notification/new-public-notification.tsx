@@ -40,10 +40,15 @@ export class NewPublicNotification {
   //
   //--------------------------------------------------------------------------
 
-  @State() activeTab = 0;
+  /**
+   * boolean: Enabled when we have 1 or more selection sets that is enabled in the download pages.
+   * By default all selection sets are enabled for download when they are first created.
+   */
+  @State() downloadActive: boolean;
 
-  @State() downloadActive = true;
-
+  /**
+   * utils/interfaces/EWorkflowType: SEARCH | SELECT | SKETCH
+   */
   @State() selectionWorkflowType = EWorkflowType.SEARCH;
 
   /**
@@ -58,7 +63,7 @@ export class NewPublicNotification {
   @State() saveEnabled = false;
 
   /**
-   * utils/interfaces/EPageType: LIST, SELECT, REFINE, PDF, CSV
+   * utils/interfaces/EPageType: LIST | SELECT | REFINE | PDF | CSV
    */
   @State() pageType: EPageType = EPageType.LIST;
 
@@ -74,11 +79,11 @@ export class NewPublicNotification {
 
   protected _selectTools: HTMLMapSelectToolsElement;
 
-  protected activeSelection: ISelectionSet;
+  protected _activeSelection: ISelectionSet;
 
   protected _refineTools: HTMLRefineSelectionToolsElement;
 
-  protected addEnabled = true;
+  protected _addEnabled = true;
 
   //--------------------------------------------------------------------------
   //
@@ -94,7 +99,7 @@ export class NewPublicNotification {
     if (v && v !== oldV && v.length > 0) {
       const nonRefineSets = v.filter(ss => ss.workflowType !== EWorkflowType.REFINE)
       if (nonRefineSets.length === 0) {
-        this.selectionSets = []
+        this.selectionSets = [];
       }
     }
   }
@@ -123,12 +128,10 @@ export class NewPublicNotification {
 
   @Listen("refineSelectionIdsChange", { target: 'window' })
   refineSelectionIdsChange(event: CustomEvent): void {
-    const idUpdates = event.detail;
-    const addIds = idUpdates?.addIds || [];
-    const removeIds = idUpdates?.removeIds || [];
+    const addIds = event.detail?.addIds || [];
+    const removeIds = event.detail?.removeIds || [];
 
     this._updateSelectionSetsForRemoveIds(removeIds);
-  
     this._updateRefineSelectionSet(addIds, removeIds);
   }
 
@@ -148,10 +151,10 @@ export class NewPublicNotification {
       <Host>
         <calcite-shell>
           <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout='horizontal' slot="header">
-            {this._getAction("list-check", false, EPageType.LIST, this.translations?.myLists)}
-            {this._getAction("test-data", !hasSelections, EPageType.REFINE, this.translations?.refineSelection)}
-            {this._getAction("file-pdf", !hasSelections, EPageType.PDF, this.translations?.downloadPDF)}
-            {this._getAction("file-csv", !hasSelections, EPageType.CSV, this.translations?.downloadCSV)}
+            {this._getActionGroup("list-check", false, EPageType.LIST, this.translations?.myLists)}
+            {this._getActionGroup("test-data", !hasSelections, EPageType.REFINE, this.translations?.refineSelection)}
+            {this._getActionGroup("file-pdf", !hasSelections, EPageType.PDF, this.translations?.downloadPDF)}
+            {this._getActionGroup("file-csv", !hasSelections, EPageType.CSV, this.translations?.downloadCSV)}
           </calcite-action-bar>
           {this._getPage(this.pageType)}
         </calcite-shell>
@@ -165,7 +168,7 @@ export class NewPublicNotification {
   //
   //--------------------------------------------------------------------------
 
-  _getAction(
+  _getActionGroup(
     icon: string,
     disabled: boolean,
     pageType: EPageType,
@@ -241,7 +244,6 @@ export class NewPublicNotification {
               mapView={this.mapView}
               onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
               selectionMode={"single"}
-            //selectedLayers={layerTitle ? [layerTitle] : []}
             />
           </calcite-label>
         </div>
@@ -282,7 +284,6 @@ export class NewPublicNotification {
               mapView={this.mapView}
               onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
               selectionMode={"single"}
-            //selectedLayers={layerTitle ? [layerTitle] : []}
             />
           </calcite-label>
         </div>
@@ -307,8 +308,8 @@ export class NewPublicNotification {
                   label={cur.label}
                 //onClick={() => flashSelection(cur)}
                 >
-                  {this._getAction2(true, "pencil", "", (): void => this._openSelection(cur), false, "actions-end")}
-                  {this._getAction2(true, "x", "", (): void => this._deleteSelection(i), false, "actions-end")}
+                  {this._getAction(true, "pencil", "", (): void => this._openSelection(cur), false, "actions-end")}
+                  {this._getAction(true, "x", "", (): void => this._deleteSelection(i), false, "actions-end")}
                 </calcite-list-item>
               ));
             }
@@ -339,8 +340,8 @@ export class NewPublicNotification {
             onWorkflowTypeChange={(evt) => this._updateForWorkflowType(evt)}
             ref={(el) => { this._selectTools = el }}
             selectLayerView={this.addresseeLayer}
-            selectionSet={this.activeSelection}
-            isUpdate={this.activeSelection ? true : false}
+            selectionSet={this._activeSelection}
+            isUpdate={this._activeSelection ? true : false}
           />
         </div>
         <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
@@ -375,7 +376,7 @@ export class NewPublicNotification {
               onCalciteRadioGroupChange={(evt) => this._modeChanged(evt)}
             >
               <calcite-radio-group-item
-                checked={this.addEnabled}
+                checked={this._addEnabled}
                 class="w-50"
                 onClick={() => this._setSelectionMode(ESelectionMode.ADD)}
                 value={ESelectionMode.ADD}
@@ -383,7 +384,7 @@ export class NewPublicNotification {
                 {this.translations.add}
               </calcite-radio-group-item>
               <calcite-radio-group-item
-                checked={!this.addEnabled}
+                checked={!this._addEnabled}
                 class="w-50"
                 onClick={() => this._setSelectionMode(ESelectionMode.REMOVE)}
                 value={ESelectionMode.REMOVE}
@@ -396,7 +397,7 @@ export class NewPublicNotification {
               ids={this._getSelectionIds(this.selectionSets)}
               layerViews={[this.addresseeLayer]}
               mapView={this.mapView}
-              mode={this.addEnabled ? ESelectionMode.ADD : ESelectionMode.REMOVE}
+              mode={this._addEnabled ? ESelectionMode.ADD : ESelectionMode.REMOVE}
               ref={(el) => { this._refineTools = el }}
               useLayerPicker={false}
             />
@@ -720,13 +721,13 @@ export class NewPublicNotification {
       <calcite-list-item
         label={this.translations.featuresAdded?.replace('{{n}}', numAdded.toString())}
       >
-        {this._getAction2(numAdded > 0, "reset", "", (): void => this._revertSelection(refineSet, true), false, "actions-end")}
+        {this._getAction(numAdded > 0, "reset", "", (): void => this._revertSelection(refineSet, true), false, "actions-end")}
       </calcite-list-item>
     ),(
       <calcite-list-item
         label={this.translations.featuresRemoved?.replace('{{n}}', numRemoved.toString())}
       >
-        {this._getAction2(numRemoved > 0, "reset", "", (): void => this._revertSelection(refineSet, false), false, "actions-end")}
+        {this._getAction(numRemoved > 0, "reset", "", (): void => this._revertSelection(refineSet, false), false, "actions-end")}
       </calcite-list-item>
     ), (
       <calcite-list-item
@@ -735,7 +736,7 @@ export class NewPublicNotification {
     )];
   }
 
-  _getAction2(
+  _getAction(
     enabled: boolean,
     icon: string,
     text: string,
@@ -794,7 +795,7 @@ export class NewPublicNotification {
   }
 
   _modeChanged(evt: CustomEvent): void {
-    this.addEnabled = evt.detail === ESelectionMode.ADD;
+    this._addEnabled = evt.detail === ESelectionMode.ADD;
   }
 
   _setSelectionMode(
@@ -842,7 +843,7 @@ export class NewPublicNotification {
   async _clearSelection () {
     await this._selectTools?.clearSelection();
     this.numSelected = 0;
-    this.activeSelection = undefined;
+    this._activeSelection = undefined;
   }
 
   _deleteSelection(index: number) {
@@ -857,7 +858,7 @@ export class NewPublicNotification {
   _openSelection(
     selectionSet: ISelectionSet
   ) {
-    this.activeSelection = selectionSet;
+    this._activeSelection = selectionSet;
     this.pageType = EPageType.SELECT;
   }
 
