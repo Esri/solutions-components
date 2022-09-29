@@ -113,7 +113,9 @@ export class PdfDownload {
       return _a < _b ? -1 : _a > _b ? 1 : 0
     });
     return sortedPdfIndo.map((l) => {
-      const textLabel = this.translations.pdfLabel.replace("{{n}}", l.descriptionPDF.labelsPerPageDisplay);
+      const lNum = l.descriptionPDF.labelsPerPageDisplay;
+      const lSize = `${l.descriptionPDF.labelWidthDisplay} x ${l.descriptionPDF.labelHeightDisplay}`;
+      const textLabel = this.translations.pdfLabel.replace("{{n}}", lNum).replace("{{labelSize}}", lSize);
       return (<calcite-option value={l}>{textLabel}</calcite-option>)
     });
   }
