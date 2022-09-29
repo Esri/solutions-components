@@ -344,7 +344,7 @@ export class MapSelectTools {
           ref={(el) => { this._refineTools = el }}
           refineMode={ERefineMode.SUBSET}
         />
-        <calcite-label disable-spacing={true} style={{ "display": "flex", "padding-top": "1rem" }}>
+        <calcite-label style={{ "display": "flex", "padding-top": "1rem" }}>
           {this.translations?.searchDistance}
           <buffer-tools
             geometries={this.geometries}

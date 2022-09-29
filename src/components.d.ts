@@ -124,7 +124,7 @@ export namespace Components {
     interface MapSearch {
         "clear": () => Promise<void>;
         /**
-          * string: The label to render above the combobox. This label is positioned on the right side of the control.
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
     }

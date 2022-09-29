@@ -383,16 +383,6 @@
            mapView={this.mapView}
            selectionSets={this.selectionSets}
          />
-         {
-           this._getPageNavButtons(
-             this.translations?.done,
-             false,
-             () => { this._setPageType(EPageType.LIST) },
-             this.translations?.cancel,
-             false,
-             () => { this._setPageType(EPageType.LIST) }
-           )
-         }
        </calcite-panel>
      );
    }
@@ -527,22 +517,6 @@
      );
    }
  
-   _getIconLabel(
-     label: string,
-     disableSpacing: boolean = false
-   ): VNode {
-     // force small space between label and icon when general label space is disabled
-     const forceSpace = disableSpacing ? " padding-end-1-2" : "";
-     return (
-       <div class="padding-sides-1 padding-top-1-2">
-         <calcite-label class={"font-bold" + forceSpace} disable-spacing={disableSpacing} layout='inline'>
-           {label}
-           <calcite-icon class="info-blue" icon="information" scale="s" />
-         </calcite-label>
-       </div>
-     );
-   }
- 
    _getSelectionLists(): VNode {
      return this.selectionSets.reduce((prev, cur) => {
        if (cur.workflowType !== EWorkflowType.REFINE) {
@@ -578,14 +552,6 @@
        return ss;
      });
      this.downloadActive = isActive;
-   }
- 
-   _getMapSearch(): VNode {
-     return (
-       <div class="padding-sides-1 padding-bottom-1 border-bottom">
-         <map-search mapView={this.mapView}></map-search>
-       </div>
-     );
    }
  
    _downloadPDF() {

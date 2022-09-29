@@ -35,7 +35,6 @@
 - calcite-checkbox
 - [pdf-download](../pdf-download)
 - calcite-notice
-- [map-search](../map-search)
 
 ### Graph
 ```mermaid
@@ -58,7 +57,6 @@ graph TD;
   public-notification --> calcite-checkbox
   public-notification --> pdf-download
   public-notification --> calcite-notice
-  public-notification --> map-search
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
