@@ -39,8 +39,14 @@ export class PdfDownload {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   */
   @Prop() layerView: __esri.FeatureLayerView;
 
+  /**
+   * boolean: Controls the enabled/disabled state of download 
+   */
   @Prop() disabled: boolean;
 
   //--------------------------------------------------------------------------
@@ -110,14 +116,6 @@ export class PdfDownload {
       const textLabel = this.translations.pdfLabel.replace("{{n}}", l.descriptionPDF.labelsPerPageDisplay);
       return (<calcite-option value={l}>{textLabel}</calcite-option>)
     });
-  }
-
-  _itemClicked(v: any): void {
-    console.log(v)
-  }
-
-  _download(): void {
-    alert("Download the stuff");
   }
 
   async _getTranslations() {

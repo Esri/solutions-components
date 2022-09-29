@@ -69,6 +69,9 @@ export class MapDrawTools {
    */
   @Prop({ mutable: true }) graphics: __esri.Graphic[];
 
+  /**
+   * boolean: Optionally draw a border around the draw tools
+   */
   @Prop() border = false;
 
   //--------------------------------------------------------------------------

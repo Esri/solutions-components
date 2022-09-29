@@ -87,6 +87,9 @@ export class RefineSelectionTools {
    */
   @Prop() layerViews: __esri.FeatureLayerView[] = [];
 
+  /**
+   * boolean: Optionally draw a border around the draw tools
+   */
   @Prop() border = false;
 
   //--------------------------------------------------------------------------

@@ -77,6 +77,9 @@ export namespace Components {
           * boolean: sketch is used by multiple components...need a way to know who should respond...
          */
         "active": boolean;
+        /**
+          * boolean: Optionally draw a border around the draw tools
+         */
         "border": boolean;
         "clear": () => Promise<void>;
         /**
@@ -163,7 +166,13 @@ export namespace Components {
         "mapView": __esri.MapView;
     }
     interface PdfDownload {
+        /**
+          * boolean: Controls the enabled/disabled state of download
+         */
         "disabled": boolean;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
         "layerView": __esri.FeatureLayerView;
     }
     interface PublicNotification {
@@ -185,6 +194,9 @@ export namespace Components {
           * boolean: sketch is used by multiple components...need a way to know who should respond...
          */
         "active": boolean;
+        /**
+          * boolean: Optionally draw a border around the draw tools
+         */
         "border": boolean;
         "clearHighlight": () => Promise<void>;
         /**
@@ -692,6 +704,9 @@ declare namespace LocalJSX {
           * boolean: sketch is used by multiple components...need a way to know who should respond...
          */
         "active"?: boolean;
+        /**
+          * boolean: Optionally draw a border around the draw tools
+         */
         "border"?: boolean;
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
@@ -776,7 +791,13 @@ declare namespace LocalJSX {
         "mapView"?: __esri.MapView;
     }
     interface PdfDownload {
+        /**
+          * boolean: Controls the enabled/disabled state of download
+         */
         "disabled"?: boolean;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
         "layerView"?: __esri.FeatureLayerView;
     }
     interface PublicNotification {
@@ -798,6 +819,9 @@ declare namespace LocalJSX {
           * boolean: sketch is used by multiple components...need a way to know who should respond...
          */
         "active"?: boolean;
+        /**
+          * boolean: Optionally draw a border around the draw tools
+         */
         "border"?: boolean;
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
