@@ -155,16 +155,6 @@ export namespace Components {
          */
         "selectionSet": ISelectionSet;
     }
-    interface NewPublicNotification {
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "addresseeLayer": __esri.FeatureLayerView;
-        /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView": __esri.MapView;
-    }
     interface PdfDownload {
         /**
           * boolean: Controls the enabled/disabled state of download
@@ -184,10 +174,6 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
-        /**
-          * string: Default message to show when we have no selection sets
-         */
-        "message": string;
     }
     interface RefineSelection {
         /**
@@ -546,12 +532,6 @@ declare global {
         prototype: HTMLMapSelectToolsElement;
         new (): HTMLMapSelectToolsElement;
     };
-    interface HTMLNewPublicNotificationElement extends Components.NewPublicNotification, HTMLStencilElement {
-    }
-    var HTMLNewPublicNotificationElement: {
-        prototype: HTMLNewPublicNotificationElement;
-        new (): HTMLNewPublicNotificationElement;
-    };
     interface HTMLPdfDownloadElement extends Components.PdfDownload, HTMLStencilElement {
     }
     var HTMLPdfDownloadElement: {
@@ -655,7 +635,6 @@ declare global {
         "map-layer-picker": HTMLMapLayerPickerElement;
         "map-search": HTMLMapSearchElement;
         "map-select-tools": HTMLMapSelectToolsElement;
-        "new-public-notification": HTMLNewPublicNotificationElement;
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
         "refine-selection": HTMLRefineSelectionElement;
@@ -805,16 +784,6 @@ declare namespace LocalJSX {
          */
         "selectionSet"?: ISelectionSet;
     }
-    interface NewPublicNotification {
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "addresseeLayer"?: __esri.FeatureLayerView;
-        /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView"?: __esri.MapView;
-    }
     interface PdfDownload {
         /**
           * boolean: Controls the enabled/disabled state of download
@@ -834,10 +803,6 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        /**
-          * string: Default message to show when we have no selection sets
-         */
-        "message"?: string;
     }
     interface RefineSelection {
         /**
@@ -1099,7 +1064,6 @@ declare namespace LocalJSX {
         "map-layer-picker": MapLayerPicker;
         "map-search": MapSearch;
         "map-select-tools": MapSelectTools;
-        "new-public-notification": NewPublicNotification;
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
         "refine-selection": RefineSelection;
@@ -1128,7 +1092,6 @@ declare module "@stencil/core" {
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
             "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
-            "new-public-notification": LocalJSX.NewPublicNotification & JSXBase.HTMLAttributes<HTMLNewPublicNotificationElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
             "refine-selection": LocalJSX.RefineSelection & JSXBase.HTMLAttributes<HTMLRefineSelectionElement>;

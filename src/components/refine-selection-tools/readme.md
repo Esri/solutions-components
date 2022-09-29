@@ -57,7 +57,6 @@ Type: `Promise<void>`
 ### Used by
 
  - [map-select-tools](../map-select-tools)
- - [public-notification](../public-notification)
  - [refine-selection](../refine-selection)
 
 ### Depends on
@@ -84,7 +83,6 @@ graph TD;
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
   map-select-tools --> refine-selection-tools
-  public-notification --> refine-selection-tools
   refine-selection --> refine-selection-tools
   style refine-selection-tools fill:#f9f,stroke:#333,stroke-width:4px
 ```

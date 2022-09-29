@@ -36,12 +36,12 @@ Type: `Promise<void>`
 
 ### Used by
 
- - [new-public-notification](../new-public-notification)
+ - [public-notification](../public-notification)
 
 ### Graph
 ```mermaid
 graph TD;
-  new-public-notification --> map-search
+  public-notification --> map-search
   style map-search fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

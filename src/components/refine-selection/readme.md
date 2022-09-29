@@ -25,7 +25,7 @@
 
 ### Used by
 
- - [new-public-notification](../new-public-notification)
+ - [public-notification](../public-notification)
 
 ### Depends on
 
@@ -60,7 +60,7 @@ graph TD;
   calcite-combobox-item --> calcite-icon
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
-  new-public-notification --> refine-selection
+  public-notification --> refine-selection
   style refine-selection fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
