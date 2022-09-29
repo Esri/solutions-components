@@ -1,6 +1,6 @@
 import { newE2EPage } from '@stencil/core/testing';
 
-describe('refine-selection-tools', () => {
+xdescribe('refine-selection-tools', () => {
   it('renders', async () => {
     const page = await newE2EPage();
     await page.setContent('<refine-selection-tools></refine-selection-tools>');

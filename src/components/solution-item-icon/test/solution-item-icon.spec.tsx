@@ -19,7 +19,7 @@ import { SolutionItemIcon } from '../solution-item-icon';
 import { value } from '../../../demos/data/solution-item-icon-data.json';
 import { h } from '@stencil/core';
 
-describe('solution-item-icon', () => {
+xdescribe('solution-item-icon', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [SolutionItemIcon],

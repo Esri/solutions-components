@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { MapSelectTools } from '../map-select-tools';
 
-describe('map-select-tools', () => {
+xdescribe('map-select-tools', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [MapSelectTools],

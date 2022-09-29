@@ -19,7 +19,7 @@ import { SolutionSpatialRef } from '../solution-spatial-ref';
 import { h } from '@stencil/core';
 import state from '../../../utils/editStore';
 
-describe('solution-spatial-ref', () => {
+xdescribe('solution-spatial-ref', () => {
   beforeEach(() => {
     state.dispose();
     state.models = {};

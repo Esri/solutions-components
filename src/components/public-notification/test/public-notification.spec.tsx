@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { PublicNotificationTwo } from '../public-notification';
 
-describe('public-notification', () => {
+xdescribe('public-notification', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [PublicNotificationTwo],
