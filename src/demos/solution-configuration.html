@@ -27,6 +27,10 @@
   .full-height {
     height: 100%;
   }
+  .app-container {
+    height: calc(100% - 30px);
+    overflow: auto;
+  }
   .demo-button {
     position: relative;
     align-self: center;
@@ -77,39 +81,41 @@
 
 <body>
   <h1>Demo Solution Configuration</h1>
-  <div class="margin-top-1 margin-side-1">
-    <div class="labeled-item align-baseline">
-      <label class="loginLabel" for="username">Username:&nbsp;</label>
-      <input type="text" id="username" placeholder="anonymous">
+  <div class="app-container">
+    <div class="margin-top-1 margin-side-1">
+      <div class="labeled-item align-baseline">
+        <label class="loginLabel" for="username">Username:&nbsp;</label>
+        <input type="text" id="username" placeholder="anonymous">
+      </div>
+      <div class="labeled-item align-baseline">
+        <label class="loginLabel" for="password">Password:&nbsp;</label>
+        <input type="password" id="password">
+      </div>
+      <div class="labeled-item align-baseline">
+        <label class="loginLabel" for="portal">Portal:&nbsp;</label>
+        <input type="text" id="portal" style="width:256px" placeholder="https://www.arcgis.com">
+      </div>
+      <div class="labeled-item align-baseline">
+        <label class="loginLabel" for="group">Group ID:&nbsp;</label>
+        <input type="text" id="group" style="width:300px">
+      </div>
+      <button id="connectBtn fader" onclick="connectFcn()">Connect</button>
     </div>
-    <div class="labeled-item align-baseline">
-      <label class="loginLabel" for="password">Password:&nbsp;</label>
-      <input type="password" id="password">
+    <div class="list flex not-visible margin-bottom-1 margin-side-1" id="componentContainer">
+      <calcite-select
+        id="solution-ids"
+        label="demo combobox"
+        placeholder="Select Solution ID"
+        scale="m"
+        class="combo-list labeled-item">
+      </calcite-select>
     </div>
-    <div class="labeled-item align-baseline">
-      <label class="loginLabel" for="portal">Portal:&nbsp;</label>
-      <input type="text" id="portal" style="width:256px" placeholder="https://www.arcgis.com">
-    </div>
-    <div class="labeled-item align-baseline">
-      <label class="loginLabel" for="group">Group ID:&nbsp;</label>
-      <input type="text" id="group" style="width:300px">
-    </div>
-    <button id="connectBtn fader" onclick="connectFcn()">Connect</button>
+    <main id="appContainer">
+      <div class="content full-height">
+        <solution-configuration id="demo"></solution-configuration>
+      </div>
+    </main>
   </div>
-  <div class="list flex not-visible margin-bottom-1 margin-side-1" id="componentContainer">
-    <calcite-select
-      id="solution-ids"
-      label="demo combobox"
-      placeholder="Select Solution ID"
-      scale="m"
-      class="combo-list labeled-item">
-    </calcite-select>
-  </div>
-  <main id="appContainer">
-    <div class="content full-height">
-      <solution-configuration id="demo"></solution-configuration>
-    </div>
-  </main>
 
   <script src="./libs/require.js"></script>
   <script src="./libs/setLocale.js"></script>

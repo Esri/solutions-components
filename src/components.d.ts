@@ -85,7 +85,7 @@ export namespace Components {
     }
     interface MapLayerPicker {
         /**
-          * string: The label to render above the combobox.
+          * string: The label to render above the combobox. This label is positioned on the left side of the control.
          */
         "label": string;
         /**
@@ -105,7 +105,7 @@ export namespace Components {
          */
         "selectionMode": SelectionMode;
         /**
-          * string: The label to render above the combobox.
+          * string: The label to render above the combobox. This label is positioned on the right side of the control.
          */
         "trailingLabel": string;
     }
@@ -662,7 +662,7 @@ declare namespace LocalJSX {
     }
     interface MapLayerPicker {
         /**
-          * string: The label to render above the combobox.
+          * string: The label to render above the combobox. This label is positioned on the left side of the control.
          */
         "label"?: string;
         /**
@@ -683,7 +683,7 @@ declare namespace LocalJSX {
          */
         "selectionMode"?: SelectionMode;
         /**
-          * string: The label to render above the combobox.
+          * string: The label to render above the combobox. This label is positioned on the right side of the control.
          */
         "trailingLabel"?: string;
     }
