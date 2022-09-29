@@ -31,9 +31,7 @@
 - calcite-list-item
 - [map-select-tools](../map-select-tools)
 - calcite-icon
-- calcite-radio-group
-- calcite-radio-group-item
-- [refine-selection-tools](../refine-selection-tools)
+- [refine-selection](../refine-selection)
 - calcite-checkbox
 - [pdf-download](../pdf-download)
 - calcite-notice
@@ -56,9 +54,7 @@ graph TD;
   new-public-notification --> calcite-list-item
   new-public-notification --> map-select-tools
   new-public-notification --> calcite-icon
-  new-public-notification --> calcite-radio-group
-  new-public-notification --> calcite-radio-group-item
-  new-public-notification --> refine-selection-tools
+  new-public-notification --> refine-selection
   new-public-notification --> calcite-checkbox
   new-public-notification --> pdf-download
   new-public-notification --> calcite-notice
@@ -105,6 +101,12 @@ graph TD;
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-slider --> calcite-graph
+  refine-selection --> calcite-radio-group
+  refine-selection --> calcite-radio-group-item
+  refine-selection --> refine-selection-tools
+  refine-selection --> calcite-list
+  refine-selection --> calcite-list-item
+  refine-selection --> calcite-action
   pdf-download --> calcite-select
   pdf-download --> calcite-option
   calcite-notice --> calcite-icon

@@ -189,6 +189,20 @@ export namespace Components {
          */
         "message": string;
     }
+    interface RefineSelection {
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "addresseeLayer": __esri.FeatureLayerView;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * utils/interfaces/ISelectionSet: An array of user defined selection sets
+         */
+        "selectionSets": ISelectionSet[];
+    }
     interface RefineSelectionTools {
         /**
           * boolean: sketch is used by multiple components...need a way to know who should respond...
@@ -463,6 +477,10 @@ export interface MapSelectToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapSelectToolsElement;
 }
+export interface RefineSelectionCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLRefineSelectionElement;
+}
 export interface RefineSelectionToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLRefineSelectionToolsElement;
@@ -545,6 +563,12 @@ declare global {
     var HTMLPublicNotificationElement: {
         prototype: HTMLPublicNotificationElement;
         new (): HTMLPublicNotificationElement;
+    };
+    interface HTMLRefineSelectionElement extends Components.RefineSelection, HTMLStencilElement {
+    }
+    var HTMLRefineSelectionElement: {
+        prototype: HTMLRefineSelectionElement;
+        new (): HTMLRefineSelectionElement;
     };
     interface HTMLRefineSelectionToolsElement extends Components.RefineSelectionTools, HTMLStencilElement {
     }
@@ -634,6 +658,7 @@ declare global {
         "new-public-notification": HTMLNewPublicNotificationElement;
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
+        "refine-selection": HTMLRefineSelectionElement;
         "refine-selection-tools": HTMLRefineSelectionToolsElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-contents": HTMLSolutionContentsElement;
@@ -813,6 +838,21 @@ declare namespace LocalJSX {
           * string: Default message to show when we have no selection sets
          */
         "message"?: string;
+    }
+    interface RefineSelection {
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "addresseeLayer"?: __esri.FeatureLayerView;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        "onSelectionSetsChanged"?: (event: RefineSelectionCustomEvent<ISelectionSet[]>) => void;
+        /**
+          * utils/interfaces/ISelectionSet: An array of user defined selection sets
+         */
+        "selectionSets"?: ISelectionSet[];
     }
     interface RefineSelectionTools {
         /**
@@ -1062,6 +1102,7 @@ declare namespace LocalJSX {
         "new-public-notification": NewPublicNotification;
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
+        "refine-selection": RefineSelection;
         "refine-selection-tools": RefineSelectionTools;
         "solution-configuration": SolutionConfiguration;
         "solution-contents": SolutionContents;
@@ -1090,6 +1131,7 @@ declare module "@stencil/core" {
             "new-public-notification": LocalJSX.NewPublicNotification & JSXBase.HTMLAttributes<HTMLNewPublicNotificationElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
+            "refine-selection": LocalJSX.RefineSelection & JSXBase.HTMLAttributes<HTMLRefineSelectionElement>;
             "refine-selection-tools": LocalJSX.RefineSelectionTools & JSXBase.HTMLAttributes<HTMLRefineSelectionToolsElement>;
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
