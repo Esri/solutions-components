@@ -38,7 +38,7 @@ import {
  * Get an array from a list of nodes
  *
  * @param nodeList list of nodes
- * 
+ *
  * @returns array of nodes
  */
 export function nodeListToArray<T extends Element>(nodeList: HTMLCollectionOf<T> | NodeListOf<T> | T[]): T[] {
@@ -54,7 +54,7 @@ export function nodeListToArray<T extends Element>(nodeList: HTMLCollectionOf<T>
  * @param data the current solution items data
  * @param authentication credentials for the request
  * @param translations translated strings for messages
- * 
+ *
  * @returns a promise that will resolve with a success true/false response
  */
 export async function save(
@@ -90,13 +90,13 @@ export async function save(
 }
 
 /**
- * Updates the solutions thumbnail and data resources 
+ * Updates the solutions thumbnail and data resources
  *
  * @param solutionId id for the solution
  * @param models the models for the solutions templates
  * @param data the current data object for the solution
  * @param authentication credentials for the request
- * 
+ *
  * @returns a promise that will resolve with response results
  */
 export async function _updateResources(
@@ -132,12 +132,12 @@ export async function _updateResources(
 }
 
 /**
- * Updates the solutions thumbnail and data resources 
+ * Updates the solutions thumbnail and data resources
  *
  * @param solutionId id for the solution
  * @param model the model for the current solution template
  * @param authentication credentials for the request
- * 
+ *
  * @returns a promise that will resolve with response results
  */
 function _updateThumbnailResource(
@@ -157,7 +157,7 @@ function _updateThumbnailResource(
           resource: model.thumbnailNew,
           name
         };
-  
+
         const resources = model.resources.filter(r => r.endsWith(name));
         if (resources.length === 1) {
           const nameParts = resources[0].split("/");
@@ -186,7 +186,7 @@ function _updateThumbnailResource(
 
 /**
  * Updates the solutions data resources
- * 
+ *
  * This function will update the provided promises argument by adding add/remove/update promises
  *
  * @param solutionId id for the solution
@@ -248,7 +248,7 @@ function _updateFileResources(
  * @param data the current data object for the solution
  * @param resourceFilePath resource file info
  * @param authentication credentials for the request
- * 
+ *
  * @returns a promise that will resolve to a response with success true/false
  */
 function _add(
@@ -306,7 +306,7 @@ function _add(
  * @param data the current data object for the solution
  * @param resourceFilePath resource file info
  * @param authentication credentials for the request
- * 
+ *
  * @returns a promise that will resolve to a response with success true/false
  */
 function _remove(
@@ -350,7 +350,7 @@ function _remove(
  * @param model the model for the current solution template
  * @param resourceFilePath resource file info
  * @param authentication credentials for the request
- * 
+ *
  * @returns a promise that will resolve to a response with success true/false
  */
 function _update(
@@ -381,7 +381,7 @@ function _update(
 
 /**
  * Update the resources paths for a given template
- * 
+ *
  * This function will update the provided data argument with any new or removed resource paths
  *
  * @param data the current data object for the solution
@@ -389,7 +389,7 @@ function _update(
  * @param updateType add/update/remove
  * @param path the resource prefix/name
  * @param sourceFileName from the current resourceFilePath
- * 
+ *
  */
 function _updateTemplateResourcePaths(
   data: any,
@@ -406,7 +406,7 @@ function _updateTemplateResourcePaths(
           break;
         case EUpdateType.Update:
           t.resources = t.resources.filter(r => r.indexOf(sourceFileName) < 0);
-          t.resources.push(path);          
+          t.resources.push(path);
           break;
         case EUpdateType.Remove:
           t.resources = t.resources.filter(r => r.indexOf(path) < 0);

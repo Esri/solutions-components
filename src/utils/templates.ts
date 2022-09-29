@@ -29,6 +29,7 @@ import {
   IVariableItem
 } from '../utils/interfaces';
 import {
+  IItemTemplate,
   IDeployFileCopyPath,
   generateStorageFilePaths,
   getProp,
@@ -45,13 +46,13 @@ import {
 
 /**
  * Sort the solution items
- * 
+ *
  * @param templates a list of item templates from the solution
- * 
+ *
  * @returns a sorted list of solution items
  */
 export function getInventoryItems(
-  templates: any[]
+  templates: IItemTemplate[]
 ): IInventoryItem[] {
   const hierarchy = getItemHierarchy(templates);
   const ids = hierarchy.reduce((prev, cur) => {
@@ -69,13 +70,13 @@ export function getInventoryItems(
 
 /**
  * Create item hierarchy that will avoid issues from cylical dependencies
- * 
+ *
  * @param templates a list of item templates from the solution
- * 
+ *
  * @returns a hierarchy for item and item dependency display
  */
 export function getItemHierarchy(
-  templates: any[]
+  templates: IItemTemplate[]
 ): any[] {
   const hierarchy = [];
 
@@ -138,10 +139,10 @@ export function getItemHierarchy(
 
 /**
  * Explore the solution item templates for variables we will allow users to insert at runtime
- * 
+ *
  * @param templates a list of item templates from the solution
  * @param translations nls translation object
- * 
+ *
  * @returns a list of variables from the solution item templates
  */
 export function getSolutionVariables(
@@ -187,9 +188,9 @@ export function getSolutionVariables(
 
 /**
  * Set key organization variables we will allow users to insert at runtime
- * 
+ *
  * @param translations nls translation object
- * 
+ *
  * @returns a list of variables for the organization
  */
 export function getOrganizationVariables(
@@ -222,9 +223,9 @@ export function getOrganizationVariables(
 /**
  * Create and store text models for the editor as well as other key values such as the original values
  * that can be used to clear any temp edits.
- * 
+ *
  * @param templates a list of item templates from the solution
- * 
+ *
  * @returns a promise that resolves a list of models and key values
  */
 export function getModels(
@@ -276,9 +277,9 @@ export function getModels(
 /**
  * Gets a list of Feature Services that are not views along with an enabled property that indicates
  * if the service currently uses a spatial reference variable.
- * 
+ *
  * @param templates a list of item templates from the solution
- * 
+ *
  * @returns a list of feature service names and an enabled property to indicate
  * if they currently use a spatial reference variable.
  */
@@ -301,11 +302,11 @@ export function getFeatureServices(
 /**
  * Stores basic spatial reference information that is used to determine if a custom spatial reference parameter will
  * be exposed while deploying this solution and if so what feature services will support it and what will the default wkid be
- * 
+ *
  * @param services a list of objects with service name and enabled property (indicates if they currently use a spatial reference var)
  * @param data the data object of a solution item
- * 
- * @returns an object that stores if a custom spatial reference parameter is enabled/disabled, 
+ *
+ * @returns an object that stores if a custom spatial reference parameter is enabled/disabled,
  * a list of services and if they are enabled/disabled, and the default wkid
  */
 export function getSpatialReferenceInfo(
@@ -332,7 +333,7 @@ export function getSpatialReferenceInfo(
 
 /**
  * Generate storage file paths from the solution template
- * 
+ *
  * @param solutionId the id of the current solution
  * @param template the current template from the solution
  * @param authentication credentials for any requests
@@ -358,7 +359,7 @@ function _getResourceFilePaths(
 
 /**
  * Fetch thumbnails from the item resources
- * 
+ *
  * @param models the list of models for the current solution item
  * @param authentication credentials for any requests
  *
@@ -394,7 +395,7 @@ function _getThumbnails(
 /**
  * Explore a solution item template for variables we will allow users to insert at runtime.
  * This function will update the item argument that is passed in with the var details.
- * 
+ *
  * @param children a list of layers or tables from a template
  * @param item an object that store key details for a given variable
  * @param template one of the templates from the current solution
@@ -425,7 +426,7 @@ function _addLayersOrTables(
 
 /**
  * Capture key details from the solution item template
- * 
+ *
  * @param template one of the templates from the current solution
  * @param templates full list of templates
  * @param dependencies list of hierarchical dependencies
@@ -457,7 +458,7 @@ function _getItemFromTemplate(
 
 /**
  * Capture key details from the solution item template
- * 
+ *
  * @param dependencies list of dependencies from a template
  * @param templates full list of templates
  *
@@ -484,7 +485,7 @@ function _getDependencies(
 
 /**
  * Capture the key item details for a given template
- * 
+ *
  * @param item the templates item
  * @param isGroup boolean to indicate if the item is a group
  * @param itemId the item id of the template
@@ -509,7 +510,7 @@ function _getItemDetails(
 
 /**
  * Capture the key item details for a given group template
- * 
+ *
  * @param template one of the templates from the current solution
  * @param templates full list of templates
  *
@@ -536,7 +537,7 @@ function _getGroupDetails(
 
 /**
  * Used to understand if we are dealing with a binary object that will support upload/download
- * 
+ *
  * @param template one of the templates from the current solution
  *
  * @returns true if this item supports upload/download
@@ -550,12 +551,12 @@ function _getIsResource(
 
 /**
  * Sort the template ids based on their dependencies
- * 
+ *
  * @param templates full list of templates
  *
  * @returns a list of Itop level item ids
  */
-function _getTopLevelItemIds(templates: any[]) {
+function _getTopLevelItemIds(templates: IItemTemplate[]) {
   // Find the top-level nodes. Start with all nodes, then remove those that other nodes depend on
   const topLevelItemCandidateIds = templates.map((template) => template.itemId);
   templates.forEach((template) => {
