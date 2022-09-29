@@ -47,11 +47,6 @@ export class MapSelectTools {
   @Prop() mapView: __esri.MapView;
 
   /**
-   * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
-   */
-  @Prop() searchLayers: __esri.Layer[];
-
-  /**
    * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
    */
   @Prop() selectLayerView: __esri.FeatureLayerView;
