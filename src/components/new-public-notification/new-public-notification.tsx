@@ -401,6 +401,7 @@ export class NewPublicNotification {
               </calcite-radio-group-item>
             </calcite-radio-group>
             <refine-selection-tools
+              border={true}
               ids={this._getSelectionIds(this.selectionSets)}
               layerViews={[this.addresseeLayer]}
               mapView={this.mapView}
