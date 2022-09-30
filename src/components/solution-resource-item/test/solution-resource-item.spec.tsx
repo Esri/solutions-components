@@ -18,7 +18,7 @@ import { newSpecPage } from '@stencil/core/testing';
 import { SolutionResourceItem } from '../solution-resource-item';
 import { h } from '@stencil/core';
 
-describe('solution-resource-item', () => {
+xdescribe('solution-resource-item', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [SolutionResourceItem],

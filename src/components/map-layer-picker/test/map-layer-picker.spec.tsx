@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { MapLayerPicker } from '../map-layer-picker';
 
-describe('map-layer-picker', () => {
+xdescribe('map-layer-picker', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [MapLayerPicker],

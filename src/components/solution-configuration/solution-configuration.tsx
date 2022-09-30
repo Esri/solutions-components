@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, h, Host, Listen, Method, Prop, State, VNode, Watch, EventEmitter, Event } from '@stencil/core';
-import { IOrganizationVariableItem, IResponse, ISolutionConfiguration, ISolutionItem, ISolutionSpatialReferenceInfo, IUpdateTemplateResponse, IVariableItem } from '../../utils/interfaces';
+import { IOrganizationVariableItem, IResponse, ISolutionConfiguration, ICurrentEditItem, ISolutionSpatialReferenceInfo, IUpdateTemplateResponse, IVariableItem } from '../../utils/interfaces';
 import * as utils from '../../utils/templates';
 import state from '../../utils/editStore';
 import { save } from '../../utils/common';
@@ -66,7 +66,7 @@ export class SolutionConfiguration {
   /**
    * Contains the current solution item we are working with
    */
-  @Prop({ mutable: true }) item: ISolutionItem = {
+  @Prop({ mutable: true }) item: ICurrentEditItem = {
     itemId: "",
     itemDetails: {},
     isResource: false,

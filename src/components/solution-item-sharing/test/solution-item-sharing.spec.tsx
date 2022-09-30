@@ -19,7 +19,7 @@ import { SolutionItemSharing } from '../solution-item-sharing';
 import { value } from '../../../demos/data/solution-item-sharing-data.json';
 import { h } from '@stencil/core';
 
-describe('solution-item-sharing', () => {
+xdescribe('solution-item-sharing', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [SolutionItemSharing],

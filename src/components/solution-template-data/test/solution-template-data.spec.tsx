@@ -24,7 +24,7 @@ beforeEach(async () => {
   dispose();
 });
 
-describe('solution-template-data', () => {
+xdescribe('solution-template-data', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [SolutionTemplateData],

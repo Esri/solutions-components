@@ -16,7 +16,7 @@
 
 //import { newE2EPage } from '@stencil/core/testing';
 
-describe('json-editor', () => {
+xdescribe('json-editor', () => {
   it('renders', async () => {
     //TEST commented out for now.
     // need to work out how we pass translations

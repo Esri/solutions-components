@@ -24,7 +24,7 @@ const mutationObserverMock = jest.fn(function MutationObserver() {
 });
 global.MutationObserver = mutationObserverMock as any;
 
-describe('json-editor', () => {
+xdescribe('json-editor', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [JsonEditor],
@@ -32,7 +32,7 @@ describe('json-editor', () => {
         <json-editor instanceid="ABC123" value="{a:'A'}"></json-editor>
       )
     });
-    
+
     expect(page.root).toEqualHtml(`
       <json-editor class="json-editor-position" instanceid="ABC123" value="{a:'A'}">
         <div class="editor-container padding-right" id="ABC123-editor-container">

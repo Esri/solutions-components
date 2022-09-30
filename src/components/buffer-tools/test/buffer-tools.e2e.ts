@@ -1,6 +1,6 @@
 import { newE2EPage } from '@stencil/core/testing';
 
-describe('buffer-tools', () => {
+xdescribe('buffer-tools', () => {
   it('renders', async () => {
     const page = await newE2EPage();
     await page.setContent('<buffer-tools></buffer-tools>');

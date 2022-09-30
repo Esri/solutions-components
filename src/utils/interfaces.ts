@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+import {
+  IDeployFileCopyPath
+} from '@esri/solution-common';
+
 /**
  * Resource update types
  */
@@ -87,7 +91,7 @@ export interface IInventoryItem {
   dependencies?: IInventoryItem[];
   type: string;
   typeKeywords: string[];
-  solutionItem: ISolutionItem;
+  solutionItem: ICurrentEditItem;
 }
 
 /**
@@ -137,7 +141,7 @@ export interface ISolutionConfiguration {
 /**
  * Details used to display and store information about the item
  */
-export interface ISolutionItem {
+export interface ICurrentEditItem {
   itemId: string;
   itemDetails: any; //use the interface
   isResource: boolean; // this should be removed and determined from the data
@@ -150,6 +154,30 @@ export interface ISolutionItem {
 /**
  * Key state info for a solution template
  */
+export interface ISolutionTemplateEdit {
+  itemId: string;
+  type: string;
+  current: ISolutionTemplateEditItem;
+  original: ISolutionTemplateEditItem;
+}
+
+export interface ISolutionTemplateEditItem {
+  details: string;
+  data: string;
+  properties: string;
+  thumbnail: any;
+  resourceFilePaths: IResourcePath[];
+  groupDetails?: IItemShare[];
+}
+
+/**
+ * A list of solution state info for each template in a solution
+ */
+export interface ISolutionTemplateEdits {
+  [templateId: string]: ISolutionTemplateEdit;
+}
+
+
 export interface ISolutionModel {
   dataModel: monaco.editor.ITextModel;
   dataOriginValue: string;
@@ -179,6 +207,14 @@ export interface ISolutionModel {
  */
 export interface ISolutionModels {
   [key: string]: ISolutionModel;
+}
+
+/**
+ * Feature service name and whether the service is enabled for SR configuration
+ */
+export interface IFeatureServiceEnabledStatus {
+  name: string;
+  enabled: boolean;
 }
 
 /**
@@ -245,10 +281,7 @@ export interface IWkidDescription {
 /**
  * Key details to manage resources
  */
-export interface IResourcePath {
-  url: string;
-  type: number;
-  filename: string;
+export interface IResourcePath extends IDeployFileCopyPath {
   blob?: any; // This will only be set when a new file is uploaded (add or update)
   sourceFileName?: string; // This will only be set when a file is being updated
   updateType: EUpdateType

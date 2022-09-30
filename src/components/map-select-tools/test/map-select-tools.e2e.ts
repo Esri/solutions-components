@@ -1,6 +1,6 @@
 import { newE2EPage } from '@stencil/core/testing';
 
-describe('map-select-tools', () => {
+xdescribe('map-select-tools', () => {
   it('renders', async () => {
     const page = await newE2EPage();
     await page.setContent('<map-select-tools></map-select-tools>');
