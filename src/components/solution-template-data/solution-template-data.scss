@@ -35,7 +35,7 @@
     w-full
     flex
     flex-col
-    overflow-hidden;
+    overflow-y-auto;
 }
 
 .solution-data-editor-container {
@@ -72,7 +72,6 @@
   @apply pt-4
     pb-0
     px-4;
-  max-height: 45%;
 }
 
 .sol-vars {
