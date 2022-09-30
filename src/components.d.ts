@@ -160,6 +160,8 @@ export namespace Components {
           * boolean: Controls the enabled/disabled state of download
          */
         "disabled": boolean;
+        "downloadCSV": (ids: number[], removeDuplicates: boolean) => Promise<void>;
+        "downloadPDF": (ids: number[], removeDuplicates: boolean) => Promise<void>;
         /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */

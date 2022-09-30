@@ -95,6 +95,10 @@
    @State() numSelected = 0;
  
    protected _selectTools: HTMLMapSelectToolsElement;
+
+   protected _downloadTools: HTMLPdfDownloadElement;
+
+   protected _removeDuplicates: HTMLCalciteCheckboxElement;
  
    protected _activeSelection: ISelectionSet;
  
@@ -412,21 +416,24 @@
            <div class="margin-side-1 padding-top-1 border-bottom"></div>
            <div class="padding-top-sides-1">
              <calcite-label layout='inline' disabled={!this.downloadActive}>
-               <calcite-checkbox disabled={!this.downloadActive} />
+               <calcite-checkbox disabled={!this.downloadActive} ref={(el) => { this._removeDuplicates = el }}/>
                {this.translations?.removeDuplicate}
              </calcite-label>
            </div>
            <div class={isPdf ? "" : "display-none"}>
              {this._getLabel(this.translations?.selectPDFLabelOption, false, !this.downloadActive)}
              <div class={"padding-sides-1"}>
-               <pdf-download disabled={!this.downloadActive} />
+               <pdf-download
+                 disabled={!this.downloadActive}
+                 ref={(el) => { this._downloadTools = el }}
+                />
              </div>
            </div>
            <div class="padding-1 display-flex">
              <calcite-button
                disabled={!this.downloadActive}
                width="full"
-               onClick={isPdf ? this._downloadPDF : this._downloadCSV}
+               onClick={isPdf ? () => this._downloadPDF() : () => this._downloadCSV()}
              >
                {isPdf ? this.translations?.downloadPDF : this.translations?.downloadCSV}
              </calcite-button>
@@ -555,11 +562,13 @@
    }
  
    _downloadPDF() {
-     alert("download PDF")
+     const ids = utils.getSelectionIds(this.selectionSets);
+     this._downloadTools.downloadPDF(ids, this._removeDuplicates.checked);
    }
- 
+
    _downloadCSV() {
-     alert("download CSV")
+     const ids = utils.getSelectionIds(this.selectionSets);
+     this._downloadTools.downloadCSV(ids, this._removeDuplicates.checked);
    }
  
    _updateForWorkflowType(

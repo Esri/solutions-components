@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Host, h, Method, Prop, State, VNode } from '@stencil/core';
 import * as pdfUtils from '../../../arcgis-pdf-creator/data/labelFormats.json';
 import '@esri/calcite-components';
 import PdfDownload_T9n from '../../assets/t9n/pdf-download/resources.json';
@@ -73,11 +73,31 @@ export class PdfDownload {
   //
   //--------------------------------------------------------------------------
 
+  @Method()
+  async downloadPDF(
+    ids: number[],
+    removeDuplicates: boolean
+  ) {
+    return this._downloadPDF(ids, removeDuplicates);
+  }
+
+  // TODO still thinking about this...may be nice to just have this as a download helper
+  // and be the general worker for any supported download types
+  @Method()
+  async downloadCSV(
+    ids: number[],
+    removeDuplicates: boolean
+  ) {
+    return this._downloadCSV(ids, removeDuplicates);
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Events (public)
   //
   //--------------------------------------------------------------------------
+
+  protected _labelInfoControl: HTMLCalciteSelectElement;
 
   //--------------------------------------------------------------------------
   //
@@ -92,7 +112,11 @@ export class PdfDownload {
   render() {
     return (
       <Host>
-        <calcite-select disabled={this.disabled} label="">
+        <calcite-select
+          disabled={this.disabled}
+          label=""
+          ref={(el) => { this._labelInfoControl = el }}
+        >
           {this._renderItems()}
         </calcite-select>
       </Host>
@@ -113,11 +137,31 @@ export class PdfDownload {
       return _a < _b ? -1 : _a > _b ? 1 : 0
     });
     return sortedPdfIndo.map((l) => {
-      const lNum = l.descriptionPDF.labelsPerPageDisplay;
-      const lSize = `${l.descriptionPDF.labelWidthDisplay} x ${l.descriptionPDF.labelHeightDisplay}`;
-      const textLabel = this.translations.pdfLabel.replace("{{n}}", lNum).replace("{{labelSize}}", lSize);
-      return (<calcite-option value={l}>{textLabel}</calcite-option>)
+      return (<calcite-option value={l}>{this._getLabelSizeText(l)}</calcite-option>)
     });
+  }
+
+  async _downloadPDF(
+    ids: number[],
+    removeDuplicates: boolean
+  ) {
+    const l = this._labelInfoControl.selectedOption.value;
+    alert(`PDF download: (${this._getLabelSizeText(l)}) (remove dups: ${removeDuplicates}) ${ids.join(", ")}`);
+  }
+
+  async _downloadCSV(
+    ids: number[],
+    removeDuplicates: boolean
+  ) {
+    alert(`CSV download: (remove dups: ${removeDuplicates}) ${ids.join(", ")}`)
+  }
+
+  _getLabelSizeText(
+    labelInfo: any
+  ) {
+    const lNum = labelInfo.descriptionPDF.labelsPerPageDisplay;
+    const lSize = `${labelInfo.descriptionPDF.labelWidthDisplay} x ${labelInfo.descriptionPDF.labelHeightDisplay}`;
+    return this.translations.pdfLabel.replace("{{n}}", lNum).replace("{{labelSize}}", lSize);
   }
 
   async _getTranslations() {
