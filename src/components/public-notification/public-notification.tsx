@@ -125,6 +125,7 @@
    async pageTypeWatchHandler(
      v: EPageType
    ) {
+     this._selectTools?.clearSelection();
      this._clearHighlight();
      if (v === EPageType.LIST || v === EPageType.REFINE || v === EPageType.PDF || v === EPageType.CSV) {
        await this._highlightFeatures();
