@@ -19,6 +19,7 @@ import * as pdfUtils from '../../../arcgis-pdf-creator/data/labelFormats.json';
 import '@esri/calcite-components';
 import PdfDownload_T9n from '../../assets/t9n/pdf-download/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
+import { exportCSV } from '../../utils/csvUtils';
 
 @Component({
   tag: 'pdf-download',
@@ -153,7 +154,9 @@ export class PdfDownload {
     ids: number[],
     removeDuplicates: boolean
   ) {
-    alert(`CSV download: (remove dups: ${removeDuplicates}) ${ids.join(", ")}`)
+    //alert(`CSV download: (remove dups: ${removeDuplicates}) ${ids.join(", ")}`);
+    console.log(removeDuplicates)
+    await exportCSV(this.layerView, ids);
   }
 
   _getLabelSizeText(

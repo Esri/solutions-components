@@ -425,6 +425,7 @@
              <div class={"padding-sides-1"}>
                <pdf-download
                  disabled={!this.downloadActive}
+                 layerView={this.addresseeLayer}
                  ref={(el) => { this._downloadTools = el }}
                 />
              </div>
