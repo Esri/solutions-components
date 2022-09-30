@@ -563,13 +563,19 @@
    }
  
    _downloadPDF() {
-     const ids = utils.getSelectionIds(this.selectionSets);
+     const ids = utils.getSelectionIds(this._getDownloadSelectionSets());
      this._downloadTools.downloadPDF(ids, this._removeDuplicates.checked);
    }
 
    _downloadCSV() {
-     const ids = utils.getSelectionIds(this.selectionSets);
+     const ids = utils.getSelectionIds(this._getDownloadSelectionSets());
      this._downloadTools.downloadCSV(ids, this._removeDuplicates.checked);
+   }
+
+   _getDownloadSelectionSets() {
+     return this.selectionSets.filter(ss => {
+       return ss.download || ss.workflowType === EWorkflowType.REFINE;
+     });
    }
  
    _updateForWorkflowType(
