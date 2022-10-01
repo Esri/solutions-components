@@ -153,6 +153,8 @@ export class JsonEditor {
 
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
+   *
+   * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
     this._initValueObserver();
