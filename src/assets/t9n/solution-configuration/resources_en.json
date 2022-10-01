@@ -1,5 +1,13 @@
 {
     "cancelEdits": "Cancel Edits",
     "definitionTab": "Definition",
-    "spatialReferenceTab": "Spatial Reference"
+    "geocodeUrl": "Geocode URL",
+    "geometryUrl": "Geometry URL",
+    "itemId": "Item ID",
+    "portalBaseUrl": "Portal base URL",
+    "routeUrl": "Route URL",
+    "solutionExtent": "Solution extent",
+    "solutionItemExtent": "Solution item extent",
+    "spatialReferenceTab": "Spatial Reference",
+    "url": "URL"
 }

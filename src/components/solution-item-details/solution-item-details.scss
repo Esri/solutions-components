@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-$snippet-width: 400px;
+$thumbnail-width: 363px;
 
 .inputBottomSeparation {
   @apply mt-0
@@ -36,7 +36,7 @@ $snippet-width: 400px;
 .img-container {
   @apply inline
     m-inline-end-4;
-  max-width: $snippet-width;
+  max-width: $thumbnail-width;
 }
 
 .summary-count-container {
@@ -46,7 +46,7 @@ $snippet-width: 400px;
 }
 
 .snippet-count-container {
-  width: calc(100vw - $snippet-width);
+  width: calc(100vw - $thumbnail-width);
 }
 
 .parent-container {
