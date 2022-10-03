@@ -26,6 +26,23 @@ Type: `Promise<any>`
 
 Promise resolving with the current contents of the editor
 
+### `prepareForDeletion() => Promise<void>`
+
+Frees the editor events and memory; to be called when the web component is no longer needed.
+
+Because the component lifecycle doesn't include an "onDestroy" event
+(@see https://stenciljs.com/docs/component-lifecycle#disconnectedcallback)
+and TypeScript/JavaScript does automatic garbage collection without a callback
+hook until ES2021
+(@see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry),
+this cleanup call needs to be called manually.
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `replaceCurrentSelection(replacement: string) => Promise<any>`
 
 Replaces the current selection with the supplied text, inserting if nothing is selected.

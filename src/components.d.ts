@@ -41,6 +41,10 @@ export namespace Components {
          */
         "instanceid": any;
         /**
+          * Frees the editor events and memory; to be called when the web component is no longer needed.  Because the component lifecycle doesn't include an "onDestroy" event (@see https://stenciljs.com/docs/component-lifecycle#disconnectedcallback) and TypeScript/JavaScript does automatic garbage collection without a callback hook until ES2021 (@see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry), this cleanup call needs to be called manually.
+         */
+        "prepareForDeletion": () => Promise<void>;
+        /**
           * Replaces the current selection with the supplied text, inserting if nothing is selected.
           * @param replacement Text to use for replacement or insertion
           * @returns Promise resolving when function is done
