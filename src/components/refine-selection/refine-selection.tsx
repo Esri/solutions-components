@@ -41,7 +41,7 @@ export class RefineSelection {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -52,7 +52,7 @@ export class RefineSelection {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof RefineSelection_T9n;
+  @State() protected _translations: typeof RefineSelection_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -114,7 +114,7 @@ export class RefineSelection {
                 onClick={() => this._setSelectionMode(ESelectionMode.ADD)}
                 value={ESelectionMode.ADD}
               >
-                {this.translations.add}
+                {this._translations.add}
               </calcite-radio-group-item>
               <calcite-radio-group-item
                 checked={!this._addEnabled}
@@ -122,7 +122,7 @@ export class RefineSelection {
                 onClick={() => this._setSelectionMode(ESelectionMode.REMOVE)}
                 value={ESelectionMode.REMOVE}
               >
-                {this.translations.remove}
+                {this._translations.remove}
               </calcite-radio-group-item>
             </calcite-radio-group>
             <refine-selection-tools
@@ -150,7 +150,7 @@ export class RefineSelection {
 
   //--------------------------------------------------------------------------
   //
-  //  Functions (private)
+  //  Functions (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -190,19 +190,19 @@ export class RefineSelection {
 
     return [(
       <calcite-list-item
-        label={this.translations.featuresAdded?.replace('{{n}}', numAdded.toString())}
+        label={this._translations.featuresAdded?.replace('{{n}}', numAdded.toString())}
       >
         {this._getAction(numAdded > 0, "reset", "", (): void => this._revertSelection(refineSet, true), false, "actions-end")}
       </calcite-list-item>
     ),(
       <calcite-list-item
-        label={this.translations.featuresRemoved?.replace('{{n}}', numRemoved.toString())}
+        label={this._translations.featuresRemoved?.replace('{{n}}', numRemoved.toString())}
       >
         {this._getAction(numRemoved > 0, "reset", "", (): void => this._revertSelection(refineSet, false), false, "actions-end")}
       </calcite-list-item>
     ), (
       <calcite-list-item
-        label={this.translations.totalSelected?.replace('{{n}}', total.toString())}
+        label={this._translations.totalSelected?.replace('{{n}}', total.toString())}
       />
     )];
   }
@@ -228,14 +228,14 @@ export class RefineSelection {
 
   /**
    * Create a calcite action
-   * 
+   *
    * @param enabled controls the enabled state of the control
    * @param icon the image to display in the action
    * @param text and supporting text for the action
    * @param onClick the fucntion the actio will execute
    * @param indicator boolean to control if an indicator should be shown (default is false)
    * @param slot the supporting slot to use
-   * 
+   *
    * @returns the calcite action node
    * @protected
    */
@@ -260,7 +260,7 @@ export class RefineSelection {
 
   /**
    * Revert an Add or Remove selection
-   * 
+   *
    * @param refineSet the refine set
    * @param isAdd boolean to indicate if we are reverting Add or Remove
    *
@@ -298,7 +298,7 @@ export class RefineSelection {
 
   /**
    * Highlight any selected features in the map
-   * 
+   *
    * @param removeIds the ids to remove
    *
    * @protected
@@ -321,7 +321,7 @@ export class RefineSelection {
 
   /**
    * Update the refine selection set with any adds or removes
-   * 
+   *
    * @param addIds any ids to add
    * @param removeIds any ids to remove
    *
@@ -384,7 +384,7 @@ export class RefineSelection {
    */
    protected async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof RefineSelection_T9n;
+    this._translations = translations[0] as typeof RefineSelection_T9n;
   }
 
 }

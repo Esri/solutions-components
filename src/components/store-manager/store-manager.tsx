@@ -96,13 +96,13 @@ export class StoreManager {
   //
   //--------------------------------------------------------------------------
 
-  private _valueObserver;
+  protected _valueObserver;
 
   /**
    * Initialize the observer that will monitor and respond to changes in the value.
    * When we get a new value we are dealinmg with a new solution and need to fetch the items data and load the state.
    */
-  private _initValueObserver() {
+  protected _initValueObserver() {
     const self = this;
     this._valueObserver = new MutationObserver(ml => {
       ml.some(mutation => {

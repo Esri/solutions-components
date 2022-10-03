@@ -68,7 +68,7 @@ export class MapSelectTools {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -82,7 +82,7 @@ export class MapSelectTools {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof MapSelectTools_T9n;
+  @State() protected _translations: typeof MapSelectTools_T9n;
 
   /**
    * EWorkflowType: "SEARCH", "SELECT", "SKETCH", "REFINE"
@@ -281,14 +281,14 @@ export class MapSelectTools {
 
   @Listen("sketchGraphicsChange", { target: 'window' })
   sketchGraphicsChange(event: CustomEvent): void {
-    this._updateSelection(EWorkflowType.SKETCH, event.detail, this.translations.sketch);
+    this._updateSelection(EWorkflowType.SKETCH, event.detail, this._translations.sketch);
   }
 
   @Listen("refineSelectionGraphicsChange", { target: 'window' })
   refineSelectionGraphicsChange(event: CustomEvent): void {
     const graphics = event.detail;
 
-    this._updateSelection(EWorkflowType.SELECT, graphics, this.translations.select);
+    this._updateSelection(EWorkflowType.SELECT, graphics, this._translations.select);
     // Using OIDs to avoid issue with points
     const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
     this._highlightFeatures(oids);
@@ -340,21 +340,21 @@ export class MapSelectTools {
               class="w-50 end-border"
               value={EWorkflowType.SEARCH}
             >
-              {this.translations.search}
+              {this._translations.search}
             </calcite-radio-group-item>
             <calcite-radio-group-item
               checked={selectEnabled}
               class="w-50 end-border"
               value={EWorkflowType.SELECT}
             >
-              {this.translations.select}
+              {this._translations.select}
             </calcite-radio-group-item>
             <calcite-radio-group-item
               checked={drawEnabled}
               class="w-50"
               value={EWorkflowType.SKETCH}
             >
-              {this.translations.sketch}
+              {this._translations.sketch}
             </calcite-radio-group-item>
           </calcite-radio-group>
         </div>
@@ -365,7 +365,7 @@ export class MapSelectTools {
           active={drawEnabled}
           border={true}
           class={showDrawToolsClass}
-          mapView={this.mapView} 
+          mapView={this.mapView}
           ref={(el) => { this._drawTools = el}}
         />
         <refine-selection-tools
@@ -379,7 +379,7 @@ export class MapSelectTools {
           refineMode={ERefineMode.SUBSET}
         />
         <calcite-label style={{ "display": "flex", "padding-top": "1rem" }}>
-          {this.translations?.searchDistance}
+          {this._translations?.searchDistance}
           <buffer-tools
             geometries={this.geometries}
             onBufferComplete={(evt) => this._bufferComplete(evt)}
@@ -395,7 +395,7 @@ export class MapSelectTools {
 
   //--------------------------------------------------------------------------
   //
-  //  Functions (private)
+  //  Functions (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -403,7 +403,7 @@ export class MapSelectTools {
    * Load esri javascript api modules
    *
    * @returns Promise resolving when function is done
-   * 
+   *
    * @protected
    */
   protected async _initModules(): Promise<void> {
@@ -429,8 +429,8 @@ export class MapSelectTools {
 
   /**
    * Initialize the graphics layer, selection set, and search widget
-   * 
-   * @returns Promise when the operation has completed 
+   *
+   * @returns Promise when the operation has completed
    */
   protected async _init(): Promise<void> {
     this._initGraphicsLayer();
@@ -440,7 +440,7 @@ export class MapSelectTools {
 
   /**
    * Initialize the state of the component with any stored values in a selection set
-   * 
+   *
    * @protected
    */
   protected _initSelectionSet(): void {
@@ -456,23 +456,23 @@ export class MapSelectTools {
       this._drawTools.graphics = this.geometries.map(sg => {
         let props = {
           'geometry': sg,
-          'symbol': sg.type === 'point' ? 
-            this._drawTools?.pointSymbol : sg.type === 'polyline' ? 
-            this._drawTools?.polylineSymbol : sg.type === 'polygon' ? 
+          'symbol': sg.type === 'point' ?
+            this._drawTools?.pointSymbol : sg.type === 'polyline' ?
+            this._drawTools?.polylineSymbol : sg.type === 'polygon' ?
             this._drawTools?.polygonSymbol : undefined
         };
         return new this.Graphic(props)
       });
       // reset selection label base
       this._selectionLabel = this.workflowType === EWorkflowType.SKETCH ?
-        this.translations.sketch : this.workflowType === EWorkflowType.SELECT ?
-        this.translations.select : this.selectionSet?.label;
+        this._translations.sketch : this.workflowType === EWorkflowType.SELECT ?
+        this._translations.select : this.selectionSet?.label;
     }
   }
 
   /**
    * Initialize the search widget
-   * 
+   *
    * @protected
    */
   protected _initSearchWidget(): void {
@@ -505,11 +505,11 @@ export class MapSelectTools {
 
   /**
    * Initialize the graphics layer used to store any buffer grapghics
-   * 
+   *
    * @protected
    */
   protected _initGraphicsLayer(): void {
-    const title = this.translations.bufferLayer;
+    const title = this._translations.bufferLayer;
 
     const bufferIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
     if (bufferIndex > -1) {
@@ -517,7 +517,7 @@ export class MapSelectTools {
     } else {
       this._bufferGraphicsLayer = new this.GraphicsLayer({ title });
       state.managedLayers.push(title);
-      const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === this.translations.sketchLayer);
+      const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === this._translations.sketchLayer);
       if (sketchIndex > -1) {
         this.mapView.map.layers.add(this._bufferGraphicsLayer, sketchIndex);
       } else {
@@ -528,7 +528,7 @@ export class MapSelectTools {
 
   /**
    * Store workflow change and emit workflow change event
-   * 
+   *
    * @protected
    */
   protected _workflowChange(evt: CustomEvent): void {
@@ -538,7 +538,7 @@ export class MapSelectTools {
 
   /**
    * Highlight the features in the map
-   * 
+   *
    * @protected
    */
   protected async _highlightFeatures(
@@ -557,9 +557,9 @@ export class MapSelectTools {
 
   /**
    * Query the selectLayerView based on any user drawn geometries or buffers
-   * 
+   *
    * @param geometries Array of geometries used for the selection of ids from the select layer view
-   * 
+   *
    * @returns Promise when the selection is complete and the graphics have been highlighted
    */
   protected async _selectFeatures(
@@ -585,9 +585,9 @@ export class MapSelectTools {
 
   /**
    * Query the selectLayerView
-   * 
+   *
    * @param geometry Geometry used for the selection of ids from the select layer view
-   * 
+   *
    * @returns Promise that will contain the selected ids
    */
   protected async _query(
@@ -601,9 +601,9 @@ export class MapSelectTools {
 
   /**
    * Query the selectLayerView based on any user drawn geometries or buffers
-   * 
+   *
    * @param evt CustomEvent that contains the result of the buffer
-   * 
+   *
    * @protected
    */
   protected _bufferComplete(
@@ -643,9 +643,9 @@ export class MapSelectTools {
 
   /**
    * Fetch a single geometry for each potential geometry type
-   * 
+   *
    * @param geometries All current selection geometries
-   * 
+   *
    * @protected
    */
   protected _geomQuery(
@@ -663,10 +663,10 @@ export class MapSelectTools {
 
   /**
    * Fetch a single geometry for the current geometry type
-   * 
+   *
    * @param geometries All current selection geometries
    * @param type The geometry type to union
-   * 
+   *
    * @returns Array with a single unioned geometry for the current geometry type
    * @protected
    */
@@ -680,10 +680,10 @@ export class MapSelectTools {
 
   /**
    * Clear all stored values and general state for the component
-   * 
+   *
    * @param clearSearchWidget Optional boolean for clearing the search widget (default is true)
    * @param clearLabel Optional boolean for clearing the search label (default is true)
-   * 
+   *
    * @protected
    */
   protected _clearResults(
@@ -705,7 +705,7 @@ export class MapSelectTools {
     }
 
     state.highlightHandle?.remove();
-    
+
     // for sketch
     if (this._drawTools) {
       this._drawTools.clear();
@@ -715,11 +715,11 @@ export class MapSelectTools {
 
   /**
    * Fetch a single geometry for the current geometry type
-   * 
+   *
    * @param type worflow type
    * @param graphics graphics to be used for selection
    * @param label selection label
-   * 
+   *
    * @protected
    */
   protected _updateSelection(
@@ -740,6 +740,6 @@ export class MapSelectTools {
    */
   async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof MapSelectTools_T9n;
+    this._translations = translations[0] as typeof MapSelectTools_T9n;
   }
 }

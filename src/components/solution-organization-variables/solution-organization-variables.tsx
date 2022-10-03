@@ -66,7 +66,7 @@ export class SolutionOrganizationVariables {
     return (
       <Host>
         <div>
-          <h4 class="org-var-header">{this.translations.orgVariables}</h4>
+          <h4 class="org-var-header">{this._translations.orgVariables}</h4>
         </div>
         <div class="container-border">
           <calcite-label id="variable-label">
@@ -79,7 +79,7 @@ export class SolutionOrganizationVariables {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -87,7 +87,7 @@ export class SolutionOrganizationVariables {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-   @State() translations: typeof SolutionOrganizationVariables_T9n;
+  @State() protected _translations: typeof SolutionOrganizationVariables_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -139,7 +139,7 @@ export class SolutionOrganizationVariables {
    * @param itemId Item id as reported by click event
    * @param value Variable id as reported by click event
    */
-  private _treeItemSelected(
+  protected _treeItemSelected(
     itemId: string,
     value: string
   ): void {
@@ -154,8 +154,8 @@ export class SolutionOrganizationVariables {
    *
    * @protected
    */
-  async _getTranslations() {
+  protected async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof SolutionOrganizationVariables_T9n;
+    this._translations = translations[0] as typeof SolutionOrganizationVariables_T9n;
   }
 }

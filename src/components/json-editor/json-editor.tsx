@@ -253,20 +253,20 @@ export class JsonEditor {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
-  private _cancelEditsBtnHandler: any;
-  private _contentChanged: any;
-  private _currentModel: any;
-  private _diffEditor: any;
-  private _editor: any;
-  private _loaded: boolean = false;
-  private _searchBtnHandler: any;
-  private _translations: typeof JsonEditor_T9n;
-  private _useDiffEditor: boolean = false;
-  private _valueObserver: MutationObserver;
+  protected _cancelEditsBtnHandler: any;
+  protected _contentChanged: any;
+  protected _currentModel: any;
+  protected _diffEditor: any;
+  protected _editor: any;
+  protected _loaded: boolean = false;
+  protected _searchBtnHandler: any;
+  protected _translations: typeof JsonEditor_T9n;
+  protected _useDiffEditor: boolean = false;
+  protected _valueObserver: MutationObserver;
 
   //--------------------------------------------------------------------------
   //
@@ -301,6 +301,29 @@ export class JsonEditor {
         reject(e);
       }
     });
+  }
+
+
+  /**
+   * Frees the editor events and memory; to be called when the web component is no longer needed.
+   *
+   * Because the component lifecycle doesn't include an "onDestroy" event
+   * (@see https://stenciljs.com/docs/component-lifecycle#disconnectedcallback)
+   * and TypeScript/JavaScript does automatic garbage collection without a callback
+   * hook until ES2021
+   * (@see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry),
+   * this cleanup call needs to be called manually.
+   */
+  @Method()
+  async prepareForDeletion(): Promise<void> {
+    this._searchBtnHandler?.removeEventListener("click", this._search);
+    this._cancelEditsBtnHandler?.removeEventListener("click", this._reset);
+
+    this._valueObserver?.disconnect();
+
+    this._contentChanged?.dispose();
+
+    this._editor?.dispose();
   }
 
   /**
@@ -343,22 +366,6 @@ export class JsonEditor {
   //--------------------------------------------------------------------------
 
   /**
-   * Frees the editor events and memory when the web component is disconnected.
-   *
-   * @protected
-   */
-   protected _destroyEditor(): void {
-    this._searchBtnHandler?.removeEventListener("click", this._search);
-    this._cancelEditsBtnHandler?.removeEventListener("click", this._reset);
-
-    this._valueObserver?.disconnect();
-
-    this._contentChanged?.dispose();
-
-    this._editor?.dispose();
-  }
-
-  /**
    * Disables a button.
    *
    * @param buttonId Id of button to disable
@@ -376,7 +383,7 @@ export class JsonEditor {
    *
    * @protected
    */
-  _enableButton(buttonId: string): void {
+  protected _enableButton(buttonId: string): void {
     document.getElementById(buttonId)?.removeAttribute("disabled");
   }
 

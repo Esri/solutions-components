@@ -147,9 +147,9 @@ export class SolutionConfiguration {
           <div class="configuration">
             <calcite-tabs class="config-tabs">
               <calcite-tab-nav slot="tab-nav">
-                <calcite-tab-title>{this.translations.definitionTab}</calcite-tab-title>
+                <calcite-tab-title>{this._translations.definitionTab}</calcite-tab-title>
                 {hasServices ?
-                  <calcite-tab-title>{this.translations.spatialReferenceTab}</calcite-tab-title> :
+                  <calcite-tab-title>{this._translations.spatialReferenceTab}</calcite-tab-title> :
                   null
                 }
               </calcite-tab-nav>
@@ -169,7 +169,7 @@ export class SolutionConfiguration {
                     id="collapse-vars"
                     onClick={() => this._toggleTree()}
                     scale="s"
-                    title={this.translations.cancelEdits}
+                    title={this._translations.cancelEdits}
                   />
                   <div class="config-item">
                     <solution-item
@@ -206,7 +206,7 @@ export class SolutionConfiguration {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -214,15 +214,15 @@ export class SolutionConfiguration {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof SolutionConfiguration_T9n;
+  @State() protected _translations: typeof SolutionConfiguration_T9n;
 
-  private _solutionVariables: IVariableItem[];
+  protected _solutionVariables: IVariableItem[];
 
-  private _organizationVariables: IOrganizationVariableItem[];
+  protected _organizationVariables: IOrganizationVariableItem[];
 
-  private _fetchData = false;
+  protected _fetchData = false;
 
-  private _isLoading = false;
+  protected _isLoading = false;
 
   //--------------------------------------------------------------------------
   //
@@ -282,11 +282,11 @@ export class SolutionConfiguration {
 
   /**
    * Get the solution items data
-   * 
+   *
    * @param id the solution items id
    * @param isReset (defaults to false) indicates if we are resetting the controls after save
    */
-  private _getItemData(
+  protected _getItemData(
     id: string,
     isReset = false
   ): Promise<any> {
@@ -301,11 +301,11 @@ export class SolutionConfiguration {
 
   /**
    * Update the store with the initial values
-   * 
+   *
    * @param templates the solution items templates
    * @param isReset (defaults to false) indicates if we are resetting the controls after save
    */
-  private _initState(
+  protected _initState(
     templates: any[],
     isReset = false
   ): Promise<any> {
@@ -336,13 +336,13 @@ export class SolutionConfiguration {
 
   /**
    * Set Props with the initial values
-   * 
+   *
    * @param templates the solution items templates
    */
-  private _initProps(templates: any[]): void {
+  protected _initProps(templates: any[]): void {
     this.value.contents = [...utils.getInventoryItems(templates)];
-    this._solutionVariables = utils.getSolutionVariables(templates, this.translations);
-    this._organizationVariables = utils.getOrganizationVariables(this.translations);
+    this._solutionVariables = utils.getSolutionVariables(templates, this._translations);
+    this._organizationVariables = utils.getOrganizationVariables(this._translations);
     this.item = {
       itemId: "",
       itemDetails: {},
@@ -356,16 +356,16 @@ export class SolutionConfiguration {
   /**
    * Toggle treeOpen prop to show/hide content tree
    */
-  private _toggleTree(): void {
+  protected _toggleTree(): void {
     this.treeOpen = !this.treeOpen;
   }
 
   /**
    * Save all edits from the current configuration
-   * 
+   *
    * @returns a response that will indicate success or failure and any associated messages
    */
-  private async _save() {
+  protected async _save() {
     const templateUpdates = await this._updateTemplates();
     const data = this._setSrInfo(templateUpdates.templates);
     return templateUpdates.errors.length === 0 ? save(
@@ -373,8 +373,8 @@ export class SolutionConfiguration {
       data,
       state.models,
       this.authentication,
-      this.translations
-    ).then(saveResult => { 
+      this._translations
+    ).then(saveResult => {
       // need to trigger re-render...and re-fetch
       this._fetchData = true;
       this.modelsSet = false;
@@ -387,10 +387,10 @@ export class SolutionConfiguration {
 
   /**
    * Update the solutions templates based on the stored changes
-   * 
+   *
    * @returns an object that contains the updated templates as well as any errors that were found
    */
-  private async _updateTemplates(): Promise<IUpdateTemplateResponse> {
+  protected async _updateTemplates(): Promise<IUpdateTemplateResponse> {
     const errors = [];
     const models = await this.getEditModels();
     let templates = this._updateGroupDependencies(models, this.templates);
@@ -417,13 +417,13 @@ export class SolutionConfiguration {
 
   /**
    * Review all models and store itemIds that should be added or removed from group dependencies
-   * 
+   *
    * @param models the corresponding models for the current templates
-   * 
-   * @returns group info (an object with keys of groupIds and 
+   *
+   * @returns group info (an object with keys of groupIds and
    * arrays of itemIds that should be added or removed from group dependencies)
    */
-  private _getGroupInfo(
+  protected _getGroupInfo(
     models: any
   ): any {
     const groupInfo = {}
@@ -450,13 +450,13 @@ export class SolutionConfiguration {
 
   /**
    * Updates group dependency arrays by adding or removing itemIds
-   * 
+   *
    * @param templates the current templates to update
    * @param models the corresponding models for the current templates
-   * 
+   *
    * @returns updated templates array
    */
-  private _updateGroupDependencies(
+  protected _updateGroupDependencies(
     models: any,
     templates: any[]
   ): any[] {
@@ -490,12 +490,12 @@ export class SolutionConfiguration {
   /**
    * Add group IDs to items that should be shared
    * This function will update the provided template when shareInfo is available
-   * 
+   *
    * @param template the current template to update
    * @param shareInfo the corresponding shareInfo from the model for the current template
-   * 
+   *
    */
-  private _updateItemGroups(
+  protected _updateItemGroups(
     template: any,
     shareInfo: any
   ): void {
@@ -512,13 +512,13 @@ export class SolutionConfiguration {
 
   /**
    * Set a templates data property with changes from the models
-   * 
+   *
    * @param template the current template to update
    * @param model the corresponding model for the current template (stores any user changes)
-   * 
+   *
    * @returns a boolean that indicates if any errors were detected
    */
-  private _setData(
+  protected _setData(
     template: any,
     model: any
   ): boolean {
@@ -532,13 +532,13 @@ export class SolutionConfiguration {
 
   /**
    * Set a templates properties property with changes from the models
-   * 
+   *
    * @param template the current template to update
    * @param model the corresponding model for the current template (stores any user changes)
-   * 
+   *
    * @returns a boolean that indicates if any errors were detected
    */
-  private _setProps(
+  protected _setProps(
     template: any,
     model: any
   ): boolean {
@@ -552,15 +552,15 @@ export class SolutionConfiguration {
 
   /**
    * Generic function used to set properties or data property on a given template
-   * 
+   *
    * @param template the current template to update
    * @param originValue the original value from the solution template
    * @param modelValue the current value from the model (will contain any edits that have been made)
    * @param path the path to the property we should update if any changes are found
-   * 
+   *
    * @returns a boolean that indicates if any errors were detected
    */
-  private _setTemplateProp(
+  protected _setTemplateProp(
     template: any,
     originValue: any,
     modelValue: any,
@@ -583,13 +583,13 @@ export class SolutionConfiguration {
 
   /**
    * Set a templates item property with changes from the models
-   * 
+   *
    * @param template the current template to update
    * @param model the corresponding model for the current template (stores any user changes)
-   * 
+   *
    * This function will update the template argument when edits are found
    */
-  private _setItem(
+  protected _setItem(
     template: any,
     model: any
   ): void {
@@ -603,13 +603,13 @@ export class SolutionConfiguration {
 
   /**
    * Set spatial reference info in the solutions data
-   * 
+   *
    * @param templates a list of item templates from the solution
-   * 
+   *
    * @returns a cloned copy of the solutions data that has been updated with spatial reference info
-   * 
+   *
    */
-  private _setSrInfo(
+  protected _setSrInfo(
     templates: any[]
   ): any {
     const srInfo: any = state.spatialReferenceInfo;
@@ -651,8 +651,8 @@ export class SolutionConfiguration {
    *
    * @protected
    */
-  async _getTranslations() {
+  protected async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof SolutionConfiguration_T9n;
+    this._translations = translations[0] as typeof SolutionConfiguration_T9n;
   }
 }

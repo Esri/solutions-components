@@ -76,7 +76,7 @@ export class MapDrawTools {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -84,7 +84,7 @@ export class MapDrawTools {
  * Contains the translations for this component.
  * All UI strings should be defined here.
  */
-  @State() translations: typeof MapDrawTools_T9n;
+  @State() protected _translations: typeof MapDrawTools_T9n;
 
   /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html?#constructors-summary
@@ -195,7 +195,7 @@ export class MapDrawTools {
 
   //--------------------------------------------------------------------------
   //
-  //  Functions (private)
+  //  Functions (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -203,7 +203,7 @@ export class MapDrawTools {
    * Load esri javascript api modules
    *
    * @returns Promise resolving when function is done
-   * 
+   *
    * @protected
    */
   protected async _initModules(): Promise<void> {
@@ -220,7 +220,7 @@ export class MapDrawTools {
 
   /**
    * Initialize the graphics layer and the tools that support creating new graphics
-   * 
+   *
    * @protected
    */
   protected _init(): void {
@@ -232,11 +232,11 @@ export class MapDrawTools {
 
   /**
    * Create or find the graphics layer and add any existing graphics
-   * 
+   *
    * @protected
    */
   protected _initGraphicsLayer(): void {
-    const title = this.translations.sketchLayer;
+    const title = this._translations.sketchLayer;
     const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
     if (sketchIndex > -1) {
       this._sketchGraphicsLayer = this.mapView.map.layers.getItemAt(sketchIndex) as __esri.GraphicsLayer;
@@ -253,7 +253,7 @@ export class MapDrawTools {
 
   /**
    * Initialize the skecth widget and store the associated symbols for each geometry type
-   * 
+   *
    * @protected
    */
   protected _initDrawTools(): void {
@@ -291,7 +291,7 @@ export class MapDrawTools {
 
   /**
    * Clear any stored graphics and remove all graphics from the graphics layer
-   * 
+   *
    * @protected
    */
   protected _clearSketch(): void {
@@ -306,6 +306,6 @@ export class MapDrawTools {
    */
    protected async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof MapDrawTools_T9n;
+    this._translations = translations[0] as typeof MapDrawTools_T9n;
   }
 }

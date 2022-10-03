@@ -80,7 +80,7 @@ export class BufferTools {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -92,7 +92,7 @@ export class BufferTools {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof BufferTools_T9n;
+  @State() _translations: typeof BufferTools_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -148,7 +148,7 @@ export class BufferTools {
 
   //--------------------------------------------------------------------------
   //
-  //  Functions (private)
+  //  Functions (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -156,7 +156,7 @@ export class BufferTools {
    * Load esri javascript api modules
    *
    * @returns Promise resolving when function is done
-   * 
+   *
    * @protected
    */
   protected async _initModules(): Promise<void> {
@@ -172,15 +172,15 @@ export class BufferTools {
    * Gets the nodes for each of the possible distance units
    *
    * @returns An array of option nodes
-   * 
+   *
    * @protected
    */
   protected _getUnits(): VNode[] {
     const units = {
-      'feet': this.translations.feet || 'Feet',
-      'meters': this.translations.meters || 'Meters',
-      'miles': this.translations.miles || 'Miles',
-      'kilometers': this.translations.kilometers || 'Kilometers'
+      'feet': this._translations.feet || 'Feet',
+      'meters': this._translations.meters || 'Meters',
+      'miles': this._translations.miles || 'Miles',
+      'kilometers': this._translations.kilometers || 'Kilometers'
     };
     return Object.keys(units).map(u => {
       let selected = true;
@@ -197,7 +197,7 @@ export class BufferTools {
    * Store the user defined distance value and create a buffer
    *
    * @param event the event from the calcite input control
-   * 
+   *
    * @protected
    */
   protected _setDistance(
@@ -213,7 +213,7 @@ export class BufferTools {
 
   /**
    * Store the user defined unit value and create a buffer
-   * 
+   *
    * @protected
    */
   protected _setUnit(): void {
@@ -223,7 +223,7 @@ export class BufferTools {
 
   /**
    * Create buffer geometry based on the user defined unit and distance
-   * 
+   *
    * @protected
    */
   protected _buffer(): void {
@@ -250,7 +250,7 @@ export class BufferTools {
    * This option will be used when the "appearance" prop is set to "text"
    *
    * @returns a node with the supporting controls
-   * 
+   *
    * @protected
    */
   protected _getTextBoxDisplay(): VNode {
@@ -281,7 +281,7 @@ export class BufferTools {
    * This option will be used when the "appearance" prop is set to "slider"
    *
    * @returns a node with the supporting control
-   * 
+   *
    * @protected
    */
   protected _getSliderDisplay(): VNode {
@@ -304,7 +304,7 @@ export class BufferTools {
    */
   async _getTranslations() {
     const messages = await getLocaleComponentStrings(this.el);
-    this.translations = messages[0] as typeof BufferTools_T9n;
+    this._translations = messages[0] as typeof BufferTools_T9n;
   }
 
 }

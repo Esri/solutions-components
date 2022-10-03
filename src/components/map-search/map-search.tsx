@@ -48,7 +48,7 @@ export class MapSearch {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -62,7 +62,7 @@ export class MapSearch {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-   @State() translations: typeof MapSearch_T9n;
+   @State() protected _translations: typeof MapSearch_T9n;
 
   /**
    * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
@@ -149,7 +149,7 @@ export class MapSearch {
 
   //--------------------------------------------------------------------------
   //
-  //  Functions (private)
+  //  Functions (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -157,7 +157,7 @@ export class MapSearch {
    * Load esri javascript api modules
    *
    * @returns Promise resolving when function is done
-   * 
+   *
    * @protected
    */
   protected async _initModules(): Promise<void> {
@@ -171,7 +171,7 @@ export class MapSearch {
 
   /**
    * Initialize the search widget
-   * 
+   *
    * @returns Promise resolving when function is done
    */
   protected async _init() {
@@ -180,7 +180,7 @@ export class MapSearch {
 
   /**
    * Initialize the search widget and listen to key events
-   * 
+   *
    * @protected
    */
   protected _initSearchWidget(): void {
@@ -218,6 +218,6 @@ export class MapSearch {
    */
   protected async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof MapSearch_T9n;
+    this._translations = translations[0] as typeof MapSearch_T9n;
   }
 }

@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ERefineMode, ESelectionMode, EWorkflowType, ICurrentEditItem, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISelectionSet, ISolutionConfiguration, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
+import { ERefineMode, ESelectionMode, EWorkflowType, ICurrentEditItem, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchResult, ISelectionSet, ISolutionConfiguration, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BufferTools {
@@ -56,6 +56,10 @@ export namespace Components {
           * Contains a unique identifier for when we have multiple instances of the editor. For example when we want to show an item's data as well as an item's properties.
          */
         "instanceid": any;
+        /**
+          * Frees the editor events and memory; to be called when the web component is no longer needed.  Because the component lifecycle doesn't include an "onDestroy" event (@see https://stenciljs.com/docs/component-lifecycle#disconnectedcallback) and TypeScript/JavaScript does automatic garbage collection without a callback hook until ES2021 (@see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry), this cleanup call needs to be called manually.
+         */
+        "prepareForDeletion": () => Promise<void>;
         /**
           * Replaces the current selection with the supplied text, inserting if nothing is selected.
           * @param replacement Text to use for replacement or insertion
@@ -402,7 +406,7 @@ export namespace Components {
     }
     interface SolutionSpatialRef {
         /**
-          * Returns the spatial reference description of the supplied value. (Exposes private method `_createSpatialRefDisplay` for testing.)
+          * Returns the spatial reference description of the supplied value. (Exposes protected method `_createSpatialRefDisplay` for testing.)
           * @param value WKID or WKT or null for default
           * @returns If component is using a WKID, description using WKID; otherwise, the WKT; defaults to 102100
          */
@@ -412,7 +416,7 @@ export namespace Components {
          */
         "defaultWkid": number;
         /**
-          * Returns the current spatial reference description. (Exposes private variable `spatialRef` for testing.)
+          * Returns the current spatial reference description. (Exposes protected variable `spatialRef` for testing.)
          */
         "getSpatialRef": () => Promise<ISpatialRefRepresentation>;
         /**
@@ -428,7 +432,7 @@ export namespace Components {
          */
         "value": string;
         /**
-          * Converts a WKID into a spatial reference description. (Exposes private method `_wkidToDisplay` for testing.)
+          * Converts a WKID into a spatial reference description. (Exposes protected method `_wkidToDisplay` for testing.)
           * @param wkid WKID to look up
           * @returns Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
          */

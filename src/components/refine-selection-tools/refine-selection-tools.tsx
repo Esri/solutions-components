@@ -94,7 +94,7 @@ export class RefineSelectionTools {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -112,7 +112,7 @@ export class RefineSelectionTools {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof RefineSelectionTools_T9n;
+  @State() protected _translations: typeof RefineSelectionTools_T9n;
 
   protected _excludeEffect = "blur(5px) grayscale(90%) opacity(40%)";
 
@@ -213,7 +213,7 @@ export class RefineSelectionTools {
       <Host>
         <div>
           <div class={"main-label " + showLayerPickerClass}>
-            <calcite-label>{this.translations.selectLayers}</calcite-label>
+            <calcite-label>{this._translations.selectLayers}</calcite-label>
           </div>
           <map-layer-picker
             class={showLayerPickerClass}
@@ -226,12 +226,12 @@ export class RefineSelectionTools {
             <div class={"esri-sketch esri-widget"}>
               <div class={"esri-sketch__panel"}>
                 <div class={"esri-sketch__tool-section esri-sketch__section"}>
-                  <calcite-action 
+                  <calcite-action
                     disabled={!this.selectEnabled}
                     icon="select"
                     onClick={() => this._setSelectionMode(ESelectionType.POINT)}
                     scale="s"
-                    text={this.translations.select}
+                    text={this._translations.select}
                   />
                 </div>
                 <div class={"esri-sketch__tool-section esri-sketch__section"}>
@@ -240,21 +240,21 @@ export class RefineSelectionTools {
                     icon="line"
                     onClick={() => this._setSelectionMode(ESelectionType.LINE)}
                     scale="s"
-                    text={this.translations.selectLine}
+                    text={this._translations.selectLine}
                   />
                   <calcite-action
                     disabled={!this.selectEnabled}
                     icon="polygon"
                     onClick={() => this._setSelectionMode(ESelectionType.POLY)}
                     scale="s"
-                    text={this.translations.selectPolygon}
+                    text={this._translations.selectPolygon}
                   />
-                  <calcite-action 
+                  <calcite-action
                     disabled={!this.selectEnabled}
                     icon="rectangle"
                     onClick={() => this._setSelectionMode(ESelectionType.RECT)}
                     scale="s"
-                    text={this.translations.selectRectangle}
+                    text={this._translations.selectRectangle}
                   />
                 </div>
                 <div class={"esri-sketch__tool-section esri-sketch__section"}>
@@ -263,14 +263,14 @@ export class RefineSelectionTools {
                     icon="undo"
                     onClick={() => this._undo()}
                     scale="s"
-                    text={this.translations.undo}
+                    text={this._translations.undo}
                   />
                   <calcite-action
                     disabled={!this.selectEnabled}
                     icon="redo"
                     onClick={() => this._redo()}
                     scale="s"
-                    text={this.translations.redo}
+                    text={this._translations.redo}
                   />
                 </div>
               </div>
@@ -283,7 +283,7 @@ export class RefineSelectionTools {
 
   //--------------------------------------------------------------------------
   //
-  //  Functions (private)
+  //  Functions (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -291,7 +291,7 @@ export class RefineSelectionTools {
    * Load esri javascript api modules
    *
    * @returns Promise resolving when function is done
-   * 
+   *
    * @protected
    */
    protected async _initModules(): Promise<void> {
@@ -308,7 +308,7 @@ export class RefineSelectionTools {
 
   /**
    * Initialize the graphics layer and skecth view model
-   * 
+   *
    * @returns Promise when the operation has completed
    * @protected
    */
@@ -319,7 +319,7 @@ export class RefineSelectionTools {
 
   /**
    * Initialize the skecth view model
-   * 
+   *
    * @returns Promise when the operation has completed
    * @protected
    */
@@ -344,7 +344,7 @@ export class RefineSelectionTools {
 
   /**
    * Clear any skecth graphics
-   * 
+   *
    * @returns Promise when the operation has completed
    * @protected
    */
@@ -356,12 +356,12 @@ export class RefineSelectionTools {
 
   /**
    * Initialize the graphics layer
-   * 
+   *
    * @returns Promise when the operation has completed
    * @protected
    */
   protected _initGraphicsLayer(): void {
-    const title = this.translations.sketchLayer;
+    const title = this._translations.sketchLayer;
     const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
     if (sketchIndex > -1) {
       this._sketchGraphicsLayer = this.mapView.map.layers.getItemAt(sketchIndex) as __esri.GraphicsLayer;
@@ -378,7 +378,7 @@ export class RefineSelectionTools {
 
   /**
    * Clear selection based on map click
-   * 
+   *
    * @protected
    */
   protected _initHitTest(): void {
@@ -412,7 +412,7 @@ export class RefineSelectionTools {
    * Gets the layer views from the map when the layer selection changes
    *
    * @returns Promise resolving when function is done
-   * 
+   *
    * @protected
    */
   protected async _layerSelectionChange(
@@ -434,7 +434,7 @@ export class RefineSelectionTools {
 
   /**
    * Store the current selection mode
-   * 
+   *
    * @protected
    */
   protected _setSelectionMode(
@@ -465,11 +465,11 @@ export class RefineSelectionTools {
 
   /**
    * Select features based on the input geometry
-   * 
+   *
    * @param geom the geometry used for selection
    *
    * @returns Promise resolving when function is done
-   * 
+   *
    * @protected
    */
   protected async _selectFeatures(
@@ -514,7 +514,7 @@ export class RefineSelectionTools {
    * @param page page query number
    * @param layerView the layer view to query
    * @param geom the geom used for selection
-   * 
+   *
    * @returns Promise resolving when function is done
    * @protected
    */
@@ -531,7 +531,7 @@ export class RefineSelectionTools {
       returnGeometry: true,
       geometry: geom
     };
-    
+
     const r = await layerView.queryFeatures(query);
     this.aaa[layerView.layer.title] = this.aaa[layerView.layer.title].concat(r.features);
 
@@ -581,6 +581,6 @@ export class RefineSelectionTools {
    */
   protected async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof RefineSelectionTools_T9n;
+    this._translations = translations[0] as typeof RefineSelectionTools_T9n;
   }
 }

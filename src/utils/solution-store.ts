@@ -118,8 +118,8 @@ const templatesChangedEvent = new CustomEvent("templatesChanged", {
 
 class SolutionStore
 {
-  private static _instance: SolutionStore;
-  private _store: any;
+  protected static _instance: SolutionStore;
+  protected _store: any;
 
   /**
    * Creates singleton instance when accessed; default export from module.
@@ -133,9 +133,9 @@ class SolutionStore
   /**
    * Creates an empty store.
    *
-   * @private
+   * @protected
    */
-  private constructor() {
+  protected constructor() {
     this._store = createStore({
       ...EmptySolutionStore
     });
@@ -267,9 +267,9 @@ class SolutionStore
 
   //------------------------------------------------------------------------------------------------------------------//
 
-  /** Provides access to private methods for unit testing.
+  /** Provides access to protected methods for unit testing.
    *
-   *  @param methodName Name of private method to run
+   *  @param methodName Name of protected method to run
    *  @param arg1 First argument to forward to method, e.g., for "_prepareSolutionItems", `solutionItemId`
    *  @param arg2 Second argument to forward to method, e.g., for "_prepareSolutionItems", `templates`
    *  @param arg3 Third argument to forward to method, e.g., for "_prepareSolutionItems", `authentication`
@@ -305,9 +305,9 @@ class SolutionStore
   /**
    * Returns the store to the empty state.
    *
-   * @private
+   * @protected
    */
-  private _emptyTheStore() {
+  protected _emptyTheStore() {
     this._store.set("solutionItemId", EmptySolutionStore.solutionItemId);
     this._store.set("defaultWkid", EmptySolutionStore.defaultWkid);
     this._store.set("templates", EmptySolutionStore.templates);
@@ -325,9 +325,9 @@ class SolutionStore
    * @returns a list of feature service names and an enabled property to indicate
    * if they currently use a spatial reference variable.
    *
-   * @private
+   * @protected
    */
-  private _getFeatureServices(
+  protected _getFeatureServices(
     templates: any[]
   ): IFeatureServiceEnabledStatus[] {
     return templates.reduce((prev, cur) => {
@@ -351,9 +351,9 @@ class SolutionStore
    *
    * @returns a list of IItemShare objects
    *
-   * @private
+   * @protected
    */
-  private _getItemsSharedWithThisGroup(
+  protected _getItemsSharedWithThisGroup(
     template: IItemTemplate,
     templates: IItemTemplate[]
   ): IItemShare[] {
@@ -381,9 +381,9 @@ class SolutionStore
    *
    * @returns a list of resource file infos
    *
-   * @private
+   * @protected
    */
-  private _getResourceFilePaths(
+  protected _getResourceFilePaths(
     solutionId: string,
     template: any,
     portal: string
@@ -410,9 +410,9 @@ class SolutionStore
    * @returns an object that stores if a custom spatial reference parameter is enabled/disabled,
    * a list of services and if they are enabled/disabled, and the default wkid
    *
-   * @private
+   * @protected
    */
-  private _getSpatialReferenceInfo(
+  protected _getSpatialReferenceInfo(
     services: any[],
     defaultWkid: any
   ): ISolutionSpatialReferenceInfo {
@@ -435,9 +435,9 @@ class SolutionStore
    *
    * @returns A promise which resolves to ISolutionTemplateEdits with hydrated thumbnails
    *
-   * @private
+   * @protected
    */
-  private _getThumbnails(
+  protected _getThumbnails(
     templateEdits: ISolutionTemplateEdits,
     authentication: UserSession
   ): Promise<ISolutionTemplateEdits> {
@@ -477,9 +477,9 @@ class SolutionStore
    *
    * @returns a promise that resolves a list of items and key values
    *
-   * @private
+   * @protected
    */
-  private _prepareSolutionItems(
+  protected _prepareSolutionItems(
     solutionItemId: string,
     templates: IItemTemplate[],
     authentication: UserSession

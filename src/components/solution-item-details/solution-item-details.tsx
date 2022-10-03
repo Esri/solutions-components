@@ -100,7 +100,7 @@ export class SolutionItemDetails {
             <button class="font-size--3 btn-link inline-block trailer-quarter" onClick={() => this._getThumbnail()}>
               <svg class="icon-inline icon-inline--on-left" height="16" viewBox="0 0 16 16" width="16">
                 <path d="M14.792 2.666l-1.414-1.413a.965.965 0 0 0-1.385-.03l-1.444 1.444-8.763 8.72L.03 15.481a.371.371 0 0 0 .488.488l4.096-1.756 8.763-8.72-.001-.001.002.002 1.443-1.444a.965.965 0 0 0-.03-1.385zM1.569 14.431l.554-1.293.74.739zm2.338-.924l-1.414-1.414 7.963-7.92 1.414 1.415zm8.67-8.626l-1.413-1.414 1.29-1.29a.306.306 0 0 1 .433 0l.981.98a.306.306 0 0 1 0 .433z" />
-              </svg>{this.translations.editThumbnail}
+              </svg>{this._translations.editThumbnail}
             </button>
 
             <div class="flex">
@@ -114,26 +114,26 @@ export class SolutionItemDetails {
             </div>
           </div>
 
-          <calcite-label>{this.translations.description}
+          <calcite-label>{this._translations.description}
             <label id="item-description-label">
               <calcite-input id="item-description" type="textarea" value={this.value.description} />
             </label>
           </calcite-label>
 
-          <calcite-label>{this.translations.tags}
+          <calcite-label>{this._translations.tags}
             <label id="item-tags-label">
               <calcite-input id="item-tags" value={(this.value.tags && Array.isArray(this.value.tags) ? this.value.tags : [this.value.tags]).join(",")} />
             </label>
           </calcite-label>
 
-          {this.type !== "Group" ? <calcite-label>{this.translations.credits}
+          {this.type !== "Group" ? <calcite-label>{this._translations.credits}
             <label id="item-credits-label">
               <calcite-input id="item-credits" value={this.value.accessInformation} />
             </label>
           </calcite-label> : null}
 
           {this.type !== "Group" ? <calcite-label>
-            <label id="item-terms-label">{this.translations.termsOfUse}
+            <label id="item-terms-label">{this._translations.termsOfUse}
               <calcite-input id="item-terms" type="textarea" value={this.value.licenseInfo} />
             </label>
           </calcite-label> : null}
@@ -145,7 +145,7 @@ export class SolutionItemDetails {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -153,24 +153,24 @@ export class SolutionItemDetails {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof SolutionItemDetails_T9n;
+  @State() protected _translations: typeof SolutionItemDetails_T9n;
 
   /**
    * Handle to the element for browsing for a file.
    */
-  private browseForThumbnail: HTMLInputElement;
+  protected browseForThumbnail: HTMLInputElement;
 
   /**
    * Handle to the snippet character-count feedback.
    */
-  private itemSnippetCount: HTMLLabelElement;
+  protected itemSnippetCount: HTMLLabelElement;
 
   /**
    * Handle to the thumbnail image display.
    */
-  private thumbnail: HTMLImageElement;
+  protected thumbnail: HTMLImageElement;
 
-  private loadThumb = false;
+  protected loadThumb = false;
 
   //--------------------------------------------------------------------------
   //
@@ -237,12 +237,12 @@ export class SolutionItemDetails {
   //--------------------------------------------------------------------------
 
   /**
-   * Load the templates thumbnail 
-   * 
+   * Load the templates thumbnail
+   *
    * @param id the current template is
    *
    */
-  private _loadThumb(id: string): void {
+  protected _loadThumb(id: string): void {
     if (id) {
       const thumbnailNew = getProp(state, `models.${id}.thumbnailNew`);
       const thumbnailOrigin = getProp(state, `models.${id}.thumbnailOrigin`);
@@ -259,7 +259,7 @@ export class SolutionItemDetails {
    * Opens image file browse dialog.
    *
    */
-  private _getThumbnail(): void {
+  protected _getThumbnail(): void {
     this.browseForThumbnail.click();
   }
 
@@ -269,19 +269,19 @@ export class SolutionItemDetails {
    *
    * @param phrase the current phrase from the control
    */
-  private _updateLengthLabel(phrase: string): void {
+  protected _updateLengthLabel(phrase: string): void {
     this.itemSnippetCount.innerText =
-      this.translations.snippetCountPattern.replace("{{n}}", phrase.length.toString());
+      this._translations.snippetCountPattern.replace("{{n}}", phrase.length.toString());
   }
 
   /**
    * Gets and displays image result from browse.
-   * 
+   *
    * @param event The input controls event that contains the new file
    * @param updateStore boolean that controls if the new value is written to the store
    *  should be false on the initial load but true the rest of the time
    */
-  private _updateThumbnail(
+  protected _updateThumbnail(
     event: any,
     updateStore: boolean
   ): void {
@@ -300,7 +300,7 @@ export class SolutionItemDetails {
    * Use the value from the store if it exists
    *
    */
-  private _validateValue(): void {
+  protected _validateValue(): void {
     const m: any = getProp(state, `models.${this.value.itemId}`);
     if (m) {
       Object.keys(this.value).forEach(k => {
@@ -319,7 +319,7 @@ export class SolutionItemDetails {
    * @param prop The model prop to update with new values
    * @param v The new value to store
    */
-  private _updateStore(
+  protected _updateStore(
     prop: string,
     v: string
   ): void {
@@ -348,8 +348,8 @@ export class SolutionItemDetails {
    *
    * @protected
    */
-  async _getTranslations() {
+  protected async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof SolutionItemDetails_T9n;
+    this._translations = translations[0] as typeof SolutionItemDetails_T9n;
   }
 }
