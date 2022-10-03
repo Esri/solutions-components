@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
-import * as pdfUtils from '../../../arcgis-pdf-creator/data/labelFormats.json';
+import * as pdfUtils from '../../assets/data/labelFormats.json';
 import '@esri/calcite-components';
 import PdfDownload_T9n from '../../assets/t9n/pdf-download/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
@@ -107,7 +107,9 @@ export class PdfDownload {
       return _a < _b ? -1 : _a > _b ? 1 : 0
     });
     return sortedPdfIndo.map((l) => {
-      const textLabel = this._translations.pdfLabel.replace("{{n}}", l.descriptionPDF.labelsPerPageDisplay);
+      const textLabel = this.translations.pdfLabel
+        .replace("{{n}}", l.descriptionPDF.labelsPerPageDisplay)
+        .replace("{{labelSize}}", l.descriptionPDF.averyPartNumber);
       return (<calcite-option value={l}>{textLabel}</calcite-option>)
     });
   }
