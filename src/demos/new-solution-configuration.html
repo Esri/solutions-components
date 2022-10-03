@@ -72,9 +72,10 @@
   }
   </style>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es5%2Cfetch%2CPromise"></script>
-  <script src="https://unpkg.com/@esri/arcgis-rest-request@3.1.1/dist/umd/request.umd.js"></script>
-  <script src="https://unpkg.com/@esri/arcgis-rest-auth@3.1.1/dist/umd/auth.umd.min.js"></script>
-  <script src="https://unpkg.com/@esri/arcgis-rest-portal@3.1.1/dist/umd/portal.umd.min.js"></script>
+  <script src="https://unpkg.com/@esri/arcgis-rest-request@3.5.0/dist/umd/request.umd.min.js"></script>
+  <script src="https://unpkg.com/@esri/arcgis-rest-auth@3.5.0/dist/umd/auth.umd.min.js"></script>
+  <script src="https://unpkg.com/@esri/arcgis-rest-portal@3.5.0/dist/umd/portal.umd.min.js"></script>
+  <script src="https://unpkg.com/@esri/solution-common@1.5.0/dist/umd/common.umd.min.js"></script>
   <script type="module" src="https://unpkg.com/@esri/calcite-components@1.0.0-beta.94/dist/calcite/calcite.esm.js"></script>
   <script type="module" src="../solutions.esm.js"></script>
 </head>
@@ -83,6 +84,7 @@
   <h1>Demo Solution Configuration</h1>
   <div class="app-container">
     <div class="margin-top-1 margin-side-1">
+      <div class="margin-side-1" style="color:red">DO NOT USE REAL SOLUTION ITEMS WHILE SAVE EDITS WORK IS IN PROGRESS...CAN DESTROY THE SOLUTION ITEM</div>
       <div class="labeled-item align-baseline">
         <label class="loginLabel" for="username">Username:&nbsp;</label>
         <input type="text" id="username" placeholder="anonymous">
@@ -96,26 +98,23 @@
         <input type="text" id="portal" style="width:256px" placeholder="https://www.arcgis.com">
       </div>
       <div class="labeled-item align-baseline">
-        <label class="loginLabel" for="group">Group ID:&nbsp;</label>
-        <input type="text" id="group" style="width:300px">
+        <label class="loginLabel" for="solutionId">Solution ID:&nbsp;</label>
+        <input type="text" id="solutionId" style="width:300px" oninput="solnIdChangedFcn()">
       </div>
-      <button id="connectBtn fader" onclick="connectFcn()">Connect</button>
+      <button id="configureBtn" onclick="configureFcn()" disabled>Configure</button>
     </div>
-    <div class="list flex not-visible margin-bottom-1 margin-side-1" id="componentContainer">
-      <calcite-select
-        id="solution-ids"
-        label="demo combobox"
-        placeholder="Select Solution ID"
-        scale="m"
-        class="combo-list labeled-item">
-      </calcite-select>
-    </div>
-    <main id="appContainer">
-      <div class="content full-height">
+  </div>
+
+  <calcite-modal id="configurationModal" fullscreen>
+    <div slot="header" id="modal-title">Configure Solution</div>
+    <div slot="content" class="full-height">
+      <div class="full-height">
         <solution-configuration id="demo"></solution-configuration>
       </div>
-    </main>
-  </div>
+    </div>
+    <calcite-button slot="secondary" width="full" appearance="outline" onclick="cancelFcn()">Cancel</calcite-button>
+    <calcite-button slot="primary" width="full" onclick="saveFcn()">Save</calcite-button>
+  </calcite-modal>
 
   <script src="./libs/require.js"></script>
   <script src="./libs/setLocale.js"></script>
@@ -126,15 +125,29 @@
         "vs": "./libs/monaco-editor"
       }
     });
-    require(['vs/editor/editor.main'],
+    require(["vs/editor/editor.main"],
     function () {
-
-
-      connectFcn = getSolutions;
-
+      const appContainer = document.getElementById("configurationModal");
+      const configureBtn = document.getElementById("configureBtn");
+      const solutionId = document.getElementById("solutionId");
+      appContainer.beforeClose = cancel;
+      cancelFcn = cancel;
+      configureFcn = configureSolution;
+      saveFcn = save;
+      solnIdChangedFcn = solnIdChanged;
       authentication = null;
+      solutionIdRegEx = /[0-9a-f]{32}/i;
 
-      function getSolutions() {
+      // Check for changes before closing modal
+      function cancel() {
+        console.log("Check for changes before closing");
+        alert("Check for changes before closing");
+        appContainer.open = false;
+        return Promise.resolve();
+      }
+
+      // Open configuration modal
+      async function configureSolution() {
         const portal = (document.getElementById("portal").value || "https://www.arcgis.com") + "/sharing/rest";
         authentication = new arcgisRest.UserSession({
           username: document.getElementById("username").value || undefined,
@@ -146,66 +159,37 @@
         let demo = document.getElementById("demo");
         demo.authentication = authentication;
 
-        // DO NOT USE REAL SOLUTION ITEMS WHILE SAVE EDITS WORK IS IN PROGRESS...CAN DESTROY THE SOLUTION ITEM
-        const groupId = document.getElementById("group").value;
+        const solutionId = document.getElementById("solutionId").value;
 
-        const q = "type:Solution typekeywords:Solution,Template ";
-        const params = {
-          sortField:"relevance",
-          sortOrder:"desc",
-          num: 100
-        };
+        if (solutionId) {
+          const itemBase = await arcgisSolution.getItemBase(solutionId, authentication);
+          const modalTitle = document.getElementById("modal-title");
+          modalTitle.innerHTML = `Configure Solution ${itemBase.title}`;
 
-        const opts = {
-          groupId,
-          q,
-          params,
-          authentication,
-          portal
-        };
-
-        // set the data
-        arcgisRest.searchGroupContent(opts)
-          .then(jsonResults => {
-            const idList = document.getElementById("solution-ids");
-
-            let value = undefined;
-            jsonResults.results.forEach(result => {
-              const i = document.createElement("calcite-option");
-              i.setAttribute("value", result.id);
-              i.setAttribute("label", result.title);
-              i.setAttribute("dir", "ltr");
-              i.setAttribute("scale", "m");
-              idList.appendChild(i);
-              if (!value) {
-                value = result.id
-              }
-            });
-
-            idList.addEventListener("calciteSelectChange", (event) => this.itemChanged(event, authentication, portal, idList));
-
-            // select the first one
-            if (value) {
-              this.itemChanged({}, authentication, portal, {
-                selectedOption: { value }
-              });
+          demo.solutionItemId = solutionId;
+          demo.addEventListener("templatesChanged",
+            (e) => {
+              console.log("templatesChanged " + JSON.stringify(e, null, 2));
             }
+          );
 
-            // show the components
-            const componentContainer = document.getElementById("componentContainer");
-            componentContainer.classList.remove("not-visible");
-
-            const appContainer = document.getElementById("appContainer");
-            appContainer.style.opacity = "1";
-            appContainer.classList.remove("not-visible")
-          });
+          appContainer.open = true;
+        }
       }
-    });
 
-    function itemChanged(event, authentication, portal, self) {
-      const demo = document.getElementById("demo");
-      demo.itemid = self.selectedOption.value;
-    }
+      // Save changes and close the modal
+      function save() {
+        console.log("Saving and closing");
+        alert("Saving and closing");
+        appContainer.open = false;
+      }
+
+      // Enables `configure` button if a guid is in the Solution ID input box
+      function solnIdChanged() {
+        configureBtn.disabled = !solutionIdRegEx.test(solutionId.value);
+      }
+
+    });
   </script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { RefineSelectionTools } from '../refine-selection-tools';
 
-describe('refine-selection-tools', () => {
+xdescribe('refine-selection-tools', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [RefineSelectionTools],

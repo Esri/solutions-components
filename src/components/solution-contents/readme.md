@@ -9,7 +9,7 @@
 
 | Property       | Attribute | Description                                   | Type               | Default     |
 | -------------- | --------- | --------------------------------------------- | ------------------ | ----------- |
-| `selectedItem` | --        | Contains the current item that is selected.   | `ISolutionItem`    | `undefined` |
+| `selectedItem` | --        | Contains the current item that is selected.   | `ICurrentEditItem` | `undefined` |
 | `value`        | --        | Contains the public value for this component. | `IInventoryItem[]` | `[]`        |
 
 

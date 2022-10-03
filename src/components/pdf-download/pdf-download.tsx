@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Host, h, Method, Prop, State, VNode } from '@stencil/core';
-import * as pdfUtils from '../../../arcgis-pdf-creator/data/labelFormats.json';
+import * as pdfUtils from '../../assets/data/labelFormats.json';
 import '@esri/calcite-components';
 import PdfDownload_T9n from '../../assets/t9n/pdf-download/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';

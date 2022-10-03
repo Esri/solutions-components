@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Listen, State, Watch } from '@stencil/core';
-import { IInventoryItem, ISolutionItem } from '../../utils/interfaces';
+import { IInventoryItem, ICurrentEditItem } from '../../utils/interfaces';
 import '@esri/calcite-components';
 import SolutionContents_T9n from '../../assets/t9n/solution-contents/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
@@ -45,7 +45,7 @@ export class SolutionContents {
   /**
    * Contains the current item that is selected.
    */
-   @Prop({ mutable: true, reflect: true }) selectedItem: ISolutionItem;
+   @Prop({ mutable: true, reflect: true }) selectedItem: ICurrentEditItem;
 
   /**
    * Contains the public value for this component.
@@ -160,7 +160,7 @@ export class SolutionContents {
    * @param evt MouseEvent or undefined
    */
   private _treeItemSelected(
-    solutionItem: ISolutionItem,
+    solutionItem: ICurrentEditItem,
     evt: any = undefined
   ): void {
     const treeItem = evt?.target?.closest("calcite-tree-item");

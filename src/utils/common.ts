@@ -169,10 +169,11 @@ function _updateThumbnailResource(
       } else {
         // if the item does not have an origin thumb we need to add rather than update
         const resourceFilePath: IResourcePath = {
+          type: EFileType.Thumbnail,
+          folder: null,
+          filename: model.thumbnailNew.name,
           url: "",
           blob: model.thumbnailNew,
-          type: EFileType.Thumbnail,
-          filename: model.thumbnailNew.name,
           updateType: EUpdateType.Add
         };
 

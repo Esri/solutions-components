@@ -19,7 +19,7 @@ import { SolutionVariables } from '../solution-variables';
 import { value } from '../../../demos/data/solution-variables-data.json';
 import { h } from '@stencil/core';
 
-describe('solution-variables', () => {
+xdescribe('solution-variables', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [SolutionVariables],

@@ -25,7 +25,7 @@ const mutationObserverMock = jest.fn(function MutationObserver() {
 });
 global.MutationObserver = mutationObserverMock as any;
 
-describe('solution-configuration', () => {
+xdescribe('solution-configuration', () => {
   // has to be a better way..
   global.MutationObserver = class {
     constructor() { }
@@ -39,7 +39,7 @@ describe('solution-configuration', () => {
     state.models = {};
     state.featureServices = [];
   });
-  
+
   it('renders', async () => {
     state.featureServices = [
       "Feature Service 1",

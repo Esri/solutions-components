@@ -395,9 +395,10 @@ export class SolutionResourceItem {
         this._removedResources[filename] = this.resourceFilePaths[currentIndex];
 
         this.resourceFilePaths[currentIndex] = {
-          url,
           type: EFileType.Data,
+          folder: null,
           filename,
+          url,
           blob: files[0],
           sourceFileName,
           updateType: EUpdateType.Update
@@ -424,9 +425,10 @@ export class SolutionResourceItem {
         this.resourceFilePaths = [
           ...this.resourceFilePaths,
           {
-            url,
             type: EFileType.Data,
+            folder: null,
             filename,
+            url,
             blob: files[0],
             updateType: EUpdateType.Add
           }

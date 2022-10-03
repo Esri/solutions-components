@@ -19,7 +19,7 @@ import { SolutionOrganizationVariables } from '../solution-organization-variable
 import { value } from '../../../demos/data/solution-organization-variables-data.json';
 import { h } from '@stencil/core';
 
-describe('solution-organization-variables', () => {
+xdescribe('solution-organization-variables', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [SolutionOrganizationVariables],

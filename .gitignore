@@ -29,6 +29,7 @@ UserInterfaceState.xcuserstate
 __*.*
 __*
 .vscode/
+coverage/
 
 # Temporary build products
 src/**/*.js

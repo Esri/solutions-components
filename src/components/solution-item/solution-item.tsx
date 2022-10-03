@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, h, Host, Prop, State, VNode } from '@stencil/core';
-import { ISolutionItem } from '../../utils/interfaces';
+import { ICurrentEditItem } from '../../utils/interfaces';
 import '@esri/calcite-components';
 import { UserSession } from '@esri/solution-common';
 import state from '../../utils/editStore';
@@ -50,7 +50,7 @@ export class SolutionItem {
   /**
    * Contains the public value for this component.
    */
-  @Prop({ mutable: true, reflect: true }) value: ISolutionItem = {
+  @Prop({ mutable: true, reflect: true }) value: ICurrentEditItem = {
     itemId: "",
     itemDetails: {},
     isResource: false,
