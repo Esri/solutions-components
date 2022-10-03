@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, getAssetPath, h, Prop, State } from '@stencil/core';
-import SolutionItemIcon_T9n from '../../assets/t9n/solution-item-icon/resources.json';
-import { getLocaleComponentStrings } from '../../utils/locale';
+import { Component, Element, getAssetPath, h, Prop } from '@stencil/core';
 
 @Component({
   tag: 'solution-item-icon',
@@ -60,10 +58,6 @@ export class SolutionItemIcon {
   //
   //--------------------------------------------------------------------------
 
-  async componentWillLoad() {
-    this._getTranslations();
-  }
-
   render() {
     return <div title={this.type}>
       <img class="item-type-icon item-type-icon-margin"
@@ -79,12 +73,6 @@ export class SolutionItemIcon {
   //  Properties (private)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-   @State() translations: typeof SolutionItemIcon_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -313,10 +301,5 @@ export class SolutionItemIcon {
       imgName = "maps";
     }
     return imgName ? getAssetPath(imgDir + imgName + size + ".png") : null;
-  }
-
-  async _getTranslations() {
-    const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof SolutionItemIcon_T9n;
   }
 }

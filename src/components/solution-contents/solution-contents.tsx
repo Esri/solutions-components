@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Listen, State, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Listen, Watch } from '@stencil/core';
 import { IInventoryItem, ICurrentEditItem } from '../../utils/interfaces';
 import '@esri/calcite-components';
-import SolutionContents_T9n from '../../assets/t9n/solution-contents/resources.json';
-import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'solution-contents',
@@ -41,7 +39,7 @@ export class SolutionContents {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
-  
+
   /**
    * Contains the current item that is selected.
    */
@@ -64,10 +62,6 @@ export class SolutionContents {
   //  Lifecycle
   //
   //--------------------------------------------------------------------------
-
-  async componentWillLoad() {
-    await this._getTranslations();
-  }
 
   render(): VNode {
     return (
@@ -108,12 +102,6 @@ export class SolutionContents {
   //
   //--------------------------------------------------------------------------
 
-  /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-  @State() translations: typeof SolutionContents_T9n;
-
   //--------------------------------------------------------------------------
   //
   //  Event Listeners
@@ -147,7 +135,7 @@ export class SolutionContents {
 
   /**
    * Publishes the `solutionItemSelected` event containing `solutionItem` of the selected item.
-   * 
+   *
    * Also toggles the expanded state of the tree item.
    *
    * @param solutionItem the selected solution item to emit
@@ -163,10 +151,5 @@ export class SolutionContents {
     }
     this.selectedItem = solutionItem;
     this.solutionItemSelected.emit(solutionItem);
-  }
-
-  async _getTranslations() {
-    const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof SolutionContents_T9n;
   }
 }
