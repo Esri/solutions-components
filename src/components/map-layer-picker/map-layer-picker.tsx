@@ -51,18 +51,6 @@ export class MapLayerPicker {
   @Prop({ mutable: true }) layerNames: string[] = [];
 
   /**
-   * string: The label to render above the combobox.
-   * This label is positioned on the left side of the control.
-   */
-  @Prop({ mutable: true, reflect: true }) label = "";
-
-  /**
-   * string: The label to render above the combobox.
-   * This label is positioned on the right side of the control.
-   */
-  @Prop({ mutable: true, reflect: true }) trailingLabel = "";
-
-  /**
    * SelectionMode: "single" | "multi"
    * 
    * Should the component support selection against a single layer or multiple layers.
@@ -80,13 +68,13 @@ export class MapLayerPicker {
   //
   //--------------------------------------------------------------------------
 
+  protected _layerSelect: HTMLCalciteSelectElement;
+
   /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
   @State() translations: typeof MapLayerPicker_T9n;
-
-  protected _layerSelect: HTMLCalciteSelectElement;
 
   //--------------------------------------------------------------------------
   //
@@ -124,6 +112,9 @@ export class MapLayerPicker {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   async componentWillLoad() {
     await this._getTranslations();
     await this._setLayers();
@@ -134,16 +125,13 @@ export class MapLayerPicker {
     }
   }
 
+  /**
+   * Renders the component.
+   */
   render() {
     return (
       <Host>
         <div class="background-w map-layer-picker-container">
-          <div class="main-label">
-            <calcite-label>{this.label}</calcite-label>
-          </div>
-          <div class="trailing-label">
-            <calcite-label scale="s">{this.trailingLabel}</calcite-label>
-          </div>
           <div class="map-layer-picker">
             {this.selectionMode === "multi" ? this._getCombobox() : this._getSelect()}
           </div>
@@ -158,7 +146,13 @@ export class MapLayerPicker {
   //
   //--------------------------------------------------------------------------
 
-  // Use Select when something should always be selected
+  /**
+   * Create a list of layers from the map
+   * 
+   * Used for selecting a single layer.
+   * 
+   * @returns Calcite Select component with the names of the layers from the map
+   */
   _getSelect(): VNode {
     return (
       <calcite-select
@@ -171,7 +165,13 @@ export class MapLayerPicker {
     );
   }
 
-  // Use combbox for multi selection
+  /**
+   * Create a list of layers from the map
+   * 
+   * Used for selecting multiple layers
+   * 
+   * @returns Calcite ComboBox component with the names of the layers from the map
+   */
   _getCombobox(): VNode {
     return (
       <calcite-combobox
@@ -185,7 +185,12 @@ export class MapLayerPicker {
     );
   }
 
-  _addMapLayersOptions(): any {
+  /**
+   * Hydrate a select or combobox component with the names of the layers in the map
+   * 
+   * @returns Array of ComboBox items or Select options for the names of the layers
+   */
+  _addMapLayersOptions(): VNode[] {
     return this.layerNames.reduce((prev, cur) => {
       if (state.managedLayers.indexOf(cur) < 0) {
         prev.push(
@@ -202,12 +207,22 @@ export class MapLayerPicker {
     }, []);
   }
 
+  /**
+   * Fetch the names of the layers from the map
+   * 
+   * @returns Promise when the operation has completed
+   */
   async _setLayers(): Promise<void> {
     if (this.mapView) {
       this.layerNames = await getMapLayerNames(this.mapView);
     }
   }
 
+  /**
+   * Fetch the names of the layers from the map
+   * 
+   * @returns Promise when the operation has completed
+   */
   _layerSelectionChange(evt: CustomEvent): void {
     this.selectedLayers = this.selectionMode === "single" ?
       [this._layerSelect.value] : evt.detail?.selectedItems.map(
@@ -218,6 +233,11 @@ export class MapLayerPicker {
     this.layerSelectionChange.emit(this.selectedLayers);
   }
 
+  /**
+   * Fetches the component's translations
+   *
+   * @protected
+   */
   async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
     this.translations = translations[0] as typeof MapLayerPicker_T9n;

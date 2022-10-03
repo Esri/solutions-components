@@ -22,26 +22,6 @@
   background-color: white;
 }
 
-.main-label {
-  display: flex;
-  float: left;
-}
-
-html[dir="rtl"] .main-label {
-  display: flex;
-  float: right;
-}
-
-.trailing-label {
-  display: flex;
-  float: right;
-}
-
-html[dir="rtl"] .trailing-label {
-  display: flex;
-  float: left;
-}
-
 .map-layer-picker-container {
   width: 100%;
 }

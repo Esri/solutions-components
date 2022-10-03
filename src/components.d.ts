@@ -10,6 +10,10 @@ import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BufferTools {
         /**
+          * string: The appearance of display. Can be a slider or text inputs for distance/value
+         */
+        "appearance": "slider" | "text";
+        /**
           * number: The distance used for buffer
          */
         "distance": number;
@@ -17,6 +21,18 @@ export namespace Components {
           * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
          */
         "geometries": __esri.Geometry[];
+        /**
+          * number: The component's maximum selectable value.
+         */
+        "sliderMax": number;
+        /**
+          * number: The component's minimum selectable value.
+         */
+        "sliderMin": number;
+        /**
+          * number: Displays tick marks on the number line at a specified interval.
+         */
+        "sliderTicks": number;
         /**
           * boolean: option to control if buffer results should be unioned
          */
@@ -61,6 +77,14 @@ export namespace Components {
           * boolean: sketch is used by multiple components...need a way to know who should respond...
          */
         "active": boolean;
+        /**
+          * boolean: Optionally draw a border around the draw tools
+         */
+        "border": boolean;
+        /**
+          * Clears the user drawn graphics
+          * @returns Promise that resolves when the operation is complete
+         */
         "clear": () => Promise<void>;
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
@@ -85,10 +109,6 @@ export namespace Components {
     }
     interface MapLayerPicker {
         /**
-          * string: The label to render above the combobox. This label is positioned on the left side of the control.
-         */
-        "label": string;
-        /**
           * string[]: list of layer names from the map
          */
         "layerNames": string[];
@@ -104,20 +124,47 @@ export namespace Components {
           * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
          */
         "selectionMode": SelectionMode;
+    }
+    interface MapSearch {
         /**
-          * string: The label to render above the combobox. This label is positioned on the right side of the control.
+          * Clears the state of the search widget
+          * @returns Promise that resolves when the operation is complete
          */
-        "trailingLabel": string;
+        "clear": () => Promise<void>;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
     }
     interface MapSelectTools {
+        /**
+          * Clear any selection results
+          * @returns Promise when the results have been cleared
+         */
         "clearSelection": () => Promise<void>;
         /**
           * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
          */
         "geometries": __esri.Geometry[];
+        /**
+          * Fetch the selection type
+          * @returns Promise with the selection type
+         */
         "getSelectType": () => Promise<EWorkflowType>;
+        /**
+          * Fetch the currently selected ids
+          * @returns Promise with an array of the selected ids
+         */
         "getSelectedIds": () => Promise<number[]>;
+        /**
+          * Get the new selection set
+          * @returns Promise with the new selection set
+         */
         "getSelection": () => Promise<ISelectionSet>;
+        /**
+          * Fetch the selection label
+          * @returns Promise with the selection label
+         */
         "getSelectionLabel": () => Promise<string>;
         /**
           * boolean: When true a new label is not generated for the stored selection set
@@ -128,10 +175,6 @@ export namespace Components {
          */
         "mapView": __esri.MapView;
         /**
-          * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
-         */
-        "searchLayers": __esri.Layer[];
-        /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
         "selectLayerView": __esri.FeatureLayerView;
@@ -141,6 +184,27 @@ export namespace Components {
         "selectionSet": ISelectionSet;
     }
     interface PdfDownload {
+        /**
+          * boolean: Controls the enabled/disabled state of download
+         */
+        "disabled": boolean;
+        /**
+          * Downloads csv of mailing labels for the provided list of ids
+          * @param ids List of ids to download
+          * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+          * @returns Promise resolving when function is done
+         */
+        "downloadCSV": (ids: number[], removeDuplicates: boolean) => Promise<void>;
+        /**
+          * Downloads pdf of mailing labels for the provided list of ids
+          * @param ids List of ids to download
+          * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+          * @returns Promise resolving when function is done
+         */
+        "downloadPDF": (ids: number[], removeDuplicates: boolean) => Promise<void>;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
         "layerView": __esri.FeatureLayerView;
     }
     interface PublicNotification {
@@ -152,20 +216,30 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+    }
+    interface RefineSelection {
         /**
-          * string: Default message to show when we have no selection sets
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
-        "message": string;
+        "addresseeLayer": __esri.FeatureLayerView;
         /**
-          * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
-        "selectionLayers": __esri.Layer[];
+        "mapView": __esri.MapView;
+        /**
+          * utils/interfaces/ISelectionSet: An array of user defined selection sets
+         */
+        "selectionSets": ISelectionSet[];
     }
     interface RefineSelectionTools {
         /**
           * boolean: sketch is used by multiple components...need a way to know who should respond...
          */
         "active": boolean;
+        /**
+          * boolean: Optionally draw a border around the draw tools
+         */
+        "border": boolean;
         "clearHighlight": () => Promise<void>;
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
@@ -423,9 +497,17 @@ export interface MapLayerPickerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapLayerPickerElement;
 }
+export interface MapSearchCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapSearchElement;
+}
 export interface MapSelectToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapSelectToolsElement;
+}
+export interface RefineSelectionCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLRefineSelectionElement;
 }
 export interface RefineSelectionToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -480,6 +562,12 @@ declare global {
         prototype: HTMLMapLayerPickerElement;
         new (): HTMLMapLayerPickerElement;
     };
+    interface HTMLMapSearchElement extends Components.MapSearch, HTMLStencilElement {
+    }
+    var HTMLMapSearchElement: {
+        prototype: HTMLMapSearchElement;
+        new (): HTMLMapSearchElement;
+    };
     interface HTMLMapSelectToolsElement extends Components.MapSelectTools, HTMLStencilElement {
     }
     var HTMLMapSelectToolsElement: {
@@ -497,6 +585,12 @@ declare global {
     var HTMLPublicNotificationElement: {
         prototype: HTMLPublicNotificationElement;
         new (): HTMLPublicNotificationElement;
+    };
+    interface HTMLRefineSelectionElement extends Components.RefineSelection, HTMLStencilElement {
+    }
+    var HTMLRefineSelectionElement: {
+        prototype: HTMLRefineSelectionElement;
+        new (): HTMLRefineSelectionElement;
     };
     interface HTMLRefineSelectionToolsElement extends Components.RefineSelectionTools, HTMLStencilElement {
     }
@@ -581,9 +675,11 @@ declare global {
         "json-editor": HTMLJsonEditorElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
+        "map-search": HTMLMapSearchElement;
         "map-select-tools": HTMLMapSelectToolsElement;
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
+        "refine-selection": HTMLRefineSelectionElement;
         "refine-selection-tools": HTMLRefineSelectionToolsElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-contents": HTMLSolutionContentsElement;
@@ -602,6 +698,10 @@ declare global {
 declare namespace LocalJSX {
     interface BufferTools {
         /**
+          * string: The appearance of display. Can be a slider or text inputs for distance/value
+         */
+        "appearance"?: "slider" | "text";
+        /**
           * number: The distance used for buffer
          */
         "distance"?: number;
@@ -610,6 +710,18 @@ declare namespace LocalJSX {
          */
         "geometries"?: __esri.Geometry[];
         "onBufferComplete"?: (event: BufferToolsCustomEvent<any>) => void;
+        /**
+          * number: The component's maximum selectable value.
+         */
+        "sliderMax"?: number;
+        /**
+          * number: The component's minimum selectable value.
+         */
+        "sliderMin"?: number;
+        /**
+          * number: Displays tick marks on the number line at a specified interval.
+         */
+        "sliderTicks"?: number;
         /**
           * boolean: option to control if buffer results should be unioned
          */
@@ -639,6 +751,10 @@ declare namespace LocalJSX {
          */
         "active"?: boolean;
         /**
+          * boolean: Optionally draw a border around the draw tools
+         */
+        "border"?: boolean;
+        /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "graphics"?: __esri.Graphic[];
@@ -662,10 +778,6 @@ declare namespace LocalJSX {
     }
     interface MapLayerPicker {
         /**
-          * string: The label to render above the combobox. This label is positioned on the left side of the control.
-         */
-        "label"?: string;
-        /**
           * string[]: list of layer names from the map
          */
         "layerNames"?: string[];
@@ -682,10 +794,13 @@ declare namespace LocalJSX {
           * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
          */
         "selectionMode"?: SelectionMode;
+    }
+    interface MapSearch {
         /**
-          * string: The label to render above the combobox. This label is positioned on the right side of the control.
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
-        "trailingLabel"?: string;
+        "mapView"?: __esri.MapView;
+        "onSearchChange"?: (event: MapSearchCustomEvent<ISearchResult>) => void;
     }
     interface MapSelectTools {
         /**
@@ -701,10 +816,7 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         "onSelectionSetChange"?: (event: MapSelectToolsCustomEvent<any>) => void;
-        /**
-          * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
-         */
-        "searchLayers"?: __esri.Layer[];
+        "onWorkflowTypeChange"?: (event: MapSelectToolsCustomEvent<any>) => void;
         /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
@@ -715,6 +827,13 @@ declare namespace LocalJSX {
         "selectionSet"?: ISelectionSet;
     }
     interface PdfDownload {
+        /**
+          * boolean: Controls the enabled/disabled state of download
+         */
+        "disabled"?: boolean;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
         "layerView"?: __esri.FeatureLayerView;
     }
     interface PublicNotification {
@@ -726,20 +845,31 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+    }
+    interface RefineSelection {
         /**
-          * string: Default message to show when we have no selection sets
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
-        "message"?: string;
+        "addresseeLayer"?: __esri.FeatureLayerView;
         /**
-          * esri/layers/Layer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
-        "selectionLayers"?: __esri.Layer[];
+        "mapView"?: __esri.MapView;
+        "onSelectionSetsChanged"?: (event: RefineSelectionCustomEvent<ISelectionSet[]>) => void;
+        /**
+          * utils/interfaces/ISelectionSet: An array of user defined selection sets
+         */
+        "selectionSets"?: ISelectionSet[];
     }
     interface RefineSelectionTools {
         /**
           * boolean: sketch is used by multiple components...need a way to know who should respond...
          */
         "active"?: boolean;
+        /**
+          * boolean: Optionally draw a border around the draw tools
+         */
+        "border"?: boolean;
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
@@ -974,9 +1104,11 @@ declare namespace LocalJSX {
         "json-editor": JsonEditor;
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
+        "map-search": MapSearch;
         "map-select-tools": MapSelectTools;
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
+        "refine-selection": RefineSelection;
         "refine-selection-tools": RefineSelectionTools;
         "solution-configuration": SolutionConfiguration;
         "solution-contents": SolutionContents;
@@ -1000,9 +1132,11 @@ declare module "@stencil/core" {
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
+            "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
+            "refine-selection": LocalJSX.RefineSelection & JSXBase.HTMLAttributes<HTMLRefineSelectionElement>;
             "refine-selection-tools": LocalJSX.RefineSelectionTools & JSXBase.HTMLAttributes<HTMLRefineSelectionToolsElement>;
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;

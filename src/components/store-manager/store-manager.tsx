@@ -75,6 +75,9 @@ export class StoreManager {
     this._initValueObserver();
   }
 
+  /**
+   * Renders the component.
+   */
   render() {
     return (null);
   }

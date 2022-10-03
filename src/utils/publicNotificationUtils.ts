@@ -14,6 +14,26 @@
  * limitations under the License.
  */
 
-:host {
-  display: block;
+/*
+ | Helper functions used in multiple components for public notification
+*/
+
+import { ISelectionSet } from "./interfaces";
+
+
+export function getSelectionIds(
+  selectionSets: ISelectionSet[]
+): number[] {
+  return Object.keys(selectionSets).reduce((prev, cur) => {
+    return [
+      ...prev,
+      ...selectionSets[cur].selectedIds
+    ]
+  }, []);
+}
+
+export function getTotal(
+  selectionSets: ISelectionSet[]
+): Number {
+  return [...new Set(getSelectionIds(selectionSets))].length;
 }

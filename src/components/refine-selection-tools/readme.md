@@ -10,6 +10,7 @@
 | Property         | Attribute          | Description                                                                                                                               | Type                                          | Default     |
 | ---------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- | ----------- |
 | `active`         | `active`           | boolean: sketch is used by multiple components...need a way to know who should respond...                                                 | `boolean`                                     | `false`     |
+| `border`         | `border`           | boolean: Optionally draw a border around the draw tools                                                                                   | `boolean`                                     | `false`     |
 | `graphics`       | --                 | esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html                                             | `Graphic[]`                                   | `undefined` |
 | `ids`            | --                 | number: The oids of the selected features                                                                                                 | `number[]`                                    | `[]`        |
 | `layerView`      | --                 | esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html               | `FeatureLayerView`                            | `undefined` |
@@ -56,19 +57,20 @@ Type: `Promise<void>`
 ### Used by
 
  - [map-select-tools](../map-select-tools)
- - [public-notification](../public-notification)
+ - [refine-selection](../refine-selection)
 
 ### Depends on
 
+- calcite-label
 - [map-layer-picker](../map-layer-picker)
 - calcite-action
 
 ### Graph
 ```mermaid
 graph TD;
+  refine-selection-tools --> calcite-label
   refine-selection-tools --> map-layer-picker
   refine-selection-tools --> calcite-action
-  map-layer-picker --> calcite-label
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-combobox-item
@@ -81,7 +83,7 @@ graph TD;
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
   map-select-tools --> refine-selection-tools
-  public-notification --> refine-selection-tools
+  refine-selection --> refine-selection-tools
   style refine-selection-tools fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

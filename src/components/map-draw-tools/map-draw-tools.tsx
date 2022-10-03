@@ -69,6 +69,11 @@ export class MapDrawTools {
    */
   @Prop({ mutable: true }) graphics: __esri.Graphic[];
 
+  /**
+   * boolean: Optionally draw a border around the draw tools
+   */
+  @Prop() border = false;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (private)
@@ -135,6 +140,11 @@ export class MapDrawTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Clears the user drawn graphics
+   *
+   * @returns Promise that resolves when the operation is complete
+   */
   @Method()
   async clear() {
     return this._clearSketch();
@@ -154,19 +164,29 @@ export class MapDrawTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   async componentWillLoad() {
     await this._getTranslations();
     await this._initModules();
   }
 
+  /**
+   * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
+   */
   componentDidLoad() {
     this._init();
   }
 
+  /**
+   * Renders the component.
+   */
   render() {
+    const drawClass = this.border ? "border" : "";
     return (
       <Host>
-        <div>
+        <div class={drawClass}>
           <div ref={(el) => { this._sketchDiv = el }} />
         </div>
       </Host>
@@ -179,7 +199,14 @@ export class MapDrawTools {
   //
   //--------------------------------------------------------------------------
 
-  async _initModules(): Promise<void> {
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   * 
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
     const [GraphicsLayer, Sketch]: [
       __esri.GraphicsLayerConstructor,
       __esri.SketchConstructor
@@ -191,14 +218,24 @@ export class MapDrawTools {
     this.Sketch = Sketch;
   }
 
-  _init(): void {
+  /**
+   * Initialize the graphics layer and the tools that support creating new graphics
+   * 
+   * @protected
+   */
+  protected _init(): void {
     if (this.mapView && this._sketchDiv) {
       this._initGraphicsLayer();
       this._initDrawTools();
     }
   }
 
-  _initGraphicsLayer(): void {
+  /**
+   * Create or find the graphics layer and add any existing graphics
+   * 
+   * @protected
+   */
+  protected _initGraphicsLayer(): void {
     const title = this.translations.sketchLayer;
     const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
     if (sketchIndex > -1) {
@@ -214,7 +251,12 @@ export class MapDrawTools {
     }
   }
 
-  _initDrawTools(): void {
+  /**
+   * Initialize the skecth widget and store the associated symbols for each geometry type
+   * 
+   * @protected
+   */
+  protected _initDrawTools(): void {
     this._sketchWidget = new this.Sketch({
       layer: this._sketchGraphicsLayer,
       view: this.mapView,
@@ -247,12 +289,22 @@ export class MapDrawTools {
     })
   }
 
-  _clearSketch() {
+  /**
+   * Clear any stored graphics and remove all graphics from the graphics layer
+   * 
+   * @protected
+   */
+  protected _clearSketch(): void {
     this.graphics = undefined;
     this._sketchGraphicsLayer.removeAll();
   }
 
-  async _getTranslations() {
+  /**
+   * Fetches the component's translations
+   *
+   * @protected
+   */
+   protected async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
     this.translations = translations[0] as typeof MapDrawTools_T9n;
   }

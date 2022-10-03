@@ -77,10 +77,16 @@ export class SolutionResourceItem {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   async componentWillLoad() {
     await this._getTranslations();
   }
   
+  /**
+   * Renders the component.
+   */
   render() {
     const hasValidResources = this._hasValidResources();
     return (
@@ -431,6 +437,11 @@ export class SolutionResourceItem {
     }
   }
 
+  /**
+   * Fetches the component's translations
+   *
+   * @protected
+   */
   async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
     this.translations = translations[0] as typeof SolutionResourceItem_T9n;

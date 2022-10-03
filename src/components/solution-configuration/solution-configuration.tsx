@@ -103,6 +103,9 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
   @Event() solutionLoaded: EventEmitter;
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   async componentWillLoad() {
     await this._getTranslations();
   }
@@ -128,6 +131,9 @@ export class SolutionConfiguration {
     }
   }
 
+  /**
+   * Renders the component.
+   */
   render(): VNode {
     const wkid = getProp(state.spatialReferenceInfo, "spatialReference.wkid");
     const hasServices: boolean = state.featureServices.length > 0;
@@ -640,6 +646,11 @@ export class SolutionConfiguration {
     return data;
   }
 
+  /**
+   * Fetches the component's translations
+   *
+   * @protected
+   */
   async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
     this.translations = translations[0] as typeof SolutionConfiguration_T9n;
