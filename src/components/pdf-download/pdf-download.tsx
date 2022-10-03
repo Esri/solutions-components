@@ -51,7 +51,7 @@ export class PdfDownload {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof PdfDownload_T9n;
+  @State() private _translations: typeof PdfDownload_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -107,7 +107,7 @@ export class PdfDownload {
       return _a < _b ? -1 : _a > _b ? 1 : 0
     });
     return sortedPdfIndo.map((l) => {
-      const textLabel = this.translations.pdfLabel.replace("{{n}}", l.descriptionPDF.labelsPerPageDisplay);
+      const textLabel = this._translations.pdfLabel.replace("{{n}}", l.descriptionPDF.labelsPerPageDisplay);
       return (<calcite-option value={l}>{textLabel}</calcite-option>)
     });
   }
@@ -120,9 +120,14 @@ export class PdfDownload {
     alert("Download the stuff");
   }
 
-  async _getTranslations() {
+  /**
+   * Fetches the component's translations
+   *
+   * @private
+   */
+  private async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof PdfDownload_T9n;
+    this._translations = translations[0] as typeof PdfDownload_T9n;
   }
 
 }

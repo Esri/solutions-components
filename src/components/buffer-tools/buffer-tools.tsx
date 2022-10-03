@@ -73,7 +73,7 @@ export class BufferTools {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof BufferTools_T9n;
+  @State() private _translations: typeof BufferTools_T9n;
 
   protected geometryEngine:  __esri.geometryEngine;
 
@@ -123,7 +123,7 @@ export class BufferTools {
     return (
       <Host>
         <calcite-label disable-spacing={true} style={{ "display": "flex", "padding-top": ".5rem" }}>
-          {this.translations?.searchDistance}
+          {this._translations?.searchDistance}
         </calcite-label>
         <div class="c-container">
           <calcite-input
@@ -164,10 +164,10 @@ export class BufferTools {
 
   _addUnits(): any {
     const units = {
-      'feet': this.translations.feet || 'Feet',
-      'meters': this.translations.meters || 'Meters',
-      'miles': this.translations.miles || 'Miles',
-      'kilometers': this.translations.kilometers || 'Kilometers'
+      'feet': this._translations.feet || 'Feet',
+      'meters': this._translations.meters || 'Meters',
+      'miles': this._translations.miles || 'Miles',
+      'kilometers': this._translations.kilometers || 'Kilometers'
     };
     return Object.keys(units).map(u => {
       let selected = true;
@@ -215,9 +215,14 @@ export class BufferTools {
     }, 400);
   }
 
-  async _getTranslations() {
+  /**
+   * Fetches the component's translations
+   *
+   * @private
+   */
+  private async _getTranslations() {
     const messages = await getLocaleComponentStrings(this.el);
-    this.translations = messages[0] as typeof BufferTools_T9n;
+    this._translations = messages[0] as typeof BufferTools_T9n;
   }
 
 }

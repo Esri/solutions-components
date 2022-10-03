@@ -80,7 +80,7 @@ export class SolutionResourceItem {
   async componentWillLoad() {
     await this._getTranslations();
   }
-  
+
   render() {
     const hasValidResources = this._hasValidResources();
     return (
@@ -92,14 +92,14 @@ export class SolutionResourceItem {
               class="resource-button"
               color="blue"
               onClick={() => this._addNewResource()}
-            >{this.translations.addResource}
+            >{this._translations.addResource}
             </calcite-button>
             <calcite-button
               appearance="solid"
               color="blue"
               disabled={!hasValidResources}
               onClick={() => this._downloadAll()}
-            >{this.translations.downloadAll}
+            >{this._translations.downloadAll}
             </calcite-button>
           </div>
           <div class="resources-container" style={{ display: hasValidResources ? "inherit" : "none" }}>
@@ -120,7 +120,7 @@ export class SolutionResourceItem {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof SolutionResourceItem_T9n;
+  @State() private _translations: typeof SolutionResourceItem_T9n;
 
   private _removedResources: any = {};
 
@@ -190,33 +190,33 @@ export class SolutionResourceItem {
           <calcite-action
             disabled={disabled}
             icon="download"
-            label={this.translations.download}
+            label={this._translations.download}
             onClick={() => this._download(resource.url, resource.filename)}
             scale="m"
-            text={this.translations.download}
+            text={this._translations.download}
           />
           <calcite-action
             disabled={disabled}
             icon="upload-to"
-            label={this.translations.update}
+            label={this._translations.update}
             onClick={() => this._upload(resource.url)}
             scale="m"
-            text={this.translations.update}
+            text={this._translations.update}
           />
           <calcite-action
             disabled={disabled}
             icon="trash"
-            label={this.translations.delete}
+            label={this._translations.delete}
             onClick={() => this._delete(resource.filename)}
             scale="m"
-            text={this.translations.delete}
+            text={this._translations.delete}
           />
           {disabled ? <calcite-action
             icon="reset"
-            label={this.translations.reset}
+            label={this._translations.reset}
             onClick={() => this._reset(resource.filename)}
             scale="m"
-            text={this.translations.reset}
+            text={this._translations.reset}
           /> : <div class="display-none"/>}
         </calcite-action-group>
       </calcite-value-list-item>
@@ -397,7 +397,7 @@ export class SolutionResourceItem {
           sourceFileName,
           updateType: EUpdateType.Update
         }
-  
+
         this.resourceFilePaths = [
           ...this.resourceFilePaths
         ];
@@ -431,8 +431,13 @@ export class SolutionResourceItem {
     }
   }
 
-  async _getTranslations() {
+  /**
+   * Fetches the component's translations
+   *
+   * @private
+   */
+  private async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof SolutionResourceItem_T9n;
+    this._translations = translations[0] as typeof SolutionResourceItem_T9n;
   }
 }

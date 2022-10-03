@@ -71,7 +71,7 @@ export class PublicNotificationTwo {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof PublicNotification_T9n;
+  @State() private _translations: typeof PublicNotification_T9n;
 
   /**
    * boolean: Save is enabled when we have 1 or more selected features
@@ -149,7 +149,7 @@ export class PublicNotificationTwo {
     const removeIds = idUpdates?.removeIds || [];
 
     this._updateSelectionSetsForRemoveIds(removeIds);
-  
+
     this._updateRefineSelectionSet(addIds, removeIds);
   }
 
@@ -191,7 +191,7 @@ export class PublicNotificationTwo {
   _getActions(): VNode {
     let actions: VNode;
     const hasSelections = this.selectionSets.filter(ss => ss.workflowType !== EWorkflowType.REFINE).length > 0;
-    const trans = this.translations;
+    const trans = this._translations;
     const hasRefine = this._hasRefine();
     switch (this.pageType) {
       case EPageType.LIST:
@@ -254,7 +254,7 @@ export class PublicNotificationTwo {
     let page: VNode;
     const layerTitle = this.addresseeLayer?.layer?.title;
     const total = this._getTotal();
-    const totalSelected = this.translations?.totalSelected.replace("{{n}}", total.toString())
+    const totalSelected = this._translations?.totalSelected.replace("{{n}}", total.toString())
     switch (this.pageType) {
       case EPageType.LIST:
         page = (
@@ -262,7 +262,7 @@ export class PublicNotificationTwo {
             <calcite-input-message active class="layer-picker-container list-border background-w">
               <div class="w-100 padding-bottom-1">
                 <map-layer-picker
-                  label={this.translations.addresseeLayer}
+                  label={this._translations.addresseeLayer}
                   mapView={this.mapView}
                   onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
                   selectionMode={"single"}
@@ -282,7 +282,7 @@ export class PublicNotificationTwo {
                       if (cur.workflowType !== EWorkflowType.REFINE) {
                         prev.push((
                           <calcite-list-item
-                            description={this.translations.selectedFeatures.replace('{{n}}', cur.selectedIds.length.toString())}
+                            description={this._translations.selectedFeatures.replace('{{n}}', cur.selectedIds.length.toString())}
                             label={cur.label}
                             onClick={() => flashSelection(cur)}
                           >
@@ -323,7 +323,7 @@ export class PublicNotificationTwo {
                 <div>
                   <br />
                   <calcite-input-message active class="start-message list-border background-w">
-                    {this.translations.selectedFeatures.replace("{{n}}", this.numSelected.toString())}
+                    {this._translations.selectedFeatures.replace("{{n}}", this.numSelected.toString())}
                   </calcite-input-message>
                 </div>
               ) : (<div />)
@@ -335,7 +335,7 @@ export class PublicNotificationTwo {
         page = (
           <div>
           <div class="background-w padding-1-2 list-border">
-            <calcite-radio-group 
+            <calcite-radio-group
               class="w-100"
               onCalciteRadioGroupChange={(evt) => this._modeChanged(evt)}
             >
@@ -345,7 +345,7 @@ export class PublicNotificationTwo {
                 onClick={() => this._setSelectionMode(ESelectionMode.ADD)}
                 value={ESelectionMode.ADD}
               >
-                {this.translations.add}
+                {this._translations.add}
               </calcite-radio-group-item>
               <calcite-radio-group-item
                 checked={!this.addEnabled}
@@ -353,7 +353,7 @@ export class PublicNotificationTwo {
                 onClick={() => this._setSelectionMode(ESelectionMode.REMOVE)}
                 value={ESelectionMode.REMOVE}
               >
-                {this.translations.remove}
+                {this._translations.remove}
               </calcite-radio-group-item>
             </calcite-radio-group>
             <refine-selection-tools
@@ -469,10 +469,10 @@ export class PublicNotificationTwo {
 
   _getRefineSelectionSetList() {
     const refineSets = this.selectionSets.filter(ss => ss.workflowType === EWorkflowType.REFINE);
-    
+
     const hasRefineSet = refineSets.length > 0;
     const refineSet = hasRefineSet ? refineSets[0] : undefined;
-    
+
     const total = this.selectionSets.reduce((prev, cur) => {
       return prev += cur.selectedIds.length
     }, 0);
@@ -482,19 +482,19 @@ export class PublicNotificationTwo {
 
     return [(
       <calcite-list-item
-        label={this.translations.featuresAdded?.replace('{{n}}', numAdded.toString())}
+        label={this._translations.featuresAdded?.replace('{{n}}', numAdded.toString())}
       >
         {this._getAction(numAdded > 0, "reset", "", (): void => this._revertSelection(refineSet, true), false, "actions-end")}
       </calcite-list-item>
     ),(
       <calcite-list-item
-        label={this.translations.featuresRemoved?.replace('{{n}}', numRemoved.toString())}
+        label={this._translations.featuresRemoved?.replace('{{n}}', numRemoved.toString())}
       >
         {this._getAction(numRemoved > 0, "reset", "", (): void => this._revertSelection(refineSet, false), false, "actions-end")}
       </calcite-list-item>
     ), (
       <calcite-list-item
-        label={this.translations.totalSelected?.replace('{{n}}', total.toString())}
+        label={this._translations.totalSelected?.replace('{{n}}', total.toString())}
       />
     )];
   }
@@ -555,7 +555,7 @@ export class PublicNotificationTwo {
   async _layerSelectionChange(evt: CustomEvent): Promise<void> {
     const title: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
     this.addresseeLayer = await getMapLayerView(this.mapView, title);
-    this.message = this.translations.startMessage.replace("{{n}}", evt?.detail?.length > 0 ? evt.detail[0] : "");
+    this.message = this._translations.startMessage.replace("{{n}}", evt?.detail?.length > 0 ? evt.detail[0] : "");
   }
 
   _updateForSelection(evt: CustomEvent) {
@@ -640,8 +640,13 @@ export class PublicNotificationTwo {
     state.highlightHandle?.remove();
   }
 
-  async _getTranslations() {
+  /**
+   * Fetches the component's translations
+   *
+   * @private
+   */
+  private async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof PublicNotification_T9n;
+    this._translations = translations[0] as typeof PublicNotification_T9n;
   }
 }

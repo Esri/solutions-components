@@ -116,7 +116,7 @@ export class SolutionTemplateData {
                   id="collapse-vars"
                   onClick={() => this._toggleVars()}
                   scale="s"
-                  title={this.translations.cancelEdits}
+                  title={this._translations.cancelEdits}
                 />
                 <div class={this.varsOpen ? "org-vars" : "org-vars display-none"} id="orgVars">
                   <solution-organization-variables
@@ -146,7 +146,7 @@ export class SolutionTemplateData {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof SolutionTemplateData_T9n;
+  @State() private _translations: typeof SolutionTemplateData_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -179,8 +179,13 @@ export class SolutionTemplateData {
     this.varsOpen = !this.varsOpen;
   }
 
-  async _getTranslations() {
+  /**
+   * Fetches the component's translations
+   *
+   * @private
+   */
+  private async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof SolutionTemplateData_T9n;
+    this._translations = translations[0] as typeof SolutionTemplateData_T9n;
   }
 }

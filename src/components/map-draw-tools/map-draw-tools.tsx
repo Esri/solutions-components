@@ -79,7 +79,7 @@ export class MapDrawTools {
  * Contains the translations for this component.
  * All UI strings should be defined here.
  */
-  @State() translations: typeof MapDrawTools_T9n;
+  @State() private _translations: typeof MapDrawTools_T9n;
 
   /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html?#constructors-summary
@@ -199,7 +199,7 @@ export class MapDrawTools {
   }
 
   _initGraphicsLayer(): void {
-    const title = this.translations.sketchLayer;
+    const title = this._translations.sketchLayer;
     const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
     if (sketchIndex > -1) {
       this._sketchGraphicsLayer = this.mapView.map.layers.getItemAt(sketchIndex) as __esri.GraphicsLayer;
@@ -252,8 +252,13 @@ export class MapDrawTools {
     this._sketchGraphicsLayer.removeAll();
   }
 
-  async _getTranslations() {
+  /**
+   * Fetches the component's translations
+   *
+   * @private
+   */
+  private async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof MapDrawTools_T9n;
+    this._translations = translations[0] as typeof MapDrawTools_T9n;
   }
 }

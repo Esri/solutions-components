@@ -79,7 +79,7 @@ export class SolutionItem {
   async componentWillLoad() {
     await this._getTranslations();
   }
-  
+
   render(): VNode {
     return (
       <Host>
@@ -107,7 +107,7 @@ export class SolutionItem {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof SolutionItem_T9n;
+  @State() private _translations: typeof SolutionItem_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -135,7 +135,7 @@ export class SolutionItem {
 
   /**
    * Render tabs based on group item types
-   * 
+   *
    * @param visible Should the current tab be visible
    */
   _showGroupTabs(
@@ -143,8 +143,8 @@ export class SolutionItem {
   ): VNode {
     return <calcite-tabs class="config-tabs" style={{ display: visible ? "inherit" : "none" }}>
       <calcite-tab-nav slot="tab-nav">
-        <calcite-tab-title>{this.translations.groupDetailsTab}</calcite-tab-title>
-        <calcite-tab-title>{this.translations.sharingTab}</calcite-tab-title>
+        <calcite-tab-title>{this._translations.groupDetailsTab}</calcite-tab-title>
+        <calcite-tab-title>{this._translations.sharingTab}</calcite-tab-title>
       </calcite-tab-nav>
 
       <calcite-tab active class="config-tab" id="group-tab">
@@ -164,7 +164,7 @@ export class SolutionItem {
 
   /**
    * Render tabs based for an items details, data, and props section from a template
-   * 
+   *
    * @param visible Should the current tab be visible
    */
   _showItemTabs(
@@ -172,10 +172,10 @@ export class SolutionItem {
   ): VNode {
     return <calcite-tabs class="config-tabs" style={{ display: visible ? "inherit" : "none" }}>
       <calcite-tab-nav slot="tab-nav">
-        <calcite-tab-title>{this.translations.itemDetailsTab}</calcite-tab-title>
-        <calcite-tab-title>{this.translations.dataTab}</calcite-tab-title>
-        <calcite-tab-title>{this.translations.propertiesTab}</calcite-tab-title>
-        <calcite-tab-title>{this.translations.resourcesTab}</calcite-tab-title>
+        <calcite-tab-title>{this._translations.itemDetailsTab}</calcite-tab-title>
+        <calcite-tab-title>{this._translations.dataTab}</calcite-tab-title>
+        <calcite-tab-title>{this._translations.propertiesTab}</calcite-tab-title>
+        <calcite-tab-title>{this._translations.resourcesTab}</calcite-tab-title>
       </calcite-tab-nav>
 
       <calcite-tab active class="config-tab">
@@ -218,8 +218,13 @@ export class SolutionItem {
     </calcite-tabs>
   }
 
-  async _getTranslations() {
+  /**
+   * Fetches the component's translations
+   *
+   * @private
+   */
+  private async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof SolutionItem_T9n;
+    this._translations = translations[0] as typeof SolutionItem_T9n;
   }
 }

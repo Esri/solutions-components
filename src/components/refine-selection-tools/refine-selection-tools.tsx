@@ -107,7 +107,7 @@ export class RefineSelectionTools {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof RefineSelectionTools_T9n;
+  @State() private _translations: typeof RefineSelectionTools_T9n;
 
   protected _excludeEffect = "blur(5px) grayscale(90%) opacity(40%)";
 
@@ -199,7 +199,7 @@ export class RefineSelectionTools {
         <div>
           <map-layer-picker
             class={showLayerPickerClass}
-            label={this.translations.selectLayers}
+            label={this._translations.selectLayers}
             mapView={this.mapView}
             selectedLayers={this.layerViews.map(l => l.layer.title)}
             selectionMode={"single"}
@@ -209,12 +209,12 @@ export class RefineSelectionTools {
             <div class={"esri-sketch esri-widget"}>
               <div class={"esri-sketch__panel"}>
                 <div class={"esri-sketch__tool-section esri-sketch__section"}>
-                  <calcite-action 
+                  <calcite-action
                     disabled={!this.selectEnabled}
                     icon="select"
                     onClick={() => this._setSelectionMode(ESelectionType.POINT)}
                     scale="s"
-                    text={this.translations.select}
+                    text={this._translations.select}
                   />
                 </div>
                 <div class={"esri-sketch__tool-section esri-sketch__section"}>
@@ -223,21 +223,21 @@ export class RefineSelectionTools {
                     icon="line"
                     onClick={() => this._setSelectionMode(ESelectionType.LINE)}
                     scale="s"
-                    text={this.translations.selectLine}
+                    text={this._translations.selectLine}
                   />
                   <calcite-action
                     disabled={!this.selectEnabled}
                     icon="polygon"
                     onClick={() => this._setSelectionMode(ESelectionType.POLY)}
                     scale="s"
-                    text={this.translations.selectPolygon}
+                    text={this._translations.selectPolygon}
                   />
-                  <calcite-action 
+                  <calcite-action
                     disabled={!this.selectEnabled}
                     icon="rectangle"
                     onClick={() => this._setSelectionMode(ESelectionType.RECT)}
                     scale="s"
-                    text={this.translations.selectRectangle}
+                    text={this._translations.selectRectangle}
                   />
                 </div>
                 <div class={"esri-sketch__tool-section esri-sketch__section"}>
@@ -246,14 +246,14 @@ export class RefineSelectionTools {
                     icon="undo"
                     onClick={() => this._undo()}
                     scale="s"
-                    text={this.translations.undo}
+                    text={this._translations.undo}
                   />
                   <calcite-action
                     disabled={!this.selectEnabled}
                     icon="redo"
                     onClick={() => this._redo()}
                     scale="s"
-                    text={this.translations.redo}
+                    text={this._translations.redo}
                   />
                 </div>
               </div>
@@ -313,7 +313,7 @@ export class RefineSelectionTools {
   }
 
   _initGraphicsLayer(): void {
-    const title = this.translations.sketchLayer;
+    const title = this._translations.sketchLayer;
     const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
     if (sketchIndex > -1) {
       this._sketchGraphicsLayer = this.mapView.map.layers.getItemAt(sketchIndex) as __esri.GraphicsLayer;
@@ -445,7 +445,7 @@ export class RefineSelectionTools {
       returnGeometry: true,
       geometry: geom
     };
-    
+
     const r = await layerView.queryFeatures(query);
     this.aaa[layerView.layer.title] = this.aaa[layerView.layer.title].concat(r.features);
 
@@ -477,8 +477,13 @@ export class RefineSelectionTools {
     console.log("REDO")
   }
 
-  async _getTranslations() {
+  /**
+   * Fetches the component's translations
+   *
+   * @private
+   */
+  private async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof RefineSelectionTools_T9n;
+    this._translations = translations[0] as typeof RefineSelectionTools_T9n;
   }
 }

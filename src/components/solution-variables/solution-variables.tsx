@@ -59,7 +59,7 @@ export class SolutionVariables {
     return (
       <Host>
         <div>
-          <h4 class="org-var-header">{this.translations.solVariables}</h4>
+          <h4 class="org-var-header">{this._translations.solVariables}</h4>
         </div>
         <div class="container-border">
           <calcite-label id="variable-label">
@@ -80,7 +80,7 @@ export class SolutionVariables {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof SolutionVariables_T9n;
+  @State() private _translations: typeof SolutionVariables_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -164,8 +164,13 @@ export class SolutionVariables {
     }
   }
 
-  async _getTranslations() {
+  /**
+   * Fetches the component's translations
+   *
+   * @private
+   */
+  private async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof SolutionVariables_T9n;
+    this._translations = translations[0] as typeof SolutionVariables_T9n;
   }
 }

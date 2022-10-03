@@ -65,7 +65,7 @@ export class SolutionItemSharing {
     return (
       <Host>
         <div class="container-border">
-          <calcite-label>{this.translations.groupInfo}</calcite-label>
+          <calcite-label>{this._translations.groupInfo}</calcite-label>
           {this._renderItems(this.value)}
         </div>
       </Host>
@@ -82,7 +82,7 @@ export class SolutionItemSharing {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof SolutionItemSharing_T9n;
+  @State() private _translations: typeof SolutionItemSharing_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -162,8 +162,13 @@ export class SolutionItemSharing {
     });
   }
 
-  async _getTranslations() {
+  /**
+   * Fetches the component's translations
+   *
+   * @private
+   */
+  private async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof SolutionItemSharing_T9n;
+    this._translations = translations[0] as typeof SolutionItemSharing_T9n;
   }
 }

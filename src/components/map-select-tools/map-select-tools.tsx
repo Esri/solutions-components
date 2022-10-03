@@ -87,7 +87,7 @@ export class MapSelectTools {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof MapSelectTools_T9n;
+  @State() private _translations: typeof MapSelectTools_T9n;
 
   /**
    * EWorkflowType: "SEARCH", "SELECT", "SKETCH", "REFINE"
@@ -258,14 +258,14 @@ export class MapSelectTools {
 
   @Listen("sketchGraphicsChange", { target: 'window' })
   sketchGraphicsChange(event: CustomEvent): void {
-    this._updateSelection(EWorkflowType.SKETCH, event.detail, this.translations.sketch);
+    this._updateSelection(EWorkflowType.SKETCH, event.detail, this._translations.sketch);
   }
 
   @Listen("refineSelectionGraphicsChange", { target: 'window' })
   refineSelectionGraphicsChange(event: CustomEvent): void {
     const graphics = event.detail;
 
-    this._updateSelection(EWorkflowType.SELECT, graphics, this.translations.select);
+    this._updateSelection(EWorkflowType.SELECT, graphics, this._translations.select);
     // Using OIDs to avoid issue with points
     const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
     this._highlightFeatures(oids);
@@ -308,21 +308,21 @@ export class MapSelectTools {
               class="w-50"
               value={EWorkflowType.SEARCH}
             >
-              {this.translations.search}
+              {this._translations.search}
             </calcite-radio-group-item>
             <calcite-radio-group-item
               checked={selectEnabled}
               class="w-50"
               value={EWorkflowType.SELECT}
             >
-              {this.translations.select}
+              {this._translations.select}
             </calcite-radio-group-item>
             <calcite-radio-group-item
               checked={drawEnabled}
               class="w-50"
               value={EWorkflowType.SKETCH}
             >
-              {this.translations.sketch}
+              {this._translations.sketch}
             </calcite-radio-group-item>
           </calcite-radio-group>
         </div>
@@ -332,7 +332,7 @@ export class MapSelectTools {
         <map-draw-tools
           active={drawEnabled}
           class={showDrawToolsClass}
-          mapView={this.mapView} 
+          mapView={this.mapView}
           ref={(el) => { this._drawTools = el}}
         />
         <refine-selection-tools
@@ -402,17 +402,17 @@ export class MapSelectTools {
       this._drawTools.graphics = this.geometries.map(sg => {
         let props = {
           'geometry': sg,
-          'symbol': sg.type === 'point' ? 
-            this._drawTools?.pointSymbol : sg.type === 'polyline' ? 
-            this._drawTools?.polylineSymbol : sg.type === 'polygon' ? 
+          'symbol': sg.type === 'point' ?
+            this._drawTools?.pointSymbol : sg.type === 'polyline' ?
+            this._drawTools?.polylineSymbol : sg.type === 'polygon' ?
             this._drawTools?.polygonSymbol : undefined
         };
         return new this.Graphic(props)
       });
       // reset selection label base
       this._selectionLabel = this.workflowType === EWorkflowType.SKETCH ?
-        this.translations.sketch : this.workflowType === EWorkflowType.SELECT ?
-        this.translations.select : this.selectionSet?.label;
+        this._translations.sketch : this.workflowType === EWorkflowType.SELECT ?
+        this._translations.select : this.selectionSet?.label;
     }
   }
 
@@ -445,7 +445,7 @@ export class MapSelectTools {
   }
 
   _initGraphicsLayer(): void {
-    const title = this.translations.bufferLayer;
+    const title = this._translations.bufferLayer;
 
     const bufferIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
     if (bufferIndex > -1) {
@@ -453,7 +453,7 @@ export class MapSelectTools {
     } else {
       this._bufferGraphicsLayer = new this.GraphicsLayer({ title });
       state.managedLayers.push(title);
-      const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === this.translations.sketchLayer);
+      const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === this._translations.sketchLayer);
       if (sketchIndex > -1) {
         this.mapView.map.layers.add(this._bufferGraphicsLayer, sketchIndex);
       } else {
@@ -583,7 +583,7 @@ export class MapSelectTools {
     }
 
     state.highlightHandle?.remove();
-    
+
     // for sketch
     if (this._drawTools) {
       this._drawTools.clear();
@@ -602,8 +602,13 @@ export class MapSelectTools {
     this._selectionLabel = label;
   }
 
-  async _getTranslations() {
+  /**
+   * Fetches the component's translations
+   *
+   * @private
+   */
+  private async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof MapSelectTools_T9n;
+    this._translations = translations[0] as typeof MapSelectTools_T9n;
   }
 }

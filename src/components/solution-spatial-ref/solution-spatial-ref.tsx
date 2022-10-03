@@ -101,7 +101,7 @@ export class SolutionSpatialRef {
     return (
       <Host>
         <div class="spatial-ref-desc">
-          <calcite-label>{this.translations.paramDescription}</calcite-label>
+          <calcite-label>{this._translations.paramDescription}</calcite-label>
         </div>
         <label class="switch-label">
           <calcite-switch
@@ -110,18 +110,18 @@ export class SolutionSpatialRef {
             scale="m"
             switched={!this.locked}
           />
-          {this.translations.specifyParam}
+          {this._translations.specifyParam}
         </label>
         <div class="spatial-ref-switch-title" id="spatialRefDefn">
           <calcite-label>
-            {this.translations.spatialReferenceInfo}
+            {this._translations.spatialReferenceInfo}
             <label class="spatial-ref-default">
               <calcite-input
                 id="calcite-sr-search"
                 disabled={this.locked}
                 onCalciteInputInput={(evt) => this._searchSpatialReferences(evt)}
                 onKeyDown={(evt) => this._inputKeyDown(evt)}
-                placeholder={this.translations.spatialReferencePlaceholder}
+                placeholder={this._translations.spatialReferencePlaceholder}
               />
             </label>
           </calcite-label>
@@ -156,7 +156,7 @@ export class SolutionSpatialRef {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof SolutionSpatialRef_T9n;
+  @State() private _translations: typeof SolutionSpatialRef_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -315,7 +315,7 @@ export class SolutionSpatialRef {
     });
     return _services && _services.length > 0 ? (
       <div>
-        <label class="spatial-ref-item-title">{this.translations.featureServicesHeading}</label>
+        <label class="spatial-ref-item-title">{this._translations.featureServicesHeading}</label>
         {_services.map(name => (
           <label class="switch-label">
             <calcite-switch
@@ -464,8 +464,13 @@ export class SolutionSpatialRef {
     )
   }
 
-  async _getTranslations() {
+  /**
+   * Fetches the component's translations
+   *
+   * @private
+   */
+  private async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof SolutionSpatialRef_T9n;
+    this._translations = translations[0] as typeof SolutionSpatialRef_T9n;
   }
 }
