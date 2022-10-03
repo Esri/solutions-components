@@ -69,7 +69,7 @@
     "@esri/arcgis-rest-portal": "^3.4.2",
     "@esri/arcgis-rest-request": "^3.4.2",
     "@esri/arcgis-rest-service-admin": "^3.4.2",
-    "@esri/calcite-components": "1.0.0-beta.86",
+    "@esri/calcite-components": "1.0.0-beta.94",
     "@esri/hub-common": "9.29.0",
     "@esri/hub-initiatives": "9.29.0",
     "@esri/hub-sites": "9.29.0",
