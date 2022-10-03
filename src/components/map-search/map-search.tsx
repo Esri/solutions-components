@@ -97,6 +97,11 @@ export class MapSearch {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Clears the state of the search widget
+   *
+   * @returns Promise that resolves when the operation is complete
+   */
   @Method()
   async clear() {
     this._searchWidget.clear();
@@ -116,15 +121,24 @@ export class MapSearch {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   async componentWillLoad() {
     await this._getTranslations();
     await this._initModules();
   }
 
+  /**
+   * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
+   */
   async componentDidLoad() {
     this._init();
   }
 
+  /**
+   * Renders the component.
+   */
   render() {
     return (
       <Host>
@@ -139,7 +153,14 @@ export class MapSearch {
   //
   //--------------------------------------------------------------------------
 
-  async _initModules(): Promise<void> {
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   * 
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
     const [Search]: [
       __esri.widgetsSearchConstructor
     ] = await loadModules([
@@ -148,11 +169,21 @@ export class MapSearch {
     this.Search = Search;
   }
 
-  async _init() {
+  /**
+   * Initialize the search widget
+   * 
+   * @returns Promise resolving when function is done
+   */
+  protected async _init() {
     this._initSearchWidget();
   }
 
-  _initSearchWidget(): void {
+  /**
+   * Initialize the search widget and listen to key events
+   * 
+   * @protected
+   */
+  protected _initSearchWidget(): void {
     if (this.mapView && this._searchDiv) {
       const searchOptions: __esri.widgetsSearchProperties = {
         view: this.mapView,
@@ -180,7 +211,12 @@ export class MapSearch {
     }
   }
 
-  async _getTranslations() {
+  /**
+   * Fetches the component's translations
+   *
+   * @protected
+   */
+  protected async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
     this.translations = translations[0] as typeof MapSearch_T9n;
   }

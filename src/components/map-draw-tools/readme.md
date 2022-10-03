@@ -29,13 +29,13 @@
 
 ### `clear() => Promise<void>`
 
-
+Clears the user drawn graphics
 
 #### Returns
 
 Type: `Promise<void>`
 
-
+Promise that resolves when the operation is complete
 
 
 ## Dependencies

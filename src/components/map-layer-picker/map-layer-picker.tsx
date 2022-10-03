@@ -68,13 +68,13 @@ export class MapLayerPicker {
   //
   //--------------------------------------------------------------------------
 
+  protected _layerSelect: HTMLCalciteSelectElement;
+
   /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
   @State() translations: typeof MapLayerPicker_T9n;
-
-  protected _layerSelect: HTMLCalciteSelectElement;
 
   //--------------------------------------------------------------------------
   //
@@ -112,6 +112,9 @@ export class MapLayerPicker {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   async componentWillLoad() {
     await this._getTranslations();
     await this._setLayers();
@@ -122,6 +125,9 @@ export class MapLayerPicker {
     }
   }
 
+  /**
+   * Renders the component.
+   */
   render() {
     return (
       <Host>
@@ -140,7 +146,13 @@ export class MapLayerPicker {
   //
   //--------------------------------------------------------------------------
 
-  // Use Select when something should always be selected
+  /**
+   * Create a list of layers from the map
+   * 
+   * Used for selecting a single layer.
+   * 
+   * @returns Calcite Select component with the names of the layers from the map
+   */
   _getSelect(): VNode {
     return (
       <calcite-select
@@ -153,7 +165,13 @@ export class MapLayerPicker {
     );
   }
 
-  // Use combbox for multi selection
+  /**
+   * Create a list of layers from the map
+   * 
+   * Used for selecting multiple layers
+   * 
+   * @returns Calcite ComboBox component with the names of the layers from the map
+   */
   _getCombobox(): VNode {
     return (
       <calcite-combobox
@@ -167,7 +185,12 @@ export class MapLayerPicker {
     );
   }
 
-  _addMapLayersOptions(): any {
+  /**
+   * Hydrate a select or combobox component with the names of the layers in the map
+   * 
+   * @returns Array of ComboBox items or Select options for the names of the layers
+   */
+  _addMapLayersOptions(): VNode[] {
     return this.layerNames.reduce((prev, cur) => {
       if (state.managedLayers.indexOf(cur) < 0) {
         prev.push(
@@ -184,12 +207,22 @@ export class MapLayerPicker {
     }, []);
   }
 
+  /**
+   * Fetch the names of the layers from the map
+   * 
+   * @returns Promise when the operation has completed
+   */
   async _setLayers(): Promise<void> {
     if (this.mapView) {
       this.layerNames = await getMapLayerNames(this.mapView);
     }
   }
 
+  /**
+   * Fetch the names of the layers from the map
+   * 
+   * @returns Promise when the operation has completed
+   */
   _layerSelectionChange(evt: CustomEvent): void {
     this.selectedLayers = this.selectionMode === "single" ?
       [this._layerSelect.value] : evt.detail?.selectedItems.map(
@@ -200,6 +233,11 @@ export class MapLayerPicker {
     this.layerSelectionChange.emit(this.selectedLayers);
   }
 
+  /**
+   * Fetches the component's translations
+   *
+   * @protected
+   */
   async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
     this.translations = translations[0] as typeof MapLayerPicker_T9n;

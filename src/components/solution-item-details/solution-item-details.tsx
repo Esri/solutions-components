@@ -67,6 +67,9 @@ export class SolutionItemDetails {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   async componentWillLoad() {
     await this._getTranslations();
   }
@@ -78,6 +81,9 @@ export class SolutionItemDetails {
     }
   }
 
+  /**
+   * Renders the component.
+   */
   render(): VNode {
     this._validateValue();
     return (
@@ -337,6 +343,11 @@ export class SolutionItemDetails {
     }
   }
 
+  /**
+   * Fetches the component's translations
+   *
+   * @protected
+   */
   async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
     this.translations = translations[0] as typeof SolutionItemDetails_T9n;

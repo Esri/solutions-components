@@ -45,15 +45,14 @@ export class RefineSelection {
   //
   //--------------------------------------------------------------------------
 
+  protected _addEnabled = true;
+  protected _refineTools: HTMLRefineSelectionToolsElement;
+
   /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
   @State() translations: typeof RefineSelection_T9n;
-
-  protected _addEnabled = true;
-
-  protected _refineTools: HTMLRefineSelectionToolsElement;
 
   //--------------------------------------------------------------------------
   //
@@ -90,10 +89,16 @@ export class RefineSelection {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   async componentWillLoad() {
     await this._getTranslations();
   }
 
+  /**
+   * Renders the component.
+   */
   render() {
     return (
       <Host>
@@ -149,18 +154,35 @@ export class RefineSelection {
   //
   //--------------------------------------------------------------------------
 
-
-  _modeChanged(evt: CustomEvent): void {
+  /**
+   * Store the Add/Remove mode
+   *
+   * @protected
+   */
+  protected _modeChanged(
+    evt: CustomEvent
+  ): void {
     this._addEnabled = evt.detail === ESelectionMode.ADD;
   }
 
-  _setSelectionMode(
+  /**
+   * Set the refine tools selection mode
+   *
+   * @protected
+   */
+  protected _setSelectionMode(
     mode: ESelectionMode
   ): void {
     this._refineTools.mode = mode;
   }
 
-  _getRefineSelectionSetList() {
+  /**
+   * Create a list to show the number added/removed/total unique selected
+   *
+   * @returns the list node
+   * @protected
+   */
+  protected _getRefineSelectionSetList(): VNode[] {
     const total = utils.getTotal(this.selectionSets);
     const refineSet = this._getRefineSelectionSet(this.selectionSets);
     const numAdded = refineSet?.refineIds.addIds.length || 0;
@@ -185,9 +207,15 @@ export class RefineSelection {
     )];
   }
 
-  _getRefineSelectionSet(
+  /**
+   * Fetch the refine selection set
+   *
+   * @returns the refine selection set
+   * @protected
+   */
+  protected _getRefineSelectionSet(
     selectionSets: ISelectionSet[]
-  ) {
+  ): ISelectionSet {
     let refineSelectionSet: ISelectionSet;
     selectionSets.some(ss => {
       if (ss.workflowType === EWorkflowType.REFINE) {
@@ -198,7 +226,20 @@ export class RefineSelection {
     return refineSelectionSet;
   }
 
-  _getAction(
+  /**
+   * Create a calcite action
+   * 
+   * @param enabled controls the enabled state of the control
+   * @param icon the image to display in the action
+   * @param text and supporting text for the action
+   * @param onClick the fucntion the actio will execute
+   * @param indicator boolean to control if an indicator should be shown (default is false)
+   * @param slot the supporting slot to use
+   * 
+   * @returns the calcite action node
+   * @protected
+   */
+  protected _getAction(
     enabled: boolean,
     icon: string,
     text: string,
@@ -217,10 +258,19 @@ export class RefineSelection {
     );
   }
 
-  _revertSelection(
+  /**
+   * Revert an Add or Remove selection
+   * 
+   * @param refineSet the refine set
+   * @param isAdd boolean to indicate if we are reverting Add or Remove
+   *
+   * @returns Promise resolving when function is done
+   * @protected
+   */
+  protected _revertSelection(
     refineSet: ISelectionSet,
     isAdd: boolean
-  ) {
+  ): void {
     if (isAdd) {
       refineSet.refineIds.removeIds = refineSet.refineIds.addIds;
       refineSet.selectedIds = refineSet.selectedIds.filter(id => {
@@ -246,9 +296,16 @@ export class RefineSelection {
     });
   }
 
-  _updateSelectionSetsForRemoveIds(
+  /**
+   * Highlight any selected features in the map
+   * 
+   * @param removeIds the ids to remove
+   *
+   * @protected
+   */
+  protected _updateSelectionSetsForRemoveIds(
     removeIds: number[]
-  ) {
+  ): void {
     if (removeIds.length > 0) {
       // update the selection sets selectedIds and remove any selection sets that have no selected features
       this.selectionSets = this.selectionSets.reduce((prev, cur) => {
@@ -262,10 +319,19 @@ export class RefineSelection {
     }
   }
 
-  _updateRefineSelectionSet(
+  /**
+   * Update the refine selection set with any adds or removes
+   * 
+   * @param addIds any ids to add
+   * @param removeIds any ids to remove
+   *
+   * @returns Promise resolving when function is done
+   * @protected
+   */
+  protected _updateRefineSelectionSet(
     addIds: number[],
     removeIds: number[]
-  ) {
+  ): void {
     const selectionSet = this._getRefineSelectionSet(this.selectionSets);
     if (selectionSet) {
       const _addIds = [...new Set(selectionSet.refineIds.addIds.concat(addIds))];
@@ -311,7 +377,12 @@ export class RefineSelection {
     this.selectionSetsChanged.emit(this.selectionSets);
   }
 
-  async _getTranslations() {
+  /**
+   * Fetches the component's translations
+   *
+   * @protected
+   */
+   protected async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
     this.translations = translations[0] as typeof RefineSelection_T9n;
   }

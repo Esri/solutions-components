@@ -23,13 +23,13 @@
 
 ### `clear() => Promise<void>`
 
-
+Clears the state of the search widget
 
 #### Returns
 
 Type: `Promise<void>`
 
-
+Promise that resolves when the operation is complete
 
 
 ----------------------------------------------

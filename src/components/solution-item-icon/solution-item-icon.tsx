@@ -60,10 +60,16 @@ export class SolutionItemIcon {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   async componentWillLoad() {
     this._getTranslations();
   }
 
+  /**
+   * Renders the component.
+   */
   render() {
     return <div title={this.type}>
       <img class="item-type-icon item-type-icon-margin"
@@ -315,6 +321,11 @@ export class SolutionItemIcon {
     return imgName ? getAssetPath(imgDir + imgName + size + ".png") : null;
   }
 
+  /**
+   * Fetches the component's translations
+   *
+   * @protected
+   */
   async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
     this.translations = translations[0] as typeof SolutionItemIcon_T9n;

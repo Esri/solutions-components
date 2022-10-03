@@ -17,23 +17,23 @@
 
 ### `downloadCSV(ids: number[], removeDuplicates: boolean) => Promise<void>`
 
-
+Downloads csv of mailing labels for the provided list of ids
 
 #### Returns
 
 Type: `Promise<void>`
 
-
+Promise resolving when function is done
 
 ### `downloadPDF(ids: number[], removeDuplicates: boolean) => Promise<void>`
 
-
+Downloads pdf of mailing labels for the provided list of ids
 
 #### Returns
 
 Type: `Promise<void>`
 
-
+Promise resolving when function is done
 
 
 ## Dependencies

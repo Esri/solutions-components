@@ -39,11 +39,6 @@ export class BufferTools {
   //--------------------------------------------------------------------------
 
   /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-
-  /**
    * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
    */
   @Prop() geometries: __esri.Geometry[];
@@ -89,17 +84,15 @@ export class BufferTools {
   //
   //--------------------------------------------------------------------------
 
+  protected geometryEngine:  __esri.geometryEngine;
+  protected _unitDiv: HTMLCalciteSelectElement;
+  protected bufferTimeout: NodeJS.Timeout;
+
   /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
   @State() translations: typeof BufferTools_T9n;
-
-  protected geometryEngine:  __esri.geometryEngine;
-
-  protected _unitDiv: HTMLCalciteSelectElement;
-
-  protected bufferTimeout: NodeJS.Timeout;
 
   //--------------------------------------------------------------------------
   //
@@ -134,11 +127,17 @@ export class BufferTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   async componentWillLoad() {
     await this._getTranslations();
     await this._initModules();
   }
 
+  /**
+   * Renders the component.
+   */
   render() {
     return (
       <Host>
@@ -153,7 +152,14 @@ export class BufferTools {
   //
   //--------------------------------------------------------------------------
 
-  async _initModules(): Promise<void> {
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   * 
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
     const [geometryEngine]: [
       __esri.geometryEngine
     ] = await loadModules([
@@ -162,7 +168,14 @@ export class BufferTools {
     this.geometryEngine = geometryEngine;
   }
 
-  _addUnits(): any {
+  /**
+   * Gets the nodes for each of the possible distance units
+   *
+   * @returns An array of option nodes
+   * 
+   * @protected
+   */
+  protected _getUnits(): VNode[] {
     const units = {
       'feet': this.translations.feet || 'Feet',
       'meters': this.translations.meters || 'Meters',
@@ -180,7 +193,14 @@ export class BufferTools {
     });
   }
 
-  _setDistance(
+  /**
+   * Store the user defined distance value and create a buffer
+   *
+   * @param event the event from the calcite input control
+   * 
+   * @protected
+   */
+  protected _setDistance(
     event: CustomEvent
   ): void {
     this.distance = event.detail.value;
@@ -191,12 +211,22 @@ export class BufferTools {
     }
   }
 
-  _setUnit(): void {
+  /**
+   * Store the user defined unit value and create a buffer
+   * 
+   * @protected
+   */
+  protected _setUnit(): void {
     this.unit = this._unitDiv.value as __esri.LinearUnits;
     this._buffer();
   }
 
-  _buffer(): void {
+  /**
+   * Create buffer geometry based on the user defined unit and distance
+   * 
+   * @protected
+   */
+  protected _buffer(): void {
     if (this.bufferTimeout) {
       clearTimeout(this.bufferTimeout);
     }
@@ -215,7 +245,15 @@ export class BufferTools {
     }, 400);
   }
 
-  _getTextBoxDisplay(): VNode {
+  /**
+   * Render distance and unit as calcite input and select controls
+   * This option will be used when the "appearance" prop is set to "text"
+   *
+   * @returns a node with the supporting controls
+   * 
+   * @protected
+   */
+  protected _getTextBoxDisplay(): VNode {
     return (
       <div class="c-container">
         <calcite-input
@@ -232,13 +270,21 @@ export class BufferTools {
           onCalciteSelectChange={() => this._setUnit()}
           ref={(el) => { this._unitDiv = el }}
         >
-          {this._addUnits()}
+          {this._getUnits()}
         </calcite-select>
       </div>
     );
   }
 
-  _getSliderDisplay(): VNode {
+  /**
+   * Render distance control as a slider
+   * This option will be used when the "appearance" prop is set to "slider"
+   *
+   * @returns a node with the supporting control
+   * 
+   * @protected
+   */
+  protected _getSliderDisplay(): VNode {
     return (
       <div>
         <calcite-slider
@@ -251,6 +297,11 @@ export class BufferTools {
     );
   }
 
+  /**
+   * Fetches the component's translations
+   *
+   * @protected
+   */
   async _getTranslations() {
     const messages = await getLocaleComponentStrings(this.el);
     this.translations = messages[0] as typeof BufferTools_T9n;

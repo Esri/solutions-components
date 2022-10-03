@@ -88,10 +88,16 @@ export class SolutionTemplateData {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   async componentWillLoad() {
     await this._getTranslations();
   }
 
+  /**
+   * Renders the component.
+   */
   render() {
     return (
       <Host>
@@ -175,10 +181,15 @@ export class SolutionTemplateData {
   /**
    * Toggle varsOpen prop to show/hide variable containers
    */
-  _toggleVars(): void {
+  _toggleVars() {
     this.varsOpen = !this.varsOpen;
   }
 
+  /**
+   * Fetches the component's translations
+   *
+   * @protected
+   */
   async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
     this.translations = translations[0] as typeof SolutionTemplateData_T9n;

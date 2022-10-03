@@ -56,6 +56,8 @@ export class PdfDownload {
   //
   //--------------------------------------------------------------------------
 
+  protected _labelInfoControl: HTMLCalciteSelectElement;
+
   /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
@@ -74,6 +76,13 @@ export class PdfDownload {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Downloads pdf of mailing labels for the provided list of ids
+   *
+   * @param ids List of ids to download
+   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+   * @returns Promise resolving when function is done
+   */
   @Method()
   async downloadPDF(
     ids: number[],
@@ -82,8 +91,13 @@ export class PdfDownload {
     return this._downloadPDF(ids, removeDuplicates);
   }
 
-  // TODO still thinking about this...may be nice to just have this as a download helper
-  // and be the general worker for any supported download types
+  /**
+   * Downloads csv of mailing labels for the provided list of ids
+   *
+   * @param ids List of ids to download
+   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+   * @returns Promise resolving when function is done
+   */
   @Method()
   async downloadCSV(
     ids: number[],
@@ -98,18 +112,22 @@ export class PdfDownload {
   //
   //--------------------------------------------------------------------------
 
-  protected _labelInfoControl: HTMLCalciteSelectElement;
-
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   async componentWillLoad() {
     await this._getTranslations();
   }
 
+  /**
+   * Renders the component.
+   */
   render() {
     return (
       <Host>
@@ -130,7 +148,14 @@ export class PdfDownload {
   //
   //--------------------------------------------------------------------------
 
-  _renderItems(): VNode[] {
+  /**
+   * Renders the pdf export size options
+   * 
+   * @returns Node array of size options
+   * 
+   * @protected
+   */
+  protected _renderItems(): VNode[] {
     const s: any = pdfUtils;
     const sortedPdfIndo = (s.default || s).sort((a, b) => {
       const _a = parseInt(a.descriptionPDF.labelsPerPageDisplay, 10);
@@ -142,32 +167,64 @@ export class PdfDownload {
     });
   }
 
-  async _downloadPDF(
+  /**
+   * Downloads pdf of mailing labels for the provided list of ids
+   *
+   * @param ids List of ids to download
+   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+   * 
+   * @returns Promise resolving when function is done
+   * @protected
+   */
+  protected async _downloadPDF(
     ids: number[],
     removeDuplicates: boolean
-  ) {
+  ): Promise<void> {
     const l = this._labelInfoControl.selectedOption.value;
     alert(`PDF download: (${this._getLabelSizeText(l)}) (remove dups: ${removeDuplicates}) ${ids.join(", ")}`);
   }
 
-  async _downloadCSV(
+  /**
+   * Downloads csv of mailing labels for the provided list of ids
+   *
+   * @param ids List of ids to download
+   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+   * @returns Promise resolving when function is done
+   * 
+   * @returns Promise that will resolve when the download is complete
+   * @protected
+   */
+  protected async _downloadCSV(
     ids: number[],
     removeDuplicates: boolean
-  ) {
-    //alert(`CSV download: (remove dups: ${removeDuplicates}) ${ids.join(", ")}`);
+  ): Promise<void> {
+    // TODO this will be leveraged when we do the real implementation of this
     console.log(removeDuplicates)
     await exportCSV(this.layerView, ids);
   }
 
-  _getLabelSizeText(
+  /**
+   * Gets the formatted pdf export size text
+   * 
+   * @param labelInfo current user selected label info
+   * 
+   * @returns the pdf label as a string
+   * @protected
+   */
+  protected _getLabelSizeText(
     labelInfo: any
-  ) {
+  ): string {
     const lNum = labelInfo.descriptionPDF.labelsPerPageDisplay;
     const lSize = `${labelInfo.descriptionPDF.labelWidthDisplay} x ${labelInfo.descriptionPDF.labelHeightDisplay}`;
     return this.translations.pdfLabel.replace("{{n}}", lNum).replace("{{labelSize}}", lSize);
   }
 
-  async _getTranslations() {
+  /**
+   * Fetches the component's translations
+   *
+   * @protected
+   */
+  protected async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
     this.translations = translations[0] as typeof PdfDownload_T9n;
   }
