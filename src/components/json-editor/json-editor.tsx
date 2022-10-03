@@ -303,6 +303,29 @@ export class JsonEditor {
     });
   }
 
+
+  /**
+   * Frees the editor events and memory; to be called when the web component is no longer needed.
+   *
+   * Because the component lifecycle doesn't include an "onDestroy" event
+   * (@see https://stenciljs.com/docs/component-lifecycle#disconnectedcallback)
+   * and TypeScript/JavaScript does automatic garbage collection without a callback
+   * hook until ES2021
+   * (@see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry),
+   * this cleanup call needs to be called manually.
+   */
+  @Method()
+  async prepareForDeletion(): Promise<void> {
+    this._searchBtnHandler?.removeEventListener("click", this._search);
+    this._cancelEditsBtnHandler?.removeEventListener("click", this._reset);
+
+    this._valueObserver?.disconnect();
+
+    this._contentChanged?.dispose();
+
+    this._editor?.dispose();
+  }
+
   /**
    * Replaces the current selection with the supplied text, inserting if nothing is selected.
    *
@@ -343,22 +366,6 @@ export class JsonEditor {
   //--------------------------------------------------------------------------
 
   /**
-   * Frees the editor events and memory when the web component is disconnected.
-   *
-   * @protected
-   */
-   protected _destroyEditor(): void {
-    this._searchBtnHandler?.removeEventListener("click", this._search);
-    this._cancelEditsBtnHandler?.removeEventListener("click", this._reset);
-
-    this._valueObserver?.disconnect();
-
-    this._contentChanged?.dispose();
-
-    this._editor?.dispose();
-  }
-
-  /**
    * Disables a button.
    *
    * @param buttonId Id of button to disable
@@ -376,7 +383,7 @@ export class JsonEditor {
    *
    * @protected
    */
-  _enableButton(buttonId: string): void {
+  protected _enableButton(buttonId: string): void {
     document.getElementById(buttonId)?.removeAttribute("disabled");
   }
 
