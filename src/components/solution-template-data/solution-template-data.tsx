@@ -88,10 +88,16 @@ export class SolutionTemplateData {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   async componentWillLoad() {
     await this._getTranslations();
   }
 
+  /**
+   * Renders the component.
+   */
   render() {
     return (
       <Host>
@@ -138,7 +144,7 @@ export class SolutionTemplateData {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -146,7 +152,7 @@ export class SolutionTemplateData {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() private _translations: typeof SolutionTemplateData_T9n;
+  @State() protected _translations: typeof SolutionTemplateData_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -182,9 +188,9 @@ export class SolutionTemplateData {
   /**
    * Fetches the component's translations
    *
-   * @private
+   * @protected
    */
-  private async _getTranslations() {
+  protected async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionTemplateData_T9n;
   }

@@ -17,19 +17,3 @@
 :host {
   display: block;
 }
-
-.background-w {
-  background-color: white;
-}
-
-.padding-1-2 {
-  padding: 0.5rem;
-}
-
-.margin-top-1 {
-  margin-top: 1rem;
-}
-
-.list-border {
-  border: 1px solid var(--calcite-ui-border-2);
-}

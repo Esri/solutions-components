@@ -58,6 +58,9 @@ export class SolutionItemIcon {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Renders the component.
+   */
   render() {
     return <div title={this.type}>
       <img class="item-type-icon item-type-icon-margin"
@@ -70,7 +73,7 @@ export class SolutionItemIcon {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -106,7 +109,7 @@ export class SolutionItemIcon {
    * @param type The item type
    * @param typeKeywords The item typeKeywords
    */
-  private _getIconUrl(
+  protected _getIconUrl(
     type: string,
     typeKeywords: string[]
   ): string {

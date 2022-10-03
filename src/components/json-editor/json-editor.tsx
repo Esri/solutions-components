@@ -253,20 +253,20 @@ export class JsonEditor {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
-  private _cancelEditsBtnHandler: any;
-  private _contentChanged: any;
-  private _currentModel: any;
-  private _diffEditor: any;
-  private _editor: any;
-  private _loaded: boolean = false;
-  private _searchBtnHandler: any;
-  private _translations: typeof JsonEditor_T9n;
-  private _useDiffEditor: boolean = false;
-  private _valueObserver: MutationObserver;
+  protected _cancelEditsBtnHandler: any;
+  protected _contentChanged: any;
+  protected _currentModel: any;
+  protected _diffEditor: any;
+  protected _editor: any;
+  protected _loaded: boolean = false;
+  protected _searchBtnHandler: any;
+  protected _translations: typeof JsonEditor_T9n;
+  protected _useDiffEditor: boolean = false;
+  protected _valueObserver: MutationObserver;
 
   //--------------------------------------------------------------------------
   //

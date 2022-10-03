@@ -103,6 +103,9 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
   @Event() solutionLoaded: EventEmitter;
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   async componentWillLoad() {
     await this._getTranslations();
   }
@@ -128,6 +131,9 @@ export class SolutionConfiguration {
     }
   }
 
+  /**
+   * Renders the component.
+   */
   render(): VNode {
     const wkid = getProp(state.spatialReferenceInfo, "spatialReference.wkid");
     const hasServices: boolean = state.featureServices.length > 0;
@@ -200,7 +206,7 @@ export class SolutionConfiguration {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -208,15 +214,15 @@ export class SolutionConfiguration {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() private _translations: typeof SolutionConfiguration_T9n;
+  @State() protected _translations: typeof SolutionConfiguration_T9n;
 
-  private _solutionVariables: IVariableItem[];
+  protected _solutionVariables: IVariableItem[];
 
-  private _organizationVariables: IOrganizationVariableItem[];
+  protected _organizationVariables: IOrganizationVariableItem[];
 
-  private _fetchData = false;
+  protected _fetchData = false;
 
-  private _isLoading = false;
+  protected _isLoading = false;
 
   //--------------------------------------------------------------------------
   //
@@ -280,7 +286,7 @@ export class SolutionConfiguration {
    * @param id the solution items id
    * @param isReset (defaults to false) indicates if we are resetting the controls after save
    */
-  private _getItemData(
+  protected _getItemData(
     id: string,
     isReset = false
   ): Promise<any> {
@@ -299,7 +305,7 @@ export class SolutionConfiguration {
    * @param templates the solution items templates
    * @param isReset (defaults to false) indicates if we are resetting the controls after save
    */
-  private _initState(
+  protected _initState(
     templates: any[],
     isReset = false
   ): Promise<any> {
@@ -333,7 +339,7 @@ export class SolutionConfiguration {
    *
    * @param templates the solution items templates
    */
-  private _initProps(templates: any[]): void {
+  protected _initProps(templates: any[]): void {
     this.value.contents = [...utils.getInventoryItems(templates)];
     this._solutionVariables = utils.getSolutionVariables(templates, this._translations);
     this._organizationVariables = utils.getOrganizationVariables(this._translations);
@@ -350,7 +356,7 @@ export class SolutionConfiguration {
   /**
    * Toggle treeOpen prop to show/hide content tree
    */
-  private _toggleTree(): void {
+  protected _toggleTree(): void {
     this.treeOpen = !this.treeOpen;
   }
 
@@ -359,7 +365,7 @@ export class SolutionConfiguration {
    *
    * @returns a response that will indicate success or failure and any associated messages
    */
-  private async _save() {
+  protected async _save() {
     const templateUpdates = await this._updateTemplates();
     const data = this._setSrInfo(templateUpdates.templates);
     return templateUpdates.errors.length === 0 ? save(
@@ -384,7 +390,7 @@ export class SolutionConfiguration {
    *
    * @returns an object that contains the updated templates as well as any errors that were found
    */
-  private async _updateTemplates(): Promise<IUpdateTemplateResponse> {
+  protected async _updateTemplates(): Promise<IUpdateTemplateResponse> {
     const errors = [];
     const models = await this.getEditModels();
     let templates = this._updateGroupDependencies(models, this.templates);
@@ -417,7 +423,7 @@ export class SolutionConfiguration {
    * @returns group info (an object with keys of groupIds and
    * arrays of itemIds that should be added or removed from group dependencies)
    */
-  private _getGroupInfo(
+  protected _getGroupInfo(
     models: any
   ): any {
     const groupInfo = {}
@@ -450,7 +456,7 @@ export class SolutionConfiguration {
    *
    * @returns updated templates array
    */
-  private _updateGroupDependencies(
+  protected _updateGroupDependencies(
     models: any,
     templates: any[]
   ): any[] {
@@ -489,7 +495,7 @@ export class SolutionConfiguration {
    * @param shareInfo the corresponding shareInfo from the model for the current template
    *
    */
-  private _updateItemGroups(
+  protected _updateItemGroups(
     template: any,
     shareInfo: any
   ): void {
@@ -512,7 +518,7 @@ export class SolutionConfiguration {
    *
    * @returns a boolean that indicates if any errors were detected
    */
-  private _setData(
+  protected _setData(
     template: any,
     model: any
   ): boolean {
@@ -532,7 +538,7 @@ export class SolutionConfiguration {
    *
    * @returns a boolean that indicates if any errors were detected
    */
-  private _setProps(
+  protected _setProps(
     template: any,
     model: any
   ): boolean {
@@ -554,7 +560,7 @@ export class SolutionConfiguration {
    *
    * @returns a boolean that indicates if any errors were detected
    */
-  private _setTemplateProp(
+  protected _setTemplateProp(
     template: any,
     originValue: any,
     modelValue: any,
@@ -583,7 +589,7 @@ export class SolutionConfiguration {
    *
    * This function will update the template argument when edits are found
    */
-  private _setItem(
+  protected _setItem(
     template: any,
     model: any
   ): void {
@@ -603,7 +609,7 @@ export class SolutionConfiguration {
    * @returns a cloned copy of the solutions data that has been updated with spatial reference info
    *
    */
-  private _setSrInfo(
+  protected _setSrInfo(
     templates: any[]
   ): any {
     const srInfo: any = state.spatialReferenceInfo;
@@ -643,9 +649,9 @@ export class SolutionConfiguration {
   /**
    * Fetches the component's translations
    *
-   * @private
+   * @protected
    */
-  private async _getTranslations() {
+  protected async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionConfiguration_T9n;
   }

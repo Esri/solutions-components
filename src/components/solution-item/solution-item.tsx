@@ -76,10 +76,16 @@ export class SolutionItem {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   async componentWillLoad() {
     await this._getTranslations();
   }
 
+  /**
+   * Renders the component.
+   */
   render(): VNode {
     return (
       <Host>
@@ -99,7 +105,7 @@ export class SolutionItem {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -107,7 +113,7 @@ export class SolutionItem {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() private _translations: typeof SolutionItem_T9n;
+  @State() protected _translations: typeof SolutionItem_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -221,9 +227,9 @@ export class SolutionItem {
   /**
    * Fetches the component's translations
    *
-   * @private
+   * @protected
    */
-  private async _getTranslations() {
+  protected async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionItem_T9n;
   }

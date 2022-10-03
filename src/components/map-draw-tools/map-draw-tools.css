@@ -17,3 +17,7 @@
 :host {
   display: block;
 }
+
+.border {
+  outline: 1px solid var(--calcite-ui-border-input);
+}

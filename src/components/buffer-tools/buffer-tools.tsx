@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import BufferTools_T9n from '../../assets/t9n/buffer-tools/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
@@ -39,11 +39,6 @@ export class BufferTools {
   //--------------------------------------------------------------------------
 
   /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-
-  /**
    * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
    */
   @Prop() geometries: __esri.Geometry[];
@@ -56,30 +51,48 @@ export class BufferTools {
   /**
    * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
    */
-  @Prop() unit: __esri.LinearUnits;
+  @Prop() unit: __esri.LinearUnits = "meters";
 
   /**
    * number: The distance used for buffer
    */
   @Prop() distance = 0;
 
+  /**
+   * string: The appearance of display. Can be a slider or text inputs for distance/value
+   */
+  @Prop() appearance: "slider" | "text" = "text";
+
+  /**
+   * number: The component's maximum selectable value.
+   */
+  @Prop() sliderMax: number = 100;
+
+  /**
+   * number: The component's minimum selectable value.
+   */
+  @Prop() sliderMin: number = 0;
+
+  /**
+   * number: Displays tick marks on the number line at a specified interval.
+   */
+  @Prop() sliderTicks: number = 10;
+
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  protected geometryEngine:  __esri.geometryEngine;
+  protected _unitDiv: HTMLCalciteSelectElement;
+  protected bufferTimeout: NodeJS.Timeout;
 
   /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() private _translations: typeof BufferTools_T9n;
-
-  protected geometryEngine:  __esri.geometryEngine;
-
-  protected _unitDiv: HTMLCalciteSelectElement;
-
-  protected bufferTimeout: NodeJS.Timeout;
+  @State() _translations: typeof BufferTools_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -114,46 +127,39 @@ export class BufferTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   async componentWillLoad() {
     await this._getTranslations();
     await this._initModules();
   }
 
+  /**
+   * Renders the component.
+   */
   render() {
     return (
       <Host>
-        <calcite-label disable-spacing={true} style={{ "display": "flex", "padding-top": ".5rem" }}>
-          {this._translations?.searchDistance}
-        </calcite-label>
-        <div class="c-container">
-          <calcite-input
-            class="padding-end-1"
-            number-button-type="vertical"
-            onCalciteInputInput={(evt) => this._setDistance(evt)}
-            placeholder="0"
-            type="number"
-            value={this.distance ? this.distance.toString() : undefined}
-          />
-          <calcite-select
-            class="flex-1"
-            label='label'
-            onCalciteSelectChange={() => this._setUnit()}
-            ref={(el) => { this._unitDiv = el }}
-          >
-            {this._addUnits()}
-          </calcite-select>
-        </div>
+        {this.appearance === "text" ? this._getTextBoxDisplay() : this._getSliderDisplay()}
       </Host>
     );
   }
 
   //--------------------------------------------------------------------------
   //
-  //  Functions (private)
+  //  Functions (protected)
   //
   //--------------------------------------------------------------------------
 
-  async _initModules(): Promise<void> {
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
     const [geometryEngine]: [
       __esri.geometryEngine
     ] = await loadModules([
@@ -162,7 +168,14 @@ export class BufferTools {
     this.geometryEngine = geometryEngine;
   }
 
-  _addUnits(): any {
+  /**
+   * Gets the nodes for each of the possible distance units
+   *
+   * @returns An array of option nodes
+   *
+   * @protected
+   */
+  protected _getUnits(): VNode[] {
     const units = {
       'feet': this._translations.feet || 'Feet',
       'meters': this._translations.meters || 'Meters',
@@ -180,7 +193,14 @@ export class BufferTools {
     });
   }
 
-  _setDistance(
+  /**
+   * Store the user defined distance value and create a buffer
+   *
+   * @param event the event from the calcite input control
+   *
+   * @protected
+   */
+  protected _setDistance(
     event: CustomEvent
   ): void {
     this.distance = event.detail.value;
@@ -191,12 +211,22 @@ export class BufferTools {
     }
   }
 
-  _setUnit(): void {
+  /**
+   * Store the user defined unit value and create a buffer
+   *
+   * @protected
+   */
+  protected _setUnit(): void {
     this.unit = this._unitDiv.value as __esri.LinearUnits;
     this._buffer();
   }
 
-  _buffer(): void {
+  /**
+   * Create buffer geometry based on the user defined unit and distance
+   *
+   * @protected
+   */
+  protected _buffer(): void {
     if (this.bufferTimeout) {
       clearTimeout(this.bufferTimeout);
     }
@@ -216,11 +246,63 @@ export class BufferTools {
   }
 
   /**
+   * Render distance and unit as calcite input and select controls
+   * This option will be used when the "appearance" prop is set to "text"
+   *
+   * @returns a node with the supporting controls
+   *
+   * @protected
+   */
+  protected _getTextBoxDisplay(): VNode {
+    return (
+      <div class="c-container">
+        <calcite-input
+          class="padding-end-1"
+          number-button-type="vertical"
+          onCalciteInputInput={(evt) => this._setDistance(evt)}
+          placeholder="0"
+          type="number"
+          value={this.distance ? this.distance.toString() : undefined}
+        />
+        <calcite-select
+          class="flex-1"
+          label='label'
+          onCalciteSelectChange={() => this._setUnit()}
+          ref={(el) => { this._unitDiv = el }}
+        >
+          {this._getUnits()}
+        </calcite-select>
+      </div>
+    );
+  }
+
+  /**
+   * Render distance control as a slider
+   * This option will be used when the "appearance" prop is set to "slider"
+   *
+   * @returns a node with the supporting control
+   *
+   * @protected
+   */
+  protected _getSliderDisplay(): VNode {
+    return (
+      <div>
+        <calcite-slider
+          labelHandles={true}
+          min={this.sliderMin}
+          max={this.sliderMax}
+          ticks={this.sliderTicks}
+        />
+      </div>
+    );
+  }
+
+  /**
    * Fetches the component's translations
    *
-   * @private
+   * @protected
    */
-  private async _getTranslations() {
+  async _getTranslations() {
     const messages = await getLocaleComponentStrings(this.el);
     this._translations = messages[0] as typeof BufferTools_T9n;
   }

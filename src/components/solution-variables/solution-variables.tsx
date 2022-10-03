@@ -51,10 +51,16 @@ export class SolutionVariables {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   async componentWillLoad() {
     await this._getTranslations();
   }
 
+  /**
+   * Renders the component.
+   */
   render() {
     return (
       <Host>
@@ -72,7 +78,7 @@ export class SolutionVariables {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -80,7 +86,7 @@ export class SolutionVariables {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() private _translations: typeof SolutionVariables_T9n;
+  @State() protected _translations: typeof SolutionVariables_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -140,7 +146,7 @@ export class SolutionVariables {
    * @param id Item id as reported by click event
    * @param value Variable id as reported by click event
    */
-  private _treeItemSelected(
+  protected _treeItemSelected(
     id: string,
     value: string
   ): void {
@@ -155,7 +161,7 @@ export class SolutionVariables {
    *
    * @param evt the clicks mouse event
    */
-  private _toggleExpand(
+  protected _toggleExpand(
     evt: any = undefined
   ): void {
     const treeItem = evt?.target?.closest("calcite-tree-item");
@@ -167,9 +173,9 @@ export class SolutionVariables {
   /**
    * Fetches the component's translations
    *
-   * @private
+   * @protected
    */
-  private async _getTranslations() {
+  protected async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionVariables_T9n;
   }
