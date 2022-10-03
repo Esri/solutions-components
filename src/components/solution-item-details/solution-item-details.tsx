@@ -67,11 +67,11 @@ export class SolutionItemDetails {
   //
   //--------------------------------------------------------------------------
 
-  async componentWillLoad() {
-    await this._getTranslations();
+  componentWillLoad(): Promise<void> {
+    return this._getTranslations();
   }
 
-  componentDidRender() {
+  componentDidRender(): void {
     if (this.loadThumb) {
       this.loadThumb = false;
       this._loadThumb(this.value.itemId)
@@ -342,8 +342,9 @@ export class SolutionItemDetails {
    *
    * @private
    */
-  private async _getTranslations() {
+  private async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionItemDetails_T9n;
+    return Promise.resolve();
   }
 }

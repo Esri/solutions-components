@@ -114,12 +114,12 @@ export class BufferTools {
   //
   //--------------------------------------------------------------------------
 
-  async componentWillLoad() {
+  async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
   }
 
-  render() {
+  render(): void {
     return (
       <Host>
         <calcite-label disable-spacing={true} style={{ "display": "flex", "padding-top": ".5rem" }}>
@@ -201,7 +201,7 @@ export class BufferTools {
       clearTimeout(this.bufferTimeout);
     }
 
-    this.bufferTimeout = setTimeout(async () => {
+    this.bufferTimeout = setTimeout(() => {
       // needs to be wgs 84 or Web Mercator
       if (this.geometries?.length > 0 && this.unit && this.distance > 0) {
         const buffer = this.geometryEngine.geodesicBuffer(
@@ -220,9 +220,10 @@ export class BufferTools {
    *
    * @private
    */
-  private async _getTranslations() {
+  private async _getTranslations(): Promise<void> {
     const messages = await getLocaleComponentStrings(this.el);
     this._translations = messages[0] as typeof BufferTools_T9n;
+    return Promise.resolve();
   }
 
 }

@@ -52,11 +52,11 @@ export class SolutionOrganizationVariables {
   //
   //--------------------------------------------------------------------------
 
-  async componentWillLoad() {
-    await this._getTranslations();
+  componentWillLoad(): Promise<void> {
+    return this._getTranslations();
   }
 
-  render() {
+  render(): void {
     return (
       <Host>
         <div>
@@ -148,8 +148,9 @@ export class SolutionOrganizationVariables {
    *
    * @private
    */
-  private async _getTranslations() {
+  private async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionOrganizationVariables_T9n;
+    return Promise.resolve();
   }
 }

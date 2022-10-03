@@ -177,7 +177,6 @@ export interface ISolutionTemplateEdits {
   [templateId: string]: ISolutionTemplateEdit;
 }
 
-
 export interface ISolutionModel {
   dataModel: monaco.editor.ITextModel;
   dataOriginValue: string;

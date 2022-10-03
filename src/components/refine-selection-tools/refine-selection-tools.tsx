@@ -145,14 +145,15 @@ export class RefineSelectionTools {
   //--------------------------------------------------------------------------
 
   @Method()
-  reset() {
+  async reset(): Promise<void> {
     this.ids = [];
     return Promise.resolve();
   }
 
   @Method()
-  async clearHighlight() {
+  async clearHighlight(): Promise<void> {
     this._clearHighlight();
+    return Promise.resolve();
   }
 
   //--------------------------------------------------------------------------
@@ -171,20 +172,22 @@ export class RefineSelectionTools {
   //
   //--------------------------------------------------------------------------
 
-  async componentWillLoad() {
+  async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
+    return Promise.resolve();
   }
 
-  async componentDidLoad() {
+  async componentDidLoad(): Promise<void> {
     this._init();
+    return Promise.resolve();
   }
 
-  disconnectedCallback() {
+  disconnectedCallback(): void {
     this.active = false;
   }
 
-  connectedCallback() {
+  connectedCallback(): void {
     this.active = true;
     if (this.ids.length > 0) {
       this.selectEnabled = true;
@@ -192,7 +195,7 @@ export class RefineSelectionTools {
     }
   }
 
-  render() {
+  render(): void {
     const showLayerPickerClass = this.useLayerPicker ? "div-visible" : "div-not-visible";
     return (
       <Host>
@@ -201,9 +204,9 @@ export class RefineSelectionTools {
             class={showLayerPickerClass}
             label={this._translations.selectLayers}
             mapView={this.mapView}
+            onLayerSelectionChange={(evt) => { this._layerSelectionChange(evt) }}
             selectedLayers={this.layerViews.map(l => l.layer.title)}
             selectionMode={"single"}
-            onLayerSelectionChange={(evt) => { this._layerSelectionChange(evt) }}
           />
           <div class="padding-top-1-2">
             <div class={"esri-sketch esri-widget"}>
@@ -282,7 +285,7 @@ export class RefineSelectionTools {
     this.SketchViewModel = SketchViewModel;
   }
 
-  async _init() {
+  _init(): void {
     this._initGraphicsLayer();
     this._initSketchViewModel();
   }
@@ -306,7 +309,7 @@ export class RefineSelectionTools {
     });
   }
 
-  _clear() {
+  _clear(): void {
     this._sketchGeometry = null;
     this._sketchViewModel.cancel();
     this._sketchGraphicsLayer.removeAll();
@@ -328,7 +331,7 @@ export class RefineSelectionTools {
     }
   }
 
-  _initHitTest() {
+  _initHitTest(): void {
     if (this._hitTestHandle) {
       this._hitTestHandle.remove();
     }
@@ -355,7 +358,7 @@ export class RefineSelectionTools {
 
   }
 
-  async _layerSelectionChange(evt: CustomEvent) {
+  async _layerSelectionChange(evt: CustomEvent): Promise<void> {
     if (Array.isArray(evt.detail) && evt.detail.length > 0) {
       this.selectEnabled = true;
       const layerPromises = evt.detail.map(title => {
@@ -364,15 +367,17 @@ export class RefineSelectionTools {
 
       Promise.all(layerPromises).then((layerViews) => {
         this.layerViews = layerViews;
+        return Promise.resolve();
       });
     } else {
       this.selectEnabled = false;
+      return Promise.resolve();
     }
   }
 
   _setSelectionMode(
     mode: ESelectionType
-  ) {
+  ): void {
     this.selectionMode = mode;
 
     if (this._hitTestHandle) {
@@ -398,7 +403,7 @@ export class RefineSelectionTools {
 
   async _selectFeatures(
     geom: __esri.Geometry
-  ) {
+  ): Promise<void> {
     const queryFeaturePromises = this.layerViews.map(l => {
       this.aaa[l.layer.title] = [];
       return this._queryPage(0, l, geom)
@@ -436,7 +441,7 @@ export class RefineSelectionTools {
     page: number,
     layerView: __esri.FeatureLayerView,
     geom: __esri.Geometry
-  ) {
+  ): Promise<any[]> {
     const num = layerView.layer.capabilities.query.maxRecordCount;
     const query = {
       start: page,
@@ -452,28 +457,28 @@ export class RefineSelectionTools {
     if (r.exceededTransferLimit) {
       return this._queryPage(page += num, layerView, geom)
     }
-    return this.aaa;
+    return Promise.resolve(this.aaa);
   }
 
   async _highlightFeatures(
     ids: number[],
-    updateExtent: boolean = false
-  ) {
+    updateExtent = false
+  ): Promise<void> {
     this._clearHighlight();
     if (ids.length > 0) {
       state.highlightHandle = await highlightFeatures(this.mapView, this.layerViews[0], ids, updateExtent);
     }
   }
 
-  _clearHighlight() {
+  _clearHighlight(): void {
     state.highlightHandle?.remove();
   }
 
-  _undo() {
+  _undo(): void {
     console.log("UNDO")
   }
 
-  _redo() {
+  _redo(): void {
     console.log("REDO")
   }
 
@@ -482,8 +487,9 @@ export class RefineSelectionTools {
    *
    * @private
    */
-  private async _getTranslations() {
+  private async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof RefineSelectionTools_T9n;
+    return Promise.resolve();
   }
 }

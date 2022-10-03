@@ -58,7 +58,7 @@ export class SolutionItemIcon {
   //
   //--------------------------------------------------------------------------
 
-  render() {
+  render(): void {
     return <div title={this.type}>
       <img class="item-type-icon item-type-icon-margin"
         height="16"

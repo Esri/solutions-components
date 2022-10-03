@@ -102,7 +102,7 @@ export class JsonEditor {
   /**
    * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
    */
-  componentDidLoad() {
+  componentDidLoad(): void {
     const editorContainer = document.getElementById(`${this.instanceid}-container`);
     if (editorContainer) {
       this._editor = monaco.editor.create(
@@ -165,7 +165,7 @@ export class JsonEditor {
   /**
    * Renders the component.
    */
-  render() {
+  render(): void {
     return (
       <Host>
         <div id={`${this.instanceid}-editor-container`} class="editor-container padding-right">
@@ -392,7 +392,7 @@ export class JsonEditor {
    *
    * @protected
    */
-  protected async _getTranslations() {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof JsonEditor_T9n;
   }
@@ -402,7 +402,7 @@ export class JsonEditor {
    *
    * @protected
    */
-   protected _initValueObserver() {
+   protected _initValueObserver(): void {
     this._valueObserver = new MutationObserver(ml => {
       ml.forEach(mutation => {
         if (mutation.type === 'attributes' && mutation.attributeName === "value") {

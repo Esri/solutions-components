@@ -75,7 +75,6 @@ export class SolutionSpatialRef {
   */
   @Prop({ mutable: true, reflect: true }) services: string[] = [];
 
-
   /**
   * Indicates if the control has been enabled.
   * The first time Spatial Reference has been enabled it should enable all feature services.
@@ -93,8 +92,8 @@ export class SolutionSpatialRef {
     this.locked = true;
   }
 
-  async componentWillLoad() {
-    await this._getTranslations();
+  componentWillLoad(): Promise<void> {
+    return this._getTranslations();
   }
 
   render(): VNode {
@@ -469,8 +468,9 @@ export class SolutionSpatialRef {
    *
    * @private
    */
-  private async _getTranslations() {
+  private async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionSpatialRef_T9n;
+    return Promise.resolve();
   }
 }

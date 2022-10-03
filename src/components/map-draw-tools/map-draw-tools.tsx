@@ -136,8 +136,9 @@ export class MapDrawTools {
   //--------------------------------------------------------------------------
 
   @Method()
-  async clear() {
-    return this._clearSketch();
+  clear(): Promise<void> {
+    this._clearSketch();
+    return Promise.resolve();
   }
 
   //--------------------------------------------------------------------------
@@ -154,16 +155,17 @@ export class MapDrawTools {
   //
   //--------------------------------------------------------------------------
 
-  async componentWillLoad() {
+  async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
+    return Promise.resolve();
   }
 
-  componentDidLoad() {
+  componentDidLoad(): void {
     this._init();
   }
 
-  render() {
+  render(): void {
     return (
       <Host>
         <div>
@@ -247,7 +249,7 @@ export class MapDrawTools {
     })
   }
 
-  _clearSketch() {
+  _clearSketch(): void {
     this.graphics = undefined;
     this._sketchGraphicsLayer.removeAll();
   }
@@ -257,8 +259,9 @@ export class MapDrawTools {
    *
    * @private
    */
-  private async _getTranslations() {
+  private async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof MapDrawTools_T9n;
+    return Promise.resolve();
   }
 }

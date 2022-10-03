@@ -111,22 +111,23 @@ export class PublicNotificationTwo {
   async selectionSetsWatchHandler(
     v: ISelectionSet[],
     oldV: ISelectionSet[]
-  ) {
+  ): Promise<void> {
     if (v && v !== oldV && v.length > 0) {
       const nonRefineSets = v.filter(ss => ss.workflowType !== EWorkflowType.REFINE)
       if (nonRefineSets.length === 0) {
         this.selectionSets = []
       }
     }
+    return Promise.resolve();
   }
 
   @Watch('pageType')
-  async pageTypeWatchHandler(
+  pageTypeWatchHandler(
     v: EPageType
-  ) {
+  ): void {
     this._clearHighlight();
     if (v === EPageType.LIST) {
-      await this._highlightFeatures();
+      this._highlightFeatures();
     }
   }
 
@@ -159,11 +160,11 @@ export class PublicNotificationTwo {
   //
   //--------------------------------------------------------------------------
 
-  async componentWillLoad() {
-    await this._getTranslations();
+  componentWillLoad(): Promise<void> {
+    return this._getTranslations();
   }
 
-  render() {
+  render(): void {
     return (
       <Host>
         <div class="main-container page-container">
@@ -197,17 +198,17 @@ export class PublicNotificationTwo {
       case EPageType.LIST:
         actions = (
           <calcite-action-group>
-            {this._getAction(true, "plus", trans?.add, (): void => this._setPageType(EPageType.SELECT))}
-            {this._getAction(hasSelections, "test-data", trans?.refineSelection, (): void => this._setPageType(EPageType.REFINE), hasRefine)}
-            {this._getAction(hasSelections, "file-pdf", trans?.downloadPDF, (): void => this._downloadPDF())}
-            {this._getAction(hasSelections, "file-csv", trans?.downloadCSV, (): void => this._downloadCSV())}
+            {this._getAction(true, "plus", trans?.add, () => this._setPageType(EPageType.SELECT))}
+            {this._getAction(hasSelections, "test-data", trans?.refineSelection, () => this._setPageType(EPageType.REFINE), hasRefine)}
+            {this._getAction(hasSelections, "file-pdf", trans?.downloadPDF, () => this._downloadPDF())}
+            {this._getAction(hasSelections, "file-csv", trans?.downloadCSV, () => this._downloadCSV())}
           </calcite-action-group>
         )
         break;
       case EPageType.SELECT:
         actions = (
           <calcite-action-group>
-            {this._getAction(true, "chevron-left", trans?.back, (): Promise<void> => this._home())}
+            {this._getAction(true, "chevron-left", trans?.back, (): void => this._home())}
             {this._getAction(this.saveEnabled, "save", trans?.save, (): Promise<void> => this._saveSelection())}
           </calcite-action-group>
         );
@@ -215,15 +216,15 @@ export class PublicNotificationTwo {
       case EPageType.REFINE:
         actions = (
           <calcite-action-group>
-            {this._getAction(true, "chevron-left", trans?.back, (): Promise<void> => this._home())}
+            {this._getAction(true, "chevron-left", trans?.back, (): void => this._home())}
           </calcite-action-group>
         );
         break;
       case EPageType.PDF:
         actions = (
           <calcite-action-group>
-            {this._getAction(true, "chevron-left", trans?.back, (): void => this._setPageType(EPageType.LIST))}
-            {this._getAction(true, "download-to", trans?.download, (): void => this._setPageType(EPageType.LIST))}
+            {this._getAction(true, "chevron-left", trans?.back, () => this._setPageType(EPageType.LIST))}
+            {this._getAction(true, "download-to", trans?.download, () => this._setPageType(EPageType.LIST))}
           </calcite-action-group>
         );
         break;
@@ -236,8 +237,8 @@ export class PublicNotificationTwo {
     icon: string,
     text: string,
     onClick: any,
-    indicator: boolean = false,
-    slot: string = ""
+    indicator = false,
+    slot = ""
   ): VNode {
     return (
       <calcite-action
@@ -265,8 +266,8 @@ export class PublicNotificationTwo {
                   label={this._translations.addresseeLayer}
                   mapView={this.mapView}
                   onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
-                  selectionMode={"single"}
                   selectedLayers={layerTitle ? [layerTitle] : []}
+                  selectionMode={"single"}
                   trailingLabel={total > 0 ? `${totalSelected}` : ''}
                 />
               </div>
@@ -286,8 +287,8 @@ export class PublicNotificationTwo {
                             label={cur.label}
                             onClick={() => flashSelection(cur)}
                           >
-                            {this._getAction(true, "pencil", "", (): void => this._openSelection(cur), false, "actions-end")}
-                            {this._getAction(true, "x", "", (): void => this._deleteSelection(i), false, "actions-end")}
+                            {this._getAction(true, "pencil", "", () => this._openSelection(cur), false, "actions-end")}
+                            {this._getAction(true, "x", "", () => this._deleteSelection(i), false, "actions-end")}
                           </calcite-list-item>
                         ));
                       }
@@ -309,13 +310,13 @@ export class PublicNotificationTwo {
           <div>
             <div class="background-w padding-1-2 list-border">
               <map-select-tools
+                isUpdate={!!this.activeSelection}
                 mapView={this.mapView}
                 onSelectionSetChange={(evt) => this._updateForSelection(evt)}
                 ref={(el) => { this._selectTools = el }}
                 searchLayers={this.selectionLayers}
                 selectLayerView={this.addresseeLayer}
                 selectionSet={this.activeSelection}
-                isUpdate={this.activeSelection ? true : false}
               />
             </div>
             {
@@ -396,7 +397,7 @@ export class PublicNotificationTwo {
 
   _updateSelectionSetsForRemoveIds(
     removeIds: number[]
-  ) {
+  ): void {
     if (removeIds.length > 0) {
       // update the selection sets selectedIds and remove any selection sets that have no selected features
       this.selectionSets = this.selectionSets.reduce((prev, cur) => {
@@ -409,7 +410,7 @@ export class PublicNotificationTwo {
     }
   }
 
-  _getRefineSelectionSet() {
+  _getRefineSelectionSet(): ISelectionSet {
     let refineSelectionSet: ISelectionSet;
     this.selectionSets.some(ss => {
       if (ss.workflowType === EWorkflowType.REFINE) {
@@ -423,7 +424,7 @@ export class PublicNotificationTwo {
   _updateRefineSelectionSet(
     addIds: number[],
     removeIds: number[]
-  ) {
+  ): void {
     const selectionSet = this._getRefineSelectionSet()
     if (selectionSet) {
       const _addIds = [...new Set(selectionSet.refineIds.addIds.concat(addIds))];
@@ -437,11 +438,7 @@ export class PublicNotificationTwo {
         selectionSet.selectedIds.filter(id => selectionSet.refineIds.removeIds.indexOf(id) < 0);
 
       this.selectionSets = this.selectionSets.map(ss => {
-        if (ss.workflowType === EWorkflowType.REFINE) {
-          return selectionSet;
-        } else {
-          return ss;
-        }
+        return ss.workflowType === EWorkflowType.REFINE ? selectionSet : ss;
       })
     } else {
       this.selectionSets = [
@@ -467,7 +464,7 @@ export class PublicNotificationTwo {
     }
   }
 
-  _getRefineSelectionSetList() {
+  _getRefineSelectionSetList(): any[] {
     const refineSets = this.selectionSets.filter(ss => ss.workflowType === EWorkflowType.REFINE);
 
     const hasRefineSet = refineSets.length > 0;
@@ -484,13 +481,13 @@ export class PublicNotificationTwo {
       <calcite-list-item
         label={this._translations.featuresAdded?.replace('{{n}}', numAdded.toString())}
       >
-        {this._getAction(numAdded > 0, "reset", "", (): void => this._revertSelection(refineSet, true), false, "actions-end")}
+        {this._getAction(numAdded > 0, "reset", "", () => this._revertSelection(refineSet, true), false, "actions-end")}
       </calcite-list-item>
     ),(
       <calcite-list-item
         label={this._translations.featuresRemoved?.replace('{{n}}', numRemoved.toString())}
       >
-        {this._getAction(numRemoved > 0, "reset", "", (): void => this._revertSelection(refineSet, false), false, "actions-end")}
+        {this._getAction(numRemoved > 0, "reset", "", () => this._revertSelection(refineSet, false), false, "actions-end")}
       </calcite-list-item>
     ), (
       <calcite-list-item
@@ -533,7 +530,7 @@ export class PublicNotificationTwo {
     this._refineTools.mode = mode;
   }
 
-  _getTotal(): Number {
+  _getTotal(): number {
     return [...new Set(this._getSelectionIds(this.selectionSets))].length;
   }
 
@@ -558,13 +555,13 @@ export class PublicNotificationTwo {
     this.message = this._translations.startMessage.replace("{{n}}", evt?.detail?.length > 0 ? evt.detail[0] : "");
   }
 
-  _updateForSelection(evt: CustomEvent) {
+  _updateForSelection(evt: CustomEvent): void {
     this.numSelected = evt.detail;
     this.saveEnabled = this.numSelected > 0;
   }
 
-  async _home() {
-    await this._clearSelection();
+  _home(): void {
+    this._clearSelection();
     this._setPageType(EPageType.LIST);
   }
 
@@ -591,26 +588,23 @@ export class PublicNotificationTwo {
     const results = await this._selectTools.getSelection();
     const isUpdate = this._selectTools.isUpdate;
 
-    if (isUpdate) {
-      this.selectionSets = this.selectionSets.map(ss => {
+    this.selectionSets = isUpdate ? this.selectionSets.map(ss => {
         return ss.id === results.id ? results : ss;
-      });
-    } else {
-      this.selectionSets = [
+      }) : [
         ...this.selectionSets,
         results
-      ]
-    }
+      ];
     this._home();
   }
 
-  async _clearSelection () {
+  async _clearSelection (): Promise<void> {
     await this._selectTools?.clearSelection();
     this.numSelected = 0;
     this.activeSelection = undefined;
+    return Promise.resolve();
   }
 
-  _deleteSelection(index: number) {
+  _deleteSelection(index: number): void {
     this.selectionSets = this.selectionSets.filter((ss, i) => {
       if (i !== index) {
         return ss;
@@ -619,14 +613,14 @@ export class PublicNotificationTwo {
     this._highlightFeatures();
   }
 
-  _openSelection(selectionSet: ISelectionSet) {
+  _openSelection(selectionSet: ISelectionSet): void {
     this.activeSelection = selectionSet;
     this.pageType = EPageType.SELECT;
   }
 
-  async _highlightFeatures() {
+  async _highlightFeatures(): Promise<void> {
     this._clearHighlight();
-    var ids = this._getSelectionIds(this.selectionSets);
+    const ids = this._getSelectionIds(this.selectionSets);
     if (ids.length > 0) {
       state.highlightHandle = await highlightFeatures(
         this.mapView,
@@ -634,9 +628,10 @@ export class PublicNotificationTwo {
         ids
       );
     }
+    return Promise.resolve();
   }
 
-  _clearHighlight() {
+  _clearHighlight(): void {
     state.highlightHandle?.remove();
   }
 
@@ -645,8 +640,9 @@ export class PublicNotificationTwo {
    *
    * @private
    */
-  private async _getTranslations() {
+  private async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof PublicNotification_T9n;
+    return Promise.resolve();
   }
 }

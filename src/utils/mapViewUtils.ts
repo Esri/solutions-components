@@ -52,7 +52,7 @@ export async function highlightFeatures(
   mapView: __esri.MapView,
   layer: __esri.FeatureLayerView,
   ids: number[],
-  updateExtent: boolean = false
+  updateExtent = false
 ): Promise<__esri.Handle> {
   if (updateExtent) {
     const query = layer.createQuery();

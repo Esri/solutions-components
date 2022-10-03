@@ -88,11 +88,11 @@ export class SolutionTemplateData {
   //
   //--------------------------------------------------------------------------
 
-  async componentWillLoad() {
-    await this._getTranslations();
+  componentWillLoad(): Promise<void> {
+    return this._getTranslations();
   }
 
-  render() {
+  render(): void {
     return (
       <Host>
         <div class="solution-data-container">
@@ -100,9 +100,9 @@ export class SolutionTemplateData {
             <calcite-panel class="json-editor">
               <div class="solution-data-child-container calcite-match-height">
                 <json-editor
+                  class="solution-data-editor-container"
                   instanceid={this.instanceid}
                   value={this.itemid}
-                  class="solution-data-editor-container"
                 />
               </div>
             </calcite-panel>
@@ -184,8 +184,9 @@ export class SolutionTemplateData {
    *
    * @private
    */
-  private async _getTranslations() {
+  private async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionTemplateData_T9n;
+    return Promise.resolve();
   }
 }

@@ -87,13 +87,14 @@ export class MapLayerPicker {
   //--------------------------------------------------------------------------
 
   @Watch('mapView')
-  async watchStateHandler(newValue: boolean, oldValue: boolean) {
+  async watchStateHandler(newValue: boolean, oldValue: boolean): Promise<void> {
     if (newValue !== oldValue) {
       await this._setLayers();
       if (this.selectionMode === "single") {
         this.layerSelectionChange.emit([this.layerNames[0]]);
       }
     }
+    return Promise.resolve();
   }
 
   //--------------------------------------------------------------------------
@@ -116,16 +117,17 @@ export class MapLayerPicker {
   //
   //--------------------------------------------------------------------------
 
-  async componentWillLoad() {
+  async componentWillLoad(): Promise<void> {
     await this._setLayers();
     if (this.selectionMode === "single" && (this.layerNames.length > 0 || this.selectedLayers.length === 1)) {
       this.layerSelectionChange.emit(
         this.selectedLayers.length === 1 ? [this.selectedLayers[0]] : [this.layerNames[0]]
       );
     }
+    return Promise.resolve();
   }
 
-  render() {
+  render(): void {
     return (
       <Host>
         <div class="background-w map-layer-picker-container">

@@ -103,8 +103,8 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
   @Event() solutionLoaded: EventEmitter;
 
-  async componentWillLoad() {
-    await this._getTranslations();
+  componentWillLoad(): Promise<void> {
+    return this._getTranslations();
   }
 
   componentWillRender(): Promise<any> {
@@ -121,7 +121,7 @@ export class SolutionConfiguration {
     });
   }
 
-  componentDidRender() {
+  componentDidRender(): void {
     if (this._isLoading) {
       this._isLoading = false;
       this.solutionLoaded.emit();
@@ -359,7 +359,7 @@ export class SolutionConfiguration {
    *
    * @returns a response that will indicate success or failure and any associated messages
    */
-  private async _save() {
+  private async _save(): Promise<IResponse> {
     const templateUpdates = await this._updateTemplates();
     const data = this._setSrInfo(templateUpdates.templates);
     return templateUpdates.errors.length === 0 ? save(
@@ -645,8 +645,9 @@ export class SolutionConfiguration {
    *
    * @private
    */
-  private async _getTranslations() {
+  private async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionConfiguration_T9n;
+    return Promise.resolve();
   }
 }

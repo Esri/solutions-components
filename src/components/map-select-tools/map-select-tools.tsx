@@ -191,10 +191,10 @@ export class MapSelectTools {
   //--------------------------------------------------------------------------
 
   @Watch('geometries')
-  async watchGeometriesHandler(
+  watchGeometriesHandler(
     newValue: __esri.Geometry[],
     oldValue: __esri.Geometry[]
-  ) {
+  ): void {
     if (newValue !== oldValue) {
       if (newValue.length > 0) {
         this._geomQuery(this.geometries);
@@ -211,28 +211,29 @@ export class MapSelectTools {
   //--------------------------------------------------------------------------
 
   @Method()
-  async getSelectedIds() {
-    return this._selectedIds;
+  async getSelectedIds(): Promise<number[]> {
+    return Promise.resolve(this._selectedIds);
   }
 
   @Method()
-  async getSelectionLabel() {
-    return this._selectionLabel;
+  async getSelectionLabel(): Promise<string> {
+    return Promise.resolve(this._selectionLabel);
   }
 
   @Method()
-  async getSelectType() {
-    return this._selectType;
+  async getSelectType(): Promise<EWorkflowType> {
+    return Promise.resolve(this._selectType);
   }
 
   @Method()
-  async clearSelection() {
-    return this._clearResults();
+  clearSelection(): Promise<void> {
+    this._clearResults();
+    return Promise.resolve();
   }
 
   @Method()
-  async getSelection(): Promise<ISelectionSet> {
-    return {
+  getSelection(): Promise<ISelectionSet> {
+    return Promise.resolve({
       id: this.isUpdate ? this.selectionSet.id : Date.now(),
       workflowType: this._selectType,
       searchResult: this._searchResult,
@@ -245,7 +246,7 @@ export class MapSelectTools {
       layerView: this.selectLayerView,
       geometries: this.geometries,
       refineSelectLayers: this._refineTools.layerViews
-    } as ISelectionSet;
+    } as ISelectionSet);
   }
 
   //--------------------------------------------------------------------------
@@ -262,13 +263,13 @@ export class MapSelectTools {
   }
 
   @Listen("refineSelectionGraphicsChange", { target: 'window' })
-  refineSelectionGraphicsChange(event: CustomEvent): void {
+  refineSelectionGraphicsChange(event: CustomEvent): Promise<void> {
     const graphics = event.detail;
 
     this._updateSelection(EWorkflowType.SELECT, graphics, this._translations.select);
     // Using OIDs to avoid issue with points
     const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
-    this._highlightFeatures(oids);
+    return this._highlightFeatures(oids);
   }
 
   //--------------------------------------------------------------------------
@@ -277,16 +278,17 @@ export class MapSelectTools {
   //
   //--------------------------------------------------------------------------
 
-  async componentWillLoad() {
+  async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
+    return Promise.resolve();
   }
 
-  async componentDidLoad() {
+  componentDidLoad(): void {
     this._init();
   }
 
-  render() {
+  render(): void {
     const searchEnabled = this.workflowType === EWorkflowType.SEARCH;
     const showSearchClass = searchEnabled ? " div-visible-search" : " div-not-visible";
 
@@ -345,12 +347,12 @@ export class MapSelectTools {
           refineMode={ERefineMode.SUBSET}
         />
         <buffer-tools
+          distance={this.selectionSet?.distance}
           geometries={this.geometries}
           onBufferComplete={(evt) => this._bufferComplete(evt)}
           ref={(el) => this._bufferTools = el}
           unit={this.selectionSet?.unit}
-          distance={this.selectionSet?.distance}
-        ></buffer-tools>
+         />
         <slot />
       </Host>
     );
@@ -383,13 +385,13 @@ export class MapSelectTools {
     this.geometryEngine = geometryEngine;
   }
 
-  async _init() {
+  _init(): void {
     this._initGraphicsLayer();
     this._initSelectionSet();
     this._initSearchWidget();
   }
 
-  _initSelectionSet() {
+  _initSelectionSet(): void {
     if (this.selectionSet) {
       this.searchTerm = this.selectionSet?.searchResult?.name;
       this.workflowType = this.selectionSet?.workflowType;
@@ -400,7 +402,7 @@ export class MapSelectTools {
         ...this.selectionSet?.geometries
       ];
       this._drawTools.graphics = this.geometries.map(sg => {
-        let props = {
+        const props = {
           'geometry': sg,
           'symbol': sg.type === 'point' ?
             this._drawTools?.pointSymbol : sg.type === 'polyline' ?
@@ -468,7 +470,7 @@ export class MapSelectTools {
 
   async _highlightFeatures(
     ids: number[]
-  ) {
+  ): Promise<void> {
     state.highlightHandle?.remove();
     if (ids.length > 0) {
       state.highlightHandle = await highlightFeatures(
@@ -478,9 +480,10 @@ export class MapSelectTools {
       );
     }
     this.selectionSetChange.emit(ids.length);
+    return Promise.resolve();
   }
 
-  async _selectFeatures(
+  _selectFeatures(
     geometries: __esri.Geometry[]
   ): Promise<void> {
     if (this.selectTimeout) {
@@ -499,18 +502,19 @@ export class MapSelectTools {
         this._highlightFeatures(this._selectedIds);
       });
     }, 100);
+    return Promise.resolve();
   }
 
   async _query(
     geometry: __esri.Geometry
-  ) {
+  ): Promise<number[]> {
     const q = this.selectLayerView.layer.createQuery();
     q.spatialRelationship = "intersects";
     q.geometry = geometry;
     return this.selectLayerView?.layer?.queryObjectIds(q);
   }
 
-  _bufferComplete(evt: CustomEvent) {
+  _bufferComplete(evt: CustomEvent): void {
     this._bufferGeometry = Array.isArray(evt.detail) ?
       evt.detail[0] : evt.detail;
 
@@ -545,7 +549,7 @@ export class MapSelectTools {
 
   _geomQuery(
     geometries: __esri.Geometry[]
-  ) {
+  ): void {
     // sort by geom type so we have a single geom for each type to query with
     const queryGeoms = [
       ...this._getQueryGeoms(geometries, "polygon"),
@@ -565,9 +569,9 @@ export class MapSelectTools {
   }
 
   _clearResults(
-    clearSearchWidget: boolean = true,
-    clearLabel: boolean = true
-  ) {
+    clearSearchWidget = true,
+    clearLabel = true
+  ): void {
     this._selectedIds = [];
 
     if (clearLabel) {
@@ -595,7 +599,7 @@ export class MapSelectTools {
     type: EWorkflowType,
     graphics: __esri.Graphic[],
     label: string
-  ) {
+  ): void {
     // This doesn't seem to work well with points for Select..but fine once a buffer is in the mix
     this.geometries = Array.isArray(graphics) ? graphics.map(g => g.geometry) : this.geometries;
     this._selectType = type;
@@ -607,8 +611,9 @@ export class MapSelectTools {
    *
    * @private
    */
-  private async _getTranslations() {
+  private async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof MapSelectTools_T9n;
+    return Promise.resolve();
   }
 }

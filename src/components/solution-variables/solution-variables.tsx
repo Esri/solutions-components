@@ -51,11 +51,11 @@ export class SolutionVariables {
   //
   //--------------------------------------------------------------------------
 
-  async componentWillLoad() {
-    await this._getTranslations();
+  componentWillLoad(): Promise<void> {
+    return this._getTranslations();
   }
 
-  render() {
+  render(): void {
     return (
       <Host>
         <div>
@@ -169,8 +169,9 @@ export class SolutionVariables {
    *
    * @private
    */
-  private async _getTranslations() {
+  private async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionVariables_T9n;
+    return Promise.resolve();
   }
 }
