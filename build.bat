@@ -1,5 +1,5 @@
 rem Builds the repository
 
-call npm install --legacy-peer-dep
+call npm install
 call npm run build
 
