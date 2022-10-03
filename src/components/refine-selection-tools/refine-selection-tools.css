@@ -23,11 +23,29 @@
 }
 
 .div-not-visible {
-  display: none;
+  display: none !important;
 }
 
 .padding-top-1-2 {
   padding-top: .5rem;
+}
+
+.main-label {
+  display: flex;
+  float: left;
+}
+
+html[dir="rtl"] .main-label {
+  display: flex;
+  float: right;
+}
+
+.border {
+  outline: 1px solid var(--calcite-ui-border-input);
+}
+
+.margin-top-1 {
+  margin-top: 1rem;
 }
 
 /* COPY FROM JS */

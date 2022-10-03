@@ -63,6 +63,9 @@ export class SolutionContents {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Renders the component.
+   */
   render(): VNode {
     return (
       <Host>
@@ -98,7 +101,7 @@ export class SolutionContents {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -141,7 +144,7 @@ export class SolutionContents {
    * @param solutionItem the selected solution item to emit
    * @param evt MouseEvent or undefined
    */
-  private _treeItemSelected(
+  protected _treeItemSelected(
     solutionItem: ICurrentEditItem,
     evt: any = undefined
   ): void {

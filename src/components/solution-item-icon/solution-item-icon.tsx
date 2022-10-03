@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, getAssetPath, h, Prop } from '@stencil/core';
+import { Component, Element, getAssetPath, h, Prop, VNode } from '@stencil/core';
 
 @Component({
   tag: 'solution-item-icon',
@@ -58,7 +58,10 @@ export class SolutionItemIcon {
   //
   //--------------------------------------------------------------------------
 
-  render(): void {
+  /**
+   * Renders the component.
+   */
+  render(): VNode {
     return <div title={this.type}>
       <img class="item-type-icon item-type-icon-margin"
         height="16"
@@ -70,7 +73,7 @@ export class SolutionItemIcon {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -106,7 +109,7 @@ export class SolutionItemIcon {
    * @param type The item type
    * @param typeKeywords The item typeKeywords
    */
-  private _getIconUrl(
+  protected _getIconUrl(
     type: string,
     typeKeywords: string[]
   ): string {

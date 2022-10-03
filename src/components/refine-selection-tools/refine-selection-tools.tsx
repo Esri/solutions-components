@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from '@stencil/core';
 import { ERefineMode, ESelectionMode, ESelectionType } from '../../utils/interfaces';
 import { getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
 import state from "../../utils/publicNotificationStore";
@@ -87,9 +87,14 @@ export class RefineSelectionTools {
    */
   @Prop() layerViews: __esri.FeatureLayerView[] = [];
 
+  /**
+   * boolean: Optionally draw a border around the draw tools
+   */
+  @Prop() border = false;
+
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -107,7 +112,7 @@ export class RefineSelectionTools {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() private _translations: typeof RefineSelectionTools_T9n;
+  @State() protected _translations: typeof RefineSelectionTools_T9n;
 
   protected _excludeEffect = "blur(5px) grayscale(90%) opacity(40%)";
 
@@ -172,12 +177,18 @@ export class RefineSelectionTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
     return Promise.resolve();
   }
 
+  /**
+   * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
+   */
   async componentDidLoad(): Promise<void> {
     this._init();
     return Promise.resolve();
@@ -195,20 +206,26 @@ export class RefineSelectionTools {
     }
   }
 
-  render(): void {
+  /**
+   * Renders the component.
+   */
+  render(): VNode {
     const showLayerPickerClass = this.useLayerPicker ? "div-visible" : "div-not-visible";
+    const drawClass = this.border ? " border" : "";
     return (
       <Host>
         <div>
+          <div class={"main-label " + showLayerPickerClass}>
+            <calcite-label>{this._translations.selectLayers}</calcite-label>
+          </div>
           <map-layer-picker
             class={showLayerPickerClass}
-            label={this._translations.selectLayers}
             mapView={this.mapView}
-            onLayerSelectionChange={(evt) => { this._layerSelectionChange(evt) }}
             selectedLayers={this.layerViews.map(l => l.layer.title)}
             selectionMode={"single"}
+            onLayerSelectionChange={(evt) => { this._layerSelectionChange(evt) }}
           />
-          <div class="padding-top-1-2">
+          <div class={"margin-top-1" + drawClass}>
             <div class={"esri-sketch esri-widget"}>
               <div class={"esri-sketch__panel"}>
                 <div class={"esri-sketch__tool-section esri-sketch__section"}>
@@ -269,11 +286,18 @@ export class RefineSelectionTools {
 
   //--------------------------------------------------------------------------
   //
-  //  Functions (private)
+  //  Functions (protected)
   //
   //--------------------------------------------------------------------------
 
-  async _initModules(): Promise<void> {
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+   protected async _initModules(): Promise<void> {
     const [GraphicsLayer, SketchViewModel]: [
       __esri.GraphicsLayerConstructor,
       __esri.SketchViewModelConstructor
@@ -285,12 +309,24 @@ export class RefineSelectionTools {
     this.SketchViewModel = SketchViewModel;
   }
 
-  _init(): void {
+  /**
+   * Initialize the graphics layer and skecth view model
+   *
+   * @returns Promise when the operation has completed
+   * @protected
+   */
+  protected async _init(): Promise<void> {
     this._initGraphicsLayer();
     this._initSketchViewModel();
   }
 
-  _initSketchViewModel(): void {
+  /**
+   * Initialize the skecth view model
+   *
+   * @returns Promise when the operation has completed
+   * @protected
+   */
+  protected _initSketchViewModel(): void {
     this._sketchViewModel = new this.SketchViewModel({
       layer: this._sketchGraphicsLayer,
       defaultUpdateOptions: {
@@ -309,13 +345,25 @@ export class RefineSelectionTools {
     });
   }
 
-  _clear(): void {
+  /**
+   * Clear any skecth graphics
+   *
+   * @returns Promise when the operation has completed
+   * @protected
+   */
+  protected _clear() {
     this._sketchGeometry = null;
     this._sketchViewModel.cancel();
     this._sketchGraphicsLayer.removeAll();
   }
 
-  _initGraphicsLayer(): void {
+  /**
+   * Initialize the graphics layer
+   *
+   * @returns Promise when the operation has completed
+   * @protected
+   */
+  protected _initGraphicsLayer(): void {
     const title = this._translations.sketchLayer;
     const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
     if (sketchIndex > -1) {
@@ -331,7 +379,12 @@ export class RefineSelectionTools {
     }
   }
 
-  _initHitTest(): void {
+  /**
+   * Clear selection based on map click
+   *
+   * @protected
+   */
+  protected _initHitTest(): void {
     if (this._hitTestHandle) {
       this._hitTestHandle.remove();
     }
@@ -358,7 +411,16 @@ export class RefineSelectionTools {
 
   }
 
-  async _layerSelectionChange(evt: CustomEvent): Promise<void> {
+  /**
+   * Gets the layer views from the map when the layer selection changes
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _layerSelectionChange(
+    evt: CustomEvent
+  ): Promise<void> {
     if (Array.isArray(evt.detail) && evt.detail.length > 0) {
       this.selectEnabled = true;
       const layerPromises = evt.detail.map(title => {
@@ -375,7 +437,12 @@ export class RefineSelectionTools {
     }
   }
 
-  _setSelectionMode(
+  /**
+   * Store the current selection mode
+   *
+   * @protected
+   */
+  protected _setSelectionMode(
     mode: ESelectionType
   ): void {
     this.selectionMode = mode;
@@ -401,7 +468,16 @@ export class RefineSelectionTools {
     }
   }
 
-  async _selectFeatures(
+  /**
+   * Select features based on the input geometry
+   *
+   * @param geom the geometry used for selection
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _selectFeatures(
     geom: __esri.Geometry
   ): Promise<void> {
     const queryFeaturePromises = this.layerViews.map(l => {
@@ -437,11 +513,21 @@ export class RefineSelectionTools {
     });
   }
 
-  async _queryPage(
+  /**
+   * Handle queries that need to be paged
+   *
+   * @param page page query number
+   * @param layerView the layer view to query
+   * @param geom the geom used for selection
+   *
+   * @returns Promise resolving when function is done
+   * @protected
+   */
+  protected async _queryPage(
     page: number,
     layerView: __esri.FeatureLayerView,
     geom: __esri.Geometry
-  ): Promise<any[]> {
+  ): Promise<any> {
     const num = layerView.layer.capabilities.query.maxRecordCount;
     const query = {
       start: page,
@@ -460,9 +546,15 @@ export class RefineSelectionTools {
     return Promise.resolve(this.aaa);
   }
 
-  async _highlightFeatures(
+  /**
+   * Highlight any selected features in the map
+   *
+   * @returns Promise resolving when function is done
+   * @protected
+   */
+  protected async _highlightFeatures(
     ids: number[],
-    updateExtent = false
+    updateExtent: boolean = false
   ): Promise<void> {
     this._clearHighlight();
     if (ids.length > 0) {
@@ -470,7 +562,12 @@ export class RefineSelectionTools {
     }
   }
 
-  _clearHighlight(): void {
+  /**
+   * Clear any highlighted features in the map
+   *
+   * @protected
+   */
+  protected _clearHighlight(): void {
     state.highlightHandle?.remove();
   }
 
@@ -485,9 +582,9 @@ export class RefineSelectionTools {
   /**
    * Fetches the component's translations
    *
-   * @private
+   * @protected
    */
-  private async _getTranslations(): Promise<void> {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof RefineSelectionTools_T9n;
     return Promise.resolve();

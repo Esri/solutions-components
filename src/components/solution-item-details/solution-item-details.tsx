@@ -67,7 +67,10 @@ export class SolutionItemDetails {
   //
   //--------------------------------------------------------------------------
 
-  componentWillLoad(): Promise<void> {
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
+  async componentWillLoad(): Promise<void> {
     return this._getTranslations();
   }
 
@@ -78,6 +81,9 @@ export class SolutionItemDetails {
     }
   }
 
+  /**
+   * Renders the component.
+   */
   render(): VNode {
     this._validateValue();
     return (
@@ -139,7 +145,7 @@ export class SolutionItemDetails {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -147,24 +153,24 @@ export class SolutionItemDetails {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() private _translations: typeof SolutionItemDetails_T9n;
+  @State() protected _translations: typeof SolutionItemDetails_T9n;
 
   /**
    * Handle to the element for browsing for a file.
    */
-  private browseForThumbnail: HTMLInputElement;
+  protected browseForThumbnail: HTMLInputElement;
 
   /**
    * Handle to the snippet character-count feedback.
    */
-  private itemSnippetCount: HTMLLabelElement;
+  protected itemSnippetCount: HTMLLabelElement;
 
   /**
    * Handle to the thumbnail image display.
    */
-  private thumbnail: HTMLImageElement;
+  protected thumbnail: HTMLImageElement;
 
-  private loadThumb = false;
+  protected loadThumb = false;
 
   //--------------------------------------------------------------------------
   //
@@ -236,7 +242,7 @@ export class SolutionItemDetails {
    * @param id the current template is
    *
    */
-  private _loadThumb(id: string): void {
+  protected _loadThumb(id: string): void {
     if (id) {
       const thumbnailNew = getProp(state, `models.${id}.thumbnailNew`);
       const thumbnailOrigin = getProp(state, `models.${id}.thumbnailOrigin`);
@@ -253,7 +259,7 @@ export class SolutionItemDetails {
    * Opens image file browse dialog.
    *
    */
-  private _getThumbnail(): void {
+  protected _getThumbnail(): void {
     this.browseForThumbnail.click();
   }
 
@@ -263,7 +269,7 @@ export class SolutionItemDetails {
    *
    * @param phrase the current phrase from the control
    */
-  private _updateLengthLabel(phrase: string): void {
+  protected _updateLengthLabel(phrase: string): void {
     this.itemSnippetCount.innerText =
       this._translations.snippetCountPattern.replace("{{n}}", phrase.length.toString());
   }
@@ -275,7 +281,7 @@ export class SolutionItemDetails {
    * @param updateStore boolean that controls if the new value is written to the store
    *  should be false on the initial load but true the rest of the time
    */
-  private _updateThumbnail(
+  protected _updateThumbnail(
     event: any,
     updateStore: boolean
   ): void {
@@ -294,7 +300,7 @@ export class SolutionItemDetails {
    * Use the value from the store if it exists
    *
    */
-  private _validateValue(): void {
+  protected _validateValue(): void {
     const m: any = getProp(state, `models.${this.value.itemId}`);
     if (m) {
       Object.keys(this.value).forEach(k => {
@@ -313,7 +319,7 @@ export class SolutionItemDetails {
    * @param prop The model prop to update with new values
    * @param v The new value to store
    */
-  private _updateStore(
+  protected _updateStore(
     prop: string,
     v: string
   ): void {
@@ -340,9 +346,9 @@ export class SolutionItemDetails {
   /**
    * Fetches the component's translations
    *
-   * @private
+   * @protected
    */
-  private async _getTranslations(): Promise<void> {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionItemDetails_T9n;
     return Promise.resolve();

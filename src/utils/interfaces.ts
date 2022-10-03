@@ -296,12 +296,18 @@ export interface ISearchConfig {
   locatorUrl: string;
 }
 
+export interface ISearchResult {
+  graphics: __esri.Graphic[];
+  name: string;
+}
+
 export interface ISelectionSet {
   id: number; // Date.Now() when the item is created...used to update a selection set
   workflowType: EWorkflowType;
   searchResult: any;
   buffer: __esri.Geometry;
   distance: number;
+  download: boolean;
   unit: __esri.LinearUnits;
   label: string;
   selectedIds: number[],

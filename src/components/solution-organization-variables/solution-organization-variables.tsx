@@ -52,11 +52,17 @@ export class SolutionOrganizationVariables {
   //
   //--------------------------------------------------------------------------
 
-  componentWillLoad(): Promise<void> {
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
+  async componentWillLoad(): Promise<void> {
     return this._getTranslations();
   }
 
-  render(): void {
+  /**
+   * Renders the component.
+   */
+  render(): VNode {
     return (
       <Host>
         <div>
@@ -73,7 +79,7 @@ export class SolutionOrganizationVariables {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -81,7 +87,7 @@ export class SolutionOrganizationVariables {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() private _translations: typeof SolutionOrganizationVariables_T9n;
+  @State() protected _translations: typeof SolutionOrganizationVariables_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -133,7 +139,7 @@ export class SolutionOrganizationVariables {
    * @param itemId Item id as reported by click event
    * @param value Variable id as reported by click event
    */
-  private _treeItemSelected(
+  protected _treeItemSelected(
     itemId: string,
     value: string
   ): void {
@@ -146,9 +152,9 @@ export class SolutionOrganizationVariables {
   /**
    * Fetches the component's translations
    *
-   * @private
+   * @protected
    */
-  private async _getTranslations(): Promise<void> {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionOrganizationVariables_T9n;
     return Promise.resolve();

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, h, Host, Method, Prop, State, Watch, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, h, Host, Method, Prop, State, VNode, Watch } from '@stencil/core';
 import '@esri/calcite-components';
 import { wkids } from './spatialreferences';
 import state from '../../utils/editStore';
@@ -92,10 +92,16 @@ export class SolutionSpatialRef {
     this.locked = true;
   }
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   componentWillLoad(): Promise<void> {
     return this._getTranslations();
   }
 
+  /**
+   * Renders the component.
+   */
   render(): VNode {
     return (
       <Host>
@@ -137,25 +143,25 @@ export class SolutionSpatialRef {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
   /**
    * Internal representation of component's value for display purposes.
    */
-  @State() private spatialRef: ISpatialRefRepresentation;
+  @State() protected spatialRef: ISpatialRefRepresentation;
 
   /**
    * Current text that is being used to filter the list of spatial references.
    */
-  @State() private _srSearchText: string;
+  @State() protected _srSearchText: string;
 
   /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() private _translations: typeof SolutionSpatialRef_T9n;
+  @State() protected _translations: typeof SolutionSpatialRef_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -179,7 +185,7 @@ export class SolutionSpatialRef {
 
   /**
    * Returns the spatial reference description of the supplied value.
-   * (Exposes private method `_createSpatialRefDisplay` for testing.)
+   * (Exposes protected method `_createSpatialRefDisplay` for testing.)
    *
    * @param value WKID or WKT or null for default
    * @returns If component is using a WKID, description using WKID; otherwise, the WKT; defaults to 102100
@@ -191,7 +197,7 @@ export class SolutionSpatialRef {
 
   /**
    * Returns the current spatial reference description.
-   * (Exposes private variable `spatialRef` for testing.)
+   * (Exposes protected variable `spatialRef` for testing.)
    */
   @Method()
   getSpatialRef(): Promise<ISpatialRefRepresentation> {
@@ -200,7 +206,7 @@ export class SolutionSpatialRef {
 
   /**
    * Converts a WKID into a spatial reference description.
-   * (Exposes private method `_wkidToDisplay` for testing.)
+   * (Exposes protected method `_wkidToDisplay` for testing.)
    *
    * @param wkid WKID to look up
    * @returns Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
@@ -222,7 +228,7 @@ export class SolutionSpatialRef {
    * @param value WKID or WKT or null for default
    * @returns If component is using a WKID, description using WKID; otherwise, the WKT; defaults to 102100
    */
-  private _createSpatialRefDisplay(value: string): ISpatialRefRepresentation {
+  protected _createSpatialRefDisplay(value: string): ISpatialRefRepresentation {
     let spatialRef: ISpatialRefRepresentation;
 
     if (!value) {
@@ -253,7 +259,7 @@ export class SolutionSpatialRef {
   /**
    * Toggles the ability to set the default spatial reference.
    */
-  private _updateLocked(event): void {
+  protected _updateLocked(event): void {
     this.locked = !event.detail.switched;
     this._updateStore();
     if (!this.loaded) {
@@ -272,7 +278,7 @@ export class SolutionSpatialRef {
    *
    * @param services list of service names
    */
-  private _setFeatureServiceDefaults(
+  protected _setFeatureServiceDefaults(
     services: string[]
   ): void {
     // switch all spatial-ref-item-switch
@@ -284,7 +290,7 @@ export class SolutionSpatialRef {
   /**
    * Stores the wkid as the components value.
    */
-  private _setSpatialRef(wkid: string): void {
+  protected _setSpatialRef(wkid: string): void {
     if (this.value !== wkid) {
       this.value = wkid;
     }
@@ -296,7 +302,7 @@ export class SolutionSpatialRef {
    * @param wkid WKID to look up
    * @returns Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
    */
-  private _wkidToDisplay(wkid: number): string {
+  protected _wkidToDisplay(wkid: number): string {
     const description: IWkidDescription = wkids[wkid];
     return description ? description.label + " (" + wkid.toString() + ")" : "WKID " + wkid.toString();
   }
@@ -307,7 +313,7 @@ export class SolutionSpatialRef {
    * @param services List of feature services
    * @returns a node to control each feature service
    */
-  private _getFeatureServices(services: string[]): VNode {
+  protected _getFeatureServices(services: string[]): VNode {
     // verify they are in state
     const _services = services.filter(s => {
       return Object.keys(state.spatialReferenceInfo["services"]).some(stateService => stateService === s)
@@ -333,7 +339,7 @@ export class SolutionSpatialRef {
   /**
    * Updates the enabled and spatialReference prop in spatialReferenceInfo.
    */
-  private _updateStore(): void {
+  protected _updateStore(): void {
     state.spatialReferenceInfo["enabled"] = !this.locked;
     state.spatialReferenceInfo["spatialReference"] = this.spatialRef;
   }
@@ -341,7 +347,7 @@ export class SolutionSpatialRef {
   /**
    * Updates the enabled/disabled state of the service in spatialReferenceInfo.
    */
-  private _updateEnabledServices(event, name): void {
+  protected _updateEnabledServices(event, name): void {
     state.spatialReferenceInfo["services"][name] = event.detail.switched;
     this.featureServiceSpatialReferenceChange.emit({
       name,
@@ -356,7 +362,7 @@ export class SolutionSpatialRef {
    *
    * @param event The keyboard event
    */
-  private _inputKeyDown(
+  protected _inputKeyDown(
     event: KeyboardEvent
   ): void {
     if (event.key === "Enter") {
@@ -373,7 +379,7 @@ export class SolutionSpatialRef {
    * Clear any selected items in the elements tree.
    *
    */
-  private _clearSelection(): void {
+  protected _clearSelection(): void {
     const selectedItems = nodeListToArray(
       this.el.querySelectorAll("calcite-tree-item[selected]")
     );
@@ -388,7 +394,7 @@ export class SolutionSpatialRef {
    * @param autoFocus Boolean to indicate if focus should also be shifted to the first child.
    *
    */
-  private _selectFirstChild(
+  protected _selectFirstChild(
     autoFocus: boolean
   ): void {
     const wkidContainer = document.getElementById("solution-wkid-container");
@@ -408,7 +414,7 @@ export class SolutionSpatialRef {
    * @param event the event to get the value from
    *
    */
-  private _searchSpatialReferences(
+  protected _searchSpatialReferences(
     event: CustomEvent
   ): void {
     this._srSearchText = event.detail.value;
@@ -418,7 +424,7 @@ export class SolutionSpatialRef {
    * Get the tree items for the current spatial reference search
    *
    */
-  private _getTreeContent(): VNode {
+  protected _getTreeContent(): VNode {
     const id = "solution-wkid-container";
     const containerClass = "spatial-ref-container";
     if (this._srSearchText && this._srSearchText !== "" && this._srSearchText.length > 1) {
@@ -447,7 +453,7 @@ export class SolutionSpatialRef {
    * @param selected Should the item be selected by default.
    *
    */
-  private _getTreeItem(
+  protected _getTreeItem(
     wkid: string,
     selected: boolean
   ): VNode {
@@ -466,9 +472,9 @@ export class SolutionSpatialRef {
   /**
    * Fetches the component's translations
    *
-   * @private
+   * @protected
    */
-  private async _getTranslations(): Promise<void> {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionSpatialRef_T9n;
     return Promise.resolve();
