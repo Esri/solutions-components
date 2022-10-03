@@ -7,16 +7,22 @@ import tailwindConfig from "./tailwind.config";
 import { generatePreactTypes } from "./support/preact";
 
 export const config: Config = {
-  buildEs5: "prod",
   namespace: 'solutions',
   globalStyle: 'src/assets/styles/styles.scss',
+  minifyJs: true,
+  minifyCss: true,
+  sourceMap: false,
   outputTargets: [
     {
       type: 'dist',
       copy: [
-        { 
+        {
           src: 'assets/t9n',
           dest: '../assets/t9n'
+        },
+        {
+          src: 'assets/data',
+          dest: '../assets/data'
         },
         { src: 'demos' },
         { src: 'utils' }
