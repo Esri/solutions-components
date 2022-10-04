@@ -46,7 +46,7 @@ export class BufferTools {
   /**
    * boolean: option to control if buffer results should be unioned
    */
-  @Prop() unionResults = true;
+  @Prop() unionResults;
 
   /**
    * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
@@ -66,17 +66,17 @@ export class BufferTools {
   /**
    * number: The component's maximum selectable value.
    */
-  @Prop() sliderMax: number = 100;
+  @Prop() sliderMax = 100;
 
   /**
    * number: The component's minimum selectable value.
    */
-  @Prop() sliderMin: number = 0;
+  @Prop() sliderMin = 0;
 
   /**
    * number: Displays tick marks on the number line at a specified interval.
    */
-  @Prop() sliderTicks: number = 10;
+  @Prop() sliderTicks = 10;
 
   //--------------------------------------------------------------------------
   //
@@ -85,7 +85,9 @@ export class BufferTools {
   //--------------------------------------------------------------------------
 
   protected geometryEngine:  __esri.geometryEngine;
+
   protected _unitDiv: HTMLCalciteSelectElement;
+
   protected bufferTimeout: NodeJS.Timeout;
 
   /**
@@ -119,7 +121,7 @@ export class BufferTools {
   //
   //--------------------------------------------------------------------------
 
-  @Event() bufferComplete: EventEmitter;
+  @Event() bufferComplete: EventEmitter<__esri.Polygon | __esri.Polygon[]>;
 
   //--------------------------------------------------------------------------
   //
@@ -289,8 +291,8 @@ export class BufferTools {
       <div>
         <calcite-slider
           labelHandles={true}
-          min={this.sliderMin}
           max={this.sliderMax}
+          min={this.sliderMin}
           ticks={this.sliderTicks}
         />
       </div>

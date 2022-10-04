@@ -18,15 +18,15 @@
 | `mapView`        | --                 | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`                                     | `undefined` |
 | `mode`           | `mode`             | utils/interfaces/ESelectionMode: ADD, REMOVE                                                                                              | `ESelectionMode.ADD \| ESelectionMode.REMOVE` | `undefined` |
 | `refineMode`     | `refine-mode`      | utils/interfaces/ERefineMode: ALL, SUBSET                                                                                                 | `ERefineMode.ALL \| ERefineMode.SUBSET`       | `undefined` |
-| `useLayerPicker` | `use-layer-picker` | boolean: Used to control the visibility of the layer picker                                                                               | `boolean`                                     | `true`      |
+| `useLayerPicker` | `use-layer-picker` | boolean: Used to control the visibility of the layer picker                                                                               | `any`                                         | `undefined` |
 
 
 ## Events
 
-| Event                           | Description | Type               |
-| ------------------------------- | ----------- | ------------------ |
-| `refineSelectionGraphicsChange` |             | `CustomEvent<any>` |
-| `refineSelectionIdsChange`      |             | `CustomEvent<any>` |
+| Event                           | Description | Type                                                |
+| ------------------------------- | ----------- | --------------------------------------------------- |
+| `refineSelectionGraphicsChange` |             | `CustomEvent<any[]>`                                |
+| `refineSelectionIdsChange`      |             | `CustomEvent<{ addIds: any[]; removeIds: any[]; }>` |
 
 
 ## Methods

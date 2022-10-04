@@ -80,7 +80,7 @@ export class SolutionTemplateData {
   /**
    * Used to show/hide the variable containers
    */
-  @Prop({ mutable: true, reflect: true }) varsOpen = true;
+  @Prop({ mutable: true, reflect: true }) varsOpen;
 
   //--------------------------------------------------------------------------
   //

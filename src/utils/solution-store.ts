@@ -119,6 +119,7 @@ const templatesChangedEvent = new CustomEvent("templatesChanged", {
 class SolutionStore
 {
   protected static _instance: SolutionStore;
+
   protected _store: any;
 
   /**

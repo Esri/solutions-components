@@ -100,7 +100,7 @@ export class SolutionVariables {
   //
   //--------------------------------------------------------------------------
 
-  @Event() solutionVariableSelected: EventEmitter;
+  @Event() solutionVariableSelected: EventEmitter<{ itemId: string, value: string }>;
 
   //--------------------------------------------------------------------------
   //

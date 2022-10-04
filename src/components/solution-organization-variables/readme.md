@@ -14,9 +14,9 @@
 
 ## Events
 
-| Event                          | Description | Type               |
-| ------------------------------ | ----------- | ------------------ |
-| `organizationVariableSelected` |             | `CustomEvent<any>` |
+| Event                          | Description | Type                                              |
+| ------------------------------ | ----------- | ------------------------------------------------- |
+| `organizationVariableSelected` |             | `CustomEvent<{ itemId: string; value: string; }>` |
 
 
 ## Dependencies

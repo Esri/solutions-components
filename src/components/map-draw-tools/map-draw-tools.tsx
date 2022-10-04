@@ -157,7 +157,7 @@ export class MapDrawTools {
   //
   //--------------------------------------------------------------------------
 
-  @Event() sketchGraphicsChange: EventEmitter;
+  @Event() sketchGraphicsChange: EventEmitter<__esri.Graphic[]>;
 
   //--------------------------------------------------------------------------
   //

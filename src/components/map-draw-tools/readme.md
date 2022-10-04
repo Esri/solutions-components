@@ -20,9 +20,9 @@
 
 ## Events
 
-| Event                  | Description | Type               |
-| ---------------------- | ----------- | ------------------ |
-| `sketchGraphicsChange` |             | `CustomEvent<any>` |
+| Event                  | Description | Type                     |
+| ---------------------- | ----------- | ------------------------ |
+| `sketchGraphicsChange` |             | `CustomEvent<Graphic[]>` |
 
 
 ## Methods

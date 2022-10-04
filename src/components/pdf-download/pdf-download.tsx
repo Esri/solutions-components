@@ -87,7 +87,7 @@ export class PdfDownload {
   async downloadPDF(
     ids: number[],
     removeDuplicates: boolean
-  ) {
+  ): Promise<void> {
     return this._downloadPDF(ids, removeDuplicates);
   }
 
@@ -102,7 +102,7 @@ export class PdfDownload {
   async downloadCSV(
     ids: number[],
     removeDuplicates: boolean
-  ) {
+  ): Promise<void> {
     return this._downloadCSV(ids, removeDuplicates);
   }
 
@@ -183,6 +183,7 @@ export class PdfDownload {
   ): Promise<void> {
     const l = this._labelInfoControl.selectedOption.value;
     alert(`PDF download: (${this._getLabelSizeText(l)}) (remove dups: ${removeDuplicates}) ${ids.join(", ")}`);
+    return Promise.resolve();
   }
 
   /**

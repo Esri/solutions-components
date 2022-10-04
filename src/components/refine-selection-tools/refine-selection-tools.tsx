@@ -75,7 +75,7 @@ export class RefineSelectionTools {
   /**
    * boolean: Used to control the visibility of the layer picker
    */
-  @Prop() useLayerPicker = true;
+  @Prop() useLayerPicker;
 
   /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
@@ -139,7 +139,7 @@ export class RefineSelectionTools {
   @Watch('ids')
   idsWatchHandler(v: any, oldV: any): void {
     if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
-      this._highlightFeatures(v);
+      void this._highlightFeatures(v);
     }
   }
 
@@ -167,9 +167,9 @@ export class RefineSelectionTools {
   //
   //--------------------------------------------------------------------------
 
-  @Event() refineSelectionGraphicsChange: EventEmitter;
+  @Event() refineSelectionGraphicsChange: EventEmitter<any[]>;
 
-  @Event() refineSelectionIdsChange: EventEmitter;
+  @Event() refineSelectionIdsChange: EventEmitter<{ addIds: any[]; removeIds: any[]; }>;
 
   //--------------------------------------------------------------------------
   //
@@ -189,9 +189,8 @@ export class RefineSelectionTools {
   /**
    * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
    */
-  async componentDidLoad(): Promise<void> {
+  componentDidLoad(): void {
     this._init();
-    return Promise.resolve();
   }
 
   disconnectedCallback(): void {
@@ -202,7 +201,7 @@ export class RefineSelectionTools {
     this.active = true;
     if (this.ids.length > 0) {
       this.selectEnabled = true;
-      this._highlightFeatures(this.ids);
+      void this._highlightFeatures(this.ids);
     }
   }
 
@@ -221,9 +220,9 @@ export class RefineSelectionTools {
           <map-layer-picker
             class={showLayerPickerClass}
             mapView={this.mapView}
+            onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
             selectedLayers={this.layerViews.map(l => l.layer.title)}
             selectionMode={"single"}
-            onLayerSelectionChange={(evt) => { this._layerSelectionChange(evt) }}
           />
           <div class={"margin-top-1" + drawClass}>
             <div class={"esri-sketch esri-widget"}>
@@ -315,7 +314,7 @@ export class RefineSelectionTools {
    * @returns Promise when the operation has completed
    * @protected
    */
-  protected async _init(): Promise<void> {
+  protected _init(): void {
     this._initGraphicsLayer();
     this._initSketchViewModel();
   }
@@ -340,7 +339,7 @@ export class RefineSelectionTools {
       if (event.state === "complete" && this.active) {
         this.aaa = {};
         this._sketchGeometry = event.graphic.geometry;
-        this._selectFeatures(this._sketchGeometry);
+        void this._selectFeatures(this._sketchGeometry);
       }
     });
   }
@@ -351,7 +350,7 @@ export class RefineSelectionTools {
    * @returns Promise when the operation has completed
    * @protected
    */
-  protected _clear() {
+  protected _clear(): void {
     this._sketchGeometry = null;
     this._sketchViewModel.cancel();
     this._sketchGraphicsLayer.removeAll();
@@ -393,7 +392,7 @@ export class RefineSelectionTools {
       const opts = {
         include: this.layerViews.map(lv => lv.layer)
       };
-      this.mapView.hitTest(event, opts).then((response) => {
+      void this.mapView.hitTest(event, opts).then((response) => {
         let graphics = [];
         if (response.results.length > 0) {
           graphics = response.results.reduce((prev, cur) => {
@@ -427,7 +426,7 @@ export class RefineSelectionTools {
         return getMapLayerView(this.mapView, title)
       });
 
-      Promise.all(layerPromises).then((layerViews) => {
+     return Promise.all(layerPromises).then((layerViews) => {
         this.layerViews = layerViews;
         return Promise.resolve();
       });
@@ -485,7 +484,7 @@ export class RefineSelectionTools {
       return this._queryPage(0, l, geom)
     });
 
-    Promise.all(queryFeaturePromises).then(response => {
+    return Promise.all(queryFeaturePromises).then(response => {
       let graphics = [];
       response.forEach(r => {
         Object.keys(r).forEach(k => {
@@ -497,7 +496,7 @@ export class RefineSelectionTools {
         this.refineSelectionGraphicsChange.emit(graphics);
       } else {
         const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
-        let idUpdates = { addIds: [], removeIds: [] };
+        const idUpdates = { addIds: [], removeIds: [] };
         if (this.mode === ESelectionMode.ADD) {
           idUpdates.addIds = oids.filter(id => this.ids.indexOf(id) < 0);
           this.ids = [...this.ids, ...idUpdates.addIds];
@@ -505,11 +504,12 @@ export class RefineSelectionTools {
           idUpdates.removeIds = oids.filter(id => this.ids.indexOf(id) > -1);
           this.ids = this.ids.filter(id => idUpdates.removeIds.indexOf(id) < 0);
         }
-        this._highlightFeatures(this.ids).then(() => {
+        void this._highlightFeatures(this.ids).then(() => {
           this.refineSelectionIdsChange.emit(idUpdates);
         });
       }
       this._clear();
+      return Promise.resolve();
     });
   }
 
@@ -554,7 +554,7 @@ export class RefineSelectionTools {
    */
   protected async _highlightFeatures(
     ids: number[],
-    updateExtent: boolean = false
+    updateExtent = false
   ): Promise<void> {
     this._clearHighlight();
     if (ids.length > 0) {

@@ -88,7 +88,7 @@ export class StoreManager {
   //
   //--------------------------------------------------------------------------
 
-  @Event() stateLoaded: EventEmitter;
+  @Event() stateLoaded: EventEmitter<any>;
 
   //--------------------------------------------------------------------------
   //

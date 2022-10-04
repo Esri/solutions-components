@@ -84,7 +84,6 @@ export class MapSearch {
    */
    protected _searchResult: any;
 
-
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -103,8 +102,9 @@ export class MapSearch {
    * @returns Promise that resolves when the operation is complete
    */
   @Method()
-  async clear() {
+  async clear(): Promise<void> {
     this._searchWidget.clear();
+    return Promise.resolve();
   }
 
   //--------------------------------------------------------------------------
@@ -127,12 +127,13 @@ export class MapSearch {
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
+    return Promise.resolve();
   }
 
   /**
    * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
    */
-  async componentDidLoad() {
+  componentDidLoad(): void {
     this._init();
   }
 
@@ -174,7 +175,7 @@ export class MapSearch {
    *
    * @returns Promise resolving when function is done
    */
-  protected async _init() {
+  protected _init(): void {
     this._initSearchWidget();
   }
 
@@ -216,8 +217,9 @@ export class MapSearch {
    *
    * @protected
    */
-  protected async _getTranslations() {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof MapSearch_T9n;
+    return Promise.resolve();
   }
 }

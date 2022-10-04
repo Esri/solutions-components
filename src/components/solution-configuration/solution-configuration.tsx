@@ -84,7 +84,7 @@ export class SolutionConfiguration {
   /**
    * Used to show/hide the content tree
    */
-  @Prop({ mutable: true }) treeOpen = true;
+  @Prop({ mutable: true }) treeOpen;
 
   /**
   * Contains the current solution item data
@@ -101,7 +101,7 @@ export class SolutionConfiguration {
   //  Lifecycle
   //
   //--------------------------------------------------------------------------
-  @Event() solutionLoaded: EventEmitter;
+  @Event() solutionLoaded: EventEmitter<void>;
 
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
@@ -365,7 +365,7 @@ export class SolutionConfiguration {
    *
    * @returns a response that will indicate success or failure and any associated messages
    */
-  protected async _save() {
+  protected async _save(): Promise<IResponse> {
     const templateUpdates = await this._updateTemplates();
     const data = this._setSrInfo(templateUpdates.templates);
     return templateUpdates.errors.length === 0 ? save(

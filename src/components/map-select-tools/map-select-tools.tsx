@@ -186,15 +186,15 @@ export class MapSelectTools {
   //--------------------------------------------------------------------------
 
   @Watch('geometries')
-  watchGeometriesHandler(
+  async watchGeometriesHandler(
     newValue: __esri.Geometry[],
     oldValue: __esri.Geometry[]
-  ): void {
+  ): Promise<void> {
     if (newValue !== oldValue) {
       if (newValue.length > 0) {
-        this._geomQuery(this.geometries);
+        return this._geomQuery(this.geometries);
       } else if (newValue.length === 0) {
-        this._clearResults(true, true);
+        return this._clearResults(true, true);
       }
     }
   }
@@ -242,8 +242,7 @@ export class MapSelectTools {
    */
   @Method()
   clearSelection(): Promise<void> {
-    this._clearResults();
-    return Promise.resolve();
+    return this._clearResults();
   }
 
   /**
@@ -276,9 +275,9 @@ export class MapSelectTools {
   //
   //--------------------------------------------------------------------------
 
-  @Event() selectionSetChange: EventEmitter;
+  @Event() selectionSetChange: EventEmitter<number>;
 
-  @Event() workflowTypeChange: EventEmitter;
+  @Event() workflowTypeChange: EventEmitter<EWorkflowType>;
 
   @Listen("sketchGraphicsChange", { target: 'window' })
   sketchGraphicsChange(event: CustomEvent): void {
@@ -383,12 +382,12 @@ export class MapSelectTools {
         <calcite-label style={{ "display": "flex", "padding-top": "1rem" }}>
           {this._translations?.searchDistance}
           <buffer-tools
+            distance={this.selectionSet?.distance}
             geometries={this.geometries}
             onBufferComplete={(evt) => this._bufferComplete(evt)}
             ref={(el) => this._bufferTools = el}
             unit={this.selectionSet?.unit}
-            distance={this.selectionSet?.distance}
-          ></buffer-tools>
+           />
         </calcite-label>
         <slot />
       </Host>
@@ -489,11 +488,11 @@ export class MapSelectTools {
       this._searchWidget = new this.Search(searchOptions);
 
       this._searchWidget.on('search-clear', () => {
-        this._clearResults(false);
+        void this._clearResults(false);
       });
 
       this._searchWidget.on('select-result', (searchResults) => {
-        this._clearResults(false);
+        void this._clearResults(false);
         if (searchResults.result) {
           this._searchResult = searchResults.result;
           this._updateSelection(
@@ -572,19 +571,18 @@ export class MapSelectTools {
     if (this.selectTimeout) {
       clearTimeout(this.selectTimeout);
     }
-    this.selectTimeout = setTimeout(async () => {
+    //this.selectTimeout = setTimeout(() => {
       this._selectedIds = [];
       const queryDefs = geometries.map(g => this._query(g))
-      Promise.all(queryDefs).then((results) => {
-        results.forEach(r => {
-          this._selectedIds = [
-            ...this._selectedIds,
-            ...r
-          ]
-        });
-        this._highlightFeatures(this._selectedIds);
+      const results = await Promise.all(queryDefs);
+      results.forEach(r => {
+        this._selectedIds = [
+          ...this._selectedIds,
+          ...r
+        ]
       });
-    }, 100);
+      void this._highlightFeatures(this._selectedIds);
+    //}, 100);
     return Promise.resolve();
   }
 
@@ -611,9 +609,9 @@ export class MapSelectTools {
    *
    * @protected
    */
-  protected _bufferComplete(
+  protected async _bufferComplete(
     evt: CustomEvent
-  ): void {
+  ): Promise<void> {
     this._bufferGeometry = Array.isArray(evt.detail) ?
       evt.detail[0] : evt.detail;
 
@@ -642,8 +640,9 @@ export class MapSelectTools {
       if (this._bufferGraphicsLayer) {
         this._bufferGraphicsLayer.removeAll();
       }
-      this._geomQuery(this.geometries);
+      void this._geomQuery(this.geometries);
     }
+    return Promise.resolve();
   }
 
   /**
@@ -655,7 +654,7 @@ export class MapSelectTools {
    */
   protected _geomQuery(
     geometries: __esri.Geometry[]
-  ): void {
+  ): Promise<void> {
     // sort by geom type so we have a single geom for each type to query with
     const queryGeoms = [
       ...this._getQueryGeoms(geometries, "polygon"),
@@ -663,7 +662,7 @@ export class MapSelectTools {
       ...this._getQueryGeoms(geometries, "point")
     ];
 
-    this._selectFeatures(queryGeoms);
+    return this._selectFeatures(queryGeoms);
   }
 
   /**
@@ -691,10 +690,10 @@ export class MapSelectTools {
    *
    * @protected
    */
-  protected _clearResults(
-    clearSearchWidget: boolean = true,
-    clearLabel: boolean = true
-  ): void {
+  protected async _clearResults(
+    clearSearchWidget = true,
+    clearLabel = true
+  ): Promise<void> {
     this._selectedIds = [];
 
     if (clearLabel) {
@@ -713,9 +712,10 @@ export class MapSelectTools {
 
     // for sketch
     if (this._drawTools) {
-      this._drawTools.clear();
+      void this._drawTools.clear();
     }
     this.selectionSetChange.emit(this._selectedIds.length);
+    return Promise.resolve();
   }
 
   /**

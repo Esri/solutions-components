@@ -97,7 +97,7 @@ export class MapLayerPicker {
   //
   //--------------------------------------------------------------------------
 
-  @Event() layerSelectionChange: EventEmitter;
+  @Event() layerSelectionChange: EventEmitter<string[]>;
 
   //--------------------------------------------------------------------------
   //

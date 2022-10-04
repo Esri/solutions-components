@@ -15,15 +15,15 @@
 | `sliderMax`    | `slider-max`    | number: The component's maximum selectable value.                                                                        | `number`                                                                                 | `100`       |
 | `sliderMin`    | `slider-min`    | number: The component's minimum selectable value.                                                                        | `number`                                                                                 | `0`         |
 | `sliderTicks`  | `slider-ticks`  | number: Displays tick marks on the number line at a specified interval.                                                  | `number`                                                                                 | `10`        |
-| `unionResults` | `union-results` | boolean: option to control if buffer results should be unioned                                                           | `boolean`                                                                                | `true`      |
+| `unionResults` | `union-results` | boolean: option to control if buffer results should be unioned                                                           | `any`                                                                                    | `undefined` |
 | `unit`         | `unit`          | LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits | `"feet" \| "kilometers" \| "meters" \| "miles" \| "nautical-miles" \| "yards" \| number` | `"meters"`  |
 
 
 ## Events
 
-| Event            | Description | Type               |
-| ---------------- | ----------- | ------------------ |
-| `bufferComplete` |             | `CustomEvent<any>` |
+| Event            | Description | Type                                |
+| ---------------- | ----------- | ----------------------------------- |
+| `bufferComplete` |             | `CustomEvent<Polygon \| Polygon[]>` |
 
 
 ## Dependencies

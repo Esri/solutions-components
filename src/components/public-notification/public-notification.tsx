@@ -95,8 +95,11 @@ export class PublicNotification {
   @State() numSelected = 0;
 
   protected _selectTools: HTMLMapSelectToolsElement;
+
   protected _downloadTools: HTMLPdfDownloadElement;
+
   protected _removeDuplicates: HTMLCalciteCheckboxElement;
+
   protected _activeSelection: ISelectionSet;
 
   //--------------------------------------------------------------------------
@@ -120,10 +123,10 @@ export class PublicNotification {
   }
 
   @Watch('pageType')
-  pageTypeWatchHandler(
+  async pageTypeWatchHandler(
     v: EPageType
   ): Promise<void> {
-    this._selectTools?.clearSelection();
+    await this._selectTools?.clearSelection();
     this._clearHighlight();
     if (v === EPageType.LIST || v === EPageType.REFINE || v === EPageType.PDF || v === EPageType.CSV) {
       return this._highlightFeatures();
@@ -206,15 +209,15 @@ export class PublicNotification {
     return (
       <calcite-action-group class={"action-center w-1-4"} layout='horizontal'>
         <calcite-action
-          alignment='center'
           active={this.pageType === pageType}
+          alignment='center'
           class="width-full height-full"
           compact={false}
           disabled={disabled}
+          icon={icon}
           id={icon}
           onClick={() => { this._setPageType(pageType) }}
           text=""
-          icon={icon}
         />
         <calcite-tooltip label="" placement="bottom" reference-element={icon}>
           <span>{tip}</span>
@@ -314,7 +317,7 @@ export class PublicNotification {
           )
         }
         <div class="display-flex padding-1">
-          <calcite-button width="full" onClick={() => { this._setPageType(EPageType.SELECT) }}>{this._translations?.add}</calcite-button>
+          <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full">{this._translations?.add}</calcite-button>
         </div>
       </calcite-panel>
     ) : (
@@ -339,7 +342,7 @@ export class PublicNotification {
           </calcite-label>
         </div>
         <div class="display-flex padding-1">
-          <calcite-button width="full" onClick={() => { this._setPageType(EPageType.SELECT) }}>{this._translations?.add}</calcite-button>
+          <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full">{this._translations?.add}</calcite-button>
         </div>
       </calcite-panel>
     );
@@ -366,7 +369,7 @@ export class PublicNotification {
                 //onClick={() => flashSelection(cur)}
                 >
                   {this._getAction(true, "pencil", "", (): void => this._openSelection(cur), false, "actions-end")}
-                  {this._getAction(true, "x", "", (): void => this._deleteSelection(i), false, "actions-end")}
+                  {this._getAction(true, "x", "", (): Promise<void> => this._deleteSelection(i), false, "actions-end")}
                 </calcite-list-item>
               ));
             }
@@ -398,13 +401,13 @@ export class PublicNotification {
         <div class={"padding-1"}>
           <map-select-tools
             class="font-bold"
+            isUpdate={!!this._activeSelection}
             mapView={this.mapView}
             onSelectionSetChange={(evt) => this._updateForSelection(evt)}
             onWorkflowTypeChange={(evt) => this._updateForWorkflowType(evt)}
             ref={(el) => { this._selectTools = el }}
             selectLayerView={this.addresseeLayer}
             selectionSet={this._activeSelection}
-            isUpdate={this._activeSelection ? true : false}
           />
         </div>
         <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
@@ -417,10 +420,10 @@ export class PublicNotification {
           this._getPageNavButtons(
             this._translations?.done,
             this.numSelected === 0,
-            (): Promise<void> => this._saveSelection(),
+            (): void => { void this._saveSelection() },
             this._translations?.cancel,
             false,
-            () => { this._home() }
+            (): void => { void this._home() }
           )
         }
       </calcite-panel>
@@ -490,9 +493,9 @@ export class PublicNotification {
             <calcite-label>{this._translations?.notifications}</calcite-label>
           </div>
           {this._getSelectionLists()}
-          <div class="margin-side-1 padding-top-1 border-bottom"></div>
+          <div class="margin-side-1 padding-top-1 border-bottom" />
           <div class="padding-top-sides-1">
-            <calcite-label layout='inline' disabled={!this.downloadActive}>
+            <calcite-label disabled={!this.downloadActive} layout='inline'>
               <calcite-checkbox disabled={!this.downloadActive} ref={(el) => { this._removeDuplicates = el }} />
               {this._translations?.removeDuplicate}
             </calcite-label>
@@ -510,8 +513,8 @@ export class PublicNotification {
           <div class="padding-1 display-flex">
             <calcite-button
               disabled={!this.downloadActive}
-              width="full"
               onClick={isPdf ? () => this._downloadPDF() : () => this._downloadCSV()}
+              width="full"
             >
               {isPdf ? this._translations?.downloadPDF : this._translations?.downloadCSV}
             </calcite-button>
@@ -547,8 +550,8 @@ export class PublicNotification {
         <div class="display-flex padding-top-sides-1">
           <calcite-button
             disabled={topDisabled}
-            width="full"
             onClick={topFunc}
+            width="full"
           >
             {topLabel}
           </calcite-button>
@@ -557,8 +560,8 @@ export class PublicNotification {
           <calcite-button
             appearance='outline'
             disabled={bottomDisabled}
-            width="full"
             onClick={bottomFunc}
+            width="full"
           >
             {bottomLabel}
           </calcite-button>
@@ -578,7 +581,7 @@ export class PublicNotification {
    */
   protected _getNotice(
     message: string,
-    noticeClass: string = "padding-1"
+    noticeClass = "padding-1"
   ): VNode {
     return (
       <calcite-notice active class={noticeClass} color="green" icon="lightbulb">
@@ -599,15 +602,15 @@ export class PublicNotification {
    */
   protected _getLabel(
     label: string,
-    disableSpacing: boolean = false,
-    disabled: boolean = false
+    disableSpacing = false,
+    disabled = false
   ): VNode {
     return (
       <div class="padding-top-sides-1">
         <calcite-label
           class="font-bold"
-          disabled={disabled}
           disable-spacing={disableSpacing}
+          disabled={disabled}
         >
           {label}
         </calcite-label>
@@ -630,14 +633,13 @@ export class PublicNotification {
         prev.push((
           <div class="display-flex padding-sides-1 padding-bottom-1">
             <calcite-checkbox checked={cur.download} onClick={() => { this._toggleDownload(cur.id) }} />
-            <calcite-list id="download-list" class="list-border margin-start-1-2 w-100">
+            <calcite-list class="list-border margin-start-1-2 w-100" id="download-list">
               <calcite-list-item
                 description={this._translations.selectedFeatures.replace('{{n}}', cur.selectedIds.length.toString())}
                 disabled={!cur.download}
                 label={cur.label}
                 onClick={() => { this._toggleDownload(cur.id) }}
-              >
-              </calcite-list-item>
+               />
             </calcite-list>
           </div>
         ));
@@ -670,9 +672,9 @@ export class PublicNotification {
    *
    * @protected
    */
-  protected _downloadPDF(): void {
+  protected _downloadPDF(): Promise<void> {
     const ids = utils.getSelectionIds(this._getDownloadSelectionSets());
-    this._downloadTools.downloadPDF(ids, this._removeDuplicates.checked);
+    return this._downloadTools.downloadPDF(ids, this._removeDuplicates.checked);
   }
 
   /**
@@ -680,9 +682,9 @@ export class PublicNotification {
    *
    * @protected
    */
-  protected _downloadCSV(): void {
+  protected _downloadCSV(): Promise<void> {
     const ids = utils.getSelectionIds(this._getDownloadSelectionSets());
-    this._downloadTools.downloadCSV(ids, this._removeDuplicates.checked);
+    return this._downloadTools.downloadCSV(ids, this._removeDuplicates.checked);
   }
 
   /**
@@ -726,8 +728,8 @@ export class PublicNotification {
     icon: string,
     text: string,
     onClick: any,
-    indicator: boolean = false,
-    slot: string = ""
+    indicator = false,
+    slot = ""
   ): VNode {
     return (
       <calcite-action
@@ -785,17 +787,13 @@ export class PublicNotification {
     const results = await this._selectTools?.getSelection();
     const isUpdate = this._selectTools?.isUpdate;
 
-    if (isUpdate) {
-      this.selectionSets = this.selectionSets.map(ss => {
+    this.selectionSets = isUpdate ? this.selectionSets.map(ss => {
         return ss.id === results.id ? results : ss;
-      });
-    } else {
-      this.selectionSets = [
+      }) : [
         ...this.selectionSets,
         results
-      ]
-    }
-    this._home();
+      ];
+    return this._home();
   }
 
   /**
@@ -819,13 +817,13 @@ export class PublicNotification {
    */
   protected _deleteSelection(
     index: number
-  ): void {
+  ): Promise<void> {
     this.selectionSets = this.selectionSets.filter((ss, i) => {
       if (i !== index) {
         return ss;
       }
     });
-    this._highlightFeatures();
+    return this._highlightFeatures();
   }
 
   /**
@@ -847,7 +845,7 @@ export class PublicNotification {
    */
   protected async _highlightFeatures(): Promise<void> {
     this._clearHighlight();
-    var ids = utils.getSelectionIds(this.selectionSets);
+    const ids = utils.getSelectionIds(this.selectionSets);
     if (ids.length > 0) {
       state.highlightHandle = await highlightFeatures(
         this.mapView,

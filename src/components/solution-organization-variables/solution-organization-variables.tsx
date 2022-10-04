@@ -101,7 +101,7 @@ export class SolutionOrganizationVariables {
   //
   //--------------------------------------------------------------------------
 
-  @Event() organizationVariableSelected: EventEmitter;
+  @Event() organizationVariableSelected: EventEmitter<{ itemId: string, value: string }>;
 
   //--------------------------------------------------------------------------
   //

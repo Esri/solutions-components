@@ -2,24 +2,24 @@
 
 // https://medium.com/@danny.pule/export-json-to-csv-file-using-javascript-a0b7bc5b00d2
 
-function _exportCSVFile(headers, items, fileTitle) {
+function _exportCSVFile(headers, items, fileTitle: string) {
   if (headers) {
     items.unshift(headers);
   }
 
   // Convert Object to JSON
-  var jsonObject = JSON.stringify(items);
+  const jsonObject = JSON.stringify(items);
 
-  var csv = _convertToCSV(jsonObject);
+  const csv = _convertToCSV(jsonObject);
 
-  var exportedFilenmae = fileTitle + '.csv' || 'export.csv';
+  const exportedFilenmae = fileTitle + '.csv' || 'export.csv';
 
-  var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
 
-  var link = document.createElement("a");
+  const link = document.createElement("a");
   if (link.download !== undefined) { // feature detection
     // Browsers that support HTML5 download attribute
-    var url = URL.createObjectURL(blob);
+    const url = URL.createObjectURL(blob);
     link.setAttribute("href", url);
     link.setAttribute("download", exportedFilenmae);
     link.style.visibility = 'hidden';
@@ -30,13 +30,13 @@ function _exportCSVFile(headers, items, fileTitle) {
 }
 
 function _convertToCSV(objArray) {
-  var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-  var str = '';
+  const array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+  let str = '';
 
-  for (var i = 0; i < array.length; i++) {
-    var line = '';
-    for (var index in array[i]) {
-      if (line != '') line += ','
+  for (let i = 0; i < array.length; i++) {
+    let line = '';
+    for (const index in array[i]) {
+      if (line != '') {line += ','}
 
       line += array[i][index];
     }
@@ -50,7 +50,7 @@ function _convertToCSV(objArray) {
 export async function exportCSV(
   layerView: __esri.FeatureLayerView,
   ids: number[]
-) {
+): Promise<void> {
   const q = layerView.layer.createQuery();
   q.outFields = ["*"];
   q.objectIds = ids;
@@ -65,4 +65,5 @@ export async function exportCSV(
     } 
   });
   _exportCSVFile(headers, attrs, `notify-${Date.now().toString()}`);
+  return Promise.resolve();
 }

@@ -52,7 +52,7 @@ export class SolutionSpatialRef {
   /**
   * When true, all but the main switch are disabled to prevent interaction.
   */
-  @Prop({ mutable: true, reflect: true }) locked = true;
+  @Prop({ mutable: true, reflect: true }) locked;
 
   /**
    * Contains the public value for this component.
@@ -122,8 +122,8 @@ export class SolutionSpatialRef {
             {this._translations.spatialReferenceInfo}
             <label class="spatial-ref-default">
               <calcite-input
-                id="calcite-sr-search"
                 disabled={this.locked}
+                id="calcite-sr-search"
                 onCalciteInputInput={(evt) => this._searchSpatialReferences(evt)}
                 onKeyDown={(evt) => this._inputKeyDown(evt)}
                 placeholder={this._translations.spatialReferencePlaceholder}
@@ -175,7 +175,7 @@ export class SolutionSpatialRef {
   //
   //--------------------------------------------------------------------------
 
-  @Event() featureServiceSpatialReferenceChange: EventEmitter;
+  @Event() featureServiceSpatialReferenceChange: EventEmitter<{ name: string, enabled: boolean }>;
 
   //--------------------------------------------------------------------------
   //
@@ -259,7 +259,7 @@ export class SolutionSpatialRef {
   /**
    * Toggles the ability to set the default spatial reference.
    */
-  protected _updateLocked(event): void {
+  protected _updateLocked(event: any): void {
     this.locked = !event.detail.switched;
     this._updateStore();
     if (!this.loaded) {
@@ -347,7 +347,7 @@ export class SolutionSpatialRef {
   /**
    * Updates the enabled/disabled state of the service in spatialReferenceInfo.
    */
-  protected _updateEnabledServices(event, name): void {
+  protected _updateEnabledServices(event: any, name: string): void {
     state.spatialReferenceInfo["services"][name] = event.detail.switched;
     this.featureServiceSpatialReferenceChange.emit({
       name,

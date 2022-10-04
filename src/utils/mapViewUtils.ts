@@ -57,8 +57,8 @@ export async function highlightFeatures(
   if (updateExtent) {
     const query = layer.createQuery();
     query.objectIds = ids;
-    await layer.queryExtent(query).then((result) => {
-      mapView.goTo(result.extent);
+    await layer.queryExtent(query).then(async (result) => {
+      await mapView.goTo(result.extent);
     });
   }
   return layer.highlight(ids);

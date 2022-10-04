@@ -14,9 +14,9 @@
 
 ## Events
 
-| Event                      | Description | Type               |
-| -------------------------- | ----------- | ------------------ |
-| `solutionVariableSelected` |             | `CustomEvent<any>` |
+| Event                      | Description | Type                                              |
+| -------------------------- | ----------- | ------------------------------------------------- |
+| `solutionVariableSelected` |             | `CustomEvent<{ itemId: string; value: string; }>` |
 
 
 ## Dependencies

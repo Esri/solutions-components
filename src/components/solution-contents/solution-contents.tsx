@@ -122,7 +122,7 @@ export class SolutionContents {
   //
   //--------------------------------------------------------------------------
 
-  @Event() solutionItemSelected: EventEmitter;
+  @Event() solutionItemSelected: EventEmitter<ICurrentEditItem>;
 
   //--------------------------------------------------------------------------
   //
