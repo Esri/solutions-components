@@ -384,7 +384,7 @@ export namespace Components {
         /**
           * When true, all but the main switch are disabled to prevent interaction.
          */
-        "locked": any;
+        "locked": boolean;
         /**
           * List of service names the spatial reference should apply to
          */
@@ -420,7 +420,7 @@ export namespace Components {
         /**
           * Used to show/hide the variable containers
          */
-        "varsOpen": any;
+        "varsOpen": boolean;
     }
     interface SolutionVariables {
         /**
@@ -953,8 +953,8 @@ declare namespace LocalJSX {
         /**
           * When true, all but the main switch are disabled to prevent interaction.
          */
-        "locked"?: any;
-        "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<any>) => void;
+        "locked"?: boolean;
+        "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ name: string, enabled: boolean }>) => void;
         /**
           * List of service names the spatial reference should apply to
          */
@@ -984,7 +984,7 @@ declare namespace LocalJSX {
         /**
           * Used to show/hide the variable containers
          */
-        "varsOpen"?: any;
+        "varsOpen"?: boolean;
     }
     interface SolutionVariables {
         "onSolutionVariableSelected"?: (event: SolutionVariablesCustomEvent<{ itemId: string, value: string }>) => void;

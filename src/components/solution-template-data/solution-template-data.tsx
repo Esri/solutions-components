@@ -61,14 +61,11 @@ export class SolutionTemplateData {
    */
   @Prop({ mutable: true, reflect: true }) itemId = "";
 
-  @Watch("itemId") valueWatchHandler(): void {
-    this.itemData = state.getItemInfo(this.itemId).data
+  @Watch("itemId") itemIdWatchHandler(): void {
+    this.value = this.instanceid === "data"
+      ? state.getItemInfo(this.itemId).data
+      : state.getItemInfo(this.itemId).properties;
   }
-
-  /**
-   * Contains the solution based variables
-   */
-  @Prop({ mutable: true, reflect: true }) solutionVariables = "";
 
   /**
    * Contains the organization based variables
@@ -76,9 +73,14 @@ export class SolutionTemplateData {
   @Prop({ mutable: true, reflect: true }) organizationVariables = "";
 
   /**
+   * Contains the solution based variables
+   */
+  @Prop({ mutable: true, reflect: true }) solutionVariables = "";
+
+  /**
    * Used to show/hide the variable containers
    */
-  @Prop({ mutable: true, reflect: true }) varsOpen;
+  @Prop({ mutable: true, reflect: true }) varsOpen: boolean;
 
   //--------------------------------------------------------------------------
   //
@@ -106,7 +108,7 @@ export class SolutionTemplateData {
                   <json-editor
                     class="solution-data-editor-container"
                     instanceid={this.instanceid}
-                    value={this.itemData}
+                    value={this.value}
                   />
               </div>
             </calcite-panel>
@@ -146,13 +148,13 @@ export class SolutionTemplateData {
   //
   //--------------------------------------------------------------------------
 
-  @State() itemData = "";
-
   /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
   @State() protected _translations: typeof SolutionTemplateData_T9n;
+
+  @State() protected value = "";
 
   //--------------------------------------------------------------------------
   //
