@@ -43,7 +43,7 @@ export class SolutionContents {
   /**
    * Contains the current item that is selected.
    */
-   @Prop({ mutable: true, reflect: true }) selectedItem: ICurrentEditItem;
+  @Prop({ mutable: true, reflect: true }) selectedItem: ICurrentEditItem;
 
   /**
    * Contains the public value for this component.

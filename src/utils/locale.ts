@@ -50,7 +50,7 @@ function fetchLocaleStringsForComponent<T extends StringBundle = StringBundle>(c
 
 export async function getLocaleComponentStrings<T extends StringBundle = StringBundle>(element: HTMLElement): Promise<[T, string]> {
   const componentName = element.tagName.toLowerCase();
-  const componentLanguage = getComponentClosestLanguage(element) ;
+  const componentLanguage = getComponentClosestLanguage(element);
   let strings: T;
   try {
     strings = await fetchLocaleStringsForComponent(componentName, componentLanguage);

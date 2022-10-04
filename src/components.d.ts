@@ -36,7 +36,7 @@ export namespace Components {
         /**
           * boolean: option to control if buffer results should be unioned
          */
-        "unionResults": any;
+        "unionResults": boolean;
         /**
           * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
          */
@@ -729,7 +729,7 @@ declare namespace LocalJSX {
         /**
           * boolean: option to control if buffer results should be unioned
          */
-        "unionResults"?: any;
+        "unionResults"?: boolean;
         /**
           * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
          */

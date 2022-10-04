@@ -46,7 +46,7 @@ export class BufferTools {
   /**
    * boolean: option to control if buffer results should be unioned
    */
-  @Prop() unionResults;
+  @Prop() unionResults: boolean;
 
   /**
    * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
