@@ -190,28 +190,28 @@ export class SolutionResourceItem {
             disabled={disabled}
             icon="download"
             label={this._translations.download}
-            text={this._translations.download}
-            title={this._translations.download}
             onClick={() => this._download(resource.url, resource.filename)}
             scale="m"
+            text={this._translations.download}
+            title={this._translations.download}
           />
           <calcite-action
             disabled={disabled}
             icon="upload-to"
             label={this._translations.update}
-            text={this._translations.update}
-            title={this._translations.update}
             onClick={() => this._upload(resource.url)}
             scale="m"
+            text={this._translations.update}
+            title={this._translations.update}
           />
           <calcite-action
             disabled={disabled}
             icon="trash"
             label={this._translations.delete}
-            text={this._translations.delete}
-            title={this._translations.delete}
             onClick={() => this._delete(resource.filename)}
             scale="m"
+            text={this._translations.delete}
+            title={this._translations.delete}
           />
           {disabled ? <calcite-action
             icon="reset"

@@ -68,12 +68,12 @@ export class SolutionTemplateData {
   /**
    * Contains the solution based variables
    */
-  @Prop({ mutable: true, reflect: true }) solutionVariables: string = "";
+  @Prop({ mutable: true, reflect: true }) solutionVariables = "";
 
   /**
    * Contains the organization based variables
    */
-  @Prop({ mutable: true, reflect: true }) organizationVariables: string = "";
+  @Prop({ mutable: true, reflect: true }) organizationVariables = "";
 
   /**
    * Used to show/hide the variable containers
@@ -104,9 +104,9 @@ export class SolutionTemplateData {
             <calcite-panel class="json-editor">
               <div class="solution-data-child-container calcite-match-height">
                   <json-editor
+                    class="solution-data-editor-container"
                     instanceid={this.instanceid}
                     value={this.itemData}
-                    class="solution-data-editor-container"
                   />
               </div>
             </calcite-panel>
@@ -146,7 +146,7 @@ export class SolutionTemplateData {
   //
   //--------------------------------------------------------------------------
 
-  @State() itemData: string = "";
+  @State() itemData = "";
 
   /**
    * Contains the translations for this component.

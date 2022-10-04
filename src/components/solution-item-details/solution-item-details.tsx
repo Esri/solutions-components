@@ -93,7 +93,7 @@ export class SolutionItemDetails {
 
             <div class="flex">
               <div class="img-container">
-                <img id="item-thumbnail" class="scale-down" height="133" ref={(el) => (this.thumbnail = el)} width="200" />
+                <img class="scale-down" height="133" id="item-thumbnail" ref={(el) => (this.thumbnail = el)} width="200" />
               </div>
               <div class="snippet-count-container">
                 <calcite-input id="item-snippet" maxlength={250} type="textarea" value={this.itemDetails.snippet} />
@@ -183,7 +183,6 @@ export class SolutionItemDetails {
    */
   @Listen("calciteInputInput")
   inputReceivedHandler(event: any): void {
-    console.log("Update " + event.target.id);//???
     switch (event.target.id) {
       case "item-title":
         this.itemDetails.title = event.target.value;

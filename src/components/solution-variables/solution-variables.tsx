@@ -44,7 +44,7 @@ export class SolutionVariables {
   /**
    * Contains the public value for this component.
    */
-  @Prop({ mutable: true, reflect: true }) value: string = "";
+  @Prop({ mutable: true, reflect: true }) value = "";
 
   @Watch("value") valueWatchHandler(): void {
     this._solutionVariables = JSON.parse(this.value);

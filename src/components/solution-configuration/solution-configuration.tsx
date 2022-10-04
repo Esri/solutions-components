@@ -125,11 +125,11 @@ export class SolutionConfiguration {
                   <div class="config-item">
                     <solution-item
                       authentication={this.authentication}
-                      key={`${this.solutionItemId}-item`}
                       item-id={this._currentEditItemId}
+                      key={`${this.solutionItemId}-item`}
                       organization-variables={this._organizationVariables}
-                      solution-variables={this._solutionVariables}
                       solution-item-id={this.solutionItemId}
+                      solution-variables={this._solutionVariables}
                     />
                   </div>
                 </div>
@@ -167,13 +167,13 @@ export class SolutionConfiguration {
    */
   @State() protected _currentEditItemId = "";
 
-  @State() protected _organizationVariables: string = "";
+  @State() protected _organizationVariables = "";
 
   @State() protected _solutionContentsComponent: HTMLSolutionContentsElement;
 
   @State() protected _solutionIsLoaded = false;
 
-  @State() protected _solutionVariables: string = "";
+  @State() protected _solutionVariables = "";
 
   /**
    * Contains the hierarchy of template items for the current solution.
@@ -301,11 +301,7 @@ export class SolutionConfiguration {
       // Start with the first item in the contents
       firstItem = state.getStoreInfo("templateEdits")[this._templateHierarchy[0].id];
     }
-    if (firstItem) {
-      this._currentEditItemId = firstItem.itemId;
-    } else {
-      this._currentEditItemId = "";
-    }
+    this._currentEditItemId = firstItem ? firstItem.itemId : "";
   }
 
   /**

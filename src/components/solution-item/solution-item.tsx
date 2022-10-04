@@ -59,12 +59,12 @@ export class SolutionItem {
   /**
    * Contains the solution based variables
    */
-  @Prop({ mutable: true, reflect: true }) solutionVariables: string = "";
+  @Prop({ mutable: true, reflect: true }) solutionVariables = "";
 
   /**
    * Contains the organization based variables
    */
-  @Prop({ mutable: true, reflect: true }) organizationVariables: string = "";
+  @Prop({ mutable: true, reflect: true }) organizationVariables = "";
 
   //--------------------------------------------------------------------------
   //

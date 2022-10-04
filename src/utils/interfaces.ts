@@ -178,7 +178,6 @@ export interface ISolutionTemplateEdits {
   [templateId: string]: ISolutionTemplateEdit;
 }
 
-
 //???
 export interface ISolutionModel {
   dataModel: monaco.editor.ITextModel;
@@ -211,7 +210,6 @@ export interface ISolutionModels {
   [key: string]: ISolutionModel;
 }
 //???
-
 
 /**
  * Feature service name and whether the service is enabled for SR configuration
