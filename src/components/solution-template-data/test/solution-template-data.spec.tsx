@@ -18,10 +18,10 @@ import { newSpecPage } from '@stencil/core/testing';
 import { SolutionTemplateData } from '../solution-template-data';
 import * as data from '../../../demos/data/solution-template-data-data.json';
 import { h } from '@stencil/core';
-import { dispose } from '../../../utils/editStore';
+import state from "../../../utils/solution-store";
 
 beforeEach(async () => {
-  dispose();
+  state._testAccess("_emptyTheStore");
 });
 
 xdescribe('solution-template-data', () => {
