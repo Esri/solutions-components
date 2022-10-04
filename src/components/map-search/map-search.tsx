@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import { ISearchResult } from '../../utils/interfaces';
 //import state from "../../utils/publicNotificationStore";
 import MapSearch_T9n from '../../assets/t9n/map-search/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
-import { Method } from '@esri/calcite-components/dist/types/stencil-public-runtime';
+//import { Method } from '@esri/calcite-components/dist/types/stencil-public-runtime';
 
 @Component({
   tag: 'map-search',
