@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Method, Prop, State, VNode } from '@stencil/core';
-import state from '../../utils/editStore';
+import { Component, Element, h, Host, Method, Prop, State, VNode, Watch } from '@stencil/core';
+import state from "../../utils/solution-store";
 import { IItemShare } from '../../utils/interfaces';
 import SolutionItemSharing_T9n from '../../assets/t9n/solution-item-sharing/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
@@ -42,14 +42,14 @@ export class SolutionItemSharing {
   //--------------------------------------------------------------------------
 
   /**
-   * Contains the public value for this component.
-   */
-  @Prop({ mutable: true, reflect: true }) value: IItemShare[] = [];
-
-  /**
    * Contains the public id for the group these items will be shared or un-shared with.
    */
   @Prop({ mutable: true, reflect: true }) groupId: string;
+
+  @Watch("groupId") valueWatchHandler(): void {
+    const itemEdit = state.getItemInfo(this.groupId);
+    this.sharing = itemEdit.groupDetails;
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -72,7 +72,7 @@ export class SolutionItemSharing {
       <Host>
         <div class="container-border">
           <calcite-label>{this._translations.groupInfo}</calcite-label>
-          {this._renderItems(this.value)}
+          {this._renderItems(this.sharing)}
         </div>
       </Host>
     );
@@ -89,6 +89,11 @@ export class SolutionItemSharing {
    * All UI strings should be defined here.
    */
   @State() protected _translations: typeof SolutionItemSharing_T9n;
+
+  /**
+   * Contains the public sharing for this component.
+   */
+  @State() sharing: IItemShare[] = [];
 
   //--------------------------------------------------------------------------
   //
@@ -110,7 +115,7 @@ export class SolutionItemSharing {
 
   @Method()
   async getShareInfo(): Promise<any> {
-    return Promise.resolve(this.value);
+    return Promise.resolve(this.sharing);
   }
 
   //--------------------------------------------------------------------------
@@ -128,12 +133,12 @@ export class SolutionItemSharing {
     objs: IItemShare[]
   ): VNode[] {
     return objs && objs.length > 0 ? objs.map(item => {
+      //onCalciteSwitchChange={(event) => this._updateItem(event)}
       return (
         <calcite-label layout="inline">
           <calcite-switch
             id={item.id}
             name="setting"
-            onCalciteSwitchChange={(event) => this._updateItem(event)}
             scale="m"
             switched={item.shareItem}
             value="enabled"
@@ -151,9 +156,10 @@ export class SolutionItemSharing {
    * @param event onCalciteSwitchChange event
    */
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  /*
   _updateItem(event): void {
     const id: string = event.target.id;
-    this.value = this.value.map(item => {
+    this.sharing = this.sharing.map(item => {
       if (item.id === id) {
         // update the item
         item.shareItem = event.detail.switched;
@@ -167,6 +173,7 @@ export class SolutionItemSharing {
       return item;
     });
   }
+  */
 
   /**
    * Fetches the component's translations

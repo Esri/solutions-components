@@ -29,7 +29,7 @@ xdescribe('solution-template-data', () => {
     const page = await newSpecPage({
       components: [SolutionTemplateData],
       template: () => (
-        <solution-template-data value={data}></solution-template-data>
+        <solution-template-data item-id={data}></solution-template-data>
       )
     });
     expect(page.root).toEqualHtml(`

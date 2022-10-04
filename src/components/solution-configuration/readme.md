@@ -7,46 +7,14 @@
 
 ## Properties
 
-| Property         | Attribute          | Description                                            | Type                     | Default                                                                                                                                         |
-| ---------------- | ------------------ | ------------------------------------------------------ | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `authentication` | --                 | Credentials for requests                               | `UserSession`            | `undefined`                                                                                                                                     |
-| `item`           | --                 | Contains the current solution item we are working with | `ICurrentEditItem`       | `{     itemId: "",     itemDetails: {},     isResource: false,     data: {},     properties: {},     type: "",     groupDetails: undefined   }` |
-| `itemid`         | `itemid`           | Contains the current solution item id                  | `string`                 | `""`                                                                                                                                            |
-| `showLoading`    | `show-loading`     | Used to show/hide loading indicator                    | `boolean`                | `false`                                                                                                                                         |
-| `sourceItemData` | `source-item-data` | Contains the current solution item data                | `any`                    | `{}`                                                                                                                                            |
-| `templates`      | --                 | Contains the raw templates from the solution item      | `any[]`                  | `undefined`                                                                                                                                     |
-| `treeOpen`       | `tree-open`        | Used to show/hide the content tree                     | `any`                    | `undefined`                                                                                                                                     |
-| `value`          | --                 | Contains the public value for this component.          | `ISolutionConfiguration` | `{     contents: []   }`                                                                                                                        |
-
-
-## Events
-
-| Event            | Description | Type                |
-| ---------------- | ----------- | ------------------- |
-| `solutionLoaded` |             | `CustomEvent<void>` |
+| Property         | Attribute          | Description                           | Type          | Default     |
+| ---------------- | ------------------ | ------------------------------------- | ------------- | ----------- |
+| `authentication` | --                 | Credentials for requests              | `UserSession` | `undefined` |
+| `showLoading`    | `show-loading`     | Used to show/hide loading indicator   | `boolean`     | `false`     |
+| `solutionItemId` | `solution-item-id` | Contains the current solution item id | `string`      | `""`        |
 
 
 ## Methods
-
-### `getEditModels() => Promise<any>`
-
-
-
-#### Returns
-
-Type: `Promise<any>`
-
-
-
-### `getSourceTemplates() => Promise<any>`
-
-
-
-#### Returns
-
-Type: `Promise<any>`
-
-
 
 ### `getSpatialReferenceInfo() => Promise<ISolutionSpatialReferenceInfo>`
 
@@ -137,12 +105,11 @@ graph TD;
   calcite-scrim --> calcite-loader
   json-editor --> calcite-icon
   json-editor --> calcite-button
-  solution-organization-variables --> calcite-label
+  solution-organization-variables --> calcite-tree
   solution-organization-variables --> calcite-tree-item
-  solution-variables --> calcite-label
+  solution-variables --> calcite-tree
   solution-variables --> calcite-tree-item
   solution-variables --> solution-item-icon
-  solution-variables --> calcite-tree
   solution-resource-item --> calcite-button
   solution-resource-item --> calcite-value-list
   solution-resource-item --> calcite-value-list-item

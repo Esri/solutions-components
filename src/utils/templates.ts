@@ -18,24 +18,18 @@
  | Helper functions to get required values from solutions templates
 */
 import {
-  EUpdateType,
+  //EUpdateType,
   IInventoryItem,
   IItemDetails,
   IItemShare,
   IOrganizationVariableItem,
-  IResourcePath,
-  ISolutionModels,
-  ISolutionSpatialReferenceInfo,
+  //IResourcePath,
+  //SolutionModels,
+  //ISolutionSpatialReferenceInfo,
   IVariableItem
 } from '../utils/interfaces';
 import {
-  IItemTemplate,
-  IDeployFileCopyPath,
-  generateStorageFilePaths,
-  getProp,
-  getThumbnailFromStorageItem,
-  UserSession,
-  cloneObject
+  IItemTemplate
 } from '@esri/solution-common';
 
 //--------------------------------------------------------------------------
@@ -220,177 +214,11 @@ export function getOrganizationVariables(
   return orgVars;
 }
 
-/**
- * Create and store text models for the editor as well as other key values such as the original values
- * that can be used to clear any temp edits.
- *
- * @param templates a list of item templates from the solution
- *
- * @returns a promise that resolves a list of models and key values
- */
-export function getModels(
-  templates: any[],
-  authentication: UserSession,
-  solutionId: string
-): Promise<ISolutionModels> {
-  const ids: string[] = [];
-  const models: ISolutionModels = {};
-  const monacoDefined = typeof (monaco) !== "undefined";
-  templates.forEach(t => {
-    if (ids.indexOf(t.itemId) < 0) {
-      ids.push(t.itemId);
-      const resourceFilePaths: IResourcePath[] = _getResourceFilePaths(
-        solutionId,
-        t,
-        authentication
-      );
-      models[t.itemId] = {
-        dataModel: monacoDefined ? monaco.editor.createModel(JSON.stringify(t.data, null, '\t'), "json") : undefined,
-        dataOriginValue: JSON.stringify(t.data),
-        propsModel: monacoDefined ? monaco.editor.createModel(JSON.stringify(t.properties, null, '\t'), "json") : undefined,
-        propsOriginValue: JSON.stringify(t.properties),
-        propsDiffOriginValue: JSON.stringify(t.properties),
-        state: undefined,
-        shareInfo: undefined,
-        isEditing: false,
-        itemId: t.itemId,
-        updateItemValues: {},
-        originalItemValues: {},
-        name: t.item?.name,
-        title: t.item?.title,
-        type: t.type,
-        itemOriginValue: JSON.stringify(t.item),
-        spatialReference: t.properties?.service?.spatialReference,
-        resources: t.resources,
-        // will contain updates
-        resourceFilePaths: resourceFilePaths,
-        // could be used to compare
-        sourceResourceFilePaths: cloneObject(resourceFilePaths),
-        thumbnailNew: undefined,// retain thumbnails in store as they get messed up if you emit them in events
-        thumbnailOrigin: undefined
-      };
-    }
-  });
-  return _getThumbnails(models, authentication);
-}
-
-/**
- * Gets a list of Feature Services that are not views along with an enabled property that indicates
- * if the service currently uses a spatial reference variable.
- *
- * @param templates a list of item templates from the solution
- *
- * @returns a list of feature service names and an enabled property to indicate
- * if they currently use a spatial reference variable.
- */
-export function getFeatureServices(
-  templates: any[]
-): any[] {
-  return templates.reduce((prev, cur) => {
-    const name: string = cur.item.title || cur.item.name;
-    if (cur.type === "Feature Service" &&
-      cur.item.typeKeywords.indexOf("View Service") < 0 &&
-      prev.indexOf(name) < 0
-    ) {
-      const wkid = getProp(cur, "properties.service.spatialReference.wkid");
-      prev.push({ name, enabled: wkid.toString().startsWith("{{params.wkid||") });
-    }
-    return prev;
-  }, []);
-}
-
-/**
- * Stores basic spatial reference information that is used to determine if a custom spatial reference parameter will
- * be exposed while deploying this solution and if so what feature services will support it and what will the default wkid be
- *
- * @param services a list of objects with service name and enabled property (indicates if they currently use a spatial reference var)
- * @param data the data object of a solution item
- *
- * @returns an object that stores if a custom spatial reference parameter is enabled/disabled,
- * a list of services and if they are enabled/disabled, and the default wkid
- */
-export function getSpatialReferenceInfo(
-  services: any[],
-  data: any
-): ISolutionSpatialReferenceInfo {
-  const defaultServices: any = {};
-  services.forEach(service => {
-    defaultServices[service.name] = service.enabled;
-  });
-  const wkid = getProp(data, "params.wkid.default");
-  return {
-    enabled: wkid !== undefined && wkid !== "",
-    services: defaultServices,
-    spatialReference: wkid ? { wkid } : undefined
-  }
-}
-
 //--------------------------------------------------------------------------
 //
 //  Private Functions
 //
 //--------------------------------------------------------------------------
-
-/**
- * Generate storage file paths from the solution template
- *
- * @param solutionId the id of the current solution
- * @param template the current template from the solution
- * @param authentication credentials for any requests
- *
- * @returns a list of resource file infos
- */
-function _getResourceFilePaths(
-  solutionId: string,
-  template: any,
-  authentication: UserSession
-): IResourcePath[] {
-  const resourceFilePaths: IDeployFileCopyPath[] = generateStorageFilePaths(
-    authentication.portal,
-    solutionId,
-    template.resources,
-    1
-  );
-  return resourceFilePaths.map((fp: any) => {
-    fp.updateType = EUpdateType.None;
-    return fp;
-  }) as IResourcePath[];
-}
-
-/**
- * Fetch thumbnails from the item resources
- *
- * @param models the list of models for the current solution item
- * @param authentication credentials for any requests
- *
- * @return A promise which resolves to ISolutionModels with hydrated thumbnails
- */
-function _getThumbnails(
-  models: any,
-  authentication: UserSession
-): Promise<ISolutionModels> {
-  return new Promise<any>((resolve, reject) => {
-    const thumbnailPromoses = [];
-    const _ids = [];
-    Object.keys(models).forEach(k => {
-      thumbnailPromoses.push(
-        models[k].resourceFilePaths.length > 0 ?
-          getThumbnailFromStorageItem(authentication, models[k].resourceFilePaths) :
-          Promise.resolve()
-      );
-      _ids.push(k);
-    });
-    thumbnailPromoses.push(Promise.resolve());
-    Promise.all(thumbnailPromoses).then(r => {
-      r.forEach((thumbnail, i) => {
-        if (thumbnail) {
-          models[_ids[i]].thumbnailOrigin = thumbnail;
-        }
-      })
-      resolve(models);
-    }, reject);
-  });
-}
 
 /**
  * Explore a solution item template for variables we will allow users to insert at runtime.
@@ -504,7 +332,8 @@ function _getItemDetails(
     description: item.description || "",
     tags: item.tags || [],
     accessInformation: !isGroup ? item.accessInformation || "" : "",
-    licenseInfo: !isGroup ? item.licenseInfo || "" : ""
+    licenseInfo: !isGroup ? item.licenseInfo || "" : "",
+    thumbnail: item.thumbnail || ""
   };
 }
 

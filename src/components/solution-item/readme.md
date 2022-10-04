@@ -7,12 +7,12 @@
 
 ## Properties
 
-| Property                | Attribute | Description                                   | Type               | Default                                                                                                                                         |
-| ----------------------- | --------- | --------------------------------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `authentication`        | --        | Credentials for requests                      | `UserSession`      | `undefined`                                                                                                                                     |
-| `organizationVariables` | --        | Contains the organization based variables     | `any[]`            | `[]`                                                                                                                                            |
-| `solutionVariables`     | --        | Contains the solution based variables         | `any[]`            | `[]`                                                                                                                                            |
-| `value`                 | --        | Contains the public value for this component. | `ICurrentEditItem` | `{     itemId: "",     itemDetails: {},     isResource: false,     data: {},     properties: {},     type: "",     groupDetails: undefined   }` |
+| Property                | Attribute                | Description                                   | Type          | Default     |
+| ----------------------- | ------------------------ | --------------------------------------------- | ------------- | ----------- |
+| `authentication`        | --                       | Credentials for requests                      | `UserSession` | `undefined` |
+| `itemId`                | `item-id`                | Contains the public value for this component. | `string`      | `""`        |
+| `organizationVariables` | `organization-variables` | Contains the organization based variables     | `string`      | `""`        |
+| `solutionVariables`     | `solution-variables`     | Contains the solution based variables         | `string`      | `""`        |
 
 
 ## Dependencies
@@ -72,14 +72,13 @@ graph TD;
   json-editor --> calcite-button
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
-  solution-organization-variables --> calcite-label
+  solution-organization-variables --> calcite-tree
   solution-organization-variables --> calcite-tree-item
   calcite-tree-item --> calcite-icon
   calcite-tree-item --> calcite-checkbox
-  solution-variables --> calcite-label
+  solution-variables --> calcite-tree
   solution-variables --> calcite-tree-item
   solution-variables --> solution-item-icon
-  solution-variables --> calcite-tree
   solution-resource-item --> calcite-button
   solution-resource-item --> calcite-value-list
   solution-resource-item --> calcite-value-list-item

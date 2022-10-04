@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ERefineMode, ESelectionMode, EWorkflowType, ICurrentEditItem, IInventoryItem, IItemDetails, IItemShare, IOrganizationVariableItem, IResourcePath, ISearchResult, ISelectionSet, ISolutionConfiguration, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, ITemplateData, IVariableItem, SelectionMode } from "./utils/interfaces";
+import { ERefineMode, ESelectionMode, EWorkflowType, ICurrentEditItem, IInventoryItem, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BufferTools {
@@ -284,38 +284,16 @@ export namespace Components {
           * Credentials for requests
          */
         "authentication": UserSession;
-        "getEditModels": () => Promise<any>;
-        "getSourceTemplates": () => Promise<any>;
         "getSpatialReferenceInfo": () => Promise<ISolutionSpatialReferenceInfo>;
-        /**
-          * Contains the current solution item we are working with
-         */
-        "item": ICurrentEditItem;
-        /**
-          * Contains the current solution item id
-         */
-        "itemid": string;
         "save": () => Promise<any>;
         /**
           * Used to show/hide loading indicator
          */
         "showLoading": boolean;
         /**
-          * Contains the current solution item data
+          * Contains the current solution item id
          */
-        "sourceItemData": any;
-        /**
-          * Contains the raw templates from the solution item
-         */
-        "templates": any[];
-        /**
-          * Used to show/hide the content tree
-         */
-        "treeOpen": any;
-        /**
-          * Contains the public value for this component.
-         */
-        "value": ISolutionConfiguration;
+        "solutionItemId": string;
     }
     interface SolutionContents {
         /**
@@ -325,7 +303,7 @@ export namespace Components {
         /**
           * Contains the public value for this component.
          */
-        "value": IInventoryItem[];
+        "templateHierarchy": IInventoryItem[];
     }
     interface SolutionItem {
         /**
@@ -333,27 +311,23 @@ export namespace Components {
          */
         "authentication": UserSession;
         /**
+          * Contains the public value for this component.
+         */
+        "itemId": string;
+        /**
           * Contains the organization based variables
          */
-        "organizationVariables": any[];
+        "organizationVariables": string;
         /**
           * Contains the solution based variables
          */
-        "solutionVariables": any[];
-        /**
-          * Contains the public value for this component.
-         */
-        "value": ICurrentEditItem;
+        "solutionVariables": string;
     }
     interface SolutionItemDetails {
         /**
-          * Contains the public type for this component.
-         */
-        "type": string;
-        /**
           * Contains the public value for this component.
          */
-        "value": IItemDetails;
+        "itemId": string;
     }
     interface SolutionItemIcon {
         /**
@@ -375,16 +349,12 @@ export namespace Components {
           * Contains the public id for the group these items will be shared or un-shared with.
          */
         "groupId": string;
-        /**
-          * Contains the public value for this component.
-         */
-        "value": IItemShare[];
     }
     interface SolutionOrganizationVariables {
         /**
           * Contains the public value for this component.
          */
-        "value": IOrganizationVariableItem[];
+        "value": string;
     }
     interface SolutionResourceItem {
         /**
@@ -394,15 +364,7 @@ export namespace Components {
         /**
           * The templates itemId. This is used to get the correct model from a store in the json-editor
          */
-        "itemid": string;
-        /**
-          * The templates resourceFilePaths.
-         */
-        "resourceFilePaths": IResourcePath[];
-        /**
-          * The templates resources.
-         */
-        "resources": {};
+        "itemId": string;
     }
     interface SolutionSpatialRef {
         /**
@@ -440,29 +402,21 @@ export namespace Components {
     }
     interface SolutionTemplateData {
         /**
-          * Credentials for requests
-         */
-        "authentication": UserSession;
-        /**
           * This needs to be unique for props vs data of an item
          */
         "instanceid": string;
         /**
           * A templates itemId. This is used to get the correct model from a store in the json-editor
          */
-        "itemid": string;
+        "itemId": string;
         /**
           * Contains the organization based variables
          */
-        "organizationVariables": IOrganizationVariableItem[];
+        "organizationVariables": string;
         /**
           * Contains the solution based variables
          */
-        "solutionVariables": IVariableItem[];
-        /**
-          * Contains the public value for this component.  When working with a resource item this should contain an IResourceItem  When working with a json type item this should contain the data and vars
-         */
-        "value": ITemplateData;
+        "solutionVariables": string;
         /**
           * Used to show/hide the variable containers
          */
@@ -472,7 +426,7 @@ export namespace Components {
         /**
           * Contains the public value for this component.
          */
-        "value": IVariableItem[];
+        "value": string;
     }
     interface StoreManager {
         /**
@@ -516,10 +470,6 @@ export interface RefineSelectionCustomEvent<T> extends CustomEvent<T> {
 export interface RefineSelectionToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLRefineSelectionToolsElement;
-}
-export interface SolutionConfigurationCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLSolutionConfigurationElement;
 }
 export interface SolutionContentsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -915,34 +865,13 @@ declare namespace LocalJSX {
          */
         "authentication"?: UserSession;
         /**
-          * Contains the current solution item we are working with
-         */
-        "item"?: ICurrentEditItem;
-        /**
-          * Contains the current solution item id
-         */
-        "itemid"?: string;
-        "onSolutionLoaded"?: (event: SolutionConfigurationCustomEvent<void>) => void;
-        /**
           * Used to show/hide loading indicator
          */
         "showLoading"?: boolean;
         /**
-          * Contains the current solution item data
+          * Contains the current solution item id
          */
-        "sourceItemData"?: any;
-        /**
-          * Contains the raw templates from the solution item
-         */
-        "templates"?: any[];
-        /**
-          * Used to show/hide the content tree
-         */
-        "treeOpen"?: any;
-        /**
-          * Contains the public value for this component.
-         */
-        "value"?: ISolutionConfiguration;
+        "solutionItemId"?: string;
     }
     interface SolutionContents {
         "onSolutionItemSelected"?: (event: SolutionContentsCustomEvent<ICurrentEditItem>) => void;
@@ -953,7 +882,7 @@ declare namespace LocalJSX {
         /**
           * Contains the public value for this component.
          */
-        "value"?: IInventoryItem[];
+        "templateHierarchy"?: IInventoryItem[];
     }
     interface SolutionItem {
         /**
@@ -961,27 +890,23 @@ declare namespace LocalJSX {
          */
         "authentication"?: UserSession;
         /**
+          * Contains the public value for this component.
+         */
+        "itemId"?: string;
+        /**
           * Contains the organization based variables
          */
-        "organizationVariables"?: any[];
+        "organizationVariables"?: string;
         /**
           * Contains the solution based variables
          */
-        "solutionVariables"?: any[];
-        /**
-          * Contains the public value for this component.
-         */
-        "value"?: ICurrentEditItem;
+        "solutionVariables"?: string;
     }
     interface SolutionItemDetails {
         /**
-          * Contains the public type for this component.
-         */
-        "type"?: string;
-        /**
           * Contains the public value for this component.
          */
-        "value"?: IItemDetails;
+        "itemId"?: string;
     }
     interface SolutionItemIcon {
         /**
@@ -1002,17 +927,13 @@ declare namespace LocalJSX {
           * Contains the public id for the group these items will be shared or un-shared with.
          */
         "groupId"?: string;
-        /**
-          * Contains the public value for this component.
-         */
-        "value"?: IItemShare[];
     }
     interface SolutionOrganizationVariables {
         "onOrganizationVariableSelected"?: (event: SolutionOrganizationVariablesCustomEvent<{ itemId: string, value: string }>) => void;
         /**
           * Contains the public value for this component.
          */
-        "value"?: IOrganizationVariableItem[];
+        "value"?: string;
     }
     interface SolutionResourceItem {
         /**
@@ -1022,15 +943,7 @@ declare namespace LocalJSX {
         /**
           * The templates itemId. This is used to get the correct model from a store in the json-editor
          */
-        "itemid"?: string;
-        /**
-          * The templates resourceFilePaths.
-         */
-        "resourceFilePaths"?: IResourcePath[];
-        /**
-          * The templates resources.
-         */
-        "resources"?: {};
+        "itemId"?: string;
     }
     interface SolutionSpatialRef {
         /**
@@ -1041,7 +954,7 @@ declare namespace LocalJSX {
           * When true, all but the main switch are disabled to prevent interaction.
          */
         "locked"?: any;
-        "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ name: string, enabled: boolean }>) => void;
+        "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<any>) => void;
         /**
           * List of service names the spatial reference should apply to
          */
@@ -1053,29 +966,21 @@ declare namespace LocalJSX {
     }
     interface SolutionTemplateData {
         /**
-          * Credentials for requests
-         */
-        "authentication"?: UserSession;
-        /**
           * This needs to be unique for props vs data of an item
          */
         "instanceid"?: string;
         /**
           * A templates itemId. This is used to get the correct model from a store in the json-editor
          */
-        "itemid"?: string;
+        "itemId"?: string;
         /**
           * Contains the organization based variables
          */
-        "organizationVariables"?: IOrganizationVariableItem[];
+        "organizationVariables"?: string;
         /**
           * Contains the solution based variables
          */
-        "solutionVariables"?: IVariableItem[];
-        /**
-          * Contains the public value for this component.  When working with a resource item this should contain an IResourceItem  When working with a json type item this should contain the data and vars
-         */
-        "value"?: ITemplateData;
+        "solutionVariables"?: string;
         /**
           * Used to show/hide the variable containers
          */
@@ -1086,7 +991,7 @@ declare namespace LocalJSX {
         /**
           * Contains the public value for this component.
          */
-        "value"?: IVariableItem[];
+        "value"?: string;
     }
     interface StoreManager {
         /**

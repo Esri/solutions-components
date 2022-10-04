@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, h, Host, Method, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, h, Host, Method, Prop, State, Watch, VNode } from '@stencil/core';
 import '@esri/calcite-components';
 import { wkids } from './spatialreferences';
-import state from '../../utils/editStore';
+import state from "../../utils/solution-store";
 import { nodeListToArray } from '../../utils/common';
 import { ISpatialRefRepresentation, IWkidDescription } from '../../utils/interfaces';
 import SolutionSpatialRef_T9n from '../../assets/t9n/solution-spatial-ref/resources.json';
@@ -122,8 +122,8 @@ export class SolutionSpatialRef {
             {this._translations.spatialReferenceInfo}
             <label class="spatial-ref-default">
               <calcite-input
-                disabled={this.locked}
                 id="calcite-sr-search"
+                disabled={this.locked}
                 onCalciteInputInput={(evt) => this._searchSpatialReferences(evt)}
                 onKeyDown={(evt) => this._inputKeyDown(evt)}
                 placeholder={this._translations.spatialReferencePlaceholder}
@@ -175,7 +175,7 @@ export class SolutionSpatialRef {
   //
   //--------------------------------------------------------------------------
 
-  @Event() featureServiceSpatialReferenceChange: EventEmitter<{ name: string, enabled: boolean }>;
+  @Event() featureServiceSpatialReferenceChange: EventEmitter;
 
   //--------------------------------------------------------------------------
   //
@@ -316,7 +316,7 @@ export class SolutionSpatialRef {
   protected _getFeatureServices(services: string[]): VNode {
     // verify they are in state
     const _services = services.filter(s => {
-      return Object.keys(state.spatialReferenceInfo["services"]).some(stateService => stateService === s)
+      return Object.keys(state.getStoreInfo("spatialReferenceInfo")["services"]).some(stateService => stateService === s)
     });
     return _services && _services.length > 0 ? (
       <div>
@@ -328,7 +328,7 @@ export class SolutionSpatialRef {
               disabled={this.locked}
               onCalciteSwitchChange={(event) => this._updateEnabledServices(event, name)}
               scale="m"
-              switched={state.spatialReferenceInfo["services"][name]}
+              switched={state.getStoreInfo("spatialReferenceInfo")["services"][name]}
             />{name}
           </label>
         ))}
@@ -340,15 +340,15 @@ export class SolutionSpatialRef {
    * Updates the enabled and spatialReference prop in spatialReferenceInfo.
    */
   protected _updateStore(): void {
-    state.spatialReferenceInfo["enabled"] = !this.locked;
-    state.spatialReferenceInfo["spatialReference"] = this.spatialRef;
+    state.getStoreInfo("spatialReferenceInfo")["enabled"] = !this.locked;
+    state.getStoreInfo("spatialReferenceInfo")["spatialReference"] = this.spatialRef;
   }
 
   /**
    * Updates the enabled/disabled state of the service in spatialReferenceInfo.
    */
-  protected _updateEnabledServices(event: any, name: string): void {
-    state.spatialReferenceInfo["services"][name] = event.detail.switched;
+  protected _updateEnabledServices(event, name): void {
+    state.getStoreInfo("spatialReferenceInfo")["services"][name] = event.detail.switched;
     this.featureServiceSpatialReferenceChange.emit({
       name,
       enabled: event.detail.switched

@@ -485,10 +485,8 @@ class SolutionStore
     templates: IItemTemplate[],
     authentication: UserSession
   ): Promise<ISolutionTemplateEdits> {
-    const ids: string[] = [];
     const templateEdits: ISolutionTemplateEdits = {};
     templates.forEach(t => {
-      ids.push(t.itemId);
       const resourceFilePaths: IResourcePath[] = this._getResourceFilePaths(
         solutionItemId,
         t,
@@ -496,6 +494,7 @@ class SolutionStore
       );
 
       const editItem: ISolutionTemplateEditItem = {
+        type: t.type,
         details: JSON.stringify(t.item),
         data: JSON.stringify(t.data, null, 2),
         properties: JSON.stringify(t.properties, null, 2),
@@ -507,7 +506,6 @@ class SolutionStore
 
       templateEdits[t.itemId] = {
         itemId: t.itemId,
-        type: t.type,
         current: editItem,
         original: {...editItem}  // make sure that the object is different than the one assigned to the `current` property
       };

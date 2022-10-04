@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
-import { IOrganizationVariableItem, ITemplateData, IVariableItem } from '../../utils/interfaces';
-import { UserSession } from '@esri/solution-common';
+import { Component, Element, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
+import state from "../../utils/solution-store";
 import SolutionTemplateData_T9n from '../../assets/t9n/solution-template-data/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
 
@@ -43,18 +42,13 @@ export class SolutionTemplateData {
   //--------------------------------------------------------------------------
 
   /**
-   * Credentials for requests
-   */
-  @Prop({ mutable: true }) authentication: UserSession;
-
-  /**
    * Contains the public value for this component.
    *
    * When working with a resource item this should contain an IResourceItem
    *
    * When working with a json type item this should contain the data and vars
    */
-  @Prop({ mutable: true, reflect: true }) value: ITemplateData = {};
+  //@Prop({ mutable: true, reflect: true }) value: ITemplateData = {};
 
   /**
    * This needs to be unique for props vs data of an item
@@ -65,17 +59,21 @@ export class SolutionTemplateData {
    * A templates itemId.
    * This is used to get the correct model from a store in the json-editor
    */
-  @Prop({ mutable: true, reflect: true }) itemid = "";
+  @Prop({ mutable: true, reflect: true }) itemId = "";
+
+  @Watch("itemId") valueWatchHandler(): void {
+    this.itemData = state.getItemInfo(this.itemId).data
+  }
 
   /**
    * Contains the solution based variables
    */
-  @Prop({ mutable: true, reflect: true }) solutionVariables: IVariableItem[] = [];
+  @Prop({ mutable: true, reflect: true }) solutionVariables: string = "";
 
   /**
    * Contains the organization based variables
    */
-  @Prop({ mutable: true, reflect: true }) organizationVariables: IOrganizationVariableItem[] = [];
+  @Prop({ mutable: true, reflect: true }) organizationVariables: string = "";
 
   /**
    * Used to show/hide the variable containers
@@ -105,11 +103,11 @@ export class SolutionTemplateData {
           <calcite-shell class="light var-container" dir="ltr">
             <calcite-panel class="json-editor">
               <div class="solution-data-child-container calcite-match-height">
-                <json-editor
-                  class="solution-data-editor-container"
-                  instanceid={this.instanceid}
-                  value={this.itemid}
-                />
+                  <json-editor
+                    instanceid={this.instanceid}
+                    value={this.itemData}
+                    class="solution-data-editor-container"
+                  />
               </div>
             </calcite-panel>
 
@@ -147,6 +145,8 @@ export class SolutionTemplateData {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  @State() itemData: string = "";
 
   /**
    * Contains the translations for this component.

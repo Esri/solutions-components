@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Listen, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Watch } from '@stencil/core';
 import { IInventoryItem, ICurrentEditItem } from '../../utils/interfaces';
 import '@esri/calcite-components';
 
@@ -48,10 +48,9 @@ export class SolutionContents {
   /**
    * Contains the public value for this component.
    */
-  @Prop() value: IInventoryItem[] = [];
+  @Prop({ mutable: true, reflect: true }) templateHierarchy: IInventoryItem[] = [];
 
-  @Watch('value')
-  valueWatchHandler(v: any, oldV: any): void {
+  @Watch("templateHierarchy") valueWatchHandler(v: any, oldV: any): void {
     if (v && v !== oldV && Array.isArray(v) && v.length > 0) {
       this._treeItemSelected(v[0].solutionItem);
     }
@@ -63,6 +62,10 @@ export class SolutionContents {
   //
   //--------------------------------------------------------------------------
 
+  componentWillLoad() {
+    this.valueWatchHandler(this.templateHierarchy, []);
+  }
+
   /**
    * Renders the component.
    */
@@ -70,7 +73,7 @@ export class SolutionContents {
     return (
       <Host>
         <calcite-tree>
-          {this.renderHierarchy(this.value)}
+          {this.renderHierarchy(this.templateHierarchy)}
         </calcite-tree>
       </Host>
     );
@@ -111,10 +114,10 @@ export class SolutionContents {
   //
   //--------------------------------------------------------------------------
 
-  @Listen("solutionLoaded", { target: 'window' })
+  /*@Listen("solutionLoaded", { target: "window" })
   _solutionLoaded(): void {
-    this._treeItemSelected(this.value[0].solutionItem);
-  }
+    this._treeItemSelected(this.templateHierarchy[0].solutionItem);
+  }*/
 
   //--------------------------------------------------------------------------
   //
