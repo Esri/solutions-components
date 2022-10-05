@@ -277,7 +277,7 @@ export namespace Components {
         /**
           * boolean: Used to control the visibility of the layer picker
          */
-        "useLayerPicker": any;
+        "useLayerPicker": boolean;
     }
     interface SolutionConfiguration {
         /**
@@ -907,7 +907,7 @@ declare namespace LocalJSX {
         /**
           * boolean: Used to control the visibility of the layer picker
          */
-        "useLayerPicker"?: any;
+        "useLayerPicker"?: boolean;
     }
     interface SolutionConfiguration {
         /**

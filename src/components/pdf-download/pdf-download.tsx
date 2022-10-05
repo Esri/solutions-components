@@ -48,7 +48,7 @@ export class PdfDownload {
   /**
    * boolean: Controls the enabled/disabled state of download
    */
-  @Prop() disabled: boolean;
+  @Prop() disabled = true;
 
   //--------------------------------------------------------------------------
   //
