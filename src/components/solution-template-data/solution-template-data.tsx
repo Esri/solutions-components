@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
 import { IOrganizationVariableItem, ITemplateData, IVariableItem } from '../../utils/interfaces';
 import { UserSession } from '@esri/solution-common';
 import SolutionTemplateData_T9n from '../../assets/t9n/solution-template-data/resources.json';
@@ -91,14 +91,14 @@ export class SolutionTemplateData {
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
-  async componentWillLoad() {
-    await this._getTranslations();
+  componentWillLoad(): Promise<void> {
+    return this._getTranslations();
   }
 
   /**
    * Renders the component.
    */
-  render() {
+  render(): VNode {
     return (
       <Host>
         <div class="solution-data-container">
@@ -106,9 +106,9 @@ export class SolutionTemplateData {
             <calcite-panel class="json-editor">
               <div class="solution-data-child-container calcite-match-height">
                 <json-editor
+                  class="solution-data-editor-container"
                   instanceid={this.instanceid}
                   value={this.itemid}
-                  class="solution-data-editor-container"
                 />
               </div>
             </calcite-panel>
@@ -190,8 +190,9 @@ export class SolutionTemplateData {
    *
    * @protected
    */
-  protected async _getTranslations() {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionTemplateData_T9n;
+    return Promise.resolve();
   }
 }

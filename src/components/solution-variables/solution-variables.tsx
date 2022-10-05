@@ -54,14 +54,14 @@ export class SolutionVariables {
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
-  async componentWillLoad() {
-    await this._getTranslations();
+  componentWillLoad(): Promise<void> {
+    return this._getTranslations();
   }
 
   /**
    * Renders the component.
    */
-  render() {
+  render(): VNode {
     return (
       <Host>
         <div>
@@ -100,7 +100,7 @@ export class SolutionVariables {
   //
   //--------------------------------------------------------------------------
 
-  @Event() solutionVariableSelected: EventEmitter;
+  @Event() solutionVariableSelected: EventEmitter<{ itemId: string, value: string }>;
 
   //--------------------------------------------------------------------------
   //
@@ -175,8 +175,9 @@ export class SolutionVariables {
    *
    * @protected
    */
-  protected async _getTranslations() {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionVariables_T9n;
+    return Promise.resolve();
   }
 }

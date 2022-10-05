@@ -713,7 +713,7 @@ declare namespace LocalJSX {
           * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
          */
         "geometries"?: __esri.Geometry[];
-        "onBufferComplete"?: (event: BufferToolsCustomEvent<any>) => void;
+        "onBufferComplete"?: (event: BufferToolsCustomEvent<__esri.Polygon | __esri.Polygon[]>) => void;
         /**
           * number: The component's maximum selectable value.
          */
@@ -766,7 +766,7 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        "onSketchGraphicsChange"?: (event: MapDrawToolsCustomEvent<any>) => void;
+        "onSketchGraphicsChange"?: (event: MapDrawToolsCustomEvent<__esri.Graphic[]>) => void;
         /**
           * esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
          */
@@ -789,7 +789,7 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        "onLayerSelectionChange"?: (event: MapLayerPickerCustomEvent<any>) => void;
+        "onLayerSelectionChange"?: (event: MapLayerPickerCustomEvent<string[]>) => void;
         /**
           * string[]: list of layers that have been selected by the end user
          */
@@ -819,8 +819,8 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        "onSelectionSetChange"?: (event: MapSelectToolsCustomEvent<any>) => void;
-        "onWorkflowTypeChange"?: (event: MapSelectToolsCustomEvent<any>) => void;
+        "onSelectionSetChange"?: (event: MapSelectToolsCustomEvent<number>) => void;
+        "onWorkflowTypeChange"?: (event: MapSelectToolsCustomEvent<EWorkflowType>) => void;
         /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
@@ -898,8 +898,8 @@ declare namespace LocalJSX {
           * utils/interfaces/ESelectionMode: ADD, REMOVE
          */
         "mode"?: ESelectionMode;
-        "onRefineSelectionGraphicsChange"?: (event: RefineSelectionToolsCustomEvent<any>) => void;
-        "onRefineSelectionIdsChange"?: (event: RefineSelectionToolsCustomEvent<any>) => void;
+        "onRefineSelectionGraphicsChange"?: (event: RefineSelectionToolsCustomEvent<any[]>) => void;
+        "onRefineSelectionIdsChange"?: (event: RefineSelectionToolsCustomEvent<{ addIds: any[]; removeIds: any[]; }>) => void;
         /**
           * utils/interfaces/ERefineMode: ALL, SUBSET
          */
@@ -922,7 +922,7 @@ declare namespace LocalJSX {
           * Contains the current solution item id
          */
         "itemid"?: string;
-        "onSolutionLoaded"?: (event: SolutionConfigurationCustomEvent<any>) => void;
+        "onSolutionLoaded"?: (event: SolutionConfigurationCustomEvent<void>) => void;
         /**
           * Used to show/hide loading indicator
          */
@@ -945,7 +945,7 @@ declare namespace LocalJSX {
         "value"?: ISolutionConfiguration;
     }
     interface SolutionContents {
-        "onSolutionItemSelected"?: (event: SolutionContentsCustomEvent<any>) => void;
+        "onSolutionItemSelected"?: (event: SolutionContentsCustomEvent<ICurrentEditItem>) => void;
         /**
           * Contains the current item that is selected.
          */
@@ -1008,7 +1008,7 @@ declare namespace LocalJSX {
         "value"?: IItemShare[];
     }
     interface SolutionOrganizationVariables {
-        "onOrganizationVariableSelected"?: (event: SolutionOrganizationVariablesCustomEvent<any>) => void;
+        "onOrganizationVariableSelected"?: (event: SolutionOrganizationVariablesCustomEvent<{ itemId: string, value: string }>) => void;
         /**
           * Contains the public value for this component.
          */
@@ -1041,7 +1041,7 @@ declare namespace LocalJSX {
           * When true, all but the main switch are disabled to prevent interaction.
          */
         "locked"?: boolean;
-        "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<any>) => void;
+        "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ name: string, enabled: boolean }>) => void;
         /**
           * List of service names the spatial reference should apply to
          */
@@ -1082,7 +1082,7 @@ declare namespace LocalJSX {
         "varsOpen"?: boolean;
     }
     interface SolutionVariables {
-        "onSolutionVariableSelected"?: (event: SolutionVariablesCustomEvent<any>) => void;
+        "onSolutionVariableSelected"?: (event: SolutionVariablesCustomEvent<{ itemId: string, value: string }>) => void;
         /**
           * Contains the public value for this component.
          */

@@ -119,6 +119,7 @@ const templatesChangedEvent = new CustomEvent("templatesChanged", {
 class SolutionStore
 {
   protected static _instance: SolutionStore;
+
   protected _store: any;
 
   /**
@@ -126,7 +127,7 @@ class SolutionStore
    *
    * @returns Static instance of the class
    */
-  public static get Store() {
+  public static get Store(): SolutionStore {
     return this._instance || (this._instance = new this());
   }
 
@@ -307,7 +308,7 @@ class SolutionStore
    *
    * @protected
    */
-  protected _emptyTheStore() {
+  protected _emptyTheStore(): void {
     this._store.set("solutionItemId", EmptySolutionStore.solutionItemId);
     this._store.set("defaultWkid", EmptySolutionStore.defaultWkid);
     this._store.set("templates", EmptySolutionStore.templates);
@@ -502,11 +503,7 @@ class SolutionStore
         resourceFilePaths
       };
 
-      if (t.type === "Group") {
-        editItem.groupDetails = this._getItemsSharedWithThisGroup(t, templates);
-      } else {
-        editItem.groupDetails = [];
-      }
+      editItem.groupDetails = t.type === "Group" ? this._getItemsSharedWithThisGroup(t, templates) : [];
 
       templateEdits[t.itemId] = {
         itemId: t.itemId,

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop, State, VNode, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import { highlightFeatures } from '../../utils/mapViewUtils';
 import { EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode } from '../../utils/interfaces';
@@ -189,12 +189,12 @@ export class MapSelectTools {
   async watchGeometriesHandler(
     newValue: __esri.Geometry[],
     oldValue: __esri.Geometry[]
-  ) {
+  ): Promise<void> {
     if (newValue !== oldValue) {
       if (newValue.length > 0) {
-        this._geomQuery(this.geometries);
+        return this._geomQuery(this.geometries);
       } else if (newValue.length === 0) {
-        this._clearResults(true, true);
+        return this._clearResults(true, true);
       }
     }
   }
@@ -211,8 +211,8 @@ export class MapSelectTools {
    * @returns Promise with an array of the selected ids
    */
   @Method()
-  async getSelectedIds() {
-    return this._selectedIds;
+  async getSelectedIds(): Promise<number[]> {
+    return Promise.resolve(this._selectedIds);
   }
 
   /**
@@ -221,8 +221,8 @@ export class MapSelectTools {
    * @returns Promise with the selection label
    */
   @Method()
-  async getSelectionLabel() {
-    return this._selectionLabel;
+  async getSelectionLabel(): Promise<string> {
+    return Promise.resolve(this._selectionLabel);
   }
 
   /**
@@ -231,8 +231,8 @@ export class MapSelectTools {
    * @returns Promise with the selection type
    */
   @Method()
-  async getSelectType() {
-    return this._selectType;
+  async getSelectType(): Promise<EWorkflowType> {
+    return Promise.resolve(this._selectType);
   }
 
   /**
@@ -241,7 +241,7 @@ export class MapSelectTools {
    * @returns Promise when the results have been cleared
    */
   @Method()
-  async clearSelection() {
+  clearSelection(): Promise<void> {
     return this._clearResults();
   }
 
@@ -251,8 +251,8 @@ export class MapSelectTools {
    * @returns Promise with the new selection set
    */
   @Method()
-  async getSelection(): Promise<ISelectionSet> {
-    return {
+  getSelection(): Promise<ISelectionSet> {
+    return Promise.resolve({
       id: this.isUpdate ? this.selectionSet.id : Date.now(),
       workflowType: this._selectType,
       searchResult: this._searchResult,
@@ -266,7 +266,7 @@ export class MapSelectTools {
       layerView: this.selectLayerView,
       geometries: this.geometries,
       refineSelectLayers: this._refineTools.layerViews
-    } as ISelectionSet;
+    } as ISelectionSet);
   }
 
   //--------------------------------------------------------------------------
@@ -275,9 +275,9 @@ export class MapSelectTools {
   //
   //--------------------------------------------------------------------------
 
-  @Event() selectionSetChange: EventEmitter;
+  @Event() selectionSetChange: EventEmitter<number>;
 
-  @Event() workflowTypeChange: EventEmitter;
+  @Event() workflowTypeChange: EventEmitter<EWorkflowType>;
 
   @Listen("sketchGraphicsChange", { target: 'window' })
   sketchGraphicsChange(event: CustomEvent): void {
@@ -285,13 +285,13 @@ export class MapSelectTools {
   }
 
   @Listen("refineSelectionGraphicsChange", { target: 'window' })
-  refineSelectionGraphicsChange(event: CustomEvent): void {
+  refineSelectionGraphicsChange(event: CustomEvent): Promise<void> {
     const graphics = event.detail;
 
     this._updateSelection(EWorkflowType.SELECT, graphics, this._translations.select);
     // Using OIDs to avoid issue with points
     const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
-    this._highlightFeatures(oids);
+    return this._highlightFeatures(oids);
   }
 
   //--------------------------------------------------------------------------
@@ -303,22 +303,23 @@ export class MapSelectTools {
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
-  async componentWillLoad() {
+  async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
+    return Promise.resolve();
   }
 
   /**
    * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
    */
-  async componentDidLoad() {
-    this._init();
+  async componentDidLoad(): Promise<void> {
+    return this._init();
   }
 
   /**
    * Renders the component.
    */
-  render() {
+  render(): VNode {
     const searchEnabled = this.workflowType === EWorkflowType.SEARCH;
     const showSearchClass = searchEnabled ? " div-visible-search" : " div-not-visible";
 
@@ -381,12 +382,12 @@ export class MapSelectTools {
         <calcite-label style={{ "display": "flex", "padding-top": "1rem" }}>
           {this._translations?.searchDistance}
           <buffer-tools
+            distance={this.selectionSet?.distance}
             geometries={this.geometries}
             onBufferComplete={(evt) => this._bufferComplete(evt)}
             ref={(el) => this._bufferTools = el}
             unit={this.selectionSet?.unit}
-            distance={this.selectionSet?.distance}
-          ></buffer-tools>
+           />
         </calcite-label>
         <slot />
       </Host>
@@ -436,6 +437,7 @@ export class MapSelectTools {
     this._initGraphicsLayer();
     this._initSelectionSet();
     this._initSearchWidget();
+    return Promise.resolve();
   }
 
   /**
@@ -454,7 +456,7 @@ export class MapSelectTools {
         ...this.selectionSet?.geometries
       ];
       this._drawTools.graphics = this.geometries.map(sg => {
-        let props = {
+        const props = {
           'geometry': sg,
           'symbol': sg.type === 'point' ?
             this._drawTools?.pointSymbol : sg.type === 'polyline' ?
@@ -486,11 +488,11 @@ export class MapSelectTools {
       this._searchWidget = new this.Search(searchOptions);
 
       this._searchWidget.on('search-clear', () => {
-        this._clearResults(false);
+        void this._clearResults(false);
       });
 
       this._searchWidget.on('select-result', (searchResults) => {
-        this._clearResults(false);
+        void this._clearResults(false);
         if (searchResults.result) {
           this._searchResult = searchResults.result;
           this._updateSelection(
@@ -543,7 +545,7 @@ export class MapSelectTools {
    */
   protected async _highlightFeatures(
     ids: number[]
-  ) {
+  ): Promise<void> {
     state.highlightHandle?.remove();
     if (ids.length > 0) {
       state.highlightHandle = await highlightFeatures(
@@ -553,6 +555,7 @@ export class MapSelectTools {
       );
     }
     this.selectionSetChange.emit(ids.length);
+    return Promise.resolve();
   }
 
   /**
@@ -568,19 +571,19 @@ export class MapSelectTools {
     if (this.selectTimeout) {
       clearTimeout(this.selectTimeout);
     }
-    this.selectTimeout = setTimeout(async () => {
+    //this.selectTimeout = setTimeout(() => {
       this._selectedIds = [];
       const queryDefs = geometries.map(g => this._query(g))
-      Promise.all(queryDefs).then((results) => {
-        results.forEach(r => {
-          this._selectedIds = [
-            ...this._selectedIds,
-            ...r
-          ]
-        });
-        this._highlightFeatures(this._selectedIds);
+      const results = await Promise.all(queryDefs);
+      results.forEach(r => {
+        this._selectedIds = [
+          ...this._selectedIds,
+          ...r
+        ]
       });
-    }, 100);
+      void this._highlightFeatures(this._selectedIds);
+    //}, 100);
+    return Promise.resolve();
   }
 
   /**
@@ -606,9 +609,9 @@ export class MapSelectTools {
    *
    * @protected
    */
-  protected _bufferComplete(
+  protected async _bufferComplete(
     evt: CustomEvent
-  ): void {
+  ): Promise<void> {
     this._bufferGeometry = Array.isArray(evt.detail) ?
       evt.detail[0] : evt.detail;
 
@@ -637,8 +640,9 @@ export class MapSelectTools {
       if (this._bufferGraphicsLayer) {
         this._bufferGraphicsLayer.removeAll();
       }
-      this._geomQuery(this.geometries);
+      void this._geomQuery(this.geometries);
     }
+    return Promise.resolve();
   }
 
   /**
@@ -650,7 +654,7 @@ export class MapSelectTools {
    */
   protected _geomQuery(
     geometries: __esri.Geometry[]
-  ): void {
+  ): Promise<void> {
     // sort by geom type so we have a single geom for each type to query with
     const queryGeoms = [
       ...this._getQueryGeoms(geometries, "polygon"),
@@ -658,7 +662,7 @@ export class MapSelectTools {
       ...this._getQueryGeoms(geometries, "point")
     ];
 
-    this._selectFeatures(queryGeoms);
+    return this._selectFeatures(queryGeoms);
   }
 
   /**
@@ -686,10 +690,10 @@ export class MapSelectTools {
    *
    * @protected
    */
-  protected _clearResults(
-    clearSearchWidget: boolean = true,
-    clearLabel: boolean = true
-  ): void {
+  protected async _clearResults(
+    clearSearchWidget = true,
+    clearLabel = true
+  ): Promise<void> {
     this._selectedIds = [];
 
     if (clearLabel) {
@@ -708,9 +712,10 @@ export class MapSelectTools {
 
     // for sketch
     if (this._drawTools) {
-      this._drawTools.clear();
+      void this._drawTools.clear();
     }
     this.selectionSetChange.emit(this._selectedIds.length);
+    return Promise.resolve();
   }
 
   /**
@@ -738,8 +743,9 @@ export class MapSelectTools {
    *
    * @protected
    */
-  async _getTranslations() {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof MapSelectTools_T9n;
+    return Promise.resolve();
   }
 }

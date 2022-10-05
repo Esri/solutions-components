@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
 import { EUpdateType, IResourcePath, ISolutionModel } from '../../utils/interfaces';
 import { EFileType, UserSession } from '@esri/solution-common';
 import state from '../../utils/editStore';
@@ -80,14 +80,14 @@ export class SolutionResourceItem {
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
-  async componentWillLoad() {
-    await this._getTranslations();
+  componentWillLoad(): Promise<void> {
+    return this._getTranslations();
   }
 
   /**
    * Renders the component.
    */
-  render() {
+  render(): VNode {
     const hasValidResources = this._hasValidResources();
     return (
       <Host>
@@ -442,8 +442,9 @@ export class SolutionResourceItem {
    *
    * @protected
    */
-  protected async _getTranslations() {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionResourceItem_T9n;
+    return Promise.resolve();
   }
 }

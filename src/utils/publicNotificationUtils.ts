@@ -20,7 +20,6 @@
 
 import { ISelectionSet } from "./interfaces";
 
-
 export function getSelectionIds(
   selectionSets: ISelectionSet[]
 ): number[] {
@@ -34,6 +33,6 @@ export function getSelectionIds(
 
 export function getTotal(
   selectionSets: ISelectionSet[]
-): Number {
+): number {
   return [...new Set(getSelectionIds(selectionSets))].length;
 }

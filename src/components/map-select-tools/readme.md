@@ -18,10 +18,10 @@
 
 ## Events
 
-| Event                | Description | Type               |
-| -------------------- | ----------- | ------------------ |
-| `selectionSetChange` |             | `CustomEvent<any>` |
-| `workflowTypeChange` |             | `CustomEvent<any>` |
+| Event                | Description | Type                                                                                                        |
+| -------------------- | ----------- | ----------------------------------------------------------------------------------------------------------- |
+| `selectionSetChange` |             | `CustomEvent<number>`                                                                                       |
+| `workflowTypeChange` |             | `CustomEvent<EWorkflowType.REFINE \| EWorkflowType.SEARCH \| EWorkflowType.SELECT \| EWorkflowType.SKETCH>` |
 
 
 ## Methods

@@ -55,14 +55,14 @@ export class SolutionOrganizationVariables {
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
-  async componentWillLoad() {
-    await this._getTranslations();
+  async componentWillLoad(): Promise<void> {
+    return this._getTranslations();
   }
 
   /**
    * Renders the component.
    */
-  render() {
+  render(): VNode {
     return (
       <Host>
         <div>
@@ -101,7 +101,7 @@ export class SolutionOrganizationVariables {
   //
   //--------------------------------------------------------------------------
 
-  @Event() organizationVariableSelected: EventEmitter;
+  @Event() organizationVariableSelected: EventEmitter<{ itemId: string, value: string }>;
 
   //--------------------------------------------------------------------------
   //
@@ -154,8 +154,9 @@ export class SolutionOrganizationVariables {
    *
    * @protected
    */
-  protected async _getTranslations() {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionOrganizationVariables_T9n;
+    return Promise.resolve();
   }
 }

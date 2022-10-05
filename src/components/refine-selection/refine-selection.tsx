@@ -46,6 +46,7 @@ export class RefineSelection {
   //--------------------------------------------------------------------------
 
   protected _addEnabled = true;
+
   protected _refineTools: HTMLRefineSelectionToolsElement;
 
   /**
@@ -92,14 +93,14 @@ export class RefineSelection {
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
-  async componentWillLoad() {
+  async componentWillLoad(): Promise<void> {
     await this._getTranslations();
   }
 
   /**
    * Renders the component.
    */
-  render() {
+  render(): VNode {
     return (
       <Host>
         <div class="padding-1">
@@ -244,8 +245,8 @@ export class RefineSelection {
     icon: string,
     text: string,
     onClick: any,
-    indicator: boolean = false,
-    slot: string = ""
+    indicator = false,
+    slot = ""
   ): VNode {
     return (
       <calcite-action
@@ -285,7 +286,7 @@ export class RefineSelection {
       ])]
       refineSet.refineIds.removeIds = [];
     }
-    this._refineTools.reset().then(() => {
+    void this._refineTools.reset().then(() => {
       this.selectionSets = this.selectionSets.map(ss => {
         if (ss.workflowType === EWorkflowType.REFINE) {
           ss = refineSet;
@@ -345,11 +346,7 @@ export class RefineSelection {
         selectionSet.selectedIds.filter(id => selectionSet.refineIds.removeIds.indexOf(id) < 0);
 
       this.selectionSets = this.selectionSets.map(ss => {
-        if (ss.workflowType === EWorkflowType.REFINE) {
-          return selectionSet;
-        } else {
-          return ss;
-        }
+        return ss.workflowType === EWorkflowType.REFINE ? selectionSet : ss;
       });
     } else {
       this.selectionSets = [
@@ -382,9 +379,10 @@ export class RefineSelection {
    *
    * @protected
    */
-   protected async _getTranslations() {
+   protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof RefineSelection_T9n;
+    return Promise.resolve();
   }
 
 }

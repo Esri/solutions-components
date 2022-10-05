@@ -21,9 +21,9 @@
 
 ## Events
 
-| Event            | Description | Type               |
-| ---------------- | ----------- | ------------------ |
-| `bufferComplete` |             | `CustomEvent<any>` |
+| Event            | Description | Type                                |
+| ---------------- | ----------- | ----------------------------------- |
+| `bufferComplete` |             | `CustomEvent<Polygon \| Polygon[]>` |
 
 
 ## Dependencies

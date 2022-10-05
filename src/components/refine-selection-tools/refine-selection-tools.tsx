@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from '@stencil/core';
 import { ERefineMode, ESelectionMode, ESelectionType } from '../../utils/interfaces';
 import { getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
 import state from "../../utils/publicNotificationStore";
@@ -139,7 +139,7 @@ export class RefineSelectionTools {
   @Watch('ids')
   idsWatchHandler(v: any, oldV: any): void {
     if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
-      this._highlightFeatures(v);
+      void this._highlightFeatures(v);
     }
   }
 
@@ -150,14 +150,15 @@ export class RefineSelectionTools {
   //--------------------------------------------------------------------------
 
   @Method()
-  reset() {
+  async reset(): Promise<void> {
     this.ids = [];
     return Promise.resolve();
   }
 
   @Method()
-  async clearHighlight() {
+  async clearHighlight(): Promise<void> {
     this._clearHighlight();
+    return Promise.resolve();
   }
 
   //--------------------------------------------------------------------------
@@ -166,9 +167,9 @@ export class RefineSelectionTools {
   //
   //--------------------------------------------------------------------------
 
-  @Event() refineSelectionGraphicsChange: EventEmitter;
+  @Event() refineSelectionGraphicsChange: EventEmitter<any[]>;
 
-  @Event() refineSelectionIdsChange: EventEmitter;
+  @Event() refineSelectionIdsChange: EventEmitter<{ addIds: any[]; removeIds: any[]; }>;
 
   //--------------------------------------------------------------------------
   //
@@ -179,34 +180,35 @@ export class RefineSelectionTools {
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
-  async componentWillLoad() {
+  async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
+    return Promise.resolve();
   }
 
   /**
    * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
    */
-  async componentDidLoad() {
+  componentDidLoad(): void {
     this._init();
   }
 
-  disconnectedCallback() {
+  disconnectedCallback(): void {
     this.active = false;
   }
 
-  connectedCallback() {
+  connectedCallback(): void {
     this.active = true;
     if (this.ids.length > 0) {
       this.selectEnabled = true;
-      this._highlightFeatures(this.ids);
+      void this._highlightFeatures(this.ids);
     }
   }
 
   /**
    * Renders the component.
    */
-  render() {
+  render(): VNode {
     const showLayerPickerClass = this.useLayerPicker ? "div-visible" : "div-not-visible";
     const drawClass = this.border ? " border" : "";
     return (
@@ -218,9 +220,9 @@ export class RefineSelectionTools {
           <map-layer-picker
             class={showLayerPickerClass}
             mapView={this.mapView}
+            onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
             selectedLayers={this.layerViews.map(l => l.layer.title)}
             selectionMode={"single"}
-            onLayerSelectionChange={(evt) => { this._layerSelectionChange(evt) }}
           />
           <div class={"margin-top-1" + drawClass}>
             <div class={"esri-sketch esri-widget"}>
@@ -312,7 +314,7 @@ export class RefineSelectionTools {
    * @returns Promise when the operation has completed
    * @protected
    */
-  protected async _init(): Promise<void> {
+  protected _init(): void {
     this._initGraphicsLayer();
     this._initSketchViewModel();
   }
@@ -337,7 +339,7 @@ export class RefineSelectionTools {
       if (event.state === "complete" && this.active) {
         this.aaa = {};
         this._sketchGeometry = event.graphic.geometry;
-        this._selectFeatures(this._sketchGeometry);
+        void this._selectFeatures(this._sketchGeometry);
       }
     });
   }
@@ -348,7 +350,7 @@ export class RefineSelectionTools {
    * @returns Promise when the operation has completed
    * @protected
    */
-  protected _clear() {
+  protected _clear(): void {
     this._sketchGeometry = null;
     this._sketchViewModel.cancel();
     this._sketchGraphicsLayer.removeAll();
@@ -390,7 +392,7 @@ export class RefineSelectionTools {
       const opts = {
         include: this.layerViews.map(lv => lv.layer)
       };
-      this.mapView.hitTest(event, opts).then((response) => {
+      void this.mapView.hitTest(event, opts).then((response) => {
         let graphics = [];
         if (response.results.length > 0) {
           graphics = response.results.reduce((prev, cur) => {
@@ -424,11 +426,13 @@ export class RefineSelectionTools {
         return getMapLayerView(this.mapView, title)
       });
 
-      Promise.all(layerPromises).then((layerViews) => {
+     return Promise.all(layerPromises).then((layerViews) => {
         this.layerViews = layerViews;
+        return Promise.resolve();
       });
     } else {
       this.selectEnabled = false;
+      return Promise.resolve();
     }
   }
 
@@ -480,7 +484,7 @@ export class RefineSelectionTools {
       return this._queryPage(0, l, geom)
     });
 
-    Promise.all(queryFeaturePromises).then(response => {
+    return Promise.all(queryFeaturePromises).then(response => {
       let graphics = [];
       response.forEach(r => {
         Object.keys(r).forEach(k => {
@@ -492,7 +496,7 @@ export class RefineSelectionTools {
         this.refineSelectionGraphicsChange.emit(graphics);
       } else {
         const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
-        let idUpdates = { addIds: [], removeIds: [] };
+        const idUpdates = { addIds: [], removeIds: [] };
         if (this.mode === ESelectionMode.ADD) {
           idUpdates.addIds = oids.filter(id => this.ids.indexOf(id) < 0);
           this.ids = [...this.ids, ...idUpdates.addIds];
@@ -500,11 +504,12 @@ export class RefineSelectionTools {
           idUpdates.removeIds = oids.filter(id => this.ids.indexOf(id) > -1);
           this.ids = this.ids.filter(id => idUpdates.removeIds.indexOf(id) < 0);
         }
-        this._highlightFeatures(this.ids).then(() => {
+        void this._highlightFeatures(this.ids).then(() => {
           this.refineSelectionIdsChange.emit(idUpdates);
         });
       }
       this._clear();
+      return Promise.resolve();
     });
   }
 
@@ -538,7 +543,7 @@ export class RefineSelectionTools {
     if (r.exceededTransferLimit) {
       return this._queryPage(page += num, layerView, geom)
     }
-    return this.aaa;
+    return Promise.resolve(this.aaa);
   }
 
   /**
@@ -549,7 +554,7 @@ export class RefineSelectionTools {
    */
   protected async _highlightFeatures(
     ids: number[],
-    updateExtent: boolean = false
+    updateExtent = false
   ): Promise<void> {
     this._clearHighlight();
     if (ids.length > 0) {
@@ -562,15 +567,15 @@ export class RefineSelectionTools {
    *
    * @protected
    */
-  protected _clearHighlight() {
+  protected _clearHighlight(): void {
     state.highlightHandle?.remove();
   }
 
-  protected _undo() {
+  _undo(): void {
     console.log("UNDO")
   }
 
-  protected _redo() {
+  _redo(): void {
     console.log("REDO")
   }
 
@@ -579,8 +584,9 @@ export class RefineSelectionTools {
    *
    * @protected
    */
-  protected async _getTranslations() {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof RefineSelectionTools_T9n;
+    return Promise.resolve();
   }
 }

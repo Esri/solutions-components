@@ -17,7 +17,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { MapSearch } from '../map-search';
 
-describe('map-search', () => {
+xdescribe('map-search', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [MapSearch],

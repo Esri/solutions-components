@@ -15,9 +15,9 @@
 
 ## Events
 
-| Event                  | Description | Type               |
-| ---------------------- | ----------- | ------------------ |
-| `solutionItemSelected` |             | `CustomEvent<any>` |
+| Event                  | Description | Type                            |
+| ---------------------- | ----------- | ------------------------------- |
+| `solutionItemSelected` |             | `CustomEvent<ICurrentEditItem>` |
 
 
 ## Dependencies

@@ -101,13 +101,13 @@ export class SolutionConfiguration {
   //  Lifecycle
   //
   //--------------------------------------------------------------------------
-  @Event() solutionLoaded: EventEmitter;
+  @Event() solutionLoaded: EventEmitter<void>;
 
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
-  async componentWillLoad() {
-    await this._getTranslations();
+  async componentWillLoad(): Promise<void> {
+    return this._getTranslations();
   }
 
   componentWillRender(): Promise<any> {
@@ -124,7 +124,7 @@ export class SolutionConfiguration {
     });
   }
 
-  componentDidRender() {
+  componentDidRender(): void {
     if (this._isLoading) {
       this._isLoading = false;
       this.solutionLoaded.emit();
@@ -365,7 +365,7 @@ export class SolutionConfiguration {
    *
    * @returns a response that will indicate success or failure and any associated messages
    */
-  protected async _save() {
+  protected async _save(): Promise<IResponse> {
     const templateUpdates = await this._updateTemplates();
     const data = this._setSrInfo(templateUpdates.templates);
     return templateUpdates.errors.length === 0 ? save(
@@ -651,8 +651,9 @@ export class SolutionConfiguration {
    *
    * @protected
    */
-  protected async _getTranslations() {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionConfiguration_T9n;
+    return Promise.resolve();
   }
 }

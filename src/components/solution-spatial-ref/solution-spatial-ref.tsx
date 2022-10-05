@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, h, Host, Method, Prop, State, Watch, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, h, Host, Method, Prop, State, VNode, Watch } from '@stencil/core';
 import '@esri/calcite-components';
 import { wkids } from './spatialreferences';
 import state from '../../utils/editStore';
@@ -75,7 +75,6 @@ export class SolutionSpatialRef {
   */
   @Prop({ mutable: true, reflect: true }) services: string[] = [];
 
-
   /**
   * Indicates if the control has been enabled.
   * The first time Spatial Reference has been enabled it should enable all feature services.
@@ -96,8 +95,8 @@ export class SolutionSpatialRef {
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
-  async componentWillLoad() {
-    await this._getTranslations();
+  componentWillLoad(): Promise<void> {
+    return this._getTranslations();
   }
 
   /**
@@ -123,8 +122,8 @@ export class SolutionSpatialRef {
             {this._translations.spatialReferenceInfo}
             <label class="spatial-ref-default">
               <calcite-input
-                id="calcite-sr-search"
                 disabled={this.locked}
+                id="calcite-sr-search"
                 onCalciteInputInput={(evt) => this._searchSpatialReferences(evt)}
                 onKeyDown={(evt) => this._inputKeyDown(evt)}
                 placeholder={this._translations.spatialReferencePlaceholder}
@@ -176,7 +175,7 @@ export class SolutionSpatialRef {
   //
   //--------------------------------------------------------------------------
 
-  @Event() featureServiceSpatialReferenceChange: EventEmitter;
+  @Event() featureServiceSpatialReferenceChange: EventEmitter<{ name: string, enabled: boolean }>;
 
   //--------------------------------------------------------------------------
   //
@@ -260,7 +259,7 @@ export class SolutionSpatialRef {
   /**
    * Toggles the ability to set the default spatial reference.
    */
-  protected _updateLocked(event): void {
+  protected _updateLocked(event: any): void {
     this.locked = !event.detail.switched;
     this._updateStore();
     if (!this.loaded) {
@@ -348,7 +347,7 @@ export class SolutionSpatialRef {
   /**
    * Updates the enabled/disabled state of the service in spatialReferenceInfo.
    */
-  protected _updateEnabledServices(event, name): void {
+  protected _updateEnabledServices(event: any, name: string): void {
     state.spatialReferenceInfo["services"][name] = event.detail.switched;
     this.featureServiceSpatialReferenceChange.emit({
       name,
@@ -475,8 +474,9 @@ export class SolutionSpatialRef {
    *
    * @protected
    */
-  protected async _getTranslations() {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionSpatialRef_T9n;
+    return Promise.resolve();
   }
 }

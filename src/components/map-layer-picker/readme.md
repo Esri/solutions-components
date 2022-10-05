@@ -17,9 +17,9 @@
 
 ## Events
 
-| Event                  | Description | Type               |
-| ---------------------- | ----------- | ------------------ |
-| `layerSelectionChange` |             | `CustomEvent<any>` |
+| Event                  | Description | Type                    |
+| ---------------------- | ----------- | ----------------------- |
+| `layerSelectionChange` |             | `CustomEvent<string[]>` |
 
 
 ## Dependencies

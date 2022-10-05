@@ -17,9 +17,9 @@
 
 ## Events
 
-| Event                                  | Description | Type               |
-| -------------------------------------- | ----------- | ------------------ |
-| `featureServiceSpatialReferenceChange` |             | `CustomEvent<any>` |
+| Event                                  | Description | Type                                               |
+| -------------------------------------- | ----------- | -------------------------------------------------- |
+| `featureServiceSpatialReferenceChange` |             | `CustomEvent<{ name: string; enabled: boolean; }>` |
 
 
 ## Methods

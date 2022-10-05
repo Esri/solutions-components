@@ -81,13 +81,13 @@ export function getItemHierarchy(
   const hierarchy = [];
 
   // Get the template specified by id out of a list of templates
-  function getTemplateInSolution(templates, id) {
+  function getTemplateInSolution(templates, id): any {
     const iTemplate = templates.findIndex((template) => id === template.itemId);
     return iTemplate >= 0 ? templates[iTemplate] : null;
   }
 
   // Hierarchically list the dependencies of specified node
-  function traceItemId(id, accumulatedHierarchy, alreadyVisitedIds = []) {
+  function traceItemId(id, accumulatedHierarchy, alreadyVisitedIds = []): void {
     // Get the dependencies of the node
     const template = getTemplateInSolution(templates, id);
     /* istanbul ignore else */
@@ -556,7 +556,7 @@ function _getIsResource(
  *
  * @returns a list of Itop level item ids
  */
-function _getTopLevelItemIds(templates: IItemTemplate[]) {
+function _getTopLevelItemIds(templates: IItemTemplate[]): string[] {
   // Find the top-level nodes. Start with all nodes, then remove those that other nodes depend on
   const topLevelItemCandidateIds = templates.map((template) => template.itemId);
   templates.forEach((template) => {

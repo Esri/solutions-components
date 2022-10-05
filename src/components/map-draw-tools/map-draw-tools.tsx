@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import state from "../../utils/publicNotificationStore";
 import MapDrawTools_T9n from '../../assets/t9n/map-draw-tools/resources.json';
@@ -146,8 +146,9 @@ export class MapDrawTools {
    * @returns Promise that resolves when the operation is complete
    */
   @Method()
-  async clear() {
-    return this._clearSketch();
+  clear(): Promise<void> {
+    this._clearSketch();
+    return Promise.resolve();
   }
 
   //--------------------------------------------------------------------------
@@ -156,7 +157,7 @@ export class MapDrawTools {
   //
   //--------------------------------------------------------------------------
 
-  @Event() sketchGraphicsChange: EventEmitter;
+  @Event() sketchGraphicsChange: EventEmitter<__esri.Graphic[]>;
 
   //--------------------------------------------------------------------------
   //
@@ -167,22 +168,23 @@ export class MapDrawTools {
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
-  async componentWillLoad() {
+  async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
+    return Promise.resolve();
   }
 
   /**
    * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
    */
-  componentDidLoad() {
+  componentDidLoad(): void {
     this._init();
   }
 
   /**
    * Renders the component.
    */
-  render() {
+  render(): VNode {
     const drawClass = this.border ? "border" : "";
     return (
       <Host>
@@ -304,8 +306,9 @@ export class MapDrawTools {
    *
    * @protected
    */
-   protected async _getTranslations() {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof MapDrawTools_T9n;
+    return Promise.resolve();
   }
 }

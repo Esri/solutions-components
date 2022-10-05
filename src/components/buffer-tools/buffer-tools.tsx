@@ -66,17 +66,17 @@ export class BufferTools {
   /**
    * number: The component's maximum selectable value.
    */
-  @Prop() sliderMax: number = 100;
+  @Prop() sliderMax = 100;
 
   /**
    * number: The component's minimum selectable value.
    */
-  @Prop() sliderMin: number = 0;
+  @Prop() sliderMin = 0;
 
   /**
    * number: Displays tick marks on the number line at a specified interval.
    */
-  @Prop() sliderTicks: number = 10;
+  @Prop() sliderTicks = 10;
 
   //--------------------------------------------------------------------------
   //
@@ -85,7 +85,9 @@ export class BufferTools {
   //--------------------------------------------------------------------------
 
   protected geometryEngine:  __esri.geometryEngine;
+
   protected _unitDiv: HTMLCalciteSelectElement;
+
   protected bufferTimeout: NodeJS.Timeout;
 
   /**
@@ -119,7 +121,7 @@ export class BufferTools {
   //
   //--------------------------------------------------------------------------
 
-  @Event() bufferComplete: EventEmitter;
+  @Event() bufferComplete: EventEmitter<__esri.Polygon | __esri.Polygon[]>;
 
   //--------------------------------------------------------------------------
   //
@@ -130,7 +132,7 @@ export class BufferTools {
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
-  async componentWillLoad() {
+  async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
   }
@@ -138,7 +140,7 @@ export class BufferTools {
   /**
    * Renders the component.
    */
-  render() {
+  render(): VNode {
     return (
       <Host>
         {this.appearance === "text" ? this._getTextBoxDisplay() : this._getSliderDisplay()}
@@ -231,7 +233,7 @@ export class BufferTools {
       clearTimeout(this.bufferTimeout);
     }
 
-    this.bufferTimeout = setTimeout(async () => {
+    this.bufferTimeout = setTimeout(() => {
       // needs to be wgs 84 or Web Mercator
       if (this.geometries?.length > 0 && this.unit && this.distance > 0) {
         const buffer = this.geometryEngine.geodesicBuffer(
@@ -289,8 +291,8 @@ export class BufferTools {
       <div>
         <calcite-slider
           labelHandles={true}
-          min={this.sliderMin}
           max={this.sliderMax}
+          min={this.sliderMin}
           ticks={this.sliderTicks}
         />
       </div>
@@ -302,9 +304,10 @@ export class BufferTools {
    *
    * @protected
    */
-  async _getTranslations() {
+  protected async _getTranslations(): Promise<void> {
     const messages = await getLocaleComponentStrings(this.el);
     this._translations = messages[0] as typeof BufferTools_T9n;
+    return Promise.resolve();
   }
 
 }
