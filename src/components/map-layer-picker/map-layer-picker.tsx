@@ -82,7 +82,6 @@ export class MapLayerPicker {
         this.layerSelectionChange.emit([this.layerNames[0]]);
       }
     }
-    return Promise.resolve();
   }
 
   //--------------------------------------------------------------------------
@@ -115,7 +114,6 @@ export class MapLayerPicker {
         this.selectedLayers.length === 1 ? [this.selectedLayers[0]] : [this.layerNames[0]]
       );
     }
-    return Promise.resolve();
   }
 
   /**

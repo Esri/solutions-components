@@ -104,7 +104,6 @@ export class MapSearch {
   @Method()
   async clear(): Promise<void> {
     this._searchWidget.clear();
-    return Promise.resolve();
   }
 
   //--------------------------------------------------------------------------
@@ -127,7 +126,6 @@ export class MapSearch {
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
-    return Promise.resolve();
   }
 
   /**
@@ -220,6 +218,5 @@ export class MapSearch {
   protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof MapSearch_T9n;
-    return Promise.resolve();
   }
 }
