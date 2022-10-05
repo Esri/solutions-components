@@ -146,9 +146,8 @@ export class MapDrawTools {
    * @returns Promise that resolves when the operation is complete
    */
   @Method()
-  clear(): Promise<void> {
+  async clear(): Promise<void> {
     this._clearSketch();
-    return Promise.resolve();
   }
 
   //--------------------------------------------------------------------------
@@ -171,7 +170,6 @@ export class MapDrawTools {
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
-    return Promise.resolve();
   }
 
   /**
@@ -309,6 +307,5 @@ export class MapDrawTools {
   protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof MapDrawTools_T9n;
-    return Promise.resolve();
   }
 }

@@ -119,7 +119,6 @@ export class PublicNotification {
         this.selectionSets = [];
       }
     }
-    return Promise.resolve();
   }
 
   @Watch('pageType')
@@ -131,7 +130,6 @@ export class PublicNotification {
     if (v === EPageType.LIST || v === EPageType.REFINE || v === EPageType.PDF || v === EPageType.CSV) {
       return this._highlightFeatures();
     }
-    return Promise.resolve();
   }
 
   //--------------------------------------------------------------------------
@@ -872,6 +870,5 @@ export class PublicNotification {
   protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof NewPublicNotification_T9n;
-    return Promise.resolve();
   }
 }

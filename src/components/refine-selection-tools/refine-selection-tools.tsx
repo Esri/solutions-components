@@ -152,13 +152,11 @@ export class RefineSelectionTools {
   @Method()
   async reset(): Promise<void> {
     this.ids = [];
-    return Promise.resolve();
   }
 
   @Method()
   async clearHighlight(): Promise<void> {
     this._clearHighlight();
-    return Promise.resolve();
   }
 
   //--------------------------------------------------------------------------
@@ -183,7 +181,6 @@ export class RefineSelectionTools {
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
-    return Promise.resolve();
   }
 
   /**
@@ -428,11 +425,9 @@ export class RefineSelectionTools {
 
      return Promise.all(layerPromises).then((layerViews) => {
         this.layerViews = layerViews;
-        return Promise.resolve();
       });
     } else {
       this.selectEnabled = false;
-      return Promise.resolve();
     }
   }
 
@@ -509,7 +504,6 @@ export class RefineSelectionTools {
         });
       }
       this._clear();
-      return Promise.resolve();
     });
   }
 
@@ -587,6 +581,5 @@ export class RefineSelectionTools {
   protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof RefineSelectionTools_T9n;
-    return Promise.resolve();
   }
 }
