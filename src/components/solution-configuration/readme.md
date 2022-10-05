@@ -7,23 +7,11 @@
 
 ## Properties
 
-| Property         | Attribute          | Description                                            | Type                     | Default                                                                                                                                         |
-| ---------------- | ------------------ | ------------------------------------------------------ | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `authentication` | --                 | Credentials for requests                               | `UserSession`            | `undefined`                                                                                                                                     |
-| `item`           | --                 | Contains the current solution item we are working with | `ICurrentEditItem`       | `{     itemId: "",     itemDetails: {},     isResource: false,     data: {},     properties: {},     type: "",     groupDetails: undefined   }` |
-| `itemid`         | `itemid`           | Contains the current solution item id                  | `string`                 | `""`                                                                                                                                            |
-| `showLoading`    | `show-loading`     | Used to show/hide loading indicator                    | `boolean`                | `false`                                                                                                                                         |
-| `sourceItemData` | `source-item-data` | Contains the current solution item data                | `any`                    | `{}`                                                                                                                                            |
-| `templates`      | --                 | Contains the raw templates from the solution item      | `any[]`                  | `undefined`                                                                                                                                     |
-| `treeOpen`       | `tree-open`        | Used to show/hide the content tree                     | `any`                    | `undefined`                                                                                                                                     |
-| `value`          | --                 | Contains the public value for this component.          | `ISolutionConfiguration` | `{     contents: []   }`                                                                                                                        |
-
-
-## Events
-
-| Event            | Description | Type                |
-| ---------------- | ----------- | ------------------- |
-| `solutionLoaded` |             | `CustomEvent<void>` |
+| Property         | Attribute          | Description                           | Type          | Default     |
+| ---------------- | ------------------ | ------------------------------------- | ------------- | ----------- |
+| `authentication` | --                 | Credentials for requests              | `UserSession` | `undefined` |
+| `showLoading`    | `show-loading`     | Used to show/hide loading indicator   | `boolean`     | `false`     |
+| `solutionItemId` | `solution-item-id` | Contains the current solution item id | `string`      | `""`        |
 
 
 ## Methods
