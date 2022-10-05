@@ -123,7 +123,6 @@ export class PdfDownload {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
-    return Promise.resolve();
   }
 
   /**
@@ -183,7 +182,6 @@ export class PdfDownload {
   ): Promise<void> {
     const l = this._labelInfoControl.selectedOption.value;
     alert(`PDF download: (${this._getLabelSizeText(l)}) (remove dups: ${removeDuplicates}) ${ids.join(", ")}`);
-    return Promise.resolve();
   }
 
   /**
@@ -229,7 +227,6 @@ export class PdfDownload {
   protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof PdfDownload_T9n;
-    return Promise.resolve();
   }
 
 }

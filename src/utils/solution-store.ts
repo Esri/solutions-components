@@ -185,7 +185,6 @@ class SolutionStore
         this._store.state.templateEdits[k].original = {...this._store.state.templateEdits[k].current};
       }
     );
-    return Promise.resolve();
   }
 
   /**
@@ -217,7 +216,6 @@ class SolutionStore
     } else {
       this._emptyTheStore();
     }
-    return Promise.resolve();
   }
 
   /**
@@ -263,7 +261,6 @@ class SolutionStore
         this._store.state.templateEdits[k].current = {...this._store.state.templateEdits[k].original};
       }
     );
-    return Promise.resolve();
   }
 
   //------------------------------------------------------------------------------------------------------------------//

@@ -306,7 +306,6 @@ export class MapSelectTools {
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
-    return Promise.resolve();
   }
 
   /**
@@ -437,7 +436,6 @@ export class MapSelectTools {
     this._initGraphicsLayer();
     this._initSelectionSet();
     this._initSearchWidget();
-    return Promise.resolve();
   }
 
   /**
@@ -555,7 +553,6 @@ export class MapSelectTools {
       );
     }
     this.selectionSetChange.emit(ids.length);
-    return Promise.resolve();
   }
 
   /**
@@ -583,7 +580,6 @@ export class MapSelectTools {
       });
       void this._highlightFeatures(this._selectedIds);
     //}, 100);
-    return Promise.resolve();
   }
 
   /**
@@ -642,7 +638,6 @@ export class MapSelectTools {
       }
       void this._geomQuery(this.geometries);
     }
-    return Promise.resolve();
   }
 
   /**
@@ -715,7 +710,6 @@ export class MapSelectTools {
       void this._drawTools.clear();
     }
     this.selectionSetChange.emit(this._selectedIds.length);
-    return Promise.resolve();
   }
 
   /**
@@ -746,6 +740,5 @@ export class MapSelectTools {
   protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof MapSelectTools_T9n;
-    return Promise.resolve();
   }
 }

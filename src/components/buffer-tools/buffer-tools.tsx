@@ -307,7 +307,6 @@ export class BufferTools {
   protected async _getTranslations(): Promise<void> {
     const messages = await getLocaleComponentStrings(this.el);
     this._translations = messages[0] as typeof BufferTools_T9n;
-    return Promise.resolve();
   }
 
 }

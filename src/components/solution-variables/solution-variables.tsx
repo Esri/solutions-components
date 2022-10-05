@@ -178,6 +178,5 @@ export class SolutionVariables {
   protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof SolutionVariables_T9n;
-    return Promise.resolve();
   }
 }
