@@ -15,7 +15,7 @@
 | `showLoading`    | `show-loading`     | Used to show/hide loading indicator                    | `boolean`                | `false`                                                                                                                                         |
 | `sourceItemData` | `source-item-data` | Contains the current solution item data                | `any`                    | `{}`                                                                                                                                            |
 | `templates`      | --                 | Contains the raw templates from the solution item      | `any[]`                  | `undefined`                                                                                                                                     |
-| `treeOpen`       | `tree-open`        | Used to show/hide the content tree                     | `any`                    | `undefined`                                                                                                                                     |
+| `treeOpen`       | `tree-open`        | Used to show/hide the content tree                     | `boolean`                | `true`                                                                                                                                          |
 | `value`          | --                 | Contains the public value for this component.          | `ISolutionConfiguration` | `{     contents: []   }`                                                                                                                        |
 
 

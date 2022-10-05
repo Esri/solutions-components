@@ -84,7 +84,7 @@ export class SolutionConfiguration {
   /**
    * Used to show/hide the content tree
    */
-  @Prop({ mutable: true }) treeOpen;
+  @Prop({ mutable: true }) treeOpen = true;
 
   /**
   * Contains the current solution item data

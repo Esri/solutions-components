@@ -15,7 +15,7 @@
 | `organizationVariables` | --           | Contains the organization based variables                                                                                                                                                       | `IOrganizationVariableItem[]` | `[]`        |
 | `solutionVariables`     | --           | Contains the solution based variables                                                                                                                                                           | `IVariableItem[]`             | `[]`        |
 | `value`                 | --           | Contains the public value for this component.  When working with a resource item this should contain an IResourceItem  When working with a json type item this should contain the data and vars | `ITemplateData`               | `{}`        |
-| `varsOpen`              | `vars-open`  | Used to show/hide the variable containers                                                                                                                                                       | `any`                         | `undefined` |
+| `varsOpen`              | `vars-open`  | Used to show/hide the variable containers                                                                                                                                                       | `boolean`                     | `true`      |
 
 
 ## Dependencies

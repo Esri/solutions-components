@@ -52,7 +52,7 @@ export class SolutionSpatialRef {
   /**
   * When true, all but the main switch are disabled to prevent interaction.
   */
-  @Prop({ mutable: true, reflect: true }) locked;
+  @Prop({ mutable: true, reflect: true }) locked = true;
 
   /**
    * Contains the public value for this component.
