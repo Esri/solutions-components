@@ -75,7 +75,7 @@ export class RefineSelectionTools {
   /**
    * boolean: Used to control the visibility of the layer picker
    */
-  @Prop() useLayerPicker;
+  @Prop() useLayerPicker = true;
 
   /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html

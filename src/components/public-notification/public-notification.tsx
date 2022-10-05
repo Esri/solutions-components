@@ -61,7 +61,7 @@ export class PublicNotification {
    * boolean: Enabled when we have 1 or more selection sets that is enabled in the download pages.
    * By default all selection sets are enabled for download when they are first created.
    */
-  @State() downloadActive: boolean;
+  @State() downloadActive = true;
 
   /**
    * utils/interfaces/EWorkflowType: SEARCH | SELECT | SKETCH

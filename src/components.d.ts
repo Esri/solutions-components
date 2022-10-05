@@ -277,7 +277,7 @@ export namespace Components {
         /**
           * boolean: Used to control the visibility of the layer picker
          */
-        "useLayerPicker": any;
+        "useLayerPicker": boolean;
     }
     interface SolutionConfiguration {
         /**
@@ -293,7 +293,19 @@ export namespace Components {
         /**
           * Contains the current solution item id
          */
-        "solutionItemId": string;
+        "sourceItemData": any;
+        /**
+          * Contains the raw templates from the solution item
+         */
+        "templates": any[];
+        /**
+          * Used to show/hide the content tree
+         */
+        "treeOpen": any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value": ISolutionConfiguration;
     }
     interface SolutionContents {
         /**
@@ -384,7 +396,7 @@ export namespace Components {
         /**
           * When true, all but the main switch are disabled to prevent interaction.
          */
-        "locked": boolean;
+        "locked": any;
         /**
           * List of service names the spatial reference should apply to
          */
@@ -420,7 +432,7 @@ export namespace Components {
         /**
           * Used to show/hide the variable containers
          */
-        "varsOpen": boolean;
+        "varsOpen": any;
     }
     interface SolutionVariables {
         /**
@@ -857,7 +869,7 @@ declare namespace LocalJSX {
         /**
           * boolean: Used to control the visibility of the layer picker
          */
-        "useLayerPicker"?: any;
+        "useLayerPicker"?: boolean;
     }
     interface SolutionConfiguration {
         /**
@@ -871,7 +883,19 @@ declare namespace LocalJSX {
         /**
           * Contains the current solution item id
          */
-        "solutionItemId"?: string;
+        "sourceItemData"?: any;
+        /**
+          * Contains the raw templates from the solution item
+         */
+        "templates"?: any[];
+        /**
+          * Used to show/hide the content tree
+         */
+        "treeOpen"?: any;
+        /**
+          * Contains the public value for this component.
+         */
+        "value"?: ISolutionConfiguration;
     }
     interface SolutionContents {
         "onSolutionItemSelected"?: (event: SolutionContentsCustomEvent<ICurrentEditItem>) => void;
@@ -953,7 +977,7 @@ declare namespace LocalJSX {
         /**
           * When true, all but the main switch are disabled to prevent interaction.
          */
-        "locked"?: boolean;
+        "locked"?: any;
         "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ name: string, enabled: boolean }>) => void;
         /**
           * List of service names the spatial reference should apply to
@@ -984,7 +1008,7 @@ declare namespace LocalJSX {
         /**
           * Used to show/hide the variable containers
          */
-        "varsOpen"?: boolean;
+        "varsOpen"?: any;
     }
     interface SolutionVariables {
         "onSolutionVariableSelected"?: (event: SolutionVariablesCustomEvent<{ itemId: string, value: string }>) => void;

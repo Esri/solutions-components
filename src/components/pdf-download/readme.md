@@ -9,7 +9,7 @@
 
 | Property    | Attribute  | Description                                                                                                                               | Type               | Default     |
 | ----------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
-| `disabled`  | `disabled` | boolean: Controls the enabled/disabled state of download                                                                                  | `boolean`          | `undefined` |
+| `disabled`  | `disabled` | boolean: Controls the enabled/disabled state of download                                                                                  | `boolean`          | `true`      |
 | `layerView` | --         | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
 
 
