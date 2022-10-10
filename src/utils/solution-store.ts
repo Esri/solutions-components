@@ -75,13 +75,13 @@ import {
 //   * getItemInfo: Returns the stored information of an item.
 //   * getStoreInfo: Returns a top-level store property: solutionItemId, defaultWkid, etc.
 //   * keepItemChanges: Makes changes permanent in store by overwriting original values with the change values.
-//   * loadSolution: Makes changes permanent in store by overwriting original values with the change values.
+//   * loadSolution: Loads a Solution into the store.
 //   * setItemInfo: Stores information for item.
 //   * setStoreInfo: Sets a top-level store property: solutionItemId, defaultWkid, etc.
 //   * undoItemChanges: Undoes changes in store by overwriting change values with the original values.
 //
 // Store events:
-//   * templatesChanged: Event for notifying about any change to the store.
+//   * solutionStoreHasChanges: Event for notifying if the store has changes or not.
 //
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -107,20 +107,23 @@ const EmptySolutionStore: SolutionStoreData = {
   }
 }
 
-/**
- * Event for notifying about any change to the store.
- */
-const templatesChangedEvent = new CustomEvent("templatesChanged", {
-  bubbles: true,
-  cancelable: false,
-  composed: true
-});
+const EmptyEditItem: ISolutionTemplateEditItem = {
+  type: "",
+  details: "{}",
+  data: "{}",
+  properties: "{}",
+  thumbnail: null,
+  resourceFilePaths: [],
+  groupDetails: []
+}
 
 class SolutionStore
 {
   protected static _instance: SolutionStore;
 
   protected _store: any;
+
+  protected _hasChanges = false;
 
   /**
    * Creates singleton instance when accessed; default export from module.
@@ -140,11 +143,6 @@ class SolutionStore
     this._store = createStore({
       ...EmptySolutionStore
     });
-
-    this._store.onChange("templateEdits", () => {
-      //console.log("templatesChangedEvent");
-      dispatchEvent(templatesChangedEvent);
-    });
   }
 
   /**
@@ -157,7 +155,7 @@ class SolutionStore
   public getItemInfo(
     itemId: string
   ): ISolutionTemplateEditItem {
-    return this._store.get("templateEdits")[itemId]?.current;
+    return this._store.get("templateEdits")[itemId]?.current || EmptyEditItem;
   }
 
   /**
@@ -185,10 +183,11 @@ class SolutionStore
         this._store.state.templateEdits[k].original = {...this._store.state.templateEdits[k].current};
       }
     );
+    this._flagStoreAsChanged(false);
   }
 
   /**
-   * Makes changes permanent in store by overwriting original values with the change values.
+   * Loads a Solution into the store.
    *
    * @param solutionItemId Id of the solution represented in the store
    * @param authentication Credentials for fetching information to be loaded into the store
@@ -209,13 +208,13 @@ class SolutionStore
       this._store.set("solutionItemId", solutionItemId);
       this._store.set("defaultWkid", defaultWkid);
       this._store.set("templates", solutionData.templates);
-
       this._store.set("templateEdits", templateEdits);
       this._store.set("featureServices", featureServices);
       this._store.set("spatialReferenceInfo", spatialReferenceInfo);
     } else {
       this._emptyTheStore();
     }
+    this._flagStoreAsChanged(false);
   }
 
   /**
@@ -234,6 +233,7 @@ class SolutionStore
     }
 
     item.current = {...itemEdit};
+    this._flagStoreAsChanged(true);
   }
 
   /**
@@ -247,6 +247,7 @@ class SolutionStore
     value: any
   ): void {
     this._store.set(propName, value);
+    this._flagStoreAsChanged(true);
   }
 
   /**
@@ -261,6 +262,7 @@ class SolutionStore
         this._store.state.templateEdits[k].current = {...this._store.state.templateEdits[k].original};
       }
     );
+    this._flagStoreAsChanged(false);
   }
 
   //------------------------------------------------------------------------------------------------------------------//
@@ -312,6 +314,25 @@ class SolutionStore
     this._store.set("templateEdits", EmptySolutionStore.templateEdits);
     this._store.set("featureServices", EmptySolutionStore.featureServices);
     this._store.set("spatialReferenceInfo", EmptySolutionStore.spatialReferenceInfo);
+  }
+
+  /**
+   * Sets the store's flag indicating if it has changes and dispatches an event when
+   * the flag value changes.
+   */
+  protected _flagStoreAsChanged(flagAsChanged: boolean): void {
+    // Event for notifying if the store has changes or not
+    if (this._hasChanges !== flagAsChanged) {
+      console.log(`dispatch 'solutionStoreHasChanges': ${flagAsChanged}`);//???
+      window.dispatchEvent(new CustomEvent("solutionStoreHasChanges", {
+        detail: flagAsChanged,
+        bubbles: true,
+        cancelable: false,
+        composed: true
+      }));
+    }
+
+    this._hasChanges = flagAsChanged;
   }
 
   /**
