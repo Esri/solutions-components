@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property | Attribute | Description                                   | Type     | Default |
-| -------- | --------- | --------------------------------------------- | -------- | ------- |
-| `itemId` | `item-id` | Contains the public value for this component. | `string` | `""`    |
+| Property | Attribute | Description          | Type     | Default |
+| -------- | --------- | -------------------- | -------- | ------- |
+| `itemId` | `item-id` | A template's itemId. | `string` | `""`    |
 
 
 ## Dependencies

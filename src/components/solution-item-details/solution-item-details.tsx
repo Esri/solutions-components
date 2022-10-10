@@ -19,7 +19,7 @@ import '@esri/calcite-components';
 import state from "../../utils/solution-store";
 import SolutionItemDetails_T9n from '../../assets/t9n/solution-item-details/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
-import { ISolutionTemplateEditItem } from '../../utils/interfaces';
+import { IItemDetails, ISolutionTemplateEditItem } from '../../utils/interfaces';
 
 @Component({
   tag: 'solution-item-details',
@@ -43,11 +43,11 @@ export class SolutionItemDetails {
   //--------------------------------------------------------------------------
 
   /**
-   * Contains the public value for this component.
+   * A template's itemId.
    */
   @Prop({ mutable: true, reflect: true }) itemId = "";
 
-  @Watch("itemId") valueWatchHandler(): void {
+  @Watch("itemId") itemIdWatchHandler(): void {
     this.itemEdit = state.getItemInfo(this.itemId);
     this.itemDetails = JSON.parse(this.itemEdit.details);
     this.itemType = this.itemDetails.type;
@@ -142,14 +142,14 @@ export class SolutionItemDetails {
    */
   protected browseForThumbnail: HTMLInputElement;
 
-  @State() itemDetails = {
-    title: "",
-    type: "",
-    snippet: "",
-    description: "",
-    tags: [],
+  @State() itemDetails: IItemDetails = {
     accessInformation: "",
-    licenseInfo: ""
+    description: "",
+    licenseInfo: "",
+    snippet: "",
+    tags: [],
+    title: "",
+    type: ""
   };
 
   @State() protected itemEdit: ISolutionTemplateEditItem;
@@ -267,7 +267,8 @@ export class SolutionItemDetails {
    */
   protected _updateStore(
   ): void {
-    state.getItemInfo(this.itemId).details = JSON.stringify(this.itemDetails);
+    this.itemEdit.details = JSON.stringify(this.itemDetails);
+    state.setItemInfo(this.itemId, this.itemEdit);
   }
 
   /**

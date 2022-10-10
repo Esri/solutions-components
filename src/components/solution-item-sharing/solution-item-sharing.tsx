@@ -42,11 +42,11 @@ export class SolutionItemSharing {
   //--------------------------------------------------------------------------
 
   /**
-   * Contains the public id for the group these items will be shared or un-shared with.
+   * A template's groupId.
    */
-  @Prop({ mutable: true, reflect: true }) groupId: string;
+  @Prop({ mutable: true, reflect: true }) groupId = "";
 
-  @Watch("groupId") valueWatchHandler(): void {
+  @Watch("groupId") itemIdWatchHandler(): void {
     const itemEdit = state.getItemInfo(this.groupId);
     this.sharing = itemEdit.groupDetails;
   }

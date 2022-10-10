@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property  | Attribute  | Description                                                                        | Type     | Default     |
-| --------- | ---------- | ---------------------------------------------------------------------------------- | -------- | ----------- |
-| `groupId` | `group-id` | Contains the public id for the group these items will be shared or un-shared with. | `string` | `undefined` |
+| Property  | Attribute  | Description           | Type     | Default |
+| --------- | ---------- | --------------------- | -------- | ------- |
+| `groupId` | `group-id` | A template's groupId. | `string` | `""`    |
 
 
 ## Methods

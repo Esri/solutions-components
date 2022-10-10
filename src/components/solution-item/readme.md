@@ -7,12 +7,12 @@
 
 ## Properties
 
-| Property                | Attribute                | Description                                   | Type          | Default     |
-| ----------------------- | ------------------------ | --------------------------------------------- | ------------- | ----------- |
-| `authentication`        | --                       | Credentials for requests                      | `UserSession` | `undefined` |
-| `itemId`                | `item-id`                | Contains the public value for this component. | `string`      | `""`        |
-| `organizationVariables` | `organization-variables` | Contains the organization based variables     | `string`      | `""`        |
-| `solutionVariables`     | `solution-variables`     | Contains the solution based variables         | `string`      | `""`        |
+| Property                | Attribute                | Description                               | Type          | Default     |
+| ----------------------- | ------------------------ | ----------------------------------------- | ------------- | ----------- |
+| `authentication`        | --                       | Credentials for requests                  | `UserSession` | `undefined` |
+| `itemId`                | `item-id`                | A template's itemId.                      | `string`      | `""`        |
+| `organizationVariables` | `organization-variables` | Contains the organization based variables | `string`      | `""`        |
+| `solutionVariables`     | `solution-variables`     | Contains the solution based variables     | `string`      | `""`        |
 
 
 ## Dependencies

@@ -274,7 +274,7 @@ function _getItemFromTemplate(
     typeKeywords: template.item.typeKeywords || [],
     solutionItem: {
       itemId: template.itemId,
-      itemDetails: _getItemDetails(template.item, template.type === "Group", template.itemId),
+      itemDetails: _getItemDetails(template.item, template.type === "Group"),
       isResource: _getIsResource(template),
       data: template.data,
       properties: template.properties,
@@ -322,18 +322,15 @@ function _getDependencies(
  */
 function _getItemDetails(
   item: any,
-  isGroup: boolean,
-  itemId: string
+  isGroup: boolean
 ): IItemDetails {
   return {
-    itemId,
     title: item.title || "",
     snippet: item.snippet || "",
     description: item.description || "",
     tags: item.tags || [],
     accessInformation: !isGroup ? item.accessInformation || "" : "",
-    licenseInfo: !isGroup ? item.licenseInfo || "" : "",
-    thumbnail: item.thumbnail || ""
+    licenseInfo: !isGroup ? item.licenseInfo || "" : ""
   };
 }
 

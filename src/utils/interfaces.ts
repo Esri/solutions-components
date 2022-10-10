@@ -73,14 +73,13 @@ export type SelectionMode = "single" | "multi";
  * Key details from the templates item
  */
 export interface IItemDetails {
-  title: string;
-  snippet: string;
-  description: string;
-  tags: string[];
   accessInformation?: string;
+  description: string;
   licenseInfo?: string;
-  itemId: string;
-  thumbnail: string;
+  snippet: string;
+  tags: string[];
+  title: string;
+  [key: string]: any;
 }
 
 /**

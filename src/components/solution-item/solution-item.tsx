@@ -47,11 +47,11 @@ export class SolutionItem {
   @Prop({ mutable: true }) authentication: UserSession;
 
   /**
-   * Contains the public value for this component.
+   * A template's itemId.
    */
   @Prop({ mutable: true, reflect: true }) itemId = "";
 
-  @Watch("itemId") valueWatchHandler(): void {
+  @Watch("itemId") itemIdWatchHandler(): void {
     const itemEdit = state.getItemInfo(this.itemId);
     this.itemType = itemEdit.type;
   }

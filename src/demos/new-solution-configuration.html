@@ -109,11 +109,11 @@
     <div slot="header" id="modal-title">Configure Solution</div>
     <div slot="content" class="full-height">
       <div class="full-height">
-        <solution-configuration id="demo"></solution-configuration>
+        <solution-configuration id="configurationComponent"></solution-configuration>
       </div>
     </div>
-    <calcite-button slot="secondary" width="full" appearance="outline" onclick="cancelFcn()">Cancel</calcite-button>
-    <calcite-button slot="primary" width="full" onclick="saveFcn()">Save</calcite-button>
+    <calcite-button id="cancelBtn" disabled slot="secondary" width="full" appearance="outline" onclick="cancelFcn()">Cancel</calcite-button>
+    <calcite-button id="saveBtn" disabled slot="primary" width="full" onclick="saveFcn()">Save</calcite-button>
   </calcite-modal>
 
   <script src="./libs/require.js"></script>
@@ -137,13 +137,31 @@
       solnIdChangedFcn = solnIdChanged;
       authentication = null;
       solutionIdRegEx = /[0-9a-f]{32}/i;
+      cancelBtn = document.getElementById("cancelBtn");
+      saveBtn = document.getElementById("saveBtn");
+      hasChanges = false;
+      configurationComponent = document.getElementById("configurationComponent");
 
-      // Check for changes before closing modal
       function cancel() {
-        console.log("Check for changes before closing");
-        alert("Check for changes before closing");
+        if (hasChanges) {
+          if (confirm("Save changes?")) {
+            saveChanges();
+          } else {
+            cancelChanges();
+          }
+        }
+        console.log("Closing modal...");
         appContainer.open = false;
         return Promise.resolve();
+      }
+
+      function cancelChanges() {
+        console.log("Cancelling changes...");
+        hasChanges = false;
+        //cancelBtn.disabled = saveBtn.disabled = true;
+        configurationComponent.cancelChanges().then(
+          () => configurationComponent.solutionItemId = ""
+        );
       }
 
       // Open configuration modal
@@ -156,8 +174,7 @@
         });
 
         // Initialize the configuration content
-        let demo = document.getElementById("demo");
-        demo.authentication = authentication;
+        configurationComponent.authentication = authentication;
 
         const solutionId = document.getElementById("solutionId").value;
 
@@ -166,10 +183,11 @@
           const modalTitle = document.getElementById("modal-title");
           modalTitle.innerHTML = `Configure Solution ${itemBase.title}`;
 
-          demo.solutionItemId = solutionId;
-          demo.addEventListener("templatesChanged",
-            (e) => {
-              console.log("templatesChanged " + JSON.stringify(e, null, 2));
+          configurationComponent.solutionItemId = solutionId;
+          window.addEventListener("solutionStoreHasChanges",
+            (evt) => {
+              hasChanges = evt.detail;
+              cancelBtn.disabled = saveBtn.disabled = !evt.detail;
             }
           );
 
@@ -179,9 +197,20 @@
 
       // Save changes and close the modal
       function save() {
-        console.log("Saving and closing");
-        alert("Saving and closing");
+        if (hasChanges) {
+          saveChanges();
+        }
+        console.log("Closing modal...");
         appContainer.open = false;
+      }
+
+      function saveChanges() {
+        console.log("Saving changes...");
+        hasChanges = false;
+        //cancelBtn.disabled = saveBtn.disabled = true;
+        configurationComponent.saveChanges().then(
+          () => configurationComponent.solutionItemId = ""
+        );
       }
 
       // Enables `configure` button if a guid is in the Solution ID input box

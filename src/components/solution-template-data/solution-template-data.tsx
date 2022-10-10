@@ -56,7 +56,7 @@ export class SolutionTemplateData {
   @Prop({ mutable: true, reflect: true }) instanceid = "";
 
   /**
-   * A templates itemId.
+   * A template's itemId.
    * This is used to get the correct model from a store in the json-editor
    */
   @Prop({ mutable: true, reflect: true }) itemId = "";

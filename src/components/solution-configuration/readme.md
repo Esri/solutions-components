@@ -11,10 +11,20 @@
 | ---------------- | ------------------ | ------------------------------------- | ------------- | ----------- |
 | `authentication` | --                 | Credentials for requests              | `UserSession` | `undefined` |
 | `showLoading`    | `show-loading`     | Used to show/hide loading indicator   | `boolean`     | `false`     |
-| `solutionItemId` | `solution-item-id` | Contains the current solution item id | `string`      | `""`        |
+| `solutionItemId` | `solution-item-id` | Contains the current solution item id | `any`         | `undefined` |
 
 
 ## Methods
+
+### `cancelChanges() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 ### `getSpatialReferenceInfo() => Promise<ISolutionSpatialReferenceInfo>`
 
@@ -26,13 +36,13 @@ Type: `Promise<ISolutionSpatialReferenceInfo>`
 
 
 
-### `save() => Promise<any>`
+### `saveChanges() => Promise<void>`
 
 
 
 #### Returns
 
-Type: `Promise<any>`
+Type: `Promise<void>`
 
 
 

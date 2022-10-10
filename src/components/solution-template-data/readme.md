@@ -7,13 +7,13 @@
 
 ## Properties
 
-| Property                | Attribute                | Description                                                                               | Type      | Default |
-| ----------------------- | ------------------------ | ----------------------------------------------------------------------------------------- | --------- | ------- |
-| `instanceid`            | `instanceid`             | This needs to be unique for props vs data of an item                                      | `string`  | `""`    |
-| `itemId`                | `item-id`                | A templates itemId. This is used to get the correct model from a store in the json-editor | `string`  | `""`    |
-| `organizationVariables` | `organization-variables` | Contains the organization based variables                                                 | `string`  | `""`    |
-| `solutionVariables`     | `solution-variables`     | Contains the solution based variables                                                     | `string`  | `""`    |
-| `varsOpen`              | `vars-open`              | Used to show/hide the variable containers                                                 | `boolean` | `true`  |
+| Property                | Attribute                | Description                                                                                | Type      | Default |
+| ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------ | --------- | ------- |
+| `instanceid`            | `instanceid`             | This needs to be unique for props vs data of an item                                       | `string`  | `""`    |
+| `itemId`                | `item-id`                | A template's itemId. This is used to get the correct model from a store in the json-editor | `string`  | `""`    |
+| `organizationVariables` | `organization-variables` | Contains the organization based variables                                                  | `string`  | `""`    |
+| `solutionVariables`     | `solution-variables`     | Contains the solution based variables                                                      | `string`  | `""`    |
+| `varsOpen`              | `vars-open`              | Used to show/hide the variable containers                                                  | `boolean` | `true`  |
 
 
 ## Dependencies

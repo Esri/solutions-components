@@ -48,12 +48,12 @@ export class SolutionResourceItem {
   @Prop({ mutable: true }) authentication: UserSession;
 
   /**
-   * The templates itemId.
+   * A template's itemId.
    * This is used to get the correct model from a store in the json-editor
    */
   @Prop({ mutable: true, reflect: true }) itemId = "";
 
-  @Watch("itemId") valueWatchHandler(): void {
+  @Watch("itemId") itemIdWatchHandler(): void {
     this.resourceFilePaths = state.getItemInfo(this.itemId).resourceFilePaths;
   }
 

@@ -284,8 +284,9 @@ export namespace Components {
           * Credentials for requests
          */
         "authentication": UserSession;
+        "cancelChanges": () => Promise<void>;
         "getSpatialReferenceInfo": () => Promise<ISolutionSpatialReferenceInfo>;
-        "save": () => Promise<any>;
+        "saveChanges": () => Promise<void>;
         /**
           * Used to show/hide loading indicator
          */
@@ -293,7 +294,7 @@ export namespace Components {
         /**
           * Contains the current solution item id
          */
-        "solutionItemId": string;
+        "solutionItemId": any;
     }
     interface SolutionContents {
         /**
@@ -311,7 +312,7 @@ export namespace Components {
          */
         "authentication": UserSession;
         /**
-          * Contains the public value for this component.
+          * A template's itemId.
          */
         "itemId": string;
         /**
@@ -325,7 +326,7 @@ export namespace Components {
     }
     interface SolutionItemDetails {
         /**
-          * Contains the public value for this component.
+          * A template's itemId.
          */
         "itemId": string;
     }
@@ -346,7 +347,7 @@ export namespace Components {
     interface SolutionItemSharing {
         "getShareInfo": () => Promise<any>;
         /**
-          * Contains the public id for the group these items will be shared or un-shared with.
+          * A template's groupId.
          */
         "groupId": string;
     }
@@ -362,7 +363,7 @@ export namespace Components {
          */
         "authentication": UserSession;
         /**
-          * The templates itemId. This is used to get the correct model from a store in the json-editor
+          * A template's itemId. This is used to get the correct model from a store in the json-editor
          */
         "itemId": string;
     }
@@ -406,7 +407,7 @@ export namespace Components {
          */
         "instanceid": string;
         /**
-          * A templates itemId. This is used to get the correct model from a store in the json-editor
+          * A template's itemId. This is used to get the correct model from a store in the json-editor
          */
         "itemId": string;
         /**
@@ -871,7 +872,7 @@ declare namespace LocalJSX {
         /**
           * Contains the current solution item id
          */
-        "solutionItemId"?: string;
+        "solutionItemId"?: any;
     }
     interface SolutionContents {
         "onSolutionItemSelected"?: (event: SolutionContentsCustomEvent<ICurrentEditItem>) => void;
@@ -890,7 +891,7 @@ declare namespace LocalJSX {
          */
         "authentication"?: UserSession;
         /**
-          * Contains the public value for this component.
+          * A template's itemId.
          */
         "itemId"?: string;
         /**
@@ -904,7 +905,7 @@ declare namespace LocalJSX {
     }
     interface SolutionItemDetails {
         /**
-          * Contains the public value for this component.
+          * A template's itemId.
          */
         "itemId"?: string;
     }
@@ -924,7 +925,7 @@ declare namespace LocalJSX {
     }
     interface SolutionItemSharing {
         /**
-          * Contains the public id for the group these items will be shared or un-shared with.
+          * A template's groupId.
          */
         "groupId"?: string;
     }
@@ -941,7 +942,7 @@ declare namespace LocalJSX {
          */
         "authentication"?: UserSession;
         /**
-          * The templates itemId. This is used to get the correct model from a store in the json-editor
+          * A template's itemId. This is used to get the correct model from a store in the json-editor
          */
         "itemId"?: string;
     }
@@ -970,7 +971,7 @@ declare namespace LocalJSX {
          */
         "instanceid"?: string;
         /**
-          * A templates itemId. This is used to get the correct model from a store in the json-editor
+          * A template's itemId. This is used to get the correct model from a store in the json-editor
          */
         "itemId"?: string;
         /**

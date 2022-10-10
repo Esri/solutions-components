@@ -52,10 +52,11 @@ export class SolutionConfiguration {
   /**
    * Contains the current solution item id
    */
-  @Prop({ mutable: true, reflect: true }) solutionItemId = "";
+  @Prop({ mutable: true, reflect: true }) solutionItemId;
 
   @Watch("solutionItemId") async valueWatchHandler(): Promise<void> {
     this._solutionIsLoaded = false;
+    console.log("Loading solution " + this.solutionItemId + "...");//???
     await state.loadSolution(this.solutionItemId, this.authentication);
     this._initProps();
     this._solutionIsLoaded = true;
@@ -222,6 +223,11 @@ export class SolutionConfiguration {
   */
 
   @Method()
+  async cancelChanges(): Promise<void> {
+    await state.undoItemChanges();
+  }
+
+  @Method()
   async getSpatialReferenceInfo(): Promise<ISolutionSpatialReferenceInfo> {
     return Promise.resolve(state.getStoreInfo("spatialReferenceInfo"));
   }
@@ -234,8 +240,8 @@ export class SolutionConfiguration {
   */
 
   @Method()
-  async save(): Promise<any> {
-    return Promise.resolve(/*this._save()*/);
+  async saveChanges(): Promise<void> {
+    await state.keepItemChanges();
   }
 
   //--------------------------------------------------------------------------
