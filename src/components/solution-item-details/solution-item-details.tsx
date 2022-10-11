@@ -48,9 +48,8 @@ export class SolutionItemDetails {
   @Prop({ mutable: true, reflect: true }) itemId = "";
 
   @Watch("itemId") itemIdWatchHandler(): void {
-    console.log("Read item details for " + this.itemId);//???
     this.itemEdit = state.getItemInfo(this.itemId);
-    this.itemDetails = this.itemEdit.details; //???JSON.parse(this.itemEdit.details);
+    this.itemDetails = this.itemEdit.details;
     this.itemType = this.itemDetails.type;
   }
 
@@ -268,7 +267,7 @@ export class SolutionItemDetails {
    */
   protected _updateStore(
   ): void {
-    this.itemEdit.details = this.itemDetails; //???JSON.stringify(this.itemDetails);
+    this.itemEdit.details = this.itemDetails;
     state.setItemInfo(this.itemId, this.itemEdit);
   }
 

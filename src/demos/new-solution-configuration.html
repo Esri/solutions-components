@@ -155,14 +155,12 @@
           } else {
             await cancelChanges();
           }
-          console.log("closing modal from cancel...");
           cancelBtn.disabled = saveBtn.disabled = true;
           appContainer.open = false;
         }
       }
 
       async function cancelChanges() {
-        console.log("cancelling changes...");
         hasChanges = false;
         await configurationComponent.unloadSolution();
       }
@@ -202,19 +200,16 @@
       // Save changes and close the modal
       async function save() {
         modalIsClosing = true;
-        console.log("save requested; has changes? " + hasChanges);//???
         if (hasChanges) {
           await saveChanges();
         } else {
           await cancelChanges();
         }
-        console.log("closing modal from save...");
         cancelBtn.disabled = saveBtn.disabled = true;
         appContainer.open = false;
       }
 
       async function saveChanges() {
-        console.log("saving changes...");
         hasChanges = false;
         await configurationComponent.saveSolution();
       }

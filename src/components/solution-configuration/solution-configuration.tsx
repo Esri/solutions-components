@@ -55,7 +55,6 @@ export class SolutionConfiguration {
   @Prop({ mutable: true, reflect: true }) solutionItemId;
 
   @Watch("solutionItemId") async valueWatchHandler(): Promise<void> {
-    console.log("component loading solution " + this.solutionItemId + (this.solutionItemId ? "..." : "---"));//???
     if (this.solutionItemId) {
       this._solutionIsLoaded = false;
       await state.loadSolution(this.solutionItemId, this.authentication);
@@ -242,13 +241,11 @@ export class SolutionConfiguration {
   async saveSolution(): Promise<void> {
     await state.saveSolution();
     this.solutionItemId = null;
-    console.log("saved solution");//???
   }
 
   @Method()
   async unloadSolution(): Promise<void> {
     this.solutionItemId = null;
-    console.log("unloaded solution");//???
   }
 
   //--------------------------------------------------------------------------

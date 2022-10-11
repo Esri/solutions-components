@@ -188,7 +188,6 @@ class SolutionStore
     this._authentication = authentication;
 
     const solutionData = await getItemDataAsJson(solutionItemId, authentication);
-    console.log("store loading solution " + solutionItemId + "; got data? " + (solutionData ? "yes" : "no"));//???
     if (solutionData) {
       const defaultWkid = getProp(solutionData, "params.wkid.default");
       const templateEdits = await this._prepareSolutionItems(solutionItemId, solutionData.templates, authentication);
@@ -220,7 +219,6 @@ class SolutionStore
       id: solutionItemId,
       text: solutionData
     };
-    console.log("updating item " + solutionItemId + " " + JSON.stringify(solutionData).substring(0, 30) + "...");//???
     await updateItem(itemInfo, this._authentication);
   }
 
@@ -312,7 +310,6 @@ class SolutionStore
   protected _flagStoreAsChanged(flagAsChanged: boolean): void {
     // Event for notifying if the store has changes or not
     if (this._hasChanges !== flagAsChanged) {
-      console.log(`dispatch 'solutionStoreHasChanges': ${flagAsChanged}`);//???
       window.dispatchEvent(new CustomEvent("solutionStoreHasChanges", {
         detail: flagAsChanged,
         bubbles: true,
@@ -502,9 +499,9 @@ class SolutionStore
       const editItem: ISolutionTemplateEdit = {
         itemId: t.itemId,
         type: t.type,
-        details: t.item as any, //???JSON.stringify(t.item),
-        data: t.data, //??? JSON.stringify(t.data, null, 2),
-        properties: t.properties, //???JSON.stringify(t.properties, null, 2),
+        details: t.item as any,
+        data: t.data,
+        properties: t.properties,
         thumbnail: undefined,  // retain thumbnails in store as they get messed up if you emit them in events
         resourceFilePaths
       };

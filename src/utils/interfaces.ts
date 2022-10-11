@@ -91,7 +91,6 @@ export interface IInventoryItem {
   dependencies?: IInventoryItem[];
   type: string;
   typeKeywords: string[];
-  //solutionItem: ISolutionTemplateEdit;//???
 }
 
 /**
