@@ -20,8 +20,8 @@
 import {
   //EUpdateType,
   IInventoryItem,
-  IItemDetails,
-  IItemShare,
+  //IItemDetails,
+  //IItemShare,
   IOrganizationVariableItem,
   //IResourcePath,
   //SolutionModels,
@@ -271,7 +271,7 @@ function _getItemFromTemplate(
     title: template.item.title || "",
     dependencies: _getDependencies(dependencies, templates),
     type: template.item.type || "",
-    typeKeywords: template.item.typeKeywords || [],
+    typeKeywords: template.item.typeKeywords || []/*,
     solutionItem: {
       itemId: template.itemId,
       itemDetails: _getItemDetails(template.item, template.type === "Group"),
@@ -280,7 +280,7 @@ function _getItemFromTemplate(
       properties: template.properties,
       type: template.type,
       groupDetails: _getGroupDetails(template, templates)
-    }
+    }*/
   };
 }
 
@@ -320,6 +320,7 @@ function _getDependencies(
  *
  * @returns a IItemDetails object for the current item
  */
+/*
 function _getItemDetails(
   item: any,
   isGroup: boolean
@@ -333,6 +334,7 @@ function _getItemDetails(
     licenseInfo: !isGroup ? item.licenseInfo || "" : ""
   };
 }
+*/
 
 /**
  * Capture the key item details for a given group template
@@ -342,6 +344,7 @@ function _getItemDetails(
  *
  * @returns a list of IItemShare objects
  */
+/*
 function _getGroupDetails(
   template: any,
   templates: any[]
@@ -360,6 +363,7 @@ function _getGroupDetails(
     return prev;
   }, []) : [];
 }
+*/
 
 /**
  * Used to understand if we are dealing with a binary object that will support upload/download
@@ -368,12 +372,14 @@ function _getGroupDetails(
  *
  * @returns true if this item supports upload/download
  */
+/*
 function _getIsResource(
   template: any
 ): boolean {
   return template.type !== "Group" && template.resources.some(r => r.indexOf("_info_thumbnail") < 0) &&
     (template.data === null || JSON.stringify(template.data) === "{}");
 }
+*/
 
 /**
  * Sort the template ids based on their dependencies

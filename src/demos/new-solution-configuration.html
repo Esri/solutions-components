@@ -141,27 +141,30 @@
       saveBtn = document.getElementById("saveBtn");
       hasChanges = false;
       configurationComponent = document.getElementById("configurationComponent");
+      modalIsClosing = false;
 
-      function cancel() {
-        if (hasChanges) {
-          if (confirm("Save changes?")) {
-            saveChanges();
+      async function cancel() {
+        if (!modalIsClosing) {
+          modalIsClosing = true;
+          if (hasChanges) {
+            if (confirm("Save changes?")) {
+              await saveChanges();
+            } else {
+              await cancelChanges();
+            }
           } else {
-            cancelChanges();
+            await cancelChanges();
           }
+          console.log("closing modal from cancel...");
+          cancelBtn.disabled = saveBtn.disabled = true;
+          appContainer.open = false;
         }
-        console.log("Closing modal...");
-        appContainer.open = false;
-        return Promise.resolve();
       }
 
-      function cancelChanges() {
-        console.log("Cancelling changes...");
+      async function cancelChanges() {
+        console.log("cancelling changes...");
         hasChanges = false;
-        //cancelBtn.disabled = saveBtn.disabled = true;
-        configurationComponent.cancelChanges().then(
-          () => configurationComponent.solutionItemId = ""
-        );
+        await configurationComponent.unloadSolution();
       }
 
       // Open configuration modal
@@ -192,25 +195,28 @@
           );
 
           appContainer.open = true;
+          modalIsClosing = false;
         }
       }
 
       // Save changes and close the modal
-      function save() {
+      async function save() {
+        modalIsClosing = true;
+        console.log("save requested; has changes? " + hasChanges);//???
         if (hasChanges) {
-          saveChanges();
+          await saveChanges();
+        } else {
+          await cancelChanges();
         }
-        console.log("Closing modal...");
+        console.log("closing modal from save...");
+        cancelBtn.disabled = saveBtn.disabled = true;
         appContainer.open = false;
       }
 
-      function saveChanges() {
-        console.log("Saving changes...");
+      async function saveChanges() {
+        console.log("saving changes...");
         hasChanges = false;
-        //cancelBtn.disabled = saveBtn.disabled = true;
-        configurationComponent.saveChanges().then(
-          () => configurationComponent.solutionItemId = ""
-        );
+        await configurationComponent.saveSolution();
       }
 
       // Enables `configure` button if a guid is in the Solution ID input box

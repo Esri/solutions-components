@@ -55,11 +55,15 @@ export class SolutionConfiguration {
   @Prop({ mutable: true, reflect: true }) solutionItemId;
 
   @Watch("solutionItemId") async valueWatchHandler(): Promise<void> {
-    this._solutionIsLoaded = false;
-    console.log("Loading solution " + this.solutionItemId + "...");//???
-    await state.loadSolution(this.solutionItemId, this.authentication);
-    this._initProps();
-    this._solutionIsLoaded = true;
+    console.log("component loading solution " + this.solutionItemId + (this.solutionItemId ? "..." : "---"));//???
+    if (this.solutionItemId) {
+      this._solutionIsLoaded = false;
+      await state.loadSolution(this.solutionItemId, this.authentication);
+      this._initProps();
+      this._solutionIsLoaded = true;
+    } else {
+      this._reset();
+    }
   }
 
   /**
@@ -200,7 +204,7 @@ export class SolutionConfiguration {
 
   @Listen("solutionItemSelected", { target: "window" })
   _solutionItemSelected(event: CustomEvent): void {
-    this._currentEditItemId = event.detail.itemId;
+    this._currentEditItemId = event.detail;
   }
 
   //--------------------------------------------------------------------------
@@ -223,11 +227,6 @@ export class SolutionConfiguration {
   */
 
   @Method()
-  async cancelChanges(): Promise<void> {
-    await state.undoItemChanges();
-  }
-
-  @Method()
   async getSpatialReferenceInfo(): Promise<ISolutionSpatialReferenceInfo> {
     return Promise.resolve(state.getStoreInfo("spatialReferenceInfo"));
   }
@@ -240,8 +239,16 @@ export class SolutionConfiguration {
   */
 
   @Method()
-  async saveChanges(): Promise<void> {
-    await state.keepItemChanges();
+  async saveSolution(): Promise<void> {
+    await state.saveSolution();
+    this.solutionItemId = null;
+    console.log("saved solution");//???
+  }
+
+  @Method()
+  async unloadSolution(): Promise<void> {
+    this.solutionItemId = null;
+    console.log("unloaded solution");//???
   }
 
   //--------------------------------------------------------------------------
@@ -291,12 +298,12 @@ export class SolutionConfiguration {
    * Set Props with the initial values
    */
   protected _initProps(): void {
-    const templates = state.getStoreInfo("templates");
+    const solutionData = state.getStoreInfo("solutionData");
 
-    this._solutionVariables = JSON.stringify(utils.getSolutionVariables(templates, this._translations));
+    this._solutionVariables = JSON.stringify(utils.getSolutionVariables(solutionData.templates, this._translations));
     this._organizationVariables = JSON.stringify(utils.getOrganizationVariables(this._translations));
 
-    this._templateHierarchy = [...utils.getInventoryItems(templates)];
+    this._templateHierarchy = [...utils.getInventoryItems(solutionData.templates)];
 
     if (this._solutionContentsComponent) {
       this._solutionContentsComponent.templateHierarchy = this._templateHierarchy;
@@ -308,6 +315,16 @@ export class SolutionConfiguration {
       firstItem = state.getStoreInfo("templateEdits")[this._templateHierarchy[0].id];
     }
     this._currentEditItemId = firstItem ? firstItem.itemId : "";
+  }
+
+  /**
+   * Resets internal variables.
+   */
+  protected _reset() {
+    this._currentEditItemId = "";
+    this._organizationVariables = "";
+    this._solutionVariables = "";
+    this._templateHierarchy = [];
   }
 
   /**

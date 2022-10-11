@@ -7,17 +7,17 @@
 
 ## Properties
 
-| Property            | Attribute | Description                                   | Type               | Default     |
-| ------------------- | --------- | --------------------------------------------- | ------------------ | ----------- |
-| `selectedItem`      | --        | Contains the current item that is selected.   | `ICurrentEditItem` | `undefined` |
-| `templateHierarchy` | --        | Contains the public value for this component. | `IInventoryItem[]` | `[]`        |
+| Property            | Attribute          | Description                                   | Type               | Default     |
+| ------------------- | ------------------ | --------------------------------------------- | ------------------ | ----------- |
+| `selectedItemId`    | `selected-item-id` | Contains the current item that is selected.   | `string`           | `undefined` |
+| `templateHierarchy` | --                 | Contains the public value for this component. | `IInventoryItem[]` | `[]`        |
 
 
 ## Events
 
-| Event                  | Description | Type                            |
-| ---------------------- | ----------- | ------------------------------- |
-| `solutionItemSelected` |             | `CustomEvent<ICurrentEditItem>` |
+| Event                  | Description | Type                  |
+| ---------------------- | ----------- | --------------------- |
+| `solutionItemSelected` |             | `CustomEvent<string>` |
 
 
 ## Dependencies

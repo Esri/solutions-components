@@ -20,7 +20,7 @@ import {
   IFeatureServiceEnabledStatus,
   IItemShare,
   IResourcePath,
-  ISolutionTemplateEditItem,
+  ISolutionTemplateEdit,
   ISolutionTemplateEdits,
   ISolutionSpatialReferenceInfo
 } from './interfaces';
@@ -31,6 +31,9 @@ import {
   getThumbnailFromStorageItem,
   IDeployFileCopyPath,
   IItemTemplate,
+  IItemUpdate,
+  ISolutionItemData,
+  updateItem,
   UserSession
 } from '@esri/solution-common';
 
@@ -41,17 +44,12 @@ import {
 // Store contents:
 //   * solutionItemId: [string] id of the current solution
 //   * defaultWkid: [any] value of the solution's `params.wkid.default` data property, which may be undefined
-//   * templates: [array] the `templates` property of the solution's data
-//   * templateEdits: [object] original & current edited values of each template organized by the template's itemId
+//   * solutionData: [ISolutionItemData] the solution's data
+//   * templateEdits: [object] templates in the Solution in editable form organized by the template's itemId
 //       Each entry is of the form
 //          interface ISolutionTemplateEdit {
 //            itemId: string;
 //            type: string;
-//            current: ISolutionTemplateEditItem;  // the value being edited
-//            original: ISolutionTemplateEditItem; // the snapshotted value
-//          }
-//       The current and original values have the form
-//          interface ISolutionTemplateEditItem {
 //            details: string;     // JSON.stringified item details
 //            data: string;        // JSON.stringified item data
 //            properties: string;  // JSON.stringified item properties
@@ -74,11 +72,10 @@ import {
 // Store instance methods:
 //   * getItemInfo: Returns the stored information of an item.
 //   * getStoreInfo: Returns a top-level store property: solutionItemId, defaultWkid, etc.
-//   * keepItemChanges: Makes changes permanent in store by overwriting original values with the change values.
-//   * loadSolution: Loads a Solution into the store.
+//   * loadSolution: Loads a Solution into the store from AGO.
+//   * saveSolution: Writes a Solution into AGO from the store.
 //   * setItemInfo: Stores information for item.
 //   * setStoreInfo: Sets a top-level store property: solutionItemId, defaultWkid, etc.
-//   * undoItemChanges: Undoes changes in store by overwriting change values with the original values.
 //
 // Store events:
 //   * solutionStoreHasChanges: Event for notifying if the store has changes or not.
@@ -88,7 +85,7 @@ import {
 interface SolutionStoreData {
   solutionItemId: string,
   defaultWkid: string,
-  templates: any[],
+  solutionData: ISolutionItemData,
   templateEdits: ISolutionTemplateEdits,
   featureServices: IFeatureServiceEnabledStatus[],
   spatialReferenceInfo: ISolutionSpatialReferenceInfo
@@ -97,7 +94,7 @@ interface SolutionStoreData {
 const EmptySolutionStore: SolutionStoreData = {
   solutionItemId: "",
   defaultWkid: undefined,
-  templates: [],
+  solutionData: { metadata: {}, templates: [] },
   templateEdits: {},
   featureServices: [],
   spatialReferenceInfo: {
@@ -107,15 +104,18 @@ const EmptySolutionStore: SolutionStoreData = {
   }
 }
 
-const EmptyEditItem: ISolutionTemplateEditItem = {
+/*
+const EmptyEditItem: ISolutionTemplateEdit = {
+  itemId: "",
   type: "",
-  details: "{}",
-  data: "{}",
-  properties: "{}",
+  details: {} as any,
+  data: {},
+  properties: {},
   thumbnail: null,
   resourceFilePaths: [],
   groupDetails: []
 }
+*/
 
 class SolutionStore
 {
@@ -124,6 +124,8 @@ class SolutionStore
   protected _store: any;
 
   protected _hasChanges = false;
+
+  protected _authentication: UserSession;
 
   /**
    * Creates singleton instance when accessed; default export from module.
@@ -154,8 +156,8 @@ class SolutionStore
    */
   public getItemInfo(
     itemId: string
-  ): ISolutionTemplateEditItem {
-    return this._store.get("templateEdits")[itemId]?.current || EmptyEditItem;
+  ): ISolutionTemplateEdit {
+    return this._store.get("templateEdits")[itemId] || undefined;
   }
 
   /**
@@ -172,22 +174,7 @@ class SolutionStore
   }
 
   /**
-   * Makes changes permanent in store by overwriting original values with the change values.
-   *
-   * @returns Promise that resolves when task is done
-   */
-  public async keepItemChanges(
-  ): Promise<void> {
-    Object.keys(this._store.state.templateEdits).forEach(
-      k => {
-        this._store.state.templateEdits[k].original = {...this._store.state.templateEdits[k].current};
-      }
-    );
-    this._flagStoreAsChanged(false);
-  }
-
-  /**
-   * Loads a Solution into the store.
+   * Loads a Solution into the store from AGO.
    *
    * @param solutionItemId Id of the solution represented in the store
    * @param authentication Credentials for fetching information to be loaded into the store
@@ -198,7 +185,10 @@ class SolutionStore
     solutionItemId: string,
     authentication: UserSession
   ): Promise<void> {
+    this._authentication = authentication;
+
     const solutionData = await getItemDataAsJson(solutionItemId, authentication);
+    console.log("store loading solution " + solutionItemId + "; got data? " + (solutionData ? "yes" : "no"));//???
     if (solutionData) {
       const defaultWkid = getProp(solutionData, "params.wkid.default");
       const templateEdits = await this._prepareSolutionItems(solutionItemId, solutionData.templates, authentication);
@@ -207,32 +197,46 @@ class SolutionStore
 
       this._store.set("solutionItemId", solutionItemId);
       this._store.set("defaultWkid", defaultWkid);
-      this._store.set("templates", solutionData.templates);
+      this._store.set("solutionData", solutionData);
       this._store.set("templateEdits", templateEdits);
       this._store.set("featureServices", featureServices);
       this._store.set("spatialReferenceInfo", spatialReferenceInfo);
-    } else {
-      this._emptyTheStore();
     }
     this._flagStoreAsChanged(false);
   }
 
   /**
+   * Writes a Solution into AGO from the store.
+   *
+   * @returns Promise that resolves when task is done
+   */
+  public async saveSolution(
+  ): Promise<void> {
+    // Update the templates in the original solution item data
+    const solutionItemId = this._store.get("solutionItemId");
+    const solutionData = this._store.get("solutionData");
+
+    const itemInfo: IItemUpdate = {
+      id: solutionItemId,
+      text: solutionData
+    };
+    console.log("updating item " + solutionItemId + " " + JSON.stringify(solutionData).substring(0, 30) + "...");//???
+    await updateItem(itemInfo, this._authentication);
+  }
+
+  /**
    * Stores information for item.
    *
-   * @param itemId Id of item to fetch
-   * @param itemEdit Item information; a `ReferenceError` exception is thrown if the item is not in the store
+   * @param itemId Id of item to modify
+   * @param itemEdit Item information
    */
   public setItemInfo(
     itemId: string,
-    itemEdit: ISolutionTemplateEditItem
+    itemEdit: ISolutionTemplateEdit
   ): void {
-    const item = this._store.get("templateEdits")[itemId];
-    if (!item) {
-      throw new ReferenceError(itemId);
-    }
-
-    item.current = {...itemEdit};
+    const templateEdits = this._store.get("templateEdits");
+    templateEdits[itemId] = {...itemEdit};
+    this._store.set("templateEdits", templateEdits);
     this._flagStoreAsChanged(true);
   }
 
@@ -248,21 +252,6 @@ class SolutionStore
   ): void {
     this._store.set(propName, value);
     this._flagStoreAsChanged(true);
-  }
-
-  /**
-   * Undoes changes in store by overwriting change values with the original values.
-   *
-   * @returns Promise that resolves when task is done
-   */
-  public async undoItemChanges(
-  ): Promise<void> {
-    Object.keys(this._store.state.templateEdits).forEach(
-      k => {
-        this._store.state.templateEdits[k].current = {...this._store.state.templateEdits[k].original};
-      }
-    );
-    this._flagStoreAsChanged(false);
   }
 
   //------------------------------------------------------------------------------------------------------------------//
@@ -310,7 +299,7 @@ class SolutionStore
   protected _emptyTheStore(): void {
     this._store.set("solutionItemId", EmptySolutionStore.solutionItemId);
     this._store.set("defaultWkid", EmptySolutionStore.defaultWkid);
-    this._store.set("templates", EmptySolutionStore.templates);
+    this._store.set("solutionData", EmptySolutionStore.solutionData);
     this._store.set("templateEdits", EmptySolutionStore.templateEdits);
     this._store.set("featureServices", EmptySolutionStore.featureServices);
     this._store.set("spatialReferenceInfo", EmptySolutionStore.spatialReferenceInfo);
@@ -465,8 +454,8 @@ class SolutionStore
       const _ids = [];
       Object.keys(templateEdits).forEach(k => {
         thumbnailPromises.push(
-          templateEdits[k].current.resourceFilePaths.length > 0 ?
-            getThumbnailFromStorageItem(authentication, templateEdits[k].current.resourceFilePaths) :
+          templateEdits[k].resourceFilePaths.length > 0 ?
+            getThumbnailFromStorageItem(authentication, templateEdits[k].resourceFilePaths) :
             Promise.resolve()
         );
         _ids.push(k);
@@ -476,7 +465,7 @@ class SolutionStore
           r.forEach((thumbnail, i) => {
             if (thumbnail) {
               const templateEdit = templateEdits[_ids[i]];
-              templateEdit.current.thumbnail = templateEdit.original.thumbnail = thumbnail;
+              templateEdit.thumbnail = templateEdit.thumbnail = thumbnail;
             }
           });
           resolve(templateEdits);
@@ -487,8 +476,7 @@ class SolutionStore
   }
 
   /**
-   * Create and store text items for the editor as well as other key values such as the original values
-   * that can be used to clear any temp edits.
+   * Create and store text items for the editor.
    *
    * @param solutionItemId Id of the solution represented in the store
    * @param templates A list of item templates from the solution
@@ -511,22 +499,19 @@ class SolutionStore
         authentication.portal
       );
 
-      const editItem: ISolutionTemplateEditItem = {
+      const editItem: ISolutionTemplateEdit = {
+        itemId: t.itemId,
         type: t.type,
-        details: JSON.stringify(t.item),
-        data: JSON.stringify(t.data, null, 2),
-        properties: JSON.stringify(t.properties, null, 2),
+        details: t.item as any, //???JSON.stringify(t.item),
+        data: t.data, //??? JSON.stringify(t.data, null, 2),
+        properties: t.properties, //???JSON.stringify(t.properties, null, 2),
         thumbnail: undefined,  // retain thumbnails in store as they get messed up if you emit them in events
         resourceFilePaths
       };
 
       editItem.groupDetails = t.type === "Group" ? this._getItemsSharedWithThisGroup(t, templates) : [];
 
-      templateEdits[t.itemId] = {
-        itemId: t.itemId,
-        current: editItem,
-        original: {...editItem}  // make sure that the object is different than the one assigned to the `current` property
-      };
+      templateEdits[t.itemId] = editItem;
     });
     return this._getThumbnails(templateEdits, authentication);
   }

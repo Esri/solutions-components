@@ -74,7 +74,7 @@ export type SelectionMode = "single" | "multi";
  */
 export interface IItemDetails {
   accessInformation?: string;
-  description: string;
+  description?: string;
   licenseInfo?: string;
   snippet: string;
   tags: string[];
@@ -91,7 +91,7 @@ export interface IInventoryItem {
   dependencies?: IInventoryItem[];
   type: string;
   typeKeywords: string[];
-  solutionItem: ICurrentEditItem;
+  //solutionItem: ISolutionTemplateEdit;//???
 }
 
 /**
@@ -141,30 +141,12 @@ export interface ISolutionConfiguration {
 /**
  * Details used to display and store information about the item
  */
-export interface ICurrentEditItem {
-  itemId: string;
-  itemDetails: any; //use the interface
-  isResource: boolean; // this should be removed and determined from the data
-  data: ITemplateData;
-  properties: ITemplateData;
-  type: string;
-  groupDetails?: IItemShare[];
-}
-
-/**
- * Key state info for a solution template
- */
 export interface ISolutionTemplateEdit {
   itemId: string;
-  current: ISolutionTemplateEditItem;
-  original: ISolutionTemplateEditItem;
-}
-
-export interface ISolutionTemplateEditItem {
   type: string;
-  details: string;
-  data: string;
-  properties: string;
+  details: IItemDetails;
+  data: any;
+  properties: any;
   thumbnail: any;
   resourceFilePaths: IResourcePath[];
   groupDetails?: IItemShare[];

@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ERefineMode, ESelectionMode, EWorkflowType, ICurrentEditItem, IInventoryItem, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
+import { ERefineMode, ESelectionMode, EWorkflowType, IInventoryItem, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BufferTools {
@@ -284,9 +284,8 @@ export namespace Components {
           * Credentials for requests
          */
         "authentication": UserSession;
-        "cancelChanges": () => Promise<void>;
         "getSpatialReferenceInfo": () => Promise<ISolutionSpatialReferenceInfo>;
-        "saveChanges": () => Promise<void>;
+        "saveSolution": () => Promise<void>;
         /**
           * Used to show/hide loading indicator
          */
@@ -295,12 +294,13 @@ export namespace Components {
           * Contains the current solution item id
          */
         "solutionItemId": any;
+        "unloadSolution": () => Promise<void>;
     }
     interface SolutionContents {
         /**
           * Contains the current item that is selected.
          */
-        "selectedItem": ICurrentEditItem;
+        "selectedItemId": string;
         /**
           * Contains the public value for this component.
          */
@@ -875,11 +875,11 @@ declare namespace LocalJSX {
         "solutionItemId"?: any;
     }
     interface SolutionContents {
-        "onSolutionItemSelected"?: (event: SolutionContentsCustomEvent<ICurrentEditItem>) => void;
+        "onSolutionItemSelected"?: (event: SolutionContentsCustomEvent<string>) => void;
         /**
           * Contains the current item that is selected.
          */
-        "selectedItem"?: ICurrentEditItem;
+        "selectedItemId"?: string;
         /**
           * Contains the public value for this component.
          */

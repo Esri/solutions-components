@@ -16,16 +16,6 @@
 
 ## Methods
 
-### `cancelChanges() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
 ### `getSpatialReferenceInfo() => Promise<ISolutionSpatialReferenceInfo>`
 
 
@@ -36,7 +26,17 @@ Type: `Promise<ISolutionSpatialReferenceInfo>`
 
 
 
-### `saveChanges() => Promise<void>`
+### `saveSolution() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `unloadSolution() => Promise<void>`
 
 
 
