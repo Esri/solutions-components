@@ -59,7 +59,7 @@ export class BufferTools {
   @Prop() distance = 0;
 
   /**
-   * string: The appearance of display. Can be a slider or text inputs for distance/value
+   * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
    */
   @Prop() appearance: "slider" | "text" = "text";
 
