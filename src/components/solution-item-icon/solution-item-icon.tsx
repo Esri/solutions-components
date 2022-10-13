@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, getAssetPath, h, Prop, State } from '@stencil/core';
-import SolutionItemIcon_T9n from '../../assets/t9n/solution-item-icon/resources.json';
-import { getLocaleComponentStrings } from '../../utils/locale';
+import { Component, Element, getAssetPath, h, Prop, VNode } from '@stencil/core';
 
 @Component({
   tag: 'solution-item-icon',
@@ -61,16 +59,9 @@ export class SolutionItemIcon {
   //--------------------------------------------------------------------------
 
   /**
-   * StencilJS: Called once just after the component is first connected to the DOM.
-   */
-  async componentWillLoad() {
-    this._getTranslations();
-  }
-
-  /**
    * Renders the component.
    */
-  render() {
+  render(): VNode {
     return <div title={this.type}>
       <img class="item-type-icon item-type-icon-margin"
         height="16"
@@ -82,15 +73,9 @@ export class SolutionItemIcon {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-   @State() translations: typeof SolutionItemIcon_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -124,7 +109,7 @@ export class SolutionItemIcon {
    * @param type The item type
    * @param typeKeywords The item typeKeywords
    */
-  private _getIconUrl(
+  protected _getIconUrl(
     type: string,
     typeKeywords: string[]
   ): string {
@@ -319,15 +304,5 @@ export class SolutionItemIcon {
       imgName = "maps";
     }
     return imgName ? getAssetPath(imgDir + imgName + size + ".png") : null;
-  }
-
-  /**
-   * Fetches the component's translations
-   *
-   * @protected
-   */
-  async _getTranslations() {
-    const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof SolutionItemIcon_T9n;
   }
 }

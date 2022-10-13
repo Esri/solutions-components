@@ -25,7 +25,7 @@
  *
 */
 
-import { Component, Element, Event, EventEmitter, Prop } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Prop, VNode } from '@stencil/core';
 import state from '../../utils/editStore';
 import { /*getModels,*/ getFeatureServices, getSpatialReferenceInfo } from '../../utils/templates';
 import { getItemDataAsJson, UserSession } from '@esri/solution-common';
@@ -78,7 +78,7 @@ export class StoreManager {
   /**
    * Renders the component.
    */
-  render() {
+  render(): VNode {
     return (null);
   }
 
@@ -88,7 +88,7 @@ export class StoreManager {
   //
   //--------------------------------------------------------------------------
 
-  @Event() stateLoaded: EventEmitter;
+  @Event() stateLoaded: EventEmitter<any>;
 
   //--------------------------------------------------------------------------
   //
@@ -96,13 +96,13 @@ export class StoreManager {
   //
   //--------------------------------------------------------------------------
 
-  private _valueObserver;
+  protected _valueObserver;
 
   /**
    * Initialize the observer that will monitor and respond to changes in the value.
    * When we get a new value we are dealinmg with a new solution and need to fetch the items data and load the state.
    */
-  private _initValueObserver() {
+  protected _initValueObserver(): void {
     const self = this;
     this._valueObserver = new MutationObserver(ml => {
       ml.some(mutation => {

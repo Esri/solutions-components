@@ -63,7 +63,7 @@ export function getSampleImageAsFile(): File {
 
 //--------------------------------------------------------------------------------------------------------------------//
 
-function _imageAsDataUri() {
+function _imageAsDataUri(): string {
   return "\
 iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAADKklEQVQ4T6XUf1DMeRzH8edu\
 53ZVZ6vLxmo2Q0Y7rtJZJT8abQmdysjETVEWMxgGOzF2/IhkCqNT8qPyo8PE6fzIj/y4qYlU\

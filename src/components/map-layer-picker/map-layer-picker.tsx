@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, State, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Watch } from '@stencil/core';
 import { getMapLayerNames } from '../../utils/mapViewUtils';
 import { SelectionMode } from '../../utils/interfaces';
 import state from '../../utils/publicNotificationStore';
-import MapLayerPicker_T9n from '../../assets/t9n/map-layer-picker/resources.json';
-import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'map-layer-picker',
@@ -52,7 +50,7 @@ export class MapLayerPicker {
 
   /**
    * SelectionMode: "single" | "multi"
-   * 
+   *
    * Should the component support selection against a single layer or multiple layers.
    */
   @Prop({ mutable: true, reflect: true }) selectionMode: SelectionMode = "single";
@@ -64,17 +62,11 @@ export class MapLayerPicker {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
   protected _layerSelect: HTMLCalciteSelectElement;
-
-  /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-  @State() translations: typeof MapLayerPicker_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -83,7 +75,7 @@ export class MapLayerPicker {
   //--------------------------------------------------------------------------
 
   @Watch('mapView')
-  async watchStateHandler(newValue: boolean, oldValue: boolean) {
+  async watchStateHandler(newValue: boolean, oldValue: boolean): Promise<void> {
     if (newValue !== oldValue) {
       await this._setLayers();
       if (this.selectionMode === "single") {
@@ -104,7 +96,7 @@ export class MapLayerPicker {
   //
   //--------------------------------------------------------------------------
 
-  @Event() layerSelectionChange: EventEmitter;
+  @Event() layerSelectionChange: EventEmitter<string[]>;
 
   //--------------------------------------------------------------------------
   //
@@ -115,8 +107,7 @@ export class MapLayerPicker {
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
-  async componentWillLoad() {
-    await this._getTranslations();
+  async componentWillLoad(): Promise<void> {
     await this._setLayers();
     if (this.selectionMode === "single" && (this.layerNames.length > 0 || this.selectedLayers.length === 1)) {
       this.layerSelectionChange.emit(
@@ -128,7 +119,7 @@ export class MapLayerPicker {
   /**
    * Renders the component.
    */
-  render() {
+  render(): VNode {
     return (
       <Host>
         <div class="background-w map-layer-picker-container">
@@ -142,15 +133,15 @@ export class MapLayerPicker {
 
   //--------------------------------------------------------------------------
   //
-  //  Functions (private)
+  //  Functions (protected)
   //
   //--------------------------------------------------------------------------
 
   /**
    * Create a list of layers from the map
-   * 
+   *
    * Used for selecting a single layer.
-   * 
+   *
    * @returns Calcite Select component with the names of the layers from the map
    */
   _getSelect(): VNode {
@@ -167,16 +158,16 @@ export class MapLayerPicker {
 
   /**
    * Create a list of layers from the map
-   * 
+   *
    * Used for selecting multiple layers
-   * 
+   *
    * @returns Calcite ComboBox component with the names of the layers from the map
    */
   _getCombobox(): VNode {
     return (
       <calcite-combobox
         label=''
-        
+
         onCalciteComboboxChange={(evt) => this._layerSelectionChange(evt)}
         selection-mode={this.selectionMode}
       >
@@ -187,7 +178,7 @@ export class MapLayerPicker {
 
   /**
    * Hydrate a select or combobox component with the names of the layers in the map
-   * 
+   *
    * @returns Array of ComboBox items or Select options for the names of the layers
    */
   _addMapLayersOptions(): VNode[] {
@@ -209,7 +200,7 @@ export class MapLayerPicker {
 
   /**
    * Fetch the names of the layers from the map
-   * 
+   *
    * @returns Promise when the operation has completed
    */
   async _setLayers(): Promise<void> {
@@ -220,7 +211,7 @@ export class MapLayerPicker {
 
   /**
    * Fetch the names of the layers from the map
-   * 
+   *
    * @returns Promise when the operation has completed
    */
   _layerSelectionChange(evt: CustomEvent): void {
@@ -231,15 +222,5 @@ export class MapLayerPicker {
         }
       ) || [];
     this.layerSelectionChange.emit(this.selectedLayers);
-  }
-
-  /**
-   * Fetches the component's translations
-   *
-   * @protected
-   */
-  async _getTranslations() {
-    const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof MapLayerPicker_T9n;
   }
 }

@@ -17,9 +17,9 @@
 
 ## Events
 
-| Event                                  | Description | Type               |
-| -------------------------------------- | ----------- | ------------------ |
-| `featureServiceSpatialReferenceChange` |             | `CustomEvent<any>` |
+| Event                                  | Description | Type                                               |
+| -------------------------------------- | ----------- | -------------------------------------------------- |
+| `featureServiceSpatialReferenceChange` |             | `CustomEvent<{ name: string; enabled: boolean; }>` |
 
 
 ## Methods
@@ -27,7 +27,7 @@
 ### `createSpatialRefDisplay(value: string) => Promise<ISpatialRefRepresentation>`
 
 Returns the spatial reference description of the supplied value.
-(Exposes private method `_createSpatialRefDisplay` for testing.)
+(Exposes protected method `_createSpatialRefDisplay` for testing.)
 
 #### Returns
 
@@ -38,7 +38,7 @@ If component is using a WKID, description using WKID; otherwise, the WKT; defaul
 ### `getSpatialRef() => Promise<ISpatialRefRepresentation>`
 
 Returns the current spatial reference description.
-(Exposes private variable `spatialRef` for testing.)
+(Exposes protected variable `spatialRef` for testing.)
 
 #### Returns
 
@@ -49,7 +49,7 @@ Type: `Promise<ISpatialRefRepresentation>`
 ### `wkidToDisplay(wkid: number) => Promise<string>`
 
 Converts a WKID into a spatial reference description.
-(Exposes private method `_wkidToDisplay` for testing.)
+(Exposes protected method `_wkidToDisplay` for testing.)
 
 #### Returns
 

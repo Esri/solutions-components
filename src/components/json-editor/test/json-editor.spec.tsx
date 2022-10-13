@@ -19,7 +19,7 @@ import { JsonEditor } from '../json-editor';
 import { h } from '@stencil/core';
 
 // Mock MutationObserver because Jest environment doesn't have it
-const mutationObserverMock = jest.fn(function MutationObserver() {
+const mutationObserverMock = jest.fn(function MutationObserver(): void {
   this.observe = jest.fn();
 });
 global.MutationObserver = mutationObserverMock as any;

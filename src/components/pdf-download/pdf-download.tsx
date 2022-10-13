@@ -46,13 +46,13 @@ export class PdfDownload {
   @Prop() layerView: __esri.FeatureLayerView;
 
   /**
-   * boolean: Controls the enabled/disabled state of download 
+   * boolean: Controls the enabled/disabled state of download
    */
-  @Prop() disabled: boolean;
+  @Prop() disabled = true;
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -62,7 +62,7 @@ export class PdfDownload {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof PdfDownload_T9n;
+  @State() protected _translations: typeof PdfDownload_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -87,7 +87,7 @@ export class PdfDownload {
   async downloadPDF(
     ids: number[],
     removeDuplicates: boolean
-  ) {
+  ): Promise<void> {
     return this._downloadPDF(ids, removeDuplicates);
   }
 
@@ -102,7 +102,7 @@ export class PdfDownload {
   async downloadCSV(
     ids: number[],
     removeDuplicates: boolean
-  ) {
+  ): Promise<void> {
     return this._downloadCSV(ids, removeDuplicates);
   }
 
@@ -121,14 +121,14 @@ export class PdfDownload {
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
-  async componentWillLoad() {
+  async componentWillLoad(): Promise<void> {
     await this._getTranslations();
   }
 
   /**
    * Renders the component.
    */
-  render() {
+  render(): VNode {
     return (
       <Host>
         <calcite-select
@@ -144,15 +144,15 @@ export class PdfDownload {
 
   //--------------------------------------------------------------------------
   //
-  //  Functions (private)
+  //  Functions (protected)
   //
   //--------------------------------------------------------------------------
 
   /**
    * Renders the pdf export size options
-   * 
+   *
    * @returns Node array of size options
-   * 
+   *
    * @protected
    */
   protected _renderItems(): VNode[] {
@@ -172,7 +172,7 @@ export class PdfDownload {
    *
    * @param ids List of ids to download
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * 
+   *
    * @returns Promise resolving when function is done
    * @protected
    */
@@ -190,7 +190,7 @@ export class PdfDownload {
    * @param ids List of ids to download
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
    * @returns Promise resolving when function is done
-   * 
+   *
    * @returns Promise that will resolve when the download is complete
    * @protected
    */
@@ -205,9 +205,9 @@ export class PdfDownload {
 
   /**
    * Gets the formatted pdf export size text
-   * 
+   *
    * @param labelInfo current user selected label info
-   * 
+   *
    * @returns the pdf label as a string
    * @protected
    */
@@ -216,7 +216,7 @@ export class PdfDownload {
   ): string {
     const lNum = labelInfo.descriptionPDF.labelsPerPageDisplay;
     const lSize = `${labelInfo.descriptionPDF.labelWidthDisplay} x ${labelInfo.descriptionPDF.labelHeightDisplay}`;
-    return this.translations.pdfLabel.replace("{{n}}", lNum).replace("{{labelSize}}", lSize);
+    return this._translations.pdfLabel.replace("{{n}}", lNum).replace("{{labelSize}}", lSize);
   }
 
   /**
@@ -224,9 +224,9 @@ export class PdfDownload {
    *
    * @protected
    */
-  protected async _getTranslations() {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof PdfDownload_T9n;
+    this._translations = translations[0] as typeof PdfDownload_T9n;
   }
 
 }

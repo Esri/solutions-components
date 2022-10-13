@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import { ISearchResult } from '../../utils/interfaces';
 //import state from "../../utils/publicNotificationStore";
 import MapSearch_T9n from '../../assets/t9n/map-search/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
-import { Method } from '@esri/calcite-components/dist/types/stencil-public-runtime';
+//import { Method } from '@esri/calcite-components/dist/types/stencil-public-runtime';
 
 @Component({
   tag: 'map-search',
@@ -48,7 +48,7 @@ export class MapSearch {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -62,7 +62,7 @@ export class MapSearch {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-   @State() translations: typeof MapSearch_T9n;
+   @State() protected _translations: typeof MapSearch_T9n;
 
   /**
    * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
@@ -84,7 +84,6 @@ export class MapSearch {
    */
    protected _searchResult: any;
 
-
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -103,7 +102,7 @@ export class MapSearch {
    * @returns Promise that resolves when the operation is complete
    */
   @Method()
-  async clear() {
+  async clear(): Promise<void> {
     this._searchWidget.clear();
   }
 
@@ -124,7 +123,7 @@ export class MapSearch {
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
-  async componentWillLoad() {
+  async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
   }
@@ -132,14 +131,14 @@ export class MapSearch {
   /**
    * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
    */
-  async componentDidLoad() {
+  componentDidLoad(): void {
     this._init();
   }
 
   /**
    * Renders the component.
    */
-  render() {
+  render(): VNode {
     return (
       <Host>
         <div class="search-widget" ref={(el) => { this._searchDiv = el }} />
@@ -149,7 +148,7 @@ export class MapSearch {
 
   //--------------------------------------------------------------------------
   //
-  //  Functions (private)
+  //  Functions (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -157,7 +156,7 @@ export class MapSearch {
    * Load esri javascript api modules
    *
    * @returns Promise resolving when function is done
-   * 
+   *
    * @protected
    */
   protected async _initModules(): Promise<void> {
@@ -171,16 +170,16 @@ export class MapSearch {
 
   /**
    * Initialize the search widget
-   * 
+   *
    * @returns Promise resolving when function is done
    */
-  protected async _init() {
+  protected _init(): void {
     this._initSearchWidget();
   }
 
   /**
    * Initialize the search widget and listen to key events
-   * 
+   *
    * @protected
    */
   protected _initSearchWidget(): void {
@@ -216,8 +215,8 @@ export class MapSearch {
    *
    * @protected
    */
-  protected async _getTranslations() {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof MapSearch_T9n;
+    this._translations = translations[0] as typeof MapSearch_T9n;
   }
 }

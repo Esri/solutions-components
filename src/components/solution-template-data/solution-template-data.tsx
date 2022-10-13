@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
 import { IOrganizationVariableItem, ITemplateData, IVariableItem } from '../../utils/interfaces';
 import { UserSession } from '@esri/solution-common';
 import SolutionTemplateData_T9n from '../../assets/t9n/solution-template-data/resources.json';
@@ -91,14 +91,14 @@ export class SolutionTemplateData {
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
-  async componentWillLoad() {
-    await this._getTranslations();
+  componentWillLoad(): Promise<void> {
+    return this._getTranslations();
   }
 
   /**
    * Renders the component.
    */
-  render() {
+  render(): VNode {
     return (
       <Host>
         <div class="solution-data-container">
@@ -106,9 +106,9 @@ export class SolutionTemplateData {
             <calcite-panel class="json-editor">
               <div class="solution-data-child-container calcite-match-height">
                 <json-editor
+                  class="solution-data-editor-container"
                   instanceid={this.instanceid}
                   value={this.itemid}
-                  class="solution-data-editor-container"
                 />
               </div>
             </calcite-panel>
@@ -122,7 +122,7 @@ export class SolutionTemplateData {
                   id="collapse-vars"
                   onClick={() => this._toggleVars()}
                   scale="s"
-                  title={this.translations.cancelEdits}
+                  title={this._translations.cancelEdits}
                 />
                 <div class={this.varsOpen ? "org-vars" : "org-vars display-none"} id="orgVars">
                   <solution-organization-variables
@@ -144,7 +144,7 @@ export class SolutionTemplateData {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -152,7 +152,7 @@ export class SolutionTemplateData {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof SolutionTemplateData_T9n;
+  @State() protected _translations: typeof SolutionTemplateData_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -181,7 +181,7 @@ export class SolutionTemplateData {
   /**
    * Toggle varsOpen prop to show/hide variable containers
    */
-  _toggleVars() {
+  _toggleVars(): void {
     this.varsOpen = !this.varsOpen;
   }
 
@@ -190,8 +190,8 @@ export class SolutionTemplateData {
    *
    * @protected
    */
-  async _getTranslations() {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof SolutionTemplateData_T9n;
+    this._translations = translations[0] as typeof SolutionTemplateData_T9n;
   }
 }

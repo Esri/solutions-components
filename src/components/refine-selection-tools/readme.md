@@ -23,10 +23,10 @@
 
 ## Events
 
-| Event                           | Description | Type               |
-| ------------------------------- | ----------- | ------------------ |
-| `refineSelectionGraphicsChange` |             | `CustomEvent<any>` |
-| `refineSelectionIdsChange`      |             | `CustomEvent<any>` |
+| Event                           | Description | Type                                                |
+| ------------------------------- | ----------- | --------------------------------------------------- |
+| `refineSelectionGraphicsChange` |             | `CustomEvent<any[]>`                                |
+| `refineSelectionIdsChange`      |             | `CustomEvent<{ addIds: any[]; removeIds: any[]; }>` |
 
 
 ## Methods

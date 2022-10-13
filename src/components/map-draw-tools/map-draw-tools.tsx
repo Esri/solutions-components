@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import state from "../../utils/publicNotificationStore";
 import MapDrawTools_T9n from '../../assets/t9n/map-draw-tools/resources.json';
@@ -76,7 +76,7 @@ export class MapDrawTools {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -84,7 +84,7 @@ export class MapDrawTools {
  * Contains the translations for this component.
  * All UI strings should be defined here.
  */
-  @State() translations: typeof MapDrawTools_T9n;
+  @State() protected _translations: typeof MapDrawTools_T9n;
 
   /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html?#constructors-summary
@@ -146,8 +146,8 @@ export class MapDrawTools {
    * @returns Promise that resolves when the operation is complete
    */
   @Method()
-  async clear() {
-    return this._clearSketch();
+  async clear(): Promise<void> {
+    this._clearSketch();
   }
 
   //--------------------------------------------------------------------------
@@ -156,7 +156,7 @@ export class MapDrawTools {
   //
   //--------------------------------------------------------------------------
 
-  @Event() sketchGraphicsChange: EventEmitter;
+  @Event() sketchGraphicsChange: EventEmitter<__esri.Graphic[]>;
 
   //--------------------------------------------------------------------------
   //
@@ -167,7 +167,7 @@ export class MapDrawTools {
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
-  async componentWillLoad() {
+  async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
   }
@@ -175,14 +175,14 @@ export class MapDrawTools {
   /**
    * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
    */
-  componentDidLoad() {
+  componentDidLoad(): void {
     this._init();
   }
 
   /**
    * Renders the component.
    */
-  render() {
+  render(): VNode {
     const drawClass = this.border ? "border" : "";
     return (
       <Host>
@@ -195,7 +195,7 @@ export class MapDrawTools {
 
   //--------------------------------------------------------------------------
   //
-  //  Functions (private)
+  //  Functions (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -203,7 +203,7 @@ export class MapDrawTools {
    * Load esri javascript api modules
    *
    * @returns Promise resolving when function is done
-   * 
+   *
    * @protected
    */
   protected async _initModules(): Promise<void> {
@@ -220,7 +220,7 @@ export class MapDrawTools {
 
   /**
    * Initialize the graphics layer and the tools that support creating new graphics
-   * 
+   *
    * @protected
    */
   protected _init(): void {
@@ -232,11 +232,11 @@ export class MapDrawTools {
 
   /**
    * Create or find the graphics layer and add any existing graphics
-   * 
+   *
    * @protected
    */
   protected _initGraphicsLayer(): void {
-    const title = this.translations.sketchLayer;
+    const title = this._translations.sketchLayer;
     const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
     if (sketchIndex > -1) {
       this._sketchGraphicsLayer = this.mapView.map.layers.getItemAt(sketchIndex) as __esri.GraphicsLayer;
@@ -253,7 +253,7 @@ export class MapDrawTools {
 
   /**
    * Initialize the skecth widget and store the associated symbols for each geometry type
-   * 
+   *
    * @protected
    */
   protected _initDrawTools(): void {
@@ -291,7 +291,7 @@ export class MapDrawTools {
 
   /**
    * Clear any stored graphics and remove all graphics from the graphics layer
-   * 
+   *
    * @protected
    */
   protected _clearSketch(): void {
@@ -304,8 +304,8 @@ export class MapDrawTools {
    *
    * @protected
    */
-   protected async _getTranslations() {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof MapDrawTools_T9n;
+    this._translations = translations[0] as typeof MapDrawTools_T9n;
   }
 }

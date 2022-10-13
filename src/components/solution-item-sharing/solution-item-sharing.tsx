@@ -60,18 +60,18 @@ export class SolutionItemSharing {
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
-  async componentWillLoad() {
-    await this._getTranslations();
+  async componentWillLoad(): Promise<void> {
+    return this._getTranslations();
   }
 
   /**
    * Renders the component.
    */
-  render() {
+  render(): VNode {
     return (
       <Host>
         <div class="container-border">
-          <calcite-label>{this.translations.groupInfo}</calcite-label>
+          <calcite-label>{this._translations.groupInfo}</calcite-label>
           {this._renderItems(this.value)}
         </div>
       </Host>
@@ -80,7 +80,7 @@ export class SolutionItemSharing {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -88,7 +88,7 @@ export class SolutionItemSharing {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof SolutionItemSharing_T9n;
+  @State() protected _translations: typeof SolutionItemSharing_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -173,8 +173,8 @@ export class SolutionItemSharing {
    *
    * @protected
    */
-  async _getTranslations() {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof SolutionItemSharing_T9n;
+    this._translations = translations[0] as typeof SolutionItemSharing_T9n;
   }
 }

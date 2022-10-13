@@ -21,9 +21,9 @@
 
 ## Events
 
-| Event            | Description | Type               |
-| ---------------- | ----------- | ------------------ |
-| `solutionLoaded` |             | `CustomEvent<any>` |
+| Event            | Description | Type                |
+| ---------------- | ----------- | ------------------- |
+| `solutionLoaded` |             | `CustomEvent<void>` |
 
 
 ## Methods

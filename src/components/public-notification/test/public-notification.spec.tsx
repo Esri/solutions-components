@@ -1,10 +1,10 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { PublicNotificationTwo } from '../public-notification';
+import { PublicNotification } from '../public-notification';
 
 xdescribe('public-notification', () => {
   it('renders', async () => {
     const page = await newSpecPage({
-      components: [PublicNotificationTwo],
+      components: [PublicNotification],
       html: `<public-notification></public-notification>`,
     });
     expect(page.root).toEqualHtml(`

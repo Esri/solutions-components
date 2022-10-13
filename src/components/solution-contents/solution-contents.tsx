@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Listen, State, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Listen, Watch } from '@stencil/core';
 import { IInventoryItem, ICurrentEditItem } from '../../utils/interfaces';
 import '@esri/calcite-components';
-import SolutionContents_T9n from '../../assets/t9n/solution-contents/resources.json';
-import { getLocaleComponentStrings } from '../../utils/locale';
 
 @Component({
   tag: 'solution-contents',
@@ -41,11 +39,11 @@ export class SolutionContents {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
-  
+
   /**
    * Contains the current item that is selected.
    */
-   @Prop({ mutable: true, reflect: true }) selectedItem: ICurrentEditItem;
+  @Prop({ mutable: true, reflect: true }) selectedItem: ICurrentEditItem;
 
   /**
    * Contains the public value for this component.
@@ -64,13 +62,6 @@ export class SolutionContents {
   //  Lifecycle
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * StencilJS: Called once just after the component is first connected to the DOM.
-   */
-  async componentWillLoad() {
-    await this._getTranslations();
-  }
 
   /**
    * Renders the component.
@@ -110,15 +101,9 @@ export class SolutionContents {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-  @State() translations: typeof SolutionContents_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -137,7 +122,7 @@ export class SolutionContents {
   //
   //--------------------------------------------------------------------------
 
-  @Event() solutionItemSelected: EventEmitter;
+  @Event() solutionItemSelected: EventEmitter<ICurrentEditItem>;
 
   //--------------------------------------------------------------------------
   //
@@ -153,13 +138,13 @@ export class SolutionContents {
 
   /**
    * Publishes the `solutionItemSelected` event containing `solutionItem` of the selected item.
-   * 
+   *
    * Also toggles the expanded state of the tree item.
    *
    * @param solutionItem the selected solution item to emit
    * @param evt MouseEvent or undefined
    */
-  private _treeItemSelected(
+  protected _treeItemSelected(
     solutionItem: ICurrentEditItem,
     evt: any = undefined
   ): void {
@@ -169,15 +154,5 @@ export class SolutionContents {
     }
     this.selectedItem = solutionItem;
     this.solutionItemSelected.emit(solutionItem);
-  }
-
-  /**
-   * Fetches the component's translations
-   *
-   * @protected
-   */
-  async _getTranslations() {
-    const translations = await getLocaleComponentStrings(this.el);
-    this.translations = translations[0] as typeof SolutionContents_T9n;
   }
 }

@@ -66,33 +66,35 @@ export class BufferTools {
   /**
    * number: The component's maximum selectable value.
    */
-  @Prop() sliderMax: number = 100;
+  @Prop() sliderMax = 100;
 
   /**
    * number: The component's minimum selectable value.
    */
-  @Prop() sliderMin: number = 0;
+  @Prop() sliderMin = 0;
 
   /**
    * number: Displays tick marks on the number line at a specified interval.
    */
-  @Prop() sliderTicks: number = 10;
+  @Prop() sliderTicks = 10;
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (private)
+  //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
   protected geometryEngine:  __esri.geometryEngine;
+
   protected _unitDiv: HTMLCalciteSelectElement;
+
   protected bufferTimeout: NodeJS.Timeout;
 
   /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() translations: typeof BufferTools_T9n;
+  @State() _translations: typeof BufferTools_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -119,7 +121,7 @@ export class BufferTools {
   //
   //--------------------------------------------------------------------------
 
-  @Event() bufferComplete: EventEmitter;
+  @Event() bufferComplete: EventEmitter<__esri.Polygon | __esri.Polygon[]>;
 
   //--------------------------------------------------------------------------
   //
@@ -130,7 +132,7 @@ export class BufferTools {
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
-  async componentWillLoad() {
+  async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
   }
@@ -138,7 +140,7 @@ export class BufferTools {
   /**
    * Renders the component.
    */
-  render() {
+  render(): VNode {
     return (
       <Host>
         {this.appearance === "text" ? this._getTextBoxDisplay() : this._getSliderDisplay()}
@@ -148,7 +150,7 @@ export class BufferTools {
 
   //--------------------------------------------------------------------------
   //
-  //  Functions (private)
+  //  Functions (protected)
   //
   //--------------------------------------------------------------------------
 
@@ -156,7 +158,7 @@ export class BufferTools {
    * Load esri javascript api modules
    *
    * @returns Promise resolving when function is done
-   * 
+   *
    * @protected
    */
   protected async _initModules(): Promise<void> {
@@ -172,15 +174,15 @@ export class BufferTools {
    * Gets the nodes for each of the possible distance units
    *
    * @returns An array of option nodes
-   * 
+   *
    * @protected
    */
   protected _getUnits(): VNode[] {
     const units = {
-      'feet': this.translations.feet || 'Feet',
-      'meters': this.translations.meters || 'Meters',
-      'miles': this.translations.miles || 'Miles',
-      'kilometers': this.translations.kilometers || 'Kilometers'
+      'feet': this._translations.feet || 'Feet',
+      'meters': this._translations.meters || 'Meters',
+      'miles': this._translations.miles || 'Miles',
+      'kilometers': this._translations.kilometers || 'Kilometers'
     };
     return Object.keys(units).map(u => {
       let selected = true;
@@ -197,7 +199,7 @@ export class BufferTools {
    * Store the user defined distance value and create a buffer
    *
    * @param event the event from the calcite input control
-   * 
+   *
    * @protected
    */
   protected _setDistance(
@@ -213,7 +215,7 @@ export class BufferTools {
 
   /**
    * Store the user defined unit value and create a buffer
-   * 
+   *
    * @protected
    */
   protected _setUnit(): void {
@@ -223,7 +225,7 @@ export class BufferTools {
 
   /**
    * Create buffer geometry based on the user defined unit and distance
-   * 
+   *
    * @protected
    */
   protected _buffer(): void {
@@ -231,7 +233,7 @@ export class BufferTools {
       clearTimeout(this.bufferTimeout);
     }
 
-    this.bufferTimeout = setTimeout(async () => {
+    this.bufferTimeout = setTimeout(() => {
       // needs to be wgs 84 or Web Mercator
       if (this.geometries?.length > 0 && this.unit && this.distance > 0) {
         const buffer = this.geometryEngine.geodesicBuffer(
@@ -250,7 +252,7 @@ export class BufferTools {
    * This option will be used when the "appearance" prop is set to "text"
    *
    * @returns a node with the supporting controls
-   * 
+   *
    * @protected
    */
   protected _getTextBoxDisplay(): VNode {
@@ -281,7 +283,7 @@ export class BufferTools {
    * This option will be used when the "appearance" prop is set to "slider"
    *
    * @returns a node with the supporting control
-   * 
+   *
    * @protected
    */
   protected _getSliderDisplay(): VNode {
@@ -289,8 +291,8 @@ export class BufferTools {
       <div>
         <calcite-slider
           labelHandles={true}
-          min={this.sliderMin}
           max={this.sliderMax}
+          min={this.sliderMin}
           ticks={this.sliderTicks}
         />
       </div>
@@ -302,9 +304,9 @@ export class BufferTools {
    *
    * @protected
    */
-  async _getTranslations() {
+  protected async _getTranslations(): Promise<void> {
     const messages = await getLocaleComponentStrings(this.el);
-    this.translations = messages[0] as typeof BufferTools_T9n;
+    this._translations = messages[0] as typeof BufferTools_T9n;
   }
 
 }

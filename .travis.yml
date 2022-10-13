@@ -2,6 +2,8 @@ language: node_js
 node_js:
   - "16"
 cache: npm
+before_script:
+  - export NODE_OPTIONS=--max_old_space_size=32768
 script:
   - npm run test
 env:
