@@ -186,7 +186,7 @@ export class MapSelectTools {
   //--------------------------------------------------------------------------
 
   /**
-   * StencilJS: Called each time the geometries prop is changed.
+   * Called each time the geometries prop is changed.
    *
    * @returns Promise when complete
    */

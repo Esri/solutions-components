@@ -118,7 +118,7 @@ export class MapDrawTools {
   //--------------------------------------------------------------------------
 
   /**
-   * StencilJS: Called each time the graphics prop is changed.
+   * Called each time the graphics prop is changed.
    *
    */
   @Watch('graphics')
@@ -132,7 +132,7 @@ export class MapDrawTools {
   }
 
   /**
-   * StencilJS: Called each time the mapView prop is changed.
+   * Called each time the mapView prop is changed.
    *
    */
   @Watch('mapView')

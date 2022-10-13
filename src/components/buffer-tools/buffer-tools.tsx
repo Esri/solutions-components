@@ -112,7 +112,7 @@ export class BufferTools {
   //--------------------------------------------------------------------------
 
   /**
-   * StencilJS: Called each time the geometries prop is changed.
+   * Called each time the geometries prop is changed.
    * Buffer each of the geometries.
    *
    */
