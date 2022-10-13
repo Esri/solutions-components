@@ -94,12 +94,24 @@ export class PublicNotification {
    */
   @State() numSelected = 0;
 
+  /**
+   * HTMLMapSelectToolsElement: The select tools element
+   */
   protected _selectTools: HTMLMapSelectToolsElement;
 
+  /**
+   * HTMLPdfDownloadElement: The pdf tools element
+   */
   protected _downloadTools: HTMLPdfDownloadElement;
 
+  /**
+   * HTMLCalciteCheckboxElement: The remove duplicates checkbox element 
+   */
   protected _removeDuplicates: HTMLCalciteCheckboxElement;
 
+  /**
+   * ISelectionSet: The current active selection set
+   */
   protected _activeSelection: ISelectionSet;
 
   //--------------------------------------------------------------------------
@@ -108,6 +120,9 @@ export class PublicNotification {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Called each time the selectionSets prop is changed.
+   */
   @Watch('selectionSets')
   async selectionSetsWatchHandler(
     v: ISelectionSet[],
@@ -121,6 +136,9 @@ export class PublicNotification {
     }
   }
 
+  /**
+   * Called each time the pageType prop is changed.
+   */
   @Watch('pageType')
   async pageTypeWatchHandler(
     v: EPageType
@@ -143,6 +161,9 @@ export class PublicNotification {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Handle changes to the selection sets
+   */
   @Listen("selectionSetsChanged", { target: 'window' })
   selectionSetsChanged(event: CustomEvent): void {
     this.selectionSets = [...event.detail];
