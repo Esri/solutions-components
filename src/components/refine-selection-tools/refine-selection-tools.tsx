@@ -21,6 +21,7 @@ import state from "../../utils/publicNotificationStore";
 import { loadModules } from "../../utils/loadModules";
 import RefineSelectionTools_T9n from '../../assets/t9n/refine-selection-tools/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
+import Graphic from 'esri/Graphic';
 
 @Component({
   tag: 'refine-selection-tools',
@@ -114,21 +115,50 @@ export class RefineSelectionTools {
    */
   @State() protected _translations: typeof RefineSelectionTools_T9n;
 
+  /**
+   * string: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html#Effect
+   * The exclusion layer effect to use when flashing a selection set
+   */
   protected _excludeEffect = "blur(5px) grayscale(90%) opacity(40%)";
 
+  /**
+   * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
+   * The graphics layer used to show selections.
+   */
   protected _sketchGraphicsLayer: __esri.GraphicsLayer;
 
+  /**
+   * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
+   * The graphics layer constructor
+   */
   protected GraphicsLayer: typeof __esri.GraphicsLayer;
 
+  /**
+   * esri/widgets/Sketch/SketchViewModel: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch-SketchViewModel.html
+   * The sketch view model constructor
+   */
   protected SketchViewModel: typeof __esri.SketchViewModel;
 
+  /**
+   * esri/widgets/Sketch/SketchViewModel: The html element for selecting buffer unit
+   * The sketch view model used to create graphics
+   */
   protected _sketchViewModel: __esri.SketchViewModel;
 
+  /**
+   * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
+   */
   protected _sketchGeometry: __esri.Geometry;
 
+  /**
+   * esri/core/Handles: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Handles.html#Handle
+   */
   protected _hitTestHandle: __esri.Handle;
 
-  protected aaa: any = {};
+  /**
+   * {<layer title>: Graphic[]}: Collection of graphics returned from queries to the layer
+   */
+  protected _featuresCollection: {[key: string]: Graphic[]} = {};
 
   //--------------------------------------------------------------------------
   //
@@ -136,6 +166,10 @@ export class RefineSelectionTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Called each time the ids prop is changed.
+   * Highlight the features based on the provided ids
+   */
   @Watch('ids')
   idsWatchHandler(v: any, oldV: any): void {
     if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
@@ -149,11 +183,21 @@ export class RefineSelectionTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Reset the ids collection
+   *
+   * @returns Promise when complete
+   */
   @Method()
   async reset(): Promise<void> {
     this.ids = [];
   }
 
+  /**
+   * Clear current highlight handle
+   *
+   * @returns Promise when complete
+   */
   @Method()
   async clearHighlight(): Promise<void> {
     this._clearHighlight();
@@ -165,8 +209,14 @@ export class RefineSelectionTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Emitted on demand when selection graphics change.
+   */
   @Event() refineSelectionGraphicsChange: EventEmitter<any[]>;
 
+  /**
+   * Emitted on demand when selection ids change
+   */
   @Event() refineSelectionIdsChange: EventEmitter<{ addIds: any[]; removeIds: any[]; }>;
 
   //--------------------------------------------------------------------------
@@ -190,10 +240,18 @@ export class RefineSelectionTools {
     this._init();
   }
 
+  /**
+   * StencilJS: Called every time the component is disconnected from the DOM, ie,
+   * it can be dispatched more than once, DO not confuse with a "onDestroy" kind of event.
+   */
   disconnectedCallback(): void {
     this.active = false;
   }
 
+  /**
+   * Called every time the component is connected to the DOM.
+   * When the component is first connected, this method is called before componentWillLoad.
+   */
   connectedCallback(): void {
     this.active = true;
     if (this.ids.length > 0) {
@@ -334,7 +392,7 @@ export class RefineSelectionTools {
 
     this._sketchViewModel.on("create", (event) => {
       if (event.state === "complete" && this.active) {
-        this.aaa = {};
+        this._featuresCollection = {};
         this._sketchGeometry = event.graphic.geometry;
         void this._selectFeatures(this._sketchGeometry);
       }
@@ -475,7 +533,7 @@ export class RefineSelectionTools {
     geom: __esri.Geometry
   ): Promise<void> {
     const queryFeaturePromises = this.layerViews.map(l => {
-      this.aaa[l.layer.title] = [];
+      this._featuresCollection[l.layer.title] = [];
       return this._queryPage(0, l, geom)
     });
 
@@ -532,12 +590,12 @@ export class RefineSelectionTools {
     };
 
     const r = await layerView.queryFeatures(query);
-    this.aaa[layerView.layer.title] = this.aaa[layerView.layer.title].concat(r.features);
+    this._featuresCollection[layerView.layer.title] = this._featuresCollection[layerView.layer.title].concat(r.features);
 
     if (r.exceededTransferLimit) {
       return this._queryPage(page += num, layerView, geom)
     }
-    return Promise.resolve(this.aaa);
+    return Promise.resolve(this._featuresCollection);
   }
 
   /**

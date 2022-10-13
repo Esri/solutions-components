@@ -137,7 +137,6 @@ export class BufferTools {
 
   /**
    * Emitted on demand when a buffer is generated.
-   * 
    */
   @Event() bufferComplete: EventEmitter<__esri.Polygon | __esri.Polygon[]>;
 

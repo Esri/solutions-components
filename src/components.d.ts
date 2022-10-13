@@ -244,6 +244,10 @@ export namespace Components {
           * boolean: Optionally draw a border around the draw tools
          */
         "border": boolean;
+        /**
+          * Clear current highlight handle
+          * @returns Promise when complete
+         */
         "clearHighlight": () => Promise<void>;
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
@@ -273,6 +277,10 @@ export namespace Components {
           * utils/interfaces/ERefineMode: ALL, SUBSET
          */
         "refineMode": ERefineMode;
+        /**
+          * Reset the ids collection
+          * @returns Promise when complete
+         */
         "reset": () => Promise<void>;
         /**
           * boolean: Used to control the visibility of the layer picker
@@ -919,7 +927,13 @@ declare namespace LocalJSX {
           * utils/interfaces/ESelectionMode: ADD, REMOVE
          */
         "mode"?: ESelectionMode;
+        /**
+          * Emitted on demand when selection graphics change.
+         */
         "onRefineSelectionGraphicsChange"?: (event: RefineSelectionToolsCustomEvent<any[]>) => void;
+        /**
+          * Emitted on demand when selection ids change
+         */
         "onRefineSelectionIdsChange"?: (event: RefineSelectionToolsCustomEvent<{ addIds: any[]; removeIds: any[]; }>) => void;
         /**
           * utils/interfaces/ERefineMode: ALL, SUBSET
