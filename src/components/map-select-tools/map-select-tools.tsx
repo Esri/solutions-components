@@ -469,16 +469,6 @@ export class MapSelectTools {
       this.geometries = [
         ...this.selectionSet?.geometries
       ];
-      this._drawTools.graphics = this.geometries.map(sg => {
-        const props = {
-          'geometry': sg,
-          'symbol': sg.type === 'point' ?
-            this._drawTools?.pointSymbol : sg.type === 'polyline' ?
-            this._drawTools?.polylineSymbol : sg.type === 'polygon' ?
-            this._drawTools?.polygonSymbol : undefined
-        };
-        return new this.Graphic(props)
-      });
       // reset selection label base
       this._selectionLabel = this.workflowType === EWorkflowType.SKETCH ?
         this._translations.sketch : this.workflowType === EWorkflowType.SELECT ?
@@ -589,6 +579,17 @@ export class MapSelectTools {
         ...this._selectedIds,
         ...r
       ]
+    });
+    // Add geometries used for selecting features as graphics
+    this._drawTools.graphics = this.geometries.map(sg => {
+      const props = {
+        'geometry': sg,
+        'symbol': sg.type === 'point' ?
+          this._drawTools?.pointSymbol : sg.type === 'polyline' ?
+          this._drawTools?.polylineSymbol : sg.type === 'polygon' ?
+          this._drawTools?.polygonSymbol : undefined
+      };
+      return new this.Graphic(props)
     });
     void this._highlightFeatures(this._selectedIds);
   }
