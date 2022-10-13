@@ -714,7 +714,7 @@ declare namespace LocalJSX {
          */
         "geometries"?: __esri.Geometry[];
         /**
-          * StencilJS: Emitted on demand when a buffer is generated.
+          * Emitted on demand when a buffer is generated.
          */
         "onBufferComplete"?: (event: BufferToolsCustomEvent<__esri.Polygon | __esri.Polygon[]>) => void;
         /**
@@ -770,7 +770,7 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
-          * StencilJS: Emitted on demand when the sketch graphics change.
+          * Emitted on demand when the sketch graphics change.
          */
         "onSketchGraphicsChange"?: (event: MapDrawToolsCustomEvent<__esri.Graphic[]>) => void;
         /**
@@ -796,7 +796,7 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
-          * StencilJS: Emitted on demand when a layer is selected
+          * Emitted on demand when a layer is selected
          */
         "onLayerSelectionChange"?: (event: MapLayerPickerCustomEvent<string[]>) => void;
         /**
@@ -814,7 +814,7 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
-          * StencilJS: Emitted on demand when the status of the search widget changes
+          * Emitted on demand when the status of the search widget changes
          */
         "onSearchChange"?: (event: MapSearchCustomEvent<ISearchResult>) => void;
     }
@@ -831,7 +831,13 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the selection set changes.
+         */
         "onSelectionSetChange"?: (event: MapSelectToolsCustomEvent<number>) => void;
+        /**
+          * Emitted on demand when the workflow type changes.
+         */
         "onWorkflowTypeChange"?: (event: MapSelectToolsCustomEvent<EWorkflowType>) => void;
         /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html

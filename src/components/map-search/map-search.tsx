@@ -112,7 +112,7 @@ export class MapSearch {
   //--------------------------------------------------------------------------
 
   /**
-   * StencilJS: Emitted on demand when the status of the search widget changes
+   * Emitted on demand when the status of the search widget changes
    * 
    */
   @Event() searchChange: EventEmitter<ISearchResult>;

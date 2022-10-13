@@ -104,7 +104,7 @@ export class MapLayerPicker {
   //--------------------------------------------------------------------------
 
   /**
-   * StencilJS: Emitted on demand when a layer is selected
+   * Emitted on demand when a layer is selected
    * 
    */
   @Event() layerSelectionChange: EventEmitter<string[]>;

@@ -165,7 +165,7 @@ export class MapDrawTools {
   //--------------------------------------------------------------------------
 
   /**
-   * StencilJS: Emitted on demand when the sketch graphics change.
+   * Emitted on demand when the sketch graphics change.
    * 
    */
   @Event() sketchGraphicsChange: EventEmitter<__esri.Graphic[]>;

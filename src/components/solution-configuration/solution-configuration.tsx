@@ -249,22 +249,22 @@ export class SolutionConfiguration {
 
   @Method()
   async getEditModels(): Promise<any> {
-    return Promise.resolve(state.models);
+    return state.models;
   }
 
   @Method()
   async getSpatialReferenceInfo(): Promise<ISolutionSpatialReferenceInfo> {
-    return Promise.resolve(state.spatialReferenceInfo);
+    return state.spatialReferenceInfo;
   }
 
   @Method()
   async getSourceTemplates(): Promise<any> {
-    return Promise.resolve(this.templates);
+    return this.templates;
   }
 
   @Method()
   async save(): Promise<any> {
-    return Promise.resolve(this._save());
+    return this._save();
   }
 
   @Watch('itemid')

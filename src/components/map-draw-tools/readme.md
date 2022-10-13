@@ -20,9 +20,9 @@
 
 ## Events
 
-| Event                  | Description                                                   | Type                     |
-| ---------------------- | ------------------------------------------------------------- | ------------------------ |
-| `sketchGraphicsChange` | StencilJS: Emitted on demand when the sketch graphics change. | `CustomEvent<Graphic[]>` |
+| Event                  | Description                                        | Type                     |
+| ---------------------- | -------------------------------------------------- | ------------------------ |
+| `sketchGraphicsChange` | Emitted on demand when the sketch graphics change. | `CustomEvent<Graphic[]>` |
 
 
 ## Methods

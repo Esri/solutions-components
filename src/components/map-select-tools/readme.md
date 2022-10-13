@@ -18,10 +18,10 @@
 
 ## Events
 
-| Event                | Description | Type                                                                                                        |
-| -------------------- | ----------- | ----------------------------------------------------------------------------------------------------------- |
-| `selectionSetChange` |             | `CustomEvent<number>`                                                                                       |
-| `workflowTypeChange` |             | `CustomEvent<EWorkflowType.REFINE \| EWorkflowType.SEARCH \| EWorkflowType.SELECT \| EWorkflowType.SKETCH>` |
+| Event                | Description                                       | Type                                                                                                        |
+| -------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `selectionSetChange` | Emitted on demand when the selection set changes. | `CustomEvent<number>`                                                                                       |
+| `workflowTypeChange` | Emitted on demand when the workflow type changes. | `CustomEvent<EWorkflowType.REFINE \| EWorkflowType.SEARCH \| EWorkflowType.SELECT \| EWorkflowType.SKETCH>` |
 
 
 ## Methods

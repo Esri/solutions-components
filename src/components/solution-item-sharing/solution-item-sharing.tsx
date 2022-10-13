@@ -110,7 +110,7 @@ export class SolutionItemSharing {
 
   @Method()
   async getShareInfo(): Promise<any> {
-    return Promise.resolve(this.value);
+    return this.value;
   }
 
   //--------------------------------------------------------------------------

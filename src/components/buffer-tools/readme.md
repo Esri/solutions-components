@@ -21,9 +21,9 @@
 
 ## Events
 
-| Event            | Description                                              | Type                                |
-| ---------------- | -------------------------------------------------------- | ----------------------------------- |
-| `bufferComplete` | StencilJS: Emitted on demand when a buffer is generated. | `CustomEvent<Polygon \| Polygon[]>` |
+| Event            | Description                                   | Type                                |
+| ---------------- | --------------------------------------------- | ----------------------------------- |
+| `bufferComplete` | Emitted on demand when a buffer is generated. | `CustomEvent<Polygon \| Polygon[]>` |
 
 
 ## Dependencies
