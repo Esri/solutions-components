@@ -155,11 +155,6 @@ export class MapSelectTools {
   protected _bufferTools: HTMLBufferToolsElement;
 
   /**
-   * Timeout: Used to add a slight delay when selecting features.
-   */
-  protected _selectTimeout: NodeJS.Timeout;
-
-  /**
    * An array of objects representing the results of search
    */
   protected _searchResult: any;
@@ -586,21 +581,16 @@ export class MapSelectTools {
   protected async _selectFeatures(
     geometries: __esri.Geometry[]
   ): Promise<void> {
-    if (this._selectTimeout) {
-      clearTimeout(this._selectTimeout);
-    }
-    //this._selectTimeout = setTimeout(() => {
-      this._selectedIds = [];
-      const queryDefs = geometries.map(g => this._query(g))
-      const results = await Promise.all(queryDefs);
-      results.forEach(r => {
-        this._selectedIds = [
-          ...this._selectedIds,
-          ...r
-        ]
-      });
-      void this._highlightFeatures(this._selectedIds);
-    //}, 100);
+    this._selectedIds = [];
+    const queryDefs = geometries.map(g => this._query(g))
+    const results = await Promise.all(queryDefs);
+    results.forEach(r => {
+      this._selectedIds = [
+        ...this._selectedIds,
+        ...r
+      ]
+    });
+    void this._highlightFeatures(this._selectedIds);
   }
 
   /**
