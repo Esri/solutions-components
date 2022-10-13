@@ -81,9 +81,9 @@ export class MapDrawTools {
   //--------------------------------------------------------------------------
 
   /**
- * Contains the translations for this component.
- * All UI strings should be defined here.
- */
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
   @State() protected _translations: typeof MapDrawTools_T9n;
 
   /**
@@ -102,9 +102,9 @@ export class MapDrawTools {
   protected _sketchWidget: __esri.Sketch;
 
   /**
-   * The container div for the sketch widget
+   * The container element for the sketch widget
    */
-  protected _sketchDiv: HTMLElement;
+  protected _sketchElement: HTMLElement;
 
   /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
@@ -117,6 +117,10 @@ export class MapDrawTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called each time the graphics prop is changed.
+   *
+   */
   @Watch('graphics')
   graphicsWatchHandler(v: any, oldV: any): void {
     if (v && v !== oldV) {
@@ -127,6 +131,10 @@ export class MapDrawTools {
     }
   }
 
+  /**
+   * StencilJS: Called each time the mapView prop is changed.
+   *
+   */
   @Watch('mapView')
   mapViewWatchHandler(v: any, oldV: any): void {
     if (v && v !== oldV) {
@@ -156,6 +164,10 @@ export class MapDrawTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Emitted on demand when the sketch graphics change.
+   * 
+   */
   @Event() sketchGraphicsChange: EventEmitter<__esri.Graphic[]>;
 
   //--------------------------------------------------------------------------
@@ -166,6 +178,8 @@ export class MapDrawTools {
 
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
+   * 
+   * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
@@ -174,6 +188,8 @@ export class MapDrawTools {
 
   /**
    * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
+   * 
+   * @returns Promise when complete
    */
   componentDidLoad(): void {
     this._init();
@@ -187,7 +203,7 @@ export class MapDrawTools {
     return (
       <Host>
         <div class={drawClass}>
-          <div ref={(el) => { this._sketchDiv = el }} />
+          <div ref={(el) => { this._sketchElement = el }} />
         </div>
       </Host>
     );
@@ -224,7 +240,7 @@ export class MapDrawTools {
    * @protected
    */
   protected _init(): void {
-    if (this.mapView && this._sketchDiv) {
+    if (this.mapView && this._sketchElement) {
       this._initGraphicsLayer();
       this._initDrawTools();
     }
@@ -260,7 +276,7 @@ export class MapDrawTools {
     this._sketchWidget = new this.Sketch({
       layer: this._sketchGraphicsLayer,
       view: this.mapView,
-      container: this._sketchDiv,
+      container: this._sketchElement,
       creationMode: "update",
       defaultCreateOptions: {
         "mode": "hybrid"
