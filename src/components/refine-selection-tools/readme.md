@@ -23,33 +23,33 @@
 
 ## Events
 
-| Event                           | Description | Type                                                |
-| ------------------------------- | ----------- | --------------------------------------------------- |
-| `refineSelectionGraphicsChange` |             | `CustomEvent<any[]>`                                |
-| `refineSelectionIdsChange`      |             | `CustomEvent<{ addIds: any[]; removeIds: any[]; }>` |
+| Event                           | Description                                       | Type                                                |
+| ------------------------------- | ------------------------------------------------- | --------------------------------------------------- |
+| `refineSelectionGraphicsChange` | Emitted on demand when selection graphics change. | `CustomEvent<any[]>`                                |
+| `refineSelectionIdsChange`      | Emitted on demand when selection ids change       | `CustomEvent<{ addIds: any[]; removeIds: any[]; }>` |
 
 
 ## Methods
 
 ### `clearHighlight() => Promise<void>`
 
-
+Clear current highlight handle
 
 #### Returns
 
 Type: `Promise<void>`
 
-
+Promise when complete
 
 ### `reset() => Promise<void>`
 
-
+Reset the ids collection
 
 #### Returns
 
 Type: `Promise<void>`
 
-
+Promise when complete
 
 
 ## Dependencies
