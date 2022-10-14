@@ -220,33 +220,32 @@ export class SolutionConfiguration {
 
   /*
   @Method()
-  async getEditModels(): Promise<any> {
-    return Promise.resolve(state.models);
+  async getEditModels(): Promise<ISolutionItems> {
+    return Promise.resolve(state.items);
   }
   */
 
   @Method()
   async getSpatialReferenceInfo(): Promise<ISolutionSpatialReferenceInfo> {
-    return Promise.resolve(state.spatialReferenceInfo);
+    return Promise.resolve(state.getStoreInfo("spatialReferenceInfo"));
   }
 
   /*
   @Method()
   async getSourceTemplates(): Promise<any> {
-    return Promise.resolve(this.templates);
+    return Promise.resolve(this._templates);
   }
   */
 
   @Method()
-  async save(): Promise<any> {
-    return Promise.resolve(this._save());
+  async saveSolution(): Promise<void> {
+    await state.saveSolution();
+    this.solutionItemId = null;
   }
 
-  @Watch('itemid')
-  valueWatchHandler(v: any, oldV: any): void {
-    if (v && v !== oldV) {
-      this._fetchData = true;
-    }
+  @Method()
+  async unloadSolution(): Promise<void> {
+    this.solutionItemId = null;
   }
 
   //--------------------------------------------------------------------------
