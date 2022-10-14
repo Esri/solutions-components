@@ -239,7 +239,9 @@ export class SolutionConfiguration {
 
   @Method()
   async saveSolution(): Promise<void> {
+    this._solutionIsLoaded = false;
     await state.saveSolution();
+    this._solutionIsLoaded = true;
     this.solutionItemId = null;
   }
 

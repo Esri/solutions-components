@@ -144,7 +144,9 @@
       modalIsClosing = false;
 
       async function cancel() {
+        // Start closing process if not already in progress
         if (!modalIsClosing) {
+          cancelBtn.disabled = saveBtn.disabled = true;
           modalIsClosing = true;
           if (hasChanges) {
             if (confirm("Save changes?")) {
@@ -155,7 +157,6 @@
           } else {
             await cancelChanges();
           }
-          cancelBtn.disabled = saveBtn.disabled = true;
           appContainer.open = false;
         }
       }
@@ -200,12 +201,12 @@
       // Save changes and close the modal
       async function save() {
         modalIsClosing = true;
+        cancelBtn.disabled = saveBtn.disabled = true;
         if (hasChanges) {
           await saveChanges();
         } else {
           await cancelChanges();
         }
-        cancelBtn.disabled = saveBtn.disabled = true;
         appContainer.open = false;
       }
 
