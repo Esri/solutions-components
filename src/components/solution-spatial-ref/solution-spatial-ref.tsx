@@ -191,8 +191,8 @@ export class SolutionSpatialRef {
    * @returns If component is using a WKID, description using WKID; otherwise, the WKT; defaults to 102100
    */
   @Method()
-  createSpatialRefDisplay(value: string): Promise<ISpatialRefRepresentation> {
-    return Promise.resolve(this._createSpatialRefDisplay(value));
+  async createSpatialRefDisplay(value: string): Promise<ISpatialRefRepresentation> {
+    return this._createSpatialRefDisplay(value);
   }
 
   /**
@@ -200,8 +200,8 @@ export class SolutionSpatialRef {
    * (Exposes protected variable `spatialRef` for testing.)
    */
   @Method()
-  getSpatialRef(): Promise<ISpatialRefRepresentation> {
-    return Promise.resolve(this.spatialRef);
+  async getSpatialRef(): Promise<ISpatialRefRepresentation> {
+    return this.spatialRef;
   }
 
   /**
@@ -212,8 +212,8 @@ export class SolutionSpatialRef {
    * @returns Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
    */
   @Method()
-  wkidToDisplay(wkid: number): Promise<string> {
-    return Promise.resolve(this._wkidToDisplay(wkid));
+  async wkidToDisplay(wkid: number): Promise<string> {
+    return this._wkidToDisplay(wkid);
   }
 
   //--------------------------------------------------------------------------

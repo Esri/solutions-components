@@ -115,7 +115,7 @@ export class SolutionItemSharing {
 
   @Method()
   async getShareInfo(): Promise<any> {
-    return Promise.resolve(this.sharing);
+    return this.sharing;
   }
 
   //--------------------------------------------------------------------------

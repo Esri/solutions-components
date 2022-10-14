@@ -16,9 +16,9 @@
 
 ## Events
 
-| Event                  | Description | Type                           |
-| ---------------------- | ----------- | ------------------------------ |
-| `selectionSetsChanged` |             | `CustomEvent<ISelectionSet[]>` |
+| Event                  | Description                                   | Type                           |
+| ---------------------- | --------------------------------------------- | ------------------------------ |
+| `selectionSetsChanged` | Emitted on demand when selection sets change. | `CustomEvent<ISelectionSet[]>` |
 
 
 ## Dependencies

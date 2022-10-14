@@ -26,7 +26,7 @@ export function getSelectionIds(
   return Object.keys(selectionSets).reduce((prev, cur) => {
     return [
       ...prev,
-      ...selectionSets[cur].selectedIds
+      ...selectionSets[cur].download ? selectionSets[cur].selectedIds : []
     ]
   }, []);
 }

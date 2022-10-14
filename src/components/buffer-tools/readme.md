@@ -9,7 +9,7 @@
 
 | Property       | Attribute       | Description                                                                                                              | Type                                                                                     | Default     |
 | -------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- | ----------- |
-| `appearance`   | `appearance`    | string: The appearance of display. Can be a slider or text inputs for distance/value                                     | `"slider" \| "text"`                                                                     | `"text"`    |
+| `appearance`   | `appearance`    | string: The appearance of display. Can be a "slider" or "text" inputs for distance/value                                 | `"slider" \| "text"`                                                                     | `"text"`    |
 | `distance`     | `distance`      | number: The distance used for buffer                                                                                     | `number`                                                                                 | `0`         |
 | `geometries`   | --              | esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html        | `Geometry[]`                                                                             | `undefined` |
 | `sliderMax`    | `slider-max`    | number: The component's maximum selectable value.                                                                        | `number`                                                                                 | `100`       |
@@ -21,9 +21,9 @@
 
 ## Events
 
-| Event            | Description | Type                                |
-| ---------------- | ----------- | ----------------------------------- |
-| `bufferComplete` |             | `CustomEvent<Polygon \| Polygon[]>` |
+| Event            | Description                                   | Type                                |
+| ---------------- | --------------------------------------------- | ----------------------------------- |
+| `bufferComplete` | Emitted on demand when a buffer is generated. | `CustomEvent<Polygon \| Polygon[]>` |
 
 
 ## Dependencies

@@ -66,7 +66,10 @@ export class MapLayerPicker {
   //
   //--------------------------------------------------------------------------
 
-  protected _layerSelect: HTMLCalciteSelectElement;
+  /**
+   * HTMLCalciteSelectElement: The html element for selecting layers
+   */
+  protected _layerElement: HTMLCalciteSelectElement;
 
   //--------------------------------------------------------------------------
   //
@@ -74,6 +77,10 @@ export class MapLayerPicker {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Called each time the mapView prop is changed.
+   *
+   */
   @Watch('mapView')
   async watchStateHandler(newValue: boolean, oldValue: boolean): Promise<void> {
     if (newValue !== oldValue) {
@@ -96,6 +103,10 @@ export class MapLayerPicker {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Emitted on demand when a layer is selected
+   * 
+   */
   @Event() layerSelectionChange: EventEmitter<string[]>;
 
   //--------------------------------------------------------------------------
@@ -149,7 +160,7 @@ export class MapLayerPicker {
       <calcite-select
         label=''
         onCalciteSelectChange={(evt) => this._layerSelectionChange(evt)}
-        ref={(el) => { this._layerSelect = el }}
+        ref={(el) => { this._layerElement = el }}
       >
         {this._addMapLayersOptions()}
       </calcite-select>
@@ -216,7 +227,7 @@ export class MapLayerPicker {
    */
   _layerSelectionChange(evt: CustomEvent): void {
     this.selectedLayers = this.selectionMode === "single" ?
-      [this._layerSelect.value] : evt.detail?.selectedItems.map(
+      [this._layerElement.value] : evt.detail?.selectedItems.map(
         (item: HTMLCalciteComboboxItemElement) => {
           return item.value;
         }

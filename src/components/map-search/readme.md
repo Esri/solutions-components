@@ -14,9 +14,9 @@
 
 ## Events
 
-| Event          | Description | Type                         |
-| -------------- | ----------- | ---------------------------- |
-| `searchChange` |             | `CustomEvent<ISearchResult>` |
+| Event          | Description                                                    | Type                         |
+| -------------- | -------------------------------------------------------------- | ---------------------------- |
+| `searchChange` | Emitted on demand when the status of the search widget changes | `CustomEvent<ISearchResult>` |
 
 
 ## Methods

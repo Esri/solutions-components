@@ -45,8 +45,14 @@ export class RefineSelection {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * boolean: Indicates if any new graphics should be added or removed 
+   */
   protected _addEnabled = true;
 
+  /**
+   * HTMLRefineSelectionToolsElement: The html element for the refine selection tools
+   */
   protected _refineTools: HTMLRefineSelectionToolsElement;
 
   /**
@@ -73,8 +79,16 @@ export class RefineSelection {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Emitted on demand when selection sets change.
+   *
+   */
   @Event() selectionSetsChanged: EventEmitter<ISelectionSet[]>;
 
+  /**
+   * Handles changes to refine selection ids.
+   *
+   */
   @Listen("refineSelectionIdsChange", { target: 'window' })
   refineSelectionIdsChange(event: CustomEvent): void {
     const addIds = event.detail?.addIds || [];

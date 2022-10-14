@@ -59,7 +59,7 @@ export class BufferTools {
   @Prop() distance = 0;
 
   /**
-   * string: The appearance of display. Can be a slider or text inputs for distance/value
+   * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
    */
   @Prop() appearance: "slider" | "text" = "text";
 
@@ -84,11 +84,20 @@ export class BufferTools {
   //
   //--------------------------------------------------------------------------
 
-  protected geometryEngine:  __esri.geometryEngine;
+  /**
+   * geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
+   */
+  protected _geometryEngine:  __esri.geometryEngine;
 
-  protected _unitDiv: HTMLCalciteSelectElement;
+  /**
+   * HTMLCalciteSelectElement: The html element for selecting buffer unit
+   */
+  protected _unitElement: HTMLCalciteSelectElement;
 
-  protected bufferTimeout: NodeJS.Timeout;
+  /**
+   * Timeout: https://nodejs.org/en/docs/guides/timers-in-node/
+   */
+  protected _bufferTimeout: NodeJS.Timeout;
 
   /**
    * Contains the translations for this component.
@@ -102,6 +111,11 @@ export class BufferTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Called each time the geometries prop is changed.
+   * Buffer each of the geometries.
+   *
+   */
   @Watch('geometries')
   geometriesWatchHandler(v: any, oldV: any): void {
     if (v && v !== oldV) {
@@ -121,6 +135,9 @@ export class BufferTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Emitted on demand when a buffer is generated.
+   */
   @Event() bufferComplete: EventEmitter<__esri.Polygon | __esri.Polygon[]>;
 
   //--------------------------------------------------------------------------
@@ -131,6 +148,8 @@ export class BufferTools {
 
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
+   * 
+   * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
@@ -167,7 +186,7 @@ export class BufferTools {
     ] = await loadModules([
       "esri/geometry/geometryEngine"
     ]);
-    this.geometryEngine = geometryEngine;
+    this._geometryEngine = geometryEngine;
   }
 
   /**
@@ -219,7 +238,7 @@ export class BufferTools {
    * @protected
    */
   protected _setUnit(): void {
-    this.unit = this._unitDiv.value as __esri.LinearUnits;
+    this.unit = this._unitElement.value as __esri.LinearUnits;
     this._buffer();
   }
 
@@ -229,14 +248,14 @@ export class BufferTools {
    * @protected
    */
   protected _buffer(): void {
-    if (this.bufferTimeout) {
-      clearTimeout(this.bufferTimeout);
+    if (this._bufferTimeout) {
+      clearTimeout(this._bufferTimeout);
     }
 
-    this.bufferTimeout = setTimeout(() => {
+    this._bufferTimeout = setTimeout(() => {
       // needs to be wgs 84 or Web Mercator
       if (this.geometries?.length > 0 && this.unit && this.distance > 0) {
-        const buffer = this.geometryEngine.geodesicBuffer(
+        const buffer = this._geometryEngine.geodesicBuffer(
           this.geometries,
           this.distance,
           this.unit,
@@ -270,7 +289,7 @@ export class BufferTools {
           class="flex-1"
           label='label'
           onCalciteSelectChange={() => this._setUnit()}
-          ref={(el) => { this._unitDiv = el }}
+          ref={(el) => { this._unitElement = el }}
         >
           {this._getUnits()}
         </calcite-select>
@@ -302,6 +321,7 @@ export class BufferTools {
   /**
    * Fetches the component's translations
    *
+   * @returns Promise when complete
    * @protected
    */
   protected async _getTranslations(): Promise<void> {
