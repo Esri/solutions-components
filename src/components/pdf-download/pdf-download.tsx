@@ -56,7 +56,10 @@ export class PdfDownload {
   //
   //--------------------------------------------------------------------------
 
-  protected _labelInfoControl: HTMLCalciteSelectElement;
+  /**
+   * HTMLCalciteSelectElement: The html element for selecting buffer unit
+   */
+  protected _labelInfoElement: HTMLCalciteSelectElement;
 
   /**
    * Contains the translations for this component.
@@ -134,7 +137,7 @@ export class PdfDownload {
         <calcite-select
           disabled={this.disabled}
           label=""
-          ref={(el) => { this._labelInfoControl = el }}
+          ref={(el) => { this._labelInfoElement = el }}
         >
           {this._renderItems()}
         </calcite-select>
@@ -180,7 +183,7 @@ export class PdfDownload {
     ids: number[],
     removeDuplicates: boolean
   ): Promise<void> {
-    const l = this._labelInfoControl.selectedOption.value;
+    const l = this._labelInfoElement.selectedOption.value;
     alert(`PDF download: (${this._getLabelSizeText(l)}) (remove dups: ${removeDuplicates}) ${ids.join(", ")}`);
   }
 

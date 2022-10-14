@@ -10,7 +10,7 @@ import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BufferTools {
         /**
-          * string: The appearance of display. Can be a slider or text inputs for distance/value
+          * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
          */
         "appearance": "slider" | "text";
         /**
@@ -244,6 +244,10 @@ export namespace Components {
           * boolean: Optionally draw a border around the draw tools
          */
         "border": boolean;
+        /**
+          * Clear current highlight handle
+          * @returns Promise when complete
+         */
         "clearHighlight": () => Promise<void>;
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
@@ -273,6 +277,10 @@ export namespace Components {
           * utils/interfaces/ERefineMode: ALL, SUBSET
          */
         "refineMode": ERefineMode;
+        /**
+          * Reset the ids collection
+          * @returns Promise when complete
+         */
         "reset": () => Promise<void>;
         /**
           * boolean: Used to control the visibility of the layer picker
@@ -702,7 +710,7 @@ declare global {
 declare namespace LocalJSX {
     interface BufferTools {
         /**
-          * string: The appearance of display. Can be a slider or text inputs for distance/value
+          * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
          */
         "appearance"?: "slider" | "text";
         /**
@@ -713,6 +721,9 @@ declare namespace LocalJSX {
           * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
          */
         "geometries"?: __esri.Geometry[];
+        /**
+          * Emitted on demand when a buffer is generated.
+         */
         "onBufferComplete"?: (event: BufferToolsCustomEvent<__esri.Polygon | __esri.Polygon[]>) => void;
         /**
           * number: The component's maximum selectable value.
@@ -766,6 +777,9 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the sketch graphics change.
+         */
         "onSketchGraphicsChange"?: (event: MapDrawToolsCustomEvent<__esri.Graphic[]>) => void;
         /**
           * esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
@@ -789,6 +803,9 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when a layer is selected
+         */
         "onLayerSelectionChange"?: (event: MapLayerPickerCustomEvent<string[]>) => void;
         /**
           * string[]: list of layers that have been selected by the end user
@@ -804,6 +821,9 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the status of the search widget changes
+         */
         "onSearchChange"?: (event: MapSearchCustomEvent<ISearchResult>) => void;
     }
     interface MapSelectTools {
@@ -819,7 +839,13 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the selection set changes.
+         */
         "onSelectionSetChange"?: (event: MapSelectToolsCustomEvent<number>) => void;
+        /**
+          * Emitted on demand when the workflow type changes.
+         */
         "onWorkflowTypeChange"?: (event: MapSelectToolsCustomEvent<EWorkflowType>) => void;
         /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
@@ -859,6 +885,9 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when selection sets change.
+         */
         "onSelectionSetsChanged"?: (event: RefineSelectionCustomEvent<ISelectionSet[]>) => void;
         /**
           * utils/interfaces/ISelectionSet: An array of user defined selection sets
@@ -898,7 +927,13 @@ declare namespace LocalJSX {
           * utils/interfaces/ESelectionMode: ADD, REMOVE
          */
         "mode"?: ESelectionMode;
+        /**
+          * Emitted on demand when selection graphics change.
+         */
         "onRefineSelectionGraphicsChange"?: (event: RefineSelectionToolsCustomEvent<any[]>) => void;
+        /**
+          * Emitted on demand when selection ids change
+         */
         "onRefineSelectionIdsChange"?: (event: RefineSelectionToolsCustomEvent<{ addIds: any[]; removeIds: any[]; }>) => void;
         /**
           * utils/interfaces/ERefineMode: ALL, SUBSET

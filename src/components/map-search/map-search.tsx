@@ -20,7 +20,6 @@ import { ISearchResult } from '../../utils/interfaces';
 //import state from "../../utils/publicNotificationStore";
 import MapSearch_T9n from '../../assets/t9n/map-search/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
-//import { Method } from '@esri/calcite-components/dist/types/stencil-public-runtime';
 
 @Component({
   tag: 'map-search',
@@ -44,7 +43,7 @@ export class MapSearch {
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
-   @Prop() mapView: __esri.MapView;
+  @Prop() mapView: __esri.MapView;
 
   //--------------------------------------------------------------------------
   //
@@ -56,33 +55,33 @@ export class MapSearch {
    * string: Text entered by the end user.
    * Used to search against the locator.
    */
-   @State() searchTerm: string;
+  @State() searchTerm: string;
 
   /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-   @State() protected _translations: typeof MapSearch_T9n;
+  @State() protected _translations: typeof MapSearch_T9n;
 
   /**
    * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
    */
-   protected Search: typeof __esri.widgetsSearch
+  protected Search: typeof __esri.widgetsSearch
 
   /**
    * HTMLElement: The container div for the search widget
    */
-   protected _searchDiv: HTMLElement;
+  protected _searchElement: HTMLElement;
 
-   /**
-    * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
-    */
-   protected _searchWidget: __esri.widgetsSearch;
+  /**
+   * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
+   */
+  protected _searchWidget: __esri.widgetsSearch;
 
   /**
    * An array of objects representing the results of search
    */
-   protected _searchResult: any;
+  protected _searchResult: any;
 
   //--------------------------------------------------------------------------
   //
@@ -112,6 +111,10 @@ export class MapSearch {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Emitted on demand when the status of the search widget changes
+   * 
+   */
   @Event() searchChange: EventEmitter<ISearchResult>;
 
   //--------------------------------------------------------------------------
@@ -122,6 +125,8 @@ export class MapSearch {
 
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
+   * 
+   * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
@@ -141,7 +146,7 @@ export class MapSearch {
   render(): VNode {
     return (
       <Host>
-        <div class="search-widget" ref={(el) => { this._searchDiv = el }} />
+        <div class="search-widget" ref={(el) => { this._searchElement = el }} />
       </Host>
     );
   }
@@ -183,10 +188,10 @@ export class MapSearch {
    * @protected
    */
   protected _initSearchWidget(): void {
-    if (this.mapView && this._searchDiv) {
+    if (this.mapView && this._searchElement) {
       const searchOptions: __esri.widgetsSearchProperties = {
         view: this.mapView,
-        container: this._searchDiv,
+        container: this._searchElement,
         searchTerm: this.searchTerm
       };
 

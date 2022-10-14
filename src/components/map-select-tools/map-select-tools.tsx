@@ -112,12 +112,12 @@ export class MapSelectTools {
   /**
    * esri/geometry/geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
    */
-  protected geometryEngine:  __esri.geometryEngine;
+  protected _geometryEngine:  __esri.geometryEngine;
 
   /**
    * HTMLElement: The container div for the search widget
    */
-  protected _searchDiv: HTMLElement;
+  protected _searchElement: HTMLElement;
 
   /**
    * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
@@ -155,11 +155,6 @@ export class MapSelectTools {
   protected _bufferTools: HTMLBufferToolsElement;
 
   /**
-   * Timeout: Used to add a slight delay when selecting features.
-   */
-  protected selectTimeout: NodeJS.Timeout;
-
-  /**
    * An array of objects representing the results of search
    */
   protected _searchResult: any;
@@ -185,6 +180,11 @@ export class MapSelectTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Called each time the geometries prop is changed.
+   *
+   * @returns Promise when complete
+   */
   @Watch('geometries')
   async watchGeometriesHandler(
     newValue: __esri.Geometry[],
@@ -212,7 +212,7 @@ export class MapSelectTools {
    */
   @Method()
   async getSelectedIds(): Promise<number[]> {
-    return Promise.resolve(this._selectedIds);
+    return this._selectedIds;
   }
 
   /**
@@ -222,7 +222,7 @@ export class MapSelectTools {
    */
   @Method()
   async getSelectionLabel(): Promise<string> {
-    return Promise.resolve(this._selectionLabel);
+    return this._selectionLabel;
   }
 
   /**
@@ -232,7 +232,7 @@ export class MapSelectTools {
    */
   @Method()
   async getSelectType(): Promise<EWorkflowType> {
-    return Promise.resolve(this._selectType);
+    return this._selectType;
   }
 
   /**
@@ -241,7 +241,7 @@ export class MapSelectTools {
    * @returns Promise when the results have been cleared
    */
   @Method()
-  clearSelection(): Promise<void> {
+  async clearSelection(): Promise<void> {
     return this._clearResults();
   }
 
@@ -251,8 +251,8 @@ export class MapSelectTools {
    * @returns Promise with the new selection set
    */
   @Method()
-  getSelection(): Promise<ISelectionSet> {
-    return Promise.resolve({
+  async getSelection(): Promise<ISelectionSet> {
+    return {
       id: this.isUpdate ? this.selectionSet.id : Date.now(),
       workflowType: this._selectType,
       searchResult: this._searchResult,
@@ -266,7 +266,7 @@ export class MapSelectTools {
       layerView: this.selectLayerView,
       geometries: this.geometries,
       refineSelectLayers: this._refineTools.layerViews
-    } as ISelectionSet);
+    } as ISelectionSet;
   }
 
   //--------------------------------------------------------------------------
@@ -275,15 +275,31 @@ export class MapSelectTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Emitted on demand when the selection set changes.
+   * 
+   */
   @Event() selectionSetChange: EventEmitter<number>;
 
+  /**
+   * Emitted on demand when the workflow type changes.
+   * 
+   */
   @Event() workflowTypeChange: EventEmitter<EWorkflowType>;
 
+  /**
+   * Listen to changes in the sketch graphics
+   * 
+   */
   @Listen("sketchGraphicsChange", { target: 'window' })
   sketchGraphicsChange(event: CustomEvent): void {
     this._updateSelection(EWorkflowType.SKETCH, event.detail, this._translations.sketch);
   }
 
+  /**
+   * Listen to changes in the refine graphics
+   * 
+   */
   @Listen("refineSelectionGraphicsChange", { target: 'window' })
   refineSelectionGraphicsChange(event: CustomEvent): Promise<void> {
     const graphics = event.detail;
@@ -359,7 +375,7 @@ export class MapSelectTools {
           </calcite-radio-group>
         </div>
         <div class={showSearchClass}>
-          <div class="search-widget" ref={(el) => { this._searchDiv = el }} />
+          <div class="search-widget" ref={(el) => { this._searchElement = el }} />
         </div>
         <map-draw-tools
           active={drawEnabled}
@@ -424,7 +440,7 @@ export class MapSelectTools {
     this.Graphic = Graphic;
     this.Search = Search;
     this.Geometry = Geometry;
-    this.geometryEngine = geometryEngine;
+    this._geometryEngine = geometryEngine;
   }
 
   /**
@@ -453,16 +469,6 @@ export class MapSelectTools {
       this.geometries = [
         ...this.selectionSet?.geometries
       ];
-      this._drawTools.graphics = this.geometries.map(sg => {
-        const props = {
-          'geometry': sg,
-          'symbol': sg.type === 'point' ?
-            this._drawTools?.pointSymbol : sg.type === 'polyline' ?
-            this._drawTools?.polylineSymbol : sg.type === 'polygon' ?
-            this._drawTools?.polygonSymbol : undefined
-        };
-        return new this.Graphic(props)
-      });
       // reset selection label base
       this._selectionLabel = this.workflowType === EWorkflowType.SKETCH ?
         this._translations.sketch : this.workflowType === EWorkflowType.SELECT ?
@@ -476,10 +482,10 @@ export class MapSelectTools {
    * @protected
    */
   protected _initSearchWidget(): void {
-    if (this.mapView && this._searchDiv) {
+    if (this.mapView && this._searchElement) {
       const searchOptions: __esri.widgetsSearchProperties = {
         view: this.mapView,
-        container: this._searchDiv,
+        container: this._searchElement,
         searchTerm: this.searchTerm
       };
 
@@ -565,21 +571,27 @@ export class MapSelectTools {
   protected async _selectFeatures(
     geometries: __esri.Geometry[]
   ): Promise<void> {
-    if (this.selectTimeout) {
-      clearTimeout(this.selectTimeout);
-    }
-    //this.selectTimeout = setTimeout(() => {
-      this._selectedIds = [];
-      const queryDefs = geometries.map(g => this._query(g))
-      const results = await Promise.all(queryDefs);
-      results.forEach(r => {
-        this._selectedIds = [
-          ...this._selectedIds,
-          ...r
-        ]
-      });
-      void this._highlightFeatures(this._selectedIds);
-    //}, 100);
+    this._selectedIds = [];
+    const queryDefs = geometries.map(g => this._query(g))
+    const results = await Promise.all(queryDefs);
+    results.forEach(r => {
+      this._selectedIds = [
+        ...this._selectedIds,
+        ...r
+      ]
+    });
+    // Add geometries used for selecting features as graphics
+    this._drawTools.graphics = this.geometries.map(sg => {
+      const props = {
+        'geometry': sg,
+        'symbol': sg.type === 'point' ?
+          this._drawTools?.pointSymbol : sg.type === 'polyline' ?
+          this._drawTools?.polylineSymbol : sg.type === 'polygon' ?
+          this._drawTools?.polygonSymbol : undefined
+      };
+      return new this.Graphic(props)
+    });
+    void this._highlightFeatures(this._selectedIds);
   }
 
   /**
@@ -674,7 +686,7 @@ export class MapSelectTools {
     type: string
   ): __esri.Geometry[] {
     const geoms = geometries.filter(g => g.type === type);
-    return geoms.length <= 1 ? geoms : [this.geometryEngine.union(geoms)];
+    return geoms.length <= 1 ? geoms : [this._geometryEngine.union(geoms)];
   }
 
   /**
