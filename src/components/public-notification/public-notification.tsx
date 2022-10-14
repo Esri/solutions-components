@@ -141,10 +141,17 @@ export class PublicNotification {
    */
   @Watch('pageType')
   async pageTypeWatchHandler(
-    v: EPageType
+    pageType: EPageType,
+    oldPageType: EPageType
   ) {
     this._clearHighlight();
-    if (v === EPageType.LIST || v === EPageType.REFINE || v === EPageType.PDF || v === EPageType.CSV) {
+
+    if (oldPageType === EPageType.SELECT || oldPageType === EPageType.REFINE) {
+      // clear any draw shapes or buffers
+      await this._clearSelection()
+    }
+
+    if (pageType !== EPageType.SELECT) {
       return this._highlightFeatures();
     }
   }
