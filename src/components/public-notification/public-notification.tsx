@@ -680,9 +680,9 @@ export class PublicNotification {
    *
    * @protected
    */
-  protected _toggleDownload(
+  protected async _toggleDownload(
     id: number
-  ): void {
+  ): Promise<void> {
     let isActive = false;
     this.selectionSets = this.selectionSets.map(ss => {
       ss.download = ss.id === id ? !ss.download : ss.download;
@@ -690,6 +690,7 @@ export class PublicNotification {
       return ss;
     });
     this.downloadActive = isActive;
+    await this._highlightFeatures();
   }
 
   /**
