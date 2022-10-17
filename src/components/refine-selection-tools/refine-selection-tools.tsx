@@ -505,8 +505,8 @@ export class RefineSelectionTools {
 
     switch (this.selectionMode) {
       case ESelectionType.POINT:
-        //this._sketchViewModel.create("point");
-        this._initHitTest();
+        this._sketchViewModel.create("point");
+        //this._initHitTest();
         break;
       case ESelectionType.LINE:
         this._sketchViewModel.create("polyline");
