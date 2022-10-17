@@ -285,7 +285,8 @@ export class SolutionItemDetails {
     if (files && files[0]) {
       if (this.thumbnail) {
         this.thumbnail.src = URL.createObjectURL(files[0]);
-        state.getItemInfo(this.itemId).thumbnail = files[0];
+        this.itemEdit.thumbnail = files[0];
+        state.setItemInfo(this.itemId, this.itemEdit);
       }
     }
   }
