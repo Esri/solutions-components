@@ -20,7 +20,7 @@
    | limitations under the License.
   -->
 
-  <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components@1.0.0-beta.94/dist/calcite/calcite.css" type="text/css" />
+  <link rel="stylesheet" href="https://js.arcgis.com/calcite-components/1.0.0-beta.94/calcite.css" type="text/css" />
   <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
   <link rel="stylesheet" href="../solutions.css" type="text/css">
   <style>
@@ -76,7 +76,7 @@
   <script src="https://unpkg.com/@esri/arcgis-rest-auth@3.5.0/dist/umd/auth.umd.min.js"></script>
   <script src="https://unpkg.com/@esri/arcgis-rest-portal@3.5.0/dist/umd/portal.umd.min.js"></script>
   <script src="https://unpkg.com/@esri/solution-common@1.5.0/dist/umd/common.umd.min.js"></script>
-  <script type="module" src="https://unpkg.com/@esri/calcite-components@1.0.0-beta.94/dist/calcite/calcite.esm.js"></script>
+  <script type="module" src="https://js.arcgis.com/calcite-components/1.0.0-beta.94/calcite.esm.js"></script>
   <script type="module" src="../solutions.esm.js"></script>
 </head>
 
@@ -115,6 +115,11 @@
     <calcite-button id="cancelBtn" disabled slot="secondary" width="full" appearance="outline" onclick="cancelFcn()">Cancel</calcite-button>
     <calcite-button id="saveBtn" disabled slot="primary" width="full" onclick="saveFcn()">Save</calcite-button>
   </calcite-modal>
+
+  <calcite-alert id="errorAlert" label="Error alert" color="red" icon="exclamation-mark-triangle" auto-dismiss="true" auto-dismiss-duration="medium">
+    <div id="errorAlertTitle" slot="title"></div>
+    <div id="errorAlertMsg" slot="message"></div>
+  </calcite-alert>
 
   <script src="./libs/require.js"></script>
   <script src="./libs/setLocale.js"></script>
@@ -188,14 +193,22 @@
           configurationComponent.solutionItemId = solutionId;
           window.addEventListener("solutionStoreHasChanges",
             (evt) => {
-              hasChanges = evt.detail;
-              cancelBtn.disabled = saveBtn.disabled = !evt.detail;
-            }
+              if (authentication._token) {  // Don't enable Save if we're not logged in
+                hasChanges = evt.detail;
+                cancelBtn.disabled = saveBtn.disabled = !evt.detail;
+              }
+          }
           );
 
           appContainer.open = true;
           modalIsClosing = false;
         }
+      }
+
+      function reportError(title, message) {
+        document.getElementById("errorAlertTitle").innerHTML = title;
+        document.getElementById("errorAlertMsg").innerHTML = message;
+        document.getElementById("errorAlert").open = true;
       }
 
       // Save changes and close the modal
@@ -211,8 +224,12 @@
       }
 
       async function saveChanges() {
+        try {
         hasChanges = false;
         await configurationComponent.saveSolution();
+        } catch (error) {
+          reportError("Unable to save", error.originalMessage);
+        }
       }
 
       // Enables `configure` button if a guid is in the Solution ID input box
