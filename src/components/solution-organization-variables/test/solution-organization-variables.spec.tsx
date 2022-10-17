@@ -24,7 +24,7 @@ xdescribe('solution-organization-variables', () => {
     const page = await newSpecPage({
       components: [SolutionOrganizationVariables],
       template: () => (
-        <solution-organization-variables value={value}></solution-organization-variables>
+        <solution-organization-variables value={JSON.stringify(value)}></solution-organization-variables>
       )
     });
     expect(page.root).toEqualHtml(`

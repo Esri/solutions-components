@@ -26,9 +26,8 @@
 */
 
 import { Component, Element, Event, EventEmitter, Prop, VNode } from '@stencil/core';
-import state from '../../utils/editStore';
-import { /*getModels,*/ getFeatureServices, getSpatialReferenceInfo } from '../../utils/templates';
-import { getItemDataAsJson, UserSession } from '@esri/solution-common';
+//import { state } from '../../utils/editStore';
+import { /*getItemDataAsJson,*/ UserSession } from '@esri/solution-common';
 
 @Component({
   tag: 'store-manager',
@@ -103,21 +102,23 @@ export class StoreManager {
    * When we get a new value we are dealinmg with a new solution and need to fetch the items data and load the state.
    */
   protected _initValueObserver(): void {
-    const self = this;
+    //const self = this;
     this._valueObserver = new MutationObserver(ml => {
       ml.some(mutation => {
         const newValue = mutation.target[mutation.attributeName];
         if (mutation.type === 'attributes' && mutation.attributeName === "value" &&
           newValue !== mutation.oldValue && newValue !== "") {
+          /*
           const v = JSON.parse(newValue);
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
           getItemDataAsJson(v, self.authentication).then(data => {
-            //state.models = getModels(Array.isArray(v) ? v : [v], self.authentication, v);
+            state.models = getModels(Array.isArray(v) ? v : [v], self.authentication, v);
             state.featureServices = getFeatureServices(Array.isArray(v) ? v : [v])
-            state.spatialReferenceInfo = getSpatialReferenceInfo(state.featureServices, data);
+            state.get("spatialReferenceInfo") = getSpatialReferenceInfo(state.featureServices, data);
             self.templates = v;
             self.stateLoaded.emit(state);
           });
+          */
           return true;
         }
       })

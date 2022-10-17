@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
-import { IOrganizationVariableItem, ITemplateData, IVariableItem } from '../../utils/interfaces';
-import { UserSession } from '@esri/solution-common';
+import { Component, Element, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
+import state from "../../utils/solution-store";
 import SolutionTemplateData_T9n from '../../assets/t9n/solution-template-data/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
 
@@ -43,18 +42,13 @@ export class SolutionTemplateData {
   //--------------------------------------------------------------------------
 
   /**
-   * Credentials for requests
-   */
-  @Prop({ mutable: true }) authentication: UserSession;
-
-  /**
    * Contains the public value for this component.
    *
    * When working with a resource item this should contain an IResourceItem
    *
    * When working with a json type item this should contain the data and vars
    */
-  @Prop({ mutable: true, reflect: true }) value: ITemplateData = {};
+  //@Prop({ mutable: true, reflect: true }) value: ITemplateData = {};
 
   /**
    * This needs to be unique for props vs data of an item
@@ -62,20 +56,26 @@ export class SolutionTemplateData {
   @Prop({ mutable: true, reflect: true }) instanceid = "";
 
   /**
-   * A templates itemId.
+   * A template's itemId.
    * This is used to get the correct model from a store in the json-editor
    */
-  @Prop({ mutable: true, reflect: true }) itemid = "";
+  @Prop({ mutable: true, reflect: true }) itemId = "";
 
-  /**
-   * Contains the solution based variables
-   */
-  @Prop({ mutable: true, reflect: true }) solutionVariables: IVariableItem[] = [];
+  @Watch("itemId") itemIdWatchHandler(): void {
+    this.value = this.instanceid === "data"
+      ? state.getItemInfo(this.itemId).data
+      : state.getItemInfo(this.itemId).properties;
+  }
 
   /**
    * Contains the organization based variables
    */
-  @Prop({ mutable: true, reflect: true }) organizationVariables: IOrganizationVariableItem[] = [];
+  @Prop({ mutable: true, reflect: true }) organizationVariables = "";
+
+  /**
+   * Contains the solution based variables
+   */
+  @Prop({ mutable: true, reflect: true }) solutionVariables = "";
 
   /**
    * Used to show/hide the variable containers
@@ -105,11 +105,11 @@ export class SolutionTemplateData {
           <calcite-shell class="light var-container" dir="ltr">
             <calcite-panel class="json-editor">
               <div class="solution-data-child-container calcite-match-height">
-                <json-editor
-                  class="solution-data-editor-container"
-                  instanceid={this.instanceid}
-                  value={this.itemid}
-                />
+                  <json-editor
+                    class="solution-data-editor-container"
+                    instanceid={this.instanceid}
+                    value={this.value}
+                  />
               </div>
             </calcite-panel>
 
@@ -153,6 +153,8 @@ export class SolutionTemplateData {
    * All UI strings should be defined here.
    */
   @State() protected _translations: typeof SolutionTemplateData_T9n;
+
+  @State() protected value = "";
 
   //--------------------------------------------------------------------------
   //

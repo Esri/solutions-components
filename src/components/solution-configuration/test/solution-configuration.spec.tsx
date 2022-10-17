@@ -17,7 +17,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionConfiguration } from '../solution-configuration';
 import { h } from '@stencil/core';
-import state from '../../../utils/editStore';
+import state from "../../../utils/solution-store";
 
 // Mock MutationObserver because Jest environment doesn't have it
 const mutationObserverMock = jest.fn(function MutationObserver(): void {
@@ -35,16 +35,14 @@ xdescribe('solution-configuration', () => {
   };
 
   beforeEach(() => {
-    state.dispose();
-    state.models = {};
-    state.featureServices = [];
+    state._testAccess("_emptyTheStore");
   });
 
   it('renders', async () => {
-    state.featureServices = [
+    state.setStoreInfo("featureServices", [
       "Feature Service 1",
       "Feature Service 2"
-    ];
+    ]);
     const page = await newSpecPage({
       components: [SolutionConfiguration],
       supportsShadowDom: false,

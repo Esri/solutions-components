@@ -15,9 +15,9 @@
  */
 
 import { Component, Element, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
-import { EUpdateType, IResourcePath, ISolutionModel } from '../../utils/interfaces';
+import { EUpdateType, IResourcePath } from '../../utils/interfaces';
 import { EFileType, UserSession } from '@esri/solution-common';
-import state from '../../utils/editStore';
+import state from "../../utils/solution-store";
 import SolutionResourceItem_T9n from '../../assets/t9n/solution-resource-item/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
 
@@ -48,27 +48,13 @@ export class SolutionResourceItem {
   @Prop({ mutable: true }) authentication: UserSession;
 
   /**
-   * The templates itemId.
+   * A template's itemId.
    * This is used to get the correct model from a store in the json-editor
    */
-  @Prop({ mutable: true, reflect: true }) itemid = "";
+  @Prop({ mutable: true, reflect: true }) itemId = "";
 
-  /**
-   * The templates resources.
-   */
-  @Prop({ mutable: true, reflect: true }) resources = {};
-
-  /**
-   * The templates resourceFilePaths.
-   */
-  @Prop({ mutable: true, reflect: true }) resourceFilePaths: IResourcePath[] = [];
-
-  @Watch('resourceFilePaths')
-  resourceFilePathsWatchHandler(v: any, oldV: any): void {
-    if (v && v !== oldV && Object.keys(state.models).indexOf(this.itemid) > -1) {
-      const m: ISolutionModel = state.models[this.itemid];
-      m.resourceFilePaths = this.resourceFilePaths;
-    }
+  @Watch("itemId") itemIdWatchHandler(): void {
+    this.resourceFilePaths = state.getItemInfo(this.itemId).resourceFilePaths;
   }
 
   //--------------------------------------------------------------------------
@@ -123,6 +109,16 @@ export class SolutionResourceItem {
   //--------------------------------------------------------------------------
 
   /**
+   * The templates resourceFilePaths.
+   */
+  @State() resourceFilePaths: IResourcePath[] = [];
+
+  /**
+   * The templates resources.
+   */
+  @State() resources = {};
+
+  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
@@ -163,9 +159,6 @@ export class SolutionResourceItem {
       <calcite-value-list multiple>
         {
           this.resourceFilePaths.reduce((prev, cur) => {
-            if (Object.keys(this.resources).indexOf(cur.url) < 0) {
-              this.resources[cur.url] = cur;
-            }
             if (cur.url.indexOf("_info_thumbnail") < 0) {
               prev.push(this._renderResource(cur));
             }
@@ -200,6 +193,7 @@ export class SolutionResourceItem {
             onClick={() => this._download(resource.url, resource.filename)}
             scale="m"
             text={this._translations.download}
+            title={this._translations.download}
           />
           <calcite-action
             disabled={disabled}
@@ -208,6 +202,7 @@ export class SolutionResourceItem {
             onClick={() => this._upload(resource.url)}
             scale="m"
             text={this._translations.update}
+            title={this._translations.update}
           />
           <calcite-action
             disabled={disabled}
@@ -216,6 +211,7 @@ export class SolutionResourceItem {
             onClick={() => this._delete(resource.filename)}
             scale="m"
             text={this._translations.delete}
+            title={this._translations.delete}
           />
           {disabled ? <calcite-action
             icon="reset"
@@ -247,11 +243,14 @@ export class SolutionResourceItem {
   /**
    * Remove the name from the deleted array so it will again be rendered
    *
-   * @param name the name to be added to the deleted array
+   * @param _name the name to be added to the deleted array
    */
-  _reset(name: string): void {
+  _reset(
+    _name: string
+  ): void {
+    /*
     // need to make sure I know if this reset is from the source or a new one
-    const m: ISolutionModel = state.models[this.itemid];
+    const m: ISolutionModel = state.models[this.itemId];
     this.resourceFilePaths = m.sourceResourceFilePaths.some(fp => fp.filename === name) ?
       this.resourceFilePaths = this.resourceFilePaths.map(p => {
         if (p.filename === name) {
@@ -265,6 +264,7 @@ export class SolutionResourceItem {
         }
         return p;
       });
+    */
   }
 
   /**
@@ -395,10 +395,10 @@ export class SolutionResourceItem {
         this._removedResources[filename] = this.resourceFilePaths[currentIndex];
 
         this.resourceFilePaths[currentIndex] = {
-          type: EFileType.Data,
-          folder: null,
-          filename,
           url,
+          type: EFileType.Data,
+          folder: undefined,
+          filename,
           blob: files[0],
           sourceFileName,
           updateType: EUpdateType.Update
@@ -425,10 +425,10 @@ export class SolutionResourceItem {
         this.resourceFilePaths = [
           ...this.resourceFilePaths,
           {
-            type: EFileType.Data,
-            folder: null,
-            filename,
             url,
+            type: EFileType.Data,
+            folder: undefined,
+            filename,
             blob: files[0],
             updateType: EUpdateType.Add
           }

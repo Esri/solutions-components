@@ -7,12 +7,10 @@
 
 ## Properties
 
-| Property            | Attribute | Description                                                                                 | Type              | Default     |
-| ------------------- | --------- | ------------------------------------------------------------------------------------------- | ----------------- | ----------- |
-| `authentication`    | --        | Credentials for requests                                                                    | `UserSession`     | `undefined` |
-| `itemid`            | `itemid`  | The templates itemId. This is used to get the correct model from a store in the json-editor | `string`          | `""`        |
-| `resourceFilePaths` | --        | The templates resourceFilePaths.                                                            | `IResourcePath[]` | `[]`        |
-| `resources`         | --        | The templates resources.                                                                    | `{}`              | `{}`        |
+| Property         | Attribute | Description                                                                                | Type          | Default     |
+| ---------------- | --------- | ------------------------------------------------------------------------------------------ | ------------- | ----------- |
+| `authentication` | --        | Credentials for requests                                                                   | `UserSession` | `undefined` |
+| `itemId`         | `item-id` | A template's itemId. This is used to get the correct model from a store in the json-editor | `string`      | `""`        |
 
 
 ## Dependencies

@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property | Attribute | Description                                   | Type                          | Default |
-| -------- | --------- | --------------------------------------------- | ----------------------------- | ------- |
-| `value`  | --        | Contains the public value for this component. | `IOrganizationVariableItem[]` | `[]`    |
+| Property | Attribute | Description                                   | Type     | Default |
+| -------- | --------- | --------------------------------------------- | -------- | ------- |
+| `value`  | `value`   | Contains the public value for this component. | `string` | `""`    |
 
 
 ## Events
@@ -27,13 +27,13 @@
 
 ### Depends on
 
-- calcite-label
+- calcite-tree
 - calcite-tree-item
 
 ### Graph
 ```mermaid
 graph TD;
-  solution-organization-variables --> calcite-label
+  solution-organization-variables --> calcite-tree
   solution-organization-variables --> calcite-tree-item
   calcite-tree-item --> calcite-icon
   calcite-tree-item --> calcite-checkbox

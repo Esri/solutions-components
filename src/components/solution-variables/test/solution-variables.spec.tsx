@@ -24,7 +24,7 @@ xdescribe('solution-variables', () => {
     const page = await newSpecPage({
       components: [SolutionVariables],
       template: () => (
-        <solution-variables value={value}></solution-variables>
+        <solution-variables value={JSON.stringify(value)}></solution-variables>
       )
     });
     expect(page.root).toEqualHtml(`

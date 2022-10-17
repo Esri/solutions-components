@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Listen, Watch } from '@stencil/core';
-import { IInventoryItem, ICurrentEditItem } from '../../utils/interfaces';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Watch } from '@stencil/core';
+import { IInventoryItem/*, ISolutionTemplateEdit */ } from '../../utils/interfaces';
 import '@esri/calcite-components';
 
 @Component({
@@ -43,17 +43,16 @@ export class SolutionContents {
   /**
    * Contains the current item that is selected.
    */
-  @Prop({ mutable: true, reflect: true }) selectedItem: ICurrentEditItem;
+  @Prop({ mutable: true, reflect: true }) selectedItemId: string;
 
   /**
    * Contains the public value for this component.
    */
-  @Prop() value: IInventoryItem[] = [];
+  @Prop({ mutable: true, reflect: true }) templateHierarchy: IInventoryItem[] = [];
 
-  @Watch('value')
-  valueWatchHandler(v: any, oldV: any): void {
+  @Watch("templateHierarchy") valueWatchHandler(v: any, oldV: any): void {
     if (v && v !== oldV && Array.isArray(v) && v.length > 0) {
-      this._treeItemSelected(v[0].solutionItem);
+      this._treeItemSelected(v[0].id);
     }
   }
 
@@ -63,6 +62,10 @@ export class SolutionContents {
   //
   //--------------------------------------------------------------------------
 
+  componentWillLoad() {
+    this.valueWatchHandler(this.templateHierarchy, []);
+  }
+
   /**
    * Renders the component.
    */
@@ -70,7 +73,7 @@ export class SolutionContents {
     return (
       <Host>
         <calcite-tree>
-          {this.renderHierarchy(this.value)}
+          {this.renderHierarchy(this.templateHierarchy)}
         </calcite-tree>
       </Host>
     );
@@ -78,10 +81,10 @@ export class SolutionContents {
 
   renderHierarchy(objs: IInventoryItem[]): HTMLCalciteTreeItemElement[] {
     return objs.map((obj) => {
-      const selected: boolean = this.selectedItem?.itemId && this.selectedItem?.itemId === obj.solutionItem.itemId;
+      const selected: boolean = this.selectedItemId && this.selectedItemId === obj.id;
       return (obj.dependencies && obj.dependencies.length > 0) ?
         (
-          <calcite-tree-item onClick={(evt) => this._treeItemSelected(obj.solutionItem, evt)} selected={selected}>
+          <calcite-tree-item onClick={(evt) => this._treeItemSelected(obj.id, evt)} selected={selected}>
             <solution-item-icon type={obj.type} typeKeywords={obj.typeKeywords} />
             <span class="icon-text" title={obj.title}>{obj.title}</span>
             <calcite-tree slot="children" >
@@ -91,7 +94,7 @@ export class SolutionContents {
         )
         :
         (
-          <calcite-tree-item onClick={(evt) => this._treeItemSelected(obj.solutionItem, evt)} selected={selected}>
+          <calcite-tree-item onClick={(evt) => this._treeItemSelected(obj.id, evt)} selected={selected}>
             <solution-item-icon type={obj.type} typeKeywords={obj.typeKeywords} />
             <span class="icon-text" title={obj.title}>{obj.title}</span>
           </calcite-tree-item>
@@ -111,10 +114,10 @@ export class SolutionContents {
   //
   //--------------------------------------------------------------------------
 
-  @Listen("solutionLoaded", { target: 'window' })
+  /*@Listen("solutionLoaded", { target: "window" })
   _solutionLoaded(): void {
-    this._treeItemSelected(this.value[0].solutionItem);
-  }
+    this._treeItemSelected(this.templateHierarchy[0].solutionItem);
+  }*/
 
   //--------------------------------------------------------------------------
   //
@@ -122,7 +125,7 @@ export class SolutionContents {
   //
   //--------------------------------------------------------------------------
 
-  @Event() solutionItemSelected: EventEmitter<ICurrentEditItem>;
+  @Event() solutionItemSelected: EventEmitter<string>;
 
   //--------------------------------------------------------------------------
   //
@@ -145,14 +148,14 @@ export class SolutionContents {
    * @param evt MouseEvent or undefined
    */
   protected _treeItemSelected(
-    solutionItem: ICurrentEditItem,
+    itemId: string,
     evt: any = undefined
   ): void {
     const treeItem = evt?.target?.closest("calcite-tree-item");
     if (treeItem) {
       treeItem.expanded = !treeItem?.expanded;
     }
-    this.selectedItem = solutionItem;
-    this.solutionItemSelected.emit(solutionItem);
+    this.selectedItemId = itemId;
+    this.solutionItemSelected.emit(itemId);
   }
 }

@@ -17,7 +17,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionItemDetails } from '../solution-item-details';
 import { value } from '../../../demos/data/solution-item-details-data.json';
-import * as groupData from '../../../demos/data/solution-group-details-data.json';
+//import * as groupData from '../../../demos/data/solution-group-details-data.json';
 import { h } from '@stencil/core';
 
 xdescribe('solution-item-details', () => {
@@ -26,7 +26,7 @@ xdescribe('solution-item-details', () => {
       components: [SolutionItemDetails],
       supportsShadowDom: false,
       template: () => (
-        <solution-item-details value={value}></solution-item-details>
+        <solution-item-details item-id={value}></solution-item-details>
       )
     });
     expect(page.root).toEqualHtml(`
@@ -83,8 +83,9 @@ xdescribe('solution-item-details', () => {
         </div>
       </solution-item-details>
     `);
- });
+  });
 
+  /*
   it('renders group details', async () => {
     const page = await newSpecPage({
       components: [SolutionItemDetails],
@@ -137,4 +138,5 @@ xdescribe('solution-item-details', () => {
       </solution-item-details>
     `);
   });
+  */
 });
