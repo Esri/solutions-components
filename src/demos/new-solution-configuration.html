@@ -105,7 +105,7 @@
     </div>
   </div>
 
-  <calcite-modal id="configurationModal" fullscreen>
+  <calcite-modal id="configurationModal" fullscreen style="z-index:450">
     <div slot="header" id="modal-title">Configure Solution</div>
     <div slot="content" class="full-height">
       <div class="full-height">
@@ -173,19 +173,27 @@
 
       // Open configuration modal
       async function configureSolution() {
-        const portal = (document.getElementById("portal").value || "https://www.arcgis.com") + "/sharing/rest";
-        authentication = new arcgisRest.UserSession({
-          username: document.getElementById("username").value || undefined,
-          password: document.getElementById("password").value || undefined,
-          portal
-        });
-
-        // Initialize the configuration content
-        configurationComponent.authentication = authentication;
-
         const solutionId = document.getElementById("solutionId").value;
-
         if (solutionId) {
+          const portal = (document.getElementById("portal").value || "https://www.arcgis.com") + "/sharing/rest";
+          authentication = new arcgisRest.UserSession({
+            username: document.getElementById("username").value || undefined,
+            password: document.getElementById("password").value || undefined,
+            portal
+          });
+
+          let token;
+          try {
+            // See if we can log in
+            token = await authentication.getToken(portal);
+          } catch (_) {
+            token = null;
+            reportError("Caution", "You will not be able to save because you are not logged in");
+          }
+
+          // Initialize the configuration content
+          configurationComponent.authentication = authentication;
+
           const itemBase = await arcgisSolution.getItemBase(solutionId, authentication);
           const modalTitle = document.getElementById("modal-title");
           modalTitle.innerHTML = `Configure Solution ${itemBase.title}`;
@@ -197,7 +205,7 @@
                 hasChanges = evt.detail;
                 cancelBtn.disabled = saveBtn.disabled = !evt.detail;
               }
-          }
+            }
           );
 
           appContainer.open = true;
