@@ -100,8 +100,9 @@ describe("solution-store", () => {
   it("saves a solution", async () => {
     jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
     const updateSpy = jest.spyOn(common, "updateItem").mockImplementation(
-      (itemInfo: any) => {
+      (itemInfo: common.IItemUpdate, _authentication: common.UserSession, _folderId?: string): Promise<common.IUpdateItemResponse> => {
         expect(itemInfo.id).toEqual("ca924c6db7d247b9a31fa30532fb5913");
+        return Promise.resolve(null);
       }
     );
     await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
