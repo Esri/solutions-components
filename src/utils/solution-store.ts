@@ -190,7 +190,7 @@ class SolutionStore
     const solutionData = await getItemDataAsJson(solutionItemId, authentication);
     if (solutionData) {
       const defaultWkid = getProp(solutionData, "params.wkid.default");
-      const templateEdits = await this._prepareSolutionItems(solutionItemId, solutionData.templates, authentication);
+      const templateEdits = await this._prepareSolutionItemsForEditing(solutionItemId, solutionData.templates, authentication);
       const featureServices = this._getFeatureServices(solutionData.templates);
       const spatialReferenceInfo = this._getSpatialReferenceInfo(featureServices, defaultWkid);
 
@@ -257,9 +257,9 @@ class SolutionStore
   /** Provides access to protected methods for unit testing.
    *
    *  @param methodName Name of protected method to run
-   *  @param arg1 First argument to forward to method, e.g., for "_prepareSolutionItems", `solutionItemId`
-   *  @param arg2 Second argument to forward to method, e.g., for "_prepareSolutionItems", `templates`
-   *  @param arg3 Third argument to forward to method, e.g., for "_prepareSolutionItems", `authentication`
+   *  @param arg1 First argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `solutionItemId`
+   *  @param arg2 Second argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `templates`
+   *  @param arg3 Third argument to forward to method, e.g., for "_prepareSolutionItemsForEditing", `authentication`
    *
    *  @returns
    */
@@ -283,8 +283,8 @@ class SolutionStore
         return this._getSpatialReferenceInfo(arg1, arg2);
       case "_getThumbnails":
         return this._getThumbnails(arg1, arg2);
-      case "_prepareSolutionItems":
-        return this._prepareSolutionItems(arg1, arg2, arg3);
+      case "_prepareSolutionItemsForEditing":
+        return this._prepareSolutionItemsForEditing(arg1, arg2, arg3);
     }
     return null;
   }
@@ -483,7 +483,7 @@ class SolutionStore
    *
    * @protected
    */
-  protected _prepareSolutionItems(
+  protected _prepareSolutionItemsForEditing(
     solutionItemId: string,
     templates: IItemTemplate[],
     authentication: UserSession
