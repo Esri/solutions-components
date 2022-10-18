@@ -16,7 +16,7 @@
 
 import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from '@stencil/core';
 import { EExportType, EPageType, EWorkflowType, ISelectionSet } from '../../utils/interfaces';
-import { getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
+import { flashSelection, getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
 import state from "../../utils/publicNotificationStore";
 import NewPublicNotification_T9n from '../../assets/t9n/public-notification/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
@@ -391,10 +391,10 @@ export class PublicNotification {
                 <calcite-list-item
                   description={this._translations.selectedFeatures.replace('{{n}}', cur.selectedIds.length.toString())}
                   label={cur.label}
-                //onClick={() => flashSelection(cur)}
+                  onClick={() => flashSelection(cur, this.mapView)}
                 >
-                  {this._getAction(true, "pencil", "", (): void => this._openSelection(cur), false, "actions-end")}
-                  {this._getAction(true, "x", "", (): Promise<void> => this._deleteSelection(i), false, "actions-end")}
+                  {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
+                  {this._getAction(true, "x", "", (evt): Promise<void> => this._deleteSelection(i, evt), false, "actions-end")}
                 </calcite-list-item>
               ));
             }
@@ -842,8 +842,10 @@ export class PublicNotification {
    * @protected
    */
   protected _deleteSelection(
-    index: number
+    index: number,
+    evt: CustomEvent
   ): Promise<void> {
+    evt.stopPropagation();
     this.selectionSets = this.selectionSets.filter((ss, i) => {
       if (i !== index) {
         return ss;
@@ -858,8 +860,10 @@ export class PublicNotification {
    * @protected
    */
   protected _openSelection(
-    selectionSet: ISelectionSet
+    selectionSet: ISelectionSet,
+    evt: CustomEvent
   ): void {
+    evt.stopPropagation();
     this._activeSelection = selectionSet;
     this.pageType = EPageType.SELECT;
   }

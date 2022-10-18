@@ -64,20 +64,36 @@ export async function highlightFeatures(
   return layer.highlight(ids);
 }
 
-export function flashSelection(
-  selectionSet: ISelectionSet
-): void {
+export async function flashSelection(
+  selectionSet: ISelectionSet,
+  mapView: __esri.MapView,
+  updateExtent: boolean = true
+): Promise<void> {
   const objectIds = selectionSet.selectedIds;
   const featureFilter = {
     objectIds
   } as __esri.FeatureFilter;
+  if (updateExtent) {
+    await goToSelection(selectionSet, mapView);
+  }
   selectionSet.layerView.featureEffect = {
     filter: featureFilter,
-    includedEffect: "bloom(1.3, 0.1px, 5%)",
-    excludedEffect: "blur(5px) grayscale(90%) opacity(40%)"
+    includedEffect: "invert(100%)",
+    excludedEffect: "blur(5px)"
   } as __esri.FeatureEffect;
 
   setTimeout(() => {
     selectionSet.layerView.featureEffect = undefined;
   }, 1300);
+}
+
+export async function goToSelection(
+  selectionSet: ISelectionSet,
+  mapView: __esri.MapView
+): Promise<void> {
+  const query = selectionSet.layerView.layer.createQuery();
+  query.objectIds = selectionSet.selectedIds;
+  await selectionSet.layerView.layer.queryExtent(query).then(async (result) => {
+    await mapView.goTo(result.extent);
+  });
 }

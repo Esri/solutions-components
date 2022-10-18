@@ -116,12 +116,6 @@ export class RefineSelectionTools {
   @State() protected _translations: typeof RefineSelectionTools_T9n;
 
   /**
-   * string: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html#Effect
-   * The exclusion layer effect to use when flashing a selection set
-   */
-  protected _excludeEffect = "blur(5px) grayscale(90%) opacity(40%)";
-
-  /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
    * The graphics layer used to show selections.
    */
@@ -280,9 +274,9 @@ export class RefineSelectionTools {
             selectionMode={"single"}
           />
           <div class={"margin-top-1" + drawClass}>
-            <div class={"esri-sketch esri-widget"}>
-              <div class={"esri-sketch__panel"}>
-                <div class={"esri-sketch__tool-section esri-sketch__section"}>
+            <div class="esri-sketch esri-widget">
+              <div class="esri-sketch__panel">
+                <div class="esri-sketch__section">
                   <calcite-action
                     disabled={!this.selectEnabled}
                     icon="select"
@@ -291,7 +285,7 @@ export class RefineSelectionTools {
                     text={this._translations.select}
                   />
                 </div>
-                <div class={"esri-sketch__tool-section esri-sketch__section"}>
+                <div class="esri-sketch__section">
                   <calcite-action
                     disabled={!this.selectEnabled}
                     icon="line"
@@ -314,16 +308,16 @@ export class RefineSelectionTools {
                     text={this._translations.selectRectangle}
                   />
                 </div>
-                <div class={"esri-sketch__tool-section esri-sketch__section"}>
+                <div class="esri-sketch__section">
                   <calcite-action
-                    disabled={!this.selectEnabled}
+                    disabled={true}
                     icon="undo"
                     onClick={() => this._undo()}
                     scale="s"
                     text={this._translations.undo}
                   />
                   <calcite-action
-                    disabled={!this.selectEnabled}
+                    disabled={true}
                     icon="redo"
                     onClick={() => this._redo()}
                     scale="s"
