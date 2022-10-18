@@ -462,7 +462,7 @@ class SolutionStore
           r.forEach((thumbnail, i) => {
             if (thumbnail) {
               const templateEdit = templateEdits[_ids[i]];
-              templateEdit.thumbnail = templateEdit.thumbnail = thumbnail;
+              templateEdit.thumbnail = thumbnail;
             }
           });
           resolve(templateEdits);
@@ -499,9 +499,9 @@ class SolutionStore
       const editItem: ISolutionTemplateEdit = {
         itemId: t.itemId,
         type: t.type,
-        details: t.item as any,
-        data: t.data,
-        properties: t.properties,
+        details: {...t.item} as any,
+        data: {...t.data},
+        properties: {...t.properties},
         thumbnail: undefined,  // retain thumbnails in store as they get messed up if you emit them in events
         resourceFilePaths
       };
