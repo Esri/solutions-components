@@ -62,9 +62,11 @@ export class SolutionTemplateData {
   @Prop({ mutable: true, reflect: true }) itemId = "";
 
   @Watch("itemId") itemIdWatchHandler(): void {
-    this.value = this.instanceid === "data"
+    this.value = JSON.stringify(
+      this.instanceid === "data"
       ? state.getItemInfo(this.itemId).data
-      : state.getItemInfo(this.itemId).properties;
+      : state.getItemInfo(this.itemId).properties
+      , null, 2);
   }
 
   /**
