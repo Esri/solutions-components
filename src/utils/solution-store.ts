@@ -215,6 +215,8 @@ class SolutionStore
     const solutionItemId = this._store.get("solutionItemId");
     const solutionData = this._store.get("solutionData");
 
+    await this._prepareSolutionItemsForStorage(solutionItemId, solutionData.templates, this._authentication);
+
     const itemInfo: IItemUpdate = {
       id: solutionItemId,
       text: solutionData
@@ -511,6 +513,18 @@ class SolutionStore
       templateEdits[t.itemId] = editItem;
     });
     return this._getThumbnails(templateEdits, authentication);
+  }
+
+  protected _prepareSolutionItemsForStorage(
+    _solutionItemId: string,
+    _templates: IItemTemplate[],
+    _authentication: UserSession
+  ): Promise<void> {
+
+
+
+
+    return Promise.resolve();
   }
 }
 
