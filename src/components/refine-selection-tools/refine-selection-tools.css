@@ -72,6 +72,10 @@ html[dir="rtl"] .main-label {
 } */
 
 /* DIV CHILD CHILD */
+.esri-sketch__tool-section {
+  border-right: 1px solid rgba(110,110,110,.3);
+}
+
 .esri-sketch__section {
   align-items: center;
   display: flex;

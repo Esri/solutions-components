@@ -553,9 +553,9 @@ export class MapSelectTools {
     state.highlightHandle?.remove();
     if (ids.length > 0) {
       state.highlightHandle = await highlightFeatures(
-        this.mapView,
+        ids,
         this.selectLayerView,
-        ids
+        this.mapView
       );
     }
     this.selectionSetChange.emit(ids.length);

@@ -391,7 +391,7 @@ export class PublicNotification {
                 <calcite-list-item
                   description={this._translations.selectedFeatures.replace('{{n}}', cur.selectedIds.length.toString())}
                   label={cur.label}
-                  onClick={() => goToSelection(cur, this.mapView)}
+                  onClick={() => goToSelection(cur.selectedIds, cur.layerView, this.mapView)}
                 >
                   {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
                   {this._getAction(true, "x", "", (evt): Promise<void> => this._deleteSelection(i, evt), false, "actions-end")}
@@ -878,9 +878,9 @@ export class PublicNotification {
     const ids = utils.getSelectionIds(this.selectionSets);
     if (ids.length > 0) {
       state.highlightHandle = await highlightFeatures(
-        this.mapView,
+        ids,
         this.addresseeLayer,
-        ids
+        this.mapView
       );
     }
   }

@@ -276,7 +276,7 @@ export class RefineSelectionTools {
           <div class={"margin-top-1" + drawClass}>
             <div class="esri-sketch esri-widget">
               <div class="esri-sketch__panel">
-                <div class="esri-sketch__section">
+                <div class="esri-sketch__tool-section esri-sketch__section">
                   <calcite-action
                     disabled={!this.selectEnabled}
                     icon="select"
@@ -285,7 +285,7 @@ export class RefineSelectionTools {
                     text={this._translations.select}
                   />
                 </div>
-                <div class="esri-sketch__section">
+                <div class="esri-sketch__tool-section esri-sketch__section">
                   <calcite-action
                     disabled={!this.selectEnabled}
                     icon="line"
@@ -308,7 +308,7 @@ export class RefineSelectionTools {
                     text={this._translations.selectRectangle}
                   />
                 </div>
-                <div class="esri-sketch__section">
+                <div class="esri-sketch__tool-section esri-sketch__section">
                   <calcite-action
                     disabled={true}
                     icon="undo"
@@ -604,7 +604,7 @@ export class RefineSelectionTools {
   ): Promise<void> {
     this._clearHighlight();
     if (ids.length > 0) {
-      state.highlightHandle = await highlightFeatures(this.mapView, this.layerViews[0], ids, updateExtent);
+      state.highlightHandle = await highlightFeatures(ids, this.layerViews[0], this.mapView, updateExtent);
     }
   }
 
