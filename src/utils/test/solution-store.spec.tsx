@@ -36,7 +36,6 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  state._testAccess("_emptyTheStore");
   jest.restoreAllMocks();
 });
 
@@ -76,66 +75,14 @@ describe("solution-store", () => {
     expect(Object.keys(state.getStoreInfo("templateEdits")).length).toEqual(25);
 
     const item = state.getItemInfo("79036430a6274e17ae915d0278b8569c");
-    const itemDetails = JSON.parse(item.details);
-    expect(itemDetails.description).toEqual("A feature layer storing reported service status and material use information.");
+    expect(item.details.description).toEqual("A feature layer storing reported service status and material use information.");
 
     // Change the item's description
-    itemDetails.description = "Nullam ac urna mattis, maximus urna sit amet.";
-    item.details = JSON.stringify(itemDetails, null, 2);
+    item.details.description = "Nullam ac urna mattis, maximus urna sit amet.";
     state.setItemInfo("79036430a6274e17ae915d0278b8569c", item);
 
     const updatedItem = state.getItemInfo("79036430a6274e17ae915d0278b8569c");
-    const updatedItemDetails = JSON.parse(updatedItem.details);
-    expect(updatedItemDetails.description).toEqual("Nullam ac urna mattis, maximus urna sit amet.");
-  });
-
-  it("undoes item changes", async () => {
-    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
-    await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
-
-    const item = state.getItemInfo("79036430a6274e17ae915d0278b8569c");
-    const itemDetails = JSON.parse(item.details);
-    expect(itemDetails.description).toEqual("A feature layer storing reported service status and material use information.");
-
-    // Change the item's description
-    itemDetails.description = "Nullam ac urna mattis, maximus urna sit amet.";
-    item.details = JSON.stringify(itemDetails, null, 2);
-    state.setItemInfo("79036430a6274e17ae915d0278b8569c", item);
-
-    const updatedItem = state.getItemInfo("79036430a6274e17ae915d0278b8569c");
-    const updatedItemDetails = JSON.parse(updatedItem.details);
-    expect(updatedItemDetails.description).toEqual("Nullam ac urna mattis, maximus urna sit amet.");
-
-    // Undo the change
-    await state.undoItemChanges();
-    const resetItem = state.getItemInfo("79036430a6274e17ae915d0278b8569c");
-    const resetItemDetails = JSON.parse(resetItem.details);
-    expect(resetItemDetails.description).toEqual("A feature layer storing reported service status and material use information.");
-  });
-
-  it("keeps item changes", async () => {
-    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
-    await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
-
-    const item = state.getItemInfo("79036430a6274e17ae915d0278b8569c");
-    const itemDetails = JSON.parse(item.details);
-    expect(itemDetails.description).toEqual("A feature layer storing reported service status and material use information.");
-
-    // Change the item's description
-    itemDetails.description = "Nullam ac urna mattis, maximus urna sit amet.";
-    item.details = JSON.stringify(itemDetails, null, 2);
-    state.setItemInfo("79036430a6274e17ae915d0278b8569c", item);
-
-    const updatedItem = state.getItemInfo("79036430a6274e17ae915d0278b8569c");
-    const updatedItemDetails = JSON.parse(updatedItem.details);
-    expect(updatedItemDetails.description).toEqual("Nullam ac urna mattis, maximus urna sit amet.");
-
-    // Keep the change, and then verify that undoing has no effect
-    await state.keepItemChanges();
-    await state.undoItemChanges();
-    const editedItem = state.getItemInfo("79036430a6274e17ae915d0278b8569c");
-    const editedItemDetails = JSON.parse(editedItem.details);
-    expect(editedItemDetails.description).toEqual("Nullam ac urna mattis, maximus urna sit amet.");
+    expect(updatedItem.details.description).toEqual("Nullam ac urna mattis, maximus urna sit amet.");
   });
 
   it("changes a store value", async () => {
@@ -150,6 +97,20 @@ describe("solution-store", () => {
     expect(modifiedDefaultWkid).toEqual("2865");
   });
 
+  it("saves a solution", async () => {
+    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
+    const updateSpy = jest.spyOn(common, "updateItem").mockImplementation(
+      (itemInfo: any) => {
+        expect(itemInfo.id).toEqual("ca924c6db7d247b9a31fa30532fb5913");
+      }
+    );
+    await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
+
+    await state.saveSolution();
+
+    expect(updateSpy).toHaveBeenCalled();
+  });
+
   it("directly empties the store", async () => {
     jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
     await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
@@ -159,32 +120,11 @@ describe("solution-store", () => {
     expect(state.getStoreInfo("solutionItemId")).toEqual("");
   });
 
-  it("indirectly empties the store", async () => {
-    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
-    await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
-    expect(state.getStoreInfo("solutionItemId")).toEqual("ca924c6db7d247b9a31fa30532fb5913");
-
-    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => null);
-    await state.loadSolution("", MOCK_USER_SESSION);
-    expect(state.getStoreInfo("solutionItemId")).toEqual("");
-  });
-
-  it("tries to set the value of an item that's not in the store", async () => {
-    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
-    await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
-    expect(state.getStoreInfo("solutionItemId")).toEqual("ca924c6db7d247b9a31fa30532fb5913");
-
-    const item = state.getItemInfo("79036430a6274e17ae915d0278b8569c");
-    expect(() => {
-      state.setItemInfo("xyz", item);
-    }).toThrow();
-  });
-
   it("gets feature services", async () => {
     jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
     await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
 
-    const result = state._testAccess("_getFeatureServices", state.getStoreInfo("templates")) as IFeatureServiceEnabledStatus[];
+    const result = state._testAccess("_getFeatureServices", state.getStoreInfo("solutionData").templates) as IFeatureServiceEnabledStatus[];
     expect(result.length).toEqual(5);
     expect(result[0].name).toEqual("Driver_Activity");  // name fetched from `name` prop because `title` empty
     expect(result[0].enabled).toBeFalsy();
@@ -195,7 +135,7 @@ describe("solution-store", () => {
     jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
     await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
 
-    const result = state._testAccess("_getItemsSharedWithThisGroup", state.getStoreInfo("templates")[0], state.getStoreInfo("templates")) as IItemShare[];
+    const result = state._testAccess("_getItemsSharedWithThisGroup", state.getStoreInfo("solutionData").templates[0], state.getStoreInfo("solutionData").templates) as IItemShare[];
     expect(result.length).toEqual(23);
     expect(result[0]).toEqual({
       "id": "9c1311d827f44fdc9680651420a63484",
@@ -216,7 +156,7 @@ describe("solution-store", () => {
     jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
     await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
 
-    const result = state._testAccess("_getResourceFilePaths", "ca924c6db7d247b9a31fa30532fb5913", state.getStoreInfo("templates")[0], MOCK_USER_SESSION.portal) as IResourcePath[];
+    const result = state._testAccess("_getResourceFilePaths", "ca924c6db7d247b9a31fa30532fb5913", state.getStoreInfo("solutionData").templates[0], MOCK_USER_SESSION.portal) as IResourcePath[];
     expect(result.length).toEqual(2);
     expect(result[0]).toEqual({
       "url": "https://myorg.maps.arcgis.com/sharing/rest/content/items/ca924c6db7d247b9a31fa30532fb5913/resources/79036430a6274e17ae915d0278b8569c_info_metadata/metadata.xml",
@@ -231,7 +171,7 @@ describe("solution-store", () => {
     jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
     await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
 
-    const featureServices = state._testAccess("_getFeatureServices", state.getStoreInfo("templates")) as IFeatureServiceEnabledStatus[];
+    const featureServices = state._testAccess("_getFeatureServices", state.getStoreInfo("solutionData").templates) as IFeatureServiceEnabledStatus[];
     const result = await state._testAccess("_getSpatialReferenceInfo", featureServices, "2865") as ISolutionSpatialReferenceInfo;
     expect(result).toEqual({
       "enabled": true,
@@ -261,7 +201,7 @@ describe("solution-store", () => {
     jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
     await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
 
-    await state._testAccess("_prepareSolutionItems", "ca924c6db7d247b9a31fa30532fb5913", state.getStoreInfo("templates"), MOCK_USER_SESSION) as ISolutionTemplateEdits;
+    await state._testAccess("_prepareSolutionItems", "ca924c6db7d247b9a31fa30532fb5913", state.getStoreInfo("solutionData").templates, MOCK_USER_SESSION) as ISolutionTemplateEdits;
     expect(state.getStoreInfo("solutionItemId")).toEqual("ca924c6db7d247b9a31fa30532fb5913");
   });
 });

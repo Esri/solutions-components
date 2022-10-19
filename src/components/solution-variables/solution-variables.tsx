@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
 import { IVariableItem } from '../../utils/interfaces';
 import SolutionVariables_T9n from '../../assets/t9n/solution-variables/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
@@ -24,6 +24,7 @@ import { getLocaleComponentStrings } from '../../utils/locale';
   styleUrl: 'solution-variables.scss',
   shadow: true,
 })
+
 export class SolutionVariables {
 
   //--------------------------------------------------------------------------
@@ -43,7 +44,11 @@ export class SolutionVariables {
   /**
    * Contains the public value for this component.
    */
-  @Prop({ mutable: true, reflect: true }) value: IVariableItem[] = [];
+  @Prop({ mutable: true, reflect: true }) value = "";
+
+  @Watch("value") valueWatchHandler(): void {
+    this._solutionVariables = JSON.parse(this.value);
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -68,9 +73,9 @@ export class SolutionVariables {
           <h4 class="org-var-header">{this._translations.solVariables}</h4>
         </div>
         <div class="container-border">
-          <calcite-label id="variable-label">
-            {this._renderHierarchy(this.value)}
-          </calcite-label>
+          <calcite-tree id="variable-label">
+            {this._renderHierarchy(this._solutionVariables)}
+          </calcite-tree>
         </div>
       </Host>
     );
@@ -81,6 +86,8 @@ export class SolutionVariables {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  @State() protected _solutionVariables: IVariableItem[] = [];
 
   /**
    * Contains the translations for this component.

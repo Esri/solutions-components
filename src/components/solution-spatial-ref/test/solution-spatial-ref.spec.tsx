@@ -17,21 +17,19 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { SolutionSpatialRef } from '../solution-spatial-ref';
 import { h } from '@stencil/core';
-import state from '../../../utils/editStore';
+import state from "../../../utils/solution-store";
 
 xdescribe('solution-spatial-ref', () => {
   beforeEach(() => {
-    state.dispose();
-    state.models = {};
-    state.spatialReferenceInfo = {
+    state._testAccess("_emptyTheStore");
+    state.setStoreInfo("spatialReferenceInfo", {
       enabled: true,
       services: {
         "Feature Service 1": true,
         "Feature Service 2": false
       },
       spatialReference: undefined
-    };
-    state.featureServices = [];
+    });
   });
   it('renders', async () => {
     const page = await newSpecPage({

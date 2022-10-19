@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property | Attribute | Description                                   | Type              | Default |
-| -------- | --------- | --------------------------------------------- | ----------------- | ------- |
-| `value`  | --        | Contains the public value for this component. | `IVariableItem[]` | `[]`    |
+| Property | Attribute | Description                                   | Type     | Default |
+| -------- | --------- | --------------------------------------------- | -------- | ------- |
+| `value`  | `value`   | Contains the public value for this component. | `string` | `""`    |
 
 
 ## Events
@@ -27,18 +27,16 @@
 
 ### Depends on
 
-- calcite-label
+- calcite-tree
 - calcite-tree-item
 - [solution-item-icon](../solution-item-icon)
-- calcite-tree
 
 ### Graph
 ```mermaid
 graph TD;
-  solution-variables --> calcite-label
+  solution-variables --> calcite-tree
   solution-variables --> calcite-tree-item
   solution-variables --> solution-item-icon
-  solution-variables --> calcite-tree
   calcite-tree-item --> calcite-icon
   calcite-tree-item --> calcite-checkbox
   solution-template-data --> solution-variables

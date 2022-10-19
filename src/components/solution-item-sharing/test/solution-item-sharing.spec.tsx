@@ -24,7 +24,7 @@ xdescribe('solution-item-sharing', () => {
     const page = await newSpecPage({
       components: [SolutionItemSharing],
       template: () => (
-        <solution-item-sharing value={value}></solution-item-sharing>
+        <solution-item-sharing group-id={value}></solution-item-sharing>
       )
     });
     expect(page.root).toEqualHtml(`

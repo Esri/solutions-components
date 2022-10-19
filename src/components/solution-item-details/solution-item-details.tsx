@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Listen, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, h, Host, Listen, Prop, State, VNode, Watch } from '@stencil/core';
 import '@esri/calcite-components';
-import state from '../../utils/editStore';
-import { getProp } from '@esri/solution-common';
-import { IItemDetails } from '../../utils/interfaces';
+import state from "../../utils/solution-store";
 import SolutionItemDetails_T9n from '../../assets/t9n/solution-item-details/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
+import { IItemDetails, ISolutionTemplateEdit } from '../../utils/interfaces';
 
 @Component({
   tag: 'solution-item-details',
@@ -44,22 +43,15 @@ export class SolutionItemDetails {
   //--------------------------------------------------------------------------
 
   /**
-   * Contains the public value for this component.
+   * A template's itemId.
    */
-  @Prop({ mutable: true, reflect: true }) value: IItemDetails = {
-    title: "",
-    snippet: "",
-    description: "",
-    tags: [],
-    accessInformation: "",
-    licenseInfo: "",
-    itemId: ""
-  };
+  @Prop({ mutable: true, reflect: true }) itemId = "";
 
-  /**
-   * Contains the public type for this component.
-   */
-  @Prop({ mutable: true, reflect: true }) type = "";
+  @Watch("itemId") itemIdWatchHandler(): void {
+    this.itemEdit = state.getItemInfo(this.itemId);
+    this.itemDetails = this.itemEdit.details;
+    this.itemType = this.itemDetails.type;
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -75,27 +67,23 @@ export class SolutionItemDetails {
   }
 
   componentDidRender(): void {
-    if (this.loadThumb) {
-      this.loadThumb = false;
-      this._loadThumb(this.value.itemId)
-    }
+    this._loadThumb()
   }
 
   /**
    * Renders the component.
    */
   render(): VNode {
-    this._validateValue();
     return (
       <Host>
         <div class="parent-container">
           <div class="inputBottomSeparation">
-            <calcite-input id="item-title" value={this.value.title} />
+            <calcite-input id="item-title" value={this.itemDetails.title} />
           </div>
 
           <div class="inputBottomSeparation">
 
-            <input accept=".jpg,.gif,.png,image/jpg,image/gif,image/png" class="display-none" onChange={(event) => (this._updateThumbnail(event, true))} ref={(el) => (this.browseForThumbnail = el)} type="file" />
+            <input accept=".jpg,.gif,.png,image/jpg,image/gif,image/png" class="display-none" onChange={(event) => (this._updateThumbnail(event))} ref={(el) => (this.browseForThumbnail = el)} type="file" />
 
             <button class="font-size--3 btn-link inline-block trailer-quarter" onClick={() => this._getThumbnail()}>
               <svg class="icon-inline icon-inline--on-left" height="16" viewBox="0 0 16 16" width="16">
@@ -105,10 +93,10 @@ export class SolutionItemDetails {
 
             <div class="flex">
               <div class="img-container">
-                <img class="scale-down" height="133" ref={(el) => (this.thumbnail = el)} width="200" />
+                <img class="scale-down" height="133" id="item-thumbnail" ref={(el) => (this.thumbnail = el)} width="200" />
               </div>
               <div class="snippet-count-container">
-                <calcite-input id="item-snippet" maxlength={250} type="textarea" value={this.value.snippet} />
+                <calcite-input id="item-snippet" maxlength={250} type="textarea" value={this.itemDetails.snippet} />
                 <label class="font-size--3" id="item-snippet-count" ref={(el) => (this.itemSnippetCount = el)} />
               </div>
             </div>
@@ -116,25 +104,25 @@ export class SolutionItemDetails {
 
           <calcite-label>{this._translations.description}
             <label id="item-description-label">
-              <calcite-input id="item-description" type="textarea" value={this.value.description} />
+              <calcite-input id="item-description" type="textarea" value={this.itemDetails.description} />
             </label>
           </calcite-label>
 
           <calcite-label>{this._translations.tags}
             <label id="item-tags-label">
-              <calcite-input id="item-tags" value={(this.value.tags && Array.isArray(this.value.tags) ? this.value.tags : [this.value.tags]).join(",")} />
+              <calcite-input id="item-tags" value={(this.itemDetails.tags && Array.isArray(this.itemDetails.tags) ? this.itemDetails.tags : [this.itemDetails.tags]).join(",")} />
             </label>
           </calcite-label>
 
-          {this.type !== "Group" ? <calcite-label>{this._translations.credits}
+          {this.itemType !== "Group" ? <calcite-label>{this._translations.credits}
             <label id="item-credits-label">
-              <calcite-input id="item-credits" value={this.value.accessInformation} />
+              <calcite-input id="item-credits" value={this.itemDetails.accessInformation} />
             </label>
           </calcite-label> : null}
 
-          {this.type !== "Group" ? <calcite-label>
+          {this.itemType !== "Group" ? <calcite-label>
             <label id="item-terms-label">{this._translations.termsOfUse}
-              <calcite-input id="item-terms" type="textarea" value={this.value.licenseInfo} />
+              <calcite-input id="item-terms" type="textarea" value={this.itemDetails.licenseInfo} />
             </label>
           </calcite-label> : null}
 
@@ -150,15 +138,29 @@ export class SolutionItemDetails {
   //--------------------------------------------------------------------------
 
   /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-  @State() protected _translations: typeof SolutionItemDetails_T9n;
-
-  /**
    * Handle to the element for browsing for a file.
    */
   protected browseForThumbnail: HTMLInputElement;
+
+  @State() itemDetails: IItemDetails = {
+    accessInformation: "",
+    description: "",
+    licenseInfo: "",
+    snippet: "",
+    tags: [],
+    title: "",
+    type: ""
+  };
+
+  @State() protected itemEdit: ISolutionTemplateEdit;
+
+  protected itemType: string;
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() _translations: typeof SolutionItemDetails_T9n;
 
   /**
    * Handle to the snippet character-count feedback.
@@ -168,21 +170,13 @@ export class SolutionItemDetails {
   /**
    * Handle to the thumbnail image display.
    */
-  protected thumbnail: HTMLImageElement;
-
-  protected loadThumb = false;
+  @State() protected thumbnail: HTMLImageElement;
 
   //--------------------------------------------------------------------------
   //
   //  Event Listeners
   //
   //--------------------------------------------------------------------------
-
-  @Listen("solutionItemSelected", { target: 'window' })
-  _solutionItemSelected(event: CustomEvent): void {
-    this.value = event.detail.itemDetails;
-    this._loadThumb(event?.detail?.itemId);
-  }
 
   /**
    * Updates the component's value with changes to the input fields.
@@ -191,29 +185,32 @@ export class SolutionItemDetails {
   inputReceivedHandler(event: any): void {
     switch (event.target.id) {
       case "item-title":
-        this.value.title = event.target.value;
-        this._updateStore("title", event.target.value);
+        this.itemDetails.title = event.target.value;
+        this._updateStore();
         break;
       case "item-snippet":
-        this.value.snippet = event.target.value;
-        this._updateLengthLabel(this.value.snippet);
-        this._updateStore("snippet", event.target.value);
+        if (event.target.value.length > 250) {
+          event.target.value = event.target.value.substring(0, 250);
+        }
+        this.itemDetails.snippet = event.target.value;
+        this._updateLengthLabel(this.itemDetails.snippet);
+        this._updateStore();
         break;
       case "item-description":
-        this.value.description = event.target.value;
-        this._updateStore("description", event.target.value);
+        this.itemDetails.description = event.target.value;
+        this._updateStore();
         break;
       case "item-tags":
-        this.value.tags = event.target.value;
-        this._updateStore("tags", event.target.value);
+        this.itemDetails.tags = event.target.value;
+        this._updateStore();
         break;
       case "item-credits":
-        this.value.accessInformation = event.target.value;
-        this._updateStore("accessInformation", event.target.value);
+        this.itemDetails.accessInformation = event.target.value;
+        this._updateStore();
         break;
       case "item-terms":
-        this.value.licenseInfo = event.target.value;
-        this._updateStore("licenseInfo", event.target.value);
+        this.itemDetails.licenseInfo = event.target.value;
+        this._updateStore();
         break;
     }
   }
@@ -237,30 +234,21 @@ export class SolutionItemDetails {
   //--------------------------------------------------------------------------
 
   /**
-   * Load the templates thumbnail
-   *
-   * @param id the current template is
-   *
-   */
-  protected _loadThumb(id: string): void {
-    if (id) {
-      const thumbnailNew = getProp(state, `models.${id}.thumbnailNew`);
-      const thumbnailOrigin = getProp(state, `models.${id}.thumbnailOrigin`);
-      if (this.thumbnail) {
-        this.thumbnail.src = (thumbnailNew || thumbnailOrigin) ?
-          URL.createObjectURL(thumbnailNew || thumbnailOrigin) : "";
-      } else {
-        this.loadThumb = true;
-      }
-    }
-  }
-
-  /**
    * Opens image file browse dialog.
    *
    */
   protected _getThumbnail(): void {
     this.browseForThumbnail.click();
+  }
+
+  /**
+   * Load the templates thumbnail
+   *
+   */
+  protected _loadThumb(): void {
+    if (this.thumbnail && this.itemEdit?.thumbnail) {
+      this.thumbnail.src = URL.createObjectURL(this.itemEdit.thumbnail);
+    }
   }
 
   /**
@@ -275,6 +263,15 @@ export class SolutionItemDetails {
   }
 
   /**
+   * Add or remove the value from the store
+   */
+  protected _updateStore(
+  ): void {
+    this.itemEdit.details = this.itemDetails;
+    state.setItemInfo(this.itemId, this.itemEdit);
+  }
+
+  /**
    * Gets and displays image result from browse.
    *
    * @param event The input controls event that contains the new file
@@ -282,63 +279,13 @@ export class SolutionItemDetails {
    *  should be false on the initial load but true the rest of the time
    */
   protected _updateThumbnail(
-    event: any,
-    updateStore: boolean
+    event: any
   ): void {
     const files = event.target.files;
     if (files && files[0]) {
       if (this.thumbnail) {
         this.thumbnail.src = URL.createObjectURL(files[0]);
-      }
-      if (updateStore) {
-        this._updateStore("thumbnailNew", files[0]);
-      }
-    }
-  }
-
-  /**
-   * Use the value from the store if it exists
-   *
-   */
-  protected _validateValue(): void {
-    const m: any = getProp(state, `models.${this.value.itemId}`);
-    if (m) {
-      Object.keys(this.value).forEach(k => {
-        if (m.updateItemValues.hasOwnProperty(k)) {
-          this.value[k] = m.updateItemValues[k];
-        } else if (m.originalItemValues.hasOwnProperty(k)) {
-          this.value[k] = m.originalItemValues[k];
-        }
-      });
-    }
-  }
-
-  /**
-   * Add or remove the value from the store
-   *
-   * @param prop The model prop to update with new values
-   * @param v The new value to store
-   */
-  protected _updateStore(
-    prop: string,
-    v: string
-  ): void {
-    const model: any = getProp(state, `models.${this.value.itemId}`);
-    if (prop === "thumbnailNew") {
-      model[prop] = v;
-    } else if (model.itemOriginValue) {
-      const item = JSON.parse(model.itemOriginValue);
-      if (item.hasOwnProperty(prop)) {
-        // store when it matches
-        if (item[prop] !== v) {
-          if (!model.originalItemValues.hasOwnProperty(prop)) {
-            model.originalItemValues[prop] = item[prop];
-          }
-          model.updateItemValues[prop] = v;
-        } else {
-          // remove when it doesn't
-          delete (model.updateItemValues[prop]);
-        }
+        state.getItemInfo(this.itemId).thumbnail = files[0];
       }
     }
   }

@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Prop, State, VNode } from '@stencil/core';
-import { ICurrentEditItem } from '../../utils/interfaces';
+import { Component, Element, h, Host, Prop, State, VNode, Watch } from '@stencil/core';
 import '@esri/calcite-components';
+import state from "../../utils/solution-store";
 import { UserSession } from '@esri/solution-common';
-import state from '../../utils/editStore';
 import SolutionItem_T9n from '../../assets/t9n/solution-item/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
 
@@ -48,27 +47,24 @@ export class SolutionItem {
   @Prop({ mutable: true }) authentication: UserSession;
 
   /**
-   * Contains the public value for this component.
+   * A template's itemId.
    */
-  @Prop({ mutable: true, reflect: true }) value: ICurrentEditItem = {
-    itemId: "",
-    itemDetails: {},
-    isResource: false,
-    data: {},
-    properties: {},
-    type: "",
-    groupDetails: undefined
-  };
+  @Prop({ mutable: true, reflect: true }) itemId = "";
+
+  @Watch("itemId") itemIdWatchHandler(): void {
+    const itemEdit = state.getItemInfo(this.itemId);
+    this.itemType = itemEdit.type;
+  }
 
   /**
- * Contains the solution based variables
- */
-  @Prop({ mutable: true, reflect: true }) solutionVariables: any[] = [];
+   * Contains the solution based variables
+   */
+  @Prop({ mutable: true, reflect: true }) solutionVariables = "";
 
   /**
    * Contains the organization based variables
    */
-  @Prop({ mutable: true, reflect: true }) organizationVariables: any[] = [];
+  @Prop({ mutable: true, reflect: true }) organizationVariables = "";
 
   //--------------------------------------------------------------------------
   //
@@ -95,8 +91,8 @@ export class SolutionItem {
                 when switching between item and group type tab.
                 It was also not a smooth transition when the 3rd tab of an item was selected and you would switch to a group.
              */}
-            {this._showGroupTabs(this.value.type === "Group")}
-            {this._showItemTabs(this.value.type !== "Group")}
+            {this._showGroupTabs(this.itemType === "Group")}
+            {this._showItemTabs(this.itemType !== "Group")}
           </div>
         </div>
       </Host>
@@ -108,6 +104,8 @@ export class SolutionItem {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  @State() itemType: string;
 
   /**
    * Contains the translations for this component.
@@ -155,14 +153,12 @@ export class SolutionItem {
 
       <calcite-tab active class="config-tab" id="group-tab">
         <solution-item-details
-          type={this.value.type}
-          value={this.value.itemDetails}
+          item-id={this.itemId}
         />
       </calcite-tab>
       <calcite-tab class="config-tab" id="share-tab">
         <solution-item-sharing
-          groupId={this.value.itemId}
-          value={this.value.groupDetails}
+          group-id={this.itemId}
         />
       </calcite-tab>
     </calcite-tabs>
@@ -186,39 +182,30 @@ export class SolutionItem {
 
       <calcite-tab active class="config-tab">
         <solution-item-details
-          type={this.value.type}
-          value={this.value.itemDetails}
+          item-id={this.itemId}
         />
       </calcite-tab>
       <calcite-tab class="config-tab" id="data-tab">
         <solution-template-data
-          authentication={this.authentication}
           instanceid="data"
-          itemid={this.value.itemId}
-          organizationVariables={this.organizationVariables}
-          solutionVariables={this.solutionVariables}
-          value={{ value: this.value.data }}
+          item-id={this.itemId}
+          organization-variables={this.organizationVariables}
+          solution-variables={this.solutionVariables}
         />
       </calcite-tab>
       <calcite-tab class="config-tab" id="props-tab">
         <solution-template-data
-          authentication={this.authentication}
-          instanceid="props"
-          itemid={this.value.itemId}
-          organizationVariables={this.organizationVariables}
-          solutionVariables={this.solutionVariables}
-          value={{ value: this.value.properties }}
+          instanceid="properties"
+          item-id={this.itemId}
+          organization-variables={this.organizationVariables}
+          solution-variables={this.solutionVariables}
         />
       </calcite-tab>
       <calcite-tab class="config-tab" id="resources-tab">
         <solution-resource-item
           authentication={this.authentication}
           class="solutions-resource-container"
-          itemid={this.value.itemId}
-          resourceFilePaths={
-            Object.keys(state.models).indexOf(this.value.itemId) > -1 ?
-              state.models[this.value.itemId].resourceFilePaths : []
-          }
+          item-id={this.itemId}
         />
       </calcite-tab>
     </calcite-tabs>

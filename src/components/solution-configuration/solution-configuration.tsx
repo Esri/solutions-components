@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Listen, Method, Prop, State, VNode, Watch, EventEmitter, Event } from '@stencil/core';
-import { IOrganizationVariableItem, IResponse, ISolutionConfiguration, ICurrentEditItem, ISolutionSpatialReferenceInfo, IUpdateTemplateResponse, IVariableItem } from '../../utils/interfaces';
-import * as utils from '../../utils/templates';
-import state from '../../utils/editStore';
-import { save } from '../../utils/common';
-import { cloneObject, getItemDataAsJson, getProp, setProp, setCreateProp, UserSession } from '@esri/solution-common';
-import '@esri/calcite-components';
-import SolutionConfiguration_T9n from '../../assets/t9n/solution-configuration/resources.json';
-import { getLocaleComponentStrings } from '../../utils/locale';
+import { Component, Element, h, Host, Listen, Method, Prop, State, VNode, Watch } from "@stencil/core";
+import { IInventoryItem, ISolutionSpatialReferenceInfo, ISolutionTemplateEdit } from "../../utils/interfaces";
+import * as utils from "../../utils/templates";
+import state from "../../utils/solution-store";
+import { getProp, UserSession } from "@esri/solution-common";
+import "@esri/calcite-components";
+import SolutionConfiguration_T9n from "../../assets/t9n/solution-configuration/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
-  tag: 'solution-configuration',
-  styleUrl: 'solution-configuration.scss',
+  tag: "solution-configuration",
+  styleUrl: "solution-configuration.scss",
   shadow: false
 })
 export class SolutionConfiguration {
@@ -36,6 +35,7 @@ export class SolutionConfiguration {
   //  Host element access
   //
   //--------------------------------------------------------------------------
+
   @Element() el: HTMLSolutionConfigurationElement;
 
   //--------------------------------------------------------------------------
@@ -44,105 +44,60 @@ export class SolutionConfiguration {
   //
   //--------------------------------------------------------------------------
 
-  @State() modelsSet = false;
-
   /**
    * Credentials for requests
    */
   @Prop({ mutable: true }) authentication: UserSession;
 
   /**
-   * Contains the public value for this component.
-   */
-  @Prop({ mutable: true, reflect: true }) value: ISolutionConfiguration = {
-    contents: []
-  };
-
-  /**
-   * Contains the raw templates from the solution item
-   */
-  @Prop({ mutable: true, reflect: true }) templates: any[];
-
-  /**
-   * Contains the current solution item we are working with
-   */
-  @Prop({ mutable: true }) item: ICurrentEditItem = {
-    itemId: "",
-    itemDetails: {},
-    isResource: false,
-    data: {},
-    properties: {},
-    type: "",
-    groupDetails: undefined
-  };
-
-  /**
    * Contains the current solution item id
    */
-  @Prop({ mutable: true, reflect: true }) itemid = "";
+  @Prop({ mutable: true, reflect: true }) solutionItemId;
 
-  /**
-   * Used to show/hide the content tree
-   */
-  @Prop({ mutable: true }) treeOpen = true;
-
-  /**
-  * Contains the current solution item data
-  */
-  @Prop({ mutable: true }) sourceItemData: any = {};
+  @Watch("solutionItemId") async valueWatchHandler(): Promise<void> {
+    if (this.solutionItemId) {
+      this._solutionIsLoaded = false;
+      await state.loadSolution(this.solutionItemId, this.authentication);
+      this._initProps();
+      this._solutionIsLoaded = true;
+    } else {
+      this._reset();
+    }
+  }
 
   /**
   * Used to show/hide loading indicator
   */
-  @Prop({ mutable: true }) showLoading = false;
+  @Prop({ mutable: true, reflect: true }) showLoading = false;
 
   //--------------------------------------------------------------------------
   //
   //  Lifecycle
   //
   //--------------------------------------------------------------------------
-  @Event() solutionLoaded: EventEmitter<void>;
 
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
+   *
+   * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
     return this._getTranslations();
-  }
-
-  componentWillRender(): Promise<any> {
-    return new Promise((resolve) => {
-      if (this.itemid && (this._fetchData || !this.modelsSet)) {
-        this._fetchData = false;
-        this._isLoading = true;
-        this._getItemData(this.itemid).then(() => {
-          resolve(undefined);
-        }, () => resolve(undefined));
-      } else {
-        resolve(undefined);
-      }
-    });
-  }
-
-  componentDidRender(): void {
-    if (this._isLoading) {
-      this._isLoading = false;
-      this.solutionLoaded.emit();
-    }
   }
 
   /**
    * Renders the component.
    */
   render(): VNode {
-    const wkid = getProp(state.spatialReferenceInfo, "spatialReference.wkid");
-    const hasServices: boolean = state.featureServices.length > 0;
-    return this.showLoading ? (
+    const wkid = getProp(state.getStoreInfo("spatialReferenceInfo"), "spatialReference.wkid");
+    const hasServices: boolean = state.getStoreInfo("featureServices").length > 0;
+    return (
       <Host>
-        <calcite-loader active label='' />
-      </Host>
-    ) : (
-      <Host>
+        {
+          !this._solutionIsLoaded
+            ? <calcite-loader active label='' />
+            : null
+        }
         <div class="configuration-container">
           <div class="configuration">
             <calcite-tabs class="config-tabs">
@@ -155,17 +110,17 @@ export class SolutionConfiguration {
               </calcite-tab-nav>
               <calcite-tab active class="config-tab">
                 <div class="config-solution">
-                  <div class={this.treeOpen ? "config-inventory" : "config-inventory-hide"}>
+                  <div class={this._treeOpen ? "config-inventory" : "config-inventory-hide"}>
                     <solution-contents
                       id="configInventory"
-                      key={`${this.itemid}-contents`}
-                      value={this.value.contents}
+                      key={`${this.solutionItemId}-contents`}
+                      ref={(el) => (this._solutionContentsComponent = el)}
                     />
                   </div>
                   <calcite-button
                     appearance="transparent"
                     class="collapse-btn"
-                    icon-start={this.treeOpen ? "chevrons-left" : "chevrons-right"}
+                    icon-start={this._treeOpen ? "chevrons-left" : "chevrons-right"}
                     id="collapse-vars"
                     onClick={() => this._toggleTree()}
                     scale="s"
@@ -174,27 +129,28 @@ export class SolutionConfiguration {
                   <div class="config-item">
                     <solution-item
                       authentication={this.authentication}
-                      key={`${this.itemid}-item`}
-                      organizationVariables={this._organizationVariables}
-                      solutionVariables={this._solutionVariables}
-                      value={this.item}
+                      item-id={this._currentEditItemId}
+                      key={`${this.solutionItemId}-item`}
+                      organization-variables={this._organizationVariables}
+                      solution-item-id={this.solutionItemId}
+                      solution-variables={this._solutionVariables}
                     />
                   </div>
                 </div>
               </calcite-tab>
               {
-                hasServices ?
-                  <calcite-tab class="config-tab">
-                    <div class="config-solution">
-                      <solution-spatial-ref
-                        defaultWkid={wkid}
-                        id="configure-solution-spatial-ref"
-                        key={`${this.itemid}-spatial-ref`}
-                        locked={!wkid}
-                        services={state.featureServices.map(fs => fs.name)}
-                      />
-                    </div>
-                  </calcite-tab>
+                hasServices
+                  ? <calcite-tab class="config-tab">
+                      <div class="config-solution">
+                        <solution-spatial-ref
+                          defaultWkid={wkid}
+                          id="configure-solution-spatial-ref"
+                          key={`${this.solutionItemId}-spatial-ref`}
+                          locked={!wkid}
+                          services={state.getStoreInfo("featureServices").map(fs => fs.name)}
+                        />
+                      </div>
+                    </calcite-tab>
                   : null
               }
             </calcite-tabs>
@@ -211,18 +167,33 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
 
   /**
-   * Contains the translations for this component.
+   * Contains the current item we are working with
+   */
+  @State() protected _currentEditItemId = "";
+
+  @State() protected _organizationVariables = "";
+
+  @State() protected _solutionContentsComponent: HTMLSolutionContentsElement;
+
+  @State() protected _solutionIsLoaded = false;
+
+  @State() protected _solutionVariables = "";
+
+  /**
+   * Contains the hierarchy of template items for the current solution.
+   */
+  @State() protected _templateHierarchy: IInventoryItem[] = [];
+
+  /**
+   * Contains the _translations for this component.
    * All UI strings should be defined here.
    */
   @State() protected _translations: typeof SolutionConfiguration_T9n;
 
-  protected _solutionVariables: IVariableItem[];
-
-  protected _organizationVariables: IOrganizationVariableItem[];
-
-  protected _fetchData = false;
-
-  protected _isLoading = false;
+  /**
+   * Used to show/hide the content tree
+   */
+  @State() protected _treeOpen = true;
 
   //--------------------------------------------------------------------------
   //
@@ -230,9 +201,9 @@ export class SolutionConfiguration {
   //
   //--------------------------------------------------------------------------
 
-  @Listen("solutionItemSelected", { target: 'window' })
+  @Listen("solutionItemSelected", { target: "window" })
   _solutionItemSelected(event: CustomEvent): void {
-    this.item = event.detail;
+    this._currentEditItemId = event.detail;
   }
 
   //--------------------------------------------------------------------------
@@ -247,31 +218,36 @@ export class SolutionConfiguration {
   //
   //--------------------------------------------------------------------------
 
+  /*
   @Method()
-  async getEditModels(): Promise<any> {
-    return state.models;
+  async getEditModels(): Promise<ISolutionItems> {
+    return Promise.resolve(state.items);
   }
+  */
 
   @Method()
   async getSpatialReferenceInfo(): Promise<ISolutionSpatialReferenceInfo> {
-    return state.spatialReferenceInfo;
+    return Promise.resolve(state.getStoreInfo("spatialReferenceInfo"));
   }
 
+  /*
   @Method()
   async getSourceTemplates(): Promise<any> {
-    return this.templates;
+    return Promise.resolve(this._templates);
+  }
+  */
+
+  @Method()
+  async saveSolution(): Promise<void> {
+    this._solutionIsLoaded = false;
+    await state.saveSolution();
+    this._solutionIsLoaded = true;
+    this.solutionItemId = null;
   }
 
   @Method()
-  async save(): Promise<any> {
-    return this._save();
-  }
-
-  @Watch('itemid')
-  valueWatchHandler(v: any, oldV: any): void {
-    if (v && v !== oldV) {
-      this._fetchData = true;
-    }
+  async unloadSolution(): Promise<void> {
+    this.solutionItemId = null;
   }
 
   //--------------------------------------------------------------------------
@@ -281,30 +257,12 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
 
   /**
-   * Get the solution items data
-   *
-   * @param id the solution items id
-   * @param isReset (defaults to false) indicates if we are resetting the controls after save
-   */
-  protected _getItemData(
-    id: string,
-    isReset = false
-  ): Promise<any> {
-    return getItemDataAsJson(id, this.authentication).then(data => {
-      this.sourceItemData = data;
-      this.templates = data.templates;
-
-      this._initProps(this.templates);
-      return this._initState(this.templates, isReset);
-    });
-  }
-
-  /**
    * Update the store with the initial values
    *
    * @param templates the solution items templates
    * @param isReset (defaults to false) indicates if we are resetting the controls after save
    */
+  /*
   protected _initState(
     templates: any[],
     isReset = false
@@ -315,11 +273,11 @@ export class SolutionConfiguration {
         this.modelsSet = false;
         state.reset();
       }
-      utils.getModels(templates, this.authentication, this.itemid).then(models => {
+      getModels(templates, this.authentication, this.solutionItemId).then(models => {
         state.models = models;
 
-        state.featureServices = utils.getFeatureServices(templates);
-        state.spatialReferenceInfo = utils.getSpatialReferenceInfo(state.featureServices, this.sourceItemData);
+        state.featureServices = getFeatureServices(templates);
+        state.getStoreInfo("spatialReferenceInfo") = getSpatialReferenceInfo(state.featureServices, this._sourceItemData);
 
         if (isReset) {
           // reset for undo/redo stack and diff editor tracking
@@ -333,31 +291,46 @@ export class SolutionConfiguration {
       }, () => reject);
     });
   }
+  */
 
   /**
    * Set Props with the initial values
-   *
-   * @param templates the solution items templates
    */
-  protected _initProps(templates: any[]): void {
-    this.value.contents = [...utils.getInventoryItems(templates)];
-    this._solutionVariables = utils.getSolutionVariables(templates, this._translations);
-    this._organizationVariables = utils.getOrganizationVariables(this._translations);
-    this.item = {
-      itemId: "",
-      itemDetails: {},
-      isResource: false,
-      data: {},
-      properties: {},
-      type: ""
-    };
+  protected _initProps(): void {
+    const solutionData = state.getStoreInfo("solutionData");
+
+    this._solutionVariables = JSON.stringify(utils.getSolutionVariables(solutionData.templates, this._translations));
+    this._organizationVariables = JSON.stringify(utils.getOrganizationVariables(this._translations));
+
+    this._templateHierarchy = [...utils.getInventoryItems(solutionData.templates)];
+
+    if (this._solutionContentsComponent) {
+      this._solutionContentsComponent.templateHierarchy = this._templateHierarchy;
+    }
+
+    let firstItem: ISolutionTemplateEdit;
+    if (this._templateHierarchy.length > 0) {
+      // Start with the first item in the contents
+      firstItem = state.getStoreInfo("templateEdits")[this._templateHierarchy[0].id];
+    }
+    this._currentEditItemId = firstItem ? firstItem.itemId : "";
   }
 
   /**
-   * Toggle treeOpen prop to show/hide content tree
+   * Resets internal variables.
+   */
+  protected _reset() {
+    this._currentEditItemId = "";
+    this._organizationVariables = "";
+    this._solutionVariables = "";
+    this._templateHierarchy = [];
+  }
+
+  /**
+   * Toggle _treeOpen prop to show/hide content tree
    */
   protected _toggleTree(): void {
-    this.treeOpen = !this.treeOpen;
+    this._treeOpen = !this._treeOpen;
   }
 
   /**
@@ -365,11 +338,12 @@ export class SolutionConfiguration {
    *
    * @returns a response that will indicate success or failure and any associated messages
    */
-  protected async _save(): Promise<IResponse> {
+  /*
+  protected async _save() {
     const templateUpdates = await this._updateTemplates();
     const data = this._setSrInfo(templateUpdates.templates);
     return templateUpdates.errors.length === 0 ? save(
-      this.itemid,
+      this.solutionItemId,
       data,
       state.models,
       this.authentication,
@@ -384,16 +358,18 @@ export class SolutionConfiguration {
       message: `The following templates have errors: ${templateUpdates.errors.join(", ")}`
     } as IResponse);
   }
+  */
 
   /**
    * Update the solutions templates based on the stored changes
    *
    * @returns an object that contains the updated templates as well as any errors that were found
    */
+  /*
   protected async _updateTemplates(): Promise<IUpdateTemplateResponse> {
     const errors = [];
     const models = await this.getEditModels();
-    let templates = this._updateGroupDependencies(models, this.templates);
+    let templates = this._updateGroupDependencies(models, this._templates);
     Object.keys(models).forEach(k => {
       const m = models[k];
       templates = templates.map(t => {
@@ -414,6 +390,7 @@ export class SolutionConfiguration {
       errors
     });
   }
+  */
 
   /**
    * Review all models and store itemIds that should be added or removed from group dependencies
@@ -423,6 +400,7 @@ export class SolutionConfiguration {
    * @returns group info (an object with keys of groupIds and
    * arrays of itemIds that should be added or removed from group dependencies)
    */
+  /*
   protected _getGroupInfo(
     models: any
   ): any {
@@ -447,6 +425,7 @@ export class SolutionConfiguration {
     });
     return groupInfo;
   }
+  */
 
   /**
    * Updates group dependency arrays by adding or removing itemIds
@@ -456,6 +435,7 @@ export class SolutionConfiguration {
    *
    * @returns updated templates array
    */
+  /*
   protected _updateGroupDependencies(
     models: any,
     templates: any[]
@@ -486,6 +466,7 @@ export class SolutionConfiguration {
     })
     return templates;
   }
+  */
 
   /**
    * Add group IDs to items that should be shared
@@ -495,6 +476,7 @@ export class SolutionConfiguration {
    * @param shareInfo the corresponding shareInfo from the model for the current template
    *
    */
+  /*
   protected _updateItemGroups(
     template: any,
     shareInfo: any
@@ -509,6 +491,7 @@ export class SolutionConfiguration {
       }
     }
   }
+  */
 
   /**
    * Set a templates data property with changes from the models
@@ -518,17 +501,19 @@ export class SolutionConfiguration {
    *
    * @returns a boolean that indicates if any errors were detected
    */
+  /*
   protected _setData(
     template: any,
     model: any
   ): boolean {
     return this._setTemplateProp(
       template,
-      model.dataOriginValue,
-      model.dataModel.getValue(),
+      model.dataOriginalValue,
+      model.dataCurrentValue,
       "data"
     );
   }
+  */
 
   /**
    * Set a templates properties property with changes from the models
@@ -538,17 +523,19 @@ export class SolutionConfiguration {
    *
    * @returns a boolean that indicates if any errors were detected
    */
+  /*
   protected _setProps(
     template: any,
     model: any
   ): boolean {
     return this._setTemplateProp(
       template,
-      model.propsOriginValue,
-      model.propsModel.getValue(),
+      model.propsOriginalValue,
+      model.propsCurrentValue,
       "properties"
     );
   }
+  */
 
   /**
    * Generic function used to set properties or data property on a given template
@@ -560,6 +547,7 @@ export class SolutionConfiguration {
    *
    * @returns a boolean that indicates if any errors were detected
    */
+  /*
   protected _setTemplateProp(
     template: any,
     originValue: any,
@@ -580,6 +568,7 @@ export class SolutionConfiguration {
     }
     return hasError;
   }
+  */
 
   /**
    * Set a templates item property with changes from the models
@@ -589,6 +578,7 @@ export class SolutionConfiguration {
    *
    * This function will update the template argument when edits are found
    */
+  /*
   protected _setItem(
     template: any,
     model: any
@@ -600,6 +590,7 @@ export class SolutionConfiguration {
       });
     }
   }
+  */
 
   /**
    * Set spatial reference info in the solutions data
@@ -609,15 +600,16 @@ export class SolutionConfiguration {
    * @returns a cloned copy of the solutions data that has been updated with spatial reference info
    *
    */
+  /*
   protected _setSrInfo(
     templates: any[]
   ): any {
-    const srInfo: any = state.spatialReferenceInfo;
+    const srInfo: any = state.getStoreInfo("spatialReferenceInfo");
 
-    const serviceEnabled = typeof srInfo?.services === 'undefined' ?
+    const serviceEnabled = typeof srInfo?.services === "undefined" ?
       false : Object.keys(srInfo.services).some(k => srInfo.services[k]);
 
-    const data = cloneObject(this.sourceItemData);
+    const data = cloneObject(this._sourceItemData);
     data.templates = templates;
     if (srInfo && srInfo.enabled && serviceEnabled) {
       const wkid = srInfo.spatialReference.wkid.toString();
@@ -645,6 +637,7 @@ export class SolutionConfiguration {
     }
     return data;
   }
+  */
 
   /**
    * Fetches the component's translations

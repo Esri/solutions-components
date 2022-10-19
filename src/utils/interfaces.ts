@@ -73,13 +73,13 @@ export type SelectionMode = "single" | "multi";
  * Key details from the templates item
  */
 export interface IItemDetails {
-  title: string;
-  snippet: string;
-  description: string;
-  tags: string[];
   accessInformation?: string;
+  description?: string;
   licenseInfo?: string;
-  itemId: string;
+  snippet: string;
+  tags: string[];
+  title: string;
+  [key: string]: any;
 }
 
 /**
@@ -91,7 +91,6 @@ export interface IInventoryItem {
   dependencies?: IInventoryItem[];
   type: string;
   typeKeywords: string[];
-  solutionItem: ICurrentEditItem;
 }
 
 /**
@@ -141,30 +140,12 @@ export interface ISolutionConfiguration {
 /**
  * Details used to display and store information about the item
  */
-export interface ICurrentEditItem {
-  itemId: string;
-  itemDetails: any; //use the interface
-  isResource: boolean; // this should be removed and determined from the data
-  data: ITemplateData;
-  properties: ITemplateData;
-  type: string;
-  groupDetails?: IItemShare[];
-}
-
-/**
- * Key state info for a solution template
- */
 export interface ISolutionTemplateEdit {
   itemId: string;
   type: string;
-  current: ISolutionTemplateEditItem;
-  original: ISolutionTemplateEditItem;
-}
-
-export interface ISolutionTemplateEditItem {
-  details: string;
-  data: string;
-  properties: string;
+  details: IItemDetails;
+  data: any;
+  properties: any;
   thumbnail: any;
   resourceFilePaths: IResourcePath[];
   groupDetails?: IItemShare[];
@@ -177,6 +158,7 @@ export interface ISolutionTemplateEdits {
   [templateId: string]: ISolutionTemplateEdit;
 }
 
+//???
 export interface ISolutionModel {
   dataModel: monaco.editor.ITextModel;
   dataOriginValue: string;
@@ -207,6 +189,7 @@ export interface ISolutionModel {
 export interface ISolutionModels {
   [key: string]: ISolutionModel;
 }
+//???
 
 /**
  * Feature service name and whether the service is enabled for SR configuration

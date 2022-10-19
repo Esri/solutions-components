@@ -25,7 +25,7 @@ xdescribe('solution-contents', () => {
       components: [SolutionContents],
       supportsShadowDom: false,
       template: () => (
-        <solution-contents value={value}></solution-contents>
+        <solution-contents template-hierarchy={value}></solution-contents>
       )
     });
     expect(page.root).toEqualHtml(`

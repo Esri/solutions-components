@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
 import { IOrganizationVariableItem } from '../../utils/interfaces';
 import SolutionOrganizationVariables_T9n from '../../assets/t9n/solution-organization-variables/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
@@ -44,7 +44,11 @@ export class SolutionOrganizationVariables {
   /**
    * Contains the public value for this component.
    */
-  @Prop({ mutable: true, reflect: true }) value: IOrganizationVariableItem[] = [];
+  @Prop({ mutable: true, reflect: true }) value = "";
+
+  @Watch("value") valueWatchHandler(): void {
+    this._organizationVariables = JSON.parse(this.value);
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -69,9 +73,9 @@ export class SolutionOrganizationVariables {
           <h4 class="org-var-header">{this._translations.orgVariables}</h4>
         </div>
         <div class="container-border">
-          <calcite-label id="variable-label">
-            {this._renderHierarchy(this.value)}
-          </calcite-label>
+          <calcite-tree id="variable-label">
+            {this._renderHierarchy(this._organizationVariables)}
+          </calcite-tree>
         </div>
       </Host>
     );
@@ -82,6 +86,8 @@ export class SolutionOrganizationVariables {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  @State() protected _organizationVariables: IOrganizationVariableItem[] = [];
 
   /**
    * Contains the translations for this component.

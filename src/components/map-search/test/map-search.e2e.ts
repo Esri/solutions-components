@@ -16,7 +16,7 @@
 
 import { newE2EPage } from '@stencil/core/testing';
 
-describe('map-search', () => {
+xdescribe('map-search', () => {
   it('renders', async () => {
     const page = await newE2EPage();
     await page.setContent('<map-search></map-search>');
