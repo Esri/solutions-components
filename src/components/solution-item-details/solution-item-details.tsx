@@ -19,7 +19,8 @@ import '@esri/calcite-components';
 import state from "../../utils/solution-store";
 import SolutionItemDetails_T9n from '../../assets/t9n/solution-item-details/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
-import { IItemDetails, ISolutionTemplateEdit } from '../../utils/interfaces';
+import { IItemGeneralized } from '@esri/solution-common';
+import { IItemTemplateEdit } from '../../utils/interfaces';
 
 @Component({
   tag: 'solution-item-details',
@@ -49,7 +50,7 @@ export class SolutionItemDetails {
 
   @Watch("itemId") itemIdWatchHandler(): void {
     this.itemEdit = state.getItemInfo(this.itemId);
-    this.itemDetails = this.itemEdit.details;
+    this.itemDetails = this.itemEdit.item;
     this.itemType = this.itemDetails.type;
   }
 
@@ -142,17 +143,16 @@ export class SolutionItemDetails {
    */
   protected browseForThumbnail: HTMLInputElement;
 
-  @State() itemDetails: IItemDetails = {
+  @State() itemDetails: IItemGeneralized = {
     accessInformation: "",
     description: "",
     licenseInfo: "",
     snippet: "",
     tags: [],
-    title: "",
-    type: ""
-  };
+    title: ""
+  } as any;
 
-  @State() protected itemEdit: ISolutionTemplateEdit;
+  @State() protected itemEdit: IItemTemplateEdit;
 
   protected itemType: string;
 
@@ -267,7 +267,7 @@ export class SolutionItemDetails {
    */
   protected _updateStore(
   ): void {
-    this.itemEdit.details = this.itemDetails;
+    this.itemEdit.item = this.itemDetails;
     state.setItemInfo(this.itemId, this.itemEdit);
   }
 
@@ -284,9 +284,12 @@ export class SolutionItemDetails {
     const files = event.target.files;
     if (files && files[0]) {
       if (this.thumbnail) {
+        // Update UI
         this.thumbnail.src = URL.createObjectURL(files[0]);
+
+        // Update info in store
         this.itemEdit.thumbnail = files[0];
-        state.setItemInfo(this.itemId, this.itemEdit);
+        state.replaceItemThumbnail(this.itemId, this.itemEdit);
       }
     }
   }

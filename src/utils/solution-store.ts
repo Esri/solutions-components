@@ -19,13 +19,16 @@ import {
   EUpdateType,
   IFeatureServiceEnabledStatus,
   IItemShare,
+  IItemTemplateEdit,
   IResourcePath,
-  ISolutionTemplateEdit,
   ISolutionTemplateEdits,
   ISolutionSpatialReferenceInfo
 } from './interfaces';
 import {
+  EFileType,
+  copyFilesToStorageItem,
   generateStorageFilePaths,
+  generateThumbnailStorageFilename,
   getItemDataAsJson,
   getProp,
   getThumbnailFromStorageItem,
@@ -33,9 +36,20 @@ import {
   IItemTemplate,
   IItemUpdate,
   ISolutionItemData,
+  ISourceFile,
+  //removeItemResourceFile,
   updateItem,
+  //updateItemResourceFile,
   UserSession
 } from '@esri/solution-common';
+import {  //???
+  IRemoveItemResourceOptions,
+  IItemResourceOptions,
+  IItemResourceResponse,
+  removeItemResource,
+  updateItemResource
+} from "@esri/arcgis-rest-portal";  //???
+
 
 //--------------------------------------------------------------------------------------------------------------------//
 //
@@ -73,6 +87,7 @@ import {
 //   * getItemInfo: Returns the stored information of an item.
 //   * getStoreInfo: Returns a top-level store property: solutionItemId, defaultWkid, etc.
 //   * loadSolution: Loads a Solution into the store from AGO.
+//   * replaceItemThumbnail: Replaces the thumbnail associated with a template item in the store.
 //   * saveSolution: Writes a Solution into AGO from the store.
 //   * setItemInfo: Stores information for item.
 //   * setStoreInfo: Sets a top-level store property: solutionItemId, defaultWkid, etc.
@@ -156,8 +171,19 @@ class SolutionStore
    */
   public getItemInfo(
     itemId: string
-  ): ISolutionTemplateEdit {
-    return this._store.get("templateEdits")[itemId] || undefined;
+  ): IItemTemplateEdit {
+    const templates = this._store.get("solutionData").templates as IItemTemplateEdit[];
+
+    let template: IItemTemplateEdit;
+    templates.some((t: IItemTemplateEdit) => {
+      if (itemId == t.itemId) {
+        template = t;
+        return true;
+      }
+      return false;
+    });
+
+    return template;
   }
 
   /**
@@ -190,14 +216,13 @@ class SolutionStore
     const solutionData = await getItemDataAsJson(solutionItemId, authentication);
     if (solutionData) {
       const defaultWkid = getProp(solutionData, "params.wkid.default");
-      const templateEdits = await this._prepareSolutionItemsForEditing(solutionItemId, solutionData.templates, authentication);
+      await this._prepareSolutionItemsForEditing(solutionItemId, solutionData.templates, authentication);
       const featureServices = this._getFeatureServices(solutionData.templates);
       const spatialReferenceInfo = this._getSpatialReferenceInfo(featureServices, defaultWkid);
 
       this._store.set("solutionItemId", solutionItemId);
       this._store.set("defaultWkid", defaultWkid);
       this._store.set("solutionData", solutionData);
-      this._store.set("templateEdits", templateEdits);
       this._store.set("featureServices", featureServices);
       this._store.set("spatialReferenceInfo", spatialReferenceInfo);
     }
@@ -205,7 +230,39 @@ class SolutionStore
   }
 
   /**
-   * Writes a Solution into AGO from the store.
+   * Replaces the thumbnail associated with a template item in the store.
+   *
+   * @param itemId Id of the template to modify
+   * @param itemEdit Details of the template to modify, containing the new thumbnail in the `thumbnail`
+   * property
+   */
+  public replaceItemThumbnail(
+    itemId: string,
+    itemEdit: IItemTemplateEdit
+  ): void {
+    // Flag the current thumbnail for removal
+    itemEdit.resourceFilePaths.some((path: IResourcePath) => {
+      if (path.type === EFileType.Thumbnail && path.updateType === EUpdateType.None) {
+        path.updateType = EUpdateType.Remove;
+        return true;
+      }
+      return false;
+    });
+
+    // Add the new thumbnail to the store item
+    itemEdit.resourceFilePaths.push({
+      blob: itemEdit.thumbnail,
+      filename: itemEdit.thumbnail.name,
+      type: EFileType.Thumbnail,
+      updateType: EUpdateType.Add
+    } as IResourcePath);
+
+    // Update the store
+    this.setItemInfo(itemId, itemEdit);
+  }
+
+  /**
+   * Writes a Solution into AGO from the store. Must use `loadSolution` to continue with solution.
    *
    * @returns Promise that resolves when task is done
    */
@@ -232,12 +289,20 @@ class SolutionStore
    */
   public setItemInfo(
     itemId: string,
-    itemEdit: ISolutionTemplateEdit
+    itemEdit: IItemTemplateEdit
   ): void {
-    const templateEdits = this._store.get("templateEdits");
-    templateEdits[itemId] = {...itemEdit};
-    this._store.set("templateEdits", templateEdits);
-    this._flagStoreAsChanged(true);
+    const solutionData = this._store.get("solutionData");
+    const templates = solutionData.templates as IItemTemplateEdit[];
+
+    templates.some((t: IItemTemplateEdit) => {
+      if (itemId == t.itemId) {
+        t = itemEdit;
+        this._store.set("solutionData", solutionData);
+        this._flagStoreAsChanged(true);
+        return true;
+      }
+      return false;
+    });
   }
 
   /**
@@ -283,10 +348,10 @@ class SolutionStore
         return this._getResourceFilePaths(arg1, arg2, arg3);
       case "_getSpatialReferenceInfo":
         return this._getSpatialReferenceInfo(arg1, arg2);
-      case "_getThumbnails":
-        return this._getThumbnails(arg1, arg2);
       case "_prepareSolutionItemsForEditing":
         return this._prepareSolutionItemsForEditing(arg1, arg2, arg3);
+      case "_prepareSolutionItemsForStorage":
+        return this._prepareSolutionItemsForStorage(arg1, arg2, arg3);
     }
     return null;
   }
@@ -321,6 +386,13 @@ class SolutionStore
     }
 
     this._hasChanges = flagAsChanged;
+  }
+
+  protected _generateThumbnailStoragePath(path: {
+    folder: string,
+    filename: string
+  }): string {
+    return path.folder + "/" + path.filename;
   }
 
   /**
@@ -435,47 +507,7 @@ class SolutionStore
   }
 
   /**
-   * Fetch thumbnails from the item resources
-   *
-   * @param templateEdits the set of items for the current solution item
-   * @param authentication credentials for any requests
-   *
-   * @returns A promise which resolves to ISolutionTemplateEdits with hydrated thumbnails
-   *
-   * @protected
-   */
-  protected _getThumbnails(
-    templateEdits: ISolutionTemplateEdits,
-    authentication: UserSession
-  ): Promise<ISolutionTemplateEdits> {
-    return new Promise<any>((resolve, reject) => {
-      const thumbnailPromises = [];
-      const _ids = [];
-      Object.keys(templateEdits).forEach(k => {
-        thumbnailPromises.push(
-          templateEdits[k].resourceFilePaths.length > 0 ?
-            getThumbnailFromStorageItem(authentication, templateEdits[k].resourceFilePaths) :
-            Promise.resolve()
-        );
-        _ids.push(k);
-      });
-      Promise.all(thumbnailPromises).then(
-        r => {
-          r.forEach((thumbnail, i) => {
-            if (thumbnail) {
-              const templateEdit = templateEdits[_ids[i]];
-              templateEdit.thumbnail = thumbnail;
-            }
-          });
-          resolve(templateEdits);
-        },
-        reject
-      );
-    });
-  }
-
-  /**
-   * Create and store text items for the editor.
+   * Create and store template items for the editor.
    *
    * @param solutionItemId Id of the solution represented in the store
    * @param templates A list of item templates from the solution
@@ -485,47 +517,142 @@ class SolutionStore
    *
    * @protected
    */
-  protected _prepareSolutionItemsForEditing(
+  protected async _prepareSolutionItemsForEditing(
     solutionItemId: string,
     templates: IItemTemplate[],
     authentication: UserSession
-  ): Promise<ISolutionTemplateEdits> {
-    const templateEdits: ISolutionTemplateEdits = {};
-    templates.forEach(t => {
-      const resourceFilePaths: IResourcePath[] = this._getResourceFilePaths(
+  ): Promise<void> {
+    const thumbnailPromises = [];
+
+    // Augment the template with paths to resources and group information, if relevant
+    templates.forEach((t: IItemTemplateEdit) => {
+      t.resourceFilePaths = this._getResourceFilePaths(
         solutionItemId,
         t,
         authentication.portal
       );
+      thumbnailPromises.push(
+        t.resourceFilePaths.length > 0 ?
+          getThumbnailFromStorageItem(authentication, t.resourceFilePaths) :
+          Promise.resolve()
+      );
 
-      const editItem: ISolutionTemplateEdit = {
-        itemId: t.itemId,
-        type: t.type,
-        details: {...t.item} as any,
-        data: {...t.data},
-        properties: {...t.properties},
-        thumbnail: undefined,  // retain thumbnails in store as they get messed up if you emit them in events
-        resourceFilePaths
-      };
-
-      editItem.groupDetails = t.type === "Group" ? this._getItemsSharedWithThisGroup(t, templates) : [];
-
-      templateEdits[t.itemId] = editItem;
+      t.groupDetails = t.type === "Group" ? this._getItemsSharedWithThisGroup(t, templates) : [];
     });
-    return this._getThumbnails(templateEdits, authentication);
+
+    // Augment the template with its thumbnail file
+    const thumbnails = await Promise.all(thumbnailPromises);
+    templates.forEach((t: IItemTemplateEdit, i: number) => {
+      t.thumbnail = thumbnails[i] ? thumbnails[i] : undefined;
+    });
+
+    return Promise.resolve();
   }
 
-  protected _prepareSolutionItemsForStorage(
-    _solutionItemId: string,
-    _templates: IItemTemplate[],
-    _authentication: UserSession
+  protected async _prepareSolutionItemsForStorage(
+    solutionItemId: string,
+    templates: IItemTemplateEdit[],
+    authentication: UserSession
   ): Promise<void> {
+    const resourceAdds: ISourceFile[] = [];
 
+    // Update the resources and remove the augmentation from a template
+    templates.forEach((t) => {
+      // Run through the resourceFilePaths for the item seeking modifications to be made to the solution item's
+      // collection of resources; queue them for batching
+      t.resourceFilePaths.forEach(async (path: IResourcePath) => {
+        const filePath = generateThumbnailStorageFilename(t.itemId, path.filename);
+        const storagePath = this._generateThumbnailStoragePath(filePath);
 
+        switch (path.updateType) {
+
+          case EUpdateType.Add:
+            t.resources.push(storagePath);
+            resourceAdds.push({
+              itemId: t.itemId,
+              file: t.thumbnail,
+              folder: filePath.folder,
+              filename: path.filename
+            } as ISourceFile);
+            console.log("add " + this._generateThumbnailStoragePath(filePath) + " for item " + t.itemId);  //???
+            break;
+
+          case EUpdateType.Update:
+            console.log("update " + path.filename + " for item " + t.itemId);
+            const updateResult = //???
+            await updateItemResourceFile(solutionItemId, storagePath, t.thumbnail, authentication);
+            console.log("update " + storagePath + " for item " + t.itemId + " result: " + JSON.stringify(updateResult));  //???
+            break;
+
+          case EUpdateType.Remove:
+            t.resources = t.resources.filter((path: string) => path !== storagePath);
+            console.log("remove " + storagePath + " for item " + t.itemId);  //???
+            const removeResult = //???      need to catch error  //???
+            await removeItemResourceFile(solutionItemId, storagePath, authentication);
+            console.log("remove " + storagePath + " for item " + t.itemId + " result: " + JSON.stringify(removeResult));  //???
+            break;
+
+        }
+      });
+
+      delete t.resourceFilePaths;
+      delete t.thumbnail;
+      delete t.groupDetails;
+    });
+
+    // Update the resources
+    console.log("Add resources: " + JSON.stringify(resourceAdds));//???
+    await copyFilesToStorageItem(resourceAdds, solutionItemId, authentication);
 
 
     return Promise.resolve();
   }
 }
+
+
+//??? ----- Temporary copies until released in solution.js -------------------------------------------------------------
+/**
+ * Removes the item's resource that matches the filename with new content
+ *
+ * @param itemId Id of the item to remove
+ * @param filename Name of the resource file to remove
+ * @param authentication Credentials for the request to the storage
+ * @returns A promise which resolves with a success true/false response
+ */
+export function removeItemResourceFile(
+  itemId: string,
+  filename: string,
+  authentication: UserSession
+): Promise<{ success: boolean }> {
+  return removeItemResource({
+    id: itemId,
+    resource: filename,
+    authentication: authentication
+  } as IRemoveItemResourceOptions);
+}
+
+/**
+ * Updates the item's resource that matches the filename with new content
+ *
+ * @param itemId Id of the item to update
+ * @param filename Name of the resource file to update
+ * @param resource The new content to update the resource with
+ * @param authentication Credentials for the request to the storage
+ * @returns A promise which resolves with a success true/false response
+ */
+function updateItemResourceFile(
+  itemId: string,
+  filename: string,
+  resource: File,
+  authentication: UserSession
+): Promise<IItemResourceResponse> {
+  return updateItemResource({
+    id: itemId,
+    name: filename,
+    resource,
+    authentication: authentication
+  } as IItemResourceOptions);
+}
+//??? ------------------------------------------------------------------------------------------------------------------
 
 export default SolutionStore.Store;

@@ -15,7 +15,8 @@
  */
 
 import {
-  IDeployFileCopyPath
+  IDeployFileCopyPath,
+  IItemTemplate
 } from '@esri/solution-common';
 
 /**
@@ -148,6 +149,12 @@ export interface ISolutionTemplateEdit {
   properties: any;
   thumbnail: any;
   resourceFilePaths: IResourcePath[];
+  groupDetails?: IItemShare[];
+}
+
+export interface IItemTemplateEdit extends IItemTemplate {
+  resourceFilePaths: IResourcePath[];
+  thumbnail: any;
   groupDetails?: IItemShare[];
 }
 

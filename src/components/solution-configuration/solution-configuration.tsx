@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, h, Host, Listen, Method, Prop, State, VNode, Watch } from "@stencil/core";
-import { IInventoryItem, ISolutionSpatialReferenceInfo, ISolutionTemplateEdit } from "../../utils/interfaces";
+import { IInventoryItem, IItemTemplateEdit, ISolutionSpatialReferenceInfo } from "../../utils/interfaces";
 import * as utils from "../../utils/templates";
 import state from "../../utils/solution-store";
 import { getProp, UserSession } from "@esri/solution-common";
@@ -308,10 +308,10 @@ export class SolutionConfiguration {
       this._solutionContentsComponent.templateHierarchy = this._templateHierarchy;
     }
 
-    let firstItem: ISolutionTemplateEdit;
+    let firstItem: IItemTemplateEdit;
     if (this._templateHierarchy.length > 0) {
       // Start with the first item in the contents
-      firstItem = state.getStoreInfo("templateEdits")[this._templateHierarchy[0].id];
+      firstItem = state.getItemInfo(this._templateHierarchy[0].id);
     }
     this._currentEditItemId = firstItem ? firstItem.itemId : "";
   }
