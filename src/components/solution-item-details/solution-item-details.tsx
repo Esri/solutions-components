@@ -268,11 +268,11 @@ export class SolutionItemDetails {
   protected _updateStore(
   ): void {
     this.itemEdit.item = this.itemDetails;
-    state.setItemInfo(this.itemId, this.itemEdit);
+    state.setItemInfo(this.itemEdit);
   }
 
   /**
-   * Gets and displays image result from browse.
+   * Gets and displays image result from browse and updates the item in the store.
    *
    * @param event The input controls event that contains the new file
    * @param updateStore boolean that controls if the new value is written to the store
@@ -289,7 +289,7 @@ export class SolutionItemDetails {
 
         // Update info in store
         this.itemEdit.thumbnail = files[0];
-        state.replaceItemThumbnail(this.itemId, this.itemEdit);
+        state.replaceItemThumbnail(this.itemEdit);
       }
     }
   }

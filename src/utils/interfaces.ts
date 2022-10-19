@@ -27,7 +27,8 @@ export enum EUpdateType {
   Add,
   Update,
   Remove,
-  None
+  None,
+  Obsolete
 }
 
 export enum EExportType {

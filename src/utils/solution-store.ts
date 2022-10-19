@@ -37,18 +37,11 @@ import {
   IItemUpdate,
   ISolutionItemData,
   ISourceFile,
-  //removeItemResourceFile,
+  removeItemResourceFile,
   updateItem,
-  //updateItemResourceFile,
+  updateItemResourceFile,
   UserSession
 } from '@esri/solution-common';
-import {  //???
-  IRemoveItemResourceOptions,
-  IItemResourceOptions,
-  IItemResourceResponse,
-  removeItemResource,
-  updateItemResource
-} from "@esri/arcgis-rest-portal";  //???
 
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -230,24 +223,30 @@ class SolutionStore
   }
 
   /**
-   * Replaces the thumbnail associated with a template item in the store.
+   * Queues the replacement of the thumbnail associated with a template item in the store.
    *
-   * @param itemId Id of the template to modify
    * @param itemEdit Details of the template to modify, containing the new thumbnail in the `thumbnail`
    * property
    */
   public replaceItemThumbnail(
-    itemId: string,
     itemEdit: IItemTemplateEdit
   ): void {
-    // Flag the current thumbnail for removal
-    itemEdit.resourceFilePaths.some((path: IResourcePath) => {
-      if (path.type === EFileType.Thumbnail && path.updateType === EUpdateType.None) {
-        path.updateType = EUpdateType.Remove;
-        return true;
+    // Flag the current thumbnail and any replacements for removal
+    itemEdit.resourceFilePaths.forEach((path: IResourcePath) => {
+      if (path.type === EFileType.Thumbnail) {
+        if (path.updateType === EUpdateType.None) {
+          // Existing thumbnail not yet flagged for removal
+          path.updateType = EUpdateType.Remove;
+        } else if (path.updateType === EUpdateType.Add || path.updateType === EUpdateType.Update) {
+          // An earlier replacement
+          path.updateType = EUpdateType.Obsolete;
+        }
       }
-      return false;
     });
+
+    // Remove any replacements already queued
+    itemEdit.resourceFilePaths =
+      itemEdit.resourceFilePaths.filter((path: IResourcePath) => path.updateType != EUpdateType.Obsolete)
 
     // Add the new thumbnail to the store item
     itemEdit.resourceFilePaths.push({
@@ -258,7 +257,7 @@ class SolutionStore
     } as IResourcePath);
 
     // Update the store
-    this.setItemInfo(itemId, itemEdit);
+    this.setItemInfo(itemEdit);
   }
 
   /**
@@ -284,18 +283,16 @@ class SolutionStore
   /**
    * Stores information for item.
    *
-   * @param itemId Id of item to modify
    * @param itemEdit Item information
    */
   public setItemInfo(
-    itemId: string,
     itemEdit: IItemTemplateEdit
   ): void {
     const solutionData = this._store.get("solutionData");
     const templates = solutionData.templates as IItemTemplateEdit[];
 
     templates.some((t: IItemTemplateEdit) => {
-      if (itemId == t.itemId) {
+      if (itemEdit.itemId == t.itemId) {
         t = itemEdit;
         this._store.set("solutionData", solutionData);
         this._flagStoreAsChanged(true);
@@ -608,51 +605,5 @@ class SolutionStore
     return Promise.resolve();
   }
 }
-
-
-//??? ----- Temporary copies until released in solution.js -------------------------------------------------------------
-/**
- * Removes the item's resource that matches the filename with new content
- *
- * @param itemId Id of the item to remove
- * @param filename Name of the resource file to remove
- * @param authentication Credentials for the request to the storage
- * @returns A promise which resolves with a success true/false response
- */
-export function removeItemResourceFile(
-  itemId: string,
-  filename: string,
-  authentication: UserSession
-): Promise<{ success: boolean }> {
-  return removeItemResource({
-    id: itemId,
-    resource: filename,
-    authentication: authentication
-  } as IRemoveItemResourceOptions);
-}
-
-/**
- * Updates the item's resource that matches the filename with new content
- *
- * @param itemId Id of the item to update
- * @param filename Name of the resource file to update
- * @param resource The new content to update the resource with
- * @param authentication Credentials for the request to the storage
- * @returns A promise which resolves with a success true/false response
- */
-function updateItemResourceFile(
-  itemId: string,
-  filename: string,
-  resource: File,
-  authentication: UserSession
-): Promise<IItemResourceResponse> {
-  return updateItemResource({
-    id: itemId,
-    name: filename,
-    resource,
-    authentication: authentication
-  } as IItemResourceOptions);
-}
-//??? ------------------------------------------------------------------------------------------------------------------
 
 export default SolutionStore.Store;

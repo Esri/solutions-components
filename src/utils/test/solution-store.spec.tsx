@@ -22,6 +22,7 @@ import state from "../solution-store";
 import {
   IFeatureServiceEnabledStatus,
   IItemShare,
+  IItemTemplateEdit,
   IResourcePath,
   ISolutionTemplateEdits,
   ISolutionSpatialReferenceInfo
@@ -64,6 +65,134 @@ describe("solution-store", () => {
     expect(Object.keys(state.getStoreInfo("templateEdits")).length).toEqual(12);
   });
 
+  describe("replaceItemThumbnail", () => {
+    let itemEdit: IItemTemplateEdit;
+
+    beforeEach(() => {
+      itemEdit = {
+        "itemId": "bd4a2dafd7584253a1bc772f2dd510c4",
+        "type": "QuickCapture Project",
+        "key": "i7t8659n",
+        "resources": [
+          "bd4a2dafd7584253a1bc772f2dd510c4/qc.project.json",
+          "bd4a2dafd7584253a1bc772f2dd510c4_info_thumbnail/esri_133.png"
+          ],
+        "dependencies": ["79036430a6274e17ae915d0278b8569c"],
+        "groups": ["90766e8ee450438fb507d7d2cd03df20"],
+        "estimatedDeploymentCostFactor": 2,
+        "relatedItems": [],
+        "data": {},
+        "item": {
+          "id": "{{bd4a2dafd7584253a1bc772f2dd510c4.itemId}}",
+          "type": "QuickCapture Project",
+          "accessInformation": "Esri",
+          "categories": [],
+          "culture": "en-us",
+          "description": "An ArcGIS QuickCapture project description",
+          "extent": [ ],
+          "licenseInfo": "Copyright 2022 Esri",
+          "name": null,
+          "properties": null,
+          "snippet": "An ArcGIS QuickCapture project snippet",
+          "tags": [],
+          "thumbnail": null,
+          "title": "Status Reporter",
+          "typeKeywords": [
+            "QuickCapture",
+            "QuickCapture Project"
+          ],
+          "url": null,
+          "created": 1645216385000,
+          "modified": 1645219985000
+        },
+        "properties": {},
+        "resourceFilePaths": [{
+          "url": "https://www.arcgis.com/sharing/rest/content/items/ca924c6db7d247b9a31fa30532fb5913/resources/bd4a2dafd7584253a1bc772f2dd510c4/qc.project.json",
+          "type": 3,
+          "folder": "",
+          "filename": "qc.project.json",
+          "updateType": 3
+        },{
+          "url": "https://www.arcgis.com/sharing/rest/content/items/ca924c6db7d247b9a31fa30532fb5913/resources/bd4a2dafd7584253a1bc772f2dd510c4_info_thumbnail/esri_133.png",
+          "type": 4,
+          "folder": "",
+          "filename": "esri_133.png",
+          "updateType": 3
+        }],
+        "thumbnail": null
+      };
+    });
+
+    it("queues a thumbnail for replacement", () => {
+      // Set a new thumbnail
+      itemEdit.thumbnail = testUtils.getSampleImageAsFile("thumb1");
+
+      // Register it in the store
+      state.replaceItemThumbnail(itemEdit);
+
+      // Check that the previous thumbnail is marked for removal and the new one is queued for adding
+      expect(itemEdit.resourceFilePaths.length).toEqual(3);
+      expect(itemEdit.resourceFilePaths[0].filename).toEqual("qc.project.json");
+      expect(itemEdit.resourceFilePaths[0].updateType).toEqual(3);
+      expect(itemEdit.resourceFilePaths[1].filename).toEqual("esri_133.png");
+      expect(itemEdit.resourceFilePaths[1].updateType).toEqual(2);
+      expect(itemEdit.resourceFilePaths[2].filename).toEqual("thumb1");
+      expect(itemEdit.resourceFilePaths[2].updateType).toEqual(0);
+    });
+
+    it("twice queues thumbnails for replacement", () => {
+      // Set a new thumbnail
+      itemEdit.thumbnail = testUtils.getSampleImageAsFile("thumb1");
+
+      // Register it in the store
+      state.replaceItemThumbnail(itemEdit);
+
+      // Set a new thumbnail
+      itemEdit.thumbnail = testUtils.getSampleImageAsFile("thumb2");
+
+      // Register it in the store
+      state.replaceItemThumbnail(itemEdit);
+
+      // Check that the previous thumbnail is marked for removal and the new one is queued for adding
+      expect(itemEdit.resourceFilePaths.length).toEqual(3);
+      expect(itemEdit.resourceFilePaths[0].filename).toEqual("qc.project.json");
+      expect(itemEdit.resourceFilePaths[0].updateType).toEqual(3);
+      expect(itemEdit.resourceFilePaths[1].filename).toEqual("esri_133.png");
+      expect(itemEdit.resourceFilePaths[1].updateType).toEqual(2);
+      expect(itemEdit.resourceFilePaths[2].filename).toEqual("thumb2");
+      expect(itemEdit.resourceFilePaths[2].updateType).toEqual(0);
+    });
+
+    it("thrice queues thumbnails for replacement", () => {
+      // Set a new thumbnail
+      itemEdit.thumbnail = testUtils.getSampleImageAsFile("thumb1");
+
+      // Register it in the store
+      state.replaceItemThumbnail(itemEdit);
+
+      // Set a new thumbnail
+      itemEdit.thumbnail = testUtils.getSampleImageAsFile("thumb2");
+
+      // Register it in the store
+      state.replaceItemThumbnail(itemEdit);
+
+      // Set a new thumbnail
+      itemEdit.thumbnail = testUtils.getSampleImageAsFile("thumb3");
+
+      // Register it in the store
+      state.replaceItemThumbnail(itemEdit);
+
+      // Check that the previous thumbnail is marked for removal and the new one is queued for adding
+      expect(itemEdit.resourceFilePaths.length).toEqual(3);
+      expect(itemEdit.resourceFilePaths[0].filename).toEqual("qc.project.json");
+      expect(itemEdit.resourceFilePaths[0].updateType).toEqual(3);
+      expect(itemEdit.resourceFilePaths[1].filename).toEqual("esri_133.png");
+      expect(itemEdit.resourceFilePaths[1].updateType).toEqual(2);
+      expect(itemEdit.resourceFilePaths[2].filename).toEqual("thumb3");
+      expect(itemEdit.resourceFilePaths[2].updateType).toEqual(0);
+    });
+  });
+
   it("fails to find an item when fetching its value", async () => {
     const item = state.getItemInfo("79036430a6274e17ae915d0278b8569c");
     expect(item).toBeUndefined();
@@ -79,7 +208,7 @@ describe("solution-store", () => {
 
     // Change the item's description
     item.details.description = "Nullam ac urna mattis, maximus urna sit amet.";
-    state.setItemInfo("79036430a6274e17ae915d0278b8569c", item);
+    state.setItemInfo(item);
 
     const updatedItem = state.getItemInfo("79036430a6274e17ae915d0278b8569c");
     expect(updatedItem.details.description).toEqual("Nullam ac urna mattis, maximus urna sit amet.");

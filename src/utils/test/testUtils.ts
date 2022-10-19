@@ -53,12 +53,14 @@ export function createRuntimeMockUserSession(
 /**
  * Creates a mock image file.
  *
- * @author mike6491 (09/29/2022)
+ * @param filename Name to give file; defaults to "sampleImage"
  *
  * @returns Buffer usable as a File
  */
-export function getSampleImageAsFile(): File {
-  return Buffer.from(_imageAsDataUri(), 'base64') as any;
+export function getSampleImageAsFile(filename = "sampleImage"): File {
+  const pseudoFile = Buffer.from(_imageAsDataUri(), 'base64') as any;
+  pseudoFile.name = filename;
+  return pseudoFile;
 }
 
 //--------------------------------------------------------------------------------------------------------------------//
