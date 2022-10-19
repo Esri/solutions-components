@@ -67,7 +67,7 @@ export class MapDrawTools {
   /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
-  @Prop({ mutable: true }) graphics: __esri.Graphic[];
+  @Prop({ mutable: true }) graphics: __esri.Graphic[] = [];
 
   /**
    * boolean: Optionally draw a border around the draw tools
@@ -123,10 +123,10 @@ export class MapDrawTools {
    */
   @Watch('graphics')
   graphicsWatchHandler(v: any, oldV: any): void {
-    if (v && v !== oldV) {
-      if (this.graphics && this.graphics.length > 0) {
+    if (v && JSON.stringify(v) !== JSON.stringify(oldV || [])) {
+      if (v.length > 0) {
         this._sketchGraphicsLayer.removeAll();
-        this._sketchGraphicsLayer.addMany(this.graphics);
+        this._sketchGraphicsLayer.addMany(v);
       }
     }
   }

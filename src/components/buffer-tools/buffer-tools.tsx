@@ -41,7 +41,7 @@ export class BufferTools {
   /**
    * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
    */
-  @Prop() geometries: __esri.Geometry[];
+  @Prop() geometries: __esri.Geometry[] = [];
 
   /**
    * boolean: option to control if buffer results should be unioned
@@ -118,7 +118,7 @@ export class BufferTools {
    */
   @Watch('geometries')
   geometriesWatchHandler(v: any, oldV: any): void {
-    if (v && v !== oldV) {
+    if (v && JSON.stringify(v) !== JSON.stringify(oldV || [])) {
       this._buffer();
     }
   }
