@@ -124,7 +124,7 @@ export class SolutionConfiguration {
                     id="collapse-vars"
                     onClick={() => this._toggleTree()}
                     scale="s"
-                    title={this._translations.cancelEdits}
+                    title={this._treeOpen ? this._translations.collapse : this._translations.expand}
                   />
                   <div class="config-item">
                     <solution-item

@@ -124,7 +124,7 @@ export class SolutionTemplateData {
                   id="collapse-vars"
                   onClick={() => this._toggleVars()}
                   scale="s"
-                  title={this._translations.cancelEdits}
+                  title={this.varsOpen ? this._translations.collapse : this._translations.expand}
                 />
                 <div class={this.varsOpen ? "org-vars" : "org-vars display-none"} id="orgVars">
                   <solution-organization-variables
