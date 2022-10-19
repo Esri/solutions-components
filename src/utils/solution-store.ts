@@ -571,22 +571,24 @@ class SolutionStore
               folder: filePath.folder,
               filename: path.filename
             } as ISourceFile);
-            console.log("add " + this._generateThumbnailStoragePath(filePath) + " for item " + t.itemId);  //???
             break;
 
           case EUpdateType.Update:
             console.log("update " + path.filename + " for item " + t.itemId);
-            const updateResult = //???
-            await updateItemResourceFile(solutionItemId, storagePath, t.thumbnail, authentication);
-            console.log("update " + storagePath + " for item " + t.itemId + " result: " + JSON.stringify(updateResult));  //???
+            try {
+              await updateItemResourceFile(solutionItemId, storagePath, t.thumbnail, authentication);
+            } catch (err) {
+              console.error("Unable to update " + storagePath + " for item " + t.itemId + ": " + JSON.stringify(err));
+            }
             break;
 
           case EUpdateType.Remove:
             t.resources = t.resources.filter((path: string) => path !== storagePath);
-            console.log("remove " + storagePath + " for item " + t.itemId);  //???
-            const removeResult = //???      need to catch error  //???
-            await removeItemResourceFile(solutionItemId, storagePath, authentication);
-            console.log("remove " + storagePath + " for item " + t.itemId + " result: " + JSON.stringify(removeResult));  //???
+            try {
+              await removeItemResourceFile(solutionItemId, storagePath, authentication);
+            } catch (err) {
+              console.error("Unable to remove " + storagePath + " for item " + t.itemId + ": " + JSON.stringify(err));
+            }
             break;
 
         }
@@ -598,9 +600,9 @@ class SolutionStore
     });
 
     // Update the resources
-    console.log("Add resources: " + JSON.stringify(resourceAdds));//???
-    await copyFilesToStorageItem(resourceAdds, solutionItemId, authentication);
-
+    if (resourceAdds.length > 0) {
+      await copyFilesToStorageItem(resourceAdds, solutionItemId, authentication);
+    }
 
     return Promise.resolve();
   }
