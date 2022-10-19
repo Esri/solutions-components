@@ -16,7 +16,7 @@
 
 import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from '@stencil/core';
 import { EExportType, EPageType, EWorkflowType, ISelectionSet } from '../../utils/interfaces';
-import { flashSelection, getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
+import { goToSelection, getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
 import state from "../../utils/publicNotificationStore";
 import NewPublicNotification_T9n from '../../assets/t9n/public-notification/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
@@ -391,7 +391,7 @@ export class PublicNotification {
                 <calcite-list-item
                   description={this._translations.selectedFeatures.replace('{{n}}', cur.selectedIds.length.toString())}
                   label={cur.label}
-                  onClick={() => flashSelection(cur, this.mapView)}
+                  onClick={() => goToSelection(cur, this.mapView)}
                 >
                   {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
                   {this._getAction(true, "x", "", (evt): Promise<void> => this._deleteSelection(i, evt), false, "actions-end")}

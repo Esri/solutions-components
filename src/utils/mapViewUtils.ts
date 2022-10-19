@@ -65,17 +65,12 @@ export async function highlightFeatures(
 }
 
 export async function flashSelection(
-  selectionSet: ISelectionSet,
-  mapView: __esri.MapView,
-  updateExtent: boolean = true
+  selectionSet: ISelectionSet
 ): Promise<void> {
   const objectIds = selectionSet.selectedIds;
   const featureFilter = {
     objectIds
   } as __esri.FeatureFilter;
-  if (updateExtent) {
-    await goToSelection(selectionSet, mapView);
-  }
   selectionSet.layerView.featureEffect = {
     filter: featureFilter,
     includedEffect: "invert(100%)",
@@ -93,7 +88,7 @@ export async function goToSelection(
 ): Promise<void> {
   const query = selectionSet.layerView.layer.createQuery();
   query.objectIds = selectionSet.selectedIds;
-  await selectionSet.layerView.layer.queryExtent(query).then(async (result) => {
-    await mapView.goTo(result.extent);
-  });
+  const result = await selectionSet.layerView.layer.queryExtent(query);
+  await mapView.goTo(result.extent);
+  await flashSelection(selectionSet);
 }
