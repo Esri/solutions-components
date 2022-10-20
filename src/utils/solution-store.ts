@@ -28,7 +28,6 @@ import {
   EFileType,
   copyFilesToStorageItem,
   generateStorageFilePaths,
-  generateThumbnailStorageFilename,
   getItemDataAsJson,
   getProp,
   getThumbnailFromStorageItem,
@@ -51,19 +50,7 @@ import {
 // Store contents:
 //   * solutionItemId: [string] id of the current solution
 //   * defaultWkid: [any] value of the solution's `params.wkid.default` data property, which may be undefined
-//   * solutionData: [ISolutionItemData] the solution's data
-//   * templateEdits: [object] templates in the Solution in editable form organized by the template's itemId
-//       Each entry is of the form
-//          interface ISolutionTemplateEdit {
-//            itemId: string;
-//            type: string;
-//            details: string;     // JSON.stringified item details
-//            data: string;        // JSON.stringified item data
-//            properties: string;  // JSON.stringified item properties
-//            thumbnail: any;
-//            resourceFilePaths: IResourcePath[];
-//            groupDetails?: IItemShare[];
-//          }
+//   * solutionData: [ISolutionItemData] the solution's data, which is modified in-place
 //   * featureServices: [array] a list of Feature service enablement status for SR configuration
 //   * spatialReferenceInfo: [object] the current spatial reference (if enabled) and the services that use it
 //       * enabled: [boolean] use the spatial reference
@@ -111,19 +98,6 @@ const EmptySolutionStore: SolutionStoreData = {
     spatialReference: undefined
   }
 }
-
-/*
-const EmptyEditItem: ISolutionTemplateEdit = {
-  itemId: "",
-  type: "",
-  details: {} as any,
-  data: {},
-  properties: {},
-  thumbnail: null,
-  resourceFilePaths: [],
-  groupDetails: []
-}
-*/
 
 class SolutionStore
 {
@@ -343,6 +317,8 @@ class SolutionStore
         return this._getItemsSharedWithThisGroup(arg1, arg2);
       case "_getResourceFilePaths":
         return this._getResourceFilePaths(arg1, arg2, arg3);
+      case "_getResourceStorageName":
+        return this._getResourceStorageName(arg1, arg2);
       case "_getSpatialReferenceInfo":
         return this._getSpatialReferenceInfo(arg1, arg2);
       case "_prepareSolutionItemsForEditing":
@@ -383,13 +359,6 @@ class SolutionStore
     }
 
     this._hasChanges = flagAsChanged;
-  }
-
-  protected _generateThumbnailStoragePath(path: {
-    folder: string,
-    filename: string
-  }): string {
-    return path.folder + "/" + path.filename;
   }
 
   /**
@@ -477,6 +446,55 @@ class SolutionStore
   }
 
   /**
+   * Generates a resource name from a storage file path.
+   *
+   * @param templateItemId The id of the template item whose resource this is; used as a prefix in the resource name
+   * @param resourcePath Resource file infos
+   *
+   * @returns The resource name to use when attaching a resource to the item.
+   *
+   * @protected
+   */
+  protected _getResourceStorageName(
+    templateItemId: string,
+    resourcePath: IResourcePath
+  ): string {
+    /* Converts
+      {
+        "url": "https://myorg.maps.arcgis.com/sharing/rest/content/items/ca924c6db7d247b9a31fa30532fb5913/resources/79036430a6274e17ae915d0278b8569c_info_metadata/metadata.xml",
+        "type": 2,
+        "folder": "",
+        "filename": "metadata.xml",
+        "updateType": 3
+      }
+      to
+      ca924c6db7d247b9a31fa30532fb5913_info_metadata/metadata.xml
+    */
+    let prefix = templateItemId;
+    switch (resourcePath.type) {
+      case EFileType.Data:
+        prefix = `${prefix}_info_data`;
+        break;
+      case EFileType.Info:
+        prefix = `${prefix}_info`;
+        break;
+      case EFileType.Metadata:
+        prefix = `${prefix}_info_metadata`;
+        break;
+      case EFileType.Resource:
+        prefix = `${prefix}_info_dataz`;
+        break;
+      case EFileType.Thumbnail:
+        prefix = `${prefix}_info_thumbnail`;
+        break;
+    }
+
+    const filename = resourcePath.folder ? resourcePath.folder + "/" + resourcePath.filename : resourcePath.filename;
+
+    return prefix + "/" + filename;
+  }
+
+  /**
    * Stores basic spatial reference information that is used to determine if a custom spatial reference parameter will
    * be exposed while deploying this solution and if so what feature services will support it and what will the default wkid be
    *
@@ -510,7 +528,7 @@ class SolutionStore
    * @param templates A list of item templates from the solution
    * @param authentication Credentials for fetching information to be loaded into the store
    *
-   * @returns a promise that resolves a list of items and key values
+   * @returns a promise that resolves when the templates are ready
    *
    * @protected
    */
@@ -546,6 +564,17 @@ class SolutionStore
     return Promise.resolve();
   }
 
+  /**
+   * Prepares template items for sending to AGO by updating the resources held by the solution item.
+   *
+   * @param solutionItemId Id of the solution represented in the store
+   * @param templates A list of item templates from the solution
+   * @param authentication Credentials for fetching information to be loaded into the store
+   *
+   * @returns a promise that resolves when the templates are ready
+   *
+   * @protected
+   */
   protected async _prepareSolutionItemsForStorage(
     solutionItemId: string,
     templates: IItemTemplateEdit[],
@@ -558,36 +587,34 @@ class SolutionStore
       // Run through the resourceFilePaths for the item seeking modifications to be made to the solution item's
       // collection of resources; queue them for batching
       t.resourceFilePaths.forEach(async (path: IResourcePath) => {
-        const filePath = generateThumbnailStorageFilename(t.itemId, path.filename);
-        const storagePath = this._generateThumbnailStoragePath(filePath);
+        const storageName = this._getResourceStorageName(t.itemId, path);
 
         switch (path.updateType) {
 
           case EUpdateType.Add:
-            t.resources.push(storagePath);
+            t.resources.push(storageName);
             resourceAdds.push({
               itemId: t.itemId,
-              file: t.thumbnail,
-              folder: filePath.folder,
-              filename: path.filename
+              file: path.blob,
+              folder: "",
+              filename: storageName
             } as ISourceFile);
             break;
 
           case EUpdateType.Update:
-            console.log("update " + path.filename + " for item " + t.itemId);
             try {
-              await updateItemResourceFile(solutionItemId, storagePath, t.thumbnail, authentication);
+              await updateItemResourceFile(solutionItemId, storageName, path.blob, authentication);
             } catch (err) {
-              console.error("Unable to update " + storagePath + " for item " + t.itemId + ": " + JSON.stringify(err));
+              console.log("Unable to update " + storageName + " for item " + t.itemId + ": " + JSON.stringify(err));
             }
             break;
 
           case EUpdateType.Remove:
-            t.resources = t.resources.filter((path: string) => path !== storagePath);
             try {
-              await removeItemResourceFile(solutionItemId, storagePath, authentication);
+              await removeItemResourceFile(solutionItemId, storageName, authentication);
+              t.resources = t.resources.filter((path: string) => path !== storageName);
             } catch (err) {
-              console.error("Unable to remove " + storagePath + " for item " + t.itemId + ": " + JSON.stringify(err));
+              console.log("Unable to remove " + storageName + " for item " + t.itemId + ": " + JSON.stringify(err));
             }
             break;
 
