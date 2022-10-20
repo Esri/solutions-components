@@ -15,6 +15,7 @@
  */
 
 import * as common from "@esri/solution-common";
+import { IItemTemplateEdit } from "../interfaces";
 
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -53,12 +54,75 @@ export function createRuntimeMockUserSession(
 /**
  * Creates a mock image file.
  *
- * @author mike6491 (09/29/2022)
+ * @param filename Name to give file; defaults to "sampleImage"
  *
  * @returns Buffer usable as a File
  */
-export function getSampleImageAsFile(): File {
-  return Buffer.from(_imageAsDataUri(), 'base64') as any;
+export function getSampleImageAsFile(filename = "sampleImage"): File {
+  const pseudoFile = Buffer.from(_imageAsDataUri(), 'base64') as any;
+  pseudoFile.name = filename;
+  return pseudoFile;
+}
+
+export function getSampleItemEdit(itemId = "bd4a2dafd7584253a1bc772f2dd510c4"): IItemTemplateEdit {
+  let itemEdit = {
+    "itemId": "bd4a2dafd7584253a1bc772f2dd510c4",
+    "type": "QuickCapture Project",
+    "key": "i7t8659n",
+    "resources": [
+      "bd4a2dafd7584253a1bc772f2dd510c4/qc.project.json",
+      "bd4a2dafd7584253a1bc772f2dd510c4_info_thumbnail/esri_133.png"
+      ],
+    "dependencies": ["79036430a6274e17ae915d0278b8569c"],
+    "groups": ["90766e8ee450438fb507d7d2cd03df20"],
+    "estimatedDeploymentCostFactor": 2,
+    "relatedItems": [],
+    "data": {},
+    "item": {
+      "id": "{{bd4a2dafd7584253a1bc772f2dd510c4.itemId}}",
+      "type": "QuickCapture Project",
+      "accessInformation": "Esri",
+      "categories": [],
+      "culture": "en-us",
+      "description": "An ArcGIS QuickCapture project description",
+      "extent": [ ],
+      "licenseInfo": "Copyright 2022 Esri",
+      "name": null,
+      "properties": null,
+      "snippet": "An ArcGIS QuickCapture project snippet",
+      "tags": [],
+      "thumbnail": null,
+      "title": "Status Reporter",
+      "typeKeywords": [
+        "QuickCapture",
+        "QuickCapture Project"
+      ],
+      "url": null,
+      "created": 1645216385000,
+      "modified": 1645219985000
+    },
+    "properties": {},
+    "resourceFilePaths": [{
+      "url": "https://www.arcgis.com/sharing/rest/content/items/ca924c6db7d247b9a31fa30532fb5913/resources/bd4a2dafd7584253a1bc772f2dd510c4/qc.project.json",
+      "type": 3,
+      "folder": "",
+      "filename": "qc.project.json",
+      "updateType": 3
+    },{
+      "url": "https://www.arcgis.com/sharing/rest/content/items/ca924c6db7d247b9a31fa30532fb5913/resources/bd4a2dafd7584253a1bc772f2dd510c4_info_thumbnail/esri_133.png",
+      "type": 4,
+      "folder": "",
+      "filename": "esri_133.png",
+      "updateType": 3
+    }],
+    "thumbnail": null
+  };
+
+  if (itemId !== "bd4a2dafd7584253a1bc772f2dd510c4") {
+    itemEdit = JSON.parse(JSON.stringify(itemEdit).replace(/bd4a2dafd7584253a1bc772f2dd510c4/g, itemId));
+  }
+
+  return itemEdit;
 }
 
 //--------------------------------------------------------------------------------------------------------------------//

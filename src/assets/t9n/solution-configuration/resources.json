@@ -1,6 +1,8 @@
 {
     "cancelEdits": "Cancel Edits",
+    "collapse": "Collapse",
     "definitionTab": "Definition",
+    "expand": "Expand",
     "geocodeUrl": "Geocode URL",
     "geometryUrl": "Geometry URL",
     "itemId": "Item ID",

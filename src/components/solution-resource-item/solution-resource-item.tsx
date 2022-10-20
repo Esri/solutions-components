@@ -159,7 +159,7 @@ export class SolutionResourceItem {
       <calcite-value-list multiple>
         {
           this.resourceFilePaths.reduce((prev, cur) => {
-            if (cur.url.indexOf("_info_thumbnail") < 0) {
+            if (cur.type !== EFileType.Thumbnail) {
               prev.push(this._renderResource(cur));
             }
             return prev;
