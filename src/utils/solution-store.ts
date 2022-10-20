@@ -350,6 +350,7 @@ class SolutionStore
   protected _flagStoreHasChanges(flagHasChanges: boolean): void {
     // Event for notifying if the store has changes or not
     if (this._hasChanges !== flagHasChanges) {
+      console.log(flagHasChanges ? "store changed" : "store original"); //???
       window.dispatchEvent(new CustomEvent("solutionStoreHasChanges", {
         detail: flagHasChanges,
         bubbles: true,

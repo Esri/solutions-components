@@ -90,6 +90,26 @@ export class SolutionTemplateData {
   //
   //--------------------------------------------------------------------------
 
+  constructor() {
+    window.addEventListener("solutionEditorContentChanged",
+      (evt) => {
+        const editorInstanceId = (evt as any).detail;
+        if (editorInstanceId === this.instanceid) {
+          console.log("snapshot "  + editorInstanceId); //???
+          const itemEdit = state.getItemInfo(this.itemId);
+          (this._editor as any).getEditorContents().then(
+            (data: string) => {
+              if (data) {
+                itemEdit.data = JSON.parse(data);
+                state.setItemInfo(itemEdit);
+              }
+            }
+          );
+        }
+      }
+    );
+  }
+
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
@@ -111,6 +131,7 @@ export class SolutionTemplateData {
                     class="solution-data-editor-container"
                     instanceid={this.instanceid}
                     value={this.value}
+                    ref={(el) => (this._editor = el)}
                   />
               </div>
             </calcite-panel>
@@ -149,6 +170,8 @@ export class SolutionTemplateData {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  protected _editor: HTMLElement;
 
   /**
    * Contains the translations for this component.

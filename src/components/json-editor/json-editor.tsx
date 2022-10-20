@@ -132,12 +132,21 @@ export class JsonEditor {
       const setModelMarkers = monaco.editor.setModelMarkers;
       const self = this;
       monaco.editor.setModelMarkers = function(model, owner, markers) {
-        // Update the error flag if this call was for our model
+        // If this call was for our model, it acts like an onEditorChange event
+        // but gives us access to the error state as well
         if (model.id === self._currentModel.id) {
+
+          // Set the error state & dispatch event if state has changed
           self._flagEditorHasErrors(markers.length > 0);
-          const errorFlag = document.getElementById(`${self.instanceid}-errorFlag`);
+
+          // Set the changed state & dispatch event if state has changed, but only if there are no errors
+          if (!self.hasErrors) {
+            self._flagEditorHasChanges(self._currentModel?.canUndo());
+            self._flagEditorContentChanged();
+          }
 
           // Show the error flag if there are errors
+          const errorFlag = document.getElementById(`${self.instanceid}-errorFlag`);
           errorFlag.style.visibility = self.hasErrors ? "visible" : "hidden";
         }
 
@@ -393,22 +402,34 @@ export class JsonEditor {
   }
 
   /**
+   * Dispatches an event that the editor's content has changed.
+   */
+  protected _flagEditorContentChanged(): void {
+    // Event for notifying that the editor contents have changed
+    window.dispatchEvent(new CustomEvent("solutionEditorContentChanged", {
+      detail: this.instanceid,
+      bubbles: true,
+      cancelable: false,
+      composed: true
+    }));
+  }
+
+  /**
    * Sets the editor's flag indicating if it has changes and dispatches an event when
    * the flag value changes.
    */
   protected _flagEditorHasChanges(flagHasChanges: boolean): void {
-    // Event for notifying if the editor has changes or not
+    // Event for notifying if the editor has updated the value of its hasChanges property
     if (this.hasChanges !== flagHasChanges) {
-      console.log("Editor changes state changed to " + flagHasChanges);//???
+      console.log(flagHasChanges ? "editor changed" : "editor original");//???
       window.dispatchEvent(new CustomEvent("solutionEditorHasChanges", {
         detail: flagHasChanges,
         bubbles: true,
         cancelable: false,
         composed: true
       }));
+      this.hasChanges = flagHasChanges;
     }
-
-    this.hasChanges = flagHasChanges;
   }
 
   /**
@@ -416,18 +437,17 @@ export class JsonEditor {
    * the flag value changes.
    */
   protected _flagEditorHasErrors(flagHasErrors: boolean): void {
-    // Event for notifying if the editor has errors or not
+    // Event for notifying if the editor has updated the value of its hasErrors property
     if (this.hasErrors !== flagHasErrors) {
-      console.log("Editor error state changed to " + flagHasErrors);//???
+      console.log(flagHasErrors ? "editor errors" : "editor ok");//???
       window.dispatchEvent(new CustomEvent("solutionEditorHasErrors", {
         detail: flagHasErrors,
         bubbles: true,
         cancelable: false,
         composed: true
       }));
+      this.hasErrors = flagHasErrors;
     }
-
-    this.hasErrors = flagHasErrors;
   }
 
   /**
@@ -460,11 +480,14 @@ export class JsonEditor {
   }
 
   /**
-   * Updates the undo redo buttons as necessary.
+   * Handles activites appropriate to changes in the editor.
    *
    * @protected
    */
-   protected _onEditorChange(): void {
+  protected _onEditorChange(): void {
+    // Note: we're not flagging that the editor has changes here because this event
+    // arrives before the model markers event, which indicates errors. We don't want
+    // to notify about changes if there are errors.
     this._toggleUndoRedo();
   }
 
@@ -541,8 +564,6 @@ export class JsonEditor {
    * @protected
    */
    protected _toggleUndoRedo(): void {
-    this._flagEditorHasChanges(this._currentModel?.canUndo());
-
     if (this._currentModel?.canUndo()) {
       this._enableButton(`${this.instanceid}-undo`);
     } else {

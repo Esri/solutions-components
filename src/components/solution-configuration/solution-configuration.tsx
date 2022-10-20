@@ -367,7 +367,7 @@ export class SolutionConfiguration {
     const updateSaveability = (solutionStoreHasChanges || solutionEditorHasChanges) && !solutionEditorHasErrors;
 
     if (this._canSave !== updateSaveability) {
-      console.log("Configuration saveability changed to " + updateSaveability);//???
+      console.log(updateSaveability ? "saveable" : "disable save");//???
       window.dispatchEvent(new CustomEvent("solutionCanSave", {
         detail: updateSaveability,
         bubbles: true,
