@@ -193,7 +193,7 @@ class SolutionStore
       this._store.set("featureServices", featureServices);
       this._store.set("spatialReferenceInfo", spatialReferenceInfo);
     }
-    this._flagStoreAsChanged(false);
+    this._flagStoreHasChanges(false);
   }
 
   /**
@@ -269,7 +269,7 @@ class SolutionStore
       if (itemEdit.itemId == t.itemId) {
         t = itemEdit;
         this._store.set("solutionData", solutionData);
-        this._flagStoreAsChanged(true);
+        this._flagStoreHasChanges(true);
         return true;
       }
       return false;
@@ -287,7 +287,7 @@ class SolutionStore
     value: any
   ): void {
     this._store.set(propName, value);
-    this._flagStoreAsChanged(true);
+    this._flagStoreHasChanges(true);
   }
 
   //------------------------------------------------------------------------------------------------------------------//
@@ -347,18 +347,18 @@ class SolutionStore
    * Sets the store's flag indicating if it has changes and dispatches an event when
    * the flag value changes.
    */
-  protected _flagStoreAsChanged(flagAsChanged: boolean): void {
+  protected _flagStoreHasChanges(flagHasChanges: boolean): void {
     // Event for notifying if the store has changes or not
-    if (this._hasChanges !== flagAsChanged) {
+    if (this._hasChanges !== flagHasChanges) {
       window.dispatchEvent(new CustomEvent("solutionStoreHasChanges", {
-        detail: flagAsChanged,
+        detail: flagHasChanges,
         bubbles: true,
         cancelable: false,
         composed: true
       }));
     }
 
-    this._hasChanges = flagAsChanged;
+    this._hasChanges = flagHasChanges;
   }
 
   /**

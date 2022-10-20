@@ -76,6 +76,11 @@ export class JsonEditor {
   //--------------------------------------------------------------------------
 
   /**
+   * Contains a public value to indicate if the model has any changes.
+   */
+  @Prop({ mutable: true, reflect: true }) hasChanges: boolean = false;
+
+  /**
    * Contains a public value to indicate if the model has any errors
    * that would prevent saving it.
    */
@@ -129,7 +134,7 @@ export class JsonEditor {
       monaco.editor.setModelMarkers = function(model, owner, markers) {
         // Update the error flag if this call was for our model
         if (model.id === self._currentModel.id) {
-          self.hasErrors = markers.length > 0;
+          self._flagEditorHasErrors(markers.length > 0);
           const errorFlag = document.getElementById(`${self.instanceid}-errorFlag`);
 
           // Show the error flag if there are errors
@@ -388,6 +393,44 @@ export class JsonEditor {
   }
 
   /**
+   * Sets the editor's flag indicating if it has changes and dispatches an event when
+   * the flag value changes.
+   */
+  protected _flagEditorHasChanges(flagHasChanges: boolean): void {
+    // Event for notifying if the editor has changes or not
+    if (this.hasChanges !== flagHasChanges) {
+      console.log("Editor changes state changed to " + flagHasChanges);//???
+      window.dispatchEvent(new CustomEvent("solutionEditorHasChanges", {
+        detail: flagHasChanges,
+        bubbles: true,
+        cancelable: false,
+        composed: true
+      }));
+    }
+
+    this.hasChanges = flagHasChanges;
+  }
+
+  /**
+   * Sets the editor's flag indicating if it has errors and dispatches an event when
+   * the flag value changes.
+   */
+  protected _flagEditorHasErrors(flagHasErrors: boolean): void {
+    // Event for notifying if the editor has errors or not
+    if (this.hasErrors !== flagHasErrors) {
+      console.log("Editor error state changed to " + flagHasErrors);//???
+      window.dispatchEvent(new CustomEvent("solutionEditorHasErrors", {
+        detail: flagHasErrors,
+        bubbles: true,
+        cancelable: false,
+        composed: true
+      }));
+    }
+
+    this.hasErrors = flagHasErrors;
+  }
+
+  /**
    * Fetches the component's translations
    *
    * @protected
@@ -498,6 +541,8 @@ export class JsonEditor {
    * @protected
    */
    protected _toggleUndoRedo(): void {
+    this._flagEditorHasChanges(this._currentModel?.canUndo());
+
     if (this._currentModel?.canUndo()) {
       this._enableButton(`${this.instanceid}-undo`);
     } else {

@@ -49,6 +49,10 @@ export namespace Components {
          */
         "getEditorContents": () => Promise<any>;
         /**
+          * Contains a public value to indicate if the model has any changes.
+         */
+        "hasChanges": boolean;
+        /**
           * Contains a public value to indicate if the model has any errors that would prevent saving it.
          */
         "hasErrors": boolean;
@@ -698,6 +702,10 @@ declare namespace LocalJSX {
         "unit"?: __esri.LinearUnits;
     }
     interface JsonEditor {
+        /**
+          * Contains a public value to indicate if the model has any changes.
+         */
+        "hasChanges"?: boolean;
         /**
           * Contains a public value to indicate if the model has any errors that would prevent saving it.
          */

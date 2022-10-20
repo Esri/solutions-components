@@ -76,6 +76,27 @@ export class SolutionConfiguration {
   //
   //--------------------------------------------------------------------------
 
+  constructor() {
+    window.addEventListener("solutionStoreHasChanges",
+      (evt) => {
+        this._updateSaveability(
+          this._solutionStoreHasChanges = (evt as any).detail, this._solutionEditorHasChanges, this._solutionEditorHasErrors);
+      }
+    );
+    window.addEventListener("solutionEditorHasChanges",
+      (evt) => {
+        this._updateSaveability(
+          this._solutionStoreHasChanges, this._solutionEditorHasChanges = (evt as any).detail, this._solutionEditorHasErrors);
+      }
+    );
+    window.addEventListener("solutionEditorHasErrors",
+      (evt) => {
+        this._updateSaveability(
+          this._solutionStoreHasChanges, this._solutionEditorHasChanges, this._solutionEditorHasErrors = (evt as any).detail);
+      }
+    );
+  }
+
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    *
@@ -194,6 +215,11 @@ export class SolutionConfiguration {
    * Used to show/hide the content tree
    */
   @State() protected _treeOpen = true;
+
+  protected _solutionStoreHasChanges = false;
+  protected _solutionEditorHasChanges = false;
+  protected _solutionEditorHasErrors = false;
+  protected _canSave = false;
 
   //--------------------------------------------------------------------------
   //
@@ -331,6 +357,26 @@ export class SolutionConfiguration {
    */
   protected _toggleTree(): void {
     this._treeOpen = !this._treeOpen;
+  }
+
+  protected _updateSaveability(
+    solutionStoreHasChanges: boolean,
+    solutionEditorHasChanges: boolean,
+    solutionEditorHasErrors: boolean
+  ): void {
+    const updateSaveability = (solutionStoreHasChanges || solutionEditorHasChanges) && !solutionEditorHasErrors;
+
+    if (this._canSave !== updateSaveability) {
+      console.log("Configuration saveability changed to " + updateSaveability);//???
+      window.dispatchEvent(new CustomEvent("solutionCanSave", {
+        detail: updateSaveability,
+        bubbles: true,
+        cancelable: false,
+        composed: true
+      }));
+    }
+
+    this._canSave = updateSaveability;
   }
 
   /**
