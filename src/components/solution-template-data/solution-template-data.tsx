@@ -62,11 +62,13 @@ export class SolutionTemplateData {
   @Prop({ mutable: true, reflect: true }) itemId = "";
 
   @Watch("itemId") itemIdWatchHandler(): void {
+    this._initializing = true;
     this.value = JSON.stringify(
       this.instanceid === "data"
       ? state.getItemInfo(this.itemId).data
       : state.getItemInfo(this.itemId).properties
       , null, 2);
+    console.log("Initializing " + this.itemId + "'s " + this.instanceid + "; data size " + this.value.length); //???
   }
 
   /**
@@ -93,18 +95,21 @@ export class SolutionTemplateData {
   constructor() {
     window.addEventListener("solutionEditorContentChanged",
       (evt) => {
-        const editorInstanceId = (evt as any).detail;
-        if (editorInstanceId === this.instanceid) {
-          console.log("snapshot "  + editorInstanceId); //???
-          const itemEdit = state.getItemInfo(this.itemId);
-          (this._editor as any).getEditorContents().then(
-            (data: string) => {
-              if (data) {
-                itemEdit.data = JSON.parse(data);
-                state.setItemInfo(itemEdit);
+        if (this.itemId) {
+          const { id, contents } = (evt as any).detail;
+          if (id === this.instanceid) {
+            if(!this._initializing && contents.length > 0) {
+              console.log("snapshot " + this.itemId + "'s " + id + " with " + contents.length + " bytes"); //???
+              const itemEdit = state.getItemInfo(this.itemId);
+              if (id === "data") {
+                itemEdit.data = JSON.parse(contents);
+              } else {
+                itemEdit.properties = JSON.parse(contents);
               }
+              state.setItemInfo(itemEdit);
             }
-          );
+            this._initializing = false;
+          }
         }
       }
     );
@@ -131,7 +136,6 @@ export class SolutionTemplateData {
                     class="solution-data-editor-container"
                     instanceid={this.instanceid}
                     value={this.value}
-                    ref={(el) => (this._editor = el)}
                   />
               </div>
             </calcite-panel>
@@ -171,8 +175,6 @@ export class SolutionTemplateData {
   //
   //--------------------------------------------------------------------------
 
-  protected _editor: HTMLElement;
-
   /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
@@ -180,6 +182,8 @@ export class SolutionTemplateData {
   @State() protected _translations: typeof SolutionTemplateData_T9n;
 
   @State() protected value = "";
+
+  protected _initializing = false;
 
   //--------------------------------------------------------------------------
   //

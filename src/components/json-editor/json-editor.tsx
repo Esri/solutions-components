@@ -407,7 +407,10 @@ export class JsonEditor {
   protected _flagEditorContentChanged(): void {
     // Event for notifying that the editor contents have changed
     window.dispatchEvent(new CustomEvent("solutionEditorContentChanged", {
-      detail: this.instanceid,
+      detail: {
+        id: this.instanceid,
+        contents: this._currentModel.getValue()
+      },
       bubbles: true,
       cancelable: false,
       composed: true
