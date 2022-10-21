@@ -16,7 +16,7 @@
 
 import {
   IDeployFileCopyPath
-} from '@esri/solution-common';
+} from "@esri/solution-common";
 
 /**
  * Resource update types

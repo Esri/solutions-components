@@ -1,4 +1,4 @@
-// May change this but doing this for now so the download button will do something 
+// May change this but doing this for now so the download button will do something
 
 // https://medium.com/@danny.pule/export-json-to-csv-file-using-javascript-a0b7bc5b00d2
 
@@ -14,9 +14,9 @@ function _exportCSVFile(headers, items, fileTitle: string) {
 
   const csv = _convertToCSV(jsonObject);
 
-  const exportedFilenmae = fileTitle + '.csv' || 'export.csv';
+  const exportedFilenmae = fileTitle + ".csv" || "export.csv";
 
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
 
   const link = document.createElement("a");
   if (link.download !== undefined) { // feature detection
@@ -24,7 +24,7 @@ function _exportCSVFile(headers, items, fileTitle: string) {
     const url = URL.createObjectURL(blob);
     link.setAttribute("href", url);
     link.setAttribute("download", exportedFilenmae);
-    link.style.visibility = 'hidden';
+    link.style.visibility = "hidden";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -32,18 +32,18 @@ function _exportCSVFile(headers, items, fileTitle: string) {
 }
 
 function _convertToCSV(objArray) {
-  const array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-  let str = '';
+  const array = typeof objArray != "object" ? JSON.parse(objArray) : objArray;
+  let str = "";
 
   for (let i = 0; i < array.length; i++) {
-    let line = '';
+    let line = "";
     for (const index in array[i]) {
-      if (line != '') {line += ','}
+      if (line != "") {line += ","}
 
       line += array[i][index];
     }
 
-    str += line + '\r\n';
+    str += line + "\r\n";
   }
 
   return str;
@@ -60,7 +60,7 @@ export async function exportCSV(
   Object.keys(entry).forEach(k => {
     if (entry.hasOwnProperty(k)) {
       headers[k] = k;
-    } 
+    }
   });
   _exportCSVFile(headers, attrs, `notify-${Date.now().toString()}`);
   return Promise.resolve();
