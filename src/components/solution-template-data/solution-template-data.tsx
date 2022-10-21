@@ -68,7 +68,6 @@ export class SolutionTemplateData {
       ? state.getItemInfo(this.itemId).data
       : state.getItemInfo(this.itemId).properties
       , null, 2);
-    console.log("Initializing " + this.itemId + "'s " + this.instanceid + "; data size " + this.value.length); //???
   }
 
   /*
@@ -100,7 +99,6 @@ export class SolutionTemplateData {
           const [itemId, instanceId] = id.split("|");
           if (itemId == this.itemId && instanceId === this.instanceid) {
             if(!this._initializing && contents.length > 0) {
-              console.log("snapshot " + itemId + "'s " + instanceId + " with " + contents.length + " bytes"); //???
               const itemEdit = state.getItemInfo(itemId);
               if (instanceId === "data") {
                 itemEdit.data = JSON.parse(contents);

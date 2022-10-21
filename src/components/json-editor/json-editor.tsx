@@ -424,7 +424,6 @@ export class JsonEditor {
   protected _flagEditorHasChanges(flagHasChanges: boolean): void {
     // Event for notifying if the editor has updated the value of its hasChanges property
     if (this.hasChanges !== flagHasChanges) {
-      console.log(flagHasChanges ? "editor changed" : "editor original");//???
       window.dispatchEvent(new CustomEvent("solutionEditorHasChanges", {
         detail: flagHasChanges,
         bubbles: true,
@@ -442,7 +441,6 @@ export class JsonEditor {
   protected _flagEditorHasErrors(flagHasErrors: boolean): void {
     // Event for notifying if the editor has updated the value of its hasErrors property
     if (this.hasErrors !== flagHasErrors) {
-      console.log(flagHasErrors ? "editor errors" : "editor ok");//???
       window.dispatchEvent(new CustomEvent("solutionEditorHasErrors", {
         detail: flagHasErrors,
         bubbles: true,
