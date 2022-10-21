@@ -359,6 +359,14 @@ export class SolutionConfiguration {
     this._treeOpen = !this._treeOpen;
   }
 
+  /**
+   * Dispatches an event indicating if the configuration is saveable or not. It's not saveable if there are no
+   * changes or if there's an error in the JSON editor.
+   *
+   * @param solutionStoreHasChanges Are there changes in the configuration editor's internal store?
+   * @param solutionEditorHasChanges Are there changes in the configuration editor's JSON editor?
+   * @param solutionEditorHasErrors Are there errors in the configuration editor's JSON editor?
+   */
   protected _updateSaveability(
     solutionStoreHasChanges: boolean,
     solutionEditorHasChanges: boolean,

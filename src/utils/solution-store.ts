@@ -346,6 +346,11 @@ class SolutionStore
   /**
    * Sets the store's flag indicating if it has changes and dispatches an event when
    * the flag value changes.
+   *
+   * @param flagHasChanges Current state of change in the store; if it doesn't match the value saved in this
+   * object, an event is dispatched with the new value and the saved value is updated
+   *
+   * @protected
    */
   protected _flagStoreHasChanges(flagHasChanges: boolean): void {
     // Event for notifying if the store has changes or not

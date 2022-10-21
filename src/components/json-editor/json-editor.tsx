@@ -403,6 +403,8 @@ export class JsonEditor {
 
   /**
    * Dispatches an event that the editor's content has changed.
+   *
+   * @protected
    */
   protected _flagEditorContentChanged(): void {
     // Event for notifying that the editor contents have changed
@@ -420,6 +422,11 @@ export class JsonEditor {
   /**
    * Sets the editor's flag indicating if it has changes and dispatches an event when
    * the flag value changes.
+   *
+   * @param flagHasChanges Current state of change in the editor; if it doesn't match the value saved in this
+   * object, an event is dispatched with the new value and the saved value is updated
+   *
+   * @protected
    */
   protected _flagEditorHasChanges(flagHasChanges: boolean): void {
     // Event for notifying if the editor has updated the value of its hasChanges property
@@ -437,6 +444,11 @@ export class JsonEditor {
   /**
    * Sets the editor's flag indicating if it has errors and dispatches an event when
    * the flag value changes.
+   *
+   * @param flagHasErrors Current state of errors in the editor; if it doesn't match the value saved in this
+   * object, an event is dispatched with the new value and the saved value is updated
+   *
+   * @protected
    */
   protected _flagEditorHasErrors(flagHasErrors: boolean): void {
     // Event for notifying if the editor has updated the value of its hasErrors property
