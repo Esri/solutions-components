@@ -17,6 +17,7 @@
 import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop, State, VNode, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import { highlightFeatures, goToSelection } from '../../utils/mapViewUtils';
+import { getQueryGeoms, queryObjectIds } from "../../utils/queryUtils";
 import { EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode } from '../../utils/interfaces';
 import state from "../../utils/publicNotificationStore";
 import MapSelectTools_T9n from '../../assets/t9n/map-select-tools/resources.json';
@@ -553,43 +554,22 @@ export class MapSelectTools {
   protected async _selectFeatures(
     geometries: __esri.Geometry[]
   ): Promise<void> {
-    this._selectedIds = [];
-    const queryDefs = geometries.map(g => this._query(g))
-    const results = await Promise.all(queryDefs);
-    results.forEach(r => {
-      this._selectedIds = [
-        ...this._selectedIds,
-        ...r
-      ]
-    });
+    this._selectedIds = await queryObjectIds(
+      geometries,
+      this.selectLayerView.layer
+    );
     // Add geometries used for selecting features as graphics
-    this._drawTools.graphics = this.geometries.map(sg => {
+    this._drawTools.graphics = this.geometries.map(geom => {
       const props = {
-        'geometry': sg,
-        'symbol': sg.type === 'point' ?
-          this._drawTools?.pointSymbol : sg.type === 'polyline' ?
-          this._drawTools?.polylineSymbol : sg.type === 'polygon' ?
+        'geometry': geom,
+        'symbol': geom.type === 'point' ?
+          this._drawTools?.pointSymbol : geom.type === 'polyline' ?
+          this._drawTools?.polylineSymbol : geom.type === 'polygon' ?
           this._drawTools?.polygonSymbol : undefined
       };
       return new this.Graphic(props)
     });
     void this._highlightFeatures(this._selectedIds);
-  }
-
-  /**
-   * Query the selectLayerView
-   *
-   * @param geometry Geometry used for the selection of ids from the select layer view
-   *
-   * @returns Promise that will contain the selected ids
-   */
-  protected async _query(
-    geometry: __esri.Geometry
-  ): Promise<number[]> {
-    const q = this.selectLayerView.layer.createQuery();
-    q.spatialRelationship = "intersects";
-    q.geometry = geometry;
-    return this.selectLayerView?.layer?.queryObjectIds(q);
   }
 
   /**
@@ -644,31 +624,8 @@ export class MapSelectTools {
   protected _geomQuery(
     geometries: __esri.Geometry[]
   ): Promise<void> {
-    // sort by geom type so we have a single geom for each type to query with
-    const queryGeoms = [
-      ...this._getQueryGeoms(geometries, "polygon"),
-      ...this._getQueryGeoms(geometries, "polyline"),
-      ...this._getQueryGeoms(geometries, "point")
-    ];
-
+    const queryGeoms = getQueryGeoms(geometries, this._geometryEngine);
     return this._selectFeatures(queryGeoms);
-  }
-
-  /**
-   * Fetch a single geometry for the current geometry type
-   *
-   * @param geometries All current selection geometries
-   * @param type The geometry type to union
-   *
-   * @returns Array with a single unioned geometry for the current geometry type
-   * @protected
-   */
-  protected _getQueryGeoms(
-    geometries: __esri.Geometry[],
-    type: string
-  ): __esri.Geometry[] {
-    const geoms = geometries.filter(g => g.type === type);
-    return geoms.length <= 1 ? geoms : [this._geometryEngine.union(geoms)];
   }
 
   /**

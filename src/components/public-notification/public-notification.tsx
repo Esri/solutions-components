@@ -15,8 +15,10 @@
  */
 
 import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from '@stencil/core';
+import { loadModules } from "../../utils/loadModules";
 import { EExportType, EPageType, EWorkflowType, ISelectionSet } from '../../utils/interfaces';
 import { goToSelection, getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
+import { getSelectionSetQuery } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
 import NewPublicNotification_T9n from '../../assets/t9n/public-notification/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
@@ -113,6 +115,11 @@ export class PublicNotification {
    * ISelectionSet: The current active selection set
    */
   protected _activeSelection: ISelectionSet;
+
+  /**
+   * esri/geometry/geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
+   */
+  protected _geometryEngine: __esri.geometryEngine;
 
   //--------------------------------------------------------------------------
   //
@@ -214,6 +221,22 @@ export class PublicNotification {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+   protected async _initModules(): Promise<void> {
+    const [geometryEngine]: [
+      __esri.geometryEngine
+    ] = await loadModules([
+      "esri/geometry/geometryEngine"
+    ]);
+    this._geometryEngine = geometryEngine;
+  }
 
   /**
    * Get a calcite action group for the current action
@@ -323,6 +346,7 @@ export class PublicNotification {
               mapView={this.mapView}
               onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
               selectionMode={"single"}
+              selectedLayers={this.addresseeLayer ? [this.addresseeLayer?.layer.title] : []}
             />
           </calcite-label>
         </div>
@@ -363,6 +387,7 @@ export class PublicNotification {
               mapView={this.mapView}
               onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
               selectionMode={"single"}
+              selectedLayers={this.addresseeLayer ? [this.addresseeLayer?.layer.title] : []}
             />
           </calcite-label>
         </div>
@@ -800,7 +825,32 @@ export class PublicNotification {
     evt: CustomEvent
   ): Promise<void> {
     const title: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
-    this.addresseeLayer = await getMapLayerView(this.mapView, title);
+    if (title !== this.addresseeLayer?.layer.title) {
+      this.addresseeLayer = await getMapLayerView(this.mapView, title);
+      await this._updateSelectionSets(this.addresseeLayer);
+    }
+  }
+
+  protected async _updateSelectionSets(
+    layerView: __esri.FeatureLayerView
+  ): Promise<void> {
+    // TODO need to store graphics drawn by refine and sketch to make this work
+    const oidDefs = [];
+    this.selectionSets.forEach(selectionSet => {
+      selectionSet.layerView = layerView;
+      selectionSet.selectedIds = [];
+      oidDefs.push(getSelectionSetQuery(selectionSet, this._geometryEngine));
+    });
+
+    Promise.all(oidDefs).then(async results => {
+      results.forEach((result, i) => {
+        this.selectionSets[i].selectedIds = result;
+      });
+      await this._highlightFeatures();
+      this.selectionSets = [
+        ...this.selectionSets
+      ];
+    });
   }
 
   /**

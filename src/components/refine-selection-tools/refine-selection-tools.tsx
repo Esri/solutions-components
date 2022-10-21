@@ -17,11 +17,11 @@
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from '@stencil/core';
 import { ERefineMode, ESelectionMode, ESelectionType } from '../../utils/interfaces';
 import { getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
+import { queryPage } from '../../utils/queryUtils';
 import state from "../../utils/publicNotificationStore";
 import { loadModules } from "../../utils/loadModules";
 import RefineSelectionTools_T9n from '../../assets/t9n/refine-selection-tools/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
-import Graphic from 'esri/Graphic';
 
 @Component({
   tag: 'refine-selection-tools',
@@ -152,7 +152,7 @@ export class RefineSelectionTools {
   /**
    * {<layer title>: Graphic[]}: Collection of graphics returned from queries to the layer
    */
-  protected _featuresCollection: {[key: string]: Graphic[]} = {};
+  protected _featuresCollection: {[key: string]: __esri.Graphic[]} = {};
 
   //--------------------------------------------------------------------------
   //
@@ -526,9 +526,9 @@ export class RefineSelectionTools {
   protected async _selectFeatures(
     geom: __esri.Geometry
   ): Promise<void> {
-    const queryFeaturePromises = this.layerViews.map(l => {
-      this._featuresCollection[l.layer.title] = [];
-      return this._queryPage(0, l, geom)
+    const queryFeaturePromises = this.layerViews.map(layerView => {
+      this._featuresCollection[layerView.layer.title] = [];
+      return queryPage(0, layerView.layer, geom, this._featuresCollection)
     });
 
     return Promise.all(queryFeaturePromises).then(response => {
@@ -557,39 +557,6 @@ export class RefineSelectionTools {
       }
       this._clear();
     });
-  }
-
-  /**
-   * Handle queries that need to be paged
-   *
-   * @param page page query number
-   * @param layerView the layer view to query
-   * @param geom the geom used for selection
-   *
-   * @returns Promise resolving when function is done
-   * @protected
-   */
-  protected async _queryPage(
-    page: number,
-    layerView: __esri.FeatureLayerView,
-    geom: __esri.Geometry
-  ): Promise<any> {
-    const num = layerView.layer.capabilities.query.maxRecordCount;
-    const query = {
-      start: page,
-      num,
-      outFields: ["*"],
-      returnGeometry: true,
-      geometry: geom
-    };
-
-    const r = await layerView.queryFeatures(query);
-    this._featuresCollection[layerView.layer.title] = this._featuresCollection[layerView.layer.title].concat(r.features);
-
-    if (r.exceededTransferLimit) {
-      return this._queryPage(page += num, layerView, geom)
-    }
-    return Promise.resolve(this._featuresCollection);
   }
 
   /**

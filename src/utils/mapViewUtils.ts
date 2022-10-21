@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { queryExtent } from "./queryUtils";
+
 /**
  * Gets the layer names from the current map
  * 
@@ -140,9 +142,7 @@ export async function goToSelection(
   mapView: __esri.MapView,
   flashFeatures: boolean = true
 ): Promise<void> {
-  const query = layerView.layer.createQuery();
-  query.objectIds = ids;
-  const result = await layerView.layer.queryExtent(query);
+  const result = await queryExtent(ids, layerView.layer);
   await mapView.goTo(result.extent);
   if (flashFeatures) {
     await flashSelection(ids, layerView);
