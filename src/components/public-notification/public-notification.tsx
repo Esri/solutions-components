@@ -832,6 +832,16 @@ export class PublicNotification {
     }
   }
 
+  /**
+   * Update selection sets when the addressee layer changes.
+   * Will remove any "refine" selection set.
+   * Will use stored search, select, and sketch geometries and any buffers to select from the new addressee layer.
+   *
+   * @param layerView The new addressee layer view to select from
+   *
+   * @returns Promise when the function has completed
+   * @protected
+   */
   protected async _updateSelectionSets(
     layerView: __esri.FeatureLayerView
   ): Promise<void> {
