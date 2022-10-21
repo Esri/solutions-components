@@ -422,9 +422,6 @@ export namespace Components {
           * A template's itemId. This is used to get the correct model from a store in the json-editor
          */
         "itemId": string;
-        /**
-          * Contains the organization based variables
-         */
         "organizationVariables": string;
         /**
           * Contains the solution based variables
@@ -1017,9 +1014,6 @@ declare namespace LocalJSX {
           * A template's itemId. This is used to get the correct model from a store in the json-editor
          */
         "itemId"?: string;
-        /**
-          * Contains the organization based variables
-         */
         "organizationVariables"?: string;
         /**
           * Contains the solution based variables

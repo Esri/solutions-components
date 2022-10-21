@@ -71,7 +71,7 @@ export class SolutionTemplateData {
     console.log("Initializing " + this.itemId + "'s " + this.instanceid + "; data size " + this.value.length); //???
   }
 
-  /**
+  /*
    * Contains the organization based variables
    */
   @Prop({ mutable: true, reflect: true }) organizationVariables = "";
@@ -97,11 +97,12 @@ export class SolutionTemplateData {
       (evt) => {
         if (this.itemId) {
           const { id, contents } = (evt as any).detail;
-          if (id === this.instanceid) {
+          const [itemId, instanceId] = id.split("|");
+          if (itemId == this.itemId && instanceId === this.instanceid) {
             if(!this._initializing && contents.length > 0) {
-              console.log("snapshot " + this.itemId + "'s " + id + " with " + contents.length + " bytes"); //???
-              const itemEdit = state.getItemInfo(this.itemId);
-              if (id === "data") {
+              console.log("snapshot " + itemId + "'s " + instanceId + " with " + contents.length + " bytes"); //???
+              const itemEdit = state.getItemInfo(itemId);
+              if (instanceId === "data") {
                 itemEdit.data = JSON.parse(contents);
               } else {
                 itemEdit.properties = JSON.parse(contents);
@@ -134,7 +135,7 @@ export class SolutionTemplateData {
               <div class="solution-data-child-container calcite-match-height">
                   <json-editor
                     class="solution-data-editor-container"
-                    instanceid={this.instanceid}
+                    instanceid={this.itemId + "|" + this.instanceid}
                     value={this.value}
                   />
               </div>
