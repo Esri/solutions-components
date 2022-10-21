@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from '@stencil/core';
-import { ERefineMode, ESelectionMode, ESelectionType } from '../../utils/interfaces';
-import { getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
-import { queryPage } from '../../utils/queryUtils';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
+import { ERefineMode, ESelectionMode, ESelectionType } from "../../utils/interfaces";
+import { getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
+import { queryPage } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
 import { loadModules } from "../../utils/loadModules";
-import RefineSelectionTools_T9n from '../../assets/t9n/refine-selection-tools/resources.json';
-import { getLocaleComponentStrings } from '../../utils/locale';
+import RefineSelectionTools_T9n from "../../assets/t9n/refine-selection-tools/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
-  tag: 'refine-selection-tools',
-  styleUrl: 'refine-selection-tools.css',
+  tag: "refine-selection-tools",
+  styleUrl: "refine-selection-tools.css",
   shadow: true,
 })
 export class RefineSelectionTools {
@@ -164,7 +164,7 @@ export class RefineSelectionTools {
    * Called each time the ids prop is changed.
    * Highlight the features based on the provided ids
    */
-  @Watch('ids')
+  @Watch("ids")
   idsWatchHandler(v: any, oldV: any): void {
     if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
       void this._highlightFeatures(v);

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import BufferTools_T9n from '../../assets/t9n/buffer-tools/resources.json';
-import { getLocaleComponentStrings } from '../../utils/locale';
+import BufferTools_T9n from "../../assets/t9n/buffer-tools/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
-  tag: 'buffer-tools',
-  styleUrl: 'buffer-tools.css',
+  tag: "buffer-tools",
+  styleUrl: "buffer-tools.css",
   shadow: true,
 })
 export class BufferTools {
@@ -116,7 +116,7 @@ export class BufferTools {
    * Buffer each of the geometries.
    *
    */
-  @Watch('geometries')
+  @Watch("geometries")
   geometriesWatchHandler(v: any, oldV: any): void {
     if (v && JSON.stringify(v) !== JSON.stringify(oldV || [])) {
       this._buffer();
@@ -148,7 +148,7 @@ export class BufferTools {
 
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
-   * 
+   *
    * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
@@ -198,10 +198,10 @@ export class BufferTools {
    */
   protected _getUnits(): VNode[] {
     const units = {
-      'feet': this._translations.feet || 'Feet',
-      'meters': this._translations.meters || 'Meters',
-      'miles': this._translations.miles || 'Miles',
-      'kilometers': this._translations.kilometers || 'Kilometers'
+      "feet": this._translations.feet || "Feet",
+      "meters": this._translations.meters || "Meters",
+      "miles": this._translations.miles || "Miles",
+      "kilometers": this._translations.kilometers || "Kilometers"
     };
     return Object.keys(units).map(u => {
       let selected = true;
@@ -287,7 +287,7 @@ export class BufferTools {
         />
         <calcite-select
           class="flex-1"
-          label='label'
+          label="label"
           onCalciteSelectChange={() => this._setUnit()}
           ref={(el) => { this._unitElement = el }}
         >

@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import { EExportType, EPageType, EWorkflowType, ISelectionSet } from '../../utils/interfaces';
-import { goToSelection, getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
+import { EExportType, EPageType, EWorkflowType, ISelectionSet } from "../../utils/interfaces";
+import { goToSelection, getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
 import { getSelectionSetQuery } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
-import NewPublicNotification_T9n from '../../assets/t9n/public-notification/resources.json';
-import { getLocaleComponentStrings } from '../../utils/locale';
+import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
 import * as utils from "../../utils/publicNotificationUtils";
 
 @Component({
-  tag: 'public-notification',
-  styleUrl: 'public-notification.css',
+  tag: "public-notification",
+  styleUrl: "public-notification.css",
   shadow: false,
 })
 export class PublicNotification {
@@ -107,7 +107,7 @@ export class PublicNotification {
   protected _downloadTools: HTMLPdfDownloadElement;
 
   /**
-   * HTMLCalciteCheckboxElement: The remove duplicates checkbox element 
+   * HTMLCalciteCheckboxElement: The remove duplicates checkbox element
    */
   protected _removeDuplicates: HTMLCalciteCheckboxElement;
 
@@ -130,7 +130,7 @@ export class PublicNotification {
   /**
    * Called each time the selectionSets prop is changed.
    */
-  @Watch('selectionSets')
+  @Watch("selectionSets")
   async selectionSetsWatchHandler(
     v: ISelectionSet[],
     oldV: ISelectionSet[]
@@ -146,7 +146,7 @@ export class PublicNotification {
   /**
    * Called each time the pageType prop is changed.
    */
-  @Watch('pageType')
+  @Watch("pageType")
   async pageTypeWatchHandler(
     pageType: EPageType,
     oldPageType: EPageType
@@ -178,7 +178,7 @@ export class PublicNotification {
   /**
    * Handle changes to the selection sets
    */
-  @Listen("selectionSetsChanged", { target: 'window' })
+  @Listen("selectionSetsChanged", { target: "window" })
   selectionSetsChanged(event: CustomEvent): void {
     this.selectionSets = [...event.detail];
   }
@@ -205,7 +205,7 @@ export class PublicNotification {
     return (
       <Host>
         <calcite-shell>
-          <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout='horizontal' slot="header">
+          <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
             {this._getActionGroup("list-check", false, EPageType.LIST, this._translations?.myLists)}
             {this._getActionGroup("test-data", !hasSelections, EPageType.REFINE, this._translations?.refineSelection)}
             {this._getActionGroup("file-pdf", !hasSelections, EPageType.PDF, this._translations?.downloadPDF)}
@@ -256,10 +256,10 @@ export class PublicNotification {
     tip: string
   ): VNode {
     return (
-      <calcite-action-group class={"action-center w-1-4"} layout='horizontal'>
+      <calcite-action-group class={"action-center w-1-4"} layout="horizontal">
         <calcite-action
           active={this.pageType === pageType}
-          alignment='center'
+          alignment="center"
           class="width-full height-full"
           compact={false}
           disabled={disabled}
@@ -353,7 +353,7 @@ export class PublicNotification {
         </div>
         <div class="padding-sides-1 height-1-1-2">
           <div class="position-left">
-            <calcite-label alignment='start' class="font-bold">{this._translations?.notifications}</calcite-label>
+            <calcite-label alignment="start" class="font-bold">{this._translations?.notifications}</calcite-label>
           </div>
           <div class="position-right">
             <calcite-input-message active class="info-blue margin-top-0" scale="m">{this._translations?.uniqueCout.replace("{{n}}", total.toString())}</calcite-input-message>
@@ -362,7 +362,7 @@ export class PublicNotification {
         {
           hasSets ? this._getSelectionSetList() : (
             <div class="info-message">
-              <calcite-input-message active class="info-blue" scale='m'>{this._translations?.noNotifications}</calcite-input-message>
+              <calcite-input-message active class="info-blue" scale="m">{this._translations?.noNotifications}</calcite-input-message>
             </div>
           )
         }
@@ -379,7 +379,7 @@ export class PublicNotification {
           <calcite-label>{this._translations?.notifications}</calcite-label>
         </div>
         <div class="info-message padding-bottom-1">
-          <calcite-input-message active class="info-blue" scale='m'>{this._translations?.noNotifications}</calcite-input-message>
+          <calcite-input-message active class="info-blue" scale="m">{this._translations?.noNotifications}</calcite-input-message>
         </div>
         {this._getNotice(this._translations?.selectLayerAndAdd, "padding-sides-1 padding-bottom-1")}
         <div class="display-flex padding-sides-1">
@@ -415,7 +415,7 @@ export class PublicNotification {
             if (cur.workflowType !== EWorkflowType.REFINE) {
               prev.push((
                 <calcite-list-item
-                  description={this._translations.selectedFeatures.replace('{{n}}', cur.selectedIds.length.toString())}
+                  description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
                   label={cur.label}
                   onClick={() => goToSelection(cur.selectedIds, cur.layerView, this.mapView)}
                 >
@@ -463,8 +463,8 @@ export class PublicNotification {
         </div>
         <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
           <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
-          <calcite-input-message active class="info-blue" scale='m'>
-            {this._translations?.selectedAddresses.replace('{{n}}', this.numSelected.toString())}
+          <calcite-input-message active class="info-blue" scale="m">
+            {this._translations?.selectedAddresses.replace("{{n}}", this.numSelected.toString())}
           </calcite-input-message>
         </div>
         {
@@ -546,7 +546,7 @@ export class PublicNotification {
           {this._getSelectionLists()}
           <div class="margin-side-1 padding-top-1 border-bottom" />
           <div class="padding-top-sides-1">
-            <calcite-label disabled={!this.downloadActive} layout='inline'>
+            <calcite-label disabled={!this.downloadActive} layout="inline">
               <calcite-checkbox disabled={!this.downloadActive} ref={(el) => { this._removeDuplicates = el }} />
               {this._translations?.removeDuplicate}
             </calcite-label>
@@ -609,7 +609,7 @@ export class PublicNotification {
         </div>
         <div class="display-flex padding-top-1-2 padding-sides-1">
           <calcite-button
-            appearance='outline'
+            appearance="outline"
             disabled={bottomDisabled}
             onClick={bottomFunc}
             width="full"
@@ -625,7 +625,7 @@ export class PublicNotification {
    * Create an informational notice
    *
    * @param message the message to display in the notice
-   * @param noticeClass any custom css for the notice (default is 'padding-1')
+   * @param noticeClass any custom css for the notice (default is "padding-1")
    *
    * @returns the notice node
    * @protected
@@ -686,7 +686,7 @@ export class PublicNotification {
             <calcite-checkbox checked={cur.download} onClick={() => { this._toggleDownload(cur.id) }} />
             <calcite-list class="list-border margin-start-1-2 w-100" id="download-list">
               <calcite-list-item
-                description={this._translations.selectedFeatures.replace('{{n}}', cur.selectedIds.length.toString())}
+                description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
                 disabled={!cur.download}
                 label={cur.label}
                 onClick={() => { this._toggleDownload(cur.id) }}

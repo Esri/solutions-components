@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import { highlightFeatures, goToSelection } from '../../utils/mapViewUtils';
+import { highlightFeatures, goToSelection } from "../../utils/mapViewUtils";
 import { getQueryGeoms, queryObjectIds } from "../../utils/queryUtils";
-import { EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode } from '../../utils/interfaces';
+import { EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode } from "../../utils/interfaces";
 import state from "../../utils/publicNotificationStore";
-import MapSelectTools_T9n from '../../assets/t9n/map-select-tools/resources.json';
-import { getLocaleComponentStrings } from '../../utils/locale';
+import MapSelectTools_T9n from "../../assets/t9n/map-select-tools/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
-  tag: 'map-select-tools',
-  styleUrl: 'map-select-tools.css',
+  tag: "map-select-tools",
+  styleUrl: "map-select-tools.css",
   shadow: false,
 })
 export class MapSelectTools {
@@ -181,7 +181,7 @@ export class MapSelectTools {
    *
    * @returns Promise when complete
    */
-  @Watch('geometries')
+  @Watch("geometries")
   async watchGeometriesHandler(
     newValue: __esri.Geometry[],
     oldValue: __esri.Geometry[]
@@ -200,7 +200,7 @@ export class MapSelectTools {
    *
    * @returns Promise when complete
    */
-  @Watch('workflowType')
+  @Watch("workflowType")
   async workflowTypeHandler(
     newValue: EWorkflowType,
     oldValue: EWorkflowType
@@ -258,30 +258,30 @@ export class MapSelectTools {
 
   /**
    * Emitted on demand when the selection set changes.
-   * 
+   *
    */
   @Event() selectionSetChange: EventEmitter<number>;
 
   /**
    * Emitted on demand when the workflow type changes.
-   * 
+   *
    */
   @Event() workflowTypeChange: EventEmitter<EWorkflowType>;
 
   /**
    * Listen to changes in the sketch graphics
-   * 
+   *
    */
-  @Listen("sketchGraphicsChange", { target: 'window' })
+  @Listen("sketchGraphicsChange", { target: "window" })
   sketchGraphicsChange(event: CustomEvent): void {
     this._updateSelection(EWorkflowType.SKETCH, event.detail, this._translations.sketch);
   }
 
   /**
    * Listen to changes in the refine graphics
-   * 
+   *
    */
-  @Listen("refineSelectionGraphicsChange", { target: 'window' })
+  @Listen("refineSelectionGraphicsChange", { target: "window" })
   refineSelectionGraphicsChange(event: CustomEvent): Promise<void> {
     const graphics = event.detail;
 
@@ -441,7 +441,7 @@ export class MapSelectTools {
    * @protected
    */
   protected _initSelectionSet(): void {
-    if (this.selectionSet) { 
+    if (this.selectionSet) {
       this.searchTerm = this.selectionSet?.searchResult?.name;
       this.workflowType = this.selectionSet?.workflowType;
       this._searchResult = this.selectionSet?.searchResult;
@@ -475,11 +475,11 @@ export class MapSelectTools {
 
       this._searchWidget = new this.Search(searchOptions);
 
-      this._searchWidget.on('search-clear', () => {
+      this._searchWidget.on("search-clear", () => {
         void this._clearResults(false);
       });
 
-      this._searchWidget.on('select-result', (searchResults) => {
+      this._searchWidget.on("select-result", (searchResults) => {
         void this._clearResults(false);
         if (searchResults.result) {
           this._searchResult = searchResults.result;
@@ -561,10 +561,10 @@ export class MapSelectTools {
     // Add geometries used for selecting features as graphics
     this._drawTools.graphics = this.geometries.map(geom => {
       const props = {
-        'geometry': geom,
-        'symbol': geom.type === 'point' ?
-          this._drawTools?.pointSymbol : geom.type === 'polyline' ?
-          this._drawTools?.polylineSymbol : geom.type === 'polygon' ?
+        "geometry": geom,
+        "symbol": geom.type === "point" ?
+          this._drawTools?.pointSymbol : geom.type === "polyline" ?
+          this._drawTools?.polylineSymbol : geom.type === "polygon" ?
           this._drawTools?.polygonSymbol : undefined
       };
       return new this.Graphic(props)

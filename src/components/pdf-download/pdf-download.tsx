@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Method, Prop, State, VNode } from '@stencil/core';
-import * as pdfUtils from '../../assets/data/labelFormats.json';
-import '@esri/calcite-components';
-import PdfDownload_T9n from '../../assets/t9n/pdf-download/resources.json';
-import { getLocaleComponentStrings } from '../../utils/locale';
-import { exportCSV } from '../../utils/csvUtils';
+import { Component, Element, Host, h, Method, Prop, State, VNode } from "@stencil/core";
+import * as pdfUtils from "../../assets/data/labelFormats.json";
+import "@esri/calcite-components";
+import PdfDownload_T9n from "../../assets/t9n/pdf-download/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
+import { exportCSV } from "../../utils/csvUtils";
 
 @Component({
-  tag: 'pdf-download',
-  styleUrl: 'pdf-download.css',
+  tag: "pdf-download",
+  styleUrl: "pdf-download.css",
   shadow: true,
 })
 export class PdfDownload {
