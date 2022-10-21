@@ -193,7 +193,8 @@ export class PublicNotification {
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
   async componentWillLoad(): Promise<void> {
-    return this._getTranslations();
+    await this._getTranslations();
+    await this._initModules();
   }
 
   /**
@@ -834,9 +835,11 @@ export class PublicNotification {
   protected async _updateSelectionSets(
     layerView: __esri.FeatureLayerView
   ): Promise<void> {
-    // TODO need to store graphics drawn by refine and sketch to make this work
+    const _selectionSets = this.selectionSets.filter(
+      selectionSet => selectionSet.workflowType !== EWorkflowType.REFINE
+    );
     const oidDefs = [];
-    this.selectionSets.forEach(selectionSet => {
+    _selectionSets.forEach(selectionSet => {
       selectionSet.layerView = layerView;
       selectionSet.selectedIds = [];
       oidDefs.push(getSelectionSetQuery(selectionSet, this._geometryEngine));
@@ -844,11 +847,11 @@ export class PublicNotification {
 
     Promise.all(oidDefs).then(async results => {
       results.forEach((result, i) => {
-        this.selectionSets[i].selectedIds = result;
+        _selectionSets[i].selectedIds = result;
       });
       await this._highlightFeatures();
       this.selectionSets = [
-        ...this.selectionSets
+        ..._selectionSets
       ];
     });
   }

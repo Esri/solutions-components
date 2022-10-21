@@ -131,107 +131,28 @@ export function getSelectionSetQuery(
   geometryEngine: __esri.geometryEngine
 ) {
   let q = Promise.resolve([]);
-  switch (selectionSet.workflowType) {
-    case EWorkflowType.REFINE:
-      q = _getRefineQuery(selectionSet);
-      break;
-    case EWorkflowType.SEARCH:
-      q = _getSearchQuery(selectionSet);
-      break;
-    case EWorkflowType.SELECT:
-      q = _getSelectQuery(selectionSet);
-      break;
-    case EWorkflowType.SKETCH:
-      q = _getSketchQuery(selectionSet, geometryEngine);
-      break;
+  if (selectionSet.workflowType !== EWorkflowType.REFINE) {
+    if (!selectionSet.buffer) {
+      const queryGeoms = getQueryGeoms(
+        selectionSet.geometries,
+        geometryEngine
+      );
+      q = queryObjectIds(
+        queryGeoms,
+        selectionSet.layerView.layer
+      );
+    } else {
+      // buffer is a single unioned geom
+      q = queryObjectIds(
+        [selectionSet.buffer],
+        selectionSet.layerView.layer
+      );
+    }
   }
   return q;
 }
 
-function _getSketchQuery(
-  selectionSet: ISelectionSet,
-  geometryEngine: __esri.geometryEngine
-) {
-  if (!selectionSet.buffer) {
-    const queryGeoms = getQueryGeoms(
-      selectionSet.geometries,
-      geometryEngine
-    );
-    return queryObjectIds(
-      queryGeoms,
-      selectionSet.layerView.layer
-    );
-  } else {
-    // buffer is a single unioned geom
-    return queryObjectIds(
-      [selectionSet.buffer],
-      selectionSet.layerView.layer
-    );
-  }
-}
 
-function _getSelectQuery(
-  selectionSet: ISelectionSet
-) {
-  if (!selectionSet.buffer) {
-    const queryGeoms = getQueryGeoms(
-      selectionSet.geometries,
-      this._geometryEngine
-    );
-    return queryObjectIds(
-      queryGeoms,
-      selectionSet.layerView.layer
-    );
-  } else {
-    // buffer is a single unioned geom
-    return queryObjectIds(
-      [selectionSet.buffer],
-      selectionSet.layerView.layer
-    );
-  }
-}
-
-function _getSearchQuery(
-  selectionSet: ISelectionSet
-) {
-  if (!selectionSet.buffer) {
-    const queryGeoms = getQueryGeoms(
-      selectionSet.geometries,
-      this._geometryEngine
-    );
-    return queryObjectIds(
-      queryGeoms,
-      selectionSet.layerView.layer
-    );
-  } else {
-    // buffer is a single unioned geom
-    return queryObjectIds(
-      [selectionSet.buffer],
-      selectionSet.layerView.layer
-    );
-  }
-}
-
-function _getRefineQuery(
-  selectionSet: ISelectionSet
-) {
-  if (!selectionSet.buffer) {
-    const queryGeoms = getQueryGeoms(
-      selectionSet.geometries,
-      this._geometryEngine
-    );
-    return queryObjectIds(
-      queryGeoms,
-      selectionSet.layerView.layer
-    );
-  } else {
-    // buffer is a single unioned geom
-    return queryObjectIds(
-      [selectionSet.buffer],
-      selectionSet.layerView.layer
-    );
-  }
-}
 
 /**
  * Query the layer
