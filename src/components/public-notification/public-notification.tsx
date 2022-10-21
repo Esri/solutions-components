@@ -105,7 +105,7 @@ export class PublicNotification {
   protected _downloadTools: HTMLPdfDownloadElement;
 
   /**
-   * HTMLCalciteCheckboxElement: The remove duplicates checkbox element 
+   * HTMLCalciteCheckboxElement: The remove duplicates checkbox element
    */
   protected _removeDuplicates: HTMLCalciteCheckboxElement;
 
@@ -143,7 +143,7 @@ export class PublicNotification {
   async pageTypeWatchHandler(
     pageType: EPageType,
     oldPageType: EPageType
-  ) {
+  ): Promise<void> {
     this._clearHighlight();
 
     if (oldPageType === EPageType.SELECT || oldPageType === EPageType.REFINE) {
@@ -657,13 +657,13 @@ export class PublicNotification {
         }
         prev.push((
           <div class="display-flex padding-sides-1 padding-bottom-1">
-            <calcite-checkbox checked={cur.download} onClick={() => { this._toggleDownload(cur.id) }} />
+            <calcite-checkbox checked={cur.download} onClick={() => { void this._toggleDownload(cur.id) }} />
             <calcite-list class="list-border margin-start-1-2 w-100" id="download-list">
               <calcite-list-item
                 description={this._translations.selectedFeatures.replace('{{n}}', cur.selectedIds.length.toString())}
                 disabled={!cur.download}
                 label={cur.label}
-                onClick={() => { this._toggleDownload(cur.id) }}
+                onClick={() => { void this._toggleDownload(cur.id) }}
                />
             </calcite-list>
           </div>

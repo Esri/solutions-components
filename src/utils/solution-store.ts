@@ -42,7 +42,6 @@ import {
   UserSession
 } from '@esri/solution-common';
 
-
 //--------------------------------------------------------------------------------------------------------------------//
 //
 // Loads a solution's definition and shares it as state across the solution configuration package components.
@@ -586,7 +585,8 @@ class SolutionStore
     templates.forEach((t) => {
       // Run through the resourceFilePaths for the item seeking modifications to be made to the solution item's
       // collection of resources; queue them for batching
-      t.resourceFilePaths.forEach(async (path: IResourcePath) => {
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      t.resourceFilePaths.forEach(async (path: IResourcePath): Promise<void> => {
         const storageName = this._getResourceStorageName(t.itemId, path);
 
         switch (path.updateType) {
@@ -619,6 +619,7 @@ class SolutionStore
             break;
 
         }
+        return Promise.resolve();
       });
 
       delete t.resourceFilePaths;

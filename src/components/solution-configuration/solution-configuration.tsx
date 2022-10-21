@@ -319,7 +319,7 @@ export class SolutionConfiguration {
   /**
    * Resets internal variables.
    */
-  protected _reset() {
+  protected _reset(): void {
     this._currentEditItemId = "";
     this._organizationVariables = "";
     this._solutionVariables = "";
