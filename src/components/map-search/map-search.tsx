@@ -54,7 +54,7 @@ export class MapSearch {
    * string: Text entered by the end user.
    * Used to search against the locator.
    */
-  @State() searchTerm: string;
+  @State() _searchTerm: string;
 
   /**
    * Contains the translations for this component.
@@ -191,7 +191,7 @@ export class MapSearch {
       const searchOptions: __esri.widgetsSearchProperties = {
         view: this.mapView,
         container: this._searchElement,
-        searchTerm: this.searchTerm
+        searchTerm: this._searchTerm
       };
 
       this._searchWidget = new this.Search(searchOptions);

@@ -45,6 +45,11 @@ export class MapDrawTools {
   @Prop() active = false;
 
   /**
+   * boolean: Optionally draw a border around the draw tools
+   */
+  @Prop() border = false;
+
+  /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop({ mutable: true }) mapView: __esri.MapView;
@@ -69,11 +74,6 @@ export class MapDrawTools {
    */
   @Prop({ mutable: true }) graphics: __esri.Graphic[] = [];
 
-  /**
-   * boolean: Optionally draw a border around the draw tools
-   */
-  @Prop() border = false;
-
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -97,11 +97,6 @@ export class MapDrawTools {
   protected Sketch: typeof __esri.Sketch;
 
   /**
-   * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
-   */
-  protected _sketchWidget: __esri.Sketch;
-
-  /**
    * The container element for the sketch widget
    */
   protected _sketchElement: HTMLElement;
@@ -110,6 +105,11 @@ export class MapDrawTools {
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
    */
   protected _sketchGraphicsLayer: __esri.GraphicsLayer;
+
+  /**
+   * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
+   */
+  protected _sketchWidget: __esri.Sketch;
 
   //--------------------------------------------------------------------------
   //
@@ -123,11 +123,9 @@ export class MapDrawTools {
    */
   @Watch("graphics")
   graphicsWatchHandler(v: any, oldV: any): void {
-    if (v && JSON.stringify(v) !== JSON.stringify(oldV || [])) {
-      if (v.length > 0) {
-        this._sketchGraphicsLayer.removeAll();
-        this._sketchGraphicsLayer.addMany(v);
-      }
+    if (v && v.length > 0 && JSON.stringify(v) !== JSON.stringify(oldV || [])) {
+      this._sketchGraphicsLayer.removeAll();
+      this._sketchGraphicsLayer.addMany(v);
     }
   }
 

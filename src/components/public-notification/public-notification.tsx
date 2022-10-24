@@ -44,14 +44,14 @@ export class PublicNotification {
   //--------------------------------------------------------------------------
 
   /**
-   * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-   */
-  @Prop() mapView: __esri.MapView;
-
-  /**
    * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
    */
   @Prop() addresseeLayer: __esri.FeatureLayerView;
+
+  /**
+   * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   */
+  @Prop() mapView: __esri.MapView;
 
   //--------------------------------------------------------------------------
   //
@@ -63,12 +63,32 @@ export class PublicNotification {
    * boolean: Enabled when we have 1 or more selection sets that is enabled in the download pages.
    * By default all selection sets are enabled for download when they are first created.
    */
-  @State() downloadActive = true;
+  @State() _downloadActive = true;
+
+  /**
+   * number: The number of selected features
+   */
+  @State() _numSelected = 0;
+
+  /**
+   * utils/interfaces/EPageType: LIST | SELECT | REFINE | PDF | CSV
+   */
+  @State() _pageType: EPageType = EPageType.LIST;
+
+  /**
+   * boolean: Save is enabled when we have 1 or more selected features
+   */
+  @State() _saveEnabled = false;
+
+  /**
+   * utils/interfaces/ISelectionSet: An array of user defined selection sets
+   */
+  @State() _selectionSets: ISelectionSet[] = [];
 
   /**
    * utils/interfaces/EWorkflowType: SEARCH | SELECT | SKETCH
    */
-  @State() selectionWorkflowType = EWorkflowType.SEARCH;
+  @State() _selectionWorkflowType = EWorkflowType.SEARCH;
 
   /**
    * Contains the translations for this component.
@@ -77,29 +97,9 @@ export class PublicNotification {
   @State() protected _translations: typeof NewPublicNotification_T9n;
 
   /**
-   * boolean: Save is enabled when we have 1 or more selected features
+   * ISelectionSet: The current active selection set
    */
-  @State() saveEnabled = false;
-
-  /**
-   * utils/interfaces/EPageType: LIST | SELECT | REFINE | PDF | CSV
-   */
-  @State() pageType: EPageType = EPageType.LIST;
-
-  /**
-   * utils/interfaces/ISelectionSet: An array of user defined selection sets
-   */
-  @State() selectionSets: ISelectionSet[] = [];
-
-  /**
-   * number: The number of selected features
-   */
-  @State() numSelected = 0;
-
-  /**
-   * HTMLMapSelectToolsElement: The select tools element
-   */
-  protected _selectTools: HTMLMapSelectToolsElement;
+  protected _activeSelection: ISelectionSet;
 
   /**
    * HTMLPdfDownloadElement: The pdf tools element
@@ -107,19 +107,19 @@ export class PublicNotification {
   protected _downloadTools: HTMLPdfDownloadElement;
 
   /**
+   * esri/geometry/geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
+   */
+  protected _geometryEngine: __esri.geometryEngine;
+
+  /**
    * HTMLCalciteCheckboxElement: The remove duplicates checkbox element
    */
   protected _removeDuplicates: HTMLCalciteCheckboxElement;
 
   /**
-   * ISelectionSet: The current active selection set
+   * HTMLMapSelectToolsElement: The select tools element
    */
-  protected _activeSelection: ISelectionSet;
-
-  /**
-   * esri/geometry/geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
-   */
-  protected _geometryEngine: __esri.geometryEngine;
+  protected _selectTools: HTMLMapSelectToolsElement;
 
   //--------------------------------------------------------------------------
   //
@@ -130,7 +130,7 @@ export class PublicNotification {
   /**
    * Called each time the selectionSets prop is changed.
    */
-  @Watch("selectionSets")
+  @Watch("_selectionSets")
   async selectionSetsWatchHandler(
     v: ISelectionSet[],
     oldV: ISelectionSet[]
@@ -138,7 +138,7 @@ export class PublicNotification {
     if (v && v !== oldV && v.length > 0) {
       const nonRefineSets = v.filter(ss => ss.workflowType !== EWorkflowType.REFINE)
       if (nonRefineSets.length === 0) {
-        this.selectionSets = [];
+        this._selectionSets = [];
       }
     }
   }
@@ -146,7 +146,7 @@ export class PublicNotification {
   /**
    * Called each time the pageType prop is changed.
    */
-  @Watch("pageType")
+  @Watch("_pageType")
   async pageTypeWatchHandler(
     pageType: EPageType,
     oldPageType: EPageType
@@ -180,7 +180,7 @@ export class PublicNotification {
    */
   @Listen("selectionSetsChanged", { target: "window" })
   selectionSetsChanged(event: CustomEvent): void {
-    this.selectionSets = [...event.detail];
+    this._selectionSets = [...event.detail];
   }
 
   //--------------------------------------------------------------------------
@@ -201,7 +201,7 @@ export class PublicNotification {
    * Renders the component.
    */
   render():void {
-    const hasSelections = this.selectionSets.length > 0;
+    const hasSelections = this._selectionSets.length > 0;
     return (
       <Host>
         <calcite-shell>
@@ -211,7 +211,7 @@ export class PublicNotification {
             {this._getActionGroup("file-pdf", !hasSelections, EPageType.PDF, this._translations?.downloadPDF)}
             {this._getActionGroup("file-csv", !hasSelections, EPageType.CSV, this._translations?.downloadCSV)}
           </calcite-action-bar>
-          {this._getPage(this.pageType)}
+          {this._getPage(this._pageType)}
         </calcite-shell>
       </Host>
     );
@@ -258,7 +258,7 @@ export class PublicNotification {
     return (
       <calcite-action-group class={"action-center w-1-4"} layout="horizontal">
         <calcite-action
-          active={this.pageType === pageType}
+          active={this._pageType === pageType}
           alignment="center"
           class="width-full height-full"
           compact={false}
@@ -285,7 +285,7 @@ export class PublicNotification {
   protected _setPageType(
     pageType: EPageType
   ): void {
-    this.pageType = pageType;
+    this._pageType = pageType;
   }
 
   /**
@@ -333,8 +333,8 @@ export class PublicNotification {
    * @protected
    */
   protected _getListPage(): VNode {
-    const hasSets = this.selectionSets.filter(ss => ss.workflowType !== EWorkflowType.REFINE).length > 0;
-    const total = utils.getTotal(this.selectionSets);
+    const hasSets = this._selectionSets.filter(ss => ss.workflowType !== EWorkflowType.REFINE).length > 0;
+    const total = utils.getTotal(this._selectionSets);
     return hasSets ? (
       <calcite-panel>
         <div class="padding-top-sides-1">
@@ -411,7 +411,7 @@ export class PublicNotification {
         {
           // REFINE is handled seperately from the core selection sets
           // You can only access after clicking the refine action
-          this.selectionSets.reduce((prev, cur, i) => {
+          this._selectionSets.reduce((prev, cur, i) => {
             if (cur.workflowType !== EWorkflowType.REFINE) {
               prev.push((
                 <calcite-list-item
@@ -442,8 +442,8 @@ export class PublicNotification {
     const selectTip = `${this._translations?.selectLayerTip} ${this._translations?.optionalSearchDistance}`;
     const sketchTip = `${this._translations?.selectSketchTip} ${this._translations?.optionalSearchDistance}`;
 
-    const noticeText = this.selectionWorkflowType === EWorkflowType.SELECT ? selectTip :
-      this.selectionWorkflowType === EWorkflowType.SKETCH ? sketchTip : searchTip;
+    const noticeText = this._selectionWorkflowType === EWorkflowType.SELECT ? selectTip :
+      this._selectionWorkflowType === EWorkflowType.SKETCH ? sketchTip : searchTip;
 
     return (
       <calcite-panel>
@@ -464,13 +464,13 @@ export class PublicNotification {
         <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
           <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
           <calcite-input-message active class="info-blue" scale="m">
-            {this._translations?.selectedAddresses.replace("{{n}}", this.numSelected.toString())}
+            {this._translations?.selectedAddresses.replace("{{n}}", this._numSelected.toString())}
           </calcite-input-message>
         </div>
         {
           this._getPageNavButtons(
             this._translations?.done,
-            this.numSelected === 0,
+            this._numSelected === 0,
             (): void => { void this._saveSelection() },
             this._translations?.cancel,
             false,
@@ -495,7 +495,7 @@ export class PublicNotification {
         <refine-selection
           addresseeLayer={this.addresseeLayer}
           mapView={this.mapView}
-          selectionSets={this.selectionSets}
+          selectionSets={this._selectionSets}
         />
       </calcite-panel>
     );
@@ -546,16 +546,16 @@ export class PublicNotification {
           {this._getSelectionLists()}
           <div class="margin-side-1 padding-top-1 border-bottom" />
           <div class="padding-top-sides-1">
-            <calcite-label disabled={!this.downloadActive} layout="inline">
-              <calcite-checkbox disabled={!this.downloadActive} ref={(el) => { this._removeDuplicates = el }} />
+            <calcite-label disabled={!this._downloadActive} layout="inline">
+              <calcite-checkbox disabled={!this._downloadActive} ref={(el) => { this._removeDuplicates = el }} />
               {this._translations?.removeDuplicate}
             </calcite-label>
           </div>
           <div class={isPdf ? "" : "display-none"}>
-            {this._getLabel(this._translations?.selectPDFLabelOption, false, !this.downloadActive)}
+            {this._getLabel(this._translations?.selectPDFLabelOption, false, !this._downloadActive)}
             <div class={"padding-sides-1"}>
               <pdf-download
-                disabled={!this.downloadActive}
+                disabled={!this._downloadActive}
                 layerView={this.addresseeLayer}
                 ref={(el) => { this._downloadTools = el }}
               />
@@ -563,7 +563,7 @@ export class PublicNotification {
           </div>
           <div class="padding-1 display-flex">
             <calcite-button
-              disabled={!this.downloadActive}
+              disabled={!this._downloadActive}
               onClick={isPdf ? () => this._downloadPDF() : () => this._downloadCSV()}
               width="full"
             >
@@ -676,10 +676,10 @@ export class PublicNotification {
    * @protected
    */
   protected _getSelectionLists(): VNode {
-    return this.selectionSets.reduce((prev, cur) => {
+    return this._selectionSets.reduce((prev, cur) => {
       if (cur.workflowType !== EWorkflowType.REFINE) {
-        if (!this.downloadActive && cur.download) {
-          this.downloadActive = true;
+        if (!this._downloadActive && cur.download) {
+          this._downloadActive = true;
         }
         prev.push((
           <div class="display-flex padding-sides-1 padding-bottom-1">
@@ -710,12 +710,12 @@ export class PublicNotification {
     id: number
   ): Promise<void> {
     let isActive = false;
-    this.selectionSets = this.selectionSets.map(ss => {
+    this._selectionSets = this._selectionSets.map(ss => {
       ss.download = ss.id === id ? !ss.download : ss.download;
       isActive = ss.download ? true : isActive;
       return ss;
     });
-    this.downloadActive = isActive;
+    this._downloadActive = isActive;
     await this._highlightFeatures();
   }
 
@@ -746,7 +746,7 @@ export class PublicNotification {
    * @protected
    */
   protected _getDownloadSelectionSets(): ISelectionSet[] {
-    return this.selectionSets.filter(ss => {
+    return this._selectionSets.filter(ss => {
       return ss.download || ss.workflowType === EWorkflowType.REFINE;
     });
   }
@@ -759,7 +759,7 @@ export class PublicNotification {
   protected _updateForWorkflowType(
     evt: CustomEvent
   ): void {
-    this.selectionWorkflowType = evt.detail;
+    this._selectionWorkflowType = evt.detail;
   }
 
   /**
@@ -801,8 +801,8 @@ export class PublicNotification {
    * @protected
    */
   protected _updateForSelection(evt: CustomEvent): void {
-    this.numSelected = evt.detail;
-    this.saveEnabled = this.numSelected > 0;
+    this._numSelected = evt.detail;
+    this._saveEnabled = this._numSelected > 0;
   }
 
   /**
@@ -845,7 +845,7 @@ export class PublicNotification {
   protected async _updateSelectionSets(
     layerView: __esri.FeatureLayerView
   ): Promise<void> {
-    const _selectionSets = this.selectionSets.filter(
+    const _selectionSets = this._selectionSets.filter(
       selectionSet => selectionSet.workflowType !== EWorkflowType.REFINE
     );
     const oidDefs = [];
@@ -860,7 +860,7 @@ export class PublicNotification {
         _selectionSets[i].selectedIds = result;
       });
       await this._highlightFeatures();
-      this.selectionSets = [
+      this._selectionSets = [
         ..._selectionSets
       ];
     });
@@ -876,10 +876,10 @@ export class PublicNotification {
     const results = await this._selectTools?.getSelection();
     const isUpdate = this._selectTools?.isUpdate;
 
-    this.selectionSets = isUpdate ? this.selectionSets.map(ss => {
+    this._selectionSets = isUpdate ? this._selectionSets.map(ss => {
         return ss.id === results.id ? results : ss;
       }) : [
-        ...this.selectionSets,
+        ...this._selectionSets,
         results
       ];
     return this._home();
@@ -893,7 +893,7 @@ export class PublicNotification {
    */
   protected async _clearSelection(): Promise<void> {
     await this._selectTools?.clearSelection();
-    this.numSelected = 0;
+    this._numSelected = 0;
     this._activeSelection = undefined;
   }
 
@@ -909,7 +909,7 @@ export class PublicNotification {
     evt: CustomEvent
   ): Promise<void> {
     evt.stopPropagation();
-    this.selectionSets = this.selectionSets.filter((ss, i) => {
+    this._selectionSets = this._selectionSets.filter((ss, i) => {
       if (i !== index) {
         return ss;
       }
@@ -928,7 +928,7 @@ export class PublicNotification {
   ): void {
     evt.stopPropagation();
     this._activeSelection = selectionSet;
-    this.pageType = EPageType.SELECT;
+    this._pageType = EPageType.SELECT;
   }
 
   /**
@@ -938,7 +938,7 @@ export class PublicNotification {
    */
   protected async _highlightFeatures(): Promise<void> {
     this._clearHighlight();
-    const ids = utils.getSelectionIds(this.selectionSets);
+    const ids = utils.getSelectionIds(this._selectionSets);
     if (ids.length > 0) {
       state.highlightHandle = await highlightFeatures(
         ids,

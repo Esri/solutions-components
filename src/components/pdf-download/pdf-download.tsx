@@ -41,14 +41,14 @@ export class PdfDownload {
   //--------------------------------------------------------------------------
 
   /**
-   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-   */
-  @Prop() layerView: __esri.FeatureLayerView;
-
-  /**
    * boolean: Controls the enabled/disabled state of download
    */
   @Prop() disabled = true;
+
+  /**
+   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   */
+  @Prop() layerView: __esri.FeatureLayerView;
 
   //--------------------------------------------------------------------------
   //
@@ -57,15 +57,15 @@ export class PdfDownload {
   //--------------------------------------------------------------------------
 
   /**
-   * HTMLCalciteSelectElement: The html element for selecting buffer unit
-   */
-  protected _labelInfoElement: HTMLCalciteSelectElement;
-
-  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
   @State() protected _translations: typeof PdfDownload_T9n;
+
+  /**
+   * HTMLCalciteSelectElement: The html element for selecting buffer unit
+   */
+  protected _labelInfoElement: HTMLCalciteSelectElement;
 
   //--------------------------------------------------------------------------
   //

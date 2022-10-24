@@ -39,14 +39,19 @@ export class MapLayerPicker {
   //--------------------------------------------------------------------------
 
   /**
+   * string[]: list of layer names from the map
+   */
+  @Prop({ mutable: true }) layerNames: string[] = [];
+
+  /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
 
   /**
-   * string[]: list of layer names from the map
+   * string[]: list of layers that have been selected by the end user
    */
-  @Prop({ mutable: true }) layerNames: string[] = [];
+  @Prop({ mutable: true }) selectedLayers: string[] = [];
 
   /**
    * SelectionMode: "single" | "multi"
@@ -54,11 +59,6 @@ export class MapLayerPicker {
    * Should the component support selection against a single layer or multiple layers.
    */
   @Prop({ mutable: true, reflect: true }) selectionMode: SelectionMode = "single";
-
-  /**
-   * string[]: list of layers that have been selected by the end user
-   */
-  @Prop({ mutable: true }) selectedLayers: string[] = [];
 
   //--------------------------------------------------------------------------
   //

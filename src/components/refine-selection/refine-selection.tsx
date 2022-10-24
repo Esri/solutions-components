@@ -46,6 +46,12 @@ export class RefineSelection {
   //--------------------------------------------------------------------------
 
   /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() protected _translations: typeof RefineSelection_T9n;
+
+  /**
    * boolean: Indicates if any new graphics should be added or removed
    */
   protected _addEnabled = true;
@@ -54,12 +60,6 @@ export class RefineSelection {
    * HTMLRefineSelectionToolsElement: The html element for the refine selection tools
    */
   protected _refineTools: HTMLRefineSelectionToolsElement;
-
-  /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-  @State() protected _translations: typeof RefineSelection_T9n;
 
   //--------------------------------------------------------------------------
   //
