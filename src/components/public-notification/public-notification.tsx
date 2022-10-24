@@ -346,8 +346,8 @@ export class PublicNotification {
             <map-layer-picker
               mapView={this.mapView}
               onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
-              selectionMode={"single"}
               selectedLayers={this.addresseeLayer ? [this.addresseeLayer?.layer.title] : []}
+              selectionMode={"single"}
             />
           </calcite-label>
         </div>
@@ -387,8 +387,8 @@ export class PublicNotification {
             <map-layer-picker
               mapView={this.mapView}
               onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
-              selectionMode={"single"}
               selectedLayers={this.addresseeLayer ? [this.addresseeLayer?.layer.title] : []}
+              selectionMode={"single"}
             />
           </calcite-label>
         </div>
@@ -855,7 +855,7 @@ export class PublicNotification {
       oidDefs.push(getSelectionSetQuery(selectionSet, this._geometryEngine));
     });
 
-    Promise.all(oidDefs).then(async results => {
+    return Promise.all(oidDefs).then(async (results): Promise<void> => {
       results.forEach((result, i) => {
         _selectionSets[i].selectedIds = result;
       });

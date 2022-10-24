@@ -140,7 +140,7 @@ export async function goToSelection(
   ids: number[],
   layerView: __esri.FeatureLayerView,
   mapView: __esri.MapView,
-  flashFeatures: boolean = true
+  flashFeatures = true
 ): Promise<void> {
   const result = await queryExtent(ids, layerView.layer);
   await mapView.goTo(result.extent);

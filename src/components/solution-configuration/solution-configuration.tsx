@@ -217,8 +217,11 @@ export class SolutionConfiguration {
   @State() protected _treeOpen = true;
 
   protected _solutionStoreHasChanges = false;
+
   protected _solutionEditorHasChanges = false;
+
   protected _solutionEditorHasErrors = false;
+
   protected _canSave = false;
 
   //--------------------------------------------------------------------------
