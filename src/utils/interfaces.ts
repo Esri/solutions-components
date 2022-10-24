@@ -274,7 +274,7 @@ export interface IWkidDescription {
 export interface IResourcePath extends IDeployFileCopyPath {
   blob?: any; // This will only be set when a new file is uploaded (add or update)
   sourceFileName?: string; // This will only be set when a file is being updated
-  updateType: EUpdateType
+  updateType: EUpdateType;
 }
 
 /**
@@ -301,14 +301,19 @@ export interface ISelectionSet {
   download: boolean;
   unit: __esri.LinearUnits;
   label: string;
-  selectedIds: number[],
-  layerView: __esri.FeatureLayerView,
-  geometries: __esri.Geometry[],
-  refineSelectLayers: __esri.FeatureLayerView[],
-  refineIds: IRefineIds
+  selectedIds: number[];
+  layerView: __esri.FeatureLayerView;
+  geometries: __esri.Geometry[];
+  refineSelectLayers: __esri.FeatureLayerView[];
+  refineIds: IRefineIds;
 }
 
 export interface IRefineIds {
-  addIds: number[],
-  removeIds: number[]
+  addIds: number[];
+  removeIds: number[];
+}
+
+export interface IQueryExtentResponse {
+  count: number;
+  extent: __esri.Extent;
 }

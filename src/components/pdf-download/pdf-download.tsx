@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Method, Prop, State, VNode } from '@stencil/core';
-import * as pdfUtils from '../../assets/data/labelFormats.json';
-import '@esri/calcite-components';
-import PdfDownload_T9n from '../../assets/t9n/pdf-download/resources.json';
-import { getLocaleComponentStrings } from '../../utils/locale';
-import { exportCSV } from '../../utils/csvUtils';
+import { Component, Element, Host, h, Method, Prop, State, VNode } from "@stencil/core";
+import * as pdfUtils from "../../assets/data/labelFormats.json";
+import "@esri/calcite-components";
+import PdfDownload_T9n from "../../assets/t9n/pdf-download/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
+import { exportCSV } from "../../utils/csvUtils";
 
 @Component({
-  tag: 'pdf-download',
-  styleUrl: 'pdf-download.css',
+  tag: "pdf-download",
+  styleUrl: "pdf-download.css",
   shadow: true,
 })
 export class PdfDownload {
@@ -41,14 +41,14 @@ export class PdfDownload {
   //--------------------------------------------------------------------------
 
   /**
-   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-   */
-  @Prop() layerView: __esri.FeatureLayerView;
-
-  /**
    * boolean: Controls the enabled/disabled state of download
    */
   @Prop() disabled = true;
+
+  /**
+   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   */
+  @Prop() layerView: __esri.FeatureLayerView;
 
   //--------------------------------------------------------------------------
   //
@@ -57,15 +57,15 @@ export class PdfDownload {
   //--------------------------------------------------------------------------
 
   /**
-   * HTMLCalciteSelectElement: The html element for selecting buffer unit
-   */
-  protected _labelInfoElement: HTMLCalciteSelectElement;
-
-  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
   @State() protected _translations: typeof PdfDownload_T9n;
+
+  /**
+   * HTMLCalciteSelectElement: The html element for selecting buffer unit
+   */
+  protected _labelInfoElement: HTMLCalciteSelectElement;
 
   //--------------------------------------------------------------------------
   //

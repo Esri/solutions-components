@@ -155,25 +155,10 @@ export namespace Components {
          */
         "geometries": __esri.Geometry[];
         /**
-          * Fetch the selection type
-          * @returns Promise with the selection type
-         */
-        "getSelectType": () => Promise<EWorkflowType>;
-        /**
-          * Fetch the currently selected ids
-          * @returns Promise with an array of the selected ids
-         */
-        "getSelectedIds": () => Promise<number[]>;
-        /**
           * Get the new selection set
           * @returns Promise with the new selection set
          */
         "getSelection": () => Promise<ISelectionSet>;
-        /**
-          * Fetch the selection label
-          * @returns Promise with the selection label
-         */
-        "getSelectionLabel": () => Promise<string>;
         /**
           * boolean: When true a new label is not generated for the stored selection set
          */

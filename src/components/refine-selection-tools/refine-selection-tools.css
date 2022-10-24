@@ -82,4 +82,5 @@ html[dir="rtl"] .main-label {
   flex-flow: row nowrap;
   padding: 0 7px;
   margin: 6px 0;
+  border-right: 1px solid rgba(110,110,110,.3);
 }

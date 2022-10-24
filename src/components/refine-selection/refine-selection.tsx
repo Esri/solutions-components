@@ -1,12 +1,12 @@
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode } from '@stencil/core';
-import { ESelectionMode, EWorkflowType, ISelectionSet } from '../../utils/interfaces';
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode } from "@stencil/core";
+import { ESelectionMode, EWorkflowType, ISelectionSet } from "../../utils/interfaces";
 import * as utils from "../../utils/publicNotificationUtils";
-import RefineSelection_T9n from '../../assets/t9n/refine-selection/resources.json';
-import { getLocaleComponentStrings } from '../../utils/locale';
+import RefineSelection_T9n from "../../assets/t9n/refine-selection/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
-  tag: 'refine-selection',
-  styleUrl: 'refine-selection.css',
+  tag: "refine-selection",
+  styleUrl: "refine-selection.css",
   shadow: false,
 })
 export class RefineSelection {
@@ -46,7 +46,13 @@ export class RefineSelection {
   //--------------------------------------------------------------------------
 
   /**
-   * boolean: Indicates if any new graphics should be added or removed 
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() protected _translations: typeof RefineSelection_T9n;
+
+  /**
+   * boolean: Indicates if any new graphics should be added or removed
    */
   protected _addEnabled = true;
 
@@ -54,12 +60,6 @@ export class RefineSelection {
    * HTMLRefineSelectionToolsElement: The html element for the refine selection tools
    */
   protected _refineTools: HTMLRefineSelectionToolsElement;
-
-  /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-  @State() protected _translations: typeof RefineSelection_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -89,7 +89,7 @@ export class RefineSelection {
    * Handles changes to refine selection ids.
    *
    */
-  @Listen("refineSelectionIdsChange", { target: 'window' })
+  @Listen("refineSelectionIdsChange", { target: "window" })
   refineSelectionIdsChange(event: CustomEvent): void {
     const addIds = event.detail?.addIds || [];
     const removeIds = event.detail?.removeIds || [];
@@ -205,19 +205,19 @@ export class RefineSelection {
 
     return [(
       <calcite-list-item
-        label={this._translations.featuresAdded?.replace('{{n}}', numAdded.toString())}
+        label={this._translations.featuresAdded?.replace("{{n}}", numAdded.toString())}
       >
         {this._getAction(numAdded > 0, "reset", "", (): void => this._revertSelection(refineSet, true), false, "actions-end")}
       </calcite-list-item>
     ),(
       <calcite-list-item
-        label={this._translations.featuresRemoved?.replace('{{n}}', numRemoved.toString())}
+        label={this._translations.featuresRemoved?.replace("{{n}}", numRemoved.toString())}
       >
         {this._getAction(numRemoved > 0, "reset", "", (): void => this._revertSelection(refineSet, false), false, "actions-end")}
       </calcite-list-item>
     ), (
       <calcite-list-item
-        label={this._translations.totalSelected?.replace('{{n}}', total.toString())}
+        label={this._translations.totalSelected?.replace("{{n}}", total.toString())}
       />
     )];
   }

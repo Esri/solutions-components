@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import BufferTools_T9n from '../../assets/t9n/buffer-tools/resources.json';
-import { getLocaleComponentStrings } from '../../utils/locale';
+import BufferTools_T9n from "../../assets/t9n/buffer-tools/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
-  tag: 'buffer-tools',
-  styleUrl: 'buffer-tools.css',
+  tag: "buffer-tools",
+  styleUrl: "buffer-tools.css",
   shadow: true,
 })
 export class BufferTools {
@@ -39,19 +39,9 @@ export class BufferTools {
   //--------------------------------------------------------------------------
 
   /**
-   * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
+   * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
    */
-  @Prop() geometries: __esri.Geometry[];
-
-  /**
-   * boolean: option to control if buffer results should be unioned
-   */
-  @Prop() unionResults = true;
-
-  /**
-   * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
-   */
-  @Prop() unit: __esri.LinearUnits = "meters";
+  @Prop() appearance: "slider" | "text" = "text";
 
   /**
    * number: The distance used for buffer
@@ -59,9 +49,9 @@ export class BufferTools {
   @Prop() distance = 0;
 
   /**
-   * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
+   * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
    */
-  @Prop() appearance: "slider" | "text" = "text";
+  @Prop() geometries: __esri.Geometry[] = [];
 
   /**
    * number: The component's maximum selectable value.
@@ -78,11 +68,32 @@ export class BufferTools {
    */
   @Prop() sliderTicks = 10;
 
+  /**
+   * boolean: option to control if buffer results should be unioned
+   */
+  @Prop() unionResults = true;
+
+  /**
+   * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
+   */
+  @Prop() unit: __esri.LinearUnits = "meters";
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() _translations: typeof BufferTools_T9n;
+
+  /**
+   * Timeout: https://nodejs.org/en/docs/guides/timers-in-node/
+   */
+  protected _bufferTimeout: NodeJS.Timeout;
 
   /**
    * geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
@@ -93,17 +104,6 @@ export class BufferTools {
    * HTMLCalciteSelectElement: The html element for selecting buffer unit
    */
   protected _unitElement: HTMLCalciteSelectElement;
-
-  /**
-   * Timeout: https://nodejs.org/en/docs/guides/timers-in-node/
-   */
-  protected _bufferTimeout: NodeJS.Timeout;
-
-  /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-  @State() _translations: typeof BufferTools_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -116,9 +116,9 @@ export class BufferTools {
    * Buffer each of the geometries.
    *
    */
-  @Watch('geometries')
+  @Watch("geometries")
   geometriesWatchHandler(v: any, oldV: any): void {
-    if (v && v !== oldV) {
+    if (v && JSON.stringify(v) !== JSON.stringify(oldV || [])) {
       this._buffer();
     }
   }
@@ -148,7 +148,7 @@ export class BufferTools {
 
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
-   * 
+   *
    * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
@@ -198,10 +198,10 @@ export class BufferTools {
    */
   protected _getUnits(): VNode[] {
     const units = {
-      'feet': this._translations.feet || 'Feet',
-      'meters': this._translations.meters || 'Meters',
-      'miles': this._translations.miles || 'Miles',
-      'kilometers': this._translations.kilometers || 'Kilometers'
+      "feet": this._translations.feet || "Feet",
+      "meters": this._translations.meters || "Meters",
+      "miles": this._translations.miles || "Miles",
+      "kilometers": this._translations.kilometers || "Kilometers"
     };
     return Object.keys(units).map(u => {
       let selected = true;
@@ -287,7 +287,7 @@ export class BufferTools {
         />
         <calcite-select
           class="flex-1"
-          label='label'
+          label="label"
           onCalciteSelectChange={() => this._setUnit()}
           ref={(el) => { this._unitElement = el }}
         >

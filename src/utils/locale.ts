@@ -15,18 +15,18 @@
  */
 
 // https://medium.com/stencil-tricks/implementing-internationalisation-i18n-with-stencil-5e6559554117
-import { languageMap } from './languageUtil';
-import { getAssetPath } from '@stencil/core';
+import { languageMap } from "./languageUtil";
+import { getAssetPath } from "@stencil/core";
 
 function getComponentClosestLanguage(element: HTMLElement): string | undefined {
-  const closestElement = (element.closest('[lang]') ) ?? element.shadowRoot?.ownerDocument?.documentElement as any;
+  const closestElement = (element.closest("[lang]") ) ?? element.shadowRoot?.ownerDocument?.documentElement as any;
   // language set by the calling application or browser. defaults to english.
-  const lang = (closestElement?.lang || navigator?.language || 'en').toLowerCase() ;
+  const lang = (closestElement?.lang || navigator?.language || "en").toLowerCase() ;
   if (languageMap.has(lang)) {
     return languageMap.get(lang);
   } else {
     // "ru-RU" maps to "ru" use case
-    return languageMap.has(lang.slice(0, 2)) ? languageMap.get(lang.slice(0, 2)) : 'en';
+    return languageMap.has(lang.slice(0, 2)) ? languageMap.get(lang.slice(0, 2)) : "en";
   }
 }
 
@@ -56,7 +56,7 @@ export async function getLocaleComponentStrings<T extends StringBundle = StringB
     strings = await fetchLocaleStringsForComponent(componentName, componentLanguage);
   } catch (e) {
     console.warn(`no locale for ${componentName} (${componentLanguage}) loading default locale en.`);
-    strings = await fetchLocaleStringsForComponent(componentName, 'en');
+    strings = await fetchLocaleStringsForComponent(componentName, "en");
   }
   return [strings, componentLanguage];
 }

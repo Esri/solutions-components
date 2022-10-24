@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
 import state from "../../utils/publicNotificationStore";
-import MapDrawTools_T9n from '../../assets/t9n/map-draw-tools/resources.json';
-import { getLocaleComponentStrings } from '../../utils/locale';
+import MapDrawTools_T9n from "../../assets/t9n/map-draw-tools/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
-  tag: 'map-draw-tools',
-  styleUrl: 'map-draw-tools.css',
+  tag: "map-draw-tools",
+  styleUrl: "map-draw-tools.css",
   shadow: false,
 })
 export class MapDrawTools {
@@ -43,6 +43,11 @@ export class MapDrawTools {
    * boolean: sketch is used by multiple components...need a way to know who should respond...
    */
   @Prop() active = false;
+
+  /**
+   * boolean: Optionally draw a border around the draw tools
+   */
+  @Prop() border = false;
 
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -67,12 +72,7 @@ export class MapDrawTools {
   /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
-  @Prop({ mutable: true }) graphics: __esri.Graphic[];
-
-  /**
-   * boolean: Optionally draw a border around the draw tools
-   */
-  @Prop() border = false;
+  @Prop({ mutable: true }) graphics: __esri.Graphic[] = [];
 
   //--------------------------------------------------------------------------
   //
@@ -97,11 +97,6 @@ export class MapDrawTools {
   protected Sketch: typeof __esri.Sketch;
 
   /**
-   * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
-   */
-  protected _sketchWidget: __esri.Sketch;
-
-  /**
    * The container element for the sketch widget
    */
   protected _sketchElement: HTMLElement;
@@ -110,6 +105,11 @@ export class MapDrawTools {
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
    */
   protected _sketchGraphicsLayer: __esri.GraphicsLayer;
+
+  /**
+   * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
+   */
+  protected _sketchWidget: __esri.Sketch;
 
   //--------------------------------------------------------------------------
   //
@@ -121,13 +121,11 @@ export class MapDrawTools {
    * Called each time the graphics prop is changed.
    *
    */
-  @Watch('graphics')
+  @Watch("graphics")
   graphicsWatchHandler(v: any, oldV: any): void {
-    if (v && v !== oldV) {
-      if (this.graphics && this.graphics.length > 0) {
-        this._sketchGraphicsLayer.removeAll();
-        this._sketchGraphicsLayer.addMany(this.graphics);
-      }
+    if (v && v.length > 0 && JSON.stringify(v) !== JSON.stringify(oldV || [])) {
+      this._sketchGraphicsLayer.removeAll();
+      this._sketchGraphicsLayer.addMany(v);
     }
   }
 
@@ -135,7 +133,7 @@ export class MapDrawTools {
    * Called each time the mapView prop is changed.
    *
    */
-  @Watch('mapView')
+  @Watch("mapView")
   mapViewWatchHandler(v: any, oldV: any): void {
     if (v && v !== oldV) {
       this._init();
@@ -166,7 +164,7 @@ export class MapDrawTools {
 
   /**
    * Emitted on demand when the sketch graphics change.
-   * 
+   *
    */
   @Event() sketchGraphicsChange: EventEmitter<__esri.Graphic[]>;
 
@@ -178,7 +176,7 @@ export class MapDrawTools {
 
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
-   * 
+   *
    * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
@@ -188,7 +186,7 @@ export class MapDrawTools {
 
   /**
    * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
-   * 
+   *
    * @returns Promise when complete
    */
   componentDidLoad(): void {

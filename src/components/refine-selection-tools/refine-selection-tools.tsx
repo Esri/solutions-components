@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from '@stencil/core';
-import { ERefineMode, ESelectionMode, ESelectionType } from '../../utils/interfaces';
-import { getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
+import { ERefineMode, ESelectionMode, ESelectionType } from "../../utils/interfaces";
+import { getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
+import { queryFeaturesByGeometry } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
 import { loadModules } from "../../utils/loadModules";
-import RefineSelectionTools_T9n from '../../assets/t9n/refine-selection-tools/resources.json';
-import { getLocaleComponentStrings } from '../../utils/locale';
-import Graphic from 'esri/Graphic';
+import RefineSelectionTools_T9n from "../../assets/t9n/refine-selection-tools/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
-  tag: 'refine-selection-tools',
-  styleUrl: 'refine-selection-tools.css',
+  tag: "refine-selection-tools",
+  styleUrl: "refine-selection-tools.css",
   shadow: true,
 })
 export class RefineSelectionTools {
@@ -49,6 +49,36 @@ export class RefineSelectionTools {
   @Prop() active = false;
 
   /**
+   * boolean: Optionally draw a border around the draw tools
+   */
+  @Prop() border = false;
+
+  /**
+   * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   */
+  @Prop({ mutable: true }) graphics: __esri.Graphic[];
+
+  /**
+   * number: The oids of the selected features
+   */
+  @Prop() ids: number[] = [];
+
+  /**
+   * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
+   */
+  @Prop() layerView: __esri.FeatureLayerView;
+
+  /**
+   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   */
+  @Prop() layerViews: __esri.FeatureLayerView[] = [];
+
+  /**
+   * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   */
+  @Prop() mapView: __esri.MapView;
+
+  /**
    * utils/interfaces/ESelectionMode: ADD, REMOVE
    */
   @Prop() mode: ESelectionMode;
@@ -59,39 +89,9 @@ export class RefineSelectionTools {
   @Prop() refineMode: ERefineMode;
 
   /**
-   * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-   */
-  @Prop() mapView: __esri.MapView;
-
-  /**
-   * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
-   */
-  @Prop() layerView: __esri.FeatureLayerView;
-
-  /**
-   * number: The oids of the selected features
-   */
-  @Prop() ids: number[] = [];
-
-  /**
    * boolean: Used to control the visibility of the layer picker
    */
   @Prop() useLayerPicker = true;
-
-  /**
-   * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
-   */
-  @Prop({ mutable: true }) graphics: __esri.Graphic[];
-
-  /**
-   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-   */
-  @Prop() layerViews: __esri.FeatureLayerView[] = [];
-
-  /**
-   * boolean: Optionally draw a border around the draw tools
-   */
-  @Prop() border = false;
 
   //--------------------------------------------------------------------------
   //
@@ -102,30 +102,18 @@ export class RefineSelectionTools {
   /**
    * boolean: Is selected enabled
    */
-  @State() selectEnabled = false;
+  @State() _selectEnabled = false;
 
   /**
    * utils/interfaces/ESelectionType: POINT, LINE, POLY, RECT
    */
-  @State() selectionMode: ESelectionType;
+  @State() _selectionMode: ESelectionType;
 
   /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() protected _translations: typeof RefineSelectionTools_T9n;
-
-  /**
-   * string: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html#Effect
-   * The exclusion layer effect to use when flashing a selection set
-   */
-  protected _excludeEffect = "blur(5px) grayscale(90%) opacity(40%)";
-
-  /**
-   * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
-   * The graphics layer used to show selections.
-   */
-  protected _sketchGraphicsLayer: __esri.GraphicsLayer;
+  @State() _translations: typeof RefineSelectionTools_T9n;
 
   /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
@@ -140,15 +128,9 @@ export class RefineSelectionTools {
   protected SketchViewModel: typeof __esri.SketchViewModel;
 
   /**
-   * esri/widgets/Sketch/SketchViewModel: The html element for selecting buffer unit
-   * The sketch view model used to create graphics
+   * {<layer title>: Graphic[]}: Collection of graphics returned from queries to the layer
    */
-  protected _sketchViewModel: __esri.SketchViewModel;
-
-  /**
-   * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
-   */
-  protected _sketchGeometry: __esri.Geometry;
+  protected _featuresCollection: {[key: string]: __esri.Graphic[]} = {};
 
   /**
    * esri/core/Handles: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Handles.html#Handle
@@ -156,9 +138,21 @@ export class RefineSelectionTools {
   protected _hitTestHandle: __esri.Handle;
 
   /**
-   * {<layer title>: Graphic[]}: Collection of graphics returned from queries to the layer
+   * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
    */
-  protected _featuresCollection: {[key: string]: Graphic[]} = {};
+  protected _sketchGeometry: __esri.Geometry;
+
+  /**
+   * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
+   * The graphics layer used to show selections.
+   */
+  protected _sketchGraphicsLayer: __esri.GraphicsLayer;
+
+  /**
+   * esri/widgets/Sketch/SketchViewModel: The html element for selecting buffer unit
+   * The sketch view model used to create graphics
+   */
+  protected _sketchViewModel: __esri.SketchViewModel;
 
   //--------------------------------------------------------------------------
   //
@@ -170,7 +164,7 @@ export class RefineSelectionTools {
    * Called each time the ids prop is changed.
    * Highlight the features based on the provided ids
    */
-  @Watch('ids')
+  @Watch("ids")
   idsWatchHandler(v: any, oldV: any): void {
     if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
       void this._highlightFeatures(v);
@@ -255,7 +249,7 @@ export class RefineSelectionTools {
   connectedCallback(): void {
     this.active = true;
     if (this.ids.length > 0) {
-      this.selectEnabled = true;
+      this._selectEnabled = true;
       void this._highlightFeatures(this.ids);
     }
   }
@@ -280,50 +274,50 @@ export class RefineSelectionTools {
             selectionMode={"single"}
           />
           <div class={"margin-top-1" + drawClass}>
-            <div class={"esri-sketch esri-widget"}>
-              <div class={"esri-sketch__panel"}>
-                <div class={"esri-sketch__tool-section esri-sketch__section"}>
+            <div class="esri-sketch esri-widget">
+              <div class="esri-sketch__panel">
+                <div class="esri-sketch__tool-section esri-sketch__section">
                   <calcite-action
-                    disabled={!this.selectEnabled}
+                    disabled={!this._selectEnabled}
                     icon="select"
                     onClick={() => this._setSelectionMode(ESelectionType.POINT)}
                     scale="s"
                     text={this._translations.select}
                   />
                 </div>
-                <div class={"esri-sketch__tool-section esri-sketch__section"}>
+                <div class="esri-sketch__tool-section esri-sketch__section">
                   <calcite-action
-                    disabled={!this.selectEnabled}
+                    disabled={!this._selectEnabled}
                     icon="line"
                     onClick={() => this._setSelectionMode(ESelectionType.LINE)}
                     scale="s"
                     text={this._translations.selectLine}
                   />
                   <calcite-action
-                    disabled={!this.selectEnabled}
+                    disabled={!this._selectEnabled}
                     icon="polygon"
                     onClick={() => this._setSelectionMode(ESelectionType.POLY)}
                     scale="s"
                     text={this._translations.selectPolygon}
                   />
                   <calcite-action
-                    disabled={!this.selectEnabled}
+                    disabled={!this._selectEnabled}
                     icon="rectangle"
                     onClick={() => this._setSelectionMode(ESelectionType.RECT)}
                     scale="s"
                     text={this._translations.selectRectangle}
                   />
                 </div>
-                <div class={"esri-sketch__tool-section esri-sketch__section"}>
+                <div class="esri-sketch__tool-section esri-sketch__section">
                   <calcite-action
-                    disabled={!this.selectEnabled}
+                    disabled={true}
                     icon="undo"
                     onClick={() => this._undo()}
                     scale="s"
                     text={this._translations.undo}
                   />
                   <calcite-action
-                    disabled={!this.selectEnabled}
+                    disabled={true}
                     icon="redo"
                     onClick={() => this._redo()}
                     scale="s"
@@ -476,7 +470,7 @@ export class RefineSelectionTools {
     evt: CustomEvent
   ): Promise<void> {
     if (Array.isArray(evt.detail) && evt.detail.length > 0) {
-      this.selectEnabled = true;
+      this._selectEnabled = true;
       const layerPromises = evt.detail.map(title => {
         return getMapLayerView(this.mapView, title)
       });
@@ -485,7 +479,7 @@ export class RefineSelectionTools {
         this.layerViews = layerViews;
       });
     } else {
-      this.selectEnabled = false;
+      this._selectEnabled = false;
     }
   }
 
@@ -497,16 +491,16 @@ export class RefineSelectionTools {
   protected _setSelectionMode(
     mode: ESelectionType
   ): void {
-    this.selectionMode = mode;
+    this._selectionMode = mode;
 
     if (this._hitTestHandle) {
       this._hitTestHandle.remove();
     }
 
-    switch (this.selectionMode) {
+    switch (this._selectionMode) {
       case ESelectionType.POINT:
-        //this._sketchViewModel.create("point");
-        this._initHitTest();
+        this._sketchViewModel.create("point");
+        //this._initHitTest();
         break;
       case ESelectionType.LINE:
         this._sketchViewModel.create("polyline");
@@ -532,9 +526,9 @@ export class RefineSelectionTools {
   protected async _selectFeatures(
     geom: __esri.Geometry
   ): Promise<void> {
-    const queryFeaturePromises = this.layerViews.map(l => {
-      this._featuresCollection[l.layer.title] = [];
-      return this._queryPage(0, l, geom)
+    const queryFeaturePromises = this.layerViews.map(layerView => {
+      this._featuresCollection[layerView.layer.title] = [];
+      return queryFeaturesByGeometry(0, layerView.layer, geom, this._featuresCollection)
     });
 
     return Promise.all(queryFeaturePromises).then(response => {
@@ -566,39 +560,6 @@ export class RefineSelectionTools {
   }
 
   /**
-   * Handle queries that need to be paged
-   *
-   * @param page page query number
-   * @param layerView the layer view to query
-   * @param geom the geom used for selection
-   *
-   * @returns Promise resolving when function is done
-   * @protected
-   */
-  protected async _queryPage(
-    page: number,
-    layerView: __esri.FeatureLayerView,
-    geom: __esri.Geometry
-  ): Promise<any> {
-    const num = layerView.layer.capabilities.query.maxRecordCount;
-    const query = {
-      start: page,
-      num,
-      outFields: ["*"],
-      returnGeometry: true,
-      geometry: geom
-    };
-
-    const r = await layerView.queryFeatures(query);
-    this._featuresCollection[layerView.layer.title] = this._featuresCollection[layerView.layer.title].concat(r.features);
-
-    if (r.exceededTransferLimit) {
-      return this._queryPage(page += num, layerView, geom)
-    }
-    return Promise.resolve(this._featuresCollection);
-  }
-
-  /**
    * Highlight any selected features in the map
    *
    * @returns Promise resolving when function is done
@@ -610,7 +571,7 @@ export class RefineSelectionTools {
   ): Promise<void> {
     this._clearHighlight();
     if (ids.length > 0) {
-      state.highlightHandle = await highlightFeatures(this.mapView, this.layerViews[0], ids, updateExtent);
+      state.highlightHandle = await highlightFeatures(ids, this.layerViews[0], this.mapView, updateExtent);
     }
   }
 
