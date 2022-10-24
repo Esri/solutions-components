@@ -267,6 +267,7 @@ export class SolutionItemDetails {
    */
   protected _updateStore(
   ): void {
+    this.itemEdit = state.getItemInfo(this.itemId);
     this.itemEdit.item = this.itemDetails;
     state.setItemInfo(this.itemEdit);
   }
@@ -288,6 +289,7 @@ export class SolutionItemDetails {
         this.thumbnail.src = URL.createObjectURL(files[0]);
 
         // Update info in store
+        this.itemEdit = state.getItemInfo(this.itemId);
         this.itemEdit.thumbnail = files[0];
         state.replaceItemThumbnail(this.itemEdit);
       }

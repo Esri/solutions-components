@@ -11,7 +11,7 @@
 | ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------ | --------- | ------- |
 | `instanceid`            | `instanceid`             | This needs to be unique for props vs data of an item                                       | `string`  | `""`    |
 | `itemId`                | `item-id`                | A template's itemId. This is used to get the correct model from a store in the json-editor | `string`  | `""`    |
-| `organizationVariables` | `organization-variables` | Contains the organization based variables                                                  | `string`  | `""`    |
+| `organizationVariables` | `organization-variables` |                                                                                            | `string`  | `""`    |
 | `solutionVariables`     | `solution-variables`     | Contains the solution based variables                                                      | `string`  | `""`    |
 | `varsOpen`              | `vars-open`              | Used to show/hide the variable containers                                                  | `boolean` | `true`  |
 

@@ -7,11 +7,12 @@
 
 ## Properties
 
-| Property     | Attribute    | Description                                                                                                                                                      | Type      | Default |
-| ------------ | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------- |
-| `hasErrors`  | `has-errors` | Contains a public value to indicate if the model has any errors that would prevent saving it.                                                                    | `boolean` | `false` |
-| `instanceid` | `instanceid` | Contains a unique identifier for when we have multiple instances of the editor. For example when we want to show an item's data as well as an item's properties. | `any`     | `""`    |
-| `value`      | `value`      | Contains the public value for this component; it is not changed by the editor. When changed, the change overwrites the contents of the editor.                   | `any`     | `""`    |
+| Property     | Attribute     | Description                                                                                                                                                      | Type      | Default |
+| ------------ | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------- |
+| `hasChanges` | `has-changes` | Contains a public value to indicate if the model has any changes.                                                                                                | `boolean` | `false` |
+| `hasErrors`  | `has-errors`  | Contains a public value to indicate if the model has any errors that would prevent saving it.                                                                    | `boolean` | `false` |
+| `instanceid` | `instanceid`  | Contains a unique identifier for when we have multiple instances of the editor. For example when we want to show an item's data as well as an item's properties. | `any`     | `""`    |
+| `value`      | `value`       | Contains the public value for this component; it is not changed by the editor. When changed, the change overwrites the contents of the editor.                   | `any`     | `""`    |
 
 
 ## Methods
