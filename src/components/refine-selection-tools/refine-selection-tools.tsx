@@ -17,7 +17,7 @@
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
 import { ERefineMode, ESelectionMode, ESelectionType } from "../../utils/interfaces";
 import { getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
-import { queryPage } from "../../utils/queryUtils";
+import { queryFeaturesByGeometry } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
 import { loadModules } from "../../utils/loadModules";
 import RefineSelectionTools_T9n from "../../assets/t9n/refine-selection-tools/resources.json";
@@ -528,7 +528,7 @@ export class RefineSelectionTools {
   ): Promise<void> {
     const queryFeaturePromises = this.layerViews.map(layerView => {
       this._featuresCollection[layerView.layer.title] = [];
-      return queryPage(0, layerView.layer, geom, this._featuresCollection)
+      return queryFeaturesByGeometry(0, layerView.layer, geom, this._featuresCollection)
     });
 
     return Promise.all(queryFeaturePromises).then(response => {

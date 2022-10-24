@@ -2,7 +2,7 @@
 
 // https://medium.com/@danny.pule/export-json-to-csv-file-using-javascript-a0b7bc5b00d2
 
-import { queryFeatures } from "./queryUtils";
+import { queryFeaturesByID } from "./queryUtils";
 
 /**
  * Export a csv of the attributes from the features that match the provided ids
@@ -16,7 +16,7 @@ export async function exportCSV(
   layerView: __esri.FeatureLayerView,
   ids: number[]
 ): Promise<void> {
-  const featureSet = await queryFeatures(ids, layerView.layer);
+  const featureSet = await queryFeaturesByID(ids, layerView.layer);
   const attributes = featureSet.features.map(f => f.attributes);
   const fieldNames = {};
   const entry = attributes[0];

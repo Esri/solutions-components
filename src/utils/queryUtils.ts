@@ -17,18 +17,19 @@
 import { EWorkflowType, ISelectionSet } from "./interfaces";
 
 /**
- * Query the selectLayerView based on any user drawn geometries or buffers
+ * Query the layer for OIDs based on any user drawn geometries or buffers
  *
- * @param geometries Array of geometries used for the selection of ids from the select layer view
+ * @param geometries Array of geometries used for the selection of ids from the layer
+ * @param layer the layer to retrieve ids from
  *
- * @returns Promise when the selection is complete and the graphics have been highlighted
+ * @returns Promise with the OIDs of features from the layer that interset the provided geometries
  */
 export async function queryObjectIds(
   geometries: __esri.Geometry[],
   layer: __esri.FeatureLayer
 ): Promise<number[]> {
   let ids = [];
-  const queryDefs = geometries.map(g => _query(g, layer))
+  const queryDefs = geometries.map(g => _intersectQuery(g, layer))
   const results = await Promise.all(queryDefs);
   results.forEach(resultIds => {
     ids = [
@@ -40,13 +41,14 @@ export async function queryObjectIds(
 }
 
 /**
- * Query the selectLayerView based on any user drawn geometries or buffers
+ * Query the layer for features that have the provided OIDs
  *
- * @param geometries Array of geometries used for the selection of ids from the select layer view
+ * @param ids array of ObjectIDs to be used to query for features in a layer
+ * @param layer the layer to retrieve features from
  *
- * @returns Promise when the selection is complete and the graphics have been highlighted
+ * @returns Promise with the featureSet from the layer that match the provided ids
  */
- export async function queryFeatures(
+ export async function queryFeaturesByID(
   ids: number[],
   layer: __esri.FeatureLayer
 ): Promise<__esri.FeatureSet> {
@@ -57,11 +59,47 @@ export async function queryObjectIds(
 }
 
 /**
- * Query the selectLayerView based on any user drawn geometries or buffers
+ * Query the layer for features that intersect the provided geometry
  *
- * @param geometries Array of geometries used for the selection of ids from the select layer view
+ * @param start zero-based index indicating where to begin retrieving features
+ * @param layer the layer to retrieve features from
+ * @param geometry the geometry to apply to the spatial filter
+ * @param featuresCollection
  *
- * @returns Promise when the selection is complete and the graphics have been highlighted
+ * @returns Promise with the featureSet from the layer that match the provided ids
+ */
+export async function queryFeaturesByGeometry(
+  start: number,
+  layer: __esri.FeatureLayer,
+  geometry: __esri.Geometry,
+  featuresCollection: {[key: string]: __esri.Graphic[]}
+): Promise<any> {
+  const num = layer.capabilities.query.maxRecordCount;
+  const query = {
+    start,
+    num,
+    outFields: ["*"],
+    returnGeometry: true,
+    geometry
+  };
+
+  const result = await layer.queryFeatures(query);
+  featuresCollection[layer.title] = featuresCollection[layer.title].concat(
+    result.features
+  );
+
+  return result.exceededTransferLimit ?
+    queryFeaturesByGeometry(start += num, layer, geometry, featuresCollection) :
+    Promise.resolve(featuresCollection);
+}
+
+/**
+ * Query the layer for the extent of features with the provided OIDs
+ *
+ * @param ids array of ObjectIDs to be used to query for features in a layer
+ * @param layer the layer to query
+ *
+ * @returns Promise with the Extent of all features that match the provided ids
  */
  export async function queryExtent(
   ids: number[],
@@ -72,10 +110,18 @@ export async function queryObjectIds(
   return layer.queryExtent(query);
 }
 
+/**
+ * Union geometries based on geometry type
+ *
+ * @param geometries Array of geometries to union
+ * @param geometryEngine the geometry engine instance to perform the unions
+ *
+ * @returns Array of single unioned geometry for each geometry type
+ */
 export function getQueryGeoms(
   geometries: __esri.Geometry[],
   geometryEngine: __esri.geometryEngine
-) {
+): __esri.Geometry[] {
   // sort and union by geom type so we have a single geom for each type to query with
   return [
     ..._unionGeoms(geometries, "polygon", geometryEngine),
@@ -85,51 +131,17 @@ export function getQueryGeoms(
 }
 
 /**
- * Query the selectLayerView based on any user drawn geometries or buffers
+ * Get the appropriate ObjectIds query for the provided selection set
  *
- * @param geometries Array of geometries used for the selection of ids from the select layer view
+ * @param selectionSet the current selection set to fetch the query for
+ * @param geometryEngine the geometry engine instance to perform the union of the user drawn graphics or buffers
  *
- * @returns Promise when the selection is complete and the graphics have been highlighted
+ * @returns A promise that will resolve with ids that intersect the selection sets geometries
  */
-function _unionGeoms(
-  geometries: __esri.Geometry[],
-  type: string,
-  geometryEngine: __esri.geometryEngine
-): __esri.Geometry[] {
-  // May make this a class and load the geom engine directly
-  const geoms = geometries.filter(g => g.type === type);
-  return geoms.length <= 1 ? geoms : [geometryEngine.union(geoms)];
-}
-
-export async function queryPage(
-  page: number,
-  layer: __esri.FeatureLayer,
-  geom: __esri.Geometry,
-  featuresCollection: {[key: string]: __esri.Graphic[]}
-): Promise<any> {
-  const num = layer.capabilities.query.maxRecordCount;
-  const query = {
-    start: page,
-    num,
-    outFields: ["*"],
-    returnGeometry: true,
-    geometry: geom
-  };
-
-  const result = await layer.queryFeatures(query);
-  featuresCollection[layer.title] = featuresCollection[layer.title].concat(
-    result.features
-  );
-
-  return result.exceededTransferLimit ?
-    queryPage(page += num, layer, geom, featuresCollection) :
-    Promise.resolve(featuresCollection);
-}
-
 export function getSelectionSetQuery(
   selectionSet: ISelectionSet,
   geometryEngine: __esri.geometryEngine
-) {
+): Promise<number[]> {
   let q = Promise.resolve([]);
   if (selectionSet.workflowType !== EWorkflowType.REFINE) {
     if (!selectionSet.buffer) {
@@ -152,16 +164,32 @@ export function getSelectionSetQuery(
   return q;
 }
 
-
+/**
+ * Union geometries based on geometry type
+ *
+ * @param geometries array of geometries to union
+ * @param type the current geometry type to union
+ * @param geometryEngine the geometry engine instance to perform the unions
+ *
+ * @returns Array of single unioned geometry for the provided geometry type
+ */
+ function _unionGeoms(
+  geometries: __esri.Geometry[],
+  type: string,
+  geometryEngine: __esri.geometryEngine
+): __esri.Geometry[] {
+  const geoms = geometries.filter(g => g.type === type);
+  return geoms.length <= 1 ? geoms : [geometryEngine.union(geoms)];
+}
 
 /**
- * Query the layer
+ * Query the layer for ObjectIds of features that intersect the provided geometry
  *
  * @param geometry Geometry used for the selection of ids from the select layer view
  *
  * @returns Promise that will contain the selected ids
  */
-async function _query(
+async function _intersectQuery(
   geometry: __esri.Geometry,
   layer: __esri.FeatureLayer
 ): Promise<number[]> {
