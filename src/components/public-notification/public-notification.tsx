@@ -150,7 +150,7 @@ export class PublicNotification {
   async pageTypeWatchHandler(
     pageType: EPageType,
     oldPageType: EPageType
-  ) {
+  ): Promise<void> {
     this._clearHighlight();
 
     if (oldPageType === EPageType.SELECT || oldPageType === EPageType.REFINE) {
@@ -346,8 +346,8 @@ export class PublicNotification {
             <map-layer-picker
               mapView={this.mapView}
               onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
-              selectionMode={"single"}
               selectedLayers={this.addresseeLayer ? [this.addresseeLayer?.layer.title] : []}
+              selectionMode={"single"}
             />
           </calcite-label>
         </div>
@@ -387,8 +387,8 @@ export class PublicNotification {
             <map-layer-picker
               mapView={this.mapView}
               onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
-              selectionMode={"single"}
               selectedLayers={this.addresseeLayer ? [this.addresseeLayer?.layer.title] : []}
+              selectionMode={"single"}
             />
           </calcite-label>
         </div>
@@ -683,13 +683,13 @@ export class PublicNotification {
         }
         prev.push((
           <div class="display-flex padding-sides-1 padding-bottom-1">
-            <calcite-checkbox checked={cur.download} onClick={() => { this._toggleDownload(cur.id) }} />
+            <calcite-checkbox checked={cur.download} onClick={() => { void this._toggleDownload(cur.id) }} />
             <calcite-list class="list-border margin-start-1-2 w-100" id="download-list">
               <calcite-list-item
                 description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
                 disabled={!cur.download}
                 label={cur.label}
-                onClick={() => { this._toggleDownload(cur.id) }}
+                onClick={() => { void this._toggleDownload(cur.id) }}
                />
             </calcite-list>
           </div>
@@ -855,7 +855,7 @@ export class PublicNotification {
       oidDefs.push(getSelectionSetQuery(selectionSet, this._geometryEngine));
     });
 
-    Promise.all(oidDefs).then(async results => {
+    return Promise.all(oidDefs).then(async (results): Promise<void> => {
       results.forEach((result, i) => {
         _selectionSets[i].selectedIds = result;
       });

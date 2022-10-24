@@ -217,8 +217,11 @@ export class SolutionConfiguration {
   @State() protected _treeOpen = true;
 
   protected _solutionStoreHasChanges = false;
+
   protected _solutionEditorHasChanges = false;
+
   protected _solutionEditorHasErrors = false;
+
   protected _canSave = false;
 
   //--------------------------------------------------------------------------
@@ -345,7 +348,7 @@ export class SolutionConfiguration {
   /**
    * Resets internal variables.
    */
-  protected _reset() {
+  protected _reset(): void {
     this._currentEditItemId = "";
     this._organizationVariables = "";
     this._solutionVariables = "";

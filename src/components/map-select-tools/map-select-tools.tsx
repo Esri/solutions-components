@@ -454,7 +454,7 @@ export class MapSelectTools {
         this._translations.sketch : this._workflowType === EWorkflowType.SELECT ?
         this._translations.select : this.selectionSet?.label;
 
-      goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
+      void goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     } else {
       this._workflowType = EWorkflowType.SEARCH;
     }
