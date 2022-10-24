@@ -62,6 +62,7 @@ export class SolutionTemplateData {
   @Prop({ mutable: true, reflect: true }) itemId = "";
 
   @Watch("itemId") itemIdWatchHandler(): void {
+    this._initializing = true;
     this.value = JSON.stringify(
       this.instanceid === "data"
       ? state.getItemInfo(this.itemId).data
@@ -69,7 +70,7 @@ export class SolutionTemplateData {
       , null, 2);
   }
 
-  /**
+  /*
    * Contains the organization based variables
    */
   @Prop({ mutable: true, reflect: true }) organizationVariables = "";
@@ -90,6 +91,29 @@ export class SolutionTemplateData {
   //
   //--------------------------------------------------------------------------
 
+  constructor() {
+    window.addEventListener("solutionEditorContentChanged",
+      (evt) => {
+        if (this.itemId) {
+          const { id, contents } = (evt as any).detail;
+          const [itemId, instanceId] = id.split("|");
+          if (itemId == this.itemId && instanceId === this.instanceid) {
+            if(!this._initializing && contents.length > 0) {
+              const itemEdit = state.getItemInfo(itemId);
+              if (instanceId === "data") {
+                itemEdit.data = JSON.parse(contents);
+              } else {
+                itemEdit.properties = JSON.parse(contents);
+              }
+              state.setItemInfo(itemEdit);
+            }
+            this._initializing = false;
+          }
+        }
+      }
+    );
+  }
+
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
@@ -109,7 +133,7 @@ export class SolutionTemplateData {
               <div class="solution-data-child-container calcite-match-height">
                   <json-editor
                     class="solution-data-editor-container"
-                    instanceid={this.instanceid}
+                    instanceid={this.itemId + "|" + this.instanceid}
                     value={this.value}
                   />
               </div>
@@ -157,6 +181,8 @@ export class SolutionTemplateData {
   @State() protected _translations: typeof SolutionTemplateData_T9n;
 
   @State() protected value = "";
+
+  protected _initializing = false;
 
   //--------------------------------------------------------------------------
   //
