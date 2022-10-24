@@ -36,26 +36,6 @@ Type: `Promise<void>`
 
 Promise when the results have been cleared
 
-### `getSelectType() => Promise<EWorkflowType>`
-
-Fetch the selection type
-
-#### Returns
-
-Type: `Promise<EWorkflowType>`
-
-Promise with the selection type
-
-### `getSelectedIds() => Promise<number[]>`
-
-Fetch the currently selected ids
-
-#### Returns
-
-Type: `Promise<number[]>`
-
-Promise with an array of the selected ids
-
 ### `getSelection() => Promise<ISelectionSet>`
 
 Get the new selection set
@@ -65,16 +45,6 @@ Get the new selection set
 Type: `Promise<ISelectionSet>`
 
 Promise with the new selection set
-
-### `getSelectionLabel() => Promise<string>`
-
-Fetch the selection label
-
-#### Returns
-
-Type: `Promise<string>`
-
-Promise with the selection label
 
 
 ## Dependencies

@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from '@stencil/core';
-import { ERefineMode, ESelectionMode, ESelectionType } from '../../utils/interfaces';
-import { getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
+import { ERefineMode, ESelectionMode, ESelectionType } from "../../utils/interfaces";
+import { getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
+import { queryFeaturesByGeometry } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
 import { loadModules } from "../../utils/loadModules";
-import RefineSelectionTools_T9n from '../../assets/t9n/refine-selection-tools/resources.json';
-import { getLocaleComponentStrings } from '../../utils/locale';
-import Graphic from 'esri/Graphic';
+import RefineSelectionTools_T9n from "../../assets/t9n/refine-selection-tools/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
-  tag: 'refine-selection-tools',
-  styleUrl: 'refine-selection-tools.css',
+  tag: "refine-selection-tools",
+  styleUrl: "refine-selection-tools.css",
   shadow: true,
 })
 export class RefineSelectionTools {
@@ -116,12 +116,6 @@ export class RefineSelectionTools {
   @State() protected _translations: typeof RefineSelectionTools_T9n;
 
   /**
-   * string: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html#Effect
-   * The exclusion layer effect to use when flashing a selection set
-   */
-  protected _excludeEffect = "blur(5px) grayscale(90%) opacity(40%)";
-
-  /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
    * The graphics layer used to show selections.
    */
@@ -158,7 +152,7 @@ export class RefineSelectionTools {
   /**
    * {<layer title>: Graphic[]}: Collection of graphics returned from queries to the layer
    */
-  protected _featuresCollection: {[key: string]: Graphic[]} = {};
+  protected _featuresCollection: {[key: string]: __esri.Graphic[]} = {};
 
   //--------------------------------------------------------------------------
   //
@@ -170,7 +164,7 @@ export class RefineSelectionTools {
    * Called each time the ids prop is changed.
    * Highlight the features based on the provided ids
    */
-  @Watch('ids')
+  @Watch("ids")
   idsWatchHandler(v: any, oldV: any): void {
     if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
       void this._highlightFeatures(v);
@@ -280,9 +274,9 @@ export class RefineSelectionTools {
             selectionMode={"single"}
           />
           <div class={"margin-top-1" + drawClass}>
-            <div class={"esri-sketch esri-widget"}>
-              <div class={"esri-sketch__panel"}>
-                <div class={"esri-sketch__tool-section esri-sketch__section"}>
+            <div class="esri-sketch esri-widget">
+              <div class="esri-sketch__panel">
+                <div class="esri-sketch__tool-section esri-sketch__section">
                   <calcite-action
                     disabled={!this.selectEnabled}
                     icon="select"
@@ -291,7 +285,7 @@ export class RefineSelectionTools {
                     text={this._translations.select}
                   />
                 </div>
-                <div class={"esri-sketch__tool-section esri-sketch__section"}>
+                <div class="esri-sketch__tool-section esri-sketch__section">
                   <calcite-action
                     disabled={!this.selectEnabled}
                     icon="line"
@@ -314,16 +308,16 @@ export class RefineSelectionTools {
                     text={this._translations.selectRectangle}
                   />
                 </div>
-                <div class={"esri-sketch__tool-section esri-sketch__section"}>
+                <div class="esri-sketch__tool-section esri-sketch__section">
                   <calcite-action
-                    disabled={!this.selectEnabled}
+                    disabled={true}
                     icon="undo"
                     onClick={() => this._undo()}
                     scale="s"
                     text={this._translations.undo}
                   />
                   <calcite-action
-                    disabled={!this.selectEnabled}
+                    disabled={true}
                     icon="redo"
                     onClick={() => this._redo()}
                     scale="s"
@@ -505,8 +499,8 @@ export class RefineSelectionTools {
 
     switch (this.selectionMode) {
       case ESelectionType.POINT:
-        //this._sketchViewModel.create("point");
-        this._initHitTest();
+        this._sketchViewModel.create("point");
+        //this._initHitTest();
         break;
       case ESelectionType.LINE:
         this._sketchViewModel.create("polyline");
@@ -532,9 +526,9 @@ export class RefineSelectionTools {
   protected async _selectFeatures(
     geom: __esri.Geometry
   ): Promise<void> {
-    const queryFeaturePromises = this.layerViews.map(l => {
-      this._featuresCollection[l.layer.title] = [];
-      return this._queryPage(0, l, geom)
+    const queryFeaturePromises = this.layerViews.map(layerView => {
+      this._featuresCollection[layerView.layer.title] = [];
+      return queryFeaturesByGeometry(0, layerView.layer, geom, this._featuresCollection)
     });
 
     return Promise.all(queryFeaturePromises).then(response => {
@@ -566,39 +560,6 @@ export class RefineSelectionTools {
   }
 
   /**
-   * Handle queries that need to be paged
-   *
-   * @param page page query number
-   * @param layerView the layer view to query
-   * @param geom the geom used for selection
-   *
-   * @returns Promise resolving when function is done
-   * @protected
-   */
-  protected async _queryPage(
-    page: number,
-    layerView: __esri.FeatureLayerView,
-    geom: __esri.Geometry
-  ): Promise<any> {
-    const num = layerView.layer.capabilities.query.maxRecordCount;
-    const query = {
-      start: page,
-      num,
-      outFields: ["*"],
-      returnGeometry: true,
-      geometry: geom
-    };
-
-    const r = await layerView.queryFeatures(query);
-    this._featuresCollection[layerView.layer.title] = this._featuresCollection[layerView.layer.title].concat(r.features);
-
-    if (r.exceededTransferLimit) {
-      return this._queryPage(page += num, layerView, geom)
-    }
-    return Promise.resolve(this._featuresCollection);
-  }
-
-  /**
    * Highlight any selected features in the map
    *
    * @returns Promise resolving when function is done
@@ -610,7 +571,7 @@ export class RefineSelectionTools {
   ): Promise<void> {
     this._clearHighlight();
     if (ids.length > 0) {
-      state.highlightHandle = await highlightFeatures(this.mapView, this.layerViews[0], ids, updateExtent);
+      state.highlightHandle = await highlightFeatures(ids, this.layerViews[0], this.mapView, updateExtent);
     }
   }
 

@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import { ISearchResult } from '../../utils/interfaces';
-//import state from "../../utils/publicNotificationStore";
-import MapSearch_T9n from '../../assets/t9n/map-search/resources.json';
-import { getLocaleComponentStrings } from '../../utils/locale';
+import { ISearchResult } from "../../utils/interfaces";
+import MapSearch_T9n from "../../assets/t9n/map-search/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
-  tag: 'map-search',
-  styleUrl: 'map-search.css',
+  tag: "map-search",
+  styleUrl: "map-search.css",
   shadow: false,
 })
 export class MapSearch {
@@ -113,7 +112,7 @@ export class MapSearch {
 
   /**
    * Emitted on demand when the status of the search widget changes
-   * 
+   *
    */
   @Event() searchChange: EventEmitter<ISearchResult>;
 
@@ -125,7 +124,7 @@ export class MapSearch {
 
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
-   * 
+   *
    * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
@@ -197,12 +196,12 @@ export class MapSearch {
 
       this._searchWidget = new this.Search(searchOptions);
 
-      this._searchWidget.on('search-clear', () => {
+      this._searchWidget.on("search-clear", () => {
         this._searchResult = undefined;
         this.searchChange.emit(this._searchResult);
       });
 
-      this._searchWidget.on('select-result', (searchResults) => {
+      this._searchWidget.on("select-result", (searchResults) => {
         this._searchResult = undefined;
         if (searchResults.result) {
           this._searchResult = searchResults.result;

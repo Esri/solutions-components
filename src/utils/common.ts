@@ -377,7 +377,7 @@ function _update(
     }
   }
 
-  return updateItemResource(opts)
+  return updateItemResource(opts);
 }
 
 /**

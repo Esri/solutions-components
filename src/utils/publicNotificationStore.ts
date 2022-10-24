@@ -29,7 +29,7 @@ const managedLayersChangedEvent = new CustomEvent("managedLayersChanged", {
     composed: true
 });
 
-onChange('managedLayers', () => {
+onChange("managedLayers", () => {
     dispatchEvent(managedLayersChangedEvent);
 });
 

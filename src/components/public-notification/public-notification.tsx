@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from '@stencil/core';
-import { EExportType, EPageType, EWorkflowType, ISelectionSet } from '../../utils/interfaces';
-import { getMapLayerView, highlightFeatures } from '../../utils/mapViewUtils';
+import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
+import { loadModules } from "../../utils/loadModules";
+import { EExportType, EPageType, EWorkflowType, ISelectionSet } from "../../utils/interfaces";
+import { goToSelection, getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
+import { getSelectionSetQuery } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
-import NewPublicNotification_T9n from '../../assets/t9n/public-notification/resources.json';
-import { getLocaleComponentStrings } from '../../utils/locale';
+import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
 import * as utils from "../../utils/publicNotificationUtils";
 
 @Component({
-  tag: 'public-notification',
-  styleUrl: 'public-notification.css',
+  tag: "public-notification",
+  styleUrl: "public-notification.css",
   shadow: false,
 })
 export class PublicNotification {
@@ -114,6 +116,11 @@ export class PublicNotification {
    */
   protected _activeSelection: ISelectionSet;
 
+  /**
+   * esri/geometry/geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
+   */
+  protected _geometryEngine: __esri.geometryEngine;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -123,7 +130,7 @@ export class PublicNotification {
   /**
    * Called each time the selectionSets prop is changed.
    */
-  @Watch('selectionSets')
+  @Watch("selectionSets")
   async selectionSetsWatchHandler(
     v: ISelectionSet[],
     oldV: ISelectionSet[]
@@ -139,7 +146,7 @@ export class PublicNotification {
   /**
    * Called each time the pageType prop is changed.
    */
-  @Watch('pageType')
+  @Watch("pageType")
   async pageTypeWatchHandler(
     pageType: EPageType,
     oldPageType: EPageType
@@ -171,7 +178,7 @@ export class PublicNotification {
   /**
    * Handle changes to the selection sets
    */
-  @Listen("selectionSetsChanged", { target: 'window' })
+  @Listen("selectionSetsChanged", { target: "window" })
   selectionSetsChanged(event: CustomEvent): void {
     this.selectionSets = [...event.detail];
   }
@@ -186,7 +193,8 @@ export class PublicNotification {
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
   async componentWillLoad(): Promise<void> {
-    return this._getTranslations();
+    await this._getTranslations();
+    await this._initModules();
   }
 
   /**
@@ -197,7 +205,7 @@ export class PublicNotification {
     return (
       <Host>
         <calcite-shell>
-          <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout='horizontal' slot="header">
+          <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
             {this._getActionGroup("list-check", false, EPageType.LIST, this._translations?.myLists)}
             {this._getActionGroup("test-data", !hasSelections, EPageType.REFINE, this._translations?.refineSelection)}
             {this._getActionGroup("file-pdf", !hasSelections, EPageType.PDF, this._translations?.downloadPDF)}
@@ -216,6 +224,22 @@ export class PublicNotification {
   //--------------------------------------------------------------------------
 
   /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+   protected async _initModules(): Promise<void> {
+    const [geometryEngine]: [
+      __esri.geometryEngine
+    ] = await loadModules([
+      "esri/geometry/geometryEngine"
+    ]);
+    this._geometryEngine = geometryEngine;
+  }
+
+  /**
    * Get a calcite action group for the current action
    *
    * @param icon the icon to display for the current action
@@ -232,10 +256,10 @@ export class PublicNotification {
     tip: string
   ): VNode {
     return (
-      <calcite-action-group class={"action-center w-1-4"} layout='horizontal'>
+      <calcite-action-group class={"action-center w-1-4"} layout="horizontal">
         <calcite-action
           active={this.pageType === pageType}
-          alignment='center'
+          alignment="center"
           class="width-full height-full"
           compact={false}
           disabled={disabled}
@@ -323,12 +347,13 @@ export class PublicNotification {
               mapView={this.mapView}
               onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
               selectionMode={"single"}
+              selectedLayers={this.addresseeLayer ? [this.addresseeLayer?.layer.title] : []}
             />
           </calcite-label>
         </div>
         <div class="padding-sides-1 height-1-1-2">
           <div class="position-left">
-            <calcite-label alignment='start' class="font-bold">{this._translations?.notifications}</calcite-label>
+            <calcite-label alignment="start" class="font-bold">{this._translations?.notifications}</calcite-label>
           </div>
           <div class="position-right">
             <calcite-input-message active class="info-blue margin-top-0" scale="m">{this._translations?.uniqueCout.replace("{{n}}", total.toString())}</calcite-input-message>
@@ -337,7 +362,7 @@ export class PublicNotification {
         {
           hasSets ? this._getSelectionSetList() : (
             <div class="info-message">
-              <calcite-input-message active class="info-blue" scale='m'>{this._translations?.noNotifications}</calcite-input-message>
+              <calcite-input-message active class="info-blue" scale="m">{this._translations?.noNotifications}</calcite-input-message>
             </div>
           )
         }
@@ -354,7 +379,7 @@ export class PublicNotification {
           <calcite-label>{this._translations?.notifications}</calcite-label>
         </div>
         <div class="info-message padding-bottom-1">
-          <calcite-input-message active class="info-blue" scale='m'>{this._translations?.noNotifications}</calcite-input-message>
+          <calcite-input-message active class="info-blue" scale="m">{this._translations?.noNotifications}</calcite-input-message>
         </div>
         {this._getNotice(this._translations?.selectLayerAndAdd, "padding-sides-1 padding-bottom-1")}
         <div class="display-flex padding-sides-1">
@@ -363,6 +388,7 @@ export class PublicNotification {
               mapView={this.mapView}
               onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
               selectionMode={"single"}
+              selectedLayers={this.addresseeLayer ? [this.addresseeLayer?.layer.title] : []}
             />
           </calcite-label>
         </div>
@@ -389,12 +415,12 @@ export class PublicNotification {
             if (cur.workflowType !== EWorkflowType.REFINE) {
               prev.push((
                 <calcite-list-item
-                  description={this._translations.selectedFeatures.replace('{{n}}', cur.selectedIds.length.toString())}
+                  description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
                   label={cur.label}
-                //onClick={() => flashSelection(cur)}
+                  onClick={() => goToSelection(cur.selectedIds, cur.layerView, this.mapView)}
                 >
-                  {this._getAction(true, "pencil", "", (): void => this._openSelection(cur), false, "actions-end")}
-                  {this._getAction(true, "x", "", (): Promise<void> => this._deleteSelection(i), false, "actions-end")}
+                  {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
+                  {this._getAction(true, "x", "", (evt): Promise<void> => this._deleteSelection(i, evt), false, "actions-end")}
                 </calcite-list-item>
               ));
             }
@@ -437,8 +463,8 @@ export class PublicNotification {
         </div>
         <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
           <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
-          <calcite-input-message active class="info-blue" scale='m'>
-            {this._translations?.selectedAddresses.replace('{{n}}', this.numSelected.toString())}
+          <calcite-input-message active class="info-blue" scale="m">
+            {this._translations?.selectedAddresses.replace("{{n}}", this.numSelected.toString())}
           </calcite-input-message>
         </div>
         {
@@ -520,7 +546,7 @@ export class PublicNotification {
           {this._getSelectionLists()}
           <div class="margin-side-1 padding-top-1 border-bottom" />
           <div class="padding-top-sides-1">
-            <calcite-label disabled={!this.downloadActive} layout='inline'>
+            <calcite-label disabled={!this.downloadActive} layout="inline">
               <calcite-checkbox disabled={!this.downloadActive} ref={(el) => { this._removeDuplicates = el }} />
               {this._translations?.removeDuplicate}
             </calcite-label>
@@ -583,7 +609,7 @@ export class PublicNotification {
         </div>
         <div class="display-flex padding-top-1-2 padding-sides-1">
           <calcite-button
-            appearance='outline'
+            appearance="outline"
             disabled={bottomDisabled}
             onClick={bottomFunc}
             width="full"
@@ -599,7 +625,7 @@ export class PublicNotification {
    * Create an informational notice
    *
    * @param message the message to display in the notice
-   * @param noticeClass any custom css for the notice (default is 'padding-1')
+   * @param noticeClass any custom css for the notice (default is "padding-1")
    *
    * @returns the notice node
    * @protected
@@ -660,7 +686,7 @@ export class PublicNotification {
             <calcite-checkbox checked={cur.download} onClick={() => { void this._toggleDownload(cur.id) }} />
             <calcite-list class="list-border margin-start-1-2 w-100" id="download-list">
               <calcite-list-item
-                description={this._translations.selectedFeatures.replace('{{n}}', cur.selectedIds.length.toString())}
+                description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
                 disabled={!cur.download}
                 label={cur.label}
                 onClick={() => { void this._toggleDownload(cur.id) }}
@@ -800,7 +826,44 @@ export class PublicNotification {
     evt: CustomEvent
   ): Promise<void> {
     const title: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
-    this.addresseeLayer = await getMapLayerView(this.mapView, title);
+    if (title !== this.addresseeLayer?.layer.title) {
+      this.addresseeLayer = await getMapLayerView(this.mapView, title);
+      await this._updateSelectionSets(this.addresseeLayer);
+    }
+  }
+
+  /**
+   * Update selection sets when the addressee layer changes.
+   * Will remove any "refine" selection set.
+   * Will use stored search, select, and sketch geometries and any buffers to select from the new addressee layer.
+   *
+   * @param layerView The new addressee layer view to select from
+   *
+   * @returns Promise when the function has completed
+   * @protected
+   */
+  protected async _updateSelectionSets(
+    layerView: __esri.FeatureLayerView
+  ): Promise<void> {
+    const _selectionSets = this.selectionSets.filter(
+      selectionSet => selectionSet.workflowType !== EWorkflowType.REFINE
+    );
+    const oidDefs = [];
+    _selectionSets.forEach(selectionSet => {
+      selectionSet.layerView = layerView;
+      selectionSet.selectedIds = [];
+      oidDefs.push(getSelectionSetQuery(selectionSet, this._geometryEngine));
+    });
+
+    Promise.all(oidDefs).then(async results => {
+      results.forEach((result, i) => {
+        _selectionSets[i].selectedIds = result;
+      });
+      await this._highlightFeatures();
+      this.selectionSets = [
+        ..._selectionSets
+      ];
+    });
   }
 
   /**
@@ -842,8 +905,10 @@ export class PublicNotification {
    * @protected
    */
   protected _deleteSelection(
-    index: number
+    index: number,
+    evt: CustomEvent
   ): Promise<void> {
+    evt.stopPropagation();
     this.selectionSets = this.selectionSets.filter((ss, i) => {
       if (i !== index) {
         return ss;
@@ -858,8 +923,10 @@ export class PublicNotification {
    * @protected
    */
   protected _openSelection(
-    selectionSet: ISelectionSet
+    selectionSet: ISelectionSet,
+    evt: CustomEvent
   ): void {
+    evt.stopPropagation();
     this._activeSelection = selectionSet;
     this.pageType = EPageType.SELECT;
   }
@@ -874,9 +941,9 @@ export class PublicNotification {
     const ids = utils.getSelectionIds(this.selectionSets);
     if (ids.length > 0) {
       state.highlightHandle = await highlightFeatures(
-        this.mapView,
+        ids,
         this.addresseeLayer,
-        ids
+        this.mapView
       );
     }
   }

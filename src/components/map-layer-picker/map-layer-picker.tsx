@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Watch } from '@stencil/core';
-import { getMapLayerNames } from '../../utils/mapViewUtils';
-import { SelectionMode } from '../../utils/interfaces';
-import state from '../../utils/publicNotificationStore';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Watch } from "@stencil/core";
+import { getMapLayerNames } from "../../utils/mapViewUtils";
+import { SelectionMode } from "../../utils/interfaces";
+import state from "../../utils/publicNotificationStore";
 
 @Component({
-  tag: 'map-layer-picker',
-  styleUrl: 'map-layer-picker.css',
+  tag: "map-layer-picker",
+  styleUrl: "map-layer-picker.css",
   shadow: false,
 })
 export class MapLayerPicker {
@@ -81,7 +81,7 @@ export class MapLayerPicker {
    * Called each time the mapView prop is changed.
    *
    */
-  @Watch('mapView')
+  @Watch("mapView")
   async watchStateHandler(newValue: boolean, oldValue: boolean): Promise<void> {
     if (newValue !== oldValue) {
       await this._setLayers();
@@ -105,7 +105,7 @@ export class MapLayerPicker {
 
   /**
    * Emitted on demand when a layer is selected
-   * 
+   *
    */
   @Event() layerSelectionChange: EventEmitter<string[]>;
 
@@ -158,7 +158,7 @@ export class MapLayerPicker {
   _getSelect(): VNode {
     return (
       <calcite-select
-        label=''
+        label=""
         onCalciteSelectChange={(evt) => this._layerSelectionChange(evt)}
         ref={(el) => { this._layerElement = el }}
       >
@@ -177,8 +177,7 @@ export class MapLayerPicker {
   _getCombobox(): VNode {
     return (
       <calcite-combobox
-        label=''
-
+        label=""
         onCalciteComboboxChange={(evt) => this._layerSelectionChange(evt)}
         selection-mode={this.selectionMode}
       >

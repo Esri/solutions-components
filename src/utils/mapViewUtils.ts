@@ -13,8 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ISelectionSet } from './interfaces';
 
+import { queryExtent } from "./queryUtils";
+
+/**
+ * Gets the layer names from the current map
+ * 
+ * @param mapView the map view to fetch the layer names from
+ *
+ * @returns Promise resolving with an array of layer names
+ *
+ */
 export async function getMapLayerNames(
   mapView: __esri.MapView
 ): Promise<string[]> {
@@ -27,6 +36,15 @@ export async function getMapLayerNames(
   return layerNames;
 }
 
+/**
+ * Get a layer view by title
+ * 
+ * @param mapView the map view to fetch the layer from
+ * @param title the title if the layer to fetch
+ *
+ * @returns Promise resolving with the fetched layer view
+ *
+ */
 export async function getMapLayerView(
   mapView: __esri.MapView,
   title: string
@@ -35,6 +53,15 @@ export async function getMapLayerView(
   return layer ? await mapView.whenLayerView(layer) : undefined;
 }
 
+/**
+ * Get a layer by title
+ * 
+ * @param mapView the map view to fetch the layer from
+ * @param title the title if the layer to fetch
+ *
+ * @returns Promise resolving with the fetched layer
+ *
+ */
 export async function getMapLayer(
   mapView: __esri.MapView,
   title: string
@@ -48,36 +75,76 @@ export async function getMapLayer(
   return layers.length > 0 ? layers[0] : undefined;
 }
 
+/**
+ * Highlight features by OID
+ * 
+ * @param ids the OIDs from the layer to highlight
+ * @param layerView the layer view to highlight
+ * @param mapView the map view used if updateExtent is true
+ * @param updateExtent optional (default false) boolean to indicate if we should zoom to the extent
+ *
+ * @returns Promise resolving with the highlight handle
+ *
+ */
 export async function highlightFeatures(
-  mapView: __esri.MapView,
-  layer: __esri.FeatureLayerView,
   ids: number[],
+  layerView: __esri.FeatureLayerView,
+  mapView: __esri.MapView,
   updateExtent = false
 ): Promise<__esri.Handle> {
   if (updateExtent) {
-    const query = layer.createQuery();
-    query.objectIds = ids;
-    await layer.queryExtent(query).then(async (result) => {
-      await mapView.goTo(result.extent);
-    });
+    await goToSelection(ids, layerView, mapView, false);
   }
-  return layer.highlight(ids);
+  return layerView.highlight(ids);
 }
 
-export function flashSelection(
-  selectionSet: ISelectionSet
-): void {
-  const objectIds = selectionSet.selectedIds;
+/**
+ * Flash features by OID
+ * 
+ * @param ids the OIDs from the layer to highlight
+ * @param layerView the layer view to highlight
+ *
+ * @returns Promise resolving when the operation is complete
+ *
+ */
+export async function flashSelection(
+  ids: number[],
+  layerView: __esri.FeatureLayerView
+): Promise<void> {
   const featureFilter = {
-    objectIds
+    objectIds: ids
   } as __esri.FeatureFilter;
-  selectionSet.layerView.featureEffect = {
+  layerView.featureEffect = {
     filter: featureFilter,
-    includedEffect: "bloom(1.3, 0.1px, 5%)",
-    excludedEffect: "blur(5px) grayscale(90%) opacity(40%)"
+    includedEffect: "invert(100%)",
+    excludedEffect: "blur(5px)"
   } as __esri.FeatureEffect;
 
   setTimeout(() => {
-    selectionSet.layerView.featureEffect = undefined;
+    layerView.featureEffect = undefined;
   }, 1300);
+}
+
+/**
+ * Zoom to features based on OID
+ * 
+ * @param ids the OIDs from the layer to go to
+ * @param layerView the layer view that contains the OIDs
+ * @param mapView the map view to show the extent change
+ * @param flashFeatures optional (default true) boolean to indicate if we should flash the features
+ * 
+ * @returns Promise resolving when the operation is complete
+ *
+ */
+export async function goToSelection(
+  ids: number[],
+  layerView: __esri.FeatureLayerView,
+  mapView: __esri.MapView,
+  flashFeatures: boolean = true
+): Promise<void> {
+  const result = await queryExtent(ids, layerView.layer);
+  await mapView.goTo(result.extent);
+  if (flashFeatures) {
+    await flashSelection(ids, layerView);
+  }
 }

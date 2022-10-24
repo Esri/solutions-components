@@ -1,69 +1,61 @@
-// May change this but doing this for now so the download button will do something 
+// May change this but doing this for now so the download button will do something
 
 // https://medium.com/@danny.pule/export-json-to-csv-file-using-javascript-a0b7bc5b00d2
 
-function _exportCSVFile(headers, items, fileTitle: string) {
-  if (headers) {
-    items.unshift(headers);
-  }
+import { queryFeaturesByID } from "./queryUtils";
 
-  // Convert Object to JSON
-  const jsonObject = JSON.stringify(items);
-
-  const csv = _convertToCSV(jsonObject);
-
-  const exportedFilenmae = fileTitle + '.csv' || 'export.csv';
-
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-
-  const link = document.createElement("a");
-  if (link.download !== undefined) { // feature detection
-    // Browsers that support HTML5 download attribute
-    const url = URL.createObjectURL(blob);
-    link.setAttribute("href", url);
-    link.setAttribute("download", exportedFilenmae);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-}
-
-function _convertToCSV(objArray) {
-  const array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-  let str = '';
-
-  for (let i = 0; i < array.length; i++) {
-    let line = '';
-    for (const index in array[i]) {
-      if (line != '') {line += ','}
-
-      line += array[i][index];
-    }
-
-    str += line + '\r\n';
-  }
-
-  return str;
-}
-
+/**
+ * Export a csv of the attributes from the features that match the provided ids
+ *
+ * @param layerView layer view to query
+ * @param ids number array of ids to export to csv
+ *
+ * @returns Promise when the function has completed
+ */
 export async function exportCSV(
   layerView: __esri.FeatureLayerView,
   ids: number[]
 ): Promise<void> {
-  const q = layerView.layer.createQuery();
-  q.outFields = ["*"];
-  q.objectIds = ids;
-  const featureSet = await layerView.layer?.queryFeatures(q);
-
-  const attrs = featureSet.features.map(f => f.attributes);
-  const headers = {};
-  const entry = attrs[0];
+  const featureSet = await queryFeaturesByID(ids, layerView.layer);
+  const attributes = featureSet.features.map(f => f.attributes);
+  const fieldNames = {};
+  const entry = attributes[0];
   Object.keys(entry).forEach(k => {
     if (entry.hasOwnProperty(k)) {
-      headers[k] = k;
-    } 
+      fieldNames[k] = k;
+    }
   });
-  _exportCSVFile(headers, attrs, `notify-${Date.now().toString()}`);
-  return Promise.resolve();
+  _downloadCSVFile(fieldNames, attributes, `notify-${Date.now().toString()}`);
+}
+
+/**
+ * Download the CSV file
+ *
+ * @param fieldNames the names for each of the features fields
+ * @param attributes the features attributes
+ *
+ * @returns void
+ */
+function _downloadCSVFile(
+  fieldNames: {[key: string]: string},
+  attributes: {[key: string]: string}[],
+  fileTitle: string
+): void {
+  if (fieldNames) {
+    attributes.unshift(fieldNames);
+  }
+  // format values to string so it doesn't get tripped up when a value has a comma
+  // another option could be to export with a different delimiter
+  const csv = attributes.reduce((prev, cur) => {
+    return prev + Object.values(cur).map(v => `"${v}"`).join(",") + "\r\n";
+  }, "");
+  const link = document.createElement("a");
+  if (link.download !== undefined) {
+    link.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8;" }));
+    link.download = `${fileTitle}.csv` || "export.csv";
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 }
