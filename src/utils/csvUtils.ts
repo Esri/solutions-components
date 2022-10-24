@@ -1,7 +1,5 @@
 // May change this but doing this for now so the download button will do something
 
-// https://medium.com/@danny.pule/export-json-to-csv-file-using-javascript-a0b7bc5b00d2
-
 import { queryFeaturesByID } from "./queryUtils";
 
 /**
@@ -33,6 +31,9 @@ export async function exportCSV(
  *
  * @param fieldNames the names for each of the features fields
  * @param attributes the features attributes
+ *
+ * Based on:
+ * https://medium.com/@danny.pule/export-json-to-csv-file-using-javascript-a0b7bc5b00d2
  *
  * @returns void
  */

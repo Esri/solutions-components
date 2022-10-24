@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { EWorkflowType, ISelectionSet } from "./interfaces";
+import { EWorkflowType, ISelectionSet, IQueryExtentResponse } from "./interfaces";
 
 /**
  * Query the layer for OIDs based on any user drawn geometries or buffers
@@ -73,7 +73,7 @@ export async function queryFeaturesByGeometry(
   layer: __esri.FeatureLayer,
   geometry: __esri.Geometry,
   featuresCollection: {[key: string]: __esri.Graphic[]}
-): Promise<any> {
+): Promise<{[key: string]: __esri.Graphic[]}> {
   const num = layer.capabilities.query.maxRecordCount;
   const query = {
     start,
@@ -104,7 +104,7 @@ export async function queryFeaturesByGeometry(
  export async function queryExtent(
   ids: number[],
   layer: __esri.FeatureLayer
-): Promise<any> {
+): Promise<IQueryExtentResponse> {
   const query = layer.createQuery();
   query.objectIds = ids;
   return layer.queryExtent(query);
@@ -186,6 +186,7 @@ export function getSelectionSetQuery(
  * Query the layer for ObjectIds of features that intersect the provided geometry
  *
  * @param geometry Geometry used for the selection of ids from the select layer view
+ * @param layer the layer to query
  *
  * @returns Promise that will contain the selected ids
  */

@@ -123,11 +123,9 @@ export class MapDrawTools {
    */
   @Watch("graphics")
   graphicsWatchHandler(v: any, oldV: any): void {
-    if (v && JSON.stringify(v) !== JSON.stringify(oldV || [])) {
-      if (v.length > 0) {
-        this._sketchGraphicsLayer.removeAll();
-        this._sketchGraphicsLayer.addMany(v);
-      }
+    if (v && v.length > 0 && JSON.stringify(v) !== JSON.stringify(oldV || [])) {
+      this._sketchGraphicsLayer.removeAll();
+      this._sketchGraphicsLayer.addMany(v);
     }
   }
 
