@@ -39,19 +39,9 @@ export class BufferTools {
   //--------------------------------------------------------------------------
 
   /**
-   * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
+   * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
    */
-  @Prop() geometries: __esri.Geometry[] = [];
-
-  /**
-   * boolean: option to control if buffer results should be unioned
-   */
-  @Prop() unionResults = true;
-
-  /**
-   * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
-   */
-  @Prop() unit: __esri.LinearUnits = "meters";
+  @Prop() appearance: "slider" | "text" = "text";
 
   /**
    * number: The distance used for buffer
@@ -59,9 +49,9 @@ export class BufferTools {
   @Prop() distance = 0;
 
   /**
-   * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
+   * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
    */
-  @Prop() appearance: "slider" | "text" = "text";
+  @Prop() geometries: __esri.Geometry[] = [];
 
   /**
    * number: The component's maximum selectable value.
@@ -78,11 +68,32 @@ export class BufferTools {
    */
   @Prop() sliderTicks = 10;
 
+  /**
+   * boolean: option to control if buffer results should be unioned
+   */
+  @Prop() unionResults = true;
+
+  /**
+   * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
+   */
+  @Prop() unit: __esri.LinearUnits = "meters";
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() _translations: typeof BufferTools_T9n;
+
+  /**
+   * Timeout: https://nodejs.org/en/docs/guides/timers-in-node/
+   */
+  protected _bufferTimeout: NodeJS.Timeout;
 
   /**
    * geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
@@ -93,17 +104,6 @@ export class BufferTools {
    * HTMLCalciteSelectElement: The html element for selecting buffer unit
    */
   protected _unitElement: HTMLCalciteSelectElement;
-
-  /**
-   * Timeout: https://nodejs.org/en/docs/guides/timers-in-node/
-   */
-  protected _bufferTimeout: NodeJS.Timeout;
-
-  /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-  @State() _translations: typeof BufferTools_T9n;
 
   //--------------------------------------------------------------------------
   //
