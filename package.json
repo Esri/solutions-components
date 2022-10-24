@@ -23,7 +23,7 @@
     "lint:ts:fix": "eslint --ext .ts,.tsx --fix src/components src/utils",
     "lint:ts:prettier": "prettier --write \"**/*.ts?(x)\"",
     "release:publish": "npm publish --access public && ts-node ./support/releaseToGitHub.ts",
-    "test": "stencil test --spec --e2e --detectOpenHandles --coverage --collectCoverageFrom=src/**/*.ts",
+    "test": "stencil test --spec --e2e --detectOpenHandles --coverage --collectCoverageFrom=src/utils/**/*.ts",
     "test:clean": "npm run clean:src && npm run lint:ts:fix && stencil test --spec --e2e --detectOpenHandles",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate",
@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@esri/eslint-plugin-calcite-components": "^0.2.2",
+    "@stencil/core": "^2.18.1",
     "@stencil/postcss": "^2.1.0",
     "@stencil/sass": "^2.0.0",
     "@stencil/store": "^2.0.1",
@@ -63,18 +64,18 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
-    "@arcgis/core": "^4.23.7",
+    "@arcgis/core": "^4.24.7",
     "@esri/arcgis-rest-auth": "^3.4.2",
     "@esri/arcgis-rest-feature-layer": "^3.4.2",
     "@esri/arcgis-rest-portal": "^3.4.2",
     "@esri/arcgis-rest-request": "^3.4.2",
     "@esri/arcgis-rest-service-admin": "^3.4.2",
-    "@esri/calcite-components": "1.0.0-beta.94",
+    "@esri/calcite-components": "1.0.0-beta.95",
     "@esri/hub-common": "9.29.0",
     "@esri/hub-initiatives": "9.29.0",
     "@esri/hub-sites": "9.29.0",
     "@esri/hub-teams": "9.29.0",
-    "@esri/solution-common": "1.5.0",
+    "@esri/solution-common": "1.5.2",
     "@types/arcgis-js-api": "^4.24.0",
     "minimist": "^1.2.6"
   },

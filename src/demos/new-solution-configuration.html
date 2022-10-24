@@ -144,7 +144,7 @@
       solutionIdRegEx = /[0-9a-f]{32}/i;
       cancelBtn = document.getElementById("cancelBtn");
       saveBtn = document.getElementById("saveBtn");
-      hasChanges = false;
+      canSave = false;
       configurationComponent = document.getElementById("configurationComponent");
       modalIsClosing = false;
 
@@ -153,7 +153,7 @@
         if (!modalIsClosing) {
           cancelBtn.disabled = saveBtn.disabled = true;
           modalIsClosing = true;
-          if (hasChanges) {
+          if (canSave) {
             if (confirm("Save changes?")) {
               await saveChanges();
             } else {
@@ -167,7 +167,7 @@
       }
 
       async function cancelChanges() {
-        hasChanges = false;
+        canSave = false;
         await configurationComponent.unloadSolution();
       }
 
@@ -199,10 +199,10 @@
           modalTitle.innerHTML = `Configure Solution ${itemBase.title}`;
 
           configurationComponent.solutionItemId = solutionId;
-          window.addEventListener("solutionStoreHasChanges",
+          window.addEventListener("solutionCanSave",
             (evt) => {
               if (authentication._token) {  // Don't enable Save if we're not logged in
-                hasChanges = evt.detail;
+                canSave = evt.detail;
                 cancelBtn.disabled = saveBtn.disabled = !evt.detail;
               }
             }
@@ -223,7 +223,7 @@
       async function save() {
         modalIsClosing = true;
         cancelBtn.disabled = saveBtn.disabled = true;
-        if (hasChanges) {
+        if (canSave) {
           await saveChanges();
         } else {
           await cancelChanges();
@@ -233,7 +233,7 @@
 
       async function saveChanges() {
         try {
-        hasChanges = false;
+        canSave = false;
         await configurationComponent.saveSolution();
         } catch (error) {
           reportError("Unable to save", error.originalMessage);

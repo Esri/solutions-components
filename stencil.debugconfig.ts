@@ -28,7 +28,6 @@ export const config: Config = {
         { src: 'utils' }
       ]
     },
-    { type: "dist-custom-elements-bundle" },
     { type: "dist-custom-elements", autoDefineCustomElements: true },
     {
       type: 'docs-readme'

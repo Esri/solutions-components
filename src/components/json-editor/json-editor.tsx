@@ -76,6 +76,11 @@ export class JsonEditor {
   //--------------------------------------------------------------------------
 
   /**
+   * Contains a public value to indicate if the model has any changes.
+   */
+  @Prop({ mutable: true, reflect: true }) hasChanges: boolean = false;
+
+  /**
    * Contains a public value to indicate if the model has any errors
    * that would prevent saving it.
    */
@@ -127,12 +132,21 @@ export class JsonEditor {
       const setModelMarkers = monaco.editor.setModelMarkers;
       const self = this;
       monaco.editor.setModelMarkers = function(model, owner, markers) {
-        // Update the error flag if this call was for our model
+        // If this call was for our model, it acts like an onEditorChange event
+        // but gives us access to the error state as well
         if (model.id === self._currentModel.id) {
-          self.hasErrors = markers.length > 0;
-          const errorFlag = document.getElementById(`${self.instanceid}-errorFlag`);
+
+          // Set the error state & dispatch event if state has changed
+          self._flagEditorHasErrors(markers.length > 0);
+
+          // Set the changed state & dispatch event if state has changed, but only if there are no errors
+          if (!self.hasErrors) {
+            self._flagEditorHasChanges(self._currentModel?.canUndo());
+            self._flagEditorContentChanged();
+          }
 
           // Show the error flag if there are errors
+          const errorFlag = document.getElementById(`${self.instanceid}-errorFlag`);
           errorFlag.style.visibility = self.hasErrors ? "visible" : "hidden";
         }
 
@@ -388,6 +402,68 @@ export class JsonEditor {
   }
 
   /**
+   * Dispatches an event that the editor's content has changed.
+   *
+   * @protected
+   */
+  protected _flagEditorContentChanged(): void {
+    // Event for notifying that the editor contents have changed
+    window.dispatchEvent(new CustomEvent("solutionEditorContentChanged", {
+      detail: {
+        id: this.instanceid,
+        contents: this._currentModel.getValue()
+      },
+      bubbles: true,
+      cancelable: false,
+      composed: true
+    }));
+  }
+
+  /**
+   * Sets the editor's flag indicating if it has changes and dispatches an event when
+   * the flag value changes.
+   *
+   * @param flagHasChanges Current state of change in the editor; if it doesn't match the value saved in this
+   * object, an event is dispatched with the new value and the saved value is updated
+   *
+   * @protected
+   */
+  protected _flagEditorHasChanges(flagHasChanges: boolean): void {
+    // Event for notifying if the editor has updated the value of its hasChanges property
+    if (this.hasChanges !== flagHasChanges) {
+      window.dispatchEvent(new CustomEvent("solutionEditorHasChanges", {
+        detail: flagHasChanges,
+        bubbles: true,
+        cancelable: false,
+        composed: true
+      }));
+      this.hasChanges = flagHasChanges;
+    }
+  }
+
+  /**
+   * Sets the editor's flag indicating if it has errors and dispatches an event when
+   * the flag value changes.
+   *
+   * @param flagHasErrors Current state of errors in the editor; if it doesn't match the value saved in this
+   * object, an event is dispatched with the new value and the saved value is updated
+   *
+   * @protected
+   */
+  protected _flagEditorHasErrors(flagHasErrors: boolean): void {
+    // Event for notifying if the editor has updated the value of its hasErrors property
+    if (this.hasErrors !== flagHasErrors) {
+      window.dispatchEvent(new CustomEvent("solutionEditorHasErrors", {
+        detail: flagHasErrors,
+        bubbles: true,
+        cancelable: false,
+        composed: true
+      }));
+      this.hasErrors = flagHasErrors;
+    }
+  }
+
+  /**
    * Fetches the component's translations
    *
    * @protected
@@ -417,11 +493,14 @@ export class JsonEditor {
   }
 
   /**
-   * Updates the undo redo buttons as necessary.
+   * Handles activites appropriate to changes in the editor.
    *
    * @protected
    */
-   protected _onEditorChange(): void {
+  protected _onEditorChange(): void {
+    // Note: we're not flagging that the editor has changes here because this event
+    // arrives before the model markers event, which indicates errors. We don't want
+    // to notify about changes if there are errors.
     this._toggleUndoRedo();
   }
 

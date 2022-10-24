@@ -49,6 +49,10 @@ export namespace Components {
          */
         "getEditorContents": () => Promise<any>;
         /**
+          * Contains a public value to indicate if the model has any changes.
+         */
+        "hasChanges": boolean;
+        /**
           * Contains a public value to indicate if the model has any errors that would prevent saving it.
          */
         "hasErrors": boolean;
@@ -403,9 +407,6 @@ export namespace Components {
           * A template's itemId. This is used to get the correct model from a store in the json-editor
          */
         "itemId": string;
-        /**
-          * Contains the organization based variables
-         */
         "organizationVariables": string;
         /**
           * Contains the solution based variables
@@ -683,6 +684,10 @@ declare namespace LocalJSX {
         "unit"?: __esri.LinearUnits;
     }
     interface JsonEditor {
+        /**
+          * Contains a public value to indicate if the model has any changes.
+         */
+        "hasChanges"?: boolean;
         /**
           * Contains a public value to indicate if the model has any errors that would prevent saving it.
          */
@@ -994,9 +999,6 @@ declare namespace LocalJSX {
           * A template's itemId. This is used to get the correct model from a store in the json-editor
          */
         "itemId"?: string;
-        /**
-          * Contains the organization based variables
-         */
         "organizationVariables"?: string;
         /**
           * Contains the solution based variables
