@@ -314,6 +314,16 @@ export class RefineSelection {
     this.selectionSetsChanged.emit(this.selectionSets);
   }
 
+  /**
+   * Update the ids stored for the refine selection set
+   *
+   * @param selectionSet the refine selection set
+   * @param addIds any ids to add
+   * @param removeIds any ids to remove
+   *
+   * @returns updated selection sets
+   * @protected
+   */
   protected _updateRefineIds(
     selectionSet: ISelectionSet,
     addIds: number[],
@@ -338,6 +348,15 @@ export class RefineSelection {
     });
   }
 
+  /**
+   * Add a new refine selection set
+   *
+   * @param addIds any ids to add
+   * @param removeIds any ids to remove
+   *
+   * @returns updated selection sets
+   * @protected
+   */
   protected _addRefineSelectionSet(
     addIds: number[],
     removeIds: number[]
