@@ -587,7 +587,7 @@ export class RefineSelectionTools {
   }
 
   /**
-   * Update the ids for any add or remove and highlight the features.
+   * Update the ids for any ADD or REMOVE operation and highlight the features.
    *
    * @param oids the ids to add or remove
    * @param mode ADD or REMOVE this will control if the ids are added or removed
