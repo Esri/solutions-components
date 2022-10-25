@@ -138,6 +138,11 @@ export class RefineSelectionTools {
   protected _hitTestHandle: __esri.Handle;
 
   /**
+   * IRefineOperation[]: Array to maintain the possible redo operations
+   */
+  protected _redoStack: IRefineOperation[] = [];
+
+  /**
    * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
    */
   protected _sketchGeometry: __esri.Geometry;
@@ -154,9 +159,12 @@ export class RefineSelectionTools {
    */
   protected _sketchViewModel: __esri.SketchViewModel;
 
-  protected _undoStack = [];
+  /**
+   * IRefineOperation[]: Array to maintain the possible undo operations
+   */
+  protected _undoStack: IRefineOperation[] = [];
 
-  protected _redoStack = [];
+
 
   //--------------------------------------------------------------------------
   //
@@ -578,12 +586,24 @@ export class RefineSelectionTools {
     state.highlightHandle?.remove();
   }
 
+  /**
+   * Update the ids for any add or remove and highlight the features.
+   *
+   * @param oids the ids to add or remove
+   * @param mode ADD or REMOVE this will control if the ids are added or removed
+   * @param operationStack the undo or redo stack to push the operation to
+   * @param operationMode ADD or REMOVE the mode of the individual refine operation
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
   protected async _updateIds(
     oids: number[],
     mode: ESelectionMode,
     operationStack: IRefineOperation[],
     operationMode: ESelectionMode
-  ) {
+  ): Promise<void> {
     const idUpdates = { addIds: [], removeIds: [] };
     if (mode === ESelectionMode.ADD) {
       idUpdates.addIds = oids.filter(id => this.ids.indexOf(id) < 0);
@@ -599,9 +619,16 @@ export class RefineSelectionTools {
     });
   }
 
+  /**
+   * Undo the most current ADD or REMOVE operation
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
   async _undo(): Promise<void> {
     const undoOp = this._undoStack.pop();
-    await this._updateIds(
+    return this._updateIds(
       undoOp.ids,
       undoOp.mode === ESelectionMode.ADD ? ESelectionMode.REMOVE : ESelectionMode.ADD,
       this._redoStack,
@@ -609,9 +636,16 @@ export class RefineSelectionTools {
     );
   }
 
+  /**
+   * Redo the most current ADD or REMOVE operation
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
   async _redo(): Promise<void> {
     const redoOp = this._redoStack.pop();
-    await this._updateIds(
+    return this._updateIds(
       redoOp.ids,
       redoOp.mode,
       this._undoStack,
