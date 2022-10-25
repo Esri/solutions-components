@@ -94,7 +94,7 @@ export class RefineSelection {
     const addIds = event.detail?.addIds || [];
     const removeIds = event.detail?.removeIds || [];
 
-    this._updateSelectionSetsForRemoveIds(removeIds);
+    this._updateSelectionSets(removeIds);
     this._updateRefineSelectionSet(addIds, removeIds);
   }
 
@@ -312,17 +312,19 @@ export class RefineSelection {
   }
 
   /**
-   * Highlight any selected features in the map
+   * Remove ids from existing selection sets.
+   * Remove any selection sets than have no selected ids
+   * This can update any selection set not just the refine set.
+   * We do not do something similar for adds as we will only ever add from refine tools to the single REFINE selection set.
    *
    * @param removeIds the ids to remove
    *
    * @protected
    */
-  protected _updateSelectionSetsForRemoveIds(
+  protected _updateSelectionSets(
     removeIds: number[]
   ): void {
     if (removeIds.length > 0) {
-      // update the selection sets selectedIds and remove any selection sets that have no selected features
       this.selectionSets = this.selectionSets.reduce((prev, cur) => {
         cur.selectedIds = cur.selectedIds.filter(id => removeIds.indexOf(id) < 0);
         if (cur.selectedIds.length > 0) {
@@ -349,6 +351,10 @@ export class RefineSelection {
   ): void {
     const selectionSet = this._getRefineSelectionSet(this.selectionSets);
     if (selectionSet) {
+      // remove ids if they exist in the current addIds list
+      selectionSet.refineIds.addIds = selectionSet.refineIds.addIds.filter(id => removeIds.indexOf(id) < 0)
+      selectionSet.refineIds.removeIds = selectionSet.refineIds.removeIds.filter(id => addIds.indexOf(id) < 0)
+
       const _addIds = [...new Set(selectionSet.refineIds.addIds.concat(addIds))];
       const _removeIds = [...new Set(selectionSet.refineIds.removeIds.concat(removeIds))];
       selectionSet.refineIds = {

@@ -154,6 +154,10 @@ export class RefineSelectionTools {
    */
   protected _sketchViewModel: __esri.SketchViewModel;
 
+  protected _undoStack = [];
+
+  protected _redoStack = [];
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -310,14 +314,14 @@ export class RefineSelectionTools {
                 </div>
                 <div class="esri-sketch__tool-section esri-sketch__section">
                   <calcite-action
-                    disabled={true}
+                    disabled={this._undoStack.length === 0}
                     icon="undo"
                     onClick={() => this._undo()}
                     scale="s"
                     text={this._translations.undo}
                   />
                   <calcite-action
-                    disabled={true}
+                    disabled={this._redoStack.length === 0}
                     icon="redo"
                     onClick={() => this._redo()}
                     scale="s"
@@ -547,9 +551,11 @@ export class RefineSelectionTools {
         if (this.mode === ESelectionMode.ADD) {
           idUpdates.addIds = oids.filter(id => this.ids.indexOf(id) < 0);
           this.ids = [...this.ids, ...idUpdates.addIds];
+          this._undoStack.push({type: "add", ids: idUpdates.addIds});
         } else {
           idUpdates.removeIds = oids.filter(id => this.ids.indexOf(id) > -1);
           this.ids = this.ids.filter(id => idUpdates.removeIds.indexOf(id) < 0);
+          this._undoStack.push({type: "remove", ids: idUpdates.removeIds});
         }
         void this._highlightFeatures(this.ids).then(() => {
           this.refineSelectionIdsChange.emit(idUpdates);
@@ -584,12 +590,43 @@ export class RefineSelectionTools {
     state.highlightHandle?.remove();
   }
 
-  _undo(): void {
-    console.log("UNDO")
+  async _undo(): Promise<void> {
+    const toUndo = this._undoStack.pop();
+
+    const idUpdates = { addIds: [], removeIds: [] };
+
+    if (toUndo.type === "add") {
+      this.ids = this.ids.filter(id => toUndo.ids.indexOf(id) < 0);
+      idUpdates.removeIds = toUndo.ids;
+    } else {
+      this.ids = [...this.ids, ...toUndo.ids];
+      idUpdates.addIds = toUndo.ids;
+    }
+
+    this._redoStack.push(toUndo);
+
+    await this._highlightFeatures(this.ids).then(() => {
+      this.refineSelectionIdsChange.emit(idUpdates);
+    });
   }
 
-  _redo(): void {
-    console.log("REDO")
+  async _redo(): Promise<void> {
+    const toRedo = this._redoStack.pop();
+    const idUpdates = { addIds: [], removeIds: [] };
+
+    if (toRedo.type === "add") {
+      this.ids = [...this.ids, ...toRedo.ids];
+      idUpdates.addIds = toRedo.ids;
+    } else {
+      this.ids = this.ids.filter(id => toRedo.ids.indexOf(id) < 0);
+      idUpdates.removeIds = toRedo.ids;
+    }
+
+    this._undoStack.push(toRedo);
+
+    await this._highlightFeatures(this.ids).then(() => {
+      this.refineSelectionIdsChange.emit(idUpdates);
+    });
   }
 
   /**
