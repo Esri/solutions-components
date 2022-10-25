@@ -206,15 +206,11 @@ export class RefineSelection {
     return [(
       <calcite-list-item
         label={this._translations.featuresAdded?.replace("{{n}}", numAdded.toString())}
-      >
-        {this._getAction(numAdded > 0, "reset", "", (): void => this._revertSelection(refineSet, true), false, "actions-end")}
-      </calcite-list-item>
+      />
     ),(
       <calcite-list-item
         label={this._translations.featuresRemoved?.replace("{{n}}", numRemoved.toString())}
-      >
-        {this._getAction(numRemoved > 0, "reset", "", (): void => this._revertSelection(refineSet, false), false, "actions-end")}
-      </calcite-list-item>
+      />
     ), (
       <calcite-list-item
         label={this._translations.totalSelected?.replace("{{n}}", total.toString())}
@@ -271,44 +267,6 @@ export class RefineSelection {
         slot={slot}
         text={text} />
     );
-  }
-
-  /**
-   * Revert an Add or Remove selection
-   *
-   * @param refineSet the refine set
-   * @param isAdd boolean to indicate if we are reverting Add or Remove
-   *
-   * @returns Promise resolving when function is done
-   * @protected
-   */
-  protected _revertSelection(
-    refineSet: ISelectionSet,
-    isAdd: boolean
-  ): void {
-    if (isAdd) {
-      refineSet.refineIds.removeIds = refineSet.refineIds.addIds;
-      refineSet.selectedIds = refineSet.selectedIds.filter(id => {
-        return refineSet.refineIds.addIds.indexOf(id) < 0;
-      });
-      refineSet.refineIds.addIds = [];
-    } else {
-      refineSet.refineIds.addIds = refineSet.refineIds.removeIds;
-      refineSet.selectedIds = [...new Set([
-        ...refineSet.selectedIds,
-        ...refineSet.refineIds.addIds
-      ])]
-      refineSet.refineIds.removeIds = [];
-    }
-    void this._refineTools.reset().then(() => {
-      this.selectionSets = this.selectionSets.map(ss => {
-        if (ss.workflowType === EWorkflowType.REFINE) {
-          ss = refineSet;
-        }
-        return ss;
-      });
-      this.selectionSetsChanged.emit(this.selectionSets);
-    });
   }
 
   /**
