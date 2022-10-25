@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
-import { ERefineMode, ESelectionMode, ESelectionType } from "../../utils/interfaces";
+import { ERefineMode, ESelectionMode, ESelectionType, IRefineOperation } from "../../utils/interfaces";
 import { getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
 import { queryFeaturesByGeometry } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
@@ -138,6 +138,11 @@ export class RefineSelectionTools {
   protected _hitTestHandle: __esri.Handle;
 
   /**
+   * IRefineOperation[]: Array to maintain the possible redo operations
+   */
+  protected _redoStack: IRefineOperation[] = [];
+
+  /**
    * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
    */
   protected _sketchGeometry: __esri.Geometry;
@@ -153,6 +158,11 @@ export class RefineSelectionTools {
    * The sketch view model used to create graphics
    */
   protected _sketchViewModel: __esri.SketchViewModel;
+
+  /**
+   * IRefineOperation[]: Array to maintain the possible undo operations
+   */
+  protected _undoStack: IRefineOperation[] = [];
 
   //--------------------------------------------------------------------------
   //
@@ -310,14 +320,14 @@ export class RefineSelectionTools {
                 </div>
                 <div class="esri-sketch__tool-section esri-sketch__section">
                   <calcite-action
-                    disabled={true}
+                    disabled={this._undoStack.length === 0}
                     icon="undo"
                     onClick={() => this._undo()}
                     scale="s"
                     text={this._translations.undo}
                   />
                   <calcite-action
-                    disabled={true}
+                    disabled={this._redoStack.length === 0}
                     icon="redo"
                     onClick={() => this._redo()}
                     scale="s"
@@ -531,7 +541,7 @@ export class RefineSelectionTools {
       return queryFeaturesByGeometry(0, layerView.layer, geom, this._featuresCollection)
     });
 
-    return Promise.all(queryFeaturePromises).then(response => {
+    return Promise.all(queryFeaturePromises).then(async response => {
       let graphics = [];
       response.forEach(r => {
         Object.keys(r).forEach(k => {
@@ -543,17 +553,7 @@ export class RefineSelectionTools {
         this.refineSelectionGraphicsChange.emit(graphics);
       } else {
         const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
-        const idUpdates = { addIds: [], removeIds: [] };
-        if (this.mode === ESelectionMode.ADD) {
-          idUpdates.addIds = oids.filter(id => this.ids.indexOf(id) < 0);
-          this.ids = [...this.ids, ...idUpdates.addIds];
-        } else {
-          idUpdates.removeIds = oids.filter(id => this.ids.indexOf(id) > -1);
-          this.ids = this.ids.filter(id => idUpdates.removeIds.indexOf(id) < 0);
-        }
-        void this._highlightFeatures(this.ids).then(() => {
-          this.refineSelectionIdsChange.emit(idUpdates);
-        });
+        await this._updateIds(oids, this.mode, this._undoStack, this.mode);
       }
       this._clear();
     });
@@ -584,12 +584,71 @@ export class RefineSelectionTools {
     state.highlightHandle?.remove();
   }
 
-  _undo(): void {
-    console.log("UNDO")
+  /**
+   * Update the ids for any ADD or REMOVE operation and highlight the features.
+   *
+   * @param oids the ids to add or remove
+   * @param mode ADD or REMOVE this will control if the ids are added or removed
+   * @param operationStack the undo or redo stack to push the operation to
+   * @param operationMode ADD or REMOVE the mode of the individual refine operation
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _updateIds(
+    oids: number[],
+    mode: ESelectionMode,
+    operationStack: IRefineOperation[],
+    operationMode: ESelectionMode
+  ): Promise<void> {
+    const idUpdates = { addIds: [], removeIds: [] };
+    if (mode === ESelectionMode.ADD) {
+      idUpdates.addIds = oids.filter(id => this.ids.indexOf(id) < 0);
+      this.ids = [...this.ids, ...idUpdates.addIds];
+      operationStack.push({ mode: operationMode, ids: idUpdates.addIds });
+    } else {
+      idUpdates.removeIds = oids.filter(id => this.ids.indexOf(id) > -1);
+      this.ids = this.ids.filter(id => idUpdates.removeIds.indexOf(id) < 0);
+      operationStack.push({ mode: operationMode, ids: idUpdates.removeIds });
+    }
+    await this._highlightFeatures(this.ids).then(() => {
+      this.refineSelectionIdsChange.emit(idUpdates);
+    });
   }
 
-  _redo(): void {
-    console.log("REDO")
+  /**
+   * Undo the most current ADD or REMOVE operation
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  async _undo(): Promise<void> {
+    const undoOp = this._undoStack.pop();
+    return this._updateIds(
+      undoOp.ids,
+      undoOp.mode === ESelectionMode.ADD ? ESelectionMode.REMOVE : ESelectionMode.ADD,
+      this._redoStack,
+      undoOp.mode
+    );
+  }
+
+  /**
+   * Redo the most current ADD or REMOVE operation
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  async _redo(): Promise<void> {
+    const redoOp = this._redoStack.pop();
+    return this._updateIds(
+      redoOp.ids,
+      redoOp.mode,
+      this._undoStack,
+      redoOp.mode
+    );
   }
 
   /**

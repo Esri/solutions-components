@@ -94,7 +94,7 @@ export class RefineSelection {
     const addIds = event.detail?.addIds || [];
     const removeIds = event.detail?.removeIds || [];
 
-    this._updateSelectionSetsForRemoveIds(removeIds);
+    this._updateSelectionSets(removeIds);
     this._updateRefineSelectionSet(addIds, removeIds);
   }
 
@@ -206,15 +206,11 @@ export class RefineSelection {
     return [(
       <calcite-list-item
         label={this._translations.featuresAdded?.replace("{{n}}", numAdded.toString())}
-      >
-        {this._getAction(numAdded > 0, "reset", "", (): void => this._revertSelection(refineSet, true), false, "actions-end")}
-      </calcite-list-item>
+      />
     ),(
       <calcite-list-item
         label={this._translations.featuresRemoved?.replace("{{n}}", numRemoved.toString())}
-      >
-        {this._getAction(numRemoved > 0, "reset", "", (): void => this._revertSelection(refineSet, false), false, "actions-end")}
-      </calcite-list-item>
+      />
     ), (
       <calcite-list-item
         label={this._translations.totalSelected?.replace("{{n}}", total.toString())}
@@ -274,55 +270,19 @@ export class RefineSelection {
   }
 
   /**
-   * Revert an Add or Remove selection
-   *
-   * @param refineSet the refine set
-   * @param isAdd boolean to indicate if we are reverting Add or Remove
-   *
-   * @returns Promise resolving when function is done
-   * @protected
-   */
-  protected _revertSelection(
-    refineSet: ISelectionSet,
-    isAdd: boolean
-  ): void {
-    if (isAdd) {
-      refineSet.refineIds.removeIds = refineSet.refineIds.addIds;
-      refineSet.selectedIds = refineSet.selectedIds.filter(id => {
-        return refineSet.refineIds.addIds.indexOf(id) < 0;
-      });
-      refineSet.refineIds.addIds = [];
-    } else {
-      refineSet.refineIds.addIds = refineSet.refineIds.removeIds;
-      refineSet.selectedIds = [...new Set([
-        ...refineSet.selectedIds,
-        ...refineSet.refineIds.addIds
-      ])]
-      refineSet.refineIds.removeIds = [];
-    }
-    void this._refineTools.reset().then(() => {
-      this.selectionSets = this.selectionSets.map(ss => {
-        if (ss.workflowType === EWorkflowType.REFINE) {
-          ss = refineSet;
-        }
-        return ss;
-      });
-      this.selectionSetsChanged.emit(this.selectionSets);
-    });
-  }
-
-  /**
-   * Highlight any selected features in the map
+   * Remove ids from existing selection sets.
+   * Remove any selection sets than have no selected ids
+   * This can update any selection set not just the refine set.
+   * We do not do something similar for adds as we will only ever add from refine tools to the single REFINE selection set.
    *
    * @param removeIds the ids to remove
    *
    * @protected
    */
-  protected _updateSelectionSetsForRemoveIds(
+  protected _updateSelectionSets(
     removeIds: number[]
   ): void {
     if (removeIds.length > 0) {
-      // update the selection sets selectedIds and remove any selection sets that have no selected features
       this.selectionSets = this.selectionSets.reduce((prev, cur) => {
         cur.selectedIds = cur.selectedIds.filter(id => removeIds.indexOf(id) < 0);
         if (cur.selectedIds.length > 0) {
@@ -348,44 +308,80 @@ export class RefineSelection {
     removeIds: number[]
   ): void {
     const selectionSet = this._getRefineSelectionSet(this.selectionSets);
-    if (selectionSet) {
-      const _addIds = [...new Set(selectionSet.refineIds.addIds.concat(addIds))];
-      const _removeIds = [...new Set(selectionSet.refineIds.removeIds.concat(removeIds))];
-      selectionSet.refineIds = {
-        addIds: _addIds.filter(id => _removeIds.indexOf(id) < 0),
-        removeIds: _removeIds.filter(id => _addIds.indexOf(id) < 0)
-      }
-      selectionSet.selectedIds = selectionSet.refineIds.addIds.length > 0 ?
-        [...new Set(selectionSet.selectedIds.concat(selectionSet.refineIds.addIds))] :
-        selectionSet.selectedIds.filter(id => selectionSet.refineIds.removeIds.indexOf(id) < 0);
-
-      this.selectionSets = this.selectionSets.map(ss => {
-        return ss.workflowType === EWorkflowType.REFINE ? selectionSet : ss;
-      });
-    } else {
-      this.selectionSets = [
-        ...this.selectionSets,
-        ({
-          buffer: undefined,
-          distance: 0,
-          download: true,
-          geometries: [],
-          id: Date.now(),
-          label: "Refine",
-          layerView: this.addresseeLayer,
-          refineSelectLayers: [],
-          searchResult: undefined,
-          selectedIds: addIds,
-          unit: "feet",
-          workflowType: EWorkflowType.REFINE,
-          refineIds: {
-            addIds: addIds,
-            removeIds: removeIds
-          }
-        })
-      ];
-    }
+    this.selectionSets = selectionSet ?
+      this._updateRefineIds(selectionSet, addIds, removeIds) :
+      this._addRefineSelectionSet(addIds, removeIds);
     this.selectionSetsChanged.emit(this.selectionSets);
+  }
+
+  /**
+   * Update the ids stored for the refine selection set
+   *
+   * @param selectionSet the refine selection set
+   * @param addIds any ids to add
+   * @param removeIds any ids to remove
+   *
+   * @returns updated selection sets
+   * @protected
+   */
+  protected _updateRefineIds(
+    selectionSet: ISelectionSet,
+    addIds: number[],
+    removeIds: number[]
+  ): ISelectionSet[] {
+    // remove ids if they exist in the current add or remove list
+    selectionSet.refineIds.addIds = selectionSet.refineIds.addIds.filter(id => removeIds.indexOf(id) < 0)
+    selectionSet.refineIds.removeIds = selectionSet.refineIds.removeIds.filter(id => addIds.indexOf(id) < 0)
+
+    const _addIds = [...new Set(selectionSet.refineIds.addIds.concat(addIds))];
+    const _removeIds = [...new Set(selectionSet.refineIds.removeIds.concat(removeIds))];
+    selectionSet.refineIds = {
+      addIds: _addIds.filter(id => _removeIds.indexOf(id) < 0),
+      removeIds: _removeIds.filter(id => _addIds.indexOf(id) < 0)
+    }
+    selectionSet.selectedIds = selectionSet.refineIds.addIds.length > 0 ?
+      [...new Set(selectionSet.selectedIds.concat(selectionSet.refineIds.addIds))] :
+      selectionSet.selectedIds.filter(id => selectionSet.refineIds.removeIds.indexOf(id) < 0);
+
+    return this.selectionSets.map(ss => {
+      return ss.workflowType === EWorkflowType.REFINE ? selectionSet : ss;
+    });
+  }
+
+  /**
+   * Add a new refine selection set
+   *
+   * @param addIds any ids to add
+   * @param removeIds any ids to remove
+   *
+   * @returns updated selection sets
+   * @protected
+   */
+  protected _addRefineSelectionSet(
+    addIds: number[],
+    removeIds: number[]
+  ): ISelectionSet[] {
+    return [
+      ...this.selectionSets,
+      ({
+        buffer: undefined,
+        distance: 0,
+        download: true,
+        geometries: [],
+        id: Date.now(),
+        label: "Refine",
+        layerView: this.addresseeLayer,
+        refineSelectLayers: [],
+        searchResult: undefined,
+        selectedIds: addIds,
+        unit: "feet",
+        workflowType: EWorkflowType.REFINE,
+        refineIds: {
+          addIds: addIds,
+          removeIds: removeIds
+        }
+      })
+    ];
   }
 
   /**

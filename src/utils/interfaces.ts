@@ -317,3 +317,8 @@ export interface IQueryExtentResponse {
   count: number;
   extent: __esri.Extent;
 }
+
+export interface IRefineOperation {
+  mode: ESelectionMode;
+  ids: number[];
+}
