@@ -308,48 +308,61 @@ export class RefineSelection {
     removeIds: number[]
   ): void {
     const selectionSet = this._getRefineSelectionSet(this.selectionSets);
-    if (selectionSet) {
-      // remove ids if they exist in the current addIds list
-      selectionSet.refineIds.addIds = selectionSet.refineIds.addIds.filter(id => removeIds.indexOf(id) < 0)
-      selectionSet.refineIds.removeIds = selectionSet.refineIds.removeIds.filter(id => addIds.indexOf(id) < 0)
-
-      const _addIds = [...new Set(selectionSet.refineIds.addIds.concat(addIds))];
-      const _removeIds = [...new Set(selectionSet.refineIds.removeIds.concat(removeIds))];
-      selectionSet.refineIds = {
-        addIds: _addIds.filter(id => _removeIds.indexOf(id) < 0),
-        removeIds: _removeIds.filter(id => _addIds.indexOf(id) < 0)
-      }
-      selectionSet.selectedIds = selectionSet.refineIds.addIds.length > 0 ?
-        [...new Set(selectionSet.selectedIds.concat(selectionSet.refineIds.addIds))] :
-        selectionSet.selectedIds.filter(id => selectionSet.refineIds.removeIds.indexOf(id) < 0);
-
-      this.selectionSets = this.selectionSets.map(ss => {
-        return ss.workflowType === EWorkflowType.REFINE ? selectionSet : ss;
-      });
-    } else {
-      this.selectionSets = [
-        ...this.selectionSets,
-        ({
-          buffer: undefined,
-          distance: 0,
-          download: true,
-          geometries: [],
-          id: Date.now(),
-          label: "Refine",
-          layerView: this.addresseeLayer,
-          refineSelectLayers: [],
-          searchResult: undefined,
-          selectedIds: addIds,
-          unit: "feet",
-          workflowType: EWorkflowType.REFINE,
-          refineIds: {
-            addIds: addIds,
-            removeIds: removeIds
-          }
-        })
-      ];
-    }
+    this.selectionSets = selectionSet ?
+      this._updateRefineIds(selectionSet, addIds, removeIds) :
+      this._addRefineSelectionSet(addIds, removeIds);
     this.selectionSetsChanged.emit(this.selectionSets);
+  }
+
+  protected _updateRefineIds(
+    selectionSet: ISelectionSet,
+    addIds: number[],
+    removeIds: number[]
+  ): ISelectionSet[] {
+    // remove ids if they exist in the current add or remove list
+    selectionSet.refineIds.addIds = selectionSet.refineIds.addIds.filter(id => removeIds.indexOf(id) < 0)
+    selectionSet.refineIds.removeIds = selectionSet.refineIds.removeIds.filter(id => addIds.indexOf(id) < 0)
+
+    const _addIds = [...new Set(selectionSet.refineIds.addIds.concat(addIds))];
+    const _removeIds = [...new Set(selectionSet.refineIds.removeIds.concat(removeIds))];
+    selectionSet.refineIds = {
+      addIds: _addIds.filter(id => _removeIds.indexOf(id) < 0),
+      removeIds: _removeIds.filter(id => _addIds.indexOf(id) < 0)
+    }
+    selectionSet.selectedIds = selectionSet.refineIds.addIds.length > 0 ?
+      [...new Set(selectionSet.selectedIds.concat(selectionSet.refineIds.addIds))] :
+      selectionSet.selectedIds.filter(id => selectionSet.refineIds.removeIds.indexOf(id) < 0);
+
+    return this.selectionSets.map(ss => {
+      return ss.workflowType === EWorkflowType.REFINE ? selectionSet : ss;
+    });
+  }
+
+  protected _addRefineSelectionSet(
+    addIds: number[],
+    removeIds: number[]
+  ): ISelectionSet[] {
+    return [
+      ...this.selectionSets,
+      ({
+        buffer: undefined,
+        distance: 0,
+        download: true,
+        geometries: [],
+        id: Date.now(),
+        label: "Refine",
+        layerView: this.addresseeLayer,
+        refineSelectLayers: [],
+        searchResult: undefined,
+        selectedIds: addIds,
+        unit: "feet",
+        workflowType: EWorkflowType.REFINE,
+        refineIds: {
+          addIds: addIds,
+          removeIds: removeIds
+        }
+      })
+    ];
   }
 
   /**

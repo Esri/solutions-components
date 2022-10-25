@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
-import { ERefineMode, ESelectionMode, ESelectionType } from "../../utils/interfaces";
+import { ERefineMode, ESelectionMode, ESelectionType, IRefineOperation } from "../../utils/interfaces";
 import { getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
 import { queryFeaturesByGeometry } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
@@ -547,19 +547,7 @@ export class RefineSelectionTools {
         this.refineSelectionGraphicsChange.emit(graphics);
       } else {
         const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
-        const idUpdates = { addIds: [], removeIds: [] };
-        if (this.mode === ESelectionMode.ADD) {
-          idUpdates.addIds = oids.filter(id => this.ids.indexOf(id) < 0);
-          this.ids = [...this.ids, ...idUpdates.addIds];
-          this._undoStack.push({type: "add", ids: idUpdates.addIds});
-        } else {
-          idUpdates.removeIds = oids.filter(id => this.ids.indexOf(id) > -1);
-          this.ids = this.ids.filter(id => idUpdates.removeIds.indexOf(id) < 0);
-          this._undoStack.push({type: "remove", ids: idUpdates.removeIds});
-        }
-        void this._highlightFeatures(this.ids).then(() => {
-          this.refineSelectionIdsChange.emit(idUpdates);
-        });
+        this._updateIds(oids, this.mode, this._undoStack, this.mode);
       }
       this._clear();
     });
@@ -590,43 +578,45 @@ export class RefineSelectionTools {
     state.highlightHandle?.remove();
   }
 
-  async _undo(): Promise<void> {
-    const toUndo = this._undoStack.pop();
-
+  protected async _updateIds(
+    oids: number[],
+    mode: ESelectionMode,
+    operationStack: IRefineOperation[],
+    operationMode: ESelectionMode
+  ) {
     const idUpdates = { addIds: [], removeIds: [] };
-
-    if (toUndo.type === "add") {
-      this.ids = this.ids.filter(id => toUndo.ids.indexOf(id) < 0);
-      idUpdates.removeIds = toUndo.ids;
+    if (mode === ESelectionMode.ADD) {
+      idUpdates.addIds = oids.filter(id => this.ids.indexOf(id) < 0);
+      this.ids = [...this.ids, ...idUpdates.addIds];
+      operationStack.push({ mode: operationMode, ids: idUpdates.addIds });
     } else {
-      this.ids = [...this.ids, ...toUndo.ids];
-      idUpdates.addIds = toUndo.ids;
+      idUpdates.removeIds = oids.filter(id => this.ids.indexOf(id) > -1);
+      this.ids = this.ids.filter(id => idUpdates.removeIds.indexOf(id) < 0);
+      operationStack.push({ mode: operationMode, ids: idUpdates.removeIds });
     }
-
-    this._redoStack.push(toUndo);
-
     await this._highlightFeatures(this.ids).then(() => {
       this.refineSelectionIdsChange.emit(idUpdates);
     });
   }
 
+  async _undo(): Promise<void> {
+    const undoOp = this._undoStack.pop();
+    await this._updateIds(
+      undoOp.ids,
+      undoOp.mode === ESelectionMode.ADD ? ESelectionMode.REMOVE : ESelectionMode.ADD,
+      this._redoStack,
+      undoOp.mode
+    );
+  }
+
   async _redo(): Promise<void> {
-    const toRedo = this._redoStack.pop();
-    const idUpdates = { addIds: [], removeIds: [] };
-
-    if (toRedo.type === "add") {
-      this.ids = [...this.ids, ...toRedo.ids];
-      idUpdates.addIds = toRedo.ids;
-    } else {
-      this.ids = this.ids.filter(id => toRedo.ids.indexOf(id) < 0);
-      idUpdates.removeIds = toRedo.ids;
-    }
-
-    this._undoStack.push(toRedo);
-
-    await this._highlightFeatures(this.ids).then(() => {
-      this.refineSelectionIdsChange.emit(idUpdates);
-    });
+    const redoOp = this._redoStack.pop();
+    await this._updateIds(
+      redoOp.ids,
+      redoOp.mode,
+      this._undoStack,
+      redoOp.mode
+    );
   }
 
   /**
