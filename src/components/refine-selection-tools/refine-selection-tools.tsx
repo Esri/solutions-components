@@ -164,8 +164,6 @@ export class RefineSelectionTools {
    */
   protected _undoStack: IRefineOperation[] = [];
 
-
-
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -543,7 +541,7 @@ export class RefineSelectionTools {
       return queryFeaturesByGeometry(0, layerView.layer, geom, this._featuresCollection)
     });
 
-    return Promise.all(queryFeaturePromises).then(response => {
+    return Promise.all(queryFeaturePromises).then(async response => {
       let graphics = [];
       response.forEach(r => {
         Object.keys(r).forEach(k => {
@@ -555,7 +553,7 @@ export class RefineSelectionTools {
         this.refineSelectionGraphicsChange.emit(graphics);
       } else {
         const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
-        this._updateIds(oids, this.mode, this._undoStack, this.mode);
+        await this._updateIds(oids, this.mode, this._undoStack, this.mode);
       }
       this._clear();
     });
