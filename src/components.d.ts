@@ -42,6 +42,8 @@ export namespace Components {
          */
         "unit": __esri.LinearUnits;
     }
+    interface ConfigLayerPicker {
+    }
     interface JsonEditor {
         /**
           * Gets the contents of the editor.
@@ -493,6 +495,12 @@ declare global {
         prototype: HTMLBufferToolsElement;
         new (): HTMLBufferToolsElement;
     };
+    interface HTMLConfigLayerPickerElement extends Components.ConfigLayerPicker, HTMLStencilElement {
+    }
+    var HTMLConfigLayerPickerElement: {
+        prototype: HTMLConfigLayerPickerElement;
+        new (): HTMLConfigLayerPickerElement;
+    };
     interface HTMLJsonEditorElement extends Components.JsonEditor, HTMLStencilElement {
     }
     var HTMLJsonEditorElement: {
@@ -621,6 +629,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "buffer-tools": HTMLBufferToolsElement;
+        "config-layer-picker": HTMLConfigLayerPickerElement;
         "json-editor": HTMLJsonEditorElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
@@ -682,6 +691,8 @@ declare namespace LocalJSX {
           * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
          */
         "unit"?: __esri.LinearUnits;
+    }
+    interface ConfigLayerPicker {
     }
     interface JsonEditor {
         /**
@@ -1033,6 +1044,7 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "buffer-tools": BufferTools;
+        "config-layer-picker": ConfigLayerPicker;
         "json-editor": JsonEditor;
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
@@ -1061,6 +1073,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
+            "config-layer-picker": LocalJSX.ConfigLayerPicker & JSXBase.HTMLAttributes<HTMLConfigLayerPickerElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
