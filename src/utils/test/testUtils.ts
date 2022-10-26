@@ -58,7 +58,7 @@ export function createRuntimeMockUserSession(
  *
  * @returns Buffer usable as a File
  */
-export function getSampleImageAsFile(filename = "sampleImage"): File {
+export function getSampleImageAsFile(filename = "sampleImage.png"): File {
   const pseudoFile = Buffer.from(_imageAsDataUri(), 'base64') as any;
   pseudoFile.name = filename;
   return pseudoFile;

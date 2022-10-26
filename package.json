@@ -23,7 +23,7 @@
     "lint:ts:fix": "eslint --ext .ts,.tsx --fix src/components src/utils",
     "lint:ts:prettier": "prettier --write \"**/*.ts?(x)\"",
     "release:publish": "npm publish --access public && ts-node ./support/releaseToGitHub.ts",
-    "test": "stencil test --spec --e2e --detectOpenHandles --coverage --collectCoverageFrom=src/utils/**/*.ts",
+    "test": "stencil test --spec --e2e --detectOpenHandles --coverage --collectCoverageFrom=src/utils/*.ts",
     "test:clean": "npm run clean:src && npm run lint:ts:fix && stencil test --spec --e2e --detectOpenHandles",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate",
