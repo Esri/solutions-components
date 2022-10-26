@@ -76,7 +76,7 @@
     "@esri/hub-initiatives": "9.29.0",
     "@esri/hub-sites": "9.29.0",
     "@esri/hub-teams": "9.29.0",
-    "@esri/solution-common": "1.5.2",
+    "@esri/solution-common": "1.5.3",
     "@types/arcgis-js-api": "^4.24.0",
     "minimist": "^1.2.6"
   },

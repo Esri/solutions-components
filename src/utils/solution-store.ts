@@ -40,10 +40,9 @@ import {
   isSupportedFileType,
   removeItemResourceFile,
   updateItem,
-  //???updateItemResourceFile,
+  updateItemResourceFile,
   UserSession
 } from '@esri/solution-common';
-import { IItemResourceOptions, IItemResourceResponse, updateItemResource } from "@esri/arcgis-rest-portal";//???
 
 //--------------------------------------------------------------------------------------------------------------------//
 //
@@ -672,26 +671,6 @@ class SolutionStore
       suffix: filenameParts[filenameParts.length - 1]
     };
   }
-}
-
-function updateItemResourceFile(  //???
-  itemId: string,
-  filename: string,
-  resource: File,
-  authentication: UserSession
-): Promise<IItemResourceResponse> {
-  // Prefix has to be specified separately
-  const prefixedFilenameParts = filename.split("/");
-  const prefix = prefixedFilenameParts.length > 1 ? prefixedFilenameParts.slice(0, prefixedFilenameParts.length - 1).join("/") : undefined;
-  const suffix = prefixedFilenameParts[prefixedFilenameParts.length - 1];
-
-  return updateItemResource({
-    id: itemId,
-    prefix: prefix,
-    name: suffix,
-    resource,
-    authentication: authentication
-  } as IItemResourceOptions);
 }
 
 export default SolutionStore.Store;
