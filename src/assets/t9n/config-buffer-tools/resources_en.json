@@ -1,4 +1,11 @@
 {
-  "defaultBufferDistance": "Default buffer distance",
-  "defaultUnit": "Default unit"
+  "defaultBufferDistance": "Default distance",
+  "defaultUnit": "Default unit",
+  "units": {
+    "feet": "Feet",
+    "yards": "Yards",
+    "meters": "Meters",
+    "kilometers": "Kilometers",
+    "miles": "Miles"
+  }
 }

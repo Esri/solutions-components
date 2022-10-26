@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, State } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode } from '@stencil/core';
 import ConfigBufferTools_T9n from "../../assets/t9n/config-buffer-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 
@@ -36,6 +36,22 @@ export class ConfigBufferTools {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * "VERTICAL" | "HORIZONTAL": Specifies how the controls chould be aligned.
+   */
+  @Prop({mutable: true, reflect: true}) alignment: "VERTICAL" | "HORIZONTAL" = "VERTICAL";
+
+  /**
+   * number: Default distance value.
+   */
+  @Prop({mutable: true, reflect: true}) distance = 100;
+
+  /**
+   * string: Default unit value.
+   * Should be a unit listed in assets/t9n/config-buffer-tools/resources
+   */
+  @Prop({mutable: true, reflect: true}) unit = "Meters";
 
   //--------------------------------------------------------------------------
   //
@@ -67,16 +83,63 @@ export class ConfigBufferTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Emitted on demand when the distance changes
+   */
+  @Event() distanceChange: EventEmitter<number>;
+
+  /**
+   * Emitted on demand when the unit changes
+   */
+  @Event() unitSelectionChange: EventEmitter<string>;
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   *
+   * @returns Promise when complete
+   */
+  async componentWillLoad(): Promise<void> {
+    await this._getTranslations();
+  }
+
+  /**
+   * Renders the component.
+   */
   render() {
+    const isHorizontal = this.alignment === "HORIZONTAL";
+    const displayClass = isHorizontal ? "horizontal-display" : "";
+    const paddingClass = isHorizontal ? "padding-inline-end-1" : "padding-block-end-1";
+    const widthClass = isHorizontal ? "width-half" : "width-full";
     return (
       <Host>
-        <slot></slot>
+        <div class={displayClass}>
+          <div class={`${paddingClass} ${widthClass}`}>
+            <calcite-label class="label-spacing">
+              {this._translations?.defaultBufferDistance}
+              <calcite-input
+                min={0}
+                number-button-type="vertical"
+                onCalciteInputInput={(evt) => this._distanceChanged(evt)}
+                type="number"
+                value={this.distance}
+              />
+            </calcite-label>
+          </div>
+          <div class={`${widthClass}`}>
+            <calcite-label class="label-spacing">
+              {this._translations?.defaultUnit}
+              <calcite-select onCalciteSelectChange={(evt) => this._unitSelectionChange(evt)}>
+                {this._renderUnitOptions()}
+              </calcite-select>
+            </calcite-label>
+          </div>
+        </div>
       </Host>
     );
   }
@@ -86,6 +149,44 @@ export class ConfigBufferTools {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Store the selected distance and emit for other components
+   *
+   * @protected
+   */
+  protected _distanceChanged(
+    evt: CustomEvent
+  ): void {
+    this.distance = evt.detail.value;
+    this.distanceChange.emit(this.distance);
+  }
+
+  /**
+   * Store the selected unit and emit for other components
+   *
+   * @protected
+   */
+  protected _unitSelectionChange(
+    evt: CustomEvent
+  ): void {
+    this.unit = (evt.target as HTMLCalciteSelectElement).value;
+    this.unitSelectionChange.emit(this.unit);
+  }
+
+  /**
+   * Render the various unit options
+   *
+   * @returns Promise when complete
+   * @protected
+   */
+  protected _renderUnitOptions(): VNode[] {
+    const nlsUnits = this._translations?.units || {};
+    const units: string[] = Object.keys(nlsUnits).map(k => nlsUnits[k]);
+    return units.map(unit => {
+      return (<calcite-option label={unit} selected={unit === this.unit} value={unit}/>);
+    });
+  }
 
   /**
    * Fetches the component's translations
