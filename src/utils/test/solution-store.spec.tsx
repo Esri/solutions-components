@@ -249,11 +249,12 @@ describe("solution-store", () => {
 
   it("gets resource storage name", async () => {
     const resourcePaths: IResourcePath[] = [
-      { type: 0, filename: "def" },
-      { type: 1, filename: "def" },
-      { type: 2, filename: "def" },
-      { type: 3, filename: "def" },
-      { type: 4, filename: "def" }
+      { type: common.EFileType.Data, filename: "def.txt" },  // file extension supported by AGO
+      { type: common.EFileType.Data, filename: "def.doc" },  // file extension not supported by AGO
+      { type: common.EFileType.Info, filename: "def" },
+      { type: common.EFileType.Metadata, filename: "def" },
+      { type: common.EFileType.Resource, filename: "def" },
+      { type: common.EFileType.Thumbnail, filename: "def" }
     ] as any;
 
     const storageNames: string[] = resourcePaths.map(
@@ -261,10 +262,11 @@ describe("solution-store", () => {
     );
 
     expect(storageNames).toEqual([
-      "abc_info_data/def",
+      "abc_info_data/def.txt",
+      "abc_info_dataz/def.doc.zip",
       "abc_info/def",
       "abc_info_metadata/def",
-      "abc_info_dataz/def",
+      "abc/def",
       "abc_info_thumbnail/def"
     ]);
   });
@@ -306,96 +308,133 @@ describe("solution-store", () => {
     expect(solutionData.templates.filter(t => t.hasOwnProperty("groupDetails")).length).toEqual(solutionData.templates.length);
   });
 
-  it("prepares a solution for storage", async () => {
-    // Get the templates; parse+stringify seems only working way to avoid modifying data file
-    const solutionData = JSON.parse(JSON.stringify(solution_ca924c));
+  describe("_prepareSolutionItemsForStorage", () => {
+    const originalConsoleLog = console.log
 
-    // Provide thumbnail images for the templates and prepare the templates for editing
-    const sampleImageFile = testUtils.getSampleImageAsFile();
-    jest.spyOn(common, "getThumbnailFromStorageItem").mockResolvedValue(sampleImageFile);
-    await state._testAccess("_prepareSolutionItemsForEditing", "ca924c6db7d247b9a31fa30532fb5913", solutionData.templates, MOCK_USER_SESSION) as ISolutionTemplateEdits;
+    beforeEach(() => {
+      console.log = jest.fn();
+    })
+    ;
+    afterEach(() => {
+      console.log = originalConsoleLog;
+    });
 
-    // Provide some resource mods
-    const template = solutionData.templates[0];
+    it("prepares a solution for storage", async () => {
+      // Get the templates; parse+stringify seems only working way to avoid modifying data file
+      const solutionData = JSON.parse(JSON.stringify(solution_ca924c));
 
-    template.resourceFilePaths.push({  // add a resource
-      blob: sampleImageFile,
-      filename: sampleImageFile.name,
-      type: common.EFileType.Resource,
-      updateType: EUpdateType.Add
-    } as IResourcePath);
+      // Provide thumbnail images for the templates and prepare the templates for editing
+      const sampleImageFile = testUtils.getSampleImageAsFile();
+      jest.spyOn(common, "getThumbnailFromStorageItem").mockResolvedValue(sampleImageFile);
+      await state._testAccess("_prepareSolutionItemsForEditing", "ca924c6db7d247b9a31fa30532fb5913", solutionData.templates, MOCK_USER_SESSION) as ISolutionTemplateEdits;
 
-    template.resourceFilePaths.push({  // update the thumbnail file
-      blob: sampleImageFile,
-      filename: template.resourceFilePaths[1].filename,
-      type: common.EFileType.Thumbnail,
-      updateType: EUpdateType.Update
-    } as IResourcePath);
+      // Provide some resource mods
+      const template = solutionData.templates[0];
 
-    template.resourceFilePaths.push({  // remove the metadata.xml file
-      filename: template.resourceFilePaths[0].filename,
-      type: common.EFileType.Metadata,
-      updateType: EUpdateType.Remove
-    } as IResourcePath);
+      template.resourceFilePaths.push({  // add a resource
+        blob: sampleImageFile,
+        filename: sampleImageFile.name,
+        type: common.EFileType.Resource,
+        updateType: EUpdateType.Add
+      } as IResourcePath);
 
-    // Run the prep
-    jest.spyOn(common, "copyFilesToStorageItem").mockResolvedValue([ template.itemId + "_info_dataz/" + sampleImageFile.name ]);
-    jest.spyOn(common, "removeItemResourceFile").mockResolvedValue({ success: true });
-    jest.spyOn(common, "updateItemResourceFile").mockResolvedValue({ success: true, itemId: "abc", owner: "def", folder: "ghi"});
+      template.resourceFilePaths.push({  // update the thumbnail file
+        blob: sampleImageFile,
+        filename: template.resourceFilePaths[1].filename,
+        type: common.EFileType.Thumbnail,
+        updateType: EUpdateType.Update
+      } as IResourcePath);
 
-    expect(template.resourceFilePaths.length).toEqual(5);
-    await state._testAccess("_prepareSolutionItemsForStorage", "ca924c6db7d247b9a31fa30532fb5913", solutionData.templates, MOCK_USER_SESSION) as ISolutionTemplateEdits;
-    expect(template.resources).toEqual([
-      "79036430a6274e17ae915d0278b8569c_info_thumbnail/thumbnail.JPEG",
-      "79036430a6274e17ae915d0278b8569c_info_dataz/" + sampleImageFile.name
-    ]);
+      template.resourceFilePaths.push({  // remove the metadata.xml file
+        filename: template.resourceFilePaths[0].filename,
+        type: common.EFileType.Metadata,
+        updateType: EUpdateType.Remove
+      } as IResourcePath);
 
-    // Check that the augmentation has been removed from each template
-    expect(solutionData.templates.some(t => t.hasOwnProperty("resourceFilePaths"))).toBeFalsy();
-    expect(solutionData.templates.some(t => t.hasOwnProperty("thumbnail"))).toBeFalsy();
-    expect(solutionData.templates.some(t => t.hasOwnProperty("groupDetails"))).toBeFalsy();
+      // Run the prep
+      jest.spyOn(common, "copyFilesToStorageItem").mockResolvedValue([ template.itemId + "_info_dataz/" + sampleImageFile.name ]);
+      jest.spyOn(common, "removeItemResourceFile").mockResolvedValue({ success: true });
+      jest.spyOn(common, "updateItemResourceFile").mockResolvedValue({ success: true, itemId: "abc", owner: "def", folder: "ghi"});
+
+      expect(template.resourceFilePaths.length).toEqual(5);
+      await state._testAccess("_prepareSolutionItemsForStorage", "ca924c6db7d247b9a31fa30532fb5913", solutionData.templates, MOCK_USER_SESSION) as ISolutionTemplateEdits;
+      expect(template.resources).toEqual([
+        "79036430a6274e17ae915d0278b8569c_info_thumbnail/thumbnail.JPEG",
+        "79036430a6274e17ae915d0278b8569c/" + sampleImageFile.name
+      ]);
+
+      // Check that the augmentation has been removed from each template
+      expect(solutionData.templates.some(t => t.hasOwnProperty("resourceFilePaths"))).toBeFalsy();
+      expect(solutionData.templates.some(t => t.hasOwnProperty("thumbnail"))).toBeFalsy();
+      expect(solutionData.templates.some(t => t.hasOwnProperty("groupDetails"))).toBeFalsy();
+    });
+
+    it("catches errors updating or removing resources while preparing a solution for storage", async () => {
+      jest.spyOn(console, "log").mockImplementation(() => {});
+
+      // Get the templates; parse+stringify seems only working way to avoid modifying data file
+      const solutionData = JSON.parse(JSON.stringify(solution_ca924c));
+
+      // Provide thumbnail images for the templates and prepare the templates for editing
+      const sampleImageFile = testUtils.getSampleImageAsFile();
+      jest.spyOn(common, "getThumbnailFromStorageItem").mockResolvedValue(sampleImageFile);
+      await state._testAccess("_prepareSolutionItemsForEditing", "ca924c6db7d247b9a31fa30532fb5913", solutionData.templates, MOCK_USER_SESSION) as ISolutionTemplateEdits;
+
+      // Provide some resource mods
+      const template = solutionData.templates[0];
+
+      template.resourceFilePaths.push({  // update the thumbnail file
+        blob: sampleImageFile,
+        filename: template.resourceFilePaths[1].filename,
+        type: common.EFileType.Thumbnail,
+        updateType: EUpdateType.Update
+      } as IResourcePath);
+
+      template.resourceFilePaths.push({  // remove the metadata.xml file
+        filename: template.resourceFilePaths[0].filename,
+        type: common.EFileType.Metadata,
+        updateType: EUpdateType.Remove
+      } as IResourcePath);
+
+      // Run the prep
+      jest.spyOn(console, "log").mockImplementation(() => {});  // hide error messages from _prepareSolutionItemsForStorage
+      jest.spyOn(common, "removeItemResourceFile").mockImplementation(() => { throw new Error("Item does not exist or is inaccessible.") });
+      jest.spyOn(common, "updateItemResourceFile").mockImplementation(() => { throw new Error("Item does not exist or is inaccessible.") });
+
+      expect(template.resourceFilePaths.length).toEqual(4);
+      await state._testAccess("_prepareSolutionItemsForStorage", "ca924c6db7d247b9a31fa30532fb5913", solutionData.templates, MOCK_USER_SESSION) as ISolutionTemplateEdits;
+      expect(template.resources).toEqual([
+        "79036430a6274e17ae915d0278b8569c_info_metadata/metadata.xml",
+        "79036430a6274e17ae915d0278b8569c_info_thumbnail/thumbnail.JPEG"
+      ]);
+
+      // Check that the augmentation has been removed from each template
+      expect(solutionData.templates.some(t => t.hasOwnProperty("resourceFilePaths"))).toBeFalsy();
+      expect(solutionData.templates.some(t => t.hasOwnProperty("thumbnail"))).toBeFalsy();
+      expect(solutionData.templates.some(t => t.hasOwnProperty("groupDetails"))).toBeFalsy();
+    });
+
   });
 
-  it("catches errors updating or removing resources while preparing a solution for storage", async () => {
-    // Get the templates; parse+stringify seems only working way to avoid modifying data file
-    const solutionData = JSON.parse(JSON.stringify(solution_ca924c));
+  describe("_splitFilename", () => {
 
-    // Provide thumbnail images for the templates and prepare the templates for editing
-    const sampleImageFile = testUtils.getSampleImageAsFile();
-    jest.spyOn(common, "getThumbnailFromStorageItem").mockResolvedValue(sampleImageFile);
-    await state._testAccess("_prepareSolutionItemsForEditing", "ca924c6db7d247b9a31fa30532fb5913", solutionData.templates, MOCK_USER_SESSION) as ISolutionTemplateEdits;
+    it("handles filename without prefix", () => {
+      const { prefix, suffix } = state._testAccess("_splitFilename", "sample.txt");
+      expect(prefix).toBeUndefined();
+      expect(suffix).toEqual("sample.txt");
+    });
 
-    // Provide some resource mods
-    const template = solutionData.templates[0];
+    it("handles filename with single prefix", () => {
+      const { prefix, suffix } = state._testAccess("_splitFilename", "folder/sample.txt");
+      expect(prefix).toEqual("folder");
+      expect(suffix).toEqual("sample.txt");
+    });
 
-    template.resourceFilePaths.push({  // update the thumbnail file
-      blob: sampleImageFile,
-      filename: template.resourceFilePaths[1].filename,
-      type: common.EFileType.Thumbnail,
-      updateType: EUpdateType.Update
-    } as IResourcePath);
+    it("handles filename with multiple prefixes", () => {
+      const { prefix, suffix } = state._testAccess("_splitFilename", "folder/subfolder/sample.txt");
+      expect(prefix).toEqual("folder/subfolder");
+      expect(suffix).toEqual("sample.txt");
+    });
 
-    template.resourceFilePaths.push({  // remove the metadata.xml file
-      filename: template.resourceFilePaths[0].filename,
-      type: common.EFileType.Metadata,
-      updateType: EUpdateType.Remove
-    } as IResourcePath);
-
-    // Run the prep
-    jest.spyOn(console, "log").mockImplementation(() => {});  // hide error messages from _prepareSolutionItemsForStorage
-    jest.spyOn(common, "removeItemResourceFile").mockImplementation(() => { throw new Error("Item does not exist or is inaccessible.") });
-    jest.spyOn(common, "updateItemResourceFile").mockImplementation(() => { throw new Error("Item does not exist or is inaccessible.") });
-
-    expect(template.resourceFilePaths.length).toEqual(4);
-    await state._testAccess("_prepareSolutionItemsForStorage", "ca924c6db7d247b9a31fa30532fb5913", solutionData.templates, MOCK_USER_SESSION) as ISolutionTemplateEdits;
-    expect(template.resources).toEqual([
-      "79036430a6274e17ae915d0278b8569c_info_metadata/metadata.xml",
-      "79036430a6274e17ae915d0278b8569c_info_thumbnail/thumbnail.JPEG"
-    ]);
-
-    // Check that the augmentation has been removed from each template
-    expect(solutionData.templates.some(t => t.hasOwnProperty("resourceFilePaths"))).toBeFalsy();
-    expect(solutionData.templates.some(t => t.hasOwnProperty("thumbnail"))).toBeFalsy();
-    expect(solutionData.templates.some(t => t.hasOwnProperty("groupDetails"))).toBeFalsy();
   });
 });
