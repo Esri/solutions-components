@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import { Component, Host, h } from '@stencil/core';
+import { Component, Element, Host, h, State } from '@stencil/core';
+import ConfigBufferTools_T9n from "../../assets/t9n/config-buffer-tools/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
   tag: 'config-buffer-tools',
@@ -27,7 +29,7 @@ export class ConfigBufferTools {
   //  Host element access
   //
   //--------------------------------------------------------------------------
-  //@Element() el: HTMLConfigLayerPickerElement;
+  @Element() el: HTMLConfigBufferToolsElement;
 
   //--------------------------------------------------------------------------
   //
@@ -40,6 +42,12 @@ export class ConfigBufferTools {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() _translations: typeof ConfigBufferTools_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -79,4 +87,14 @@ export class ConfigBufferTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Fetches the component's translations
+   *
+   * @returns Promise when complete
+   * @protected
+   */
+  protected async _getTranslations(): Promise<void> {
+    const messages = await getLocaleComponentStrings(this.el);
+    this._translations = messages[0] as typeof ConfigBufferTools_T9n;
+  }
 }
