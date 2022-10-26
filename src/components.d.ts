@@ -48,6 +48,8 @@ export namespace Components {
     }
     interface ConfigLayerPicker {
     }
+    interface ConfigPdfDownload {
+    }
     interface JsonEditor {
         /**
           * Gets the contents of the editor.
@@ -517,6 +519,12 @@ declare global {
         prototype: HTMLConfigLayerPickerElement;
         new (): HTMLConfigLayerPickerElement;
     };
+    interface HTMLConfigPdfDownloadElement extends Components.ConfigPdfDownload, HTMLStencilElement {
+    }
+    var HTMLConfigPdfDownloadElement: {
+        prototype: HTMLConfigPdfDownloadElement;
+        new (): HTMLConfigPdfDownloadElement;
+    };
     interface HTMLJsonEditorElement extends Components.JsonEditor, HTMLStencilElement {
     }
     var HTMLJsonEditorElement: {
@@ -648,6 +656,7 @@ declare global {
         "config-buffer-tools": HTMLConfigBufferToolsElement;
         "config-draw-tools": HTMLConfigDrawToolsElement;
         "config-layer-picker": HTMLConfigLayerPickerElement;
+        "config-pdf-download": HTMLConfigPdfDownloadElement;
         "json-editor": HTMLJsonEditorElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
@@ -715,6 +724,8 @@ declare namespace LocalJSX {
     interface ConfigDrawTools {
     }
     interface ConfigLayerPicker {
+    }
+    interface ConfigPdfDownload {
     }
     interface JsonEditor {
         /**
@@ -1069,6 +1080,7 @@ declare namespace LocalJSX {
         "config-buffer-tools": ConfigBufferTools;
         "config-draw-tools": ConfigDrawTools;
         "config-layer-picker": ConfigLayerPicker;
+        "config-pdf-download": ConfigPdfDownload;
         "json-editor": JsonEditor;
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
@@ -1100,6 +1112,7 @@ declare module "@stencil/core" {
             "config-buffer-tools": LocalJSX.ConfigBufferTools & JSXBase.HTMLAttributes<HTMLConfigBufferToolsElement>;
             "config-draw-tools": LocalJSX.ConfigDrawTools & JSXBase.HTMLAttributes<HTMLConfigDrawToolsElement>;
             "config-layer-picker": LocalJSX.ConfigLayerPicker & JSXBase.HTMLAttributes<HTMLConfigLayerPickerElement>;
+            "config-pdf-download": LocalJSX.ConfigPdfDownload & JSXBase.HTMLAttributes<HTMLConfigPdfDownloadElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
