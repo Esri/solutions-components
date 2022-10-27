@@ -154,7 +154,7 @@ export class ConfigLayerPicker {
               {this._translations?.addresseeLayers}
             </calcite-label>
           </div>
-          <div>
+          <div class="padding-inline-start-1">
             {this._renderCheckboxes(this._layerNames)}
           </div>
         </div>

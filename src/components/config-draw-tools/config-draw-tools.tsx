@@ -131,7 +131,7 @@ export class ConfigDrawTools {
               {this._translations?.drawTools}
             </calcite-label>
           </div>
-          <div>
+          <div class="padding-inline-start-1">
             {this._renderDrawTypes()}
           </div>
         </div>
