@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, State } from '@stencil/core';
+import { Component, Element, Host, h, Method, Prop, State, VNode } from '@stencil/core';
 import ConfigDrawTools_T9n from "../../assets/t9n/config-draw-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 
@@ -37,6 +37,12 @@ export class ConfigDrawTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * boolean: All checkboxes checked state will be set with this value on first render.
+   * Default is true
+   */
+  @Prop({reflect: true}) defaultChecked = true;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -49,6 +55,13 @@ export class ConfigDrawTools {
    */
   @State() _translations: typeof ConfigDrawTools_T9n;
 
+  /**
+   * A list of all checkbox elements for this component
+   *
+   * @protected
+   */
+  protected _elements: HTMLCalciteCheckboxElement[] = [];
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -60,6 +73,19 @@ export class ConfigDrawTools {
   //  Methods (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Returns a key/value pair that represents the checkbox value and checked state
+   *
+   * @returns Promise with the state of the checkboxes
+   */
+  @Method()
+  async getConfigInfo(): Promise<{ [key: string]: boolean }> {
+    return this._elements.reduce((prev, cur) => {
+      prev[cur.value] = cur.checked;
+      return prev;
+    }, {});
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -83,12 +109,32 @@ export class ConfigDrawTools {
   }
 
   /**
+   * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
+   */
+  async componentDidLoad(): Promise<void> {
+    if (this.defaultChecked) {
+      this._elements.forEach(el => {
+        el.checked = true;
+      });
+    }
+  }
+
+  /**
    * Renders the component.
    */
   render() {
     return (
       <Host>
-        <slot></slot>
+        <div>
+          <div class="padding-block-end-1">
+            <calcite-label class="label-spacing">
+              {this._translations?.drawTools}
+            </calcite-label>
+          </div>
+          <div>
+            {this._renderDrawTypes()}
+          </div>
+        </div>
       </Host>
     );
   }
@@ -98,6 +144,25 @@ export class ConfigDrawTools {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Render a checkbox with a label for each of the types listed in the NLS
+   *
+   * @returns Array of label/checkbox input nodes
+   * @protected
+   */
+  protected _renderDrawTypes(): VNode[] {
+    const nlsTypes = this._translations?.types || {};
+    const types = Object.keys(nlsTypes).map(k => nlsTypes[k]);
+    return types.map(type => {
+      return (
+        <calcite-label layout="inline">
+          <calcite-checkbox ref={(el) => this._elements.push(el) } value={type}/>
+          {type}
+        </calcite-label>
+      );
+    })
+  }
 
   /**
    * Fetches the component's translations

@@ -5,7 +5,7 @@
       name="viewport"
       content="initial-scale=1,maximum-scale=1,user-scalable=no"
     />
-    <title>Map Search</title>
+    <title>Config Draw Tools</title>
     <!--
     | Copyright 2022 Esri
     |
@@ -22,12 +22,6 @@
     | limitations under the License.
     -->
     <style>
-      .map-div {
-        padding: 0;
-        margin: 0;
-        height: 100%;
-        width: 100%;
-      }
       .over-map {
         position: absolute;
         right: 0px;
@@ -41,41 +35,26 @@
       }
     </style>
 
-    <link
-      rel="stylesheet"
-      href="https://js.arcgis.com/4.23/esri/themes/light/main.css"
-    />
     <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components@1.0.0-beta.94/dist/calcite/calcite.css" type="text/css" />
     <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
     <link rel="stylesheet" href="../solutions.css" type="text/css">
 
-    <script src="https://js.arcgis.com/4.23/"></script>
     <script type="module" src="https://unpkg.com/@esri/calcite-components@1.0.0-beta.94/dist/calcite/calcite.esm.js"></script>
     <script type="module" src="../solutions.esm.js"></script>
     <script>
-      require(["esri/WebMap", "esri/views/MapView"], (
-        WebMap,
-        MapView
-      ) => {
-        var webMap = new WebMap({
-          portalItem: {
-            id: "6a55f6678208461bb7a26d9e418a00bc"
-          }
-        });
-
+      function showResults() {
         const demo = document.getElementById("demo");
-        demo.mapView = new MapView({
-          container: "viewDiv",
-          map: webMap,
-          zoom: 5,
-          center: [-98, 42]
+        demo?.getConfigInfo().then(configInfo => {
+          alert(JSON.stringify(configInfo));
         });
-      });
+      }
     </script>
   </head>
 
   <body>
-    <div id="viewDiv" class="map-div"></div>
-    <config-draw-tools id="demo" class="over-map column"></config-draw-tools>
+    <div class="over-map column">
+      <config-draw-tools id="demo"></config-draw-tools>
+      <calcite-button onclick="showResults()">Demo Results</calcite-button>
+    </div>
   </body>
 </html>
