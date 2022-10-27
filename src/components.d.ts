@@ -68,6 +68,19 @@ export namespace Components {
         "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
     }
     interface ConfigLayerPicker {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked": boolean;
+        /**
+          * Returns a key/value pair that represents the checkbox value and checked state
+          * @returns Promise with the state of the checkboxes
+         */
+        "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
     }
     interface ConfigPdfDownload {
     }
@@ -773,6 +786,14 @@ declare namespace LocalJSX {
         "defaultChecked"?: boolean;
     }
     interface ConfigLayerPicker {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked"?: boolean;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
     }
     interface ConfigPdfDownload {
     }
