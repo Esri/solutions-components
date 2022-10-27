@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ConfigLayerPicker } from '../config-layer-picker';
 
-describe('config-layer-picker', () => {
+xdescribe('config-layer-picker', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [ConfigLayerPicker],

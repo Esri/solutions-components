@@ -1,6 +1,6 @@
 import { newE2EPage } from '@stencil/core/testing';
 
-describe('config-pdf-download', () => {
+xdescribe('config-pdf-download', () => {
   it('renders', async () => {
     const page = await newE2EPage();
     await page.setContent('<config-pdf-download></config-pdf-download>');
