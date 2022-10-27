@@ -5,7 +5,7 @@
       name="viewport"
       content="initial-scale=1,maximum-scale=1,user-scalable=no"
     />
-    <title>Map Search</title>
+    <title>Config PDF Download</title>
     <!--
     | Copyright 2022 Esri
     |
@@ -71,11 +71,21 @@
           center: [-98, 42]
         });
       });
+
+      function showResults() {
+        const demo = document.getElementById("demo");
+        demo?.getConfigInfo().then(configInfo => {
+          alert(JSON.stringify(configInfo));
+        });
+      };
     </script>
   </head>
 
   <body>
     <div id="viewDiv" class="map-div"></div>
-    <config-pdf-download id="demo" class="over-map column"></config-pdf-download>
+    <div class="over-map column">
+      <config-pdf-download id="demo"></config-pdf-download>
+      <calcite-button onclick="showResults()">Demo Results</calcite-button>
+    </div>
   </body>
 </html>

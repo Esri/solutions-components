@@ -83,6 +83,15 @@ export namespace Components {
         "mapView": __esri.MapView;
     }
     interface ConfigPdfDownload {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked": boolean;
+        /**
+          * Returns a key/value pair that represents the checkbox value and checked state
+          * @returns Promise with the state of the checkboxes
+         */
+        "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
     }
     interface JsonEditor {
         /**
@@ -796,6 +805,10 @@ declare namespace LocalJSX {
         "mapView"?: __esri.MapView;
     }
     interface ConfigPdfDownload {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked"?: boolean;
     }
     interface JsonEditor {
         /**

@@ -109,17 +109,6 @@ export class ConfigLayerPicker {
     }, {});
   }
 
-  /**
-   * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
-   */
-  async componentDidLoad(): Promise<void> {
-    if (this.defaultChecked) {
-      this._elements.forEach(el => {
-        el.checked = true;
-      });
-    }
-  }
-
   //--------------------------------------------------------------------------
   //
   //  Events (public)
@@ -140,6 +129,17 @@ export class ConfigLayerPicker {
   async componentWillLoad(): Promise<void> {
     await this._setLayers();
     await this._getTranslations();
+  }
+
+  /**
+   * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
+   */
+  async componentDidLoad(): Promise<void> {
+    if (this.defaultChecked) {
+      this._elements.forEach(el => {
+        el.checked = true;
+      });
+    }
   }
 
   /**
