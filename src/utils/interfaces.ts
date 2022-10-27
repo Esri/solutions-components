@@ -219,7 +219,7 @@ export interface IServiceInfo {
 export interface ISolutionSpatialReferenceInfo {
   enabled: boolean;
   services: IServiceInfo;
-  spatialReference: any;
+  spatialReference: string | number;
 }
 
 /**
