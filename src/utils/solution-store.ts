@@ -557,21 +557,16 @@ class SolutionStore
     services: any[],
     defaultWkid: string | number
   ): ISolutionSpatialReferenceInfo {
-    console.log("Default wkid: " + defaultWkid);//???
     const defaultServices: any = {};
     services.forEach(service => {
       defaultServices[service.name] = service.enabled;
-      console.log("Service " + service.name + " is " + (service.enabled ? "enabled" : "NOT enabled"));//???
     });
 
-    //return {
-    const spatialReferenceInfo = {//???
+    return {
       enabled: defaultWkid !== undefined,
       services: defaultServices,
       spatialReference: defaultWkid ? defaultWkid : undefined
     }
-    console.log("get spatialReferenceInfo: " + JSON.stringify(spatialReferenceInfo, null, 2));//???
-    return spatialReferenceInfo;//???
   }
 
   /**
@@ -718,12 +713,10 @@ class SolutionStore
     spatialReferenceInfo: ISolutionSpatialReferenceInfo,
     templates: IItemTemplateEdit[]
   ): string | number {
-    console.log("set spatialReferenceInfo: " + JSON.stringify(spatialReferenceInfo, null, 2));  //???
     const customizingPrefix = "{{params.wkid||";
     const customizeableFeatureServices = this._getCustomizableFeatureServices(templates);
 
     if (spatialReferenceInfo.enabled) {
-      console.log("spatialReferenceInfo is enabled with " + JSON.stringify(spatialReferenceInfo.spatialReference, null, 2));//???
       // Enable or disable this feature in each service
       customizeableFeatureServices.forEach(
         (fs) => {
@@ -732,15 +725,12 @@ class SolutionStore
           if (spatialReferenceInfo.services[name] ) {  // enabled
             wkid = `{{params.wkid||${spatialReferenceInfo.spatialReference}}}`;
             setCreateProp(fs, "properties.service.spatialReference.wkid", wkid);
-            console.log(name + " wkid set: " + wkid);//???
 
           } else {                                     // disabled
             wkid = getProp(fs, "properties.service.spatialReference.wkid");
             if (wkid.toString().startsWith(customizingPrefix)) {
               wkid = wkid.toString().substring(customizingPrefix.length, wkid.length - 2);
               setCreateProp(fs, "properties.service.spatialReference.wkid", wkid);
-              console.log(name + " wkid cleared: " + wkid);//???
-              } else { console.log(name + " wkid unchanged: " + wkid);//???
             }
           }
         }
@@ -748,16 +738,13 @@ class SolutionStore
       return spatialReferenceInfo.spatialReference;
 
     } else {
-      console.log("spatialReferenceInfo is disabled");//???
       // Disable this feature in each service
       customizeableFeatureServices.forEach(
         (fs) => {
-          let wkid = getProp(fs, "properties.service.spatialReference.wkid");
+          const wkid = getProp(fs, "properties.service.spatialReference.wkid");
           if (wkid.toString().startsWith(customizingPrefix)) {
             setCreateProp(fs, "properties.service.spatialReference.wkid",
               wkid.toString().substring(customizingPrefix.length, wkid.length - 2));
-            console.log((fs.item.title || fs.item.name) + " wkid cleared: " + wkid);//???
-          } else { console.log((fs.item.title || fs.item.name) + " wkid unchanged: " + wkid);//???
           }
         }
       );
