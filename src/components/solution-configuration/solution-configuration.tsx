@@ -110,7 +110,7 @@ export class SolutionConfiguration {
    * Renders the component.
    */
   render(): VNode {
-    const wkid = getProp(state.getStoreInfo("spatialReferenceInfo"), "spatialReference.wkid");
+    const wkid = getProp(state.getStoreInfo("spatialReferenceInfo"), "spatialReference");
     const hasServices: boolean = state.getStoreInfo("featureServices").length > 0;
     return (
       <Host>

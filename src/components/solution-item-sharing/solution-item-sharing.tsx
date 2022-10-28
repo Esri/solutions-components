@@ -16,7 +16,7 @@
 
 import { Component, Element, h, Host, Method, Prop, State, VNode, Watch } from '@stencil/core';
 import state from "../../utils/solution-store";
-import { IItemShare } from '../../utils/interfaces';
+import { IItemShare, IItemTemplateEdit } from '../../utils/interfaces';
 import SolutionItemSharing_T9n from '../../assets/t9n/solution-item-sharing/resources.json';
 import { getLocaleComponentStrings } from '../../utils/locale';
 
@@ -132,22 +132,24 @@ export class SolutionItemSharing {
   _renderItems(
     objs: IItemShare[]
   ): VNode[] {
-    return objs && objs.length > 0 ? objs.map(item => {
-      //onCalciteSwitchChange={(event) => this._updateItem(event)}
-      return (
-        <calcite-label layout="inline">
-          <calcite-switch
-            id={item.id}
-            name="setting"
-            scale="m"
-            switched={item.shareItem}
-            value="enabled"
-          />
-          <solution-item-icon type={item.type} typeKeywords={item.typeKeywords} />
-          <span class="icon-text" title={item.title}>{item.title}</span>
-        </calcite-label>
-      );
-    }) : null;
+    return objs && objs.length > 0
+      ? objs.map(item => {
+        return (
+          <calcite-label layout="inline">
+            <calcite-switch
+              id={item.id}
+              name="setting"
+              onCalciteSwitchChange={(event) => this._updateItem(event)}
+              scale="m"
+              switched={item.shareItem}
+              value="enabled"
+            />
+            <solution-item-icon type={item.type} typeKeywords={item.typeKeywords} />
+            <span class="icon-text" title={item.title}>{item.title}</span>
+          </calcite-label>
+        );
+      })
+      : null;
   }
 
   /**
@@ -156,24 +158,38 @@ export class SolutionItemSharing {
    * @param event onCalciteSwitchChange event
    */
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  /*
   _updateItem(event): void {
     const id: string = event.target.id;
-    this.sharing = this.sharing.map(item => {
-      if (item.id === id) {
+    this.sharing = this.sharing.map((itemShare: IItemShare) => {
+      if (itemShare.id === id) {
         // update the item
-        item.shareItem = event.detail.switched;
-        // update the store
-        if (state?.models[id]) {
-          state.models[id].shareInfo =
-            (item.isShared && !item.shareItem) ? { groupId: this.groupId, shared: false } :
-              (!item.isShared && item.shareItem) ? { groupId: this.groupId, shared: true } : undefined;
+        itemShare.shareItem = event.detail.switched;
+
+        // update the item in the store
+        const itemEdit: IItemTemplateEdit = state.getItemInfo(id);
+
+        if (itemShare.shareItem) {
+          // Add the group to the item if it's not already there
+          if (!itemEdit.groups) {
+            itemEdit.groups = [this.groupId];
+          } else if (itemEdit.groups.indexOf(this.groupId) < 0) {
+            itemEdit.groups.push(this.groupId);
+          }
+        } else {
+          // Remove the group from the item if it's there
+          if (itemEdit.groups) {
+            const i = itemEdit.groups.indexOf(this.groupId);
+            if (i > -1) {
+              itemEdit.groups.splice(i, 1);
+            }
+          }
         }
+
+        state.setItemInfo(itemEdit);
       }
-      return item;
+      return itemShare;
     });
   }
-  */
 
   /**
    * Fetches the component's translations

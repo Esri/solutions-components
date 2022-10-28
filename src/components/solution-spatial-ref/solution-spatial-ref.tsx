@@ -55,7 +55,7 @@ export class SolutionSpatialRef {
   @Prop({ mutable: true, reflect: true }) locked = true;
 
   /**
-   * Contains the public value for this component.
+   * Contains the public value for this component, which is a wkid or a wkt.
    */
   @Prop({ mutable: true, reflect: true }) value: string = this.defaultWkid.toString();
 
@@ -89,7 +89,7 @@ export class SolutionSpatialRef {
 
   constructor() {
     this.spatialRef = this._createSpatialRefDisplay(this.value);
-    this.locked = true;
+    this.locked = typeof this.value === "undefined";
   }
 
   /**
@@ -315,8 +315,9 @@ export class SolutionSpatialRef {
    */
   protected _getFeatureServices(services: string[]): VNode {
     // verify they are in state
+    const spatialReferenceInfo = state.getStoreInfo("spatialReferenceInfo");
     const _services = services.filter(s => {
-      return Object.keys(state.getStoreInfo("spatialReferenceInfo")["services"]).some(stateService => stateService === s)
+      return Object.keys(spatialReferenceInfo.services).some(stateService => stateService === s)
     });
     return _services && _services.length > 0 ? (
       <div>
@@ -328,7 +329,7 @@ export class SolutionSpatialRef {
               disabled={this.locked}
               onCalciteSwitchChange={(event) => this._updateEnabledServices(event, name)}
               scale="m"
-              switched={state.getStoreInfo("spatialReferenceInfo")["services"][name]}
+              switched={spatialReferenceInfo.services[name]}
             />{name}
           </label>
         ))}
@@ -340,15 +341,20 @@ export class SolutionSpatialRef {
    * Updates the enabled and spatialReference prop in spatialReferenceInfo.
    */
   protected _updateStore(): void {
-    state.getStoreInfo("spatialReferenceInfo")["enabled"] = !this.locked;
-    state.getStoreInfo("spatialReferenceInfo")["spatialReference"] = this.spatialRef;
+    const spatialReferenceInfo = state.getStoreInfo("spatialReferenceInfo");
+    spatialReferenceInfo.enabled = !this.locked;
+    spatialReferenceInfo.spatialReference = this.spatialRef.wkid;
+    state.setStoreInfo("spatialReferenceInfo", spatialReferenceInfo);
   }
 
   /**
    * Updates the enabled/disabled state of the service in spatialReferenceInfo.
    */
   protected _updateEnabledServices(event: any, name: string): void {
-    state.getStoreInfo("spatialReferenceInfo")["services"][name] = event.detail.switched;
+    const spatialReferenceInfo = state.getStoreInfo("spatialReferenceInfo");
+    spatialReferenceInfo.services[name] = event.detail.switched;
+    state.setStoreInfo("spatialReferenceInfo", spatialReferenceInfo);
+
     this.featureServiceSpatialReferenceChange.emit({
       name,
       enabled: event.detail.switched
