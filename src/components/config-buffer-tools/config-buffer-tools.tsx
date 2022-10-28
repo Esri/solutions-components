@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Host, h, Method, Prop, State, VNode } from '@stencil/core';
 import ConfigBufferTools_T9n from "../../assets/t9n/config-buffer-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 
@@ -51,7 +51,7 @@ export class ConfigBufferTools {
    * string: Default unit value.
    * Should be a unit listed in assets/t9n/config-buffer-tools/resources
    */
-  @Prop({mutable: true, reflect: true}) unit = "Meters";
+  @Prop({mutable: true, reflect: true}) unit;
 
   //--------------------------------------------------------------------------
   //
@@ -77,21 +77,24 @@ export class ConfigBufferTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Returns a key/value pair that represents the checkbox value and checked state
+   *
+   * @returns Promise with the state of the checkboxes
+   */
+  @Method()
+  async getConfigInfo(): Promise<{ [key: string]: number | string }> {
+    return Promise.resolve({
+      "distance": this.distance,
+      "unit": this.unit
+    });
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Events (public)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Emitted on demand when the distance changes
-   */
-  @Event() distanceChange: EventEmitter<number>;
-
-  /**
-   * Emitted on demand when the unit changes
-   */
-  @Event() unitSelectionChange: EventEmitter<string>;
 
   //--------------------------------------------------------------------------
   //
@@ -106,6 +109,8 @@ export class ConfigBufferTools {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
+    // set the default
+    this.unit = this._translations.units.meters;
   }
 
   /**
@@ -125,7 +130,7 @@ export class ConfigBufferTools {
               <calcite-input
                 min={0}
                 number-button-type="vertical"
-                onCalciteInputInput={(evt) => this._distanceChanged(evt)}
+                onCalciteInputInput={(evt) => {this._distanceChanged(evt);}}
                 type="number"
                 value={this.distance}
               />
@@ -134,7 +139,9 @@ export class ConfigBufferTools {
           <div class={`${widthClass}`}>
             <calcite-label class="label-spacing">
               {this._translations?.defaultUnit}
-              <calcite-select onCalciteSelectChange={(evt) => this._unitSelectionChange(evt)}>
+              <calcite-select
+                onCalciteSelectChange={(evt) => {this._unitSelectionChange(evt);}}
+              >
                 {this._renderUnitOptions()}
               </calcite-select>
             </calcite-label>
@@ -151,7 +158,7 @@ export class ConfigBufferTools {
   //--------------------------------------------------------------------------
 
   /**
-   * Store the selected distance and emit for other components
+   * Store the user defined distance
    *
    * @protected
    */
@@ -159,11 +166,10 @@ export class ConfigBufferTools {
     evt: CustomEvent
   ): void {
     this.distance = evt.detail.value;
-    this.distanceChange.emit(this.distance);
   }
 
   /**
-   * Store the selected unit and emit for other components
+   * Store the user defined unit
    *
    * @protected
    */
@@ -171,7 +177,6 @@ export class ConfigBufferTools {
     evt: CustomEvent
   ): void {
     this.unit = (evt.target as HTMLCalciteSelectElement).value;
-    this.unitSelectionChange.emit(this.unit);
   }
 
   /**

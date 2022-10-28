@@ -11,15 +11,20 @@
 | ----------- | ----------- | ----------------------------------------------------------------------------------------------- | ---------------------------- | ------------ |
 | `alignment` | `alignment` | "VERTICAL" \| "HORIZONTAL": Specifies how the controls chould be aligned.                       | `"HORIZONTAL" \| "VERTICAL"` | `"VERTICAL"` |
 | `distance`  | `distance`  | number: Default distance value.                                                                 | `number`                     | `100`        |
-| `unit`      | `unit`      | string: Default unit value. Should be a unit listed in assets/t9n/config-buffer-tools/resources | `string`                     | `"Meters"`   |
+| `unit`      | `unit`      | string: Default unit value. Should be a unit listed in assets/t9n/config-buffer-tools/resources | `any`                        | `undefined`  |
 
 
-## Events
+## Methods
 
-| Event                 | Description                                 | Type                  |
-| --------------------- | ------------------------------------------- | --------------------- |
-| `distanceChange`      | Emitted on demand when the distance changes | `CustomEvent<number>` |
-| `unitSelectionChange` | Emitted on demand when the unit changes     | `CustomEvent<string>` |
+### `getConfigInfo() => Promise<{ [key: string]: string | number; }>`
+
+Returns a key/value pair that represents the checkbox value and checked state
+
+#### Returns
+
+Type: `Promise<{ [key: string]: string | number; }>`
+
+Promise with the state of the checkboxes
 
 
 ## Dependencies

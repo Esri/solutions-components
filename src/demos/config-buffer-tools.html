@@ -5,7 +5,7 @@
       name="viewport"
       content="initial-scale=1,maximum-scale=1,user-scalable=no"
     />
-    <title>Map Search</title>
+    <title>Config Buffer Tools</title>
     <!--
     | Copyright 2022 Esri
     |
@@ -39,6 +39,9 @@
         padding: 1rem;
         border: 1px solid;
       }
+      .padding-block-end-1 {
+        padding-block-end: 1rem;
+      }
     </style>
 
     <link
@@ -71,11 +74,23 @@
           center: [-98, 42]
         });
       });
+
+      function showResults() {
+        const demo = document.getElementById("demo");
+        demo?.getConfigInfo().then(configInfo => {
+          alert(JSON.stringify(configInfo));
+        });
+      };
     </script>
   </head>
 
   <body>
     <div id="viewDiv" class="map-div"></div>
     <config-buffer-tools id="demo" class="over-map column"></config-buffer-tools>
+
+    <div class="over-map column">
+      <config-buffer-tools class="padding-block-end-1" id="demo"></config-buffer-tools>
+      <calcite-button onclick="showResults()">Demo Results</calcite-button>
+    </div>
   </body>
 </html>

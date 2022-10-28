@@ -52,9 +52,14 @@ export namespace Components {
          */
         "distance": number;
         /**
+          * Returns a key/value pair that represents the checkbox value and checked state
+          * @returns Promise with the state of the checkboxes
+         */
+        "getConfigInfo": () => Promise<{ [key: string]: string | number; }>;
+        /**
           * string: Default unit value. Should be a unit listed in assets/t9n/config-buffer-tools/resources
          */
-        "unit": string;
+        "unit": any;
     }
     interface ConfigDrawTools {
         /**
@@ -493,10 +498,6 @@ export interface BufferToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLBufferToolsElement;
 }
-export interface ConfigBufferToolsCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLConfigBufferToolsElement;
-}
 export interface MapDrawToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapDrawToolsElement;
@@ -776,17 +777,9 @@ declare namespace LocalJSX {
          */
         "distance"?: number;
         /**
-          * Emitted on demand when the distance changes
-         */
-        "onDistanceChange"?: (event: ConfigBufferToolsCustomEvent<number>) => void;
-        /**
-          * Emitted on demand when the unit changes
-         */
-        "onUnitSelectionChange"?: (event: ConfigBufferToolsCustomEvent<string>) => void;
-        /**
           * string: Default unit value. Should be a unit listed in assets/t9n/config-buffer-tools/resources
          */
-        "unit"?: string;
+        "unit"?: any;
     }
     interface ConfigDrawTools {
         /**
