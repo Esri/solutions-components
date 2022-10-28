@@ -132,7 +132,7 @@ export class ConfigBufferTools {
                 number-button-type="vertical"
                 onCalciteInputInput={(evt) => {this._distanceChanged(evt);}}
                 type="number"
-                value={this.distance}
+                value={this.distance.toString()}
               />
             </calcite-label>
           </div>
@@ -140,6 +140,7 @@ export class ConfigBufferTools {
             <calcite-label class="label-spacing">
               {this._translations?.defaultUnit}
               <calcite-select
+                label={this._translations?.defaultUnit}
                 onCalciteSelectChange={(evt) => {this._unitSelectionChange(evt);}}
               >
                 {this._renderUnitOptions()}
