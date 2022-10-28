@@ -149,7 +149,7 @@ describe("solution-store", () => {
   });
 
   it("changes an item's value", async () => {
-    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
+    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => JSON.parse(JSON.stringify(solution_ca924c)));
     await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
     expect(state.getStoreInfo("solutionData").templates.length).toEqual(25);
 
@@ -165,7 +165,7 @@ describe("solution-store", () => {
   });
 
   it("changes a store value", async () => {
-    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
+    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => JSON.parse(JSON.stringify(solution_ca924c)));
     await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
 
     const origDefaultWkid = state.getStoreInfo("defaultWkid");
@@ -176,23 +176,54 @@ describe("solution-store", () => {
     expect(modifiedDefaultWkid).toEqual("2865");
   });
 
-  it("saves a solution", async () => {
-    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
-    const updateSpy = jest.spyOn(common, "updateItem").mockImplementation(
-      (itemInfo: common.IItemUpdate, _authentication: common.UserSession, _folderId?: string): Promise<common.IUpdateItemResponse> => {
-        expect(itemInfo.id).toEqual("ca924c6db7d247b9a31fa30532fb5913");
-        return Promise.resolve(null);
-      }
-    );
-    await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
+  describe("saveSolution", () => {
+    it("saves a solution with a custom spatial reference", async () => {
+      jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => {
+        return {
+          ...JSON.parse(JSON.stringify(solution_ca924c)),
+          "params": {
+            "wkid": {
+              "label": "Spatial Reference",
+              "default": 102100,
+              "valueType": "spatialReference",
+              "attributes": {
+                  "required": "true"
+              }
+            }
+          }
+        }
+      });
+      const updateSpy = jest.spyOn(common, "updateItem").mockImplementation(
+        (itemInfo: common.IItemUpdate, _authentication: common.UserSession, _folderId?: string): Promise<common.IUpdateItemResponse> => {
+          expect(itemInfo.id).toEqual("ca924c6db7d247b9a31fa30532fb5913");
+          return Promise.resolve(null);
+        }
+      );
+      await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
 
-    await state.saveSolution();
+      await state.saveSolution();
 
-    expect(updateSpy).toHaveBeenCalled();
+      expect(updateSpy).toHaveBeenCalled();
+    });
+
+    it("saves a solution without a custom spatial reference", async () => {
+      jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => JSON.parse(JSON.stringify(solution_ca924c)));
+      const updateSpy = jest.spyOn(common, "updateItem").mockImplementation(
+        (itemInfo: common.IItemUpdate, _authentication: common.UserSession, _folderId?: string): Promise<common.IUpdateItemResponse> => {
+          expect(itemInfo.id).toEqual("ca924c6db7d247b9a31fa30532fb5913");
+          return Promise.resolve(null);
+        }
+      );
+      await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
+
+      await state.saveSolution();
+
+      expect(updateSpy).toHaveBeenCalled();
+    });
   });
 
   it("directly empties the store", async () => {
-    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
+    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => JSON.parse(JSON.stringify(solution_ca924c)));
     await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
     expect(state.getStoreInfo("solutionItemId")).toEqual("ca924c6db7d247b9a31fa30532fb5913");
 
@@ -201,7 +232,7 @@ describe("solution-store", () => {
   });
 
   it("gets feature services", async () => {
-    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
+    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => JSON.parse(JSON.stringify(solution_ca924c)));
     await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
 
     const result = state._testAccess("_getFeatureServices", state.getStoreInfo("solutionData").templates) as IFeatureServiceEnabledStatus[];
@@ -212,7 +243,7 @@ describe("solution-store", () => {
   });
 
   it("gets items shared with a group", async () => {
-    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
+    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => JSON.parse(JSON.stringify(solution_ca924c)));
     await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
 
     const result = state._testAccess("_getItemsSharedWithThisGroup", state.getStoreInfo("solutionData").templates[0], state.getStoreInfo("solutionData").templates) as IItemShare[];
@@ -233,7 +264,7 @@ describe("solution-store", () => {
   });
 
   it("gets resource file paths", async () => {
-    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
+    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => JSON.parse(JSON.stringify(solution_ca924c)));
     await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
 
     const result = state._testAccess("_getResourceFilePaths", "ca924c6db7d247b9a31fa30532fb5913", state.getStoreInfo("solutionData").templates[0], MOCK_USER_SESSION.portal) as IResourcePath[];
@@ -271,24 +302,62 @@ describe("solution-store", () => {
     ]);
   });
 
-  it("gets spatial reference info", async () => {
-    jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => solution_ca924c as any);
-    await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
+  describe("_getSpatialReferenceInfo", () => {
+    it("gets spatial reference info using a string wkid", async () => {
+      jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => JSON.parse(JSON.stringify(solution_ca924c)));
+      await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
 
-    const featureServices = state._testAccess("_getFeatureServices", state.getStoreInfo("solutionData").templates) as IFeatureServiceEnabledStatus[];
-    const result = await state._testAccess("_getSpatialReferenceInfo", featureServices, "2865") as ISolutionSpatialReferenceInfo;
-    expect(result).toEqual({
-      "enabled": true,
-      "services": {
-        "Driver_Activity": false,
-        "OperationsManagement": false,
-        "SnowRoutes": false,
-        "ServiceAreas": false,
-        "Requests": false
-      },
-      "spatialReference": {
-        "defaultWkid": "2865"
-      }
+      const featureServices = state._testAccess("_getFeatureServices", state.getStoreInfo("solutionData").templates) as IFeatureServiceEnabledStatus[];
+      const result = await state._testAccess("_getSpatialReferenceInfo", featureServices, "2865") as ISolutionSpatialReferenceInfo;
+      expect(result).toEqual({
+        "enabled": true,
+        "services": {
+          "Driver_Activity": false,
+          "OperationsManagement": false,
+          "SnowRoutes": false,
+          "ServiceAreas": true,
+          "Requests": true
+        },
+        "spatialReference": "2865"
+      });
+    });
+
+    it("gets spatial reference info using a numeric wkid", async () => {
+      jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => JSON.parse(JSON.stringify(solution_ca924c)));
+      await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
+
+      const featureServices = state._testAccess("_getFeatureServices", state.getStoreInfo("solutionData").templates) as IFeatureServiceEnabledStatus[];
+      const result = await state._testAccess("_getSpatialReferenceInfo", featureServices, 2865) as ISolutionSpatialReferenceInfo;
+      expect(result).toEqual({
+        "enabled": true,
+        "services": {
+          "Driver_Activity": false,
+          "OperationsManagement": false,
+          "SnowRoutes": false,
+          "ServiceAreas": true,
+          "Requests": true
+        },
+        "spatialReference": 2865
+      });
+    });
+
+    it("gets spatial reference info using no wkid", async () => {
+      jest.spyOn(common, "getItemDataAsJson").mockImplementation(() => JSON.parse(JSON.stringify(solution_ca924c)));
+      await state.loadSolution("ca924c6db7d247b9a31fa30532fb5913", MOCK_USER_SESSION);
+
+      const featureServices = state._testAccess("_getFeatureServices", state.getStoreInfo("solutionData").templates) as IFeatureServiceEnabledStatus[];
+      const result = await state._testAccess("_getSpatialReferenceInfo", featureServices) as ISolutionSpatialReferenceInfo;
+      expect(result).toEqual({
+        "enabled": false,
+        "services": {
+          "Driver_Activity": false,
+          "OperationsManagement": false,
+          "SnowRoutes": false,
+          "ServiceAreas": true,
+          "Requests": true
+        },
+        "spatialReference": undefined
+      });
     });
   });
 
@@ -414,6 +483,46 @@ describe("solution-store", () => {
       expect(solutionData.templates.some(t => t.hasOwnProperty("groupDetails"))).toBeFalsy();
     });
 
+  });
+
+  describe("_setSpatialReferenceInfo", () => {
+    it("handles an enabled custom spatial reference", () => {
+      jest.spyOn(common, "setCreateProp").mockImplementation(() => {});
+      const spatialReferenceInfo: ISolutionSpatialReferenceInfo = {
+        enabled: true,
+        services: {
+          "Driver_Activity": false,      // has "wkid": 102100
+          "OperationsManagement": true,  // has "wkid": 102100
+          "Requests": false,             // has "wkid": "{{params.wkid||102100}}"
+          "ServiceAreas": true,          // has "wkid": "{{params.wkid||102100}}"
+          "SnowRoutes": false            // has "wkid": 4326
+        },
+        spatialReference: 2865
+      };
+      const solutionTemplates = JSON.parse(JSON.stringify(solution_ca924c)).templates;
+
+      const updatedWkid = state._testAccess("_setSpatialReferenceInfo", spatialReferenceInfo, solutionTemplates);
+      expect(updatedWkid).toEqual(2865);
+    });
+
+    it("handles a disabled custom spatial reference", () => {
+      jest.spyOn(common, "setCreateProp").mockImplementation(() => {});
+      const spatialReferenceInfo: ISolutionSpatialReferenceInfo = {
+        enabled: false,
+        services: {
+          "Driver_Activity": false,      // has "wkid": 102100
+          "OperationsManagement": true,  // has "wkid": 102100
+          "Requests": false,             // has "wkid": "{{params.wkid||102100}}"
+          "ServiceAreas": true,          // has "wkid": "{{params.wkid||102100}}"
+          "SnowRoutes": false            // has "wkid": 4326
+        },
+        spatialReference: 2865
+      };
+      const solutionTemplates = JSON.parse(JSON.stringify(solution_ca924c)).templates;
+
+      const updatedWkid = state._testAccess("_setSpatialReferenceInfo", spatialReferenceInfo, solutionTemplates);
+      expect(updatedWkid).toBeUndefined();
+    });
   });
 
   describe("_splitFilename", () => {

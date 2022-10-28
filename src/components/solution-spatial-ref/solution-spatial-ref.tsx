@@ -253,7 +253,6 @@ export class SolutionSpatialRef {
       };
     }
 
-    console.log("spatial reference display for wkid " + value + ": " + JSON.stringify(spatialRef, null, 2));//???
     return spatialRef;
   }
 

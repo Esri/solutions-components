@@ -31031,7 +31031,7 @@
                     "description": "",
                     "copyrightText": "",
                     "spatialReference": {
-                        "wkid": 102100,
+                        "wkid": "{{params.wkid||102100}}",
                         "latestWkid": 3857
                     },
                     "initialExtent": "{{b9ade1d6f8d04656ab0eab2d68a2f979.solutionExtent}}",
@@ -31875,7 +31875,7 @@
                     "description": "",
                     "copyrightText": "",
                     "spatialReference": {
-                        "wkid": 102100,
+                        "wkid": "{{params.wkid||102100}}",
                         "latestWkid": 3857
                     },
                     "initialExtent": "{{9daf5761f0974c2ba20afa6e8c386d0e.solutionExtent}}",

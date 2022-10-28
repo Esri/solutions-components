@@ -728,6 +728,7 @@ class SolutionStore
 
           } else {                                     // disabled
             wkid = getProp(fs, "properties.service.spatialReference.wkid");
+            // Remove customizing prefix if present
             if (wkid.toString().startsWith(customizingPrefix)) {
               wkid = wkid.toString().substring(customizingPrefix.length, wkid.length - 2);
               setCreateProp(fs, "properties.service.spatialReference.wkid", wkid);
@@ -742,6 +743,7 @@ class SolutionStore
       customizeableFeatureServices.forEach(
         (fs) => {
           const wkid = getProp(fs, "properties.service.spatialReference.wkid");
+          // Remove customizing prefix if present
           if (wkid.toString().startsWith(customizingPrefix)) {
             setCreateProp(fs, "properties.service.spatialReference.wkid",
               wkid.toString().substring(customizingPrefix.length, wkid.length - 2));
