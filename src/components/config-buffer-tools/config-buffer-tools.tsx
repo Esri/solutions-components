@@ -51,7 +51,7 @@ export class ConfigBufferTools {
    * string: Default unit value.
    * Should be a unit listed in assets/t9n/config-buffer-tools/resources
    */
-  @Prop({mutable: true, reflect: true}) unit;
+  @Prop({mutable: true, reflect: true}) unit = "Meters";
 
   //--------------------------------------------------------------------------
   //
@@ -84,10 +84,10 @@ export class ConfigBufferTools {
    */
   @Method()
   async getConfigInfo(): Promise<{ [key: string]: number | string }> {
-    return Promise.resolve({
+    return {
       "distance": this.distance,
       "unit": this.unit
-    });
+    };
   }
 
   //--------------------------------------------------------------------------
@@ -110,7 +110,7 @@ export class ConfigBufferTools {
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     // set the default
-    this.unit = this._translations.units.meters;
+    //this.unit = this._translations.units.meters;
   }
 
   /**
