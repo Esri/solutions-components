@@ -109,8 +109,6 @@ export class ConfigBufferTools {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
-    // set the default
-    //this.unit = this._translations.units.meters;
   }
 
   /**
