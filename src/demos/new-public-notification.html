@@ -58,13 +58,17 @@
     <script type="module" src="../solutions.esm.js"></script>
 
     <script>
-      require(["esri/WebMap", "esri/views/MapView"], (
+      require(["esri/WebMap", "esri/views/MapView", "esri/widgets/Legend"], (
         WebMap,
-        MapView
+        MapView,
+        Legend
       ) => {
         var webMap = new WebMap({
           portalItem: {
-            id: "3715f4899bea4b2a948347c5c2357e58"
+            // solutions
+            // id: "3715f4899bea4b2a948347c5c2357e58"
+            // InstantApps
+            id: "863e4f6f2a7840db896cc1b1606d552d"
           }
         });
 
@@ -72,6 +76,13 @@
         demo.mapView = new MapView({
           container: "viewDiv",
           map: webMap
+        });
+
+        demo.mapView.when(() => {
+          const legend = new Legend({
+            view: demo.mapView
+          });
+          demo.mapView.ui.add(legend, "top-left");
         });
       });
     </script>
