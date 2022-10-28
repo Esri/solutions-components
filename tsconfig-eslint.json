@@ -1,4 +1,4 @@
 {
   "extends": "./tsconfig-base",
-  "include": [".storybook/*", "**/*", "**/*.config.js"]
+  "include": ["src/components/**/*.tsx", "src/utils/**/*.ts"]
 }

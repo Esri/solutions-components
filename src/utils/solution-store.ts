@@ -26,6 +26,7 @@ import {
 } from './interfaces';
 import {
   EFileType,
+  SolutionTemplateFormatVersion,
   copyFilesToStorageItem,
   generateStorageFilePaths,
   getItemDataAsJson,
@@ -36,6 +37,7 @@ import {
   IItemUpdate,
   ISolutionItemData,
   ISourceFile,
+  isSupportedFileType,
   removeItemResourceFile,
   updateItem,
   updateItemResourceFile,
@@ -324,6 +326,8 @@ class SolutionStore
         return this._prepareSolutionItemsForEditing(arg1, arg2, arg3);
       case "_prepareSolutionItemsForStorage":
         return this._prepareSolutionItemsForStorage(arg1, arg2, arg3);
+      case "_splitFilename":
+        return this._splitFilename(arg1);
     }
     return null;
   }
@@ -441,7 +445,7 @@ class SolutionStore
       portal,
       solutionId,
       template.resources,
-      1
+      SolutionTemplateFormatVersion
     );
     return resourceFilePaths.map((fp: any) => {
       fp.updateType = EUpdateType.None;
@@ -486,14 +490,19 @@ class SolutionStore
         prefix = `${prefix}_info_metadata`;
         break;
       case EFileType.Resource:
-        prefix = `${prefix}_info_dataz`;
         break;
       case EFileType.Thumbnail:
         prefix = `${prefix}_info_thumbnail`;
         break;
     }
 
-    const filename = resourcePath.folder ? resourcePath.folder + "/" + resourcePath.filename : resourcePath.filename;
+    let filenameToUse = resourcePath.filename;
+    if (resourcePath.type == EFileType.Data && filenameToUse && !isSupportedFileType(filenameToUse)) {
+      filenameToUse = filenameToUse + ".zip";
+      prefix += "z";
+    }
+
+    const filename = resourcePath.folder ? resourcePath.folder + "/" + filenameToUse : filenameToUse;
 
     return prefix + "/" + filename;
   }
@@ -587,7 +596,9 @@ class SolutionStore
     const resourceAdds: ISourceFile[] = [];
 
     // Update the resources and remove the augmentation from a template
+    const pendingTasks: Promise<void>[] = [];
     templates.forEach((t) => {
+
       // Run through the resourceFilePaths for the item seeking modifications to be made to the solution item's
       // collection of resources; queue them for batching
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -597,30 +608,39 @@ class SolutionStore
         switch (path.updateType) {
 
           case EUpdateType.Add:
+            const {prefix, suffix } = this._splitFilename(storageName);
             t.resources.push(storageName);
             resourceAdds.push({
               itemId: t.itemId,
               file: path.blob,
-              folder: "",
-              filename: storageName
+              folder: prefix,
+              filename: suffix
             } as ISourceFile);
             break;
 
           case EUpdateType.Update:
-            try {
-              await updateItemResourceFile(solutionItemId, storageName, path.blob, authentication);
-            } catch (err) {
-              console.log("Unable to update " + storageName + " for item " + t.itemId + ": " + JSON.stringify(err));
-            }
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            pendingTasks.push(new Promise<void>(async (resolve): Promise<void> => {
+              try {
+                await updateItemResourceFile(solutionItemId, storageName, path.blob, authentication);
+              } catch (err) {
+                console.log("Unable to update " + storageName + " for item " + t.itemId + ": " + JSON.stringify(err));
+              }
+              resolve();
+            }));
             break;
 
           case EUpdateType.Remove:
-            try {
-              await removeItemResourceFile(solutionItemId, storageName, authentication);
-              t.resources = t.resources.filter((path: string) => path !== storageName);
-            } catch (err) {
-              console.log("Unable to remove " + storageName + " for item " + t.itemId + ": " + JSON.stringify(err));
-            }
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            pendingTasks.push(new Promise<void>(async (resolve): Promise<void> => {
+              try {
+                await removeItemResourceFile(solutionItemId, storageName, authentication);
+                t.resources = t.resources.filter((path: string) => path !== storageName);
+              } catch (err) {
+                console.log("Unable to remove " + storageName + " for item " + t.itemId + ": " + JSON.stringify(err));
+              }
+              resolve();
+            }));
             break;
 
         }
@@ -633,11 +653,23 @@ class SolutionStore
     });
 
     // Update the resources
-    if (resourceAdds.length > 0) {
-      await copyFilesToStorageItem(resourceAdds, solutionItemId, authentication);
-    }
+    return Promise.all(pendingTasks)
+    .then(async () => {
+      if (resourceAdds.length > 0) {
+        await copyFilesToStorageItem(resourceAdds, solutionItemId, authentication);
+      }
+      return Promise.resolve();
+    });
+  }
 
-    return Promise.resolve();
+  protected _splitFilename(
+    filename: string
+  ): { prefix: string, suffix: string } {
+    const filenameParts = filename.split("/");
+    return {
+      prefix: filenameParts.length > 1 ? filenameParts.slice(0, filenameParts.length - 1).join("/") : undefined,
+      suffix: filenameParts[filenameParts.length - 1]
+    };
   }
 }
 

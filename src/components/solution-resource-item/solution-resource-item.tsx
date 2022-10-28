@@ -54,7 +54,13 @@ export class SolutionResourceItem {
   @Prop({ mutable: true, reflect: true }) itemId = "";
 
   @Watch("itemId") itemIdWatchHandler(): void {
-    this.resourceFilePaths = state.getItemInfo(this.itemId).resourceFilePaths;
+    const item = state.getItemInfo(this.itemId);
+    this.resourceFilePaths = item.resourceFilePaths;
+    this.resources = item.resources.map(
+      // False linting error
+      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+      (path) => path.substring(path.lastIndexOf("/") + 1)
+    );
   }
 
   //--------------------------------------------------------------------------
@@ -116,7 +122,7 @@ export class SolutionResourceItem {
   /**
    * The templates resources.
    */
-  @State() resources = {};
+  @State() resources: string[] = [];
 
   /**
    * Contains the translations for this component.
@@ -177,17 +183,17 @@ export class SolutionResourceItem {
   _renderResource(
     resource: IResourcePath
   ): HTMLCalciteValueListItemElement {
-    const disabled = resource.updateType === EUpdateType.Remove;
+    const resettable = resource.updateType === EUpdateType.Remove;
     return (
       <calcite-value-list-item
-        class={disabled ? "disabled" : ""}
+        class={resettable ? "disabled" : ""}
         label={resource.filename}
         nonInteractive={true}
         value={resource.url}
         >
         <calcite-action-group expand-disabled="true" layout="horizontal" slot="actions-end">
           <calcite-action
-            disabled={disabled}
+            disabled={resettable}
             icon="download"
             label={this._translations.download}
             onClick={() => this._download(resource.url, resource.filename)}
@@ -196,29 +202,30 @@ export class SolutionResourceItem {
             title={this._translations.download}
           />
           <calcite-action
-            disabled={disabled}
+            disabled={resettable}
             icon="upload-to"
             label={this._translations.update}
-            onClick={() => this._upload(resource.url)}
+            onClick={() => this._upload(resource)}
             scale="m"
             text={this._translations.update}
             title={this._translations.update}
           />
           <calcite-action
-            disabled={disabled}
+            disabled={resettable}
             icon="trash"
             label={this._translations.delete}
-            onClick={() => this._delete(resource.filename)}
+            onClick={() => this._delete(resource)}
             scale="m"
             text={this._translations.delete}
             title={this._translations.delete}
           />
-          {disabled ? <calcite-action
+          {resettable ? <calcite-action
             icon="reset"
             label={this._translations.reset}
             onClick={() => this._reset(resource.filename)}
             scale="m"
             text={this._translations.reset}
+            title={this._translations.reset}
           /> : <div class="display-none"/>}
         </calcite-action-group>
       </calcite-value-list-item>
@@ -229,42 +236,41 @@ export class SolutionResourceItem {
    * Adds the name to the deleted array so it will be skipped while rendering
    *  but still exist if the user chooses to reset
    *
-   * @param name the name to be added to the deleted array
+   * @param resource the resource to be updated
    */
-  _delete(name: string): void {
-    this.resourceFilePaths = this.resourceFilePaths.map(p => {
-      if (p.filename === name) {
-        p.updateType = EUpdateType.Remove;
-      }
-      return p;
-    })
+  _delete(resource: IResourcePath): void {
+    resource.updateType = EUpdateType.Remove;
+    this.resourceFilePaths = [...this.resourceFilePaths];  // to trigger refresh
+    this._updateStore();
   }
 
   /**
    * Remove the name from the deleted array so it will again be rendered
    *
-   * @param _name the name to be added to the deleted array
+   * @param name the name to be added to the deleted array
    */
   _reset(
-    _name: string
+    name: string
   ): void {
-    /*
     // need to make sure I know if this reset is from the source or a new one
-    const m: ISolutionModel = state.models[this.itemId];
-    this.resourceFilePaths = m.sourceResourceFilePaths.some(fp => fp.filename === name) ?
+    // Because the item's `resources` array is not updated until (and if) the solution is saved,
+    // we can use it for the reset info
+    this.resources.some(resourceName => resourceName === name) ?
+      // Undo removing an existing resource
       this.resourceFilePaths = this.resourceFilePaths.map(p => {
         if (p.filename === name) {
           p.updateType = EUpdateType.None;
         }
         return p;
       }) :
+      // Undo cancelling the adding of a resource
       this.resourceFilePaths = this.resourceFilePaths.map(p => {
         if (p.filename === name) {
           p.updateType = EUpdateType.Add;
         }
         return p;
       });
-    */
+    this._updateStore();
   }
 
   /**
@@ -291,13 +297,8 @@ export class SolutionResourceItem {
     if (url.startsWith("blob")) {
       this.downloadFile(url, name);
     } else {
-      const fileExtensions: string[] = ['jpg', 'jpeg', 'gif', 'png', 'json'];
       const _url = `${url}?token=${this.authentication.token}`;
-      if (fileExtensions.some(ext => url.endsWith(ext))) {
-        void this.fetchAndDownload(_url, name);
-      } else {
-        this.downloadFile(_url, name);
-      }
+      void this.fetchAndDownload(_url, name);
     }
   }
 
@@ -314,6 +315,7 @@ export class SolutionResourceItem {
     const link = document.createElement("a");
     link.href = url;
     link.download = name;
+    link.target = "_blank";
     link.click();
   }
 
@@ -342,12 +344,12 @@ export class SolutionResourceItem {
   /**
    * Create an input element to support the uploading of the resource and upload the resource
    *
-   * @param url the url of the resource
+   * @param resource the resource to be updated
    */
-  _upload(url: string): void {
+  _upload(resource: IResourcePath): void {
     const _input = document.createElement("input");
     _input.classList.add("display-none");
-    _input.onchange = this._updateResource.bind(this, url);
+    _input.onchange = this._updateResource.bind(this, resource);
     _input.type = "file";
     _input.click();
   }
@@ -367,47 +369,20 @@ export class SolutionResourceItem {
   /**
    * Replace the resource file path when update action is used
    *
-   * @param currentUrl the url for the item to replace
+   * @param resourcePath the resource to be updated
    * @param event the input event that contains the file
    */
   _updateResource(
-    currentUrl: string,
+    resourcePath: IResourcePath,
     event: any
   ): void {
     const files = event.target.files;
     if (files && files[0]) {
-      const url = URL.createObjectURL(files[0]);
-      const filename = files[0].name;
 
-      let currentIndex = -1;
-      let sourceFileName;
-      this.resourceFilePaths.some((r, i) => {
-        if (r.url === currentUrl) {
-          currentIndex = i;
-          sourceFileName = r.sourceFileName || r.filename;
-          return true;
-        } else {
-          return false;
-        }
-      });
+      resourcePath.blob = files[0];
+      resourcePath.updateType = EUpdateType.Update;
 
-      if (currentIndex > -1) {
-        this._removedResources[filename] = this.resourceFilePaths[currentIndex];
-
-        this.resourceFilePaths[currentIndex] = {
-          url,
-          type: EFileType.Data,
-          folder: undefined,
-          filename,
-          blob: files[0],
-          sourceFileName,
-          updateType: EUpdateType.Update
-        }
-
-        this.resourceFilePaths = [
-          ...this.resourceFilePaths
-        ];
-      }
+      this._updateStore();
     }
   }
 
@@ -421,6 +396,8 @@ export class SolutionResourceItem {
     if (files && files[0]) {
       const url = URL.createObjectURL(files[0]);
       const filename = files[0].name;
+
+      // Add the item if it's not already in the resource file paths list
       if (!this.resourceFilePaths.some(r => r.filename === filename && r.url === url)) {
         this.resourceFilePaths = [
           ...this.resourceFilePaths,
@@ -432,9 +409,20 @@ export class SolutionResourceItem {
             blob: files[0],
             updateType: EUpdateType.Add
           }
-        ]
+        ];
+        this._updateStore();
       }
     }
+  }
+
+  /**
+   * Add or remove the value from the store
+   */
+  protected _updateStore(
+  ): void {
+    const item = state.getItemInfo(this.itemId);
+    item.resourceFilePaths = this.resourceFilePaths;
+    state.setItemInfo(item);
   }
 
   /**
