@@ -30,13 +30,15 @@ Promise with the state of the checkboxes
 ### Depends on
 
 - calcite-label
-- calcite-checkbox
+- [check-list](../check-list)
 
 ### Graph
 ```mermaid
 graph TD;
   config-draw-tools --> calcite-label
-  config-draw-tools --> calcite-checkbox
+  config-draw-tools --> check-list
+  check-list --> calcite-label
+  check-list --> calcite-checkbox
   style config-draw-tools fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -42,6 +42,21 @@ export namespace Components {
          */
         "unit": __esri.LinearUnits;
     }
+    interface CheckList {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked": boolean;
+        /**
+          * Returns a key/value pair that represents the checkbox value and checked state
+          * @returns Promise with the state of the checkboxes
+         */
+        "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
+        /**
+          * string []: The values to render beside the checkboxes
+         */
+        "values": string[];
+    }
     interface ConfigBufferTools {
         /**
           * "VERTICAL" | "HORIZONTAL": Specifies how the controls chould be aligned.
@@ -549,6 +564,12 @@ declare global {
         prototype: HTMLBufferToolsElement;
         new (): HTMLBufferToolsElement;
     };
+    interface HTMLCheckListElement extends Components.CheckList, HTMLStencilElement {
+    }
+    var HTMLCheckListElement: {
+        prototype: HTMLCheckListElement;
+        new (): HTMLCheckListElement;
+    };
     interface HTMLConfigBufferToolsElement extends Components.ConfigBufferTools, HTMLStencilElement {
     }
     var HTMLConfigBufferToolsElement: {
@@ -701,6 +722,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "buffer-tools": HTMLBufferToolsElement;
+        "check-list": HTMLCheckListElement;
         "config-buffer-tools": HTMLConfigBufferToolsElement;
         "config-draw-tools": HTMLConfigDrawToolsElement;
         "config-layer-picker": HTMLConfigLayerPickerElement;
@@ -766,6 +788,16 @@ declare namespace LocalJSX {
           * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
          */
         "unit"?: __esri.LinearUnits;
+    }
+    interface CheckList {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked"?: boolean;
+        /**
+          * string []: The values to render beside the checkboxes
+         */
+        "values"?: string[];
     }
     interface ConfigBufferTools {
         /**
@@ -1153,6 +1185,7 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "buffer-tools": BufferTools;
+        "check-list": CheckList;
         "config-buffer-tools": ConfigBufferTools;
         "config-draw-tools": ConfigDrawTools;
         "config-layer-picker": ConfigLayerPicker;
@@ -1185,6 +1218,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
+            "check-list": LocalJSX.CheckList & JSXBase.HTMLAttributes<HTMLCheckListElement>;
             "config-buffer-tools": LocalJSX.ConfigBufferTools & JSXBase.HTMLAttributes<HTMLConfigBufferToolsElement>;
             "config-draw-tools": LocalJSX.ConfigDrawTools & JSXBase.HTMLAttributes<HTMLConfigDrawToolsElement>;
             "config-layer-picker": LocalJSX.ConfigLayerPicker & JSXBase.HTMLAttributes<HTMLConfigLayerPickerElement>;
