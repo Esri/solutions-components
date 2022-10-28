@@ -1,6 +1,6 @@
 import { newE2EPage } from '@stencil/core/testing';
 
-describe('check-list', () => {
+xdescribe('check-list', () => {
   it('renders', async () => {
     const page = await newE2EPage();
     await page.setContent('<check-list></check-list>');

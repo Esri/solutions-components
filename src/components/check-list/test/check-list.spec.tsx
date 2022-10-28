@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { CheckList } from '../check-list';
 
-describe('check-list', () => {
+xdescribe('check-list', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [CheckList],
