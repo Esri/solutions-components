@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Method, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, Host, h, Method, Prop, State, Watch } from '@stencil/core';
 import ConfigLayerPicker_T9n from "../../assets/t9n/config-layer-picker/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getMapLayerNames } from "../../utils/mapViewUtils";
@@ -69,11 +69,9 @@ export class ConfigLayerPicker {
   @State() _translations: typeof ConfigLayerPicker_T9n;
 
   /**
-   * A list of all checkbox elements for this component
-   *
-   * @protected
+   * HTMLCheckListElement: The check list element
    */
-  protected _elements: HTMLCalciteCheckboxElement[] = [];
+  protected _checkList: HTMLCheckListElement;
 
   //--------------------------------------------------------------------------
   //
@@ -103,10 +101,7 @@ export class ConfigLayerPicker {
    */
   @Method()
   async getConfigInfo(): Promise<{ [key: string]: boolean }> {
-    return this._elements.reduce((prev, cur) => {
-      prev[cur.value] = cur.checked;
-      return prev;
-    }, {});
+    return this._checkList.getConfigInfo();
   }
 
   //--------------------------------------------------------------------------
@@ -132,17 +127,6 @@ export class ConfigLayerPicker {
   }
 
   /**
-   * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
-   */
-  async componentDidLoad(): Promise<void> {
-    if (this.defaultChecked) {
-      this._elements.forEach(el => {
-        el.checked = true;
-      });
-    }
-  }
-
-  /**
    * Renders the component.
    */
   render() {
@@ -155,7 +139,11 @@ export class ConfigLayerPicker {
             </calcite-label>
           </div>
           <div class="padding-inline-start-1">
-            {this._renderCheckboxes(this._layerNames)}
+            <check-list
+              defaultChecked={this.defaultChecked}
+              ref={(el) => { this._checkList = el; }}
+              values={this._layerNames}
+            />
           </div>
         </div>
       </Host>
@@ -169,25 +157,6 @@ export class ConfigLayerPicker {
   //--------------------------------------------------------------------------
 
   /**
-   * Render a checkbox with a label for each of the types listed in the NLS
-   *
-   * @returns Array of label/checkbox input nodes
-   * @protected
-   */
-  protected _renderCheckboxes(
-    values: string[]
-  ): VNode[] {
-    return values.map(v => {
-      return (
-        <calcite-label layout="inline">
-          <calcite-checkbox ref={(el) => this._elements.push(el)} value={v} />
-          {v}
-        </calcite-label>
-      );
-    })
-  }
-
-  /**
    * Fetch the names of the layers from the map
    *
    * @returns Promise when the operation has completed
@@ -197,7 +166,6 @@ export class ConfigLayerPicker {
       this._layerNames = await getMapLayerNames(this.mapView);
     }
   }
-
 
   /**
    * Fetches the component's translations
