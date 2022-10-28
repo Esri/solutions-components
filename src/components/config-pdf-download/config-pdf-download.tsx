@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Method, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Host, h, Method, Prop, State } from '@stencil/core';
 import ConfigPdfDownload_T9n from "../../assets/t9n/config-pdf-download/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import * as pdfUtils from "../../assets/data/labelFormats.json";
@@ -44,7 +44,6 @@ export class ConfigPdfDownload {
    */
   @Prop({ reflect: true }) defaultChecked = true;
 
-
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -53,8 +52,6 @@ export class ConfigPdfDownload {
 
   /**
    * string[]: list of layer names from the map
-   *
-   * @protected
    */
   @State() _formatOptions: string[] = [];
 
@@ -65,11 +62,14 @@ export class ConfigPdfDownload {
   @State() _translations: typeof ConfigPdfDownload_T9n;
 
   /**
-   * A list of all checkbox elements for this component
-   *
-   * @protected
+   * HTMLCheckListElement: The format options check list element
    */
-  protected _elements: HTMLCalciteCheckboxElement[] = [];
+  protected _formatOptionsCheckList: HTMLCheckListElement;
+
+  /**
+   * HTMLCheckListElement: The CSV options check list element
+   */
+  protected _csvOptionsCheckList: HTMLCheckListElement;
 
   //--------------------------------------------------------------------------
   //
@@ -90,10 +90,10 @@ export class ConfigPdfDownload {
    */
   @Method()
   async getConfigInfo(): Promise<{ [key: string]: boolean }> {
-    return this._elements.reduce((prev, cur) => {
-      prev[cur.value] = cur.checked;
-      return prev;
-    }, {});
+    return {
+      ...this._formatOptionsCheckList.getConfigInfo(),
+      ...this._csvOptionsCheckList.getConfigInfo()
+    };
   }
 
   //--------------------------------------------------------------------------
@@ -119,17 +119,6 @@ export class ConfigPdfDownload {
   }
 
   /**
-   * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
-   */
-  async componentDidLoad(): Promise<void> {
-    if (this.defaultChecked) {
-      this._elements.forEach(el => {
-        el.checked = true;
-      });
-    }
-  }
-
-  /**
    * Renders the component.
    */
   render() {
@@ -142,7 +131,11 @@ export class ConfigPdfDownload {
             </calcite-label>
           </div>
           <div class="padding-block-end-1 padding-inline-start-1">
-            {this._renderCheckboxes(this._formatOptions)}
+            <check-list
+              defaultChecked={this.defaultChecked}
+              ref={(el) => { this._formatOptionsCheckList = el; }}
+              values={this._formatOptions}
+            />
           </div>
           <div class="padding-block-end-1">
             <calcite-label class="label-spacing">
@@ -150,7 +143,11 @@ export class ConfigPdfDownload {
             </calcite-label>
           </div>
           <div class="padding-block-end-1 padding-inline-start-1">
-            {this._renderCheckboxes([this._translations?.csvColumnTitle])}
+            <check-list
+              defaultChecked={this.defaultChecked}
+              ref={(el) => { this._csvOptionsCheckList = el; }}
+              values={[this._translations?.csvColumnTitle]}
+            />
           </div>
         </div>
       </Host>
@@ -162,25 +159,6 @@ export class ConfigPdfDownload {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Render a checkbox with a label for each of the types listed in the NLS
-   *
-   * @returns Array of label/checkbox input nodes
-   * @protected
-   */
-  protected _renderCheckboxes(
-    values: string[]
-  ): VNode[] {
-    return values.map(v => {
-      return (
-        <calcite-label layout="inline">
-          <calcite-checkbox ref={(el) => this._elements.push(el)} value={v} />
-          {v}
-        </calcite-label>
-      );
-    })
-  }
 
   /**
    * Fetch the names of the layers from the map

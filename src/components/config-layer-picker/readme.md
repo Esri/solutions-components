@@ -31,13 +31,15 @@ Promise with the state of the checkboxes
 ### Depends on
 
 - calcite-label
-- calcite-checkbox
+- [check-list](../check-list)
 
 ### Graph
 ```mermaid
 graph TD;
   config-layer-picker --> calcite-label
-  config-layer-picker --> calcite-checkbox
+  config-layer-picker --> check-list
+  check-list --> calcite-label
+  check-list --> calcite-checkbox
   style config-layer-picker fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
