@@ -82,3 +82,9 @@ input.input-group-input, .input-group-input {
 .display-none {
   @apply hidden;
 }
+
+.empty-box {
+  width: 200px;
+  aspect-ratio: auto 200 / 133;
+  border: 1px dotted gray;
+}
