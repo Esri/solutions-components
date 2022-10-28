@@ -184,10 +184,11 @@ export class SolutionResourceItem {
     resource: IResourcePath
   ): HTMLCalciteValueListItemElement {
     const resettable = resource.updateType === EUpdateType.Remove;
+    const fullname = resource.folder ? resource.folder + "/" + resource.filename : resource.filename;
     return (
       <calcite-value-list-item
         class={resettable ? "disabled" : ""}
-        label={resource.filename}
+        label={fullname}
         nonInteractive={true}
         value={resource.url}
         >

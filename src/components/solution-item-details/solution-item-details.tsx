@@ -93,7 +93,7 @@ export class SolutionItemDetails {
             </button>
 
             <div class="flex">
-              <div class="img-container">
+              <div class="img-container" ref={(el) => (this.thumbnailContainer = el)}>
                 <img class="scale-down" height="133" id="item-thumbnail" ref={(el) => (this.thumbnail = el)} width="200" />
               </div>
               <div class="snippet-count-container">
@@ -172,6 +172,11 @@ export class SolutionItemDetails {
    */
   @State() protected thumbnail: HTMLImageElement;
 
+  /**
+   * Handle to the thumbnail image container.
+   */
+  @State() protected thumbnailContainer: HTMLElement;
+
   //--------------------------------------------------------------------------
   //
   //  Event Listeners
@@ -247,7 +252,14 @@ export class SolutionItemDetails {
    */
   protected _loadThumb(): void {
     if (this.thumbnail && this.itemEdit?.thumbnail) {
+      // Show the thumbnail
       this.thumbnail.src = URL.createObjectURL(this.itemEdit.thumbnail);
+      this.thumbnailContainer.classList.remove("empty-box");
+      this.thumbnail.classList.remove("display-none");
+    } else {
+      // Replace the thumbnail with an empty box
+      this.thumbnailContainer.classList.add("empty-box");
+      this.thumbnail.classList.add("display-none");
     }
   }
 

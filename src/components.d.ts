@@ -459,7 +459,7 @@ export namespace Components {
          */
         "services": string[];
         /**
-          * Contains the public value for this component.
+          * Contains the public value for this component, which is a wkid or a wkt.
          */
         "value": string;
         /**
@@ -1138,7 +1138,7 @@ declare namespace LocalJSX {
          */
         "services"?: string[];
         /**
-          * Contains the public value for this component.
+          * Contains the public value for this component, which is a wkid or a wkt.
          */
         "value"?: string;
     }
