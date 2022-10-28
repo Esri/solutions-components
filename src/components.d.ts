@@ -42,6 +42,77 @@ export namespace Components {
          */
         "unit": __esri.LinearUnits;
     }
+    interface CheckList {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked": boolean;
+        /**
+          * Returns a key/value pair that represents the checkbox value and checked state
+          * @returns Promise with the state of the checkboxes
+         */
+        "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
+        /**
+          * string []: The values to render beside the checkboxes
+         */
+        "values": string[];
+    }
+    interface ConfigBufferTools {
+        /**
+          * "VERTICAL" | "HORIZONTAL": Specifies how the controls chould be aligned.
+         */
+        "alignment": "VERTICAL" | "HORIZONTAL";
+        /**
+          * number: Default distance value.
+         */
+        "distance": number;
+        /**
+          * Returns a key/value pair that represents the checkbox value and checked state
+          * @returns Promise with the state of the checkboxes
+         */
+        "getConfigInfo": () => Promise<{ [key: string]: string | number; }>;
+        /**
+          * string: Default unit value. Should be a unit listed in assets/t9n/config-buffer-tools/resources
+         */
+        "unit": any;
+    }
+    interface ConfigDrawTools {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked": boolean;
+        /**
+          * Returns a key/value pair that represents the checkbox value and checked state
+          * @returns Promise with the state of the checkboxes
+         */
+        "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
+    }
+    interface ConfigLayerPicker {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked": boolean;
+        /**
+          * Returns a key/value pair that represents the checkbox value and checked state
+          * @returns Promise with the state of the checkboxes
+         */
+        "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+    }
+    interface ConfigPdfDownload {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked": boolean;
+        /**
+          * Returns a key/value pair that represents the checkbox value and checked state
+          * @returns Promise with the state of the checkboxes
+         */
+        "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
+    }
     interface JsonEditor {
         /**
           * Gets the contents of the editor.
@@ -493,6 +564,36 @@ declare global {
         prototype: HTMLBufferToolsElement;
         new (): HTMLBufferToolsElement;
     };
+    interface HTMLCheckListElement extends Components.CheckList, HTMLStencilElement {
+    }
+    var HTMLCheckListElement: {
+        prototype: HTMLCheckListElement;
+        new (): HTMLCheckListElement;
+    };
+    interface HTMLConfigBufferToolsElement extends Components.ConfigBufferTools, HTMLStencilElement {
+    }
+    var HTMLConfigBufferToolsElement: {
+        prototype: HTMLConfigBufferToolsElement;
+        new (): HTMLConfigBufferToolsElement;
+    };
+    interface HTMLConfigDrawToolsElement extends Components.ConfigDrawTools, HTMLStencilElement {
+    }
+    var HTMLConfigDrawToolsElement: {
+        prototype: HTMLConfigDrawToolsElement;
+        new (): HTMLConfigDrawToolsElement;
+    };
+    interface HTMLConfigLayerPickerElement extends Components.ConfigLayerPicker, HTMLStencilElement {
+    }
+    var HTMLConfigLayerPickerElement: {
+        prototype: HTMLConfigLayerPickerElement;
+        new (): HTMLConfigLayerPickerElement;
+    };
+    interface HTMLConfigPdfDownloadElement extends Components.ConfigPdfDownload, HTMLStencilElement {
+    }
+    var HTMLConfigPdfDownloadElement: {
+        prototype: HTMLConfigPdfDownloadElement;
+        new (): HTMLConfigPdfDownloadElement;
+    };
     interface HTMLJsonEditorElement extends Components.JsonEditor, HTMLStencilElement {
     }
     var HTMLJsonEditorElement: {
@@ -621,6 +722,11 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "buffer-tools": HTMLBufferToolsElement;
+        "check-list": HTMLCheckListElement;
+        "config-buffer-tools": HTMLConfigBufferToolsElement;
+        "config-draw-tools": HTMLConfigDrawToolsElement;
+        "config-layer-picker": HTMLConfigLayerPickerElement;
+        "config-pdf-download": HTMLConfigPdfDownloadElement;
         "json-editor": HTMLJsonEditorElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
@@ -682,6 +788,52 @@ declare namespace LocalJSX {
           * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
          */
         "unit"?: __esri.LinearUnits;
+    }
+    interface CheckList {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked"?: boolean;
+        /**
+          * string []: The values to render beside the checkboxes
+         */
+        "values"?: string[];
+    }
+    interface ConfigBufferTools {
+        /**
+          * "VERTICAL" | "HORIZONTAL": Specifies how the controls chould be aligned.
+         */
+        "alignment"?: "VERTICAL" | "HORIZONTAL";
+        /**
+          * number: Default distance value.
+         */
+        "distance"?: number;
+        /**
+          * string: Default unit value. Should be a unit listed in assets/t9n/config-buffer-tools/resources
+         */
+        "unit"?: any;
+    }
+    interface ConfigDrawTools {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked"?: boolean;
+    }
+    interface ConfigLayerPicker {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked"?: boolean;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+    }
+    interface ConfigPdfDownload {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked"?: boolean;
     }
     interface JsonEditor {
         /**
@@ -1033,6 +1185,11 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "buffer-tools": BufferTools;
+        "check-list": CheckList;
+        "config-buffer-tools": ConfigBufferTools;
+        "config-draw-tools": ConfigDrawTools;
+        "config-layer-picker": ConfigLayerPicker;
+        "config-pdf-download": ConfigPdfDownload;
         "json-editor": JsonEditor;
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
@@ -1061,6 +1218,11 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
+            "check-list": LocalJSX.CheckList & JSXBase.HTMLAttributes<HTMLCheckListElement>;
+            "config-buffer-tools": LocalJSX.ConfigBufferTools & JSXBase.HTMLAttributes<HTMLConfigBufferToolsElement>;
+            "config-draw-tools": LocalJSX.ConfigDrawTools & JSXBase.HTMLAttributes<HTMLConfigDrawToolsElement>;
+            "config-layer-picker": LocalJSX.ConfigLayerPicker & JSXBase.HTMLAttributes<HTMLConfigLayerPickerElement>;
+            "config-pdf-download": LocalJSX.ConfigPdfDownload & JSXBase.HTMLAttributes<HTMLConfigPdfDownloadElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
