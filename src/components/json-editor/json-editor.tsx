@@ -142,7 +142,9 @@ export class JsonEditor {
           // Set the changed state & dispatch event if state has changed, but only if there are no errors
           if (!self.hasErrors) {
             self._flagEditorHasChanges(self._currentModel?.canUndo());
-            self._flagEditorContentChanged();
+            if (self._currentModel?.canUndo()) {
+              self._flagEditorContentChanged();
+            }
           }
 
           // Show the error flag if there are errors
