@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+.label-spacing {
+  --calcite-label-margin-bottom: 0;
+}
+
+.padding-block-end-1 {
+  padding-block-end: 1rem;
+}
+
+.padding-inline-start-1 {
+  padding-inline-start: 1rem;
+}

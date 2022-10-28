@@ -1,0 +1,27 @@
+:host {
+  display: block;
+}
+
+.horizontal-display {
+  display: flex;
+}
+
+.label-spacing {
+  --calcite-label-margin-bottom: 0;
+}
+
+.padding-inline-end-1 {
+  padding-inline-end: 1rem;
+}
+
+.padding-block-end-1 {
+  padding-block-end: 1rem;
+}
+
+.width-half {
+  width: 50%;
+}
+
+.width-full {
+  width: 100%;
+}

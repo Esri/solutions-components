@@ -5,7 +5,7 @@
       name="viewport"
       content="initial-scale=1,maximum-scale=1,user-scalable=no"
     />
-    <title>New Public Notification</title>
+    <title>Config Draw Tools</title>
     <!--
     | Copyright 2022 Esri
     |
@@ -22,12 +22,6 @@
     | limitations under the License.
     -->
     <style>
-      #viewDiv {
-        padding: 0;
-        margin: 0;
-        height: 100%;
-        width: 100%;
-      }
       .over-map {
         position: absolute;
         right: 0px;
@@ -35,61 +29,32 @@
       }
       .column {
         min-width: 300px;
+        margin: 1rem;
         padding: 1rem;
-        border: 1px solid var(--calcite-ui-border-2);
-        height: -webkit-fill-available;
-        height: 100%;
-      }
-      .column[dir="rtl"] {
-        float: left;
+        border: 1px solid;
       }
     </style>
 
-    <link
-      rel="stylesheet"
-      href="https://js.arcgis.com/4.23/esri/themes/light/main.css"
-    />
     <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components@1.0.0-beta.94/dist/calcite/calcite.css" type="text/css" />
     <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
     <link rel="stylesheet" href="../solutions.css" type="text/css">
 
-    <script src="https://js.arcgis.com/4.23/"></script>
     <script type="module" src="https://unpkg.com/@esri/calcite-components@1.0.0-beta.94/dist/calcite/calcite.esm.js"></script>
     <script type="module" src="../solutions.esm.js"></script>
-
     <script>
-      require(["esri/WebMap", "esri/views/MapView", "esri/widgets/Legend"], (
-        WebMap,
-        MapView,
-        Legend
-      ) => {
-        var webMap = new WebMap({
-          portalItem: {
-            // solutions
-            // id: "3715f4899bea4b2a948347c5c2357e58"
-            // InstantApps
-            id: "863e4f6f2a7840db896cc1b1606d552d"
-          }
-        });
-
+      function showResults() {
         const demo = document.getElementById("demo");
-        demo.mapView = new MapView({
-          container: "viewDiv",
-          map: webMap
+        demo?.getConfigInfo().then(configInfo => {
+          alert(JSON.stringify(configInfo));
         });
-
-        demo.mapView.when(() => {
-          const legend = new Legend({
-            view: demo.mapView
-          });
-          demo.mapView.ui.add(legend, "top-left");
-        });
-      });
+      }
     </script>
   </head>
 
   <body>
-    <div id="viewDiv"></div>
-    <public-notification id="demo" class="over-map column"></public-notification>
+    <div class="over-map column">
+      <config-draw-tools id="demo"></config-draw-tools>
+      <calcite-button onclick="showResults()">Demo Results</calcite-button>
+    </div>
   </body>
 </html>
