@@ -11,16 +11,17 @@
 #
 name: "CodeQL"
 
+paths:
+  - src
+paths-ignore:
+  - 'src/components/json-editor/assets/monaco-editor/**/*.*'
+
 on:
   push:
     branches: [ develop, master ]
-    paths-ignore:
-      - 'src/components/json-editor/assets/monaco-editor/**/*.*'
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ develop ]
-    paths-ignore:
-      - 'src/components/json-editor/assets/monaco-editor/**/*.*'
   schedule:
     - cron: '30 15 * * 1'
 
