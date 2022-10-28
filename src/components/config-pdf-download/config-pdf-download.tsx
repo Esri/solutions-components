@@ -90,9 +90,11 @@ export class ConfigPdfDownload {
    */
   @Method()
   async getConfigInfo(): Promise<{ [key: string]: boolean }> {
+    const formatOptions = await this._formatOptionsCheckList.getConfigInfo();
+    const csvOptions = await this._csvOptionsCheckList.getConfigInfo();
     return {
-      ...this._formatOptionsCheckList.getConfigInfo(),
-      ...this._csvOptionsCheckList.getConfigInfo()
+      ...formatOptions,
+      ...csvOptions
     };
   }
 
