@@ -108,5 +108,4 @@ describe('buffer-tools', () => {
     expect(bufferTools.unionResults).toEqual(true);
     expect(bufferTools.unit).toEqual('meters');
   });
-
 });
