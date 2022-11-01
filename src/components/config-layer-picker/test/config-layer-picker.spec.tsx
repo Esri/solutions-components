@@ -14,8 +14,6 @@ beforeEach(() => {
   jest.spyOn(locale, "getLocaleComponentStrings").mockImplementation(() => [{
     "addresseeLayers": "Choose the potential addressee layers"
   }] as any);
-
-  jest.useFakeTimers();
 });
 
 describe('config-layer-picker', () => {
