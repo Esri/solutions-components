@@ -3,6 +3,7 @@ import { newSpecPage } from '@stencil/core/testing';
 import { BufferTools } from '../buffer-tools';
 import * as locale from "../../../utils/locale";
 import * as loadModules from "../../../utils/loadModules";
+import * as translations from "../../../assets/t9n/buffer-tools/resources.json";
 
 jest.setTimeout(30000);
 
@@ -11,12 +12,9 @@ afterEach(() => {
 });
 
 beforeEach(() => {
-  jest.spyOn(locale, "getLocaleComponentStrings").mockImplementation(() => [{
-    feet: "Feet",
-    meters: "Meters",
-    miles: "Miles",
-    kilometers: "Kilometers"
-  }] as any);
+  jest.spyOn(locale, "getLocaleComponentStrings").mockImplementation(() => [
+    translations
+  ] as any);
 
   jest.spyOn(loadModules, "loadModules").mockImplementation(async () => {
     return [{ geodesicBuffer: () => {}}]

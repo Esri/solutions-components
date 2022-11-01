@@ -2,6 +2,7 @@ import { h } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { ConfigDrawTools } from '../config-draw-tools';
 import * as locale from "../../../utils/locale";
+import * as translations from "../../../assets/t9n/config-draw-tools/resources.json";
 
 jest.setTimeout(30000);
 
@@ -10,16 +11,9 @@ afterEach(() => {
 });
 
 beforeEach(() => {
-  jest.spyOn(locale, "getLocaleComponentStrings").mockImplementation(() => [{
-    "drawTools": "Drawing tools",
-    "types": {
-      "point": "Point",
-      "line": "Line",
-      "polygon": "Polygon",
-      "rectangle": "Rectangle",
-      "freehandPolygon": "Freehand Polygon"
-    }
-  }] as any);
+  jest.spyOn(locale, "getLocaleComponentStrings").mockImplementation(() => [
+    translations
+  ] as any);
 
   jest.useFakeTimers();
 });

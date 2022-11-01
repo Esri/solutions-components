@@ -3,6 +3,7 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ConfigLayerPicker } from '../config-layer-picker';
 import * as locale from "../../../utils/locale";
 import * as mapViewUtils from "../../../utils/mapViewUtils";
+import * as translations from "../../../assets/t9n/config-layer-picker/resources.json";
 
 jest.setTimeout(30000);
 
@@ -11,9 +12,9 @@ afterEach(() => {
 });
 
 beforeEach(() => {
-  jest.spyOn(locale, "getLocaleComponentStrings").mockImplementation(() => [{
-    "addresseeLayers": "Choose the potential addressee layers"
-  }] as any);
+  jest.spyOn(locale, "getLocaleComponentStrings").mockImplementation(() => [
+    translations
+  ] as any);
 });
 
 describe('config-layer-picker', () => {

@@ -2,6 +2,7 @@ import { h } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { ConfigBufferTools } from '../config-buffer-tools';
 import * as locale from "../../../utils/locale";
+import * as translations from "../../../assets/t9n/config-buffer-tools/resources.json";
 
 jest.setTimeout(30000);
 
@@ -10,17 +11,9 @@ afterEach(() => {
 });
 
 beforeEach(() => {
-  jest.spyOn(locale, "getLocaleComponentStrings").mockImplementation(() => [{
-    "defaultBufferDistance": "Default distance",
-    "defaultUnit": "Default unit",
-    "units": {
-      "feet": "Feet",
-      "yards": "Yards",
-      "meters": "Meters",
-      "kilometers": "Kilometers",
-      "miles": "Miles"
-    }
-  }] as any);
+  jest.spyOn(locale, "getLocaleComponentStrings").mockImplementation(() => [
+    translations
+  ] as any);
 });
 
 describe('config-buffer-tools', () => {
