@@ -35,6 +35,7 @@
     "@stencil/postcss": "^2.1.0",
     "@stencil/sass": "^2.0.0",
     "@stencil/store": "^2.0.1",
+    "@types/arcgis-js-api": "^4.24.0",
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.11",
     "@types/puppeteer": "^5.4.2",
@@ -66,19 +67,20 @@
   },
   "dependencies": {
     "@arcgis/core": "^4.24.7",
+    "minimist": "^1.2.6"
+  },
+  "peerDependencies": {
     "@esri/arcgis-rest-auth": "^3.4.2",
     "@esri/arcgis-rest-feature-layer": "^3.4.2",
     "@esri/arcgis-rest-portal": "^3.4.2",
     "@esri/arcgis-rest-request": "^3.4.2",
     "@esri/arcgis-rest-service-admin": "^3.4.2",
-    "@esri/calcite-components": "1.0.0-beta.97",
     "@esri/hub-common": "9.29.0",
     "@esri/hub-initiatives": "9.29.0",
     "@esri/hub-sites": "9.29.0",
     "@esri/hub-teams": "9.29.0",
     "@esri/solution-common": "1.5.3",
-    "@types/arcgis-js-api": "^4.24.0",
-    "minimist": "^1.2.6"
+    "@esri/calcite-components": "1.0.0-beta.97"
   },
   "repository": {
     "type": "git",
