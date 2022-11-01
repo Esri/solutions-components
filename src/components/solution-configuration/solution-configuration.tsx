@@ -52,17 +52,10 @@ export class SolutionConfiguration {
   /**
    * Contains the current solution item id
    */
-  @Prop({ mutable: true, reflect: true }) solutionItemId;
+  @Prop({ mutable: true, reflect: true }) solutionItemId = "";
 
   @Watch("solutionItemId") async valueWatchHandler(): Promise<void> {
-    if (this.solutionItemId) {
-      this._solutionIsLoaded = false;
-      await state.loadSolution(this.solutionItemId, this.authentication);
-      this._initProps();
-      this._solutionIsLoaded = true;
-    } else {
-      this._reset();
-    }
+    await this._loadSolution(this.solutionItemId);
   }
 
   /**
@@ -77,6 +70,8 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
 
   constructor() {
+    void this._loadSolution(this.solutionItemId);
+
     window.addEventListener("solutionStoreHasChanges",
       (evt) => {
         this._updateSaveability(
@@ -324,6 +319,8 @@ export class SolutionConfiguration {
 
   /**
    * Set Props with the initial values
+   *
+   * @protected
    */
   protected _initProps(): void {
     const solutionData = state.getStoreInfo("solutionData");
@@ -346,7 +343,30 @@ export class SolutionConfiguration {
   }
 
   /**
+   * Loads a solution.
+   *
+   * @param solutionItemId AGO id of solution to load
+   *
+   * @returns Resolved promise when task is done
+   *
+   * @protected
+   */
+  protected async _loadSolution(solutionItemId: string): Promise<void> {
+    if (solutionItemId) {
+      this._solutionIsLoaded = false;
+      await state.loadSolution(solutionItemId, this.authentication);
+      this._initProps();
+      this._solutionIsLoaded = true;
+    } else {
+      this._reset();
+    }
+    return Promise.resolve();
+  }
+
+  /**
    * Resets internal variables.
+   *
+   * @protected
    */
   protected _reset(): void {
     this._currentEditItemId = "";
@@ -356,7 +376,9 @@ export class SolutionConfiguration {
   }
 
   /**
-   * Toggle _treeOpen prop to show/hide content tree
+   * Toggle _treeOpen prop to show/hide content tree.
+   *
+   * @protected
    */
   protected _toggleTree(): void {
     this._treeOpen = !this._treeOpen;
@@ -369,6 +391,8 @@ export class SolutionConfiguration {
    * @param solutionStoreHasChanges Are there changes in the configuration editor's internal store?
    * @param solutionEditorHasChanges Are there changes in the configuration editor's JSON editor?
    * @param solutionEditorHasErrors Are there errors in the configuration editor's JSON editor?
+   *
+   * @protected
    */
   protected _updateSaveability(
     solutionStoreHasChanges: boolean,
