@@ -41,42 +41,42 @@ export class BufferTools {
   /**
    * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
    */
-  @Prop() appearance: "slider" | "text" = "text";
+  @Prop({mutable: true}) appearance: "slider" | "text" = "text";
 
   /**
    * number: The distance used for buffer
    */
-  @Prop() distance = 0;
+  @Prop({mutable: true}) distance = 0;
 
   /**
    * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
    */
-  @Prop() geometries: __esri.Geometry[] = [];
+  @Prop({mutable: true}) geometries: __esri.Geometry[] = [];
 
   /**
    * number: The component's maximum selectable value.
    */
-  @Prop() sliderMax = 100;
+  @Prop({mutable: true}) sliderMax = 100;
 
   /**
    * number: The component's minimum selectable value.
    */
-  @Prop() sliderMin = 0;
+  @Prop({mutable: true}) sliderMin = 0;
 
   /**
    * number: Displays tick marks on the number line at a specified interval.
    */
-  @Prop() sliderTicks = 10;
+  @Prop({mutable: true}) sliderTicks = 10;
 
   /**
    * boolean: option to control if buffer results should be unioned
    */
-  @Prop() unionResults = true;
+  @Prop({mutable: true}) unionResults = true;
 
   /**
    * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
    */
-  @Prop() unit: __esri.LinearUnits = "meters";
+  @Prop({mutable: true}) unit: __esri.LinearUnits = "meters";
 
   //--------------------------------------------------------------------------
   //
