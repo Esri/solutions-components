@@ -21,6 +21,8 @@ beforeEach(() => {
   jest.spyOn(loadModules, "loadModules").mockImplementation(async () => {
     return [{ geodesicBuffer: () => {}}]
   });
+
+  jest.useFakeTimers();
 });
 
 describe('buffer-tools', () => {
@@ -64,15 +66,47 @@ describe('buffer-tools', () => {
     `);
   });
 
-  it('have expected defaults', () => {
-    const toggle = new BufferTools();
-    expect(toggle.appearance).toEqual('text');
-    expect(toggle.distance).toEqual(0);
-    expect(toggle.geometries).toEqual([]);
-    expect(toggle.sliderMax).toEqual(100);
-    expect(toggle.sliderMin).toEqual(0);
-    expect(toggle.sliderTicks).toEqual(10);
-    expect(toggle.unionResults).toEqual(true);
-    expect(toggle.unit).toEqual('meters');
+  it('geometries watch', async () => {
+    const timeout = jest.spyOn(global, 'setTimeout');
+    const cleartimeout = jest.spyOn(global, 'clearTimeout');
+    const page = await newSpecPage({
+      autoApplyChanges: true,
+      components: [BufferTools],
+      template: () => (<buffer-tools></buffer-tools>),
+    });
+    expect(page.root).toEqualHtml(`
+      <buffer-tools>
+        <mock:shadow-root>
+          <div class="c-container">
+            <calcite-input class="padding-end-1" number-button-type="vertical" placeholder="0" type="number"></calcite-input>
+            <calcite-select class="flex-1" label="label">
+              <calcite-option label="Feet" value="feet"></calcite-option>
+              <calcite-option label="Meters" selected="" value="meters"></calcite-option>
+              <calcite-option label="Miles" value="miles"></calcite-option>
+              <calcite-option label="Kilometers" value="kilometers"></calcite-option>
+            </calcite-select>
+          </div>
+        </mock:shadow-root>
+      </buffer-tools>
+    `);
+
+    page.root.geometries = [{}];
+    page.root.geometries = [];
+
+    expect(timeout).toBeCalledTimes(3);
+    expect(cleartimeout).toBeCalledTimes(2);
   });
+
+  it('have expected defaults', () => {
+    const bufferTools = new BufferTools();
+    expect(bufferTools.appearance).toEqual('text');
+    expect(bufferTools.distance).toEqual(0);
+    expect(bufferTools.geometries).toEqual([]);
+    expect(bufferTools.sliderMax).toEqual(100);
+    expect(bufferTools.sliderMin).toEqual(0);
+    expect(bufferTools.sliderTicks).toEqual(10);
+    expect(bufferTools.unionResults).toEqual(true);
+    expect(bufferTools.unit).toEqual('meters');
+  });
+
 });

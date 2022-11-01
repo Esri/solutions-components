@@ -118,7 +118,7 @@ export class BufferTools {
    */
   @Watch("geometries")
   geometriesWatchHandler(v: any, oldV: any): void {
-    if (v && JSON.stringify(v) !== JSON.stringify(oldV || [])) {
+    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
       this._buffer();
     }
   }
@@ -198,19 +198,13 @@ export class BufferTools {
    */
   protected _getUnits(): VNode[] {
     const units = {
-      "feet": this._translations.feet || "Feet",
-      "meters": this._translations.meters || "Meters",
-      "miles": this._translations.miles || "Miles",
-      "kilometers": this._translations.kilometers || "Kilometers"
+      "feet": this._translations.feet,
+      "meters": this._translations.meters,
+      "miles": this._translations.miles,
+      "kilometers": this._translations.kilometers
     };
     return Object.keys(units).map(u => {
-      let selected = true;
-      if (!this.unit) {
-        this.unit = u as __esri.LinearUnits;
-      } else if (this.unit !== u) {
-        selected = false;
-      }
-      return (<calcite-option label={units[u]} selected={selected} value={u} />);
+      return (<calcite-option label={units[u]} selected={this.unit === u} value={u} />);
     });
   }
 
