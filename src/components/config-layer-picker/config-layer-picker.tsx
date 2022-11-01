@@ -135,7 +135,7 @@ export class ConfigLayerPicker {
         <div>
           <div class="padding-block-end-1">
             <calcite-label class="label-spacing">
-              {this._translations?.addresseeLayers}
+              {this._translations.addresseeLayers}
             </calcite-label>
           </div>
           <div class="padding-inline-start-1">
