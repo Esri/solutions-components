@@ -107,14 +107,14 @@ export class ConfigDrawTools {
    * Renders the component.
    */
   render() {
-    const nlsTypes = this._translations?.types || {};
+    const nlsTypes = this._translations.types || {};
     const types = Object.keys(nlsTypes).map(k => nlsTypes[k]);
     return (
       <Host>
         <div>
           <div class="padding-block-end-1">
             <calcite-label class="label-spacing">
-              {this._translations?.drawTools}
+              {this._translations.drawTools}
             </calcite-label>
           </div>
           <div class="padding-inline-start-1">
