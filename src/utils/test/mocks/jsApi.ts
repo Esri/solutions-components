@@ -35,12 +35,7 @@ export class GraphicsLayer {
 
 export class Sketch {
   constructor(options) {
-    this.layer = options.layer;
-    this.view = options.view;
-    this.container = options.container;
-    this.creationMode = options.creationMode;
-    this.defaultCreateOptions = options.defaultCreateOptions;
-
+    Object.assign(this, options);
     this.viewModel = {
       pointSymbol: {},
       polylineSymbol: {},
@@ -57,5 +52,19 @@ export class Sketch {
   defaultCreateOptions: any;
   viewModel: any;
   visibleElements: any;
+  on: any;
+}
+
+export class Search {
+  constructor(options) {
+    Object.assign(this, options);
+    this.clear = () => {};
+    this.on = () => {};
+  }
+
+  clear: any;
+  view: any;
+  container: any;
+  searchTerm: any;
   on: any;
 }
