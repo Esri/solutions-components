@@ -2,7 +2,7 @@ import { h } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { ConfigPdfDownload } from '../config-pdf-download';
 import * as locale from "../../../utils/locale";
-import * as translations from "../../../assets/t9n/config-pdf-download/resources.json"
+import * as translations from "../../../assets/t9n/config-pdf-download/resources.json";
 
 jest.setTimeout(30000);
 
@@ -11,12 +11,15 @@ afterEach(() => {
 });
 
 beforeEach(() => {
-  jest.spyOn(locale, "getLocaleComponentStrings").mockImplementation(() => [translations] as any);
+  jest.spyOn(locale, "getLocaleComponentStrings").mockImplementation(() => [
+    translations
+  ] as any);
 });
 
 describe('config-pdf-download', () => {
   it('renders', async () => {
     const page = await newSpecPage({
+      autoApplyChanges: true,
       components: [ConfigPdfDownload],
       template: () => (<config-pdf-download></config-pdf-download>),
     });
