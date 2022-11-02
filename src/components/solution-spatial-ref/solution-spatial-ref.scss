@@ -1,0 +1,63 @@
+/** @license
+ * Copyright 2022 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+.spatial-ref-switch {
+  @apply m-inline-end-2;
+}
+
+.spatial-ref-switch-title {
+  @apply mt-2.5
+    m-inline-start-10;
+}
+
+#spatialRefDefn .sc-calcite-label-h label.sc-calcite-label {
+  @apply m-0;
+  background-color: $solutions-light-purple;
+}
+
+.spatial-ref-default {
+  @apply m-0;
+}
+
+.spatial-ref-item-title {
+  @apply mb-2
+    text-sm;
+}
+
+.spatial-ref-item-switch {
+  @apply m-inline-end-2;
+}
+
+.switch-label {
+  @apply m-1
+    text-sm;
+}
+
+.disabled-div {
+  @apply pointer-events-none
+    opacity-40;
+}
+
+.spatial-ref-container {
+  max-height: 200px;
+  @apply overflow-y-auto
+    mb-4;
+}
+
+.spatial-ref-desc {
+  padding-bottom: .5rem;
+  @apply p-inline-start-1;
+}

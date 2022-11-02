@@ -1,0 +1,90 @@
+/** @license
+ * Copyright 2018 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@import "calcite-web.min";
+
+/*#region Basic Overrides*/
+
+html, body {
+  @apply w-full
+    h-full
+    flex
+    overflow-y-hidden;
+  background-color: $solutions-background-color;
+}
+
+h1 {
+  line-height: unset;
+  margin: unset;
+  font-size: 2rem;
+  @apply pl-2;
+}
+
+#appContainer {
+  @apply h-full
+    opacity-0;
+  transition: 1s;
+}
+
+/*#endregion */
+
+/*#region Calcite overrides */
+
+.block-group {
+  @apply mx-inline-2.5;
+}
+
+calcite-tree-item[highlight] > div {
+  @apply font-bold;
+}
+
+calcite-tree-item[childselected] > div {
+  @apply font-bold;
+}
+
+calcite-tree-item > a:hover {
+  text-decoration: none;
+}
+
+calcite-switch > input {
+  @apply hidden;
+}
+
+calcite-switch {
+  @apply static;
+}
+
+calcite-tree a {
+  color: black;
+}
+
+input.input-group-input, .input-group-input {
+  width: unset;
+  display: flex;
+  flex: auto;
+}
+
+/*#endregion */
+
+.display-none {
+  @apply hidden;
+}
+
+.empty-box {
+  width: 200px;
+  aspect-ratio: auto 200 / 133;
+  border: 1px dotted gray;
+}

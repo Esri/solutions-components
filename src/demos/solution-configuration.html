@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+  <title>Solution Configuration</title>
+  <!--
+   | Copyright 2022 Esri
+   |
+   | Licensed under the Apache License, Version 2.0 (the "License");
+   | you may not use this file except in compliance with the License.
+   | You may obtain a copy of the License at
+   |
+   |    http://www.apache.org/licenses/LICENSE-2.0
+   |
+   | Unless required by applicable law or agreed to in writing, software
+   | distributed under the License is distributed on an "AS IS" BASIS,
+   | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   | See the License for the specific language governing permissions and
+   | limitations under the License.
+  -->
+
+  <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components@1.0.0-beta.94/dist/calcite/calcite.css" type="text/css" />
+  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
+  <link rel="stylesheet" href="../solutions.css" type="text/css">
+  <style>
+  .full-height {
+    height: 100%;
+  }
+  .app-container {
+    height: calc(100% - 30px);
+    overflow: auto;
+  }
+  .demo-button {
+    position: relative;
+    align-self: center;
+  }
+  .list {
+    padding-inline-end: 100px;
+  }
+  .flex {
+    display: flex;
+  }
+  .combo-list {
+    width: 330px;
+  }
+  .section-title {
+    margin-bottom: 12px;
+  }
+  .align-baseline {
+    align-items: baseline;
+  }
+  .labeled-item {
+    display: inline-flex;
+    margin-inline-end: 8px;
+  }
+  .loginLabel {
+    min-width: unset;
+  }
+  .margin-top-1 {
+    margin-top: 1rem;
+  }
+  .margin-bottom-1 {
+    margin-bottom: 1rem;
+  }
+  .margin-side-1 {
+    margin-inline-end: 1rem;
+    margin-inline-start: 1rem;
+  }
+  .not-visible {
+    visibility: hidden;
+  }
+  </style>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es5%2Cfetch%2CPromise"></script>
+  <script src="https://unpkg.com/@esri/arcgis-rest-request@3.1.1/dist/umd/request.umd.js"></script>
+  <script src="https://unpkg.com/@esri/arcgis-rest-auth@3.1.1/dist/umd/auth.umd.min.js"></script>
+  <script src="https://unpkg.com/@esri/arcgis-rest-portal@3.1.1/dist/umd/portal.umd.min.js"></script>
+  <script type="module" src="https://unpkg.com/@esri/calcite-components@1.0.0-beta.94/dist/calcite/calcite.esm.js"></script>
+  <script type="module" src="../solutions.esm.js"></script>
+</head>
+
+<body>
+  <h1>Demo Solution Configuration</h1>
+  <div class="app-container">
+    <div class="margin-top-1 margin-side-1">
+      <div class="labeled-item align-baseline">
+        <label class="loginLabel" for="username">Username:&nbsp;</label>
+        <input type="text" id="username" placeholder="anonymous">
+      </div>
+      <div class="labeled-item align-baseline">
+        <label class="loginLabel" for="password">Password:&nbsp;</label>
+        <input type="password" id="password">
+      </div>
+      <div class="labeled-item align-baseline">
+        <label class="loginLabel" for="portal">Portal:&nbsp;</label>
+        <input type="text" id="portal" style="width:256px" placeholder="https://www.arcgis.com">
+      </div>
+      <div class="labeled-item align-baseline">
+        <label class="loginLabel" for="group">Group ID:&nbsp;</label>
+        <input type="text" id="group" style="width:300px">
+      </div>
+      <button id="connectBtn fader" onclick="connectFcn()">Connect</button>
+    </div>
+    <div class="list flex not-visible margin-bottom-1 margin-side-1" id="componentContainer">
+      <calcite-select
+        id="solution-ids"
+        label="demo combobox"
+        placeholder="Select Solution ID"
+        scale="m"
+        class="combo-list labeled-item">
+      </calcite-select>
+    </div>
+    <main id="appContainer">
+      <div class="content full-height">
+        <solution-configuration id="demo"></solution-configuration>
+      </div>
+    </main>
+  </div>
+
+  <script src="./libs/require.js"></script>
+  <script src="./libs/setLocale.js"></script>
+  <script src="./monacoConfig.js"></script>
+  <script>
+    require.config({
+      "paths": {
+        "vs": "./libs/monaco-editor"
+      }
+    });
+    require(['vs/editor/editor.main'],
+    function () {
+
+
+      connectFcn = getSolutions;
+
+      authentication = null;
+
+      function getSolutions() {
+        const portal = (document.getElementById("portal").value || "https://www.arcgis.com") + "/sharing/rest";
+        authentication = new arcgisRest.UserSession({
+          username: document.getElementById("username").value || undefined,
+          password: document.getElementById("password").value || undefined,
+          portal
+        });
+
+        // Initialize the configuration content
+        let demo = document.getElementById("demo");
+        demo.authentication = authentication;
+
+        // DO NOT USE REAL SOLUTION ITEMS WHILE SAVE EDITS WORK IS IN PROGRESS...CAN DESTROY THE SOLUTION ITEM
+        const groupId = document.getElementById("group").value;
+
+        const q = "type:Solution typekeywords:Solution,Template ";
+        const params = {
+          sortField:"relevance",
+          sortOrder:"desc",
+          num: 100
+        };
+
+        const opts = {
+          groupId,
+          q,
+          params,
+          authentication,
+          portal
+        };
+
+        // set the data
+        arcgisRest.searchGroupContent(opts)
+          .then(jsonResults => {
+            const idList = document.getElementById("solution-ids");
+
+            let value = undefined;
+            jsonResults.results.forEach(result => {
+              const i = document.createElement("calcite-option");
+              i.setAttribute("value", result.id);
+              i.setAttribute("label", result.title);
+              i.setAttribute("dir", "ltr");
+              i.setAttribute("scale", "m");
+              idList.appendChild(i);
+              if (!value) {
+                value = result.id
+              }
+            });
+
+            idList.addEventListener("calciteSelectChange", (event) => this.itemChanged(event, authentication, portal, idList));
+
+            // select the first one
+            if (value) {
+              this.itemChanged({}, authentication, portal, {
+                selectedOption: { value }
+              });
+            }
+
+            // show the components
+            const componentContainer = document.getElementById("componentContainer");
+            componentContainer.classList.remove("not-visible");
+
+            const appContainer = document.getElementById("appContainer");
+            appContainer.style.opacity = "1";
+            appContainer.classList.remove("not-visible")
+          });
+      }
+    });
+
+    function itemChanged(event, authentication, portal, self) {
+      const demo = document.getElementById("demo");
+      demo.itemid = self.selectedOption.value;
+    }
+  </script>
+</body>
+</html>

@@ -5,57 +5,1245 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { ERefineMode, ESelectionMode, EWorkflowType, IInventoryItem, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
+import { UserSession } from "@esri/solution-common";
 export namespace Components {
-    interface MyComponent {
+    interface BufferTools {
         /**
-          * The first name
+          * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
          */
-        "first": string;
+        "appearance": "slider" | "text";
         /**
-          * The last name
+          * number: The distance used for buffer
          */
-        "last": string;
+        "distance": number;
         /**
-          * The middle name
+          * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
          */
-        "middle": string;
+        "geometries": __esri.Geometry[];
+        /**
+          * number: The component's maximum selectable value.
+         */
+        "sliderMax": number;
+        /**
+          * number: The component's minimum selectable value.
+         */
+        "sliderMin": number;
+        /**
+          * number: Displays tick marks on the number line at a specified interval.
+         */
+        "sliderTicks": number;
+        /**
+          * boolean: option to control if buffer results should be unioned
+         */
+        "unionResults": boolean;
+        /**
+          * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
+         */
+        "unit": __esri.LinearUnits;
+    }
+    interface CheckList {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked": boolean;
+        /**
+          * Returns a key/value pair that represents the checkbox value and checked state
+          * @returns Promise with the state of the checkboxes
+         */
+        "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
+        /**
+          * string []: The values to render beside the checkboxes
+         */
+        "values": string[];
+    }
+    interface ConfigBufferTools {
+        /**
+          * "VERTICAL" | "HORIZONTAL": Specifies how the controls chould be aligned.
+         */
+        "alignment": "VERTICAL" | "HORIZONTAL";
+        /**
+          * number: Default distance value.
+         */
+        "distance": number;
+        /**
+          * Returns a key/value pair that represents the checkbox value and checked state
+          * @returns Promise with the state of the checkboxes
+         */
+        "getConfigInfo": () => Promise<{ [key: string]: string | number; }>;
+        /**
+          * string: Default unit value. Should be a unit listed in assets/t9n/config-buffer-tools/resources
+         */
+        "unit": any;
+    }
+    interface ConfigDrawTools {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked": boolean;
+        /**
+          * Returns a key/value pair that represents the checkbox value and checked state
+          * @returns Promise with the state of the checkboxes
+         */
+        "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
+    }
+    interface ConfigLayerPicker {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked": boolean;
+        /**
+          * Returns a key/value pair that represents the checkbox value and checked state
+          * @returns Promise with the state of the checkboxes
+         */
+        "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+    }
+    interface ConfigPdfDownload {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked": boolean;
+        /**
+          * Returns a key/value pair that represents the checkbox value and checked state
+          * @returns Promise with the state of the checkboxes
+         */
+        "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
+    }
+    interface JsonEditor {
+        /**
+          * Gets the contents of the editor.
+          * @returns Promise resolving with the current contents of the editor
+         */
+        "getEditorContents": () => Promise<any>;
+        /**
+          * Contains a public value to indicate if the model has any changes.
+         */
+        "hasChanges": boolean;
+        /**
+          * Contains a public value to indicate if the model has any errors that would prevent saving it.
+         */
+        "hasErrors": boolean;
+        /**
+          * Contains a unique identifier for when we have multiple instances of the editor. For example when we want to show an item's data as well as an item's properties.
+         */
+        "instanceid": any;
+        /**
+          * Frees the editor events and memory; to be called when the web component is no longer needed.  Because the component lifecycle doesn't include an "onDestroy" event (@see https://stenciljs.com/docs/component-lifecycle#disconnectedcallback) and TypeScript/JavaScript does automatic garbage collection without a callback hook until ES2021 (@see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry), this cleanup call needs to be called manually.
+         */
+        "prepareForDeletion": () => Promise<void>;
+        /**
+          * Replaces the current selection with the supplied text, inserting if nothing is selected.
+          * @param replacement Text to use for replacement or insertion
+          * @returns Promise resolving when function is done
+         */
+        "replaceCurrentSelection": (replacement: string) => Promise<any>;
+        /**
+          * Resets the contents of the editor with the current `value`.
+          * @returns Promise resolving when function is done
+         */
+        "reset": () => Promise<any>;
+        /**
+          * Contains the public value for this component; it is not changed by the editor. When changed, the change overwrites the contents of the editor.
+         */
+        "value": any;
+    }
+    interface MapDrawTools {
+        /**
+          * boolean: sketch is used by multiple components...need a way to know who should respond...
+         */
+        "active": boolean;
+        /**
+          * boolean: Optionally draw a border around the draw tools
+         */
+        "border": boolean;
+        /**
+          * Clears the user drawn graphics
+          * @returns Promise that resolves when the operation is complete
+         */
+        "clear": () => Promise<void>;
+        /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "graphics": __esri.Graphic[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+         */
+        "pointSymbol": __esri.SimpleMarkerSymbol;
+        /**
+          * esri/symbols/SimpleFillSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+         */
+        "polygonSymbol": __esri.SimpleFillSymbol;
+        /**
+          * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+         */
+        "polylineSymbol": __esri.SimpleLineSymbol;
+    }
+    interface MapLayerPicker {
+        /**
+          * string[]: list of layer names from the map
+         */
+        "layerNames": string[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * string[]: list of layers that have been selected by the end user
+         */
+        "selectedLayers": string[];
+        /**
+          * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
+         */
+        "selectionMode": SelectionMode;
+    }
+    interface MapSearch {
+        /**
+          * Clears the state of the search widget
+          * @returns Promise that resolves when the operation is complete
+         */
+        "clear": () => Promise<void>;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+    }
+    interface MapSelectTools {
+        /**
+          * Clear any selection results
+          * @returns Promise when the results have been cleared
+         */
+        "clearSelection": () => Promise<void>;
+        /**
+          * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
+         */
+        "geometries": __esri.Geometry[];
+        /**
+          * Get the new selection set
+          * @returns Promise with the new selection set
+         */
+        "getSelection": () => Promise<ISelectionSet>;
+        /**
+          * boolean: When true a new label is not generated for the stored selection set
+         */
+        "isUpdate": boolean;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "selectLayerView": __esri.FeatureLayerView;
+        /**
+          * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
+         */
+        "selectionSet": ISelectionSet;
+    }
+    interface PdfDownload {
+        /**
+          * boolean: Controls the enabled/disabled state of download
+         */
+        "disabled": boolean;
+        /**
+          * Downloads csv of mailing labels for the provided list of ids
+          * @param ids List of ids to download
+          * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+          * @returns Promise resolving when function is done
+         */
+        "downloadCSV": (ids: number[], removeDuplicates: boolean) => Promise<void>;
+        /**
+          * Downloads pdf of mailing labels for the provided list of ids
+          * @param ids List of ids to download
+          * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+          * @returns Promise resolving when function is done
+         */
+        "downloadPDF": (ids: number[], removeDuplicates: boolean) => Promise<void>;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "layerView": __esri.FeatureLayerView;
+    }
+    interface PublicNotification {
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "addresseeLayer": __esri.FeatureLayerView;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+    }
+    interface RefineSelection {
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "addresseeLayer": __esri.FeatureLayerView;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * utils/interfaces/ISelectionSet: An array of user defined selection sets
+         */
+        "selectionSets": ISelectionSet[];
+    }
+    interface RefineSelectionTools {
+        /**
+          * boolean: sketch is used by multiple components...need a way to know who should respond...
+         */
+        "active": boolean;
+        /**
+          * boolean: Optionally draw a border around the draw tools
+         */
+        "border": boolean;
+        /**
+          * Clear current highlight handle
+          * @returns Promise when complete
+         */
+        "clearHighlight": () => Promise<void>;
+        /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "graphics": __esri.Graphic[];
+        /**
+          * number: The oids of the selected features
+         */
+        "ids": number[];
+        /**
+          * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
+         */
+        "layerView": __esri.FeatureLayerView;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "layerViews": __esri.FeatureLayerView[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * utils/interfaces/ESelectionMode: ADD, REMOVE
+         */
+        "mode": ESelectionMode;
+        /**
+          * utils/interfaces/ERefineMode: ALL, SUBSET
+         */
+        "refineMode": ERefineMode;
+        /**
+          * Reset the ids collection
+          * @returns Promise when complete
+         */
+        "reset": () => Promise<void>;
+        /**
+          * boolean: Used to control the visibility of the layer picker
+         */
+        "useLayerPicker": boolean;
+    }
+    interface SolutionConfiguration {
+        /**
+          * Credentials for requests
+         */
+        "authentication": UserSession;
+        "getSpatialReferenceInfo": () => Promise<ISolutionSpatialReferenceInfo>;
+        "saveSolution": () => Promise<void>;
+        /**
+          * Used to show/hide loading indicator
+         */
+        "showLoading": boolean;
+        /**
+          * Contains the current solution item id
+         */
+        "solutionItemId": string;
+        "unloadSolution": () => Promise<void>;
+    }
+    interface SolutionContents {
+        /**
+          * Contains the current item that is selected.
+         */
+        "selectedItemId": string;
+        /**
+          * Contains the public value for this component.
+         */
+        "templateHierarchy": IInventoryItem[];
+    }
+    interface SolutionItem {
+        /**
+          * Credentials for requests
+         */
+        "authentication": UserSession;
+        /**
+          * A template's itemId.
+         */
+        "itemId": string;
+        /**
+          * Contains the organization based variables
+         */
+        "organizationVariables": string;
+        /**
+          * Contains the solution based variables
+         */
+        "solutionVariables": string;
+    }
+    interface SolutionItemDetails {
+        /**
+          * A template's itemId.
+         */
+        "itemId": string;
+    }
+    interface SolutionItemIcon {
+        /**
+          * Indicate if this is portal
+         */
+        "isPortal": boolean;
+        /**
+          * The type for the item
+         */
+        "type": string;
+        /**
+          * The typeKeywords for the item
+         */
+        "typeKeywords": string[];
+    }
+    interface SolutionItemSharing {
+        "getShareInfo": () => Promise<any>;
+        /**
+          * A template's groupId.
+         */
+        "groupId": string;
+    }
+    interface SolutionOrganizationVariables {
+        /**
+          * Contains the public value for this component.
+         */
+        "value": string;
+    }
+    interface SolutionResourceItem {
+        /**
+          * Credentials for requests
+         */
+        "authentication": UserSession;
+        /**
+          * A template's itemId. This is used to get the correct model from a store in the json-editor
+         */
+        "itemId": string;
+    }
+    interface SolutionSpatialRef {
+        /**
+          * Returns the spatial reference description of the supplied value. (Exposes protected method `_createSpatialRefDisplay` for testing.)
+          * @param value WKID or WKT or null for default
+          * @returns If component is using a WKID, description using WKID; otherwise, the WKT; defaults to 102100
+         */
+        "createSpatialRefDisplay": (value: string) => Promise<ISpatialRefRepresentation>;
+        /**
+          * The wkid that will be used as the default when no user selection has been made.
+         */
+        "defaultWkid": number;
+        /**
+          * Returns the current spatial reference description. (Exposes protected variable `spatialRef` for testing.)
+         */
+        "getSpatialRef": () => Promise<ISpatialRefRepresentation>;
+        /**
+          * When true, all but the main switch are disabled to prevent interaction.
+         */
+        "locked": boolean;
+        /**
+          * List of service names the spatial reference should apply to
+         */
+        "services": string[];
+        /**
+          * Contains the public value for this component, which is a wkid or a wkt.
+         */
+        "value": string;
+        /**
+          * Converts a WKID into a spatial reference description. (Exposes protected method `_wkidToDisplay` for testing.)
+          * @param wkid WKID to look up
+          * @returns Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
+         */
+        "wkidToDisplay": (wkid: number) => Promise<string>;
+    }
+    interface SolutionTemplateData {
+        /**
+          * This needs to be unique for props vs data of an item
+         */
+        "instanceid": string;
+        /**
+          * A template's itemId. This is used to get the correct model from a store in the json-editor
+         */
+        "itemId": string;
+        "organizationVariables": string;
+        /**
+          * Contains the solution based variables
+         */
+        "solutionVariables": string;
+        /**
+          * Used to show/hide the variable containers
+         */
+        "varsOpen": boolean;
+    }
+    interface SolutionVariables {
+        /**
+          * Contains the public value for this component.
+         */
+        "value": string;
+    }
+    interface StoreManager {
+        /**
+          * Credentials for requests
+         */
+        "authentication": UserSession;
+        /**
+          * Templates for the current solution
+         */
+        "templates": any[];
+        /**
+          * Contains source json as a string
+         */
+        "value": string;
     }
 }
+export interface BufferToolsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLBufferToolsElement;
+}
+export interface MapDrawToolsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapDrawToolsElement;
+}
+export interface MapLayerPickerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapLayerPickerElement;
+}
+export interface MapSearchCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapSearchElement;
+}
+export interface MapSelectToolsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapSelectToolsElement;
+}
+export interface RefineSelectionCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLRefineSelectionElement;
+}
+export interface RefineSelectionToolsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLRefineSelectionToolsElement;
+}
+export interface SolutionContentsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSolutionContentsElement;
+}
+export interface SolutionOrganizationVariablesCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSolutionOrganizationVariablesElement;
+}
+export interface SolutionSpatialRefCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSolutionSpatialRefElement;
+}
+export interface SolutionVariablesCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSolutionVariablesElement;
+}
+export interface StoreManagerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLStoreManagerElement;
+}
 declare global {
-    interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
+    interface HTMLBufferToolsElement extends Components.BufferTools, HTMLStencilElement {
     }
-    var HTMLMyComponentElement: {
-        prototype: HTMLMyComponentElement;
-        new (): HTMLMyComponentElement;
+    var HTMLBufferToolsElement: {
+        prototype: HTMLBufferToolsElement;
+        new (): HTMLBufferToolsElement;
+    };
+    interface HTMLCheckListElement extends Components.CheckList, HTMLStencilElement {
+    }
+    var HTMLCheckListElement: {
+        prototype: HTMLCheckListElement;
+        new (): HTMLCheckListElement;
+    };
+    interface HTMLConfigBufferToolsElement extends Components.ConfigBufferTools, HTMLStencilElement {
+    }
+    var HTMLConfigBufferToolsElement: {
+        prototype: HTMLConfigBufferToolsElement;
+        new (): HTMLConfigBufferToolsElement;
+    };
+    interface HTMLConfigDrawToolsElement extends Components.ConfigDrawTools, HTMLStencilElement {
+    }
+    var HTMLConfigDrawToolsElement: {
+        prototype: HTMLConfigDrawToolsElement;
+        new (): HTMLConfigDrawToolsElement;
+    };
+    interface HTMLConfigLayerPickerElement extends Components.ConfigLayerPicker, HTMLStencilElement {
+    }
+    var HTMLConfigLayerPickerElement: {
+        prototype: HTMLConfigLayerPickerElement;
+        new (): HTMLConfigLayerPickerElement;
+    };
+    interface HTMLConfigPdfDownloadElement extends Components.ConfigPdfDownload, HTMLStencilElement {
+    }
+    var HTMLConfigPdfDownloadElement: {
+        prototype: HTMLConfigPdfDownloadElement;
+        new (): HTMLConfigPdfDownloadElement;
+    };
+    interface HTMLJsonEditorElement extends Components.JsonEditor, HTMLStencilElement {
+    }
+    var HTMLJsonEditorElement: {
+        prototype: HTMLJsonEditorElement;
+        new (): HTMLJsonEditorElement;
+    };
+    interface HTMLMapDrawToolsElement extends Components.MapDrawTools, HTMLStencilElement {
+    }
+    var HTMLMapDrawToolsElement: {
+        prototype: HTMLMapDrawToolsElement;
+        new (): HTMLMapDrawToolsElement;
+    };
+    interface HTMLMapLayerPickerElement extends Components.MapLayerPicker, HTMLStencilElement {
+    }
+    var HTMLMapLayerPickerElement: {
+        prototype: HTMLMapLayerPickerElement;
+        new (): HTMLMapLayerPickerElement;
+    };
+    interface HTMLMapSearchElement extends Components.MapSearch, HTMLStencilElement {
+    }
+    var HTMLMapSearchElement: {
+        prototype: HTMLMapSearchElement;
+        new (): HTMLMapSearchElement;
+    };
+    interface HTMLMapSelectToolsElement extends Components.MapSelectTools, HTMLStencilElement {
+    }
+    var HTMLMapSelectToolsElement: {
+        prototype: HTMLMapSelectToolsElement;
+        new (): HTMLMapSelectToolsElement;
+    };
+    interface HTMLPdfDownloadElement extends Components.PdfDownload, HTMLStencilElement {
+    }
+    var HTMLPdfDownloadElement: {
+        prototype: HTMLPdfDownloadElement;
+        new (): HTMLPdfDownloadElement;
+    };
+    interface HTMLPublicNotificationElement extends Components.PublicNotification, HTMLStencilElement {
+    }
+    var HTMLPublicNotificationElement: {
+        prototype: HTMLPublicNotificationElement;
+        new (): HTMLPublicNotificationElement;
+    };
+    interface HTMLRefineSelectionElement extends Components.RefineSelection, HTMLStencilElement {
+    }
+    var HTMLRefineSelectionElement: {
+        prototype: HTMLRefineSelectionElement;
+        new (): HTMLRefineSelectionElement;
+    };
+    interface HTMLRefineSelectionToolsElement extends Components.RefineSelectionTools, HTMLStencilElement {
+    }
+    var HTMLRefineSelectionToolsElement: {
+        prototype: HTMLRefineSelectionToolsElement;
+        new (): HTMLRefineSelectionToolsElement;
+    };
+    interface HTMLSolutionConfigurationElement extends Components.SolutionConfiguration, HTMLStencilElement {
+    }
+    var HTMLSolutionConfigurationElement: {
+        prototype: HTMLSolutionConfigurationElement;
+        new (): HTMLSolutionConfigurationElement;
+    };
+    interface HTMLSolutionContentsElement extends Components.SolutionContents, HTMLStencilElement {
+    }
+    var HTMLSolutionContentsElement: {
+        prototype: HTMLSolutionContentsElement;
+        new (): HTMLSolutionContentsElement;
+    };
+    interface HTMLSolutionItemElement extends Components.SolutionItem, HTMLStencilElement {
+    }
+    var HTMLSolutionItemElement: {
+        prototype: HTMLSolutionItemElement;
+        new (): HTMLSolutionItemElement;
+    };
+    interface HTMLSolutionItemDetailsElement extends Components.SolutionItemDetails, HTMLStencilElement {
+    }
+    var HTMLSolutionItemDetailsElement: {
+        prototype: HTMLSolutionItemDetailsElement;
+        new (): HTMLSolutionItemDetailsElement;
+    };
+    interface HTMLSolutionItemIconElement extends Components.SolutionItemIcon, HTMLStencilElement {
+    }
+    var HTMLSolutionItemIconElement: {
+        prototype: HTMLSolutionItemIconElement;
+        new (): HTMLSolutionItemIconElement;
+    };
+    interface HTMLSolutionItemSharingElement extends Components.SolutionItemSharing, HTMLStencilElement {
+    }
+    var HTMLSolutionItemSharingElement: {
+        prototype: HTMLSolutionItemSharingElement;
+        new (): HTMLSolutionItemSharingElement;
+    };
+    interface HTMLSolutionOrganizationVariablesElement extends Components.SolutionOrganizationVariables, HTMLStencilElement {
+    }
+    var HTMLSolutionOrganizationVariablesElement: {
+        prototype: HTMLSolutionOrganizationVariablesElement;
+        new (): HTMLSolutionOrganizationVariablesElement;
+    };
+    interface HTMLSolutionResourceItemElement extends Components.SolutionResourceItem, HTMLStencilElement {
+    }
+    var HTMLSolutionResourceItemElement: {
+        prototype: HTMLSolutionResourceItemElement;
+        new (): HTMLSolutionResourceItemElement;
+    };
+    interface HTMLSolutionSpatialRefElement extends Components.SolutionSpatialRef, HTMLStencilElement {
+    }
+    var HTMLSolutionSpatialRefElement: {
+        prototype: HTMLSolutionSpatialRefElement;
+        new (): HTMLSolutionSpatialRefElement;
+    };
+    interface HTMLSolutionTemplateDataElement extends Components.SolutionTemplateData, HTMLStencilElement {
+    }
+    var HTMLSolutionTemplateDataElement: {
+        prototype: HTMLSolutionTemplateDataElement;
+        new (): HTMLSolutionTemplateDataElement;
+    };
+    interface HTMLSolutionVariablesElement extends Components.SolutionVariables, HTMLStencilElement {
+    }
+    var HTMLSolutionVariablesElement: {
+        prototype: HTMLSolutionVariablesElement;
+        new (): HTMLSolutionVariablesElement;
+    };
+    interface HTMLStoreManagerElement extends Components.StoreManager, HTMLStencilElement {
+    }
+    var HTMLStoreManagerElement: {
+        prototype: HTMLStoreManagerElement;
+        new (): HTMLStoreManagerElement;
     };
     interface HTMLElementTagNameMap {
-        "my-component": HTMLMyComponentElement;
+        "buffer-tools": HTMLBufferToolsElement;
+        "check-list": HTMLCheckListElement;
+        "config-buffer-tools": HTMLConfigBufferToolsElement;
+        "config-draw-tools": HTMLConfigDrawToolsElement;
+        "config-layer-picker": HTMLConfigLayerPickerElement;
+        "config-pdf-download": HTMLConfigPdfDownloadElement;
+        "json-editor": HTMLJsonEditorElement;
+        "map-draw-tools": HTMLMapDrawToolsElement;
+        "map-layer-picker": HTMLMapLayerPickerElement;
+        "map-search": HTMLMapSearchElement;
+        "map-select-tools": HTMLMapSelectToolsElement;
+        "pdf-download": HTMLPdfDownloadElement;
+        "public-notification": HTMLPublicNotificationElement;
+        "refine-selection": HTMLRefineSelectionElement;
+        "refine-selection-tools": HTMLRefineSelectionToolsElement;
+        "solution-configuration": HTMLSolutionConfigurationElement;
+        "solution-contents": HTMLSolutionContentsElement;
+        "solution-item": HTMLSolutionItemElement;
+        "solution-item-details": HTMLSolutionItemDetailsElement;
+        "solution-item-icon": HTMLSolutionItemIconElement;
+        "solution-item-sharing": HTMLSolutionItemSharingElement;
+        "solution-organization-variables": HTMLSolutionOrganizationVariablesElement;
+        "solution-resource-item": HTMLSolutionResourceItemElement;
+        "solution-spatial-ref": HTMLSolutionSpatialRefElement;
+        "solution-template-data": HTMLSolutionTemplateDataElement;
+        "solution-variables": HTMLSolutionVariablesElement;
+        "store-manager": HTMLStoreManagerElement;
     }
 }
 declare namespace LocalJSX {
-    interface MyComponent {
+    interface BufferTools {
         /**
-          * The first name
+          * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
          */
-        "first"?: string;
+        "appearance"?: "slider" | "text";
         /**
-          * The last name
+          * number: The distance used for buffer
          */
-        "last"?: string;
+        "distance"?: number;
         /**
-          * The middle name
+          * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
          */
-        "middle"?: string;
+        "geometries"?: __esri.Geometry[];
+        /**
+          * Emitted on demand when a buffer is generated.
+         */
+        "onBufferComplete"?: (event: BufferToolsCustomEvent<__esri.Polygon | __esri.Polygon[]>) => void;
+        /**
+          * number: The component's maximum selectable value.
+         */
+        "sliderMax"?: number;
+        /**
+          * number: The component's minimum selectable value.
+         */
+        "sliderMin"?: number;
+        /**
+          * number: Displays tick marks on the number line at a specified interval.
+         */
+        "sliderTicks"?: number;
+        /**
+          * boolean: option to control if buffer results should be unioned
+         */
+        "unionResults"?: boolean;
+        /**
+          * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
+         */
+        "unit"?: __esri.LinearUnits;
+    }
+    interface CheckList {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked"?: boolean;
+        /**
+          * string []: The values to render beside the checkboxes
+         */
+        "values"?: string[];
+    }
+    interface ConfigBufferTools {
+        /**
+          * "VERTICAL" | "HORIZONTAL": Specifies how the controls chould be aligned.
+         */
+        "alignment"?: "VERTICAL" | "HORIZONTAL";
+        /**
+          * number: Default distance value.
+         */
+        "distance"?: number;
+        /**
+          * string: Default unit value. Should be a unit listed in assets/t9n/config-buffer-tools/resources
+         */
+        "unit"?: any;
+    }
+    interface ConfigDrawTools {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked"?: boolean;
+    }
+    interface ConfigLayerPicker {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked"?: boolean;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+    }
+    interface ConfigPdfDownload {
+        /**
+          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+         */
+        "defaultChecked"?: boolean;
+    }
+    interface JsonEditor {
+        /**
+          * Contains a public value to indicate if the model has any changes.
+         */
+        "hasChanges"?: boolean;
+        /**
+          * Contains a public value to indicate if the model has any errors that would prevent saving it.
+         */
+        "hasErrors"?: boolean;
+        /**
+          * Contains a unique identifier for when we have multiple instances of the editor. For example when we want to show an item's data as well as an item's properties.
+         */
+        "instanceid"?: any;
+        /**
+          * Contains the public value for this component; it is not changed by the editor. When changed, the change overwrites the contents of the editor.
+         */
+        "value"?: any;
+    }
+    interface MapDrawTools {
+        /**
+          * boolean: sketch is used by multiple components...need a way to know who should respond...
+         */
+        "active"?: boolean;
+        /**
+          * boolean: Optionally draw a border around the draw tools
+         */
+        "border"?: boolean;
+        /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "graphics"?: __esri.Graphic[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the sketch graphics change.
+         */
+        "onSketchGraphicsChange"?: (event: MapDrawToolsCustomEvent<__esri.Graphic[]>) => void;
+        /**
+          * esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+         */
+        "pointSymbol"?: __esri.SimpleMarkerSymbol;
+        /**
+          * esri/symbols/SimpleFillSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+         */
+        "polygonSymbol"?: __esri.SimpleFillSymbol;
+        /**
+          * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+         */
+        "polylineSymbol"?: __esri.SimpleLineSymbol;
+    }
+    interface MapLayerPicker {
+        /**
+          * string[]: list of layer names from the map
+         */
+        "layerNames"?: string[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when a layer is selected
+         */
+        "onLayerSelectionChange"?: (event: MapLayerPickerCustomEvent<string[]>) => void;
+        /**
+          * string[]: list of layers that have been selected by the end user
+         */
+        "selectedLayers"?: string[];
+        /**
+          * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
+         */
+        "selectionMode"?: SelectionMode;
+    }
+    interface MapSearch {
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the status of the search widget changes
+         */
+        "onSearchChange"?: (event: MapSearchCustomEvent<ISearchResult>) => void;
+    }
+    interface MapSelectTools {
+        /**
+          * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
+         */
+        "geometries"?: __esri.Geometry[];
+        /**
+          * boolean: When true a new label is not generated for the stored selection set
+         */
+        "isUpdate"?: boolean;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the selection set changes.
+         */
+        "onSelectionSetChange"?: (event: MapSelectToolsCustomEvent<number>) => void;
+        /**
+          * Emitted on demand when the workflow type changes.
+         */
+        "onWorkflowTypeChange"?: (event: MapSelectToolsCustomEvent<EWorkflowType>) => void;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "selectLayerView"?: __esri.FeatureLayerView;
+        /**
+          * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
+         */
+        "selectionSet"?: ISelectionSet;
+    }
+    interface PdfDownload {
+        /**
+          * boolean: Controls the enabled/disabled state of download
+         */
+        "disabled"?: boolean;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "layerView"?: __esri.FeatureLayerView;
+    }
+    interface PublicNotification {
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "addresseeLayer"?: __esri.FeatureLayerView;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+    }
+    interface RefineSelection {
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "addresseeLayer"?: __esri.FeatureLayerView;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when selection sets change.
+         */
+        "onSelectionSetsChanged"?: (event: RefineSelectionCustomEvent<ISelectionSet[]>) => void;
+        /**
+          * utils/interfaces/ISelectionSet: An array of user defined selection sets
+         */
+        "selectionSets"?: ISelectionSet[];
+    }
+    interface RefineSelectionTools {
+        /**
+          * boolean: sketch is used by multiple components...need a way to know who should respond...
+         */
+        "active"?: boolean;
+        /**
+          * boolean: Optionally draw a border around the draw tools
+         */
+        "border"?: boolean;
+        /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "graphics"?: __esri.Graphic[];
+        /**
+          * number: The oids of the selected features
+         */
+        "ids"?: number[];
+        /**
+          * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
+         */
+        "layerView"?: __esri.FeatureLayerView;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "layerViews"?: __esri.FeatureLayerView[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * utils/interfaces/ESelectionMode: ADD, REMOVE
+         */
+        "mode"?: ESelectionMode;
+        /**
+          * Emitted on demand when selection graphics change.
+         */
+        "onRefineSelectionGraphicsChange"?: (event: RefineSelectionToolsCustomEvent<any[]>) => void;
+        /**
+          * Emitted on demand when selection ids change
+         */
+        "onRefineSelectionIdsChange"?: (event: RefineSelectionToolsCustomEvent<{ addIds: any[]; removeIds: any[]; }>) => void;
+        /**
+          * utils/interfaces/ERefineMode: ALL, SUBSET
+         */
+        "refineMode"?: ERefineMode;
+        /**
+          * boolean: Used to control the visibility of the layer picker
+         */
+        "useLayerPicker"?: boolean;
+    }
+    interface SolutionConfiguration {
+        /**
+          * Credentials for requests
+         */
+        "authentication"?: UserSession;
+        /**
+          * Used to show/hide loading indicator
+         */
+        "showLoading"?: boolean;
+        /**
+          * Contains the current solution item id
+         */
+        "solutionItemId"?: string;
+    }
+    interface SolutionContents {
+        "onSolutionItemSelected"?: (event: SolutionContentsCustomEvent<string>) => void;
+        /**
+          * Contains the current item that is selected.
+         */
+        "selectedItemId"?: string;
+        /**
+          * Contains the public value for this component.
+         */
+        "templateHierarchy"?: IInventoryItem[];
+    }
+    interface SolutionItem {
+        /**
+          * Credentials for requests
+         */
+        "authentication"?: UserSession;
+        /**
+          * A template's itemId.
+         */
+        "itemId"?: string;
+        /**
+          * Contains the organization based variables
+         */
+        "organizationVariables"?: string;
+        /**
+          * Contains the solution based variables
+         */
+        "solutionVariables"?: string;
+    }
+    interface SolutionItemDetails {
+        /**
+          * A template's itemId.
+         */
+        "itemId"?: string;
+    }
+    interface SolutionItemIcon {
+        /**
+          * Indicate if this is portal
+         */
+        "isPortal"?: boolean;
+        /**
+          * The type for the item
+         */
+        "type"?: string;
+        /**
+          * The typeKeywords for the item
+         */
+        "typeKeywords"?: string[];
+    }
+    interface SolutionItemSharing {
+        /**
+          * A template's groupId.
+         */
+        "groupId"?: string;
+    }
+    interface SolutionOrganizationVariables {
+        "onOrganizationVariableSelected"?: (event: SolutionOrganizationVariablesCustomEvent<{ itemId: string, value: string }>) => void;
+        /**
+          * Contains the public value for this component.
+         */
+        "value"?: string;
+    }
+    interface SolutionResourceItem {
+        /**
+          * Credentials for requests
+         */
+        "authentication"?: UserSession;
+        /**
+          * A template's itemId. This is used to get the correct model from a store in the json-editor
+         */
+        "itemId"?: string;
+    }
+    interface SolutionSpatialRef {
+        /**
+          * The wkid that will be used as the default when no user selection has been made.
+         */
+        "defaultWkid"?: number;
+        /**
+          * When true, all but the main switch are disabled to prevent interaction.
+         */
+        "locked"?: boolean;
+        "onFeatureServiceSpatialReferenceChange"?: (event: SolutionSpatialRefCustomEvent<{ name: string, enabled: boolean }>) => void;
+        /**
+          * List of service names the spatial reference should apply to
+         */
+        "services"?: string[];
+        /**
+          * Contains the public value for this component, which is a wkid or a wkt.
+         */
+        "value"?: string;
+    }
+    interface SolutionTemplateData {
+        /**
+          * This needs to be unique for props vs data of an item
+         */
+        "instanceid"?: string;
+        /**
+          * A template's itemId. This is used to get the correct model from a store in the json-editor
+         */
+        "itemId"?: string;
+        "organizationVariables"?: string;
+        /**
+          * Contains the solution based variables
+         */
+        "solutionVariables"?: string;
+        /**
+          * Used to show/hide the variable containers
+         */
+        "varsOpen"?: boolean;
+    }
+    interface SolutionVariables {
+        "onSolutionVariableSelected"?: (event: SolutionVariablesCustomEvent<{ itemId: string, value: string }>) => void;
+        /**
+          * Contains the public value for this component.
+         */
+        "value"?: string;
+    }
+    interface StoreManager {
+        /**
+          * Credentials for requests
+         */
+        "authentication"?: UserSession;
+        "onStateLoaded"?: (event: StoreManagerCustomEvent<any>) => void;
+        /**
+          * Templates for the current solution
+         */
+        "templates"?: any[];
+        /**
+          * Contains source json as a string
+         */
+        "value"?: string;
     }
     interface IntrinsicElements {
-        "my-component": MyComponent;
+        "buffer-tools": BufferTools;
+        "check-list": CheckList;
+        "config-buffer-tools": ConfigBufferTools;
+        "config-draw-tools": ConfigDrawTools;
+        "config-layer-picker": ConfigLayerPicker;
+        "config-pdf-download": ConfigPdfDownload;
+        "json-editor": JsonEditor;
+        "map-draw-tools": MapDrawTools;
+        "map-layer-picker": MapLayerPicker;
+        "map-search": MapSearch;
+        "map-select-tools": MapSelectTools;
+        "pdf-download": PdfDownload;
+        "public-notification": PublicNotification;
+        "refine-selection": RefineSelection;
+        "refine-selection-tools": RefineSelectionTools;
+        "solution-configuration": SolutionConfiguration;
+        "solution-contents": SolutionContents;
+        "solution-item": SolutionItem;
+        "solution-item-details": SolutionItemDetails;
+        "solution-item-icon": SolutionItemIcon;
+        "solution-item-sharing": SolutionItemSharing;
+        "solution-organization-variables": SolutionOrganizationVariables;
+        "solution-resource-item": SolutionResourceItem;
+        "solution-spatial-ref": SolutionSpatialRef;
+        "solution-template-data": SolutionTemplateData;
+        "solution-variables": SolutionVariables;
+        "store-manager": StoreManager;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
+            "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
+            "check-list": LocalJSX.CheckList & JSXBase.HTMLAttributes<HTMLCheckListElement>;
+            "config-buffer-tools": LocalJSX.ConfigBufferTools & JSXBase.HTMLAttributes<HTMLConfigBufferToolsElement>;
+            "config-draw-tools": LocalJSX.ConfigDrawTools & JSXBase.HTMLAttributes<HTMLConfigDrawToolsElement>;
+            "config-layer-picker": LocalJSX.ConfigLayerPicker & JSXBase.HTMLAttributes<HTMLConfigLayerPickerElement>;
+            "config-pdf-download": LocalJSX.ConfigPdfDownload & JSXBase.HTMLAttributes<HTMLConfigPdfDownloadElement>;
+            "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
+            "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
+            "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
+            "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
+            "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
+            "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
+            "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
+            "refine-selection": LocalJSX.RefineSelection & JSXBase.HTMLAttributes<HTMLRefineSelectionElement>;
+            "refine-selection-tools": LocalJSX.RefineSelectionTools & JSXBase.HTMLAttributes<HTMLRefineSelectionToolsElement>;
+            "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
+            "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
+            "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;
+            "solution-item-details": LocalJSX.SolutionItemDetails & JSXBase.HTMLAttributes<HTMLSolutionItemDetailsElement>;
+            "solution-item-icon": LocalJSX.SolutionItemIcon & JSXBase.HTMLAttributes<HTMLSolutionItemIconElement>;
+            "solution-item-sharing": LocalJSX.SolutionItemSharing & JSXBase.HTMLAttributes<HTMLSolutionItemSharingElement>;
+            "solution-organization-variables": LocalJSX.SolutionOrganizationVariables & JSXBase.HTMLAttributes<HTMLSolutionOrganizationVariablesElement>;
+            "solution-resource-item": LocalJSX.SolutionResourceItem & JSXBase.HTMLAttributes<HTMLSolutionResourceItemElement>;
+            "solution-spatial-ref": LocalJSX.SolutionSpatialRef & JSXBase.HTMLAttributes<HTMLSolutionSpatialRefElement>;
+            "solution-template-data": LocalJSX.SolutionTemplateData & JSXBase.HTMLAttributes<HTMLSolutionTemplateDataElement>;
+            "solution-variables": LocalJSX.SolutionVariables & JSXBase.HTMLAttributes<HTMLSolutionVariablesElement>;
+            "store-manager": LocalJSX.StoreManager & JSXBase.HTMLAttributes<HTMLStoreManagerElement>;
         }
     }
 }

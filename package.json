@@ -1,34 +1,90 @@
 {
-  "name": "solutions-components",
-  "version": "0.0.1",
+  "name": "@esri/solutions-components",
+  "version": "0.1.4",
   "description": "Web Components for Esri's Solutions Applications",
   "main": "dist/index.cjs.js",
-  "module": "dist/custom-elements/index.js",
-  "es2015": "dist/esm/index.mjs",
-  "es2017": "dist/esm/index.mjs",
-  "types": "dist/custom-elements/index.d.ts",
+  "module": "dist/index.js",
+  "es2015": "dist/esm/index.js",
+  "es2017": "dist/esm/index.js",
+  "jsnext:main": "dist/esm/index.js",
+  "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/solutions/solutions.esm.js",
+  "unpkg": "dist/solutions/solutions.js",
   "files": [
-    "dist/",
-    "loader/"
+    "dist/"
   ],
   "scripts": {
     "build": "stencil build --docs",
+    "build:debug": "stencil build -c stencil.debugconfig.ts",
     "start": "stencil build --dev --watch --serve",
-    "test": "stencil test --spec --e2e",
+    "clean:src": "start cmd.exe /c cleanSrc.bat",
+    "lint:ts": "eslint --ext .ts,.tsx src/components src/utils",
+    "lint:ts:fix": "eslint --ext .ts,.tsx --fix src/components src/utils",
+    "lint:ts:prettier": "prettier --write \"**/*.ts?(x)\"",
+    "release:publish": "npm publish --access public && ts-node ./support/releaseToGitHub.ts",
+    "test": "stencil test --spec --e2e --detectOpenHandles --coverage --collectCoverageFrom=src/utils/*.ts",
+    "test:clean": "npm run clean:src && npm run lint:ts:fix && stencil test --spec --e2e --detectOpenHandles",
     "test.watch": "stencil test --spec --e2e --watchAll",
-    "generate": "stencil generate"
+    "generate": "stencil generate",
+    "update-browserslist": "npx browserslist@latest --update-db"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.20",
+    "@esri/eslint-plugin-calcite-components": "^0.2.2",
+    "@stencil/core": "^2.18.1",
+    "@stencil/postcss": "^2.1.0",
+    "@stencil/sass": "^2.0.0",
+    "@stencil/store": "^2.0.1",
+    "@types/arcgis-js-api": "^4.24.0",
+    "@types/jest": "^27.0.3",
+    "@types/node": "^16.11.11",
     "@types/puppeteer": "^5.4.2",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.39.0",
+    "autoprefixer": "10.4.4",
+    "caniuse-lite": "^1.0.30001412",
+    "dotenv": "^10.0.0",
+    "eslint": "^8.11.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-jest": "25.3.0",
+    "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-react": "7.27.1",
+    "eslint-plugin-unicorn": "39.0.0",
+    "esri-loader": "3.4.0",
+    "form-request-submit-polyfill": "^2.0.0",
+    "gh-release": "^6.0.3",
     "jest": "^26.6.3",
-    "puppeteer": "^5.5.0"
+    "jest-cli": "^26.6.3",
+    "pify": "^5.0.0",
+    "prettier": "2.4.1",
+    "puppeteer": "^13.5.1",
+    "react": "^18.2.0",
+    "rimraf": "^3.0.2",
+    "tailwindcss": "3.0.23",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.4.0",
+    "typescript": "^4.8.4"
   },
   "dependencies": {
-    "@stencil/core": "^2.0.1"
+    "@arcgis/core": "^4.24.7",
+    "minimist": "^1.2.6"
+  },
+  "peerDependencies": {
+    "@esri/arcgis-rest-auth": "^3.4.2",
+    "@esri/arcgis-rest-feature-layer": "^3.4.2",
+    "@esri/arcgis-rest-portal": "^3.4.2",
+    "@esri/arcgis-rest-request": "^3.4.2",
+    "@esri/arcgis-rest-service-admin": "^3.4.2",
+    "@esri/calcite-components": "1.0.0-beta.97",
+    "@esri/hub-common": "9.29.0",
+    "@esri/hub-initiatives": "9.29.0",
+    "@esri/hub-sites": "9.29.0",
+    "@esri/hub-teams": "9.29.0",
+    "@esri/solution-common": "1.5.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Esri/solutions-components.git"
   },
   "contributors": [
     {
@@ -40,5 +96,10 @@
       "email": "mtschudi@esri.com"
     }
   ],
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "volta": {
+    "node": "16.17.1",
+    "npm": "8.18.0",
+    "typescript": "4.8.4"
+  }
 }

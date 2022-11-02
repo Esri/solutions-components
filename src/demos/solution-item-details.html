@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+  <title>Solution Item Details</title>
+  <!--
+   | Copyright 2022 Esri
+   |
+   | Licensed under the Apache License, Version 2.0 (the "License");
+   | you may not use this file except in compliance with the License.
+   | You may obtain a copy of the License at
+   |
+   |    http://www.apache.org/licenses/LICENSE-2.0
+   |
+   | Unless required by applicable law or agreed to in writing, software
+   | distributed under the License is distributed on an "AS IS" BASIS,
+   | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   | See the License for the specific language governing permissions and
+   | limitations under the License.
+  -->
+
+  <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components@1.0.0-beta.94/dist/calcite/calcite.css" type="text/css" />
+  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
+  <link rel="stylesheet" href="../solutions.css" type="text/css">
+  <style>
+  .full-height {
+    height: 100%;
+  }
+  .overflow {
+    overflow-y: auto;
+  }
+  </style>
+
+  <script type="module" src="https://unpkg.com/@esri/calcite-components@1.0.0-beta.94/dist/calcite/calcite.esm.js"></script>
+  <script type="module" src="../solutions.esm.js"></script>
+</head>
+
+<body>
+  <h1>Demo Solution Item Details</h1>
+  <main id="appContainer" class="overflow">
+    <div class="content full-height">
+      <solution-item-details id="demo"></solution-item-details>
+    </div>
+  </main>
+
+  <script src="./libs/require.js"></script>
+  <script src="./libs/setLocale.js"></script>
+  <script>
+    require([],
+    function () {
+      // Initialize the configuration content
+      const demo = document.getElementById("demo");
+
+      // set the data
+      fetch("./data/solution-item-details-data.json")
+        .then(response => response.json())
+        .then(data => {
+          demo.value = data.value;
+          document.getElementById("appContainer").style.opacity = "1";
+        });
+    });
+  </script>
+</body>
+</html>

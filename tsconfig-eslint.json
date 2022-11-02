@@ -1,0 +1,4 @@
+{
+  "extends": "./tsconfig-base",
+  "include": ["src/components/**/*.tsx", "src/utils/**/*.ts"]
+}

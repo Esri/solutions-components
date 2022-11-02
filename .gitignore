@@ -24,3 +24,15 @@ $RECYCLE.BIN/
 Thumbs.db
 UserInterfaceState.xcuserstate
 .env
+
+# Tools, notes, outputs
+__*.*
+__*
+.vscode/
+coverage/
+
+# Temporary build products
+src/**/*.js
+!src/**/assets/**/*.js
+!src/demos/**/*.js
+arcgis-pdf-creator/
