@@ -23,6 +23,8 @@ beforeEach(() => {
     return [GraphicsLayer, Sketch]
   });
 
+  jest.spyOn(console, 'warn').mockImplementation(() => {});
+
   mapView = {
     map: {
       layers: {
