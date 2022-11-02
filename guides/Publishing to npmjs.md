@@ -4,11 +4,11 @@
 
 * \[ \] Stop automatic recompilation software
 * \[ \] Switch to `master` branch
-* \[ \] Merge in--but don't commit--the current `release/X.X.X` branch
+* \[ \] Merge in--but don't commit--the source branch, e.g., `develop` or the current `release/X.X.X` branch
 * \[ \] Run `npm run clean:src`
 * \[ \] Change the package version number in package.json
 * \[ \] Run `npm install` to update package-lock.json
-* \[ \] Edit CHANGELOG.md 
+* \[ \] Edit CHANGELOG.md
   * \[ \] Add the version and date after the "## [Unreleased]" line, e.g., `## [0.1.6] - November 2nd 2022`
   * \[ \] Define the version's symbol (e.g., "0.1.6") mapping from the previous version to the new version, e.g., `[0.1.6]: https://github.com/Esri/solution.js/compare/v0.1.5...v0.1.6 "v0.1.6"`
   * \[ \] Update the "Unreleased" symbol to map from the new version to the "HEAD", e.g., `[Unreleased]: https://github.com/Esri/solution.js/compare/v0.1.6...HEAD "Unreleased Changes"`
