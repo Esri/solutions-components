@@ -287,7 +287,7 @@ export class MapSelectTools {
 
     this._updateSelection(EWorkflowType.SELECT, graphics, this._translations.select);
     // Using OIDs to avoid issue with points
-    const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
+    const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g.layer.objectIdField]) : [];
     return this._highlightFeatures(oids);
   }
 
@@ -376,7 +376,7 @@ export class MapSelectTools {
           refineMode={ERefineMode.SUBSET}
         />
         <calcite-label style={{ "display": "flex", "padding-top": "1rem" }}>
-          {this._translations?.searchDistance}
+          {this._translations.searchDistance}
           <buffer-tools
             distance={this.selectionSet?.distance}
             geometries={this.geometries}
@@ -657,7 +657,8 @@ export class MapSelectTools {
     state.highlightHandle?.remove();
 
     // for sketch
-    if (this._drawTools) {
+    // checking for clear as it would throw off tests
+    if (this._drawTools?.clear) {
       void this._drawTools.clear();
     }
     this.selectionSetChange.emit(this._selectedIds.length);

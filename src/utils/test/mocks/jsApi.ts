@@ -33,6 +33,14 @@ export class GraphicsLayer {
   addMany: any;
 }
 
+export class Graphic {
+  constructor(options) {
+    Object.assign(this, options);
+  }
+  geometry: any;
+  symbol: any;
+}
+
 export class Sketch {
   constructor(options) {
     Object.assign(this, options);
@@ -67,4 +75,28 @@ export class Search {
   container: any;
   searchTerm: any;
   on: any;
+}
+
+export class Geometry {
+  constructor(options) {
+    Object.assign(this, options);
+  }
+
+}
+
+export class geometryEngine {
+  constructor(options) {
+    Object.assign(this, options);
+  }
+
+}
+
+export class highlightHandle { remove: () => {} }
+
+export class LayerView {
+  constructor(options?) {
+    Object.assign(this, options);
+    this.layer = {}
+  }
+  layer: any;
 }
