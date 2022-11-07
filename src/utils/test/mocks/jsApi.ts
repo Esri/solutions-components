@@ -96,7 +96,14 @@ export class highlightHandle { remove: () => {} }
 export class LayerView {
   constructor(options?) {
     Object.assign(this, options);
-    this.layer = {}
+    this.layer = {
+      createQuery: () => {
+        return {};
+      },
+      queryFeatures: async() => {
+
+      }
+    };
   }
   layer: any;
 }

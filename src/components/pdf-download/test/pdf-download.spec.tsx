@@ -14,21 +14,108 @@
  * limitations under the License.
  */
 
+import { h } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { PdfDownload } from '../pdf-download';
+import * as locale from "../../../utils/locale";
+import * as translations from "../../../assets/t9n/pdf-download/resources.json";
+import * as csvUtils from "../../../utils/csvUtils";
+import { LayerView } from "../../../utils/test/mocks/jsApi";
 
-xdescribe('pdf-download', () => {
+jest.setTimeout(30000);
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
+beforeEach(() => {
+  jest.spyOn(locale, "getLocaleComponentStrings").mockImplementation(() => [
+    translations
+  ] as any);
+});
+
+describe('pdf-download', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [PdfDownload],
-      html: `<pdf-download></pdf-download>`,
+      template: () => (<pdf-download></pdf-download>),
     });
     expect(page.root).toEqualHtml(`
       <pdf-download>
         <mock:shadow-root>
-          <slot></slot>
+          <calcite-select disabled="" label="">
+            <calcite-option>
+              6 per page | 4 x 3-1/3
+            </calcite-option>
+            <calcite-option>
+              10 per page | 4 x 2
+            </calcite-option>
+            <calcite-option>
+              14 per page | 4 x 1-1/3
+            </calcite-option>
+            <calcite-option>
+              20 per page | 4 x 1
+            </calcite-option>
+            <calcite-option>
+              30 per page | 2-5/8 x 1
+            </calcite-option>
+            <calcite-option>
+              60 per page | 1-3/4 x 2/3
+            </calcite-option>
+            <calcite-option>
+              80 per page | 1-3/4 x 1/2
+            </calcite-option>
+          </calcite-select>
         </mock:shadow-root>
       </pdf-download>
     `);
   });
+
+  it('downloads csv', async () => {
+    const exportCSVMock = jest.fn();
+    jest.spyOn(csvUtils, "exportCSV").mockImplementation(exportCSVMock);
+
+    const consoleLogMock = jest.fn();
+    jest.spyOn(console, "log").mockImplementation(consoleLogMock);
+
+    const layerView = new LayerView() as unknown as any;
+    const page = await newSpecPage({
+      components: [PdfDownload],
+      template: () => (<pdf-download layerView={layerView}></pdf-download>),
+    });
+
+    await page.root.downloadCSV([], true);
+    expect(exportCSVMock).toBeCalledTimes(1);
+    expect(consoleLogMock).toBeCalledTimes(1);
+    expect(consoleLogMock).toBeCalledWith(true)
+
+    await page.root.downloadCSV([], false);
+    expect(exportCSVMock).toBeCalledTimes(2);
+    expect(consoleLogMock).toBeCalledTimes(2);
+    expect(consoleLogMock).toBeCalledWith(false)
+  });
+
+  // it('downloads pdf', async () => {
+  //   const layerView = new LayerView() as unknown as any;
+
+  //   const page = await newSpecPage({
+  //     components: [PdfDownload],
+  //     template: () => (<pdf-download layerView={layerView}></pdf-download>),
+  //     supportsShadowDom: true,
+  //     autoApplyChanges: true,
+  //   });
+
+
+  //   const sel = page.root.shadowRoot.querySelector("calcite-option");
+
+  //   //.getElementsByTagName("calcite-option");
+  //   sel[0].selected = true;
+  //   //expect(sel.length).toEqual(0);
+
+  //   const tempAlertMock = jest.fn();
+  //   jest.spyOn(page.win, "alert").mockImplementation(tempAlertMock);
+  //   await page.root.downloadPDF([], true);
+  //   expect(tempAlertMock).toBeCalledTimes(1);
+
+  // });
 });
