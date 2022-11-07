@@ -7,7 +7,7 @@ import tailwindConfig from "./tailwind.config";
 import { generatePreactTypes } from "./support/preact";
 
 export const config: Config = {
-  namespace: 'solutions',
+  namespace: 'solutions-components',
   globalStyle: 'src/assets/styles/styles.scss',
   minifyJs: false,
   minifyCss: false,
