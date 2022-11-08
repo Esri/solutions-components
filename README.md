@@ -1,6 +1,9 @@
+[![npm status][npm-img]][npm-url]
 [![Build status][travis-img]][travis-url]
 [![Apache 2.0 licensed][license-img]][license-url]
 
+[npm-img]: https://img.shields.io/npm/v/@esri/solutions-components.svg?style=round-square&color=blue
+[npm-url]: https://www.npmjs.com/package/@esri/solutions-components
 [travis-img]: https://img.shields.io/travis/Esri/solutions-components/develop.svg
 [travis-url]: https://travis-ci.org/Esri/solutions-components
 [license-img]: https://img.shields.io/badge/license-Apache%202.0-blue.svg

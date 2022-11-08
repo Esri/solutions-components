@@ -1,6 +1,6 @@
 {
   "name": "@esri/solutions-components",
-  "version": "0.0.10",
+  "version": "0.2.0",
   "description": "Web Components for Esri's Solutions Applications",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -35,6 +35,7 @@
     "@stencil/postcss": "^2.1.0",
     "@stencil/sass": "^2.0.0",
     "@stencil/store": "^2.0.1",
+    "@types/arcgis-js-api": "^4.24.0",
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.11",
     "@types/puppeteer": "^5.4.2",
@@ -60,12 +61,15 @@
     "react": "^18.2.0",
     "rimraf": "^3.0.2",
     "tailwindcss": "3.0.23",
-    "ts-node": "^10.4.0",
+    "ts-node": "^10.9.1",
     "tslib": "^2.4.0",
     "typescript": "^4.8.4"
   },
   "dependencies": {
     "@arcgis/core": "^4.24.7",
+    "minimist": "^1.2.6"
+  },
+  "peerDependencies": {
     "@esri/arcgis-rest-auth": "^3.4.2",
     "@esri/arcgis-rest-feature-layer": "^3.4.2",
     "@esri/arcgis-rest-portal": "^3.4.2",
@@ -76,9 +80,7 @@
     "@esri/hub-initiatives": "9.29.0",
     "@esri/hub-sites": "9.29.0",
     "@esri/hub-teams": "9.29.0",
-    "@esri/solution-common": "1.5.3",
-    "@types/arcgis-js-api": "^4.24.0",
-    "minimist": "^1.2.6"
+    "@esri/solution-common": "1.5.3"
   },
   "repository": {
     "type": "git",
