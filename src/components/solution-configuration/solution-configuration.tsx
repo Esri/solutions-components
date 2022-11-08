@@ -47,7 +47,7 @@ export class SolutionConfiguration {
   /**
    * Credentials for requests
    */
-  @Prop({ mutable: true }) authentication: UserSession;
+  @Prop({ mutable: true }) authentication = new UserSession({});
 
   /**
    * Contains the current solution item id
