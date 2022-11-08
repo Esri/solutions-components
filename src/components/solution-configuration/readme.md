@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property         | Attribute          | Description                           | Type          | Default     |
-| ---------------- | ------------------ | ------------------------------------- | ------------- | ----------- |
-| `authentication` | --                 | Credentials for requests              | `UserSession` | `undefined` |
-| `showLoading`    | `show-loading`     | Used to show/hide loading indicator   | `boolean`     | `false`     |
-| `solutionItemId` | `solution-item-id` | Contains the current solution item id | `string`      | `""`        |
+| Property         | Attribute          | Description                           | Type          | Default               |
+| ---------------- | ------------------ | ------------------------------------- | ------------- | --------------------- |
+| `authentication` | --                 | Credentials for requests              | `UserSession` | `new UserSession({})` |
+| `showLoading`    | `show-loading`     | Used to show/hide loading indicator   | `boolean`     | `false`               |
+| `solutionItemId` | `solution-item-id` | Contains the current solution item id | `string`      | `""`                  |
 
 
 ## Methods
