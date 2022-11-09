@@ -28,11 +28,14 @@ export const config: Config = {
         { src: 'utils' }
       ]
     },
-    { type: "dist-custom-elements", autoDefineCustomElements: true },
     {
       type: 'docs-readme'
     },
-    { type: "custom", name: "preact", generator: generatePreactTypes },
+    {
+       type: "custom",
+       name: "preact",
+       generator: generatePreactTypes
+    },
   ],
   plugins: [
     sass({
