@@ -107,6 +107,11 @@ export class SolutionConfiguration {
   render(): VNode {
     const wkid = getProp(state.getStoreInfo("spatialReferenceInfo"), "spatialReference");
     const hasServices: boolean = state.getStoreInfo("featureServices").length > 0;
+
+    const solutionData = state.getStoreInfo("solutionData");
+    this._solutionVariables = JSON.stringify(utils.getSolutionVariables(solutionData.templates, this._translations));
+    this._organizationVariables = JSON.stringify(utils.getOrganizationVariables(this._translations));
+
     return (
       <Host>
         {
@@ -324,9 +329,6 @@ export class SolutionConfiguration {
    */
   protected _initProps(): void {
     const solutionData = state.getStoreInfo("solutionData");
-
-    this._solutionVariables = JSON.stringify(utils.getSolutionVariables(solutionData.templates, this._translations));
-    this._organizationVariables = JSON.stringify(utils.getOrganizationVariables(this._translations));
 
     this._templateHierarchy = [...utils.getInventoryItems(solutionData.templates)];
 
