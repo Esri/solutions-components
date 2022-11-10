@@ -11,7 +11,7 @@
 | ---------------- | ------------------ | ------------------------------------- | ------------- | ----------- |
 | `authentication` | --                 | Credentials for requests              | `UserSession` | `undefined` |
 | `showLoading`    | `show-loading`     | Used to show/hide loading indicator   | `boolean`     | `false`     |
-| `solutionItemId` | `solution-item-id` | Contains the current solution item id | `any`         | `undefined` |
+| `solutionItemId` | `solution-item-id` | Contains the current solution item id | `string`      | `""`        |
 
 
 ## Methods

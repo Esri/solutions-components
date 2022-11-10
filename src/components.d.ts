@@ -361,7 +361,7 @@ export namespace Components {
         /**
           * Contains the current solution item id
          */
-        "solutionItemId": any;
+        "solutionItemId": string;
         "unloadSolution": () => Promise<void>;
     }
     interface SolutionContents {
@@ -1049,7 +1049,7 @@ declare namespace LocalJSX {
         /**
           * Contains the current solution item id
          */
-        "solutionItemId"?: any;
+        "solutionItemId"?: string;
     }
     interface SolutionContents {
         "onSolutionItemSelected"?: (event: SolutionContentsCustomEvent<string>) => void;
