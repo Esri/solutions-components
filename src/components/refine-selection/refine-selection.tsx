@@ -37,7 +37,7 @@ export class RefineSelection {
   /**
    * utils/interfaces/ISelectionSet: An array of user defined selection sets
    */
-  @Prop() selectionSets: ISelectionSet[] = [];
+  @Prop({mutable: true}) selectionSets: ISelectionSet[] = [];
 
   //--------------------------------------------------------------------------
   //
@@ -205,15 +205,15 @@ export class RefineSelection {
 
     return [(
       <calcite-list-item
-        label={this._translations.featuresAdded?.replace("{{n}}", numAdded.toString())}
+        label={this._translations.featuresAdded.replace("{{n}}", numAdded.toString())}
       />
     ),(
       <calcite-list-item
-        label={this._translations.featuresRemoved?.replace("{{n}}", numRemoved.toString())}
+        label={this._translations.featuresRemoved.replace("{{n}}", numRemoved.toString())}
       />
     ), (
       <calcite-list-item
-        label={this._translations.totalSelected?.replace("{{n}}", total.toString())}
+        label={this._translations.totalSelected.replace("{{n}}", total.toString())}
       />
     )];
   }
@@ -235,38 +235,6 @@ export class RefineSelection {
       }
     });
     return refineSelectionSet;
-  }
-
-  /**
-   * Create a calcite action
-   *
-   * @param enabled controls the enabled state of the control
-   * @param icon the image to display in the action
-   * @param text and supporting text for the action
-   * @param onClick the fucntion the actio will execute
-   * @param indicator boolean to control if an indicator should be shown (default is false)
-   * @param slot the supporting slot to use
-   *
-   * @returns the calcite action node
-   * @protected
-   */
-  protected _getAction(
-    enabled: boolean,
-    icon: string,
-    text: string,
-    onClick: any,
-    indicator = false,
-    slot = ""
-  ): VNode {
-    return (
-      <calcite-action
-        disabled={!enabled}
-        icon={icon}
-        indicator={indicator}
-        onClick={onClick}
-        slot={slot}
-        text={text} />
-    );
   }
 
   /**
@@ -394,4 +362,34 @@ export class RefineSelection {
     this._translations = translations[0] as typeof RefineSelection_T9n;
   }
 
+  /** Provides access to protected methods for unit testing.
+ *
+ *  @param methodName Name of protected method to run
+ *  @param arg1 First argument to forward to method, e.g., for "_modeChanged", `ESelectionMode`
+ *  @returns
+ */
+  public _testAccess(
+    methodName: string,
+    arg1?: any
+  ): any {
+    switch (methodName) {
+      case "_modeChanged":
+        return this._modeChanged(arg1);
+      case "_setSelectionMode":
+        return this._setSelectionMode(arg1);
+      // case "_getRefineSelectionSetList":
+      //   return this._getRefineSelectionSetList();
+      // case "_getRefineSelectionSet":
+      //   return this._getRefineSelectionSet(arg1);
+      // case "_updateSelectionSets":
+      //   return this._updateSelectionSets(arg1);
+      // case "_updateRefineSelectionSet":
+      //   return this._updateRefineSelectionSet(arg1, arg2);
+      // case "_updateRefineIds":
+      //   return this._updateRefineIds(arg1, arg2, arg3);
+      // case "_addRefineSelectionSet":
+      //   return this._addRefineSelectionSet(arg1, arg2);
+    }
+    return null;
+  }
 }
