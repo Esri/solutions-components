@@ -132,7 +132,7 @@ export class SolutionItemDetails {
   }
 
   componentDidRender(): void {
-    this._loadThumb()
+    this._loadThumb();
   }
 
   //--------------------------------------------------------------------------
