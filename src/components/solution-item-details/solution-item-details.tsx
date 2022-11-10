@@ -48,9 +48,6 @@ export class SolutionItemDetails {
    */
   @Prop({ mutable: true, reflect: true }) itemId = "";
 
-  @Watch("itemId") itemIdWatchHandler(): void {
-  }
-
   //--------------------------------------------------------------------------
   //
   //  Lifecycle
