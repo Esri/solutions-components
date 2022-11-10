@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Listen, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, h, Host, Listen, Prop, State, VNode } from '@stencil/core';
 import '@esri/calcite-components';
 import state from "../../utils/solution-store";
 import SolutionItemDetails_T9n from '../../assets/t9n/solution-item-details/resources.json';
