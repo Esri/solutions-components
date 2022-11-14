@@ -349,11 +349,12 @@ export namespace Components {
     }
     interface SolutionConfiguration {
         /**
-          * Credentials for requests
+          * Credentials for requests, which can be a serialized UserSession
          */
         "authentication": UserSession;
         "getSpatialReferenceInfo": () => Promise<ISolutionSpatialReferenceInfo>;
         "saveSolution": () => Promise<void>;
+        "serializedAuthentication": string;
         /**
           * Used to show/hide loading indicator
          */
@@ -1039,9 +1040,10 @@ declare namespace LocalJSX {
     }
     interface SolutionConfiguration {
         /**
-          * Credentials for requests
+          * Credentials for requests, which can be a serialized UserSession
          */
         "authentication"?: UserSession;
+        "serializedAuthentication"?: string;
         /**
           * Used to show/hide loading indicator
          */
