@@ -52,11 +52,7 @@ export class SolutionConfiguration {
   @Prop({ mutable: true }) serializedAuthentication = "";
 
   @Watch("serializedAuthentication") async serializedAuthenticationWatchHandler(): Promise<void> {
-    if (this.serializedAuthentication) {
-      this.authentication = UserSession.deserialize(this.serializedAuthentication);
-    } else {
-      this.authentication = new UserSession({});
-    }
+    this.authentication = this.serializedAuthentication ? UserSession.deserialize(this.serializedAuthentication) : new UserSession({});
   }
 
   /**
