@@ -54,6 +54,8 @@ export class SolutionConfiguration {
   @Watch("serializedAuthentication") async serializedAuthenticationWatchHandler(): Promise<void> {
     if (this.serializedAuthentication) {
       this.authentication = UserSession.deserialize(this.serializedAuthentication);
+    } else {
+      this.authentication = new UserSession({});
     }
   }
 
