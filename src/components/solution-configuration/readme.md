@@ -7,11 +7,12 @@
 
 ## Properties
 
-| Property         | Attribute          | Description                           | Type          | Default               |
-| ---------------- | ------------------ | ------------------------------------- | ------------- | --------------------- |
-| `authentication` | --                 | Credentials for requests              | `UserSession` | `new UserSession({})` |
-| `showLoading`    | `show-loading`     | Used to show/hide loading indicator   | `boolean`     | `false`               |
-| `solutionItemId` | `solution-item-id` | Contains the current solution item id | `string`      | `""`                  |
+| Property                   | Attribute                   | Description                                                     | Type          | Default               |
+| -------------------------- | --------------------------- | --------------------------------------------------------------- | ------------- | --------------------- |
+| `authentication`           | --                          | Credentials for requests, which can be a serialized UserSession | `UserSession` | `new UserSession({})` |
+| `serializedAuthentication` | `serialized-authentication` |                                                                 | `string`      | `""`                  |
+| `showLoading`              | `show-loading`              | Used to show/hide loading indicator                             | `boolean`     | `false`               |
+| `solutionItemId`           | `solution-item-id`          | Contains the current solution item id                           | `string`      | `""`                  |
 
 
 ## Methods
