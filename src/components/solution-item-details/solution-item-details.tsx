@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Listen, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, h, Host, Listen, Prop, State, VNode } from '@stencil/core';
 import '@esri/calcite-components';
 import state from "../../utils/solution-store";
 import SolutionItemDetails_T9n from '../../assets/t9n/solution-item-details/resources.json';
@@ -48,12 +48,6 @@ export class SolutionItemDetails {
    */
   @Prop({ mutable: true, reflect: true }) itemId = "";
 
-  @Watch("itemId") itemIdWatchHandler(): void {
-    this.itemEdit = state.getItemInfo(this.itemId);
-    this.itemDetails = this.itemEdit.item;
-    this.itemType = this.itemDetails.type;
-  }
-
   //--------------------------------------------------------------------------
   //
   //  Lifecycle
@@ -67,8 +61,13 @@ export class SolutionItemDetails {
     return this._getTranslations();
   }
 
-  componentDidRender(): void {
-    this._loadThumb()
+  async componentWillRender(): Promise<void> {
+    this.itemEdit = state.getItemInfo(this.itemId);
+    if (this.itemEdit) {
+      this.itemDetails = this.itemEdit.item;
+      this.itemType = this.itemDetails.type;
+    }
+    return Promise.resolve();
   }
 
   /**
@@ -130,6 +129,10 @@ export class SolutionItemDetails {
         </div>
       </Host>
     );
+  }
+
+  componentDidRender(): void {
+    this._loadThumb();
   }
 
   //--------------------------------------------------------------------------
