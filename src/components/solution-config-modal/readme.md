@@ -12,62 +12,26 @@
 | `serializedAuthentication` | `serialized-authentication` | Credentials for requests in a serialized form | `string`  | `""`    |
 | `showLoading`              | `show-loading`              | Used to show/hide loading indicator           | `boolean` | `false` |
 | `solutionItemId`           | `solution-item-id`          | Contains the current solution item id         | `string`  | `""`    |
-
-
-## Methods
-
-### `getSpatialReferenceInfo() => Promise<ISolutionSpatialReferenceInfo>`
-
-
-
-#### Returns
-
-Type: `Promise<ISolutionSpatialReferenceInfo>`
-
-
-
-### `saveSolution() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-### `unloadSolution() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
+| `solutionTitle`            | `solution-title`            |                                               | `string`  | `""`    |
 
 
 ## Dependencies
 
-### Used by
-
- - [solution-config-modal](../solution-config-modal)
-
 ### Depends on
 
-- calcite-loader
-- calcite-tabs
-- calcite-tab-nav
-- calcite-tab-title
-- calcite-tab
-- [solution-contents](../solution-contents)
+- calcite-modal
+- [solution-configuration](../solution-configuration)
 - calcite-button
-- [solution-item](../solution-item)
-- [solution-spatial-ref](../solution-spatial-ref)
 
 ### Graph
 ```mermaid
 graph TD;
+  solution-config-modal --> calcite-modal
+  solution-config-modal --> solution-configuration
+  solution-config-modal --> calcite-button
+  calcite-modal --> calcite-scrim
+  calcite-modal --> calcite-icon
+  calcite-scrim --> calcite-loader
   solution-configuration --> calcite-loader
   solution-configuration --> calcite-tabs
   solution-configuration --> calcite-tab-nav
@@ -116,7 +80,6 @@ graph TD;
   calcite-action-menu --> calcite-popover
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
-  calcite-scrim --> calcite-loader
   json-editor --> calcite-icon
   json-editor --> calcite-button
   solution-organization-variables --> calcite-tree
@@ -140,8 +103,7 @@ graph TD;
   solution-spatial-ref --> calcite-input
   solution-spatial-ref --> calcite-tree
   solution-spatial-ref --> calcite-tree-item
-  solution-config-modal --> solution-configuration
-  style solution-configuration fill:#f9f,stroke:#333,stroke-width:4px
+  style solution-config-modal fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------
