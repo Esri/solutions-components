@@ -231,8 +231,10 @@ export class BufferTools {
    *
    * @protected
    */
-  protected _setUnit(): void {
-    this.unit = this._unitElement.value as __esri.LinearUnits;
+  protected _setUnit(
+    unit: __esri.LinearUnits
+  ): void {
+    this.unit = unit;
     this._buffer();
   }
 
@@ -282,7 +284,7 @@ export class BufferTools {
         <calcite-select
           class="flex-1"
           label="label"
-          onCalciteSelectChange={() => this._setUnit()}
+          onCalciteSelectChange={() => this._setUnit(this._unitElement.value as __esri.LinearUnits)}
           ref={(el) => { this._unitElement = el }}
         >
           {this._getUnits()}
@@ -323,4 +325,22 @@ export class BufferTools {
     this._translations = messages[0] as typeof BufferTools_T9n;
   }
 
+  /** Provides access to protected methods for unit testing.
+  *
+  *  @param methodName Name of protected method to run
+  *  @param arg1 First argument to forward to method, e.g., for "_setDistance", `CustomEvent`
+  *  @returns
+  */
+  public _testAccess(
+    methodName: string,
+    arg1?: any
+  ): any {
+    switch (methodName) {
+      case "_setUnit":
+        return this._setUnit(arg1);
+      case "_setDistance":
+        return this._setDistance(arg1);
+    }
+    return null;
+  }
 }

@@ -37,10 +37,11 @@ beforeEach(() => {
   });
 
   jest.useFakeTimers();
+
 });
 
 describe('buffer-tools', () => {
-  it('renders at text', async () => {
+  it('renders as text', async () => {
     const page = await newSpecPage({
       autoApplyChanges: true,
       components: [BufferTools],
@@ -80,6 +81,55 @@ describe('buffer-tools', () => {
     `);
   });
 
+  it('_setDistance', async () => {
+    const timeout = jest.spyOn(global, 'setTimeout');
+    const cleartimeout = jest.spyOn(global, 'clearTimeout');
+    const page = await newSpecPage({
+      autoApplyChanges: true,
+      components: [BufferTools],
+      template: () => (<buffer-tools></buffer-tools>),
+    });
+    expect(page.root).toEqualHtml(`
+      <buffer-tools>
+        <mock:shadow-root>
+          <div class="c-container">
+            <calcite-input class="padding-end-1" number-button-type="vertical" placeholder="0" type="number"></calcite-input>
+            <calcite-select class="flex-1" label="label">
+              <calcite-option label="Feet" value="feet"></calcite-option>
+              <calcite-option label="Meters" selected="" value="meters"></calcite-option>
+              <calcite-option label="Miles" value="miles"></calcite-option>
+              <calcite-option label="Kilometers" value="kilometers"></calcite-option>
+            </calcite-select>
+          </div>
+        </mock:shadow-root>
+      </buffer-tools>
+    `);
+
+    let matcher = undefined;
+
+    page.root.geometries = [{}];
+    jest.runAllTimers();
+
+    page.doc.addEventListener("bufferComplete", (evt: CustomEvent) => {
+      expect(evt.detail).toEqual(matcher);
+    });
+
+    page.rootInstance._testAccess("_setDistance", {detail: {value: 0}});
+    jest.runAllTimers();
+
+    page.rootInstance._testAccess("_setDistance", {detail: {value: 1}});
+    jest.runAllTimers();
+
+    expect(timeout).toBeCalledTimes(3);
+    expect(cleartimeout).toBeCalledTimes(2);
+
+    timeout.mockReset();
+    timeout.mockRestore();
+
+    cleartimeout.mockReset();
+    cleartimeout.mockRestore();
+  });
+
   it('geometries watch', async () => {
     const timeout = jest.spyOn(global, 'setTimeout');
     const cleartimeout = jest.spyOn(global, 'clearTimeout');
@@ -109,6 +159,12 @@ describe('buffer-tools', () => {
 
     expect(timeout).toBeCalledTimes(3);
     expect(cleartimeout).toBeCalledTimes(2);
+
+    timeout.mockReset();
+    timeout.mockRestore();
+
+    cleartimeout.mockReset();
+    cleartimeout.mockRestore();
   });
 
   it('have expected defaults', () => {
@@ -121,5 +177,10 @@ describe('buffer-tools', () => {
     expect(bufferTools.sliderTicks).toEqual(10);
     expect(bufferTools.unionResults).toEqual(true);
     expect(bufferTools.unit).toEqual('meters');
+  });
+
+  it('have expected defaults', () => {
+    const bufferTools = new BufferTools();
+    bufferTools._testAccess("_setUnit", "meters");
   });
 });
