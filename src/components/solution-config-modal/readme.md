@@ -7,12 +7,11 @@
 
 ## Properties
 
-| Property                   | Attribute                   | Description                                   | Type      | Default |
-| -------------------------- | --------------------------- | --------------------------------------------- | --------- | ------- |
-| `serializedAuthentication` | `serialized-authentication` | Credentials for requests in a serialized form | `string`  | `""`    |
-| `showLoading`              | `show-loading`              | Used to show/hide loading indicator           | `boolean` | `false` |
-| `solutionItemId`           | `solution-item-id`          | Contains the current solution item id         | `string`  | `""`    |
-| `solutionTitle`            | `solution-title`            |                                               | `string`  | `""`    |
+| Property                   | Attribute                   | Description                                   | Type     | Default |
+| -------------------------- | --------------------------- | --------------------------------------------- | -------- | ------- |
+| `serializedAuthentication` | `serialized-authentication` | Credentials for requests in a serialized form | `string` | `""`    |
+| `solutionItemId`           | `solution-item-id`          | Contains the current solution item id         | `string` | `""`    |
+| `solutionTitle`            | `solution-title`            |                                               | `string` | `""`    |
 
 
 ## Dependencies

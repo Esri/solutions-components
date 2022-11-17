@@ -353,10 +353,6 @@ export namespace Components {
          */
         "serializedAuthentication": string;
         /**
-          * Used to show/hide loading indicator
-         */
-        "showLoading": boolean;
-        /**
           * Contains the current solution item id
          */
         "solutionItemId": string;
@@ -1064,10 +1060,6 @@ declare namespace LocalJSX {
           * Credentials for requests in a serialized form
          */
         "serializedAuthentication"?: string;
-        /**
-          * Used to show/hide loading indicator
-         */
-        "showLoading"?: boolean;
         /**
           * Contains the current solution item id
          */

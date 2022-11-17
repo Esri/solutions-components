@@ -59,6 +59,7 @@ export class SolutionConfiguration {
   @Prop({ mutable: true, reflect: true }) solutionItemId = "";
 
   @Watch("solutionItemId") async valueWatchHandler(): Promise<void> {
+    console.log("CONFIG watch " + this.solutionItemId );//???
     await this._loadSolution(this.solutionItemId);
   }
 
@@ -76,6 +77,7 @@ export class SolutionConfiguration {
   constructor() {
     this._authentication = this.serializedAuthentication ? UserSession.deserialize(this.serializedAuthentication) : new UserSession({});
 
+    console.log("CONFIG constructor " + this.solutionItemId );//???
     void this._loadSolution(this.solutionItemId);
 
     window.addEventListener("solutionStoreHasChanges",
@@ -118,6 +120,7 @@ export class SolutionConfiguration {
     this._solutionVariables = JSON.stringify(utils.getSolutionVariables(solutionData.templates, this._translations));
     this._organizationVariables = JSON.stringify(utils.getOrganizationVariables(this._translations));
 
+    console.log("CONFIG render " + this.solutionItemId );//???
     return (
       <Host>
         {

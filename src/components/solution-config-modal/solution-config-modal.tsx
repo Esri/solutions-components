@@ -52,10 +52,9 @@ export class SolutionConfigModal {
    */
   @Prop({ mutable: true, reflect: true }) solutionItemId = "";
 
-  /**
-  * Used to show/hide loading indicator
-  */
-  @Prop({ mutable: true, reflect: true }) showLoading = false;
+  /*@Watch("solutionItemId") async valueWatchHandler(): Promise<void> {
+    console.log("MODAL watch " + this.solutionItemId);//??? + " open:" + this._modalIsOpen);//???
+  }*/
 
   //--------------------------------------------------------------------------
   //
@@ -64,6 +63,8 @@ export class SolutionConfigModal {
   //--------------------------------------------------------------------------
 
   constructor() {
+    console.log("MODAL constructor " + this.solutionItemId);//??? + " open:" + this._modalIsOpen);//???
+
     window.addEventListener("solutionCanSave",
       (evt) => {
         this._canSave = (evt as any).detail as boolean;
@@ -84,15 +85,17 @@ export class SolutionConfigModal {
    * Renders the component.
    */
   render(): VNode {
+    const modalIsOpen = !!this.solutionItemId;
+    console.log("MODAL render " + this.solutionTitle + " (" + this.solutionItemId + ")" + " open:" + modalIsOpen);//???
     return (
       <Host>
         <calcite-modal
-          active=""
           aria-labelledby="solutions-modal-title"
           fullscreen=""
           intl-close={this._translations.cancel}
           onCalciteModalClose={() => this._cancel()}
-          ref={(el) => (this._modal = el)}
+          open={modalIsOpen}
+          ref={(el) => this._modal = el}
         >
           <h3
             id="solutions-modal-title"
@@ -158,6 +161,8 @@ export class SolutionConfigModal {
    */
   protected _modalIsClosing = false;
 
+  //@State() protected _modalIsOpen = false;
+
   protected _saveBtn: HTMLCalciteButtonElement;
 
   /**
@@ -191,7 +196,8 @@ export class SolutionConfigModal {
   //--------------------------------------------------------------------------
 
   protected async _cancel(): Promise<void> {
-    // Start closing process if not already in progress
+    console.log("MODAL cancel 1 " + this.solutionItemId);//???
+    // Start closing process if not already in progress via save
     if (!this._modalIsClosing) {
       this._cancelBtn.disabled = this._saveBtn.disabled = true;
       this._modalIsClosing = true;
@@ -200,8 +206,11 @@ export class SolutionConfigModal {
           ? await this._saveChanges()
           : await this._cancelChanges()
         : await this._cancelChanges();
-      this._modal.open = false;
     }
+    this.solutionItemId = "";
+    this.solutionTitle = "";
+    this._modalIsClosing = false;
+    console.log("MODAL cancel 2 " + this.solutionItemId);//???
   }
 
   protected async _cancelChanges(): Promise<void> {
@@ -211,12 +220,12 @@ export class SolutionConfigModal {
 
   // Save changes and close the modal
   protected async _save(): Promise<void> {
+    console.log("MODAL save " + this.solutionItemId);//???
     this._modalIsClosing = true;
     this._cancelBtn.disabled = this._saveBtn.disabled = true;
     this._canSave
       ? await this._saveChanges()
       : await this._cancelChanges();
-    this._modal.open = false;
   }
 
   protected async _saveChanges(): Promise<void> {
