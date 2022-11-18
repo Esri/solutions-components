@@ -15,13 +15,13 @@
  */
 
 export enum ESeverity {
-  H="H",
-  M="M",
-  L="L"
+  H = "H",
+  M = "M",
+  L = "L"
 }
 
 export enum EDistressType {
-  ALLIGATOR_CRACKING=1,
+  ALLIGATOR_CRACKING = 1,
   BLEEDING,
   BLOCK_CRACKING,
   BUMPS_SAGS,
@@ -46,7 +46,7 @@ export function calcPCI(
   type: EDistressType,
   severity: ESeverity,
   density: number
-) {
+): number {
   let calc;
   switch (type) {
     case EDistressType.ALLIGATOR_CRACKING:
@@ -107,366 +107,228 @@ export function calcPCI(
       calc = _calcWeatheringReveling;
       break;
   }
-  return calc(severity, density);
+  return calc(severity, Math.log10(density));
+}
+
+function _getDeduct(
+  density: number,
+  vals: number[]
+) {
+  return vals.reduce((prev, cur, i) => {
+    return prev += i === 0 ? cur :
+      i === 1 ? (cur * density) :
+        (cur * Math.pow(density, i));
+  }, 0);
 }
 
 function _calcAlligator(
   severity: ESeverity,
   density: number
-) {
-  let calc;
-  switch (severity) {
-    case ESeverity.H:
-      calc = `Alligator High: ${density}`;
-      break;
-    case ESeverity.M:
-      calc = `Alligator Med: ${density}`;
-      break;
-    case ESeverity.L:
-      calc = `Alligator Low: ${density}`;
-      break;
-  }
-  return calc;
+): number {
+  const vals = severity === ESeverity.H ? [30.71, 29.22, 9.407, -6.981, -2.158, 3.047, -0.6578] :
+    severity === ESeverity.M ? [21.62, 21.32, 5.194, -1.343, 0.2341] :
+      [11.31, 16.05, 7.572, -1.471];
+
+  return _getDeduct(density, vals);
 }
 
 function _calcBleeding(
   severity: ESeverity,
   density: number
-) {
-  let calc;
-  switch (severity) {
-    case ESeverity.H:
-      calc = `Bleeding High: ${density}`;
-      break;
-    case ESeverity.M:
-      calc = `Bleeding Med: ${density}`;
-      break;
-    case ESeverity.L:
-      calc = `Bleeding Low: ${density}`;
-      break;
-  }
-  return calc;
+): number {
+  const vals = severity === ESeverity.H ? [5.343, 6.927, 7.926, 4.265, -0.7582] :
+    severity === ESeverity.M ? [2.38, 5.483, 4.128, 0.8366, 0.03659, 0.1052] :
+      [0.01391, 0.5079, 1.576, 1.191, 0.1329, 0.03823];
+
+  return _getDeduct(density, vals);
 }
 
 function _calcBlockCracking(
   severity: ESeverity,
   density: number
-) {
-  let calc;
-  switch (severity) {
-    case ESeverity.H:
-      calc = `Block Cracking High: ${density}`;
-      break;
-    case ESeverity.M:
-      calc = `Block Cracking Med: ${density}`;
-      break;
-    case ESeverity.L:
-      calc = `Block Cracking Low: ${density}`;
-      break;
-  }
-  return calc;
+): number {
+  const vals = severity === ESeverity.H ? [7.926, 11.93, 8.826, 3.432, -1.382] :
+    severity === ESeverity.M ? [2.587, 9.142, 6.647, -0.455, -0.2439, 0.1107] :
+      [0.646, 4.002, 4.2, 0.4987, -0.06269];
+
+  return _getDeduct(density, vals);
 }
 
 function _calcBumpsSags(
   severity: ESeverity,
   density: number
-) {
-  let calc;
-  switch (severity) {
-    case ESeverity.H:
-      calc = `Bumps Sags High: ${density}`;
-      break;
-    case ESeverity.M:
-      calc = `Bumps Sags Med: ${density}`;
-      break;
-    case ESeverity.L:
-      calc = `Bumps Sags Low: ${density}`;
-      break;
-  }
-  return calc;
+): number {
+  const vals = severity === ESeverity.H ? [52.77, 38.07, 8.964, -0.4148, -1.589, 2.478] :
+    severity === ESeverity.M ? [24.66, 27.86, 15.73, 3.295, -5.27, 5.921, 7.959] :
+      [8.768, 13.79, 7.064, 7.455, 6.041, -1.739, -1.371];
+
+  return _getDeduct(density, vals);
 }
 
 function _calcCorrugation(
   severity: ESeverity,
   density: number
-) {
-  let calc;
-  switch (severity) {
-    case ESeverity.H:
-      calc = `Corrugation High: ${density}`;
-      break;
-    case ESeverity.M:
-      calc = `Corrugation Med: ${density}`;
-      break;
-    case ESeverity.L:
-      calc = `Corrugation Low: ${density}`;
-      break;
-  }
-  return calc;
+): number {
+  const vals = severity === ESeverity.H ? [34.21, 21.59, 1.863, 6.1410, -0.687, -1.885, 0.4916] :
+    severity === ESeverity.M ? [15.78, 19.69, 6.276, -2.124, 0.5868, 0.06045] :
+      [2.173, 5.609, 5.976, -0.7348, -0.2172, 1.494, -0.5659];
+
+  return _getDeduct(density, vals);
 }
 
 function _calcDepression(
   severity: ESeverity,
   density: number
-) {
-  let calc;
-  switch (severity) {
-    case ESeverity.H:
-      calc = `Depression High: ${density}`;
-      break;
-    case ESeverity.M:
-      calc = `Depression Med: ${density}`;
-      break;
-    case ESeverity.L:
-      calc = `Depression Low: ${density}`;
-      break;
-  }
-  return calc;
+): number {
+  const vals = severity === ESeverity.H ? [17.84, 5.904, 9.406, 18.28, -2.753, -7.798, 2.402] :
+    severity === ESeverity.M ? [8.471, 3.171, 10.25, 12.2, -0.9687, -4.601, 1.079] :
+      [4.836, -0.7572, 4.786, 12.39, 1.233, -4.871, 0.9749];
+
+  return _getDeduct(density, vals);
 }
 
 function _calcEdgeCracking(
   severity: ESeverity,
   density: number
-) {
-  let calc;
-  switch (severity) {
-    case ESeverity.H:
-      calc = `Edge Cracking High: ${density}`;
-      break;
-    case ESeverity.M:
-      calc = `Edge Cracking Med: ${density}`;
-      break;
-    case ESeverity.L:
-      calc = `Edge Cracking Low: ${density}`;
-      break;
-  }
-  return calc;
+): number {
+  const vals = severity === ESeverity.H ? [14.99, 13.5, 10.62, 5.15, -1.792, -2.826] :
+    severity === ESeverity.M ? [9.177, 10.26, 5.704, -0.6812, -0.8588, 0.2123] :
+      [3.049, 4.802, 4.058, -0.3556, -1.55, 1.02];
+
+  return _getDeduct(density, vals);
 }
 
 function _calcReflectionCracking(
   severity: ESeverity,
   density: number
-) {
-  let calc;
-  switch (severity) {
-    case ESeverity.H:
-      calc = `Reflection Cracking High: ${density}`;
-      break;
-    case ESeverity.M:
-      calc = `Reflection Cracking Med: ${density}`;
-      break;
-    case ESeverity.L:
-      calc = `Reflection Cracking Low: ${density}`;
-      break;
-  }
-  return calc;
+): number {
+  const vals = severity === ESeverity.H ? [14.99, 17.21, 27.63, 31.13, -20.94, -18.82, 9.985] :
+    severity === ESeverity.M ? [9.9193, 10.88, 8.073, 14.8, -3.792, -9.583, 3.651] :
+      [2.356, 6.664, 3.717, -1.393, 1.94, 1.785, -0.9707];
+
+  return _getDeduct(density, vals);
 }
 
 function _calcLaneShoulderDropOff(
   severity: ESeverity,
   density: number
-) {
-  let calc;
-  switch (severity) {
-    case ESeverity.H:
-      calc = `Lane Shoulder Drop Off High: ${density}`;
-      break;
-    case ESeverity.M:
-      calc = `Lane Shoulder Drop Off Med: ${density}`;
-      break;
-    case ESeverity.L:
-      calc = `Lane Shoulder Drop Off Low: ${density}`;
-      break;
-  }
-  return calc;
+): number {
+  const vals = severity === ESeverity.H ? [7.549, 6.907, 7.284, 9.304, 2.064] :
+    severity === ESeverity.M ? [4.02, 1.744, 14.36, 15.92, -40.22, 23.6] :
+      [2.004, 1.065, 9.706, 11.75, -27.52, 15.04];
+
+  return _getDeduct(density, vals);
 }
 
 function _calcLongTransCracking(
   severity: ESeverity,
   density: number
-) {
-  let calc;
-  switch (severity) {
-    case ESeverity.H:
-      calc = `Long Trans Cracking High: ${density}`;
-      break;
-    case ESeverity.M:
-      calc = `Long Trans Cracking Med: ${density}`;
-      break;
-    case ESeverity.L:
-      calc = `Long Trans Cracking Low: ${density}`;
-      break;
-  }
-  return calc;
+): number {
+  const vals = severity === ESeverity.H ? [19.56, 24.06, 12.12, 9.336, 1.532, -4.396] :
+    severity === ESeverity.M ? [9.751, 15.53, 4.719, 1.369, 1.206, -1.164] :
+      [2.347, 9.074, 8.424, -1.338, -1.873, 1.144];
+
+  return _getDeduct(density, vals);
 }
 
 function _calcPatchingUtilCutPatching(
   severity: ESeverity,
   density: number
-) {
-  let calc;
-  switch (severity) {
-    case ESeverity.H:
-      calc = `Patching Util Cut Patching High: ${density}`;
-      break;
-    case ESeverity.M:
-      calc = `Patching Util Cut Patching Med: ${density}`;
-      break;
-    case ESeverity.L:
-      calc = `Patching Util Cut Patching Low: ${density}`;
-      break;
-  }
-  return calc;
+): number {
+  const vals = severity === ESeverity.H ? [20.15, 16.55, 5.415, 10.77, 3.257, -4.502] :
+    severity === ESeverity.M ? [10.28, 12.71, 6.174, 1.928, 0.6923, -0.4673] :
+      [2.523, 6.892, 5.702, 2.407, 0.2185, -0.8722];
+
+  return _getDeduct(density, vals);
 }
 
 function _calcPolishedAggregate(
   severity: ESeverity,
   density: number
-) {
-  let calc;
-  switch (severity) {
-    case ESeverity.H:
-      calc = `Polished Aggregate High: ${density}`;
-      break;
-    case ESeverity.M:
-      calc = `Polished Aggregate Med: ${density}`;
-      break;
-    case ESeverity.L:
-      calc = `Polished Aggregate Low: ${density}`;
-      break;
-  }
-  return calc;
+): number {
+  // TODO update after I get the values from Ryan
+  const vals = severity === ESeverity.H ? [] :
+    severity === ESeverity.M ? [] :
+      [];
+
+  return _getDeduct(density, vals);
 }
 
 function _calcPotholes(
   severity: ESeverity,
   density: number
-) {
-  let calc;
-  switch (severity) {
-    case ESeverity.H:
-      calc = `Potholes High: ${density}`;
-      break;
-    case ESeverity.M:
-      calc = `Potholes Med: ${density}`;
-      break;
-    case ESeverity.L:
-      calc = `Potholes Low: ${density}`;
-      break;
-  }
-  return calc;
+): number {
+  const vals = severity === ESeverity.H ? [110.7, 60.66, 2.378, -2.664] :
+    severity === ESeverity.M ? [90.47, 60.41, -0.1123, -4.746] :
+      [58.19, 40.53, 2.884, -1.443, 0.1195];
+
+  return _getDeduct(density, vals);
 }
 
 function _calcRailroadCrossing(
   severity: ESeverity,
   density: number
-) {
-  let calc;
-  switch (severity) {
-    case ESeverity.H:
-      calc = `Railroad Crossing High: ${density}`;
-      break;
-    case ESeverity.M:
-      calc = `Railroad Crossing Med: ${density}`;
-      break;
-    case ESeverity.L:
-      calc = `Railroad Crossing Low: ${density}`;
-      break;
-  }
-  return calc;
+): number {
+  const vals = severity === ESeverity.H ? [20, 38.64, -62.82, 193.6, -162.7, 41.22] :
+    severity === ESeverity.M ? [6.994, 23.47, -52.3, 167.3, -143.6, 37.64] :
+      [1.998, -0.7488, 13.8, -0.7917, -1.981];
+
+  return _getDeduct(density, vals);
 }
 
 function _calcRutting(
   severity: ESeverity,
   density: number
-) {
-  let calc;
-  switch (severity) {
-    case ESeverity.H:
-      calc = `Rutting High: ${density}`;
-      break;
-    case ESeverity.M:
-      calc = `Rutting Med: ${density}`;
-      break;
-    case ESeverity.L:
-      calc = `Rutting Low: ${density}`;
-      break;
-  }
-  return calc;
+): number {
+
+  // TODO update after I hear back from Ryan -0.5325 vs -2.286
+  const vals = severity === ESeverity.H ? [27.61, 25.19, 8.557, 1.65, -2.2030] :
+    severity === ESeverity.M ? [18.47, 20.77, 6.617, -1.13, -2.286] :
+      [8.833, 14.84, 3.129, 0.1451, 2.438, -1.279];
+
+  return _getDeduct(density, vals);
 }
 
 function _calcShoving(
   severity: ESeverity,
   density: number
-) {
-  let calc;
-  switch (severity) {
-    case ESeverity.H:
-      calc = `Shoving High: ${density}`;
-      break;
-    case ESeverity.M:
-      calc = `Shoving Med: ${density}`;
-      break;
-    case ESeverity.L:
-      calc = `Shoving Low: ${density}`;
-      break;
-  }
-  return calc;
+): number {
+  const vals = severity === ESeverity.H ? [18.7, 20.17, 10.3, 4.694, 1.331, -2.61] :
+    severity === ESeverity.M ? [10.39, 14.78, 5.488, 4.001, 3.23, -2.387] :
+      [4.002, 10.66, 6.332, -0.5226, -0.1923];
+
+  return _getDeduct(density, vals);
 }
 
 function _calcSlippageCracking(
   severity: ESeverity,
   density: number
-) {
-  let calc;
-  switch (severity) {
-    case ESeverity.H:
-      calc = `Slippage Cracking High: ${density}`;
-      break;
-    case ESeverity.M:
-      calc = `Slippage Cracking Med: ${density}`;
-      break;
-    case ESeverity.L:
-      calc = `Slippage Cracking Low: ${density}`;
-      break;
-  }
-  return calc;
+): number {
+  const vals = severity === ESeverity.H ? [19.73, 32.21, 25.87, -2.871, -10.55, 1.496, 0.7393] :
+    severity === ESeverity.M ? [11.38, 18.55, 18.38, 1.628, -7.596, 0.5841, 0.5946] :
+      [5.144, 12.95, 11.95, -0.833, -2.995, 1.325, -0.2113];
+
+  return _getDeduct(density, vals);
 }
 
 function _calcSwell(
   severity: ESeverity,
   density: number
-) {
-  let calc;
-  switch (severity) {
-    case ESeverity.H:
-      calc = `Swell High: ${density}`;
-      break;
-    case ESeverity.M:
-      calc = `Swell Med: ${density}`;
-      break;
-    case ESeverity.L:
-      calc = `Swell Low: ${density}`;
-      break;
-  }
-  return calc;
+): number {
+  const vals = severity === ESeverity.H ? [34, 16.84, -23.09, 41.17, -14.84] :
+    severity === ESeverity.M ? [12, 15.67, 20.59, -28.33, 21, -5.508] :
+      [1.995, 11.9, -12.83, 16.74, -5.361];
+
+  return _getDeduct(density, vals);
 }
 
 function _calcWeatheringReveling(
   severity: ESeverity,
   density: number
-) {
-  let calc;
-  switch (severity) {
-    case ESeverity.H:
-      calc = `Weathering Reveling High: ${density}`;
-      break;
-    case ESeverity.M:
-      calc = `Weathering Reveling Med: ${density}`;
-      break;
-    case ESeverity.L:
-      calc = `Weathering Reveling Low: ${density}`;
-      break;
-  }
-  return calc;
+): number {
+  const vals = severity === ESeverity.H ? [16.67, 10.94, 5.897, 13.38, -0.2589, -6.328, 1.806] :
+    severity === ESeverity.M ? [8.335, 4.022, 1.032, 6.267, 1.154, -3.004, 0.7874] :
+      [1.761, 0.3251, -1.586, 5.783, 1.365, -3.576, 1.05];
+
+  return _getDeduct(density, vals);
 }
