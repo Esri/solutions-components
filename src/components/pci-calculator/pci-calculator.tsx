@@ -20,7 +20,8 @@
 // It has been requested that we have a simple way to demo and test the functionality.
 // I am putting here now just to keep together with other current work.
 
-import { Component, Host, h } from '@stencil/core';
+import { Component, Host, h, VNode } from '@stencil/core';
+import { calcPCI, EDistressType, ESeverity } from '../../utils/pciUtils';
 
 @Component({
   tag: 'pci-calculator',
@@ -32,9 +33,89 @@ export class PciCalculator {
   render() {
     return (
       <Host>
-        <slot></slot>
+        <div class="label-display">
+          <calcite-label disableSpacing={true} class="label-display">
+            Density %
+            {this._getDensityInput()}
+          </calcite-label>
+          <calcite-label disableSpacing={true} class="label-display">
+            Type
+            {this._getTypeInput()}
+          </calcite-label>
+          <calcite-label disableSpacing={true} class="label-display">
+            Severity
+            {this._getSeverityInput()}
+          </calcite-label>
+        </div>
+        <div>
+          {this._getCalculateInput()}
+        </div>
       </Host>
     );
   }
 
+  protected _densityElement: HTMLCalciteInputElement;
+
+  protected _typeElement: HTMLCalciteSelectElement;
+
+  protected _severityElement: HTMLCalciteSelectElement;
+
+  protected _types: string[] = Object.keys(EDistressType).filter(k => !isNaN(Number(EDistressType[k])));
+
+  protected _getDensityInput(): VNode {
+    return (
+      <calcite-input
+        max={100}
+        min={0}
+        ref={(el) => { this._densityElement = el }}
+        type='number'
+      />
+    );
+  }
+
+  protected _getTypeInput(): VNode {
+    return (
+      <calcite-select label='' ref={(el) => { this._typeElement = el }}>
+        {
+          this._types.map(t => <calcite-option value={EDistressType[t].toString()}>{t}</calcite-option>)
+        }
+      </calcite-select>
+    );
+  }
+
+  protected _getSeverityInput(): VNode {
+    return (
+      <calcite-select label='' ref={(el) => { this._severityElement = el }}>
+        <calcite-option value={ESeverity.H}>High</calcite-option>
+        <calcite-option value={ESeverity.M}>Medium</calcite-option>
+        <calcite-option value={ESeverity.L}>Low</calcite-option>
+      </calcite-select>
+    );
+  }
+
+  protected _getCalculateInput(): VNode {
+    return (
+      <calcite-button
+        onClick={
+          () => this._calculatePCI(
+            parseFloat(this._typeElement.value),
+            this._severityElement.value as unknown as ESeverity,
+            parseFloat(this._densityElement.value)
+          )
+        }
+      >Calculate Deduct Value</calcite-button>
+    );
+  }
+
+  protected _calculatePCI(
+    type: number,
+    severity: ESeverity,
+    density: number
+  ): void {
+    if (type && severity && !isNaN(density)) {
+      alert(calcPCI(type, severity, density));
+    } else {
+      alert("Check your settings homie");
+    }
+  }
 }

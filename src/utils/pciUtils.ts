@@ -42,7 +42,7 @@ export enum EDistressType {
   WEATHERING_RAVELING
 }
 
-export function calcLog(
+export function calcPCI(
   type: EDistressType,
   severity: ESeverity,
   density: number

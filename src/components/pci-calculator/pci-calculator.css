@@ -17,3 +17,8 @@
 :host {
   display: block;
 }
+
+.label-display {
+  display: block;
+  padding-bottom: 1rem;
+}
