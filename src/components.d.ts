@@ -348,6 +348,7 @@ export namespace Components {
         "useLayerPicker": boolean;
     }
     interface SolutionConfigModal {
+        "cacheBreaker": string;
         /**
           * Credentials for requests in a serialized form
          */
@@ -547,6 +548,10 @@ export interface RefineSelectionCustomEvent<T> extends CustomEvent<T> {
 export interface RefineSelectionToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLRefineSelectionToolsElement;
+}
+export interface SolutionConfigModalCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSolutionConfigModalElement;
 }
 export interface SolutionContentsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1056,6 +1061,8 @@ declare namespace LocalJSX {
         "useLayerPicker"?: boolean;
     }
     interface SolutionConfigModal {
+        "cacheBreaker"?: string;
+        "onSolutionConfigModalClosed"?: (event: SolutionConfigModalCustomEvent<void>) => void;
         /**
           * Credentials for requests in a serialized form
          */

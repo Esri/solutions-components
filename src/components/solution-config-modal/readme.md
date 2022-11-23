@@ -7,11 +7,19 @@
 
 ## Properties
 
-| Property                   | Attribute                   | Description                                   | Type     | Default |
-| -------------------------- | --------------------------- | --------------------------------------------- | -------- | ------- |
-| `serializedAuthentication` | `serialized-authentication` | Credentials for requests in a serialized form | `string` | `""`    |
-| `solutionItemId`           | `solution-item-id`          | Contains the current solution item id         | `string` | `""`    |
-| `solutionTitle`            | `solution-title`            |                                               | `string` | `""`    |
+| Property                   | Attribute                   | Description                                   | Type     | Default     |
+| -------------------------- | --------------------------- | --------------------------------------------- | -------- | ----------- |
+| `cacheBreaker`             | `cache-breaker`             |                                               | `string` | `undefined` |
+| `serializedAuthentication` | `serialized-authentication` | Credentials for requests in a serialized form | `string` | `""`        |
+| `solutionItemId`           | `solution-item-id`          | Contains the current solution item id         | `string` | `undefined` |
+| `solutionTitle`            | `solution-title`            |                                               | `string` | `""`        |
+
+
+## Events
+
+| Event                       | Description | Type                |
+| --------------------------- | ----------- | ------------------- |
+| `solutionConfigModalClosed` |             | `CustomEvent<void>` |
 
 
 ## Dependencies

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, h, Host, Prop, State, VNode } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, h, Host, Prop, State, VNode } from "@stencil/core";
 import "@esri/calcite-components";
 import SolutionConfigModal_T9n from "../../assets/t9n/solution-config-modal/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -40,6 +40,8 @@ export class SolutionConfigModal {
   //
   //--------------------------------------------------------------------------
 
+  @Prop({ mutable: true }) cacheBreaker: string;
+
   /**
    * Credentials for requests in a serialized form
    */
@@ -50,10 +52,10 @@ export class SolutionConfigModal {
   /**
    * Contains the current solution item id
    */
-  @Prop({ mutable: true, reflect: true }) solutionItemId = "";
+  @Prop({ mutable: true }) solutionItemId: string;
 
   /*@Watch("solutionItemId") async valueWatchHandler(): Promise<void> {
-    console.log("MODAL watch " + this.solutionItemId);//??? + " open:" + this._modalIsOpen);//???
+    console.log("MODAL watch " + this.solutionItemId);//???
   }*/
 
   //--------------------------------------------------------------------------
@@ -63,7 +65,7 @@ export class SolutionConfigModal {
   //--------------------------------------------------------------------------
 
   constructor() {
-    console.log("MODAL constructor " + this.solutionItemId);//??? + " open:" + this._modalIsOpen);//???
+    //console.log("MODAL constructor " + this.solutionItemId);//??? + " open:" + this._modalIsOpen);//???
 
     window.addEventListener("solutionCanSave",
       (evt) => {
@@ -81,12 +83,16 @@ export class SolutionConfigModal {
     return this._getTranslations();
   }
 
+  componentWillRender(): void {
+    console.log("MODAL will render " + this.solutionTitle + " (" + this.solutionItemId + ", " + this.cacheBreaker + ")");//???
+  }
+
   /**
    * Renders the component.
    */
   render(): VNode {
     const modalIsOpen = !!this.solutionItemId;
-    console.log("MODAL render " + this.solutionTitle + " (" + this.solutionItemId + ")" + " open:" + modalIsOpen);//???
+    console.log("MODAL render " + this.solutionTitle + " (" + this.solutionItemId + ", " + this.cacheBreaker + ")" + " open:" + modalIsOpen);//???
     return (
       <Host>
         <calcite-modal
@@ -183,6 +189,8 @@ export class SolutionConfigModal {
   //
   //--------------------------------------------------------------------------
 
+  @Event() solutionConfigModalClosed: EventEmitter<void>;
+
   //--------------------------------------------------------------------------
   //
   //  Public Methods (async)
@@ -209,7 +217,9 @@ export class SolutionConfigModal {
     }
     this.solutionItemId = "";
     this.solutionTitle = "";
+    this.cacheBreaker = "";
     this._modalIsClosing = false;
+    this.solutionConfigModalClosed.emit();
     console.log("MODAL cancel 2 " + this.solutionItemId);//???
   }
 
