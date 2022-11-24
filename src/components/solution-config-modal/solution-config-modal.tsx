@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, h, Host, Prop, State, VNode } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, h, Host, Prop, State, VNode, Watch } from "@stencil/core";
 import "@esri/calcite-components";
 import SolutionConfigModal_T9n from "../../assets/t9n/solution-config-modal/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -54,9 +54,9 @@ export class SolutionConfigModal {
    */
   @Prop({ mutable: true }) solutionItemId: string;
 
-  /*@Watch("solutionItemId") async valueWatchHandler(): Promise<void> {
+  @Watch("solutionItemId") async valueWatchHandler(): Promise<void> {
     console.log("MODAL watch " + this.solutionItemId);//???
-  }*/
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -91,6 +91,11 @@ export class SolutionConfigModal {
    * Renders the component.
    */
   render(): VNode {
+    const cacheBreakerParts = this.cacheBreaker.split("_");
+    if (!this.solutionItemId && cacheBreakerParts.length === 2) {
+      this.solutionItemId = cacheBreakerParts[0];
+    }
+
     const modalIsOpen = !!this.solutionItemId;
     console.log("MODAL render " + this.solutionTitle + " (" + this.solutionItemId + ", " + this.cacheBreaker + ")" + " open:" + modalIsOpen);//???
     return (
@@ -216,7 +221,7 @@ export class SolutionConfigModal {
         : await this._cancelChanges();
     }
     this.solutionItemId = "";
-    this.solutionTitle = "";
+    //this.solutionTitle = "";
     this.cacheBreaker = "";
     this._modalIsClosing = false;
     this.solutionConfigModalClosed.emit();
