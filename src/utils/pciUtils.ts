@@ -47,7 +47,8 @@ export enum EDistressType {
 export function calculateDeductValue(
   type: EDistressType,
   severity: ESeverity,
-  density: number
+  density: number,
+  showDebugging: boolean = false
 ): number {
   let calc;
   switch (type) {
@@ -111,18 +112,24 @@ export function calculateDeductValue(
   }
 
   const dv = calc(severity, Math.log10(density));
-  return Math.round(dv * 10) / 10;
+  const roundedDV = Math.round(dv * 10) / 10;
+  if (showDebugging) {
+    console.log(`Deduct value: ${dv}`);
+    console.log(`Rounded deduct value: ${roundedDV}`);
+  }
+  return roundedDV;
 }
 
 export function calculatePCI(
   deductValues: number[],
-  numSeverities: number
+  numSeverities: number,
+  showDebugging: boolean = false
 ): number {
-  const maxCDV = _getMaxCDV(deductValues);
+  const maxCDV = _getMaxCDV(deductValues, showDebugging);
 
   let pci;
   if (numSeverities === 1) {
-    pci = 100 - maxCDV;
+    pci = 100 - Math.round(maxCDV * 10) / 10;
   } else if (numSeverities === 2) {
 
   } else if (numSeverities === 3) {
@@ -131,7 +138,7 @@ export function calculatePCI(
   return pci;
 }
 
-function _getDeduct(
+function _calc(
   density: number,
   vals: number[]
 ) {
@@ -150,7 +157,7 @@ function _calcAlligator(
     severity === ESeverity.M ? [21.62, 21.32, 5.194, -1.343, 0.2341] :
       [11.31, 16.05, 7.572, -1.471];
 
-  return _getDeduct(density, vals);
+  return _calc(density, vals);
 }
 
 function _calcBleeding(
@@ -161,7 +168,7 @@ function _calcBleeding(
     severity === ESeverity.M ? [2.38, 5.483, 4.128, 0.8366, 0.03659, 0.1052] :
       [0.01391, 0.5079, 1.576, 1.191, 0.1329, 0.03823];
 
-  return _getDeduct(density, vals);
+  return _calc(density, vals);
 }
 
 function _calcBlockCracking(
@@ -172,7 +179,7 @@ function _calcBlockCracking(
     severity === ESeverity.M ? [2.587, 9.142, 6.647, -0.455, -0.2439, 0.1107] :
       [0.646, 4.002, 4.2, 0.4987, -0.06269];
 
-  return _getDeduct(density, vals);
+  return _calc(density, vals);
 }
 
 function _calcBumpsSags(
@@ -183,7 +190,7 @@ function _calcBumpsSags(
     severity === ESeverity.M ? [24.66, 27.86, 15.73, 3.295, -5.27, 5.921, 7.959] :
       [8.768, 13.79, 7.064, 7.455, 6.041, -1.739, -1.371];
 
-  return _getDeduct(density, vals);
+  return _calc(density, vals);
 }
 
 function _calcCorrugation(
@@ -194,7 +201,7 @@ function _calcCorrugation(
     severity === ESeverity.M ? [15.78, 19.69, 6.276, -2.124, 0.5868, 0.06045] :
       [2.173, 5.609, 5.976, -0.7348, -0.2172, 1.494, -0.5659];
 
-  return _getDeduct(density, vals);
+  return _calc(density, vals);
 }
 
 function _calcDepression(
@@ -205,7 +212,7 @@ function _calcDepression(
     severity === ESeverity.M ? [8.471, 3.171, 10.25, 12.2, -0.9687, -4.601, 1.079] :
       [4.836, -0.7572, 4.786, 12.39, 1.233, -4.871, 0.9749];
 
-  return _getDeduct(density, vals);
+  return _calc(density, vals);
 }
 
 function _calcEdgeCracking(
@@ -216,7 +223,7 @@ function _calcEdgeCracking(
     severity === ESeverity.M ? [9.177, 10.26, 5.704, -0.6812, -0.8588, 0.2123] :
       [3.049, 4.802, 4.058, -0.3556, -1.55, 1.02];
 
-  return _getDeduct(density, vals);
+  return _calc(density, vals);
 }
 
 function _calcReflectionCracking(
@@ -227,7 +234,7 @@ function _calcReflectionCracking(
     severity === ESeverity.M ? [9.9193, 10.88, 8.073, 14.8, -3.792, -9.583, 3.651] :
       [2.356, 6.664, 3.717, -1.393, 1.94, 1.785, -0.9707];
 
-  return _getDeduct(density, vals);
+  return _calc(density, vals);
 }
 
 function _calcLaneShoulderDropOff(
@@ -238,7 +245,7 @@ function _calcLaneShoulderDropOff(
     severity === ESeverity.M ? [4.02, 1.744, 14.36, 15.92, -40.22, 23.6] :
       [2.004, 1.065, 9.706, 11.75, -27.52, 15.04];
 
-  return _getDeduct(density, vals);
+  return _calc(density, vals);
 }
 
 function _calcLongTransCracking(
@@ -249,7 +256,7 @@ function _calcLongTransCracking(
     severity === ESeverity.M ? [9.751, 15.53, 4.719, 1.369, 1.206, -1.164] :
       [2.347, 9.074, 8.424, -1.338, -1.873, 1.144];
 
-  return _getDeduct(density, vals);
+  return _calc(density, vals);
 }
 
 function _calcPatchingUtilCutPatching(
@@ -260,7 +267,7 @@ function _calcPatchingUtilCutPatching(
     severity === ESeverity.M ? [10.28, 12.71, 6.174, 1.928, 0.6923, -0.4673] :
       [2.523, 6.892, 5.702, 2.407, 0.2185, -0.8722];
 
-  return _getDeduct(density, vals);
+  return _calc(density, vals);
 }
 
 function _calcPolishedAggregate(
@@ -272,7 +279,7 @@ function _calcPolishedAggregate(
     severity === ESeverity.M ? [] :
       [];
 
-  return _getDeduct(density, vals);
+  return _calc(density, vals);
 }
 
 function _calcPotholes(
@@ -283,7 +290,7 @@ function _calcPotholes(
     severity === ESeverity.M ? [90.47, 60.41, -0.1123, -4.746] :
       [58.19, 40.53, 2.884, -1.443, 0.1195];
 
-  return _getDeduct(density, vals);
+  return _calc(density, vals);
 }
 
 function _calcRailroadCrossing(
@@ -294,7 +301,7 @@ function _calcRailroadCrossing(
     severity === ESeverity.M ? [6.994, 23.47, -52.3, 167.3, -143.6, 37.64] :
       [1.998, -0.7488, 13.8, -0.7917, -1.981];
 
-  return _getDeduct(density, vals);
+  return _calc(density, vals);
 }
 
 function _calcRutting(
@@ -306,7 +313,7 @@ function _calcRutting(
     severity === ESeverity.M ? [18.47, 20.77, 6.617, -1.13, -2.286] :
       [8.833, 14.84, 3.129, 0.1451, 2.438, -1.279];
 
-  return _getDeduct(density, vals);
+  return _calc(density, vals);
 }
 
 function _calcShoving(
@@ -317,7 +324,7 @@ function _calcShoving(
     severity === ESeverity.M ? [10.39, 14.78, 5.488, 4.001, 3.23, -2.387] :
       [4.002, 10.66, 6.332, -0.5226, -0.1923];
 
-  return _getDeduct(density, vals);
+  return _calc(density, vals);
 }
 
 function _calcSlippageCracking(
@@ -328,7 +335,7 @@ function _calcSlippageCracking(
     severity === ESeverity.M ? [11.38, 18.55, 18.38, 1.628, -7.596, 0.5841, 0.5946] :
       [5.144, 12.95, 11.95, -0.833, -2.995, 1.325, -0.2113];
 
-  return _getDeduct(density, vals);
+  return _calc(density, vals);
 }
 
 function _calcSwell(
@@ -339,7 +346,7 @@ function _calcSwell(
     severity === ESeverity.M ? [12, 15.67, 20.59, -28.33, 21, -5.508] :
       [1.995, 11.9, -12.83, 16.74, -5.361];
 
-  return _getDeduct(density, vals);
+  return _calc(density, vals);
 }
 
 function _calcWeatheringReveling(
@@ -350,11 +357,12 @@ function _calcWeatheringReveling(
     severity === ESeverity.M ? [8.335, 4.022, 1.032, 6.267, 1.154, -3.004, 0.7874] :
       [1.761, 0.3251, -1.586, 5.783, 1.365, -3.576, 1.05];
 
-  return _getDeduct(density, vals);
+  return _calc(density, vals);
 }
 
 function _getMaxCDV(
-  deductValues: number[]
+  deductValues: number[],
+  showDebugging: boolean
 ): number {
   let maxCDV;
   // If none or only one individual deduct value is greater
@@ -365,6 +373,11 @@ function _getMaxCDV(
       prev += cur;
       return prev;
     }, 0);
+    if (showDebugging) {
+      console.log("If none or only one individual deduct value is greater");
+      console.log("than two, the total value is used in place of the maximum CD");
+      console.log(`Max CDV: ${maxCDV}`);
+    }
   } else {
     // sort in descending order (9.5.2)
     const sortedDVs = deductValues.sort((a, b) => b - a);
@@ -374,13 +387,31 @@ function _getMaxCDV(
     // m = allowable number of deducts including fractions (must be less than or equal to ten)
     const m = 1 + (9/98) * (100 - highestDV);
 
+    if (showDebugging) {
+      console.log(`Deduct values sorted in descending order: ${sortedDVs}`);
+      console.log(`Highest deduct value: ${highestDV}`);
+      console.log(`Allowable number of deducts including fractions: ${m}`);
+    }
+
     // TODO they mention (must be less than or equal to ten) but don't say what happens if its over
     if (m <= 10) {
       const vals = _reduceDeductValues(sortedDVs, m);
 
+      if (showDebugging) {
+        console.log(`Reduce deduct values to the m largest including the fractional part: ${vals}`);
+      }
+
       // iteratively determined cdv values
-      const cdvs = _getCDVs(vals);
+      const cdvs = _getCDVs(vals, showDebugging);
       maxCDV = Math.max(...cdvs);
+
+      if (showDebugging) {
+        console.log(`Max CDV: ${maxCDV}`);
+      }
+    } else {
+      if (showDebugging) {
+        console.log("Allowable number of deducts including fractions (must be less than or equal to ten)");
+      }
     }
   }
 
@@ -413,21 +444,25 @@ function _reduceDeductValues(
 }
 
 function _getCDVs(
-  vals: number[]
+  vals: number[],
+  showDebugging: boolean
 ): number[] {
   let len = vals.length;
 
   const cdvs = [];
   while (len >= 1) {
-    cdvs.push(_getCDV(vals));
+    //console.log("_getCDVs")
+    console.log(`vals: ${vals}`)
+    cdvs.push(_getCDV(vals, showDebugging));
     len -= 1;
-    vals = vals.splice(len, 1, 2);
+    vals.splice(len, 1, 2);
   }
   return cdvs;
 }
 
 function _getCDV(
-  vals: number[]
+  vals: number[],
+  showDebugging: boolean
 ): number {
   // 9.5.5.1
   const totalDV = vals.reduce((prev, cur) => prev += cur, 0);
@@ -437,24 +472,30 @@ function _getCDV(
   const q = vals.reduce((prev, cur) => cur > 2 ? prev + 1 : prev, 0);
 
   // 9.5.5.3
-  return _calcCDV(totalDV, q);
+  return _calcCDV(totalDV, q, showDebugging);
 }
 
 function _calcCDV(
   totalDV: number,
-  q: number
+  q: number,
+  showDebugging: boolean
 ): number {
   // Determine the CDV from total deduct value and q
-  // ASTM stated that q curve values 7 and higher are all the same ( also asked about this for clarification)
-  const vals = {
-    7: `-5.448e-06 * ${totalDV} + 0.0003563 * ${totalDV} + 0.6045 * ${totalDV} - 9.482`,
-    6: `-4.254e-06 * ${totalDV} + 0.0004266 * ${totalDV} + 0.5724 * ${totalDV} - 8.165`,
-    5: `-4.265e-06 * ${totalDV} + 0.0003464 * ${totalDV} + 0.6091 * ${totalDV} - 7.932`,
-    4: `-6.357e-06 * ${totalDV} + 0.0007376 * ${totalDV} + 0.6301 * ${totalDV} - 6.78`,
-    3: `-3.075e-06 * ${totalDV} - 0.00043 * ${totalDV} + 0.7546 * ${totalDV} - 5.015`,
-    2: `-5.214e-06 * ${totalDV} - 0.0003013 * ${totalDV} + 0.7992 * ${totalDV} - 1.668`,
-    1: `1.149e-19 * ${totalDV} - 4.249e-18 * ${totalDV} + 1 * ${totalDV} + 1.651e-15`
+  const vals2 = {
+    7: [-9.482, 0.6045, 0.0003563, -5.448e-06],
+    6: [-8.165, 0.5724, 0.0004266, -4.254e-06],
+    5: [-7.932, 0.6091, 0.0003464, -4.265e-06],
+    4: [-6.78, 0.6301, 0.0007376, -6.357e-06],
+    3: [-5.015, 0.7546, -0.00043, -3.075e-06],
+    2: [-1.668, 0.7992, -0.0003013, -5.214e-06],
+    1: [1.651e-15, 1, -4.249e-18, 1.149e-19]
   };
 
-  return parseFloat(vals[q >= 7 ? "7" : q.toString()]);
+  if (showDebugging) {
+    console.log(`totalDV: ${totalDV}`);
+    console.log(`q: ${q}`);
+    console.log(`CDV: ${_calc(totalDV, vals2[q >= 7 ? 7 : q])}`);
+  }
+
+  return _calc(totalDV, vals2[q >= 7 ? 7 : q]);
 }

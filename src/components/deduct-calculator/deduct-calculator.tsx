@@ -77,7 +77,7 @@ export class DeductCalculator {
     return (
       <calcite-select label='' ref={(el) => { this._typeElement = el }}>
         {
-          this._types.map(t => <calcite-option value={EDistressType[t].toString()}>{t}</calcite-option>)
+          this._types.map((t, i) => <calcite-option value={EDistressType[t].toString()}>{`${t} (${i + 1})`}</calcite-option>)
         }
       </calcite-select>
     );
@@ -113,7 +113,7 @@ export class DeductCalculator {
     density: number
   ): void {
     if (type && severity && !isNaN(density)) {
-      alert(calculateDeductValue(type, severity, density));
+      alert(calculateDeductValue(type, severity, density, true));
     } else {
       alert("Check your settings homie");
     }

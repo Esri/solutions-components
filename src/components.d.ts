@@ -249,6 +249,8 @@ export namespace Components {
          */
         "selectionSet": ISelectionSet;
     }
+    interface PciCalculator {
+    }
     interface PdfDownload {
         /**
           * boolean: Controls the enabled/disabled state of download
@@ -633,6 +635,12 @@ declare global {
         prototype: HTMLMapSelectToolsElement;
         new (): HTMLMapSelectToolsElement;
     };
+    interface HTMLPciCalculatorElement extends Components.PciCalculator, HTMLStencilElement {
+    }
+    var HTMLPciCalculatorElement: {
+        prototype: HTMLPciCalculatorElement;
+        new (): HTMLPciCalculatorElement;
+    };
     interface HTMLPdfDownloadElement extends Components.PdfDownload, HTMLStencilElement {
     }
     var HTMLPdfDownloadElement: {
@@ -742,6 +750,7 @@ declare global {
         "map-layer-picker": HTMLMapLayerPickerElement;
         "map-search": HTMLMapSearchElement;
         "map-select-tools": HTMLMapSelectToolsElement;
+        "pci-calculator": HTMLPciCalculatorElement;
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
         "refine-selection": HTMLRefineSelectionElement;
@@ -960,6 +969,8 @@ declare namespace LocalJSX {
           * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
          */
         "selectionSet"?: ISelectionSet;
+    }
+    interface PciCalculator {
     }
     interface PdfDownload {
         /**
@@ -1209,6 +1220,7 @@ declare namespace LocalJSX {
         "map-layer-picker": MapLayerPicker;
         "map-search": MapSearch;
         "map-select-tools": MapSelectTools;
+        "pci-calculator": PciCalculator;
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
         "refine-selection": RefineSelection;
@@ -1243,6 +1255,7 @@ declare module "@stencil/core" {
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
             "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
+            "pci-calculator": LocalJSX.PciCalculator & JSXBase.HTMLAttributes<HTMLPciCalculatorElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
             "refine-selection": LocalJSX.RefineSelection & JSXBase.HTMLAttributes<HTMLRefineSelectionElement>;
