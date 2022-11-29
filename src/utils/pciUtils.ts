@@ -112,7 +112,7 @@ export function calculateDeductValue(
   }
 
   const dv = calc(severity, Math.log10(density));
-  const roundedDV = Math.round(dv * 10) / 10;
+  const roundedDV = _round(dv);
   if (showDebugging) {
     console.log(`Deduct value: ${dv}`);
     console.log(`Rounded deduct value: ${roundedDV}`);
@@ -129,7 +129,7 @@ export function calculatePCI(
 
   let pci;
   if (numSeverities === 1) {
-    pci = 100 - Math.round(maxCDV * 10) / 10;
+    pci = 100 - _round(maxCDV);
   } else if (numSeverities === 2) {
 
   } else if (numSeverities === 3) {
@@ -147,6 +147,12 @@ function _calc(
       i === 1 ? (cur * density) :
         (cur * Math.pow(density, i));
   }, 0);
+}
+
+function _round(
+  v: number
+): number {
+  return Math.round(v * 10) / 10;
 }
 
 function _calcAlligator(
@@ -431,11 +437,10 @@ function _reduceDeductValues(
   } else {
     // reduce values to m largest including the fractional part
     vals = sortedDVs.reduce((prev, cur, i) => {
-      if (i < m) {
+      if (i + 1 < m) {
         prev.push(cur);
       } else if (fractionalPart > 0) {
-        // TODO in the spec doc they rounded for some reason but don't mention it...leaving without rounding for now
-        prev.push(cur * fractionalPart);
+        prev.push(_round(cur * fractionalPart));
       }
       return prev;
     }, []);
@@ -491,11 +496,13 @@ function _calcCDV(
     1: [1.651e-15, 1, -4.249e-18, 1.149e-19]
   };
 
+  const cdv = _calc(totalDV, vals2[q >= 7 ? 7 : q])
+
   if (showDebugging) {
     console.log(`totalDV: ${totalDV}`);
     console.log(`q: ${q}`);
-    console.log(`CDV: ${_calc(totalDV, vals2[q >= 7 ? 7 : q])}`);
+    console.log(`CDV: ${cdv}`);
   }
 
-  return _calc(totalDV, vals2[q >= 7 ? 7 : q]);
+  return cdv;
 }

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+// This is a demo component for internal use only.
+// It may eventually live somewhere else and doesn't really need to be a component.
+// The main code will be whats in the supporting util file...it will be used by a survey123 form.
+// It has been requested that we have a simple way to demo and test the functionality.
+// I am putting here now just to keep together with other current work.
+
 import { Component, Host, h, VNode } from '@stencil/core';
 import { calculatePCI } from '../../utils/pciUtils';
 
