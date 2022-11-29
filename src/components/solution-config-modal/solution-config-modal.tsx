@@ -209,28 +209,32 @@ export class SolutionConfigModal {
   //--------------------------------------------------------------------------
 
   protected async _cancel(): Promise<void> {
-    console.log("MODAL cancel 1 " + this.solutionItemId);//???
+    console.log("MODAL cancel " + this.solutionItemId);//???
     // Start closing process if not already in progress via save
     if (!this._modalIsClosing) {
       this._cancelBtn.disabled = this._saveBtn.disabled = true;
-      this._modalIsClosing = true;
       this._canSave
         ? confirm("Save changes?")
           ? await this._saveChanges()
           : await this._cancelChanges()
         : await this._cancelChanges();
     }
+    this._closeModal();
+  }
+
+  protected async _cancelChanges(): Promise<void> {
+    console.log("MODAL cancelChanges");//???
+    this._canSave = false;
+    await this._configuration.unloadSolution();
+  }
+
+  protected _closeModal(): void {
+    console.log("MODAL close");//???
     this.solutionItemId = "";
     //this.solutionTitle = "";
     this.cacheBreaker = "";
     this._modalIsClosing = false;
     this.solutionConfigModalClosed.emit();
-    console.log("MODAL cancel 2 " + this.solutionItemId);//???
-  }
-
-  protected async _cancelChanges(): Promise<void> {
-    this._canSave = false;
-    await this._configuration.unloadSolution();
   }
 
   // Save changes and close the modal
@@ -238,12 +242,14 @@ export class SolutionConfigModal {
     console.log("MODAL save " + this.solutionItemId);//???
     this._modalIsClosing = true;
     this._cancelBtn.disabled = this._saveBtn.disabled = true;
-    this._canSave
-      ? await this._saveChanges()
-      : await this._cancelChanges();
+    if (this._canSave) {
+      await this._saveChanges();
+    }
+    this._closeModal();
   }
 
   protected async _saveChanges(): Promise<void> {
+    console.log("MODAL saveChanges");//???
     try {
       this._canSave = false;
       await this._configuration.saveSolution();
