@@ -21,7 +21,7 @@
 // I am putting here now just to keep together with other current work.
 
 import { Component, Host, h, VNode } from '@stencil/core';
-import { calcPCI, EDistressType, ESeverity } from '../../utils/pciUtils';
+import { calculateDeductValue, EDistressType, ESeverity } from '../../utils/pciUtils';
 
 @Component({
   tag: 'pci-calculator',
@@ -113,7 +113,7 @@ export class PciCalculator {
     density: number
   ): void {
     if (type && severity && !isNaN(density)) {
-      alert(calcPCI(type, severity, density));
+      alert(calculateDeductValue(type, severity, density));
     } else {
       alert("Check your settings homie");
     }

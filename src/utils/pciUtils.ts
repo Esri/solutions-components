@@ -42,7 +42,9 @@ export enum EDistressType {
   WEATHERING_RAVELING
 }
 
-export function calcPCI(
+// this is just getting the deduct value...will need to run for multiple types and severities to
+// calc the PCI
+export function calculateDeductValue(
   type: EDistressType,
   severity: ESeverity,
   density: number
@@ -108,6 +110,23 @@ export function calcPCI(
       break;
   }
   return calc(severity, Math.log10(density));
+}
+
+export function calculatePCI(
+  deductValues: number[],
+  numSeverities: number
+): number {
+  const maxCDV = _getMaxCDV(deductValues);
+
+  let pci;
+  if (numSeverities === 1) {
+    pci = 100 - maxCDV;
+  } else if (numSeverities === 2) {
+
+  } else if (numSeverities === 3) {
+
+  }
+  return pci;
 }
 
 function _getDeduct(
@@ -280,7 +299,6 @@ function _calcRutting(
   severity: ESeverity,
   density: number
 ): number {
-
   // TODO update after I hear back from Ryan -0.5325 vs -2.286
   const vals = severity === ESeverity.H ? [27.61, 25.19, 8.557, 1.65, -2.2030] :
     severity === ESeverity.M ? [18.47, 20.77, 6.617, -1.13, -2.286] :
@@ -331,4 +349,110 @@ function _calcWeatheringReveling(
       [1.761, 0.3251, -1.586, 5.783, 1.365, -3.576, 1.05];
 
   return _getDeduct(density, vals);
+}
+
+function _getMaxCDV(
+  deductValues: number[]
+): number {
+  let maxCDV;
+  // If none or only one individual deduct value is greater
+  // than two, the total value is used in place of the maximum CD
+  const valuesGraterThan2 = deductValues.filter(deductValue => deductValue > 2);
+  if (valuesGraterThan2.length <= 1) {
+    maxCDV = valuesGraterThan2.reduce((prev, cur) => {
+      prev += cur;
+      return prev;
+    }, 0);
+  } else {
+    // sort in descending order (9.5.2)
+    const sortedDVs = deductValues.sort((a, b) => b - a);
+
+    // Determine the allowable number of deducts, m (9.5.3)
+    const highestDV = sortedDVs[0];
+    // m = allowable number of deducts including fractions (must be less than or equal to ten)
+    const m = 1 + (9/98) * (100 - highestDV);
+
+    // TODO they mention (must be less than or equal to ten) but don't say what happens if its over
+    if (m <= 10) {
+      const vals = _reduceDeductValues(sortedDVs, m);
+
+      // iteratively determined cdv values
+      const cdvs = _getCDVs(vals);
+      maxCDV = Math.max(...cdvs);
+    }
+  }
+
+  return maxCDV;
+}
+
+// reduce deduct values to the m largest including the fractional part
+function _reduceDeductValues(
+  sortedDVs: number[],
+  m: number
+): number[] {
+  const fractionalPart = m - Math.floor(m);
+  let vals: number[];
+  if (sortedDVs.length < m) {
+    // If less than m deduct values are available, all of the deduct values are used
+    vals = sortedDVs;
+  } else {
+    // reduce values to m largest including the fractional part
+    vals = sortedDVs.reduce((prev, cur, i) => {
+      if (i < m) {
+        prev.push(cur);
+      } else if (fractionalPart > 0) {
+        // TODO in the spec doc they rounded for some reason but don't mention it...leaving without rounding for now
+        prev.push(cur * fractionalPart);
+      }
+      return prev;
+    }, []);
+  }
+  return vals;
+}
+
+function _getCDVs(
+  vals: number[]
+): number[] {
+  let len = vals.length;
+
+  const cdvs = [];
+  while (len >= 1) {
+    cdvs.push(_getCDV(vals));
+    len -= 1;
+    vals = vals.splice(len, 1, 2);
+  }
+  return cdvs;
+}
+
+function _getCDV(
+  vals: number[]
+): number {
+  // 9.5.5.1
+  const totalDV = vals.reduce((prev, cur) => prev += cur, 0);
+
+  // 9.5.5.2
+  // the number of deducts with a value greater than 2.0
+  const q = vals.reduce((prev, cur) => cur > 2 ? prev + 1 : prev, 0);
+
+  // 9.5.5.3
+  return _calcCDV(totalDV, q);
+}
+
+function _calcCDV(
+  totalDV: number,
+  q: number
+): number {
+  // Determine the CDV from total deduct value and q
+  // ASTM stated that q curve values 7 and higher are all the same ( also asked about this for clarification)
+  const vals = {
+    7: `-5.448e-06 * ${totalDV} + 0.0003563 * ${totalDV} + 0.6045 * ${totalDV} - 9.482`,
+    6: `-4.254e-06 * ${totalDV} + 0.0004266 * ${totalDV} + 0.5724 * ${totalDV} - 8.165`,
+    5: `-4.265e-06 * ${totalDV} + 0.0003464 * ${totalDV} + 0.6091 * ${totalDV} - 7.932`,
+    4: `-6.357e-06 * ${totalDV} + 0.0007376 * ${totalDV} + 0.6301 * ${totalDV} - 6.78`,
+    3: `-3.075e-06 * ${totalDV} - 0.00043 * ${totalDV} + 0.7546 * ${totalDV} - 5.015`,
+    2: `-5.214e-06 * ${totalDV} - 0.0003013 * ${totalDV} + 0.7992 * ${totalDV} - 1.668`,
+    1: `1.149e-19 * ${totalDV} - 4.249e-18 * ${totalDV} + 1 * ${totalDV} + 1.651e-15`
+  };
+
+  return parseFloat(vals[q >= 7 ? "7" : q.toString()]);
 }
