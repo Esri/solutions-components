@@ -347,13 +347,24 @@ export namespace Components {
          */
         "useLayerPicker": boolean;
     }
-    interface SolutionConfiguration {
+    interface SolutionConfigModal {
+        "cacheBreaker": string;
         /**
-          * Credentials for requests, which can be a serialized UserSession
+          * Credentials for requests in a serialized form
          */
-        "authentication": UserSession;
+        "serializedAuthentication": string;
+        /**
+          * Contains the current solution item id
+         */
+        "solutionItemId": string;
+        "solutionTitle": string;
+    }
+    interface SolutionConfiguration {
         "getSpatialReferenceInfo": () => Promise<ISolutionSpatialReferenceInfo>;
         "saveSolution": () => Promise<void>;
+        /**
+          * Credentials for requests in a serialized form
+         */
         "serializedAuthentication": string;
         /**
           * Used to show/hide loading indicator
@@ -538,6 +549,10 @@ export interface RefineSelectionToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLRefineSelectionToolsElement;
 }
+export interface SolutionConfigModalCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSolutionConfigModalElement;
+}
 export interface SolutionContentsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLSolutionContentsElement;
@@ -649,6 +664,12 @@ declare global {
         prototype: HTMLRefineSelectionToolsElement;
         new (): HTMLRefineSelectionToolsElement;
     };
+    interface HTMLSolutionConfigModalElement extends Components.SolutionConfigModal, HTMLStencilElement {
+    }
+    var HTMLSolutionConfigModalElement: {
+        prototype: HTMLSolutionConfigModalElement;
+        new (): HTMLSolutionConfigModalElement;
+    };
     interface HTMLSolutionConfigurationElement extends Components.SolutionConfiguration, HTMLStencilElement {
     }
     var HTMLSolutionConfigurationElement: {
@@ -737,6 +758,7 @@ declare global {
         "public-notification": HTMLPublicNotificationElement;
         "refine-selection": HTMLRefineSelectionElement;
         "refine-selection-tools": HTMLRefineSelectionToolsElement;
+        "solution-config-modal": HTMLSolutionConfigModalElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-contents": HTMLSolutionContentsElement;
         "solution-item": HTMLSolutionItemElement;
@@ -1038,11 +1060,23 @@ declare namespace LocalJSX {
          */
         "useLayerPicker"?: boolean;
     }
+    interface SolutionConfigModal {
+        "cacheBreaker"?: string;
+        "onSolutionConfigModalClosed"?: (event: SolutionConfigModalCustomEvent<void>) => void;
+        /**
+          * Credentials for requests in a serialized form
+         */
+        "serializedAuthentication"?: string;
+        /**
+          * Contains the current solution item id
+         */
+        "solutionItemId"?: string;
+        "solutionTitle"?: string;
+    }
     interface SolutionConfiguration {
         /**
-          * Credentials for requests, which can be a serialized UserSession
+          * Credentials for requests in a serialized form
          */
-        "authentication"?: UserSession;
         "serializedAuthentication"?: string;
         /**
           * Used to show/hide loading indicator
@@ -1201,6 +1235,7 @@ declare namespace LocalJSX {
         "public-notification": PublicNotification;
         "refine-selection": RefineSelection;
         "refine-selection-tools": RefineSelectionTools;
+        "solution-config-modal": SolutionConfigModal;
         "solution-configuration": SolutionConfiguration;
         "solution-contents": SolutionContents;
         "solution-item": SolutionItem;
@@ -1234,6 +1269,7 @@ declare module "@stencil/core" {
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
             "refine-selection": LocalJSX.RefineSelection & JSXBase.HTMLAttributes<HTMLRefineSelectionElement>;
             "refine-selection-tools": LocalJSX.RefineSelectionTools & JSXBase.HTMLAttributes<HTMLRefineSelectionToolsElement>;
+            "solution-config-modal": LocalJSX.SolutionConfigModal & JSXBase.HTMLAttributes<HTMLSolutionConfigModalElement>;
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;

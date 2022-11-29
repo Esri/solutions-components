@@ -45,14 +45,12 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
 
   /**
-   * Credentials for requests, which can be a serialized UserSession
+   * Credentials for requests in a serialized form
    */
-  @Prop({ mutable: true }) authentication = new UserSession({});
-
   @Prop({ mutable: true }) serializedAuthentication = "";
 
   @Watch("serializedAuthentication") async serializedAuthenticationWatchHandler(): Promise<void> {
-    this.authentication = this.serializedAuthentication ? UserSession.deserialize(this.serializedAuthentication) : new UserSession({});
+    this._authentication = this.serializedAuthentication ? UserSession.deserialize(this.serializedAuthentication) : new UserSession({});
   }
 
   /**
@@ -61,6 +59,7 @@ export class SolutionConfiguration {
   @Prop({ mutable: true, reflect: true }) solutionItemId = "";
 
   @Watch("solutionItemId") async valueWatchHandler(): Promise<void> {
+    console.log("CONFIG watch " + this.solutionItemId );//???
     await this._loadSolution(this.solutionItemId);
   }
 
@@ -76,10 +75,9 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
 
   constructor() {
-    if (this.serializedAuthentication) {
-      this.authentication = UserSession.deserialize(this.serializedAuthentication);
-    }
+    this._authentication = this.serializedAuthentication ? UserSession.deserialize(this.serializedAuthentication) : new UserSession({});
 
+    console.log("CONFIG constructor " + this.solutionItemId );//???
     void this._loadSolution(this.solutionItemId);
 
     window.addEventListener("solutionStoreHasChanges",
@@ -122,6 +120,7 @@ export class SolutionConfiguration {
     this._solutionVariables = JSON.stringify(utils.getSolutionVariables(solutionData.templates, this._translations));
     this._organizationVariables = JSON.stringify(utils.getOrganizationVariables(this._translations));
 
+    console.log("CONFIG render " + this.solutionItemId );//???
     return (
       <Host>
         {
@@ -159,7 +158,7 @@ export class SolutionConfiguration {
                   />
                   <div class="config-item">
                     <solution-item
-                      authentication={this.authentication}
+                      authentication={this._authentication}
                       item-id={this._currentEditItemId}
                       key={`${this.solutionItemId}-item`}
                       organization-variables={this._organizationVariables}
@@ -196,6 +195,8 @@ export class SolutionConfiguration {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  protected _authentication: UserSession;
 
   /**
    * Contains the current item we are working with
@@ -312,7 +313,7 @@ export class SolutionConfiguration {
         this.modelsSet = false;
         state.reset();
       }
-      getModels(templates, this.authentication, this.solutionItemId).then(models => {
+      getModels(templates, this._authentication, this.solutionItemId).then(models => {
         state.models = models;
 
         state.featureServices = getFeatureServices(templates);
@@ -366,7 +367,7 @@ export class SolutionConfiguration {
   protected async _loadSolution(solutionItemId: string): Promise<void> {
     if (solutionItemId) {
       this._solutionIsLoaded = false;
-      await state.loadSolution(solutionItemId, this.authentication);
+      await state.loadSolution(solutionItemId, this._authentication);
       this._initProps();
       this._solutionIsLoaded = true;
     } else {
@@ -438,7 +439,7 @@ export class SolutionConfiguration {
       this.solutionItemId,
       data,
       state.models,
-      this.authentication,
+      this._authentication,
       this._translations
     ).then(saveResult => {
       // need to trigger re-render...and re-fetch
