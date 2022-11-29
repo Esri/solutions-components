@@ -113,6 +113,8 @@ export namespace Components {
          */
         "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
     }
+    interface DeductCalculator {
+    }
     interface JsonEditor {
         /**
           * Gets the contents of the editor.
@@ -246,8 +248,6 @@ export namespace Components {
           * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
          */
         "selectionSet": ISelectionSet;
-    }
-    interface PciCalculator {
     }
     interface PdfDownload {
         /**
@@ -597,6 +597,12 @@ declare global {
         prototype: HTMLConfigPdfDownloadElement;
         new (): HTMLConfigPdfDownloadElement;
     };
+    interface HTMLDeductCalculatorElement extends Components.DeductCalculator, HTMLStencilElement {
+    }
+    var HTMLDeductCalculatorElement: {
+        prototype: HTMLDeductCalculatorElement;
+        new (): HTMLDeductCalculatorElement;
+    };
     interface HTMLJsonEditorElement extends Components.JsonEditor, HTMLStencilElement {
     }
     var HTMLJsonEditorElement: {
@@ -626,12 +632,6 @@ declare global {
     var HTMLMapSelectToolsElement: {
         prototype: HTMLMapSelectToolsElement;
         new (): HTMLMapSelectToolsElement;
-    };
-    interface HTMLPciCalculatorElement extends Components.PciCalculator, HTMLStencilElement {
-    }
-    var HTMLPciCalculatorElement: {
-        prototype: HTMLPciCalculatorElement;
-        new (): HTMLPciCalculatorElement;
     };
     interface HTMLPdfDownloadElement extends Components.PdfDownload, HTMLStencilElement {
     }
@@ -736,12 +736,12 @@ declare global {
         "config-draw-tools": HTMLConfigDrawToolsElement;
         "config-layer-picker": HTMLConfigLayerPickerElement;
         "config-pdf-download": HTMLConfigPdfDownloadElement;
+        "deduct-calculator": HTMLDeductCalculatorElement;
         "json-editor": HTMLJsonEditorElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
         "map-search": HTMLMapSearchElement;
         "map-select-tools": HTMLMapSelectToolsElement;
-        "pci-calculator": HTMLPciCalculatorElement;
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
         "refine-selection": HTMLRefineSelectionElement;
@@ -844,6 +844,8 @@ declare namespace LocalJSX {
           * boolean: All checkboxes checked state will be set with this value on first render. Default is true
          */
         "defaultChecked"?: boolean;
+    }
+    interface DeductCalculator {
     }
     interface JsonEditor {
         /**
@@ -958,8 +960,6 @@ declare namespace LocalJSX {
           * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
          */
         "selectionSet"?: ISelectionSet;
-    }
-    interface PciCalculator {
     }
     interface PdfDownload {
         /**
@@ -1203,12 +1203,12 @@ declare namespace LocalJSX {
         "config-draw-tools": ConfigDrawTools;
         "config-layer-picker": ConfigLayerPicker;
         "config-pdf-download": ConfigPdfDownload;
+        "deduct-calculator": DeductCalculator;
         "json-editor": JsonEditor;
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
         "map-search": MapSearch;
         "map-select-tools": MapSelectTools;
-        "pci-calculator": PciCalculator;
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
         "refine-selection": RefineSelection;
@@ -1237,12 +1237,12 @@ declare module "@stencil/core" {
             "config-draw-tools": LocalJSX.ConfigDrawTools & JSXBase.HTMLAttributes<HTMLConfigDrawToolsElement>;
             "config-layer-picker": LocalJSX.ConfigLayerPicker & JSXBase.HTMLAttributes<HTMLConfigLayerPickerElement>;
             "config-pdf-download": LocalJSX.ConfigPdfDownload & JSXBase.HTMLAttributes<HTMLConfigPdfDownloadElement>;
+            "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
             "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
-            "pci-calculator": LocalJSX.PciCalculator & JSXBase.HTMLAttributes<HTMLPciCalculatorElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
             "refine-selection": LocalJSX.RefineSelection & JSXBase.HTMLAttributes<HTMLRefineSelectionElement>;

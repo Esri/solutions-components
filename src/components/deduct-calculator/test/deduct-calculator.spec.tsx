@@ -15,20 +15,20 @@
  */
 
 import { newSpecPage } from '@stencil/core/testing';
-import { PciCalculator } from '../pci-calculator';
+import { DeductCalculator } from '../deduct-calculator';
 
 xdescribe('pci-calculator', () => {
   it('renders', async () => {
     const page = await newSpecPage({
-      components: [PciCalculator],
-      html: `<pci-calculator></pci-calculator>`,
+      components: [DeductCalculator],
+      html: `<deduct-calculator></deduct-calculator>`,
     });
     expect(page.root).toEqualHtml(`
-      <pci-calculator>
+      <deduct-calculator>
         <mock:shadow-root>
           <slot></slot>
         </mock:shadow-root>
-      </pci-calculator>
+      </deduct-calculator>
     `);
   });
 });

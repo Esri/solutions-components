@@ -109,7 +109,9 @@ export function calculateDeductValue(
       calc = _calcWeatheringReveling;
       break;
   }
-  return calc(severity, Math.log10(density));
+
+  const dv = calc(severity, Math.log10(density));
+  return Math.round(dv * 10) / 10;
 }
 
 export function calculatePCI(

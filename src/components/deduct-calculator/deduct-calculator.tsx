@@ -24,11 +24,11 @@ import { Component, Host, h, VNode } from '@stencil/core';
 import { calculateDeductValue, EDistressType, ESeverity } from '../../utils/pciUtils';
 
 @Component({
-  tag: 'pci-calculator',
-  styleUrl: 'pci-calculator.css',
+  tag: 'deduct-calculator',
+  styleUrl: 'deduct-calculator.css',
   shadow: true,
 })
-export class PciCalculator {
+export class DeductCalculator {
 
   render() {
     return (
@@ -97,7 +97,7 @@ export class PciCalculator {
     return (
       <calcite-button
         onClick={
-          () => this._calculatePCI(
+          () => this._calculateDeduct(
             parseFloat(this._typeElement.value),
             this._severityElement.value as unknown as ESeverity,
             parseFloat(this._densityElement.value)
@@ -107,7 +107,7 @@ export class PciCalculator {
     );
   }
 
-  protected _calculatePCI(
+  protected _calculateDeduct(
     type: number,
     severity: ESeverity,
     density: number

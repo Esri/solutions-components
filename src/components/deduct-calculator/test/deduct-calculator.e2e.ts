@@ -16,12 +16,12 @@
 
 import { newE2EPage } from '@stencil/core/testing';
 
-xdescribe('pci-calculator', () => {
+xdescribe('deduct-calculator', () => {
   it('renders', async () => {
     const page = await newE2EPage();
-    await page.setContent('<pci-calculator></pci-calculator>');
+    await page.setContent('<deduct-calculator></deduct-calculator>');
 
-    const element = await page.find('pci-calculator');
+    const element = await page.find('deduct-calculator');
     expect(element).toHaveClass('hydrated');
   });
 });

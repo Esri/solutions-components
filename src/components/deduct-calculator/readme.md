@@ -18,17 +18,17 @@
 ### Graph
 ```mermaid
 graph TD;
-  pci-calculator --> calcite-label
-  pci-calculator --> calcite-input
-  pci-calculator --> calcite-select
-  pci-calculator --> calcite-option
-  pci-calculator --> calcite-button
+  deduct-calculator --> calcite-label
+  deduct-calculator --> calcite-input
+  deduct-calculator --> calcite-select
+  deduct-calculator --> calcite-option
+  deduct-calculator --> calcite-button
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-select --> calcite-icon
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
-  style pci-calculator fill:#f9f,stroke:#333,stroke-width:4px
+  style deduct-calculator fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------
