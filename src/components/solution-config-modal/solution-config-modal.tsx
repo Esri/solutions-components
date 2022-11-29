@@ -97,7 +97,7 @@ export class SolutionConfigModal {
     }
 
     const modalIsOpen = !!this.solutionItemId;
-    console.log("MODAL render " + this.solutionTitle + " (" + this.solutionItemId + ", " + this.cacheBreaker + ")" + " open:" + modalIsOpen);//???
+    console.log("MODAL render " + this.solutionTitle + " (" + this.solutionItemId + ", " + this.cacheBreaker + ")" + " open:" + modalIsOpen.toString());//???
     return (
       <Host>
         <calcite-modal
