@@ -22,3 +22,49 @@
   display: block;
   padding-bottom: 1rem;
 }
+
+.display-flex {
+  display: flex;
+}
+
+.display-grid {
+  display: grid;
+}
+
+.display-table {
+  display: table;
+}
+
+.display-inline-table {
+  display: inline-table;
+}
+
+.display-none {
+  display: none;
+}
+
+.display-inherit {
+  display: inherit;
+}
+
+.padding-top-1 {
+  padding-top: 1rem;
+}
+
+.main-input {
+  width: 300px;
+  padding-inline-end: 1rem;
+}
+
+.float-end {
+  float: inline-end;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.position-right {
+  position: absolute;
+  right: 0px;
+}

@@ -518,6 +518,10 @@ export interface BufferToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLBufferToolsElement;
 }
+export interface DeductCalculatorCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDeductCalculatorElement;
+}
 export interface MapDrawToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapDrawToolsElement;
@@ -855,6 +859,7 @@ declare namespace LocalJSX {
         "defaultChecked"?: boolean;
     }
     interface DeductCalculator {
+        "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<number>) => void;
     }
     interface JsonEditor {
         /**

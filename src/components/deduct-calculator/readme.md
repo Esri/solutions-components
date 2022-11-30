@@ -5,7 +5,18 @@
 <!-- Auto Generated Below -->
 
 
+## Events
+
+| Event                 | Description | Type                  |
+| --------------------- | ----------- | --------------------- |
+| `deductValueComplete` |             | `CustomEvent<number>` |
+
+
 ## Dependencies
+
+### Used by
+
+ - [pci-calculator](../pci-calculator)
 
 ### Depends on
 
@@ -28,6 +39,7 @@ graph TD;
   calcite-select --> calcite-icon
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
+  pci-calculator --> deduct-calculator
   style deduct-calculator fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

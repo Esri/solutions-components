@@ -20,7 +20,7 @@
 // It has been requested that we have a simple way to demo and test the functionality.
 // I am putting here now just to keep together with other current work.
 
-import { Component, Host, h, VNode } from '@stencil/core';
+import { Component, Event, EventEmitter, Host, h, VNode } from '@stencil/core';
 import { calculateDeductValue, EDistressType, ESeverity } from '../../utils/pciUtils';
 
 @Component({
@@ -29,6 +29,8 @@ import { calculateDeductValue, EDistressType, ESeverity } from '../../utils/pciU
   shadow: true,
 })
 export class DeductCalculator {
+
+  @Event() deductValueComplete: EventEmitter<number>;
 
   render() {
     return (
@@ -113,7 +115,9 @@ export class DeductCalculator {
     density: number
   ): void {
     if (type && severity && !isNaN(density)) {
-      alert(calculateDeductValue(type, severity, density, true));
+      const dv = calculateDeductValue(type, severity, density, true);
+      this.deductValueComplete.emit(dv);
+      alert(dv);
     } else {
       alert("Check your settings homie");
     }

@@ -20,7 +20,7 @@
 // It has been requested that we have a simple way to demo and test the functionality.
 // I am putting here now just to keep together with other current work.
 
-import { Component, Host, h, VNode } from '@stencil/core';
+import { Component, Host, h, State, VNode } from '@stencil/core';
 import { calculatePCI } from '../../utils/pciUtils';
 
 @Component({
@@ -31,36 +31,71 @@ import { calculatePCI } from '../../utils/pciUtils';
 export class PciCalculator {
 
   render() {
+    const pciClass = !this.showAddDeduct ? "display-grid" : "display-none";
+    const deductClass = this.showAddDeduct ? "position-relative" : "display-none";
+
     return (
       <Host>
-        <div class="label-display">
-          <calcite-label disableSpacing={true} class="label-display">
-            Enter comma delimited deduct values
-            {this._getDeductValuesInput()}
-          </calcite-label>
+        {/* PCI */}
+        <div class={pciClass}>
+          <div class="label-display">
+            <calcite-label disableSpacing={true} class="label-display">
+              Enter comma delimited deduct values
+              {this._getDeductValuesInput()}
+            </calcite-label>
+          </div>
+          <div>
+            {this._getCalculateButton()}
+          </div>
         </div>
-        <div>
-          {this._getCalculateInput()}
+        {/* Deduct */}
+        <div class={deductClass}>
+          <div class="position-right">
+            <calcite-action
+              appearance='clear'
+              class="float-end"
+              onClick={() => this._toggleShowAddDeduct()}
+              icon="x"
+              scale="s"
+              text=''
+            />
+          </div>
+          <deduct-calculator
+            class="display-grid padding-top-1"
+            onDeductValueComplete={(evt) => this._addDeductValue(evt)}
+          />
         </div>
       </Host>
     );
   }
 
+  @State() showAddDeduct = false;
+
   protected _deductValuesElement: HTMLCalciteInputElement;
 
   protected _getDeductValuesInput(): VNode {
     return (
-      <calcite-input
-        ref={(el) => { this._deductValuesElement = el }}
-      />
+      <div class="display-flex">
+        <calcite-input
+          class="main-input"
+          ref={(el) => { this._deductValuesElement = el }}
+        />
+        <calcite-action
+          appearance='clear'
+          onClick={() => this._toggleShowAddDeduct()}
+          icon="plus-circle"
+          scale="s"
+          text=''
+        />
+      </div>
     );
   }
 
-  protected _getCalculateInput(): VNode {
+  protected _getCalculateButton(): VNode {
     return (
       <calcite-button
         onClick={
-          () => this._calculateDeduct(
+          () => this._calculatePCI(
             this._deductValuesElement.value
           )
         }
@@ -68,7 +103,18 @@ export class PciCalculator {
     );
   }
 
-  protected _calculateDeduct(
+  protected _toggleShowAddDeduct() {
+    this.showAddDeduct = !this.showAddDeduct;
+  }
+
+  protected _addDeductValue(
+    evt: CustomEvent
+  ) {
+    this._toggleShowAddDeduct();
+    this._deductValuesElement.value += Math.abs(parseFloat(this._deductValuesElement.value)) > 0 ? `,${evt.detail}` : evt.detail;
+  }
+
+  protected _calculatePCI(
     deductValueString: string
   ): void {
     const deductValues: number[] = deductValueString.split(",").map(parseFloat);
