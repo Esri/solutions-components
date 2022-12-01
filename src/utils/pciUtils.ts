@@ -458,11 +458,8 @@ function _calcPolishedAggregate(
   severity: ESeverity,
   density: number
 ): number {
-  // TODO update after I get the values from Ryan
-  const vals = severity === ESeverity.H ? [] :
-    severity === ESeverity.M ? [] :
-      [];
-
+  const vals = severity === "H" || severity === "M" || severity === "L" ?
+    [3.417, -26.82, 71.15, -76.22, 38.52, -6.904] : [];
   return _calc(density, vals);
 }
 
