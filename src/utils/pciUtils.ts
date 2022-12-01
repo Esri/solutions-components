@@ -612,9 +612,9 @@ function _getMaxCDV(
   let maxCDV;
   // If none or only one individual deduct value is greater
   // than two, the total value is used in place of the maximum CD
-  const valuesGraterThan2 = deductValues.filter(deductValue => deductValue > 2);
-  if (valuesGraterThan2.length <= 1) {
-    maxCDV = valuesGraterThan2.reduce((prev, cur) => {
+  const valuesGreaterThan2 = deductValues.filter(deductValue => deductValue > 2);
+  if (valuesGreaterThan2.length <= 1) {
+    maxCDV = valuesGreaterThan2.reduce((prev, cur) => {
       prev += cur;
       return prev;
     }, 0);

@@ -154,7 +154,7 @@ export class DeductCalculator {
    * Render the distress type input
    *
    * @returns a node with a control that shows the distress type name and value
-   * for example ALIGATOR_CRACKING (1)
+   * for example ALLIGATOR_CRACKING (1)
    *
    * @protected
    */
@@ -172,7 +172,7 @@ export class DeductCalculator {
    * Render the distress type input
    *
    * @returns a node with a control that shows the distress type name and value
-   * for example ALIGATOR_CRACKING (1)
+   * for example ALLIGATOR_CRACKING (1)
    *
    * @protected
    */
