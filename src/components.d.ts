@@ -859,6 +859,9 @@ declare namespace LocalJSX {
         "defaultChecked"?: boolean;
     }
     interface DeductCalculator {
+        /**
+          * Emitted on demand when the user clicks to calculate the deduct value
+         */
         "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<number>) => void;
     }
     interface JsonEditor {

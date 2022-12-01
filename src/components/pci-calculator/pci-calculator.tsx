@@ -20,7 +20,7 @@
 // It has been requested that we have a simple way to demo and test the functionality.
 // I am putting here now just to keep together with other current work.
 
-import { Component, Host, h, State, VNode } from '@stencil/core';
+import { Component, Element, Host, h, State, VNode } from '@stencil/core';
 import { calculatePCI } from '../../utils/pciUtils';
 
 @Component({
@@ -29,7 +29,62 @@ import { calculatePCI } from '../../utils/pciUtils';
   shadow: true,
 })
 export class PciCalculator {
+  //--------------------------------------------------------------------------
+  //
+  //  Host element access
+  //
+  //--------------------------------------------------------------------------
+  @Element() el: HTMLPciCalculatorElement;
 
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (public)
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * Boolean: Show/Hide the calculate deduct value UI
+   */
+  @State() showAddDeduct = false;
+
+  /**
+   * HTMLCalciteInputElement: The html element for setting deduct values
+   */
+  protected _deductValuesElement: HTMLCalciteInputElement;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Watch handlers
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Methods (public)
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Events (public)
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (lifecycle)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * Renders the component.
+   */
   render() {
     const pciClass = !this.showAddDeduct ? "display-grid" : "display-none";
     const deductClass = this.showAddDeduct ? "position-relative" : "display-none";
@@ -69,10 +124,19 @@ export class PciCalculator {
     );
   }
 
-  @State() showAddDeduct = false;
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (protected)
+  //
+  //--------------------------------------------------------------------------
 
-  protected _deductValuesElement: HTMLCalciteInputElement;
-
+  /**
+   * Load the calculate deduct values calculate UI
+   *
+   * @returns calculate deduct value UI node
+   *
+   * @protected
+   */
   protected _getDeductValuesInput(): VNode {
     return (
       <div class="display-flex">
@@ -91,6 +155,13 @@ export class PciCalculator {
     );
   }
 
+  /**
+   * Add the calculate PCI button
+   *
+   * @returns calculate PCI button
+   *
+   * @protected
+   */
   protected _getCalculateButton(): VNode {
     return (
       <calcite-button
@@ -103,21 +174,42 @@ export class PciCalculator {
     );
   }
 
-  protected _toggleShowAddDeduct() {
+  /**
+   * Toggle the value that controls show/hide of the deduct value UI
+   *
+   * @protected
+   */
+  protected _toggleShowAddDeduct(): void {
     this.showAddDeduct = !this.showAddDeduct;
   }
 
+  /**
+   * Hide the calculate deduct value UI and add the newly calculated value
+   *
+   * @param event the event from the calculate deduct value control
+   *
+   * @protected
+   */
   protected _addDeductValue(
     evt: CustomEvent
-  ) {
+  ): void {
     this._toggleShowAddDeduct();
     this._deductValuesElement.value += Math.abs(parseFloat(this._deductValuesElement.value)) > 0 ? `,${evt.detail}` : evt.detail;
   }
 
+  /**
+   * Calculate the PCI value based on the ASTM methodology
+   *
+   * @param deductValuesString string with comma delimited numbers
+   * Survery123 does not accept array type arguments for passing to scripts.
+   * The string will be parsed within the script that will be consumed by Survey123
+   *
+   * @protected
+   */
   protected _calculatePCI(
-    deductValueString: string
+    deductValuesString: string
   ): void {
-    const pci = calculatePCI(deductValueString, "1", true);
+    const pci = calculatePCI(deductValuesString, "1", true);
     const rating = pci <= 10 ? "Failed" :
       pci <= 25 ? "Serious" :
       pci <= 40 ? "Very Poor" :

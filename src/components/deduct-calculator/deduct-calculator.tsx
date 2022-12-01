@@ -20,7 +20,7 @@
 // It has been requested that we have a simple way to demo and test the functionality.
 // I am putting here now just to keep together with other current work.
 
-import { Component, Event, EventEmitter, Host, h, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, VNode } from '@stencil/core';
 import { calculateDeductValue, EDistressType, ESeverity } from '../../utils/pciUtils';
 
 @Component({
@@ -29,9 +29,79 @@ import { calculateDeductValue, EDistressType, ESeverity } from '../../utils/pciU
   shadow: true,
 })
 export class DeductCalculator {
+  //--------------------------------------------------------------------------
+  //
+  //  Host element access
+  //
+  //--------------------------------------------------------------------------
+  @Element() el: HTMLBufferToolsElement;
 
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (public)
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * HTMLCalciteInputElement: The html element for setting the density value
+   */
+  protected _densityElement: HTMLCalciteInputElement;
+
+  /**
+   * HTMLCalciteSelectElement: The html element for selecting the distress type
+   * 1-19 based on values defined by ASTM standard
+   */
+  protected _typeElement: HTMLCalciteSelectElement;
+
+  /**
+   * HTMLCalciteSelectElement: The html element for selecting the distress severity
+   * "H" | "M" | "L"
+   */
+  protected _severityElement: HTMLCalciteSelectElement;
+
+  /**
+   * string[]: Array of the distress types
+   */
+  protected _types: string[] = Object.keys(EDistressType).filter(k => !isNaN(Number(EDistressType[k])));
+
+  //--------------------------------------------------------------------------
+  //
+  //  Watch handlers
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Methods (public)
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
+  //  Events (public)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * Emitted on demand when the user clicks to calculate the deduct value
+   */
   @Event() deductValueComplete: EventEmitter<number>;
 
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (lifecycle)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * Renders the component.
+   */
   render() {
     return (
       <Host>
@@ -56,14 +126,19 @@ export class DeductCalculator {
     );
   }
 
-  protected _densityElement: HTMLCalciteInputElement;
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (protected)
+  //
+  //--------------------------------------------------------------------------
 
-  protected _typeElement: HTMLCalciteSelectElement;
-
-  protected _severityElement: HTMLCalciteSelectElement;
-
-  protected _types: string[] = Object.keys(EDistressType).filter(k => !isNaN(Number(EDistressType[k])));
-
+  /**
+   * Render the density input
+   *
+   * @returns a node with a control to set the density number (float)
+   *
+   * @protected
+   */
   protected _getDensityInput(): VNode {
     return (
       <calcite-input
@@ -75,6 +150,14 @@ export class DeductCalculator {
     );
   }
 
+  /**
+   * Render the distress type input
+   *
+   * @returns a node with a control that shows the distress type name and value
+   * for example ALIGATOR_CRACKING (1)
+   *
+   * @protected
+   */
   protected _getTypeInput(): VNode {
     return (
       <calcite-select label='' ref={(el) => { this._typeElement = el }}>
@@ -85,6 +168,14 @@ export class DeductCalculator {
     );
   }
 
+  /**
+   * Render the distress type input
+   *
+   * @returns a node with a control that shows the distress type name and value
+   * for example ALIGATOR_CRACKING (1)
+   *
+   * @protected
+   */
   protected _getSeverityInput(): VNode {
     return (
       <calcite-select label='' ref={(el) => { this._severityElement = el }}>
@@ -95,6 +186,13 @@ export class DeductCalculator {
     );
   }
 
+  /**
+   * Render calculate deduct value button
+   *
+   * @returns a node with a control that calculates the deduct value
+   *
+   * @protected
+   */
   protected _getCalculateInput(): VNode {
     return (
       <calcite-button
@@ -109,6 +207,15 @@ export class DeductCalculator {
     );
   }
 
+  /**
+   * Calculate the deduct value based on the user inputs using the ASTM methodology
+   *
+   * @param type distress type 1-19 based on ASTM
+   * @param severity "H" | "M" | "L" high, med, low based on ASTM
+   * @param density percent density of the distress type and severity based on total sample area
+   *
+   * @protected
+   */
   protected _calculateDeduct(
     type: number,
     severity: ESeverity,
@@ -119,7 +226,7 @@ export class DeductCalculator {
       this.deductValueComplete.emit(dv);
       alert(dv);
     } else {
-      alert("Check your settings homie");
+      alert("Type, severity, and a density number are required");
     }
   }
 }

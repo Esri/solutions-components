@@ -14,12 +14,33 @@
  * limitations under the License.
  */
 
+/**
+ * Effect of the distresses on ride quality.
+ *
+ * L - Low. Individual bumps or settlements, or both, cause the vehicle to bounce slightly,
+ * but create little discomfort.
+ *
+ * M - Medium. Individual bumps or settlements, or both, cause the vehicle to bounce significantly,
+ * creating some discomfort.
+ *
+ * H - High. Individual bumps or settlements, or both, cause the vehicle to bounce excessively,
+ * creating substantial discomfort, safety hazard, or high potential vehicle damage.
+ *
+ * @returns Promise resolving when function is done
+ *
+ * @protected
+ */
 export enum ESeverity {
   H = "H",
   M = "M",
   L = "L"
 }
 
+/**
+ * Type of distress as defined by ASTM standard
+ *
+ * @protected
+ */
 export enum EDistressType {
   ALLIGATOR_CRACKING = 1,
   BLEEDING,
@@ -41,8 +62,21 @@ export enum EDistressType {
   SWELL,
   WEATHERING_RAVELING
 }
-// type expects 1-19
-// severity expects "H" | "M" | "L"
+
+/**
+ * Calculate the deduct value for the given distress.
+ *
+ * @param type expects 1-19 as a string
+ * @param severity expects "H" | "M" | "L"
+ * @param density the cacluated percent density ralative to the total sample area
+ * @param showDebugging used to control debugging messages to show the various
+ * calculations a required steps along the way.
+ * The main reason this is optional is that it provides no value when used within
+ * Survey123 as we have nowhere to see the messages and I wasn't sure if writing to a
+ * console in that context could have any negative side effects.
+ *
+ * @protected
+ */
 export function calculateDeductValue(
   type: string,
   severity: string,
@@ -131,6 +165,20 @@ export function calculateDeductValue(
   return roundedDV;
 }
 
+/**
+ * Calculate the pavement condition index (PCI)
+ *
+ * @param deductValues string of comma delimited deduct value numbers
+ * @param numSeverities expects "1" | "2" | "3" represents the number of severities for
+ * a single distress type
+ * @param showDebugging used to control debugging messages to show the various
+ * calculations a required steps along the way.
+ * The main reason this is optional is that it provides no value when used within
+ * Survey123 as we have nowhere to see the messages and I wasn't sure if writing to a
+ * console in that context could have any negative side effects.
+ *
+ * @protected
+ */
 export function calculatePCI(
   deductValues: string,
   numSeverities: string,
@@ -162,10 +210,17 @@ export function calculatePCI(
   return pci;
 }
 
+/**
+ * Executes the polynomial equation using the provided values and density.
+ * In the ASTM standard this is the step represented by finding the values
+ * on the plotted graphs.
+ *
+ * @returns the calculated deduct value
+ */
 function _calc(
   density: number,
   vals: number[]
-) {
+): number {
   return vals.reduce((prev, cur, i) => {
     return prev += i === 0 ? cur :
       i === 1 ? (cur * density) :
@@ -173,12 +228,23 @@ function _calc(
   }, 0);
 }
 
+/**
+ * Round to the nerest decimal in the 10ths place
+ */
 function _round(
   v: number
 ): number {
   return Math.round(v * 10) / 10;
 }
 
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
 function _calcAlligator(
   severity: ESeverity,
   density: number
@@ -190,6 +256,14 @@ function _calcAlligator(
   return _calc(density, vals);
 }
 
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
 function _calcBleeding(
   severity: ESeverity,
   density: number
@@ -201,6 +275,14 @@ function _calcBleeding(
   return _calc(density, vals);
 }
 
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
 function _calcBlockCracking(
   severity: ESeverity,
   density: number
@@ -212,6 +294,14 @@ function _calcBlockCracking(
   return _calc(density, vals);
 }
 
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
 function _calcBumpsSags(
   severity: ESeverity,
   density: number
@@ -223,6 +313,14 @@ function _calcBumpsSags(
   return _calc(density, vals);
 }
 
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
 function _calcCorrugation(
   severity: ESeverity,
   density: number
@@ -234,6 +332,14 @@ function _calcCorrugation(
   return _calc(density, vals);
 }
 
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
 function _calcDepression(
   severity: ESeverity,
   density: number
@@ -245,6 +351,14 @@ function _calcDepression(
   return _calc(density, vals);
 }
 
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
 function _calcEdgeCracking(
   severity: ESeverity,
   density: number
@@ -256,6 +370,14 @@ function _calcEdgeCracking(
   return _calc(density, vals);
 }
 
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
 function _calcReflectionCracking(
   severity: ESeverity,
   density: number
@@ -267,6 +389,14 @@ function _calcReflectionCracking(
   return _calc(density, vals);
 }
 
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
 function _calcLaneShoulderDropOff(
   severity: ESeverity,
   density: number
@@ -278,6 +408,14 @@ function _calcLaneShoulderDropOff(
   return _calc(density, vals);
 }
 
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
 function _calcLongTransCracking(
   severity: ESeverity,
   density: number
@@ -289,6 +427,14 @@ function _calcLongTransCracking(
   return _calc(density, vals);
 }
 
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
 function _calcPatchingUtilCutPatching(
   severity: ESeverity,
   density: number
@@ -300,6 +446,14 @@ function _calcPatchingUtilCutPatching(
   return _calc(density, vals);
 }
 
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
 function _calcPolishedAggregate(
   severity: ESeverity,
   density: number
@@ -312,6 +466,14 @@ function _calcPolishedAggregate(
   return _calc(density, vals);
 }
 
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
 function _calcPotholes(
   severity: ESeverity,
   density: number
@@ -323,6 +485,14 @@ function _calcPotholes(
   return _calc(density, vals);
 }
 
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
 function _calcRailroadCrossing(
   severity: ESeverity,
   density: number
@@ -334,6 +504,14 @@ function _calcRailroadCrossing(
   return _calc(density, vals);
 }
 
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
 function _calcRutting(
   severity: ESeverity,
   density: number
@@ -346,6 +524,14 @@ function _calcRutting(
   return _calc(density, vals);
 }
 
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
 function _calcShoving(
   severity: ESeverity,
   density: number
@@ -357,6 +543,14 @@ function _calcShoving(
   return _calc(density, vals);
 }
 
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
 function _calcSlippageCracking(
   severity: ESeverity,
   density: number
@@ -368,6 +562,14 @@ function _calcSlippageCracking(
   return _calc(density, vals);
 }
 
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
 function _calcSwell(
   severity: ESeverity,
   density: number
@@ -379,6 +581,14 @@ function _calcSwell(
   return _calc(density, vals);
 }
 
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
 function _calcWeatheringReveling(
   severity: ESeverity,
   density: number
@@ -390,6 +600,14 @@ function _calcWeatheringReveling(
   return _calc(density, vals);
 }
 
+/**
+ * Determine maximum Corrected Deduct Value (CDV) iteratively
+ *
+ * @param deductValues The calculated deduct values that will be used to determine max CDV
+ * @param showDebugging used to optionally show debugging messages
+ *
+ * @returns the max CDV value
+ */
 function _getMaxCDV(
   deductValues: number[],
   showDebugging: boolean
@@ -448,7 +666,14 @@ function _getMaxCDV(
   return maxCDV;
 }
 
-// reduce deduct values to the m largest including the fractional part
+/**
+ * Reduce deduct values to the m largest including the fractional part
+ *
+ * @param sortedDVs individual deduct values in descending order
+ * @param m allowable number of deducts (9.5.3 in ASTM standard)
+ *
+ * @returns updated deduct values
+ */
 function _reduceDeductValues(
   sortedDVs: number[],
   m: number
@@ -472,6 +697,14 @@ function _reduceDeductValues(
   return vals;
 }
 
+/**
+ * Reduce the smallest individual deduct value greater to 2.0 and repeat
+ *
+ * @param vals the list of deduct values
+ * @param showDebugging optionally show debugging messages
+ *
+ * @returns array of CDV values
+ */
 function _getCDVs(
   vals: number[],
   showDebugging: boolean
@@ -480,8 +713,9 @@ function _getCDVs(
 
   const cdvs = [];
   while (len >= 1) {
-    //console.log("_getCDVs")
-    console.log(`vals: ${vals}`)
+    if (showDebugging) {
+      console.log(`vals: ${vals}`);
+    }
     cdvs.push(_getCDV(vals, showDebugging));
     len -= 1;
     vals.splice(len, 1, 2);
@@ -489,6 +723,14 @@ function _getCDVs(
   return cdvs;
 }
 
+/**
+ * Determine the total and max number deducts higher than two and calculate the CDV
+ *
+ * @param vals the list of deduct values
+ * @param showDebugging optionally show debugging messages
+ *
+ * @returns the calculated CDV
+ */
 function _getCDV(
   vals: number[],
   showDebugging: boolean
@@ -504,8 +746,17 @@ function _getCDV(
   return _calcCDV(totalDV, q, showDebugging);
 }
 
+/**
+ * Determine the total and max number deducts higher than two and calculate the CDV
+ *
+ * @param total the sum of all deduct values
+ * @param q the number of deducts with a value greater than 2.0
+ * @param showDebugging optionally show debugging messages
+ *
+ * @returns the calculated CDV
+ */
 function _calcCDV(
-  totalDV: number,
+  total: number,
   q: number,
   showDebugging: boolean
 ): number {
@@ -520,10 +771,10 @@ function _calcCDV(
     1: [1.651e-15, 1, -4.249e-18, 1.149e-19]
   };
 
-  const cdv = _calc(totalDV, vals2[q >= 7 ? 7 : q])
+  const cdv = _calc(total, vals2[q >= 7 ? 7 : q])
 
   if (showDebugging) {
-    console.log(`totalDV: ${totalDV}`);
+    console.log(`totalDV: ${total}`);
     console.log(`q: ${q}`);
     console.log(`CDV: ${cdv}`);
   }

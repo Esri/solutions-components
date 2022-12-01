@@ -7,9 +7,9 @@
 
 ## Events
 
-| Event                 | Description | Type                  |
-| --------------------- | ----------- | --------------------- |
-| `deductValueComplete` |             | `CustomEvent<number>` |
+| Event                 | Description                                                          | Type                  |
+| --------------------- | -------------------------------------------------------------------- | --------------------- |
+| `deductValueComplete` | Emitted on demand when the user clicks to calculate the deduct value | `CustomEvent<number>` |
 
 
 ## Dependencies
