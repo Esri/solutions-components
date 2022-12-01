@@ -41,17 +41,28 @@ export enum EDistressType {
   SWELL,
   WEATHERING_RAVELING
 }
-
-// this is just getting the deduct value...will need to run for multiple types and severities to
-// calc the PCI
+// type expects 1-19
+// severity expects "H" | "M" | "L"
 export function calculateDeductValue(
-  type: EDistressType,
-  severity: ESeverity,
-  density: number,
-  showDebugging: boolean = false
+  type: string,
+  severity: string,
+  density: string,
+  showDebugging = false
 ): number {
+  // When called from survey123 we will get the args as strings
+  // not sure if they could be numbers so a little extra conversion to make sure with the density
+
+  // type: EDistressType
+  const _type = parseInt(type);
+  // severity: ESeverity
+  const _severity = ESeverity[severity];
+  // density: number
+  const _density = parseFloat(density.toString());
+  // showDebugging: boolean
+  let _showDebugging = showDebugging === true || showDebugging.toString().toLowerCase() === "true";
+
   let calc;
-  switch (type) {
+  switch (_type) {
     case EDistressType.ALLIGATOR_CRACKING:
       calc = _calcAlligator;
       break;
@@ -111,9 +122,9 @@ export function calculateDeductValue(
       break;
   }
 
-  const dv = calc(severity, Math.log10(density));
+  const dv = calc(_severity, Math.log10(_density));
   const roundedDV = _round(dv);
-  if (showDebugging) {
+  if (_showDebugging) {
     console.log(`Deduct value: ${dv}`);
     console.log(`Rounded deduct value: ${roundedDV}`);
   }
@@ -121,19 +132,32 @@ export function calculateDeductValue(
 }
 
 export function calculatePCI(
-  deductValues: number[],
-  numSeverities: number,
-  showDebugging: boolean = false
+  deductValues: string,
+  numSeverities: string,
+  showDebugging = false
 ): number {
-  const maxCDV = _getMaxCDV(deductValues, showDebugging);
+  // When called from survey123 we will get the args as strings
+  // not sure if they could be numbers so a little extra conversion to make sure with the density
 
-  let pci;
-  if (numSeverities === 1) {
-    pci = 100 - _round(maxCDV);
-  } else if (numSeverities === 2) {
+  // deductValues: number[]
+  let _deductValues = deductValues.split(",").map((dv) => parseFloat(dv.toString()));
+  // numSeverities: number
+  let _numSeverities = parseInt(numSeverities);
+  // showDebugging: boolean
+  let _showDebugging = showDebugging === true || showDebugging.toString().toLowerCase() === "true";
 
-  } else if (numSeverities === 3) {
+  let pci = 0;
+  // filter out non-numbers
+  _deductValues = _deductValues.filter(dv => Math.abs(dv) > 0);
+  if (_deductValues.length > 0) {
+    const maxCDV = _getMaxCDV(_deductValues, _showDebugging);
+    if (_numSeverities === 1) {
+      pci = 100 - _round(maxCDV);
+    } else if (_numSeverities === 2) {
 
+    } else if (_numSeverities === 3) {
+
+    }
   }
   return pci;
 }

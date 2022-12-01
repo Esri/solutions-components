@@ -115,7 +115,7 @@ export class DeductCalculator {
     density: number
   ): void {
     if (type && severity && !isNaN(density)) {
-      const dv = calculateDeductValue(type, severity, density, true);
+      const dv = calculateDeductValue(type.toString(), severity.toString(), density.toString(), true);
       this.deductValueComplete.emit(dv);
       alert(dv);
     } else {
