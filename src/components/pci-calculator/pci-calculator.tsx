@@ -94,7 +94,7 @@ export class PciCalculator {
         {/* PCI */}
         <div class={pciClass}>
           <div class="label-display">
-            <calcite-label disableSpacing={true} class="label-display">
+            <calcite-label class="label-display" disableSpacing={true} >
               Enter comma delimited deduct values
               {this._getDeductValuesInput()}
             </calcite-label>
@@ -109,8 +109,8 @@ export class PciCalculator {
             <calcite-action
               appearance='clear'
               class="float-end"
-              onClick={() => this._toggleShowAddDeduct()}
               icon="x"
+              onClick={() => this._toggleShowAddDeduct()}
               scale="s"
               text=''
             />
@@ -146,8 +146,8 @@ export class PciCalculator {
         />
         <calcite-action
           appearance='clear'
-          onClick={() => this._toggleShowAddDeduct()}
           icon="plus-circle"
+          onClick={() => this._toggleShowAddDeduct()}
           scale="s"
           text=''
         />

@@ -93,7 +93,7 @@ export function calculateDeductValue(
   // density: number
   const _density = parseFloat(density.toString());
   // showDebugging: boolean
-  let _showDebugging = showDebugging === true || showDebugging.toString().toLowerCase() === "true";
+  const _showDebugging = showDebugging === true || showDebugging.toString().toLowerCase() === "true";
 
   let calc;
   switch (_type) {
@@ -190,9 +190,9 @@ export function calculatePCI(
   // deductValues: number[]
   let _deductValues = deductValues.split(",").map((dv) => parseFloat(dv.toString()));
   // numSeverities: number
-  let _numSeverities = parseInt(numSeverities);
+  const _numSeverities = parseInt(numSeverities);
   // showDebugging: boolean
-  let _showDebugging = showDebugging === true || showDebugging.toString().toLowerCase() === "true";
+  const _showDebugging = showDebugging === true || showDebugging.toString().toLowerCase() === "true";
 
   let pci = 0;
   // filter out non-numbers
@@ -676,13 +676,9 @@ function _reduceDeductValues(
   m: number
 ): number[] {
   const fractionalPart = m - Math.floor(m);
-  let vals: number[];
-  if (sortedDVs.length < m) {
-    // If less than m deduct values are available, all of the deduct values are used
-    vals = sortedDVs;
-  } else {
-    // reduce values to m largest including the fractional part
-    vals = sortedDVs.reduce((prev, cur, i) => {
+  // If less than m deduct values are available, all of the deduct values are used
+  return sortedDVs.length < m ? sortedDVs :
+    sortedDVs.reduce((prev, cur, i) => {
       if (i + 1 < m) {
         prev.push(cur);
       } else if (fractionalPart > 0) {
@@ -690,8 +686,6 @@ function _reduceDeductValues(
       }
       return prev;
     }, []);
-  }
-  return vals;
 }
 
 /**
