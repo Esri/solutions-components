@@ -624,10 +624,10 @@ function _getMaxCDV(
       console.log(`Max CDV: ${maxCDV}`);
     }
   } else {
-    // sort in descending order (9.5.2)
+    // sort in descending order (section 9.5.2 in ASTM doc)
     const sortedDVs = deductValues.sort((a, b) => b - a);
 
-    // Determine the allowable number of deducts, m (9.5.3)
+    // Determine the allowable number of deducts, m (section 9.5.3 in ASTM doc)
     const highestDV = sortedDVs[0];
     // m = allowable number of deducts including fractions (must be less than or equal to ten)
     const m = 1 + (9/98) * (100 - highestDV);
@@ -726,14 +726,14 @@ function _getCDV(
   vals: number[],
   showDebugging: boolean
 ): number {
-  // 9.5.5.1
+  // section 9.5.5.1 in ASTM doc
   const totalDV = vals.reduce((prev, cur) => prev += cur, 0);
 
-  // 9.5.5.2
+  // section 9.5.5.2 in ASTM doc
   // the number of deducts with a value greater than 2.0
   const q = vals.reduce((prev, cur) => cur > 2 ? prev + 1 : prev, 0);
 
-  // 9.5.5.3
+  // section 9.5.5.3 in ASTM doc
   return _calcCDV(totalDV, q, showDebugging);
 }
 
