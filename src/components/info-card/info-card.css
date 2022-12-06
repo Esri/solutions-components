@@ -14,21 +14,6 @@
  * limitations under the License.
  */
 
-import { newSpecPage } from '@stencil/core/testing';
-import { CrowdsourceManager } from '../crowdsource-manager';
-
-xdescribe('crowdsource-manager', () => {
-  it('renders', async () => {
-    const page = await newSpecPage({
-      components: [CrowdsourceManager],
-      html: `<crowdsource-manager></crowdsource-manager>`,
-    });
-    expect(page.root).toEqualHtml(`
-      <crowdsource-manager>
-        <mock:shadow-root>
-          <slot></slot>
-        </mock:shadow-root>
-      </crowdsource-manager>
-    `);
-  });
-});
+:host {
+  display: block;
+}

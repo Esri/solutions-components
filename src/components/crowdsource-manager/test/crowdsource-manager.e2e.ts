@@ -16,7 +16,7 @@
 
 import { newE2EPage } from '@stencil/core/testing';
 
-describe('crowdsource-manager', () => {
+xdescribe('crowdsource-manager', () => {
   it('renders', async () => {
     const page = await newE2EPage();
     await page.setContent('<crowdsource-manager></crowdsource-manager>');

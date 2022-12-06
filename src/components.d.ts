@@ -117,6 +117,8 @@ export namespace Components {
     }
     interface DeductCalculator {
     }
+    interface InfoCard {
+    }
     interface JsonEditor {
         /**
           * Gets the contents of the editor.
@@ -617,6 +619,12 @@ declare global {
         prototype: HTMLDeductCalculatorElement;
         new (): HTMLDeductCalculatorElement;
     };
+    interface HTMLInfoCardElement extends Components.InfoCard, HTMLStencilElement {
+    }
+    var HTMLInfoCardElement: {
+        prototype: HTMLInfoCardElement;
+        new (): HTMLInfoCardElement;
+    };
     interface HTMLJsonEditorElement extends Components.JsonEditor, HTMLStencilElement {
     }
     var HTMLJsonEditorElement: {
@@ -758,6 +766,7 @@ declare global {
         "config-pdf-download": HTMLConfigPdfDownloadElement;
         "crowdsource-manager": HTMLCrowdsourceManagerElement;
         "deduct-calculator": HTMLDeductCalculatorElement;
+        "info-card": HTMLInfoCardElement;
         "json-editor": HTMLJsonEditorElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
@@ -874,6 +883,8 @@ declare namespace LocalJSX {
           * Emitted on demand when the user clicks to calculate the deduct value
          */
         "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<number>) => void;
+    }
+    interface InfoCard {
     }
     interface JsonEditor {
         /**
@@ -1235,6 +1246,7 @@ declare namespace LocalJSX {
         "config-pdf-download": ConfigPdfDownload;
         "crowdsource-manager": CrowdsourceManager;
         "deduct-calculator": DeductCalculator;
+        "info-card": InfoCard;
         "json-editor": JsonEditor;
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
@@ -1271,6 +1283,7 @@ declare module "@stencil/core" {
             "config-pdf-download": LocalJSX.ConfigPdfDownload & JSXBase.HTMLAttributes<HTMLConfigPdfDownloadElement>;
             "crowdsource-manager": LocalJSX.CrowdsourceManager & JSXBase.HTMLAttributes<HTMLCrowdsourceManagerElement>;
             "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;
+            "info-card": LocalJSX.InfoCard & JSXBase.HTMLAttributes<HTMLInfoCardElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;

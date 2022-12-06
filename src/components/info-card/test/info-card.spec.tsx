@@ -15,20 +15,20 @@
  */
 
 import { newSpecPage } from '@stencil/core/testing';
-import { CrowdsourceManager } from '../crowdsource-manager';
+import { InfoCard } from '../info-card';
 
-xdescribe('crowdsource-manager', () => {
+xdescribe('info-card', () => {
   it('renders', async () => {
     const page = await newSpecPage({
-      components: [CrowdsourceManager],
-      html: `<crowdsource-manager></crowdsource-manager>`,
+      components: [InfoCard],
+      html: `<info-card></info-card>`,
     });
     expect(page.root).toEqualHtml(`
-      <crowdsource-manager>
+      <info-card>
         <mock:shadow-root>
           <slot></slot>
         </mock:shadow-root>
-      </crowdsource-manager>
+      </info-card>
     `);
   });
 });
