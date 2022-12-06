@@ -161,6 +161,8 @@ export namespace Components {
          */
         "value": any;
     }
+    interface LayerTable {
+    }
     interface MapCard {
     }
     interface MapDrawTools {
@@ -651,6 +653,12 @@ declare global {
         prototype: HTMLJsonEditorElement;
         new (): HTMLJsonEditorElement;
     };
+    interface HTMLLayerTableElement extends Components.LayerTable, HTMLStencilElement {
+    }
+    var HTMLLayerTableElement: {
+        prototype: HTMLLayerTableElement;
+        new (): HTMLLayerTableElement;
+    };
     interface HTMLMapCardElement extends Components.MapCard, HTMLStencilElement {
     }
     var HTMLMapCardElement: {
@@ -802,6 +810,7 @@ declare global {
         "deduct-calculator": HTMLDeductCalculatorElement;
         "info-card": HTMLInfoCardElement;
         "json-editor": HTMLJsonEditorElement;
+        "layer-table": HTMLLayerTableElement;
         "map-card": HTMLMapCardElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
@@ -943,6 +952,8 @@ declare namespace LocalJSX {
           * Contains the public value for this component; it is not changed by the editor. When changed, the change overwrites the contents of the editor.
          */
         "value"?: any;
+    }
+    interface LayerTable {
     }
     interface MapCard {
     }
@@ -1294,6 +1305,7 @@ declare namespace LocalJSX {
         "deduct-calculator": DeductCalculator;
         "info-card": InfoCard;
         "json-editor": JsonEditor;
+        "layer-table": LayerTable;
         "map-card": MapCard;
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
@@ -1335,6 +1347,7 @@ declare module "@stencil/core" {
             "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;
             "info-card": LocalJSX.InfoCard & JSXBase.HTMLAttributes<HTMLInfoCardElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
+            "layer-table": LocalJSX.LayerTable & JSXBase.HTMLAttributes<HTMLLayerTableElement>;
             "map-card": LocalJSX.MapCard & JSXBase.HTMLAttributes<HTMLMapCardElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
