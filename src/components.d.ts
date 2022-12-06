@@ -253,6 +253,8 @@ export namespace Components {
          */
         "selectionSet": ISelectionSet;
     }
+    interface MediaCard {
+    }
     interface PciCalculator {
     }
     interface PdfDownload {
@@ -655,6 +657,12 @@ declare global {
         prototype: HTMLMapSelectToolsElement;
         new (): HTMLMapSelectToolsElement;
     };
+    interface HTMLMediaCardElement extends Components.MediaCard, HTMLStencilElement {
+    }
+    var HTMLMediaCardElement: {
+        prototype: HTMLMediaCardElement;
+        new (): HTMLMediaCardElement;
+    };
     interface HTMLPciCalculatorElement extends Components.PciCalculator, HTMLStencilElement {
     }
     var HTMLPciCalculatorElement: {
@@ -772,6 +780,7 @@ declare global {
         "map-layer-picker": HTMLMapLayerPickerElement;
         "map-search": HTMLMapSearchElement;
         "map-select-tools": HTMLMapSelectToolsElement;
+        "media-card": HTMLMediaCardElement;
         "pci-calculator": HTMLPciCalculatorElement;
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
@@ -999,6 +1008,8 @@ declare namespace LocalJSX {
           * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
          */
         "selectionSet"?: ISelectionSet;
+    }
+    interface MediaCard {
     }
     interface PciCalculator {
     }
@@ -1252,6 +1263,7 @@ declare namespace LocalJSX {
         "map-layer-picker": MapLayerPicker;
         "map-search": MapSearch;
         "map-select-tools": MapSelectTools;
+        "media-card": MediaCard;
         "pci-calculator": PciCalculator;
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
@@ -1289,6 +1301,7 @@ declare module "@stencil/core" {
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
             "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
+            "media-card": LocalJSX.MediaCard & JSXBase.HTMLAttributes<HTMLMediaCardElement>;
             "pci-calculator": LocalJSX.PciCalculator & JSXBase.HTMLAttributes<HTMLPciCalculatorElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
