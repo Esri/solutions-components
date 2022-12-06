@@ -123,6 +123,8 @@ export namespace Components {
     }
     interface DeductCalculator {
     }
+    interface EditRecordModal {
+    }
     interface InfoCard {
     }
     interface JsonEditor {
@@ -649,6 +651,12 @@ declare global {
         prototype: HTMLDeductCalculatorElement;
         new (): HTMLDeductCalculatorElement;
     };
+    interface HTMLEditRecordModalElement extends Components.EditRecordModal, HTMLStencilElement {
+    }
+    var HTMLEditRecordModalElement: {
+        prototype: HTMLEditRecordModalElement;
+        new (): HTMLEditRecordModalElement;
+    };
     interface HTMLInfoCardElement extends Components.InfoCard, HTMLStencilElement {
     }
     var HTMLInfoCardElement: {
@@ -817,6 +825,7 @@ declare global {
         "config-pdf-download": HTMLConfigPdfDownloadElement;
         "crowdsource-manager": HTMLCrowdsourceManagerElement;
         "deduct-calculator": HTMLDeductCalculatorElement;
+        "edit-record-modal": HTMLEditRecordModalElement;
         "info-card": HTMLInfoCardElement;
         "json-editor": HTMLJsonEditorElement;
         "layer-table": HTMLLayerTableElement;
@@ -943,6 +952,8 @@ declare namespace LocalJSX {
           * Emitted on demand when the user clicks to calculate the deduct value
          */
         "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<number>) => void;
+    }
+    interface EditRecordModal {
     }
     interface InfoCard {
     }
@@ -1315,6 +1326,7 @@ declare namespace LocalJSX {
         "config-pdf-download": ConfigPdfDownload;
         "crowdsource-manager": CrowdsourceManager;
         "deduct-calculator": DeductCalculator;
+        "edit-record-modal": EditRecordModal;
         "info-card": InfoCard;
         "json-editor": JsonEditor;
         "layer-table": LayerTable;
@@ -1358,6 +1370,7 @@ declare module "@stencil/core" {
             "config-pdf-download": LocalJSX.ConfigPdfDownload & JSXBase.HTMLAttributes<HTMLConfigPdfDownloadElement>;
             "crowdsource-manager": LocalJSX.CrowdsourceManager & JSXBase.HTMLAttributes<HTMLCrowdsourceManagerElement>;
             "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;
+            "edit-record-modal": LocalJSX.EditRecordModal & JSXBase.HTMLAttributes<HTMLEditRecordModalElement>;
             "info-card": LocalJSX.InfoCard & JSXBase.HTMLAttributes<HTMLInfoCardElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "layer-table": LocalJSX.LayerTable & JSXBase.HTMLAttributes<HTMLLayerTableElement>;
