@@ -169,6 +169,8 @@ export namespace Components {
     }
     interface LayerTable {
     }
+    interface ListItem {
+    }
     interface MapCard {
     }
     interface MapDrawTools {
@@ -683,6 +685,12 @@ declare global {
         prototype: HTMLLayerTableElement;
         new (): HTMLLayerTableElement;
     };
+    interface HTMLListItemElement extends Components.ListItem, HTMLStencilElement {
+    }
+    var HTMLListItemElement: {
+        prototype: HTMLListItemElement;
+        new (): HTMLListItemElement;
+    };
     interface HTMLMapCardElement extends Components.MapCard, HTMLStencilElement {
     }
     var HTMLMapCardElement: {
@@ -838,6 +846,7 @@ declare global {
         "info-card": HTMLInfoCardElement;
         "json-editor": HTMLJsonEditorElement;
         "layer-table": HTMLLayerTableElement;
+        "list-item": HTMLListItemElement;
         "map-card": HTMLMapCardElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
@@ -987,6 +996,8 @@ declare namespace LocalJSX {
         "value"?: any;
     }
     interface LayerTable {
+    }
+    interface ListItem {
     }
     interface MapCard {
     }
@@ -1342,6 +1353,7 @@ declare namespace LocalJSX {
         "info-card": InfoCard;
         "json-editor": JsonEditor;
         "layer-table": LayerTable;
+        "list-item": ListItem;
         "map-card": MapCard;
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
@@ -1387,6 +1399,7 @@ declare module "@stencil/core" {
             "info-card": LocalJSX.InfoCard & JSXBase.HTMLAttributes<HTMLInfoCardElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "layer-table": LocalJSX.LayerTable & JSXBase.HTMLAttributes<HTMLLayerTableElement>;
+            "list-item": LocalJSX.ListItem & JSXBase.HTMLAttributes<HTMLListItemElement>;
             "map-card": LocalJSX.MapCard & JSXBase.HTMLAttributes<HTMLMapCardElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
