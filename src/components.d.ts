@@ -42,6 +42,8 @@ export namespace Components {
          */
         "unit": __esri.LinearUnits;
     }
+    interface CardManager {
+    }
     interface CheckList {
         /**
           * boolean: All checkboxes checked state will be set with this value on first render. Default is true
@@ -583,6 +585,12 @@ declare global {
         prototype: HTMLBufferToolsElement;
         new (): HTMLBufferToolsElement;
     };
+    interface HTMLCardManagerElement extends Components.CardManager, HTMLStencilElement {
+    }
+    var HTMLCardManagerElement: {
+        prototype: HTMLCardManagerElement;
+        new (): HTMLCardManagerElement;
+    };
     interface HTMLCheckListElement extends Components.CheckList, HTMLStencilElement {
     }
     var HTMLCheckListElement: {
@@ -783,6 +791,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "buffer-tools": HTMLBufferToolsElement;
+        "card-manager": HTMLCardManagerElement;
         "check-list": HTMLCheckListElement;
         "comment-card": HTMLCommentCardElement;
         "config-buffer-tools": HTMLConfigBufferToolsElement;
@@ -856,6 +865,8 @@ declare namespace LocalJSX {
           * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
          */
         "unit"?: __esri.LinearUnits;
+    }
+    interface CardManager {
     }
     interface CheckList {
         /**
@@ -1272,6 +1283,7 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "buffer-tools": BufferTools;
+        "card-manager": CardManager;
         "check-list": CheckList;
         "comment-card": CommentCard;
         "config-buffer-tools": ConfigBufferTools;
@@ -1312,6 +1324,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
+            "card-manager": LocalJSX.CardManager & JSXBase.HTMLAttributes<HTMLCardManagerElement>;
             "check-list": LocalJSX.CheckList & JSXBase.HTMLAttributes<HTMLCheckListElement>;
             "comment-card": LocalJSX.CommentCard & JSXBase.HTMLAttributes<HTMLCommentCardElement>;
             "config-buffer-tools": LocalJSX.ConfigBufferTools & JSXBase.HTMLAttributes<HTMLConfigBufferToolsElement>;
