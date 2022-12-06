@@ -121,6 +121,8 @@ export namespace Components {
     }
     interface CrowdsourceManager {
     }
+    interface CrowdsourceReporter {
+    }
     interface DeductCalculator {
     }
     interface EditRecordModal {
@@ -645,6 +647,12 @@ declare global {
         prototype: HTMLCrowdsourceManagerElement;
         new (): HTMLCrowdsourceManagerElement;
     };
+    interface HTMLCrowdsourceReporterElement extends Components.CrowdsourceReporter, HTMLStencilElement {
+    }
+    var HTMLCrowdsourceReporterElement: {
+        prototype: HTMLCrowdsourceReporterElement;
+        new (): HTMLCrowdsourceReporterElement;
+    };
     interface HTMLDeductCalculatorElement extends Components.DeductCalculator, HTMLStencilElement {
     }
     var HTMLDeductCalculatorElement: {
@@ -824,6 +832,7 @@ declare global {
         "config-layer-picker": HTMLConfigLayerPickerElement;
         "config-pdf-download": HTMLConfigPdfDownloadElement;
         "crowdsource-manager": HTMLCrowdsourceManagerElement;
+        "crowdsource-reporter": HTMLCrowdsourceReporterElement;
         "deduct-calculator": HTMLDeductCalculatorElement;
         "edit-record-modal": HTMLEditRecordModalElement;
         "info-card": HTMLInfoCardElement;
@@ -946,6 +955,8 @@ declare namespace LocalJSX {
         "defaultChecked"?: boolean;
     }
     interface CrowdsourceManager {
+    }
+    interface CrowdsourceReporter {
     }
     interface DeductCalculator {
         /**
@@ -1325,6 +1336,7 @@ declare namespace LocalJSX {
         "config-layer-picker": ConfigLayerPicker;
         "config-pdf-download": ConfigPdfDownload;
         "crowdsource-manager": CrowdsourceManager;
+        "crowdsource-reporter": CrowdsourceReporter;
         "deduct-calculator": DeductCalculator;
         "edit-record-modal": EditRecordModal;
         "info-card": InfoCard;
@@ -1369,6 +1381,7 @@ declare module "@stencil/core" {
             "config-layer-picker": LocalJSX.ConfigLayerPicker & JSXBase.HTMLAttributes<HTMLConfigLayerPickerElement>;
             "config-pdf-download": LocalJSX.ConfigPdfDownload & JSXBase.HTMLAttributes<HTMLConfigPdfDownloadElement>;
             "crowdsource-manager": LocalJSX.CrowdsourceManager & JSXBase.HTMLAttributes<HTMLCrowdsourceManagerElement>;
+            "crowdsource-reporter": LocalJSX.CrowdsourceReporter & JSXBase.HTMLAttributes<HTMLCrowdsourceReporterElement>;
             "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;
             "edit-record-modal": LocalJSX.EditRecordModal & JSXBase.HTMLAttributes<HTMLEditRecordModalElement>;
             "info-card": LocalJSX.InfoCard & JSXBase.HTMLAttributes<HTMLInfoCardElement>;
