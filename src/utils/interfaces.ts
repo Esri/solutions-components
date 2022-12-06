@@ -321,3 +321,7 @@ export interface IRefineOperation {
   mode: ESelectionMode;
   ids: number[];
 }
+
+export interface IInfoCardValues {
+  [key: string]: string;
+}

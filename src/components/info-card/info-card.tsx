@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h } from '@stencil/core';
+import { Component, Element, Host, h, Prop, VNode } from '@stencil/core';
+import { IInfoCardValues } from '../../utils/interfaces';
 
 @Component({
   tag: 'info-card',
@@ -27,6 +28,7 @@ export class InfoCard {
   //  Host element access
   //
   //--------------------------------------------------------------------------
+
   @Element() el: HTMLInfoCardElement;
 
   //--------------------------------------------------------------------------
@@ -34,6 +36,16 @@ export class InfoCard {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * string: the components title
+   */
+  @Prop() cardTitle = "";
+
+  /**
+   * IInfoCardValues: key value pairs to show in the components table
+   */
+  @Prop() values: IInfoCardValues = {};
 
   //--------------------------------------------------------------------------
   //
@@ -65,10 +77,24 @@ export class InfoCard {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Renders the component.
+   */
   render() {
     return (
       <Host>
-        <slot></slot>
+        <div>
+          <div class="bottom-border">
+            <calcite-label >{this.cardTitle}</calcite-label>
+          </div>
+          <div class="padding-top-1-2">
+            <table>
+              <tbody>
+                {this._getRows()}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </Host>
     );
   }
@@ -80,14 +106,27 @@ export class InfoCard {
   //--------------------------------------------------------------------------
 
   /**
-   * Fetches the component's translations
+   * Render the user defined values as table rows
    *
-   * @returns Promise when complete
+   * @returns array of row nodes
    * @protected
    */
-   protected async _getTranslations(): Promise<void> {
-    // const messages = await getLocaleComponentStrings(this.el);
-    // this._translations = messages[0] as typeof BufferTools_T9n;
+  protected _getRows(): VNode[] {
+    return Object.keys(this.values).map(k => {
+      return (
+        <tr>
+          <td>
+            <calcite-label>
+              <span class="font-color-3">{k}</span>
+            </calcite-label>
+          </td>
+          <td>
+            <calcite-label>
+              <span>{this.values[k]}</span>
+            </calcite-label>
+          </td>
+        </tr>
+      );
+    })
   }
-
 }

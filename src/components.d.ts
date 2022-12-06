@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ERefineMode, ESelectionMode, EWorkflowType, IInventoryItem, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
+import { ERefineMode, ESelectionMode, EWorkflowType, IInfoCardValues, IInventoryItem, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -128,6 +128,14 @@ export namespace Components {
     interface EditRecordModal {
     }
     interface InfoCard {
+        /**
+          * string: the components title
+         */
+        "cardTitle": string;
+        /**
+          * IInfoCardValues: key value pairs to show in the components table
+         */
+        "values": IInfoCardValues;
     }
     interface JsonEditor {
         /**
@@ -976,6 +984,14 @@ declare namespace LocalJSX {
     interface EditRecordModal {
     }
     interface InfoCard {
+        /**
+          * string: the components title
+         */
+        "cardTitle"?: string;
+        /**
+          * IInfoCardValues: key value pairs to show in the components table
+         */
+        "values"?: IInfoCardValues;
     }
     interface JsonEditor {
         /**
