@@ -113,6 +113,8 @@ export namespace Components {
          */
         "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
     }
+    interface CrowdsourceManager {
+    }
     interface DeductCalculator {
     }
     interface JsonEditor {
@@ -603,6 +605,12 @@ declare global {
         prototype: HTMLConfigPdfDownloadElement;
         new (): HTMLConfigPdfDownloadElement;
     };
+    interface HTMLCrowdsourceManagerElement extends Components.CrowdsourceManager, HTMLStencilElement {
+    }
+    var HTMLCrowdsourceManagerElement: {
+        prototype: HTMLCrowdsourceManagerElement;
+        new (): HTMLCrowdsourceManagerElement;
+    };
     interface HTMLDeductCalculatorElement extends Components.DeductCalculator, HTMLStencilElement {
     }
     var HTMLDeductCalculatorElement: {
@@ -748,6 +756,7 @@ declare global {
         "config-draw-tools": HTMLConfigDrawToolsElement;
         "config-layer-picker": HTMLConfigLayerPickerElement;
         "config-pdf-download": HTMLConfigPdfDownloadElement;
+        "crowdsource-manager": HTMLCrowdsourceManagerElement;
         "deduct-calculator": HTMLDeductCalculatorElement;
         "json-editor": HTMLJsonEditorElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
@@ -857,6 +866,8 @@ declare namespace LocalJSX {
           * boolean: All checkboxes checked state will be set with this value on first render. Default is true
          */
         "defaultChecked"?: boolean;
+    }
+    interface CrowdsourceManager {
     }
     interface DeductCalculator {
         /**
@@ -1222,6 +1233,7 @@ declare namespace LocalJSX {
         "config-draw-tools": ConfigDrawTools;
         "config-layer-picker": ConfigLayerPicker;
         "config-pdf-download": ConfigPdfDownload;
+        "crowdsource-manager": CrowdsourceManager;
         "deduct-calculator": DeductCalculator;
         "json-editor": JsonEditor;
         "map-draw-tools": MapDrawTools;
@@ -1257,6 +1269,7 @@ declare module "@stencil/core" {
             "config-draw-tools": LocalJSX.ConfigDrawTools & JSXBase.HTMLAttributes<HTMLConfigDrawToolsElement>;
             "config-layer-picker": LocalJSX.ConfigLayerPicker & JSXBase.HTMLAttributes<HTMLConfigLayerPickerElement>;
             "config-pdf-download": LocalJSX.ConfigPdfDownload & JSXBase.HTMLAttributes<HTMLConfigPdfDownloadElement>;
+            "crowdsource-manager": LocalJSX.CrowdsourceManager & JSXBase.HTMLAttributes<HTMLCrowdsourceManagerElement>;
             "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
