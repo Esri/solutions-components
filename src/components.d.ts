@@ -57,6 +57,8 @@ export namespace Components {
          */
         "values": string[];
     }
+    interface CommentCard {
+    }
     interface ConfigBufferTools {
         /**
           * "VERTICAL" | "HORIZONTAL": Specifies how the controls chould be aligned.
@@ -587,6 +589,12 @@ declare global {
         prototype: HTMLCheckListElement;
         new (): HTMLCheckListElement;
     };
+    interface HTMLCommentCardElement extends Components.CommentCard, HTMLStencilElement {
+    }
+    var HTMLCommentCardElement: {
+        prototype: HTMLCommentCardElement;
+        new (): HTMLCommentCardElement;
+    };
     interface HTMLConfigBufferToolsElement extends Components.ConfigBufferTools, HTMLStencilElement {
     }
     var HTMLConfigBufferToolsElement: {
@@ -776,6 +784,7 @@ declare global {
     interface HTMLElementTagNameMap {
         "buffer-tools": HTMLBufferToolsElement;
         "check-list": HTMLCheckListElement;
+        "comment-card": HTMLCommentCardElement;
         "config-buffer-tools": HTMLConfigBufferToolsElement;
         "config-draw-tools": HTMLConfigDrawToolsElement;
         "config-layer-picker": HTMLConfigLayerPickerElement;
@@ -857,6 +866,8 @@ declare namespace LocalJSX {
           * string []: The values to render beside the checkboxes
          */
         "values"?: string[];
+    }
+    interface CommentCard {
     }
     interface ConfigBufferTools {
         /**
@@ -1262,6 +1273,7 @@ declare namespace LocalJSX {
     interface IntrinsicElements {
         "buffer-tools": BufferTools;
         "check-list": CheckList;
+        "comment-card": CommentCard;
         "config-buffer-tools": ConfigBufferTools;
         "config-draw-tools": ConfigDrawTools;
         "config-layer-picker": ConfigLayerPicker;
@@ -1301,6 +1313,7 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
             "check-list": LocalJSX.CheckList & JSXBase.HTMLAttributes<HTMLCheckListElement>;
+            "comment-card": LocalJSX.CommentCard & JSXBase.HTMLAttributes<HTMLCommentCardElement>;
             "config-buffer-tools": LocalJSX.ConfigBufferTools & JSXBase.HTMLAttributes<HTMLConfigBufferToolsElement>;
             "config-draw-tools": LocalJSX.ConfigDrawTools & JSXBase.HTMLAttributes<HTMLConfigDrawToolsElement>;
             "config-layer-picker": LocalJSX.ConfigLayerPicker & JSXBase.HTMLAttributes<HTMLConfigLayerPickerElement>;
