@@ -8,6 +8,8 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ERefineMode, ESelectionMode, EWorkflowType, IInventoryItem, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
+    interface AddRecordModal {
+    }
     interface BufferTools {
         /**
           * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
@@ -581,6 +583,12 @@ export interface StoreManagerCustomEvent<T> extends CustomEvent<T> {
     target: HTMLStoreManagerElement;
 }
 declare global {
+    interface HTMLAddRecordModalElement extends Components.AddRecordModal, HTMLStencilElement {
+    }
+    var HTMLAddRecordModalElement: {
+        prototype: HTMLAddRecordModalElement;
+        new (): HTMLAddRecordModalElement;
+    };
     interface HTMLBufferToolsElement extends Components.BufferTools, HTMLStencilElement {
     }
     var HTMLBufferToolsElement: {
@@ -798,6 +806,7 @@ declare global {
         new (): HTMLStoreManagerElement;
     };
     interface HTMLElementTagNameMap {
+        "add-record-modal": HTMLAddRecordModalElement;
         "buffer-tools": HTMLBufferToolsElement;
         "card-manager": HTMLCardManagerElement;
         "check-list": HTMLCheckListElement;
@@ -837,6 +846,8 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface AddRecordModal {
+    }
     interface BufferTools {
         /**
           * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
@@ -1293,6 +1304,7 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface IntrinsicElements {
+        "add-record-modal": AddRecordModal;
         "buffer-tools": BufferTools;
         "card-manager": CardManager;
         "check-list": CheckList;
@@ -1335,6 +1347,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "add-record-modal": LocalJSX.AddRecordModal & JSXBase.HTMLAttributes<HTMLAddRecordModalElement>;
             "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
             "card-manager": LocalJSX.CardManager & JSXBase.HTMLAttributes<HTMLCardManagerElement>;
             "check-list": LocalJSX.CheckList & JSXBase.HTMLAttributes<HTMLCheckListElement>;
