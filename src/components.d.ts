@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ERefineMode, ESelectionMode, EWorkflowType, IInfoCardValues, IInventoryItem, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
+import { ERefineMode, ESelectionMode, EWorkflowType, IInfoCardValues, IInventoryItem, IMediaCardValues, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -278,6 +278,10 @@ export namespace Components {
         "selectionSet": ISelectionSet;
     }
     interface MediaCard {
+        /**
+          * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
+         */
+        "values": IMediaCardValues[];
     }
     interface PciCalculator {
     }
@@ -1114,6 +1118,10 @@ declare namespace LocalJSX {
         "selectionSet"?: ISelectionSet;
     }
     interface MediaCard {
+        /**
+          * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
+         */
+        "values"?: IMediaCardValues[];
     }
     interface PciCalculator {
     }

@@ -325,3 +325,9 @@ export interface IRefineOperation {
 export interface IInfoCardValues {
   [key: string]: string;
 }
+
+export interface IMediaCardValues {
+  name: string;
+  description: string;
+  url: string;
+}
