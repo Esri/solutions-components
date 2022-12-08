@@ -38,11 +38,6 @@ export class ConfigBufferTools {
   //--------------------------------------------------------------------------
 
   /**
-   * "VERTICAL" | "HORIZONTAL": Specifies how the controls chould be aligned.
-   */
-  @Prop({mutable: true, reflect: true}) alignment: "VERTICAL" | "HORIZONTAL" = "VERTICAL";
-
-  /**
    * number: Default distance value.
    */
   @Prop({mutable: true, reflect: true}) distance = 100;
@@ -58,6 +53,16 @@ export class ConfigBufferTools {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * When checked the buffer tools will be avalible at runtime.
+   */
+  protected _showBufferElement: HTMLCalciteCheckboxElement;
+
+  /**
+   * When checked the buffer tools will be show in the config
+   */
+  @State() _showBufferChecked = true;
 
   /**
    * Contains the translations for this component.
@@ -115,31 +120,39 @@ export class ConfigBufferTools {
    * Renders the component.
    */
   render() {
-    const isHorizontal = this.alignment === "HORIZONTAL";
-    const displayClass = isHorizontal ? "horizontal-display" : "";
-    const paddingClass = isHorizontal ? "padding-inline-end-1" : "padding-block-end-1";
-    const widthClass = isHorizontal ? "width-half" : "width-full";
     return (
       <Host>
-        <div class={displayClass}>
-          <div class={`${paddingClass} ${widthClass}`}>
+        <div>
+          <calcite-label layout="inline">
+            <calcite-checkbox
+              checked={this._showBufferChecked}
+              onCalciteCheckboxChange={() => this._setShowBufferChecked()}
+              ref={(el) => { this._showBufferElement = el }}
+            />
+            {this._translations.showSearchDistance}
+          </calcite-label>
+        </div>
+        <div class="padding-inline-start-1">
+          <div class="padding-block-end-1 width-full">
             <calcite-label class="label-spacing">
               {this._translations.defaultBufferDistance}
               <calcite-input
+                disabled={!this._showBufferChecked}
                 min={0}
                 number-button-type="vertical"
-                onCalciteInputInput={(evt) => {this._distanceChanged(evt);}}
+                onCalciteInputInput={(evt) => { this._distanceChanged(evt); }}
                 type="number"
                 value={this.distance.toString()}
               />
             </calcite-label>
           </div>
-          <div class={`${widthClass}`}>
+          <div class="width-full">
             <calcite-label class="label-spacing">
               {this._translations.defaultUnit}
               <calcite-select
+                disabled={!this._showBufferChecked}
                 label={this._translations.defaultUnit}
-                onCalciteSelectChange={(evt) => {this._unitSelectionChange(evt);}}
+                onCalciteSelectChange={(evt) => { this._unitSelectionChange(evt); }}
               >
                 {this._renderUnitOptions()}
               </calcite-select>
@@ -190,6 +203,15 @@ export class ConfigBufferTools {
     return units.map(unit => {
       return (<calcite-option label={unit} selected={unit === this.unit} value={unit}/>);
     });
+  }
+
+  /**
+   * When not checked the buffer options will be disabled in the config and not visible in the UI at runtime
+   *
+   * @protected
+   */
+  protected _setShowBufferChecked(): void {
+    this._showBufferChecked = this._showBufferElement.checked;
   }
 
   /**

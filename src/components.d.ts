@@ -59,10 +59,6 @@ export namespace Components {
     }
     interface ConfigBufferTools {
         /**
-          * "VERTICAL" | "HORIZONTAL": Specifies how the controls chould be aligned.
-         */
-        "alignment": "VERTICAL" | "HORIZONTAL";
-        /**
           * number: Default distance value.
          */
         "distance": number;
@@ -831,10 +827,6 @@ declare namespace LocalJSX {
         "values"?: string[];
     }
     interface ConfigBufferTools {
-        /**
-          * "VERTICAL" | "HORIZONTAL": Specifies how the controls chould be aligned.
-         */
-        "alignment"?: "VERTICAL" | "HORIZONTAL";
         /**
           * number: Default distance value.
          */
