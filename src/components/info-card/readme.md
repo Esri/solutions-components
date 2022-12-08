@@ -15,6 +15,10 @@
 
 ## Dependencies
 
+### Used by
+
+ - [card-manager](../card-manager)
+
 ### Depends on
 
 - calcite-label
@@ -23,6 +27,7 @@
 ```mermaid
 graph TD;
   info-card --> calcite-label
+  card-manager --> info-card
   style info-card fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

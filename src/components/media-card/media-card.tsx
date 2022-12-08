@@ -116,7 +116,7 @@ export class MediaCard {
    * @returns Promise when complete
    */
   async componentDidLoad(): Promise<void> {
-    if (this._index === -1 && this.values.length > 0) {
+    if (this._index === -1 && this.values?.length > 0) {
       this._initIndex();
     }
   }
@@ -125,7 +125,7 @@ export class MediaCard {
    * Renders the component.
    */
   render() {
-    const v = this.values.length > 0 ? this.values[this._index] : undefined;
+    const v = this.values?.length > 0 ? this.values[this._index] : undefined;
     const total = (this.values || []).length;
     const imgNum = this._index + 1;
     return (

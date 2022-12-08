@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h } from '@stencil/core';
+import { Component, Element, Host, h, State } from '@stencil/core';
+import CardManager_T9n from "../../assets/t9n/card-manager/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
+
+// TODO maybe just move to the manager component directly
 
 @Component({
   tag: 'card-manager',
@@ -41,6 +45,22 @@ export class CardManager {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() _translations: typeof CardManager_T9n;
+
+  protected _showInfoCard;
+
+  protected _showMediaCard;
+
+  protected _showCommentsCard;
+
+  protected _fakeValues;
+
+  protected _fakeInfos;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -65,10 +85,50 @@ export class CardManager {
   //
   //--------------------------------------------------------------------------
 
+  async componentWillLoad(): Promise<void> {
+    await this._getTranslations();
+
+    const href = window.location.href;
+    const url = href.substring(0, href.lastIndexOf('/'));
+    const img = `${url}/data/generic.png`;
+    this._fakeValues = [{
+      name: "Filename.png",
+      description: "This is an example of what a media description looks like.",
+      url: img
+    }, {
+      name: "Filename2.png",
+      description: "Another example of what a media description looks like.",
+      url: img
+    }, {
+      name: "Filename3.png",
+      description: "And another example of a media description.",
+      url: img
+    }];
+    this._fakeInfos = {
+      "Details": "Details info goes here",
+      "Name": "Name here",
+      "Phone": "(000) 000-0000",
+      "Email": "example@gmail.com",
+      "Date": "May 11, 2022"
+    };
+  }
+
   render() {
+    // const mediaCardClass =;
+    // const infoCardClass = "";
     return (
       <Host>
-        <slot></slot>
+        <div class="display-inline-table">
+          <div class="w-100 display-flex padding-bottom-1">
+            <calcite-button appearance='outline' class="w-1-2">{this._translations.information}</calcite-button>
+            <calcite-button class="w-1-2">{this._translations.media}</calcite-button>
+            {/* <calcite-button>{this._translations.comments}</calcite-button> */}
+          </div>
+          <div>
+            <media-card class="" values={this._fakeValues}/>
+            <info-card class="display-none" values={this._fakeInfos}/>
+          </div>
+        </div>
       </Host>
     );
   }
@@ -86,8 +146,8 @@ export class CardManager {
    * @protected
    */
    protected async _getTranslations(): Promise<void> {
-    // const messages = await getLocaleComponentStrings(this.el);
-    // this._translations = messages[0] as typeof BufferTools_T9n;
+    const messages = await getLocaleComponentStrings(this.el);
+    this._translations = messages[0] as typeof CardManager_T9n;
   }
 
 }

@@ -17,3 +17,27 @@
 :host {
   display: block;
 }
+
+.display-inline-table {
+  display: inline-table;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.display-none {
+  display: none;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.w-1-2 {
+  width: 50%;
+}
+
+.padding-bottom-1 {
+  padding-bottom: 1rem;
+}
