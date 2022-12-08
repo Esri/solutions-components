@@ -43,9 +43,24 @@ export class MapSelectTools {
   //--------------------------------------------------------------------------
 
   /**
+   * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
+   */
+   @Prop() geometries: __esri.Geometry[];
+
+  /**
+   * boolean: When true a new label is not generated for the stored selection set
+   */
+   @Prop() isUpdate = false;
+
+  /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
+
+  /**
+   * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
+   */
+   @Prop({reflect: false}) selectionSet: ISelectionSet;
 
   /**
    * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
@@ -53,19 +68,9 @@ export class MapSelectTools {
   @Prop() selectLayerView: __esri.FeatureLayerView;
 
   /**
-   * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
+   * boolean: When true the buffer tools will be available for use
    */
-  @Prop() geometries: __esri.Geometry[];
-
-  /**
-   * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
-   */
-  @Prop({reflect: false}) selectionSet: ISelectionSet;
-
-  /**
-   * boolean: When true a new label is not generated for the stored selection set
-   */
-  @Prop() isUpdate = false;
+  @Prop() showBufferTools = true;
 
   //--------------------------------------------------------------------------
   //
@@ -325,6 +330,8 @@ export class MapSelectTools {
     const selectEnabled = this._workflowType === EWorkflowType.SELECT;
     const showSelectToolsClass = selectEnabled ? " div-visible" : " div-not-visible";
 
+    const showBufferToolsClass = this.showBufferTools ? "search-distance" : "div-not-visible";
+
     return (
       <Host>
         <div class="padding-bottom-1">
@@ -375,7 +382,7 @@ export class MapSelectTools {
           ref={(el) => { this._refineTools = el }}
           refineMode={ERefineMode.SUBSET}
         />
-        <calcite-label style={{ "display": "flex", "padding-top": "1rem" }}>
+        <calcite-label class={showBufferToolsClass}>
           {this._translations.searchDistance}
           <buffer-tools
             distance={this.selectionSet?.distance}

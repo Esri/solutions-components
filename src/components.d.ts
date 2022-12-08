@@ -248,6 +248,10 @@ export namespace Components {
           * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
          */
         "selectionSet": ISelectionSet;
+        /**
+          * boolean: When true the buffer tools will be available for use
+         */
+        "showBufferTools": boolean;
     }
     interface PciCalculator {
     }
@@ -977,6 +981,10 @@ declare namespace LocalJSX {
           * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
          */
         "selectionSet"?: ISelectionSet;
+        /**
+          * boolean: When true the buffer tools will be available for use
+         */
+        "showBufferTools"?: boolean;
     }
     interface PciCalculator {
     }
