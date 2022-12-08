@@ -7,10 +7,11 @@
 
 ## Properties
 
-| Property         | Attribute | Description                                                                                                                               | Type               | Default     |
-| ---------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
-| `addresseeLayer` | --        | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
-| `mapView`        | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`          | `undefined` |
+| Property              | Attribute               | Description                                                                                                                               | Type               | Default     |
+| --------------------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
+| `addresseeLayer`      | --                      | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
+| `mapView`             | --                      | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`          | `undefined` |
+| `showRefineSelection` | `show-refine-selection` | boolean: When true the refine selection workflow will be included in the UI                                                               | `boolean`          | `false`     |
 
 
 ## Dependencies

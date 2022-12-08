@@ -53,6 +53,11 @@ export class PublicNotification {
    */
   @Prop() mapView: __esri.MapView;
 
+  /**
+   * boolean: When true the refine selection workflow will be included in the UI
+   */
+  @Prop() showRefineSelection = false;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -207,7 +212,7 @@ export class PublicNotification {
         <calcite-shell>
           <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
             {this._getActionGroup("list-check", false, EPageType.LIST, this._translations.myLists)}
-            {this._getActionGroup("test-data", !hasSelections, EPageType.REFINE, this._translations.refineSelection)}
+            {this.showRefineSelection ? this._getActionGroup("test-data", !hasSelections, EPageType.REFINE, this._translations.refineSelection) : undefined}
             {this._getActionGroup("file-pdf", !hasSelections, EPageType.PDF, this._translations.downloadPDF)}
             {this._getActionGroup("file-csv", !hasSelections, EPageType.CSV, this._translations.downloadCSV)}
           </calcite-action-bar>
@@ -255,8 +260,9 @@ export class PublicNotification {
     pageType: EPageType,
     tip: string
   ): VNode {
+    const groupClass = this.showRefineSelection ? "action-center w-1-4" : "action-center w-1-3";
     return (
-      <calcite-action-group class={"action-center w-1-4"} layout="horizontal">
+      <calcite-action-group class={groupClass} layout="horizontal">
         <calcite-action
           active={this._pageType === pageType}
           alignment="center"

@@ -288,6 +288,10 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * boolean: When true the refine selection workflow will be included in the UI
+         */
+        "showRefineSelection": boolean;
     }
     interface RefineSelection {
         /**
@@ -1007,6 +1011,10 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * boolean: When true the refine selection workflow will be included in the UI
+         */
+        "showRefineSelection"?: boolean;
     }
     interface RefineSelection {
         /**
