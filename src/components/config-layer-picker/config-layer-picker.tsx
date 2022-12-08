@@ -45,6 +45,12 @@ export class ConfigLayerPicker {
   @Prop({ reflect: true }) defaultChecked = true;
 
   /**
+   * string: Value to be shown above the check list
+   * Allows this to support multiple sets of layers.
+   */
+  @Prop() instruction = "";
+
+  /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
@@ -130,12 +136,16 @@ export class ConfigLayerPicker {
    * Renders the component.
    */
   render() {
+    console.log("render mfer")
+    console.log(this.instruction || this._translations.chooseLayer)
+    console.log(this.instruction)
+    console.log(this._translations.chooseLayer)
     return (
       <Host>
         <div>
           <div class="padding-block-end-1">
             <calcite-label class="label-spacing">
-              {this._translations.addresseeLayers}
+              {this.instruction || this._translations.chooseLayer}
             </calcite-label>
           </div>
           <div class="padding-inline-start-1">
