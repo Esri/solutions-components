@@ -22,6 +22,7 @@
 | Event                | Description                                       | Type                                                                                                        |
 | -------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | `selectionSetChange` | Emitted on demand when the selection set changes. | `CustomEvent<number>`                                                                                       |
+| `sketchTypeChange`   | Emitted on demand when the sketch type changes.   | `CustomEvent<ESketchType.INTERACTIVE \| ESketchType.LAYER>`                                                 |
 | `workflowTypeChange` | Emitted on demand when the workflow type changes. | `CustomEvent<EWorkflowType.REFINE \| EWorkflowType.SEARCH \| EWorkflowType.SELECT \| EWorkflowType.SKETCH>` |
 
 
@@ -58,9 +59,10 @@ Promise with the new selection set
 
 - calcite-radio-group
 - calcite-radio-group-item
+- calcite-label
+- calcite-checkbox
 - [map-draw-tools](../map-draw-tools)
 - [refine-selection-tools](../refine-selection-tools)
-- calcite-label
 - [buffer-tools](../buffer-tools)
 
 ### Graph
@@ -68,12 +70,12 @@ Promise with the new selection set
 graph TD;
   map-select-tools --> calcite-radio-group
   map-select-tools --> calcite-radio-group-item
+  map-select-tools --> calcite-label
+  map-select-tools --> calcite-checkbox
   map-select-tools --> map-draw-tools
   map-select-tools --> refine-selection-tools
-  map-select-tools --> calcite-label
   map-select-tools --> buffer-tools
   calcite-radio-group-item --> calcite-icon
-  refine-selection-tools --> calcite-label
   refine-selection-tools --> map-layer-picker
   refine-selection-tools --> calcite-action
   map-layer-picker --> calcite-select

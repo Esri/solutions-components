@@ -133,7 +133,7 @@ export class MapLayerPicker {
   render(): VNode {
     return (
       <Host>
-        <div class="background-w map-layer-picker-container">
+        <div class="map-layer-picker-container">
           <div class="map-layer-picker">
             {this.selectionMode === "multi" ? this._getCombobox() : this._getSelect()}
           </div>

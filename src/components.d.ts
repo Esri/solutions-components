@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ERefineMode, ESelectionMode, EWorkflowType, IInventoryItem, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
+import { ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IInventoryItem, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BufferTools {
@@ -973,6 +973,10 @@ declare namespace LocalJSX {
           * Emitted on demand when the selection set changes.
          */
         "onSelectionSetChange"?: (event: MapSelectToolsCustomEvent<number>) => void;
+        /**
+          * Emitted on demand when the sketch type changes.
+         */
+        "onSketchTypeChange"?: (event: MapSelectToolsCustomEvent<ESketchType>) => void;
         /**
           * Emitted on demand when the workflow type changes.
          */

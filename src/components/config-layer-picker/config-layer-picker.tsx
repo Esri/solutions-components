@@ -136,10 +136,6 @@ export class ConfigLayerPicker {
    * Renders the component.
    */
   render() {
-    console.log("render mfer")
-    console.log(this.instruction || this._translations.chooseLayer)
-    console.log(this.instruction)
-    console.log(this._translations.chooseLayer)
     return (
       <Host>
         <div>

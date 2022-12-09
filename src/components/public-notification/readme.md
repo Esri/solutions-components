@@ -85,12 +85,12 @@ graph TD;
   calcite-button --> calcite-icon
   map-select-tools --> calcite-radio-group
   map-select-tools --> calcite-radio-group-item
+  map-select-tools --> calcite-label
+  map-select-tools --> calcite-checkbox
   map-select-tools --> map-draw-tools
   map-select-tools --> refine-selection-tools
-  map-select-tools --> calcite-label
   map-select-tools --> buffer-tools
   calcite-radio-group-item --> calcite-icon
-  refine-selection-tools --> calcite-label
   refine-selection-tools --> map-layer-picker
   refine-selection-tools --> calcite-action
   buffer-tools --> calcite-option

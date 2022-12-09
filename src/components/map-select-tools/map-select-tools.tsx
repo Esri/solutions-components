@@ -18,7 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop,
 import { loadModules } from "../../utils/loadModules";
 import { highlightFeatures, goToSelection } from "../../utils/mapViewUtils";
 import { getQueryGeoms, queryObjectIds } from "../../utils/queryUtils";
-import { EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode } from "../../utils/interfaces";
+import { EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode, ESketchType } from "../../utils/interfaces";
 import state from "../../utils/publicNotificationStore";
 import MapSelectTools_T9n from "../../assets/t9n/map-select-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -77,6 +77,8 @@ export class MapSelectTools {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  @State() _layerSelectChecked: boolean;
 
   /**
    * string: Text entered by the end user.
@@ -164,6 +166,12 @@ export class MapSelectTools {
    * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
    */
   protected _searchWidget: __esri.widgetsSearch;
+
+  /**
+   * HTMLCalciteCheckboxElement: The checkbox element that controls if user drawn graphics
+   * are used, if checked, to first make a selection on the layer and use the returned geomerties to select from the addressee layer
+   */
+  protected _selectFromLayerElement: HTMLCalciteCheckboxElement;
 
   /**
    * number[]: the oids of the selected features
@@ -268,6 +276,12 @@ export class MapSelectTools {
   @Event() selectionSetChange: EventEmitter<number>;
 
   /**
+   * Emitted on demand when the sketch type changes.
+   *
+   */
+  @Event() sketchTypeChange: EventEmitter<ESketchType>;
+
+  /**
    * Emitted on demand when the workflow type changes.
    *
    */
@@ -324,13 +338,18 @@ export class MapSelectTools {
     const searchEnabled = this._workflowType === EWorkflowType.SEARCH;
     const showSearchClass = searchEnabled ? " div-visible-search" : " div-not-visible";
 
-    const drawEnabled = this._workflowType === EWorkflowType.SKETCH;
-    const showDrawToolsClass = drawEnabled ? " div-visible" : " div-not-visible";
+    const drawEnabled = this._workflowType === EWorkflowType.SKETCH || this._workflowType === EWorkflowType.SELECT;
+    //const showDrawToolsClass = drawEnabled ? " div-visible" : " div-not-visible";
 
-    const selectEnabled = this._workflowType === EWorkflowType.SELECT;
-    const showSelectToolsClass = selectEnabled ? " div-visible" : " div-not-visible";
+    // const selectEnabled = this._workflowType === EWorkflowType.SELECT;
+    // const showSelectToolsClass = selectEnabled ? " div-visible" : " div-not-visible";
 
     const showBufferToolsClass = this.showBufferTools ? "search-distance" : "div-not-visible";
+
+    const useSelectClass = this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
+    const useDrawClass = !this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
+
+    const showLayerChoiceClass = searchEnabled ? "div-not-visible" : "div-visible";
 
     return (
       <Host>
@@ -346,13 +365,13 @@ export class MapSelectTools {
             >
               {this._translations.search}
             </calcite-radio-group-item>
-            <calcite-radio-group-item
+            {/* <calcite-radio-group-item
               checked={selectEnabled}
               class="w-50 end-border"
               value={EWorkflowType.SELECT}
             >
               {this._translations.select}
-            </calcite-radio-group-item>
+            </calcite-radio-group-item> */}
             <calcite-radio-group-item
               checked={drawEnabled}
               class="w-50"
@@ -365,23 +384,38 @@ export class MapSelectTools {
         <div class={showSearchClass}>
           <div class="search-widget" ref={(el) => { this._searchElement = el }} />
         </div>
-        <map-draw-tools
-          active={drawEnabled}
-          border={true}
-          class={showDrawToolsClass}
-          mapView={this.mapView}
-          ref={(el) => { this._drawTools = el}}
-        />
-        <refine-selection-tools
-          active={selectEnabled}
-          border={true}
-          class={showSelectToolsClass}
-          layerViews={this._refineSelectLayers}
-          mapView={this.mapView}
-          mode={ESelectionMode.ADD}
-          ref={(el) => { this._refineTools = el }}
-          refineMode={ERefineMode.SUBSET}
-        />
+        <div class={showLayerChoiceClass}>
+          <calcite-label layout="inline">
+            <calcite-checkbox
+              onCalciteCheckboxChange={() => this._layerSelectChanged()}
+              ref={(el) => this._selectFromLayerElement = el}
+            />
+            {"Use layer features"}
+          </calcite-label>
+        </div>
+        <div class={useDrawClass}>
+          <map-draw-tools
+            //active={drawEnabled}
+            active={true}
+            border={true}
+            //class={showDrawToolsClass}
+            mapView={this.mapView}
+            ref={(el) => { this._drawTools = el}}
+          />
+        </div>
+        <div class={useSelectClass}>
+          <refine-selection-tools
+            //active={selectEnabled}
+            active={true}
+            border={true}
+            //class={showSelectToolsClass}
+            layerViews={this._refineSelectLayers}
+            mapView={this.mapView}
+            mode={ESelectionMode.ADD}
+            ref={(el) => { this._refineTools = el }}
+            refineMode={ERefineMode.SUBSET}
+          />
+        </div>
         <calcite-label class={showBufferToolsClass}>
           {this._translations.searchDistance}
           <buffer-tools
@@ -521,6 +555,16 @@ export class MapSelectTools {
         this.mapView.map.layers.add(this._bufferGraphicsLayer);
       }
     }
+  }
+
+  /**
+   * Store the layer select checked change
+   *
+   * @protected
+   */
+  protected _layerSelectChanged(): void {
+    this._layerSelectChecked = this._selectFromLayerElement.checked;
+    this.sketchTypeChange.emit(this._layerSelectChecked ? ESketchType.LAYER : ESketchType.INTERACTIVE);
   }
 
   /**

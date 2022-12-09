@@ -16,7 +16,7 @@
 
 import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import { EExportType, EPageType, EWorkflowType, ISelectionSet } from "../../utils/interfaces";
+import { EExportType, EPageType, ESketchType, EWorkflowType, ISelectionSet } from "../../utils/interfaces";
 import { goToSelection, getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
 import { getSelectionSetQuery } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
@@ -89,6 +89,12 @@ export class PublicNotification {
    * utils/interfaces/ISelectionSet: An array of user defined selection sets
    */
   @State() _selectionSets: ISelectionSet[] = [];
+
+  /**
+   * ESketchType: The current type of sketch
+   * used to control information messages.
+   */
+  @State() _sketchType: ESketchType = ESketchType.INTERACTIVE;
 
   /**
    * utils/interfaces/EWorkflowType: SEARCH | SELECT | SKETCH
@@ -186,6 +192,14 @@ export class PublicNotification {
   @Listen("selectionSetsChanged", { target: "window" })
   selectionSetsChanged(event: CustomEvent): void {
     this._selectionSets = [...event.detail];
+  }
+
+  /**
+   * Handle changes to the selection sets
+   */
+  @Listen("sketchTypeChange", { target: "window" })
+  sketchTypeChange(event: CustomEvent): void {
+    this._sketchType = event.detail;
   }
 
   //--------------------------------------------------------------------------
@@ -444,16 +458,23 @@ export class PublicNotification {
    * @protected
    */
   protected _getSelectPage(): VNode {
-    const searchTip = `${this._translations.selectSearchTip} ${this._translations.optionalSearchDistance}`;
-    const selectTip = `${this._translations.selectLayerTip} ${this._translations.optionalSearchDistance}`;
-    const sketchTip = `${this._translations.selectSketchTip} ${this._translations.optionalSearchDistance}`;
+    // const searchTip = `${this._translations.selectSearchTip} ${this._translations.optionalSearchDistance}`;
+    const searchTip = this._translations.selectSearchTip;
+    // const selectTip = `${this._translations.selectLayerTip} ${this._translations.optionalSearchDistance}`;
+    const selectTip = this._translations.selectLayerTip;
+    // const sketchTip = this._sketchType === ESketchType.INTERACTIVE ?
+    //   `${this._translations.selectSketchTip} ${this._translations.optionalSearchDistance}` :
+    //   `${this._translations.selectLayerTip} ${this._translations.optionalSearchDistance}`;
+    const sketchTip = this._sketchType === ESketchType.INTERACTIVE ?
+      this._translations.selectSketchTip :
+      this._translations.selectLayerTip;
 
     const noticeText = this._selectionWorkflowType === EWorkflowType.SELECT ? selectTip :
       this._selectionWorkflowType === EWorkflowType.SKETCH ? sketchTip : searchTip;
 
     return (
       <calcite-panel>
-        {this._getLabel(this._translations.stepTwoFull, true)}
+        {this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", this.addresseeLayer?.layer.title), true)}
         {this._getNotice(noticeText)}
         <div class={"padding-1"}>
           <map-select-tools
@@ -470,7 +491,7 @@ export class PublicNotification {
         <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
           <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
           <calcite-input-message active class="info-blue" scale="m">
-            {this._translations.selectedAddresses.replace("{{n}}", this._numSelected.toString())}
+            {this._translations.selectedAddresses.replace("{{n}}", this._numSelected.toString()).replace("{{layer}}", this.addresseeLayer?.layer.title || "")}
           </calcite-input-message>
         </div>
         {
