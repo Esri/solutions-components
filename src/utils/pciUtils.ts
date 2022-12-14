@@ -82,7 +82,7 @@ export function calculateDeductValue(
   severity: string,
   density: string,
   showDebugging = false
-): number {
+): string {
   // When called from survey123 we will get the args as strings
   // not sure if they could be numbers so a little extra conversion to make sure with the density
 
@@ -158,11 +158,13 @@ export function calculateDeductValue(
 
   const dv = calc(_severity, Math.log10(_density));
   const roundedDV = _round(dv);
+  const formattedDV = `${type}-${severity}-${roundedDV}-${_density}`;
   if (_showDebugging) {
     console.log(`Deduct value: ${dv}`);
     console.log(`Rounded deduct value: ${roundedDV}`);
+    console.log(`Formatted devduct value (type-severity-roundedDV-density): ${formattedDV}`)
   }
-  return roundedDV;
+  return formattedDV;
 }
 
 /**
@@ -181,16 +183,18 @@ export function calculateDeductValue(
  */
 export function calculatePCI(
   deductValues: string,
-  numSeverities: string,
   showDebugging = false
 ): number {
-  // When called from survey123 we will get the args as strings
-  // not sure if they could be numbers so a little extra conversion to make sure with the density
+  // When called from survey123 we wil_evaluateMultiSeverityl get the args as strings
 
-  // deductValues: number[]
-  let _deductValues = deductValues.split(",").map((dv) => parseFloat(dv.toString()));
-  // numSeverities: number
-  const _numSeverities = parseInt(numSeverities);
+  // _deductValues: number[]
+  // When comparing multi-severities calculatePCI will be called multiple times
+  // When called from _evaluateMultiSeverity we will just recieve a comma delimited string
+  // When its just comma delimited we don't need to re-evaluate the multiple severities
+  let _deductValues = deductValues.indexOf("-") > -1 ?
+    _evaluateMultiSeverity(deductValues, showDebugging) :
+    deductValues.split(",").map(dv => parseFloat(dv));
+
   // showDebugging: boolean
   const _showDebugging = showDebugging === true || showDebugging.toString().toLowerCase() === "true";
 
@@ -199,15 +203,114 @@ export function calculatePCI(
   _deductValues = _deductValues.filter(dv => Math.abs(dv) > 0);
   if (_deductValues.length > 0) {
     const maxCDV = _getMaxCDV(_deductValues, _showDebugging);
-    if (_numSeverities === 1) {
-      pci = 100 - _round(maxCDV);
-    } else if (_numSeverities === 2) {
-
-    } else if (_numSeverities === 3) {
-
-    }
+    pci = 100 - _round(maxCDV);
   }
   return pci;
+}
+
+function _evaluateMultiSeverity(
+  deductValues: string,
+  showDebugging: boolean
+) {
+  let _dvs = [];
+  // example: "1-L-10-0.52,1-H-7-0.58"
+  const _dvObject = deductValues.split(",").reduce((prev, cur) => {
+    const splitVal = cur.split("-");
+    const type = splitVal[0];
+    const severity = splitVal[1]
+    const deductValue = parseFloat(splitVal[2]);
+    const density = parseFloat(splitVal[3]);
+
+    if (!prev[type]) {
+      prev[type] = {};
+    }
+    prev[type][severity] = {
+      deductValue,
+      density
+    };
+    // Store deduct values directly in case of no multi severity
+    _dvs.push(deductValue);
+
+    return prev;
+  }, {});
+
+  const multiSeverityKeys = Object.keys(_dvObject).filter(k => Object.keys(_dvObject[k]).length > 1);
+  if (multiSeverityKeys.length > 0) {
+    const updates = {};
+    multiSeverityKeys.forEach(k => {
+      let hDeductValue;
+      let mDeductValue;
+      let lDeductValue;
+
+      let hDensity;
+      let mDensity;
+      let lDensity;
+
+      // need to know if 2 or 3 severity case
+      Object.keys(_dvObject[k]).forEach(_k => {
+        if (_k === "H") {
+          hDeductValue = _dvObject[k][_k].deductValue;
+          hDensity = _dvObject[k][_k].density;
+        } else if (_k === "M") {
+          mDeductValue = _dvObject[k][_k].deductValue;
+          mDensity = _dvObject[k][_k].density;
+        } else {
+          lDeductValue = _dvObject[k][_k].deductValue;
+          lDensity = _dvObject[k][_k].density;
+        }
+      });
+
+      let pci1;
+      let pci2;
+      if (hDensity && mDensity && lDensity) {
+        pci1 = calculatePCI(`${hDeductValue},${mDeductValue},${lDeductValue}`, showDebugging);
+        // compare with iterative tests
+
+      } else {
+        const hDV = hDeductValue || mDeductValue;
+        const lDV = lDeductValue || mDeductValue;
+        pci1 = calculatePCI(`${hDV},${lDV}`, true);
+        if (showDebugging) {
+          console.log("pci1");
+          console.log(pci1);
+        }
+
+        const hDen = hDensity || mDensity;
+        const lDen = lDensity || mDensity;
+        const sumDen = hDen + lDen;
+        const highestSeverity = hDen === hDensity ? "H" : "M";
+
+        const multiSeverityDV = calculateDeductValue(k, highestSeverity, sumDen);
+        const splitVal = multiSeverityDV.split("-");
+        pci2 = calculatePCI(splitVal[2], showDebugging);
+        if (showDebugging) {
+          console.log("pci2");
+          console.log(pci2);
+        }
+        if (pci2 > pci1) {
+          // need to replace the source DVs with the new cumulative DV
+          updates[k] = multiSeverityDV;
+        }
+      }
+    });
+
+    if (Object.keys(updates).length > 0) {
+      _dvs = deductValues.split(",").reduce((prev, cur) => {
+        //0: type, 1: severity, 2: deductValue, 3: density
+        const splitVal = cur.split("-");
+        const type = splitVal[0];
+        const deductValue = parseFloat(splitVal[2]);
+        if (updates[type]) {
+          prev.push(updates[type]);
+          delete(updates[type]);
+        } else {
+          prev.push(deductValue);
+        }
+        return prev;
+      }, []);
+    }
+  }
+  return _dvs;
 }
 
 /**
