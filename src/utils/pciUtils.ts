@@ -212,31 +212,13 @@ function _evaluateMultiSeverity(
   deductValues: string,
   showDebugging: boolean
 ) {
-  let _dvs = [];
-  // example: "1-L-10-0.52,1-H-7-0.58"
-  const _dvObject = deductValues.split(",").reduce((prev, cur) => {
-    const splitVal = cur.split("-");
-    const type = splitVal[0];
-    const severity = splitVal[1]
-    const deductValue = parseFloat(splitVal[2]);
-    const density = parseFloat(splitVal[3]);
-
-    if (!prev[type]) {
-      prev[type] = {};
-    }
-    prev[type][severity] = {
-      deductValue,
-      density
-    };
-    // Store deduct values directly in case of no multi severity
-    _dvs.push(deductValue);
-
-    return prev;
-  }, {});
+  const updates = {};
+  // example deductValues: "1-L-10-0.52,1-H-7-0.58"
+  const _dvObject = _parseDeductValues(deductValues);
 
   const multiSeverityKeys = Object.keys(_dvObject).filter(k => Object.keys(_dvObject[k]).length > 1);
   if (multiSeverityKeys.length > 0) {
-    const updates = {};
+
     multiSeverityKeys.forEach(k => {
       let hDeductValue;
       let mDeductValue;
@@ -260,57 +242,165 @@ function _evaluateMultiSeverity(
         }
       });
 
-      let pci1;
-      let pci2;
-      if (hDensity && mDensity && lDensity) {
-        pci1 = calculatePCI(`${hDeductValue},${mDeductValue},${lDeductValue}`, showDebugging);
-        // compare with iterative tests
+      const func = (hDensity && mDensity && lDensity) ?
+        _getThreeSeverityCaseUpdates : _getTwoSeverityCaseUpdates;
 
-      } else {
-        const hDV = hDeductValue || mDeductValue;
-        const lDV = lDeductValue || mDeductValue;
-        pci1 = calculatePCI(`${hDV},${lDV}`, true);
-        if (showDebugging) {
-          console.log("pci1");
-          console.log(pci1);
-        }
-
-        const hDen = hDensity || mDensity;
-        const lDen = lDensity || mDensity;
-        const sumDen = hDen + lDen;
-        const highestSeverity = hDen === hDensity ? "H" : "M";
-
-        const multiSeverityDV = calculateDeductValue(k, highestSeverity, sumDen);
-        const splitVal = multiSeverityDV.split("-");
-        pci2 = calculatePCI(splitVal[2], showDebugging);
-        if (showDebugging) {
-          console.log("pci2");
-          console.log(pci2);
-        }
-        if (pci2 > pci1) {
-          // need to replace the source DVs with the new cumulative DV
-          updates[k] = multiSeverityDV;
-        }
+      const update = func(
+        k,
+        hDeductValue,
+        mDeductValue,
+        lDeductValue,
+        hDensity,
+        mDensity,
+        lDensity,
+        showDebugging
+      );
+      if (update) {
+        updates[k] = update;
+        console.log("updates")
+        console.log(updates)
       }
     });
-
-    if (Object.keys(updates).length > 0) {
-      _dvs = deductValues.split(",").reduce((prev, cur) => {
-        //0: type, 1: severity, 2: deductValue, 3: density
-        const splitVal = cur.split("-");
-        const type = splitVal[0];
-        const deductValue = parseFloat(splitVal[2]);
-        if (updates[type]) {
-          prev.push(updates[type]);
-          delete(updates[type]);
-        } else {
-          prev.push(deductValue);
-        }
-        return prev;
-      }, []);
-    }
   }
-  return _dvs;
+  return _getFinalDeductValues(deductValues, updates);
+}
+
+function _getThreeSeverityCaseUpdates(
+  type: string,
+  hDeductValue: number,
+  mDeductValue: number,
+  lDeductValue: number,
+  hDensity: number,
+  mDensity: number,
+  lDensity: number,
+  showDebugging: boolean
+) {
+  const pci1 = calculatePCI(`${hDeductValue},${mDeductValue},${lDeductValue}`, true);
+  if (showDebugging) {
+    console.log("pci1");
+    console.log(pci1);
+  }
+  const lm = lDensity + mDensity;
+  const lmPCI2 = _getPCI2(type, "M", lm.toString(), hDeductValue, showDebugging);
+
+  const mh = mDensity + hDensity;
+  const mhPCI2 = _getPCI2(type, "H", mh.toString(), lDeductValue, showDebugging);
+
+  const lh = lDensity + hDensity;
+  const lhPCI2 = _getPCI2(type, "H", lh.toString(), mDeductValue, showDebugging);
+
+  const lmh = lDensity + mDensity + hDensity;
+  const lmhPCI2 = _getPCI2(type, "H", lmh.toString(), 0, showDebugging);
+
+  if (showDebugging) {
+    console.log("low med pci2");
+    console.log(lmPCI2.pci);
+
+    console.log("med high pci2");
+    console.log(mhPCI2.pci);
+
+    console.log("low high pci2");
+    console.log(lhPCI2.pci);
+
+    console.log("low med high pci2");
+    console.log(lmhPCI2.pci);
+  }
+  const pcis = [lmPCI2, mhPCI2, lhPCI2, lmhPCI2];
+
+  const highest = pcis.reduce((prev, cur) => {
+    return cur.pci < pci1 && (!prev || cur.pci < prev.pci) ? cur : prev;
+  }, undefined);
+
+  return highest ? highest.dv : undefined;
+}
+
+function _getTwoSeverityCaseUpdates(
+  type: string,
+  hDeductValue: number,
+  mDeductValue: number,
+  lDeductValue: number,
+  hDensity: number,
+  mDensity: number,
+  lDensity: number,
+  showDebugging: boolean
+) {
+  const hDV = hDeductValue || mDeductValue;
+  const lDV = lDeductValue || mDeductValue;
+  const pci1 = calculatePCI(`${hDV},${lDV}`, true);
+  if (showDebugging) {
+    console.log("pci1");
+    console.log(pci1);
+  }
+
+  const hDen = hDensity || mDensity;
+  const lDen = lDensity || mDensity;
+  const sumDen = hDen + lDen;
+  const highestSeverity = hDen === hDensity ? "H" : "M";
+
+  const pci2 = _getPCI2(type, highestSeverity, sumDen.toString(), 0, showDebugging);
+  if (showDebugging) {
+    console.log("pci2");
+    console.log(pci2.pci);
+  }
+  return pci2.pci > pci1 ? pci2.dv : undefined;
+}
+
+function _getPCI2(
+  type: string,
+  severity: string,
+  density: string,
+  secondDeductValue: number,
+  showDebugging: boolean
+) {
+  const deductValue = calculateDeductValue(type, severity, density);
+  const splitVal = deductValue.split("-");
+  const newDV = parseFloat(splitVal[2]);
+  return {
+    pci: calculatePCI(`${splitVal[2]},${secondDeductValue}`, showDebugging),
+    dv: secondDeductValue ? [newDV, secondDeductValue] : [newDV]
+  };
+}
+
+function _parseDeductValues(
+  deductValues: string
+) {
+  return deductValues.split(",").reduce((prev, cur) => {
+    const splitVal = cur.split("-");
+    const type = splitVal[0];
+    const severity = splitVal[1]
+    const deductValue = parseFloat(splitVal[2]);
+    const density = parseFloat(splitVal[3]);
+
+    if (!prev[type]) {
+      prev[type] = {};
+    }
+    prev[type][severity] = {
+      deductValue,
+      density
+    };
+    return prev;
+  }, {});
+}
+
+function _getFinalDeductValues(
+  deductValues: string,
+  updates: any
+) {
+  const skipAdditionalTypes = [];
+  return deductValues.split(",").reduce((prev, cur) => {
+    //0: type, 1: severity, 2: deductValue, 3: density
+    const splitVal = cur.split("-");
+    const type = splitVal[0];
+    const deductValue = parseFloat(splitVal[2]);
+    if (Object.keys(updates).length > 0 && updates[type]) {
+      skipAdditionalTypes.push(type);
+      prev.push(...updates[type]);
+      delete (updates[type]);
+    } else if(skipAdditionalTypes.indexOf(type) < 0) {
+      prev.push(deductValue);
+    }
+    return prev;
+  }, []);
 }
 
 /**
