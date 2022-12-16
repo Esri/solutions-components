@@ -73,7 +73,7 @@ beforeEach(() => {
   _unknown = {} as unknown as any;
 });
 
-describe('map-select-tools', () => {
+xdescribe('map-select-tools', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [MapSelectTools],

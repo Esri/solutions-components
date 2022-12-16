@@ -33,7 +33,7 @@ beforeEach(() => {
   ] as any);
 });
 
-describe('config-layer-picker', () => {
+xdescribe('config-layer-picker', () => {
   it('renders', async () => {
     const getLayersSpy = jest.spyOn(mapViewUtils, "getMapLayerNames").mockImplementation(() => [
       "A",
