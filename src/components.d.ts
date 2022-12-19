@@ -870,7 +870,7 @@ declare namespace LocalJSX {
         /**
           * Emitted on demand when the user clicks to calculate the deduct value
          */
-        "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<number>) => void;
+        "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<string>) => void;
     }
     interface JsonEditor {
         /**

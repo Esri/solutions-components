@@ -80,14 +80,11 @@ xdescribe('map-select-tools', () => {
       template: () => (<map-select-tools mapView={mapView}></map-select-tools>),
     });
     expect(page.root).toEqualHtml(`
-     <map-select-tools>
+      <map-select-tools>
        <div class="padding-bottom-1">
          <calcite-radio-group class="w-100">
            <calcite-radio-group-item checked="" class="end-border w-50" value="SEARCH">
              Search
-           </calcite-radio-group-item>
-           <calcite-radio-group-item class="end-border w-50" value="SELECT">
-             Layer
            </calcite-radio-group-item>
            <calcite-radio-group-item class="w-50" value="SKETCH">
              Sketch
@@ -97,9 +94,19 @@ xdescribe('map-select-tools', () => {
        <div class="div-visible-search">
          <div class="search-widget"></div>
        </div>
-       <map-draw-tools border="" class="div-not-visible"></map-draw-tools>
-       <refine-selection-tools border="" class="div-not-visible" mode="ADD" refinemode="SUBSET"></refine-selection-tools>
-       <calcite-label style="display: flex; padding-top: 1rem;">
+       <div class="div-not-visible">
+         <calcite-label layout="inline">
+           <calcite-checkbox></calcite-checkbox>
+           Use layer features
+         </calcite-label>
+       </div>
+       <div class="div-not-visible">
+         <map-draw-tools active="" border=""></map-draw-tools>
+       </div>
+       <div class="div-not-visible">
+         <refine-selection-tools active="" border="" mode="ADD" refinemode="SUBSET"></refine-selection-tools>
+       </div>
+       <calcite-label class="search-distance">
          Search Distance
          <buffer-tools></buffer-tools>
        </calcite-label>
@@ -210,16 +217,13 @@ xdescribe('map-select-tools', () => {
       expect(evt.detail).toEqual(EWorkflowType.SELECT);
     })
     expect(page.root).toEqualHtml(`
-     <map-select-tools>
+      <map-select-tools>
        <div class="padding-bottom-1">
          <calcite-radio-group class="w-100">
            <calcite-radio-group-item class="end-border w-50" value="SEARCH">
              Search
            </calcite-radio-group-item>
-           <calcite-radio-group-item checked="" class="end-border w-50" value="SELECT">
-             Layer
-           </calcite-radio-group-item>
-           <calcite-radio-group-item class="w-50" value="SKETCH">
+           <calcite-radio-group-item checked="" class="w-50" value="SKETCH">
              Sketch
            </calcite-radio-group-item>
          </calcite-radio-group>
@@ -227,9 +231,19 @@ xdescribe('map-select-tools', () => {
        <div class="div-not-visible">
          <div class="search-widget"></div>
        </div>
-       <map-draw-tools border="" class="div-not-visible"></map-draw-tools>
-       <refine-selection-tools active="" border="" class="div-visible" mode="ADD" refinemode="SUBSET"></refine-selection-tools>
-       <calcite-label style="display: flex; padding-top: 1rem;">
+       <div class="div-visible">
+         <calcite-label layout="inline">
+           <calcite-checkbox></calcite-checkbox>
+           Use layer features
+         </calcite-label>
+       </div>
+       <div class="div-visible">
+         <map-draw-tools active="" border=""></map-draw-tools>
+       </div>
+       <div class="div-not-visible">
+         <refine-selection-tools active="" border="" mode="ADD" refinemode="SUBSET"></refine-selection-tools>
+       </div>
+       <calcite-label class="search-distance">
          Search Distance
          <buffer-tools distance="100" unit="feet"></buffer-tools>
        </calcite-label>
@@ -279,9 +293,6 @@ xdescribe('map-select-tools', () => {
            <calcite-radio-group-item class="end-border w-50" value="SEARCH">
              Search
            </calcite-radio-group-item>
-           <calcite-radio-group-item class="end-border w-50" value="SELECT">
-             Layer
-           </calcite-radio-group-item>
            <calcite-radio-group-item checked="" class="w-50" value="SKETCH">
              Sketch
            </calcite-radio-group-item>
@@ -290,9 +301,19 @@ xdescribe('map-select-tools', () => {
        <div class="div-not-visible">
          <div class="search-widget"></div>
        </div>
-       <map-draw-tools active="" border="" class="div-visible"></map-draw-tools>
-       <refine-selection-tools border="" class="div-not-visible" mode="ADD" refinemode="SUBSET"></refine-selection-tools>
-       <calcite-label style="display: flex; padding-top: 1rem;">
+       <div class="div-visible">
+         <calcite-label layout="inline">
+           <calcite-checkbox></calcite-checkbox>
+           Use layer features
+         </calcite-label>
+       </div>
+       <div class="div-visible">
+         <map-draw-tools active="" border=""></map-draw-tools>
+       </div>
+       <div class="div-not-visible">
+         <refine-selection-tools active="" border="" mode="ADD" refinemode="SUBSET"></refine-selection-tools>
+       </div>
+       <calcite-label class="search-distance">
          Search Distance
          <buffer-tools distance="100" unit="feet"></buffer-tools>
        </calcite-label>
@@ -343,9 +364,6 @@ xdescribe('map-select-tools', () => {
            <calcite-radio-group-item checked="" class="end-border w-50" value="SEARCH">
              Search
            </calcite-radio-group-item>
-           <calcite-radio-group-item class="end-border w-50" value="SELECT">
-             Layer
-           </calcite-radio-group-item>
            <calcite-radio-group-item class="w-50" value="SKETCH">
              Sketch
            </calcite-radio-group-item>
@@ -354,9 +372,19 @@ xdescribe('map-select-tools', () => {
        <div class="div-visible-search">
          <div class="search-widget"></div>
        </div>
-       <map-draw-tools border="" class="div-not-visible"></map-draw-tools>
-       <refine-selection-tools border="" class="div-not-visible" mode="ADD" refinemode="SUBSET"></refine-selection-tools>
-       <calcite-label style="display: flex; padding-top: 1rem;">
+       <div class="div-not-visible">
+         <calcite-label layout="inline">
+           <calcite-checkbox></calcite-checkbox>
+           Use layer features
+         </calcite-label>
+       </div>
+       <div class="div-not-visible">
+         <map-draw-tools active="" border=""></map-draw-tools>
+       </div>
+       <div class="div-not-visible">
+         <refine-selection-tools active="" border="" mode="ADD" refinemode="SUBSET"></refine-selection-tools>
+       </div>
+       <calcite-label class="search-distance">
          Search Distance
          <buffer-tools distance="100" unit="feet"></buffer-tools>
        </calcite-label>
