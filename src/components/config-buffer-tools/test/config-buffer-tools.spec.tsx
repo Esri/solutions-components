@@ -32,17 +32,23 @@ beforeEach(() => {
   ] as any);
 });
 
-xdescribe('config-buffer-tools', () => {
-  it('renders VERTICAL', async () => {
+describe('config-buffer-tools', () => {
+  it('renders', async () => {
     const page = await newSpecPage({
       autoApplyChanges: true,
       components: [ConfigBufferTools],
       template: () => (<config-buffer-tools></config-buffer-tools>),
     });
     expect(page.root).toEqualHtml(`
-     <config-buffer-tools alignment="VERTICAL" distance="100" unit="Meters">
+     <config-buffer-tools distance="100" unit="Meters">
        <mock:shadow-root>
          <div>
+           <calcite-label layout="inline">
+             <calcite-checkbox checked=""></calcite-checkbox>
+             Show buffer options
+           </calcite-label>
+         </div>
+         <div class="padding-inline-start-1">
            <div class="padding-block-end-1 width-full">
              <calcite-label class="label-spacing">
                Default distance
@@ -62,50 +68,8 @@ xdescribe('config-buffer-tools', () => {
              </calcite-label>
            </div>
          </div>
-        </mock:shadow-root>
-      </config-buffer-tools>
-    `);
-
-    const expected = {
-      "distance": 100,
-      "unit": "Meters"
-    };
-
-    const actual = await page.root.getConfigInfo();
-    expect(actual).toEqual(expected);
-  });
-
-  it('renders HORIZONTAL', async () => {
-    const page = await newSpecPage({
-      autoApplyChanges: true,
-      components: [ConfigBufferTools],
-      template: () => (<config-buffer-tools alignment='HORIZONTAL'></config-buffer-tools>),
-    });
-    expect(page.root).toEqualHtml(`
-     <config-buffer-tools alignment="HORIZONTAL" distance="100" unit="Meters">
-       <mock:shadow-root>
-         <div class="horizontal-display">
-           <div class="padding-inline-end-1 width-half">
-             <calcite-label class="label-spacing">
-               Default distance
-               <calcite-input min="0" number-button-type="vertical" type="number" value="100"></calcite-input>
-             </calcite-label>
-           </div>
-           <div class="width-half">
-             <calcite-label class="label-spacing">
-               Default unit
-               <calcite-select label="Default unit">
-                 <calcite-option label="Feet" value="Feet"></calcite-option>
-                 <calcite-option label="Yards" value="Yards"></calcite-option>
-                 <calcite-option label="Meters" selected="" value="Meters"></calcite-option>
-                 <calcite-option label="Kilometers" value="Kilometers"></calcite-option>
-                 <calcite-option label="Miles" value="Miles"></calcite-option>
-               </calcite-select>
-             </calcite-label>
-           </div>
-         </div>
-        </mock:shadow-root>
-      </config-buffer-tools>
+       </mock:shadow-root>
+     </config-buffer-tools>
     `);
   });
 });

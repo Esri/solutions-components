@@ -28,7 +28,6 @@
  *
  * @returns Promise resolving when function is done
  *
- * @protected
  */
 export enum ESeverity {
   H = "H",
@@ -39,7 +38,6 @@ export enum ESeverity {
 /**
  * Type of distress as defined by ASTM standard
  *
- * @protected
  */
 export enum EDistressType {
   ALLIGATOR_CRACKING = 1,
@@ -64,35 +62,39 @@ export enum EDistressType {
 }
 
 /**
+ * Values to use for multi-severity case corrections
+ *
+ */
+export interface ICorrection {
+  pci: number;
+  dv: number[];
+}
+
+/**
  * Calculate the deduct value for the given distress.
  *
  * @param type expects 1-19 as a string
  * @param severity expects "H" | "M" | "L"
- * @param density the cacluated percent density ralative to the total sample area
+ * @param density the calculated percent density ralative to the total sample area
  * @param showDebugging used to control debugging messages to show the various
  * calculations a required steps along the way.
  * The main reason this is optional is that it provides no value when used within
  * Survey123 as we have nowhere to see the messages and I wasn't sure if writing to a
  * console in that context could have any negative side effects.
  *
- * @protected
+ * @returns pipe delimited string: type|severity|roundedDeductValue|density
  */
 export function calculateDeductValue(
   type: string,
   severity: string,
   density: string,
   showDebugging = false
-): number {
+): string {
   // When called from survey123 we will get the args as strings
   // not sure if they could be numbers so a little extra conversion to make sure with the density
-
-  // type: EDistressType
   const _type = parseInt(type);
-  // severity: ESeverity
   const _severity = ESeverity[severity];
-  // density: number
   const _density = parseFloat(density.toString());
-  // showDebugging: boolean
   const _showDebugging = showDebugging === true || showDebugging.toString().toLowerCase() === "true";
 
   let calc;
@@ -158,40 +160,40 @@ export function calculateDeductValue(
 
   const dv = calc(_severity, Math.log10(_density));
   const roundedDV = _round(dv);
+  const formattedDV = `${type}|${severity}|${roundedDV}|${_density}`;
   if (_showDebugging) {
     console.log(`Deduct value: ${dv}`);
     console.log(`Rounded deduct value: ${roundedDV}`);
+    console.log(`Formatted devduct value (type|severity|roundedDV|density): ${formattedDV}`)
   }
-  return roundedDV;
+  return formattedDV;
 }
 
 /**
  * Calculate the pavement condition index (PCI)
  *
- * @param deductValues string of comma delimited deduct value numbers
- * @param numSeverities expects "1" | "2" | "3" represents the number of severities for
- * a single distress type
+ * @param deductValues string of comma delimited values
  * @param showDebugging used to control debugging messages to show the various
  * calculations a required steps along the way.
  * The main reason this is optional is that it provides no value when used within
  * Survey123 as we have nowhere to see the messages and I wasn't sure if writing to a
  * console in that context could have any negative side effects.
  *
- * @protected
+ * @returns the calculated PCI
  */
 export function calculatePCI(
   deductValues: string,
-  numSeverities: string,
   showDebugging = false
 ): number {
   // When called from survey123 we will get the args as strings
-  // not sure if they could be numbers so a little extra conversion to make sure with the density
 
-  // deductValues: number[]
-  let _deductValues = deductValues.split(",").map((dv) => parseFloat(dv.toString()));
-  // numSeverities: number
-  const _numSeverities = parseInt(numSeverities);
-  // showDebugging: boolean
+  // When comparing multi-severities calculatePCI will be called multiple times
+  // When called from _evaluateMultiSeverity we will just recieve a comma delimited string
+  // When its just comma delimited we don't need to re-evaluate the multiple severities
+  let _deductValues = deductValues.indexOf("|") > -1 ?
+    _evaluateMultiSeverity(deductValues, showDebugging) :
+    deductValues.split(",").map(dv => parseFloat(dv));
+
   const _showDebugging = showDebugging === true || showDebugging.toString().toLowerCase() === "true";
 
   let pci = 0;
@@ -199,15 +201,272 @@ export function calculatePCI(
   _deductValues = _deductValues.filter(dv => Math.abs(dv) > 0);
   if (_deductValues.length > 0) {
     const maxCDV = _getMaxCDV(_deductValues, _showDebugging);
-    if (_numSeverities === 1) {
-      pci = 100 - _round(maxCDV);
-    } else if (_numSeverities === 2) {
-
-    } else if (_numSeverities === 3) {
-
-    }
+    pci = 100 - _round(maxCDV);
   }
   return pci;
+}
+
+/**
+ * Determine if corrections are required when we have multiple severities of a single distress type.
+ *
+ * @param deductValues string of comma delimited values e.g. "1|L|10|0.52,1|H|7|0.58"
+ * @param showDebugging used to control debugging messages to show the various
+ * calculations a required steps along the way.
+ *
+ * @returns an object that will contain any corrections for the current distress type
+ */
+function _evaluateMultiSeverity(
+  deductValues: string,
+  showDebugging: boolean
+) {
+  const updates = {};
+  const _dvObject = _parseDeductValues(deductValues);
+
+  const multiSeverityKeys = Object.keys(_dvObject).filter(k => Object.keys(_dvObject[k]).length > 1);
+  if (multiSeverityKeys.length > 0) {
+
+    multiSeverityKeys.forEach(k => {
+      let hDeductValue;
+      let mDeductValue;
+      let lDeductValue;
+
+      let hDensity;
+      let mDensity;
+      let lDensity;
+
+      // need to know if 2 or 3 severity case
+      Object.keys(_dvObject[k]).forEach(_k => {
+        if (_k === "H") {
+          hDeductValue = _dvObject[k][_k].deductValue;
+          hDensity = _dvObject[k][_k].density;
+        } else if (_k === "M") {
+          mDeductValue = _dvObject[k][_k].deductValue;
+          mDensity = _dvObject[k][_k].density;
+        } else {
+          lDeductValue = _dvObject[k][_k].deductValue;
+          lDensity = _dvObject[k][_k].density;
+        }
+      });
+
+      const func = (hDensity && mDensity && lDensity) ?
+        _getThreeSeverityCaseUpdates : _getTwoSeverityCaseUpdates;
+
+      const update = func(
+        k,
+        hDeductValue,
+        mDeductValue,
+        lDeductValue,
+        hDensity,
+        mDensity,
+        lDensity,
+        showDebugging
+      );
+      if (update) {
+        updates[k] = update;
+        if (showDebugging) {
+          console.log("updates");
+          console.log(updates);
+        }
+      }
+    });
+  }
+  return _getFinalDeductValues(deductValues, updates);
+}
+
+/**
+ * Determine if corrections are required when we have 3 severities of a single distress type.
+ *
+ * @param type the distress type 1-19 as a string
+ * @param hDeductValue high severity deduct value
+ * @param mDeductValue med severity deduct value
+ * @param lDeductValue low severity deduct value
+ * @param hDensity high severity density
+ * @param mDensity med severity density
+ * @param lDensity low severity density
+ * @param showDebugging used to control debugging messages to show the various
+ * calculations a required steps along the way.
+ *
+ * @returns undefined or an object that will contain any corrections for the current distress type
+ */
+function _getThreeSeverityCaseUpdates(
+  type: string,
+  hDeductValue: number,
+  mDeductValue: number,
+  lDeductValue: number,
+  hDensity: number,
+  mDensity: number,
+  lDensity: number,
+  showDebugging: boolean
+): any {
+  const pci1 = calculatePCI(`${hDeductValue},${mDeductValue},${lDeductValue}`, true);
+  if (showDebugging) {
+    console.log("pci1");
+    console.log(pci1);
+  }
+  const lm = lDensity + mDensity;
+  const lmPCI2 = _getPCI2(type, "M", lm.toString(), hDeductValue, showDebugging);
+
+  const mh = mDensity + hDensity;
+  const mhPCI2 = _getPCI2(type, "H", mh.toString(), lDeductValue, showDebugging);
+
+  const lh = lDensity + hDensity;
+  const lhPCI2 = _getPCI2(type, "H", lh.toString(), mDeductValue, showDebugging);
+
+  const lmh = lDensity + mDensity + hDensity;
+  const lmhPCI2 = _getPCI2(type, "H", lmh.toString(), 0, showDebugging);
+
+  if (showDebugging) {
+    console.log("low med pci2");
+    console.log(lmPCI2.pci);
+
+    console.log("med high pci2");
+    console.log(mhPCI2.pci);
+
+    console.log("low high pci2");
+    console.log(lhPCI2.pci);
+
+    console.log("low med high pci2");
+    console.log(lmhPCI2.pci);
+  }
+  const pcis  = [lmPCI2, mhPCI2, lhPCI2, lmhPCI2];
+
+  const highest = pcis.reduce((prev, cur) => {
+    return cur.pci > pci1 && (!prev || cur.pci > prev.pci) ? cur : prev;
+  }, undefined);
+
+  return highest ? highest.dv : undefined;
+}
+
+/**
+ * Determine if corrections are required when we have 2 severities of a single distress type.
+ *
+ * @param type the distress type 1-19 as a string
+ * @param hDeductValue high severity deduct value
+ * @param mDeductValue med severity deduct value
+ * @param lDeductValue low severity deduct value
+ * @param hDensity high severity density
+ * @param mDensity med severity density
+ * @param lDensity low severity density
+ * @param showDebugging used to control debugging messages to show the various
+ * calculations a required steps along the way.
+ *
+ * @returns undefined or an object that will contain any corrections for the current distress type
+ */
+function _getTwoSeverityCaseUpdates(
+  type: string,
+  hDeductValue: number,
+  mDeductValue: number,
+  lDeductValue: number,
+  hDensity: number,
+  mDensity: number,
+  lDensity: number,
+  showDebugging: boolean
+) {
+  const hDV = hDeductValue || mDeductValue;
+  const lDV = lDeductValue || mDeductValue;
+  const pci1 = calculatePCI(`${hDV},${lDV}`, true);
+  if (showDebugging) {
+    console.log("pci1");
+    console.log(pci1);
+  }
+
+  const hDen = hDensity || mDensity;
+  const lDen = lDensity || mDensity;
+  const sumDen = hDen + lDen;
+  const highestSeverity = hDen === hDensity ? "H" : "M";
+
+  const pci2 = _getPCI2(type, highestSeverity, sumDen.toString(), 0, showDebugging);
+  if (showDebugging) {
+    console.log("pci2");
+    console.log(pci2.pci);
+  }
+  return pci2.pci > pci1 ? pci2.dv : undefined;
+}
+
+/**
+ * Used to test for highest PCI when we have multiple severity cases for a single distress type.
+ *
+ * @param type the distress type 1-19 as a string
+ * @param severity expects "H" | "M" | "L"
+ * @param density the calculated percent density ralative to the total sample area
+ * @param secondDeductValue optional deduct value will be 0 for all 2 severity cases and will be a non 0 number for 3 severity cases
+ * @param showDebugging used to control debugging messages to show the various
+ * calculations a required steps along the way.
+ *
+ * @returns ICorrection that contains the new PCI as well as the deduct values that should be used for corrections
+ */
+function _getPCI2(
+  type: string,
+  severity: string,
+  density: string,
+  secondDeductValue: number,
+  showDebugging: boolean
+): ICorrection {
+  const deductValue = calculateDeductValue(type, severity, density);
+  const splitVal = deductValue.split("|");
+  const newDV = parseFloat(splitVal[2]);
+  return {
+    pci: calculatePCI(`${splitVal[2]},${secondDeductValue}`, showDebugging),
+    dv: secondDeductValue ? [newDV, secondDeductValue] : [newDV]
+  };
+}
+
+/**
+ * Parse the deduct value string into individual values for type, severity, deduct value, and density
+ *
+ * @param deductValues string of comma delimited values for type, severity, deduct value, and density
+ *
+ * @returns an object with the parsed values
+ */
+function _parseDeductValues(
+  deductValues: string
+): any {
+  return deductValues.split(",").reduce((prev, cur) => {
+    const splitVal = cur.split("|");
+    const type = splitVal[0];
+    const severity = splitVal[1]
+    const deductValue = parseFloat(splitVal[2]);
+    const density = parseFloat(splitVal[3]);
+
+    if (!prev[type]) {
+      prev[type] = {};
+    }
+    prev[type][severity] = {
+      deductValue,
+      density
+    };
+    return prev;
+  }, {});
+}
+
+/**
+ * Replace any deduct values for the given distress types when it is determined that corrections
+ * are required for a multi-severity case
+ *
+ * @param deductValues string of comma delimited values for type, severity, deduct value, and density
+ * @param updates will contain the new corrected deduct value(s) that should be substituted for the original deduct value
+ *
+ * @returns an object with the parsed and updated deduct values to use for final PCI calculation
+ */
+function _getFinalDeductValues(
+  deductValues: string,
+  updates: any
+) {
+  const skipAdditionalTypes = [];
+  return deductValues.split(",").reduce((prev, cur) => {
+    //0: type, 1: severity, 2: deductValue, 3: density
+    const splitVal = cur.split("|");
+    const type = splitVal[0];
+    const deductValue = parseFloat(splitVal[2]);
+    if (Object.keys(updates).length > 0 && updates[type]) {
+      skipAdditionalTypes.push(type);
+      prev.push(...updates[type]);
+      delete (updates[type]);
+    } else if(skipAdditionalTypes.indexOf(type) < 0) {
+      prev.push(deductValue);
+    }
+    return prev;
+  }, []);
 }
 
 /**
@@ -513,7 +772,6 @@ function _calcRutting(
   severity: ESeverity,
   density: number
 ): number {
-  // TODO update after I hear back from Ryan -0.5325 vs -2.286
   const vals = severity === ESeverity.H ? [27.61, 25.19, 8.557, 1.65, -2.2030] :
     severity === ESeverity.M ? [18.47, 20.77, 6.617, -1.13, -2.286] :
       [8.833, 14.84, 3.129, 0.1451, 2.438, -1.279];

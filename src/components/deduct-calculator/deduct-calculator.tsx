@@ -91,7 +91,7 @@ export class DeductCalculator {
   /**
    * Emitted on demand when the user clicks to calculate the deduct value
    */
-  @Event() deductValueComplete: EventEmitter<number>;
+  @Event() deductValueComplete: EventEmitter<string>;
 
   //--------------------------------------------------------------------------
   //

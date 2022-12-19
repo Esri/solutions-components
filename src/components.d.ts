@@ -287,8 +287,6 @@ export namespace Components {
          */
         "values": IMediaCardValues[];
     }
-    interface PciCalculator {
-    }
     interface PdfDownload {
         /**
           * boolean: Controls the enabled/disabled state of download
@@ -991,7 +989,7 @@ declare namespace LocalJSX {
         /**
           * Emitted on demand when the user clicks to calculate the deduct value
          */
-        "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<number>) => void;
+        "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<string>) => void;
     }
     interface EditRecordModal {
     }
@@ -1138,8 +1136,6 @@ declare namespace LocalJSX {
           * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
          */
         "values"?: IMediaCardValues[];
-    }
-    interface PciCalculator {
     }
     interface PdfDownload {
         /**

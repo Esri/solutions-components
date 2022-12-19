@@ -209,7 +209,7 @@ export class PciCalculator {
   protected _calculatePCI(
     deductValuesString: string
   ): void {
-    const pci = calculatePCI(deductValuesString, "1", true);
+    const pci = calculatePCI(deductValuesString, true);
     const rating = pci <= 10 ? "Failed" :
       pci <= 25 ? "Serious" :
       pci <= 40 ? "Very Poor" :
