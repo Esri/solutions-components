@@ -82,7 +82,7 @@ export interface ICorrection {
  * Survey123 as we have nowhere to see the messages and I wasn't sure if writing to a
  * console in that context could have any negative side effects.
  *
- * @returns hyphen delimited string: type-severity-roundedDeductValue-density
+ * @returns pipe delimited string: type|severity|roundedDeductValue|density
  */
 export function calculateDeductValue(
   type: string,
@@ -160,11 +160,11 @@ export function calculateDeductValue(
 
   const dv = calc(_severity, Math.log10(_density));
   const roundedDV = _round(dv);
-  const formattedDV = `${type}-${severity}-${roundedDV}-${_density}`;
+  const formattedDV = `${type}|${severity}|${roundedDV}|${_density}`;
   if (_showDebugging) {
     console.log(`Deduct value: ${dv}`);
     console.log(`Rounded deduct value: ${roundedDV}`);
-    console.log(`Formatted devduct value (type-severity-roundedDV-density): ${formattedDV}`)
+    console.log(`Formatted devduct value (type|severity|roundedDV|density): ${formattedDV}`)
   }
   return formattedDV;
 }
@@ -190,7 +190,7 @@ export function calculatePCI(
   // When comparing multi-severities calculatePCI will be called multiple times
   // When called from _evaluateMultiSeverity we will just recieve a comma delimited string
   // When its just comma delimited we don't need to re-evaluate the multiple severities
-  let _deductValues = deductValues.indexOf("-") > -1 ?
+  let _deductValues = deductValues.indexOf("|") > -1 ?
     _evaluateMultiSeverity(deductValues, showDebugging) :
     deductValues.split(",").map(dv => parseFloat(dv));
 
@@ -209,7 +209,7 @@ export function calculatePCI(
 /**
  * Determine if corrections are required when we have multiple severities of a single distress type.
  *
- * @param deductValues string of comma delimited values e.g. "1-L-10-0.52,1-H-7-0.58"
+ * @param deductValues string of comma delimited values e.g. "1|L|10|0.52,1|H|7|0.58"
  * @param showDebugging used to control debugging messages to show the various
  * calculations a required steps along the way.
  *
@@ -403,7 +403,7 @@ function _getPCI2(
   showDebugging: boolean
 ): ICorrection {
   const deductValue = calculateDeductValue(type, severity, density);
-  const splitVal = deductValue.split("-");
+  const splitVal = deductValue.split("|");
   const newDV = parseFloat(splitVal[2]);
   return {
     pci: calculatePCI(`${splitVal[2]},${secondDeductValue}`, showDebugging),
@@ -422,7 +422,7 @@ function _parseDeductValues(
   deductValues: string
 ): any {
   return deductValues.split(",").reduce((prev, cur) => {
-    const splitVal = cur.split("-");
+    const splitVal = cur.split("|");
     const type = splitVal[0];
     const severity = splitVal[1]
     const deductValue = parseFloat(splitVal[2]);
@@ -455,7 +455,7 @@ function _getFinalDeductValues(
   const skipAdditionalTypes = [];
   return deductValues.split(",").reduce((prev, cur) => {
     //0: type, 1: severity, 2: deductValue, 3: density
-    const splitVal = cur.split("-");
+    const splitVal = cur.split("|");
     const type = splitVal[0];
     const deductValue = parseFloat(splitVal[2]);
     if (Object.keys(updates).length > 0 && updates[type]) {
