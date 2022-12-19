@@ -51,7 +51,7 @@ export class ConfigBufferTools {
    * string: Default unit value.
    * Should be a unit listed in assets/t9n/config-buffer-tools/resources
    */
-  @Prop({mutable: true, reflect: true}) unit;
+  @Prop({mutable: true, reflect: true}) unit = "Meters";
 
   //--------------------------------------------------------------------------
   //
@@ -84,10 +84,10 @@ export class ConfigBufferTools {
    */
   @Method()
   async getConfigInfo(): Promise<{ [key: string]: number | string }> {
-    return Promise.resolve({
+    return {
       "distance": this.distance,
       "unit": this.unit
-    });
+    };
   }
 
   //--------------------------------------------------------------------------
@@ -109,8 +109,6 @@ export class ConfigBufferTools {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
-    // set the default
-    this.unit = this._translations.units.meters;
   }
 
   /**
@@ -126,7 +124,7 @@ export class ConfigBufferTools {
         <div class={displayClass}>
           <div class={`${paddingClass} ${widthClass}`}>
             <calcite-label class="label-spacing">
-              {this._translations?.defaultBufferDistance}
+              {this._translations.defaultBufferDistance}
               <calcite-input
                 min={0}
                 number-button-type="vertical"
@@ -138,9 +136,9 @@ export class ConfigBufferTools {
           </div>
           <div class={`${widthClass}`}>
             <calcite-label class="label-spacing">
-              {this._translations?.defaultUnit}
+              {this._translations.defaultUnit}
               <calcite-select
-                label={this._translations?.defaultUnit}
+                label={this._translations.defaultUnit}
                 onCalciteSelectChange={(evt) => {this._unitSelectionChange(evt);}}
               >
                 {this._renderUnitOptions()}
@@ -187,7 +185,7 @@ export class ConfigBufferTools {
    * @protected
    */
   protected _renderUnitOptions(): VNode[] {
-    const nlsUnits = this._translations?.units || {};
+    const nlsUnits = this._translations.units || {};
     const units: string[] = Object.keys(nlsUnits).map(k => nlsUnits[k]);
     return units.map(unit => {
       return (<calcite-option label={unit} selected={unit === this.unit} value={unit}/>);

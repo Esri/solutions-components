@@ -11,7 +11,7 @@
 | ----------- | ----------- | ----------------------------------------------------------------------------------------------- | ---------------------------- | ------------ |
 | `alignment` | `alignment` | "VERTICAL" \| "HORIZONTAL": Specifies how the controls chould be aligned.                       | `"HORIZONTAL" \| "VERTICAL"` | `"VERTICAL"` |
 | `distance`  | `distance`  | number: Default distance value.                                                                 | `number`                     | `100`        |
-| `unit`      | `unit`      | string: Default unit value. Should be a unit listed in assets/t9n/config-buffer-tools/resources | `any`                        | `undefined`  |
+| `unit`      | `unit`      | string: Default unit value. Should be a unit listed in assets/t9n/config-buffer-tools/resources | `string`                     | `"Meters"`   |
 
 
 ## Methods
