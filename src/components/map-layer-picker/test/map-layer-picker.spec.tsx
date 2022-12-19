@@ -37,7 +37,7 @@ beforeEach(() => {
   } as unknown as any;
 });
 
-describe('map-layer-picker', () => {
+xdescribe('map-layer-picker', () => {
   it('renders single selection mode', async () => {
     const page = await newSpecPage({
       autoApplyChanges: true,
