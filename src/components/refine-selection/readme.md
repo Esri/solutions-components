@@ -44,7 +44,6 @@ graph TD;
   refine-selection --> calcite-list
   refine-selection --> calcite-list-item
   calcite-radio-group-item --> calcite-icon
-  refine-selection-tools --> calcite-label
   refine-selection-tools --> map-layer-picker
   refine-selection-tools --> calcite-action
   map-layer-picker --> calcite-select

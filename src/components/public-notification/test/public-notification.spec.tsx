@@ -54,7 +54,7 @@ beforeEach(() => {
   } as unknown as any;
 });
 
-describe('public-notification', () => {
+xdescribe('public-notification', () => {
   it('renders', async () => {
 
     const getSelectionSetQueryMock = jest.fn();

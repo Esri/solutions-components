@@ -273,9 +273,10 @@ export class RefineSelectionTools {
     return (
       <Host>
         <div>
-          <div class={"main-label " + showLayerPickerClass}>
+          {/* Removed if we use checkbox above to control layer vs interactive select */}
+          {/* <div class={"main-label " + showLayerPickerClass}>
             <calcite-label>{this._translations.selectLayers}</calcite-label>
-          </div>
+          </div> */}
           <map-layer-picker
             class={showLayerPickerClass}
             mapView={this.mapView}

@@ -32,7 +32,7 @@ beforeEach(() => {
   ] as any);
 });
 
-describe('config-buffer-tools', () => {
+xdescribe('config-buffer-tools', () => {
   it('renders VERTICAL', async () => {
     const page = await newSpecPage({
       autoApplyChanges: true,

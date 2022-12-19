@@ -18,16 +18,12 @@
   display: block;
 }
 
-.background-w {
-  background-color: white;
-}
-
 .map-layer-picker-container {
   width: 100%;
 }
 
 .map-layer-picker {
-  position: relative; 
+  position: relative;
   width: 100%;
   display: inline-block;
 }
