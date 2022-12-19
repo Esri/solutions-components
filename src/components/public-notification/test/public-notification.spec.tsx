@@ -64,11 +64,13 @@ describe('public-notification', () => {
       autoApplyChanges: true,
       components: [PublicNotification],
       template: () => (
-        <public-notification></public-notification>
+        <public-notification show-refine-selection="true"></public-notification>
       ),
     });
+
+    //page.rootInstance.showRefineSelection = true;
     expect(page.root).toEqualHtml(`
-      <public-notification>
+      <public-notification show-refine-selection="true">
         <calcite-shell>
           <calcite-action-bar class="action-bar-size border-bottom-1" expand-disabled="" layout="horizontal" slot="header">
             <calcite-action-group class="action-center w-1-4" layout="horizontal">

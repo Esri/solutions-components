@@ -50,7 +50,7 @@ describe('config-layer-picker', () => {
           <div>
             <div class="padding-block-end-1">
               <calcite-label class="label-spacing">
-                Choose the potential addressee layers
+                Choose layers
               </calcite-label>
             </div>
             <div class="padding-inline-start-1">

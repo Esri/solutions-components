@@ -46,7 +46,7 @@ describe('map-layer-picker', () => {
     });
     expect(page.root).toEqualHtml(`
       <map-layer-picker selection-mode="single">
-       <div class="background-w map-layer-picker-container">
+       <div class="map-layer-picker-container">
          <div class="map-layer-picker">
            <calcite-select label="">
              <calcite-option label="A" value="A"></calcite-option>
@@ -65,7 +65,7 @@ describe('map-layer-picker', () => {
 
     expect(page.root).toEqualHtml(`
     <map-layer-picker selection-mode="single">
-     <div class="background-w map-layer-picker-container">
+     <div class="map-layer-picker-container">
        <div class="map-layer-picker">
          <calcite-select label="">
            <calcite-option label="A" value="A"></calcite-option>
@@ -90,7 +90,7 @@ describe('map-layer-picker', () => {
     });
     expect(page.root).toEqualHtml(`
       <map-layer-picker selection-mode="single">
-       <div class="background-w map-layer-picker-container">
+       <div class="map-layer-picker-container">
          <div class="map-layer-picker">
            <calcite-select label="">
              <calcite-option label="A" value="A"></calcite-option>
@@ -116,7 +116,7 @@ describe('map-layer-picker', () => {
     });
     expect(page.root).toEqualHtml(`
       <map-layer-picker selection-mode="multi">
-       <div class="background-w map-layer-picker-container">
+       <div class="map-layer-picker-container">
          <div class="map-layer-picker">
           <calcite-combobox label="" selection-mode="multi">
             <calcite-combobox-item selected="" textlabel="A" value="A"></calcite-combobox-item>

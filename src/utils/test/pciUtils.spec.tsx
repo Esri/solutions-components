@@ -28,268 +28,268 @@ describe("pciUtils", () => {
     // 1
     let type = "1";
     let actual = pciUtils.calculateDeductValue(type, "L", "0.52", true);
-    let expected = 7.4;
+    let expected = "1-L-7.4-0.52";
     expect(actual).toEqual(expected);
-    expect(logMock).toBeCalledTimes(2);
+    expect(logMock).toBeCalledTimes(3);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
-    expected = 16;
+    expected = "1-M-16-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = 23.3;
+    expected = "1-H-23.3-0.52";
     expect(actual).toEqual(expected);
 
     // 2
     type = "2";
     actual = pciUtils.calculateDeductValue(type, "L", "0.52");
-    expected = -0;
+    expected = "2-L-0-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
-    expected = 1.1;
+    expected = "2-M-1.1-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = 3.9;
+    expected = "2-H-3.9-0.52";
     expect(actual).toEqual(expected);
 
     // 3
     type = "3";
     actual = pciUtils.calculateDeductValue(type, "L", "0.52");
-    expected = -0.2;
+    expected = "3-L--0.2-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
-    expected = 0.5;
+    expected = "3-M-0.5-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = 5.2;
+    expected = "3-H-5.2-0.52";
     expect(actual).toEqual(expected);
 
     // 4
     type = "4";
     actual = pciUtils.calculateDeductValue(type, "L", "0.52");
-    expected = 5.3;
+    expected = "4-L-5.3-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
-    expected = 17.9;
+    expected = "4-M-17.9-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = 42.7;
+    expected = "4-H-42.7-0.52";
     expect(actual).toEqual(expected);
 
     // 5
     type = "5";
     actual = pciUtils.calculateDeductValue(type, "L", "0.52");
-    expected = 1.1;
+    expected = "5-L-1.1-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
-    expected = 10.7;
+    expected = "5-M-10.7-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = 28.1;
+    expected = "5-H-28.1-0.52";
     expect(actual).toEqual(expected);
 
     // 6
     type = "6";
     actual = pciUtils.calculateDeductValue(type, "L", "0.52");
-    expected = 5.2;
+    expected = "6-L-5.2-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
-    expected = 8.1;
+    expected = "6-M-8.1-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = 16.5;
+    expected = "6-H-16.5-0.52";
     expect(actual).toEqual(expected);
 
     // 7
     type = "7";
     actual = pciUtils.calculateDeductValue(type, "L", "0.52");
-    expected = 2;
+    expected = "7-L-2-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
-    expected = 6.7;
+    expected = "7-M-6.7-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = 11.9;
+    expected = "7-H-11.9-0.52";
     expect(actual).toEqual(expected);
 
     // 8
     type = "8";
     actual = pciUtils.calculateDeductValue(type, "L", "0.52");
-    expected = 0.8;
+    expected = "8-L-0.8-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
-    expected = 7.1;
+    expected = "8-M-7.1-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = 11.5;
+    expected = "8-H-11.5-0.52";
     expect(actual).toEqual(expected);
 
     // 9
     type = "9";
     actual = pciUtils.calculateDeductValue(type, "L", "0.52");
-    expected = 2;
+    expected = "9-L-2-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
-    expected = 4;
+    expected = "9-M-4-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = 6;
+    expected = "9-H-6-0.52";
     expect(actual).toEqual(expected);
 
     // 10
     type = "10";
     actual = pciUtils.calculateDeductValue(type, "L", "0.52");
-    expected = 0.5;
+    expected = "10-L-0.5-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
-    expected = 5.7;
+    expected = "10-M-5.7-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = 13.5;
+    expected = "10-H-13.5-0.52";
     expect(actual).toEqual(expected);
 
     // 11
     type = "11";
     actual = pciUtils.calculateDeductValue(type, "L", "0.52");
-    expected = 1;
+    expected = "11-L-1-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
-    expected = 7.1;
+    expected = "11-M-7.1-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = 15.7;
+    expected = "11-H-15.7-0.52";
     expect(actual).toEqual(expected);
 
     // 12
     type = "12";
     actual = pciUtils.calculateDeductValue(type, "L", "0.52");
-    expected = 18.8;
+    expected = "12-L-18.8-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
-    expected = 18.8;
+    expected = "12-M-18.8-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = 18.8;
+    expected = "12-H-18.8-0.52";
     expect(actual).toEqual(expected);
 
     // 13
     type = "13";
     actual = pciUtils.calculateDeductValue(type, "L", "0.52");
-    expected = 46.9;
+    expected = "13-L-46.9-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
-    expected = 73.4;
+    expected = "13-M-73.4-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = 93.7;
+    expected = "13-H-93.7-0.52";
     expect(actual).toEqual(expected);
 
     // 14
     type = "14";
     actual = pciUtils.calculateDeductValue(type, "L", "0.52");
-    expected = 3.3;
+    expected = "14-L-3.3-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
-    expected = -8.7;
+    expected = "14-M--8.7-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = -1.6;
+    expected = "14-H--1.6-0.52";
     expect(actual).toEqual(expected);
 
     // 15
     type = "15";
     actual = pciUtils.calculateDeductValue(type, "L", "0.52");
-    expected = 4.9;
+    expected = "15-L-4.9-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
-    expected = 13.1;
+    expected = "15-M-13.1-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = 21.1;
+    expected = "15-H-21.1-0.52";
     expect(actual).toEqual(expected);
 
     // 16
     type = "16";
     actual = pciUtils.calculateDeductValue(type, "L", "0.52");
-    expected = 1.5;
+    expected = "16-L-1.5-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
-    expected = 6.6;
+    expected = "16-M-6.6-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = 13.7;
+    expected = "16-H-13.7-0.52";
     expect(actual).toEqual(expected);
 
     // 17
     type = "17";
     actual = pciUtils.calculateDeductValue(type, "L", "0.52");
-    expected = 2.4;
+    expected = "17-L-2.4-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
-    expected = 7.5;
+    expected = "17-M-7.5-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = 12.7;
+    expected = "17-H-12.7-0.52";
     expect(actual).toEqual(expected);
 
     // 18
     type = "18";
     actual = pciUtils.calculateDeductValue(type, "L", "0.52");
-    expected = -2.8;
+    expected = "18-L--2.8-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
-    expected = 10;
+    expected = "18-M-10-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = 26.3;
+    expected = "18-H-26.3-0.52";
     expect(actual).toEqual(expected);
 
     // 19
     type = "19";
     actual = pciUtils.calculateDeductValue(type, "L", "0.52");
-    expected = 1.4;
+    expected = "19-L-1.4-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
-    expected = 7.1;
+    expected = "19-M-7.1-0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = 13.7;
+    expected = "19-H-13.7-0.52";
     expect(actual).toEqual(expected);
   });
   it("calculatePCI", () => {
@@ -336,7 +336,7 @@ describe("pciUtils", () => {
     const logMock = jest.spyOn(console, "log").mockImplementation(() => {});
 
     const expected = 48.6;
-    const actual = pciUtils.calculatePCI("7.9,23.4,7.5,25.1,17.9,11.2,6.9,5.3", "1", true);
+    const actual = pciUtils.calculatePCI("7.9,23.4,7.5,25.1,17.9,11.2,6.9,5.3", true);
     expect(actual).toEqual(expected);
 
     debugMessages.forEach((m, i) => {
@@ -348,7 +348,7 @@ describe("pciUtils", () => {
     const logMock = jest.spyOn(console, "log").mockImplementation(() => {});
 
     const expected = 48.6;
-    const actual = pciUtils.calculatePCI("7.9,23.4,7.5,25.1,17.9,11.2,6.9,5.3", "1", false);
+    const actual = pciUtils.calculatePCI("7.9,23.4,7.5,25.1,17.9,11.2,6.9,5.3", false);
     expect(actual).toEqual(expected);
 
     expect(logMock).toBeCalledTimes(0);
@@ -358,7 +358,7 @@ describe("pciUtils", () => {
     const logMock = jest.spyOn(console, "log").mockImplementation(() => {});
 
     const expected = 92.1;
-    const actual = pciUtils.calculatePCI("7.9", "1", true);
+    const actual = pciUtils.calculatePCI("7.9", true);
     expect(actual).toEqual(expected);
 
     expect(logMock).lastCalledWith("Max CDV: 7.9")
