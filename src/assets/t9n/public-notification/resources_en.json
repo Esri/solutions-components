@@ -21,7 +21,7 @@
     "removeDuplicate": "Remove duplicate addresses",
     "selectLayerAndAdd": "Choose an addressee layer and click on the 'Add' button to create a notification list by selecting features.",
     "selectSearchTip": "Search for an address, place, or feature for selection",
-    "selectLayerTip": "Draw shapes to select features from the chosen selection layer, the results will be used to select features from the addressee layer",
+    "selectLayerTip": "Draw shapes to select features from the chosen selection layer; the results will be used to select features from the addressee layer",
     "selectSketchTip": "Draw shapes to select features from the addressee layer",
     "optionalSearchDistance": "and optionally add search distance.",
     "listHasSetsTip": "For existing notification lists optionally edit or remove each list. Also, refine across all selection sets or export to PDF or CSV.",
