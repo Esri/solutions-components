@@ -149,9 +149,9 @@ export class ConfigLayerPicker {
           <div class="padding-inline-start-1">
             <calcite-combobox
               label=''
+              overlayPositioning="fixed"
               ref={(el) => { this._checkList = el; }}
               selectionMode="multi"
-              overlayPositioning="fixed"
             >
               {this._getComboboxItems()}
             </calcite-combobox>
@@ -169,7 +169,7 @@ export class ConfigLayerPicker {
 
   _getComboboxItems(): VNode[] {
     return this._layerNames ? this._layerNames.map(name => (
-      <calcite-combobox-item value={name} textLabel={name} />
+      <calcite-combobox-item textLabel={name} value={name} />
     )) : [];
   }
 
