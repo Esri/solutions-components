@@ -23,18 +23,26 @@
     -->
     <style>
       #viewDiv {
-        padding: 0;
-        margin: 0;
-        height: 100%;
-        width: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        bottom: 0px;
+        right: 334px;
+      }
+      #viewDiv[dir="rtl"] {
+        left: 334px;
+        right: 0px;
       }
       .over-map {
         position: absolute;
         right: 0px;
         background-color: var(--calcite-ui-foreground-1);
       }
+      .over-map[dir="rtl"] {
+        left: 0px;
+      }
       .column {
-        min-width: 300px;
+        width: 300px;
         padding: 1rem;
         border: 1px solid var(--calcite-ui-border-2);
         height: -webkit-fill-available;
