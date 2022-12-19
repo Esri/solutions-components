@@ -255,8 +255,6 @@ export namespace Components {
     }
     interface PciCalculator {
     }
-    interface PciCalculator {
-    }
     interface PdfDownload {
         /**
           * boolean: Controls the enabled/disabled state of download
@@ -995,8 +993,6 @@ declare namespace LocalJSX {
           * boolean: When true the buffer tools will be available for use
          */
         "showBufferTools"?: boolean;
-    }
-    interface PciCalculator {
     }
     interface PciCalculator {
     }

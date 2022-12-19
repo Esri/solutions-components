@@ -61,6 +61,7 @@ export enum EDistressType {
   WEATHERING_RAVELING
 }
 
+/**
  * Values to use for multi-severity case corrections
  *
  */
