@@ -7,13 +7,14 @@
 
 ## Properties
 
-| Property          | Attribute   | Description                                                                                                                               | Type               | Default     |
-| ----------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
-| `geometries`      | --          | esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html                                           | `Geometry[]`       | `undefined` |
-| `isUpdate`        | `is-update` | boolean: When true a new label is not generated for the stored selection set                                                              | `boolean`          | `false`     |
-| `mapView`         | --          | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`          | `undefined` |
-| `selectLayerView` | --          | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
-| `selectionSet`    | --          | utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.                                       | `ISelectionSet`    | `undefined` |
+| Property          | Attribute           | Description                                                                                                                               | Type               | Default     |
+| ----------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
+| `geometries`      | --                  | esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html                                           | `Geometry[]`       | `undefined` |
+| `isUpdate`        | `is-update`         | boolean: When true a new label is not generated for the stored selection set                                                              | `boolean`          | `false`     |
+| `mapView`         | --                  | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`          | `undefined` |
+| `selectLayerView` | --                  | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
+| `selectionSet`    | --                  | utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.                                       | `ISelectionSet`    | `undefined` |
+| `showBufferTools` | `show-buffer-tools` | boolean: When true the buffer tools will be available for use                                                                             | `boolean`          | `true`      |
 
 
 ## Events
@@ -21,6 +22,7 @@
 | Event                | Description                                       | Type                                                                                                        |
 | -------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | `selectionSetChange` | Emitted on demand when the selection set changes. | `CustomEvent<number>`                                                                                       |
+| `sketchTypeChange`   | Emitted on demand when the sketch type changes.   | `CustomEvent<ESketchType.INTERACTIVE \| ESketchType.LAYER>`                                                 |
 | `workflowTypeChange` | Emitted on demand when the workflow type changes. | `CustomEvent<EWorkflowType.REFINE \| EWorkflowType.SEARCH \| EWorkflowType.SELECT \| EWorkflowType.SKETCH>` |
 
 
@@ -57,9 +59,10 @@ Promise with the new selection set
 
 - calcite-radio-group
 - calcite-radio-group-item
+- calcite-label
+- calcite-checkbox
 - [map-draw-tools](../map-draw-tools)
 - [refine-selection-tools](../refine-selection-tools)
-- calcite-label
 - [buffer-tools](../buffer-tools)
 
 ### Graph
@@ -67,12 +70,12 @@ Promise with the new selection set
 graph TD;
   map-select-tools --> calcite-radio-group
   map-select-tools --> calcite-radio-group-item
+  map-select-tools --> calcite-label
+  map-select-tools --> calcite-checkbox
   map-select-tools --> map-draw-tools
   map-select-tools --> refine-selection-tools
-  map-select-tools --> calcite-label
   map-select-tools --> buffer-tools
   calcite-radio-group-item --> calcite-icon
-  refine-selection-tools --> calcite-label
   refine-selection-tools --> map-layer-picker
   refine-selection-tools --> calcite-action
   map-layer-picker --> calcite-select

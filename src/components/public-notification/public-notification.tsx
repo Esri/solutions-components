@@ -16,7 +16,7 @@
 
 import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import { EExportType, EPageType, EWorkflowType, ISelectionSet } from "../../utils/interfaces";
+import { EExportType, EPageType, ESketchType, EWorkflowType, ISelectionSet } from "../../utils/interfaces";
 import { goToSelection, getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
 import { getSelectionSetQuery } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
@@ -53,6 +53,11 @@ export class PublicNotification {
    */
   @Prop() mapView: __esri.MapView;
 
+  /**
+   * boolean: When true the refine selection workflow will be included in the UI
+   */
+  @Prop() showRefineSelection = false;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -84,6 +89,12 @@ export class PublicNotification {
    * utils/interfaces/ISelectionSet: An array of user defined selection sets
    */
   @State() _selectionSets: ISelectionSet[] = [];
+
+  /**
+   * ESketchType: The current type of sketch
+   * used to control information messages.
+   */
+  @State() _sketchType: ESketchType = ESketchType.INTERACTIVE;
 
   /**
    * utils/interfaces/EWorkflowType: SEARCH | SELECT | SKETCH
@@ -183,6 +194,14 @@ export class PublicNotification {
     this._selectionSets = [...event.detail];
   }
 
+  /**
+   * Handle changes to the selection sets
+   */
+  @Listen("sketchTypeChange", { target: "window" })
+  sketchTypeChange(event: CustomEvent): void {
+    this._sketchType = event.detail;
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -206,10 +225,10 @@ export class PublicNotification {
       <Host>
         <calcite-shell>
           <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
-            {this._getActionGroup("list-check", false, EPageType.LIST, this._translations?.myLists)}
-            {this._getActionGroup("test-data", !hasSelections, EPageType.REFINE, this._translations?.refineSelection)}
-            {this._getActionGroup("file-pdf", !hasSelections, EPageType.PDF, this._translations?.downloadPDF)}
-            {this._getActionGroup("file-csv", !hasSelections, EPageType.CSV, this._translations?.downloadCSV)}
+            {this._getActionGroup("list-check", false, EPageType.LIST, this._translations.myLists)}
+            {this.showRefineSelection ? this._getActionGroup("test-data", !hasSelections, EPageType.REFINE, this._translations.refineSelection) : undefined}
+            {this._getActionGroup("file-pdf", !hasSelections, EPageType.PDF, this._translations.downloadPDF)}
+            {this._getActionGroup("file-csv", !hasSelections, EPageType.CSV, this._translations.downloadCSV)}
           </calcite-action-bar>
           {this._getPage(this._pageType)}
         </calcite-shell>
@@ -255,8 +274,9 @@ export class PublicNotification {
     pageType: EPageType,
     tip: string
   ): VNode {
+    const groupClass = this.showRefineSelection ? "action-center w-1-4" : "action-center w-1-3";
     return (
-      <calcite-action-group class={"action-center w-1-4"} layout="horizontal">
+      <calcite-action-group class={groupClass} layout="horizontal">
         <calcite-action
           active={this._pageType === pageType}
           alignment="center"
@@ -338,11 +358,11 @@ export class PublicNotification {
     return hasSets ? (
       <calcite-panel>
         <div class="padding-top-sides-1">
-          <calcite-label class="font-bold">{this._translations?.myLists}</calcite-label>
+          <calcite-label class="font-bold">{this._translations.myLists}</calcite-label>
         </div>
-        {this._getNotice(this._translations?.listHasSetsTip, "padding-sides-1 padding-bottom-1")}
+        {this._getNotice(this._translations.listHasSetsTip, "padding-sides-1 padding-bottom-1")}
         <div class="display-flex padding-sides-1">
-          <calcite-label class="font-bold width-full">{this._translations?.addresseeLayer}
+          <calcite-label class="font-bold width-full">{this._translations.addresseeLayer}
             <map-layer-picker
               mapView={this.mapView}
               onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
@@ -353,37 +373,37 @@ export class PublicNotification {
         </div>
         <div class="padding-sides-1 height-1-1-2">
           <div class="position-left">
-            <calcite-label alignment="start" class="font-bold">{this._translations?.notifications}</calcite-label>
+            <calcite-label alignment="start" class="font-bold">{this._translations.notifications}</calcite-label>
           </div>
           <div class="position-right">
-            <calcite-input-message active class="info-blue margin-top-0" scale="m">{this._translations?.uniqueCout.replace("{{n}}", total.toString())}</calcite-input-message>
+            <calcite-input-message active class="info-blue margin-top-0" scale="m">{this._translations.uniqueCout.replace("{{n}}", total.toString())}</calcite-input-message>
           </div>
         </div>
         {
           hasSets ? this._getSelectionSetList() : (
             <div class="info-message">
-              <calcite-input-message active class="info-blue" scale="m">{this._translations?.noNotifications}</calcite-input-message>
+              <calcite-input-message active class="info-blue" scale="m">{this._translations.noNotifications}</calcite-input-message>
             </div>
           )
         }
         <div class="display-flex padding-1">
-          <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full">{this._translations?.add}</calcite-button>
+          <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full">{this._translations.add}</calcite-button>
         </div>
       </calcite-panel>
     ) : (
       <calcite-panel>
         <div class="padding-top-sides-1">
-          <calcite-label class="font-bold">{this._translations?.myLists}</calcite-label>
+          <calcite-label class="font-bold">{this._translations.myLists}</calcite-label>
         </div>
         <div class="padding-sides-1">
-          <calcite-label>{this._translations?.notifications}</calcite-label>
+          <calcite-label>{this._translations.notifications}</calcite-label>
         </div>
         <div class="info-message padding-bottom-1">
-          <calcite-input-message active class="info-blue" scale="m">{this._translations?.noNotifications}</calcite-input-message>
+          <calcite-input-message active class="info-blue" scale="m">{this._translations.noNotifications}</calcite-input-message>
         </div>
-        {this._getNotice(this._translations?.selectLayerAndAdd, "padding-sides-1 padding-bottom-1")}
+        {this._getNotice(this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1")}
         <div class="display-flex padding-sides-1">
-          <calcite-label class="font-bold width-full">{this._translations?.addresseeLayer}
+          <calcite-label class="font-bold width-full">{this._translations.addresseeLayer}
             <map-layer-picker
               mapView={this.mapView}
               onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
@@ -393,7 +413,7 @@ export class PublicNotification {
           </calcite-label>
         </div>
         <div class="display-flex padding-1">
-          <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full">{this._translations?.add}</calcite-button>
+          <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full">{this._translations.add}</calcite-button>
         </div>
       </calcite-panel>
     );
@@ -438,16 +458,23 @@ export class PublicNotification {
    * @protected
    */
   protected _getSelectPage(): VNode {
-    const searchTip = `${this._translations?.selectSearchTip} ${this._translations?.optionalSearchDistance}`;
-    const selectTip = `${this._translations?.selectLayerTip} ${this._translations?.optionalSearchDistance}`;
-    const sketchTip = `${this._translations?.selectSketchTip} ${this._translations?.optionalSearchDistance}`;
+    // const searchTip = `${this._translations.selectSearchTip} ${this._translations.optionalSearchDistance}`;
+    const searchTip = this._translations.selectSearchTip;
+    // const selectTip = `${this._translations.selectLayerTip} ${this._translations.optionalSearchDistance}`;
+    const selectTip = this._translations.selectLayerTip;
+    // const sketchTip = this._sketchType === ESketchType.INTERACTIVE ?
+    //   `${this._translations.selectSketchTip} ${this._translations.optionalSearchDistance}` :
+    //   `${this._translations.selectLayerTip} ${this._translations.optionalSearchDistance}`;
+    const sketchTip = this._sketchType === ESketchType.INTERACTIVE ?
+      this._translations.selectSketchTip :
+      this._translations.selectLayerTip;
 
     const noticeText = this._selectionWorkflowType === EWorkflowType.SELECT ? selectTip :
       this._selectionWorkflowType === EWorkflowType.SKETCH ? sketchTip : searchTip;
 
     return (
       <calcite-panel>
-        {this._getLabel(this._translations?.stepTwoFull, true)}
+        {this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", this.addresseeLayer?.layer.title), true)}
         {this._getNotice(noticeText)}
         <div class={"padding-1"}>
           <map-select-tools
@@ -464,15 +491,15 @@ export class PublicNotification {
         <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
           <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
           <calcite-input-message active class="info-blue" scale="m">
-            {this._translations?.selectedAddresses.replace("{{n}}", this._numSelected.toString())}
+            {this._translations.selectedAddresses.replace("{{n}}", this._numSelected.toString()).replace("{{layer}}", this.addresseeLayer?.layer.title || "")}
           </calcite-input-message>
         </div>
         {
           this._getPageNavButtons(
-            this._translations?.done,
+            this._translations.done,
             this._numSelected === 0,
             (): void => { void this._saveSelection() },
-            this._translations?.cancel,
+            this._translations.cancel,
             false,
             (): void => { void this._home() }
           )
@@ -490,8 +517,8 @@ export class PublicNotification {
   protected _getRefinePage(): VNode {
     return (
       <calcite-panel>
-        {this._getLabel(this._translations?.refineSelection)}
-        {this._getNotice(this._translations?.refineTip, "padding-sides-1")}
+        {this._getLabel(this._translations.refineSelection)}
+        {this._getNotice(this._translations.refineTip, "padding-sides-1")}
         <refine-selection
           addresseeLayer={this.addresseeLayer}
           mapView={this.mapView}
@@ -539,20 +566,20 @@ export class PublicNotification {
         <div>
           <div class="padding-top-sides-1">
             <calcite-label class="font-bold">
-              {isPdf ? this._translations?.pdfDownloads : this._translations?.csvDownloads}
+              {isPdf ? this._translations.pdfDownloads : this._translations.csvDownloads}
             </calcite-label>
-            <calcite-label>{this._translations?.notifications}</calcite-label>
+            <calcite-label>{this._translations.notifications}</calcite-label>
           </div>
           {this._getSelectionLists()}
           <div class="margin-side-1 padding-top-1 border-bottom" />
           <div class="padding-top-sides-1">
             <calcite-label disabled={!this._downloadActive} layout="inline">
               <calcite-checkbox disabled={!this._downloadActive} ref={(el) => { this._removeDuplicates = el }} />
-              {this._translations?.removeDuplicate}
+              {this._translations.removeDuplicate}
             </calcite-label>
           </div>
           <div class={isPdf ? "" : "display-none"}>
-            {this._getLabel(this._translations?.selectPDFLabelOption, false, !this._downloadActive)}
+            {this._getLabel(this._translations.selectPDFLabelOption, false, !this._downloadActive)}
             <div class={"padding-sides-1"}>
               <pdf-download
                 disabled={!this._downloadActive}
@@ -567,7 +594,7 @@ export class PublicNotification {
               onClick={isPdf ? () => this._downloadPDF() : () => this._downloadCSV()}
               width="full"
             >
-              {isPdf ? this._translations?.downloadPDF : this._translations?.downloadCSV}
+              {isPdf ? this._translations.downloadPDF : this._translations.downloadCSV}
             </calcite-button>
           </div>
         </div>
@@ -954,7 +981,9 @@ export class PublicNotification {
    * @protected
    */
   protected _clearHighlight(): void {
-    state.highlightHandle?.remove();
+    if (state && state.highlightHandle) {
+      state.highlightHandle?.remove();
+    }
   }
 
   /**

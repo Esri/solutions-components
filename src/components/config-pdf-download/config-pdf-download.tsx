@@ -129,7 +129,7 @@ export class ConfigPdfDownload {
         <div>
           <div class="padding-block-end-1">
             <calcite-label class="label-spacing">
-              {this._translations?.availableLabelFormats}
+              {this._translations.availableLabelFormats}
             </calcite-label>
           </div>
           <div class="padding-block-end-1 padding-inline-start-1">
@@ -141,14 +141,14 @@ export class ConfigPdfDownload {
           </div>
           <div class="padding-block-end-1">
             <calcite-label class="label-spacing">
-              {this._translations?.csvOptions}
+              {this._translations.csvOptions}
             </calcite-label>
           </div>
           <div class="padding-block-end-1 padding-inline-start-1">
             <check-list
               defaultChecked={this.defaultChecked}
               ref={(el) => { this._csvOptionsCheckList = el; }}
-              values={[this._translations?.csvColumnTitle]}
+              values={[this._translations.csvColumnTitle]}
             />
           </div>
         </div>

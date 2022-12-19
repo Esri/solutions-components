@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ERefineMode, ESelectionMode, EWorkflowType, IInfoCardValues, IInventoryItem, IMediaCardValues, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
+import { ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IInfoCardValues, IInventoryItem, IMediaCardValues, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -65,10 +65,6 @@ export namespace Components {
     }
     interface ConfigBufferTools {
         /**
-          * "VERTICAL" | "HORIZONTAL": Specifies how the controls chould be aligned.
-         */
-        "alignment": "VERTICAL" | "HORIZONTAL";
-        /**
           * number: Default distance value.
          */
         "distance": number;
@@ -80,7 +76,7 @@ export namespace Components {
         /**
           * string: Default unit value. Should be a unit listed in assets/t9n/config-buffer-tools/resources
          */
-        "unit": any;
+        "unit": string;
     }
     interface ConfigDrawTools {
         /**
@@ -103,6 +99,10 @@ export namespace Components {
           * @returns Promise with the state of the checkboxes
          */
         "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
+        /**
+          * string: Value to be shown above the check list Allows this to support multiple sets of layers.
+         */
+        "instruction": string;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -276,6 +276,10 @@ export namespace Components {
           * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
          */
         "selectionSet": ISelectionSet;
+        /**
+          * boolean: When true the buffer tools will be available for use
+         */
+        "showBufferTools": boolean;
     }
     interface MediaCard {
         /**
@@ -318,6 +322,10 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * boolean: When true the refine selection workflow will be included in the UI
+         */
+        "showRefineSelection": boolean;
     }
     interface RefineSelection {
         /**
@@ -941,17 +949,13 @@ declare namespace LocalJSX {
     }
     interface ConfigBufferTools {
         /**
-          * "VERTICAL" | "HORIZONTAL": Specifies how the controls chould be aligned.
-         */
-        "alignment"?: "VERTICAL" | "HORIZONTAL";
-        /**
           * number: Default distance value.
          */
         "distance"?: number;
         /**
           * string: Default unit value. Should be a unit listed in assets/t9n/config-buffer-tools/resources
          */
-        "unit"?: any;
+        "unit"?: string;
     }
     interface ConfigDrawTools {
         /**
@@ -964,6 +968,10 @@ declare namespace LocalJSX {
           * boolean: All checkboxes checked state will be set with this value on first render. Default is true
          */
         "defaultChecked"?: boolean;
+        /**
+          * string: Value to be shown above the check list Allows this to support multiple sets of layers.
+         */
+        "instruction"?: string;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -1105,6 +1113,10 @@ declare namespace LocalJSX {
          */
         "onSelectionSetChange"?: (event: MapSelectToolsCustomEvent<number>) => void;
         /**
+          * Emitted on demand when the sketch type changes.
+         */
+        "onSketchTypeChange"?: (event: MapSelectToolsCustomEvent<ESketchType>) => void;
+        /**
           * Emitted on demand when the workflow type changes.
          */
         "onWorkflowTypeChange"?: (event: MapSelectToolsCustomEvent<EWorkflowType>) => void;
@@ -1116,6 +1128,10 @@ declare namespace LocalJSX {
           * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
          */
         "selectionSet"?: ISelectionSet;
+        /**
+          * boolean: When true the buffer tools will be available for use
+         */
+        "showBufferTools"?: boolean;
     }
     interface MediaCard {
         /**
@@ -1144,6 +1160,10 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * boolean: When true the refine selection workflow will be included in the UI
+         */
+        "showRefineSelection"?: boolean;
     }
     interface RefineSelection {
         /**

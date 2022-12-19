@@ -41,42 +41,42 @@ export class BufferTools {
   /**
    * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
    */
-  @Prop() appearance: "slider" | "text" = "text";
+  @Prop({mutable: true}) appearance: "slider" | "text" = "text";
 
   /**
    * number: The distance used for buffer
    */
-  @Prop() distance = 0;
+  @Prop({mutable: true}) distance = 0;
 
   /**
    * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
    */
-  @Prop() geometries: __esri.Geometry[] = [];
+  @Prop({mutable: true}) geometries: __esri.Geometry[] = [];
 
   /**
    * number: The component's maximum selectable value.
    */
-  @Prop() sliderMax = 100;
+  @Prop({mutable: true}) sliderMax = 100;
 
   /**
    * number: The component's minimum selectable value.
    */
-  @Prop() sliderMin = 0;
+  @Prop({mutable: true}) sliderMin = 0;
 
   /**
    * number: Displays tick marks on the number line at a specified interval.
    */
-  @Prop() sliderTicks = 10;
+  @Prop({mutable: true}) sliderTicks = 10;
 
   /**
    * boolean: option to control if buffer results should be unioned
    */
-  @Prop() unionResults = true;
+  @Prop({mutable: true}) unionResults = true;
 
   /**
    * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
    */
-  @Prop() unit: __esri.LinearUnits = "meters";
+  @Prop({mutable: true}) unit: __esri.LinearUnits = "meters";
 
   //--------------------------------------------------------------------------
   //
@@ -118,7 +118,7 @@ export class BufferTools {
    */
   @Watch("geometries")
   geometriesWatchHandler(v: any, oldV: any): void {
-    if (v && JSON.stringify(v) !== JSON.stringify(oldV || [])) {
+    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
       this._buffer();
     }
   }
@@ -198,19 +198,13 @@ export class BufferTools {
    */
   protected _getUnits(): VNode[] {
     const units = {
-      "feet": this._translations.feet || "Feet",
-      "meters": this._translations.meters || "Meters",
-      "miles": this._translations.miles || "Miles",
-      "kilometers": this._translations.kilometers || "Kilometers"
+      "feet": this._translations.feet,
+      "meters": this._translations.meters,
+      "miles": this._translations.miles,
+      "kilometers": this._translations.kilometers
     };
     return Object.keys(units).map(u => {
-      let selected = true;
-      if (!this.unit) {
-        this.unit = u as __esri.LinearUnits;
-      } else if (this.unit !== u) {
-        selected = false;
-      }
-      return (<calcite-option label={units[u]} selected={selected} value={u} />);
+      return (<calcite-option label={units[u]} selected={this.unit === u} value={u} />);
     });
   }
 
@@ -237,8 +231,10 @@ export class BufferTools {
    *
    * @protected
    */
-  protected _setUnit(): void {
-    this.unit = this._unitElement.value as __esri.LinearUnits;
+  protected _setUnit(
+    unit: __esri.LinearUnits
+  ): void {
+    this.unit = unit;
     this._buffer();
   }
 
@@ -288,7 +284,7 @@ export class BufferTools {
         <calcite-select
           class="flex-1"
           label="label"
-          onCalciteSelectChange={() => this._setUnit()}
+          onCalciteSelectChange={() => this._setUnit(this._unitElement.value as __esri.LinearUnits)}
           ref={(el) => { this._unitElement = el }}
         >
           {this._getUnits()}
@@ -329,4 +325,22 @@ export class BufferTools {
     this._translations = messages[0] as typeof BufferTools_T9n;
   }
 
+  /** Provides access to protected methods for unit testing.
+  *
+  *  @param methodName Name of protected method to run
+  *  @param arg1 First argument to forward to method, e.g., for "_setDistance", `CustomEvent`
+  *  @returns
+  */
+  public _testAccess(
+    methodName: string,
+    arg1?: any
+  ): any {
+    switch (methodName) {
+      case "_setUnit":
+        return this._setUnit(arg1);
+      case "_setDistance":
+        return this._setDistance(arg1);
+    }
+    return null;
+  }
 }

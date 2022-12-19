@@ -66,6 +66,12 @@ export enum ESelectionType {
   POLY="POLY",
   RECT="RECT"
 }
+
+export enum ESketchType {
+  "LAYER"="LAYER",
+  "INTERACTIVE"="INTERACTIVE"
+}
+
 /* eslint-enable no-unused-vars */
 
 export type SelectionMode = "single" | "multi";

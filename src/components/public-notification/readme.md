@@ -7,10 +7,11 @@
 
 ## Properties
 
-| Property         | Attribute | Description                                                                                                                               | Type               | Default     |
-| ---------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
-| `addresseeLayer` | --        | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
-| `mapView`        | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`          | `undefined` |
+| Property              | Attribute               | Description                                                                                                                               | Type               | Default     |
+| --------------------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
+| `addresseeLayer`      | --                      | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
+| `mapView`             | --                      | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`          | `undefined` |
+| `showRefineSelection` | `show-refine-selection` | boolean: When true the refine selection workflow will be included in the UI                                                               | `boolean`          | `false`     |
 
 
 ## Dependencies
@@ -84,12 +85,12 @@ graph TD;
   calcite-button --> calcite-icon
   map-select-tools --> calcite-radio-group
   map-select-tools --> calcite-radio-group-item
+  map-select-tools --> calcite-label
+  map-select-tools --> calcite-checkbox
   map-select-tools --> map-draw-tools
   map-select-tools --> refine-selection-tools
-  map-select-tools --> calcite-label
   map-select-tools --> buffer-tools
   calcite-radio-group-item --> calcite-icon
-  refine-selection-tools --> calcite-label
   refine-selection-tools --> map-layer-picker
   refine-selection-tools --> calcite-action
   buffer-tools --> calcite-option
@@ -104,7 +105,6 @@ graph TD;
   refine-selection --> refine-selection-tools
   refine-selection --> calcite-list
   refine-selection --> calcite-list-item
-  refine-selection --> calcite-action
   pdf-download --> calcite-select
   pdf-download --> calcite-option
   calcite-notice --> calcite-icon
