@@ -68,7 +68,7 @@ export class CrowdsourceReporter {
   render() {
     return (
       <Host>
-        <slot></slot>
+        <slot/>
       </Host>
     );
   }

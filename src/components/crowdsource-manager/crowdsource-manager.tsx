@@ -68,7 +68,7 @@ export class CrowdsourceManager {
   render() {
     return (
       <Host>
-        <slot></slot>
+        <slot/>
       </Host>
     );
   }

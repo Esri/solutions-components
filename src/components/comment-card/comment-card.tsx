@@ -68,7 +68,7 @@ export class CommentCard {
   render() {
     return (
       <Host>
-        <slot></slot>
+        <slot/>
       </Host>
     );
   }

@@ -68,7 +68,7 @@ export class AddRecordModal {
   render() {
     return (
       <Host>
-        <slot></slot>
+        <slot/>
       </Host>
     );
   }

@@ -66,7 +66,6 @@ export class MediaCard {
   //
   //--------------------------------------------------------------------------
 
-
   /**
    * Called each time the values prop is changed.
    * Reset the _index value accordingly.

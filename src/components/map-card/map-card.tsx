@@ -68,7 +68,7 @@ export class MapCard {
   render() {
     return (
       <Host>
-        <slot></slot>
+        <slot/>
       </Host>
     );
   }

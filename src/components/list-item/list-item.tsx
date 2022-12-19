@@ -68,7 +68,7 @@ export class ListItem {
   render() {
     return (
       <Host>
-        <slot></slot>
+        <slot/>
       </Host>
     );
   }

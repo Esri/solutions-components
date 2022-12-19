@@ -68,7 +68,7 @@ export class LayerTable {
   render() {
     return (
       <Host>
-        <slot></slot>
+        <slot/>
       </Host>
     );
   }
