@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import { VNode } from '@esri/calcite-components/dist/types/stencil-public-runtime';
-import { Component, Element, Host, h, Method, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Host, h, Method, Prop, State, VNode, Watch } from '@stencil/core';
 import ConfigLayerPicker_T9n from "../../assets/t9n/config-layer-picker/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getMapLayerNames } from "../../utils/mapViewUtils";
