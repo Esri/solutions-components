@@ -173,8 +173,6 @@ export function calculateDeductValue(
  * Calculate the pavement condition index (PCI)
  *
  * @param deductValues string of comma delimited values
- * @param numSeverities expects "1" | "2" | "3" represents the number of severities for
- * a single distress type
  * @param showDebugging used to control debugging messages to show the various
  * calculations a required steps along the way.
  * The main reason this is optional is that it provides no value when used within
