@@ -92,7 +92,7 @@ export namespace Components {
           * Returns a key/value pair that represents the checkbox value and checked state
           * @returns Promise with the state of the checkboxes
          */
-        "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
+        "getConfigInfo": () => Promise<string[]>;
         /**
           * string: Value to be shown above the check list Allows this to support multiple sets of layers.
          */
@@ -252,8 +252,6 @@ export namespace Components {
           * boolean: When true the buffer tools will be available for use
          */
         "showBufferTools": boolean;
-    }
-    interface PciCalculator {
     }
     interface PciCalculator {
     }
@@ -995,8 +993,6 @@ declare namespace LocalJSX {
           * boolean: When true the buffer tools will be available for use
          */
         "showBufferTools"?: boolean;
-    }
-    interface PciCalculator {
     }
     interface PciCalculator {
     }

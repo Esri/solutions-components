@@ -31,7 +31,6 @@ Promise with the state of the checkboxes
 ### Used by
 
  - [config-draw-tools](../config-draw-tools)
- - [config-layer-picker](../config-layer-picker)
  - [config-pdf-download](../config-pdf-download)
 
 ### Depends on
@@ -45,7 +44,6 @@ graph TD;
   check-list --> calcite-label
   check-list --> calcite-checkbox
   config-draw-tools --> check-list
-  config-layer-picker --> check-list
   config-pdf-download --> check-list
   style check-list fill:#f9f,stroke:#333,stroke-width:4px
 ```

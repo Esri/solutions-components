@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { VNode } from '@esri/calcite-components/dist/types/stencil-public-runtime';
 import { Component, Element, Host, h, Method, Prop, State, Watch } from '@stencil/core';
 import ConfigLayerPicker_T9n from "../../assets/t9n/config-layer-picker/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -77,7 +78,7 @@ export class ConfigLayerPicker {
   /**
    * HTMLCheckListElement: The check list element
    */
-  protected _checkList: HTMLCheckListElement;
+  protected _checkList: HTMLCalciteComboboxElement;
 
   //--------------------------------------------------------------------------
   //
@@ -106,8 +107,9 @@ export class ConfigLayerPicker {
    * @returns Promise with the state of the checkboxes
    */
   @Method()
-  async getConfigInfo(): Promise<{ [key: string]: boolean }> {
-    return this._checkList.getConfigInfo();
+  async getConfigInfo(): Promise<string[]> {
+    return typeof this._checkList.value === "string" ?
+      [this._checkList.value] : this._checkList.value;
   }
 
   //--------------------------------------------------------------------------
@@ -145,11 +147,14 @@ export class ConfigLayerPicker {
             </calcite-label>
           </div>
           <div class="padding-inline-start-1">
-            <check-list
-              defaultChecked={this.defaultChecked}
+            <calcite-combobox
+              label=''
               ref={(el) => { this._checkList = el; }}
-              values={this._layerNames}
-            />
+              selectionMode="multi"
+              overlayPositioning="fixed"
+            >
+              {this._getComboboxItems()}
+            </calcite-combobox>
           </div>
         </div>
       </Host>
@@ -161,6 +166,12 @@ export class ConfigLayerPicker {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  _getComboboxItems(): VNode[] {
+    return this._layerNames ? this._layerNames.map(name => (
+      <calcite-combobox-item value={name} textLabel={name} />
+    )) : [];
+  }
 
   /**
    * Fetch the names of the layers from the map
