@@ -104,7 +104,6 @@ graph TD;
   refine-selection --> refine-selection-tools
   refine-selection --> calcite-list
   refine-selection --> calcite-list-item
-  refine-selection --> calcite-action
   pdf-download --> calcite-select
   pdf-download --> calcite-option
   calcite-notice --> calcite-icon

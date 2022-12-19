@@ -74,7 +74,7 @@ export namespace Components {
         /**
           * string: Default unit value. Should be a unit listed in assets/t9n/config-buffer-tools/resources
          */
-        "unit": any;
+        "unit": string;
     }
     interface ConfigDrawTools {
         /**
@@ -834,7 +834,7 @@ declare namespace LocalJSX {
         /**
           * string: Default unit value. Should be a unit listed in assets/t9n/config-buffer-tools/resources
          */
-        "unit"?: any;
+        "unit"?: string;
     }
     interface ConfigDrawTools {
         /**

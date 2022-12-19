@@ -34,7 +34,6 @@
 - [refine-selection-tools](../refine-selection-tools)
 - calcite-list
 - calcite-list-item
-- calcite-action
 
 ### Graph
 ```mermaid
@@ -44,7 +43,6 @@ graph TD;
   refine-selection --> refine-selection-tools
   refine-selection --> calcite-list
   refine-selection --> calcite-list-item
-  refine-selection --> calcite-action
   calcite-radio-group-item --> calcite-icon
   refine-selection-tools --> calcite-label
   refine-selection-tools --> map-layer-picker
