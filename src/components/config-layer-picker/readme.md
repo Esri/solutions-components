@@ -18,13 +18,13 @@
 
 ### `getConfigInfo() => Promise<string[]>`
 
-Returns a key/value pair that represents the checkbox value and checked state
+Returns a list of layers that have been selected
 
 #### Returns
 
 Type: `Promise<string[]>`
 
-Promise with the state of the checkboxes
+Promise with a list of layer names to use
 
 
 ## Dependencies
