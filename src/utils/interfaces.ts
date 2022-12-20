@@ -327,3 +327,13 @@ export interface IRefineOperation {
   mode: ESelectionMode;
   ids: number[];
 }
+
+export interface IInfoCardValues {
+  [key: string]: string;
+}
+
+export interface IMediaCardValues {
+  name: string;
+  description: string;
+  url: string;
+}

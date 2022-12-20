@@ -5,9 +5,11 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IInventoryItem, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
+import { ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IInfoCardValues, IInventoryItem, IMediaCardValues, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
+    interface AddRecordModal {
+    }
     interface BufferTools {
         /**
           * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
@@ -42,6 +44,8 @@ export namespace Components {
          */
         "unit": __esri.LinearUnits;
     }
+    interface CardManager {
+    }
     interface CheckList {
         /**
           * boolean: All checkboxes checked state will be set with this value on first render. Default is true
@@ -56,6 +60,8 @@ export namespace Components {
           * string []: The values to render beside the checkboxes
          */
         "values": string[];
+    }
+    interface CommentCard {
     }
     interface ConfigBufferTools {
         /**
@@ -113,7 +119,23 @@ export namespace Components {
          */
         "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
     }
+    interface CrowdsourceManager {
+    }
+    interface CrowdsourceReporter {
+    }
     interface DeductCalculator {
+    }
+    interface EditRecordModal {
+    }
+    interface InfoCard {
+        /**
+          * string: the components title
+         */
+        "cardTitle": string;
+        /**
+          * IInfoCardValues: key value pairs to show in the components table
+         */
+        "values": IInfoCardValues;
     }
     interface JsonEditor {
         /**
@@ -152,6 +174,12 @@ export namespace Components {
           * Contains the public value for this component; it is not changed by the editor. When changed, the change overwrites the contents of the editor.
          */
         "value": any;
+    }
+    interface LayerTable {
+    }
+    interface ListItem {
+    }
+    interface MapCard {
     }
     interface MapDrawTools {
         /**
@@ -253,7 +281,11 @@ export namespace Components {
          */
         "showBufferTools": boolean;
     }
-    interface PciCalculator {
+    interface MediaCard {
+        /**
+          * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
+         */
+        "values": IMediaCardValues[];
     }
     interface PdfDownload {
         /**
@@ -575,17 +607,35 @@ export interface StoreManagerCustomEvent<T> extends CustomEvent<T> {
     target: HTMLStoreManagerElement;
 }
 declare global {
+    interface HTMLAddRecordModalElement extends Components.AddRecordModal, HTMLStencilElement {
+    }
+    var HTMLAddRecordModalElement: {
+        prototype: HTMLAddRecordModalElement;
+        new (): HTMLAddRecordModalElement;
+    };
     interface HTMLBufferToolsElement extends Components.BufferTools, HTMLStencilElement {
     }
     var HTMLBufferToolsElement: {
         prototype: HTMLBufferToolsElement;
         new (): HTMLBufferToolsElement;
     };
+    interface HTMLCardManagerElement extends Components.CardManager, HTMLStencilElement {
+    }
+    var HTMLCardManagerElement: {
+        prototype: HTMLCardManagerElement;
+        new (): HTMLCardManagerElement;
+    };
     interface HTMLCheckListElement extends Components.CheckList, HTMLStencilElement {
     }
     var HTMLCheckListElement: {
         prototype: HTMLCheckListElement;
         new (): HTMLCheckListElement;
+    };
+    interface HTMLCommentCardElement extends Components.CommentCard, HTMLStencilElement {
+    }
+    var HTMLCommentCardElement: {
+        prototype: HTMLCommentCardElement;
+        new (): HTMLCommentCardElement;
     };
     interface HTMLConfigBufferToolsElement extends Components.ConfigBufferTools, HTMLStencilElement {
     }
@@ -611,17 +661,59 @@ declare global {
         prototype: HTMLConfigPdfDownloadElement;
         new (): HTMLConfigPdfDownloadElement;
     };
+    interface HTMLCrowdsourceManagerElement extends Components.CrowdsourceManager, HTMLStencilElement {
+    }
+    var HTMLCrowdsourceManagerElement: {
+        prototype: HTMLCrowdsourceManagerElement;
+        new (): HTMLCrowdsourceManagerElement;
+    };
+    interface HTMLCrowdsourceReporterElement extends Components.CrowdsourceReporter, HTMLStencilElement {
+    }
+    var HTMLCrowdsourceReporterElement: {
+        prototype: HTMLCrowdsourceReporterElement;
+        new (): HTMLCrowdsourceReporterElement;
+    };
     interface HTMLDeductCalculatorElement extends Components.DeductCalculator, HTMLStencilElement {
     }
     var HTMLDeductCalculatorElement: {
         prototype: HTMLDeductCalculatorElement;
         new (): HTMLDeductCalculatorElement;
     };
+    interface HTMLEditRecordModalElement extends Components.EditRecordModal, HTMLStencilElement {
+    }
+    var HTMLEditRecordModalElement: {
+        prototype: HTMLEditRecordModalElement;
+        new (): HTMLEditRecordModalElement;
+    };
+    interface HTMLInfoCardElement extends Components.InfoCard, HTMLStencilElement {
+    }
+    var HTMLInfoCardElement: {
+        prototype: HTMLInfoCardElement;
+        new (): HTMLInfoCardElement;
+    };
     interface HTMLJsonEditorElement extends Components.JsonEditor, HTMLStencilElement {
     }
     var HTMLJsonEditorElement: {
         prototype: HTMLJsonEditorElement;
         new (): HTMLJsonEditorElement;
+    };
+    interface HTMLLayerTableElement extends Components.LayerTable, HTMLStencilElement {
+    }
+    var HTMLLayerTableElement: {
+        prototype: HTMLLayerTableElement;
+        new (): HTMLLayerTableElement;
+    };
+    interface HTMLListItemElement extends Components.ListItem, HTMLStencilElement {
+    }
+    var HTMLListItemElement: {
+        prototype: HTMLListItemElement;
+        new (): HTMLListItemElement;
+    };
+    interface HTMLMapCardElement extends Components.MapCard, HTMLStencilElement {
+    }
+    var HTMLMapCardElement: {
+        prototype: HTMLMapCardElement;
+        new (): HTMLMapCardElement;
     };
     interface HTMLMapDrawToolsElement extends Components.MapDrawTools, HTMLStencilElement {
     }
@@ -646,6 +738,12 @@ declare global {
     var HTMLMapSelectToolsElement: {
         prototype: HTMLMapSelectToolsElement;
         new (): HTMLMapSelectToolsElement;
+    };
+    interface HTMLMediaCardElement extends Components.MediaCard, HTMLStencilElement {
+    }
+    var HTMLMediaCardElement: {
+        prototype: HTMLMediaCardElement;
+        new (): HTMLMediaCardElement;
     };
     interface HTMLPciCalculatorElement extends Components.PciCalculator, HTMLStencilElement {
     }
@@ -750,18 +848,29 @@ declare global {
         new (): HTMLStoreManagerElement;
     };
     interface HTMLElementTagNameMap {
+        "add-record-modal": HTMLAddRecordModalElement;
         "buffer-tools": HTMLBufferToolsElement;
+        "card-manager": HTMLCardManagerElement;
         "check-list": HTMLCheckListElement;
+        "comment-card": HTMLCommentCardElement;
         "config-buffer-tools": HTMLConfigBufferToolsElement;
         "config-draw-tools": HTMLConfigDrawToolsElement;
         "config-layer-picker": HTMLConfigLayerPickerElement;
         "config-pdf-download": HTMLConfigPdfDownloadElement;
+        "crowdsource-manager": HTMLCrowdsourceManagerElement;
+        "crowdsource-reporter": HTMLCrowdsourceReporterElement;
         "deduct-calculator": HTMLDeductCalculatorElement;
+        "edit-record-modal": HTMLEditRecordModalElement;
+        "info-card": HTMLInfoCardElement;
         "json-editor": HTMLJsonEditorElement;
+        "layer-table": HTMLLayerTableElement;
+        "list-item": HTMLListItemElement;
+        "map-card": HTMLMapCardElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
         "map-search": HTMLMapSearchElement;
         "map-select-tools": HTMLMapSelectToolsElement;
+        "media-card": HTMLMediaCardElement;
         "pci-calculator": HTMLPciCalculatorElement;
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
@@ -782,6 +891,8 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface AddRecordModal {
+    }
     interface BufferTools {
         /**
           * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
@@ -820,6 +931,8 @@ declare namespace LocalJSX {
          */
         "unit"?: __esri.LinearUnits;
     }
+    interface CardManager {
+    }
     interface CheckList {
         /**
           * boolean: All checkboxes checked state will be set with this value on first render. Default is true
@@ -829,6 +942,8 @@ declare namespace LocalJSX {
           * string []: The values to render beside the checkboxes
          */
         "values"?: string[];
+    }
+    interface CommentCard {
     }
     interface ConfigBufferTools {
         /**
@@ -866,11 +981,27 @@ declare namespace LocalJSX {
          */
         "defaultChecked"?: boolean;
     }
+    interface CrowdsourceManager {
+    }
+    interface CrowdsourceReporter {
+    }
     interface DeductCalculator {
         /**
           * Emitted on demand when the user clicks to calculate the deduct value
          */
         "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<string>) => void;
+    }
+    interface EditRecordModal {
+    }
+    interface InfoCard {
+        /**
+          * string: the components title
+         */
+        "cardTitle"?: string;
+        /**
+          * IInfoCardValues: key value pairs to show in the components table
+         */
+        "values"?: IInfoCardValues;
     }
     interface JsonEditor {
         /**
@@ -889,6 +1020,12 @@ declare namespace LocalJSX {
           * Contains the public value for this component; it is not changed by the editor. When changed, the change overwrites the contents of the editor.
          */
         "value"?: any;
+    }
+    interface LayerTable {
+    }
+    interface ListItem {
+    }
+    interface MapCard {
     }
     interface MapDrawTools {
         /**
@@ -994,7 +1131,11 @@ declare namespace LocalJSX {
          */
         "showBufferTools"?: boolean;
     }
-    interface PciCalculator {
+    interface MediaCard {
+        /**
+          * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
+         */
+        "values"?: IMediaCardValues[];
     }
     interface PdfDownload {
         /**
@@ -1236,18 +1377,29 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface IntrinsicElements {
+        "add-record-modal": AddRecordModal;
         "buffer-tools": BufferTools;
+        "card-manager": CardManager;
         "check-list": CheckList;
+        "comment-card": CommentCard;
         "config-buffer-tools": ConfigBufferTools;
         "config-draw-tools": ConfigDrawTools;
         "config-layer-picker": ConfigLayerPicker;
         "config-pdf-download": ConfigPdfDownload;
+        "crowdsource-manager": CrowdsourceManager;
+        "crowdsource-reporter": CrowdsourceReporter;
         "deduct-calculator": DeductCalculator;
+        "edit-record-modal": EditRecordModal;
+        "info-card": InfoCard;
         "json-editor": JsonEditor;
+        "layer-table": LayerTable;
+        "list-item": ListItem;
+        "map-card": MapCard;
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
         "map-search": MapSearch;
         "map-select-tools": MapSelectTools;
+        "media-card": MediaCard;
         "pci-calculator": PciCalculator;
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
@@ -1271,18 +1423,29 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "add-record-modal": LocalJSX.AddRecordModal & JSXBase.HTMLAttributes<HTMLAddRecordModalElement>;
             "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
+            "card-manager": LocalJSX.CardManager & JSXBase.HTMLAttributes<HTMLCardManagerElement>;
             "check-list": LocalJSX.CheckList & JSXBase.HTMLAttributes<HTMLCheckListElement>;
+            "comment-card": LocalJSX.CommentCard & JSXBase.HTMLAttributes<HTMLCommentCardElement>;
             "config-buffer-tools": LocalJSX.ConfigBufferTools & JSXBase.HTMLAttributes<HTMLConfigBufferToolsElement>;
             "config-draw-tools": LocalJSX.ConfigDrawTools & JSXBase.HTMLAttributes<HTMLConfigDrawToolsElement>;
             "config-layer-picker": LocalJSX.ConfigLayerPicker & JSXBase.HTMLAttributes<HTMLConfigLayerPickerElement>;
             "config-pdf-download": LocalJSX.ConfigPdfDownload & JSXBase.HTMLAttributes<HTMLConfigPdfDownloadElement>;
+            "crowdsource-manager": LocalJSX.CrowdsourceManager & JSXBase.HTMLAttributes<HTMLCrowdsourceManagerElement>;
+            "crowdsource-reporter": LocalJSX.CrowdsourceReporter & JSXBase.HTMLAttributes<HTMLCrowdsourceReporterElement>;
             "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;
+            "edit-record-modal": LocalJSX.EditRecordModal & JSXBase.HTMLAttributes<HTMLEditRecordModalElement>;
+            "info-card": LocalJSX.InfoCard & JSXBase.HTMLAttributes<HTMLInfoCardElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
+            "layer-table": LocalJSX.LayerTable & JSXBase.HTMLAttributes<HTMLLayerTableElement>;
+            "list-item": LocalJSX.ListItem & JSXBase.HTMLAttributes<HTMLListItemElement>;
+            "map-card": LocalJSX.MapCard & JSXBase.HTMLAttributes<HTMLMapCardElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
             "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
+            "media-card": LocalJSX.MediaCard & JSXBase.HTMLAttributes<HTMLMediaCardElement>;
             "pci-calculator": LocalJSX.PciCalculator & JSXBase.HTMLAttributes<HTMLPciCalculatorElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
