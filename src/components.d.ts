@@ -95,8 +95,8 @@ export namespace Components {
          */
         "defaultChecked": boolean;
         /**
-          * Returns a key/value pair that represents the checkbox value and checked state
-          * @returns Promise with the state of the checkboxes
+          * Returns a list of layers that have been selected
+          * @returns Promise with a list of layer names to use
          */
         "getConfigInfo": () => Promise<string[]>;
         /**
@@ -286,6 +286,8 @@ export namespace Components {
           * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
          */
         "values": IMediaCardValues[];
+    }
+    interface PciCalculator {
     }
     interface PdfDownload {
         /**
@@ -1136,6 +1138,8 @@ declare namespace LocalJSX {
           * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
          */
         "values"?: IMediaCardValues[];
+    }
+    interface PciCalculator {
     }
     interface PdfDownload {
         /**

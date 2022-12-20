@@ -101,9 +101,9 @@ export class ConfigLayerPicker {
   //--------------------------------------------------------------------------
 
   /**
-   * Returns a key/value pair that represents the checkbox value and checked state
+   * Returns a list of layers that have been selected
    *
-   * @returns Promise with the state of the checkboxes
+   * @returns Promise with a list of layer names to use
    */
   @Method()
   async getConfigInfo(): Promise<string[]> {
