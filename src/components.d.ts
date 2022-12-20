@@ -9,6 +9,9 @@ import { ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IInfoCardValue
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
+        /**
+          * When true the component is displayed
+         */
         "open": boolean;
     }
     interface BufferTools {
@@ -127,6 +130,9 @@ export namespace Components {
     interface DeductCalculator {
     }
     interface EditRecordModal {
+        /**
+          * When true the component is displayed
+         */
         "open": boolean;
     }
     interface InfoCard {
@@ -896,6 +902,9 @@ declare global {
 }
 declare namespace LocalJSX {
     interface AddRecordModal {
+        /**
+          * When true the component is displayed
+         */
         "open"?: boolean;
     }
     interface BufferTools {
@@ -997,6 +1006,9 @@ declare namespace LocalJSX {
         "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<string>) => void;
     }
     interface EditRecordModal {
+        /**
+          * When true the component is displayed
+         */
         "open"?: boolean;
     }
     interface InfoCard {

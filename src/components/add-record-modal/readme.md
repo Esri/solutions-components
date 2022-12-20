@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type      | Default |
-| -------- | --------- | ----------- | --------- | ------- |
-| `open`   | `open`    |             | `boolean` | `false` |
+| Property | Attribute | Description                          | Type      | Default |
+| -------- | --------- | ------------------------------------ | --------- | ------- |
+| `open`   | `open`    | When true the component is displayed | `boolean` | `false` |
 
 
 ## Dependencies

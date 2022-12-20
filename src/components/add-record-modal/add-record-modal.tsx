@@ -37,6 +37,9 @@ export class AddRecordModal {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * When true the component is displayed
+   */
   @Prop({mutable: true}) open = false;
 
   //--------------------------------------------------------------------------
@@ -44,6 +47,11 @@ export class AddRecordModal {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Handle to the element for browsing for a file.
+   */
+  protected _browseForAttachment: HTMLInputElement;
 
   /**
    * Contains the translations for this component.
@@ -98,13 +106,13 @@ export class AddRecordModal {
                 <div class="padding-bottom-1">
                   <calcite-label class="font-bold">
                     {this._translations.source}
-                    <calcite-input type='textarea' placeholder={this._translations.textField} />
+                    <calcite-input placeholder={this._translations.textField} type='textarea'/>
                   </calcite-label>
                 </div>
                 <div class="padding-bottom-1">
                   <calcite-label class="font-bold">
                     {this._translations.publicView}
-                    <calcite-input type='textarea' placeholder={this._translations.textField} />
+                    <calcite-input placeholder={this._translations.textField} type='textarea'/>
                   </calcite-label>
                 </div>
                 <div class="padding-bottom-1">
@@ -113,6 +121,12 @@ export class AddRecordModal {
                     {/* TODO the design has this smaller with rounded border.
                     Can't quite get that with calcite from what I see...look more or go custom */}
                     <div>
+                      <input
+                        class="display-none"
+                        onChange={(event) => (this._updateAttachment(event))}
+                        ref={(el) => (this._browseForAttachment = el)}
+                        type="file"
+                      />
                       <calcite-button
                         appearance="solid"
                         color="neutral"
@@ -154,15 +168,29 @@ export class AddRecordModal {
   //--------------------------------------------------------------------------
 
   protected _browse(): void {
-
+    this._browseForAttachment.click();
   }
 
   protected _cancel(): void {
-
+    this.open = false;
   }
 
   protected _save(): void {
+    this.open = false;
+  }
 
+  /**
+   * Gets the result file from browse
+   *
+   * @param event The input controls event that contains the new file
+   */
+  protected _updateAttachment(
+    event: any
+  ): void {
+    const files = event.target.files;
+    if (files && files[0]) {
+      console.log(files[0]);
+    }
   }
 
   /**

@@ -37,6 +37,9 @@ export class EditRecordModal {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * When true the component is displayed
+   */
   @Prop({mutable: true}) open = false;
 
   //--------------------------------------------------------------------------
@@ -142,7 +145,7 @@ export class EditRecordModal {
         <div class="padding-bottom-1">
           <calcite-label class="font-bold">
             {label}
-            <calcite-input type="text" placeholder={this._translations.textField} />
+            <calcite-input placeholder={this._translations.textField} type="text"/>
           </calcite-label>
         </div>
       );
@@ -150,11 +153,11 @@ export class EditRecordModal {
   }
 
   protected _cancel(): void {
-
+    this.open = false;
   }
 
   protected _save(): void {
-
+    this.open = false;
   }
 
   /**
