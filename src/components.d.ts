@@ -99,10 +99,10 @@ export namespace Components {
          */
         "defaultChecked": boolean;
         /**
-          * Returns a key/value pair that represents the checkbox value and checked state
-          * @returns Promise with the state of the checkboxes
+          * Returns a list of layers that have been selected
+          * @returns Promise with a list of layer names to use
          */
-        "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
+        "getConfigInfo": () => Promise<string[]>;
         /**
           * string: Value to be shown above the check list Allows this to support multiple sets of layers.
          */

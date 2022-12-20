@@ -33,11 +33,19 @@
         right: 0px;
         background-color: var(--calcite-ui-foreground-1);
       }
+      .over-map[dir="rtl"] {
+        position: absolute;
+        left: 0px;
+        background-color: var(--calcite-ui-foreground-1);
+      }
       .column {
-        min-width: 300px;
+        width: 300px;
         margin: 1rem;
         padding: 1rem;
         border: 1px solid;
+      }
+      .padding-top-1 {
+        padding-top: 1rem;
       }
     </style>
 
@@ -85,7 +93,7 @@
     <div id="viewDiv" class="map-div"></div>
     <div class="over-map column">
       <config-layer-picker id="demo" instruction="Choose potential addressee layers"></config-layer-picker>
-      <calcite-button onclick="showResults()">Demo Results</calcite-button>
+      <calcite-button class="padding-top-1" onclick="showResults()">Demo Results</calcite-button>
     </div>
   </body>
 </html>
