@@ -184,6 +184,10 @@ export namespace Components {
         "value": any;
     }
     interface LayerTable {
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
     }
     interface ListItem {
     }
@@ -1040,6 +1044,10 @@ declare namespace LocalJSX {
         "value"?: any;
     }
     interface LayerTable {
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
     }
     interface ListItem {
     }

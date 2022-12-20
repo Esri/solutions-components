@@ -1,3 +1,11 @@
 {
-
+  "clearSelection": "Clear selection",
+  "delete": "Delete",
+  "editMultiple": "Edit Multiple",
+  "exportCSV": "Export to CSV",
+  "more": "More",
+  "selectAll": "Select all",
+  "showSelected": "Show selected",
+  "switchSelected": "Switch selected",
+  "zoom": "Zoom"
 }

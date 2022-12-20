@@ -167,6 +167,11 @@ export class AddRecordModal {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Opens the browse dialog
+   *
+   * @param event The input controls event that contains the new file
+   */
   protected _browse(): void {
     this._browseForAttachment.click();
   }

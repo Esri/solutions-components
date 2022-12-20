@@ -5,6 +5,50 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property  | Attribute | Description                                                                                            | Type      | Default     |
+| --------- | --------- | ------------------------------------------------------------------------------------------------------ | --------- | ----------- |
+| `mapView` | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView` | `undefined` |
+
+
+## Dependencies
+
+### Depends on
+
+- [map-layer-picker](../map-layer-picker)
+- calcite-button
+- calcite-split-button
+- calcite-dropdown-group
+- calcite-dropdown-item
+- calcite-checkbox
+
+### Graph
+```mermaid
+graph TD;
+  layer-table --> map-layer-picker
+  layer-table --> calcite-button
+  layer-table --> calcite-split-button
+  layer-table --> calcite-dropdown-group
+  layer-table --> calcite-dropdown-item
+  layer-table --> calcite-checkbox
+  map-layer-picker --> calcite-select
+  map-layer-picker --> calcite-combobox
+  map-layer-picker --> calcite-combobox-item
+  map-layer-picker --> calcite-option
+  calcite-select --> calcite-icon
+  calcite-combobox --> calcite-chip
+  calcite-combobox --> calcite-icon
+  calcite-chip --> calcite-icon
+  calcite-combobox-item --> calcite-icon
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
+  calcite-split-button --> calcite-button
+  calcite-split-button --> calcite-dropdown
+  calcite-dropdown-item --> calcite-icon
+  style layer-table fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

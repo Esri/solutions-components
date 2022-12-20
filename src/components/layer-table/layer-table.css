@@ -17,3 +17,52 @@
 :host {
   display: block;
 }
+
+.table {
+  display: table;
+  width: 100%;
+}
+
+.header {
+  display: table-header-group;
+  background-color: #757575;
+  font-weight: 500;
+  font-size: var(--calcite-font-size-0);
+  color: var(--calcite-ui-text-inverse);
+}
+
+.table-header-cell {
+  display: table-cell;
+  text-align: justify;
+  border-right: 1px solid var(--calcite-ui-border-2);
+  padding: 0.5rem;
+}
+
+.body {
+  display: table-row-group;
+}
+
+.row {
+  display: table-row;
+}
+
+.table-cell {
+  display: table-cell;
+  padding: 0.5rem;
+}
+
+.display-table-header {
+  display: table-header-group;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.table-border {
+  border: 1px solid var(--calcite-ui-border-2);
+}
+
+.justify-center {
+  justify-content: center;
+}
