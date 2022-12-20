@@ -22,7 +22,7 @@
     | limitations under the License.
     -->
     <style>
-      .over-map {
+      /* .over-map {
         position: absolute;
         right: 0px;
         background-color: var(--calcite-ui-foreground-1);
@@ -36,46 +36,18 @@
       }
       .column[dir="rtl"] {
         float: left;
-      }
+      } */
     </style>
 
-    <link
-      rel="stylesheet"
-      href="https://js.arcgis.com/4.25/esri/themes/light/main.css"
-    />
     <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components@1.0.0-beta.94/dist/calcite/calcite.css" type="text/css" />
     <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
     <link rel="stylesheet" href="../solutions-components.css" type="text/css">
 
-    <script src="https://js.arcgis.com/4.25/"></script>
     <script type="module" src="https://unpkg.com/@esri/calcite-components@1.0.0-beta.94/dist/calcite/calcite.esm.js"></script>
     <script type="module" src="../solutions-components.esm.js"></script>
-
-    <script>
-      require(["esri/WebMap", "esri/views/MapView"], (
-        WebMap,
-        MapView
-      ) => {
-        var webMap = new WebMap({
-          portalItem: {
-            // solutions
-            // id: "3715f4899bea4b2a948347c5c2357e58"
-            // InstantApps
-            id: "863e4f6f2a7840db896cc1b1606d552d"
-          }
-        });
-
-        const demo = document.getElementById("demo");
-        demo.mapView = new MapView({
-          container: "viewDiv",
-          map: webMap
-        });
-      });
-    </script>
   </head>
 
   <body>
-    <div id="viewDiv"></div>
-    <add-record-modal id="demo" class="over-map column"></add-record-modal>
+    <add-record-modal id="demo" open="true"></add-record-modal>
   </body>
 </html>

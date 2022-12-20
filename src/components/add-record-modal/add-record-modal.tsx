@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State } from '@stencil/core';
+import AddRecordModal_T9n from "../../assets/t9n/add-record-modal/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
   tag: 'add-record-modal',
@@ -35,11 +37,19 @@ export class AddRecordModal {
   //
   //--------------------------------------------------------------------------
 
+  @Prop({mutable: true}) open = false;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() _translations: typeof AddRecordModal_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -65,10 +75,74 @@ export class AddRecordModal {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   *
+   * @returns Promise when complete
+   */
+  async componentWillLoad(): Promise<void> {
+    await this._getTranslations();
+  }
+
+  /**
+   * Renders the component.
+   */
   render() {
     return (
       <Host>
-        <slot/>
+        <div class="modal-size">
+          <calcite-modal open={this.open} width="s">
+            <div class="font-500" slot="header">{this._translations.addRecord}</div>
+            <div slot="content" class="height-100">
+              <div class="height-100">
+                <div class="padding-bottom-1">
+                  <calcite-label class="font-bold">
+                    {this._translations.source}
+                    <calcite-input type='textarea' placeholder={this._translations.textField} />
+                  </calcite-label>
+                </div>
+                <div class="padding-bottom-1">
+                  <calcite-label class="font-bold">
+                    {this._translations.publicView}
+                    <calcite-input type='textarea' placeholder={this._translations.textField} />
+                  </calcite-label>
+                </div>
+                <div class="padding-bottom-1">
+                  <calcite-label class="font-bold">
+                    {this._translations.attachments}
+                    {/* TODO the design has this smaller with rounded border.
+                    Can't quite get that with calcite from what I see...look more or go custom */}
+                    <div>
+                      <calcite-button
+                        appearance="solid"
+                        color="neutral"
+                        onClick={() => this._browse()}
+                        width='auto'>
+                        {this._translations.browse}
+                      </calcite-button>
+                    </div>
+                  </calcite-label>
+                </div>
+              </div>
+            </div>
+            <calcite-button
+              appearance="outline"
+              onClick={() => this._cancel()}
+              slot="secondary"
+              width="full"
+            >
+              {this._translations.cancel}
+            </calcite-button>
+            <calcite-button
+              appearance="solid"
+              onClick={() => this._save()}
+              slot="primary"
+              width="full"
+            >
+              {this._translations.save}
+            </calcite-button>
+          </calcite-modal>
+        </div>
       </Host>
     );
   }
@@ -79,6 +153,18 @@ export class AddRecordModal {
   //
   //--------------------------------------------------------------------------
 
+  protected _browse(): void {
+
+  }
+
+  protected _cancel(): void {
+
+  }
+
+  protected _save(): void {
+
+  }
+
   /**
    * Fetches the component's translations
    *
@@ -86,8 +172,8 @@ export class AddRecordModal {
    * @protected
    */
    protected async _getTranslations(): Promise<void> {
-    // const messages = await getLocaleComponentStrings(this.el);
-    // this._translations = messages[0] as typeof BufferTools_T9n;
+    const messages = await getLocaleComponentStrings(this.el);
+    this._translations = messages[0] as typeof AddRecordModal_T9n;
   }
 
 }

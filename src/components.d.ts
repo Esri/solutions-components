@@ -9,6 +9,7 @@ import { ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IInfoCardValue
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
+        "open": boolean;
     }
     interface BufferTools {
         /**
@@ -286,6 +287,8 @@ export namespace Components {
           * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
          */
         "values": IMediaCardValues[];
+    }
+    interface PciCalculator {
     }
     interface PdfDownload {
         /**
@@ -892,6 +895,7 @@ declare global {
 }
 declare namespace LocalJSX {
     interface AddRecordModal {
+        "open"?: boolean;
     }
     interface BufferTools {
         /**
@@ -1136,6 +1140,8 @@ declare namespace LocalJSX {
           * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
          */
         "values"?: IMediaCardValues[];
+    }
+    interface PciCalculator {
     }
     interface PdfDownload {
         /**

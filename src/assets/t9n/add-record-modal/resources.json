@@ -1,3 +1,10 @@
 {
-
+  "addRecord": "Add record",
+  "attachments": "Attachments",
+  "browse": "Browse",
+  "cancel": "Cancel",
+  "publicView": "Public View",
+  "save": "Save",
+  "source": "Source",
+  "textField": "Text Field"
 }
