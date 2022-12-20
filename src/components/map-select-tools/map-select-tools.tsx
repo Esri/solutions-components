@@ -34,7 +34,7 @@ export class MapSelectTools {
   //  Host element access
   //
   //--------------------------------------------------------------------------
-  @Element() el: HTMLElement;
+  @Element() el: HTMLMapSelectToolsElement;
 
   //--------------------------------------------------------------------------
   //

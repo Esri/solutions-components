@@ -16,15 +16,15 @@
 
 ## Methods
 
-### `getConfigInfo() => Promise<{ [key: string]: boolean; }>`
+### `getConfigInfo() => Promise<string[]>`
 
-Returns a key/value pair that represents the checkbox value and checked state
+Returns a list of layers that have been selected
 
 #### Returns
 
-Type: `Promise<{ [key: string]: boolean; }>`
+Type: `Promise<string[]>`
 
-Promise with the state of the checkboxes
+Promise with a list of layer names to use
 
 
 ## Dependencies
@@ -32,15 +32,19 @@ Promise with the state of the checkboxes
 ### Depends on
 
 - calcite-label
-- [check-list](../check-list)
+- calcite-combobox
+- calcite-combobox-item
 
 ### Graph
 ```mermaid
 graph TD;
   config-layer-picker --> calcite-label
-  config-layer-picker --> check-list
-  check-list --> calcite-label
-  check-list --> calcite-checkbox
+  config-layer-picker --> calcite-combobox
+  config-layer-picker --> calcite-combobox-item
+  calcite-combobox --> calcite-chip
+  calcite-combobox --> calcite-icon
+  calcite-chip --> calcite-icon
+  calcite-combobox-item --> calcite-icon
   style config-layer-picker fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
