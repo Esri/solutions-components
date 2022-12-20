@@ -127,6 +127,7 @@ export namespace Components {
     interface DeductCalculator {
     }
     interface EditRecordModal {
+        "open": boolean;
     }
     interface InfoCard {
         /**
@@ -996,6 +997,7 @@ declare namespace LocalJSX {
         "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<string>) => void;
     }
     interface EditRecordModal {
+        "open"?: boolean;
     }
     interface InfoCard {
         /**

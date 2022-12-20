@@ -90,11 +90,11 @@ export class AddRecordModal {
   render() {
     return (
       <Host>
-        <div class="modal-size">
+        <div>
           <calcite-modal open={this.open} width="s">
             <div class="font-500" slot="header">{this._translations.addRecord}</div>
-            <div slot="content" class="height-100">
-              <div class="height-100">
+            <div slot="content">
+              <div>
                 <div class="padding-bottom-1">
                   <calcite-label class="font-bold">
                     {this._translations.source}
