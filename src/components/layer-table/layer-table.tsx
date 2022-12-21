@@ -17,6 +17,8 @@
 import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
+import { getMapLayerView } from "../../utils/mapViewUtils";
+import { queryAllFeatures } from "../../utils/queryUtils";
 
 @Component({
   tag: 'layer-table',
@@ -49,10 +51,22 @@ export class LayerTable {
   //--------------------------------------------------------------------------
 
   /**
+   * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   */
+  @State() _graphics: __esri.Graphic[] = [];
+
+  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
   @State() _translations: typeof LayerTable_T9n;
+
+  /**
+   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   */
+  protected _layerView: __esri.FeatureLayerView;
+
+  protected _fieldNames: string[] = [];
 
   //--------------------------------------------------------------------------
   //
@@ -94,9 +108,13 @@ export class LayerTable {
     return (
       <Host>
         {this._getTableControlRow()}
-        <div class="table">
-          {this._getTableHeader()}
-          {this._getTableRows()}
+        <div class="data-container">
+          <div class="table-container">
+            <div class="table">
+              {this._getTableHeader()}
+              {this._getTableRows()}
+            </div>
+          </div>
         </div>
       </Host>
     );
@@ -111,7 +129,10 @@ export class LayerTable {
   protected _getTableControlRow(): VNode {
     return (
       <div class="display-flex table-border">
-        <map-layer-picker mapView={this.mapView} />
+        <map-layer-picker
+          mapView={this.mapView}
+          onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
+        />
         <div>
           <calcite-button
             appearance='transparent'
@@ -180,22 +201,23 @@ export class LayerTable {
   protected _getTableHeader(): VNode {
     return (
       <div class="header">
-        <div/>
-        <div class="table-header-cell">
-          Field
+        <div class="table-header-cell padding-3-4">
+          <calcite-checkbox
+            class="display-flex justify-center"
+            onClick={() => this._selectAll()}
+          />
         </div>
-        <div class="table-header-cell">
-          Field
-        </div>
-        <div class="table-header-cell">
-          Field
-        </div>
-        <div class="table-header-cell">
-          Field
-        </div>
-        <div class="table-header-cell">
-          Field
-        </div>
+        {this._fieldNames.map(name => this._getTableHeaderCell(name))}
+      </div>
+    );
+  }
+
+  protected _getTableHeaderCell(
+    name: string
+  ): VNode {
+    return (
+      <div class="table-header-cell">
+        {name}
       </div>
     );
   }
@@ -203,29 +225,33 @@ export class LayerTable {
   protected _getTableRows(): VNode[] {
     return (
       <div class="body">
-        <div class="row">
-          <div class="table-cell table-border">
-            <calcite-checkbox
-              class="display-flex justify-center"
-              onClick={(evt) => this._rowSelected(evt)}
-            />
-          </div>
-          <div class="table-cell table-border">
-            Text here
-          </div>
-          <div class="table-cell table-border">
-            Text here
-          </div>
-          <div class="table-cell table-border">
-            Text here
-          </div>
-          <div class="table-cell table-border">
-            Text here
-          </div>
-          <div class="table-cell table-border">
-            Text here
-          </div>
+        {this._graphics.map(g => this._getTableRow(g))}
+      </div>
+    );
+  }
+
+  protected _getTableRow(
+    g: __esri.Graphic
+  ): VNode {
+    return (
+      <div class="row">
+        <div class="table-cell table-border">
+          <calcite-checkbox
+            class="display-flex justify-center"
+            onClick={(evt) => this._rowSelected(evt)}
+          />
         </div>
+        {this._fieldNames.map(name => this._getTableRowCell(g.attributes[name]))}
+      </div>
+    );
+  }
+
+  protected _getTableRowCell(
+    v: string
+  ): VNode {
+    return (
+      <div class="table-cell table-border value-cell">
+        {v}
       </div>
     );
   }
@@ -254,6 +280,15 @@ export class LayerTable {
     evt: MouseEvent
   ): void {
     console.log(evt);
+  }
+
+  protected async _layerSelectionChanged(
+    evt: CustomEvent
+  ): Promise<void> {
+    const layerName:string = evt.detail[0];
+    this._layerView = await getMapLayerView(this.mapView, layerName);
+    this._fieldNames = this._layerView.layer.fields.map(f => f.alias || f.name);
+    this._graphics = await queryAllFeatures(0, this._layerView.layer, []);
   }
 
   /**
