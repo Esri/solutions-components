@@ -216,7 +216,7 @@ export class LayerTable {
     name: string
   ): VNode {
     return (
-      <div class="table-header-cell">
+      <div class="table-header-cell field-width">
         {name}
       </div>
     );
@@ -224,7 +224,7 @@ export class LayerTable {
 
   protected _getTableRows(): VNode[] {
     return (
-      <div class="body">
+      <div class="table-body">
         {this._graphics.map(g => this._getTableRow(g))}
       </div>
     );
@@ -235,7 +235,7 @@ export class LayerTable {
   ): VNode {
     return (
       <div class="row">
-        <div class="table-cell table-border">
+        <div class="table-cell table-border padding-3-4">
           <calcite-checkbox
             class="display-flex justify-center"
             onClick={(evt) => this._rowSelected(evt)}
@@ -250,7 +250,7 @@ export class LayerTable {
     v: string
   ): VNode {
     return (
-      <div class="table-cell table-border value-cell">
+      <div class="table-cell table-border field-width">
         {v}
       </div>
     );
