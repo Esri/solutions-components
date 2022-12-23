@@ -14,6 +14,10 @@
 
 ## Dependencies
 
+### Used by
+
+ - [layer-table](../layer-table)
+
 ### Depends on
 
 - calcite-modal
@@ -35,6 +39,7 @@ graph TD;
   calcite-button --> calcite-icon
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
+  layer-table --> edit-record-modal
   style edit-record-modal fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

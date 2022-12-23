@@ -95,6 +95,13 @@ export function calculateDeductValue(
   const _type = parseInt(type);
   const _severity = ESeverity[severity];
   const _density = parseFloat(density.toString());
+
+  // When called from survey123 all distress types and severities will be passed in
+  // We only need to calculate the deduct value if we have a valid density
+  if (Number.isNaN(_density) || _density === 0) {
+    return "";
+  }
+
   const _showDebugging = showDebugging === true || showDebugging.toString().toLowerCase() === "true";
 
   let calc;
