@@ -8,3 +8,4 @@
 	* Update the "from" version for the `[Unreleased]` symbol to the new version; e.g., `[Unreleased]: https://github.com/Esri/solution.js/compare/v0.2.5...HEAD "Unreleased Changes"`
 4. Commit and push the changes
 5. Run `npm run release:publish`
+6. Create a tag for the release and push it to GitHub
