@@ -151,7 +151,7 @@ export class SolutionItem {
         <calcite-tab-title>{this._translations.sharingTab}</calcite-tab-title>
       </calcite-tab-nav>
 
-      <calcite-tab active class="config-tab" id="group-tab">
+      <calcite-tab selected={true} class="config-tab" id="group-tab">
         <solution-item-details
           item-id={this.itemId}
         />
@@ -180,7 +180,7 @@ export class SolutionItem {
         <calcite-tab-title>{this._translations.resourcesTab}</calcite-tab-title>
       </calcite-tab-nav>
 
-      <calcite-tab active class="config-tab">
+      <calcite-tab selected={true} class="config-tab">
         <solution-item-details
           item-id={this.itemId}
         />

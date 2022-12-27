@@ -96,7 +96,7 @@ export class SolutionItemDetails {
                 <img class="scale-down" height="133" id="item-thumbnail" ref={(el) => (this.thumbnail = el)} width="200" />
               </div>
               <div class="snippet-count-container">
-                <calcite-input id="item-snippet" maxlength={250} type="textarea" value={this.itemDetails.snippet} />
+                <calcite-input id="item-snippet" maxLength={250} type="textarea" value={this.itemDetails.snippet} />
                 <label class="font-size--3" id="item-snippet-count" ref={(el) => (this.itemSnippetCount = el)} />
               </div>
             </div>
