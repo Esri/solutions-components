@@ -437,7 +437,7 @@ export class PublicNotification {
                 <calcite-list-item
                   description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
                   label={cur.label}
-                  onClick={() => goToSelection(cur.selectedIds, cur.layerView, this.mapView)}
+                  onClick={void (async (): Promise<void> => goToSelection(cur.selectedIds, cur.layerView, this.mapView))}
                 >
                   {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
                   {this._getAction(true, "x", "", (evt): Promise<void> => this._deleteSelection(i, evt), false, "actions-end")}
@@ -591,7 +591,10 @@ export class PublicNotification {
           <div class="padding-1 display-flex">
             <calcite-button
               disabled={!this._downloadActive}
-              onClick={isPdf ? () => this._downloadPDF() : () => this._downloadCSV()}
+              onClick={isPdf
+                ? void (async (): Promise<void> => this._downloadPDF())
+                : void (async (): Promise<void> => this._downloadCSV())
+              }
               width="full"
             >
               {isPdf ? this._translations.downloadPDF : this._translations.downloadCSV}
@@ -662,7 +665,7 @@ export class PublicNotification {
     noticeClass = "padding-1"
   ): VNode {
     return (
-      <calcite-notice open={true} class={noticeClass} color="green" icon="lightbulb">
+      <calcite-notice class={noticeClass} color="green" icon="lightbulb" open={true}>
         <div slot="message">{message}</div>
       </calcite-notice>
     );

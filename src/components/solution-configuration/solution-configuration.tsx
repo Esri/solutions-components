@@ -139,7 +139,7 @@ export class SolutionConfiguration {
                   null
                 }
               </calcite-tab-nav>
-              <calcite-tab selected={true} class="config-tab">
+              <calcite-tab class="config-tab" selected={true}>
                 <div class="config-solution">
                   <div class={this._treeOpen ? "config-inventory" : "config-inventory-hide"}>
                     <solution-contents
