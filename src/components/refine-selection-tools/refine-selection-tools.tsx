@@ -323,14 +323,14 @@ export class RefineSelectionTools {
                   <calcite-action
                     disabled={this._undoStack.length === 0}
                     icon="undo"
-                    onClick={() => this._undo()}
+                    onClick={void (async (): Promise<void> => this._undo())}
                     scale="s"
                     text={this._translations.undo}
                   />
                   <calcite-action
                     disabled={this._redoStack.length === 0}
                     icon="redo"
-                    onClick={() => this._redo()}
+                    onClick={void (async (): Promise<void> => this._redo())}
                     scale="s"
                     text={this._translations.redo}
                   />

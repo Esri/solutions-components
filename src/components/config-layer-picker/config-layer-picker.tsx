@@ -150,7 +150,7 @@ export class ConfigLayerPicker {
               label=''
               overlayPositioning="fixed"
               ref={(el) => { this._checkList = el; }}
-              selectionMode="multi"
+              selectionMode="multiple"
             >
               {this._getComboboxItems()}
             </calcite-combobox>
