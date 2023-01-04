@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
+import { loadModules } from "../../utils/loadModules";
 import MapCard_T9n from "../../assets/t9n/map-card/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
   tag: 'map-card',
   styleUrl: 'map-card.css',
-  shadow: true,
+  shadow: false,
 })
 export class MapCard {
   //--------------------------------------------------------------------------
@@ -36,6 +37,11 @@ export class MapCard {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * string:
+   */
+  @Prop() webMapId = "";
 
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -56,11 +62,35 @@ export class MapCard {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * esri/WebMap: https://developers.arcgis.com/javascript/latest/api-reference/esri-WebMap.html
+   */
+  protected WebMap: typeof __esri.WebMap;
+
+  /**
+   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   */
+  protected MapView: typeof __esri.MapView;
+
+  protected mapDiv: any = (<div id="testMapNew" class="height-full"></div>);
+
+  protected loadedId = "";
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Called each time the webMapId prop is changed.
+   */
+  @Watch("webMapId")
+  webMapIdWatchHandler(v: any, oldV: any): void {
+    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
+      this._loadMap(v);
+    }
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -85,14 +115,18 @@ export class MapCard {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
-    //await this._initModules();
+    await this._initModules();
+  }
+
+  componentDidRender() {
+    this._loadMap(this.webMapId);
   }
 
   render() {
     return (
       <Host>
         {this._getToolbar()}
-        <slot name="map"></slot>
+        {this.mapDiv}
       </Host>
     );
   }
@@ -102,6 +136,25 @@ export class MapCard {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
+    const [WebMap, MapView]: [
+      __esri.WebMapConstructor,
+      __esri.MapViewConstructor
+    ] = await loadModules([
+      "esri/WebMap",
+      "esri/views/MapView"
+    ]);
+    this.WebMap = WebMap;
+    this.MapView = MapView;
+  }
 
   protected _getToolbar():VNode {
     return (
@@ -117,6 +170,23 @@ export class MapCard {
         </calcite-action-bar>
       </div>
     );
+  }
+
+  protected _loadMap(
+    id: string
+  ): void {
+    if (this.loadedId !== this.webMapId) {
+      var webMap = new this.WebMap({
+        portalItem: { id }
+      });
+
+      this.mapView = new this.MapView({
+        container: this.mapDiv.$attrs$.id,
+        map: webMap
+      });
+
+      this.loadedId = id;
+    }
   }
 
   /**

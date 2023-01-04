@@ -196,6 +196,10 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * string:
+         */
+        "webMapId": string;
     }
     interface MapDrawTools {
         /**
@@ -1060,6 +1064,10 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * string:
+         */
+        "webMapId"?: string;
     }
     interface MapDrawTools {
         /**

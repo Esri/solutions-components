@@ -22,12 +22,6 @@
     | limitations under the License.
     -->
     <style>
-      #viewDiv {
-        padding: 0;
-        margin: 0;
-        height: 100%;
-        width: 100%;
-      }
       .over-map {
         position: absolute;
         right: 0px;
@@ -56,32 +50,14 @@
     <script type="module" src="../solutions-components.esm.js"></script>
 
     <script>
-      require(["esri/WebMap", "esri/views/MapView"], (
-        WebMap,
-        MapView
-      ) => {
-        var webMap = new WebMap({
-          portalItem: {
-            // solutions
-            // id: "3715f4899bea4b2a948347c5c2357e58"
-            // InstantApps
-            id: "863e4f6f2a7840db896cc1b1606d552d"
-          }
-        });
-
+      function addValues() {
         const demo = document.getElementById("demo");
-        demo.mapView = new MapView({
-          container: "viewDiv",
-          map: webMap
-        });
-      });
+        demo.webMapId = "863e4f6f2a7840db896cc1b1606d552d";
+      }
     </script>
   </head>
 
-  <body>
-    <map-card id="demo" class="over-map column">
-      <!-- TODO figure out a better way -->
-      <div id="viewDiv" slot="map"></div>
-    </map-card>
+  <body onload="addValues()">
+    <map-card id="demo" class="over-map column"/>
   </body>
 </html>
