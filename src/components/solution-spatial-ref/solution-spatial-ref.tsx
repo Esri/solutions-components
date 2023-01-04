@@ -110,10 +110,10 @@ export class SolutionSpatialRef {
         </div>
         <label class="switch-label">
           <calcite-switch
+            checked={!this.locked}
             class="spatial-ref-switch"
             onCalciteSwitchChange={(event) => this._updateLocked(event)}
             scale="m"
-            switched={!this.locked}
           />
           {this._translations.specifyParam}
         </label>
@@ -325,11 +325,11 @@ export class SolutionSpatialRef {
         {_services.map(name => (
           <label class="switch-label">
             <calcite-switch
+              checked={spatialReferenceInfo.services[name]}
               class="spatial-ref-item-switch"
               disabled={this.locked}
               onCalciteSwitchChange={(event) => this._updateEnabledServices(event, name)}
               scale="m"
-              switched={spatialReferenceInfo.services[name]}
             />{name}
           </label>
         ))}

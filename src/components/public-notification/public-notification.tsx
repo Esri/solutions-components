@@ -376,13 +376,13 @@ export class PublicNotification {
             <calcite-label alignment="start" class="font-bold">{this._translations.notifications}</calcite-label>
           </div>
           <div class="position-right">
-            <calcite-input-message active class="info-blue margin-top-0" scale="m">{this._translations.uniqueCout.replace("{{n}}", total.toString())}</calcite-input-message>
+            <calcite-input-message class="info-blue margin-top-0" scale="m">{this._translations.uniqueCout.replace("{{n}}", total.toString())}</calcite-input-message>
           </div>
         </div>
         {
           hasSets ? this._getSelectionSetList() : (
             <div class="info-message">
-              <calcite-input-message active class="info-blue" scale="m">{this._translations.noNotifications}</calcite-input-message>
+              <calcite-input-message class="info-blue" scale="m">{this._translations.noNotifications}</calcite-input-message>
             </div>
           )
         }
@@ -399,7 +399,7 @@ export class PublicNotification {
           <calcite-label>{this._translations.notifications}</calcite-label>
         </div>
         <div class="info-message padding-bottom-1">
-          <calcite-input-message active class="info-blue" scale="m">{this._translations.noNotifications}</calcite-input-message>
+          <calcite-input-message class="info-blue" scale="m">{this._translations.noNotifications}</calcite-input-message>
         </div>
         {this._getNotice(this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1")}
         <div class="display-flex padding-sides-1">
@@ -437,7 +437,7 @@ export class PublicNotification {
                 <calcite-list-item
                   description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
                   label={cur.label}
-                  onClick={() => goToSelection(cur.selectedIds, cur.layerView, this.mapView)}
+                  onClick={void (async (): Promise<void> => goToSelection(cur.selectedIds, cur.layerView, this.mapView))}
                 >
                   {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
                   {this._getAction(true, "x", "", (evt): Promise<void> => this._deleteSelection(i, evt), false, "actions-end")}
@@ -474,7 +474,7 @@ export class PublicNotification {
 
     return (
       <calcite-panel>
-        {this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", this.addresseeLayer?.layer.title), true)}
+        {this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", this.addresseeLayer?.layer.title))}
         {this._getNotice(noticeText)}
         <div class={"padding-1"}>
           <map-select-tools
@@ -490,7 +490,7 @@ export class PublicNotification {
         </div>
         <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
           <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
-          <calcite-input-message active class="info-blue" scale="m">
+          <calcite-input-message class="info-blue" scale="m">
             {this._translations.selectedAddresses.replace("{{n}}", this._numSelected.toString()).replace("{{layer}}", this.addresseeLayer?.layer.title || "")}
           </calcite-input-message>
         </div>
@@ -573,13 +573,13 @@ export class PublicNotification {
           {this._getSelectionLists()}
           <div class="margin-side-1 padding-top-1 border-bottom" />
           <div class="padding-top-sides-1">
-            <calcite-label disabled={!this._downloadActive} layout="inline">
+            <calcite-label layout="inline">
               <calcite-checkbox disabled={!this._downloadActive} ref={(el) => { this._removeDuplicates = el }} />
               {this._translations.removeDuplicate}
             </calcite-label>
           </div>
           <div class={isPdf ? "" : "display-none"}>
-            {this._getLabel(this._translations.selectPDFLabelOption, false, !this._downloadActive)}
+            {this._getLabel(this._translations.selectPDFLabelOption, false)}
             <div class={"padding-sides-1"}>
               <pdf-download
                 disabled={!this._downloadActive}
@@ -591,7 +591,10 @@ export class PublicNotification {
           <div class="padding-1 display-flex">
             <calcite-button
               disabled={!this._downloadActive}
-              onClick={isPdf ? () => this._downloadPDF() : () => this._downloadCSV()}
+              onClick={isPdf
+                ? void (async (): Promise<void> => this._downloadPDF())
+                : void (async (): Promise<void> => this._downloadCSV())
+              }
               width="full"
             >
               {isPdf ? this._translations.downloadPDF : this._translations.downloadCSV}
@@ -662,7 +665,7 @@ export class PublicNotification {
     noticeClass = "padding-1"
   ): VNode {
     return (
-      <calcite-notice active class={noticeClass} color="green" icon="lightbulb">
+      <calcite-notice class={noticeClass} color="green" icon="lightbulb" open={true}>
         <div slot="message">{message}</div>
       </calcite-notice>
     );
@@ -673,22 +676,19 @@ export class PublicNotification {
    *
    * @param label value to display in the label
    * @param disableSpacing should extra calcite defined spacing be applied
-   * @param disabled should the label be disabled
    *
    * @returns the label node
    * @protected
    */
   protected _getLabel(
     label: string,
-    disableSpacing = false,
-    disabled = false
+    disableSpacing = false
   ): VNode {
     return (
       <div class="padding-top-sides-1">
         <calcite-label
           class="font-bold"
           disable-spacing={disableSpacing}
-          disabled={disabled}
         >
           {label}
         </calcite-label>
