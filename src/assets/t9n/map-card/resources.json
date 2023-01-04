@@ -1,3 +1,9 @@
 {
-
+  "mapName": "Map Name",
+  "home": "Home",
+  "list": "List",
+  "search": "Search",
+  "zoomIn": "Zoom In",
+  "zoomOut": "Zoom Out",
+  "expand": "Expand"
 }

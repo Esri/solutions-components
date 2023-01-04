@@ -16,4 +16,74 @@
 
 :host {
   display: block;
+  --calcite-label-margin-bottom: 0;
+  --calcite-block-padding: 0;
 }
+
+.action-bar-size {
+  height: 3.5rem;
+  width: 100%;
+}
+
+.action-center {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-grid-row-align: center;
+  align-items: center;
+  -webkit-align-content: center;
+  align-content: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.border-bottom-1 {
+  border-width: 0px;
+  border-bottom-width: 1px;
+  border-style: solid;
+  border-color: var(--calcite-ui-border-3);
+}
+
+.width-1-7 {
+  width: 14.28%;
+}
+
+.width-1-6 {
+  width: 16.66%;
+}
+
+.width-full {
+  width: 100%;
+}
+
+.height-full {
+  height: 100%;
+}
+
+.display-flex {
+  display: flex;
+}
+
+/* only used if we need to do the map action seperately */
+.block-button {
+  border-bottom: 0;
+}
+
+.block-button:hover {
+  background-color: var(--calcite-ui-foreground-2);
+}
+
+.block-button:active {
+  background-color: var(--calcite-ui-foreground-3);
+}
+
+.map-view {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+/* .block-button:focus {
+  @apply bg-foreground-2 text-color-1 fill-color-1 focus-inset;
+} */

@@ -192,6 +192,10 @@ export namespace Components {
     interface ListItem {
     }
     interface MapCard {
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
     }
     interface MapDrawTools {
         /**
@@ -1052,6 +1056,10 @@ declare namespace LocalJSX {
     interface ListItem {
     }
     interface MapCard {
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
     }
     interface MapDrawTools {
         /**
