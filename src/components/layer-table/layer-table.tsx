@@ -178,7 +178,7 @@ export class LayerTable {
             color='neutral'
             disabled={!featuresSelected}
             iconStart='magnifying-glass'
-            onClick={() => this._zoom()}
+            onClick={async () => this._zoom()}
           >
             {this._translations.zoom}
           </calcite-button>
@@ -196,7 +196,7 @@ export class LayerTable {
             color='neutral'
             disabled={!featuresSelected}
             iconStart='trash'
-            onClick={() => this._delete()}
+            onClick={async () => this._delete()}
           >
             {this._translations.delete}
           </calcite-button>
@@ -232,7 +232,7 @@ export class LayerTable {
               </calcite-dropdown-item>
               <calcite-dropdown-item
                 iconStart='export'
-                onClick={() => this._exportToCSV()}
+                onClick={async () => this._exportToCSV()}
               >
                 {this._translations.exportCSV}
               </calcite-dropdown-item>
