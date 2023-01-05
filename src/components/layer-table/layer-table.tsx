@@ -47,7 +47,7 @@ export class LayerTable {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (protected)
+  //  State (internal)
   //
   //--------------------------------------------------------------------------
 
@@ -58,6 +58,12 @@ export class LayerTable {
   @State() _translations: typeof LayerTable_T9n;
 
   @State() _selectedIndexes: number[] = [];
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
 
   protected _editMultipleMpdal: HTMLEditRecordModalElement;
 
@@ -74,7 +80,6 @@ export class LayerTable {
   protected _fieldNames: string[] = [];
 
   protected _selectAllElement: HTMLCalciteCheckboxElement;
-
 
   //--------------------------------------------------------------------------
   //
@@ -292,14 +297,14 @@ export class LayerTable {
         domainInput = (
           <calcite-select label=''>
             {domain.codedValues.map(cv => {
-              return (<calcite-option label={cv.name} selected={v === cv.code.toString()} value={cv.code} />);
+              return (<calcite-option label={cv.name} selected={v === cv.code.toString()} value={cv.code}/>);
             })}
           </calcite-select>
         )
       } else {
         // range domain
         const range = domain as __esri.RangeDomain;
-        domainInput = (<calcite-input type="number" value={v} min={range.minValue} max={range.maxValue}/>);
+        domainInput = (<calcite-input max={range.maxValue} min={range.minValue} type="number" value={v}/>);
       }
     };
 
@@ -309,7 +314,6 @@ export class LayerTable {
       </div>
     );
   }
-
 
   protected _getInputType(
     type: string
@@ -375,7 +379,7 @@ export class LayerTable {
   }
 
   protected _delete(): void {
-
+    console.log("delete")
   }
 
   protected _getGraphics(

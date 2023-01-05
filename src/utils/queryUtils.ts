@@ -16,7 +16,6 @@
 
 import { EWorkflowType, ISelectionSet, IQueryExtentResponse } from "./interfaces";
 
-
 /**
  * Query the layer for all features
  *

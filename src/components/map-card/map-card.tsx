@@ -169,7 +169,7 @@ export class MapCard {
       <Host>
         {this._getToolbar()}
         {this._getMapNameList(this._mapListExpanded)}
-        <div id={this._mapDivId} class="map-height"></div>
+        <div class="map-height" id={this._mapDivId}/>
       </Host>
     );
   }
@@ -222,7 +222,7 @@ export class MapCard {
       id = this.mapInfos[0].id;
     }
     if (this._loadedId !== id) {
-      var webMap = new this.WebMap({
+      const webMap = new this.WebMap({
         portalItem: { id }
       });
 
@@ -255,7 +255,6 @@ export class MapCard {
     return (
       <calcite-action-group class="action-center width-1-6" layout="horizontal">
         <calcite-action
-          //active={this._pageType === pageType}
           alignment="center"
           class="width-full height-full"
           compact={false}
@@ -265,7 +264,7 @@ export class MapCard {
           onClick={func}
           text=""
         >
-          <calcite-icon scale="s" slot="icon" icon={"cheveron-up"}/>
+          <calcite-icon icon={"cheveron-up"} scale="s" slot="icon"/>
         </calcite-action>
         <calcite-tooltip label="" placement="bottom" reference-element={icon}>
           <span>{tip}</span>
@@ -283,8 +282,8 @@ export class MapCard {
           heading=''
           onClick={() => this._chooseMap()}
         >
-          <calcite-icon scale="s" slot="icon" icon="map"></calcite-icon>
-          <calcite-icon scale="s" slot="icon" icon={mapListIcon}></calcite-icon>
+          <calcite-icon icon="map" scale="s" slot="icon"/>
+          <calcite-icon icon={mapListIcon} scale="s" slot="icon"/>
           <calcite-tooltip label="" placement="bottom">
             <span>{this._translations.mapName}</span>
           </calcite-tooltip>
@@ -317,7 +316,7 @@ export class MapCard {
 
   protected _webMapSelected(
     id: string
-  ) {
+  ): void {
     this._mapListExpanded = false;
     this._webMapId = id;
   }
