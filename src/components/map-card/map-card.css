@@ -84,6 +84,34 @@
   width: 100%;
 }
 
+.map-list {
+  position: absolute;
+  inset: 3.5rem 0 0 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: calcite-scrim-fade-in var(--calcite-internal-animation-timing-medium) ease-in-out;
+  background-color: var(--calcite-scrim-background);
+  z-index: 1;
+  width: 100%;
+  height: fit-content;
+}
+
+.map-height {
+  height: calc(100% - 58px);
+}
+
+.display-none {
+  display: none;
+}
+
+/* Not sure how else to do this
+  tried navigation gamepad settings but enabled: false still shows this */
+
+.esri-zoom {
+  display: none !important;
+}
+
 /* .block-button:focus {
   @apply bg-foreground-2 text-color-1 fill-color-1 focus-inset;
 } */

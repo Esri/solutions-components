@@ -7,10 +7,16 @@
 
 ## Properties
 
-| Property   | Attribute    | Description                                                                                            | Type      | Default     |
-| ---------- | ------------ | ------------------------------------------------------------------------------------------------------ | --------- | ----------- |
-| `mapView`  | --           | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView` | `undefined` |
-| `webMapId` | `web-map-id` | string:                                                                                                | `string`  | `""`        |
+| Property   | Attribute | Description                                  | Type         | Default |
+| ---------- | --------- | -------------------------------------------- | ------------ | ------- |
+| `mapInfos` | --        | IMapInfo[]: array of map infos (name and id) | `IMapInfo[]` | `[]`    |
+
+
+## Events
+
+| Event       | Description                               | Type                                                      |
+| ----------- | ----------------------------------------- | --------------------------------------------------------- |
+| `expandMap` | Emitted when the expand button is clicked | `CustomEvent<EExpandType.COLLAPSE \| EExpandType.EXPAND>` |
 
 
 ## Dependencies
@@ -23,6 +29,8 @@
 - calcite-icon
 - calcite-tooltip
 - calcite-block
+- calcite-pick-list
+- calcite-pick-list-item
 
 ### Graph
 ```mermaid
@@ -33,6 +41,8 @@ graph TD;
   map-card --> calcite-icon
   map-card --> calcite-tooltip
   map-card --> calcite-block
+  map-card --> calcite-pick-list
+  map-card --> calcite-pick-list-item
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
@@ -49,6 +59,8 @@ graph TD;
   calcite-block --> calcite-action-menu
   calcite-scrim --> calcite-loader
   calcite-handle --> calcite-icon
+  calcite-pick-list-item --> calcite-icon
+  calcite-pick-list-item --> calcite-action
   style map-card fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

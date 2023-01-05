@@ -14,10 +14,15 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 import MapCard_T9n from "../../assets/t9n/map-card/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
+import { EExpandType, IMapInfo } from "../../utils/interfaces";
+
+// TODO navigation and accessability isn't right for the map list
+// TODO clarify what the Home and List buttons are supposed to do
+// TODO handle zoom in/out
 
 @Component({
   tag: 'map-card',
@@ -30,6 +35,7 @@ export class MapCard {
   //  Host element access
   //
   //--------------------------------------------------------------------------
+
   @Element() el: HTMLMapCardElement;
 
   //--------------------------------------------------------------------------
@@ -39,14 +45,25 @@ export class MapCard {
   //--------------------------------------------------------------------------
 
   /**
-   * string:
+   * IMapInfo[]: array of map infos (name and id)
    */
-  @Prop() webMapId = "";
+  @Prop() mapInfos: IMapInfo[] = [];
+
+  //--------------------------------------------------------------------------
+  //
+  //  State (internal)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * boolean: controls the state of the map list
+   */
+  @State() _mapListExpanded = false;
 
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
-  @Prop() mapView: __esri.MapView;
+  @State() _mapView: __esri.MapView;
 
   /**
    * Contains the translations for this component.
@@ -54,7 +71,10 @@ export class MapCard {
    */
   @State() _translations: typeof MapCard_T9n;
 
-  @State() _mapListExpanded = false;
+  /**
+   * string: id of the map to display
+   */
+  @State() _webMapId = "";
 
   //--------------------------------------------------------------------------
   //
@@ -63,18 +83,24 @@ export class MapCard {
   //--------------------------------------------------------------------------
 
   /**
-   * esri/WebMap: https://developers.arcgis.com/javascript/latest/api-reference/esri-WebMap.html
+   * string: the id of map currently displayed
    */
-  protected WebMap: typeof __esri.WebMap;
+  protected _loadedId = "";
+
+  /**
+   * string: the id of the container div for the map
+   */
+  protected _mapDivId = "map-div";
 
   /**
    * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   protected MapView: typeof __esri.MapView;
 
-  protected mapDiv: any = (<div id="testMapNew" class="height-full"></div>);
-
-  protected loadedId = "";
+  /**
+   * esri/WebMap: https://developers.arcgis.com/javascript/latest/api-reference/esri-WebMap.html
+   */
+  protected WebMap: typeof __esri.WebMap;
 
   //--------------------------------------------------------------------------
   //
@@ -83,12 +109,22 @@ export class MapCard {
   //--------------------------------------------------------------------------
 
   /**
-   * Called each time the webMapId prop is changed.
+   * Called each time the _webMapId prop is changed.
    */
-  @Watch("webMapId")
-  webMapIdWatchHandler(v: any, oldV: any): void {
+  @Watch("_webMapId")
+  _webMapIdWatchHandler(v: any, oldV: any): void {
     if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
       this._loadMap(v);
+    }
+  }
+
+  /**
+   * Called each time the mapInfos prop is changed.
+   */
+  @Watch("mapInfos")
+  mapInfosWatchHandler(v: any, oldV: any): void {
+    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
+      this._loadMap(v[0].id);
     }
   }
 
@@ -103,6 +139,11 @@ export class MapCard {
   //  Events (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Emitted when the expand button is clicked
+   */
+  @Event() expandMap: EventEmitter<EExpandType>;
 
   //--------------------------------------------------------------------------
   //
@@ -119,14 +160,16 @@ export class MapCard {
   }
 
   componentDidRender() {
-    this._loadMap(this.webMapId);
+    // the container node for the map view needs to exist before the view is created
+    this._loadMap(this._webMapId);
   }
 
   render() {
     return (
       <Host>
         {this._getToolbar()}
-        {this.mapDiv}
+        {this._getMapNameList(this._mapListExpanded)}
+        <div id={this._mapDivId} class="map-height"></div>
       </Host>
     );
   }
@@ -175,17 +218,21 @@ export class MapCard {
   protected _loadMap(
     id: string
   ): void {
-    if (this.loadedId !== this.webMapId) {
+    if (id === "" && this.mapInfos.length > 0) {
+      id = this.mapInfos[0].id;
+    }
+    if (this._loadedId !== id) {
       var webMap = new this.WebMap({
         portalItem: { id }
       });
 
-      this.mapView = new this.MapView({
-        container: this.mapDiv.$attrs$.id,
-        map: webMap
+      this._mapView = new this.MapView({
+        container: this._mapDivId,
+        map: webMap,
+        resizeAlign: "top-left"
       });
 
-      this.loadedId = id;
+      this._loadedId = id;
     }
   }
 
@@ -231,19 +278,57 @@ export class MapCard {
     const mapListIcon = this._mapListExpanded ? "chevron-up" :"chevron-down";
     return (
       <calcite-action-group class="action-center width-1-6" layout="horizontal">
-        <calcite-block class="action-center block-button width-full height-full" onClick={() => this._chooseMap()} heading=''>
+        <calcite-block
+          class="action-center block-button width-full height-full"
+          heading=''
+          onClick={() => this._chooseMap()}
+        >
           <calcite-icon scale="s" slot="icon" icon="map"></calcite-icon>
           <calcite-icon scale="s" slot="icon" icon={mapListIcon}></calcite-icon>
+          <calcite-tooltip label="" placement="bottom">
+            <span>{this._translations.mapName}</span>
+          </calcite-tooltip>
         </calcite-block>
-        <calcite-tooltip label="" placement="bottom">
-          <span>{this._translations.mapName}</span>
-        </calcite-tooltip>
       </calcite-action-group>
     );
   }
 
-  protected _chooseMap(): void {
-    alert("pick a map")
+  protected _getMapNameList(
+    show: boolean
+  ): VNode {
+    const listClass = show ? "map-list" : "display-none";
+    return (
+      <div class={listClass}>
+        <calcite-pick-list id="mapList">
+          {this.mapInfos.map(mapInfo => {
+            return (
+              <calcite-pick-list-item
+                label={mapInfo.name}
+                onClick={() => this._webMapSelected(mapInfo.id)}
+                selected={mapInfo.id === this._loadedId}
+                value={mapInfo.id}
+              />
+            )
+          })}
+        </calcite-pick-list>
+      </div>
+    );
+  }
+
+  protected _webMapSelected(
+    id: string
+  ) {
+    this._mapListExpanded = false;
+    this._webMapId = id;
+  }
+
+  protected async _chooseMap(): Promise<void> {
+    this._mapListExpanded = !this._mapListExpanded;
+    if (this._mapListExpanded) {
+      const mapList = document.getElementById("mapList");
+      // TODO figure out why this doesn't work
+      await (mapList.children[0] as HTMLCalcitePickListItemElement).setFocus();
+    }
   }
 
   protected _goHome(): void {
@@ -267,7 +352,7 @@ export class MapCard {
   }
 
   protected _expand(): void {
-    alert("expand")
+    this.expandMap.emit(EExpandType.EXPAND);
   }
 
   /**

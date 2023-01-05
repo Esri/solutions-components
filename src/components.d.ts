@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IInfoCardValues, IInventoryItem, IMediaCardValues, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
+import { EExpandType, ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -193,13 +193,9 @@ export namespace Components {
     }
     interface MapCard {
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * IMapInfo[]: array of map infos (name and id)
          */
-        "mapView": __esri.MapView;
-        /**
-          * string:
-         */
-        "webMapId": string;
+        "mapInfos": IMapInfo[];
     }
     interface MapDrawTools {
         /**
@@ -583,6 +579,10 @@ export interface BufferToolsCustomEvent<T> extends CustomEvent<T> {
 export interface DeductCalculatorCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLDeductCalculatorElement;
+}
+export interface MapCardCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapCardElement;
 }
 export interface MapDrawToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1061,13 +1061,13 @@ declare namespace LocalJSX {
     }
     interface MapCard {
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * IMapInfo[]: array of map infos (name and id)
          */
-        "mapView"?: __esri.MapView;
+        "mapInfos"?: IMapInfo[];
         /**
-          * string:
+          * Emitted when the expand button is clicked
          */
-        "webMapId"?: string;
+        "onExpandMap"?: (event: MapCardCustomEvent<EExpandType>) => void;
     }
     interface MapDrawTools {
         /**
