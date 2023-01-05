@@ -40,7 +40,7 @@ export class EditRecordModal {
   /**
    * When true the component is displayed
    */
-  @Prop({mutable: true}) open = false;
+  @Prop({ mutable: true }) open = false;
 
   //--------------------------------------------------------------------------
   //
@@ -145,7 +145,7 @@ export class EditRecordModal {
         <div class="padding-bottom-1">
           <calcite-label class="font-bold">
             {label}
-            <calcite-input placeholder={this._translations.textField} type="text"/>
+            <calcite-input placeholder={this._translations.textField} type="text" />
           </calcite-label>
         </div>
       );
@@ -166,7 +166,7 @@ export class EditRecordModal {
    * @returns Promise when complete
    * @protected
    */
-   protected async _getTranslations(): Promise<void> {
+  protected async _getTranslations(): Promise<void> {
     const messages = await getLocaleComponentStrings(this.el);
     this._translations = messages[0] as typeof EditRecordModal_T9n;
   }

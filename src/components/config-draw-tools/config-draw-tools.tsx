@@ -41,7 +41,7 @@ export class ConfigDrawTools {
    * boolean: All checkboxes checked state will be set with this value on first render.
    * Default is true
    */
-  @Prop({reflect: true}) defaultChecked = true;
+  @Prop({ reflect: true }) defaultChecked = true;
 
   //--------------------------------------------------------------------------
   //

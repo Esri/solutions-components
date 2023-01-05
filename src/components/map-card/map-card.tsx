@@ -159,6 +159,9 @@ export class MapCard {
     await this._initModules();
   }
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
   componentDidRender() {
     // the container node for the map view needs to exist before the view is created
     this._loadMap(this._webMapId);
@@ -169,7 +172,7 @@ export class MapCard {
       <Host>
         {this._getToolbar()}
         {this._getMapNameList(this._mapListExpanded)}
-        <div class="map-height" id={this._mapDivId}/>
+        <div class="map-height" id={this._mapDivId} />
       </Host>
     );
   }
@@ -199,7 +202,7 @@ export class MapCard {
     this.MapView = MapView;
   }
 
-  protected _getToolbar():VNode {
+  protected _getToolbar(): VNode {
     return (
       <div class="display-flex">
         <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
@@ -264,7 +267,7 @@ export class MapCard {
           onClick={func}
           text=""
         >
-          <calcite-icon icon={"cheveron-up"} scale="s" slot="icon"/>
+          <calcite-icon icon={"cheveron-up"} scale="s" slot="icon" />
         </calcite-action>
         <calcite-tooltip label="" placement="bottom" reference-element={icon}>
           <span>{tip}</span>
@@ -274,7 +277,7 @@ export class MapCard {
   }
 
   protected _getMapPicker(): VNode {
-    const mapListIcon = this._mapListExpanded ? "chevron-up" :"chevron-down";
+    const mapListIcon = this._mapListExpanded ? "chevron-up" : "chevron-down";
     return (
       <calcite-action-group class="action-center width-1-6" layout="horizontal">
         <calcite-block
@@ -282,8 +285,8 @@ export class MapCard {
           heading=''
           onClick={() => this._chooseMap()}
         >
-          <calcite-icon icon="map" scale="s" slot="icon"/>
-          <calcite-icon icon={mapListIcon} scale="s" slot="icon"/>
+          <calcite-icon icon="map" scale="s" slot="icon" />
+          <calcite-icon icon={mapListIcon} scale="s" slot="icon" />
           <calcite-tooltip label="" placement="bottom">
             <span>{this._translations.mapName}</span>
           </calcite-tooltip>
@@ -360,7 +363,7 @@ export class MapCard {
    * @returns Promise when complete
    * @protected
    */
-   protected async _getTranslations(): Promise<void> {
+  protected async _getTranslations(): Promise<void> {
     const messages = await getLocaleComponentStrings(this.el);
     this._translations = messages[0] as typeof MapCard_T9n;
   }

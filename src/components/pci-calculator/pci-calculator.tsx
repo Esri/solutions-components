@@ -212,10 +212,10 @@ export class PciCalculator {
     const pci = calculatePCI(deductValuesString, true);
     const rating = pci <= 10 ? "Failed" :
       pci <= 25 ? "Serious" :
-      pci <= 40 ? "Very Poor" :
-      pci <= 55 ? "Poor" :
-      pci <= 70 ? "Fair" :
-      pci <= 85 ? "Satisfactory" : "Good";
+        pci <= 40 ? "Very Poor" :
+          pci <= 55 ? "Poor" :
+            pci <= 70 ? "Fair" :
+              pci <= 85 ? "Satisfactory" : "Good";
 
     console.log(`PCI: ${pci}`);
     console.log(`Rating: ${rating}`)

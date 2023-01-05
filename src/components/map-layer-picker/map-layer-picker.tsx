@@ -200,8 +200,8 @@ export class MapLayerPicker {
             this.selectionMode === "multi" ?
               (<calcite-combobox-item textLabel={cur} value={cur} />) :
               this.selectedLayers.indexOf(cur) > -1 ?
-              (<calcite-option label={cur} selected={true} value={cur} />) :
-              (<calcite-option label={cur} value={cur} />)
+                (<calcite-option label={cur} selected={true} value={cur} />) :
+                (<calcite-option label={cur} value={cur} />)
         );
       }
       return prev;

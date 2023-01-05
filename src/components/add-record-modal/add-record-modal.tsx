@@ -40,7 +40,7 @@ export class AddRecordModal {
   /**
    * When true the component is displayed
    */
-  @Prop({mutable: true}) open = false;
+  @Prop({ mutable: true }) open = false;
 
   //--------------------------------------------------------------------------
   //
@@ -106,13 +106,13 @@ export class AddRecordModal {
                 <div class="padding-bottom-1">
                   <calcite-label class="font-bold">
                     {this._translations.source}
-                    <calcite-input placeholder={this._translations.textField} type='textarea'/>
+                    <calcite-input placeholder={this._translations.textField} type='textarea' />
                   </calcite-label>
                 </div>
                 <div class="padding-bottom-1">
                   <calcite-label class="font-bold">
                     {this._translations.publicView}
-                    <calcite-input placeholder={this._translations.textField} type='textarea'/>
+                    <calcite-input placeholder={this._translations.textField} type='textarea' />
                   </calcite-label>
                 </div>
                 <div class="padding-bottom-1">
@@ -204,7 +204,7 @@ export class AddRecordModal {
    * @returns Promise when complete
    * @protected
    */
-   protected async _getTranslations(): Promise<void> {
+  protected async _getTranslations(): Promise<void> {
     const messages = await getLocaleComponentStrings(this.el);
     this._translations = messages[0] as typeof AddRecordModal_T9n;
   }

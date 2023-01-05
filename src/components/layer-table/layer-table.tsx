@@ -250,7 +250,7 @@ export class LayerTable {
   protected _getTableRows(): VNode[] {
     return (
       <div class="table-body">
-        {this._graphics.map((g,i) => this._getTableRow(g, i))}
+        {this._graphics.map((g, i) => this._getTableRow(g, i))}
       </div>
     );
   }
@@ -297,20 +297,20 @@ export class LayerTable {
         domainInput = (
           <calcite-select label=''>
             {domain.codedValues.map(cv => {
-              return (<calcite-option label={cv.name} selected={v === cv.code.toString()} value={cv.code}/>);
+              return (<calcite-option label={cv.name} selected={v === cv.code.toString()} value={cv.code} />);
             })}
           </calcite-select>
         )
       } else {
         // range domain
         const range = domain as __esri.RangeDomain;
-        domainInput = (<calcite-input max={range.maxValue} min={range.minValue} type="number" value={v}/>);
+        domainInput = (<calcite-input max={range.maxValue} min={range.minValue} type="number" value={v} />);
       }
     };
 
     return (
       <div class="table-cell table-border field-width">
-        {editable && domainInput ? domainInput : editable ? (<calcite-input type={inputType} value={v}/>) : v}
+        {editable && domainInput ? domainInput : editable ? (<calcite-input type={inputType} value={v} />) : v}
       </div>
     );
   }
@@ -343,7 +343,7 @@ export class LayerTable {
   protected _selectAll(
     checked: boolean
   ): void {
-    this._selectedIndexes = checked ? this._graphics.map((_g,i) => i) : [];
+    this._selectedIndexes = checked ? this._graphics.map((_g, i) => i) : [];
   }
 
   protected _showSelected(): void {
@@ -357,11 +357,11 @@ export class LayerTable {
   protected _switchSelected(): void {
     const currentIndexes = [...this._selectedIndexes];
     this._selectedIndexes = this._graphics.reduce((prev, _cur, i) => {
-      if (currentIndexes.indexOf(i) < 0){
+      if (currentIndexes.indexOf(i) < 0) {
         prev.push(i);
       }
       return prev;
-    },[]);
+    }, []);
   }
 
   protected async _exportToCSV(): Promise<void> {
@@ -408,7 +408,7 @@ export class LayerTable {
   protected async _layerSelectionChanged(
     evt: CustomEvent
   ): Promise<void> {
-    const layerName:string = evt.detail[0];
+    const layerName: string = evt.detail[0];
     this._layerView = await getMapLayerView(this.mapView, layerName);
     // TODO rethink this...when we use later we need to be able to lookup with name
     this._fieldNames = this._layerView.layer.fields.map(f => f.alias || f.name);
@@ -422,7 +422,7 @@ export class LayerTable {
    * @returns Promise when complete
    * @protected
    */
-   protected async _getTranslations(): Promise<void> {
+  protected async _getTranslations(): Promise<void> {
     const messages = await getLocaleComponentStrings(this.el);
     this._translations = messages[0] as typeof LayerTable_T9n;
   }

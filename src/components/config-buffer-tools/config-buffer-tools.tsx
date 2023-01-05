@@ -40,13 +40,13 @@ export class ConfigBufferTools {
   /**
    * number: Default distance value.
    */
-  @Prop({mutable: true, reflect: true}) distance = 100;
+  @Prop({ mutable: true, reflect: true }) distance = 100;
 
   /**
    * string: Default unit value.
    * Should be a unit listed in assets/t9n/config-buffer-tools/resources
    */
-  @Prop({mutable: true, reflect: true}) unit = "Meters";
+  @Prop({ mutable: true, reflect: true }) unit = "Meters";
 
   //--------------------------------------------------------------------------
   //
@@ -201,7 +201,7 @@ export class ConfigBufferTools {
     const nlsUnits = this._translations.units || {};
     const units: string[] = Object.keys(nlsUnits).map(k => nlsUnits[k]);
     return units.map(unit => {
-      return (<calcite-option label={unit} selected={unit === this.unit} value={unit}/>);
+      return (<calcite-option label={unit} selected={unit === this.unit} value={unit} />);
     });
   }
 

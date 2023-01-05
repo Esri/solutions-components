@@ -219,7 +219,7 @@ export class PublicNotification {
   /**
    * Renders the component.
    */
-  render():void {
+  render(): void {
     const hasSelections = this._selectionSets.length > 0;
     return (
       <Host>
@@ -249,7 +249,7 @@ export class PublicNotification {
    *
    * @protected
    */
-   protected async _initModules(): Promise<void> {
+  protected async _initModules(): Promise<void> {
     const [geometryEngine]: [
       __esri.geometryEngine
     ] = await loadModules([
@@ -717,7 +717,7 @@ export class PublicNotification {
                 disabled={!cur.download}
                 label={cur.label}
                 onClick={() => { void this._toggleDownload(cur.id) }}
-               />
+              />
             </calcite-list>
           </div>
         ));
@@ -904,11 +904,11 @@ export class PublicNotification {
     const isUpdate = this._selectTools?.isUpdate;
 
     this._selectionSets = isUpdate ? this._selectionSets.map(ss => {
-        return ss.id === results.id ? results : ss;
-      }) : [
-        ...this._selectionSets,
-        results
-      ];
+      return ss.id === results.id ? results : ss;
+    }) : [
+      ...this._selectionSets,
+      results
+    ];
     return this._home();
   }
 

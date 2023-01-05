@@ -187,7 +187,7 @@ export class ConfigPdfDownload {
    * @returns the pdf label as a string
    * @protected
    */
-   protected _getLabelSizeText(
+  protected _getLabelSizeText(
     labelInfo: any
   ): string {
     const lNum = labelInfo.descriptionPDF.labelsPerPageDisplay;

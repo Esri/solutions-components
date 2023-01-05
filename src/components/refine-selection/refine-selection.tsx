@@ -53,7 +53,7 @@ export class RefineSelection {
   /**
    * utils/interfaces/ISelectionSet: An array of user defined selection sets
    */
-  @Prop({mutable: true}) selectionSets: ISelectionSet[] = [];
+  @Prop({ mutable: true }) selectionSets: ISelectionSet[] = [];
 
   //--------------------------------------------------------------------------
   //
@@ -223,7 +223,7 @@ export class RefineSelection {
       <calcite-list-item
         label={this._translations.featuresAdded.replace("{{n}}", numAdded.toString())}
       />
-    ),(
+    ), (
       <calcite-list-item
         label={this._translations.featuresRemoved.replace("{{n}}", numRemoved.toString())}
       />
@@ -373,7 +373,7 @@ export class RefineSelection {
    *
    * @protected
    */
-   protected async _getTranslations(): Promise<void> {
+  protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof RefineSelection_T9n;
   }
