@@ -318,7 +318,7 @@ export class MapCard {
         <calcite-block
           class="action-center block-button width-full height-full"
           heading=''
-          onClick={() => this._chooseMap()}
+          onClick={void (async () => await this._chooseMap())}
         >
           <calcite-icon icon="map" scale="s" slot="icon" />
           <calcite-icon icon={mapListIcon} scale="s" slot="icon" />
