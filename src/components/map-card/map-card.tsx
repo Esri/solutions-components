@@ -21,8 +21,12 @@ import { getLocaleComponentStrings } from "../../utils/locale";
 import { EExpandType, IMapInfo } from "../../utils/interfaces";
 
 // TODO navigation and accessability isn't right for the map list
+//   tab does not go into the list when it's open
+//   focus is not set when it opens
 // TODO clarify what the Home and List buttons are supposed to do
 // TODO handle zoom in/out
+// TODO map list button tooltip does not work
+// TODO map list should close if the user clicks something else...hope this will be easy when I figure out how to set focus when it opens
 
 @Component({
   tag: 'map-card',
@@ -160,13 +164,16 @@ export class MapCard {
   }
 
   /**
-   * StencilJS: Called once just after the component is first connected to the DOM.
+   * StencilJS: Called after every render.
    */
   componentDidRender() {
     // the container node for the map view needs to exist before the view is created
     this._loadMap(this._webMapId);
   }
 
+  /**
+   * Renders the component.
+   */
   render() {
     return (
       <Host>
@@ -202,6 +209,13 @@ export class MapCard {
     this.MapView = MapView;
   }
 
+  /**
+   * Create the toolbar (controls used for map and app interactions)
+   *
+   * @returns The dom node with the toolbar
+   *
+   * @protected
+   */
   protected _getToolbar(): VNode {
     return (
       <div class="display-flex">
@@ -218,9 +232,19 @@ export class MapCard {
     );
   }
 
+  /**
+   * Load the webmap for the provided id
+   *
+   * @param id the webmap id to load
+   *
+   * @returns void
+   *
+   * @protected
+   */
   protected _loadMap(
     id: string
   ): void {
+    // on the first render use the first child of the provided mapInfos
     if (id === "" && this.mapInfos.length > 0) {
       id = this.mapInfos[0].id;
     }
@@ -232,6 +256,7 @@ export class MapCard {
       this._mapView = new this.MapView({
         container: this._mapDivId,
         map: webMap,
+        // TODO consider this more...seems to cause less overflow issues when the component is resized
         resizeAlign: "top-left"
       });
 
@@ -244,8 +269,10 @@ export class MapCard {
    *
    * @param icon the icon to display for the current action
    * @param disabled should the action be disabled
-   * @param pageType what page type will the action navigate to
    * @param tip information tip to display helpful details to end user
+   * @param func the associated onClick function to execute
+   *
+   * @returns the dom node for the action group
    *
    * @protected
    */
@@ -276,6 +303,14 @@ export class MapCard {
     );
   }
 
+  /**
+   * Get a calcite action group for the map list
+   * Actions do not support multiple icons so this uses a block
+   *
+   * @returns the dom node for the action group
+   *
+   * @protected
+   */
   protected _getMapPicker(): VNode {
     const mapListIcon = this._mapListExpanded ? "chevron-up" : "chevron-down";
     return (
@@ -295,6 +330,15 @@ export class MapCard {
     );
   }
 
+  /**
+   * Get a pick list for all maps in mapInfos
+   *
+   * @param show boolean to indicate if the list should be shown or hidden
+   *
+   * @returns the dom node for the list of maps
+   *
+   * @protected
+   */
   protected _getMapNameList(
     show: boolean
   ): VNode {
@@ -317,6 +361,15 @@ export class MapCard {
     );
   }
 
+  /**
+   * Fired when the user clicks on the map list
+   *
+   * @param id the web map id selected from the list
+   *
+   * @returns void
+   *
+   * @protected
+   */
   protected _webMapSelected(
     id: string
   ): void {
@@ -324,6 +377,13 @@ export class MapCard {
     this._webMapId = id;
   }
 
+  /**
+   * Toggles the open/close state of the map list
+   *
+   * @returns the dom node for the action group
+   *
+   * @protected
+   */
   protected async _chooseMap(): Promise<void> {
     this._mapListExpanded = !this._mapListExpanded;
     if (this._mapListExpanded) {
@@ -333,26 +393,38 @@ export class MapCard {
     }
   }
 
+  // Need to discuss this with the team
   protected _goHome(): void {
     alert("go home")
   }
 
+  // need to discuss this with the team
   protected _showList(): void {
     alert("show list")
   }
 
+  // Need to discuss this with the team
   protected _search(): void {
     alert("search")
   }
 
+  // Need to explore map fixed zoom in considerations
   protected _zoomIn(): void {
     alert("zoom in")
   }
 
+  // Need to explore map fixed zoom out considerations
   protected _zoomOut(): void {
     alert("zoom out")
   }
 
+  /**
+   * Emit the expand map event
+   *
+   * @returns void
+   *
+   * @protected
+   */
   protected _expand(): void {
     this.expandMap.emit(EExpandType.EXPAND);
   }
