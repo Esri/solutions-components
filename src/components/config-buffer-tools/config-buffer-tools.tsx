@@ -50,6 +50,17 @@ export class ConfigBufferTools {
 
   //--------------------------------------------------------------------------
   //
+  //  State (internal)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * When checked the buffer tools will be show in the config
+   */
+  @State() _showBufferChecked = true;
+
+  //--------------------------------------------------------------------------
+  //
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
@@ -58,11 +69,6 @@ export class ConfigBufferTools {
    * When checked the buffer tools will be avalible at runtime.
    */
   protected _showBufferElement: HTMLCalciteCheckboxElement;
-
-  /**
-   * When checked the buffer tools will be show in the config
-   */
-  @State() _showBufferChecked = true;
 
   /**
    * Contains the translations for this component.

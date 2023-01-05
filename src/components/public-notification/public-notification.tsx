@@ -60,7 +60,7 @@ export class PublicNotification {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (protected)
+  //  State (internal)
   //
   //--------------------------------------------------------------------------
 
@@ -106,6 +106,12 @@ export class PublicNotification {
    * All UI strings should be defined here.
    */
   @State() protected _translations: typeof NewPublicNotification_T9n;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
 
   /**
    * ISelectionSet: The current active selection set

@@ -46,7 +46,7 @@ export class ConfigPdfDownload {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (protected)
+  //  State (internal)
   //
   //--------------------------------------------------------------------------
 
@@ -60,6 +60,12 @@ export class ConfigPdfDownload {
    * All UI strings should be defined here.
    */
   @State() _translations: typeof ConfigPdfDownload_T9n;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
 
   /**
    * HTMLCheckListElement: The format options check list element

@@ -80,7 +80,7 @@ export class BufferTools {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (protected)
+  //  State (internal)
   //
   //--------------------------------------------------------------------------
 
@@ -89,6 +89,12 @@ export class BufferTools {
    * All UI strings should be defined here.
    */
   @State() _translations: typeof BufferTools_T9n;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
 
   /**
    * Timeout: https://nodejs.org/en/docs/guides/timers-in-node/

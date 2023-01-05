@@ -57,7 +57,7 @@ export class RefineSelection {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (protected)
+  //  State (internal)
   //
   //--------------------------------------------------------------------------
 
@@ -66,6 +66,12 @@ export class RefineSelection {
    * All UI strings should be defined here.
    */
   @State() protected _translations: typeof RefineSelection_T9n;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
 
   /**
    * boolean: Indicates if any new graphics should be added or removed

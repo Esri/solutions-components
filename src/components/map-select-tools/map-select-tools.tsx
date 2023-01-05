@@ -74,7 +74,7 @@ export class MapSelectTools {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (protected)
+  //  State (internal)
   //
   //--------------------------------------------------------------------------
 
@@ -96,6 +96,12 @@ export class MapSelectTools {
    * EWorkflowType: "SEARCH", "SELECT", "SKETCH", "REFINE"
    */
   @State() _workflowType: EWorkflowType;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
 
   /**
    * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html

@@ -95,7 +95,7 @@ export class RefineSelectionTools {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (protected)
+  //  State (internal)
   //
   //--------------------------------------------------------------------------
 
@@ -114,6 +114,12 @@ export class RefineSelectionTools {
    * All UI strings should be defined here.
    */
   @State() _translations: typeof RefineSelectionTools_T9n;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
 
   /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html

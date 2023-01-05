@@ -44,7 +44,7 @@ export class PciCalculator {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (protected)
+  //  State (internal)
   //
   //--------------------------------------------------------------------------
 
@@ -52,6 +52,12 @@ export class PciCalculator {
    * Boolean: Show/Hide the calculate deduct value UI
    */
   @State() showAddDeduct = false;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
 
   /**
    * HTMLCalciteInputElement: The html element for setting deduct values

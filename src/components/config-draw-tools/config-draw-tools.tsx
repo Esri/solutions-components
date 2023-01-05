@@ -45,7 +45,7 @@ export class ConfigDrawTools {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (protected)
+  //  State (internal)
   //
   //--------------------------------------------------------------------------
 
@@ -54,6 +54,12 @@ export class ConfigDrawTools {
    * All UI strings should be defined here.
    */
   @State() _translations: typeof ConfigDrawTools_T9n;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
 
   /**
    * HTMLCheckListElement: The check list element

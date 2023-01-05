@@ -52,7 +52,7 @@ export class PdfDownload {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (protected)
+  //  State (internal)
   //
   //--------------------------------------------------------------------------
 
@@ -61,6 +61,12 @@ export class PdfDownload {
    * All UI strings should be defined here.
    */
   @State() protected _translations: typeof PdfDownload_T9n;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
 
   /**
    * HTMLCalciteSelectElement: The html element for selecting buffer unit
