@@ -21,6 +21,10 @@ import { getMapLayerView, goToSelection } from "../../utils/mapViewUtils";
 import { queryAllFeatures } from "../../utils/queryUtils";
 import { exportCSV } from "../../utils/csvUtils";
 
+// TODO look for options to better handle very large number of records
+//  has a hard time especially with select all when we have many rows
+// TODO test with data that contains domains
+
 @Component({
   tag: 'layer-table',
   styleUrl: 'layer-table.css',
@@ -57,6 +61,9 @@ export class LayerTable {
    */
   @State() _translations: typeof LayerTable_T9n;
 
+  /**
+   * A list of indexes that are currently selected
+   */
   @State() _selectedIndexes: number[] = [];
 
   //--------------------------------------------------------------------------
@@ -65,6 +72,9 @@ export class LayerTable {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * HTMLEditRecordModalElement: Modal used to edit multiple records
+   */
   protected _editMultipleMpdal: HTMLEditRecordModalElement;
 
   /**
@@ -77,8 +87,14 @@ export class LayerTable {
    */
   protected _layerView: __esri.FeatureLayerView;
 
+  /**
+   * string[]: List of field names to display
+   */
   protected _fieldNames: string[] = [];
 
+  /**
+   * HTMLCalciteCheckboxElement: Element to force selection of all records
+   */
   protected _selectAllElement: HTMLCalciteCheckboxElement;
 
   //--------------------------------------------------------------------------
@@ -142,6 +158,11 @@ export class LayerTable {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Gets a row of controls that can be used for various interactions with the table
+   *
+   * @returns The dom node that contains the controls
+   */
   protected _getTableControlRow(): VNode {
     const featuresSelected = this._selectedIndexes.length > 0;
     const multiFeaturesSelected = this._selectedIndexes.length > 1;
@@ -222,6 +243,11 @@ export class LayerTable {
     );
   }
 
+  /**
+   * Gets the table header with a select all control and column headers for each field
+   *
+   * @returns The dom node that contains the header
+   */
   protected _getTableHeader(): VNode {
     return (
       <div class="header">
@@ -237,6 +263,13 @@ export class LayerTable {
     );
   }
 
+  /**
+   * Gets a header cell for the table header
+   *
+   * @param name the string to display in the cell
+   *
+   * @returns The dom node that contains the header cell
+   */
   protected _getTableHeaderCell(
     name: string
   ): VNode {
@@ -247,6 +280,11 @@ export class LayerTable {
     );
   }
 
+  /**
+   * Gets the table rows for all features
+   *
+   * @returns The dom node that contains the body of the table
+   */
   protected _getTableRows(): VNode[] {
     return (
       <div class="table-body">
@@ -255,6 +293,14 @@ export class LayerTable {
     );
   }
 
+  /**
+   * Gets the individual table row for a feature
+   *
+   * @param g the graphic the row is based on
+   * @param index the index location of the row within the table
+   *
+   * @returns The dom node that contains the row
+   */
   protected _getTableRow(
     g: __esri.Graphic,
     index: number
@@ -282,6 +328,15 @@ export class LayerTable {
     );
   }
 
+  /**
+   * Gets the individual table cell for the provided field
+   *
+   * @param v the value to display
+   * @param field the field the row is based on
+   * @param rowSelected when true editable fields will render a control that will allow the value to be updated
+   *
+   * @returns The dom node that contains the table cell
+   */
   protected _getTableRowCell(
     v: string,
     field: __esri.Field,
@@ -315,6 +370,13 @@ export class LayerTable {
     );
   }
 
+  /**
+   * Simple lookup that will get the appropriate edit control for the value type
+   *
+   * @param type the Esri field type
+   *
+   * @returns A string for the type of control to create based on the provided field type
+   */
   protected _getInputType(
     type: string
   ): "number" | "datetime-local" | "text" {
@@ -340,20 +402,38 @@ export class LayerTable {
     return Object.keys(inputTypes).indexOf(type) > -1 ? inputTypes[type] : "text";
   }
 
+  /**
+   * Select or deselect all rows
+   *
+   * @param checked When true all rows will be selected
+   *
+   * @returns void
+   */
   protected _selectAll(
     checked: boolean
   ): void {
     this._selectedIndexes = checked ? this._graphics.map((_g, i) => i) : [];
   }
 
+  // need to discuss with team
   protected _showSelected(): void {
     console.log("_showSelected");
   }
 
+  /**
+   * Clears the selected indexes
+   *
+   * @returns void
+   */
   protected _clearSelection(): void {
     this._selectedIndexes = [];
   }
 
+  /**
+   * Select all rows that are not currently selectd
+   *
+   * @returns void
+   */
   protected _switchSelected(): void {
     const currentIndexes = [...this._selectedIndexes];
     this._selectedIndexes = this._graphics.reduce((prev, _cur, i) => {
@@ -364,35 +444,74 @@ export class LayerTable {
     }, []);
   }
 
+  /**
+   * Export all selected rows as CSV
+   *
+   * @returns a promise that will resolve when the operation is complete
+   */
   protected async _exportToCSV(): Promise<void> {
     const ids = this._getSelectedIds();
     await exportCSV(this._layerView, ids);
   }
 
+  /**
+   * Zoom to all selected features
+   *
+   * @returns a promise that will resolve when the operation is complete
+   */
   protected async _zoom(): Promise<void> {
     const ids = this._getSelectedIds();
     await goToSelection(ids, this._layerView, this.mapView, true);
   }
 
+  /**
+   * Open the edit multiple modal
+   *
+   * @returns void
+   */
   protected _editMultiple(): void {
     this._editMultipleMpdal.open = true;
   }
 
-  protected _delete(): void {
+  /**
+   * Delete all selected records
+   *
+   * @returns a promise that will resolve when the operation is complete
+   */
+  protected async _delete(): Promise<void> {
     console.log("delete")
   }
 
+  /**
+   * Get the graphics for all selected indexes
+   *
+   * @param indexes the indexes for the graphics to fetch
+   *
+   * @returns An array of selected graphics
+   */
   protected _getGraphics(
     indexes: number[]
   ): __esri.Graphic[] {
     return this._graphics.filter((_g, i) => indexes.indexOf(i) > -1);
   }
 
+  /**
+   * Gets the object ids for all selected rows
+   *
+   * @returns An array of object ids
+   */
   protected _getSelectedIds(): number[] {
     const graphics = this._getGraphics(this._selectedIndexes);
     return graphics.map(g => g.getObjectId());
   }
 
+  /**
+   * Update the selected indexes based on the current row
+   *
+   * @param index the index of the selected row
+   *
+   * @returns void
+   */
   protected _rowSelected(
     index: number
   ): void {
@@ -405,6 +524,11 @@ export class LayerTable {
     }
   }
 
+  /**
+   * Handles layer selection change to show new table
+   *
+   * @returns a promise that will resolve when the operation is complete
+   */
   protected async _layerSelectionChanged(
     evt: CustomEvent
   ): Promise<void> {
