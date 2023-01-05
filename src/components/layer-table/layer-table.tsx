@@ -178,7 +178,7 @@ export class LayerTable {
             color='neutral'
             disabled={!featuresSelected}
             iconStart='magnifying-glass'
-            onClick={void (async () => await this._zoom())}
+            onClick={() => this._zoom()}
           >
             {this._translations.zoom}
           </calcite-button>
@@ -196,7 +196,7 @@ export class LayerTable {
             color='neutral'
             disabled={!featuresSelected}
             iconStart='trash'
-            onClick={void (async () => await this._delete())}
+            onClick={() => this._delete()}
           >
             {this._translations.delete}
           </calcite-button>
@@ -232,7 +232,7 @@ export class LayerTable {
               </calcite-dropdown-item>
               <calcite-dropdown-item
                 iconStart='export'
-                onClick={void (async () => await this._exportToCSV())}
+                onClick={() => this._exportToCSV()}
               >
                 {this._translations.exportCSV}
               </calcite-dropdown-item>
@@ -449,9 +449,9 @@ export class LayerTable {
    *
    * @returns a promise that will resolve when the operation is complete
    */
-  protected async _exportToCSV(): Promise<void> {
+  protected _exportToCSV(): void {
     const ids = this._getSelectedIds();
-    await exportCSV(this._layerView, ids);
+    void exportCSV(this._layerView, ids);
   }
 
   /**
@@ -459,9 +459,9 @@ export class LayerTable {
    *
    * @returns a promise that will resolve when the operation is complete
    */
-  protected async _zoom(): Promise<void> {
+  protected _zoom(): void {
     const ids = this._getSelectedIds();
-    await goToSelection(ids, this._layerView, this.mapView, true);
+    void goToSelection(ids, this._layerView, this.mapView, true);
   }
 
   /**
@@ -478,7 +478,7 @@ export class LayerTable {
    *
    * @returns a promise that will resolve when the operation is complete
    */
-  protected async _delete(): Promise<void> {
+  protected _delete(): void {
     console.log("delete")
   }
 

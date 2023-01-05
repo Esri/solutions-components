@@ -318,7 +318,7 @@ export class MapCard {
         <calcite-block
           class="action-center block-button width-full height-full"
           heading=''
-          onClick={void (async () => await this._chooseMap())}
+          onClick={() => this._chooseMap()}
         >
           <calcite-icon icon="map" scale="s" slot="icon" />
           <calcite-icon icon={mapListIcon} scale="s" slot="icon" />
@@ -384,12 +384,12 @@ export class MapCard {
    *
    * @protected
    */
-  protected async _chooseMap(): Promise<void> {
+  protected _chooseMap(): void {
     this._mapListExpanded = !this._mapListExpanded;
     if (this._mapListExpanded) {
-      const mapList = document.getElementById("mapList");
+      //const mapList = document.getElementById("mapList");
       // TODO figure out why this doesn't work
-      await (mapList.children[0] as HTMLCalcitePickListItemElement).setFocus();
+      //await (mapList.children[0] as HTMLCalcitePickListItemElement).setFocus();
     }
   }
 
