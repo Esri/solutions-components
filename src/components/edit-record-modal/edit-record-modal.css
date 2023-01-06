@@ -23,11 +23,11 @@
 }
 
 .font-bold {
-  font-weight: bold;
+  font-weight: var(--calcite-font-weight-bold);
 }
 
 .font-500 {
-  font-weight: 500;
+  font-weight: var(--calcite-font-weight-medium);
 }
 
 .font-italic {
