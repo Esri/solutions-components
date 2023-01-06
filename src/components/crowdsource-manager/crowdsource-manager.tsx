@@ -74,7 +74,11 @@ export class CrowdsourceManager {
   render() {
     return (
       <Host>
-        <slot />
+        <div>
+          <calcite-shell>
+            <div class="header" slot='header'/>
+          </calcite-shell>
+        </div>
       </Host>
     );
   }
