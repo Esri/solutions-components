@@ -28,11 +28,9 @@
         background-color: var(--calcite-ui-foreground-1);
       }
       .column {
-        min-width: 300px;
-        padding: 1rem;
-        border: 1px solid var(--calcite-ui-border-2);
-        height: -webkit-fill-available;
+        width: 100%;
         height: 100%;
+        border: 1px solid var(--calcite-ui-border-2);
       }
       .column[dir="rtl"] {
         float: left;
@@ -52,30 +50,20 @@
     <script type="module" src="../solutions-components.esm.js"></script>
 
     <script>
-      require(["esri/WebMap", "esri/views/MapView"], (
-        WebMap,
-        MapView
-      ) => {
-        var webMap = new WebMap({
-          portalItem: {
-            // solutions
-            // id: "3715f4899bea4b2a948347c5c2357e58"
-            // InstantApps
-            id: "863e4f6f2a7840db896cc1b1606d552d"
-          }
-        });
-
+      function addValues() {
         const demo = document.getElementById("demo");
-        demo.mapView = new MapView({
-          container: "viewDiv",
-          map: webMap
-        });
-      });
+        demo.mapInfos = [{
+          id: "863e4f6f2a7840db896cc1b1606d552d",
+          name: "Name of map 1"
+        }, {
+          id: "3715f4899bea4b2a948347c5c2357e58",
+          name: "Name of map 2"
+        }];
+      }
     </script>
   </head>
 
-  <body>
-    <div id="viewDiv"></div>
-    <map-card id="demo" class="over-map column"></map-card>
+  <body onload="addValues()">
+    <map-card id="demo" class="over-map column"/>
   </body>
 </html>

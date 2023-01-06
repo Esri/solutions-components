@@ -72,6 +72,11 @@ export enum ESketchType {
   "INTERACTIVE"="INTERACTIVE"
 }
 
+export enum EExpandType {
+  EXPAND="EXPAND",
+  COLLAPSE="COLLAPSE"
+}
+
 /* eslint-enable no-unused-vars */
 
 export type SelectionMode = "single" | "multi";
@@ -336,4 +341,9 @@ export interface IMediaCardValues {
   name: string;
   description: string;
   url: string;
+}
+
+export interface IMapInfo {
+  id: string;
+  name: string;
 }

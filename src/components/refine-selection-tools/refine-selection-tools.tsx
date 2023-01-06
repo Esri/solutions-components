@@ -95,7 +95,7 @@ export class RefineSelectionTools {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (protected)
+  //  State (internal)
   //
   //--------------------------------------------------------------------------
 
@@ -115,6 +115,12 @@ export class RefineSelectionTools {
    */
   @State() _translations: typeof RefineSelectionTools_T9n;
 
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
+
   /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
    * The graphics layer constructor
@@ -130,7 +136,7 @@ export class RefineSelectionTools {
   /**
    * {<layer title>: Graphic[]}: Collection of graphics returned from queries to the layer
    */
-  protected _featuresCollection: {[key: string]: __esri.Graphic[]} = {};
+  protected _featuresCollection: { [key: string]: __esri.Graphic[] } = {};
 
   /**
    * esri/core/Handles: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Handles.html#Handle
@@ -356,7 +362,7 @@ export class RefineSelectionTools {
    *
    * @protected
    */
-   protected async _initModules(): Promise<void> {
+  protected async _initModules(): Promise<void> {
     const [GraphicsLayer, SketchViewModel]: [
       __esri.GraphicsLayerConstructor,
       __esri.SketchViewModelConstructor
@@ -486,7 +492,7 @@ export class RefineSelectionTools {
         return getMapLayerView(this.mapView, title)
       });
 
-     return Promise.all(layerPromises).then((layerViews) => {
+      return Promise.all(layerPromises).then((layerViews) => {
         this.layerViews = layerViews;
       });
     } else {

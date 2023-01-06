@@ -44,7 +44,7 @@ export class PciCalculator {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (protected)
+  //  State (internal)
   //
   //--------------------------------------------------------------------------
 
@@ -52,6 +52,12 @@ export class PciCalculator {
    * Boolean: Show/Hide the calculate deduct value UI
    */
   @State() showAddDeduct = false;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
 
   /**
    * HTMLCalciteInputElement: The html element for setting deduct values
@@ -212,10 +218,10 @@ export class PciCalculator {
     const pci = calculatePCI(deductValuesString, true);
     const rating = pci <= 10 ? "Failed" :
       pci <= 25 ? "Serious" :
-      pci <= 40 ? "Very Poor" :
-      pci <= 55 ? "Poor" :
-      pci <= 70 ? "Fair" :
-      pci <= 85 ? "Satisfactory" : "Good";
+        pci <= 40 ? "Very Poor" :
+          pci <= 55 ? "Poor" :
+            pci <= 70 ? "Fair" :
+              pci <= 85 ? "Satisfactory" : "Good";
 
     console.log(`PCI: ${pci}`);
     console.log(`Rating: ${rating}`)

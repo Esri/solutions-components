@@ -125,8 +125,8 @@ export class CardManager {
             {/* <calcite-button>{this._translations.comments}</calcite-button> */}
           </div>
           <div>
-            <media-card class="" values={this._fakeValues}/>
-            <info-card class="display-none" values={this._fakeInfos}/>
+            <media-card class="" values={this._fakeValues} />
+            <info-card class="display-none" values={this._fakeInfos} />
           </div>
         </div>
       </Host>
@@ -145,7 +145,7 @@ export class CardManager {
    * @returns Promise when complete
    * @protected
    */
-   protected async _getTranslations(): Promise<void> {
+  protected async _getTranslations(): Promise<void> {
     const messages = await getLocaleComponentStrings(this.el);
     this._translations = messages[0] as typeof CardManager_T9n;
   }

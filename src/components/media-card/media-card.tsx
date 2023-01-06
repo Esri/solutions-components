@@ -41,11 +41,11 @@ export class MediaCard {
   /**
    * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
    */
-   @Prop() values: IMediaCardValues[] = [];
+  @Prop() values: IMediaCardValues[] = [];
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (protected)
+  //  State (internal)
   //
   //--------------------------------------------------------------------------
 
@@ -59,6 +59,12 @@ export class MediaCard {
    * All UI strings should be defined here.
    */
   @State() _translations: typeof MediaCard_T9n;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
 
   //--------------------------------------------------------------------------
   //
@@ -104,7 +110,7 @@ export class MediaCard {
    *
    * @returns Promise when complete
    */
-   async componentWillLoad(): Promise<void> {
+  async componentWillLoad(): Promise<void> {
     await this._getTranslations();
   }
 
@@ -131,7 +137,7 @@ export class MediaCard {
       <Host>
         <div>
           <div class="display-flex">
-            <img class="img-container" src={v?.url}/>
+            <img class="img-container" src={v?.url} />
           </div>
           <calcite-label scale='s'>
             <span class="font-italic padding-bottom-1">
@@ -213,7 +219,7 @@ export class MediaCard {
    * @returns Promise when complete
    * @protected
    */
-   protected async _getTranslations(): Promise<void> {
+  protected async _getTranslations(): Promise<void> {
     const messages = await getLocaleComponentStrings(this.el);
     this._translations = messages[0] as typeof MediaCard_T9n;
   }

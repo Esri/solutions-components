@@ -46,7 +46,7 @@ export class MapSearch {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (protected)
+  //  State (internal)
   //
   //--------------------------------------------------------------------------
 
@@ -61,6 +61,12 @@ export class MapSearch {
    * All UI strings should be defined here.
    */
   @State() protected _translations: typeof MapSearch_T9n;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
 
   /**
    * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html

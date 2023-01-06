@@ -45,12 +45,12 @@ export class MapSelectTools {
   /**
    * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
    */
-   @Prop() geometries: __esri.Geometry[];
+  @Prop() geometries: __esri.Geometry[];
 
   /**
    * boolean: When true a new label is not generated for the stored selection set
    */
-   @Prop() isUpdate = false;
+  @Prop() isUpdate = false;
 
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -60,7 +60,7 @@ export class MapSelectTools {
   /**
    * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
    */
-   @Prop({reflect: false}) selectionSet: ISelectionSet;
+  @Prop({ reflect: false }) selectionSet: ISelectionSet;
 
   /**
    * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
@@ -74,7 +74,7 @@ export class MapSelectTools {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (protected)
+  //  State (internal)
   //
   //--------------------------------------------------------------------------
 
@@ -96,6 +96,12 @@ export class MapSelectTools {
    * EWorkflowType: "SEARCH", "SELECT", "SKETCH", "REFINE"
    */
   @State() _workflowType: EWorkflowType;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
 
   /**
    * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
@@ -140,7 +146,7 @@ export class MapSelectTools {
   /**
    * esri/geometry/geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
    */
-  protected _geometryEngine:  __esri.geometryEngine;
+  protected _geometryEngine: __esri.geometryEngine;
 
   /**
    * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
@@ -400,7 +406,7 @@ export class MapSelectTools {
             border={true}
             //class={showDrawToolsClass}
             mapView={this.mapView}
-            ref={(el) => { this._drawTools = el}}
+            ref={(el) => { this._drawTools = el }}
           />
         </div>
         <div class={useSelectClass}>
@@ -424,7 +430,7 @@ export class MapSelectTools {
             onBufferComplete={(evt) => this._bufferComplete(evt)}
             ref={(el) => this._bufferTools = el}
             unit={this.selectionSet?.unit}
-           />
+          />
         </calcite-label>
         <slot />
       </Host>
@@ -493,7 +499,7 @@ export class MapSelectTools {
       // reset selection label base
       this._selectionLabel = this._workflowType === EWorkflowType.SKETCH ?
         this._translations.sketch : this._workflowType === EWorkflowType.SELECT ?
-        this._translations.select : this.selectionSet?.label;
+          this._translations.select : this.selectionSet?.label;
 
       void goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     } else {
@@ -615,8 +621,8 @@ export class MapSelectTools {
         "geometry": geom,
         "symbol": geom.type === "point" ?
           this._drawTools?.pointSymbol : geom.type === "polyline" ?
-          this._drawTools?.polylineSymbol : geom.type === "polygon" ?
-          this._drawTools?.polygonSymbol : undefined
+            this._drawTools?.polylineSymbol : geom.type === "polygon" ?
+              this._drawTools?.polygonSymbol : undefined
       };
       return new this.Graphic(props)
     });

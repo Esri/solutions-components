@@ -17,3 +17,19 @@
 :host {
   display: block;
 }
+
+.padding-bottom-1 {
+  padding-bottom: 1rem;
+}
+
+.font-bold {
+  font-weight: var(--calcite-font-weight-bold);
+}
+
+.font-500 {
+  font-weight: var(--calcite-font-weight-medium);
+}
+
+.font-italic {
+  font-style: italic;
+}

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
- import { Component, Element, Host, h, Method, Prop, VNode} from '@stencil/core';
+import { Component, Element, Host, h, Method, Prop, VNode } from '@stencil/core';
 
 @Component({
   tag: 'check-list',
@@ -45,6 +45,12 @@ export class CheckList {
    * string []: The values to render beside the checkboxes
    */
   @Prop() values: string[];
+
+  //--------------------------------------------------------------------------
+  //
+  //  State (internal)
+  //
+  //--------------------------------------------------------------------------
 
   //--------------------------------------------------------------------------
   //

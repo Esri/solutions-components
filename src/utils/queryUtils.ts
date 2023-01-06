@@ -17,6 +17,42 @@
 import { EWorkflowType, ISelectionSet, IQueryExtentResponse } from "./interfaces";
 
 /**
+ * Query the layer for all features
+ *
+ * @param start zero-based index indicating where to begin retrieving features
+ * @param layer the layer to retrieve features from
+ * @param graphics stores the features
+ *
+ * @returns Promise with the featureSet from the layer that match the provided ids
+ */
+export async function queryAllFeatures(
+  start: number,
+  layer: __esri.FeatureLayer,
+  graphics: __esri.Graphic[]
+): Promise<__esri.Graphic[]> {
+  const num = layer.capabilities.query.maxRecordCount;
+  const query = {
+    start,
+    num,
+    outFields: ["*"],
+    // TODO think through this more...does this make sense
+    // may be better to fetch when checkbox is clicked...
+    returnGeometry: true,
+    where: "1=1"
+  };
+
+  const result = await layer.queryFeatures(query);
+
+  graphics = graphics.concat(
+    result.features
+  );
+
+  return result.exceededTransferLimit ?
+    queryAllFeatures(start += num, layer, graphics) :
+    Promise.resolve(graphics);
+}
+
+/**
  * Query the layer for OIDs based on any user drawn geometries or buffers
  *
  * @param geometries Array of geometries used for the selection of ids from the layer

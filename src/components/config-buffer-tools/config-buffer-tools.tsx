@@ -40,13 +40,24 @@ export class ConfigBufferTools {
   /**
    * number: Default distance value.
    */
-  @Prop({mutable: true, reflect: true}) distance = 100;
+  @Prop({ mutable: true, reflect: true }) distance = 100;
 
   /**
    * string: Default unit value.
    * Should be a unit listed in assets/t9n/config-buffer-tools/resources
    */
-  @Prop({mutable: true, reflect: true}) unit = "Meters";
+  @Prop({ mutable: true, reflect: true }) unit = "Meters";
+
+  //--------------------------------------------------------------------------
+  //
+  //  State (internal)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * When checked the buffer tools will be show in the config
+   */
+  @State() _showBufferChecked = true;
 
   //--------------------------------------------------------------------------
   //
@@ -58,11 +69,6 @@ export class ConfigBufferTools {
    * When checked the buffer tools will be avalible at runtime.
    */
   protected _showBufferElement: HTMLCalciteCheckboxElement;
-
-  /**
-   * When checked the buffer tools will be show in the config
-   */
-  @State() _showBufferChecked = true;
 
   /**
    * Contains the translations for this component.
@@ -201,7 +207,7 @@ export class ConfigBufferTools {
     const nlsUnits = this._translations.units || {};
     const units: string[] = Object.keys(nlsUnits).map(k => nlsUnits[k]);
     return units.map(unit => {
-      return (<calcite-option label={unit} selected={unit === this.unit} value={unit}/>);
+      return (<calcite-option label={unit} selected={unit === this.unit} value={unit} />);
     });
   }
 

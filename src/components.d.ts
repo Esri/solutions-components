@@ -5,10 +5,14 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IInfoCardValues, IInventoryItem, IMediaCardValues, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
+import { EExpandType, ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
+        /**
+          * When true the component is displayed
+         */
+        "open": boolean;
     }
     interface BufferTools {
         /**
@@ -126,6 +130,10 @@ export namespace Components {
     interface DeductCalculator {
     }
     interface EditRecordModal {
+        /**
+          * When true the component is displayed
+         */
+        "open": boolean;
     }
     interface InfoCard {
         /**
@@ -176,10 +184,18 @@ export namespace Components {
         "value": any;
     }
     interface LayerTable {
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
     }
     interface ListItem {
     }
     interface MapCard {
+        /**
+          * IMapInfo[]: array of map infos (name and id)
+         */
+        "mapInfos": IMapInfo[];
     }
     interface MapDrawTools {
         /**
@@ -564,6 +580,10 @@ export interface DeductCalculatorCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLDeductCalculatorElement;
 }
+export interface MapCardCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapCardElement;
+}
 export interface MapDrawToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapDrawToolsElement;
@@ -894,6 +914,10 @@ declare global {
 }
 declare namespace LocalJSX {
     interface AddRecordModal {
+        /**
+          * When true the component is displayed
+         */
+        "open"?: boolean;
     }
     interface BufferTools {
         /**
@@ -994,6 +1018,10 @@ declare namespace LocalJSX {
         "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<string>) => void;
     }
     interface EditRecordModal {
+        /**
+          * When true the component is displayed
+         */
+        "open"?: boolean;
     }
     interface InfoCard {
         /**
@@ -1024,10 +1052,22 @@ declare namespace LocalJSX {
         "value"?: any;
     }
     interface LayerTable {
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
     }
     interface ListItem {
     }
     interface MapCard {
+        /**
+          * IMapInfo[]: array of map infos (name and id)
+         */
+        "mapInfos"?: IMapInfo[];
+        /**
+          * Emitted when the expand button is clicked
+         */
+        "onExpandMap"?: (event: MapCardCustomEvent<EExpandType>) => void;
     }
     interface MapDrawTools {
         /**
