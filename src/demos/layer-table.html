@@ -22,17 +22,21 @@
     | limitations under the License.
     -->
     <style>
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: calc(50% - 2px);
+      }
       .over-map {
         position: absolute;
         right: 0px;
         background-color: var(--calcite-ui-foreground-1);
       }
       .column {
-        min-width: 300px;
-        padding: 1rem;
-        border: 1px solid var(--calcite-ui-border-2);
-        height: -webkit-fill-available;
+        width: 50%;
         height: 100%;
+        border: 1px solid var(--calcite-ui-border-2);
       }
       .column[dir="rtl"] {
         float: left;
@@ -59,7 +63,7 @@
         var webMap = new WebMap({
           portalItem: {
             // solutions
-            // id: "3715f4899bea4b2a948347c5c2357e58"
+             //id: "3715f4899bea4b2a948347c5c2357e58"
             // InstantApps
             id: "863e4f6f2a7840db896cc1b1606d552d"
           }

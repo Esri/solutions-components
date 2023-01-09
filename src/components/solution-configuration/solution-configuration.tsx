@@ -126,7 +126,7 @@ export class SolutionConfiguration {
       <Host>
         {
           !this._solutionIsLoaded
-            ? <calcite-loader active label='' />
+            ? <calcite-loader label='' />
             : null
         }
         <div class="configuration-container">
@@ -139,7 +139,7 @@ export class SolutionConfiguration {
                   null
                 }
               </calcite-tab-nav>
-              <calcite-tab active class="config-tab">
+              <calcite-tab class="config-tab" selected={true}>
                 <div class="config-solution">
                   <div class={this._treeOpen ? "config-inventory" : "config-inventory-hide"}>
                     <solution-contents

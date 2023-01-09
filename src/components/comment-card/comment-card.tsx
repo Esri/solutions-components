@@ -37,6 +37,12 @@ export class CommentCard {
 
   //--------------------------------------------------------------------------
   //
+  //  State (internal)
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
@@ -68,7 +74,7 @@ export class CommentCard {
   render() {
     return (
       <Host>
-        <slot/>
+        <slot />
       </Host>
     );
   }
@@ -85,7 +91,7 @@ export class CommentCard {
    * @returns Promise when complete
    * @protected
    */
-   protected async _getTranslations(): Promise<void> {
+  protected async _getTranslations(): Promise<void> {
     // const messages = await getLocaleComponentStrings(this.el);
     // this._translations = messages[0] as typeof BufferTools_T9n;
   }

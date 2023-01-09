@@ -44,6 +44,12 @@ export class DeductCalculator {
 
   //--------------------------------------------------------------------------
   //
+  //  State (internal)
+  //
+  //--------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------
+  //
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
@@ -106,15 +112,15 @@ export class DeductCalculator {
     return (
       <Host>
         <div class="label-display">
-          <calcite-label class="label-display" disableSpacing={true}>
+          <calcite-label class="label-display" disable-spacing>
             Density %
             {this._getDensityInput()}
           </calcite-label>
-          <calcite-label class="label-display" disableSpacing={true}>
+          <calcite-label class="label-display" disable-spacing>
             Type
             {this._getTypeInput()}
           </calcite-label>
-          <calcite-label class="label-display" disableSpacing={true}>
+          <calcite-label class="label-display" disable-spacing>
             Severity
             {this._getSeverityInput()}
           </calcite-label>

@@ -57,14 +57,12 @@ export class ConfigLayerPicker {
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (protected)
+  //  State (internal)
   //
   //--------------------------------------------------------------------------
 
   /**
    * string[]: list of layer names from the map
-   *
-   * @protected
    */
   @State() _layerNames: string[] = [];
 
@@ -73,6 +71,12 @@ export class ConfigLayerPicker {
    * All UI strings should be defined here.
    */
   @State() _translations: typeof ConfigLayerPicker_T9n;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
 
   /**
    * HTMLCheckListElement: The check list element
@@ -150,7 +154,7 @@ export class ConfigLayerPicker {
               label=''
               overlayPositioning="fixed"
               ref={(el) => { this._checkList = el; }}
-              selectionMode="multi"
+              selectionMode="multiple"
             >
               {this._getComboboxItems()}
             </calcite-combobox>

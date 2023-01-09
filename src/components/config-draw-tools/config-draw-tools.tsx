@@ -41,11 +41,11 @@ export class ConfigDrawTools {
    * boolean: All checkboxes checked state will be set with this value on first render.
    * Default is true
    */
-  @Prop({reflect: true}) defaultChecked = true;
+  @Prop({ reflect: true }) defaultChecked = true;
 
   //--------------------------------------------------------------------------
   //
-  //  Properties (protected)
+  //  State (internal)
   //
   //--------------------------------------------------------------------------
 
@@ -54,6 +54,12 @@ export class ConfigDrawTools {
    * All UI strings should be defined here.
    */
   @State() _translations: typeof ConfigDrawTools_T9n;
+
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
 
   /**
    * HTMLCheckListElement: The check list element
