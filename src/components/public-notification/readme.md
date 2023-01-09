@@ -83,6 +83,12 @@ graph TD;
   calcite-input-message --> calcite-icon
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
+  calcite-list --> calcite-scrim
+  calcite-list --> calcite-filter
+  calcite-filter --> calcite-input
+  calcite-input --> calcite-progress
+  calcite-input --> calcite-icon
+  calcite-list-item --> calcite-icon
   map-select-tools --> calcite-radio-group
   map-select-tools --> calcite-radio-group-item
   map-select-tools --> calcite-label
@@ -97,8 +103,6 @@ graph TD;
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select
   buffer-tools --> calcite-slider
-  calcite-input --> calcite-progress
-  calcite-input --> calcite-icon
   calcite-slider --> calcite-graph
   refine-selection --> calcite-radio-group
   refine-selection --> calcite-radio-group-item

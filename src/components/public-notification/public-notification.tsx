@@ -123,6 +123,11 @@ export class PublicNotification {
   protected _geometryEngine: __esri.geometryEngine;
 
   /**
+   * HTMLCalciteCheckboxElement: When enabled popups will be shown on map click
+   */
+  protected _popupsEnabled: boolean;
+
+  /**
    * HTMLCalciteCheckboxElement: The remove duplicates checkbox element
    */
   protected _removeDuplicates: HTMLCalciteCheckboxElement;
@@ -137,6 +142,16 @@ export class PublicNotification {
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Called each time the mapView prop is changed.
+   */
+  @Watch("mapView")
+  async mapViewWatchHandler(
+    v: __esri.MapView
+  ): Promise<void> {
+    this._popupsEnabled = v.popup.autoOpenEnabled;
+  }
 
   /**
    * Called each time the selectionSets prop is changed.
@@ -162,6 +177,7 @@ export class PublicNotification {
     pageType: EPageType,
     oldPageType: EPageType
   ): Promise<void> {
+    this._checkPopups();
     this._clearHighlight();
 
     if (oldPageType === EPageType.SELECT || oldPageType === EPageType.REFINE) {
@@ -840,6 +856,7 @@ export class PublicNotification {
    */
   protected async _home(): Promise<void> {
     await this._clearSelection();
+    this.mapView.popup.autoOpenEnabled = this._popupsEnabled;
     this._setPageType(EPageType.LIST);
   }
 
@@ -972,6 +989,17 @@ export class PublicNotification {
         this.addresseeLayer,
         this.mapView
       );
+    }
+  }
+
+  /**
+   * Clear any highlighted features in the map
+   *
+   * @protected
+   */
+  protected _checkPopups(): void {
+    if (this._popupsEnabled === undefined) {
+      this._popupsEnabled = this.mapView.popup.autoOpenEnabled;
     }
   }
 

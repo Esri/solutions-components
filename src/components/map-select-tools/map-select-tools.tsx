@@ -219,6 +219,7 @@ export class MapSelectTools {
     oldValue: EWorkflowType
   ): Promise<void> {
     if (newValue !== oldValue) {
+      this.mapView.popup.autoOpenEnabled = ["SELECT", "SKETCH", "REFINE"].indexOf(newValue) < 0;
       this.workflowTypeChange.emit(newValue);
     }
   }
