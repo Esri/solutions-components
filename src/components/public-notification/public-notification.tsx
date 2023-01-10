@@ -398,13 +398,13 @@ export class PublicNotification {
             <calcite-label alignment="start" class="font-bold">{this._translations.notifications}</calcite-label>
           </div>
           <div class="position-right">
-            <calcite-input-message class="info-blue margin-top-0" scale="m">{this._translations.uniqueCout.replace("{{n}}", total.toString())}</calcite-input-message>
+            <calcite-input-message active class="info-blue margin-top-0" scale="m">{this._translations.uniqueCout.replace("{{n}}", total.toString())}</calcite-input-message>
           </div>
         </div>
         {
           hasSets ? this._getSelectionSetList() : (
             <div class="info-message">
-              <calcite-input-message class="info-blue" scale="m">{this._translations.noNotifications}</calcite-input-message>
+              <calcite-input-message active class="info-blue" scale="m">{this._translations.noNotifications}</calcite-input-message>
             </div>
           )
         }
@@ -421,7 +421,7 @@ export class PublicNotification {
           <calcite-label>{this._translations.notifications}</calcite-label>
         </div>
         <div class="info-message padding-bottom-1">
-          <calcite-input-message class="info-blue" scale="m">{this._translations.noNotifications}</calcite-input-message>
+          <calcite-input-message active class="info-blue" scale="m">{this._translations.noNotifications}</calcite-input-message>
         </div>
         {this._getNotice(this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1")}
         <div class="display-flex padding-sides-1">
@@ -512,7 +512,7 @@ export class PublicNotification {
         </div>
         <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
           <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
-          <calcite-input-message class="info-blue" scale="m">
+          <calcite-input-message active class="info-blue" scale="m">
             {this._translations.selectedAddresses.replace("{{n}}", this._numSelected.toString()).replace("{{layer}}", this.addresseeLayer?.layer.title || "")}
           </calcite-input-message>
         </div>

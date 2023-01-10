@@ -112,15 +112,15 @@ export class DeductCalculator {
     return (
       <Host>
         <div class="label-display">
-          <calcite-label class="label-display" disable-spacing>
+          <calcite-label class="label-display">
             Density %
             {this._getDensityInput()}
           </calcite-label>
-          <calcite-label class="label-display" disable-spacing>
+          <calcite-label class="label-display">
             Type
             {this._getTypeInput()}
           </calcite-label>
-          <calcite-label class="label-display" disable-spacing>
+          <calcite-label class="label-display">
             Severity
             {this._getSeverityInput()}
           </calcite-label>
