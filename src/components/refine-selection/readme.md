@@ -57,13 +57,6 @@ graph TD;
   calcite-combobox-item --> calcite-icon
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
-  calcite-list --> calcite-scrim
-  calcite-list --> calcite-filter
-  calcite-scrim --> calcite-loader
-  calcite-filter --> calcite-input
-  calcite-input --> calcite-progress
-  calcite-input --> calcite-icon
-  calcite-list-item --> calcite-icon
   public-notification --> refine-selection
   style refine-selection fill:#f9f,stroke:#333,stroke-width:4px
 ```
