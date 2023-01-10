@@ -58,7 +58,8 @@ export enum EDistressType {
   SHOVING,
   SLIPPAGE_CRACKING,
   SWELL,
-  WEATHERING_RAVELING
+  RAVELING,
+  WEATHERING
 }
 
 /**
@@ -160,8 +161,11 @@ export function calculateDeductValue(
     case EDistressType.SWELL:
       calc = _calcSwell;
       break;
-    case EDistressType.WEATHERING_RAVELING:
-      calc = _calcWeatheringReveling;
+    case EDistressType.RAVELING:
+      calc = _calcRaveling;
+      break;
+    case EDistressType.WEATHERING:
+      calc = _calcWeathering;
       break;
   }
 
@@ -851,13 +855,32 @@ function _calcSwell(
  *
  * @returns the calculated deduct value
  */
-function _calcWeatheringReveling(
+function _calcRaveling(
   severity: ESeverity,
   density: number
 ): number {
-  const vals = severity === ESeverity.H ? [16.67, 10.94, 5.897, 13.38, -0.2589, -6.328, 1.806] :
-    severity === ESeverity.M ? [8.335, 4.022, 1.032, 6.267, 1.154, -3.004, 0.7874] :
-      [1.761, 0.3251, -1.586, 5.783, 1.365, -3.576, 1.05];
+  const vals = severity === ESeverity.H ? [16.77, 10.67, 5.758, 12.9, -0.0633, -5.659, 1.48] :
+    severity === ESeverity.M ? [8.512, 5.106, 1.63, 3.469, 1.028, -1.211, 0.1938] :
+      [];
+
+  return _calc(density, vals);
+}
+
+/**
+ * Execute the deduct value calculation for the distress type
+ *
+ * @param severity The severity of the distress type
+ * @param density percent density of the distress type
+ *
+ * @returns the calculated deduct value
+ */
+function _calcWeathering(
+  severity: ESeverity,
+  density: number
+): number {
+  const vals = severity === ESeverity.H ? [3.673, 3.349, 2.598, -1.233, 2.754, 2.434, -1.485] :
+    severity === ESeverity.M ? [1.12, 0.9769, 0.93, -0.5955, 1.041, 1.111, -0.614] :
+      [-0.0386, -0.0736, 0.834, 1.63, -0.0287, -0.639, 0.1515];
 
   return _calc(density, vals);
 }
