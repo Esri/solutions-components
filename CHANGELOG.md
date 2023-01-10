@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.2.6] - January 10th 2023
+
 ## [0.2.5] - December 20th 2022
 * Fixed `unpkg` path in `package.json`
 
@@ -34,5 +36,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 [0.2.3]: https://github.com/Esri/solution.js/compare/v0.2.2...v0.2.3 "v0.2.3"
 [0.2.4]: https://github.com/Esri/solution.js/compare/v0.2.3...v0.2.4 "v0.2.4"
 [0.2.5]: https://github.com/Esri/solution.js/compare/v0.2.4...v0.2.5 "v0.2.5"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.2.5...HEAD "Unreleased Changes"
+[0.2.6]: https://github.com/Esri/solution.js/compare/v0.2.5...v0.2.6 "v0.2.6"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.2.6...HEAD "Unreleased Changes"
 
