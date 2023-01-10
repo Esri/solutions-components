@@ -459,7 +459,7 @@ export class PublicNotification {
                 <calcite-list-item
                   description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
                   label={cur.label}
-                  onClick={void (async (): Promise<void> => goToSelection(cur.selectedIds, cur.layerView, this.mapView))}
+                  onClick={() => this._gotoSelection(cur, this.mapView)}
                 >
                   {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
                   {this._getAction(true, "x", "", (evt): Promise<void> => this._deleteSelection(i, evt), false, "actions-end")}
@@ -613,10 +613,7 @@ export class PublicNotification {
           <div class="padding-1 display-flex">
             <calcite-button
               disabled={!this._downloadActive}
-              onClick={isPdf
-                ? void (async (): Promise<void> => this._downloadPDF())
-                : void (async (): Promise<void> => this._downloadCSV())
-              }
+              onClick={isPdf ? () => this._downloadPDF() : () => this._downloadCSV()}
               width="full"
             >
               {isPdf ? this._translations.downloadPDF : this._translations.downloadCSV}
@@ -773,9 +770,9 @@ export class PublicNotification {
    *
    * @protected
    */
-  protected _downloadPDF(): Promise<void> {
+  protected _downloadPDF(): void {
     const ids = utils.getSelectionIds(this._getDownloadSelectionSets());
-    return this._downloadTools.downloadPDF(ids, this._removeDuplicates.checked);
+    void this._downloadTools.downloadPDF(ids, this._removeDuplicates.checked);
   }
 
   /**
@@ -783,9 +780,9 @@ export class PublicNotification {
    *
    * @protected
    */
-  protected _downloadCSV(): Promise<void> {
+  protected _downloadCSV(): void {
     const ids = utils.getSelectionIds(this._getDownloadSelectionSets());
-    return this._downloadTools.downloadCSV(ids, this._removeDuplicates.checked);
+    void this._downloadTools.downloadCSV(ids, this._removeDuplicates.checked);
   }
 
   /**
@@ -965,6 +962,21 @@ export class PublicNotification {
       }
     });
     return this._highlightFeatures();
+  }
+
+  /**
+   * Pan to the current selection
+   *
+   * @param selSet ISelectionSet to pan to
+   * @param mapView Current MapView to pan within
+   *
+   * @protected
+   */
+  protected _gotoSelection(
+    selSet: ISelectionSet,
+    mapView: __esri.MapView
+  ): void {
+    void goToSelection(selSet.selectedIds, selSet.layerView, mapView)
   }
 
   /**
