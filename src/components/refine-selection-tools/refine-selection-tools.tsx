@@ -329,14 +329,14 @@ export class RefineSelectionTools {
                   <calcite-action
                     disabled={this._undoStack.length === 0}
                     icon="undo"
-                    onClick={void (async (): Promise<void> => this._undo())}
+                    onClick={() => this._undo()}
                     scale="s"
                     text={this._translations.undo}
                   />
                   <calcite-action
                     disabled={this._redoStack.length === 0}
                     icon="redo"
-                    onClick={void (async (): Promise<void> => this._redo())}
+                    onClick={() => this._redo()}
                     scale="s"
                     text={this._translations.redo}
                   />
@@ -631,9 +631,9 @@ export class RefineSelectionTools {
    *
    * @protected
    */
-  async _undo(): Promise<void> {
+  protected _undo(): void {
     const undoOp = this._undoStack.pop();
-    return this._updateIds(
+    void this._updateIds(
       undoOp.ids,
       undoOp.mode === ESelectionMode.ADD ? ESelectionMode.REMOVE : ESelectionMode.ADD,
       this._redoStack,
@@ -648,9 +648,9 @@ export class RefineSelectionTools {
    *
    * @protected
    */
-  async _redo(): Promise<void> {
+  protected _redo(): void {
     const redoOp = this._redoStack.pop();
-    return this._updateIds(
+    void this._updateIds(
       redoOp.ids,
       redoOp.mode,
       this._undoStack,
