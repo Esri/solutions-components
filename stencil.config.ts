@@ -36,6 +36,10 @@ export const config: Config = {
        name: "preact",
        generator: generatePreactTypes
     },
+    {
+      type: "dist-custom-elements",
+      autoDefineCustomElements: true
+    },
   ],
   plugins: [
     sass({
