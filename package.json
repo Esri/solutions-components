@@ -1,6 +1,6 @@
 {
   "name": "@esri/solutions-components",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Web Components for Esri's Solutions Applications",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -31,7 +31,6 @@
   },
   "devDependencies": {
     "@esri/eslint-plugin-calcite-components": "^0.2.2",
-    "@stencil/core": "^2.18.1",
     "@stencil/postcss": "^2.1.0",
     "@stencil/sass": "^2.0.0",
     "@stencil/store": "^2.0.1",
@@ -68,7 +67,9 @@
   },
   "dependencies": {
     "@arcgis/core": "4.25.0-next.20221031",
-    "minimist": "^1.2.6"
+    "minimist": "^1.2.6",
+    "@stencil/core": "^2.20.0",
+    "focus-trap": "7.2.0"
   },
   "peerDependencies": {
     "@esri/arcgis-rest-auth": "^3.4.2",
