@@ -156,7 +156,9 @@ export class PublicNotification {
   async mapViewWatchHandler(
     v: __esri.MapView
   ): Promise<void> {
-    this._popupsEnabled = v.popup.autoOpenEnabled;
+    if (v?.popup) {
+      this._popupsEnabled = v?.popup.autoOpenEnabled;
+    }
   }
 
   /**
@@ -859,7 +861,9 @@ export class PublicNotification {
    */
   protected async _home(): Promise<void> {
     await this._clearSelection();
-    this.mapView.popup.autoOpenEnabled = this._popupsEnabled;
+    if (typeof this._popupsEnabled === 'boolean' && this.mapView.popup) {
+      this.mapView.popup.autoOpenEnabled = this._popupsEnabled;
+    }
     this._setPageType(EPageType.LIST);
   }
 
@@ -1016,8 +1020,8 @@ export class PublicNotification {
    * @protected
    */
   protected _checkPopups(): void {
-    if (this._popupsEnabled === undefined) {
-      this._popupsEnabled = this.mapView.popup.autoOpenEnabled;
+    if (typeof this._popupsEnabled !== 'boolean') {
+      this._popupsEnabled = this.mapView?.popup.autoOpenEnabled;
     }
   }
 
