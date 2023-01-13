@@ -19,9 +19,10 @@ import { ERefineMode, ESelectionMode, ESelectionType, IRefineOperation } from ".
 import { getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
 import { queryFeaturesByGeometry } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
-import { loadModules } from "../../utils/loadModules";
 import RefineSelectionTools_T9n from "../../assets/t9n/refine-selection-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
+import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
+import SketchViewModel from "@arcgis/core/widgets/Sketch/SketchViewModel";
 
 @Component({
   tag: "refine-selection-tools",
@@ -120,18 +121,6 @@ export class RefineSelectionTools {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
-   * The graphics layer constructor
-   */
-  protected GraphicsLayer: typeof __esri.GraphicsLayer;
-
-  /**
-   * esri/widgets/Sketch/SketchViewModel: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch-SketchViewModel.html
-   * The sketch view model constructor
-   */
-  protected SketchViewModel: typeof __esri.SketchViewModel;
 
   /**
    * {<layer title>: Graphic[]}: Collection of graphics returned from queries to the layer
@@ -240,7 +229,6 @@ export class RefineSelectionTools {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
-    await this._initModules();
   }
 
   /**
@@ -356,25 +344,6 @@ export class RefineSelectionTools {
   //--------------------------------------------------------------------------
 
   /**
-   * Load esri javascript api modules
-   *
-   * @returns Promise resolving when function is done
-   *
-   * @protected
-   */
-  protected async _initModules(): Promise<void> {
-    const [GraphicsLayer, SketchViewModel]: [
-      __esri.GraphicsLayerConstructor,
-      __esri.SketchViewModelConstructor
-    ] = await loadModules([
-      "esri/layers/GraphicsLayer",
-      "esri/widgets/Sketch/SketchViewModel"
-    ]);
-    this.GraphicsLayer = GraphicsLayer;
-    this.SketchViewModel = SketchViewModel;
-  }
-
-  /**
    * Initialize the graphics layer and skecth view model
    *
    * @returns Promise when the operation has completed
@@ -392,7 +361,7 @@ export class RefineSelectionTools {
    * @protected
    */
   protected _initSketchViewModel(): void {
-    this._sketchViewModel = new this.SketchViewModel({
+    this._sketchViewModel = new SketchViewModel({
       layer: this._sketchGraphicsLayer,
       defaultUpdateOptions: {
         tool: "reshape",
@@ -434,7 +403,7 @@ export class RefineSelectionTools {
     if (sketchIndex > -1) {
       this._sketchGraphicsLayer = this.mapView.map.layers.getItemAt(sketchIndex) as __esri.GraphicsLayer;
     } else {
-      this._sketchGraphicsLayer = new this.GraphicsLayer({ title });
+      this._sketchGraphicsLayer = new GraphicsLayer({ title });
       state.managedLayers.push(title);
       this.mapView.map.layers.add(this._sketchGraphicsLayer);
     }

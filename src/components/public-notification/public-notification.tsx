@@ -15,7 +15,6 @@
  */
 
 import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
-import { loadModules } from "../../utils/loadModules";
 import { EExportType, EPageType, ESketchType, EWorkflowType, ISelectionSet } from "../../utils/interfaces";
 import { goToSelection, getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
 import { getSelectionSetQuery } from "../../utils/queryUtils";
@@ -23,6 +22,7 @@ import state from "../../utils/publicNotificationStore";
 import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import * as utils from "../../utils/publicNotificationUtils";
+import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 
 @Component({
   tag: "public-notification",
@@ -122,11 +122,6 @@ export class PublicNotification {
    * HTMLPdfDownloadElement: The pdf tools element
    */
   protected _downloadTools: HTMLPdfDownloadElement;
-
-  /**
-   * esri/geometry/geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
-   */
-  protected _geometryEngine: __esri.geometryEngine;
 
   /**
    * HTMLCalciteCheckboxElement: When enabled popups will be shown on map click
@@ -237,7 +232,6 @@ export class PublicNotification {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
-    await this._initModules();
   }
 
   /**
@@ -265,22 +259,6 @@ export class PublicNotification {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Load esri javascript api modules
-   *
-   * @returns Promise resolving when function is done
-   *
-   * @protected
-   */
-  protected async _initModules(): Promise<void> {
-    const [geometryEngine]: [
-      __esri.geometryEngine
-    ] = await loadModules([
-      "esri/geometry/geometryEngine"
-    ]);
-    this._geometryEngine = geometryEngine;
-  }
 
   /**
    * Get a calcite action group for the current action
@@ -903,7 +881,7 @@ export class PublicNotification {
     _selectionSets.forEach(selectionSet => {
       selectionSet.layerView = layerView;
       selectionSet.selectedIds = [];
-      oidDefs.push(getSelectionSetQuery(selectionSet, this._geometryEngine));
+      oidDefs.push(getSelectionSetQuery(selectionSet, geometryEngine));
     });
 
     return Promise.all(oidDefs).then(async (results): Promise<void> => {

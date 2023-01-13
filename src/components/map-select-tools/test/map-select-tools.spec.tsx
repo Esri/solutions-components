@@ -18,7 +18,6 @@ import { h } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { MapSelectTools } from '../map-select-tools';
 import * as locale from "../../../utils/locale";
-import * as loadModules from "../../../utils/loadModules";
 import * as translations from "../../../assets/t9n/map-select-tools/resources.json";
 import { Geometry, geometryEngine, Graphic, GraphicsLayer, LayerView, Search } from "../../../utils/test/mocks/jsApi";
 import * as mapViewUtils from "../../../utils/mapViewUtils";
@@ -39,10 +38,6 @@ beforeEach(() => {
   jest.spyOn(locale, "getLocaleComponentStrings").mockImplementation(() => [
     translations
   ] as any);
-
-  jest.spyOn(loadModules, "loadModules").mockImplementation(async () => {
-    return [GraphicsLayer, Graphic, Search, Geometry, geometryEngine]
-  });
 
   jest.spyOn(mapViewUtils, "highlightFeatures").mockImplementation(async () => {
     return { remove: () => {} } as unknown as any;

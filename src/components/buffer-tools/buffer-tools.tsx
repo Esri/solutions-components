@@ -15,9 +15,9 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
-import { loadModules } from "../../utils/loadModules";
 import BufferTools_T9n from "../../assets/t9n/buffer-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
+import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 
 @Component({
   tag: "buffer-tools",
@@ -102,11 +102,6 @@ export class BufferTools {
   protected _bufferTimeout: NodeJS.Timeout;
 
   /**
-   * geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
-   */
-  protected _geometryEngine: __esri.geometryEngine;
-
-  /**
    * HTMLCalciteSelectElement: The html element for selecting buffer unit
    */
   protected _unitElement: HTMLCalciteSelectElement;
@@ -159,7 +154,6 @@ export class BufferTools {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
-    await this._initModules();
   }
 
   /**
@@ -178,22 +172,6 @@ export class BufferTools {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Load esri javascript api modules
-   *
-   * @returns Promise resolving when function is done
-   *
-   * @protected
-   */
-  protected async _initModules(): Promise<void> {
-    const [geometryEngine]: [
-      __esri.geometryEngine
-    ] = await loadModules([
-      "esri/geometry/geometryEngine"
-    ]);
-    this._geometryEngine = geometryEngine;
-  }
 
   /**
    * Gets the nodes for each of the possible distance units
@@ -257,7 +235,7 @@ export class BufferTools {
     this._bufferTimeout = setTimeout(() => {
       // needs to be wgs 84 or Web Mercator
       if (this.geometries?.length > 0 && this.unit && this.distance > 0) {
-        const buffer = this._geometryEngine.geodesicBuffer(
+        const buffer = geometryEngine.geodesicBuffer(
           this.geometries,
           this.distance,
           this.unit,
