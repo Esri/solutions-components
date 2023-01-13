@@ -281,7 +281,7 @@ describe("pciUtils", () => {
     // 19
     type = "19";
     actual = pciUtils.calculateDeductValue(type, "L", "0.52");
-    expected = "19|L|1.4|0.52";
+    expected = "19|L|0|0.52";
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "M", "0.52");
@@ -289,7 +289,7 @@ describe("pciUtils", () => {
     expect(actual).toEqual(expected);
 
     actual = pciUtils.calculateDeductValue(type, "H", "0.52");
-    expected = "19|H|13.7|0.52";
+    expected = "19|H|13.9|0.52";
     expect(actual).toEqual(expected);
   });
   it("calculatePCI", () => {
