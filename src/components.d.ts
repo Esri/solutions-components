@@ -270,7 +270,7 @@ export namespace Components {
         /**
           * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
          */
-        "geometries": __esri.Geometry[];
+        "geometries": Geometry[];
         /**
           * Get the new selection set
           * @returns Promise with the new selection set
@@ -1139,7 +1139,7 @@ declare namespace LocalJSX {
         /**
           * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
          */
-        "geometries"?: __esri.Geometry[];
+        "geometries"?: Geometry[];
         /**
           * boolean: When true a new label is not generated for the stored selection set
          */

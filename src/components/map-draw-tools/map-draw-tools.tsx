@@ -15,10 +15,11 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
-import { loadModules } from "../../utils/loadModules";
 import state from "../../utils/publicNotificationStore";
 import MapDrawTools_T9n from "../../assets/t9n/map-draw-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
+import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
+import Sketch from "@arcgis/core/widgets/Sketch";
 
 @Component({
   tag: "map-draw-tools",
@@ -93,16 +94,6 @@ export class MapDrawTools {
   //--------------------------------------------------------------------------
 
   /**
-   * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html?#constructors-summary
-   */
-  protected GraphicsLayer: typeof __esri.GraphicsLayer;
-
-  /**
-   * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html#constructors-summary
-   */
-  protected Sketch: typeof __esri.Sketch;
-
-  /**
    * The container element for the sketch widget
    */
   protected _sketchElement: HTMLElement;
@@ -110,12 +101,12 @@ export class MapDrawTools {
   /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
    */
-  protected _sketchGraphicsLayer: __esri.GraphicsLayer;
+  protected _sketchGraphicsLayer: GraphicsLayer;
 
   /**
    * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
    */
-  protected _sketchWidget: __esri.Sketch;
+  protected _sketchWidget: Sketch;
 
   //--------------------------------------------------------------------------
   //
@@ -187,7 +178,6 @@ export class MapDrawTools {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
-    await this._initModules();
   }
 
   /**
@@ -220,25 +210,6 @@ export class MapDrawTools {
   //--------------------------------------------------------------------------
 
   /**
-   * Load esri javascript api modules
-   *
-   * @returns Promise resolving when function is done
-   *
-   * @protected
-   */
-  protected async _initModules(): Promise<void> {
-    const [GraphicsLayer, Sketch]: [
-      __esri.GraphicsLayerConstructor,
-      __esri.SketchConstructor
-    ] = await loadModules([
-      "esri/layers/GraphicsLayer",
-      "esri/widgets/Sketch"
-    ]);
-    this.GraphicsLayer = GraphicsLayer;
-    this.Sketch = Sketch;
-  }
-
-  /**
    * Initialize the graphics layer and the tools that support creating new graphics
    *
    * @protected
@@ -259,9 +230,9 @@ export class MapDrawTools {
     const title = this._translations.sketchLayer;
     const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
     if (sketchIndex > -1) {
-      this._sketchGraphicsLayer = this.mapView.map.layers.getItemAt(sketchIndex) as __esri.GraphicsLayer;
+      this._sketchGraphicsLayer = this.mapView.map.layers.getItemAt(sketchIndex) as GraphicsLayer;
     } else {
-      this._sketchGraphicsLayer = new this.GraphicsLayer({ title });
+      this._sketchGraphicsLayer = new GraphicsLayer({ title });
       state.managedLayers.push(title);
       this.mapView.map.layers.add(this._sketchGraphicsLayer);
     }
@@ -277,7 +248,7 @@ export class MapDrawTools {
    * @protected
    */
   protected _initDrawTools(): void {
-    this._sketchWidget = new this.Sketch({
+    this._sketchWidget = new Sketch({
       layer: this._sketchGraphicsLayer,
       view: this.mapView,
       container: this._sketchElement,

@@ -15,10 +15,10 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode } from "@stencil/core";
-import { loadModules } from "../../utils/loadModules";
 import { ISearchResult } from "../../utils/interfaces";
 import MapSearch_T9n from "../../assets/t9n/map-search/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
+import Search from "@arcgis/core/widgets/Search";
 
 @Component({
   tag: "map-search",
@@ -67,11 +67,6 @@ export class MapSearch {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
-   */
-  protected Search: typeof __esri.widgetsSearch
 
   /**
    * HTMLElement: The container div for the search widget
@@ -135,7 +130,6 @@ export class MapSearch {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
-    await this._initModules();
   }
 
   /**
@@ -163,22 +157,6 @@ export class MapSearch {
   //--------------------------------------------------------------------------
 
   /**
-   * Load esri javascript api modules
-   *
-   * @returns Promise resolving when function is done
-   *
-   * @protected
-   */
-  protected async _initModules(): Promise<void> {
-    const [Search]: [
-      __esri.widgetsSearchConstructor
-    ] = await loadModules([
-      "esri/widgets/Search"
-    ]);
-    this.Search = Search;
-  }
-
-  /**
    * Initialize the search widget
    *
    * @returns Promise resolving when function is done
@@ -200,7 +178,7 @@ export class MapSearch {
         searchTerm: this._searchTerm
       };
 
-      this._searchWidget = new this.Search(searchOptions);
+      this._searchWidget = new Search(searchOptions);
 
       this._searchWidget.on("search-clear", () => {
         this._searchResult = undefined;

@@ -18,9 +18,7 @@ import { h } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { MapSearch } from '../map-search';
 import * as locale from "../../../utils/locale";
-import * as loadModules from "../../../utils/loadModules";
 import * as translations from "../../../assets/t9n/map-search/resources.json";
-import { Search } from "../../../utils/test/mocks/jsApi";
 
 jest.setTimeout(30000);
 
@@ -34,10 +32,6 @@ beforeEach(() => {
   jest.spyOn(locale, "getLocaleComponentStrings").mockImplementation(() => [
     translations
   ] as any);
-
-  jest.spyOn(loadModules, "loadModules").mockImplementation(async () => {
-    return [Search]
-  })
 
   mapView = {
     map: {
