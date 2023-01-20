@@ -198,6 +198,8 @@ export namespace Components {
         "mapInfos": IMapInfo[];
     }
     interface MapDrawTools {
+        "GraphicsLayer": any;
+        "Sketch": any;
         /**
           * boolean: sketch is used by multiple components...need a way to know who should respond...
          */
@@ -1071,6 +1073,8 @@ declare namespace LocalJSX {
         "onExpandMap"?: (event: MapCardCustomEvent<EExpandType>) => void;
     }
     interface MapDrawTools {
+        "GraphicsLayer"?: any;
+        "Sketch"?: any;
         /**
           * boolean: sketch is used by multiple components...need a way to know who should respond...
          */
