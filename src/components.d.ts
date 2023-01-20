@@ -251,6 +251,7 @@ export namespace Components {
         "selectionMode": SelectionMode;
     }
     interface MapSearch {
+        "Search": any;
         /**
           * Clears the state of the search widget
           * @returns Promise that resolves when the operation is complete
@@ -1126,6 +1127,7 @@ declare namespace LocalJSX {
         "selectionMode"?: SelectionMode;
     }
     interface MapSearch {
+        "Search"?: any;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */

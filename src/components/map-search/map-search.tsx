@@ -18,7 +18,6 @@ import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, 
 import { ISearchResult } from "../../utils/interfaces";
 import MapSearch_T9n from "../../assets/t9n/map-search/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import Search from "@arcgis/core/widgets/Search";
 
 @Component({
   tag: "map-search",
@@ -43,6 +42,8 @@ export class MapSearch {
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
+
+  @Prop() Search: any;
 
   //--------------------------------------------------------------------------
   //
@@ -178,7 +179,7 @@ export class MapSearch {
         searchTerm: this._searchTerm
       };
 
-      this._searchWidget = new Search(searchOptions);
+      this._searchWidget = new this.Search(searchOptions);
 
       this._searchWidget.on("search-clear", () => {
         this._searchResult = undefined;
