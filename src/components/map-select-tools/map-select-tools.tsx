@@ -21,10 +21,6 @@ import { EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode, ESketchType 
 import state from "../../utils/publicNotificationStore";
 import MapSelectTools_T9n from "../../assets/t9n/map-select-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
-import Graphic from "@arcgis/core/Graphic";
-import Search from "@arcgis/core/widgets/Search";
-import Geometry from "@arcgis/core/geometry/Geometry";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 
 @Component({
@@ -49,7 +45,7 @@ export class MapSelectTools {
   /**
    * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
    */
-  @Prop() geometries: Geometry[];
+  @Prop() geometries: __esri.Geometry[];
 
   /**
    * boolean: When true a new label is not generated for the stored selection set
@@ -75,6 +71,16 @@ export class MapSelectTools {
    * boolean: When true the buffer tools will be available for use
    */
   @Prop() showBufferTools = true;
+
+  @Prop() Search: any;
+
+  @Prop() GraphicsLayer: any;
+
+  @Prop() Graphic: any;
+
+  @Prop() Sketch: any;
+
+  @Prop() SketchViewModel: any;
 
   //--------------------------------------------------------------------------
   //
@@ -110,12 +116,12 @@ export class MapSelectTools {
   /**
    * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
    */
-  protected _bufferGeometry: Geometry;
+  protected _bufferGeometry: __esri.Geometry;
 
   /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
    */
-  protected _bufferGraphicsLayer: GraphicsLayer;
+  protected _bufferGraphicsLayer: __esri.GraphicsLayer;
 
   /**
    * HTMLBufferToolsElement: The container div for the buffer tools
@@ -150,7 +156,7 @@ export class MapSelectTools {
   /**
    * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
    */
-  protected _searchWidget: Search;
+  protected _searchWidget: __esri.widgetsSearch;
 
   /**
    * HTMLCalciteCheckboxElement: The checkbox element that controls if user drawn graphics
@@ -181,8 +187,8 @@ export class MapSelectTools {
    */
   @Watch("geometries")
   async watchGeometriesHandler(
-    newValue: Geometry[],
-    oldValue: Geometry[]
+    newValue: __esri.Geometry[],
+    oldValue: __esri.Geometry[]
   ): Promise<void> {
     if (newValue !== oldValue) {
       if (newValue.length > 0) {
@@ -380,25 +386,25 @@ export class MapSelectTools {
         </div>
         <div class={useDrawClass}>
           <map-draw-tools
-            //active={drawEnabled}
             active={true}
             border={true}
-            //class={showDrawToolsClass}
+            GraphicsLayer={this.GraphicsLayer}
             mapView={this.mapView}
             ref={(el) => { this._drawTools = el }}
+            Sketch={this.Sketch}
           />
         </div>
         <div class={useSelectClass}>
           <refine-selection-tools
-            //active={selectEnabled}
             active={true}
             border={true}
-            //class={showSelectToolsClass}
+            GraphicsLayer={this.GraphicsLayer}
             layerViews={this._refineSelectLayers}
             mapView={this.mapView}
             mode={ESelectionMode.ADD}
             ref={(el) => { this._refineTools = el }}
             refineMode={ERefineMode.SUBSET}
+            SketchViewModel={this.SketchViewModel}
           />
         </div>
         <calcite-label class={showBufferToolsClass}>
@@ -471,7 +477,7 @@ export class MapSelectTools {
         searchTerm: this._searchTerm
       };
 
-      this._searchWidget = new Search(searchOptions);
+      this._searchWidget = new this.Search(searchOptions);
 
       this._searchWidget.on("search-clear", () => {
         void this._clearResults(false);
@@ -501,9 +507,9 @@ export class MapSelectTools {
 
     const bufferIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
     if (bufferIndex > -1) {
-      this._bufferGraphicsLayer = this.mapView.map.layers.getItemAt(bufferIndex) as GraphicsLayer;
+      this._bufferGraphicsLayer = this.mapView.map.layers.getItemAt(bufferIndex) as __esri.GraphicsLayer;
     } else {
-      this._bufferGraphicsLayer = new GraphicsLayer({ title });
+      this._bufferGraphicsLayer = new this.GraphicsLayer({ title });
       state.managedLayers.push(title);
       const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === this._translations.sketchLayer);
       if (sketchIndex > -1) {
@@ -560,7 +566,7 @@ export class MapSelectTools {
    * @returns Promise when the selection is complete and the graphics have been highlighted
    */
   protected async _selectFeatures(
-    geometries: Geometry[]
+    geometries: __esri.Geometry[]
   ): Promise<void> {
     this._selectedIds = await queryObjectIds(
       geometries,
@@ -575,7 +581,7 @@ export class MapSelectTools {
             this._drawTools?.polylineSymbol : geom.type === "polygon" ?
               this._drawTools?.polygonSymbol : undefined
       };
-      return new Graphic(props)
+      return new this.Graphic(props)
     });
     void this._highlightFeatures(this._selectedIds);
   }
@@ -605,7 +611,7 @@ export class MapSelectTools {
       };
 
       // Add the geometry and symbol to a new graphic
-      const polygonGraphic = new Graphic({
+      const polygonGraphic = new this.Graphic({
         geometry: this._bufferGeometry,
         symbol
       });
@@ -630,7 +636,7 @@ export class MapSelectTools {
    * @protected
    */
   protected _geomQuery(
-    geometries: Geometry[]
+    geometries: __esri.Geometry[]
   ): Promise<void> {
     const queryGeoms = getQueryGeoms(geometries, geometryEngine);
     return this._selectFeatures(queryGeoms);
@@ -683,7 +689,7 @@ export class MapSelectTools {
    */
   protected _updateSelection(
     type: EWorkflowType,
-    graphics: Graphic[],
+    graphics: __esri.Graphic[],
     label: string
   ): void {
     this.geometries = Array.isArray(graphics) ? graphics.map(g => g.geometry) : this.geometries;

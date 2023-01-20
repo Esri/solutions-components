@@ -265,6 +265,11 @@ export namespace Components {
         "mapView": __esri.MapView;
     }
     interface MapSelectTools {
+        "Graphic": any;
+        "GraphicsLayer": any;
+        "Search": any;
+        "Sketch": any;
+        "SketchViewModel": any;
         /**
           * Clear any selection results
           * @returns Promise when the results have been cleared
@@ -273,7 +278,7 @@ export namespace Components {
         /**
           * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
          */
-        "geometries": Geometry[];
+        "geometries": __esri.Geometry[];
         /**
           * Get the new selection set
           * @returns Promise with the new selection set
@@ -1144,10 +1149,15 @@ declare namespace LocalJSX {
         "onSearchChange"?: (event: MapSearchCustomEvent<ISearchResult>) => void;
     }
     interface MapSelectTools {
+        "Graphic"?: any;
+        "GraphicsLayer"?: any;
+        "Search"?: any;
+        "Sketch"?: any;
+        "SketchViewModel"?: any;
         /**
           * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
          */
-        "geometries"?: Geometry[];
+        "geometries"?: __esri.Geometry[];
         /**
           * boolean: When true a new label is not generated for the stored selection set
          */

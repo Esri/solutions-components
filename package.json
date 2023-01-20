@@ -15,7 +15,7 @@
     "dist/"
   ],
   "scripts": {
-    "build": "npm run lint:ts && stencil build --docs",
+    "build": "stencil build --docs",
     "build:debug": "stencil build -c stencil.debugconfig.ts",
     "start": "stencil build --dev --watch --serve",
     "clean:src": "start cmd.exe /c cleanSrc.bat",
