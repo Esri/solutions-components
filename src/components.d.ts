@@ -352,6 +352,8 @@ export namespace Components {
         "showRefineSelection": boolean;
     }
     interface RefineSelection {
+        "GraphicsLayer": any;
+        "SketchViewModel": any;
         /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
@@ -1224,6 +1226,8 @@ declare namespace LocalJSX {
         "showRefineSelection"?: boolean;
     }
     interface RefineSelection {
+        "GraphicsLayer"?: any;
+        "SketchViewModel"?: any;
         /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
