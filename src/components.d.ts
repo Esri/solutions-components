@@ -361,6 +361,8 @@ export namespace Components {
         "selectionSets": ISelectionSet[];
     }
     interface RefineSelectionTools {
+        "GraphicsLayer": any;
+        "SketchViewModel": any;
         /**
           * boolean: sketch is used by multiple components...need a way to know who should respond...
          */
@@ -1230,6 +1232,8 @@ declare namespace LocalJSX {
         "selectionSets"?: ISelectionSet[];
     }
     interface RefineSelectionTools {
+        "GraphicsLayer"?: any;
+        "SketchViewModel"?: any;
         /**
           * boolean: sketch is used by multiple components...need a way to know who should respond...
          */
