@@ -21,8 +21,6 @@ import { queryFeaturesByGeometry } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
 import RefineSelectionTools_T9n from "../../assets/t9n/refine-selection-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
-import SketchViewModel from "@arcgis/core/widgets/Sketch/SketchViewModel";
 
 @Component({
   tag: "refine-selection-tools",
@@ -93,6 +91,10 @@ export class RefineSelectionTools {
    * boolean: Used to control the visibility of the layer picker
    */
   @Prop() useLayerPicker = true;
+
+  @Prop() GraphicsLayer: any;
+
+  @Prop() SketchViewModel: any;
 
   //--------------------------------------------------------------------------
   //
@@ -361,7 +363,7 @@ export class RefineSelectionTools {
    * @protected
    */
   protected _initSketchViewModel(): void {
-    this._sketchViewModel = new SketchViewModel({
+    this._sketchViewModel = new this.SketchViewModel({
       layer: this._sketchGraphicsLayer,
       defaultUpdateOptions: {
         tool: "reshape",
@@ -403,7 +405,7 @@ export class RefineSelectionTools {
     if (sketchIndex > -1) {
       this._sketchGraphicsLayer = this.mapView.map.layers.getItemAt(sketchIndex) as __esri.GraphicsLayer;
     } else {
-      this._sketchGraphicsLayer = new GraphicsLayer({ title });
+      this._sketchGraphicsLayer = new this.GraphicsLayer({ title });
       state.managedLayers.push(title);
       this.mapView.map.layers.add(this._sketchGraphicsLayer);
     }

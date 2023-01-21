@@ -22,7 +22,6 @@ import state from "../../utils/publicNotificationStore";
 import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import * as utils from "../../utils/publicNotificationUtils";
-import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 
 @Component({
   tag: "public-notification",
@@ -57,6 +56,18 @@ export class PublicNotification {
    * boolean: When true the refine selection workflow will be included in the UI
    */
   @Prop() showRefineSelection = false;
+
+  @Prop() Search: any;
+
+  @Prop() GraphicsLayer: any;
+
+  @Prop() Graphic: any;
+
+  @Prop() Sketch: any;
+
+  @Prop() SketchViewModel: any;
+
+  @Prop() geometryEngine: any;
 
   //--------------------------------------------------------------------------
   //
@@ -481,13 +492,19 @@ export class PublicNotification {
         <div class={"padding-1"}>
           <map-select-tools
             class="font-bold"
+            geometryEngine={this.geometryEngine}
+            Graphic={this.Graphic}
+            GraphicsLayer={this.GraphicsLayer}
             isUpdate={!!this._activeSelection}
             mapView={this.mapView}
             onSelectionSetChange={(evt) => this._updateForSelection(evt)}
             onWorkflowTypeChange={(evt) => this._updateForWorkflowType(evt)}
             ref={(el) => { this._selectTools = el }}
+            Search={this.Search}
             selectLayerView={this.addresseeLayer}
             selectionSet={this._activeSelection}
+            Sketch={this.Sketch}
+            SketchViewModel={this.SketchViewModel}
           />
         </div>
         <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
@@ -523,8 +540,10 @@ export class PublicNotification {
         {this._getNotice(this._translations.refineTip, "padding-sides-1")}
         <refine-selection
           addresseeLayer={this.addresseeLayer}
+          GraphicsLayer={this.GraphicsLayer}
           mapView={this.mapView}
           selectionSets={this._selectionSets}
+          SketchViewModel={this.SketchViewModel}
         />
       </calcite-panel>
     );
@@ -881,7 +900,7 @@ export class PublicNotification {
     _selectionSets.forEach(selectionSet => {
       selectionSet.layerView = layerView;
       selectionSet.selectedIds = [];
-      oidDefs.push(getSelectionSetQuery(selectionSet, geometryEngine));
+      oidDefs.push(getSelectionSetQuery(selectionSet, this.geometryEngine));
     });
 
     return Promise.all(oidDefs).then(async (results): Promise<void> => {

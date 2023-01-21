@@ -9,7 +9,13 @@
 
 | Property          | Attribute           | Description                                                                                                                               | Type               | Default     |
 | ----------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
+| `Graphic`         | `graphic`           |                                                                                                                                           | `any`              | `undefined` |
+| `GraphicsLayer`   | `graphics-layer`    |                                                                                                                                           | `any`              | `undefined` |
+| `Search`          | `search`            |                                                                                                                                           | `any`              | `undefined` |
+| `Sketch`          | `sketch`            |                                                                                                                                           | `any`              | `undefined` |
+| `SketchViewModel` | `sketch-view-model` |                                                                                                                                           | `any`              | `undefined` |
 | `geometries`      | --                  | esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html                                           | `Geometry[]`       | `undefined` |
+| `geometryEngine`  | `geometry-engine`   |                                                                                                                                           | `any`              | `undefined` |
 | `isUpdate`        | `is-update`         | boolean: When true a new label is not generated for the stored selection set                                                              | `boolean`          | `false`     |
 | `mapView`         | --                  | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`          | `undefined` |
 | `selectLayerView` | --                  | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |

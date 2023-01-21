@@ -1,6 +1,6 @@
 {
   "name": "@esri/solutions-components",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Web Components for Esri's Solutions Applications",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -15,7 +15,7 @@
     "dist/"
   ],
   "scripts": {
-    "build": "npm run lint:ts && stencil build --docs",
+    "build": "stencil build --docs",
     "build:debug": "stencil build -c stencil.debugconfig.ts",
     "start": "stencil build --dev --watch --serve",
     "clean:src": "start cmd.exe /c cleanSrc.bat",

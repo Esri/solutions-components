@@ -5,7 +5,7 @@
       name="viewport"
       content="initial-scale=1,maximum-scale=1,user-scalable=no"
     />
-    <title>Map Select</title>
+    <title>Map Search</title>
     <!--
     | Copyright 2022 Esri
     |
@@ -55,11 +55,7 @@
     <script type="module">
       import Map from 'https://js.arcgis.com/4.25/@arcgis/core/Map.js';
       import MapView from 'https://js.arcgis.com/4.25/@arcgis/core/views/MapView.js';
-      import Sketch from 'https://js.arcgis.com/4.25/@arcgis/core/widgets/Sketch.js';
-      import GraphicsLayer from 'https://js.arcgis.com/4.25/@arcgis/core/layers/GraphicsLayer.js';
       import Search from 'https://js.arcgis.com/4.25/@arcgis/core/widgets/Search.js';
-      import Graphic from 'https://js.arcgis.com/4.25/@arcgis/core/Graphic.js';
-      import SketchViewModel from 'https://js.arcgis.com/4.25/@arcgis/core/widgets/Sketch/SketchViewModel.js';
 
       const map = new Map({
         basemap: "topo-vector"
@@ -73,16 +69,12 @@
         center: [-98, 42]
       });
 
-      demo.Sketch = Sketch;
-      demo.GraphicsLayer = GraphicsLayer;
       demo.Search = Search;
-      demo.Graphic = Graphic;
-      demo.SketchViewModel = SketchViewModel;
     </script>
   </head>
 
   <body>
     <div id="viewDiv"></div>
-    <map-select-tools id="demo" class="over-map column"></map-select-tools>
+    <map-search id="demo" class="over-map column"></map-search>
   </body>
 </html>
