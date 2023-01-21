@@ -21,7 +21,6 @@ import { EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode, ESketchType 
 import state from "../../utils/publicNotificationStore";
 import MapSelectTools_T9n from "../../assets/t9n/map-select-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 
 @Component({
   tag: "map-select-tools",
@@ -81,6 +80,8 @@ export class MapSelectTools {
   @Prop() Sketch: any;
 
   @Prop() SketchViewModel: any;
+
+  @Prop() geometryEngine: any;
 
   //--------------------------------------------------------------------------
   //
@@ -412,6 +413,7 @@ export class MapSelectTools {
           <buffer-tools
             distance={this.selectionSet?.distance}
             geometries={this.geometries}
+            geometryEngine={this.geometryEngine}
             onBufferComplete={(evt) => this._bufferComplete(evt)}
             ref={(el) => this._bufferTools = el}
             unit={this.selectionSet?.unit}
@@ -638,7 +640,7 @@ export class MapSelectTools {
   protected _geomQuery(
     geometries: __esri.Geometry[]
   ): Promise<void> {
-    const queryGeoms = getQueryGeoms(geometries, geometryEngine);
+    const queryGeoms = getQueryGeoms(geometries, this.geometryEngine);
     return this._selectFeatures(queryGeoms);
   }
 

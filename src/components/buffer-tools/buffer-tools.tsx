@@ -17,7 +17,6 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
 import BufferTools_T9n from "../../assets/t9n/buffer-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 
 @Component({
   tag: "buffer-tools",
@@ -77,6 +76,8 @@ export class BufferTools {
    * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
    */
   @Prop({ mutable: true }) unit: __esri.LinearUnits = "meters";
+
+  @Prop() geometryEngine: any;
 
   //--------------------------------------------------------------------------
   //
@@ -235,7 +236,7 @@ export class BufferTools {
     this._bufferTimeout = setTimeout(() => {
       // needs to be wgs 84 or Web Mercator
       if (this.geometries?.length > 0 && this.unit && this.distance > 0) {
-        const buffer = geometryEngine.geodesicBuffer(
+        const buffer = this.geometryEngine.geodesicBuffer(
           this.geometries,
           this.distance,
           this.unit,
