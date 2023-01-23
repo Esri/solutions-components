@@ -19,7 +19,7 @@ import { newSpecPage } from '@stencil/core/testing';
 import { MapSelectTools } from '../map-select-tools';
 import * as locale from "../../../utils/locale";
 import * as translations from "../../../assets/t9n/map-select-tools/resources.json";
-import { Geometry, geometryEngine, Graphic, GraphicsLayer, LayerView, Search } from "../../../utils/test/mocks/jsApi";
+import { LayerView } from "../../../utils/test/mocks/jsApi";
 import * as mapViewUtils from "../../../utils/mapViewUtils";
 import * as queryUtils from "../../../utils/queryUtils";
 import { ISelectionSet, EWorkflowType } from '../../../utils/interfaces';

@@ -16,6 +16,7 @@
 
 import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import { EExportType, EPageType, ESketchType, EWorkflowType, ISelectionSet } from "../../utils/interfaces";
+import { loadModules } from "../../utils/loadModules";
 import { goToSelection, getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
 import { getSelectionSetQuery } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
@@ -56,18 +57,6 @@ export class PublicNotification {
    * boolean: When true the refine selection workflow will be included in the UI
    */
   @Prop() showRefineSelection = false;
-
-  @Prop() Search: any;
-
-  @Prop() GraphicsLayer: any;
-
-  @Prop() Graphic: any;
-
-  @Prop() Sketch: any;
-
-  @Prop() SketchViewModel: any;
-
-  @Prop() geometryEngine: any;
 
   //--------------------------------------------------------------------------
   //
@@ -133,6 +122,11 @@ export class PublicNotification {
    * HTMLPdfDownloadElement: The pdf tools element
    */
   protected _downloadTools: HTMLPdfDownloadElement;
+
+  /**
+   * esri/geometry/geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
+   */
+  protected _geometryEngine: __esri.geometryEngine;
 
   /**
    * HTMLCalciteCheckboxElement: When enabled popups will be shown on map click
@@ -243,6 +237,7 @@ export class PublicNotification {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
+    await this._initModules();
   }
 
   /**
@@ -270,6 +265,22 @@ export class PublicNotification {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
+    const [geometryEngine]: [
+      __esri.geometryEngine
+    ] = await loadModules([
+      "esri/geometry/geometryEngine"
+    ]);
+    this._geometryEngine = geometryEngine;
+  }
 
   /**
    * Get a calcite action group for the current action
@@ -492,19 +503,13 @@ export class PublicNotification {
         <div class={"padding-1"}>
           <map-select-tools
             class="font-bold"
-            geometryEngine={this.geometryEngine}
-            Graphic={this.Graphic}
-            GraphicsLayer={this.GraphicsLayer}
             isUpdate={!!this._activeSelection}
             mapView={this.mapView}
             onSelectionSetChange={(evt) => this._updateForSelection(evt)}
             onWorkflowTypeChange={(evt) => this._updateForWorkflowType(evt)}
             ref={(el) => { this._selectTools = el }}
-            Search={this.Search}
             selectLayerView={this.addresseeLayer}
             selectionSet={this._activeSelection}
-            Sketch={this.Sketch}
-            SketchViewModel={this.SketchViewModel}
           />
         </div>
         <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
@@ -540,10 +545,8 @@ export class PublicNotification {
         {this._getNotice(this._translations.refineTip, "padding-sides-1")}
         <refine-selection
           addresseeLayer={this.addresseeLayer}
-          GraphicsLayer={this.GraphicsLayer}
           mapView={this.mapView}
           selectionSets={this._selectionSets}
-          SketchViewModel={this.SketchViewModel}
         />
       </calcite-panel>
     );
@@ -900,7 +903,7 @@ export class PublicNotification {
     _selectionSets.forEach(selectionSet => {
       selectionSet.layerView = layerView;
       selectionSet.selectedIds = [];
-      oidDefs.push(getSelectionSetQuery(selectionSet, this.geometryEngine));
+      oidDefs.push(getSelectionSetQuery(selectionSet, this._geometryEngine));
     });
 
     return Promise.all(oidDefs).then(async (results): Promise<void> => {

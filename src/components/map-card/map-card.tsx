@@ -16,10 +16,9 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
 import MapCard_T9n from "../../assets/t9n/map-card/resources.json";
+import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { EExpandType, IMapInfo } from "../../utils/interfaces";
-import WebMap from "@arcgis/core/WebMap";
-import MapView from "@arcgis/core/views/MapView";
 
 // TODO navigation and accessability isn't right for the map list
 //   tab does not go into the list when it's open
@@ -88,6 +87,16 @@ export class MapCard {
   //--------------------------------------------------------------------------
 
   /**
+   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   */
+  protected MapView: typeof __esri.MapView;
+
+  /**
+   * esri/WebMap: https://developers.arcgis.com/javascript/latest/api-reference/esri-WebMap.html
+   */
+  protected WebMap: typeof __esri.WebMap;
+
+  /**
    * string: the id of map currently displayed
    */
   protected _loadedId = "";
@@ -151,6 +160,7 @@ export class MapCard {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
+    await this._initModules();
   }
 
   /**
@@ -179,6 +189,25 @@ export class MapCard {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
+    const [WebMap, MapView]: [
+      __esri.WebMapConstructor,
+      __esri.MapViewConstructor
+    ] = await loadModules([
+      "esri/WebMap",
+      "esri/views/MapView"
+    ]);
+    this.WebMap = WebMap;
+    this.MapView = MapView;
+  }
 
   /**
    * Create the toolbar (controls used for map and app interactions)
@@ -220,11 +249,11 @@ export class MapCard {
       id = this.mapInfos[0].id;
     }
     if (this._loadedId !== id) {
-      const webMap = new WebMap({
+      const webMap = new this.WebMap({
         portalItem: { id }
       });
 
-      this._mapView = new MapView({
+      this._mapView = new this.MapView({
         container: this._mapDivId,
         map: webMap,
         // TODO consider this more...seems to cause less overflow issues when the component is resized
