@@ -136,10 +136,10 @@ export class MapCard {
       id = this.mapInfos[0].id;
     }
     if (this._loadedId !== id) {
-      const webMap = new WebMap({
+      const webMap = new this.WebMap({
         portalItem: { id }
       });
-      this._mapView = new MapView({
+      this._mapView = new this.MapView({
         container: this._mapDivId,
         map: webMap,
         // TODO consider this more...seems to cause less overflow issues when the component is resized

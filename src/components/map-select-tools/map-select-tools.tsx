@@ -404,7 +404,6 @@ export class MapSelectTools {
           <map-draw-tools
             active={true}
             border={true}
-            GraphicsLayer={this.GraphicsLayer}
             mapView={this.mapView}
             ref={(el) => { this._drawTools = el }}
           />
@@ -413,7 +412,6 @@ export class MapSelectTools {
           <refine-selection-tools
             active={true}
             border={true}
-            GraphicsLayer={this.GraphicsLayer}
             layerViews={this._refineSelectLayers}
             mapView={this.mapView}
             mode={ESelectionMode.ADD}

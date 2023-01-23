@@ -1317,8 +1317,13 @@ const MapDrawTools = class {
    */
   graphicsWatchHandler(v, oldV) {
     if (v && v.length > 0 && JSON.stringify(v) !== JSON.stringify(oldV)) {
-      this._sketchGraphicsLayer.removeAll();
-      this._sketchGraphicsLayer.addMany(v);
+      if (!this._sketchGraphicsLayer) {
+        this._initGraphicsLayer();
+      }
+      else {
+        this._sketchGraphicsLayer.removeAll();
+        this._sketchGraphicsLayer.addMany(v);
+      }
     }
   }
   /**

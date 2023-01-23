@@ -168,13 +168,11 @@ export class RefineSelection {
             </calcite-radio-group>
             <refine-selection-tools
               border={true}
-              GraphicsLayer={this.GraphicsLayer}
               ids={utils.getSelectionIds(this.selectionSets)}
               layerViews={[this.addresseeLayer]}
               mapView={this.mapView}
               mode={this._addEnabled ? ESelectionMode.ADD : ESelectionMode.REMOVE}
               ref={(el) => { this._refineTools = el }}
-              SketchViewModel={this.SketchViewModel}
               useLayerPicker={false}
             />
           </div>
