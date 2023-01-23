@@ -15,6 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
+import { loadModules } from "../../utils/loadModules";
 import BufferTools_T9n from "../../assets/t9n/buffer-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 
@@ -77,8 +78,6 @@ export class BufferTools {
    */
   @Prop({ mutable: true }) unit: __esri.LinearUnits = "meters";
 
-  @Prop() geometryEngine: any;
-
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -96,6 +95,11 @@ export class BufferTools {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
+   */
+  protected _geometryEngine: __esri.geometryEngine;
 
   /**
    * Timeout: https://nodejs.org/en/docs/guides/timers-in-node/
@@ -155,6 +159,7 @@ export class BufferTools {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
+    await this._initModules();
   }
 
   /**
@@ -173,6 +178,22 @@ export class BufferTools {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
+    const [geometryEngine]: [
+      __esri.geometryEngine
+    ] = await loadModules([
+      "esri/geometry/geometryEngine"
+    ]);
+    this._geometryEngine = geometryEngine;
+  }
 
   /**
    * Gets the nodes for each of the possible distance units
@@ -236,7 +257,7 @@ export class BufferTools {
     this._bufferTimeout = setTimeout(() => {
       // needs to be wgs 84 or Web Mercator
       if (this.geometries?.length > 0 && this.unit && this.distance > 0) {
-        const buffer = this.geometryEngine.geodesicBuffer(
+        const buffer = this._geometryEngine.geodesicBuffer(
           this.geometries,
           this.distance,
           this.unit,
