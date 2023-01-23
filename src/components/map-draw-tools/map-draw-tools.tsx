@@ -129,8 +129,6 @@ export class MapDrawTools {
    */
   @Watch("graphics")
   graphicsWatchHandler(v: any, oldV: any): void {
-    console.log("graphicsWatchHandler")
-    console.log(JSON.stringify(v))
     if (v && v.length > 0 && JSON.stringify(v) !== JSON.stringify(oldV) && this._sketchGraphicsLayer) {
       this._sketchGraphicsLayer.removeAll();
       this._sketchGraphicsLayer.addMany(v);

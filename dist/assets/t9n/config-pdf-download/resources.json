@@ -1,6 +1,0 @@
-{
-  "availableLabelFormats": "Available label formats",
-  "csvOptions": "CSV options",
-  "csvColumnTitle": "Add column title",
-  "pdfLabel": "{{n}} per page | {{labelSize}}"
-}
