@@ -27,7 +27,6 @@ export namespace Components {
           * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
          */
         "geometries": __esri.Geometry[];
-        "geometryEngine": any;
         /**
           * number: The component's maximum selectable value.
          */
@@ -199,8 +198,6 @@ export namespace Components {
         "mapInfos": IMapInfo[];
     }
     interface MapDrawTools {
-        "GraphicsLayer": any;
-        "Sketch": any;
         /**
           * boolean: sketch is used by multiple components...need a way to know who should respond...
          */
@@ -254,7 +251,6 @@ export namespace Components {
         "selectionMode": SelectionMode;
     }
     interface MapSearch {
-        "Search": any;
         /**
           * Clears the state of the search widget
           * @returns Promise that resolves when the operation is complete
@@ -266,11 +262,6 @@ export namespace Components {
         "mapView": __esri.MapView;
     }
     interface MapSelectTools {
-        "Graphic": any;
-        "GraphicsLayer": any;
-        "Search": any;
-        "Sketch": any;
-        "SketchViewModel": any;
         /**
           * Clear any selection results
           * @returns Promise when the results have been cleared
@@ -280,7 +271,6 @@ export namespace Components {
           * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
          */
         "geometries": __esri.Geometry[];
-        "geometryEngine": any;
         /**
           * Get the new selection set
           * @returns Promise with the new selection set
@@ -340,16 +330,10 @@ export namespace Components {
         "layerView": __esri.FeatureLayerView;
     }
     interface PublicNotification {
-        "Graphic": any;
-        "GraphicsLayer": any;
-        "Search": any;
-        "Sketch": any;
-        "SketchViewModel": any;
         /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
         "addresseeLayer": __esri.FeatureLayerView;
-        "geometryEngine": any;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -376,8 +360,6 @@ export namespace Components {
         "selectionSets": ISelectionSet[];
     }
     interface RefineSelectionTools {
-        "GraphicsLayer": any;
-        "SketchViewModel": any;
         /**
           * boolean: sketch is used by multiple components...need a way to know who should respond...
          */
@@ -952,7 +934,6 @@ declare namespace LocalJSX {
           * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
          */
         "geometries"?: __esri.Geometry[];
-        "geometryEngine"?: any;
         /**
           * Emitted on demand when a buffer is generated.
          */
@@ -1091,8 +1072,6 @@ declare namespace LocalJSX {
         "onExpandMap"?: (event: MapCardCustomEvent<EExpandType>) => void;
     }
     interface MapDrawTools {
-        "GraphicsLayer"?: any;
-        "Sketch"?: any;
         /**
           * boolean: sketch is used by multiple components...need a way to know who should respond...
          */
@@ -1149,7 +1128,6 @@ declare namespace LocalJSX {
         "selectionMode"?: SelectionMode;
     }
     interface MapSearch {
-        "Search"?: any;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -1160,16 +1138,10 @@ declare namespace LocalJSX {
         "onSearchChange"?: (event: MapSearchCustomEvent<ISearchResult>) => void;
     }
     interface MapSelectTools {
-        "Graphic"?: any;
-        "GraphicsLayer"?: any;
-        "Search"?: any;
-        "Sketch"?: any;
-        "SketchViewModel"?: any;
         /**
           * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
          */
         "geometries"?: __esri.Geometry[];
-        "geometryEngine"?: any;
         /**
           * boolean: When true a new label is not generated for the stored selection set
          */
@@ -1222,16 +1194,10 @@ declare namespace LocalJSX {
         "layerView"?: __esri.FeatureLayerView;
     }
     interface PublicNotification {
-        "Graphic"?: any;
-        "GraphicsLayer"?: any;
-        "Search"?: any;
-        "Sketch"?: any;
-        "SketchViewModel"?: any;
         /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
         "addresseeLayer"?: __esri.FeatureLayerView;
-        "geometryEngine"?: any;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -1262,8 +1228,6 @@ declare namespace LocalJSX {
         "selectionSets"?: ISelectionSet[];
     }
     interface RefineSelectionTools {
-        "GraphicsLayer"?: any;
-        "SketchViewModel"?: any;
         /**
           * boolean: sketch is used by multiple components...need a way to know who should respond...
          */

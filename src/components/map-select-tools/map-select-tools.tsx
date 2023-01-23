@@ -15,6 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop, State, VNode, Watch } from "@stencil/core";
+import { loadModules } from "../../utils/loadModules";
 import { highlightFeatures, goToSelection } from "../../utils/mapViewUtils";
 import { getQueryGeoms, queryObjectIds } from "../../utils/queryUtils";
 import { EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode, ESketchType } from "../../utils/interfaces";
@@ -71,18 +72,6 @@ export class MapSelectTools {
    */
   @Prop() showBufferTools = true;
 
-  @Prop() Search: any;
-
-  @Prop() GraphicsLayer: any;
-
-  @Prop() Graphic: any;
-
-  @Prop() Sketch: any;
-
-  @Prop() SketchViewModel: any;
-
-  @Prop() geometryEngine: any;
-
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -113,6 +102,31 @@ export class MapSelectTools {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
+   */
+  protected Geometry: typeof __esri.Geometry;
+
+  /**
+   * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   */
+  protected Graphic: typeof __esri.Graphic;
+
+  /**
+   * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
+   */
+  protected GraphicsLayer: typeof __esri.GraphicsLayer;
+
+  /**
+   * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
+   */
+  protected Search: typeof __esri.widgetsSearch;
+
+  /**
+   * esri/geometry/geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
+   */
+  protected _geometryEngine: __esri.geometryEngine;
 
   /**
    * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
@@ -314,6 +328,7 @@ export class MapSelectTools {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
+    await this._initModules();
   }
 
   /**
@@ -389,23 +404,19 @@ export class MapSelectTools {
           <map-draw-tools
             active={true}
             border={true}
-            GraphicsLayer={this.GraphicsLayer}
             mapView={this.mapView}
             ref={(el) => { this._drawTools = el }}
-            Sketch={this.Sketch}
           />
         </div>
         <div class={useSelectClass}>
           <refine-selection-tools
             active={true}
             border={true}
-            GraphicsLayer={this.GraphicsLayer}
             layerViews={this._refineSelectLayers}
             mapView={this.mapView}
             mode={ESelectionMode.ADD}
             ref={(el) => { this._refineTools = el }}
             refineMode={ERefineMode.SUBSET}
-            SketchViewModel={this.SketchViewModel}
           />
         </div>
         <calcite-label class={showBufferToolsClass}>
@@ -413,7 +424,6 @@ export class MapSelectTools {
           <buffer-tools
             distance={this.selectionSet?.distance}
             geometries={this.geometries}
-            geometryEngine={this.geometryEngine}
             onBufferComplete={(evt) => this._bufferComplete(evt)}
             ref={(el) => this._bufferTools = el}
             unit={this.selectionSet?.unit}
@@ -429,6 +439,34 @@ export class MapSelectTools {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
+    const [GraphicsLayer, Graphic, Search, Geometry, geometryEngine]: [
+      __esri.GraphicsLayerConstructor,
+      __esri.GraphicConstructor,
+      __esri.widgetsSearchConstructor,
+      __esri.GeometryConstructor,
+      __esri.geometryEngine
+    ] = await loadModules([
+      "esri/layers/GraphicsLayer",
+      "esri/Graphic",
+      "esri/widgets/Search",
+      "esri/geometry/Geometry",
+      "esri/geometry/geometryEngine"
+    ]);
+    this.GraphicsLayer = GraphicsLayer;
+    this.Graphic = Graphic;
+    this.Search = Search;
+    this.Geometry = Geometry;
+    this._geometryEngine = geometryEngine;
+  }
 
   /**
    * Initialize the graphics layer, selection set, and search widget
@@ -640,7 +678,7 @@ export class MapSelectTools {
   protected _geomQuery(
     geometries: __esri.Geometry[]
   ): Promise<void> {
-    const queryGeoms = getQueryGeoms(geometries, this.geometryEngine);
+    const queryGeoms = getQueryGeoms(geometries, this._geometryEngine);
     return this._selectFeatures(queryGeoms);
   }
 

@@ -16,6 +16,7 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
 import { ERefineMode, ESelectionMode, ESelectionType, IRefineOperation } from "../../utils/interfaces";
+import { loadModules } from "../../utils/loadModules";
 import { getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
 import { queryFeaturesByGeometry } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
@@ -92,10 +93,6 @@ export class RefineSelectionTools {
    */
   @Prop() useLayerPicker = true;
 
-  @Prop() GraphicsLayer: any;
-
-  @Prop() SketchViewModel: any;
-
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -123,6 +120,18 @@ export class RefineSelectionTools {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
+   * The graphics layer constructor
+   */
+  protected GraphicsLayer: typeof __esri.GraphicsLayer;
+
+  /**
+   * esri/widgets/Sketch/SketchViewModel: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch-SketchViewModel.html
+   * The sketch view model constructor
+   */
+  protected SketchViewModel: typeof __esri.SketchViewModel;
 
   /**
    * {<layer title>: Graphic[]}: Collection of graphics returned from queries to the layer
@@ -231,6 +240,7 @@ export class RefineSelectionTools {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
+    await this._initModules();
   }
 
   /**
@@ -354,6 +364,25 @@ export class RefineSelectionTools {
   protected _init(): void {
     this._initGraphicsLayer();
     this._initSketchViewModel();
+  }
+
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
+    const [GraphicsLayer, SketchViewModel]: [
+      __esri.GraphicsLayerConstructor,
+      __esri.SketchViewModelConstructor
+    ] = await loadModules([
+      "esri/layers/GraphicsLayer",
+      "esri/widgets/Sketch/SketchViewModel"
+    ]);
+    this.GraphicsLayer = GraphicsLayer;
+    this.SketchViewModel = SketchViewModel;
   }
 
   /**
