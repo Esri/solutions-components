@@ -15,6 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
+import { loadModules } from "../../utils/loadModules";
 import state from "../../utils/publicNotificationStore";
 import MapDrawTools_T9n from "../../assets/t9n/map-draw-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -73,10 +74,6 @@ export class MapDrawTools {
    */
   @Prop({ mutable: true }) graphics: __esri.Graphic[] = [];
 
-  @Prop() GraphicsLayer: any;
-
-  @Prop() Sketch: any;
-
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -94,6 +91,16 @@ export class MapDrawTools {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html?#constructors-summary
+   */
+  protected GraphicsLayer: typeof __esri.GraphicsLayer;
+
+  /**
+   * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html#constructors-summary
+   */
+  protected Sketch: typeof __esri.Sketch;
 
   /**
    * The container element for the sketch widget
@@ -180,6 +187,7 @@ export class MapDrawTools {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
+    await this._initModules();
   }
 
   /**
@@ -210,6 +218,25 @@ export class MapDrawTools {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
+    const [GraphicsLayer, Sketch]: [
+      __esri.GraphicsLayerConstructor,
+      __esri.SketchConstructor
+    ] = await loadModules([
+      "esri/layers/GraphicsLayer",
+      "esri/widgets/Sketch"
+    ]);
+    this.GraphicsLayer = GraphicsLayer;
+    this.Sketch = Sketch;
+  }
 
   /**
    * Initialize the graphics layer and the tools that support creating new graphics
