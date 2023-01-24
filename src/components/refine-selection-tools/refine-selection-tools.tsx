@@ -125,13 +125,13 @@ export class RefineSelectionTools {
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
    * The graphics layer constructor
    */
-  protected GraphicsLayer: typeof __esri.GraphicsLayer;
+  protected GraphicsLayer: typeof import("esri/layers/GraphicsLayer");
 
   /**
    * esri/widgets/Sketch/SketchViewModel: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch-SketchViewModel.html
    * The sketch view model constructor
    */
-  protected SketchViewModel: typeof __esri.SketchViewModel;
+  protected SketchViewModel: typeof import("esri/widgets/Sketch/SketchViewModel");
 
   /**
    * {<layer title>: Graphic[]}: Collection of graphics returned from queries to the layer
@@ -374,10 +374,7 @@ export class RefineSelectionTools {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [GraphicsLayer, SketchViewModel]: [
-      __esri.GraphicsLayerConstructor,
-      __esri.SketchViewModelConstructor
-    ] = await loadModules([
+    const [GraphicsLayer, SketchViewModel] = await loadModules([
       "esri/layers/GraphicsLayer",
       "esri/widgets/Sketch/SketchViewModel"
     ]);

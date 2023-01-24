@@ -71,7 +71,7 @@ export class MapSearch {
   /**
    * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
    */
-  protected Search: typeof __esri.widgetsSearch
+  protected Search: typeof import("esri/widgets/Search");
 
   /**
    * HTMLElement: The container div for the search widget
@@ -170,9 +170,7 @@ export class MapSearch {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [Search]: [
-      __esri.widgetsSearchConstructor
-    ] = await loadModules([
+    const [Search] = await loadModules([
       "esri/widgets/Search"
     ]);
     this.Search = Search;

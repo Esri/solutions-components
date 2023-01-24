@@ -34,7 +34,7 @@
     "@stencil/postcss": "^2.1.0",
     "@stencil/sass": "^2.0.0",
     "@stencil/store": "^2.0.1",
-    "@types/arcgis-js-api": "^4.24.0",
+    "@types/arcgis-js-api": "^4.25.0-next.20221031",
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.11",
     "@types/puppeteer": "^5.4.2",
@@ -66,7 +66,6 @@
     "@esri/solution-common": "1.5.3"
   },
   "dependencies": {
-    "@arcgis/core": "4.25.0-next.20221031",
     "minimist": "^1.2.6",
     "@stencil/core": "^2.20.0",
     "focus-trap": "7.2.0"
