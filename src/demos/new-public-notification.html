@@ -60,47 +60,37 @@
     <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
     <link rel="stylesheet" href="../solutions-components.css" type="text/css">
 
+    <script src="https://js.arcgis.com/4.25/"></script>
     <script type="module" src="../solutions-components.esm.js"></script>
 
-    <script type="module">
-      import WebMap from 'https://js.arcgis.com/4.25/@arcgis/core/WebMap.js';
-      import MapView from 'https://js.arcgis.com/4.25/@arcgis/core/views/MapView.js';
-      import Legend from 'https://js.arcgis.com/4.25/@arcgis/core/widgets/Legend.js';
-      import Sketch from 'https://js.arcgis.com/4.25/@arcgis/core/widgets/Sketch.js';
-      import GraphicsLayer from 'https://js.arcgis.com/4.25/@arcgis/core/layers/GraphicsLayer.js';
-      import Search from 'https://js.arcgis.com/4.25/@arcgis/core/widgets/Search.js';
-      import Graphic from 'https://js.arcgis.com/4.25/@arcgis/core/Graphic.js';
-      import SketchViewModel from 'https://js.arcgis.com/4.25/@arcgis/core/widgets/Sketch/SketchViewModel.js';
-      import * as geometryEngine from 'https://js.arcgis.com/4.25/@arcgis/core/geometry/geometryEngine.js';
-
-      var webMap = new WebMap({
-        portalItem: {
-          // solutions
-          // id: "3715f4899bea4b2a948347c5c2357e58"
-          // InstantApps
-          id: "863e4f6f2a7840db896cc1b1606d552d"
-        }
-      });
-
-      const demo = document.getElementById("demo");
-      demo.mapView = new MapView({
-        container: "viewDiv",
-        map: webMap
-      });
-
-      demo.mapView.when(() => {
-        const legend = new Legend({
-          view: demo.mapView
+    <script>
+      require(["esri/WebMap", "esri/views/MapView", "esri/widgets/Legend"], (
+        WebMap,
+        MapView,
+        Legend
+      ) => {
+        var webMap = new WebMap({
+          portalItem: {
+            // solutions
+            // id: "3715f4899bea4b2a948347c5c2357e58"
+            // InstantApps
+            id: "863e4f6f2a7840db896cc1b1606d552d"
+          }
         });
-        demo.mapView.ui.add(legend, "top-left");
-      });
 
-      demo.Sketch = Sketch;
-      demo.GraphicsLayer = GraphicsLayer;
-      demo.Search = Search;
-      demo.Graphic = Graphic;
-      demo.SketchViewModel = SketchViewModel;
-      demo.geometryEngine = geometryEngine;
+        const demo = document.getElementById("demo");
+        demo.mapView = new MapView({
+          container: "viewDiv",
+          map: webMap
+        });
+
+        demo.mapView.when(() => {
+          const legend = new Legend({
+            view: demo.mapView
+          });
+          demo.mapView.ui.add(legend, "top-left");
+        });
+      });
     </script>
   </head>
 

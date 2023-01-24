@@ -16,6 +16,7 @@
 
  :host {
     display: block;
+    --calcite-input-message-spacing-value: 0;
   }
 
   .border-bottom-1 {
@@ -202,6 +203,6 @@
   }
 
   .num-selected {
-    align-items: "center";
-    display: "flex";
+    align-items: center;
+    display: flex;
   }
