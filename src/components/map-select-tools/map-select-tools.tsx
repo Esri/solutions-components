@@ -104,24 +104,19 @@ export class MapSelectTools {
   //--------------------------------------------------------------------------
 
   /**
-   * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
-   */
-  protected Geometry: typeof __esri.Geometry;
-
-  /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
-  protected Graphic: typeof __esri.Graphic;
+  protected Graphic: typeof import("esri/Graphic");
 
   /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
    */
-  protected GraphicsLayer: typeof __esri.GraphicsLayer;
+  protected GraphicsLayer: typeof import("esri/layers/GraphicsLayer");
 
   /**
    * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
    */
-  protected Search: typeof __esri.widgetsSearch;
+  protected Search: typeof import("esri/widgets/Search");
 
   /**
    * esri/geometry/geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
@@ -448,23 +443,15 @@ export class MapSelectTools {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [GraphicsLayer, Graphic, Search, Geometry, geometryEngine]: [
-      __esri.GraphicsLayerConstructor,
-      __esri.GraphicConstructor,
-      __esri.widgetsSearchConstructor,
-      __esri.GeometryConstructor,
-      __esri.geometryEngine
-    ] = await loadModules([
+    const [GraphicsLayer, Graphic, Search, geometryEngine] = await loadModules([
       "esri/layers/GraphicsLayer",
       "esri/Graphic",
       "esri/widgets/Search",
-      "esri/geometry/Geometry",
       "esri/geometry/geometryEngine"
     ]);
     this.GraphicsLayer = GraphicsLayer;
     this.Graphic = Graphic;
     this.Search = Search;
-    this.Geometry = Geometry;
     this._geometryEngine = geometryEngine;
   }
 

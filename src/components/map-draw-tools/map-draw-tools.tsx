@@ -95,12 +95,12 @@ export class MapDrawTools {
   /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html?#constructors-summary
    */
-  protected GraphicsLayer: typeof __esri.GraphicsLayer;
+  protected GraphicsLayer: typeof import("esri/layers/GraphicsLayer");
 
   /**
    * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html#constructors-summary
    */
-  protected Sketch: typeof __esri.Sketch;
+  protected Sketch: typeof import("esri/widgets/Sketch");
 
   /**
    * The container element for the sketch widget
@@ -227,10 +227,7 @@ export class MapDrawTools {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [GraphicsLayer, Sketch]: [
-      __esri.GraphicsLayerConstructor,
-      __esri.SketchConstructor
-    ] = await loadModules([
+    const [GraphicsLayer, Sketch] = await loadModules([
       "esri/layers/GraphicsLayer",
       "esri/widgets/Sketch"
     ]);

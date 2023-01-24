@@ -89,12 +89,12 @@ export class MapCard {
   /**
    * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
-  protected MapView: typeof __esri.MapView;
+  protected MapView: typeof import("esri/views/MapView");
 
   /**
    * esri/WebMap: https://developers.arcgis.com/javascript/latest/api-reference/esri-WebMap.html
    */
-  protected WebMap: typeof __esri.WebMap;
+  protected WebMap: typeof import("esri/WebMap");
 
   /**
    * string: the id of map currently displayed
@@ -198,10 +198,7 @@ export class MapCard {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [WebMap, MapView]: [
-      __esri.WebMapConstructor,
-      __esri.MapViewConstructor
-    ] = await loadModules([
+    const [WebMap, MapView] = await loadModules([
       "esri/WebMap",
       "esri/views/MapView"
     ]);
