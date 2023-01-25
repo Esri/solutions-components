@@ -102,6 +102,11 @@ export class PublicNotification {
   @State() _selectionWorkflowType = EWorkflowType.SEARCH;
 
   /**
+   * boolean: When true a modal will be shown to alert users of potential changes to selection sets.
+   */
+  @State() _showLayerSelectionChangeModal = false;
+
+  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
@@ -127,6 +132,11 @@ export class PublicNotification {
    * esri/geometry/geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
    */
   protected _geometryEngine: __esri.geometryEngine;
+
+  /**
+   * CustomEvent: Used to prevent default behavior of layer selection change
+   */
+  protected _layerSelectionChangeEvt: CustomEvent;
 
   /**
    * HTMLCalciteCheckboxElement: When enabled popups will be shown on map click
@@ -413,6 +423,7 @@ export class PublicNotification {
         <div class="display-flex padding-1">
           <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full">{this._translations.add}</calcite-button>
         </div>
+        {this._showModal(this._showLayerSelectionChangeModal)}
       </calcite-panel>
     ) : (
       <calcite-panel>
@@ -476,6 +487,71 @@ export class PublicNotification {
   }
 
   /**
+   * Alert the user of the potential change to the selection sets and ask if they would like to proceed.
+   *
+   * @returns the page node
+   * @protected
+   */
+  protected _showModal(
+    open: boolean
+  ): VNode {
+    return (
+      <calcite-modal
+        aria-labelledby="modal-title"
+        background-color="grey"
+        color="red"
+        open={open}
+        scale="s"
+        width="s"
+      >
+        <div id="modal-title" slot="header">{this._translations.shouldProceed}</div>
+        <div slot="content">{this._translations.proceedInfo}</div>
+        <calcite-button
+          appearance="outline"
+          onClick={() => this._cancelLayerChange()}
+          slot="secondary"
+          width="full"
+        >
+          {this._translations.cancel}
+        </calcite-button>
+        <calcite-button
+          onClick={() => this._handleLayerChange()}
+          slot="primary"
+          width="full"
+        >
+          {this._translations.proceed}
+        </calcite-button>
+      </calcite-modal>
+    )
+  }
+
+  /**
+   * Prevent the default behavior of layer selection change and close the modal.
+   *
+   * @returns the page node
+   * @protected
+   */
+  protected _cancelLayerChange(): void {
+    this._layerSelectionChangeEvt.preventDefault();
+    this._layerSelectionChangeEvt.stopPropagation();
+    this._layerSelectionChangeEvt = undefined;
+    this._showLayerSelectionChangeModal = false;
+  }
+
+  /**
+   * Allow the default behavior of layer selection change and close the modal.
+   *
+   * @returns the page node
+   * @protected
+   */
+  protected async _handleLayerChange(): Promise<void> {
+    this._showLayerSelectionChangeModal = false;
+    const title: string = this._layerSelectionChangeEvt?.detail?.length > 0 ?
+      this._layerSelectionChangeEvt.detail[0] : "";
+    await this._updateAddresseeLayer(title);
+  }
+
+  /**
    * Create the Select page that shows the selection workflows
    *
    * @returns the page node
@@ -512,9 +588,9 @@ export class PublicNotification {
             selectionSet={this._activeSelection}
           />
         </div>
-        <div class="padding-sides-1 padding-bottom-1 num-selected">
+        <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
           <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
-          <calcite-input-message active class="info-blue margin-top-0" scale="m">
+          <calcite-input-message active class="info-blue" scale="m">
             {this._translations.selectedAddresses.replace("{{n}}", this._numSelected.toString()).replace("{{layer}}", this.addresseeLayer?.layer.title || "")}
           </calcite-input-message>
         </div>
@@ -868,7 +944,10 @@ export class PublicNotification {
   }
 
   /**
-   * Fetch the layer defined in the selection change event
+   * Fetch the addressee layer from the map if no selection sets exist.
+   * Alert the user of the potential change to the selection sets if they exist.
+   *
+   * @param evt layer selection change event
    *
    * @returns Promise when the function has completed
    * @protected
@@ -878,9 +957,28 @@ export class PublicNotification {
   ): Promise<void> {
     const title: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
     if (title !== this.addresseeLayer?.layer.title) {
-      this.addresseeLayer = await getMapLayerView(this.mapView, title);
-      await this._updateSelectionSets(this.addresseeLayer);
+      this._showLayerSelectionChangeModal = this.addresseeLayer?.layer.title !== undefined && this._selectionSets.length > 0;
+      if (this._showLayerSelectionChangeModal) {
+        this._layerSelectionChangeEvt = evt;
+      } else {
+        await this._updateAddresseeLayer(title);
+      }
     }
+  }
+
+  /**
+   * Fetch the new addressee layer and update the selection sets
+   *
+   * @param title the title of the layer to fetch
+   *
+   * @returns Promise when the function has completed
+   * @protected
+   */
+  protected async _updateAddresseeLayer(
+    title: string
+  ): Promise<void> {
+    this.addresseeLayer = await getMapLayerView(this.mapView, title);
+    await this._updateSelectionSets(this.addresseeLayer);
   }
 
   /**

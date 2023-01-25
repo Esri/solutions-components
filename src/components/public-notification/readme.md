@@ -30,6 +30,7 @@
 - calcite-button
 - calcite-list
 - calcite-list-item
+- calcite-modal
 - [map-select-tools](../map-select-tools)
 - calcite-icon
 - [refine-selection](../refine-selection)
@@ -52,6 +53,7 @@ graph TD;
   public-notification --> calcite-button
   public-notification --> calcite-list
   public-notification --> calcite-list-item
+  public-notification --> calcite-modal
   public-notification --> map-select-tools
   public-notification --> calcite-icon
   public-notification --> refine-selection
@@ -83,6 +85,8 @@ graph TD;
   calcite-input-message --> calcite-icon
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
+  calcite-modal --> calcite-scrim
+  calcite-modal --> calcite-icon
   map-select-tools --> calcite-radio-group
   map-select-tools --> calcite-radio-group-item
   map-select-tools --> calcite-label
