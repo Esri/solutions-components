@@ -5,8 +5,8 @@
  */
 import { r as registerInstance, h, H as Host, g as getElement } from './index-09deaa39.js';
 import { g as getLocaleComponentStrings } from './locale-a5a0b545.js';
-import { a as goToSelection, b as getMapLayerView, q as queryAllFeatures } from './mapViewUtils-31d2c2bb.js';
-import { e as exportCSV } from './csvUtils-edc0c2a8.js';
+import { q as queryFeaturesByID, a as goToSelection, b as getMapLayerView, c as queryAllFeatures } from './mapViewUtils-ad2b505b.js';
+import { e as exportCSV } from './csvUtils-e4f5f335.js';
 import './_commonjsHelpers-8fd39c50.js';
 import './interfaces-3b23a5f9.js';
 
@@ -216,9 +216,20 @@ const LayerTable = class {
    *
    * @returns a promise that will resolve when the operation is complete
    */
-  _exportToCSV() {
+  async _exportToCSV() {
+    // Get the attributes of the features to export
     const ids = this._getSelectedIds();
-    void exportCSV(this._layerView, ids);
+    const featureSet = await queryFeaturesByID(ids, this._layerView.layer);
+    const attributes = featureSet.features.map(f => f.attributes);
+    // Get the column headings from the first record
+    const columnNames = new Set();
+    const entry = attributes[0];
+    Object.keys(entry).forEach(k => {
+      if (entry.hasOwnProperty(k)) {
+        columnNames[k] = k;
+      }
+    });
+    void exportCSV(columnNames, attributes);
   }
   /**
    * Zoom to all selected features

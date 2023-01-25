@@ -13,18 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/// <reference types="arcgis-js-api" />
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
- * @param layerView layer view to query
- * @param ids number array of ids to export to csv
+ * @param contentArray Array of labels; each label is an array of label line strings
  * @param labelDescription Format to use for labels
  * @param removeDuplicates Remove duplicate labels before exporting
  *
  * @returns Promise when the function has completed
  */
-export declare function exportPDF(layerView: __esri.FeatureLayerView, ids: number[], labelDescription: any, removeDuplicates?: boolean): Promise<void>;
+export declare function exportPDF(contents: string[][], labelDescription: any, removeDuplicates?: boolean): Promise<void>;
 /**
  * Download the CSV file
  *

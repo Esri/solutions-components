@@ -16,7 +16,7 @@ import { i as isPrimaryPointerButton, t as toAriaBoolean, g as getElementProp, a
 import { c as connectOpenCloseComponent, d as disconnectOpenCloseComponent } from './openCloseComponent-5caff873.js';
 import { d as debounce } from './debounce-4c884e5c.js';
 import { c as connectConditionalSlotComponent, d as disconnectConditionalSlotComponent } from './conditionalSlot-e96b0a4f.js';
-import { g as getMapLayerNames } from './mapViewUtils-31d2c2bb.js';
+import { g as getMapLayerNames } from './mapViewUtils-ad2b505b.js';
 import { s as state } from './publicNotificationStore-3e762eea.js';
 import './resources-436ae282.js';
 import './interfaces-3b23a5f9.js';

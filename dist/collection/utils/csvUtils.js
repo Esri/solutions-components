@@ -18,19 +18,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// May change this but doing this for now so the download button will do something
-import { queryFeaturesByID } from "./queryUtils";
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
- * @param layerView layer view to query
- * @param ids number array of ids to export to csv
+ * @param contentArray Array of labels; each label is an array of label line strings
+ * @param removeDuplicates Remove duplicate entries before exporting
  *
  * @returns Promise when the function has completed
  */
-export async function exportCSV(layerView, ids) {
-  const featureSet = await queryFeaturesByID(ids, layerView.layer);
-  const attributes = featureSet.features.map(f => f.attributes);
+export async function exportCSV(columnNames, contents, removeDuplicates = true) {
+  console.log("exportCSV", columnNames, contents, removeDuplicates); //???
+  /*
   const fieldNames = {};
   const entry = attributes[0];
   Object.keys(entry).forEach(k => {
@@ -38,7 +36,9 @@ export async function exportCSV(layerView, ids) {
       fieldNames[k] = k;
     }
   });
+
   _downloadCSVFile(fieldNames, attributes, `notify-${Date.now().toString()}`);
+  */
 }
 /**
  * Download the CSV file
@@ -51,7 +51,12 @@ export async function exportCSV(layerView, ids) {
  *
  * @returns void
  */
-function _downloadCSVFile(fieldNames, attributes, fileTitle) {
+/*
+function _downloadCSVFile(
+  fieldNames: {[key: string]: string},
+  attributes: {[key: string]: string}[],
+  fileTitle: string
+): void {
   if (fieldNames) {
     attributes.unshift(fieldNames);
   }
@@ -70,3 +75,4 @@ function _downloadCSVFile(fieldNames, attributes, fileTitle) {
     document.body.removeChild(link);
   }
 }
+*/

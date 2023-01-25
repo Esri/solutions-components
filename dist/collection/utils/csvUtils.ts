@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-// May change this but doing this for now so the download button will do something
-
-import { queryFeaturesByID } from "./queryUtils";
-
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
- * @param layerView layer view to query
- * @param ids number array of ids to export to csv
+ * @param contentArray Array of labels; each label is an array of label line strings
+ * @param removeDuplicates Remove duplicate entries before exporting
  *
  * @returns Promise when the function has completed
  */
 export async function exportCSV(
-  layerView: __esri.FeatureLayerView,
-  ids: number[]
+  columnNames: Set<string>,
+  contents: Set<string>[],
+  removeDuplicates = true
 ): Promise<void> {
-  const featureSet = await queryFeaturesByID(ids, layerView.layer);
-  const attributes = featureSet.features.map(f => f.attributes);
+  console.log("exportCSV", columnNames, contents, removeDuplicates);//???
+
+  /*
   const fieldNames = {};
   const entry = attributes[0];
   Object.keys(entry).forEach(k => {
@@ -39,7 +37,9 @@ export async function exportCSV(
       fieldNames[k] = k;
     }
   });
+
   _downloadCSVFile(fieldNames, attributes, `notify-${Date.now().toString()}`);
+  */
 }
 
 /**
@@ -53,6 +53,7 @@ export async function exportCSV(
  *
  * @returns void
  */
+/*
 function _downloadCSVFile(
   fieldNames: {[key: string]: string},
   attributes: {[key: string]: string}[],
@@ -76,3 +77,4 @@ function _downloadCSVFile(
     document.body.removeChild(link);
   }
 }
+*/

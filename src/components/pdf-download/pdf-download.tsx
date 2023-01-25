@@ -21,6 +21,7 @@ import PdfDownload_T9n from "../../assets/t9n/pdf-download/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { exportCSV } from "../../utils/csvUtils";
 import { exportPDF } from "../../utils/pdfUtils";
+import { queryFeaturesByID } from "../../utils/queryUtils";
 
 @Component({
   tag: "pdf-download",
@@ -98,7 +99,15 @@ export class PdfDownload {
     ids: number[],
     removeDuplicates: boolean
   ): Promise<void> {
-    return this._downloadPDF(ids, removeDuplicates);
+    // Get the attributes of the features to export
+    const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
+    const attributes = featureSet.features.map(f => f.attributes);
+
+    // Convert array of sets into an array of arrays
+    const contents: string[][] = attributes.map(attr => Array.from(attr));
+
+    const labelDescription = this._labelInfoElement.selectedOption.value;
+    return exportPDF(contents, labelDescription, removeDuplicates);
   }
 
   /**
@@ -113,7 +122,20 @@ export class PdfDownload {
     ids: number[],
     removeDuplicates: boolean
   ): Promise<void> {
-    return this._downloadCSV(ids, removeDuplicates);
+    // Get the attributes of the features to export
+    const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
+    const attributes = featureSet.features.map(f => f.attributes);
+
+    // Get the column headings from the first record
+    const columnNames: Set<string> = new Set();
+    const entry = attributes[0];
+    Object.keys(entry).forEach(k => {
+      if (entry.hasOwnProperty(k)) {
+        columnNames[k] = k;
+      }
+    });
+
+    return exportCSV(columnNames, attributes, removeDuplicates);
   }
 
   //--------------------------------------------------------------------------
@@ -186,6 +208,7 @@ export class PdfDownload {
    * @returns Promise resolving when function is done
    * @protected
    */
+  /*
   protected async _downloadPDF(
     ids: number[],
     removeDuplicates: boolean
@@ -193,6 +216,7 @@ export class PdfDownload {
     const labelDescription = this._labelInfoElement.selectedOption.value;
     await exportPDF(this.layerView, ids, labelDescription, removeDuplicates);
   }
+  */
 
   /**
    * Downloads csv of mailing labels for the provided list of ids
@@ -204,6 +228,7 @@ export class PdfDownload {
    * @returns Promise that will resolve when the download is complete
    * @protected
    */
+  /*
   protected async _downloadCSV(
     ids: number[],
     removeDuplicates: boolean
@@ -212,6 +237,7 @@ export class PdfDownload {
     console.log(removeDuplicates)
     await exportCSV(this.layerView, ids);
   }
+  */
 
   /**
    * Gets the formatted pdf export size text

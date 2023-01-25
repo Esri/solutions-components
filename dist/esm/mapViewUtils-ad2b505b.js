@@ -305,4 +305,4 @@ async function goToSelection(ids, layerView, mapView, flashFeatures = true) {
   }
 }
 
-export { goToSelection as a, getMapLayerView as b, queryFeaturesByID as c, getSelectionSetQuery as d, queryObjectIds as e, getQueryGeoms as f, getMapLayerNames as g, highlightFeatures as h, queryFeaturesByGeometry as i, queryAllFeatures as q };
+export { goToSelection as a, getMapLayerView as b, queryAllFeatures as c, getSelectionSetQuery as d, queryObjectIds as e, getQueryGeoms as f, getMapLayerNames as g, highlightFeatures as h, queryFeaturesByGeometry as i, queryFeaturesByID as q };

@@ -6,7 +6,7 @@
 import { proxyCustomElement, HTMLElement, h, Host } from '@stencil/core/internal/client';
 import { g as getLocaleComponentStrings } from './locale.js';
 import { a as goToSelection, b as getMapLayerView } from './mapViewUtils.js';
-import { q as queryAllFeatures } from './queryUtils.js';
+import { q as queryFeaturesByID, a as queryAllFeatures } from './queryUtils.js';
 import { e as exportCSV } from './csvUtils.js';
 import { d as defineCustomElement$l } from './button.js';
 import { d as defineCustomElement$k } from './checkbox.js';
@@ -237,9 +237,20 @@ const LayerTable$1 = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement 
    *
    * @returns a promise that will resolve when the operation is complete
    */
-  _exportToCSV() {
+  async _exportToCSV() {
+    // Get the attributes of the features to export
     const ids = this._getSelectedIds();
-    void exportCSV(this._layerView, ids);
+    const featureSet = await queryFeaturesByID(ids, this._layerView.layer);
+    const attributes = featureSet.features.map(f => f.attributes);
+    // Get the column headings from the first record
+    const columnNames = new Set();
+    const entry = attributes[0];
+    Object.keys(entry).forEach(k => {
+      if (entry.hasOwnProperty(k)) {
+        columnNames[k] = k;
+      }
+    });
+    void exportCSV(columnNames, attributes);
   }
   /**
    * Zoom to all selected features

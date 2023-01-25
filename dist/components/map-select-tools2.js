@@ -6,7 +6,7 @@
 import { proxyCustomElement, HTMLElement, createEvent, h, Host } from '@stencil/core/internal/client';
 import { l as loadModules } from './loadModules.js';
 import { a as goToSelection, h as highlightFeatures } from './mapViewUtils.js';
-import { a as queryObjectIds, b as getQueryGeoms } from './queryUtils.js';
+import { b as queryObjectIds, c as getQueryGeoms } from './queryUtils.js';
 import { c as EWorkflowType, e as ESelectionMode, f as ERefineMode, b as ESketchType } from './interfaces3.js';
 import { s as state } from './publicNotificationStore.js';
 import { g as getLocaleComponentStrings } from './locale.js';

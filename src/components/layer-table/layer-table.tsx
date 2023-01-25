@@ -19,6 +19,7 @@ import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getMapLayerView, goToSelection } from "../../utils/mapViewUtils";
 import { queryAllFeatures } from "../../utils/queryUtils";
+import { queryFeaturesByID } from "../../utils/queryUtils";
 import { exportCSV } from "../../utils/csvUtils";
 
 // TODO look for options to better handle very large number of records
@@ -449,9 +450,22 @@ export class LayerTable {
    *
    * @returns a promise that will resolve when the operation is complete
    */
-  protected _exportToCSV(): void {
+  protected async _exportToCSV(): Promise<void> {
+    // Get the attributes of the features to export
     const ids = this._getSelectedIds();
-    void exportCSV(this._layerView, ids);
+    const featureSet = await queryFeaturesByID(ids, this._layerView.layer);
+    const attributes = featureSet.features.map(f => f.attributes);
+
+    // Get the column headings from the first record
+    const columnNames: Set<string> = new Set();
+    const entry = attributes[0];
+    Object.keys(entry).forEach(k => {
+      if (entry.hasOwnProperty(k)) {
+        columnNames[k] = k;
+      }
+    });
+
+    void exportCSV(columnNames, attributes);
   }
 
   /**

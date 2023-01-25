@@ -13,13 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/// <reference types="arcgis-js-api" />
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
- * @param layerView layer view to query
- * @param ids number array of ids to export to csv
+ * @param contentArray Array of labels; each label is an array of label line strings
+ * @param removeDuplicates Remove duplicate entries before exporting
  *
  * @returns Promise when the function has completed
  */
-export declare function exportCSV(layerView: __esri.FeatureLayerView, ids: number[]): Promise<void>;
+export declare function exportCSV(columnNames: Set<string>, contents: Set<string>[], removeDuplicates?: boolean): Promise<void>;
+/**
+ * Download the CSV file
+ *
+ * @param fieldNames the names for each of the features fields
+ * @param attributes the features attributes
+ *
+ * Based on:
+ * https://medium.com/@danny.pule/export-json-to-csv-file-using-javascript-a0b7bc5b00d2
+ *
+ * @returns void
+ */

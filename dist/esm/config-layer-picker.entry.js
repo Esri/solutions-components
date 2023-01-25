@@ -5,7 +5,7 @@
  */
 import { r as registerInstance, h, H as Host, g as getElement } from './index-09deaa39.js';
 import { g as getLocaleComponentStrings } from './locale-a5a0b545.js';
-import { g as getMapLayerNames } from './mapViewUtils-31d2c2bb.js';
+import { g as getMapLayerNames } from './mapViewUtils-ad2b505b.js';
 import './_commonjsHelpers-8fd39c50.js';
 import './interfaces-3b23a5f9.js';
 

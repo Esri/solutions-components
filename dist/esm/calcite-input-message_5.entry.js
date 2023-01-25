@@ -8,12 +8,12 @@ import { s as setRequestedIcon, g as getElementProp, a as getSlotted } from './d
 import { S as StatusIcons } from './interfaces-4ae145eb.js';
 import { c as connectConditionalSlotComponent, d as disconnectConditionalSlotComponent } from './conditionalSlot-e96b0a4f.js';
 import { l as loadModules } from './loadModules-06bbc523.js';
-import { a as goToSelection, h as highlightFeatures, e as queryObjectIds, f as getQueryGeoms, c as queryFeaturesByID } from './mapViewUtils-31d2c2bb.js';
+import { a as goToSelection, h as highlightFeatures, e as queryObjectIds, f as getQueryGeoms, q as queryFeaturesByID } from './mapViewUtils-ad2b505b.js';
 import { E as EWorkflowType, f as ESelectionMode, g as ERefineMode, c as ESketchType } from './interfaces-3b23a5f9.js';
 import { s as state } from './publicNotificationStore-3e762eea.js';
 import { g as getLocaleComponentStrings } from './locale-a5a0b545.js';
 import { p as pdfUtils } from './labelFormats-0a0f314c.js';
-import { e as exportCSV } from './csvUtils-edc0c2a8.js';
+import { e as exportCSV } from './csvUtils-e4f5f335.js';
 import { a as getSelectionIds, g as getTotal } from './publicNotificationUtils-5cb5a607.js';
 import './resources-436ae282.js';
 import './guid-15fce7c0.js';
@@ -665,22 +665,25 @@ MapSelectTools.style = mapSelectToolsCss;
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
- * @param layerView layer view to query
- * @param ids number array of ids to export to csv
+ * @param contentArray Array of labels; each label is an array of label line strings
  * @param labelDescription Format to use for labels
  * @param removeDuplicates Remove duplicate labels before exporting
  *
  * @returns Promise when the function has completed
  */
-async function exportPDF(layerView, ids, labelDescription, removeDuplicates = true) {
-  console.log("exportPDF", removeDuplicates, JSON.stringify(ids), JSON.stringify(labelDescription, null, 2)); //???
-  const featureSet = await queryFeaturesByID(ids, layerView.layer);
-  const attributes = featureSet.features.map(f => f.attributes);
+async function exportPDF(contents, labelDescription, removeDuplicates = true) {
+  console.log("exportPDF", JSON.stringify(contents), JSON.stringify(labelDescription, null, 2), removeDuplicates); //???
+  /*
+  const fieldNames = {};
   const entry = attributes[0];
   Object.keys(entry).forEach(k => {
-    if (entry.hasOwnProperty(k)) ;
+    if (entry.hasOwnProperty(k)) {
+      fieldNames[k] = k;
+    }
   });
-  //_downloadCSVFile(fieldNames, attributes, `notify-${Date.now().toString()}`);
+
+  _downloadCSVFile(fieldNames, attributes, `notify-${Date.now().toString()}`);
+  */
 }
 /**
  * Download the CSV file
@@ -746,7 +749,13 @@ const PdfDownload = class {
    * @returns Promise resolving when function is done
    */
   async downloadPDF(ids, removeDuplicates) {
-    return this._downloadPDF(ids, removeDuplicates);
+    // Get the attributes of the features to export
+    const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
+    const attributes = featureSet.features.map(f => f.attributes);
+    // Convert array of sets into an array of arrays
+    const contents = attributes.map(attr => Array.from(attr));
+    const labelDescription = this._labelInfoElement.selectedOption.value;
+    return exportPDF(contents, labelDescription, removeDuplicates);
   }
   /**
    * Downloads csv of mailing labels for the provided list of ids
@@ -756,7 +765,18 @@ const PdfDownload = class {
    * @returns Promise resolving when function is done
    */
   async downloadCSV(ids, removeDuplicates) {
-    return this._downloadCSV(ids, removeDuplicates);
+    // Get the attributes of the features to export
+    const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
+    const attributes = featureSet.features.map(f => f.attributes);
+    // Get the column headings from the first record
+    const columnNames = new Set();
+    const entry = attributes[0];
+    Object.keys(entry).forEach(k => {
+      if (entry.hasOwnProperty(k)) {
+        columnNames[k] = k;
+      }
+    });
+    return exportCSV(columnNames, attributes, removeDuplicates);
   }
   //--------------------------------------------------------------------------
   //
@@ -812,10 +832,15 @@ const PdfDownload = class {
    * @returns Promise resolving when function is done
    * @protected
    */
-  async _downloadPDF(ids, removeDuplicates) {
+  /*
+  protected async _downloadPDF(
+    ids: number[],
+    removeDuplicates: boolean
+  ): Promise<void> {
     const labelDescription = this._labelInfoElement.selectedOption.value;
     await exportPDF(this.layerView, ids, labelDescription, removeDuplicates);
   }
+  */
   /**
    * Downloads csv of mailing labels for the provided list of ids
    *
@@ -826,11 +851,16 @@ const PdfDownload = class {
    * @returns Promise that will resolve when the download is complete
    * @protected
    */
-  async _downloadCSV(ids, removeDuplicates) {
+  /*
+  protected async _downloadCSV(
+    ids: number[],
+    removeDuplicates: boolean
+  ): Promise<void> {
     // TODO this will be leveraged when we do the real implementation of this
-    console.log(removeDuplicates);
+    console.log(removeDuplicates)
     await exportCSV(this.layerView, ids);
   }
+  */
   /**
    * Gets the formatted pdf export size text
    *

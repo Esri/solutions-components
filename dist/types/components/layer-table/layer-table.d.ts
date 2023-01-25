@@ -140,7 +140,7 @@ export declare class LayerTable {
    *
    * @returns a promise that will resolve when the operation is complete
    */
-  protected _exportToCSV(): void;
+  protected _exportToCSV(): Promise<void>;
   /**
    * Zoom to all selected features
    *

@@ -77,7 +77,6 @@ export declare class PdfDownload {
    * @returns Promise resolving when function is done
    * @protected
    */
-  protected _downloadPDF(ids: number[], removeDuplicates: boolean): Promise<void>;
   /**
    * Downloads csv of mailing labels for the provided list of ids
    *
@@ -88,7 +87,6 @@ export declare class PdfDownload {
    * @returns Promise that will resolve when the download is complete
    * @protected
    */
-  protected _downloadCSV(ids: number[], removeDuplicates: boolean): Promise<void>;
   /**
    * Gets the formatted pdf export size text
    *

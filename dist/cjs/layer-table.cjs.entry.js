@@ -10,7 +10,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 const index = require('./index-ee607805.js');
 const locale = require('./locale-d15229c4.js');
 const mapViewUtils = require('./mapViewUtils-8ea9adc5.js');
-const csvUtils = require('./csvUtils-18a03353.js');
+const csvUtils = require('./csvUtils-d5b641d9.js');
 require('./_commonjsHelpers-6aafa5de.js');
 require('./interfaces-772edf61.js');
 
@@ -220,9 +220,20 @@ const LayerTable = class {
    *
    * @returns a promise that will resolve when the operation is complete
    */
-  _exportToCSV() {
+  async _exportToCSV() {
+    // Get the attributes of the features to export
     const ids = this._getSelectedIds();
-    void csvUtils.exportCSV(this._layerView, ids);
+    const featureSet = await mapViewUtils.queryFeaturesByID(ids, this._layerView.layer);
+    const attributes = featureSet.features.map(f => f.attributes);
+    // Get the column headings from the first record
+    const columnNames = new Set();
+    const entry = attributes[0];
+    Object.keys(entry).forEach(k => {
+      if (entry.hasOwnProperty(k)) {
+        columnNames[k] = k;
+      }
+    });
+    void csvUtils.exportCSV(columnNames, attributes);
   }
   /**
    * Zoom to all selected features

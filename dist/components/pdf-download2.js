@@ -7,7 +7,7 @@ import { proxyCustomElement, HTMLElement, h, Host } from '@stencil/core/internal
 import { p as pdfUtils } from './labelFormats.js';
 import { g as getLocaleComponentStrings } from './locale.js';
 import { e as exportCSV } from './csvUtils.js';
-import { c as queryFeaturesByID } from './queryUtils.js';
+import { q as queryFeaturesByID } from './queryUtils.js';
 import { d as defineCustomElement$3 } from './icon.js';
 import { d as defineCustomElement$2 } from './option.js';
 import { d as defineCustomElement$1 } from './select.js';
@@ -30,22 +30,25 @@ import { d as defineCustomElement$1 } from './select.js';
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
- * @param layerView layer view to query
- * @param ids number array of ids to export to csv
+ * @param contentArray Array of labels; each label is an array of label line strings
  * @param labelDescription Format to use for labels
  * @param removeDuplicates Remove duplicate labels before exporting
  *
  * @returns Promise when the function has completed
  */
-async function exportPDF(layerView, ids, labelDescription, removeDuplicates = true) {
-  console.log("exportPDF", removeDuplicates, JSON.stringify(ids), JSON.stringify(labelDescription, null, 2)); //???
-  const featureSet = await queryFeaturesByID(ids, layerView.layer);
-  const attributes = featureSet.features.map(f => f.attributes);
+async function exportPDF(contents, labelDescription, removeDuplicates = true) {
+  console.log("exportPDF", JSON.stringify(contents), JSON.stringify(labelDescription, null, 2), removeDuplicates); //???
+  /*
+  const fieldNames = {};
   const entry = attributes[0];
   Object.keys(entry).forEach(k => {
-    if (entry.hasOwnProperty(k)) ;
+    if (entry.hasOwnProperty(k)) {
+      fieldNames[k] = k;
+    }
   });
-  //_downloadCSVFile(fieldNames, attributes, `notify-${Date.now().toString()}`);
+
+  _downloadCSVFile(fieldNames, attributes, `notify-${Date.now().toString()}`);
+  */
 }
 /**
  * Download the CSV file
@@ -113,7 +116,13 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
    * @returns Promise resolving when function is done
    */
   async downloadPDF(ids, removeDuplicates) {
-    return this._downloadPDF(ids, removeDuplicates);
+    // Get the attributes of the features to export
+    const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
+    const attributes = featureSet.features.map(f => f.attributes);
+    // Convert array of sets into an array of arrays
+    const contents = attributes.map(attr => Array.from(attr));
+    const labelDescription = this._labelInfoElement.selectedOption.value;
+    return exportPDF(contents, labelDescription, removeDuplicates);
   }
   /**
    * Downloads csv of mailing labels for the provided list of ids
@@ -123,7 +132,18 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
    * @returns Promise resolving when function is done
    */
   async downloadCSV(ids, removeDuplicates) {
-    return this._downloadCSV(ids, removeDuplicates);
+    // Get the attributes of the features to export
+    const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
+    const attributes = featureSet.features.map(f => f.attributes);
+    // Get the column headings from the first record
+    const columnNames = new Set();
+    const entry = attributes[0];
+    Object.keys(entry).forEach(k => {
+      if (entry.hasOwnProperty(k)) {
+        columnNames[k] = k;
+      }
+    });
+    return exportCSV(columnNames, attributes, removeDuplicates);
   }
   //--------------------------------------------------------------------------
   //
@@ -179,10 +199,15 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
    * @returns Promise resolving when function is done
    * @protected
    */
-  async _downloadPDF(ids, removeDuplicates) {
+  /*
+  protected async _downloadPDF(
+    ids: number[],
+    removeDuplicates: boolean
+  ): Promise<void> {
     const labelDescription = this._labelInfoElement.selectedOption.value;
     await exportPDF(this.layerView, ids, labelDescription, removeDuplicates);
   }
+  */
   /**
    * Downloads csv of mailing labels for the provided list of ids
    *
@@ -193,11 +218,16 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
    * @returns Promise that will resolve when the download is complete
    * @protected
    */
-  async _downloadCSV(ids, removeDuplicates) {
+  /*
+  protected async _downloadCSV(
+    ids: number[],
+    removeDuplicates: boolean
+  ): Promise<void> {
     // TODO this will be leveraged when we do the real implementation of this
-    console.log(removeDuplicates);
+    console.log(removeDuplicates)
     await exportCSV(this.layerView, ids);
   }
+  */
   /**
    * Gets the formatted pdf export size text
    *
