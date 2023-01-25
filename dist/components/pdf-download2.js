@@ -119,8 +119,8 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
     // Get the attributes of the features to export
     const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
     const attributes = featureSet.features.map(f => f.attributes);
-    // Convert array of sets into an array of arrays
-    const contents = attributes.map(attr => Array.from(attr));
+    // Convert array of objects into an array of string arrays
+    const contents = attributes.map(attr => Object.values(attr));
     const labelDescription = this._labelInfoElement.selectedOption.value;
     return exportPDF(contents, labelDescription, removeDuplicates);
   }
