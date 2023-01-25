@@ -9,7 +9,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 const index = require('./index-ee607805.js');
 const locale = require('./locale-d15229c4.js');
-const labelFormats = require('./labelFormats-3236d2e0.js');
+const labelFormats = require('./labelFormats-ae8916fd.js');
 require('./_commonjsHelpers-6aafa5de.js');
 
 const configPdfDownloadCss = ":host{display:block}.label-spacing{--calcite-label-margin-bottom:0}.padding-block-end-1{-webkit-padding-after:1rem;padding-block-end:1rem}.padding-inline-start-1{-webkit-padding-start:1rem;padding-inline-start:1rem}";

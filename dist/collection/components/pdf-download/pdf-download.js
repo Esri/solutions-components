@@ -23,9 +23,10 @@ import * as pdfUtils from "../../assets/data/labelFormats.json";
 import "@esri/calcite-components";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { exportCSV } from "../../utils/csvUtils";
+import { exportPDF } from "../../utils/pdfUtils";
 export class PdfDownload {
   constructor() {
-    this.disabled = true;
+    this.disabled = false;
     this.layerView = undefined;
     this._translations = undefined;
   }
@@ -114,8 +115,8 @@ export class PdfDownload {
    * @protected
    */
   async _downloadPDF(ids, removeDuplicates) {
-    const l = this._labelInfoElement.selectedOption.value;
-    alert(`PDF download: (${this._getLabelSizeText(l)}) (remove dups: ${removeDuplicates}) ${ids.join(", ")}`);
+    const labelDescription = this._labelInfoElement.selectedOption.value;
+    await exportPDF(this.layerView, ids, labelDescription, removeDuplicates);
   }
   /**
    * Downloads csv of mailing labels for the provided list of ids
@@ -184,7 +185,7 @@ export class PdfDownload {
         },
         "attribute": "disabled",
         "reflect": false,
-        "defaultValue": "true"
+        "defaultValue": "false"
       },
       "layerView": {
         "type": "unknown",

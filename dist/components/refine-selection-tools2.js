@@ -7,7 +7,7 @@ import { proxyCustomElement, HTMLElement, createEvent, h, Host } from '@stencil/
 import { g as ESelectionType, f as ERefineMode, e as ESelectionMode } from './interfaces3.js';
 import { l as loadModules } from './loadModules.js';
 import { b as getMapLayerView, h as highlightFeatures } from './mapViewUtils.js';
-import { c as queryFeaturesByGeometry } from './queryUtils.js';
+import { d as queryFeaturesByGeometry } from './queryUtils.js';
 import { s as state } from './publicNotificationStore.js';
 import { g as getLocaleComponentStrings } from './locale.js';
 import { d as defineCustomElement$9 } from './action.js';

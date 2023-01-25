@@ -184,4 +184,4 @@ async function _intersectQuery(geometry, layer) {
   return layer.queryObjectIds(q);
 }
 
-export { queryObjectIds as a, getQueryGeoms as b, queryFeaturesByGeometry as c, queryExtent as d, queryFeaturesByID as e, getSelectionSetQuery as g, queryAllFeatures as q };
+export { queryObjectIds as a, getQueryGeoms as b, queryFeaturesByID as c, queryFeaturesByGeometry as d, queryExtent as e, getSelectionSetQuery as g, queryAllFeatures as q };

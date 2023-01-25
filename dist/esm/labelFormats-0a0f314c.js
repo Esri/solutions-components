@@ -3,8 +3,6 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-'use strict';
-
 const labelFormats = [
 	{
 		descriptionPDF: {
@@ -15,9 +13,8 @@ const labelFormats = [
 		},
 		labelSpec: {
 			type: "AVERY",
-			pageDimensions: {
-				width: 8.5,
-				height: 11,
+			pageProperties: {
+				pageType: "ANSI A",
 				leftMargin: 0.1875,
 				rightMargin: 0.1875,
 				topMargin: 0.5,
@@ -43,9 +40,8 @@ const labelFormats = [
 		},
 		labelSpec: {
 			type: "AVERY",
-			pageDimensions: {
-				width: 8.5,
-				height: 11,
+			pageProperties: {
+				pageType: "ANSI A",
 				leftMargin: 0.15625,
 				rightMargin: 0.15625,
 				topMargin: 0.47637821,
@@ -71,9 +67,8 @@ const labelFormats = [
 		},
 		labelSpec: {
 			type: "AVERY",
-			pageDimensions: {
-				width: 8.5,
-				height: 11,
+			pageProperties: {
+				pageType: "ANSI A",
 				leftMargin: 0.15625,
 				rightMargin: 0.15625,
 				topMargin: 0.81889808,
@@ -99,9 +94,8 @@ const labelFormats = [
 		},
 		labelSpec: {
 			type: "AVERY",
-			pageDimensions: {
-				width: 8.5,
-				height: 11,
+			pageProperties: {
+				pageType: "ANSI A",
 				leftMargin: 0.15625,
 				rightMargin: 0.15625,
 				topMargin: 0.5,
@@ -127,9 +121,8 @@ const labelFormats = [
 		},
 		labelSpec: {
 			type: "AVERY",
-			pageDimensions: {
-				width: 8.5,
-				height: 11,
+			pageProperties: {
+				pageType: "ANSI A",
 				leftMargin: 0.15625,
 				rightMargin: 0.15625,
 				topMargin: 0.4724412,
@@ -155,9 +148,8 @@ const labelFormats = [
 		},
 		labelSpec: {
 			type: "AVERY",
-			pageDimensions: {
-				width: 8.5,
-				height: 11,
+			pageProperties: {
+				pageType: "ANSI A",
 				leftMargin: 0.307086375,
 				rightMargin: 0.307086375,
 				topMargin: 0.4724412,
@@ -183,9 +175,8 @@ const labelFormats = [
 		},
 		labelSpec: {
 			type: "AVERY",
-			pageDimensions: {
-				width: 8.5,
-				height: 11,
+			pageProperties: {
+				pageType: "ANSI A",
 				leftMargin: 0.28936983,
 				rightMargin: 0.28936983,
 				topMargin: 0.53937037,
@@ -209,4 +200,4 @@ const pdfUtils = /*#__PURE__*/Object.freeze({
   'default': labelFormats
 });
 
-exports.pdfUtils = pdfUtils;
+export { pdfUtils as p };

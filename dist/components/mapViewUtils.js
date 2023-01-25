@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { d as queryExtent } from './queryUtils.js';
+import { e as queryExtent } from './queryUtils.js';
 
 /** @license
  * Copyright 2022 Esri

@@ -22,26 +22,50 @@
     | limitations under the License.
     -->
     <style>
-      .main {
-        background-color: var(--calcite-ui-foreground-1);
-        display: grid;
-        align-self: center;
+      body {
+        padding: 1rem;
       }
       .column {
-        min-width: 300px;
-        margin: 1rem;
-        padding: 1rem;
-        border: 1px solid;
+        width: 300px;
+      }
+      #removeDups {
+        float: left;
+      }
+      #removeDupsLabel {
+        margin-left: 2.5rem;
       }
     </style>
 
     <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
-    <link rel="stylesheet" href="../solutions-components.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/1.0.3/calcite.css" />
+    <link rel="stylesheet" href="../../dist/solutions-components/solutions-components.css" type="text/css">
 
-    <script type="module" src="../solutions-components.esm.js"></script>
+    <script type="module" src="https://js.arcgis.com/calcite-components/1.0.3/calcite.esm.js"></script>
+    <script type="module" src="../../dist/solutions-components/solutions-components.esm.js"></script>
   </head>
 
   <body>
-    <pdf-download class="column over-map" id="demo"></pdf-download>
+    <div class="column">
+      <pdf-download id="pdfDownload"></pdf-download>
+      <br>
+      <button onclick="downloadPDF()">Download PDF</button>
+      <button onclick="downloadCSV()">Download CSV</button>
+      <br><br>
+      <calcite-switch checked id="removeDups"></calcite-switch> <calcite-label id="removeDupsLabel">Remove duplicates</calcite-label>
+    </div>
+
+    <script>
+      const pdfDownload = document.getElementById("pdfDownload");
+      const removeDups = document.getElementById("removeDups");
+      const ids = [];
+
+      function downloadPDF() {
+        pdfDownload.downloadPDF(ids, removeDups.checked);
+      }
+
+      function downloadCSV() {
+        pdfDownload.downloadCSV(ids, removeDups.checked);
+      }
+    </script>
   </body>
 </html>

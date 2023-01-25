@@ -7,9 +7,82 @@ import { proxyCustomElement, HTMLElement, h, Host } from '@stencil/core/internal
 import { p as pdfUtils } from './labelFormats.js';
 import { g as getLocaleComponentStrings } from './locale.js';
 import { e as exportCSV } from './csvUtils.js';
+import { c as queryFeaturesByID } from './queryUtils.js';
 import { d as defineCustomElement$3 } from './icon.js';
 import { d as defineCustomElement$2 } from './option.js';
 import { d as defineCustomElement$1 } from './select.js';
+
+/** @license
+ * Copyright 2022 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+ * Export a csv of the attributes from the features that match the provided ids
+ *
+ * @param layerView layer view to query
+ * @param ids number array of ids to export to csv
+ * @param labelDescription Format to use for labels
+ * @param removeDuplicates Remove duplicate labels before exporting
+ *
+ * @returns Promise when the function has completed
+ */
+async function exportPDF(layerView, ids, labelDescription, removeDuplicates = true) {
+  console.log("exportPDF", removeDuplicates, JSON.stringify(ids), JSON.stringify(labelDescription, null, 2)); //???
+  const featureSet = await queryFeaturesByID(ids, layerView.layer);
+  const attributes = featureSet.features.map(f => f.attributes);
+  const entry = attributes[0];
+  Object.keys(entry).forEach(k => {
+    if (entry.hasOwnProperty(k)) ;
+  });
+  //_downloadCSVFile(fieldNames, attributes, `notify-${Date.now().toString()}`);
+}
+/**
+ * Download the CSV file
+ *
+ * @param fieldNames the names for each of the features fields
+ * @param attributes the features attributes
+ *
+ * Based on:
+ * https://medium.com/@danny.pule/export-json-to-csv-file-using-javascript-a0b7bc5b00d2
+ *
+ * @returns void
+ */
+/*
+function _downloadCSVFile(
+  fieldNames: {[key: string]: string},
+  attributes: {[key: string]: string}[],
+  fileTitle: string
+): void {
+  if (fieldNames) {
+    attributes.unshift(fieldNames);
+  }
+  // format values to string so it doesn't get tripped up when a value has a comma
+  // another option could be to export with a different delimiter
+  const csv = attributes.reduce((prev, cur) => {
+    return prev + Object.values(cur).map(v => `"${v}"`).join(",") + "\r\n";
+  }, "");
+  const link = document.createElement("a");
+  if (link.download !== undefined) {
+    link.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8;" }));
+    link.download = `${fileTitle}.csv` || "export.csv";
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+}
+*/
 
 const pdfDownloadCss = ":host{display:block}";
 
@@ -18,7 +91,7 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
     super();
     this.__registerHost();
     this.__attachShadow();
-    this.disabled = true;
+    this.disabled = false;
     this.layerView = undefined;
     this._translations = undefined;
   }
@@ -107,8 +180,8 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
    * @protected
    */
   async _downloadPDF(ids, removeDuplicates) {
-    const l = this._labelInfoElement.selectedOption.value;
-    alert(`PDF download: (${this._getLabelSizeText(l)}) (remove dups: ${removeDuplicates}) ${ids.join(", ")}`);
+    const labelDescription = this._labelInfoElement.selectedOption.value;
+    await exportPDF(this.layerView, ids, labelDescription, removeDuplicates);
   }
   /**
    * Downloads csv of mailing labels for the provided list of ids

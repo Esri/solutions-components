@@ -20,6 +20,7 @@ import "@esri/calcite-components";
 import PdfDownload_T9n from "../../assets/t9n/pdf-download/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { exportCSV } from "../../utils/csvUtils";
+import { exportPDF } from "../../utils/pdfUtils";
 
 @Component({
   tag: "pdf-download",
@@ -43,7 +44,7 @@ export class PdfDownload {
   /**
    * boolean: Controls the enabled/disabled state of download
    */
-  @Prop() disabled = true;
+  @Prop() disabled = false;
 
   /**
    * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
@@ -189,8 +190,8 @@ export class PdfDownload {
     ids: number[],
     removeDuplicates: boolean
   ): Promise<void> {
-    const l = this._labelInfoElement.selectedOption.value;
-    alert(`PDF download: (${this._getLabelSizeText(l)}) (remove dups: ${removeDuplicates}) ${ids.join(", ")}`);
+    const labelDescription = this._labelInfoElement.selectedOption.value;
+    await exportPDF(this.layerView, ids, labelDescription, removeDuplicates);
   }
 
   /**

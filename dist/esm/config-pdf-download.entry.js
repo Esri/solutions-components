@@ -5,7 +5,7 @@
  */
 import { r as registerInstance, h, H as Host, g as getElement } from './index-09deaa39.js';
 import { g as getLocaleComponentStrings } from './locale-a5a0b545.js';
-import { p as pdfUtils } from './labelFormats-b37958c3.js';
+import { p as pdfUtils } from './labelFormats-0a0f314c.js';
 import './_commonjsHelpers-8fd39c50.js';
 
 const configPdfDownloadCss = ":host{display:block}.label-spacing{--calcite-label-margin-bottom:0}.padding-block-end-1{-webkit-padding-after:1rem;padding-block-end:1rem}.padding-inline-start-1{-webkit-padding-start:1rem;padding-inline-start:1rem}";
