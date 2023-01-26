@@ -671,7 +671,7 @@ MapSelectTools.style = mapSelectToolsCss;
  */
 function exportPDF(contents, labelDescription, removeDuplicates = true) {
   const outputLabels = _prepareOutput(contents, removeDuplicates);
-  console.log(outputLabels, labelDescription); //???
+  console.log("outputLabels", outputLabels, labelDescription); //???
   //_downloadPDFFile(outputLabels, labelDescription, `notify-${Date.now().toString()}`);
 }
 /**
@@ -718,9 +718,9 @@ function _prepareOutput(contents, removeDuplicates = true) {
   // Remove duplicates if desired
   if (removeDuplicates) {
     const uniques = new Set();
-    contents.forEach(label => uniques.add(JSON.stringify(label)));
+    contents.forEach(labelLines => uniques.add(labelLines.join("|")));
     console.log(Array.from(uniques)); //???
-    contents = [Array.from(uniques)];
+    contents = Array.from(uniques).map(label => label.split("|"));
   }
   return contents;
 }
