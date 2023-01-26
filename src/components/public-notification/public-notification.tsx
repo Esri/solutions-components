@@ -647,7 +647,12 @@ export class PublicNotification {
         <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
           <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
           <calcite-input-message active class="info-blue" scale="m">
-            {this._translations.selectedAddresses.replace("{{n}}", this._numSelected.toString()).replace("{{layer}}", this.addresseeLayer?.layer.title || "")}
+            {
+              this.noResultText ? this.noResultText :
+                this._translations.selectedAddresses.replace(
+                  "{{n}}", this._numSelected.toString()).replace("{{layer}}", this.addresseeLayer?.layer.title || ""
+                )
+            }
           </calcite-input-message>
         </div>
         {
