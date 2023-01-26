@@ -35,7 +35,6 @@ import { d as defineCustomElement$1 } from './select.js';
  * @param removeDuplicates Remove duplicate labels before exporting
  */
 function exportPDF(contents, labelDescription, removeDuplicates = true) {
-  console.log(contents, labelDescription, removeDuplicates); //???
   const outputLabels = _prepareOutput(contents, removeDuplicates);
   console.log(outputLabels, labelDescription); //???
   //_downloadPDFFile(outputLabels, labelDescription, `notify-${Date.now().toString()}`);
@@ -126,7 +125,8 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
     // Convert array of objects into an array of string arrays
     const contents = attributes.map(attr => Object.values(attr));
     const labelDescription = this._labelInfoElement.selectedOption.value;
-    return exportPDF(contents, labelDescription, removeDuplicates);
+    console.log("downloadPDF removeDuplicates", removeDuplicates); //???
+    return exportPDF(contents, labelDescription);
   }
   /**
    * Downloads csv of mailing labels for the provided list of ids

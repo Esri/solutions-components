@@ -13,7 +13,7 @@ import { E as EWorkflowType, f as ESelectionMode, g as ERefineMode, c as ESketch
 import { s as state } from './publicNotificationStore-3e762eea.js';
 import { g as getLocaleComponentStrings } from './locale-a5a0b545.js';
 import { p as pdfUtils } from './labelFormats-0a0f314c.js';
-import { e as exportCSV } from './csvUtils-4986ba68.js';
+import { e as exportCSV } from './csvUtils-a02bfc76.js';
 import { a as getSelectionIds, g as getTotal } from './publicNotificationUtils-5cb5a607.js';
 import './resources-436ae282.js';
 import './guid-15fce7c0.js';
@@ -670,7 +670,6 @@ MapSelectTools.style = mapSelectToolsCss;
  * @param removeDuplicates Remove duplicate labels before exporting
  */
 function exportPDF(contents, labelDescription, removeDuplicates = true) {
-  console.log(contents, labelDescription, removeDuplicates); //???
   const outputLabels = _prepareOutput(contents, removeDuplicates);
   console.log(outputLabels, labelDescription); //???
   //_downloadPDFFile(outputLabels, labelDescription, `notify-${Date.now().toString()}`);
@@ -759,7 +758,8 @@ const PdfDownload = class {
     // Convert array of objects into an array of string arrays
     const contents = attributes.map(attr => Object.values(attr));
     const labelDescription = this._labelInfoElement.selectedOption.value;
-    return exportPDF(contents, labelDescription, removeDuplicates);
+    console.log("downloadPDF removeDuplicates", removeDuplicates); //???
+    return exportPDF(contents, labelDescription);
   }
   /**
    * Downloads csv of mailing labels for the provided list of ids

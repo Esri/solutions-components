@@ -26,7 +26,6 @@
  * @param removeDuplicates Remove duplicate labels before exporting
  */
 export function exportPDF(contents, labelDescription, removeDuplicates = true) {
-  console.log(contents, labelDescription, removeDuplicates); //???
   const outputLabels = _prepareOutput(contents, removeDuplicates);
   console.log(outputLabels, labelDescription); //???
   //_downloadPDFFile(outputLabels, labelDescription, `notify-${Date.now().toString()}`);

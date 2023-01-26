@@ -107,7 +107,8 @@ export class PdfDownload {
     const contents: string[][] = attributes.map(attr => Object.values(attr));
 
     const labelDescription = this._labelInfoElement.selectedOption.value;
-    return exportPDF(contents, labelDescription, removeDuplicates);
+    console.log("downloadPDF removeDuplicates", removeDuplicates);//???
+    return exportPDF(contents, labelDescription);
   }
 
   /**

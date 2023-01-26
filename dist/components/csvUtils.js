@@ -27,7 +27,6 @@
  */
 function exportCSV(contents, columnNames = null, removeDuplicates = true) {
   const outputLines = _prepareOutput(contents, columnNames, removeDuplicates);
-  console.log(outputLines);
   _downloadCSVFile(outputLines, `notify-${Date.now().toString()}`);
 }
 /**

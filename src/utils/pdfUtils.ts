@@ -26,8 +26,6 @@ export function exportPDF(
   labelDescription: any,
   removeDuplicates = true
 ): void {
-  console.log(contents, labelDescription, removeDuplicates);//???
-
   const outputLabels = _prepareOutput(contents, removeDuplicates);
   console.log(outputLabels, labelDescription);//???
 

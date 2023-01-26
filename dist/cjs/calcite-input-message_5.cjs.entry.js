@@ -17,7 +17,7 @@ const interfaces$1 = require('./interfaces-772edf61.js');
 const publicNotificationStore = require('./publicNotificationStore-aca88430.js');
 const locale = require('./locale-d15229c4.js');
 const labelFormats = require('./labelFormats-ae8916fd.js');
-const csvUtils = require('./csvUtils-2d25a5ce.js');
+const csvUtils = require('./csvUtils-b8693144.js');
 const publicNotificationUtils = require('./publicNotificationUtils-9d585d8d.js');
 require('./resources-b56bce71.js');
 require('./guid-84ac4d91.js');
@@ -674,7 +674,6 @@ MapSelectTools.style = mapSelectToolsCss;
  * @param removeDuplicates Remove duplicate labels before exporting
  */
 function exportPDF(contents, labelDescription, removeDuplicates = true) {
-  console.log(contents, labelDescription, removeDuplicates); //???
   const outputLabels = _prepareOutput(contents, removeDuplicates);
   console.log(outputLabels, labelDescription); //???
   //_downloadPDFFile(outputLabels, labelDescription, `notify-${Date.now().toString()}`);
@@ -763,7 +762,8 @@ const PdfDownload = class {
     // Convert array of objects into an array of string arrays
     const contents = attributes.map(attr => Object.values(attr));
     const labelDescription = this._labelInfoElement.selectedOption.value;
-    return exportPDF(contents, labelDescription, removeDuplicates);
+    console.log("downloadPDF removeDuplicates", removeDuplicates); //???
+    return exportPDF(contents, labelDescription);
   }
   /**
    * Downloads csv of mailing labels for the provided list of ids

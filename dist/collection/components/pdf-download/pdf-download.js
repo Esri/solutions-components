@@ -55,7 +55,8 @@ export class PdfDownload {
     // Convert array of objects into an array of string arrays
     const contents = attributes.map(attr => Object.values(attr));
     const labelDescription = this._labelInfoElement.selectedOption.value;
-    return exportPDF(contents, labelDescription, removeDuplicates);
+    console.log("downloadPDF removeDuplicates", removeDuplicates); //???
+    return exportPDF(contents, labelDescription);
   }
   /**
    * Downloads csv of mailing labels for the provided list of ids
