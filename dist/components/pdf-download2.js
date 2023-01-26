@@ -191,44 +191,6 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
     });
   }
   /**
-   * Downloads pdf of mailing labels for the provided list of ids
-   *
-   * @param ids List of ids to download
-   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   *
-   * @returns Promise resolving when function is done
-   * @protected
-   */
-  /*
-  protected async _downloadPDF(
-    ids: number[],
-    removeDuplicates: boolean
-  ): Promise<void> {
-    const labelDescription = this._labelInfoElement.selectedOption.value;
-    await exportPDF(this.layerView, ids, labelDescription, removeDuplicates);
-  }
-  */
-  /**
-   * Downloads csv of mailing labels for the provided list of ids
-   *
-   * @param ids List of ids to download
-   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * @returns Promise resolving when function is done
-   *
-   * @returns Promise that will resolve when the download is complete
-   * @protected
-   */
-  /*
-  protected async _downloadCSV(
-    ids: number[],
-    removeDuplicates: boolean
-  ): Promise<void> {
-    // TODO this will be leveraged when we do the real implementation of this
-    console.log(removeDuplicates)
-    await exportCSV(this.layerView, ids);
-  }
-  */
-  /**
    * Gets the formatted pdf export size text
    *
    * @param labelInfo current user selected label info

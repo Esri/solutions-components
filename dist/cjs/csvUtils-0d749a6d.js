@@ -29,18 +29,22 @@
  * @returns Promise when the function has completed
  */
 async function exportCSV(columnNames, contents, removeDuplicates = true) {
-  console.log("exportCSV", columnNames, contents, removeDuplicates); //???
-  /*
-  const fieldNames = {};
-  const entry = attributes[0];
-  Object.keys(entry).forEach(k => {
-    if (entry.hasOwnProperty(k)) {
-      fieldNames[k] = k;
-    }
-  });
-
-  _downloadCSVFile(fieldNames, attributes, `notify-${Date.now().toString()}`);
-  */
+  // Format values to string so it doesn't get tripped up when a value has a comma
+  // another option could be to export with a different delimiter
+  let outputLines = contents.map(values => Object.values(values).map(v => `"${v}"`).join(",") + "\r\n");
+  // Remove duplicates if desired
+  if (removeDuplicates) {
+    const uniques = new Set();
+    outputLines.forEach(line => uniques.add(line));
+    outputLines = Array.from(uniques);
+  }
+  // Add the column names to the output
+  if (columnNames) {
+    const columnNamesLine = Object.values(columnNames).map(v => `"${v}"`).join(",") + "\r\n";
+    outputLines.unshift(columnNamesLine);
+  }
+  console.log(outputLines);
+  //_downloadCSVFile(outputLines, `notify-${Date.now().toString()}`);
 }
 /**
  * Download the CSV file
@@ -55,21 +59,12 @@ async function exportCSV(columnNames, contents, removeDuplicates = true) {
  */
 /*
 function _downloadCSVFile(
-  fieldNames: {[key: string]: string},
-  attributes: {[key: string]: string}[],
+  outputLines: string[],
   fileTitle: string
 ): void {
-  if (fieldNames) {
-    attributes.unshift(fieldNames);
-  }
-  // format values to string so it doesn't get tripped up when a value has a comma
-  // another option could be to export with a different delimiter
-  const csv = attributes.reduce((prev, cur) => {
-    return prev + Object.values(cur).map(v => `"${v}"`).join(",") + "\r\n";
-  }, "");
   const link = document.createElement("a");
   if (link.download !== undefined) {
-    link.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8;" }));
+    link.href = URL.createObjectURL(new Blob([outputLines], { type: "text/csv;charset=utf-8;" }));
     link.download = `${fileTitle}.csv` || "export.csv";
     link.style.visibility = "hidden";
     document.body.appendChild(link);

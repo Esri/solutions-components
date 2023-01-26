@@ -17,7 +17,7 @@ const interfaces$1 = require('./interfaces-772edf61.js');
 const publicNotificationStore = require('./publicNotificationStore-aca88430.js');
 const locale = require('./locale-d15229c4.js');
 const labelFormats = require('./labelFormats-ae8916fd.js');
-const csvUtils = require('./csvUtils-d5b641d9.js');
+const csvUtils = require('./csvUtils-0d749a6d.js');
 const publicNotificationUtils = require('./publicNotificationUtils-9d585d8d.js');
 require('./resources-b56bce71.js');
 require('./guid-84ac4d91.js');
@@ -827,44 +827,6 @@ const PdfDownload = class {
       return (index.h("calcite-option", { value: l }, this._getLabelSizeText(l)));
     });
   }
-  /**
-   * Downloads pdf of mailing labels for the provided list of ids
-   *
-   * @param ids List of ids to download
-   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   *
-   * @returns Promise resolving when function is done
-   * @protected
-   */
-  /*
-  protected async _downloadPDF(
-    ids: number[],
-    removeDuplicates: boolean
-  ): Promise<void> {
-    const labelDescription = this._labelInfoElement.selectedOption.value;
-    await exportPDF(this.layerView, ids, labelDescription, removeDuplicates);
-  }
-  */
-  /**
-   * Downloads csv of mailing labels for the provided list of ids
-   *
-   * @param ids List of ids to download
-   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * @returns Promise resolving when function is done
-   *
-   * @returns Promise that will resolve when the download is complete
-   * @protected
-   */
-  /*
-  protected async _downloadCSV(
-    ids: number[],
-    removeDuplicates: boolean
-  ): Promise<void> {
-    // TODO this will be leveraged when we do the real implementation of this
-    console.log(removeDuplicates)
-    await exportCSV(this.layerView, ids);
-  }
-  */
   /**
    * Gets the formatted pdf export size text
    *

@@ -18,4 +18,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-async function o(o,e,n=!0){console.log("exportCSV",o,e,n)}export{o as e}
+async function n(n,e,t=!0){let c=e.map((n=>Object.values(n).map((n=>`"${n}"`)).join(",")+"\r\n"));if(t){const n=new Set;c.forEach((e=>n.add(e))),c=Array.from(n)}if(n){const e=Object.values(n).map((n=>`"${n}"`)).join(",")+"\r\n";c.unshift(e)}console.log(c)}export{n as e}

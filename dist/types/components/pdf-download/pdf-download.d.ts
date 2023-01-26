@@ -69,25 +69,6 @@ export declare class PdfDownload {
    */
   protected _renderItems(): VNode[];
   /**
-   * Downloads pdf of mailing labels for the provided list of ids
-   *
-   * @param ids List of ids to download
-   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   *
-   * @returns Promise resolving when function is done
-   * @protected
-   */
-  /**
-   * Downloads csv of mailing labels for the provided list of ids
-   *
-   * @param ids List of ids to download
-   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * @returns Promise resolving when function is done
-   *
-   * @returns Promise that will resolve when the download is complete
-   * @protected
-   */
-  /**
    * Gets the formatted pdf export size text
    *
    * @param labelInfo current user selected label info

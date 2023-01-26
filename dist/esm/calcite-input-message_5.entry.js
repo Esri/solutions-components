@@ -13,7 +13,7 @@ import { E as EWorkflowType, f as ESelectionMode, g as ERefineMode, c as ESketch
 import { s as state } from './publicNotificationStore-3e762eea.js';
 import { g as getLocaleComponentStrings } from './locale-a5a0b545.js';
 import { p as pdfUtils } from './labelFormats-0a0f314c.js';
-import { e as exportCSV } from './csvUtils-e4f5f335.js';
+import { e as exportCSV } from './csvUtils-625e734d.js';
 import { a as getSelectionIds, g as getTotal } from './publicNotificationUtils-5cb5a607.js';
 import './resources-436ae282.js';
 import './guid-15fce7c0.js';
@@ -823,44 +823,6 @@ const PdfDownload = class {
       return (h("calcite-option", { value: l }, this._getLabelSizeText(l)));
     });
   }
-  /**
-   * Downloads pdf of mailing labels for the provided list of ids
-   *
-   * @param ids List of ids to download
-   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   *
-   * @returns Promise resolving when function is done
-   * @protected
-   */
-  /*
-  protected async _downloadPDF(
-    ids: number[],
-    removeDuplicates: boolean
-  ): Promise<void> {
-    const labelDescription = this._labelInfoElement.selectedOption.value;
-    await exportPDF(this.layerView, ids, labelDescription, removeDuplicates);
-  }
-  */
-  /**
-   * Downloads csv of mailing labels for the provided list of ids
-   *
-   * @param ids List of ids to download
-   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * @returns Promise resolving when function is done
-   *
-   * @returns Promise that will resolve when the download is complete
-   * @protected
-   */
-  /*
-  protected async _downloadCSV(
-    ids: number[],
-    removeDuplicates: boolean
-  ): Promise<void> {
-    // TODO this will be leveraged when we do the real implementation of this
-    console.log(removeDuplicates)
-    await exportCSV(this.layerView, ids);
-  }
-  */
   /**
    * Gets the formatted pdf export size text
    *
