@@ -12,6 +12,7 @@
 | `GraphicsLayer`   | `graphics-layer`    |                                                                                                                                           | `any`              | `undefined` |
 | `SketchViewModel` | `sketch-view-model` |                                                                                                                                           | `any`              | `undefined` |
 | `addresseeLayer`  | --                  | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
+| `enabledLayers`   | --                  | string[]: Optional list of enabled layers  If empty all layers will be available                                                          | `string[]`         | `[]`        |
 | `mapView`         | --                  | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`          | `undefined` |
 | `selectionSets`   | --                  | utils/interfaces/ISelectionSet: An array of user defined selection sets                                                                   | `ISelectionSet[]`  | `[]`        |
 

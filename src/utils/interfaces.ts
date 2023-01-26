@@ -81,6 +81,63 @@ export enum EExpandType {
 
 export type SelectionMode = "single" | "multi";
 
+export type ValidSize = 6|10|14|20|30|60|80;
+
+export type DistanceUnit = "feet"|"meters"|"miles"|"kilometers";
+
+export interface IExportOptions {
+  csvOptions: ICsvOptions;
+  pdfOptions: IPdfOptions;
+}
+
+export interface ICsvOptions {
+  enabled: boolean;
+  addColumnTitle: boolean;
+}
+
+export interface IPdfOptions {
+  enabled: boolean;
+  enabledSizeValues: ValidSize[];
+}
+
+export interface ISearchConfiguration {
+  activeSourceIndex?: number;
+  allPlaceholder?: string;
+  includeDefaultSources?: boolean;
+  searchAllEnabled?: boolean;
+  sources: Array<ILocatorSourceConfigItem | ILayerSourceConfigItem>;
+}
+
+interface ISearchSourceConfigItem {
+  maxResults: number;
+  maxSuggestions: number;
+  minSuggestCharacters: number;
+  name: string;
+  suggestionsEnabled: boolean;
+  placeholder: string;
+  withinViewEnabled: boolean;
+  zoomScale: number;
+}
+
+export interface ILocatorSourceConfigItem extends ISearchSourceConfigItem {
+  url: string;
+  singleLineFieldName: string;
+  countryCode: string;
+}
+
+export interface ILayerSourceConfigItem extends ISearchSourceConfigItem {
+  displayField: string;
+  exactMatch: boolean;
+  layer: {
+    url: string | __esri.FeatureLayer;
+    id: string;
+  };
+  outFields: string[];
+  searchFields: string;
+  popupTemplate: any;
+  popupEnabled: boolean;
+}
+
 /**
  * Key details from the templates item
  */
@@ -309,7 +366,7 @@ export interface ISelectionSet {
   buffer: __esri.Geometry;
   distance: number;
   download: boolean;
-  unit: __esri.LinearUnits;
+  unit: DistanceUnit;
   label: string;
   selectedIds: number[];
   layerView: __esri.FeatureLayerView;

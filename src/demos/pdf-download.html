@@ -39,9 +39,16 @@
     <link rel="stylesheet" href="../solutions-components.css" type="text/css">
 
     <script type="module" src="../solutions-components.esm.js"></script>
+    <script>
+      function init() {
+        const demo = document.getElementById("demo");
+        demo.enabledSizeValues = [6,10];
+        demo.disabled = false;
+      }
+    </script>
   </head>
 
-  <body>
+  <body onload="init()">
     <pdf-download class="column over-map" id="demo"></pdf-download>
   </body>
 </html>

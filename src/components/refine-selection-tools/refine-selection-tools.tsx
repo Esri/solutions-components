@@ -54,6 +54,12 @@ export class RefineSelectionTools {
   @Prop() border = false;
 
   /**
+   * string[]: Optional list of enabled layers
+   *  If empty all layers will be available
+   */
+  @Prop() enabledLayers: string[] = [];
+
+  /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
   @Prop({ mutable: true }) graphics: __esri.Graphic[];
@@ -285,6 +291,7 @@ export class RefineSelectionTools {
           </div> */}
           <map-layer-picker
             class={showLayerPickerClass}
+            enabledLayers={this.enabledLayers}
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
             selectedLayers={this.layerViews.map(l => l.layer.title)}

@@ -49,27 +49,27 @@
     <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
     <link rel="stylesheet" href="../solutions-components.css" type="text/css">
 
+    <script src="https://js.arcgis.com/4.25/"></script>
     <script type="module" src="../solutions-components.esm.js"></script>
-    <script type="module">
-      import Map from 'https://js.arcgis.com/4.25/@arcgis/core/Map.js';
-      import MapView from 'https://js.arcgis.com/4.25/@arcgis/core/views/MapView.js';
-      import Sketch from 'https://js.arcgis.com/4.25/@arcgis/core/widgets/Sketch.js';
-      import GraphicsLayer from 'https://js.arcgis.com/4.25/@arcgis/core/layers/GraphicsLayer.js';
+    <script>
+      require(["esri/WebMap", "esri/views/MapView", "esri/widgets/Legend"], (
+        WebMap,
+        MapView,
+        Legend
+      ) => {
 
-      const map = new Map({
-        basemap: "topo-vector"
+        const map = new Map({
+          basemap: "topo-vector"
+        });
+
+        const demo = document.getElementById("demo");
+        demo.mapView = new MapView({
+          container: "viewDiv",
+          map: map,
+          zoom: 5,
+          center: [-98, 42]
+        });
       });
-
-      const demo = document.getElementById("demo");
-      demo.mapView = new MapView({
-        container: "viewDiv",
-        map: map,
-        zoom: 5,
-        center: [-98, 42]
-      });
-
-      demo.Sketch = Sketch;
-      demo.GraphicsLayer = GraphicsLayer;
     </script>
   </head>
 

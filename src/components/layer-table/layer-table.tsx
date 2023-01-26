@@ -451,7 +451,7 @@ export class LayerTable {
    */
   protected _exportToCSV(): void {
     const ids = this._getSelectedIds();
-    void exportCSV(this._layerView, ids);
+    void exportCSV(this._layerView, ids, true);
   }
 
   /**
