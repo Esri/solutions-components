@@ -81,6 +81,29 @@ export enum EExpandType {
 
 export type SelectionMode = "single" | "multi";
 
+export interface IExportOptions {
+  csvOptions: ICsvOptions;
+  pdfOptions: IPdfOptions;
+}
+
+export interface ICsvOptions {
+  enabled: boolean;
+  addColumnTitle: boolean;
+}
+
+type ValidSize = 6|10|14|20|30|60|80;
+
+export interface IPdfOptions {
+  enabled: boolean;
+  enabledSizeValues: ValidSize[];
+}
+
+export type DistanceUnit = "feet"|"meters"|"miles"|"kilometers";
+
+// export interface ISearchOptions {
+
+// }
+
 /**
  * Key details from the templates item
  */
@@ -309,7 +332,7 @@ export interface ISelectionSet {
   buffer: __esri.Geometry;
   distance: number;
   download: boolean;
-  unit: __esri.LinearUnits;
+  unit: DistanceUnit;
   label: string;
   selectedIds: number[];
   layerView: __esri.FeatureLayerView;

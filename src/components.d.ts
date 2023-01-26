@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { EExpandType, ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
+import { DistanceUnit, EExpandType, ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IExportOptions, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -44,9 +44,9 @@ export namespace Components {
          */
         "unionResults": boolean;
         /**
-          * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
+          * DistanceUnit: "feet"|"meters"|"miles"|"kilometers"
          */
-        "unit": __esri.LinearUnits;
+        "unit": DistanceUnit;
     }
     interface CardManager {
     }
@@ -234,9 +234,9 @@ export namespace Components {
     }
     interface MapLayerPicker {
         /**
-          * string[]: list of layer names from the map
+          * string[]: Optional list of enabled layers  If empty all layers will be available
          */
-        "layerNames": string[];
+        "enabledLayers": string[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -267,6 +267,18 @@ export namespace Components {
           * @returns Promise when the results have been cleared
          */
         "clearSelection": () => Promise<void>;
+        /**
+          * number: The default value to show for the buffer distance
+         */
+        "defaultBufferDistance": number;
+        /**
+          * number: The default value to show for the buffer unit
+         */
+        "defaultBufferUnit": DistanceUnit;
+        /**
+          * string[]: Optional list of enabled layers  If empty all layers will be available
+         */
+        "enabledLayers": string[];
         /**
           * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
          */
@@ -316,7 +328,7 @@ export namespace Components {
           * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
           * @returns Promise resolving when function is done
          */
-        "downloadCSV": (ids: number[], removeDuplicates: boolean) => Promise<void>;
+        "downloadCSV": (ids: number[], removeDuplicates: boolean, addColumnTitle: boolean) => Promise<void>;
         /**
           * Downloads pdf of mailing labels for the provided list of ids
           * @param ids List of ids to download
@@ -325,23 +337,59 @@ export namespace Components {
          */
         "downloadPDF": (ids: number[], removeDuplicates: boolean) => Promise<void>;
         /**
+          * string[]: Optional list of enabled size values for PDF export  If empty all sizes will be enabled
+         */
+        "enabledSizeValues": number[];
+        /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
         "layerView": __esri.FeatureLayerView;
     }
     interface PublicNotification {
         /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+          * string[]: List of layer titles that should be shown as potential addressee layers
          */
-        "addresseeLayer": __esri.FeatureLayerView;
+        "addresseeLayers": string[];
+        /**
+          * number: The default value to show for the buffer distance
+         */
+        "defaultBufferDistance": number;
+        /**
+          * number: The default value to show for the buffer unit
+         */
+        "defaultBufferUnit": DistanceUnit;
+        /**
+          * IExportOptions: Set of options that control export capabilities  If not provided all export capabilities will be enabled.
+         */
+        "exportOptions": IExportOptions;
+        /**
+          * esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
+         */
+        "featureEffect": __esri.FeatureEffect;
+        /**
+          * boolean: When enabled features will be highlighted when their notification list item is clicked.
+         */
+        "featureHighlightEnabled": boolean;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
         /**
+          * string: The value to show for no results
+         */
+        "noResultText": string;
+        /**
+          * string[]: List of layer titles that should be shown as potential selection layers
+         */
+        "selectionLayers": string[];
+        /**
           * boolean: When true the refine selection workflow will be included in the UI
          */
         "showRefineSelection": boolean;
+        /**
+          * boolean: I don't remember what this is
+         */
+        "showSearchSettings": boolean;
     }
     interface RefineSelection {
         "GraphicsLayer": any;
@@ -350,6 +398,10 @@ export namespace Components {
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
         "addresseeLayer": __esri.FeatureLayerView;
+        /**
+          * string[]: Optional list of enabled layers  If empty all layers will be available
+         */
+        "enabledLayers": string[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -373,6 +425,10 @@ export namespace Components {
           * @returns Promise when complete
          */
         "clearHighlight": () => Promise<void>;
+        /**
+          * string[]: Optional list of enabled layers  If empty all layers will be available
+         */
+        "enabledLayers": string[];
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
@@ -955,9 +1011,9 @@ declare namespace LocalJSX {
          */
         "unionResults"?: boolean;
         /**
-          * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
+          * DistanceUnit: "feet"|"meters"|"miles"|"kilometers"
          */
-        "unit"?: __esri.LinearUnits;
+        "unit"?: DistanceUnit;
     }
     interface CardManager {
     }
@@ -1107,9 +1163,9 @@ declare namespace LocalJSX {
     }
     interface MapLayerPicker {
         /**
-          * string[]: list of layer names from the map
+          * string[]: Optional list of enabled layers  If empty all layers will be available
          */
-        "layerNames"?: string[];
+        "enabledLayers"?: string[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -1138,6 +1194,18 @@ declare namespace LocalJSX {
         "onSearchChange"?: (event: MapSearchCustomEvent<ISearchResult>) => void;
     }
     interface MapSelectTools {
+        /**
+          * number: The default value to show for the buffer distance
+         */
+        "defaultBufferDistance"?: number;
+        /**
+          * number: The default value to show for the buffer unit
+         */
+        "defaultBufferUnit"?: DistanceUnit;
+        /**
+          * string[]: Optional list of enabled layers  If empty all layers will be available
+         */
+        "enabledLayers"?: string[];
         /**
           * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
          */
@@ -1189,23 +1257,59 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * string[]: Optional list of enabled size values for PDF export  If empty all sizes will be enabled
+         */
+        "enabledSizeValues"?: number[];
+        /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
         "layerView"?: __esri.FeatureLayerView;
     }
     interface PublicNotification {
         /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+          * string[]: List of layer titles that should be shown as potential addressee layers
          */
-        "addresseeLayer"?: __esri.FeatureLayerView;
+        "addresseeLayers"?: string[];
+        /**
+          * number: The default value to show for the buffer distance
+         */
+        "defaultBufferDistance"?: number;
+        /**
+          * number: The default value to show for the buffer unit
+         */
+        "defaultBufferUnit"?: DistanceUnit;
+        /**
+          * IExportOptions: Set of options that control export capabilities  If not provided all export capabilities will be enabled.
+         */
+        "exportOptions"?: IExportOptions;
+        /**
+          * esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
+         */
+        "featureEffect"?: __esri.FeatureEffect;
+        /**
+          * boolean: When enabled features will be highlighted when their notification list item is clicked.
+         */
+        "featureHighlightEnabled"?: boolean;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         /**
+          * string: The value to show for no results
+         */
+        "noResultText"?: string;
+        /**
+          * string[]: List of layer titles that should be shown as potential selection layers
+         */
+        "selectionLayers"?: string[];
+        /**
           * boolean: When true the refine selection workflow will be included in the UI
          */
         "showRefineSelection"?: boolean;
+        /**
+          * boolean: I don't remember what this is
+         */
+        "showSearchSettings"?: boolean;
     }
     interface RefineSelection {
         "GraphicsLayer"?: any;
@@ -1214,6 +1318,10 @@ declare namespace LocalJSX {
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
         "addresseeLayer"?: __esri.FeatureLayerView;
+        /**
+          * string[]: Optional list of enabled layers  If empty all layers will be available
+         */
+        "enabledLayers"?: string[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -1236,6 +1344,10 @@ declare namespace LocalJSX {
           * boolean: Optionally draw a border around the draw tools
          */
         "border"?: boolean;
+        /**
+          * string[]: Optional list of enabled layers  If empty all layers will be available
+         */
+        "enabledLayers"?: string[];
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */

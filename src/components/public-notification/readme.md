@@ -7,11 +7,19 @@
 
 ## Properties
 
-| Property              | Attribute               | Description                                                                                                                               | Type               | Default     |
-| --------------------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
-| `addresseeLayer`      | --                      | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
-| `mapView`             | --                      | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`          | `undefined` |
-| `showRefineSelection` | `show-refine-selection` | boolean: When true the refine selection workflow will be included in the UI                                                               | `boolean`          | `false`     |
+| Property                  | Attribute                   | Description                                                                                                                             | Type                                            | Default     |
+| ------------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ----------- |
+| `addresseeLayers`         | --                          | string[]: List of layer titles that should be shown as potential addressee layers                                                       | `string[]`                                      | `[]`        |
+| `defaultBufferDistance`   | `default-buffer-distance`   | number: The default value to show for the buffer distance                                                                               | `number`                                        | `undefined` |
+| `defaultBufferUnit`       | `default-buffer-unit`       | number: The default value to show for the buffer unit                                                                                   | `"feet" \| "kilometers" \| "meters" \| "miles"` | `undefined` |
+| `exportOptions`           | --                          | IExportOptions: Set of options that control export capabilities  If not provided all export capabilities will be enabled.               | `IExportOptions`                                | `undefined` |
+| `featureEffect`           | --                          | esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html | `FeatureEffect`                                 | `undefined` |
+| `featureHighlightEnabled` | `feature-highlight-enabled` | boolean: When enabled features will be highlighted when their notification list item is clicked.                                        | `boolean`                                       | `undefined` |
+| `mapView`                 | --                          | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                  | `MapView`                                       | `undefined` |
+| `noResultText`            | `no-result-text`            | string: The value to show for no results                                                                                                | `string`                                        | `undefined` |
+| `selectionLayers`         | --                          | string[]: List of layer titles that should be shown as potential selection layers                                                       | `string[]`                                      | `[]`        |
+| `showRefineSelection`     | `show-refine-selection`     | boolean: When true the refine selection workflow will be included in the UI                                                             | `boolean`                                       | `false`     |
+| `showSearchSettings`      | `show-search-settings`      | boolean: I don't remember what this is                                                                                                  | `boolean`                                       | `undefined` |
 
 
 ## Dependencies

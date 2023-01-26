@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
-import { EExportType, EPageType, ESketchType, EWorkflowType, ISelectionSet } from "../../utils/interfaces";
+import { DistanceUnit, EExportType, EPageType, ESketchType, EWorkflowType, IExportOptions, ISelectionSet } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
 import { goToSelection, getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
 import { getSelectionSetQuery } from "../../utils/queryUtils";
@@ -44,9 +44,35 @@ export class PublicNotification {
   //--------------------------------------------------------------------------
 
   /**
-   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   * string[]: List of layer titles that should be shown as potential addressee layers
    */
-  @Prop() addresseeLayer: __esri.FeatureLayerView;
+  @Prop() addresseeLayers: string[] = [];
+
+  /**
+   * number: The default value to show for the buffer distance
+   */
+  @Prop() defaultBufferDistance: number;
+
+  /**
+   * number: The default value to show for the buffer unit
+   */
+  @Prop() defaultBufferUnit: DistanceUnit;
+
+  /**
+   * IExportOptions: Set of options that control export capabilities
+   *  If not provided all export capabilities will be enabled.
+   */
+  @Prop() exportOptions: IExportOptions;
+
+  /**
+   * esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
+   */
+  @Prop() featureEffect: __esri.FeatureEffect;
+
+  /**
+   * boolean: When enabled features will be highlighted when their notification list item is clicked.
+   */
+  @Prop() featureHighlightEnabled: boolean;
 
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -54,15 +80,35 @@ export class PublicNotification {
   @Prop() mapView: __esri.MapView;
 
   /**
+   * string: The value to show for no results
+   */
+  @Prop() noResultText: string;
+
+  /**
+   * string[]: List of layer titles that should be shown as potential selection layers
+   */
+  @Prop() selectionLayers: string[] = [];
+
+  /**
    * boolean: When true the refine selection workflow will be included in the UI
    */
   @Prop() showRefineSelection = false;
+
+  /**
+   * boolean: I don't remember what this is
+   */
+  @Prop() showSearchSettings: boolean;
 
   //--------------------------------------------------------------------------
   //
   //  State (internal)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   */
+  @State() addresseeLayer: __esri.FeatureLayerView;
 
   /**
    * boolean: Enabled when we have 1 or more selection sets that is enabled in the download pages.
@@ -398,6 +444,7 @@ export class PublicNotification {
         <div class="display-flex padding-sides-1">
           <calcite-label class="font-bold width-full">{this._translations.addresseeLayer}
             <map-layer-picker
+              enabledLayers={this.addresseeLayers}
               mapView={this.mapView}
               onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
               selectedLayers={this.addresseeLayer ? [this.addresseeLayer?.layer.title] : []}
@@ -579,6 +626,7 @@ export class PublicNotification {
         <div class={"padding-1"}>
           <map-select-tools
             class="font-bold"
+            enabledLayers={this.selectionLayers}
             isUpdate={!!this._activeSelection}
             mapView={this.mapView}
             onSelectionSetChange={(evt) => this._updateForSelection(evt)}
@@ -621,6 +669,7 @@ export class PublicNotification {
         {this._getNotice(this._translations.refineTip, "padding-sides-1")}
         <refine-selection
           addresseeLayer={this.addresseeLayer}
+          enabledLayers={this.selectionLayers}
           mapView={this.mapView}
           selectionSets={this._selectionSets}
         />
@@ -661,6 +710,7 @@ export class PublicNotification {
     type: EExportType
   ): VNode {
     const isPdf = type === EExportType.PDF;
+    const multiPdfOptions = this.exportOptions?.pdfOptions.enabledSizeValues.length > 1;
     return (
       <calcite-panel>
         <div>
@@ -678,11 +728,12 @@ export class PublicNotification {
               {this._translations.removeDuplicate}
             </calcite-label>
           </div>
-          <div class={isPdf ? "" : "display-none"}>
+          <div class={isPdf && multiPdfOptions ? "" : "display-none"}>
             {this._getLabel(this._translations.selectPDFLabelOption, false)}
             <div class={"padding-sides-1"}>
               <pdf-download
                 disabled={!this._downloadActive}
+                enabledSizeValues={this.exportOptions?.pdfOptions.enabledSizeValues}
                 layerView={this.addresseeLayer}
                 ref={(el) => { this._downloadTools = el }}
               />
@@ -860,7 +911,11 @@ export class PublicNotification {
    */
   protected _downloadCSV(): void {
     const ids = utils.getSelectionIds(this._getDownloadSelectionSets());
-    void this._downloadTools.downloadCSV(ids, this._removeDuplicates.checked);
+    void this._downloadTools.downloadCSV(
+      ids,
+      this._removeDuplicates.checked,
+      this.exportOptions?.csvOptions.addColumnTitle
+    );
   }
 
   /**
@@ -1078,7 +1133,13 @@ export class PublicNotification {
     selSet: ISelectionSet,
     mapView: __esri.MapView
   ): void {
-    void goToSelection(selSet.selectedIds, selSet.layerView, mapView)
+    void goToSelection(
+      selSet.selectedIds,
+      selSet.layerView,
+      mapView,
+      this.featureHighlightEnabled,
+      this.featureEffect
+    );
   }
 
   /**

@@ -46,6 +46,12 @@ export class PdfDownload {
   @Prop() disabled = true;
 
   /**
+   * string[]: Optional list of enabled size values for PDF export
+   *  If empty all sizes will be enabled
+   */
+  @Prop() enabledSizeValues: number[] = [];
+
+  /**
    * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
    */
   @Prop() layerView: __esri.FeatureLayerView;
@@ -110,9 +116,10 @@ export class PdfDownload {
   @Method()
   async downloadCSV(
     ids: number[],
-    removeDuplicates: boolean
+    removeDuplicates: boolean,
+    addColumnTitle: boolean
   ): Promise<void> {
-    return this._downloadCSV(ids, removeDuplicates);
+    return this._downloadCSV(ids, removeDuplicates, addColumnTitle);
   }
 
   //--------------------------------------------------------------------------
@@ -171,9 +178,12 @@ export class PdfDownload {
       const _b = parseInt(b.descriptionPDF.labelsPerPageDisplay, 10);
       return _a < _b ? -1 : _a > _b ? 1 : 0
     });
-    return sortedPdfIndo.map((l) => {
-      return (<calcite-option value={l}>{this._getLabelSizeText(l)}</calcite-option>)
-    });
+    return sortedPdfIndo.reduce((prev, cur) => {
+      if (this.enabledSizeValues.length === 0 || this.enabledSizeValues.indexOf(cur) > -1) {
+        prev.push((<calcite-option value={cur}>{this._getLabelSizeText(cur)}</calcite-option>));
+      }
+      return prev;
+    }, []);
   }
 
   /**
@@ -205,11 +215,12 @@ export class PdfDownload {
    */
   protected async _downloadCSV(
     ids: number[],
-    removeDuplicates: boolean
+    removeDuplicates: boolean,
+    addColumnTitle: boolean
   ): Promise<void> {
     // TODO this will be leveraged when we do the real implementation of this
     console.log(removeDuplicates)
-    await exportCSV(this.layerView, ids);
+    await exportCSV(this.layerView, ids, addColumnTitle);
   }
 
   /**

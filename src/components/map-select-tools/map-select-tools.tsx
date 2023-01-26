@@ -18,7 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop,
 import { loadModules } from "../../utils/loadModules";
 import { highlightFeatures, goToSelection } from "../../utils/mapViewUtils";
 import { getQueryGeoms, queryObjectIds } from "../../utils/queryUtils";
-import { EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode, ESketchType } from "../../utils/interfaces";
+import { DistanceUnit, EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode, ESketchType } from "../../utils/interfaces";
 import state from "../../utils/publicNotificationStore";
 import MapSelectTools_T9n from "../../assets/t9n/map-select-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -41,6 +41,22 @@ export class MapSelectTools {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * string[]: Optional list of enabled layers
+   *  If empty all layers will be available
+   */
+  @Prop() enabledLayers: string[] = [];
+
+  /**
+   * number: The default value to show for the buffer distance
+   */
+  @Prop() defaultBufferDistance: number;
+
+  /**
+   * number: The default value to show for the buffer unit
+   */
+  @Prop() defaultBufferUnit: DistanceUnit;
 
   /**
    * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
@@ -407,6 +423,7 @@ export class MapSelectTools {
           <refine-selection-tools
             active={true}
             border={true}
+            enabledLayers={this.enabledLayers}
             layerViews={this._refineSelectLayers}
             mapView={this.mapView}
             mode={ESelectionMode.ADD}
@@ -417,11 +434,11 @@ export class MapSelectTools {
         <calcite-label class={showBufferToolsClass}>
           {this._translations.searchDistance}
           <buffer-tools
-            distance={this.selectionSet?.distance}
+            distance={this.selectionSet?.distance || this.defaultBufferDistance}
             geometries={this.geometries}
             onBufferComplete={(evt) => this._bufferComplete(evt)}
             ref={(el) => this._bufferTools = el}
-            unit={this.selectionSet?.unit}
+            unit={this.selectionSet?.unit || this.defaultBufferUnit}
           />
         </calcite-label>
         <slot />

@@ -7,14 +7,17 @@
 
 ## Properties
 
-| Property          | Attribute           | Description                                                                                                                               | Type               | Default     |
-| ----------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
-| `geometries`      | --                  | esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html                                           | `Geometry[]`       | `undefined` |
-| `isUpdate`        | `is-update`         | boolean: When true a new label is not generated for the stored selection set                                                              | `boolean`          | `false`     |
-| `mapView`         | --                  | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`          | `undefined` |
-| `selectLayerView` | --                  | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
-| `selectionSet`    | --                  | utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.                                       | `ISelectionSet`    | `undefined` |
-| `showBufferTools` | `show-buffer-tools` | boolean: When true the buffer tools will be available for use                                                                             | `boolean`          | `true`      |
+| Property                | Attribute                 | Description                                                                                                                               | Type                                            | Default     |
+| ----------------------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ----------- |
+| `defaultBufferDistance` | `default-buffer-distance` | number: The default value to show for the buffer distance                                                                                 | `number`                                        | `undefined` |
+| `defaultBufferUnit`     | `default-buffer-unit`     | number: The default value to show for the buffer unit                                                                                     | `"feet" \| "kilometers" \| "meters" \| "miles"` | `undefined` |
+| `enabledLayers`         | --                        | string[]: Optional list of enabled layers  If empty all layers will be available                                                          | `string[]`                                      | `[]`        |
+| `geometries`            | --                        | esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html                                           | `Geometry[]`                                    | `undefined` |
+| `isUpdate`              | `is-update`               | boolean: When true a new label is not generated for the stored selection set                                                              | `boolean`                                       | `false`     |
+| `mapView`               | --                        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`                                       | `undefined` |
+| `selectLayerView`       | --                        | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView`                              | `undefined` |
+| `selectionSet`          | --                        | utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.                                       | `ISelectionSet`                                 | `undefined` |
+| `showBufferTools`       | `show-buffer-tools`       | boolean: When true the buffer tools will be available for use                                                                             | `boolean`                                       | `true`      |
 
 
 ## Events
