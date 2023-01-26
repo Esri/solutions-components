@@ -135,7 +135,8 @@ export class PdfDownload {
       }
     });
 
-    return exportCSV(columnNames, attributes, removeDuplicates);
+    exportCSV(columnNames, attributes, removeDuplicates);
+    return Promise.resolve();
   }
 
   //--------------------------------------------------------------------------

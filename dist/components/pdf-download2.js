@@ -143,7 +143,8 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
         columnNames[k] = k;
       }
     });
-    return exportCSV(columnNames, attributes, removeDuplicates);
+    exportCSV(columnNames, attributes, removeDuplicates);
+    return Promise.resolve();
   }
   //--------------------------------------------------------------------------
   //

@@ -18,18 +18,5 @@
  *
  * @param contentArray Array of labels; each label is an array of label line strings
  * @param removeDuplicates Remove duplicate entries before exporting
- *
- * @returns Promise when the function has completed
  */
-export declare function exportCSV(columnNames: Set<string>, contents: Set<string>[], removeDuplicates?: boolean): Promise<void>;
-/**
- * Download the CSV file
- *
- * @param fieldNames the names for each of the features fields
- * @param attributes the features attributes
- *
- * Based on:
- * https://medium.com/@danny.pule/export-json-to-csv-file-using-javascript-a0b7bc5b00d2
- *
- * @returns void
- */
+export declare function exportCSV(columnNames: Set<string>, contents: Set<string>[], removeDuplicates?: boolean): void;

@@ -19,14 +19,57 @@
  *
  * @param contentArray Array of labels; each label is an array of label line strings
  * @param removeDuplicates Remove duplicate entries before exporting
- *
- * @returns Promise when the function has completed
  */
-export async function exportCSV(
+export function exportCSV(
   columnNames: Set<string>,
   contents: Set<string>[],
   removeDuplicates = true
-): Promise<void> {
+): void {
+  const outputLines = _prepareOutput(contents, columnNames, removeDuplicates);
+  console.log(outputLines);
+
+  _downloadCSVFile(outputLines, `notify-${Date.now().toString()}`);
+}
+
+/**
+ * Download the CSV file
+ *
+ * @param outputLines Lines of output to write to file
+ * @param fileTitle Title (without file extension) to use for file; defaults to "export"
+ *
+ * @see {@link https://medium.com/@danny.pule/export-json-to-csv-file-using-javascript-a0b7bc5b00d2}
+ *
+ * @returns void
+ */
+function _downloadCSVFile(
+  outputLines: string[],
+  fileTitle: string
+): void {
+  const link = document.createElement("a");
+  if (link.download !== undefined) {
+    link.href = URL.createObjectURL(new Blob(outputLines, { type: "text/csv;charset=utf-8;" }));
+    link.download = `${fileTitle}.csv` || "export.csv";
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+}
+
+/**
+ * Converts output into an array of line strings.
+ *
+ * @param contents Array of content to convert into lines of output
+ * @param columnNames Column names to add to the beginning of the output array
+ * @param removeDuplicates Remove duplicate lines
+ *
+ * @returns Array of line strings
+ */
+function _prepareOutput(
+  contents: Set<string>[],
+  columnNames: Set<string> | null = null,
+  removeDuplicates = true
+): string[] {
   // Format values to string so it doesn't get tripped up when a value has a comma
   // another option could be to export with a different delimiter
   let outputLines = contents.map(
@@ -46,35 +89,5 @@ export async function exportCSV(
     outputLines.unshift(columnNamesLine);
   }
 
-  console.log(outputLines);
-
-  //_downloadCSVFile(outputLines, `notify-${Date.now().toString()}`);
+  return outputLines;
 }
-
-/**
- * Download the CSV file
- *
- * @param fieldNames the names for each of the features fields
- * @param attributes the features attributes
- *
- * Based on:
- * https://medium.com/@danny.pule/export-json-to-csv-file-using-javascript-a0b7bc5b00d2
- *
- * @returns void
- */
-/*
-function _downloadCSVFile(
-  outputLines: string[],
-  fileTitle: string
-): void {
-  const link = document.createElement("a");
-  if (link.download !== undefined) {
-    link.href = URL.createObjectURL(new Blob([outputLines], { type: "text/csv;charset=utf-8;" }));
-    link.download = `${fileTitle}.csv` || "export.csv";
-    link.style.visibility = "hidden";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-}
-*/

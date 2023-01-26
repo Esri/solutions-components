@@ -3,6 +3,8 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
+'use strict';
+
 /** @license
  * Copyright 2022 Esri
  *
@@ -77,4 +79,4 @@ function _prepareOutput(contents, columnNames = null, removeDuplicates = true) {
   return outputLines;
 }
 
-export { exportCSV as e };
+exports.exportCSV = exportCSV;

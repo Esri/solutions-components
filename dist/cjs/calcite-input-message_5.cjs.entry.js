@@ -17,7 +17,7 @@ const interfaces$1 = require('./interfaces-772edf61.js');
 const publicNotificationStore = require('./publicNotificationStore-aca88430.js');
 const locale = require('./locale-d15229c4.js');
 const labelFormats = require('./labelFormats-ae8916fd.js');
-const csvUtils = require('./csvUtils-0d749a6d.js');
+const csvUtils = require('./csvUtils-4e4c34d5.js');
 const publicNotificationUtils = require('./publicNotificationUtils-9d585d8d.js');
 require('./resources-b56bce71.js');
 require('./guid-84ac4d91.js');
@@ -780,7 +780,8 @@ const PdfDownload = class {
         columnNames[k] = k;
       }
     });
-    return csvUtils.exportCSV(columnNames, attributes, removeDuplicates);
+    csvUtils.exportCSV(columnNames, attributes, removeDuplicates);
+    return Promise.resolve();
   }
   //--------------------------------------------------------------------------
   //
