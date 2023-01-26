@@ -25,5 +25,8 @@
     "selectSketchTip": "Draw shapes to select features from the addressee layer",
     "optionalSearchDistance": "and optionally add search distance.",
     "listHasSetsTip": "For existing notification lists optionally edit or remove each list. Also, refine across all selection sets or export to PDF or CSV.",
-    "uniqueCout": "Unique Count: {{n}}"
+    "uniqueCout": "Unique Count: {{n}}",
+    "shouldProceed": "Would you like to proceed?",
+    "proceed": "Proceed",
+    "proceedInfo": "Notification lists will be updated based on the existing search or sketch geometries."
 }

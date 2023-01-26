@@ -9,7 +9,7 @@
 
 | Property         | Attribute        | Description                                                                                                           | Type                  | Default     |
 | ---------------- | ---------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------- | ----------- |
-| `layerNames`     | --               | string[]: list of layer names from the map                                                                            | `string[]`            | `[]`        |
+| `enabledLayers`  | --               | string[]: Optional list of enabled layers  If empty all layers will be available                                      | `string[]`            | `[]`        |
 | `mapView`        | --               | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                | `MapView`             | `undefined` |
 | `selectedLayers` | --               | string[]: list of layers that have been selected by the end user                                                      | `string[]`            | `[]`        |
 | `selectionMode`  | `selection-mode` | SelectionMode: "single" \| "multi"  Should the component support selection against a single layer or multiple layers. | `"multi" \| "single"` | `"single"`  |

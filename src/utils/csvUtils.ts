@@ -28,7 +28,8 @@ import { queryFeaturesByID } from "./queryUtils";
  */
 export async function exportCSV(
   layerView: __esri.FeatureLayerView,
-  ids: number[]
+  ids: number[],
+  addColumnTitle: boolean
 ): Promise<void> {
   const featureSet = await queryFeaturesByID(ids, layerView.layer);
   const attributes = featureSet.features.map(f => f.attributes);
@@ -39,7 +40,7 @@ export async function exportCSV(
       fieldNames[k] = k;
     }
   });
-  _downloadCSVFile(fieldNames, attributes, `notify-${Date.now().toString()}`);
+  _downloadCSVFile(fieldNames, attributes, `notify-${Date.now().toString()}`, addColumnTitle);
 }
 
 /**
@@ -56,11 +57,13 @@ export async function exportCSV(
 function _downloadCSVFile(
   fieldNames: {[key: string]: string},
   attributes: {[key: string]: string}[],
-  fileTitle: string
+  fileTitle: string,
+  addColumnTitle: boolean
 ): void {
   if (fieldNames) {
     attributes.unshift(fieldNames);
   }
+  console.log(addColumnTitle);
   // format values to string so it doesn't get tripped up when a value has a comma
   // another option could be to export with a different delimiter
   const csv = attributes.reduce((prev, cur) => {

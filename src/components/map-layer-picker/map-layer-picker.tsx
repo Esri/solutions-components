@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, VNode, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
 import { getMapLayerNames } from "../../utils/mapViewUtils";
 import { SelectionMode } from "../../utils/interfaces";
 import state from "../../utils/publicNotificationStore";
@@ -39,9 +39,10 @@ export class MapLayerPicker {
   //--------------------------------------------------------------------------
 
   /**
-   * string[]: list of layer names from the map
+   * string[]: Optional list of enabled layers
+   *  If empty all layers will be available
    */
-  @Prop({ mutable: true }) layerNames: string[] = [];
+  @Prop() enabledLayers: string[] = [];
 
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -65,6 +66,11 @@ export class MapLayerPicker {
   //  State (internal)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * string[]: list of layer names from the map
+   */
+  @State() layerNames: string[] = [];
 
   //--------------------------------------------------------------------------
   //
@@ -199,7 +205,7 @@ export class MapLayerPicker {
    */
   _addMapLayersOptions(): VNode[] {
     return this.layerNames.reduce((prev, cur) => {
-      if (state.managedLayers.indexOf(cur) < 0) {
+      if (state.managedLayers.indexOf(cur) < 0 && (this.enabledLayers.length > 0 ? this.enabledLayers.indexOf(cur) > -1 : true)) {
         prev.push(
           this.selectionMode === "multi" && this.selectedLayers.indexOf(cur) > -1 ?
             (<calcite-combobox-item selected textLabel={cur} value={cur} />) :
@@ -221,7 +227,8 @@ export class MapLayerPicker {
    */
   async _setLayers(): Promise<void> {
     if (this.mapView) {
-      this.layerNames = await getMapLayerNames(this.mapView);
+      const mapLayerNames = await getMapLayerNames(this.mapView);
+      this.layerNames = mapLayerNames.filter(n => this.enabledLayers?.length > 0 ? this.enabledLayers.indexOf(n) > -1 : true)
     }
   }
 
