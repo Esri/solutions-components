@@ -54,7 +54,7 @@ export class PublicNotification {
   @Prop() defaultBufferDistance: number;
 
   /**
-   * number: The default value to show for the buffer unit
+   * number: The default value to show for the buffer unit ("feet"|"meters"|"miles"|"kilometers")
    */
   @Prop() defaultBufferUnit: DistanceUnit;
 
@@ -65,7 +65,10 @@ export class PublicNotification {
   @Prop() exportOptions: IExportOptions;
 
   /**
+   * The effect that will be applied when featureHighlightEnabled is true
+   *
    * esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
+   *
    */
   @Prop() featureEffect: __esri.FeatureEffect;
 
@@ -81,6 +84,7 @@ export class PublicNotification {
 
   /**
    * string: The value to show for no results
+   * when left empty the default text "0 selected features from {layerTitle}" will be shown
    */
   @Prop() noResultText: string;
 
@@ -91,6 +95,7 @@ export class PublicNotification {
 
   /**
    * string[]: List of layer titles that should be shown as potential selection layers
+   * when skectching with "Use layer features" option
    */
   @Prop() selectionLayers: string[] = [];
 

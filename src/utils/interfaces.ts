@@ -81,6 +81,10 @@ export enum EExpandType {
 
 export type SelectionMode = "single" | "multi";
 
+export type ValidSize = 6|10|14|20|30|60|80;
+
+export type DistanceUnit = "feet"|"meters"|"miles"|"kilometers";
+
 export interface IExportOptions {
   csvOptions: ICsvOptions;
   pdfOptions: IPdfOptions;
@@ -91,14 +95,10 @@ export interface ICsvOptions {
   addColumnTitle: boolean;
 }
 
-type ValidSize = 6|10|14|20|30|60|80;
-
 export interface IPdfOptions {
   enabled: boolean;
   enabledSizeValues: ValidSize[];
 }
-
-export type DistanceUnit = "feet"|"meters"|"miles"|"kilometers";
 
 export interface ISearchConfiguration {
   activeSourceIndex?: number;
