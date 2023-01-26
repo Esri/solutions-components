@@ -21,18 +21,3 @@
  * @param removeDuplicates Remove duplicate labels before exporting
  */
 export declare function exportPDF(contents: string[][], labelDescription: any, removeDuplicates?: boolean): void;
-/**
- * Download the PDF file
- *
- * @param labels Labels to write
- * @param labelDescription Format to use for labels
- * @param fileTitle Title (without file extension) to use for file; defaults to "export"
- */
-/**
- * Converts output into an array of labels.
- *
- * @param contents Array of content to convert into an array of labels
- * @param removeDuplicates Remove duplicate lines
- *
- * @returns Array of labels; each label consists of an array of strings
- */

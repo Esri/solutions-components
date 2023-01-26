@@ -28,10 +28,8 @@ export function exportPDF(
 ): void {
   console.log(contents, labelDescription, removeDuplicates);//???
 
-  /*
   const outputLabels = _prepareOutput(contents, removeDuplicates);
   console.log(outputLabels, labelDescription);//???
-    */
 
   //_downloadPDFFile(outputLabels, labelDescription, `notify-${Date.now().toString()}`);
 }
@@ -77,18 +75,17 @@ function _downloadPDFFile(
  *
  * @returns Array of labels; each label consists of an array of strings
  */
-/*
 function _prepareOutput(
-  contents: string[],
+  contents: string[][],
   removeDuplicates = true
-): string[] {
+): string[][] {
   // Remove duplicates if desired
   if (removeDuplicates) {
     const uniques: Set<string> = new Set();
     contents.forEach(label => uniques.add(JSON.stringify(label)));
-    contents = Array.from(uniques);
+    console.log(Array.from(uniques));//???
+    contents = [Array.from(uniques)];
   }
 
   return contents;
 }
-*/

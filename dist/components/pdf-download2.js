@@ -36,10 +36,8 @@ import { d as defineCustomElement$1 } from './select.js';
  */
 function exportPDF(contents, labelDescription, removeDuplicates = true) {
   console.log(contents, labelDescription, removeDuplicates); //???
-  /*
   const outputLabels = _prepareOutput(contents, removeDuplicates);
-  console.log(outputLabels, labelDescription);//???
-    */
+  console.log(outputLabels, labelDescription); //???
   //_downloadPDFFile(outputLabels, labelDescription, `notify-${Date.now().toString()}`);
 }
 /**
@@ -82,21 +80,16 @@ function _downloadPDFFile(
  *
  * @returns Array of labels; each label consists of an array of strings
  */
-/*
-function _prepareOutput(
-  contents: string[],
-  removeDuplicates = true
-): string[] {
+function _prepareOutput(contents, removeDuplicates = true) {
   // Remove duplicates if desired
   if (removeDuplicates) {
-    const uniques: Set<string> = new Set();
+    const uniques = new Set();
     contents.forEach(label => uniques.add(JSON.stringify(label)));
-    contents = Array.from(uniques);
+    console.log(Array.from(uniques)); //???
+    contents = [Array.from(uniques)];
   }
-
   return contents;
 }
-*/
 
 const pdfDownloadCss = ":host{display:block}";
 
