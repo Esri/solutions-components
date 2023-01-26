@@ -441,17 +441,7 @@ export class PublicNotification {
           <calcite-label class="font-bold">{this._translations.myLists}</calcite-label>
         </div>
         {this._getNotice(this._translations.listHasSetsTip, "padding-sides-1 padding-bottom-1")}
-        <div class="display-flex padding-sides-1">
-          <calcite-label class="font-bold width-full">{this._translations.addresseeLayer}
-            <map-layer-picker
-              enabledLayers={this.addresseeLayers}
-              mapView={this.mapView}
-              onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
-              selectedLayers={this.addresseeLayer ? [this.addresseeLayer?.layer.title] : []}
-              selectionMode={"single"}
-            />
-          </calcite-label>
-        </div>
+        {this._getMapLayerPicker()}
         <div class="padding-sides-1 height-1-1-2">
           <div class="position-left">
             <calcite-label alignment="start" class="font-bold">{this._translations.notifications}</calcite-label>
@@ -484,20 +474,33 @@ export class PublicNotification {
           <calcite-input-message active class="info-blue" scale="m">{this._translations.noNotifications}</calcite-input-message>
         </div>
         {this._getNotice(this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1")}
-        <div class="display-flex padding-sides-1">
-          <calcite-label class="font-bold width-full">{this._translations.addresseeLayer}
-            <map-layer-picker
-              mapView={this.mapView}
-              onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
-              selectedLayers={this.addresseeLayer ? [this.addresseeLayer?.layer.title] : []}
-              selectionMode={"single"}
-            />
-          </calcite-label>
-        </div>
+        {this._getMapLayerPicker()}
         <div class="display-flex padding-1">
           <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full">{this._translations.add}</calcite-button>
         </div>
       </calcite-panel>
+    );
+  }
+
+  /**
+   * Create the UI element that will expose the addressee layers
+   *
+   * @returns addressee layer list node
+   * @protected
+   */
+  protected _getMapLayerPicker(): VNode {
+    return (
+      <div class="display-flex padding-sides-1">
+        <calcite-label class="font-bold width-full">{this._translations.addresseeLayer}
+          <map-layer-picker
+            enabledLayers={this.addresseeLayers}
+            mapView={this.mapView}
+            onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
+            selectedLayers={this.addresseeLayer ? [this.addresseeLayer?.layer.title] : []}
+            selectionMode={"single"}
+          />
+        </calcite-label>
+      </div>
     );
   }
 

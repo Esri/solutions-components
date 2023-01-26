@@ -179,7 +179,8 @@ export class PdfDownload {
       return _a < _b ? -1 : _a > _b ? 1 : 0
     });
     return sortedPdfIndo.reduce((prev, cur) => {
-      if (this.enabledSizeValues.length === 0 || this.enabledSizeValues.indexOf(cur) > -1) {
+      if (this.enabledSizeValues.length === 0 ||
+        this.enabledSizeValues.indexOf(parseInt(cur.descriptionPDF.labelsPerPageDisplay, 10)) > -1) {
         prev.push((<calcite-option value={cur}>{this._getLabelSizeText(cur)}</calcite-option>));
       }
       return prev;

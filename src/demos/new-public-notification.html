@@ -90,6 +90,27 @@
           });
           demo.mapView.ui.add(legend, "top-left");
         });
+        demo.addresseeLayers = ["Site addresses"];
+        demo.defaultBufferDistance = 100;
+        demo.defaultBufferUnit = "kilometers";
+        demo.exportOptions = {
+          csvOptions: {
+            enabled: true,
+            addColumnTitle: true
+          },
+          pdfOptions: {
+            enabled: true,
+            enabledSizeValues: [6,10,14,20]
+          }
+        };
+        demo.featureEffect = {
+          includedEffect: "invert(100%)",
+          excludedEffect: "blur(5px)"
+        };
+        demo.featureHighlightEnabled = true;
+        // demo.noResultText = "";
+        demo.selectionLayers = ["Neighborhoods"];
+        // demo.showSearchSettings = false;
       });
     </script>
   </head>

@@ -227,7 +227,8 @@ export class MapLayerPicker {
    */
   async _setLayers(): Promise<void> {
     if (this.mapView) {
-      this.layerNames = await getMapLayerNames(this.mapView);
+      const mapLayerNames = await getMapLayerNames(this.mapView);
+      this.layerNames = mapLayerNames.filter(n => this.enabledLayers?.length > 0 ? this.enabledLayers.indexOf(n) > -1 : true)
     }
   }
 

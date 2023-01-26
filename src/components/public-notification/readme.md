@@ -33,9 +33,9 @@
 - calcite-tooltip
 - calcite-panel
 - calcite-label
-- [map-layer-picker](../map-layer-picker)
 - calcite-input-message
 - calcite-button
+- [map-layer-picker](../map-layer-picker)
 - calcite-list
 - calcite-list-item
 - calcite-modal
@@ -56,9 +56,9 @@ graph TD;
   public-notification --> calcite-tooltip
   public-notification --> calcite-panel
   public-notification --> calcite-label
-  public-notification --> map-layer-picker
   public-notification --> calcite-input-message
   public-notification --> calcite-button
+  public-notification --> map-layer-picker
   public-notification --> calcite-list
   public-notification --> calcite-list-item
   public-notification --> calcite-modal
@@ -81,6 +81,9 @@ graph TD;
   calcite-panel --> calcite-action-menu
   calcite-panel --> calcite-scrim
   calcite-scrim --> calcite-loader
+  calcite-input-message --> calcite-icon
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-combobox-item
@@ -90,9 +93,6 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
-  calcite-input-message --> calcite-icon
-  calcite-button --> calcite-loader
-  calcite-button --> calcite-icon
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
   map-select-tools --> calcite-radio-group

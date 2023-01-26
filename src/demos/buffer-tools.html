@@ -5,7 +5,7 @@
       name="viewport"
       content="initial-scale=1,maximum-scale=1,user-scalable=no"
     />
-    <title>Map Layer Picker</title>
+    <title>Buffer Tools</title>
     <!--
     | Copyright 2022 Esri
     |
@@ -22,7 +22,7 @@
     | limitations under the License.
     -->
     <style>
-      .map-div {
+      #viewDiv {
         padding: 0;
         margin: 0;
         height: 100%;
@@ -39,6 +39,9 @@
         padding: 1rem;
         border: 1px solid;
       }
+      .column[dir="rtl"] {
+        float: left;
+      }
     </style>
 
     <link
@@ -51,31 +54,28 @@
     <script src="https://js.arcgis.com/4.25/"></script>
     <script type="module" src="../solutions-components.esm.js"></script>
     <script>
-      require(["esri/WebMap", "esri/views/MapView"], (
-        WebMap,
+      require(["esri/Map", "esri/views/MapView"], (
+        Map,
         MapView
       ) => {
-        var webMap = new WebMap({
-          portalItem: {
-            id: "6a55f6678208461bb7a26d9e418a00bc"
-          }
+
+        const map = new Map({
+          basemap: "topo-vector"
         });
 
         const demo = document.getElementById("demo");
         demo.mapView = new MapView({
           container: "viewDiv",
-          map: webMap,
+          map: map,
           zoom: 5,
           center: [-98, 42]
         });
-
-        demo.enabledLayers = ["Colorado14ers"];
       });
     </script>
   </head>
 
   <body>
-    <div id="viewDiv" class="map-div"></div>
-    <map-layer-picker id="demo" class="over-map column"></map-layer-picker>
+    <div id="viewDiv"></div>
+    <buffer-tools id="demo" class="over-map column" distance="10" unit="miles"></map-search>
   </body>
 </html>
