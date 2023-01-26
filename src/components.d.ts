@@ -387,7 +387,7 @@ export namespace Components {
          */
         "showRefineSelection": boolean;
         /**
-          * boolean: I don't remember what this is
+          * boolean: When false no buffer distance or unit controls will be exposed
          */
         "showSearchSettings": boolean;
     }
@@ -1307,7 +1307,7 @@ declare namespace LocalJSX {
          */
         "showRefineSelection"?: boolean;
         /**
-          * boolean: I don't remember what this is
+          * boolean: When false no buffer distance or unit controls will be exposed
          */
         "showSearchSettings"?: boolean;
     }

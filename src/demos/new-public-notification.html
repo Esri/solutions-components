@@ -95,11 +95,11 @@
         demo.defaultBufferUnit = "kilometers";
         demo.exportOptions = {
           csvOptions: {
-            enabled: true,
+            enabled: true, // I question if this should be exposed
             addColumnTitle: true
           },
           pdfOptions: {
-            enabled: true,
+            enabled: true, // I question if this should be exposed
             enabledSizeValues: [6,10,14,20]
           }
         };
@@ -110,7 +110,7 @@
         demo.featureHighlightEnabled = true;
         // demo.noResultText = "";
         demo.selectionLayers = ["Neighborhoods"];
-        // demo.showSearchSettings = false;
+        demo.showSearchSettings = false;
       });
     </script>
   </head>

@@ -95,9 +95,9 @@ export class PublicNotification {
   @Prop() showRefineSelection = false;
 
   /**
-   * boolean: I don't remember what this is
+   * boolean: When false no buffer distance or unit controls will be exposed
    */
-  @Prop() showSearchSettings: boolean;
+  @Prop() showSearchSettings = true;
 
   //--------------------------------------------------------------------------
   //
@@ -301,14 +301,18 @@ export class PublicNotification {
    */
   render(): void {
     const hasSelections = this._selectionSets.length > 0;
+    const csvEnabled = typeof this.exportOptions?.csvOptions?.enabled === "boolean" ?
+      this.exportOptions?.csvOptions.enabled : true;
+    const pdfEnabled = typeof this.exportOptions?.pdfOptions?.enabled === "boolean" ?
+      this.exportOptions?.pdfOptions.enabled : true;
     return (
       <Host>
         <calcite-shell>
           <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
             {this._getActionGroup("list-check", false, EPageType.LIST, this._translations.myLists)}
             {this.showRefineSelection ? this._getActionGroup("test-data", !hasSelections, EPageType.REFINE, this._translations.refineSelection) : undefined}
-            {this._getActionGroup("file-pdf", !hasSelections, EPageType.PDF, this._translations.downloadPDF)}
-            {this._getActionGroup("file-csv", !hasSelections, EPageType.CSV, this._translations.downloadCSV)}
+            {pdfEnabled ? this._getActionGroup("file-pdf", !hasSelections, EPageType.PDF, this._translations.downloadPDF) : undefined}
+            {csvEnabled ? this._getActionGroup("file-csv", !hasSelections, EPageType.CSV, this._translations.downloadCSV): undefined}
           </calcite-action-bar>
           {this._getPage(this._pageType)}
         </calcite-shell>
@@ -637,6 +641,7 @@ export class PublicNotification {
             ref={(el) => { this._selectTools = el }}
             selectLayerView={this.addresseeLayer}
             selectionSet={this._activeSelection}
+            showBufferTools={this.showSearchSettings}
           />
         </div>
         <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>

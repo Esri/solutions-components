@@ -19,7 +19,7 @@
 | `noResultText`            | `no-result-text`            | string: The value to show for no results                                                                                                | `string`                                        | `undefined` |
 | `selectionLayers`         | --                          | string[]: List of layer titles that should be shown as potential selection layers                                                       | `string[]`                                      | `[]`        |
 | `showRefineSelection`     | `show-refine-selection`     | boolean: When true the refine selection workflow will be included in the UI                                                             | `boolean`                                       | `false`     |
-| `showSearchSettings`      | `show-search-settings`      | boolean: I don't remember what this is                                                                                                  | `boolean`                                       | `undefined` |
+| `showSearchSettings`      | `show-search-settings`      | boolean: When false no buffer distance or unit controls will be exposed                                                                 | `boolean`                                       | `true`      |
 
 
 ## Dependencies
