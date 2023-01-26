@@ -465,7 +465,7 @@ export class LayerTable {
       }
     });
 
-    void exportCSV(columnNames, attributes);
+    void exportCSV(attributes, columnNames);
   }
 
   /**

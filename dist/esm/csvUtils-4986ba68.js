@@ -21,10 +21,11 @@
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
- * @param contentArray Array of labels; each label is an array of label line strings
- * @param removeDuplicates Remove duplicate entries before exporting
+ * @param contents Array of content to convert into lines of output
+ * @param columnNames Column names to add to the beginning of the output array
+ * @param removeDuplicates Remove duplicate lines
  */
-function exportCSV(columnNames, contents, removeDuplicates = true) {
+function exportCSV(contents, columnNames = null, removeDuplicates = true) {
   const outputLines = _prepareOutput(contents, columnNames, removeDuplicates);
   console.log(outputLines);
   _downloadCSVFile(outputLines, `notify-${Date.now().toString()}`);
@@ -36,8 +37,6 @@ function exportCSV(columnNames, contents, removeDuplicates = true) {
  * @param fileTitle Title (without file extension) to use for file; defaults to "export"
  *
  * @see {@link https://medium.com/@danny.pule/export-json-to-csv-file-using-javascript-a0b7bc5b00d2}
- *
- * @returns void
  */
 function _downloadCSVFile(outputLines, fileTitle) {
   const link = document.createElement("a");

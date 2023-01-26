@@ -10,7 +10,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 const index = require('./index-ee607805.js');
 const locale = require('./locale-d15229c4.js');
 const mapViewUtils = require('./mapViewUtils-8ea9adc5.js');
-const csvUtils = require('./csvUtils-4e4c34d5.js');
+const csvUtils = require('./csvUtils-2d25a5ce.js');
 require('./_commonjsHelpers-6aafa5de.js');
 require('./interfaces-772edf61.js');
 
@@ -233,7 +233,7 @@ const LayerTable = class {
         columnNames[k] = k;
       }
     });
-    void csvUtils.exportCSV(columnNames, attributes);
+    void csvUtils.exportCSV(attributes, columnNames);
   }
   /**
    * Zoom to all selected features

@@ -13,7 +13,7 @@ import { E as EWorkflowType, f as ESelectionMode, g as ERefineMode, c as ESketch
 import { s as state } from './publicNotificationStore-3e762eea.js';
 import { g as getLocaleComponentStrings } from './locale-a5a0b545.js';
 import { p as pdfUtils } from './labelFormats-0a0f314c.js';
-import { e as exportCSV } from './csvUtils-92ff3201.js';
+import { e as exportCSV } from './csvUtils-4986ba68.js';
 import { a as getSelectionIds, g as getTotal } from './publicNotificationUtils-5cb5a607.js';
 import './resources-436ae282.js';
 import './guid-15fce7c0.js';
@@ -665,39 +665,27 @@ MapSelectTools.style = mapSelectToolsCss;
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
- * @param contentArray Array of labels; each label is an array of label line strings
+ * @param contents Array of content to convert into lines of output
  * @param labelDescription Format to use for labels
  * @param removeDuplicates Remove duplicate labels before exporting
- *
- * @returns Promise when the function has completed
  */
-async function exportPDF(contents, labelDescription, removeDuplicates = true) {
-  console.log("exportPDF", JSON.stringify(contents), JSON.stringify(labelDescription, null, 2), removeDuplicates); //???
+function exportPDF(contents, labelDescription, removeDuplicates = true) {
+  console.log(contents, labelDescription, removeDuplicates); //???
   /*
-  const fieldNames = {};
-  const entry = attributes[0];
-  Object.keys(entry).forEach(k => {
-    if (entry.hasOwnProperty(k)) {
-      fieldNames[k] = k;
-    }
-  });
-
-  _downloadCSVFile(fieldNames, attributes, `notify-${Date.now().toString()}`);
-  */
+  const outputLabels = _prepareOutput(contents, removeDuplicates);
+  console.log(outputLabels, labelDescription);//???
+    */
+  //_downloadPDFFile(outputLabels, labelDescription, `notify-${Date.now().toString()}`);
 }
 /**
- * Download the CSV file
+ * Download the PDF file
  *
- * @param fieldNames the names for each of the features fields
- * @param attributes the features attributes
- *
- * Based on:
- * https://medium.com/@danny.pule/export-json-to-csv-file-using-javascript-a0b7bc5b00d2
- *
- * @returns void
+ * @param labels Labels to write
+ * @param labelDescription Format to use for labels
+ * @param fileTitle Title (without file extension) to use for file; defaults to "export"
  */
 /*
-function _downloadCSVFile(
+function _downloadPDFFile(
   fieldNames: {[key: string]: string},
   attributes: {[key: string]: string}[],
   fileTitle: string
@@ -719,6 +707,29 @@ function _downloadCSVFile(
     link.click();
     document.body.removeChild(link);
   }
+}
+*/
+/**
+ * Converts output into an array of labels.
+ *
+ * @param contents Array of content to convert into an array of labels
+ * @param removeDuplicates Remove duplicate lines
+ *
+ * @returns Array of labels; each label consists of an array of strings
+ */
+/*
+function _prepareOutput(
+  contents: string[],
+  removeDuplicates = true
+): string[] {
+  // Remove duplicates if desired
+  if (removeDuplicates) {
+    const uniques: Set<string> = new Set();
+    contents.forEach(label => uniques.add(JSON.stringify(label)));
+    contents = Array.from(uniques);
+  }
+
+  return contents;
 }
 */
 
@@ -776,7 +787,7 @@ const PdfDownload = class {
         columnNames[k] = k;
       }
     });
-    exportCSV(columnNames, attributes, removeDuplicates);
+    exportCSV(attributes, columnNames, removeDuplicates);
     return Promise.resolve();
   }
   //--------------------------------------------------------------------------

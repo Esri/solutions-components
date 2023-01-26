@@ -250,7 +250,7 @@ const LayerTable$1 = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement 
         columnNames[k] = k;
       }
     });
-    void exportCSV(columnNames, attributes);
+    void exportCSV(attributes, columnNames);
   }
   /**
    * Zoom to all selected features

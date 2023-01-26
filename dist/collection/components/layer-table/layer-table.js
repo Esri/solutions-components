@@ -244,7 +244,7 @@ export class LayerTable {
         columnNames[k] = k;
       }
     });
-    void exportCSV(columnNames, attributes);
+    void exportCSV(attributes, columnNames);
   }
   /**
    * Zoom to all selected features

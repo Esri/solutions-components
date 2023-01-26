@@ -76,7 +76,7 @@ export class PdfDownload {
         columnNames[k] = k;
       }
     });
-    exportCSV(columnNames, attributes, removeDuplicates);
+    exportCSV(attributes, columnNames, removeDuplicates);
     return Promise.resolve();
   }
   //--------------------------------------------------------------------------

@@ -16,21 +16,23 @@
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
- * @param contentArray Array of labels; each label is an array of label line strings
+ * @param contents Array of content to convert into lines of output
  * @param labelDescription Format to use for labels
  * @param removeDuplicates Remove duplicate labels before exporting
- *
- * @returns Promise when the function has completed
  */
-export declare function exportPDF(contents: string[][], labelDescription: any, removeDuplicates?: boolean): Promise<void>;
+export declare function exportPDF(contents: string[][], labelDescription: any, removeDuplicates?: boolean): void;
 /**
- * Download the CSV file
+ * Download the PDF file
  *
- * @param fieldNames the names for each of the features fields
- * @param attributes the features attributes
+ * @param labels Labels to write
+ * @param labelDescription Format to use for labels
+ * @param fileTitle Title (without file extension) to use for file; defaults to "export"
+ */
+/**
+ * Converts output into an array of labels.
  *
- * Based on:
- * https://medium.com/@danny.pule/export-json-to-csv-file-using-javascript-a0b7bc5b00d2
+ * @param contents Array of content to convert into an array of labels
+ * @param removeDuplicates Remove duplicate lines
  *
- * @returns void
+ * @returns Array of labels; each label consists of an array of strings
  */
