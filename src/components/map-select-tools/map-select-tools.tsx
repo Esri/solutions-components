@@ -18,7 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop,
 import { loadModules } from "../../utils/loadModules";
 import { highlightFeatures, goToSelection } from "../../utils/mapViewUtils";
 import { getQueryGeoms, queryObjectIds } from "../../utils/queryUtils";
-import { DistanceUnit, EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode, ESketchType } from "../../utils/interfaces";
+import { DistanceUnit, ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration, EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode, ESketchType } from "../../utils/interfaces";
 import state from "../../utils/publicNotificationStore";
 import MapSelectTools_T9n from "../../assets/t9n/map-select-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -74,6 +74,11 @@ export class MapSelectTools {
   @Prop() mapView: __esri.MapView;
 
   /**
+   * ISearchConfiguration: Configuration details for the Search widget
+   */
+  @Prop() searchConfiguration: ISearchConfiguration;
+
+  /**
    * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
    */
   @Prop({ reflect: false }) selectionSet: ISelectionSet;
@@ -118,6 +123,11 @@ export class MapSelectTools {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * esri/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+   */
+  protected FeatureLayer: typeof import("esri/layers/FeatureLayer");
 
   /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
@@ -460,16 +470,18 @@ export class MapSelectTools {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [GraphicsLayer, Graphic, Search, geometryEngine] = await loadModules([
+    const [GraphicsLayer, Graphic, Search, geometryEngine, FeatureLayer] = await loadModules([
       "esri/layers/GraphicsLayer",
       "esri/Graphic",
       "esri/widgets/Search",
-      "esri/geometry/geometryEngine"
+      "esri/geometry/geometryEngine",
+      "esri/layers/FeatureLayer"
     ]);
     this.GraphicsLayer = GraphicsLayer;
     this.Graphic = Graphic;
     this.Search = Search;
     this._geometryEngine = geometryEngine;
+    this.FeatureLayer = FeatureLayer;
   }
 
   /**
@@ -515,10 +527,13 @@ export class MapSelectTools {
    */
   protected _initSearchWidget(): void {
     if (this.mapView && this._searchElement) {
+      const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this.mapView);
+
       const searchOptions: __esri.widgetsSearchProperties = {
         view: this.mapView,
         container: this._searchElement,
-        searchTerm: this._searchTerm
+        searchTerm: this._searchTerm,
+        ...searchConfiguration
       };
 
       this._searchWidget = new this.Search(searchOptions);
@@ -539,6 +554,46 @@ export class MapSelectTools {
         }
       });
     }
+  }
+
+  /**
+   * Initialize the search widget based on user defined configuration
+   *
+   * @param searchConfiguration search configuration defined by the user
+   * @param view the current map view
+   *
+   * @protected
+   */
+  protected _getSearchConfig(
+    searchConfiguration: ISearchConfiguration,
+    view: __esri.MapView
+  ): ISearchConfiguration {
+    const sources = searchConfiguration?.sources;
+    if (sources) {
+      sources.forEach(source => {
+        const isLayerSource = source.hasOwnProperty("layer");
+        if (isLayerSource) {
+          const layerSource = source as ILayerSourceConfigItem;
+          const layerFromMap = layerSource.layer?.id
+            ? view.map.findLayerById(layerSource.layer.id)
+            : null;
+          if (layerFromMap) {
+            layerSource.layer = layerFromMap as __esri.FeatureLayer;
+          } else if (layerSource?.layer?.url) {
+            layerSource.layer = new this.FeatureLayer(layerSource?.layer?.url as any);
+          }
+        }
+      });
+    }
+    searchConfiguration?.sources?.forEach(source => {
+      const isLocatorSource = source.hasOwnProperty("locator");
+      if (isLocatorSource) {
+        const locatorSource = source as ILocatorSourceConfigItem;
+        locatorSource.url = locatorSource.url;
+        delete locatorSource.url;
+      }
+    });
+    return searchConfiguration;
   }
 
   /**

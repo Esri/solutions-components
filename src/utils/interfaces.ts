@@ -100,9 +100,43 @@ export interface IPdfOptions {
 
 export type DistanceUnit = "feet"|"meters"|"miles"|"kilometers";
 
-// export interface ISearchOptions {
+export interface ISearchConfiguration {
+  activeSourceIndex?: number;
+  allPlaceholder?: string;
+  includeDefaultSources?: boolean;
+  searchAllEnabled?: boolean;
+  sources: Array<ILocatorSourceConfigItem | ILayerSourceConfigItem>;
+}
 
-// }
+interface ISearchSourceConfigItem {
+  maxResults: number;
+  maxSuggestions: number;
+  minSuggestCharacters: number;
+  name: string;
+  suggestionsEnabled: boolean;
+  placeholder: string;
+  withinViewEnabled: boolean;
+  zoomScale: number;
+}
+
+export interface ILocatorSourceConfigItem extends ISearchSourceConfigItem {
+  url: string;
+  singleLineFieldName: string;
+  countryCode: string;
+}
+
+export interface ILayerSourceConfigItem extends ISearchSourceConfigItem {
+  displayField: string;
+  exactMatch: boolean;
+  layer: {
+    url: string | __esri.FeatureLayer;
+    id: string;
+  };
+  outFields: string[];
+  searchFields: string;
+  popupTemplate: any;
+  popupEnabled: boolean;
+}
 
 /**
  * Key details from the templates item

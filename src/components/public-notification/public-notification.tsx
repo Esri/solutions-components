@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
-import { DistanceUnit, EExportType, EPageType, ESketchType, EWorkflowType, IExportOptions, ISelectionSet } from "../../utils/interfaces";
+import { DistanceUnit, EExportType, EPageType, ESketchType, EWorkflowType, IExportOptions, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
 import { goToSelection, getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
 import { getSelectionSetQuery } from "../../utils/queryUtils";
@@ -83,6 +83,11 @@ export class PublicNotification {
    * string: The value to show for no results
    */
   @Prop() noResultText: string;
+
+  /**
+   * ISearchConfiguration: Configuration details for the Search widget
+   */
+  @Prop() searchConfiguration: ISearchConfiguration;
 
   /**
    * string[]: List of layer titles that should be shown as potential selection layers
@@ -639,6 +644,7 @@ export class PublicNotification {
             onSelectionSetChange={(evt) => this._updateForSelection(evt)}
             onWorkflowTypeChange={(evt) => this._updateForWorkflowType(evt)}
             ref={(el) => { this._selectTools = el }}
+            searchConfiguration={this.searchConfiguration}
             selectLayerView={this.addresseeLayer}
             selectionSet={this._activeSelection}
             showBufferTools={this.showSearchSettings}

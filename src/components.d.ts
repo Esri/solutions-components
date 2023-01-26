@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EExpandType, ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IExportOptions, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
+import { DistanceUnit, EExpandType, ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IExportOptions, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -260,6 +260,10 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
     }
     interface MapSelectTools {
         /**
@@ -296,6 +300,10 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
         /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
@@ -378,6 +386,10 @@ export namespace Components {
           * string: The value to show for no results
          */
         "noResultText": string;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
         /**
           * string[]: List of layer titles that should be shown as potential selection layers
          */
@@ -1192,6 +1204,10 @@ declare namespace LocalJSX {
           * Emitted on demand when the status of the search widget changes
          */
         "onSearchChange"?: (event: MapSearchCustomEvent<ISearchResult>) => void;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
     }
     interface MapSelectTools {
         /**
@@ -1230,6 +1246,10 @@ declare namespace LocalJSX {
           * Emitted on demand when the workflow type changes.
          */
         "onWorkflowTypeChange"?: (event: MapSelectToolsCustomEvent<EWorkflowType>) => void;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
         /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
@@ -1298,6 +1318,10 @@ declare namespace LocalJSX {
           * string: The value to show for no results
          */
         "noResultText"?: string;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
         /**
           * string[]: List of layer titles that should be shown as potential selection layers
          */
