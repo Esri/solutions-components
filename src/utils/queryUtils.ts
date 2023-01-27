@@ -120,7 +120,7 @@ export async function queryFeaturesByGeometry(
   };
 
   const result = await layer.queryFeatures(query);
-  featuresCollection[layer.title] = featuresCollection[layer.title].concat(
+  featuresCollection[layer.id] = featuresCollection[layer.id].concat(
     result.features
   );
 

@@ -20,7 +20,9 @@ const { state, onChange } = createStore({
     // List of layers added and managed by the component
     managedLayers: [],
     // Handle: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Handles.html#Handle
-    highlightHandle: undefined
+    highlightHandle: undefined,
+    // ILayerHash title: id lookup to be used across components
+    layerNameHash: {}
 });
 
 const managedLayersChangedEvent = new CustomEvent("managedLayersChanged", {

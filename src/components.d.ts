@@ -163,17 +163,17 @@ export namespace Components {
     }
     interface MapLayerPicker {
         /**
-          * string[]: Optional list of enabled layers  If empty all layers will be available
+          * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
-        "enabledLayers": string[];
+        "enabledLayerIds": string[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
         /**
-          * string[]: list of layers that have been selected by the end user
+          * string[]: list of layer ids that have been selected by the end user
          */
-        "selectedLayers": string[];
+        "selectedLayerIds": string[];
         /**
           * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
          */
@@ -209,9 +209,9 @@ export namespace Components {
          */
         "defaultBufferUnit": DistanceUnit;
         /**
-          * string[]: Optional list of enabled layers  If empty all layers will be available
+          * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
-        "enabledLayers": string[];
+        "enabledLayerIds": string[];
         /**
           * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
          */
@@ -284,9 +284,9 @@ export namespace Components {
     }
     interface PublicNotification {
         /**
-          * string[]: List of layer titles that should be shown as potential addressee layers
+          * string[]: List of layer ids that should be shown as potential addressee layers
          */
-        "addresseeLayers": string[];
+        "addresseeLayerIds": string[];
         /**
           * number: The default value to show for the buffer distance
          */
@@ -320,9 +320,9 @@ export namespace Components {
          */
         "searchConfiguration": ISearchConfiguration;
         /**
-          * string[]: List of layer titles that should be shown as potential selection layers when skectching with "Use layer features" option
+          * string[]: List of layer ids that should be shown as potential selection layers when skectching with "Use layer features" option
          */
-        "selectionLayers": string[];
+        "selectionLayerIds": string[];
         /**
           * boolean: When true the refine selection workflow will be included in the UI
          */
@@ -340,9 +340,9 @@ export namespace Components {
          */
         "addresseeLayer": __esri.FeatureLayerView;
         /**
-          * string[]: Optional list of enabled layers  If empty all layers will be available
+          * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
-        "enabledLayers": string[];
+        "enabledLayerIds": string[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -367,9 +367,9 @@ export namespace Components {
          */
         "clearHighlight": () => Promise<void>;
         /**
-          * string[]: Optional list of enabled layers  If empty all layers will be available
+          * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
-        "enabledLayers": string[];
+        "enabledLayerIds": string[];
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
@@ -1023,9 +1023,9 @@ declare namespace LocalJSX {
     }
     interface MapLayerPicker {
         /**
-          * string[]: Optional list of enabled layers  If empty all layers will be available
+          * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
-        "enabledLayers"?: string[];
+        "enabledLayerIds"?: string[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -1035,9 +1035,9 @@ declare namespace LocalJSX {
          */
         "onLayerSelectionChange"?: (event: MapLayerPickerCustomEvent<string[]>) => void;
         /**
-          * string[]: list of layers that have been selected by the end user
+          * string[]: list of layer ids that have been selected by the end user
          */
-        "selectedLayers"?: string[];
+        "selectedLayerIds"?: string[];
         /**
           * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
          */
@@ -1067,9 +1067,9 @@ declare namespace LocalJSX {
          */
         "defaultBufferUnit"?: DistanceUnit;
         /**
-          * string[]: Optional list of enabled layers  If empty all layers will be available
+          * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
-        "enabledLayers"?: string[];
+        "enabledLayerIds"?: string[];
         /**
           * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
          */
@@ -1135,9 +1135,9 @@ declare namespace LocalJSX {
     }
     interface PublicNotification {
         /**
-          * string[]: List of layer titles that should be shown as potential addressee layers
+          * string[]: List of layer ids that should be shown as potential addressee layers
          */
-        "addresseeLayers"?: string[];
+        "addresseeLayerIds"?: string[];
         /**
           * number: The default value to show for the buffer distance
          */
@@ -1171,9 +1171,9 @@ declare namespace LocalJSX {
          */
         "searchConfiguration"?: ISearchConfiguration;
         /**
-          * string[]: List of layer titles that should be shown as potential selection layers when skectching with "Use layer features" option
+          * string[]: List of layer ids that should be shown as potential selection layers when skectching with "Use layer features" option
          */
-        "selectionLayers"?: string[];
+        "selectionLayerIds"?: string[];
         /**
           * boolean: When true the refine selection workflow will be included in the UI
          */
@@ -1191,9 +1191,9 @@ declare namespace LocalJSX {
          */
         "addresseeLayer"?: __esri.FeatureLayerView;
         /**
-          * string[]: Optional list of enabled layers  If empty all layers will be available
+          * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
-        "enabledLayers"?: string[];
+        "enabledLayerIds"?: string[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -1217,9 +1217,9 @@ declare namespace LocalJSX {
          */
         "border"?: boolean;
         /**
-          * string[]: Optional list of enabled layers  If empty all layers will be available
+          * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
-        "enabledLayers"?: string[];
+        "enabledLayerIds"?: string[];
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */

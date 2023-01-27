@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
-import { getMapLayerNames } from "../../utils/mapViewUtils";
+import { getMapLayerHash, getMapLayerIds } from "../../utils/mapViewUtils";
 import { SelectionMode } from "../../utils/interfaces";
 import state from "../../utils/publicNotificationStore";
 
@@ -39,10 +39,10 @@ export class MapLayerPicker {
   //--------------------------------------------------------------------------
 
   /**
-   * string[]: Optional list of enabled layers
+   * string[]: Optional list of enabled layer ids
    *  If empty all layers will be available
    */
-  @Prop() enabledLayers: string[] = [];
+  @Prop() enabledLayerIds: string[] = [];
 
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -50,9 +50,9 @@ export class MapLayerPicker {
   @Prop() mapView: __esri.MapView;
 
   /**
-   * string[]: list of layers that have been selected by the end user
+   * string[]: list of layer ids that have been selected by the end user
    */
-  @Prop({ mutable: true }) selectedLayers: string[] = [];
+  @Prop({ mutable: true }) selectedLayerIds: string[] = [];
 
   /**
    * SelectionMode: "single" | "multi"
@@ -68,9 +68,9 @@ export class MapLayerPicker {
   //--------------------------------------------------------------------------
 
   /**
-   * string[]: list of layer names from the map
+   * string[]: list of layer ids from the map
    */
-  @State() layerNames: string[] = [];
+  @State() layerIds: string[] = [];
 
   //--------------------------------------------------------------------------
   //
@@ -98,7 +98,7 @@ export class MapLayerPicker {
     if (newValue !== oldValue) {
       await this._setLayers();
       if (this.selectionMode === "single") {
-        this.layerSelectionChange.emit([this.layerNames[0]]);
+        this.layerSelectionChange.emit([this.layerIds[0]]);
       }
     }
   }
@@ -132,9 +132,9 @@ export class MapLayerPicker {
    */
   async componentWillLoad(): Promise<void> {
     await this._setLayers();
-    if (this.selectionMode === "single" && (this.layerNames.length > 0 || this.selectedLayers.length === 1)) {
+    if (this.selectionMode === "single" && (this.layerIds.length > 0 || this.selectedLayerIds.length === 1)) {
       this.layerSelectionChange.emit(
-        this.selectedLayers.length === 1 ? [this.selectedLayers[0]] : [this.layerNames[0]]
+        this.selectedLayerIds.length === 1 ? [this.selectedLayerIds[0]] : [this.layerIds[0]]
       );
     }
   }
@@ -165,7 +165,7 @@ export class MapLayerPicker {
    *
    * Used for selecting a single layer.
    *
-   * @returns Calcite Select component with the names of the layers from the map
+   * @returns Calcite Select component with the ids of the layers from the map
    */
   _getSelect(): VNode {
     return (
@@ -180,11 +180,11 @@ export class MapLayerPicker {
   }
 
   /**
-   * Create a list of layers from the map
+   * Create a list of layer ids from the map
    *
    * Used for selecting multiple layers
    *
-   * @returns Calcite ComboBox component with the names of the layers from the map
+   * @returns Calcite ComboBox component with the ids of the layers from the map
    */
   _getCombobox(): VNode {
     return (
@@ -199,21 +199,21 @@ export class MapLayerPicker {
   }
 
   /**
-   * Hydrate a select or combobox component with the names of the layers in the map
+   * Hydrate a select or combobox component with the ids of the layers in the map
    *
-   * @returns Array of ComboBox items or Select options for the names of the layers
+   * @returns Array of ComboBox items or Select options for the ids of the layers
    */
   _addMapLayersOptions(): VNode[] {
-    return this.layerNames.reduce((prev, cur) => {
-      if (state.managedLayers.indexOf(cur) < 0 && (this.enabledLayers.length > 0 ? this.enabledLayers.indexOf(cur) > -1 : true)) {
+    return this.layerIds.reduce((prev, cur) => {
+      if (state.managedLayers.indexOf(cur) < 0 && (this.enabledLayerIds.length > 0 ? this.enabledLayerIds.indexOf(cur) > -1 : true)) {
         prev.push(
-          this.selectionMode === "multi" && this.selectedLayers.indexOf(cur) > -1 ?
-            (<calcite-combobox-item selected textLabel={cur} value={cur} />) :
+          this.selectionMode === "multi" && this.selectedLayerIds.indexOf(cur) > -1 ?
+            (<calcite-combobox-item selected textLabel={state.layerNameHash[cur]} value={cur} />) :
             this.selectionMode === "multi" ?
-              (<calcite-combobox-item textLabel={cur} value={cur} />) :
-              this.selectedLayers.indexOf(cur) > -1 ?
-                (<calcite-option label={cur} selected={true} value={cur} />) :
-                (<calcite-option label={cur} value={cur} />)
+              (<calcite-combobox-item textLabel={state.layerNameHash[cur]} value={cur} />) :
+              this.selectedLayerIds.indexOf(cur) > -1 ?
+                (<calcite-option label={state.layerNameHash[cur]} selected={true} value={cur} />) :
+                (<calcite-option label={state.layerNameHash[cur]} value={cur} />)
         );
       }
       return prev;
@@ -221,29 +221,43 @@ export class MapLayerPicker {
   }
 
   /**
-   * Fetch the names of the layers from the map
+   * Fetch the ids of the layers from the map
    *
    * @returns Promise when the operation has completed
    */
   async _setLayers(): Promise<void> {
     if (this.mapView) {
-      const mapLayerNames = await getMapLayerNames(this.mapView);
-      this.layerNames = mapLayerNames.filter(n => this.enabledLayers?.length > 0 ? this.enabledLayers.indexOf(n) > -1 : true)
+      const mapLayerIds = await getMapLayerIds(this.mapView);
+      this.layerIds = mapLayerIds.filter(n => this.enabledLayerIds?.length > 0 ? this.enabledLayerIds.indexOf(n) > -1 : true);
+      await this._initLayerHashState();
     }
   }
 
   /**
-   * Fetch the names of the layers from the map
+   * Create a layer id:title hash for layer name display
+   *
+   * @returns Promise when the operation has completed
+   */
+  protected async _initLayerHashState(): Promise<void> {
+    console.log("MLP _initLayerState")
+    if (this.mapView) {
+      state.layerNameHash = await getMapLayerHash(this.mapView);
+    }
+    console.log(state.layerNameHash);
+  }
+
+  /**
+   * Fetch the ids of the layers from the map
    *
    * @returns Promise when the operation has completed
    */
   _layerSelectionChange(evt: CustomEvent): void {
-    this.selectedLayers = this.selectionMode === "single" ?
+    this.selectedLayerIds = this.selectionMode === "single" ?
       [this._layerElement.value] : evt.detail?.selectedItems.map(
         (item: HTMLCalciteComboboxItemElement) => {
           return item.value;
         }
       ) || [];
-    this.layerSelectionChange.emit(this.selectedLayers);
+    this.layerSelectionChange.emit(this.selectedLayerIds);
   }
 }

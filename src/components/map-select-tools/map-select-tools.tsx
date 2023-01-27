@@ -43,10 +43,10 @@ export class MapSelectTools {
   //--------------------------------------------------------------------------
 
   /**
-   * string[]: Optional list of enabled layers
+   * string[]: Optional list of enabled layer ids
    *  If empty all layers will be available
    */
-  @Prop() enabledLayers: string[] = [];
+  @Prop() enabledLayerIds: string[] = [];
 
   /**
    * number: The default value to show for the buffer distance
@@ -433,7 +433,7 @@ export class MapSelectTools {
           <refine-selection-tools
             active={true}
             border={true}
-            enabledLayers={this.enabledLayers}
+            enabledLayerIds={this.enabledLayerIds}
             layerViews={this._refineSelectLayers}
             mapView={this.mapView}
             mode={ESelectionMode.ADD}

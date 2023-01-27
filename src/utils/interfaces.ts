@@ -139,6 +139,13 @@ export interface ILayerSourceConfigItem extends ISearchSourceConfigItem {
 }
 
 /**
+ * Layer id and title key value pair
+ */
+export interface ILayerHash {
+  [key: string]: string;
+}
+
+/**
  * Key details from the templates item
  */
 export interface IItemDetails {
