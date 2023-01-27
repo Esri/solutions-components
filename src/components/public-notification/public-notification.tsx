@@ -44,9 +44,9 @@ export class PublicNotification {
   //--------------------------------------------------------------------------
 
   /**
-   * string[]: List of layer titles that should be shown as potential addressee layers
+   * string[]: List of layer ids that should be shown as potential addressee layers
    */
-  @Prop() addresseeLayers: string[] = [];
+  @Prop() addresseeLayerIds: string[] = [];
 
   /**
    * number: The default value to show for the buffer distance
@@ -94,10 +94,10 @@ export class PublicNotification {
   @Prop() searchConfiguration: ISearchConfiguration;
 
   /**
-   * string[]: List of layer titles that should be shown as potential selection layers
+   * string[]: List of layer ids that should be shown as potential selection layers
    * when skectching with "Use layer features" option
    */
-  @Prop() selectionLayers: string[] = [];
+  @Prop() selectionLayerIds: string[] = [];
 
   /**
    * boolean: When true the refine selection workflow will be included in the UI
@@ -507,10 +507,10 @@ export class PublicNotification {
       <div class="display-flex padding-sides-1">
         <calcite-label class="font-bold width-full">{this._translations.addresseeLayer}
           <map-layer-picker
-            enabledLayers={this.addresseeLayers}
+            enabledLayerIds={this.addresseeLayerIds}
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
-            selectedLayers={this.addresseeLayer ? [this.addresseeLayer?.layer.title] : []}
+            selectedLayerIds={this.addresseeLayer ? [this.addresseeLayer?.layer.id] : []}
             selectionMode={"single"}
           />
         </calcite-label>
@@ -610,9 +610,9 @@ export class PublicNotification {
    */
   protected async _handleLayerChange(): Promise<void> {
     this._showLayerSelectionChangeModal = false;
-    const title: string = this._layerSelectionChangeEvt?.detail?.length > 0 ?
+    const id: string = this._layerSelectionChangeEvt?.detail?.length > 0 ?
       this._layerSelectionChangeEvt.detail[0] : "";
-    await this._updateAddresseeLayer(title);
+    await this._updateAddresseeLayer(id);
   }
 
   /**
@@ -643,7 +643,7 @@ export class PublicNotification {
         <div class={"padding-1"}>
           <map-select-tools
             class="font-bold"
-            enabledLayers={this.selectionLayers}
+            enabledLayerIds={this.selectionLayerIds}
             isUpdate={!!this._activeSelection}
             mapView={this.mapView}
             onSelectionSetChange={(evt) => this._updateForSelection(evt)}
@@ -659,7 +659,7 @@ export class PublicNotification {
           <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
           <calcite-input-message active class="info-blue" scale="m">
             {
-              this.noResultText ? this.noResultText :
+              this.noResultText && this._numSelected === 0 ? this.noResultText :
                 this._translations.selectedAddresses.replace(
                   "{{n}}", this._numSelected.toString()).replace("{{layer}}", this.addresseeLayer?.layer.title || ""
                 )
@@ -693,7 +693,7 @@ export class PublicNotification {
         {this._getNotice(this._translations.refineTip, "padding-sides-1")}
         <refine-selection
           addresseeLayer={this.addresseeLayer}
-          enabledLayers={this.selectionLayers}
+          enabledLayerIds={this.selectionLayerIds}
           mapView={this.mapView}
           selectionSets={this._selectionSets}
         />
@@ -1034,13 +1034,13 @@ export class PublicNotification {
   protected async _layerSelectionChange(
     evt: CustomEvent
   ): Promise<void> {
-    const title: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
-    if (title !== this.addresseeLayer?.layer.title) {
-      this._showLayerSelectionChangeModal = this.addresseeLayer?.layer.title !== undefined && this._selectionSets.length > 0;
+    const id: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
+    if (id !== this.addresseeLayer?.layer.id) {
+      this._showLayerSelectionChangeModal = this.addresseeLayer?.layer.id !== undefined && this._selectionSets.length > 0;
       if (this._showLayerSelectionChangeModal) {
         this._layerSelectionChangeEvt = evt;
       } else {
-        await this._updateAddresseeLayer(title);
+        await this._updateAddresseeLayer(id);
       }
     }
   }
@@ -1048,15 +1048,15 @@ export class PublicNotification {
   /**
    * Fetch the new addressee layer and update the selection sets
    *
-   * @param title the title of the layer to fetch
+   * @param id the id of the layer to fetch
    *
    * @returns Promise when the function has completed
    * @protected
    */
   protected async _updateAddresseeLayer(
-    title: string
+    id: string
   ): Promise<void> {
-    this.addresseeLayer = await getMapLayerView(this.mapView, title);
+    this.addresseeLayer = await getMapLayerView(this.mapView, id);
     await this._updateSelectionSets(this.addresseeLayer);
   }
 

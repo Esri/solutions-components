@@ -46,10 +46,10 @@ export class RefineSelection {
   @Prop() addresseeLayer: __esri.FeatureLayerView;
 
   /**
-   * string[]: Optional list of enabled layers
+   * string[]: Optional list of enabled layer ids
    *  If empty all layers will be available
    */
-  @Prop() enabledLayers: string[] = [];
+  @Prop() enabledLayerIds: string[] = [];
 
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -174,7 +174,7 @@ export class RefineSelection {
             </calcite-radio-group>
             <refine-selection-tools
               border={true}
-              enabledLayers={this.enabledLayers}
+              enabledLayerIds={this.enabledLayerIds}
               ids={utils.getSelectionIds(this.selectionSets)}
               layerViews={[this.addresseeLayer]}
               mapView={this.mapView}

@@ -60,10 +60,9 @@ function _downloadCSVFile(
   fileTitle: string,
   addColumnTitle: boolean
 ): void {
-  if (fieldNames) {
+  if (addColumnTitle && fieldNames) {
     attributes.unshift(fieldNames);
   }
-  console.log(addColumnTitle);
   // format values to string so it doesn't get tripped up when a value has a comma
   // another option could be to export with a different delimiter
   const csv = attributes.reduce((prev, cur) => {

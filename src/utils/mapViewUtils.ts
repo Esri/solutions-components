@@ -15,6 +15,7 @@
  */
 
 import { queryExtent } from "./queryUtils";
+import { ILayerHash } from "./interfaces";
 
 /**
  * Gets the layer names from the current map
@@ -24,52 +25,73 @@ import { queryExtent } from "./queryUtils";
  * @returns Promise resolving with an array of layer names
  *
  */
-export async function getMapLayerNames(
+export async function getMapLayerHash(
   mapView: __esri.MapView
-): Promise<string[]> {
-  let layerNames = [];
+): Promise<ILayerHash> {
+  let layerHash = {};
   await mapView.when(() => {
-    layerNames = mapView.map.layers.toArray().map((l) => {
-      return l.title;
-    });
+    layerHash = mapView.map.layers.toArray().reduce((prev, cur) => {
+      prev[cur.id] = cur.title;
+      return prev;
+    }, {});
   });
-  return layerNames;
+  return layerHash;
 }
 
 /**
- * Get a layer view by title
+ * Gets the layer names from the current map
+ *
+ * @param mapView the map view to fetch the layer names from
+ *
+ * @returns Promise resolving with an array of layer names
+ *
+ */
+export async function getMapLayerIds(
+  mapView: __esri.MapView
+): Promise<string[]> {
+  let layerIds = [];
+  await mapView.when(() => {
+    layerIds = mapView.map.layers.toArray().map((l) => {
+      return l.id;
+    });
+  });
+  return layerIds;
+}
+
+/**
+ * Get a layer view by id
  *
  * @param mapView the map view to fetch the layer from
- * @param title the title if the layer to fetch
+ * @param id the id if the layer to fetch
  *
  * @returns Promise resolving with the fetched layer view
  *
  */
 export async function getMapLayerView(
   mapView: __esri.MapView,
-  title: string
+  id: string
 ): Promise<__esri.FeatureLayerView> {
-  const layer = await getMapLayer(mapView, title);
+  const layer = await getMapLayer(mapView, id);
   return layer ? await mapView.whenLayerView(layer) : undefined;
 }
 
 /**
- * Get a layer by title
+ * Get a layer by id
  *
  * @param mapView the map view to fetch the layer from
- * @param title the title if the layer to fetch
+ * @param id the id if the layer to fetch
  *
  * @returns Promise resolving with the fetched layer
  *
  */
 export async function getMapLayer(
   mapView: __esri.MapView,
-  title: string
+  id: string
 ): Promise<__esri.FeatureLayer> {
   let layers = [];
   await mapView.when(() => {
     layers = mapView.map.layers.toArray().filter((l) => {
-      return l.title === title;
+      return l.id === id;
     });
   });
   return layers.length > 0 ? layers[0] : undefined;
