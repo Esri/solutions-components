@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 /**
- * Export a csv of the attributes from the features that match the provided ids
+ * Exports a PDF of labels.
  *
- * @param contents Array of content to convert into lines of output
+ * @param labels Labels to write
  * @param labelDescription Format to use for labels
  * @param removeDuplicates Remove duplicate labels before exporting
  */
-export declare function exportPDF(contents: string[][], labelDescription: any, removeDuplicates?: boolean): void;
+export declare function exportPDF(labels: string[][], labelDescription: any, removeDuplicates?: boolean): void;

@@ -28,66 +28,42 @@ import { d as defineCustomElement$1 } from './select.js';
  * limitations under the License.
  */
 /**
- * Export a csv of the attributes from the features that match the provided ids
+ * Exports a PDF of labels.
  *
- * @param contents Array of content to convert into lines of output
+ * @param labels Labels to write
  * @param labelDescription Format to use for labels
  * @param removeDuplicates Remove duplicate labels before exporting
  */
-function exportPDF(contents, labelDescription, removeDuplicates = true) {
-  const outputLabels = _prepareOutput(contents, removeDuplicates);
-  console.log("outputLabels", outputLabels, labelDescription); //???
-  //_downloadPDFFile(outputLabels, labelDescription, `notify-${Date.now().toString()}`);
+function exportPDF(labels, labelDescription, removeDuplicates = true) {
+  const outputLabels = _prepareOutput(labels, removeDuplicates);
+  _downloadPDFFile(outputLabels, labelDescription, `notify-${Date.now().toString()}`);
 }
 /**
- * Download the PDF file
+ * Downloads the PDF file.
  *
  * @param labels Labels to write
  * @param labelDescription Format to use for labels
  * @param fileTitle Title (without file extension) to use for file; defaults to "export"
  */
-/*
-function _downloadPDFFile(
-  fieldNames: {[key: string]: string},
-  attributes: {[key: string]: string}[],
-  fileTitle: string
-): void {
-  if (fieldNames) {
-    attributes.unshift(fieldNames);
-  }
-  // format values to string so it doesn't get tripped up when a value has a comma
-  // another option could be to export with a different delimiter
-  const csv = attributes.reduce((prev, cur) => {
-    return prev + Object.values(cur).map(v => `"${v}"`).join(",") + "\r\n";
-  }, "");
-  const link = document.createElement("a");
-  if (link.download !== undefined) {
-    link.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8;" }));
-    link.download = `${fileTitle}.csv` || "export.csv";
-    link.style.visibility = "hidden";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
+function _downloadPDFFile(labels, labelDescription, fileTitle) {
+  console.log("_downloadPDFFile", labels, labelDescription, fileTitle); //???
 }
-*/
 /**
- * Converts output into an array of labels.
+ * Prepares labels for export.
  *
- * @param contents Array of content to convert into an array of labels
+ * @param labels Array of labels to prepare
  * @param removeDuplicates Remove duplicate lines
  *
- * @returns Array of labels; each label consists of an array of strings
+ * @returns De-duped array of labels if removeDuplicates is true
  */
-function _prepareOutput(contents, removeDuplicates = true) {
+function _prepareOutput(labels, removeDuplicates = true) {
   // Remove duplicates if desired
   if (removeDuplicates) {
     const uniques = new Set();
-    contents.forEach(labelLines => uniques.add(labelLines.join("|")));
-    console.log(Array.from(uniques)); //???
-    contents = Array.from(uniques).map(label => label.split("|"));
+    labels.forEach(labelLines => uniques.add(labelLines.join("|")));
+    labels = Array.from(uniques).map(label => label.split("|"));
   }
-  return contents;
+  return labels;
 }
 
 const pdfDownloadCss = ":host{display:block}";
@@ -125,8 +101,7 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
     // Convert array of objects into an array of string arrays
     const contents = attributes.map(attr => Object.values(attr));
     const labelDescription = this._labelInfoElement.selectedOption.value;
-    console.log("downloadPDF removeDuplicates", removeDuplicates); //???
-    return exportPDF(contents, labelDescription);
+    return exportPDF(contents, labelDescription, removeDuplicates);
   }
   /**
    * Downloads csv of mailing labels for the provided list of ids
