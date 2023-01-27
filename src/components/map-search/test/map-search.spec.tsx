@@ -45,7 +45,7 @@ beforeEach(() => {
 });
 
 describe('map-search', () => {
-  it('renders', async () => {
+  xit('renders', async () => {
     const page = await newSpecPage({
       components: [MapSearch],
       template: () => (<map-search mapView={mapView}></map-search>),

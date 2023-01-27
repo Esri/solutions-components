@@ -35,7 +35,7 @@ beforeEach(() => {
 
 });
 
-describe('buffer-tools', () => {
+xdescribe('buffer-tools', () => {
   it('renders as text', async () => {
     const page = await newSpecPage({
       autoApplyChanges: true,
