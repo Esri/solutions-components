@@ -363,7 +363,7 @@ export namespace Components {
          */
         "defaultBufferDistance": number;
         /**
-          * number: The default value to show for the buffer unit
+          * number: The default value to show for the buffer unit ("feet"|"meters"|"miles"|"kilometers")
          */
         "defaultBufferUnit": DistanceUnit;
         /**
@@ -371,7 +371,7 @@ export namespace Components {
          */
         "exportOptions": IExportOptions;
         /**
-          * esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
+          * The effect that will be applied when featureHighlightEnabled is true  esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
          */
         "featureEffect": __esri.FeatureEffect;
         /**
@@ -383,7 +383,7 @@ export namespace Components {
          */
         "mapView": __esri.MapView;
         /**
-          * string: The value to show for no results
+          * string: The value to show for no results when left empty the default text "0 selected features from {layerTitle}" will be shown
          */
         "noResultText": string;
         /**
@@ -391,7 +391,7 @@ export namespace Components {
          */
         "searchConfiguration": ISearchConfiguration;
         /**
-          * string[]: List of layer titles that should be shown as potential selection layers
+          * string[]: List of layer titles that should be shown as potential selection layers when skectching with "Use layer features" option
          */
         "selectionLayers": string[];
         /**
@@ -1295,7 +1295,7 @@ declare namespace LocalJSX {
          */
         "defaultBufferDistance"?: number;
         /**
-          * number: The default value to show for the buffer unit
+          * number: The default value to show for the buffer unit ("feet"|"meters"|"miles"|"kilometers")
          */
         "defaultBufferUnit"?: DistanceUnit;
         /**
@@ -1303,7 +1303,7 @@ declare namespace LocalJSX {
          */
         "exportOptions"?: IExportOptions;
         /**
-          * esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
+          * The effect that will be applied when featureHighlightEnabled is true  esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
          */
         "featureEffect"?: __esri.FeatureEffect;
         /**
@@ -1315,7 +1315,7 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
-          * string: The value to show for no results
+          * string: The value to show for no results when left empty the default text "0 selected features from {layerTitle}" will be shown
          */
         "noResultText"?: string;
         /**
@@ -1323,7 +1323,7 @@ declare namespace LocalJSX {
          */
         "searchConfiguration"?: ISearchConfiguration;
         /**
-          * string[]: List of layer titles that should be shown as potential selection layers
+          * string[]: List of layer titles that should be shown as potential selection layers when skectching with "Use layer features" option
          */
         "selectionLayers"?: string[];
         /**

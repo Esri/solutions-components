@@ -659,7 +659,7 @@ export class PublicNotification {
           <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
           <calcite-input-message active class="info-blue" scale="m">
             {
-              this.noResultText ? this.noResultText :
+              this.noResultText && this._numSelected === 0 ? this.noResultText :
                 this._translations.selectedAddresses.replace(
                   "{{n}}", this._numSelected.toString()).replace("{{layer}}", this.addresseeLayer?.layer.title || ""
                 )
