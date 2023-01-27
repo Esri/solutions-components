@@ -205,7 +205,7 @@ export class MapLayerPicker {
    */
   _addMapLayersOptions(): VNode[] {
     return this.layerIds.reduce((prev, cur) => {
-      if (state.managedLayers.indexOf(cur) < 0 && (this.enabledLayerIds.length > 0 ? this.enabledLayerIds.indexOf(cur) > -1 : true)) {
+      if (state.managedLayers.indexOf(state.layerNameHash[cur]) < 0 && (this.enabledLayerIds.length > 0 ? this.enabledLayerIds.indexOf(cur) > -1 : true)) {
         prev.push(
           this.selectionMode === "multi" && this.selectedLayerIds.indexOf(cur) > -1 ?
             (<calcite-combobox-item selected textLabel={state.layerNameHash[cur]} value={cur} />) :
@@ -239,11 +239,9 @@ export class MapLayerPicker {
    * @returns Promise when the operation has completed
    */
   protected async _initLayerHashState(): Promise<void> {
-    console.log("MLP _initLayerState")
     if (this.mapView) {
       state.layerNameHash = await getMapLayerHash(this.mapView);
     }
-    console.log(state.layerNameHash);
   }
 
   /**
