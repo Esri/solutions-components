@@ -70,7 +70,7 @@ export async function queryObjectIds(
   results.forEach(resultIds => {
     ids = [
       ...ids,
-      ...resultIds
+      ...resultIds || []
     ]
   });
   return ids;
