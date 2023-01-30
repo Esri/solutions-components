@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const dom = require('./dom-4a580af6.js');
 const resources = require('./resources-6152b073.js');
 const interactive = require('./interactive-0a68ab99.js');
@@ -162,5 +162,3 @@ const FlowItem = class {
 FlowItem.style = flowItemCss;
 
 exports.calcite_flow_item = FlowItem;
-
-//# sourceMappingURL=calcite-flow-item.cjs.entry.js.map

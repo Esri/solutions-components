@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, h, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, h, g as getElement } from './index-c246d90e.js';
 import { h as hexToRGB, i as isValidHex } from './utils-3f4ee4c3.js';
 import { e as getThemeName } from './dom-3bdc69ee.js';
 import './resources-436ae282.js';
@@ -150,5 +150,3 @@ const Avatar = class {
 Avatar.style = avatarCss;
 
 export { Avatar as calcite_avatar };
-
-//# sourceMappingURL=calcite-avatar.entry.js.map

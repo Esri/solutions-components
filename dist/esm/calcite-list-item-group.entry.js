@@ -3,8 +3,8 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, h, H as Host, g as getElement } from './index-09deaa39.js';
-import { H as Heading, c as constrainHeadingLevel } from './Heading-18b8d999.js';
+import { r as registerInstance, h, H as Host, g as getElement } from './index-c246d90e.js';
+import { H as Heading, c as constrainHeadingLevel } from './Heading-34ddc076.js';
 
 /*!
  * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
@@ -41,5 +41,3 @@ const ListItemGroup = class {
 ListItemGroup.style = listItemGroupCss;
 
 export { ListItemGroup as calcite_list_item_group };
-
-//# sourceMappingURL=calcite-list-item-group.entry.js.map

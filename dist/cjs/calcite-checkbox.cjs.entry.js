@@ -7,9 +7,9 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const guid = require('./guid-84ac4d91.js');
-const form = require('./form-c94c0c4d.js');
+const form = require('./form-ef410342.js');
 const label = require('./label-24fcd8a5.js');
 const interactive = require('./interactive-0a68ab99.js');
 const dom = require('./dom-4a580af6.js');
@@ -140,5 +140,3 @@ const Checkbox = class {
 Checkbox.style = checkboxCss;
 
 exports.calcite_checkbox = Checkbox;
-
-//# sourceMappingURL=calcite-checkbox.cjs.entry.js.map

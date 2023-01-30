@@ -3,11 +3,11 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-c246d90e.js';
 import { g as guid } from './guid-15fce7c0.js';
 import { b as getElementDir, f as focusElement, t as toAriaBoolean } from './dom-3bdc69ee.js';
 import { c as connectLabel, d as disconnectLabel, g as getLabelText } from './label-aa562647.js';
-import { c as connectForm, d as disconnectForm, H as HiddenFormInputSlot } from './form-dd3f6c86.js';
+import { c as connectForm, d as disconnectForm, H as HiddenFormInputSlot } from './form-62bc7b1f.js';
 import { g as getRoundRobinIndex } from './array-2ab3b18f.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
 import './resources-436ae282.js';
@@ -276,5 +276,3 @@ const RadioButton = class {
 RadioButton.style = radioButtonCss;
 
 export { RadioButton as calcite_radio_button };
-
-//# sourceMappingURL=calcite-radio-button.entry.js.map

@@ -3,11 +3,11 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, g as getElement, F as Fragment } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, g as getElement, F as Fragment } from './index-c246d90e.js';
 import { c as createObserver } from './observers-31601001.js';
 import { f as focusElement } from './dom-3bdc69ee.js';
 import { c as connectLabel, d as disconnectLabel } from './label-aa562647.js';
-import { c as connectForm, d as disconnectForm, a as afterConnectDefaultValueSet, H as HiddenFormInputSlot } from './form-dd3f6c86.js';
+import { c as connectForm, d as disconnectForm, a as afterConnectDefaultValueSet, H as HiddenFormInputSlot } from './form-62bc7b1f.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
 import './resources-436ae282.js';
 import './guid-15fce7c0.js';
@@ -306,5 +306,3 @@ const Select = class {
 Select.style = selectCss;
 
 export { Option as calcite_option, Select as calcite_select };
-
-//# sourceMappingURL=calcite-option_2.entry.js.map

@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, g as getElement } from './index-c246d90e.js';
 import { g as getElementProp, a as getSlotted } from './dom-3bdc69ee.js';
 import { c as connectLabel, d as disconnectLabel, g as getLabelText } from './label-aa562647.js';
 import { c as createObserver } from './observers-31601001.js';
@@ -246,5 +246,3 @@ const InlineEditable = class {
 InlineEditable.style = inlineEditableCss;
 
 export { InlineEditable as calcite_inline_editable };
-
-//# sourceMappingURL=calcite-inline-editable.entry.js.map

@@ -34,4 +34,3 @@ onChange("managedLayers", () => {
   dispatchEvent(managedLayersChangedEvent);
 });
 export default state;
-//# sourceMappingURL=publicNotificationStore.js.map

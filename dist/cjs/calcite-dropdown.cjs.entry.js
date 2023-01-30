@@ -7,9 +7,9 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const dom = require('./dom-4a580af6.js');
-const floatingUi = require('./floating-ui-c89a093e.js');
+const floatingUi = require('./floating-ui-7e3d7775.js');
 const observers = require('./observers-5311faf8.js');
 const interactive = require('./interactive-0a68ab99.js');
 const openCloseComponent = require('./openCloseComponent-bf986132.js');
@@ -479,5 +479,3 @@ const Dropdown = class {
 Dropdown.style = dropdownCss;
 
 exports.calcite_dropdown = Dropdown;
-
-//# sourceMappingURL=calcite-dropdown.cjs.entry.js.map

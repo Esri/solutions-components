@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, g as getElement } from './index-c246d90e.js';
 
 const StoreManager = class {
   constructor(hostRef) {
@@ -59,5 +59,3 @@ const StoreManager = class {
 };
 
 export { StoreManager as store_manager };
-
-//# sourceMappingURL=store-manager.entry.js.map

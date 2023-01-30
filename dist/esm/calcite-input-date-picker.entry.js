@@ -3,12 +3,12 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-09deaa39.js';
-import { T as TEXT, g as getValueAsDateRange, a as getLocaleData } from './resources-421bd81b.js';
+import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-c246d90e.js';
+import { T as TEXT, g as getValueAsDateRange, a as getLocaleData } from './resources-8a9faf6e.js';
 import { d as dateToISO, a as dateFromISO, s as setEndOfDay, b as dateFromRange, c as sameDate, p as parseDateString, i as inRange } from './date-03618c4c.js';
 import { c as connectLabel, d as disconnectLabel, g as getLabelText } from './label-aa562647.js';
-import { s as submitForm, c as connectForm, d as disconnectForm, H as HiddenFormInputSlot } from './form-dd3f6c86.js';
-import { d as defaultMenuPlacement, f as filterComputedPlacements, c as connectFloatingUI, u as updateAfterClose, r as reposition, a as disconnectFloatingUI, F as FloatingCSS } from './floating-ui-6010f963.js';
+import { s as submitForm, c as connectForm, d as disconnectForm, H as HiddenFormInputSlot } from './form-62bc7b1f.js';
+import { d as defaultMenuPlacement, f as filterComputedPlacements, c as connectFloatingUI, u as updateAfterClose, r as reposition, a as disconnectFloatingUI, F as FloatingCSS } from './floating-ui-63460291.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
 import { t as toAriaBoolean } from './dom-3bdc69ee.js';
 import { c as connectOpenCloseComponent, d as disconnectOpenCloseComponent } from './openCloseComponent-5caff873.js';
@@ -616,5 +616,3 @@ const InputDatePicker = class {
 InputDatePicker.style = inputDatePickerCss;
 
 export { InputDatePicker as calcite_input_date_picker };
-
-//# sourceMappingURL=calcite-input-date-picker.entry.js.map

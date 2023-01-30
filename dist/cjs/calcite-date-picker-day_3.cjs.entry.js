@@ -7,14 +7,14 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const dom = require('./dom-4a580af6.js');
 const resources = require('./resources-b56bce71.js');
 const interactive = require('./interactive-0a68ab99.js');
 const key = require('./key-55aca5c0.js');
 const locale = require('./locale-73cab8e8.js');
 const date = require('./date-e21b2052.js');
-const Heading = require('./Heading-dc3950d8.js');
+const Heading = require('./Heading-c10b33b5.js');
 require('./guid-84ac4d91.js');
 require('./observers-5311faf8.js');
 
@@ -569,5 +569,3 @@ DatePickerMonthHeader.style = datePickerMonthHeaderCss;
 exports.calcite_date_picker_day = DatePickerDay;
 exports.calcite_date_picker_month = DatePickerMonth;
 exports.calcite_date_picker_month_header = DatePickerMonthHeader;
-
-//# sourceMappingURL=calcite-date-picker-day_3.cjs.entry.js.map

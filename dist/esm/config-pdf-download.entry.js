@@ -3,8 +3,8 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, h, H as Host, g as getElement } from './index-09deaa39.js';
-import { g as getLocaleComponentStrings } from './locale-a5a0b545.js';
+import { r as registerInstance, h, H as Host, g as getElement } from './index-c246d90e.js';
+import { g as getLocaleComponentStrings } from './locale-b76dc371.js';
 import { p as pdfUtils } from './labelFormats-0a0f314c.js';
 import './_commonjsHelpers-8fd39c50.js';
 
@@ -111,5 +111,3 @@ const ConfigPdfDownload = class {
 ConfigPdfDownload.style = configPdfDownloadCss;
 
 export { ConfigPdfDownload as config_pdf_download };
-
-//# sourceMappingURL=config-pdf-download.entry.js.map

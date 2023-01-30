@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const pciUtils = require('./pciUtils-423cfc68.js');
 
 const deductCalculatorCss = ":host{display:block;--calcite-label-margin-bottom:0}.label-display{display:block;padding-bottom:1rem}";
@@ -103,5 +103,3 @@ const DeductCalculator = class {
 DeductCalculator.style = deductCalculatorCss;
 
 exports.deduct_calculator = DeductCalculator;
-
-//# sourceMappingURL=deduct-calculator.cjs.entry.js.map

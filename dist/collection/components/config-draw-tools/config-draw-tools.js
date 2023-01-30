@@ -148,4 +148,3 @@ export class ConfigDrawTools {
   }
   static get elementRef() { return "el"; }
 }
-//# sourceMappingURL=config-draw-tools.js.map

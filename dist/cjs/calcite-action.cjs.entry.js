@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const observers = require('./observers-5311faf8.js');
 const interactive = require('./interactive-0a68ab99.js');
 const dom = require('./dom-4a580af6.js');
@@ -175,5 +175,3 @@ const Action = class {
 Action.style = actionCss;
 
 exports.calcite_action = Action;
-
-//# sourceMappingURL=calcite-action.cjs.entry.js.map

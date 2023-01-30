@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, F as Fragment, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, F as Fragment, g as getElement } from './index-c246d90e.js';
 import { n as numberStringFormatter, c as connectLocalized, d as disconnectLocalized } from './locale-9dd0777b.js';
 import './key-acb660e7.js';
 import './observers-31601001.js';
@@ -224,5 +224,3 @@ const Pagination = class {
 Pagination.style = paginationCss;
 
 export { Pagination as calcite_pagination };
-
-//# sourceMappingURL=calcite-pagination.entry.js.map

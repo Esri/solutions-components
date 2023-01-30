@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 
 const commentCardCss = ":host{display:block}";
 
@@ -73,5 +73,3 @@ const CommentCard = class {
 CommentCard.style = commentCardCss;
 
 exports.comment_card = CommentCard;
-
-//# sourceMappingURL=comment-card.cjs.entry.js.map

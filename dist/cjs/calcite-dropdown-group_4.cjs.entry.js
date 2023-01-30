@@ -7,10 +7,10 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const dom = require('./dom-4a580af6.js');
 const interactive = require('./interactive-0a68ab99.js');
-const locale = require('./locale-d15229c4.js');
+const locale = require('./locale-fadee9a0.js');
 require('./resources-b56bce71.js');
 require('./guid-84ac4d91.js');
 require('./_commonjsHelpers-6aafa5de.js');
@@ -461,5 +461,3 @@ exports.calcite_dropdown_group = DropdownGroup;
 exports.calcite_dropdown_item = DropdownItem;
 exports.calcite_split_button = SplitButton;
 exports.edit_record_modal = EditRecordModal;
-
-//# sourceMappingURL=calcite-dropdown-group_4.cjs.entry.js.map

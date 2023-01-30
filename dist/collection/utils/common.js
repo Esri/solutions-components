@@ -294,4 +294,3 @@ function _updateTemplateResourcePaths(data, id, updateType, path, sourceFileName
     return t;
   });
 }
-//# sourceMappingURL=common.js.map

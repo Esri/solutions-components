@@ -3,10 +3,10 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-c246d90e.js';
 import { a as getSlotted, s as setRequestedIcon, g as getElementProp, b as getElementDir } from './dom-3bdc69ee.js';
 import { c as connectLabel, d as disconnectLabel, g as getLabelText } from './label-aa562647.js';
-import { s as submitForm, c as connectForm, d as disconnectForm, H as HiddenFormInputSlot } from './form-dd3f6c86.js';
+import { s as submitForm, c as connectForm, d as disconnectForm, H as HiddenFormInputSlot } from './form-62bc7b1f.js';
 import { T as TEXT$1, C as CSS_UTILITY } from './resources-436ae282.js';
 import { c as createObserver } from './observers-31601001.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
@@ -343,5 +343,3 @@ const InputText = class {
 InputText.style = inputTextCss;
 
 export { InputText as calcite_input_text };
-
-//# sourceMappingURL=calcite-input-text.entry.js.map

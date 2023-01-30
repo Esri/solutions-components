@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const label = require('./label-24fcd8a5.js');
 require('./dom-4a580af6.js');
 require('./resources-b56bce71.js');
@@ -87,5 +87,3 @@ const Label = class {
 Label.style = labelCss;
 
 exports.calcite_label = Label;
-
-//# sourceMappingURL=calcite-label.cjs.entry.js.map

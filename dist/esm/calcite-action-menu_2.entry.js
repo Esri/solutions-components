@@ -3,15 +3,15 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, F as Fragment, g as getElement, f as forceUpdate, H as Host } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, F as Fragment, g as getElement, f as forceUpdate, H as Host } from './index-c246d90e.js';
 import { C as CSS$1, I as ICONS, S as SLOTS } from './resources-d60362c3.js';
 import { t as toAriaBoolean, i as isPrimaryPointerButton, f as focusElement, q as queryElementRoots } from './dom-3bdc69ee.js';
 import { g as getRoundRobinIndex } from './array-2ab3b18f.js';
 import { g as guid } from './guid-15fce7c0.js';
 import { i as isActivationKey } from './key-acb660e7.js';
-import { b as defaultOffsetDistance, f as filterComputedPlacements, c as connectFloatingUI, u as updateAfterClose, a as disconnectFloatingUI, r as reposition, F as FloatingCSS } from './floating-ui-6010f963.js';
+import { b as defaultOffsetDistance, f as filterComputedPlacements, c as connectFloatingUI, u as updateAfterClose, a as disconnectFloatingUI, r as reposition, F as FloatingCSS } from './floating-ui-63460291.js';
 import { c as connectOpenCloseComponent, d as disconnectOpenCloseComponent } from './openCloseComponent-5caff873.js';
-import { H as Heading } from './Heading-18b8d999.js';
+import { H as Heading } from './Heading-34ddc076.js';
 import './resources-436ae282.js';
 import './debounce-4c884e5c.js';
 
@@ -721,5 +721,3 @@ const Popover = class {
 Popover.style = popoverCss;
 
 export { ActionMenu as calcite_action_menu, Popover as calcite_popover };
-
-//# sourceMappingURL=calcite-action-menu_2.entry.js.map

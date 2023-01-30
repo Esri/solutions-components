@@ -7,12 +7,12 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const appGlobals = require('./app-globals-3d491821.js');
 require('./resources-b56bce71.js');
 
 /*
- Stencil Client Patch Esm v2.21.0 | MIT Licensed | https://stenciljs.com
+ Stencil Client Patch Esm v2.22.2 | MIT Licensed | https://stenciljs.com
  */
 const patchEsm = () => {
     return index.promiseResolve();
@@ -26,6 +26,5 @@ const defineCustomElements = (win, options) => {
   });
 };
 
+exports.setNonce = index.setNonce;
 exports.defineCustomElements = defineCustomElements;
-
-//# sourceMappingURL=loader.cjs.js.map

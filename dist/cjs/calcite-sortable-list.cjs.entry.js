@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const sortable_esm = require('./sortable.esm-bf47019d.js');
 const observers = require('./observers-5311faf8.js');
 const interactive = require('./interactive-0a68ab99.js');
@@ -177,5 +177,3 @@ const SortableList = class {
 SortableList.style = sortableListCss;
 
 exports.calcite_sortable_list = SortableList;
-
-//# sourceMappingURL=calcite-sortable-list.cjs.entry.js.map

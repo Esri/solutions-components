@@ -7,8 +7,8 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
-const locale = require('./locale-d15229c4.js');
+const index = require('./index-c6979cbb.js');
+const locale = require('./locale-fadee9a0.js');
 require('./_commonjsHelpers-6aafa5de.js');
 
 const configDrawToolsCss = ":host{display:block}.label-spacing{--calcite-label-margin-bottom:0}.padding-block-end-1{-webkit-padding-after:1rem;padding-block-end:1rem}.padding-inline-start-1{-webkit-padding-start:1rem;padding-inline-start:1rem}";
@@ -83,5 +83,3 @@ const ConfigDrawTools = class {
 ConfigDrawTools.style = configDrawToolsCss;
 
 exports.config_draw_tools = ConfigDrawTools;
-
-//# sourceMappingURL=config-draw-tools.cjs.entry.js.map

@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const index$1 = require('./index-7af21b6f.js');
 const resources = require('./resources-aa19bf8c.js');
 const dom = require('./dom-4a580af6.js');
@@ -915,5 +915,3 @@ const ColorPicker = class {
 ColorPicker.style = colorPickerCss;
 
 exports.calcite_color_picker = ColorPicker;
-
-//# sourceMappingURL=calcite-color-picker.cjs.entry.js.map

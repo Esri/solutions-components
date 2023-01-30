@@ -1951,5 +1951,3 @@ function zeroArray(array, length) {
 var color = Color;
 
 export { color as c };
-
-//# sourceMappingURL=index-d33ebc35.js.map

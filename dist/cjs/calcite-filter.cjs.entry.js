@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const dom = require('./dom-4a580af6.js');
 const interactive = require('./interactive-0a68ab99.js');
 const filter = require('./filter-325f654f.js');
@@ -152,5 +152,3 @@ const Filter = class {
 Filter.style = filterCss;
 
 exports.calcite_filter = Filter;
-
-//# sourceMappingURL=calcite-filter.cjs.entry.js.map

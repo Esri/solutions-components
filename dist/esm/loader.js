@@ -3,12 +3,13 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { p as promiseResolve, b as bootstrapLazy } from './index-09deaa39.js';
+import { p as promiseResolve, b as bootstrapLazy } from './index-c246d90e.js';
+export { s as setNonce } from './index-c246d90e.js';
 import { g as globalScripts } from './app-globals-19688cc1.js';
 import './resources-436ae282.js';
 
 /*
- Stencil Client Patch Esm v2.21.0 | MIT Licensed | https://stenciljs.com
+ Stencil Client Patch Esm v2.22.2 | MIT Licensed | https://stenciljs.com
  */
 const patchEsm = () => {
     return promiseResolve();
@@ -23,5 +24,3 @@ const defineCustomElements = (win, options) => {
 };
 
 export { defineCustomElements };
-
-//# sourceMappingURL=loader.js.map

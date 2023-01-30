@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, g as getElement } from './index-c246d90e.js';
 import { n as numberKeys, i as isActivationKey } from './key-acb660e7.js';
 import { i as isValidNumber, u as updateEffectiveLocale, c as connectLocalized, d as disconnectLocalized } from './locale-9dd0777b.js';
 import { i as isValidTime, p as parseTimeString, a as localizeTimeStringToParts, g as getMeridiem, b as getTimeParts, c as formatTimePart, d as localizeTimePart, e as getLocaleHourCycle, m as maxTenthForMinuteAndSecond } from './time-52d51e3d.js';
@@ -709,5 +709,3 @@ const TimePicker = class {
 TimePicker.style = timePickerCss;
 
 export { TimePicker as calcite_time_picker };
-
-//# sourceMappingURL=calcite-time-picker.entry.js.map

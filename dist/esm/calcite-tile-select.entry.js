@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, g as getElement } from './index-c246d90e.js';
 import { g as guid } from './guid-15fce7c0.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
 
@@ -212,5 +212,3 @@ const TileSelect = class {
 TileSelect.style = tileSelectCss;
 
 export { TileSelect as calcite_tile_select };
-
-//# sourceMappingURL=calcite-tile-select.entry.js.map

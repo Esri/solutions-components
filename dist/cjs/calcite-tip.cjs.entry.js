@@ -7,11 +7,11 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const resources = require('./resources-308edbd8.js');
 const dom = require('./dom-4a580af6.js');
-const Heading = require('./Heading-dc3950d8.js');
-const conditionalSlot = require('./conditionalSlot-d8471163.js');
+const Heading = require('./Heading-c10b33b5.js');
+const conditionalSlot = require('./conditionalSlot-baada7a3.js');
 require('./resources-b56bce71.js');
 require('./guid-84ac4d91.js');
 require('./observers-5311faf8.js');
@@ -123,5 +123,3 @@ const Tip = class {
 Tip.style = tipCss;
 
 exports.calcite_tip = Tip;
-
-//# sourceMappingURL=calcite-tip.cjs.entry.js.map

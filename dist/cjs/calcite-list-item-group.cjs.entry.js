@@ -7,8 +7,8 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
-const Heading = require('./Heading-dc3950d8.js');
+const index = require('./index-c6979cbb.js');
+const Heading = require('./Heading-c10b33b5.js');
 
 /*!
  * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
@@ -45,5 +45,3 @@ const ListItemGroup = class {
 ListItemGroup.style = listItemGroupCss;
 
 exports.calcite_list_item_group = ListItemGroup;
-
-//# sourceMappingURL=calcite-list-item-group.cjs.entry.js.map

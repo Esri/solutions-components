@@ -112,5 +112,3 @@ const DIMENSIONS = {
 };
 
 export { CSS as C, DEFAULT_COLOR as D, HSV_LIMITS as H, RGB_LIMITS as R, TEXT as T, DIMENSIONS as a, DEFAULT_STORAGE_KEY_PREFIX as b };
-
-//# sourceMappingURL=resources-7d4a587f.js.map

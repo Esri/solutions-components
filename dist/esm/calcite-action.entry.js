@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, H as Host, g as getElement, f as forceUpdate } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, H as Host, g as getElement, f as forceUpdate } from './index-c246d90e.js';
 import { c as createObserver } from './observers-31601001.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
 import { t as toAriaBoolean } from './dom-3bdc69ee.js';
@@ -171,5 +171,3 @@ const Action = class {
 Action.style = actionCss;
 
 export { Action as calcite_action };
-
-//# sourceMappingURL=calcite-action.entry.js.map

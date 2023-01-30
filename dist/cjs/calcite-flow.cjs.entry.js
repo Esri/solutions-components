@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const observers = require('./observers-5311faf8.js');
 
 /*!
@@ -125,5 +125,3 @@ const Flow = class {
 Flow.style = flowCss;
 
 exports.calcite_flow = Flow;
-
-//# sourceMappingURL=calcite-flow.cjs.entry.js.map

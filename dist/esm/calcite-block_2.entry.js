@@ -3,14 +3,14 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-c246d90e.js';
 import { a as getSlotted, t as toAriaBoolean } from './dom-3bdc69ee.js';
-import { H as Heading } from './Heading-18b8d999.js';
-import { c as connectConditionalSlotComponent, d as disconnectConditionalSlotComponent } from './conditionalSlot-e96b0a4f.js';
+import { H as Heading } from './Heading-34ddc076.js';
+import { c as connectConditionalSlotComponent, d as disconnectConditionalSlotComponent } from './conditionalSlot-d09506c4.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
 import { g as guid } from './guid-15fce7c0.js';
 import { I as ICON_TYPES } from './resources-2235e4ff.js';
-import { m as mutationObserverCallback, d as deselectRemovedItems, a as deselectSiblingItems, s as selectSiblings, h as handleFilter, g as getItemData, k as keyDownHandler, i as initialize, b as initializeObserver, c as cleanUpObserver, r as removeItem, e as calciteListItemChangeHandler, f as calciteInternalListItemValueChangeHandler, j as calciteListFocusOutHandler, l as setUpItems, n as setFocus, L as List } from './shared-list-render-5dfbcd05.js';
+import { m as mutationObserverCallback, d as deselectRemovedItems, a as deselectSiblingItems, s as selectSiblings, h as handleFilter, g as getItemData, k as keyDownHandler, i as initialize, b as initializeObserver, c as cleanUpObserver, r as removeItem, e as calciteListItemChangeHandler, f as calciteInternalListItemValueChangeHandler, j as calciteListFocusOutHandler, l as setUpItems, n as setFocus, L as List } from './shared-list-render-13a77297.js';
 import { c as createObserver } from './observers-31601001.js';
 import './resources-436ae282.js';
 import './array-2ab3b18f.js';
@@ -333,5 +333,3 @@ const PickList = class {
 PickList.style = pickListCss;
 
 export { Block as calcite_block, PickList as calcite_pick_list };
-
-//# sourceMappingURL=calcite-block_2.entry.js.map

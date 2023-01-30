@@ -3,8 +3,8 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, h, H as Host, g as getElement } from './index-09deaa39.js';
-import { g as getLocaleComponentStrings } from './locale-a5a0b545.js';
+import { r as registerInstance, h, H as Host, g as getElement } from './index-c246d90e.js';
+import { g as getLocaleComponentStrings } from './locale-b76dc371.js';
 import './_commonjsHelpers-8fd39c50.js';
 
 const configBufferToolsCss = ":host{display:block}.horizontal-display{display:flex}.label-spacing{--calcite-label-margin-bottom:0}.padding-inline-end-1{-webkit-padding-end:1rem;padding-inline-end:1rem}.padding-inline-start-1{-webkit-padding-start:1rem;padding-inline-start:1rem}.padding-block-end-1{-webkit-padding-after:1rem;padding-block-end:1rem}.width-half{width:50%}.width-full{width:100%}";
@@ -119,5 +119,3 @@ const ConfigBufferTools = class {
 ConfigBufferTools.style = configBufferToolsCss;
 
 export { ConfigBufferTools as config_buffer_tools };
-
-//# sourceMappingURL=config-buffer-tools.entry.js.map

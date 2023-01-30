@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 
 /*!
  * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
@@ -60,5 +60,3 @@ const Scrim = class {
 Scrim.style = scrimCss;
 
 exports.calcite_scrim = Scrim;
-
-//# sourceMappingURL=calcite-scrim.cjs.entry.js.map

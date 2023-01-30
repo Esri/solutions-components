@@ -177,4 +177,3 @@ export class CheckList {
   }
   static get elementRef() { return "el"; }
 }
-//# sourceMappingURL=check-list.js.map

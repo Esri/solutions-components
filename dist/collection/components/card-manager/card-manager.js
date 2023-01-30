@@ -110,4 +110,3 @@ export class CardManager {
   }
   static get elementRef() { return "el"; }
 }
-//# sourceMappingURL=card-manager.js.map

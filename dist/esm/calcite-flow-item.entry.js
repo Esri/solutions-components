@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-c246d90e.js';
 import { b as getElementDir } from './dom-3bdc69ee.js';
 import { S as SLOTS$1 } from './resources-9eb63965.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
@@ -158,5 +158,3 @@ const FlowItem = class {
 FlowItem.style = flowItemCss;
 
 export { FlowItem as calcite_flow_item };
-
-//# sourceMappingURL=calcite-flow-item.entry.js.map

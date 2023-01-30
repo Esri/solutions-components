@@ -7,10 +7,10 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const dom = require('./dom-4a580af6.js');
 const guid = require('./guid-84ac4d91.js');
-const conditionalSlot = require('./conditionalSlot-d8471163.js');
+const conditionalSlot = require('./conditionalSlot-baada7a3.js');
 require('./resources-b56bce71.js');
 require('./observers-5311faf8.js');
 
@@ -140,5 +140,3 @@ const Chip = class {
 Chip.style = chipCss;
 
 exports.calcite_chip = Chip;
-
-//# sourceMappingURL=calcite-chip.cjs.entry.js.map

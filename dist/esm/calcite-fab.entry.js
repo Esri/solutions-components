@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, h, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, h, g as getElement } from './index-c246d90e.js';
 import { f as focusElement } from './dom-3bdc69ee.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
 import './resources-436ae282.js';
@@ -96,5 +96,3 @@ const Fab = class {
 Fab.style = fabCss;
 
 export { Fab as calcite_fab };
-
-//# sourceMappingURL=calcite-fab.entry.js.map

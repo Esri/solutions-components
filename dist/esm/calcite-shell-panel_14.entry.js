@@ -3,26 +3,26 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, f as forceUpdate, g as getElement, H as Host, F as Fragment } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, f as forceUpdate, g as getElement, H as Host, F as Fragment } from './index-c246d90e.js';
 import { b as getElementDir, i as isPrimaryPointerButton, a as getSlotted, n as nodeListToArray, j as filterDirectChildren, g as getElementProp, t as toAriaBoolean } from './dom-3bdc69ee.js';
 import { c as clamp } from './math-552c5420.js';
-import { c as connectConditionalSlotComponent, d as disconnectConditionalSlotComponent } from './conditionalSlot-e96b0a4f.js';
+import { c as connectConditionalSlotComponent, d as disconnectConditionalSlotComponent } from './conditionalSlot-d09506c4.js';
 import { g as guid } from './guid-15fce7c0.js';
 import { c as createObserver } from './observers-31601001.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
 import { S as Sortable } from './sortable.esm-3b2eaa5c.js';
-import { o as getItemIndex, m as mutationObserverCallback, d as deselectRemovedItems, a as deselectSiblingItems, s as selectSiblings, h as handleFilter, g as getItemData, k as keyDownHandler, p as moveItemIndex, i as initialize, b as initializeObserver, c as cleanUpObserver, j as calciteListFocusOutHandler, r as removeItem, e as calciteListItemChangeHandler, f as calciteInternalListItemValueChangeHandler, l as setUpItems, n as setFocus, L as List } from './shared-list-render-5dfbcd05.js';
+import { o as getItemIndex, m as mutationObserverCallback, d as deselectRemovedItems, a as deselectSiblingItems, s as selectSiblings, h as handleFilter, g as getItemData, k as keyDownHandler, p as moveItemIndex, i as initialize, b as initializeObserver, c as cleanUpObserver, j as calciteListFocusOutHandler, r as removeItem, e as calciteListItemChangeHandler, f as calciteInternalListItemValueChangeHandler, l as setUpItems, n as setFocus, L as List } from './shared-list-render-13a77297.js';
 import { I as ICON_TYPES$1 } from './resources-2235e4ff.js';
 import { C as CSS$2, S as SLOTS$3 } from './resources-e3a5cf27.js';
-import { g as getLocaleComponentStrings } from './locale-a5a0b545.js';
-import { s as state, E as EFileType } from './solution-store-c0bf9200.js';
+import { g as getLocaleComponentStrings } from './locale-b76dc371.js';
+import { s as state, E as EFileType } from './solution-store-e7ab55c3.js';
 import { e as EUpdateType } from './interfaces-3b23a5f9.js';
 import './resources-436ae282.js';
 import './array-2ab3b18f.js';
 import './resources-78132e50.js';
 import './debounce-4c884e5c.js';
 import './_commonjsHelpers-8fd39c50.js';
-import './index-e496ff06.js';
+import './index-ac7f66eb.js';
 
 /*!
  * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
@@ -2618,5 +2618,3 @@ const SolutionVariables = class {
 SolutionVariables.style = solutionVariablesCss;
 
 export { ShellPanel as calcite_shell_panel, Tab as calcite_tab, TabNav as calcite_tab_nav, TabTitle as calcite_tab_title, Tabs as calcite_tabs, ValueList as calcite_value_list, ValueListItem as calcite_value_list_item, JsonEditor as json_editor, SolutionItemDetails as solution_item_details, SolutionItemSharing as solution_item_sharing, SolutionOrganizationVariables as solution_organization_variables, SolutionResourceItem as solution_resource_item, SolutionTemplateData as solution_template_data, SolutionVariables as solution_variables };
-
-//# sourceMappingURL=calcite-shell-panel_14.entry.js.map

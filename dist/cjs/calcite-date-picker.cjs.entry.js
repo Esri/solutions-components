@@ -7,8 +7,8 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
-const resources = require('./resources-e81ca10e.js');
+const index = require('./index-c6979cbb.js');
+const resources = require('./resources-40d45ca4.js');
 const date = require('./date-e21b2052.js');
 const locale = require('./locale-73cab8e8.js');
 require('./key-55aca5c0.js');
@@ -449,5 +449,3 @@ const DatePicker = class {
 DatePicker.style = datePickerCss;
 
 exports.calcite_date_picker = DatePicker;
-
-//# sourceMappingURL=calcite-date-picker.cjs.entry.js.map

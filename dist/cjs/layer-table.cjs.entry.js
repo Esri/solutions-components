@@ -7,8 +7,8 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
-const locale = require('./locale-d15229c4.js');
+const index = require('./index-c6979cbb.js');
+const locale = require('./locale-fadee9a0.js');
 const mapViewUtils = require('./mapViewUtils-8ea9adc5.js');
 const csvUtils = require('./csvUtils-63a0511d.js');
 require('./_commonjsHelpers-6aafa5de.js');
@@ -325,5 +325,3 @@ const LayerTable = class {
 LayerTable.style = layerTableCss;
 
 exports.layer_table = LayerTable;
-
-//# sourceMappingURL=layer-table.cjs.entry.js.map

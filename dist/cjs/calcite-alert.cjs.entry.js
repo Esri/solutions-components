@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const dom = require('./dom-4a580af6.js');
 const interfaces = require('./interfaces-e76f31e9.js');
 const openCloseComponent = require('./openCloseComponent-bf986132.js');
@@ -254,5 +254,3 @@ const Alert = class {
 Alert.style = alertCss;
 
 exports.calcite_alert = Alert;
-
-//# sourceMappingURL=calcite-alert.cjs.entry.js.map

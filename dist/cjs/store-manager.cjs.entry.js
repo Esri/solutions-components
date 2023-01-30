@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 
 const StoreManager = class {
   constructor(hostRef) {
@@ -63,5 +63,3 @@ const StoreManager = class {
 };
 
 exports.store_manager = StoreManager;
-
-//# sourceMappingURL=store-manager.cjs.entry.js.map

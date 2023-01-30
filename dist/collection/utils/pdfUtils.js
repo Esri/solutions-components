@@ -60,4 +60,3 @@ function _prepareOutput(labels, labelFormat, removeDuplicates = true) {
   }
   return labels;
 }
-//# sourceMappingURL=pdfUtils.js.map

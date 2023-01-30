@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const utils = require('./utils-120bbbeb.js');
 const dom = require('./dom-4a580af6.js');
 require('./resources-b56bce71.js');
@@ -154,5 +154,3 @@ const Avatar = class {
 Avatar.style = avatarCss;
 
 exports.calcite_avatar = Avatar;
-
-//# sourceMappingURL=calcite-avatar.cjs.entry.js.map

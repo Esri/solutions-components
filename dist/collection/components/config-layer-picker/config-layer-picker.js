@@ -216,4 +216,3 @@ export class ConfigLayerPicker {
       }];
   }
 }
-//# sourceMappingURL=config-layer-picker.js.map

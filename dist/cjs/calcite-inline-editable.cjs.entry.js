@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const dom = require('./dom-4a580af6.js');
 const label = require('./label-24fcd8a5.js');
 const observers = require('./observers-5311faf8.js');
@@ -250,5 +250,3 @@ const InlineEditable = class {
 InlineEditable.style = inlineEditableCss;
 
 exports.calcite_inline_editable = InlineEditable;
-
-//# sourceMappingURL=calcite-inline-editable.cjs.entry.js.map

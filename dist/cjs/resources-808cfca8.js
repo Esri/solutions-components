@@ -23,5 +23,3 @@ const HEADING_LEVEL = 3;
 exports.CSS = CSS;
 exports.HEADING_LEVEL = HEADING_LEVEL;
 exports.SLOTS = SLOTS;
-
-//# sourceMappingURL=resources-808cfca8.js.map

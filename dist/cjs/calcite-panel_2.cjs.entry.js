@@ -7,14 +7,14 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const resources = require('./resources-6152b073.js');
 const dom = require('./dom-4a580af6.js');
-const Heading = require('./Heading-dc3950d8.js');
+const Heading = require('./Heading-c10b33b5.js');
 const resources$1 = require('./resources-2260d186.js');
 const interactive = require('./interactive-0a68ab99.js');
 const observers = require('./observers-5311faf8.js');
-const conditionalSlot = require('./conditionalSlot-d8471163.js');
+const conditionalSlot = require('./conditionalSlot-baada7a3.js');
 require('./resources-b56bce71.js');
 require('./guid-84ac4d91.js');
 
@@ -435,5 +435,3 @@ Shell.style = shellCss;
 
 exports.calcite_panel = Panel;
 exports.calcite_shell = Shell;
-
-//# sourceMappingURL=calcite-panel_2.cjs.entry.js.map

@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, h, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, h, g as getElement } from './index-c246d90e.js';
 import { c as createObserver } from './observers-31601001.js';
 
 /*!
@@ -121,5 +121,3 @@ const Flow = class {
 Flow.style = flowCss;
 
 export { Flow as calcite_flow };
-
-//# sourceMappingURL=calcite-flow.entry.js.map

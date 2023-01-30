@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-c246d90e.js';
 import { s as setRequestedIcon, t as toAriaBoolean, a as getSlotted } from './dom-3bdc69ee.js';
 import { S as StatusIcons } from './interfaces-4ae145eb.js';
 import { c as connectOpenCloseComponent, d as disconnectOpenCloseComponent } from './openCloseComponent-5caff873.js';
@@ -250,5 +250,3 @@ const Alert = class {
 Alert.style = alertCss;
 
 export { Alert as calcite_alert };
-
-//# sourceMappingURL=calcite-alert.entry.js.map

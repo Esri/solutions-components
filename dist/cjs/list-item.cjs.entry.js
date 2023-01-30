@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 
 const listItemCss = ":host{display:block}";
 
@@ -73,5 +73,3 @@ const ListItem = class {
 ListItem.style = listItemCss;
 
 exports.list_item = ListItem;
-
-//# sourceMappingURL=list-item.cjs.entry.js.map

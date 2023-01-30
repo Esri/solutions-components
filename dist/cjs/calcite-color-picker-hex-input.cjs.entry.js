@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index$1 = require('./index-ee607805.js');
+const index$1 = require('./index-c6979cbb.js');
 const utils = require('./utils-120bbbeb.js');
 const index = require('./index-7af21b6f.js');
 const dom = require('./dom-4a580af6.js');
@@ -215,5 +215,3 @@ const ColorPickerHexInput = class {
 ColorPickerHexInput.style = colorPickerHexInputCss;
 
 exports.calcite_color_picker_hex_input = ColorPickerHexInput;
-
-//# sourceMappingURL=calcite-color-picker-hex-input.cjs.entry.js.map

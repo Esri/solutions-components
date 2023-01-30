@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const dom = require('./dom-4a580af6.js');
 require('./resources-b56bce71.js');
 require('./guid-84ac4d91.js');
@@ -97,5 +97,3 @@ const Handle = class {
 Handle.style = handleCss;
 
 exports.calcite_handle = Handle;
-
-//# sourceMappingURL=calcite-handle.cjs.entry.js.map

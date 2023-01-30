@@ -3,12 +3,12 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, h, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, h, g as getElement } from './index-c246d90e.js';
 import { c as closestElementCrossShadowBoundary } from './dom-3bdc69ee.js';
 import { c as connectLabel, d as disconnectLabel, g as getLabelText } from './label-aa562647.js';
 import { c as createObserver } from './observers-31601001.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
-import { s as submitForm, r as resetForm } from './form-dd3f6c86.js';
+import { s as submitForm, r as resetForm } from './form-62bc7b1f.js';
 import './resources-436ae282.js';
 import './guid-15fce7c0.js';
 
@@ -211,5 +211,3 @@ const Button = class {
 Button.style = buttonCss;
 
 export { Button as calcite_button };
-
-//# sourceMappingURL=calcite-button.entry.js.map

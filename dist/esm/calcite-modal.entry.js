@@ -3,10 +3,10 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-c246d90e.js';
 import { f as focusElement, a as getSlotted, k as ensureId, l as isCalciteFocusable } from './dom-3bdc69ee.js';
 import { c as createObserver } from './observers-31601001.js';
-import { c as connectConditionalSlotComponent, d as disconnectConditionalSlotComponent } from './conditionalSlot-e96b0a4f.js';
+import { c as connectConditionalSlotComponent, d as disconnectConditionalSlotComponent } from './conditionalSlot-d09506c4.js';
 import { c as connectOpenCloseComponent, d as disconnectOpenCloseComponent } from './openCloseComponent-5caff873.js';
 import './resources-436ae282.js';
 import './guid-15fce7c0.js';
@@ -441,5 +441,3 @@ const Modal = class {
 Modal.style = modalCss;
 
 export { Modal as calcite_modal };
-
-//# sourceMappingURL=calcite-modal.entry.js.map

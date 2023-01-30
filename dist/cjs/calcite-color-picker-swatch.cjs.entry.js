@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const index$1 = require('./index-7af21b6f.js');
 const dom = require('./dom-4a580af6.js');
 require('./_commonjsHelpers-6aafa5de.js');
@@ -74,5 +74,3 @@ const ColorPickerSwatch = class {
 ColorPickerSwatch.style = colorPickerSwatchCss;
 
 exports.calcite_color_picker_swatch = ColorPickerSwatch;
-
-//# sourceMappingURL=calcite-color-picker-swatch.cjs.entry.js.map

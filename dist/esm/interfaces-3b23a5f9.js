@@ -78,5 +78,3 @@ var EExpandType;
 })(EExpandType || (EExpandType = {}));
 
 export { EWorkflowType as E, EExpandType as a, EPageType as b, ESketchType as c, EExportType as d, EUpdateType as e, ESelectionMode as f, ERefineMode as g, ESelectionType as h };
-
-//# sourceMappingURL=interfaces-3b23a5f9.js.map

@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const pciUtils = require('./pciUtils-423cfc68.js');
 
 const pciCalculatorCss = ":host{display:block;--calcite-label-margin-bottom:0}.label-display{display:block;padding-bottom:1rem}.display-flex{display:flex}.display-grid{display:grid}.display-table{display:table}.display-inline-table{display:inline-table}.display-none{display:none}.display-inherit{display:inherit}.padding-top-1{padding-top:1rem}.main-input{width:300px;-webkit-padding-end:1rem;padding-inline-end:1rem}.float-end{float:inline-end}.position-relative{position:relative}.position-right{position:absolute;right:0px}";
@@ -115,5 +115,3 @@ const PciCalculator = class {
 PciCalculator.style = pciCalculatorCss;
 
 exports.pci_calculator = PciCalculator;
-
-//# sourceMappingURL=pci-calculator.cjs.entry.js.map

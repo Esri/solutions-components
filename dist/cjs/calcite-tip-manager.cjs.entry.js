@@ -7,10 +7,10 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const resources = require('./resources-308edbd8.js');
 const dom = require('./dom-4a580af6.js');
-const Heading = require('./Heading-dc3950d8.js');
+const Heading = require('./Heading-c10b33b5.js');
 const observers = require('./observers-5311faf8.js');
 require('./resources-b56bce71.js');
 require('./guid-84ac4d91.js');
@@ -175,5 +175,3 @@ const TipManager = class {
 TipManager.style = tipManagerCss;
 
 exports.calcite_tip_manager = TipManager;
-
-//# sourceMappingURL=calcite-tip-manager.cjs.entry.js.map

@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const dom = require('./dom-4a580af6.js');
 const interactive = require('./interactive-0a68ab99.js');
 const locale = require('./locale-73cab8e8.js');
@@ -236,5 +236,3 @@ const StepperItem = class {
 StepperItem.style = stepperItemCss;
 
 exports.calcite_stepper_item = StepperItem;
-
-//# sourceMappingURL=calcite-stepper-item.cjs.entry.js.map

@@ -3,10 +3,10 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-c246d90e.js';
 import { g as getElementProp, t as toAriaBoolean } from './dom-3bdc69ee.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
-import { g as getLocaleComponentStrings } from './locale-a5a0b545.js';
+import { g as getLocaleComponentStrings } from './locale-b76dc371.js';
 import './resources-436ae282.js';
 import './guid-15fce7c0.js';
 import './_commonjsHelpers-8fd39c50.js';
@@ -454,5 +454,3 @@ const EditRecordModal = class {
 EditRecordModal.style = editRecordModalCss;
 
 export { DropdownGroup as calcite_dropdown_group, DropdownItem as calcite_dropdown_item, SplitButton as calcite_split_button, EditRecordModal as edit_record_modal };
-
-//# sourceMappingURL=calcite-dropdown-group_4.entry.js.map

@@ -3,14 +3,14 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, H as Host, g as getElement, F as Fragment } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, H as Host, g as getElement, F as Fragment } from './index-c246d90e.js';
 import { c as closestElementCrossShadowBoundary, b as getElementDir } from './dom-3bdc69ee.js';
 import { C as CSS_UTILITY } from './resources-436ae282.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
 import { i as isActivationKey } from './key-acb660e7.js';
 import { n as numberStringFormatter } from './locale-9dd0777b.js';
 import { c as sameDate, b as dateFromRange, i as inRange, e as getOrder, n as nextMonth, f as prevMonth } from './date-03618c4c.js';
-import { H as Heading } from './Heading-18b8d999.js';
+import { H as Heading } from './Heading-34ddc076.js';
 import './guid-15fce7c0.js';
 import './observers-31601001.js';
 
@@ -563,5 +563,3 @@ const DatePickerMonthHeader = class {
 DatePickerMonthHeader.style = datePickerMonthHeaderCss;
 
 export { DatePickerDay as calcite_date_picker_day, DatePickerMonth as calcite_date_picker_month, DatePickerMonthHeader as calcite_date_picker_month_header };
-
-//# sourceMappingURL=calcite-date-picker-day_3.entry.js.map

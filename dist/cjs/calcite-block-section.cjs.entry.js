@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const dom = require('./dom-4a580af6.js');
 const guid = require('./guid-84ac4d91.js');
 const key = require('./key-55aca5c0.js');
@@ -120,5 +120,3 @@ const BlockSection = class {
 BlockSection.style = blockSectionCss;
 
 exports.calcite_block_section = BlockSection;
-
-//# sourceMappingURL=calcite-block-section.cjs.entry.js.map

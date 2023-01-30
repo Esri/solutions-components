@@ -7,8 +7,8 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
-const locale = require('./locale-d15229c4.js');
+const index = require('./index-c6979cbb.js');
+const locale = require('./locale-fadee9a0.js');
 const labelFormats = require('./labelFormats-ae8916fd.js');
 require('./_commonjsHelpers-6aafa5de.js');
 
@@ -115,5 +115,3 @@ const ConfigPdfDownload = class {
 ConfigPdfDownload.style = configPdfDownloadCss;
 
 exports.config_pdf_download = ConfigPdfDownload;
-
-//# sourceMappingURL=config-pdf-download.cjs.entry.js.map

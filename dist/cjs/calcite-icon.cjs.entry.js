@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const dom = require('./dom-4a580af6.js');
 const observers = require('./observers-5311faf8.js');
 require('./resources-b56bce71.js');
@@ -183,5 +183,3 @@ const Icon = class {
 Icon.style = iconCss;
 
 exports.calcite_icon = Icon;
-
-//# sourceMappingURL=calcite-icon.cjs.entry.js.map

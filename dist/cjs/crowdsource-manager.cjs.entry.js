@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 
 const crowdsourceManagerCss = ":host{display:block}";
 
@@ -73,5 +73,3 @@ const CrowdsourceManager = class {
 CrowdsourceManager.style = crowdsourceManagerCss;
 
 exports.crowdsource_manager = CrowdsourceManager;
-
-//# sourceMappingURL=crowdsource-manager.cjs.entry.js.map

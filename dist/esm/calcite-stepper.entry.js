@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, g as getElement } from './index-c246d90e.js';
 import { f as focusElement } from './dom-3bdc69ee.js';
 import './resources-436ae282.js';
 import './guid-15fce7c0.js';
@@ -226,5 +226,3 @@ const Stepper = class {
 Stepper.style = stepperCss;
 
 export { Stepper as calcite_stepper };
-
-//# sourceMappingURL=calcite-stepper.entry.js.map

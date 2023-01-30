@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 
 const checkListCss = ":host{display:block}";
 
@@ -101,5 +101,3 @@ const CheckList = class {
 CheckList.style = checkListCss;
 
 exports.check_list = CheckList;
-
-//# sourceMappingURL=check-list.cjs.entry.js.map

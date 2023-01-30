@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-c246d90e.js';
 import { l as labelConnectedEvent, a as labelDisconnectedEvent } from './label-aa562647.js';
 import './dom-3bdc69ee.js';
 import './resources-436ae282.js';
@@ -83,5 +83,3 @@ const Label = class {
 Label.style = labelCss;
 
 export { Label as calcite_label };
-
-//# sourceMappingURL=calcite-label.entry.js.map

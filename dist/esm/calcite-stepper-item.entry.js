@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-c246d90e.js';
 import { g as getElementProp, t as toAriaBoolean } from './dom-3bdc69ee.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
 import { n as numberStringFormatter, c as connectLocalized, d as disconnectLocalized } from './locale-9dd0777b.js';
@@ -232,5 +232,3 @@ const StepperItem = class {
 StepperItem.style = stepperItemCss;
 
 export { StepperItem as calcite_stepper_item };
-
-//# sourceMappingURL=calcite-stepper-item.entry.js.map

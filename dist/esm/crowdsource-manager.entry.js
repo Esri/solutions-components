@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, h, H as Host, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, h, H as Host, g as getElement } from './index-c246d90e.js';
 
 const crowdsourceManagerCss = ":host{display:block}";
 
@@ -69,5 +69,3 @@ const CrowdsourceManager = class {
 CrowdsourceManager.style = crowdsourceManagerCss;
 
 export { CrowdsourceManager as crowdsource_manager };
-
-//# sourceMappingURL=crowdsource-manager.entry.js.map

@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-c246d90e.js';
 import { b as getElementDir, t as toAriaBoolean } from './dom-3bdc69ee.js';
 import { g as guid } from './guid-15fce7c0.js';
 import { i as isActivationKey } from './key-acb660e7.js';
@@ -116,5 +116,3 @@ const BlockSection = class {
 BlockSection.style = blockSectionCss;
 
 export { BlockSection as calcite_block_section };
-
-//# sourceMappingURL=calcite-block-section.entry.js.map

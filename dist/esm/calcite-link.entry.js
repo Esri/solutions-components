@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, h, H as Host, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, h, H as Host, g as getElement } from './index-c246d90e.js';
 import { b as getElementDir, f as focusElement } from './dom-3bdc69ee.js';
 import { C as CSS_UTILITY } from './resources-436ae282.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
@@ -91,5 +91,3 @@ const Link = class {
 Link.style = linkCss;
 
 export { Link as calcite_link };
-
-//# sourceMappingURL=calcite-link.entry.js.map

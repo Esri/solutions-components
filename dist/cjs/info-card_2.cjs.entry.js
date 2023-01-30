@@ -7,8 +7,8 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
-const locale = require('./locale-d15229c4.js');
+const index = require('./index-c6979cbb.js');
+const locale = require('./locale-fadee9a0.js');
 require('./_commonjsHelpers-6aafa5de.js');
 
 const infoCardCss = ":host{display:block;--calcite-label-margin-bottom:0}table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:8px}tr:nth-child(odd){background:var(--calcite-ui-foreground-2)}.bottom-border{padding-bottom:0.5rem;border-bottom:1px solid var(--calcite-ui-border-1)}.padding-top-1-2{padding-top:0.5rem}.font-color-3{color:var(--calcite-ui-text-3)}";
@@ -201,5 +201,3 @@ MediaCard.style = mediaCardCss;
 
 exports.info_card = InfoCard;
 exports.media_card = MediaCard;
-
-//# sourceMappingURL=info-card_2.cjs.entry.js.map

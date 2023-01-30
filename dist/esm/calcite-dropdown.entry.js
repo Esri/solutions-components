@@ -3,9 +3,9 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-c246d90e.js';
 import { t as toAriaBoolean, i as isPrimaryPointerButton, f as focusElement } from './dom-3bdc69ee.js';
-import { d as defaultMenuPlacement, f as filterComputedPlacements, c as connectFloatingUI, u as updateAfterClose, a as disconnectFloatingUI, F as FloatingCSS, r as reposition } from './floating-ui-6010f963.js';
+import { d as defaultMenuPlacement, f as filterComputedPlacements, c as connectFloatingUI, u as updateAfterClose, a as disconnectFloatingUI, F as FloatingCSS, r as reposition } from './floating-ui-63460291.js';
 import { c as createObserver } from './observers-31601001.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
 import { c as connectOpenCloseComponent, d as disconnectOpenCloseComponent } from './openCloseComponent-5caff873.js';
@@ -475,5 +475,3 @@ const Dropdown = class {
 Dropdown.style = dropdownCss;
 
 export { Dropdown as calcite_dropdown };
-
-//# sourceMappingURL=calcite-dropdown.entry.js.map

@@ -82,5 +82,3 @@ function _prepareOutput(contents, columnNames, labelFormat, removeDuplicates = t
 }
 
 exports.exportCSV = exportCSV;
-
-//# sourceMappingURL=csvUtils-63a0511d.js.map

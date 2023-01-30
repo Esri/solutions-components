@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { a as getAssetPath, r as registerInstance, h, H as Host, g as getElement } from './index-09deaa39.js';
+import { a as getAssetPath, r as registerInstance, h, H as Host, g as getElement } from './index-c246d90e.js';
 import { b as getElementDir, t as toAriaBoolean } from './dom-3bdc69ee.js';
 import { c as createObserver } from './observers-31601001.js';
 import './resources-436ae282.js';
@@ -179,5 +179,3 @@ const Icon = class {
 Icon.style = iconCss;
 
 export { Icon as calcite_icon };
-
-//# sourceMappingURL=calcite-icon.entry.js.map

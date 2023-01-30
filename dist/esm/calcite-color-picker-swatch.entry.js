@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, h, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, h, g as getElement } from './index-c246d90e.js';
 import { c as color } from './index-d33ebc35.js';
 import { e as getThemeName } from './dom-3bdc69ee.js';
 import './_commonjsHelpers-8fd39c50.js';
@@ -70,5 +70,3 @@ const ColorPickerSwatch = class {
 ColorPickerSwatch.style = colorPickerSwatchCss;
 
 export { ColorPickerSwatch as calcite_color_picker_swatch };
-
-//# sourceMappingURL=calcite-color-picker-swatch.entry.js.map

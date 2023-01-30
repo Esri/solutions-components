@@ -3,11 +3,11 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, F as Fragment, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, F as Fragment, g as getElement } from './index-c246d90e.js';
 import { H as HEADING_LEVEL$1 } from './resources-971845d1.js';
 import { a as getSlotted } from './dom-3bdc69ee.js';
-import { H as Heading, c as constrainHeadingLevel } from './Heading-18b8d999.js';
-import { c as connectConditionalSlotComponent, d as disconnectConditionalSlotComponent } from './conditionalSlot-e96b0a4f.js';
+import { H as Heading, c as constrainHeadingLevel } from './Heading-34ddc076.js';
+import { c as connectConditionalSlotComponent, d as disconnectConditionalSlotComponent } from './conditionalSlot-d09506c4.js';
 import './resources-436ae282.js';
 import './guid-15fce7c0.js';
 import './observers-31601001.js';
@@ -119,5 +119,3 @@ const Tip = class {
 Tip.style = tipCss;
 
 export { Tip as calcite_tip };
-
-//# sourceMappingURL=calcite-tip.entry.js.map

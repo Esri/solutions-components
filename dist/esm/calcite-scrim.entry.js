@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, h, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, h, g as getElement } from './index-c246d90e.js';
 
 /*!
  * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
@@ -56,5 +56,3 @@ const Scrim = class {
 Scrim.style = scrimCss;
 
 export { Scrim as calcite_scrim };
-
-//# sourceMappingURL=calcite-scrim.entry.js.map

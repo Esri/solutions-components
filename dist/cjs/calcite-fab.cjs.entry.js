@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const dom = require('./dom-4a580af6.js');
 const interactive = require('./interactive-0a68ab99.js');
 require('./resources-b56bce71.js');
@@ -100,5 +100,3 @@ const Fab = class {
 Fab.style = fabCss;
 
 exports.calcite_fab = Fab;
-
-//# sourceMappingURL=calcite-fab.cjs.entry.js.map

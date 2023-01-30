@@ -18,18 +18,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-function getSelectionIds(selectionSets) {
-  return Object.keys(selectionSets).reduce((prev, cur) => {
-    return [
-      ...prev,
-      ...selectionSets[cur].download ? selectionSets[cur].selectedIds : []
-    ];
-  }, []);
-}
-function getTotal(selectionSets) {
-  return [...new Set(getSelectionIds(selectionSets))].length;
-}
-
-export { getSelectionIds as a, getTotal as g };
-
-//# sourceMappingURL=p-fc884dd6.js.map
+function n(n){return Object.keys(n).reduce(((t,e)=>[...t,...n[e].download?n[e].selectedIds:[]]),[])}function t(t){return[...new Set(n(t))].length}export{n as a,t as g}

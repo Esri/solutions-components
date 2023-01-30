@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const utils = require('./utils-b4236001.js');
 const guid = require('./guid-84ac4d91.js');
 const dom = require('./dom-4a580af6.js');
@@ -56,5 +56,3 @@ const ComboboxItemGroup = class {
 ComboboxItemGroup.style = comboboxItemGroupCss;
 
 exports.calcite_combobox_item_group = ComboboxItemGroup;
-
-//# sourceMappingURL=calcite-combobox-item-group.cjs.entry.js.map

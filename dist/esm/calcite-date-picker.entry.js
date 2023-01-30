@@ -3,8 +3,8 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-09deaa39.js';
-import { T as TEXT, g as getValueAsDateRange, a as getLocaleData, H as HEADING_LEVEL } from './resources-421bd81b.js';
+import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-c246d90e.js';
+import { T as TEXT, g as getValueAsDateRange, a as getLocaleData, H as HEADING_LEVEL } from './resources-8a9faf6e.js';
 import { g as getDaysDiff, d as dateToISO, a as dateFromISO, b as dateFromRange, s as setEndOfDay } from './date-03618c4c.js';
 import { c as connectLocalized, d as disconnectLocalized, n as numberStringFormatter } from './locale-9dd0777b.js';
 import './key-acb660e7.js';
@@ -445,5 +445,3 @@ const DatePicker = class {
 DatePicker.style = datePickerCss;
 
 export { DatePicker as calcite_date_picker };
-
-//# sourceMappingURL=calcite-date-picker.entry.js.map

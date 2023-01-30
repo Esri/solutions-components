@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, h, g as getElement, f as forceUpdate } from './index-09deaa39.js';
+import { r as registerInstance, h, g as getElement, f as forceUpdate } from './index-c246d90e.js';
 import { g as guid } from './guid-15fce7c0.js';
 import { c as createObserver } from './observers-31601001.js';
 
@@ -229,5 +229,3 @@ const Graph = class {
 Graph.style = graphCss;
 
 export { Graph as calcite_graph };
-
-//# sourceMappingURL=calcite-graph.entry.js.map

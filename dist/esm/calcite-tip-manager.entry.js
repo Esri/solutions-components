@@ -3,10 +3,10 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, g as getElement } from './index-c246d90e.js';
 import { T as TEXT, C as CSS, I as ICONS, H as HEADING_LEVEL } from './resources-971845d1.js';
 import { b as getElementDir, t as toAriaBoolean } from './dom-3bdc69ee.js';
-import { H as Heading } from './Heading-18b8d999.js';
+import { H as Heading } from './Heading-34ddc076.js';
 import { c as createObserver } from './observers-31601001.js';
 import './resources-436ae282.js';
 import './guid-15fce7c0.js';
@@ -171,5 +171,3 @@ const TipManager = class {
 TipManager.style = tipManagerCss;
 
 export { TipManager as calcite_tip_manager };
-
-//# sourceMappingURL=calcite-tip-manager.entry.js.map

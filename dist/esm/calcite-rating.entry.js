@@ -3,10 +3,10 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, F as Fragment, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, F as Fragment, g as getElement } from './index-c246d90e.js';
 import { g as guid } from './guid-15fce7c0.js';
 import { c as connectLabel, d as disconnectLabel } from './label-aa562647.js';
-import { c as connectForm, d as disconnectForm, H as HiddenFormInputSlot } from './form-dd3f6c86.js';
+import { c as connectForm, d as disconnectForm, H as HiddenFormInputSlot } from './form-62bc7b1f.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
 import { i as isActivationKey } from './key-acb660e7.js';
 import './dom-3bdc69ee.js';
@@ -154,5 +154,3 @@ const Rating = class {
 Rating.style = ratingCss;
 
 export { Rating as calcite_rating };
-
-//# sourceMappingURL=calcite-rating.entry.js.map

@@ -258,6 +258,15 @@ export declare function getAssetPath(path: string): string;
  */
 export declare function setAssetPath(path: string): string;
 /**
+ * Used to specify a nonce value that corresponds with an application's
+ * [Content Security Policy (CSP)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP).
+ * When set, the nonce will be added to all dynamically created script and style tags at runtime.
+ * Alternatively, the nonce value can be set on a `meta` tag in the DOM head
+ * (<meta name="csp-nonce" content="{ nonce value here }" />) and will result in the same behavior.
+ * @param nonce The value to be used for the nonce attribute.
+ */
+export declare function setNonce(nonce: string): void;
+/**
  * Retrieve a Stencil element for a given reference
  * @param ref the ref to get the Stencil element for
  * @returns a reference to the element
@@ -476,6 +485,14 @@ export interface FunctionalUtilities {
 export interface FunctionalComponent<T = {}> {
     (props: T, children: VNode[], utils: FunctionalUtilities): VNode | VNode[];
 }
+/**
+ * A Child VDOM node
+ *
+ * This has most of the same properties as {@link VNode} but friendlier names
+ * (i.e. `vtag` instead of `$tag$`, `vchildren` instead of `$children$`) in
+ * order to provide a friendlier public interface for users of the
+ * {@link FunctionalUtilities}).
+ */
 export interface ChildNode {
     vtag?: string | number | Function;
     vkey?: string | number;
@@ -522,6 +539,9 @@ export declare function h(sel: any, children: Array<VNode | undefined | null>): 
 export declare function h(sel: any, data: VNodeData | null, text: string): VNode;
 export declare function h(sel: any, data: VNodeData | null, children: Array<VNode | undefined | null>): VNode;
 export declare function h(sel: any, data: VNodeData | null, children: VNode): VNode;
+/**
+ * A virtual DOM node
+ */
 export interface VNode {
     $flags$: number;
     $tag$: string | number | Function;

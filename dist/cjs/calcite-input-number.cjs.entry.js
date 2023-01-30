@@ -7,10 +7,10 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const dom = require('./dom-4a580af6.js');
 const label = require('./label-24fcd8a5.js');
-const form = require('./form-c94c0c4d.js');
+const form = require('./form-ef410342.js');
 const locale = require('./locale-73cab8e8.js');
 const key = require('./key-55aca5c0.js');
 const resources = require('./resources-b56bce71.js');
@@ -574,5 +574,3 @@ const InputNumber = class {
 InputNumber.style = inputNumberCss;
 
 exports.calcite_input_number = InputNumber;
-
-//# sourceMappingURL=calcite-input-number.cjs.entry.js.map

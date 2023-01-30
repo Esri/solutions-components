@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, g as getElement } from './index-c246d90e.js';
 import { S as Sortable } from './sortable.esm-3b2eaa5c.js';
 import { c as createObserver } from './observers-31601001.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
@@ -173,5 +173,3 @@ const SortableList = class {
 SortableList.style = sortableListCss;
 
 export { SortableList as calcite_sortable_list };
-
-//# sourceMappingURL=calcite-sortable-list.entry.js.map

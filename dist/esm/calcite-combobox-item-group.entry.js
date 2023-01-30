@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, h, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, h, g as getElement } from './index-c246d90e.js';
 import { g as getAncestors, a as getDepth } from './utils-bef8e381.js';
 import { g as guid } from './guid-15fce7c0.js';
 import { g as getElementProp } from './dom-3bdc69ee.js';
@@ -52,5 +52,3 @@ const ComboboxItemGroup = class {
 ComboboxItemGroup.style = comboboxItemGroupCss;
 
 export { ComboboxItemGroup as calcite_combobox_item_group };
-
-//# sourceMappingURL=calcite-combobox-item-group.entry.js.map

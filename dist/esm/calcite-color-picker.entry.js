@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, g as getElement } from './index-c246d90e.js';
 import { c as color } from './index-d33ebc35.js';
 import { D as DEFAULT_COLOR, T as TEXT, a as DIMENSIONS, H as HSV_LIMITS, C as CSS, b as DEFAULT_STORAGE_KEY_PREFIX, R as RGB_LIMITS } from './resources-7d4a587f.js';
 import { i as isPrimaryPointerButton, b as getElementDir, f as focusElement } from './dom-3bdc69ee.js';
@@ -911,5 +911,3 @@ const ColorPicker = class {
 ColorPicker.style = colorPickerCss;
 
 export { ColorPicker as calcite_color_picker };
-
-//# sourceMappingURL=calcite-color-picker.entry.js.map

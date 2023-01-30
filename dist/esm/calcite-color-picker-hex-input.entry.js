@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, c as createEvent, h, g as getElement } from './index-09deaa39.js';
+import { r as registerInstance, c as createEvent, h, g as getElement } from './index-c246d90e.js';
 import { n as normalizeHex, i as isValidHex, a as isLonghandHex, r as rgbToHex, b as hexChar } from './utils-3f4ee4c3.js';
 import { c as color } from './index-d33ebc35.js';
 import { f as focusElement } from './dom-3bdc69ee.js';
@@ -211,5 +211,3 @@ const ColorPickerHexInput = class {
 ColorPickerHexInput.style = colorPickerHexInputCss;
 
 export { ColorPickerHexInput as calcite_color_picker_hex_input };
-
-//# sourceMappingURL=calcite-color-picker-hex-input.entry.js.map

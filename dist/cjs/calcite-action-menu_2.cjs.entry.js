@@ -7,15 +7,15 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const resources = require('./resources-2260d186.js');
 const dom = require('./dom-4a580af6.js');
 const array = require('./array-ace6d4b5.js');
 const guid = require('./guid-84ac4d91.js');
 const key = require('./key-55aca5c0.js');
-const floatingUi = require('./floating-ui-c89a093e.js');
+const floatingUi = require('./floating-ui-7e3d7775.js');
 const openCloseComponent = require('./openCloseComponent-bf986132.js');
-const Heading = require('./Heading-dc3950d8.js');
+const Heading = require('./Heading-c10b33b5.js');
 require('./resources-b56bce71.js');
 require('./debounce-69c3bada.js');
 
@@ -726,5 +726,3 @@ Popover.style = popoverCss;
 
 exports.calcite_action_menu = ActionMenu;
 exports.calcite_popover = Popover;
-
-//# sourceMappingURL=calcite-action-menu_2.cjs.entry.js.map

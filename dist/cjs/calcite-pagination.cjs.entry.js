@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const locale = require('./locale-73cab8e8.js');
 require('./key-55aca5c0.js');
 require('./observers-5311faf8.js');
@@ -228,5 +228,3 @@ const Pagination = class {
 Pagination.style = paginationCss;
 
 exports.calcite_pagination = Pagination;
-
-//# sourceMappingURL=calcite-pagination.cjs.entry.js.map

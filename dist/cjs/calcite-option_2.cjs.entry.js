@@ -7,11 +7,11 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const observers = require('./observers-5311faf8.js');
 const dom = require('./dom-4a580af6.js');
 const label = require('./label-24fcd8a5.js');
-const form = require('./form-c94c0c4d.js');
+const form = require('./form-ef410342.js');
 const interactive = require('./interactive-0a68ab99.js');
 require('./resources-b56bce71.js');
 require('./guid-84ac4d91.js');
@@ -311,5 +311,3 @@ Select.style = selectCss;
 
 exports.calcite_option = Option;
 exports.calcite_select = Select;
-
-//# sourceMappingURL=calcite-option_2.cjs.entry.js.map

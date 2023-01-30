@@ -7,7 +7,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const index = require('./index-ee607805.js');
+const index = require('./index-c6979cbb.js');
 const key = require('./key-55aca5c0.js');
 const locale = require('./locale-73cab8e8.js');
 const time = require('./time-3f5577cb.js');
@@ -713,5 +713,3 @@ const TimePicker = class {
 TimePicker.style = timePickerCss;
 
 exports.calcite_time_picker = TimePicker;
-
-//# sourceMappingURL=calcite-time-picker.cjs.entry.js.map
