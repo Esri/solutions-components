@@ -127,8 +127,7 @@ export class PdfDownload {
   @Method()
   async downloadCSV(
     ids: number[],
-    removeDuplicates: boolean,
-    addColumnTitle: boolean
+    removeDuplicates: boolean
   ): Promise<void> {
     // Get the attributes of the features to export
     const featureSet = await queryFeaturesByID(ids, this.layerView.layer);

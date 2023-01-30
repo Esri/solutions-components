@@ -965,11 +965,7 @@ export class PublicNotification {
    */
   protected _downloadCSV(): void {
     const ids = utils.getSelectionIds(this._getDownloadSelectionSets());
-    void this._downloadTools.downloadCSV(
-      ids,
-      this._removeDuplicates.checked,
-      this.exportOptions?.csvOptions.addColumnTitle
-    );
+    void this._downloadTools.downloadCSV(ids, this._removeDuplicates.checked);
   }
 
   /**
