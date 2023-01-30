@@ -13,9 +13,10 @@
 | `layerView` | --         | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
 
 
+
 ## Methods
 
-### `downloadCSV(ids: number[], removeDuplicates: boolean) => Promise<void>`
+### `downloadCSV(ids: number[], removeDuplicates: boolean, addColumnTitle: boolean) => Promise<void>`
 
 Downloads csv of mailing labels for the provided list of ids
 

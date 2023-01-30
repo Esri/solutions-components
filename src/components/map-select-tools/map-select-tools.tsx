@@ -18,7 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop,
 import { loadModules } from "../../utils/loadModules";
 import { highlightFeatures, goToSelection } from "../../utils/mapViewUtils";
 import { getQueryGeoms, queryObjectIds } from "../../utils/queryUtils";
-import { EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode, ESketchType } from "../../utils/interfaces";
+import { DistanceUnit, ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration, EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode, ESketchType } from "../../utils/interfaces";
 import state from "../../utils/publicNotificationStore";
 import MapSelectTools_T9n from "../../assets/t9n/map-select-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -43,6 +43,22 @@ export class MapSelectTools {
   //--------------------------------------------------------------------------
 
   /**
+   * string[]: Optional list of enabled layer ids
+   *  If empty all layers will be available
+   */
+  @Prop() enabledLayerIds: string[] = [];
+
+  /**
+   * number: The default value to show for the buffer distance
+   */
+  @Prop() defaultBufferDistance: number;
+
+  /**
+   * number: The default value to show for the buffer unit
+   */
+  @Prop() defaultBufferUnit: DistanceUnit;
+
+  /**
    * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
    */
   @Prop() geometries: __esri.Geometry[];
@@ -56,6 +72,11 @@ export class MapSelectTools {
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
+
+  /**
+   * ISearchConfiguration: Configuration details for the Search widget
+   */
+  @Prop() searchConfiguration: ISearchConfiguration;
 
   /**
    * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
@@ -102,6 +123,11 @@ export class MapSelectTools {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * esri/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+   */
+  protected FeatureLayer: typeof import("esri/layers/FeatureLayer");
 
   /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
@@ -248,6 +274,11 @@ export class MapSelectTools {
    */
   @Method()
   async getSelection(): Promise<ISelectionSet> {
+    // Allow any non whitespace
+    if (!/\S+/gm.test(this._selectionLabel)) {
+      this._selectionLabel = this._getSelectionBaseLabel();
+    }
+    const isBaseLabel = this._selectionLabel === this._getSelectionBaseLabel();
     return {
       id: this.isUpdate ? this.selectionSet.id : Date.now(),
       workflowType: this._workflowType,
@@ -256,7 +287,7 @@ export class MapSelectTools {
       distance: this._bufferTools.distance,
       download: true,
       unit: this._bufferTools.unit,
-      label: this._workflowType === EWorkflowType.SEARCH ?
+      label: this._workflowType === EWorkflowType.SEARCH || (this._selectionLabel && !isBaseLabel) ?
         this._selectionLabel : `${this._selectionLabel} ${this._bufferTools.distance} ${this._bufferTools.unit}`,
       selectedIds: this._selectedIds,
       layerView: this.selectLayerView,
@@ -290,12 +321,20 @@ export class MapSelectTools {
   @Event() workflowTypeChange: EventEmitter<EWorkflowType>;
 
   /**
+   * Handle changes to the selection sets
+   */
+  @Listen("labelChange", { target: "window" })
+  labelChange(event: CustomEvent): void {
+    this._selectionLabel = event.detail;
+  }
+
+  /**
    * Listen to changes in the sketch graphics
    *
    */
   @Listen("sketchGraphicsChange", { target: "window" })
   sketchGraphicsChange(event: CustomEvent): void {
-    this._updateSelection(EWorkflowType.SKETCH, event.detail, this._translations.sketch);
+    this._updateSelection(EWorkflowType.SKETCH, event.detail, this._selectionLabel || this._translations.sketch);
   }
 
   /**
@@ -306,7 +345,7 @@ export class MapSelectTools {
   refineSelectionGraphicsChange(event: CustomEvent): Promise<void> {
     const graphics = event.detail;
 
-    this._updateSelection(EWorkflowType.SELECT, graphics, this._translations.select);
+    this._updateSelection(EWorkflowType.SELECT, graphics, this._selectionLabel || this._translations.select);
     // Using OIDs to avoid issue with points
     const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g.layer.objectIdField]) : [];
     return this._highlightFeatures(oids);
@@ -407,6 +446,7 @@ export class MapSelectTools {
           <refine-selection-tools
             active={true}
             border={true}
+            enabledLayerIds={this.enabledLayerIds}
             layerViews={this._refineSelectLayers}
             mapView={this.mapView}
             mode={ESelectionMode.ADD}
@@ -417,11 +457,11 @@ export class MapSelectTools {
         <calcite-label class={showBufferToolsClass}>
           {this._translations.searchDistance}
           <buffer-tools
-            distance={this.selectionSet?.distance}
+            distance={this.selectionSet?.distance || this.defaultBufferDistance}
             geometries={this.geometries}
             onBufferComplete={(evt) => this._bufferComplete(evt)}
             ref={(el) => this._bufferTools = el}
-            unit={this.selectionSet?.unit}
+            unit={this.selectionSet?.unit || this.defaultBufferUnit}
           />
         </calcite-label>
         <slot />
@@ -443,16 +483,18 @@ export class MapSelectTools {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [GraphicsLayer, Graphic, Search, geometryEngine] = await loadModules([
+    const [GraphicsLayer, Graphic, Search, geometryEngine, FeatureLayer] = await loadModules([
       "esri/layers/GraphicsLayer",
       "esri/Graphic",
       "esri/widgets/Search",
-      "esri/geometry/geometryEngine"
+      "esri/geometry/geometryEngine",
+      "esri/layers/FeatureLayer"
     ]);
     this.GraphicsLayer = GraphicsLayer;
     this.Graphic = Graphic;
     this.Search = Search;
     this._geometryEngine = geometryEngine;
+    this.FeatureLayer = FeatureLayer;
   }
 
   /**
@@ -481,14 +523,24 @@ export class MapSelectTools {
         ...this.selectionSet?.geometries
       ];
       // reset selection label base
-      this._selectionLabel = this._workflowType === EWorkflowType.SKETCH ?
-        this._translations.sketch : this._workflowType === EWorkflowType.SELECT ?
-          this._translations.select : this.selectionSet?.label;
+      this._selectionLabel = this._getSelectionBaseLabel();
 
       void goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     } else {
       this._workflowType = EWorkflowType.SEARCH;
     }
+  }
+
+  /**
+   * Get the default label base when the user has not provided a value
+   *
+   * @protected
+   */
+  protected _getSelectionBaseLabel(): string {
+    return this._workflowType === EWorkflowType.SKETCH ?
+      this._translations.sketch : this._workflowType === EWorkflowType.SELECT ?
+        this._translations.select : this._workflowType === EWorkflowType.SEARCH && this._searchResult ?
+          this._searchResult?.name : this.selectionSet?.label;
   }
 
   /**
@@ -498,10 +550,13 @@ export class MapSelectTools {
    */
   protected _initSearchWidget(): void {
     if (this.mapView && this._searchElement) {
+      const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this.mapView);
+
       const searchOptions: __esri.widgetsSearchProperties = {
         view: this.mapView,
         container: this._searchElement,
-        searchTerm: this._searchTerm
+        searchTerm: this._searchTerm,
+        ...searchConfiguration
       };
 
       this._searchWidget = new this.Search(searchOptions);
@@ -522,6 +577,46 @@ export class MapSelectTools {
         }
       });
     }
+  }
+
+  /**
+   * Initialize the search widget based on user defined configuration
+   *
+   * @param searchConfiguration search configuration defined by the user
+   * @param view the current map view
+   *
+   * @protected
+   */
+  protected _getSearchConfig(
+    searchConfiguration: ISearchConfiguration,
+    view: __esri.MapView
+  ): ISearchConfiguration {
+    const sources = searchConfiguration?.sources;
+    if (sources) {
+      sources.forEach(source => {
+        const isLayerSource = source.hasOwnProperty("layer");
+        if (isLayerSource) {
+          const layerSource = source as ILayerSourceConfigItem;
+          const layerFromMap = layerSource.layer?.id
+            ? view.map.findLayerById(layerSource.layer.id)
+            : null;
+          if (layerFromMap) {
+            layerSource.layer = layerFromMap as __esri.FeatureLayer;
+          } else if (layerSource?.layer?.url) {
+            layerSource.layer = new this.FeatureLayer(layerSource?.layer?.url as any);
+          }
+        }
+      });
+    }
+    searchConfiguration?.sources?.forEach(source => {
+      const isLocatorSource = source.hasOwnProperty("locator");
+      if (isLocatorSource) {
+        const locatorSource = source as ILocatorSourceConfigItem;
+        locatorSource.url = locatorSource.url;
+        delete locatorSource.url;
+      }
+    });
+    return searchConfiguration;
   }
 
   /**

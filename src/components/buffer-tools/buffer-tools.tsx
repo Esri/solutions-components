@@ -18,6 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, W
 import { loadModules } from "../../utils/loadModules";
 import BufferTools_T9n from "../../assets/t9n/buffer-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
+import { DistanceUnit } from "../../utils/interfaces";
 
 @Component({
   tag: "buffer-tools",
@@ -74,9 +75,9 @@ export class BufferTools {
   @Prop({ mutable: true }) unionResults = true;
 
   /**
-   * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
+   * DistanceUnit: "feet"|"meters"|"miles"|"kilometers"
    */
-  @Prop({ mutable: true }) unit: __esri.LinearUnits = "meters";
+  @Prop({ mutable: true }) unit: DistanceUnit = "meters";
 
   //--------------------------------------------------------------------------
   //
@@ -238,7 +239,7 @@ export class BufferTools {
    * @protected
    */
   protected _setUnit(
-    unit: __esri.LinearUnits
+    unit: DistanceUnit
   ): void {
     this.unit = unit;
     this._buffer();
@@ -290,7 +291,7 @@ export class BufferTools {
         <calcite-select
           class="flex-1"
           label="label"
-          onCalciteSelectChange={() => this._setUnit(this._unitElement.value as __esri.LinearUnits)}
+          onCalciteSelectChange={() => this._setUnit(this._unitElement.value as DistanceUnit)}
           ref={(el) => { this._unitElement = el }}
         >
           {this._getUnits()}

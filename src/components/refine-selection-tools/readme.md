@@ -7,18 +7,19 @@
 
 ## Properties
 
-| Property         | Attribute          | Description                                                                                                                               | Type                                          | Default     |
-| ---------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- | ----------- |
-| `active`         | `active`           | boolean: sketch is used by multiple components...need a way to know who should respond...                                                 | `boolean`                                     | `false`     |
-| `border`         | `border`           | boolean: Optionally draw a border around the draw tools                                                                                   | `boolean`                                     | `false`     |
-| `graphics`       | --                 | esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html                                             | `Graphic[]`                                   | `undefined` |
-| `ids`            | --                 | number: The oids of the selected features                                                                                                 | `number[]`                                    | `[]`        |
-| `layerView`      | --                 | esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html               | `FeatureLayerView`                            | `undefined` |
-| `layerViews`     | --                 | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView[]`                          | `[]`        |
-| `mapView`        | --                 | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`                                     | `undefined` |
-| `mode`           | `mode`             | utils/interfaces/ESelectionMode: ADD, REMOVE                                                                                              | `ESelectionMode.ADD \| ESelectionMode.REMOVE` | `undefined` |
-| `refineMode`     | `refine-mode`      | utils/interfaces/ERefineMode: ALL, SUBSET                                                                                                 | `ERefineMode.ALL \| ERefineMode.SUBSET`       | `undefined` |
-| `useLayerPicker` | `use-layer-picker` | boolean: Used to control the visibility of the layer picker                                                                               | `boolean`                                     | `true`      |
+| Property          | Attribute          | Description                                                                                                                               | Type                                          | Default     |
+| ----------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- | ----------- |
+| `active`          | `active`           | boolean: sketch is used by multiple components...need a way to know who should respond...                                                 | `boolean`                                     | `false`     |
+| `border`          | `border`           | boolean: Optionally draw a border around the draw tools                                                                                   | `boolean`                                     | `false`     |
+| `enabledLayerIds` | --                 | string[]: Optional list of enabled layer ids  If empty all layers will be available                                                       | `string[]`                                    | `[]`        |
+| `graphics`        | --                 | esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html                                             | `Graphic[]`                                   | `undefined` |
+| `ids`             | --                 | number: The oids of the selected features                                                                                                 | `number[]`                                    | `[]`        |
+| `layerView`       | --                 | esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html               | `FeatureLayerView`                            | `undefined` |
+| `layerViews`      | --                 | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView[]`                          | `[]`        |
+| `mapView`         | --                 | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                    | `MapView`                                     | `undefined` |
+| `mode`            | `mode`             | utils/interfaces/ESelectionMode: ADD, REMOVE                                                                                              | `ESelectionMode.ADD \| ESelectionMode.REMOVE` | `undefined` |
+| `refineMode`      | `refine-mode`      | utils/interfaces/ERefineMode: ALL, SUBSET                                                                                                 | `ERefineMode.ALL \| ERefineMode.SUBSET`       | `undefined` |
+| `useLayerPicker`  | `use-layer-picker` | boolean: Used to control the visibility of the layer picker                                                                               | `boolean`                                     | `true`      |
 
 
 ## Events

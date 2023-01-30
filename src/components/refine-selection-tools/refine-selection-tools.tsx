@@ -54,6 +54,12 @@ export class RefineSelectionTools {
   @Prop() border = false;
 
   /**
+   * string[]: Optional list of enabled layer ids
+   *  If empty all layers will be available
+   */
+  @Prop() enabledLayerIds: string[] = [];
+
+  /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
   @Prop({ mutable: true }) graphics: __esri.Graphic[];
@@ -134,7 +140,7 @@ export class RefineSelectionTools {
   protected SketchViewModel: typeof import("esri/widgets/Sketch/SketchViewModel");
 
   /**
-   * {<layer title>: Graphic[]}: Collection of graphics returned from queries to the layer
+   * {<layer id>: Graphic[]}: Collection of graphics returned from queries to the layer
    */
   protected _featuresCollection: { [key: string]: __esri.Graphic[] } = {};
 
@@ -285,9 +291,10 @@ export class RefineSelectionTools {
           </div> */}
           <map-layer-picker
             class={showLayerPickerClass}
+            enabledLayerIds={this.enabledLayerIds}
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
-            selectedLayers={this.layerViews.map(l => l.layer.title)}
+            selectedLayerIds={this.layerViews.map(l => l.layer.id)}
             selectionMode={"single"}
           />
           <div class={"margin-top-1" + drawClass}>
@@ -485,8 +492,8 @@ export class RefineSelectionTools {
   ): Promise<void> {
     if (Array.isArray(evt.detail) && evt.detail.length > 0) {
       this._selectEnabled = true;
-      const layerPromises = evt.detail.map(title => {
-        return getMapLayerView(this.mapView, title)
+      const layerPromises = evt.detail.map(id => {
+        return getMapLayerView(this.mapView, id)
       });
 
       return Promise.all(layerPromises).then((layerViews) => {
@@ -541,7 +548,7 @@ export class RefineSelectionTools {
     geom: __esri.Geometry
   ): Promise<void> {
     const queryFeaturePromises = this.layerViews.map(layerView => {
-      this._featuresCollection[layerView.layer.title] = [];
+      this._featuresCollection[layerView.layer.id] = [];
       return queryFeaturesByGeometry(0, layerView.layer, geom, this._featuresCollection)
     });
 
