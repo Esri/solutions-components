@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import { DistanceUnit, EExportType, EPageType, ESketchType, EWorkflowType, IExportOptions, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
 import { goToSelection, getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
@@ -47,6 +47,11 @@ export class PublicNotification {
    * string[]: List of layer ids that should be shown as potential addressee layers
    */
   @Prop() addresseeLayerIds: string[] = [];
+
+  /**
+   * boolean: When true the user can define a name for each notification list
+   */
+  @Prop() customLabelEnabled: boolean;
 
   /**
    * number: The default value to show for the buffer distance
@@ -192,6 +197,11 @@ export class PublicNotification {
   /**
    * CustomEvent: Used to prevent default behavior of layer selection change
    */
+  protected _labelName: HTMLCalciteInputElement;
+
+  /**
+   * CustomEvent: Used to prevent default behavior of layer selection change
+   */
   protected _layerSelectionChangeEvt: CustomEvent;
 
   /**
@@ -275,6 +285,11 @@ export class PublicNotification {
   //  Events (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Emitted on demand when a buffer is generated.
+   */
+  @Event() labelChange: EventEmitter<string>;
 
   /**
    * Handle changes to the selection sets
@@ -640,7 +655,7 @@ export class PublicNotification {
       <calcite-panel>
         {this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", this.addresseeLayer?.layer.title))}
         {this._getNotice(noticeText)}
-        <div class={"padding-1"}>
+        <div class={"padding-top-sides-1"}>
           <map-select-tools
             class="font-bold"
             enabledLayerIds={this.selectionLayerIds}
@@ -665,6 +680,21 @@ export class PublicNotification {
                 )
             }
           </calcite-input-message>
+        </div>
+        <div class="padding-sides-1">
+          <calcite-label
+            class="font-bold"
+          >
+            {"Name label"}
+            <calcite-input
+              onInput={() => {
+                this.labelChange.emit(this._labelName.value);
+              }}
+              placeholder="Insert label here..."
+              ref={(el) => { this._labelName = el }}
+              value={this._activeSelection?.label || ""}
+            />
+          </calcite-label>
         </div>
         {
           this._getPageNavButtons(
@@ -857,7 +887,7 @@ export class PublicNotification {
     disableSpacing = false
   ): VNode {
     return (
-      <div class="padding-top-sides-1">
+      <div class={"padding-top-sides-1"}>
         <calcite-label
           class="font-bold"
           disable-spacing={disableSpacing}
@@ -872,7 +902,7 @@ export class PublicNotification {
    * Get selection set list node with checkbox for Download pages
    *
    * @returns the list node
-   * @protected
+   * @protectedlabel
    */
   protected _getSelectionLists(): VNode {
     return this._selectionSets.reduce((prev, cur) => {

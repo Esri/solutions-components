@@ -288,6 +288,10 @@ export namespace Components {
          */
         "addresseeLayerIds": string[];
         /**
+          * boolean: When true the user can define a name for each notification list
+         */
+        "customLabelEnabled": boolean;
+        /**
           * number: The default value to show for the buffer distance
          */
         "defaultBufferDistance": number;
@@ -598,6 +602,10 @@ export interface MapSearchCustomEvent<T> extends CustomEvent<T> {
 export interface MapSelectToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapSelectToolsElement;
+}
+export interface PublicNotificationCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLPublicNotificationElement;
 }
 export interface RefineSelectionCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1139,6 +1147,10 @@ declare namespace LocalJSX {
          */
         "addresseeLayerIds"?: string[];
         /**
+          * boolean: When true the user can define a name for each notification list
+         */
+        "customLabelEnabled"?: boolean;
+        /**
           * number: The default value to show for the buffer distance
          */
         "defaultBufferDistance"?: number;
@@ -1166,6 +1178,10 @@ declare namespace LocalJSX {
           * string: The value to show for no results when left empty the default text "0 selected features from {layerTitle}" will be shown
          */
         "noResultText"?: string;
+        /**
+          * Emitted on demand when a buffer is generated.
+         */
+        "onLabelChange"?: (event: PublicNotificationCustomEvent<string>) => void;
         /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
