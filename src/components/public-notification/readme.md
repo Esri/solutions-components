@@ -10,6 +10,7 @@
 | Property                  | Attribute                   | Description                                                                                                                                                                                                   | Type                                            | Default     |
 | ------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ----------- |
 | `addresseeLayerIds`       | --                          | string[]: List of layer ids that should be shown as potential addressee layers                                                                                                                                | `string[]`                                      | `[]`        |
+| `customLabelEnabled`      | `custom-label-enabled`      | boolean: When true the user can define a name for each notification list                                                                                                                                      | `boolean`                                       | `undefined` |
 | `defaultBufferDistance`   | `default-buffer-distance`   | number: The default value to show for the buffer distance                                                                                                                                                     | `number`                                        | `undefined` |
 | `defaultBufferUnit`       | `default-buffer-unit`       | number: The default value to show for the buffer unit ("feet"\|"meters"\|"miles"\|"kilometers")                                                                                                               | `"feet" \| "kilometers" \| "meters" \| "miles"` | `undefined` |
 | `exportOptions`           | --                          | IExportOptions: Set of options that control export capabilities  If not provided all export capabilities will be enabled.                                                                                     | `IExportOptions`                                | `undefined` |
@@ -21,6 +22,13 @@
 | `selectionLayerIds`       | --                          | string[]: List of layer ids that should be shown as potential selection layers when skectching with "Use layer features" option                                                                               | `string[]`                                      | `[]`        |
 | `showRefineSelection`     | `show-refine-selection`     | boolean: When true the refine selection workflow will be included in the UI                                                                                                                                   | `boolean`                                       | `false`     |
 | `showSearchSettings`      | `show-search-settings`      | boolean: When false no buffer distance or unit controls will be exposed                                                                                                                                       | `boolean`                                       | `true`      |
+
+
+## Events
+
+| Event         | Description                                   | Type                  |
+| ------------- | --------------------------------------------- | --------------------- |
+| `labelChange` | Emitted on demand when a buffer is generated. | `CustomEvent<string>` |
 
 
 ## Dependencies
@@ -42,6 +50,7 @@
 - calcite-modal
 - [map-select-tools](../map-select-tools)
 - calcite-icon
+- calcite-input
 - [refine-selection](../refine-selection)
 - calcite-checkbox
 - [pdf-download](../pdf-download)
@@ -65,6 +74,7 @@ graph TD;
   public-notification --> calcite-modal
   public-notification --> map-select-tools
   public-notification --> calcite-icon
+  public-notification --> calcite-input
   public-notification --> refine-selection
   public-notification --> calcite-checkbox
   public-notification --> pdf-download

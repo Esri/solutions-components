@@ -274,6 +274,11 @@ export class MapSelectTools {
    */
   @Method()
   async getSelection(): Promise<ISelectionSet> {
+    // Allow any non whitespace
+    if (!/\S+/gm.test(this._selectionLabel)) {
+      this._selectionLabel = this._getSelectionBaseLabel();
+    }
+    const isBaseLabel = this._selectionLabel === this._getSelectionBaseLabel();
     return {
       id: this.isUpdate ? this.selectionSet.id : Date.now(),
       workflowType: this._workflowType,
@@ -282,7 +287,7 @@ export class MapSelectTools {
       distance: this._bufferTools.distance,
       download: true,
       unit: this._bufferTools.unit,
-      label: this._workflowType === EWorkflowType.SEARCH ?
+      label: this._workflowType === EWorkflowType.SEARCH || (this._selectionLabel && !isBaseLabel) ?
         this._selectionLabel : `${this._selectionLabel} ${this._bufferTools.distance} ${this._bufferTools.unit}`,
       selectedIds: this._selectedIds,
       layerView: this.selectLayerView,
@@ -316,12 +321,20 @@ export class MapSelectTools {
   @Event() workflowTypeChange: EventEmitter<EWorkflowType>;
 
   /**
+   * Handle changes to the selection sets
+   */
+  @Listen("labelChange", { target: "window" })
+  labelChange(event: CustomEvent): void {
+    this._selectionLabel = event.detail;
+  }
+
+  /**
    * Listen to changes in the sketch graphics
    *
    */
   @Listen("sketchGraphicsChange", { target: "window" })
   sketchGraphicsChange(event: CustomEvent): void {
-    this._updateSelection(EWorkflowType.SKETCH, event.detail, this._translations.sketch);
+    this._updateSelection(EWorkflowType.SKETCH, event.detail, this._selectionLabel || this._translations.sketch);
   }
 
   /**
@@ -332,7 +345,7 @@ export class MapSelectTools {
   refineSelectionGraphicsChange(event: CustomEvent): Promise<void> {
     const graphics = event.detail;
 
-    this._updateSelection(EWorkflowType.SELECT, graphics, this._translations.select);
+    this._updateSelection(EWorkflowType.SELECT, graphics, this._selectionLabel || this._translations.select);
     // Using OIDs to avoid issue with points
     const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g.layer.objectIdField]) : [];
     return this._highlightFeatures(oids);
@@ -510,14 +523,24 @@ export class MapSelectTools {
         ...this.selectionSet?.geometries
       ];
       // reset selection label base
-      this._selectionLabel = this._workflowType === EWorkflowType.SKETCH ?
-        this._translations.sketch : this._workflowType === EWorkflowType.SELECT ?
-          this._translations.select : this.selectionSet?.label;
+      this._selectionLabel = this._getSelectionBaseLabel();
 
       void goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     } else {
       this._workflowType = EWorkflowType.SEARCH;
     }
+  }
+
+  /**
+   * Get the default label base when the user has not provided a value
+   *
+   * @protected
+   */
+  protected _getSelectionBaseLabel(): string {
+    return this._workflowType === EWorkflowType.SKETCH ?
+      this._translations.sketch : this._workflowType === EWorkflowType.SELECT ?
+        this._translations.select : this._workflowType === EWorkflowType.SEARCH && this._searchResult ?
+          this._searchResult?.name : this.selectionSet?.label;
   }
 
   /**

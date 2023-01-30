@@ -103,6 +103,11 @@ export class MapDrawTools {
   protected Sketch: typeof import("esri/widgets/Sketch");
 
   /**
+   * A timer used to prevent redundant selections while drawing shapes
+   */
+  protected _selectionTimer;
+
+  /**
    * The container element for the sketch widget
    */
   protected _sketchElement: HTMLElement;
@@ -299,11 +304,18 @@ export class MapDrawTools {
     }
 
     this._sketchWidget.on("update", (evt) => {
-      if (evt.state === "complete" && this.active) {
-        this.graphics = this._sketchGraphicsLayer.graphics.toArray();
+      if (evt.state === "start") {
+        this.graphics = evt.graphics;
         this.sketchGraphicsChange.emit(this.graphics);
       }
-    })
+      if (evt.state === "active") {
+        clearTimeout(this._selectionTimer);
+        this._selectionTimer = setTimeout(() => {
+          this.graphics = evt.graphics;
+          this.sketchGraphicsChange.emit(this.graphics);
+        }, 500);
+      }
+    });
   }
 
   /**
