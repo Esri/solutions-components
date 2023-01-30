@@ -22,3 +22,5 @@ function gen(counts) {
 const guid = () => gen([2, 1, 1, 1, 3]);
 
 export { guid as g };
+
+//# sourceMappingURL=guid-15fce7c0.js.map

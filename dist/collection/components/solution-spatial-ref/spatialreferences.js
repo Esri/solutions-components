@@ -21044,3 +21044,4 @@ export const wkids = {
     "defaultExtent": "{\"xmin\": -179.9999885408437, \"ymin\": -85.05112779126247, \"xmax\": 179.9999885408437, \"ymax\": 85.05112779126246}"
   }
 };
+//# sourceMappingURL=spatialreferences.js.map

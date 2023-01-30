@@ -118,3 +118,5 @@ const Switch = class {
 Switch.style = switchCss;
 
 exports.calcite_switch = Switch;
+
+//# sourceMappingURL=calcite-switch.cjs.entry.js.map

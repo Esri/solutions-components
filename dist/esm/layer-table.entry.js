@@ -6,7 +6,7 @@
 import { r as registerInstance, h, H as Host, g as getElement } from './index-09deaa39.js';
 import { g as getLocaleComponentStrings } from './locale-a5a0b545.js';
 import { q as queryFeaturesByID, a as goToSelection, b as getMapLayerView, c as queryAllFeatures } from './mapViewUtils-ad2b505b.js';
-import { e as exportCSV } from './csvUtils-a02bfc76.js';
+import { e as exportCSV } from './csvUtils-81b3e74a.js';
 import './_commonjsHelpers-8fd39c50.js';
 import './interfaces-3b23a5f9.js';
 
@@ -222,14 +222,15 @@ const LayerTable = class {
     const featureSet = await queryFeaturesByID(ids, this._layerView.layer);
     const attributes = featureSet.features.map(f => f.attributes);
     // Get the column headings from the first record
-    const columnNames = new Set();
+    const columnNames = {};
     const entry = attributes[0];
     Object.keys(entry).forEach(k => {
       if (entry.hasOwnProperty(k)) {
         columnNames[k] = k;
       }
     });
-    void exportCSV(attributes, columnNames);
+    const labelFormat = Object.keys(columnNames).map(column => "{" + column + "}");
+    void exportCSV(attributes, columnNames, labelFormat);
   }
   /**
    * Zoom to all selected features
@@ -320,3 +321,5 @@ const LayerTable = class {
 LayerTable.style = layerTableCss;
 
 export { LayerTable as layer_table };
+
+//# sourceMappingURL=layer-table.entry.js.map

@@ -457,7 +457,7 @@ export class LayerTable {
     const attributes = featureSet.features.map(f => f.attributes);
 
     // Get the column headings from the first record
-    const columnNames: Set<string> = new Set();
+    const columnNames = {};
     const entry = attributes[0];
     Object.keys(entry).forEach(k => {
       if (entry.hasOwnProperty(k)) {
@@ -465,7 +465,8 @@ export class LayerTable {
       }
     });
 
-    void exportCSV(attributes, columnNames);
+    const labelFormat = Object.keys(columnNames).map(column => "{" + column + "}");
+    void exportCSV(attributes, columnNames, labelFormat);
   }
 
   /**

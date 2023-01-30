@@ -139,3 +139,4 @@ export class EditRecordModal {
   }
   static get elementRef() { return "el"; }
 }
+//# sourceMappingURL=edit-record-modal.js.map

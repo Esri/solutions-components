@@ -135,3 +135,5 @@ exports.disconnectLabel = disconnectLabel;
 exports.getLabelText = getLabelText;
 exports.labelConnectedEvent = labelConnectedEvent;
 exports.labelDisconnectedEvent = labelDisconnectedEvent;
+
+//# sourceMappingURL=label-24fcd8a5.js.map

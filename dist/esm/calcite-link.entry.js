@@ -91,3 +91,5 @@ const Link = class {
 Link.style = linkCss;
 
 export { Link as calcite_link };
+
+//# sourceMappingURL=calcite-link.entry.js.map

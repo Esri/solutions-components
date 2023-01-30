@@ -22,3 +22,5 @@ const decimalPlaces = (value) => {
 };
 
 export { clamp as c, decimalPlaces as d };
+
+//# sourceMappingURL=math-552c5420.js.map

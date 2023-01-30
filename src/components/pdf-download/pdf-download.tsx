@@ -106,8 +106,9 @@ export class PdfDownload {
     // Convert array of objects into an array of string arrays
     const contents: string[][] = attributes.map(attr => Object.values(attr));
 
-    const labelDescription = this._labelInfoElement.selectedOption.value;
-    return exportPDF(contents, labelDescription, removeDuplicates);
+    const labelFormat = this._convertPopupToLabelSpec(this.layerView.layer.popupTemplate.content[0].text);
+    const labelPageDescription = this._labelInfoElement.selectedOption.value;
+    return exportPDF(contents, labelFormat, labelPageDescription, removeDuplicates);
   }
 
   /**
@@ -127,15 +128,17 @@ export class PdfDownload {
     const attributes = featureSet.features.map(f => f.attributes);
 
     // Get the column headings from the first record
-    const columnNames: Set<string> = new Set();
+    const columnNames = {};
     const entry = attributes[0];
     Object.keys(entry).forEach(k => {
       if (entry.hasOwnProperty(k)) {
         columnNames[k] = k;
       }
     });
+    console.log(typeof attributes, typeof columnNames);//???
 
-    exportCSV(attributes, columnNames, removeDuplicates);
+    const labelFormat = this._convertPopupToLabelSpec(this.layerView.layer.popupTemplate.content[0].text);
+    exportCSV(attributes, columnNames, labelFormat, removeDuplicates);
     return Promise.resolve();
   }
 
@@ -182,23 +185,27 @@ export class PdfDownload {
   //--------------------------------------------------------------------------
 
   /**
-   * Renders the pdf export size options
+   * Converts the text of a custom popup into a multiline label specification; conversion splits text into
+   * lines on <br>s, and removes HTML tags. It does not handle Arcade and related records.
    *
-   * @returns Node array of size options
-   *
-   * @protected
+   * @param popupInfo Layer's popupInfo structure containing description, fieldInfos, and expressionInfos, e.g.,
+   * "<div style='text-align: left;'>{NAME}<br />{STREET}<br />{CITY}, {STATE} {ZIP} <br /></div>"
+   * @return Label spec
    */
-  protected _renderItems(): VNode[] {
-    const s: any = pdfUtils;
-    const sortedPdfIndo = (s.default || s).sort((a, b) => {
-      const _a = parseInt(a.descriptionPDF.labelsPerPageDisplay, 10);
-      const _b = parseInt(b.descriptionPDF.labelsPerPageDisplay, 10);
-      return _a < _b ? -1 : _a > _b ? 1 : 0
-    });
-    return sortedPdfIndo.map((l) => {
-      return (<calcite-option value={l}>{this._getLabelSizeText(l)}</calcite-option>)
-    });
-  }
+  public _convertPopupToLabelSpec(
+    popupInfo: string
+  ): string[] {
+    // Replace <br>, <br/> with |
+    popupInfo = popupInfo.replace(/<br\s*\/?>/gi, "|");
+
+    // Remove remaining HTML tags
+    let labelSpec = popupInfo.replace(/<[\s.]*[^<>]*\/?>/gi, "").split("|");
+
+    // Trim lines and remove empties
+    labelSpec = labelSpec.map(line => line.trim()).filter(line => line.length > 0);
+
+    return labelSpec;
+  };
 
   /**
    * Gets the formatted pdf export size text
@@ -224,6 +231,25 @@ export class PdfDownload {
   protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof PdfDownload_T9n;
+  }
+
+  /**
+   * Renders the pdf export size options
+   *
+   * @returns Node array of size options
+   *
+   * @protected
+   */
+  protected _renderItems(): VNode[] {
+    const s: any = pdfUtils;
+    const sortedPdfIndo = (s.default || s).sort((a, b) => {
+      const _a = parseInt(a.descriptionPDF.labelsPerPageDisplay, 10);
+      const _b = parseInt(b.descriptionPDF.labelsPerPageDisplay, 10);
+      return _a < _b ? -1 : _a > _b ? 1 : 0
+    });
+    return sortedPdfIndo.map((l) => {
+      return (<calcite-option value={l}>{this._getLabelSizeText(l)}</calcite-option>)
+    });
   }
 
 }

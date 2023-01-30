@@ -87,3 +87,4 @@ export class CommentCard {
   }
   static get elementRef() { return "el"; }
 }
+//# sourceMappingURL=comment-card.js.map

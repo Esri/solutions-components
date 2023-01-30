@@ -87,3 +87,5 @@ const Label = class {
 Label.style = labelCss;
 
 exports.calcite_label = Label;
+
+//# sourceMappingURL=calcite-label.cjs.entry.js.map

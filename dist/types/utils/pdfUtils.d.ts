@@ -17,7 +17,8 @@
  * Exports a PDF of labels.
  *
  * @param labels Labels to write
- * @param labelDescription Format to use for labels
+ * @param labelFormat Field format per label
+ * @param labelPageDescription Page format to use for labels
  * @param removeDuplicates Remove duplicate labels before exporting
  */
-export declare function exportPDF(labels: string[][], labelDescription: any, removeDuplicates?: boolean): void;
+export declare function exportPDF(labels: string[][], labelFormat: string[], labelPageDescription: any, removeDuplicates?: boolean): void;

@@ -71,3 +71,5 @@ const TEXT = {
 };
 
 export { HEADING_LEVEL as H, TEXT as T, getLocaleData as a, getValueAsDateRange as g };
+
+//# sourceMappingURL=resources-421bd81b.js.map

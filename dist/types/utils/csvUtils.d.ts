@@ -16,8 +16,9 @@
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
- * @param contents Array of content to convert into lines of output
+ * @param attributes Array of content to convert into lines of output
  * @param columnNames Column names to add to the beginning of the output array
+ * @param labelFormat Field format per label
  * @param removeDuplicates Remove duplicate lines
  */
-export declare function exportCSV(contents: Set<string>[], columnNames?: Set<string> | null, removeDuplicates?: boolean): void;
+export declare function exportCSV(attributes: Set<string>[], columnNames: any, labelFormat: string[], removeDuplicates?: boolean): void;

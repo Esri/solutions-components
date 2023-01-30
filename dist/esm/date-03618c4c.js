@@ -178,3 +178,5 @@ function setEndOfDay(date) {
 }
 
 export { dateFromISO as a, dateFromRange as b, sameDate as c, dateToISO as d, getOrder as e, prevMonth as f, getDaysDiff as g, inRange as i, nextMonth as n, parseDateString as p, setEndOfDay as s };
+
+//# sourceMappingURL=date-03618c4c.js.map

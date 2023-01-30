@@ -56,3 +56,5 @@ const Scrim = class {
 Scrim.style = scrimCss;
 
 export { Scrim as calcite_scrim };
+
+//# sourceMappingURL=calcite-scrim.entry.js.map

@@ -25,3 +25,5 @@ const ICONS = {
 exports.CSS = CSS;
 exports.ICONS = ICONS;
 exports.SLOTS = SLOTS;
+
+//# sourceMappingURL=resources-2260d186.js.map

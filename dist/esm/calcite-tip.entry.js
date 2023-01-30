@@ -119,3 +119,5 @@ const Tip = class {
 Tip.style = tipCss;
 
 export { Tip as calcite_tip };
+
+//# sourceMappingURL=calcite-tip.entry.js.map

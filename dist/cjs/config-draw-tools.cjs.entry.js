@@ -83,3 +83,5 @@ const ConfigDrawTools = class {
 ConfigDrawTools.style = configDrawToolsCss;
 
 exports.config_draw_tools = ConfigDrawTools;
+
+//# sourceMappingURL=config-draw-tools.cjs.entry.js.map

@@ -93,3 +93,5 @@ const Handle = class {
 Handle.style = handleCss;
 
 export { Handle as calcite_handle };
+
+//# sourceMappingURL=calcite-handle.entry.js.map

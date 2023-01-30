@@ -13,7 +13,7 @@ import { E as EWorkflowType, f as ESelectionMode, g as ERefineMode, c as ESketch
 import { s as state } from './publicNotificationStore-3e762eea.js';
 import { g as getLocaleComponentStrings } from './locale-a5a0b545.js';
 import { p as pdfUtils } from './labelFormats-0a0f314c.js';
-import { e as exportCSV } from './csvUtils-a02bfc76.js';
+import { e as exportCSV } from './csvUtils-81b3e74a.js';
 import { a as getSelectionIds, g as getTotal } from './publicNotificationUtils-5cb5a607.js';
 import './resources-436ae282.js';
 import './guid-15fce7c0.js';
@@ -666,32 +666,36 @@ MapSelectTools.style = mapSelectToolsCss;
  * Exports a PDF of labels.
  *
  * @param labels Labels to write
- * @param labelDescription Format to use for labels
+ * @param labelFormat Field format per label
+ * @param labelPageDescription Page format to use for labels
  * @param removeDuplicates Remove duplicate labels before exporting
  */
-function exportPDF(labels, labelDescription, removeDuplicates = true) {
-  const outputLabels = _prepareOutput(labels, removeDuplicates);
-  _downloadPDFFile(outputLabels, labelDescription, `notify-${Date.now().toString()}`);
+function exportPDF(labels, labelFormat, labelPageDescription, removeDuplicates = true) {
+  const outputLabels = _prepareOutput(labels, labelFormat, removeDuplicates);
+  _downloadPDFFile(outputLabels, labelPageDescription, `notify-${Date.now().toString()}`);
 }
 /**
  * Downloads the PDF file.
  *
  * @param labels Labels to write
- * @param labelDescription Format to use for labels
+ * @param labelPageDescription Page format to use for labels
  * @param fileTitle Title (without file extension) to use for file; defaults to "export"
  */
-function _downloadPDFFile(labels, labelDescription, fileTitle) {
-  console.log("_downloadPDFFile", labels, labelDescription, fileTitle); //???
+function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
+  console.log("_downloadPDFFile", labels, labelPageDescription, fileTitle); //???
 }
 /**
  * Prepares labels for export.
  *
  * @param labels Array of labels to prepare
+ * @param labelFormat Field format per label
  * @param removeDuplicates Remove duplicate lines
  *
  * @returns De-duped array of labels if removeDuplicates is true
  */
-function _prepareOutput(labels, removeDuplicates = true) {
+function _prepareOutput(labels, labelFormat, removeDuplicates = true) {
+  // Format the input into labels
+  console.log(labelFormat);
   // Remove duplicates if desired
   if (removeDuplicates) {
     const uniques = new Set();
@@ -733,8 +737,9 @@ const PdfDownload = class {
     const attributes = featureSet.features.map(f => f.attributes);
     // Convert array of objects into an array of string arrays
     const contents = attributes.map(attr => Object.values(attr));
-    const labelDescription = this._labelInfoElement.selectedOption.value;
-    return exportPDF(contents, labelDescription, removeDuplicates);
+    const labelFormat = this._convertPopupToLabelSpec(this.layerView.layer.popupTemplate.content[0].text);
+    const labelPageDescription = this._labelInfoElement.selectedOption.value;
+    return exportPDF(contents, labelFormat, labelPageDescription, removeDuplicates);
   }
   /**
    * Downloads csv of mailing labels for the provided list of ids
@@ -748,14 +753,16 @@ const PdfDownload = class {
     const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
     const attributes = featureSet.features.map(f => f.attributes);
     // Get the column headings from the first record
-    const columnNames = new Set();
+    const columnNames = {};
     const entry = attributes[0];
     Object.keys(entry).forEach(k => {
       if (entry.hasOwnProperty(k)) {
         columnNames[k] = k;
       }
     });
-    exportCSV(attributes, columnNames, removeDuplicates);
+    console.log(typeof attributes, typeof columnNames); //???
+    const labelFormat = this._convertPopupToLabelSpec(this.layerView.layer.popupTemplate.content[0].text);
+    exportCSV(attributes, columnNames, labelFormat, removeDuplicates);
     return Promise.resolve();
   }
   //--------------------------------------------------------------------------
@@ -786,23 +793,23 @@ const PdfDownload = class {
   //
   //--------------------------------------------------------------------------
   /**
-   * Renders the pdf export size options
+   * Converts the text of a custom popup into a multiline label specification; conversion splits text into
+   * lines on <br>s, and removes HTML tags. It does not handle Arcade and related records.
    *
-   * @returns Node array of size options
-   *
-   * @protected
+   * @param popupInfo Layer's popupInfo structure containing description, fieldInfos, and expressionInfos, e.g.,
+   * "<div style='text-align: left;'>{NAME}<br />{STREET}<br />{CITY}, {STATE} {ZIP} <br /></div>"
+   * @return Label spec
    */
-  _renderItems() {
-    const s = pdfUtils;
-    const sortedPdfIndo = (s.default || s).sort((a, b) => {
-      const _a = parseInt(a.descriptionPDF.labelsPerPageDisplay, 10);
-      const _b = parseInt(b.descriptionPDF.labelsPerPageDisplay, 10);
-      return _a < _b ? -1 : _a > _b ? 1 : 0;
-    });
-    return sortedPdfIndo.map((l) => {
-      return (h("calcite-option", { value: l }, this._getLabelSizeText(l)));
-    });
+  _convertPopupToLabelSpec(popupInfo) {
+    // Replace <br>, <br/> with |
+    popupInfo = popupInfo.replace(/<br\s*\/?>/gi, "|");
+    // Remove remaining HTML tags
+    let labelSpec = popupInfo.replace(/<[\s.]*[^<>]*\/?>/gi, "").split("|");
+    // Trim lines and remove empties
+    labelSpec = labelSpec.map(line => line.trim()).filter(line => line.length > 0);
+    return labelSpec;
   }
+  ;
   /**
    * Gets the formatted pdf export size text
    *
@@ -824,6 +831,24 @@ const PdfDownload = class {
   async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0];
+  }
+  /**
+   * Renders the pdf export size options
+   *
+   * @returns Node array of size options
+   *
+   * @protected
+   */
+  _renderItems() {
+    const s = pdfUtils;
+    const sortedPdfIndo = (s.default || s).sort((a, b) => {
+      const _a = parseInt(a.descriptionPDF.labelsPerPageDisplay, 10);
+      const _b = parseInt(b.descriptionPDF.labelsPerPageDisplay, 10);
+      return _a < _b ? -1 : _a > _b ? 1 : 0;
+    });
+    return sortedPdfIndo.map((l) => {
+      return (h("calcite-option", { value: l }, this._getLabelSizeText(l)));
+    });
   }
   get el() { return getElement(this); }
 };
@@ -1067,3 +1092,5 @@ const RefineSelection = class {
 RefineSelection.style = refineSelectionCss;
 
 export { InputMessage as calcite_input_message, Notice as calcite_notice, MapSelectTools as map_select_tools, PdfDownload as pdf_download, RefineSelection as refine_selection };
+
+//# sourceMappingURL=calcite-input-message_5.entry.js.map

@@ -101,3 +101,5 @@ const CheckList = class {
 CheckList.style = checkListCss;
 
 exports.check_list = CheckList;
+
+//# sourceMappingURL=check-list.cjs.entry.js.map

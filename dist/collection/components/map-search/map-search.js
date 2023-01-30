@@ -223,3 +223,4 @@ export class MapSearch {
   }
   static get elementRef() { return "el"; }
 }
+//# sourceMappingURL=map-search.js.map

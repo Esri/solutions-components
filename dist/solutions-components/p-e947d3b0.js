@@ -8,4 +8,10 @@
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.0.0-beta.97
  */
-function n(n,r){return(n+r)%r}export{n as g}
+function getRoundRobinIndex(index, total) {
+  return (index + total) % total;
+}
+
+export { getRoundRobinIndex as g };
+
+//# sourceMappingURL=p-e947d3b0.js.map

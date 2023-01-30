@@ -3,7 +3,8 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import{E as t}from"./p-be41429f.js";
+import { E as EWorkflowType } from './p-be41429f.js';
+
 /** @license
  * Copyright 2022 Esri
  *
@@ -18,7 +19,171 @@ import{E as t}from"./p-be41429f.js";
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */async function n(t,e,a){const r=e.capabilities.query.maxRecordCount,o={start:t,num:r,outFields:["*"],returnGeometry:!0,where:"1=1"},s=await e.queryFeatures(o);return a=a.concat(s.features),s.exceededTransferLimit?n(t+=r,e,a):Promise.resolve(a)}async function e(t,n){let e=[];const a=t.map((t=>async function(t,n){const e=n.createQuery();return e.spatialRelationship="intersects",e.geometry=t,n.queryObjectIds(e)}
+ */
+/**
+ * Query the layer for all features
+ *
+ * @param start zero-based index indicating where to begin retrieving features
+ * @param layer the layer to retrieve features from
+ * @param graphics stores the features
+ *
+ * @returns Promise with the featureSet from the layer that match the provided ids
+ */
+async function queryAllFeatures(start, layer, graphics) {
+  const num = layer.capabilities.query.maxRecordCount;
+  const query = {
+    start,
+    num,
+    outFields: ["*"],
+    // TODO think through this more...does this make sense
+    // may be better to fetch when checkbox is clicked...
+    returnGeometry: true,
+    where: "1=1"
+  };
+  const result = await layer.queryFeatures(query);
+  graphics = graphics.concat(result.features);
+  return result.exceededTransferLimit ?
+    queryAllFeatures(start += num, layer, graphics) :
+    Promise.resolve(graphics);
+}
+/**
+ * Query the layer for OIDs based on any user drawn geometries or buffers
+ *
+ * @param geometries Array of geometries used for the selection of ids from the layer
+ * @param layer the layer to retrieve ids from
+ *
+ * @returns Promise with the OIDs of features from the layer that interset the provided geometries
+ */
+async function queryObjectIds(geometries, layer) {
+  let ids = [];
+  const queryDefs = geometries.map(g => _intersectQuery(g, layer));
+  const results = await Promise.all(queryDefs);
+  results.forEach(resultIds => {
+    ids = [
+      ...ids,
+      ...resultIds
+    ];
+  });
+  return ids;
+}
+/**
+ * Query the layer for features that have the provided OIDs
+ *
+ * @param ids array of ObjectIDs to be used to query for features in a layer
+ * @param layer the layer to retrieve features from
+ *
+ * @returns Promise with the featureSet from the layer that match the provided ids
+ */
+async function queryFeaturesByID(ids, layer) {
+  const q = layer.createQuery();
+  q.outFields = ["*"];
+  q.objectIds = ids;
+  return layer.queryFeatures(q);
+}
+/**
+ * Query the layer for features that intersect the provided geometry
+ *
+ * @param start zero-based index indicating where to begin retrieving features
+ * @param layer the layer to retrieve features from
+ * @param geometry the geometry to apply to the spatial filter
+ * @param featuresCollection
+ *
+ * @returns Promise with the featureSet from the layer that match the provided ids
+ */
+async function queryFeaturesByGeometry(start, layer, geometry, featuresCollection) {
+  const num = layer.capabilities.query.maxRecordCount;
+  const query = {
+    start,
+    num,
+    outFields: ["*"],
+    returnGeometry: true,
+    geometry
+  };
+  const result = await layer.queryFeatures(query);
+  featuresCollection[layer.title] = featuresCollection[layer.title].concat(result.features);
+  return result.exceededTransferLimit ?
+    queryFeaturesByGeometry(start += num, layer, geometry, featuresCollection) :
+    Promise.resolve(featuresCollection);
+}
+/**
+ * Query the layer for the extent of features with the provided OIDs
+ *
+ * @param ids array of ObjectIDs to be used to query for features in a layer
+ * @param layer the layer to query
+ *
+ * @returns Promise with the Extent of all features that match the provided ids
+ */
+async function queryExtent(ids, layer) {
+  const query = layer.createQuery();
+  query.objectIds = ids;
+  return layer.queryExtent(query);
+}
+/**
+ * Union geometries based on geometry type
+ *
+ * @param geometries Array of geometries to union
+ * @param geometryEngine the geometry engine instance to perform the unions
+ *
+ * @returns Array of single unioned geometry for each geometry type
+ */
+function getQueryGeoms(geometries, geometryEngine) {
+  // sort and union by geom type so we have a single geom for each type to query with
+  return [
+    ..._unionGeoms(geometries, "polygon", geometryEngine),
+    ..._unionGeoms(geometries, "polyline", geometryEngine),
+    ..._unionGeoms(geometries, "point", geometryEngine)
+  ];
+}
+/**
+ * Get the appropriate ObjectIds query for the provided selection set
+ *
+ * @param selectionSet the current selection set to fetch the query for
+ * @param geometryEngine the geometry engine instance to perform the union of the user drawn graphics or buffers
+ *
+ * @returns A promise that will resolve with ids that intersect the selection sets geometries
+ */
+function getSelectionSetQuery(selectionSet, geometryEngine) {
+  let q = Promise.resolve([]);
+  if (selectionSet.workflowType !== EWorkflowType.REFINE) {
+    if (!selectionSet.buffer) {
+      const queryGeoms = getQueryGeoms(selectionSet.geometries, geometryEngine);
+      q = queryObjectIds(queryGeoms, selectionSet.layerView.layer);
+    }
+    else {
+      // buffer is a single unioned geom
+      q = queryObjectIds([selectionSet.buffer], selectionSet.layerView.layer);
+    }
+  }
+  return q;
+}
+/**
+ * Union geometries based on geometry type
+ *
+ * @param geometries array of geometries to union
+ * @param type the current geometry type to union
+ * @param geometryEngine the geometry engine instance to perform the unions
+ *
+ * @returns Array of single unioned geometry for the provided geometry type
+ */
+function _unionGeoms(geometries, type, geometryEngine) {
+  const geoms = geometries.filter(g => g.type === type);
+  return geoms.length <= 1 ? geoms : [geometryEngine.union(geoms)];
+}
+/**
+ * Query the layer for ObjectIds of features that intersect the provided geometry
+ *
+ * @param geometry Geometry used for the selection of ids from the select layer view
+ * @param layer the layer to query
+ *
+ * @returns Promise that will contain the selected ids
+ */
+async function _intersectQuery(geometry, layer) {
+  const q = layer.createQuery();
+  q.spatialRelationship = "intersects";
+  q.geometry = geometry;
+  return layer.queryObjectIds(q);
+}
+
 /** @license
  * Copyright 2022 Esri
  *
@@ -33,4 +198,113 @@ import{E as t}from"./p-be41429f.js";
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */(t,n)));return(await Promise.all(a)).forEach((t=>{e=[...e,...t]})),e}async function a(t,n){const e=n.createQuery();return e.outFields=["*"],e.objectIds=t,n.queryFeatures(e)}async function r(t,n,e,a){const o=n.capabilities.query.maxRecordCount,s={start:t,num:o,outFields:["*"],returnGeometry:!0,geometry:e},i=await n.queryFeatures(s);return a[n.title]=a[n.title].concat(i.features),i.exceededTransferLimit?r(t+=o,n,e,a):Promise.resolve(a)}function o(t,n){return[...i(t,"polygon",n),...i(t,"polyline",n),...i(t,"point",n)]}function s(n,a){let r=Promise.resolve([]);return n.workflowType!==t.REFINE&&(r=e(n.buffer?[n.buffer]:o(n.geometries,a),n.layerView.layer)),r}function i(t,n,e){const a=t.filter((t=>t.type===n));return a.length<=1?a:[e.union(a)]}async function c(t){let n=[];return await t.when((()=>{n=t.map.layers.toArray().map((t=>t.title))})),n}async function u(t,n){const e=await async function(t,n){let e=[];return await t.when((()=>{e=t.map.layers.toArray().filter((t=>t.title===n))})),e.length>0?e[0]:void 0}(t,n);return e?await t.whenLayerView(e):void 0}async function f(t,n,e,a=!1){return a&&await y(t,n,e,!1),n.highlight(t)}async function y(t,n,e,a=!0){const r=await async function(t,n){const e=n.createQuery();return e.objectIds=t,n.queryExtent(e)}(t,n.layer);await e.goTo(r.extent),a&&await async function(t,n){n.featureEffect={filter:{objectIds:t},includedEffect:"invert(100%)",excludedEffect:"blur(5px)"},setTimeout((()=>{n.featureEffect=void 0}),1300)}(t,n)}export{y as a,u as b,n as c,s as d,e,o as f,c as g,f as h,r as i,a as q}
+ */
+/**
+ * Gets the layer names from the current map
+ *
+ * @param mapView the map view to fetch the layer names from
+ *
+ * @returns Promise resolving with an array of layer names
+ *
+ */
+async function getMapLayerNames(mapView) {
+  let layerNames = [];
+  await mapView.when(() => {
+    layerNames = mapView.map.layers.toArray().map((l) => {
+      return l.title;
+    });
+  });
+  return layerNames;
+}
+/**
+ * Get a layer view by title
+ *
+ * @param mapView the map view to fetch the layer from
+ * @param title the title if the layer to fetch
+ *
+ * @returns Promise resolving with the fetched layer view
+ *
+ */
+async function getMapLayerView(mapView, title) {
+  const layer = await getMapLayer(mapView, title);
+  return layer ? await mapView.whenLayerView(layer) : undefined;
+}
+/**
+ * Get a layer by title
+ *
+ * @param mapView the map view to fetch the layer from
+ * @param title the title if the layer to fetch
+ *
+ * @returns Promise resolving with the fetched layer
+ *
+ */
+async function getMapLayer(mapView, title) {
+  let layers = [];
+  await mapView.when(() => {
+    layers = mapView.map.layers.toArray().filter((l) => {
+      return l.title === title;
+    });
+  });
+  return layers.length > 0 ? layers[0] : undefined;
+}
+/**
+ * Highlight features by OID
+ *
+ * @param ids the OIDs from the layer to highlight
+ * @param layerView the layer view to highlight
+ * @param mapView the map view used if updateExtent is true
+ * @param updateExtent optional (default false) boolean to indicate if we should zoom to the extent
+ *
+ * @returns Promise resolving with the highlight handle
+ *
+ */
+async function highlightFeatures(ids, layerView, mapView, updateExtent = false) {
+  if (updateExtent) {
+    await goToSelection(ids, layerView, mapView, false);
+  }
+  return layerView.highlight(ids);
+}
+/**
+ * Flash features by OID
+ *
+ * @param ids the OIDs from the layer to highlight
+ * @param layerView the layer view to highlight
+ *
+ * @returns Promise resolving when the operation is complete
+ *
+ */
+async function flashSelection(ids, layerView) {
+  const featureFilter = {
+    objectIds: ids
+  };
+  layerView.featureEffect = {
+    filter: featureFilter,
+    includedEffect: "invert(100%)",
+    excludedEffect: "blur(5px)"
+  };
+  setTimeout(() => {
+    layerView.featureEffect = undefined;
+  }, 1300);
+}
+/**
+ * Zoom to features based on OID
+ *
+ * @param ids the OIDs from the layer to go to
+ * @param layerView the layer view that contains the OIDs
+ * @param mapView the map view to show the extent change
+ * @param flashFeatures optional (default true) boolean to indicate if we should flash the features
+ *
+ * @returns Promise resolving when the operation is complete
+ *
+ */
+async function goToSelection(ids, layerView, mapView, flashFeatures = true) {
+  const result = await queryExtent(ids, layerView.layer);
+  await mapView.goTo(result.extent);
+  if (flashFeatures) {
+    await flashSelection(ids, layerView);
+  }
+}
+
+export { goToSelection as a, getMapLayerView as b, queryAllFeatures as c, getSelectionSetQuery as d, queryObjectIds as e, getQueryGeoms as f, getMapLayerNames as g, highlightFeatures as h, queryFeaturesByGeometry as i, queryFeaturesByID as q };
+
+//# sourceMappingURL=p-3f46d8ea.js.map

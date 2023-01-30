@@ -228,3 +228,4 @@ export class SolutionTemplateData {
       }];
   }
 }
+//# sourceMappingURL=solution-template-data.js.map

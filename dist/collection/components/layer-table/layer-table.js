@@ -237,14 +237,15 @@ export class LayerTable {
     const featureSet = await queryFeaturesByID(ids, this._layerView.layer);
     const attributes = featureSet.features.map(f => f.attributes);
     // Get the column headings from the first record
-    const columnNames = new Set();
+    const columnNames = {};
     const entry = attributes[0];
     Object.keys(entry).forEach(k => {
       if (entry.hasOwnProperty(k)) {
         columnNames[k] = k;
       }
     });
-    void exportCSV(attributes, columnNames);
+    const labelFormat = Object.keys(columnNames).map(column => "{" + column + "}");
+    void exportCSV(attributes, columnNames, labelFormat);
   }
   /**
    * Zoom to all selected features
@@ -373,3 +374,4 @@ export class LayerTable {
   }
   static get elementRef() { return "el"; }
 }
+//# sourceMappingURL=layer-table.js.map

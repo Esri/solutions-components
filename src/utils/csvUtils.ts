@@ -17,16 +17,18 @@
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
- * @param contents Array of content to convert into lines of output
+ * @param attributes Array of content to convert into lines of output
  * @param columnNames Column names to add to the beginning of the output array
+ * @param labelFormat Field format per label
  * @param removeDuplicates Remove duplicate lines
  */
 export function exportCSV(
-  contents: Set<string>[],
-  columnNames: Set<string> | null = null,
+  attributes: Set<string>[],
+  columnNames: any,
+  labelFormat: string[],
   removeDuplicates = true
 ): void {
-  const outputLines = _prepareOutput(contents, columnNames, removeDuplicates);
+  const outputLines = _prepareOutput(attributes, columnNames, labelFormat, removeDuplicates);
 
   _downloadCSVFile(outputLines, `notify-${Date.now().toString()}`);
 }
@@ -59,15 +61,20 @@ function _downloadCSVFile(
  *
  * @param contents Array of content to convert into lines of output
  * @param columnNames Column names to add to the beginning of the output array
+ * @param labelFormat Field format per label
  * @param removeDuplicates Remove duplicate lines
  *
  * @returns Array of line strings
  */
 function _prepareOutput(
   contents: Set<string>[],
-  columnNames: Set<string> | null = null,
+  columnNames: any,
+  labelFormat: string[],
   removeDuplicates = true
 ): string[] {
+  // Format the input into labels
+  console.log(labelFormat);
+
   // Format values to string so it doesn't get tripped up when a value has a comma
   // another option could be to export with a different delimiter
   let outputLines = contents.map(

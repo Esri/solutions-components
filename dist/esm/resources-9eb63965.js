@@ -49,3 +49,5 @@ const TEXT = {
 const HEADING_LEVEL = 3;
 
 export { CSS as C, HEADING_LEVEL as H, ICONS as I, SLOTS as S, TEXT as T };
+
+//# sourceMappingURL=resources-9eb63965.js.map

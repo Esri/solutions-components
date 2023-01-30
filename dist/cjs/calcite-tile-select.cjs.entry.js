@@ -216,3 +216,5 @@ const TileSelect = class {
 TileSelect.style = tileSelectCss;
 
 exports.calcite_tile_select = TileSelect;
+
+//# sourceMappingURL=calcite-tile-select.cjs.entry.js.map

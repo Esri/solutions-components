@@ -182,3 +182,4 @@ async function _intersectQuery(geometry, layer) {
   q.geometry = geometry;
   return layer.queryObjectIds(q);
 }
+//# sourceMappingURL=queryUtils.js.map

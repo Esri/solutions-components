@@ -93,3 +93,5 @@ const Loader = class {
 Loader.style = loaderCss;
 
 exports.calcite_loader = Loader;
+
+//# sourceMappingURL=calcite-loader.cjs.entry.js.map

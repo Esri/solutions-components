@@ -1758,3 +1758,5 @@ function getFloatingElFromTransitionTarget(floatingTransitionEl) {
 }
 
 export { FloatingCSS as F, disconnectFloatingUI as a, defaultOffsetDistance as b, connectFloatingUI as c, defaultMenuPlacement as d, rectToClientRect as e, filterComputedPlacements as f, reposition as r, updateAfterClose as u };
+
+//# sourceMappingURL=floating-ui-6010f963.js.map

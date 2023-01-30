@@ -73,3 +73,5 @@ const CrowdsourceManager = class {
 CrowdsourceManager.style = crowdsourceManagerCss;
 
 exports.crowdsource_manager = CrowdsourceManager;
+
+//# sourceMappingURL=crowdsource-manager.cjs.entry.js.map

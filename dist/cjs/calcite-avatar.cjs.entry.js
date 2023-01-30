@@ -154,3 +154,5 @@ const Avatar = class {
 Avatar.style = avatarCss;
 
 exports.calcite_avatar = Avatar;
+
+//# sourceMappingURL=calcite-avatar.cjs.entry.js.map

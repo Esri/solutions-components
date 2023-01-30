@@ -333,3 +333,5 @@ const PickList = class {
 PickList.style = pickListCss;
 
 export { Block as calcite_block, PickList as calcite_pick_list };
+
+//# sourceMappingURL=calcite-block_2.entry.js.map

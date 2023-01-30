@@ -21,12 +21,13 @@
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
- * @param contents Array of content to convert into lines of output
+ * @param attributes Array of content to convert into lines of output
  * @param columnNames Column names to add to the beginning of the output array
+ * @param labelFormat Field format per label
  * @param removeDuplicates Remove duplicate lines
  */
-export function exportCSV(contents, columnNames = null, removeDuplicates = true) {
-  const outputLines = _prepareOutput(contents, columnNames, removeDuplicates);
+export function exportCSV(attributes, columnNames, labelFormat, removeDuplicates = true) {
+  const outputLines = _prepareOutput(attributes, columnNames, labelFormat, removeDuplicates);
   _downloadCSVFile(outputLines, `notify-${Date.now().toString()}`);
 }
 /**
@@ -53,11 +54,14 @@ function _downloadCSVFile(outputLines, fileTitle) {
  *
  * @param contents Array of content to convert into lines of output
  * @param columnNames Column names to add to the beginning of the output array
+ * @param labelFormat Field format per label
  * @param removeDuplicates Remove duplicate lines
  *
  * @returns Array of line strings
  */
-function _prepareOutput(contents, columnNames = null, removeDuplicates = true) {
+function _prepareOutput(contents, columnNames, labelFormat, removeDuplicates = true) {
+  // Format the input into labels
+  console.log(labelFormat);
   // Format values to string so it doesn't get tripped up when a value has a comma
   // another option could be to export with a different delimiter
   let outputLines = contents.map(values => Object.values(values).map(v => `"${v}"`).join(",") + "\r\n");
@@ -74,3 +78,4 @@ function _prepareOutput(contents, columnNames = null, removeDuplicates = true) {
   }
   return outputLines;
 }
+//# sourceMappingURL=csvUtils.js.map

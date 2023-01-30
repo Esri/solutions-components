@@ -88,3 +88,4 @@ export async function formatNumber(number, options) {
     places,
   });
 }
+//# sourceMappingURL=languageUtil.js.map

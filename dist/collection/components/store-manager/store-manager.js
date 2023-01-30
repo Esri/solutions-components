@@ -125,3 +125,4 @@ export class StoreManager {
   }
   static get elementRef() { return "el"; }
 }
+//# sourceMappingURL=store-manager.js.map

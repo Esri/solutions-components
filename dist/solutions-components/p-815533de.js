@@ -3,14 +3,319 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import{f as t,a as s,t as i}from"./p-83166522.js";import{g as n}from"./p-e947d3b0.js";import{S as e}from"./p-ae1fd76b.js";import{d as o}from"./p-4e32bf8c.js";import{h as r,H as a}from"./p-c023e6a1.js";import{C as l,S as c}from"./p-b978636e.js";
+import { f as focusElement, a as getSlotted, t as toAriaBoolean } from './p-83166522.js';
+import { g as getRoundRobinIndex } from './p-e947d3b0.js';
+import { S as SLOTS } from './p-ae1fd76b.js';
+import { d as debounce } from './p-4e32bf8c.js';
+import { h, H as Host } from './p-c023e6a1.js';
+import { C as CSS, S as SLOTS$1 } from './p-b978636e.js';
+
 /*!
  * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.0.0-beta.97
- */function h(){this.setUpItems(),this.setUpFilter(),this.deselectRemovedItems()}const u=["ArrowUp","ArrowDown"];function f(){this.setUpItems(),this.setUpFilter(),this.emitCalciteListChange=o(j.bind(this),0)}function d(){var t;null===(t=this.mutationObserver)||void 0===t||t.observe(this.el,{childList:!0,subtree:!0})}function m(){var t;null===(t=this.mutationObserver)||void 0===t||t.disconnect()}function p(s){const{selectedValues:i}=this,{item:n,value:e,selected:o,shiftPressed:r}=s.detail;o?(this.multiple&&r&&this.selectSiblings(n),this.multiple||this.deselectSiblingItems(n),i.set(e,n)):(i.delete(e),this.multiple&&r&&this.selectSiblings(n,!0)),this.multiple||(C(n,o),o&&t(n)),this.lastSelectedItem=n,this.emitCalciteListChange()}function b(t){const s=t.detail.oldValue,i=this.selectedValues;if(i.has(s)){const n=i.get(s);i.delete(s),i.set(t.detail.newValue,n)}t.stopPropagation()}function v(t){const{el:s,items:i,multiple:n,selectedValues:e}=this;n||s.contains(t.relatedTarget)||A(i).forEach((s=>{C(s,0===e.size?s.contains(t.target)||t.target===s:s.selected)}))}function g(s){const{key:i,target:n}=s;if(!function(t){return!!u.find((s=>s===t))}(i))return;const{items:e,multiple:o,selectionFollowsFocus:r}=this,{length:a}=e,l=e.indexOf(n);if(!a||-1===l)return;s.preventDefault();const c=e[w(this,n,"ArrowUp"===i?"up":"down")];e.forEach((t=>C(t,t===c))),!o&&r&&(c.selected=!0),t(c)}function w(t,s,i){const{items:e}=t,{length:o}=e,r=e.indexOf(s),a="up"===i?-1:1;let l=1,c=n(r+a*l++,o);const h=c;for(;e[c].disabled&&(c=n(r+a*l++,o),c!==h););return c}function F(t,s){const{items:i}=t;return i.indexOf(s)}function A(t){return t.filter((t=>!t.disabled))}function j(){this.calciteListChange.emit(this.selectedValues)}function y(t){if(t.defaultPrevented)return;const s=t.target,i=this.selectedValues;"CALCITE-PICK-LIST-GROUP"===s.parentElement.tagName&&s.slot===e.parentItem?(s.parentElement.remove(),Array.from(s.parentElement.children).forEach((t=>i.delete(t.value)))):(s.remove(),i.delete(s.value)),this.emitCalciteListChange()}function C(t,s){t.disabled||(s?t.removeAttribute("tabindex"):t.setAttribute("tabindex","-1"))}async function E(s){var i;if(this.filterEnabled&&"filter"===s)return void await t(this.filterEl);const{items:n,multiple:e,selectionFollowsFocus:o}=this;if(0===n.length)return;if(e)return null===(i=A(n)[0])||void 0===i?void 0:i.setFocus();const r=A(n),a=r.find((t=>t.selected))||r[0];return o&&a&&(a.selected=!0),a.setFocus()}function x(t){this.items=Array.from(this.el.querySelectorAll(t));let s=!1;const{items:i}=this;i.forEach((t=>{t.icon=this.getIconType(),this.multiple||(t.disableDeselect=!0,C(t,!1)),t.selected&&(s=!0,C(t,!0),this.selectedValues.set(t.value,t))}));const[n]=i;s||!n||n.disabled||C(n,!0)}function I(){const t=this.selectedValues,s=this.items.map((({value:t})=>t));t.forEach((t=>{s.includes(t.value)||this.selectedValues.delete(t.value)}))}function L(t){this.items.forEach((s=>{s.value!==t.value&&(s.toggleSelected(!1),this.selectedValues.has(s.value)&&this.selectedValues.delete(s.value))}))}function P(t,s=!1){if(!this.lastSelectedItem)return;const{items:i}=this,n=i.findIndex((t=>t.value===this.lastSelectedItem.value)),e=i.findIndex((s=>s.value===t.value));i.slice(Math.min(n,e),Math.max(n,e)).forEach((t=>{t.toggleSelected(!s),s?this.selectedValues.delete(t.value):this.selectedValues.set(t.value,t)}))}let S;function k(t){const{filteredItems:i}=t.currentTarget,n=i.map((t=>t.value));let e=!1;S||(S=new Set);const o=this.items.filter((t=>{const s=t.parentElement;s.matches("calcite-pick-list-group")&&S.add(s);const i=n.includes(t.value);return t.hidden=!i,e||(e=i&&t.selected),i}));S.forEach((t=>{const i=o.some((s=>t.contains(s)));if(t.hidden=!i,!i)return;const n=s(t,"parent-item");n&&(n.hidden=!1,o.includes(n)&&Array.from(t.children).forEach((t=>t.hidden=!1)))})),S.clear(),o.length>0&&!e&&!this.multiple&&C(o[0],!0)}function U(){return this.items.map((t=>({label:t.label,description:t.description,metadata:t.metadata,value:t.value})))}
+ */
+function mutationObserverCallback() {
+  this.setUpItems();
+  this.setUpFilter();
+  this.deselectRemovedItems();
+}
+const SUPPORTED_ARROW_KEYS = ["ArrowUp", "ArrowDown"];
+// --------------------------------------------------------------------------
+//
+//  Lifecycle
+//
+// --------------------------------------------------------------------------
+function initialize() {
+  this.setUpItems();
+  this.setUpFilter();
+  this.emitCalciteListChange = debounce(internalCalciteListChangeEvent.bind(this), 0);
+}
+function initializeObserver() {
+  var _a;
+  (_a = this.mutationObserver) === null || _a === void 0 ? void 0 : _a.observe(this.el, { childList: true, subtree: true });
+}
+function cleanUpObserver() {
+  var _a;
+  (_a = this.mutationObserver) === null || _a === void 0 ? void 0 : _a.disconnect();
+}
+// --------------------------------------------------------------------------
+//
+//  Listeners
+//
+// --------------------------------------------------------------------------
+function calciteListItemChangeHandler(event) {
+  const { selectedValues } = this;
+  const { item, value, selected, shiftPressed } = event.detail;
+  if (selected) {
+    if (this.multiple && shiftPressed) {
+      this.selectSiblings(item);
+    }
+    if (!this.multiple) {
+      this.deselectSiblingItems(item);
+    }
+    selectedValues.set(value, item);
+  }
+  else {
+    selectedValues.delete(value);
+    if (this.multiple && shiftPressed) {
+      this.selectSiblings(item, true);
+    }
+  }
+  if (!this.multiple) {
+    toggleSingleSelectItemTabbing(item, selected);
+    if (selected) {
+      focusElement(item);
+    }
+  }
+  this.lastSelectedItem = item;
+  this.emitCalciteListChange();
+}
+function calciteInternalListItemValueChangeHandler(event) {
+  const oldValue = event.detail.oldValue;
+  const selectedValues = this.selectedValues;
+  if (selectedValues.has(oldValue)) {
+    const item = selectedValues.get(oldValue);
+    selectedValues.delete(oldValue);
+    selectedValues.set(event.detail.newValue, item);
+  }
+  event.stopPropagation();
+}
+// --------------------------------------------------------------------------
+//
+//  Private Methods
+//
+// --------------------------------------------------------------------------
+function isValidNavigationKey(key) {
+  return !!SUPPORTED_ARROW_KEYS.find((k) => k === key);
+}
+function calciteListFocusOutHandler(event) {
+  const { el, items, multiple, selectedValues } = this;
+  if (multiple) {
+    return;
+  }
+  const focusedInside = el.contains(event.relatedTarget);
+  if (focusedInside) {
+    return;
+  }
+  filterOutDisabled(items).forEach((item) => {
+    toggleSingleSelectItemTabbing(item, selectedValues.size === 0 ? item.contains(event.target) || event.target === item : item.selected);
+  });
+}
+function keyDownHandler(event) {
+  const { key, target } = event;
+  if (!isValidNavigationKey(key)) {
+    return;
+  }
+  const { items, multiple, selectionFollowsFocus } = this;
+  const { length: totalItems } = items;
+  const currentIndex = items.indexOf(target);
+  if (!totalItems || currentIndex === -1) {
+    return;
+  }
+  event.preventDefault();
+  const index = moveItemIndex(this, target, key === "ArrowUp" ? "up" : "down");
+  const item = items[index];
+  items.forEach((i) => toggleSingleSelectItemTabbing(i, i === item));
+  if (!multiple && selectionFollowsFocus) {
+    item.selected = true;
+  }
+  focusElement(item);
+}
+function moveItemIndex(list, item, direction) {
+  const { items } = list;
+  const { length: totalItems } = items;
+  const currentIndex = items.indexOf(item);
+  const directionFactor = direction === "up" ? -1 : 1;
+  let moveOffset = 1;
+  let index = getRoundRobinIndex(currentIndex + directionFactor * moveOffset++, totalItems);
+  const firstMovedIndex = index;
+  while (items[index].disabled) {
+    index = getRoundRobinIndex(currentIndex + directionFactor * moveOffset++, totalItems);
+    if (index === firstMovedIndex) {
+      break;
+    }
+  }
+  return index;
+}
+function getItemIndex(list, item) {
+  const { items } = list;
+  return items.indexOf(item);
+}
+function filterOutDisabled(items) {
+  return items.filter((item) => !item.disabled);
+}
+function internalCalciteListChangeEvent() {
+  this.calciteListChange.emit(this.selectedValues);
+}
+function removeItem(event) {
+  if (event.defaultPrevented) {
+    return;
+  }
+  const item = event.target;
+  const selectedValues = this.selectedValues;
+  if (item.parentElement.tagName === "CALCITE-PICK-LIST-GROUP" && item.slot === SLOTS.parentItem) {
+    item.parentElement.remove();
+    Array.from(item.parentElement.children).forEach((item) => selectedValues.delete(item.value));
+  }
+  else {
+    item.remove();
+    selectedValues.delete(item.value);
+  }
+  this.emitCalciteListChange();
+}
+function toggleSingleSelectItemTabbing(item, selectable) {
+  if (item.disabled) {
+    return;
+  }
+  // using attribute intentionally
+  if (selectable) {
+    item.removeAttribute("tabindex");
+  }
+  else {
+    item.setAttribute("tabindex", "-1");
+  }
+}
+async function setFocus(focusId) {
+  var _a;
+  if (this.filterEnabled && focusId === "filter") {
+    await focusElement(this.filterEl);
+    return;
+  }
+  const { items, multiple, selectionFollowsFocus } = this;
+  if (items.length === 0) {
+    return;
+  }
+  if (multiple) {
+    return (_a = filterOutDisabled(items)[0]) === null || _a === void 0 ? void 0 : _a.setFocus();
+  }
+  const filtered = filterOutDisabled(items);
+  const focusTarget = filtered.find((item) => item.selected) || filtered[0];
+  if (selectionFollowsFocus && focusTarget) {
+    focusTarget.selected = true;
+  }
+  return focusTarget.setFocus();
+}
+function setUpItems(tagName) {
+  this.items = Array.from(this.el.querySelectorAll(tagName));
+  let hasSelected = false;
+  const { items } = this;
+  items.forEach((item) => {
+    item.icon = this.getIconType();
+    if (!this.multiple) {
+      item.disableDeselect = true;
+      toggleSingleSelectItemTabbing(item, false);
+    }
+    if (item.selected) {
+      hasSelected = true;
+      toggleSingleSelectItemTabbing(item, true);
+      this.selectedValues.set(item.value, item);
+    }
+  });
+  const [first] = items;
+  if (!hasSelected && first && !first.disabled) {
+    toggleSingleSelectItemTabbing(first, true);
+  }
+}
+function deselectRemovedItems() {
+  const selectedValues = this.selectedValues;
+  const itemValues = this.items.map(({ value }) => value);
+  selectedValues.forEach((selectedItem) => {
+    if (!itemValues.includes(selectedItem.value)) {
+      this.selectedValues.delete(selectedItem.value);
+    }
+  });
+}
+function deselectSiblingItems(item) {
+  this.items.forEach((currentItem) => {
+    if (currentItem.value !== item.value) {
+      currentItem.toggleSelected(false);
+      if (this.selectedValues.has(currentItem.value)) {
+        this.selectedValues.delete(currentItem.value);
+      }
+    }
+  });
+}
+function selectSiblings(item, deselect = false) {
+  if (!this.lastSelectedItem) {
+    return;
+  }
+  const { items } = this;
+  const start = items.findIndex((currentItem) => {
+    return currentItem.value === this.lastSelectedItem.value;
+  });
+  const end = items.findIndex((currentItem) => {
+    return currentItem.value === item.value;
+  });
+  items.slice(Math.min(start, end), Math.max(start, end)).forEach((currentItem) => {
+    currentItem.toggleSelected(!deselect);
+    if (!deselect) {
+      this.selectedValues.set(currentItem.value, currentItem);
+    }
+    else {
+      this.selectedValues.delete(currentItem.value);
+    }
+  });
+}
+let groups;
+function handleFilter(event) {
+  const { filteredItems } = event.currentTarget;
+  const values = filteredItems.map((item) => item.value);
+  let hasSelectedMatch = false;
+  if (!groups) {
+    groups = new Set();
+  }
+  const matchedItems = this.items.filter((item) => {
+    const parent = item.parentElement;
+    const grouped = parent.matches("calcite-pick-list-group");
+    if (grouped) {
+      groups.add(parent);
+    }
+    const matches = values.includes(item.value);
+    item.hidden = !matches;
+    if (!hasSelectedMatch) {
+      hasSelectedMatch = matches && item.selected;
+    }
+    return matches;
+  });
+  groups.forEach((group) => {
+    const hasAtLeastOneMatch = matchedItems.some((item) => group.contains(item));
+    group.hidden = !hasAtLeastOneMatch;
+    if (!hasAtLeastOneMatch) {
+      return;
+    }
+    const parentItem = getSlotted(group, "parent-item");
+    if (parentItem) {
+      parentItem.hidden = false;
+      if (matchedItems.includes(parentItem)) {
+        Array.from(group.children).forEach((child) => (child.hidden = false));
+      }
+    }
+  });
+  groups.clear();
+  if (matchedItems.length > 0 && !hasSelectedMatch && !this.multiple) {
+    toggleSingleSelectItemTabbing(matchedItems[0], true);
+  }
+}
+function getItemData() {
+  return this.items.map((item) => ({
+    label: item.label,
+    description: item.description,
+    metadata: item.metadata,
+    value: item.value
+  }));
+}
+
 /*!
  * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.0.0-beta.97
- */const M=({props:{disabled:t,loading:s,filterEnabled:n,dataForFilter:e,handleFilter:o,filterPlaceholder:h,setFilterEl:u,dragEnabled:f,storeAssistiveEl:d},...m})=>{const p=r("slot",null);return r(a,{"aria-busy":i(s),role:"menu",...m},r("section",null,f?r("span",{"aria-live":"assertive",class:"assistive-text",ref:d}):null,r("header",{class:{[l.sticky]:!0}},n?r("calcite-filter",{"aria-label":h,disabled:s||t,items:e,onCalciteFilterChange:o,placeholder:h,ref:u}):null,r("slot",{name:c.menuActions})),s?r("calcite-scrim",{loading:s}):null,p))};export{M as L,L as a,d as b,m as c,I as d,p as e,b as f,U as g,k as h,f as i,v as j,g as k,x as l,h as m,E as n,F as o,w as p,y as r,P as s}
+ */
+const List = ({ props: { disabled, loading, filterEnabled, dataForFilter, handleFilter, filterPlaceholder, setFilterEl, dragEnabled, storeAssistiveEl }, ...rest }) => {
+  const defaultSlot = h("slot", null);
+  return (h(Host, { "aria-busy": toAriaBoolean(loading), role: "menu", ...rest }, h("section", null, dragEnabled ? (h("span", { "aria-live": "assertive", class: "assistive-text", ref: storeAssistiveEl })) : null, h("header", { class: { [CSS.sticky]: true } }, filterEnabled ? (h("calcite-filter", { "aria-label": filterPlaceholder, disabled: loading || disabled, items: dataForFilter, onCalciteFilterChange: handleFilter, placeholder: filterPlaceholder, ref: setFilterEl })) : null, h("slot", { name: SLOTS$1.menuActions })), loading ? h("calcite-scrim", { loading: loading }) : null, defaultSlot)));
+};
+
+export { List as L, deselectSiblingItems as a, initializeObserver as b, cleanUpObserver as c, deselectRemovedItems as d, calciteListItemChangeHandler as e, calciteInternalListItemValueChangeHandler as f, getItemData as g, handleFilter as h, initialize as i, calciteListFocusOutHandler as j, keyDownHandler as k, setUpItems as l, mutationObserverCallback as m, setFocus as n, getItemIndex as o, moveItemIndex as p, removeItem as r, selectSiblings as s };
+
+//# sourceMappingURL=p-815533de.js.map

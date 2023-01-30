@@ -123,3 +123,5 @@ const ConfigBufferTools = class {
 ConfigBufferTools.style = configBufferToolsCss;
 
 exports.config_buffer_tools = ConfigBufferTools;
+
+//# sourceMappingURL=config-buffer-tools.cjs.entry.js.map

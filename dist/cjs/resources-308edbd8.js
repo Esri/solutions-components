@@ -41,3 +41,5 @@ exports.CSS = CSS;
 exports.HEADING_LEVEL = HEADING_LEVEL;
 exports.ICONS = ICONS;
 exports.TEXT = TEXT;
+
+//# sourceMappingURL=resources-308edbd8.js.map

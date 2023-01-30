@@ -18,46 +18,53 @@
  * Exports a PDF of labels.
  *
  * @param labels Labels to write
- * @param labelDescription Format to use for labels
+ * @param labelFormat Field format per label
+ * @param labelPageDescription Page format to use for labels
  * @param removeDuplicates Remove duplicate labels before exporting
  */
 export function exportPDF(
   labels: string[][],
-  labelDescription: any,
+  labelFormat: string[],
+  labelPageDescription: any,
   removeDuplicates = true
 ): void {
-  const outputLabels = _prepareOutput(labels, removeDuplicates);
+  const outputLabels = _prepareOutput(labels, labelFormat, removeDuplicates);
 
-  _downloadPDFFile(outputLabels, labelDescription, `notify-${Date.now().toString()}`);
+  _downloadPDFFile(outputLabels, labelPageDescription, `notify-${Date.now().toString()}`);
 }
 
 /**
  * Downloads the PDF file.
  *
  * @param labels Labels to write
- * @param labelDescription Format to use for labels
+ * @param labelPageDescription Page format to use for labels
  * @param fileTitle Title (without file extension) to use for file; defaults to "export"
  */
 function _downloadPDFFile(
   labels: string[][],
-  labelDescription: any,
+  labelPageDescription: any,
   fileTitle: string
 ): void {
-  console.log("_downloadPDFFile", labels, labelDescription, fileTitle);//???
+  console.log("_downloadPDFFile", labels, labelPageDescription, fileTitle);//???
 }
 
 /**
  * Prepares labels for export.
  *
  * @param labels Array of labels to prepare
+ * @param labelFormat Field format per label
  * @param removeDuplicates Remove duplicate lines
  *
  * @returns De-duped array of labels if removeDuplicates is true
  */
 function _prepareOutput(
   labels: string[][],
+  labelFormat: string[],
   removeDuplicates = true
 ): string[][] {
+  // Format the input into labels
+  console.log(labelFormat);
+
   // Remove duplicates if desired
   if (removeDuplicates) {
     const uniques: Set<string> = new Set();

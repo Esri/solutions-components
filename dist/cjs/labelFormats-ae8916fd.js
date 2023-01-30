@@ -203,3 +203,5 @@ const pdfUtils = /*#__PURE__*/Object.freeze({
 });
 
 exports.pdfUtils = pdfUtils;
+
+//# sourceMappingURL=labelFormats-ae8916fd.js.map

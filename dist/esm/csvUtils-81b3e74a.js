@@ -1,0 +1,84 @@
+/*!
+ * Copyright 2022 Esri
+ * Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+/** @license
+ * Copyright 2022 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+ * Export a csv of the attributes from the features that match the provided ids
+ *
+ * @param attributes Array of content to convert into lines of output
+ * @param columnNames Column names to add to the beginning of the output array
+ * @param labelFormat Field format per label
+ * @param removeDuplicates Remove duplicate lines
+ */
+function exportCSV(attributes, columnNames, labelFormat, removeDuplicates = true) {
+  const outputLines = _prepareOutput(attributes, columnNames, labelFormat, removeDuplicates);
+  _downloadCSVFile(outputLines, `notify-${Date.now().toString()}`);
+}
+/**
+ * Download the CSV file
+ *
+ * @param outputLines Lines of output to write to file
+ * @param fileTitle Title (without file extension) to use for file; defaults to "export"
+ *
+ * @see {@link https://medium.com/@danny.pule/export-json-to-csv-file-using-javascript-a0b7bc5b00d2}
+ */
+function _downloadCSVFile(outputLines, fileTitle) {
+  const link = document.createElement("a");
+  if (link.download !== undefined) {
+    link.href = URL.createObjectURL(new Blob(outputLines, { type: "text/csv;charset=utf-8;" }));
+    link.download = `${fileTitle}.csv` || "export.csv";
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+}
+/**
+ * Converts output into an array of line strings.
+ *
+ * @param contents Array of content to convert into lines of output
+ * @param columnNames Column names to add to the beginning of the output array
+ * @param labelFormat Field format per label
+ * @param removeDuplicates Remove duplicate lines
+ *
+ * @returns Array of line strings
+ */
+function _prepareOutput(contents, columnNames, labelFormat, removeDuplicates = true) {
+  // Format the input into labels
+  console.log(labelFormat);
+  // Format values to string so it doesn't get tripped up when a value has a comma
+  // another option could be to export with a different delimiter
+  let outputLines = contents.map(values => Object.values(values).map(v => `"${v}"`).join(",") + "\r\n");
+  // Remove duplicates if desired
+  if (removeDuplicates) {
+    const uniques = new Set();
+    outputLines.forEach(line => uniques.add(line));
+    outputLines = Array.from(uniques);
+  }
+  // Add the column names to the output
+  if (columnNames) {
+    const columnNamesLine = Object.values(columnNames).map(v => `"${v}"`).join(",") + "\r\n";
+    outputLines.unshift(columnNamesLine);
+  }
+  return outputLines;
+}
+
+export { exportCSV as e };
+
+//# sourceMappingURL=csvUtils-81b3e74a.js.map

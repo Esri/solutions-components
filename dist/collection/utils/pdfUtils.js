@@ -22,32 +22,36 @@
  * Exports a PDF of labels.
  *
  * @param labels Labels to write
- * @param labelDescription Format to use for labels
+ * @param labelFormat Field format per label
+ * @param labelPageDescription Page format to use for labels
  * @param removeDuplicates Remove duplicate labels before exporting
  */
-export function exportPDF(labels, labelDescription, removeDuplicates = true) {
-  const outputLabels = _prepareOutput(labels, removeDuplicates);
-  _downloadPDFFile(outputLabels, labelDescription, `notify-${Date.now().toString()}`);
+export function exportPDF(labels, labelFormat, labelPageDescription, removeDuplicates = true) {
+  const outputLabels = _prepareOutput(labels, labelFormat, removeDuplicates);
+  _downloadPDFFile(outputLabels, labelPageDescription, `notify-${Date.now().toString()}`);
 }
 /**
  * Downloads the PDF file.
  *
  * @param labels Labels to write
- * @param labelDescription Format to use for labels
+ * @param labelPageDescription Page format to use for labels
  * @param fileTitle Title (without file extension) to use for file; defaults to "export"
  */
-function _downloadPDFFile(labels, labelDescription, fileTitle) {
-  console.log("_downloadPDFFile", labels, labelDescription, fileTitle); //???
+function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
+  console.log("_downloadPDFFile", labels, labelPageDescription, fileTitle); //???
 }
 /**
  * Prepares labels for export.
  *
  * @param labels Array of labels to prepare
+ * @param labelFormat Field format per label
  * @param removeDuplicates Remove duplicate lines
  *
  * @returns De-duped array of labels if removeDuplicates is true
  */
-function _prepareOutput(labels, removeDuplicates = true) {
+function _prepareOutput(labels, labelFormat, removeDuplicates = true) {
+  // Format the input into labels
+  console.log(labelFormat);
   // Remove duplicates if desired
   if (removeDuplicates) {
     const uniques = new Set();
@@ -56,3 +60,4 @@ function _prepareOutput(labels, removeDuplicates = true) {
   }
   return labels;
 }
+//# sourceMappingURL=pdfUtils.js.map

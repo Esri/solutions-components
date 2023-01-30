@@ -1768,3 +1768,5 @@ exports.filterComputedPlacements = filterComputedPlacements;
 exports.rectToClientRect = rectToClientRect;
 exports.reposition = reposition;
 exports.updateAfterClose = updateAfterClose;
+
+//# sourceMappingURL=floating-ui-c89a093e.js.map

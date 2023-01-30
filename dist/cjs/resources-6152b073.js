@@ -55,3 +55,5 @@ exports.HEADING_LEVEL = HEADING_LEVEL;
 exports.ICONS = ICONS;
 exports.SLOTS = SLOTS;
 exports.TEXT = TEXT;
+
+//# sourceMappingURL=resources-6152b073.js.map

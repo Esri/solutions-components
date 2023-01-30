@@ -20,3 +20,5 @@ const Heading = (props, children) => {
 };
 
 export { Heading as H, constrainHeadingLevel as c };
+
+//# sourceMappingURL=Heading-18b8d999.js.map

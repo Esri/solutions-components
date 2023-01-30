@@ -117,3 +117,5 @@ function colorEqual(value1, value2) {
 }
 
 export { CSSColorMode as C, isLonghandHex as a, hexChar as b, colorEqual as c, hexToRGB as h, isValidHex as i, normalizeHex as n, parseMode as p, rgbToHex as r };
+
+//# sourceMappingURL=utils-3f4ee4c3.js.map

@@ -61,13 +61,14 @@ export declare class PdfDownload {
    */
   render(): VNode;
   /**
-   * Renders the pdf export size options
+   * Converts the text of a custom popup into a multiline label specification; conversion splits text into
+   * lines on <br>s, and removes HTML tags. It does not handle Arcade and related records.
    *
-   * @returns Node array of size options
-   *
-   * @protected
+   * @param popupInfo Layer's popupInfo structure containing description, fieldInfos, and expressionInfos, e.g.,
+   * "<div style='text-align: left;'>{NAME}<br />{STREET}<br />{CITY}, {STATE} {ZIP} <br /></div>"
+   * @return Label spec
    */
-  protected _renderItems(): VNode[];
+  _convertPopupToLabelSpec(popupInfo: string): string[];
   /**
    * Gets the formatted pdf export size text
    *
@@ -83,4 +84,12 @@ export declare class PdfDownload {
    * @protected
    */
   protected _getTranslations(): Promise<void>;
+  /**
+   * Renders the pdf export size options
+   *
+   * @returns Node array of size options
+   *
+   * @protected
+   */
+  protected _renderItems(): VNode[];
 }

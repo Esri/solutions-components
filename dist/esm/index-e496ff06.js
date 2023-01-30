@@ -197,3 +197,5 @@ const createStore = (defaultState, shouldUpdate) => {
 };
 
 export { createStore as c };
+
+//# sourceMappingURL=index-e496ff06.js.map

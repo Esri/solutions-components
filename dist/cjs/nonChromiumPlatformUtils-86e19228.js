@@ -509,3 +509,5 @@ function getClippingRect(_ref) {
 exports.getClippingRect = getClippingRect;
 exports.getElementRects = getElementRects;
 exports.getOffsetParent = getOffsetParent;
+
+//# sourceMappingURL=nonChromiumPlatformUtils-86e19228.js.map

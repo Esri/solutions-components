@@ -111,3 +111,5 @@ const ConfigPdfDownload = class {
 ConfigPdfDownload.style = configPdfDownloadCss;
 
 export { ConfigPdfDownload as config_pdf_download };
+
+//# sourceMappingURL=config-pdf-download.entry.js.map

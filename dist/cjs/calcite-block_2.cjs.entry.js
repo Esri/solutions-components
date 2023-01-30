@@ -338,3 +338,5 @@ PickList.style = pickListCss;
 
 exports.calcite_block = Block;
 exports.calcite_pick_list = PickList;
+
+//# sourceMappingURL=calcite-block_2.cjs.entry.js.map

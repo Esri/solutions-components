@@ -879,3 +879,5 @@ const SolutionItemIcon = class {
 SolutionItemIcon.style = solutionItemIconCss;
 
 export { Tree as calcite_tree, TreeItem as calcite_tree_item, SolutionItemIcon as solution_item_icon };
+
+//# sourceMappingURL=calcite-tree_3.entry.js.map

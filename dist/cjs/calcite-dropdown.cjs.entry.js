@@ -479,3 +479,5 @@ const Dropdown = class {
 Dropdown.style = dropdownCss;
 
 exports.calcite_dropdown = Dropdown;
+
+//# sourceMappingURL=calcite-dropdown.cjs.entry.js.map

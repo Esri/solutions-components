@@ -1,6 +1,0 @@
-/*!
- * Copyright 2022 Esri
- * Licensed under the Apache License, Version 2.0
- * http://www.apache.org/licenses/LICENSE-2.0
- */
-import{r as t,h as i,H as s,g as a}from"./p-c023e6a1.js";import{g as n}from"./p-44da2507.js";import"./p-3b010ce1.js";const e=class{constructor(i){t(this,i),this.defaultChecked=!0,this._translations=void 0}async getConfigInfo(){return this._checkList.getConfigInfo()}async componentWillLoad(){await this._getTranslations()}render(){const t=this._translations.types||{},a=Object.keys(t).map((i=>t[i]));return i(s,null,i("div",null,i("div",{class:"padding-block-end-1"},i("calcite-label",{class:"label-spacing"},this._translations.drawTools)),i("div",{class:"padding-inline-start-1"},i("check-list",{defaultChecked:this.defaultChecked,ref:t=>{this._checkList=t},values:a}))))}async _getTranslations(){const t=await n(this.el);this._translations=t[0]}get el(){return a(this)}};e.style=":host{display:block}.label-spacing{--calcite-label-margin-bottom:0}.padding-block-end-1{-webkit-padding-after:1rem;padding-block-end:1rem}.padding-inline-start-1{-webkit-padding-start:1rem;padding-inline-start:1rem}";export{e as config_draw_tools}

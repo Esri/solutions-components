@@ -2063,3 +2063,5 @@ exports.getRenderingRef = getRenderingRef;
 exports.h = h;
 exports.promiseResolve = promiseResolve;
 exports.registerInstance = registerInstance;
+
+//# sourceMappingURL=index-ee607805.js.map

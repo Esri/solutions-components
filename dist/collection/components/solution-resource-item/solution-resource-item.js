@@ -345,3 +345,4 @@ export class SolutionResourceItem {
       }];
   }
 }
+//# sourceMappingURL=solution-resource-item.js.map

@@ -158,3 +158,5 @@ const Rating = class {
 Rating.style = ratingCss;
 
 exports.calcite_rating = Rating;
+
+//# sourceMappingURL=calcite-rating.cjs.entry.js.map

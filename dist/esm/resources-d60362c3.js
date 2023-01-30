@@ -21,3 +21,5 @@ const ICONS = {
 };
 
 export { CSS as C, ICONS as I, SLOTS as S };
+
+//# sourceMappingURL=resources-d60362c3.js.map
