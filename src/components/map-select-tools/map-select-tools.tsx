@@ -380,18 +380,13 @@ export class MapSelectTools {
     const showSearchClass = searchEnabled ? " div-visible-search" : " div-not-visible";
 
     const drawEnabled = this._workflowType === EWorkflowType.SKETCH || this._workflowType === EWorkflowType.SELECT;
-    //const showDrawToolsClass = drawEnabled ? " div-visible" : " div-not-visible";
-
-    // const selectEnabled = this._workflowType === EWorkflowType.SELECT;
-    // const showSelectToolsClass = selectEnabled ? " div-visible" : " div-not-visible";
-
     const showBufferToolsClass = this.showBufferTools ? "search-distance" : "div-not-visible";
 
     const useSelectClass = this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
     const useDrawClass = !this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
 
     const showLayerChoiceClass = searchEnabled ? "div-not-visible" : "div-visible";
-
+    console.log(this.selectionSet)
     return (
       <Host>
         <div class="padding-bottom-1">
@@ -406,13 +401,6 @@ export class MapSelectTools {
             >
               {this._translations.search}
             </calcite-radio-group-item>
-            {/* <calcite-radio-group-item
-              checked={selectEnabled}
-              class="w-50 end-border"
-              value={EWorkflowType.SELECT}
-            >
-              {this._translations.select}
-            </calcite-radio-group-item> */}
             <calcite-radio-group-item
               checked={drawEnabled}
               class="w-50"
@@ -428,6 +416,7 @@ export class MapSelectTools {
         <div class={showLayerChoiceClass}>
           <calcite-label layout="inline">
             <calcite-checkbox
+              checked={this.selectionSet?.workflowType === EWorkflowType.SELECT}
               onCalciteCheckboxChange={() => this._layerSelectChanged()}
               ref={(el) => this._selectFromLayerElement = el}
             />
