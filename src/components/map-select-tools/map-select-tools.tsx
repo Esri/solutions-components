@@ -287,7 +287,7 @@ export class MapSelectTools {
       distance: this._bufferTools.distance,
       download: true,
       unit: this._bufferTools.unit,
-      label: this._workflowType === EWorkflowType.SEARCH || (this._selectionLabel && !isBaseLabel) ?
+      label: (this._selectionLabel && !isBaseLabel) ?
         this._selectionLabel : `${this._selectionLabel} ${this._bufferTools.distance} ${this._bufferTools.unit}`,
       selectedIds: this._selectedIds,
       layerView: this.selectLayerView,
@@ -386,7 +386,6 @@ export class MapSelectTools {
     const useDrawClass = !this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
 
     const showLayerChoiceClass = searchEnabled ? "div-not-visible" : "div-visible";
-    console.log(this.selectionSet)
     return (
       <Host>
         <div class="padding-bottom-1">
