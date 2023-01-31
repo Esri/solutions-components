@@ -19,23 +19,28 @@ import { SelectionMode } from "../../utils/interfaces";
 export declare class MapLayerPicker {
   el: HTMLMapLayerPickerElement;
   /**
-   * string[]: list of layer names from the map
+   * string[]: Optional list of enabled layer ids
+   *  If empty all layers will be available
    */
-  layerNames: string[];
+  enabledLayerIds: string[];
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   mapView: __esri.MapView;
   /**
-   * string[]: list of layers that have been selected by the end user
+   * string[]: list of layer ids that have been selected by the end user
    */
-  selectedLayers: string[];
+  selectedLayerIds: string[];
   /**
    * SelectionMode: "single" | "multi"
    *
    * Should the component support selection against a single layer or multiple layers.
    */
   selectionMode: SelectionMode;
+  /**
+   * string[]: list of layer ids from the map
+   */
+  layerIds: string[];
   /**
    * HTMLCalciteSelectElement: The html element for selecting layers
    */
@@ -63,31 +68,37 @@ export declare class MapLayerPicker {
    *
    * Used for selecting a single layer.
    *
-   * @returns Calcite Select component with the names of the layers from the map
+   * @returns Calcite Select component with the ids of the layers from the map
    */
   _getSelect(): VNode;
   /**
-   * Create a list of layers from the map
+   * Create a list of layer ids from the map
    *
    * Used for selecting multiple layers
    *
-   * @returns Calcite ComboBox component with the names of the layers from the map
+   * @returns Calcite ComboBox component with the ids of the layers from the map
    */
   _getCombobox(): VNode;
   /**
-   * Hydrate a select or combobox component with the names of the layers in the map
+   * Hydrate a select or combobox component with the ids of the layers in the map
    *
-   * @returns Array of ComboBox items or Select options for the names of the layers
+   * @returns Array of ComboBox items or Select options for the ids of the layers
    */
   _addMapLayersOptions(): VNode[];
   /**
-   * Fetch the names of the layers from the map
+   * Fetch the ids of the layers from the map
    *
    * @returns Promise when the operation has completed
    */
   _setLayers(): Promise<void>;
   /**
-   * Fetch the names of the layers from the map
+   * Create a layer id:title hash for layer name display
+   *
+   * @returns Promise when the operation has completed
+   */
+  protected _initLayerHashState(): Promise<void>;
+  /**
+   * Fetch the ids of the layers from the map
    *
    * @returns Promise when the operation has completed
    */

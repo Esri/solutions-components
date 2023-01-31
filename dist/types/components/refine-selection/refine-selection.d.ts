@@ -24,6 +24,11 @@ export declare class RefineSelection {
    */
   addresseeLayer: __esri.FeatureLayerView;
   /**
+   * string[]: Optional list of enabled layer ids
+   *  If empty all layers will be available
+   */
+  enabledLayerIds: string[];
+  /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   mapView: __esri.MapView;

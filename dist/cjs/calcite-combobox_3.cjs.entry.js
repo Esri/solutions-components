@@ -20,8 +20,8 @@ const dom = require('./dom-4a580af6.js');
 const openCloseComponent = require('./openCloseComponent-bf986132.js');
 const debounce = require('./debounce-69c3bada.js');
 const conditionalSlot = require('./conditionalSlot-baada7a3.js');
-const mapViewUtils = require('./mapViewUtils-8ea9adc5.js');
-const publicNotificationStore = require('./publicNotificationStore-75048f49.js');
+const mapViewUtils = require('./mapViewUtils-55ac76cb.js');
+const publicNotificationStore = require('./publicNotificationStore-20e924f5.js');
 require('./resources-b56bce71.js');
 require('./interfaces-772edf61.js');
 require('./index-763f87ac.js');
@@ -1004,10 +1004,11 @@ const MapLayerPicker = class {
   constructor(hostRef) {
     index.registerInstance(this, hostRef);
     this.layerSelectionChange = index.createEvent(this, "layerSelectionChange", 7);
-    this.layerNames = [];
+    this.enabledLayerIds = [];
     this.mapView = undefined;
-    this.selectedLayers = [];
+    this.selectedLayerIds = [];
     this.selectionMode = "single";
+    this.layerIds = [];
   }
   //--------------------------------------------------------------------------
   //
@@ -1022,7 +1023,7 @@ const MapLayerPicker = class {
     if (newValue !== oldValue) {
       await this._setLayers();
       if (this.selectionMode === "single") {
-        this.layerSelectionChange.emit([this.layerNames[0]]);
+        this.layerSelectionChange.emit([this.layerIds[0]]);
       }
     }
   }
@@ -1036,8 +1037,8 @@ const MapLayerPicker = class {
    */
   async componentWillLoad() {
     await this._setLayers();
-    if (this.selectionMode === "single" && (this.layerNames.length > 0 || this.selectedLayers.length === 1)) {
-      this.layerSelectionChange.emit(this.selectedLayers.length === 1 ? [this.selectedLayers[0]] : [this.layerNames[0]]);
+    if (this.selectionMode === "single" && (this.layerIds.length > 0 || this.selectedLayerIds.length === 1)) {
+      this.layerSelectionChange.emit(this.selectedLayerIds.length === 1 ? [this.selectedLayerIds[0]] : [this.layerIds[0]]);
     }
   }
   /**
@@ -1056,62 +1057,74 @@ const MapLayerPicker = class {
    *
    * Used for selecting a single layer.
    *
-   * @returns Calcite Select component with the names of the layers from the map
+   * @returns Calcite Select component with the ids of the layers from the map
    */
   _getSelect() {
     return (index.h("calcite-select", { label: "", onCalciteSelectChange: (evt) => this._layerSelectionChange(evt), ref: (el) => { this._layerElement = el; } }, this._addMapLayersOptions()));
   }
   /**
-   * Create a list of layers from the map
+   * Create a list of layer ids from the map
    *
    * Used for selecting multiple layers
    *
-   * @returns Calcite ComboBox component with the names of the layers from the map
+   * @returns Calcite ComboBox component with the ids of the layers from the map
    */
   _getCombobox() {
     return (index.h("calcite-combobox", { label: "", onCalciteComboboxChange: (evt) => this._layerSelectionChange(evt), "selection-mode": this.selectionMode }, this._addMapLayersOptions()));
   }
   /**
-   * Hydrate a select or combobox component with the names of the layers in the map
+   * Hydrate a select or combobox component with the ids of the layers in the map
    *
-   * @returns Array of ComboBox items or Select options for the names of the layers
+   * @returns Array of ComboBox items or Select options for the ids of the layers
    */
   _addMapLayersOptions() {
-    return this.layerNames.reduce((prev, cur) => {
-      if (publicNotificationStore.state.managedLayers.indexOf(cur) < 0) {
-        prev.push(this.selectionMode === "multi" && this.selectedLayers.indexOf(cur) > -1 ?
-          (index.h("calcite-combobox-item", { selected: true, textLabel: cur, value: cur })) :
+    return this.layerIds.reduce((prev, cur) => {
+      if (publicNotificationStore.state.managedLayers.indexOf(publicNotificationStore.state.layerNameHash[cur]) < 0 && (this.enabledLayerIds.length > 0 ? this.enabledLayerIds.indexOf(cur) > -1 : true)) {
+        prev.push(this.selectionMode === "multi" && this.selectedLayerIds.indexOf(cur) > -1 ?
+          (index.h("calcite-combobox-item", { selected: true, textLabel: publicNotificationStore.state.layerNameHash[cur], value: cur })) :
           this.selectionMode === "multi" ?
-            (index.h("calcite-combobox-item", { textLabel: cur, value: cur })) :
-            this.selectedLayers.indexOf(cur) > -1 ?
-              (index.h("calcite-option", { label: cur, selected: true, value: cur })) :
-              (index.h("calcite-option", { label: cur, value: cur })));
+            (index.h("calcite-combobox-item", { textLabel: publicNotificationStore.state.layerNameHash[cur], value: cur })) :
+            this.selectedLayerIds.indexOf(cur) > -1 ?
+              (index.h("calcite-option", { label: publicNotificationStore.state.layerNameHash[cur], selected: true, value: cur })) :
+              (index.h("calcite-option", { label: publicNotificationStore.state.layerNameHash[cur], value: cur })));
       }
       return prev;
     }, []);
   }
   /**
-   * Fetch the names of the layers from the map
+   * Fetch the ids of the layers from the map
    *
    * @returns Promise when the operation has completed
    */
   async _setLayers() {
     if (this.mapView) {
-      this.layerNames = await mapViewUtils.getMapLayerNames(this.mapView);
+      const mapLayerIds = await mapViewUtils.getMapLayerIds(this.mapView);
+      this.layerIds = mapLayerIds.filter(n => { var _a; return ((_a = this.enabledLayerIds) === null || _a === void 0 ? void 0 : _a.length) > 0 ? this.enabledLayerIds.indexOf(n) > -1 : true; });
+      await this._initLayerHashState();
     }
   }
   /**
-   * Fetch the names of the layers from the map
+   * Create a layer id:title hash for layer name display
+   *
+   * @returns Promise when the operation has completed
+   */
+  async _initLayerHashState() {
+    if (this.mapView) {
+      publicNotificationStore.state.layerNameHash = await mapViewUtils.getMapLayerHash(this.mapView);
+    }
+  }
+  /**
+   * Fetch the ids of the layers from the map
    *
    * @returns Promise when the operation has completed
    */
   _layerSelectionChange(evt) {
     var _a;
-    this.selectedLayers = this.selectionMode === "single" ?
+    this.selectedLayerIds = this.selectionMode === "single" ?
       [this._layerElement.value] : ((_a = evt.detail) === null || _a === void 0 ? void 0 : _a.selectedItems.map((item) => {
       return item.value;
     })) || [];
-    this.layerSelectionChange.emit(this.selectedLayers);
+    this.layerSelectionChange.emit(this.selectedLayerIds);
   }
   get el() { return index.getElement(this); }
   static get watchers() { return {

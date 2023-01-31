@@ -60,7 +60,7 @@ export async function queryObjectIds(geometries, layer) {
   results.forEach(resultIds => {
     ids = [
       ...ids,
-      ...resultIds
+      ...resultIds || []
     ];
   });
   return ids;
@@ -99,7 +99,7 @@ export async function queryFeaturesByGeometry(start, layer, geometry, featuresCo
     geometry
   };
   const result = await layer.queryFeatures(query);
-  featuresCollection[layer.title] = featuresCollection[layer.title].concat(result.features);
+  featuresCollection[layer.id] = featuresCollection[layer.id].concat(result.features);
   return result.exceededTransferLimit ?
     queryFeaturesByGeometry(start += num, layer, geometry, featuresCollection) :
     Promise.resolve(featuresCollection);

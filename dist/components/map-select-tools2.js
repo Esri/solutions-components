@@ -5,8 +5,8 @@
  */
 import { proxyCustomElement, HTMLElement, createEvent, h, Host } from '@stencil/core/internal/client';
 import { l as loadModules } from './loadModules.js';
-import { a as goToSelection, h as highlightFeatures } from './mapViewUtils.js';
-import { b as queryObjectIds, c as getQueryGeoms } from './queryUtils.js';
+import { g as goToSelection, h as highlightFeatures, d as defineCustomElement$2 } from './map-layer-picker2.js';
+import { c as queryObjectIds, d as getQueryGeoms } from './queryUtils.js';
 import { c as EWorkflowType, e as ESelectionMode, f as ERefineMode, b as ESketchType } from './interfaces3.js';
 import { s as state } from './publicNotificationStore.js';
 import { g as getLocaleComponentStrings } from './locale.js';
@@ -28,7 +28,6 @@ import { d as defineCustomElement$6 } from './radio-group-item.js';
 import { d as defineCustomElement$5 } from './select.js';
 import { d as defineCustomElement$4 } from './slider.js';
 import { d as defineCustomElement$3 } from './map-draw-tools2.js';
-import { d as defineCustomElement$2 } from './map-layer-picker2.js';
 import { d as defineCustomElement$1 } from './refine-selection-tools2.js';
 
 const mapSelectToolsCss = ":host{display:block}.div-visible{display:inherit}.div-visible-search{display:flex;height:44px;align-items:center;padding-bottom:0}.div-not-visible{display:none}.padding-bottom-1{padding-bottom:1rem}.search-widget{width:100% !important;border:1px solid var(--calcite-ui-border-input)}.w-100{width:100%}.w-50{width:50%}.search-distance-container{padding-top:\"1rem\" !important}.end-border{-webkit-border-end:1px solid var(--calcite-ui-border-2);border-inline-end:1px solid var(--calcite-ui-border-2)}.search-distance{display:flex;padding-top:1rem}";
@@ -48,9 +47,13 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
      * string: A label to help uniquely identify the selection set
      */
     this._selectionLabel = "";
+    this.enabledLayerIds = [];
+    this.defaultBufferDistance = undefined;
+    this.defaultBufferUnit = undefined;
     this.geometries = undefined;
     this.isUpdate = false;
     this.mapView = undefined;
+    this.searchConfiguration = undefined;
     this.selectionSet = undefined;
     this.selectLayerView = undefined;
     this.showBufferTools = true;
@@ -109,6 +112,11 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
    * @returns Promise with the new selection set
    */
   async getSelection() {
+    // Allow any non whitespace
+    if (!/\S+/gm.test(this._selectionLabel)) {
+      this._selectionLabel = this._getSelectionBaseLabel();
+    }
+    const isBaseLabel = this._selectionLabel === this._getSelectionBaseLabel();
     return {
       id: this.isUpdate ? this.selectionSet.id : Date.now(),
       workflowType: this._workflowType,
@@ -117,7 +125,7 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
       distance: this._bufferTools.distance,
       download: true,
       unit: this._bufferTools.unit,
-      label: this._workflowType === EWorkflowType.SEARCH ?
+      label: this._workflowType === EWorkflowType.SEARCH || (this._selectionLabel && !isBaseLabel) ?
         this._selectionLabel : `${this._selectionLabel} ${this._bufferTools.distance} ${this._bufferTools.unit}`,
       selectedIds: this._selectedIds,
       layerView: this.selectLayerView,
@@ -126,11 +134,17 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
     };
   }
   /**
+   * Handle changes to the selection sets
+   */
+  labelChange(event) {
+    this._selectionLabel = event.detail;
+  }
+  /**
    * Listen to changes in the sketch graphics
    *
    */
   sketchGraphicsChange(event) {
-    this._updateSelection(EWorkflowType.SKETCH, event.detail, this._translations.sketch);
+    this._updateSelection(EWorkflowType.SKETCH, event.detail, this._selectionLabel || this._translations.sketch);
   }
   /**
    * Listen to changes in the refine graphics
@@ -138,7 +152,7 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
    */
   refineSelectionGraphicsChange(event) {
     const graphics = event.detail;
-    this._updateSelection(EWorkflowType.SELECT, graphics, this._translations.select);
+    this._updateSelection(EWorkflowType.SELECT, graphics, this._selectionLabel || this._translations.select);
     // Using OIDs to avoid issue with points
     const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g.layer.objectIdField]) : [];
     return this._highlightFeatures(oids);
@@ -176,7 +190,7 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
     const useSelectClass = this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
     const useDrawClass = !this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
     const showLayerChoiceClass = searchEnabled ? "div-not-visible" : "div-visible";
-    return (h(Host, null, h("div", { class: "padding-bottom-1" }, h("calcite-radio-group", { class: "w-100", onCalciteRadioGroupChange: (evt) => this._workflowChange(evt) }, h("calcite-radio-group-item", { checked: searchEnabled, class: "w-50 end-border", value: EWorkflowType.SEARCH }, this._translations.search), h("calcite-radio-group-item", { checked: drawEnabled, class: "w-50", value: EWorkflowType.SKETCH }, this._translations.sketch))), h("div", { class: showSearchClass }, h("div", { class: "search-widget", ref: (el) => { this._searchElement = el; } })), h("div", { class: showLayerChoiceClass }, h("calcite-label", { layout: "inline" }, h("calcite-checkbox", { onCalciteCheckboxChange: () => this._layerSelectChanged(), ref: (el) => this._selectFromLayerElement = el }), "Use layer features")), h("div", { class: useDrawClass }, h("map-draw-tools", { active: true, border: true, mapView: this.mapView, ref: (el) => { this._drawTools = el; } })), h("div", { class: useSelectClass }, h("refine-selection-tools", { active: true, border: true, layerViews: this._refineSelectLayers, mapView: this.mapView, mode: ESelectionMode.ADD, ref: (el) => { this._refineTools = el; }, refineMode: ERefineMode.SUBSET })), h("calcite-label", { class: showBufferToolsClass }, this._translations.searchDistance, h("buffer-tools", { distance: (_a = this.selectionSet) === null || _a === void 0 ? void 0 : _a.distance, geometries: this.geometries, onBufferComplete: (evt) => this._bufferComplete(evt), ref: (el) => this._bufferTools = el, unit: (_b = this.selectionSet) === null || _b === void 0 ? void 0 : _b.unit })), h("slot", null)));
+    return (h(Host, null, h("div", { class: "padding-bottom-1" }, h("calcite-radio-group", { class: "w-100", onCalciteRadioGroupChange: (evt) => this._workflowChange(evt) }, h("calcite-radio-group-item", { checked: searchEnabled, class: "w-50 end-border", value: EWorkflowType.SEARCH }, this._translations.search), h("calcite-radio-group-item", { checked: drawEnabled, class: "w-50", value: EWorkflowType.SKETCH }, this._translations.sketch))), h("div", { class: showSearchClass }, h("div", { class: "search-widget", ref: (el) => { this._searchElement = el; } })), h("div", { class: showLayerChoiceClass }, h("calcite-label", { layout: "inline" }, h("calcite-checkbox", { onCalciteCheckboxChange: () => this._layerSelectChanged(), ref: (el) => this._selectFromLayerElement = el }), "Use layer features")), h("div", { class: useDrawClass }, h("map-draw-tools", { active: true, border: true, mapView: this.mapView, ref: (el) => { this._drawTools = el; } })), h("div", { class: useSelectClass }, h("refine-selection-tools", { active: true, border: true, enabledLayerIds: this.enabledLayerIds, layerViews: this._refineSelectLayers, mapView: this.mapView, mode: ESelectionMode.ADD, ref: (el) => { this._refineTools = el; }, refineMode: ERefineMode.SUBSET })), h("calcite-label", { class: showBufferToolsClass }, this._translations.searchDistance, h("buffer-tools", { distance: ((_a = this.selectionSet) === null || _a === void 0 ? void 0 : _a.distance) || this.defaultBufferDistance, geometries: this.geometries, onBufferComplete: (evt) => this._bufferComplete(evt), ref: (el) => this._bufferTools = el, unit: ((_b = this.selectionSet) === null || _b === void 0 ? void 0 : _b.unit) || this.defaultBufferUnit })), h("slot", null)));
   }
   //--------------------------------------------------------------------------
   //
@@ -191,16 +205,18 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
    * @protected
    */
   async _initModules() {
-    const [GraphicsLayer, Graphic, Search, geometryEngine] = await loadModules([
+    const [GraphicsLayer, Graphic, Search, geometryEngine, FeatureLayer] = await loadModules([
       "esri/layers/GraphicsLayer",
       "esri/Graphic",
       "esri/widgets/Search",
-      "esri/geometry/geometryEngine"
+      "esri/geometry/geometryEngine",
+      "esri/layers/FeatureLayer"
     ]);
     this.GraphicsLayer = GraphicsLayer;
     this.Graphic = Graphic;
     this.Search = Search;
     this._geometryEngine = geometryEngine;
+    this.FeatureLayer = FeatureLayer;
   }
   /**
    * Initialize the graphics layer, selection set, and search widget
@@ -218,7 +234,7 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
    * @protected
    */
   _initSelectionSet() {
-    var _a, _b, _c, _d, _e, _f, _g;
+    var _a, _b, _c, _d, _e, _f;
     if (this.selectionSet) {
       this._searchTerm = (_b = (_a = this.selectionSet) === null || _a === void 0 ? void 0 : _a.searchResult) === null || _b === void 0 ? void 0 : _b.name;
       this._workflowType = (_c = this.selectionSet) === null || _c === void 0 ? void 0 : _c.workflowType;
@@ -228,14 +244,24 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
         ...(_f = this.selectionSet) === null || _f === void 0 ? void 0 : _f.geometries
       ];
       // reset selection label base
-      this._selectionLabel = this._workflowType === EWorkflowType.SKETCH ?
-        this._translations.sketch : this._workflowType === EWorkflowType.SELECT ?
-        this._translations.select : (_g = this.selectionSet) === null || _g === void 0 ? void 0 : _g.label;
+      this._selectionLabel = this._getSelectionBaseLabel();
       void goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     }
     else {
       this._workflowType = EWorkflowType.SEARCH;
     }
+  }
+  /**
+   * Get the default label base when the user has not provided a value
+   *
+   * @protected
+   */
+  _getSelectionBaseLabel() {
+    var _a, _b;
+    return this._workflowType === EWorkflowType.SKETCH ?
+      this._translations.sketch : this._workflowType === EWorkflowType.SELECT ?
+      this._translations.select : this._workflowType === EWorkflowType.SEARCH && this._searchResult ?
+      (_a = this._searchResult) === null || _a === void 0 ? void 0 : _a.name : (_b = this.selectionSet) === null || _b === void 0 ? void 0 : _b.label;
   }
   /**
    * Initialize the search widget
@@ -244,11 +270,8 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
    */
   _initSearchWidget() {
     if (this.mapView && this._searchElement) {
-      const searchOptions = {
-        view: this.mapView,
-        container: this._searchElement,
-        searchTerm: this._searchTerm
-      };
+      const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this.mapView);
+      const searchOptions = Object.assign({ view: this.mapView, container: this._searchElement, searchTerm: this._searchTerm }, searchConfiguration);
       this._searchWidget = new this.Search(searchOptions);
       this._searchWidget.on("search-clear", () => {
         void this._clearResults(false);
@@ -262,6 +285,45 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
         }
       });
     }
+  }
+  /**
+   * Initialize the search widget based on user defined configuration
+   *
+   * @param searchConfiguration search configuration defined by the user
+   * @param view the current map view
+   *
+   * @protected
+   */
+  _getSearchConfig(searchConfiguration, view) {
+    var _a;
+    const sources = searchConfiguration === null || searchConfiguration === void 0 ? void 0 : searchConfiguration.sources;
+    if (sources) {
+      sources.forEach(source => {
+        var _a, _b, _c;
+        const isLayerSource = source.hasOwnProperty("layer");
+        if (isLayerSource) {
+          const layerSource = source;
+          const layerFromMap = ((_a = layerSource.layer) === null || _a === void 0 ? void 0 : _a.id)
+            ? view.map.findLayerById(layerSource.layer.id)
+            : null;
+          if (layerFromMap) {
+            layerSource.layer = layerFromMap;
+          }
+          else if ((_b = layerSource === null || layerSource === void 0 ? void 0 : layerSource.layer) === null || _b === void 0 ? void 0 : _b.url) {
+            layerSource.layer = new this.FeatureLayer((_c = layerSource === null || layerSource === void 0 ? void 0 : layerSource.layer) === null || _c === void 0 ? void 0 : _c.url);
+          }
+        }
+      });
+    }
+    (_a = searchConfiguration === null || searchConfiguration === void 0 ? void 0 : searchConfiguration.sources) === null || _a === void 0 ? void 0 : _a.forEach(source => {
+      const isLocatorSource = source.hasOwnProperty("locator");
+      if (isLocatorSource) {
+        const locatorSource = source;
+        locatorSource.url = locatorSource.url;
+        delete locatorSource.url;
+      }
+    });
+    return searchConfiguration;
   }
   /**
    * Initialize the graphics layer used to store any buffer grapghics
@@ -445,9 +507,13 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
   }; }
   static get style() { return mapSelectToolsCss; }
 }, [4, "map-select-tools", {
+    "enabledLayerIds": [16],
+    "defaultBufferDistance": [2, "default-buffer-distance"],
+    "defaultBufferUnit": [1, "default-buffer-unit"],
     "geometries": [16],
     "isUpdate": [4, "is-update"],
     "mapView": [16],
+    "searchConfiguration": [16],
     "selectionSet": [16],
     "selectLayerView": [16],
     "showBufferTools": [4, "show-buffer-tools"],
@@ -457,7 +523,7 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
     "_workflowType": [32],
     "clearSelection": [64],
     "getSelection": [64]
-  }, [[8, "sketchGraphicsChange", "sketchGraphicsChange"], [8, "refineSelectionGraphicsChange", "refineSelectionGraphicsChange"]]]);
+  }, [[8, "labelChange", "labelChange"], [8, "sketchGraphicsChange", "sketchGraphicsChange"], [8, "refineSelectionGraphicsChange", "refineSelectionGraphicsChange"]]]);
 function defineCustomElement() {
   if (typeof customElements === "undefined") {
     return;

@@ -18,9 +18,9 @@ const guid = require('./guid-84ac4d91.js');
 const math = require('./math-460fffaf.js');
 const key = require('./key-55aca5c0.js');
 const locale$1 = require('./locale-73cab8e8.js');
-const publicNotificationStore = require('./publicNotificationStore-75048f49.js');
+const publicNotificationStore = require('./publicNotificationStore-20e924f5.js');
 const interfaces = require('./interfaces-772edf61.js');
-const mapViewUtils = require('./mapViewUtils-8ea9adc5.js');
+const mapViewUtils = require('./mapViewUtils-55ac76cb.js');
 require('./_commonjsHelpers-6aafa5de.js');
 require('./resources-b56bce71.js');
 require('./observers-5311faf8.js');
@@ -1455,9 +1455,16 @@ const MapDrawTools = class {
       }
     };
     this._sketchWidget.on("update", (evt) => {
-      if (evt.state === "complete" && this.active) {
-        this.graphics = this._sketchGraphicsLayer.graphics.toArray();
+      if (evt.state === "start") {
+        this.graphics = evt.graphics;
         this.sketchGraphicsChange.emit(this.graphics);
+      }
+      if (evt.state === "active") {
+        clearTimeout(this._selectionTimer);
+        this._selectionTimer = setTimeout(() => {
+          this.graphics = evt.graphics;
+          this.sketchGraphicsChange.emit(this.graphics);
+        }, 500);
       }
     });
   }
@@ -1495,7 +1502,7 @@ const RefineSelectionTools = class {
     this.refineSelectionGraphicsChange = index.createEvent(this, "refineSelectionGraphicsChange", 7);
     this.refineSelectionIdsChange = index.createEvent(this, "refineSelectionIdsChange", 7);
     /**
-     * {<layer title>: Graphic[]}: Collection of graphics returned from queries to the layer
+     * {<layer id>: Graphic[]}: Collection of graphics returned from queries to the layer
      */
     this._featuresCollection = {};
     /**
@@ -1508,6 +1515,7 @@ const RefineSelectionTools = class {
     this._undoStack = [];
     this.active = false;
     this.border = false;
+    this.enabledLayerIds = [];
     this.graphics = undefined;
     this.ids = [];
     this.layerView = undefined;
@@ -1597,7 +1605,7 @@ const RefineSelectionTools = class {
   render() {
     const showLayerPickerClass = this.useLayerPicker ? "div-visible" : "div-not-visible";
     const drawClass = this.border ? " border" : "";
-    return (index.h(index.Host, null, index.h("div", null, index.h("map-layer-picker", { class: showLayerPickerClass, mapView: this.mapView, onLayerSelectionChange: (evt) => { void this._layerSelectionChange(evt); }, selectedLayers: this.layerViews.map(l => l.layer.title), selectionMode: "single" }), index.h("div", { class: "margin-top-1" + drawClass }, index.h("div", { class: "esri-sketch esri-widget" }, index.h("div", { class: "esri-sketch__panel" }, index.h("div", { class: "esri-sketch__tool-section esri-sketch__section" }, index.h("calcite-action", { disabled: !this._selectEnabled, icon: "select", onClick: () => this._setSelectionMode(interfaces.ESelectionType.POINT), scale: "s", text: this._translations.select })), index.h("div", { class: "esri-sketch__tool-section esri-sketch__section" }, index.h("calcite-action", { disabled: !this._selectEnabled, icon: "line", onClick: () => this._setSelectionMode(interfaces.ESelectionType.LINE), scale: "s", text: this._translations.selectLine }), index.h("calcite-action", { disabled: !this._selectEnabled, icon: "polygon", onClick: () => this._setSelectionMode(interfaces.ESelectionType.POLY), scale: "s", text: this._translations.selectPolygon }), index.h("calcite-action", { disabled: !this._selectEnabled, icon: "rectangle", onClick: () => this._setSelectionMode(interfaces.ESelectionType.RECT), scale: "s", text: this._translations.selectRectangle })), index.h("div", { class: "esri-sketch__tool-section esri-sketch__section" }, index.h("calcite-action", { disabled: this._undoStack.length === 0, icon: "undo", onClick: () => this._undo(), scale: "s", text: this._translations.undo }), index.h("calcite-action", { disabled: this._redoStack.length === 0, icon: "redo", onClick: () => this._redo(), scale: "s", text: this._translations.redo }))))))));
+    return (index.h(index.Host, null, index.h("div", null, index.h("map-layer-picker", { class: showLayerPickerClass, enabledLayerIds: this.enabledLayerIds, mapView: this.mapView, onLayerSelectionChange: (evt) => { void this._layerSelectionChange(evt); }, selectedLayerIds: this.layerViews.map(l => l.layer.id), selectionMode: "single" }), index.h("div", { class: "margin-top-1" + drawClass }, index.h("div", { class: "esri-sketch esri-widget" }, index.h("div", { class: "esri-sketch__panel" }, index.h("div", { class: "esri-sketch__tool-section esri-sketch__section" }, index.h("calcite-action", { disabled: !this._selectEnabled, icon: "select", onClick: () => this._setSelectionMode(interfaces.ESelectionType.POINT), scale: "s", text: this._translations.select })), index.h("div", { class: "esri-sketch__tool-section esri-sketch__section" }, index.h("calcite-action", { disabled: !this._selectEnabled, icon: "line", onClick: () => this._setSelectionMode(interfaces.ESelectionType.LINE), scale: "s", text: this._translations.selectLine }), index.h("calcite-action", { disabled: !this._selectEnabled, icon: "polygon", onClick: () => this._setSelectionMode(interfaces.ESelectionType.POLY), scale: "s", text: this._translations.selectPolygon }), index.h("calcite-action", { disabled: !this._selectEnabled, icon: "rectangle", onClick: () => this._setSelectionMode(interfaces.ESelectionType.RECT), scale: "s", text: this._translations.selectRectangle })), index.h("div", { class: "esri-sketch__tool-section esri-sketch__section" }, index.h("calcite-action", { disabled: this._undoStack.length === 0, icon: "undo", onClick: () => this._undo(), scale: "s", text: this._translations.undo }), index.h("calcite-action", { disabled: this._redoStack.length === 0, icon: "redo", onClick: () => this._redo(), scale: "s", text: this._translations.redo }))))))));
   }
   //--------------------------------------------------------------------------
   //
@@ -1724,8 +1732,8 @@ const RefineSelectionTools = class {
   async _layerSelectionChange(evt) {
     if (Array.isArray(evt.detail) && evt.detail.length > 0) {
       this._selectEnabled = true;
-      const layerPromises = evt.detail.map(title => {
-        return mapViewUtils.getMapLayerView(this.mapView, title);
+      const layerPromises = evt.detail.map(id => {
+        return mapViewUtils.getMapLayerView(this.mapView, id);
       });
       return Promise.all(layerPromises).then((layerViews) => {
         this.layerViews = layerViews;
@@ -1772,7 +1780,7 @@ const RefineSelectionTools = class {
    */
   async _selectFeatures(geom) {
     const queryFeaturePromises = this.layerViews.map(layerView => {
-      this._featuresCollection[layerView.layer.title] = [];
+      this._featuresCollection[layerView.layer.id] = [];
       return mapViewUtils.queryFeaturesByGeometry(0, layerView.layer, geom, this._featuresCollection);
     });
     return Promise.all(queryFeaturePromises).then(async (response) => {

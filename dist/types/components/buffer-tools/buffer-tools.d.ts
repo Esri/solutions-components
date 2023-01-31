@@ -17,6 +17,7 @@
 /// <reference types="node" />
 import { EventEmitter, VNode } from "../../stencil-public-runtime";
 import BufferTools_T9n from "../../assets/t9n/buffer-tools/resources.json";
+import { DistanceUnit } from "../../utils/interfaces";
 export declare class BufferTools {
   el: HTMLBufferToolsElement;
   /**
@@ -48,9 +49,9 @@ export declare class BufferTools {
    */
   unionResults: boolean;
   /**
-   * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
+   * DistanceUnit: "feet"|"meters"|"miles"|"kilometers"
    */
-  unit: __esri.LinearUnits;
+  unit: DistanceUnit;
   /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
@@ -117,7 +118,7 @@ export declare class BufferTools {
    *
    * @protected
    */
-  protected _setUnit(unit: __esri.LinearUnits): void;
+  protected _setUnit(unit: DistanceUnit): void;
   /**
    * Create buffer geometry based on the user defined unit and distance
    *

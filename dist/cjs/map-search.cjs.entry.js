@@ -19,6 +19,7 @@ const MapSearch = class {
     index.registerInstance(this, hostRef);
     this.searchChange = index.createEvent(this, "searchChange", 7);
     this.mapView = undefined;
+    this.searchConfiguration = undefined;
     this._searchTerm = undefined;
     this._translations = undefined;
   }
@@ -79,10 +80,12 @@ const MapSearch = class {
    * @protected
    */
   async _initModules() {
-    const [Search] = await loadModules.loadModules([
-      "esri/widgets/Search"
+    const [Search, FeatureLayer] = await loadModules.loadModules([
+      "esri/widgets/Search",
+      "esri/layers/FeatureLayer"
     ]);
     this.Search = Search;
+    this.FeatureLayer = FeatureLayer;
   }
   /**
    * Initialize the search widget
@@ -99,11 +102,8 @@ const MapSearch = class {
    */
   _initSearchWidget() {
     if (this.mapView && this._searchElement) {
-      const searchOptions = {
-        view: this.mapView,
-        container: this._searchElement,
-        searchTerm: this._searchTerm
-      };
+      const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this.mapView);
+      const searchOptions = Object.assign({ view: this.mapView, container: this._searchElement, searchTerm: this._searchTerm }, searchConfiguration);
       this._searchWidget = new this.Search(searchOptions);
       this._searchWidget.on("search-clear", () => {
         this._searchResult = undefined;
@@ -120,6 +120,45 @@ const MapSearch = class {
         }
       });
     }
+  }
+  /**
+   * Initialize the search widget based on user defined configuration
+   *
+   * @param searchConfiguration search configuration defined by the user
+   * @param view the current map view
+   *
+   * @protected
+   */
+  _getSearchConfig(searchConfiguration, view) {
+    var _a;
+    const sources = searchConfiguration === null || searchConfiguration === void 0 ? void 0 : searchConfiguration.sources;
+    if (sources) {
+      sources.forEach(source => {
+        var _a, _b, _c;
+        const isLayerSource = source.hasOwnProperty("layer");
+        if (isLayerSource) {
+          const layerSource = source;
+          const layerFromMap = ((_a = layerSource.layer) === null || _a === void 0 ? void 0 : _a.id)
+            ? view.map.findLayerById(layerSource.layer.id)
+            : null;
+          if (layerFromMap) {
+            layerSource.layer = layerFromMap;
+          }
+          else if ((_b = layerSource === null || layerSource === void 0 ? void 0 : layerSource.layer) === null || _b === void 0 ? void 0 : _b.url) {
+            layerSource.layer = new this.FeatureLayer((_c = layerSource === null || layerSource === void 0 ? void 0 : layerSource.layer) === null || _c === void 0 ? void 0 : _c.url);
+          }
+        }
+      });
+    }
+    (_a = searchConfiguration === null || searchConfiguration === void 0 ? void 0 : searchConfiguration.sources) === null || _a === void 0 ? void 0 : _a.forEach(source => {
+      const isLocatorSource = source.hasOwnProperty("locator");
+      if (isLocatorSource) {
+        const locatorSource = source;
+        locatorSource.url = locatorSource.url;
+        delete locatorSource.url;
+      }
+    });
+    return searchConfiguration;
   }
   /**
    * Fetches the component's translations

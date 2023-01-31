@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 /// <reference types="arcgis-js-api" />
+import { ILayerHash } from "./interfaces";
 /**
  * Gets the layer names from the current map
  *
@@ -22,27 +23,36 @@
  * @returns Promise resolving with an array of layer names
  *
  */
-export declare function getMapLayerNames(mapView: __esri.MapView): Promise<string[]>;
+export declare function getMapLayerHash(mapView: __esri.MapView): Promise<ILayerHash>;
 /**
- * Get a layer view by title
+ * Gets the layer names from the current map
+ *
+ * @param mapView the map view to fetch the layer names from
+ *
+ * @returns Promise resolving with an array of layer names
+ *
+ */
+export declare function getMapLayerIds(mapView: __esri.MapView): Promise<string[]>;
+/**
+ * Get a layer view by id
  *
  * @param mapView the map view to fetch the layer from
- * @param title the title if the layer to fetch
+ * @param id the id if the layer to fetch
  *
  * @returns Promise resolving with the fetched layer view
  *
  */
-export declare function getMapLayerView(mapView: __esri.MapView, title: string): Promise<__esri.FeatureLayerView>;
+export declare function getMapLayerView(mapView: __esri.MapView, id: string): Promise<__esri.FeatureLayerView>;
 /**
- * Get a layer by title
+ * Get a layer by id
  *
  * @param mapView the map view to fetch the layer from
- * @param title the title if the layer to fetch
+ * @param id the id if the layer to fetch
  *
  * @returns Promise resolving with the fetched layer
  *
  */
-export declare function getMapLayer(mapView: __esri.MapView, title: string): Promise<__esri.FeatureLayer>;
+export declare function getMapLayer(mapView: __esri.MapView, id: string): Promise<__esri.FeatureLayer>;
 /**
  * Highlight features by OID
  *
@@ -64,7 +74,7 @@ export declare function highlightFeatures(ids: number[], layerView: __esri.Featu
  * @returns Promise resolving when the operation is complete
  *
  */
-export declare function flashSelection(ids: number[], layerView: __esri.FeatureLayerView): Promise<void>;
+export declare function flashSelection(ids: number[], layerView: __esri.FeatureLayerView, featureEffect: __esri.FeatureEffect): Promise<void>;
 /**
  * Zoom to features based on OID
  *
@@ -76,4 +86,4 @@ export declare function flashSelection(ids: number[], layerView: __esri.FeatureL
  * @returns Promise resolving when the operation is complete
  *
  */
-export declare function goToSelection(ids: number[], layerView: __esri.FeatureLayerView, mapView: __esri.MapView, flashFeatures?: boolean): Promise<void>;
+export declare function goToSelection(ids: number[], layerView: __esri.FeatureLayerView, mapView: __esri.MapView, flashFeatures?: boolean, featureEffect?: __esri.FeatureEffect): Promise<void>;

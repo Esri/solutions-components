@@ -6,8 +6,8 @@
 import { proxyCustomElement, HTMLElement, createEvent, h, Host } from '@stencil/core/internal/client';
 import { g as ESelectionType, f as ERefineMode, e as ESelectionMode } from './interfaces3.js';
 import { l as loadModules } from './loadModules.js';
-import { b as getMapLayerView, h as highlightFeatures } from './mapViewUtils.js';
-import { d as queryFeaturesByGeometry } from './queryUtils.js';
+import { a as getMapLayerView, h as highlightFeatures, d as defineCustomElement$1 } from './map-layer-picker2.js';
+import { e as queryFeaturesByGeometry } from './queryUtils.js';
 import { s as state } from './publicNotificationStore.js';
 import { g as getLocaleComponentStrings } from './locale.js';
 import { d as defineCustomElement$9 } from './action.js';
@@ -18,7 +18,6 @@ import { d as defineCustomElement$5 } from './icon.js';
 import { d as defineCustomElement$4 } from './loader.js';
 import { d as defineCustomElement$3 } from './option.js';
 import { d as defineCustomElement$2 } from './select.js';
-import { d as defineCustomElement$1 } from './map-layer-picker2.js';
 
 const refineSelectionToolsCss = ":host{display:block}.div-visible{display:inherit}.div-not-visible{display:none !important}.padding-top-1-2{padding-top:.5rem}.main-label{display:flex;float:left}html[dir=\"rtl\"] .main-label{display:flex;float:right}.border{outline:1px solid var(--calcite-ui-border-input)}.margin-top-1{margin-top:1rem}.esri-sketch{display:flex;flex-flow:column wrap}.esri-widget{box-sizing:border-box;color:#323232;font-size:14px;font-family:\"Avenir Next\",\"Helvetica Neue\",Helvetica,Arial,sans-serif;line-height:1.3em}.esri-sketch__panel{align-items:center;display:flex;flex-flow:row nowrap;padding:0}*/ .esri-sketch__tool-section{border-right:1px solid rgba(110,110,110,.3)}.esri-sketch__section{align-items:center;display:flex;flex-flow:row nowrap;padding:0 7px;margin:6px 0;border-right:1px solid rgba(110,110,110,.3)}";
 
@@ -30,7 +29,7 @@ const RefineSelectionTools = /*@__PURE__*/ proxyCustomElement(class extends HTML
     this.refineSelectionGraphicsChange = createEvent(this, "refineSelectionGraphicsChange", 7);
     this.refineSelectionIdsChange = createEvent(this, "refineSelectionIdsChange", 7);
     /**
-     * {<layer title>: Graphic[]}: Collection of graphics returned from queries to the layer
+     * {<layer id>: Graphic[]}: Collection of graphics returned from queries to the layer
      */
     this._featuresCollection = {};
     /**
@@ -43,6 +42,7 @@ const RefineSelectionTools = /*@__PURE__*/ proxyCustomElement(class extends HTML
     this._undoStack = [];
     this.active = false;
     this.border = false;
+    this.enabledLayerIds = [];
     this.graphics = undefined;
     this.ids = [];
     this.layerView = undefined;
@@ -132,7 +132,7 @@ const RefineSelectionTools = /*@__PURE__*/ proxyCustomElement(class extends HTML
   render() {
     const showLayerPickerClass = this.useLayerPicker ? "div-visible" : "div-not-visible";
     const drawClass = this.border ? " border" : "";
-    return (h(Host, null, h("div", null, h("map-layer-picker", { class: showLayerPickerClass, mapView: this.mapView, onLayerSelectionChange: (evt) => { void this._layerSelectionChange(evt); }, selectedLayers: this.layerViews.map(l => l.layer.title), selectionMode: "single" }), h("div", { class: "margin-top-1" + drawClass }, h("div", { class: "esri-sketch esri-widget" }, h("div", { class: "esri-sketch__panel" }, h("div", { class: "esri-sketch__tool-section esri-sketch__section" }, h("calcite-action", { disabled: !this._selectEnabled, icon: "select", onClick: () => this._setSelectionMode(ESelectionType.POINT), scale: "s", text: this._translations.select })), h("div", { class: "esri-sketch__tool-section esri-sketch__section" }, h("calcite-action", { disabled: !this._selectEnabled, icon: "line", onClick: () => this._setSelectionMode(ESelectionType.LINE), scale: "s", text: this._translations.selectLine }), h("calcite-action", { disabled: !this._selectEnabled, icon: "polygon", onClick: () => this._setSelectionMode(ESelectionType.POLY), scale: "s", text: this._translations.selectPolygon }), h("calcite-action", { disabled: !this._selectEnabled, icon: "rectangle", onClick: () => this._setSelectionMode(ESelectionType.RECT), scale: "s", text: this._translations.selectRectangle })), h("div", { class: "esri-sketch__tool-section esri-sketch__section" }, h("calcite-action", { disabled: this._undoStack.length === 0, icon: "undo", onClick: () => this._undo(), scale: "s", text: this._translations.undo }), h("calcite-action", { disabled: this._redoStack.length === 0, icon: "redo", onClick: () => this._redo(), scale: "s", text: this._translations.redo }))))))));
+    return (h(Host, null, h("div", null, h("map-layer-picker", { class: showLayerPickerClass, enabledLayerIds: this.enabledLayerIds, mapView: this.mapView, onLayerSelectionChange: (evt) => { void this._layerSelectionChange(evt); }, selectedLayerIds: this.layerViews.map(l => l.layer.id), selectionMode: "single" }), h("div", { class: "margin-top-1" + drawClass }, h("div", { class: "esri-sketch esri-widget" }, h("div", { class: "esri-sketch__panel" }, h("div", { class: "esri-sketch__tool-section esri-sketch__section" }, h("calcite-action", { disabled: !this._selectEnabled, icon: "select", onClick: () => this._setSelectionMode(ESelectionType.POINT), scale: "s", text: this._translations.select })), h("div", { class: "esri-sketch__tool-section esri-sketch__section" }, h("calcite-action", { disabled: !this._selectEnabled, icon: "line", onClick: () => this._setSelectionMode(ESelectionType.LINE), scale: "s", text: this._translations.selectLine }), h("calcite-action", { disabled: !this._selectEnabled, icon: "polygon", onClick: () => this._setSelectionMode(ESelectionType.POLY), scale: "s", text: this._translations.selectPolygon }), h("calcite-action", { disabled: !this._selectEnabled, icon: "rectangle", onClick: () => this._setSelectionMode(ESelectionType.RECT), scale: "s", text: this._translations.selectRectangle })), h("div", { class: "esri-sketch__tool-section esri-sketch__section" }, h("calcite-action", { disabled: this._undoStack.length === 0, icon: "undo", onClick: () => this._undo(), scale: "s", text: this._translations.undo }), h("calcite-action", { disabled: this._redoStack.length === 0, icon: "redo", onClick: () => this._redo(), scale: "s", text: this._translations.redo }))))))));
   }
   //--------------------------------------------------------------------------
   //
@@ -259,8 +259,8 @@ const RefineSelectionTools = /*@__PURE__*/ proxyCustomElement(class extends HTML
   async _layerSelectionChange(evt) {
     if (Array.isArray(evt.detail) && evt.detail.length > 0) {
       this._selectEnabled = true;
-      const layerPromises = evt.detail.map(title => {
-        return getMapLayerView(this.mapView, title);
+      const layerPromises = evt.detail.map(id => {
+        return getMapLayerView(this.mapView, id);
       });
       return Promise.all(layerPromises).then((layerViews) => {
         this.layerViews = layerViews;
@@ -307,7 +307,7 @@ const RefineSelectionTools = /*@__PURE__*/ proxyCustomElement(class extends HTML
    */
   async _selectFeatures(geom) {
     const queryFeaturePromises = this.layerViews.map(layerView => {
-      this._featuresCollection[layerView.layer.title] = [];
+      this._featuresCollection[layerView.layer.id] = [];
       return queryFeaturesByGeometry(0, layerView.layer, geom, this._featuresCollection);
     });
     return Promise.all(queryFeaturePromises).then(async (response) => {
@@ -415,6 +415,7 @@ const RefineSelectionTools = /*@__PURE__*/ proxyCustomElement(class extends HTML
 }, [1, "refine-selection-tools", {
     "active": [4],
     "border": [4],
+    "enabledLayerIds": [16],
     "graphics": [1040],
     "ids": [16],
     "layerView": [16],

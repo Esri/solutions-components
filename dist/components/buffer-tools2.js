@@ -206,7 +206,7 @@ const BufferTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
     "sliderMin": [1026, "slider-min"],
     "sliderTicks": [1026, "slider-ticks"],
     "unionResults": [1028, "union-results"],
-    "unit": [1032],
+    "unit": [1025],
     "_translations": [32]
   }]);
 function defineCustomElement() {

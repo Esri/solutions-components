@@ -24,6 +24,11 @@ export declare class PdfDownload {
    */
   disabled: boolean;
   /**
+   * string[]: Optional list of enabled size values for PDF export
+   *  If empty all sizes will be enabled
+   */
+  enabledSizeValues: number[];
+  /**
    * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
    */
   layerView: __esri.FeatureLayerView;

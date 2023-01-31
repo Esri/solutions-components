@@ -28,6 +28,7 @@ import { queryFeaturesByID } from "../../utils/queryUtils";
 export class PdfDownload {
   constructor() {
     this.disabled = false;
+    this.enabledSizeValues = [];
     this.layerView = undefined;
     this._translations = undefined;
   }
@@ -198,6 +199,22 @@ export class PdfDownload {
         "attribute": "disabled",
         "reflect": false,
         "defaultValue": "false"
+      },
+      "enabledSizeValues": {
+        "type": "unknown",
+        "mutable": false,
+        "complexType": {
+          "original": "number[]",
+          "resolved": "number[]",
+          "references": {}
+        },
+        "required": false,
+        "optional": false,
+        "docs": {
+          "tags": [],
+          "text": "string[]: Optional list of enabled size values for PDF export\r\n If empty all sizes will be enabled"
+        },
+        "defaultValue": "[]"
       },
       "layerView": {
         "type": "unknown",

@@ -14,23 +14,73 @@
  * limitations under the License.
  */
 /// <reference types="arcgis-js-api" />
-import { VNode } from "../../stencil-public-runtime";
-import { EExportType, EPageType, ESketchType, EWorkflowType, ISelectionSet } from "../../utils/interfaces";
+import { EventEmitter, VNode } from "../../stencil-public-runtime";
+import { DistanceUnit, EExportType, EPageType, ESketchType, EWorkflowType, IExportOptions, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
 import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
 export declare class PublicNotification {
   el: HTMLPublicNotificationElement;
   /**
-   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   * string[]: List of layer ids that should be shown as potential addressee layers
    */
-  addresseeLayer: __esri.FeatureLayerView;
+  addresseeLayerIds: string[];
+  /**
+   * boolean: When true the user can define a name for each notification list
+   */
+  customLabelEnabled: boolean;
+  /**
+   * number: The default value to show for the buffer distance
+   */
+  defaultBufferDistance: number;
+  /**
+   * number: The default value to show for the buffer unit ("feet"|"meters"|"miles"|"kilometers")
+   */
+  defaultBufferUnit: DistanceUnit;
+  /**
+   * IExportOptions: Set of options that control export capabilities
+   *  If not provided all export capabilities will be enabled.
+   */
+  exportOptions: IExportOptions;
+  /**
+   * The effect that will be applied when featureHighlightEnabled is true
+   *
+   * esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
+   *
+   */
+  featureEffect: __esri.FeatureEffect;
+  /**
+   * boolean: When enabled features will be highlighted when their notification list item is clicked.
+   */
+  featureHighlightEnabled: boolean;
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   mapView: __esri.MapView;
   /**
+   * string: The value to show for no results
+   * when left empty the default text "0 selected features from {layerTitle}" will be shown
+   */
+  noResultText: string;
+  /**
+   * ISearchConfiguration: Configuration details for the Search widget
+   */
+  searchConfiguration: ISearchConfiguration;
+  /**
+   * string[]: List of layer ids that should be shown as potential selection layers
+   * when skectching with "Use layer features" option
+   */
+  selectionLayerIds: string[];
+  /**
    * boolean: When true the refine selection workflow will be included in the UI
    */
   showRefineSelection: boolean;
+  /**
+   * boolean: When false no buffer distance or unit controls will be exposed
+   */
+  showSearchSettings: boolean;
+  /**
+   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   */
+  addresseeLayer: __esri.FeatureLayerView;
   /**
    * boolean: Enabled when we have 1 or more selection sets that is enabled in the download pages.
    * By default all selection sets are enabled for download when they are first created.
@@ -62,6 +112,10 @@ export declare class PublicNotification {
    */
   _selectionWorkflowType: EWorkflowType;
   /**
+   * boolean: When true a modal will be shown to alert users of potential changes to selection sets.
+   */
+  _showLayerSelectionChangeModal: boolean;
+  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
@@ -78,6 +132,14 @@ export declare class PublicNotification {
    * esri/geometry/geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
    */
   protected _geometryEngine: __esri.geometryEngine;
+  /**
+   * CustomEvent: Used to prevent default behavior of layer selection change
+   */
+  protected _labelName: HTMLCalciteInputElement;
+  /**
+   * CustomEvent: Used to prevent default behavior of layer selection change
+   */
+  protected _layerSelectionChangeEvt: CustomEvent;
   /**
    * HTMLCalciteCheckboxElement: When enabled popups will be shown on map click
    */
@@ -102,6 +164,10 @@ export declare class PublicNotification {
    * Called each time the pageType prop is changed.
    */
   pageTypeWatchHandler(pageType: EPageType, oldPageType: EPageType): Promise<void>;
+  /**
+   * Emitted on demand when a buffer is generated.
+   */
+  labelChange: EventEmitter<string>;
   /**
    * Handle changes to the selection sets
    */
@@ -163,12 +229,40 @@ export declare class PublicNotification {
    */
   protected _getListPage(): VNode;
   /**
+   * Create the UI element that will expose the addressee layers
+   *
+   * @returns addressee layer list node
+   * @protected
+   */
+  protected _getMapLayerPicker(): VNode;
+  /**
    * Create the selection sets list node for the List page
    *
    * @returns selection sets list node
    * @protected
    */
   protected _getSelectionSetList(): VNode;
+  /**
+   * Alert the user of the potential change to the selection sets and ask if they would like to proceed.
+   *
+   * @returns the page node
+   * @protected
+   */
+  protected _showModal(open: boolean): VNode;
+  /**
+   * Prevent the default behavior of layer selection change and close the modal.
+   *
+   * @returns the page node
+   * @protected
+   */
+  protected _cancelLayerChange(): void;
+  /**
+   * Allow the default behavior of layer selection change and close the modal.
+   *
+   * @returns the page node
+   * @protected
+   */
+  protected _handleLayerChange(): Promise<void>;
   /**
    * Create the Select page that shows the selection workflows
    *
@@ -245,7 +339,7 @@ export declare class PublicNotification {
    * Get selection set list node with checkbox for Download pages
    *
    * @returns the list node
-   * @protected
+   * @protectedlabel
    */
   protected _getSelectionLists(): VNode;
   /**
@@ -310,12 +404,24 @@ export declare class PublicNotification {
    */
   protected _home(): Promise<void>;
   /**
-   * Fetch the layer defined in the selection change event
+   * Fetch the addressee layer from the map if no selection sets exist.
+   * Alert the user of the potential change to the selection sets if they exist.
+   *
+   * @param evt layer selection change event
    *
    * @returns Promise when the function has completed
    * @protected
    */
   protected _layerSelectionChange(evt: CustomEvent): Promise<void>;
+  /**
+   * Fetch the new addressee layer and update the selection sets
+   *
+   * @param id the id of the layer to fetch
+   *
+   * @returns Promise when the function has completed
+   * @protected
+   */
+  protected _updateAddresseeLayer(id: string): Promise<void>;
   /**
    * Update selection sets when the addressee layer changes.
    * Will remove any "refine" selection set.

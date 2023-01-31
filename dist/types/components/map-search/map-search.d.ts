@@ -15,7 +15,7 @@
  */
 /// <reference types="arcgis-js-api" />
 import { EventEmitter, VNode } from "../../stencil-public-runtime";
-import { ISearchResult } from "../../utils/interfaces";
+import { ISearchConfiguration, ISearchResult } from "../../utils/interfaces";
 import MapSearch_T9n from "../../assets/t9n/map-search/resources.json";
 export declare class MapSearch {
   el: HTMLElement;
@@ -23,6 +23,10 @@ export declare class MapSearch {
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   mapView: __esri.MapView;
+  /**
+   * ISearchConfiguration: Configuration details for the Search widget
+   */
+  searchConfiguration: ISearchConfiguration;
   /**
    * string: Text entered by the end user.
    * Used to search against the locator.
@@ -33,6 +37,10 @@ export declare class MapSearch {
    * All UI strings should be defined here.
    */
   protected _translations: typeof MapSearch_T9n;
+  /**
+   * esri/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+   */
+  protected FeatureLayer: typeof import("esri/layers/FeatureLayer");
   /**
    * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
    */
@@ -94,6 +102,15 @@ export declare class MapSearch {
    * @protected
    */
   protected _initSearchWidget(): void;
+  /**
+   * Initialize the search widget based on user defined configuration
+   *
+   * @param searchConfiguration search configuration defined by the user
+   * @param view the current map view
+   *
+   * @protected
+   */
+  protected _getSearchConfig(searchConfiguration: ISearchConfiguration, view: __esri.MapView): ISearchConfiguration;
   /**
    * Fetches the component's translations
    *

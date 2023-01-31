@@ -28,6 +28,11 @@ export declare class RefineSelectionTools {
    */
   border: boolean;
   /**
+   * string[]: Optional list of enabled layer ids
+   *  If empty all layers will be available
+   */
+  enabledLayerIds: string[];
+  /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
   graphics: __esri.Graphic[];
@@ -83,7 +88,7 @@ export declare class RefineSelectionTools {
    */
   protected SketchViewModel: typeof import("esri/widgets/Sketch/SketchViewModel");
   /**
-   * {<layer title>: Graphic[]}: Collection of graphics returned from queries to the layer
+   * {<layer id>: Graphic[]}: Collection of graphics returned from queries to the layer
    */
   protected _featuresCollection: {
     [key: string]: __esri.Graphic[];

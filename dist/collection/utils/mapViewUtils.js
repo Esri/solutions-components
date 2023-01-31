@@ -27,42 +27,60 @@ import { queryExtent } from "./queryUtils";
  * @returns Promise resolving with an array of layer names
  *
  */
-export async function getMapLayerNames(mapView) {
-  let layerNames = [];
+export async function getMapLayerHash(mapView) {
+  let layerHash = {};
   await mapView.when(() => {
-    layerNames = mapView.map.layers.toArray().map((l) => {
-      return l.title;
-    });
+    layerHash = mapView.map.layers.toArray().reduce((prev, cur) => {
+      prev[cur.id] = cur.title;
+      return prev;
+    }, {});
   });
-  return layerNames;
+  return layerHash;
 }
 /**
- * Get a layer view by title
+ * Gets the layer names from the current map
+ *
+ * @param mapView the map view to fetch the layer names from
+ *
+ * @returns Promise resolving with an array of layer names
+ *
+ */
+export async function getMapLayerIds(mapView) {
+  let layerIds = [];
+  await mapView.when(() => {
+    layerIds = mapView.map.layers.toArray().map((l) => {
+      return l.id;
+    });
+  });
+  return layerIds;
+}
+/**
+ * Get a layer view by id
  *
  * @param mapView the map view to fetch the layer from
- * @param title the title if the layer to fetch
+ * @param id the id if the layer to fetch
  *
  * @returns Promise resolving with the fetched layer view
  *
  */
-export async function getMapLayerView(mapView, title) {
-  const layer = await getMapLayer(mapView, title);
+export async function getMapLayerView(mapView, id) {
+  const layer = await getMapLayer(mapView, id);
   return layer ? await mapView.whenLayerView(layer) : undefined;
 }
 /**
- * Get a layer by title
+ * Get a layer by id
  *
  * @param mapView the map view to fetch the layer from
- * @param title the title if the layer to fetch
+ * @param id the id if the layer to fetch
  *
  * @returns Promise resolving with the fetched layer
  *
  */
-export async function getMapLayer(mapView, title) {
+export async function getMapLayer(mapView, id) {
   let layers = [];
   await mapView.when(() => {
     layers = mapView.map.layers.toArray().filter((l) => {
-      return l.title === title;
+      return l.id === id;
     });
   });
   return layers.length > 0 ? layers[0] : undefined;
@@ -93,15 +111,11 @@ export async function highlightFeatures(ids, layerView, mapView, updateExtent = 
  * @returns Promise resolving when the operation is complete
  *
  */
-export async function flashSelection(ids, layerView) {
-  const featureFilter = {
+export async function flashSelection(ids, layerView, featureEffect) {
+  const filter = {
     objectIds: ids
   };
-  layerView.featureEffect = {
-    filter: featureFilter,
-    includedEffect: "invert(100%)",
-    excludedEffect: "blur(5px)"
-  };
+  layerView.featureEffect = Object.assign(Object.assign({}, featureEffect), { filter });
   setTimeout(() => {
     layerView.featureEffect = undefined;
   }, 1300);
@@ -117,10 +131,10 @@ export async function flashSelection(ids, layerView) {
  * @returns Promise resolving when the operation is complete
  *
  */
-export async function goToSelection(ids, layerView, mapView, flashFeatures = true) {
+export async function goToSelection(ids, layerView, mapView, flashFeatures = true, featureEffect = undefined) {
   const result = await queryExtent(ids, layerView.layer);
   await mapView.goTo(result.extent);
   if (flashFeatures) {
-    await flashSelection(ids, layerView);
+    await flashSelection(ids, layerView, featureEffect);
   }
 }

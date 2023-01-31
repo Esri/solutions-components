@@ -15,10 +15,23 @@
  */
 /// <reference types="arcgis-js-api" />
 import { EventEmitter, VNode } from "../../stencil-public-runtime";
-import { EWorkflowType, ISelectionSet, ESketchType } from "../../utils/interfaces";
+import { DistanceUnit, ISearchConfiguration, EWorkflowType, ISelectionSet, ESketchType } from "../../utils/interfaces";
 import MapSelectTools_T9n from "../../assets/t9n/map-select-tools/resources.json";
 export declare class MapSelectTools {
   el: HTMLMapSelectToolsElement;
+  /**
+   * string[]: Optional list of enabled layer ids
+   *  If empty all layers will be available
+   */
+  enabledLayerIds: string[];
+  /**
+   * number: The default value to show for the buffer distance
+   */
+  defaultBufferDistance: number;
+  /**
+   * number: The default value to show for the buffer unit
+   */
+  defaultBufferUnit: DistanceUnit;
   /**
    * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
    */
@@ -31,6 +44,10 @@ export declare class MapSelectTools {
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   mapView: __esri.MapView;
+  /**
+   * ISearchConfiguration: Configuration details for the Search widget
+   */
+  searchConfiguration: ISearchConfiguration;
   /**
    * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
    */
@@ -58,6 +75,10 @@ export declare class MapSelectTools {
    * EWorkflowType: "SEARCH", "SELECT", "SKETCH", "REFINE"
    */
   _workflowType: EWorkflowType;
+  /**
+   * esri/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+   */
+  protected FeatureLayer: typeof import("esri/layers/FeatureLayer");
   /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
@@ -163,6 +184,10 @@ export declare class MapSelectTools {
    */
   workflowTypeChange: EventEmitter<EWorkflowType>;
   /**
+   * Handle changes to the selection sets
+   */
+  labelChange(event: CustomEvent): void;
+  /**
    * Listen to changes in the sketch graphics
    *
    */
@@ -205,11 +230,26 @@ export declare class MapSelectTools {
    */
   protected _initSelectionSet(): void;
   /**
+   * Get the default label base when the user has not provided a value
+   *
+   * @protected
+   */
+  protected _getSelectionBaseLabel(): string;
+  /**
    * Initialize the search widget
    *
    * @protected
    */
   protected _initSearchWidget(): void;
+  /**
+   * Initialize the search widget based on user defined configuration
+   *
+   * @param searchConfiguration search configuration defined by the user
+   * @param view the current map view
+   *
+   * @protected
+   */
+  protected _getSearchConfig(searchConfiguration: ISearchConfiguration, view: __esri.MapView): ISearchConfiguration;
   /**
    * Initialize the graphics layer used to store any buffer grapghics
    *

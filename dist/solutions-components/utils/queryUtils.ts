@@ -70,7 +70,7 @@ export async function queryObjectIds(
   results.forEach(resultIds => {
     ids = [
       ...ids,
-      ...resultIds
+      ...resultIds || []
     ]
   });
   return ids;
@@ -120,7 +120,7 @@ export async function queryFeaturesByGeometry(
   };
 
   const result = await layer.queryFeatures(query);
-  featuresCollection[layer.title] = featuresCollection[layer.title].concat(
+  featuresCollection[layer.id] = featuresCollection[layer.id].concat(
     result.features
   );
 

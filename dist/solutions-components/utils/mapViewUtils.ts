@@ -15,61 +15,83 @@
  */
 
 import { queryExtent } from "./queryUtils";
+import { ILayerHash } from "./interfaces";
 
 /**
  * Gets the layer names from the current map
- * 
+ *
  * @param mapView the map view to fetch the layer names from
  *
  * @returns Promise resolving with an array of layer names
  *
  */
-export async function getMapLayerNames(
+export async function getMapLayerHash(
   mapView: __esri.MapView
-): Promise<string[]> {
-  let layerNames = [];
+): Promise<ILayerHash> {
+  let layerHash = {};
   await mapView.when(() => {
-    layerNames = mapView.map.layers.toArray().map((l) => {
-      return l.title;
-    });
+    layerHash = mapView.map.layers.toArray().reduce((prev, cur) => {
+      prev[cur.id] = cur.title;
+      return prev;
+    }, {});
   });
-  return layerNames;
+  return layerHash;
 }
 
 /**
- * Get a layer view by title
- * 
+ * Gets the layer names from the current map
+ *
+ * @param mapView the map view to fetch the layer names from
+ *
+ * @returns Promise resolving with an array of layer names
+ *
+ */
+export async function getMapLayerIds(
+  mapView: __esri.MapView
+): Promise<string[]> {
+  let layerIds = [];
+  await mapView.when(() => {
+    layerIds = mapView.map.layers.toArray().map((l) => {
+      return l.id;
+    });
+  });
+  return layerIds;
+}
+
+/**
+ * Get a layer view by id
+ *
  * @param mapView the map view to fetch the layer from
- * @param title the title if the layer to fetch
+ * @param id the id if the layer to fetch
  *
  * @returns Promise resolving with the fetched layer view
  *
  */
 export async function getMapLayerView(
   mapView: __esri.MapView,
-  title: string
+  id: string
 ): Promise<__esri.FeatureLayerView> {
-  const layer = await getMapLayer(mapView, title);
+  const layer = await getMapLayer(mapView, id);
   return layer ? await mapView.whenLayerView(layer) : undefined;
 }
 
 /**
- * Get a layer by title
- * 
+ * Get a layer by id
+ *
  * @param mapView the map view to fetch the layer from
- * @param title the title if the layer to fetch
+ * @param id the id if the layer to fetch
  *
  * @returns Promise resolving with the fetched layer
  *
  */
 export async function getMapLayer(
   mapView: __esri.MapView,
-  title: string
+  id: string
 ): Promise<__esri.FeatureLayer> {
   let layers = [];
   await mapView.when(() => {
     layers = mapView.map.layers.toArray().filter((l) => {
-      return l.title === title;
+      return l.id === id;
     });
   });
   return layers.length > 0 ? layers[0] : undefined;
@@ -77,7 +99,7 @@ export async function getMapLayer(
 
 /**
  * Highlight features by OID
- * 
+ *
  * @param ids the OIDs from the layer to highlight
  * @param layerView the layer view to highlight
  * @param mapView the map view used if updateExtent is true
@@ -100,7 +122,7 @@ export async function highlightFeatures(
 
 /**
  * Flash features by OID
- * 
+ *
  * @param ids the OIDs from the layer to highlight
  * @param layerView the layer view to highlight
  *
@@ -109,15 +131,15 @@ export async function highlightFeatures(
  */
 export async function flashSelection(
   ids: number[],
-  layerView: __esri.FeatureLayerView
+  layerView: __esri.FeatureLayerView,
+  featureEffect: __esri.FeatureEffect
 ): Promise<void> {
-  const featureFilter = {
+  const filter = {
     objectIds: ids
   } as __esri.FeatureFilter;
   layerView.featureEffect = {
-    filter: featureFilter,
-    includedEffect: "invert(100%)",
-    excludedEffect: "blur(5px)"
+    ...featureEffect,
+    filter
   } as __esri.FeatureEffect;
 
   setTimeout(() => {
@@ -127,12 +149,12 @@ export async function flashSelection(
 
 /**
  * Zoom to features based on OID
- * 
+ *
  * @param ids the OIDs from the layer to go to
  * @param layerView the layer view that contains the OIDs
  * @param mapView the map view to show the extent change
  * @param flashFeatures optional (default true) boolean to indicate if we should flash the features
- * 
+ *
  * @returns Promise resolving when the operation is complete
  *
  */
@@ -140,11 +162,12 @@ export async function goToSelection(
   ids: number[],
   layerView: __esri.FeatureLayerView,
   mapView: __esri.MapView,
-  flashFeatures = true
+  flashFeatures = true,
+  featureEffect: __esri.FeatureEffect = undefined
 ): Promise<void> {
   const result = await queryExtent(ids, layerView.layer);
   await mapView.goTo(result.extent);
   if (flashFeatures) {
-    await flashSelection(ids, layerView);
+    await flashSelection(ids, layerView, featureEffect);
   }
 }

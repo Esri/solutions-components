@@ -16,5 +16,6 @@
 declare const state: {
   managedLayers: any[];
   highlightHandle: any;
+  layerNameHash: {};
 };
 export default state;

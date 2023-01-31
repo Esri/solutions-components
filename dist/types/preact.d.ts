@@ -416,17 +416,7 @@ declare module "preact/src/jsx" {
 
       "card-manager": JSX.SolutionsCardManager & JSXInternal.HTMLAttributes<HTMLSolutionsCardManagerElement>
 
-      "check-list": JSX.SolutionsCheckList & JSXInternal.HTMLAttributes<HTMLSolutionsCheckListElement>
-
       "comment-card": JSX.SolutionsCommentCard & JSXInternal.HTMLAttributes<HTMLSolutionsCommentCardElement>
-
-      "config-buffer-tools": JSX.SolutionsConfigBufferTools & JSXInternal.HTMLAttributes<HTMLSolutionsConfigBufferToolsElement>
-
-      "config-draw-tools": JSX.SolutionsConfigDrawTools & JSXInternal.HTMLAttributes<HTMLSolutionsConfigDrawToolsElement>
-
-      "config-layer-picker": JSX.SolutionsConfigLayerPicker & JSXInternal.HTMLAttributes<HTMLSolutionsConfigLayerPickerElement>
-
-      "config-pdf-download": JSX.SolutionsConfigPdfDownload & JSXInternal.HTMLAttributes<HTMLSolutionsConfigPdfDownloadElement>
 
       "crowdsource-manager": JSX.SolutionsCrowdsourceManager & JSXInternal.HTMLAttributes<HTMLSolutionsCrowdsourceManagerElement>
 
@@ -474,7 +464,9 @@ declare module "preact/src/jsx" {
 
       "pdf-download": JSX.SolutionsPdfDownload & JSXInternal.HTMLAttributes<HTMLSolutionsPdfDownloadElement>
 
-      "public-notification": JSX.SolutionsPublicNotification & JSXInternal.HTMLAttributes<HTMLSolutionsPublicNotificationElement>
+      "public-notification": Omit<JSX.SolutionsPublicNotification, "onLabelChange"> & JSXInternal.HTMLAttributes<HTMLSolutionsPublicNotificationElement> & {
+        "onlabelChange"?: (event: CustomEvent<any>) => void;
+      }
 
       "refine-selection": Omit<JSX.SolutionsRefineSelection, "onSelectionSetsChanged"> & JSXInternal.HTMLAttributes<HTMLSolutionsRefineSelectionElement> & {
         "onselectionSetsChanged"?: (event: CustomEvent<any>) => void;

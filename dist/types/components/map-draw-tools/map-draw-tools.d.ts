@@ -60,6 +60,10 @@ export declare class MapDrawTools {
    */
   protected Sketch: typeof import("esri/widgets/Sketch");
   /**
+   * A timer used to prevent redundant selections while drawing shapes
+   */
+  protected _selectionTimer: any;
+  /**
    * The container element for the sketch widget
    */
   protected _sketchElement: HTMLElement;

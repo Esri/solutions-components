@@ -2,12 +2,7 @@
 export { AddRecordModal as AddRecordModal } from '../types/components/add-record-modal/add-record-modal';
 export { BufferTools as BufferTools } from '../types/components/buffer-tools/buffer-tools';
 export { CardManager as CardManager } from '../types/components/card-manager/card-manager';
-export { CheckList as CheckList } from '../types/components/check-list/check-list';
 export { CommentCard as CommentCard } from '../types/components/comment-card/comment-card';
-export { ConfigBufferTools as ConfigBufferTools } from '../types/components/config-buffer-tools/config-buffer-tools';
-export { ConfigDrawTools as ConfigDrawTools } from '../types/components/config-draw-tools/config-draw-tools';
-export { ConfigLayerPicker as ConfigLayerPicker } from '../types/components/config-layer-picker/config-layer-picker';
-export { ConfigPdfDownload as ConfigPdfDownload } from '../types/components/config-pdf-download/config-pdf-download';
 export { CrowdsourceManager as CrowdsourceManager } from '../types/components/crowdsource-manager/crowdsource-manager';
 export { CrowdsourceReporter as CrowdsourceReporter } from '../types/components/crowdsource-reporter/crowdsource-reporter';
 export { DeductCalculator as DeductCalculator } from '../types/components/deduct-calculator/deduct-calculator';

@@ -61,7 +61,7 @@ async function queryObjectIds(geometries, layer) {
   results.forEach(resultIds => {
     ids = [
       ...ids,
-      ...resultIds
+      ...resultIds || []
     ];
   });
   return ids;
@@ -100,7 +100,7 @@ async function queryFeaturesByGeometry(start, layer, geometry, featuresCollectio
     geometry
   };
   const result = await layer.queryFeatures(query);
-  featuresCollection[layer.title] = featuresCollection[layer.title].concat(result.features);
+  featuresCollection[layer.id] = featuresCollection[layer.id].concat(result.features);
   return result.exceededTransferLimit ?
     queryFeaturesByGeometry(start += num, layer, geometry, featuresCollection) :
     Promise.resolve(featuresCollection);
@@ -184,4 +184,4 @@ async function _intersectQuery(geometry, layer) {
   return layer.queryObjectIds(q);
 }
 
-export { queryAllFeatures as a, queryObjectIds as b, getQueryGeoms as c, queryFeaturesByGeometry as d, queryExtent as e, getSelectionSetQuery as g, queryFeaturesByID as q };
+export { queryAllFeatures as a, queryExtent as b, queryObjectIds as c, getQueryGeoms as d, queryFeaturesByGeometry as e, getSelectionSetQuery as g, queryFeaturesByID as q };

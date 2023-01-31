@@ -265,7 +265,7 @@ export namespace Components {
           * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
           * @returns Promise resolving when function is done
          */
-        "downloadCSV": (ids: number[], removeDuplicates: boolean, addColumnTitle: boolean) => Promise<void>;
+        "downloadCSV": (ids: number[], removeDuplicates: boolean) => Promise<void>;
         /**
           * Downloads pdf of mailing labels for the provided list of ids
           * @param ids List of ids to download

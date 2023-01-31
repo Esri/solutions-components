@@ -5,7 +5,7 @@
  */
 import { proxyCustomElement, HTMLElement, h, Host } from '@stencil/core/internal/client';
 import { g as getLocaleComponentStrings } from './locale.js';
-import { a as goToSelection, b as getMapLayerView } from './mapViewUtils.js';
+import { g as goToSelection, a as getMapLayerView, d as defineCustomElement$2 } from './map-layer-picker2.js';
 import { q as queryFeaturesByID, a as queryAllFeatures } from './queryUtils.js';
 import { e as exportCSV } from './csvUtils.js';
 import { d as defineCustomElement$l } from './button.js';
@@ -27,7 +27,6 @@ import { d as defineCustomElement$6 } from './scrim.js';
 import { d as defineCustomElement$5 } from './select.js';
 import { d as defineCustomElement$4 } from './split-button.js';
 import { d as defineCustomElement$3 } from './edit-record-modal2.js';
-import { d as defineCustomElement$2 } from './map-layer-picker2.js';
 
 const layerTableCss = ":host{display:block}.table{display:table;width:100%}.header{display:table-header-group;background-color:#757575;font-weight:500;font-size:var(--calcite-font-size-0);color:var(--calcite-ui-text-inverse);position:sticky;top:0;z-index:1}.table-header-cell{display:table-cell;text-align:justify;border-right:1px solid var(--calcite-ui-border-2);padding:0.5rem}.table-body{display:table-row-group}.row{display:table-row}.table-cell{display:table-cell;padding:0.5rem}.display-table-header{display:table-header-group}.display-flex{display:flex}.table-border{border:1px solid var(--calcite-ui-border-2)}.justify-center{justify-content:center}.table-container{width:100%}.overflow-auto{overflow:auto}.data-container{overflow:auto;height:calc(100% - 35px)}.row:nth-child(odd){background:var(--calcite-ui-foreground-3)}.padding-3-4{padding:0.75rem}.field-width{white-space:nowrap;min-width:300px;max-width:300px;overflow:hidden}";
 

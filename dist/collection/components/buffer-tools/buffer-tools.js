@@ -337,14 +337,15 @@ export class BufferTools {
         "defaultValue": "true"
       },
       "unit": {
-        "type": "any",
+        "type": "string",
         "mutable": true,
         "complexType": {
-          "original": "__esri.LinearUnits",
-          "resolved": "\"feet\" | \"kilometers\" | \"meters\" | \"miles\" | \"nautical-miles\" | \"yards\" | number",
+          "original": "DistanceUnit",
+          "resolved": "\"feet\" | \"kilometers\" | \"meters\" | \"miles\"",
           "references": {
-            "___esri": {
-              "location": "global"
+            "DistanceUnit": {
+              "location": "import",
+              "path": "../../utils/interfaces"
             }
           }
         },
@@ -352,7 +353,7 @@ export class BufferTools {
         "optional": false,
         "docs": {
           "tags": [],
-          "text": "LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits"
+          "text": "DistanceUnit: \"feet\"|\"meters\"|\"miles\"|\"kilometers\""
         },
         "attribute": "unit",
         "reflect": false,

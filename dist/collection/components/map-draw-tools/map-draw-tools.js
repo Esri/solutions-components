@@ -178,9 +178,16 @@ export class MapDrawTools {
       }
     };
     this._sketchWidget.on("update", (evt) => {
-      if (evt.state === "complete" && this.active) {
-        this.graphics = this._sketchGraphicsLayer.graphics.toArray();
+      if (evt.state === "start") {
+        this.graphics = evt.graphics;
         this.sketchGraphicsChange.emit(this.graphics);
+      }
+      if (evt.state === "active") {
+        clearTimeout(this._selectionTimer);
+        this._selectionTimer = setTimeout(() => {
+          this.graphics = evt.graphics;
+          this.sketchGraphicsChange.emit(this.graphics);
+        }, 500);
       }
     });
   }
