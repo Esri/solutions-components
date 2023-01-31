@@ -43,6 +43,16 @@ export class MapSelectTools {
   //--------------------------------------------------------------------------
 
   /**
+   * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+   */
+  @Prop() bufferColor: any = [227, 139, 79, 0.8];
+
+  /**
+   * string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+   */
+  @Prop() bufferOutlineColor: any = [255, 255, 255];
+
+  /**
    * string[]: Optional list of enabled layer ids
    *  If empty all layers will be available
    */
@@ -713,9 +723,9 @@ export class MapSelectTools {
       // Create a symbol for rendering the graphic
       const symbol = {
         type: "simple-fill",
-        color: [227, 139, 79, 0.8],
+        color: this.bufferColor,
         outline: {
-          color: [255, 255, 255],
+          color: this.bufferOutlineColor,
           width: 1
         }
       };

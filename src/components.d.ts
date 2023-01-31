@@ -196,6 +196,14 @@ export namespace Components {
     }
     interface MapSelectTools {
         /**
+          * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferColor": any;
+        /**
+          * string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferOutlineColor": any;
+        /**
           * Clear any selection results
           * @returns Promise when the results have been cleared
          */
@@ -287,6 +295,14 @@ export namespace Components {
           * string[]: List of layer ids that should be shown as potential addressee layers
          */
         "addresseeLayerIds": string[];
+        /**
+          * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferColor": any;
+        /**
+          * string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferOutlineColor": any;
         /**
           * boolean: When true the user can define a name for each notification list
          */
@@ -1067,6 +1083,14 @@ declare namespace LocalJSX {
     }
     interface MapSelectTools {
         /**
+          * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferColor"?: any;
+        /**
+          * string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferOutlineColor"?: any;
+        /**
           * number: The default value to show for the buffer distance
          */
         "defaultBufferDistance"?: number;
@@ -1146,6 +1170,14 @@ declare namespace LocalJSX {
           * string[]: List of layer ids that should be shown as potential addressee layers
          */
         "addresseeLayerIds"?: string[];
+        /**
+          * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferColor"?: any;
+        /**
+          * string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferOutlineColor"?: any;
         /**
           * boolean: When true the user can define a name for each notification list
          */

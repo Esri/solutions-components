@@ -49,6 +49,16 @@ export class PublicNotification {
   @Prop() addresseeLayerIds: string[] = [];
 
   /**
+   * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+   */
+  @Prop() bufferColor: any = [227, 139, 79, 0.8];
+
+  /**
+   * string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+   */
+  @Prop() bufferOutlineColor: any = [255, 255, 255];
+
+  /**
    * boolean: When true the user can define a name for each notification list
    */
   @Prop() customLabelEnabled: boolean;
@@ -654,6 +664,8 @@ export class PublicNotification {
         {this._getNotice(noticeText)}
         <div class={"padding-top-sides-1"}>
           <map-select-tools
+            bufferColor={this.bufferColor}
+            bufferOutlineColor={this.bufferOutlineColor}
             class="font-bold"
             enabledLayerIds={this.selectionLayerIds}
             isUpdate={!!this._activeSelection}
