@@ -651,6 +651,8 @@ export class PublicNotification {
     const noticeText = this._selectionWorkflowType === EWorkflowType.SELECT ? selectTip :
       this._selectionWorkflowType === EWorkflowType.SKETCH ? sketchTip : searchTip;
 
+    const nameLabelClass = this.customLabelEnabled ? "" : "display-none";
+
     return (
       <calcite-panel>
         {this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", this.addresseeLayer?.layer.title))}
@@ -681,7 +683,7 @@ export class PublicNotification {
             }
           </calcite-input-message>
         </div>
-        <div class="padding-sides-1">
+        <div class={"padding-sides-1 " + nameLabelClass}>
           <calcite-label
             class="font-bold"
           >
