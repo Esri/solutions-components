@@ -667,6 +667,8 @@ export class PublicNotification {
             bufferColor={this.bufferColor}
             bufferOutlineColor={this.bufferOutlineColor}
             class="font-bold"
+            defaultBufferDistance={this.defaultBufferDistance}
+            defaultBufferUnit={this.defaultBufferUnit}
             enabledLayerIds={this.selectionLayerIds}
             isUpdate={!!this._activeSelection}
             mapView={this.mapView}
