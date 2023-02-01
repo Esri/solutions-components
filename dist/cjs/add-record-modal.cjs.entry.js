@@ -8,7 +8,7 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 const index = require('./index-c6979cbb.js');
-const locale = require('./locale-fadee9a0.js');
+const locale = require('./locale-de75eb2b.js');
 require('./_commonjsHelpers-6aafa5de.js');
 
 const addRecordModalCss = ":host{display:block;--calcite-label-margin-bottom:0px}.padding-bottom-1{padding-bottom:1rem}.font-bold{font-weight:bold}.font-500{font-weight:500}.display-none{display:none}";

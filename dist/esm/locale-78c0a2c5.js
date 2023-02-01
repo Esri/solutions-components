@@ -385,7 +385,7 @@ function getComponentClosestLanguage(element) {
 }
 function fetchLocaleStringsForComponent(componentName, locale) {
   return new Promise((resolve, reject) => {
-    fetch(getAssetPath(`../assets/t9n/${componentName}/resources_${locale}.json`)).then(result => {
+    fetch(getAssetPath(`./assets/t9n/${componentName}/resources_${locale}.json`)).then(result => {
       if (result.ok) {
         resolve(result.json());
       }

@@ -4,8 +4,8 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-c246d90e.js';
-import { l as loadModules } from './loadModules-e3a95eb3.js';
-import { g as getLocaleComponentStrings } from './locale-b76dc371.js';
+import { l as loadModules } from './loadModules-4e40f189.js';
+import { g as getLocaleComponentStrings } from './locale-78c0a2c5.js';
 import { b as getElementDir, g as getElementProp, t as toAriaBoolean, i as isPrimaryPointerButton, h as intersects } from './dom-3bdc69ee.js';
 import { c as connectLabel, d as disconnectLabel } from './label-aa562647.js';
 import { a as afterConnectDefaultValueSet, c as connectForm, d as disconnectForm, H as HiddenFormInputSlot } from './form-62bc7b1f.js';

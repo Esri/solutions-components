@@ -8,8 +8,8 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 const index = require('./index-c6979cbb.js');
-const loadModules = require('./loadModules-9f9939dc.js');
-const locale = require('./locale-fadee9a0.js');
+const loadModules = require('./loadModules-12ad203f.js');
+const locale = require('./locale-de75eb2b.js');
 require('./_commonjsHelpers-6aafa5de.js');
 
 const mapSearchCss = ":host{display:block}.search-widget{width:100% !important;border:1px solid var(--calcite-ui-border-input)}";

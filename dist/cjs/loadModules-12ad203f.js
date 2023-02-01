@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const locale = require('./locale-fadee9a0.js');
+const locale = require('./locale-de75eb2b.js');
 
 /** @license
  * Copyright 2022 Esri
