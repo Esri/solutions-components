@@ -72,9 +72,9 @@
         var webMap = new WebMap({
           portalItem: {
             // solutions
-            // id: "3715f4899bea4b2a948347c5c2357e58"
+            id: "3715f4899bea4b2a948347c5c2357e58"
             // InstantApps
-            id: "863e4f6f2a7840db896cc1b1606d552d"
+            //id: "863e4f6f2a7840db896cc1b1606d552d"
           }
         });
 
@@ -90,9 +90,9 @@
           });
           demo.mapView.ui.add(legend, "top-left");
         });
-        demo.addresseeLayerIds = ["18434515eb8-layer-12"];
-        demo.defaultBufferDistance = 100;
-        demo.defaultBufferUnit = "kilometers";
+        //demo.addresseeLayerIds = ["18434515eb8-layer-12"];
+        //demo.defaultBufferDistance = 100;
+        //demo.defaultBufferUnit = "kilometers";
         demo.exportOptions = {
           csvOptions: {
             enabled: true, // I question if this should be exposed
@@ -109,8 +109,11 @@
         };
         demo.featureHighlightEnabled = true;
         demo.noResultText = "No results found";
-        demo.selectionLayerIds = ["1843422bf6b-layer-7"];
-        //demo.showSearchSettings = false;
+        //demo.selectionLayerIds = ["1843422bf6b-layer-7"];
+        demo.showSearchSettings = true;
+        demo.customLabelEnabled = true;
+        // demo.bufferColor = [227, 0, 0, 0.8];
+        // demo.bufferOutlineColor = [0, 255, 0];
       });
     </script>
   </head>

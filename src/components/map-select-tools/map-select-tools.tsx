@@ -43,6 +43,16 @@ export class MapSelectTools {
   //--------------------------------------------------------------------------
 
   /**
+   * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+   */
+  @Prop() bufferColor: any = [227, 139, 79, 0.8];
+
+  /**
+   * string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+   */
+  @Prop() bufferOutlineColor: any = [255, 255, 255];
+
+  /**
    * string[]: Optional list of enabled layer ids
    *  If empty all layers will be available
    */
@@ -287,7 +297,7 @@ export class MapSelectTools {
       distance: this._bufferTools.distance,
       download: true,
       unit: this._bufferTools.unit,
-      label: this._workflowType === EWorkflowType.SEARCH || (this._selectionLabel && !isBaseLabel) ?
+      label: (this._selectionLabel && !isBaseLabel) ?
         this._selectionLabel : `${this._selectionLabel} ${this._bufferTools.distance} ${this._bufferTools.unit}`,
       selectedIds: this._selectedIds,
       layerView: this.selectLayerView,
@@ -380,18 +390,12 @@ export class MapSelectTools {
     const showSearchClass = searchEnabled ? " div-visible-search" : " div-not-visible";
 
     const drawEnabled = this._workflowType === EWorkflowType.SKETCH || this._workflowType === EWorkflowType.SELECT;
-    //const showDrawToolsClass = drawEnabled ? " div-visible" : " div-not-visible";
-
-    // const selectEnabled = this._workflowType === EWorkflowType.SELECT;
-    // const showSelectToolsClass = selectEnabled ? " div-visible" : " div-not-visible";
-
     const showBufferToolsClass = this.showBufferTools ? "search-distance" : "div-not-visible";
 
     const useSelectClass = this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
     const useDrawClass = !this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
 
     const showLayerChoiceClass = searchEnabled ? "div-not-visible" : "div-visible";
-
     return (
       <Host>
         <div class="padding-bottom-1">
@@ -406,13 +410,6 @@ export class MapSelectTools {
             >
               {this._translations.search}
             </calcite-radio-group-item>
-            {/* <calcite-radio-group-item
-              checked={selectEnabled}
-              class="w-50 end-border"
-              value={EWorkflowType.SELECT}
-            >
-              {this._translations.select}
-            </calcite-radio-group-item> */}
             <calcite-radio-group-item
               checked={drawEnabled}
               class="w-50"
@@ -428,6 +425,7 @@ export class MapSelectTools {
         <div class={showLayerChoiceClass}>
           <calcite-label layout="inline">
             <calcite-checkbox
+              checked={this.selectionSet?.workflowType === EWorkflowType.SELECT}
               onCalciteCheckboxChange={() => this._layerSelectChanged()}
               ref={(el) => this._selectFromLayerElement = el}
             />
@@ -523,7 +521,7 @@ export class MapSelectTools {
         ...this.selectionSet?.geometries
       ];
       // reset selection label base
-      this._selectionLabel = this._getSelectionBaseLabel();
+      this._selectionLabel = this.selectionSet?.label || this._getSelectionBaseLabel();
 
       void goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     } else {
@@ -725,9 +723,9 @@ export class MapSelectTools {
       // Create a symbol for rendering the graphic
       const symbol = {
         type: "simple-fill",
-        color: [227, 139, 79, 0.8],
+        color: this.bufferColor,
         outline: {
-          color: [255, 255, 255],
+          color: this.bufferOutlineColor,
           width: 1
         }
       };

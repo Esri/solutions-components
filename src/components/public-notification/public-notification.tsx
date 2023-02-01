@@ -49,6 +49,16 @@ export class PublicNotification {
   @Prop() addresseeLayerIds: string[] = [];
 
   /**
+   * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+   */
+  @Prop() bufferColor: any = [227, 139, 79, 0.8];
+
+  /**
+   * string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+   */
+  @Prop() bufferOutlineColor: any = [255, 255, 255];
+
+  /**
    * boolean: When true the user can define a name for each notification list
    */
   @Prop() customLabelEnabled: boolean;
@@ -637,13 +647,8 @@ export class PublicNotification {
    * @protected
    */
   protected _getSelectPage(): VNode {
-    // const searchTip = `${this._translations.selectSearchTip} ${this._translations.optionalSearchDistance}`;
     const searchTip = this._translations.selectSearchTip;
-    // const selectTip = `${this._translations.selectLayerTip} ${this._translations.optionalSearchDistance}`;
     const selectTip = this._translations.selectLayerTip;
-    // const sketchTip = this._sketchType === ESketchType.INTERACTIVE ?
-    //   `${this._translations.selectSketchTip} ${this._translations.optionalSearchDistance}` :
-    //   `${this._translations.selectLayerTip} ${this._translations.optionalSearchDistance}`;
     const sketchTip = this._sketchType === ESketchType.INTERACTIVE ?
       this._translations.selectSketchTip :
       this._translations.selectLayerTip;
@@ -651,13 +656,19 @@ export class PublicNotification {
     const noticeText = this._selectionWorkflowType === EWorkflowType.SELECT ? selectTip :
       this._selectionWorkflowType === EWorkflowType.SKETCH ? sketchTip : searchTip;
 
+    const nameLabelClass = this.customLabelEnabled ? "" : "display-none";
+
     return (
       <calcite-panel>
         {this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", this.addresseeLayer?.layer.title))}
         {this._getNotice(noticeText)}
         <div class={"padding-top-sides-1"}>
           <map-select-tools
+            bufferColor={this.bufferColor}
+            bufferOutlineColor={this.bufferOutlineColor}
             class="font-bold"
+            defaultBufferDistance={this.defaultBufferDistance}
+            defaultBufferUnit={this.defaultBufferUnit}
             enabledLayerIds={this.selectionLayerIds}
             isUpdate={!!this._activeSelection}
             mapView={this.mapView}
@@ -681,7 +692,7 @@ export class PublicNotification {
             }
           </calcite-input-message>
         </div>
-        <div class="padding-sides-1">
+        <div class={"padding-sides-1 " + nameLabelClass}>
           <calcite-label
             class="font-bold"
           >

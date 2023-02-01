@@ -316,6 +316,21 @@ export class MapDrawTools {
         }, 500);
       }
     });
+
+    this._sketchWidget.on("delete", () => {
+      this.graphics = [];
+      this.sketchGraphicsChange.emit(this.graphics);
+    });
+
+    this._sketchWidget.on("undo", (evt) => {
+      this.graphics = evt.graphics;
+      this.sketchGraphicsChange.emit(this.graphics);
+    });
+
+    this._sketchWidget.on("redo", (evt) => {
+      this.graphics = evt.graphics;
+      this.sketchGraphicsChange.emit(this.graphics);
+    });
   }
 
   /**
