@@ -521,7 +521,7 @@ export class MapSelectTools {
         ...this.selectionSet?.geometries
       ];
       // reset selection label base
-      this._selectionLabel = this._getSelectionBaseLabel();
+      this._selectionLabel = this.selectionSet?.label || this._getSelectionBaseLabel();
 
       void goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     } else {
