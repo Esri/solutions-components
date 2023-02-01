@@ -305,22 +305,31 @@ export class MapDrawTools {
 
     this._sketchWidget.on("update", (evt) => {
       if (evt.state === "start") {
-        this.graphics = [
-          ...this.graphics,
-          ...evt.graphics
-        ];
+        this.graphics = evt.graphics;
         this.sketchGraphicsChange.emit(this.graphics);
       }
       if (evt.state === "active") {
         clearTimeout(this._selectionTimer);
         this._selectionTimer = setTimeout(() => {
-          this.graphics = [
-            ...this.graphics,
-            ...evt.graphics
-          ];
+          this.graphics = evt.graphics;
           this.sketchGraphicsChange.emit(this.graphics);
         }, 500);
       }
+    });
+
+    this._sketchWidget.on("delete", () => {
+      this.graphics = [];
+      this.sketchGraphicsChange.emit(this.graphics);
+    });
+
+    this._sketchWidget.on("undo", (evt) => {
+      this.graphics = evt.graphics;
+      this.sketchGraphicsChange.emit(this.graphics);
+    });
+
+    this._sketchWidget.on("redo", (evt) => {
+      this.graphics = evt.graphics;
+      this.sketchGraphicsChange.emit(this.graphics);
     });
   }
 
