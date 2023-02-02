@@ -170,24 +170,20 @@
     margin-inline-start: 0.5rem;
   }
 
-  .position-right {
-    position: absolute;
-    right: 1rem;
+  .float-right {
+    float: right;
   }
 
-  .position-right[dir="rtl"] {
-    position: absolute;
-    left: 1rem;
+  .float-right[dir="rtl"] {
+    float: left;
   }
 
-  .position-left {
-    position: absolute;
-    left: 1rem;
+  .float-left {
+    float: left;
   }
 
-  .position-left[dir="rtl"] {
-    position: absolute;
-    right: 1rem;
+  .float-left[dir="rtl"] {
+    float: right;
   }
 
   .margin-top-0 {

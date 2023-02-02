@@ -481,11 +481,11 @@ export class PublicNotification {
         </div>
         {this._getNotice(this._translations.listHasSetsTip, "padding-sides-1 padding-bottom-1")}
         {this._getMapLayerPicker()}
-        <div class="padding-sides-1 height-1-1-2">
-          <div class="position-left">
+        <div class="display-block padding-sides-1 height-1-1-2">
+          <div class="display-block float-left">
             <calcite-label alignment="start" class="font-bold">{this._translations.notifications}</calcite-label>
           </div>
-          <div class="position-right">
+          <div class="display-block float-right">
             <calcite-input-message active class="info-blue margin-top-0" scale="m">{this._translations.uniqueCout.replace("{{n}}", total.toString())}</calcite-input-message>
           </div>
         </div>
