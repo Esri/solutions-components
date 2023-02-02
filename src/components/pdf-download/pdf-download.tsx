@@ -108,10 +108,11 @@ export class PdfDownload {
   ): Promise<void> {
     // Get the attributes of the features to export
     const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
-    //???const featuresAttrs = featureSet.features.map(f => f.attributes);
+    //const featuresAttrs = featureSet.features.map(f => f.attributes);
     let featuresAttrs = featureSet.features.map(f => f.attributes);//???
     featuresAttrs = [...featuresAttrs, featuresAttrs.slice(1, 9)];//???
-    featuresAttrs[4] = featuresAttrs[4].slice(1);//???
+    featuresAttrs[4].NAME = "";//???
+    featuresAttrs[5].STREET = "";//???
 
     // What data fields are used in the labels?
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
