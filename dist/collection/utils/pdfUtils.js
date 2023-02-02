@@ -22,16 +22,10 @@
  * Exports a PDF of labels.
  *
  * @param labels Labels to write
- * @param columnNames Column names to add to the beginning of the output array
- * @param labelFormat Field format per label
  * @param labelPageDescription Page format to use for labels
- * @param removeDuplicates Remove duplicate labels before exporting
  */
-export function exportPDF(labels, 
-//columnNames: string[],
-labelFormat, labelPageDescription, removeDuplicates = true) {
-  const outputLabels = _prepareOutput(labels, /*columnNames,*/ labelFormat, removeDuplicates);
-  _downloadPDFFile(outputLabels, labelPageDescription, `notify-${Date.now().toString()}`);
+export function exportPDF(labels, labelPageDescription) {
+  _downloadPDFFile(labels, labelPageDescription, `notify-${Date.now().toString()}`);
 }
 /**
  * Downloads the PDF file.
@@ -53,17 +47,24 @@ function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
  *
  * @returns De-duped array of labels if removeDuplicates is true
  */
-function _prepareOutput(labels, 
-//columnNames: string[],
-labelFormat, removeDuplicates = true) {
+/*
+function _prepareOutput(
+  labels: string[][],
+  //columnNames: string[],
+  labelFormat: string[],
+  removeDuplicates = true
+): string[][] {
   // Format the input into labels
   // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
   console.log(labelFormat);
+
   // Remove duplicates if desired
   if (removeDuplicates) {
-    const uniques = new Set();
+    const uniques: Set<string> = new Set();
     labels.forEach(labelLines => uniques.add(labelLines.join("|")));
     labels = Array.from(uniques).map(label => label.split("|"));
   }
+
   return labels;
 }
+*/

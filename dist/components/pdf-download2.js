@@ -382,6 +382,72 @@ const pdfUtils = /*#__PURE__*/Object.freeze({
   'default': labelFormats
 });
 
+/** @license
+ * Copyright 2022 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+ * Exports a PDF of labels.
+ *
+ * @param labels Labels to write
+ * @param labelPageDescription Page format to use for labels
+ */
+function exportPDF(labels, labelPageDescription) {
+  _downloadPDFFile(labels, labelPageDescription, `notify-${Date.now().toString()}`);
+}
+/**
+ * Downloads the PDF file.
+ *
+ * @param labels Labels to write
+ * @param labelPageDescription Page format to use for labels
+ * @param fileTitle Title (without file extension) to use for file; defaults to "export"
+ */
+function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
+  console.log("_downloadPDFFile", labels, labelPageDescription, fileTitle); //???
+}
+/**
+ * Prepares labels for export.
+ *
+ * @param labels Array of labels to prepare
+ * @param columnNames Column names to add to the beginning of the output array
+ * @param labelFormat Field format per label
+ * @param removeDuplicates Remove duplicate lines
+ *
+ * @returns De-duped array of labels if removeDuplicates is true
+ */
+/*
+function _prepareOutput(
+  labels: string[][],
+  //columnNames: string[],
+  labelFormat: string[],
+  removeDuplicates = true
+): string[][] {
+  // Format the input into labels
+  // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
+  console.log(labelFormat);
+
+  // Remove duplicates if desired
+  if (removeDuplicates) {
+    const uniques: Set<string> = new Set();
+    labels.forEach(labelLines => uniques.add(labelLines.join("|")));
+    labels = Array.from(uniques).map(label => label.split("|"));
+  }
+
+  return labels;
+}
+*/
+
 const pdfDownloadCss = ":host{display:block}";
 
 const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement$1 {
@@ -414,7 +480,10 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement$1
   async downloadPDF(ids, removeDuplicates) {
     // Get the attributes of the features to export
     const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
-    const featuresAttrs = featureSet.features.map(f => f.attributes);
+    //???const featuresAttrs = featureSet.features.map(f => f.attributes);
+    let featuresAttrs = featureSet.features.map(f => f.attributes); //???
+    featuresAttrs = [...featuresAttrs, featuresAttrs.slice(1, 9)]; //???
+    featuresAttrs[4] = featuresAttrs[4].slice(1); //???
     // What data fields are used in the labels?
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
     const labelFormat = this._convertPopupToLabelSpec(this.layerView.layer.popupTemplate.content[0].text);
@@ -432,33 +501,17 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement$1
       // Remove empty labels
       .filter(label => label.length > 0);
     // Remove duplicates
+    console.log(labels); //???
     if (removeDuplicates) {
       console.log("remove duplicates before " + labels.length.toString()); //???
       const labelsAsStrings = labels.map(label => JSON.stringify(label));
       const uniqueLabels = new Set(labelsAsStrings);
       labels = Array.from(uniqueLabels, labelString => JSON.parse(labelString));
       console.log("remove duplicates after " + labels.length.toString()); //???
+      console.log(labels); //???
     }
-    console.log(labels); //???
-    /*
-    const contents: string[][] = attributes.map(attr => Object.values(attr));
-
-    // Get the column headings from the first record
-    const columnNames: string[] = [];
-    const entry = attributes[0];
-    Object.keys(entry).forEach(k => {
-      if (entry.hasOwnProperty(k)) {
-        columnNames.push(k);
-      }
-    });
-    console.log(columnNames);//???
-
-    // Extract the label data
-
     const labelPageDescription = this._labelInfoElement.selectedOption.value;
-
-    return exportPDF(contents, columnNames, labelFormat, labelPageDescription, removeDuplicates);
-    */
+    return exportPDF(labels, labelPageDescription);
   }
   /**
    * Downloads csv of mailing labels for the provided list of ids

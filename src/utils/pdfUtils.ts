@@ -19,14 +19,12 @@
  *
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
- * @param removeDuplicates Remove duplicate labels before exporting
  */
 export function exportPDF(
   labels: string[][],
-  labelPageDescription: any,
-  removeDuplicates = true
+  labelPageDescription: any
 ): void {
-  _downloadPDFFile(outputLabels, labelPageDescription, `notify-${Date.now().toString()}`);
+  _downloadPDFFile(labels, labelPageDescription, `notify-${Date.now().toString()}`);
 }
 
 /**
@@ -43,7 +41,6 @@ function _downloadPDFFile(
 ): void {
   console.log("_downloadPDFFile", labels, labelPageDescription, fileTitle);//???
 }
-
 
 /**
  * Prepares labels for export.

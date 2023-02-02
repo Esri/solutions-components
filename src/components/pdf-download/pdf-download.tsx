@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-//import { exportPDF } from "../../utils/pdfUtils";
 import "@esri/calcite-components";
 import * as intl from "@arcgis/core/intl";
 import * as pdfUtils from "../../assets/data/labelFormats.json";
 import PdfDownload_T9n from "../../assets/t9n/pdf-download/resources.json";
 import { Component, Element, Host, h, Method, Prop, State, VNode } from "@stencil/core";
 import { exportCSV } from "../../utils/csvUtils";
+import { exportPDF } from "../../utils/pdfUtils";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { queryFeaturesByID } from "../../utils/queryUtils";
 
@@ -111,6 +111,7 @@ export class PdfDownload {
     //???const featuresAttrs = featureSet.features.map(f => f.attributes);
     let featuresAttrs = featureSet.features.map(f => f.attributes);//???
     featuresAttrs = [...featuresAttrs, featuresAttrs.slice(1, 9)];//???
+    featuresAttrs[4] = featuresAttrs[4].slice(1);//???
 
     // What data fields are used in the labels?
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
@@ -147,7 +148,9 @@ export class PdfDownload {
       console.log(labels);//???
     }
 
-    return exportPDF(labels, labelPageDescription, removeDuplicates);
+    const labelPageDescription = this._labelInfoElement.selectedOption.value;
+
+    return exportPDF(labels, labelPageDescription);
   }
 
   /**

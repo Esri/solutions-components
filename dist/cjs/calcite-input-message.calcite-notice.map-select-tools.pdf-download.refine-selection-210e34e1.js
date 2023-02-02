@@ -860,7 +860,7 @@ function c$1(r,t,n=!1,s){return new Promise(((i,c)=>{if(p$1(s))return void c(a$2
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-async function U(e,r){const t=X$1(e),s=V$1(e);s||t||(e=F$1(e));const n={url:e,requestOptions:{...e$9(r)}};let i=W$1(e);if(i){const e=await G(i,n);if(null!=e)return {data:e,getHeader:M,requestOptions:n.requestOptions,url:n.url};i.after||i.error||(i=null);}if(e=n.url,"image"===(r=n.requestOptions).responseType){if(has("host-webworker")||has("host-node"))throw N("request:invalid-parameters",new Error("responseType 'image' is not supported in Web Workers or Node environment"),n)}else if(t)throw N("request:invalid-parameters",new Error("Data URLs are not supported for responseType = "+r.responseType),n);if("head"===r.method){if(r.body)throw N("request:invalid-parameters",new Error("body parameter cannot be set when method is 'head'"),n);if(t||s)throw N("request:invalid-parameters",new Error("data and blob URLs are not supported for method 'head'"),n)}if(await B(),j)return j.execute(e,r);const l=new AbortController;v$1(r,(()=>l.abort()));const m={controller:l,credential:void 0,credentialToken:void 0,fetchOptions:void 0,hasToken:!1,interceptor:i,params:n,redoRequest:!1,useIdentity:P.useIdentity,useProxy:!1,useSSL:!1,withCredentials:!1},h=await Q(m);return i?.after?.(h),h}let j;const P=s$5.request,D="FormData"in globalThis,_=[499,498,403,401],F=["COM_0056","COM_0057","SB_0008"],I=[/\/arcgis\/tokens/i,/\/sharing(\/rest)?\/generatetoken/i,/\/rest\/info/i],M=()=>null,R=Symbol();function A(e){const r=H$1(e);r&&!U._corsServers.includes(r)&&U._corsServers.push(r);}function H(e){const r=H$1(e);return !r||r.endsWith(".arcgis.com")||U._corsServers.includes(r)||D$1(r)}function N(e,r,o,a){let l="Error";const u={url:o.url,requestOptions:o.requestOptions,getHeader:M,ssl:!1};if(r instanceof s$2)return r.details?(r.details=y$1(r.details),r.details.url=o.url,r.details.requestOptions=o.requestOptions):r.details=u,r;if(r){const e=a&&(e=>a.headers.get(e)),t=a&&a.status,s=r.message;s&&(l=s),e&&(u.getHeader=e),u.httpStatus=(null!=r.httpCode?r.httpCode:r.code)||t||0,u.subCode=r.subcode,u.messageCode=r.messageCode,"string"==typeof r.details?u.messages=[r.details]:u.messages=r.details,u.raw=R in r?r[R]:r;}return j$2(r)?a$5():new s$2(e,l,u)}async function B(){has("host-webworker")?j||(j=await Promise.resolve().then(function () { return require('./request-4bc6297e.js'); })):U._abortableFetch||(U._abortableFetch=globalThis.fetch.bind(globalThis));}async function $(){exports.s$5||await Promise.resolve().then(function () { return require('./IdentityManager-28044d69.js'); });}async function z(t){const s=t.params.url,o=t.params.requestOptions,a=t.controller.signal,n=o.body;let i=null,u=null;if(D&&"HTMLFormElement"in globalThis&&(n instanceof FormData?i=n:n instanceof HTMLFormElement&&(i=new FormData(n))),"string"==typeof n&&(u=n),t.fetchOptions={cache:o.cacheBust&&!U._abortableFetch.polyfill?"no-cache":"default",credentials:"same-origin",headers:o.headers||{},method:"head"===o.method?"HEAD":"GET",mode:"cors",priority:P.priority,redirect:"follow",signal:a},(i||u)&&(t.fetchOptions.body=i||u),"anonymous"===o.authMode&&(t.useIdentity=!1),t.hasToken=!!(/token=/i.test(s)||o.query?.token||i?.get("token")),!t.hasToken&&s$5.apiKey&&r(s)&&(o.query||(o.query={}),o.query.token=s$5.apiKey,t.hasToken=!0),t.useIdentity&&!t.hasToken&&!t.credentialToken&&!K(s)&&!p$1(a)){let e;"immediate"===o.authMode?(await $(),e=await exports.s$5.getCredential(s,{signal:a}),t.credential=e):"no-prompt"===o.authMode?(await $(),e=await exports.s$5.getCredential(s,{prompt:!1,signal:a}).catch((()=>{})),t.credential=e):exports.s$5&&(e=exports.s$5.findCredential(s)),e&&(t.credentialToken=e.token,t.useSSL=!!e.ssl);}}function K(e){return I.some((r=>r.test(e)))}async function W(e){let t=e.params.url;const s=e.params.requestOptions,o=e.fetchOptions??{},a=V$1(t)||X$1(t),n=s.responseType||"json",l=a?0:null!=s.timeout?s.timeout:P.timeout;let d$1=!1;if(!a){e.useSSL&&(t=mt(t)),s.cacheBust&&"default"===o.cache&&(t=St(t,"request.preventCache",Date.now()));let a={...s.query};e.credentialToken&&(a.token=e.credentialToken);let n=I$1(a);has("esri-url-encodes-apostrophe")&&(n=n.replace(/'/g,"%27"));const i=t.length+1+n.length;let l;d$1="delete"===s.method||"post"===s.method||"put"===s.method||!!s.body||i>P.maxUrlLength;const u$1=s.useProxy||!!J$1(t);if(u$1){const e=A$1(t);l=e.path,!d$1&&l.length+1+i>P.maxUrlLength&&(d$1=!0),e.query&&(a={...e.query,...a});}if("HEAD"===o.method&&(d$1||u$1)){if(d$1){if(i>P.maxUrlLength)throw N("request:invalid-parameters",new Error("URL exceeds maximum length"),e.params);throw N("request:invalid-parameters",new Error("cannot use POST request when method is 'head'"),e.params)}if(u$1)throw N("request:invalid-parameters",new Error("cannot use proxy when method is 'head'"),e.params)}if(d$1?(o.method="delete"===s.method?"DELETE":"put"===s.method?"PUT":"POST",s.body?t=Bt(t,a):(o.body=I$1(a),o.headers||(o.headers={}),o.headers["Content-Type"]="application/x-www-form-urlencoded")):t=Bt(t,a),u$1&&(e.useProxy=!0,t=`${l}?${t}`),a.token&&D&&o.body instanceof FormData&&!t$1(t)&&o.body.set("token",a.token),s.hasOwnProperty("withCredentials"))e.withCredentials=s.withCredentials;else if(!z$1(t,b()))if(D$1(t))e.withCredentials=!0;else if(exports.s$5){const s=exports.s$5.findServerInfo(t);s&&s.webTierAuth&&(e.withCredentials=!0);}e.withCredentials&&(o.credentials="include",u(t)&&await d(d$1?Bt(t,a):t));}let p,v,C=0,L=!1;l>0&&(C=setTimeout((()=>{L=!0,e.controller.abort();}),l));try{if("native-request-init"===s.responseType)v=o,v.url=t;else if("image"!==s.responseType||"default"!==o.cache||"GET"!==o.method||d$1||J(s.headers)||!a&&!e.useProxy&&P.proxyUrl&&!H(t)){if(p=await U._abortableFetch(t,o),e.useProxy||A(t),"native"===s.responseType)v=p;else if("HEAD"!==o.method)if(p.ok){switch(n){case"array-buffer":v=await p.arrayBuffer();break;case"blob":case"image":v=await p.blob();break;default:v=await p.text();}if(C&&(clearTimeout(C),C=0),"json"===n||"xml"===n||"document"===n)if(v)switch(n){case"json":v=JSON.parse(v);break;case"xml":v=X(v,"application/xml");break;case"document":v=X(v,"text/html");}else v=null;if(v){if("array-buffer"===n||"blob"===n){const e=p.headers.get("Content-Type");if(e&&/application\/json|text\/plain/i.test(e)&&v["blob"===n?"size":"byteLength"]<=750)try{const e=await new Response(v).json();e.error&&(v=e);}catch{}}"image"===n&&v instanceof Blob&&(v=await Y(URL.createObjectURL(v),e,!0));}}else v=await p.text();}else v=await Y(t,e);}catch(j){if("AbortError"===j.name){if(L)throw new Error("Timeout exceeded");throw a$5("Request canceled")}if(!(!p&&j instanceof TypeError&&P.proxyUrl)||s.body||"delete"===s.method||"head"===s.method||"post"===s.method||"put"===s.method||e.useProxy||H(t))throw j;e.redoRequest=!0,E({proxyUrl:P.proxyUrl,urlPrefix:H$1(t)??""});}finally{C&&clearTimeout(C);}return [p,v]}async function G(e,r){if(null!=e.responseData)return e.responseData;if(e.headers&&(r.requestOptions.headers={...r.requestOptions.headers,...e.headers}),e.query&&(r.requestOptions.query={...r.requestOptions.query,...e.query}),e.before){let o,a;try{a=await e.before(r);}catch(s){o=N("request:interceptor",s,r);}if((a instanceof Error||a instanceof s$2)&&(o=N("request:interceptor",a,r)),o)throw e.error&&e.error(o),o;return a}}function J(e){if(e)for(const r of Object.getOwnPropertyNames(e))if(e[r])return !0;return !1}function X(e,r){let t;try{t=(new DOMParser).parseFromString(e,r);}catch{}if(!t||t.getElementsByTagName("parsererror").length)throw new SyntaxError("XML Parse error");return t}async function Q(e){let t,s;await z(e);try{do{[t,s]=await W(e);}while(!await V(e,t,s))}catch(n){const r=N("request:server",n,e.params,t);throw r.details.ssl=e.useSSL,e.interceptor&&e.interceptor.error&&e.interceptor.error(r),r}const o=e.params.url;if(s&&/\/sharing\/rest\/(accounts|portals)\/self/i.test(o)){if(!e.hasToken&&!e.credentialToken&&s.user?.username&&!D$1(o)){const e=H$1(o,!0);e&&P.trustedServers.push(e);}Array.isArray(s.authorizedCrossOriginNoCorsDomains)&&m(s.authorizedCrossOriginNoCorsDomains);}const a=e.credential;if(a&&exports.s$5){const e=exports.s$5.findServerInfo(a.server);let t=e&&e.owningSystemUrl;if(t){t=t.replace(/\/?$/,"/sharing");const e=exports.s$5.findCredential(t,a.userId);e&&-1===exports.s$5._getIdenticalSvcIdx(t,e)&&e.resources.unshift(t);}}return {data:s,getHeader:t?e=>t?.headers.get(e):M,requestOptions:e.params.requestOptions,ssl:e.useSSL,url:e.params.url}}async function V(e,t,s){if(e.redoRequest)return e.redoRequest=!1,!1;const o=e.params.requestOptions;if(!t||"native"===o.responseType||"native-request-init"===o.responseType)return !0;let a,n;if(!t.ok)throw a=new Error(`Unable to load ${t.url} status: ${t.status}`),a[R]=s,a;s&&(s.error?a=s.error:"error"===s.status&&Array.isArray(s.messages)&&(a={...s},a[R]=s,a.details=s.messages));let i,l=null;a&&(n=Number(a.code),l=a.hasOwnProperty("subcode")?Number(a.subcode):null,i=a.messageCode,i=i&&i.toUpperCase());const u=o.authMode;if(403===n&&(4===l||a.message&&a.message.toLowerCase().includes("ssl")&&!a.message.toLowerCase().includes("permission"))){if(!e.useSSL)return e.useSSL=!0,!1}else if(!e.hasToken&&e.useIdentity&&("no-prompt"!==u||498===n)&&void 0!==n&&_.includes(n)&&!K(e.params.url)&&(403!==n||i&&!F.includes(i)&&(null==l||2===l&&e.credentialToken))){await $();try{const t=await exports.s$5.getCredential(e.params.url,{error:N("request:server",a,e.params),prompt:"no-prompt"!==u,signal:e.controller.signal,token:e.credentialToken});return e.credential=t,e.credentialToken=t.token,e.useSSL=e.useSSL||t.ssl,!1}catch(c){if("no-prompt"===u)return e.credential=void 0,e.credentialToken=void 0,!1;a=c;}}if(a)throw a;return !0}function Y(e,r,t=!1){const s=r.controller.signal,o=new Image;return r.withCredentials?o.crossOrigin="use-credentials":o.crossOrigin="anonymous",o.alt="",o.fetchPriority=P.priority,o.src=e,c$1(o,e,t,s)}U._abortableFetch=null,U._corsServers=["https://server.arcgisonline.com","https://services.arcgisonline.com"];
+async function U(e,r){const t=X$1(e),s=V$1(e);s||t||(e=F$1(e));const n={url:e,requestOptions:{...e$9(r)}};let i=W$1(e);if(i){const e=await G(i,n);if(null!=e)return {data:e,getHeader:M,requestOptions:n.requestOptions,url:n.url};i.after||i.error||(i=null);}if(e=n.url,"image"===(r=n.requestOptions).responseType){if(has("host-webworker")||has("host-node"))throw N("request:invalid-parameters",new Error("responseType 'image' is not supported in Web Workers or Node environment"),n)}else if(t)throw N("request:invalid-parameters",new Error("Data URLs are not supported for responseType = "+r.responseType),n);if("head"===r.method){if(r.body)throw N("request:invalid-parameters",new Error("body parameter cannot be set when method is 'head'"),n);if(t||s)throw N("request:invalid-parameters",new Error("data and blob URLs are not supported for method 'head'"),n)}if(await B(),j)return j.execute(e,r);const l=new AbortController;v$1(r,(()=>l.abort()));const m={controller:l,credential:void 0,credentialToken:void 0,fetchOptions:void 0,hasToken:!1,interceptor:i,params:n,redoRequest:!1,useIdentity:P.useIdentity,useProxy:!1,useSSL:!1,withCredentials:!1},h=await Q(m);return i?.after?.(h),h}let j;const P=s$5.request,D="FormData"in globalThis,_=[499,498,403,401],F=["COM_0056","COM_0057","SB_0008"],I=[/\/arcgis\/tokens/i,/\/sharing(\/rest)?\/generatetoken/i,/\/rest\/info/i],M=()=>null,R=Symbol();function A(e){const r=H$1(e);r&&!U._corsServers.includes(r)&&U._corsServers.push(r);}function H(e){const r=H$1(e);return !r||r.endsWith(".arcgis.com")||U._corsServers.includes(r)||D$1(r)}function N(e,r,o,a){let l="Error";const u={url:o.url,requestOptions:o.requestOptions,getHeader:M,ssl:!1};if(r instanceof s$2)return r.details?(r.details=y$1(r.details),r.details.url=o.url,r.details.requestOptions=o.requestOptions):r.details=u,r;if(r){const e=a&&(e=>a.headers.get(e)),t=a&&a.status,s=r.message;s&&(l=s),e&&(u.getHeader=e),u.httpStatus=(null!=r.httpCode?r.httpCode:r.code)||t||0,u.subCode=r.subcode,u.messageCode=r.messageCode,"string"==typeof r.details?u.messages=[r.details]:u.messages=r.details,u.raw=R in r?r[R]:r;}return j$2(r)?a$5():new s$2(e,l,u)}async function B(){has("host-webworker")?j||(j=await Promise.resolve().then(function () { return require('./request-b08e8bf5.js'); })):U._abortableFetch||(U._abortableFetch=globalThis.fetch.bind(globalThis));}async function $(){exports.s$5||await Promise.resolve().then(function () { return require('./IdentityManager-a8a78505.js'); });}async function z(t){const s=t.params.url,o=t.params.requestOptions,a=t.controller.signal,n=o.body;let i=null,u=null;if(D&&"HTMLFormElement"in globalThis&&(n instanceof FormData?i=n:n instanceof HTMLFormElement&&(i=new FormData(n))),"string"==typeof n&&(u=n),t.fetchOptions={cache:o.cacheBust&&!U._abortableFetch.polyfill?"no-cache":"default",credentials:"same-origin",headers:o.headers||{},method:"head"===o.method?"HEAD":"GET",mode:"cors",priority:P.priority,redirect:"follow",signal:a},(i||u)&&(t.fetchOptions.body=i||u),"anonymous"===o.authMode&&(t.useIdentity=!1),t.hasToken=!!(/token=/i.test(s)||o.query?.token||i?.get("token")),!t.hasToken&&s$5.apiKey&&r(s)&&(o.query||(o.query={}),o.query.token=s$5.apiKey,t.hasToken=!0),t.useIdentity&&!t.hasToken&&!t.credentialToken&&!K(s)&&!p$1(a)){let e;"immediate"===o.authMode?(await $(),e=await exports.s$5.getCredential(s,{signal:a}),t.credential=e):"no-prompt"===o.authMode?(await $(),e=await exports.s$5.getCredential(s,{prompt:!1,signal:a}).catch((()=>{})),t.credential=e):exports.s$5&&(e=exports.s$5.findCredential(s)),e&&(t.credentialToken=e.token,t.useSSL=!!e.ssl);}}function K(e){return I.some((r=>r.test(e)))}async function W(e){let t=e.params.url;const s=e.params.requestOptions,o=e.fetchOptions??{},a=V$1(t)||X$1(t),n=s.responseType||"json",l=a?0:null!=s.timeout?s.timeout:P.timeout;let d$1=!1;if(!a){e.useSSL&&(t=mt(t)),s.cacheBust&&"default"===o.cache&&(t=St(t,"request.preventCache",Date.now()));let a={...s.query};e.credentialToken&&(a.token=e.credentialToken);let n=I$1(a);has("esri-url-encodes-apostrophe")&&(n=n.replace(/'/g,"%27"));const i=t.length+1+n.length;let l;d$1="delete"===s.method||"post"===s.method||"put"===s.method||!!s.body||i>P.maxUrlLength;const u$1=s.useProxy||!!J$1(t);if(u$1){const e=A$1(t);l=e.path,!d$1&&l.length+1+i>P.maxUrlLength&&(d$1=!0),e.query&&(a={...e.query,...a});}if("HEAD"===o.method&&(d$1||u$1)){if(d$1){if(i>P.maxUrlLength)throw N("request:invalid-parameters",new Error("URL exceeds maximum length"),e.params);throw N("request:invalid-parameters",new Error("cannot use POST request when method is 'head'"),e.params)}if(u$1)throw N("request:invalid-parameters",new Error("cannot use proxy when method is 'head'"),e.params)}if(d$1?(o.method="delete"===s.method?"DELETE":"put"===s.method?"PUT":"POST",s.body?t=Bt(t,a):(o.body=I$1(a),o.headers||(o.headers={}),o.headers["Content-Type"]="application/x-www-form-urlencoded")):t=Bt(t,a),u$1&&(e.useProxy=!0,t=`${l}?${t}`),a.token&&D&&o.body instanceof FormData&&!t$1(t)&&o.body.set("token",a.token),s.hasOwnProperty("withCredentials"))e.withCredentials=s.withCredentials;else if(!z$1(t,b()))if(D$1(t))e.withCredentials=!0;else if(exports.s$5){const s=exports.s$5.findServerInfo(t);s&&s.webTierAuth&&(e.withCredentials=!0);}e.withCredentials&&(o.credentials="include",u(t)&&await d(d$1?Bt(t,a):t));}let p,v,C=0,L=!1;l>0&&(C=setTimeout((()=>{L=!0,e.controller.abort();}),l));try{if("native-request-init"===s.responseType)v=o,v.url=t;else if("image"!==s.responseType||"default"!==o.cache||"GET"!==o.method||d$1||J(s.headers)||!a&&!e.useProxy&&P.proxyUrl&&!H(t)){if(p=await U._abortableFetch(t,o),e.useProxy||A(t),"native"===s.responseType)v=p;else if("HEAD"!==o.method)if(p.ok){switch(n){case"array-buffer":v=await p.arrayBuffer();break;case"blob":case"image":v=await p.blob();break;default:v=await p.text();}if(C&&(clearTimeout(C),C=0),"json"===n||"xml"===n||"document"===n)if(v)switch(n){case"json":v=JSON.parse(v);break;case"xml":v=X(v,"application/xml");break;case"document":v=X(v,"text/html");}else v=null;if(v){if("array-buffer"===n||"blob"===n){const e=p.headers.get("Content-Type");if(e&&/application\/json|text\/plain/i.test(e)&&v["blob"===n?"size":"byteLength"]<=750)try{const e=await new Response(v).json();e.error&&(v=e);}catch{}}"image"===n&&v instanceof Blob&&(v=await Y(URL.createObjectURL(v),e,!0));}}else v=await p.text();}else v=await Y(t,e);}catch(j){if("AbortError"===j.name){if(L)throw new Error("Timeout exceeded");throw a$5("Request canceled")}if(!(!p&&j instanceof TypeError&&P.proxyUrl)||s.body||"delete"===s.method||"head"===s.method||"post"===s.method||"put"===s.method||e.useProxy||H(t))throw j;e.redoRequest=!0,E({proxyUrl:P.proxyUrl,urlPrefix:H$1(t)??""});}finally{C&&clearTimeout(C);}return [p,v]}async function G(e,r){if(null!=e.responseData)return e.responseData;if(e.headers&&(r.requestOptions.headers={...r.requestOptions.headers,...e.headers}),e.query&&(r.requestOptions.query={...r.requestOptions.query,...e.query}),e.before){let o,a;try{a=await e.before(r);}catch(s){o=N("request:interceptor",s,r);}if((a instanceof Error||a instanceof s$2)&&(o=N("request:interceptor",a,r)),o)throw e.error&&e.error(o),o;return a}}function J(e){if(e)for(const r of Object.getOwnPropertyNames(e))if(e[r])return !0;return !1}function X(e,r){let t;try{t=(new DOMParser).parseFromString(e,r);}catch{}if(!t||t.getElementsByTagName("parsererror").length)throw new SyntaxError("XML Parse error");return t}async function Q(e){let t,s;await z(e);try{do{[t,s]=await W(e);}while(!await V(e,t,s))}catch(n){const r=N("request:server",n,e.params,t);throw r.details.ssl=e.useSSL,e.interceptor&&e.interceptor.error&&e.interceptor.error(r),r}const o=e.params.url;if(s&&/\/sharing\/rest\/(accounts|portals)\/self/i.test(o)){if(!e.hasToken&&!e.credentialToken&&s.user?.username&&!D$1(o)){const e=H$1(o,!0);e&&P.trustedServers.push(e);}Array.isArray(s.authorizedCrossOriginNoCorsDomains)&&m(s.authorizedCrossOriginNoCorsDomains);}const a=e.credential;if(a&&exports.s$5){const e=exports.s$5.findServerInfo(a.server);let t=e&&e.owningSystemUrl;if(t){t=t.replace(/\/?$/,"/sharing");const e=exports.s$5.findCredential(t,a.userId);e&&-1===exports.s$5._getIdenticalSvcIdx(t,e)&&e.resources.unshift(t);}}return {data:s,getHeader:t?e=>t?.headers.get(e):M,requestOptions:e.params.requestOptions,ssl:e.useSSL,url:e.params.url}}async function V(e,t,s){if(e.redoRequest)return e.redoRequest=!1,!1;const o=e.params.requestOptions;if(!t||"native"===o.responseType||"native-request-init"===o.responseType)return !0;let a,n;if(!t.ok)throw a=new Error(`Unable to load ${t.url} status: ${t.status}`),a[R]=s,a;s&&(s.error?a=s.error:"error"===s.status&&Array.isArray(s.messages)&&(a={...s},a[R]=s,a.details=s.messages));let i,l=null;a&&(n=Number(a.code),l=a.hasOwnProperty("subcode")?Number(a.subcode):null,i=a.messageCode,i=i&&i.toUpperCase());const u=o.authMode;if(403===n&&(4===l||a.message&&a.message.toLowerCase().includes("ssl")&&!a.message.toLowerCase().includes("permission"))){if(!e.useSSL)return e.useSSL=!0,!1}else if(!e.hasToken&&e.useIdentity&&("no-prompt"!==u||498===n)&&void 0!==n&&_.includes(n)&&!K(e.params.url)&&(403!==n||i&&!F.includes(i)&&(null==l||2===l&&e.credentialToken))){await $();try{const t=await exports.s$5.getCredential(e.params.url,{error:N("request:server",a,e.params),prompt:"no-prompt"!==u,signal:e.controller.signal,token:e.credentialToken});return e.credential=t,e.credentialToken=t.token,e.useSSL=e.useSSL||t.ssl,!1}catch(c){if("no-prompt"===u)return e.credential=void 0,e.credentialToken=void 0,!1;a=c;}}if(a)throw a;return !0}function Y(e,r,t=!1){const s=r.controller.signal,o=new Image;return r.withCredentials?o.crossOrigin="use-credentials":o.crossOrigin="anonymous",o.alt="",o.fetchPriority=P.priority,o.src=e,c$1(o,e,t,s)}U._abortableFetch=null,U._corsServers=["https://server.arcgisonline.com","https://services.arcgisonline.com"];
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
@@ -1077,6 +1077,72 @@ const pdfUtils = /*#__PURE__*/Object.freeze({
   'default': labelFormats
 });
 
+/** @license
+ * Copyright 2022 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+ * Exports a PDF of labels.
+ *
+ * @param labels Labels to write
+ * @param labelPageDescription Page format to use for labels
+ */
+function exportPDF(labels, labelPageDescription) {
+  _downloadPDFFile(labels, labelPageDescription, `notify-${Date.now().toString()}`);
+}
+/**
+ * Downloads the PDF file.
+ *
+ * @param labels Labels to write
+ * @param labelPageDescription Page format to use for labels
+ * @param fileTitle Title (without file extension) to use for file; defaults to "export"
+ */
+function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
+  console.log("_downloadPDFFile", labels, labelPageDescription, fileTitle); //???
+}
+/**
+ * Prepares labels for export.
+ *
+ * @param labels Array of labels to prepare
+ * @param columnNames Column names to add to the beginning of the output array
+ * @param labelFormat Field format per label
+ * @param removeDuplicates Remove duplicate lines
+ *
+ * @returns De-duped array of labels if removeDuplicates is true
+ */
+/*
+function _prepareOutput(
+  labels: string[][],
+  //columnNames: string[],
+  labelFormat: string[],
+  removeDuplicates = true
+): string[][] {
+  // Format the input into labels
+  // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
+  console.log(labelFormat);
+
+  // Remove duplicates if desired
+  if (removeDuplicates) {
+    const uniques: Set<string> = new Set();
+    labels.forEach(labelLines => uniques.add(labelLines.join("|")));
+    labels = Array.from(uniques).map(label => label.split("|"));
+  }
+
+  return labels;
+}
+*/
+
 const pdfDownloadCss = ":host{display:block}";
 
 const PdfDownload = class {
@@ -1107,7 +1173,10 @@ const PdfDownload = class {
   async downloadPDF(ids, removeDuplicates) {
     // Get the attributes of the features to export
     const featureSet = await mapViewUtils.queryFeaturesByID(ids, this.layerView.layer);
-    const featuresAttrs = featureSet.features.map(f => f.attributes);
+    //???const featuresAttrs = featureSet.features.map(f => f.attributes);
+    let featuresAttrs = featureSet.features.map(f => f.attributes); //???
+    featuresAttrs = [...featuresAttrs, featuresAttrs.slice(1, 9)]; //???
+    featuresAttrs[4] = featuresAttrs[4].slice(1); //???
     // What data fields are used in the labels?
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
     const labelFormat = this._convertPopupToLabelSpec(this.layerView.layer.popupTemplate.content[0].text);
@@ -1125,33 +1194,17 @@ const PdfDownload = class {
       // Remove empty labels
       .filter(label => label.length > 0);
     // Remove duplicates
+    console.log(labels); //???
     if (removeDuplicates) {
       console.log("remove duplicates before " + labels.length.toString()); //???
       const labelsAsStrings = labels.map(label => JSON.stringify(label));
       const uniqueLabels = new Set(labelsAsStrings);
       labels = Array.from(uniqueLabels, labelString => JSON.parse(labelString));
       console.log("remove duplicates after " + labels.length.toString()); //???
+      console.log(labels); //???
     }
-    console.log(labels); //???
-    /*
-    const contents: string[][] = attributes.map(attr => Object.values(attr));
-
-    // Get the column headings from the first record
-    const columnNames: string[] = [];
-    const entry = attributes[0];
-    Object.keys(entry).forEach(k => {
-      if (entry.hasOwnProperty(k)) {
-        columnNames.push(k);
-      }
-    });
-    console.log(columnNames);//???
-
-    // Extract the label data
-
     const labelPageDescription = this._labelInfoElement.selectedOption.value;
-
-    return exportPDF(contents, columnNames, labelFormat, labelPageDescription, removeDuplicates);
-    */
+    return exportPDF(labels, labelPageDescription);
   }
   /**
    * Downloads csv of mailing labels for the provided list of ids

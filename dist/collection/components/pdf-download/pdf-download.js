@@ -18,12 +18,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-//import { exportPDF } from "../../utils/pdfUtils";
 import "@esri/calcite-components";
 import * as intl from "@arcgis/core/intl";
 import * as pdfUtils from "../../assets/data/labelFormats.json";
 import { Host, h } from "@stencil/core";
 import { exportCSV } from "../../utils/csvUtils";
+import { exportPDF } from "../../utils/pdfUtils";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { queryFeaturesByID } from "../../utils/queryUtils";
 export class PdfDownload {
@@ -53,7 +53,10 @@ export class PdfDownload {
   async downloadPDF(ids, removeDuplicates) {
     // Get the attributes of the features to export
     const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
-    const featuresAttrs = featureSet.features.map(f => f.attributes);
+    //???const featuresAttrs = featureSet.features.map(f => f.attributes);
+    let featuresAttrs = featureSet.features.map(f => f.attributes); //???
+    featuresAttrs = [...featuresAttrs, featuresAttrs.slice(1, 9)]; //???
+    featuresAttrs[4] = featuresAttrs[4].slice(1); //???
     // What data fields are used in the labels?
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
     const labelFormat = this._convertPopupToLabelSpec(this.layerView.layer.popupTemplate.content[0].text);
@@ -71,33 +74,17 @@ export class PdfDownload {
       // Remove empty labels
       .filter(label => label.length > 0);
     // Remove duplicates
+    console.log(labels); //???
     if (removeDuplicates) {
       console.log("remove duplicates before " + labels.length.toString()); //???
       const labelsAsStrings = labels.map(label => JSON.stringify(label));
       const uniqueLabels = new Set(labelsAsStrings);
       labels = Array.from(uniqueLabels, labelString => JSON.parse(labelString));
       console.log("remove duplicates after " + labels.length.toString()); //???
+      console.log(labels); //???
     }
-    console.log(labels); //???
-    /*
-    const contents: string[][] = attributes.map(attr => Object.values(attr));
-
-    // Get the column headings from the first record
-    const columnNames: string[] = [];
-    const entry = attributes[0];
-    Object.keys(entry).forEach(k => {
-      if (entry.hasOwnProperty(k)) {
-        columnNames.push(k);
-      }
-    });
-    console.log(columnNames);//???
-
-    // Extract the label data
-
     const labelPageDescription = this._labelInfoElement.selectedOption.value;
-
-    return exportPDF(contents, columnNames, labelFormat, labelPageDescription, removeDuplicates);
-    */
+    return exportPDF(labels, labelPageDescription);
   }
   /**
    * Downloads csv of mailing labels for the provided list of ids
