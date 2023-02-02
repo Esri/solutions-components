@@ -17,6 +17,7 @@
  * Exports a PDF of labels.
  *
  * @param labels Labels to write
+ * @param columnNames Column names to add to the beginning of the output array
  * @param labelFormat Field format per label
  * @param labelPageDescription Page format to use for labels
  * @param removeDuplicates Remove duplicate labels before exporting

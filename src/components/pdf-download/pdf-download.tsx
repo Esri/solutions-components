@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Method, Prop, State, VNode } from "@stencil/core";
-import * as pdfUtils from "../../assets/data/labelFormats.json";
+//import { exportPDF } from "../../utils/pdfUtils";
 import "@esri/calcite-components";
+import * as intl from "@arcgis/core/intl";
+import * as pdfUtils from "../../assets/data/labelFormats.json";
 import PdfDownload_T9n from "../../assets/t9n/pdf-download/resources.json";
-import { getLocaleComponentStrings } from "../../utils/locale";
+import { Component, Element, Host, h, Method, Prop, State, VNode } from "@stencil/core";
 import { exportCSV } from "../../utils/csvUtils";
-import { exportPDF } from "../../utils/pdfUtils";
+import { getLocaleComponentStrings } from "../../utils/locale";
 import { queryFeaturesByID } from "../../utils/queryUtils";
 
 @Component({
@@ -107,14 +108,53 @@ export class PdfDownload {
   ): Promise<void> {
     // Get the attributes of the features to export
     const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
-    const attributes = featureSet.features.map(f => f.attributes);
+    const featuresAttrs = featureSet.features.map(f => f.attributes);
 
-    // Convert array of objects into an array of string arrays
+    // What data fields are used in the labels?
+    // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
+    const labelFormat = this._convertPopupToLabelSpec(this.layerView.layer.popupTemplate.content[0].text);
+
+    // Convert attributes into an array of labels
+    const labels: string[][] = featuresAttrs.map(
+      featureAttributes => {
+        const label: string[] = [];
+        labelFormat.forEach(
+          labelLineTemplate => {
+            const labelLine = intl.substitute(labelLineTemplate, featureAttributes).trim();
+            if (labelLine.length > 0) {
+              label.push(labelLine);
+            }
+          }
+        )
+        return label;
+      }
+    ).filter(label => label.length > 0);
+
+    if (removeDuplicates) {
+      console.log("remove duplicates");//???
+    }
+
+    console.log(labels);//???
+
+    /*
     const contents: string[][] = attributes.map(attr => Object.values(attr));
 
-    const labelFormat = this._convertPopupToLabelSpec(this.layerView.layer.popupTemplate.content[0].text);
+    // Get the column headings from the first record
+    const columnNames: string[] = [];
+    const entry = attributes[0];
+    Object.keys(entry).forEach(k => {
+      if (entry.hasOwnProperty(k)) {
+        columnNames.push(k);
+      }
+    });
+    console.log(columnNames);//???
+
+    // Extract the label data
+
     const labelPageDescription = this._labelInfoElement.selectedOption.value;
-    return exportPDF(contents, labelFormat, labelPageDescription, removeDuplicates);
+
+    return exportPDF(contents, columnNames, labelFormat, labelPageDescription, removeDuplicates);
+    */
   }
 
   /**

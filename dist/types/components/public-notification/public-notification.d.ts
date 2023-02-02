@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/// <reference types="arcgis-js-api" />
 import { EventEmitter, VNode } from "../../stencil-public-runtime";
 import { DistanceUnit, EExportType, EPageType, ESketchType, EWorkflowType, IExportOptions, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
 import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";

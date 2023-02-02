@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/// <reference types="arcgis-js-api" />
 /// <reference types="node" />
 import { EventEmitter, VNode } from "../../stencil-public-runtime";
 import BufferTools_T9n from "../../assets/t9n/buffer-tools/resources.json";

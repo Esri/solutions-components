@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/// <reference types="arcgis-js-api" />
 import { EventEmitter, VNode } from "../../stencil-public-runtime";
 import { ESelectionMode, ISelectionSet } from "../../utils/interfaces";
 import RefineSelection_T9n from "../../assets/t9n/refine-selection/resources.json";

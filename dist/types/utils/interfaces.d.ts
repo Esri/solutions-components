@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/// <reference types="arcgis-js-api" />
 import { IDeployFileCopyPath, IItemTemplate } from '@esri/solution-common';
 /**
  * Resource update types
