@@ -18,20 +18,14 @@
  * Exports a PDF of labels.
  *
  * @param labels Labels to write
- * @param columnNames Column names to add to the beginning of the output array
- * @param labelFormat Field format per label
  * @param labelPageDescription Page format to use for labels
  * @param removeDuplicates Remove duplicate labels before exporting
  */
 export function exportPDF(
   labels: string[][],
-  //columnNames: string[],
-  labelFormat: string[],
   labelPageDescription: any,
   removeDuplicates = true
 ): void {
-  const outputLabels = _prepareOutput(labels, /*columnNames,*/ labelFormat, removeDuplicates);
-
   _downloadPDFFile(outputLabels, labelPageDescription, `notify-${Date.now().toString()}`);
 }
 
@@ -50,6 +44,7 @@ function _downloadPDFFile(
   console.log("_downloadPDFFile", labels, labelPageDescription, fileTitle);//???
 }
 
+
 /**
  * Prepares labels for export.
  *
@@ -60,6 +55,7 @@ function _downloadPDFFile(
  *
  * @returns De-duped array of labels if removeDuplicates is true
  */
+/*
 function _prepareOutput(
   labels: string[][],
   //columnNames: string[],
@@ -79,3 +75,4 @@ function _prepareOutput(
 
   return labels;
 }
+*/

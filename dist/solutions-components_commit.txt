@@ -1,7 +1,7 @@
-Built 02/01/2023 17:24:44.89 
+Built 02/01/2023 17:36:06.87 
 ch/add-pdf-export
-commit 368a061a9577505cb8fae0c1dbdae1388090b157
+commit 36bf01416896845f4790b2445d4df35d62e501d9
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Wed Feb 1 14:09:16 2023 -0800
+Date:   Wed Feb 1 17:24:57 2023 -0800
 
-    Rebuild with alternate assets path
+    Update label generation

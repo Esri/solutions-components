@@ -419,7 +419,7 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement$1
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
     const labelFormat = this._convertPopupToLabelSpec(this.layerView.layer.popupTemplate.content[0].text);
     // Convert attributes into an array of labels
-    const labels = featuresAttrs.map(featureAttributes => {
+    let labels = featuresAttrs.map(featureAttributes => {
       const label = [];
       labelFormat.forEach(labelLineTemplate => {
         const labelLine = s$4(labelLineTemplate, featureAttributes).trim();
@@ -428,9 +428,16 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement$1
         }
       });
       return label;
-    }).filter(label => label.length > 0);
+    })
+      // Remove empty labels
+      .filter(label => label.length > 0);
+    // Remove duplicates
     if (removeDuplicates) {
-      console.log("remove duplicates"); //???
+      console.log("remove duplicates before " + labels.length.toString()); //???
+      const labelsAsStrings = labels.map(label => JSON.stringify(label));
+      const uniqueLabels = new Set(labelsAsStrings);
+      labels = Array.from(uniqueLabels, labelString => JSON.parse(labelString));
+      console.log("remove duplicates after " + labels.length.toString()); //???
     }
     console.log(labels); //???
     /*
