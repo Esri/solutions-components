@@ -89,3 +89,5 @@ const CardManager = class {
 CardManager.style = cardManagerCss;
 
 exports.card_manager = CardManager;
+
+//# sourceMappingURL=card-manager.cjs.entry.js.map

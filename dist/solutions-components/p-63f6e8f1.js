@@ -8,4 +8,19 @@
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.0.0-beta.97
  */
-const t=(t,a,s)=>Math.max(a,Math.min(t,s)),a=t=>{const a=(""+t).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);return a?Math.max(0,(a[1]?a[1].length:0)-(a[2]?+a[2]:0)):0};export{t as c,a as d}
+const clamp = (value, min, max) => Math.max(min, Math.min(value, max));
+const decimalPlaces = (value) => {
+  const match = ("" + value).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
+  if (!match) {
+    return 0;
+  }
+  return Math.max(0, 
+  // Number of digits right of decimal point.
+  (match[1] ? match[1].length : 0) -
+    // Adjust for scientific notation.
+    (match[2] ? +match[2] : 0));
+};
+
+export { clamp as c, decimalPlaces as d };
+
+//# sourceMappingURL=p-63f6e8f1.js.map

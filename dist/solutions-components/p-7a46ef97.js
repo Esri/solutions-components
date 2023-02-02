@@ -3,9 +3,190 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import{i as n,g as e,b as t}from"./p-9eba5c66.js";
+import { i as isValidNumber, g as getSupportedLocale, b as getSupportedNumberingSystem } from './p-9eba5c66.js';
+
 /*!
  * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.0.0-beta.97
- */const r=5;function u(n,r,u=!0){try{const i={hour:"2-digit",minute:"2-digit",timeZone:"UTC",numberingSystem:t(r)};return u&&(i.second="2-digit"),new Intl.DateTimeFormat(e(n),i)}catch(e){throw new Error(`Invalid locale supplied while attempting to create a DateTime formatter: ${n}`)}}function i(n){const e=n.toString();return n>=0&&n<=9?e.padStart(2,"0"):e}function o(n){if(!c(n))return null;const[e,t,r]=n.split(":"),u=i(parseInt(e)),o=i(parseInt(t));return r?`${u}:${o}:${i(parseInt(r))}`:`${u}:${o}`}function l(n,e){return a("meridiem",u(n,e).formatToParts(new Date(Date.UTC(0,0,0,0,0,0))))?"12":"24"}function a(n,e){var t,r,u,i;if(!n||!e)return null;if("hourSuffix"===n){const n=e.indexOf(e.find((({type:n})=>"hour"===n))),r=e.indexOf(e.find((({type:n})=>"minute"===n))),u=e[n+1];return u&&"literal"===u.type&&r-n==2&&(null===(t=u.value)||void 0===t?void 0:t.trim())||null}if("minuteSuffix"===n){const n=e.indexOf(e.find((({type:n})=>"minute"===n))),t=e.indexOf(e.find((({type:n})=>"second"===n))),u=e[n+1];return u&&"literal"===u.type&&t-n==2&&(null===(r=u.value)||void 0===r?void 0:r.trim())||null}if("secondSuffix"===n){const n=e.indexOf(e.find((({type:n})=>"second"===n))),t=e[n+1];return t&&"literal"===t.type&&(null===(u=t.value)||void 0===u?void 0:u.trim())||null}return(null===(i=e.find((({type:e})=>"meridiem"==n?"dayPeriod"===e:e===n)))||void 0===i?void 0:i.value)||null}function s(e){if(!n(e))return null;const t=parseInt(e);return t>=0&&t<=11?"AM":"PM"}function c(e){if(!e||e.startsWith(":")||e.endsWith(":"))return!1;const t=e.split(":");if(!(t.length>1&&t.length<4))return!1;const[r,u,i]=t,o=parseInt(t[0]),l=parseInt(t[1]),a=parseInt(t[2]),s=n(r)&&o>=0&&o<24,c=n(u)&&l>=0&&l<60,f=n(i)&&a>=0&&a<60;return!!(s&&c&&!i||s&&c&&f)||void 0}function f({value:e,part:t,locale:r,numberingSystem:i}){if(!function(e,t){if("meridiem"===t)return"AM"===e||"PM"===e;if(!n(e))return!1;const r=Number(e);return"hour"===t?r>=0&&r<24:r>=0&&r<60}(e,t))return;const o=parseInt(e),l=new Date(Date.UTC(0,0,0,"hour"===t?o:"meridiem"===t?"AM"===e?0:12:0,"minute"===t?o:0,"second"===t?o:0));return l?a(t,u(r,i).formatToParts(l)):void 0}function d({value:n,locale:e,numberingSystem:t,includeSeconds:r=!0}){if(!c(n))return null;const{hour:i,minute:o,second:l="0"}=I(n),a=new Date(Date.UTC(0,0,0,parseInt(i),parseInt(o),parseInt(l))),s=u(e,t,r);return(null==s?void 0:s.format(a))||null}function m({value:n,locale:e,numberingSystem:t}){if(!c(n))return null;const{hour:r,minute:i,second:o="0"}=I(n),l=new Date(Date.UTC(0,0,0,parseInt(r),parseInt(i),parseInt(o)));if(l){const n=u(e,t).formatToParts(l);return{localizedHour:a("hour",n),localizedHourSuffix:a("hourSuffix",n),localizedMinute:a("minute",n),localizedMinuteSuffix:a("minuteSuffix",n),localizedSecond:a("second",n),localizedSecondSuffix:a("secondSuffix",n),localizedMeridiem:a("meridiem",n)}}return null}function p({value:n,locale:e,numberingSystem:t}){if(!c(n))return null;const{hour:r,minute:i,second:o="0"}=I(n),l=new Date(Date.UTC(0,0,0,parseInt(r),parseInt(i),parseInt(o)));return l?u(e,t).formatToParts(l):null}function I(n){if(c(n)){const[e,t,r]=n.split(":");return{hour:e,minute:t,second:r}}return{hour:null,minute:null,second:null}}export{m as a,p as b,i as c,f as d,l as e,o as f,s as g,c as i,d as l,r as m,I as p}
+ */
+const maxTenthForMinuteAndSecond = 5;
+function createLocaleDateTimeFormatter(locale, numberingSystem, includeSeconds = true) {
+  try {
+    const options = {
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "UTC",
+      numberingSystem: getSupportedNumberingSystem(numberingSystem)
+    };
+    if (includeSeconds) {
+      options.second = "2-digit";
+    }
+    return new Intl.DateTimeFormat(getSupportedLocale(locale), options);
+  }
+  catch (error) {
+    throw new Error(`Invalid locale supplied while attempting to create a DateTime formatter: ${locale}`);
+  }
+}
+function formatTimePart(number) {
+  const numberAsString = number.toString();
+  return number >= 0 && number <= 9 ? numberAsString.padStart(2, "0") : numberAsString;
+}
+function formatTimeString(value) {
+  if (!isValidTime(value)) {
+    return null;
+  }
+  const [hourString, minuteString, secondString] = value.split(":");
+  const hour = formatTimePart(parseInt(hourString));
+  const minute = formatTimePart(parseInt(minuteString));
+  if (secondString) {
+    const second = formatTimePart(parseInt(secondString));
+    return `${hour}:${minute}:${second}`;
+  }
+  return `${hour}:${minute}`;
+}
+function getLocaleHourCycle(locale, numberingSystem) {
+  const formatter = createLocaleDateTimeFormatter(locale, numberingSystem);
+  const parts = formatter.formatToParts(new Date(Date.UTC(0, 0, 0, 0, 0, 0)));
+  return getLocalizedTimePart("meridiem", parts) ? "12" : "24";
+}
+function getLocalizedTimePart(part, parts) {
+  var _a, _b, _c, _d;
+  if (!part || !parts) {
+    return null;
+  }
+  if (part === "hourSuffix") {
+    const hourIndex = parts.indexOf(parts.find(({ type }) => type === "hour"));
+    const minuteIndex = parts.indexOf(parts.find(({ type }) => type === "minute"));
+    const hourSuffix = parts[hourIndex + 1];
+    return hourSuffix && hourSuffix.type === "literal" && minuteIndex - hourIndex === 2
+      ? ((_a = hourSuffix.value) === null || _a === void 0 ? void 0 : _a.trim()) || null
+      : null;
+  }
+  if (part === "minuteSuffix") {
+    const minuteIndex = parts.indexOf(parts.find(({ type }) => type === "minute"));
+    const secondIndex = parts.indexOf(parts.find(({ type }) => type === "second"));
+    const minuteSuffix = parts[minuteIndex + 1];
+    return minuteSuffix && minuteSuffix.type === "literal" && secondIndex - minuteIndex === 2
+      ? ((_b = minuteSuffix.value) === null || _b === void 0 ? void 0 : _b.trim()) || null
+      : null;
+  }
+  if (part === "secondSuffix") {
+    const secondIndex = parts.indexOf(parts.find(({ type }) => type === "second"));
+    const secondSuffix = parts[secondIndex + 1];
+    return secondSuffix && secondSuffix.type === "literal" ? ((_c = secondSuffix.value) === null || _c === void 0 ? void 0 : _c.trim()) || null : null;
+  }
+  return ((_d = parts.find(({ type }) => (part == "meridiem" ? type === "dayPeriod" : type === part))) === null || _d === void 0 ? void 0 : _d.value) || null;
+}
+function getMeridiem(hour) {
+  if (!isValidNumber(hour)) {
+    return null;
+  }
+  const hourAsNumber = parseInt(hour);
+  return hourAsNumber >= 0 && hourAsNumber <= 11 ? "AM" : "PM";
+}
+function isValidTime(value) {
+  if (!value || value.startsWith(":") || value.endsWith(":")) {
+    return false;
+  }
+  const splitValue = value.split(":");
+  const validLength = splitValue.length > 1 && splitValue.length < 4;
+  if (!validLength) {
+    return false;
+  }
+  const [hour, minute, second] = splitValue;
+  const hourAsNumber = parseInt(splitValue[0]);
+  const minuteAsNumber = parseInt(splitValue[1]);
+  const secondAsNumber = parseInt(splitValue[2]);
+  const hourValid = isValidNumber(hour) && hourAsNumber >= 0 && hourAsNumber < 24;
+  const minuteValid = isValidNumber(minute) && minuteAsNumber >= 0 && minuteAsNumber < 60;
+  const secondValid = isValidNumber(second) && secondAsNumber >= 0 && secondAsNumber < 60;
+  if ((hourValid && minuteValid && !second) || (hourValid && minuteValid && secondValid)) {
+    return true;
+  }
+}
+function isValidTimePart(value, part) {
+  if (part === "meridiem") {
+    return value === "AM" || value === "PM";
+  }
+  if (!isValidNumber(value)) {
+    return false;
+  }
+  const valueAsNumber = Number(value);
+  return part === "hour" ? valueAsNumber >= 0 && valueAsNumber < 24 : valueAsNumber >= 0 && valueAsNumber < 60;
+}
+function localizeTimePart({ value, part, locale, numberingSystem }) {
+  if (!isValidTimePart(value, part)) {
+    return;
+  }
+  const valueAsNumber = parseInt(value);
+  const date = new Date(Date.UTC(0, 0, 0, part === "hour" ? valueAsNumber : part === "meridiem" ? (value === "AM" ? 0 : 12) : 0, part === "minute" ? valueAsNumber : 0, part === "second" ? valueAsNumber : 0));
+  if (!date) {
+    return;
+  }
+  const formatter = createLocaleDateTimeFormatter(locale, numberingSystem);
+  const parts = formatter.formatToParts(date);
+  return getLocalizedTimePart(part, parts);
+}
+function localizeTimeString({ value, locale, numberingSystem, includeSeconds = true }) {
+  if (!isValidTime(value)) {
+    return null;
+  }
+  const { hour, minute, second = "0" } = parseTimeString(value);
+  const dateFromTimeString = new Date(Date.UTC(0, 0, 0, parseInt(hour), parseInt(minute), parseInt(second)));
+  const formatter = createLocaleDateTimeFormatter(locale, numberingSystem, includeSeconds);
+  return (formatter === null || formatter === void 0 ? void 0 : formatter.format(dateFromTimeString)) || null;
+}
+function localizeTimeStringToParts({ value, locale, numberingSystem }) {
+  if (!isValidTime(value)) {
+    return null;
+  }
+  const { hour, minute, second = "0" } = parseTimeString(value);
+  const dateFromTimeString = new Date(Date.UTC(0, 0, 0, parseInt(hour), parseInt(minute), parseInt(second)));
+  if (dateFromTimeString) {
+    const formatter = createLocaleDateTimeFormatter(locale, numberingSystem);
+    const parts = formatter.formatToParts(dateFromTimeString);
+    return {
+      localizedHour: getLocalizedTimePart("hour", parts),
+      localizedHourSuffix: getLocalizedTimePart("hourSuffix", parts),
+      localizedMinute: getLocalizedTimePart("minute", parts),
+      localizedMinuteSuffix: getLocalizedTimePart("minuteSuffix", parts),
+      localizedSecond: getLocalizedTimePart("second", parts),
+      localizedSecondSuffix: getLocalizedTimePart("secondSuffix", parts),
+      localizedMeridiem: getLocalizedTimePart("meridiem", parts)
+    };
+  }
+  return null;
+}
+function getTimeParts({ value, locale, numberingSystem }) {
+  if (!isValidTime(value)) {
+    return null;
+  }
+  const { hour, minute, second = "0" } = parseTimeString(value);
+  const dateFromTimeString = new Date(Date.UTC(0, 0, 0, parseInt(hour), parseInt(minute), parseInt(second)));
+  if (dateFromTimeString) {
+    const formatter = createLocaleDateTimeFormatter(locale, numberingSystem);
+    const parts = formatter.formatToParts(dateFromTimeString);
+    return parts;
+  }
+  return null;
+}
+function parseTimeString(value) {
+  if (isValidTime(value)) {
+    const [hour, minute, second] = value.split(":");
+    return {
+      hour,
+      minute,
+      second
+    };
+  }
+  return {
+    hour: null,
+    minute: null,
+    second: null
+  };
+}
+
+export { localizeTimeStringToParts as a, getTimeParts as b, formatTimePart as c, localizeTimePart as d, getLocaleHourCycle as e, formatTimeString as f, getMeridiem as g, isValidTime as i, localizeTimeString as l, maxTenthForMinuteAndSecond as m, parseTimeString as p };
+
+//# sourceMappingURL=p-7a46ef97.js.map

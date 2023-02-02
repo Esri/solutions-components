@@ -911,3 +911,5 @@ const ColorPicker = class {
 ColorPicker.style = colorPickerCss;
 
 export { ColorPicker as calcite_color_picker };
+
+//# sourceMappingURL=calcite-color-picker.entry.js.map

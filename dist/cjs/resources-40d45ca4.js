@@ -76,3 +76,5 @@ exports.HEADING_LEVEL = HEADING_LEVEL;
 exports.TEXT = TEXT;
 exports.getLocaleData = getLocaleData;
 exports.getValueAsDateRange = getValueAsDateRange;
+
+//# sourceMappingURL=resources-40d45ca4.js.map

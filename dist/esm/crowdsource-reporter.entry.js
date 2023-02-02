@@ -69,3 +69,5 @@ const CrowdsourceReporter = class {
 CrowdsourceReporter.style = crowdsourceReporterCss;
 
 export { CrowdsourceReporter as crowdsource_reporter };
+
+//# sourceMappingURL=crowdsource-reporter.entry.js.map

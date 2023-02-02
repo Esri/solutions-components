@@ -59,3 +59,4 @@ export async function getLocaleComponentStrings(element) {
   }
   return [strings, componentLanguage];
 }
+//# sourceMappingURL=locale.js.map

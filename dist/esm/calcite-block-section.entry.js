@@ -116,3 +116,5 @@ const BlockSection = class {
 BlockSection.style = blockSectionCss;
 
 export { BlockSection as calcite_block_section };
+
+//# sourceMappingURL=calcite-block-section.entry.js.map

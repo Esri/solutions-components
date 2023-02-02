@@ -212,3 +212,5 @@ function isPrimaryPointerButton(event) {
 }
 
 export { getSlotted as a, getElementDir as b, closestElementCrossShadowBoundary as c, containsCrossShadowBoundary as d, getThemeName as e, focusElement as f, getElementProp as g, intersects as h, isPrimaryPointerButton as i, filterDirectChildren as j, ensureId as k, isCalciteFocusable as l, getRootNode as m, nodeListToArray as n, queryElementRoots as q, setRequestedIcon as s, toAriaBoolean as t };
+
+//# sourceMappingURL=dom-3bdc69ee.js.map

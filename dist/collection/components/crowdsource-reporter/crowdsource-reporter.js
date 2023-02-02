@@ -87,3 +87,4 @@ export class CrowdsourceReporter {
   }
   static get elementRef() { return "el"; }
 }
+//# sourceMappingURL=crowdsource-reporter.js.map

@@ -32,6 +32,7 @@
   "devDependencies": {
     "@esri/eslint-plugin-calcite-components": "^0.2.2",
     "@esri/solution-common": "1.5.3",
+    "@pdf-lib/fontkit": "^1.1.1",
     "@stencil/postcss": "^2.1.0",
     "@stencil/sass": "^2.0.0",
     "@stencil/store": "^2.0.1",
@@ -69,7 +70,9 @@
     "@arcgis/core": "^4.25.5",
     "@stencil/core": "^2.20.0",
     "focus-trap": "7.2.0",
-    "minimist": "^1.2.6"
+    "jspdf": "^2.5.1",
+    "minimist": "^1.2.6",
+    "pdf-lib": "^1.17.1"
   },
   "peerDependencies": {
     "@esri/arcgis-rest-auth": "^3.4.2",

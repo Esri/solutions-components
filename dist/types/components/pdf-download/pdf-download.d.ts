@@ -41,14 +41,6 @@ export declare class PdfDownload {
    */
   protected _labelInfoElement: HTMLCalciteSelectElement;
   /**
-   * Downloads pdf of mailing labels for the provided list of ids
-   *
-   * @param ids List of ids to download
-   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * @returns Promise resolving when function is done
-   */
-  downloadPDF(ids: number[], removeDuplicates: boolean): Promise<void>;
-  /**
    * Downloads csv of mailing labels for the provided list of ids
    *
    * @param ids List of ids to download
@@ -56,7 +48,14 @@ export declare class PdfDownload {
    * @returns Promise resolving when function is done
    */
   downloadCSV(ids: number[], removeDuplicates: boolean): Promise<void>;
-  protected _prepareLabels(ids: number[], removeDuplicates: boolean, includeHeaderNames: boolean): Promise<string[][]>;
+  /**
+   * Downloads pdf of mailing labels for the provided list of ids
+   *
+   * @param ids List of ids to download
+   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+   * @returns Promise resolving when function is done
+   */
+  downloadPDF(ids: number[], removeDuplicates: boolean): Promise<void>;
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
@@ -89,6 +88,15 @@ export declare class PdfDownload {
    * @protected
    */
   protected _getTranslations(): Promise<void>;
+  /**
+   * Creates labels from items.
+  *
+  * @param ids List of ids to download
+  * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+  * @param includeHeaderNames Add the label format at the front of the list of generated labels
+  * @returns Promise resolving when function is done
+   */
+  protected _prepareLabels(ids: number[], removeDuplicates: boolean, includeHeaderNames: boolean): Promise<string[][]>;
   /**
    * Renders the pdf export size options
    *

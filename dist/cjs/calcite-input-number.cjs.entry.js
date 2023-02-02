@@ -574,3 +574,5 @@ const InputNumber = class {
 InputNumber.style = inputNumberCss;
 
 exports.calcite_input_number = InputNumber;
+
+//# sourceMappingURL=calcite-input-number.cjs.entry.js.map

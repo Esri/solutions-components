@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import * as PDFCreator_jsPDF from "../assets/arcgis-pdf-creator/PDFCreator_jsPDF";
 /**
  * Exports a PDF of labels.
  *
@@ -36,4 +37,8 @@ export function exportPDF(labels, labelPageDescription) {
  */
 function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
   console.log("_downloadPDFFile", labels, labelPageDescription, fileTitle); //???
+  console.log(typeof PDFCreator_jsPDF);
+  const pdfLibrary = new PDFCreator_jsPDF();
+  pdfLibrary.initialize();
 }
+//# sourceMappingURL=pdfUtils.js.map

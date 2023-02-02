@@ -337,3 +337,5 @@ exports.removeItem = removeItem;
 exports.selectSiblings = selectSiblings;
 exports.setFocus = setFocus;
 exports.setUpItems = setUpItems;
+
+//# sourceMappingURL=shared-list-render-6977a4b3.js.map

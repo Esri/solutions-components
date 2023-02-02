@@ -2635,3 +2635,5 @@ exports.solution_organization_variables = SolutionOrganizationVariables;
 exports.solution_resource_item = SolutionResourceItem;
 exports.solution_template_data = SolutionTemplateData;
 exports.solution_variables = SolutionVariables;
+
+//# sourceMappingURL=calcite-shell-panel_14.cjs.entry.js.map

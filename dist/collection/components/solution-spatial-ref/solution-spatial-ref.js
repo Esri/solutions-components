@@ -508,3 +508,4 @@ export class SolutionSpatialRef {
       }];
   }
 }
+//# sourceMappingURL=solution-spatial-ref.js.map

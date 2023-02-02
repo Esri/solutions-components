@@ -95,27 +95,6 @@ export class PdfDownload {
   //--------------------------------------------------------------------------
 
   /**
-   * Downloads pdf of mailing labels for the provided list of ids
-   *
-   * @param ids List of ids to download
-   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * @returns Promise resolving when function is done
-   */
-  @Method()
-  async downloadPDF(
-    ids: number[],
-    removeDuplicates: boolean
-  ): Promise<void> {
-    const includeHeaderNames = true;
-
-    const labels = await this._prepareLabels(ids, removeDuplicates, includeHeaderNames);
-
-    const labelPageDescription = this._labelInfoElement.selectedOption.value;
-
-    return exportPDF(labels, labelPageDescription);
-  }
-
-  /**
    * Downloads csv of mailing labels for the provided list of ids
    *
    * @param ids List of ids to download
@@ -127,64 +106,32 @@ export class PdfDownload {
     ids: number[],
     removeDuplicates: boolean
   ): Promise<void> {
-    const includeHeaderNames = true;
+    const includeHeaderNames = true;  //???
 
     const labels = await this._prepareLabels(ids, removeDuplicates, includeHeaderNames);
 
     return exportCSV(labels);
   }
 
-  protected async _prepareLabels(
+  /**
+   * Downloads pdf of mailing labels for the provided list of ids
+   *
+   * @param ids List of ids to download
+   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+   * @returns Promise resolving when function is done
+   */
+  @Method()
+  async downloadPDF(
     ids: number[],
-    removeDuplicates: boolean,
-    includeHeaderNames: boolean
-  ): Promise<string[][]> {
-    // Get the attributes of the features to export
-    const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
-    const featuresAttrs = featureSet.features.map(f => f.attributes);
+    removeDuplicates: boolean
+  ): Promise<void> {
+    const includeHeaderNames = true;  //???
 
-    // What data fields are used in the labels?
-    // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
-    const labelFormat = this._convertPopupToLabelSpec(this.layerView.layer.popupTemplate.content[0].text);
+    const labels = await this._prepareLabels(ids, removeDuplicates, includeHeaderNames);
 
-    // Convert attributes into an array of labels
-    let labels: string[][] = featuresAttrs.map(
-      featureAttributes => {
-        const label: string[] = [];
-        labelFormat.forEach(
-          labelLineTemplate => {
-            const labelLine = intl.substitute(labelLineTemplate, featureAttributes).trim();
-            if (labelLine.length > 0) {
-              label.push(labelLine);
-            }
-          }
-        )
-        return label;
-      }
-    )
-    // Remove empty labels
-    .filter(label => label.length > 0);
+    const labelPageDescription = this._labelInfoElement.selectedOption.value;
 
-    // Remove duplicates
-    console.log(labels);//???
-    if (removeDuplicates) {
-      console.log("remove duplicates before " + labels.length.toString());//???
-      const labelsAsStrings: string[] = labels.map(label => JSON.stringify(label));
-      const uniqueLabels = new Set(labelsAsStrings);
-      labels = Array.from(uniqueLabels,
-        labelString => JSON.parse(labelString)
-      );
-      console.log("remove duplicates after " + labels.length.toString());//???
-      console.log(labels);//???
-    }
-
-    // Add header names
-    if (includeHeaderNames) {
-      const headerNames = labelFormat.map(labelFormatLine => labelFormatLine.replace(/\{/g, "").replace(/\}/g, ""));
-      labels.unshift(headerNames);
-    }
-
-    return Promise.resolve(labels);
+    return exportPDF(labels, labelPageDescription);
   }
 
   //--------------------------------------------------------------------------
@@ -243,8 +190,8 @@ export class PdfDownload {
     // Replace <br>, <br/> with |
     popupInfo = popupInfo.replace(/<br\s*\/?>/gi, "|");
 
-    // Remove remaining HTML tags
-    let labelSpec = popupInfo.replace(/<[\s.]*[^<>]*\/?>/gi, "").split("|");
+    // Remove remaining HTML tags and replace 0xA0 that popup uses for spaces
+    let labelSpec = popupInfo.replace(/<[\s.]*[^<>]*\/?>/gi, "").replace("\xA0", " ").split("|");
 
     // Trim lines and remove empties
     labelSpec = labelSpec.map(line => line.trim()).filter(line => line.length > 0);
@@ -276,6 +223,63 @@ export class PdfDownload {
   protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof PdfDownload_T9n;
+  }
+
+  /**
+   * Creates labels from items.
+  *
+  * @param ids List of ids to download
+  * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+  * @param includeHeaderNames Add the label format at the front of the list of generated labels
+  * @returns Promise resolving when function is done
+   */
+  protected async _prepareLabels(
+    ids: number[],
+    removeDuplicates: boolean,
+    includeHeaderNames: boolean
+  ): Promise<string[][]> {
+    // Get the attributes of the features to export
+    const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
+    const featuresAttrs = featureSet.features.map(f => f.attributes);
+
+    // What data fields are used in the labels?
+    // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
+    const labelFormat = this._convertPopupToLabelSpec(this.layerView.layer.popupTemplate.content[0].text);
+
+    // Convert attributes into an array of labels
+    let labels: string[][] = featuresAttrs.map(
+      featureAttributes => {
+        const label: string[] = [];
+        labelFormat.forEach(
+          labelLineTemplate => {
+            const labelLine = intl.substitute(labelLineTemplate, featureAttributes).trim();
+            if (labelLine.length > 0) {
+              label.push(labelLine);
+            }
+          }
+        )
+        return label;
+      }
+    )
+    // Remove empty labels
+    .filter(label => label.length > 0);
+
+    // Remove duplicates
+    if (removeDuplicates) {
+      const labelsAsStrings: string[] = labels.map(label => JSON.stringify(label));
+      const uniqueLabels = new Set(labelsAsStrings);
+      labels = Array.from(uniqueLabels,
+        labelString => JSON.parse(labelString)
+      );
+    }
+
+    // Add header names
+    if (includeHeaderNames) {
+      const headerNames = labelFormat.map(labelFormatLine => labelFormatLine.replace(/\{/g, "").replace(/\}/g, ""));
+      labels.unshift(headerNames);
+    }
+
+    return Promise.resolve(labels);
   }
 
   /**

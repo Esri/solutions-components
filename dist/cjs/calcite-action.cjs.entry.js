@@ -175,3 +175,5 @@ const Action = class {
 Action.style = actionCss;
 
 exports.calcite_action = Action;
+
+//# sourceMappingURL=calcite-action.cjs.entry.js.map

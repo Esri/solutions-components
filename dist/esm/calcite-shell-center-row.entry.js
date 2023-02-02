@@ -78,3 +78,5 @@ const ShellCenterRow = class {
 ShellCenterRow.style = shellCenterRowCss;
 
 export { ShellCenterRow as calcite_shell_center_row };
+
+//# sourceMappingURL=calcite-shell-center-row.entry.js.map

@@ -8,4 +8,46 @@
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.0.0-beta.97
  */
-function t(t,s,n){const i=function(t){class s extends window.MutationObserver{constructor(t){super(t),this.observedEntry=[],this.callback=t}observe(t,s){return this.observedEntry.push({target:t,options:s}),super.observe(t,s)}unobserve(t){const s=this.observedEntry.filter((s=>s.target!==t));this.observedEntry=[],this.callback(super.takeRecords(),this),this.disconnect(),s.forEach((t=>this.observe(t.target,t.options)))}}return"intersection"===t?window.IntersectionObserver:"mutation"===t?s:window.ResizeObserver}(t);return new i(s,n)}export{t as c}
+/**
+ * This utility ensures observers are created only for browser contexts.
+ *
+ * @param type - the type of observer to create
+ * @param callback - the observer callback
+ * @param options - the observer options
+ */
+function createObserver(type, callback, options) {
+  const Observer = getObserver(type);
+  return new Observer(callback, options);
+}
+function getObserver(type) {
+  // based on https://github.com/whatwg/dom/issues/126#issuecomment-1049814948
+  class ExtendedMutationObserver extends window.MutationObserver {
+    constructor(callback) {
+      super(callback);
+      this.observedEntry = [];
+      this.callback = callback;
+    }
+    observe(target, options) {
+      this.observedEntry.push({ target, options });
+      return super.observe(target, options);
+    }
+    unobserve(target) {
+      const newObservedEntries = this.observedEntry.filter((observed) => observed.target !== target);
+      this.observedEntry = [];
+      this.callback(super.takeRecords(), this);
+      this.disconnect();
+      newObservedEntries.forEach((observed) => this.observe(observed.target, observed.options));
+    }
+  }
+  return (function () {
+    return (type === "intersection"
+      ? window.IntersectionObserver
+      : type === "mutation"
+        ? ExtendedMutationObserver
+        : window.ResizeObserver);
+  })();
+}
+
+export { createObserver as c };
+
+//# sourceMappingURL=p-9a9955db.js.map

@@ -140,3 +140,5 @@ const Chip = class {
 Chip.style = chipCss;
 
 exports.calcite_chip = Chip;
+
+//# sourceMappingURL=calcite-chip.cjs.entry.js.map

@@ -721,3 +721,5 @@ const Popover = class {
 Popover.style = popoverCss;
 
 export { ActionMenu as calcite_action_menu, Popover as calcite_popover };
+
+//# sourceMappingURL=calcite-action-menu_2.entry.js.map

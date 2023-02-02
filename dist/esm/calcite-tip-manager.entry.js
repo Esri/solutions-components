@@ -171,3 +171,5 @@ const TipManager = class {
 TipManager.style = tipManagerCss;
 
 export { TipManager as calcite_tip_manager };
+
+//# sourceMappingURL=calcite-tip-manager.entry.js.map

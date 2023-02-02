@@ -726,3 +726,5 @@ Popover.style = popoverCss;
 
 exports.calcite_action_menu = ActionMenu;
 exports.calcite_popover = Popover;
+
+//# sourceMappingURL=calcite-action-menu_2.cjs.entry.js.map

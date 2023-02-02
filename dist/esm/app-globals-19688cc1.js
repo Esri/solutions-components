@@ -60,3 +60,5 @@ function appGlobalScript () {
 const globalScripts = appGlobalScript;
 
 export { globalScripts as g };
+
+//# sourceMappingURL=app-globals-19688cc1.js.map

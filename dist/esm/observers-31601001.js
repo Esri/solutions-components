@@ -49,3 +49,5 @@ function getObserver(type) {
 }
 
 export { createObserver as c };
+
+//# sourceMappingURL=observers-31601001.js.map

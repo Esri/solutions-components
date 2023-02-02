@@ -3024,3 +3024,5 @@ Sortable.mount(new AutoScrollPlugin());
 Sortable.mount(Remove, Revert);
 
 export { Sortable as S };
+
+//# sourceMappingURL=sortable.esm-3b2eaa5c.js.map

@@ -104,3 +104,5 @@ const AddRecordModal = class {
 AddRecordModal.style = addRecordModalCss;
 
 exports.add_record_modal = AddRecordModal;
+
+//# sourceMappingURL=add-record-modal.cjs.entry.js.map

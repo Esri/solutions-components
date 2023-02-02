@@ -311,3 +311,5 @@ Select.style = selectCss;
 
 exports.calcite_option = Option;
 exports.calcite_select = Select;
+
+//# sourceMappingURL=calcite-option_2.cjs.entry.js.map

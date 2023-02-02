@@ -230,3 +230,5 @@ exports.nodeListToArray = nodeListToArray;
 exports.queryElementRoots = queryElementRoots;
 exports.setRequestedIcon = setRequestedIcon;
 exports.toAriaBoolean = toAriaBoolean;
+
+//# sourceMappingURL=dom-4a580af6.js.map

@@ -885,3 +885,5 @@ SolutionItemIcon.style = solutionItemIconCss;
 exports.calcite_tree = Tree;
 exports.calcite_tree_item = TreeItem;
 exports.solution_item_icon = SolutionItemIcon;
+
+//# sourceMappingURL=calcite-tree_3.cjs.entry.js.map

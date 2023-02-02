@@ -1988,3 +1988,5 @@ const SolutionConfiguration = class {
 SolutionConfiguration.style = solutionConfigurationCss;
 
 exports.solution_configuration = SolutionConfiguration;
+
+//# sourceMappingURL=solution-configuration.cjs.entry.js.map

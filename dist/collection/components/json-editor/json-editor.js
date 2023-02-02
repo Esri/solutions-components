@@ -612,3 +612,4 @@ export class JsonEditor {
   }
   static get elementRef() { return "el"; }
 }
+//# sourceMappingURL=json-editor.js.map

@@ -73,3 +73,5 @@ const CommentCard = class {
 CommentCard.style = commentCardCss;
 
 exports.comment_card = CommentCard;
+
+//# sourceMappingURL=comment-card.cjs.entry.js.map

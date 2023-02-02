@@ -22,3 +22,5 @@ const SLOTS = {
 };
 
 export { CSS as C, ICON_TYPES as I, SLOTS as S };
+
+//# sourceMappingURL=resources-2235e4ff.js.map

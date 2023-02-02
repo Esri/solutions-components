@@ -96,3 +96,5 @@ const Fab = class {
 Fab.style = fabCss;
 
 export { Fab as calcite_fab };
+
+//# sourceMappingURL=calcite-fab.entry.js.map

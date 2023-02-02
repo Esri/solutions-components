@@ -44,19 +44,6 @@ export class PdfDownload {
   //
   //--------------------------------------------------------------------------
   /**
-   * Downloads pdf of mailing labels for the provided list of ids
-   *
-   * @param ids List of ids to download
-   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * @returns Promise resolving when function is done
-   */
-  async downloadPDF(ids, removeDuplicates) {
-    const includeHeaderNames = true;
-    const labels = await this._prepareLabels(ids, removeDuplicates, includeHeaderNames);
-    const labelPageDescription = this._labelInfoElement.selectedOption.value;
-    return exportPDF(labels, labelPageDescription);
-  }
-  /**
    * Downloads csv of mailing labels for the provided list of ids
    *
    * @param ids List of ids to download
@@ -64,46 +51,22 @@ export class PdfDownload {
    * @returns Promise resolving when function is done
    */
   async downloadCSV(ids, removeDuplicates) {
-    const includeHeaderNames = true;
+    const includeHeaderNames = true; //???
     const labels = await this._prepareLabels(ids, removeDuplicates, includeHeaderNames);
     return exportCSV(labels);
   }
-  async _prepareLabels(ids, removeDuplicates, includeHeaderNames) {
-    // Get the attributes of the features to export
-    const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
-    const featuresAttrs = featureSet.features.map(f => f.attributes);
-    // What data fields are used in the labels?
-    // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
-    const labelFormat = this._convertPopupToLabelSpec(this.layerView.layer.popupTemplate.content[0].text);
-    // Convert attributes into an array of labels
-    let labels = featuresAttrs.map(featureAttributes => {
-      const label = [];
-      labelFormat.forEach(labelLineTemplate => {
-        const labelLine = intl.substitute(labelLineTemplate, featureAttributes).trim();
-        if (labelLine.length > 0) {
-          label.push(labelLine);
-        }
-      });
-      return label;
-    })
-      // Remove empty labels
-      .filter(label => label.length > 0);
-    // Remove duplicates
-    console.log(labels); //???
-    if (removeDuplicates) {
-      console.log("remove duplicates before " + labels.length.toString()); //???
-      const labelsAsStrings = labels.map(label => JSON.stringify(label));
-      const uniqueLabels = new Set(labelsAsStrings);
-      labels = Array.from(uniqueLabels, labelString => JSON.parse(labelString));
-      console.log("remove duplicates after " + labels.length.toString()); //???
-      console.log(labels); //???
-    }
-    // Add header names
-    if (includeHeaderNames) {
-      const headerNames = labelFormat.map(labelFormatLine => labelFormatLine.replace(/\{/g, "").replace(/\}/g, ""));
-      labels.unshift(headerNames);
-    }
-    return Promise.resolve(labels);
+  /**
+   * Downloads pdf of mailing labels for the provided list of ids
+   *
+   * @param ids List of ids to download
+   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+   * @returns Promise resolving when function is done
+   */
+  async downloadPDF(ids, removeDuplicates) {
+    const includeHeaderNames = true; //???
+    const labels = await this._prepareLabels(ids, removeDuplicates, includeHeaderNames);
+    const labelPageDescription = this._labelInfoElement.selectedOption.value;
+    return exportPDF(labels, labelPageDescription);
   }
   //--------------------------------------------------------------------------
   //
@@ -143,8 +106,8 @@ export class PdfDownload {
   _convertPopupToLabelSpec(popupInfo) {
     // Replace <br>, <br/> with |
     popupInfo = popupInfo.replace(/<br\s*\/?>/gi, "|");
-    // Remove remaining HTML tags
-    let labelSpec = popupInfo.replace(/<[\s.]*[^<>]*\/?>/gi, "").split("|");
+    // Remove remaining HTML tags and replace 0xA0 that popup uses for spaces
+    let labelSpec = popupInfo.replace(/<[\s.]*[^<>]*\/?>/gi, "").replace("\xA0", " ").split("|");
     // Trim lines and remove empties
     labelSpec = labelSpec.map(line => line.trim()).filter(line => line.length > 0);
     return labelSpec;
@@ -171,6 +134,47 @@ export class PdfDownload {
   async _getTranslations() {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0];
+  }
+  /**
+   * Creates labels from items.
+  *
+  * @param ids List of ids to download
+  * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+  * @param includeHeaderNames Add the label format at the front of the list of generated labels
+  * @returns Promise resolving when function is done
+   */
+  async _prepareLabels(ids, removeDuplicates, includeHeaderNames) {
+    // Get the attributes of the features to export
+    const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
+    const featuresAttrs = featureSet.features.map(f => f.attributes);
+    // What data fields are used in the labels?
+    // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
+    const labelFormat = this._convertPopupToLabelSpec(this.layerView.layer.popupTemplate.content[0].text);
+    // Convert attributes into an array of labels
+    let labels = featuresAttrs.map(featureAttributes => {
+      const label = [];
+      labelFormat.forEach(labelLineTemplate => {
+        const labelLine = intl.substitute(labelLineTemplate, featureAttributes).trim();
+        if (labelLine.length > 0) {
+          label.push(labelLine);
+        }
+      });
+      return label;
+    })
+      // Remove empty labels
+      .filter(label => label.length > 0);
+    // Remove duplicates
+    if (removeDuplicates) {
+      const labelsAsStrings = labels.map(label => JSON.stringify(label));
+      const uniqueLabels = new Set(labelsAsStrings);
+      labels = Array.from(uniqueLabels, labelString => JSON.parse(labelString));
+    }
+    // Add header names
+    if (includeHeaderNames) {
+      const headerNames = labelFormat.map(labelFormatLine => labelFormatLine.replace(/\{/g, "").replace(/\}/g, ""));
+      labels.unshift(headerNames);
+    }
+    return Promise.resolve(labels);
   }
   /**
    * Renders the pdf export size options
@@ -266,43 +270,6 @@ export class PdfDownload {
   }
   static get methods() {
     return {
-      "downloadPDF": {
-        "complexType": {
-          "signature": "(ids: number[], removeDuplicates: boolean) => Promise<void>",
-          "parameters": [{
-              "tags": [{
-                  "name": "param",
-                  "text": "ids List of ids to download"
-                }],
-              "text": "List of ids to download"
-            }, {
-              "tags": [{
-                  "name": "param",
-                  "text": "removeDuplicates When true a single label is generated when multiple featues have a shared address value"
-                }],
-              "text": "When true a single label is generated when multiple featues have a shared address value"
-            }],
-          "references": {
-            "Promise": {
-              "location": "global"
-            }
-          },
-          "return": "Promise<void>"
-        },
-        "docs": {
-          "text": "Downloads pdf of mailing labels for the provided list of ids",
-          "tags": [{
-              "name": "param",
-              "text": "ids List of ids to download"
-            }, {
-              "name": "param",
-              "text": "removeDuplicates When true a single label is generated when multiple featues have a shared address value"
-            }, {
-              "name": "returns",
-              "text": "Promise resolving when function is done"
-            }]
-        }
-      },
       "downloadCSV": {
         "complexType": {
           "signature": "(ids: number[], removeDuplicates: boolean) => Promise<void>",
@@ -339,8 +306,46 @@ export class PdfDownload {
               "text": "Promise resolving when function is done"
             }]
         }
+      },
+      "downloadPDF": {
+        "complexType": {
+          "signature": "(ids: number[], removeDuplicates: boolean) => Promise<void>",
+          "parameters": [{
+              "tags": [{
+                  "name": "param",
+                  "text": "ids List of ids to download"
+                }],
+              "text": "List of ids to download"
+            }, {
+              "tags": [{
+                  "name": "param",
+                  "text": "removeDuplicates When true a single label is generated when multiple featues have a shared address value"
+                }],
+              "text": "When true a single label is generated when multiple featues have a shared address value"
+            }],
+          "references": {
+            "Promise": {
+              "location": "global"
+            }
+          },
+          "return": "Promise<void>"
+        },
+        "docs": {
+          "text": "Downloads pdf of mailing labels for the provided list of ids",
+          "tags": [{
+              "name": "param",
+              "text": "ids List of ids to download"
+            }, {
+              "name": "param",
+              "text": "removeDuplicates When true a single label is generated when multiple featues have a shared address value"
+            }, {
+              "name": "returns",
+              "text": "Promise resolving when function is done"
+            }]
+        }
       }
     };
   }
   static get elementRef() { return "el"; }
 }
+//# sourceMappingURL=pdf-download.js.map

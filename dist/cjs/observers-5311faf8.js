@@ -51,3 +51,5 @@ function getObserver(type) {
 }
 
 exports.createObserver = createObserver;
+
+//# sourceMappingURL=observers-5311faf8.js.map

@@ -2618,3 +2618,5 @@ const SolutionVariables = class {
 SolutionVariables.style = solutionVariablesCss;
 
 export { ShellPanel as calcite_shell_panel, Tab as calcite_tab, TabNav as calcite_tab_nav, TabTitle as calcite_tab_title, Tabs as calcite_tabs, ValueList as calcite_value_list, ValueListItem as calcite_value_list_item, JsonEditor as json_editor, SolutionItemDetails as solution_item_details, SolutionItemSharing as solution_item_sharing, SolutionOrganizationVariables as solution_organization_variables, SolutionResourceItem as solution_resource_item, SolutionTemplateData as solution_template_data, SolutionVariables as solution_variables };
+
+//# sourceMappingURL=calcite-shell-panel_14.entry.js.map

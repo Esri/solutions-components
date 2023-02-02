@@ -99,3 +99,5 @@ const DeductCalculator = class {
 DeductCalculator.style = deductCalculatorCss;
 
 export { DeductCalculator as deduct_calculator };
+
+//# sourceMappingURL=deduct-calculator.entry.js.map

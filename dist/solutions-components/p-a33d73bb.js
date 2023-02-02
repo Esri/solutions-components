@@ -3,9 +3,228 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import{c as n}from"./p-83166522.js";import{h as t}from"./p-c2f00d41.js";
+import { c as closestElementCrossShadowBoundary } from './p-83166522.js';
+import { h } from './p-c2f00d41.js';
+
 /*!
  * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.0.0-beta.97
- */const e="hidden-form-input";function o(n){return"checked"in n}const s=new WeakMap,c=new WeakSet;function r(n){const{formEl:t}=n;return!!t&&("requestSubmit"in t?t.requestSubmit():t.submit(),!0)}function i(n){var t;null===(t=n.formEl)||void 0===t||t.reset()}function u(t){const{el:e,value:r}=t,i=n(e,"form");if(!i||function(n,t){const e="calciteInternalFormComponentRegister";let o=!1;return n.addEventListener(e,(n=>{o=n.composedPath().some((n=>c.has(n))),n.stopPropagation()}),{once:!0}),t.dispatchEvent(new CustomEvent(e,{bubbles:!0,composed:!0})),o}(i,e))return;t.formEl=i,t.defaultValue=r,o(t)&&(t.defaultChecked=t.checked);const u=(t.onFormReset||l).bind(t);i.addEventListener("reset",u),s.set(t.el,u),c.add(e)}function l(){o(this)?this.checked=this.defaultChecked:this.value=this.defaultValue}function a(n){const{el:t,formEl:e}=n;if(!e)return;const o=s.get(t);e.removeEventListener("reset",o),s.delete(t),n.formEl=null,c.delete(t)}function f(n,t){n.defaultValue=t}const m=n=>{n.target.dispatchEvent(new CustomEvent("calciteInternalHiddenInputChange",{bubbles:!0}))},d=n=>n.removeEventListener("change",m);function p(n,t,e){var s;const{defaultValue:c,disabled:r,name:i,required:u}=n;t.defaultValue=c,t.disabled=r,t.name=i,t.required=u,t.tabIndex=-1,o(n)?(t.defaultChecked=n.defaultChecked,t.value=n.checked?e||"on":"",r||n.checked||(t.disabled=!0)):t.value=e||"",null===(s=n.syncHiddenFormInput)||void 0===s||s.call(n,t)}const h=({component:n})=>(function(n){const{el:t,formEl:o,name:s,value:c}=n,{ownerDocument:r}=t,i=t.querySelectorAll(`input[slot="${e}"]`);if(!o||!s)return void i.forEach((n=>{d(n),n.remove()}));const u=Array.isArray(c)?c:[c],l=[],a=new Set;let f;i.forEach((t=>{const e=u.find((n=>n==t.value));null!=e?(a.add(e),p(n,t,e)):l.push(t)})),u.forEach((t=>{if(a.has(t))return;let o=l.pop();o||(o=r.createElement("input"),o.slot=e),f||(f=r.createDocumentFragment()),f.append(o),o.addEventListener("change",m),p(n,o,t)})),f&&t.append(f),l.forEach((n=>{d(n),n.remove()}))}(n),t("slot",{name:e}));export{h as H,f as a,u as c,a as d,i as r,r as s}
+ */
+/**
+ * Exported for testing purposes.
+ */
+const hiddenFormInputSlotName = "hidden-form-input";
+function isCheckable(component) {
+  return "checked" in component;
+}
+const onFormResetMap = new WeakMap();
+const formComponentSet = new WeakSet();
+function hasRegisteredFormComponentParent(form, formComponentEl) {
+  // we use events as a way to test for nested form-associated components across shadow bounds
+  const formComponentRegisterEventName = "calciteInternalFormComponentRegister";
+  let hasRegisteredFormComponentParent = false;
+  form.addEventListener(formComponentRegisterEventName, (event) => {
+    hasRegisteredFormComponentParent = event
+      .composedPath()
+      .some((element) => formComponentSet.has(element));
+    event.stopPropagation();
+  }, { once: true });
+  formComponentEl.dispatchEvent(new CustomEvent(formComponentRegisterEventName, {
+    bubbles: true,
+    composed: true
+  }));
+  return hasRegisteredFormComponentParent;
+}
+/**
+ * Helper to submit a form.
+ *
+ * @param component
+ * @returns true if its associated form was submitted, false otherwise.
+ */
+function submitForm(component) {
+  const { formEl } = component;
+  if (!formEl) {
+    return false;
+  }
+  "requestSubmit" in formEl ? formEl.requestSubmit() : formEl.submit();
+  return true;
+}
+/**
+ * Helper to reset a form.
+ *
+ * @param component
+ */
+function resetForm(component) {
+  var _a;
+  (_a = component.formEl) === null || _a === void 0 ? void 0 : _a.reset();
+}
+/**
+ * Helper to set up form interactions on connectedCallback.
+ *
+ * @param component
+ */
+function connectForm(component) {
+  const { el, value } = component;
+  const form = closestElementCrossShadowBoundary(el, "form");
+  if (!form || hasRegisteredFormComponentParent(form, el)) {
+    return;
+  }
+  component.formEl = form;
+  component.defaultValue = value;
+  if (isCheckable(component)) {
+    component.defaultChecked = component.checked;
+  }
+  const boundOnFormReset = (component.onFormReset || onFormReset).bind(component);
+  form.addEventListener("reset", boundOnFormReset);
+  onFormResetMap.set(component.el, boundOnFormReset);
+  formComponentSet.add(el);
+}
+function onFormReset() {
+  if (isCheckable(this)) {
+    this.checked = this.defaultChecked;
+    return;
+  }
+  this.value = this.defaultValue;
+}
+/**
+ * Helper to tear down form interactions on disconnectedCallback.
+ *
+ * @param component
+ */
+function disconnectForm(component) {
+  const { el, formEl } = component;
+  if (!formEl) {
+    return;
+  }
+  const boundOnFormReset = onFormResetMap.get(el);
+  formEl.removeEventListener("reset", boundOnFormReset);
+  onFormResetMap.delete(el);
+  component.formEl = null;
+  formComponentSet.delete(el);
+}
+/**
+ * Helper for setting the default value on initialization after connectedCallback.
+ *
+ * Note that this is only needed if the default value cannot be determined on connectedCallback.
+ *
+ * @param component
+ * @param value
+ */
+function afterConnectDefaultValueSet(component, value) {
+  component.defaultValue = value;
+}
+const hiddenInputChangeHandler = (event) => {
+  event.target.dispatchEvent(new CustomEvent("calciteInternalHiddenInputChange", { bubbles: true }));
+};
+const removeHiddenInputChangeEventListener = (input) => input.removeEventListener("change", hiddenInputChangeHandler);
+/**
+ * Helper for maintaining a form-associated's hidden input in sync with the component.
+ *
+ * Based on Ionic's approach: https://github.com/ionic-team/ionic-framework/blob/e4bf052794af9aac07f887013b9250d2a045eba3/core/src/utils/helpers.ts#L198
+ *
+ * @param component
+ */
+function syncHiddenFormInput(component) {
+  const { el, formEl, name, value } = component;
+  const { ownerDocument } = el;
+  const inputs = el.querySelectorAll(`input[slot="${hiddenFormInputSlotName}"]`);
+  if (!formEl || !name) {
+    inputs.forEach((input) => {
+      removeHiddenInputChangeEventListener(input);
+      input.remove();
+    });
+    return;
+  }
+  const values = Array.isArray(value) ? value : [value];
+  const extra = [];
+  const seen = new Set();
+  inputs.forEach((input) => {
+    const valueMatch = values.find((val) => 
+    /* intentional non-strict equality check */
+    val == input.value);
+    if (valueMatch != null) {
+      seen.add(valueMatch);
+      defaultSyncHiddenFormInput(component, input, valueMatch);
+    }
+    else {
+      extra.push(input);
+    }
+  });
+  let docFrag;
+  values.forEach((value) => {
+    if (seen.has(value)) {
+      return;
+    }
+    let input = extra.pop();
+    if (!input) {
+      input = ownerDocument.createElement("input");
+      input.slot = hiddenFormInputSlotName;
+    }
+    if (!docFrag) {
+      docFrag = ownerDocument.createDocumentFragment();
+    }
+    docFrag.append(input);
+    // emits when hidden input is autofilled
+    input.addEventListener("change", hiddenInputChangeHandler);
+    defaultSyncHiddenFormInput(component, input, value);
+  });
+  if (docFrag) {
+    el.append(docFrag);
+  }
+  extra.forEach((input) => {
+    removeHiddenInputChangeEventListener(input);
+    input.remove();
+  });
+}
+function defaultSyncHiddenFormInput(component, input, value) {
+  var _a;
+  const { defaultValue, disabled, name, required } = component;
+  // keep in sync to prevent losing reset value
+  input.defaultValue = defaultValue;
+  input.disabled = disabled;
+  input.name = name;
+  input.required = required;
+  input.tabIndex = -1;
+  if (isCheckable(component)) {
+    // keep in sync to prevent losing reset value
+    input.defaultChecked = component.defaultChecked;
+    // heuristic to support default/on mode from https://html.spec.whatwg.org/multipage/input.html#dom-input-value-default-on
+    input.value = component.checked ? value || "on" : "";
+    // we disable the component when not checked to avoid having its value submitted
+    if (!disabled && !component.checked) {
+      input.disabled = true;
+    }
+  }
+  else {
+    input.value = value || "";
+  }
+  (_a = component.syncHiddenFormInput) === null || _a === void 0 ? void 0 : _a.call(component, input);
+}
+/**
+ * Helper to render the slot for form-associated component's hidden input.
+ *
+ * If the component has a default slot, this must be placed at the bottom of the component's root container to ensure it is the last child.
+ *
+ * render(): VNode {
+ *   <Host>
+ *     <div class={CSS.container}>
+ *     // ...
+ *     <HiddenFormInputSlot component={this} />
+ *     </div>
+ *   </Host>
+ * }
+ *
+ * Note that the hidden-form-input Sass mixin must be added to the component's style to apply specific styles.
+ *
+ * @param root0
+ * @param root0.component
+ */
+const HiddenFormInputSlot = ({ component }) => {
+  syncHiddenFormInput(component);
+  return h("slot", { name: hiddenFormInputSlotName });
+};
+
+export { HiddenFormInputSlot as H, afterConnectDefaultValueSet as a, connectForm as c, disconnectForm as d, resetForm as r, submitForm as s };
+
+//# sourceMappingURL=p-a33d73bb.js.map

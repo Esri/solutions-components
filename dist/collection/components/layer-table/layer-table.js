@@ -374,3 +374,4 @@ export class LayerTable {
   }
   static get elementRef() { return "el"; }
 }
+//# sourceMappingURL=layer-table.js.map

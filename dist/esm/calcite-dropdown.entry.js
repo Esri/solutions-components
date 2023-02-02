@@ -475,3 +475,5 @@ const Dropdown = class {
 Dropdown.style = dropdownCss;
 
 export { Dropdown as calcite_dropdown };
+
+//# sourceMappingURL=calcite-dropdown.entry.js.map

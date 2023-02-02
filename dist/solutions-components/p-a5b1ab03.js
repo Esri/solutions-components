@@ -3,15 +3,47 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import{n as o}from"./p-83166522.js";
-/*!
- * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
- * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
- * v1.0.0-beta.97
- */const t="CALCITE-COMBOBOX-ITEM",n="CALCITE-COMBOBOX-ITEM-GROUP",c=`${t}, ${n}`,e={removeTag:"Remove tag"};
+import { n as nodeListToArray } from './p-83166522.js';
+
 /*!
  * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.0.0-beta.97
  */
-function a(o){var t,n;const e=null===(t=o.parentElement)||void 0===t?void 0:t.closest(c);return[e,null===(n=null==e?void 0:e.parentElement)||void 0===n?void 0:n.closest(c)].filter((o=>o))}function i(o){var t;return(null===(t=o.ancestors)||void 0===t?void 0:t.filter((o=>"CALCITE-COMBOBOX-ITEM"===o.nodeName)))||[]}function r(t){return o(t.querySelectorAll("calcite-combobox-item"))}function u(t){return o(t.querySelectorAll("calcite-combobox-item")).filter((o=>o.selected)).length>0}function l(o){return document.evaluate("ancestor::calcite-combobox-item | ancestor::calcite-combobox-item-group",o,null,XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE,null).snapshotLength}export{c as C,e as T,l as a,i as b,r as c,t as d,n as e,a as g,u as h}
+const ComboboxItem = "CALCITE-COMBOBOX-ITEM";
+const ComboboxItemGroup = "CALCITE-COMBOBOX-ITEM-GROUP";
+const ComboboxChildSelector = `${ComboboxItem}, ${ComboboxItemGroup}`;
+const TEXT = {
+  removeTag: "Remove tag"
+};
+
+/*!
+ * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+ * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
+ * v1.0.0-beta.97
+ */
+function getAncestors(element) {
+  var _a, _b;
+  const parent = (_a = element.parentElement) === null || _a === void 0 ? void 0 : _a.closest(ComboboxChildSelector);
+  const grandparent = (_b = parent === null || parent === void 0 ? void 0 : parent.parentElement) === null || _b === void 0 ? void 0 : _b.closest(ComboboxChildSelector);
+  return [parent, grandparent].filter((el) => el);
+}
+function getItemAncestors(item) {
+  var _a;
+  return (((_a = item.ancestors) === null || _a === void 0 ? void 0 : _a.filter((el) => el.nodeName === "CALCITE-COMBOBOX-ITEM")) || []);
+}
+function getItemChildren(item) {
+  return nodeListToArray(item.querySelectorAll("calcite-combobox-item"));
+}
+function hasActiveChildren(node) {
+  const items = nodeListToArray(node.querySelectorAll("calcite-combobox-item"));
+  return items.filter((item) => item.selected).length > 0;
+}
+function getDepth(element) {
+  const result = document.evaluate("ancestor::calcite-combobox-item | ancestor::calcite-combobox-item-group", element, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+  return result.snapshotLength;
+}
+
+export { ComboboxChildSelector as C, TEXT as T, getDepth as a, getItemAncestors as b, getItemChildren as c, ComboboxItem as d, ComboboxItemGroup as e, getAncestors as g, hasActiveChildren as h };
+
+//# sourceMappingURL=p-a5b1ab03.js.map

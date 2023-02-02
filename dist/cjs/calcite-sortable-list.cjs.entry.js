@@ -177,3 +177,5 @@ const SortableList = class {
 SortableList.style = sortableListCss;
 
 exports.calcite_sortable_list = SortableList;
+
+//# sourceMappingURL=calcite-sortable-list.cjs.entry.js.map
