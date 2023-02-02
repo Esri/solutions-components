@@ -41,35 +41,3 @@ function _downloadPDFFile(
 ): void {
   console.log("_downloadPDFFile", labels, labelPageDescription, fileTitle);//???
 }
-
-/**
- * Prepares labels for export.
- *
- * @param labels Array of labels to prepare
- * @param columnNames Column names to add to the beginning of the output array
- * @param labelFormat Field format per label
- * @param removeDuplicates Remove duplicate lines
- *
- * @returns De-duped array of labels if removeDuplicates is true
- */
-/*
-function _prepareOutput(
-  labels: string[][],
-  //columnNames: string[],
-  labelFormat: string[],
-  removeDuplicates = true
-): string[][] {
-  // Format the input into labels
-  // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
-  console.log(labelFormat);
-
-  // Remove duplicates if desired
-  if (removeDuplicates) {
-    const uniques: Set<string> = new Set();
-    labels.forEach(labelLines => uniques.add(labelLines.join("|")));
-    labels = Array.from(uniques).map(label => label.split("|"));
-  }
-
-  return labels;
-}
-*/

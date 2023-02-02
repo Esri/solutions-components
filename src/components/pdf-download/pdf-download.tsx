@@ -106,13 +106,42 @@ export class PdfDownload {
     ids: number[],
     removeDuplicates: boolean
   ): Promise<void> {
+    const includeHeaderNames = true;
+
+    const labels = await this._prepareLabels(ids, removeDuplicates, includeHeaderNames);
+
+    const labelPageDescription = this._labelInfoElement.selectedOption.value;
+
+    return exportPDF(labels, labelPageDescription);
+  }
+
+  /**
+   * Downloads csv of mailing labels for the provided list of ids
+   *
+   * @param ids List of ids to download
+   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+   * @returns Promise resolving when function is done
+   */
+  @Method()
+  async downloadCSV(
+    ids: number[],
+    removeDuplicates: boolean
+  ): Promise<void> {
+    const includeHeaderNames = true;
+
+    const labels = await this._prepareLabels(ids, removeDuplicates, includeHeaderNames);
+
+    return exportCSV(labels);
+  }
+
+  protected async _prepareLabels(
+    ids: number[],
+    removeDuplicates: boolean,
+    includeHeaderNames: boolean
+  ): Promise<string[][]> {
     // Get the attributes of the features to export
     const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
-    //const featuresAttrs = featureSet.features.map(f => f.attributes);
-    let featuresAttrs = featureSet.features.map(f => f.attributes);//???
-    featuresAttrs = [...featuresAttrs, featuresAttrs.slice(1, 9)];//???
-    featuresAttrs[4].NAME = "";//???
-    featuresAttrs[5].STREET = "";//???
+    const featuresAttrs = featureSet.features.map(f => f.attributes);
 
     // What data fields are used in the labels?
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
@@ -149,40 +178,13 @@ export class PdfDownload {
       console.log(labels);//???
     }
 
-    const labelPageDescription = this._labelInfoElement.selectedOption.value;
+    // Add header names
+    if (includeHeaderNames) {
+      const headerNames = labelFormat.map(labelFormatLine => labelFormatLine.replace(/\{/g, "").replace(/\}/g, ""));
+      labels.unshift(headerNames);
+    }
 
-    return exportPDF(labels, labelPageDescription);
-  }
-
-  /**
-   * Downloads csv of mailing labels for the provided list of ids
-   *
-   * @param ids List of ids to download
-   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * @returns Promise resolving when function is done
-   */
-  @Method()
-  async downloadCSV(
-    ids: number[],
-    removeDuplicates: boolean
-  ): Promise<void> {
-    // Get the attributes of the features to export
-    const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
-    const attributes = featureSet.features.map(f => f.attributes);
-
-    // Get the column headings from the first record
-    const columnNames = {};
-    const entry = attributes[0];
-    Object.keys(entry).forEach(k => {
-      if (entry.hasOwnProperty(k)) {
-        columnNames[k] = k;
-      }
-    });
-    console.log(typeof attributes, typeof columnNames);//???
-
-    const labelFormat = this._convertPopupToLabelSpec(this.layerView.layer.popupTemplate.content[0].text);
-    exportCSV(attributes, columnNames, labelFormat, removeDuplicates);
-    return Promise.resolve();
+    return Promise.resolve(labels);
   }
 
   //--------------------------------------------------------------------------

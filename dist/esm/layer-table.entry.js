@@ -6,7 +6,6 @@
 import { r as registerInstance, h, H as Host, g as getElement } from './index-c246d90e.js';
 import { g as getLocaleComponentStrings } from './locale-78c0a2c5.js';
 import { q as queryFeaturesByID, g as goToSelection, a as getMapLayerView, b as queryAllFeatures } from './mapViewUtils-8f0754c5.js';
-import { e as exportCSV } from './csvUtils-81b3e74a.js';
 import './_commonjsHelpers-8fd39c50.js';
 import './interfaces-3b23a5f9.js';
 
@@ -221,16 +220,12 @@ const LayerTable = class {
     const ids = this._getSelectedIds();
     const featureSet = await queryFeaturesByID(ids, this._layerView.layer);
     const attributes = featureSet.features.map(f => f.attributes);
-    // Get the column headings from the first record
-    const columnNames = {};
     const entry = attributes[0];
     Object.keys(entry).forEach(k => {
-      if (entry.hasOwnProperty(k)) {
-        columnNames[k] = k;
-      }
+      if (entry.hasOwnProperty(k)) ;
     });
-    const labelFormat = Object.keys(columnNames).map(column => "{" + column + "}");
-    void exportCSV(attributes, columnNames, labelFormat);
+    //???const labelFormat = Object.keys(columnNames).map(column => "{" + column + "}");
+    //???void exportCSV(attributes);  //???
   }
   /**
    * Zoom to all selected features

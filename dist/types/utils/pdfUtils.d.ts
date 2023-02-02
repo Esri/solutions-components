@@ -20,13 +20,3 @@
  * @param labelPageDescription Page format to use for labels
  */
 export declare function exportPDF(labels: string[][], labelPageDescription: any): void;
-/**
- * Prepares labels for export.
- *
- * @param labels Array of labels to prepare
- * @param columnNames Column names to add to the beginning of the output array
- * @param labelFormat Field format per label
- * @param removeDuplicates Remove duplicate lines
- *
- * @returns De-duped array of labels if removeDuplicates is true
- */

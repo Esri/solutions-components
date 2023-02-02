@@ -56,6 +56,7 @@ export declare class PdfDownload {
    * @returns Promise resolving when function is done
    */
   downloadCSV(ids: number[], removeDuplicates: boolean): Promise<void>;
+  protected _prepareLabels(ids: number[], removeDuplicates: boolean, includeHeaderNames: boolean): Promise<string[][]>;
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */

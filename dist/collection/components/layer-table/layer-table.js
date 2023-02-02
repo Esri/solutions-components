@@ -23,7 +23,7 @@ import { getLocaleComponentStrings } from "../../utils/locale";
 import { getMapLayerView, goToSelection } from "../../utils/mapViewUtils";
 import { queryAllFeatures } from "../../utils/queryUtils";
 import { queryFeaturesByID } from "../../utils/queryUtils";
-import { exportCSV } from "../../utils/csvUtils";
+//???import { exportCSV } from "../../utils/csvUtils";
 // TODO look for options to better handle very large number of records
 //  has a hard time especially with select all when we have many rows
 // TODO test with data that contains domains
@@ -244,8 +244,8 @@ export class LayerTable {
         columnNames[k] = k;
       }
     });
-    const labelFormat = Object.keys(columnNames).map(column => "{" + column + "}");
-    void exportCSV(attributes, columnNames, labelFormat);
+    //???const labelFormat = Object.keys(columnNames).map(column => "{" + column + "}");
+    //???void exportCSV(attributes);  //???
   }
   /**
    * Zoom to all selected features

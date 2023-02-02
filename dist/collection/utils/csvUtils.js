@@ -21,13 +21,12 @@
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
- * @param attributes Array of content to convert into lines of output
- * @param columnNames Column names to add to the beginning of the output array
- * @param labelFormat Field format per label
- * @param removeDuplicates Remove duplicate lines
+ * @param labels Labels to write
  */
-export function exportCSV(attributes, columnNames, labelFormat, removeDuplicates = true) {
-  const outputLines = _prepareOutput(attributes, columnNames, labelFormat, removeDuplicates);
+export function exportCSV(labels) {
+  // Format values to string so it doesn't get tripped up when a value has a comma
+  // another option could be to export with a different delimiter
+  const outputLines = labels.map(label => Object.values(label).map(v => `"${v}"`).join(",") + "\r\n");
   _downloadCSVFile(outputLines, `notify-${Date.now().toString()}`);
 }
 /**
@@ -48,33 +47,4 @@ function _downloadCSVFile(outputLines, fileTitle) {
     link.click();
     document.body.removeChild(link);
   }
-}
-/**
- * Converts output into an array of line strings.
- *
- * @param contents Array of content to convert into lines of output
- * @param columnNames Column names to add to the beginning of the output array
- * @param labelFormat Field format per label
- * @param removeDuplicates Remove duplicate lines
- *
- * @returns Array of line strings
- */
-function _prepareOutput(contents, columnNames, labelFormat, removeDuplicates = true) {
-  // Format the input into labels
-  console.log(labelFormat);
-  // Format values to string so it doesn't get tripped up when a value has a comma
-  // another option could be to export with a different delimiter
-  let outputLines = contents.map(values => Object.values(values).map(v => `"${v}"`).join(",") + "\r\n");
-  // Remove duplicates if desired
-  if (removeDuplicates) {
-    const uniques = new Set();
-    outputLines.forEach(line => uniques.add(line));
-    outputLines = Array.from(uniques);
-  }
-  // Add the column names to the output
-  if (columnNames) {
-    const columnNamesLine = Object.values(columnNames).map(v => `"${v}"`).join(",") + "\r\n";
-    outputLines.unshift(columnNamesLine);
-  }
-  return outputLines;
 }

@@ -4,7 +4,6 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 import { proxyCustomElement, HTMLElement as HTMLElement$1, h as h$7, Host } from '@stencil/core/internal/client';
-import { e as exportCSV } from './csvUtils.js';
 import { g as getLocaleComponentStrings } from './locale.js';
 import { q as queryFeaturesByID } from './queryUtils.js';
 import { d as defineCustomElement$3 } from './icon.js';
@@ -398,6 +397,52 @@ const pdfUtils = /*#__PURE__*/Object.freeze({
  * limitations under the License.
  */
 /**
+ * Export a csv of the attributes from the features that match the provided ids
+ *
+ * @param labels Labels to write
+ */
+function exportCSV(labels) {
+  // Format values to string so it doesn't get tripped up when a value has a comma
+  // another option could be to export with a different delimiter
+  const outputLines = labels.map(label => Object.values(label).map(v => `"${v}"`).join(",") + "\r\n");
+  _downloadCSVFile(outputLines, `notify-${Date.now().toString()}`);
+}
+/**
+ * Download the CSV file
+ *
+ * @param outputLines Lines of output to write to file
+ * @param fileTitle Title (without file extension) to use for file; defaults to "export"
+ *
+ * @see {@link https://medium.com/@danny.pule/export-json-to-csv-file-using-javascript-a0b7bc5b00d2}
+ */
+function _downloadCSVFile(outputLines, fileTitle) {
+  const link = document.createElement("a");
+  if (link.download !== undefined) {
+    link.href = URL.createObjectURL(new Blob(outputLines, { type: "text/csv;charset=utf-8;" }));
+    link.download = `${fileTitle}.csv` || "export.csv";
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+}
+
+/** @license
+ * Copyright 2022 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
  * Exports a PDF of labels.
  *
  * @param labels Labels to write
@@ -416,37 +461,6 @@ function exportPDF(labels, labelPageDescription) {
 function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
   console.log("_downloadPDFFile", labels, labelPageDescription, fileTitle); //???
 }
-/**
- * Prepares labels for export.
- *
- * @param labels Array of labels to prepare
- * @param columnNames Column names to add to the beginning of the output array
- * @param labelFormat Field format per label
- * @param removeDuplicates Remove duplicate lines
- *
- * @returns De-duped array of labels if removeDuplicates is true
- */
-/*
-function _prepareOutput(
-  labels: string[][],
-  //columnNames: string[],
-  labelFormat: string[],
-  removeDuplicates = true
-): string[][] {
-  // Format the input into labels
-  // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
-  console.log(labelFormat);
-
-  // Remove duplicates if desired
-  if (removeDuplicates) {
-    const uniques: Set<string> = new Set();
-    labels.forEach(labelLines => uniques.add(labelLines.join("|")));
-    labels = Array.from(uniques).map(label => label.split("|"));
-  }
-
-  return labels;
-}
-*/
 
 const pdfDownloadCss = ":host{display:block}";
 
@@ -478,13 +492,27 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement$1
    * @returns Promise resolving when function is done
    */
   async downloadPDF(ids, removeDuplicates) {
+    const includeHeaderNames = true;
+    const labels = await this._prepareLabels(ids, removeDuplicates, includeHeaderNames);
+    const labelPageDescription = this._labelInfoElement.selectedOption.value;
+    return exportPDF(labels, labelPageDescription);
+  }
+  /**
+   * Downloads csv of mailing labels for the provided list of ids
+   *
+   * @param ids List of ids to download
+   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+   * @returns Promise resolving when function is done
+   */
+  async downloadCSV(ids, removeDuplicates) {
+    const includeHeaderNames = true;
+    const labels = await this._prepareLabels(ids, removeDuplicates, includeHeaderNames);
+    return exportCSV(labels);
+  }
+  async _prepareLabels(ids, removeDuplicates, includeHeaderNames) {
     // Get the attributes of the features to export
     const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
-    //const featuresAttrs = featureSet.features.map(f => f.attributes);
-    let featuresAttrs = featureSet.features.map(f => f.attributes); //???
-    featuresAttrs = [...featuresAttrs, featuresAttrs.slice(1, 9)]; //???
-    featuresAttrs[4].NAME = ""; //???
-    featuresAttrs[5].STREET = ""; //???
+    const featuresAttrs = featureSet.features.map(f => f.attributes);
     // What data fields are used in the labels?
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
     const labelFormat = this._convertPopupToLabelSpec(this.layerView.layer.popupTemplate.content[0].text);
@@ -511,32 +539,12 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement$1
       console.log("remove duplicates after " + labels.length.toString()); //???
       console.log(labels); //???
     }
-    const labelPageDescription = this._labelInfoElement.selectedOption.value;
-    return exportPDF(labels, labelPageDescription);
-  }
-  /**
-   * Downloads csv of mailing labels for the provided list of ids
-   *
-   * @param ids List of ids to download
-   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * @returns Promise resolving when function is done
-   */
-  async downloadCSV(ids, removeDuplicates) {
-    // Get the attributes of the features to export
-    const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
-    const attributes = featureSet.features.map(f => f.attributes);
-    // Get the column headings from the first record
-    const columnNames = {};
-    const entry = attributes[0];
-    Object.keys(entry).forEach(k => {
-      if (entry.hasOwnProperty(k)) {
-        columnNames[k] = k;
-      }
-    });
-    console.log(typeof attributes, typeof columnNames); //???
-    const labelFormat = this._convertPopupToLabelSpec(this.layerView.layer.popupTemplate.content[0].text);
-    exportCSV(attributes, columnNames, labelFormat, removeDuplicates);
-    return Promise.resolve();
+    // Add header names
+    if (includeHeaderNames) {
+      const headerNames = labelFormat.map(labelFormatLine => labelFormatLine.replace(/\{/g, "").replace(/\}/g, ""));
+      labels.unshift(headerNames);
+    }
+    return Promise.resolve(labels);
   }
   //--------------------------------------------------------------------------
   //
