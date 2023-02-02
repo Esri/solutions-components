@@ -298,8 +298,7 @@ export class MapDrawTools {
         "lasso-selection": false,
         "rectangle-selection": false
       }, createTools: {
-        "circle": false,
-        "point": false
+        "circle": false
       }
     }
 
