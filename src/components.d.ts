@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EExpandType, ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IExportOptions, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
+import { DistanceUnit, EExpandType, ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IExportOptions, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -924,6 +924,14 @@ declare namespace LocalJSX {
           * Emitted on demand when a buffer is generated.
          */
         "onBufferComplete"?: (event: BufferToolsCustomEvent<__esri.Polygon | __esri.Polygon[]>) => void;
+        /**
+          * Emitted on demand when a buffer is generated.
+         */
+        "onDistanceChanged"?: (event: BufferToolsCustomEvent<IValueChange>) => void;
+        /**
+          * Emitted on demand when a buffer is generated.
+         */
+        "onUnitChanged"?: (event: BufferToolsCustomEvent<IValueChange>) => void;
         /**
           * number: The component's maximum selectable value.
          */

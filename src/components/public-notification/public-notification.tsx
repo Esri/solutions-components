@@ -195,6 +195,11 @@ export class PublicNotification {
   protected _activeSelection: ISelectionSet;
 
   /**
+   * string: The current custom label
+   */
+  protected _customLabel: string;
+
+  /**
    * HTMLPdfDownloadElement: The pdf tools element
    */
   protected _downloadTools: HTMLPdfDownloadElement;
@@ -302,6 +307,14 @@ export class PublicNotification {
   @Event() labelChange: EventEmitter<string>;
 
   /**
+   * Handle changes to the buffer distance value
+   */
+  @Listen("distanceChanged", { target: "window" })
+  distanceChanged(event: CustomEvent): void {
+    this._updateLabel(event);
+  }
+
+  /**
    * Handle changes to the selection sets
    */
   @Listen("selectionSetsChanged", { target: "window" })
@@ -315,6 +328,14 @@ export class PublicNotification {
   @Listen("sketchTypeChange", { target: "window" })
   sketchTypeChange(event: CustomEvent): void {
     this._sketchType = event.detail;
+  }
+
+  /**
+   * Handle changes to the buffer unit
+   */
+  @Listen("unitChanged", { target: "window" })
+  unitChanged(event: CustomEvent): void {
+    this._updateLabel(event);
   }
 
   //--------------------------------------------------------------------------
@@ -703,7 +724,7 @@ export class PublicNotification {
               }}
               placeholder="Insert label here..."
               ref={(el) => { this._labelName = el }}
-              value={this._activeSelection?.label || ""}
+              value={this._customLabel || ""}
             />
           </calcite-label>
         </div>
@@ -996,6 +1017,21 @@ export class PublicNotification {
   }
 
   /**
+   * Update custom label UI with buffer values
+   *
+   * @protected
+   */
+  protected _updateLabel(
+    evt: CustomEvent
+  ): void {
+    if (this.customLabelEnabled && this._customLabel && this._labelName.value.indexOf(evt.detail.oldValue) > -1) {
+      this._customLabel = this._customLabel.replace(evt.detail.oldValue, evt.detail.newValue);
+      this._labelName.value = this._customLabel;
+      this.labelChange.emit(this._labelName.value);
+    }
+  }
+
+  /**
    * Store the current workflow type
    *
    * @protected
@@ -1164,6 +1200,7 @@ export class PublicNotification {
     await this._selectTools?.clearSelection();
     this._numSelected = 0;
     this._activeSelection = undefined;
+    this._customLabel = undefined;
   }
 
   /**
@@ -1218,6 +1255,9 @@ export class PublicNotification {
   ): void {
     evt.stopPropagation();
     this._activeSelection = selectionSet;
+    if (this.customLabelEnabled) {
+      this._customLabel = this._activeSelection.label;
+    }
     this._pageType = EPageType.SELECT;
   }
 
