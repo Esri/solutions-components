@@ -923,7 +923,7 @@ export class PublicNotification {
         }
         prev.push((
           <div class="display-flex padding-sides-1 padding-bottom-1">
-            <calcite-checkbox checked={cur.download} onClick={() => { void this._toggleDownload(cur.id) }} />
+            <calcite-checkbox checked={cur.download} class="align-center" onClick={() => { void this._toggleDownload(cur.id) }} />
             <calcite-list class="list-border margin-start-1-2 w-100" id="download-list">
               <calcite-list-item
                 description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
