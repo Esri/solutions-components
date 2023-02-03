@@ -8,9 +8,9 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 const index = require('./index-c6979cbb.js');
-const locale = require('./locale-de75eb2b.js');
+const locale = require('./locale-81876817.js');
 const mapViewUtils = require('./mapViewUtils-55ac76cb.js');
-require('./_commonjsHelpers-6aafa5de.js');
+require('./_commonjsHelpers-384729db.js');
 require('./interfaces-772edf61.js');
 
 const layerTableCss = ":host{display:block}.table{display:table;width:100%}.header{display:table-header-group;background-color:#757575;font-weight:500;font-size:var(--calcite-font-size-0);color:var(--calcite-ui-text-inverse);position:sticky;top:0;z-index:1}.table-header-cell{display:table-cell;text-align:justify;border-right:1px solid var(--calcite-ui-border-2);padding:0.5rem}.table-body{display:table-row-group}.row{display:table-row}.table-cell{display:table-cell;padding:0.5rem}.display-table-header{display:table-header-group}.display-flex{display:flex}.table-border{border:1px solid var(--calcite-ui-border-2)}.justify-center{justify-content:center}.table-container{width:100%}.overflow-auto{overflow:auto}.data-container{overflow:auto;height:calc(100% - 35px)}.row:nth-child(odd){background:var(--calcite-ui-foreground-3)}.padding-3-4{padding:0.75rem}.field-width{white-space:nowrap;min-width:300px;max-width:300px;overflow:hidden}";

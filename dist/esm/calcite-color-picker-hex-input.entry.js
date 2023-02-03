@@ -5,10 +5,10 @@
  */
 import { r as registerInstance, c as createEvent, h, g as getElement } from './index-c246d90e.js';
 import { n as normalizeHex, i as isValidHex, a as isLonghandHex, r as rgbToHex, b as hexChar } from './utils-3f4ee4c3.js';
-import { c as color } from './index-d33ebc35.js';
+import { c as color } from './index-9fdcb8d3.js';
 import { f as focusElement } from './dom-3bdc69ee.js';
-import { T as TEXT } from './resources-7d4a587f.js';
-import './_commonjsHelpers-8fd39c50.js';
+import { T as TEXT } from './resources-07070bff.js';
+import './_commonjsHelpers-d5f9d613.js';
 import './resources-436ae282.js';
 import './guid-15fce7c0.js';
 

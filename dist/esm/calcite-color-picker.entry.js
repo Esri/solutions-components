@@ -4,15 +4,15 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 import { r as registerInstance, c as createEvent, h, g as getElement } from './index-c246d90e.js';
-import { c as color } from './index-d33ebc35.js';
-import { D as DEFAULT_COLOR, T as TEXT, a as DIMENSIONS, H as HSV_LIMITS, C as CSS, b as DEFAULT_STORAGE_KEY_PREFIX, R as RGB_LIMITS } from './resources-7d4a587f.js';
+import { c as color } from './index-9fdcb8d3.js';
+import { D as DEFAULT_COLOR, T as TEXT, a as DIMENSIONS, H as HSV_LIMITS, C as CSS, b as DEFAULT_STORAGE_KEY_PREFIX, R as RGB_LIMITS } from './resources-07070bff.js';
 import { i as isPrimaryPointerButton, b as getElementDir, f as focusElement } from './dom-3bdc69ee.js';
 import { n as normalizeHex, C as CSSColorMode, p as parseMode, c as colorEqual } from './utils-3f4ee4c3.js';
 import { c as clamp } from './math-552c5420.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
 import { i as isActivationKey } from './key-acb660e7.js';
 import { d as debounce, i as isObject } from './debounce-4c884e5c.js';
-import './_commonjsHelpers-8fd39c50.js';
+import './_commonjsHelpers-d5f9d613.js';
 import './resources-436ae282.js';
 import './guid-15fce7c0.js';
 

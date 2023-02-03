@@ -4,9 +4,9 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-c246d90e.js';
-import { l as loadModules } from './loadModules-4e40f189.js';
-import { g as getLocaleComponentStrings } from './locale-78c0a2c5.js';
-import './_commonjsHelpers-8fd39c50.js';
+import { l as loadModules } from './loadModules-c5553ae8.js';
+import { g as getLocaleComponentStrings } from './locale-45c3ffef.js';
+import './_commonjsHelpers-d5f9d613.js';
 
 const mapSearchCss = ":host{display:block}.search-widget{width:100% !important;border:1px solid var(--calcite-ui-border-input)}";
 
