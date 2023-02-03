@@ -18,7 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, W
 import { loadModules } from "../../utils/loadModules";
 import BufferTools_T9n from "../../assets/t9n/buffer-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { DistanceUnit } from "../../utils/interfaces";
+import { DistanceUnit, IValueChange } from "../../utils/interfaces";
 
 @Component({
   tag: "buffer-tools",
@@ -147,6 +147,16 @@ export class BufferTools {
    */
   @Event() bufferComplete: EventEmitter<__esri.Polygon | __esri.Polygon[]>;
 
+  /**
+   * Emitted on demand when the distance value changes
+   */
+  @Event() distanceChanged: EventEmitter<IValueChange>;
+
+  /**
+   * Emitted on demand when the unit changes
+   */
+  @Event() unitChanged: EventEmitter<IValueChange>;
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -225,6 +235,10 @@ export class BufferTools {
   protected _setDistance(
     event: CustomEvent
   ): void {
+    this.distanceChanged.emit({
+      oldValue: this.distance,
+      newValue: event.detail.value
+    });
     this.distance = event.detail.value;
     if (this.distance > 0) {
       this._buffer();
@@ -241,6 +255,10 @@ export class BufferTools {
   protected _setUnit(
     unit: DistanceUnit
   ): void {
+    this.unitChanged.emit({
+      oldValue: this.unit,
+      newValue: unit
+    });
     this.unit = unit;
     this._buffer();
   }
