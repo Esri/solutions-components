@@ -70,5 +70,3 @@ const PopoverManager = class {
 PopoverManager.style = popoverManagerCss;
 
 export { PopoverManager as calcite_popover_manager };
-
-//# sourceMappingURL=calcite-popover-manager.entry.js.map

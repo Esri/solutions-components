@@ -67,4 +67,3 @@ function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
     pdfLib.save();
   });
 }
-//# sourceMappingURL=pdfUtils.js.map

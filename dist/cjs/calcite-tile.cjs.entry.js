@@ -96,5 +96,3 @@ const Tile = class {
 Tile.style = tileCss;
 
 exports.calcite_tile = Tile;
-
-//# sourceMappingURL=calcite-tile.cjs.entry.js.map

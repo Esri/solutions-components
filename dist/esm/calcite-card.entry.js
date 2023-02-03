@@ -143,5 +143,3 @@ const Card = class {
 Card.style = cardCss;
 
 export { Card as calcite_card };
-
-//# sourceMappingURL=calcite-card.entry.js.map

@@ -162,5 +162,3 @@ const FlowItem = class {
 FlowItem.style = flowItemCss;
 
 exports.calcite_flow_item = FlowItem;
-
-//# sourceMappingURL=calcite-flow-item.cjs.entry.js.map

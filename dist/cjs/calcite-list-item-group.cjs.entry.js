@@ -45,5 +45,3 @@ const ListItemGroup = class {
 ListItemGroup.style = listItemGroupCss;
 
 exports.calcite_list_item_group = ListItemGroup;
-
-//# sourceMappingURL=calcite-list-item-group.cjs.entry.js.map

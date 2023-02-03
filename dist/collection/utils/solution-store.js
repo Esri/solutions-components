@@ -582,4 +582,3 @@ class SolutionStore {
   }
 }
 export default SolutionStore.Store;
-//# sourceMappingURL=solution-store.js.map

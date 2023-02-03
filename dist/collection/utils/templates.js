@@ -344,4 +344,3 @@ function _getTopLevelItemIds(templates) {
   });
   return topLevelItemCandidateIds;
 }
-//# sourceMappingURL=templates.js.map

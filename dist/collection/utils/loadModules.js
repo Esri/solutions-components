@@ -23,4 +23,3 @@ export const loadModules = async (moduleNames, options) => {
   const mods = await _loadModules(moduleNames, options);
   return mods.map((mod) => (mod.__esModule && mod.default ? mod.default : mod));
 };
-//# sourceMappingURL=loadModules.js.map

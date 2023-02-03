@@ -915,5 +915,3 @@ const ColorPicker = class {
 ColorPicker.style = colorPickerCss;
 
 exports.calcite_color_picker = ColorPicker;
-
-//# sourceMappingURL=calcite-color-picker.cjs.entry.js.map

@@ -57,5 +57,3 @@ function disconnectOpenCloseComponent(component) {
 
 exports.connectOpenCloseComponent = connectOpenCloseComponent;
 exports.disconnectOpenCloseComponent = disconnectOpenCloseComponent;
-
-//# sourceMappingURL=openCloseComponent-bf986132.js.map

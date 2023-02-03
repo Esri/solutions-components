@@ -276,5 +276,3 @@ const RadioButton = class {
 RadioButton.style = radioButtonCss;
 
 export { RadioButton as calcite_radio_button };
-
-//# sourceMappingURL=calcite-radio-button.entry.js.map

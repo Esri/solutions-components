@@ -188,5 +188,3 @@ function parseTimeString(value) {
 }
 
 export { localizeTimeStringToParts as a, getTimeParts as b, formatTimePart as c, localizeTimePart as d, getLocaleHourCycle as e, formatTimeString as f, getMeridiem as g, isValidTime as i, localizeTimeString as l, maxTenthForMinuteAndSecond as m, parseTimeString as p };
-
-//# sourceMappingURL=time-52d51e3d.js.map

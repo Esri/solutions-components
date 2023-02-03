@@ -1136,5 +1136,3 @@ MapLayerPicker.style = mapLayerPickerCss;
 exports.calcite_combobox = Combobox;
 exports.calcite_combobox_item = ComboboxItem;
 exports.map_layer_picker = MapLayerPicker;
-
-//# sourceMappingURL=calcite-combobox_3.cjs.entry.js.map

@@ -34,5 +34,3 @@ function getTotal(selectionSets) {
 
 exports.getSelectionIds = getSelectionIds;
 exports.getTotal = getTotal;
-
-//# sourceMappingURL=publicNotificationUtils-9d585d8d.js.map

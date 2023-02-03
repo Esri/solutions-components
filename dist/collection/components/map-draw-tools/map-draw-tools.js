@@ -417,4 +417,3 @@ export class MapDrawTools {
       }];
   }
 }
-//# sourceMappingURL=map-draw-tools.js.map

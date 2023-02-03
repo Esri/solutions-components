@@ -31,5 +31,3 @@ function getTotal(selectionSets) {
 }
 
 export { getSelectionIds as a, getTotal as g };
-
-//# sourceMappingURL=publicNotificationUtils-5cb5a607.js.map

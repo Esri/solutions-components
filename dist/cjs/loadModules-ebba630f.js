@@ -28,5 +28,3 @@ const loadModules = async (moduleNames, options) => {
 };
 
 exports.loadModules = loadModules;
-
-//# sourceMappingURL=loadModules-ebba630f.js.map

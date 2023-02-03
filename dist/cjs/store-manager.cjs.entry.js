@@ -63,5 +63,3 @@ const StoreManager = class {
 };
 
 exports.store_manager = StoreManager;
-
-//# sourceMappingURL=store-manager.cjs.entry.js.map

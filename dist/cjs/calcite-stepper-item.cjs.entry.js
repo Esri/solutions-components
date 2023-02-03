@@ -236,5 +236,3 @@ const StepperItem = class {
 StepperItem.style = stepperItemCss;
 
 exports.calcite_stepper_item = StepperItem;
-
-//# sourceMappingURL=calcite-stepper-item.cjs.entry.js.map

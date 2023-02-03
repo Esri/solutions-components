@@ -87,4 +87,3 @@ export class CrowdsourceManager {
   }
   static get elementRef() { return "el"; }
 }
-//# sourceMappingURL=crowdsource-manager.js.map

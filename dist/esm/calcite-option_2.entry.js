@@ -306,5 +306,3 @@ const Select = class {
 Select.style = selectCss;
 
 export { Option as calcite_option, Select as calcite_select };
-
-//# sourceMappingURL=calcite-option_2.entry.js.map

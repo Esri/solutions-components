@@ -82,5 +82,3 @@ const ShellCenterRow = class {
 ShellCenterRow.style = shellCenterRowCss;
 
 exports.calcite_shell_center_row = ShellCenterRow;
-
-//# sourceMappingURL=calcite-shell-center-row.cjs.entry.js.map

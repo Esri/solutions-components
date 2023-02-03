@@ -343,5 +343,3 @@ const InputText = class {
 InputText.style = inputTextCss;
 
 export { InputText as calcite_input_text };
-
-//# sourceMappingURL=calcite-input-text.entry.js.map

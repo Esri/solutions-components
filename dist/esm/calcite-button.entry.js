@@ -211,5 +211,3 @@ const Button = class {
 Button.style = buttonCss;
 
 export { Button as calcite_button };
-
-//# sourceMappingURL=calcite-button.entry.js.map

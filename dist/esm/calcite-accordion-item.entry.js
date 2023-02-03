@@ -210,5 +210,3 @@ const AccordionItem = class {
 AccordionItem.style = accordionItemCss;
 
 export { AccordionItem as calcite_accordion_item };
-
-//# sourceMappingURL=calcite-accordion-item.entry.js.map

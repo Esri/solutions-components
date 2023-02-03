@@ -28,5 +28,3 @@ const defineCustomElements = (win, options) => {
 
 exports.setNonce = index.setNonce;
 exports.defineCustomElements = defineCustomElements;
-
-//# sourceMappingURL=loader.cjs.js.map

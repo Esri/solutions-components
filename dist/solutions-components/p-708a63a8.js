@@ -8,17 +8,4 @@
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.0.0-beta.97
  */
-const SLOTS = {
-  menuActions: "menu-actions",
-  menuTooltip: "menu-tooltip"
-};
-const TEXT = {
-  more: "More"
-};
-const ICONS = {
-  menu: "ellipsis"
-};
-
-export { ICONS as I, SLOTS as S, TEXT as T };
-
-//# sourceMappingURL=p-708a63a8.js.map
+const o={menuActions:"menu-actions",menuTooltip:"menu-tooltip"},e={more:"More"},n={menu:"ellipsis"};export{n as I,o as S,e as T}

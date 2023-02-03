@@ -69,5 +69,3 @@ const ListItem = class {
 ListItem.style = listItemCss;
 
 export { ListItem as list_item };
-
-//# sourceMappingURL=list-item.entry.js.map

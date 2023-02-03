@@ -138,4 +138,3 @@ export async function goToSelection(ids, layerView, mapView, flashFeatures = tru
     await flashSelection(ids, layerView, featureEffect);
   }
 }
-//# sourceMappingURL=mapViewUtils.js.map

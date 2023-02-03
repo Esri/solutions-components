@@ -40,5 +40,3 @@ const OptionGroup = class {
 OptionGroup.style = optionGroupCss;
 
 export { OptionGroup as calcite_option_group };
-
-//# sourceMappingURL=calcite-option-group.entry.js.map

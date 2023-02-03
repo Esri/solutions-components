@@ -435,5 +435,3 @@ Shell.style = shellCss;
 
 exports.calcite_panel = Panel;
 exports.calcite_shell = Shell;
-
-//# sourceMappingURL=calcite-panel_2.cjs.entry.js.map

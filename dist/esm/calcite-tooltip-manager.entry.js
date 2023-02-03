@@ -34,5 +34,3 @@ const TooltipManager = class {
 TooltipManager.style = tooltipManagerCss;
 
 export { TooltipManager as calcite_tooltip_manager };
-
-//# sourceMappingURL=calcite-tooltip-manager.entry.js.map

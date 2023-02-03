@@ -713,5 +713,3 @@ const TimePicker = class {
 TimePicker.style = timePickerCss;
 
 exports.calcite_time_picker = TimePicker;
-
-//# sourceMappingURL=calcite-time-picker.cjs.entry.js.map

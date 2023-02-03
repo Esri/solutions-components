@@ -316,5 +316,3 @@ const LayerTable = class {
 LayerTable.style = layerTableCss;
 
 export { LayerTable as layer_table };
-
-//# sourceMappingURL=layer-table.entry.js.map

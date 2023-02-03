@@ -704,5 +704,3 @@ const Progress = class {
 Progress.style = progressCss;
 
 export { Input as calcite_input, Progress as calcite_progress };
-
-//# sourceMappingURL=calcite-input_2.entry.js.map

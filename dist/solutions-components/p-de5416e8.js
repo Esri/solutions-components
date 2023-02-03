@@ -8,33 +8,4 @@
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.0.0-beta.97
  */
-const CSS = {
-  actions: "actions",
-  actionsEnd: "actions--end",
-  actionsStart: "actions--start",
-  description: "description",
-  handle: "handle",
-  handleActivated: "handle--activated",
-  highlight: "highlight",
-  icon: "icon",
-  iconDot: "icon-dot",
-  label: "label",
-  remove: "remove",
-  title: "title",
-  textContainer: "text-container"
-};
-const ICONS = {
-  checked: "check",
-  remove: "x"
-};
-const SLOTS = {
-  actionsEnd: "actions-end",
-  actionsStart: "actions-start"
-};
-const TEXT = {
-  remove: "Remove"
-};
-
-export { CSS as C, ICONS as I, SLOTS as S, TEXT as T };
-
-//# sourceMappingURL=p-de5416e8.js.map
+const t={actions:"actions",actionsEnd:"actions--end",actionsStart:"actions--start",description:"description",handle:"handle",handleActivated:"handle--activated",highlight:"highlight",icon:"icon",iconDot:"icon-dot",label:"label",remove:"remove",title:"title",textContainer:"text-container"},e={checked:"check",remove:"x"},a={actionsEnd:"actions-end",actionsStart:"actions-start"},n={remove:"Remove"};export{t as C,e as I,a as S,n as T}

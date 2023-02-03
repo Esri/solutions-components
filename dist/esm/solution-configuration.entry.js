@@ -1984,5 +1984,3 @@ const SolutionConfiguration = class {
 SolutionConfiguration.style = solutionConfigurationCss;
 
 export { SolutionConfiguration as solution_configuration };
-
-//# sourceMappingURL=solution-configuration.entry.js.map

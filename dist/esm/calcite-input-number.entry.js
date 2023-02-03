@@ -570,5 +570,3 @@ const InputNumber = class {
 InputNumber.style = inputNumberCss;
 
 export { InputNumber as calcite_input_number };
-
-//# sourceMappingURL=calcite-input-number.entry.js.map

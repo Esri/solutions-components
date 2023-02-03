@@ -181,5 +181,3 @@ const PickListItem = class {
 PickListItem.style = pickListItemCss;
 
 exports.calcite_pick_list_item = PickListItem;
-
-//# sourceMappingURL=calcite-pick-list-item.cjs.entry.js.map

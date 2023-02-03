@@ -120,5 +120,3 @@ const BlockSection = class {
 BlockSection.style = blockSectionCss;
 
 exports.calcite_block_section = BlockSection;
-
-//# sourceMappingURL=calcite-block-section.cjs.entry.js.map

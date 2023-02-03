@@ -422,5 +422,3 @@ exports.numberStringFormatter = numberStringFormatter;
 exports.parseNumberString = parseNumberString;
 exports.sanitizeNumberString = sanitizeNumberString;
 exports.updateEffectiveLocale = updateEffectiveLocale;
-
-//# sourceMappingURL=locale-73cab8e8.js.map

@@ -182,5 +182,3 @@ const ListItem = class {
 ListItem.style = listItemCss;
 
 export { List as calcite_list, ListItem as calcite_list_item };
-
-//# sourceMappingURL=calcite-list_2.entry.js.map

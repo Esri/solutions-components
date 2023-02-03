@@ -445,5 +445,3 @@ const Modal = class {
 Modal.style = modalCss;
 
 exports.calcite_modal = Modal;
-
-//# sourceMappingURL=calcite-modal.cjs.entry.js.map

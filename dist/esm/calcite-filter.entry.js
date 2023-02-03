@@ -148,5 +148,3 @@ const Filter = class {
 Filter.style = filterCss;
 
 export { Filter as calcite_filter };
-
-//# sourceMappingURL=calcite-filter.entry.js.map

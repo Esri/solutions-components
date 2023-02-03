@@ -22,5 +22,3 @@ const TEXT = {
 };
 
 export { CSS_UTILITY as C, TEXT as T, autoTheme as a, darkTheme as d };
-
-//# sourceMappingURL=resources-436ae282.js.map

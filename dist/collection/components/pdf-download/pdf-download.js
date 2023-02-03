@@ -348,4 +348,3 @@ export class PdfDownload {
   }
   static get elementRef() { return "el"; }
 }
-//# sourceMappingURL=pdf-download.js.map

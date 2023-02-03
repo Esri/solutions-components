@@ -29,5 +29,3 @@ patchBrowser().then(options => {
 });
 
 exports.setNonce = index.setNonce;
-
-//# sourceMappingURL=solutions-components.cjs.js.map

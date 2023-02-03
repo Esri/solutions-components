@@ -228,5 +228,3 @@ const Pagination = class {
 Pagination.style = paginationCss;
 
 exports.calcite_pagination = Pagination;
-
-//# sourceMappingURL=calcite-pagination.cjs.entry.js.map

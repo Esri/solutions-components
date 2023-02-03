@@ -461,5 +461,3 @@ exports.calcite_dropdown_group = DropdownGroup;
 exports.calcite_dropdown_item = DropdownItem;
 exports.calcite_split_button = SplitButton;
 exports.edit_record_modal = EditRecordModal;
-
-//# sourceMappingURL=calcite-dropdown-group_4.cjs.entry.js.map

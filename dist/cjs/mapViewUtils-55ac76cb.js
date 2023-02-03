@@ -332,5 +332,3 @@ exports.queryAllFeatures = queryAllFeatures;
 exports.queryFeaturesByGeometry = queryFeaturesByGeometry;
 exports.queryFeaturesByID = queryFeaturesByID;
 exports.queryObjectIds = queryObjectIds;
-
-//# sourceMappingURL=mapViewUtils-55ac76cb.js.map

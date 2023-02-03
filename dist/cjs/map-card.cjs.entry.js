@@ -250,5 +250,3 @@ const MapCard = class {
 MapCard.style = mapCardCss;
 
 exports.map_card = MapCard;
-
-//# sourceMappingURL=map-card.cjs.entry.js.map

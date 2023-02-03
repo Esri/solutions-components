@@ -454,5 +454,3 @@ const EditRecordModal = class {
 EditRecordModal.style = editRecordModalCss;
 
 export { DropdownGroup as calcite_dropdown_group, DropdownItem as calcite_dropdown_item, SplitButton as calcite_split_button, EditRecordModal as edit_record_modal };
-
-//# sourceMappingURL=calcite-dropdown-group_4.entry.js.map

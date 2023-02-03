@@ -250,5 +250,3 @@ const InlineEditable = class {
 InlineEditable.style = inlineEditableCss;
 
 exports.calcite_inline_editable = InlineEditable;
-
-//# sourceMappingURL=calcite-inline-editable.cjs.entry.js.map
