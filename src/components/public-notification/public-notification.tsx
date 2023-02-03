@@ -1037,7 +1037,7 @@ export class PublicNotification {
     evt: CustomEvent,
     type: "unit" | "distance"
   ): void {
-    if (this.customLabelEnabled && this._customLabel && this._labelName.value.indexOf(evt.detail.oldValue) > -1) {
+    if (this._customLabel) {
       const oldV = type === "unit" ? `${this._distance} ${evt.detail.oldValue}` : `${evt.detail.oldValue} ${this._unit}`;
       const newV = type === "unit" ? `${this._distance} ${evt.detail.newValue}` : `${evt.detail.newValue} ${this._unit}`;
       this._customLabel = this._customLabel.replace(oldV, newV);
@@ -1274,9 +1274,7 @@ export class PublicNotification {
     this._activeSelection = selectionSet;
     this._distance = this._activeSelection.distance;
     this._unit = this._activeSelection.unit;
-    if (this.customLabelEnabled) {
-      this._customLabel = this._activeSelection.label;
-    }
+    this._customLabel = this._activeSelection.label;
     this._pageType = EPageType.SELECT;
   }
 
