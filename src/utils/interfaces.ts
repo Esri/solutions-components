@@ -44,8 +44,8 @@ export enum EPageType {
 }
 
 export enum ERefineMode {
-  ALL="ALL",
-  SUBSET="SUBSET"
+  ALL="ALL", // Used for the refine selection workflow
+  SUBSET="SUBSET" // Used as a part interactive selection "Use layer features"
 }
 
 export enum ESelectionMode {
