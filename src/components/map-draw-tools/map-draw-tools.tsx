@@ -299,7 +299,8 @@ export class MapDrawTools {
         "rectangle-selection": false
       }, createTools: {
         "circle": false
-      }
+      },
+      undoRedoMenu: false
     }
 
     this._sketchWidget.on("update", (evt) => {
