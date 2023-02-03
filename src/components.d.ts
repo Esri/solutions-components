@@ -925,11 +925,11 @@ declare namespace LocalJSX {
          */
         "onBufferComplete"?: (event: BufferToolsCustomEvent<__esri.Polygon | __esri.Polygon[]>) => void;
         /**
-          * Emitted on demand when a buffer is generated.
+          * Emitted on demand when the distance value changes
          */
         "onDistanceChanged"?: (event: BufferToolsCustomEvent<IValueChange>) => void;
         /**
-          * Emitted on demand when a buffer is generated.
+          * Emitted on demand when the unit changes
          */
         "onUnitChanged"?: (event: BufferToolsCustomEvent<IValueChange>) => void;
         /**

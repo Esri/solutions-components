@@ -200,6 +200,11 @@ export class PublicNotification {
   protected _customLabel: string;
 
   /**
+   * number: The current buffer distance
+   */
+  protected _distance: number;
+
+  /**
    * HTMLPdfDownloadElement: The pdf tools element
    */
   protected _downloadTools: HTMLPdfDownloadElement;
@@ -233,6 +238,11 @@ export class PublicNotification {
    * HTMLMapSelectToolsElement: The select tools element
    */
   protected _selectTools: HTMLMapSelectToolsElement;
+
+  /**
+   * string: The current buffer unit
+   */
+  protected _unit: string;
 
   //--------------------------------------------------------------------------
   //
@@ -311,7 +321,8 @@ export class PublicNotification {
    */
   @Listen("distanceChanged", { target: "window" })
   distanceChanged(event: CustomEvent): void {
-    this._updateLabel(event);
+    this._updateLabel(event, "distance");
+    this._distance = event.detail.newValue;
   }
 
   /**
@@ -335,7 +346,8 @@ export class PublicNotification {
    */
   @Listen("unitChanged", { target: "window" })
   unitChanged(event: CustomEvent): void {
-    this._updateLabel(event);
+    this._updateLabel(event, "unit");
+    this._unit = event.detail.newValue;
   }
 
   //--------------------------------------------------------------------------
@@ -1022,10 +1034,13 @@ export class PublicNotification {
    * @protected
    */
   protected _updateLabel(
-    evt: CustomEvent
+    evt: CustomEvent,
+    type: "unit" | "distance"
   ): void {
     if (this.customLabelEnabled && this._customLabel && this._labelName.value.indexOf(evt.detail.oldValue) > -1) {
-      this._customLabel = this._customLabel.replace(evt.detail.oldValue, evt.detail.newValue);
+      const oldV = type === "unit" ? `${this._distance} ${evt.detail.oldValue}` : `${evt.detail.oldValue} ${this._unit}`;
+      const newV = type === "unit" ? `${this._distance} ${evt.detail.newValue}` : `${evt.detail.newValue} ${this._unit}`;
+      this._customLabel = this._customLabel.replace(oldV, newV);
       this._labelName.value = this._customLabel;
       this.labelChange.emit(this._labelName.value);
     }
@@ -1201,6 +1216,8 @@ export class PublicNotification {
     this._numSelected = 0;
     this._activeSelection = undefined;
     this._customLabel = undefined;
+    this._distance = undefined;
+    this._unit = undefined;
   }
 
   /**
@@ -1255,6 +1272,8 @@ export class PublicNotification {
   ): void {
     evt.stopPropagation();
     this._activeSelection = selectionSet;
+    this._distance = this._activeSelection.distance;
+    this._unit = this._activeSelection.unit;
     if (this.customLabelEnabled) {
       this._customLabel = this._activeSelection.label;
     }
