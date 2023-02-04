@@ -282,13 +282,10 @@ export class RefineSelectionTools {
   render(): VNode {
     const showLayerPickerClass = this.useLayerPicker ? "div-visible" : "div-not-visible";
     const drawClass = this.border ? " border" : "";
+    const showUndoRedo = this.refineMode === ERefineMode.ALL ? "div-visible" : "div-not-visible";
     return (
       <Host>
         <div>
-          {/* Removed if we use checkbox above to control layer vs interactive select */}
-          {/* <div class={"main-label " + showLayerPickerClass}>
-            <calcite-label>{this._translations.selectLayers}</calcite-label>
-          </div> */}
           <map-layer-picker
             class={showLayerPickerClass}
             enabledLayerIds={this.enabledLayerIds}
@@ -332,7 +329,7 @@ export class RefineSelectionTools {
                     text={this._translations.selectRectangle}
                   />
                 </div>
-                <div class="esri-sketch__tool-section esri-sketch__section">
+                <div class={showUndoRedo + " esri-sketch__tool-section esri-sketch__section"}>
                   <calcite-action
                     disabled={this._undoStack.length === 0}
                     icon="undo"
