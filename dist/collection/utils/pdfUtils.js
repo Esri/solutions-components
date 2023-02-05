@@ -19,6 +19,7 @@
  * limitations under the License.
  */
 import * as grid from "../assets/arcgis-pdf-creator/grid";
+import * as PDFCreator from "../assets/arcgis-pdf-creator/PDFCreator";
 import * as PDFCreator_jsPDF from "../assets/arcgis-pdf-creator/PDFCreator_jsPDF";
 /**
  * Exports a PDF of labels.
@@ -38,7 +39,8 @@ export function exportPDF(labels, labelPageDescription) {
  */
 function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
   console.log("_downloadPDFFile", labels, labelPageDescription, fileTitle); //???
-  const pdfLib = new PDFCreator_jsPDF();
+  console.log(JSON.stringify((new PDFCreator.PDFCreator()).getPageSize("A4")));
+  const pdfLib = new PDFCreator_jsPDF.PDFCreator_jsPDF();
   pdfLib.initialize({
     pageType: "ANSI_A"
   }, "../../dist/", "en", "My Labels", false)

@@ -3,13 +3,706 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { proxyCustomElement, HTMLElement as HTMLElement$1, h as h$8, Host } from '@stencil/core/internal/client';
-import { c as createCommonjsModule, g as getDefaultExportFromCjs } from './_commonjsHelpers.js';
-import { g as getLocaleComponentStrings } from './locale.js';
-import { q as queryFeaturesByID } from './queryUtils.js';
-import { d as defineCustomElement$3 } from './icon.js';
-import { d as defineCustomElement$2 } from './option.js';
-import { d as defineCustomElement$1 } from './select.js';
+import { r as registerInstance, h as h$8, H as Host, g as getElement, c as createEvent } from './index-c246d90e.js';
+import { s as setRequestedIcon, g as getElementProp, a as getSlotted } from './dom-3bdc69ee.js';
+import { S as StatusIcons } from './interfaces-4ae145eb.js';
+import { c as connectConditionalSlotComponent, d as disconnectConditionalSlotComponent } from './conditionalSlot-d09506c4.js';
+import { l as loadModules } from './loadModules-c5553ae8.js';
+import { g as goToSelection, h as highlightFeatures, d as queryObjectIds, e as getQueryGeoms, q as queryFeaturesByID } from './mapViewUtils-8f0754c5.js';
+import { E as EWorkflowType, f as ESelectionMode, g as ERefineMode, c as ESketchType } from './interfaces-3b23a5f9.js';
+import { s as state } from './publicNotificationStore-b9daaee4.js';
+import { g as getLocaleComponentStrings } from './locale-45c3ffef.js';
+import { c as createCommonjsModule, g as getDefaultExportFromCjs } from './_commonjsHelpers-d5f9d613.js';
+import { a as getSelectionIds, g as getTotal } from './publicNotificationUtils-5cb5a607.js';
+
+/*!
+ * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+ * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
+ * v1.0.0-beta.97
+ */
+var StatusIconDefaults;
+(function (StatusIconDefaults) {
+  StatusIconDefaults["valid"] = "check-circle";
+  StatusIconDefaults["invalid"] = "exclamation-mark-triangle";
+  StatusIconDefaults["idle"] = "information";
+})(StatusIconDefaults || (StatusIconDefaults = {}));
+
+const inputMessageCss = "@keyframes in{0%{opacity:0}100%{opacity:1}}@keyframes in-down{0%{opacity:0;transform:translate3D(0, -5px, 0)}100%{opacity:1;transform:translate3D(0, 0, 0)}}@keyframes in-up{0%{opacity:0;transform:translate3D(0, 5px, 0)}100%{opacity:1;transform:translate3D(0, 0, 0)}}@keyframes in-scale{0%{opacity:0;transform:scale3D(0.95, 0.95, 1)}100%{opacity:1;transform:scale3D(1, 1, 1)}}:root{--calcite-animation-timing:calc(150ms * var(--calcite-internal-duration-factor));--calcite-internal-duration-factor:var(--calcite-duration-factor, 1);--calcite-internal-animation-timing-fast:calc(100ms * var(--calcite-internal-duration-factor));--calcite-internal-animation-timing-medium:calc(200ms * var(--calcite-internal-duration-factor));--calcite-internal-animation-timing-slow:calc(300ms * var(--calcite-internal-duration-factor))}.calcite-animate{opacity:0;animation-fill-mode:both;animation-duration:var(--calcite-animation-timing)}.calcite-animate__in{animation-name:in}.calcite-animate__in-down{animation-name:in-down}.calcite-animate__in-up{animation-name:in-up}.calcite-animate__in-scale{animation-name:in-scale}@media (prefers-reduced-motion: reduce){:root{--calcite-internal-duration-factor:0.01}}:root{--calcite-floating-ui-transition:var(--calcite-animation-timing)}:host([hidden]){display:none}:host([active][scale=m]),:host([active][scale=l]){--calcite-input-message-spacing-value:0.25rem}:host{visibility:hidden;box-sizing:border-box;display:flex;block-size:0px;inline-size:100%;align-items:center;font-weight:var(--calcite-font-weight-medium);color:var(--calcite-ui-text-1);opacity:0;transition:all var(--calcite-animation-timing) ease-in-out 0s, outline 0s, outline-offset 0s}:host([active]){visibility:visible;block-size:auto;opacity:1;transition:all var(--calcite-animation-timing) ease-in-out 0s, outline 0s, outline-offset 0s}:host([active][scale=m]),:host([active][scale=l]){-webkit-margin-before:var(--calcite-input-message-spacing-value);margin-block-start:var(--calcite-input-message-spacing-value)}:host([calcite-hydrated-hidden]){visibility:hidden !important;pointer-events:none}.calcite-input-message-icon{pointer-events:none;display:inline-flex;flex-shrink:0;transition:all var(--calcite-animation-timing) ease-in-out 0s, outline 0s, outline-offset 0s;-webkit-margin-end:0.5rem;margin-inline-end:0.5rem}:host([status=invalid]) .calcite-input-message-icon{color:var(--calcite-ui-danger)}:host([status=warning]) .calcite-input-message-icon{color:var(--calcite-ui-warning)}:host([status=valid]) .calcite-input-message-icon{color:var(--calcite-ui-success)}:host([status=idle]) .calcite-input-message-icon{color:var(--calcite-ui-brand)}:host([status][active]){color:var(--calcite-ui-text-1)}:host([status][scale=s]){font-size:var(--calcite-font-size--3);line-height:0.75rem}:host([status][scale=m]){-webkit-margin-before:0.25rem;margin-block-start:0.25rem;font-size:var(--calcite-font-size--2);line-height:1rem}:host([status][scale=l]){-webkit-margin-before:0.25rem;margin-block-start:0.25rem;font-size:var(--calcite-font-size--1);line-height:1rem}";
+
+const InputMessage = class {
+  constructor(hostRef) {
+    registerInstance(this, hostRef);
+    //--------------------------------------------------------------------------
+    //
+    //  Properties
+    //
+    //--------------------------------------------------------------------------
+    /** When `true`, the component is active. */
+    this.active = false;
+    /** Specifies the size of the component. */
+    this.scale = "m";
+    /** Specifies the status of the input field, which determines message and icons. */
+    this.status = "idle";
+  }
+  handleIconEl() {
+    this.requestedIcon = setRequestedIcon(StatusIconDefaults, this.icon, this.status);
+  }
+  //--------------------------------------------------------------------------
+  //
+  //  Lifecycle
+  //
+  //--------------------------------------------------------------------------
+  connectedCallback() {
+    this.status = getElementProp(this.el, "status", this.status);
+    this.scale = getElementProp(this.el, "scale", this.scale);
+    this.requestedIcon = setRequestedIcon(StatusIconDefaults, this.icon, this.status);
+  }
+  render() {
+    const hidden = !this.active;
+    return (h$8(Host, { "calcite-hydrated-hidden": hidden }, this.renderIcon(this.requestedIcon), h$8("slot", null)));
+  }
+  //--------------------------------------------------------------------------
+  //
+  //  Private Methods
+  //
+  //--------------------------------------------------------------------------
+  renderIcon(iconName) {
+    if (iconName) {
+      return h$8("calcite-icon", { class: "calcite-input-message-icon", icon: iconName, scale: "s" });
+    }
+  }
+  get el() { return getElement(this); }
+  static get watchers() { return {
+    "status": ["handleIconEl"],
+    "icon": ["handleIconEl"]
+  }; }
+};
+InputMessage.style = inputMessageCss;
+
+/*!
+ * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+ * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
+ * v1.0.0-beta.97
+ */
+const TEXT = {
+  close: "Close"
+};
+const SLOTS = {
+  title: "title",
+  message: "message",
+  link: "link",
+  actionsEnd: "actions-end"
+};
+const CSS = {
+  actionsEnd: "actions-end",
+  close: "notice-close",
+  container: "container",
+  content: "notice-content",
+  icon: "notice-icon"
+};
+
+const noticeCss = "@keyframes in{0%{opacity:0}100%{opacity:1}}@keyframes in-down{0%{opacity:0;transform:translate3D(0, -5px, 0)}100%{opacity:1;transform:translate3D(0, 0, 0)}}@keyframes in-up{0%{opacity:0;transform:translate3D(0, 5px, 0)}100%{opacity:1;transform:translate3D(0, 0, 0)}}@keyframes in-scale{0%{opacity:0;transform:scale3D(0.95, 0.95, 1)}100%{opacity:1;transform:scale3D(1, 1, 1)}}:root{--calcite-animation-timing:calc(150ms * var(--calcite-internal-duration-factor));--calcite-internal-duration-factor:var(--calcite-duration-factor, 1);--calcite-internal-animation-timing-fast:calc(100ms * var(--calcite-internal-duration-factor));--calcite-internal-animation-timing-medium:calc(200ms * var(--calcite-internal-duration-factor));--calcite-internal-animation-timing-slow:calc(300ms * var(--calcite-internal-duration-factor))}.calcite-animate{opacity:0;animation-fill-mode:both;animation-duration:var(--calcite-animation-timing)}.calcite-animate__in{animation-name:in}.calcite-animate__in-down{animation-name:in-down}.calcite-animate__in-up{animation-name:in-up}.calcite-animate__in-scale{animation-name:in-scale}@media (prefers-reduced-motion: reduce){:root{--calcite-internal-duration-factor:0.01}}:root{--calcite-floating-ui-transition:var(--calcite-animation-timing)}:host([hidden]){display:none}:host([scale=s]){--calcite-notice-spacing-token-small:0.5rem;--calcite-notice-spacing-token-large:0.75rem}:host([scale=s]) .container slot[name=title]::slotted(*),:host([scale=s]) .container *::slotted([slot=title]){margin-block:0.125rem;font-size:var(--calcite-font-size--1);line-height:1.375}:host([scale=s]) .container slot[name=message]::slotted(*),:host([scale=s]) .container *::slotted([slot=message]){margin-block:0.125rem;font-size:var(--calcite-font-size--2);line-height:1.375}:host([scale=s]) ::slotted(calcite-link){margin-block:0.125rem;font-size:var(--calcite-font-size--2);line-height:1.375}:host([scale=s]) .notice-close{padding:0.5rem}:host([scale=m]){--calcite-notice-spacing-token-small:0.75rem;--calcite-notice-spacing-token-large:1rem}:host([scale=m]) .container slot[name=title]::slotted(*),:host([scale=m]) .container *::slotted([slot=title]){margin-block:0.125rem;font-size:var(--calcite-font-size-0);line-height:1.375}:host([scale=m]) .container slot[name=message]::slotted(*),:host([scale=m]) .container *::slotted([slot=message]){margin-block:0.125rem;font-size:var(--calcite-font-size--1);line-height:1.375}:host([scale=m]) ::slotted(calcite-link){margin-block:0.125rem;font-size:var(--calcite-font-size--1);line-height:1.375}:host([scale=l]){--calcite-notice-spacing-token-small:1rem;--calcite-notice-spacing-token-large:1.25rem}:host([scale=l]) .container slot[name=title]::slotted(*),:host([scale=l]) .container *::slotted([slot=title]){margin-block:0.125rem;font-size:var(--calcite-font-size-1);line-height:1.375}:host([scale=l]) .container slot[name=message]::slotted(*),:host([scale=l]) .container *::slotted([slot=message]){margin-block:0.125rem;font-size:var(--calcite-font-size-0);line-height:1.375}:host([scale=l]) ::slotted(calcite-link){margin-block:0.125rem;font-size:var(--calcite-font-size-0);line-height:1.375}:host([width=auto]){--calcite-notice-width:auto}:host([width=half]){--calcite-notice-width:50%}:host([width=full]){--calcite-notice-width:100%}:host{margin-inline:auto;display:none;max-inline-size:100%;align-items:center;inline-size:var(--calcite-notice-width)}.container{pointer-events:none;margin-block:0px;box-sizing:border-box;display:none;inline-size:100%;background-color:var(--calcite-ui-foreground-1);opacity:0;transition:all var(--calcite-animation-timing) ease-in-out 0s, outline 0s, outline-offset 0s;max-block-size:0;text-align:start;-webkit-border-start:0px solid;border-inline-start:0px solid;box-shadow:0 0 0 0 transparent}.notice-close{outline-color:transparent}.notice-close:focus{outline:2px solid var(--calcite-ui-brand);outline-offset:-2px}:host{display:flex}:host([open]) .container{pointer-events:auto;display:flex;max-block-size:100%;align-items:center;border-width:2px;opacity:1;--tw-shadow:0 4px 8px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);--tw-shadow-colored:0 4px 8px -1px var(--tw-shadow-color), 0 2px 4px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.container slot[name=title]::slotted(*),.container *::slotted([slot=title]){margin:0px;font-weight:var(--calcite-font-weight-medium);color:var(--calcite-ui-text-1)}.container slot[name=message]::slotted(*),.container *::slotted([slot=message]){margin:0px;display:inline;font-weight:var(--calcite-font-weight-normal);color:var(--calcite-ui-text-2);-webkit-margin-end:var(--calcite-notice-spacing-token-small);margin-inline-end:var(--calcite-notice-spacing-token-small)}.notice-content{box-sizing:border-box;transition:all var(--calcite-animation-timing) ease-in-out 0s, outline 0s, outline-offset 0s;padding-inline:var(--calcite-notice-spacing-token-large);flex:0 0 auto;display:flex;min-inline-size:0px;flex-direction:column;overflow-wrap:break-word;flex:1 1 0;padding-block:var(--calcite-notice-spacing-token-small);padding-inline:0 var(--calcite-notice-spacing-token-small)}.notice-content:first-of-type:not(:only-child){-webkit-padding-start:var(--calcite-notice-spacing-token-large);padding-inline-start:var(--calcite-notice-spacing-token-large)}.notice-content:only-of-type{padding-block:var(--calcite-notice-spacing-token-small);padding-inline:var(--calcite-notice-spacing-token-large)}.notice-icon{display:flex;align-items:center;box-sizing:border-box;transition:all var(--calcite-animation-timing) ease-in-out 0s, outline 0s, outline-offset 0s;padding-block:var(--calcite-notice-spacing-token-small);padding-inline:var(--calcite-notice-spacing-token-large);flex:0 0 auto}.notice-close{display:flex;cursor:pointer;align-items:center;align-self:stretch;border-style:none;background-color:transparent;color:var(--calcite-ui-text-3);outline:2px solid transparent;outline-offset:2px;box-sizing:border-box;transition:all var(--calcite-animation-timing) ease-in-out 0s, outline 0s, outline-offset 0s;padding-block:var(--calcite-notice-spacing-token-small);padding-inline:var(--calcite-notice-spacing-token-large);flex:0 0 auto;-webkit-appearance:none}.notice-close:hover,.notice-close:focus{background-color:var(--calcite-ui-foreground-2);color:var(--calcite-ui-text-1)}.notice-close:active{background-color:var(--calcite-ui-foreground-3)}.actions-end{display:flex;align-self:stretch}:host([color=blue]) .container{border-color:var(--calcite-ui-brand)}:host([color=blue]) .container .notice-icon{color:var(--calcite-ui-brand)}:host([color=red]) .container{border-color:var(--calcite-ui-danger)}:host([color=red]) .container .notice-icon{color:var(--calcite-ui-danger)}:host([color=yellow]) .container{border-color:var(--calcite-ui-warning)}:host([color=yellow]) .container .notice-icon{color:var(--calcite-ui-warning)}:host([color=green]) .container{border-color:var(--calcite-ui-success)}:host([color=green]) .container .notice-icon{color:var(--calcite-ui-success)}";
+
+const Notice = class {
+  constructor(hostRef) {
+    registerInstance(this, hostRef);
+    this.calciteNoticeClose = createEvent(this, "calciteNoticeClose", 6);
+    this.calciteNoticeOpen = createEvent(this, "calciteNoticeOpen", 6);
+    //--------------------------------------------------------------------------
+    //
+    //  Properties
+    //
+    //---------------------------------------------------------------------------
+    /**
+     * When `true`, the component is active.
+     *
+     * @deprecated Use `open` instead.
+     */
+    this.active = false;
+    /** When `true`, the component is visible. */
+    this.open = false;
+    /** The color for the component's top border and icon. */
+    this.color = "blue";
+    /**
+     * When `true`, a close button is added to the component.
+     *
+     * @deprecated use `closable` instead.
+     */
+    this.dismissible = false;
+    /** When `true`, a close button is added to the component. */
+    this.closable = false;
+    /**
+     * Accessible name for the close button.
+     *
+     * @default "Close"
+     */
+    this.intlClose = TEXT.close;
+    /** Specifies the size of the component. */
+    this.scale = "m";
+    /** Specifies the width of the component. */
+    this.width = "auto";
+    //--------------------------------------------------------------------------
+    //
+    //  Private Methods
+    //
+    //--------------------------------------------------------------------------
+    this.close = () => {
+      this.open = false;
+      this.calciteNoticeClose.emit();
+    };
+  }
+  activeHandler(value) {
+    this.open = value;
+  }
+  openHandler(value) {
+    this.active = value;
+  }
+  handleDismissible(value) {
+    this.closable = value;
+  }
+  handleClosable(value) {
+    this.dismissible = value;
+  }
+  updateRequestedIcon() {
+    this.requestedIcon = setRequestedIcon(StatusIcons, this.icon, this.color);
+  }
+  //--------------------------------------------------------------------------
+  //
+  //  Lifecycle
+  //
+  //--------------------------------------------------------------------------
+  connectedCallback() {
+    connectConditionalSlotComponent(this);
+    const isOpen = this.active || this.open;
+    if (isOpen) {
+      this.activeHandler(isOpen);
+      this.openHandler(isOpen);
+    }
+    if (this.dismissible) {
+      this.handleDismissible(this.dismissible);
+    }
+    if (this.closable) {
+      this.handleClosable(this.closable);
+    }
+  }
+  disconnectedCallback() {
+    disconnectConditionalSlotComponent(this);
+  }
+  componentWillLoad() {
+    this.requestedIcon = setRequestedIcon(StatusIcons, this.icon, this.color);
+  }
+  render() {
+    const { el } = this;
+    const closeButton = (h$8("button", { "aria-label": this.intlClose, class: CSS.close, onClick: this.close, ref: (el) => (this.closeButton = el) }, h$8("calcite-icon", { icon: "x", scale: this.scale === "l" ? "m" : "s" })));
+    const hasActionEnd = getSlotted(el, SLOTS.actionsEnd);
+    return (h$8("div", { class: CSS.container }, this.requestedIcon ? (h$8("div", { class: CSS.icon }, h$8("calcite-icon", { icon: this.requestedIcon, scale: this.scale === "l" ? "m" : "s" }))) : null, h$8("div", { class: CSS.content }, h$8("slot", { name: SLOTS.title }), h$8("slot", { name: SLOTS.message }), h$8("slot", { name: SLOTS.link })), hasActionEnd ? (h$8("div", { class: CSS.actionsEnd }, h$8("slot", { name: SLOTS.actionsEnd }))) : null, this.closable ? closeButton : null));
+  }
+  //--------------------------------------------------------------------------
+  //
+  //  Public Methods
+  //
+  //--------------------------------------------------------------------------
+  /** Sets focus on the component. */
+  async setFocus() {
+    const noticeLinkEl = this.el.querySelector("calcite-link");
+    if (!this.closeButton && !noticeLinkEl) {
+      return;
+    }
+    if (noticeLinkEl) {
+      noticeLinkEl.setFocus();
+    }
+    else if (this.closeButton) {
+      this.closeButton.focus();
+    }
+  }
+  get el() { return getElement(this); }
+  static get watchers() { return {
+    "active": ["activeHandler"],
+    "open": ["openHandler"],
+    "dismissible": ["handleDismissible"],
+    "closable": ["handleClosable"],
+    "icon": ["updateRequestedIcon"],
+    "color": ["updateRequestedIcon"]
+  }; }
+};
+Notice.style = noticeCss;
+
+const mapSelectToolsCss = ":host{display:block}.div-visible{display:inherit}.div-visible-search{display:flex;height:44px;align-items:center;padding-bottom:0}.div-not-visible{display:none}.padding-bottom-1{padding-bottom:1rem}.search-widget{width:100% !important;border:1px solid var(--calcite-ui-border-input)}.w-100{width:100%}.w-50{width:50%}.search-distance-container{padding-top:\"1rem\" !important}.end-border{-webkit-border-end:1px solid var(--calcite-ui-border-2);border-inline-end:1px solid var(--calcite-ui-border-2)}.search-distance{display:flex;padding-top:1rem}";
+
+const MapSelectTools = class {
+  constructor(hostRef) {
+    registerInstance(this, hostRef);
+    this.selectionSetChange = createEvent(this, "selectionSetChange", 7);
+    this.sketchTypeChange = createEvent(this, "sketchTypeChange", 7);
+    this.workflowTypeChange = createEvent(this, "workflowTypeChange", 7);
+    /**
+     * number[]: the oids of the selected features
+     */
+    this._selectedIds = [];
+    /**
+     * string: A label to help uniquely identify the selection set
+     */
+    this._selectionLabel = "";
+    this.enabledLayerIds = [];
+    this.defaultBufferDistance = undefined;
+    this.defaultBufferUnit = undefined;
+    this.geometries = undefined;
+    this.isUpdate = false;
+    this.mapView = undefined;
+    this.searchConfiguration = undefined;
+    this.selectionSet = undefined;
+    this.selectLayerView = undefined;
+    this.showBufferTools = true;
+    this._layerSelectChecked = undefined;
+    this._searchTerm = undefined;
+    this._translations = undefined;
+    this._workflowType = undefined;
+  }
+  //--------------------------------------------------------------------------
+  //
+  //  Watch handlers
+  //
+  //--------------------------------------------------------------------------
+  /**
+   * Called each time the geometries prop is changed.
+   *
+   * @returns Promise when complete
+   */
+  async watchGeometriesHandler(newValue, oldValue) {
+    if (newValue !== oldValue) {
+      if (newValue.length > 0) {
+        return this._geomQuery(this.geometries);
+      }
+      else if (newValue.length === 0) {
+        return this._clearResults(true, true);
+      }
+    }
+  }
+  /**
+   * Called each time the workflowType prop is changed and emits the workflowTypeChange event.
+   *
+   * @returns Promise when complete
+   */
+  async workflowTypeHandler(newValue, oldValue) {
+    if (newValue !== oldValue) {
+      this.mapView.popup.autoOpenEnabled = ["SELECT", "SKETCH", "REFINE"].indexOf(newValue) < 0;
+      this.workflowTypeChange.emit(newValue);
+    }
+  }
+  //--------------------------------------------------------------------------
+  //
+  //  Methods (public)
+  //
+  //--------------------------------------------------------------------------
+  /**
+   * Clear any selection results
+   *
+   * @returns Promise when the results have been cleared
+   */
+  async clearSelection() {
+    return this._clearResults();
+  }
+  /**
+   * Get the new selection set
+   *
+   * @returns Promise with the new selection set
+   */
+  async getSelection() {
+    // Allow any non whitespace
+    if (!/\S+/gm.test(this._selectionLabel)) {
+      this._selectionLabel = this._getSelectionBaseLabel();
+    }
+    const isBaseLabel = this._selectionLabel === this._getSelectionBaseLabel();
+    return {
+      id: this.isUpdate ? this.selectionSet.id : Date.now(),
+      workflowType: this._workflowType,
+      searchResult: this._searchResult,
+      buffer: this._bufferGeometry,
+      distance: this._bufferTools.distance,
+      download: true,
+      unit: this._bufferTools.unit,
+      label: this._workflowType === EWorkflowType.SEARCH || (this._selectionLabel && !isBaseLabel) ?
+        this._selectionLabel : `${this._selectionLabel} ${this._bufferTools.distance} ${this._bufferTools.unit}`,
+      selectedIds: this._selectedIds,
+      layerView: this.selectLayerView,
+      geometries: this.geometries,
+      refineSelectLayers: this._refineTools.layerViews
+    };
+  }
+  /**
+   * Handle changes to the selection sets
+   */
+  labelChange(event) {
+    this._selectionLabel = event.detail;
+  }
+  /**
+   * Listen to changes in the sketch graphics
+   *
+   */
+  sketchGraphicsChange(event) {
+    this._updateSelection(EWorkflowType.SKETCH, event.detail, this._selectionLabel || this._translations.sketch);
+  }
+  /**
+   * Listen to changes in the refine graphics
+   *
+   */
+  refineSelectionGraphicsChange(event) {
+    const graphics = event.detail;
+    this._updateSelection(EWorkflowType.SELECT, graphics, this._selectionLabel || this._translations.select);
+    // Using OIDs to avoid issue with points
+    const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g.layer.objectIdField]) : [];
+    return this._highlightFeatures(oids);
+  }
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (lifecycle)
+  //
+  //--------------------------------------------------------------------------
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
+  async componentWillLoad() {
+    await this._getTranslations();
+    await this._initModules();
+  }
+  /**
+   * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
+   */
+  async componentDidLoad() {
+    return this._init();
+  }
+  /**
+   * Renders the component.
+   */
+  render() {
+    var _a, _b;
+    const searchEnabled = this._workflowType === EWorkflowType.SEARCH;
+    const showSearchClass = searchEnabled ? " div-visible-search" : " div-not-visible";
+    const drawEnabled = this._workflowType === EWorkflowType.SKETCH || this._workflowType === EWorkflowType.SELECT;
+    //const showDrawToolsClass = drawEnabled ? " div-visible" : " div-not-visible";
+    // const selectEnabled = this._workflowType === EWorkflowType.SELECT;
+    // const showSelectToolsClass = selectEnabled ? " div-visible" : " div-not-visible";
+    const showBufferToolsClass = this.showBufferTools ? "search-distance" : "div-not-visible";
+    const useSelectClass = this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
+    const useDrawClass = !this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
+    const showLayerChoiceClass = searchEnabled ? "div-not-visible" : "div-visible";
+    return (h$8(Host, null, h$8("div", { class: "padding-bottom-1" }, h$8("calcite-radio-group", { class: "w-100", onCalciteRadioGroupChange: (evt) => this._workflowChange(evt) }, h$8("calcite-radio-group-item", { checked: searchEnabled, class: "w-50 end-border", value: EWorkflowType.SEARCH }, this._translations.search), h$8("calcite-radio-group-item", { checked: drawEnabled, class: "w-50", value: EWorkflowType.SKETCH }, this._translations.sketch))), h$8("div", { class: showSearchClass }, h$8("div", { class: "search-widget", ref: (el) => { this._searchElement = el; } })), h$8("div", { class: showLayerChoiceClass }, h$8("calcite-label", { layout: "inline" }, h$8("calcite-checkbox", { onCalciteCheckboxChange: () => this._layerSelectChanged(), ref: (el) => this._selectFromLayerElement = el }), "Use layer features")), h$8("div", { class: useDrawClass }, h$8("map-draw-tools", { active: true, border: true, mapView: this.mapView, ref: (el) => { this._drawTools = el; } })), h$8("div", { class: useSelectClass }, h$8("refine-selection-tools", { active: true, border: true, enabledLayerIds: this.enabledLayerIds, layerViews: this._refineSelectLayers, mapView: this.mapView, mode: ESelectionMode.ADD, ref: (el) => { this._refineTools = el; }, refineMode: ERefineMode.SUBSET })), h$8("calcite-label", { class: showBufferToolsClass }, this._translations.searchDistance, h$8("buffer-tools", { distance: ((_a = this.selectionSet) === null || _a === void 0 ? void 0 : _a.distance) || this.defaultBufferDistance, geometries: this.geometries, onBufferComplete: (evt) => this._bufferComplete(evt), ref: (el) => this._bufferTools = el, unit: ((_b = this.selectionSet) === null || _b === void 0 ? void 0 : _b.unit) || this.defaultBufferUnit })), h$8("slot", null)));
+  }
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (protected)
+  //
+  //--------------------------------------------------------------------------
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  async _initModules() {
+    const [GraphicsLayer, Graphic, Search, geometryEngine, FeatureLayer] = await loadModules([
+      "esri/layers/GraphicsLayer",
+      "esri/Graphic",
+      "esri/widgets/Search",
+      "esri/geometry/geometryEngine",
+      "esri/layers/FeatureLayer"
+    ]);
+    this.GraphicsLayer = GraphicsLayer;
+    this.Graphic = Graphic;
+    this.Search = Search;
+    this._geometryEngine = geometryEngine;
+    this.FeatureLayer = FeatureLayer;
+  }
+  /**
+   * Initialize the graphics layer, selection set, and search widget
+   *
+   * @returns Promise when the operation has completed
+   */
+  async _init() {
+    this._initGraphicsLayer();
+    this._initSelectionSet();
+    this._initSearchWidget();
+  }
+  /**
+   * Initialize the state of the component with any stored values in a selection set
+   *
+   * @protected
+   */
+  _initSelectionSet() {
+    var _a, _b, _c, _d, _e, _f;
+    if (this.selectionSet) {
+      this._searchTerm = (_b = (_a = this.selectionSet) === null || _a === void 0 ? void 0 : _a.searchResult) === null || _b === void 0 ? void 0 : _b.name;
+      this._workflowType = (_c = this.selectionSet) === null || _c === void 0 ? void 0 : _c.workflowType;
+      this._searchResult = (_d = this.selectionSet) === null || _d === void 0 ? void 0 : _d.searchResult;
+      this._refineSelectLayers = (_e = this.selectionSet) === null || _e === void 0 ? void 0 : _e.refineSelectLayers;
+      this.geometries = [
+        ...(_f = this.selectionSet) === null || _f === void 0 ? void 0 : _f.geometries
+      ];
+      // reset selection label base
+      this._selectionLabel = this._getSelectionBaseLabel();
+      void goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
+    }
+    else {
+      this._workflowType = EWorkflowType.SEARCH;
+    }
+  }
+  /**
+   * Get the default label base when the user has not provided a value
+   *
+   * @protected
+   */
+  _getSelectionBaseLabel() {
+    var _a, _b;
+    return this._workflowType === EWorkflowType.SKETCH ?
+      this._translations.sketch : this._workflowType === EWorkflowType.SELECT ?
+      this._translations.select : this._workflowType === EWorkflowType.SEARCH && this._searchResult ?
+      (_a = this._searchResult) === null || _a === void 0 ? void 0 : _a.name : (_b = this.selectionSet) === null || _b === void 0 ? void 0 : _b.label;
+  }
+  /**
+   * Initialize the search widget
+   *
+   * @protected
+   */
+  _initSearchWidget() {
+    if (this.mapView && this._searchElement) {
+      const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this.mapView);
+      const searchOptions = Object.assign({ view: this.mapView, container: this._searchElement, searchTerm: this._searchTerm }, searchConfiguration);
+      this._searchWidget = new this.Search(searchOptions);
+      this._searchWidget.on("search-clear", () => {
+        void this._clearResults(false);
+      });
+      this._searchWidget.on("select-result", (searchResults) => {
+        var _a;
+        void this._clearResults(false);
+        if (searchResults.result) {
+          this._searchResult = searchResults.result;
+          this._updateSelection(EWorkflowType.SEARCH, [searchResults.result.feature], (_a = searchResults === null || searchResults === void 0 ? void 0 : searchResults.result) === null || _a === void 0 ? void 0 : _a.name);
+        }
+      });
+    }
+  }
+  /**
+   * Initialize the search widget based on user defined configuration
+   *
+   * @param searchConfiguration search configuration defined by the user
+   * @param view the current map view
+   *
+   * @protected
+   */
+  _getSearchConfig(searchConfiguration, view) {
+    var _a;
+    const sources = searchConfiguration === null || searchConfiguration === void 0 ? void 0 : searchConfiguration.sources;
+    if (sources) {
+      sources.forEach(source => {
+        var _a, _b, _c;
+        const isLayerSource = source.hasOwnProperty("layer");
+        if (isLayerSource) {
+          const layerSource = source;
+          const layerFromMap = ((_a = layerSource.layer) === null || _a === void 0 ? void 0 : _a.id)
+            ? view.map.findLayerById(layerSource.layer.id)
+            : null;
+          if (layerFromMap) {
+            layerSource.layer = layerFromMap;
+          }
+          else if ((_b = layerSource === null || layerSource === void 0 ? void 0 : layerSource.layer) === null || _b === void 0 ? void 0 : _b.url) {
+            layerSource.layer = new this.FeatureLayer((_c = layerSource === null || layerSource === void 0 ? void 0 : layerSource.layer) === null || _c === void 0 ? void 0 : _c.url);
+          }
+        }
+      });
+    }
+    (_a = searchConfiguration === null || searchConfiguration === void 0 ? void 0 : searchConfiguration.sources) === null || _a === void 0 ? void 0 : _a.forEach(source => {
+      const isLocatorSource = source.hasOwnProperty("locator");
+      if (isLocatorSource) {
+        const locatorSource = source;
+        locatorSource.url = locatorSource.url;
+        delete locatorSource.url;
+      }
+    });
+    return searchConfiguration;
+  }
+  /**
+   * Initialize the graphics layer used to store any buffer grapghics
+   *
+   * @protected
+   */
+  _initGraphicsLayer() {
+    const title = this._translations.bufferLayer;
+    const bufferIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
+    if (bufferIndex > -1) {
+      this._bufferGraphicsLayer = this.mapView.map.layers.getItemAt(bufferIndex);
+    }
+    else {
+      this._bufferGraphicsLayer = new this.GraphicsLayer({ title });
+      state.managedLayers.push(title);
+      const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === this._translations.sketchLayer);
+      if (sketchIndex > -1) {
+        this.mapView.map.layers.add(this._bufferGraphicsLayer, sketchIndex);
+      }
+      else {
+        this.mapView.map.layers.add(this._bufferGraphicsLayer);
+      }
+    }
+  }
+  /**
+   * Store the layer select checked change
+   *
+   * @protected
+   */
+  _layerSelectChanged() {
+    this._layerSelectChecked = this._selectFromLayerElement.checked;
+    this.sketchTypeChange.emit(this._layerSelectChecked ? ESketchType.LAYER : ESketchType.INTERACTIVE);
+  }
+  /**
+   * Store workflow type change
+   *
+   * @protected
+   */
+  _workflowChange(evt) {
+    this._workflowType = evt.detail;
+  }
+  /**
+   * Highlight the features in the map
+   *
+   * @protected
+   */
+  async _highlightFeatures(ids) {
+    var _a;
+    (_a = state.highlightHandle) === null || _a === void 0 ? void 0 : _a.remove();
+    if (ids.length > 0) {
+      state.highlightHandle = await highlightFeatures(ids, this.selectLayerView, this.mapView);
+    }
+    this.selectionSetChange.emit(ids.length);
+  }
+  /**
+   * Query the selectLayerView based on any user drawn geometries or buffers
+   *
+   * @param geometries Array of geometries used for the selection of ids from the select layer view
+   *
+   * @returns Promise when the selection is complete and the graphics have been highlighted
+   */
+  async _selectFeatures(geometries) {
+    this._selectedIds = await queryObjectIds(geometries, this.selectLayerView.layer);
+    // Add geometries used for selecting features as graphics
+    this._drawTools.graphics = this.geometries.map(geom => {
+      var _a, _b, _c;
+      const props = {
+        "geometry": geom,
+        "symbol": geom.type === "point" ?
+          (_a = this._drawTools) === null || _a === void 0 ? void 0 : _a.pointSymbol : geom.type === "polyline" ?
+          (_b = this._drawTools) === null || _b === void 0 ? void 0 : _b.polylineSymbol : geom.type === "polygon" ?
+          (_c = this._drawTools) === null || _c === void 0 ? void 0 : _c.polygonSymbol : undefined
+      };
+      return new this.Graphic(props);
+    });
+    void this._highlightFeatures(this._selectedIds);
+  }
+  /**
+   * Query the selectLayerView based on any user drawn geometries or buffers
+   *
+   * @param evt CustomEvent that contains the result of the buffer
+   *
+   * @protected
+   */
+  async _bufferComplete(evt) {
+    this._bufferGeometry = Array.isArray(evt.detail) ?
+      evt.detail[0] : evt.detail;
+    if (this._bufferGeometry) {
+      // Create a symbol for rendering the graphic
+      const symbol = {
+        type: "simple-fill",
+        color: [227, 139, 79, 0.8],
+        outline: {
+          color: [255, 255, 255],
+          width: 1
+        }
+      };
+      // Add the geometry and symbol to a new graphic
+      const polygonGraphic = new this.Graphic({
+        geometry: this._bufferGeometry,
+        symbol
+      });
+      this._bufferGraphicsLayer.removeAll();
+      this._bufferGraphicsLayer.add(polygonGraphic);
+      void this._selectFeatures([this._bufferGeometry]);
+      void this.mapView.goTo(polygonGraphic.geometry.extent);
+    }
+    else {
+      if (this._bufferGraphicsLayer) {
+        this._bufferGraphicsLayer.removeAll();
+      }
+      void this._geomQuery(this.geometries);
+    }
+  }
+  /**
+   * Fetch a single geometry for each potential geometry type
+   *
+   * @param geometries All current selection geometries
+   *
+   * @protected
+   */
+  _geomQuery(geometries) {
+    const queryGeoms = getQueryGeoms(geometries, this._geometryEngine);
+    return this._selectFeatures(queryGeoms);
+  }
+  /**
+   * Clear all stored values and general state for the component
+   *
+   * @param clearSearchWidget Optional boolean for clearing the search widget (default is true)
+   * @param clearLabel Optional boolean for clearing the search label (default is true)
+   *
+   * @protected
+   */
+  async _clearResults(clearSearchWidget = true, clearLabel = true) {
+    var _a, _b;
+    this._selectedIds = [];
+    if (clearLabel) {
+      this._selectionLabel = "";
+    }
+    if (this._bufferGraphicsLayer) {
+      this._bufferGraphicsLayer.removeAll();
+    }
+    if (clearSearchWidget && this._searchWidget) {
+      this._searchWidget.clear();
+    }
+    (_a = state.highlightHandle) === null || _a === void 0 ? void 0 : _a.remove();
+    // for sketch
+    // checking for clear as it would throw off tests
+    if ((_b = this._drawTools) === null || _b === void 0 ? void 0 : _b.clear) {
+      void this._drawTools.clear();
+    }
+    this.selectionSetChange.emit(this._selectedIds.length);
+  }
+  /**
+   * Fetch a single geometry for the current geometry type
+   *
+   * @param type worflow type
+   * @param graphics graphics to be used for selection
+   * @param label selection label
+   *
+   * @protected
+   */
+  _updateSelection(type, graphics, label) {
+    this.geometries = Array.isArray(graphics) ? graphics.map(g => g.geometry) : this.geometries;
+    this._workflowType = type;
+    this._selectionLabel = label;
+  }
+  /**
+   * Fetches the component's translations
+   *
+   * @protected
+   */
+  async _getTranslations() {
+    const translations = await getLocaleComponentStrings(this.el);
+    this._translations = translations[0];
+  }
+  get el() { return getElement(this); }
+  static get watchers() { return {
+    "geometries": ["watchGeometriesHandler"],
+    "_workflowType": ["workflowTypeHandler"]
+  }; }
+};
+MapSelectTools.style = mapSelectToolsCss;
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
@@ -165,7 +858,7 @@ function c$2(r,t,n=!1,s){return new Promise(((i,c)=>{if(p$2(s))return void c(a$3
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-async function U$1(e,r){const t=X$2(e),s=V$2(e);s||t||(e=F$2(e));const n={url:e,requestOptions:{...e$9(r)}};let i=W$2(e);if(i){const e=await G$1(i,n);if(null!=e)return {data:e,getHeader:M$1,requestOptions:n.requestOptions,url:n.url};i.after||i.error||(i=null);}if(e=n.url,"image"===(r=n.requestOptions).responseType){if(has("host-webworker")||has("host-node"))throw N$1("request:invalid-parameters",new Error("responseType 'image' is not supported in Web Workers or Node environment"),n)}else if(t)throw N$1("request:invalid-parameters",new Error("Data URLs are not supported for responseType = "+r.responseType),n);if("head"===r.method){if(r.body)throw N$1("request:invalid-parameters",new Error("body parameter cannot be set when method is 'head'"),n);if(t||s)throw N$1("request:invalid-parameters",new Error("data and blob URLs are not supported for method 'head'"),n)}if(await B$1(),j$1)return j$1.execute(e,r);const l=new AbortController;v$2(r,(()=>l.abort()));const m={controller:l,credential:void 0,credentialToken:void 0,fetchOptions:void 0,hasToken:!1,interceptor:i,params:n,redoRequest:!1,useIdentity:P$1.useIdentity,useProxy:!1,useSSL:!1,withCredentials:!1},h=await Q$1(m);return i?.after?.(h),h}let j$1;const P$1=s$7.request,D$1="FormData"in globalThis,_$1=[499,498,403,401],F$1=["COM_0056","COM_0057","SB_0008"],I$1=[/\/arcgis\/tokens/i,/\/sharing(\/rest)?\/generatetoken/i,/\/rest\/info/i],M$1=()=>null,R$1=Symbol();function A$1(e){const r=H$2(e);r&&!U$1._corsServers.includes(r)&&U$1._corsServers.push(r);}function H$1(e){const r=H$2(e);return !r||r.endsWith(".arcgis.com")||U$1._corsServers.includes(r)||D$2(r)}function N$1(e,r,o,a){let l="Error";const u={url:o.url,requestOptions:o.requestOptions,getHeader:M$1,ssl:!1};if(r instanceof s$4)return r.details?(r.details=y$2(r.details),r.details.url=o.url,r.details.requestOptions=o.requestOptions):r.details=u,r;if(r){const e=a&&(e=>a.headers.get(e)),t=a&&a.status,s=r.message;s&&(l=s),e&&(u.getHeader=e),u.httpStatus=(null!=r.httpCode?r.httpCode:r.code)||t||0,u.subCode=r.subcode,u.messageCode=r.messageCode,"string"==typeof r.details?u.messages=[r.details]:u.messages=r.details,u.raw=R$1 in r?r[R$1]:r;}return j$3(r)?a$6():new s$4(e,l,u)}async function B$1(){has("host-webworker")?j$1||(j$1=await import('./request.js')):U$1._abortableFetch||(U$1._abortableFetch=globalThis.fetch.bind(globalThis));}async function $$1(){s$2||await import('./IdentityManager.js');}async function z$1(t){const s=t.params.url,o=t.params.requestOptions,a=t.controller.signal,n=o.body;let i=null,u=null;if(D$1&&"HTMLFormElement"in globalThis&&(n instanceof FormData?i=n:n instanceof HTMLFormElement&&(i=new FormData(n))),"string"==typeof n&&(u=n),t.fetchOptions={cache:o.cacheBust&&!U$1._abortableFetch.polyfill?"no-cache":"default",credentials:"same-origin",headers:o.headers||{},method:"head"===o.method?"HEAD":"GET",mode:"cors",priority:P$1.priority,redirect:"follow",signal:a},(i||u)&&(t.fetchOptions.body=i||u),"anonymous"===o.authMode&&(t.useIdentity=!1),t.hasToken=!!(/token=/i.test(s)||o.query?.token||i?.get("token")),!t.hasToken&&s$7.apiKey&&r(s)&&(o.query||(o.query={}),o.query.token=s$7.apiKey,t.hasToken=!0),t.useIdentity&&!t.hasToken&&!t.credentialToken&&!K$1(s)&&!p$2(a)){let e;"immediate"===o.authMode?(await $$1(),e=await s$2.getCredential(s,{signal:a}),t.credential=e):"no-prompt"===o.authMode?(await $$1(),e=await s$2.getCredential(s,{prompt:!1,signal:a}).catch((()=>{})),t.credential=e):s$2&&(e=s$2.findCredential(s)),e&&(t.credentialToken=e.token,t.useSSL=!!e.ssl);}}function K$1(e){return I$1.some((r=>r.test(e)))}async function W$1(e){let t=e.params.url;const s=e.params.requestOptions,o=e.fetchOptions??{},a=V$2(t)||X$2(t),n=s.responseType||"json",l=a?0:null!=s.timeout?s.timeout:P$1.timeout;let d=!1;if(!a){e.useSSL&&(t=mt$1(t)),s.cacheBust&&"default"===o.cache&&(t=St(t,"request.preventCache",Date.now()));let a={...s.query};e.credentialToken&&(a.token=e.credentialToken);let n=I$2(a);has("esri-url-encodes-apostrophe")&&(n=n.replace(/'/g,"%27"));const i=t.length+1+n.length;let l;d="delete"===s.method||"post"===s.method||"put"===s.method||!!s.body||i>P$1.maxUrlLength;const u=s.useProxy||!!J$2(t);if(u){const e=A$2(t);l=e.path,!d&&l.length+1+i>P$1.maxUrlLength&&(d=!0),e.query&&(a={...e.query,...a});}if("HEAD"===o.method&&(d||u)){if(d){if(i>P$1.maxUrlLength)throw N$1("request:invalid-parameters",new Error("URL exceeds maximum length"),e.params);throw N$1("request:invalid-parameters",new Error("cannot use POST request when method is 'head'"),e.params)}if(u)throw N$1("request:invalid-parameters",new Error("cannot use proxy when method is 'head'"),e.params)}if(d?(o.method="delete"===s.method?"DELETE":"put"===s.method?"PUT":"POST",s.body?t=Bt$1(t,a):(o.body=I$2(a),o.headers||(o.headers={}),o.headers["Content-Type"]="application/x-www-form-urlencoded")):t=Bt$1(t,a),u&&(e.useProxy=!0,t=`${l}?${t}`),a.token&&D$1&&o.body instanceof FormData&&!t$2(t)&&o.body.set("token",a.token),s.hasOwnProperty("withCredentials"))e.withCredentials=s.withCredentials;else if(!z$2(t,b$1()))if(D$2(t))e.withCredentials=!0;else if(s$2){const s=s$2.findServerInfo(t);s&&s.webTierAuth&&(e.withCredentials=!0);}e.withCredentials&&(o.credentials="include",u$1(t)&&await d$1(d?Bt$1(t,a):t));}let p,v,C=0,L=!1;l>0&&(C=setTimeout((()=>{L=!0,e.controller.abort();}),l));try{if("native-request-init"===s.responseType)v=o,v.url=t;else if("image"!==s.responseType||"default"!==o.cache||"GET"!==o.method||d||J$1(s.headers)||!a&&!e.useProxy&&P$1.proxyUrl&&!H$1(t)){if(p=await U$1._abortableFetch(t,o),e.useProxy||A$1(t),"native"===s.responseType)v=p;else if("HEAD"!==o.method)if(p.ok){switch(n){case"array-buffer":v=await p.arrayBuffer();break;case"blob":case"image":v=await p.blob();break;default:v=await p.text();}if(C&&(clearTimeout(C),C=0),"json"===n||"xml"===n||"document"===n)if(v)switch(n){case"json":v=JSON.parse(v);break;case"xml":v=X$1(v,"application/xml");break;case"document":v=X$1(v,"text/html");}else v=null;if(v){if("array-buffer"===n||"blob"===n){const e=p.headers.get("Content-Type");if(e&&/application\/json|text\/plain/i.test(e)&&v["blob"===n?"size":"byteLength"]<=750)try{const e=await new Response(v).json();e.error&&(v=e);}catch{}}"image"===n&&v instanceof Blob&&(v=await Y$1(URL.createObjectURL(v),e,!0));}}else v=await p.text();}else v=await Y$1(t,e);}catch(j){if("AbortError"===j.name){if(L)throw new Error("Timeout exceeded");throw a$6("Request canceled")}if(!(!p&&j instanceof TypeError&&P$1.proxyUrl)||s.body||"delete"===s.method||"head"===s.method||"post"===s.method||"put"===s.method||e.useProxy||H$1(t))throw j;e.redoRequest=!0,E$1({proxyUrl:P$1.proxyUrl,urlPrefix:H$2(t)??""});}finally{C&&clearTimeout(C);}return [p,v]}async function G$1(e,r){if(null!=e.responseData)return e.responseData;if(e.headers&&(r.requestOptions.headers={...r.requestOptions.headers,...e.headers}),e.query&&(r.requestOptions.query={...r.requestOptions.query,...e.query}),e.before){let o,a;try{a=await e.before(r);}catch(s){o=N$1("request:interceptor",s,r);}if((a instanceof Error||a instanceof s$4)&&(o=N$1("request:interceptor",a,r)),o)throw e.error&&e.error(o),o;return a}}function J$1(e){if(e)for(const r of Object.getOwnPropertyNames(e))if(e[r])return !0;return !1}function X$1(e,r){let t;try{t=(new DOMParser).parseFromString(e,r);}catch{}if(!t||t.getElementsByTagName("parsererror").length)throw new SyntaxError("XML Parse error");return t}async function Q$1(e){let t,s;await z$1(e);try{do{[t,s]=await W$1(e);}while(!await V$1(e,t,s))}catch(n){const r=N$1("request:server",n,e.params,t);throw r.details.ssl=e.useSSL,e.interceptor&&e.interceptor.error&&e.interceptor.error(r),r}const o=e.params.url;if(s&&/\/sharing\/rest\/(accounts|portals)\/self/i.test(o)){if(!e.hasToken&&!e.credentialToken&&s.user?.username&&!D$2(o)){const e=H$2(o,!0);e&&P$1.trustedServers.push(e);}Array.isArray(s.authorizedCrossOriginNoCorsDomains)&&m$1(s.authorizedCrossOriginNoCorsDomains);}const a=e.credential;if(a&&s$2){const e=s$2.findServerInfo(a.server);let t=e&&e.owningSystemUrl;if(t){t=t.replace(/\/?$/,"/sharing");const e=s$2.findCredential(t,a.userId);e&&-1===s$2._getIdenticalSvcIdx(t,e)&&e.resources.unshift(t);}}return {data:s,getHeader:t?e=>t?.headers.get(e):M$1,requestOptions:e.params.requestOptions,ssl:e.useSSL,url:e.params.url}}async function V$1(e,t,s){if(e.redoRequest)return e.redoRequest=!1,!1;const o=e.params.requestOptions;if(!t||"native"===o.responseType||"native-request-init"===o.responseType)return !0;let a,n;if(!t.ok)throw a=new Error(`Unable to load ${t.url} status: ${t.status}`),a[R$1]=s,a;s&&(s.error?a=s.error:"error"===s.status&&Array.isArray(s.messages)&&(a={...s},a[R$1]=s,a.details=s.messages));let i,l=null;a&&(n=Number(a.code),l=a.hasOwnProperty("subcode")?Number(a.subcode):null,i=a.messageCode,i=i&&i.toUpperCase());const u=o.authMode;if(403===n&&(4===l||a.message&&a.message.toLowerCase().includes("ssl")&&!a.message.toLowerCase().includes("permission"))){if(!e.useSSL)return e.useSSL=!0,!1}else if(!e.hasToken&&e.useIdentity&&("no-prompt"!==u||498===n)&&void 0!==n&&_$1.includes(n)&&!K$1(e.params.url)&&(403!==n||i&&!F$1.includes(i)&&(null==l||2===l&&e.credentialToken))){await $$1();try{const t=await s$2.getCredential(e.params.url,{error:N$1("request:server",a,e.params),prompt:"no-prompt"!==u,signal:e.controller.signal,token:e.credentialToken});return e.credential=t,e.credentialToken=t.token,e.useSSL=e.useSSL||t.ssl,!1}catch(c){if("no-prompt"===u)return e.credential=void 0,e.credentialToken=void 0,!1;a=c;}}if(a)throw a;return !0}function Y$1(e,r,t=!1){const s=r.controller.signal,o=new Image;return r.withCredentials?o.crossOrigin="use-credentials":o.crossOrigin="anonymous",o.alt="",o.fetchPriority=P$1.priority,o.src=e,c$2(o,e,t,s)}U$1._abortableFetch=null,U$1._corsServers=["https://server.arcgisonline.com","https://services.arcgisonline.com"];
+async function U$1(e,r){const t=X$2(e),s=V$2(e);s||t||(e=F$2(e));const n={url:e,requestOptions:{...e$9(r)}};let i=W$2(e);if(i){const e=await G$1(i,n);if(null!=e)return {data:e,getHeader:M$1,requestOptions:n.requestOptions,url:n.url};i.after||i.error||(i=null);}if(e=n.url,"image"===(r=n.requestOptions).responseType){if(has("host-webworker")||has("host-node"))throw N$1("request:invalid-parameters",new Error("responseType 'image' is not supported in Web Workers or Node environment"),n)}else if(t)throw N$1("request:invalid-parameters",new Error("Data URLs are not supported for responseType = "+r.responseType),n);if("head"===r.method){if(r.body)throw N$1("request:invalid-parameters",new Error("body parameter cannot be set when method is 'head'"),n);if(t||s)throw N$1("request:invalid-parameters",new Error("data and blob URLs are not supported for method 'head'"),n)}if(await B$1(),j$1)return j$1.execute(e,r);const l=new AbortController;v$2(r,(()=>l.abort()));const m={controller:l,credential:void 0,credentialToken:void 0,fetchOptions:void 0,hasToken:!1,interceptor:i,params:n,redoRequest:!1,useIdentity:P$1.useIdentity,useProxy:!1,useSSL:!1,withCredentials:!1},h=await Q$1(m);return i?.after?.(h),h}let j$1;const P$1=s$7.request,D$1="FormData"in globalThis,_$1=[499,498,403,401],F$1=["COM_0056","COM_0057","SB_0008"],I$1=[/\/arcgis\/tokens/i,/\/sharing(\/rest)?\/generatetoken/i,/\/rest\/info/i],M$1=()=>null,R$1=Symbol();function A$1(e){const r=H$2(e);r&&!U$1._corsServers.includes(r)&&U$1._corsServers.push(r);}function H$1(e){const r=H$2(e);return !r||r.endsWith(".arcgis.com")||U$1._corsServers.includes(r)||D$2(r)}function N$1(e,r,o,a){let l="Error";const u={url:o.url,requestOptions:o.requestOptions,getHeader:M$1,ssl:!1};if(r instanceof s$4)return r.details?(r.details=y$2(r.details),r.details.url=o.url,r.details.requestOptions=o.requestOptions):r.details=u,r;if(r){const e=a&&(e=>a.headers.get(e)),t=a&&a.status,s=r.message;s&&(l=s),e&&(u.getHeader=e),u.httpStatus=(null!=r.httpCode?r.httpCode:r.code)||t||0,u.subCode=r.subcode,u.messageCode=r.messageCode,"string"==typeof r.details?u.messages=[r.details]:u.messages=r.details,u.raw=R$1 in r?r[R$1]:r;}return j$3(r)?a$6():new s$4(e,l,u)}async function B$1(){has("host-webworker")?j$1||(j$1=await import('./request-f8620597.js')):U$1._abortableFetch||(U$1._abortableFetch=globalThis.fetch.bind(globalThis));}async function $$1(){s$2||await import('./IdentityManager-79d351d7.js');}async function z$1(t){const s=t.params.url,o=t.params.requestOptions,a=t.controller.signal,n=o.body;let i=null,u=null;if(D$1&&"HTMLFormElement"in globalThis&&(n instanceof FormData?i=n:n instanceof HTMLFormElement&&(i=new FormData(n))),"string"==typeof n&&(u=n),t.fetchOptions={cache:o.cacheBust&&!U$1._abortableFetch.polyfill?"no-cache":"default",credentials:"same-origin",headers:o.headers||{},method:"head"===o.method?"HEAD":"GET",mode:"cors",priority:P$1.priority,redirect:"follow",signal:a},(i||u)&&(t.fetchOptions.body=i||u),"anonymous"===o.authMode&&(t.useIdentity=!1),t.hasToken=!!(/token=/i.test(s)||o.query?.token||i?.get("token")),!t.hasToken&&s$7.apiKey&&r(s)&&(o.query||(o.query={}),o.query.token=s$7.apiKey,t.hasToken=!0),t.useIdentity&&!t.hasToken&&!t.credentialToken&&!K$1(s)&&!p$2(a)){let e;"immediate"===o.authMode?(await $$1(),e=await s$2.getCredential(s,{signal:a}),t.credential=e):"no-prompt"===o.authMode?(await $$1(),e=await s$2.getCredential(s,{prompt:!1,signal:a}).catch((()=>{})),t.credential=e):s$2&&(e=s$2.findCredential(s)),e&&(t.credentialToken=e.token,t.useSSL=!!e.ssl);}}function K$1(e){return I$1.some((r=>r.test(e)))}async function W$1(e){let t=e.params.url;const s=e.params.requestOptions,o=e.fetchOptions??{},a=V$2(t)||X$2(t),n=s.responseType||"json",l=a?0:null!=s.timeout?s.timeout:P$1.timeout;let d=!1;if(!a){e.useSSL&&(t=mt$1(t)),s.cacheBust&&"default"===o.cache&&(t=St(t,"request.preventCache",Date.now()));let a={...s.query};e.credentialToken&&(a.token=e.credentialToken);let n=I$2(a);has("esri-url-encodes-apostrophe")&&(n=n.replace(/'/g,"%27"));const i=t.length+1+n.length;let l;d="delete"===s.method||"post"===s.method||"put"===s.method||!!s.body||i>P$1.maxUrlLength;const u=s.useProxy||!!J$2(t);if(u){const e=A$2(t);l=e.path,!d&&l.length+1+i>P$1.maxUrlLength&&(d=!0),e.query&&(a={...e.query,...a});}if("HEAD"===o.method&&(d||u)){if(d){if(i>P$1.maxUrlLength)throw N$1("request:invalid-parameters",new Error("URL exceeds maximum length"),e.params);throw N$1("request:invalid-parameters",new Error("cannot use POST request when method is 'head'"),e.params)}if(u)throw N$1("request:invalid-parameters",new Error("cannot use proxy when method is 'head'"),e.params)}if(d?(o.method="delete"===s.method?"DELETE":"put"===s.method?"PUT":"POST",s.body?t=Bt$1(t,a):(o.body=I$2(a),o.headers||(o.headers={}),o.headers["Content-Type"]="application/x-www-form-urlencoded")):t=Bt$1(t,a),u&&(e.useProxy=!0,t=`${l}?${t}`),a.token&&D$1&&o.body instanceof FormData&&!t$2(t)&&o.body.set("token",a.token),s.hasOwnProperty("withCredentials"))e.withCredentials=s.withCredentials;else if(!z$2(t,b$1()))if(D$2(t))e.withCredentials=!0;else if(s$2){const s=s$2.findServerInfo(t);s&&s.webTierAuth&&(e.withCredentials=!0);}e.withCredentials&&(o.credentials="include",u$1(t)&&await d$1(d?Bt$1(t,a):t));}let p,v,C=0,L=!1;l>0&&(C=setTimeout((()=>{L=!0,e.controller.abort();}),l));try{if("native-request-init"===s.responseType)v=o,v.url=t;else if("image"!==s.responseType||"default"!==o.cache||"GET"!==o.method||d||J$1(s.headers)||!a&&!e.useProxy&&P$1.proxyUrl&&!H$1(t)){if(p=await U$1._abortableFetch(t,o),e.useProxy||A$1(t),"native"===s.responseType)v=p;else if("HEAD"!==o.method)if(p.ok){switch(n){case"array-buffer":v=await p.arrayBuffer();break;case"blob":case"image":v=await p.blob();break;default:v=await p.text();}if(C&&(clearTimeout(C),C=0),"json"===n||"xml"===n||"document"===n)if(v)switch(n){case"json":v=JSON.parse(v);break;case"xml":v=X$1(v,"application/xml");break;case"document":v=X$1(v,"text/html");}else v=null;if(v){if("array-buffer"===n||"blob"===n){const e=p.headers.get("Content-Type");if(e&&/application\/json|text\/plain/i.test(e)&&v["blob"===n?"size":"byteLength"]<=750)try{const e=await new Response(v).json();e.error&&(v=e);}catch{}}"image"===n&&v instanceof Blob&&(v=await Y$1(URL.createObjectURL(v),e,!0));}}else v=await p.text();}else v=await Y$1(t,e);}catch(j){if("AbortError"===j.name){if(L)throw new Error("Timeout exceeded");throw a$6("Request canceled")}if(!(!p&&j instanceof TypeError&&P$1.proxyUrl)||s.body||"delete"===s.method||"head"===s.method||"post"===s.method||"put"===s.method||e.useProxy||H$1(t))throw j;e.redoRequest=!0,E$1({proxyUrl:P$1.proxyUrl,urlPrefix:H$2(t)??""});}finally{C&&clearTimeout(C);}return [p,v]}async function G$1(e,r){if(null!=e.responseData)return e.responseData;if(e.headers&&(r.requestOptions.headers={...r.requestOptions.headers,...e.headers}),e.query&&(r.requestOptions.query={...r.requestOptions.query,...e.query}),e.before){let o,a;try{a=await e.before(r);}catch(s){o=N$1("request:interceptor",s,r);}if((a instanceof Error||a instanceof s$4)&&(o=N$1("request:interceptor",a,r)),o)throw e.error&&e.error(o),o;return a}}function J$1(e){if(e)for(const r of Object.getOwnPropertyNames(e))if(e[r])return !0;return !1}function X$1(e,r){let t;try{t=(new DOMParser).parseFromString(e,r);}catch{}if(!t||t.getElementsByTagName("parsererror").length)throw new SyntaxError("XML Parse error");return t}async function Q$1(e){let t,s;await z$1(e);try{do{[t,s]=await W$1(e);}while(!await V$1(e,t,s))}catch(n){const r=N$1("request:server",n,e.params,t);throw r.details.ssl=e.useSSL,e.interceptor&&e.interceptor.error&&e.interceptor.error(r),r}const o=e.params.url;if(s&&/\/sharing\/rest\/(accounts|portals)\/self/i.test(o)){if(!e.hasToken&&!e.credentialToken&&s.user?.username&&!D$2(o)){const e=H$2(o,!0);e&&P$1.trustedServers.push(e);}Array.isArray(s.authorizedCrossOriginNoCorsDomains)&&m$1(s.authorizedCrossOriginNoCorsDomains);}const a=e.credential;if(a&&s$2){const e=s$2.findServerInfo(a.server);let t=e&&e.owningSystemUrl;if(t){t=t.replace(/\/?$/,"/sharing");const e=s$2.findCredential(t,a.userId);e&&-1===s$2._getIdenticalSvcIdx(t,e)&&e.resources.unshift(t);}}return {data:s,getHeader:t?e=>t?.headers.get(e):M$1,requestOptions:e.params.requestOptions,ssl:e.useSSL,url:e.params.url}}async function V$1(e,t,s){if(e.redoRequest)return e.redoRequest=!1,!1;const o=e.params.requestOptions;if(!t||"native"===o.responseType||"native-request-init"===o.responseType)return !0;let a,n;if(!t.ok)throw a=new Error(`Unable to load ${t.url} status: ${t.status}`),a[R$1]=s,a;s&&(s.error?a=s.error:"error"===s.status&&Array.isArray(s.messages)&&(a={...s},a[R$1]=s,a.details=s.messages));let i,l=null;a&&(n=Number(a.code),l=a.hasOwnProperty("subcode")?Number(a.subcode):null,i=a.messageCode,i=i&&i.toUpperCase());const u=o.authMode;if(403===n&&(4===l||a.message&&a.message.toLowerCase().includes("ssl")&&!a.message.toLowerCase().includes("permission"))){if(!e.useSSL)return e.useSSL=!0,!1}else if(!e.hasToken&&e.useIdentity&&("no-prompt"!==u||498===n)&&void 0!==n&&_$1.includes(n)&&!K$1(e.params.url)&&(403!==n||i&&!F$1.includes(i)&&(null==l||2===l&&e.credentialToken))){await $$1();try{const t=await s$2.getCredential(e.params.url,{error:N$1("request:server",a,e.params),prompt:"no-prompt"!==u,signal:e.controller.signal,token:e.credentialToken});return e.credential=t,e.credentialToken=t.token,e.useSSL=e.useSSL||t.ssl,!1}catch(c){if("no-prompt"===u)return e.credential=void 0,e.credentialToken=void 0,!1;a=c;}}if(a)throw a;return !0}function Y$1(e,r,t=!1){const s=r.controller.signal,o=new Image;return r.withCredentials?o.crossOrigin="use-credentials":o.crossOrigin="anonymous",o.alt="",o.fetchPriority=P$1.priority,o.src=e,c$2(o,e,t,s)}U$1._abortableFetch=null,U$1._corsServers=["https://server.arcgisonline.com","https://services.arcgisonline.com"];
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
@@ -1839,7 +2532,7 @@ function(t){var r=function(t){var e,r,n,i,a,o,s,c,u,h;for(/[^\x00-\xFF]/.test(t)
  * Licensed under the MIT License.
  * http://opensource.org/licenses/mit-license
  */
-function(t){t.loadFile=function(t,e,r){return function(t,e,r){e=!1!==e,r="function"==typeof r?r:function(){};var n=void 0;try{n=function(t,e,r){var n=new XMLHttpRequest,i=0,a=function(t){var e=t.length,r=[],n=String.fromCharCode;for(i=0;i<e;i+=1)r.push(n(255&t.charCodeAt(i)));return r.join("")};if(n.open("GET",t,!e),n.overrideMimeType("text/plain; charset=x-user-defined"),!1===e&&(n.onload=function(){200===n.status?r(a(this.responseText)):r(void 0);}),n.send(null),e&&200===n.status)return a(n.responseText)}(t,e,r);}catch(t){}return n}(t,e,r)},t.loadImageFile=t.loadFile;}(E.API),function(e){function r(){return (n.html2canvas?Promise.resolve(n.html2canvas):import('./html2canvas.js').then(function (n) { return n.h; })).catch((function(t){return Promise.reject(new Error("Could not load html2canvas: "+t))})).then((function(t){return t.default?t.default:t}))}function i(){return (n.DOMPurify?Promise.resolve(n.DOMPurify):import('./purify.js').then(function (n) { return n.p; })).catch((function(t){return Promise.reject(new Error("Could not load dompurify: "+t))})).then((function(t){return t.default?t.default:t}))}var a=function(e){var r=t(e);return "undefined"===r?"undefined":"string"===r||e instanceof String?"string":"number"===r||e instanceof Number?"number":"function"===r||e instanceof Function?"function":e&&e.constructor===Array?"array":e&&1===e.nodeType?"element":"object"===r?"object":"unknown"},o=function(t,e){var r=document.createElement(t);for(var n in e.className&&(r.className=e.className),e.innerHTML&&e.dompurify&&(r.innerHTML=e.dompurify.sanitize(e.innerHTML)),e.style)r.style[n]=e.style[n];return r},s=function t(e){var r=Object.assign(t.convert(Promise.resolve()),JSON.parse(JSON.stringify(t.template))),n=t.convert(Promise.resolve(),r);return n=(n=n.setProgress(1,t,1,[t])).set(e)};(s.prototype=Object.create(Promise.prototype)).constructor=s,s.convert=function(t,e){return t.__proto__=e||s.prototype,t},s.template={prop:{src:null,container:null,overlay:null,canvas:null,img:null,pdf:null,pageSize:null,callback:function(){}},progress:{val:0,state:null,n:0,stack:[]},opt:{filename:"file.pdf",margin:[0,0,0,0],enableLinks:!0,x:0,y:0,html2canvas:{},jsPDF:{},backgroundColor:"transparent"}},s.prototype.from=function(t,e){return this.then((function(){switch(e=e||function(t){switch(a(t)){case"string":return "string";case"element":return "canvas"===t.nodeName.toLowerCase()?"canvas":"element";default:return "unknown"}}(t)){case"string":return this.then(i).then((function(e){return this.set({src:o("div",{innerHTML:t,dompurify:e})})}));case"element":return this.set({src:t});case"canvas":return this.set({canvas:t});case"img":return this.set({img:t});default:return this.error("Unknown source type.")}}))},s.prototype.to=function(t){switch(t){case"container":return this.toContainer();case"canvas":return this.toCanvas();case"img":return this.toImg();case"pdf":return this.toPdf();default:return this.error("Invalid target.")}},s.prototype.toContainer=function(){return this.thenList([function(){return this.prop.src||this.error("Cannot duplicate - no source HTML.")},function(){return this.prop.pageSize||this.setPageSize()}]).then((function(){var t={position:"relative",display:"inline-block",width:("number"!=typeof this.opt.width||isNaN(this.opt.width)||"number"!=typeof this.opt.windowWidth||isNaN(this.opt.windowWidth)?Math.max(this.prop.src.clientWidth,this.prop.src.scrollWidth,this.prop.src.offsetWidth):this.opt.windowWidth)+"px",left:0,right:0,top:0,margin:"auto",backgroundColor:this.opt.backgroundColor},e=function t(e,r){for(var n=3===e.nodeType?document.createTextNode(e.nodeValue):e.cloneNode(!1),i=e.firstChild;i;i=i.nextSibling)!0!==r&&1===i.nodeType&&"SCRIPT"===i.nodeName||n.appendChild(t(i,r));return 1===e.nodeType&&("CANVAS"===e.nodeName?(n.width=e.width,n.height=e.height,n.getContext("2d").drawImage(e,0,0)):"TEXTAREA"!==e.nodeName&&"SELECT"!==e.nodeName||(n.value=e.value),n.addEventListener("load",(function(){n.scrollTop=e.scrollTop,n.scrollLeft=e.scrollLeft;}),!0)),n}(this.prop.src,this.opt.html2canvas.javascriptEnabled);"BODY"===e.tagName&&(t.height=Math.max(document.body.scrollHeight,document.body.offsetHeight,document.documentElement.clientHeight,document.documentElement.scrollHeight,document.documentElement.offsetHeight)+"px"),this.prop.overlay=o("div",{className:"html2pdf__overlay",style:{position:"fixed",overflow:"hidden",zIndex:1e3,left:"-100000px",right:0,bottom:0,top:0}}),this.prop.container=o("div",{className:"html2pdf__container",style:t}),this.prop.container.appendChild(e),this.prop.container.firstChild.appendChild(o("div",{style:{clear:"both",border:"0 none transparent",margin:0,padding:0,height:0}})),this.prop.container.style.float="none",this.prop.overlay.appendChild(this.prop.container),document.body.appendChild(this.prop.overlay),this.prop.container.firstChild.style.position="relative",this.prop.container.height=Math.max(this.prop.container.firstChild.clientHeight,this.prop.container.firstChild.scrollHeight,this.prop.container.firstChild.offsetHeight)+"px";}))},s.prototype.toCanvas=function(){var t=[function(){return document.body.contains(this.prop.container)||this.toContainer()}];return this.thenList(t).then(r).then((function(t){var e=Object.assign({},this.opt.html2canvas);return delete e.onrendered,t(this.prop.container,e)})).then((function(t){(this.opt.html2canvas.onrendered||function(){})(t),this.prop.canvas=t,document.body.removeChild(this.prop.overlay);}))},s.prototype.toContext2d=function(){var t=[function(){return document.body.contains(this.prop.container)||this.toContainer()}];return this.thenList(t).then(r).then((function(t){var e=this.opt.jsPDF,r=this.opt.fontFaces,n="number"!=typeof this.opt.width||isNaN(this.opt.width)||"number"!=typeof this.opt.windowWidth||isNaN(this.opt.windowWidth)?1:this.opt.width/this.opt.windowWidth,i=Object.assign({async:!0,allowTaint:!0,scale:n,scrollX:this.opt.scrollX||0,scrollY:this.opt.scrollY||0,backgroundColor:"#ffffff",imageTimeout:15e3,logging:!0,proxy:null,removeContainer:!0,foreignObjectRendering:!1,useCORS:!1},this.opt.html2canvas);if(delete i.onrendered,e.context2d.autoPaging=void 0===this.opt.autoPaging||this.opt.autoPaging,e.context2d.posX=this.opt.x,e.context2d.posY=this.opt.y,e.context2d.margin=this.opt.margin,e.context2d.fontFaces=r,r)for(var a=0;a<r.length;++a){var o=r[a],s=o.src.find((function(t){return "truetype"===t.format}));s&&e.addFont(s.url,o.ref.name,o.ref.style);}return i.windowHeight=i.windowHeight||0,i.windowHeight=0==i.windowHeight?Math.max(this.prop.container.clientHeight,this.prop.container.scrollHeight,this.prop.container.offsetHeight):i.windowHeight,e.context2d.save(!0),t(this.prop.container,i)})).then((function(t){this.opt.jsPDF.context2d.restore(!0),(this.opt.html2canvas.onrendered||function(){})(t),this.prop.canvas=t,document.body.removeChild(this.prop.overlay);}))},s.prototype.toImg=function(){return this.thenList([function(){return this.prop.canvas||this.toCanvas()}]).then((function(){var t=this.prop.canvas.toDataURL("image/"+this.opt.image.type,this.opt.image.quality);this.prop.img=document.createElement("img"),this.prop.img.src=t;}))},s.prototype.toPdf=function(){return this.thenList([function(){return this.toContext2d()}]).then((function(){this.prop.pdf=this.prop.pdf||this.opt.jsPDF;}))},s.prototype.output=function(t,e,r){return "img"===(r=r||"pdf").toLowerCase()||"image"===r.toLowerCase()?this.outputImg(t,e):this.outputPdf(t,e)},s.prototype.outputPdf=function(t,e){return this.thenList([function(){return this.prop.pdf||this.toPdf()}]).then((function(){return this.prop.pdf.output(t,e)}))},s.prototype.outputImg=function(t){return this.thenList([function(){return this.prop.img||this.toImg()}]).then((function(){switch(t){case void 0:case"img":return this.prop.img;case"datauristring":case"dataurlstring":return this.prop.img.src;case"datauri":case"dataurl":return document.location.href=this.prop.img.src;default:throw 'Image output type "'+t+'" is not supported.'}}))},s.prototype.save=function(t){return this.thenList([function(){return this.prop.pdf||this.toPdf()}]).set(t?{filename:t}:null).then((function(){this.prop.pdf.save(this.opt.filename);}))},s.prototype.doCallback=function(){return this.thenList([function(){return this.prop.pdf||this.toPdf()}]).then((function(){this.prop.callback(this.prop.pdf);}))},s.prototype.set=function(t){if("object"!==a(t))return this;var e=Object.keys(t||{}).map((function(e){if(e in s.template.prop)return function(){this.prop[e]=t[e];};switch(e){case"margin":return this.setMargin.bind(this,t.margin);case"jsPDF":return function(){return this.opt.jsPDF=t.jsPDF,this.setPageSize()};case"pageSize":return this.setPageSize.bind(this,t.pageSize);default:return function(){this.opt[e]=t[e];}}}),this);return this.then((function(){return this.thenList(e)}))},s.prototype.get=function(t,e){return this.then((function(){var r=t in s.template.prop?this.prop[t]:this.opt[t];return e?e(r):r}))},s.prototype.setMargin=function(t){return this.then((function(){switch(a(t)){case"number":t=[t,t,t,t];case"array":if(2===t.length&&(t=[t[0],t[1],t[0],t[1]]),4===t.length)break;default:return this.error("Invalid margin array.")}this.opt.margin=t;})).then(this.setPageSize)},s.prototype.setPageSize=function(t){function e(t,e){return Math.floor(t*e/72*96)}return this.then((function(){(t=t||E.getPageSize(this.opt.jsPDF)).hasOwnProperty("inner")||(t.inner={width:t.width-this.opt.margin[1]-this.opt.margin[3],height:t.height-this.opt.margin[0]-this.opt.margin[2]},t.inner.px={width:e(t.inner.width,t.k),height:e(t.inner.height,t.k)},t.inner.ratio=t.inner.height/t.inner.width),this.prop.pageSize=t;}))},s.prototype.setProgress=function(t,e,r,n){return null!=t&&(this.progress.val=t),null!=e&&(this.progress.state=e),null!=r&&(this.progress.n=r),null!=n&&(this.progress.stack=n),this.progress.ratio=this.progress.val/this.progress.state,this},s.prototype.updateProgress=function(t,e,r,n){return this.setProgress(t?this.progress.val+t:null,e||null,r?this.progress.n+r:null,n?this.progress.stack.concat(n):null)},s.prototype.then=function(t,e){var r=this;return this.thenCore(t,e,(function(t,e){return r.updateProgress(null,null,1,[t]),Promise.prototype.then.call(this,(function(e){return r.updateProgress(null,t),e})).then(t,e).then((function(t){return r.updateProgress(1),t}))}))},s.prototype.thenCore=function(t,e,r){r=r||Promise.prototype.then;t&&(t=t.bind(this)),e&&(e=e.bind(this));var n=-1!==Promise.toString().indexOf("[native code]")&&"Promise"===Promise.name?this:s.convert(Object.assign({},this),Promise.prototype),i=r.call(n,t,e);return s.convert(i,this.__proto__)},s.prototype.thenExternal=function(t,e){return Promise.prototype.then.call(this,t,e)},s.prototype.thenList=function(t){var e=this;return t.forEach((function(t){e=e.thenCore(t);})),e},s.prototype.catch=function(t){t&&(t=t.bind(this));var e=Promise.prototype.catch.call(this,t);return s.convert(e,this)},s.prototype.catchExternal=function(t){return Promise.prototype.catch.call(this,t)},s.prototype.error=function(t){return this.then((function(){throw new Error(t)}))},s.prototype.using=s.prototype.set,s.prototype.saveAs=s.prototype.save,s.prototype.export=s.prototype.output,s.prototype.run=s.prototype.then,E.getPageSize=function(e,r,n){if("object"===t(e)){var i=e;e=i.orientation,r=i.unit||r,n=i.format||n;}r=r||"mm",n=n||"a4",e=(""+(e||"P")).toLowerCase();var a,o=(""+n).toLowerCase(),s={a0:[2383.94,3370.39],a1:[1683.78,2383.94],a2:[1190.55,1683.78],a3:[841.89,1190.55],a4:[595.28,841.89],a5:[419.53,595.28],a6:[297.64,419.53],a7:[209.76,297.64],a8:[147.4,209.76],a9:[104.88,147.4],a10:[73.7,104.88],b0:[2834.65,4008.19],b1:[2004.09,2834.65],b2:[1417.32,2004.09],b3:[1000.63,1417.32],b4:[708.66,1000.63],b5:[498.9,708.66],b6:[354.33,498.9],b7:[249.45,354.33],b8:[175.75,249.45],b9:[124.72,175.75],b10:[87.87,124.72],c0:[2599.37,3676.54],c1:[1836.85,2599.37],c2:[1298.27,1836.85],c3:[918.43,1298.27],c4:[649.13,918.43],c5:[459.21,649.13],c6:[323.15,459.21],c7:[229.61,323.15],c8:[161.57,229.61],c9:[113.39,161.57],c10:[79.37,113.39],dl:[311.81,623.62],letter:[612,792],"government-letter":[576,756],legal:[612,1008],"junior-legal":[576,360],ledger:[1224,792],tabloid:[792,1224],"credit-card":[153,243]};switch(r){case"pt":a=1;break;case"mm":a=72/25.4;break;case"cm":a=72/2.54;break;case"in":a=72;break;case"px":a=.75;break;case"pc":case"em":a=12;break;case"ex":a=6;break;default:throw "Invalid unit: "+r}var c,u=0,h=0;if(s.hasOwnProperty(o))u=s[o][1]/a,h=s[o][0]/a;else try{u=n[1],h=n[0];}catch(t){throw new Error("Invalid format: "+n)}if("p"===e||"portrait"===e)e="p",h>u&&(c=h,h=u,u=c);else {if("l"!==e&&"landscape"!==e)throw "Invalid orientation: "+e;e="l",u>h&&(c=h,h=u,u=c);}return {width:h,height:u,unit:r,k:a,orientation:e}},e.html=function(t,e){(e=e||{}).callback=e.callback||function(){},e.html2canvas=e.html2canvas||{},e.html2canvas.canvas=e.html2canvas.canvas||this.canvas,e.jsPDF=e.jsPDF||this,e.fontFaces=e.fontFaces?e.fontFaces.map(jt):null;var r=new s(e);return e.worker?r:r.from(t).doCallback()};}(E.API),E.API.addJS=function(t){return Ht=t,this.internal.events.subscribe("postPutResources",(function(){Ut=this.internal.newObject(),this.internal.out("<<"),this.internal.out("/Names [(EmbeddedJS) "+(Ut+1)+" 0 R]"),this.internal.out(">>"),this.internal.out("endobj"),zt=this.internal.newObject(),this.internal.out("<<"),this.internal.out("/S /JavaScript"),this.internal.out("/JS ("+Ht+")"),this.internal.out(">>"),this.internal.out("endobj");})),this.internal.events.subscribe("putCatalog",(function(){void 0!==Ut&&void 0!==zt&&this.internal.out("/Names <</JavaScript "+Ut+" 0 R>>");})),this},
+function(t){t.loadFile=function(t,e,r){return function(t,e,r){e=!1!==e,r="function"==typeof r?r:function(){};var n=void 0;try{n=function(t,e,r){var n=new XMLHttpRequest,i=0,a=function(t){var e=t.length,r=[],n=String.fromCharCode;for(i=0;i<e;i+=1)r.push(n(255&t.charCodeAt(i)));return r.join("")};if(n.open("GET",t,!e),n.overrideMimeType("text/plain; charset=x-user-defined"),!1===e&&(n.onload=function(){200===n.status?r(a(this.responseText)):r(void 0);}),n.send(null),e&&200===n.status)return a(n.responseText)}(t,e,r);}catch(t){}return n}(t,e,r)},t.loadImageFile=t.loadFile;}(E.API),function(e){function r(){return (n.html2canvas?Promise.resolve(n.html2canvas):import('./html2canvas-12c862c8.js').then(function (n) { return n.h; })).catch((function(t){return Promise.reject(new Error("Could not load html2canvas: "+t))})).then((function(t){return t.default?t.default:t}))}function i(){return (n.DOMPurify?Promise.resolve(n.DOMPurify):import('./purify-75c61cf7.js').then(function (n) { return n.p; })).catch((function(t){return Promise.reject(new Error("Could not load dompurify: "+t))})).then((function(t){return t.default?t.default:t}))}var a=function(e){var r=t(e);return "undefined"===r?"undefined":"string"===r||e instanceof String?"string":"number"===r||e instanceof Number?"number":"function"===r||e instanceof Function?"function":e&&e.constructor===Array?"array":e&&1===e.nodeType?"element":"object"===r?"object":"unknown"},o=function(t,e){var r=document.createElement(t);for(var n in e.className&&(r.className=e.className),e.innerHTML&&e.dompurify&&(r.innerHTML=e.dompurify.sanitize(e.innerHTML)),e.style)r.style[n]=e.style[n];return r},s=function t(e){var r=Object.assign(t.convert(Promise.resolve()),JSON.parse(JSON.stringify(t.template))),n=t.convert(Promise.resolve(),r);return n=(n=n.setProgress(1,t,1,[t])).set(e)};(s.prototype=Object.create(Promise.prototype)).constructor=s,s.convert=function(t,e){return t.__proto__=e||s.prototype,t},s.template={prop:{src:null,container:null,overlay:null,canvas:null,img:null,pdf:null,pageSize:null,callback:function(){}},progress:{val:0,state:null,n:0,stack:[]},opt:{filename:"file.pdf",margin:[0,0,0,0],enableLinks:!0,x:0,y:0,html2canvas:{},jsPDF:{},backgroundColor:"transparent"}},s.prototype.from=function(t,e){return this.then((function(){switch(e=e||function(t){switch(a(t)){case"string":return "string";case"element":return "canvas"===t.nodeName.toLowerCase()?"canvas":"element";default:return "unknown"}}(t)){case"string":return this.then(i).then((function(e){return this.set({src:o("div",{innerHTML:t,dompurify:e})})}));case"element":return this.set({src:t});case"canvas":return this.set({canvas:t});case"img":return this.set({img:t});default:return this.error("Unknown source type.")}}))},s.prototype.to=function(t){switch(t){case"container":return this.toContainer();case"canvas":return this.toCanvas();case"img":return this.toImg();case"pdf":return this.toPdf();default:return this.error("Invalid target.")}},s.prototype.toContainer=function(){return this.thenList([function(){return this.prop.src||this.error("Cannot duplicate - no source HTML.")},function(){return this.prop.pageSize||this.setPageSize()}]).then((function(){var t={position:"relative",display:"inline-block",width:("number"!=typeof this.opt.width||isNaN(this.opt.width)||"number"!=typeof this.opt.windowWidth||isNaN(this.opt.windowWidth)?Math.max(this.prop.src.clientWidth,this.prop.src.scrollWidth,this.prop.src.offsetWidth):this.opt.windowWidth)+"px",left:0,right:0,top:0,margin:"auto",backgroundColor:this.opt.backgroundColor},e=function t(e,r){for(var n=3===e.nodeType?document.createTextNode(e.nodeValue):e.cloneNode(!1),i=e.firstChild;i;i=i.nextSibling)!0!==r&&1===i.nodeType&&"SCRIPT"===i.nodeName||n.appendChild(t(i,r));return 1===e.nodeType&&("CANVAS"===e.nodeName?(n.width=e.width,n.height=e.height,n.getContext("2d").drawImage(e,0,0)):"TEXTAREA"!==e.nodeName&&"SELECT"!==e.nodeName||(n.value=e.value),n.addEventListener("load",(function(){n.scrollTop=e.scrollTop,n.scrollLeft=e.scrollLeft;}),!0)),n}(this.prop.src,this.opt.html2canvas.javascriptEnabled);"BODY"===e.tagName&&(t.height=Math.max(document.body.scrollHeight,document.body.offsetHeight,document.documentElement.clientHeight,document.documentElement.scrollHeight,document.documentElement.offsetHeight)+"px"),this.prop.overlay=o("div",{className:"html2pdf__overlay",style:{position:"fixed",overflow:"hidden",zIndex:1e3,left:"-100000px",right:0,bottom:0,top:0}}),this.prop.container=o("div",{className:"html2pdf__container",style:t}),this.prop.container.appendChild(e),this.prop.container.firstChild.appendChild(o("div",{style:{clear:"both",border:"0 none transparent",margin:0,padding:0,height:0}})),this.prop.container.style.float="none",this.prop.overlay.appendChild(this.prop.container),document.body.appendChild(this.prop.overlay),this.prop.container.firstChild.style.position="relative",this.prop.container.height=Math.max(this.prop.container.firstChild.clientHeight,this.prop.container.firstChild.scrollHeight,this.prop.container.firstChild.offsetHeight)+"px";}))},s.prototype.toCanvas=function(){var t=[function(){return document.body.contains(this.prop.container)||this.toContainer()}];return this.thenList(t).then(r).then((function(t){var e=Object.assign({},this.opt.html2canvas);return delete e.onrendered,t(this.prop.container,e)})).then((function(t){(this.opt.html2canvas.onrendered||function(){})(t),this.prop.canvas=t,document.body.removeChild(this.prop.overlay);}))},s.prototype.toContext2d=function(){var t=[function(){return document.body.contains(this.prop.container)||this.toContainer()}];return this.thenList(t).then(r).then((function(t){var e=this.opt.jsPDF,r=this.opt.fontFaces,n="number"!=typeof this.opt.width||isNaN(this.opt.width)||"number"!=typeof this.opt.windowWidth||isNaN(this.opt.windowWidth)?1:this.opt.width/this.opt.windowWidth,i=Object.assign({async:!0,allowTaint:!0,scale:n,scrollX:this.opt.scrollX||0,scrollY:this.opt.scrollY||0,backgroundColor:"#ffffff",imageTimeout:15e3,logging:!0,proxy:null,removeContainer:!0,foreignObjectRendering:!1,useCORS:!1},this.opt.html2canvas);if(delete i.onrendered,e.context2d.autoPaging=void 0===this.opt.autoPaging||this.opt.autoPaging,e.context2d.posX=this.opt.x,e.context2d.posY=this.opt.y,e.context2d.margin=this.opt.margin,e.context2d.fontFaces=r,r)for(var a=0;a<r.length;++a){var o=r[a],s=o.src.find((function(t){return "truetype"===t.format}));s&&e.addFont(s.url,o.ref.name,o.ref.style);}return i.windowHeight=i.windowHeight||0,i.windowHeight=0==i.windowHeight?Math.max(this.prop.container.clientHeight,this.prop.container.scrollHeight,this.prop.container.offsetHeight):i.windowHeight,e.context2d.save(!0),t(this.prop.container,i)})).then((function(t){this.opt.jsPDF.context2d.restore(!0),(this.opt.html2canvas.onrendered||function(){})(t),this.prop.canvas=t,document.body.removeChild(this.prop.overlay);}))},s.prototype.toImg=function(){return this.thenList([function(){return this.prop.canvas||this.toCanvas()}]).then((function(){var t=this.prop.canvas.toDataURL("image/"+this.opt.image.type,this.opt.image.quality);this.prop.img=document.createElement("img"),this.prop.img.src=t;}))},s.prototype.toPdf=function(){return this.thenList([function(){return this.toContext2d()}]).then((function(){this.prop.pdf=this.prop.pdf||this.opt.jsPDF;}))},s.prototype.output=function(t,e,r){return "img"===(r=r||"pdf").toLowerCase()||"image"===r.toLowerCase()?this.outputImg(t,e):this.outputPdf(t,e)},s.prototype.outputPdf=function(t,e){return this.thenList([function(){return this.prop.pdf||this.toPdf()}]).then((function(){return this.prop.pdf.output(t,e)}))},s.prototype.outputImg=function(t){return this.thenList([function(){return this.prop.img||this.toImg()}]).then((function(){switch(t){case void 0:case"img":return this.prop.img;case"datauristring":case"dataurlstring":return this.prop.img.src;case"datauri":case"dataurl":return document.location.href=this.prop.img.src;default:throw 'Image output type "'+t+'" is not supported.'}}))},s.prototype.save=function(t){return this.thenList([function(){return this.prop.pdf||this.toPdf()}]).set(t?{filename:t}:null).then((function(){this.prop.pdf.save(this.opt.filename);}))},s.prototype.doCallback=function(){return this.thenList([function(){return this.prop.pdf||this.toPdf()}]).then((function(){this.prop.callback(this.prop.pdf);}))},s.prototype.set=function(t){if("object"!==a(t))return this;var e=Object.keys(t||{}).map((function(e){if(e in s.template.prop)return function(){this.prop[e]=t[e];};switch(e){case"margin":return this.setMargin.bind(this,t.margin);case"jsPDF":return function(){return this.opt.jsPDF=t.jsPDF,this.setPageSize()};case"pageSize":return this.setPageSize.bind(this,t.pageSize);default:return function(){this.opt[e]=t[e];}}}),this);return this.then((function(){return this.thenList(e)}))},s.prototype.get=function(t,e){return this.then((function(){var r=t in s.template.prop?this.prop[t]:this.opt[t];return e?e(r):r}))},s.prototype.setMargin=function(t){return this.then((function(){switch(a(t)){case"number":t=[t,t,t,t];case"array":if(2===t.length&&(t=[t[0],t[1],t[0],t[1]]),4===t.length)break;default:return this.error("Invalid margin array.")}this.opt.margin=t;})).then(this.setPageSize)},s.prototype.setPageSize=function(t){function e(t,e){return Math.floor(t*e/72*96)}return this.then((function(){(t=t||E.getPageSize(this.opt.jsPDF)).hasOwnProperty("inner")||(t.inner={width:t.width-this.opt.margin[1]-this.opt.margin[3],height:t.height-this.opt.margin[0]-this.opt.margin[2]},t.inner.px={width:e(t.inner.width,t.k),height:e(t.inner.height,t.k)},t.inner.ratio=t.inner.height/t.inner.width),this.prop.pageSize=t;}))},s.prototype.setProgress=function(t,e,r,n){return null!=t&&(this.progress.val=t),null!=e&&(this.progress.state=e),null!=r&&(this.progress.n=r),null!=n&&(this.progress.stack=n),this.progress.ratio=this.progress.val/this.progress.state,this},s.prototype.updateProgress=function(t,e,r,n){return this.setProgress(t?this.progress.val+t:null,e||null,r?this.progress.n+r:null,n?this.progress.stack.concat(n):null)},s.prototype.then=function(t,e){var r=this;return this.thenCore(t,e,(function(t,e){return r.updateProgress(null,null,1,[t]),Promise.prototype.then.call(this,(function(e){return r.updateProgress(null,t),e})).then(t,e).then((function(t){return r.updateProgress(1),t}))}))},s.prototype.thenCore=function(t,e,r){r=r||Promise.prototype.then;t&&(t=t.bind(this)),e&&(e=e.bind(this));var n=-1!==Promise.toString().indexOf("[native code]")&&"Promise"===Promise.name?this:s.convert(Object.assign({},this),Promise.prototype),i=r.call(n,t,e);return s.convert(i,this.__proto__)},s.prototype.thenExternal=function(t,e){return Promise.prototype.then.call(this,t,e)},s.prototype.thenList=function(t){var e=this;return t.forEach((function(t){e=e.thenCore(t);})),e},s.prototype.catch=function(t){t&&(t=t.bind(this));var e=Promise.prototype.catch.call(this,t);return s.convert(e,this)},s.prototype.catchExternal=function(t){return Promise.prototype.catch.call(this,t)},s.prototype.error=function(t){return this.then((function(){throw new Error(t)}))},s.prototype.using=s.prototype.set,s.prototype.saveAs=s.prototype.save,s.prototype.export=s.prototype.output,s.prototype.run=s.prototype.then,E.getPageSize=function(e,r,n){if("object"===t(e)){var i=e;e=i.orientation,r=i.unit||r,n=i.format||n;}r=r||"mm",n=n||"a4",e=(""+(e||"P")).toLowerCase();var a,o=(""+n).toLowerCase(),s={a0:[2383.94,3370.39],a1:[1683.78,2383.94],a2:[1190.55,1683.78],a3:[841.89,1190.55],a4:[595.28,841.89],a5:[419.53,595.28],a6:[297.64,419.53],a7:[209.76,297.64],a8:[147.4,209.76],a9:[104.88,147.4],a10:[73.7,104.88],b0:[2834.65,4008.19],b1:[2004.09,2834.65],b2:[1417.32,2004.09],b3:[1000.63,1417.32],b4:[708.66,1000.63],b5:[498.9,708.66],b6:[354.33,498.9],b7:[249.45,354.33],b8:[175.75,249.45],b9:[124.72,175.75],b10:[87.87,124.72],c0:[2599.37,3676.54],c1:[1836.85,2599.37],c2:[1298.27,1836.85],c3:[918.43,1298.27],c4:[649.13,918.43],c5:[459.21,649.13],c6:[323.15,459.21],c7:[229.61,323.15],c8:[161.57,229.61],c9:[113.39,161.57],c10:[79.37,113.39],dl:[311.81,623.62],letter:[612,792],"government-letter":[576,756],legal:[612,1008],"junior-legal":[576,360],ledger:[1224,792],tabloid:[792,1224],"credit-card":[153,243]};switch(r){case"pt":a=1;break;case"mm":a=72/25.4;break;case"cm":a=72/2.54;break;case"in":a=72;break;case"px":a=.75;break;case"pc":case"em":a=12;break;case"ex":a=6;break;default:throw "Invalid unit: "+r}var c,u=0,h=0;if(s.hasOwnProperty(o))u=s[o][1]/a,h=s[o][0]/a;else try{u=n[1],h=n[0];}catch(t){throw new Error("Invalid format: "+n)}if("p"===e||"portrait"===e)e="p",h>u&&(c=h,h=u,u=c);else {if("l"!==e&&"landscape"!==e)throw "Invalid orientation: "+e;e="l",u>h&&(c=h,h=u,u=c);}return {width:h,height:u,unit:r,k:a,orientation:e}},e.html=function(t,e){(e=e||{}).callback=e.callback||function(){},e.html2canvas=e.html2canvas||{},e.html2canvas.canvas=e.html2canvas.canvas||this.canvas,e.jsPDF=e.jsPDF||this,e.fontFaces=e.fontFaces?e.fontFaces.map(jt):null;var r=new s(e);return e.worker?r:r.from(t).doCallback()};}(E.API),E.API.addJS=function(t){return Ht=t,this.internal.events.subscribe("postPutResources",(function(){Ut=this.internal.newObject(),this.internal.out("<<"),this.internal.out("/Names [(EmbeddedJS) "+(Ut+1)+" 0 R]"),this.internal.out(">>"),this.internal.out("endobj"),zt=this.internal.newObject(),this.internal.out("<<"),this.internal.out("/S /JavaScript"),this.internal.out("/JS ("+Ht+")"),this.internal.out(">>"),this.internal.out("endobj");})),this.internal.events.subscribe("putCatalog",(function(){void 0!==Ut&&void 0!==zt&&this.internal.out("/Names <</JavaScript "+Ut+" 0 R>>");})),this},
 /**
  * @license
  * Copyright (c) 2014 Steven Spungin (TwelveTone LLC)  steven@twelvetone.tv
@@ -2002,7 +2695,7 @@ function(t){var e=function(t){for(var e=t.length,r=new Uint8Array(e),n=0;n<e;n++
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * ====================================================================
  */
-function(t){function e(){return (n.canvg?Promise.resolve(n.canvg):import('./index.es.js')).catch((function(t){return Promise.reject(new Error("Could not load canvg: "+t))})).then((function(t){return t.default?t.default:t}))}E.API.addSvgAsImage=function(t,r,n,i,o,s,c,u){if(isNaN(r)||isNaN(n))throw a.error("jsPDF.addSvgAsImage: Invalid coordinates",arguments),new Error("Invalid coordinates passed to jsPDF.addSvgAsImage");if(isNaN(i)||isNaN(o))throw a.error("jsPDF.addSvgAsImage: Invalid measurements",arguments),new Error("Invalid measurements (width and/or height) passed to jsPDF.addSvgAsImage");var h=document.createElement("canvas");h.width=i,h.height=o;var l=h.getContext("2d");l.fillStyle="#fff",l.fillRect(0,0,h.width,h.height);var f={ignoreMouse:!0,ignoreAnimation:!0,ignoreDimensions:!0},d=this;return e().then((function(e){return e.fromString(l,t,f)}),(function(){return Promise.reject(new Error("Could not load canvg."))})).then((function(t){return t.render(f)})).then((function(){d.addImage(h.toDataURL("image/jpeg",1),r,n,i,o,c,u);}))};}(),E.API.putTotalPages=function(t){var e,r=0;parseInt(this.internal.getFont().id.substr(1),10)<15?(e=new RegExp(t,"g"),r=this.internal.getNumberOfPages()):(e=new RegExp(this.pdfEscape16(t,this.internal.getFont()),"g"),r=this.pdfEscape16(this.internal.getNumberOfPages()+"",this.internal.getFont()));for(var n=1;n<=this.internal.getNumberOfPages();n++)for(var i=0;i<this.internal.pages[n].length;i++)this.internal.pages[n][i]=this.internal.pages[n][i].replace(e,r);return this},E.API.viewerPreferences=function(e,r){var n;e=e||{},r=r||!1;var i,a,o,s={HideToolbar:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},HideMenubar:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},HideWindowUI:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},FitWindow:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},CenterWindow:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},DisplayDocTitle:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.4},NonFullScreenPageMode:{defaultValue:"UseNone",value:"UseNone",type:"name",explicitSet:!1,valueSet:["UseNone","UseOutlines","UseThumbs","UseOC"],pdfVersion:1.3},Direction:{defaultValue:"L2R",value:"L2R",type:"name",explicitSet:!1,valueSet:["L2R","R2L"],pdfVersion:1.3},ViewArea:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},ViewClip:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},PrintArea:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},PrintClip:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},PrintScaling:{defaultValue:"AppDefault",value:"AppDefault",type:"name",explicitSet:!1,valueSet:["AppDefault","None"],pdfVersion:1.6},Duplex:{defaultValue:"",value:"none",type:"name",explicitSet:!1,valueSet:["Simplex","DuplexFlipShortEdge","DuplexFlipLongEdge","none"],pdfVersion:1.7},PickTrayByPDFSize:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.7},PrintPageRange:{defaultValue:"",value:"",type:"array",explicitSet:!1,valueSet:null,pdfVersion:1.7},NumCopies:{defaultValue:1,value:1,type:"integer",explicitSet:!1,valueSet:null,pdfVersion:1.7}},c=Object.keys(s),u=[],h=0,l=0,f=0;function d(t,e){var r,n=!1;for(r=0;r<t.length;r+=1)t[r]===e&&(n=!0);return n}if(void 0===this.internal.viewerpreferences&&(this.internal.viewerpreferences={},this.internal.viewerpreferences.configuration=JSON.parse(JSON.stringify(s)),this.internal.viewerpreferences.isSubscribed=!1),n=this.internal.viewerpreferences.configuration,"reset"===e||!0===r){var p=c.length;for(f=0;f<p;f+=1)n[c[f]].value=n[c[f]].defaultValue,n[c[f]].explicitSet=!1;}if("object"===t(e))for(a in e)if(o=e[a],d(c,a)&&void 0!==o){if("boolean"===n[a].type&&"boolean"==typeof o)n[a].value=o;else if("name"===n[a].type&&d(n[a].valueSet,o))n[a].value=o;else if("integer"===n[a].type&&Number.isInteger(o))n[a].value=o;else if("array"===n[a].type){for(h=0;h<o.length;h+=1)if(i=!0,1===o[h].length&&"number"==typeof o[h][0])u.push(String(o[h]-1));else if(o[h].length>1){for(l=0;l<o[h].length;l+=1)"number"!=typeof o[h][l]&&(i=!1);!0===i&&u.push([o[h][0]-1,o[h][1]-1].join(" "));}n[a].value="["+u.join(" ")+"]";}else n[a].value=n[a].defaultValue;n[a].explicitSet=!0;}return !1===this.internal.viewerpreferences.isSubscribed&&(this.internal.events.subscribe("putCatalog",(function(){var t,e=[];for(t in n)!0===n[t].explicitSet&&("name"===n[t].type?e.push("/"+t+" /"+n[t].value):e.push("/"+t+" "+n[t].value));0!==e.length&&this.internal.write("/ViewerPreferences\n<<\n"+e.join("\n")+"\n>>");})),this.internal.viewerpreferences.isSubscribed=!0),this.internal.viewerpreferences.configuration=n,this},
+function(t){function e(){return (n.canvg?Promise.resolve(n.canvg):import('./index.es-f503b1b6.js')).catch((function(t){return Promise.reject(new Error("Could not load canvg: "+t))})).then((function(t){return t.default?t.default:t}))}E.API.addSvgAsImage=function(t,r,n,i,o,s,c,u){if(isNaN(r)||isNaN(n))throw a.error("jsPDF.addSvgAsImage: Invalid coordinates",arguments),new Error("Invalid coordinates passed to jsPDF.addSvgAsImage");if(isNaN(i)||isNaN(o))throw a.error("jsPDF.addSvgAsImage: Invalid measurements",arguments),new Error("Invalid measurements (width and/or height) passed to jsPDF.addSvgAsImage");var h=document.createElement("canvas");h.width=i,h.height=o;var l=h.getContext("2d");l.fillStyle="#fff",l.fillRect(0,0,h.width,h.height);var f={ignoreMouse:!0,ignoreAnimation:!0,ignoreDimensions:!0},d=this;return e().then((function(e){return e.fromString(l,t,f)}),(function(){return Promise.reject(new Error("Could not load canvg."))})).then((function(t){return t.render(f)})).then((function(){d.addImage(h.toDataURL("image/jpeg",1),r,n,i,o,c,u);}))};}(),E.API.putTotalPages=function(t){var e,r=0;parseInt(this.internal.getFont().id.substr(1),10)<15?(e=new RegExp(t,"g"),r=this.internal.getNumberOfPages()):(e=new RegExp(this.pdfEscape16(t,this.internal.getFont()),"g"),r=this.pdfEscape16(this.internal.getNumberOfPages()+"",this.internal.getFont()));for(var n=1;n<=this.internal.getNumberOfPages();n++)for(var i=0;i<this.internal.pages[n].length;i++)this.internal.pages[n][i]=this.internal.pages[n][i].replace(e,r);return this},E.API.viewerPreferences=function(e,r){var n;e=e||{},r=r||!1;var i,a,o,s={HideToolbar:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},HideMenubar:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},HideWindowUI:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},FitWindow:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},CenterWindow:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},DisplayDocTitle:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.4},NonFullScreenPageMode:{defaultValue:"UseNone",value:"UseNone",type:"name",explicitSet:!1,valueSet:["UseNone","UseOutlines","UseThumbs","UseOC"],pdfVersion:1.3},Direction:{defaultValue:"L2R",value:"L2R",type:"name",explicitSet:!1,valueSet:["L2R","R2L"],pdfVersion:1.3},ViewArea:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},ViewClip:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},PrintArea:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},PrintClip:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},PrintScaling:{defaultValue:"AppDefault",value:"AppDefault",type:"name",explicitSet:!1,valueSet:["AppDefault","None"],pdfVersion:1.6},Duplex:{defaultValue:"",value:"none",type:"name",explicitSet:!1,valueSet:["Simplex","DuplexFlipShortEdge","DuplexFlipLongEdge","none"],pdfVersion:1.7},PickTrayByPDFSize:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.7},PrintPageRange:{defaultValue:"",value:"",type:"array",explicitSet:!1,valueSet:null,pdfVersion:1.7},NumCopies:{defaultValue:1,value:1,type:"integer",explicitSet:!1,valueSet:null,pdfVersion:1.7}},c=Object.keys(s),u=[],h=0,l=0,f=0;function d(t,e){var r,n=!1;for(r=0;r<t.length;r+=1)t[r]===e&&(n=!0);return n}if(void 0===this.internal.viewerpreferences&&(this.internal.viewerpreferences={},this.internal.viewerpreferences.configuration=JSON.parse(JSON.stringify(s)),this.internal.viewerpreferences.isSubscribed=!1),n=this.internal.viewerpreferences.configuration,"reset"===e||!0===r){var p=c.length;for(f=0;f<p;f+=1)n[c[f]].value=n[c[f]].defaultValue,n[c[f]].explicitSet=!1;}if("object"===t(e))for(a in e)if(o=e[a],d(c,a)&&void 0!==o){if("boolean"===n[a].type&&"boolean"==typeof o)n[a].value=o;else if("name"===n[a].type&&d(n[a].valueSet,o))n[a].value=o;else if("integer"===n[a].type&&Number.isInteger(o))n[a].value=o;else if("array"===n[a].type){for(h=0;h<o.length;h+=1)if(i=!0,1===o[h].length&&"number"==typeof o[h][0])u.push(String(o[h]-1));else if(o[h].length>1){for(l=0;l<o[h].length;l+=1)"number"!=typeof o[h][l]&&(i=!1);!0===i&&u.push([o[h][0]-1,o[h][1]-1].join(" "));}n[a].value="["+u.join(" ")+"]";}else n[a].value=n[a].defaultValue;n[a].explicitSet=!0;}return !1===this.internal.viewerpreferences.isSubscribed&&(this.internal.events.subscribe("putCatalog",(function(){var t,e=[];for(t in n)!0===n[t].explicitSet&&("name"===n[t].type?e.push("/"+t+" /"+n[t].value):e.push("/"+t+" "+n[t].value));0!==e.length&&this.internal.write("/ViewerPreferences\n<<\n"+e.join("\n")+"\n>>");})),this.internal.viewerpreferences.isSubscribed=!0),this.internal.viewerpreferences.configuration=n,this},
 /** ====================================================================
  * @license
  * jsPDF XMP metadata plugin
@@ -2336,11 +3029,9 @@ function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
 
 const pdfDownloadCss = ":host{display:block}";
 
-const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement$1 {
-  constructor() {
-    super();
-    this.__registerHost();
-    this.__attachShadow();
+const PdfDownload = class {
+  constructor(hostRef) {
+    registerInstance(this, hostRef);
     this.disabled = false;
     this.enabledSizeValues = [];
     this.layerView = undefined;
@@ -2507,44 +3198,246 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement$1
       return (h$8("calcite-option", { value: l }, this._getLabelSizeText(l)));
     });
   }
-  get el() { return this; }
-  static get style() { return pdfDownloadCss; }
-}, [1, "pdf-download", {
-    "disabled": [4],
-    "enabledSizeValues": [16],
-    "layerView": [16],
-    "_translations": [32],
-    "downloadCSV": [64],
-    "downloadPDF": [64]
-  }]);
-function defineCustomElement() {
-  if (typeof customElements === "undefined") {
-    return;
-  }
-  const components = ["pdf-download", "calcite-icon", "calcite-option", "calcite-select"];
-  components.forEach(tagName => { switch (tagName) {
-    case "pdf-download":
-      if (!customElements.get(tagName)) {
-        customElements.define(tagName, PdfDownload);
-      }
-      break;
-    case "calcite-icon":
-      if (!customElements.get(tagName)) {
-        defineCustomElement$3();
-      }
-      break;
-    case "calcite-option":
-      if (!customElements.get(tagName)) {
-        defineCustomElement$2();
-      }
-      break;
-    case "calcite-select":
-      if (!customElements.get(tagName)) {
-        defineCustomElement$1();
-      }
-      break;
-  } });
-}
-defineCustomElement();
+  get el() { return getElement(this); }
+};
+PdfDownload.style = pdfDownloadCss;
 
-export { n$1 as $, A$3 as A, r$2 as B, C$2 as C, s$5 as D, E$2 as E, i$a as F, s$2 as G, p$3 as H, y$1 as I, j$2 as J, D$3 as K, v$2 as L, p$2 as M, N$2 as N, z$2 as O, PdfDownload as P, Q$2 as Q, L$1 as R, I$2 as S, t$2 as T, U$1 as U, s$7 as V, F$2 as W, J$2 as X, t$6 as Y, Z$1 as Z, Bt$1 as _, s$6 as a, _typeof_1 as a0, d$5 as b, x$4 as c, defineCustomElement as d, e$9 as e, b$4 as f, r$3 as g, has as h, s$c as i, j$5 as j, h$7 as k, a$6 as l, j$3 as m, a$1 as n, o$7 as o, x$3 as p, b$2 as q, r$6 as r, s$4 as s, t$8 as t, s$9 as u, u$3 as v, w$2 as w, x$5 as x, y$2 as y, e as z };
+const refineSelectionCss = ":host{display:block}";
+
+const RefineSelection = class {
+  constructor(hostRef) {
+    registerInstance(this, hostRef);
+    this.selectionSetsChanged = createEvent(this, "selectionSetsChanged", 7);
+    //--------------------------------------------------------------------------
+    //
+    //  Properties (protected)
+    //
+    //--------------------------------------------------------------------------
+    /**
+     * boolean: Indicates if any new graphics should be added or removed
+     */
+    this._addEnabled = true;
+    this.addresseeLayer = undefined;
+    this.enabledLayerIds = [];
+    this.mapView = undefined;
+    this.selectionSets = [];
+    this.GraphicsLayer = undefined;
+    this.SketchViewModel = undefined;
+    this._translations = undefined;
+  }
+  /**
+   * Handles changes to refine selection ids.
+   *
+   */
+  refineSelectionIdsChange(event) {
+    var _a, _b;
+    const addIds = ((_a = event.detail) === null || _a === void 0 ? void 0 : _a.addIds) || [];
+    const removeIds = ((_b = event.detail) === null || _b === void 0 ? void 0 : _b.removeIds) || [];
+    this._updateSelectionSets(removeIds);
+    this._updateRefineSelectionSet(addIds, removeIds);
+  }
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (lifecycle)
+  //
+  //--------------------------------------------------------------------------
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
+  async componentWillLoad() {
+    await this._getTranslations();
+  }
+  /**
+   * Renders the component.
+   */
+  render() {
+    return (h$8(Host, null, h$8("div", { class: "padding-1" }, h$8("div", null, h$8("calcite-radio-group", { class: "w-100", onCalciteRadioGroupChange: (evt) => this._modeChanged(evt) }, h$8("calcite-radio-group-item", { checked: this._addEnabled, class: "w-50", onClick: () => this._setSelectionMode(ESelectionMode.ADD), value: ESelectionMode.ADD }, this._translations.add), h$8("calcite-radio-group-item", { checked: !this._addEnabled, class: "w-50", onClick: () => this._setSelectionMode(ESelectionMode.REMOVE), value: ESelectionMode.REMOVE }, this._translations.remove)), h$8("refine-selection-tools", { border: true, enabledLayerIds: this.enabledLayerIds, ids: getSelectionIds(this.selectionSets), layerViews: [this.addresseeLayer], mapView: this.mapView, mode: this._addEnabled ? ESelectionMode.ADD : ESelectionMode.REMOVE, ref: (el) => { this._refineTools = el; }, useLayerPicker: false })), h$8("br", null), (h$8("calcite-list", { class: "list-border" }, this._getRefineSelectionSetList())))));
+  }
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (protected)
+  //
+  //--------------------------------------------------------------------------
+  /**
+   * Store the Add/Remove mode
+   *
+   * @protected
+   */
+  _modeChanged(evt) {
+    this._addEnabled = evt.detail === ESelectionMode.ADD;
+  }
+  /**
+   * Set the refine tools selection mode
+   *
+   * @protected
+   */
+  _setSelectionMode(mode) {
+    this._refineTools.mode = mode;
+  }
+  /**
+   * Create a list to show the number added/removed/total unique selected
+   *
+   * @returns the list node
+   * @protected
+   */
+  _getRefineSelectionSetList() {
+    const total = getTotal(this.selectionSets);
+    const refineSet = this._getRefineSelectionSet(this.selectionSets);
+    const numAdded = (refineSet === null || refineSet === void 0 ? void 0 : refineSet.refineIds.addIds.length) || 0;
+    const numRemoved = (refineSet === null || refineSet === void 0 ? void 0 : refineSet.refineIds.removeIds.length) || 0;
+    return [(h$8("calcite-list-item", { label: this._translations.featuresAdded.replace("{{n}}", numAdded.toString()) })), (h$8("calcite-list-item", { label: this._translations.featuresRemoved.replace("{{n}}", numRemoved.toString()) })), (h$8("calcite-list-item", { label: this._translations.totalSelected.replace("{{n}}", total.toString()) }))];
+  }
+  /**
+   * Fetch the refine selection set
+   *
+   * @returns the refine selection set
+   * @protected
+   */
+  _getRefineSelectionSet(selectionSets) {
+    let refineSelectionSet;
+    selectionSets.some(ss => {
+      if (ss.workflowType === EWorkflowType.REFINE) {
+        refineSelectionSet = ss;
+        return true;
+      }
+    });
+    return refineSelectionSet;
+  }
+  /**
+   * Remove ids from existing selection sets.
+   * Remove any selection sets than have no selected ids
+   * This can update any selection set not just the refine set.
+   * We do not do something similar for adds as we will only ever add from refine tools to the single REFINE selection set.
+   *
+   * @param removeIds the ids to remove
+   *
+   * @protected
+   */
+  _updateSelectionSets(removeIds) {
+    if (removeIds.length > 0) {
+      this.selectionSets = this.selectionSets.reduce((prev, cur) => {
+        cur.selectedIds = cur.selectedIds.filter(id => removeIds.indexOf(id) < 0);
+        if (cur.selectedIds.length > 0) {
+          prev.push(cur);
+        }
+        return prev;
+      }, []);
+      this.selectionSetsChanged.emit(this.selectionSets);
+    }
+  }
+  /**
+   * Update the refine selection set with any adds or removes
+   *
+   * @param addIds any ids to add
+   * @param removeIds any ids to remove
+   *
+   * @returns Promise resolving when function is done
+   * @protected
+   */
+  _updateRefineSelectionSet(addIds, removeIds) {
+    const selectionSet = this._getRefineSelectionSet(this.selectionSets);
+    this.selectionSets = selectionSet ?
+      this._updateRefineIds(selectionSet, addIds, removeIds) :
+      this._addRefineSelectionSet(addIds, removeIds);
+    this.selectionSetsChanged.emit(this.selectionSets);
+  }
+  /**
+   * Update the ids stored for the refine selection set
+   *
+   * @param selectionSet the refine selection set
+   * @param addIds any ids to add
+   * @param removeIds any ids to remove
+   *
+   * @returns updated selection sets
+   * @protected
+   */
+  _updateRefineIds(selectionSet, addIds, removeIds) {
+    // remove ids if they exist in the current add or remove list
+    selectionSet.refineIds.addIds = selectionSet.refineIds.addIds.filter(id => removeIds.indexOf(id) < 0);
+    selectionSet.refineIds.removeIds = selectionSet.refineIds.removeIds.filter(id => addIds.indexOf(id) < 0);
+    const _addIds = [...new Set(selectionSet.refineIds.addIds.concat(addIds))];
+    const _removeIds = [...new Set(selectionSet.refineIds.removeIds.concat(removeIds))];
+    selectionSet.refineIds = {
+      addIds: _addIds.filter(id => _removeIds.indexOf(id) < 0),
+      removeIds: _removeIds.filter(id => _addIds.indexOf(id) < 0)
+    };
+    selectionSet.selectedIds = selectionSet.refineIds.addIds.length > 0 ?
+      [...new Set(selectionSet.selectedIds.concat(selectionSet.refineIds.addIds))] :
+      selectionSet.selectedIds.filter(id => selectionSet.refineIds.removeIds.indexOf(id) < 0);
+    return this.selectionSets.map(ss => {
+      return ss.workflowType === EWorkflowType.REFINE ? selectionSet : ss;
+    });
+  }
+  /**
+   * Add a new refine selection set
+   *
+   * @param addIds any ids to add
+   * @param removeIds any ids to remove
+   *
+   * @returns updated selection sets
+   * @protected
+   */
+  _addRefineSelectionSet(addIds, removeIds) {
+    return [
+      ...this.selectionSets,
+      ({
+        buffer: undefined,
+        distance: 0,
+        download: true,
+        geometries: [],
+        id: Date.now(),
+        label: "Refine",
+        layerView: this.addresseeLayer,
+        refineSelectLayers: [],
+        searchResult: undefined,
+        selectedIds: addIds,
+        unit: "feet",
+        workflowType: EWorkflowType.REFINE,
+        refineIds: {
+          addIds: addIds,
+          removeIds: removeIds
+        }
+      })
+    ];
+  }
+  /**
+   * Fetches the component's translations
+   *
+   * @protected
+   */
+  async _getTranslations() {
+    const translations = await getLocaleComponentStrings(this.el);
+    this._translations = translations[0];
+  }
+  /** Provides access to protected methods for unit testing.
+ *
+ *  @param methodName Name of protected method to run
+ *  @param arg1 First argument to forward to method, e.g., for "_modeChanged", `ESelectionMode`
+ *  @returns
+ */
+  _testAccess(methodName, arg1) {
+    switch (methodName) {
+      case "_modeChanged":
+        return this._modeChanged(arg1);
+      case "_setSelectionMode":
+        return this._setSelectionMode(arg1);
+      // case "_getRefineSelectionSetList":
+      //   return this._getRefineSelectionSetList();
+      // case "_getRefineSelectionSet":
+      //   return this._getRefineSelectionSet(arg1);
+      // case "_updateSelectionSets":
+      //   return this._updateSelectionSets(arg1);
+      // case "_updateRefineSelectionSet":
+      //   return this._updateRefineSelectionSet(arg1, arg2);
+      // case "_updateRefineIds":
+      //   return this._updateRefineIds(arg1, arg2, arg3);
+      // case "_addRefineSelectionSet":
+      //   return this._addRefineSelectionSet(arg1, arg2);
+    }
+    return null;
+  }
+  get el() { return getElement(this); }
+};
+RefineSelection.style = refineSelectionCss;
+
+export { InputMessage as $, A$3 as A, s$5 as B, C$2 as C, i$a as D, E$2 as E, s$2 as F, p$3 as G, y$1 as H, j$2 as I, D$3 as J, v$2 as K, p$2 as L, z$2 as M, N$2 as N, L$1 as O, I$2 as P, Q$2 as Q, t$2 as R, s$7 as S, F$2 as T, U$1 as U, J$2 as V, t$6 as W, Bt$1 as X, n$1 as Y, Z$1 as Z, _typeof_1 as _, s$6 as a, Notice as a0, MapSelectTools as a1, PdfDownload as a2, RefineSelection as a3, x$4 as b, b$4 as c, d$5 as d, e$9 as e, r$3 as f, s$c as g, has as h, h$7 as i, j$5 as j, a$6 as k, j$3 as l, a$1 as m, x$3 as n, o$7 as o, b$2 as p, s$9 as q, r$6 as r, s$4 as s, t$8 as t, u$3 as u, e as v, w$2 as w, x$5 as x, y$2 as y, r$2 as z };
