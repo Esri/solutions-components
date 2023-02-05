@@ -1,7 +1,7 @@
-Built 02/03/2023  9:55:11.96 
+Built 02/05/2023 15:16:11.65 
 ch/add-pdf-export
-commit 77614df5701f0d47bffeb3eba6f9d70bdc5aafdd
+commit 038429b50942bd1921b4d4a43d058f3229fe59a1
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Thu Feb 2 18:21:34 2023 -0800
+Date:   Fri Feb 3 09:55:34 2023 -0800
 
-    Add arcgis-pdf-creator library to dist in GH
+    Adjust package location

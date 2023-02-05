@@ -2316,7 +2316,7 @@ function exportPDF(labels, labelPageDescription) {
  */
 function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
   console.log("_downloadPDFFile", labels, labelPageDescription, fileTitle); //???
-  console.log(JSON.stringify((new PDFCreator$1).getPageSize("A4")));
+  console.log(JSON.stringify((new PDFCreator$1()).getPageSize("A4")));
   const pdfLib = new PDFCreator_jsPDF$1();
   pdfLib.initialize({
     pageType: "ANSI_A"

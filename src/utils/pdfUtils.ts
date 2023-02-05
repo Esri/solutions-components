@@ -45,7 +45,7 @@ function _downloadPDFFile(
 ): void {
   console.log("_downloadPDFFile", labels, labelPageDescription, fileTitle);//???
 
-  console.log(JSON.stringify((new PDFCreator).getPageSize("A4")));
+  console.log(JSON.stringify((new PDFCreator()).getPageSize("A4")));
 
   const pdfLib = new PDFCreator_jsPDF();
   pdfLib.initialize(
