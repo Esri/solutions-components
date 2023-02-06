@@ -326,14 +326,14 @@ export class RefineSelectionTools {
                 </div>
                 <div class={showUndoRedo + " esri-sketch__tool-section esri-sketch__section"}>
                   <calcite-action
-                    disabled={this.refineSelectionSet.undoStack.length === 0}
+                    disabled={this.refineSelectionSet?.undoStack ? this.refineSelectionSet.undoStack.length === 0 : true}
                     icon="undo"
                     onClick={() => this._undo()}
                     scale="s"
                     text={this._translations.undo}
                   />
                   <calcite-action
-                    disabled={this.refineSelectionSet.redoStack.length === 0}
+                    disabled={this.refineSelectionSet?.redoStack ? this.refineSelectionSet.redoStack.length === 0 : true}
                     icon="redo"
                     onClick={() => this._redo()}
                     scale="s"
@@ -609,11 +609,15 @@ export class RefineSelectionTools {
     if (mode === ESelectionMode.ADD) {
       idUpdates.addIds = oids.filter(id => this.ids.indexOf(id) < 0);
       this.ids = [...this.ids, ...idUpdates.addIds];
-      operationStack.push({ mode: operationMode, ids: idUpdates.addIds });
+      if (idUpdates.addIds.length > 0) {
+        operationStack.push({ mode: operationMode, ids: idUpdates.addIds });
+      }
     } else {
       idUpdates.removeIds = oids.filter(id => this.ids.indexOf(id) > -1);
       this.ids = this.ids.filter(id => idUpdates.removeIds.indexOf(id) < 0);
-      operationStack.push({ mode: operationMode, ids: idUpdates.removeIds });
+      if (idUpdates.removeIds.length > 0) {
+        operationStack.push({ mode: operationMode, ids: idUpdates.removeIds });
+      }
     }
     await this._highlightFeatures(this.ids).then(() => {
       this.refineSelectionIdsChange.emit(idUpdates);
