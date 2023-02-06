@@ -45,7 +45,7 @@ export var EPageType;
 export var ERefineMode;
 (function (ERefineMode) {
   ERefineMode["ALL"] = "ALL";
-  ERefineMode["SUBSET"] = "SUBSET";
+  ERefineMode["SUBSET"] = "SUBSET"; // Used as a part interactive selection "Use layer features"
 })(ERefineMode || (ERefineMode = {}));
 export var ESelectionMode;
 (function (ESelectionMode) {

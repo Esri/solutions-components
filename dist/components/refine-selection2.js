@@ -4,7 +4,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 import { proxyCustomElement, HTMLElement, createEvent, h, Host } from '@stencil/core/internal/client';
-import { e as ESelectionMode, c as EWorkflowType } from './interfaces3.js';
+import { e as ESelectionMode, f as ERefineMode, c as EWorkflowType } from './interfaces3.js';
 import { g as getLocaleComponentStrings } from './locale.js';
 import { d as defineCustomElement$e } from './action.js';
 import { d as defineCustomElement$d } from './chip.js';
@@ -98,7 +98,7 @@ const RefineSelection = /*@__PURE__*/ proxyCustomElement(class extends HTMLEleme
    * Renders the component.
    */
   render() {
-    return (h(Host, null, h("div", { class: "padding-1" }, h("div", null, h("calcite-radio-group", { class: "w-100", onCalciteRadioGroupChange: (evt) => this._modeChanged(evt) }, h("calcite-radio-group-item", { checked: this._addEnabled, class: "w-50", onClick: () => this._setSelectionMode(ESelectionMode.ADD), value: ESelectionMode.ADD }, this._translations.add), h("calcite-radio-group-item", { checked: !this._addEnabled, class: "w-50", onClick: () => this._setSelectionMode(ESelectionMode.REMOVE), value: ESelectionMode.REMOVE }, this._translations.remove)), h("refine-selection-tools", { border: true, enabledLayerIds: this.enabledLayerIds, ids: getSelectionIds(this.selectionSets), layerViews: [this.addresseeLayer], mapView: this.mapView, mode: this._addEnabled ? ESelectionMode.ADD : ESelectionMode.REMOVE, ref: (el) => { this._refineTools = el; }, useLayerPicker: false })), h("br", null), (h("calcite-list", { class: "list-border" }, this._getRefineSelectionSetList())))));
+    return (h(Host, null, h("div", { class: "padding-1" }, h("div", null, h("calcite-radio-group", { class: "w-100", onCalciteRadioGroupChange: (evt) => this._modeChanged(evt) }, h("calcite-radio-group-item", { checked: this._addEnabled, class: "w-50", onClick: () => this._setSelectionMode(ESelectionMode.ADD), value: ESelectionMode.ADD }, this._translations.add), h("calcite-radio-group-item", { checked: !this._addEnabled, class: "w-50", onClick: () => this._setSelectionMode(ESelectionMode.REMOVE), value: ESelectionMode.REMOVE }, this._translations.remove)), h("refine-selection-tools", { border: true, enabledLayerIds: this.enabledLayerIds, ids: getSelectionIds(this.selectionSets), layerViews: [this.addresseeLayer], mapView: this.mapView, mode: this._addEnabled ? ESelectionMode.ADD : ESelectionMode.REMOVE, ref: (el) => { this._refineTools = el; }, refineMode: ERefineMode.ALL, useLayerPicker: false })), h("br", null), (h("calcite-list", { class: "list-border" }, this._getRefineSelectionSetList())))));
   }
   //--------------------------------------------------------------------------
   //

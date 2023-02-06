@@ -19,6 +19,14 @@ import MapSelectTools_T9n from "../../assets/t9n/map-select-tools/resources.json
 export declare class MapSelectTools {
   el: HTMLMapSelectToolsElement;
   /**
+   * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+   */
+  bufferColor: any;
+  /**
+   * string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+   */
+  bufferOutlineColor: any;
+  /**
    * string[]: Optional list of enabled layer ids
    *  If empty all layers will be available
    */

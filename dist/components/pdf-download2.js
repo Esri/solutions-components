@@ -2457,7 +2457,7 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement$1
    * @param addColumnTitle Indicates if column headings should be included in output
    * @returns Promise resolving when function is done
    */
-  async downloadCSV(ids, removeDuplicates, addColumnTitle) {
+  async downloadCSV(ids, removeDuplicates, addColumnTitle = true) {
     const labels = await this._prepareLabels(ids, removeDuplicates, addColumnTitle);
     return exportCSV(labels);
   }

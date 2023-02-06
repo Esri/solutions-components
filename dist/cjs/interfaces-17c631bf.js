@@ -3,6 +3,8 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
+'use strict';
+
 /** @license
  * Copyright 2022 Esri
  *
@@ -21,60 +23,58 @@
 /**
  * Resource update types
  */
-var EUpdateType;
+exports.EUpdateType = void 0;
 (function (EUpdateType) {
   EUpdateType[EUpdateType["Add"] = 0] = "Add";
   EUpdateType[EUpdateType["Update"] = 1] = "Update";
   EUpdateType[EUpdateType["Remove"] = 2] = "Remove";
   EUpdateType[EUpdateType["None"] = 3] = "None";
   EUpdateType[EUpdateType["Obsolete"] = 4] = "Obsolete";
-})(EUpdateType || (EUpdateType = {}));
-var EExportType;
+})(exports.EUpdateType || (exports.EUpdateType = {}));
+exports.EExportType = void 0;
 (function (EExportType) {
   EExportType[EExportType["PDF"] = 0] = "PDF";
   EExportType[EExportType["CSV"] = 1] = "CSV";
-})(EExportType || (EExportType = {}));
-var EPageType;
+})(exports.EExportType || (exports.EExportType = {}));
+exports.EPageType = void 0;
 (function (EPageType) {
   EPageType[EPageType["LIST"] = 0] = "LIST";
   EPageType[EPageType["SELECT"] = 1] = "SELECT";
   EPageType[EPageType["REFINE"] = 2] = "REFINE";
   EPageType[EPageType["PDF"] = 3] = "PDF";
   EPageType[EPageType["CSV"] = 4] = "CSV";
-})(EPageType || (EPageType = {}));
-var ERefineMode;
+})(exports.EPageType || (exports.EPageType = {}));
+exports.ERefineMode = void 0;
 (function (ERefineMode) {
   ERefineMode["ALL"] = "ALL";
-  ERefineMode["SUBSET"] = "SUBSET";
-})(ERefineMode || (ERefineMode = {}));
-var ESelectionMode;
+  ERefineMode["SUBSET"] = "SUBSET"; // Used as a part interactive selection "Use layer features"
+})(exports.ERefineMode || (exports.ERefineMode = {}));
+exports.ESelectionMode = void 0;
 (function (ESelectionMode) {
   ESelectionMode["ADD"] = "ADD";
   ESelectionMode["REMOVE"] = "REMOVE";
-})(ESelectionMode || (ESelectionMode = {}));
-var EWorkflowType;
+})(exports.ESelectionMode || (exports.ESelectionMode = {}));
+exports.EWorkflowType = void 0;
 (function (EWorkflowType) {
   EWorkflowType["SEARCH"] = "SEARCH";
   EWorkflowType["SELECT"] = "SELECT";
   EWorkflowType["SKETCH"] = "SKETCH";
   EWorkflowType["REFINE"] = "REFINE";
-})(EWorkflowType || (EWorkflowType = {}));
-var ESelectionType;
+})(exports.EWorkflowType || (exports.EWorkflowType = {}));
+exports.ESelectionType = void 0;
 (function (ESelectionType) {
   ESelectionType["POINT"] = "POINT";
   ESelectionType["LINE"] = "LINE";
   ESelectionType["POLY"] = "POLY";
   ESelectionType["RECT"] = "RECT";
-})(ESelectionType || (ESelectionType = {}));
-var ESketchType;
+})(exports.ESelectionType || (exports.ESelectionType = {}));
+exports.ESketchType = void 0;
 (function (ESketchType) {
   ESketchType["LAYER"] = "LAYER";
   ESketchType["INTERACTIVE"] = "INTERACTIVE";
-})(ESketchType || (ESketchType = {}));
-var EExpandType;
+})(exports.ESketchType || (exports.ESketchType = {}));
+exports.EExpandType = void 0;
 (function (EExpandType) {
   EExpandType["EXPAND"] = "EXPAND";
   EExpandType["COLLAPSE"] = "COLLAPSE";
-})(EExpandType || (EExpandType = {}));
-
-export { EWorkflowType as E, EExpandType as a, EPageType as b, ESketchType as c, EExportType as d, EUpdateType as e, ESelectionMode as f, ERefineMode as g, ESelectionType as h };
+})(exports.EExpandType || (exports.EExpandType = {}));

@@ -151,7 +151,7 @@ const MapDrawTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement 
       layer: this._sketchGraphicsLayer,
       view: this.mapView,
       container: this._sketchElement,
-      creationMode: "update",
+      creationMode: "single",
       defaultCreateOptions: {
         "mode": "hybrid"
       }
@@ -164,9 +164,9 @@ const MapDrawTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement 
         "lasso-selection": false,
         "rectangle-selection": false
       }, createTools: {
-        "circle": false,
-        "point": false
-      }
+        "circle": false
+      },
+      undoRedoMenu: false
     };
     this._sketchWidget.on("update", (evt) => {
       if (evt.state === "start") {
@@ -179,6 +179,24 @@ const MapDrawTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement 
           this.graphics = evt.graphics;
           this.sketchGraphicsChange.emit(this.graphics);
         }, 500);
+      }
+    });
+    this._sketchWidget.on("delete", () => {
+      this.graphics = [];
+      this.sketchGraphicsChange.emit(this.graphics);
+    });
+    this._sketchWidget.on("undo", (evt) => {
+      this.graphics = evt.graphics;
+      this.sketchGraphicsChange.emit(this.graphics);
+    });
+    this._sketchWidget.on("redo", (evt) => {
+      this.graphics = evt.graphics;
+      this.sketchGraphicsChange.emit(this.graphics);
+    });
+    this._sketchWidget.on("create", (evt) => {
+      if (evt.state === "complete") {
+        this.graphics = [evt.graphic];
+        this.sketchGraphicsChange.emit(this.graphics);
       }
     });
   }

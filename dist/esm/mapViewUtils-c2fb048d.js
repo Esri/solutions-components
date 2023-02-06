@@ -3,9 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-'use strict';
-
-const interfaces = require('./interfaces-772edf61.js');
+import { E as EWorkflowType } from './interfaces-d0d83efa.js';
 
 /** @license
  * Copyright 2022 Esri
@@ -146,7 +144,7 @@ function getQueryGeoms(geometries, geometryEngine) {
  */
 function getSelectionSetQuery(selectionSet, geometryEngine) {
   let q = Promise.resolve([]);
-  if (selectionSet.workflowType !== interfaces.EWorkflowType.REFINE) {
+  if (selectionSet.workflowType !== EWorkflowType.REFINE) {
     if (!selectionSet.buffer) {
       const queryGeoms = getQueryGeoms(selectionSet.geometries, geometryEngine);
       q = queryObjectIds(queryGeoms, selectionSet.layerView.layer);
@@ -321,14 +319,4 @@ async function goToSelection(ids, layerView, mapView, flashFeatures = true, feat
   }
 }
 
-exports.getMapLayerHash = getMapLayerHash;
-exports.getMapLayerIds = getMapLayerIds;
-exports.getMapLayerView = getMapLayerView;
-exports.getQueryGeoms = getQueryGeoms;
-exports.getSelectionSetQuery = getSelectionSetQuery;
-exports.goToSelection = goToSelection;
-exports.highlightFeatures = highlightFeatures;
-exports.queryAllFeatures = queryAllFeatures;
-exports.queryFeaturesByGeometry = queryFeaturesByGeometry;
-exports.queryFeaturesByID = queryFeaturesByID;
-exports.queryObjectIds = queryObjectIds;
+export { getMapLayerView as a, queryAllFeatures as b, getSelectionSetQuery as c, queryObjectIds as d, getQueryGeoms as e, queryFeaturesByGeometry as f, goToSelection as g, highlightFeatures as h, getMapLayerIds as i, getMapLayerHash as j, queryFeaturesByID as q };

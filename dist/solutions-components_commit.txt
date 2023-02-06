@@ -1,7 +1,8 @@
-Built 02/06/2023 11:01:36.33 
+Built 02/06/2023 11:16:08.14 
 ch/add-pdf-export
-commit 022bf1007a5065cc810c21ebd4a756e7716ceb95
+commit 895d20e2354366327a2ac40c5b631b2d57f940cc
+Merge: f818780d 2afe653b
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Mon Feb 6 09:52:27 2023 -0800
+Date:   Mon Feb 6 11:10:31 2023 -0800
 
-    Build with custom assets path
+    Merge branch 'develop' into ch/add-pdf-export

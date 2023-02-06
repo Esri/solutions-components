@@ -112,6 +112,10 @@ export interface ILayerSourceConfigItem extends ISearchSourceConfigItem {
   popupTemplate: any;
   popupEnabled: boolean;
 }
+export interface IValueChange {
+  oldValue: number | string;
+  newValue: number | string;
+}
 /**
  * Layer id and title key value pair
  */

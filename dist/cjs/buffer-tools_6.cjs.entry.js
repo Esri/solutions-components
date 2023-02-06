@@ -19,8 +19,8 @@ const math = require('./math-460fffaf.js');
 const key = require('./key-55aca5c0.js');
 const locale$1 = require('./locale-73cab8e8.js');
 const publicNotificationStore = require('./publicNotificationStore-20e924f5.js');
-const interfaces = require('./interfaces-772edf61.js');
-const mapViewUtils = require('./mapViewUtils-55ac76cb.js');
+const interfaces = require('./interfaces-17c631bf.js');
+const mapViewUtils = require('./mapViewUtils-24d1d859.js');
 require('./_commonjsHelpers-384729db.js');
 require('./resources-b56bce71.js');
 require('./observers-5311faf8.js');
@@ -32,6 +32,8 @@ const BufferTools = class {
   constructor(hostRef) {
     index.registerInstance(this, hostRef);
     this.bufferComplete = index.createEvent(this, "bufferComplete", 7);
+    this.distanceChanged = index.createEvent(this, "distanceChanged", 7);
+    this.unitChanged = index.createEvent(this, "unitChanged", 7);
     this.appearance = "text";
     this.distance = 0;
     this.geometries = [];
@@ -121,6 +123,10 @@ const BufferTools = class {
    * @protected
    */
   _setDistance(event) {
+    this.distanceChanged.emit({
+      oldValue: this.distance,
+      newValue: event.detail.value
+    });
     this.distance = event.detail.value;
     if (this.distance > 0) {
       this._buffer();
@@ -135,6 +141,10 @@ const BufferTools = class {
    * @protected
    */
   _setUnit(unit) {
+    this.unitChanged.emit({
+      oldValue: this.unit,
+      newValue: unit
+    });
     this.unit = unit;
     this._buffer();
   }
@@ -1437,7 +1447,7 @@ const MapDrawTools = class {
       layer: this._sketchGraphicsLayer,
       view: this.mapView,
       container: this._sketchElement,
-      creationMode: "update",
+      creationMode: "single",
       defaultCreateOptions: {
         "mode": "hybrid"
       }
@@ -1450,9 +1460,9 @@ const MapDrawTools = class {
         "lasso-selection": false,
         "rectangle-selection": false
       }, createTools: {
-        "circle": false,
-        "point": false
-      }
+        "circle": false
+      },
+      undoRedoMenu: false
     };
     this._sketchWidget.on("update", (evt) => {
       if (evt.state === "start") {
@@ -1465,6 +1475,24 @@ const MapDrawTools = class {
           this.graphics = evt.graphics;
           this.sketchGraphicsChange.emit(this.graphics);
         }, 500);
+      }
+    });
+    this._sketchWidget.on("delete", () => {
+      this.graphics = [];
+      this.sketchGraphicsChange.emit(this.graphics);
+    });
+    this._sketchWidget.on("undo", (evt) => {
+      this.graphics = evt.graphics;
+      this.sketchGraphicsChange.emit(this.graphics);
+    });
+    this._sketchWidget.on("redo", (evt) => {
+      this.graphics = evt.graphics;
+      this.sketchGraphicsChange.emit(this.graphics);
+    });
+    this._sketchWidget.on("create", (evt) => {
+      if (evt.state === "complete") {
+        this.graphics = [evt.graphic];
+        this.sketchGraphicsChange.emit(this.graphics);
       }
     });
   }
@@ -1494,7 +1522,7 @@ const MapDrawTools = class {
 };
 MapDrawTools.style = mapDrawToolsCss;
 
-const refineSelectionToolsCss = ":host{display:block}.div-visible{display:inherit}.div-not-visible{display:none !important}.padding-top-1-2{padding-top:.5rem}.main-label{display:flex;float:left}html[dir=\"rtl\"] .main-label{display:flex;float:right}.border{outline:1px solid var(--calcite-ui-border-input)}.margin-top-1{margin-top:1rem}.esri-sketch{display:flex;flex-flow:column wrap}.esri-widget{box-sizing:border-box;color:#323232;font-size:14px;font-family:\"Avenir Next\",\"Helvetica Neue\",Helvetica,Arial,sans-serif;line-height:1.3em}.esri-sketch__panel{align-items:center;display:flex;flex-flow:row nowrap;padding:0}*/ .esri-sketch__tool-section{border-right:1px solid rgba(110,110,110,.3)}.esri-sketch__section{align-items:center;display:flex;flex-flow:row nowrap;padding:0 7px;margin:6px 0;border-right:1px solid rgba(110,110,110,.3)}";
+const refineSelectionToolsCss = ":host{display:block}.div-visible{display:inherit}.div-not-visible{display:none !important}.padding-top-1-2{padding-top:.5rem}.main-label{display:flex;float:left}html[dir=\"rtl\"] .main-label{display:flex;float:right}.border{outline:1px solid var(--calcite-ui-border-input)}.margin-top-1{margin-top:1rem}.esri-sketch{display:flex;flex-flow:column wrap}.esri-widget{box-sizing:border-box;color:#323232;font-size:14px;font-family:\"Avenir Next\",\"Helvetica Neue\",Helvetica,Arial,sans-serif;line-height:1.3em;background-color:var(--calcite-ui-foreground-1)}.esri-sketch__panel{align-items:center;display:flex;flex-flow:row nowrap;padding:0}*/ .esri-sketch__tool-section{border-right:1px solid rgba(110,110,110,.3)}.esri-sketch__section{align-items:center;display:flex;flex-flow:row nowrap;padding:0 7px;margin:6px 0;border-right:1px solid rgba(110,110,110,.3)}";
 
 const RefineSelectionTools = class {
   constructor(hostRef) {
@@ -1605,7 +1633,8 @@ const RefineSelectionTools = class {
   render() {
     const showLayerPickerClass = this.useLayerPicker ? "div-visible" : "div-not-visible";
     const drawClass = this.border ? " border" : "";
-    return (index.h(index.Host, null, index.h("div", null, index.h("map-layer-picker", { class: showLayerPickerClass, enabledLayerIds: this.enabledLayerIds, mapView: this.mapView, onLayerSelectionChange: (evt) => { void this._layerSelectionChange(evt); }, selectedLayerIds: this.layerViews.map(l => l.layer.id), selectionMode: "single" }), index.h("div", { class: "margin-top-1" + drawClass }, index.h("div", { class: "esri-sketch esri-widget" }, index.h("div", { class: "esri-sketch__panel" }, index.h("div", { class: "esri-sketch__tool-section esri-sketch__section" }, index.h("calcite-action", { disabled: !this._selectEnabled, icon: "select", onClick: () => this._setSelectionMode(interfaces.ESelectionType.POINT), scale: "s", text: this._translations.select })), index.h("div", { class: "esri-sketch__tool-section esri-sketch__section" }, index.h("calcite-action", { disabled: !this._selectEnabled, icon: "line", onClick: () => this._setSelectionMode(interfaces.ESelectionType.LINE), scale: "s", text: this._translations.selectLine }), index.h("calcite-action", { disabled: !this._selectEnabled, icon: "polygon", onClick: () => this._setSelectionMode(interfaces.ESelectionType.POLY), scale: "s", text: this._translations.selectPolygon }), index.h("calcite-action", { disabled: !this._selectEnabled, icon: "rectangle", onClick: () => this._setSelectionMode(interfaces.ESelectionType.RECT), scale: "s", text: this._translations.selectRectangle })), index.h("div", { class: "esri-sketch__tool-section esri-sketch__section" }, index.h("calcite-action", { disabled: this._undoStack.length === 0, icon: "undo", onClick: () => this._undo(), scale: "s", text: this._translations.undo }), index.h("calcite-action", { disabled: this._redoStack.length === 0, icon: "redo", onClick: () => this._redo(), scale: "s", text: this._translations.redo }))))))));
+    const showUndoRedo = this.refineMode === interfaces.ERefineMode.ALL ? "div-visible" : "div-not-visible";
+    return (index.h(index.Host, null, index.h("div", null, index.h("map-layer-picker", { class: showLayerPickerClass, enabledLayerIds: this.enabledLayerIds, mapView: this.mapView, onLayerSelectionChange: (evt) => { void this._layerSelectionChange(evt); }, selectedLayerIds: this.layerViews.map(l => l.layer.id), selectionMode: "single" }), index.h("div", { class: "margin-top-1" + drawClass }, index.h("div", { class: "esri-sketch esri-widget" }, index.h("div", { class: "esri-sketch__panel" }, index.h("div", { class: "esri-sketch__tool-section esri-sketch__section" }, index.h("calcite-action", { disabled: !this._selectEnabled, icon: "select", onClick: () => this._setSelectionMode(interfaces.ESelectionType.POINT), scale: "s", text: this._translations.select })), index.h("div", { class: "esri-sketch__tool-section esri-sketch__section" }, index.h("calcite-action", { disabled: !this._selectEnabled, icon: "line", onClick: () => this._setSelectionMode(interfaces.ESelectionType.LINE), scale: "s", text: this._translations.selectLine }), index.h("calcite-action", { disabled: !this._selectEnabled, icon: "polygon", onClick: () => this._setSelectionMode(interfaces.ESelectionType.POLY), scale: "s", text: this._translations.selectPolygon }), index.h("calcite-action", { disabled: !this._selectEnabled, icon: "rectangle", onClick: () => this._setSelectionMode(interfaces.ESelectionType.RECT), scale: "s", text: this._translations.selectRectangle })), index.h("div", { class: showUndoRedo + " esri-sketch__tool-section esri-sketch__section" }, index.h("calcite-action", { disabled: this._undoStack.length === 0, icon: "undo", onClick: () => this._undo(), scale: "s", text: this._translations.undo }), index.h("calcite-action", { disabled: this._redoStack.length === 0, icon: "redo", onClick: () => this._redo(), scale: "s", text: this._translations.redo }))))))));
   }
   //--------------------------------------------------------------------------
   //

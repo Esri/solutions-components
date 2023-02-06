@@ -8,8 +8,10 @@ declare module "preact/src/jsx" {
       
       "add-record-modal": JSX.SolutionsAddRecordModal & JSXInternal.HTMLAttributes<HTMLSolutionsAddRecordModalElement>
 
-      "buffer-tools": Omit<JSX.SolutionsBufferTools, "onBufferComplete"> & JSXInternal.HTMLAttributes<HTMLSolutionsBufferToolsElement> & {
+      "buffer-tools": Omit<JSX.SolutionsBufferTools, "onBufferComplete" | "onDistanceChanged" | "onUnitChanged"> & JSXInternal.HTMLAttributes<HTMLSolutionsBufferToolsElement> & {
         "onbufferComplete"?: (event: CustomEvent<any>) => void;
+        "ondistanceChanged"?: (event: CustomEvent<any>) => void;
+        "onunitChanged"?: (event: CustomEvent<any>) => void;
       }
 
       "calcite-accordion": Omit<JSX.SolutionsAccordion, "onCalciteInternalAccordionChange"> & JSXInternal.HTMLAttributes<HTMLSolutionsAccordionElement> & {

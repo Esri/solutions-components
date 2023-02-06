@@ -29,6 +29,8 @@ import * as utils from "../../utils/publicNotificationUtils";
 export class PublicNotification {
   constructor() {
     this.addresseeLayerIds = [];
+    this.bufferColor = [227, 139, 79, 0.8];
+    this.bufferOutlineColor = [255, 255, 255];
     this.customLabelEnabled = undefined;
     this.defaultBufferDistance = undefined;
     this.defaultBufferUnit = undefined;
@@ -91,6 +93,13 @@ export class PublicNotification {
     }
   }
   /**
+   * Handle changes to the buffer distance value
+   */
+  distanceChanged(event) {
+    this._updateLabel(event, "distance");
+    this._distance = event.detail.newValue;
+  }
+  /**
    * Handle changes to the selection sets
    */
   selectionSetsChanged(event) {
@@ -101,6 +110,13 @@ export class PublicNotification {
    */
   sketchTypeChange(event) {
     this._sketchType = event.detail;
+  }
+  /**
+   * Handle changes to the buffer unit
+   */
+  unitChanged(event) {
+    this._updateLabel(event, "unit");
+    this._unit = event.detail.newValue;
   }
   //--------------------------------------------------------------------------
   //
@@ -207,7 +223,7 @@ export class PublicNotification {
   _getListPage() {
     const hasSets = this._selectionSets.filter(ss => ss.workflowType !== EWorkflowType.REFINE).length > 0;
     const total = utils.getTotal(this._selectionSets);
-    return hasSets ? (h("calcite-panel", null, h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "font-bold" }, this._translations.myLists)), this._getNotice(this._translations.listHasSetsTip, "padding-sides-1 padding-bottom-1"), this._getMapLayerPicker(), h("div", { class: "padding-sides-1 height-1-1-2" }, h("div", { class: "position-left" }, h("calcite-label", { alignment: "start", class: "font-bold" }, this._translations.notifications)), h("div", { class: "position-right" }, h("calcite-input-message", { active: true, class: "info-blue margin-top-0", scale: "m" }, this._translations.uniqueCout.replace("{{n}}", total.toString())))), hasSets ? this._getSelectionSetList() : (h("div", { class: "info-message" }, h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this._translations.noNotifications))), h("div", { class: "display-flex padding-1" }, h("calcite-button", { onClick: () => { this._setPageType(EPageType.SELECT); }, width: "full" }, this._translations.add)), this._showModal(this._showLayerSelectionChangeModal))) : (h("calcite-panel", null, h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "font-bold" }, this._translations.myLists)), h("div", { class: "padding-sides-1" }, h("calcite-label", null, this._translations.notifications)), h("div", { class: "info-message padding-bottom-1" }, h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this._translations.noNotifications)), this._getNotice(this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1"), this._getMapLayerPicker(), h("div", { class: "display-flex padding-1" }, h("calcite-button", { onClick: () => { this._setPageType(EPageType.SELECT); }, width: "full" }, this._translations.add))));
+    return hasSets ? (h("calcite-panel", null, h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "font-bold" }, this._translations.myLists)), this._getNotice(this._translations.listHasSetsTip, "padding-sides-1 padding-bottom-1"), this._getMapLayerPicker(), h("div", { class: "display-block padding-sides-1 height-1-1-2" }, h("div", { class: "display-block float-left" }, h("calcite-label", { alignment: "start", class: "font-bold" }, this._translations.notifications)), h("div", { class: "display-block float-right" }, h("calcite-input-message", { active: true, class: "info-blue margin-top-0", scale: "m" }, this._translations.uniqueCout.replace("{{n}}", total.toString())))), hasSets ? this._getSelectionSetList() : (h("div", { class: "info-message" }, h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this._translations.noNotifications))), h("div", { class: "display-flex padding-1" }, h("calcite-button", { onClick: () => { this._setPageType(EPageType.SELECT); }, width: "full" }, this._translations.add)), this._showModal(this._showLayerSelectionChangeModal))) : (h("calcite-panel", null, h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "font-bold" }, this._translations.myLists)), h("div", { class: "padding-sides-1" }, h("calcite-label", null, this._translations.notifications)), h("div", { class: "info-message padding-bottom-1" }, h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this._translations.noNotifications)), this._getNotice(this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1"), this._getMapLayerPicker(), h("div", { class: "display-flex padding-1" }, h("calcite-button", { onClick: () => { this._setPageType(EPageType.SELECT); }, width: "full" }, this._translations.add))));
   }
   /**
    * Create the UI element that will expose the addressee layers
@@ -277,23 +293,19 @@ export class PublicNotification {
    * @protected
    */
   _getSelectPage() {
-    var _a, _b, _c;
-    // const searchTip = `${this._translations.selectSearchTip} ${this._translations.optionalSearchDistance}`;
+    var _a, _b;
     const searchTip = this._translations.selectSearchTip;
-    // const selectTip = `${this._translations.selectLayerTip} ${this._translations.optionalSearchDistance}`;
     const selectTip = this._translations.selectLayerTip;
-    // const sketchTip = this._sketchType === ESketchType.INTERACTIVE ?
-    //   `${this._translations.selectSketchTip} ${this._translations.optionalSearchDistance}` :
-    //   `${this._translations.selectLayerTip} ${this._translations.optionalSearchDistance}`;
     const sketchTip = this._sketchType === ESketchType.INTERACTIVE ?
       this._translations.selectSketchTip :
       this._translations.selectLayerTip;
     const noticeText = this._selectionWorkflowType === EWorkflowType.SELECT ? selectTip :
       this._selectionWorkflowType === EWorkflowType.SKETCH ? sketchTip : searchTip;
-    return (h("calcite-panel", null, this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", (_a = this.addresseeLayer) === null || _a === void 0 ? void 0 : _a.layer.title)), this._getNotice(noticeText), h("div", { class: "padding-top-sides-1" }, h("map-select-tools", { class: "font-bold", enabledLayerIds: this.selectionLayerIds, isUpdate: !!this._activeSelection, mapView: this.mapView, onSelectionSetChange: (evt) => this._updateForSelection(evt), onWorkflowTypeChange: (evt) => this._updateForWorkflowType(evt), ref: (el) => { this._selectTools = el; }, searchConfiguration: this.searchConfiguration, selectLayerView: this.addresseeLayer, selectionSet: this._activeSelection, showBufferTools: this.showSearchSettings })), h("div", { class: "padding-sides-1 padding-bottom-1", style: { "align-items": "end", "display": "flex" } }, h("calcite-icon", { class: "info-blue padding-end-1-2", icon: "feature-layer", scale: "s" }), h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this.noResultText && this._numSelected === 0 ? this.noResultText :
-      this._translations.selectedAddresses.replace("{{n}}", this._numSelected.toString()).replace("{{layer}}", ((_b = this.addresseeLayer) === null || _b === void 0 ? void 0 : _b.layer.title) || ""))), h("div", { class: "padding-sides-1" }, h("calcite-label", { class: "font-bold" }, "Name label", h("calcite-input", { onInput: () => {
+    const nameLabelClass = this.customLabelEnabled ? "" : "display-none";
+    return (h("calcite-panel", null, this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", (_a = this.addresseeLayer) === null || _a === void 0 ? void 0 : _a.layer.title)), this._getNotice(noticeText), h("div", { class: "padding-top-sides-1" }, h("map-select-tools", { bufferColor: this.bufferColor, bufferOutlineColor: this.bufferOutlineColor, class: "font-bold", defaultBufferDistance: this.defaultBufferDistance, defaultBufferUnit: this.defaultBufferUnit, enabledLayerIds: this.selectionLayerIds, isUpdate: !!this._activeSelection, mapView: this.mapView, onSelectionSetChange: (evt) => this._updateForSelection(evt), onWorkflowTypeChange: (evt) => this._updateForWorkflowType(evt), ref: (el) => { this._selectTools = el; }, searchConfiguration: this.searchConfiguration, selectLayerView: this.addresseeLayer, selectionSet: this._activeSelection, showBufferTools: this.showSearchSettings })), h("div", { class: "padding-sides-1 padding-bottom-1", style: { "align-items": "end", "display": "flex" } }, h("calcite-icon", { class: "info-blue padding-end-1-2", icon: "feature-layer", scale: "s" }), h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this.noResultText && this._numSelected === 0 ? this.noResultText :
+      this._translations.selectedAddresses.replace("{{n}}", this._numSelected.toString()).replace("{{layer}}", ((_b = this.addresseeLayer) === null || _b === void 0 ? void 0 : _b.layer.title) || ""))), h("div", { class: "padding-sides-1 " + nameLabelClass }, h("calcite-label", { class: "font-bold" }, "Name label", h("calcite-input", { onInput: () => {
         this.labelChange.emit(this._labelName.value);
-      }, placeholder: "Insert label here...", ref: (el) => { this._labelName = el; }, value: ((_c = this._activeSelection) === null || _c === void 0 ? void 0 : _c.label) || "" }))), this._getPageNavButtons(this._translations.done, this._numSelected === 0, () => { void this._saveSelection(); }, this._translations.cancel, false, () => { void this._home(); })));
+      }, placeholder: "Insert label here...", ref: (el) => { this._labelName = el; }, value: this._customLabel || "" }))), this._getPageNavButtons(this._translations.done, this._numSelected === 0, () => { void this._saveSelection(); }, this._translations.cancel, false, () => { void this._home(); })));
   }
   /**
    * Create the Refine page that users can interactively add/remove features from existing selection sets
@@ -389,7 +401,7 @@ export class PublicNotification {
         if (!this._downloadActive && cur.download) {
           this._downloadActive = true;
         }
-        prev.push((h("div", { class: "display-flex padding-sides-1 padding-bottom-1" }, h("calcite-checkbox", { checked: cur.download, onClick: () => { void this._toggleDownload(cur.id); } }), h("calcite-list", { class: "list-border margin-start-1-2 w-100", id: "download-list" }, h("calcite-list-item", { description: this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString()), disabled: !cur.download, label: cur.label, onClick: () => { void this._toggleDownload(cur.id); } })))));
+        prev.push((h("div", { class: "display-flex padding-sides-1 padding-bottom-1" }, h("calcite-checkbox", { checked: cur.download, class: "align-center", onClick: () => { void this._toggleDownload(cur.id); } }), h("calcite-list", { class: "list-border margin-start-1-2 w-100", id: "download-list" }, h("calcite-list-item", { description: this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString()), disabled: !cur.download, label: cur.label, onClick: () => { void this._toggleDownload(cur.id); } })))));
       }
       return prev;
     }, []) || (h("div", null));
@@ -439,6 +451,20 @@ export class PublicNotification {
     return this._selectionSets.filter(ss => {
       return ss.download || ss.workflowType === EWorkflowType.REFINE;
     });
+  }
+  /**
+   * Update custom label UI with buffer values
+   *
+   * @protected
+   */
+  _updateLabel(evt, type) {
+    if (this._customLabel) {
+      const oldV = type === "unit" ? `${this._distance} ${evt.detail.oldValue}` : `${evt.detail.oldValue} ${this._unit}`;
+      const newV = type === "unit" ? `${this._distance} ${evt.detail.newValue}` : `${evt.detail.newValue} ${this._unit}`;
+      this._customLabel = this._customLabel.replace(oldV, newV);
+      this._labelName.value = this._customLabel;
+      this.labelChange.emit(this._labelName.value);
+    }
   }
   /**
    * Store the current workflow type
@@ -578,6 +604,9 @@ export class PublicNotification {
     await ((_a = this._selectTools) === null || _a === void 0 ? void 0 : _a.clearSelection());
     this._numSelected = 0;
     this._activeSelection = undefined;
+    this._customLabel = undefined;
+    this._distance = undefined;
+    this._unit = undefined;
   }
   /**
    * Delete the selection at the defined index
@@ -614,6 +643,9 @@ export class PublicNotification {
   _openSelection(selectionSet, evt) {
     evt.stopPropagation();
     this._activeSelection = selectionSet;
+    this._distance = this._activeSelection.distance;
+    this._unit = this._activeSelection.unit;
+    this._customLabel = this._activeSelection.label;
     this._pageType = EPageType.SELECT;
   }
   /**
@@ -687,6 +719,42 @@ export class PublicNotification {
           "text": "string[]: List of layer ids that should be shown as potential addressee layers"
         },
         "defaultValue": "[]"
+      },
+      "bufferColor": {
+        "type": "any",
+        "mutable": false,
+        "complexType": {
+          "original": "any",
+          "resolved": "any",
+          "references": {}
+        },
+        "required": false,
+        "optional": false,
+        "docs": {
+          "tags": [],
+          "text": "string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html"
+        },
+        "attribute": "buffer-color",
+        "reflect": false,
+        "defaultValue": "[227, 139, 79, 0.8]"
+      },
+      "bufferOutlineColor": {
+        "type": "any",
+        "mutable": false,
+        "complexType": {
+          "original": "any",
+          "resolved": "any",
+          "references": {}
+        },
+        "required": false,
+        "optional": false,
+        "docs": {
+          "tags": [],
+          "text": "string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html"
+        },
+        "attribute": "buffer-outline-color",
+        "reflect": false,
+        "defaultValue": "[255, 255, 255]"
       },
       "customLabelEnabled": {
         "type": "boolean",
@@ -957,6 +1025,12 @@ export class PublicNotification {
   }
   static get listeners() {
     return [{
+        "name": "distanceChanged",
+        "method": "distanceChanged",
+        "target": "window",
+        "capture": false,
+        "passive": false
+      }, {
         "name": "selectionSetsChanged",
         "method": "selectionSetsChanged",
         "target": "window",
@@ -965,6 +1039,12 @@ export class PublicNotification {
       }, {
         "name": "sketchTypeChange",
         "method": "sketchTypeChange",
+        "target": "window",
+        "capture": false,
+        "passive": false
+      }, {
+        "name": "unitChanged",
+        "method": "unitChanged",
         "target": "window",
         "capture": false,
         "passive": false

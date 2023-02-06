@@ -35,6 +35,8 @@ export class MapSelectTools {
      * string: A label to help uniquely identify the selection set
      */
     this._selectionLabel = "";
+    this.bufferColor = [227, 139, 79, 0.8];
+    this.bufferOutlineColor = [255, 255, 255];
     this.enabledLayerIds = [];
     this.defaultBufferDistance = undefined;
     this.defaultBufferUnit = undefined;
@@ -113,7 +115,7 @@ export class MapSelectTools {
       distance: this._bufferTools.distance,
       download: true,
       unit: this._bufferTools.unit,
-      label: this._workflowType === EWorkflowType.SEARCH || (this._selectionLabel && !isBaseLabel) ?
+      label: (this._selectionLabel && !isBaseLabel) ?
         this._selectionLabel : `${this._selectionLabel} ${this._bufferTools.distance} ${this._bufferTools.unit}`,
       selectedIds: this._selectedIds,
       layerView: this.selectLayerView,
@@ -167,18 +169,15 @@ export class MapSelectTools {
    * Renders the component.
    */
   render() {
-    var _a, _b;
+    var _a, _b, _c;
     const searchEnabled = this._workflowType === EWorkflowType.SEARCH;
     const showSearchClass = searchEnabled ? " div-visible-search" : " div-not-visible";
     const drawEnabled = this._workflowType === EWorkflowType.SKETCH || this._workflowType === EWorkflowType.SELECT;
-    //const showDrawToolsClass = drawEnabled ? " div-visible" : " div-not-visible";
-    // const selectEnabled = this._workflowType === EWorkflowType.SELECT;
-    // const showSelectToolsClass = selectEnabled ? " div-visible" : " div-not-visible";
     const showBufferToolsClass = this.showBufferTools ? "search-distance" : "div-not-visible";
     const useSelectClass = this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
     const useDrawClass = !this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
     const showLayerChoiceClass = searchEnabled ? "div-not-visible" : "div-visible";
-    return (h(Host, null, h("div", { class: "padding-bottom-1" }, h("calcite-radio-group", { class: "w-100", onCalciteRadioGroupChange: (evt) => this._workflowChange(evt) }, h("calcite-radio-group-item", { checked: searchEnabled, class: "w-50 end-border", value: EWorkflowType.SEARCH }, this._translations.search), h("calcite-radio-group-item", { checked: drawEnabled, class: "w-50", value: EWorkflowType.SKETCH }, this._translations.sketch))), h("div", { class: showSearchClass }, h("div", { class: "search-widget", ref: (el) => { this._searchElement = el; } })), h("div", { class: showLayerChoiceClass }, h("calcite-label", { layout: "inline" }, h("calcite-checkbox", { onCalciteCheckboxChange: () => this._layerSelectChanged(), ref: (el) => this._selectFromLayerElement = el }), "Use layer features")), h("div", { class: useDrawClass }, h("map-draw-tools", { active: true, border: true, mapView: this.mapView, ref: (el) => { this._drawTools = el; } })), h("div", { class: useSelectClass }, h("refine-selection-tools", { active: true, border: true, enabledLayerIds: this.enabledLayerIds, layerViews: this._refineSelectLayers, mapView: this.mapView, mode: ESelectionMode.ADD, ref: (el) => { this._refineTools = el; }, refineMode: ERefineMode.SUBSET })), h("calcite-label", { class: showBufferToolsClass }, this._translations.searchDistance, h("buffer-tools", { distance: ((_a = this.selectionSet) === null || _a === void 0 ? void 0 : _a.distance) || this.defaultBufferDistance, geometries: this.geometries, onBufferComplete: (evt) => this._bufferComplete(evt), ref: (el) => this._bufferTools = el, unit: ((_b = this.selectionSet) === null || _b === void 0 ? void 0 : _b.unit) || this.defaultBufferUnit })), h("slot", null)));
+    return (h(Host, null, h("div", { class: "padding-bottom-1" }, h("calcite-radio-group", { class: "w-100", onCalciteRadioGroupChange: (evt) => this._workflowChange(evt) }, h("calcite-radio-group-item", { checked: searchEnabled, class: "w-50 end-border", value: EWorkflowType.SEARCH }, this._translations.search), h("calcite-radio-group-item", { checked: drawEnabled, class: "w-50", value: EWorkflowType.SKETCH }, this._translations.sketch))), h("div", { class: showSearchClass }, h("div", { class: "search-widget", ref: (el) => { this._searchElement = el; } })), h("div", { class: showLayerChoiceClass }, h("calcite-label", { layout: "inline" }, h("calcite-checkbox", { checked: ((_a = this.selectionSet) === null || _a === void 0 ? void 0 : _a.workflowType) === EWorkflowType.SELECT, onCalciteCheckboxChange: () => this._layerSelectChanged(), ref: (el) => this._selectFromLayerElement = el }), "Use layer features")), h("div", { class: useDrawClass }, h("map-draw-tools", { active: true, border: true, mapView: this.mapView, ref: (el) => { this._drawTools = el; } })), h("div", { class: useSelectClass }, h("refine-selection-tools", { active: true, border: true, enabledLayerIds: this.enabledLayerIds, layerViews: this._refineSelectLayers, mapView: this.mapView, mode: ESelectionMode.ADD, ref: (el) => { this._refineTools = el; }, refineMode: ERefineMode.SUBSET })), h("calcite-label", { class: showBufferToolsClass }, this._translations.searchDistance, h("buffer-tools", { distance: ((_b = this.selectionSet) === null || _b === void 0 ? void 0 : _b.distance) || this.defaultBufferDistance, geometries: this.geometries, onBufferComplete: (evt) => this._bufferComplete(evt), ref: (el) => this._bufferTools = el, unit: ((_c = this.selectionSet) === null || _c === void 0 ? void 0 : _c.unit) || this.defaultBufferUnit })), h("slot", null)));
   }
   //--------------------------------------------------------------------------
   //
@@ -222,7 +221,7 @@ export class MapSelectTools {
    * @protected
    */
   _initSelectionSet() {
-    var _a, _b, _c, _d, _e, _f;
+    var _a, _b, _c, _d, _e, _f, _g;
     if (this.selectionSet) {
       this._searchTerm = (_b = (_a = this.selectionSet) === null || _a === void 0 ? void 0 : _a.searchResult) === null || _b === void 0 ? void 0 : _b.name;
       this._workflowType = (_c = this.selectionSet) === null || _c === void 0 ? void 0 : _c.workflowType;
@@ -232,7 +231,7 @@ export class MapSelectTools {
         ...(_f = this.selectionSet) === null || _f === void 0 ? void 0 : _f.geometries
       ];
       // reset selection label base
-      this._selectionLabel = this._getSelectionBaseLabel();
+      this._selectionLabel = ((_g = this.selectionSet) === null || _g === void 0 ? void 0 : _g.label) || this._getSelectionBaseLabel();
       void goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     }
     else {
@@ -403,9 +402,9 @@ export class MapSelectTools {
       // Create a symbol for rendering the graphic
       const symbol = {
         type: "simple-fill",
-        color: [227, 139, 79, 0.8],
+        color: this.bufferColor,
         outline: {
-          color: [255, 255, 255],
+          color: this.bufferOutlineColor,
           width: 1
         }
       };
@@ -501,6 +500,42 @@ export class MapSelectTools {
   }
   static get properties() {
     return {
+      "bufferColor": {
+        "type": "any",
+        "mutable": false,
+        "complexType": {
+          "original": "any",
+          "resolved": "any",
+          "references": {}
+        },
+        "required": false,
+        "optional": false,
+        "docs": {
+          "tags": [],
+          "text": "string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html"
+        },
+        "attribute": "buffer-color",
+        "reflect": false,
+        "defaultValue": "[227, 139, 79, 0.8]"
+      },
+      "bufferOutlineColor": {
+        "type": "any",
+        "mutable": false,
+        "complexType": {
+          "original": "any",
+          "resolved": "any",
+          "references": {}
+        },
+        "required": false,
+        "optional": false,
+        "docs": {
+          "tags": [],
+          "text": "string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html"
+        },
+        "attribute": "buffer-outline-color",
+        "reflect": false,
+        "defaultValue": "[255, 255, 255]"
+      },
       "enabledLayerIds": {
         "type": "unknown",
         "mutable": false,

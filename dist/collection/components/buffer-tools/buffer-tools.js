@@ -112,6 +112,10 @@ export class BufferTools {
    * @protected
    */
   _setDistance(event) {
+    this.distanceChanged.emit({
+      oldValue: this.distance,
+      newValue: event.detail.value
+    });
     this.distance = event.detail.value;
     if (this.distance > 0) {
       this._buffer();
@@ -126,6 +130,10 @@ export class BufferTools {
    * @protected
    */
   _setUnit(unit) {
+    this.unitChanged.emit({
+      oldValue: this.unit,
+      newValue: unit
+    });
     this.unit = unit;
     this._buffer();
   }
@@ -383,6 +391,46 @@ export class BufferTools {
           "references": {
             "___esri": {
               "location": "global"
+            }
+          }
+        }
+      }, {
+        "method": "distanceChanged",
+        "name": "distanceChanged",
+        "bubbles": true,
+        "cancelable": true,
+        "composed": true,
+        "docs": {
+          "tags": [],
+          "text": "Emitted on demand when the distance value changes"
+        },
+        "complexType": {
+          "original": "IValueChange",
+          "resolved": "IValueChange",
+          "references": {
+            "IValueChange": {
+              "location": "import",
+              "path": "../../utils/interfaces"
+            }
+          }
+        }
+      }, {
+        "method": "unitChanged",
+        "name": "unitChanged",
+        "bubbles": true,
+        "cancelable": true,
+        "composed": true,
+        "docs": {
+          "tags": [],
+          "text": "Emitted on demand when the unit changes"
+        },
+        "complexType": {
+          "original": "IValueChange",
+          "resolved": "IValueChange",
+          "references": {
+            "IValueChange": {
+              "location": "import",
+              "path": "../../utils/interfaces"
             }
           }
         }

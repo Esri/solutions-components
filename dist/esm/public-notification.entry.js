@@ -4,22 +4,24 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-c246d90e.js';
-import { b as EPageType, c as ESketchType, E as EWorkflowType, d as EExportType } from './interfaces-3b23a5f9.js';
+import { b as EPageType, c as ESketchType, E as EWorkflowType, d as EExportType } from './interfaces-d0d83efa.js';
 import { l as loadModules } from './loadModules-c5553ae8.js';
-import { a as getMapLayerView, c as getSelectionSetQuery, g as goToSelection, h as highlightFeatures } from './mapViewUtils-8f0754c5.js';
+import { a as getMapLayerView, c as getSelectionSetQuery, g as goToSelection, h as highlightFeatures } from './mapViewUtils-c2fb048d.js';
 import { s as state } from './publicNotificationStore-b9daaee4.js';
 import { g as getLocaleComponentStrings } from './locale-45c3ffef.js';
 import { g as getTotal, a as getSelectionIds } from './publicNotificationUtils-5cb5a607.js';
 import './index-ac7f66eb.js';
 import './_commonjsHelpers-d5f9d613.js';
 
-const publicNotificationCss = ":host{display:block;--calcite-input-message-spacing-value:0}.border-bottom-1{border-width:0px;border-bottom-width:1px;border-style:solid;border-color:var(--calcite-ui-border-3)}.action-bar-size{height:3.5rem;width:100%}.w-1-3{width:33.3%}.w-1-4{width:25%}.action-center{-webkit-box-align:center;-webkit-align-items:center;-ms-grid-row-align:center;align-items:center;align-content:center;justify-content:center}.width-full{width:100%}.height-full{height:100%}.padding-1{padding:1rem}.padding-top-sides-1{-webkit-padding-before:1rem;padding-block-start:1rem;-webkit-padding-start:1rem;padding-inline-start:1rem;-webkit-padding-end:1rem;padding-inline-end:1rem}.padding-sides-1{-webkit-padding-start:1rem;padding-inline-start:1rem;-webkit-padding-end:1rem;padding-inline-end:1rem}.padding-end-1-2{-webkit-padding-end:.5rem;padding-inline-end:.5rem}.padding-top-1-2{-webkit-padding-before:.5rem;padding-block-start:.5rem}.padding-top-1{padding-top:1rem}.padding-bottom-1{padding-bottom:1rem}.info-blue{color:#00A0FF}.info-message{justify-content:center;display:grid}.font-bold{font-weight:bold}.display-flex{display:flex}.display-block{display:block}.display-none{display:none}.main-label{float:left}html[dir=\"rtl\"] .main-label{float:right}.back-label:hover{cursor:pointer;color:var(--calcite-ui-brand-hover)}.border-bottom{border-bottom:1px solid var(--calcite-ui-border-2)}.margin-side-1{-webkit-margin-start:1rem;margin-inline-start:1rem;-webkit-margin-end:1rem;margin-inline-end:1rem}.border-top{border-top:1px solid var(--calcite-ui-border-2)}.w-100{width:100%}.w-50{width:50%}.padding-1-2{padding:0.5rem}.list-border{border:1px solid var(--calcite-ui-border-2)}.margin-sides-1{-webkit-margin-start:1rem;margin-inline-start:1rem;-webkit-margin-end:1rem;margin-inline-end:1rem}.margin-start-1-2{-webkit-margin-start:0.5rem;margin-inline-start:0.5rem}.position-right{position:absolute;right:1rem}.position-right[dir=\"rtl\"]{position:absolute;left:1rem}.position-left{position:absolute;left:1rem}.position-left[dir=\"rtl\"]{position:absolute;right:1rem}.margin-top-0{-webkit-margin-before:0 !important;margin-block-start:0 !important}.height-1-1-2{height:1.5rem}.main-background{background-color:var(--calcite-ui-foreground-2)}.num-selected{align-items:center;display:flex}";
+const publicNotificationCss = ":host{display:block;--calcite-input-message-spacing-value:0}.align-center{align-items:center}.border-bottom-1{border-width:0px;border-bottom-width:1px;border-style:solid;border-color:var(--calcite-ui-border-3)}.action-bar-size{height:3.5rem;width:100%}.w-1-3{width:33.3%}.w-1-4{width:25%}.action-center{-webkit-box-align:center;-webkit-align-items:center;-ms-grid-row-align:center;align-items:center;align-content:center;justify-content:center}.width-full{width:100%}.height-full{height:100%}.padding-1{padding:1rem}.padding-top-sides-1{-webkit-padding-before:1rem;padding-block-start:1rem;-webkit-padding-start:1rem;padding-inline-start:1rem;-webkit-padding-end:1rem;padding-inline-end:1rem}.padding-sides-1{-webkit-padding-start:1rem;padding-inline-start:1rem;-webkit-padding-end:1rem;padding-inline-end:1rem}.padding-end-1-2{-webkit-padding-end:.5rem;padding-inline-end:.5rem}.padding-top-1-2{-webkit-padding-before:.5rem;padding-block-start:.5rem}.padding-top-1{padding-top:1rem}.padding-bottom-1{padding-bottom:1rem}.info-blue{color:#00A0FF}.info-message{justify-content:center;display:grid}.font-bold{font-weight:bold}.display-flex{display:flex}.display-block{display:block}.display-none{display:none}.main-label{float:left}html[dir=\"rtl\"] .main-label{float:right}.back-label:hover{cursor:pointer;color:var(--calcite-ui-brand-hover)}.border-bottom{border-bottom:1px solid var(--calcite-ui-border-2)}.margin-side-1{-webkit-margin-start:1rem;margin-inline-start:1rem;-webkit-margin-end:1rem;margin-inline-end:1rem}.border-top{border-top:1px solid var(--calcite-ui-border-2)}.w-100{width:100%}.w-50{width:50%}.padding-1-2{padding:0.5rem}.list-border{border:1px solid var(--calcite-ui-border-2)}.margin-sides-1{-webkit-margin-start:1rem;margin-inline-start:1rem;-webkit-margin-end:1rem;margin-inline-end:1rem}.margin-start-1-2{-webkit-margin-start:0.5rem;margin-inline-start:0.5rem}.float-right{float:right}.float-right[dir=\"rtl\"]{float:left}.float-left{float:left}.float-left[dir=\"rtl\"]{float:right}.margin-top-0{-webkit-margin-before:0 !important;margin-block-start:0 !important}.height-1-1-2{height:1.5rem}.main-background{background-color:var(--calcite-ui-foreground-2)}.num-selected{align-items:center;display:flex}";
 
 const PublicNotification = class {
   constructor(hostRef) {
     registerInstance(this, hostRef);
     this.labelChange = createEvent(this, "labelChange", 7);
     this.addresseeLayerIds = [];
+    this.bufferColor = [227, 139, 79, 0.8];
+    this.bufferOutlineColor = [255, 255, 255];
     this.customLabelEnabled = undefined;
     this.defaultBufferDistance = undefined;
     this.defaultBufferUnit = undefined;
@@ -82,6 +84,13 @@ const PublicNotification = class {
     }
   }
   /**
+   * Handle changes to the buffer distance value
+   */
+  distanceChanged(event) {
+    this._updateLabel(event, "distance");
+    this._distance = event.detail.newValue;
+  }
+  /**
    * Handle changes to the selection sets
    */
   selectionSetsChanged(event) {
@@ -92,6 +101,13 @@ const PublicNotification = class {
    */
   sketchTypeChange(event) {
     this._sketchType = event.detail;
+  }
+  /**
+   * Handle changes to the buffer unit
+   */
+  unitChanged(event) {
+    this._updateLabel(event, "unit");
+    this._unit = event.detail.newValue;
   }
   //--------------------------------------------------------------------------
   //
@@ -198,7 +214,7 @@ const PublicNotification = class {
   _getListPage() {
     const hasSets = this._selectionSets.filter(ss => ss.workflowType !== EWorkflowType.REFINE).length > 0;
     const total = getTotal(this._selectionSets);
-    return hasSets ? (h("calcite-panel", null, h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "font-bold" }, this._translations.myLists)), this._getNotice(this._translations.listHasSetsTip, "padding-sides-1 padding-bottom-1"), this._getMapLayerPicker(), h("div", { class: "padding-sides-1 height-1-1-2" }, h("div", { class: "position-left" }, h("calcite-label", { alignment: "start", class: "font-bold" }, this._translations.notifications)), h("div", { class: "position-right" }, h("calcite-input-message", { active: true, class: "info-blue margin-top-0", scale: "m" }, this._translations.uniqueCout.replace("{{n}}", total.toString())))), hasSets ? this._getSelectionSetList() : (h("div", { class: "info-message" }, h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this._translations.noNotifications))), h("div", { class: "display-flex padding-1" }, h("calcite-button", { onClick: () => { this._setPageType(EPageType.SELECT); }, width: "full" }, this._translations.add)), this._showModal(this._showLayerSelectionChangeModal))) : (h("calcite-panel", null, h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "font-bold" }, this._translations.myLists)), h("div", { class: "padding-sides-1" }, h("calcite-label", null, this._translations.notifications)), h("div", { class: "info-message padding-bottom-1" }, h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this._translations.noNotifications)), this._getNotice(this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1"), this._getMapLayerPicker(), h("div", { class: "display-flex padding-1" }, h("calcite-button", { onClick: () => { this._setPageType(EPageType.SELECT); }, width: "full" }, this._translations.add))));
+    return hasSets ? (h("calcite-panel", null, h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "font-bold" }, this._translations.myLists)), this._getNotice(this._translations.listHasSetsTip, "padding-sides-1 padding-bottom-1"), this._getMapLayerPicker(), h("div", { class: "display-block padding-sides-1 height-1-1-2" }, h("div", { class: "display-block float-left" }, h("calcite-label", { alignment: "start", class: "font-bold" }, this._translations.notifications)), h("div", { class: "display-block float-right" }, h("calcite-input-message", { active: true, class: "info-blue margin-top-0", scale: "m" }, this._translations.uniqueCout.replace("{{n}}", total.toString())))), hasSets ? this._getSelectionSetList() : (h("div", { class: "info-message" }, h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this._translations.noNotifications))), h("div", { class: "display-flex padding-1" }, h("calcite-button", { onClick: () => { this._setPageType(EPageType.SELECT); }, width: "full" }, this._translations.add)), this._showModal(this._showLayerSelectionChangeModal))) : (h("calcite-panel", null, h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "font-bold" }, this._translations.myLists)), h("div", { class: "padding-sides-1" }, h("calcite-label", null, this._translations.notifications)), h("div", { class: "info-message padding-bottom-1" }, h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this._translations.noNotifications)), this._getNotice(this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1"), this._getMapLayerPicker(), h("div", { class: "display-flex padding-1" }, h("calcite-button", { onClick: () => { this._setPageType(EPageType.SELECT); }, width: "full" }, this._translations.add))));
   }
   /**
    * Create the UI element that will expose the addressee layers
@@ -268,23 +284,19 @@ const PublicNotification = class {
    * @protected
    */
   _getSelectPage() {
-    var _a, _b, _c;
-    // const searchTip = `${this._translations.selectSearchTip} ${this._translations.optionalSearchDistance}`;
+    var _a, _b;
     const searchTip = this._translations.selectSearchTip;
-    // const selectTip = `${this._translations.selectLayerTip} ${this._translations.optionalSearchDistance}`;
     const selectTip = this._translations.selectLayerTip;
-    // const sketchTip = this._sketchType === ESketchType.INTERACTIVE ?
-    //   `${this._translations.selectSketchTip} ${this._translations.optionalSearchDistance}` :
-    //   `${this._translations.selectLayerTip} ${this._translations.optionalSearchDistance}`;
     const sketchTip = this._sketchType === ESketchType.INTERACTIVE ?
       this._translations.selectSketchTip :
       this._translations.selectLayerTip;
     const noticeText = this._selectionWorkflowType === EWorkflowType.SELECT ? selectTip :
       this._selectionWorkflowType === EWorkflowType.SKETCH ? sketchTip : searchTip;
-    return (h("calcite-panel", null, this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", (_a = this.addresseeLayer) === null || _a === void 0 ? void 0 : _a.layer.title)), this._getNotice(noticeText), h("div", { class: "padding-top-sides-1" }, h("map-select-tools", { class: "font-bold", enabledLayerIds: this.selectionLayerIds, isUpdate: !!this._activeSelection, mapView: this.mapView, onSelectionSetChange: (evt) => this._updateForSelection(evt), onWorkflowTypeChange: (evt) => this._updateForWorkflowType(evt), ref: (el) => { this._selectTools = el; }, searchConfiguration: this.searchConfiguration, selectLayerView: this.addresseeLayer, selectionSet: this._activeSelection, showBufferTools: this.showSearchSettings })), h("div", { class: "padding-sides-1 padding-bottom-1", style: { "align-items": "end", "display": "flex" } }, h("calcite-icon", { class: "info-blue padding-end-1-2", icon: "feature-layer", scale: "s" }), h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this.noResultText && this._numSelected === 0 ? this.noResultText :
-      this._translations.selectedAddresses.replace("{{n}}", this._numSelected.toString()).replace("{{layer}}", ((_b = this.addresseeLayer) === null || _b === void 0 ? void 0 : _b.layer.title) || ""))), h("div", { class: "padding-sides-1" }, h("calcite-label", { class: "font-bold" }, "Name label", h("calcite-input", { onInput: () => {
+    const nameLabelClass = this.customLabelEnabled ? "" : "display-none";
+    return (h("calcite-panel", null, this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", (_a = this.addresseeLayer) === null || _a === void 0 ? void 0 : _a.layer.title)), this._getNotice(noticeText), h("div", { class: "padding-top-sides-1" }, h("map-select-tools", { bufferColor: this.bufferColor, bufferOutlineColor: this.bufferOutlineColor, class: "font-bold", defaultBufferDistance: this.defaultBufferDistance, defaultBufferUnit: this.defaultBufferUnit, enabledLayerIds: this.selectionLayerIds, isUpdate: !!this._activeSelection, mapView: this.mapView, onSelectionSetChange: (evt) => this._updateForSelection(evt), onWorkflowTypeChange: (evt) => this._updateForWorkflowType(evt), ref: (el) => { this._selectTools = el; }, searchConfiguration: this.searchConfiguration, selectLayerView: this.addresseeLayer, selectionSet: this._activeSelection, showBufferTools: this.showSearchSettings })), h("div", { class: "padding-sides-1 padding-bottom-1", style: { "align-items": "end", "display": "flex" } }, h("calcite-icon", { class: "info-blue padding-end-1-2", icon: "feature-layer", scale: "s" }), h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this.noResultText && this._numSelected === 0 ? this.noResultText :
+      this._translations.selectedAddresses.replace("{{n}}", this._numSelected.toString()).replace("{{layer}}", ((_b = this.addresseeLayer) === null || _b === void 0 ? void 0 : _b.layer.title) || ""))), h("div", { class: "padding-sides-1 " + nameLabelClass }, h("calcite-label", { class: "font-bold" }, "Name label", h("calcite-input", { onInput: () => {
         this.labelChange.emit(this._labelName.value);
-      }, placeholder: "Insert label here...", ref: (el) => { this._labelName = el; }, value: ((_c = this._activeSelection) === null || _c === void 0 ? void 0 : _c.label) || "" }))), this._getPageNavButtons(this._translations.done, this._numSelected === 0, () => { void this._saveSelection(); }, this._translations.cancel, false, () => { void this._home(); })));
+      }, placeholder: "Insert label here...", ref: (el) => { this._labelName = el; }, value: this._customLabel || "" }))), this._getPageNavButtons(this._translations.done, this._numSelected === 0, () => { void this._saveSelection(); }, this._translations.cancel, false, () => { void this._home(); })));
   }
   /**
    * Create the Refine page that users can interactively add/remove features from existing selection sets
@@ -380,7 +392,7 @@ const PublicNotification = class {
         if (!this._downloadActive && cur.download) {
           this._downloadActive = true;
         }
-        prev.push((h("div", { class: "display-flex padding-sides-1 padding-bottom-1" }, h("calcite-checkbox", { checked: cur.download, onClick: () => { void this._toggleDownload(cur.id); } }), h("calcite-list", { class: "list-border margin-start-1-2 w-100", id: "download-list" }, h("calcite-list-item", { description: this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString()), disabled: !cur.download, label: cur.label, onClick: () => { void this._toggleDownload(cur.id); } })))));
+        prev.push((h("div", { class: "display-flex padding-sides-1 padding-bottom-1" }, h("calcite-checkbox", { checked: cur.download, class: "align-center", onClick: () => { void this._toggleDownload(cur.id); } }), h("calcite-list", { class: "list-border margin-start-1-2 w-100", id: "download-list" }, h("calcite-list-item", { description: this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString()), disabled: !cur.download, label: cur.label, onClick: () => { void this._toggleDownload(cur.id); } })))));
       }
       return prev;
     }, []) || (h("div", null));
@@ -430,6 +442,20 @@ const PublicNotification = class {
     return this._selectionSets.filter(ss => {
       return ss.download || ss.workflowType === EWorkflowType.REFINE;
     });
+  }
+  /**
+   * Update custom label UI with buffer values
+   *
+   * @protected
+   */
+  _updateLabel(evt, type) {
+    if (this._customLabel) {
+      const oldV = type === "unit" ? `${this._distance} ${evt.detail.oldValue}` : `${evt.detail.oldValue} ${this._unit}`;
+      const newV = type === "unit" ? `${this._distance} ${evt.detail.newValue}` : `${evt.detail.newValue} ${this._unit}`;
+      this._customLabel = this._customLabel.replace(oldV, newV);
+      this._labelName.value = this._customLabel;
+      this.labelChange.emit(this._labelName.value);
+    }
   }
   /**
    * Store the current workflow type
@@ -569,6 +595,9 @@ const PublicNotification = class {
     await ((_a = this._selectTools) === null || _a === void 0 ? void 0 : _a.clearSelection());
     this._numSelected = 0;
     this._activeSelection = undefined;
+    this._customLabel = undefined;
+    this._distance = undefined;
+    this._unit = undefined;
   }
   /**
    * Delete the selection at the defined index
@@ -605,6 +634,9 @@ const PublicNotification = class {
   _openSelection(selectionSet, evt) {
     evt.stopPropagation();
     this._activeSelection = selectionSet;
+    this._distance = this._activeSelection.distance;
+    this._unit = this._activeSelection.unit;
+    this._customLabel = this._activeSelection.label;
     this._pageType = EPageType.SELECT;
   }
   /**

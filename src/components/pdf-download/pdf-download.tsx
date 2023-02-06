@@ -106,7 +106,7 @@ export class PdfDownload {
   async downloadCSV(
     ids: number[],
     removeDuplicates: boolean,
-    addColumnTitle: boolean
+    addColumnTitle = true
   ): Promise<void> {
     const labels = await this._prepareLabels(ids, removeDuplicates, addColumnTitle);
 

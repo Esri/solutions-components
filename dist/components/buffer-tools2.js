@@ -22,6 +22,8 @@ const BufferTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
     this.__registerHost();
     this.__attachShadow();
     this.bufferComplete = createEvent(this, "bufferComplete", 7);
+    this.distanceChanged = createEvent(this, "distanceChanged", 7);
+    this.unitChanged = createEvent(this, "unitChanged", 7);
     this.appearance = "text";
     this.distance = 0;
     this.geometries = [];
@@ -111,6 +113,10 @@ const BufferTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
    * @protected
    */
   _setDistance(event) {
+    this.distanceChanged.emit({
+      oldValue: this.distance,
+      newValue: event.detail.value
+    });
     this.distance = event.detail.value;
     if (this.distance > 0) {
       this._buffer();
@@ -125,6 +131,10 @@ const BufferTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
    * @protected
    */
   _setUnit(unit) {
+    this.unitChanged.emit({
+      oldValue: this.unit,
+      newValue: unit
+    });
     this.unit = unit;
     this._buffer();
   }

@@ -16,7 +16,7 @@
 /// <reference types="node" />
 import { EventEmitter, VNode } from "../../stencil-public-runtime";
 import BufferTools_T9n from "../../assets/t9n/buffer-tools/resources.json";
-import { DistanceUnit } from "../../utils/interfaces";
+import { DistanceUnit, IValueChange } from "../../utils/interfaces";
 export declare class BufferTools {
   el: HTMLBufferToolsElement;
   /**
@@ -78,6 +78,14 @@ export declare class BufferTools {
    * Emitted on demand when a buffer is generated.
    */
   bufferComplete: EventEmitter<__esri.Polygon | __esri.Polygon[]>;
+  /**
+   * Emitted on demand when the distance value changes
+   */
+  distanceChanged: EventEmitter<IValueChange>;
+  /**
+   * Emitted on demand when the unit changes
+   */
+  unitChanged: EventEmitter<IValueChange>;
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    *

@@ -23,6 +23,14 @@ export declare class PublicNotification {
    */
   addresseeLayerIds: string[];
   /**
+   * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+   */
+  bufferColor: any;
+  /**
+   * string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+   */
+  bufferOutlineColor: any;
+  /**
    * boolean: When true the user can define a name for each notification list
    */
   customLabelEnabled: boolean;
@@ -124,6 +132,14 @@ export declare class PublicNotification {
    */
   protected _activeSelection: ISelectionSet;
   /**
+   * string: The current custom label
+   */
+  protected _customLabel: string;
+  /**
+   * number: The current buffer distance
+   */
+  protected _distance: number;
+  /**
    * HTMLPdfDownloadElement: The pdf tools element
    */
   protected _downloadTools: HTMLPdfDownloadElement;
@@ -152,6 +168,10 @@ export declare class PublicNotification {
    */
   protected _selectTools: HTMLMapSelectToolsElement;
   /**
+   * string: The current buffer unit
+   */
+  protected _unit: string;
+  /**
    * Called each time the mapView prop is changed.
    */
   mapViewWatchHandler(v: __esri.MapView): Promise<void>;
@@ -168,6 +188,10 @@ export declare class PublicNotification {
    */
   labelChange: EventEmitter<string>;
   /**
+   * Handle changes to the buffer distance value
+   */
+  distanceChanged(event: CustomEvent): void;
+  /**
    * Handle changes to the selection sets
    */
   selectionSetsChanged(event: CustomEvent): void;
@@ -175,6 +199,10 @@ export declare class PublicNotification {
    * Handle changes to the selection sets
    */
   sketchTypeChange(event: CustomEvent): void;
+  /**
+   * Handle changes to the buffer unit
+   */
+  unitChanged(event: CustomEvent): void;
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
@@ -368,6 +396,12 @@ export declare class PublicNotification {
    * @protected
    */
   protected _getDownloadSelectionSets(): ISelectionSet[];
+  /**
+   * Update custom label UI with buffer values
+   *
+   * @protected
+   */
+  protected _updateLabel(evt: CustomEvent, type: "unit" | "distance"): void;
   /**
    * Store the current workflow type
    *

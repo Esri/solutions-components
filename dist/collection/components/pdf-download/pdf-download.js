@@ -51,7 +51,7 @@ export class PdfDownload {
    * @param addColumnTitle Indicates if column headings should be included in output
    * @returns Promise resolving when function is done
    */
-  async downloadCSV(ids, removeDuplicates, addColumnTitle) {
+  async downloadCSV(ids, removeDuplicates, addColumnTitle = true) {
     const labels = await this._prepareLabels(ids, removeDuplicates, addColumnTitle);
     return exportCSV(labels);
   }
@@ -271,7 +271,7 @@ export class PdfDownload {
     return {
       "downloadCSV": {
         "complexType": {
-          "signature": "(ids: number[], removeDuplicates: boolean, addColumnTitle: boolean) => Promise<void>",
+          "signature": "(ids: number[], removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>",
           "parameters": [{
               "tags": [{
                   "name": "param",
