@@ -125,7 +125,7 @@ export class PdfDownload {
     ids: number[],
     removeDuplicates: boolean
   ): Promise<void> {
-    const includeHeaderNames = true;  //???
+    const includeHeaderNames = false;  //???
 
     const labels = await this._prepareLabels(ids, removeDuplicates, includeHeaderNames);
 
@@ -191,7 +191,7 @@ export class PdfDownload {
     popupInfo = popupInfo.replace(/<br\s*\/?>/gi, "|");
 
     // Remove remaining HTML tags and replace 0xA0 that popup uses for spaces
-    let labelSpec = popupInfo.replace(/<[\s.]*[^<>]*\/?>/gi, "").replace("\xA0", " ").split("|");
+    let labelSpec = popupInfo.replace(/<[\s.]*[^<>]*\/?>/gi, "").replace(/\xA0/gi, " ").split("|");
 
     // Trim lines and remove empties
     labelSpec = labelSpec.map(line => line.trim()).filter(line => line.length > 0);

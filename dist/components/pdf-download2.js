@@ -2514,7 +2514,7 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement$1
    * @returns Promise resolving when function is done
    */
   async downloadPDF(ids, removeDuplicates) {
-    const includeHeaderNames = true; //???
+    const includeHeaderNames = false; //???
     const labels = await this._prepareLabels(ids, removeDuplicates, includeHeaderNames);
     const labelPageDescription = this._labelInfoElement.selectedOption.value;
     return exportPDF(labels, labelPageDescription);
@@ -2558,7 +2558,7 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement$1
     // Replace <br>, <br/> with |
     popupInfo = popupInfo.replace(/<br\s*\/?>/gi, "|");
     // Remove remaining HTML tags and replace 0xA0 that popup uses for spaces
-    let labelSpec = popupInfo.replace(/<[\s.]*[^<>]*\/?>/gi, "").replace("\xA0", " ").split("|");
+    let labelSpec = popupInfo.replace(/<[\s.]*[^<>]*\/?>/gi, "").replace(/\xA0/gi, " ").split("|");
     // Trim lines and remove empties
     labelSpec = labelSpec.map(line => line.trim()).filter(line => line.length > 0);
     return labelSpec;
