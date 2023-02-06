@@ -419,6 +419,10 @@ export namespace Components {
          */
         "refineMode": ERefineMode;
         /**
+          * utils/interfaces/ISelectionSet: Refine selection set
+         */
+        "refineSelectionSet": ISelectionSet;
+        /**
           * Reset the ids collection
           * @returns Promise when complete
          */
@@ -1312,6 +1316,10 @@ declare namespace LocalJSX {
           * utils/interfaces/ERefineMode: ALL, SUBSET
          */
         "refineMode"?: ERefineMode;
+        /**
+          * utils/interfaces/ISelectionSet: Refine selection set
+         */
+        "refineSelectionSet"?: ISelectionSet;
         /**
           * boolean: Used to control the visibility of the layer picker
          */
