@@ -51,7 +51,7 @@ function _downloadPDFFile(
   pdfLib.initialize(
     {
       pageType: "ANSI_A"
-    }, "../../dist/", "en",
+    }, "../assets/arcgis-pdf-creator/", "en",
     "My Labels", false
   )
   .then(

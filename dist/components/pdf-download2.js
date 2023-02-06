@@ -2309,7 +2309,7 @@ function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
   const pdfLib = new PDFCreator_jsPDF();
   pdfLib.initialize({
     pageType: "ANSI_A"
-  }, "../../dist/", "en", "My Labels", false)
+  }, "../assets/arcgis-pdf-creator/", "en", "My Labels", false)
     .then(() => {
     // Draw frame with tick marks
     drawMeasurementLines(pdfLib);
