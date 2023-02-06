@@ -287,7 +287,7 @@ export class RefineSelection {
     if (removeIds.length > 0) {
       this.selectionSets = this.selectionSets.reduce((prev, cur) => {
         cur.selectedIds = cur.selectedIds.filter(id => removeIds.indexOf(id) < 0);
-        if (cur.selectedIds.length > 0) {
+        if (cur.selectedIds.length > 0 || cur.workflowType === EWorkflowType.REFINE) {
           prev.push(cur);
         }
         return prev;
