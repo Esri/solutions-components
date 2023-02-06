@@ -383,9 +383,9 @@ function getComponentClosestLanguage(element) {
     return languageMap.has(lang.slice(0, 2)) ? languageMap.get(lang.slice(0, 2)) : "en";
   }
 }
-function fetchLocaleStringsForComponent(componentName, locale, assetsFolder = "../assets") {
+function fetchLocaleStringsForComponent(componentName, locale) {
   return new Promise((resolve, reject) => {
-    fetch(getAssetPath(`${assetsFolder}/t9n/${componentName}/resources_${locale}.json`)).then(result => {
+    fetch(getAssetPath(`./assets/t9n/${componentName}/resources_${locale}.json`)).then(result => {
       if (result.ok) {
         resolve(result.json());
       }
@@ -395,16 +395,16 @@ function fetchLocaleStringsForComponent(componentName, locale, assetsFolder = ".
     }, () => reject());
   });
 }
-async function getLocaleComponentStrings(element, assetsFolder = "../assets") {
+async function getLocaleComponentStrings(element) {
   const componentName = element.tagName.toLowerCase();
   const componentLanguage = getComponentClosestLanguage(element);
   let strings;
   try {
-    strings = await fetchLocaleStringsForComponent(componentName, componentLanguage, assetsFolder);
+    strings = await fetchLocaleStringsForComponent(componentName, componentLanguage);
   }
   catch (e) {
     console.warn(`no locale for ${componentName} (${componentLanguage}) loading default locale en.`);
-    strings = await fetchLocaleStringsForComponent(componentName, "en", assetsFolder);
+    strings = await fetchLocaleStringsForComponent(componentName, "en");
   }
   return [strings, componentLanguage];
 }

@@ -2454,11 +2454,11 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement$1
    *
    * @param ids List of ids to download
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+   * @param addColumnTitle Indicates if column headings should be included in output
    * @returns Promise resolving when function is done
    */
-  async downloadCSV(ids, removeDuplicates) {
-    const includeHeaderNames = true; //???
-    const labels = await this._prepareLabels(ids, removeDuplicates, includeHeaderNames);
+  async downloadCSV(ids, removeDuplicates, addColumnTitle) {
+    const labels = await this._prepareLabels(ids, removeDuplicates, addColumnTitle);
     return exportCSV(labels);
   }
   /**
@@ -2469,8 +2469,7 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement$1
    * @returns Promise resolving when function is done
    */
   async downloadPDF(ids, removeDuplicates) {
-    const includeHeaderNames = false; //???
-    const labels = await this._prepareLabels(ids, removeDuplicates, includeHeaderNames);
+    const labels = await this._prepareLabels(ids, removeDuplicates);
     const labelPageDescription = this._labelInfoElement.selectedOption.value;
     return exportPDF(labels, labelPageDescription);
   }
@@ -2538,7 +2537,7 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement$1
    * @protected
    */
   async _getTranslations() {
-    const translations = await getLocaleComponentStrings(this.el, "./assets");
+    const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0];
   }
   /**
@@ -2549,7 +2548,7 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement$1
   * @param includeHeaderNames Add the label format at the front of the list of generated labels
   * @returns Promise resolving when function is done
    */
-  async _prepareLabels(ids, removeDuplicates, includeHeaderNames) {
+  async _prepareLabels(ids, removeDuplicates, includeHeaderNames = false) {
     // Get the attributes of the features to export
     const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
     const featuresAttrs = featureSet.features.map(f => f.attributes);

@@ -48,11 +48,11 @@ export class PdfDownload {
    *
    * @param ids List of ids to download
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+   * @param addColumnTitle Indicates if column headings should be included in output
    * @returns Promise resolving when function is done
    */
-  async downloadCSV(ids, removeDuplicates) {
-    const includeHeaderNames = true; //???
-    const labels = await this._prepareLabels(ids, removeDuplicates, includeHeaderNames);
+  async downloadCSV(ids, removeDuplicates, addColumnTitle) {
+    const labels = await this._prepareLabels(ids, removeDuplicates, addColumnTitle);
     return exportCSV(labels);
   }
   /**
@@ -63,8 +63,7 @@ export class PdfDownload {
    * @returns Promise resolving when function is done
    */
   async downloadPDF(ids, removeDuplicates) {
-    const includeHeaderNames = false; //???
-    const labels = await this._prepareLabels(ids, removeDuplicates, includeHeaderNames);
+    const labels = await this._prepareLabels(ids, removeDuplicates);
     const labelPageDescription = this._labelInfoElement.selectedOption.value;
     return exportPDF(labels, labelPageDescription);
   }
@@ -132,7 +131,7 @@ export class PdfDownload {
    * @protected
    */
   async _getTranslations() {
-    const translations = await getLocaleComponentStrings(this.el, "./assets");
+    const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0];
   }
   /**
@@ -143,7 +142,7 @@ export class PdfDownload {
   * @param includeHeaderNames Add the label format at the front of the list of generated labels
   * @returns Promise resolving when function is done
    */
-  async _prepareLabels(ids, removeDuplicates, includeHeaderNames) {
+  async _prepareLabels(ids, removeDuplicates, includeHeaderNames = false) {
     // Get the attributes of the features to export
     const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
     const featuresAttrs = featureSet.features.map(f => f.attributes);
@@ -272,7 +271,7 @@ export class PdfDownload {
     return {
       "downloadCSV": {
         "complexType": {
-          "signature": "(ids: number[], removeDuplicates: boolean) => Promise<void>",
+          "signature": "(ids: number[], removeDuplicates: boolean, addColumnTitle: boolean) => Promise<void>",
           "parameters": [{
               "tags": [{
                   "name": "param",
@@ -285,6 +284,12 @@ export class PdfDownload {
                   "text": "removeDuplicates When true a single label is generated when multiple featues have a shared address value"
                 }],
               "text": "When true a single label is generated when multiple featues have a shared address value"
+            }, {
+              "tags": [{
+                  "name": "param",
+                  "text": "addColumnTitle Indicates if column headings should be included in output"
+                }],
+              "text": "Indicates if column headings should be included in output"
             }],
           "references": {
             "Promise": {
@@ -301,6 +306,9 @@ export class PdfDownload {
             }, {
               "name": "param",
               "text": "removeDuplicates When true a single label is generated when multiple featues have a shared address value"
+            }, {
+              "name": "param",
+              "text": "addColumnTitle Indicates if column headings should be included in output"
             }, {
               "name": "returns",
               "text": "Promise resolving when function is done"

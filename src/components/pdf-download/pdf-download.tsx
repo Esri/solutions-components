@@ -99,16 +99,16 @@ export class PdfDownload {
    *
    * @param ids List of ids to download
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+   * @param addColumnTitle Indicates if column headings should be included in output
    * @returns Promise resolving when function is done
    */
   @Method()
   async downloadCSV(
     ids: number[],
-    removeDuplicates: boolean
+    removeDuplicates: boolean,
+    addColumnTitle: boolean
   ): Promise<void> {
-    const includeHeaderNames = true;  //???
-
-    const labels = await this._prepareLabels(ids, removeDuplicates, includeHeaderNames);
+    const labels = await this._prepareLabels(ids, removeDuplicates, addColumnTitle);
 
     return exportCSV(labels);
   }
@@ -125,9 +125,7 @@ export class PdfDownload {
     ids: number[],
     removeDuplicates: boolean
   ): Promise<void> {
-    const includeHeaderNames = false;  //???
-
-    const labels = await this._prepareLabels(ids, removeDuplicates, includeHeaderNames);
+    const labels = await this._prepareLabels(ids, removeDuplicates);
 
     const labelPageDescription = this._labelInfoElement.selectedOption.value;
 
@@ -221,7 +219,7 @@ export class PdfDownload {
    * @protected
    */
   protected async _getTranslations(): Promise<void> {
-    const translations = await getLocaleComponentStrings(this.el, "./assets");
+    const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof PdfDownload_T9n;
   }
 
@@ -236,7 +234,7 @@ export class PdfDownload {
   protected async _prepareLabels(
     ids: number[],
     removeDuplicates: boolean,
-    includeHeaderNames: boolean
+    includeHeaderNames = false
   ): Promise<string[][]> {
     // Get the attributes of the features to export
     const featureSet = await queryFeaturesByID(ids, this.layerView.layer);

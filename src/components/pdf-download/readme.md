@@ -16,7 +16,7 @@
 
 ## Methods
 
-### `downloadCSV(ids: number[], removeDuplicates: boolean) => Promise<void>`
+### `downloadCSV(ids: number[], removeDuplicates: boolean, addColumnTitle: boolean) => Promise<void>`
 
 Downloads csv of mailing labels for the provided list of ids
 

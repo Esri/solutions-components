@@ -263,9 +263,10 @@ export namespace Components {
           * Downloads csv of mailing labels for the provided list of ids
           * @param ids List of ids to download
           * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+          * @param addColumnTitle Indicates if column headings should be included in output
           * @returns Promise resolving when function is done
          */
-        "downloadCSV": (ids: number[], removeDuplicates: boolean) => Promise<void>;
+        "downloadCSV": (ids: number[], removeDuplicates: boolean, addColumnTitle: boolean) => Promise<void>;
         /**
           * Downloads pdf of mailing labels for the provided list of ids
           * @param ids List of ids to download

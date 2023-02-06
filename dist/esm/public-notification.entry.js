@@ -5,10 +5,10 @@
  */
 import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-c246d90e.js';
 import { b as EPageType, c as ESketchType, E as EWorkflowType, d as EExportType } from './interfaces-3b23a5f9.js';
-import { l as loadModules } from './loadModules-ca6fd358.js';
+import { l as loadModules } from './loadModules-c5553ae8.js';
 import { a as getMapLayerView, c as getSelectionSetQuery, g as goToSelection, h as highlightFeatures } from './mapViewUtils-8f0754c5.js';
 import { s as state } from './publicNotificationStore-b9daaee4.js';
-import { g as getLocaleComponentStrings } from './locale-45b745d6.js';
+import { g as getLocaleComponentStrings } from './locale-45c3ffef.js';
 import { g as getTotal, a as getSelectionIds } from './publicNotificationUtils-5cb5a607.js';
 import './index-ac7f66eb.js';
 import './_commonjsHelpers-d5f9d613.js';

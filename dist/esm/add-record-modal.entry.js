@@ -4,7 +4,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 import { r as registerInstance, h, H as Host, g as getElement } from './index-c246d90e.js';
-import { g as getLocaleComponentStrings } from './locale-45b745d6.js';
+import { g as getLocaleComponentStrings } from './locale-45c3ffef.js';
 import './_commonjsHelpers-d5f9d613.js';
 
 const addRecordModalCss = ":host{display:block;--calcite-label-margin-bottom:0px}.padding-bottom-1{padding-bottom:1rem}.font-bold{font-weight:bold}.font-500{font-weight:500}.display-none{display:none}";

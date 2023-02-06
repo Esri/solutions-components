@@ -1,7 +1,7 @@
-Built 02/06/2023  9:51:35.18 
+Built 02/06/2023 11:01:36.33 
 ch/add-pdf-export
-commit 73b21cfe876732ee13b5258b04112510b87d4860
+commit 022bf1007a5065cc810c21ebd4a756e7716ceb95
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Mon Feb 6 06:35:30 2023 -0800
+Date:   Mon Feb 6 09:52:27 2023 -0800
 
-    Test layerview
+    Build with custom assets path

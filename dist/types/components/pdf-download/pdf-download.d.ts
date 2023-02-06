@@ -45,9 +45,10 @@ export declare class PdfDownload {
    *
    * @param ids List of ids to download
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+   * @param addColumnTitle Indicates if column headings should be included in output
    * @returns Promise resolving when function is done
    */
-  downloadCSV(ids: number[], removeDuplicates: boolean): Promise<void>;
+  downloadCSV(ids: number[], removeDuplicates: boolean, addColumnTitle: boolean): Promise<void>;
   /**
    * Downloads pdf of mailing labels for the provided list of ids
    *
@@ -96,7 +97,7 @@ export declare class PdfDownload {
   * @param includeHeaderNames Add the label format at the front of the list of generated labels
   * @returns Promise resolving when function is done
    */
-  protected _prepareLabels(ids: number[], removeDuplicates: boolean, includeHeaderNames: boolean): Promise<string[][]>;
+  protected _prepareLabels(ids: number[], removeDuplicates: boolean, includeHeaderNames?: boolean): Promise<string[][]>;
   /**
    * Renders the pdf export size options
    *
