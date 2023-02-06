@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode } from "@stencil/core";
-import { ESelectionMode, EWorkflowType, ISelectionSet } from "../../utils/interfaces";
+import { ERefineMode, ESelectionMode, EWorkflowType, ISelectionSet } from "../../utils/interfaces";
 import * as utils from "../../utils/publicNotificationUtils";
 import RefineSelection_T9n from "../../assets/t9n/refine-selection/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -180,6 +180,7 @@ export class RefineSelection {
               mapView={this.mapView}
               mode={this._addEnabled ? ESelectionMode.ADD : ESelectionMode.REMOVE}
               ref={(el) => { this._refineTools = el }}
+              refineMode={ERefineMode.ALL}
               useLayerPicker={false}
             />
           </div>

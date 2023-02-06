@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EExpandType, ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IExportOptions, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
+import { DistanceUnit, EExpandType, ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IExportOptions, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -196,6 +196,14 @@ export namespace Components {
     }
     interface MapSelectTools {
         /**
+          * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferColor": any;
+        /**
+          * string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferOutlineColor": any;
+        /**
           * Clear any selection results
           * @returns Promise when the results have been cleared
          */
@@ -288,6 +296,14 @@ export namespace Components {
           * string[]: List of layer ids that should be shown as potential addressee layers
          */
         "addresseeLayerIds": string[];
+        /**
+          * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferColor": any;
+        /**
+          * string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferOutlineColor": any;
         /**
           * boolean: When true the user can define a name for each notification list
          */
@@ -910,6 +926,14 @@ declare namespace LocalJSX {
          */
         "onBufferComplete"?: (event: BufferToolsCustomEvent<__esri.Polygon | __esri.Polygon[]>) => void;
         /**
+          * Emitted on demand when the distance value changes
+         */
+        "onDistanceChanged"?: (event: BufferToolsCustomEvent<IValueChange>) => void;
+        /**
+          * Emitted on demand when the unit changes
+         */
+        "onUnitChanged"?: (event: BufferToolsCustomEvent<IValueChange>) => void;
+        /**
           * number: The component's maximum selectable value.
          */
         "sliderMax"?: number;
@@ -1068,6 +1092,14 @@ declare namespace LocalJSX {
     }
     interface MapSelectTools {
         /**
+          * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferColor"?: any;
+        /**
+          * string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferOutlineColor"?: any;
+        /**
           * number: The default value to show for the buffer distance
          */
         "defaultBufferDistance"?: number;
@@ -1147,6 +1179,14 @@ declare namespace LocalJSX {
           * string[]: List of layer ids that should be shown as potential addressee layers
          */
         "addresseeLayerIds"?: string[];
+        /**
+          * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferColor"?: any;
+        /**
+          * string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferOutlineColor"?: any;
         /**
           * boolean: When true the user can define a name for each notification list
          */

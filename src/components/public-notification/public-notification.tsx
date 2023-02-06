@@ -49,6 +49,16 @@ export class PublicNotification {
   @Prop() addresseeLayerIds: string[] = [];
 
   /**
+   * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+   */
+  @Prop() bufferColor: any = [227, 139, 79, 0.8];
+
+  /**
+   * string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+   */
+  @Prop() bufferOutlineColor: any = [255, 255, 255];
+
+  /**
    * boolean: When true the user can define a name for each notification list
    */
   @Prop() customLabelEnabled: boolean;
@@ -185,6 +195,16 @@ export class PublicNotification {
   protected _activeSelection: ISelectionSet;
 
   /**
+   * string: The current custom label
+   */
+  protected _customLabel: string;
+
+  /**
+   * number: The current buffer distance
+   */
+  protected _distance: number;
+
+  /**
    * HTMLPdfDownloadElement: The pdf tools element
    */
   protected _downloadTools: HTMLPdfDownloadElement;
@@ -218,6 +238,11 @@ export class PublicNotification {
    * HTMLMapSelectToolsElement: The select tools element
    */
   protected _selectTools: HTMLMapSelectToolsElement;
+
+  /**
+   * string: The current buffer unit
+   */
+  protected _unit: string;
 
   //--------------------------------------------------------------------------
   //
@@ -292,6 +317,15 @@ export class PublicNotification {
   @Event() labelChange: EventEmitter<string>;
 
   /**
+   * Handle changes to the buffer distance value
+   */
+  @Listen("distanceChanged", { target: "window" })
+  distanceChanged(event: CustomEvent): void {
+    this._updateLabel(event, "distance");
+    this._distance = event.detail.newValue;
+  }
+
+  /**
    * Handle changes to the selection sets
    */
   @Listen("selectionSetsChanged", { target: "window" })
@@ -305,6 +339,15 @@ export class PublicNotification {
   @Listen("sketchTypeChange", { target: "window" })
   sketchTypeChange(event: CustomEvent): void {
     this._sketchType = event.detail;
+  }
+
+  /**
+   * Handle changes to the buffer unit
+   */
+  @Listen("unitChanged", { target: "window" })
+  unitChanged(event: CustomEvent): void {
+    this._updateLabel(event, "unit");
+    this._unit = event.detail.newValue;
   }
 
   //--------------------------------------------------------------------------
@@ -471,11 +514,11 @@ export class PublicNotification {
         </div>
         {this._getNotice(this._translations.listHasSetsTip, "padding-sides-1 padding-bottom-1")}
         {this._getMapLayerPicker()}
-        <div class="padding-sides-1 height-1-1-2">
-          <div class="position-left">
+        <div class="display-block padding-sides-1 height-1-1-2">
+          <div class="display-block float-left">
             <calcite-label alignment="start" class="font-bold">{this._translations.notifications}</calcite-label>
           </div>
-          <div class="position-right">
+          <div class="display-block float-right">
             <calcite-input-message active class="info-blue margin-top-0" scale="m">{this._translations.uniqueCout.replace("{{n}}", total.toString())}</calcite-input-message>
           </div>
         </div>
@@ -637,13 +680,8 @@ export class PublicNotification {
    * @protected
    */
   protected _getSelectPage(): VNode {
-    // const searchTip = `${this._translations.selectSearchTip} ${this._translations.optionalSearchDistance}`;
     const searchTip = this._translations.selectSearchTip;
-    // const selectTip = `${this._translations.selectLayerTip} ${this._translations.optionalSearchDistance}`;
     const selectTip = this._translations.selectLayerTip;
-    // const sketchTip = this._sketchType === ESketchType.INTERACTIVE ?
-    //   `${this._translations.selectSketchTip} ${this._translations.optionalSearchDistance}` :
-    //   `${this._translations.selectLayerTip} ${this._translations.optionalSearchDistance}`;
     const sketchTip = this._sketchType === ESketchType.INTERACTIVE ?
       this._translations.selectSketchTip :
       this._translations.selectLayerTip;
@@ -651,13 +689,19 @@ export class PublicNotification {
     const noticeText = this._selectionWorkflowType === EWorkflowType.SELECT ? selectTip :
       this._selectionWorkflowType === EWorkflowType.SKETCH ? sketchTip : searchTip;
 
+    const nameLabelClass = this.customLabelEnabled ? "" : "display-none";
+
     return (
       <calcite-panel>
         {this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", this.addresseeLayer?.layer.title))}
         {this._getNotice(noticeText)}
         <div class={"padding-top-sides-1"}>
           <map-select-tools
+            bufferColor={this.bufferColor}
+            bufferOutlineColor={this.bufferOutlineColor}
             class="font-bold"
+            defaultBufferDistance={this.defaultBufferDistance}
+            defaultBufferUnit={this.defaultBufferUnit}
             enabledLayerIds={this.selectionLayerIds}
             isUpdate={!!this._activeSelection}
             mapView={this.mapView}
@@ -681,7 +725,7 @@ export class PublicNotification {
             }
           </calcite-input-message>
         </div>
-        <div class="padding-sides-1">
+        <div class={"padding-sides-1 " + nameLabelClass}>
           <calcite-label
             class="font-bold"
           >
@@ -692,7 +736,7 @@ export class PublicNotification {
               }}
               placeholder="Insert label here..."
               ref={(el) => { this._labelName = el }}
-              value={this._activeSelection?.label || ""}
+              value={this._customLabel || ""}
             />
           </calcite-label>
         </div>
@@ -912,7 +956,7 @@ export class PublicNotification {
         }
         prev.push((
           <div class="display-flex padding-sides-1 padding-bottom-1">
-            <calcite-checkbox checked={cur.download} onClick={() => { void this._toggleDownload(cur.id) }} />
+            <calcite-checkbox checked={cur.download} class="align-center" onClick={() => { void this._toggleDownload(cur.id) }} />
             <calcite-list class="list-border margin-start-1-2 w-100" id="download-list">
               <calcite-list-item
                 description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
@@ -978,6 +1022,24 @@ export class PublicNotification {
     return this._selectionSets.filter(ss => {
       return ss.download || ss.workflowType === EWorkflowType.REFINE;
     });
+  }
+
+  /**
+   * Update custom label UI with buffer values
+   *
+   * @protected
+   */
+  protected _updateLabel(
+    evt: CustomEvent,
+    type: "unit" | "distance"
+  ): void {
+    if (this._customLabel) {
+      const oldV = type === "unit" ? `${this._distance} ${evt.detail.oldValue}` : `${evt.detail.oldValue} ${this._unit}`;
+      const newV = type === "unit" ? `${this._distance} ${evt.detail.newValue}` : `${evt.detail.newValue} ${this._unit}`;
+      this._customLabel = this._customLabel.replace(oldV, newV);
+      this._labelName.value = this._customLabel;
+      this.labelChange.emit(this._labelName.value);
+    }
   }
 
   /**
@@ -1149,6 +1211,9 @@ export class PublicNotification {
     await this._selectTools?.clearSelection();
     this._numSelected = 0;
     this._activeSelection = undefined;
+    this._customLabel = undefined;
+    this._distance = undefined;
+    this._unit = undefined;
   }
 
   /**
@@ -1203,6 +1268,9 @@ export class PublicNotification {
   ): void {
     evt.stopPropagation();
     this._activeSelection = selectionSet;
+    this._distance = this._activeSelection.distance;
+    this._unit = this._activeSelection.unit;
+    this._customLabel = this._activeSelection.label;
     this._pageType = EPageType.SELECT;
   }
 

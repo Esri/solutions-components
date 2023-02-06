@@ -21,9 +21,11 @@
 
 ## Events
 
-| Event            | Description                                   | Type                                |
-| ---------------- | --------------------------------------------- | ----------------------------------- |
-| `bufferComplete` | Emitted on demand when a buffer is generated. | `CustomEvent<Polygon \| Polygon[]>` |
+| Event             | Description                                       | Type                                |
+| ----------------- | ------------------------------------------------- | ----------------------------------- |
+| `bufferComplete`  | Emitted on demand when a buffer is generated.     | `CustomEvent<Polygon \| Polygon[]>` |
+| `distanceChanged` | Emitted on demand when the distance value changes | `CustomEvent<IValueChange>`         |
+| `unitChanged`     | Emitted on demand when the unit changes           | `CustomEvent<IValueChange>`         |
 
 
 ## Dependencies
