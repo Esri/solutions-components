@@ -23,7 +23,7 @@ import { getLocaleComponentStrings } from "../../utils/locale";
 import { getMapLayerView, goToSelection } from "../../utils/mapViewUtils";
 import { queryAllFeatures } from "../../utils/queryUtils";
 import { queryFeaturesByID } from "../../utils/queryUtils";
-//???import { exportCSV } from "../../utils/csvUtils";
+import { exportCSV } from "../../utils/csvUtils";
 // TODO look for options to better handle very large number of records
 //  has a hard time especially with select all when we have many rows
 // TODO test with data that contains domains
@@ -236,16 +236,16 @@ export class LayerTable {
     const ids = this._getSelectedIds();
     const featureSet = await queryFeaturesByID(ids, this._layerView.layer);
     const attributes = featureSet.features.map(f => f.attributes);
-    // Get the column headings from the first record
-    const columnNames = {};
+    // Get the column headings from the first record and add to front of list of attributes
+    const columnNames = [];
     const entry = attributes[0];
     Object.keys(entry).forEach(k => {
       if (entry.hasOwnProperty(k)) {
-        columnNames[k] = k;
+        columnNames.push(k);
       }
     });
-    //???const labelFormat = Object.keys(columnNames).map(column => "{" + column + "}");
-    //???void exportCSV(attributes);  //???
+    attributes.unshift(columnNames);
+    return exportCSV(attributes);
   }
   /**
    * Zoom to all selected features

@@ -106,11 +106,31 @@ export class PdfDownload {
     ids: number[],
     removeDuplicates: boolean
   ): Promise<void> {
+    console.log("removeDuplicates ", removeDuplicates);//???
+
+    // Get the attributes of the features to export
+    const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
+    const attributes: string[][] = featureSet.features.map(f => f.attributes);
+
+    // Get the column headings from the first record and add to front of list of attributes
+    const columnNames = [];
+    const entry = attributes[0];
+    Object.keys(entry).forEach(k => {
+      if (entry.hasOwnProperty(k)) {
+        columnNames.push(k);
+      }
+    });
+    attributes.unshift(columnNames);
+
+    return exportCSV(attributes);
+
+    /*
     const includeHeaderNames = true;  //???
 
     const labels = await this._prepareLabels(ids, removeDuplicates, includeHeaderNames);
 
     return exportCSV(labels);
+    */
   }
 
   /**
