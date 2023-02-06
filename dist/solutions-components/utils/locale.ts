@@ -36,9 +36,13 @@ interface StringBundle {
   [key: string]: StringValue;
 }
 
-function fetchLocaleStringsForComponent<T extends StringBundle = StringBundle>(componentName: string, locale: string): Promise<T> {
+function fetchLocaleStringsForComponent<T extends StringBundle = StringBundle>(
+  componentName: string,
+  locale: string,
+  assetsFolder = "../assets"
+): Promise<T> {
   return new Promise((resolve, reject): void => {
-    fetch(getAssetPath(`./assets/t9n/${componentName}/resources_${locale}.json`)).then(
+    fetch(getAssetPath(`${assetsFolder}/t9n/${componentName}/resources_${locale}.json`)).then(
       result => {
         if (result.ok) {resolve(result.json());}
         else {reject();}
@@ -48,15 +52,18 @@ function fetchLocaleStringsForComponent<T extends StringBundle = StringBundle>(c
   });
 }
 
-export async function getLocaleComponentStrings<T extends StringBundle = StringBundle>(element: HTMLElement): Promise<[T, string]> {
+export async function getLocaleComponentStrings<T extends StringBundle = StringBundle>(
+  element: HTMLElement,
+  assetsFolder = "../assets"
+): Promise<[T, string]> {
   const componentName = element.tagName.toLowerCase();
   const componentLanguage = getComponentClosestLanguage(element);
   let strings: T;
   try {
-    strings = await fetchLocaleStringsForComponent(componentName, componentLanguage);
+    strings = await fetchLocaleStringsForComponent(componentName, componentLanguage, assetsFolder);
   } catch (e) {
     console.warn(`no locale for ${componentName} (${componentLanguage}) loading default locale en.`);
-    strings = await fetchLocaleStringsForComponent(componentName, "en");
+    strings = await fetchLocaleStringsForComponent(componentName, "en", assetsFolder);
   }
   return [strings, componentLanguage];
 }

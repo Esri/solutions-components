@@ -3,10 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-'use strict';
-
-const locale = require('./locale-81876817.js');
-
+import{e as a}from"./p-c94fb85c.js";
 /** @license
  * Copyright 2022 Esri
  *
@@ -21,10 +18,4 @@ const locale = require('./locale-81876817.js');
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-const loadModules = async (moduleNames, options) => {
-  const mods = await locale.esriLoader.loadModules(moduleNames, options);
-  return mods.map((mod) => (mod.__esModule && mod.default ? mod.default : mod));
-};
-
-exports.loadModules = loadModules;
+ */const s=async(s,c)=>(await a.loadModules(s,c)).map((a=>a.__esModule&&a.default?a.default:a));export{s as l}

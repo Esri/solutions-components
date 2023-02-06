@@ -4,7 +4,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 import { r as registerInstance, h, H as Host, g as getElement } from './index-c246d90e.js';
-import { g as getLocaleComponentStrings } from './locale-45c3ffef.js';
+import { g as getLocaleComponentStrings } from './locale-45b745d6.js';
 import './_commonjsHelpers-d5f9d613.js';
 
 const infoCardCss = ":host{display:block;--calcite-label-margin-bottom:0}table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:8px}tr:nth-child(odd){background:var(--calcite-ui-foreground-2)}.bottom-border{padding-bottom:0.5rem;border-bottom:1px solid var(--calcite-ui-border-1)}.padding-top-1-2{padding-top:0.5rem}.font-color-3{color:var(--calcite-ui-text-3)}";

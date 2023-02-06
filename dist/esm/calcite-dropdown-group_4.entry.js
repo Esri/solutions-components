@@ -6,7 +6,7 @@
 import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-c246d90e.js';
 import { g as getElementProp, t as toAriaBoolean } from './dom-3bdc69ee.js';
 import { u as updateHostInteraction } from './interactive-822ffed6.js';
-import { g as getLocaleComponentStrings } from './locale-45c3ffef.js';
+import { g as getLocaleComponentStrings } from './locale-45b745d6.js';
 import './resources-436ae282.js';
 import './guid-15fce7c0.js';
 import './_commonjsHelpers-d5f9d613.js';

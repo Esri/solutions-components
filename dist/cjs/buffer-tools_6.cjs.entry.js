@@ -8,8 +8,8 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 const index = require('./index-c6979cbb.js');
-const loadModules = require('./loadModules-ebba630f.js');
-const locale = require('./locale-81876817.js');
+const loadModules = require('./loadModules-0eda12cd.js');
+const locale = require('./locale-81a5f7d0.js');
 const dom = require('./dom-4a580af6.js');
 const label = require('./label-24fcd8a5.js');
 const form = require('./form-ef410342.js');

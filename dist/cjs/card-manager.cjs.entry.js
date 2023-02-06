@@ -8,7 +8,7 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 const index = require('./index-c6979cbb.js');
-const locale = require('./locale-81876817.js');
+const locale = require('./locale-81a5f7d0.js');
 require('./_commonjsHelpers-384729db.js');
 
 const cardManagerCss = ":host{display:block}.display-inline-table{display:inline-table}.display-flex{display:flex}.display-none{display:none}.w-100{width:100%}.w-1-2{width:50%}.padding-bottom-1{padding-bottom:1rem}";

@@ -9,7 +9,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 const index = require('./index-c6979cbb.js');
 const solutionStore = require('./solution-store-cb080f07.js');
-const locale = require('./locale-81876817.js');
+const locale = require('./locale-81a5f7d0.js');
 require('./index-763f87ac.js');
 require('./interfaces-772edf61.js');
 require('./_commonjsHelpers-384729db.js');
