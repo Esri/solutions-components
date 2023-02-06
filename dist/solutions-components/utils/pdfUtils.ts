@@ -45,13 +45,13 @@ function _downloadPDFFile(
 ): void {
   console.log("_downloadPDFFile", labels, labelPageDescription, fileTitle);//???
 
-  console.log(JSON.stringify(PDFCreator.PDFCreator.getPageSize("A4")));
+  console.log(JSON.stringify(PDFCreator.PDFCreator.getPageSize("ANSI_A")));
 
   const pdfLib = new PDFCreator_jsPDF.PDFCreator_jsPDF();
   pdfLib.initialize(
     {
       pageType: "ANSI_A"
-    }, "../assets/arcgis-pdf-creator/", "en",
+    }, "../build/assets/arcgis-pdf-creator/", "en",
     "My Labels", false
   )
   .then(

@@ -1,7 +1,7 @@
-Built 02/05/2023 16:39:08.47 
+Built 02/05/2023 16:53:39.97 
 ch/add-pdf-export
-commit bfe4075bfb0dd910edf7590d4a8e64f3d16ffb77
+commit 65bd705a002f9c7966c8b743f0ea474d2f65d617
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Sun Feb 5 16:15:56 2023 -0800
+Date:   Sun Feb 5 16:39:22 2023 -0800
 
-    Constructor adjustment
+    Fix path to font assets
