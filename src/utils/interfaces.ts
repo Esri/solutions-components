@@ -385,6 +385,8 @@ export interface ISelectionSet {
   geometries: __esri.Geometry[];
   refineSelectLayers: __esri.FeatureLayerView[];
   refineIds: IRefineIds;
+  redoStack?: IRefineOperation[];
+  undoStack?: IRefineOperation[];
 }
 
 export interface IRefineIds {

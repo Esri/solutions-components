@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
-import { ERefineMode, ESelectionMode, ESelectionType, IRefineOperation } from "../../utils/interfaces";
+import { ERefineMode, ESelectionMode, ESelectionType, IRefineOperation, ISelectionSet } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
 import { getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
 import { queryFeaturesByGeometry } from "../../utils/queryUtils";
@@ -95,6 +95,11 @@ export class RefineSelectionTools {
   @Prop() refineMode: ERefineMode;
 
   /**
+   * utils/interfaces/ISelectionSet: Refine selection set
+   */
+  @Prop({ mutable: true }) refineSelectionSet: ISelectionSet;
+
+  /**
    * boolean: Used to control the visibility of the layer picker
    */
   @Prop() useLayerPicker = true;
@@ -150,11 +155,6 @@ export class RefineSelectionTools {
   protected _hitTestHandle: __esri.Handle;
 
   /**
-   * IRefineOperation[]: Array to maintain the possible redo operations
-   */
-  protected _redoStack: IRefineOperation[] = [];
-
-  /**
    * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
    */
   protected _sketchGeometry: __esri.Geometry;
@@ -170,11 +170,6 @@ export class RefineSelectionTools {
    * The sketch view model used to create graphics
    */
   protected _sketchViewModel: __esri.SketchViewModel;
-
-  /**
-   * IRefineOperation[]: Array to maintain the possible undo operations
-   */
-  protected _undoStack: IRefineOperation[] = [];
 
   //--------------------------------------------------------------------------
   //
@@ -331,14 +326,14 @@ export class RefineSelectionTools {
                 </div>
                 <div class={showUndoRedo + " esri-sketch__tool-section esri-sketch__section"}>
                   <calcite-action
-                    disabled={this._undoStack.length === 0}
+                    disabled={this.refineSelectionSet.undoStack.length === 0}
                     icon="undo"
                     onClick={() => this._undo()}
                     scale="s"
                     text={this._translations.undo}
                   />
                   <calcite-action
-                    disabled={this._redoStack.length === 0}
+                    disabled={this.refineSelectionSet.redoStack.length === 0}
                     icon="redo"
                     onClick={() => this._redo()}
                     scale="s"
@@ -561,7 +556,7 @@ export class RefineSelectionTools {
         this.refineSelectionGraphicsChange.emit(graphics);
       } else {
         const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
-        await this._updateIds(oids, this.mode, this._undoStack, this.mode);
+        await this._updateIds(oids, this.mode, this.refineSelectionSet.undoStack, this.mode);
       }
       this._clear();
     });
@@ -633,11 +628,11 @@ export class RefineSelectionTools {
    * @protected
    */
   protected _undo(): void {
-    const undoOp = this._undoStack.pop();
+    const undoOp = this.refineSelectionSet.undoStack.pop();
     void this._updateIds(
       undoOp.ids,
       undoOp.mode === ESelectionMode.ADD ? ESelectionMode.REMOVE : ESelectionMode.ADD,
-      this._redoStack,
+      this.refineSelectionSet.redoStack,
       undoOp.mode
     );
   }
@@ -650,11 +645,11 @@ export class RefineSelectionTools {
    * @protected
    */
   protected _redo(): void {
-    const redoOp = this._redoStack.pop();
+    const redoOp = this.refineSelectionSet.redoStack.pop();
     void this._updateIds(
       redoOp.ids,
       redoOp.mode,
-      this._undoStack,
+      this.refineSelectionSet.undoStack,
       redoOp.mode
     );
   }

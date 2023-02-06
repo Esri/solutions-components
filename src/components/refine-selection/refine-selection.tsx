@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import { ERefineMode, ESelectionMode, EWorkflowType, ISelectionSet } from "../../utils/interfaces";
 import * as utils from "../../utils/publicNotificationUtils";
 import RefineSelection_T9n from "../../assets/t9n/refine-selection/resources.json";
@@ -99,6 +99,16 @@ export class RefineSelection {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Called each time the addresseeLayer is changed.
+   * Add a new clean refine set for the new addressee layer.
+   */
+  @Watch("addresseeLayer")
+  addresseeLayerWatchHandler(): void {
+    const selectionSets = this.selectionSets.filter(ss => ss.workflowType !== EWorkflowType.REFINE);
+    this.selectionSets = this._initRefineSelectionSet(selectionSets);
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
@@ -141,6 +151,10 @@ export class RefineSelection {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
+    const refineSet = this._getRefineSelectionSet(this.selectionSets);
+    if (!refineSet) {
+      this.selectionSets = this._initRefineSelectionSet(this.selectionSets);
+    }
   }
 
   /**
@@ -181,6 +195,7 @@ export class RefineSelection {
               mode={this._addEnabled ? ESelectionMode.ADD : ESelectionMode.REMOVE}
               ref={(el) => { this._refineTools = el }}
               refineMode={ERefineMode.ALL}
+              refineSelectionSet={this._getRefineSelectionSet(this.selectionSets)}
               useLayerPicker={false}
             />
           </div>
@@ -310,9 +325,7 @@ export class RefineSelection {
     removeIds: number[]
   ): void {
     const selectionSet = this._getRefineSelectionSet(this.selectionSets);
-    this.selectionSets = selectionSet ?
-      this._updateRefineIds(selectionSet, addIds, removeIds) :
-      this._addRefineSelectionSet(addIds, removeIds);
+    this._updateRefineIds(selectionSet, addIds, removeIds);
     this.selectionSetsChanged.emit(this.selectionSets);
   }
 
@@ -353,18 +366,14 @@ export class RefineSelection {
   /**
    * Add a new refine selection set
    *
-   * @param addIds any ids to add
-   * @param removeIds any ids to remove
-   *
    * @returns updated selection sets
    * @protected
    */
-  protected _addRefineSelectionSet(
-    addIds: number[],
-    removeIds: number[]
+  protected _initRefineSelectionSet(
+    selectionSets: ISelectionSet[]
   ): ISelectionSet[] {
     return [
-      ...this.selectionSets,
+      ...selectionSets,
       ({
         buffer: undefined,
         distance: 0,
@@ -375,13 +384,15 @@ export class RefineSelection {
         layerView: this.addresseeLayer,
         refineSelectLayers: [],
         searchResult: undefined,
-        selectedIds: addIds,
+        selectedIds: [],
         unit: "feet",
         workflowType: EWorkflowType.REFINE,
         refineIds: {
-          addIds: addIds,
-          removeIds: removeIds
-        }
+          addIds: [],
+          removeIds: []
+        },
+        redoStack: [],
+        undoStack: []
       })
     ];
   }
