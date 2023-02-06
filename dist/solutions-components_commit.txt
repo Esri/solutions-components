@@ -1,7 +1,7 @@
-Built 02/05/2023 16:53:39.97 
+Built 02/05/2023 17:11:27.67 
 ch/add-pdf-export
-commit 65bd705a002f9c7966c8b743f0ea474d2f65d617
+commit aeab0e5a3aba87ecdb7d8f82c60e39f1f39b2980
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Sun Feb 5 16:39:22 2023 -0800
+Date:   Sun Feb 5 16:53:50 2023 -0800
 
-    Fix path to font assets
+    Use notify's path to font assets

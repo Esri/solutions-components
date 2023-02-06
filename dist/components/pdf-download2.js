@@ -428,558 +428,6 @@ function _downloadCSVFile(outputLines, fileTitle) {
   }
 }
 
-/* @preserve
-* arcgis-pdf-creator v0.0.1
-* Fri Feb 03 2023 09:47:02 GMT-0800 (Pacific Standard Time)
-*/
-/** @license
- * Copyright 2022 Esri
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-//--------------------------------------------------------------------------------------------------------------------//
-/**
- * Draws a grid of boxes with optional gaps between boxes.
- *
- * @param PDFCreator PDF-drawing library
- * @param numAcross Number of boxes in each row
- * @param numDown Number of boxes in each column
- * @param x0 Offset in doc units to left edge of leftmost column of boxes
- * @param y0 Offset in doc units to top edge of topmost row of boxes
- * @param width Width of each box in doc units
- * @param height Height of each box in doc units
- * @param horizGap Gap in doc units between two boxes in the same row
- * @param vertGap Gap in doc units between two boxes in the same column
- * @param lineProperties Drawing properties for grid lines
- */
-function drawGridOfBoxes(PDFCreator, options = {
-    numAcross: 1,
-    numDown: 1,
-    x0: 0,
-    y0: 0,
-    width: 1,
-    height: 1,
-    horizGap: 0,
-    vertGap: 0,
-    lineProperties: {
-        thickness: 0,
-        color: "",
-        opacity: 1 // 0..1
-    }
-}) {
-    // Draw the set of boxes
-    for (let j = 0; j < options.numDown; ++j) {
-        for (let i = 0; i < options.numAcross; ++i) {
-            PDFCreator.drawRectangle({
-                left: options.x0 + i * (options.width + options.horizGap),
-                top: options.y0 + j * (options.height + options.vertGap),
-                width: options.width,
-                height: options.height,
-                lineProperties: options.lineProperties
-            });
-        }
-    }
-}
-/**
- * Draws a set of horizontal tick marks down the page.
- *
- * @param PDFCreator PDF-drawing library
- * @param yTickTop Vertical offset in doc units to topmost tick mark
- * @param xTickLeft Horizontal offset in doc units from left of page to left of each tick mark
- * @param numberOfTicks Number of lines to draw in set
- * @param tickLength Length of each tick mark in doc units
- * @param tickInterval Gap between each tick mark in doc units
- */
-function drawHorizontallMeasurementTicks(PDFCreator, yTickTop, xTickLeft, numberOfTicks, tickLength, tickInterval) {
-    for (let y = yTickTop, i = 0; i < numberOfTicks; y += tickInterval, i++) {
-        PDFCreator.drawLine({
-            x1: xTickLeft,
-            y1: y,
-            x2: xTickLeft + tickLength,
-            y2: y
-        });
-    }
-}
-/**
- * Draws a measurement grid useful for checking scaling and for adjusting offsets.
- *
- * @param PDFCreator PDF-drawing library
- * @param tickOptions Drawing properties for ticks
- *
- * @note Note that grid lines will not appear if outside of printer's page print area
- */
-function drawMeasurementLines(PDFCreator, options = {
-    tickLength: 0.05,
-    tickInterval: 1,
-    lineProperties: {
-        thickness: 0.001,
-        color: "0000ff",
-        opacity: 0.5 // 0..1
-    }
-}) {
-    // Draw box showing margins
-    PDFCreator.drawNeatline(options.lineProperties);
-    // Update the line options for the tick marks
-    const updatedOptions = {
-        ...PDFCreator.lineOptions,
-        ...options
-    };
-    PDFCreator.updateLineProperties(updatedOptions.lineProperties);
-    PDFCreator.lineOptions = updatedOptions;
-    // Draw tick marks along horizontal margin lines
-    const numHorizontalTicks = numberOfTicks(PDFCreator.pageOptions.width, PDFCreator.pageOptions.leftMargin, PDFCreator.pageOptions.rightMargin, options.tickInterval);
-    drawVerticalMeasurementTicks(PDFCreator, 0, // first (left) tick within margins
-    0, // top of tick
-    numHorizontalTicks, options.tickLength, options.tickInterval // tick properties
-    );
-    drawVerticalMeasurementTicks(PDFCreator, 0, // first (left) tick
-    PDFCreator.pageOptions.height - PDFCreator.pageOptions.topMargin - PDFCreator.pageOptions.bottomMargin, // top of tick
-    numHorizontalTicks, -options.tickLength, options.tickInterval // tick properties
-    );
-    // Draw tick marks along vertical margin lines
-    const numVerticalTicks = numberOfTicks(PDFCreator.pageOptions.height, PDFCreator.pageOptions.topMargin, PDFCreator.pageOptions.bottomMargin, options.tickInterval);
-    drawHorizontallMeasurementTicks(PDFCreator, 0, // first (top) tick
-    0, // left of tick
-    numVerticalTicks, options.tickLength, options.tickInterval // tick properties
-    );
-    drawHorizontallMeasurementTicks(PDFCreator, 0, // first (top) tick
-    PDFCreator.pageOptions.width - PDFCreator.pageOptions.leftMargin - PDFCreator.pageOptions.rightMargin, // left of tick
-    numVerticalTicks, -options.tickLength, options.tickInterval // tick properties
-    );
-}
-/**
- * Draws a set of vertical tick marks across the page.
- *
- * @param PDFCreator PDF-drawing library
- * @param xLeftTick Horizontal offset in doc units to leftmost tick mark
- * @param yTickTop Vertical offset in doc units from top of page to top of each tick mark
- * @param numberOfTicks Number of lines to draw in set
- * @param tickLength Length of each tick mark in doc units
- * @param tickInterval Gap between each tick mark in doc units
- */
-function drawVerticalMeasurementTicks(PDFCreator, xLeftTick, yTickTop, numberOfTicks, tickLength, tickInterval) {
-    for (let x = xLeftTick, i = 0; i < numberOfTicks; x += tickInterval, i++) {
-        PDFCreator.drawLine({
-            x1: x,
-            y1: yTickTop,
-            x2: x,
-            y2: yTickTop + tickLength
-        });
-    }
-}
-/**
- * Calculates the number of ticks to draw given the total dimension and margins.
- *
- * @param total Total dimension of space to fill with tick marks;, e.g., width
- * @param marginA A margin to remove from the total; e.g., left margin
- * @param marginB A margin to remove from the total; e.g., right margin
- * @param interval Gap between tick marks
- *
- * @return Number of ticks; assumes that ticks start at marginA and continue to marginB
- */
-function numberOfTicks(total, marginA, marginB, interval) {
-    return 1 + Math.floor(((total - marginA - marginB) / interval) + 0.01);
-}
-
-/* @preserve
-* arcgis-pdf-creator v0.0.1
-* Fri Feb 03 2023 09:47:02 GMT-0800 (Pacific Standard Time)
-*/
-/** @license
- * Copyright 2022 Esri
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/*
-  This module contains a generic superclass that models a PDF creator
-  and two subclasses that are adaptors to two PDF libraries. This structure
-  enables us to choose the PDF library to work with since each has strengths
-  over the other.
-
-  Superclass: PDFCreator
-  Subclass for the jsPDF library: PDFCreator_jsPDF
-  Subclass for the pdf_lib library: PDFCreator_pdf_lib
-*/
-//--------------------------------------------------------------------------------------------------------------------//
-var EPageType;
-(function (EPageType) {
-    EPageType["A4"] = "A4";
-    EPageType["ANSI_A"] = "ANSI A";
-})(EPageType || (EPageType = {}));
-//====================================================================================================================//
-class PDFCreator {
-    constructor() {
-        // Properties are public for testing purposes
-        this.dataPath = "";
-        this.lang = "en";
-        this.title = "";
-        this.fontProps = {
-            fontResolutionInchesPerPoint: 1 / 72,
-            fontFullHeightRatio: 1.28
-        };
-        this.lineOptions = {
-            x1: 0,
-            y1: 0,
-            x2: 0,
-            y2: 0,
-            lineProperties: {
-                thickness: 0.1,
-                color: "000000",
-                opacity: 1 // 0..1
-            }
-        };
-        this.pageOptions = {
-            pageType: EPageType.ANSI_A,
-            width: 8.5,
-            height: 11,
-            leftMargin: 0.25,
-            rightMargin: 0.25,
-            topMargin: 0.25,
-            bottomMargin: 0.25,
-            drawNeatline: false
-        };
-        this.rectangleOptions = {
-            left: 0,
-            top: 0,
-            width: 8.5,
-            height: 11,
-            lineProperties: {
-                thickness: 0.1,
-                color: "000000",
-                opacity: 1 // 0..1
-            },
-            fillColor: "",
-            fillOpacity: 1 // 0..1
-        };
-        this.tableOptions = {
-            lineProperties: {
-                thickness: 0.1,
-                color: "",
-                opacity: 1 // 0..1
-            },
-            textProperties: {
-                left: 0,
-                top: 0,
-                fontPoints: 1,
-                fontColor: "000000" // i.e., black
-            }
-        };
-        this.textOptions = {
-            left: 0,
-            top: 0,
-            fontPoints: 1,
-            fontColor: "000000" // i.e., black
-        };
-    }
-    //-- Static methods ------------------------------------------------------------------------------------------------//
-    /**
-     * @class PDFCreator
-     */
-    static getPageSize(pageType) {
-        if (typeof pageType === "string") {
-            pageType = pageType === EPageType.A4 ? EPageType.A4 : EPageType.ANSI_A;
-        }
-        switch (pageType) {
-            case EPageType.A4:
-                return {
-                    width: 8.25,
-                    height: 11.708333
-                };
-            case EPageType.ANSI_A:
-                return {
-                    width: 8.5,
-                    height: 11
-                };
-        }
-    }
-    //-- Public methods ------------------------------------------------------------------------------------------------//
-    /**
-     * @class PDFCreator
-     */
-    addPage() {
-    }
-    /**
-     * Calculates a color intensity that emulates an opacity being applied to it.
-     *
-     * @param colorIntensity Color value to start with; range 0..1
-     * @param opacity Opacity to apply; range 0..1
-     *
-     * @return Color intensity emulating the application of opacity. It works by applying the opacity value
-     * to the input colorIntensity and adding the inverse of the opacity. E.g., if opacity is 1, the original
-     * colorIntensity is returned; if opacity is 0, 1 is returned; if opacity is 0.5; colorIntensity/2 + 0.5 is
-     * returned. It's odd, but when applied to an RGB value, it produces the desired effect.
-     *
-     * @class PDFCreator
-     */
-    applyOpacity(colorIntensity, opacity) {
-        const backgroundColorIntensity = 1;
-        return (colorIntensity * opacity) + backgroundColorIntensity * (1 - opacity);
-    }
-    /**
-     * @class PDFCreator
-     */
-    drawLine(options) {
-        const updatedOptions = {
-            ...this.lineOptions,
-            ...options
-        };
-        updatedOptions.lineProperties = {
-            ...this.lineOptions.lineProperties,
-            ...options.lineProperties
-        };
-        this.updateLineProperties(updatedOptions.lineProperties);
-        this.lineOptions = updatedOptions;
-    }
-    /**
-     * @class PDFCreator
-     */
-    drawNeatline(lineProperties = {
-        thickness: 0.005,
-        color: "0000ff",
-        opacity: 0.2
-    }) {
-        this.drawRectangle({
-            left: 0,
-            top: 0,
-            width: this.pageOptions.width - this.pageOptions.leftMargin - this.pageOptions.rightMargin,
-            height: this.pageOptions.height - this.pageOptions.topMargin - this.pageOptions.bottomMargin,
-            lineProperties
-        });
-    }
-    /**
-     * @class PDFCreator
-     */
-    drawRectangle(options) {
-        const updatedOptions = {
-            ...this.rectangleOptions,
-            ...options
-        };
-        updatedOptions.lineProperties = {
-            ...this.lineOptions.lineProperties,
-            ...options.lineProperties
-        };
-        this.updateLineProperties(updatedOptions.lineProperties);
-        if (this.rectangleOptions.fillColor !== updatedOptions.fillColor ||
-            this.rectangleOptions.fillOpacity !== updatedOptions.fillOpacity) {
-            this.setFillColor(updatedOptions.fillColor, updatedOptions.fillOpacity);
-        }
-        this.rectangleOptions = updatedOptions;
-    }
-    /**
-     * @class PDFCreator
-     */
-    drawTable(text, options) {
-        const updatedOptions = {};
-        updatedOptions.lineProperties = {
-            ...this.tableOptions.lineProperties,
-            ...options.lineProperties
-        };
-        updatedOptions.textProperties = {
-            ...this.tableOptions.textProperties,
-            ...options.textProperties
-        };
-        if (this.tableOptions.textProperties.fontPoints !== updatedOptions.textProperties.fontPoints) {
-            this.setFontSize(updatedOptions.textProperties.fontPoints);
-        }
-        if (this.tableOptions.textProperties.fontColor !== updatedOptions.textProperties.fontColor) {
-            this.setFontColor(updatedOptions.textProperties.fontColor);
-        }
-        this.updateLineProperties(updatedOptions.lineProperties);
-        this.tableOptions = updatedOptions;
-    }
-    /**
-     * @class PDFCreator
-     */
-    drawText(text, options) {
-        const updatedOptions = {
-            ...this.textOptions,
-            ...options
-        };
-        if (this.textOptions.fontPoints !== updatedOptions.fontPoints) {
-            this.setFontSize(updatedOptions.fontPoints);
-        }
-        if (this.textOptions.fontColor !== updatedOptions.fontColor) {
-            this.setFontColor(updatedOptions.fontColor);
-        }
-        this.textOptions = updatedOptions;
-    }
-    /**
-     * Calculates document units from top of font ascenders to baseline.
-     *
-     * @class PDFCreator
-     */
-    fontAscenderBaselineHeight(fontPoints) {
-        return fontPoints * this.fontProps.fontResolutionInchesPerPoint;
-    }
-    /**
-     * Calculates document units from top of font ascenders to bottom of descenders.
-     *
-     * @class PDFCreator
-     */
-    fontAscenderDescenderHeight(fontPoints) {
-        return this.fontProps.fontFullHeightRatio * this.fontAscenderBaselineHeight(fontPoints);
-    }
-    /**
-     * Returns the name of the font file supporting the specified locale.
-     *
-     * @param lang Locale such as "en" or "zh-tw"
-     * @returns Font name, e.g., "0b7681dc140844ee9f409bdac249fbf0-japanese"
-     *
-     * @class PDFCreator
-     */
-    getFontFileName(lang) {
-        let fontFile = "0b7681dc140844ee9f409bdac249fbf0-general";
-        if (lang === "ja") {
-            fontFile = "0b7681dc140844ee9f409bdac249fbf0-japanese";
-        }
-        else if (lang === "ko") {
-            fontFile = "0b7681dc140844ee9f409bdac249fbf0-korean";
-        }
-        else if (lang === "zh-cn") {
-            fontFile = "0b7681dc140844ee9f409bdac249fbf0-simplified-chinese";
-        }
-        else if (lang === "zh-hk" || lang === "zh-tw") {
-            fontFile = "0b7681dc140844ee9f409bdac249fbf0-traditional-chinese";
-        }
-        return fontFile;
-    }
-    /**
-     * Estimates with width of a string.
-     *
-     * @param text String to estimate
-     * @param fontSize Text size in points
-     * @returns Estimated width of text in doc units
-     *
-     * @class PDFCreator
-     */
-    getTextWidth(text, fontSize) {
-        // Return a value for testing
-        return text.length * fontSize;
-    }
-    /**
-     * @class PDFCreator
-     */
-    hexToRGB(hex, opacity = 1 // 0..1
-    ) {
-        const colorParts = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return colorParts ? {
-            r: this.applyOpacity(parseInt(colorParts[1], 16) / 255, opacity),
-            g: this.applyOpacity(parseInt(colorParts[2], 16) / 255, opacity),
-            b: this.applyOpacity(parseInt(colorParts[3], 16) / 255, opacity)
-        } : {
-            r: 0,
-            g: 0,
-            b: 0
-        };
-    }
-    /**
-     * @class PDFCreator
-     */
-    async initialize(pageProperties = {}, dataPath = "", lang = "en", title = "", drawNeatline = false) {
-        if (JSON.stringify(pageProperties) !== "{}") {
-            this.pageOptions.pageType = pageProperties.pageType === EPageType.A4 ? EPageType.A4 : EPageType.ANSI_A;
-            const pageSize = PDFCreator.getPageSize(this.pageOptions.pageType);
-            this.pageOptions.width = pageSize.width;
-            this.pageOptions.height = pageSize.height;
-            this.pageOptions.leftMargin = pageProperties.leftMargin ?? this.pageOptions.leftMargin;
-            this.pageOptions.rightMargin = pageProperties.rightMargin ?? this.pageOptions.rightMargin;
-            this.pageOptions.topMargin = pageProperties.topMargin ?? this.pageOptions.topMargin;
-            this.pageOptions.bottomMargin = pageProperties.bottomMargin ?? this.pageOptions.bottomMargin;
-        }
-        this.dataPath = dataPath;
-        this.lang = lang;
-        this.title = title || "PDF Document";
-        this.pageOptions.drawNeatline = drawNeatline;
-        return Promise.resolve();
-    }
-    /**
-     * @class PDFCreator
-     */
-    save() {
-    }
-    /**
-     * @class PDFCreator
-     */
-    setDrawColor(drawColor, // eslint-disable-line @typescript-eslint/no-unused-vars
-    opacity = 1 // eslint-disable-line @typescript-eslint/no-unused-vars
-    ) {
-    }
-    /**
-     * @class PDFCreator
-     */
-    setFillColor(fillColor, // eslint-disable-line @typescript-eslint/no-unused-vars
-    opacity = 1 // eslint-disable-line @typescript-eslint/no-unused-vars
-    ) {
-    }
-    /**
-     * @class PDFCreator
-     */
-    setFont(lang // eslint-disable-line @typescript-eslint/no-unused-vars
-    ) {
-        return Promise.resolve();
-    }
-    /**
-     * @class PDFCreator
-     */
-    setFontColor(fontColor // eslint-disable-line @typescript-eslint/no-unused-vars
-    ) {
-    }
-    /**
-     * @class PDFCreator
-     */
-    setFontSize(fontPoints // eslint-disable-line @typescript-eslint/no-unused-vars
-    ) {
-    }
-    /**
-     * @class PDFCreator
-     */
-    setLang(lang) {
-        if (this.lang !== lang) {
-            this.lang = lang;
-            return this.setFont(lang);
-        }
-        else {
-            return Promise.resolve();
-        }
-    }
-    /**
-     * @class PDFCreator
-     */
-    setLineWidth(width // eslint-disable-line @typescript-eslint/no-unused-vars
-    ) {
-    }
-    updateLineProperties(updatedProps) {
-        if (this.lineOptions.lineProperties.thickness !== updatedProps.thickness) {
-            this.setLineWidth(updatedProps.thickness); // Note that this changes the drawing width for ALL vectors!
-        }
-        if (this.lineOptions.lineProperties.color !== updatedProps.color ||
-            this.lineOptions.lineProperties.opacity !== updatedProps.opacity) {
-            this.setDrawColor(updatedProps.color, updatedProps.opacity); // Note that this changes the drawing color & opacity for ALL vectors!
-        }
-        this.lineOptions.lineProperties = updatedProps;
-    }
-}
-
 var _typeof_1 = createCommonjsModule(function (module) {
 function _typeof(obj) {
   "@babel/helpers - typeof";
@@ -2048,6 +1496,395 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var r,n,i,a,
 * arcgis-pdf-creator v0.0.1
 * Fri Feb 03 2023 09:47:02 GMT-0800 (Pacific Standard Time)
 */
+/** @license
+ * Copyright 2022 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/*
+  This module contains a generic superclass that models a PDF creator
+  and two subclasses that are adaptors to two PDF libraries. This structure
+  enables us to choose the PDF library to work with since each has strengths
+  over the other.
+
+  Superclass: PDFCreator
+  Subclass for the jsPDF library: PDFCreator_jsPDF
+  Subclass for the pdf_lib library: PDFCreator_pdf_lib
+*/
+//--------------------------------------------------------------------------------------------------------------------//
+var EPageType;
+(function (EPageType) {
+    EPageType["A4"] = "A4";
+    EPageType["ANSI_A"] = "ANSI A";
+})(EPageType || (EPageType = {}));
+//====================================================================================================================//
+class PDFCreator {
+    constructor() {
+        // Properties are public for testing purposes
+        this.dataPath = "";
+        this.lang = "en";
+        this.title = "";
+        this.fontProps = {
+            fontResolutionInchesPerPoint: 1 / 72,
+            fontFullHeightRatio: 1.28
+        };
+        this.lineOptions = {
+            x1: 0,
+            y1: 0,
+            x2: 0,
+            y2: 0,
+            lineProperties: {
+                thickness: 0.1,
+                color: "000000",
+                opacity: 1 // 0..1
+            }
+        };
+        this.pageOptions = {
+            pageType: EPageType.ANSI_A,
+            width: 8.5,
+            height: 11,
+            leftMargin: 0.25,
+            rightMargin: 0.25,
+            topMargin: 0.25,
+            bottomMargin: 0.25,
+            drawNeatline: false
+        };
+        this.rectangleOptions = {
+            left: 0,
+            top: 0,
+            width: 8.5,
+            height: 11,
+            lineProperties: {
+                thickness: 0.1,
+                color: "000000",
+                opacity: 1 // 0..1
+            },
+            fillColor: "",
+            fillOpacity: 1 // 0..1
+        };
+        this.tableOptions = {
+            lineProperties: {
+                thickness: 0.1,
+                color: "",
+                opacity: 1 // 0..1
+            },
+            textProperties: {
+                left: 0,
+                top: 0,
+                fontPoints: 1,
+                fontColor: "000000" // i.e., black
+            }
+        };
+        this.textOptions = {
+            left: 0,
+            top: 0,
+            fontPoints: 1,
+            fontColor: "000000" // i.e., black
+        };
+    }
+    //-- Static methods ------------------------------------------------------------------------------------------------//
+    /**
+     * @class PDFCreator
+     */
+    static getPageSize(pageType) {
+        if (typeof pageType === "string") {
+            pageType = pageType === EPageType.A4 ? EPageType.A4 : EPageType.ANSI_A;
+        }
+        switch (pageType) {
+            case EPageType.A4:
+                return {
+                    width: 8.25,
+                    height: 11.708333
+                };
+            case EPageType.ANSI_A:
+                return {
+                    width: 8.5,
+                    height: 11
+                };
+        }
+    }
+    //-- Public methods ------------------------------------------------------------------------------------------------//
+    /**
+     * @class PDFCreator
+     */
+    addPage() {
+    }
+    /**
+     * Calculates a color intensity that emulates an opacity being applied to it.
+     *
+     * @param colorIntensity Color value to start with; range 0..1
+     * @param opacity Opacity to apply; range 0..1
+     *
+     * @return Color intensity emulating the application of opacity. It works by applying the opacity value
+     * to the input colorIntensity and adding the inverse of the opacity. E.g., if opacity is 1, the original
+     * colorIntensity is returned; if opacity is 0, 1 is returned; if opacity is 0.5; colorIntensity/2 + 0.5 is
+     * returned. It's odd, but when applied to an RGB value, it produces the desired effect.
+     *
+     * @class PDFCreator
+     */
+    applyOpacity(colorIntensity, opacity) {
+        const backgroundColorIntensity = 1;
+        return (colorIntensity * opacity) + backgroundColorIntensity * (1 - opacity);
+    }
+    /**
+     * @class PDFCreator
+     */
+    drawLine(options) {
+        const updatedOptions = {
+            ...this.lineOptions,
+            ...options
+        };
+        updatedOptions.lineProperties = {
+            ...this.lineOptions.lineProperties,
+            ...options.lineProperties
+        };
+        this.updateLineProperties(updatedOptions.lineProperties);
+        this.lineOptions = updatedOptions;
+    }
+    /**
+     * @class PDFCreator
+     */
+    drawNeatline(lineProperties = {
+        thickness: 0.005,
+        color: "0000ff",
+        opacity: 0.2
+    }) {
+        this.drawRectangle({
+            left: 0,
+            top: 0,
+            width: this.pageOptions.width - this.pageOptions.leftMargin - this.pageOptions.rightMargin,
+            height: this.pageOptions.height - this.pageOptions.topMargin - this.pageOptions.bottomMargin,
+            lineProperties
+        });
+    }
+    /**
+     * @class PDFCreator
+     */
+    drawRectangle(options) {
+        const updatedOptions = {
+            ...this.rectangleOptions,
+            ...options
+        };
+        updatedOptions.lineProperties = {
+            ...this.lineOptions.lineProperties,
+            ...options.lineProperties
+        };
+        this.updateLineProperties(updatedOptions.lineProperties);
+        if (this.rectangleOptions.fillColor !== updatedOptions.fillColor ||
+            this.rectangleOptions.fillOpacity !== updatedOptions.fillOpacity) {
+            this.setFillColor(updatedOptions.fillColor, updatedOptions.fillOpacity);
+        }
+        this.rectangleOptions = updatedOptions;
+    }
+    /**
+     * @class PDFCreator
+     */
+    drawTable(text, options) {
+        const updatedOptions = {};
+        updatedOptions.lineProperties = {
+            ...this.tableOptions.lineProperties,
+            ...options.lineProperties
+        };
+        updatedOptions.textProperties = {
+            ...this.tableOptions.textProperties,
+            ...options.textProperties
+        };
+        if (this.tableOptions.textProperties.fontPoints !== updatedOptions.textProperties.fontPoints) {
+            this.setFontSize(updatedOptions.textProperties.fontPoints);
+        }
+        if (this.tableOptions.textProperties.fontColor !== updatedOptions.textProperties.fontColor) {
+            this.setFontColor(updatedOptions.textProperties.fontColor);
+        }
+        this.updateLineProperties(updatedOptions.lineProperties);
+        this.tableOptions = updatedOptions;
+    }
+    /**
+     * @class PDFCreator
+     */
+    drawText(text, options) {
+        const updatedOptions = {
+            ...this.textOptions,
+            ...options
+        };
+        if (this.textOptions.fontPoints !== updatedOptions.fontPoints) {
+            this.setFontSize(updatedOptions.fontPoints);
+        }
+        if (this.textOptions.fontColor !== updatedOptions.fontColor) {
+            this.setFontColor(updatedOptions.fontColor);
+        }
+        this.textOptions = updatedOptions;
+    }
+    /**
+     * Calculates document units from top of font ascenders to baseline.
+     *
+     * @class PDFCreator
+     */
+    fontAscenderBaselineHeight(fontPoints) {
+        return fontPoints * this.fontProps.fontResolutionInchesPerPoint;
+    }
+    /**
+     * Calculates document units from top of font ascenders to bottom of descenders.
+     *
+     * @class PDFCreator
+     */
+    fontAscenderDescenderHeight(fontPoints) {
+        return this.fontProps.fontFullHeightRatio * this.fontAscenderBaselineHeight(fontPoints);
+    }
+    /**
+     * Returns the name of the font file supporting the specified locale.
+     *
+     * @param lang Locale such as "en" or "zh-tw"
+     * @returns Font name, e.g., "0b7681dc140844ee9f409bdac249fbf0-japanese"
+     *
+     * @class PDFCreator
+     */
+    getFontFileName(lang) {
+        let fontFile = "0b7681dc140844ee9f409bdac249fbf0-general";
+        if (lang === "ja") {
+            fontFile = "0b7681dc140844ee9f409bdac249fbf0-japanese";
+        }
+        else if (lang === "ko") {
+            fontFile = "0b7681dc140844ee9f409bdac249fbf0-korean";
+        }
+        else if (lang === "zh-cn") {
+            fontFile = "0b7681dc140844ee9f409bdac249fbf0-simplified-chinese";
+        }
+        else if (lang === "zh-hk" || lang === "zh-tw") {
+            fontFile = "0b7681dc140844ee9f409bdac249fbf0-traditional-chinese";
+        }
+        return fontFile;
+    }
+    /**
+     * Estimates with width of a string.
+     *
+     * @param text String to estimate
+     * @param fontSize Text size in points
+     * @returns Estimated width of text in doc units
+     *
+     * @class PDFCreator
+     */
+    getTextWidth(text, fontSize) {
+        // Return a value for testing
+        return text.length * fontSize;
+    }
+    /**
+     * @class PDFCreator
+     */
+    hexToRGB(hex, opacity = 1 // 0..1
+    ) {
+        const colorParts = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return colorParts ? {
+            r: this.applyOpacity(parseInt(colorParts[1], 16) / 255, opacity),
+            g: this.applyOpacity(parseInt(colorParts[2], 16) / 255, opacity),
+            b: this.applyOpacity(parseInt(colorParts[3], 16) / 255, opacity)
+        } : {
+            r: 0,
+            g: 0,
+            b: 0
+        };
+    }
+    /**
+     * @class PDFCreator
+     */
+    async initialize(pageProperties = {}, dataPath = "", lang = "en", title = "", drawNeatline = false) {
+        if (JSON.stringify(pageProperties) !== "{}") {
+            this.pageOptions.pageType = pageProperties.pageType === EPageType.A4 ? EPageType.A4 : EPageType.ANSI_A;
+            const pageSize = PDFCreator.getPageSize(this.pageOptions.pageType);
+            this.pageOptions.width = pageSize.width;
+            this.pageOptions.height = pageSize.height;
+            this.pageOptions.leftMargin = pageProperties.leftMargin ?? this.pageOptions.leftMargin;
+            this.pageOptions.rightMargin = pageProperties.rightMargin ?? this.pageOptions.rightMargin;
+            this.pageOptions.topMargin = pageProperties.topMargin ?? this.pageOptions.topMargin;
+            this.pageOptions.bottomMargin = pageProperties.bottomMargin ?? this.pageOptions.bottomMargin;
+        }
+        this.dataPath = dataPath;
+        this.lang = lang;
+        this.title = title || "PDF Document";
+        this.pageOptions.drawNeatline = drawNeatline;
+        return Promise.resolve();
+    }
+    /**
+     * @class PDFCreator
+     */
+    save() {
+    }
+    /**
+     * @class PDFCreator
+     */
+    setDrawColor(drawColor, // eslint-disable-line @typescript-eslint/no-unused-vars
+    opacity = 1 // eslint-disable-line @typescript-eslint/no-unused-vars
+    ) {
+    }
+    /**
+     * @class PDFCreator
+     */
+    setFillColor(fillColor, // eslint-disable-line @typescript-eslint/no-unused-vars
+    opacity = 1 // eslint-disable-line @typescript-eslint/no-unused-vars
+    ) {
+    }
+    /**
+     * @class PDFCreator
+     */
+    setFont(lang // eslint-disable-line @typescript-eslint/no-unused-vars
+    ) {
+        return Promise.resolve();
+    }
+    /**
+     * @class PDFCreator
+     */
+    setFontColor(fontColor // eslint-disable-line @typescript-eslint/no-unused-vars
+    ) {
+    }
+    /**
+     * @class PDFCreator
+     */
+    setFontSize(fontPoints // eslint-disable-line @typescript-eslint/no-unused-vars
+    ) {
+    }
+    /**
+     * @class PDFCreator
+     */
+    setLang(lang) {
+        if (this.lang !== lang) {
+            this.lang = lang;
+            return this.setFont(lang);
+        }
+        else {
+            return Promise.resolve();
+        }
+    }
+    /**
+     * @class PDFCreator
+     */
+    setLineWidth(width // eslint-disable-line @typescript-eslint/no-unused-vars
+    ) {
+    }
+    updateLineProperties(updatedProps) {
+        if (this.lineOptions.lineProperties.thickness !== updatedProps.thickness) {
+            this.setLineWidth(updatedProps.thickness); // Note that this changes the drawing width for ALL vectors!
+        }
+        if (this.lineOptions.lineProperties.color !== updatedProps.color ||
+            this.lineOptions.lineProperties.opacity !== updatedProps.opacity) {
+            this.setDrawColor(updatedProps.color, updatedProps.opacity); // Note that this changes the drawing color & opacity for ALL vectors!
+        }
+        this.lineOptions.lineProperties = updatedProps;
+    }
+}
+
+/* @preserve
+* arcgis-pdf-creator v0.0.1
+* Fri Feb 03 2023 09:47:02 GMT-0800 (Pacific Standard Time)
+*/
 
 /** @license
  * Copyright 2022 Esri
@@ -2272,6 +2109,323 @@ class PDFCreator_jsPDF extends PDFCreator {
     }
 }
 
+/* @preserve
+* arcgis-pdf-creator v0.0.1
+* Fri Feb 03 2023 09:47:02 GMT-0800 (Pacific Standard Time)
+*/
+/** @license
+ * Copyright 2022 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+//--------------------------------------------------------------------------------------------------------------------//
+/**
+ * Draws a grid of boxes with optional gaps between boxes.
+ *
+ * @param PDFCreator PDF-drawing library
+ * @param numAcross Number of boxes in each row
+ * @param numDown Number of boxes in each column
+ * @param x0 Offset in doc units to left edge of leftmost column of boxes
+ * @param y0 Offset in doc units to top edge of topmost row of boxes
+ * @param width Width of each box in doc units
+ * @param height Height of each box in doc units
+ * @param horizGap Gap in doc units between two boxes in the same row
+ * @param vertGap Gap in doc units between two boxes in the same column
+ * @param lineProperties Drawing properties for grid lines
+ */
+function drawGridOfBoxes(PDFCreator, options = {
+    numAcross: 1,
+    numDown: 1,
+    x0: 0,
+    y0: 0,
+    width: 1,
+    height: 1,
+    horizGap: 0,
+    vertGap: 0,
+    lineProperties: {
+        thickness: 0,
+        color: "",
+        opacity: 1 // 0..1
+    }
+}) {
+    // Draw the set of boxes
+    for (let j = 0; j < options.numDown; ++j) {
+        for (let i = 0; i < options.numAcross; ++i) {
+            PDFCreator.drawRectangle({
+                left: options.x0 + i * (options.width + options.horizGap),
+                top: options.y0 + j * (options.height + options.vertGap),
+                width: options.width,
+                height: options.height,
+                lineProperties: options.lineProperties
+            });
+        }
+    }
+}
+
+/* @preserve
+* arcgis-pdf-creator v0.0.1
+* Fri Feb 03 2023 09:47:02 GMT-0800 (Pacific Standard Time)
+*/
+
+/** @license
+ * Copyright 2022 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+//====================================================================================================================//
+class PDFLabels {
+    //-- Public methods ------------------------------------------------------------------------------------------------//
+    /**
+     * Add labels to a PDF doc, starting at the beginning of the specified PDF doc page.
+     *
+     * @param labels Array of labels; each label consists of one or more line strings
+     * @param labelSpec Properties describing page dimensions of labels sheet
+     * @param startingPageNum The 1-based page number to start printing labels into; page is assumed to be blank & to exist
+     * @param progressCallback Callback with percent done in range 0..100
+     * @returns Promise which, when resolved, returns the 1-based page number of the last page containing labels
+     *
+     * @class PDFLabels
+     */
+    addLabelsToDoc(labels, labelSpec, startingPageNum, progressCallback) {
+        return new Promise((resolve) => {
+            const labelsPerPageDisplay = labelSpec.numLabelsAcross * labelSpec.numLabelsDown;
+            let column;
+            let row;
+            let currentLabelLeft;
+            let currentLabelTop;
+            const maxLabelTextWidth = labelSpec.labelWidth - (2 * labelSpec.labelPadding);
+            // Draw
+            let currentPageNum = startingPageNum;
+            const topOfFirstLabel = labelSpec.pageProperties.topMargin - this.PDFCreator.pageOptions.topMargin;
+            for (let iLabel = 0, iNonBlankLabel = 0; iLabel < labels.length; iLabel++) {
+                if (progressCallback) {
+                    progressCallback(Math.round(iLabel / labels.length * 100));
+                }
+                // Trim lines and discard blank ones
+                let labelLines = labels[iLabel].map((line) => line.trim()).filter((line) => line.length > 0);
+                if (labelLines.length === 0) {
+                    continue;
+                }
+                // Are we at the beginning of a page or column?
+                if (iNonBlankLabel % labelsPerPageDisplay === 0) {
+                    if (iNonBlankLabel > 0) {
+                        // Advance to next page
+                        this.PDFCreator.addPage();
+                        ++currentPageNum;
+                    }
+                    // Prep the new page
+                    column = 0;
+                    currentLabelLeft = 0;
+                    row = 0;
+                }
+                else if (iNonBlankLabel % labelSpec.numLabelsDown === 0) {
+                    // Advance to next column
+                    currentLabelLeft = (++column * (labelSpec.labelWidth + labelSpec.horizGapIn));
+                    row = 0;
+                }
+                // Draw the label
+                // Temporarily reduce the font size if we have more lines than the label can hold
+                let fontPoints = labelSpec.fontSizePx;
+                if (labelSpec.maxNumLabelLines < labelLines.length) {
+                    fontPoints = Math.floor(labelSpec.maxNumLabelLines / labelLines.length * labelSpec.fontSizePx);
+                }
+                // Clip overlong lines; append ellipses to clipped lines
+                labelLines = this._clipOverlongLines(labelLines, maxLabelTextWidth, fontPoints);
+                const labelLineHeight = this.PDFCreator.fontAscenderDescenderHeight(fontPoints);
+                // Draw label
+                currentLabelTop = topOfFirstLabel + (row++ * (labelSpec.labelHeight + labelSpec.vertGapIn));
+                labelLines.forEach((line) => {
+                    this.PDFCreator.drawText(line, {
+                        left: currentLabelLeft + labelSpec.labelPadding,
+                        top: currentLabelTop + labelSpec.labelPadding,
+                        fontPoints,
+                        fontColor: "000000"
+                    });
+                    currentLabelTop += labelLineHeight;
+                });
+                ++iNonBlankLabel;
+            }
+            if (progressCallback) {
+                progressCallback(100);
+            }
+            resolve(currentPageNum);
+        });
+    }
+    drawLabelGuidelines(labelSpec, labelBoundaryLinesProperties = null) {
+        // Label boundaries
+        if (labelBoundaryLinesProperties !== null) {
+            drawGridOfBoxes(this.PDFCreator, {
+                // Margins in the page spec are absolute but we draw in within the margins
+                x0: labelSpec.pageProperties.leftMargin - this.PDFCreator.pageOptions.leftMargin,
+                y0: labelSpec.pageProperties.topMargin - this.PDFCreator.pageOptions.topMargin,
+                numAcross: labelSpec.numLabelsAcross,
+                numDown: labelSpec.numLabelsDown,
+                width: labelSpec.labelWidth,
+                height: labelSpec.labelHeight,
+                horizGap: labelSpec.horizGapIn,
+                vertGap: labelSpec.vertGapIn,
+                lineProperties: labelBoundaryLinesProperties
+            });
+        }
+    }
+    /**
+     * Returns the UI descriptions of the label formats.
+     *
+     * @returns List of label format descriptions
+     *
+     * @class PDFLabels
+     */
+    getAvailableLabelFormats() {
+        if (this.labelFormats.length > 0) {
+            return this.labelFormats.map((format) => format.descriptionPDF);
+        }
+        else {
+            return [];
+        }
+    }
+    /**
+     * Returns the format of the specified label.
+     *
+     * @param averyPartNumber Avery® label base part number, e.g., "*60" (versus actual part numbers "5160", "8160",
+     * "8460", "48160"--all of which are 1" x 2-5/8" rectangular labels)
+     * @returns List of label format descriptions
+     *
+     * @class PDFLabels
+     */
+    getLabelFormat(averyPartNumber) {
+        if (this.labelFormats.length > 0) {
+            const matches = this.labelFormats.filter((format) => averyPartNumber === format.descriptionPDF.averyPartNumber);
+            if (matches.length > 0) {
+                return matches[0];
+            }
+            else {
+                return null;
+            }
+        }
+        else {
+            return null;
+        }
+    }
+    /**
+     * Loads language font file and label formats into a jsPDF `doc` object.
+     *
+     * @param PDFCreator PDF-drawing library
+     * @throws TypeError "startPDFLabelDoc is stomping on labelFormats property" if the `labelFormats` property
+     * is found in doc before the label formats are loaded into the doc.
+     *
+     * @class PDFLabels
+     */
+    initialize(PDFCreator) {
+        this.PDFCreator = PDFCreator;
+        // tslint:disable-next-line: no-floating-promises
+        return this._loadLabelFormats(PDFCreator.dataPath)
+            .then((labelFormats) => {
+            this.labelFormats = labelFormats;
+            return Promise.resolve();
+        });
+    }
+    /**
+     * Removes duplicates and empties, trims label lines, and returns a sorted list.
+     *
+     * @class PDFLabels
+     */
+    removeDuplicates(labels) {
+        // Screen out empty labels
+        const nonEmptyLabels = labels.filter((label) => Array.isArray(label) && label.length > 0);
+        // Screen out duplicates and sort the results
+        // Combine the lines of each label into a single string
+        const compressedLabels = nonEmptyLabels.map((label) => label.map((labelLine) => labelLine.trim())
+            .join("?"));
+        // Get unique values
+        const uniqueLabels = {};
+        compressedLabels.forEach((comprLabel) => uniqueLabels[comprLabel] = true);
+        // Sort the unique labels and reconstruct the lines of each label
+        const screenedLabels = Object.keys(uniqueLabels)
+            .sort()
+            .map((label) => label.split("?"));
+        return screenedLabels;
+    }
+    //-- Private methods -----------------------------------------------------------------------------------------------//
+    /**
+     * Calculates the baseline position of the first line of text in a label.
+     *
+     * @param labelTop Offset from top of document to top of label
+     * @param labelHeight Height of each label in doc units
+     * @param numLabelLines Number of lines to be drawn in the label
+     * @param fontHeight Height of text in doc units
+     * @param verticalFontGap Spacing between lines of text in doc units
+     * @returns Baseline position
+     *
+     * @class PDFLabels
+     * @private
+     */
+    _calculateLabelFirstLineBase(labelTop, labelHeight, numLabelLines, fontHeight, verticalFontGap) {
+        const labelVerticalMidpoint = labelTop + (labelHeight / 2);
+        return labelVerticalMidpoint +
+            (2 - numLabelLines) / 2 * fontHeight +
+            (1 - numLabelLines) / 2 * verticalFontGap;
+    }
+    /**
+     * Trims a set of text lines to fit within specified bounds.
+     *
+     * @param lines Text lines to be trimmed
+     * @param maxTextWidth The maximum width permitted for the drawing of the text in doc units
+     * @param fontSize Text size in points
+     * @returns A copy of lines trimmed as necessary
+     *
+     * @class PDFLabels
+     * @private
+     */
+    _clipOverlongLines(lines, maxTextWidth, fontSize) {
+        const trimmedLines = [];
+        lines.forEach(line => {
+            line = line.trim();
+            if (this.PDFCreator.getTextWidth(line, fontSize) > maxTextWidth) {
+                do {
+                    line = line.slice(0, -1);
+                } while (this.PDFCreator.getTextWidth(line, fontSize) > maxTextWidth);
+                line += '...';
+            }
+            trimmedLines.push(line);
+        });
+        return trimmedLines;
+    }
+    /**
+     * Loads the label formats.
+     *
+     * @param dataPath Path to the library's data files
+     * @returns Promise resolving to the label formats JSON
+     *
+     * @class PDFLabels
+     * @private
+     */
+    async _loadLabelFormats(dataPath) {
+        const labelFormatsFile = await fetch(dataPath + "labelFormats.json");
+        const labelFormatsJson = await labelFormatsFile.json();
+        return labelFormatsJson;
+    }
+}
+
 /** @license
  * Copyright 2022 Esri
  *
@@ -2304,33 +2458,17 @@ function exportPDF(labels, labelPageDescription) {
  * @param fileTitle Title (without file extension) to use for file; defaults to "export"
  */
 function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
-  console.log("_downloadPDFFile", labels, labelPageDescription, fileTitle); //???
-  console.log(JSON.stringify(PDFCreator.getPageSize("ANSI_A")));
   const pdfLib = new PDFCreator_jsPDF();
   pdfLib.initialize({
     pageType: "ANSI_A"
-  }, "../build/assets/arcgis-pdf-creator/", "en", "My Labels", false)
+  }, "../build/assets/arcgis-pdf-creator/", "en", fileTitle, false)
     .then(() => {
-    // Draw frame with tick marks
-    drawMeasurementLines(pdfLib);
-    // Draw a grid of boxes
-    drawGridOfBoxes(pdfLib, {
-      numAcross: 10,
-      numDown: 10,
-      x0: 0.25,
-      y0: 0.25,
-      width: 0.5,
-      height: 0.25,
-      horizGap: 0.25,
-      vertGap: 0.25,
-      lineProperties: {
-        thickness: 0.01,
-        color: "00ff00",
-        opacity: 0.75 // 0..1
-      }
-    } // as pdfLib.IGridOptions
-    );
-    pdfLib.save();
+    const labeller = new PDFLabels();
+    labeller.initialize(pdfLib)
+      .then(async () => {
+      await labeller.addLabelsToDoc(labels, labelPageDescription.labelSpec, 1);
+      pdfLib.save();
+    });
   });
 }
 

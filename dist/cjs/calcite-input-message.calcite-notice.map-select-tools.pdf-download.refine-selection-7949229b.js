@@ -3,17 +3,19 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { r as registerInstance, h as h$8, H as Host, g as getElement, c as createEvent } from './index-c246d90e.js';
-import { s as setRequestedIcon, g as getElementProp, a as getSlotted } from './dom-3bdc69ee.js';
-import { S as StatusIcons } from './interfaces-4ae145eb.js';
-import { c as connectConditionalSlotComponent, d as disconnectConditionalSlotComponent } from './conditionalSlot-d09506c4.js';
-import { l as loadModules } from './loadModules-c5553ae8.js';
-import { g as goToSelection, h as highlightFeatures, d as queryObjectIds, e as getQueryGeoms, q as queryFeaturesByID } from './mapViewUtils-8f0754c5.js';
-import { E as EWorkflowType, f as ESelectionMode, g as ERefineMode, c as ESketchType } from './interfaces-3b23a5f9.js';
-import { s as state } from './publicNotificationStore-b9daaee4.js';
-import { g as getLocaleComponentStrings } from './locale-45c3ffef.js';
-import { c as createCommonjsModule, g as getDefaultExportFromCjs } from './_commonjsHelpers-d5f9d613.js';
-import { a as getSelectionIds, g as getTotal } from './publicNotificationUtils-5cb5a607.js';
+'use strict';
+
+const index = require('./index-c6979cbb.js');
+const dom = require('./dom-4a580af6.js');
+const interfaces = require('./interfaces-e76f31e9.js');
+const conditionalSlot = require('./conditionalSlot-baada7a3.js');
+const loadModules = require('./loadModules-ebba630f.js');
+const mapViewUtils = require('./mapViewUtils-55ac76cb.js');
+const interfaces$1 = require('./interfaces-772edf61.js');
+const publicNotificationStore = require('./publicNotificationStore-20e924f5.js');
+const locale = require('./locale-81876817.js');
+const _commonjsHelpers = require('./_commonjsHelpers-384729db.js');
+const publicNotificationUtils = require('./publicNotificationUtils-9d585d8d.js');
 
 /*!
  * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
@@ -31,7 +33,7 @@ const inputMessageCss = "@keyframes in{0%{opacity:0}100%{opacity:1}}@keyframes i
 
 const InputMessage = class {
   constructor(hostRef) {
-    registerInstance(this, hostRef);
+    index.registerInstance(this, hostRef);
     //--------------------------------------------------------------------------
     //
     //  Properties
@@ -45,7 +47,7 @@ const InputMessage = class {
     this.status = "idle";
   }
   handleIconEl() {
-    this.requestedIcon = setRequestedIcon(StatusIconDefaults, this.icon, this.status);
+    this.requestedIcon = dom.setRequestedIcon(StatusIconDefaults, this.icon, this.status);
   }
   //--------------------------------------------------------------------------
   //
@@ -53,13 +55,13 @@ const InputMessage = class {
   //
   //--------------------------------------------------------------------------
   connectedCallback() {
-    this.status = getElementProp(this.el, "status", this.status);
-    this.scale = getElementProp(this.el, "scale", this.scale);
-    this.requestedIcon = setRequestedIcon(StatusIconDefaults, this.icon, this.status);
+    this.status = dom.getElementProp(this.el, "status", this.status);
+    this.scale = dom.getElementProp(this.el, "scale", this.scale);
+    this.requestedIcon = dom.setRequestedIcon(StatusIconDefaults, this.icon, this.status);
   }
   render() {
     const hidden = !this.active;
-    return (h$8(Host, { "calcite-hydrated-hidden": hidden }, this.renderIcon(this.requestedIcon), h$8("slot", null)));
+    return (index.h(index.Host, { "calcite-hydrated-hidden": hidden }, this.renderIcon(this.requestedIcon), index.h("slot", null)));
   }
   //--------------------------------------------------------------------------
   //
@@ -68,10 +70,10 @@ const InputMessage = class {
   //--------------------------------------------------------------------------
   renderIcon(iconName) {
     if (iconName) {
-      return h$8("calcite-icon", { class: "calcite-input-message-icon", icon: iconName, scale: "s" });
+      return index.h("calcite-icon", { class: "calcite-input-message-icon", icon: iconName, scale: "s" });
     }
   }
-  get el() { return getElement(this); }
+  get el() { return index.getElement(this); }
   static get watchers() { return {
     "status": ["handleIconEl"],
     "icon": ["handleIconEl"]
@@ -105,9 +107,9 @@ const noticeCss = "@keyframes in{0%{opacity:0}100%{opacity:1}}@keyframes in-down
 
 const Notice = class {
   constructor(hostRef) {
-    registerInstance(this, hostRef);
-    this.calciteNoticeClose = createEvent(this, "calciteNoticeClose", 6);
-    this.calciteNoticeOpen = createEvent(this, "calciteNoticeOpen", 6);
+    index.registerInstance(this, hostRef);
+    this.calciteNoticeClose = index.createEvent(this, "calciteNoticeClose", 6);
+    this.calciteNoticeOpen = index.createEvent(this, "calciteNoticeOpen", 6);
     //--------------------------------------------------------------------------
     //
     //  Properties
@@ -164,7 +166,7 @@ const Notice = class {
     this.dismissible = value;
   }
   updateRequestedIcon() {
-    this.requestedIcon = setRequestedIcon(StatusIcons, this.icon, this.color);
+    this.requestedIcon = dom.setRequestedIcon(interfaces.StatusIcons, this.icon, this.color);
   }
   //--------------------------------------------------------------------------
   //
@@ -172,7 +174,7 @@ const Notice = class {
   //
   //--------------------------------------------------------------------------
   connectedCallback() {
-    connectConditionalSlotComponent(this);
+    conditionalSlot.connectConditionalSlotComponent(this);
     const isOpen = this.active || this.open;
     if (isOpen) {
       this.activeHandler(isOpen);
@@ -186,16 +188,16 @@ const Notice = class {
     }
   }
   disconnectedCallback() {
-    disconnectConditionalSlotComponent(this);
+    conditionalSlot.disconnectConditionalSlotComponent(this);
   }
   componentWillLoad() {
-    this.requestedIcon = setRequestedIcon(StatusIcons, this.icon, this.color);
+    this.requestedIcon = dom.setRequestedIcon(interfaces.StatusIcons, this.icon, this.color);
   }
   render() {
     const { el } = this;
-    const closeButton = (h$8("button", { "aria-label": this.intlClose, class: CSS.close, onClick: this.close, ref: (el) => (this.closeButton = el) }, h$8("calcite-icon", { icon: "x", scale: this.scale === "l" ? "m" : "s" })));
-    const hasActionEnd = getSlotted(el, SLOTS.actionsEnd);
-    return (h$8("div", { class: CSS.container }, this.requestedIcon ? (h$8("div", { class: CSS.icon }, h$8("calcite-icon", { icon: this.requestedIcon, scale: this.scale === "l" ? "m" : "s" }))) : null, h$8("div", { class: CSS.content }, h$8("slot", { name: SLOTS.title }), h$8("slot", { name: SLOTS.message }), h$8("slot", { name: SLOTS.link })), hasActionEnd ? (h$8("div", { class: CSS.actionsEnd }, h$8("slot", { name: SLOTS.actionsEnd }))) : null, this.closable ? closeButton : null));
+    const closeButton = (index.h("button", { "aria-label": this.intlClose, class: CSS.close, onClick: this.close, ref: (el) => (this.closeButton = el) }, index.h("calcite-icon", { icon: "x", scale: this.scale === "l" ? "m" : "s" })));
+    const hasActionEnd = dom.getSlotted(el, SLOTS.actionsEnd);
+    return (index.h("div", { class: CSS.container }, this.requestedIcon ? (index.h("div", { class: CSS.icon }, index.h("calcite-icon", { icon: this.requestedIcon, scale: this.scale === "l" ? "m" : "s" }))) : null, index.h("div", { class: CSS.content }, index.h("slot", { name: SLOTS.title }), index.h("slot", { name: SLOTS.message }), index.h("slot", { name: SLOTS.link })), hasActionEnd ? (index.h("div", { class: CSS.actionsEnd }, index.h("slot", { name: SLOTS.actionsEnd }))) : null, this.closable ? closeButton : null));
   }
   //--------------------------------------------------------------------------
   //
@@ -215,7 +217,7 @@ const Notice = class {
       this.closeButton.focus();
     }
   }
-  get el() { return getElement(this); }
+  get el() { return index.getElement(this); }
   static get watchers() { return {
     "active": ["activeHandler"],
     "open": ["openHandler"],
@@ -231,10 +233,10 @@ const mapSelectToolsCss = ":host{display:block}.div-visible{display:inherit}.div
 
 const MapSelectTools = class {
   constructor(hostRef) {
-    registerInstance(this, hostRef);
-    this.selectionSetChange = createEvent(this, "selectionSetChange", 7);
-    this.sketchTypeChange = createEvent(this, "sketchTypeChange", 7);
-    this.workflowTypeChange = createEvent(this, "workflowTypeChange", 7);
+    index.registerInstance(this, hostRef);
+    this.selectionSetChange = index.createEvent(this, "selectionSetChange", 7);
+    this.sketchTypeChange = index.createEvent(this, "sketchTypeChange", 7);
+    this.workflowTypeChange = index.createEvent(this, "workflowTypeChange", 7);
     /**
      * number[]: the oids of the selected features
      */
@@ -321,7 +323,7 @@ const MapSelectTools = class {
       distance: this._bufferTools.distance,
       download: true,
       unit: this._bufferTools.unit,
-      label: this._workflowType === EWorkflowType.SEARCH || (this._selectionLabel && !isBaseLabel) ?
+      label: this._workflowType === interfaces$1.EWorkflowType.SEARCH || (this._selectionLabel && !isBaseLabel) ?
         this._selectionLabel : `${this._selectionLabel} ${this._bufferTools.distance} ${this._bufferTools.unit}`,
       selectedIds: this._selectedIds,
       layerView: this.selectLayerView,
@@ -340,7 +342,7 @@ const MapSelectTools = class {
    *
    */
   sketchGraphicsChange(event) {
-    this._updateSelection(EWorkflowType.SKETCH, event.detail, this._selectionLabel || this._translations.sketch);
+    this._updateSelection(interfaces$1.EWorkflowType.SKETCH, event.detail, this._selectionLabel || this._translations.sketch);
   }
   /**
    * Listen to changes in the refine graphics
@@ -348,7 +350,7 @@ const MapSelectTools = class {
    */
   refineSelectionGraphicsChange(event) {
     const graphics = event.detail;
-    this._updateSelection(EWorkflowType.SELECT, graphics, this._selectionLabel || this._translations.select);
+    this._updateSelection(interfaces$1.EWorkflowType.SELECT, graphics, this._selectionLabel || this._translations.select);
     // Using OIDs to avoid issue with points
     const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g.layer.objectIdField]) : [];
     return this._highlightFeatures(oids);
@@ -376,9 +378,9 @@ const MapSelectTools = class {
    */
   render() {
     var _a, _b;
-    const searchEnabled = this._workflowType === EWorkflowType.SEARCH;
+    const searchEnabled = this._workflowType === interfaces$1.EWorkflowType.SEARCH;
     const showSearchClass = searchEnabled ? " div-visible-search" : " div-not-visible";
-    const drawEnabled = this._workflowType === EWorkflowType.SKETCH || this._workflowType === EWorkflowType.SELECT;
+    const drawEnabled = this._workflowType === interfaces$1.EWorkflowType.SKETCH || this._workflowType === interfaces$1.EWorkflowType.SELECT;
     //const showDrawToolsClass = drawEnabled ? " div-visible" : " div-not-visible";
     // const selectEnabled = this._workflowType === EWorkflowType.SELECT;
     // const showSelectToolsClass = selectEnabled ? " div-visible" : " div-not-visible";
@@ -386,7 +388,7 @@ const MapSelectTools = class {
     const useSelectClass = this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
     const useDrawClass = !this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
     const showLayerChoiceClass = searchEnabled ? "div-not-visible" : "div-visible";
-    return (h$8(Host, null, h$8("div", { class: "padding-bottom-1" }, h$8("calcite-radio-group", { class: "w-100", onCalciteRadioGroupChange: (evt) => this._workflowChange(evt) }, h$8("calcite-radio-group-item", { checked: searchEnabled, class: "w-50 end-border", value: EWorkflowType.SEARCH }, this._translations.search), h$8("calcite-radio-group-item", { checked: drawEnabled, class: "w-50", value: EWorkflowType.SKETCH }, this._translations.sketch))), h$8("div", { class: showSearchClass }, h$8("div", { class: "search-widget", ref: (el) => { this._searchElement = el; } })), h$8("div", { class: showLayerChoiceClass }, h$8("calcite-label", { layout: "inline" }, h$8("calcite-checkbox", { onCalciteCheckboxChange: () => this._layerSelectChanged(), ref: (el) => this._selectFromLayerElement = el }), "Use layer features")), h$8("div", { class: useDrawClass }, h$8("map-draw-tools", { active: true, border: true, mapView: this.mapView, ref: (el) => { this._drawTools = el; } })), h$8("div", { class: useSelectClass }, h$8("refine-selection-tools", { active: true, border: true, enabledLayerIds: this.enabledLayerIds, layerViews: this._refineSelectLayers, mapView: this.mapView, mode: ESelectionMode.ADD, ref: (el) => { this._refineTools = el; }, refineMode: ERefineMode.SUBSET })), h$8("calcite-label", { class: showBufferToolsClass }, this._translations.searchDistance, h$8("buffer-tools", { distance: ((_a = this.selectionSet) === null || _a === void 0 ? void 0 : _a.distance) || this.defaultBufferDistance, geometries: this.geometries, onBufferComplete: (evt) => this._bufferComplete(evt), ref: (el) => this._bufferTools = el, unit: ((_b = this.selectionSet) === null || _b === void 0 ? void 0 : _b.unit) || this.defaultBufferUnit })), h$8("slot", null)));
+    return (index.h(index.Host, null, index.h("div", { class: "padding-bottom-1" }, index.h("calcite-radio-group", { class: "w-100", onCalciteRadioGroupChange: (evt) => this._workflowChange(evt) }, index.h("calcite-radio-group-item", { checked: searchEnabled, class: "w-50 end-border", value: interfaces$1.EWorkflowType.SEARCH }, this._translations.search), index.h("calcite-radio-group-item", { checked: drawEnabled, class: "w-50", value: interfaces$1.EWorkflowType.SKETCH }, this._translations.sketch))), index.h("div", { class: showSearchClass }, index.h("div", { class: "search-widget", ref: (el) => { this._searchElement = el; } })), index.h("div", { class: showLayerChoiceClass }, index.h("calcite-label", { layout: "inline" }, index.h("calcite-checkbox", { onCalciteCheckboxChange: () => this._layerSelectChanged(), ref: (el) => this._selectFromLayerElement = el }), "Use layer features")), index.h("div", { class: useDrawClass }, index.h("map-draw-tools", { active: true, border: true, mapView: this.mapView, ref: (el) => { this._drawTools = el; } })), index.h("div", { class: useSelectClass }, index.h("refine-selection-tools", { active: true, border: true, enabledLayerIds: this.enabledLayerIds, layerViews: this._refineSelectLayers, mapView: this.mapView, mode: interfaces$1.ESelectionMode.ADD, ref: (el) => { this._refineTools = el; }, refineMode: interfaces$1.ERefineMode.SUBSET })), index.h("calcite-label", { class: showBufferToolsClass }, this._translations.searchDistance, index.h("buffer-tools", { distance: ((_a = this.selectionSet) === null || _a === void 0 ? void 0 : _a.distance) || this.defaultBufferDistance, geometries: this.geometries, onBufferComplete: (evt) => this._bufferComplete(evt), ref: (el) => this._bufferTools = el, unit: ((_b = this.selectionSet) === null || _b === void 0 ? void 0 : _b.unit) || this.defaultBufferUnit })), index.h("slot", null)));
   }
   //--------------------------------------------------------------------------
   //
@@ -401,7 +403,7 @@ const MapSelectTools = class {
    * @protected
    */
   async _initModules() {
-    const [GraphicsLayer, Graphic, Search, geometryEngine, FeatureLayer] = await loadModules([
+    const [GraphicsLayer, Graphic, Search, geometryEngine, FeatureLayer] = await loadModules.loadModules([
       "esri/layers/GraphicsLayer",
       "esri/Graphic",
       "esri/widgets/Search",
@@ -441,10 +443,10 @@ const MapSelectTools = class {
       ];
       // reset selection label base
       this._selectionLabel = this._getSelectionBaseLabel();
-      void goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
+      void mapViewUtils.goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     }
     else {
-      this._workflowType = EWorkflowType.SEARCH;
+      this._workflowType = interfaces$1.EWorkflowType.SEARCH;
     }
   }
   /**
@@ -454,9 +456,9 @@ const MapSelectTools = class {
    */
   _getSelectionBaseLabel() {
     var _a, _b;
-    return this._workflowType === EWorkflowType.SKETCH ?
-      this._translations.sketch : this._workflowType === EWorkflowType.SELECT ?
-      this._translations.select : this._workflowType === EWorkflowType.SEARCH && this._searchResult ?
+    return this._workflowType === interfaces$1.EWorkflowType.SKETCH ?
+      this._translations.sketch : this._workflowType === interfaces$1.EWorkflowType.SELECT ?
+      this._translations.select : this._workflowType === interfaces$1.EWorkflowType.SEARCH && this._searchResult ?
       (_a = this._searchResult) === null || _a === void 0 ? void 0 : _a.name : (_b = this.selectionSet) === null || _b === void 0 ? void 0 : _b.label;
   }
   /**
@@ -477,7 +479,7 @@ const MapSelectTools = class {
         void this._clearResults(false);
         if (searchResults.result) {
           this._searchResult = searchResults.result;
-          this._updateSelection(EWorkflowType.SEARCH, [searchResults.result.feature], (_a = searchResults === null || searchResults === void 0 ? void 0 : searchResults.result) === null || _a === void 0 ? void 0 : _a.name);
+          this._updateSelection(interfaces$1.EWorkflowType.SEARCH, [searchResults.result.feature], (_a = searchResults === null || searchResults === void 0 ? void 0 : searchResults.result) === null || _a === void 0 ? void 0 : _a.name);
         }
       });
     }
@@ -534,7 +536,7 @@ const MapSelectTools = class {
     }
     else {
       this._bufferGraphicsLayer = new this.GraphicsLayer({ title });
-      state.managedLayers.push(title);
+      publicNotificationStore.state.managedLayers.push(title);
       const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === this._translations.sketchLayer);
       if (sketchIndex > -1) {
         this.mapView.map.layers.add(this._bufferGraphicsLayer, sketchIndex);
@@ -551,7 +553,7 @@ const MapSelectTools = class {
    */
   _layerSelectChanged() {
     this._layerSelectChecked = this._selectFromLayerElement.checked;
-    this.sketchTypeChange.emit(this._layerSelectChecked ? ESketchType.LAYER : ESketchType.INTERACTIVE);
+    this.sketchTypeChange.emit(this._layerSelectChecked ? interfaces$1.ESketchType.LAYER : interfaces$1.ESketchType.INTERACTIVE);
   }
   /**
    * Store workflow type change
@@ -568,9 +570,9 @@ const MapSelectTools = class {
    */
   async _highlightFeatures(ids) {
     var _a;
-    (_a = state.highlightHandle) === null || _a === void 0 ? void 0 : _a.remove();
+    (_a = publicNotificationStore.state.highlightHandle) === null || _a === void 0 ? void 0 : _a.remove();
     if (ids.length > 0) {
-      state.highlightHandle = await highlightFeatures(ids, this.selectLayerView, this.mapView);
+      publicNotificationStore.state.highlightHandle = await mapViewUtils.highlightFeatures(ids, this.selectLayerView, this.mapView);
     }
     this.selectionSetChange.emit(ids.length);
   }
@@ -582,7 +584,7 @@ const MapSelectTools = class {
    * @returns Promise when the selection is complete and the graphics have been highlighted
    */
   async _selectFeatures(geometries) {
-    this._selectedIds = await queryObjectIds(geometries, this.selectLayerView.layer);
+    this._selectedIds = await mapViewUtils.queryObjectIds(geometries, this.selectLayerView.layer);
     // Add geometries used for selecting features as graphics
     this._drawTools.graphics = this.geometries.map(geom => {
       var _a, _b, _c;
@@ -642,7 +644,7 @@ const MapSelectTools = class {
    * @protected
    */
   _geomQuery(geometries) {
-    const queryGeoms = getQueryGeoms(geometries, this._geometryEngine);
+    const queryGeoms = mapViewUtils.getQueryGeoms(geometries, this._geometryEngine);
     return this._selectFeatures(queryGeoms);
   }
   /**
@@ -665,7 +667,7 @@ const MapSelectTools = class {
     if (clearSearchWidget && this._searchWidget) {
       this._searchWidget.clear();
     }
-    (_a = state.highlightHandle) === null || _a === void 0 ? void 0 : _a.remove();
+    (_a = publicNotificationStore.state.highlightHandle) === null || _a === void 0 ? void 0 : _a.remove();
     // for sketch
     // checking for clear as it would throw off tests
     if ((_b = this._drawTools) === null || _b === void 0 ? void 0 : _b.clear) {
@@ -693,10 +695,10 @@ const MapSelectTools = class {
    * @protected
    */
   async _getTranslations() {
-    const translations = await getLocaleComponentStrings(this.el);
+    const translations = await locale.getLocaleComponentStrings(this.el);
     this._translations = translations[0];
   }
-  get el() { return getElement(this); }
+  get el() { return index.getElement(this); }
   static get watchers() { return {
     "geometries": ["watchGeometriesHandler"],
     "_workflowType": ["workflowTypeHandler"]
@@ -708,7 +710,7 @@ MapSelectTools.style = mapSelectToolsCss;
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-function r$6(n){return null!=n}function t$8(n){return null==n}function e$9(n){return n}function s$c(n){return r$6(n)&&n.destroy(),null}function h$7(n){return r$6(n)&&n.remove(),null}function d$5(n){return null}function x$5(n){return n}
+function r$6(n){return null!=n}function t$8(n){return null==n}function e$9(n){return n}function s$b(n){return r$6(n)&&n.destroy(),null}function h$7(n){return r$6(n)&&n.remove(),null}function d$5(n){return null}function x$5(n){return n}
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
@@ -720,13 +722,13 @@ function i$a(n,e,r){if(t$8(n)&&t$8(e))return !0;if(t$8(n)||t$8(e)||n.length!==e.
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-function t$7(r,n,t){if(r.slice)return r.slice(n,t);void 0===n?n=0:(n<0&&(n+=r.length),n=Math.min(r.length,Math.max(0,n))),void 0===t?t=r.length:(t<0&&(t+=r.length),t=Math.min(r.length,Math.max(0,t)));const o=Math.max(0,t-n),c=new(r.constructor)(o);for(let e=0;e<o;e++)c[e]=r[n+e];return c}function c$8(r){return r instanceof Int8Array||r&&r.constructor&&"Int8Array"===r.constructor.name}function e$8(r){return r instanceof Uint8Array||r&&r.constructor&&"Uint8Array"===r.constructor.name}function a$a(r){return r instanceof Uint8ClampedArray||r&&r.constructor&&"Uint8ClampedArray"===r.constructor.name}function u$7(r){return r instanceof Int16Array||r&&r.constructor&&"Int16Array"===r.constructor.name}function i$9(r){return r instanceof Uint16Array||r&&r.constructor&&"Uint16Array"===r.constructor.name}function f$5(r){return r instanceof Int32Array||r&&r.constructor&&"Int32Array"===r.constructor.name}function s$b(r){return r instanceof Uint32Array||r&&r.constructor&&"Uint32Array"===r.constructor.name}function y$3(r){return r instanceof Float32Array||r&&r.constructor&&"Float32Array"===r.constructor.name}function A$4(r){return r instanceof Float64Array||r&&r.constructor&&"Float64Array"===r.constructor.name}
+function t$7(r,n,t){if(r.slice)return r.slice(n,t);void 0===n?n=0:(n<0&&(n+=r.length),n=Math.min(r.length,Math.max(0,n))),void 0===t?t=r.length:(t<0&&(t+=r.length),t=Math.min(r.length,Math.max(0,t)));const o=Math.max(0,t-n),c=new(r.constructor)(o);for(let e=0;e<o;e++)c[e]=r[n+e];return c}function c$8(r){return r instanceof Int8Array||r&&r.constructor&&"Int8Array"===r.constructor.name}function e$8(r){return r instanceof Uint8Array||r&&r.constructor&&"Uint8Array"===r.constructor.name}function a$a(r){return r instanceof Uint8ClampedArray||r&&r.constructor&&"Uint8ClampedArray"===r.constructor.name}function u$7(r){return r instanceof Int16Array||r&&r.constructor&&"Int16Array"===r.constructor.name}function i$9(r){return r instanceof Uint16Array||r&&r.constructor&&"Uint16Array"===r.constructor.name}function f$5(r){return r instanceof Int32Array||r&&r.constructor&&"Int32Array"===r.constructor.name}function s$a(r){return r instanceof Uint32Array||r&&r.constructor&&"Uint32Array"===r.constructor.name}function y$3(r){return r instanceof Float32Array||r&&r.constructor&&"Float32Array"===r.constructor.name}function A$4(r){return r instanceof Float64Array||r&&r.constructor&&"Float64Array"===r.constructor.name}
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-function p$3(t,n){let e;if(n)for(e in t)t.hasOwnProperty(e)&&(void 0===t[e]?delete t[e]:t[e]instanceof Object&&p$3(t[e],!0));else for(e in t)t.hasOwnProperty(e)&&void 0===t[e]&&delete t[e];return t}function y$2(t){if(!t||"object"!=typeof t||"function"==typeof t)return t;const e=h$6(t);if(r$6(e))return e;if(b$3(t))return t.clone();if(g$3(t))return t.map(y$2);if(O$2(t))return t.clone();const r={};for(const n of Object.getOwnPropertyNames(t))r[n]=y$2(t[n]);return r}function b$3(t){return "function"==typeof t.clone}function g$3(t){return "function"==typeof t.map&&"function"==typeof t.forEach}function O$2(t){return "function"==typeof t.notifyChange&&"function"==typeof t.watch}function j$4(t){if("[object Object]"!==Object.prototype.toString.call(t))return !1;const n=Object.getPrototypeOf(t);return null===n||n===Object.prototype}function h$6(t){if(c$8(t)||e$8(t)||a$a(t)||u$7(t)||i$9(t)||f$5(t)||s$b(t)||y$3(t)||A$4(t))return t$7(t);if(t instanceof Date)return new Date(t.getTime());if(t instanceof ArrayBuffer){return t.slice(0,t.byteLength)}if(t instanceof Map){const n=new Map;for(const[e,r]of t)n.set(e,y$2(r));return n}if(t instanceof Set){const n=new Set;for(const e of t)n.add(y$2(e));return n}return null}function w$2(t,n){return t===n||"number"==typeof t&&isNaN(t)&&"number"==typeof n&&isNaN(n)||"function"==typeof(t||{}).getTime&&"function"==typeof(n||{}).getTime&&t.getTime()===n.getTime()||!1}function N$2(n,e){return n===e||(null==n||"string"==typeof n?n===e:"number"==typeof n?n===e||"number"==typeof e&&isNaN(n)&&isNaN(e):n instanceof Date?e instanceof Date&&n.getTime()===e.getTime():Array.isArray(n)?Array.isArray(e)&&i$a(n,e):n instanceof Set?e instanceof Set&&d$4(n,e):n instanceof Map?e instanceof Map&&P$3(n,e):!!j$4(n)&&(j$4(e)&&T$2(n,e)))}function T$2(t,n){if(null===t||null===n)return !1;const e=Object.keys(t);if(null===n||Object.keys(n).length!==e.length)return !1;for(const r of e)if(t[r]!==n[r]||!Object.prototype.hasOwnProperty.call(n,r))return !1;return !0}function d$4(t,n){if(t.size!==n.size)return !1;for(const e of t)if(!n.has(e))return !1;return !0}function P$3(t,n){if(t.size!==n.size)return !1;for(const[e,r]of t){const t=n.get(e);if(t!==r||void 0===t&&!n.has(e))return !1}return !0}
+function p$3(t,n){let e;if(n)for(e in t)t.hasOwnProperty(e)&&(void 0===t[e]?delete t[e]:t[e]instanceof Object&&p$3(t[e],!0));else for(e in t)t.hasOwnProperty(e)&&void 0===t[e]&&delete t[e];return t}function y$2(t){if(!t||"object"!=typeof t||"function"==typeof t)return t;const e=h$6(t);if(r$6(e))return e;if(b$3(t))return t.clone();if(g$3(t))return t.map(y$2);if(O$2(t))return t.clone();const r={};for(const n of Object.getOwnPropertyNames(t))r[n]=y$2(t[n]);return r}function b$3(t){return "function"==typeof t.clone}function g$3(t){return "function"==typeof t.map&&"function"==typeof t.forEach}function O$2(t){return "function"==typeof t.notifyChange&&"function"==typeof t.watch}function j$4(t){if("[object Object]"!==Object.prototype.toString.call(t))return !1;const n=Object.getPrototypeOf(t);return null===n||n===Object.prototype}function h$6(t){if(c$8(t)||e$8(t)||a$a(t)||u$7(t)||i$9(t)||f$5(t)||s$a(t)||y$3(t)||A$4(t))return t$7(t);if(t instanceof Date)return new Date(t.getTime());if(t instanceof ArrayBuffer){return t.slice(0,t.byteLength)}if(t instanceof Map){const n=new Map;for(const[e,r]of t)n.set(e,y$2(r));return n}if(t instanceof Set){const n=new Set;for(const e of t)n.add(y$2(e));return n}return null}function w$2(t,n){return t===n||"number"==typeof t&&isNaN(t)&&"number"==typeof n&&isNaN(n)||"function"==typeof(t||{}).getTime&&"function"==typeof(n||{}).getTime&&t.getTime()===n.getTime()||!1}function N$2(n,e){return n===e||(null==n||"string"==typeof n?n===e:"number"==typeof n?n===e||"number"==typeof e&&isNaN(n)&&isNaN(e):n instanceof Date?e instanceof Date&&n.getTime()===e.getTime():Array.isArray(n)?Array.isArray(e)&&i$a(n,e):n instanceof Set?e instanceof Set&&d$4(n,e):n instanceof Map?e instanceof Map&&P$3(n,e):!!j$4(n)&&(j$4(e)&&T$2(n,e)))}function T$2(t,n){if(null===t||null===n)return !1;const e=Object.keys(t);if(null===n||Object.keys(n).length!==e.length)return !1;for(const r of e)if(t[r]!==n[r]||!Object.prototype.hasOwnProperty.call(n,r))return !1;return !0}function d$4(t,n){if(t.size!==n.size)return !1;for(const e of t)if(!n.has(e))return !1;return !0}function P$3(t,n){if(t.size!==n.size)return !1;for(const[e,r]of t){const t=n.get(e);if(t!==r||void 0===t&&!n.has(e))return !1}return !0}
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
@@ -738,19 +740,19 @@ function n$4(r,n,t=!1){return i$8(r,n,t)}function t$6(r,n){if(null!=n)return n[r
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-class s$a{constructor(s,o={ignoreUnknown:!1,useNumericKeys:!1}){this._jsonToAPI=s,this._options=o,this.apiValues=[],this.jsonValues=[],this._apiToJSON=this._invertMap(s),this.apiValues=this._getKeysSorted(this._apiToJSON),this.jsonValues=this._getKeysSorted(this._jsonToAPI),this.read=t=>this.fromJSON(t),this.write=(s,o,i)=>{const n=this.toJSON(s);void 0!==n&&o$7(i,n,o);},this.write.isJSONMapWriter=!0;}toJSON(t){if(this._apiToJSON.hasOwnProperty(t)){const s=this._apiToJSON[t];return this._options.useNumericKeys?+s:s}return this._options.ignoreUnknown?void 0:t}fromJSON(t){return this._jsonToAPI.hasOwnProperty(t)?this._jsonToAPI[t]:this._options.ignoreUnknown?void 0:t}_invertMap(t){const s={};for(const o in t)s[t[o]]=o;return s}_getKeysSorted(t){const s=[];for(const o in t)s.push(o);return s.sort(),s}}function o$6(){return function(t,o){return new s$a(t,{ignoreUnknown:!0,...o})}}
+class s$9{constructor(s,o={ignoreUnknown:!1,useNumericKeys:!1}){this._jsonToAPI=s,this._options=o,this.apiValues=[],this.jsonValues=[],this._apiToJSON=this._invertMap(s),this.apiValues=this._getKeysSorted(this._apiToJSON),this.jsonValues=this._getKeysSorted(this._jsonToAPI),this.read=t=>this.fromJSON(t),this.write=(s,o,i)=>{const n=this.toJSON(s);void 0!==n&&o$7(i,n,o);},this.write.isJSONMapWriter=!0;}toJSON(t){if(this._apiToJSON.hasOwnProperty(t)){const s=this._apiToJSON[t];return this._options.useNumericKeys?+s:s}return this._options.ignoreUnknown?void 0:t}fromJSON(t){return this._jsonToAPI.hasOwnProperty(t)?this._jsonToAPI[t]:this._options.ignoreUnknown?void 0:t}_invertMap(t){const s={};for(const o in t)s[t[o]]=o;return s}_getKeysSorted(t){const s=[];for(const o in t)s.push(o);return s.sort(),s}}function o$6(){return function(t,o){return new s$9(t,{ignoreUnknown:!0,...o})}}
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-let o$5;const e$6=globalThis.esriConfig?.locale??globalThis.dojoConfig?.locale;function t$5(){return e$6??globalThis.navigator?.language??"en"}function l$4(){return void 0===o$5&&(o$5=t$5()),o$5}const u$6=[];function s$9(n){return u$6.push(n),{remove(){u$6.splice(u$6.indexOf(n),1);}}}const f$4=[];function g$2(n){return f$4.push(n),{remove(){u$6.splice(f$4.indexOf(n),1);}}}function h$5(){const e=t$5();o$5!==e&&(o$5=e,[...f$4].forEach((n=>{n.call(null,e);})),[...u$6].forEach((n=>{n.call(null,e);})));}globalThis.addEventListener?.("languagechange",h$5);
+let o$5;const e$6=globalThis.esriConfig?.locale??globalThis.dojoConfig?.locale;function t$5(){return e$6??globalThis.navigator?.language??"en"}function l$4(){return void 0===o$5&&(o$5=t$5()),o$5}const u$6=[];function s$8(n){return u$6.push(n),{remove(){u$6.splice(u$6.indexOf(n),1);}}}const f$4=[];function g$2(n){return f$4.push(n),{remove(){u$6.splice(f$4.indexOf(n),1);}}}function h$5(){const e=t$5();o$5!==e&&(o$5=e,[...f$4].forEach((n=>{n.call(null,e);})),[...u$6].forEach((n=>{n.call(null,e);})));}globalThis.addEventListener?.("languagechange",h$5);
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-const r$5={year:"numeric",month:"numeric",day:"numeric"},n$3={year:"numeric",month:"long",day:"numeric"},a$9={year:"numeric",month:"short",day:"numeric"},h$4={year:"numeric",month:"long",weekday:"long",day:"numeric"},m$5={hour:"numeric",minute:"numeric"},i$7={...m$5,second:"numeric"},s$8={"short-date":r$5,"short-date-short-time":{...r$5,...m$5},"short-date-short-time-24":{...r$5,...m$5,hour12:!1},"short-date-long-time":{...r$5,...i$7},"short-date-long-time-24":{...r$5,...i$7,hour12:!1},"short-date-le":r$5,"short-date-le-short-time":{...r$5,...m$5},"short-date-le-short-time-24":{...r$5,...m$5,hour12:!1},"short-date-le-long-time":{...r$5,...i$7},"short-date-le-long-time-24":{...r$5,...i$7,hour12:!1},"long-month-day-year":n$3,"long-month-day-year-short-time":{...n$3,...m$5},"long-month-day-year-short-time-24":{...n$3,...m$5,hour12:!1},"long-month-day-year-long-time":{...n$3,...i$7},"long-month-day-year-long-time-24":{...n$3,...i$7,hour12:!1},"day-short-month-year":a$9,"day-short-month-year-short-time":{...a$9,...m$5},"day-short-month-year-short-time-24":{...a$9,...m$5,hour12:!1},"day-short-month-year-long-time":{...a$9,...i$7},"day-short-month-year-long-time-24":{...a$9,...i$7,hour12:!1},"long-date":h$4,"long-date-short-time":{...h$4,...m$5},"long-date-short-time-24":{...h$4,...m$5,hour12:!1},"long-date-long-time":{...h$4,...i$7},"long-date-long-time-24":{...h$4,...i$7,hour12:!1},"long-month-year":{month:"long",year:"numeric"},"short-month-year":{month:"short",year:"numeric"},year:{year:"numeric"},"short-time":m$5,"long-time":i$7},l$3=o$6()({shortDate:"short-date",shortDateShortTime:"short-date-short-time",shortDateShortTime24:"short-date-short-time-24",shortDateLongTime:"short-date-long-time",shortDateLongTime24:"short-date-long-time-24",shortDateLE:"short-date-le",shortDateLEShortTime:"short-date-le-short-time",shortDateLEShortTime24:"short-date-le-short-time-24",shortDateLELongTime:"short-date-le-long-time",shortDateLELongTime24:"short-date-le-long-time-24",longMonthDayYear:"long-month-day-year",longMonthDayYearShortTime:"long-month-day-year-short-time",longMonthDayYearShortTime24:"long-month-day-year-short-time-24",longMonthDayYearLongTime:"long-month-day-year-long-time",longMonthDayYearLongTime24:"long-month-day-year-long-time-24",dayShortMonthYear:"day-short-month-year",dayShortMonthYearShortTime:"day-short-month-year-short-time",dayShortMonthYearShortTime24:"day-short-month-year-short-time-24",dayShortMonthYearLongTime:"day-short-month-year-long-time",dayShortMonthYearLongTime24:"day-short-month-year-long-time-24",longDate:"long-date",longDateShortTime:"long-date-short-time",longDateShortTime24:"long-date-short-time-24",longDateLongTime:"long-date-long-time",longDateLongTime24:"long-date-long-time-24",longMonthYear:"long-month-year",shortMonthYear:"short-month-year",year:"year"});l$3.toJSON.bind(l$3);l$3.fromJSON.bind(l$3);const u$5={ar:"ar-u-nu-latn-ca-gregory"};let c$7=new WeakMap,D$4=s$8["short-date-short-time"];function T$1(t){const o=t||D$4;let r=c$7.get(o);if(!r){const t=l$4(),n=u$5[l$4()]||t;r=new Intl.DateTimeFormat(n,o),c$7.set(o,r);}return r}function L$2(t,o){return T$1(o).format(t)}g$2((()=>{c$7=new WeakMap,D$4=s$8["short-date-short-time"];}));
+const r$5={year:"numeric",month:"numeric",day:"numeric"},n$3={year:"numeric",month:"long",day:"numeric"},a$9={year:"numeric",month:"short",day:"numeric"},h$4={year:"numeric",month:"long",weekday:"long",day:"numeric"},m$5={hour:"numeric",minute:"numeric"},i$7={...m$5,second:"numeric"},s$7={"short-date":r$5,"short-date-short-time":{...r$5,...m$5},"short-date-short-time-24":{...r$5,...m$5,hour12:!1},"short-date-long-time":{...r$5,...i$7},"short-date-long-time-24":{...r$5,...i$7,hour12:!1},"short-date-le":r$5,"short-date-le-short-time":{...r$5,...m$5},"short-date-le-short-time-24":{...r$5,...m$5,hour12:!1},"short-date-le-long-time":{...r$5,...i$7},"short-date-le-long-time-24":{...r$5,...i$7,hour12:!1},"long-month-day-year":n$3,"long-month-day-year-short-time":{...n$3,...m$5},"long-month-day-year-short-time-24":{...n$3,...m$5,hour12:!1},"long-month-day-year-long-time":{...n$3,...i$7},"long-month-day-year-long-time-24":{...n$3,...i$7,hour12:!1},"day-short-month-year":a$9,"day-short-month-year-short-time":{...a$9,...m$5},"day-short-month-year-short-time-24":{...a$9,...m$5,hour12:!1},"day-short-month-year-long-time":{...a$9,...i$7},"day-short-month-year-long-time-24":{...a$9,...i$7,hour12:!1},"long-date":h$4,"long-date-short-time":{...h$4,...m$5},"long-date-short-time-24":{...h$4,...m$5,hour12:!1},"long-date-long-time":{...h$4,...i$7},"long-date-long-time-24":{...h$4,...i$7,hour12:!1},"long-month-year":{month:"long",year:"numeric"},"short-month-year":{month:"short",year:"numeric"},year:{year:"numeric"},"short-time":m$5,"long-time":i$7},l$3=o$6()({shortDate:"short-date",shortDateShortTime:"short-date-short-time",shortDateShortTime24:"short-date-short-time-24",shortDateLongTime:"short-date-long-time",shortDateLongTime24:"short-date-long-time-24",shortDateLE:"short-date-le",shortDateLEShortTime:"short-date-le-short-time",shortDateLEShortTime24:"short-date-le-short-time-24",shortDateLELongTime:"short-date-le-long-time",shortDateLELongTime24:"short-date-le-long-time-24",longMonthDayYear:"long-month-day-year",longMonthDayYearShortTime:"long-month-day-year-short-time",longMonthDayYearShortTime24:"long-month-day-year-short-time-24",longMonthDayYearLongTime:"long-month-day-year-long-time",longMonthDayYearLongTime24:"long-month-day-year-long-time-24",dayShortMonthYear:"day-short-month-year",dayShortMonthYearShortTime:"day-short-month-year-short-time",dayShortMonthYearShortTime24:"day-short-month-year-short-time-24",dayShortMonthYearLongTime:"day-short-month-year-long-time",dayShortMonthYearLongTime24:"day-short-month-year-long-time-24",longDate:"long-date",longDateShortTime:"long-date-short-time",longDateShortTime24:"long-date-short-time-24",longDateLongTime:"long-date-long-time",longDateLongTime24:"long-date-long-time-24",longMonthYear:"long-month-year",shortMonthYear:"short-month-year",year:"year"});l$3.toJSON.bind(l$3);l$3.fromJSON.bind(l$3);const u$5={ar:"ar-u-nu-latn-ca-gregory"};let c$7=new WeakMap,D$4=s$7["short-date-short-time"];function T$1(t){const o=t||D$4;let r=c$7.get(o);if(!r){const t=l$4(),n=u$5[l$4()]||t;r=new Intl.DateTimeFormat(n,o),c$7.set(o,r);}return r}function L$2(t,o){return T$1(o).format(t)}g$2((()=>{c$7=new WeakMap,D$4=s$7["short-date-short-time"];}));
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
@@ -768,7 +770,7 @@ let e$4;function has(a){return "function"==typeof e$4[a]?e$4[a]=e$4[a](globalThi
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-const s$7={analysisTheme:{accentColor:[255,128,0],textColor:"white"},apiKey:void 0,applicationUrl:globalThis.location?.href,assetsPath:"",fontsUrl:"https://static.arcgis.com/fonts",geometryServiceUrl:"https://utility.arcgisonline.com/arcgis/rest/services/Geometry/GeometryServer",geoRSSServiceUrl:"https://utility.arcgis.com/sharing/rss",kmlServiceUrl:"https://utility.arcgis.com/sharing/kml",portalUrl:"https://www.arcgis.com",routeServiceUrl:"https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World",workers:{loaderConfig:{has:{},paths:{},map:{},packages:[]}},request:{crossOriginNoCorsDomains:null,httpsDomains:["arcgis.com","arcgisonline.com","esrikr.com","premiumservices.blackbridge.com","esripremium.accuweather.com","gbm.digitalglobe.com","firstlook.digitalglobe.com","msi.digitalglobe.com"],interceptors:[],maxUrlLength:2e3,priority:"high",proxyRules:[],proxyUrl:null,timeout:6e4,trustedServers:[],useIdentity:!0},log:{interceptors:[],level:null}};if(globalThis.esriConfig&&(n$4(s$7,globalThis.esriConfig,!0),delete s$7.has),!s$7.assetsPath){{const e="4.25.5";s$7.assetsPath=`https://js.arcgis.com/${e.slice(0,-2)}/@arcgis/core/assets`;}s$7.defaultAssetsPath=s$7.assetsPath;}
+const s$6={analysisTheme:{accentColor:[255,128,0],textColor:"white"},apiKey:void 0,applicationUrl:globalThis.location?.href,assetsPath:"",fontsUrl:"https://static.arcgis.com/fonts",geometryServiceUrl:"https://utility.arcgisonline.com/arcgis/rest/services/Geometry/GeometryServer",geoRSSServiceUrl:"https://utility.arcgis.com/sharing/rss",kmlServiceUrl:"https://utility.arcgis.com/sharing/kml",portalUrl:"https://www.arcgis.com",routeServiceUrl:"https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World",workers:{loaderConfig:{has:{},paths:{},map:{},packages:[]}},request:{crossOriginNoCorsDomains:null,httpsDomains:["arcgis.com","arcgisonline.com","esrikr.com","premiumservices.blackbridge.com","esripremium.accuweather.com","gbm.digitalglobe.com","firstlook.digitalglobe.com","msi.digitalglobe.com"],interceptors:[],maxUrlLength:2e3,priority:"high",proxyRules:[],proxyUrl:null,timeout:6e4,trustedServers:[],useIdentity:!0},log:{interceptors:[],level:null}};if(globalThis.esriConfig&&(n$4(s$6,globalThis.esriConfig,!0),delete s$6.has),!s$6.assetsPath){{const e="4.25.5";s$6.assetsPath=`https://js.arcgis.com/${e.slice(0,-2)}/@arcgis/core/assets`;}s$6.defaultAssetsPath=s$6.assetsPath;}
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
@@ -780,13 +782,13 @@ const e$3=/\{([^\}]+)\}/g;function r$4(t){return t??""}function n$2(n,o){return 
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-const o$3={info:0,warn:1,error:2,none:3};class s$6{constructor(e){this.level=null,this._module="",this._parent=null,this.writer=null,this._loggedMessages={error:new Map,warn:new Map,info:new Map},null!=e.level&&(this.level=e.level),null!=e.writer&&(this.writer=e.writer),this._module=e.module,s$6._loggers[this.module]=this;const t=this.module.lastIndexOf(".");-1!==t&&(this._parent=s$6.getLogger(this.module.slice(0,t)));}get module(){return this._module}get parent(){return this._parent}error(...e){this._log("error","always",...e);}warn(...e){this._log("warn","always",...e);}info(...e){this._log("info","always",...e);}errorOnce(...e){this._log("error","once",...e);}warnOnce(...e){this._log("warn","once",...e);}infoOnce(...e){this._log("info","once",...e);}errorOncePerTick(...e){this._log("error","oncePerTick",...e);}warnOncePerTick(...e){this._log("warn","oncePerTick",...e);}infoOncePerTick(...e){this._log("info","oncePerTick",...e);}get test(){const e=this;return {loggedMessages:e._loggedMessages,clearLoggedWarnings:()=>e._loggedMessages.warn.clear()}}static get testSingleton(){return {resetLoggers(e={}){const t=s$6._loggers;return s$6._loggers=e,t},set throttlingDisabled(e){s$6._throttlingDisabled=e;}}}static getLogger(e){let t=s$6._loggers[e];return t||(t=new s$6({module:e})),t}_log(t,r,...o){if(!this._matchLevel(t))return;if("always"!==r&&!s$6._throttlingDisabled){const e=this._argsToKey(o),n=this._loggedMessages[t].get(e);if("once"===r&&null!=n||"oncePerTick"===r&&n&&n>=s$6._tickCounter)return;this._loggedMessages[t].set(e,s$6._tickCounter),s$6._scheduleTickCounterIncrement();}for(const s of s$7.log.interceptors)if(s(t,this.module,...o))return;this._inheritedWriter()(t,this.module,...o);}_parentWithMember(e,r){let o=this;for(;r$6(o);){const r=o[e];if(r$6(r))return r;o=o.parent;}return r}_inheritedWriter(){return this._parentWithMember("writer",this._consoleWriter)}_consoleWriter(e,t,...r){console[e](`[${t}]`,...r);}_matchLevel(t){const r=s$7.log.level?s$7.log.level:"warn";return o$3[this._parentWithMember("level",r)]<=o$3[t]}_argsToKey(...e){const t=(e,t)=>"object"!=typeof t||Array.isArray(t)?t:"[Object]";return c$6(JSON.stringify(e,t))}static _scheduleTickCounterIncrement(){s$6._tickCounterScheduled||(s$6._tickCounterScheduled=!0,Promise.resolve().then((()=>{s$6._tickCounter++,s$6._tickCounterScheduled=!1;})));}}s$6._loggers={},s$6._tickCounter=0,s$6._tickCounterScheduled=!1,s$6._throttlingDisabled=!1;
+const o$3={info:0,warn:1,error:2,none:3};class s$5{constructor(e){this.level=null,this._module="",this._parent=null,this.writer=null,this._loggedMessages={error:new Map,warn:new Map,info:new Map},null!=e.level&&(this.level=e.level),null!=e.writer&&(this.writer=e.writer),this._module=e.module,s$5._loggers[this.module]=this;const t=this.module.lastIndexOf(".");-1!==t&&(this._parent=s$5.getLogger(this.module.slice(0,t)));}get module(){return this._module}get parent(){return this._parent}error(...e){this._log("error","always",...e);}warn(...e){this._log("warn","always",...e);}info(...e){this._log("info","always",...e);}errorOnce(...e){this._log("error","once",...e);}warnOnce(...e){this._log("warn","once",...e);}infoOnce(...e){this._log("info","once",...e);}errorOncePerTick(...e){this._log("error","oncePerTick",...e);}warnOncePerTick(...e){this._log("warn","oncePerTick",...e);}infoOncePerTick(...e){this._log("info","oncePerTick",...e);}get test(){const e=this;return {loggedMessages:e._loggedMessages,clearLoggedWarnings:()=>e._loggedMessages.warn.clear()}}static get testSingleton(){return {resetLoggers(e={}){const t=s$5._loggers;return s$5._loggers=e,t},set throttlingDisabled(e){s$5._throttlingDisabled=e;}}}static getLogger(e){let t=s$5._loggers[e];return t||(t=new s$5({module:e})),t}_log(t,r,...o){if(!this._matchLevel(t))return;if("always"!==r&&!s$5._throttlingDisabled){const e=this._argsToKey(o),n=this._loggedMessages[t].get(e);if("once"===r&&null!=n||"oncePerTick"===r&&n&&n>=s$5._tickCounter)return;this._loggedMessages[t].set(e,s$5._tickCounter),s$5._scheduleTickCounterIncrement();}for(const s of s$6.log.interceptors)if(s(t,this.module,...o))return;this._inheritedWriter()(t,this.module,...o);}_parentWithMember(e,r){let o=this;for(;r$6(o);){const r=o[e];if(r$6(r))return r;o=o.parent;}return r}_inheritedWriter(){return this._parentWithMember("writer",this._consoleWriter)}_consoleWriter(e,t,...r){console[e](`[${t}]`,...r);}_matchLevel(t){const r=s$6.log.level?s$6.log.level:"warn";return o$3[this._parentWithMember("level",r)]<=o$3[t]}_argsToKey(...e){const t=(e,t)=>"object"!=typeof t||Array.isArray(t)?t:"[Object]";return c$6(JSON.stringify(e,t))}static _scheduleTickCounterIncrement(){s$5._tickCounterScheduled||(s$5._tickCounterScheduled=!0,Promise.resolve().then((()=>{s$5._tickCounter++,s$5._tickCounterScheduled=!1;})));}}s$5._loggers={},s$5._tickCounter=0,s$5._tickCounterScheduled=!1,s$5._throttlingDisabled=!1;
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-const i$5=s$6.getLogger("esri.intl.substitute");function s$5(t,r,n={}){const{format:o={}}=n;return n$2(t,(t=>u$4(t,r,o)))}function u$4(t,e,n){let o,i;const s=t.indexOf(":");if(-1===s?o=t.trim():(o=t.slice(0,s).trim(),i=t.slice(s+1).trim()),!o)return "";const u=t$6(o,e);if(null==u)return "";const m=(i?n?.[i]:null)??n?.[o];return m?c$5(u,m):i?a$7(u,i):f$3(u)}function c$5(t,r){switch(r.type){case"date":return L$2(t,r.intlOptions);case"number":return m$4(t,r.intlOptions);default:return i$5.warn("missing format descriptor for key {key}"),f$3(t)}}function a$7(t,r){switch(r.toLowerCase()){case"dateformat":return L$2(t);case"numberformat":return m$4(t);default:return i$5.warn(`inline format is unsupported since 4.12: ${r}`),/^(dateformat|datestring)/i.test(r)?L$2(t):/^numberformat/i.test(r)?m$4(t):f$3(t)}}function f$3(t){switch(typeof t){case"string":return t;case"number":return m$4(t);case"boolean":return ""+t;default:return t instanceof Date?L$2(t):""}}
+const i$5=s$5.getLogger("esri.intl.substitute");function s$4(t,r,n={}){const{format:o={}}=n;return n$2(t,(t=>u$4(t,r,o)))}function u$4(t,e,n){let o,i;const s=t.indexOf(":");if(-1===s?o=t.trim():(o=t.slice(0,s).trim(),i=t.slice(s+1).trim()),!o)return "";const u=t$6(o,e);if(null==u)return "";const m=(i?n?.[i]:null)??n?.[o];return m?c$5(u,m):i?a$7(u,i):f$3(u)}function c$5(t,r){switch(r.type){case"date":return L$2(t,r.intlOptions);case"number":return m$4(t,r.intlOptions);default:return i$5.warn("missing format descriptor for key {key}"),f$3(t)}}function a$7(t,r){switch(r.toLowerCase()){case"dateformat":return L$2(t);case"numberformat":return m$4(t);default:return i$5.warn(`inline format is unsupported since 4.12: ${r}`),/^(dateformat|datestring)/i.test(r)?L$2(t):/^numberformat/i.test(r)?m$4(t):f$3(t)}}function f$3(t){switch(typeof t){case"string":return t;case"number":return m$4(t);case"boolean":return ""+t;default:return t instanceof Date?L$2(t):""}}
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
@@ -798,7 +800,7 @@ function e$2(e,r){return e.replace(/\$\{([^\s\:\}]*)(?:\:([^\s\:\}]+))?\}/g,((e,
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-class s$4 extends r$3{constructor(e,t,r){if(super(e,t,r),!(this instanceof s$4))return new s$4(e,t,r)}toJSON(){if(null!=this.details)try{return {name:this.name,message:this.message,details:JSON.parse(JSON.stringify(this.details,((t,r)=>{if(r&&"object"==typeof r&&"function"==typeof r.toJSON)return r;try{return y$2(r)}catch(s){return "[object]"}})))}}catch(r){throw s$6.getLogger("esri.core.Error").error(r),r}return {name:this.name,message:this.message,details:this.details}}static fromJSON(e){return new s$4(e.name,e.message,e.details)}}s$4.prototype.type="error";
+class s$3 extends r$3{constructor(e,t,r){if(super(e,t,r),!(this instanceof s$3))return new s$3(e,t,r)}toJSON(){if(null!=this.details)try{return {name:this.name,message:this.message,details:JSON.parse(JSON.stringify(this.details,((t,r)=>{if(r&&"object"==typeof r&&"function"==typeof r.toJSON)return r;try{return y$2(r)}catch(s){return "[object]"}})))}}catch(r){throw s$5.getLogger("esri.core.Error").error(r),r}return {name:this.name,message:this.message,details:this.details}}static fromJSON(e){return new s$3(e.name,e.message,e.details)}}s$3.prototype.type="error";
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
@@ -816,25 +818,25 @@ function e(e){return e&&("function"==typeof e.on||"function"==typeof e.addEventL
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-function a$6(t="Aborted"){return new s$4("AbortError",t)}function h$3(t){return r$6(t)?"aborted"in t?t:t.signal:t}function p$2(t){const e=h$3(t);return r$6(e)&&e.aborted}function b$2(t){if(!j$3(t))throw t}function v$2(t,e){const r=h$3(t);if(!t$8(r)){if(!r.aborted)return t$3(r,"abort",(()=>e()));e();}}function j$3(t){return "AbortError"===t?.name}function A$3(){let t=null;const e=new Promise(((e,r)=>{t={promise:void 0,resolve:e,reject:r};}));return t.promise=e,t}async function E$2(t){if(!t)return;if("function"!=typeof t.forEach){const e=Object.keys(t),r=e.map((e=>t[e])),n=await E$2(r),o={};return e.map(((t,e)=>o[t]=n[e])),o}const e=t;return new Promise((t=>{const r=[];let n=e.length;0===n&&t(r),e.forEach((e=>{const o={promise:e||Promise.resolve(e)};r.push(o),o.promise.then((t=>{o.value=t;})).catch((t=>{o.error=t;})).then((()=>{--n,0===n&&t(r);}));}));}))}function U$3(t,e,r){const n=new AbortController;return v$2(r,(()=>n.abort())),new Promise(((r,o)=>{let i=setTimeout((()=>{i=0,r(e);}),t);v$2(n,(()=>{i&&(clearTimeout(i),o(a$6()));}));}))}function C$1(t){return t&&"function"==typeof t.then}function $$3(t){return C$1(t)?t:Promise.resolve(t)}function x$3(t,e=-1){let r,n,o,i,s=null;const c=(...l)=>{if(r){n=l,i&&i.reject(a$6()),i=A$3();const t=x$5(i.promise);if(s){const t=s;s=null,t.abort();}return t}if(o=i||A$3(),i=null,e>0){const n=new AbortController;r=$$3(t(...l,n.signal));const o=r;U$3(e).then((()=>{r===o&&(i?n.abort():s=n);}));}else r=1,r=$$3(t(...l));const m=()=>{const t=n;n=o=r=s=null,null!=t&&c(...t);},f=r,h=o;return f.then(m,m),f.then(h.resolve,h.reject),x$5(h.promise)};return c}function D$3(){let e,r;const n=new Promise(((t,n)=>{e=t,r=n;})),o=t=>{e(t);};return o.resolve=t=>e(t),o.reject=t=>r(t),o.timeout=(e,r)=>t$4.setTimeout((()=>o.reject(r)),e),o.promise=n,o}
+function a$6(t="Aborted"){return new s$3("AbortError",t)}function h$3(t){return r$6(t)?"aborted"in t?t:t.signal:t}function p$2(t){const e=h$3(t);return r$6(e)&&e.aborted}function b$2(t){if(!j$3(t))throw t}function v$2(t,e){const r=h$3(t);if(!t$8(r)){if(!r.aborted)return t$3(r,"abort",(()=>e()));e();}}function j$3(t){return "AbortError"===t?.name}function A$3(){let t=null;const e=new Promise(((e,r)=>{t={promise:void 0,resolve:e,reject:r};}));return t.promise=e,t}async function E$2(t){if(!t)return;if("function"!=typeof t.forEach){const e=Object.keys(t),r=e.map((e=>t[e])),n=await E$2(r),o={};return e.map(((t,e)=>o[t]=n[e])),o}const e=t;return new Promise((t=>{const r=[];let n=e.length;0===n&&t(r),e.forEach((e=>{const o={promise:e||Promise.resolve(e)};r.push(o),o.promise.then((t=>{o.value=t;})).catch((t=>{o.error=t;})).then((()=>{--n,0===n&&t(r);}));}));}))}function U$3(t,e,r){const n=new AbortController;return v$2(r,(()=>n.abort())),new Promise(((r,o)=>{let i=setTimeout((()=>{i=0,r(e);}),t);v$2(n,(()=>{i&&(clearTimeout(i),o(a$6()));}));}))}function C$1(t){return t&&"function"==typeof t.then}function $$3(t){return C$1(t)?t:Promise.resolve(t)}function x$3(t,e=-1){let r,n,o,i,s=null;const c=(...l)=>{if(r){n=l,i&&i.reject(a$6()),i=A$3();const t=x$5(i.promise);if(s){const t=s;s=null,t.abort();}return t}if(o=i||A$3(),i=null,e>0){const n=new AbortController;r=$$3(t(...l,n.signal));const o=r;U$3(e).then((()=>{r===o&&(i?n.abort():s=n);}));}else r=1,r=$$3(t(...l));const m=()=>{const t=n;n=o=r=s=null,null!=t&&c(...t);},f=r,h=o;return f.then(m,m),f.then(h.resolve,h.reject),x$5(h.promise)};return c}function D$3(){let e,r;const n=new Promise(((t,n)=>{e=t,r=n;})),o=t=>{e(t);};return o.resolve=t=>e(t),o.reject=t=>r(t),o.timeout=(e,r)=>t$4.setTimeout((()=>o.reject(r)),e),o.promise=n,o}
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-const r$1=/^([a-z]{2})(?:[-_]([A-Za-z]{2}))?$/,o$2={ar:!0,bg:!0,bs:!0,ca:!0,cs:!0,da:!0,de:!0,el:!0,en:!0,es:!0,et:!0,fi:!0,fr:!0,he:!0,hr:!0,hu:!0,id:!0,it:!0,ja:!0,ko:!0,lt:!0,lv:!0,nb:!0,nl:!0,pl:!0,"pt-BR":!0,"pt-PT":!0,ro:!0,ru:!0,sk:!0,sl:!0,sr:!0,sv:!0,th:!0,tr:!0,uk:!0,vi:!0,"zh-CN":!0,"zh-HK":!0,"zh-TW":!0};function i$4(t){return o$2[t]??!1}const a$5=[],c$4=new Map;function d$3(t){for(const e of c$4.keys())_$2(t.pattern,e)&&c$4.delete(e);}function l$2(t){return a$5.includes(t)||(d$3(t),a$5.unshift(t)),{remove(){const e=a$5.indexOf(t);e>-1&&(a$5.splice(e,1),d$3(t));}}}async function u$3(t){const e=l$4();c$4.has(t)||c$4.set(t,f$2(t,e));const n=c$4.get(t);return n&&await m$3.add(n),n}function h$2(t){if(!r$1.test(t))return null;const e=r$1.exec(t);if(null===e)return null;const[,n,s]=e,o=n+(s?"-"+s.toUpperCase():"");return i$4(o)?o:i$4(n)?n:null}async function f$2(e,n){const s=[];for(const t of a$5)if(_$2(t.pattern,e))try{return await t.fetchMessageBundle(e,n)}catch(r){s.push(r);}if(s.length)throw new s$4("intl:message-bundle-error",`Errors occurred while loading "${e}"`,{errors:s});throw new s$4("intl:no-message-bundle-loader",`No loader found for message bundle "${e}"`)}function _$2(t,e){return "string"==typeof t?e.startsWith(t):t.test(e)}g$2((()=>{c$4.clear();}));const m$3=new class{constructor(){this._numLoading=0,this._dfd=null;}async waitForAll(){this._dfd&&await this._dfd.promise;}add(t){return this._increase(),t.then((()=>this._decrease()),(()=>this._decrease())),this.waitForAll()}_increase(){this._numLoading++,this._dfd||(this._dfd=A$3());}_decrease(){this._numLoading=Math.max(this._numLoading-1,0),this._dfd&&0===this._numLoading&&(this._dfd.resolve(),this._dfd=null);}};
+const r$1=/^([a-z]{2})(?:[-_]([A-Za-z]{2}))?$/,o$2={ar:!0,bg:!0,bs:!0,ca:!0,cs:!0,da:!0,de:!0,el:!0,en:!0,es:!0,et:!0,fi:!0,fr:!0,he:!0,hr:!0,hu:!0,id:!0,it:!0,ja:!0,ko:!0,lt:!0,lv:!0,nb:!0,nl:!0,pl:!0,"pt-BR":!0,"pt-PT":!0,ro:!0,ru:!0,sk:!0,sl:!0,sr:!0,sv:!0,th:!0,tr:!0,uk:!0,vi:!0,"zh-CN":!0,"zh-HK":!0,"zh-TW":!0};function i$4(t){return o$2[t]??!1}const a$5=[],c$4=new Map;function d$3(t){for(const e of c$4.keys())_$2(t.pattern,e)&&c$4.delete(e);}function l$2(t){return a$5.includes(t)||(d$3(t),a$5.unshift(t)),{remove(){const e=a$5.indexOf(t);e>-1&&(a$5.splice(e,1),d$3(t));}}}async function u$3(t){const e=l$4();c$4.has(t)||c$4.set(t,f$2(t,e));const n=c$4.get(t);return n&&await m$3.add(n),n}function h$2(t){if(!r$1.test(t))return null;const e=r$1.exec(t);if(null===e)return null;const[,n,s]=e,o=n+(s?"-"+s.toUpperCase():"");return i$4(o)?o:i$4(n)?n:null}async function f$2(e,n){const s=[];for(const t of a$5)if(_$2(t.pattern,e))try{return await t.fetchMessageBundle(e,n)}catch(r){s.push(r);}if(s.length)throw new s$3("intl:message-bundle-error",`Errors occurred while loading "${e}"`,{errors:s});throw new s$3("intl:no-message-bundle-loader",`No loader found for message bundle "${e}"`)}function _$2(t,e){return "string"==typeof t?e.startsWith(t):t.test(e)}g$2((()=>{c$4.clear();}));const m$3=new class{constructor(){this._numLoading=0,this._dfd=null;}async waitForAll(){this._dfd&&await this._dfd.promise;}add(t){return this._increase(),t.then((()=>this._decrease()),(()=>this._decrease())),this.waitForAll()}_increase(){this._numLoading++,this._dfd||(this._dfd=A$3());}_decrease(){this._numLoading=Math.max(this._numLoading-1,0),this._dfd&&0===this._numLoading&&(this._dfd.resolve(),this._dfd=null);}};
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-const s$3=s$6.getLogger("esri.core.urlUtils"),u$2=s$7.request,l$1="esri/config: esriConfig.request.proxyUrl is not set.",c$3=/^\s*[a-z][a-z0-9-+.]*:(?![0-9])/i,f$1=/^\s*http:/i,a$4=/^\s*https:/i,h$1=/^\s*file:/i,p$1=/:\d+$/,d$2=/^https?:\/\/[^/]+\.arcgis.com\/sharing(\/|$)/i,g$1=new RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?$"),m$2=new RegExp("^((([^\\[:]+):)?([^@]+)@)?(\\[([^\\]]+)\\]|([^\\[:]*))(:([0-9]+))?$");class y$1{constructor(t=""){this.uri=t,this.scheme=null,this.authority=null,this.path=null,this.query=null,this.fragment=null,this.user=null,this.password=null,this.host=null,this.port=null;let n=x$5(this.uri.match(g$1));this.scheme=n[2]||(n[1]?"":null),this.authority=n[4]||(n[3]?"":null),this.path=n[5],this.query=n[7]||(n[6]?"":null),this.fragment=n[9]||(n[8]?"":null),null!=this.authority&&(n=x$5(this.authority.match(m$2)),this.user=n[3]||null,this.password=n[4]||null,this.host=n[6]||n[7],this.port=n[9]||null);}toString(){return this.uri}}const $$2={},x$2=new y$1(s$7.applicationUrl);let w$1=x$2;const O$1=q$1();let U$2=O$1;const b$1=()=>w$1;function q$1(){const t=x$5(w$1.path),n=t.substring(0,t.lastIndexOf(t.split("/")[t.split("/").length-1]));return `${`${w$1.scheme}://${w$1.host}${null!=w$1.port?`:${w$1.port}`:""}`}${n}`}function j$2(t){if(!t)return null;const n={path:null,query:null},e=new y$1(t),r=t.indexOf("?");return null===e.query?n.path=t:(n.path=t.substring(0,r),n.query=L$1(e.query)),e.fragment&&(n.hash=e.fragment,null===e.query&&(n.path=n.path.substring(0,n.path.length-(e.fragment.length+1)))),n}function L$1(t){const n=t.split("&"),e={};for(const r of n){if(!r)continue;const t=r.indexOf("=");let n,o;t<0?(n=decodeURIComponent(r),o=""):(n=decodeURIComponent(r.slice(0,t)),o=decodeURIComponent(r.slice(t+1)));let i=e[n];"string"==typeof i&&(i=e[n]=[i]),Array.isArray(i)?i.push(o):e[n]=o;}return e}function v$1(t){return t&&"object"==typeof t&&"toJSON"in t&&"function"==typeof t.toJSON}function I$2(t,n){return t?n&&"function"==typeof n?Object.keys(t).map((e=>encodeURIComponent(e)+"="+encodeURIComponent(n(e,t[e])))).join("&"):Object.keys(t).map((e=>{const r=t[e];if(null==r)return "";const o=encodeURIComponent(e)+"=",i=n&&n[e];return i?o+encodeURIComponent(i(r)):Array.isArray(r)?r.map((t=>v$1(t)?o+encodeURIComponent(JSON.stringify(t)):o+encodeURIComponent(t))).join("&"):v$1(r)?o+encodeURIComponent(JSON.stringify(r)):o+encodeURIComponent(r)})).filter((t=>t)).join("&"):""}function A$2(t=!1){let e,r=u$2.proxyUrl;if("string"==typeof t){e=ht$1(t);const n=J$2(t);n&&(r=n.proxyUrl);}else e=!!t;if(!r)throw s$3.warn(l$1),new s$4("urlutils:proxy-not-set",l$1);e&&$t$1()&&(r=mt$1(r));return j$2(r)}const B$2={path:"",query:""};function P$2(t){const n=t.indexOf("?");return -1!==n?(B$2.path=t.slice(0,n),B$2.query=t.slice(n+1)):(B$2.path=t,B$2.query=null),B$2}function k$1(t){return t=(t=xt$1(t=bt$1(t=P$2(t).path),!0)).toLowerCase()}function E$1(t){const n={proxyUrl:t.proxyUrl,urlPrefix:k$1(t.urlPrefix)},e=u$2.proxyRules,r=n.urlPrefix;let o=e.length;for(let i=0;i<e.length;i++){const t=e[i].urlPrefix;if(0===r.indexOf(t)){if(r.length===t.length)return -1;o=i;break}0===t.indexOf(r)&&(o=i+1);}return e.splice(o,0,n),o}function J$2(t){const n=u$2.proxyRules,e=k$1(t);for(let r=0;r<n.length;r++)if(0===e.indexOf(n[r].urlPrefix))return n[r]}function W$2(t){const n=n=>null==n||n instanceof RegExp&&n.test(t)||"string"==typeof n&&t.startsWith(n),e=u$2.interceptors;if(e)for(const r of e)if(Array.isArray(r.urls)){if(r.urls.some(n))return r}else if(n(r.urls))return r;return null}function z$2(t,n,e=!1){if(!t||!n)return !1;const r=vt$1(t),o=vt$1(n);return !(!e&&r.scheme!==o.scheme)&&(null!=r.host&&null!=o.host&&(r.host.toLowerCase()===o.host.toLowerCase()&&r.port===o.port))}function D$2(t){if("string"==typeof t){if(!K$2(t))return !0;t=vt$1(t);}if(z$2(t,w$1))return !0;const n=u$2.trustedServers||[];for(let e=0;e<n.length;e++){const r=M$2(n[e]);for(let n=0;n<r.length;n++)if(z$2(t,r[n]))return !0}return !1}function M$2(t){return $$2[t]||(at$1(t)||ft$1(t)?$$2[t]=[new y$1(Q$2(t))]:$$2[t]=[new y$1(`http://${t}`),new y$1(`https://${t}`)]),$$2[t]}function Q$2(t,n=U$2,e){return ft$1(t)?e&&e.preserveProtocolRelative?t:"http"===w$1.scheme&&w$1.authority===H$2(t).slice(2)?`http:${t}`:`https:${t}`:at$1(t)?t:x$5(G$2("/"===t[0]?wt$1(n):n,t))}function F$2(t){return t=jt$1(t=Rt$1(t=qt$1(t=Q$2(t=t.trim()))))}function G$2(...t){const n=t.filter(r$6);if(!n||!n.length)return;const e=[];if(K$2(n[0])){const t=n[0],r=t.indexOf("//");-1!==r&&(e.push(t.slice(0,r+1)),dt$1(n[0])&&(e[0]+="/"),n[0]=t.slice(r+2));}else "/"===n[0][0]&&e.push("");const r=n.reduce(((t,n)=>n?t.concat(n.split("/")):t),[]);for(let o=0;o<r.length;o++){const t=r[o];".."===t&&e.length>0&&".."!==e[e.length-1]?e.pop():(!t&&o===r.length-1||t&&("."!==t||0===e.length))&&e.push(t);}return e.join("/")}function H$2(t,n=!1){if(null==t||V$2(t)||X$2(t))return null;let e=t.indexOf("://");if(-1===e&&ft$1(t))e=2;else {if(-1===e)return null;e+=3;}const r=t.indexOf("/",e);return -1!==r&&(t=t.slice(0,r)),n&&(t=xt$1(t,!0)),t}function K$2(t){return ft$1(t)||at$1(t)}function V$2(t){return null!=t&&"blob:"===t.slice(0,5)}function X$2(t){return null!=t&&"data:"===t.slice(0,5)}function Z$1(t){return btoa(String.fromCharCode.apply(null,t)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}function ft$1(t){return null!=t&&"/"===t[0]&&"/"===t[1]}function at$1(t){return null!=t&&c$3.test(t)}function ht$1(t){return null!=t&&a$4.test(t)||"https"===w$1.scheme&&ft$1(t)}function pt$1(t){return null!=t&&f$1.test(t)||"http"===w$1.scheme&&ft$1(t)}function dt$1(t){return null!=t&&h$1.test(t)}function mt$1(t){return ft$1(t)?`https:${t}`:t.replace(f$1,"https:")}function yt$1(){return "http"===w$1.scheme}function $t$1(){return "https"===w$1.scheme}function xt$1(t,n=!1){return ft$1(t)?t.slice(2):(t=t.replace(c$3,""),n&&t.length>1&&"/"===t[0]&&"/"===t[1]&&(t=t.slice(2)),t)}function wt$1(t){const n=t.indexOf("//"),e=t.indexOf("/",n+2);return -1===e?t:t.slice(0,e)}function bt$1(t){return t&&"/"===t[t.length-1]?t:`${t}/`}function qt$1(t){if(/^https?:\/\//i.test(t)){const n=P$2(t);t=(t=n.path.replace(/\/{2,}/g,"/")).replace("/","//"),n.query&&(t+=`?${n.query}`);}return t}function Rt$1(t){return t.replace(/^(https?:\/\/)(arcgis\.com)/i,"$1www.$2")}function jt$1(t){const n=u$2.httpsDomains;if(!pt$1(t))return t;const e=t.indexOf("/",7);let r;if(r=-1===e?t:t.slice(0,e),r=r.toLowerCase().slice(7),p$1.test(r)){if(!r.endsWith(":80"))return t;r=r.slice(0,-3),t=t.replace(":80","");}return yt$1()&&r===w$1.authority&&!d$2.test(t)||($t$1()&&r===w$1.authority||n&&n.some((t=>r===t||r.endsWith(`.${t}`)))||$t$1()&&!J$2(t))&&(t=mt$1(t)),t}function vt$1(t){return "string"==typeof t?new y$1(Q$2(t)):(t.scheme||(t.scheme=w$1.scheme),t)}function St(t,n,e){const r=j$2(t),o=r.query||{};return o[n]=String(e),`${r.path}?${I$2(o)}`}function Bt$1(t,n){const e=j$2(t),r=e.query||{};for(const i in n)r[i]=n[i];const o=I$2(r);return o?`${e.path}?${o}`:e.path}
+const s$2=s$5.getLogger("esri.core.urlUtils"),u$2=s$6.request,l$1="esri/config: esriConfig.request.proxyUrl is not set.",c$3=/^\s*[a-z][a-z0-9-+.]*:(?![0-9])/i,f$1=/^\s*http:/i,a$4=/^\s*https:/i,h$1=/^\s*file:/i,p$1=/:\d+$/,d$2=/^https?:\/\/[^/]+\.arcgis.com\/sharing(\/|$)/i,g$1=new RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?$"),m$2=new RegExp("^((([^\\[:]+):)?([^@]+)@)?(\\[([^\\]]+)\\]|([^\\[:]*))(:([0-9]+))?$");class y$1{constructor(t=""){this.uri=t,this.scheme=null,this.authority=null,this.path=null,this.query=null,this.fragment=null,this.user=null,this.password=null,this.host=null,this.port=null;let n=x$5(this.uri.match(g$1));this.scheme=n[2]||(n[1]?"":null),this.authority=n[4]||(n[3]?"":null),this.path=n[5],this.query=n[7]||(n[6]?"":null),this.fragment=n[9]||(n[8]?"":null),null!=this.authority&&(n=x$5(this.authority.match(m$2)),this.user=n[3]||null,this.password=n[4]||null,this.host=n[6]||n[7],this.port=n[9]||null);}toString(){return this.uri}}const $$2={},x$2=new y$1(s$6.applicationUrl);let w$1=x$2;const O$1=q$1();let U$2=O$1;const b$1=()=>w$1;function q$1(){const t=x$5(w$1.path),n=t.substring(0,t.lastIndexOf(t.split("/")[t.split("/").length-1]));return `${`${w$1.scheme}://${w$1.host}${null!=w$1.port?`:${w$1.port}`:""}`}${n}`}function j$2(t){if(!t)return null;const n={path:null,query:null},e=new y$1(t),r=t.indexOf("?");return null===e.query?n.path=t:(n.path=t.substring(0,r),n.query=L$1(e.query)),e.fragment&&(n.hash=e.fragment,null===e.query&&(n.path=n.path.substring(0,n.path.length-(e.fragment.length+1)))),n}function L$1(t){const n=t.split("&"),e={};for(const r of n){if(!r)continue;const t=r.indexOf("=");let n,o;t<0?(n=decodeURIComponent(r),o=""):(n=decodeURIComponent(r.slice(0,t)),o=decodeURIComponent(r.slice(t+1)));let i=e[n];"string"==typeof i&&(i=e[n]=[i]),Array.isArray(i)?i.push(o):e[n]=o;}return e}function v$1(t){return t&&"object"==typeof t&&"toJSON"in t&&"function"==typeof t.toJSON}function I$2(t,n){return t?n&&"function"==typeof n?Object.keys(t).map((e=>encodeURIComponent(e)+"="+encodeURIComponent(n(e,t[e])))).join("&"):Object.keys(t).map((e=>{const r=t[e];if(null==r)return "";const o=encodeURIComponent(e)+"=",i=n&&n[e];return i?o+encodeURIComponent(i(r)):Array.isArray(r)?r.map((t=>v$1(t)?o+encodeURIComponent(JSON.stringify(t)):o+encodeURIComponent(t))).join("&"):v$1(r)?o+encodeURIComponent(JSON.stringify(r)):o+encodeURIComponent(r)})).filter((t=>t)).join("&"):""}function A$2(t=!1){let e,r=u$2.proxyUrl;if("string"==typeof t){e=ht$1(t);const n=J$2(t);n&&(r=n.proxyUrl);}else e=!!t;if(!r)throw s$2.warn(l$1),new s$3("urlutils:proxy-not-set",l$1);e&&$t$1()&&(r=mt$1(r));return j$2(r)}const B$2={path:"",query:""};function P$2(t){const n=t.indexOf("?");return -1!==n?(B$2.path=t.slice(0,n),B$2.query=t.slice(n+1)):(B$2.path=t,B$2.query=null),B$2}function k$1(t){return t=(t=xt$1(t=bt$1(t=P$2(t).path),!0)).toLowerCase()}function E$1(t){const n={proxyUrl:t.proxyUrl,urlPrefix:k$1(t.urlPrefix)},e=u$2.proxyRules,r=n.urlPrefix;let o=e.length;for(let i=0;i<e.length;i++){const t=e[i].urlPrefix;if(0===r.indexOf(t)){if(r.length===t.length)return -1;o=i;break}0===t.indexOf(r)&&(o=i+1);}return e.splice(o,0,n),o}function J$2(t){const n=u$2.proxyRules,e=k$1(t);for(let r=0;r<n.length;r++)if(0===e.indexOf(n[r].urlPrefix))return n[r]}function W$2(t){const n=n=>null==n||n instanceof RegExp&&n.test(t)||"string"==typeof n&&t.startsWith(n),e=u$2.interceptors;if(e)for(const r of e)if(Array.isArray(r.urls)){if(r.urls.some(n))return r}else if(n(r.urls))return r;return null}function z$2(t,n,e=!1){if(!t||!n)return !1;const r=vt$1(t),o=vt$1(n);return !(!e&&r.scheme!==o.scheme)&&(null!=r.host&&null!=o.host&&(r.host.toLowerCase()===o.host.toLowerCase()&&r.port===o.port))}function D$2(t){if("string"==typeof t){if(!K$2(t))return !0;t=vt$1(t);}if(z$2(t,w$1))return !0;const n=u$2.trustedServers||[];for(let e=0;e<n.length;e++){const r=M$2(n[e]);for(let n=0;n<r.length;n++)if(z$2(t,r[n]))return !0}return !1}function M$2(t){return $$2[t]||(at$1(t)||ft$1(t)?$$2[t]=[new y$1(Q$2(t))]:$$2[t]=[new y$1(`http://${t}`),new y$1(`https://${t}`)]),$$2[t]}function Q$2(t,n=U$2,e){return ft$1(t)?e&&e.preserveProtocolRelative?t:"http"===w$1.scheme&&w$1.authority===H$2(t).slice(2)?`http:${t}`:`https:${t}`:at$1(t)?t:x$5(G$2("/"===t[0]?wt$1(n):n,t))}function F$2(t){return t=jt$1(t=Rt$1(t=qt$1(t=Q$2(t=t.trim()))))}function G$2(...t){const n=t.filter(r$6);if(!n||!n.length)return;const e=[];if(K$2(n[0])){const t=n[0],r=t.indexOf("//");-1!==r&&(e.push(t.slice(0,r+1)),dt$1(n[0])&&(e[0]+="/"),n[0]=t.slice(r+2));}else "/"===n[0][0]&&e.push("");const r=n.reduce(((t,n)=>n?t.concat(n.split("/")):t),[]);for(let o=0;o<r.length;o++){const t=r[o];".."===t&&e.length>0&&".."!==e[e.length-1]?e.pop():(!t&&o===r.length-1||t&&("."!==t||0===e.length))&&e.push(t);}return e.join("/")}function H$2(t,n=!1){if(null==t||V$2(t)||X$2(t))return null;let e=t.indexOf("://");if(-1===e&&ft$1(t))e=2;else {if(-1===e)return null;e+=3;}const r=t.indexOf("/",e);return -1!==r&&(t=t.slice(0,r)),n&&(t=xt$1(t,!0)),t}function K$2(t){return ft$1(t)||at$1(t)}function V$2(t){return null!=t&&"blob:"===t.slice(0,5)}function X$2(t){return null!=t&&"data:"===t.slice(0,5)}function Z$1(t){return btoa(String.fromCharCode.apply(null,t)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}function ft$1(t){return null!=t&&"/"===t[0]&&"/"===t[1]}function at$1(t){return null!=t&&c$3.test(t)}function ht$1(t){return null!=t&&a$4.test(t)||"https"===w$1.scheme&&ft$1(t)}function pt$1(t){return null!=t&&f$1.test(t)||"http"===w$1.scheme&&ft$1(t)}function dt$1(t){return null!=t&&h$1.test(t)}function mt$1(t){return ft$1(t)?`https:${t}`:t.replace(f$1,"https:")}function yt$1(){return "http"===w$1.scheme}function $t$1(){return "https"===w$1.scheme}function xt$1(t,n=!1){return ft$1(t)?t.slice(2):(t=t.replace(c$3,""),n&&t.length>1&&"/"===t[0]&&"/"===t[1]&&(t=t.slice(2)),t)}function wt$1(t){const n=t.indexOf("//"),e=t.indexOf("/",n+2);return -1===e?t:t.slice(0,e)}function bt$1(t){return t&&"/"===t[t.length-1]?t:`${t}/`}function qt$1(t){if(/^https?:\/\//i.test(t)){const n=P$2(t);t=(t=n.path.replace(/\/{2,}/g,"/")).replace("/","//"),n.query&&(t+=`?${n.query}`);}return t}function Rt$1(t){return t.replace(/^(https?:\/\/)(arcgis\.com)/i,"$1www.$2")}function jt$1(t){const n=u$2.httpsDomains;if(!pt$1(t))return t;const e=t.indexOf("/",7);let r;if(r=-1===e?t:t.slice(0,e),r=r.toLowerCase().slice(7),p$1.test(r)){if(!r.endsWith(":80"))return t;r=r.slice(0,-3),t=t.replace(":80","");}return yt$1()&&r===w$1.authority&&!d$2.test(t)||($t$1()&&r===w$1.authority||n&&n.some((t=>r===t||r.endsWith(`.${t}`)))||$t$1()&&!J$2(t))&&(t=mt$1(t)),t}function vt$1(t){return "string"==typeof t?new y$1(Q$2(t)):(t.scheme||(t.scheme=w$1.scheme),t)}function St(t,n,e){const r=j$2(t),o=r.query||{};return o[n]=String(e),`${r.path}?${I$2(o)}`}function Bt$1(t,n){const e=j$2(t),r=e.query||{};for(const i in n)r[i]=n[i];const o=I$2(r);return o?`${e.path}?${o}`:e.path}
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-let s$2;function n$1(e){s$2=e;}has("host-webworker");
+exports.s$5 = void 0;function n$1(e){exports.s$5=e;}has("host-webworker");
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
@@ -852,25 +854,25 @@ const t$1=["elevation3d.arcgis.com","js.arcgis.com","jsdev.arcgis.com","jsqa.arc
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-function c$2(r,t,n=!1,s){return new Promise(((i,c)=>{if(p$2(s))return void c(a$3());let m=()=>{f(),c(new Error(`Unable to load ${t}`));},u=()=>{const e=r;f(),i(e);},d=()=>{if(!r)return;const e=r;f(),e.src="",c(a$3());};const f=()=>{has("esri-image-decode")||(r.removeEventListener("error",m),r.removeEventListener("load",u)),m=null,u=null,r=null,r$6(s)&&s.removeEventListener("abort",d),d=null,n&&URL.revokeObjectURL(t);};r$6(s)&&s.addEventListener("abort",d),has("esri-image-decode")?r.decode().then(u,m):(r.addEventListener("error",m),r.addEventListener("load",u));}))}function a$3(){try{return new DOMException("Aborted","AbortError")}catch{const r=new Error;return r.name="AbortError",r}}function m$1(e){s$7.request.crossOriginNoCorsDomains||(s$7.request.crossOriginNoCorsDomains={});const o=s$7.request.crossOriginNoCorsDomains;for(let r of e)r=r.toLowerCase(),/^https?:\/\//.test(r)?o[H$2(r)??""]=0:(o[H$2("http://"+r)??""]=0,o[H$2("https://"+r)??""]=0);}function u$1(e){const o=s$7.request.crossOriginNoCorsDomains;if(o){let r=H$2(e);if(r)return r=r.toLowerCase(),!z$2(r,b$1())&&o[r]<Date.now()-36e5}return !1}async function d$1(e){const o=s$7.request.crossOriginNoCorsDomains,n=H$2(e);o&&n&&(o[n.toLowerCase()]=Date.now());const s=j$2(e);e=s.path,"json"===s.query?.f&&(e+="?f=json");try{await fetch(e,{mode:"no-cors",credentials:"include"});}catch{}}
+function c$2(r,t,n=!1,s){return new Promise(((i,c)=>{if(p$2(s))return void c(a$3());let m=()=>{f(),c(new Error(`Unable to load ${t}`));},u=()=>{const e=r;f(),i(e);},d=()=>{if(!r)return;const e=r;f(),e.src="",c(a$3());};const f=()=>{has("esri-image-decode")||(r.removeEventListener("error",m),r.removeEventListener("load",u)),m=null,u=null,r=null,r$6(s)&&s.removeEventListener("abort",d),d=null,n&&URL.revokeObjectURL(t);};r$6(s)&&s.addEventListener("abort",d),has("esri-image-decode")?r.decode().then(u,m):(r.addEventListener("error",m),r.addEventListener("load",u));}))}function a$3(){try{return new DOMException("Aborted","AbortError")}catch{const r=new Error;return r.name="AbortError",r}}function m$1(e){s$6.request.crossOriginNoCorsDomains||(s$6.request.crossOriginNoCorsDomains={});const o=s$6.request.crossOriginNoCorsDomains;for(let r of e)r=r.toLowerCase(),/^https?:\/\//.test(r)?o[H$2(r)??""]=0:(o[H$2("http://"+r)??""]=0,o[H$2("https://"+r)??""]=0);}function u$1(e){const o=s$6.request.crossOriginNoCorsDomains;if(o){let r=H$2(e);if(r)return r=r.toLowerCase(),!z$2(r,b$1())&&o[r]<Date.now()-36e5}return !1}async function d$1(e){const o=s$6.request.crossOriginNoCorsDomains,n=H$2(e);o&&n&&(o[n.toLowerCase()]=Date.now());const s=j$2(e);e=s.path,"json"===s.query?.f&&(e+="?f=json");try{await fetch(e,{mode:"no-cors",credentials:"include"});}catch{}}
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-async function U$1(e,r){const t=X$2(e),s=V$2(e);s||t||(e=F$2(e));const n={url:e,requestOptions:{...e$9(r)}};let i=W$2(e);if(i){const e=await G$1(i,n);if(null!=e)return {data:e,getHeader:M$1,requestOptions:n.requestOptions,url:n.url};i.after||i.error||(i=null);}if(e=n.url,"image"===(r=n.requestOptions).responseType){if(has("host-webworker")||has("host-node"))throw N$1("request:invalid-parameters",new Error("responseType 'image' is not supported in Web Workers or Node environment"),n)}else if(t)throw N$1("request:invalid-parameters",new Error("Data URLs are not supported for responseType = "+r.responseType),n);if("head"===r.method){if(r.body)throw N$1("request:invalid-parameters",new Error("body parameter cannot be set when method is 'head'"),n);if(t||s)throw N$1("request:invalid-parameters",new Error("data and blob URLs are not supported for method 'head'"),n)}if(await B$1(),j$1)return j$1.execute(e,r);const l=new AbortController;v$2(r,(()=>l.abort()));const m={controller:l,credential:void 0,credentialToken:void 0,fetchOptions:void 0,hasToken:!1,interceptor:i,params:n,redoRequest:!1,useIdentity:P$1.useIdentity,useProxy:!1,useSSL:!1,withCredentials:!1},h=await Q$1(m);return i?.after?.(h),h}let j$1;const P$1=s$7.request,D$1="FormData"in globalThis,_$1=[499,498,403,401],F$1=["COM_0056","COM_0057","SB_0008"],I$1=[/\/arcgis\/tokens/i,/\/sharing(\/rest)?\/generatetoken/i,/\/rest\/info/i],M$1=()=>null,R$1=Symbol();function A$1(e){const r=H$2(e);r&&!U$1._corsServers.includes(r)&&U$1._corsServers.push(r);}function H$1(e){const r=H$2(e);return !r||r.endsWith(".arcgis.com")||U$1._corsServers.includes(r)||D$2(r)}function N$1(e,r,o,a){let l="Error";const u={url:o.url,requestOptions:o.requestOptions,getHeader:M$1,ssl:!1};if(r instanceof s$4)return r.details?(r.details=y$2(r.details),r.details.url=o.url,r.details.requestOptions=o.requestOptions):r.details=u,r;if(r){const e=a&&(e=>a.headers.get(e)),t=a&&a.status,s=r.message;s&&(l=s),e&&(u.getHeader=e),u.httpStatus=(null!=r.httpCode?r.httpCode:r.code)||t||0,u.subCode=r.subcode,u.messageCode=r.messageCode,"string"==typeof r.details?u.messages=[r.details]:u.messages=r.details,u.raw=R$1 in r?r[R$1]:r;}return j$3(r)?a$6():new s$4(e,l,u)}async function B$1(){has("host-webworker")?j$1||(j$1=await import('./request-b48fdda0.js')):U$1._abortableFetch||(U$1._abortableFetch=globalThis.fetch.bind(globalThis));}async function $$1(){s$2||await import('./IdentityManager-c34b12d9.js');}async function z$1(t){const s=t.params.url,o=t.params.requestOptions,a=t.controller.signal,n=o.body;let i=null,u=null;if(D$1&&"HTMLFormElement"in globalThis&&(n instanceof FormData?i=n:n instanceof HTMLFormElement&&(i=new FormData(n))),"string"==typeof n&&(u=n),t.fetchOptions={cache:o.cacheBust&&!U$1._abortableFetch.polyfill?"no-cache":"default",credentials:"same-origin",headers:o.headers||{},method:"head"===o.method?"HEAD":"GET",mode:"cors",priority:P$1.priority,redirect:"follow",signal:a},(i||u)&&(t.fetchOptions.body=i||u),"anonymous"===o.authMode&&(t.useIdentity=!1),t.hasToken=!!(/token=/i.test(s)||o.query?.token||i?.get("token")),!t.hasToken&&s$7.apiKey&&r(s)&&(o.query||(o.query={}),o.query.token=s$7.apiKey,t.hasToken=!0),t.useIdentity&&!t.hasToken&&!t.credentialToken&&!K$1(s)&&!p$2(a)){let e;"immediate"===o.authMode?(await $$1(),e=await s$2.getCredential(s,{signal:a}),t.credential=e):"no-prompt"===o.authMode?(await $$1(),e=await s$2.getCredential(s,{prompt:!1,signal:a}).catch((()=>{})),t.credential=e):s$2&&(e=s$2.findCredential(s)),e&&(t.credentialToken=e.token,t.useSSL=!!e.ssl);}}function K$1(e){return I$1.some((r=>r.test(e)))}async function W$1(e){let t=e.params.url;const s=e.params.requestOptions,o=e.fetchOptions??{},a=V$2(t)||X$2(t),n=s.responseType||"json",l=a?0:null!=s.timeout?s.timeout:P$1.timeout;let d=!1;if(!a){e.useSSL&&(t=mt$1(t)),s.cacheBust&&"default"===o.cache&&(t=St(t,"request.preventCache",Date.now()));let a={...s.query};e.credentialToken&&(a.token=e.credentialToken);let n=I$2(a);has("esri-url-encodes-apostrophe")&&(n=n.replace(/'/g,"%27"));const i=t.length+1+n.length;let l;d="delete"===s.method||"post"===s.method||"put"===s.method||!!s.body||i>P$1.maxUrlLength;const u=s.useProxy||!!J$2(t);if(u){const e=A$2(t);l=e.path,!d&&l.length+1+i>P$1.maxUrlLength&&(d=!0),e.query&&(a={...e.query,...a});}if("HEAD"===o.method&&(d||u)){if(d){if(i>P$1.maxUrlLength)throw N$1("request:invalid-parameters",new Error("URL exceeds maximum length"),e.params);throw N$1("request:invalid-parameters",new Error("cannot use POST request when method is 'head'"),e.params)}if(u)throw N$1("request:invalid-parameters",new Error("cannot use proxy when method is 'head'"),e.params)}if(d?(o.method="delete"===s.method?"DELETE":"put"===s.method?"PUT":"POST",s.body?t=Bt$1(t,a):(o.body=I$2(a),o.headers||(o.headers={}),o.headers["Content-Type"]="application/x-www-form-urlencoded")):t=Bt$1(t,a),u&&(e.useProxy=!0,t=`${l}?${t}`),a.token&&D$1&&o.body instanceof FormData&&!t$2(t)&&o.body.set("token",a.token),s.hasOwnProperty("withCredentials"))e.withCredentials=s.withCredentials;else if(!z$2(t,b$1()))if(D$2(t))e.withCredentials=!0;else if(s$2){const s=s$2.findServerInfo(t);s&&s.webTierAuth&&(e.withCredentials=!0);}e.withCredentials&&(o.credentials="include",u$1(t)&&await d$1(d?Bt$1(t,a):t));}let p,v,C=0,L=!1;l>0&&(C=setTimeout((()=>{L=!0,e.controller.abort();}),l));try{if("native-request-init"===s.responseType)v=o,v.url=t;else if("image"!==s.responseType||"default"!==o.cache||"GET"!==o.method||d||J$1(s.headers)||!a&&!e.useProxy&&P$1.proxyUrl&&!H$1(t)){if(p=await U$1._abortableFetch(t,o),e.useProxy||A$1(t),"native"===s.responseType)v=p;else if("HEAD"!==o.method)if(p.ok){switch(n){case"array-buffer":v=await p.arrayBuffer();break;case"blob":case"image":v=await p.blob();break;default:v=await p.text();}if(C&&(clearTimeout(C),C=0),"json"===n||"xml"===n||"document"===n)if(v)switch(n){case"json":v=JSON.parse(v);break;case"xml":v=X$1(v,"application/xml");break;case"document":v=X$1(v,"text/html");}else v=null;if(v){if("array-buffer"===n||"blob"===n){const e=p.headers.get("Content-Type");if(e&&/application\/json|text\/plain/i.test(e)&&v["blob"===n?"size":"byteLength"]<=750)try{const e=await new Response(v).json();e.error&&(v=e);}catch{}}"image"===n&&v instanceof Blob&&(v=await Y$1(URL.createObjectURL(v),e,!0));}}else v=await p.text();}else v=await Y$1(t,e);}catch(j){if("AbortError"===j.name){if(L)throw new Error("Timeout exceeded");throw a$6("Request canceled")}if(!(!p&&j instanceof TypeError&&P$1.proxyUrl)||s.body||"delete"===s.method||"head"===s.method||"post"===s.method||"put"===s.method||e.useProxy||H$1(t))throw j;e.redoRequest=!0,E$1({proxyUrl:P$1.proxyUrl,urlPrefix:H$2(t)??""});}finally{C&&clearTimeout(C);}return [p,v]}async function G$1(e,r){if(null!=e.responseData)return e.responseData;if(e.headers&&(r.requestOptions.headers={...r.requestOptions.headers,...e.headers}),e.query&&(r.requestOptions.query={...r.requestOptions.query,...e.query}),e.before){let o,a;try{a=await e.before(r);}catch(s){o=N$1("request:interceptor",s,r);}if((a instanceof Error||a instanceof s$4)&&(o=N$1("request:interceptor",a,r)),o)throw e.error&&e.error(o),o;return a}}function J$1(e){if(e)for(const r of Object.getOwnPropertyNames(e))if(e[r])return !0;return !1}function X$1(e,r){let t;try{t=(new DOMParser).parseFromString(e,r);}catch{}if(!t||t.getElementsByTagName("parsererror").length)throw new SyntaxError("XML Parse error");return t}async function Q$1(e){let t,s;await z$1(e);try{do{[t,s]=await W$1(e);}while(!await V$1(e,t,s))}catch(n){const r=N$1("request:server",n,e.params,t);throw r.details.ssl=e.useSSL,e.interceptor&&e.interceptor.error&&e.interceptor.error(r),r}const o=e.params.url;if(s&&/\/sharing\/rest\/(accounts|portals)\/self/i.test(o)){if(!e.hasToken&&!e.credentialToken&&s.user?.username&&!D$2(o)){const e=H$2(o,!0);e&&P$1.trustedServers.push(e);}Array.isArray(s.authorizedCrossOriginNoCorsDomains)&&m$1(s.authorizedCrossOriginNoCorsDomains);}const a=e.credential;if(a&&s$2){const e=s$2.findServerInfo(a.server);let t=e&&e.owningSystemUrl;if(t){t=t.replace(/\/?$/,"/sharing");const e=s$2.findCredential(t,a.userId);e&&-1===s$2._getIdenticalSvcIdx(t,e)&&e.resources.unshift(t);}}return {data:s,getHeader:t?e=>t?.headers.get(e):M$1,requestOptions:e.params.requestOptions,ssl:e.useSSL,url:e.params.url}}async function V$1(e,t,s){if(e.redoRequest)return e.redoRequest=!1,!1;const o=e.params.requestOptions;if(!t||"native"===o.responseType||"native-request-init"===o.responseType)return !0;let a,n;if(!t.ok)throw a=new Error(`Unable to load ${t.url} status: ${t.status}`),a[R$1]=s,a;s&&(s.error?a=s.error:"error"===s.status&&Array.isArray(s.messages)&&(a={...s},a[R$1]=s,a.details=s.messages));let i,l=null;a&&(n=Number(a.code),l=a.hasOwnProperty("subcode")?Number(a.subcode):null,i=a.messageCode,i=i&&i.toUpperCase());const u=o.authMode;if(403===n&&(4===l||a.message&&a.message.toLowerCase().includes("ssl")&&!a.message.toLowerCase().includes("permission"))){if(!e.useSSL)return e.useSSL=!0,!1}else if(!e.hasToken&&e.useIdentity&&("no-prompt"!==u||498===n)&&void 0!==n&&_$1.includes(n)&&!K$1(e.params.url)&&(403!==n||i&&!F$1.includes(i)&&(null==l||2===l&&e.credentialToken))){await $$1();try{const t=await s$2.getCredential(e.params.url,{error:N$1("request:server",a,e.params),prompt:"no-prompt"!==u,signal:e.controller.signal,token:e.credentialToken});return e.credential=t,e.credentialToken=t.token,e.useSSL=e.useSSL||t.ssl,!1}catch(c){if("no-prompt"===u)return e.credential=void 0,e.credentialToken=void 0,!1;a=c;}}if(a)throw a;return !0}function Y$1(e,r,t=!1){const s=r.controller.signal,o=new Image;return r.withCredentials?o.crossOrigin="use-credentials":o.crossOrigin="anonymous",o.alt="",o.fetchPriority=P$1.priority,o.src=e,c$2(o,e,t,s)}U$1._abortableFetch=null,U$1._corsServers=["https://server.arcgisonline.com","https://services.arcgisonline.com"];
+async function U$1(e,r){const t=X$2(e),s=V$2(e);s||t||(e=F$2(e));const n={url:e,requestOptions:{...e$9(r)}};let i=W$2(e);if(i){const e=await G$1(i,n);if(null!=e)return {data:e,getHeader:M$1,requestOptions:n.requestOptions,url:n.url};i.after||i.error||(i=null);}if(e=n.url,"image"===(r=n.requestOptions).responseType){if(has("host-webworker")||has("host-node"))throw N$1("request:invalid-parameters",new Error("responseType 'image' is not supported in Web Workers or Node environment"),n)}else if(t)throw N$1("request:invalid-parameters",new Error("Data URLs are not supported for responseType = "+r.responseType),n);if("head"===r.method){if(r.body)throw N$1("request:invalid-parameters",new Error("body parameter cannot be set when method is 'head'"),n);if(t||s)throw N$1("request:invalid-parameters",new Error("data and blob URLs are not supported for method 'head'"),n)}if(await B$1(),j$1)return j$1.execute(e,r);const l=new AbortController;v$2(r,(()=>l.abort()));const m={controller:l,credential:void 0,credentialToken:void 0,fetchOptions:void 0,hasToken:!1,interceptor:i,params:n,redoRequest:!1,useIdentity:P$1.useIdentity,useProxy:!1,useSSL:!1,withCredentials:!1},h=await Q$1(m);return i?.after?.(h),h}let j$1;const P$1=s$6.request,D$1="FormData"in globalThis,_$1=[499,498,403,401],F$1=["COM_0056","COM_0057","SB_0008"],I$1=[/\/arcgis\/tokens/i,/\/sharing(\/rest)?\/generatetoken/i,/\/rest\/info/i],M$1=()=>null,R$1=Symbol();function A$1(e){const r=H$2(e);r&&!U$1._corsServers.includes(r)&&U$1._corsServers.push(r);}function H$1(e){const r=H$2(e);return !r||r.endsWith(".arcgis.com")||U$1._corsServers.includes(r)||D$2(r)}function N$1(e,r,o,a){let l="Error";const u={url:o.url,requestOptions:o.requestOptions,getHeader:M$1,ssl:!1};if(r instanceof s$3)return r.details?(r.details=y$2(r.details),r.details.url=o.url,r.details.requestOptions=o.requestOptions):r.details=u,r;if(r){const e=a&&(e=>a.headers.get(e)),t=a&&a.status,s=r.message;s&&(l=s),e&&(u.getHeader=e),u.httpStatus=(null!=r.httpCode?r.httpCode:r.code)||t||0,u.subCode=r.subcode,u.messageCode=r.messageCode,"string"==typeof r.details?u.messages=[r.details]:u.messages=r.details,u.raw=R$1 in r?r[R$1]:r;}return j$3(r)?a$6():new s$3(e,l,u)}async function B$1(){has("host-webworker")?j$1||(j$1=await Promise.resolve().then(function () { return require('./request-f8e16790.js'); })):U$1._abortableFetch||(U$1._abortableFetch=globalThis.fetch.bind(globalThis));}async function $$1(){exports.s$5||await Promise.resolve().then(function () { return require('./IdentityManager-ee5d7cf6.js'); });}async function z$1(t){const s=t.params.url,o=t.params.requestOptions,a=t.controller.signal,n=o.body;let i=null,u=null;if(D$1&&"HTMLFormElement"in globalThis&&(n instanceof FormData?i=n:n instanceof HTMLFormElement&&(i=new FormData(n))),"string"==typeof n&&(u=n),t.fetchOptions={cache:o.cacheBust&&!U$1._abortableFetch.polyfill?"no-cache":"default",credentials:"same-origin",headers:o.headers||{},method:"head"===o.method?"HEAD":"GET",mode:"cors",priority:P$1.priority,redirect:"follow",signal:a},(i||u)&&(t.fetchOptions.body=i||u),"anonymous"===o.authMode&&(t.useIdentity=!1),t.hasToken=!!(/token=/i.test(s)||o.query?.token||i?.get("token")),!t.hasToken&&s$6.apiKey&&r(s)&&(o.query||(o.query={}),o.query.token=s$6.apiKey,t.hasToken=!0),t.useIdentity&&!t.hasToken&&!t.credentialToken&&!K$1(s)&&!p$2(a)){let e;"immediate"===o.authMode?(await $$1(),e=await exports.s$5.getCredential(s,{signal:a}),t.credential=e):"no-prompt"===o.authMode?(await $$1(),e=await exports.s$5.getCredential(s,{prompt:!1,signal:a}).catch((()=>{})),t.credential=e):exports.s$5&&(e=exports.s$5.findCredential(s)),e&&(t.credentialToken=e.token,t.useSSL=!!e.ssl);}}function K$1(e){return I$1.some((r=>r.test(e)))}async function W$1(e){let t=e.params.url;const s=e.params.requestOptions,o=e.fetchOptions??{},a=V$2(t)||X$2(t),n=s.responseType||"json",l=a?0:null!=s.timeout?s.timeout:P$1.timeout;let d=!1;if(!a){e.useSSL&&(t=mt$1(t)),s.cacheBust&&"default"===o.cache&&(t=St(t,"request.preventCache",Date.now()));let a={...s.query};e.credentialToken&&(a.token=e.credentialToken);let n=I$2(a);has("esri-url-encodes-apostrophe")&&(n=n.replace(/'/g,"%27"));const i=t.length+1+n.length;let l;d="delete"===s.method||"post"===s.method||"put"===s.method||!!s.body||i>P$1.maxUrlLength;const u=s.useProxy||!!J$2(t);if(u){const e=A$2(t);l=e.path,!d&&l.length+1+i>P$1.maxUrlLength&&(d=!0),e.query&&(a={...e.query,...a});}if("HEAD"===o.method&&(d||u)){if(d){if(i>P$1.maxUrlLength)throw N$1("request:invalid-parameters",new Error("URL exceeds maximum length"),e.params);throw N$1("request:invalid-parameters",new Error("cannot use POST request when method is 'head'"),e.params)}if(u)throw N$1("request:invalid-parameters",new Error("cannot use proxy when method is 'head'"),e.params)}if(d?(o.method="delete"===s.method?"DELETE":"put"===s.method?"PUT":"POST",s.body?t=Bt$1(t,a):(o.body=I$2(a),o.headers||(o.headers={}),o.headers["Content-Type"]="application/x-www-form-urlencoded")):t=Bt$1(t,a),u&&(e.useProxy=!0,t=`${l}?${t}`),a.token&&D$1&&o.body instanceof FormData&&!t$2(t)&&o.body.set("token",a.token),s.hasOwnProperty("withCredentials"))e.withCredentials=s.withCredentials;else if(!z$2(t,b$1()))if(D$2(t))e.withCredentials=!0;else if(exports.s$5){const s=exports.s$5.findServerInfo(t);s&&s.webTierAuth&&(e.withCredentials=!0);}e.withCredentials&&(o.credentials="include",u$1(t)&&await d$1(d?Bt$1(t,a):t));}let p,v,C=0,L=!1;l>0&&(C=setTimeout((()=>{L=!0,e.controller.abort();}),l));try{if("native-request-init"===s.responseType)v=o,v.url=t;else if("image"!==s.responseType||"default"!==o.cache||"GET"!==o.method||d||J$1(s.headers)||!a&&!e.useProxy&&P$1.proxyUrl&&!H$1(t)){if(p=await U$1._abortableFetch(t,o),e.useProxy||A$1(t),"native"===s.responseType)v=p;else if("HEAD"!==o.method)if(p.ok){switch(n){case"array-buffer":v=await p.arrayBuffer();break;case"blob":case"image":v=await p.blob();break;default:v=await p.text();}if(C&&(clearTimeout(C),C=0),"json"===n||"xml"===n||"document"===n)if(v)switch(n){case"json":v=JSON.parse(v);break;case"xml":v=X$1(v,"application/xml");break;case"document":v=X$1(v,"text/html");}else v=null;if(v){if("array-buffer"===n||"blob"===n){const e=p.headers.get("Content-Type");if(e&&/application\/json|text\/plain/i.test(e)&&v["blob"===n?"size":"byteLength"]<=750)try{const e=await new Response(v).json();e.error&&(v=e);}catch{}}"image"===n&&v instanceof Blob&&(v=await Y$1(URL.createObjectURL(v),e,!0));}}else v=await p.text();}else v=await Y$1(t,e);}catch(j){if("AbortError"===j.name){if(L)throw new Error("Timeout exceeded");throw a$6("Request canceled")}if(!(!p&&j instanceof TypeError&&P$1.proxyUrl)||s.body||"delete"===s.method||"head"===s.method||"post"===s.method||"put"===s.method||e.useProxy||H$1(t))throw j;e.redoRequest=!0,E$1({proxyUrl:P$1.proxyUrl,urlPrefix:H$2(t)??""});}finally{C&&clearTimeout(C);}return [p,v]}async function G$1(e,r){if(null!=e.responseData)return e.responseData;if(e.headers&&(r.requestOptions.headers={...r.requestOptions.headers,...e.headers}),e.query&&(r.requestOptions.query={...r.requestOptions.query,...e.query}),e.before){let o,a;try{a=await e.before(r);}catch(s){o=N$1("request:interceptor",s,r);}if((a instanceof Error||a instanceof s$3)&&(o=N$1("request:interceptor",a,r)),o)throw e.error&&e.error(o),o;return a}}function J$1(e){if(e)for(const r of Object.getOwnPropertyNames(e))if(e[r])return !0;return !1}function X$1(e,r){let t;try{t=(new DOMParser).parseFromString(e,r);}catch{}if(!t||t.getElementsByTagName("parsererror").length)throw new SyntaxError("XML Parse error");return t}async function Q$1(e){let t,s;await z$1(e);try{do{[t,s]=await W$1(e);}while(!await V$1(e,t,s))}catch(n){const r=N$1("request:server",n,e.params,t);throw r.details.ssl=e.useSSL,e.interceptor&&e.interceptor.error&&e.interceptor.error(r),r}const o=e.params.url;if(s&&/\/sharing\/rest\/(accounts|portals)\/self/i.test(o)){if(!e.hasToken&&!e.credentialToken&&s.user?.username&&!D$2(o)){const e=H$2(o,!0);e&&P$1.trustedServers.push(e);}Array.isArray(s.authorizedCrossOriginNoCorsDomains)&&m$1(s.authorizedCrossOriginNoCorsDomains);}const a=e.credential;if(a&&exports.s$5){const e=exports.s$5.findServerInfo(a.server);let t=e&&e.owningSystemUrl;if(t){t=t.replace(/\/?$/,"/sharing");const e=exports.s$5.findCredential(t,a.userId);e&&-1===exports.s$5._getIdenticalSvcIdx(t,e)&&e.resources.unshift(t);}}return {data:s,getHeader:t?e=>t?.headers.get(e):M$1,requestOptions:e.params.requestOptions,ssl:e.useSSL,url:e.params.url}}async function V$1(e,t,s){if(e.redoRequest)return e.redoRequest=!1,!1;const o=e.params.requestOptions;if(!t||"native"===o.responseType||"native-request-init"===o.responseType)return !0;let a,n;if(!t.ok)throw a=new Error(`Unable to load ${t.url} status: ${t.status}`),a[R$1]=s,a;s&&(s.error?a=s.error:"error"===s.status&&Array.isArray(s.messages)&&(a={...s},a[R$1]=s,a.details=s.messages));let i,l=null;a&&(n=Number(a.code),l=a.hasOwnProperty("subcode")?Number(a.subcode):null,i=a.messageCode,i=i&&i.toUpperCase());const u=o.authMode;if(403===n&&(4===l||a.message&&a.message.toLowerCase().includes("ssl")&&!a.message.toLowerCase().includes("permission"))){if(!e.useSSL)return e.useSSL=!0,!1}else if(!e.hasToken&&e.useIdentity&&("no-prompt"!==u||498===n)&&void 0!==n&&_$1.includes(n)&&!K$1(e.params.url)&&(403!==n||i&&!F$1.includes(i)&&(null==l||2===l&&e.credentialToken))){await $$1();try{const t=await exports.s$5.getCredential(e.params.url,{error:N$1("request:server",a,e.params),prompt:"no-prompt"!==u,signal:e.controller.signal,token:e.credentialToken});return e.credential=t,e.credentialToken=t.token,e.useSSL=e.useSSL||t.ssl,!1}catch(c){if("no-prompt"===u)return e.credential=void 0,e.credentialToken=void 0,!1;a=c;}}if(a)throw a;return !0}function Y$1(e,r,t=!1){const s=r.controller.signal,o=new Image;return r.withCredentials?o.crossOrigin="use-credentials":o.crossOrigin="anonymous",o.alt="",o.fetchPriority=P$1.priority,o.src=e,c$2(o,e,t,s)}U$1._abortableFetch=null,U$1._corsServers=["https://server.arcgisonline.com","https://services.arcgisonline.com"];
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-async function o$1(e,n,o,i){const a=n.exec(o);if(!a)throw new s$4("esri-intl:invalid-bundle",`Bundle id "${o}" is not compatible with the pattern "${n}"`);const c=a[1]?`${a[1]}/`:"",l=a[2],w=h$2(i),h=`${c}${l}.json`,u=w?`${c}${l}_${w}.json`:h;let f;try{f=await s$1(e(u));}catch(d){if(u===h)throw new s$4("intl:unknown-bundle",`Bundle "${o}" cannot be loaded`,{error:d});try{f=await s$1(e(h));}catch(d){throw new s$4("intl:unknown-bundle",`Bundle "${o}" cannot be loaded`,{error:d})}}return f}async function s$1(t){if(r$6(c$1.fetchBundleAsset))return c$1.fetchBundleAsset(t);const r=await U$1(t,{responseType:"text"});return JSON.parse(r.data)}class i$3{constructor({base:e="",pattern:t,location:n=new URL(window.location.href)}){let r;r="string"==typeof n?e=>new URL(e,new URL(n,window.location.href)).href:n instanceof URL?e=>new URL(e,n).href:n,this.pattern="string"==typeof t?new RegExp(`^${t}`):t,this.getAssetUrl=r,e=e?e.endsWith("/")?e:e+"/":"",this.matcher=new RegExp(`^${e}(?:(.*)/)?(.*)$`);}fetchMessageBundle(e,t){return o$1(this.getAssetUrl,this.matcher,e,t)}}function a$2(e){return new i$3(e)}const c$1={};
+async function o$1(e,n,o,i){const a=n.exec(o);if(!a)throw new s$3("esri-intl:invalid-bundle",`Bundle id "${o}" is not compatible with the pattern "${n}"`);const c=a[1]?`${a[1]}/`:"",l=a[2],w=h$2(i),h=`${c}${l}.json`,u=w?`${c}${l}_${w}.json`:h;let f;try{f=await s$1(e(u));}catch(d){if(u===h)throw new s$3("intl:unknown-bundle",`Bundle "${o}" cannot be loaded`,{error:d});try{f=await s$1(e(h));}catch(d){throw new s$3("intl:unknown-bundle",`Bundle "${o}" cannot be loaded`,{error:d})}}return f}async function s$1(t){if(r$6(c$1.fetchBundleAsset))return c$1.fetchBundleAsset(t);const r=await U$1(t,{responseType:"text"});return JSON.parse(r.data)}class i$3{constructor({base:e="",pattern:t,location:n=new URL(window.location.href)}){let r;r="string"==typeof n?e=>new URL(e,new URL(n,window.location.href)).href:n instanceof URL?e=>new URL(e,n).href:n,this.pattern="string"==typeof t?new RegExp(`^${t}`):t,this.getAssetUrl=r,e=e?e.endsWith("/")?e:e+"/":"",this.matcher=new RegExp(`^${e}(?:(.*)/)?(.*)$`);}fetchMessageBundle(e,t){return o$1(this.getAssetUrl,this.matcher,e,t)}}function a$2(e){return new i$3(e)}const c$1={};
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
 See https://js.arcgis.com/4.25/esri/copyright.txt for details.
 */
-const i$2=s$6.getLogger("esri.assets");function a$1(t){if(!s$7.assetsPath)throw i$2.errorOnce("The API assets location needs to be set using config.assetsPath. More information: https://arcg.is/1OzLe50"),new s$4("assets:path-not-set","config.assetsPath is not set");return G$2(s$7.assetsPath,t)}
+const i$2=s$5.getLogger("esri.assets");function a$1(t){if(!s$6.assetsPath)throw i$2.errorOnce("The API assets location needs to be set using config.assetsPath. More information: https://arcg.is/1OzLe50"),new s$3("assets:path-not-set","config.assetsPath is not set");return G$2(s$6.assetsPath,t)}
 
 /*
 All material copyright ESRI, All Rights Reserved, unless otherwise specified.
@@ -1121,559 +1123,7 @@ function _downloadCSVFile(outputLines, fileTitle) {
   }
 }
 
-/* @preserve
-* arcgis-pdf-creator v0.0.1
-* Fri Feb 03 2023 09:47:02 GMT-0800 (Pacific Standard Time)
-*/
-/** @license
- * Copyright 2022 Esri
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-//--------------------------------------------------------------------------------------------------------------------//
-/**
- * Draws a grid of boxes with optional gaps between boxes.
- *
- * @param PDFCreator PDF-drawing library
- * @param numAcross Number of boxes in each row
- * @param numDown Number of boxes in each column
- * @param x0 Offset in doc units to left edge of leftmost column of boxes
- * @param y0 Offset in doc units to top edge of topmost row of boxes
- * @param width Width of each box in doc units
- * @param height Height of each box in doc units
- * @param horizGap Gap in doc units between two boxes in the same row
- * @param vertGap Gap in doc units between two boxes in the same column
- * @param lineProperties Drawing properties for grid lines
- */
-function drawGridOfBoxes(PDFCreator, options = {
-    numAcross: 1,
-    numDown: 1,
-    x0: 0,
-    y0: 0,
-    width: 1,
-    height: 1,
-    horizGap: 0,
-    vertGap: 0,
-    lineProperties: {
-        thickness: 0,
-        color: "",
-        opacity: 1 // 0..1
-    }
-}) {
-    // Draw the set of boxes
-    for (let j = 0; j < options.numDown; ++j) {
-        for (let i = 0; i < options.numAcross; ++i) {
-            PDFCreator.drawRectangle({
-                left: options.x0 + i * (options.width + options.horizGap),
-                top: options.y0 + j * (options.height + options.vertGap),
-                width: options.width,
-                height: options.height,
-                lineProperties: options.lineProperties
-            });
-        }
-    }
-}
-/**
- * Draws a set of horizontal tick marks down the page.
- *
- * @param PDFCreator PDF-drawing library
- * @param yTickTop Vertical offset in doc units to topmost tick mark
- * @param xTickLeft Horizontal offset in doc units from left of page to left of each tick mark
- * @param numberOfTicks Number of lines to draw in set
- * @param tickLength Length of each tick mark in doc units
- * @param tickInterval Gap between each tick mark in doc units
- */
-function drawHorizontallMeasurementTicks(PDFCreator, yTickTop, xTickLeft, numberOfTicks, tickLength, tickInterval) {
-    for (let y = yTickTop, i = 0; i < numberOfTicks; y += tickInterval, i++) {
-        PDFCreator.drawLine({
-            x1: xTickLeft,
-            y1: y,
-            x2: xTickLeft + tickLength,
-            y2: y
-        });
-    }
-}
-/**
- * Draws a measurement grid useful for checking scaling and for adjusting offsets.
- *
- * @param PDFCreator PDF-drawing library
- * @param tickOptions Drawing properties for ticks
- *
- * @note Note that grid lines will not appear if outside of printer's page print area
- */
-function drawMeasurementLines(PDFCreator, options = {
-    tickLength: 0.05,
-    tickInterval: 1,
-    lineProperties: {
-        thickness: 0.001,
-        color: "0000ff",
-        opacity: 0.5 // 0..1
-    }
-}) {
-    // Draw box showing margins
-    PDFCreator.drawNeatline(options.lineProperties);
-    // Update the line options for the tick marks
-    const updatedOptions = {
-        ...PDFCreator.lineOptions,
-        ...options
-    };
-    PDFCreator.updateLineProperties(updatedOptions.lineProperties);
-    PDFCreator.lineOptions = updatedOptions;
-    // Draw tick marks along horizontal margin lines
-    const numHorizontalTicks = numberOfTicks(PDFCreator.pageOptions.width, PDFCreator.pageOptions.leftMargin, PDFCreator.pageOptions.rightMargin, options.tickInterval);
-    drawVerticalMeasurementTicks(PDFCreator, 0, // first (left) tick within margins
-    0, // top of tick
-    numHorizontalTicks, options.tickLength, options.tickInterval // tick properties
-    );
-    drawVerticalMeasurementTicks(PDFCreator, 0, // first (left) tick
-    PDFCreator.pageOptions.height - PDFCreator.pageOptions.topMargin - PDFCreator.pageOptions.bottomMargin, // top of tick
-    numHorizontalTicks, -options.tickLength, options.tickInterval // tick properties
-    );
-    // Draw tick marks along vertical margin lines
-    const numVerticalTicks = numberOfTicks(PDFCreator.pageOptions.height, PDFCreator.pageOptions.topMargin, PDFCreator.pageOptions.bottomMargin, options.tickInterval);
-    drawHorizontallMeasurementTicks(PDFCreator, 0, // first (top) tick
-    0, // left of tick
-    numVerticalTicks, options.tickLength, options.tickInterval // tick properties
-    );
-    drawHorizontallMeasurementTicks(PDFCreator, 0, // first (top) tick
-    PDFCreator.pageOptions.width - PDFCreator.pageOptions.leftMargin - PDFCreator.pageOptions.rightMargin, // left of tick
-    numVerticalTicks, -options.tickLength, options.tickInterval // tick properties
-    );
-}
-/**
- * Draws a set of vertical tick marks across the page.
- *
- * @param PDFCreator PDF-drawing library
- * @param xLeftTick Horizontal offset in doc units to leftmost tick mark
- * @param yTickTop Vertical offset in doc units from top of page to top of each tick mark
- * @param numberOfTicks Number of lines to draw in set
- * @param tickLength Length of each tick mark in doc units
- * @param tickInterval Gap between each tick mark in doc units
- */
-function drawVerticalMeasurementTicks(PDFCreator, xLeftTick, yTickTop, numberOfTicks, tickLength, tickInterval) {
-    for (let x = xLeftTick, i = 0; i < numberOfTicks; x += tickInterval, i++) {
-        PDFCreator.drawLine({
-            x1: x,
-            y1: yTickTop,
-            x2: x,
-            y2: yTickTop + tickLength
-        });
-    }
-}
-/**
- * Calculates the number of ticks to draw given the total dimension and margins.
- *
- * @param total Total dimension of space to fill with tick marks;, e.g., width
- * @param marginA A margin to remove from the total; e.g., left margin
- * @param marginB A margin to remove from the total; e.g., right margin
- * @param interval Gap between tick marks
- *
- * @return Number of ticks; assumes that ticks start at marginA and continue to marginB
- */
-function numberOfTicks(total, marginA, marginB, interval) {
-    return 1 + Math.floor(((total - marginA - marginB) / interval) + 0.01);
-}
-
-/* @preserve
-* arcgis-pdf-creator v0.0.1
-* Fri Feb 03 2023 09:47:02 GMT-0800 (Pacific Standard Time)
-*/
-/** @license
- * Copyright 2022 Esri
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/*
-  This module contains a generic superclass that models a PDF creator
-  and two subclasses that are adaptors to two PDF libraries. This structure
-  enables us to choose the PDF library to work with since each has strengths
-  over the other.
-
-  Superclass: PDFCreator
-  Subclass for the jsPDF library: PDFCreator_jsPDF
-  Subclass for the pdf_lib library: PDFCreator_pdf_lib
-*/
-//--------------------------------------------------------------------------------------------------------------------//
-var EPageType;
-(function (EPageType) {
-    EPageType["A4"] = "A4";
-    EPageType["ANSI_A"] = "ANSI A";
-})(EPageType || (EPageType = {}));
-//====================================================================================================================//
-class PDFCreator {
-    constructor() {
-        // Properties are public for testing purposes
-        this.dataPath = "";
-        this.lang = "en";
-        this.title = "";
-        this.fontProps = {
-            fontResolutionInchesPerPoint: 1 / 72,
-            fontFullHeightRatio: 1.28
-        };
-        this.lineOptions = {
-            x1: 0,
-            y1: 0,
-            x2: 0,
-            y2: 0,
-            lineProperties: {
-                thickness: 0.1,
-                color: "000000",
-                opacity: 1 // 0..1
-            }
-        };
-        this.pageOptions = {
-            pageType: EPageType.ANSI_A,
-            width: 8.5,
-            height: 11,
-            leftMargin: 0.25,
-            rightMargin: 0.25,
-            topMargin: 0.25,
-            bottomMargin: 0.25,
-            drawNeatline: false
-        };
-        this.rectangleOptions = {
-            left: 0,
-            top: 0,
-            width: 8.5,
-            height: 11,
-            lineProperties: {
-                thickness: 0.1,
-                color: "000000",
-                opacity: 1 // 0..1
-            },
-            fillColor: "",
-            fillOpacity: 1 // 0..1
-        };
-        this.tableOptions = {
-            lineProperties: {
-                thickness: 0.1,
-                color: "",
-                opacity: 1 // 0..1
-            },
-            textProperties: {
-                left: 0,
-                top: 0,
-                fontPoints: 1,
-                fontColor: "000000" // i.e., black
-            }
-        };
-        this.textOptions = {
-            left: 0,
-            top: 0,
-            fontPoints: 1,
-            fontColor: "000000" // i.e., black
-        };
-    }
-    //-- Static methods ------------------------------------------------------------------------------------------------//
-    /**
-     * @class PDFCreator
-     */
-    static getPageSize(pageType) {
-        if (typeof pageType === "string") {
-            pageType = pageType === EPageType.A4 ? EPageType.A4 : EPageType.ANSI_A;
-        }
-        switch (pageType) {
-            case EPageType.A4:
-                return {
-                    width: 8.25,
-                    height: 11.708333
-                };
-            case EPageType.ANSI_A:
-                return {
-                    width: 8.5,
-                    height: 11
-                };
-        }
-    }
-    //-- Public methods ------------------------------------------------------------------------------------------------//
-    /**
-     * @class PDFCreator
-     */
-    addPage() {
-    }
-    /**
-     * Calculates a color intensity that emulates an opacity being applied to it.
-     *
-     * @param colorIntensity Color value to start with; range 0..1
-     * @param opacity Opacity to apply; range 0..1
-     *
-     * @return Color intensity emulating the application of opacity. It works by applying the opacity value
-     * to the input colorIntensity and adding the inverse of the opacity. E.g., if opacity is 1, the original
-     * colorIntensity is returned; if opacity is 0, 1 is returned; if opacity is 0.5; colorIntensity/2 + 0.5 is
-     * returned. It's odd, but when applied to an RGB value, it produces the desired effect.
-     *
-     * @class PDFCreator
-     */
-    applyOpacity(colorIntensity, opacity) {
-        const backgroundColorIntensity = 1;
-        return (colorIntensity * opacity) + backgroundColorIntensity * (1 - opacity);
-    }
-    /**
-     * @class PDFCreator
-     */
-    drawLine(options) {
-        const updatedOptions = {
-            ...this.lineOptions,
-            ...options
-        };
-        updatedOptions.lineProperties = {
-            ...this.lineOptions.lineProperties,
-            ...options.lineProperties
-        };
-        this.updateLineProperties(updatedOptions.lineProperties);
-        this.lineOptions = updatedOptions;
-    }
-    /**
-     * @class PDFCreator
-     */
-    drawNeatline(lineProperties = {
-        thickness: 0.005,
-        color: "0000ff",
-        opacity: 0.2
-    }) {
-        this.drawRectangle({
-            left: 0,
-            top: 0,
-            width: this.pageOptions.width - this.pageOptions.leftMargin - this.pageOptions.rightMargin,
-            height: this.pageOptions.height - this.pageOptions.topMargin - this.pageOptions.bottomMargin,
-            lineProperties
-        });
-    }
-    /**
-     * @class PDFCreator
-     */
-    drawRectangle(options) {
-        const updatedOptions = {
-            ...this.rectangleOptions,
-            ...options
-        };
-        updatedOptions.lineProperties = {
-            ...this.lineOptions.lineProperties,
-            ...options.lineProperties
-        };
-        this.updateLineProperties(updatedOptions.lineProperties);
-        if (this.rectangleOptions.fillColor !== updatedOptions.fillColor ||
-            this.rectangleOptions.fillOpacity !== updatedOptions.fillOpacity) {
-            this.setFillColor(updatedOptions.fillColor, updatedOptions.fillOpacity);
-        }
-        this.rectangleOptions = updatedOptions;
-    }
-    /**
-     * @class PDFCreator
-     */
-    drawTable(text, options) {
-        const updatedOptions = {};
-        updatedOptions.lineProperties = {
-            ...this.tableOptions.lineProperties,
-            ...options.lineProperties
-        };
-        updatedOptions.textProperties = {
-            ...this.tableOptions.textProperties,
-            ...options.textProperties
-        };
-        if (this.tableOptions.textProperties.fontPoints !== updatedOptions.textProperties.fontPoints) {
-            this.setFontSize(updatedOptions.textProperties.fontPoints);
-        }
-        if (this.tableOptions.textProperties.fontColor !== updatedOptions.textProperties.fontColor) {
-            this.setFontColor(updatedOptions.textProperties.fontColor);
-        }
-        this.updateLineProperties(updatedOptions.lineProperties);
-        this.tableOptions = updatedOptions;
-    }
-    /**
-     * @class PDFCreator
-     */
-    drawText(text, options) {
-        const updatedOptions = {
-            ...this.textOptions,
-            ...options
-        };
-        if (this.textOptions.fontPoints !== updatedOptions.fontPoints) {
-            this.setFontSize(updatedOptions.fontPoints);
-        }
-        if (this.textOptions.fontColor !== updatedOptions.fontColor) {
-            this.setFontColor(updatedOptions.fontColor);
-        }
-        this.textOptions = updatedOptions;
-    }
-    /**
-     * Calculates document units from top of font ascenders to baseline.
-     *
-     * @class PDFCreator
-     */
-    fontAscenderBaselineHeight(fontPoints) {
-        return fontPoints * this.fontProps.fontResolutionInchesPerPoint;
-    }
-    /**
-     * Calculates document units from top of font ascenders to bottom of descenders.
-     *
-     * @class PDFCreator
-     */
-    fontAscenderDescenderHeight(fontPoints) {
-        return this.fontProps.fontFullHeightRatio * this.fontAscenderBaselineHeight(fontPoints);
-    }
-    /**
-     * Returns the name of the font file supporting the specified locale.
-     *
-     * @param lang Locale such as "en" or "zh-tw"
-     * @returns Font name, e.g., "0b7681dc140844ee9f409bdac249fbf0-japanese"
-     *
-     * @class PDFCreator
-     */
-    getFontFileName(lang) {
-        let fontFile = "0b7681dc140844ee9f409bdac249fbf0-general";
-        if (lang === "ja") {
-            fontFile = "0b7681dc140844ee9f409bdac249fbf0-japanese";
-        }
-        else if (lang === "ko") {
-            fontFile = "0b7681dc140844ee9f409bdac249fbf0-korean";
-        }
-        else if (lang === "zh-cn") {
-            fontFile = "0b7681dc140844ee9f409bdac249fbf0-simplified-chinese";
-        }
-        else if (lang === "zh-hk" || lang === "zh-tw") {
-            fontFile = "0b7681dc140844ee9f409bdac249fbf0-traditional-chinese";
-        }
-        return fontFile;
-    }
-    /**
-     * Estimates with width of a string.
-     *
-     * @param text String to estimate
-     * @param fontSize Text size in points
-     * @returns Estimated width of text in doc units
-     *
-     * @class PDFCreator
-     */
-    getTextWidth(text, fontSize) {
-        // Return a value for testing
-        return text.length * fontSize;
-    }
-    /**
-     * @class PDFCreator
-     */
-    hexToRGB(hex, opacity = 1 // 0..1
-    ) {
-        const colorParts = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return colorParts ? {
-            r: this.applyOpacity(parseInt(colorParts[1], 16) / 255, opacity),
-            g: this.applyOpacity(parseInt(colorParts[2], 16) / 255, opacity),
-            b: this.applyOpacity(parseInt(colorParts[3], 16) / 255, opacity)
-        } : {
-            r: 0,
-            g: 0,
-            b: 0
-        };
-    }
-    /**
-     * @class PDFCreator
-     */
-    async initialize(pageProperties = {}, dataPath = "", lang = "en", title = "", drawNeatline = false) {
-        if (JSON.stringify(pageProperties) !== "{}") {
-            this.pageOptions.pageType = pageProperties.pageType === EPageType.A4 ? EPageType.A4 : EPageType.ANSI_A;
-            const pageSize = PDFCreator.getPageSize(this.pageOptions.pageType);
-            this.pageOptions.width = pageSize.width;
-            this.pageOptions.height = pageSize.height;
-            this.pageOptions.leftMargin = pageProperties.leftMargin ?? this.pageOptions.leftMargin;
-            this.pageOptions.rightMargin = pageProperties.rightMargin ?? this.pageOptions.rightMargin;
-            this.pageOptions.topMargin = pageProperties.topMargin ?? this.pageOptions.topMargin;
-            this.pageOptions.bottomMargin = pageProperties.bottomMargin ?? this.pageOptions.bottomMargin;
-        }
-        this.dataPath = dataPath;
-        this.lang = lang;
-        this.title = title || "PDF Document";
-        this.pageOptions.drawNeatline = drawNeatline;
-        return Promise.resolve();
-    }
-    /**
-     * @class PDFCreator
-     */
-    save() {
-    }
-    /**
-     * @class PDFCreator
-     */
-    setDrawColor(drawColor, // eslint-disable-line @typescript-eslint/no-unused-vars
-    opacity = 1 // eslint-disable-line @typescript-eslint/no-unused-vars
-    ) {
-    }
-    /**
-     * @class PDFCreator
-     */
-    setFillColor(fillColor, // eslint-disable-line @typescript-eslint/no-unused-vars
-    opacity = 1 // eslint-disable-line @typescript-eslint/no-unused-vars
-    ) {
-    }
-    /**
-     * @class PDFCreator
-     */
-    setFont(lang // eslint-disable-line @typescript-eslint/no-unused-vars
-    ) {
-        return Promise.resolve();
-    }
-    /**
-     * @class PDFCreator
-     */
-    setFontColor(fontColor // eslint-disable-line @typescript-eslint/no-unused-vars
-    ) {
-    }
-    /**
-     * @class PDFCreator
-     */
-    setFontSize(fontPoints // eslint-disable-line @typescript-eslint/no-unused-vars
-    ) {
-    }
-    /**
-     * @class PDFCreator
-     */
-    setLang(lang) {
-        if (this.lang !== lang) {
-            this.lang = lang;
-            return this.setFont(lang);
-        }
-        else {
-            return Promise.resolve();
-        }
-    }
-    /**
-     * @class PDFCreator
-     */
-    setLineWidth(width // eslint-disable-line @typescript-eslint/no-unused-vars
-    ) {
-    }
-    updateLineProperties(updatedProps) {
-        if (this.lineOptions.lineProperties.thickness !== updatedProps.thickness) {
-            this.setLineWidth(updatedProps.thickness); // Note that this changes the drawing width for ALL vectors!
-        }
-        if (this.lineOptions.lineProperties.color !== updatedProps.color ||
-            this.lineOptions.lineProperties.opacity !== updatedProps.opacity) {
-            this.setDrawColor(updatedProps.color, updatedProps.opacity); // Note that this changes the drawing color & opacity for ALL vectors!
-        }
-        this.lineOptions.lineProperties = updatedProps;
-    }
-}
-
-var _typeof_1 = createCommonjsModule(function (module) {
+var _typeof_1 = _commonjsHelpers.createCommonjsModule(function (module) {
 function _typeof(obj) {
   "@babel/helpers - typeof";
 
@@ -1686,7 +1136,7 @@ function _typeof(obj) {
 module.exports = _typeof, module.exports.__esModule = true, module.exports["default"] = module.exports;
 });
 
-const t = /*@__PURE__*/getDefaultExportFromCjs(_typeof_1);
+const t = /*@__PURE__*/_commonjsHelpers.getDefaultExportFromCjs(_typeof_1);
 
 // DEFLATE is a complex format; to read this code, you should probably check the RFC first:
 
@@ -2532,7 +1982,7 @@ function(t){var r=function(t){var e,r,n,i,a,o,s,c,u,h;for(/[^\x00-\xFF]/.test(t)
  * Licensed under the MIT License.
  * http://opensource.org/licenses/mit-license
  */
-function(t){t.loadFile=function(t,e,r){return function(t,e,r){e=!1!==e,r="function"==typeof r?r:function(){};var n=void 0;try{n=function(t,e,r){var n=new XMLHttpRequest,i=0,a=function(t){var e=t.length,r=[],n=String.fromCharCode;for(i=0;i<e;i+=1)r.push(n(255&t.charCodeAt(i)));return r.join("")};if(n.open("GET",t,!e),n.overrideMimeType("text/plain; charset=x-user-defined"),!1===e&&(n.onload=function(){200===n.status?r(a(this.responseText)):r(void 0);}),n.send(null),e&&200===n.status)return a(n.responseText)}(t,e,r);}catch(t){}return n}(t,e,r)},t.loadImageFile=t.loadFile;}(E.API),function(e){function r(){return (n.html2canvas?Promise.resolve(n.html2canvas):import('./html2canvas-12c862c8.js').then(function (n) { return n.h; })).catch((function(t){return Promise.reject(new Error("Could not load html2canvas: "+t))})).then((function(t){return t.default?t.default:t}))}function i(){return (n.DOMPurify?Promise.resolve(n.DOMPurify):import('./purify-75c61cf7.js').then(function (n) { return n.p; })).catch((function(t){return Promise.reject(new Error("Could not load dompurify: "+t))})).then((function(t){return t.default?t.default:t}))}var a=function(e){var r=t(e);return "undefined"===r?"undefined":"string"===r||e instanceof String?"string":"number"===r||e instanceof Number?"number":"function"===r||e instanceof Function?"function":e&&e.constructor===Array?"array":e&&1===e.nodeType?"element":"object"===r?"object":"unknown"},o=function(t,e){var r=document.createElement(t);for(var n in e.className&&(r.className=e.className),e.innerHTML&&e.dompurify&&(r.innerHTML=e.dompurify.sanitize(e.innerHTML)),e.style)r.style[n]=e.style[n];return r},s=function t(e){var r=Object.assign(t.convert(Promise.resolve()),JSON.parse(JSON.stringify(t.template))),n=t.convert(Promise.resolve(),r);return n=(n=n.setProgress(1,t,1,[t])).set(e)};(s.prototype=Object.create(Promise.prototype)).constructor=s,s.convert=function(t,e){return t.__proto__=e||s.prototype,t},s.template={prop:{src:null,container:null,overlay:null,canvas:null,img:null,pdf:null,pageSize:null,callback:function(){}},progress:{val:0,state:null,n:0,stack:[]},opt:{filename:"file.pdf",margin:[0,0,0,0],enableLinks:!0,x:0,y:0,html2canvas:{},jsPDF:{},backgroundColor:"transparent"}},s.prototype.from=function(t,e){return this.then((function(){switch(e=e||function(t){switch(a(t)){case"string":return "string";case"element":return "canvas"===t.nodeName.toLowerCase()?"canvas":"element";default:return "unknown"}}(t)){case"string":return this.then(i).then((function(e){return this.set({src:o("div",{innerHTML:t,dompurify:e})})}));case"element":return this.set({src:t});case"canvas":return this.set({canvas:t});case"img":return this.set({img:t});default:return this.error("Unknown source type.")}}))},s.prototype.to=function(t){switch(t){case"container":return this.toContainer();case"canvas":return this.toCanvas();case"img":return this.toImg();case"pdf":return this.toPdf();default:return this.error("Invalid target.")}},s.prototype.toContainer=function(){return this.thenList([function(){return this.prop.src||this.error("Cannot duplicate - no source HTML.")},function(){return this.prop.pageSize||this.setPageSize()}]).then((function(){var t={position:"relative",display:"inline-block",width:("number"!=typeof this.opt.width||isNaN(this.opt.width)||"number"!=typeof this.opt.windowWidth||isNaN(this.opt.windowWidth)?Math.max(this.prop.src.clientWidth,this.prop.src.scrollWidth,this.prop.src.offsetWidth):this.opt.windowWidth)+"px",left:0,right:0,top:0,margin:"auto",backgroundColor:this.opt.backgroundColor},e=function t(e,r){for(var n=3===e.nodeType?document.createTextNode(e.nodeValue):e.cloneNode(!1),i=e.firstChild;i;i=i.nextSibling)!0!==r&&1===i.nodeType&&"SCRIPT"===i.nodeName||n.appendChild(t(i,r));return 1===e.nodeType&&("CANVAS"===e.nodeName?(n.width=e.width,n.height=e.height,n.getContext("2d").drawImage(e,0,0)):"TEXTAREA"!==e.nodeName&&"SELECT"!==e.nodeName||(n.value=e.value),n.addEventListener("load",(function(){n.scrollTop=e.scrollTop,n.scrollLeft=e.scrollLeft;}),!0)),n}(this.prop.src,this.opt.html2canvas.javascriptEnabled);"BODY"===e.tagName&&(t.height=Math.max(document.body.scrollHeight,document.body.offsetHeight,document.documentElement.clientHeight,document.documentElement.scrollHeight,document.documentElement.offsetHeight)+"px"),this.prop.overlay=o("div",{className:"html2pdf__overlay",style:{position:"fixed",overflow:"hidden",zIndex:1e3,left:"-100000px",right:0,bottom:0,top:0}}),this.prop.container=o("div",{className:"html2pdf__container",style:t}),this.prop.container.appendChild(e),this.prop.container.firstChild.appendChild(o("div",{style:{clear:"both",border:"0 none transparent",margin:0,padding:0,height:0}})),this.prop.container.style.float="none",this.prop.overlay.appendChild(this.prop.container),document.body.appendChild(this.prop.overlay),this.prop.container.firstChild.style.position="relative",this.prop.container.height=Math.max(this.prop.container.firstChild.clientHeight,this.prop.container.firstChild.scrollHeight,this.prop.container.firstChild.offsetHeight)+"px";}))},s.prototype.toCanvas=function(){var t=[function(){return document.body.contains(this.prop.container)||this.toContainer()}];return this.thenList(t).then(r).then((function(t){var e=Object.assign({},this.opt.html2canvas);return delete e.onrendered,t(this.prop.container,e)})).then((function(t){(this.opt.html2canvas.onrendered||function(){})(t),this.prop.canvas=t,document.body.removeChild(this.prop.overlay);}))},s.prototype.toContext2d=function(){var t=[function(){return document.body.contains(this.prop.container)||this.toContainer()}];return this.thenList(t).then(r).then((function(t){var e=this.opt.jsPDF,r=this.opt.fontFaces,n="number"!=typeof this.opt.width||isNaN(this.opt.width)||"number"!=typeof this.opt.windowWidth||isNaN(this.opt.windowWidth)?1:this.opt.width/this.opt.windowWidth,i=Object.assign({async:!0,allowTaint:!0,scale:n,scrollX:this.opt.scrollX||0,scrollY:this.opt.scrollY||0,backgroundColor:"#ffffff",imageTimeout:15e3,logging:!0,proxy:null,removeContainer:!0,foreignObjectRendering:!1,useCORS:!1},this.opt.html2canvas);if(delete i.onrendered,e.context2d.autoPaging=void 0===this.opt.autoPaging||this.opt.autoPaging,e.context2d.posX=this.opt.x,e.context2d.posY=this.opt.y,e.context2d.margin=this.opt.margin,e.context2d.fontFaces=r,r)for(var a=0;a<r.length;++a){var o=r[a],s=o.src.find((function(t){return "truetype"===t.format}));s&&e.addFont(s.url,o.ref.name,o.ref.style);}return i.windowHeight=i.windowHeight||0,i.windowHeight=0==i.windowHeight?Math.max(this.prop.container.clientHeight,this.prop.container.scrollHeight,this.prop.container.offsetHeight):i.windowHeight,e.context2d.save(!0),t(this.prop.container,i)})).then((function(t){this.opt.jsPDF.context2d.restore(!0),(this.opt.html2canvas.onrendered||function(){})(t),this.prop.canvas=t,document.body.removeChild(this.prop.overlay);}))},s.prototype.toImg=function(){return this.thenList([function(){return this.prop.canvas||this.toCanvas()}]).then((function(){var t=this.prop.canvas.toDataURL("image/"+this.opt.image.type,this.opt.image.quality);this.prop.img=document.createElement("img"),this.prop.img.src=t;}))},s.prototype.toPdf=function(){return this.thenList([function(){return this.toContext2d()}]).then((function(){this.prop.pdf=this.prop.pdf||this.opt.jsPDF;}))},s.prototype.output=function(t,e,r){return "img"===(r=r||"pdf").toLowerCase()||"image"===r.toLowerCase()?this.outputImg(t,e):this.outputPdf(t,e)},s.prototype.outputPdf=function(t,e){return this.thenList([function(){return this.prop.pdf||this.toPdf()}]).then((function(){return this.prop.pdf.output(t,e)}))},s.prototype.outputImg=function(t){return this.thenList([function(){return this.prop.img||this.toImg()}]).then((function(){switch(t){case void 0:case"img":return this.prop.img;case"datauristring":case"dataurlstring":return this.prop.img.src;case"datauri":case"dataurl":return document.location.href=this.prop.img.src;default:throw 'Image output type "'+t+'" is not supported.'}}))},s.prototype.save=function(t){return this.thenList([function(){return this.prop.pdf||this.toPdf()}]).set(t?{filename:t}:null).then((function(){this.prop.pdf.save(this.opt.filename);}))},s.prototype.doCallback=function(){return this.thenList([function(){return this.prop.pdf||this.toPdf()}]).then((function(){this.prop.callback(this.prop.pdf);}))},s.prototype.set=function(t){if("object"!==a(t))return this;var e=Object.keys(t||{}).map((function(e){if(e in s.template.prop)return function(){this.prop[e]=t[e];};switch(e){case"margin":return this.setMargin.bind(this,t.margin);case"jsPDF":return function(){return this.opt.jsPDF=t.jsPDF,this.setPageSize()};case"pageSize":return this.setPageSize.bind(this,t.pageSize);default:return function(){this.opt[e]=t[e];}}}),this);return this.then((function(){return this.thenList(e)}))},s.prototype.get=function(t,e){return this.then((function(){var r=t in s.template.prop?this.prop[t]:this.opt[t];return e?e(r):r}))},s.prototype.setMargin=function(t){return this.then((function(){switch(a(t)){case"number":t=[t,t,t,t];case"array":if(2===t.length&&(t=[t[0],t[1],t[0],t[1]]),4===t.length)break;default:return this.error("Invalid margin array.")}this.opt.margin=t;})).then(this.setPageSize)},s.prototype.setPageSize=function(t){function e(t,e){return Math.floor(t*e/72*96)}return this.then((function(){(t=t||E.getPageSize(this.opt.jsPDF)).hasOwnProperty("inner")||(t.inner={width:t.width-this.opt.margin[1]-this.opt.margin[3],height:t.height-this.opt.margin[0]-this.opt.margin[2]},t.inner.px={width:e(t.inner.width,t.k),height:e(t.inner.height,t.k)},t.inner.ratio=t.inner.height/t.inner.width),this.prop.pageSize=t;}))},s.prototype.setProgress=function(t,e,r,n){return null!=t&&(this.progress.val=t),null!=e&&(this.progress.state=e),null!=r&&(this.progress.n=r),null!=n&&(this.progress.stack=n),this.progress.ratio=this.progress.val/this.progress.state,this},s.prototype.updateProgress=function(t,e,r,n){return this.setProgress(t?this.progress.val+t:null,e||null,r?this.progress.n+r:null,n?this.progress.stack.concat(n):null)},s.prototype.then=function(t,e){var r=this;return this.thenCore(t,e,(function(t,e){return r.updateProgress(null,null,1,[t]),Promise.prototype.then.call(this,(function(e){return r.updateProgress(null,t),e})).then(t,e).then((function(t){return r.updateProgress(1),t}))}))},s.prototype.thenCore=function(t,e,r){r=r||Promise.prototype.then;t&&(t=t.bind(this)),e&&(e=e.bind(this));var n=-1!==Promise.toString().indexOf("[native code]")&&"Promise"===Promise.name?this:s.convert(Object.assign({},this),Promise.prototype),i=r.call(n,t,e);return s.convert(i,this.__proto__)},s.prototype.thenExternal=function(t,e){return Promise.prototype.then.call(this,t,e)},s.prototype.thenList=function(t){var e=this;return t.forEach((function(t){e=e.thenCore(t);})),e},s.prototype.catch=function(t){t&&(t=t.bind(this));var e=Promise.prototype.catch.call(this,t);return s.convert(e,this)},s.prototype.catchExternal=function(t){return Promise.prototype.catch.call(this,t)},s.prototype.error=function(t){return this.then((function(){throw new Error(t)}))},s.prototype.using=s.prototype.set,s.prototype.saveAs=s.prototype.save,s.prototype.export=s.prototype.output,s.prototype.run=s.prototype.then,E.getPageSize=function(e,r,n){if("object"===t(e)){var i=e;e=i.orientation,r=i.unit||r,n=i.format||n;}r=r||"mm",n=n||"a4",e=(""+(e||"P")).toLowerCase();var a,o=(""+n).toLowerCase(),s={a0:[2383.94,3370.39],a1:[1683.78,2383.94],a2:[1190.55,1683.78],a3:[841.89,1190.55],a4:[595.28,841.89],a5:[419.53,595.28],a6:[297.64,419.53],a7:[209.76,297.64],a8:[147.4,209.76],a9:[104.88,147.4],a10:[73.7,104.88],b0:[2834.65,4008.19],b1:[2004.09,2834.65],b2:[1417.32,2004.09],b3:[1000.63,1417.32],b4:[708.66,1000.63],b5:[498.9,708.66],b6:[354.33,498.9],b7:[249.45,354.33],b8:[175.75,249.45],b9:[124.72,175.75],b10:[87.87,124.72],c0:[2599.37,3676.54],c1:[1836.85,2599.37],c2:[1298.27,1836.85],c3:[918.43,1298.27],c4:[649.13,918.43],c5:[459.21,649.13],c6:[323.15,459.21],c7:[229.61,323.15],c8:[161.57,229.61],c9:[113.39,161.57],c10:[79.37,113.39],dl:[311.81,623.62],letter:[612,792],"government-letter":[576,756],legal:[612,1008],"junior-legal":[576,360],ledger:[1224,792],tabloid:[792,1224],"credit-card":[153,243]};switch(r){case"pt":a=1;break;case"mm":a=72/25.4;break;case"cm":a=72/2.54;break;case"in":a=72;break;case"px":a=.75;break;case"pc":case"em":a=12;break;case"ex":a=6;break;default:throw "Invalid unit: "+r}var c,u=0,h=0;if(s.hasOwnProperty(o))u=s[o][1]/a,h=s[o][0]/a;else try{u=n[1],h=n[0];}catch(t){throw new Error("Invalid format: "+n)}if("p"===e||"portrait"===e)e="p",h>u&&(c=h,h=u,u=c);else {if("l"!==e&&"landscape"!==e)throw "Invalid orientation: "+e;e="l",u>h&&(c=h,h=u,u=c);}return {width:h,height:u,unit:r,k:a,orientation:e}},e.html=function(t,e){(e=e||{}).callback=e.callback||function(){},e.html2canvas=e.html2canvas||{},e.html2canvas.canvas=e.html2canvas.canvas||this.canvas,e.jsPDF=e.jsPDF||this,e.fontFaces=e.fontFaces?e.fontFaces.map(jt):null;var r=new s(e);return e.worker?r:r.from(t).doCallback()};}(E.API),E.API.addJS=function(t){return Ht=t,this.internal.events.subscribe("postPutResources",(function(){Ut=this.internal.newObject(),this.internal.out("<<"),this.internal.out("/Names [(EmbeddedJS) "+(Ut+1)+" 0 R]"),this.internal.out(">>"),this.internal.out("endobj"),zt=this.internal.newObject(),this.internal.out("<<"),this.internal.out("/S /JavaScript"),this.internal.out("/JS ("+Ht+")"),this.internal.out(">>"),this.internal.out("endobj");})),this.internal.events.subscribe("putCatalog",(function(){void 0!==Ut&&void 0!==zt&&this.internal.out("/Names <</JavaScript "+Ut+" 0 R>>");})),this},
+function(t){t.loadFile=function(t,e,r){return function(t,e,r){e=!1!==e,r="function"==typeof r?r:function(){};var n=void 0;try{n=function(t,e,r){var n=new XMLHttpRequest,i=0,a=function(t){var e=t.length,r=[],n=String.fromCharCode;for(i=0;i<e;i+=1)r.push(n(255&t.charCodeAt(i)));return r.join("")};if(n.open("GET",t,!e),n.overrideMimeType("text/plain; charset=x-user-defined"),!1===e&&(n.onload=function(){200===n.status?r(a(this.responseText)):r(void 0);}),n.send(null),e&&200===n.status)return a(n.responseText)}(t,e,r);}catch(t){}return n}(t,e,r)},t.loadImageFile=t.loadFile;}(E.API),function(e){function r(){return (n.html2canvas?Promise.resolve(n.html2canvas):Promise.resolve().then(function () { return require('./html2canvas-770c1171.js'); }).then(function (n) { return n.html2canvas; })).catch((function(t){return Promise.reject(new Error("Could not load html2canvas: "+t))})).then((function(t){return t.default?t.default:t}))}function i(){return (n.DOMPurify?Promise.resolve(n.DOMPurify):Promise.resolve().then(function () { return require('./purify-5389d8d6.js'); }).then(function (n) { return n.purify; })).catch((function(t){return Promise.reject(new Error("Could not load dompurify: "+t))})).then((function(t){return t.default?t.default:t}))}var a=function(e){var r=t(e);return "undefined"===r?"undefined":"string"===r||e instanceof String?"string":"number"===r||e instanceof Number?"number":"function"===r||e instanceof Function?"function":e&&e.constructor===Array?"array":e&&1===e.nodeType?"element":"object"===r?"object":"unknown"},o=function(t,e){var r=document.createElement(t);for(var n in e.className&&(r.className=e.className),e.innerHTML&&e.dompurify&&(r.innerHTML=e.dompurify.sanitize(e.innerHTML)),e.style)r.style[n]=e.style[n];return r},s=function t(e){var r=Object.assign(t.convert(Promise.resolve()),JSON.parse(JSON.stringify(t.template))),n=t.convert(Promise.resolve(),r);return n=(n=n.setProgress(1,t,1,[t])).set(e)};(s.prototype=Object.create(Promise.prototype)).constructor=s,s.convert=function(t,e){return t.__proto__=e||s.prototype,t},s.template={prop:{src:null,container:null,overlay:null,canvas:null,img:null,pdf:null,pageSize:null,callback:function(){}},progress:{val:0,state:null,n:0,stack:[]},opt:{filename:"file.pdf",margin:[0,0,0,0],enableLinks:!0,x:0,y:0,html2canvas:{},jsPDF:{},backgroundColor:"transparent"}},s.prototype.from=function(t,e){return this.then((function(){switch(e=e||function(t){switch(a(t)){case"string":return "string";case"element":return "canvas"===t.nodeName.toLowerCase()?"canvas":"element";default:return "unknown"}}(t)){case"string":return this.then(i).then((function(e){return this.set({src:o("div",{innerHTML:t,dompurify:e})})}));case"element":return this.set({src:t});case"canvas":return this.set({canvas:t});case"img":return this.set({img:t});default:return this.error("Unknown source type.")}}))},s.prototype.to=function(t){switch(t){case"container":return this.toContainer();case"canvas":return this.toCanvas();case"img":return this.toImg();case"pdf":return this.toPdf();default:return this.error("Invalid target.")}},s.prototype.toContainer=function(){return this.thenList([function(){return this.prop.src||this.error("Cannot duplicate - no source HTML.")},function(){return this.prop.pageSize||this.setPageSize()}]).then((function(){var t={position:"relative",display:"inline-block",width:("number"!=typeof this.opt.width||isNaN(this.opt.width)||"number"!=typeof this.opt.windowWidth||isNaN(this.opt.windowWidth)?Math.max(this.prop.src.clientWidth,this.prop.src.scrollWidth,this.prop.src.offsetWidth):this.opt.windowWidth)+"px",left:0,right:0,top:0,margin:"auto",backgroundColor:this.opt.backgroundColor},e=function t(e,r){for(var n=3===e.nodeType?document.createTextNode(e.nodeValue):e.cloneNode(!1),i=e.firstChild;i;i=i.nextSibling)!0!==r&&1===i.nodeType&&"SCRIPT"===i.nodeName||n.appendChild(t(i,r));return 1===e.nodeType&&("CANVAS"===e.nodeName?(n.width=e.width,n.height=e.height,n.getContext("2d").drawImage(e,0,0)):"TEXTAREA"!==e.nodeName&&"SELECT"!==e.nodeName||(n.value=e.value),n.addEventListener("load",(function(){n.scrollTop=e.scrollTop,n.scrollLeft=e.scrollLeft;}),!0)),n}(this.prop.src,this.opt.html2canvas.javascriptEnabled);"BODY"===e.tagName&&(t.height=Math.max(document.body.scrollHeight,document.body.offsetHeight,document.documentElement.clientHeight,document.documentElement.scrollHeight,document.documentElement.offsetHeight)+"px"),this.prop.overlay=o("div",{className:"html2pdf__overlay",style:{position:"fixed",overflow:"hidden",zIndex:1e3,left:"-100000px",right:0,bottom:0,top:0}}),this.prop.container=o("div",{className:"html2pdf__container",style:t}),this.prop.container.appendChild(e),this.prop.container.firstChild.appendChild(o("div",{style:{clear:"both",border:"0 none transparent",margin:0,padding:0,height:0}})),this.prop.container.style.float="none",this.prop.overlay.appendChild(this.prop.container),document.body.appendChild(this.prop.overlay),this.prop.container.firstChild.style.position="relative",this.prop.container.height=Math.max(this.prop.container.firstChild.clientHeight,this.prop.container.firstChild.scrollHeight,this.prop.container.firstChild.offsetHeight)+"px";}))},s.prototype.toCanvas=function(){var t=[function(){return document.body.contains(this.prop.container)||this.toContainer()}];return this.thenList(t).then(r).then((function(t){var e=Object.assign({},this.opt.html2canvas);return delete e.onrendered,t(this.prop.container,e)})).then((function(t){(this.opt.html2canvas.onrendered||function(){})(t),this.prop.canvas=t,document.body.removeChild(this.prop.overlay);}))},s.prototype.toContext2d=function(){var t=[function(){return document.body.contains(this.prop.container)||this.toContainer()}];return this.thenList(t).then(r).then((function(t){var e=this.opt.jsPDF,r=this.opt.fontFaces,n="number"!=typeof this.opt.width||isNaN(this.opt.width)||"number"!=typeof this.opt.windowWidth||isNaN(this.opt.windowWidth)?1:this.opt.width/this.opt.windowWidth,i=Object.assign({async:!0,allowTaint:!0,scale:n,scrollX:this.opt.scrollX||0,scrollY:this.opt.scrollY||0,backgroundColor:"#ffffff",imageTimeout:15e3,logging:!0,proxy:null,removeContainer:!0,foreignObjectRendering:!1,useCORS:!1},this.opt.html2canvas);if(delete i.onrendered,e.context2d.autoPaging=void 0===this.opt.autoPaging||this.opt.autoPaging,e.context2d.posX=this.opt.x,e.context2d.posY=this.opt.y,e.context2d.margin=this.opt.margin,e.context2d.fontFaces=r,r)for(var a=0;a<r.length;++a){var o=r[a],s=o.src.find((function(t){return "truetype"===t.format}));s&&e.addFont(s.url,o.ref.name,o.ref.style);}return i.windowHeight=i.windowHeight||0,i.windowHeight=0==i.windowHeight?Math.max(this.prop.container.clientHeight,this.prop.container.scrollHeight,this.prop.container.offsetHeight):i.windowHeight,e.context2d.save(!0),t(this.prop.container,i)})).then((function(t){this.opt.jsPDF.context2d.restore(!0),(this.opt.html2canvas.onrendered||function(){})(t),this.prop.canvas=t,document.body.removeChild(this.prop.overlay);}))},s.prototype.toImg=function(){return this.thenList([function(){return this.prop.canvas||this.toCanvas()}]).then((function(){var t=this.prop.canvas.toDataURL("image/"+this.opt.image.type,this.opt.image.quality);this.prop.img=document.createElement("img"),this.prop.img.src=t;}))},s.prototype.toPdf=function(){return this.thenList([function(){return this.toContext2d()}]).then((function(){this.prop.pdf=this.prop.pdf||this.opt.jsPDF;}))},s.prototype.output=function(t,e,r){return "img"===(r=r||"pdf").toLowerCase()||"image"===r.toLowerCase()?this.outputImg(t,e):this.outputPdf(t,e)},s.prototype.outputPdf=function(t,e){return this.thenList([function(){return this.prop.pdf||this.toPdf()}]).then((function(){return this.prop.pdf.output(t,e)}))},s.prototype.outputImg=function(t){return this.thenList([function(){return this.prop.img||this.toImg()}]).then((function(){switch(t){case void 0:case"img":return this.prop.img;case"datauristring":case"dataurlstring":return this.prop.img.src;case"datauri":case"dataurl":return document.location.href=this.prop.img.src;default:throw 'Image output type "'+t+'" is not supported.'}}))},s.prototype.save=function(t){return this.thenList([function(){return this.prop.pdf||this.toPdf()}]).set(t?{filename:t}:null).then((function(){this.prop.pdf.save(this.opt.filename);}))},s.prototype.doCallback=function(){return this.thenList([function(){return this.prop.pdf||this.toPdf()}]).then((function(){this.prop.callback(this.prop.pdf);}))},s.prototype.set=function(t){if("object"!==a(t))return this;var e=Object.keys(t||{}).map((function(e){if(e in s.template.prop)return function(){this.prop[e]=t[e];};switch(e){case"margin":return this.setMargin.bind(this,t.margin);case"jsPDF":return function(){return this.opt.jsPDF=t.jsPDF,this.setPageSize()};case"pageSize":return this.setPageSize.bind(this,t.pageSize);default:return function(){this.opt[e]=t[e];}}}),this);return this.then((function(){return this.thenList(e)}))},s.prototype.get=function(t,e){return this.then((function(){var r=t in s.template.prop?this.prop[t]:this.opt[t];return e?e(r):r}))},s.prototype.setMargin=function(t){return this.then((function(){switch(a(t)){case"number":t=[t,t,t,t];case"array":if(2===t.length&&(t=[t[0],t[1],t[0],t[1]]),4===t.length)break;default:return this.error("Invalid margin array.")}this.opt.margin=t;})).then(this.setPageSize)},s.prototype.setPageSize=function(t){function e(t,e){return Math.floor(t*e/72*96)}return this.then((function(){(t=t||E.getPageSize(this.opt.jsPDF)).hasOwnProperty("inner")||(t.inner={width:t.width-this.opt.margin[1]-this.opt.margin[3],height:t.height-this.opt.margin[0]-this.opt.margin[2]},t.inner.px={width:e(t.inner.width,t.k),height:e(t.inner.height,t.k)},t.inner.ratio=t.inner.height/t.inner.width),this.prop.pageSize=t;}))},s.prototype.setProgress=function(t,e,r,n){return null!=t&&(this.progress.val=t),null!=e&&(this.progress.state=e),null!=r&&(this.progress.n=r),null!=n&&(this.progress.stack=n),this.progress.ratio=this.progress.val/this.progress.state,this},s.prototype.updateProgress=function(t,e,r,n){return this.setProgress(t?this.progress.val+t:null,e||null,r?this.progress.n+r:null,n?this.progress.stack.concat(n):null)},s.prototype.then=function(t,e){var r=this;return this.thenCore(t,e,(function(t,e){return r.updateProgress(null,null,1,[t]),Promise.prototype.then.call(this,(function(e){return r.updateProgress(null,t),e})).then(t,e).then((function(t){return r.updateProgress(1),t}))}))},s.prototype.thenCore=function(t,e,r){r=r||Promise.prototype.then;t&&(t=t.bind(this)),e&&(e=e.bind(this));var n=-1!==Promise.toString().indexOf("[native code]")&&"Promise"===Promise.name?this:s.convert(Object.assign({},this),Promise.prototype),i=r.call(n,t,e);return s.convert(i,this.__proto__)},s.prototype.thenExternal=function(t,e){return Promise.prototype.then.call(this,t,e)},s.prototype.thenList=function(t){var e=this;return t.forEach((function(t){e=e.thenCore(t);})),e},s.prototype.catch=function(t){t&&(t=t.bind(this));var e=Promise.prototype.catch.call(this,t);return s.convert(e,this)},s.prototype.catchExternal=function(t){return Promise.prototype.catch.call(this,t)},s.prototype.error=function(t){return this.then((function(){throw new Error(t)}))},s.prototype.using=s.prototype.set,s.prototype.saveAs=s.prototype.save,s.prototype.export=s.prototype.output,s.prototype.run=s.prototype.then,E.getPageSize=function(e,r,n){if("object"===t(e)){var i=e;e=i.orientation,r=i.unit||r,n=i.format||n;}r=r||"mm",n=n||"a4",e=(""+(e||"P")).toLowerCase();var a,o=(""+n).toLowerCase(),s={a0:[2383.94,3370.39],a1:[1683.78,2383.94],a2:[1190.55,1683.78],a3:[841.89,1190.55],a4:[595.28,841.89],a5:[419.53,595.28],a6:[297.64,419.53],a7:[209.76,297.64],a8:[147.4,209.76],a9:[104.88,147.4],a10:[73.7,104.88],b0:[2834.65,4008.19],b1:[2004.09,2834.65],b2:[1417.32,2004.09],b3:[1000.63,1417.32],b4:[708.66,1000.63],b5:[498.9,708.66],b6:[354.33,498.9],b7:[249.45,354.33],b8:[175.75,249.45],b9:[124.72,175.75],b10:[87.87,124.72],c0:[2599.37,3676.54],c1:[1836.85,2599.37],c2:[1298.27,1836.85],c3:[918.43,1298.27],c4:[649.13,918.43],c5:[459.21,649.13],c6:[323.15,459.21],c7:[229.61,323.15],c8:[161.57,229.61],c9:[113.39,161.57],c10:[79.37,113.39],dl:[311.81,623.62],letter:[612,792],"government-letter":[576,756],legal:[612,1008],"junior-legal":[576,360],ledger:[1224,792],tabloid:[792,1224],"credit-card":[153,243]};switch(r){case"pt":a=1;break;case"mm":a=72/25.4;break;case"cm":a=72/2.54;break;case"in":a=72;break;case"px":a=.75;break;case"pc":case"em":a=12;break;case"ex":a=6;break;default:throw "Invalid unit: "+r}var c,u=0,h=0;if(s.hasOwnProperty(o))u=s[o][1]/a,h=s[o][0]/a;else try{u=n[1],h=n[0];}catch(t){throw new Error("Invalid format: "+n)}if("p"===e||"portrait"===e)e="p",h>u&&(c=h,h=u,u=c);else {if("l"!==e&&"landscape"!==e)throw "Invalid orientation: "+e;e="l",u>h&&(c=h,h=u,u=c);}return {width:h,height:u,unit:r,k:a,orientation:e}},e.html=function(t,e){(e=e||{}).callback=e.callback||function(){},e.html2canvas=e.html2canvas||{},e.html2canvas.canvas=e.html2canvas.canvas||this.canvas,e.jsPDF=e.jsPDF||this,e.fontFaces=e.fontFaces?e.fontFaces.map(jt):null;var r=new s(e);return e.worker?r:r.from(t).doCallback()};}(E.API),E.API.addJS=function(t){return Ht=t,this.internal.events.subscribe("postPutResources",(function(){Ut=this.internal.newObject(),this.internal.out("<<"),this.internal.out("/Names [(EmbeddedJS) "+(Ut+1)+" 0 R]"),this.internal.out(">>"),this.internal.out("endobj"),zt=this.internal.newObject(),this.internal.out("<<"),this.internal.out("/S /JavaScript"),this.internal.out("/JS ("+Ht+")"),this.internal.out(">>"),this.internal.out("endobj");})),this.internal.events.subscribe("putCatalog",(function(){void 0!==Ut&&void 0!==zt&&this.internal.out("/Names <</JavaScript "+Ut+" 0 R>>");})),this},
 /**
  * @license
  * Copyright (c) 2014 Steven Spungin (TwelveTone LLC)  steven@twelvetone.tv
@@ -2695,7 +2145,7 @@ function(t){var e=function(t){for(var e=t.length,r=new Uint8Array(e),n=0;n<e;n++
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * ====================================================================
  */
-function(t){function e(){return (n.canvg?Promise.resolve(n.canvg):import('./index.es-bbbf1714.js')).catch((function(t){return Promise.reject(new Error("Could not load canvg: "+t))})).then((function(t){return t.default?t.default:t}))}E.API.addSvgAsImage=function(t,r,n,i,o,s,c,u){if(isNaN(r)||isNaN(n))throw a.error("jsPDF.addSvgAsImage: Invalid coordinates",arguments),new Error("Invalid coordinates passed to jsPDF.addSvgAsImage");if(isNaN(i)||isNaN(o))throw a.error("jsPDF.addSvgAsImage: Invalid measurements",arguments),new Error("Invalid measurements (width and/or height) passed to jsPDF.addSvgAsImage");var h=document.createElement("canvas");h.width=i,h.height=o;var l=h.getContext("2d");l.fillStyle="#fff",l.fillRect(0,0,h.width,h.height);var f={ignoreMouse:!0,ignoreAnimation:!0,ignoreDimensions:!0},d=this;return e().then((function(e){return e.fromString(l,t,f)}),(function(){return Promise.reject(new Error("Could not load canvg."))})).then((function(t){return t.render(f)})).then((function(){d.addImage(h.toDataURL("image/jpeg",1),r,n,i,o,c,u);}))};}(),E.API.putTotalPages=function(t){var e,r=0;parseInt(this.internal.getFont().id.substr(1),10)<15?(e=new RegExp(t,"g"),r=this.internal.getNumberOfPages()):(e=new RegExp(this.pdfEscape16(t,this.internal.getFont()),"g"),r=this.pdfEscape16(this.internal.getNumberOfPages()+"",this.internal.getFont()));for(var n=1;n<=this.internal.getNumberOfPages();n++)for(var i=0;i<this.internal.pages[n].length;i++)this.internal.pages[n][i]=this.internal.pages[n][i].replace(e,r);return this},E.API.viewerPreferences=function(e,r){var n;e=e||{},r=r||!1;var i,a,o,s={HideToolbar:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},HideMenubar:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},HideWindowUI:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},FitWindow:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},CenterWindow:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},DisplayDocTitle:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.4},NonFullScreenPageMode:{defaultValue:"UseNone",value:"UseNone",type:"name",explicitSet:!1,valueSet:["UseNone","UseOutlines","UseThumbs","UseOC"],pdfVersion:1.3},Direction:{defaultValue:"L2R",value:"L2R",type:"name",explicitSet:!1,valueSet:["L2R","R2L"],pdfVersion:1.3},ViewArea:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},ViewClip:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},PrintArea:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},PrintClip:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},PrintScaling:{defaultValue:"AppDefault",value:"AppDefault",type:"name",explicitSet:!1,valueSet:["AppDefault","None"],pdfVersion:1.6},Duplex:{defaultValue:"",value:"none",type:"name",explicitSet:!1,valueSet:["Simplex","DuplexFlipShortEdge","DuplexFlipLongEdge","none"],pdfVersion:1.7},PickTrayByPDFSize:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.7},PrintPageRange:{defaultValue:"",value:"",type:"array",explicitSet:!1,valueSet:null,pdfVersion:1.7},NumCopies:{defaultValue:1,value:1,type:"integer",explicitSet:!1,valueSet:null,pdfVersion:1.7}},c=Object.keys(s),u=[],h=0,l=0,f=0;function d(t,e){var r,n=!1;for(r=0;r<t.length;r+=1)t[r]===e&&(n=!0);return n}if(void 0===this.internal.viewerpreferences&&(this.internal.viewerpreferences={},this.internal.viewerpreferences.configuration=JSON.parse(JSON.stringify(s)),this.internal.viewerpreferences.isSubscribed=!1),n=this.internal.viewerpreferences.configuration,"reset"===e||!0===r){var p=c.length;for(f=0;f<p;f+=1)n[c[f]].value=n[c[f]].defaultValue,n[c[f]].explicitSet=!1;}if("object"===t(e))for(a in e)if(o=e[a],d(c,a)&&void 0!==o){if("boolean"===n[a].type&&"boolean"==typeof o)n[a].value=o;else if("name"===n[a].type&&d(n[a].valueSet,o))n[a].value=o;else if("integer"===n[a].type&&Number.isInteger(o))n[a].value=o;else if("array"===n[a].type){for(h=0;h<o.length;h+=1)if(i=!0,1===o[h].length&&"number"==typeof o[h][0])u.push(String(o[h]-1));else if(o[h].length>1){for(l=0;l<o[h].length;l+=1)"number"!=typeof o[h][l]&&(i=!1);!0===i&&u.push([o[h][0]-1,o[h][1]-1].join(" "));}n[a].value="["+u.join(" ")+"]";}else n[a].value=n[a].defaultValue;n[a].explicitSet=!0;}return !1===this.internal.viewerpreferences.isSubscribed&&(this.internal.events.subscribe("putCatalog",(function(){var t,e=[];for(t in n)!0===n[t].explicitSet&&("name"===n[t].type?e.push("/"+t+" /"+n[t].value):e.push("/"+t+" "+n[t].value));0!==e.length&&this.internal.write("/ViewerPreferences\n<<\n"+e.join("\n")+"\n>>");})),this.internal.viewerpreferences.isSubscribed=!0),this.internal.viewerpreferences.configuration=n,this},
+function(t){function e(){return (n.canvg?Promise.resolve(n.canvg):Promise.resolve().then(function () { return require('./index.es-58901275.js'); })).catch((function(t){return Promise.reject(new Error("Could not load canvg: "+t))})).then((function(t){return t.default?t.default:t}))}E.API.addSvgAsImage=function(t,r,n,i,o,s,c,u){if(isNaN(r)||isNaN(n))throw a.error("jsPDF.addSvgAsImage: Invalid coordinates",arguments),new Error("Invalid coordinates passed to jsPDF.addSvgAsImage");if(isNaN(i)||isNaN(o))throw a.error("jsPDF.addSvgAsImage: Invalid measurements",arguments),new Error("Invalid measurements (width and/or height) passed to jsPDF.addSvgAsImage");var h=document.createElement("canvas");h.width=i,h.height=o;var l=h.getContext("2d");l.fillStyle="#fff",l.fillRect(0,0,h.width,h.height);var f={ignoreMouse:!0,ignoreAnimation:!0,ignoreDimensions:!0},d=this;return e().then((function(e){return e.fromString(l,t,f)}),(function(){return Promise.reject(new Error("Could not load canvg."))})).then((function(t){return t.render(f)})).then((function(){d.addImage(h.toDataURL("image/jpeg",1),r,n,i,o,c,u);}))};}(),E.API.putTotalPages=function(t){var e,r=0;parseInt(this.internal.getFont().id.substr(1),10)<15?(e=new RegExp(t,"g"),r=this.internal.getNumberOfPages()):(e=new RegExp(this.pdfEscape16(t,this.internal.getFont()),"g"),r=this.pdfEscape16(this.internal.getNumberOfPages()+"",this.internal.getFont()));for(var n=1;n<=this.internal.getNumberOfPages();n++)for(var i=0;i<this.internal.pages[n].length;i++)this.internal.pages[n][i]=this.internal.pages[n][i].replace(e,r);return this},E.API.viewerPreferences=function(e,r){var n;e=e||{},r=r||!1;var i,a,o,s={HideToolbar:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},HideMenubar:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},HideWindowUI:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},FitWindow:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},CenterWindow:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},DisplayDocTitle:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.4},NonFullScreenPageMode:{defaultValue:"UseNone",value:"UseNone",type:"name",explicitSet:!1,valueSet:["UseNone","UseOutlines","UseThumbs","UseOC"],pdfVersion:1.3},Direction:{defaultValue:"L2R",value:"L2R",type:"name",explicitSet:!1,valueSet:["L2R","R2L"],pdfVersion:1.3},ViewArea:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},ViewClip:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},PrintArea:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},PrintClip:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},PrintScaling:{defaultValue:"AppDefault",value:"AppDefault",type:"name",explicitSet:!1,valueSet:["AppDefault","None"],pdfVersion:1.6},Duplex:{defaultValue:"",value:"none",type:"name",explicitSet:!1,valueSet:["Simplex","DuplexFlipShortEdge","DuplexFlipLongEdge","none"],pdfVersion:1.7},PickTrayByPDFSize:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.7},PrintPageRange:{defaultValue:"",value:"",type:"array",explicitSet:!1,valueSet:null,pdfVersion:1.7},NumCopies:{defaultValue:1,value:1,type:"integer",explicitSet:!1,valueSet:null,pdfVersion:1.7}},c=Object.keys(s),u=[],h=0,l=0,f=0;function d(t,e){var r,n=!1;for(r=0;r<t.length;r+=1)t[r]===e&&(n=!0);return n}if(void 0===this.internal.viewerpreferences&&(this.internal.viewerpreferences={},this.internal.viewerpreferences.configuration=JSON.parse(JSON.stringify(s)),this.internal.viewerpreferences.isSubscribed=!1),n=this.internal.viewerpreferences.configuration,"reset"===e||!0===r){var p=c.length;for(f=0;f<p;f+=1)n[c[f]].value=n[c[f]].defaultValue,n[c[f]].explicitSet=!1;}if("object"===t(e))for(a in e)if(o=e[a],d(c,a)&&void 0!==o){if("boolean"===n[a].type&&"boolean"==typeof o)n[a].value=o;else if("name"===n[a].type&&d(n[a].valueSet,o))n[a].value=o;else if("integer"===n[a].type&&Number.isInteger(o))n[a].value=o;else if("array"===n[a].type){for(h=0;h<o.length;h+=1)if(i=!0,1===o[h].length&&"number"==typeof o[h][0])u.push(String(o[h]-1));else if(o[h].length>1){for(l=0;l<o[h].length;l+=1)"number"!=typeof o[h][l]&&(i=!1);!0===i&&u.push([o[h][0]-1,o[h][1]-1].join(" "));}n[a].value="["+u.join(" ")+"]";}else n[a].value=n[a].defaultValue;n[a].explicitSet=!0;}return !1===this.internal.viewerpreferences.isSubscribed&&(this.internal.events.subscribe("putCatalog",(function(){var t,e=[];for(t in n)!0===n[t].explicitSet&&("name"===n[t].type?e.push("/"+t+" /"+n[t].value):e.push("/"+t+" "+n[t].value));0!==e.length&&this.internal.write("/ViewerPreferences\n<<\n"+e.join("\n")+"\n>>");})),this.internal.viewerpreferences.isSubscribed=!0),this.internal.viewerpreferences.configuration=n,this},
 /** ====================================================================
  * @license
  * jsPDF XMP metadata plugin
@@ -2736,6 +2186,395 @@ function(t){var e=function(){return void 0===this.internal.vFS&&(this.internal.v
  * MIT License
  */
 function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var r,n,i,a,o,s,c,u=e,h=[[0,3,0,1,0,0,0],[0,3,0,1,2,2,0],[0,3,0,17,2,0,1],[0,3,5,5,4,1,0],[0,3,21,21,4,0,1],[0,3,5,5,4,2,0]],l=[[2,0,1,1,0,1,0],[2,0,1,1,0,2,0],[2,0,2,1,3,2,0],[2,0,2,33,3,1,1]],f={L:0,R:1,EN:2,AN:3,N:4,B:5,S:6},d={0:0,5:1,6:2,7:3,32:4,251:5,254:6,255:7},p=["(",")","(","<",">","<","[","]","[","{","}","{","«","»","«","‹","›","‹","⁅","⁆","⁅","⁽","⁾","⁽","₍","₎","₍","≤","≥","≤","〈","〉","〈","﹙","﹚","﹙","﹛","﹜","﹛","﹝","﹞","﹝","﹤","﹥","﹤"],g=new RegExp(/^([1-4|9]|1[0-9]|2[0-9]|3[0168]|4[04589]|5[012]|7[78]|159|16[0-9]|17[0-2]|21[569]|22[03489]|250)$/),m=!1,v=0;this.__bidiEngine__={};var b=function(t){var e=t.charCodeAt(),r=e>>8,n=d[r];return void 0!==n?u[256*n+(255&e)]:252===r||253===r?"AL":g.test(r)?"L":8===r?"R":"N"},y=function(t){for(var e,r=0;r<t.length;r++){if("L"===(e=b(t.charAt(r))))return !1;if("R"===e)return !0}return !1},w=function(t,e,o,s){var c,u,h,l,f=e[s];switch(f){case"L":case"R":m=!1;break;case"N":case"AN":break;case"EN":m&&(f="AN");break;case"AL":m=!0,f="R";break;case"WS":f="N";break;case"CS":s<1||s+1>=e.length||"EN"!==(c=o[s-1])&&"AN"!==c||"EN"!==(u=e[s+1])&&"AN"!==u?f="N":m&&(u="AN"),f=u===c?u:"N";break;case"ES":f="EN"===(c=s>0?o[s-1]:"B")&&s+1<e.length&&"EN"===e[s+1]?"EN":"N";break;case"ET":if(s>0&&"EN"===o[s-1]){f="EN";break}if(m){f="N";break}for(h=s+1,l=e.length;h<l&&"ET"===e[h];)h++;f=h<l&&"EN"===e[h]?"EN":"N";break;case"NSM":if(i&&!a){for(l=e.length,h=s+1;h<l&&"NSM"===e[h];)h++;if(h<l){var d=t[s],p=d>=1425&&d<=2303||64286===d;if(c=e[h],p&&("R"===c||"AL"===c)){f="R";break}}}f=s<1||"B"===(c=e[s-1])?"N":o[s-1];break;case"B":m=!1,r=!0,f=v;break;case"S":n=!0,f="N";break;case"LRE":case"RLE":case"LRO":case"RLO":case"PDF":m=!1;break;case"BN":f="N";}return f},N=function(t,e,r){var n=t.split("");return r&&L(n,r,{hiLevel:v}),n.reverse(),e&&e.reverse(),n.join("")},L=function(t,e,i){var a,o,s,c,u,d=-1,p=t.length,g=0,y=[],N=v?l:h,L=[];for(m=!1,r=!1,n=!1,o=0;o<p;o++)L[o]=b(t[o]);for(s=0;s<p;s++){if(u=g,y[s]=w(t,L,y,s),a=240&(g=N[u][f[y[s]]]),g&=15,e[s]=c=N[g][5],a>0)if(16===a){for(o=d;o<s;o++)e[o]=1;d=-1;}else d=-1;if(N[g][6])-1===d&&(d=s);else if(d>-1){for(o=d;o<s;o++)e[o]=c;d=-1;}"B"===L[s]&&(e[s]=0),i.hiLevel|=c;}n&&function(t,e,r){for(var n=0;n<r;n++)if("S"===t[n]){e[n]=v;for(var i=n-1;i>=0&&"WS"===t[i];i--)e[i]=v;}}(L,e,p);},A=function(t,e,n,i,a){if(!(a.hiLevel<t)){if(1===t&&1===v&&!r)return e.reverse(),void(n&&n.reverse());for(var o,s,c,u,h=e.length,l=0;l<h;){if(i[l]>=t){for(c=l+1;c<h&&i[c]>=t;)c++;for(u=l,s=c-1;u<s;u++,s--)o=e[u],e[u]=e[s],e[s]=o,n&&(o=n[u],n[u]=n[s],n[s]=o);l=c;}l++;}}},x=function(t,e,r){var n=t.split(""),i={hiLevel:v};return r||(r=[]),L(n,r,i),function(t,e,r){if(0!==r.hiLevel&&c)for(var n,i=0;i<t.length;i++)1===e[i]&&(n=p.indexOf(t[i]))>=0&&(t[i]=p[n+1]);}(n,r,i),A(2,n,e,r,i),A(1,n,e,r,i),n.join("")};return this.__bidiEngine__.doBidiReorder=function(t,e,r){if(function(t,e){if(e)for(var r=0;r<t.length;r++)e[r]=r;void 0===a&&(a=y(t)),void 0===s&&(s=y(t));}(t,e),i||!o||s)if(i&&o&&a^s)v=a?1:0,t=N(t,e,r);else if(!i&&o&&s)v=a?1:0,t=x(t,e,r),t=N(t,e);else if(!i||a||o||s){if(i&&!o&&a^s)t=N(t,e),a?(v=0,t=x(t,e,r)):(v=1,t=x(t,e,r),t=N(t,e));else if(i&&a&&!o&&s)v=1,t=x(t,e,r),t=N(t,e);else if(!i&&!o&&a^s){var n=c;a?(v=1,t=x(t,e,r),v=0,c=!1,t=x(t,e,r),c=n):(v=0,t=x(t,e,r),t=N(t,e),v=1,c=!1,t=x(t,e,r),c=n,t=N(t,e));}}else v=0,t=x(t,e,r);else v=a?1:0,t=x(t,e,r);return t},this.__bidiEngine__.setOptions=function(t){t&&(i=t.isInputVisual,o=t.isOutputVisual,a=t.isInputRtl,s=t.isOutputRtl,c=t.isSymmetricSwapping);},this.__bidiEngine__.setOptions(t),this.__bidiEngine__};var e=["BN","BN","BN","BN","BN","BN","BN","BN","BN","S","B","S","WS","B","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","B","B","B","S","WS","N","N","ET","ET","ET","N","N","N","N","N","ES","CS","ES","CS","CS","EN","EN","EN","EN","EN","EN","EN","EN","EN","EN","CS","N","N","N","N","N","N","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","N","N","N","N","N","N","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","N","N","N","N","BN","BN","BN","BN","BN","BN","B","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","CS","N","ET","ET","ET","ET","N","N","N","N","L","N","N","BN","N","N","ET","ET","EN","EN","N","L","N","N","N","EN","L","N","N","N","N","N","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","N","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","N","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","N","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","N","N","L","L","L","L","L","L","L","N","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","N","L","N","N","N","N","N","ET","N","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","R","NSM","R","NSM","NSM","R","NSM","NSM","R","NSM","N","N","N","N","N","N","N","N","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","N","N","N","N","N","R","R","R","R","R","N","N","N","N","N","N","N","N","N","N","N","AN","AN","AN","AN","AN","AN","N","N","AL","ET","ET","AL","CS","AL","N","N","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","AL","AL","N","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","AN","AN","AN","AN","AN","AN","AN","AN","AN","AN","ET","AN","AN","AL","AL","AL","NSM","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","NSM","NSM","NSM","NSM","NSM","NSM","NSM","AN","N","NSM","NSM","NSM","NSM","NSM","NSM","AL","AL","NSM","NSM","N","NSM","NSM","NSM","NSM","AL","AL","EN","EN","EN","EN","EN","EN","EN","EN","EN","EN","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","N","AL","AL","NSM","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","N","N","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","AL","N","N","N","N","N","N","N","N","N","N","N","N","N","N","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","R","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","R","R","N","N","N","N","R","N","N","N","N","N","WS","WS","WS","WS","WS","WS","WS","WS","WS","WS","WS","BN","BN","BN","L","R","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","WS","B","LRE","RLE","PDF","LRO","RLO","CS","ET","ET","ET","ET","ET","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","CS","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","WS","BN","BN","BN","BN","BN","N","LRI","RLI","FSI","PDI","BN","BN","BN","BN","BN","BN","EN","L","N","N","EN","EN","EN","EN","EN","EN","ES","ES","N","N","N","L","EN","EN","EN","EN","EN","EN","EN","EN","EN","EN","ES","ES","N","N","N","N","L","L","L","L","L","L","L","L","L","L","L","L","L","N","N","N","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","ET","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","L","L","L","L","L","L","L","N","N","N","N","N","N","N","N","N","N","N","N","L","L","L","L","L","N","N","N","N","N","R","NSM","R","R","R","R","R","R","R","R","R","R","ES","R","R","R","R","R","R","R","R","R","R","R","R","R","N","R","R","R","R","R","N","R","N","R","R","N","R","R","N","R","R","R","R","R","R","R","R","R","R","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","CS","N","CS","N","N","CS","N","N","N","N","N","N","N","N","N","ET","N","N","ES","ES","N","N","N","N","N","ET","ET","N","N","N","N","N","AL","AL","AL","AL","AL","N","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","N","N","BN","N","N","N","ET","ET","ET","N","N","N","N","N","ES","CS","ES","CS","CS","EN","EN","EN","EN","EN","EN","EN","EN","EN","EN","CS","N","N","N","N","N","N","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","N","N","N","N","N","N","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","N","N","N","N","N","N","N","N","N","N","N","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","N","N","N","L","L","L","L","L","L","N","N","L","L","L","L","L","L","N","N","L","L","L","L","L","L","N","N","L","L","L","N","N","N","ET","ET","N","N","N","ET","ET","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N"],r=new t.__bidiEngine__({isInputVisual:!0});t.API.events.push(["postProcessText",function(t){var e=t.text,n=(t.options||{}),i=([]);if(n.isInputVisual="boolean"!=typeof n.isInputVisual||n.isInputVisual,r.setOptions(n),"[object Array]"===Object.prototype.toString.call(e)){var a=0;for(i=[],a=0;a<e.length;a+=1)"[object Array]"===Object.prototype.toString.call(e[a])?i.push([r.doBidiReorder(e[a][0]),e[a][1],e[a][2]]):i.push([r.doBidiReorder(e[a])]);t.text=i;}else t.text=r.doBidiReorder(e);r.setOptions({isInputVisual:!0});}]);}(E),E.API.TTFFont=function(){function t(t){var e;if(this.rawData=t,e=this.contents=new ne(t),this.contents.pos=4,"ttcf"===e.readString(4))throw new Error("TTCF not supported.");e.pos=0,this.parse(),this.subset=new Le(this),this.registerTTF();}return t.open=function(e){return new t(e)},t.prototype.parse=function(){return this.directory=new ie(this.contents),this.head=new se(this),this.name=new pe(this),this.cmap=new ue(this),this.toUnicode={},this.hhea=new he(this),this.maxp=new ge(this),this.hmtx=new me(this),this.post=new fe(this),this.os2=new le(this),this.loca=new Ne(this),this.glyf=new be(this),this.ascender=this.os2.exists&&this.os2.ascender||this.hhea.ascender,this.decender=this.os2.exists&&this.os2.decender||this.hhea.decender,this.lineGap=this.os2.exists&&this.os2.lineGap||this.hhea.lineGap,this.bbox=[this.head.xMin,this.head.yMin,this.head.xMax,this.head.yMax]},t.prototype.registerTTF=function(){var t,e,r,n,i;if(this.scaleFactor=1e3/this.head.unitsPerEm,this.bbox=function(){var e,r,n,i;for(i=[],e=0,r=(n=this.bbox).length;e<r;e++)t=n[e],i.push(Math.round(t*this.scaleFactor));return i}.call(this),this.stemV=0,this.post.exists?(r=255&(n=this.post.italic_angle),0!=(32768&(e=n>>16))&&(e=-(1+(65535^e))),this.italicAngle=+(e+"."+r)):this.italicAngle=0,this.ascender=Math.round(this.ascender*this.scaleFactor),this.decender=Math.round(this.decender*this.scaleFactor),this.lineGap=Math.round(this.lineGap*this.scaleFactor),this.capHeight=this.os2.exists&&this.os2.capHeight||this.ascender,this.xHeight=this.os2.exists&&this.os2.xHeight||0,this.familyClass=(this.os2.exists&&this.os2.familyClass||0)>>8,this.isSerif=1===(i=this.familyClass)||2===i||3===i||4===i||5===i||7===i,this.isScript=10===this.familyClass,this.flags=0,this.post.isFixedPitch&&(this.flags|=1),this.isSerif&&(this.flags|=2),this.isScript&&(this.flags|=8),0!==this.italicAngle&&(this.flags|=64),this.flags|=32,!this.cmap.unicode)throw new Error("No unicode cmap for font")},t.prototype.characterToGlyph=function(t){var e;return (null!=(e=this.cmap.unicode)?e.codeMap[t]:void 0)||0},t.prototype.widthOfGlyph=function(t){var e;return e=1e3/this.head.unitsPerEm,this.hmtx.forGlyph(t).advance*e},t.prototype.widthOfString=function(t,e,r){var n,i,a,o;for(a=0,i=0,o=(t=""+t).length;0<=o?i<o:i>o;i=0<=o?++i:--i)n=t.charCodeAt(i),a+=this.widthOfGlyph(this.characterToGlyph(n))+r*(1e3/e)||0;return a*(e/1e3)},t.prototype.lineHeight=function(t,e){var r;return null==e&&(e=!1),r=e?this.lineGap:0,(this.ascender+r-this.decender)/1e3*t},t}();var re,ne=function(){function t(t){this.data=null!=t?t:[],this.pos=0,this.length=this.data.length;}return t.prototype.readByte=function(){return this.data[this.pos++]},t.prototype.writeByte=function(t){return this.data[this.pos++]=t},t.prototype.readUInt32=function(){return 16777216*this.readByte()+(this.readByte()<<16)+(this.readByte()<<8)+this.readByte()},t.prototype.writeUInt32=function(t){return this.writeByte(t>>>24&255),this.writeByte(t>>16&255),this.writeByte(t>>8&255),this.writeByte(255&t)},t.prototype.readInt32=function(){var t;return (t=this.readUInt32())>=2147483648?t-4294967296:t},t.prototype.writeInt32=function(t){return t<0&&(t+=4294967296),this.writeUInt32(t)},t.prototype.readUInt16=function(){return this.readByte()<<8|this.readByte()},t.prototype.writeUInt16=function(t){return this.writeByte(t>>8&255),this.writeByte(255&t)},t.prototype.readInt16=function(){var t;return (t=this.readUInt16())>=32768?t-65536:t},t.prototype.writeInt16=function(t){return t<0&&(t+=65536),this.writeUInt16(t)},t.prototype.readString=function(t){var e,r;for(r=[],e=0;0<=t?e<t:e>t;e=0<=t?++e:--e)r[e]=String.fromCharCode(this.readByte());return r.join("")},t.prototype.writeString=function(t){var e,r,n;for(n=[],e=0,r=t.length;0<=r?e<r:e>r;e=0<=r?++e:--e)n.push(this.writeByte(t.charCodeAt(e)));return n},t.prototype.readShort=function(){return this.readInt16()},t.prototype.writeShort=function(t){return this.writeInt16(t)},t.prototype.readLongLong=function(){var t,e,r,n,i,a,o,s;return t=this.readByte(),e=this.readByte(),r=this.readByte(),n=this.readByte(),i=this.readByte(),a=this.readByte(),o=this.readByte(),s=this.readByte(),128&t?-1*(72057594037927940*(255^t)+281474976710656*(255^e)+1099511627776*(255^r)+4294967296*(255^n)+16777216*(255^i)+65536*(255^a)+256*(255^o)+(255^s)+1):72057594037927940*t+281474976710656*e+1099511627776*r+4294967296*n+16777216*i+65536*a+256*o+s},t.prototype.writeLongLong=function(t){var e,r;return e=Math.floor(t/4294967296),r=4294967295&t,this.writeByte(e>>24&255),this.writeByte(e>>16&255),this.writeByte(e>>8&255),this.writeByte(255&e),this.writeByte(r>>24&255),this.writeByte(r>>16&255),this.writeByte(r>>8&255),this.writeByte(255&r)},t.prototype.readInt=function(){return this.readInt32()},t.prototype.writeInt=function(t){return this.writeInt32(t)},t.prototype.read=function(t){var e,r;for(e=[],r=0;0<=t?r<t:r>t;r=0<=t?++r:--r)e.push(this.readByte());return e},t.prototype.write=function(t){var e,r,n,i;for(i=[],r=0,n=t.length;r<n;r++)e=t[r],i.push(this.writeByte(e));return i},t}(),ie=function(){var t;function e(t){var e,r,n;for(this.scalarType=t.readInt(),this.tableCount=t.readShort(),this.searchRange=t.readShort(),this.entrySelector=t.readShort(),this.rangeShift=t.readShort(),this.tables={},r=0,n=this.tableCount;0<=n?r<n:r>n;r=0<=n?++r:--r)e={tag:t.readString(4),checksum:t.readInt(),offset:t.readInt(),length:t.readInt()},this.tables[e.tag]=e;}return e.prototype.encode=function(e){var r,n,i,a,o,s,c,u,h,l,f,d,p;for(p in f=Object.keys(e).length,s=Math.log(2),h=16*Math.floor(Math.log(f)/s),a=Math.floor(h/s),u=16*f-h,(n=new ne).writeInt(this.scalarType),n.writeShort(f),n.writeShort(h),n.writeShort(a),n.writeShort(u),i=16*f,c=n.pos+i,o=null,d=[],e)for(l=e[p],n.writeString(p),n.writeInt(t(l)),n.writeInt(c),n.writeInt(l.length),d=d.concat(l),"head"===p&&(o=c),c+=l.length;c%4;)d.push(0),c++;return n.write(d),r=2981146554-t(n.data),n.pos=o+8,n.writeUInt32(r),n.data},t=function(t){var e,r,n,i;for(t=ve.call(t);t.length%4;)t.push(0);for(n=new ne(t),r=0,e=0,i=t.length;e<i;e=e+=4)r+=n.readUInt32();return 4294967295&r},e}(),ae={}.hasOwnProperty,oe=function(t,e){for(var r in e)ae.call(e,r)&&(t[r]=e[r]);function n(){this.constructor=t;}return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};re=function(){function t(t){var e;this.file=t,e=this.file.directory.tables[this.tag],this.exists=!!e,e&&(this.offset=e.offset,this.length=e.length,this.parse(this.file.contents));}return t.prototype.parse=function(){},t.prototype.encode=function(){},t.prototype.raw=function(){return this.exists?(this.file.contents.pos=this.offset,this.file.contents.read(this.length)):null},t}();var se=function(t){function e(){return e.__super__.constructor.apply(this,arguments)}return oe(e,re),e.prototype.tag="head",e.prototype.parse=function(t){return t.pos=this.offset,this.version=t.readInt(),this.revision=t.readInt(),this.checkSumAdjustment=t.readInt(),this.magicNumber=t.readInt(),this.flags=t.readShort(),this.unitsPerEm=t.readShort(),this.created=t.readLongLong(),this.modified=t.readLongLong(),this.xMin=t.readShort(),this.yMin=t.readShort(),this.xMax=t.readShort(),this.yMax=t.readShort(),this.macStyle=t.readShort(),this.lowestRecPPEM=t.readShort(),this.fontDirectionHint=t.readShort(),this.indexToLocFormat=t.readShort(),this.glyphDataFormat=t.readShort()},e.prototype.encode=function(t){var e;return (e=new ne).writeInt(this.version),e.writeInt(this.revision),e.writeInt(this.checkSumAdjustment),e.writeInt(this.magicNumber),e.writeShort(this.flags),e.writeShort(this.unitsPerEm),e.writeLongLong(this.created),e.writeLongLong(this.modified),e.writeShort(this.xMin),e.writeShort(this.yMin),e.writeShort(this.xMax),e.writeShort(this.yMax),e.writeShort(this.macStyle),e.writeShort(this.lowestRecPPEM),e.writeShort(this.fontDirectionHint),e.writeShort(t),e.writeShort(this.glyphDataFormat),e.data},e}(),ce=function(){function t(t,e){var r,n,i,a,o,s,c,u,h,l,f,d,p,g,m,v,b;switch(this.platformID=t.readUInt16(),this.encodingID=t.readShort(),this.offset=e+t.readInt(),h=t.pos,t.pos=this.offset,this.format=t.readUInt16(),this.length=t.readUInt16(),this.language=t.readUInt16(),this.isUnicode=3===this.platformID&&1===this.encodingID&&4===this.format||0===this.platformID&&4===this.format,this.codeMap={},this.format){case 0:for(s=0;s<256;++s)this.codeMap[s]=t.readByte();break;case 4:for(f=t.readUInt16(),l=f/2,t.pos+=6,i=function(){var e,r;for(r=[],s=e=0;0<=l?e<l:e>l;s=0<=l?++e:--e)r.push(t.readUInt16());return r}(),t.pos+=2,p=function(){var e,r;for(r=[],s=e=0;0<=l?e<l:e>l;s=0<=l?++e:--e)r.push(t.readUInt16());return r}(),c=function(){var e,r;for(r=[],s=e=0;0<=l?e<l:e>l;s=0<=l?++e:--e)r.push(t.readUInt16());return r}(),u=function(){var e,r;for(r=[],s=e=0;0<=l?e<l:e>l;s=0<=l?++e:--e)r.push(t.readUInt16());return r}(),n=(this.length-t.pos+this.offset)/2,o=function(){var e,r;for(r=[],s=e=0;0<=n?e<n:e>n;s=0<=n?++e:--e)r.push(t.readUInt16());return r}(),s=m=0,b=i.length;m<b;s=++m)for(g=i[s],r=v=d=p[s];d<=g?v<=g:v>=g;r=d<=g?++v:--v)0===u[s]?a=r+c[s]:0!==(a=o[u[s]/2+(r-d)-(l-s)]||0)&&(a+=c[s]),this.codeMap[r]=65535&a;}t.pos=h;}return t.encode=function(t,e){var r,n,i,a,o,s,c,u,h,l,f,d,p,g,m,v,b,y,w,N,L,A,x,S,_,P,k,I,F,C,j,O,B,M,E,q,D,R,T,U,z,H,W,V,G,Y;switch(I=new ne,a=Object.keys(t).sort((function(t,e){return t-e})),e){case"macroman":for(p=0,g=function(){var t=[];for(d=0;d<256;++d)t.push(0);return t}(),v={0:0},i={},F=0,B=a.length;F<B;F++)null==v[W=t[n=a[F]]]&&(v[W]=++p),i[n]={old:t[n],new:v[t[n]]},g[n]=v[t[n]];return I.writeUInt16(1),I.writeUInt16(0),I.writeUInt32(12),I.writeUInt16(0),I.writeUInt16(262),I.writeUInt16(0),I.write(g),{charMap:i,subtable:I.data,maxGlyphID:p+1};case"unicode":for(P=[],h=[],b=0,v={},r={},m=c=null,C=0,M=a.length;C<M;C++)null==v[w=t[n=a[C]]]&&(v[w]=++b),r[n]={old:w,new:v[w]},o=v[w]-n,null!=m&&o===c||(m&&h.push(m),P.push(n),c=o),m=n;for(m&&h.push(m),h.push(65535),P.push(65535),S=2*(x=P.length),A=2*Math.pow(Math.log(x)/Math.LN2,2),l=Math.log(A/2)/Math.LN2,L=2*x-A,s=[],N=[],f=[],d=j=0,E=P.length;j<E;d=++j){if(_=P[d],u=h[d],65535===_){s.push(0),N.push(0);break}if(_-(k=r[_].new)>=32768)for(s.push(0),N.push(2*(f.length+x-d)),n=O=_;_<=u?O<=u:O>=u;n=_<=u?++O:--O)f.push(r[n].new);else s.push(k-_),N.push(0);}for(I.writeUInt16(3),I.writeUInt16(1),I.writeUInt32(12),I.writeUInt16(4),I.writeUInt16(16+8*x+2*f.length),I.writeUInt16(0),I.writeUInt16(S),I.writeUInt16(A),I.writeUInt16(l),I.writeUInt16(L),z=0,q=h.length;z<q;z++)n=h[z],I.writeUInt16(n);for(I.writeUInt16(0),H=0,D=P.length;H<D;H++)n=P[H],I.writeUInt16(n);for(V=0,R=s.length;V<R;V++)o=s[V],I.writeUInt16(o);for(G=0,T=N.length;G<T;G++)y=N[G],I.writeUInt16(y);for(Y=0,U=f.length;Y<U;Y++)p=f[Y],I.writeUInt16(p);return {charMap:r,subtable:I.data,maxGlyphID:b+1}}},t}(),ue=function(t){function e(){return e.__super__.constructor.apply(this,arguments)}return oe(e,re),e.prototype.tag="cmap",e.prototype.parse=function(t){var e,r,n;for(t.pos=this.offset,this.version=t.readUInt16(),n=t.readUInt16(),this.tables=[],this.unicode=null,r=0;0<=n?r<n:r>n;r=0<=n?++r:--r)e=new ce(t,this.offset),this.tables.push(e),e.isUnicode&&null==this.unicode&&(this.unicode=e);return !0},e.encode=function(t,e){var r,n;return null==e&&(e="macroman"),r=ce.encode(t,e),(n=new ne).writeUInt16(0),n.writeUInt16(1),r.table=n.data.concat(r.subtable),r},e}(),he=function(t){function e(){return e.__super__.constructor.apply(this,arguments)}return oe(e,re),e.prototype.tag="hhea",e.prototype.parse=function(t){return t.pos=this.offset,this.version=t.readInt(),this.ascender=t.readShort(),this.decender=t.readShort(),this.lineGap=t.readShort(),this.advanceWidthMax=t.readShort(),this.minLeftSideBearing=t.readShort(),this.minRightSideBearing=t.readShort(),this.xMaxExtent=t.readShort(),this.caretSlopeRise=t.readShort(),this.caretSlopeRun=t.readShort(),this.caretOffset=t.readShort(),t.pos+=8,this.metricDataFormat=t.readShort(),this.numberOfMetrics=t.readUInt16()},e}(),le=function(t){function e(){return e.__super__.constructor.apply(this,arguments)}return oe(e,re),e.prototype.tag="OS/2",e.prototype.parse=function(t){if(t.pos=this.offset,this.version=t.readUInt16(),this.averageCharWidth=t.readShort(),this.weightClass=t.readUInt16(),this.widthClass=t.readUInt16(),this.type=t.readShort(),this.ySubscriptXSize=t.readShort(),this.ySubscriptYSize=t.readShort(),this.ySubscriptXOffset=t.readShort(),this.ySubscriptYOffset=t.readShort(),this.ySuperscriptXSize=t.readShort(),this.ySuperscriptYSize=t.readShort(),this.ySuperscriptXOffset=t.readShort(),this.ySuperscriptYOffset=t.readShort(),this.yStrikeoutSize=t.readShort(),this.yStrikeoutPosition=t.readShort(),this.familyClass=t.readShort(),this.panose=function(){var e,r;for(r=[],e=0;e<10;++e)r.push(t.readByte());return r}(),this.charRange=function(){var e,r;for(r=[],e=0;e<4;++e)r.push(t.readInt());return r}(),this.vendorID=t.readString(4),this.selection=t.readShort(),this.firstCharIndex=t.readShort(),this.lastCharIndex=t.readShort(),this.version>0&&(this.ascent=t.readShort(),this.descent=t.readShort(),this.lineGap=t.readShort(),this.winAscent=t.readShort(),this.winDescent=t.readShort(),this.codePageRange=function(){var e,r;for(r=[],e=0;e<2;e=++e)r.push(t.readInt());return r}(),this.version>1))return this.xHeight=t.readShort(),this.capHeight=t.readShort(),this.defaultChar=t.readShort(),this.breakChar=t.readShort(),this.maxContext=t.readShort()},e}(),fe=function(t){function e(){return e.__super__.constructor.apply(this,arguments)}return oe(e,re),e.prototype.tag="post",e.prototype.parse=function(t){var e,r,n;switch(t.pos=this.offset,this.format=t.readInt(),this.italicAngle=t.readInt(),this.underlinePosition=t.readShort(),this.underlineThickness=t.readShort(),this.isFixedPitch=t.readInt(),this.minMemType42=t.readInt(),this.maxMemType42=t.readInt(),this.minMemType1=t.readInt(),this.maxMemType1=t.readInt(),this.format){case 65536:break;case 131072:var i;for(r=t.readUInt16(),this.glyphNameIndex=[],i=0;0<=r?i<r:i>r;i=0<=r?++i:--i)this.glyphNameIndex.push(t.readUInt16());for(this.names=[],n=[];t.pos<this.offset+this.length;)e=t.readByte(),n.push(this.names.push(t.readString(e)));return n;case 151552:return r=t.readUInt16(),this.offsets=t.read(r);case 196608:break;case 262144:return this.map=function(){var e,r,n;for(n=[],i=e=0,r=this.file.maxp.numGlyphs;0<=r?e<r:e>r;i=0<=r?++e:--e)n.push(t.readUInt32());return n}.call(this)}},e}(),de=function(t,e){this.raw=t,this.length=t.length,this.platformID=e.platformID,this.encodingID=e.encodingID,this.languageID=e.languageID;},pe=function(t){function e(){return e.__super__.constructor.apply(this,arguments)}return oe(e,re),e.prototype.tag="name",e.prototype.parse=function(t){var e,r,n,i,a,o,s,c,u,h,l;for(t.pos=this.offset,t.readShort(),e=t.readShort(),o=t.readShort(),r=[],i=0;0<=e?i<e:i>e;i=0<=e?++i:--i)r.push({platformID:t.readShort(),encodingID:t.readShort(),languageID:t.readShort(),nameID:t.readShort(),length:t.readShort(),offset:this.offset+o+t.readShort()});for(s={},i=u=0,h=r.length;u<h;i=++u)n=r[i],t.pos=n.offset,c=t.readString(n.length),a=new de(c,n),null==s[l=n.nameID]&&(s[l]=[]),s[n.nameID].push(a);this.strings=s,this.copyright=s[0],this.fontFamily=s[1],this.fontSubfamily=s[2],this.uniqueSubfamily=s[3],this.fontName=s[4],this.version=s[5];try{this.postscriptName=s[6][0].raw.replace(/[\x00-\x19\x80-\xff]/g,"");}catch(t){this.postscriptName=s[4][0].raw.replace(/[\x00-\x19\x80-\xff]/g,"");}return this.trademark=s[7],this.manufacturer=s[8],this.designer=s[9],this.description=s[10],this.vendorUrl=s[11],this.designerUrl=s[12],this.license=s[13],this.licenseUrl=s[14],this.preferredFamily=s[15],this.preferredSubfamily=s[17],this.compatibleFull=s[18],this.sampleText=s[19]},e}(),ge=function(t){function e(){return e.__super__.constructor.apply(this,arguments)}return oe(e,re),e.prototype.tag="maxp",e.prototype.parse=function(t){return t.pos=this.offset,this.version=t.readInt(),this.numGlyphs=t.readUInt16(),this.maxPoints=t.readUInt16(),this.maxContours=t.readUInt16(),this.maxCompositePoints=t.readUInt16(),this.maxComponentContours=t.readUInt16(),this.maxZones=t.readUInt16(),this.maxTwilightPoints=t.readUInt16(),this.maxStorage=t.readUInt16(),this.maxFunctionDefs=t.readUInt16(),this.maxInstructionDefs=t.readUInt16(),this.maxStackElements=t.readUInt16(),this.maxSizeOfInstructions=t.readUInt16(),this.maxComponentElements=t.readUInt16(),this.maxComponentDepth=t.readUInt16()},e}(),me=function(t){function e(){return e.__super__.constructor.apply(this,arguments)}return oe(e,re),e.prototype.tag="hmtx",e.prototype.parse=function(t){var e,r,n,i,a,o,s;for(t.pos=this.offset,this.metrics=[],e=0,o=this.file.hhea.numberOfMetrics;0<=o?e<o:e>o;e=0<=o?++e:--e)this.metrics.push({advance:t.readUInt16(),lsb:t.readInt16()});for(n=this.file.maxp.numGlyphs-this.file.hhea.numberOfMetrics,this.leftSideBearings=function(){var r,i;for(i=[],e=r=0;0<=n?r<n:r>n;e=0<=n?++r:--r)i.push(t.readInt16());return i}(),this.widths=function(){var t,e,r,n;for(n=[],t=0,e=(r=this.metrics).length;t<e;t++)i=r[t],n.push(i.advance);return n}.call(this),r=this.widths[this.widths.length-1],s=[],e=a=0;0<=n?a<n:a>n;e=0<=n?++a:--a)s.push(this.widths.push(r));return s},e.prototype.forGlyph=function(t){return t in this.metrics?this.metrics[t]:{advance:this.metrics[this.metrics.length-1].advance,lsb:this.leftSideBearings[t-this.metrics.length]}},e}(),ve=[].slice,be=function(t){function e(){return e.__super__.constructor.apply(this,arguments)}return oe(e,re),e.prototype.tag="glyf",e.prototype.parse=function(){return this.cache={}},e.prototype.glyphFor=function(t){var e,r,n,i,a,o,s,c,u,h;return t in this.cache?this.cache[t]:(i=this.file.loca,e=this.file.contents,r=i.indexOf(t),0===(n=i.lengthOf(t))?this.cache[t]=null:(e.pos=this.offset+r,a=(o=new ne(e.read(n))).readShort(),c=o.readShort(),h=o.readShort(),s=o.readShort(),u=o.readShort(),this.cache[t]=-1===a?new we(o,c,h,s,u):new ye(o,a,c,h,s,u),this.cache[t]))},e.prototype.encode=function(t,e,r){var n,i,a,o,s;for(a=[],i=[],o=0,s=e.length;o<s;o++)n=t[e[o]],i.push(a.length),n&&(a=a.concat(n.encode(r)));return i.push(a.length),{table:a,offsets:i}},e}(),ye=function(){function t(t,e,r,n,i,a){this.raw=t,this.numberOfContours=e,this.xMin=r,this.yMin=n,this.xMax=i,this.yMax=a,this.compound=!1;}return t.prototype.encode=function(){return this.raw.data},t}(),we=function(){function t(t,e,r,n,i){var a,o;for(this.raw=t,this.xMin=e,this.yMin=r,this.xMax=n,this.yMax=i,this.compound=!0,this.glyphIDs=[],this.glyphOffsets=[],a=this.raw;o=a.readShort(),this.glyphOffsets.push(a.pos),this.glyphIDs.push(a.readUInt16()),32&o;)a.pos+=1&o?4:2,128&o?a.pos+=8:64&o?a.pos+=4:8&o&&(a.pos+=2);}return t.prototype.encode=function(){var t,e,r;for(e=new ne(ve.call(this.raw.data)),t=0,r=this.glyphIDs.length;t<r;++t)e.pos=this.glyphOffsets[t];return e.data},t}(),Ne=function(t){function e(){return e.__super__.constructor.apply(this,arguments)}return oe(e,re),e.prototype.tag="loca",e.prototype.parse=function(t){var e,r;return t.pos=this.offset,e=this.file.head.indexToLocFormat,this.offsets=0===e?function(){var e,n;for(n=[],r=0,e=this.length;r<e;r+=2)n.push(2*t.readUInt16());return n}.call(this):function(){var e,n;for(n=[],r=0,e=this.length;r<e;r+=4)n.push(t.readUInt32());return n}.call(this)},e.prototype.indexOf=function(t){return this.offsets[t]},e.prototype.lengthOf=function(t){return this.offsets[t+1]-this.offsets[t]},e.prototype.encode=function(t,e){for(var r=new Uint32Array(this.offsets.length),n=0,i=0,a=0;a<r.length;++a)if(r[a]=n,i<e.length&&e[i]==a){++i,r[a]=n;var o=this.offsets[a],s=this.offsets[a+1]-o;s>0&&(n+=s);}for(var c=new Array(4*r.length),u=0;u<r.length;++u)c[4*u+3]=255&r[u],c[4*u+2]=(65280&r[u])>>8,c[4*u+1]=(16711680&r[u])>>16,c[4*u]=(4278190080&r[u])>>24;return c},e}(),Le=function(){function t(t){this.font=t,this.subset={},this.unicodes={},this.next=33;}return t.prototype.generateCmap=function(){var t,e,r,n,i;for(e in n=this.font.cmap.tables[0].codeMap,t={},i=this.subset)r=i[e],t[e]=n[r];return t},t.prototype.glyphsFor=function(t){var e,r,n,i,a,o,s;for(n={},a=0,o=t.length;a<o;a++)n[i=t[a]]=this.font.glyf.glyphFor(i);for(i in e=[],n)(null!=(r=n[i])?r.compound:void 0)&&e.push.apply(e,r.glyphIDs);if(e.length>0)for(i in s=this.glyphsFor(e))r=s[i],n[i]=r;return n},t.prototype.encode=function(t,e){var r,n,i,a,o,s,c,u,h,l,f,d,p,g,m;for(n in r=ue.encode(this.generateCmap(),"unicode"),a=this.glyphsFor(t),f={0:0},m=r.charMap)f[(s=m[n]).old]=s.new;for(d in l=r.maxGlyphID,a)d in f||(f[d]=l++);return u=function(t){var e,r;for(e in r={},t)r[t[e]]=e;return r}(f),h=Object.keys(u).sort((function(t,e){return t-e})),p=function(){var t,e,r;for(r=[],t=0,e=h.length;t<e;t++)o=h[t],r.push(u[o]);return r}(),i=this.font.glyf.encode(a,p,f),c=this.font.loca.encode(i.offsets,p),g={cmap:this.font.cmap.raw(),glyf:i.table,loca:c,hmtx:this.font.hmtx.raw(),hhea:this.font.hhea.raw(),maxp:this.font.maxp.raw(),post:this.font.post.raw(),name:this.font.name.raw(),head:this.font.head.encode(e)},this.font.os2.exists&&(g["OS/2"]=this.font.os2.raw()),this.font.directory.encode(g)},t}();E.API.PDFObject=function(){var t;function e(){}return t=function(t,e){return (Array(e+1).join("0")+t).slice(-e)},e.convert=function(r){var n,i,a,o;if(Array.isArray(r))return "["+function(){var t,i,a;for(a=[],t=0,i=r.length;t<i;t++)n=r[t],a.push(e.convert(n));return a}().join(" ")+"]";if("string"==typeof r)return "/"+r;if(null!=r?r.isString:void 0)return "("+r+")";if(r instanceof Date)return "(D:"+t(r.getUTCFullYear(),4)+t(r.getUTCMonth(),2)+t(r.getUTCDate(),2)+t(r.getUTCHours(),2)+t(r.getUTCMinutes(),2)+t(r.getUTCSeconds(),2)+"Z)";if("[object Object]"==={}.toString.call(r)){for(i in a=["<<"],r)o=r[i],a.push("/"+i+" "+e.convert(o));return a.push(">>"),a.join("\n")}return ""+r},e}();
+
+/* @preserve
+* arcgis-pdf-creator v0.0.1
+* Fri Feb 03 2023 09:47:02 GMT-0800 (Pacific Standard Time)
+*/
+/** @license
+ * Copyright 2022 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/*
+  This module contains a generic superclass that models a PDF creator
+  and two subclasses that are adaptors to two PDF libraries. This structure
+  enables us to choose the PDF library to work with since each has strengths
+  over the other.
+
+  Superclass: PDFCreator
+  Subclass for the jsPDF library: PDFCreator_jsPDF
+  Subclass for the pdf_lib library: PDFCreator_pdf_lib
+*/
+//--------------------------------------------------------------------------------------------------------------------//
+var EPageType;
+(function (EPageType) {
+    EPageType["A4"] = "A4";
+    EPageType["ANSI_A"] = "ANSI A";
+})(EPageType || (EPageType = {}));
+//====================================================================================================================//
+class PDFCreator {
+    constructor() {
+        // Properties are public for testing purposes
+        this.dataPath = "";
+        this.lang = "en";
+        this.title = "";
+        this.fontProps = {
+            fontResolutionInchesPerPoint: 1 / 72,
+            fontFullHeightRatio: 1.28
+        };
+        this.lineOptions = {
+            x1: 0,
+            y1: 0,
+            x2: 0,
+            y2: 0,
+            lineProperties: {
+                thickness: 0.1,
+                color: "000000",
+                opacity: 1 // 0..1
+            }
+        };
+        this.pageOptions = {
+            pageType: EPageType.ANSI_A,
+            width: 8.5,
+            height: 11,
+            leftMargin: 0.25,
+            rightMargin: 0.25,
+            topMargin: 0.25,
+            bottomMargin: 0.25,
+            drawNeatline: false
+        };
+        this.rectangleOptions = {
+            left: 0,
+            top: 0,
+            width: 8.5,
+            height: 11,
+            lineProperties: {
+                thickness: 0.1,
+                color: "000000",
+                opacity: 1 // 0..1
+            },
+            fillColor: "",
+            fillOpacity: 1 // 0..1
+        };
+        this.tableOptions = {
+            lineProperties: {
+                thickness: 0.1,
+                color: "",
+                opacity: 1 // 0..1
+            },
+            textProperties: {
+                left: 0,
+                top: 0,
+                fontPoints: 1,
+                fontColor: "000000" // i.e., black
+            }
+        };
+        this.textOptions = {
+            left: 0,
+            top: 0,
+            fontPoints: 1,
+            fontColor: "000000" // i.e., black
+        };
+    }
+    //-- Static methods ------------------------------------------------------------------------------------------------//
+    /**
+     * @class PDFCreator
+     */
+    static getPageSize(pageType) {
+        if (typeof pageType === "string") {
+            pageType = pageType === EPageType.A4 ? EPageType.A4 : EPageType.ANSI_A;
+        }
+        switch (pageType) {
+            case EPageType.A4:
+                return {
+                    width: 8.25,
+                    height: 11.708333
+                };
+            case EPageType.ANSI_A:
+                return {
+                    width: 8.5,
+                    height: 11
+                };
+        }
+    }
+    //-- Public methods ------------------------------------------------------------------------------------------------//
+    /**
+     * @class PDFCreator
+     */
+    addPage() {
+    }
+    /**
+     * Calculates a color intensity that emulates an opacity being applied to it.
+     *
+     * @param colorIntensity Color value to start with; range 0..1
+     * @param opacity Opacity to apply; range 0..1
+     *
+     * @return Color intensity emulating the application of opacity. It works by applying the opacity value
+     * to the input colorIntensity and adding the inverse of the opacity. E.g., if opacity is 1, the original
+     * colorIntensity is returned; if opacity is 0, 1 is returned; if opacity is 0.5; colorIntensity/2 + 0.5 is
+     * returned. It's odd, but when applied to an RGB value, it produces the desired effect.
+     *
+     * @class PDFCreator
+     */
+    applyOpacity(colorIntensity, opacity) {
+        const backgroundColorIntensity = 1;
+        return (colorIntensity * opacity) + backgroundColorIntensity * (1 - opacity);
+    }
+    /**
+     * @class PDFCreator
+     */
+    drawLine(options) {
+        const updatedOptions = {
+            ...this.lineOptions,
+            ...options
+        };
+        updatedOptions.lineProperties = {
+            ...this.lineOptions.lineProperties,
+            ...options.lineProperties
+        };
+        this.updateLineProperties(updatedOptions.lineProperties);
+        this.lineOptions = updatedOptions;
+    }
+    /**
+     * @class PDFCreator
+     */
+    drawNeatline(lineProperties = {
+        thickness: 0.005,
+        color: "0000ff",
+        opacity: 0.2
+    }) {
+        this.drawRectangle({
+            left: 0,
+            top: 0,
+            width: this.pageOptions.width - this.pageOptions.leftMargin - this.pageOptions.rightMargin,
+            height: this.pageOptions.height - this.pageOptions.topMargin - this.pageOptions.bottomMargin,
+            lineProperties
+        });
+    }
+    /**
+     * @class PDFCreator
+     */
+    drawRectangle(options) {
+        const updatedOptions = {
+            ...this.rectangleOptions,
+            ...options
+        };
+        updatedOptions.lineProperties = {
+            ...this.lineOptions.lineProperties,
+            ...options.lineProperties
+        };
+        this.updateLineProperties(updatedOptions.lineProperties);
+        if (this.rectangleOptions.fillColor !== updatedOptions.fillColor ||
+            this.rectangleOptions.fillOpacity !== updatedOptions.fillOpacity) {
+            this.setFillColor(updatedOptions.fillColor, updatedOptions.fillOpacity);
+        }
+        this.rectangleOptions = updatedOptions;
+    }
+    /**
+     * @class PDFCreator
+     */
+    drawTable(text, options) {
+        const updatedOptions = {};
+        updatedOptions.lineProperties = {
+            ...this.tableOptions.lineProperties,
+            ...options.lineProperties
+        };
+        updatedOptions.textProperties = {
+            ...this.tableOptions.textProperties,
+            ...options.textProperties
+        };
+        if (this.tableOptions.textProperties.fontPoints !== updatedOptions.textProperties.fontPoints) {
+            this.setFontSize(updatedOptions.textProperties.fontPoints);
+        }
+        if (this.tableOptions.textProperties.fontColor !== updatedOptions.textProperties.fontColor) {
+            this.setFontColor(updatedOptions.textProperties.fontColor);
+        }
+        this.updateLineProperties(updatedOptions.lineProperties);
+        this.tableOptions = updatedOptions;
+    }
+    /**
+     * @class PDFCreator
+     */
+    drawText(text, options) {
+        const updatedOptions = {
+            ...this.textOptions,
+            ...options
+        };
+        if (this.textOptions.fontPoints !== updatedOptions.fontPoints) {
+            this.setFontSize(updatedOptions.fontPoints);
+        }
+        if (this.textOptions.fontColor !== updatedOptions.fontColor) {
+            this.setFontColor(updatedOptions.fontColor);
+        }
+        this.textOptions = updatedOptions;
+    }
+    /**
+     * Calculates document units from top of font ascenders to baseline.
+     *
+     * @class PDFCreator
+     */
+    fontAscenderBaselineHeight(fontPoints) {
+        return fontPoints * this.fontProps.fontResolutionInchesPerPoint;
+    }
+    /**
+     * Calculates document units from top of font ascenders to bottom of descenders.
+     *
+     * @class PDFCreator
+     */
+    fontAscenderDescenderHeight(fontPoints) {
+        return this.fontProps.fontFullHeightRatio * this.fontAscenderBaselineHeight(fontPoints);
+    }
+    /**
+     * Returns the name of the font file supporting the specified locale.
+     *
+     * @param lang Locale such as "en" or "zh-tw"
+     * @returns Font name, e.g., "0b7681dc140844ee9f409bdac249fbf0-japanese"
+     *
+     * @class PDFCreator
+     */
+    getFontFileName(lang) {
+        let fontFile = "0b7681dc140844ee9f409bdac249fbf0-general";
+        if (lang === "ja") {
+            fontFile = "0b7681dc140844ee9f409bdac249fbf0-japanese";
+        }
+        else if (lang === "ko") {
+            fontFile = "0b7681dc140844ee9f409bdac249fbf0-korean";
+        }
+        else if (lang === "zh-cn") {
+            fontFile = "0b7681dc140844ee9f409bdac249fbf0-simplified-chinese";
+        }
+        else if (lang === "zh-hk" || lang === "zh-tw") {
+            fontFile = "0b7681dc140844ee9f409bdac249fbf0-traditional-chinese";
+        }
+        return fontFile;
+    }
+    /**
+     * Estimates with width of a string.
+     *
+     * @param text String to estimate
+     * @param fontSize Text size in points
+     * @returns Estimated width of text in doc units
+     *
+     * @class PDFCreator
+     */
+    getTextWidth(text, fontSize) {
+        // Return a value for testing
+        return text.length * fontSize;
+    }
+    /**
+     * @class PDFCreator
+     */
+    hexToRGB(hex, opacity = 1 // 0..1
+    ) {
+        const colorParts = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return colorParts ? {
+            r: this.applyOpacity(parseInt(colorParts[1], 16) / 255, opacity),
+            g: this.applyOpacity(parseInt(colorParts[2], 16) / 255, opacity),
+            b: this.applyOpacity(parseInt(colorParts[3], 16) / 255, opacity)
+        } : {
+            r: 0,
+            g: 0,
+            b: 0
+        };
+    }
+    /**
+     * @class PDFCreator
+     */
+    async initialize(pageProperties = {}, dataPath = "", lang = "en", title = "", drawNeatline = false) {
+        if (JSON.stringify(pageProperties) !== "{}") {
+            this.pageOptions.pageType = pageProperties.pageType === EPageType.A4 ? EPageType.A4 : EPageType.ANSI_A;
+            const pageSize = PDFCreator.getPageSize(this.pageOptions.pageType);
+            this.pageOptions.width = pageSize.width;
+            this.pageOptions.height = pageSize.height;
+            this.pageOptions.leftMargin = pageProperties.leftMargin ?? this.pageOptions.leftMargin;
+            this.pageOptions.rightMargin = pageProperties.rightMargin ?? this.pageOptions.rightMargin;
+            this.pageOptions.topMargin = pageProperties.topMargin ?? this.pageOptions.topMargin;
+            this.pageOptions.bottomMargin = pageProperties.bottomMargin ?? this.pageOptions.bottomMargin;
+        }
+        this.dataPath = dataPath;
+        this.lang = lang;
+        this.title = title || "PDF Document";
+        this.pageOptions.drawNeatline = drawNeatline;
+        return Promise.resolve();
+    }
+    /**
+     * @class PDFCreator
+     */
+    save() {
+    }
+    /**
+     * @class PDFCreator
+     */
+    setDrawColor(drawColor, // eslint-disable-line @typescript-eslint/no-unused-vars
+    opacity = 1 // eslint-disable-line @typescript-eslint/no-unused-vars
+    ) {
+    }
+    /**
+     * @class PDFCreator
+     */
+    setFillColor(fillColor, // eslint-disable-line @typescript-eslint/no-unused-vars
+    opacity = 1 // eslint-disable-line @typescript-eslint/no-unused-vars
+    ) {
+    }
+    /**
+     * @class PDFCreator
+     */
+    setFont(lang // eslint-disable-line @typescript-eslint/no-unused-vars
+    ) {
+        return Promise.resolve();
+    }
+    /**
+     * @class PDFCreator
+     */
+    setFontColor(fontColor // eslint-disable-line @typescript-eslint/no-unused-vars
+    ) {
+    }
+    /**
+     * @class PDFCreator
+     */
+    setFontSize(fontPoints // eslint-disable-line @typescript-eslint/no-unused-vars
+    ) {
+    }
+    /**
+     * @class PDFCreator
+     */
+    setLang(lang) {
+        if (this.lang !== lang) {
+            this.lang = lang;
+            return this.setFont(lang);
+        }
+        else {
+            return Promise.resolve();
+        }
+    }
+    /**
+     * @class PDFCreator
+     */
+    setLineWidth(width // eslint-disable-line @typescript-eslint/no-unused-vars
+    ) {
+    }
+    updateLineProperties(updatedProps) {
+        if (this.lineOptions.lineProperties.thickness !== updatedProps.thickness) {
+            this.setLineWidth(updatedProps.thickness); // Note that this changes the drawing width for ALL vectors!
+        }
+        if (this.lineOptions.lineProperties.color !== updatedProps.color ||
+            this.lineOptions.lineProperties.opacity !== updatedProps.opacity) {
+            this.setDrawColor(updatedProps.color, updatedProps.opacity); // Note that this changes the drawing color & opacity for ALL vectors!
+        }
+        this.lineOptions.lineProperties = updatedProps;
+    }
+}
 
 /* @preserve
 * arcgis-pdf-creator v0.0.1
@@ -2965,6 +2804,323 @@ class PDFCreator_jsPDF extends PDFCreator {
     }
 }
 
+/* @preserve
+* arcgis-pdf-creator v0.0.1
+* Fri Feb 03 2023 09:47:02 GMT-0800 (Pacific Standard Time)
+*/
+/** @license
+ * Copyright 2022 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+//--------------------------------------------------------------------------------------------------------------------//
+/**
+ * Draws a grid of boxes with optional gaps between boxes.
+ *
+ * @param PDFCreator PDF-drawing library
+ * @param numAcross Number of boxes in each row
+ * @param numDown Number of boxes in each column
+ * @param x0 Offset in doc units to left edge of leftmost column of boxes
+ * @param y0 Offset in doc units to top edge of topmost row of boxes
+ * @param width Width of each box in doc units
+ * @param height Height of each box in doc units
+ * @param horizGap Gap in doc units between two boxes in the same row
+ * @param vertGap Gap in doc units between two boxes in the same column
+ * @param lineProperties Drawing properties for grid lines
+ */
+function drawGridOfBoxes(PDFCreator, options = {
+    numAcross: 1,
+    numDown: 1,
+    x0: 0,
+    y0: 0,
+    width: 1,
+    height: 1,
+    horizGap: 0,
+    vertGap: 0,
+    lineProperties: {
+        thickness: 0,
+        color: "",
+        opacity: 1 // 0..1
+    }
+}) {
+    // Draw the set of boxes
+    for (let j = 0; j < options.numDown; ++j) {
+        for (let i = 0; i < options.numAcross; ++i) {
+            PDFCreator.drawRectangle({
+                left: options.x0 + i * (options.width + options.horizGap),
+                top: options.y0 + j * (options.height + options.vertGap),
+                width: options.width,
+                height: options.height,
+                lineProperties: options.lineProperties
+            });
+        }
+    }
+}
+
+/* @preserve
+* arcgis-pdf-creator v0.0.1
+* Fri Feb 03 2023 09:47:02 GMT-0800 (Pacific Standard Time)
+*/
+
+/** @license
+ * Copyright 2022 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+//====================================================================================================================//
+class PDFLabels {
+    //-- Public methods ------------------------------------------------------------------------------------------------//
+    /**
+     * Add labels to a PDF doc, starting at the beginning of the specified PDF doc page.
+     *
+     * @param labels Array of labels; each label consists of one or more line strings
+     * @param labelSpec Properties describing page dimensions of labels sheet
+     * @param startingPageNum The 1-based page number to start printing labels into; page is assumed to be blank & to exist
+     * @param progressCallback Callback with percent done in range 0..100
+     * @returns Promise which, when resolved, returns the 1-based page number of the last page containing labels
+     *
+     * @class PDFLabels
+     */
+    addLabelsToDoc(labels, labelSpec, startingPageNum, progressCallback) {
+        return new Promise((resolve) => {
+            const labelsPerPageDisplay = labelSpec.numLabelsAcross * labelSpec.numLabelsDown;
+            let column;
+            let row;
+            let currentLabelLeft;
+            let currentLabelTop;
+            const maxLabelTextWidth = labelSpec.labelWidth - (2 * labelSpec.labelPadding);
+            // Draw
+            let currentPageNum = startingPageNum;
+            const topOfFirstLabel = labelSpec.pageProperties.topMargin - this.PDFCreator.pageOptions.topMargin;
+            for (let iLabel = 0, iNonBlankLabel = 0; iLabel < labels.length; iLabel++) {
+                if (progressCallback) {
+                    progressCallback(Math.round(iLabel / labels.length * 100));
+                }
+                // Trim lines and discard blank ones
+                let labelLines = labels[iLabel].map((line) => line.trim()).filter((line) => line.length > 0);
+                if (labelLines.length === 0) {
+                    continue;
+                }
+                // Are we at the beginning of a page or column?
+                if (iNonBlankLabel % labelsPerPageDisplay === 0) {
+                    if (iNonBlankLabel > 0) {
+                        // Advance to next page
+                        this.PDFCreator.addPage();
+                        ++currentPageNum;
+                    }
+                    // Prep the new page
+                    column = 0;
+                    currentLabelLeft = 0;
+                    row = 0;
+                }
+                else if (iNonBlankLabel % labelSpec.numLabelsDown === 0) {
+                    // Advance to next column
+                    currentLabelLeft = (++column * (labelSpec.labelWidth + labelSpec.horizGapIn));
+                    row = 0;
+                }
+                // Draw the label
+                // Temporarily reduce the font size if we have more lines than the label can hold
+                let fontPoints = labelSpec.fontSizePx;
+                if (labelSpec.maxNumLabelLines < labelLines.length) {
+                    fontPoints = Math.floor(labelSpec.maxNumLabelLines / labelLines.length * labelSpec.fontSizePx);
+                }
+                // Clip overlong lines; append ellipses to clipped lines
+                labelLines = this._clipOverlongLines(labelLines, maxLabelTextWidth, fontPoints);
+                const labelLineHeight = this.PDFCreator.fontAscenderDescenderHeight(fontPoints);
+                // Draw label
+                currentLabelTop = topOfFirstLabel + (row++ * (labelSpec.labelHeight + labelSpec.vertGapIn));
+                labelLines.forEach((line) => {
+                    this.PDFCreator.drawText(line, {
+                        left: currentLabelLeft + labelSpec.labelPadding,
+                        top: currentLabelTop + labelSpec.labelPadding,
+                        fontPoints,
+                        fontColor: "000000"
+                    });
+                    currentLabelTop += labelLineHeight;
+                });
+                ++iNonBlankLabel;
+            }
+            if (progressCallback) {
+                progressCallback(100);
+            }
+            resolve(currentPageNum);
+        });
+    }
+    drawLabelGuidelines(labelSpec, labelBoundaryLinesProperties = null) {
+        // Label boundaries
+        if (labelBoundaryLinesProperties !== null) {
+            drawGridOfBoxes(this.PDFCreator, {
+                // Margins in the page spec are absolute but we draw in within the margins
+                x0: labelSpec.pageProperties.leftMargin - this.PDFCreator.pageOptions.leftMargin,
+                y0: labelSpec.pageProperties.topMargin - this.PDFCreator.pageOptions.topMargin,
+                numAcross: labelSpec.numLabelsAcross,
+                numDown: labelSpec.numLabelsDown,
+                width: labelSpec.labelWidth,
+                height: labelSpec.labelHeight,
+                horizGap: labelSpec.horizGapIn,
+                vertGap: labelSpec.vertGapIn,
+                lineProperties: labelBoundaryLinesProperties
+            });
+        }
+    }
+    /**
+     * Returns the UI descriptions of the label formats.
+     *
+     * @returns List of label format descriptions
+     *
+     * @class PDFLabels
+     */
+    getAvailableLabelFormats() {
+        if (this.labelFormats.length > 0) {
+            return this.labelFormats.map((format) => format.descriptionPDF);
+        }
+        else {
+            return [];
+        }
+    }
+    /**
+     * Returns the format of the specified label.
+     *
+     * @param averyPartNumber Avery® label base part number, e.g., "*60" (versus actual part numbers "5160", "8160",
+     * "8460", "48160"--all of which are 1" x 2-5/8" rectangular labels)
+     * @returns List of label format descriptions
+     *
+     * @class PDFLabels
+     */
+    getLabelFormat(averyPartNumber) {
+        if (this.labelFormats.length > 0) {
+            const matches = this.labelFormats.filter((format) => averyPartNumber === format.descriptionPDF.averyPartNumber);
+            if (matches.length > 0) {
+                return matches[0];
+            }
+            else {
+                return null;
+            }
+        }
+        else {
+            return null;
+        }
+    }
+    /**
+     * Loads language font file and label formats into a jsPDF `doc` object.
+     *
+     * @param PDFCreator PDF-drawing library
+     * @throws TypeError "startPDFLabelDoc is stomping on labelFormats property" if the `labelFormats` property
+     * is found in doc before the label formats are loaded into the doc.
+     *
+     * @class PDFLabels
+     */
+    initialize(PDFCreator) {
+        this.PDFCreator = PDFCreator;
+        // tslint:disable-next-line: no-floating-promises
+        return this._loadLabelFormats(PDFCreator.dataPath)
+            .then((labelFormats) => {
+            this.labelFormats = labelFormats;
+            return Promise.resolve();
+        });
+    }
+    /**
+     * Removes duplicates and empties, trims label lines, and returns a sorted list.
+     *
+     * @class PDFLabels
+     */
+    removeDuplicates(labels) {
+        // Screen out empty labels
+        const nonEmptyLabels = labels.filter((label) => Array.isArray(label) && label.length > 0);
+        // Screen out duplicates and sort the results
+        // Combine the lines of each label into a single string
+        const compressedLabels = nonEmptyLabels.map((label) => label.map((labelLine) => labelLine.trim())
+            .join("?"));
+        // Get unique values
+        const uniqueLabels = {};
+        compressedLabels.forEach((comprLabel) => uniqueLabels[comprLabel] = true);
+        // Sort the unique labels and reconstruct the lines of each label
+        const screenedLabels = Object.keys(uniqueLabels)
+            .sort()
+            .map((label) => label.split("?"));
+        return screenedLabels;
+    }
+    //-- Private methods -----------------------------------------------------------------------------------------------//
+    /**
+     * Calculates the baseline position of the first line of text in a label.
+     *
+     * @param labelTop Offset from top of document to top of label
+     * @param labelHeight Height of each label in doc units
+     * @param numLabelLines Number of lines to be drawn in the label
+     * @param fontHeight Height of text in doc units
+     * @param verticalFontGap Spacing between lines of text in doc units
+     * @returns Baseline position
+     *
+     * @class PDFLabels
+     * @private
+     */
+    _calculateLabelFirstLineBase(labelTop, labelHeight, numLabelLines, fontHeight, verticalFontGap) {
+        const labelVerticalMidpoint = labelTop + (labelHeight / 2);
+        return labelVerticalMidpoint +
+            (2 - numLabelLines) / 2 * fontHeight +
+            (1 - numLabelLines) / 2 * verticalFontGap;
+    }
+    /**
+     * Trims a set of text lines to fit within specified bounds.
+     *
+     * @param lines Text lines to be trimmed
+     * @param maxTextWidth The maximum width permitted for the drawing of the text in doc units
+     * @param fontSize Text size in points
+     * @returns A copy of lines trimmed as necessary
+     *
+     * @class PDFLabels
+     * @private
+     */
+    _clipOverlongLines(lines, maxTextWidth, fontSize) {
+        const trimmedLines = [];
+        lines.forEach(line => {
+            line = line.trim();
+            if (this.PDFCreator.getTextWidth(line, fontSize) > maxTextWidth) {
+                do {
+                    line = line.slice(0, -1);
+                } while (this.PDFCreator.getTextWidth(line, fontSize) > maxTextWidth);
+                line += '...';
+            }
+            trimmedLines.push(line);
+        });
+        return trimmedLines;
+    }
+    /**
+     * Loads the label formats.
+     *
+     * @param dataPath Path to the library's data files
+     * @returns Promise resolving to the label formats JSON
+     *
+     * @class PDFLabels
+     * @private
+     */
+    async _loadLabelFormats(dataPath) {
+        const labelFormatsFile = await fetch(dataPath + "labelFormats.json");
+        const labelFormatsJson = await labelFormatsFile.json();
+        return labelFormatsJson;
+    }
+}
+
 /** @license
  * Copyright 2022 Esri
  *
@@ -2997,33 +3153,17 @@ function exportPDF(labels, labelPageDescription) {
  * @param fileTitle Title (without file extension) to use for file; defaults to "export"
  */
 function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
-  console.log("_downloadPDFFile", labels, labelPageDescription, fileTitle); //???
-  console.log(JSON.stringify(PDFCreator.getPageSize("ANSI_A")));
   const pdfLib = new PDFCreator_jsPDF();
   pdfLib.initialize({
     pageType: "ANSI_A"
-  }, "../build/assets/arcgis-pdf-creator/", "en", "My Labels", false)
+  }, "../build/assets/arcgis-pdf-creator/", "en", fileTitle, false)
     .then(() => {
-    // Draw frame with tick marks
-    drawMeasurementLines(pdfLib);
-    // Draw a grid of boxes
-    drawGridOfBoxes(pdfLib, {
-      numAcross: 10,
-      numDown: 10,
-      x0: 0.25,
-      y0: 0.25,
-      width: 0.5,
-      height: 0.25,
-      horizGap: 0.25,
-      vertGap: 0.25,
-      lineProperties: {
-        thickness: 0.01,
-        color: "00ff00",
-        opacity: 0.75 // 0..1
-      }
-    } // as pdfLib.IGridOptions
-    );
-    pdfLib.save();
+    const labeller = new PDFLabels();
+    labeller.initialize(pdfLib)
+      .then(async () => {
+      await labeller.addLabelsToDoc(labels, labelPageDescription.labelSpec, 1);
+      pdfLib.save();
+    });
   });
 }
 
@@ -3031,7 +3171,7 @@ const pdfDownloadCss = ":host{display:block}";
 
 const PdfDownload = class {
   constructor(hostRef) {
-    registerInstance(this, hostRef);
+    index.registerInstance(this, hostRef);
     this.disabled = false;
     this.enabledSizeValues = [];
     this.layerView = undefined;
@@ -3092,7 +3232,7 @@ const PdfDownload = class {
    * Renders the component.
    */
   render() {
-    return (h$8(Host, null, h$8("calcite-select", { disabled: this.disabled, label: "", ref: (el) => { this._labelInfoElement = el; } }, this._renderItems())));
+    return (index.h(index.Host, null, index.h("calcite-select", { disabled: this.disabled, label: "", ref: (el) => { this._labelInfoElement = el; } }, this._renderItems())));
   }
   //--------------------------------------------------------------------------
   //
@@ -3136,7 +3276,7 @@ const PdfDownload = class {
    * @protected
    */
   async _getTranslations() {
-    const translations = await getLocaleComponentStrings(this.el);
+    const translations = await locale.getLocaleComponentStrings(this.el);
     this._translations = translations[0];
   }
   /**
@@ -3149,7 +3289,7 @@ const PdfDownload = class {
    */
   async _prepareLabels(ids, removeDuplicates, includeHeaderNames) {
     // Get the attributes of the features to export
-    const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
+    const featureSet = await mapViewUtils.queryFeaturesByID(ids, this.layerView.layer);
     const featuresAttrs = featureSet.features.map(f => f.attributes);
     // What data fields are used in the labels?
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
@@ -3158,7 +3298,7 @@ const PdfDownload = class {
     let labels = featuresAttrs.map(featureAttributes => {
       const label = [];
       labelFormat.forEach(labelLineTemplate => {
-        const labelLine = s$5(labelLineTemplate, featureAttributes).trim();
+        const labelLine = s$4(labelLineTemplate, featureAttributes).trim();
         if (labelLine.length > 0) {
           label.push(labelLine);
         }
@@ -3195,10 +3335,10 @@ const PdfDownload = class {
       return _a < _b ? -1 : _a > _b ? 1 : 0;
     });
     return sortedPdfIndo.map((l) => {
-      return (h$8("calcite-option", { value: l }, this._getLabelSizeText(l)));
+      return (index.h("calcite-option", { value: l }, this._getLabelSizeText(l)));
     });
   }
-  get el() { return getElement(this); }
+  get el() { return index.getElement(this); }
 };
 PdfDownload.style = pdfDownloadCss;
 
@@ -3206,8 +3346,8 @@ const refineSelectionCss = ":host{display:block}";
 
 const RefineSelection = class {
   constructor(hostRef) {
-    registerInstance(this, hostRef);
-    this.selectionSetsChanged = createEvent(this, "selectionSetsChanged", 7);
+    index.registerInstance(this, hostRef);
+    this.selectionSetsChanged = index.createEvent(this, "selectionSetsChanged", 7);
     //--------------------------------------------------------------------------
     //
     //  Properties (protected)
@@ -3251,7 +3391,7 @@ const RefineSelection = class {
    * Renders the component.
    */
   render() {
-    return (h$8(Host, null, h$8("div", { class: "padding-1" }, h$8("div", null, h$8("calcite-radio-group", { class: "w-100", onCalciteRadioGroupChange: (evt) => this._modeChanged(evt) }, h$8("calcite-radio-group-item", { checked: this._addEnabled, class: "w-50", onClick: () => this._setSelectionMode(ESelectionMode.ADD), value: ESelectionMode.ADD }, this._translations.add), h$8("calcite-radio-group-item", { checked: !this._addEnabled, class: "w-50", onClick: () => this._setSelectionMode(ESelectionMode.REMOVE), value: ESelectionMode.REMOVE }, this._translations.remove)), h$8("refine-selection-tools", { border: true, enabledLayerIds: this.enabledLayerIds, ids: getSelectionIds(this.selectionSets), layerViews: [this.addresseeLayer], mapView: this.mapView, mode: this._addEnabled ? ESelectionMode.ADD : ESelectionMode.REMOVE, ref: (el) => { this._refineTools = el; }, useLayerPicker: false })), h$8("br", null), (h$8("calcite-list", { class: "list-border" }, this._getRefineSelectionSetList())))));
+    return (index.h(index.Host, null, index.h("div", { class: "padding-1" }, index.h("div", null, index.h("calcite-radio-group", { class: "w-100", onCalciteRadioGroupChange: (evt) => this._modeChanged(evt) }, index.h("calcite-radio-group-item", { checked: this._addEnabled, class: "w-50", onClick: () => this._setSelectionMode(interfaces$1.ESelectionMode.ADD), value: interfaces$1.ESelectionMode.ADD }, this._translations.add), index.h("calcite-radio-group-item", { checked: !this._addEnabled, class: "w-50", onClick: () => this._setSelectionMode(interfaces$1.ESelectionMode.REMOVE), value: interfaces$1.ESelectionMode.REMOVE }, this._translations.remove)), index.h("refine-selection-tools", { border: true, enabledLayerIds: this.enabledLayerIds, ids: publicNotificationUtils.getSelectionIds(this.selectionSets), layerViews: [this.addresseeLayer], mapView: this.mapView, mode: this._addEnabled ? interfaces$1.ESelectionMode.ADD : interfaces$1.ESelectionMode.REMOVE, ref: (el) => { this._refineTools = el; }, useLayerPicker: false })), index.h("br", null), (index.h("calcite-list", { class: "list-border" }, this._getRefineSelectionSetList())))));
   }
   //--------------------------------------------------------------------------
   //
@@ -3264,7 +3404,7 @@ const RefineSelection = class {
    * @protected
    */
   _modeChanged(evt) {
-    this._addEnabled = evt.detail === ESelectionMode.ADD;
+    this._addEnabled = evt.detail === interfaces$1.ESelectionMode.ADD;
   }
   /**
    * Set the refine tools selection mode
@@ -3281,11 +3421,11 @@ const RefineSelection = class {
    * @protected
    */
   _getRefineSelectionSetList() {
-    const total = getTotal(this.selectionSets);
+    const total = publicNotificationUtils.getTotal(this.selectionSets);
     const refineSet = this._getRefineSelectionSet(this.selectionSets);
     const numAdded = (refineSet === null || refineSet === void 0 ? void 0 : refineSet.refineIds.addIds.length) || 0;
     const numRemoved = (refineSet === null || refineSet === void 0 ? void 0 : refineSet.refineIds.removeIds.length) || 0;
-    return [(h$8("calcite-list-item", { label: this._translations.featuresAdded.replace("{{n}}", numAdded.toString()) })), (h$8("calcite-list-item", { label: this._translations.featuresRemoved.replace("{{n}}", numRemoved.toString()) })), (h$8("calcite-list-item", { label: this._translations.totalSelected.replace("{{n}}", total.toString()) }))];
+    return [(index.h("calcite-list-item", { label: this._translations.featuresAdded.replace("{{n}}", numAdded.toString()) })), (index.h("calcite-list-item", { label: this._translations.featuresRemoved.replace("{{n}}", numRemoved.toString()) })), (index.h("calcite-list-item", { label: this._translations.totalSelected.replace("{{n}}", total.toString()) }))];
   }
   /**
    * Fetch the refine selection set
@@ -3296,7 +3436,7 @@ const RefineSelection = class {
   _getRefineSelectionSet(selectionSets) {
     let refineSelectionSet;
     selectionSets.some(ss => {
-      if (ss.workflowType === EWorkflowType.REFINE) {
+      if (ss.workflowType === interfaces$1.EWorkflowType.REFINE) {
         refineSelectionSet = ss;
         return true;
       }
@@ -3365,7 +3505,7 @@ const RefineSelection = class {
       [...new Set(selectionSet.selectedIds.concat(selectionSet.refineIds.addIds))] :
       selectionSet.selectedIds.filter(id => selectionSet.refineIds.removeIds.indexOf(id) < 0);
     return this.selectionSets.map(ss => {
-      return ss.workflowType === EWorkflowType.REFINE ? selectionSet : ss;
+      return ss.workflowType === interfaces$1.EWorkflowType.REFINE ? selectionSet : ss;
     });
   }
   /**
@@ -3392,7 +3532,7 @@ const RefineSelection = class {
         searchResult: undefined,
         selectedIds: addIds,
         unit: "feet",
-        workflowType: EWorkflowType.REFINE,
+        workflowType: interfaces$1.EWorkflowType.REFINE,
         refineIds: {
           addIds: addIds,
           removeIds: removeIds
@@ -3406,7 +3546,7 @@ const RefineSelection = class {
    * @protected
    */
   async _getTranslations() {
-    const translations = await getLocaleComponentStrings(this.el);
+    const translations = await locale.getLocaleComponentStrings(this.el);
     this._translations = translations[0];
   }
   /** Provides access to protected methods for unit testing.
@@ -3436,8 +3576,64 @@ const RefineSelection = class {
     }
     return null;
   }
-  get el() { return getElement(this); }
+  get el() { return index.getElement(this); }
 };
 RefineSelection.style = refineSelectionCss;
 
-export { InputMessage as $, A$3 as A, s$5 as B, C$2 as C, i$a as D, E$2 as E, s$2 as F, p$3 as G, y$1 as H, j$2 as I, D$3 as J, v$2 as K, p$2 as L, z$2 as M, N$2 as N, L$1 as O, I$2 as P, Q$2 as Q, t$2 as R, s$7 as S, F$2 as T, U$1 as U, J$2 as V, t$6 as W, Bt$1 as X, n$1 as Y, Z$1 as Z, _typeof_1 as _, s$6 as a, Notice as a0, MapSelectTools as a1, PdfDownload as a2, RefineSelection as a3, x$4 as b, b$4 as c, d$5 as d, e$9 as e, r$3 as f, s$c as g, has as h, h$7 as i, j$5 as j, a$6 as k, j$3 as l, a$1 as m, x$3 as n, o$7 as o, b$2 as p, s$9 as q, r$6 as r, s$4 as s, t$8 as t, u$3 as u, e as v, w$2 as w, x$5 as x, y$2 as y, r$2 as z };
+exports.A = A$3;
+exports.Bt = Bt$1;
+exports.C = C$2;
+exports.D = D$3;
+exports.E = E$2;
+exports.F = F$2;
+exports.I = I$2;
+exports.InputMessage = InputMessage;
+exports.J = J$2;
+exports.L = L$1;
+exports.MapSelectTools = MapSelectTools;
+exports.N = N$2;
+exports.Notice = Notice;
+exports.PdfDownload = PdfDownload;
+exports.Q = Q$2;
+exports.RefineSelection = RefineSelection;
+exports.U = U$1;
+exports.Z = Z$1;
+exports._typeof_1 = _typeof_1;
+exports.a = a$6;
+exports.a$1 = a$1;
+exports.b = b$4;
+exports.b$1 = b$2;
+exports.d = d$5;
+exports.e = e$9;
+exports.e$1 = e;
+exports.h = h$7;
+exports.has = has;
+exports.i = i$a;
+exports.j = j$5;
+exports.j$1 = j$3;
+exports.j$2 = j$2;
+exports.n = n$1;
+exports.o = o$7;
+exports.p = p$3;
+exports.p$1 = p$2;
+exports.r = r$6;
+exports.r$1 = r$3;
+exports.r$2 = r$2;
+exports.s = s$3;
+exports.s$1 = s$5;
+exports.s$2 = s$b;
+exports.s$3 = s$8;
+exports.s$4 = s$4;
+exports.s$6 = s$6;
+exports.t = t$8;
+exports.t$1 = t$2;
+exports.t$2 = t$6;
+exports.u = u$3;
+exports.v = v$2;
+exports.w = w$2;
+exports.x = x$5;
+exports.x$1 = x$4;
+exports.x$2 = x$3;
+exports.y = y$2;
+exports.y$1 = y$1;
+exports.z = z$2;
