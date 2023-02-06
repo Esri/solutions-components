@@ -39,7 +39,7 @@ export function exportPDF(labels, labelPageDescription) {
  */
 function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
   console.log("_downloadPDFFile", labels, labelPageDescription, fileTitle); //???
-  console.log(JSON.stringify(PDFCreator.getPageSize("A4")));
+  console.log(JSON.stringify(PDFCreator.PDFCreator.getPageSize("A4")));
   const pdfLib = new PDFCreator_jsPDF.PDFCreator_jsPDF();
   pdfLib.initialize({
     pageType: "ANSI_A"

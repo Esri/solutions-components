@@ -3,22 +3,24 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { a as commonjsGlobal, c as createCommonjsModule, g as getDefaultExportFromCjs } from './_commonjsHelpers-d5f9d613.js';
-import { _ as _typeof_1 } from './calcite-input-message.calcite-notice.map-select-tools.pdf-download.refine-selection-a1dd1527.js';
-import './index-c246d90e.js';
-import './dom-3bdc69ee.js';
-import './resources-436ae282.js';
-import './guid-15fce7c0.js';
-import './interfaces-4ae145eb.js';
-import './conditionalSlot-d09506c4.js';
-import './observers-31601001.js';
-import './loadModules-c5553ae8.js';
-import './locale-45c3ffef.js';
-import './mapViewUtils-8f0754c5.js';
-import './interfaces-3b23a5f9.js';
-import './publicNotificationStore-b9daaee4.js';
-import './index-ac7f66eb.js';
-import './publicNotificationUtils-5cb5a607.js';
+'use strict';
+
+const _commonjsHelpers = require('./_commonjsHelpers-384729db.js');
+const calciteInputMessage_calciteNotice_mapSelectTools_pdfDownload_refineSelection_entry = require('./calcite-input-message.calcite-notice.map-select-tools.pdf-download.refine-selection-2c3f7a5c.js');
+require('./index-c6979cbb.js');
+require('./dom-4a580af6.js');
+require('./resources-b56bce71.js');
+require('./guid-84ac4d91.js');
+require('./interfaces-e76f31e9.js');
+require('./conditionalSlot-baada7a3.js');
+require('./observers-5311faf8.js');
+require('./loadModules-ebba630f.js');
+require('./locale-81876817.js');
+require('./mapViewUtils-55ac76cb.js');
+require('./interfaces-772edf61.js');
+require('./publicNotificationStore-20e924f5.js');
+require('./index-763f87ac.js');
+require('./publicNotificationUtils-9d585d8d.js');
 
 var check = function (it) {
   return it && it.Math == Math && it;
@@ -31,7 +33,7 @@ var global_1 =
   check(typeof window == 'object' && window) ||
   // eslint-disable-next-line no-restricted-globals -- safe
   check(typeof self == 'object' && self) ||
-  check(typeof commonjsGlobal == 'object' && commonjsGlobal) ||
+  check(typeof _commonjsHelpers.commonjsGlobal == 'object' && _commonjsHelpers.commonjsGlobal) ||
   // eslint-disable-next-line no-new-func -- fallback
   (function () { return this; })() || Function('return this')();
 
@@ -290,7 +292,7 @@ var store$1 = global_1[SHARED] || defineGlobalProperty(SHARED, {});
 
 var sharedStore = store$1;
 
-var shared = createCommonjsModule(function (module) {
+var shared = _commonjsHelpers.createCommonjsModule(function (module) {
 (module.exports = function (key, value) {
   return sharedStore[key] || (sharedStore[key] = value !== undefined ? value : {});
 })('versions', []).push({
@@ -567,7 +569,7 @@ var internalState = {
   getterFor: getterFor
 };
 
-var makeBuiltIn_1 = createCommonjsModule(function (module) {
+var makeBuiltIn_1 = _commonjsHelpers.createCommonjsModule(function (module) {
 var CONFIGURABLE_FUNCTION_NAME = functionName.CONFIGURABLE;
 
 
@@ -1884,7 +1886,7 @@ _export({ target: 'Promise', stat: true, forced: FORCED_PROMISE_CONSTRUCTOR }, {
   }
 });
 
-var asyncToGenerator = createCommonjsModule(function (module) {
+var asyncToGenerator = _commonjsHelpers.createCommonjsModule(function (module) {
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
   try {
     var info = gen[key](arg);
@@ -1918,7 +1920,7 @@ function _asyncToGenerator(fn) {
 module.exports = _asyncToGenerator, module.exports.__esModule = true, module.exports["default"] = module.exports;
 });
 
-const _asyncToGenerator = /*@__PURE__*/getDefaultExportFromCjs(asyncToGenerator);
+const _asyncToGenerator = /*@__PURE__*/_commonjsHelpers.getDefaultExportFromCjs(asyncToGenerator);
 
 var $String = String;
 
@@ -2932,8 +2934,8 @@ for (var COLLECTION_NAME in domIterables) {
 
 handlePrototype(domTokenListPrototype, 'DOMTokenList');
 
-var toPrimitive = createCommonjsModule(function (module) {
-var _typeof = _typeof_1["default"];
+var toPrimitive = _commonjsHelpers.createCommonjsModule(function (module) {
+var _typeof = calciteInputMessage_calciteNotice_mapSelectTools_pdfDownload_refineSelection_entry._typeof_1["default"];
 function _toPrimitive(input, hint) {
   if (_typeof(input) !== "object" || input === null) return input;
   var prim = input[Symbol.toPrimitive];
@@ -2947,8 +2949,8 @@ function _toPrimitive(input, hint) {
 module.exports = _toPrimitive, module.exports.__esModule = true, module.exports["default"] = module.exports;
 });
 
-var toPropertyKey = createCommonjsModule(function (module) {
-var _typeof = _typeof_1["default"];
+var toPropertyKey = _commonjsHelpers.createCommonjsModule(function (module) {
+var _typeof = calciteInputMessage_calciteNotice_mapSelectTools_pdfDownload_refineSelection_entry._typeof_1["default"];
 
 function _toPropertyKey(arg) {
   var key = toPrimitive(arg, "string");
@@ -2957,7 +2959,7 @@ function _toPropertyKey(arg) {
 module.exports = _toPropertyKey, module.exports.__esModule = true, module.exports["default"] = module.exports;
 });
 
-var defineProperty = createCommonjsModule(function (module) {
+var defineProperty = _commonjsHelpers.createCommonjsModule(function (module) {
 function _defineProperty(obj, key, value) {
   key = toPropertyKey(key);
   if (key in obj) {
@@ -2975,7 +2977,7 @@ function _defineProperty(obj, key, value) {
 module.exports = _defineProperty, module.exports.__esModule = true, module.exports["default"] = module.exports;
 });
 
-const _defineProperty = /*@__PURE__*/getDefaultExportFromCjs(defineProperty);
+const _defineProperty = /*@__PURE__*/_commonjsHelpers.getDefaultExportFromCjs(defineProperty);
 
 var $TypeError = TypeError;
 
@@ -3235,7 +3237,7 @@ fixRegexpWellKnownSymbolLogic('split', function (SPLIT, nativeSplit, maybeCallNa
   ];
 }, !SPLIT_WORKS_WITH_OVERWRITTEN_EXEC, UNSUPPORTED_Y);
 
-var performanceNow = createCommonjsModule(function (module) {
+var performanceNow = _commonjsHelpers.createCommonjsModule(function (module) {
 // Generated by CoffeeScript 1.12.2
 (function() {
   var getNanoSeconds, hrtime, loadTime, moduleLoadTime, nodeLoadTime, upTime;
@@ -3269,12 +3271,12 @@ var performanceNow = createCommonjsModule(function (module) {
     loadTime = new Date().getTime();
   }
 
-}).call(commonjsGlobal);
+}).call(_commonjsHelpers.commonjsGlobal);
 
 //# sourceMappingURL=performance-now.js.map
 });
 
-var root = typeof window === 'undefined' ? commonjsGlobal : window
+var root = typeof window === 'undefined' ? _commonjsHelpers.commonjsGlobal : window
   , vendors = ['moz', 'webkit']
   , suffix = 'AnimationFrame'
   , raf = root['request' + suffix]
@@ -10727,5 +10729,89 @@ class Canvg {
 
 }
 
-export default Canvg;
-export { AElement, AnimateColorElement, AnimateElement, AnimateTransformElement, BoundingBox, CB1, CB2, CB3, CB4, Canvg, CircleElement, ClipPathElement, DefsElement, DescElement, Document, Element, EllipseElement, FeColorMatrixElement, FeCompositeElement, FeDropShadowElement, FeGaussianBlurElement, FeMorphologyElement, FilterElement, Font, FontElement, FontFaceElement, GElement, GlyphElement, GradientElement, ImageElement, LineElement, LinearGradientElement, MarkerElement, MaskElement, Matrix, MissingGlyphElement, Mouse, PSEUDO_ZERO, Parser, PathElement, PathParser, PatternElement, Point, PolygonElement, PolylineElement, Property, QB1, QB2, QB3, RadialGradientElement, RectElement, RenderedElement, Rotate, SVGElement, SVGFontLoader, Scale, Screen, Skew, SkewX, SkewY, StopElement, StyleElement, SymbolElement, TRefElement, TSpanElement, TextElement, TextPathElement, TitleElement, Transform, Translate, UnknownElement, UseElement, ViewPort, compressSpaces, getSelectorSpecificity, normalizeAttributeName, normalizeColor, parseExternalUrl, index as presets, toNumbers, trimLeft, trimRight, vectorMagnitude, vectorsAngle, vectorsRatio };
+exports.AElement = AElement;
+exports.AnimateColorElement = AnimateColorElement;
+exports.AnimateElement = AnimateElement;
+exports.AnimateTransformElement = AnimateTransformElement;
+exports.BoundingBox = BoundingBox;
+exports.CB1 = CB1;
+exports.CB2 = CB2;
+exports.CB3 = CB3;
+exports.CB4 = CB4;
+exports.Canvg = Canvg;
+exports.CircleElement = CircleElement;
+exports.ClipPathElement = ClipPathElement;
+exports.DefsElement = DefsElement;
+exports.DescElement = DescElement;
+exports.Document = Document;
+exports.Element = Element;
+exports.EllipseElement = EllipseElement;
+exports.FeColorMatrixElement = FeColorMatrixElement;
+exports.FeCompositeElement = FeCompositeElement;
+exports.FeDropShadowElement = FeDropShadowElement;
+exports.FeGaussianBlurElement = FeGaussianBlurElement;
+exports.FeMorphologyElement = FeMorphologyElement;
+exports.FilterElement = FilterElement;
+exports.Font = Font;
+exports.FontElement = FontElement;
+exports.FontFaceElement = FontFaceElement;
+exports.GElement = GElement;
+exports.GlyphElement = GlyphElement;
+exports.GradientElement = GradientElement;
+exports.ImageElement = ImageElement;
+exports.LineElement = LineElement;
+exports.LinearGradientElement = LinearGradientElement;
+exports.MarkerElement = MarkerElement;
+exports.MaskElement = MaskElement;
+exports.Matrix = Matrix;
+exports.MissingGlyphElement = MissingGlyphElement;
+exports.Mouse = Mouse;
+exports.PSEUDO_ZERO = PSEUDO_ZERO;
+exports.Parser = Parser;
+exports.PathElement = PathElement;
+exports.PathParser = PathParser;
+exports.PatternElement = PatternElement;
+exports.Point = Point;
+exports.PolygonElement = PolygonElement;
+exports.PolylineElement = PolylineElement;
+exports.Property = Property;
+exports.QB1 = QB1;
+exports.QB2 = QB2;
+exports.QB3 = QB3;
+exports.RadialGradientElement = RadialGradientElement;
+exports.RectElement = RectElement;
+exports.RenderedElement = RenderedElement;
+exports.Rotate = Rotate;
+exports.SVGElement = SVGElement;
+exports.SVGFontLoader = SVGFontLoader;
+exports.Scale = Scale;
+exports.Screen = Screen;
+exports.Skew = Skew;
+exports.SkewX = SkewX;
+exports.SkewY = SkewY;
+exports.StopElement = StopElement;
+exports.StyleElement = StyleElement;
+exports.SymbolElement = SymbolElement;
+exports.TRefElement = TRefElement;
+exports.TSpanElement = TSpanElement;
+exports.TextElement = TextElement;
+exports.TextPathElement = TextPathElement;
+exports.TitleElement = TitleElement;
+exports.Transform = Transform;
+exports.Translate = Translate;
+exports.UnknownElement = UnknownElement;
+exports.UseElement = UseElement;
+exports.ViewPort = ViewPort;
+exports.compressSpaces = compressSpaces;
+exports.default = Canvg;
+exports.getSelectorSpecificity = getSelectorSpecificity;
+exports.normalizeAttributeName = normalizeAttributeName;
+exports.normalizeColor = normalizeColor;
+exports.parseExternalUrl = parseExternalUrl;
+exports.presets = index;
+exports.toNumbers = toNumbers;
+exports.trimLeft = trimLeft;
+exports.trimRight = trimRight;
+exports.vectorMagnitude = vectorMagnitude;
+exports.vectorsAngle = vectorsAngle;
+exports.vectorsRatio = vectorsRatio;

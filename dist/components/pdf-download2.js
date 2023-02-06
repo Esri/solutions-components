@@ -980,12 +980,6 @@ class PDFCreator {
     }
 }
 
-const PDFCreator$1 = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  get EPageType () { return EPageType; },
-  PDFCreator: PDFCreator
-});
-
 var _typeof_1 = createCommonjsModule(function (module) {
 function _typeof(obj) {
   "@babel/helpers - typeof";
@@ -2311,7 +2305,7 @@ function exportPDF(labels, labelPageDescription) {
  */
 function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
   console.log("_downloadPDFFile", labels, labelPageDescription, fileTitle); //???
-  console.log(JSON.stringify(undefined("A4")));
+  console.log(JSON.stringify(PDFCreator.getPageSize("A4")));
   const pdfLib = new PDFCreator_jsPDF();
   pdfLib.initialize({
     pageType: "ANSI_A"
