@@ -1,0 +1,10 @@
+{
+  "drawTools": "Drawing tools",
+  "types": {
+    "point": "Point",
+    "line": "Line",
+    "polygon": "Polygon",
+    "rectangle": "Rectangle",
+    "freehandPolygon": "Freehand Polygon"
+  }
+}
