@@ -66,7 +66,6 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
-    "@arcgis/core": "^4.25.5",
     "@pdf-lib/fontkit": "^1.1.1",
     "@stencil/core": "^2.20.0",
     "focus-trap": "7.2.0",

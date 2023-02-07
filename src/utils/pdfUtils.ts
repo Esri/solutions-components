@@ -16,6 +16,7 @@
 
 import * as PDFCreator_jsPDF from "../assets/arcgis-pdf-creator/PDFCreator_jsPDF";
 import * as PDFLabels from "../assets/arcgis-pdf-creator/PDFLabels";
+import { getAssetPath } from "@stencil/core";
 
 /**
  * Exports a PDF of labels.
@@ -46,7 +47,7 @@ function _downloadPDFFile(
   pdfLib.initialize(
     {
       pageType: "ANSI_A"
-    }, "../build/assets/arcgis-pdf-creator/", "en",
+    }, getAssetPath(`../assets/arcgis-pdf-creator/`), "en",
     fileTitle, false
   )
   .then(

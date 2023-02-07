@@ -15,9 +15,9 @@
  */
 
 import "@esri/calcite-components";
-import * as intl from "@arcgis/core/intl";
 import * as pdfUtils from "../../assets/data/labelFormats.json";
 import PdfDownload_T9n from "../../assets/t9n/pdf-download/resources.json";
+import { loadModules } from "../../utils/loadModules";
 import { Component, Element, Host, h, Method, Prop, State, VNode } from "@stencil/core";
 import { exportCSV } from "../../utils/csvUtils";
 import { exportPDF } from "../../utils/pdfUtils";
@@ -81,6 +81,11 @@ export class PdfDownload {
    * HTMLCalciteSelectElement: The html element for selecting buffer unit
    */
   protected _labelInfoElement: HTMLCalciteSelectElement;
+
+  /**
+   * intl: https://developers.arcgis.com/javascript/latest/api-reference/esri-intl.html
+   */
+  protected _intl: __esri.intl;
 
   //--------------------------------------------------------------------------
   //
@@ -149,6 +154,7 @@ export class PdfDownload {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
+    await this._initModules();
   }
 
   /**
@@ -173,6 +179,20 @@ export class PdfDownload {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
+    const [intl] = await loadModules([
+      "esri/intl"
+    ]);
+    this._intl = intl;
+  }
 
   /**
    * Converts the text of a custom popup into a multiline label specification; conversion splits text into
@@ -250,7 +270,7 @@ export class PdfDownload {
         const label: string[] = [];
         labelFormat.forEach(
           labelLineTemplate => {
-            const labelLine = intl.substitute(labelLineTemplate, featureAttributes).trim();
+            const labelLine = this._intl.substitute(labelLineTemplate, featureAttributes).trim();
             if (labelLine.length > 0) {
               label.push(labelLine);
             }
