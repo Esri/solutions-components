@@ -82,7 +82,10 @@ export class PdfDownload {
    */
   protected _labelInfoElement: HTMLCalciteSelectElement;
 
-  protected _intl: any;
+  /**
+   * intl: https://developers.arcgis.com/javascript/latest/api-reference/esri-intl.html
+   */
+  protected _intl: __esri.intl;
 
   //--------------------------------------------------------------------------
   //
