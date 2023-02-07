@@ -43,10 +43,11 @@ function _downloadPDFFile(
   fileTitle: string
 ): void {
   const pdfLib = new PDFCreator_jsPDF.PDFCreator_jsPDF();
+  //console.log(windoe href check here)
   pdfLib.initialize(
     {
       pageType: "ANSI_A"
-    }, "../build/assets/arcgis-pdf-creator/", "en",
+    }, "./assets/arcgis-pdf-creator/", "en",
     fileTitle, false
   )
   .then(

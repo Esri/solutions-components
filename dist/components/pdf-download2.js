@@ -2241,9 +2241,10 @@ function exportPDF(labels, labelPageDescription) {
  */
 function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
   const pdfLib = new PDFCreator_jsPDF();
+  //console.log(windoe href check here)
   pdfLib.initialize({
     pageType: "ANSI_A"
-  }, "../build/assets/arcgis-pdf-creator/", "en", fileTitle, false)
+  }, "./assets/arcgis-pdf-creator/", "en", fileTitle, false)
     .then(() => {
     const labeller = new PDFLabels();
     labeller.initialize(pdfLib)
