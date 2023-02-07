@@ -295,13 +295,11 @@ export class RefineSelectionTools {
                 <div class="esri-sketch__tool-section esri-sketch__section">
                   <calcite-action
                     disabled={!this._selectEnabled}
-                    icon="select"
+                    icon="pin"
                     onClick={() => this._setSelectionMode(ESelectionType.POINT)}
                     scale="s"
                     text={this._translations.select}
                   />
-                </div>
-                <div class="esri-sketch__tool-section esri-sketch__section">
                   <calcite-action
                     disabled={!this._selectEnabled}
                     icon="line"
