@@ -8,4 +8,17 @@
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.0.0-beta.97
  */
-const s={sticky:"sticky-pos"};var c;!function(s){s.circle="circle",s.square="square",s.grip="grip"}(c||(c={}));const n={menuActions:"menu-actions"};export{s as C,c as I,n as S}
+const CSS = {
+  sticky: "sticky-pos"
+};
+var ICON_TYPES;
+(function (ICON_TYPES) {
+  ICON_TYPES["circle"] = "circle";
+  ICON_TYPES["square"] = "square";
+  ICON_TYPES["grip"] = "grip";
+})(ICON_TYPES || (ICON_TYPES = {}));
+const SLOTS = {
+  menuActions: "menu-actions"
+};
+
+export { CSS as C, ICON_TYPES as I, SLOTS as S };

@@ -8,4 +8,16 @@
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.0.0-beta.97
  */
-const e={menu:"menu",defaultTrigger:"default-trigger"},t={tooltip:"tooltip",trigger:"trigger"},r={menu:"ellipsis"};export{e as C,r as I,t as S}
+const CSS = {
+  menu: "menu",
+  defaultTrigger: "default-trigger"
+};
+const SLOTS = {
+  tooltip: "tooltip",
+  trigger: "trigger"
+};
+const ICONS = {
+  menu: "ellipsis"
+};
+
+export { CSS as C, ICONS as I, SLOTS as S };

@@ -8,4 +8,14 @@
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.0.0-beta.97
  */
-const n={heading:"heading",container:"container",indented:"container--indented"},e={parentItem:"parent-item"},t=3;export{n as C,t as H,e as S}
+const CSS = {
+  heading: "heading",
+  container: "container",
+  indented: "container--indented"
+};
+const SLOTS = {
+  parentItem: "parent-item"
+};
+const HEADING_LEVEL = 3;
+
+export { CSS as C, HEADING_LEVEL as H, SLOTS as S };

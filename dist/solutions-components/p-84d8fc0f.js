@@ -3,9 +3,108 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import{f as t,h as o}from"./p-c2f00d41.js";import{b as e}from"./p-83166522.js";import{S as n}from"./p-6e0da576.js";import{S as a}from"./p-708a63a8.js";
+import { f as forceUpdate, h } from './p-c2f00d41.js';
+import { b as getElementDir } from './p-83166522.js';
+import { S as SLOTS } from './p-6e0da576.js';
+import { S as SLOTS$1 } from './p-708a63a8.js';
+
 /*!
  * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.0.0-beta.97
- */const i=150,c=t=>t.reduce(((t,o)=>t+o),0)/t.length,l=t=>{const o=null==t?void 0:t.length;return{actionWidth:o?c(t.map((t=>t.clientWidth||0))):0,actionHeight:o?c(t.map((t=>t.clientHeight||0))):0}},r=({layout:t,actionCount:o,actionWidth:e,width:n,actionHeight:a,height:i,groupCount:c})=>Math.max(o-(({width:t,actionWidth:o,layout:e,height:n,actionHeight:a,groupCount:i})=>Math.floor((("horizontal"===e?t:n)-2*i)/("horizontal"===e?o:a)))({width:n,actionWidth:e,layout:t,height:i,actionHeight:a,groupCount:c}),0),s=t=>Array.from(t.querySelectorAll("calcite-action")).filter((t=>!t.closest("calcite-action-menu")||t.slot===n.trigger)),p=({actionGroups:o,expanded:e,overflowCount:n})=>{let i=n;o.reverse().forEach((o=>{let n=0;const c=s(o).reverse();c.forEach((t=>{t.slot===a.menuActions&&(t.removeAttribute("slot"),t.textEnabled=e)})),i>0&&c.some((t=>(c.filter((t=>!t.slot)).length>1&&c.length>2&&!t.closest("calcite-action-menu")&&(t.textEnabled=!0,t.setAttribute("slot",a.menuActions),n++,n>1&&i--),i<1))),t(o)}))};function d({parent:t,expanded:o}){s(t).filter((t=>t.slot!==a.menuActions)).forEach((t=>t.textEnabled=o)),t.querySelectorAll("calcite-action-group, calcite-action-menu").forEach((t=>t.expanded=o))}const h=({expanded:t,intlExpand:n,intlCollapse:a,toggle:i,el:c,position:l,tooltip:r,ref:s,scale:p})=>{const d="rtl"===e(c),h=t?a:n,u=["chevrons-left","chevrons-right"];d&&u.reverse();const f="end"===function(t,o){var e;return t||(null===(e=o.closest("calcite-shell-panel"))||void 0===e?void 0:e.position)||"start"}(l,c),g=o("calcite-action",{icon:t?f?u[1]:u[0]:f?u[0]:u[1],onClick:i,ref:o=>(({tooltip:t,referenceElement:o,expanded:e,ref:n})=>(t&&(t.referenceElement=!e&&o?o:null),n&&n(o),o))({tooltip:r,referenceElement:o,expanded:t,ref:s}),scale:p,text:h,textEnabled:t});return g};export{h as E,p as a,r as b,l as g,i as o,s as q,d as t}
+ */
+const overflowActionsDebounceInMs = 150;
+const groupBufferPx = 2;
+const getAverage = (arr) => arr.reduce((p, c) => p + c, 0) / arr.length;
+const geActionDimensions = (actions) => {
+  const actionLen = actions === null || actions === void 0 ? void 0 : actions.length;
+  return {
+    actionWidth: actionLen ? getAverage(actions.map((action) => action.clientWidth || 0)) : 0,
+    actionHeight: actionLen ? getAverage(actions.map((action) => action.clientHeight || 0)) : 0
+  };
+};
+const getMaxActionCount = ({ width, actionWidth, layout, height, actionHeight, groupCount }) => {
+  const maxContainerPx = layout === "horizontal" ? width : height;
+  const avgItemPx = layout === "horizontal" ? actionWidth : actionHeight;
+  return Math.floor((maxContainerPx - groupCount * groupBufferPx) / avgItemPx);
+};
+const getOverflowCount = ({ layout, actionCount, actionWidth, width, actionHeight, height, groupCount }) => {
+  return Math.max(actionCount - getMaxActionCount({ width, actionWidth, layout, height, actionHeight, groupCount }), 0);
+};
+const queryActions = (el) => {
+  return Array.from(el.querySelectorAll("calcite-action")).filter((action) => action.closest("calcite-action-menu") ? action.slot === SLOTS.trigger : true);
+};
+const overflowActions = ({ actionGroups, expanded, overflowCount }) => {
+  let needToSlotCount = overflowCount;
+  actionGroups.reverse().forEach((group) => {
+    let slottedWithinGroupCount = 0;
+    const groupActions = queryActions(group).reverse();
+    groupActions.forEach((groupAction) => {
+      if (groupAction.slot === SLOTS$1.menuActions) {
+        groupAction.removeAttribute("slot");
+        groupAction.textEnabled = expanded;
+      }
+    });
+    if (needToSlotCount > 0) {
+      groupActions.some((groupAction) => {
+        const unslottedActions = groupActions.filter((action) => !action.slot);
+        if (unslottedActions.length > 1 && groupActions.length > 2 && !groupAction.closest("calcite-action-menu")) {
+          groupAction.textEnabled = true;
+          groupAction.setAttribute("slot", SLOTS$1.menuActions);
+          slottedWithinGroupCount++;
+          if (slottedWithinGroupCount > 1) {
+            needToSlotCount--;
+          }
+        }
+        return needToSlotCount < 1;
+      });
+    }
+    forceUpdate(group);
+  });
+};
+
+/*!
+ * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+ * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
+ * v1.0.0-beta.97
+ */
+const ICONS = {
+  chevronsLeft: "chevrons-left",
+  chevronsRight: "chevrons-right"
+};
+function getCalcitePosition(position, el) {
+  var _a;
+  return position || ((_a = el.closest("calcite-shell-panel")) === null || _a === void 0 ? void 0 : _a.position) || "start";
+}
+function toggleChildActionText({ parent, expanded }) {
+  queryActions(parent)
+    .filter((el) => el.slot !== SLOTS$1.menuActions)
+    .forEach((action) => (action.textEnabled = expanded));
+  parent
+    .querySelectorAll("calcite-action-group, calcite-action-menu")
+    .forEach((el) => (el.expanded = expanded));
+}
+const setTooltipReference = ({ tooltip, referenceElement, expanded, ref }) => {
+  if (tooltip) {
+    tooltip.referenceElement = !expanded && referenceElement ? referenceElement : null;
+  }
+  if (ref) {
+    ref(referenceElement);
+  }
+  return referenceElement;
+};
+const ExpandToggle = ({ expanded, intlExpand, intlCollapse, toggle, el, position, tooltip, ref, scale }) => {
+  const rtl = getElementDir(el) === "rtl";
+  const expandText = expanded ? intlCollapse : intlExpand;
+  const icons = [ICONS.chevronsLeft, ICONS.chevronsRight];
+  if (rtl) {
+    icons.reverse();
+  }
+  const end = getCalcitePosition(position, el) === "end";
+  const expandIcon = end ? icons[1] : icons[0];
+  const collapseIcon = end ? icons[0] : icons[1];
+  const actionNode = (h("calcite-action", { icon: expanded ? expandIcon : collapseIcon, onClick: toggle, ref: (referenceElement) => setTooltipReference({ tooltip, referenceElement, expanded, ref }), scale: scale, text: expandText, textEnabled: expanded }));
+  return actionNode;
+};
+
+export { ExpandToggle as E, overflowActions as a, getOverflowCount as b, geActionDimensions as g, overflowActionsDebounceInMs as o, queryActions as q, toggleChildActionText as t };

@@ -3,15 +3,411 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import{n as t}from"./p-73e23995.js";import{c as n}from"./p-9a9955db.js";import{c as e,d as i}from"./p-83166522.js";
+import { n as numberKeys } from './p-73e23995.js';
+import { c as createObserver } from './p-9a9955db.js';
+import { c as closestElementCrossShadowBoundary, d as containsCrossShadowBoundary } from './p-83166522.js';
+
 /*!
  * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.0.0-beta.97
  */
-class s{constructor(t){if(t instanceof s)return t;const[n,e]=String(t).split(".").concat("");this.value=BigInt(n+e.padEnd(s.DECIMALS,"0").slice(0,s.DECIMALS))+BigInt(s.ROUNDED&&e[s.DECIMALS]>="5"),this.isNegative="-"===t.charAt(0)}static _divRound(t,n){return s.fromBigInt(t/n+(s.ROUNDED?t*BigInt(2)/n%BigInt(2):BigInt(0)))}static fromBigInt(t){return Object.assign(Object.create(s.prototype),{value:t})}toString(){const t=this.value.toString().replace(new RegExp("-","g"),"").padStart(s.DECIMALS+1,"0"),n=t.slice(0,-s.DECIMALS),e=t.slice(-s.DECIMALS).replace(/\.?0+$/,""),i=n.concat(e.length?"."+e:"");return`${this.isNegative?"-":""}${i}`}formatToParts(t){const n=this.value.toString().replace(new RegExp("-","g"),"").padStart(s.DECIMALS+1,"0"),e=n.slice(0,-s.DECIMALS),i=n.slice(-s.DECIMALS).replace(/\.?0+$/,""),r=t.formatToParts(BigInt(e));return this.isNegative&&r.unshift({type:"minusSign",value:S.minusSign}),i.length&&(r.push({type:"decimal",value:S.decimal}),i.split("").forEach((t=>r.push({type:"fraction",value:t})))),r}format(t){const n=this.value.toString().replace(new RegExp("-","g"),"").padStart(s.DECIMALS+1,"0"),e=n.slice(0,-s.DECIMALS),i=n.slice(-s.DECIMALS).replace(/\.?0+$/,"");return`${this.isNegative?S.minusSign:""}${t.format(BigInt(e))}${i.length?`${S.decimal}${t.format(BigInt(i))}`:""}`}add(t){return s.fromBigInt(this.value+new s(t).value)}subtract(t){return s.fromBigInt(this.value-new s(t).value)}multiply(t){return s._divRound(this.value*new s(t).value,s.SHIFT)}divide(t){return s._divRound(this.value*s.SHIFT,new s(t).value)}}function r(t){return!(!t||isNaN(Number(t)))}function u(n){return n&&(e=n,t.some((t=>e.includes(t))))?l(n,(n=>{let e=!1;const i=n.split("").filter(((n,i)=>n.match(/\./g)&&!e?(e=!0,!0):!(!n.match(/\-/g)||0!==i)||t.includes(n))).reduce(((t,n)=>t+n));return r(i)?new s(i).toString():""})):"";var e;
+// adopted from https://stackoverflow.com/a/66939244
+class BigDecimal {
+  constructor(input) {
+    if (input instanceof BigDecimal) {
+      return input;
+    }
+    const [integers, decimals] = String(input).split(".").concat("");
+    this.value =
+      BigInt(integers + decimals.padEnd(BigDecimal.DECIMALS, "0").slice(0, BigDecimal.DECIMALS)) +
+        BigInt(BigDecimal.ROUNDED && decimals[BigDecimal.DECIMALS] >= "5");
+    this.isNegative = input.charAt(0) === "-";
+  }
+  static _divRound(dividend, divisor) {
+    return BigDecimal.fromBigInt(dividend / divisor + (BigDecimal.ROUNDED ? ((dividend * BigInt(2)) / divisor) % BigInt(2) : BigInt(0)));
+  }
+  static fromBigInt(bigint) {
+    return Object.assign(Object.create(BigDecimal.prototype), { value: bigint });
+  }
+  toString() {
+    const s = this.value
+      .toString()
+      .replace(new RegExp("-", "g"), "")
+      .padStart(BigDecimal.DECIMALS + 1, "0");
+    const i = s.slice(0, -BigDecimal.DECIMALS);
+    const d = s.slice(-BigDecimal.DECIMALS).replace(/\.?0+$/, "");
+    const value = i.concat(d.length ? "." + d : "");
+    return `${this.isNegative ? "-" : ""}${value}`;
+  }
+  formatToParts(formatter) {
+    const s = this.value
+      .toString()
+      .replace(new RegExp("-", "g"), "")
+      .padStart(BigDecimal.DECIMALS + 1, "0");
+    const i = s.slice(0, -BigDecimal.DECIMALS);
+    const d = s.slice(-BigDecimal.DECIMALS).replace(/\.?0+$/, "");
+    const parts = formatter.formatToParts(BigInt(i));
+    this.isNegative && parts.unshift({ type: "minusSign", value: numberStringFormatter.minusSign });
+    if (d.length) {
+      parts.push({ type: "decimal", value: numberStringFormatter.decimal });
+      d.split("").forEach((char) => parts.push({ type: "fraction", value: char }));
+    }
+    return parts;
+  }
+  format(formatter) {
+    const s = this.value
+      .toString()
+      .replace(new RegExp("-", "g"), "")
+      .padStart(BigDecimal.DECIMALS + 1, "0");
+    const i = s.slice(0, -BigDecimal.DECIMALS);
+    const d = s.slice(-BigDecimal.DECIMALS).replace(/\.?0+$/, "");
+    const iFormatted = `${this.isNegative ? numberStringFormatter.minusSign : ""}${formatter.format(BigInt(i))}`;
+    const dFormatted = d.length ? `${numberStringFormatter.decimal}${formatter.format(BigInt(d))}` : "";
+    return `${iFormatted}${dFormatted}`;
+  }
+  add(num) {
+    return BigDecimal.fromBigInt(this.value + new BigDecimal(num).value);
+  }
+  subtract(num) {
+    return BigDecimal.fromBigInt(this.value - new BigDecimal(num).value);
+  }
+  multiply(num) {
+    return BigDecimal._divRound(this.value * new BigDecimal(num).value, BigDecimal.SHIFT);
+  }
+  divide(num) {
+    return BigDecimal._divRound(this.value * BigDecimal.SHIFT, new BigDecimal(num).value);
+  }
+}
+// Configuration: constants
+BigDecimal.DECIMALS = 100; // number of decimals on all instances
+BigDecimal.ROUNDED = true; // numbers are truncated (false) or rounded (true)
+BigDecimal.SHIFT = BigInt("1" + "0".repeat(BigDecimal.DECIMALS)); // derived constant
+function isValidNumber(numberString) {
+  return !(!numberString || isNaN(Number(numberString)));
+}
+function parseNumberString(numberString) {
+  if (!numberString || !stringContainsNumbers(numberString)) {
+    return "";
+  }
+  return sanitizeExponentialNumberString(numberString, (nonExpoNumString) => {
+    let containsDecimal = false;
+    const result = nonExpoNumString
+      .split("")
+      .filter((value, i) => {
+      if (value.match(/\./g) && !containsDecimal) {
+        containsDecimal = true;
+        return true;
+      }
+      if (value.match(/\-/g) && i === 0) {
+        return true;
+      }
+      return numberKeys.includes(value);
+    })
+      .reduce((string, part) => string + part);
+    return isValidNumber(result) ? new BigDecimal(result).toString() : "";
+  });
+}
+// regex for number sanitization
+const allLeadingZerosOptionallyNegative = /^([-0])0+(?=\d)/;
+const decimalOnlyAtEndOfString = /(?!^\.)\.$/;
+const allHyphensExceptTheStart = /(?!^-)-/g;
+const isNegativeDecimalOnlyZeros = /^-\b0\b\.?0*$/;
+const sanitizeNumberString = (numberString) => sanitizeExponentialNumberString(numberString, (nonExpoNumString) => {
+  const sanitizedValue = nonExpoNumString
+    .replace(allHyphensExceptTheStart, "")
+    .replace(decimalOnlyAtEndOfString, "")
+    .replace(allLeadingZerosOptionallyNegative, "$1");
+  return isValidNumber(sanitizedValue)
+    ? isNegativeDecimalOnlyZeros.test(sanitizedValue)
+      ? sanitizedValue
+      : new BigDecimal(sanitizedValue).toString()
+    : nonExpoNumString;
+});
+function sanitizeExponentialNumberString(numberString, func) {
+  if (!numberString) {
+    return numberString;
+  }
+  const firstE = numberString.toLowerCase().indexOf("e") + 1;
+  if (!firstE) {
+    return func(numberString);
+  }
+  return numberString
+    .replace(/[eE]*$/g, "")
+    .substring(0, firstE)
+    .concat(numberString.slice(firstE).replace(/[eE]/g, ""))
+    .split(/[eE]/)
+    .map((section, i) => (i === 1 ? func(section.replace(/\./g, "")) : func(section)))
+    .join("e")
+    .replace(/^e/, "1e");
+}
+function stringContainsNumbers(string) {
+  return numberKeys.some((number) => string.includes(number));
+}
+
 /*!
  * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.0.0-beta.97
- */}s.DECIMALS=100,s.ROUNDED=!0,s.SHIFT=BigInt("1"+"0".repeat(s.DECIMALS));const a=/^([-0])0+(?=\d)/,o=/(?!^\.)\.$/,h=/(?!^-)-/g,g=/^-\b0\b\.?0*$/,c=t=>l(t,(t=>{const n=t.replace(h,"").replace(o,"").replace(a,"$1");return r(n)?g.test(n)?n:new s(n).toString():t}));function l(t,n){if(!t)return t;const e=t.toLowerCase().indexOf("e")+1;return e?t.replace(/[eE]*$/g,"").substring(0,e).concat(t.slice(e).replace(/[eE]/g,"")).split(/[eE]/).map(((t,e)=>n(1===e?t.replace(/\./g,""):t))).join("e").replace(/^e/,"1e"):n(t)}const m="en",d=["ar","bg","bs","ca","cs","da","de","de-CH","el",m,"en-AU","en-CA","en-GB","es","es-MX","et","fi","fr","fr-CH","he","hi","hr","hu","id","it","it-CH","ja","ko","lt","lv","mk","nb","nl","pl","pt","pt-PT","ro","ru","sk","sl","sr","sv","th","tr","uk","vi","zh-CN","zh-HK","zh-TW"],p=["arab","arabext","bali","beng","deva","fullwide","gujr","guru","hanidec","khmr","knda","laoo","latn","limb","mlym","mong","mymr","orya","tamldec","telu","thai","tibt"],b=t=>p.includes(t),f=(new Intl.NumberFormat).resolvedOptions().numberingSystem,w="arab"!==f&&b(f)?f:"latn",$=t=>b(t)?t:w;function v(t){return d.indexOf(t)>-1?t:t?"nb"===(t=t.toLowerCase())?"no":(t.includes("-")&&(t=t.replace(/(\w+)-(\w+)/,((t,n,e)=>`${n}-${e.toUpperCase()}`)),d.includes(t)||(t=t.split("-")[0])),d.includes(t)?t:m):m}const I=new Set;function B(t){E(t),0===I.size&&R.observe(document.documentElement,{attributes:!0,attributeFilter:["lang"],subtree:!0}),I.add(t)}function E(t){t.effectiveLocale=function(t){var n;return t.el.lang||t.locale||(null===(n=e(t.el,"[lang]"))||void 0===n?void 0:n.lang)||document.documentElement.lang||m}(t)}function x(t){I.delete(t),0===I.size&&R.disconnect()}const R=n("mutation",(t=>{t.forEach((t=>{const n=t.target;I.forEach((t=>{const s=!(!t.locale||t.el.lang),r=!i(n,t.el);if(s||r)return;const u=e(t.el,"[lang]");if(!u)return void(t.effectiveLocale=m);const a=u.lang;t.effectiveLocale=u.hasAttribute("lang")&&""===a?m:a}))}))})),S=new class{constructor(){this.delocalize=t=>this._numberFormatOptions?l(t,(t=>t.trim().replace(new RegExp(`[${this._minusSign}]`,"g"),"-").replace(new RegExp(`[${this._group}]`,"g"),"").replace(new RegExp(`[${this._decimal}]`,"g"),".").replace(new RegExp(`[${this._digits.join("")}]`,"g"),this._getDigitIndex))):t,this.localize=t=>this._numberFormatOptions?l(t,(t=>r(t.trim())?new s(t.trim()).format(this._numberFormatter).replace(new RegExp(`[${this._actualGroup}]`,"g"),this._group):t)):t}get group(){return this._group}get decimal(){return this._decimal}get minusSign(){return this._minusSign}get digits(){return this._digits}get numberFormatter(){return this._numberFormatter}get numberFormatOptions(){return this._numberFormatOptions}set numberFormatOptions(t){if(t.locale=v(null==t?void 0:t.locale),t.numberingSystem=$(null==t?void 0:t.numberingSystem),!this._numberFormatOptions&&t.locale===m&&t.numberingSystem===w&&2===Object.keys(t).length||JSON.stringify(this._numberFormatOptions)===JSON.stringify(t))return;this._numberFormatOptions=t,this._numberFormatter=new Intl.NumberFormat(this._numberFormatOptions.locale,this._numberFormatOptions),this._digits=[...new Intl.NumberFormat(this._numberFormatOptions.locale,{useGrouping:!1,numberingSystem:this._numberFormatOptions.numberingSystem}).format(9876543210)].reverse();const n=new Map(this._digits.map(((t,n)=>[t,n]))),e=new Intl.NumberFormat(this._numberFormatOptions.locale).formatToParts(-12345678.9);this._actualGroup=e.find((t=>"group"===t.type)).value,this._group=0===this._actualGroup.trim().length?" ":this._actualGroup,this._decimal=e.find((t=>"decimal"===t.type)).value,this._minusSign=e.find((t=>"minusSign"===t.type)).value,this._getDigitIndex=t=>n.get(t)}};export{w as a,$ as b,B as c,x as d,v as g,r as i,S as n,u as p,c as s,E as u}
+ */
+const defaultLocale = "en";
+const locales = [
+  "ar",
+  "bg",
+  "bs",
+  "ca",
+  "cs",
+  "da",
+  "de",
+  "de-CH",
+  "el",
+  defaultLocale,
+  "en-AU",
+  "en-CA",
+  "en-GB",
+  "es",
+  "es-MX",
+  "et",
+  "fi",
+  "fr",
+  "fr-CH",
+  "he",
+  "hi",
+  "hr",
+  "hu",
+  "id",
+  "it",
+  "it-CH",
+  "ja",
+  "ko",
+  "lt",
+  "lv",
+  "mk",
+  "nb",
+  "nl",
+  "pl",
+  "pt",
+  "pt-PT",
+  "ro",
+  "ru",
+  "sk",
+  "sl",
+  "sr",
+  "sv",
+  "th",
+  "tr",
+  "uk",
+  "vi",
+  "zh-CN",
+  "zh-HK",
+  "zh-TW"
+];
+const numberingSystems = [
+  "arab",
+  "arabext",
+  "bali",
+  "beng",
+  "deva",
+  "fullwide",
+  "gujr",
+  "guru",
+  "hanidec",
+  "khmr",
+  "knda",
+  "laoo",
+  "latn",
+  "limb",
+  "mlym",
+  "mong",
+  "mymr",
+  "orya",
+  "tamldec",
+  "telu",
+  "thai",
+  "tibt"
+];
+const isNumberingSystemSupported = (numberingSystem) => numberingSystems.includes(numberingSystem);
+const browserNumberingSystem = new Intl.NumberFormat().resolvedOptions().numberingSystem;
+const defaultNumberingSystem = browserNumberingSystem === "arab" || !isNumberingSystemSupported(browserNumberingSystem)
+  ? "latn"
+  : browserNumberingSystem;
+const getSupportedNumberingSystem = (numberingSystem) => isNumberingSystemSupported(numberingSystem) ? numberingSystem : defaultNumberingSystem;
+function getSupportedLocale(locale) {
+  if (locales.indexOf(locale) > -1) {
+    return locale;
+  }
+  if (!locale) {
+    return defaultLocale;
+  }
+  locale = locale.toLowerCase();
+  // we support both 'nb' and 'no' (BCP 47) for Norwegian
+  if (locale === "nb") {
+    return "no";
+  }
+  if (locale.includes("-")) {
+    locale = locale.replace(/(\w+)-(\w+)/, (_match, language, region) => `${language}-${region.toUpperCase()}`);
+    if (!locales.includes(locale)) {
+      locale = locale.split("-")[0];
+    }
+  }
+  return locales.includes(locale) ? locale : defaultLocale;
+}
+const connectedComponents = new Set();
+/**
+ * This utility sets up internals for messages support.
+ *
+ * It needs to be called in `connectedCallback` before any logic that depends on locale
+ *
+ * @param component
+ */
+function connectLocalized(component) {
+  updateEffectiveLocale(component);
+  if (connectedComponents.size === 0) {
+    mutationObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["lang"],
+      subtree: true
+    });
+  }
+  connectedComponents.add(component);
+}
+/**
+ * This is only exported for components that implemented the now deprecated `locale` prop.
+ *
+ * Do not use this utils for new components.
+ *
+ * @param component
+ */
+function updateEffectiveLocale(component) {
+  component.effectiveLocale = getLocale(component);
+}
+/**
+ * This utility tears down internals for messages support.
+ *
+ * It needs to be called in `disconnectedCallback`
+ *
+ * @param component
+ */
+function disconnectLocalized(component) {
+  connectedComponents.delete(component);
+  if (connectedComponents.size === 0) {
+    mutationObserver.disconnect();
+  }
+}
+const mutationObserver = createObserver("mutation", (records) => {
+  records.forEach((record) => {
+    const el = record.target;
+    connectedComponents.forEach((component) => {
+      const hasOverridingLocale = !!(component.locale && !component.el.lang);
+      const inUnrelatedSubtree = !containsCrossShadowBoundary(el, component.el);
+      if (hasOverridingLocale || inUnrelatedSubtree) {
+        return;
+      }
+      const closestLangEl = closestElementCrossShadowBoundary(component.el, "[lang]");
+      if (!closestLangEl) {
+        component.effectiveLocale = defaultLocale;
+        return;
+      }
+      const closestLang = closestLangEl.lang;
+      component.effectiveLocale =
+        // user set lang="" means unknown language, so we use default
+        closestLangEl.hasAttribute("lang") && closestLang === "" ? defaultLocale : closestLang;
+    });
+  });
+});
+/**
+ * This util helps resolve a component's locale.
+ * It will also fall back on the deprecated `locale` if a component implemented this previously.
+ *
+ * @param component
+ */
+function getLocale(component) {
+  var _a;
+  return (component.el.lang ||
+    component.locale ||
+    ((_a = closestElementCrossShadowBoundary(component.el, "[lang]")) === null || _a === void 0 ? void 0 : _a.lang) ||
+    document.documentElement.lang ||
+    defaultLocale);
+}
+/**
+ * This util formats and parses numbers for localization
+ */
+class NumberStringFormat {
+  constructor() {
+    this.delocalize = (numberString) => 
+    // For performance, (de)localization is skipped if the formatter isn't initialized.
+    // In order to localize/delocalize, e.g. when lang/numberingSystem props are not default values,
+    // `numberFormatOptions` must be set in a component to create and cache the formatter.
+    this._numberFormatOptions
+      ? sanitizeExponentialNumberString(numberString, (nonExpoNumString) => nonExpoNumString
+        .trim()
+        .replace(new RegExp(`[${this._minusSign}]`, "g"), "-")
+        .replace(new RegExp(`[${this._group}]`, "g"), "")
+        .replace(new RegExp(`[${this._decimal}]`, "g"), ".")
+        .replace(new RegExp(`[${this._digits.join("")}]`, "g"), this._getDigitIndex))
+      : numberString;
+    this.localize = (numberString) => this._numberFormatOptions
+      ? sanitizeExponentialNumberString(numberString, (nonExpoNumString) => isValidNumber(nonExpoNumString.trim())
+        ? new BigDecimal(nonExpoNumString.trim())
+          .format(this._numberFormatter)
+          .replace(new RegExp(`[${this._actualGroup}]`, "g"), this._group)
+        : nonExpoNumString)
+      : numberString;
+  }
+  get group() {
+    return this._group;
+  }
+  get decimal() {
+    return this._decimal;
+  }
+  get minusSign() {
+    return this._minusSign;
+  }
+  get digits() {
+    return this._digits;
+  }
+  get numberFormatter() {
+    return this._numberFormatter;
+  }
+  get numberFormatOptions() {
+    return this._numberFormatOptions;
+  }
+  /**
+   * numberFormatOptions needs to be set before localize/delocalize is called to ensure the options are up to date
+   */
+  set numberFormatOptions(options) {
+    options.locale = getSupportedLocale(options === null || options === void 0 ? void 0 : options.locale);
+    options.numberingSystem = getSupportedNumberingSystem(options === null || options === void 0 ? void 0 : options.numberingSystem);
+    if (
+    // No need to create the formatter if `locale` and `numberingSystem`
+    // are the default values and `numberFormatOptions` has not been set
+    (!this._numberFormatOptions &&
+      options.locale === defaultLocale &&
+      options.numberingSystem === defaultNumberingSystem &&
+      // don't skip initialization if any options besides locale/numberingSystem are set
+      Object.keys(options).length === 2) ||
+      // cache formatter by only recreating when options change
+      JSON.stringify(this._numberFormatOptions) === JSON.stringify(options)) {
+      return;
+    }
+    this._numberFormatOptions = options;
+    this._numberFormatter = new Intl.NumberFormat(this._numberFormatOptions.locale, this._numberFormatOptions);
+    this._digits = [
+      ...new Intl.NumberFormat(this._numberFormatOptions.locale, {
+        useGrouping: false,
+        numberingSystem: this._numberFormatOptions.numberingSystem
+      }).format(9876543210)
+    ].reverse();
+    const index = new Map(this._digits.map((d, i) => [d, i]));
+    const parts = new Intl.NumberFormat(this._numberFormatOptions.locale).formatToParts(-12345678.9);
+    this._actualGroup = parts.find((d) => d.type === "group").value;
+    // change whitespace group characters that don't render correctly
+    this._group = this._actualGroup.trim().length === 0 ? " " : this._actualGroup;
+    this._decimal = parts.find((d) => d.type === "decimal").value;
+    this._minusSign = parts.find((d) => d.type === "minusSign").value;
+    this._getDigitIndex = (d) => index.get(d);
+  }
+}
+const numberStringFormatter = new NumberStringFormat();
+
+export { defaultNumberingSystem as a, getSupportedNumberingSystem as b, connectLocalized as c, disconnectLocalized as d, getSupportedLocale as g, isValidNumber as i, numberStringFormatter as n, parseNumberString as p, sanitizeNumberString as s, updateEffectiveLocale as u };

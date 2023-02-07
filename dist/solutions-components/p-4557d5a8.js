@@ -3,7 +3,8 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import{c as a}from"./p-00444009.js";
+import { c as createStore } from './p-00444009.js';
+
 /** @license
  * Copyright 2022 Esri
  *
@@ -18,4 +19,22 @@ import{c as a}from"./p-00444009.js";
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */const{state:e,onChange:s}=a({managedLayers:[],highlightHandle:void 0,layerNameHash:{}}),n=new CustomEvent("managedLayersChanged",{bubbles:!0,cancelable:!1,composed:!0});s("managedLayers",(()=>{dispatchEvent(n)}));export{e as s}
+ */
+const { state, onChange } = createStore({
+  // List of layers added and managed by the component
+  managedLayers: [],
+  // Handle: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Handles.html#Handle
+  highlightHandle: undefined,
+  // ILayerHash title: id lookup to be used across components
+  layerNameHash: {}
+});
+const managedLayersChangedEvent = new CustomEvent("managedLayersChanged", {
+  bubbles: true,
+  cancelable: false,
+  composed: true
+});
+onChange("managedLayers", () => {
+  dispatchEvent(managedLayersChangedEvent);
+});
+
+export { state as s };

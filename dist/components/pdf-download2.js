@@ -2247,7 +2247,7 @@ function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
   console.log(getAssetPath(`../assets/arcgis-pdf-creator`));
   pdfLib.initialize({
     pageType: "ANSI_A"
-  }, "./assets/arcgis-pdf-creator/", "en", fileTitle, false)
+  }, getAssetPath(`../assets/arcgis-pdf-creator/`), "en", fileTitle, false)
     .then(() => {
     const labeller = new PDFLabels();
     labeller.initialize(pdfLib)

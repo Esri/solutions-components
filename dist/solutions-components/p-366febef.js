@@ -3,14 +3,71 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import{a as n}from"./p-c2f00d41.js";import{g as o}from"./p-9eba5c66.js";import{a as t}from"./p-f42e014b.js";
+import { a as getAssetPath } from './p-c2f00d41.js';
+import { g as getSupportedLocale } from './p-9eba5c66.js';
+import { a as dateFromISO } from './p-f42e014b.js';
+
 /*!
  * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.0.0-beta.97
- */const s={},a={};async function r(t){const e=o(t);if(s[e])return s[e];a[e]||(a[e]=fetch(n(`./assets/date-picker/nls/${e}.json`)).then((n=>n.json())).catch((()=>(console.error(`Translations for "${e}" not found or invalid, falling back to english`),r("en")))));const i=await a[e];return s[e]=i,i}function e(n){return n.map(((n,o)=>t(n,1===o)))}
+ */
+/**
+ * CLDR cache.
+ * Exported for testing purposes.
+ *
+ * @private
+ */
+const translationCache = {};
+/**
+ * CLDR request cache.
+ * Exported for testing purposes.
+ *
+ * @private
+ */
+const requestCache = {};
+/**
+ * Fetch calendar data for a given locale from list of supported languages
+ *
+ * @param lang
+ * @public
+ */
+async function getLocaleData(lang) {
+  const locale = getSupportedLocale(lang);
+  if (translationCache[locale]) {
+    return translationCache[locale];
+  }
+  if (!requestCache[locale]) {
+    requestCache[locale] = fetch(getAssetPath(`./assets/date-picker/nls/${locale}.json`))
+      .then((resp) => resp.json())
+      .catch(() => {
+      console.error(`Translations for "${locale}" not found or invalid, falling back to english`);
+      return getLocaleData("en");
+    });
+  }
+  const data = await requestCache[locale];
+  translationCache[locale] = data;
+  return data;
+}
+/**
+ *  Maps value to valueAsDate
+ *
+ * @param value
+ */
+function getValueAsDateRange(value) {
+  return value.map((v, index) => dateFromISO(v, index === 1));
+}
+
 /*!
  * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.0.0-beta.97
- */const i=2,c={nextMonth:"Next month",prevMonth:"Previous month",year:"Year"};export{i as H,c as T,r as a,e as g}
+ */
+const HEADING_LEVEL = 2;
+const TEXT = {
+  nextMonth: "Next month",
+  prevMonth: "Previous month",
+  year: "Year"
+};
+
+export { HEADING_LEVEL as H, TEXT as T, getLocaleData as a, getValueAsDateRange as g };
