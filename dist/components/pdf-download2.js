@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { proxyCustomElement, HTMLElement, h as h$1, Host } from '@stencil/core/internal/client';
+import { getAssetPath, proxyCustomElement, HTMLElement, h as h$1, Host } from '@stencil/core/internal/client';
 import { l as loadModules } from './loadModules.js';
 import { e as exportCSV } from './csvUtils.js';
 import { c as createCommonjsModule, g as getDefaultExportFromCjs } from './_commonjsHelpers.js';
@@ -2241,7 +2241,10 @@ function exportPDF(labels, labelPageDescription) {
  */
 function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
   const pdfLib = new PDFCreator_jsPDF();
-  //console.log(windoe href check here)
+  console.log("_downloadPDFFile");
+  console.log(new URL("./assets/", window.location.href).href);
+  console.log("getAssetPath(`../assets/arcgis-pdf-creator`)");
+  console.log(getAssetPath(`../assets/arcgis-pdf-creator`));
   pdfLib.initialize({
     pageType: "ANSI_A"
   }, "./assets/arcgis-pdf-creator/", "en", fileTitle, false)

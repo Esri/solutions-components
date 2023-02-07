@@ -60,3 +60,20 @@ export async function getLocaleComponentStrings<T extends StringBundle = StringB
   }
   return [strings, componentLanguage];
 }
+
+export function fetchLocaleStringsForComponent2<T extends StringBundle = StringBundle>(fileName: string): Promise<T> {
+  return new Promise((resolve, reject): void => {
+    fetch(getAssetPath(`../assets/arcgis-pdf-creator/${fileName}`)).then(
+      result => {
+        if (result.ok) {resolve(result.json());}
+        else {reject();}
+      },
+      () => reject(),
+    );
+  });
+}
+
+// export async function getLocaleComponentStrings2<T extends StringBundle = StringBundle>(fileName: string): Promise<[T]> {
+//   let strings: T = await fetchLocaleStringsForComponent2(fileName);
+//   return strings;
+// }

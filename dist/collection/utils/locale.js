@@ -59,3 +59,19 @@ export async function getLocaleComponentStrings(element) {
   }
   return [strings, componentLanguage];
 }
+export function fetchLocaleStringsForComponent2(fileName) {
+  return new Promise((resolve, reject) => {
+    fetch(getAssetPath(`../assets/arcgis-pdf-creator/${fileName}`)).then(result => {
+      if (result.ok) {
+        resolve(result.json());
+      }
+      else {
+        reject();
+      }
+    }, () => reject());
+  });
+}
+// export async function getLocaleComponentStrings2<T extends StringBundle = StringBundle>(fileName: string): Promise<[T]> {
+//   let strings: T = await fetchLocaleStringsForComponent2(fileName);
+//   return strings;
+// }

@@ -3,15 +3,13 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-'use strict';
+import { c as createCommonjsModule, a as commonjsGlobal } from './_commonjsHelpers-d5f9d613.js';
+import { a as getAssetPath } from './index-c246d90e.js';
 
-const _commonjsHelpers = require('./_commonjsHelpers-384729db.js');
-const index = require('./index-c6979cbb.js');
-
-var esriLoader = _commonjsHelpers.createCommonjsModule(function (module, exports) {
+var esriLoader = createCommonjsModule(function (module, exports) {
 (function (global, factory) {
 	factory(exports) ;
-}(_commonjsHelpers.commonjsGlobal, (function (exports) {
+}(commonjsGlobal, (function (exports) {
 /* Copyright (c) 2017 Environmental Systems Research Institute, Inc.
  * Apache-2.0 */
 var isBrowser = typeof window !== 'undefined';
@@ -387,7 +385,7 @@ function getComponentClosestLanguage(element) {
 }
 function fetchLocaleStringsForComponent(componentName, locale) {
   return new Promise((resolve, reject) => {
-    fetch(index.getAssetPath(`../assets/t9n/${componentName}/resources_${locale}.json`)).then(result => {
+    fetch(getAssetPath(`../assets/t9n/${componentName}/resources_${locale}.json`)).then(result => {
       if (result.ok) {
         resolve(result.json());
       }
@@ -410,6 +408,9 @@ async function getLocaleComponentStrings(element) {
   }
   return [strings, componentLanguage];
 }
+// export async function getLocaleComponentStrings2<T extends StringBundle = StringBundle>(fileName: string): Promise<[T]> {
+//   let strings: T = await fetchLocaleStringsForComponent2(fileName);
+//   return strings;
+// }
 
-exports.esriLoader = esriLoader;
-exports.getLocaleComponentStrings = getLocaleComponentStrings;
+export { esriLoader as e, getLocaleComponentStrings as g };

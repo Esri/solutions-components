@@ -4,8 +4,8 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-c246d90e.js';
-import { l as loadModules } from './loadModules-649aedac.js';
-import { g as getLocaleComponentStrings } from './locale-4a87aff1.js';
+import { l as loadModules } from './loadModules-d43d4f75.js';
+import { g as getLocaleComponentStrings } from './locale-c9051707.js';
 import { a as EExpandType } from './interfaces-d0d83efa.js';
 import './_commonjsHelpers-d5f9d613.js';
 

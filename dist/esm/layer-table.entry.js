@@ -4,7 +4,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 import { r as registerInstance, h, H as Host, g as getElement } from './index-c246d90e.js';
-import { g as getLocaleComponentStrings } from './locale-4a87aff1.js';
+import { g as getLocaleComponentStrings } from './locale-c9051707.js';
 import { q as queryFeaturesByID, g as goToSelection, a as getMapLayerView, b as queryAllFeatures } from './mapViewUtils-c2fb048d.js';
 import { e as exportCSV } from './csvUtils-23b5418f.js';
 import './_commonjsHelpers-d5f9d613.js';

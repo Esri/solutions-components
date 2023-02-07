@@ -408,5 +408,9 @@ async function getLocaleComponentStrings(element) {
   }
   return [strings, componentLanguage];
 }
+// export async function getLocaleComponentStrings2<T extends StringBundle = StringBundle>(fileName: string): Promise<[T]> {
+//   let strings: T = await fetchLocaleStringsForComponent2(fileName);
+//   return strings;
+// }
 
 export { esriLoader as e, getLocaleComponentStrings as g };

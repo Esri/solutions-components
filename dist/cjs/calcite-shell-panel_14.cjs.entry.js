@@ -18,7 +18,7 @@ const sortable_esm = require('./sortable.esm-bf47019d.js');
 const sharedListRender = require('./shared-list-render-6977a4b3.js');
 const resources = require('./resources-9c55e05c.js');
 const resources$1 = require('./resources-1f785471.js');
-const locale = require('./locale-db1db902.js');
+const locale = require('./locale-bb1fa8df.js');
 const solutionStore = require('./solution-store-b86759b2.js');
 const interfaces = require('./interfaces-17c631bf.js');
 require('./resources-b56bce71.js');

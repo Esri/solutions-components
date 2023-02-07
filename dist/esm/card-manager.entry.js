@@ -4,7 +4,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 import { r as registerInstance, h, H as Host, g as getElement } from './index-c246d90e.js';
-import { g as getLocaleComponentStrings } from './locale-4a87aff1.js';
+import { g as getLocaleComponentStrings } from './locale-c9051707.js';
 import './_commonjsHelpers-d5f9d613.js';
 
 const cardManagerCss = ":host{display:block}.display-inline-table{display:inline-table}.display-flex{display:flex}.display-none{display:none}.w-100{width:100%}.w-1-2{width:50%}.padding-bottom-1{padding-bottom:1rem}";
