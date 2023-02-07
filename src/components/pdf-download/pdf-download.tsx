@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Method, Prop, State, VNode } from "@stencil/core";
-import * as pdfUtils from "../../assets/data/labelFormats.json";
 import "@esri/calcite-components";
+import * as pdfUtils from "../../assets/data/labelFormats.json";
 import PdfDownload_T9n from "../../assets/t9n/pdf-download/resources.json";
-import { getLocaleComponentStrings } from "../../utils/locale";
+import { loadModules } from "../../utils/loadModules";
+import { Component, Element, Host, h, Method, Prop, State, VNode } from "@stencil/core";
 import { exportCSV } from "../../utils/csvUtils";
+import { exportPDF } from "../../utils/pdfUtils";
+import { getLocaleComponentStrings } from "../../utils/locale";
+import { queryFeaturesByID } from "../../utils/queryUtils";
 
 @Component({
   tag: "pdf-download",
@@ -43,7 +46,7 @@ export class PdfDownload {
   /**
    * boolean: Controls the enabled/disabled state of download
    */
-  @Prop() disabled = true;
+  @Prop() disabled = false;
 
   /**
    * string[]: Optional list of enabled size values for PDF export
@@ -79,6 +82,11 @@ export class PdfDownload {
    */
   protected _labelInfoElement: HTMLCalciteSelectElement;
 
+  /**
+   * intl: https://developers.arcgis.com/javascript/latest/api-reference/esri-intl.html
+   */
+  protected _intl: __esri.intl;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -92,6 +100,25 @@ export class PdfDownload {
   //--------------------------------------------------------------------------
 
   /**
+   * Downloads csv of mailing labels for the provided list of ids
+   *
+   * @param ids List of ids to download
+   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+   * @param addColumnTitle Indicates if column headings should be included in output
+   * @returns Promise resolving when function is done
+   */
+  @Method()
+  async downloadCSV(
+    ids: number[],
+    removeDuplicates: boolean,
+    addColumnTitle = true
+  ): Promise<void> {
+    const labels = await this._prepareLabels(ids, removeDuplicates, addColumnTitle);
+
+    return exportCSV(labels);
+  }
+
+  /**
    * Downloads pdf of mailing labels for the provided list of ids
    *
    * @param ids List of ids to download
@@ -103,23 +130,11 @@ export class PdfDownload {
     ids: number[],
     removeDuplicates: boolean
   ): Promise<void> {
-    return this._downloadPDF(ids, removeDuplicates);
-  }
+    const labels = await this._prepareLabels(ids, removeDuplicates);
 
-  /**
-   * Downloads csv of mailing labels for the provided list of ids
-   *
-   * @param ids List of ids to download
-   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * @returns Promise resolving when function is done
-   */
-  @Method()
-  async downloadCSV(
-    ids: number[],
-    removeDuplicates: boolean,
-    addColumnTitle: boolean
-  ): Promise<void> {
-    return this._downloadCSV(ids, removeDuplicates, addColumnTitle);
+    const labelPageDescription = this._labelInfoElement.selectedOption.value;
+
+    return exportPDF(labels, labelPageDescription);
   }
 
   //--------------------------------------------------------------------------
@@ -139,6 +154,7 @@ export class PdfDownload {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
+    await this._initModules();
   }
 
   /**
@@ -165,64 +181,41 @@ export class PdfDownload {
   //--------------------------------------------------------------------------
 
   /**
-   * Renders the pdf export size options
+   * Load esri javascript api modules
    *
-   * @returns Node array of size options
+   * @returns Promise resolving when function is done
    *
    * @protected
    */
-  protected _renderItems(): VNode[] {
-    const s: any = pdfUtils;
-    const sortedPdfIndo = (s.default || s).sort((a, b) => {
-      const _a = parseInt(a.descriptionPDF.labelsPerPageDisplay, 10);
-      const _b = parseInt(b.descriptionPDF.labelsPerPageDisplay, 10);
-      return _a < _b ? -1 : _a > _b ? 1 : 0
-    });
-    return sortedPdfIndo.reduce((prev, cur) => {
-      if (this.enabledSizeValues.length === 0 ||
-        this.enabledSizeValues.indexOf(parseInt(cur.descriptionPDF.labelsPerPageDisplay, 10)) > -1) {
-        prev.push((<calcite-option value={cur}>{this._getLabelSizeText(cur)}</calcite-option>));
-      }
-      return prev;
-    }, []);
+  protected async _initModules(): Promise<void> {
+    const [intl] = await loadModules([
+      "esri/intl"
+    ]);
+    this._intl = intl;
   }
 
   /**
-   * Downloads pdf of mailing labels for the provided list of ids
+   * Converts the text of a custom popup into a multiline label specification; conversion splits text into
+   * lines on <br>s, and removes HTML tags. It does not handle Arcade and related records.
    *
-   * @param ids List of ids to download
-   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   *
-   * @returns Promise resolving when function is done
-   * @protected
+   * @param popupInfo Layer's popupInfo structure containing description, fieldInfos, and expressionInfos, e.g.,
+   * "<div style='text-align: left;'>{NAME}<br />{STREET}<br />{CITY}, {STATE} {ZIP} <br /></div>"
+   * @return Label spec
    */
-  protected async _downloadPDF(
-    ids: number[],
-    removeDuplicates: boolean
-  ): Promise<void> {
-    const l = this._labelInfoElement.selectedOption.value;
-    alert(`PDF download: (${this._getLabelSizeText(l)}) (remove dups: ${removeDuplicates}) ${ids.join(", ")}`);
-  }
+  public _convertPopupToLabelSpec(
+    popupInfo: string
+  ): string[] {
+    // Replace <br>, <br/> with |
+    popupInfo = popupInfo.replace(/<br\s*\/?>/gi, "|");
 
-  /**
-   * Downloads csv of mailing labels for the provided list of ids
-   *
-   * @param ids List of ids to download
-   * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * @returns Promise resolving when function is done
-   *
-   * @returns Promise that will resolve when the download is complete
-   * @protected
-   */
-  protected async _downloadCSV(
-    ids: number[],
-    removeDuplicates: boolean,
-    addColumnTitle: boolean
-  ): Promise<void> {
-    // TODO this will be leveraged when we do the real implementation of this
-    console.log(removeDuplicates)
-    await exportCSV(this.layerView, ids, addColumnTitle);
-  }
+    // Remove remaining HTML tags and replace 0xA0 that popup uses for spaces
+    let labelSpec = popupInfo.replace(/<[\s.]*[^<>]*\/?>/gi, "").replace(/\xA0/gi, " ").split("|");
+
+    // Trim lines and remove empties
+    labelSpec = labelSpec.map(line => line.trim()).filter(line => line.length > 0);
+
+    return labelSpec;
+  };
 
   /**
    * Gets the formatted pdf export size text
@@ -248,6 +241,82 @@ export class PdfDownload {
   protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0] as typeof PdfDownload_T9n;
+  }
+
+  /**
+   * Creates labels from items.
+  *
+  * @param ids List of ids to download
+  * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+  * @param includeHeaderNames Add the label format at the front of the list of generated labels
+  * @returns Promise resolving when function is done
+   */
+  protected async _prepareLabels(
+    ids: number[],
+    removeDuplicates: boolean,
+    includeHeaderNames = false
+  ): Promise<string[][]> {
+    // Get the attributes of the features to export
+    const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
+    const featuresAttrs = featureSet.features.map(f => f.attributes);
+
+    // What data fields are used in the labels?
+    // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
+    const labelFormat = this._convertPopupToLabelSpec(this.layerView.layer.popupTemplate.content[0].text);
+
+    // Convert attributes into an array of labels
+    let labels: string[][] = featuresAttrs.map(
+      featureAttributes => {
+        const label: string[] = [];
+        labelFormat.forEach(
+          labelLineTemplate => {
+            const labelLine = this._intl.substitute(labelLineTemplate, featureAttributes).trim();
+            if (labelLine.length > 0) {
+              label.push(labelLine);
+            }
+          }
+        )
+        return label;
+      }
+    )
+    // Remove empty labels
+    .filter(label => label.length > 0);
+
+    // Remove duplicates
+    if (removeDuplicates) {
+      const labelsAsStrings: string[] = labels.map(label => JSON.stringify(label));
+      const uniqueLabels = new Set(labelsAsStrings);
+      labels = Array.from(uniqueLabels,
+        labelString => JSON.parse(labelString)
+      );
+    }
+
+    // Add header names
+    if (includeHeaderNames) {
+      const headerNames = labelFormat.map(labelFormatLine => labelFormatLine.replace(/\{/g, "").replace(/\}/g, ""));
+      labels.unshift(headerNames);
+    }
+
+    return Promise.resolve(labels);
+  }
+
+  /**
+   * Renders the pdf export size options
+   *
+   * @returns Node array of size options
+   *
+   * @protected
+   */
+  protected _renderItems(): VNode[] {
+    const s: any = pdfUtils;
+    const sortedPdfIndo = (s.default || s).sort((a, b) => {
+      const _a = parseInt(a.descriptionPDF.labelsPerPageDisplay, 10);
+      const _b = parseInt(b.descriptionPDF.labelsPerPageDisplay, 10);
+      return _a < _b ? -1 : _a > _b ? 1 : 0
+    });
+    return sortedPdfIndo.map((l) => {
+      return (<calcite-option value={l}>{this._getLabelSizeText(l)}</calcite-option>)
+    });
   }
 
 }
