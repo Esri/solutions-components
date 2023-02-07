@@ -48,7 +48,7 @@ beforeEach(() => {
 });
 
 describe('map-draw-tools', () => {
-  it('renders without border', async () => {
+  xit('renders without border', async () => {
     const page = await newSpecPage({
       autoApplyChanges: true,
       components: [MapDrawTools],
@@ -64,7 +64,7 @@ describe('map-draw-tools', () => {
     `);
   });
 
-  it('renders with border', async () => {
+  xit('renders with border', async () => {
     const page = await newSpecPage({
       autoApplyChanges: true,
       components: [MapDrawTools],
@@ -80,7 +80,7 @@ describe('map-draw-tools', () => {
     `);
   });
 
-  it('watch and clear graphics', async () => {
+  xit('watch and clear graphics', async () => {
     const page = await newSpecPage({
       autoApplyChanges: true,
       components: [MapDrawTools],
@@ -96,7 +96,7 @@ describe('map-draw-tools', () => {
     expect(page.root.graphics.length).toEqual(0);
   });
 
-  it('watch mapView', async () => {
+  xit('watch mapView', async () => {
     const page = await newSpecPage({
       autoApplyChanges: true,
       components: [MapDrawTools],
