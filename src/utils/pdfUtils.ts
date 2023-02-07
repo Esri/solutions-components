@@ -44,12 +44,6 @@ function _downloadPDFFile(
   fileTitle: string
 ): void {
   const pdfLib = new PDFCreator_jsPDF.PDFCreator_jsPDF();
-  console.log("_downloadPDFFile")
-  console.log(new URL("./assets/", window.location.href).href)
-
-  console.log("getAssetPath(`../assets/arcgis-pdf-creator`)")
-  console.log(getAssetPath(`../assets/arcgis-pdf-creator`))
-
   pdfLib.initialize(
     {
       pageType: "ANSI_A"
