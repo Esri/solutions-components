@@ -7,11 +7,10 @@
 
 ## Properties
 
-| Property            | Attribute  | Description                                                                                                                               | Type               | Default     |
-| ------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
-| `disabled`          | `disabled` | boolean: Controls the enabled/disabled state of download                                                                                  | `boolean`          | `false`     |
-| `enabledSizeValues` | --         | string[]: Optional list of enabled size values for PDF export  If empty all sizes will be enabled                                         | `number[]`         | `[]`        |
-| `layerView`         | --         | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
+| Property    | Attribute  | Description                                                                                                                               | Type               | Default     |
+| ----------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
+| `disabled`  | `disabled` | boolean: Controls the enabled/disabled state of download                                                                                  | `boolean`          | `false`     |
+| `layerView` | --         | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
 
 
 ## Methods

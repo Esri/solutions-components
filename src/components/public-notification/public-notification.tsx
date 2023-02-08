@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
-import { DistanceUnit, EExportType, EPageType, ESketchType, EWorkflowType, IExportOptions, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
+import { DistanceUnit, EExportType, EPageType, ESketchType, EWorkflowType, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
 import { goToSelection, getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
 import { getSelectionSetQuery } from "../../utils/queryUtils";
@@ -72,12 +72,6 @@ export class PublicNotification {
    * number: The default value to show for the buffer unit ("feet"|"meters"|"miles"|"kilometers")
    */
   @Prop() defaultBufferUnit: DistanceUnit;
-
-  /**
-   * IExportOptions: Set of options that control export capabilities
-   *  If not provided all export capabilities will be enabled.
-   */
-  @Prop() exportOptions: IExportOptions;
 
   /**
    * The effect that will be applied when featureHighlightEnabled is true
@@ -369,18 +363,14 @@ export class PublicNotification {
    */
   render(): void {
     const hasSelections = this._selectionSets.length > 0;
-    const csvEnabled = typeof this.exportOptions?.csvOptions?.enabled === "boolean" ?
-      this.exportOptions?.csvOptions.enabled : true;
-    const pdfEnabled = typeof this.exportOptions?.pdfOptions?.enabled === "boolean" ?
-      this.exportOptions?.pdfOptions.enabled : true;
     return (
       <Host>
         <calcite-shell>
           <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
             {this._getActionGroup("list-check", false, EPageType.LIST, this._translations.myLists)}
             {this.showRefineSelection ? this._getActionGroup("test-data", !hasSelections, EPageType.REFINE, this._translations.refineSelection) : undefined}
-            {pdfEnabled ? this._getActionGroup("file-pdf", !hasSelections, EPageType.PDF, this._translations.downloadPDF) : undefined}
-            {csvEnabled ? this._getActionGroup("file-csv", !hasSelections, EPageType.CSV, this._translations.downloadCSV): undefined}
+            {this._getActionGroup("file-pdf", !hasSelections, EPageType.PDF, this._translations.downloadPDF)}
+            {this._getActionGroup("file-csv", !hasSelections, EPageType.CSV, this._translations.downloadCSV)}
           </calcite-action-bar>
           {this._getPage(this._pageType)}
         </calcite-shell>
@@ -808,7 +798,6 @@ export class PublicNotification {
     type: EExportType
   ): VNode {
     const isPdf = type === EExportType.PDF;
-    const multiPdfOptions = this.exportOptions?.pdfOptions.enabledSizeValues.length > 1;
     return (
       <calcite-panel>
         <div>
@@ -826,12 +815,11 @@ export class PublicNotification {
               {this._translations.removeDuplicate}
             </calcite-label>
           </div>
-          <div class={isPdf && multiPdfOptions ? "" : "display-none"}>
+          <div class={isPdf ? "" : "display-none"}>
             {this._getLabel(this._translations.selectPDFLabelOption, false)}
             <div class={"padding-sides-1"}>
               <pdf-download
                 disabled={!this._downloadActive}
-                enabledSizeValues={this.exportOptions?.pdfOptions.enabledSizeValues}
                 layerView={this.addresseeLayer}
                 ref={(el) => { this._downloadTools = el }}
               />
