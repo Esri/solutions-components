@@ -49,12 +49,6 @@ export class PdfDownload {
   @Prop() disabled = false;
 
   /**
-   * string[]: Optional list of enabled size values for PDF export
-   *  If empty all sizes will be enabled
-   */
-  @Prop() enabledSizeValues: number[] = [];
-
-  /**
    * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
    */
   @Prop() layerView: __esri.FeatureLayerView;

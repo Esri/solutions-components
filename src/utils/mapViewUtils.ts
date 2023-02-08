@@ -30,8 +30,10 @@ export async function getMapLayerHash(
 ): Promise<ILayerHash> {
   let layerHash = {};
   await mapView.when(() => {
-    layerHash = mapView.map.layers.toArray().reduce((prev, cur) => {
-      prev[cur.id] = cur.title;
+    layerHash = mapView.map.allLayers.toArray().reduce((prev, cur) => {
+      if (cur.type === "feature") {
+        prev[cur.id] = cur.title;
+      }
       return prev;
     }, {});
   });
@@ -51,9 +53,12 @@ export async function getMapLayerIds(
 ): Promise<string[]> {
   let layerIds = [];
   await mapView.when(() => {
-    layerIds = mapView.map.layers.toArray().map((l) => {
-      return l.id;
-    });
+    layerIds = mapView.map.allLayers.toArray().reduce((prev, cur) => {
+      if (cur.type === "feature") {
+        prev.push(cur.id);
+      }
+      return prev;
+    }, []);
   });
   return layerIds;
 }
@@ -90,7 +95,7 @@ export async function getMapLayer(
 ): Promise<__esri.FeatureLayer> {
   let layers = [];
   await mapView.when(() => {
-    layers = mapView.map.layers.toArray().filter((l) => {
+    layers = mapView.map.allLayers.toArray().filter((l) => {
       return l.id === id;
     });
   });

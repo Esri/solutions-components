@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EExpandType, ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IExportOptions, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
+import { DistanceUnit, EExpandType, ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -283,10 +283,6 @@ export namespace Components {
          */
         "downloadPDF": (ids: number[], removeDuplicates: boolean) => Promise<void>;
         /**
-          * string[]: Optional list of enabled size values for PDF export  If empty all sizes will be enabled
-         */
-        "enabledSizeValues": number[];
-        /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
         "layerView": __esri.FeatureLayerView;
@@ -316,10 +312,6 @@ export namespace Components {
           * number: The default value to show for the buffer unit ("feet"|"meters"|"miles"|"kilometers")
          */
         "defaultBufferUnit": DistanceUnit;
-        /**
-          * IExportOptions: Set of options that control export capabilities  If not provided all export capabilities will be enabled.
-         */
-        "exportOptions": IExportOptions;
         /**
           * The effect that will be applied when featureHighlightEnabled is true  esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
          */
@@ -1170,10 +1162,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * string[]: Optional list of enabled size values for PDF export  If empty all sizes will be enabled
-         */
-        "enabledSizeValues"?: number[];
-        /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
         "layerView"?: __esri.FeatureLayerView;
@@ -1203,10 +1191,6 @@ declare namespace LocalJSX {
           * number: The default value to show for the buffer unit ("feet"|"meters"|"miles"|"kilometers")
          */
         "defaultBufferUnit"?: DistanceUnit;
-        /**
-          * IExportOptions: Set of options that control export capabilities  If not provided all export capabilities will be enabled.
-         */
-        "exportOptions"?: IExportOptions;
         /**
           * The effect that will be applied when featureHighlightEnabled is true  esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
          */
