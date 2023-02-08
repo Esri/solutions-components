@@ -32,7 +32,6 @@ export async function getMapLayerHash(
   await mapView.when(() => {
     layerHash = mapView.map.allLayers.toArray().reduce((prev, cur) => {
       if (cur.type === "feature") {
-        console.log(cur)
         prev[cur.id] = cur.title;
       }
       return prev;
