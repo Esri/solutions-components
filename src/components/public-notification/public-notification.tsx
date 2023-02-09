@@ -987,7 +987,8 @@ export class PublicNotification {
    */
   protected _downloadPDF(): void {
     const ids = utils.getSelectionIds(this._getDownloadSelectionSets());
-    void this._downloadTools.downloadPDF(ids, this._removeDuplicates.checked);
+    const selectionSetNames = this._selectionSets.map(set => set.label);
+    void this._downloadTools.downloadPDF(selectionSetNames, ids, this._removeDuplicates.checked);
   }
 
   /**
@@ -997,7 +998,8 @@ export class PublicNotification {
    */
   protected _downloadCSV(): void {
     const ids = utils.getSelectionIds(this._getDownloadSelectionSets());
-    void this._downloadTools.downloadCSV(ids, this._removeDuplicates.checked);
+    const selectionSetNames = this._selectionSets.map(set => set.label);
+    void this._downloadTools.downloadCSV(selectionSetNames, ids, this._removeDuplicates.checked);
   }
 
   /**
