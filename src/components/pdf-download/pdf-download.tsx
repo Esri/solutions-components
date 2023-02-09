@@ -202,8 +202,15 @@ export class PdfDownload {
     // Replace <br>, <br/> with |
     popupInfo = popupInfo.replace(/<br\s*\/?>/gi, "|");
 
-    // Remove remaining HTML tags and replace 0xA0 that popup uses for spaces
-    let labelSpec = popupInfo.replace(/<[\s.]*[^<>]*\/?>/gi, "").replace(/\xA0/gi, " ").split("|");
+    // Remove remaining HTML tags, replace 0xA0 that popup uses for spaces, replace some char representations,
+    // and split the label back into individual lines
+    let labelSpec = popupInfo
+      .replace(/<[\s.]*[^<>]*\/?>/gi, "")
+      .replace(/\xA0/gi, " ")
+      .replace(/&lt;/gi, "<")
+      .replace(/&gt;/gi, ">")
+      .replace(/&nbsp;/gi, " ")
+      .split("|");
 
     // Trim lines and remove empties
     labelSpec = labelSpec.map(line => line.trim()).filter(line => line.length > 0);
