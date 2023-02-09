@@ -2221,7 +2221,7 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
   else {
     // Export all attributes
     labels = featuresAttrs.map(featureAttributes => {
-      return Object.values(featureAttributes).map(attribute => `"${attribute}"`);
+      return Object.values(featureAttributes).map(attribute => `${attribute}`);
     });
   }
   // Remove duplicates
@@ -2237,7 +2237,7 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
       headerNames = labelFormat.map(labelFormatLine => labelFormatLine.replace(/\{/g, "").replace(/\}/g, ""));
     }
     else {
-      Object.keys(featuresAttrs).forEach(k => {
+      Object.keys(featuresAttrs[0]).forEach(k => {
         if (featuresAttrs.hasOwnProperty(k)) {
           headerNames.push(k);
         }

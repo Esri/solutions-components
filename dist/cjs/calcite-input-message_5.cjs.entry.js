@@ -16,7 +16,7 @@ const mapViewUtils = require('./mapViewUtils-d250b1ed.js');
 const interfaces$1 = require('./interfaces-17c631bf.js');
 const publicNotificationStore = require('./publicNotificationStore-20e924f5.js');
 const locale = require('./locale-db1db902.js');
-const downloadUtils = require('./downloadUtils-9952a8ed.js');
+const downloadUtils = require('./downloadUtils-2c8f8626.js');
 const publicNotificationUtils = require('./publicNotificationUtils-9d585d8d.js');
 require('./resources-b56bce71.js');
 require('./guid-84ac4d91.js');

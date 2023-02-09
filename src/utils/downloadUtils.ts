@@ -161,7 +161,7 @@ async function _prepareLabels(
     labels = featuresAttrs.map(
       featureAttributes => {
         return Object.values(featureAttributes).map(
-          attribute => `"${attribute}"`
+          attribute => `${attribute}`
         );
       }
     );
@@ -184,7 +184,7 @@ async function _prepareLabels(
       headerNames = labelFormat.map(labelFormatLine => labelFormatLine.replace(/\{/g, "").replace(/\}/g, ""));
 
     } else {
-      Object.keys(featuresAttrs).forEach(k => {
+      Object.keys(featuresAttrs[0]).forEach(k => {
         if (featuresAttrs.hasOwnProperty(k)) {
           headerNames.push(k);
         }
