@@ -453,7 +453,8 @@ export class LayerTable {
     return downloadUtils.downloadCSV(
       this._layerView.layer,
       this._getSelectedIds(),
-      true, // removeDuplicates
+      false, // formatUsingLayerPopup
+      false, // removeDuplicates
       true, // addColumnTitle
     );
   }

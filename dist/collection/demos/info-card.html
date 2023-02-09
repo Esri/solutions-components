@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>Info Card</title>
+    <!--
+    | Copyright 2022 Esri
+    |
+    | Licensed under the Apache License, Version 2.0 (the "License");
+    | you may not use this file except in compliance with the License.
+    | You may obtain a copy of the License at
+    |
+    |    http://www.apache.org/licenses/LICENSE-2.0
+    |
+    | Unless required by applicable law or agreed to in writing, software
+    | distributed under the License is distributed on an "AS IS" BASIS,
+    | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    | See the License for the specific language governing permissions and
+    | limitations under the License.
+    -->
+    <style>
+      .main {
+        background-color: var(--calcite-ui-foreground-1);
+        display: grid;
+        align-self: center;
+      }
+      .column {
+        min-width: 300px;
+        padding: 1rem;
+        border: 1px solid var(--calcite-ui-border-2);
+      }
+    </style>
+
+    <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components@1.0.0-beta.97/dist/calcite/calcite.css" type="text/css" />
+    <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
+    <link rel="stylesheet" href="../solutions-components.css" type="text/css">
+
+    <script type="module" src="../solutions-components.esm.js"></script>
+
+    <script>
+        function addValues() {
+          const demo = document.getElementById("demo");
+          demo.values = {
+            "Details": "Details info goes here",
+            "Name": "Name here",
+            "Phone": "(000) 000-0000",
+            "Email": "example@gmail.com",
+            "Date": "May 11, 2022"
+          };
+        }
+    </script>
+  </head>
+
+  <body onload="addValues()">
+    <info-card id="demo" card-title="Title" class="main column"></info-card>
+  </body>
+</html>

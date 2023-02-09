@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+  <title>Solutions Components</title>
+  <!--
+   | Copyright 2022 Esri
+   |
+   | Licensed under the Apache License, Version 2.0 (the "License");
+   | you may not use this file except in compliance with the License.
+   | You may obtain a copy of the License at
+   |
+   |    http://www.apache.org/licenses/LICENSE-2.0
+   |
+   | Unless required by applicable law or agreed to in writing, software
+   | distributed under the License is distributed on an "AS IS" BASIS,
+   | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   | See the License for the specific language governing permissions and
+   | limitations under the License.
+  -->
+
+  <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components@1.0.0-beta.97/dist/calcite/calcite.css" type="text/css" />
+  <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
+  <link rel="stylesheet" href="../solutions-components.css" type="text/css">
+  <style>
+    body {
+      overflow-y: auto;
+    }
+    .full-height {
+      height: 100%;
+    }
+    .demo {
+      display: flex;
+      align-items: flex-start;
+      padding-bottom: 4rem;
+    }
+    .demo-column {
+      flex: 1;
+      margin: 0 2rem;
+    }
+    .nav {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
+  </style>
+
+  <script type="module" src="https://unpkg.com/@esri/calcite-components@1.0.0-beta.97/dist/calcite/calcite.esm.js"></script>
+
+</head>
+
+<body>
+  <h2>Solutions Component Examples!</h2>
+  <main>
+    <div class="content full-height">
+      <div class="demo-column">
+        <ul class="nav">
+          <li><calcite-link href="./solution-configuration.html" target="_blank">&lt;solution-configuration&gt;</calcite-link>
+            <ul>
+              <li><calcite-link href="./solution-contents.html" target="_blank">&lt;solution-contents&gt;</calcite-link>
+                <ul>
+                  <li><calcite-link href="./solution-item-icon.html" target="_blank">&lt;solution-item-icon&gt;</calcite-link></li>
+                </ul>
+              </li>
+              <li><calcite-link href="./solution-item.html" target="_blank">&lt;solution-item&gt;</calcite-link>
+                <ul>
+                  <li><calcite-link href="./solution-item-details.html" target="_blank">&lt;solution-item-details&gt; (item)</calcite-link>, <calcite-link href="./solution-group-details.html" target="_blank">&lt;solution-item-details&gt; (group)</calcite-link>
+                  </li>
+                  <li><calcite-link href="./solution-item-sharing.html" target="_blank">&lt;solution-item-sharing&gt;</calcite-link>
+                    <ul>
+                      <li><calcite-link href="./solution-item-icon.html" target="_blank">&lt;solution-item-icon&gt;</calcite-link></li>
+                    </ul>
+                  </li>
+                  <li><calcite-link href="./solution-template-data.html" target="_blank">&lt;solution-item-template-data&gt;</calcite-link>
+                    <ul>
+                      <li><calcite-link href="./json-editor.html" target="_blank">&lt;json-editor&gt;</calcite-link></li>
+                      <li><calcite-link href="./json-editor-2.html" target="_blank">&lt;json-editor&gt; with two editor windows</calcite-link></li>
+                      <li><calcite-link href="./solution-organization-variables.html" target="_blank">&lt;solution-organization-variables&gt;</calcite-link></li>
+                      <li><calcite-link href="./solution-variables.html" target="_blank">&lt;solution-variables&gt;</calcite-link>
+                        <ul>
+                          <li><calcite-link href="./solution-item-icon.html" target="_blank">&lt;solution-item-icon&gt;</calcite-link></li>
+                        </ul>
+                      </li>
+                      <li><calcite-link href="./solution-resource-item.html" target="_blank">&lt;solution-resource-item&gt;</calcite-link></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li><calcite-link href="./solution-spatial-ref.html" target="_blank">&lt;solution-spatial-ref&gt;</calcite-link></li>
+            </ul>
+          </li>
+        </ul>
+        <br>
+        <calcite-link href="./browse-solutions-components.html" target="_blank">Solution Browser</calcite-link>
+        <br>
+        <calcite-link href="./new-solution-configuration.html" target="_blank">&lt;solution-configuration&gt; alternate UI</calcite-link>
+      </div>
+      <br>
+
+      <div>
+        <h3>Public Notification Examples!</h3>
+        <div>
+          <div class="demo-column">
+            <ul class="nav">
+              <li><calcite-link href="./new-public-notification.html" target="_blank">&lt;public-notification&gt;</calcite-link>
+                <ul>
+                  <li><calcite-link href="./map-select-tools.html" target="_blank">&lt;map-select-tools&gt;</calcite-link>
+                  </li>
+                  <li><calcite-link href="./map-draw-tools.html" target="_blank">&lt;map-draw-tools&gt;</calcite-link>
+                  </li>
+                  <li><calcite-link href="./map-layer-picker.html" target="_blank">&lt;map-layer-picker&gt;</calcite-link>
+                  </li>
+                  <li><calcite-link href="./pdf-download.html" target="_blank">&lt;pdf-download&gt;</calcite-link>
+                  </li>
+                </ul>
+              </li>
+
+              <li><calcite-link href="./new-public-notification.html" target="_blank">&lt;public-notification&gt;</calcite-link>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3>Roadway Management</h3>
+        <div>
+          <div class="demo-column">
+            <ul class="nav">
+              <li>
+                <calcite-link href="./pci-calculator.html" target="_blank">&lt;pci-calculator&gt;</calcite-link>
+              </li>
+              <li>
+                <calcite-link href="./deduct-calculator.html" target="_blank">&lt;deduct-calculator&gt;</calcite-link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3>Crowdsource Manager</h3>
+        <div>
+          <div class="demo-column">
+            <ul class="nav">
+              <li>
+                <calcite-link href="./crowdsource-manager.html" target="_blank">&lt;crowdsource-manager&gt;</calcite-link>
+              </li>
+              <li>
+                <calcite-link href="./info-card.html" target="_blank">&lt;info-card&gt;</calcite-link>
+              </li>
+              <li>
+                <calcite-link href="./media-card.html" target="_blank">&lt;media-card&gt;</calcite-link>
+              </li>
+              <li>
+                <calcite-link href="./map-card.html" target="_blank">&lt;map-card&gt;</calcite-link>
+              </li>
+              <li>
+                <calcite-link href="./comment-card.html" target="_blank">&lt;comment-card&gt;</calcite-link>
+              </li>
+              <li>
+                <calcite-link href="./card-manager.html" target="_blank">&lt;card-manager&gt;</calcite-link>
+              </li>
+              <li>
+                <calcite-link href="./layer-table.html" target="_blank">&lt;layer-table&gt;</calcite-link>
+              </li>
+              <li>
+                <calcite-link href="./add-record-modal.html" target="_blank">&lt;add-record-modal&gt;</calcite-link>
+              </li>
+              <li>
+                <calcite-link href="./edit-record-modal.html" target="_blank">&lt;edit-record-modal&gt;</calcite-link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3>Crowdsource Reporter</h3>
+        <div>
+          <div class="demo-column">
+            <ul class="nav">
+              <li>
+                <calcite-link href="./crowdsource-reporter.html" target="_blank">&lt;crowdsource-reporter&gt;</calcite-link>
+              </li>
+              <li>
+                <calcite-link href="./list-item.html" target="_blank">&lt;list-item&gt;</calcite-link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </main>
+</body>
+</html>

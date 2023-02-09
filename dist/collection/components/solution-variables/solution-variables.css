@@ -1,0 +1,155 @@
+/** @license
+* Copyright 2022 Esri
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*    http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+:host {
+  display: block;
+  box-sizing: border-box;
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+  min-width: 0;
+  flex-grow: 0;
+  flex-shrink: 1;
+}
+:host-group-1-up > .block {
+  flex-basis: calc(100% - 1.5rem);
+  width: calc(100% - 1.5rem);
+}
+:host-group-2-up > .block {
+  flex-basis: calc(50% - 1.5rem);
+  width: calc(50% - 1.5rem);
+}
+:host-group-3-up > .block {
+  flex-basis: calc(33.33333% - 1.5rem);
+  width: calc(33.33333% - 1.5rem);
+}
+:host-group-4-up > .block {
+  flex-basis: calc(25% - 1.5rem);
+  width: calc(25% - 1.5rem);
+}
+:host-group-5-up > .block {
+  flex-basis: calc(20% - 1.5rem);
+  width: calc(20% - 1.5rem);
+}
+:host-group-6-up > .block {
+  flex-basis: calc(16.66666% - 1.5rem);
+  width: calc(16.66666% - 1.5rem);
+}
+:host-group-7-up > .block {
+  flex-basis: calc(14.2857% - 1.5rem);
+  width: calc(14.2857% - 1.5rem);
+}
+:host-group-8-up > .block {
+  flex-basis: calc(12.5% - 1.5rem);
+  width: calc(12.5% - 1.5rem);
+}
+.tablet-block-group-1-up > :host {
+    flex-basis: calc(100% - 1.5rem);
+    width: calc(100% - 1.5rem);
+  }
+.tablet-block-group-2-up > :host {
+    flex-basis: calc(50% - 1.5rem);
+    width: calc(50% - 1.5rem);
+  }
+.tablet-block-group-3-up > :host {
+    flex-basis: calc(33.33333% - 1.5rem);
+    width: calc(33.33333% - 1.5rem);
+  }
+.tablet-block-group-4-up > :host {
+    flex-basis: calc(25% - 1.5rem);
+    width: calc(25% - 1.5rem);
+  }
+.tablet-block-group-5-up > :host {
+    flex-basis: calc(20% - 1.5rem);
+    width: calc(20% - 1.5rem);
+  }
+.tablet-block-group-6-up > :host {
+    flex-basis: calc(16.66666% - 1.5rem);
+    width: calc(16.66666% - 1.5rem);
+  }
+.tablet-block-group-7-up > :host {
+    flex-basis: calc(14.2857% - 1.5rem);
+    width: calc(14.2857% - 1.5rem);
+  }
+.tablet-block-group-8-up > :host {
+    flex-basis: calc(12.5% - 1.5rem);
+    width: calc(12.5% - 1.5rem);
+  }
+.phone-block-group-1-up > :host {
+    flex-basis: calc(100% - 1.5rem);
+    width: calc(100% - 1.5rem);
+  }
+.phone-block-group-2-up > :host {
+    flex-basis: calc(50% - 1.5rem);
+    width: calc(50% - 1.5rem);
+  }
+.phone-block-group-3-up > :host {
+    flex-basis: calc(33.33333% - 1.5rem);
+    width: calc(33.33333% - 1.5rem);
+  }
+.phone-block-group-4-up > :host {
+    flex-basis: calc(25% - 1.5rem);
+    width: calc(25% - 1.5rem);
+  }
+.phone-block-group-5-up > :host {
+    flex-basis: calc(20% - 1.5rem);
+    width: calc(20% - 1.5rem);
+  }
+.phone-block-group-6-up > :host {
+    flex-basis: calc(16.66666% - 1.5rem);
+    width: calc(16.66666% - 1.5rem);
+  }
+.phone-block-group-7-up > :host {
+    flex-basis: calc(14.2857% - 1.5rem);
+    width: calc(14.2857% - 1.5rem);
+  }
+.phone-block-group-8-up > :host {
+    flex-basis: calc(12.5% - 1.5rem);
+    width: calc(12.5% - 1.5rem);
+  }
+.code-face :host {
+  letter-spacing: 0em;
+  font-family: "Consolas", "Andale Mono", "Lucida Console", "Monaco", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+.code-face :host b, .code-face :host strong {
+  font-weight: 400;
+}
+.code-italic :host {
+  letter-spacing: 0em;
+  font-family: "Consolas", "Andale Mono", "Lucida Console", "Monaco", monospace;
+  font-weight: 400;
+  font-style: italic;
+}
+.code-italic :host b, .code-italic :host strong {
+  font-weight: 400;
+}
+
+.container-border {
+  overflow-y: hidden;
+}
+
+.org-var-header {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.icon-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
