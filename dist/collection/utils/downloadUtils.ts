@@ -159,7 +159,7 @@ async function _prepareLabels(
 
   // Get the label formatting, if any
   let labelFormat: string[];
-  if (this.layerView.layer.popupEnabled) {
+  if (layer.popupEnabled) {
     // What data fields are used in the labels?
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
     if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "fields") {

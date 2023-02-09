@@ -122,7 +122,7 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
   const featuresAttrs = featureSet.features.map(f => f.attributes);
   // Get the label formatting, if any
   let labelFormat;
-  if (this.layerView.layer.popupEnabled) {
+  if (layer.popupEnabled) {
     // What data fields are used in the labels?
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
     if (formatUsingLayerPopup && ((_b = (_a = layer.popupTemplate) === null || _a === void 0 ? void 0 : _a.content[0]) === null || _b === void 0 ? void 0 : _b.type) === "fields") {

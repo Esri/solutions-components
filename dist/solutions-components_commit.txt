@@ -1,7 +1,7 @@
-Built 02/09/2023  8:06:11.86 
+Built 02/09/2023  8:18:23.65 
 ch/153-label-fallbacks
-commit 48df440c7fecd4843fbaf64dd4bda9b6b3f6e2c3
+commit e916572e6816cb1fab9d8ee57cdf3f1e13ba8b17
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Wed Feb 8 21:11:52 2023 -0800
+Date:   Thu Feb 9 08:06:36 2023 -0800
 
-    Remove test cases
+    Handle field lists
