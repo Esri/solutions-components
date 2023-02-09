@@ -246,6 +246,21 @@ export class MapSelectTools {
   }
 
   /**
+   * Called each time the searchConfiguration prop is changed.
+   *
+   * @returns Promise when complete
+   */
+  @Watch("searchConfiguration")
+  async watchSearchConfigurationHandler(
+    newValue: ISearchConfiguration,
+    oldValue: ISearchConfiguration
+  ): Promise<void> {
+    if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
+      this._initSearchWidget();
+    }
+  }
+
+  /**
    * Called each time the workflowType prop is changed and emits the workflowTypeChange event.
    *
    * @returns Promise when complete
