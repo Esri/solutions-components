@@ -27,9 +27,10 @@
 
 ## Events
 
-| Event         | Description                                   | Type                  |
-| ------------- | --------------------------------------------- | --------------------- |
-| `labelChange` | Emitted on demand when a buffer is generated. | `CustomEvent<string>` |
+| Event                       | Description                                                 | Type                                |
+| --------------------------- | ----------------------------------------------------------- | ----------------------------------- |
+| `labelChange`               | Emitted on demand when a buffer is generated.               | `CustomEvent<string>`               |
+| `searchConfigurationChange` | Emitted on demand when searchConfiguration gets a new value | `CustomEvent<ISearchConfiguration>` |
 
 
 ## Dependencies
