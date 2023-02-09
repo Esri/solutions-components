@@ -30,11 +30,11 @@ export namespace Components {
         /**
           * number: The component's maximum selectable value.
          */
-        "sliderMax": number;
+        "max": number;
         /**
           * number: The component's minimum selectable value.
          */
-        "sliderMin": number;
+        "min": number;
         /**
           * number: Displays tick marks on the number line at a specified interval.
          */
@@ -918,6 +918,14 @@ declare namespace LocalJSX {
          */
         "geometries"?: __esri.Geometry[];
         /**
+          * number: The component's maximum selectable value.
+         */
+        "max"?: number;
+        /**
+          * number: The component's minimum selectable value.
+         */
+        "min"?: number;
+        /**
           * Emitted on demand when a buffer is generated.
          */
         "onBufferComplete"?: (event: BufferToolsCustomEvent<__esri.Polygon | __esri.Polygon[]>) => void;
@@ -929,14 +937,6 @@ declare namespace LocalJSX {
           * Emitted on demand when the unit changes
          */
         "onUnitChanged"?: (event: BufferToolsCustomEvent<IValueChange>) => void;
-        /**
-          * number: The component's maximum selectable value.
-         */
-        "sliderMax"?: number;
-        /**
-          * number: The component's minimum selectable value.
-         */
-        "sliderMin"?: number;
         /**
           * number: Displays tick marks on the number line at a specified interval.
          */
