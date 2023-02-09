@@ -2238,7 +2238,7 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
     }
     else {
       Object.keys(featuresAttrs[0]).forEach(k => {
-        if (featuresAttrs.hasOwnProperty(k)) {
+        if (featuresAttrs[0].hasOwnProperty(k)) {
           headerNames.push(k);
         }
       });

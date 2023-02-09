@@ -12,7 +12,7 @@ import { g as goToSelection, h as highlightFeatures, d as queryObjectIds, e as g
 import { E as EWorkflowType, f as ESelectionMode, g as ERefineMode, c as ESketchType } from './interfaces-d0d83efa.js';
 import { s as state } from './publicNotificationStore-b9daaee4.js';
 import { g as getLocaleComponentStrings } from './locale-4a87aff1.js';
-import { d as downloadCSV, a as downloadPDF } from './downloadUtils-9d48601e.js';
+import { d as downloadCSV, a as downloadPDF } from './downloadUtils-17d01e54.js';
 import { a as getSelectionIds, g as getTotal } from './publicNotificationUtils-5cb5a607.js';
 import './resources-436ae282.js';
 import './guid-15fce7c0.js';
