@@ -2219,8 +2219,9 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
       .filter(label => label.length > 0);
   }
   else {
+    // Export all attributes
     labels = featuresAttrs.map(featureAttributes => {
-      return featureAttributes.map(attribute => `"${attribute}"`);
+      return Object.values(featureAttributes).map(attribute => `"${attribute}"`);
     });
   }
   // Remove duplicates

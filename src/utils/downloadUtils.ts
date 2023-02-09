@@ -157,11 +157,12 @@ async function _prepareLabels(
     .filter(label => label.length > 0);
 
   } else {
+    // Export all attributes
     labels = featuresAttrs.map(
       featureAttributes => {
-        return featureAttributes.map(
+        return Object.values(featureAttributes).map(
           attribute => `"${attribute}"`
-        )
+        );
       }
     );
   }

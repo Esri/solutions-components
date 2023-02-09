@@ -1,8 +1,7 @@
-Built 02/08/2023 20:13:17.91 
+Built 02/08/2023 20:29:56.27 
 ch/153-label-fallbacks
-commit 45dae7f71430d71df92c1f81aebc6e118b4a3112
-Merge: 45abd095 b029d3b8
+commit 83933c6facf15c7c59c6856199d13f63fb09635b
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Wed Feb 8 18:22:41 2023 -0800
+Date:   Wed Feb 8 20:14:19 2023 -0800
 
-    Merge branch 'develop' into ch/153-label-fallbacks
+    Handle optional formatting
