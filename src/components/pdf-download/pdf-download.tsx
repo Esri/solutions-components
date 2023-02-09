@@ -108,7 +108,7 @@ export class PdfDownload {
     return downloadUtils.downloadCSV(
       this.layerView.layer,
       ids,
-      false, //???true, // formatUsingLayerPopup
+      true, // formatUsingLayerPopup
       removeDuplicates,
       addColumnTitle
     );
