@@ -12,7 +12,7 @@
 | `appearance`   | `appearance`    | string: The appearance of display. Can be a "slider" or "text" inputs for distance/value                          | `"slider" \| "text"`                            | `"text"`    |
 | `distance`     | `distance`      | number: The distance used for buffer                                                                              | `number`                                        | `0`         |
 | `geometries`   | --              | esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html | `Geometry[]`                                    | `[]`        |
-| `max`          | `max`           | number: The component's maximum selectable value.                                                                 | `any`                                           | `undefined` |
+| `max`          | `max`           | number: The component's maximum selectable value.                                                                 | `number`                                        | `undefined` |
 | `min`          | `min`           | number: The component's minimum selectable value.                                                                 | `number`                                        | `0`         |
 | `sliderTicks`  | `slider-ticks`  | number: Displays tick marks on the number line at a specified interval.                                           | `number`                                        | `10`        |
 | `unionResults` | `union-results` | boolean: option to control if buffer results should be unioned                                                    | `boolean`                                       | `true`      |

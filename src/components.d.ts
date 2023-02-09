@@ -30,7 +30,7 @@ export namespace Components {
         /**
           * number: The component's maximum selectable value.
          */
-        "max": any;
+        "max": number;
         /**
           * number: The component's minimum selectable value.
          */
@@ -920,7 +920,7 @@ declare namespace LocalJSX {
         /**
           * number: The component's maximum selectable value.
          */
-        "max"?: any;
+        "max"?: number;
         /**
           * number: The component's minimum selectable value.
          */

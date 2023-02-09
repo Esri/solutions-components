@@ -57,7 +57,7 @@ export class BufferTools {
   /**
    * number: The component's maximum selectable value.
    */
-  @Prop({ mutable: true }) max;
+  @Prop({ mutable: true }) max: number;
 
   /**
    * number: The component's minimum selectable value.
