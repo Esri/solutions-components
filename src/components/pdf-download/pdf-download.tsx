@@ -15,14 +15,12 @@
  */
 
 import "@esri/calcite-components";
-import * as pdfUtils from "../../assets/data/labelFormats.json";
+import * as pdfLabelFormats from "../../assets/data/labelFormats.json";
+import * as downloadUtils from "../../utils/downloadUtils";
 import PdfDownload_T9n from "../../assets/t9n/pdf-download/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { Component, Element, Host, h, Method, Prop, State, VNode } from "@stencil/core";
-import { exportCSV } from "../../utils/csvUtils";
-import { exportPDF } from "../../utils/pdfUtils";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { queryFeaturesByID } from "../../utils/queryUtils";
 
 @Component({
   tag: "pdf-download",
@@ -107,9 +105,13 @@ export class PdfDownload {
     removeDuplicates: boolean,
     addColumnTitle = true
   ): Promise<void> {
-    const labels = await this._prepareLabels(ids, removeDuplicates, addColumnTitle);
-
-    return exportCSV(labels);
+    return downloadUtils.downloadCSV(
+      this.layerView.layer,
+      ids,
+      true, // formatUsingLayerPopup
+      removeDuplicates,
+      addColumnTitle
+    );
   }
 
   /**
@@ -124,11 +126,12 @@ export class PdfDownload {
     ids: number[],
     removeDuplicates: boolean
   ): Promise<void> {
-    const labels = await this._prepareLabels(ids, removeDuplicates);
-
-    const labelPageDescription = this._labelInfoElement.selectedOption.value;
-
-    return exportPDF(labels, labelPageDescription);
+    return downloadUtils.downloadPDF(
+      this.layerView.layer,
+      ids,
+      removeDuplicates,
+      this._labelInfoElement.selectedOption.value as downloadUtils.ILabel
+    );
   }
 
   //--------------------------------------------------------------------------
@@ -189,36 +192,6 @@ export class PdfDownload {
   }
 
   /**
-   * Converts the text of a custom popup into a multiline label specification; conversion splits text into
-   * lines on <br>s, and removes HTML tags. It does not handle Arcade and related records.
-   *
-   * @param popupInfo Layer's popupInfo structure containing description, fieldInfos, and expressionInfos, e.g.,
-   * "<div style='text-align: left;'>{NAME}<br />{STREET}<br />{CITY}, {STATE} {ZIP} <br /></div>"
-   * @return Label spec
-   */
-  public _convertPopupToLabelSpec(
-    popupInfo: string
-  ): string[] {
-    // Replace <br>, <br/> with |
-    popupInfo = popupInfo.replace(/<br\s*\/?>/gi, "|");
-
-    // Remove remaining HTML tags, replace 0xA0 that popup uses for spaces, replace some char representations,
-    // and split the label back into individual lines
-    let labelSpec = popupInfo
-      .replace(/<[\s.]*[^<>]*\/?>/gi, "")
-      .replace(/\xA0/gi, " ")
-      .replace(/&lt;/gi, "<")
-      .replace(/&gt;/gi, ">")
-      .replace(/&nbsp;/gi, " ")
-      .split("|");
-
-    // Trim lines and remove empties
-    labelSpec = labelSpec.map(line => line.trim()).filter(line => line.length > 0);
-
-    return labelSpec;
-  };
-
-  /**
    * Gets the formatted pdf export size text
    *
    * @param labelInfo current user selected label info
@@ -245,63 +218,6 @@ export class PdfDownload {
   }
 
   /**
-   * Creates labels from items.
-  *
-  * @param ids List of ids to download
-  * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-  * @param includeHeaderNames Add the label format at the front of the list of generated labels
-  * @returns Promise resolving when function is done
-   */
-  protected async _prepareLabels(
-    ids: number[],
-    removeDuplicates: boolean,
-    includeHeaderNames = false
-  ): Promise<string[][]> {
-    // Get the attributes of the features to export
-    const featureSet = await queryFeaturesByID(ids, this.layerView.layer);
-    const featuresAttrs = featureSet.features.map(f => f.attributes);
-
-    // What data fields are used in the labels?
-    // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
-    const labelFormat = this._convertPopupToLabelSpec(this.layerView.layer.popupTemplate.content[0].text);
-
-    // Convert attributes into an array of labels
-    let labels: string[][] = featuresAttrs.map(
-      featureAttributes => {
-        const label: string[] = [];
-        labelFormat.forEach(
-          labelLineTemplate => {
-            const labelLine = this._intl.substitute(labelLineTemplate, featureAttributes).trim();
-            if (labelLine.length > 0) {
-              label.push(labelLine);
-            }
-          }
-        )
-        return label;
-      }
-    )
-    // Remove empty labels
-    .filter(label => label.length > 0);
-
-    // Remove duplicates
-    if (removeDuplicates) {
-      const labelsAsStrings: string[] = labels.map(label => JSON.stringify(label));
-      const uniqueLabels = new Set(labelsAsStrings);
-      labels = Array.from(uniqueLabels,
-        labelString => JSON.parse(labelString)
-      );
-    }
-
-    // Add header names
-    if (includeHeaderNames) {
-      const headerNames = labelFormat.map(labelFormatLine => labelFormatLine.replace(/\{/g, "").replace(/\}/g, ""));
-      labels.unshift(headerNames);
-    }
-
-    return Promise.resolve(labels);
-  }
-
-  /**
    * Renders the pdf export size options
    *
    * @returns Node array of size options
@@ -309,7 +225,7 @@ export class PdfDownload {
    * @protected
    */
   protected _renderItems(): VNode[] {
-    const s: any = pdfUtils;
+    const s: any = pdfLabelFormats;
     const sortedPdfIndo = (s.default || s).sort((a, b) => {
       const _a = parseInt(a.descriptionPDF.labelsPerPageDisplay, 10);
       const _b = parseInt(b.descriptionPDF.labelsPerPageDisplay, 10);
