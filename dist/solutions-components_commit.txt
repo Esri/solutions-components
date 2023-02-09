@@ -1,7 +1,0 @@
-Built 02/08/2023 21:00:16.48 
-ch/153-label-fallbacks
-commit 352d22407fee67356c7e46089ac949195464b0b4
-Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Wed Feb 8 20:49:14 2023 -0800
-
-    Fix attributes
