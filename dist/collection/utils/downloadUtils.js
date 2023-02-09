@@ -67,10 +67,8 @@ function _convertPopupFieldsToLabelSpec(fieldInfos) {
   const labelSpec = [];
   // Every visible attribute is used
   fieldInfos.forEach(fieldInfo => {
-    var _a;
     if (fieldInfo.visible) {
-      const fieldName = (_a = fieldInfo.label) !== null && _a !== void 0 ? _a : fieldInfo.fieldName;
-      labelSpec.push(`{${fieldName}}`);
+      labelSpec.push(`{${fieldInfo.fieldName}}`);
     }
   });
   return labelSpec;

@@ -1,7 +1,7 @@
-Built 02/09/2023  8:36:17.06 
+Built 02/09/2023  8:45:25.24 
 ch/153-label-fallbacks
-commit e26a44a0476a89e9e3d2ffb82d0335a15db09cd3
+commit a21de197632d7d19e068abb9134cf8d57eccba12
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Thu Feb 9 08:18:52 2023 -0800
+Date:   Thu Feb 9 08:36:36 2023 -0800
 
-    Fix typo
+    Try another source for fieldInfos

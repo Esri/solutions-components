@@ -92,8 +92,7 @@ function _convertPopupFieldsToLabelSpec(
   fieldInfos.forEach(
     fieldInfo => {
       if (fieldInfo.visible) {
-        const fieldName = fieldInfo.label ?? fieldInfo.fieldName;
-        labelSpec.push(`{${fieldName}}`);
+        labelSpec.push(`{${fieldInfo.fieldName}}`);
       }
     }
   );
