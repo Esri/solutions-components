@@ -6,9 +6,10 @@
 import { r as registerInstance, h, H as Host, g as getElement } from './index-c246d90e.js';
 import { g as getLocaleComponentStrings } from './locale-4a87aff1.js';
 import { g as goToSelection, a as getMapLayerView, q as queryAllFeatures } from './mapViewUtils-02696ab6.js';
-import { d as downloadCSV } from './downloadUtils-73853b59.js';
+import { d as downloadCSV } from './downloadUtils-ef10fb2f.js';
 import './_commonjsHelpers-d5f9d613.js';
 import './interfaces-d0d83efa.js';
+import './loadModules-649aedac.js';
 
 const layerTableCss = ":host{display:block}.table{display:table;width:100%}.header{display:table-header-group;background-color:#757575;font-weight:500;font-size:var(--calcite-font-size-0);color:var(--calcite-ui-text-inverse);position:sticky;top:0;z-index:1}.table-header-cell{display:table-cell;text-align:justify;border-right:1px solid var(--calcite-ui-border-2);padding:0.5rem}.table-body{display:table-row-group}.row{display:table-row}.table-cell{display:table-cell;padding:0.5rem}.display-table-header{display:table-header-group}.display-flex{display:flex}.table-border{border:1px solid var(--calcite-ui-border-2)}.justify-center{justify-content:center}.table-container{width:100%}.overflow-auto{overflow:auto}.data-container{overflow:auto;height:calc(100% - 35px)}.row:nth-child(odd){background:var(--calcite-ui-foreground-3)}.padding-3-4{padding:0.75rem}.field-width{white-space:nowrap;min-width:300px;max-width:300px;overflow:hidden}";
 

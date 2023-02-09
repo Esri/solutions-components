@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 /// <reference types="arcgis-js-api" />
-import { ILabel } from "./pdfUtils";
 export { ILabel } from "./pdfUtils";
+import { ILabel } from "./pdfUtils";
 /**
  * Downloads csv of mailing labels for the provided list of ids
  *

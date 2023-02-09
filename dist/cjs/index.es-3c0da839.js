@@ -6,8 +6,10 @@
 'use strict';
 
 const _commonjsHelpers = require('./_commonjsHelpers-384729db.js');
-const downloadUtils = require('./downloadUtils-3f466088.js');
+const downloadUtils = require('./downloadUtils-4c2679a7.js');
 require('./index-c6979cbb.js');
+require('./loadModules-918ff3e7.js');
+require('./locale-db1db902.js');
 require('./mapViewUtils-d250b1ed.js');
 require('./interfaces-17c631bf.js');
 

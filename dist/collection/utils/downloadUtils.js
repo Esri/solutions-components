@@ -19,10 +19,11 @@
  * limitations under the License.
  */
 //#region Declarations
+export { ILabel } from "./pdfUtils";
 import { exportCSV } from "./csvUtils";
 import { exportPDF } from "./pdfUtils";
+import { loadModules } from "./loadModules";
 import { queryFeaturesByID } from "./queryUtils";
-export { ILabel } from "./pdfUtils";
 //#endregion
 //#region Public functions
 /**
@@ -34,7 +35,7 @@ export { ILabel } from "./pdfUtils";
  * @returns Promise resolving when function is done
  */
 export async function downloadCSV(layer, ids, removeDuplicates, addColumnTitle = false) {
-  const labels = await this._prepareLabels(layer, ids, removeDuplicates, addColumnTitle);
+  const labels = await _prepareLabels(layer, ids, removeDuplicates, addColumnTitle);
   exportCSV(labels);
   return Promise.resolve();
 }
@@ -94,11 +95,14 @@ async function _prepareLabels(layer, ids, removeDuplicates, includeHeaderNames =
   // What data fields are used in the labels?
   // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
   const labelFormat = _convertPopupToLabelSpec(layer.popupTemplate.content[0].text);
+  const [intl] = await loadModules([
+    "esri/intl"
+  ]);
   // Convert attributes into an array of labels
   let labels = featuresAttrs.map(featureAttributes => {
     const label = [];
     labelFormat.forEach(labelLineTemplate => {
-      const labelLine = __esri.intl.substitute(labelLineTemplate, featureAttributes).trim();
+      const labelLine = intl.substitute(labelLineTemplate, featureAttributes).trim();
       if (labelLine.length > 0) {
         label.push(labelLine);
       }
