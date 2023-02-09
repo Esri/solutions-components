@@ -163,7 +163,7 @@ async function _prepareLabels(
     // What data fields are used in the labels?
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
     if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "fields") {
-      labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.content[0].fieldInfos);
+      labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos);
 
     } else if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "text") {
       labelFormat = _convertPopupTextToLabelSpec(layer.popupTemplate.content[0].text);

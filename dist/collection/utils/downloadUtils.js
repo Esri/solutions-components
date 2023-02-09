@@ -126,7 +126,7 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
     // What data fields are used in the labels?
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
     if (formatUsingLayerPopup && ((_b = (_a = layer.popupTemplate) === null || _a === void 0 ? void 0 : _a.content[0]) === null || _b === void 0 ? void 0 : _b.type) === "fields") {
-      labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.content[0].fieldInfos);
+      labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos);
     }
     else if (formatUsingLayerPopup && ((_d = (_c = layer.popupTemplate) === null || _c === void 0 ? void 0 : _c.content[0]) === null || _d === void 0 ? void 0 : _d.type) === "text") {
       labelFormat = _convertPopupTextToLabelSpec(layer.popupTemplate.content[0].text);
