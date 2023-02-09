@@ -349,5 +349,3 @@ const InputTimePicker = class {
 InputTimePicker.style = inputTimePickerCss;
 
 exports.calcite_input_time_picker = InputTimePicker;
-
-//# sourceMappingURL=calcite-input-time-picker.cjs.entry.js.map

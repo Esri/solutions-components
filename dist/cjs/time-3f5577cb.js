@@ -200,5 +200,3 @@ exports.localizeTimeString = localizeTimeString;
 exports.localizeTimeStringToParts = localizeTimeStringToParts;
 exports.maxTenthForMinuteAndSecond = maxTenthForMinuteAndSecond;
 exports.parseTimeString = parseTimeString;
-
-//# sourceMappingURL=time-3f5577cb.js.map

@@ -21528,5 +21528,3 @@ const SolutionSpatialRef = class {
 SolutionSpatialRef.style = solutionSpatialRefCss;
 
 export { SolutionContents as solution_contents, SolutionItem as solution_item, SolutionSpatialRef as solution_spatial_ref };
-
-//# sourceMappingURL=solution-contents_3.entry.js.map

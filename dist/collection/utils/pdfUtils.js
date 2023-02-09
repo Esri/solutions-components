@@ -18,9 +18,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+//#region Declarations
 import * as PDFCreator_jsPDF from "../assets/arcgis-pdf-creator/PDFCreator_jsPDF";
 import * as PDFLabels from "../assets/arcgis-pdf-creator/PDFLabels";
 import { getAssetPath } from "@stencil/core";
+export { ILabel } from "../assets/arcgis-pdf-creator/PDFLabels";
+//#endregion
+//#region Public functions
 /**
  * Exports a PDF of labels.
  *
@@ -30,6 +34,8 @@ import { getAssetPath } from "@stencil/core";
 export function exportPDF(labels, labelPageDescription) {
   _downloadPDFFile(labels, labelPageDescription, `notify-${Date.now().toString()}`);
 }
+//#endregion
+//#region Private functions
 /**
  * Downloads the PDF file.
  *
@@ -51,4 +57,4 @@ function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
     });
   });
 }
-//# sourceMappingURL=pdfUtils.js.map
+//#endregion

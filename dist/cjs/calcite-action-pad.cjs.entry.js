@@ -140,5 +140,3 @@ const ActionPad = class {
 ActionPad.style = actionPadCss;
 
 exports.calcite_action_pad = ActionPad;
-
-//# sourceMappingURL=calcite-action-pad.cjs.entry.js.map

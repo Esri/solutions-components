@@ -233,5 +233,3 @@ const Graph = class {
 Graph.style = graphCss;
 
 exports.calcite_graph = Graph;
-
-//# sourceMappingURL=calcite-graph.cjs.entry.js.map

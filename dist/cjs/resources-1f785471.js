@@ -41,5 +41,3 @@ exports.CSS = CSS;
 exports.ICONS = ICONS;
 exports.SLOTS = SLOTS;
 exports.TEXT = TEXT;
-
-//# sourceMappingURL=resources-1f785471.js.map

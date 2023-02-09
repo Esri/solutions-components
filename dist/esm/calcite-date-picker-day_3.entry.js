@@ -563,5 +563,3 @@ const DatePickerMonthHeader = class {
 DatePickerMonthHeader.style = datePickerMonthHeaderCss;
 
 export { DatePickerDay as calcite_date_picker_day, DatePickerMonth as calcite_date_picker_month, DatePickerMonthHeader as calcite_date_picker_month_header };
-
-//# sourceMappingURL=calcite-date-picker-day_3.entry.js.map

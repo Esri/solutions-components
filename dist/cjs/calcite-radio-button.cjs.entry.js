@@ -280,5 +280,3 @@ const RadioButton = class {
 RadioButton.style = radioButtonCss;
 
 exports.calcite_radio_button = RadioButton;
-
-//# sourceMappingURL=calcite-radio-button.cjs.entry.js.map

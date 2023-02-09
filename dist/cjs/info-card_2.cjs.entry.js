@@ -201,5 +201,3 @@ MediaCard.style = mediaCardCss;
 
 exports.info_card = InfoCard;
 exports.media_card = MediaCard;
-
-//# sourceMappingURL=info-card_2.cjs.entry.js.map

@@ -41,5 +41,3 @@ const TileSelectGroup = class {
 TileSelectGroup.style = tileSelectGroupCss;
 
 export { TileSelectGroup as calcite_tile_select_group };
-
-//# sourceMappingURL=calcite-tile-select-group.entry.js.map

@@ -336,4 +336,3 @@ export class MapCard {
       }];
   }
 }
-//# sourceMappingURL=map-card.js.map

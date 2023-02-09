@@ -7840,5 +7840,3 @@ const html2canvas$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.assign(/*#_
 }));
 
 exports.html2canvas = html2canvas$1;
-
-//# sourceMappingURL=html2canvas-770c1171.js.map

@@ -25,5 +25,3 @@ const decimalPlaces = (value) => {
 
 exports.clamp = clamp;
 exports.decimalPlaces = decimalPlaces;
-
-//# sourceMappingURL=math-460fffaf.js.map

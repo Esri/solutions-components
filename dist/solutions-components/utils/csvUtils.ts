@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+//#region Public functions
+
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
@@ -28,6 +30,9 @@ export function exportCSV(
 
   _downloadCSVFile(outputLines, `notify-${Date.now().toString()}`);
 }
+
+//#endregion
+//#region Private functions
 
 /**
  * Download the CSV file
@@ -51,3 +56,5 @@ function _downloadCSVFile(
     document.body.removeChild(link);
   }
 }
+
+//#endregion

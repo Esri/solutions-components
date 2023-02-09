@@ -77,4 +77,3 @@ export class LayerView {
     };
   }
 }
-//# sourceMappingURL=jsApi.js.map

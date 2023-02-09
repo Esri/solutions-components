@@ -127,5 +127,3 @@ exports.isValidHex = isValidHex;
 exports.normalizeHex = normalizeHex;
 exports.parseMode = parseMode;
 exports.rgbToHex = rgbToHex;
-
-//# sourceMappingURL=utils-120bbbeb.js.map

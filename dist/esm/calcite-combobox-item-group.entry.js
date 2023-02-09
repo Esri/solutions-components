@@ -52,5 +52,3 @@ const ComboboxItemGroup = class {
 ComboboxItemGroup.style = comboboxItemGroupCss;
 
 export { ComboboxItemGroup as calcite_combobox_item_group };
-
-//# sourceMappingURL=calcite-combobox-item-group.entry.js.map

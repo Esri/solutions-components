@@ -83,5 +83,3 @@ const ActionGroup = class {
 ActionGroup.style = actionGroupCss;
 
 export { ActionGroup as calcite_action_group };
-
-//# sourceMappingURL=calcite-action-group.entry.js.map

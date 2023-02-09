@@ -29,5 +29,3 @@ exports.commonjsGlobal = commonjsGlobal;
 exports.commonjsRequire = commonjsRequire;
 exports.createCommonjsModule = createCommonjsModule;
 exports.getDefaultExportFromCjs = getDefaultExportFromCjs;
-
-//# sourceMappingURL=_commonjsHelpers-384729db.js.map

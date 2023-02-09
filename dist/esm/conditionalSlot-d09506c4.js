@@ -48,5 +48,3 @@ function processMutations(mutations) {
 }
 
 export { connectConditionalSlotComponent as c, disconnectConditionalSlotComponent as d };
-
-//# sourceMappingURL=conditionalSlot-d09506c4.js.map

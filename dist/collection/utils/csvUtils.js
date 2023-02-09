@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+//#region Public functions
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
@@ -29,6 +30,8 @@ export function exportCSV(labels) {
   const outputLines = labels.map(label => Object.values(label).map(v => `"${v}"`).join(",") + "\r\n");
   _downloadCSVFile(outputLines, `notify-${Date.now().toString()}`);
 }
+//#endregion
+//#region Private functions
 /**
  * Download the CSV file
  *
@@ -48,4 +51,4 @@ function _downloadCSVFile(outputLines, fileTitle) {
     document.body.removeChild(link);
   }
 }
-//# sourceMappingURL=csvUtils.js.map
+//#endregion

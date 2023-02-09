@@ -411,5 +411,3 @@ class NumberStringFormat {
 const numberStringFormatter = new NumberStringFormat();
 
 export { defaultNumberingSystem as a, getSupportedNumberingSystem as b, connectLocalized as c, disconnectLocalized as d, getSupportedLocale as g, isValidNumber as i, numberStringFormatter as n, parseNumberString as p, sanitizeNumberString as s, updateEffectiveLocale as u };
-
-//# sourceMappingURL=locale-9dd0777b.js.map

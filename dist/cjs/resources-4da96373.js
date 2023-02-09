@@ -120,5 +120,3 @@ exports.DIMENSIONS = DIMENSIONS;
 exports.HSV_LIMITS = HSV_LIMITS;
 exports.RGB_LIMITS = RGB_LIMITS;
 exports.TEXT = TEXT;
-
-//# sourceMappingURL=resources-4da96373.js.map

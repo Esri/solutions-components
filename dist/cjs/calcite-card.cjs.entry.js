@@ -147,5 +147,3 @@ const Card = class {
 Card.style = cardCss;
 
 exports.calcite_card = Card;
-
-//# sourceMappingURL=calcite-card.cjs.entry.js.map

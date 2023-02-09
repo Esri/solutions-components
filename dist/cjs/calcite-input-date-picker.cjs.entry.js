@@ -620,5 +620,3 @@ const InputDatePicker = class {
 InputDatePicker.style = inputDatePickerCss;
 
 exports.calcite_input_date_picker = InputDatePicker;
-
-//# sourceMappingURL=calcite-input-date-picker.cjs.entry.js.map

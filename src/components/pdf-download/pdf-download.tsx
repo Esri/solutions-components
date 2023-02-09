@@ -190,7 +190,6 @@ export class PdfDownload {
     this._intl = intl;
   }
 
-
   /**
    * Gets the formatted pdf export size text
    *

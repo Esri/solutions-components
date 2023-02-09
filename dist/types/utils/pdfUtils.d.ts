@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import * as PDFLabels from "../assets/arcgis-pdf-creator/PDFLabels";
+export { ILabel } from "../assets/arcgis-pdf-creator/PDFLabels";
 /**
  * Exports a PDF of labels.
  *
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
  */
-export declare function exportPDF(labels: string[][], labelPageDescription: any): void;
+export declare function exportPDF(labels: string[][], labelPageDescription: PDFLabels.ILabel): void;

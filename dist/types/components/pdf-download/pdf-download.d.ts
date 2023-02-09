@@ -74,15 +74,6 @@ export declare class PdfDownload {
    */
   protected _initModules(): Promise<void>;
   /**
-   * Converts the text of a custom popup into a multiline label specification; conversion splits text into
-   * lines on <br>s, and removes HTML tags. It does not handle Arcade and related records.
-   *
-   * @param popupInfo Layer's popupInfo structure containing description, fieldInfos, and expressionInfos, e.g.,
-   * "<div style='text-align: left;'>{NAME}<br />{STREET}<br />{CITY}, {STATE} {ZIP} <br /></div>"
-   * @return Label spec
-   */
-  _convertPopupToLabelSpec(popupInfo: string): string[];
-  /**
    * Gets the formatted pdf export size text
    *
    * @param labelInfo current user selected label info
@@ -97,15 +88,6 @@ export declare class PdfDownload {
    * @protected
    */
   protected _getTranslations(): Promise<void>;
-  /**
-   * Creates labels from items.
-  *
-  * @param ids List of ids to download
-  * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-  * @param includeHeaderNames Add the label format at the front of the list of generated labels
-  * @returns Promise resolving when function is done
-   */
-  protected _prepareLabels(ids: number[], removeDuplicates: boolean, includeHeaderNames?: boolean): Promise<string[][]>;
   /**
    * Renders the pdf export size options
    *

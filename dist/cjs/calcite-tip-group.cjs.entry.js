@@ -22,5 +22,3 @@ const TipGroup = class {
 TipGroup.style = tipGroupCss;
 
 exports.calcite_tip_group = TipGroup;
-
-//# sourceMappingURL=calcite-tip-group.cjs.entry.js.map

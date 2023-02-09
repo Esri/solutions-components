@@ -5,8 +5,8 @@
  */
 import { r as registerInstance, h, H as Host, g as getElement } from './index-c246d90e.js';
 import { g as getLocaleComponentStrings } from './locale-4a87aff1.js';
-import { q as queryFeaturesByID, g as goToSelection, a as getMapLayerView, b as queryAllFeatures } from './mapViewUtils-63e118f8.js';
-import { e as exportCSV } from './csvUtils-23b5418f.js';
+import { g as goToSelection, a as getMapLayerView, q as queryAllFeatures } from './mapViewUtils-02696ab6.js';
+import { d as downloadCSV } from './downloadUtils-73853b59.js';
 import './_commonjsHelpers-d5f9d613.js';
 import './interfaces-d0d83efa.js';
 
@@ -217,20 +217,8 @@ const LayerTable = class {
    * @returns a promise that will resolve when the operation is complete
    */
   async _exportToCSV() {
-    // Get the attributes of the features to export
-    const ids = this._getSelectedIds();
-    const featureSet = await queryFeaturesByID(ids, this._layerView.layer);
-    const attributes = featureSet.features.map(f => f.attributes);
-    // Get the column headings from the first record and add to front of list of attributes
-    const columnNames = [];
-    const entry = attributes[0];
-    Object.keys(entry).forEach(k => {
-      if (entry.hasOwnProperty(k)) {
-        columnNames.push(k);
-      }
-    });
-    attributes.unshift(columnNames);
-    return exportCSV(attributes);
+    return downloadCSV(this._layerView.layer, this._getSelectedIds(), true, // removeDuplicates
+    true);
   }
   /**
    * Zoom to all selected features
@@ -321,5 +309,3 @@ const LayerTable = class {
 LayerTable.style = layerTableCss;
 
 export { LayerTable as layer_table };
-
-//# sourceMappingURL=layer-table.entry.js.map

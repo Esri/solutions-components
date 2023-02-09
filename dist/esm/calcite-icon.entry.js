@@ -179,5 +179,3 @@ const Icon = class {
 Icon.style = iconCss;
 
 export { Icon as calcite_icon };
-
-//# sourceMappingURL=calcite-icon.entry.js.map

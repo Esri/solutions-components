@@ -36,5 +36,3 @@ const TEXT = {
 };
 
 export { CSS as C, ICONS as I, SLOTS as S, TEXT as T };
-
-//# sourceMappingURL=resources-e3a5cf27.js.map

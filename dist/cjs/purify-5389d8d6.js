@@ -1710,5 +1710,3 @@ const purify$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.assign(/*#__PURE
 }));
 
 exports.purify = purify$1;
-
-//# sourceMappingURL=purify-5389d8d6.js.map

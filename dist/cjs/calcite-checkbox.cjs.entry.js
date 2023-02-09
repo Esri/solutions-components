@@ -140,5 +140,3 @@ const Checkbox = class {
 Checkbox.style = checkboxCss;
 
 exports.calcite_checkbox = Checkbox;
-
-//# sourceMappingURL=calcite-checkbox.cjs.entry.js.map

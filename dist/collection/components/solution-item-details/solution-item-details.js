@@ -246,4 +246,3 @@ export class SolutionItemDetails {
       }];
   }
 }
-//# sourceMappingURL=solution-item-details.js.map

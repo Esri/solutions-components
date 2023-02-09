@@ -129,5 +129,3 @@ function onLabelDisconnected() {
 }
 
 export { labelDisconnectedEvent as a, connectLabel as c, disconnectLabel as d, getLabelText as g, labelConnectedEvent as l };
-
-//# sourceMappingURL=label-aa562647.js.map

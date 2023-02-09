@@ -57,5 +57,3 @@ const PickListGroup = class {
 PickListGroup.style = pickListGroupCss;
 
 exports.calcite_pick_list_group = PickListGroup;
-
-//# sourceMappingURL=calcite-pick-list-group.cjs.entry.js.map

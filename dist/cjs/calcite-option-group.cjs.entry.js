@@ -44,5 +44,3 @@ const OptionGroup = class {
 OptionGroup.style = optionGroupCss;
 
 exports.calcite_option_group = OptionGroup;
-
-//# sourceMappingURL=calcite-option-group.cjs.entry.js.map

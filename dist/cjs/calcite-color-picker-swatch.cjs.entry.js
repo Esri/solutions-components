@@ -74,5 +74,3 @@ const ColorPickerSwatch = class {
 ColorPickerSwatch.style = colorPickerSwatchCss;
 
 exports.calcite_color_picker_swatch = ColorPickerSwatch;
-
-//# sourceMappingURL=calcite-color-picker-swatch.cjs.entry.js.map

@@ -410,5 +410,3 @@ async function getLocaleComponentStrings(element) {
 }
 
 export { esriLoader as e, getLocaleComponentStrings as g };
-
-//# sourceMappingURL=locale-4a87aff1.js.map

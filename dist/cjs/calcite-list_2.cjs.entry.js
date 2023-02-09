@@ -187,5 +187,3 @@ ListItem.style = listItemCss;
 
 exports.calcite_list = List;
 exports.calcite_list_item = ListItem;
-
-//# sourceMappingURL=calcite-list_2.cjs.entry.js.map

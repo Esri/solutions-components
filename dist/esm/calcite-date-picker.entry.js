@@ -445,5 +445,3 @@ const DatePicker = class {
 DatePicker.style = datePickerCss;
 
 export { DatePicker as calcite_date_picker };
-
-//# sourceMappingURL=calcite-date-picker.entry.js.map

@@ -347,5 +347,3 @@ const InputText = class {
 InputText.style = inputTextCss;
 
 exports.calcite_input_text = InputText;
-
-//# sourceMappingURL=calcite-input-text.cjs.entry.js.map

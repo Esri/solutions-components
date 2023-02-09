@@ -170,5 +170,3 @@ const MapSearch = class {
 MapSearch.style = mapSearchCss;
 
 export { MapSearch as map_search };
-
-//# sourceMappingURL=map-search.entry.js.map

@@ -582,5 +582,3 @@ Tooltip.style = tooltipCss;
 
 exports.calcite_action_bar = ActionBar;
 exports.calcite_tooltip = Tooltip;
-
-//# sourceMappingURL=calcite-action-bar_2.cjs.entry.js.map

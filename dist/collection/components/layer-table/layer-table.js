@@ -22,8 +22,7 @@ import { Host, h } from '@stencil/core';
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getMapLayerView, goToSelection } from "../../utils/mapViewUtils";
 import { queryAllFeatures } from "../../utils/queryUtils";
-import { queryFeaturesByID } from "../../utils/queryUtils";
-import { exportCSV } from "../../utils/csvUtils";
+import * as downloadUtils from "../../utils/downloadUtils";
 // TODO look for options to better handle very large number of records
 //  has a hard time especially with select all when we have many rows
 // TODO test with data that contains domains
@@ -232,20 +231,8 @@ export class LayerTable {
    * @returns a promise that will resolve when the operation is complete
    */
   async _exportToCSV() {
-    // Get the attributes of the features to export
-    const ids = this._getSelectedIds();
-    const featureSet = await queryFeaturesByID(ids, this._layerView.layer);
-    const attributes = featureSet.features.map(f => f.attributes);
-    // Get the column headings from the first record and add to front of list of attributes
-    const columnNames = [];
-    const entry = attributes[0];
-    Object.keys(entry).forEach(k => {
-      if (entry.hasOwnProperty(k)) {
-        columnNames.push(k);
-      }
-    });
-    attributes.unshift(columnNames);
-    return exportCSV(attributes);
+    return downloadUtils.downloadCSV(this._layerView.layer, this._getSelectedIds(), true, // removeDuplicates
+    true);
   }
   /**
    * Zoom to all selected features
@@ -374,4 +361,3 @@ export class LayerTable {
   }
   static get elementRef() { return "el"; }
 }
-//# sourceMappingURL=layer-table.js.map

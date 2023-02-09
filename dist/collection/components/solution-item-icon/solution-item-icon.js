@@ -396,4 +396,3 @@ export class SolutionItemIcon {
   }
   static get elementRef() { return "el"; }
 }
-//# sourceMappingURL=solution-item-icon.js.map

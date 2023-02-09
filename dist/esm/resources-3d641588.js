@@ -20,5 +20,3 @@ const ICONS = {
 };
 
 export { ICONS as I, SLOTS as S, TEXT as T };
-
-//# sourceMappingURL=resources-3d641588.js.map

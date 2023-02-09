@@ -254,5 +254,3 @@ const Alert = class {
 Alert.style = alertCss;
 
 exports.calcite_alert = Alert;
-
-//# sourceMappingURL=calcite-alert.cjs.entry.js.map

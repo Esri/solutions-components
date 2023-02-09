@@ -111,5 +111,3 @@ const PciCalculator = class {
 PciCalculator.style = pciCalculatorCss;
 
 export { PciCalculator as pci_calculator };
-
-//# sourceMappingURL=pci-calculator.entry.js.map

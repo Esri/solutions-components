@@ -1953,5 +1953,3 @@ function zeroArray(array, length) {
 var color = Color;
 
 exports.color = color;
-
-//# sourceMappingURL=index-951f09d7.js.map

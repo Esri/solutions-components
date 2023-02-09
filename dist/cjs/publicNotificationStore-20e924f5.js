@@ -40,5 +40,3 @@ onChange("managedLayers", () => {
 });
 
 exports.state = state;
-
-//# sourceMappingURL=publicNotificationStore-20e924f5.js.map

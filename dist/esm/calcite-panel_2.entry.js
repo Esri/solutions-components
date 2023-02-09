@@ -430,5 +430,3 @@ const Shell = class {
 Shell.style = shellCss;
 
 export { Panel as calcite_panel, Shell as calcite_shell };
-
-//# sourceMappingURL=calcite-panel_2.entry.js.map

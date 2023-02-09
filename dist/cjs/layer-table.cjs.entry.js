@@ -10,7 +10,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 const index = require('./index-c6979cbb.js');
 const locale = require('./locale-db1db902.js');
 const mapViewUtils = require('./mapViewUtils-d250b1ed.js');
-const csvUtils = require('./csvUtils-3a56c6d8.js');
+const downloadUtils = require('./downloadUtils-3f466088.js');
 require('./_commonjsHelpers-384729db.js');
 require('./interfaces-17c631bf.js');
 
@@ -221,20 +221,8 @@ const LayerTable = class {
    * @returns a promise that will resolve when the operation is complete
    */
   async _exportToCSV() {
-    // Get the attributes of the features to export
-    const ids = this._getSelectedIds();
-    const featureSet = await mapViewUtils.queryFeaturesByID(ids, this._layerView.layer);
-    const attributes = featureSet.features.map(f => f.attributes);
-    // Get the column headings from the first record and add to front of list of attributes
-    const columnNames = [];
-    const entry = attributes[0];
-    Object.keys(entry).forEach(k => {
-      if (entry.hasOwnProperty(k)) {
-        columnNames.push(k);
-      }
-    });
-    attributes.unshift(columnNames);
-    return csvUtils.exportCSV(attributes);
+    return downloadUtils.downloadCSV(this._layerView.layer, this._getSelectedIds(), true, // removeDuplicates
+    true);
   }
   /**
    * Zoom to all selected features
@@ -325,5 +313,3 @@ const LayerTable = class {
 LayerTable.style = layerTableCss;
 
 exports.layer_table = LayerTable;
-
-//# sourceMappingURL=layer-table.cjs.entry.js.map

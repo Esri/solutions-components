@@ -100,5 +100,3 @@ const Fab = class {
 Fab.style = fabCss;
 
 exports.calcite_fab = Fab;
-
-//# sourceMappingURL=calcite-fab.cjs.entry.js.map

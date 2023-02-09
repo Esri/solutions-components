@@ -69,5 +69,3 @@ const CommentCard = class {
 CommentCard.style = commentCardCss;
 
 export { CommentCard as comment_card };
-
-//# sourceMappingURL=comment-card.entry.js.map
