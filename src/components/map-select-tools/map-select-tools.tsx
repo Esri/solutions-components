@@ -876,7 +876,7 @@ export class MapSelectTools {
    * @param graphics graphics to be used for selection
    * @param label selection label
    * @param useOIDs indicates if the OIDs should override the geometry for selection
-   * @param oids list of IDs to select when useGeoms is false
+   * @param oids list of IDs to select when useOIDs is true
    *
    * @protected
    */
