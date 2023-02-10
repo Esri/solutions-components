@@ -1212,6 +1212,10 @@ declare namespace LocalJSX {
          */
         "onLabelChange"?: (event: PublicNotificationCustomEvent<string>) => void;
         /**
+          * Emitted on demand when searchConfiguration gets a new value
+         */
+        "onSearchConfigurationChange"?: (event: PublicNotificationCustomEvent<ISearchConfiguration>) => void;
+        /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
         "searchConfiguration"?: ISearchConfiguration;
