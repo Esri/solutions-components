@@ -283,7 +283,7 @@ export class MapSelectTools {
     oldValue: EWorkflowType
   ): Promise<void> {
     if (newValue !== oldValue) {
-      this.mapView.popup.autoOpenEnabled = ["SELECT", "SKETCH", "REFINE"].indexOf(newValue) < 0;
+      this.mapView.popup.autoOpenEnabled = ["SELECT", "SKETCH", "REFINE", "SEARCH"].indexOf(newValue) < 0;
       this.workflowTypeChange.emit(newValue);
     }
   }
@@ -566,6 +566,7 @@ export class MapSelectTools {
       void goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     } else {
       this._workflowType = EWorkflowType.SEARCH;
+      this.mapView.popup.autoOpenEnabled = false;
     }
   }
 
@@ -606,6 +607,7 @@ export class MapSelectTools {
       };
 
       this._searchWidget = new this.Search(searchOptions);
+      this._searchWidget.popupEnabled = false;
 
       this._searchWidget.on("search-clear", () => {
         void this._clearResults(false);
@@ -615,11 +617,14 @@ export class MapSelectTools {
         void this._clearResults(false);
         if (searchResults.result) {
           this._searchResult = searchResults.result;
+          const useOIDs = searchResults.source?.layer.id === this.selectLayerView.layer.id;
+          const oids = useOIDs ? [searchResults.result.feature.getObjectId()] : undefined;
           this._updateSelection(
             EWorkflowType.SEARCH,
             [searchResults.result.feature],
             searchResults?.result?.name,
-            false
+            useOIDs,
+            oids
           );
         }
       });
