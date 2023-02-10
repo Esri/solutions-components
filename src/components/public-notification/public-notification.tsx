@@ -257,6 +257,30 @@ export class PublicNotification {
   }
 
   /**
+   * Called each time the searchConfiguration prop is changed.
+   *
+   * @returns Promise when complete
+   */
+  @Watch("searchConfiguration")
+  async watchSearchConfigurationHandler(
+    newValue: ISearchConfiguration,
+    oldValue: ISearchConfiguration
+  ): Promise<void> {
+    //TODO adding this here to see if its any different than having in map-select-tools
+    // I would have thought that the prop would have made it through on the next render of map-select-tools
+    // however we are still seeing a broken search...need to understand why and don't see a clean way to debug in devext
+    console.log("PN watchSearchConfigurationHandler")
+    console.log("PN newValue")
+    console.log(newValue)
+    console.log("PN oldValue")
+    console.log(oldValue)
+    if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
+      console.log("Emit event from parent")
+      this.searchConfigurationChange.emit(newValue);
+    }
+  }
+
+  /**
    * Called each time the selectionSets prop is changed.
    */
   @Watch("_selectionSets")
@@ -309,6 +333,11 @@ export class PublicNotification {
    * Emitted on demand when a buffer is generated.
    */
   @Event() labelChange: EventEmitter<string>;
+
+  /**
+   * Emitted on demand when searchConfiguration gets a new value
+   */
+  @Event() searchConfigurationChange: EventEmitter<ISearchConfiguration>;
 
   /**
    * Handle changes to the buffer distance value
