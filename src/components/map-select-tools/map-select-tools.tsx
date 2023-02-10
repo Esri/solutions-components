@@ -86,7 +86,7 @@ export class MapSelectTools {
   /**
    * ISearchConfiguration: Configuration details for the Search widget
    */
-  @Prop() searchConfiguration: ISearchConfiguration;
+  @Prop({mutable: true}) searchConfiguration: ISearchConfiguration;
 
   /**
    * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
@@ -637,8 +637,11 @@ export class MapSelectTools {
             ? view.map.findLayerById(layerSource.layer.id)
             : null;
           if (layerFromMap) {
+            console.log("layerFromMap")
             layerSource.layer = layerFromMap as __esri.FeatureLayer;
           } else if (layerSource?.layer?.url) {
+            console.log("create new")
+
             layerSource.layer = new this.FeatureLayer(layerSource?.layer?.url as any);
           }
         }
