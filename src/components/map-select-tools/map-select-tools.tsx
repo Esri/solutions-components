@@ -460,7 +460,7 @@ export class MapSelectTools {
         <div class={showLayerChoiceClass}>
           <calcite-label layout="inline">
             <calcite-checkbox
-              checked={this.selectionSet?.workflowType === EWorkflowType.SELECT}
+              checked={this._layerSelectChecked}
               onCalciteCheckboxChange={() => this._layerSelectChanged()}
               ref={(el) => this._selectFromLayerElement = el}
             />
@@ -555,6 +555,7 @@ export class MapSelectTools {
       this._refineSelectLayers = this.selectionSet?.refineSelectLayers;
       this._selectedIds = this.selectionSet?.selectedIds;
       this._skipGeomOIDs =  this.selectionSet?.skipGeomOIDs;
+      this._layerSelectChecked = this.selectionSet?.workflowType === EWorkflowType.SELECT;
 
       this.geometries = [
         ...this.selectionSet?.geometries || []
