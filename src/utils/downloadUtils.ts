@@ -16,7 +16,6 @@
 
 //#region Declarations
 
-import FieldInfo from "@arcgis/core/popup/FieldInfo";
 import { exportCSV } from "./csvUtils";
 import { ILabel, exportPDF } from "./pdfUtils";
 import { loadModules } from "./loadModules";
@@ -84,7 +83,7 @@ export async function downloadPDF(
  * @return Label spec
  */
 function _convertPopupFieldsToLabelSpec(
-  fieldInfos: FieldInfo[]
+  fieldInfos: __esri.FieldInfo[]
 ): string[] {
   const labelSpec: string[] = [];
 
