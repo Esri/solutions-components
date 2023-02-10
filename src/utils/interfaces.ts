@@ -387,6 +387,13 @@ export interface ISelectionSet {
   refineIds: IRefineIds;
   redoStack?: IRefineOperation[];
   undoStack?: IRefineOperation[];
+  //skipGeomQuery?: boolean;
+  skipGeomOIDs?: number[];
+}
+
+export interface IRefineSelectionEvent {
+  graphics: __esri.Graphic[];
+  useOIDs: boolean;
 }
 
 export interface IRefineIds {

@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
-import { ERefineMode, ESelectionMode, ESelectionType, IRefineOperation, ISelectionSet } from "../../utils/interfaces";
+import { ERefineMode, ESelectionMode, ESelectionType, IRefineOperation, IRefineSelectionEvent, ISelectionSet } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
 import { getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
 import { queryFeaturesByGeometry } from "../../utils/queryUtils";
@@ -223,7 +223,7 @@ export class RefineSelectionTools {
   /**
    * Emitted on demand when selection graphics change.
    */
-  @Event() refineSelectionGraphicsChange: EventEmitter<any[]>;
+  @Event() refineSelectionGraphicsChange: EventEmitter<IRefineSelectionEvent>;
 
   /**
    * Emitted on demand when selection ids change
@@ -463,7 +463,7 @@ export class RefineSelectionTools {
             return prev;
           }, []);
         }
-        this.refineSelectionGraphicsChange.emit(graphics);
+        this.refineSelectionGraphicsChange.emit({graphics, useOIDs: false});
         this._clear();
       });
     });
@@ -551,7 +551,10 @@ export class RefineSelectionTools {
       });
 
       if (this.refineMode === ERefineMode.SUBSET) {
-        this.refineSelectionGraphicsChange.emit(graphics);
+        this.refineSelectionGraphicsChange.emit({
+          graphics,
+          useOIDs: this.layerViews[0].layer.title === this.layerView.layer.title
+        });
       } else {
         const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
         await this._updateIds(oids, this.mode, this.refineSelectionSet.undoStack, this.mode);

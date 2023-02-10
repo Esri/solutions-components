@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EExpandType, ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
+import { DistanceUnit, EExpandType, ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, IRefineSelectionEvent, ISearchConfiguration, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -1296,7 +1296,7 @@ declare namespace LocalJSX {
         /**
           * Emitted on demand when selection graphics change.
          */
-        "onRefineSelectionGraphicsChange"?: (event: RefineSelectionToolsCustomEvent<any[]>) => void;
+        "onRefineSelectionGraphicsChange"?: (event: RefineSelectionToolsCustomEvent<IRefineSelectionEvent>) => void;
         /**
           * Emitted on demand when selection ids change
          */

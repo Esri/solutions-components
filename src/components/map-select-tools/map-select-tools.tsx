@@ -220,6 +220,13 @@ export class MapSelectTools {
    */
   protected _selectionLabel = "";
 
+  /**
+   * number[]: When empty or undefined the geometries will be used for selection
+   *          When it has values they will be used directly when no buffer is provided
+   *          see https://github.com/Esri/solutions-components/issues/148
+   */
+  protected _skipGeomOIDs: number[];
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -238,7 +245,7 @@ export class MapSelectTools {
   ): Promise<void> {
     if (newValue !== oldValue) {
       if (newValue.length > 0) {
-        return this._geomQuery(this.geometries);
+        return this._highlightWithOIDsOrGeoms();
       } else if (newValue.length === 0) {
         return this._clearResults(true, true);
       }
@@ -322,7 +329,8 @@ export class MapSelectTools {
       selectedIds: this._selectedIds,
       layerView: this.selectLayerView,
       geometries: this.geometries,
-      refineSelectLayers: this._refineTools.layerViews
+      refineSelectLayers: this._refineTools.layerViews,
+      skipGeomOIDs: this._skipGeomOIDs
     } as ISelectionSet;
   }
 
@@ -373,7 +381,7 @@ export class MapSelectTools {
    */
   @Listen("sketchGraphicsChange", { target: "window" })
   sketchGraphicsChange(event: CustomEvent): void {
-    this._updateSelection(EWorkflowType.SKETCH, event.detail, this._selectionLabel || this._translations.sketch);
+    this._updateSelection(EWorkflowType.SKETCH, event.detail, this._selectionLabel || this._translations.sketch, false);
   }
 
   /**
@@ -382,11 +390,9 @@ export class MapSelectTools {
    */
   @Listen("refineSelectionGraphicsChange", { target: "window" })
   refineSelectionGraphicsChange(event: CustomEvent): Promise<void> {
-    const graphics = event.detail;
-
-    this._updateSelection(EWorkflowType.SELECT, graphics, this._selectionLabel || this._translations.select);
-    // Using OIDs to avoid issue with points
+    const graphics = event.detail.graphics;
     const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g.layer.objectIdField]) : [];
+    this._updateSelection(EWorkflowType.SELECT, graphics, this._selectionLabel || this._translations.select, event.detail.useOIDs, oids);
     return this._highlightFeatures(oids);
   }
 
@@ -474,6 +480,7 @@ export class MapSelectTools {
             active={true}
             border={true}
             enabledLayerIds={this.enabledLayerIds}
+            layerView={this.selectLayerView}
             layerViews={this._refineSelectLayers}
             mapView={this.mapView}
             mode={ESelectionMode.ADD}
@@ -546,8 +553,11 @@ export class MapSelectTools {
       this._workflowType = this.selectionSet?.workflowType;
       this._searchResult = this.selectionSet?.searchResult;
       this._refineSelectLayers = this.selectionSet?.refineSelectLayers;
+      this._selectedIds = this.selectionSet?.selectedIds;
+      this._skipGeomOIDs =  this.selectionSet?.skipGeomOIDs;
+
       this.geometries = [
-        ...this.selectionSet?.geometries
+        ...this.selectionSet?.geometries || []
       ];
       // reset selection label base
       this._selectionLabel = this.selectionSet?.label || this._getSelectionBaseLabel();
@@ -607,7 +617,8 @@ export class MapSelectTools {
           this._updateSelection(
             EWorkflowType.SEARCH,
             [searchResults.result.feature],
-            searchResults?.result?.name
+            searchResults?.result?.name,
+            false
           );
         }
       });
@@ -641,7 +652,6 @@ export class MapSelectTools {
             layerSource.layer = layerFromMap as __esri.FeatureLayer;
           } else if (layerSource?.layer?.url) {
             console.log("create new")
-
             layerSource.layer = new this.FeatureLayer(layerSource?.layer?.url as any);
           }
         }
@@ -698,6 +708,20 @@ export class MapSelectTools {
    */
   protected _workflowChange(evt: CustomEvent): void {
     this._workflowType = evt.detail;
+  }
+
+  /**
+   * Highlight the features in the map based on OIDs when skipOIDs have been defined
+   *
+   * @protected
+   */
+  protected async _highlightWithOIDsOrGeoms(): Promise<void> {
+    if (this._skipGeomOIDs?.length > 0) {
+      this._selectedIds = this._skipGeomOIDs;
+      return this._highlightFeatures(this._selectedIds);
+    } else {
+      return this._geomQuery(this.geometries);
+    }
   }
 
   /**
@@ -785,7 +809,7 @@ export class MapSelectTools {
       if (this._bufferGraphicsLayer) {
         this._bufferGraphicsLayer.removeAll();
       }
-      void this._geomQuery(this.geometries);
+      return this._highlightWithOIDsOrGeoms();
     }
   }
 
@@ -845,14 +869,21 @@ export class MapSelectTools {
    * @param type worflow type
    * @param graphics graphics to be used for selection
    * @param label selection label
+   * @param useOIDs indicates if the OIDs should override the geometry for selection
+   * @param oids list of IDs to select when useGeoms is false
    *
    * @protected
    */
   protected _updateSelection(
     type: EWorkflowType,
     graphics: __esri.Graphic[],
-    label: string
+    label: string,
+    useOIDs: boolean,
+    oids?: number[]
   ): void {
+    this._selectedIds = useOIDs && oids ? oids : this._selectedIds;
+    // see https://github.com/Esri/solutions-components/issues/148
+    this._skipGeomOIDs = useOIDs ? oids : undefined;
     this.geometries = Array.isArray(graphics) ? graphics.map(g => g.geometry) : this.geometries;
     this._workflowType = type;
     this._selectionLabel = label;
