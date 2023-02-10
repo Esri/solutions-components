@@ -832,7 +832,7 @@ export class PublicNotification {
         <div>
           <div class="padding-top-sides-1">
             <calcite-label class="font-bold">
-              {isPdf ? this._translations.pdfDownloads : this._translations.csvDownloads}
+              {isPdf ? this._translations.downloadPDF : this._translations.downloadCSV}
             </calcite-label>
             <calcite-label>{this._translations.notifications}</calcite-label>
           </div>
