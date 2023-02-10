@@ -637,8 +637,11 @@ export class MapSelectTools {
             ? view.map.findLayerById(layerSource.layer.id)
             : null;
           if (layerFromMap) {
+            console.log("layerFromMap")
             layerSource.layer = layerFromMap as __esri.FeatureLayer;
           } else if (layerSource?.layer?.url) {
+            console.log("create new")
+
             layerSource.layer = new this.FeatureLayer(layerSource?.layer?.url as any);
           }
         }

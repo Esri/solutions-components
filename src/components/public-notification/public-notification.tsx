@@ -100,7 +100,7 @@ export class PublicNotification {
   /**
    * ISearchConfiguration: Configuration details for the Search widget
    */
-  @Prop() searchConfiguration: ISearchConfiguration;
+  @Prop({mutable: true}) searchConfiguration: ISearchConfiguration;
 
   /**
    * string[]: List of layer ids that should be shown as potential selection layers

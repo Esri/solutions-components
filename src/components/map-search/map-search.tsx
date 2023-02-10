@@ -47,7 +47,7 @@ export class MapSearch {
   /**
    * ISearchConfiguration: Configuration details for the Search widget
    */
-  @Prop() searchConfiguration: ISearchConfiguration;
+  @Prop({mutable: true}) searchConfiguration: ISearchConfiguration;
 
   //--------------------------------------------------------------------------
   //
