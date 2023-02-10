@@ -94,6 +94,7 @@ export class PdfDownload {
   /**
    * Downloads csv of mailing labels for the provided list of ids
    *
+   * @param selectionSetNames Names of the selection sets used to provide ids
    * @param ids List of ids to download
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
    * @param addColumnTitle Indicates if column headings should be included in output
@@ -101,11 +102,13 @@ export class PdfDownload {
    */
   @Method()
   async downloadCSV(
+    selectionSetNames: string[],
     ids: number[],
     removeDuplicates: boolean,
     addColumnTitle = true
   ): Promise<void> {
     return downloadUtils.downloadCSV(
+      selectionSetNames,
       this.layerView.layer,
       ids,
       true, // formatUsingLayerPopup
@@ -117,16 +120,19 @@ export class PdfDownload {
   /**
    * Downloads pdf of mailing labels for the provided list of ids
    *
+   * @param selectionSetNames Names of the selection sets used to provide ids
    * @param ids List of ids to download
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
    * @returns Promise resolving when function is done
    */
   @Method()
   async downloadPDF(
+    selectionSetNames: string[],
     ids: number[],
     removeDuplicates: boolean
   ): Promise<void> {
     return downloadUtils.downloadPDF(
+      selectionSetNames,
       this.layerView.layer,
       ids,
       removeDuplicates,
