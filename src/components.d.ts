@@ -269,19 +269,21 @@ export namespace Components {
         "disabled": boolean;
         /**
           * Downloads csv of mailing labels for the provided list of ids
+          * @param selectionSetNames Names of the selection sets used to provide ids
           * @param ids List of ids to download
           * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
           * @param addColumnTitle Indicates if column headings should be included in output
           * @returns Promise resolving when function is done
          */
-        "downloadCSV": (ids: number[], removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>;
+        "downloadCSV": (selectionSetNames: string[], ids: number[], removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>;
         /**
           * Downloads pdf of mailing labels for the provided list of ids
+          * @param selectionSetNames Names of the selection sets used to provide ids
           * @param ids List of ids to download
           * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
           * @returns Promise resolving when function is done
          */
-        "downloadPDF": (ids: number[], removeDuplicates: boolean) => Promise<void>;
+        "downloadPDF": (selectionSetNames: string[], ids: number[], removeDuplicates: boolean) => Promise<void>;
         /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */

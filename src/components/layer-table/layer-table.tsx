@@ -451,6 +451,7 @@ export class LayerTable {
    */
   protected async _exportToCSV(): Promise<void> {
     return downloadUtils.downloadCSV(
+      [],
       this._layerView.layer,
       this._getSelectedIds(),
       false, // formatUsingLayerPopup
