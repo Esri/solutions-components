@@ -748,7 +748,7 @@ export class PublicNotification {
           <calcite-label
             class="font-bold"
           >
-            {"Name label"}
+            {"List name"}
             <calcite-input
               onInput={() => {
                 this.labelChange.emit(this._labelName.value);
