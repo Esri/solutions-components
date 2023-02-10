@@ -29,6 +29,7 @@ export { ILabel } from "./pdfUtils";
 /**
  * Downloads csv of mailing labels for the provided list of ids
  *
+ * @param selectionSetNames Names of the selection sets used to provide ids
  * @param layer Layer providing features and attributes for download
  * @param ids List of ids to download
  * @param formatUsingLayerPopup When true, the layer's popup is used to choose attributes for each column; when false,
@@ -38,12 +39,14 @@ export { ILabel } from "./pdfUtils";
  * @returns Promise resolving when function is done
  */
 export async function downloadCSV(
+  selectionSetNames: string[],
   layer: __esri.FeatureLayer,
   ids: number[],
   formatUsingLayerPopup: boolean,
   removeDuplicates = false,
   addColumnTitle = false
 ): Promise<void> {
+  console.log("downloadCSV using selectionSetNames " + JSON.stringify(selectionSetNames));//???
   const labels = await _prepareLabels(layer, ids, removeDuplicates, formatUsingLayerPopup, addColumnTitle);
 
   exportCSV(labels);
@@ -54,6 +57,7 @@ export async function downloadCSV(
 /**
  * Downloads csv of mailing labels for the provided list of ids
  *
+ * @param selectionSetNames Names of the selection sets used to provide ids
  * @param layer Layer providing features and attributes for download
  * @param ids List of ids to download
  * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
@@ -61,11 +65,13 @@ export async function downloadCSV(
  * @returns Promise resolving when function is done
  */
 export async function downloadPDF(
+  selectionSetNames: string[],
   layer: __esri.FeatureLayer,
   ids: number[],
   removeDuplicates: boolean,
   labelPageDescription: ILabel
 ): Promise<void> {
+  console.log("downloadPDF using selectionSetNames " + JSON.stringify(selectionSetNames));//???
   const labels = await _prepareLabels(layer, ids, removeDuplicates);
 
   exportPDF(labels, labelPageDescription);
@@ -80,17 +86,19 @@ export async function downloadPDF(
  * Converts a set of fieldInfos into template lines.
  *
  * @param fieldInfos Layer's fieldInfos structure
+ * @param bypassFieldVisiblity Indicates if the configured fieldInfo visibility property should be ignored
  * @return Label spec
  */
 function _convertPopupFieldsToLabelSpec(
-  fieldInfos: __esri.FieldInfo[]
+  fieldInfos: __esri.FieldInfo[],
+  bypassFieldVisiblity = false
 ): string[] {
   const labelSpec: string[] = [];
 
   // Every visible attribute is used
   fieldInfos.forEach(
     fieldInfo => {
-      if (fieldInfo.visible) {
+      if (fieldInfo.visible || bypassFieldVisiblity) {
         labelSpec.push(`{${fieldInfo.fieldName}}`);
       }
     }
@@ -162,6 +170,19 @@ async function _prepareLabels(
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
     if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "fields") {
       labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos);
+
+      // If popup is configured with "no attribute information", then no fields will visible
+      if (labelFormat.length === 0) {
+        // Can we use the popup title?
+        // eslint-disable-next-line unicorn/prefer-ternary
+        if (typeof layer.popupTemplate.title === "string") {
+          labelFormat = [layer.popupTemplate.title];
+
+        // Otherwise revert to using attributes
+        } else {
+          labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos, true);
+        }
+      }
 
     } else if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "text") {
       labelFormat = _convertPopupTextToLabelSpec(layer.popupTemplate.content[0].text);
