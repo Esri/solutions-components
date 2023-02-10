@@ -86,7 +86,7 @@ export class MapSelectTools {
   /**
    * ISearchConfiguration: Configuration details for the Search widget
    */
-  @Prop() searchConfiguration: ISearchConfiguration;
+  @Prop({mutable: true}) searchConfiguration: ISearchConfiguration;
 
   /**
    * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
