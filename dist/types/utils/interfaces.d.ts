@@ -86,7 +86,7 @@ export interface ISearchConfiguration {
   searchAllEnabled?: boolean;
   sources: Array<ILocatorSourceConfigItem | ILayerSourceConfigItem>;
 }
-interface ISearchSourceConfigItem {
+export interface ISearchSourceConfigItem {
   maxResults: number;
   maxSuggestions: number;
   minSuggestCharacters: number;
@@ -360,4 +360,3 @@ export interface IMapInfo {
   id: string;
   name: string;
 }
-export {};

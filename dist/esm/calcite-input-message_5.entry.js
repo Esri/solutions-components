@@ -12,7 +12,7 @@ import { g as goToSelection, h as highlightFeatures, d as queryObjectIds, e as g
 import { E as EWorkflowType, f as ESelectionMode, g as ERefineMode, c as ESketchType } from './interfaces-d0d83efa.js';
 import { s as state } from './publicNotificationStore-b9daaee4.js';
 import { g as getLocaleComponentStrings } from './locale-4a87aff1.js';
-import { d as downloadCSV, a as downloadPDF } from './downloadUtils-6c179343.js';
+import { d as downloadCSV, a as downloadPDF } from './downloadUtils-7126adb5.js';
 import { a as getSelectionIds, g as getTotal } from './publicNotificationUtils-5cb5a607.js';
 import './resources-436ae282.js';
 import './guid-15fce7c0.js';
@@ -538,9 +538,11 @@ const MapSelectTools = class {
             ? view.map.findLayerById(layerSource.layer.id)
             : null;
           if (layerFromMap) {
+            console.log("layerFromMap");
             layerSource.layer = layerFromMap;
           }
           else if ((_b = layerSource === null || layerSource === void 0 ? void 0 : layerSource.layer) === null || _b === void 0 ? void 0 : _b.url) {
+            console.log("create new");
             layerSource.layer = new this.FeatureLayer((_c = layerSource === null || layerSource === void 0 ? void 0 : layerSource.layer) === null || _c === void 0 ? void 0 : _c.url);
           }
         }
@@ -1165,7 +1167,7 @@ const RefineSelection = class {
     const refineSet = this._getRefineSelectionSet(this.selectionSets);
     const numAdded = (refineSet === null || refineSet === void 0 ? void 0 : refineSet.refineIds.addIds.length) || 0;
     const numRemoved = (refineSet === null || refineSet === void 0 ? void 0 : refineSet.refineIds.removeIds.length) || 0;
-    return [(h("calcite-list-item", { label: this._translations.featuresAdded.replace("{{n}}", numAdded.toString()) })), (h("calcite-list-item", { label: this._translations.featuresRemoved.replace("{{n}}", numRemoved.toString()) })), (h("calcite-list-item", { label: this._translations.totalSelected.replace("{{n}}", total.toString()) }))];
+    return [(h("calcite-list-item", { label: this._translations.featuresAdded.replace("{{n}}", numAdded.toString()), "non-interactive": true })), (h("calcite-list-item", { label: this._translations.featuresRemoved.replace("{{n}}", numRemoved.toString()), "non-interactive": true })), (h("calcite-list-item", { label: this._translations.totalSelected.replace("{{n}}", total.toString()), "non-interactive": true }))];
   }
   /**
    * Fetch the refine selection set

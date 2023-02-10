@@ -337,9 +337,11 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
             ? view.map.findLayerById(layerSource.layer.id)
             : null;
           if (layerFromMap) {
+            console.log("layerFromMap");
             layerSource.layer = layerFromMap;
           }
           else if ((_b = layerSource === null || layerSource === void 0 ? void 0 : layerSource.layer) === null || _b === void 0 ? void 0 : _b.url) {
+            console.log("create new");
             layerSource.layer = new this.FeatureLayer((_c = layerSource === null || layerSource === void 0 ? void 0 : layerSource.layer) === null || _c === void 0 ? void 0 : _c.url);
           }
         }
@@ -546,7 +548,7 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
     "geometries": [16],
     "isUpdate": [4, "is-update"],
     "mapView": [16],
-    "searchConfiguration": [16],
+    "searchConfiguration": [1040],
     "selectionSet": [16],
     "selectLayerView": [16],
     "showBufferTools": [4, "show-buffer-tools"],

@@ -325,9 +325,11 @@ export class MapSelectTools {
             ? view.map.findLayerById(layerSource.layer.id)
             : null;
           if (layerFromMap) {
+            console.log("layerFromMap");
             layerSource.layer = layerFromMap;
           }
           else if ((_b = layerSource === null || layerSource === void 0 ? void 0 : layerSource.layer) === null || _b === void 0 ? void 0 : _b.url) {
+            console.log("create new");
             layerSource.layer = new this.FeatureLayer((_c = layerSource === null || layerSource === void 0 ? void 0 : layerSource.layer) === null || _c === void 0 ? void 0 : _c.url);
           }
         }
@@ -680,7 +682,7 @@ export class MapSelectTools {
       },
       "searchConfiguration": {
         "type": "unknown",
-        "mutable": false,
+        "mutable": true,
         "complexType": {
           "original": "ISearchConfiguration",
           "resolved": "ISearchConfiguration",

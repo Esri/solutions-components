@@ -208,7 +208,7 @@ export class MapSearch {
       },
       "searchConfiguration": {
         "type": "unknown",
-        "mutable": false,
+        "mutable": true,
         "complexType": {
           "original": "ISearchConfiguration",
           "resolved": "ISearchConfiguration",

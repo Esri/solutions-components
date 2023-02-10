@@ -2164,13 +2164,14 @@ async function downloadPDF(selectionSetNames, layer, ids, removeDuplicates, labe
  * Converts a set of fieldInfos into template lines.
  *
  * @param fieldInfos Layer's fieldInfos structure
+ * @param bypassFieldVisiblity Indicates if the configured fieldInfo visibility property should be ignored
  * @return Label spec
  */
-function _convertPopupFieldsToLabelSpec(fieldInfos) {
+function _convertPopupFieldsToLabelSpec(fieldInfos, bypassFieldVisiblity = false) {
   const labelSpec = [];
   // Every visible attribute is used
   fieldInfos.forEach(fieldInfo => {
-    if (fieldInfo.visible) {
+    if (fieldInfo.visible || bypassFieldVisiblity) {
       labelSpec.push(`{${fieldInfo.fieldName}}`);
     }
   });
@@ -2226,6 +2227,18 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
     if (formatUsingLayerPopup && ((_b = (_a = layer.popupTemplate) === null || _a === void 0 ? void 0 : _a.content[0]) === null || _b === void 0 ? void 0 : _b.type) === "fields") {
       labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos);
+      // If popup is configured with "no attribute information", then no fields will visible
+      if (labelFormat.length === 0) {
+        // Can we use the popup title?
+        // eslint-disable-next-line unicorn/prefer-ternary
+        if (typeof layer.popupTemplate.title === "string") {
+          labelFormat = [layer.popupTemplate.title];
+          // Otherwise revert to using attributes
+        }
+        else {
+          labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos, true);
+        }
+      }
     }
     else if (formatUsingLayerPopup && ((_d = (_c = layer.popupTemplate) === null || _c === void 0 ? void 0 : _c.content[0]) === null || _d === void 0 ? void 0 : _d.type) === "text") {
       labelFormat = _convertPopupTextToLabelSpec(layer.popupTemplate.content[0].text);

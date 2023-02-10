@@ -86,17 +86,19 @@ export async function downloadPDF(
  * Converts a set of fieldInfos into template lines.
  *
  * @param fieldInfos Layer's fieldInfos structure
+ * @param bypassFieldVisiblity Indicates if the configured fieldInfo visibility property should be ignored
  * @return Label spec
  */
 function _convertPopupFieldsToLabelSpec(
-  fieldInfos: __esri.FieldInfo[]
+  fieldInfos: __esri.FieldInfo[],
+  bypassFieldVisiblity = false
 ): string[] {
   const labelSpec: string[] = [];
 
   // Every visible attribute is used
   fieldInfos.forEach(
     fieldInfo => {
-      if (fieldInfo.visible) {
+      if (fieldInfo.visible || bypassFieldVisiblity) {
         labelSpec.push(`{${fieldInfo.fieldName}}`);
       }
     }
@@ -168,6 +170,19 @@ async function _prepareLabels(
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
     if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "fields") {
       labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos);
+
+      // If popup is configured with "no attribute information", then no fields will visible
+      if (labelFormat.length === 0) {
+        // Can we use the popup title?
+        // eslint-disable-next-line unicorn/prefer-ternary
+        if (typeof layer.popupTemplate.title === "string") {
+          labelFormat = [layer.popupTemplate.title];
+
+        // Otherwise revert to using attributes
+        } else {
+          labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos, true);
+        }
+      }
 
     } else if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "text") {
       labelFormat = _convertPopupTextToLabelSpec(layer.popupTemplate.content[0].text);

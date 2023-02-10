@@ -169,7 +169,7 @@ const MapSearch$1 = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
   static get style() { return mapSearchCss; }
 }, [0, "map-search", {
     "mapView": [16],
-    "searchConfiguration": [16],
+    "searchConfiguration": [1040],
     "_searchTerm": [32],
     "_translations": [32],
     "clear": [64]

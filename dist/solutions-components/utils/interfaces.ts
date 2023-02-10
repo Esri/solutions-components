@@ -108,7 +108,7 @@ export interface ISearchConfiguration {
   sources: Array<ILocatorSourceConfigItem | ILayerSourceConfigItem>;
 }
 
-interface ISearchSourceConfigItem {
+export interface ISearchSourceConfigItem {
   maxResults: number;
   maxSuggestions: number;
   minSuggestCharacters: number;
