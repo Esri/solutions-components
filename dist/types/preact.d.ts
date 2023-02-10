@@ -466,8 +466,9 @@ declare module "preact/src/jsx" {
 
       "pdf-download": JSX.SolutionsPdfDownload & JSXInternal.HTMLAttributes<HTMLSolutionsPdfDownloadElement>
 
-      "public-notification": Omit<JSX.SolutionsPublicNotification, "onLabelChange"> & JSXInternal.HTMLAttributes<HTMLSolutionsPublicNotificationElement> & {
+      "public-notification": Omit<JSX.SolutionsPublicNotification, "onLabelChange" | "onSearchConfigurationChange"> & JSXInternal.HTMLAttributes<HTMLSolutionsPublicNotificationElement> & {
         "onlabelChange"?: (event: CustomEvent<any>) => void;
+        "onsearchConfigurationChange"?: (event: CustomEvent<any>) => void;
       }
 
       "refine-selection": Omit<JSX.SolutionsRefineSelection, "onSelectionSetsChanged"> & JSXInternal.HTMLAttributes<HTMLSolutionsRefineSelectionElement> & {

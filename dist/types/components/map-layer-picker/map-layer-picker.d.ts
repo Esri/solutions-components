@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/// <reference types="arcgis-js-api" />
 import { EventEmitter, VNode } from "../../stencil-public-runtime";
 import { SelectionMode } from "../../utils/interfaces";
 export declare class MapLayerPicker {

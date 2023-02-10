@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/// <reference types="arcgis-js-api" />
 import { EventEmitter, VNode } from '../../stencil-public-runtime';
 import MapCard_T9n from "../../assets/t9n/map-card/resources.json";
 import { EExpandType, IMapInfo } from "../../utils/interfaces";

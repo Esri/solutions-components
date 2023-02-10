@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/// <reference types="arcgis-js-api" />
 import { EventEmitter, VNode } from "../../stencil-public-runtime";
 import { DistanceUnit, ISearchConfiguration, EWorkflowType, ISelectionSet, ESketchType } from "../../utils/interfaces";
 import MapSelectTools_T9n from "../../assets/t9n/map-select-tools/resources.json";
@@ -200,6 +201,10 @@ export declare class MapSelectTools {
    * Handle changes to the selection sets
    */
   labelChange(event: CustomEvent): void;
+  /**
+   * Handle changes to the search configuration
+   */
+  searchConfigurationChangeChanged(event: CustomEvent): void;
   /**
    * Listen to changes in the sketch graphics
    *

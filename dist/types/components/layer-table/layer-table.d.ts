@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/// <reference types="arcgis-js-api" />
 import { VNode } from '../../stencil-public-runtime';
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 export declare class LayerTable {

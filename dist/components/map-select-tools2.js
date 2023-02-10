@@ -90,6 +90,11 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
    * @returns Promise when complete
    */
   async watchSearchConfigurationHandler(newValue, oldValue) {
+    console.log("watchSearchConfigurationHandler");
+    console.log("newValue");
+    console.log(newValue);
+    console.log("oldValue");
+    console.log(oldValue);
     if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
       this._initSearchWidget();
     }
@@ -150,6 +155,13 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
    */
   labelChange(event) {
     this._selectionLabel = event.detail;
+  }
+  /**
+   * Handle changes to the search configuration
+   */
+  searchConfigurationChangeChanged(event) {
+    console.log("searchConfigurationChange listener");
+    this.searchConfiguration = event.detail;
   }
   /**
    * Listen to changes in the sketch graphics
@@ -278,8 +290,16 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
    * @protected
    */
   _initSearchWidget() {
+    console.log("_initSearchWidget");
+    console.log("this.mapView");
+    console.log(this.mapView);
+    console.log("this._searchElement");
+    console.log(this._searchElement);
     if (this.mapView && this._searchElement) {
+      console.log("this._getSearchConfig");
       const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this.mapView);
+      console.log("searchConfiguration");
+      console.log(searchConfiguration);
       const searchOptions = Object.assign({ view: this.mapView, container: this._searchElement, searchTerm: this._searchTerm }, searchConfiguration);
       this._searchWidget = new this.Search(searchOptions);
       this._searchWidget.on("search-clear", () => {
@@ -293,6 +313,7 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
           this._updateSelection(EWorkflowType.SEARCH, [searchResults.result.feature], (_a = searchResults === null || searchResults === void 0 ? void 0 : searchResults.result) === null || _a === void 0 ? void 0 : _a.name);
         }
       });
+      console.log("END search widget init");
     }
   }
   /**
@@ -535,7 +556,7 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
     "_workflowType": [32],
     "clearSelection": [64],
     "getSelection": [64]
-  }, [[8, "labelChange", "labelChange"], [8, "sketchGraphicsChange", "sketchGraphicsChange"], [8, "refineSelectionGraphicsChange", "refineSelectionGraphicsChange"]]]);
+  }, [[8, "labelChange", "labelChange"], [8, "searchConfigurationChange", "searchConfigurationChangeChanged"], [8, "sketchGraphicsChange", "sketchGraphicsChange"], [8, "refineSelectionGraphicsChange", "refineSelectionGraphicsChange"]]]);
 function defineCustomElement() {
   if (typeof customElements === "undefined") {
     return;

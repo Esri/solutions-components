@@ -291,6 +291,11 @@ const MapSelectTools = class {
    * @returns Promise when complete
    */
   async watchSearchConfigurationHandler(newValue, oldValue) {
+    console.log("watchSearchConfigurationHandler");
+    console.log("newValue");
+    console.log(newValue);
+    console.log("oldValue");
+    console.log(oldValue);
     if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
       this._initSearchWidget();
     }
@@ -351,6 +356,13 @@ const MapSelectTools = class {
    */
   labelChange(event) {
     this._selectionLabel = event.detail;
+  }
+  /**
+   * Handle changes to the search configuration
+   */
+  searchConfigurationChangeChanged(event) {
+    console.log("searchConfigurationChange listener");
+    this.searchConfiguration = event.detail;
   }
   /**
    * Listen to changes in the sketch graphics
@@ -479,8 +491,16 @@ const MapSelectTools = class {
    * @protected
    */
   _initSearchWidget() {
+    console.log("_initSearchWidget");
+    console.log("this.mapView");
+    console.log(this.mapView);
+    console.log("this._searchElement");
+    console.log(this._searchElement);
     if (this.mapView && this._searchElement) {
+      console.log("this._getSearchConfig");
       const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this.mapView);
+      console.log("searchConfiguration");
+      console.log(searchConfiguration);
       const searchOptions = Object.assign({ view: this.mapView, container: this._searchElement, searchTerm: this._searchTerm }, searchConfiguration);
       this._searchWidget = new this.Search(searchOptions);
       this._searchWidget.on("search-clear", () => {
@@ -494,6 +514,7 @@ const MapSelectTools = class {
           this._updateSelection(EWorkflowType.SEARCH, [searchResults.result.feature], (_a = searchResults === null || searchResults === void 0 ? void 0 : searchResults.result) === null || _a === void 0 ? void 0 : _a.name);
         }
       });
+      console.log("END search widget init");
     }
   }
   /**

@@ -67,6 +67,25 @@ export class PublicNotification {
     }
   }
   /**
+   * Called each time the searchConfiguration prop is changed.
+   *
+   * @returns Promise when complete
+   */
+  async watchSearchConfigurationHandler(newValue, oldValue) {
+    //TODO adding this here to see if its any different than having in map-select-tools
+    // I would have thought that the prop would have made it through on the next render of map-select-tools
+    // however we are still seeing a broken search...need to understand why and don't see a clean way to debug in devext
+    console.log("PN watchSearchConfigurationHandler");
+    console.log("PN newValue");
+    console.log(newValue);
+    console.log("PN oldValue");
+    console.log(oldValue);
+    if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
+      console.log("Emit event from parent");
+      this.searchConfigurationChange.emit(newValue);
+    }
+  }
+  /**
    * Called each time the selectionSets prop is changed.
    */
   async selectionSetsWatchHandler(v, oldV) {
@@ -982,6 +1001,26 @@ export class PublicNotification {
           "resolved": "string",
           "references": {}
         }
+      }, {
+        "method": "searchConfigurationChange",
+        "name": "searchConfigurationChange",
+        "bubbles": true,
+        "cancelable": true,
+        "composed": true,
+        "docs": {
+          "tags": [],
+          "text": "Emitted on demand when searchConfiguration gets a new value"
+        },
+        "complexType": {
+          "original": "ISearchConfiguration",
+          "resolved": "ISearchConfiguration",
+          "references": {
+            "ISearchConfiguration": {
+              "location": "import",
+              "path": "../../utils/interfaces"
+            }
+          }
+        }
       }];
   }
   static get elementRef() { return "el"; }
@@ -989,6 +1028,9 @@ export class PublicNotification {
     return [{
         "propName": "mapView",
         "methodName": "mapViewWatchHandler"
+      }, {
+        "propName": "searchConfiguration",
+        "methodName": "watchSearchConfigurationHandler"
       }, {
         "propName": "_selectionSets",
         "methodName": "selectionSetsWatchHandler"

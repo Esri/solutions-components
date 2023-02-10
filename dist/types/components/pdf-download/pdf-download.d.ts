@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/// <reference types="arcgis-js-api" />
 import "@esri/calcite-components";
 import PdfDownload_T9n from "../../assets/t9n/pdf-download/resources.json";
 import { VNode } from "../../stencil-public-runtime";

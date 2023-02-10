@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+//#region Declarations
 import { exportCSV } from "./csvUtils";
 import { exportPDF } from "./pdfUtils";
 import { loadModules } from "./loadModules";
@@ -23,6 +24,7 @@ export { ILabel } from "./pdfUtils";
 /**
  * Downloads csv of mailing labels for the provided list of ids
  *
+ * @param selectionSetNames Names of the selection sets used to provide ids
  * @param layer Layer providing features and attributes for download
  * @param ids List of ids to download
  * @param formatUsingLayerPopup When true, the layer's popup is used to choose attributes for each column; when false,
@@ -31,7 +33,8 @@ export { ILabel } from "./pdfUtils";
  * @param addColumnTitle Indicates if column headings should be included in output
  * @returns Promise resolving when function is done
  */
-export async function downloadCSV(layer, ids, formatUsingLayerPopup, removeDuplicates = false, addColumnTitle = false) {
+export async function downloadCSV(selectionSetNames, layer, ids, formatUsingLayerPopup, removeDuplicates = false, addColumnTitle = false) {
+    console.log("selectionSetNames " + JSON.stringify(selectionSetNames)); //???
     const labels = await _prepareLabels(layer, ids, removeDuplicates, formatUsingLayerPopup, addColumnTitle);
     exportCSV(labels);
     return Promise.resolve();
@@ -39,13 +42,15 @@ export async function downloadCSV(layer, ids, formatUsingLayerPopup, removeDupli
 /**
  * Downloads csv of mailing labels for the provided list of ids
  *
+ * @param selectionSetNames Names of the selection sets used to provide ids
  * @param layer Layer providing features and attributes for download
  * @param ids List of ids to download
  * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
  * @param labelPageDescription Provides PDF page layout info
  * @returns Promise resolving when function is done
  */
-export async function downloadPDF(layer, ids, removeDuplicates, labelPageDescription) {
+export async function downloadPDF(selectionSetNames, layer, ids, removeDuplicates, labelPageDescription) {
+    console.log("selectionSetNames " + JSON.stringify(selectionSetNames)); //???
     const labels = await _prepareLabels(layer, ids, removeDuplicates);
     exportPDF(labels, labelPageDescription);
     return Promise.resolve();
@@ -59,13 +64,11 @@ export async function downloadPDF(layer, ids, removeDuplicates, labelPageDescrip
  * @return Label spec
  */
 function _convertPopupFieldsToLabelSpec(fieldInfos) {
-    let labelSpec = [];
+    const labelSpec = [];
     // Every visible attribute is used
     fieldInfos.forEach(fieldInfo => {
-        var _a;
         if (fieldInfo.visible) {
-            const fieldName = (_a = fieldInfo.label) !== null && _a !== void 0 ? _a : fieldInfo.fieldName;
-            labelSpec.push(`{${fieldName}}`);
+            labelSpec.push(`{${fieldInfo.fieldName}}`);
         }
     });
     return labelSpec;
@@ -116,28 +119,20 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
     const featureSet = await queryFeaturesByID(ids, layer);
     const featuresAttrs = featureSet.features.map(f => f.attributes);
     // Get the label formatting, if any
-    console.log("popupEnabled", this.layerView.layer.popupEnabled); //???  disabled: no PDF; all fields for CSV
-    let formattingSource = "";
-    if (layer.popupTemplate.content[0].type === "text") {
-        formattingSource = layer.popupTemplate.content[0].text;
-        console.log("formatting from text: " + JSON.stringify(layer.popupTemplate.content[0].text, null, 2));
-    }
-    if (layer.popupTemplate.content[0].type === "fields") {
-        console.log("formatting from fields: " + JSON.stringify(layer.popupTemplate.content[0].fields, null, 2));
-    }
     let labelFormat;
-    if (this.layerView.layer.popupEnabled) {
+    if (layer.popupEnabled) {
         // What data fields are used in the labels?
         // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
-        if (formatUsingLayerPopup && ((_b = (_a = layer.popupTemplate) === null || _a === void 0 ? void 0 : _a.content[0]) === null || _b === void 0 ? void 0 : _b.type) === "text") {
-            labelFormat = _convertPopupTextToLabelSpec(layer.popupTemplate.content[0].text);
+        if (formatUsingLayerPopup && ((_b = (_a = layer.popupTemplate) === null || _a === void 0 ? void 0 : _a.content[0]) === null || _b === void 0 ? void 0 : _b.type) === "fields") {
+            labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos);
         }
-        else if (formatUsingLayerPopup && ((_d = (_c = layer.popupTemplate) === null || _c === void 0 ? void 0 : _c.content[0]) === null || _d === void 0 ? void 0 : _d.type) === "fields") {
-            labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.content[0].fieldInfos);
+        else if (formatUsingLayerPopup && ((_d = (_c = layer.popupTemplate) === null || _c === void 0 ? void 0 : _c.content[0]) === null || _d === void 0 ? void 0 : _d.type) === "text") {
+            labelFormat = _convertPopupTextToLabelSpec(layer.popupTemplate.content[0].text);
         }
     }
     // Apply the label format
     let labels;
+    // eslint-disable-next-line unicorn/prefer-ternary
     if (labelFormat) {
         // Convert attributes into an array of labels
         labels = featuresAttrs.map(featureAttributes => {

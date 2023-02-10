@@ -54,6 +54,7 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
     super();
     this.__registerHost();
     this.labelChange = createEvent(this, "labelChange", 7);
+    this.searchConfigurationChange = createEvent(this, "searchConfigurationChange", 7);
     this.addresseeLayerIds = [];
     this.bufferColor = [227, 139, 79, 0.8];
     this.bufferOutlineColor = [255, 255, 255];
@@ -90,6 +91,25 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
   async mapViewWatchHandler(v) {
     if (v === null || v === void 0 ? void 0 : v.popup) {
       this._popupsEnabled = v === null || v === void 0 ? void 0 : v.popup.autoOpenEnabled;
+    }
+  }
+  /**
+   * Called each time the searchConfiguration prop is changed.
+   *
+   * @returns Promise when complete
+   */
+  async watchSearchConfigurationHandler(newValue, oldValue) {
+    //TODO adding this here to see if its any different than having in map-select-tools
+    // I would have thought that the prop would have made it through on the next render of map-select-tools
+    // however we are still seeing a broken search...need to understand why and don't see a clean way to debug in devext
+    console.log("PN watchSearchConfigurationHandler");
+    console.log("PN newValue");
+    console.log(newValue);
+    console.log("PN oldValue");
+    console.log(oldValue);
+    if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
+      console.log("Emit event from parent");
+      this.searchConfigurationChange.emit(newValue);
     }
   }
   /**
@@ -714,6 +734,7 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
   get el() { return this; }
   static get watchers() { return {
     "mapView": ["mapViewWatchHandler"],
+    "searchConfiguration": ["watchSearchConfigurationHandler"],
     "_selectionSets": ["selectionSetsWatchHandler"],
     "_pageType": ["pageTypeWatchHandler"]
   }; }

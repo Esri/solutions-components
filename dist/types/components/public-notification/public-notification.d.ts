@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/// <reference types="arcgis-js-api" />
 import { EventEmitter, VNode } from "../../stencil-public-runtime";
 import { DistanceUnit, EExportType, EPageType, ESketchType, EWorkflowType, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
 import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
@@ -171,6 +172,12 @@ export declare class PublicNotification {
    */
   mapViewWatchHandler(v: __esri.MapView): Promise<void>;
   /**
+   * Called each time the searchConfiguration prop is changed.
+   *
+   * @returns Promise when complete
+   */
+  watchSearchConfigurationHandler(newValue: ISearchConfiguration, oldValue: ISearchConfiguration): Promise<void>;
+  /**
    * Called each time the selectionSets prop is changed.
    */
   selectionSetsWatchHandler(v: ISelectionSet[], oldV: ISelectionSet[]): Promise<void>;
@@ -182,6 +189,10 @@ export declare class PublicNotification {
    * Emitted on demand when a buffer is generated.
    */
   labelChange: EventEmitter<string>;
+  /**
+   * Emitted on demand when searchConfiguration gets a new value
+   */
+  searchConfigurationChange: EventEmitter<ISearchConfiguration>;
   /**
    * Handle changes to the buffer distance value
    */
