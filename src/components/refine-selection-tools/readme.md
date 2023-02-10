@@ -27,7 +27,7 @@
 
 | Event                           | Description                                       | Type                                                |
 | ------------------------------- | ------------------------------------------------- | --------------------------------------------------- |
-| `refineSelectionGraphicsChange` | Emitted on demand when selection graphics change. | `CustomEvent<any[]>`                                |
+| `refineSelectionGraphicsChange` | Emitted on demand when selection graphics change. | `CustomEvent<IRefineSelectionEvent>`                |
 | `refineSelectionIdsChange`      | Emitted on demand when selection ids change       | `CustomEvent<{ addIds: any[]; removeIds: any[]; }>` |
 
 
