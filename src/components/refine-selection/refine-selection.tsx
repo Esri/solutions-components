@@ -255,14 +255,17 @@ export class RefineSelection {
     return [(
       <calcite-list-item
         label={this._translations.featuresAdded.replace("{{n}}", numAdded.toString())}
+        non-interactive
       />
     ), (
       <calcite-list-item
         label={this._translations.featuresRemoved.replace("{{n}}", numRemoved.toString())}
+        non-interactive
       />
     ), (
       <calcite-list-item
         label={this._translations.totalSelected.replace("{{n}}", total.toString())}
+        non-interactive
       />
     )];
   }

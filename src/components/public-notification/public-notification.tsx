@@ -100,7 +100,7 @@ export class PublicNotification {
   /**
    * ISearchConfiguration: Configuration details for the Search widget
    */
-  @Prop() searchConfiguration: ISearchConfiguration;
+  @Prop({mutable: true}) searchConfiguration: ISearchConfiguration;
 
   /**
    * string[]: List of layer ids that should be shown as potential selection layers
@@ -748,7 +748,7 @@ export class PublicNotification {
           <calcite-label
             class="font-bold"
           >
-            {"Name label"}
+            {"List name"}
             <calcite-input
               onInput={() => {
                 this.labelChange.emit(this._labelName.value);
