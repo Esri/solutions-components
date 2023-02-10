@@ -255,6 +255,11 @@ export class MapSelectTools {
     newValue: ISearchConfiguration,
     oldValue: ISearchConfiguration
   ): Promise<void> {
+    console.log("watchSearchConfigurationHandler")
+    console.log("newValue")
+    console.log(newValue)
+    console.log("oldValue")
+    console.log(oldValue)
     if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
       this._initSearchWidget();
     }
@@ -351,6 +356,15 @@ export class MapSelectTools {
   @Listen("labelChange", { target: "window" })
   labelChange(event: CustomEvent): void {
     this._selectionLabel = event.detail;
+  }
+
+  /**
+   * Handle changes to the search configuration
+   */
+  @Listen("searchConfigurationChange", { target: "window" })
+  searchConfigurationChangeChanged(event: CustomEvent): void {
+    console.log("searchConfigurationChange listener")
+    this.searchConfiguration = event.detail;
   }
 
   /**
@@ -562,8 +576,16 @@ export class MapSelectTools {
    * @protected
    */
   protected _initSearchWidget(): void {
+    console.log("_initSearchWidget")
+    console.log("this.mapView")
+    console.log(this.mapView)
+    console.log("this._searchElement")
+    console.log(this._searchElement)
     if (this.mapView && this._searchElement) {
+      console.log("this._getSearchConfig")
       const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this.mapView);
+      console.log("searchConfiguration")
+      console.log(searchConfiguration)
 
       const searchOptions: __esri.widgetsSearchProperties = {
         view: this.mapView,
@@ -589,6 +611,7 @@ export class MapSelectTools {
           );
         }
       });
+      console.log("END search widget init")
     }
   }
 
