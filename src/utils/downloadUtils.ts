@@ -46,7 +46,7 @@ export async function downloadCSV(
   removeDuplicates = false,
   addColumnTitle = false
 ): Promise<void> {
-  console.log("selectionSetNames " + JSON.stringify(selectionSetNames));//???
+  console.log("downloadCSV using selectionSetNames " + JSON.stringify(selectionSetNames));//???
   const labels = await _prepareLabels(layer, ids, removeDuplicates, formatUsingLayerPopup, addColumnTitle);
 
   exportCSV(labels);
@@ -71,7 +71,7 @@ export async function downloadPDF(
   removeDuplicates: boolean,
   labelPageDescription: ILabel
 ): Promise<void> {
-  console.log("selectionSetNames " + JSON.stringify(selectionSetNames));//???
+  console.log("downloadPDF using selectionSetNames " + JSON.stringify(selectionSetNames));//???
   const labels = await _prepareLabels(layer, ids, removeDuplicates);
 
   exportPDF(labels, labelPageDescription);
