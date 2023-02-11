@@ -108,25 +108,40 @@ function _convertPopupTextToLabelSpec(popupInfo) {
 //???
 async function _createArcadeExecutors(labelFormat, layer) {
   const arcadeExecutors = {};
+  // Are any Arcade expressions in the layer?
+  if (!Array.isArray(layer.popupTemplate.expressionInfos) || layer.popupTemplate.expressionInfos.length === 0) {
+    return Promise.resolve(arcadeExecutors);
+  }
+  // Are there any Arcade expressions in the label format?
   const arcadeExpressionRegExp = /\{expression\/\w+\}/g;
   const arcadeExpressionsMatches = labelFormat.join("|").match(arcadeExpressionRegExp);
-  if (arcadeExpressionsMatches) {
-    const [arcade] = await loadModules(["esri/arcade"]);
-    // Generate an Arcade executor for each match
-    const labelingProfile = arcade.createArcadeProfile("popup");
-    arcadeExpressionsMatches.forEach(match => {
-      const expressionName = match.substring(match.indexOf("/") + 1, match.length - 1);
-      console.log("expressionName: " + expressionName); //???
-      (layer.popupTemplate.expressionInfos || []).some(async (expressionInfo) => {
-        if (expressionInfo.name === expressionName) {
-          console.log("    create executor for " + expressionName); //???
-          arcadeExecutors[expressionName] =
-            await arcade.createArcadeExecutor(expressionInfo.expression, labelingProfile);
-        }
-      });
-    });
+  if (!arcadeExpressionsMatches) {
+    return Promise.resolve(arcadeExecutors);
   }
-  return Promise.resolve(arcadeExecutors);
+  // Generate an Arcade executor for each match
+  const [arcade] = await loadModules(["esri/arcade"]);
+  const labelingProfile = arcade.createArcadeProfile("popup");
+  const createArcadeExecutorPromises = {};
+  arcadeExpressionsMatches.forEach(match => {
+    const expressionName = match.substring(match.indexOf("/") + 1, match.length - 1);
+    console.log("expressionName: " + expressionName); //???
+    (layer.popupTemplate.expressionInfos || []).forEach(expressionInfo => {
+      if (expressionInfo.name === expressionName) {
+        console.log("    create executor promise for " + expressionName); //???
+        createArcadeExecutorPromises[expressionName] =
+          arcade.createArcadeExecutor(expressionInfo.expression, labelingProfile);
+      }
+    });
+  });
+  const promises = Object.values(createArcadeExecutorPromises);
+  return Promise.all(promises)
+    .then(executors => {
+    const expressionNames = Object.keys(createArcadeExecutorPromises);
+    for (let i = 0; i < expressionNames.length; ++i) {
+      arcadeExecutors[expressionNames[i]] = executors[expressionNames[i]];
+    }
+    return arcadeExecutors;
+  });
 }
 /**
  * Creates labels from items.
