@@ -145,7 +145,14 @@ function _convertPopupTextToLabelSpec(
   return labelSpec;
 };
 
-//???
+/**
+ * Extracts Arcade expressions from the lines of a label format and creates an Arcade executor for each
+ * referenced expression name.
+ *
+ * @param labelFormat Label to examine
+ * @param layer Layer from which to fetch features
+ * @return Promise resolving to a set of executors keyed using the expression name
+ */
 async function _createArcadeExecutors(
   labelFormat: string[],
   layer: __esri.FeatureLayer
@@ -249,19 +256,8 @@ async function _prepareLabels(
 
       // Do we need any Arcade executors?
       arcadeExecutors = await _createArcadeExecutors(labelFormat, layer);
-
-      const allValues0 = featureSet.features.map( (feature) => {
-        return arcadeExecutors["expr0"].execute({"$feature": feature});
-      });
-      console.log("expr0", JSON.stringify(allValues0, null, 2));//???
-
-      const allValues1 = featureSet.features.map( (feature) => {
-        return arcadeExecutors["expr1"].execute({"$feature": feature});
-      });
-      console.log("expr1", JSON.stringify(allValues1, null, 2));//???
     }
   }
-  console.log("Number of arcade executors: " + Object.keys(arcadeExecutors).length.toString());//???
 
   // Apply the label format
   let labels: string[][];
@@ -275,8 +271,7 @@ async function _prepareLabels(
         const label: string[] = [];
         labelFormat.forEach(
           labelLineTemplate => {
-            // Replace fields
-            let labelLine = intl.substitute(labelLineTemplate, feature.attributes).trim();
+            let labelLine = labelLineTemplate;
 
             // Replace Arcade expressions
             const arcadeExpressionsMatches = labelLine.match(arcadeExpressionRegExp);
@@ -289,6 +284,9 @@ async function _prepareLabels(
                 }
               )
             }
+
+            // Replace fields; must be done after Arcade check because `substitute` will discard Arcade expressions!
+            labelLine = intl.substitute(labelLine, feature.attributes).trim();
 
             if (labelLine.length > 0) {
               label.push(labelLine);
