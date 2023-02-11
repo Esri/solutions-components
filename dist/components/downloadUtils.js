@@ -2234,7 +2234,7 @@ async function _createArcadeExecutors(labelFormat, layer) {
     .then(executors => {
     const expressionNames = Object.keys(createArcadeExecutorPromises);
     for (let i = 0; i < expressionNames.length; ++i) {
-      arcadeExecutors[expressionNames[i]] = executors[expressionNames[i]];
+      arcadeExecutors[expressionNames[i]] = executors[expressionNames[i]].Object;
     }
     return arcadeExecutors;
   });

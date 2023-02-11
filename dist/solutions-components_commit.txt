@@ -1,7 +1,7 @@
-Built 02/10/2023 16:58:28.89 
+Built 02/10/2023 17:14:04.28 
 enh/166-arcade
-commit 317abc77dcbd364a667e426101d8540dd9177c36
+commit fa34515104c579c7260b291fdb24aa9b24ccb2cb
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Fri Feb 10 16:16:32 2023 -0800
+Date:   Fri Feb 10 16:58:45 2023 -0800
 
-    More Arcade
+    Create Arcade executors from layer
