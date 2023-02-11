@@ -34,7 +34,7 @@ export { ILabel } from "./pdfUtils";
  * @returns Promise resolving when function is done
  */
 export async function downloadCSV(selectionSetNames, layer, ids, formatUsingLayerPopup, removeDuplicates = false, addColumnTitle = false) {
-    console.log("selectionSetNames " + JSON.stringify(selectionSetNames)); //???
+    console.log("downloadCSV using selectionSetNames " + JSON.stringify(selectionSetNames)); //???
     const labels = await _prepareLabels(layer, ids, removeDuplicates, formatUsingLayerPopup, addColumnTitle);
     exportCSV(labels);
     return Promise.resolve();
@@ -50,7 +50,7 @@ export async function downloadCSV(selectionSetNames, layer, ids, formatUsingLaye
  * @returns Promise resolving when function is done
  */
 export async function downloadPDF(selectionSetNames, layer, ids, removeDuplicates, labelPageDescription) {
-    console.log("selectionSetNames " + JSON.stringify(selectionSetNames)); //???
+    console.log("downloadPDF using selectionSetNames " + JSON.stringify(selectionSetNames)); //???
     const labels = await _prepareLabels(layer, ids, removeDuplicates);
     exportPDF(labels, labelPageDescription);
     return Promise.resolve();
@@ -61,13 +61,14 @@ export async function downloadPDF(selectionSetNames, layer, ids, removeDuplicate
  * Converts a set of fieldInfos into template lines.
  *
  * @param fieldInfos Layer's fieldInfos structure
+ * @param bypassFieldVisiblity Indicates if the configured fieldInfo visibility property should be ignored
  * @return Label spec
  */
-function _convertPopupFieldsToLabelSpec(fieldInfos) {
+function _convertPopupFieldsToLabelSpec(fieldInfos, bypassFieldVisiblity = false) {
     const labelSpec = [];
     // Every visible attribute is used
     fieldInfos.forEach(fieldInfo => {
-        if (fieldInfo.visible) {
+        if (fieldInfo.visible || bypassFieldVisiblity) {
             labelSpec.push(`{${fieldInfo.fieldName}}`);
         }
     });
@@ -99,6 +100,29 @@ function _convertPopupTextToLabelSpec(popupInfo) {
     return labelSpec;
 }
 ;
+//???
+async function _createArcadeExecutors(labelFormat, layer) {
+    const arcadeExecutors = {};
+    const arcadeExpressionRegExp = /\{expression\/\w+\}/g;
+    const arcadeExpressionsMatches = labelFormat.join("|").match(arcadeExpressionRegExp);
+    if (arcadeExpressionsMatches) {
+        const [arcade] = await loadModules(["esri/arcade"]);
+        // Generate an Arcade executor for each match
+        const labelingProfile = arcade.createArcadeProfile("popup");
+        arcadeExpressionsMatches.forEach(match => {
+            const expressionName = match.substring(match.indexOf("/") + 1, match.length - 1);
+            console.log("expressionName: " + expressionName); //???
+            (layer.popupTemplate.expressionInfos || []).some(async (expressionInfo) => {
+                if (expressionInfo.name === expressionName) {
+                    console.log("    create executor for " + expressionName); //???
+                    arcadeExecutors[expressionName] =
+                        await arcade.createArcadeExecutor(expressionInfo.expression, labelingProfile);
+                }
+            });
+        });
+    }
+    return Promise.resolve(arcadeExecutors);
+}
 /**
  * Creates labels from items.
  *
@@ -112,24 +136,46 @@ function _convertPopupTextToLabelSpec(popupInfo) {
  */
 async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLayerPopup = true, includeHeaderNames = false) {
     var _a, _b, _c, _d;
-    const [intl] = await loadModules([
-        "esri/intl"
-    ]);
+    const [intl] = await loadModules(["esri/intl"]);
     // Get the attributes of the features to export
     const featureSet = await queryFeaturesByID(ids, layer);
     const featuresAttrs = featureSet.features.map(f => f.attributes);
+    /*
+      const allValues = featureSet.features.map( (feature) => {
+        return labelExecutor.execute({
+          "$feature": feature
+        });
+      });
+      console.log(JSON.stringify(allValues, null, 2));//???
+    */
     // Get the label formatting, if any
     let labelFormat;
+    let arcadeExecutors = {};
     if (layer.popupEnabled) {
         // What data fields are used in the labels?
         // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
         if (formatUsingLayerPopup && ((_b = (_a = layer.popupTemplate) === null || _a === void 0 ? void 0 : _a.content[0]) === null || _b === void 0 ? void 0 : _b.type) === "fields") {
             labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos);
+            // If popup is configured with "no attribute information", then no fields will visible
+            if (labelFormat.length === 0) {
+                // Can we use the popup title?
+                // eslint-disable-next-line unicorn/prefer-ternary
+                if (typeof layer.popupTemplate.title === "string") {
+                    labelFormat = [layer.popupTemplate.title];
+                    // Otherwise revert to using attributes
+                }
+                else {
+                    labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos, true);
+                }
+            }
         }
         else if (formatUsingLayerPopup && ((_d = (_c = layer.popupTemplate) === null || _c === void 0 ? void 0 : _c.content[0]) === null || _d === void 0 ? void 0 : _d.type) === "text") {
             labelFormat = _convertPopupTextToLabelSpec(layer.popupTemplate.content[0].text);
+            // Do we need any Arcade executors?
+            arcadeExecutors = await _createArcadeExecutors(labelFormat, layer);
         }
     }
+    console.log("Number of arcade executors: " + Object.keys(arcadeExecutors).length.toString()); //???
     // Apply the label format
     let labels;
     // eslint-disable-next-line unicorn/prefer-ternary

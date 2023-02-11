@@ -1,7 +1,7 @@
-Built 02/10/2023 14:55:55.11 
+Built 02/10/2023 16:16:11.80 
 enh/166-arcade
-commit 311e1cfb4cfb9623e9173fd972f9ccf05eeb412e
+commit 4c0394c965341014bd13bfba1988444b0895d6cb
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Fri Feb 10 11:02:39 2023 -0800
+Date:   Fri Feb 10 15:03:54 2023 -0800
 
-    Remove dist
+    Explore Arcade

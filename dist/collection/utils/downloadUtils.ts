@@ -23,6 +23,10 @@ import { queryFeaturesByID } from "./queryUtils";
 
 export { ILabel } from "./pdfUtils";
 
+interface IArcadeExecutors {
+  [expressionName: string]: __esri.ArcadeExecutor;
+}
+
 //#endregion
 //#region Public functions
 
@@ -137,6 +141,41 @@ function _convertPopupTextToLabelSpec(
   return labelSpec;
 };
 
+//???
+async function _createArcadeExecutors(
+  labelFormat: string[],
+  layer: __esri.FeatureLayer
+): Promise<IArcadeExecutors> {
+  const arcadeExecutors: IArcadeExecutors = {};
+
+  const arcadeExpressionRegExp = /\{expression\/\w+\}/g;
+  const arcadeExpressionsMatches = labelFormat.join("|").match(arcadeExpressionRegExp);
+  if (arcadeExpressionsMatches) {
+    const [arcade] = await loadModules(["esri/arcade"]);
+
+    // Generate an Arcade executor for each match
+    const labelingProfile: __esri.Profile = arcade.createArcadeProfile("popup");
+    arcadeExpressionsMatches.forEach(
+      match => {
+        const expressionName = match.substring(match.indexOf("/") + 1, match.length - 1);
+        console.log("expressionName: " + expressionName);//???
+
+        (layer.popupTemplate.expressionInfos || []).some(
+          async expressionInfo => {
+            if (expressionInfo.name === expressionName) {
+              console.log("    create executor for " + expressionName);//???
+              arcadeExecutors[expressionName] =
+                await arcade.createArcadeExecutor(expressionInfo.expression, labelingProfile);
+            }
+          }
+        );
+      }
+    );
+  }
+
+  return Promise.resolve(arcadeExecutors);
+}
+
 /**
  * Creates labels from items.
  *
@@ -155,27 +194,24 @@ async function _prepareLabels(
   formatUsingLayerPopup = true,
   includeHeaderNames = false
 ): Promise<string[][]> {
-  const [arcade, intl] = await loadModules([
-    "esri/arcade",
-    "esri/intl"
-  ]);
+  const [intl] = await loadModules(["esri/intl"]);
 
   // Get the attributes of the features to export
   const featureSet = await queryFeaturesByID(ids, layer);
   const featuresAttrs = featureSet.features.map(f => f.attributes);
 
-  const labelingProfile: __esri.Profile = arcade.createArcadeProfile("popup");
-  const labelExecutor: __esri.ArcadeExecutor = await arcade.createArcadeExecutor('Concatenate([$feature.LAT, $feature.LON], " ", "##0.000")', labelingProfile);
-
+/*
   const allValues = featureSet.features.map( (feature) => {
     return labelExecutor.execute({
       "$feature": feature
     });
   });
   console.log(JSON.stringify(allValues, null, 2));//???
+*/
 
   // Get the label formatting, if any
   let labelFormat: string[];
+  let arcadeExecutors: IArcadeExecutors = {};
   if (layer.popupEnabled) {
     // What data fields are used in the labels?
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
@@ -198,8 +234,11 @@ async function _prepareLabels(
     } else if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "text") {
       labelFormat = _convertPopupTextToLabelSpec(layer.popupTemplate.content[0].text);
 
+      // Do we need any Arcade executors?
+      arcadeExecutors = await _createArcadeExecutors(labelFormat, layer);
     }
   }
+  console.log("Number of arcade executors: " + Object.keys(arcadeExecutors).length.toString());//???
 
   // Apply the label format
   let labels: string[][];
