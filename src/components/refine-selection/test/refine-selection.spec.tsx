@@ -93,9 +93,9 @@ describe('refine-selection', () => {
          </div>
          <br>
          <calcite-list class="list-border">
-           <calcite-list-item label="Features Added: 0"></calcite-list-item>
-           <calcite-list-item label="Features Removed: 0"></calcite-list-item>
-           <calcite-list-item label="Total Selected: 0"></calcite-list-item>
+           <calcite-list-item label="Features added: 0"></calcite-list-item>
+           <calcite-list-item label="Features removed: 0"></calcite-list-item>
+           <calcite-list-item label="Total selected: 0"></calcite-list-item>
          </calcite-list>
        </div>
       </refine-selection>
@@ -137,9 +137,9 @@ describe('refine-selection', () => {
           </div>
           <br>
           <calcite-list class="list-border">
-            <calcite-list-item label="Features Added: 0"></calcite-list-item>
-            <calcite-list-item label="Features Removed: 0"></calcite-list-item>
-            <calcite-list-item label="Total Selected: 2"></calcite-list-item>
+            <calcite-list-item label="Features added: 0"></calcite-list-item>
+            <calcite-list-item label="Features removed: 0"></calcite-list-item>
+            <calcite-list-item label="Total selected: 2"></calcite-list-item>
           </calcite-list>
         </div>
       </refine-selection>
