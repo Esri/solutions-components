@@ -193,7 +193,7 @@ async function _createArcadeExecutors(
       const expressionNames = Object.keys(createArcadeExecutorPromises);
 
       for (let i = 0; i < expressionNames.length; ++i) {
-        arcadeExecutors[expressionNames[i]] = executors[expressionNames[i]].Object;
+        arcadeExecutors[expressionNames[i]] = executors[i].valueOf() as __esri.ArcadeExecutor;
       }
 
       return arcadeExecutors;
@@ -225,15 +225,6 @@ async function _prepareLabels(
   const featureSet = await queryFeaturesByID(ids, layer);
   const featuresAttrs = featureSet.features.map(f => f.attributes);
 
-/*
-  const allValues = featureSet.features.map( (feature) => {
-    return labelExecutor.execute({
-      "$feature": feature
-    });
-  });
-  console.log(JSON.stringify(allValues, null, 2));//???
-*/
-
   // Get the label formatting, if any
   let labelFormat: string[];
   let arcadeExecutors: IArcadeExecutors = {};
@@ -261,6 +252,16 @@ async function _prepareLabels(
 
       // Do we need any Arcade executors?
       arcadeExecutors = await _createArcadeExecutors(labelFormat, layer);
+
+      const allValues0 = featureSet.features.map( (feature) => {
+        return arcadeExecutors["expr0"].execute({"$feature": feature});
+      });
+      console.log("expr0", JSON.stringify(allValues0, null, 2));//???
+
+      const allValues1 = featureSet.features.map( (feature) => {
+        return arcadeExecutors["expr1"].execute({"$feature": feature});
+      });
+      console.log("expr1", JSON.stringify(allValues1, null, 2));//???
     }
   }
   console.log("Number of arcade executors: " + Object.keys(arcadeExecutors).length.toString());//???
