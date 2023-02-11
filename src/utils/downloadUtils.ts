@@ -170,14 +170,12 @@ async function _createArcadeExecutors(
 
   const createArcadeExecutorPromises: IArcadeExecutorPromises = {};
   arcadeExpressionsMatches.forEach(
-    match => {
+    (match: string) => {
       const expressionName = match.substring(match.indexOf("/") + 1, match.length - 1);
-      console.log("expressionName: " + expressionName);//???
 
       (layer.popupTemplate.expressionInfos || []).forEach(
         expressionInfo => {
           if (expressionInfo.name === expressionName) {
-            console.log("    create executor promise for " + expressionName);//???
             createArcadeExecutorPromises[expressionName] =
               arcade.createArcadeExecutor(expressionInfo.expression, labelingProfile);
           }
@@ -221,9 +219,8 @@ async function _prepareLabels(
 ): Promise<string[][]> {
   const [intl] = await loadModules(["esri/intl"]);
 
-  // Get the attributes of the features to export
+  // Get the features to export
   const featureSet = await queryFeaturesByID(ids, layer);
-  const featuresAttrs = featureSet.features.map(f => f.attributes);
 
   // Get the label formatting, if any
   let labelFormat: string[];
@@ -270,13 +267,29 @@ async function _prepareLabels(
   let labels: string[][];
   // eslint-disable-next-line unicorn/prefer-ternary
   if (labelFormat) {
+    const arcadeExpressionRegExp = /\{expression\/\w+\}/g;
+
     // Convert attributes into an array of labels
-    labels = featuresAttrs.map(
-      featureAttributes => {
+    labels = featureSet.features.map(
+      feature => {
         const label: string[] = [];
         labelFormat.forEach(
           labelLineTemplate => {
-            const labelLine = intl.substitute(labelLineTemplate, featureAttributes).trim();
+            // Replace fields
+            let labelLine = intl.substitute(labelLineTemplate, feature.attributes).trim();
+
+            // Replace Arcade expressions
+            const arcadeExpressionsMatches = labelLine.match(arcadeExpressionRegExp);
+            if (arcadeExpressionsMatches) {
+              arcadeExpressionsMatches.forEach(
+                (match: string) => {
+                  const expressionName = match.substring(match.indexOf("/") + 1, match.length - 1);
+                  const replacement = arcadeExecutors[expressionName].execute({"$feature": feature});
+                  labelLine = labelLine.replace(match, replacement);
+                }
+              )
+            }
+
             if (labelLine.length > 0) {
               label.push(labelLine);
             }
@@ -290,9 +303,9 @@ async function _prepareLabels(
 
   } else {
     // Export all attributes
-    labels = featuresAttrs.map(
-      featureAttributes => {
-        return Object.values(featureAttributes).map(
+    labels = featureSet.features.map(
+      feature => {
+        return Object.values(feature.attributes).map(
           attribute => `${attribute}`
         );
       }
@@ -316,7 +329,8 @@ async function _prepareLabels(
       headerNames = labelFormat.map(labelFormatLine => labelFormatLine.replace(/\{/g, "").replace(/\}/g, ""));
 
     } else {
-      Object.keys(featuresAttrs[0]).forEach(k => {
+      const featuresAttrs = featureSet.features[0].attributes;
+      Object.keys(featuresAttrs).forEach(k => {
         if (featuresAttrs[0].hasOwnProperty(k)) {
           headerNames.push(k);
         }
