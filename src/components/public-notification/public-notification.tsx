@@ -276,7 +276,8 @@ export class PublicNotification {
     console.log(oldValue)
     if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
       console.log("Emit event from parent")
-      this.searchConfigurationChange.emit(newValue);
+      this.searchConfiguration = {...newValue};
+      this.searchConfigurationChange.emit(this.searchConfiguration);
     }
   }
 
