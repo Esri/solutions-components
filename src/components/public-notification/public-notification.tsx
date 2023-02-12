@@ -21,7 +21,7 @@ import { goToSelection, getMapLayerView, highlightFeatures } from "../../utils/m
 import { getSelectionSetQuery } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
 import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
-import { getLocaleComponentStrings } from "../../utils/locale";
+import { getComponentClosestLanguage, getLocaleComponentStrings } from "../../utils/locale";
 import * as utils from "../../utils/publicNotificationUtils";
 
 @Component({
@@ -149,6 +149,11 @@ export class PublicNotification {
    * boolean: Save is enabled when we have 1 or more selected features
    */
   @State() _saveEnabled = false;
+
+  /**
+   * boolean: When true a loading indicator will be shown in place of the number of selected features
+   */
+  @State() _selectionLoading = false;
 
   /**
    * utils/interfaces/ISelectionSet: An array of user defined selection sets
@@ -347,6 +352,14 @@ export class PublicNotification {
   distanceChanged(event: CustomEvent): void {
     this._updateLabel(event, "distance");
     this._distance = event.detail.newValue;
+  }
+
+  /**
+   * Handle changes when selection is loading
+   */
+  @Listen("selectionLoading", { target: "window" })
+  selectionLoading(event: CustomEvent): void {
+    this._selectionLoading = event.detail;
   }
 
   /**
@@ -719,8 +732,14 @@ export class PublicNotification {
 
     const nameLabelClass = this.customLabelEnabled ? "" : "display-none";
 
+    // TODO find out if ... is appropriate for other languages
+    const locale = getComponentClosestLanguage(this.el);
+    const selectionLoading = locale && locale === "en" ?
+      `${this._translations.selectionLoading}...` : this._translations.selectionLoading;
+
     return (
       <calcite-panel>
+        <calcite-loader class="info-blue padding-end-1-2" inline={true} label="Selection loading..." scale="s" type="indeterminate"/>
         {this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", this.addresseeLayer?.layer.title))}
         {this._getNotice(noticeText)}
         <div class={"padding-top-sides-1"}>
@@ -743,13 +762,22 @@ export class PublicNotification {
           />
         </div>
         <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
-          <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
+          {
+            this._selectionLoading ? (
+              <div>
+                <calcite-loader active class="info-blue" inline={true} label={selectionLoading} scale="m" type="indeterminate" />
+              </div>
+            ) : (
+              <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
+            )
+          }
           <calcite-input-message active class="info-blue" scale="m">
             {
-              this.noResultText && this._numSelected === 0 ? this.noResultText :
-                this._translations.selectedAddresses.replace(
-                  "{{n}}", this._numSelected.toString()).replace("{{layer}}", this.addresseeLayer?.layer.title || ""
-                )
+              this._selectionLoading ? selectionLoading :
+                this.noResultText && this._numSelected === 0 ? this.noResultText :
+                  this._translations.selectedAddresses.replace(
+                    "{{n}}", this._numSelected.toString()).replace("{{layer}}", this.addresseeLayer?.layer.title || ""
+                    )
             }
           </calcite-input-message>
         </div>

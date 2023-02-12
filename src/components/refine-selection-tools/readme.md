@@ -29,6 +29,7 @@
 | ------------------------------- | ------------------------------------------------- | --------------------------------------------------- |
 | `refineSelectionGraphicsChange` | Emitted on demand when selection graphics change. | `CustomEvent<IRefineSelectionEvent>`                |
 | `refineSelectionIdsChange`      | Emitted on demand when selection ids change       | `CustomEvent<{ addIds: any[]; removeIds: any[]; }>` |
+| `selectionLoading`              | Emitted on demand when selection starts or ends.  | `CustomEvent<boolean>`                              |
 
 
 ## Methods
