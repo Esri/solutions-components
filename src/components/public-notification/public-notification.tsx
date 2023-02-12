@@ -276,7 +276,8 @@ export class PublicNotification {
     console.log(oldValue)
     if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
       console.log("Emit event from parent")
-      this.searchConfigurationChange.emit(newValue);
+      this.searchConfiguration = {...newValue};
+      this.searchConfigurationChange.emit(this.searchConfiguration);
     }
   }
 
@@ -391,15 +392,14 @@ export class PublicNotification {
    * Renders the component.
    */
   render(): void {
-    const hasSelections = this._selectionSets.length > 0;
     return (
       <Host>
         <calcite-shell>
           <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
-            {this._getActionGroup("list-check", false, EPageType.LIST, this._translations.myLists)}
-            {this.showRefineSelection ? this._getActionGroup("test-data", !hasSelections, EPageType.REFINE, this._translations.refineSelection) : undefined}
-            {this._getActionGroup("file-pdf", !hasSelections, EPageType.PDF, this._translations.downloadPDF)}
-            {this._getActionGroup("file-csv", !hasSelections, EPageType.CSV, this._translations.downloadCSV)}
+            {this._getActionGroup("list-check", EPageType.LIST, this._translations.myLists)}
+            {this.showRefineSelection ? this._getActionGroup("test-data", EPageType.REFINE, this._translations.refineSelection) : undefined}
+            {this._getActionGroup("file-pdf", EPageType.PDF, this._translations.downloadPDF)}
+            {this._getActionGroup("file-csv", EPageType.CSV, this._translations.downloadCSV)}
           </calcite-action-bar>
           {this._getPage(this._pageType)}
         </calcite-shell>
@@ -441,7 +441,6 @@ export class PublicNotification {
    */
   protected _getActionGroup(
     icon: string,
-    disabled: boolean,
     pageType: EPageType,
     tip: string
   ): VNode {
@@ -453,7 +452,6 @@ export class PublicNotification {
           alignment="center"
           class="width-full height-full"
           compact={false}
-          disabled={disabled}
           icon={icon}
           id={icon}
           onClick={() => { this._setPageType(pageType) }}
@@ -693,6 +691,17 @@ export class PublicNotification {
   }
 
   /**
+   * Check if any selection sets exist.
+   *
+   * @returns true if selection sets exist
+   *
+   * @protected
+   */
+  protected _hasSelections(): boolean {
+    return this._selectionSets.length > 0;
+  }
+
+  /**
    * Create the Select page that shows the selection workflows
    *
    * @returns the page node
@@ -780,16 +789,25 @@ export class PublicNotification {
    * @protected
    */
   protected _getRefinePage(): VNode {
+    const hasSelections = this._hasSelections();
     return (
       <calcite-panel>
         {this._getLabel(this._translations.refineSelection)}
-        {this._getNotice(this._translations.refineTip, "padding-sides-1")}
-        <refine-selection
-          addresseeLayer={this.addresseeLayer}
-          enabledLayerIds={this.selectionLayerIds}
-          mapView={this.mapView}
-          selectionSets={this._selectionSets}
-        />
+        {
+          hasSelections ? (
+            <div>
+              {this._getNotice(this._translations.refineTip, "padding-sides-1")}
+              <refine-selection
+                addresseeLayer={this.addresseeLayer}
+                enabledLayerIds={this.selectionLayerIds}
+                mapView={this.mapView}
+                selectionSets={this._selectionSets}
+              />
+            </div>
+          ) :
+            this._getNotice(this._translations.refineTipNoSelections, "padding-sides-1")
+        }
+
       </calcite-panel>
     );
   }
@@ -827,6 +845,7 @@ export class PublicNotification {
     type: EExportType
   ): VNode {
     const isPdf = type === EExportType.PDF;
+    const hasSelections = this._hasSelections();
     return (
       <calcite-panel>
         <div>
@@ -834,35 +853,43 @@ export class PublicNotification {
             <calcite-label class="font-bold">
               {isPdf ? this._translations.downloadPDF : this._translations.downloadCSV}
             </calcite-label>
-            <calcite-label>{this._translations.notifications}</calcite-label>
           </div>
-          {this._getSelectionLists()}
-          <div class="margin-side-1 padding-top-1 border-bottom" />
-          <div class="padding-top-sides-1">
-            <calcite-label layout="inline">
-              <calcite-checkbox disabled={!this._downloadActive} ref={(el) => { this._removeDuplicates = el }} />
-              {this._translations.removeDuplicate}
-            </calcite-label>
-          </div>
-          <div class={isPdf ? "" : "display-none"}>
-            {this._getLabel(this._translations.selectPDFLabelOption, false)}
-            <div class={"padding-sides-1"}>
-              <pdf-download
-                disabled={!this._downloadActive}
-                layerView={this.addresseeLayer}
-                ref={(el) => { this._downloadTools = el }}
-              />
-            </div>
-          </div>
-          <div class="padding-1 display-flex">
-            <calcite-button
-              disabled={!this._downloadActive}
-              onClick={isPdf ? () => this._downloadPDF() : () => this._downloadCSV()}
-              width="full"
-            >
-              {isPdf ? this._translations.downloadPDF : this._translations.downloadCSV}
-            </calcite-button>
-          </div>
+          {
+            hasSelections ? (
+              <div>
+                <calcite-label>{this._translations.notifications}</calcite-label>
+                {this._getSelectionLists()}
+                <div class="margin-side-1 padding-top-1 border-bottom" />
+                <div class="padding-top-sides-1">
+                  <calcite-label layout="inline">
+                    <calcite-checkbox disabled={!this._downloadActive} ref={(el) => { this._removeDuplicates = el }} />
+                    {this._translations.removeDuplicate}
+                  </calcite-label>
+                </div>
+                <div class={isPdf ? "" : "display-none"}>
+                  {this._getLabel(this._translations.selectPDFLabelOption, false)}
+                  <div class={"padding-sides-1"}>
+                    <pdf-download
+                      disabled={!this._downloadActive}
+                      layerView={this.addresseeLayer}
+                      ref={(el) => { this._downloadTools = el }}
+                    />
+                  </div>
+                </div>
+                <div class="padding-1 display-flex">
+                  <calcite-button
+                    disabled={!this._downloadActive}
+                    onClick={isPdf ? () => this._downloadPDF() : () => this._downloadCSV()}
+                    width="full"
+                  >
+                    {isPdf ? this._translations.downloadPDF : this._translations.downloadCSV}
+                  </calcite-button>
+                </div>
+              </div>
+            ) : (
+              this._getNotice(this._translations.downloadNoLists, "padding-sides-1 padding-bottom-1")
+            )
+          }
         </div>
       </calcite-panel>
     );
