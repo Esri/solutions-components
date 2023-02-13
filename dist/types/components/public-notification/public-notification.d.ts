@@ -164,6 +164,10 @@ export declare class PublicNotification {
    */
   protected _removeDuplicates: HTMLCalciteCheckboxElement;
   /**
+   * ISearchConfiguration: Configuration details for the Search widget
+   */
+  protected _searchConfiguration: ISearchConfiguration;
+  /**
    * HTMLMapSelectToolsElement: The select tools element
    */
   protected _selectTools: HTMLMapSelectToolsElement;

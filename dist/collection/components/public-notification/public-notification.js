@@ -83,8 +83,8 @@ export class PublicNotification {
     console.log(oldValue);
     if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
       console.log("Emit event from parent");
-      this.searchConfiguration = Object.assign({}, newValue);
-      this.searchConfigurationChange.emit(this.searchConfiguration);
+      this._searchConfiguration = Object.assign({}, newValue);
+      this.searchConfigurationChange.emit(this._searchConfiguration);
     }
   }
   /**
@@ -92,7 +92,6 @@ export class PublicNotification {
    */
   async selectionSetsWatchHandler(v, oldV) {
     if (v && v !== oldV && v.length > 0) {
-      //TODO
       const nonRefineSets = v.filter(ss => ss.workflowType !== EWorkflowType.REFINE);
       if (nonRefineSets.length === 0) {
         this._selectionSets = [];
@@ -267,9 +266,9 @@ export class PublicNotification {
     // REFINE is handled seperately from the core selection sets
     // You can only access after clicking the refine action
     this._selectionSets.reduce((prev, cur, i) => {
-      //if (cur.workflowType !== EWorkflowType.REFINE) {
-      prev.push((h("calcite-list-item", { description: this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString()), label: cur.label, onClick: () => this._gotoSelection(cur, this.mapView) }, this._getAction(true, "pencil", "", (evt) => this._openSelection(cur, evt), false, "actions-end"), this._getAction(true, "x", "", (evt) => this._deleteSelection(i, evt), false, "actions-end"))));
-      //}
+      if (cur.workflowType !== EWorkflowType.REFINE) {
+        prev.push((h("calcite-list-item", { description: this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString()), label: cur.label, onClick: () => this._gotoSelection(cur, this.mapView) }, this._getAction(true, "pencil", "", (evt) => this._openSelection(cur, evt), false, "actions-end"), this._getAction(true, "x", "", (evt) => this._deleteSelection(i, evt), false, "actions-end"))));
+      }
       return prev;
     }, [])));
   }
@@ -337,7 +336,7 @@ export class PublicNotification {
     const locale = getComponentClosestLanguage(this.el);
     const selectionLoading = locale && locale === "en" ?
       `${this._translations.selectionLoading}...` : this._translations.selectionLoading;
-    return (h("calcite-panel", null, h("calcite-loader", { class: "info-blue padding-end-1-2", inline: true, label: "Selection loading...", scale: "s", type: "indeterminate" }), this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", (_a = this.addresseeLayer) === null || _a === void 0 ? void 0 : _a.layer.title)), this._getNotice(noticeText), h("div", { class: "padding-top-sides-1" }, h("map-select-tools", { bufferColor: this.bufferColor, bufferOutlineColor: this.bufferOutlineColor, class: "font-bold", defaultBufferDistance: this.defaultBufferDistance, defaultBufferUnit: this.defaultBufferUnit, enabledLayerIds: this.selectionLayerIds, isUpdate: !!this._activeSelection, mapView: this.mapView, onSelectionSetChange: (evt) => this._updateForSelection(evt), onWorkflowTypeChange: (evt) => this._updateForWorkflowType(evt), ref: (el) => { this._selectTools = el; }, searchConfiguration: this.searchConfiguration, selectLayerView: this.addresseeLayer, selectionSet: this._activeSelection, showBufferTools: this.showSearchSettings })), h("div", { class: "padding-sides-1 padding-bottom-1", style: { "align-items": "end", "display": "flex" } }, this._selectionLoading ? (h("div", null, h("calcite-loader", { active: true, class: "info-blue", inline: true, label: selectionLoading, scale: "m", type: "indeterminate" }))) : (h("calcite-icon", { class: "info-blue padding-end-1-2", icon: "feature-layer", scale: "s" })), h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this._selectionLoading ? selectionLoading :
+    return (h("calcite-panel", null, h("calcite-loader", { class: "info-blue padding-end-1-2", inline: true, label: "Selection loading...", scale: "s", type: "indeterminate" }), this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", (_a = this.addresseeLayer) === null || _a === void 0 ? void 0 : _a.layer.title)), this._getNotice(noticeText), h("div", { class: "padding-top-sides-1" }, h("map-select-tools", { bufferColor: this.bufferColor, bufferOutlineColor: this.bufferOutlineColor, class: "font-bold", defaultBufferDistance: this.defaultBufferDistance, defaultBufferUnit: this.defaultBufferUnit, enabledLayerIds: this.selectionLayerIds, isUpdate: !!this._activeSelection, mapView: this.mapView, onSelectionSetChange: (evt) => this._updateForSelection(evt), onWorkflowTypeChange: (evt) => this._updateForWorkflowType(evt), ref: (el) => { this._selectTools = el; }, searchConfiguration: this._searchConfiguration, selectLayerView: this.addresseeLayer, selectionSet: this._activeSelection, showBufferTools: this.showSearchSettings })), h("div", { class: "padding-sides-1 padding-bottom-1", style: { "align-items": "end", "display": "flex" } }, this._selectionLoading ? (h("div", null, h("calcite-loader", { active: true, class: "info-blue", inline: true, label: selectionLoading, scale: "m", type: "indeterminate" }))) : (h("calcite-icon", { class: "info-blue padding-end-1-2", icon: "feature-layer", scale: "s" })), h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this._selectionLoading ? selectionLoading :
       this.noResultText && this._numSelected === 0 ? this.noResultText :
         this._translations.selectedAddresses.replace("{{n}}", this._numSelected.toString()).replace("{{layer}}", ((_b = this.addresseeLayer) === null || _b === void 0 ? void 0 : _b.layer.title) || ""))), h("div", { class: "padding-sides-1 " + nameLabelClass }, h("calcite-label", { class: "font-bold" }, "List name", h("calcite-input", { onInput: () => {
         this.labelChange.emit(this._labelName.value);
@@ -434,12 +433,12 @@ export class PublicNotification {
    */
   _getSelectionLists() {
     return this._selectionSets.reduce((prev, cur) => {
-      //if (cur.workflowType !== EWorkflowType.REFINE) {
-      if (!this._downloadActive && cur.download) {
-        this._downloadActive = true;
+      if (cur.workflowType !== EWorkflowType.REFINE) {
+        if (!this._downloadActive && cur.download) {
+          this._downloadActive = true;
+        }
+        prev.push((h("div", { class: "display-flex padding-sides-1 padding-bottom-1" }, h("calcite-checkbox", { checked: cur.download, class: "align-center", onClick: () => { void this._toggleDownload(cur.id); } }), h("calcite-list", { class: "list-border margin-start-1-2 w-100", id: "download-list" }, h("calcite-list-item", { description: this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString()), disabled: !cur.download, label: cur.label, onClick: () => { void this._toggleDownload(cur.id); } })))));
       }
-      prev.push((h("div", { class: "display-flex padding-sides-1 padding-bottom-1" }, h("calcite-checkbox", { checked: cur.download, class: "align-center", onClick: () => { void this._toggleDownload(cur.id); } }), h("calcite-list", { class: "list-border margin-start-1-2 w-100", id: "download-list" }, h("calcite-list-item", { description: this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString()), disabled: !cur.download, label: cur.label, onClick: () => { void this._toggleDownload(cur.id); } })))));
-      //}
       return prev;
     }, []) || (h("div", null));
   }
@@ -488,8 +487,7 @@ export class PublicNotification {
    */
   _getDownloadSelectionSets() {
     return this._selectionSets.filter(ss => {
-      //return ss.download || ss.workflowType === EWorkflowType.REFINE;
-      return ss;
+      return ss.download || ss.workflowType === EWorkflowType.REFINE;
     });
   }
   /**
@@ -598,9 +596,7 @@ export class PublicNotification {
    * @protected
    */
   async _updateSelectionSets(layerView) {
-    const _selectionSets = this._selectionSets.filter(
-    //selectionSet => selectionSet.workflowType !== EWorkflowType.REFINE
-    selectionSet => selectionSet);
+    const _selectionSets = this._selectionSets.filter(selectionSet => selectionSet.workflowType !== EWorkflowType.REFINE);
     const oidDefs = [];
     _selectionSets.forEach(selectionSet => {
       selectionSet.layerView = layerView;

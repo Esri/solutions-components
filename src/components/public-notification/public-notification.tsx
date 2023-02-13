@@ -234,6 +234,11 @@ export class PublicNotification {
   protected _removeDuplicates: HTMLCalciteCheckboxElement;
 
   /**
+   * ISearchConfiguration: Configuration details for the Search widget
+   */
+  protected _searchConfiguration: ISearchConfiguration;
+
+  /**
    * HTMLMapSelectToolsElement: The select tools element
    */
   protected _selectTools: HTMLMapSelectToolsElement;
@@ -281,8 +286,8 @@ export class PublicNotification {
     console.log(oldValue)
     if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
       console.log("Emit event from parent")
-      this.searchConfiguration = {...newValue};
-      this.searchConfigurationChange.emit(this.searchConfiguration);
+      this._searchConfiguration = {...newValue};
+      this.searchConfigurationChange.emit(this._searchConfiguration);
     }
   }
 
@@ -755,7 +760,7 @@ export class PublicNotification {
             onSelectionSetChange={(evt) => this._updateForSelection(evt)}
             onWorkflowTypeChange={(evt) => this._updateForWorkflowType(evt)}
             ref={(el) => { this._selectTools = el }}
-            searchConfiguration={this.searchConfiguration}
+            searchConfiguration={this._searchConfiguration}
             selectLayerView={this.addresseeLayer}
             selectionSet={this._activeSelection}
             showBufferTools={this.showSearchSettings}
