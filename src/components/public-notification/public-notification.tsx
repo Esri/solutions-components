@@ -276,17 +276,9 @@ export class PublicNotification {
     newValue: ISearchConfiguration,
     oldValue: ISearchConfiguration
   ): Promise<void> {
-    //TODO adding this here to see if its any different than having in map-select-tools
-    // I would have thought that the prop would have made it through on the next render of map-select-tools
-    // however we are still seeing a broken search...need to understand why and don't see a clean way to debug in devext
-    console.log("PN watchSearchConfigurationHandler")
-    console.log("PN newValue")
-    console.log(newValue)
-    console.log("PN oldValue")
-    console.log(oldValue)
-    if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
-      console.log("Emit event from parent")
-      this._searchConfiguration = {...newValue};
+    const s_newValue = JSON.stringify(newValue);
+    if (s_newValue !== JSON.stringify(oldValue)) {
+      this._searchConfiguration = JSON.parse(s_newValue);
       this.searchConfigurationChange.emit(this._searchConfiguration);
     }
   }
