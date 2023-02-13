@@ -341,6 +341,11 @@ export class MapSelectTools {
   //--------------------------------------------------------------------------
 
   /**
+   * Emitted on demand when selection starts or ends.
+   */
+  @Event() selectionLoadingChange: EventEmitter<boolean>;
+
+  /**
    * Emitted on demand when the selection set changes.
    *
    */
@@ -617,7 +622,7 @@ export class MapSelectTools {
         void this._clearResults(false);
         if (searchResults.result) {
           this._searchResult = searchResults.result;
-          const useOIDs = searchResults.source?.layer.id === this.selectLayerView.layer.id;
+          const useOIDs = searchResults.source?.layer?.id && searchResults.source.layer.id === this.selectLayerView.layer.id;
           const oids = useOIDs ? [searchResults.result.feature.getObjectId()] : undefined;
           this._updateSelection(
             EWorkflowType.SEARCH,
@@ -628,7 +633,6 @@ export class MapSelectTools {
           );
         }
       });
-      console.log("END search widget init")
     }
   }
 
@@ -759,10 +763,12 @@ export class MapSelectTools {
   protected async _selectFeatures(
     geometries: __esri.Geometry[]
   ): Promise<void> {
+    this.selectionLoadingChange.emit(true);
     this._selectedIds = await queryObjectIds(
       geometries,
       this.selectLayerView.layer
     );
+    this.selectionLoadingChange.emit(false);
     // Add geometries used for selecting features as graphics
     this._drawTools.graphics = this.geometries.map(geom => {
       const props = {

@@ -21,7 +21,7 @@ import { goToSelection, getMapLayerView, highlightFeatures } from "../../utils/m
 import { getSelectionSetQuery } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
 import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
-import { getLocaleComponentStrings } from "../../utils/locale";
+import { getComponentClosestLanguage, getLocaleComponentStrings } from "../../utils/locale";
 import * as utils from "../../utils/publicNotificationUtils";
 
 @Component({
@@ -151,6 +151,11 @@ export class PublicNotification {
   @State() _saveEnabled = false;
 
   /**
+   * boolean: When true a loading indicator will be shown in place of the number of selected features
+   */
+  @State() _selectionLoading = false;
+
+  /**
    * utils/interfaces/ISelectionSet: An array of user defined selection sets
    */
   @State() _selectionSets: ISelectionSet[] = [];
@@ -229,6 +234,11 @@ export class PublicNotification {
   protected _removeDuplicates: HTMLCalciteCheckboxElement;
 
   /**
+   * ISearchConfiguration: Configuration details for the Search widget
+   */
+  protected _searchConfiguration: ISearchConfiguration;
+
+  /**
    * HTMLMapSelectToolsElement: The select tools element
    */
   protected _selectTools: HTMLMapSelectToolsElement;
@@ -276,8 +286,8 @@ export class PublicNotification {
     console.log(oldValue)
     if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
       console.log("Emit event from parent")
-      this.searchConfiguration = {...newValue};
-      this.searchConfigurationChange.emit(this.searchConfiguration);
+      this._searchConfiguration = {...newValue};
+      this.searchConfigurationChange.emit(this._searchConfiguration);
     }
   }
 
@@ -347,6 +357,14 @@ export class PublicNotification {
   distanceChanged(event: CustomEvent): void {
     this._updateLabel(event, "distance");
     this._distance = event.detail.newValue;
+  }
+
+  /**
+   * Handle changes when selection is loading
+   */
+  @Listen("selectionLoadingChange", { target: "window" })
+  selectionLoadingChange(event: CustomEvent): void {
+    this._selectionLoading = event.detail;
   }
 
   /**
@@ -719,6 +737,11 @@ export class PublicNotification {
 
     const nameLabelClass = this.customLabelEnabled ? "" : "display-none";
 
+    // TODO find out if ... is appropriate for other languages
+    const locale = getComponentClosestLanguage(this.el);
+    const selectionLoading = locale && locale === "en" ?
+      `${this._translations.selectionLoading}...` : this._translations.selectionLoading;
+
     return (
       <calcite-panel>
         {this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", this.addresseeLayer?.layer.title))}
@@ -736,20 +759,29 @@ export class PublicNotification {
             onSelectionSetChange={(evt) => this._updateForSelection(evt)}
             onWorkflowTypeChange={(evt) => this._updateForWorkflowType(evt)}
             ref={(el) => { this._selectTools = el }}
-            searchConfiguration={this.searchConfiguration}
+            searchConfiguration={this._searchConfiguration}
             selectLayerView={this.addresseeLayer}
             selectionSet={this._activeSelection}
             showBufferTools={this.showSearchSettings}
           />
         </div>
         <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
-          <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
+          {
+            this._selectionLoading ? (
+              <div>
+                <calcite-loader active class="info-blue" inline={true} label={selectionLoading} scale="m" type="indeterminate" />
+              </div>
+            ) : (
+              <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
+            )
+          }
           <calcite-input-message active class="info-blue" scale="m">
             {
-              this.noResultText && this._numSelected === 0 ? this.noResultText :
-                this._translations.selectedAddresses.replace(
-                  "{{n}}", this._numSelected.toString()).replace("{{layer}}", this.addresseeLayer?.layer.title || ""
-                )
+              this._selectionLoading ? selectionLoading :
+                this.noResultText && this._numSelected === 0 ? this.noResultText :
+                  this._translations.selectedAddresses.replace(
+                    "{{n}}", this._numSelected.toString()).replace("{{layer}}", this.addresseeLayer?.layer.title || ""
+                    )
             }
           </calcite-input-message>
         </div>

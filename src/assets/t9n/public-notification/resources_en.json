@@ -15,6 +15,7 @@
     "cancel": "Cancel",
     "done": "Done",
     "selectedAddresses": "{{n}} selected addresses from {{layer}}",
+    "selectionLoading": "Selection loading",
     "selectPDFLabelOption": "Select PDF label option",
     "refineTip": "Add or remove features to refine and finalize the selection using the sketch tools. This functionality will work across all selection sets.",
     "refineTipNoSelections": "There are no selections to refine. Go to My lists to create a list of features.",

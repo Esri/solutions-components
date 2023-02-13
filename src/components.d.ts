@@ -1122,6 +1122,10 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
+          * Emitted on demand when selection starts or ends.
+         */
+        "onSelectionLoadingChange"?: (event: MapSelectToolsCustomEvent<boolean>) => void;
+        /**
           * Emitted on demand when the selection set changes.
          */
         "onSelectionSetChange"?: (event: MapSelectToolsCustomEvent<number>) => void;
@@ -1303,6 +1307,10 @@ declare namespace LocalJSX {
           * Emitted on demand when selection ids change
          */
         "onRefineSelectionIdsChange"?: (event: RefineSelectionToolsCustomEvent<{ addIds: any[]; removeIds: any[]; }>) => void;
+        /**
+          * Emitted on demand when selection starts or ends.
+         */
+        "onSelectionLoadingChange"?: (event: RefineSelectionToolsCustomEvent<boolean>) => void;
         /**
           * utils/interfaces/ERefineMode: ALL, SUBSET
          */

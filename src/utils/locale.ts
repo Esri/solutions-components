@@ -18,7 +18,7 @@
 import { languageMap } from "./languageUtil";
 import { getAssetPath } from "@stencil/core";
 
-function getComponentClosestLanguage(element: HTMLElement): string | undefined {
+export function getComponentClosestLanguage(element: HTMLElement): string | undefined {
   const closestElement = (element.closest("[lang]") ) ?? element.shadowRoot?.ownerDocument?.documentElement as any;
   // language set by the calling application or browser. defaults to english.
   const lang = (closestElement?.lang || navigator?.language || "en").toLowerCase() ;
