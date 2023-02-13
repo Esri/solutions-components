@@ -223,7 +223,7 @@ export class RefineSelectionTools {
   /**
    * Emitted on demand when selection starts or ends.
    */
-  @Event() selectionLoading: EventEmitter<boolean>;
+  @Event() selectionLoadingChange: EventEmitter<boolean>;
 
   /**
    * Emitted on demand when selection graphics change.
@@ -542,14 +542,14 @@ export class RefineSelectionTools {
   protected async _selectFeatures(
     geom: __esri.Geometry
   ): Promise<void> {
-    this.selectionLoading.emit(true);
+    this.selectionLoadingChange.emit(true);
     const queryFeaturePromises = this.layerViews.map(layerView => {
       this._featuresCollection[layerView.layer.id] = [];
       return queryFeaturesByGeometry(0, layerView.layer, geom, this._featuresCollection)
     });
 
     return Promise.all(queryFeaturePromises).then(async response => {
-      this.selectionLoading.emit(false);
+      this.selectionLoadingChange.emit(false);
       let graphics = [];
       response.forEach(r => {
         Object.keys(r).forEach(k => {

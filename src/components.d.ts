@@ -1124,7 +1124,7 @@ declare namespace LocalJSX {
         /**
           * Emitted on demand when selection starts or ends.
          */
-        "onSelectionLoading"?: (event: MapSelectToolsCustomEvent<boolean>) => void;
+        "onSelectionLoadingChange"?: (event: MapSelectToolsCustomEvent<boolean>) => void;
         /**
           * Emitted on demand when the selection set changes.
          */
@@ -1310,7 +1310,7 @@ declare namespace LocalJSX {
         /**
           * Emitted on demand when selection starts or ends.
          */
-        "onSelectionLoading"?: (event: RefineSelectionToolsCustomEvent<boolean>) => void;
+        "onSelectionLoadingChange"?: (event: RefineSelectionToolsCustomEvent<boolean>) => void;
         /**
           * utils/interfaces/ERefineMode: ALL, SUBSET
          */

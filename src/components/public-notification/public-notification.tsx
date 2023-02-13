@@ -362,8 +362,8 @@ export class PublicNotification {
   /**
    * Handle changes when selection is loading
    */
-  @Listen("selectionLoading", { target: "window" })
-  selectionLoading(event: CustomEvent): void {
+  @Listen("selectionLoadingChange", { target: "window" })
+  selectionLoadingChange(event: CustomEvent): void {
     this._selectionLoading = event.detail;
   }
 
@@ -744,7 +744,6 @@ export class PublicNotification {
 
     return (
       <calcite-panel>
-        <calcite-loader class="info-blue padding-end-1-2" inline={true} label="Selection loading..." scale="s" type="indeterminate"/>
         {this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", this.addresseeLayer?.layer.title))}
         {this._getNotice(noticeText)}
         <div class={"padding-top-sides-1"}>

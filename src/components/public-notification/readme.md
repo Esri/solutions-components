@@ -50,8 +50,8 @@
 - calcite-list
 - calcite-list-item
 - calcite-modal
-- calcite-loader
 - [map-select-tools](../map-select-tools)
+- calcite-loader
 - calcite-icon
 - calcite-input
 - [refine-selection](../refine-selection)
@@ -75,8 +75,8 @@ graph TD;
   public-notification --> calcite-list
   public-notification --> calcite-list-item
   public-notification --> calcite-modal
-  public-notification --> calcite-loader
   public-notification --> map-select-tools
+  public-notification --> calcite-loader
   public-notification --> calcite-icon
   public-notification --> calcite-input
   public-notification --> refine-selection
