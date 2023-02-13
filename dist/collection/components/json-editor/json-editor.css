@@ -1,0 +1,261 @@
+/** @license
+* Copyright 2022 Esri
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*    http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+:host {
+  display: block;
+  box-sizing: border-box;
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+  min-width: 0;
+  flex-grow: 0;
+  flex-shrink: 1;
+}
+:host-group-1-up > .block {
+  flex-basis: calc(100% - 1.5rem);
+  width: calc(100% - 1.5rem);
+}
+:host-group-2-up > .block {
+  flex-basis: calc(50% - 1.5rem);
+  width: calc(50% - 1.5rem);
+}
+:host-group-3-up > .block {
+  flex-basis: calc(33.33333% - 1.5rem);
+  width: calc(33.33333% - 1.5rem);
+}
+:host-group-4-up > .block {
+  flex-basis: calc(25% - 1.5rem);
+  width: calc(25% - 1.5rem);
+}
+:host-group-5-up > .block {
+  flex-basis: calc(20% - 1.5rem);
+  width: calc(20% - 1.5rem);
+}
+:host-group-6-up > .block {
+  flex-basis: calc(16.66666% - 1.5rem);
+  width: calc(16.66666% - 1.5rem);
+}
+:host-group-7-up > .block {
+  flex-basis: calc(14.2857% - 1.5rem);
+  width: calc(14.2857% - 1.5rem);
+}
+:host-group-8-up > .block {
+  flex-basis: calc(12.5% - 1.5rem);
+  width: calc(12.5% - 1.5rem);
+}
+.tablet-block-group-1-up > :host {
+    flex-basis: calc(100% - 1.5rem);
+    width: calc(100% - 1.5rem);
+  }
+.tablet-block-group-2-up > :host {
+    flex-basis: calc(50% - 1.5rem);
+    width: calc(50% - 1.5rem);
+  }
+.tablet-block-group-3-up > :host {
+    flex-basis: calc(33.33333% - 1.5rem);
+    width: calc(33.33333% - 1.5rem);
+  }
+.tablet-block-group-4-up > :host {
+    flex-basis: calc(25% - 1.5rem);
+    width: calc(25% - 1.5rem);
+  }
+.tablet-block-group-5-up > :host {
+    flex-basis: calc(20% - 1.5rem);
+    width: calc(20% - 1.5rem);
+  }
+.tablet-block-group-6-up > :host {
+    flex-basis: calc(16.66666% - 1.5rem);
+    width: calc(16.66666% - 1.5rem);
+  }
+.tablet-block-group-7-up > :host {
+    flex-basis: calc(14.2857% - 1.5rem);
+    width: calc(14.2857% - 1.5rem);
+  }
+.tablet-block-group-8-up > :host {
+    flex-basis: calc(12.5% - 1.5rem);
+    width: calc(12.5% - 1.5rem);
+  }
+.phone-block-group-1-up > :host {
+    flex-basis: calc(100% - 1.5rem);
+    width: calc(100% - 1.5rem);
+  }
+.phone-block-group-2-up > :host {
+    flex-basis: calc(50% - 1.5rem);
+    width: calc(50% - 1.5rem);
+  }
+.phone-block-group-3-up > :host {
+    flex-basis: calc(33.33333% - 1.5rem);
+    width: calc(33.33333% - 1.5rem);
+  }
+.phone-block-group-4-up > :host {
+    flex-basis: calc(25% - 1.5rem);
+    width: calc(25% - 1.5rem);
+  }
+.phone-block-group-5-up > :host {
+    flex-basis: calc(20% - 1.5rem);
+    width: calc(20% - 1.5rem);
+  }
+.phone-block-group-6-up > :host {
+    flex-basis: calc(16.66666% - 1.5rem);
+    width: calc(16.66666% - 1.5rem);
+  }
+.phone-block-group-7-up > :host {
+    flex-basis: calc(14.2857% - 1.5rem);
+    width: calc(14.2857% - 1.5rem);
+  }
+.phone-block-group-8-up > :host {
+    flex-basis: calc(12.5% - 1.5rem);
+    width: calc(12.5% - 1.5rem);
+  }
+.code-face :host {
+  letter-spacing: 0em;
+  font-family: "Consolas", "Andale Mono", "Lucida Console", "Monaco", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+.code-face :host b, .code-face :host strong {
+  font-weight: 400;
+}
+.code-italic :host {
+  letter-spacing: 0em;
+  font-family: "Consolas", "Andale Mono", "Lucida Console", "Monaco", monospace;
+  font-weight: 400;
+  font-style: italic;
+}
+.code-italic :host b, .code-italic :host strong {
+  font-weight: 400;
+}
+
+.editor-container {
+  position: relative;
+  height: 100%;
+}
+
+.editor-controls {
+  height: 2.75rem;
+  padding-right: 0.5rem;
+  background-color: #F4F4F4;
+}
+
+.editor-buttons {
+  float: right;
+}
+
+html[dir=rtl] .editor-buttons {
+  float: left;
+}
+
+.edit-error-flag {
+  padding-top: 0.5rem;
+  color: red;
+  visibility: hidden;
+}
+
+.edit-button {
+  -webkit-padding-start: 0.5rem;
+          padding-inline-start: 0.5rem;
+}
+
+.editor-text {
+  width: 100%;
+  overflow-y: auto;
+  background-color: #FFFFFF;
+}
+
+.edit-width {
+  width: 100%;
+}
+
+/* NEW CSS FOR MONACO */
+.edit-parent {
+  box-sizing: border-box;
+  width: 100%;
+  /* adjust for edit buttons and border */
+  height: calc(100% - 46px);
+}
+
+.json-edit-container {
+  height: 100%;
+  width: 100%;
+  border: 1px #808080 solid;
+}
+
+.padding-right {
+  -webkit-padding-end: 0.125rem;
+          padding-inline-end: 0.125rem;
+}
+
+.btn {
+  margin-bottom: 1rem;
+  display: flex;
+  align-content: center;
+  height: 25px;
+  width: 120px;
+}
+
+.select-ctrl {
+  margin-bottom: 1rem;
+}
+
+.all-edits {
+  margin-top: 4rem;
+}
+
+.floating-title {
+  font-size: 2rem;
+  z-index: 100;
+  position: absolute;
+  left: 0.5rem;
+  pointer-events: none;
+}
+
+.floating-title-button {
+  pointer-events: auto;
+}
+
+.json-editor-position1 {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  margin: 0px;
+  height: 100%;
+  width: 100%;
+  padding: 0px;
+  overflow: hidden;
+  max-height: 100% !important;
+}
+
+.json-editor-position2a {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  margin: 0px;
+  height: 100%;
+  width: 50%;
+  padding: 0px;
+  overflow: hidden;
+  max-height: 100% !important;
+}
+
+.json-editor-position2b {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  margin: 0px;
+  height: 100%;
+  width: 50%;
+  padding: 0px;
+  overflow: hidden;
+  max-height: 100% !important;
+}
