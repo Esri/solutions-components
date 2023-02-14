@@ -2155,7 +2155,12 @@ async function downloadCSV(selectionSetNames, layer, ids, formatUsingLayerPopup,
  */
 async function downloadPDF(selectionSetNames, layer, ids, removeDuplicates, labelPageDescription) {
   console.log("downloadPDF using selectionSetNames " + JSON.stringify(selectionSetNames)); //???
-  const labels = await _prepareLabels(layer, ids, removeDuplicates);
+  let labels = await _prepareLabels(layer, ids, removeDuplicates);
+  labels =
+    // Remove empty lines in labels
+    labels.map(labelLines => labelLines.filter(line => line.length > 0))
+      // Remove empty labels
+      .filter(label => label.length > 0);
   exportPDF(labels, labelPageDescription);
   return Promise.resolve();
 }
@@ -2355,12 +2360,10 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
       }
       // Split label into lines
       let label = labelPrep.split(lineSeparatorChar);
-      // Trim lines and remove empty lines
-      label = label.map(line => line.trim()).filter(line => line.length > 0);
+      // Trim lines
+      label = label.map(line => line.trim());
       return label;
-    })
-      // Remove empty labels
-      .filter(label => label.length > 0);
+    });
   }
   else {
     // Export all attributes
