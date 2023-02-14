@@ -1,8 +1,0 @@
-Built 02/14/2023 10:51:17.09 
-enh/156-add-coded-values
-commit 0380841adfaa786e09905d0fe8403257f4aa6b4f
-Merge: 88c36479 65659d32
-Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Tue Feb 14 10:32:11 2023 -0800
-
-    Merge branch 'develop' into enh/156-add-coded-values
