@@ -31,6 +31,16 @@ interface IArcadeExecutorPromises {
   [expressionName: string]: Promise<__esri.ArcadeExecutor>;
 }
 
+interface IAttributeDomains {
+  [attributeName: string]: __esri.CodedValueDomain | __esri.RangeDomain | __esri.InheritedDomain | null;
+}
+
+interface IAttributeTypes {
+  [attributeName: string]: string;
+}
+
+const lineSeparatorChar = "|";
+
 //#endregion
 //#region Public functions
 
@@ -80,7 +90,13 @@ export async function downloadPDF(
   labelPageDescription: ILabel
 ): Promise<void> {
   console.log("downloadPDF using selectionSetNames " + JSON.stringify(selectionSetNames));//???
-  const labels = await _prepareLabels(layer, ids, removeDuplicates);
+  let labels = await _prepareLabels(layer, ids, removeDuplicates);
+
+  labels =
+    // Remove empty lines in labels
+    labels.map(labelLines => labelLines.filter(line => line.length > 0))
+    // Remove empty labels
+    .filter(label => label.length > 0);
 
   exportPDF(labels, labelPageDescription);
 
@@ -95,12 +111,12 @@ export async function downloadPDF(
  *
  * @param fieldInfos Layer's fieldInfos structure
  * @param bypassFieldVisiblity Indicates if the configured fieldInfo visibility property should be ignored
- * @return Label spec
+ * @return Label spec with lines separated by `lineSeparatorChar`
  */
 function _convertPopupFieldsToLabelSpec(
   fieldInfos: __esri.FieldInfo[],
   bypassFieldVisiblity = false
-): string[] {
+): string {
   const labelSpec: string[] = [];
 
   // Every visible attribute is used
@@ -112,7 +128,7 @@ function _convertPopupFieldsToLabelSpec(
     }
   );
 
-  return labelSpec;
+  return labelSpec.join(lineSeparatorChar);
 };
 
 /**
@@ -121,26 +137,22 @@ function _convertPopupFieldsToLabelSpec(
  *
  * @param popupInfo Layer's popupInfo structure containing description, fieldInfos, and expressionInfos, e.g.,
  * "<div style='text-align: left;'>{NAME}<br />{STREET}<br />{CITY}, {STATE} {ZIP} <br /></div>"
- * @return Label spec
+ * @return Label spec with lines separated by `lineSeparatorChar`
  */
 function _convertPopupTextToLabelSpec(
-  popupInfo: string
-): string[] {
-  // Replace <br>, <br/> with |
-  popupInfo = popupInfo.replace(/<br\s*\/?>/gi, "|");
+  popupInfo: string,
+): string {
+  // Replace <br>, <br/> with the line separator character
+  popupInfo = popupInfo.replace(/<br\s*\/?>/gi, lineSeparatorChar);
 
-  // Remove remaining HTML tags, replace 0xA0 that popup uses for spaces, replace some char representations,
+  // Remove remaining HTML tags, replace 0xA0 that popup uses for spaces, and replace some char representations,
   // and split the label back into individual lines
-  let labelSpec = popupInfo
+  const labelSpec = popupInfo
     .replace(/<[\s.]*[^<>]*\/?>/gi, "")
     .replace(/\xA0/gi, " ")
     .replace(/&lt;/gi, "<")
     .replace(/&gt;/gi, ">")
-    .replace(/&nbsp;/gi, " ")
-    .split("|");
-
-  // Trim lines and remove empties
-  labelSpec = labelSpec.map(line => line.trim()).filter(line => line.length > 0);
+    .replace(/&nbsp;/gi, " ");
 
   return labelSpec;
 };
@@ -154,7 +166,7 @@ function _convertPopupTextToLabelSpec(
  * @return Promise resolving to a set of executors keyed using the expression name
  */
 async function _createArcadeExecutors(
-  labelFormat: string[],
+  labelFormat: string,
   layer: __esri.FeatureLayer
 ): Promise<IArcadeExecutors> {
   const arcadeExecutors: IArcadeExecutors = {};
@@ -166,7 +178,7 @@ async function _createArcadeExecutors(
 
   // Are there any Arcade expressions in the label format?
   const arcadeExpressionRegExp = /\{expression\/\w+\}/g;
-  const arcadeExpressionsMatches = labelFormat.join("|").match(arcadeExpressionRegExp);
+  const arcadeExpressionsMatches = labelFormat.match(arcadeExpressionRegExp);
   if (!arcadeExpressionsMatches) {
     return Promise.resolve(arcadeExecutors);
   }
@@ -207,6 +219,44 @@ async function _createArcadeExecutors(
 }
 
 /**
+ * Prepares an attribute's value by applying domain and type information.
+ *
+ * @param attributeValue Value of attribute
+ * @param attributeType Type of attribute
+ * @param attributeDomain Domain info for attribute, if any
+ * @return Attribute value modified appropriate to domain and type
+ */
+function _prepareAttributeValue(
+  attributeValue: any,
+  attributeType: string,
+  attributeDomain: __esri.CodedValueDomain | __esri.RangeDomain | __esri.InheritedDomain | null,
+  intl: any
+): any {
+  if (attributeDomain && (attributeDomain as __esri.CodedValueDomain).type === "coded-value") {
+    // "coded-value" domain field
+    const value = (attributeDomain as __esri.CodedValueDomain).getName(attributeValue);
+    return value;
+  } else {
+    // Non-domain field or unsupported domain type
+    let value = attributeValue;
+    switch (attributeType) {
+      case "date":
+        // Format date produces odd characters for the space between the time and the AM/PM text,
+        // e.g., "12/31/1969, 4:00â€¯PM"
+        value = intl.formatDate(value).replace(/\xe2\x80\xaf/g, "");
+        break;
+      case "double":
+      case "integer":
+      case "long":
+      case "small-integer":
+        value = intl.formatNumber(value);
+        break;
+    }
+    return value;
+  }
+}
+
+/**
  * Creates labels from items.
  *
  * @param layer Layer from which to fetch features
@@ -229,8 +279,18 @@ async function _prepareLabels(
   // Get the features to export
   const featureSet = await queryFeaturesByID(ids, layer);
 
+  // Get field data types. Do we have any domain-based fields?
+  const attributeTypes: IAttributeTypes = {};
+  const attributeDomains: IAttributeDomains = {};
+  layer.fields.forEach(
+    field => {
+      attributeTypes[field.name] = field.type;
+      attributeDomains[field.name] = field.domain;
+    }
+  );
+
   // Get the label formatting, if any
-  let labelFormat: string[];
+  let labelFormat: string;
   let arcadeExecutors: IArcadeExecutors = {};
   if (layer.popupEnabled) {
     // What data fields are used in the labels?
@@ -243,7 +303,7 @@ async function _prepareLabels(
         // Can we use the popup title?
         // eslint-disable-next-line unicorn/prefer-ternary
         if (typeof layer.popupTemplate.title === "string") {
-          labelFormat = [layer.popupTemplate.title];
+          labelFormat = layer.popupTemplate.title;
 
         // Otherwise revert to using attributes
         } else {
@@ -264,47 +324,60 @@ async function _prepareLabels(
   // eslint-disable-next-line unicorn/prefer-ternary
   if (labelFormat) {
     const arcadeExpressionRegExp = /\{expression\/\w+\}/g;
+    const attributeRegExp = /\{\w+\}/g;
 
-    // Convert attributes into an array of labels
+    // Find the label fields that we need to replace with values
+    const arcadeExpressionMatches = labelFormat.match(arcadeExpressionRegExp);
+    const attributeMatches = labelFormat.match(attributeRegExp);
+
+    // Convert feature attributes into an array of labels
     labels = featureSet.features.map(
       feature => {
-        const label: string[] = [];
-        labelFormat.forEach(
-          labelLineTemplate => {
-            let labelLine = labelLineTemplate;
+        let labelPrep = labelFormat;
 
-            // Replace Arcade expressions
-            const arcadeExpressionsMatches = labelLine.match(arcadeExpressionRegExp);
-            if (arcadeExpressionsMatches) {
-              arcadeExpressionsMatches.forEach(
-                (match: string) => {
-                  const expressionName = match.substring(match.indexOf("/") + 1, match.length - 1);
-                  const replacement = arcadeExecutors[expressionName].execute({"$feature": feature});
-                  labelLine = labelLine.replace(match, replacement);
-                }
-              )
+        // Replace Arcade expressions
+        if (arcadeExpressionMatches) {
+          arcadeExpressionMatches.forEach(
+            (match: string) => {
+              const expressionName = match.substring(match.indexOf("/") + 1, match.length - 1);
+              const value = arcadeExecutors[expressionName].execute({"$feature": feature});
+              labelPrep = labelPrep.replace(match, value);
             }
+          )
+        }
 
-            // Replace fields; must be done after Arcade check because `substitute` will discard Arcade expressions!
-            labelLine = intl.substitute(labelLine, feature.attributes).trim();
-
-            if (labelLine.length > 0) {
-              label.push(labelLine);
+        // Replace non-Arcade fields
+        if (attributeMatches) {
+          attributeMatches.forEach(
+            (match: string) => {
+              const attributeName = match.substring(1, match.length - 1);
+              const value = _prepareAttributeValue(feature.attributes[attributeName],
+                  attributeTypes[attributeName], attributeDomains[attributeName], intl);
+              labelPrep = labelPrep.replace(match, value);
             }
-          }
-        )
+          )
+        }
+
+        // Split label into lines
+        let label = labelPrep.split(lineSeparatorChar);
+
+        // Trim lines
+        label = label.map(line => line.trim());
+
         return label;
       }
-    )
-    // Remove empty labels
-    .filter(label => label.length > 0);
+    );
 
   } else {
     // Export all attributes
     labels = featureSet.features.map(
       feature => {
-        return Object.values(feature.attributes).map(
-          attribute => `${attribute}`
+        return Object.keys(feature.attributes).map(
+          (attributeName: string) => {
+            const value =  _prepareAttributeValue(feature.attributes[attributeName],
+              attributeTypes[attributeName], attributeDomains[attributeName], intl);
+            return `${value}`;
+          }
         );
       }
     );
@@ -324,14 +397,12 @@ async function _prepareLabels(
     let headerNames = [];
 
     if (labelFormat) {
-      headerNames = labelFormat.map(labelFormatLine => labelFormatLine.replace(/\{/g, "").replace(/\}/g, ""));
+      headerNames = labelFormat.replace(/\{/g, "").replace(/\}/g, "").split(lineSeparatorChar);
 
     } else {
       const featuresAttrs = featureSet.features[0].attributes;
       Object.keys(featuresAttrs).forEach(k => {
-        if (featuresAttrs[0].hasOwnProperty(k)) {
-          headerNames.push(k);
-        }
+        headerNames.push(k);
       });
     }
 
