@@ -31,6 +31,14 @@ interface IArcadeExecutorPromises {
   [expressionName: string]: Promise<__esri.ArcadeExecutor>;
 }
 
+interface IFieldDomains {
+  [fieldName: string]: __esri.CodedValueDomain | __esri.RangeDomain | __esri.InheritedDomain | null;
+}
+
+interface IFieldTypes {
+  [fieldName: string]: string;
+}
+
 //#endregion
 //#region Public functions
 
@@ -124,7 +132,7 @@ function _convertPopupFieldsToLabelSpec(
  * @return Label spec
  */
 function _convertPopupTextToLabelSpec(
-  popupInfo: string
+  popupInfo: string,
 ): string[] {
   // Replace <br>, <br/> with |
   popupInfo = popupInfo.replace(/<br\s*\/?>/gi, "|");
@@ -229,9 +237,17 @@ async function _prepareLabels(
   // Get the features to export
   const featureSet = await queryFeaturesByID(ids, layer);
 
-  // Do we have any domain-based fields?
-  const fieldDomains = layer.fields.map(field => field.domain);
-  console.log("fieldDomains", JSON.stringify(fieldDomains,null,2));//???
+  // Get field data types. Do we have any domain-based fields?
+  const fieldTypes: IFieldTypes = {};
+  const fieldDomains: IFieldDomains = {};
+  layer.fields.forEach(
+    field => {
+      fieldTypes[field.name] = field.type;
+      fieldDomains[field.name] = field.domain;
+    }
+  );
+  console.log("fieldTypes", fieldTypes);//???
+  console.log("fieldDomains", fieldDomains);//???
 
   // Get the label formatting, if any
   let labelFormat: string[];
@@ -264,6 +280,7 @@ async function _prepareLabels(
   }
 
   // Apply the label format
+  //???const attributeRegExp = /\{\w+\}/g;
   let labels: string[][];
   // eslint-disable-next-line unicorn/prefer-ternary
   if (labelFormat) {
@@ -289,9 +306,13 @@ async function _prepareLabels(
               )
             }
 
-            // Replace fields; must be done after Arcade check because `substitute` will discard Arcade expressions!
+            // Replace non-Arcade fields; must be done after Arcade check because `substitute` will discard
+            // Arcade expressions!
             labelLine = intl.substitute(labelLine, feature.attributes).trim();
 
+            // Replace domain fields
+
+            // Discard empty lines
             if (labelLine.length > 0) {
               label.push(labelLine);
             }
@@ -307,8 +328,34 @@ async function _prepareLabels(
     // Export all attributes
     labels = featureSet.features.map(
       feature => {
-        return Object.values(feature.attributes).map(
-          attribute => `${attribute}`
+        return Object.keys(feature.attributes).map(
+          (name: string) => {
+            const domain = fieldDomains[name];
+            if (domain && domain.type === "coded-value") {
+              // "codedValue" domain field
+              console.log("handle domain for " + name);//???
+              const value = domain.getName(feature.attributes[name]);
+
+              /*
+              const code = feature.attributes[name];
+              let value = cv.code;
+              domain.codedValues.some(
+                cv => {
+                  if (code === cv.code) {
+                    value = cv.name;
+                    return true;
+                  }
+                  return false;
+                }
+              );
+              */
+              return `${value}`;
+            } else {
+              // Non-domain field
+              console.log("handle " + fieldTypes[name] + " for " + name);//???
+              return `${feature.attributes[name]}`;
+            }
+          }
         );
       }
     );
