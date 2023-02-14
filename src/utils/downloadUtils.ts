@@ -237,7 +237,7 @@ function _prepareAttributeValue(
       case "date":
         // Format date produces odd characters for the space between the time and the AM/PM text,
         // e.g., "12/31/1969, 4:00â€¯PM"
-        value = intl.formatDate(value).replace(/\xe2\x80\xaf/, "");
+        value = intl.formatDate(value).replace(/\xe2\x80\xaf/g, "");
         break;
       case "double":
       case "integer":
@@ -327,7 +327,7 @@ async function _prepareLabels(
     // Convert feature attributes into an array of labels
     labels = featureSet.features.map(
       feature => {
-        let labelPrep = "";
+        let labelPrep = labelFormat;
 
         // Replace Arcade expressions
         if (arcadeExpressionMatches) {
