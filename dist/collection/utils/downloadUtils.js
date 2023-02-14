@@ -171,8 +171,6 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
     fieldTypes[field.name] = field.type;
     fieldDomains[field.name] = field.domain;
   });
-  console.log("fieldTypes", fieldTypes); //???
-  console.log("fieldDomains", fieldDomains); //???
   // Get the label formatting, if any
   let labelFormat;
   let arcadeExecutors = {};
@@ -241,27 +239,22 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
         const domain = fieldDomains[name];
         if (domain && domain.type === "coded-value") {
           // "codedValue" domain field
-          console.log("handle domain for " + name); //???
           const value = domain.getName(feature.attributes[name]);
-          /*
-          const code = feature.attributes[name];
-          let value = cv.code;
-          domain.codedValues.some(
-            cv => {
-              if (code === cv.code) {
-                value = cv.name;
-                return true;
-              }
-              return false;
-            }
-          );
-          */
           return `${value}`;
         }
         else {
-          // Non-domain field
-          console.log("handle " + fieldTypes[name] + " for " + name); //???
-          return `${feature.attributes[name]}`;
+          // Non-domain field or unsupported domain type
+          let value = feature.attributes[name];
+          switch (fieldTypes[name]) {
+            case "date":
+              value = intl.formatDate(value);
+              break;
+            case "small-integer":
+            case "integer":
+            case "double":
+              value = intl.formatNumber(value);
+          }
+          return `${value}`;
         }
       });
     });
@@ -281,9 +274,7 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
     else {
       const featuresAttrs = featureSet.features[0].attributes;
       Object.keys(featuresAttrs).forEach(k => {
-        if (featuresAttrs[0].hasOwnProperty(k)) {
-          headerNames.push(k);
-        }
+        headerNames.push(k);
       });
     }
     labels.unshift(headerNames);
