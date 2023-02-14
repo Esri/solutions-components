@@ -1080,7 +1080,7 @@ function(t){var e=function(t){for(var e=t.length,r=new Uint8Array(e),n=0;n<e;n++
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * ====================================================================
  */
-function(t){function e(){return (n.canvg?Promise.resolve(n.canvg):import('./index.es-5a60b7ab.js')).catch((function(t){return Promise.reject(new Error("Could not load canvg: "+t))})).then((function(t){return t.default?t.default:t}))}E.API.addSvgAsImage=function(t,r,n,i,o,s,c,u){if(isNaN(r)||isNaN(n))throw a.error("jsPDF.addSvgAsImage: Invalid coordinates",arguments),new Error("Invalid coordinates passed to jsPDF.addSvgAsImage");if(isNaN(i)||isNaN(o))throw a.error("jsPDF.addSvgAsImage: Invalid measurements",arguments),new Error("Invalid measurements (width and/or height) passed to jsPDF.addSvgAsImage");var h=document.createElement("canvas");h.width=i,h.height=o;var l=h.getContext("2d");l.fillStyle="#fff",l.fillRect(0,0,h.width,h.height);var f={ignoreMouse:!0,ignoreAnimation:!0,ignoreDimensions:!0},d=this;return e().then((function(e){return e.fromString(l,t,f)}),(function(){return Promise.reject(new Error("Could not load canvg."))})).then((function(t){return t.render(f)})).then((function(){d.addImage(h.toDataURL("image/jpeg",1),r,n,i,o,c,u);}))};}(),E.API.putTotalPages=function(t){var e,r=0;parseInt(this.internal.getFont().id.substr(1),10)<15?(e=new RegExp(t,"g"),r=this.internal.getNumberOfPages()):(e=new RegExp(this.pdfEscape16(t,this.internal.getFont()),"g"),r=this.pdfEscape16(this.internal.getNumberOfPages()+"",this.internal.getFont()));for(var n=1;n<=this.internal.getNumberOfPages();n++)for(var i=0;i<this.internal.pages[n].length;i++)this.internal.pages[n][i]=this.internal.pages[n][i].replace(e,r);return this},E.API.viewerPreferences=function(e,r){var n;e=e||{},r=r||!1;var i,a,o,s={HideToolbar:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},HideMenubar:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},HideWindowUI:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},FitWindow:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},CenterWindow:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},DisplayDocTitle:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.4},NonFullScreenPageMode:{defaultValue:"UseNone",value:"UseNone",type:"name",explicitSet:!1,valueSet:["UseNone","UseOutlines","UseThumbs","UseOC"],pdfVersion:1.3},Direction:{defaultValue:"L2R",value:"L2R",type:"name",explicitSet:!1,valueSet:["L2R","R2L"],pdfVersion:1.3},ViewArea:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},ViewClip:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},PrintArea:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},PrintClip:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},PrintScaling:{defaultValue:"AppDefault",value:"AppDefault",type:"name",explicitSet:!1,valueSet:["AppDefault","None"],pdfVersion:1.6},Duplex:{defaultValue:"",value:"none",type:"name",explicitSet:!1,valueSet:["Simplex","DuplexFlipShortEdge","DuplexFlipLongEdge","none"],pdfVersion:1.7},PickTrayByPDFSize:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.7},PrintPageRange:{defaultValue:"",value:"",type:"array",explicitSet:!1,valueSet:null,pdfVersion:1.7},NumCopies:{defaultValue:1,value:1,type:"integer",explicitSet:!1,valueSet:null,pdfVersion:1.7}},c=Object.keys(s),u=[],h=0,l=0,f=0;function d(t,e){var r,n=!1;for(r=0;r<t.length;r+=1)t[r]===e&&(n=!0);return n}if(void 0===this.internal.viewerpreferences&&(this.internal.viewerpreferences={},this.internal.viewerpreferences.configuration=JSON.parse(JSON.stringify(s)),this.internal.viewerpreferences.isSubscribed=!1),n=this.internal.viewerpreferences.configuration,"reset"===e||!0===r){var p=c.length;for(f=0;f<p;f+=1)n[c[f]].value=n[c[f]].defaultValue,n[c[f]].explicitSet=!1;}if("object"===t(e))for(a in e)if(o=e[a],d(c,a)&&void 0!==o){if("boolean"===n[a].type&&"boolean"==typeof o)n[a].value=o;else if("name"===n[a].type&&d(n[a].valueSet,o))n[a].value=o;else if("integer"===n[a].type&&Number.isInteger(o))n[a].value=o;else if("array"===n[a].type){for(h=0;h<o.length;h+=1)if(i=!0,1===o[h].length&&"number"==typeof o[h][0])u.push(String(o[h]-1));else if(o[h].length>1){for(l=0;l<o[h].length;l+=1)"number"!=typeof o[h][l]&&(i=!1);!0===i&&u.push([o[h][0]-1,o[h][1]-1].join(" "));}n[a].value="["+u.join(" ")+"]";}else n[a].value=n[a].defaultValue;n[a].explicitSet=!0;}return !1===this.internal.viewerpreferences.isSubscribed&&(this.internal.events.subscribe("putCatalog",(function(){var t,e=[];for(t in n)!0===n[t].explicitSet&&("name"===n[t].type?e.push("/"+t+" /"+n[t].value):e.push("/"+t+" "+n[t].value));0!==e.length&&this.internal.write("/ViewerPreferences\n<<\n"+e.join("\n")+"\n>>");})),this.internal.viewerpreferences.isSubscribed=!0),this.internal.viewerpreferences.configuration=n,this},
+function(t){function e(){return (n.canvg?Promise.resolve(n.canvg):import('./index.es-4be4ae30.js')).catch((function(t){return Promise.reject(new Error("Could not load canvg: "+t))})).then((function(t){return t.default?t.default:t}))}E.API.addSvgAsImage=function(t,r,n,i,o,s,c,u){if(isNaN(r)||isNaN(n))throw a.error("jsPDF.addSvgAsImage: Invalid coordinates",arguments),new Error("Invalid coordinates passed to jsPDF.addSvgAsImage");if(isNaN(i)||isNaN(o))throw a.error("jsPDF.addSvgAsImage: Invalid measurements",arguments),new Error("Invalid measurements (width and/or height) passed to jsPDF.addSvgAsImage");var h=document.createElement("canvas");h.width=i,h.height=o;var l=h.getContext("2d");l.fillStyle="#fff",l.fillRect(0,0,h.width,h.height);var f={ignoreMouse:!0,ignoreAnimation:!0,ignoreDimensions:!0},d=this;return e().then((function(e){return e.fromString(l,t,f)}),(function(){return Promise.reject(new Error("Could not load canvg."))})).then((function(t){return t.render(f)})).then((function(){d.addImage(h.toDataURL("image/jpeg",1),r,n,i,o,c,u);}))};}(),E.API.putTotalPages=function(t){var e,r=0;parseInt(this.internal.getFont().id.substr(1),10)<15?(e=new RegExp(t,"g"),r=this.internal.getNumberOfPages()):(e=new RegExp(this.pdfEscape16(t,this.internal.getFont()),"g"),r=this.pdfEscape16(this.internal.getNumberOfPages()+"",this.internal.getFont()));for(var n=1;n<=this.internal.getNumberOfPages();n++)for(var i=0;i<this.internal.pages[n].length;i++)this.internal.pages[n][i]=this.internal.pages[n][i].replace(e,r);return this},E.API.viewerPreferences=function(e,r){var n;e=e||{},r=r||!1;var i,a,o,s={HideToolbar:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},HideMenubar:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},HideWindowUI:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},FitWindow:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},CenterWindow:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.3},DisplayDocTitle:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.4},NonFullScreenPageMode:{defaultValue:"UseNone",value:"UseNone",type:"name",explicitSet:!1,valueSet:["UseNone","UseOutlines","UseThumbs","UseOC"],pdfVersion:1.3},Direction:{defaultValue:"L2R",value:"L2R",type:"name",explicitSet:!1,valueSet:["L2R","R2L"],pdfVersion:1.3},ViewArea:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},ViewClip:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},PrintArea:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},PrintClip:{defaultValue:"CropBox",value:"CropBox",type:"name",explicitSet:!1,valueSet:["MediaBox","CropBox","TrimBox","BleedBox","ArtBox"],pdfVersion:1.4},PrintScaling:{defaultValue:"AppDefault",value:"AppDefault",type:"name",explicitSet:!1,valueSet:["AppDefault","None"],pdfVersion:1.6},Duplex:{defaultValue:"",value:"none",type:"name",explicitSet:!1,valueSet:["Simplex","DuplexFlipShortEdge","DuplexFlipLongEdge","none"],pdfVersion:1.7},PickTrayByPDFSize:{defaultValue:!1,value:!1,type:"boolean",explicitSet:!1,valueSet:[!0,!1],pdfVersion:1.7},PrintPageRange:{defaultValue:"",value:"",type:"array",explicitSet:!1,valueSet:null,pdfVersion:1.7},NumCopies:{defaultValue:1,value:1,type:"integer",explicitSet:!1,valueSet:null,pdfVersion:1.7}},c=Object.keys(s),u=[],h=0,l=0,f=0;function d(t,e){var r,n=!1;for(r=0;r<t.length;r+=1)t[r]===e&&(n=!0);return n}if(void 0===this.internal.viewerpreferences&&(this.internal.viewerpreferences={},this.internal.viewerpreferences.configuration=JSON.parse(JSON.stringify(s)),this.internal.viewerpreferences.isSubscribed=!1),n=this.internal.viewerpreferences.configuration,"reset"===e||!0===r){var p=c.length;for(f=0;f<p;f+=1)n[c[f]].value=n[c[f]].defaultValue,n[c[f]].explicitSet=!1;}if("object"===t(e))for(a in e)if(o=e[a],d(c,a)&&void 0!==o){if("boolean"===n[a].type&&"boolean"==typeof o)n[a].value=o;else if("name"===n[a].type&&d(n[a].valueSet,o))n[a].value=o;else if("integer"===n[a].type&&Number.isInteger(o))n[a].value=o;else if("array"===n[a].type){for(h=0;h<o.length;h+=1)if(i=!0,1===o[h].length&&"number"==typeof o[h][0])u.push(String(o[h]-1));else if(o[h].length>1){for(l=0;l<o[h].length;l+=1)"number"!=typeof o[h][l]&&(i=!1);!0===i&&u.push([o[h][0]-1,o[h][1]-1].join(" "));}n[a].value="["+u.join(" ")+"]";}else n[a].value=n[a].defaultValue;n[a].explicitSet=!0;}return !1===this.internal.viewerpreferences.isSubscribed&&(this.internal.events.subscribe("putCatalog",(function(){var t,e=[];for(t in n)!0===n[t].explicitSet&&("name"===n[t].type?e.push("/"+t+" /"+n[t].value):e.push("/"+t+" "+n[t].value));0!==e.length&&this.internal.write("/ViewerPreferences\n<<\n"+e.join("\n")+"\n>>");})),this.internal.viewerpreferences.isSubscribed=!0),this.internal.viewerpreferences.configuration=n,this},
 /** ====================================================================
  * @license
  * jsPDF XMP metadata plugin
@@ -2122,6 +2122,7 @@ function _downloadPDFFile(labels, labelPageDescription, fileTitle) {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+const lineSeparatorChar = "|";
 //#endregion
 //#region Public functions
 /**
@@ -2165,7 +2166,7 @@ async function downloadPDF(selectionSetNames, layer, ids, removeDuplicates, labe
  *
  * @param fieldInfos Layer's fieldInfos structure
  * @param bypassFieldVisiblity Indicates if the configured fieldInfo visibility property should be ignored
- * @return Label spec
+ * @return Label spec with lines separated by `lineSeparatorChar`
  */
 function _convertPopupFieldsToLabelSpec(fieldInfos, bypassFieldVisiblity = false) {
   const labelSpec = [];
@@ -2175,7 +2176,7 @@ function _convertPopupFieldsToLabelSpec(fieldInfos, bypassFieldVisiblity = false
       labelSpec.push(`{${fieldInfo.fieldName}}`);
     }
   });
-  return labelSpec;
+  return labelSpec.join(lineSeparatorChar);
 }
 /**
  * Converts the text of a custom popup into a multiline label specification; conversion splits text into
@@ -2183,22 +2184,19 @@ function _convertPopupFieldsToLabelSpec(fieldInfos, bypassFieldVisiblity = false
  *
  * @param popupInfo Layer's popupInfo structure containing description, fieldInfos, and expressionInfos, e.g.,
  * "<div style='text-align: left;'>{NAME}<br />{STREET}<br />{CITY}, {STATE} {ZIP} <br /></div>"
- * @return Label spec
+ * @return Label spec with lines separated by `lineSeparatorChar`
  */
 function _convertPopupTextToLabelSpec(popupInfo) {
-  // Replace <br>, <br/> with |
-  popupInfo = popupInfo.replace(/<br\s*\/?>/gi, "|");
-  // Remove remaining HTML tags, replace 0xA0 that popup uses for spaces, replace some char representations,
+  // Replace <br>, <br/> with the line separator character
+  popupInfo = popupInfo.replace(/<br\s*\/?>/gi, lineSeparatorChar);
+  // Remove remaining HTML tags, replace 0xA0 that popup uses for spaces, and replace some char representations,
   // and split the label back into individual lines
-  let labelSpec = popupInfo
+  const labelSpec = popupInfo
     .replace(/<[\s.]*[^<>]*\/?>/gi, "")
     .replace(/\xA0/gi, " ")
     .replace(/&lt;/gi, "<")
     .replace(/&gt;/gi, ">")
-    .replace(/&nbsp;/gi, " ")
-    .split("|");
-  // Trim lines and remove empties
-  labelSpec = labelSpec.map(line => line.trim()).filter(line => line.length > 0);
+    .replace(/&nbsp;/gi, " ");
   return labelSpec;
 }
 /**
@@ -2217,7 +2215,7 @@ async function _createArcadeExecutors(labelFormat, layer) {
   }
   // Are there any Arcade expressions in the label format?
   const arcadeExpressionRegExp = /\{expression\/\w+\}/g;
-  const arcadeExpressionsMatches = labelFormat.join("|").match(arcadeExpressionRegExp);
+  const arcadeExpressionsMatches = labelFormat.match(arcadeExpressionRegExp);
   if (!arcadeExpressionsMatches) {
     return Promise.resolve(arcadeExecutors);
   }
@@ -2245,6 +2243,39 @@ async function _createArcadeExecutors(labelFormat, layer) {
   });
 }
 /**
+ * Prepares an attribute's value by applying domain and type information.
+ *
+ * @param attributeValue Value of attribute
+ * @param attributeType Type of attribute
+ * @param attributeDomain Domain info for attribute, if any
+ * @return Attribute value modified appropriate to domain and type
+ */
+function _prepareAttributeValue(attributeValue, attributeType, attributeDomain, intl) {
+  if (attributeDomain && attributeDomain.type === "coded-value") {
+    // "coded-value" domain field
+    const value = attributeDomain.getName(attributeValue);
+    return value;
+  }
+  else {
+    // Non-domain field or unsupported domain type
+    let value = attributeValue;
+    switch (attributeType) {
+      case "date":
+        // Format date produces odd characters for the space between the time and the AM/PM text,
+        // e.g., "12/31/1969, 4:00â€¯PM"
+        value = intl.formatDate(value).replace(/\xe2\x80\xaf/, "");
+        break;
+      case "double":
+      case "integer":
+      case "long":
+      case "small-integer":
+        value = intl.formatNumber(value);
+        break;
+    }
+    return value;
+  }
+}
+/**
  * Creates labels from items.
  *
  * @param layer Layer from which to fetch features
@@ -2261,11 +2292,11 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
   // Get the features to export
   const featureSet = await queryFeaturesByID(ids, layer);
   // Get field data types. Do we have any domain-based fields?
-  const fieldTypes = {};
-  const fieldDomains = {};
+  const attributeTypes = {};
+  const attributeDomains = {};
   layer.fields.forEach(field => {
-    fieldTypes[field.name] = field.type;
-    fieldDomains[field.name] = field.domain;
+    attributeTypes[field.name] = field.type;
+    attributeDomains[field.name] = field.domain;
   });
   // Get the label formatting, if any
   let labelFormat;
@@ -2280,7 +2311,7 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
         // Can we use the popup title?
         // eslint-disable-next-line unicorn/prefer-ternary
         if (typeof layer.popupTemplate.title === "string") {
-          labelFormat = [layer.popupTemplate.title];
+          labelFormat = layer.popupTemplate.title;
           // Otherwise revert to using attributes
         }
         else {
@@ -2295,34 +2326,37 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
     }
   }
   // Apply the label format
-  //???const attributeRegExp = /\{\w+\}/g;
   let labels;
   // eslint-disable-next-line unicorn/prefer-ternary
   if (labelFormat) {
     const arcadeExpressionRegExp = /\{expression\/\w+\}/g;
-    // Convert attributes into an array of labels
+    const attributeRegExp = /\{\w+\}/g;
+    // Find the label fields that we need to replace with values
+    const arcadeExpressionMatches = labelFormat.match(arcadeExpressionRegExp);
+    const attributeMatches = labelFormat.match(attributeRegExp);
+    // Convert feature attributes into an array of labels
     labels = featureSet.features.map(feature => {
-      const label = [];
-      labelFormat.forEach(labelLineTemplate => {
-        let labelLine = labelLineTemplate;
-        // Replace Arcade expressions
-        const arcadeExpressionsMatches = labelLine.match(arcadeExpressionRegExp);
-        if (arcadeExpressionsMatches) {
-          arcadeExpressionsMatches.forEach((match) => {
-            const expressionName = match.substring(match.indexOf("/") + 1, match.length - 1);
-            const replacement = arcadeExecutors[expressionName].execute({ "$feature": feature });
-            labelLine = labelLine.replace(match, replacement);
-          });
-        }
-        // Replace non-Arcade fields; must be done after Arcade check because `substitute` will discard
-        // Arcade expressions!
-        labelLine = intl.substitute(labelLine, feature.attributes).trim();
-        // Replace domain fields
-        // Discard empty lines
-        if (labelLine.length > 0) {
-          label.push(labelLine);
-        }
-      });
+      let labelPrep = "";
+      // Replace Arcade expressions
+      if (arcadeExpressionMatches) {
+        arcadeExpressionMatches.forEach((match) => {
+          const expressionName = match.substring(match.indexOf("/") + 1, match.length - 1);
+          const value = arcadeExecutors[expressionName].execute({ "$feature": feature });
+          labelPrep = labelPrep.replace(match, value);
+        });
+      }
+      // Replace non-Arcade fields
+      if (attributeMatches) {
+        attributeMatches.forEach((match) => {
+          const attributeName = match.substring(1, match.length - 1);
+          const value = _prepareAttributeValue(feature.attributes[attributeName], attributeTypes[attributeName], attributeDomains[attributeName], intl);
+          labelPrep = labelPrep.replace(match, value);
+        });
+      }
+      // Split label into lines
+      let label = labelPrep.split(lineSeparatorChar);
+      // Trim lines and remove empty lines
+      label = label.map(line => line.trim()).filter(line => line.length > 0);
       return label;
     })
       // Remove empty labels
@@ -2331,27 +2365,9 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
   else {
     // Export all attributes
     labels = featureSet.features.map(feature => {
-      return Object.keys(feature.attributes).map((name) => {
-        const domain = fieldDomains[name];
-        if (domain && domain.type === "coded-value") {
-          // "codedValue" domain field
-          const value = domain.getName(feature.attributes[name]);
-          return `${value}`;
-        }
-        else {
-          // Non-domain field or unsupported domain type
-          let value = feature.attributes[name];
-          switch (fieldTypes[name]) {
-            case "date":
-              value = intl.formatDate(value);
-              break;
-            case "small-integer":
-            case "integer":
-            case "double":
-              value = intl.formatNumber(value);
-          }
-          return `${value}`;
-        }
+      return Object.keys(feature.attributes).map((attributeName) => {
+        const value = _prepareAttributeValue(feature.attributes[attributeName], attributeTypes[attributeName], attributeDomains[attributeName], intl);
+        return `${value}`;
       });
     });
   }
@@ -2365,7 +2381,7 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
   if (includeHeaderNames) {
     let headerNames = [];
     if (labelFormat) {
-      headerNames = labelFormat.map(labelFormatLine => labelFormatLine.replace(/\{/g, "").replace(/\}/g, ""));
+      headerNames = labelFormat.replace(/\{/g, "").replace(/\}/g, "").split(lineSeparatorChar);
     }
     else {
       const featuresAttrs = featureSet.features[0].attributes;
