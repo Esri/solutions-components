@@ -2192,8 +2192,10 @@ function _convertPopupFieldsToLabelSpec(fieldInfos, bypassFieldVisiblity = false
  * @return Label spec with lines separated by `lineSeparatorChar`
  */
 function _convertPopupTextToLabelSpec(popupInfo) {
-  // Replace <br>, <br/> with the line separator character
+  // Replace <br> variants with the line separator character
   popupInfo = popupInfo.replace(/<br\s*\/?>/gi, lineSeparatorChar);
+  // Replace <p> variants with the line separator character
+  popupInfo = popupInfo.replace(/<p.*>/gi, lineSeparatorChar);
   // Remove remaining HTML tags, replace 0xA0 that popup uses for spaces, and replace some char representations,
   // and split the label back into individual lines
   const labelSpec = popupInfo
@@ -2285,21 +2287,30 @@ function _prepareAttributeValue(attributeValue, attributeType, attributeDomain, 
   else {
     // Non-domain field or unsupported domain type
     let value = attributeValue;
-    // Use format information if we have it
-    if (attributeFormat) {
-      console.log(value, attributeFormat); //???
-    }
     switch (attributeType) {
       case "date":
+        if (attributeFormat === null || attributeFormat === void 0 ? void 0 : attributeFormat.dateFormat) {
+          const dateFormatIntlOptions = intl.convertDateFormatToIntlOptions(attributeFormat.dateFormat);
+          value = intl.formatDate(value, dateFormatIntlOptions);
+        }
+        else {
+          value = intl.formatDate(value);
+        }
         // Format date produces odd characters for the space between the time and the AM/PM text,
         // e.g., "12/31/1969, 4:00â€¯PM"
-        value = intl.formatDate(value).replace(/\xe2\x80\xaf/g, "");
+        value = value.replace(/\xe2\x80\xaf/g, "");
         break;
       case "double":
       case "integer":
       case "long":
       case "small-integer":
-        value = intl.formatNumber(value);
+        if (attributeFormat) {
+          const numberFormatIntlOptions = intl.convertNumberFormatToIntlOptions(attributeFormat);
+          value = intl.formatNumber(value, numberFormatIntlOptions);
+        }
+        else {
+          value = intl.formatNumber(value);
+        }
         break;
     }
     return value;

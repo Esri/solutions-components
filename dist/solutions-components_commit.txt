@@ -1,7 +1,7 @@
-Built 02/16/2023 11:02:37.00 
+Built 02/16/2023 11:53:04.38 
 pn-updates
-commit 9cae2e4968d100e41abdc8919f310f03578977ba
+commit 4179aa3ee7db6d190f3964f850a95084bd47276a
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Thu Feb 16 09:46:59 2023 -0800
+Date:   Thu Feb 16 11:08:10 2023 -0800
 
-    Replace missing Arcade function
+    Gather info about formats
