@@ -35,6 +35,10 @@ interface IAttributeDomains {
   [attributeName: string]: __esri.CodedValueDomain | __esri.RangeDomain | __esri.InheritedDomain | null;
 }
 
+interface IAttributeFormats {
+  [attributeName: string]: __esri.FieldInfoFormat;
+}
+
 interface IAttributeTypes {
   [attributeName: string]: string;
 }
@@ -142,8 +146,17 @@ function _convertPopupFieldsToLabelSpec(
 function _convertPopupTextToLabelSpec(
   popupInfo: string,
 ): string {
-  // Replace <br>, <br/> with the line separator character
+  // Replace <br> variants with the line separator character
   popupInfo = popupInfo.replace(/<br\s*\/?>/gi, lineSeparatorChar);
+
+  // Replace <p> variants with the line separator character
+  popupInfo = popupInfo.replace(/<p.*>/gi, lineSeparatorChar);
+
+  // Remove </p>
+  popupInfo = popupInfo.replace(/<\/p>/gi, "");
+
+  // Remove \n
+  popupInfo = popupInfo.replace(/\n/gi, "");
 
   // Remove remaining HTML tags, replace 0xA0 that popup uses for spaces, and replace some char representations,
   // and split the label back into individual lines
@@ -185,7 +198,26 @@ async function _createArcadeExecutors(
 
   // Generate an Arcade executor for each match
   const [arcade] = await loadModules(["esri/arcade"]);
-  const labelingProfile: __esri.Profile = arcade.createArcadeProfile("popup");
+  const labelingProfile: __esri.Profile = {
+    variables: [
+      {
+        name: "$feature",
+        type: "feature"
+      },
+      {
+        name: "$layer",
+        type: "featureSet"
+      },
+      {
+        name: "$datastore",
+        type: "featureSetCollection"
+      },
+      {
+        name: "$map",
+        type: "featureSetCollection"
+      }
+    ]
+  };
 
   const createArcadeExecutorPromises: IArcadeExecutorPromises = {};
   arcadeExpressionsMatches.forEach(
@@ -224,12 +256,15 @@ async function _createArcadeExecutors(
  * @param attributeValue Value of attribute
  * @param attributeType Type of attribute
  * @param attributeDomain Domain info for attribute, if any
+ * @param attributeFormat Format info for attribute, if any
+ * @param intl esri/intl
  * @return Attribute value modified appropriate to domain and type
  */
 function _prepareAttributeValue(
   attributeValue: any,
   attributeType: string,
   attributeDomain: __esri.CodedValueDomain | __esri.RangeDomain | __esri.InheritedDomain | null,
+  attributeFormat: __esri.FieldInfoFormat,
   intl: any
 ): any {
   if (attributeDomain && (attributeDomain as __esri.CodedValueDomain).type === "coded-value") {
@@ -239,17 +274,31 @@ function _prepareAttributeValue(
   } else {
     // Non-domain field or unsupported domain type
     let value = attributeValue;
+
     switch (attributeType) {
       case "date":
+        if (attributeFormat?.dateFormat) {
+          const dateFormatIntlOptions = intl.convertDateFormatToIntlOptions(attributeFormat.dateFormat);
+          value = intl.formatDate(value, dateFormatIntlOptions);
+        } else {
+          value = intl.formatDate(value);
+        }
+
         // Format date produces odd characters for the space between the time and the AM/PM text,
         // e.g., "12/31/1969, 4:00â€¯PM"
-        value = intl.formatDate(value).replace(/\xe2\x80\xaf/g, "");
+        value = value.replace(/\xe2\x80\xaf/g, "");
         break;
+
       case "double":
       case "integer":
       case "long":
       case "small-integer":
-        value = intl.formatNumber(value);
+        if (attributeFormat) {
+          const numberFormatIntlOptions = intl.convertNumberFormatToIntlOptions(attributeFormat)
+          value = intl.formatNumber(value, numberFormatIntlOptions);
+        } else {
+          value = intl.formatNumber(value);
+        }
         break;
     }
     return value;
@@ -288,11 +337,21 @@ async function _prepareLabels(
       attributeDomains[field.name] = field.domain;
     }
   );
+  const attributeFormats: IAttributeFormats = {};
 
   // Get the label formatting, if any
   let labelFormat: string;
   let arcadeExecutors: IArcadeExecutors = {};
   if (layer.popupEnabled) {
+    layer.popupTemplate.fieldInfos.forEach(
+      // Extract any format info that we have
+      fieldInfo => {
+        if (fieldInfo.format) {
+          attributeFormats[fieldInfo.fieldName] = fieldInfo.format;
+        }
+      }
+    );
+
     // What data fields are used in the labels?
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
     if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "fields") {
@@ -352,7 +411,8 @@ async function _prepareLabels(
             (match: string) => {
               const attributeName = match.substring(1, match.length - 1);
               const value = _prepareAttributeValue(feature.attributes[attributeName],
-                  attributeTypes[attributeName], attributeDomains[attributeName], intl);
+                attributeTypes[attributeName], attributeDomains[attributeName],
+                attributeFormats[attributeName], intl);
               labelPrep = labelPrep.replace(match, value);
             }
           )
@@ -375,7 +435,8 @@ async function _prepareLabels(
         return Object.keys(feature.attributes).map(
           (attributeName: string) => {
             const value =  _prepareAttributeValue(feature.attributes[attributeName],
-              attributeTypes[attributeName], attributeDomains[attributeName], intl);
+              attributeTypes[attributeName], attributeDomains[attributeName],
+              null, intl);
             return `${value}`;
           }
         );
