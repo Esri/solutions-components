@@ -185,7 +185,26 @@ async function _createArcadeExecutors(
 
   // Generate an Arcade executor for each match
   const [arcade] = await loadModules(["esri/arcade"]);
-  const labelingProfile: __esri.Profile = arcade.createArcadeProfile("popup");
+  const labelingProfile: __esri.Profile = {
+    variables: [
+      {
+        name: "$feature",
+        type: "feature"
+      },
+      {
+        name: "$layer",
+        type: "featureSet"
+      },
+      {
+        name: "$datastore",
+        type: "featureSetCollection"
+      },
+      {
+        name: "$map",
+        type: "featureSetCollection"
+      }
+    ]
+  };
 
   const createArcadeExecutorPromises: IArcadeExecutorPromises = {};
   arcadeExpressionsMatches.forEach(
