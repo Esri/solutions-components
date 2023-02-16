@@ -35,6 +35,10 @@ interface IAttributeDomains {
   [attributeName: string]: __esri.CodedValueDomain | __esri.RangeDomain | __esri.InheritedDomain | null;
 }
 
+interface IAttributeFormats {
+  [attributeName: string]: __esri.FieldInfoFormat;
+}
+
 interface IAttributeTypes {
   [attributeName: string]: string;
 }
@@ -243,12 +247,15 @@ async function _createArcadeExecutors(
  * @param attributeValue Value of attribute
  * @param attributeType Type of attribute
  * @param attributeDomain Domain info for attribute, if any
+ * @param attributeFormat Format info for attribute, if any
+ * @param intl esri/intl
  * @return Attribute value modified appropriate to domain and type
  */
 function _prepareAttributeValue(
   attributeValue: any,
   attributeType: string,
   attributeDomain: __esri.CodedValueDomain | __esri.RangeDomain | __esri.InheritedDomain | null,
+  attributeFormat: __esri.FieldInfoFormat,
   intl: any
 ): any {
   if (attributeDomain && (attributeDomain as __esri.CodedValueDomain).type === "coded-value") {
@@ -258,6 +265,12 @@ function _prepareAttributeValue(
   } else {
     // Non-domain field or unsupported domain type
     let value = attributeValue;
+
+    // Use format information if we have it
+    if (attributeFormat) {
+      console.log(value, attributeFormat);//???
+    }
+
     switch (attributeType) {
       case "date":
         // Format date produces odd characters for the space between the time and the AM/PM text,
@@ -307,11 +320,21 @@ async function _prepareLabels(
       attributeDomains[field.name] = field.domain;
     }
   );
+  const attributeFormats: IAttributeFormats = {};
 
   // Get the label formatting, if any
   let labelFormat: string;
   let arcadeExecutors: IArcadeExecutors = {};
   if (layer.popupEnabled) {
+    layer.popupTemplate.fieldInfos.forEach(
+      // Extract any format info that we have
+      fieldInfo => {
+        if (fieldInfo.format) {
+          attributeFormats[fieldInfo.fieldName] = fieldInfo.format;
+        }
+      }
+    );
+
     // What data fields are used in the labels?
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
     if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "fields") {
@@ -371,7 +394,8 @@ async function _prepareLabels(
             (match: string) => {
               const attributeName = match.substring(1, match.length - 1);
               const value = _prepareAttributeValue(feature.attributes[attributeName],
-                  attributeTypes[attributeName], attributeDomains[attributeName], intl);
+                attributeTypes[attributeName], attributeDomains[attributeName],
+                attributeFormats[attributeName], intl);
               labelPrep = labelPrep.replace(match, value);
             }
           )
@@ -394,7 +418,8 @@ async function _prepareLabels(
         return Object.keys(feature.attributes).map(
           (attributeName: string) => {
             const value =  _prepareAttributeValue(feature.attributes[attributeName],
-              attributeTypes[attributeName], attributeDomains[attributeName], intl);
+              attributeTypes[attributeName], attributeDomains[attributeName],
+              null, intl);
             return `${value}`;
           }
         );

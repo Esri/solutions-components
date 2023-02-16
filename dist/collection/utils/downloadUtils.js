@@ -176,9 +176,11 @@ async function _createArcadeExecutors(labelFormat, layer) {
  * @param attributeValue Value of attribute
  * @param attributeType Type of attribute
  * @param attributeDomain Domain info for attribute, if any
+ * @param attributeFormat Format info for attribute, if any
+ * @param intl esri/intl
  * @return Attribute value modified appropriate to domain and type
  */
-function _prepareAttributeValue(attributeValue, attributeType, attributeDomain, intl) {
+function _prepareAttributeValue(attributeValue, attributeType, attributeDomain, attributeFormat, intl) {
   if (attributeDomain && attributeDomain.type === "coded-value") {
     // "coded-value" domain field
     const value = attributeDomain.getName(attributeValue);
@@ -187,6 +189,10 @@ function _prepareAttributeValue(attributeValue, attributeType, attributeDomain, 
   else {
     // Non-domain field or unsupported domain type
     let value = attributeValue;
+    // Use format information if we have it
+    if (attributeFormat) {
+      console.log(value, attributeFormat); //???
+    }
     switch (attributeType) {
       case "date":
         // Format date produces odd characters for the space between the time and the AM/PM text,
@@ -226,10 +232,18 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
     attributeTypes[field.name] = field.type;
     attributeDomains[field.name] = field.domain;
   });
+  const attributeFormats = {};
   // Get the label formatting, if any
   let labelFormat;
   let arcadeExecutors = {};
   if (layer.popupEnabled) {
+    layer.popupTemplate.fieldInfos.forEach(
+    // Extract any format info that we have
+    fieldInfo => {
+      if (fieldInfo.format) {
+        attributeFormats[fieldInfo.fieldName] = fieldInfo.format;
+      }
+    });
     // What data fields are used in the labels?
     // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
     if (formatUsingLayerPopup && ((_b = (_a = layer.popupTemplate) === null || _a === void 0 ? void 0 : _a.content[0]) === null || _b === void 0 ? void 0 : _b.type) === "fields") {
@@ -277,7 +291,7 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
       if (attributeMatches) {
         attributeMatches.forEach((match) => {
           const attributeName = match.substring(1, match.length - 1);
-          const value = _prepareAttributeValue(feature.attributes[attributeName], attributeTypes[attributeName], attributeDomains[attributeName], intl);
+          const value = _prepareAttributeValue(feature.attributes[attributeName], attributeTypes[attributeName], attributeDomains[attributeName], attributeFormats[attributeName], intl);
           labelPrep = labelPrep.replace(match, value);
         });
       }
@@ -292,7 +306,7 @@ async function _prepareLabels(layer, ids, removeDuplicates = true, formatUsingLa
     // Export all attributes
     labels = featureSet.features.map(feature => {
       return Object.keys(feature.attributes).map((attributeName) => {
-        const value = _prepareAttributeValue(feature.attributes[attributeName], attributeTypes[attributeName], attributeDomains[attributeName], intl);
+        const value = _prepareAttributeValue(feature.attributes[attributeName], attributeTypes[attributeName], attributeDomains[attributeName], null, intl);
         return `${value}`;
       });
     });
