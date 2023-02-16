@@ -152,6 +152,9 @@ function _convertPopupTextToLabelSpec(
   // Replace <p> variants with the line separator character
   popupInfo = popupInfo.replace(/<p.*>/gi, lineSeparatorChar);
 
+  // Remove </p>
+  popupInfo = popupInfo.replace(/<\/p>/gi, "");
+
   // Remove \n
   popupInfo = popupInfo.replace(/\n/gi, "");
 
