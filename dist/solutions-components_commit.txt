@@ -1,7 +1,7 @@
-Built 02/16/2023 11:53:04.38 
+Built 02/16/2023 12:07:25.45 
 pn-updates
-commit 4179aa3ee7db6d190f3964f850a95084bd47276a
+commit c48242f1a0a3181847e949d7b27ce5d493e6e9d3
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Thu Feb 16 11:08:10 2023 -0800
+Date:   Thu Feb 16 11:53:24 2023 -0800
 
-    Gather info about formats
+    Apply formatting and <p> handling

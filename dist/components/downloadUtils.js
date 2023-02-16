@@ -2196,6 +2196,8 @@ function _convertPopupTextToLabelSpec(popupInfo) {
   popupInfo = popupInfo.replace(/<br\s*\/?>/gi, lineSeparatorChar);
   // Replace <p> variants with the line separator character
   popupInfo = popupInfo.replace(/<p.*>/gi, lineSeparatorChar);
+  // Remove \n
+  popupInfo = popupInfo.replace(/\n/gi, "");
   // Remove remaining HTML tags, replace 0xA0 that popup uses for spaces, and replace some char representations,
   // and split the label back into individual lines
   const labelSpec = popupInfo
