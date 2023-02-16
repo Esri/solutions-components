@@ -1,7 +1,0 @@
-Built 02/16/2023 12:20:43.70 
-pn-updates
-commit 5c669230114d0d119ba616c99103947b8564f01c
-Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Thu Feb 16 12:08:09 2023 -0800
-
-    Handle \n
