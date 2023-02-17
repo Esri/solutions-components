@@ -891,7 +891,7 @@ export class PublicNotification {
                 <div class="margin-side-1 padding-top-1 border-bottom" />
                 <div class="padding-top-sides-1">
 
-                  <calcite-label layout="inline"style={ "visibility:" + (isPdf ? "hidden" : "visible") }>
+                  <calcite-label layout="inline" style="visibility:visible" >
                     <calcite-checkbox disabled={!this._downloadActive} ref={(el) => { this._removeDuplicatesCSV = el }} />
                     {this._translations.removeDuplicate} CSV
                   </calcite-label>
