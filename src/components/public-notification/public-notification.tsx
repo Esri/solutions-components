@@ -896,7 +896,7 @@ export class PublicNotification {
                     {this._translations.removeDuplicate} CSV
                   </calcite-label>
 
-                  <calcite-label layout="inline">
+                  <calcite-label layout="inline" style="visibility:hidden">
                     <calcite-checkbox disabled={!this._downloadActive} ref={(el) => { this._removeDuplicatesPDF = el }} />
                     {this._translations.removeDuplicate} PDF
                   </calcite-label>

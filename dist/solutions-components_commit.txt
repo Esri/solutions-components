@@ -1,7 +1,7 @@
-Built 02/16/2023 18:14:57.46 
+Built 02/17/2023  9:27:24.69 
 enh/183-separate-remove-dups-switches
-commit bc70ca6a9ddbaf6694808cc5a57f98fe2a936af1
+commit 444615925d913aa7b04af12fa351421060980b06
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Thu Feb 16 18:05:48 2023 -0800
+Date:   Fri Feb 17 09:09:22 2023 -0800
 
-    Adjust for calcite
+    Fix regexp
