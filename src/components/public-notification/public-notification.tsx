@@ -886,7 +886,9 @@ export class PublicNotification {
           {
             hasSelections ? (
               <div>
-                <calcite-label>{this._translations.notifications}</calcite-label>
+                <div class="padding-top-sides-1">
+                  <calcite-label>{this._translations.notifications}</calcite-label>
+                </div>
                 {this._getSelectionLists()}
                 <div class="margin-side-1 padding-top-1 border-bottom" />
                 <div class="padding-top-sides-1">
