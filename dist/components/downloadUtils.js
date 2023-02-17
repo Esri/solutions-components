@@ -2139,6 +2139,7 @@ const lineSeparatorChar = "|";
  */
 async function downloadCSV(selectionSetNames, layer, ids, formatUsingLayerPopup, removeDuplicates = false, addColumnTitle = false) {
   console.log("downloadCSV using selectionSetNames " + JSON.stringify(selectionSetNames)); //???
+  console.log("downloadCSV removeDuplicates", removeDuplicates); //???
   const labels = await _prepareLabels(layer, ids, removeDuplicates, formatUsingLayerPopup, addColumnTitle);
   exportCSV(labels);
   return Promise.resolve();
@@ -2155,6 +2156,7 @@ async function downloadCSV(selectionSetNames, layer, ids, formatUsingLayerPopup,
  */
 async function downloadPDF(selectionSetNames, layer, ids, removeDuplicates, labelPageDescription) {
   console.log("downloadPDF using selectionSetNames " + JSON.stringify(selectionSetNames)); //???
+  console.log("downloadPDF removeDuplicates", removeDuplicates); //???
   let labels = await _prepareLabels(layer, ids, removeDuplicates);
   labels =
     // Remove empty lines in labels
