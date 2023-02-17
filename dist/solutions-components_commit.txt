@@ -1,7 +1,7 @@
-Built 02/16/2023 15:55:22.66 
+Built 02/17/2023  8:36:27.94 
 develop
-commit 892359cacb1b2943895630580ca77cbbdbc25eaa
+commit c56e10daeff65d83e4efbec3057b8b9166b61c98
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Thu Feb 16 12:37:06 2023 -0800
+Date:   Thu Feb 16 15:57:50 2023 -0800
 
-    Update version
+    v0.4.7

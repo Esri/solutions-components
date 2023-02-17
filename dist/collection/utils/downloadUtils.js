@@ -97,8 +97,8 @@ function _convertPopupFieldsToLabelSpec(fieldInfos, bypassFieldVisiblity = false
 function _convertPopupTextToLabelSpec(popupInfo) {
   // Replace <br> variants with the line separator character
   popupInfo = popupInfo.replace(/<br\s*\/?>/gi, lineSeparatorChar);
-  // Replace <p> variants with the line separator character
-  popupInfo = popupInfo.replace(/<p.*>/gi, lineSeparatorChar);
+  // Replace <p> variants with the line separator character, except in the first position
+  popupInfo = popupInfo.replace(/<p[^>]*>/gi, lineSeparatorChar).trim().replace(/^|/, "");
   // Remove </p>
   popupInfo = popupInfo.replace(/<\/p>/gi, "");
   // Remove \n
