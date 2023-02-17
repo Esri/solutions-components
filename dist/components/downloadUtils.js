@@ -2139,6 +2139,7 @@ const lineSeparatorChar = "|";
  */
 async function downloadCSV(selectionSetNames, layer, ids, formatUsingLayerPopup, removeDuplicates = false, addColumnTitle = false) {
   console.log("downloadCSV using selectionSetNames " + JSON.stringify(selectionSetNames)); //???
+  console.log("downloadCSV removeDuplicates", removeDuplicates); //???
   const labels = await _prepareLabels(layer, ids, removeDuplicates, formatUsingLayerPopup, addColumnTitle);
   exportCSV(labels);
   return Promise.resolve();
@@ -2155,6 +2156,7 @@ async function downloadCSV(selectionSetNames, layer, ids, formatUsingLayerPopup,
  */
 async function downloadPDF(selectionSetNames, layer, ids, removeDuplicates, labelPageDescription) {
   console.log("downloadPDF using selectionSetNames " + JSON.stringify(selectionSetNames)); //???
+  console.log("downloadPDF removeDuplicates", removeDuplicates); //???
   let labels = await _prepareLabels(layer, ids, removeDuplicates);
   labels =
     // Remove empty lines in labels
@@ -2195,7 +2197,7 @@ function _convertPopupTextToLabelSpec(popupInfo) {
   // Replace <br> variants with the line separator character
   popupInfo = popupInfo.replace(/<br\s*\/?>/gi, lineSeparatorChar);
   // Replace <p> variants with the line separator character, except in the first position
-  popupInfo = popupInfo.replace(/<p[^>]*>/gi, lineSeparatorChar).trim().replace(/^|/, "");
+  popupInfo = popupInfo.replace(/<p[^>]*>/gi, lineSeparatorChar).trim().replace(/^\|/, "");
   // Remove </p>
   popupInfo = popupInfo.replace(/<\/p>/gi, "");
   // Remove \n

@@ -229,9 +229,14 @@ export class PublicNotification {
   protected _popupsEnabled: boolean;
 
   /**
-   * HTMLCalciteCheckboxElement: The remove duplicates checkbox element
+   * HTMLCalciteCheckboxElement: The remove duplicates checkbox element for CSV downloads
    */
-  protected _removeDuplicates: HTMLCalciteCheckboxElement;
+  protected _removeDuplicatesCSV: HTMLCalciteCheckboxElement;
+
+  /**
+   * HTMLCalciteCheckboxElement: The remove duplicates checkbox element for PDF downloads
+   */
+  protected _removeDuplicatesPDF: HTMLCalciteCheckboxElement;
 
   /**
    * ISearchConfiguration: Configuration details for the Search widget
@@ -885,8 +890,12 @@ export class PublicNotification {
                 {this._getSelectionLists()}
                 <div class="margin-side-1 padding-top-1 border-bottom" />
                 <div class="padding-top-sides-1">
-                  <calcite-label layout="inline">
-                    <calcite-checkbox disabled={!this._downloadActive} ref={(el) => { this._removeDuplicates = el }} />
+                  <calcite-label class={isPdf ? "display-none" : ""} layout="inline">
+                    <calcite-checkbox disabled={!this._downloadActive} ref={(el) => { this._removeDuplicatesCSV = el }} />
+                    {this._translations.removeDuplicate}
+                  </calcite-label>
+                  <calcite-label class={isPdf ? "" : "display-none"} layout="inline">
+                    <calcite-checkbox disabled={!this._downloadActive} ref={(el) => { this._removeDuplicatesPDF = el }} />
                     {this._translations.removeDuplicate}
                   </calcite-label>
                 </div>
@@ -1068,7 +1077,7 @@ export class PublicNotification {
   protected _downloadPDF(): void {
     const ids = utils.getSelectionIds(this._getDownloadSelectionSets());
     const selectionSetNames = this._selectionSets.map(set => set.label);
-    void this._downloadTools.downloadPDF(selectionSetNames, ids, this._removeDuplicates.checked);
+    void this._downloadTools.downloadPDF(selectionSetNames, ids, this._removeDuplicatesPDF.checked);
   }
 
   /**
@@ -1079,7 +1088,7 @@ export class PublicNotification {
   protected _downloadCSV(): void {
     const ids = utils.getSelectionIds(this._getDownloadSelectionSets());
     const selectionSetNames = this._selectionSets.map(set => set.label);
-    void this._downloadTools.downloadCSV(selectionSetNames, ids, this._removeDuplicates.checked);
+    void this._downloadTools.downloadCSV(selectionSetNames, ids, this._removeDuplicatesCSV.checked);
   }
 
   /**

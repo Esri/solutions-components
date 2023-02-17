@@ -160,9 +160,13 @@ export declare class PublicNotification {
    */
   protected _popupsEnabled: boolean;
   /**
-   * HTMLCalciteCheckboxElement: The remove duplicates checkbox element
+   * HTMLCalciteCheckboxElement: The remove duplicates checkbox element for CSV downloads
    */
-  protected _removeDuplicates: HTMLCalciteCheckboxElement;
+  protected _removeDuplicatesCSV: HTMLCalciteCheckboxElement;
+  /**
+   * HTMLCalciteCheckboxElement: The remove duplicates checkbox element for PDF downloads
+   */
+  protected _removeDuplicatesPDF: HTMLCalciteCheckboxElement;
   /**
    * ISearchConfiguration: Configuration details for the Search widget
    */

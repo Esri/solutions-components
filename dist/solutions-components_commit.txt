@@ -1,7 +1,7 @@
-Built 02/17/2023  8:36:27.94 
-develop
-commit c56e10daeff65d83e4efbec3057b8b9166b61c98
+Built 02/17/2023 10:18:11.74 
+enh/183-separate-remove-dups-switches
+commit bbde1acc3314dd3515c0d15ffbbbc6e0598cbe90
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Thu Feb 16 15:57:50 2023 -0800
+Date:   Fri Feb 17 10:08:13 2023 -0800
 
-    v0.4.7
+    Adjust for calcite

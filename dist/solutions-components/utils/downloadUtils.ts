@@ -69,6 +69,7 @@ export async function downloadCSV(
   addColumnTitle = false
 ): Promise<void> {
   console.log("downloadCSV using selectionSetNames " + JSON.stringify(selectionSetNames));//???
+  console.log("downloadCSV removeDuplicates", removeDuplicates);//???
   const labels = await _prepareLabels(layer, ids, removeDuplicates, formatUsingLayerPopup, addColumnTitle);
 
   exportCSV(labels);
@@ -94,6 +95,7 @@ export async function downloadPDF(
   labelPageDescription: ILabel
 ): Promise<void> {
   console.log("downloadPDF using selectionSetNames " + JSON.stringify(selectionSetNames));//???
+  console.log("downloadPDF removeDuplicates", removeDuplicates);//???
   let labels = await _prepareLabels(layer, ids, removeDuplicates);
 
   labels =
@@ -150,7 +152,7 @@ function _convertPopupTextToLabelSpec(
   popupInfo = popupInfo.replace(/<br\s*\/?>/gi, lineSeparatorChar);
 
   // Replace <p> variants with the line separator character, except in the first position
-  popupInfo = popupInfo.replace(/<p[^>]*>/gi, lineSeparatorChar).trim().replace(/^|/, "");
+  popupInfo = popupInfo.replace(/<p[^>]*>/gi, lineSeparatorChar).trim().replace(/^\|/, "");
 
   // Remove </p>
   popupInfo = popupInfo.replace(/<\/p>/gi, "");
