@@ -244,10 +244,10 @@ export class MapSelectTools {
     oldValue: __esri.Geometry[]
   ): Promise<void> {
     if (newValue !== oldValue) {
+      const isEmpty = newValue.length === 0;
+      await this._clearResults(isEmpty, isEmpty);
       if (newValue.length > 0) {
         return this._highlightWithOIDsOrGeoms();
-      } else if (newValue.length === 0) {
-        return this._clearResults(true, true);
       }
     }
   }

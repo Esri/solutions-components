@@ -64,11 +64,10 @@ export class MapSelectTools {
    */
   async watchGeometriesHandler(newValue, oldValue) {
     if (newValue !== oldValue) {
+      const isEmpty = newValue.length === 0;
+      await this._clearResults(isEmpty, isEmpty);
       if (newValue.length > 0) {
         return this._highlightWithOIDsOrGeoms();
-      }
-      else if (newValue.length === 0) {
-        return this._clearResults(true, true);
       }
     }
   }
