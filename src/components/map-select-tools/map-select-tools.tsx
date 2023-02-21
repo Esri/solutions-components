@@ -430,6 +430,9 @@ export class MapSelectTools {
     const useDrawClass = !this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
 
     const showLayerChoiceClass = searchEnabled ? "div-not-visible" : "div-visible";
+
+    const bufferDistance = typeof this.selectionSet?.distance === "number" ? this.selectionSet.distance : this.defaultBufferDistance;
+
     return (
       <Host>
         <div class="padding-bottom-1">
@@ -490,7 +493,7 @@ export class MapSelectTools {
         <calcite-label class={showBufferToolsClass}>
           {this._translations.searchDistance}
           <buffer-tools
-            distance={this.selectionSet?.distance || this.defaultBufferDistance}
+            distance={bufferDistance}
             geometries={this.geometries}
             onBufferComplete={(evt) => this._bufferComplete(evt)}
             ref={(el) => this._bufferTools = el}

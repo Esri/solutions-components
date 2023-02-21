@@ -1,7 +1,0 @@
-Built 02/17/2023 13:59:52.86 
-bug/185-notifications-heading
-commit 5c4a92b96bdf28f4939e7842959b2cc4fda5bc09
-Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Fri Feb 17 10:22:01 2023 -0800
-
-    v0.4.9
