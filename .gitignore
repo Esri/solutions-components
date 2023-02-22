@@ -35,3 +35,4 @@ coverage/
 src/**/*.js
 !src/**/assets/**/*.js
 !src/demos/**/*.js
+*.tgz
