@@ -638,31 +638,47 @@ export class MapSelectTools {
     searchConfiguration: ISearchConfiguration,
     view: __esri.MapView
   ): ISearchConfiguration {
+    const INCLUDE_DEFAULT_SOURCES = "includeDefaultSources";
     const sources = searchConfiguration?.sources;
-    if (sources) {
-      sources.forEach(source => {
+
+    if (sources?.length > 0) {
+      searchConfiguration[INCLUDE_DEFAULT_SOURCES] = false;
+
+      sources.forEach((source) => {
         const isLayerSource = source.hasOwnProperty("layer");
         if (isLayerSource) {
           const layerSource = source as ILayerSourceConfigItem;
-          const layerFromMap = layerSource.layer?.id
-            ? view.map.findLayerById(layerSource.layer.id)
-            : null;
+          const layerId = layerSource.layer?.id;
+          const layerFromMap = layerId ? view.map.findLayerById(layerId) : null;
+          const layerUrl = layerSource?.layer?.url;
           if (layerFromMap) {
             layerSource.layer = layerFromMap as __esri.FeatureLayer;
-          } else if (layerSource?.layer?.url) {
-            layerSource.layer = new this.FeatureLayer(layerSource?.layer?.url as any);
+          } else if (layerUrl) {
+            layerSource.layer = new this.FeatureLayer(layerUrl as any);
           }
         }
       });
-    }
-    searchConfiguration?.sources?.forEach(source => {
-      const isLocatorSource = source.hasOwnProperty("locator");
-      if (isLocatorSource) {
-        const locatorSource = source as ILocatorSourceConfigItem;
-        locatorSource.url = locatorSource.url;
-        delete locatorSource.url;
+
+      sources?.forEach((source) => {
+        const isLocatorSource = source.hasOwnProperty("locator");
+        if (isLocatorSource) {
+          const locatorSource = (source as ILocatorSourceConfigItem);
+          if (locatorSource?.name === "ArcGIS World Geocoding Service") {
+            const outFields = locatorSource.outFields || ["Addr_type", "Match_addr", "StAddr", "City"];
+            locatorSource.outFields = outFields;
+            locatorSource.singleLineFieldName = "SingleLine";
+          }
+
+          locatorSource.url = locatorSource.url;
+          delete locatorSource.url;
+        }
+      });
+    } else {
+      searchConfiguration = {
+        ...searchConfiguration,
+        includeDefaultSources: true
       }
-    });
+    }
     return searchConfiguration;
   }
 

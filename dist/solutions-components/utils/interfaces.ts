@@ -105,7 +105,7 @@ export interface ISearchConfiguration {
   allPlaceholder?: string;
   includeDefaultSources?: boolean;
   searchAllEnabled?: boolean;
-  sources: Array<ILocatorSourceConfigItem | ILayerSourceConfigItem>;
+  sources?: Array<ILocatorSourceConfigItem | ILayerSourceConfigItem>;
 }
 
 export interface ISearchSourceConfigItem {
@@ -117,6 +117,7 @@ export interface ISearchSourceConfigItem {
   placeholder: string;
   withinViewEnabled: boolean;
   zoomScale: number;
+  outFields?: string[];
 }
 
 export interface ILocatorSourceConfigItem extends ISearchSourceConfigItem {

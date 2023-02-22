@@ -307,34 +307,43 @@ export class MapSelectTools {
    * @protected
    */
   _getSearchConfig(searchConfiguration, view) {
-    var _a;
+    const INCLUDE_DEFAULT_SOURCES = "includeDefaultSources";
     const sources = searchConfiguration === null || searchConfiguration === void 0 ? void 0 : searchConfiguration.sources;
-    if (sources) {
-      sources.forEach(source => {
-        var _a, _b, _c;
+    if ((sources === null || sources === void 0 ? void 0 : sources.length) > 0) {
+      searchConfiguration[INCLUDE_DEFAULT_SOURCES] = false;
+      sources.forEach((source) => {
+        var _a, _b;
         const isLayerSource = source.hasOwnProperty("layer");
         if (isLayerSource) {
           const layerSource = source;
-          const layerFromMap = ((_a = layerSource.layer) === null || _a === void 0 ? void 0 : _a.id)
-            ? view.map.findLayerById(layerSource.layer.id)
-            : null;
+          const layerId = (_a = layerSource.layer) === null || _a === void 0 ? void 0 : _a.id;
+          const layerFromMap = layerId ? view.map.findLayerById(layerId) : null;
+          const layerUrl = (_b = layerSource === null || layerSource === void 0 ? void 0 : layerSource.layer) === null || _b === void 0 ? void 0 : _b.url;
           if (layerFromMap) {
             layerSource.layer = layerFromMap;
           }
-          else if ((_b = layerSource === null || layerSource === void 0 ? void 0 : layerSource.layer) === null || _b === void 0 ? void 0 : _b.url) {
-            layerSource.layer = new this.FeatureLayer((_c = layerSource === null || layerSource === void 0 ? void 0 : layerSource.layer) === null || _c === void 0 ? void 0 : _c.url);
+          else if (layerUrl) {
+            layerSource.layer = new this.FeatureLayer(layerUrl);
           }
         }
       });
+      sources === null || sources === void 0 ? void 0 : sources.forEach((source) => {
+        const isLocatorSource = source.hasOwnProperty("locator");
+        if (isLocatorSource) {
+          const locatorSource = source;
+          if ((locatorSource === null || locatorSource === void 0 ? void 0 : locatorSource.name) === "ArcGIS World Geocoding Service") {
+            const outFields = locatorSource.outFields || ["Addr_type", "Match_addr", "StAddr", "City"];
+            locatorSource.outFields = outFields;
+            locatorSource.singleLineFieldName = "SingleLine";
+          }
+          locatorSource.url = locatorSource.url;
+          delete locatorSource.url;
+        }
+      });
     }
-    (_a = searchConfiguration === null || searchConfiguration === void 0 ? void 0 : searchConfiguration.sources) === null || _a === void 0 ? void 0 : _a.forEach(source => {
-      const isLocatorSource = source.hasOwnProperty("locator");
-      if (isLocatorSource) {
-        const locatorSource = source;
-        locatorSource.url = locatorSource.url;
-        delete locatorSource.url;
-      }
-    });
+    else {
+      searchConfiguration = Object.assign(Object.assign({}, searchConfiguration), { includeDefaultSources: true });
+    }
     return searchConfiguration;
   }
   /**
