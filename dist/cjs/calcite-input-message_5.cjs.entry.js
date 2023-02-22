@@ -504,12 +504,14 @@ const MapSelectTools = class {
       });
       this._searchWidget.on("select-result", (searchResults) => {
         var _a, _b, _c;
-        void this._clearResults(false);
         if (searchResults.result) {
           this._searchResult = searchResults.result;
           const useOIDs = ((_b = (_a = searchResults.source) === null || _a === void 0 ? void 0 : _a.layer) === null || _b === void 0 ? void 0 : _b.id) && searchResults.source.layer.id === this.selectLayerView.layer.id;
           const oids = useOIDs ? [searchResults.result.feature.getObjectId()] : undefined;
           this._updateSelection(interfaces$1.EWorkflowType.SEARCH, [searchResults.result.feature], (_c = searchResults === null || searchResults === void 0 ? void 0 : searchResults.result) === null || _c === void 0 ? void 0 : _c.name, useOIDs, oids);
+        }
+        else {
+          void this._clearResults(false);
         }
       });
     }

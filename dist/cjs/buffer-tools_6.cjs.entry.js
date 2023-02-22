@@ -54,10 +54,8 @@ const BufferTools = class {
    * Buffer each of the geometries.
    *
    */
-  geometriesWatchHandler(v, oldV) {
-    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
-      this._buffer();
-    }
+  geometriesWatchHandler() {
+    this._buffer();
   }
   //--------------------------------------------------------------------------
   //

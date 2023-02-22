@@ -608,7 +608,6 @@ export class MapSelectTools {
       });
 
       this._searchWidget.on("select-result", (searchResults) => {
-        void this._clearResults(false);
         if (searchResults.result) {
           this._searchResult = searchResults.result;
           const useOIDs = searchResults.source?.layer?.id && searchResults.source.layer.id === this.selectLayerView.layer.id;
@@ -620,6 +619,8 @@ export class MapSelectTools {
             useOIDs,
             oids
           );
+        } else {
+          void this._clearResults(false);
         }
       });
     }

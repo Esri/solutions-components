@@ -124,10 +124,8 @@ export class BufferTools {
    *
    */
   @Watch("geometries")
-  geometriesWatchHandler(v: any, oldV: any): void {
-    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
-      this._buffer();
-    }
+  geometriesWatchHandler(): void {
+    this._buffer();
   }
 
   //--------------------------------------------------------------------------

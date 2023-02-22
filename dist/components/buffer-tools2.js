@@ -44,10 +44,8 @@ const BufferTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
    * Buffer each of the geometries.
    *
    */
-  geometriesWatchHandler(v, oldV) {
-    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
-      this._buffer();
-    }
+  geometriesWatchHandler() {
+    this._buffer();
   }
   //--------------------------------------------------------------------------
   //
