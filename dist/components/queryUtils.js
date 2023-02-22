@@ -31,15 +31,11 @@ import { c as EWorkflowType } from './interfaces3.js';
  */
 async function queryAllFeatures(start, layer, graphics) {
   const num = layer.capabilities.query.maxRecordCount;
-  const query = {
-    start,
-    num,
-    outFields: ["*"],
-    // TODO think through this more...does this make sense
-    // may be better to fetch when checkbox is clicked...
-    returnGeometry: true,
-    where: "1=1"
-  };
+  const query = layer.createQuery();
+  query.start = start;
+  query.num = num;
+  // TODO think through this once I'm back on crowdsource...seems like we may want an arg to control this
+  query.where = layer.definitionExpression || "1=1";
   const result = await layer.queryFeatures(query);
   graphics = graphics.concat(result.features);
   return result.exceededTransferLimit ?
@@ -76,7 +72,6 @@ async function queryObjectIds(geometries, layer) {
  */
 async function queryFeaturesByID(ids, layer) {
   const q = layer.createQuery();
-  q.outFields = ["*"];
   q.objectIds = ids;
   return layer.queryFeatures(q);
 }
@@ -92,13 +87,10 @@ async function queryFeaturesByID(ids, layer) {
  */
 async function queryFeaturesByGeometry(start, layer, geometry, featuresCollection) {
   const num = layer.capabilities.query.maxRecordCount;
-  const query = {
-    start,
-    num,
-    outFields: ["*"],
-    returnGeometry: true,
-    geometry
-  };
+  const query = layer.createQuery();
+  query.start = start;
+  query.num = num;
+  query.geometry = geometry;
   const result = await layer.queryFeatures(query);
   featuresCollection[layer.id] = featuresCollection[layer.id].concat(result.features);
   return result.exceededTransferLimit ?
