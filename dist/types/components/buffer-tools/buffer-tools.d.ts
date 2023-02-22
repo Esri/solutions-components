@@ -74,7 +74,7 @@ export declare class BufferTools {
    * Buffer each of the geometries.
    *
    */
-  geometriesWatchHandler(v: any, oldV: any): void;
+  geometriesWatchHandler(): void;
   /**
    * Emitted on demand when a buffer is generated.
    */

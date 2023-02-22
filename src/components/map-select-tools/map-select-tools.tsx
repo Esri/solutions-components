@@ -244,10 +244,10 @@ export class MapSelectTools {
     oldValue: __esri.Geometry[]
   ): Promise<void> {
     if (newValue !== oldValue) {
+      const isEmpty = newValue.length === 0;
+      await this._clearResults(isEmpty, isEmpty);
       if (newValue.length > 0) {
         return this._highlightWithOIDsOrGeoms();
-      } else if (newValue.length === 0) {
-        return this._clearResults(true, true);
       }
     }
   }
@@ -430,6 +430,9 @@ export class MapSelectTools {
     const useDrawClass = !this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
 
     const showLayerChoiceClass = searchEnabled ? "div-not-visible" : "div-visible";
+
+    const bufferDistance = typeof this.selectionSet?.distance === "number" ? this.selectionSet.distance : this.defaultBufferDistance;
+
     return (
       <Host>
         <div class="padding-bottom-1">
@@ -490,7 +493,7 @@ export class MapSelectTools {
         <calcite-label class={showBufferToolsClass}>
           {this._translations.searchDistance}
           <buffer-tools
-            distance={this.selectionSet?.distance || this.defaultBufferDistance}
+            distance={bufferDistance}
             geometries={this.geometries}
             onBufferComplete={(evt) => this._bufferComplete(evt)}
             ref={(el) => this._bufferTools = el}
@@ -605,7 +608,6 @@ export class MapSelectTools {
       });
 
       this._searchWidget.on("select-result", (searchResults) => {
-        void this._clearResults(false);
         if (searchResults.result) {
           this._searchResult = searchResults.result;
           const useOIDs = searchResults.source?.layer?.id && searchResults.source.layer.id === this.selectLayerView.layer.id;
@@ -617,6 +619,8 @@ export class MapSelectTools {
             useOIDs,
             oids
           );
+        } else {
+          void this._clearResults(false);
         }
       });
     }
