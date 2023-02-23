@@ -347,7 +347,7 @@ export class MapDrawTools {
    */
   protected _clearSketch(): void {
     this.graphics = [];
-    this._sketchGraphicsLayer.removeAll();
+    this._sketchGraphicsLayer?.removeAll();
   }
 
   /**
