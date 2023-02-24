@@ -285,6 +285,9 @@ export class PublicNotification {
     if (s_newValue !== JSON.stringify(oldValue)) {
       this._searchConfiguration = JSON.parse(s_newValue);
       this.searchConfigurationChange.emit(this._searchConfiguration);
+      // force back to list page before we create Search
+      // https://devtopia.esri.com/WebGIS/arcgis-template-configuration/issues/3402
+      void this._home();
     }
   }
 
