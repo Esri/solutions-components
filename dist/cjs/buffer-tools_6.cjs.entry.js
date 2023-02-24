@@ -1503,8 +1503,9 @@ const MapDrawTools = class {
    * @protected
    */
   _clearSketch() {
+    var _a;
     this.graphics = [];
-    this._sketchGraphicsLayer.removeAll();
+    (_a = this._sketchGraphicsLayer) === null || _a === void 0 ? void 0 : _a.removeAll();
   }
   /**
    * Fetches the component's translations
