@@ -645,6 +645,7 @@ const MapSelectTools = class {
     this.selectionLoadingChange.emit(true);
     this._selectedIds = await mapViewUtils.queryObjectIds(geometries, this.selectLayerView.layer);
     this.selectionLoadingChange.emit(false);
+    const pSym = { "type": "esriSFS", "color": [150, 150, 150, 51], "outline": { "type": "esriSLS", "color": [50, 50, 50, 255], "width": 2, "style": "esriSLSSolid" }, "style": "esriSFSSolid" };
     // Add geometries used for selecting features as graphics
     this._drawTools.graphics = this.geometries.map(geom => {
       var _a, _b, _c;
@@ -653,7 +654,7 @@ const MapSelectTools = class {
         "symbol": geom.type === "point" ?
           (_a = this._drawTools) === null || _a === void 0 ? void 0 : _a.pointSymbol : geom.type === "polyline" ?
           (_b = this._drawTools) === null || _b === void 0 ? void 0 : _b.polylineSymbol : geom.type === "polygon" ?
-          (_c = this._drawTools) === null || _c === void 0 ? void 0 : _c.polygonSymbol : undefined
+          ((_c = this._drawTools) === null || _c === void 0 ? void 0 : _c.polygonSymbol) || pSym : undefined
       };
       console.log("props");
       console.log(props);

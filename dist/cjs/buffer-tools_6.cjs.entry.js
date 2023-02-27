@@ -1459,8 +1459,15 @@ const MapDrawTools = class {
     this.pointSymbol = this._sketchWidget.viewModel.pointSymbol;
     this.polylineSymbol = this._sketchWidget.viewModel.polylineSymbol;
     this.polygonSymbol = this._sketchWidget.viewModel.polygonSymbol;
+    console.log("this.polygonSymbol");
     console.log(this.polygonSymbol);
     console.log(JSON.stringify(this.polygonSymbol));
+    console.log("this.pointSymbol");
+    console.log(this.pointSymbol);
+    console.log(JSON.stringify(this.pointSymbol));
+    console.log("this.polylineSymbol");
+    console.log(this.polylineSymbol);
+    console.log(JSON.stringify(this.polylineSymbol));
     this._sketchWidget.visibleElements = {
       selectionTools: {
         "lasso-selection": false,

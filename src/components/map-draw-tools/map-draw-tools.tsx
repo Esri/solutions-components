@@ -299,8 +299,17 @@ export class MapDrawTools {
     this.polylineSymbol = this._sketchWidget.viewModel.polylineSymbol as __esri.SimpleLineSymbol;
     this.polygonSymbol = this._sketchWidget.viewModel.polygonSymbol as __esri.SimpleFillSymbol;
 
+    console.log("this.polygonSymbol")
     console.log(this.polygonSymbol)
     console.log(JSON.stringify(this.polygonSymbol))
+
+    console.log("this.pointSymbol")
+    console.log(this.pointSymbol)
+    console.log(JSON.stringify(this.pointSymbol))
+
+    console.log("this.polylineSymbol")
+    console.log(this.polylineSymbol)
+    console.log(JSON.stringify(this.polylineSymbol))
 
     this._sketchWidget.visibleElements = {
       selectionTools: {
