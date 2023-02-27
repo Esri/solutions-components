@@ -776,7 +776,6 @@ export class MapSelectTools {
     );
     this.selectionLoadingChange.emit(false);
 
-    const pSym = {"type":"esriSFS","color":[150,150,150,51],"outline":{"type":"esriSLS","color":[50,50,50,255],"width":2,"style":"esriSLSSolid"},"style":"esriSFSSolid"};
     // Add geometries used for selecting features as graphics
     this._drawTools.graphics = this.geometries.map(geom => {
       const props = {
@@ -784,7 +783,7 @@ export class MapSelectTools {
         "symbol": geom.type === "point" ?
           this._drawTools?.pointSymbol : geom.type === "polyline" ?
             this._drawTools?.polylineSymbol : geom.type === "polygon" ?
-              this._drawTools?.polygonSymbol || pSym : undefined
+              this._drawTools?.polygonSymbol : undefined
       };
 
       console.log("props")

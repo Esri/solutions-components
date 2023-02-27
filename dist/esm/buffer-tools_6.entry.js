@@ -1367,6 +1367,7 @@ const MapDrawTools = class {
   async componentWillLoad() {
     await this._getTranslations();
     await this._initModules();
+    this._initSymbols();
   }
   /**
    * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
@@ -1396,12 +1397,14 @@ const MapDrawTools = class {
    * @protected
    */
   async _initModules() {
-    const [GraphicsLayer, Sketch] = await loadModules([
+    const [GraphicsLayer, Sketch, jsonUtils] = await loadModules([
       "esri/layers/GraphicsLayer",
-      "esri/widgets/Sketch"
+      "esri/widgets/Sketch",
+      "esri/symbols/support/jsonUtils"
     ]);
     this.GraphicsLayer = GraphicsLayer;
     this.Sketch = Sketch;
+    this._jsonUtils = jsonUtils;
   }
   /**
    * Initialize the graphics layer and the tools that support creating new graphics
@@ -1413,6 +1416,40 @@ const MapDrawTools = class {
       this._initGraphicsLayer();
       this._initDrawTools();
     }
+  }
+  _initSymbols() {
+    this.polygonSymbol = this._jsonUtils.fromJSON({
+      "type": "esriSFS",
+      "color": [150, 150, 150, 51],
+      "outline": {
+        "type": "esriSLS",
+        "color": [50, 50, 50, 255],
+        "width": 2,
+        "style": "esriSLSSolid"
+      },
+      "style": "esriSFSSolid"
+    });
+    this.pointSymbol = this._jsonUtils.fromJSON({
+      "type": "esriSMS",
+      "color": [255, 255, 255, 255],
+      "angle": 0,
+      "xoffset": 0,
+      "yoffset": 0,
+      "size": 6,
+      "style": "esriSMSCircle",
+      "outline": {
+        "type": "esriSLS",
+        "color": [50, 50, 50, 255],
+        "width": 1,
+        "style": "esriSLSSolid"
+      }
+    });
+    this.polylineSymbol = this._jsonUtils.fromJSON({
+      "type": "esriSLS",
+      "color": [130, 130, 130, 255],
+      "width": 2,
+      "style": "esriSLSSolid"
+    });
   }
   /**
    * Create or find the graphics layer and add any existing graphics
@@ -1452,18 +1489,18 @@ const MapDrawTools = class {
         "mode": "hybrid"
       }
     });
-    this.pointSymbol = this._sketchWidget.viewModel.pointSymbol;
-    this.polylineSymbol = this._sketchWidget.viewModel.polylineSymbol;
-    this.polygonSymbol = this._sketchWidget.viewModel.polygonSymbol;
-    console.log("this.polygonSymbol");
-    console.log(this.polygonSymbol);
-    console.log(JSON.stringify(this.polygonSymbol));
-    console.log("this.pointSymbol");
-    console.log(this.pointSymbol);
-    console.log(JSON.stringify(this.pointSymbol));
-    console.log("this.polylineSymbol");
-    console.log(this.polylineSymbol);
-    console.log(JSON.stringify(this.polylineSymbol));
+    // this.pointSymbol = this._sketchWidget.viewModel.pointSymbol as __esri.SimpleMarkerSymbol;
+    // this.polylineSymbol = this._sketchWidget.viewModel.polylineSymbol as __esri.SimpleLineSymbol;
+    // this.polygonSymbol = this._sketchWidget.viewModel.polygonSymbol as __esri.SimpleFillSymbol;
+    // console.log("this.polygonSymbol")
+    // console.log(this.polygonSymbol)
+    // console.log(JSON.stringify(this.polygonSymbol))
+    // console.log("this.pointSymbol")
+    // console.log(this.pointSymbol)
+    // console.log(JSON.stringify(this.pointSymbol))
+    // console.log("this.polylineSymbol")
+    // console.log(this.polylineSymbol)
+    // console.log(JSON.stringify(this.polylineSymbol))
     this._sketchWidget.visibleElements = {
       selectionTools: {
         "lasso-selection": false,
