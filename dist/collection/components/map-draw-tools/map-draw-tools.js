@@ -178,14 +178,19 @@ export class MapDrawTools {
       undoRedoMenu: false
     };
     this._sketchWidget.on("update", (evt) => {
-      if (evt.state === "start") {
-        this.graphics = evt.graphics;
-        this.sketchGraphicsChange.emit(this.graphics);
-      }
+      console.log("this._sketchWidget.on('update'");
+      console.log(evt.state);
+      //if (evt.state === "start") {
+      //console.log('evt.state === "start"')
+      //this.graphics = evt.graphics;
+      //this.sketchGraphicsChange.emit(this.graphics);
+      //}
       if (evt.state === "active") {
+        console.log('evt.state === "active"');
         clearTimeout(this._selectionTimer);
         this._selectionTimer = setTimeout(() => {
           this.graphics = evt.graphics;
+          console.log('sketchGraphicsChange.emit');
           this.sketchGraphicsChange.emit(this.graphics);
         }, 500);
       }
@@ -203,7 +208,9 @@ export class MapDrawTools {
       this.sketchGraphicsChange.emit(this.graphics);
     });
     this._sketchWidget.on("create", (evt) => {
+      console.log('_sketchWidget.on("create"');
       if (evt.state === "complete") {
+        console.log('evt.state === "complete"');
         this.graphics = [evt.graphic];
         this.sketchGraphicsChange.emit(this.graphics);
       }
