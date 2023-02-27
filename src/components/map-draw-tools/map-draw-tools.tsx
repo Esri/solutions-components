@@ -260,9 +260,15 @@ export class MapDrawTools {
   protected _initGraphicsLayer(): void {
     const title = this._translations.sketchLayer;
     const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
+    console.log("-----------------------------_initGraphicsLayer DRAW-----------------------------");
+
     if (sketchIndex > -1) {
+    console.log("-----------------------------HAS-----------------------------");
+
       this._sketchGraphicsLayer = this.mapView.map.layers.getItemAt(sketchIndex) as __esri.GraphicsLayer;
     } else {
+    console.log("-----------------------------NOT HAS-----------------------------");
+
       this._sketchGraphicsLayer = new this.GraphicsLayer({ title });
       state.managedLayers.push(title);
       this.mapView.map.layers.add(this._sketchGraphicsLayer);
@@ -292,6 +298,9 @@ export class MapDrawTools {
     this.pointSymbol = this._sketchWidget.viewModel.pointSymbol as __esri.SimpleMarkerSymbol;
     this.polylineSymbol = this._sketchWidget.viewModel.polylineSymbol as __esri.SimpleLineSymbol;
     this.polygonSymbol = this._sketchWidget.viewModel.polygonSymbol as __esri.SimpleFillSymbol;
+
+    console.log(this.polygonSymbol)
+    console.log(JSON.stringify(this.polygonSymbol))
 
     this._sketchWidget.visibleElements = {
       selectionTools: {

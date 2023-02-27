@@ -163,6 +163,7 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
    *
    */
   sketchGraphicsChange(event) {
+    console.log("sketchGraphicsChange was fired");
     this._updateSelection(EWorkflowType.SKETCH, event.detail, this._selectionLabel || this._translations.sketch, false);
   }
   /**
@@ -365,6 +366,7 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
    * @protected
    */
   _initGraphicsLayer() {
+    console.log("-----------------------------_initGraphicsLayer BUFFER-----------------------------");
     const title = this._translations.bufferLayer;
     const bufferIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
     if (bufferIndex > -1) {

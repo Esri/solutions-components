@@ -150,6 +150,7 @@ export class MapSelectTools {
    *
    */
   sketchGraphicsChange(event) {
+    console.log("sketchGraphicsChange was fired");
     this._updateSelection(EWorkflowType.SKETCH, event.detail, this._selectionLabel || this._translations.sketch, false);
   }
   /**
@@ -352,6 +353,7 @@ export class MapSelectTools {
    * @protected
    */
   _initGraphicsLayer() {
+    console.log("-----------------------------_initGraphicsLayer BUFFER-----------------------------");
     const title = this._translations.bufferLayer;
     const bufferIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
     if (bufferIndex > -1) {
