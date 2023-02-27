@@ -228,7 +228,7 @@ export class MapSelectTools {
    */
   async _init() {
     this._initGraphicsLayer();
-    this._initSelectionSet();
+    await this._initSelectionSet();
     this._initSearchWidget();
   }
   /**
@@ -236,7 +236,7 @@ export class MapSelectTools {
    *
    * @protected
    */
-  _initSelectionSet() {
+  async _initSelectionSet() {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
     if (this.selectionSet) {
       this._searchTerm = (_b = (_a = this.selectionSet) === null || _a === void 0 ? void 0 : _a.searchResult) === null || _b === void 0 ? void 0 : _b.name;
@@ -251,7 +251,7 @@ export class MapSelectTools {
       ];
       // reset selection label base
       this._selectionLabel = ((_k = this.selectionSet) === null || _k === void 0 ? void 0 : _k.label) || this._getSelectionBaseLabel();
-      void goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
+      await goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     }
     else {
       this._workflowType = EWorkflowType.SEARCH;
@@ -437,7 +437,7 @@ export class MapSelectTools {
       };
       return new this.Graphic(props);
     });
-    void this._highlightFeatures(this._selectedIds);
+    await this._highlightFeatures(this._selectedIds);
   }
   /**
    * Query the selectLayerView based on any user drawn geometries or buffers
@@ -466,8 +466,8 @@ export class MapSelectTools {
       });
       this._bufferGraphicsLayer.removeAll();
       this._bufferGraphicsLayer.add(polygonGraphic);
-      void this._selectFeatures([this._bufferGeometry]);
-      void this.mapView.goTo(polygonGraphic.geometry.extent);
+      await this._selectFeatures([this._bufferGeometry]);
+      await this.mapView.goTo(polygonGraphic.geometry.extent);
     }
     else {
       if (this._bufferGraphicsLayer) {
@@ -511,7 +511,7 @@ export class MapSelectTools {
     // for sketch
     // checking for clear as it would throw off tests
     if ((_b = this._drawTools) === null || _b === void 0 ? void 0 : _b.clear) {
-      void this._drawTools.clear();
+      await this._drawTools.clear();
     }
     this.selectionSetChange.emit(this._selectedIds.length);
   }

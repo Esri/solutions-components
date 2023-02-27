@@ -540,7 +540,7 @@ export class MapSelectTools {
    */
   protected async _init(): Promise<void> {
     this._initGraphicsLayer();
-    this._initSelectionSet();
+    await this._initSelectionSet();
     this._initSearchWidget();
   }
 
@@ -549,7 +549,7 @@ export class MapSelectTools {
    *
    * @protected
    */
-  protected _initSelectionSet(): void {
+  protected async _initSelectionSet(): Promise<void> {
     if (this.selectionSet) {
       this._searchTerm = this.selectionSet?.searchResult?.name;
       this._workflowType = this.selectionSet?.workflowType;
@@ -565,7 +565,7 @@ export class MapSelectTools {
       // reset selection label base
       this._selectionLabel = this.selectionSet?.label || this._getSelectionBaseLabel();
 
-      void goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
+      await goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     } else {
       this._workflowType = EWorkflowType.SEARCH;
       this.mapView.popup.autoOpenEnabled = false;
@@ -784,7 +784,7 @@ export class MapSelectTools {
       };
       return new this.Graphic(props)
     });
-    void this._highlightFeatures(this._selectedIds);
+    await this._highlightFeatures(this._selectedIds);
   }
 
   /**
@@ -819,8 +819,8 @@ export class MapSelectTools {
 
       this._bufferGraphicsLayer.removeAll();
       this._bufferGraphicsLayer.add(polygonGraphic);
-      void this._selectFeatures([this._bufferGeometry]);
-      void this.mapView.goTo(polygonGraphic.geometry.extent);
+      await this._selectFeatures([this._bufferGeometry]);
+      await this.mapView.goTo(polygonGraphic.geometry.extent);
     } else {
       if (this._bufferGraphicsLayer) {
         this._bufferGraphicsLayer.removeAll();
@@ -874,7 +874,7 @@ export class MapSelectTools {
     // for sketch
     // checking for clear as it would throw off tests
     if (this._drawTools?.clear) {
-      void this._drawTools.clear();
+      await this._drawTools.clear();
     }
     this.selectionSetChange.emit(this._selectedIds.length);
   }

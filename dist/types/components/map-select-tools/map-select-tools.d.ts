@@ -256,7 +256,7 @@ export declare class MapSelectTools {
    *
    * @protected
    */
-  protected _initSelectionSet(): void;
+  protected _initSelectionSet(): Promise<void>;
   /**
    * Get the default label base when the user has not provided a value
    *
