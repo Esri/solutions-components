@@ -651,6 +651,8 @@ const MapSelectTools = class {
           (_b = this._drawTools) === null || _b === void 0 ? void 0 : _b.polylineSymbol : geom.type === "polygon" ?
           (_c = this._drawTools) === null || _c === void 0 ? void 0 : _c.polygonSymbol : undefined
       };
+      console.log("props");
+      console.log(props);
       return new this.Graphic(props);
     });
     await this._highlightFeatures(this._selectedIds);

@@ -784,6 +784,9 @@ export class MapSelectTools {
             this._drawTools?.polylineSymbol : geom.type === "polygon" ?
               this._drawTools?.polygonSymbol : undefined
       };
+
+      console.log("props")
+      console.log(props)
       return new this.Graphic(props)
     });
     await this._highlightFeatures(this._selectedIds);
