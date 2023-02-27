@@ -71,7 +71,7 @@ export class MapSelectTools {
   /**
    * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
    */
-  @Prop() geometries: __esri.Geometry[];
+  @Prop() geometries: __esri.Geometry[] = [];
 
   /**
    * boolean: When true a new label is not generated for the stored selection set

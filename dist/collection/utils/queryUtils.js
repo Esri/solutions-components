@@ -51,7 +51,7 @@ export async function queryAllFeatures(start, layer, graphics) {
  */
 export async function queryObjectIds(geometries, layer) {
   let ids = [];
-  const queryDefs = geometries.map(g => _intersectQuery(g, layer));
+  const queryDefs = geometries ? geometries.map(g => _intersectQuery(g, layer)) : [Promise.resolve()];
   const results = await Promise.all(queryDefs);
   results.forEach(resultIds => {
     ids = [
@@ -157,7 +157,7 @@ export function getSelectionSetQuery(selectionSet, geometryEngine) {
  * @returns Array of single unioned geometry for the provided geometry type
  */
 function _unionGeoms(geometries, type, geometryEngine) {
-  const geoms = geometries.filter(g => g.type === type);
+  const geoms = (geometries === null || geometries === void 0 ? void 0 : geometries.filter(g => g.type === type)) || [];
   return geoms.length <= 1 ? geoms : [geometryEngine.union(geoms)];
 }
 /**

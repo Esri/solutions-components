@@ -61,7 +61,7 @@ export async function queryObjectIds(
   layer: __esri.FeatureLayer
 ): Promise<number[]> {
   let ids = [];
-  const queryDefs = geometries.map(g => _intersectQuery(g, layer))
+  const queryDefs = geometries ? geometries.map(g => _intersectQuery(g, layer)) : [Promise.resolve()];
   const results = await Promise.all(queryDefs);
   results.forEach(resultIds => {
     ids = [
@@ -206,7 +206,7 @@ export function getSelectionSetQuery(
   type: string,
   geometryEngine: __esri.geometryEngine
 ): __esri.Geometry[] {
-  const geoms = geometries.filter(g => g.type === type);
+  const geoms = geometries?.filter(g => g.type === type) || [];
   return geoms.length <= 1 ? geoms : [geometryEngine.union(geoms)];
 }
 

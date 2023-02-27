@@ -40,7 +40,7 @@ export class MapSelectTools {
     this.enabledLayerIds = [];
     this.defaultBufferDistance = undefined;
     this.defaultBufferUnit = undefined;
-    this.geometries = undefined;
+    this.geometries = [];
     this.isUpdate = false;
     this.mapView = undefined;
     this.searchConfiguration = undefined;
@@ -664,7 +664,8 @@ export class MapSelectTools {
         "docs": {
           "tags": [],
           "text": "esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html"
-        }
+        },
+        "defaultValue": "[]"
       },
       "isUpdate": {
         "type": "boolean",
