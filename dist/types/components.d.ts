@@ -253,6 +253,18 @@ export namespace Components {
           * boolean: When true the buffer tools will be available for use
          */
         "showBufferTools": boolean;
+        /**
+          * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+         */
+        "sketchLineSymbol": __esri.SimpleLineSymbol;
+        /**
+          * esri/symbols/SimpleMarkerSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+         */
+        "sketchPointSymbol": __esri.SimpleMarkerSymbol;
+        /**
+          * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+         */
+        "sketchPolygonSymbol": __esri.SimpleFillSymbol;
     }
     interface MediaCard {
         /**
@@ -346,6 +358,18 @@ export namespace Components {
           * boolean: When false no buffer distance or unit controls will be exposed
          */
         "showSearchSettings": boolean;
+        /**
+          * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html  A JSON representation of the instance in the ArcGIS format. See the ArcGIS REST API documentation for examples of the structure of various input JSON objects. https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
+         */
+        "sketchLineSymbol": __esri.SimpleLineSymbol | any;
+        /**
+          * esri/symbols/SimpleMarkerSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html  A JSON representation of the instance in the ArcGIS format. See the ArcGIS REST API documentation for examples of the structure of various input JSON objects. https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
+         */
+        "sketchPointSymbol": __esri.SimpleMarkerSymbol | any;
+        /**
+          * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html  A JSON representation of the instance in the ArcGIS format. See the ArcGIS REST API documentation for examples of the structure of various input JSON objects. https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
+         */
+        "sketchPolygonSymbol": __esri.SimpleFillSymbol | any;
     }
     interface RefineSelection {
         "GraphicsLayer": any;
@@ -1153,6 +1177,18 @@ declare namespace LocalJSX {
           * boolean: When true the buffer tools will be available for use
          */
         "showBufferTools"?: boolean;
+        /**
+          * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+         */
+        "sketchLineSymbol"?: __esri.SimpleLineSymbol;
+        /**
+          * esri/symbols/SimpleMarkerSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+         */
+        "sketchPointSymbol"?: __esri.SimpleMarkerSymbol;
+        /**
+          * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+         */
+        "sketchPolygonSymbol"?: __esri.SimpleFillSymbol;
     }
     interface MediaCard {
         /**
@@ -1237,6 +1273,18 @@ declare namespace LocalJSX {
           * boolean: When false no buffer distance or unit controls will be exposed
          */
         "showSearchSettings"?: boolean;
+        /**
+          * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html  A JSON representation of the instance in the ArcGIS format. See the ArcGIS REST API documentation for examples of the structure of various input JSON objects. https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
+         */
+        "sketchLineSymbol"?: __esri.SimpleLineSymbol | any;
+        /**
+          * esri/symbols/SimpleMarkerSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html  A JSON representation of the instance in the ArcGIS format. See the ArcGIS REST API documentation for examples of the structure of various input JSON objects. https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
+         */
+        "sketchPointSymbol"?: __esri.SimpleMarkerSymbol | any;
+        /**
+          * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html  A JSON representation of the instance in the ArcGIS format. See the ArcGIS REST API documentation for examples of the structure of various input JSON objects. https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
+         */
+        "sketchPolygonSymbol"?: __esri.SimpleFillSymbol | any;
     }
     interface RefineSelection {
         "GraphicsLayer"?: any;

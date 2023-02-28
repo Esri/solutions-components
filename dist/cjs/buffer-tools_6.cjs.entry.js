@@ -20,7 +20,7 @@ const key = require('./key-55aca5c0.js');
 const locale$1 = require('./locale-73cab8e8.js');
 const publicNotificationStore = require('./publicNotificationStore-20e924f5.js');
 const interfaces = require('./interfaces-17c631bf.js');
-const mapViewUtils = require('./mapViewUtils-f617ae9a.js');
+const mapViewUtils = require('./mapViewUtils-df63bfa4.js');
 require('./_commonjsHelpers-384729db.js');
 require('./resources-b56bce71.js');
 require('./observers-5311faf8.js');
@@ -1453,9 +1453,9 @@ const MapDrawTools = class {
         "mode": "hybrid"
       }
     });
-    this.pointSymbol = this._sketchWidget.viewModel.pointSymbol;
-    this.polylineSymbol = this._sketchWidget.viewModel.polylineSymbol;
-    this.polygonSymbol = this._sketchWidget.viewModel.polygonSymbol;
+    this._sketchWidget.viewModel.polylineSymbol = this.polylineSymbol;
+    this._sketchWidget.viewModel.pointSymbol = this.pointSymbol;
+    this._sketchWidget.viewModel.polygonSymbol = this.polygonSymbol;
     this._sketchWidget.visibleElements = {
       selectionTools: {
         "lasso-selection": false,
@@ -1466,10 +1466,6 @@ const MapDrawTools = class {
       undoRedoMenu: false
     };
     this._sketchWidget.on("update", (evt) => {
-      if (evt.state === "start") {
-        this.graphics = evt.graphics;
-        this.sketchGraphicsChange.emit(this.graphics);
-      }
       if (evt.state === "active") {
         clearTimeout(this._selectionTimer);
         this._selectionTimer = setTimeout(() => {

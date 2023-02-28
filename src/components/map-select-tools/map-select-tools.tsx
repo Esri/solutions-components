@@ -71,7 +71,7 @@ export class MapSelectTools {
   /**
    * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
    */
-  @Prop() geometries: __esri.Geometry[];
+  @Prop() geometries: __esri.Geometry[] = [];
 
   /**
    * boolean: When true a new label is not generated for the stored selection set
@@ -102,6 +102,24 @@ export class MapSelectTools {
    * boolean: When true the buffer tools will be available for use
    */
   @Prop() showBufferTools = true;
+
+  /**
+   * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+   *
+   */
+  @Prop() sketchLineSymbol: __esri.SimpleLineSymbol;
+
+  /**
+   * esri/symbols/SimpleMarkerSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+   *
+   */
+  @Prop() sketchPointSymbol: __esri.SimpleMarkerSymbol;
+
+  /**
+   * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+   *
+   */
+  @Prop() sketchPolygonSymbol: __esri.SimpleFillSymbol;
 
   //--------------------------------------------------------------------------
   //
@@ -474,6 +492,9 @@ export class MapSelectTools {
             active={true}
             border={true}
             mapView={this.mapView}
+            pointSymbol={this.sketchPointSymbol}
+            polygonSymbol={this.sketchPolygonSymbol}
+            polylineSymbol={this.sketchLineSymbol}
             ref={(el) => { this._drawTools = el }}
           />
         </div>
@@ -540,7 +561,7 @@ export class MapSelectTools {
    */
   protected async _init(): Promise<void> {
     this._initGraphicsLayer();
-    this._initSelectionSet();
+    await this._initSelectionSet();
     this._initSearchWidget();
   }
 
@@ -549,7 +570,7 @@ export class MapSelectTools {
    *
    * @protected
    */
-  protected _initSelectionSet(): void {
+  protected async _initSelectionSet(): Promise<void> {
     if (this.selectionSet) {
       this._searchTerm = this.selectionSet?.searchResult?.name;
       this._workflowType = this.selectionSet?.workflowType;
@@ -565,7 +586,7 @@ export class MapSelectTools {
       // reset selection label base
       this._selectionLabel = this.selectionSet?.label || this._getSelectionBaseLabel();
 
-      void goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
+      await goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     } else {
       this._workflowType = EWorkflowType.SEARCH;
       this.mapView.popup.autoOpenEnabled = false;
@@ -773,18 +794,19 @@ export class MapSelectTools {
       this.selectLayerView.layer
     );
     this.selectionLoadingChange.emit(false);
+
     // Add geometries used for selecting features as graphics
     this._drawTools.graphics = this.geometries.map(geom => {
       const props = {
         "geometry": geom,
         "symbol": geom.type === "point" ?
-          this._drawTools?.pointSymbol : geom.type === "polyline" ?
-            this._drawTools?.polylineSymbol : geom.type === "polygon" ?
-              this._drawTools?.polygonSymbol : undefined
+          this.sketchPointSymbol : geom.type === "polyline" ?
+            this.sketchLineSymbol : geom.type === "polygon" ?
+              this.sketchPolygonSymbol : undefined
       };
       return new this.Graphic(props)
     });
-    void this._highlightFeatures(this._selectedIds);
+    await this._highlightFeatures(this._selectedIds);
   }
 
   /**
@@ -819,8 +841,8 @@ export class MapSelectTools {
 
       this._bufferGraphicsLayer.removeAll();
       this._bufferGraphicsLayer.add(polygonGraphic);
-      void this._selectFeatures([this._bufferGeometry]);
-      void this.mapView.goTo(polygonGraphic.geometry.extent);
+      await this._selectFeatures([this._bufferGeometry]);
+      await this.mapView.goTo(polygonGraphic.geometry.extent);
     } else {
       if (this._bufferGraphicsLayer) {
         this._bufferGraphicsLayer.removeAll();
@@ -874,7 +896,7 @@ export class MapSelectTools {
     // for sketch
     // checking for clear as it would throw off tests
     if (this._drawTools?.clear) {
-      void this._drawTools.clear();
+      await this._drawTools.clear();
     }
     this.selectionSetChange.emit(this._selectedIds.length);
   }

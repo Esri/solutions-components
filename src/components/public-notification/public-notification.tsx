@@ -118,6 +118,33 @@ export class PublicNotification {
    */
   @Prop() showSearchSettings = true;
 
+  /**
+   * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+   *
+   * A JSON representation of the instance in the ArcGIS format.
+   * See the ArcGIS REST API documentation for examples of the structure of various input JSON objects.
+   * https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
+   */
+  @Prop() sketchLineSymbol: __esri.SimpleLineSymbol | any;
+
+  /**
+   * esri/symbols/SimpleMarkerSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+   *
+   * A JSON representation of the instance in the ArcGIS format.
+   * See the ArcGIS REST API documentation for examples of the structure of various input JSON objects.
+   * https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
+   */
+  @Prop() sketchPointSymbol: __esri.SimpleMarkerSymbol | any;
+
+  /**
+   * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+   *
+   * A JSON representation of the instance in the ArcGIS format.
+   * See the ArcGIS REST API documentation for examples of the structure of various input JSON objects.
+   * https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
+   */
+  @Prop() sketchPolygonSymbol: __esri.SimpleFillSymbol | any;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -214,6 +241,11 @@ export class PublicNotification {
   protected _geometryEngine: __esri.geometryEngine;
 
   /**
+   * esri/symbols/support/jsonUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-support-jsonUtils.html
+   */
+  protected _jsonUtils: __esri.symbolsSupportJsonUtils;
+
+  /**
    * CustomEvent: Used to prevent default behavior of layer selection change
    */
   protected _labelName: HTMLCalciteInputElement;
@@ -304,6 +336,45 @@ export class PublicNotification {
       if (nonRefineSets.length === 0) {
         this._selectionSets = [];
       }
+    }
+  }
+
+  /**
+   * Called each time the sketchLineSymbol prop is changed.
+   */
+  @Watch("sketchLineSymbol")
+  async sketchLineSymbolWatchHandler(
+    v: __esri.SimpleLineSymbol | any,
+    oldV: __esri.SimpleLineSymbol
+  ): Promise<void> {
+    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
+      this._setLineSymbol(v);
+    }
+  }
+
+  /**
+   * Called each time the sketchPointSymbol prop is changed.
+   */
+  @Watch("sketchPointSymbol")
+  async sketchPointSymbolWatchHandler(
+    v: __esri.SimpleMarkerSymbol | any,
+    oldV: __esri.SimpleMarkerSymbol
+  ): Promise<void> {
+    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
+      this._setPointSymbol(v);
+    }
+  }
+
+  /**
+   * Called each time the sketchPolygonSymbol prop is changed.
+   */
+  @Watch("sketchPolygonSymbol")
+  async sketchPolygonSymbolWatchHandler(
+    v: __esri.SimpleFillSymbol | any,
+    oldV: __esri.SimpleFillSymbol
+  ): Promise<void> {
+    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
+      this._setPolygonSymbol(v);
     }
   }
 
@@ -404,6 +475,7 @@ export class PublicNotification {
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
+    this._initSymbols();
   }
 
   /**
@@ -439,12 +511,97 @@ export class PublicNotification {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [geometryEngine]: [
-      __esri.geometryEngine
+    const [geometryEngine, jsonUtils]: [
+      __esri.geometryEngine,
+      __esri.symbolsSupportJsonUtils
     ] = await loadModules([
-      "esri/geometry/geometryEngine"
+      "esri/geometry/geometryEngine",
+      "esri/symbols/support/jsonUtils"
     ]);
     this._geometryEngine = geometryEngine;
+    this._jsonUtils = jsonUtils;
+  }
+
+  /**
+   * Initialize the default symbols that will be used when creating new graphics
+   *
+   * @protected
+   */
+  protected _initSymbols(): void {
+    this._setLineSymbol(this.sketchLineSymbol);
+    this._setPointSymbol(this.sketchPointSymbol);
+    this._setPolygonSymbol(this.sketchPolygonSymbol);
+  }
+
+  /**
+   * Convert a JSON representation of a line symbol and/or set the line symbol
+   *
+   * @param v SimpleLineSymbol or a JSON representation of a line symbol
+   *
+   * @protected
+   */
+  protected _setLineSymbol(
+    v: __esri.SimpleLineSymbol | any
+  ): void {
+    const isSymbol = v?.type === 'simple-line';
+    this.sketchLineSymbol = isSymbol ? v : this._jsonUtils.fromJSON(v ? v : {
+      "type": "esriSLS",
+      "color": [130, 130, 130, 255],
+      "width": 2,
+      "style": "esriSLSSolid"
+    }) as __esri.SimpleLineSymbol;
+  }
+
+  /**
+   * Convert a JSON representation of a point symbol and/or set the point symbol
+   *
+   * @param v SimpleMarkerSymbol or a JSON representation of a point symbol
+   *
+   * @protected
+   */
+  protected _setPointSymbol(
+    v: __esri.SimpleMarkerSymbol | any
+  ): void {
+    const isSymbol = v?.type === 'simple-marker';
+    this.sketchPointSymbol = isSymbol ? v : this._jsonUtils.fromJSON(v ? v : {
+      "type": "esriSMS",
+      "color": [255, 255, 255, 255],
+      "angle": 0,
+      "xoffset": 0,
+      "yoffset": 0,
+      "size": 6,
+      "style": "esriSMSCircle",
+      "outline": {
+        "type": "esriSLS",
+        "color": [50, 50, 50, 255],
+        "width": 1,
+        "style": "esriSLSSolid"
+      }
+    }) as __esri.SimpleMarkerSymbol;
+  }
+
+  /**
+   * Convert a JSON representation of a polygon symbol and/or set the polygon symbol
+   *
+   * @param v SimpleFillSymbol or a JSON representation of a polygon symbol
+   *
+   * @protected
+   */
+  protected _setPolygonSymbol(
+    v: __esri.SimpleFillSymbol | any
+  ): void {
+    const isSymbol = v?.type === 'simple-fill';
+    this.sketchPolygonSymbol = isSymbol ? v : this._jsonUtils.fromJSON(v ? v : {
+      "type": "esriSFS",
+      "color": [150, 150, 150, 51],
+      "outline": {
+        "type": "esriSLS",
+        "color": [50, 50, 50, 255],
+        "width": 2,
+        "style": "esriSLSSolid"
+      },
+      "style": "esriSFSSolid"
+    }) as __esri.SimpleFillSymbol;
   }
 
   /**
@@ -763,6 +920,9 @@ export class PublicNotification {
             selectLayerView={this.addresseeLayer}
             selectionSet={this._activeSelection}
             showBufferTools={this.showSearchSettings}
+            sketchLineSymbol={this.sketchLineSymbol}
+            sketchPointSymbol={this.sketchPointSymbol}
+            sketchPolygonSymbol={this.sketchPolygonSymbol}
           />
         </div>
         <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>

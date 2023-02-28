@@ -53,13 +53,16 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
     this.enabledLayerIds = [];
     this.defaultBufferDistance = undefined;
     this.defaultBufferUnit = undefined;
-    this.geometries = undefined;
+    this.geometries = [];
     this.isUpdate = false;
     this.mapView = undefined;
     this.searchConfiguration = undefined;
     this.selectionSet = undefined;
     this.selectLayerView = undefined;
     this.showBufferTools = true;
+    this.sketchLineSymbol = undefined;
+    this.sketchPointSymbol = undefined;
+    this.sketchPolygonSymbol = undefined;
     this._layerSelectChecked = undefined;
     this._searchTerm = undefined;
     this._translations = undefined;
@@ -206,7 +209,7 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
     const useDrawClass = !this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
     const showLayerChoiceClass = searchEnabled ? "div-not-visible" : "div-visible";
     const bufferDistance = typeof ((_a = this.selectionSet) === null || _a === void 0 ? void 0 : _a.distance) === "number" ? this.selectionSet.distance : this.defaultBufferDistance;
-    return (h(Host, null, h("div", { class: "padding-bottom-1" }, h("calcite-radio-group", { class: "w-100", onCalciteRadioGroupChange: (evt) => this._workflowChange(evt) }, h("calcite-radio-group-item", { checked: searchEnabled, class: "w-50 end-border", value: EWorkflowType.SEARCH }, this._translations.search), h("calcite-radio-group-item", { checked: drawEnabled, class: "w-50", value: EWorkflowType.SKETCH }, this._translations.sketch))), h("div", { class: showSearchClass }, h("div", { class: "search-widget", ref: (el) => { this._searchElement = el; } })), h("div", { class: showLayerChoiceClass }, h("calcite-label", { layout: "inline" }, h("calcite-checkbox", { checked: this._layerSelectChecked, onCalciteCheckboxChange: () => this._layerSelectChanged(), ref: (el) => this._selectFromLayerElement = el }), "Use layer features")), h("div", { class: useDrawClass }, h("map-draw-tools", { active: true, border: true, mapView: this.mapView, ref: (el) => { this._drawTools = el; } })), h("div", { class: useSelectClass }, h("refine-selection-tools", { active: true, border: true, enabledLayerIds: this.enabledLayerIds, layerView: this.selectLayerView, layerViews: this._refineSelectLayers, mapView: this.mapView, mode: ESelectionMode.ADD, ref: (el) => { this._refineTools = el; }, refineMode: ERefineMode.SUBSET })), h("calcite-label", { class: showBufferToolsClass }, this._translations.searchDistance, h("buffer-tools", { distance: bufferDistance, geometries: this.geometries, onBufferComplete: (evt) => this._bufferComplete(evt), ref: (el) => this._bufferTools = el, unit: ((_b = this.selectionSet) === null || _b === void 0 ? void 0 : _b.unit) || this.defaultBufferUnit })), h("slot", null)));
+    return (h(Host, null, h("div", { class: "padding-bottom-1" }, h("calcite-radio-group", { class: "w-100", onCalciteRadioGroupChange: (evt) => this._workflowChange(evt) }, h("calcite-radio-group-item", { checked: searchEnabled, class: "w-50 end-border", value: EWorkflowType.SEARCH }, this._translations.search), h("calcite-radio-group-item", { checked: drawEnabled, class: "w-50", value: EWorkflowType.SKETCH }, this._translations.sketch))), h("div", { class: showSearchClass }, h("div", { class: "search-widget", ref: (el) => { this._searchElement = el; } })), h("div", { class: showLayerChoiceClass }, h("calcite-label", { layout: "inline" }, h("calcite-checkbox", { checked: this._layerSelectChecked, onCalciteCheckboxChange: () => this._layerSelectChanged(), ref: (el) => this._selectFromLayerElement = el }), "Use layer features")), h("div", { class: useDrawClass }, h("map-draw-tools", { active: true, border: true, mapView: this.mapView, pointSymbol: this.sketchPointSymbol, polygonSymbol: this.sketchPolygonSymbol, polylineSymbol: this.sketchLineSymbol, ref: (el) => { this._drawTools = el; } })), h("div", { class: useSelectClass }, h("refine-selection-tools", { active: true, border: true, enabledLayerIds: this.enabledLayerIds, layerView: this.selectLayerView, layerViews: this._refineSelectLayers, mapView: this.mapView, mode: ESelectionMode.ADD, ref: (el) => { this._refineTools = el; }, refineMode: ERefineMode.SUBSET })), h("calcite-label", { class: showBufferToolsClass }, this._translations.searchDistance, h("buffer-tools", { distance: bufferDistance, geometries: this.geometries, onBufferComplete: (evt) => this._bufferComplete(evt), ref: (el) => this._bufferTools = el, unit: ((_b = this.selectionSet) === null || _b === void 0 ? void 0 : _b.unit) || this.defaultBufferUnit })), h("slot", null)));
   }
   //--------------------------------------------------------------------------
   //
@@ -241,7 +244,7 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
    */
   async _init() {
     this._initGraphicsLayer();
-    this._initSelectionSet();
+    await this._initSelectionSet();
     this._initSearchWidget();
   }
   /**
@@ -249,7 +252,7 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
    *
    * @protected
    */
-  _initSelectionSet() {
+  async _initSelectionSet() {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
     if (this.selectionSet) {
       this._searchTerm = (_b = (_a = this.selectionSet) === null || _a === void 0 ? void 0 : _a.searchResult) === null || _b === void 0 ? void 0 : _b.name;
@@ -264,7 +267,7 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
       ];
       // reset selection label base
       this._selectionLabel = ((_k = this.selectionSet) === null || _k === void 0 ? void 0 : _k.label) || this._getSelectionBaseLabel();
-      void goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
+      await goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     }
     else {
       this._workflowType = EWorkflowType.SEARCH;
@@ -440,17 +443,16 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
     this.selectionLoadingChange.emit(false);
     // Add geometries used for selecting features as graphics
     this._drawTools.graphics = this.geometries.map(geom => {
-      var _a, _b, _c;
       const props = {
         "geometry": geom,
         "symbol": geom.type === "point" ?
-          (_a = this._drawTools) === null || _a === void 0 ? void 0 : _a.pointSymbol : geom.type === "polyline" ?
-          (_b = this._drawTools) === null || _b === void 0 ? void 0 : _b.polylineSymbol : geom.type === "polygon" ?
-          (_c = this._drawTools) === null || _c === void 0 ? void 0 : _c.polygonSymbol : undefined
+          this.sketchPointSymbol : geom.type === "polyline" ?
+          this.sketchLineSymbol : geom.type === "polygon" ?
+          this.sketchPolygonSymbol : undefined
       };
       return new this.Graphic(props);
     });
-    void this._highlightFeatures(this._selectedIds);
+    await this._highlightFeatures(this._selectedIds);
   }
   /**
    * Query the selectLayerView based on any user drawn geometries or buffers
@@ -479,8 +481,8 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
       });
       this._bufferGraphicsLayer.removeAll();
       this._bufferGraphicsLayer.add(polygonGraphic);
-      void this._selectFeatures([this._bufferGeometry]);
-      void this.mapView.goTo(polygonGraphic.geometry.extent);
+      await this._selectFeatures([this._bufferGeometry]);
+      await this.mapView.goTo(polygonGraphic.geometry.extent);
     }
     else {
       if (this._bufferGraphicsLayer) {
@@ -524,7 +526,7 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
     // for sketch
     // checking for clear as it would throw off tests
     if ((_b = this._drawTools) === null || _b === void 0 ? void 0 : _b.clear) {
-      void this._drawTools.clear();
+      await this._drawTools.clear();
     }
     this.selectionSetChange.emit(this._selectedIds.length);
   }
@@ -576,6 +578,9 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
     "selectionSet": [16],
     "selectLayerView": [16],
     "showBufferTools": [4, "show-buffer-tools"],
+    "sketchLineSymbol": [16],
+    "sketchPointSymbol": [16],
+    "sketchPolygonSymbol": [16],
     "_layerSelectChecked": [32],
     "_searchTerm": [32],
     "_translations": [32],

@@ -69,6 +69,9 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
     this.selectionLayerIds = [];
     this.showRefineSelection = false;
     this.showSearchSettings = true;
+    this.sketchLineSymbol = undefined;
+    this.sketchPointSymbol = undefined;
+    this.sketchPolygonSymbol = undefined;
     this.addresseeLayer = undefined;
     this._downloadActive = true;
     this._numSelected = 0;
@@ -118,6 +121,30 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
       if (nonRefineSets.length === 0) {
         this._selectionSets = [];
       }
+    }
+  }
+  /**
+   * Called each time the sketchLineSymbol prop is changed.
+   */
+  async sketchLineSymbolWatchHandler(v, oldV) {
+    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
+      this._setLineSymbol(v);
+    }
+  }
+  /**
+   * Called each time the sketchPointSymbol prop is changed.
+   */
+  async sketchPointSymbolWatchHandler(v, oldV) {
+    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
+      this._setPointSymbol(v);
+    }
+  }
+  /**
+   * Called each time the sketchPolygonSymbol prop is changed.
+   */
+  async sketchPolygonSymbolWatchHandler(v, oldV) {
+    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
+      this._setPolygonSymbol(v);
     }
   }
   /**
@@ -177,6 +204,7 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
   async componentWillLoad() {
     await this._getTranslations();
     await this._initModules();
+    this._initSymbols();
   }
   /**
    * Renders the component.
@@ -197,10 +225,84 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
    * @protected
    */
   async _initModules() {
-    const [geometryEngine] = await loadModules([
-      "esri/geometry/geometryEngine"
+    const [geometryEngine, jsonUtils] = await loadModules([
+      "esri/geometry/geometryEngine",
+      "esri/symbols/support/jsonUtils"
     ]);
     this._geometryEngine = geometryEngine;
+    this._jsonUtils = jsonUtils;
+  }
+  /**
+   * Initialize the default symbols that will be used when creating new graphics
+   *
+   * @protected
+   */
+  _initSymbols() {
+    this._setLineSymbol(this.sketchLineSymbol);
+    this._setPointSymbol(this.sketchPointSymbol);
+    this._setPolygonSymbol(this.sketchPolygonSymbol);
+  }
+  /**
+   * Convert a JSON representation of a line symbol and/or set the line symbol
+   *
+   * @param v SimpleLineSymbol or a JSON representation of a line symbol
+   *
+   * @protected
+   */
+  _setLineSymbol(v) {
+    const isSymbol = (v === null || v === void 0 ? void 0 : v.type) === 'simple-line';
+    this.sketchLineSymbol = isSymbol ? v : this._jsonUtils.fromJSON(v ? v : {
+      "type": "esriSLS",
+      "color": [130, 130, 130, 255],
+      "width": 2,
+      "style": "esriSLSSolid"
+    });
+  }
+  /**
+   * Convert a JSON representation of a point symbol and/or set the point symbol
+   *
+   * @param v SimpleMarkerSymbol or a JSON representation of a point symbol
+   *
+   * @protected
+   */
+  _setPointSymbol(v) {
+    const isSymbol = (v === null || v === void 0 ? void 0 : v.type) === 'simple-marker';
+    this.sketchPointSymbol = isSymbol ? v : this._jsonUtils.fromJSON(v ? v : {
+      "type": "esriSMS",
+      "color": [255, 255, 255, 255],
+      "angle": 0,
+      "xoffset": 0,
+      "yoffset": 0,
+      "size": 6,
+      "style": "esriSMSCircle",
+      "outline": {
+        "type": "esriSLS",
+        "color": [50, 50, 50, 255],
+        "width": 1,
+        "style": "esriSLSSolid"
+      }
+    });
+  }
+  /**
+   * Convert a JSON representation of a polygon symbol and/or set the polygon symbol
+   *
+   * @param v SimpleFillSymbol or a JSON representation of a polygon symbol
+   *
+   * @protected
+   */
+  _setPolygonSymbol(v) {
+    const isSymbol = (v === null || v === void 0 ? void 0 : v.type) === 'simple-fill';
+    this.sketchPolygonSymbol = isSymbol ? v : this._jsonUtils.fromJSON(v ? v : {
+      "type": "esriSFS",
+      "color": [150, 150, 150, 51],
+      "outline": {
+        "type": "esriSLS",
+        "color": [50, 50, 50, 255],
+        "width": 2,
+        "style": "esriSLSSolid"
+      },
+      "style": "esriSFSSolid"
+    });
   }
   /**
    * Get a calcite action group for the current action
@@ -358,7 +460,7 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
     const locale = getComponentClosestLanguage(this.el);
     const selectionLoading = locale && locale === "en" ?
       `${this._translations.selectionLoading}...` : this._translations.selectionLoading;
-    return (h("calcite-panel", null, this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", (_a = this.addresseeLayer) === null || _a === void 0 ? void 0 : _a.layer.title)), this._getNotice(noticeText), h("div", { class: "padding-top-sides-1" }, h("map-select-tools", { bufferColor: this.bufferColor, bufferOutlineColor: this.bufferOutlineColor, class: "font-bold", defaultBufferDistance: this.defaultBufferDistance, defaultBufferUnit: this.defaultBufferUnit, enabledLayerIds: this.selectionLayerIds, isUpdate: !!this._activeSelection, mapView: this.mapView, onSelectionSetChange: (evt) => this._updateForSelection(evt), onWorkflowTypeChange: (evt) => this._updateForWorkflowType(evt), ref: (el) => { this._selectTools = el; }, searchConfiguration: this._searchConfiguration, selectLayerView: this.addresseeLayer, selectionSet: this._activeSelection, showBufferTools: this.showSearchSettings })), h("div", { class: "padding-sides-1 padding-bottom-1", style: { "align-items": "end", "display": "flex" } }, this._selectionLoading ? (h("div", null, h("calcite-loader", { active: true, class: "info-blue", inline: true, label: selectionLoading, scale: "m", type: "indeterminate" }))) : (h("calcite-icon", { class: "info-blue padding-end-1-2", icon: "feature-layer", scale: "s" })), h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this._selectionLoading ? selectionLoading :
+    return (h("calcite-panel", null, this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", (_a = this.addresseeLayer) === null || _a === void 0 ? void 0 : _a.layer.title)), this._getNotice(noticeText), h("div", { class: "padding-top-sides-1" }, h("map-select-tools", { bufferColor: this.bufferColor, bufferOutlineColor: this.bufferOutlineColor, class: "font-bold", defaultBufferDistance: this.defaultBufferDistance, defaultBufferUnit: this.defaultBufferUnit, enabledLayerIds: this.selectionLayerIds, isUpdate: !!this._activeSelection, mapView: this.mapView, onSelectionSetChange: (evt) => this._updateForSelection(evt), onWorkflowTypeChange: (evt) => this._updateForWorkflowType(evt), ref: (el) => { this._selectTools = el; }, searchConfiguration: this._searchConfiguration, selectLayerView: this.addresseeLayer, selectionSet: this._activeSelection, showBufferTools: this.showSearchSettings, sketchLineSymbol: this.sketchLineSymbol, sketchPointSymbol: this.sketchPointSymbol, sketchPolygonSymbol: this.sketchPolygonSymbol })), h("div", { class: "padding-sides-1 padding-bottom-1", style: { "align-items": "end", "display": "flex" } }, this._selectionLoading ? (h("div", null, h("calcite-loader", { active: true, class: "info-blue", inline: true, label: selectionLoading, scale: "m", type: "indeterminate" }))) : (h("calcite-icon", { class: "info-blue padding-end-1-2", icon: "feature-layer", scale: "s" })), h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this._selectionLoading ? selectionLoading :
       this.noResultText && this._numSelected === 0 ? this.noResultText :
         this._translations.selectedAddresses.replace("{{n}}", this._numSelected.toString()).replace("{{layer}}", ((_b = this.addresseeLayer) === null || _b === void 0 ? void 0 : _b.layer.title) || ""))), h("div", { class: "padding-sides-1 " + nameLabelClass }, h("calcite-label", { class: "font-bold" }, "List name", h("calcite-input", { onInput: () => {
         this.labelChange.emit(this._labelName.value);
@@ -756,6 +858,9 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
     "mapView": ["mapViewWatchHandler"],
     "searchConfiguration": ["watchSearchConfigurationHandler"],
     "_selectionSets": ["selectionSetsWatchHandler"],
+    "sketchLineSymbol": ["sketchLineSymbolWatchHandler"],
+    "sketchPointSymbol": ["sketchPointSymbolWatchHandler"],
+    "sketchPolygonSymbol": ["sketchPolygonSymbolWatchHandler"],
     "_pageType": ["pageTypeWatchHandler"]
   }; }
   static get style() { return publicNotificationCss; }
@@ -774,6 +879,9 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
     "selectionLayerIds": [16],
     "showRefineSelection": [4, "show-refine-selection"],
     "showSearchSettings": [4, "show-search-settings"],
+    "sketchLineSymbol": [8, "sketch-line-symbol"],
+    "sketchPointSymbol": [8, "sketch-point-symbol"],
+    "sketchPolygonSymbol": [8, "sketch-polygon-symbol"],
     "addresseeLayer": [32],
     "_downloadActive": [32],
     "_numSelected": [32],

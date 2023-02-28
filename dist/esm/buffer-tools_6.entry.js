@@ -16,7 +16,7 @@ import { i as isActivationKey } from './key-acb660e7.js';
 import { n as numberStringFormatter, c as connectLocalized, d as disconnectLocalized } from './locale-9dd0777b.js';
 import { s as state } from './publicNotificationStore-b9daaee4.js';
 import { h as ESelectionType, g as ERefineMode, f as ESelectionMode } from './interfaces-d0d83efa.js';
-import { a as getMapLayerView, f as queryFeaturesByGeometry, h as highlightFeatures } from './mapViewUtils-4e945e07.js';
+import { a as getMapLayerView, f as queryFeaturesByGeometry, h as highlightFeatures } from './mapViewUtils-bd1809f0.js';
 import './_commonjsHelpers-d5f9d613.js';
 import './resources-436ae282.js';
 import './observers-31601001.js';
@@ -1449,9 +1449,9 @@ const MapDrawTools = class {
         "mode": "hybrid"
       }
     });
-    this.pointSymbol = this._sketchWidget.viewModel.pointSymbol;
-    this.polylineSymbol = this._sketchWidget.viewModel.polylineSymbol;
-    this.polygonSymbol = this._sketchWidget.viewModel.polygonSymbol;
+    this._sketchWidget.viewModel.polylineSymbol = this.polylineSymbol;
+    this._sketchWidget.viewModel.pointSymbol = this.pointSymbol;
+    this._sketchWidget.viewModel.polygonSymbol = this.polygonSymbol;
     this._sketchWidget.visibleElements = {
       selectionTools: {
         "lasso-selection": false,
@@ -1462,10 +1462,6 @@ const MapDrawTools = class {
       undoRedoMenu: false
     };
     this._sketchWidget.on("update", (evt) => {
-      if (evt.state === "start") {
-        this.graphics = evt.graphics;
-        this.sketchGraphicsChange.emit(this.graphics);
-      }
       if (evt.state === "active") {
         clearTimeout(this._selectionTimer);
         this._selectionTimer = setTimeout(() => {

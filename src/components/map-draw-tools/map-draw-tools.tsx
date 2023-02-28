@@ -260,6 +260,7 @@ export class MapDrawTools {
   protected _initGraphicsLayer(): void {
     const title = this._translations.sketchLayer;
     const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
+
     if (sketchIndex > -1) {
       this._sketchGraphicsLayer = this.mapView.map.layers.getItemAt(sketchIndex) as __esri.GraphicsLayer;
     } else {
@@ -289,9 +290,9 @@ export class MapDrawTools {
       }
     });
 
-    this.pointSymbol = this._sketchWidget.viewModel.pointSymbol as __esri.SimpleMarkerSymbol;
-    this.polylineSymbol = this._sketchWidget.viewModel.polylineSymbol as __esri.SimpleLineSymbol;
-    this.polygonSymbol = this._sketchWidget.viewModel.polygonSymbol as __esri.SimpleFillSymbol;
+    this._sketchWidget.viewModel.polylineSymbol = this.polylineSymbol;
+    this._sketchWidget.viewModel.pointSymbol = this.pointSymbol;
+    this._sketchWidget.viewModel.polygonSymbol = this.polygonSymbol;
 
     this._sketchWidget.visibleElements = {
       selectionTools: {
@@ -304,10 +305,6 @@ export class MapDrawTools {
     }
 
     this._sketchWidget.on("update", (evt) => {
-      if (evt.state === "start") {
-        this.graphics = evt.graphics;
-        this.sketchGraphicsChange.emit(this.graphics);
-      }
       if (evt.state === "active") {
         clearTimeout(this._selectionTimer);
         this._selectionTimer = setTimeout(() => {

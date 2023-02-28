@@ -12,11 +12,11 @@ const dom = require('./dom-4a580af6.js');
 const interfaces = require('./interfaces-e76f31e9.js');
 const conditionalSlot = require('./conditionalSlot-baada7a3.js');
 const loadModules = require('./loadModules-0806a34f.js');
-const mapViewUtils = require('./mapViewUtils-f617ae9a.js');
+const mapViewUtils = require('./mapViewUtils-df63bfa4.js');
 const interfaces$1 = require('./interfaces-17c631bf.js');
 const publicNotificationStore = require('./publicNotificationStore-20e924f5.js');
 const locale = require('./locale-04da9a8c.js');
-const downloadUtils = require('./downloadUtils-415ab342.js');
+const downloadUtils = require('./downloadUtils-b85476e8.js');
 const publicNotificationUtils = require('./publicNotificationUtils-9d585d8d.js');
 require('./resources-b56bce71.js');
 require('./guid-84ac4d91.js');
@@ -258,13 +258,16 @@ const MapSelectTools = class {
     this.enabledLayerIds = [];
     this.defaultBufferDistance = undefined;
     this.defaultBufferUnit = undefined;
-    this.geometries = undefined;
+    this.geometries = [];
     this.isUpdate = false;
     this.mapView = undefined;
     this.searchConfiguration = undefined;
     this.selectionSet = undefined;
     this.selectLayerView = undefined;
     this.showBufferTools = true;
+    this.sketchLineSymbol = undefined;
+    this.sketchPointSymbol = undefined;
+    this.sketchPolygonSymbol = undefined;
     this._layerSelectChecked = undefined;
     this._searchTerm = undefined;
     this._translations = undefined;
@@ -411,7 +414,7 @@ const MapSelectTools = class {
     const useDrawClass = !this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
     const showLayerChoiceClass = searchEnabled ? "div-not-visible" : "div-visible";
     const bufferDistance = typeof ((_a = this.selectionSet) === null || _a === void 0 ? void 0 : _a.distance) === "number" ? this.selectionSet.distance : this.defaultBufferDistance;
-    return (index.h(index.Host, null, index.h("div", { class: "padding-bottom-1" }, index.h("calcite-radio-group", { class: "w-100", onCalciteRadioGroupChange: (evt) => this._workflowChange(evt) }, index.h("calcite-radio-group-item", { checked: searchEnabled, class: "w-50 end-border", value: interfaces$1.EWorkflowType.SEARCH }, this._translations.search), index.h("calcite-radio-group-item", { checked: drawEnabled, class: "w-50", value: interfaces$1.EWorkflowType.SKETCH }, this._translations.sketch))), index.h("div", { class: showSearchClass }, index.h("div", { class: "search-widget", ref: (el) => { this._searchElement = el; } })), index.h("div", { class: showLayerChoiceClass }, index.h("calcite-label", { layout: "inline" }, index.h("calcite-checkbox", { checked: this._layerSelectChecked, onCalciteCheckboxChange: () => this._layerSelectChanged(), ref: (el) => this._selectFromLayerElement = el }), "Use layer features")), index.h("div", { class: useDrawClass }, index.h("map-draw-tools", { active: true, border: true, mapView: this.mapView, ref: (el) => { this._drawTools = el; } })), index.h("div", { class: useSelectClass }, index.h("refine-selection-tools", { active: true, border: true, enabledLayerIds: this.enabledLayerIds, layerView: this.selectLayerView, layerViews: this._refineSelectLayers, mapView: this.mapView, mode: interfaces$1.ESelectionMode.ADD, ref: (el) => { this._refineTools = el; }, refineMode: interfaces$1.ERefineMode.SUBSET })), index.h("calcite-label", { class: showBufferToolsClass }, this._translations.searchDistance, index.h("buffer-tools", { distance: bufferDistance, geometries: this.geometries, onBufferComplete: (evt) => this._bufferComplete(evt), ref: (el) => this._bufferTools = el, unit: ((_b = this.selectionSet) === null || _b === void 0 ? void 0 : _b.unit) || this.defaultBufferUnit })), index.h("slot", null)));
+    return (index.h(index.Host, null, index.h("div", { class: "padding-bottom-1" }, index.h("calcite-radio-group", { class: "w-100", onCalciteRadioGroupChange: (evt) => this._workflowChange(evt) }, index.h("calcite-radio-group-item", { checked: searchEnabled, class: "w-50 end-border", value: interfaces$1.EWorkflowType.SEARCH }, this._translations.search), index.h("calcite-radio-group-item", { checked: drawEnabled, class: "w-50", value: interfaces$1.EWorkflowType.SKETCH }, this._translations.sketch))), index.h("div", { class: showSearchClass }, index.h("div", { class: "search-widget", ref: (el) => { this._searchElement = el; } })), index.h("div", { class: showLayerChoiceClass }, index.h("calcite-label", { layout: "inline" }, index.h("calcite-checkbox", { checked: this._layerSelectChecked, onCalciteCheckboxChange: () => this._layerSelectChanged(), ref: (el) => this._selectFromLayerElement = el }), "Use layer features")), index.h("div", { class: useDrawClass }, index.h("map-draw-tools", { active: true, border: true, mapView: this.mapView, pointSymbol: this.sketchPointSymbol, polygonSymbol: this.sketchPolygonSymbol, polylineSymbol: this.sketchLineSymbol, ref: (el) => { this._drawTools = el; } })), index.h("div", { class: useSelectClass }, index.h("refine-selection-tools", { active: true, border: true, enabledLayerIds: this.enabledLayerIds, layerView: this.selectLayerView, layerViews: this._refineSelectLayers, mapView: this.mapView, mode: interfaces$1.ESelectionMode.ADD, ref: (el) => { this._refineTools = el; }, refineMode: interfaces$1.ERefineMode.SUBSET })), index.h("calcite-label", { class: showBufferToolsClass }, this._translations.searchDistance, index.h("buffer-tools", { distance: bufferDistance, geometries: this.geometries, onBufferComplete: (evt) => this._bufferComplete(evt), ref: (el) => this._bufferTools = el, unit: ((_b = this.selectionSet) === null || _b === void 0 ? void 0 : _b.unit) || this.defaultBufferUnit })), index.h("slot", null)));
   }
   //--------------------------------------------------------------------------
   //
@@ -446,7 +449,7 @@ const MapSelectTools = class {
    */
   async _init() {
     this._initGraphicsLayer();
-    this._initSelectionSet();
+    await this._initSelectionSet();
     this._initSearchWidget();
   }
   /**
@@ -454,7 +457,7 @@ const MapSelectTools = class {
    *
    * @protected
    */
-  _initSelectionSet() {
+  async _initSelectionSet() {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
     if (this.selectionSet) {
       this._searchTerm = (_b = (_a = this.selectionSet) === null || _a === void 0 ? void 0 : _a.searchResult) === null || _b === void 0 ? void 0 : _b.name;
@@ -469,7 +472,7 @@ const MapSelectTools = class {
       ];
       // reset selection label base
       this._selectionLabel = ((_k = this.selectionSet) === null || _k === void 0 ? void 0 : _k.label) || this._getSelectionBaseLabel();
-      void mapViewUtils.goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
+      await mapViewUtils.goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     }
     else {
       this._workflowType = interfaces$1.EWorkflowType.SEARCH;
@@ -645,17 +648,16 @@ const MapSelectTools = class {
     this.selectionLoadingChange.emit(false);
     // Add geometries used for selecting features as graphics
     this._drawTools.graphics = this.geometries.map(geom => {
-      var _a, _b, _c;
       const props = {
         "geometry": geom,
         "symbol": geom.type === "point" ?
-          (_a = this._drawTools) === null || _a === void 0 ? void 0 : _a.pointSymbol : geom.type === "polyline" ?
-          (_b = this._drawTools) === null || _b === void 0 ? void 0 : _b.polylineSymbol : geom.type === "polygon" ?
-          (_c = this._drawTools) === null || _c === void 0 ? void 0 : _c.polygonSymbol : undefined
+          this.sketchPointSymbol : geom.type === "polyline" ?
+          this.sketchLineSymbol : geom.type === "polygon" ?
+          this.sketchPolygonSymbol : undefined
       };
       return new this.Graphic(props);
     });
-    void this._highlightFeatures(this._selectedIds);
+    await this._highlightFeatures(this._selectedIds);
   }
   /**
    * Query the selectLayerView based on any user drawn geometries or buffers
@@ -684,8 +686,8 @@ const MapSelectTools = class {
       });
       this._bufferGraphicsLayer.removeAll();
       this._bufferGraphicsLayer.add(polygonGraphic);
-      void this._selectFeatures([this._bufferGeometry]);
-      void this.mapView.goTo(polygonGraphic.geometry.extent);
+      await this._selectFeatures([this._bufferGeometry]);
+      await this.mapView.goTo(polygonGraphic.geometry.extent);
     }
     else {
       if (this._bufferGraphicsLayer) {
@@ -729,7 +731,7 @@ const MapSelectTools = class {
     // for sketch
     // checking for clear as it would throw off tests
     if ((_b = this._drawTools) === null || _b === void 0 ? void 0 : _b.clear) {
-      void this._drawTools.clear();
+      await this._drawTools.clear();
     }
     this.selectionSetChange.emit(this._selectedIds.length);
   }

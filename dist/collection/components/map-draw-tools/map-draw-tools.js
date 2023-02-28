@@ -165,9 +165,9 @@ export class MapDrawTools {
         "mode": "hybrid"
       }
     });
-    this.pointSymbol = this._sketchWidget.viewModel.pointSymbol;
-    this.polylineSymbol = this._sketchWidget.viewModel.polylineSymbol;
-    this.polygonSymbol = this._sketchWidget.viewModel.polygonSymbol;
+    this._sketchWidget.viewModel.polylineSymbol = this.polylineSymbol;
+    this._sketchWidget.viewModel.pointSymbol = this.pointSymbol;
+    this._sketchWidget.viewModel.polygonSymbol = this.polygonSymbol;
     this._sketchWidget.visibleElements = {
       selectionTools: {
         "lasso-selection": false,
@@ -178,10 +178,6 @@ export class MapDrawTools {
       undoRedoMenu: false
     };
     this._sketchWidget.on("update", (evt) => {
-      if (evt.state === "start") {
-        this.graphics = evt.graphics;
-        this.sketchGraphicsChange.emit(this.graphics);
-      }
       if (evt.state === "active") {
         clearTimeout(this._selectionTimer);
         this._selectionTimer = setTimeout(() => {
