@@ -450,8 +450,6 @@ const MapSelectTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElemen
           this.sketchLineSymbol : geom.type === "polygon" ?
           this.sketchPolygonSymbol : undefined
       };
-      console.log("props");
-      console.log(props);
       return new this.Graphic(props);
     });
     await this._highlightFeatures(this._selectedIds);
