@@ -103,6 +103,24 @@ export class MapSelectTools {
    */
   @Prop() showBufferTools = true;
 
+  /**
+   * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+   *
+   */
+  @Prop() sketchLineSymbol: __esri.SimpleLineSymbol;
+
+  /**
+   * esri/symbols/SimpleMarkerSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+   *
+   */
+  @Prop() sketchPointSymbol: __esri.SimpleMarkerSymbol;
+
+  /**
+   * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+   *
+   */
+  @Prop() sketchPolygonSymbol: __esri.SimpleFillSymbol;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -380,7 +398,6 @@ export class MapSelectTools {
    */
   @Listen("sketchGraphicsChange", { target: "window" })
   sketchGraphicsChange(event: CustomEvent): void {
-    console.log("sketchGraphicsChange was fired")
     this._updateSelection(EWorkflowType.SKETCH, event.detail, this._selectionLabel || this._translations.sketch, false);
   }
 
@@ -475,6 +492,9 @@ export class MapSelectTools {
             active={true}
             border={true}
             mapView={this.mapView}
+            pointSymbol={this.sketchPointSymbol}
+            polygonSymbol={this.sketchPolygonSymbol}
+            polylineSymbol={this.sketchLineSymbol}
             ref={(el) => { this._drawTools = el }}
           />
         </div>
@@ -689,7 +709,6 @@ export class MapSelectTools {
    * @protected
    */
   protected _initGraphicsLayer(): void {
-    console.log("-----------------------------_initGraphicsLayer BUFFER-----------------------------");
     const title = this._translations.bufferLayer;
 
     const bufferIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
@@ -781,11 +800,10 @@ export class MapSelectTools {
       const props = {
         "geometry": geom,
         "symbol": geom.type === "point" ?
-          this._drawTools?.pointSymbol : geom.type === "polyline" ?
-            this._drawTools?.polylineSymbol : geom.type === "polygon" ?
-              this._drawTools?.polygonSymbol : undefined
+          this.sketchPointSymbol : geom.type === "polyline" ?
+            this.sketchLineSymbol : geom.type === "polygon" ?
+              this.sketchPolygonSymbol : undefined
       };
-
       console.log("props")
       console.log(props)
       return new this.Graphic(props)

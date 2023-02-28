@@ -81,6 +81,30 @@ export declare class PublicNotification {
    */
   showSearchSettings: boolean;
   /**
+   * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+   *
+   * A JSON representation of the instance in the ArcGIS format.
+   * See the ArcGIS REST API documentation for examples of the structure of various input JSON objects.
+   * https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
+   */
+  sketchLineSymbol: __esri.SimpleLineSymbol | any;
+  /**
+   * esri/symbols/SimpleMarkerSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+   *
+   * A JSON representation of the instance in the ArcGIS format.
+   * See the ArcGIS REST API documentation for examples of the structure of various input JSON objects.
+   * https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
+   */
+  sketchPointSymbol: __esri.SimpleMarkerSymbol | any;
+  /**
+   * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+   *
+   * A JSON representation of the instance in the ArcGIS format.
+   * See the ArcGIS REST API documentation for examples of the structure of various input JSON objects.
+   * https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
+   */
+  sketchPolygonSymbol: __esri.SimpleFillSymbol | any;
+  /**
    * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
    */
   addresseeLayer: __esri.FeatureLayerView;
@@ -148,6 +172,10 @@ export declare class PublicNotification {
    */
   protected _geometryEngine: __esri.geometryEngine;
   /**
+   * esri/symbols/support/jsonUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-support-jsonUtils.html
+   */
+  protected _jsonUtils: __esri.symbolsSupportJsonUtils;
+  /**
    * CustomEvent: Used to prevent default behavior of layer selection change
    */
   protected _labelName: HTMLCalciteInputElement;
@@ -193,6 +221,18 @@ export declare class PublicNotification {
    * Called each time the selectionSets prop is changed.
    */
   selectionSetsWatchHandler(v: ISelectionSet[], oldV: ISelectionSet[]): Promise<void>;
+  /**
+   * Called each time the sketchLineSymbol prop is changed.
+   */
+  sketchLineSymbolWatchHandler(v: __esri.SimpleLineSymbol | any, oldV: __esri.SimpleLineSymbol): Promise<void>;
+  /**
+   * Called each time the sketchPointSymbol prop is changed.
+   */
+  sketchPointSymbolWatchHandler(v: __esri.SimpleMarkerSymbol | any, oldV: __esri.SimpleMarkerSymbol): Promise<void>;
+  /**
+   * Called each time the sketchPolygonSymbol prop is changed.
+   */
+  sketchPolygonSymbolWatchHandler(v: __esri.SimpleFillSymbol | any, oldV: __esri.SimpleFillSymbol): Promise<void>;
   /**
    * Called each time the pageType prop is changed.
    */
@@ -241,6 +281,30 @@ export declare class PublicNotification {
    * @protected
    */
   protected _initModules(): Promise<void>;
+  /**
+   * Initialize the default symbols that will be used when creating new graphics
+   *
+   * @protected
+   */
+  protected _initSymbols(): void;
+  /**
+   * Convert a JSON representation of a line symbol and/or set the line symbol
+   *
+   * @protected
+   */
+  protected _setLineSymbol(v: __esri.SimpleLineSymbol | any): void;
+  /**
+   * Convert a JSON representation of a point symbol and/or set the point symbol
+   *
+   * @protected
+   */
+  protected _setPointSymbol(v: __esri.SimpleMarkerSymbol | any): void;
+  /**
+   * Convert a JSON representation of a polygon symbol and/or set the polygon symbol
+   *
+   * @protected
+   */
+  protected _setPolygonSymbol(v: __esri.SimpleFillSymbol | any): void;
   /**
    * Get a calcite action group for the current action
    *

@@ -98,11 +98,6 @@ export class MapDrawTools {
   protected GraphicsLayer: typeof import("esri/layers/GraphicsLayer");
 
   /**
-   * esri/symbols/support/jsonUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-support-jsonUtils.html
-   */
-  protected _jsonUtils: __esri.symbolsSupportJsonUtils;
-
-  /**
    * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html#constructors-summary
    */
   protected Sketch: typeof import("esri/widgets/Sketch");
@@ -198,7 +193,6 @@ export class MapDrawTools {
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
-    this._initSymbols();
   }
 
   /**
@@ -238,14 +232,12 @@ export class MapDrawTools {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [GraphicsLayer, Sketch, jsonUtils] = await loadModules([
+    const [GraphicsLayer, Sketch] = await loadModules([
       "esri/layers/GraphicsLayer",
-      "esri/widgets/Sketch",
-      "esri/symbols/support/jsonUtils"
+      "esri/widgets/Sketch"
     ]);
     this.GraphicsLayer = GraphicsLayer;
     this.Sketch = Sketch;
-    this._jsonUtils = jsonUtils;
   }
 
   /**
@@ -260,43 +252,6 @@ export class MapDrawTools {
     }
   }
 
-  protected _initSymbols(): void {
-    this.polygonSymbol = this._jsonUtils.fromJSON({
-      "type": "esriSFS",
-      "color": [150, 150, 150, 51],
-      "outline": {
-        "type": "esriSLS",
-        "color": [50, 50, 50, 255],
-        "width": 2,
-        "style": "esriSLSSolid"
-      },
-      "style": "esriSFSSolid"
-    }) as __esri.SimpleFillSymbol;
-
-    this.pointSymbol = this._jsonUtils.fromJSON({
-      "type": "esriSMS",
-      "color": [255, 255, 255, 255],
-      "angle": 0,
-      "xoffset": 0,
-      "yoffset": 0,
-      "size": 6,
-      "style": "esriSMSCircle",
-      "outline": {
-        "type": "esriSLS",
-        "color": [50, 50, 50, 255],
-        "width": 1,
-        "style": "esriSLSSolid"
-      }
-    }) as __esri.SimpleMarkerSymbol;
-
-    this.polylineSymbol = this._jsonUtils.fromJSON({
-      "type": "esriSLS",
-      "color": [130, 130, 130, 255],
-      "width": 2,
-      "style": "esriSLSSolid"
-    }) as __esri.SimpleLineSymbol;
-  }
-
   /**
    * Create or find the graphics layer and add any existing graphics
    *
@@ -305,15 +260,10 @@ export class MapDrawTools {
   protected _initGraphicsLayer(): void {
     const title = this._translations.sketchLayer;
     const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
-    console.log("-----------------------------_initGraphicsLayer DRAW-----------------------------");
 
     if (sketchIndex > -1) {
-    console.log("-----------------------------HAS-----------------------------");
-
       this._sketchGraphicsLayer = this.mapView.map.layers.getItemAt(sketchIndex) as __esri.GraphicsLayer;
     } else {
-    console.log("-----------------------------NOT HAS-----------------------------");
-
       this._sketchGraphicsLayer = new this.GraphicsLayer({ title });
       state.managedLayers.push(title);
       this.mapView.map.layers.add(this._sketchGraphicsLayer);
@@ -340,21 +290,9 @@ export class MapDrawTools {
       }
     });
 
-    // this.pointSymbol = this._sketchWidget.viewModel.pointSymbol as __esri.SimpleMarkerSymbol;
-    // this.polylineSymbol = this._sketchWidget.viewModel.polylineSymbol as __esri.SimpleLineSymbol;
-    // this.polygonSymbol = this._sketchWidget.viewModel.polygonSymbol as __esri.SimpleFillSymbol;
-
-    // console.log("this.polygonSymbol")
-    // console.log(this.polygonSymbol)
-    // console.log(JSON.stringify(this.polygonSymbol))
-
-    // console.log("this.pointSymbol")
-    // console.log(this.pointSymbol)
-    // console.log(JSON.stringify(this.pointSymbol))
-
-    // console.log("this.polylineSymbol")
-    // console.log(this.polylineSymbol)
-    // console.log(JSON.stringify(this.polylineSymbol))
+    this._sketchWidget.viewModel.polylineSymbol = this.polylineSymbol;
+    this._sketchWidget.viewModel.pointSymbol = this.pointSymbol;
+    this._sketchWidget.viewModel.polygonSymbol = this.polygonSymbol;
 
     this._sketchWidget.visibleElements = {
       selectionTools: {
@@ -367,19 +305,10 @@ export class MapDrawTools {
     }
 
     this._sketchWidget.on("update", (evt) => {
-      console.log("this._sketchWidget.on('update'")
-      console.log(evt.state)
-      //if (evt.state === "start") {
-        //console.log('evt.state === "start"')
-        //this.graphics = evt.graphics;
-        //this.sketchGraphicsChange.emit(this.graphics);
-      //}
       if (evt.state === "active") {
-        console.log('evt.state === "active"')
         clearTimeout(this._selectionTimer);
         this._selectionTimer = setTimeout(() => {
           this.graphics = evt.graphics;
-          console.log('sketchGraphicsChange.emit')
           this.sketchGraphicsChange.emit(this.graphics);
         }, 500);
       }
@@ -401,10 +330,7 @@ export class MapDrawTools {
     });
 
     this._sketchWidget.on("create", (evt) => {
-      console.log('_sketchWidget.on("create"')
-
       if (evt.state === "complete") {
-        console.log('evt.state === "complete"')
         this.graphics = [evt.graphic];
         this.sketchGraphicsChange.emit(this.graphics);
       }

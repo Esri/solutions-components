@@ -56,10 +56,6 @@ export declare class MapDrawTools {
    */
   protected GraphicsLayer: typeof import("esri/layers/GraphicsLayer");
   /**
-   * esri/symbols/support/jsonUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-support-jsonUtils.html
-   */
-  protected _jsonUtils: __esri.symbolsSupportJsonUtils;
-  /**
    * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html#constructors-summary
    */
   protected Sketch: typeof import("esri/widgets/Sketch");
@@ -130,7 +126,6 @@ export declare class MapDrawTools {
    * @protected
    */
   protected _init(): void;
-  protected _initSymbols(): void;
   /**
    * Create or find the graphics layer and add any existing graphics
    *

@@ -68,6 +68,21 @@ export declare class MapSelectTools {
    * boolean: When true the buffer tools will be available for use
    */
   showBufferTools: boolean;
+  /**
+   * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+   *
+   */
+  sketchLineSymbol: __esri.SimpleLineSymbol;
+  /**
+   * esri/symbols/SimpleMarkerSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+   *
+   */
+  sketchPointSymbol: __esri.SimpleMarkerSymbol;
+  /**
+   * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+   *
+   */
+  sketchPolygonSymbol: __esri.SimpleFillSymbol;
   _layerSelectChecked: boolean;
   /**
    * string: Text entered by the end user.

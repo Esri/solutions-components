@@ -265,6 +265,9 @@ const MapSelectTools = class {
     this.selectionSet = undefined;
     this.selectLayerView = undefined;
     this.showBufferTools = true;
+    this.sketchLineSymbol = undefined;
+    this.sketchPointSymbol = undefined;
+    this.sketchPolygonSymbol = undefined;
     this._layerSelectChecked = undefined;
     this._searchTerm = undefined;
     this._translations = undefined;
@@ -368,7 +371,6 @@ const MapSelectTools = class {
    *
    */
   sketchGraphicsChange(event) {
-    console.log("sketchGraphicsChange was fired");
     this._updateSelection(interfaces$1.EWorkflowType.SKETCH, event.detail, this._selectionLabel || this._translations.sketch, false);
   }
   /**
@@ -412,7 +414,7 @@ const MapSelectTools = class {
     const useDrawClass = !this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
     const showLayerChoiceClass = searchEnabled ? "div-not-visible" : "div-visible";
     const bufferDistance = typeof ((_a = this.selectionSet) === null || _a === void 0 ? void 0 : _a.distance) === "number" ? this.selectionSet.distance : this.defaultBufferDistance;
-    return (index.h(index.Host, null, index.h("div", { class: "padding-bottom-1" }, index.h("calcite-radio-group", { class: "w-100", onCalciteRadioGroupChange: (evt) => this._workflowChange(evt) }, index.h("calcite-radio-group-item", { checked: searchEnabled, class: "w-50 end-border", value: interfaces$1.EWorkflowType.SEARCH }, this._translations.search), index.h("calcite-radio-group-item", { checked: drawEnabled, class: "w-50", value: interfaces$1.EWorkflowType.SKETCH }, this._translations.sketch))), index.h("div", { class: showSearchClass }, index.h("div", { class: "search-widget", ref: (el) => { this._searchElement = el; } })), index.h("div", { class: showLayerChoiceClass }, index.h("calcite-label", { layout: "inline" }, index.h("calcite-checkbox", { checked: this._layerSelectChecked, onCalciteCheckboxChange: () => this._layerSelectChanged(), ref: (el) => this._selectFromLayerElement = el }), "Use layer features")), index.h("div", { class: useDrawClass }, index.h("map-draw-tools", { active: true, border: true, mapView: this.mapView, ref: (el) => { this._drawTools = el; } })), index.h("div", { class: useSelectClass }, index.h("refine-selection-tools", { active: true, border: true, enabledLayerIds: this.enabledLayerIds, layerView: this.selectLayerView, layerViews: this._refineSelectLayers, mapView: this.mapView, mode: interfaces$1.ESelectionMode.ADD, ref: (el) => { this._refineTools = el; }, refineMode: interfaces$1.ERefineMode.SUBSET })), index.h("calcite-label", { class: showBufferToolsClass }, this._translations.searchDistance, index.h("buffer-tools", { distance: bufferDistance, geometries: this.geometries, onBufferComplete: (evt) => this._bufferComplete(evt), ref: (el) => this._bufferTools = el, unit: ((_b = this.selectionSet) === null || _b === void 0 ? void 0 : _b.unit) || this.defaultBufferUnit })), index.h("slot", null)));
+    return (index.h(index.Host, null, index.h("div", { class: "padding-bottom-1" }, index.h("calcite-radio-group", { class: "w-100", onCalciteRadioGroupChange: (evt) => this._workflowChange(evt) }, index.h("calcite-radio-group-item", { checked: searchEnabled, class: "w-50 end-border", value: interfaces$1.EWorkflowType.SEARCH }, this._translations.search), index.h("calcite-radio-group-item", { checked: drawEnabled, class: "w-50", value: interfaces$1.EWorkflowType.SKETCH }, this._translations.sketch))), index.h("div", { class: showSearchClass }, index.h("div", { class: "search-widget", ref: (el) => { this._searchElement = el; } })), index.h("div", { class: showLayerChoiceClass }, index.h("calcite-label", { layout: "inline" }, index.h("calcite-checkbox", { checked: this._layerSelectChecked, onCalciteCheckboxChange: () => this._layerSelectChanged(), ref: (el) => this._selectFromLayerElement = el }), "Use layer features")), index.h("div", { class: useDrawClass }, index.h("map-draw-tools", { active: true, border: true, mapView: this.mapView, pointSymbol: this.sketchPointSymbol, polygonSymbol: this.sketchPolygonSymbol, polylineSymbol: this.sketchLineSymbol, ref: (el) => { this._drawTools = el; } })), index.h("div", { class: useSelectClass }, index.h("refine-selection-tools", { active: true, border: true, enabledLayerIds: this.enabledLayerIds, layerView: this.selectLayerView, layerViews: this._refineSelectLayers, mapView: this.mapView, mode: interfaces$1.ESelectionMode.ADD, ref: (el) => { this._refineTools = el; }, refineMode: interfaces$1.ERefineMode.SUBSET })), index.h("calcite-label", { class: showBufferToolsClass }, this._translations.searchDistance, index.h("buffer-tools", { distance: bufferDistance, geometries: this.geometries, onBufferComplete: (evt) => this._bufferComplete(evt), ref: (el) => this._bufferTools = el, unit: ((_b = this.selectionSet) === null || _b === void 0 ? void 0 : _b.unit) || this.defaultBufferUnit })), index.h("slot", null)));
   }
   //--------------------------------------------------------------------------
   //
@@ -571,7 +573,6 @@ const MapSelectTools = class {
    * @protected
    */
   _initGraphicsLayer() {
-    console.log("-----------------------------_initGraphicsLayer BUFFER-----------------------------");
     const title = this._translations.bufferLayer;
     const bufferIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
     if (bufferIndex > -1) {
@@ -647,13 +648,12 @@ const MapSelectTools = class {
     this.selectionLoadingChange.emit(false);
     // Add geometries used for selecting features as graphics
     this._drawTools.graphics = this.geometries.map(geom => {
-      var _a, _b, _c;
       const props = {
         "geometry": geom,
         "symbol": geom.type === "point" ?
-          (_a = this._drawTools) === null || _a === void 0 ? void 0 : _a.pointSymbol : geom.type === "polyline" ?
-          (_b = this._drawTools) === null || _b === void 0 ? void 0 : _b.polylineSymbol : geom.type === "polygon" ?
-          (_c = this._drawTools) === null || _c === void 0 ? void 0 : _c.polygonSymbol : undefined
+          this.sketchPointSymbol : geom.type === "polyline" ?
+          this.sketchLineSymbol : geom.type === "polygon" ?
+          this.sketchPolygonSymbol : undefined
       };
       console.log("props");
       console.log(props);
