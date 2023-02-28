@@ -536,6 +536,8 @@ export class PublicNotification {
   /**
    * Convert a JSON representation of a line symbol and/or set the line symbol
    *
+   * @param v SimpleLineSymbol or a JSON representation of a line symbol
+   *
    * @protected
    */
   protected _setLineSymbol(
@@ -552,6 +554,8 @@ export class PublicNotification {
 
   /**
    * Convert a JSON representation of a point symbol and/or set the point symbol
+   *
+   * @param v SimpleMarkerSymbol or a JSON representation of a point symbol
    *
    * @protected
    */
@@ -578,6 +582,8 @@ export class PublicNotification {
 
   /**
    * Convert a JSON representation of a polygon symbol and/or set the polygon symbol
+   *
+   * @param v SimpleFillSymbol or a JSON representation of a polygon symbol
    *
    * @protected
    */
