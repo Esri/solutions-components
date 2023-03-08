@@ -19,7 +19,7 @@ import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getMapLayerView, goToSelection } from "../../utils/mapViewUtils";
 import { queryAllFeatures } from "../../utils/queryUtils";
-import { exportCSV } from "../../utils/csvUtils";
+import * as downloadUtils from "../../utils/downloadUtils";
 
 // TODO look for options to better handle very large number of records
 //  has a hard time especially with select all when we have many rows
@@ -449,9 +449,15 @@ export class LayerTable {
    *
    * @returns a promise that will resolve when the operation is complete
    */
-  protected _exportToCSV(): void {
-    const ids = this._getSelectedIds();
-    void exportCSV(this._layerView, ids);
+  protected async _exportToCSV(): Promise<void> {
+    return downloadUtils.downloadCSV(
+      [],
+      this._layerView.layer,
+      this._getSelectedIds(),
+      false, // formatUsingLayerPopup
+      false, // removeDuplicates
+      true, // addColumnTitle
+    );
   }
 
   /**

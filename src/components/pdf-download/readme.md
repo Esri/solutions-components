@@ -9,13 +9,13 @@
 
 | Property    | Attribute  | Description                                                                                                                               | Type               | Default     |
 | ----------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----------- |
-| `disabled`  | `disabled` | boolean: Controls the enabled/disabled state of download                                                                                  | `boolean`          | `true`      |
+| `disabled`  | `disabled` | boolean: Controls the enabled/disabled state of download                                                                                  | `boolean`          | `false`     |
 | `layerView` | --         | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView` | `undefined` |
 
 
 ## Methods
 
-### `downloadCSV(ids: number[], removeDuplicates: boolean) => Promise<void>`
+### `downloadCSV(selectionSetNames: string[], ids: number[], removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>`
 
 Downloads csv of mailing labels for the provided list of ids
 
@@ -25,7 +25,7 @@ Type: `Promise<void>`
 
 Promise resolving when function is done
 
-### `downloadPDF(ids: number[], removeDuplicates: boolean) => Promise<void>`
+### `downloadPDF(selectionSetNames: string[], ids: number[], removeDuplicates: boolean) => Promise<void>`
 
 Downloads pdf of mailing labels for the provided list of ids
 

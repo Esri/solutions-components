@@ -15,11 +15,11 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
-import { ERefineMode, ESelectionMode, ESelectionType, IRefineOperation } from "../../utils/interfaces";
+import { ERefineMode, ESelectionMode, ESelectionType, IRefineOperation, IRefineSelectionEvent, ISelectionSet } from "../../utils/interfaces";
+import { loadModules } from "../../utils/loadModules";
 import { getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
 import { queryFeaturesByGeometry } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
-import { loadModules } from "../../utils/loadModules";
 import RefineSelectionTools_T9n from "../../assets/t9n/refine-selection-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 
@@ -52,6 +52,12 @@ export class RefineSelectionTools {
    * boolean: Optionally draw a border around the draw tools
    */
   @Prop() border = false;
+
+  /**
+   * string[]: Optional list of enabled layer ids
+   *  If empty all layers will be available
+   */
+  @Prop() enabledLayerIds: string[] = [];
 
   /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
@@ -87,6 +93,11 @@ export class RefineSelectionTools {
    * utils/interfaces/ERefineMode: ALL, SUBSET
    */
   @Prop() refineMode: ERefineMode;
+
+  /**
+   * utils/interfaces/ISelectionSet: Refine selection set
+   */
+  @Prop({ mutable: true }) refineSelectionSet: ISelectionSet;
 
   /**
    * boolean: Used to control the visibility of the layer picker
@@ -125,16 +136,16 @@ export class RefineSelectionTools {
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
    * The graphics layer constructor
    */
-  protected GraphicsLayer: typeof __esri.GraphicsLayer;
+  protected GraphicsLayer: typeof import("esri/layers/GraphicsLayer");
 
   /**
    * esri/widgets/Sketch/SketchViewModel: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch-SketchViewModel.html
    * The sketch view model constructor
    */
-  protected SketchViewModel: typeof __esri.SketchViewModel;
+  protected SketchViewModel: typeof import("esri/widgets/Sketch/SketchViewModel");
 
   /**
-   * {<layer title>: Graphic[]}: Collection of graphics returned from queries to the layer
+   * {<layer id>: Graphic[]}: Collection of graphics returned from queries to the layer
    */
   protected _featuresCollection: { [key: string]: __esri.Graphic[] } = {};
 
@@ -142,11 +153,6 @@ export class RefineSelectionTools {
    * esri/core/Handles: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Handles.html#Handle
    */
   protected _hitTestHandle: __esri.Handle;
-
-  /**
-   * IRefineOperation[]: Array to maintain the possible redo operations
-   */
-  protected _redoStack: IRefineOperation[] = [];
 
   /**
    * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
@@ -164,11 +170,6 @@ export class RefineSelectionTools {
    * The sketch view model used to create graphics
    */
   protected _sketchViewModel: __esri.SketchViewModel;
-
-  /**
-   * IRefineOperation[]: Array to maintain the possible undo operations
-   */
-  protected _undoStack: IRefineOperation[] = [];
 
   //--------------------------------------------------------------------------
   //
@@ -220,9 +221,14 @@ export class RefineSelectionTools {
   //--------------------------------------------------------------------------
 
   /**
+   * Emitted on demand when selection starts or ends.
+   */
+  @Event() selectionLoadingChange: EventEmitter<boolean>;
+
+  /**
    * Emitted on demand when selection graphics change.
    */
-  @Event() refineSelectionGraphicsChange: EventEmitter<any[]>;
+  @Event() refineSelectionGraphicsChange: EventEmitter<IRefineSelectionEvent>;
 
   /**
    * Emitted on demand when selection ids change
@@ -276,18 +282,16 @@ export class RefineSelectionTools {
   render(): VNode {
     const showLayerPickerClass = this.useLayerPicker ? "div-visible" : "div-not-visible";
     const drawClass = this.border ? " border" : "";
+    const showUndoRedo = this.refineMode === ERefineMode.ALL ? "div-visible" : "div-not-visible";
     return (
       <Host>
         <div>
-          {/* Removed if we use checkbox above to control layer vs interactive select */}
-          {/* <div class={"main-label " + showLayerPickerClass}>
-            <calcite-label>{this._translations.selectLayers}</calcite-label>
-          </div> */}
           <map-layer-picker
             class={showLayerPickerClass}
+            enabledLayerIds={this.enabledLayerIds}
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
-            selectedLayers={this.layerViews.map(l => l.layer.title)}
+            selectedLayerIds={this.layerViews.map(l => l.layer.id)}
             selectionMode={"single"}
           />
           <div class={"margin-top-1" + drawClass}>
@@ -296,13 +300,11 @@ export class RefineSelectionTools {
                 <div class="esri-sketch__tool-section esri-sketch__section">
                   <calcite-action
                     disabled={!this._selectEnabled}
-                    icon="select"
+                    icon="pin"
                     onClick={() => this._setSelectionMode(ESelectionType.POINT)}
                     scale="s"
                     text={this._translations.select}
                   />
-                </div>
-                <div class="esri-sketch__tool-section esri-sketch__section">
                   <calcite-action
                     disabled={!this._selectEnabled}
                     icon="line"
@@ -325,18 +327,18 @@ export class RefineSelectionTools {
                     text={this._translations.selectRectangle}
                   />
                 </div>
-                <div class="esri-sketch__tool-section esri-sketch__section">
+                <div class={showUndoRedo + " esri-sketch__tool-section esri-sketch__section"}>
                   <calcite-action
-                    disabled={this._undoStack.length === 0}
+                    disabled={this.refineSelectionSet?.undoStack ? this.refineSelectionSet.undoStack.length === 0 : true}
                     icon="undo"
-                    onClick={void (async (): Promise<void> => this._undo())}
+                    onClick={() => this._undo()}
                     scale="s"
                     text={this._translations.undo}
                   />
                   <calcite-action
-                    disabled={this._redoStack.length === 0}
+                    disabled={this.refineSelectionSet?.redoStack ? this.refineSelectionSet.redoStack.length === 0 : true}
                     icon="redo"
-                    onClick={void (async (): Promise<void> => this._redo())}
+                    onClick={() => this._redo()}
                     scale="s"
                     text={this._translations.redo}
                   />
@@ -356,25 +358,6 @@ export class RefineSelectionTools {
   //--------------------------------------------------------------------------
 
   /**
-   * Load esri javascript api modules
-   *
-   * @returns Promise resolving when function is done
-   *
-   * @protected
-   */
-  protected async _initModules(): Promise<void> {
-    const [GraphicsLayer, SketchViewModel]: [
-      __esri.GraphicsLayerConstructor,
-      __esri.SketchViewModelConstructor
-    ] = await loadModules([
-      "esri/layers/GraphicsLayer",
-      "esri/widgets/Sketch/SketchViewModel"
-    ]);
-    this.GraphicsLayer = GraphicsLayer;
-    this.SketchViewModel = SketchViewModel;
-  }
-
-  /**
    * Initialize the graphics layer and skecth view model
    *
    * @returns Promise when the operation has completed
@@ -383,6 +366,22 @@ export class RefineSelectionTools {
   protected _init(): void {
     this._initGraphicsLayer();
     this._initSketchViewModel();
+  }
+
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
+    const [GraphicsLayer, SketchViewModel] = await loadModules([
+      "esri/layers/GraphicsLayer",
+      "esri/widgets/Sketch/SketchViewModel"
+    ]);
+    this.GraphicsLayer = GraphicsLayer;
+    this.SketchViewModel = SketchViewModel;
   }
 
   /**
@@ -469,7 +468,7 @@ export class RefineSelectionTools {
             return prev;
           }, []);
         }
-        this.refineSelectionGraphicsChange.emit(graphics);
+        this.refineSelectionGraphicsChange.emit({graphics, useOIDs: false});
         this._clear();
       });
     });
@@ -488,8 +487,8 @@ export class RefineSelectionTools {
   ): Promise<void> {
     if (Array.isArray(evt.detail) && evt.detail.length > 0) {
       this._selectEnabled = true;
-      const layerPromises = evt.detail.map(title => {
-        return getMapLayerView(this.mapView, title)
+      const layerPromises = evt.detail.map(id => {
+        return getMapLayerView(this.mapView, id)
       });
 
       return Promise.all(layerPromises).then((layerViews) => {
@@ -543,12 +542,14 @@ export class RefineSelectionTools {
   protected async _selectFeatures(
     geom: __esri.Geometry
   ): Promise<void> {
+    this.selectionLoadingChange.emit(true);
     const queryFeaturePromises = this.layerViews.map(layerView => {
-      this._featuresCollection[layerView.layer.title] = [];
+      this._featuresCollection[layerView.layer.id] = [];
       return queryFeaturesByGeometry(0, layerView.layer, geom, this._featuresCollection)
     });
 
     return Promise.all(queryFeaturePromises).then(async response => {
+      this.selectionLoadingChange.emit(false);
       let graphics = [];
       response.forEach(r => {
         Object.keys(r).forEach(k => {
@@ -557,10 +558,13 @@ export class RefineSelectionTools {
       });
 
       if (this.refineMode === ERefineMode.SUBSET) {
-        this.refineSelectionGraphicsChange.emit(graphics);
+        this.refineSelectionGraphicsChange.emit({
+          graphics,
+          useOIDs: this.layerViews[0].layer.title === this.layerView.layer.title
+        });
       } else {
         const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
-        await this._updateIds(oids, this.mode, this._undoStack, this.mode);
+        await this._updateIds(oids, this.mode, this.refineSelectionSet.undoStack, this.mode);
       }
       this._clear();
     });
@@ -613,11 +617,15 @@ export class RefineSelectionTools {
     if (mode === ESelectionMode.ADD) {
       idUpdates.addIds = oids.filter(id => this.ids.indexOf(id) < 0);
       this.ids = [...this.ids, ...idUpdates.addIds];
-      operationStack.push({ mode: operationMode, ids: idUpdates.addIds });
+      if (idUpdates.addIds.length > 0) {
+        operationStack.push({ mode: operationMode, ids: idUpdates.addIds });
+      }
     } else {
       idUpdates.removeIds = oids.filter(id => this.ids.indexOf(id) > -1);
       this.ids = this.ids.filter(id => idUpdates.removeIds.indexOf(id) < 0);
-      operationStack.push({ mode: operationMode, ids: idUpdates.removeIds });
+      if (idUpdates.removeIds.length > 0) {
+        operationStack.push({ mode: operationMode, ids: idUpdates.removeIds });
+      }
     }
     await this._highlightFeatures(this.ids).then(() => {
       this.refineSelectionIdsChange.emit(idUpdates);
@@ -631,12 +639,12 @@ export class RefineSelectionTools {
    *
    * @protected
    */
-  async _undo(): Promise<void> {
-    const undoOp = this._undoStack.pop();
-    return this._updateIds(
+  protected _undo(): void {
+    const undoOp = this.refineSelectionSet.undoStack.pop();
+    void this._updateIds(
       undoOp.ids,
       undoOp.mode === ESelectionMode.ADD ? ESelectionMode.REMOVE : ESelectionMode.ADD,
-      this._redoStack,
+      this.refineSelectionSet.redoStack,
       undoOp.mode
     );
   }
@@ -648,12 +656,12 @@ export class RefineSelectionTools {
    *
    * @protected
    */
-  async _redo(): Promise<void> {
-    const redoOp = this._redoStack.pop();
-    return this._updateIds(
+  protected _redo(): void {
+    const redoOp = this.refineSelectionSet.redoStack.pop();
+    void this._updateIds(
       redoOp.ids,
       redoOp.mode,
-      this._undoStack,
+      this.refineSelectionSet.undoStack,
       redoOp.mode
     );
   }

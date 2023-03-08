@@ -1,0 +1,11 @@
+/*!
+ * Copyright 2022 Esri
+ * Licensed under the Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+import{q as n,c as t}from"./p-83166522.js";
+/*!
+ * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+ * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
+ * v1.0.0-beta.97
+ */const e="calciteInternalLabelClick",c="calciteInternalLabelConnected",o="calciteInternaLabelDisconnected",s="calcite-label",i=new WeakMap,a=new WeakMap,u=new WeakMap,l=new Set;function r(r){const d=(e=>{const{id:c}=e,o=c&&n(e,{selector:`${s}[for="${c}"]`});if(o)return o;const i=t(e,s);return!i||function(n,t){let e;const c="custom-element-ancestor-check",o=c=>{c.stopImmediatePropagation();const o=c.composedPath();e=o.slice(o.indexOf(t),o.indexOf(n))};return n.addEventListener(c,o,{once:!0}),t.dispatchEvent(new CustomEvent(c,{composed:!0,bubbles:!0})),n.removeEventListener(c,o),e.filter((e=>e!==t&&e!==n)).filter((n=>{var t;return null===(t=n.tagName)||void 0===t?void 0:t.includes("-")})).length>0}(i,e)?null:i})(r.el);if(i.has(d)||!d&&l.has(r))return;const f=v.bind(r);if(d){r.labelEl=d;const n=m.bind(r);i.set(r.labelEl,n),r.labelEl.addEventListener(e,n),l.delete(r),document.removeEventListener(c,a.get(r)),u.set(r,f),document.addEventListener(o,f)}else l.has(r)||(f(),document.removeEventListener(o,u.get(r)))}function d(n){if(l.delete(n),document.removeEventListener(c,a.get(n)),document.removeEventListener(o,u.get(n)),a.delete(n),u.delete(n),!n.labelEl)return;const t=i.get(n.labelEl);n.labelEl.removeEventListener(e,t),i.delete(n.labelEl)}function f(n){var t,e;return n.label||(null===(e=null===(t=n.labelEl)||void 0===t?void 0:t.textContent)||void 0===e?void 0:e.trim())||""}function m(n){this.disabled||this.el.contains(n.detail.sourceEvent.target)||this.onLabelClick(n)}function h(){l.has(this)&&r(this)}function v(){l.add(this);const n=a.get(this)||h.bind(this);a.set(this,n),document.addEventListener(c,n)}export{o as a,r as c,d,f as g,c as l}

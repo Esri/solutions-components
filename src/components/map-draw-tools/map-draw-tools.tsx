@@ -95,12 +95,17 @@ export class MapDrawTools {
   /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html?#constructors-summary
    */
-  protected GraphicsLayer: typeof __esri.GraphicsLayer;
+  protected GraphicsLayer: typeof import("esri/layers/GraphicsLayer");
 
   /**
    * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html#constructors-summary
    */
-  protected Sketch: typeof __esri.Sketch;
+  protected Sketch: typeof import("esri/widgets/Sketch");
+
+  /**
+   * A timer used to prevent redundant selections while drawing shapes
+   */
+  protected _selectionTimer;
 
   /**
    * The container element for the sketch widget
@@ -129,7 +134,7 @@ export class MapDrawTools {
    */
   @Watch("graphics")
   graphicsWatchHandler(v: any, oldV: any): void {
-    if (v && v.length > 0 && JSON.stringify(v) !== JSON.stringify(oldV)) {
+    if (v && v.length > 0 && JSON.stringify(v) !== JSON.stringify(oldV) && this._sketchGraphicsLayer) {
       this._sketchGraphicsLayer.removeAll();
       this._sketchGraphicsLayer.addMany(v);
     }
@@ -227,10 +232,7 @@ export class MapDrawTools {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [GraphicsLayer, Sketch]: [
-      __esri.GraphicsLayerConstructor,
-      __esri.SketchConstructor
-    ] = await loadModules([
+    const [GraphicsLayer, Sketch] = await loadModules([
       "esri/layers/GraphicsLayer",
       "esri/widgets/Sketch"
     ]);
@@ -258,6 +260,7 @@ export class MapDrawTools {
   protected _initGraphicsLayer(): void {
     const title = this._translations.sketchLayer;
     const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
+
     if (sketchIndex > -1) {
       this._sketchGraphicsLayer = this.mapView.map.layers.getItemAt(sketchIndex) as __esri.GraphicsLayer;
     } else {
@@ -281,32 +284,57 @@ export class MapDrawTools {
       layer: this._sketchGraphicsLayer,
       view: this.mapView,
       container: this._sketchElement,
-      creationMode: "update",
+      creationMode: "single",
       defaultCreateOptions: {
         "mode": "hybrid"
       }
     });
 
-    this.pointSymbol = this._sketchWidget.viewModel.pointSymbol as __esri.SimpleMarkerSymbol;
-    this.polylineSymbol = this._sketchWidget.viewModel.polylineSymbol as __esri.SimpleLineSymbol;
-    this.polygonSymbol = this._sketchWidget.viewModel.polygonSymbol as __esri.SimpleFillSymbol;
+    this._sketchWidget.viewModel.polylineSymbol = this.polylineSymbol;
+    this._sketchWidget.viewModel.pointSymbol = this.pointSymbol;
+    this._sketchWidget.viewModel.polygonSymbol = this.polygonSymbol;
 
     this._sketchWidget.visibleElements = {
       selectionTools: {
         "lasso-selection": false,
         "rectangle-selection": false
       }, createTools: {
-        "circle": false,
-        "point": false
-      }
+        "circle": false
+      },
+      undoRedoMenu: false
     }
 
     this._sketchWidget.on("update", (evt) => {
-      if (evt.state === "complete" && this.active) {
-        this.graphics = this._sketchGraphicsLayer.graphics.toArray();
+      if (evt.state === "active") {
+        clearTimeout(this._selectionTimer);
+        this._selectionTimer = setTimeout(() => {
+          this.graphics = evt.graphics;
+          this.sketchGraphicsChange.emit(this.graphics);
+        }, 500);
+      }
+    });
+
+    this._sketchWidget.on("delete", () => {
+      this.graphics = [];
+      this.sketchGraphicsChange.emit(this.graphics);
+    });
+
+    this._sketchWidget.on("undo", (evt) => {
+      this.graphics = evt.graphics;
+      this.sketchGraphicsChange.emit(this.graphics);
+    });
+
+    this._sketchWidget.on("redo", (evt) => {
+      this.graphics = evt.graphics;
+      this.sketchGraphicsChange.emit(this.graphics);
+    });
+
+    this._sketchWidget.on("create", (evt) => {
+      if (evt.state === "complete") {
+        this.graphics = [evt.graphic];
         this.sketchGraphicsChange.emit(this.graphics);
       }
-    })
+    });
   }
 
   /**
@@ -316,7 +344,7 @@ export class MapDrawTools {
    */
   protected _clearSketch(): void {
     this.graphics = [];
-    this._sketchGraphicsLayer.removeAll();
+    this._sketchGraphicsLayer?.removeAll();
   }
 
   /**

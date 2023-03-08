@@ -15,8 +15,8 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
-import { loadModules } from "../../utils/loadModules";
 import MapCard_T9n from "../../assets/t9n/map-card/resources.json";
+import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { EExpandType, IMapInfo } from "../../utils/interfaces";
 
@@ -87,6 +87,16 @@ export class MapCard {
   //--------------------------------------------------------------------------
 
   /**
+   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   */
+  protected MapView: typeof import("esri/views/MapView");
+
+  /**
+   * esri/WebMap: https://developers.arcgis.com/javascript/latest/api-reference/esri-WebMap.html
+   */
+  protected WebMap: typeof import("esri/WebMap");
+
+  /**
    * string: the id of map currently displayed
    */
   protected _loadedId = "";
@@ -95,16 +105,6 @@ export class MapCard {
    * string: the id of the container div for the map
    */
   protected _mapDivId = "map-div";
-
-  /**
-   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-   */
-  protected MapView: typeof __esri.MapView;
-
-  /**
-   * esri/WebMap: https://developers.arcgis.com/javascript/latest/api-reference/esri-WebMap.html
-   */
-  protected WebMap: typeof __esri.WebMap;
 
   //--------------------------------------------------------------------------
   //
@@ -198,10 +198,7 @@ export class MapCard {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [WebMap, MapView]: [
-      __esri.WebMapConstructor,
-      __esri.MapViewConstructor
-    ] = await loadModules([
+    const [WebMap, MapView] = await loadModules([
       "esri/WebMap",
       "esri/views/MapView"
     ]);

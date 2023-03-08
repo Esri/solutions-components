@@ -18,6 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, W
 import { loadModules } from "../../utils/loadModules";
 import BufferTools_T9n from "../../assets/t9n/buffer-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
+import { DistanceUnit, IValueChange } from "../../utils/interfaces";
 
 @Component({
   tag: "buffer-tools",
@@ -56,12 +57,12 @@ export class BufferTools {
   /**
    * number: The component's maximum selectable value.
    */
-  @Prop({ mutable: true }) sliderMax = 100;
+  @Prop({ mutable: true }) max: number;
 
   /**
    * number: The component's minimum selectable value.
    */
-  @Prop({ mutable: true }) sliderMin = 0;
+  @Prop({ mutable: true }) min = 0;
 
   /**
    * number: Displays tick marks on the number line at a specified interval.
@@ -74,9 +75,9 @@ export class BufferTools {
   @Prop({ mutable: true }) unionResults = true;
 
   /**
-   * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
+   * DistanceUnit: "feet"|"meters"|"miles"|"kilometers"
    */
-  @Prop({ mutable: true }) unit: __esri.LinearUnits = "meters";
+  @Prop({ mutable: true }) unit: DistanceUnit = "meters";
 
   //--------------------------------------------------------------------------
   //
@@ -97,14 +98,14 @@ export class BufferTools {
   //--------------------------------------------------------------------------
 
   /**
-   * Timeout: https://nodejs.org/en/docs/guides/timers-in-node/
-   */
-  protected _bufferTimeout: NodeJS.Timeout;
-
-  /**
    * geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
    */
   protected _geometryEngine: __esri.geometryEngine;
+
+  /**
+   * Timeout: https://nodejs.org/en/docs/guides/timers-in-node/
+   */
+  protected _bufferTimeout: NodeJS.Timeout;
 
   /**
    * HTMLCalciteSelectElement: The html element for selecting buffer unit
@@ -123,10 +124,8 @@ export class BufferTools {
    *
    */
   @Watch("geometries")
-  geometriesWatchHandler(v: any, oldV: any): void {
-    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
-      this._buffer();
-    }
+  geometriesWatchHandler(): void {
+    this._buffer();
   }
 
   //--------------------------------------------------------------------------
@@ -145,6 +144,16 @@ export class BufferTools {
    * Emitted on demand when a buffer is generated.
    */
   @Event() bufferComplete: EventEmitter<__esri.Polygon | __esri.Polygon[]>;
+
+  /**
+   * Emitted on demand when the distance value changes
+   */
+  @Event() distanceChanged: EventEmitter<IValueChange>;
+
+  /**
+   * Emitted on demand when the unit changes
+   */
+  @Event() unitChanged: EventEmitter<IValueChange>;
 
   //--------------------------------------------------------------------------
   //
@@ -224,11 +233,18 @@ export class BufferTools {
   protected _setDistance(
     event: CustomEvent
   ): void {
-    this.distance = event.detail.value;
-    if (this.distance > 0) {
-      this._buffer();
-    } else {
-      this.bufferComplete.emit(undefined);
+    const v = parseInt(event.detail.value, 10);
+    if (this.distance !== v && v >= this.min) {
+      this.distanceChanged.emit({
+        oldValue: this.distance,
+        newValue: event.detail.value
+      });
+      this.distance = v;
+      if (this.distance > 0) {
+        this._buffer();
+      } else {
+        this.bufferComplete.emit(undefined);
+      }
     }
   }
 
@@ -238,8 +254,12 @@ export class BufferTools {
    * @protected
    */
   protected _setUnit(
-    unit: __esri.LinearUnits
+    unit: DistanceUnit
   ): void {
+    this.unitChanged.emit({
+      oldValue: this.unit,
+      newValue: unit
+    });
     this.unit = unit;
     this._buffer();
   }
@@ -281,6 +301,8 @@ export class BufferTools {
       <div class="c-container">
         <calcite-input
           class="padding-end-1"
+          max={this.max && this.max > 0 ? this.max : undefined}
+          min={this.min}
           number-button-type="vertical"
           onCalciteInputInput={(evt) => this._setDistance(evt)}
           placeholder="0"
@@ -290,7 +312,7 @@ export class BufferTools {
         <calcite-select
           class="flex-1"
           label="label"
-          onCalciteSelectChange={() => this._setUnit(this._unitElement.value as __esri.LinearUnits)}
+          onCalciteSelectChange={() => this._setUnit(this._unitElement.value as DistanceUnit)}
           ref={(el) => { this._unitElement = el }}
         >
           {this._getUnits()}
@@ -312,8 +334,8 @@ export class BufferTools {
       <div>
         <calcite-slider
           labelHandles={true}
-          max={this.sliderMax}
-          min={this.sliderMin}
+          max={this.max && this.max > 0 ? this.max : undefined}
+          min={this.min}
           ticks={this.sliderTicks}
         />
       </div>

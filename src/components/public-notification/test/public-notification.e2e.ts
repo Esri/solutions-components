@@ -15,8 +15,7 @@
  */
 
 import { newE2EPage } from '@stencil/core/testing';
-import * as locale from "../../../utils/locale";
-import * as loadModules from "../../../utils/loadModules";
+import * as locale from "../../../utils/locale";;
 import * as translations from "../../../assets/t9n/public-notification/resources.json";
 import { geometryEngine } from "../../../utils/test/mocks/jsApi";
 import * as queryUtils from "../../../utils/queryUtils";
@@ -35,10 +34,6 @@ beforeEach(() => {
   jest.spyOn(locale, "getLocaleComponentStrings").mockImplementation(() => [
     translations
   ] as any);
-
-  jest.spyOn(loadModules, "loadModules").mockImplementation(async () => {
-    return [geometryEngine]
-  });
 
   jest.spyOn(mapViewUtils, "highlightFeatures").mockImplementation(jest.fn());
   jest.spyOn(publicNotificationUtils, "getSelectionIds").mockImplementation(jest.fn());

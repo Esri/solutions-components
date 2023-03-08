@@ -16,6 +16,7 @@
 
 :host {
   display: block;
+  --calcite-label-margin-bottom: 0;
 }
 
 .label-display {
