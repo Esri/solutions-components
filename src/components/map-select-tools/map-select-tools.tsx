@@ -715,7 +715,7 @@ export class MapSelectTools {
     if (bufferIndex > -1) {
       this._bufferGraphicsLayer = this.mapView.map.layers.getItemAt(bufferIndex) as __esri.GraphicsLayer;
     } else {
-      this._bufferGraphicsLayer = new this.GraphicsLayer({ title });
+      this._bufferGraphicsLayer = new this.GraphicsLayer({ title, listMode: "hide" });
       state.managedLayers.push(title);
       const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === this._translations.sketchLayer);
       if (sketchIndex > -1) {
