@@ -19,6 +19,12 @@ import {
   IItemTemplate
 } from '@esri/solution-common';
 
+export enum ELayoutMode {
+  GRID = "GRID",
+  HORIZONTAL = "HORIZONTAL",
+  VERTICAL = "VERTICAL"
+}
+
 /**
  * Resource update types
  */

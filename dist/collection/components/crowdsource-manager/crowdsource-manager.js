@@ -19,17 +19,11 @@
  * limitations under the License.
  */
 import { Host, h } from '@stencil/core';
+import { getLocaleComponentStrings } from "../../utils/locale";
 export class CrowdsourceManager {
-  //--------------------------------------------------------------------------
-  //
-  //  Properties (public)
-  //
-  //--------------------------------------------------------------------------
-  //--------------------------------------------------------------------------
-  //
-  //  State (internal)
-  //
-  //--------------------------------------------------------------------------
+  constructor() {
+    this._translations = undefined;
+  }
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -55,14 +49,23 @@ export class CrowdsourceManager {
   //  Functions (lifecycle)
   //
   //--------------------------------------------------------------------------
+  async componentWillLoad() {
+    await this._getTranslations();
+  }
   render() {
-    return (h(Host, null, h("slot", null)));
+    return (h(Host, null, h("div", null, h("calcite-shell", null, h("div", { class: "header", slot: 'header' }, h("calcite-label", { class: "header-title" }, this._translations.header), h("calcite-label", { class: "header-controls-label", layout: "inline" }, this._translations.layout, h("calcite-action-bar", { class: "header-controls", "expand-disabled": true, layout: "horizontal" }, this._getActionGroup("grid-background"), this._getActionGroup("horizontal-background"), this._getActionGroup("vertical-background"))))))));
   }
   //--------------------------------------------------------------------------
   //
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+  _getActionGroup(imgClass) {
+    return (h("div", { class: "action-center background-transparent" }, h("calcite-action", { alignment: "center", appearance: "transparent", compact: false, onClick: () => { this._updateLayout(); }, text: "" }, h("div", { class: imgClass + " img-background" })), h("calcite-tooltip", { label: "", placement: "bottom" }, h("span", null, "tip"))));
+  }
+  _updateLayout() {
+    console.log("A");
+  }
   /**
    * Fetches the component's translations
    *
@@ -70,8 +73,8 @@ export class CrowdsourceManager {
    * @protected
    */
   async _getTranslations() {
-    // const messages = await getLocaleComponentStrings(this.el);
-    // this._translations = messages[0] as typeof BufferTools_T9n;
+    const messages = await getLocaleComponentStrings(this.el);
+    this._translations = messages[0];
   }
   static get is() { return "crowdsource-manager"; }
   static get encapsulation() { return "shadow"; }
@@ -83,6 +86,11 @@ export class CrowdsourceManager {
   static get styleUrls() {
     return {
       "$": ["crowdsource-manager.css"]
+    };
+  }
+  static get states() {
+    return {
+      "_translations": {}
     };
   }
   static get elementRef() { return "el"; }

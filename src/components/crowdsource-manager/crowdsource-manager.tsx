@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h } from '@stencil/core';
+import { Component, Element, Host, h, State, VNode } from '@stencil/core';
+import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
   tag: 'crowdsource-manager',
@@ -40,6 +42,12 @@ export class CrowdsourceManager {
   //  State (internal)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() _translations: typeof CrowdsourceManager_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -71,12 +79,28 @@ export class CrowdsourceManager {
   //
   //--------------------------------------------------------------------------
 
+  async componentWillLoad(): Promise<void> {
+    await this._getTranslations();
+  }
+
   render() {
     return (
       <Host>
         <div>
           <calcite-shell>
-            <div class="header" slot='header'/>
+            <div class="header" slot='header'>
+              <calcite-label class="header-title">
+                {this._translations.header}
+              </calcite-label>
+              <calcite-label class="header-controls-label" layout="inline">
+                {this._translations.layout}
+                <calcite-action-bar class="header-controls" expand-disabled layout="horizontal">
+                  {this._getActionGroup("grid-background")}
+                  {this._getActionGroup("horizontal-background")}
+                  {this._getActionGroup("vertical-background")}
+                </calcite-action-bar>
+              </calcite-label>
+            </div>
           </calcite-shell>
         </div>
       </Host>
@@ -89,6 +113,31 @@ export class CrowdsourceManager {
   //
   //--------------------------------------------------------------------------
 
+  protected _getActionGroup(
+    imgClass: string
+  ): VNode {
+    return (
+      <div class="action-center background-transparent">
+        <calcite-action
+          alignment="center"
+          appearance="transparent"
+          compact={false}
+          onClick={() => { this._updateLayout() }}
+          text=""
+        >
+          <div class={imgClass + " img-background"} />
+        </calcite-action>
+        <calcite-tooltip label="" placement="bottom">
+          <span>tip</span>
+        </calcite-tooltip>
+      </div>
+    );
+  }
+
+  protected _updateLayout(): void {
+    console.log("A")
+  }
+
   /**
    * Fetches the component's translations
    *
@@ -96,8 +145,8 @@ export class CrowdsourceManager {
    * @protected
    */
   protected async _getTranslations(): Promise<void> {
-    // const messages = await getLocaleComponentStrings(this.el);
-    // this._translations = messages[0] as typeof BufferTools_T9n;
+    const messages = await getLocaleComponentStrings(this.el);
+    this._translations = messages[0] as typeof CrowdsourceManager_T9n;
   }
 
 }

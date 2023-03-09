@@ -16,10 +16,60 @@
 
 :host {
   display: block;
+  --calcite-label-margin-bottom: 0px;
 }
 
 .header {
   width: 100%;
   height: 50px;
   background-color: var(--calcite-ui-foreground-2);
+}
+
+.header-title {
+  display: flex;
+  float: left;
+}
+
+.header-controls-label {
+  display: flex;
+  float: right;
+}
+
+.header-controls {
+  height: 50px;
+}
+
+.img-background {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 38px;
+  height: 26px;
+}
+
+.grid-background {
+  background-image: url('../../assets/data/images/grid.png');
+}
+
+.horizontal-background {
+  background-image: url('../../assets/data/images/horizontal.png');
+}
+
+.vertical-background {
+  background-image: url('../../assets/data/images/vertical.png');
+}
+
+.action-center {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-grid-row-align: center;
+  align-items: center;
+  -webkit-align-content: center;
+  align-content: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.background-transparent {
+  background-color: transparent;
 }

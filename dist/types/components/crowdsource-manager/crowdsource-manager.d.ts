@@ -13,9 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { VNode } from '../../stencil-public-runtime';
+import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 export declare class CrowdsourceManager {
   el: HTMLCrowdsourceManagerElement;
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  _translations: typeof CrowdsourceManager_T9n;
+  componentWillLoad(): Promise<void>;
   render(): any;
+  protected _getActionGroup(imgClass: string): VNode;
+  protected _updateLayout(): void;
   /**
    * Fetches the component's translations
    *

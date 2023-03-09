@@ -15,6 +15,11 @@
  */
 /// <reference types="arcgis-js-api" />
 import { IDeployFileCopyPath, IItemTemplate } from '@esri/solution-common';
+export declare enum ELayoutMode {
+  GRID = "GRID",
+  HORIZONTAL = "HORIZONTAL",
+  VERTICAL = "VERTICAL"
+}
 /**
  * Resource update types
  */

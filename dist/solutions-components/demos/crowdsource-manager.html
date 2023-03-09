@@ -22,26 +22,9 @@
     | limitations under the License.
     -->
     <style>
-      #viewDiv {
-        padding: 0;
-        margin: 0;
-        height: 100%;
-        width: 100%;
-      }
-      .over-map {
-        position: absolute;
-        right: 0px;
-        background-color: var(--calcite-ui-foreground-1);
-      }
-      .column {
-        min-width: 300px;
-        padding: 1rem;
-        border: 1px solid var(--calcite-ui-border-2);
-        height: -webkit-fill-available;
-        height: 100%;
-      }
-      .column[dir="rtl"] {
-        float: left;
+      .crowdsource {
+        height: 100vh;
+        width: 100vw;
       }
     </style>
 
@@ -55,7 +38,7 @@
     <script src="https://js.arcgis.com/4.25/"></script>
     <script type="module" src="../solutions-components.esm.js"></script>
 
-    <script>
+    <!-- <script>
       require(["esri/WebMap", "esri/views/MapView"], (
         WebMap,
         MapView
@@ -75,11 +58,10 @@
           map: webMap
         });
       });
-    </script>
+    </script> -->
   </head>
 
   <body>
-    <div id="viewDiv"></div>
-    <crowdsource-manager id="demo" class="over-map column"></crowdsource-manager>
+    <crowdsource-manager id="demo" class="crowdsource"/>
   </body>
 </html>
