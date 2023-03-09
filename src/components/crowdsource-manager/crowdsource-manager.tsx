@@ -17,6 +17,7 @@
 import { Component, Element, Host, h, State, VNode } from '@stencil/core';
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
+import { ELayoutMode } from '../../utils/interfaces';
 
 @Component({
   tag: 'crowdsource-manager',
@@ -48,6 +49,11 @@ export class CrowdsourceManager {
    * All UI strings should be defined here.
    */
   @State() _translations: typeof CrowdsourceManager_T9n;
+
+  /**
+   * Controls the layout of the application
+   */
+  @State() _layoutMode: ELayoutMode;
 
   //--------------------------------------------------------------------------
   //
@@ -95,9 +101,9 @@ export class CrowdsourceManager {
               <calcite-label class="header-controls-label" layout="inline">
                 {this._translations.layout}
                 <calcite-action-bar class="header-controls" expand-disabled layout="horizontal">
-                  {this._getActionGroup("grid-background")}
-                  {this._getActionGroup("horizontal-background")}
-                  {this._getActionGroup("vertical-background")}
+                  {this._getActionGroup("grid-background", ELayoutMode.GRID)}
+                  {this._getActionGroup("horizontal-background", ELayoutMode.HORIZONTAL)}
+                  {this._getActionGroup("vertical-background", ELayoutMode.VERTICAL)}
                 </calcite-action-bar>
               </calcite-label>
             </div>
@@ -114,7 +120,8 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   protected _getActionGroup(
-    imgClass: string
+    imgClass: string,
+    layoutMode: ELayoutMode
   ): VNode {
     return (
       <div class="action-center background-transparent">
@@ -122,7 +129,7 @@ export class CrowdsourceManager {
           alignment="center"
           appearance="transparent"
           compact={false}
-          onClick={() => { this._updateLayout() }}
+          onClick={() => { this._updateLayout(layoutMode) }}
           text=""
         >
           <div class={imgClass + " img-background"} />
@@ -134,8 +141,10 @@ export class CrowdsourceManager {
     );
   }
 
-  protected _updateLayout(): void {
-    console.log("A")
+  protected _updateLayout(
+    layoutMode: ELayoutMode
+  ): void {
+    this._layoutMode = layoutMode;
   }
 
   /**
