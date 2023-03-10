@@ -19,10 +19,8 @@
   --calcite-label-margin-bottom: 0px;
 }
 
-.header {
-  width: 100%;
-  height: 50px;
-  background-color: var(--calcite-ui-foreground-2);
+.pad-top-51 {
+  padding-top: 51px;
 }
 
 .header-title {
@@ -50,11 +48,11 @@
   background-image: url('../../assets/data/images/grid.png');
 }
 
-.horizontal-background {
+.vertical-background {
   background-image: url('../../assets/data/images/horizontal.png');
 }
 
-.vertical-background {
+.horizontal-background {
   background-image: url('../../assets/data/images/vertical.png');
 }
 
@@ -72,4 +70,50 @@
 
 .background-transparent {
   background-color: transparent;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.header-text {
+  font-size: var(--calcite-font-size-0);
+  font-weight: var(--calcite-font-weight-medium);
+  padding-inline: 0.75rem;
+  padding-block: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.width-full {
+  width: 100%;
+}
+
+.width-1-2 {
+  width: 50%;
+}
+
+.width-0 {
+  width: 0;
+}
+
+.height-full {
+  height: 100%;
+}
+
+.height-1-2 {
+  height: 50%;
+}
+
+.height-0 {
+  height: 0;
+}
+
+.divider-w {
+  width: 48px;
+  height: 100%;
+}
+
+.divider-h {
+  width: 100%;
+  height: 48px;
 }
