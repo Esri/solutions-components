@@ -5,6 +5,13 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property   | Attribute | Description                                  | Type         | Default |
+| ---------- | --------- | -------------------------------------------- | ------------ | ------- |
+| `mapInfos` | --        | IMapInfo[]: array of map infos (name and id) | `IMapInfo[]` | `[]`    |
+
+
 ## Dependencies
 
 ### Depends on
@@ -13,7 +20,7 @@
 - calcite-action
 - calcite-tooltip
 - calcite-shell
-- calcite-shell-panel
+- [map-card](../map-card)
 
 ### Graph
 ```mermaid
@@ -22,7 +29,7 @@ graph TD;
   crowdsource-manager --> calcite-action
   crowdsource-manager --> calcite-tooltip
   crowdsource-manager --> calcite-shell
-  crowdsource-manager --> calcite-shell-panel
+  crowdsource-manager --> map-card
   calcite-panel --> calcite-action
   calcite-panel --> calcite-action-menu
   calcite-panel --> calcite-scrim
@@ -33,6 +40,25 @@ graph TD;
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
   calcite-scrim --> calcite-loader
+  map-card --> calcite-action-bar
+  map-card --> calcite-action-group
+  map-card --> calcite-action
+  map-card --> calcite-icon
+  map-card --> calcite-tooltip
+  map-card --> calcite-block
+  map-card --> calcite-pick-list
+  map-card --> calcite-pick-list-item
+  calcite-action-bar --> calcite-action-group
+  calcite-action-group --> calcite-action-menu
+  calcite-action-group --> calcite-action
+  calcite-block --> calcite-scrim
+  calcite-block --> calcite-icon
+  calcite-block --> calcite-handle
+  calcite-block --> calcite-loader
+  calcite-block --> calcite-action-menu
+  calcite-handle --> calcite-icon
+  calcite-pick-list-item --> calcite-icon
+  calcite-pick-list-item --> calcite-action
   style crowdsource-manager fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

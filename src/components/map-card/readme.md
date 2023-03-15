@@ -21,6 +21,10 @@
 
 ## Dependencies
 
+### Used by
+
+ - [crowdsource-manager](../crowdsource-manager)
+
 ### Depends on
 
 - calcite-action-bar
@@ -61,6 +65,7 @@ graph TD;
   calcite-handle --> calcite-icon
   calcite-pick-list-item --> calcite-icon
   calcite-pick-list-item --> calcite-action
+  crowdsource-manager --> map-card
   style map-card fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -53,6 +53,10 @@ export namespace Components {
     interface CommentCard {
     }
     interface CrowdsourceManager {
+        /**
+          * IMapInfo[]: array of map infos (name and id)
+         */
+        "mapInfos": IMapInfo[];
     }
     interface CrowdsourceReporter {
     }
@@ -981,6 +985,10 @@ declare namespace LocalJSX {
     interface CommentCard {
     }
     interface CrowdsourceManager {
+        /**
+          * IMapInfo[]: array of map infos (name and id)
+         */
+        "mapInfos"?: IMapInfo[];
     }
     interface CrowdsourceReporter {
     }

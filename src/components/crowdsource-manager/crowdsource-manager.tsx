@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, State, VNode } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { ELayoutMode } from '../../utils/interfaces';
+import { ELayoutMode, IMapInfo } from '../../utils/interfaces';
 
 @Component({
   tag: 'crowdsource-manager',
@@ -37,6 +37,11 @@ export class CrowdsourceManager {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * IMapInfo[]: array of map infos (name and id)
+   */
+  @Prop() mapInfos: IMapInfo[] = [];
 
   //--------------------------------------------------------------------------
   //
@@ -155,25 +160,26 @@ export class CrowdsourceManager {
     shellClass: string
   ): VNode {
     const icon = this._panelOpen ? "chevrons-left" : "chevrons-right";
+    const tooltip = this._panelOpen ? "Close" : "Open";
+    const id = "toggle-vertical";
     return (
       <calcite-shell
         class={shellClass}
       >
-        <calcite-shell-panel
-          collapsed={!this._panelOpen}
-          slot="panel-start"
-        >
-          <div
-            class="width-full height-full"
-            style={{ "background-color": "black" }}
-          />
-        </calcite-shell-panel>
-        <div class="width-full height-full">
-          <div class="divider-w">
-            <calcite-action
-              icon={icon}
-              onclick={() => this._toggleLayout()}
-              text="Add" />
+        <div class="width-full height-full display-flex">
+          {this._getMap()}
+          <div class="width-2-3 height-full">
+            <div class="divider-w">
+              <calcite-action
+                icon={icon}
+                id={id}
+                onclick={() => this._toggleLayout()}
+                text=""
+              />
+              <calcite-tooltip label={tooltip} placement="bottom" reference-element={id}>
+                <span>{tooltip}</span>
+              </calcite-tooltip>
+            </div>
           </div>
         </div>
       </calcite-shell>
@@ -199,7 +205,8 @@ export class CrowdsourceManager {
                 id={id}
                 onclick={() => this._toggleLayout()}
                 slot="header-actions-start"
-                text="Add" />
+                text=""
+              />
               <calcite-tooltip label={tooltip} placement="bottom" reference-element={id}>
                 <span>{tooltip}</span>
               </calcite-tooltip>
@@ -228,7 +235,8 @@ export class CrowdsourceManager {
                 icon={icon}
                 id={id}
                 onclick={() => this._toggleLayout()}
-                text="Add" />
+                text=""
+              />
               <calcite-tooltip label={tooltip} placement="bottom" reference-element={id}>
                 <span>{tooltip}</span>
               </calcite-tooltip>
@@ -242,9 +250,13 @@ export class CrowdsourceManager {
   protected _getMap(): VNode {
     const sizeClass = this._layoutMode === ELayoutMode.VERTICAL ?
       `height-full ${ this._panelOpen ? "width-1-2" : "width-0"}` :
-      `${this._panelOpen ? "height-1-2" : "height-0"} width-full`
+      this._layoutMode === ELayoutMode.HORIZONTAL ?
+      `${this._panelOpen ? "height-1-2" : "height-0"} width-full` :
+      `height-1-2 ${this._panelOpen ? "width-1-3" : "width-0"}`;
     return (
-      <div class={sizeClass} style={{"background-color": "black"}}/>
+      <div class={sizeClass}>
+        <map-card mapInfos={this.mapInfos}/>
+      </div>
     );
   }
 

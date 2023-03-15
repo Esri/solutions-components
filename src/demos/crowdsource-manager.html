@@ -38,30 +38,21 @@
     <script src="https://js.arcgis.com/4.25/"></script>
     <script type="module" src="../solutions-components.esm.js"></script>
 
-    <!-- <script>
-      require(["esri/WebMap", "esri/views/MapView"], (
-        WebMap,
-        MapView
-      ) => {
-        var webMap = new WebMap({
-          portalItem: {
-            // solutions
-            // id: "3715f4899bea4b2a948347c5c2357e58"
-            // InstantApps
-            id: "863e4f6f2a7840db896cc1b1606d552d"
-          }
-        });
-
+    <script>
+      function addValues() {
         const demo = document.getElementById("demo");
-        demo.mapView = new MapView({
-          container: "viewDiv",
-          map: webMap
-        });
-      });
-    </script> -->
+        demo.mapInfos = [{
+          id: "863e4f6f2a7840db896cc1b1606d552d",
+          name: "Name of map 1"
+        }, {
+          id: "3715f4899bea4b2a948347c5c2357e58",
+          name: "Name of map 2"
+        }];
+      }
+    </script>
   </head>
 
-  <body>
+  <body onload="addValues()">
     <crowdsource-manager id="demo" class="crowdsource"/>
   </body>
 </html>

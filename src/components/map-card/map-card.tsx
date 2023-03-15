@@ -102,9 +102,9 @@ export class MapCard {
   protected _loadedId = "";
 
   /**
-   * string: the id of the container div for the map
+   * HTMLDivElement: the container div for the map
    */
-  protected _mapDivId = "map-div";
+  protected _mapDiv: HTMLDivElement;
 
   //--------------------------------------------------------------------------
   //
@@ -179,7 +179,7 @@ export class MapCard {
       <Host>
         {this._getToolbar()}
         {this._getMapNameList(this._mapListExpanded)}
-        <div class="map-height" id={this._mapDivId} />
+        <div class="map-height" ref={(el) => (this._mapDiv = el)}/>
       </Host>
     );
   }
@@ -251,7 +251,7 @@ export class MapCard {
       });
 
       this._mapView = new this.MapView({
-        container: this._mapDivId,
+        container: this._mapDiv,
         map: webMap,
         // TODO consider this more...seems to cause less overflow issues when the component is resized
         resizeAlign: "top-left"
