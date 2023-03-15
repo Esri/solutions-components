@@ -135,6 +135,7 @@ export class CrowdsourceManager {
           appearance="transparent"
           compact={false}
           id={imgClass}
+          indicator={layoutMode === this._layoutMode}
           onClick={() => { this._setLayoutMode(layoutMode) }}
           text=""
         >
