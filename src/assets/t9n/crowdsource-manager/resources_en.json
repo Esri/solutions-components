@@ -1,4 +1,6 @@
 {
   "header": "Crowdsource Manager",
-	"layout": "Layout"
+	"layout": "Layout",
+	"open": "Open",
+	"close": "Close"
 }

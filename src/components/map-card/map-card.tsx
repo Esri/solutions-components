@@ -313,7 +313,7 @@ export class MapCard {
     return (
       <calcite-action-group class="action-center width-1-6" layout="horizontal">
         <calcite-block
-          class="action-center block-button width-full height-full"
+          class="action-center block-button width-full height-full display-grid"
           heading=''
           onClick={() => this._chooseMap()}
         >

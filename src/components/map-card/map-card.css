@@ -64,6 +64,10 @@
   display: flex;
 }
 
+.display-grid {
+  display: inline-grid;
+}
+
 /* only used if we need to do the map action seperately */
 .block-button {
   border-bottom: 0;

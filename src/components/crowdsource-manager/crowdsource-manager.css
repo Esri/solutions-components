@@ -118,14 +118,29 @@
 
 .divider-w {
   width: 48px;
-  height: 100%;
+  height: calc(100% - 2px);
 }
 
 .divider-h {
-  width: 100%;
+  width: calc(100% - 2px);
+  height: 48px;
+}
+
+.toggle-node {
+  width: 48px;
   height: 48px;
 }
 
 .overflow-hidden {
   overflow: hidden;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.border {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--calcite-ui-border-3);
 }

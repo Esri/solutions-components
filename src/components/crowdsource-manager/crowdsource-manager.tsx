@@ -157,13 +157,14 @@ export class CrowdsourceManager {
       case ELayoutMode.HORIZONTAL:
         icon = panelOpen ? "chevrons-up" : "chevrons-down";
         break;
-      case ELayoutMode.GRID || ELayoutMode.VERTICAL:
+      default:
         icon = panelOpen ? "chevrons-left" : "chevrons-right";
+        break;
     }
     return icon;
   }
 
-  protected _getSizeClass(
+  protected _getMapSizeClass(
     layoutMode: ELayoutMode,
     panelOpen: boolean
   ): string {
@@ -177,6 +178,25 @@ export class CrowdsourceManager {
         break;
       case ELayoutMode.VERTICAL:
         sizeClass = `height-full ${panelOpen ? "width-1-2" : "width-0"}`;
+        break;
+    }
+    return sizeClass;
+  }
+
+  protected _getTableSizeClass(
+    layoutMode: ELayoutMode,
+    panelOpen: boolean
+  ): string {
+    let sizeClass = "";
+    switch (layoutMode) {
+      case ELayoutMode.HORIZONTAL:
+        sizeClass = `${panelOpen ? "height-1-2" : "height-full"} width-full display-flex flex-column`;
+        break;
+      case ELayoutMode.GRID:
+        sizeClass = `${panelOpen ? "width-2-3" : "width-full"} height-full display-flex`;
+        break;
+      case ELayoutMode.VERTICAL:
+        sizeClass = `${panelOpen ? "width-1-2" : "width-full"} height-full display-flex`;
         break;
     }
     return sizeClass;
@@ -201,7 +221,7 @@ export class CrowdsourceManager {
     layoutMode: ELayoutMode,
     panelOpen: boolean
   ): VNode {
-    const mapSizeClass = this._getSizeClass(layoutMode, panelOpen);
+    const mapSizeClass = this._getMapSizeClass(layoutMode, panelOpen);
     return (
       <div class={`${mapSizeClass} overflow-hidden`}>
         <div style={{ "overflow": "hidden" }} >
@@ -215,29 +235,31 @@ export class CrowdsourceManager {
     layoutMode: ELayoutMode,
     panelOpen: boolean
   ): VNode {
-    const tableSizeClass = layoutMode === ELayoutMode.HORIZONTAL ?
-      "height-1-2 width-full display-flex" : layoutMode === ELayoutMode.VERTICAL ?
-        "width-1-2 height-full display-flex" : "width-2-3 height-full display-flex";
+    const tableSizeClass = this._getTableSizeClass(layoutMode, panelOpen)
     const icon = this._getDividerIcon(layoutMode, panelOpen);
-    const tooltip = panelOpen ? "Close" : "Open";
+    const tooltip = panelOpen ? this._translations.close : this._translations.open;
     const id = "toggle-layout";
+    const toggleSizeClass = layoutMode === ELayoutMode.HORIZONTAL ? "divider-h" : "divider-w";
     return (
       <div class={tableSizeClass}>
-      <div class="divider-w">
-        <calcite-action
-          icon={icon}
-          id={id}
-          onclick={() => this._toggleLayout()}
-          text=""
-        />
-        <calcite-tooltip label={tooltip} placement="bottom" reference-element={id}>
-          <span>{tooltip}</span>
-        </calcite-tooltip>
+        <div class={`border ${toggleSizeClass}`}>
+          <div class="toggle-node">
+            <calcite-action
+              class="toggle-node"
+              icon={icon}
+              id={id}
+              onclick={() => this._toggleLayout()}
+              text=""
+            />
+            <calcite-tooltip label={tooltip} placement="bottom" reference-element={id}>
+              <span>{tooltip}</span>
+            </calcite-tooltip>
+          </div>
+        </div>
+        <div class="width-full height-full" style={{"background-color": "black"}}>
+          H
+        </div>
       </div>
-      <div>
-        H
-      </div>
-    </div>
     );
   }
 
