@@ -21,6 +21,7 @@
 - calcite-tooltip
 - calcite-shell
 - [map-card](../map-card)
+- [layer-table](../layer-table)
 
 ### Graph
 ```mermaid
@@ -30,6 +31,7 @@ graph TD;
   crowdsource-manager --> calcite-tooltip
   crowdsource-manager --> calcite-shell
   crowdsource-manager --> map-card
+  crowdsource-manager --> layer-table
   calcite-panel --> calcite-action
   calcite-panel --> calcite-action-menu
   calcite-panel --> calcite-scrim
@@ -59,6 +61,38 @@ graph TD;
   calcite-handle --> calcite-icon
   calcite-pick-list-item --> calcite-icon
   calcite-pick-list-item --> calcite-action
+  layer-table --> edit-record-modal
+  layer-table --> map-layer-picker
+  layer-table --> calcite-button
+  layer-table --> calcite-split-button
+  layer-table --> calcite-dropdown-group
+  layer-table --> calcite-dropdown-item
+  layer-table --> calcite-checkbox
+  layer-table --> calcite-select
+  layer-table --> calcite-option
+  layer-table --> calcite-input
+  edit-record-modal --> calcite-modal
+  edit-record-modal --> calcite-label
+  edit-record-modal --> calcite-button
+  edit-record-modal --> calcite-input
+  calcite-modal --> calcite-scrim
+  calcite-modal --> calcite-icon
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
+  calcite-input --> calcite-progress
+  calcite-input --> calcite-icon
+  map-layer-picker --> calcite-select
+  map-layer-picker --> calcite-combobox
+  map-layer-picker --> calcite-combobox-item
+  map-layer-picker --> calcite-option
+  calcite-select --> calcite-icon
+  calcite-combobox --> calcite-chip
+  calcite-combobox --> calcite-icon
+  calcite-chip --> calcite-icon
+  calcite-combobox-item --> calcite-icon
+  calcite-split-button --> calcite-button
+  calcite-split-button --> calcite-dropdown
+  calcite-dropdown-item --> calcite-icon
   style crowdsource-manager fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -7,16 +7,18 @@
 
 ## Properties
 
-| Property   | Attribute | Description                                  | Type         | Default |
-| ---------- | --------- | -------------------------------------------- | ------------ | ------- |
-| `mapInfos` | --        | IMapInfo[]: array of map infos (name and id) | `IMapInfo[]` | `[]`    |
+| Property   | Attribute | Description                                                                                            | Type         | Default     |
+| ---------- | --------- | ------------------------------------------------------------------------------------------------------ | ------------ | ----------- |
+| `mapInfos` | --        | IMapInfo[]: array of map infos (name and id)                                                           | `IMapInfo[]` | `[]`        |
+| `mapView`  | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`    | `undefined` |
 
 
 ## Events
 
-| Event       | Description                               | Type                                                      |
-| ----------- | ----------------------------------------- | --------------------------------------------------------- |
-| `expandMap` | Emitted when the expand button is clicked | `CustomEvent<EExpandType.COLLAPSE \| EExpandType.EXPAND>` |
+| Event        | Description                               | Type                                                      |
+| ------------ | ----------------------------------------- | --------------------------------------------------------- |
+| `expandMap`  | Emitted when the expand button is clicked | `CustomEvent<EExpandType.COLLAPSE \| EExpandType.EXPAND>` |
+| `mapChanged` | Emitted when a new map is loaded          | `CustomEvent<MapView>`                                    |
 
 
 ## Dependencies

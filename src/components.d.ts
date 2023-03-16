@@ -129,6 +129,10 @@ export namespace Components {
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos": IMapInfo[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
     }
     interface MapDrawTools {
         /**
@@ -1046,9 +1050,17 @@ declare namespace LocalJSX {
          */
         "mapInfos"?: IMapInfo[];
         /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
           * Emitted when the expand button is clicked
          */
         "onExpandMap"?: (event: MapCardCustomEvent<EExpandType>) => void;
+        /**
+          * Emitted when a new map is loaded
+         */
+        "onMapChanged"?: (event: MapCardCustomEvent<__esri.MapView>) => void;
     }
     interface MapDrawTools {
         /**

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Host, h, Listen, Prop, State, VNode } from '@stencil/core';
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { ELayoutMode, IMapInfo } from '../../utils/interfaces';
@@ -61,6 +61,11 @@ export class CrowdsourceManager {
   @State() _layoutMode: ELayoutMode = ELayoutMode.GRID;
 
   /**
+   * Stores the current map view
+   */
+  @State() _mapView: __esri.MapView;
+
+  /**
    * Controls the layout of the application
    */
   @State() _panelOpen = true;
@@ -88,6 +93,14 @@ export class CrowdsourceManager {
   //  Events (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Handle changes to the buffer distance value
+   */
+  @Listen("mapChanged", { target: "window" })
+  mapChanged(event: CustomEvent): void {
+    this._mapView = event.detail;
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -190,13 +203,13 @@ export class CrowdsourceManager {
     let sizeClass = "";
     switch (layoutMode) {
       case ELayoutMode.HORIZONTAL:
-        sizeClass = `${panelOpen ? "height-1-2" : "height-full"} width-full display-flex flex-column`;
+        sizeClass = `${panelOpen ? "height-1-2" : "height-full-a"} width-full display-flex flex-column`;
         break;
       case ELayoutMode.GRID:
-        sizeClass = `${panelOpen ? "width-2-3" : "width-full"} height-full display-flex`;
+        sizeClass = `${panelOpen ? "width-2-3" : "width-full-a"} height-full display-flex`;
         break;
       case ELayoutMode.VERTICAL:
-        sizeClass = `${panelOpen ? "width-1-2" : "width-full"} height-full display-flex`;
+        sizeClass = `${panelOpen ? "width-1-2" : "width-full-a"} height-full display-flex`;
         break;
     }
     return sizeClass;
@@ -225,7 +238,7 @@ export class CrowdsourceManager {
     return (
       <div class={`${mapSizeClass} overflow-hidden`}>
         <div style={{ "overflow": "hidden" }} >
-          <map-card mapInfos={this.mapInfos} />
+          <map-card mapInfos={this.mapInfos}/>
         </div>
       </div>
     );
@@ -256,8 +269,8 @@ export class CrowdsourceManager {
             </calcite-tooltip>
           </div>
         </div>
-        <div class="width-full height-full" style={{"background-color": "black"}}>
-          H
+        <div class="width-full height-full">
+          <layer-table mapView={this?._mapView}/>
         </div>
       </div>
     );

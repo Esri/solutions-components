@@ -14,6 +14,10 @@
 
 ## Dependencies
 
+### Used by
+
+ - [crowdsource-manager](../crowdsource-manager)
+
 ### Depends on
 
 - [edit-record-modal](../edit-record-modal)
@@ -63,6 +67,7 @@ graph TD;
   calcite-split-button --> calcite-button
   calcite-split-button --> calcite-dropdown
   calcite-dropdown-item --> calcite-icon
+  crowdsource-manager --> layer-table
   style layer-table fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

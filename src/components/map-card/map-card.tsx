@@ -53,6 +53,11 @@ export class MapCard {
    */
   @Prop() mapInfos: IMapInfo[] = [];
 
+  /**
+   * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   */
+  @Prop() mapView: __esri.MapView;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -63,11 +68,6 @@ export class MapCard {
    * boolean: controls the state of the map list
    */
   @State() _mapListExpanded = false;
-
-  /**
-   * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-   */
-  @State() _mapView: __esri.MapView;
 
   /**
    * Contains the translations for this component.
@@ -148,6 +148,11 @@ export class MapCard {
    * Emitted when the expand button is clicked
    */
   @Event() expandMap: EventEmitter<EExpandType>;
+
+  /**
+   * Emitted when a new map is loaded
+   */
+  @Event() mapChanged: EventEmitter<__esri.MapView>;
 
   //--------------------------------------------------------------------------
   //
@@ -250,7 +255,7 @@ export class MapCard {
         portalItem: { id }
       });
 
-      this._mapView = new this.MapView({
+      this.mapView = new this.MapView({
         container: this._mapDiv,
         map: webMap,
         // TODO consider this more...seems to cause less overflow issues when the component is resized
@@ -258,6 +263,7 @@ export class MapCard {
       });
 
       this._loadedId = id;
+      this.mapChanged.emit(this.mapView);
     }
   }
 
