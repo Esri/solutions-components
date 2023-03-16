@@ -68,11 +68,9 @@ export async function downloadCSV(
   removeDuplicates = false,
   addColumnTitle = false
 ): Promise<void> {
-  console.log("downloadCSV using selectionSetNames " + JSON.stringify(selectionSetNames));//???
-  console.log("downloadCSV removeDuplicates", removeDuplicates);//???
   const labels = await _prepareLabels(layer, ids, removeDuplicates, formatUsingLayerPopup, addColumnTitle);
 
-  exportCSV(labels);
+  exportCSV(_createTitle(selectionSetNames), labels);
 
   return Promise.resolve();
 }
@@ -94,8 +92,6 @@ export async function downloadPDF(
   removeDuplicates: boolean,
   labelPageDescription: ILabel
 ): Promise<void> {
-  console.log("downloadPDF using selectionSetNames " + JSON.stringify(selectionSetNames));//???
-  console.log("downloadPDF removeDuplicates", removeDuplicates);//???
   let labels = await _prepareLabels(layer, ids, removeDuplicates);
 
   labels =
@@ -104,7 +100,7 @@ export async function downloadPDF(
     // Remove empty labels
     .filter(label => label.length > 0);
 
-  exportPDF(labels, labelPageDescription);
+  exportPDF(_createTitle(selectionSetNames), labels, labelPageDescription);
 
   return Promise.resolve();
 }
@@ -250,6 +246,21 @@ async function _createArcadeExecutors(
       return arcadeExecutors;
     }
   );
+}
+
+/**
+ * Creates a title from a list of selection set names.
+ *
+ * @param selectionSetNames Names to use in title
+ * @return Title
+ */
+function _createTitle(
+  selectionSetNames: string[]
+): string {
+  // Windows doesn't permit the characters \/:*?"<>|
+  const title = selectionSetNames.join(", ");
+  console.log("_createTitle from " + JSON.stringify(selectionSetNames) + ": " + title);//???
+  return title;
 }
 
 /**

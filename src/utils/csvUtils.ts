@@ -19,16 +19,18 @@
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
+ * @param title Title to use for file
  * @param labels Labels to write
  */
 export function exportCSV(
+  title: string,
   labels: string[][],
 ): void {
   // Format values to string so it doesn't get tripped up when a value has a comma
   // another option could be to export with a different delimiter
   const outputLines = labels.map(label => Object.values(label).map(v => `"${v}"`).join(",") + "\r\n");
 
-  _downloadCSVFile(outputLines, `notify-${Date.now().toString()}`);
+  _downloadCSVFile(outputLines, title);
 }
 
 //#endregion

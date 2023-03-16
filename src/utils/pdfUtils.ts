@@ -27,14 +27,16 @@ export { ILabel } from "../assets/arcgis-pdf-creator/PDFLabels";
 /**
  * Exports a PDF of labels.
  *
+ * @param title Title to use for file
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
  */
 export function exportPDF(
+  title: string,
   labels: string[][],
   labelPageDescription: PDFLabels.ILabel
 ): void {
-  _downloadPDFFile(labels, labelPageDescription, `notify-${Date.now().toString()}`);
+  _downloadPDFFile(labels, labelPageDescription, title);
 }
 
 //#endregion
