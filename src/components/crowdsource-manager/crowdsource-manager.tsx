@@ -112,7 +112,7 @@ export class CrowdsourceManager {
             {this._getAction("horizontal-background", ELayoutMode.VERTICAL)}
             {this._getAction("vertical-background", ELayoutMode.HORIZONTAL)}
           </div>
-          {this._getBody(this._layoutMode)}
+          {this._getBody(this._layoutMode, this._panelOpen)}
         </calcite-panel>
       </Host>
     );
@@ -148,116 +148,96 @@ export class CrowdsourceManager {
     );
   }
 
+  protected _getDividerIcon(
+    layoutMode: ELayoutMode,
+    panelOpen: boolean
+  ): string {
+    let icon = "";
+    switch (layoutMode) {
+      case ELayoutMode.HORIZONTAL:
+        icon = panelOpen ? "chevrons-up" : "chevrons-down";
+        break;
+      case ELayoutMode.GRID || ELayoutMode.VERTICAL:
+        icon = panelOpen ? "chevrons-left" : "chevrons-right";
+    }
+    return icon;
+  }
+
+  protected _getSizeClass(
+    layoutMode: ELayoutMode,
+    panelOpen: boolean
+  ): string {
+    let sizeClass = "";
+    switch (layoutMode) {
+      case ELayoutMode.HORIZONTAL:
+        sizeClass = `${panelOpen ? "height-1-2" : "height-0"} width-full`;
+        break;
+      case ELayoutMode.GRID:
+        sizeClass = `height-full ${panelOpen ? "width-1-3" : "width-0"}`;
+        break;
+      case ELayoutMode.VERTICAL:
+        sizeClass = `height-full ${panelOpen ? "width-1-2" : "width-0"}`;
+        break;
+    }
+    return sizeClass;
+  }
+
   protected _getBody(
-    layoutMode: ELayoutMode
+    layoutMode: ELayoutMode,
+    panelOpen: boolean
   ): VNode {
-    const shellClass = "width-full height-full pad-top-51";
-    return layoutMode === ELayoutMode.GRID ? this._getGridLayout(shellClass) :
-      layoutMode === ELayoutMode.HORIZONTAL ? this._getHorizontalLayout(shellClass) :
-        this._getVerticalLayout(shellClass);
-  }
-
-  protected _getGridLayout(
-    shellClass: string
-  ): VNode {
-    const icon = this._panelOpen ? "chevrons-left" : "chevrons-right";
-    const tooltip = this._panelOpen ? "Close" : "Open";
-    const id = "toggle-vertical";
+    const displayFlex = layoutMode === ELayoutMode.HORIZONTAL ? "" : "display-flex";
     return (
-      <calcite-shell
-        class={shellClass}
-      >
-        <div class="width-full height-full display-flex">
-          {this._getMap()}
-          <div class="width-2-3 height-full">
-            <div class="divider-w">
-              <calcite-action
-                icon={icon}
-                id={id}
-                onclick={() => this._toggleLayout()}
-                text=""
-              />
-              <calcite-tooltip label={tooltip} placement="bottom" reference-element={id}>
-                <span>{tooltip}</span>
-              </calcite-tooltip>
-            </div>
-          </div>
+      <calcite-shell class={"width-full height-full pad-top-51"}>
+        <div class={`width-full height-full ${displayFlex}`}>
+          {this._getMap(layoutMode, panelOpen)}
+          {this._getTable(layoutMode, panelOpen)}
         </div>
       </calcite-shell>
     );
   }
 
-  protected _getHorizontalLayout(
-    shellClass: string
+  protected _getMap(
+    layoutMode: ELayoutMode,
+    panelOpen: boolean
   ): VNode {
-    const icon = this._panelOpen ? "chevrons-up" : "chevrons-down";
-    const tooltip = this._panelOpen ? "Close" : "Open";
-    const id = "toggle-horizontal";
+    const mapSizeClass = this._getSizeClass(layoutMode, panelOpen);
     return (
-      <calcite-shell
-        class={shellClass}
-      >
-        <div class="width-full height-full">
-          {this._getMap()}
-          <div class="height-1-2 width-full">
-            <calcite-panel>
-              <calcite-action
-                icon={icon}
-                id={id}
-                onclick={() => this._toggleLayout()}
-                slot="header-actions-start"
-                text=""
-              />
-              <calcite-tooltip label={tooltip} placement="bottom" reference-element={id}>
-                <span>{tooltip}</span>
-              </calcite-tooltip>
-            </calcite-panel>
-          </div>
+      <div class={`${mapSizeClass} overflow-hidden`}>
+        <div style={{ "overflow": "hidden" }} >
+          <map-card mapInfos={this.mapInfos} />
         </div>
-      </calcite-shell>
-    );
-  }
-
-  protected _getVerticalLayout(
-    shellClass: string
-  ): VNode {
-    const icon = this._panelOpen ? "chevrons-left" : "chevrons-right";
-    const tooltip = this._panelOpen ? "Close" : "Open";
-    const id = "toggle-vertical";
-    return (
-      <calcite-shell
-        class={shellClass}
-      >
-        <div class="width-full height-full display-flex">
-          {this._getMap()}
-          <div class="width-1-2 height-full">
-            <div class="divider-w">
-              <calcite-action
-                icon={icon}
-                id={id}
-                onclick={() => this._toggleLayout()}
-                text=""
-              />
-              <calcite-tooltip label={tooltip} placement="bottom" reference-element={id}>
-                <span>{tooltip}</span>
-              </calcite-tooltip>
-            </div>
-          </div>
-        </div>
-      </calcite-shell>
-    );
-  }
-
-  protected _getMap(): VNode {
-    const sizeClass = this._layoutMode === ELayoutMode.VERTICAL ?
-      `height-full ${ this._panelOpen ? "width-1-2" : "width-0"}` :
-      this._layoutMode === ELayoutMode.HORIZONTAL ?
-      `${this._panelOpen ? "height-1-2" : "height-0"} width-full` :
-      `height-1-2 ${this._panelOpen ? "width-1-3" : "width-0"}`;
-    return (
-      <div class={sizeClass}>
-        <map-card mapInfos={this.mapInfos}/>
       </div>
+    );
+  }
+
+  protected _getTable(
+    layoutMode: ELayoutMode,
+    panelOpen: boolean
+  ): VNode {
+    const tableSizeClass = layoutMode === ELayoutMode.HORIZONTAL ?
+      "height-1-2 width-full display-flex" : layoutMode === ELayoutMode.VERTICAL ?
+        "width-1-2 height-full display-flex" : "width-2-3 height-full display-flex";
+    const icon = this._getDividerIcon(layoutMode, panelOpen);
+    const tooltip = panelOpen ? "Close" : "Open";
+    const id = "toggle-layout";
+    return (
+      <div class={tableSizeClass}>
+      <div class="divider-w">
+        <calcite-action
+          icon={icon}
+          id={id}
+          onclick={() => this._toggleLayout()}
+          text=""
+        />
+        <calcite-tooltip label={tooltip} placement="bottom" reference-element={id}>
+          <span>{tooltip}</span>
+        </calcite-tooltip>
+      </div>
+      <div>
+        H
+      </div>
+    </div>
     );
   }
 
