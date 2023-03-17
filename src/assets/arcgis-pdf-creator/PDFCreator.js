@@ -1,6 +1,6 @@
 /* @preserve
 * arcgis-pdf-creator v0.0.1
-* Fri Feb 03 2023 09:47:02 GMT-0800 (Pacific Standard Time)
+* Fri Mar 17 2023 10:39:56 GMT-0700 (Pacific Daylight Time)
 */
 /** @license
  * Copyright 2022 Esri
@@ -275,13 +275,16 @@ class PDFCreator {
      *
      * @param text String to estimate
      * @param fontSize Text size in points
-     * @returns Estimated width of text in doc units
+     * @returns Estimated width of text using (points x 1/72 inches/point) * 0.6;
+     * need to override this generalized function with a specific PDF generator;
+     * the 0.6 width:height ratio comes from https://www.fhwa.dot.gov/publications/research/safety/98057/ch03.cfm#width
      *
      * @class PDFCreator
      */
     getTextWidth(text, fontSize) {
+        const ratioWidthToHeight = 0.6;
         // Return a value for testing
-        return text.length * fontSize;
+        return text.length * fontSize * this.fontProps.fontResolutionInchesPerPoint * ratioWidthToHeight;
     }
     /**
      * @class PDFCreator

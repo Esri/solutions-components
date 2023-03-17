@@ -1,6 +1,6 @@
 /* @preserve
 * arcgis-pdf-creator v0.0.1
-* Fri Feb 03 2023 09:47:02 GMT-0800 (Pacific Standard Time)
+* Fri Mar 17 2023 10:39:56 GMT-0700 (Pacific Daylight Time)
 */
 import { drawGridOfBoxes } from './grid.js';
 
@@ -71,11 +71,14 @@ class PDFLabels {
                     row = 0;
                 }
                 // Draw the label
+                const minimumFontSize = 4;
                 // Temporarily reduce the font size if we have more lines than the label can hold
                 let fontPoints = labelSpec.fontSizePx;
                 if (labelSpec.maxNumLabelLines < labelLines.length) {
-                    fontPoints = Math.floor(labelSpec.maxNumLabelLines / labelLines.length * labelSpec.fontSizePx);
+                    fontPoints = Math.max(Math.floor(labelSpec.maxNumLabelLines / labelLines.length * labelSpec.fontSizePx), minimumFontSize);
                 }
+                // Temporarily reduce the font size farther if label lines are too long
+                fontPoints = this._getFontSizeForOverlongLines(labelLines, maxLabelTextWidth, fontPoints, minimumFontSize);
                 // Clip overlong lines; append ellipses to clipped lines
                 labelLines = this._clipOverlongLines(labelLines, maxLabelTextWidth, fontPoints);
                 const labelLineHeight = this.PDFCreator.fontAscenderDescenderHeight(fontPoints);
@@ -236,6 +239,31 @@ class PDFLabels {
             trimmedLines.push(line);
         });
         return trimmedLines;
+    }
+    /**
+     * Trims a set of text lines to fit within specified bounds.
+     *
+     * @param lines Text lines to be checked
+     * @param maxTextWidth The maximum width permitted for the drawing of the text in doc units
+     * @param preferredFontSize Initial text size in points
+     * @param minimumFontSize The smallest acceptable font size in points
+     * @returns The maximum of `minimumFontSize` and the font size in points that should help all lines
+     * of the label to fit on the label
+     *
+     * @class PDFLabels
+     * @private
+     */
+    _getFontSizeForOverlongLines(lines, maxTextWidth, preferredFontSize, minimumFontSize) {
+        let fontSize = preferredFontSize;
+        lines.forEach(line => {
+            line = line.trim();
+            if (this.PDFCreator.getTextWidth(line, fontSize) > maxTextWidth) {
+                do {
+                    --fontSize;
+                } while (this.PDFCreator.getTextWidth(line, fontSize) > maxTextWidth && fontSize > minimumFontSize);
+            }
+        });
+        return fontSize;
     }
     /**
      * Loads the label formats.
