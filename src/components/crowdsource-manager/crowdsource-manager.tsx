@@ -184,13 +184,13 @@ export class CrowdsourceManager {
     let sizeClass = "";
     switch (layoutMode) {
       case ELayoutMode.HORIZONTAL:
-        sizeClass = `${panelOpen ? "height-1-2" : "height-0"} width-full`;
+        sizeClass = `${panelOpen ? "height-1-2" : "height-0"} width-full position-relative`;
         break;
       case ELayoutMode.GRID:
-        sizeClass = `height-full ${panelOpen ? "width-1-3" : "width-0"}`;
+        sizeClass = `height-full position-relative ${panelOpen ? "width-1-3" : "width-0"}`;
         break;
       case ELayoutMode.VERTICAL:
-        sizeClass = `height-full ${panelOpen ? "width-1-2" : "width-0"}`;
+        sizeClass = `height-full position-relative ${panelOpen ? "width-1-2" : "width-0"}`;
         break;
     }
     return sizeClass;

@@ -154,3 +154,7 @@
   border-style: solid;
   border-color: var(--calcite-ui-border-3);
 }
+
+.position-relative {
+  position: relative;
+}
