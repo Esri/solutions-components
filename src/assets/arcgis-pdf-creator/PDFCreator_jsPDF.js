@@ -1,9 +1,8 @@
 /* @preserve
 * arcgis-pdf-creator v0.0.1
-* Fri Mar 17 2023 10:39:56 GMT-0700 (Pacific Daylight Time)
+* Mon Mar 20 2023 13:48:56 GMT-0700 (Pacific Daylight Time)
 */
-import * as jspdf from 'jspdf';
-import { PDFCreator, EPageType } from './PDFCreator.js';
+'use strict';
 
 /** @license
  * Copyright 2022 Esri
@@ -20,212 +19,231 @@ import { PDFCreator, EPageType } from './PDFCreator.js';
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-//--------------------------------------------------------------------------------------------------------------------//
-class PDFCreator_jsPDF extends PDFCreator {
-    constructor(jspdfToUse = null) {
-        super();
-        this.jsDoc = jspdfToUse;
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
     }
-    //-- Public methods ------------------------------------------------------------------------------------------------//
-    /**
-     * @class PDFCreator_jsPDF
-     */
-    addPage() {
-        super.addPage();
-        this.jsDoc.addPage();
-        if (this.pageOptions.drawNeatline) {
-            this.drawNeatline();
-        }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "jspdf", "./PDFCreator"], factory);
     }
-    /**
-     * Converts a locale into a jsPDF language code.
-     *
-     * @param lang Locale such as "en" or "en-gb"
-     * @returns jsPDF_lang_code jsPDF language code such as "en" or "en-GB", mapping AGO locales "it-it" & "pt-pt"
-     * into "it" & "pt", respectively, to match jsPDF offering
-     *
-     * @class PDFCreator_jsPDF
-     */
-    convertLocaleToJsPDFLanguageCode(lang) {
-        let jsPDF_lang;
-        if (lang === "it-it") {
-            jsPDF_lang = "it";
+})(function (require, exports) {
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.PDFCreator_jsPDF = void 0;
+    /*
+      This module contains a class that provides an interface to the jsPDF PDF library.
+    
+      Superclass: PDFCreator
+      Subclass for the jsPDF library: PDFCreator_jsPDF
+    */
+    const jspdf = require("jspdf");
+    const PDFCreator = require("./PDFCreator");
+    //--------------------------------------------------------------------------------------------------------------------//
+    class PDFCreator_jsPDF extends PDFCreator.PDFCreator {
+        constructor(jspdfToUse = null) {
+            super();
+            this.jsDoc = jspdfToUse;
         }
-        else if (lang === "pt-pt") {
-            jsPDF_lang = "pt";
+        //-- Public methods ------------------------------------------------------------------------------------------------//
+        /**
+         * @class PDFCreator_jsPDF
+         */
+        addPage() {
+            super.addPage();
+            this.jsDoc.addPage();
+            if (this.pageOptions.drawNeatline) {
+                this.drawNeatline();
+            }
         }
-        else {
-            const langParts = lang.split("-");
-            if (langParts.length === 1) {
-                jsPDF_lang = lang;
+        /**
+         * Converts a locale into a jsPDF language code.
+         *
+         * @param lang Locale such as "en" or "en-gb"
+         * @returns jsPDF_lang_code jsPDF language code such as "en" or "en-GB", mapping AGO locales "it-it" & "pt-pt"
+         * into "it" & "pt", respectively, to match jsPDF offering
+         *
+         * @class PDFCreator_jsPDF
+         */
+        convertLocaleToJsPDFLanguageCode(lang) {
+            let jsPDF_lang;
+            if (lang === "it-it") {
+                jsPDF_lang = "it";
+            }
+            else if (lang === "pt-pt") {
+                jsPDF_lang = "pt";
             }
             else {
-                jsPDF_lang = (langParts[0] + "-" + langParts[1].toUpperCase());
+                const langParts = lang.split("-");
+                if (langParts.length === 1) {
+                    jsPDF_lang = lang;
+                }
+                else {
+                    jsPDF_lang = (langParts[0] + "-" + langParts[1].toUpperCase());
+                }
             }
+            return jsPDF_lang;
         }
-        return jsPDF_lang;
-    }
-    /**
-     * @class PDFCreator_jsPDF
-     */
-    drawLine(options) {
-        // Update this.lineOptions
-        super.drawLine(options);
-        this.jsDoc.line(this.pageOptions.leftMargin + this.lineOptions.x1, this.pageOptions.topMargin + this.lineOptions.y1, this.pageOptions.leftMargin + this.lineOptions.x2, this.pageOptions.topMargin + this.lineOptions.y2, (this.lineOptions.lineProperties.color ? "S" : "") // line vs. nothing
-        );
-    }
-    /**
-     * @class PDFCreator_jsPDF
-     */
-    drawRectangle(options) {
-        // Update this.rectangleOptions
-        super.drawRectangle(options);
-        this.jsDoc.rect(this.pageOptions.leftMargin + this.rectangleOptions.left, this.pageOptions.topMargin + this.rectangleOptions.top, this.rectangleOptions.width, this.rectangleOptions.height, (this.rectangleOptions.lineProperties.color ?
-            (this.rectangleOptions.fillColor ? "FD" : "S") : // border + fill vs. border only
-            (this.rectangleOptions.fillColor ? "F" : "") // fill only vs. nothing
-        ));
-    }
-    /**
-     * @class PDFCreator_jsPDF
-     */
-    drawTable(text, options) {
-        // Update this.tableOptions
-        super.drawTable(text, options);
-        /*
-        let left = this.pageOptions.leftRightMargin + this.textOptions.left;
-        if (this.lang === "ar" || this.lang === "he") {
-          const textWidth =
-            (this.jsDoc.context2d.measureText(text[0][0]) as any).width *  //???
-            this.fontProps.fontResolutionInchesPerPoint;
-          left = this.pageOptions.width - this.pageOptions.leftRightMargin - textWidth - this.textOptions.left;
+        /**
+         * @class PDFCreator_jsPDF
+         */
+        drawLine(options) {
+            // Update this.lineOptions
+            super.drawLine(options);
+            this.jsDoc.line(this.pageOptions.leftMargin + this.lineOptions.x1, this.pageOptions.topMargin + this.lineOptions.y1, this.pageOptions.leftMargin + this.lineOptions.x2, this.pageOptions.topMargin + this.lineOptions.y2, (this.lineOptions.lineProperties.color ? "S" : "") // line vs. nothing
+            );
         }
-        this.jsDoc.text(
-          text[0][0],  //???
-          left,
-          this.pageOptions.topBottomMargin + this.textOptions.top
-        );
-        */
-        const left = this.pageOptions.leftMargin + this.textOptions.left;
-        const top = this.pageOptions.topMargin + this.textOptions.top;
-        this.jsDoc.text(text[0][0], left, top);
-    }
-    /**
-     * @class PDFCreator_jsPDF
-     */
-    drawText(text, options) {
-        // Update this.textOptions
-        super.drawText(text, options);
-        let left = this.pageOptions.leftMargin + this.textOptions.left;
-        if (this.lang === "ar" || this.lang === "he") {
-            const textWidth = this.jsDoc.context2d.measureText(text).width *
+        /**
+         * @class PDFCreator_jsPDF
+         */
+        drawRectangle(options) {
+            // Update this.rectangleOptions
+            super.drawRectangle(options);
+            this.jsDoc.rect(this.pageOptions.leftMargin + this.rectangleOptions.left, this.pageOptions.topMargin + this.rectangleOptions.top, this.rectangleOptions.width, this.rectangleOptions.height, (this.rectangleOptions.lineProperties.color ?
+                (this.rectangleOptions.fillColor ? "FD" : "S") : // border + fill vs. border only
+                (this.rectangleOptions.fillColor ? "F" : "") // fill only vs. nothing
+            ));
+        }
+        /**
+         * @class PDFCreator_jsPDF
+         */
+        drawTable(text, options) {
+            // Update this.tableOptions
+            super.drawTable(text, options);
+            /*
+            let left = this.pageOptions.leftRightMargin + this.textOptions.left;
+            if (this.lang === "ar" || this.lang === "he") {
+              const textWidth =
+                (this.jsDoc.context2d.measureText(text[0][0]) as any).width *  //???
                 this.fontProps.fontResolutionInchesPerPoint;
-            left = this.pageOptions.width - this.pageOptions.leftMargin - textWidth - this.textOptions.left;
+              left = this.pageOptions.width - this.pageOptions.leftRightMargin - textWidth - this.textOptions.left;
+            }
+            this.jsDoc.text(
+              text[0][0],  //???
+              left,
+              this.pageOptions.topBottomMargin + this.textOptions.top
+            );
+            */
+            const left = this.pageOptions.leftMargin + this.textOptions.left;
+            const top = this.pageOptions.topMargin + this.textOptions.top;
+            this.jsDoc.text(text[0][0], left, top);
         }
-        const top = this.pageOptions.topMargin + this.textOptions.top + this.fontAscenderBaselineHeight(this.textOptions.fontPoints);
-        this.jsDoc.text(text, left, top);
-    }
-    /**
-     * Estimates with width of a string.
-     *
-     * @param {string} text String to estimate
-     * @param fontSize Text size in points
-     * @returns {number} Estimated width of text in doc units
-     *
-     * @class PDFCreator_jsPDF
-     */
-    getTextWidth(text, fontSize) {
-        return this.jsDoc.getStringUnitWidth(text) * fontSize / this.jsDoc.internal.scaleFactor;
-    }
-    /**
-     * @class PDFCreator_jsPDF
-     */
-    async initialize(pageProperties = {}, dataPath = "", lang = "en", title = "", drawNeatline = false) {
-        await super.initialize(pageProperties, dataPath, lang, title, drawNeatline);
-        // Start the PDF document if it hasn't already been started
-        if (!this.jsDoc) {
-            this.jsDoc = new jspdf.jsPDF({
-                format: pageProperties.pageType === EPageType.A4 ? "a4" : "letter",
-                orientation: "portrait",
-                putOnlyUsedFonts: true,
-                unit: "in"
+        /**
+         * @class PDFCreator_jsPDF
+         */
+        drawText(text, options) {
+            // Update this.textOptions
+            super.drawText(text, options);
+            let left = this.pageOptions.leftMargin + this.textOptions.left;
+            if (this.lang === "ar" || this.lang === "he") {
+                const textWidth = this.jsDoc.context2d.measureText(text).width *
+                    this.fontProps.fontResolutionInchesPerPoint;
+                left = this.pageOptions.width - this.pageOptions.leftMargin - textWidth - this.textOptions.left;
+            }
+            const top = this.pageOptions.topMargin + this.textOptions.top + this.fontAscenderBaselineHeight(this.textOptions.fontPoints);
+            this.jsDoc.text(text, left, top);
+        }
+        /**
+         * Estimates with width of a string.
+         *
+         * @param {string} text String to estimate
+         * @param fontSize Text size in points
+         * @returns {number} Estimated width of text in doc units
+         *
+         * @class PDFCreator_jsPDF
+         */
+        getTextWidth(text, fontSize) {
+            return this.jsDoc.getStringUnitWidth(text) * fontSize / this.jsDoc.internal.scaleFactor;
+        }
+        /**
+         * @class PDFCreator_jsPDF
+         */
+        async initialize(pageProperties = {}, dataPath = "", lang = "en", title = "", drawNeatline = false) {
+            await super.initialize(pageProperties, dataPath, lang, title, drawNeatline);
+            // Start the PDF document if it hasn't already been started
+            if (!this.jsDoc) {
+                this.jsDoc = new jspdf.jsPDF({
+                    format: pageProperties.pageType === PDFCreator.EPageType.A4 ? "a4" : "letter",
+                    orientation: "portrait",
+                    putOnlyUsedFonts: true,
+                    unit: "in"
+                });
+            }
+            this.jsDoc.setDocumentProperties({
+                title: this.title,
+                keywords: "Created with ArcGIS Online"
+            });
+            if (this.pageOptions.drawNeatline) {
+                this.drawNeatline();
+            }
+            await this.setFont(lang);
+        }
+        /**
+         * @class PDFCreator_jsPDF
+         */
+        save() {
+            this.jsDoc.save(this.title + ".pdf");
+        }
+        /**
+         * @class PDFCreator_jsPDF
+         */
+        setDrawColor(drawColor, opacity = 1 // 0..1
+        ) {
+            const rgb = this.hexToRGB(drawColor, opacity);
+            // String inputs are in range 0..1, but jsPDF's TypeScript definitions don't have that variant
+            this.jsDoc.setDrawColor(rgb.r.toString(), rgb.g.toString(), rgb.b.toString());
+        }
+        /**
+         * @class PDFCreator_jsPDF
+         */
+        setFillColor(fillColor, opacity = 1 // 0..1
+        ) {
+            const rgb = this.hexToRGB(fillColor, opacity);
+            // String inputs are in range 0..1, but jsPDF's TypeScript definitions don't have that variant
+            this.jsDoc.setFillColor(rgb.r.toString(), rgb.g.toString(), rgb.b.toString());
+        }
+        /**
+         * @class PDFCreator_jsPDF
+         */
+        setFont(lang) {
+            this.jsDoc.setLanguage(this.convertLocaleToJsPDFLanguageCode(lang));
+            const fontFileName = this.getFontFileName(lang);
+            // Short-circuit loading font if we already have it.
+            if (this.jsDoc.existsFileInVFS(fontFileName + ".ttf")) {
+                this.jsDoc.setFont(fontFileName, "normal", "normal");
+                return Promise.resolve();
+            }
+            // Load the necessary font file
+            return fetch(this.dataPath + fontFileName + ".txt")
+                .then((fontFile) => {
+                return fontFile.text();
+            })
+                .then((font) => {
+                this.jsDoc.addFileToVFS(fontFileName + ".ttf", font);
+                this.jsDoc.addFont(fontFileName + ".ttf", fontFileName, "normal", "normal");
+                this.jsDoc.setFont(fontFileName, "normal", "normal");
+                return Promise.resolve();
             });
         }
-        this.jsDoc.setDocumentProperties({
-            title: this.title,
-            keywords: "Created with ArcGIS Online"
-        });
-        if (this.pageOptions.drawNeatline) {
-            this.drawNeatline();
+        /**
+         * @class PDFCreator_jsPDF
+         */
+        setFontColor(fontColor) {
+            const rgb = this.hexToRGB(fontColor);
+            // String inputs are in range 0..1, but jsPDF's TypeScript definitions don't have that variant
+            this.jsDoc.setTextColor(rgb.r.toString(), rgb.g.toString(), rgb.b.toString());
         }
-        await this.setFont(lang);
-    }
-    /**
-     * @class PDFCreator_jsPDF
-     */
-    save() {
-        this.jsDoc.save(this.title + ".pdf");
-    }
-    /**
-     * @class PDFCreator_jsPDF
-     */
-    setDrawColor(drawColor, opacity = 1 // 0..1
-    ) {
-        const rgb = this.hexToRGB(drawColor, opacity);
-        // String inputs are in range 0..1, but jsPDF's TypeScript definitions don't have that variant
-        this.jsDoc.setDrawColor(rgb.r.toString(), rgb.g.toString(), rgb.b.toString());
-    }
-    /**
-     * @class PDFCreator_jsPDF
-     */
-    setFillColor(fillColor, opacity = 1 // 0..1
-    ) {
-        const rgb = this.hexToRGB(fillColor, opacity);
-        // String inputs are in range 0..1, but jsPDF's TypeScript definitions don't have that variant
-        this.jsDoc.setFillColor(rgb.r.toString(), rgb.g.toString(), rgb.b.toString());
-    }
-    /**
-     * @class PDFCreator_jsPDF
-     */
-    setFont(lang) {
-        this.jsDoc.setLanguage(this.convertLocaleToJsPDFLanguageCode(lang));
-        const fontFileName = this.getFontFileName(lang);
-        // Short-circuit loading font if we already have it.
-        if (this.jsDoc.existsFileInVFS(fontFileName + ".ttf")) {
-            this.jsDoc.setFont(fontFileName, "normal", "normal");
-            return Promise.resolve();
+        /**
+         * @class PDFCreator_jsPDF
+         */
+        setFontSize(fontPoints) {
+            this.jsDoc.setFontSize(fontPoints);
         }
-        // Load the necessary font file
-        return fetch(this.dataPath + fontFileName + ".txt")
-            .then((fontFile) => {
-            return fontFile.text();
-        })
-            .then((font) => {
-            this.jsDoc.addFileToVFS(fontFileName + ".ttf", font);
-            this.jsDoc.addFont(fontFileName + ".ttf", fontFileName, "normal", "normal");
-            this.jsDoc.setFont(fontFileName, "normal", "normal");
-            return Promise.resolve();
-        });
+        /**
+         * @class PDFCreator_jsPDF
+         */
+        setLineWidth(width) {
+            this.jsDoc.setLineWidth(width);
+        }
     }
-    /**
-     * @class PDFCreator_jsPDF
-     */
-    setFontColor(fontColor) {
-        const rgb = this.hexToRGB(fontColor);
-        // String inputs are in range 0..1, but jsPDF's TypeScript definitions don't have that variant
-        this.jsDoc.setTextColor(rgb.r.toString(), rgb.g.toString(), rgb.b.toString());
-    }
-    /**
-     * @class PDFCreator_jsPDF
-     */
-    setFontSize(fontPoints) {
-        this.jsDoc.setFontSize(fontPoints);
-    }
-    /**
-     * @class PDFCreator_jsPDF
-     */
-    setLineWidth(width) {
-        this.jsDoc.setLineWidth(width);
-    }
-}
-
-export { PDFCreator_jsPDF };
+    exports.PDFCreator_jsPDF = PDFCreator_jsPDF;
+});
