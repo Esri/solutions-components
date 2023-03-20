@@ -86,17 +86,6 @@ export class PublicNotification {
     }
   }
   /**
-   * Called each time the selectionSets prop is changed.
-   */
-  async selectionSetsWatchHandler(v, oldV) {
-    if (v && v !== oldV && v.length > 0) {
-      const nonRefineSets = v.filter(ss => ss.workflowType !== EWorkflowType.REFINE);
-      if (nonRefineSets.length === 0) {
-        this._selectionSets = [];
-      }
-    }
-  }
-  /**
    * Called each time the sketchLineSymbol prop is changed.
    */
   async sketchLineSymbolWatchHandler(v, oldV) {
@@ -338,7 +327,7 @@ export class PublicNotification {
    * @protected
    */
   _getListPage() {
-    const hasSets = this._selectionSets.filter(ss => ss.workflowType !== EWorkflowType.REFINE).length > 0;
+    const hasSets = this._hasSelections();
     const total = utils.getTotal(this._selectionSets);
     return hasSets ? (h("calcite-panel", null, h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "font-bold" }, this._translations.myLists)), this._getNotice(this._translations.listHasSetsTip, "padding-sides-1 padding-bottom-1"), this._getMapLayerPicker(), h("div", { class: "display-block padding-sides-1 height-1-1-2" }, h("div", { class: "display-block float-left" }, h("calcite-label", { alignment: "start", class: "font-bold" }, this._translations.notifications)), h("div", { class: "display-block float-right" }, h("calcite-input-message", { active: true, class: "info-blue margin-top-0", scale: "m" }, this._translations.uniqueCout.replace("{{n}}", total.toString())))), hasSets ? this._getSelectionSetList() : (h("div", { class: "info-message" }, h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this._translations.noNotifications))), h("div", { class: "display-flex padding-1" }, h("calcite-button", { onClick: () => { this._setPageType(EPageType.SELECT); }, width: "full" }, this._translations.add)), this._showModal(this._showLayerSelectionChangeModal))) : (h("calcite-panel", null, h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "font-bold" }, this._translations.myLists)), h("div", { class: "padding-sides-1" }, h("calcite-label", null, this._translations.notifications)), h("div", { class: "info-message padding-bottom-1" }, h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this._translations.noNotifications)), this._getNotice(this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1"), this._getMapLayerPicker(), h("div", { class: "display-flex padding-1" }, h("calcite-button", { onClick: () => { this._setPageType(EPageType.SELECT); }, width: "full" }, this._translations.add))));
   }
@@ -363,7 +352,8 @@ export class PublicNotification {
     // REFINE is handled seperately from the core selection sets
     // You can only access after clicking the refine action
     this._selectionSets.reduce((prev, cur, i) => {
-      if (cur.workflowType !== EWorkflowType.REFINE) {
+      const validSet = this._isValidSet(cur);
+      if (validSet) {
         prev.push((h("calcite-list-item", { description: this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString()), label: cur.label, onClick: () => this._gotoSelection(cur, this.mapView) }, this._getAction(true, "pencil", "", (evt) => this._openSelection(cur, evt), false, "actions-end"), this._getAction(true, "x", "", (evt) => this._deleteSelection(i, evt), false, "actions-end"))));
       }
       return prev;
@@ -404,14 +394,25 @@ export class PublicNotification {
     await this._updateAddresseeLayer(id);
   }
   /**
-   * Check if any selection sets exist.
+   * Check if any valid selection sets exist.
    *
-   * @returns true if selection sets exist
+   * @returns true if valid selection sets exist
    *
    * @protected
    */
   _hasSelections() {
-    return this._selectionSets.length > 0;
+    return this._selectionSets.filter(ss => this._isValidSet(ss)).length > 0;
+  }
+  /**
+   * Check if a selection set is valid (exists or has at least one added if its a refine set)
+   *
+   * @returns true if selection set is valid
+   *
+   * @protected
+   */
+  _isValidSet(ss) {
+    var _a, _b;
+    return ss.workflowType === EWorkflowType.REFINE ? ((_b = (_a = ss === null || ss === void 0 ? void 0 : ss.refineIds) === null || _a === void 0 ? void 0 : _a.addIds) === null || _b === void 0 ? void 0 : _b.length) > 0 : true;
   }
   /**
    * Create the Select page that shows the selection workflows
@@ -530,7 +531,8 @@ export class PublicNotification {
    */
   _getSelectionLists() {
     return this._selectionSets.reduce((prev, cur) => {
-      if (cur.workflowType !== EWorkflowType.REFINE) {
+      const validSet = this._isValidSet(cur);
+      if (validSet) {
         if (!this._downloadActive && cur.download) {
           this._downloadActive = true;
         }
@@ -693,7 +695,7 @@ export class PublicNotification {
    * @protected
    */
   async _updateSelectionSets(layerView) {
-    const _selectionSets = this._selectionSets.filter(selectionSet => selectionSet.workflowType !== EWorkflowType.REFINE);
+    const _selectionSets = this._selectionSets;
     const oidDefs = [];
     _selectionSets.forEach(selectionSet => {
       selectionSet.layerView = layerView;
@@ -777,11 +779,16 @@ export class PublicNotification {
    */
   _openSelection(selectionSet, evt) {
     evt.stopPropagation();
-    this._activeSelection = selectionSet;
-    this._distance = this._activeSelection.distance;
-    this._unit = this._activeSelection.unit;
-    this._customLabel = this._activeSelection.label;
-    this._pageType = EPageType.SELECT;
+    if (selectionSet.workflowType === EWorkflowType.REFINE) {
+      this._pageType = EPageType.REFINE;
+    }
+    else {
+      this._activeSelection = selectionSet;
+      this._distance = this._activeSelection.distance;
+      this._unit = this._activeSelection.unit;
+      this._customLabel = this._activeSelection.label;
+      this._pageType = EPageType.SELECT;
+    }
   }
   /**
    * Highlight any selected features in the map
@@ -1217,9 +1224,6 @@ export class PublicNotification {
       }, {
         "propName": "searchConfiguration",
         "methodName": "watchSearchConfigurationHandler"
-      }, {
-        "propName": "_selectionSets",
-        "methodName": "selectionSetsWatchHandler"
       }, {
         "propName": "sketchLineSymbol",
         "methodName": "sketchLineSymbolWatchHandler"

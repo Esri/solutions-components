@@ -218,10 +218,6 @@ export declare class PublicNotification {
    */
   watchSearchConfigurationHandler(newValue: ISearchConfiguration, oldValue: ISearchConfiguration): Promise<void>;
   /**
-   * Called each time the selectionSets prop is changed.
-   */
-  selectionSetsWatchHandler(v: ISelectionSet[], oldV: ISelectionSet[]): Promise<void>;
-  /**
    * Called each time the sketchLineSymbol prop is changed.
    */
   sketchLineSymbolWatchHandler(v: __esri.SimpleLineSymbol | any, oldV: __esri.SimpleLineSymbol): Promise<void>;
@@ -383,13 +379,21 @@ export declare class PublicNotification {
    */
   protected _handleLayerChange(): Promise<void>;
   /**
-   * Check if any selection sets exist.
+   * Check if any valid selection sets exist.
    *
-   * @returns true if selection sets exist
+   * @returns true if valid selection sets exist
    *
    * @protected
    */
   protected _hasSelections(): boolean;
+  /**
+   * Check if a selection set is valid (exists or has at least one added if its a refine set)
+   *
+   * @returns true if selection set is valid
+   *
+   * @protected
+   */
+  protected _isValidSet(ss: ISelectionSet): boolean;
   /**
    * Create the Select page that shows the selection workflows
    *

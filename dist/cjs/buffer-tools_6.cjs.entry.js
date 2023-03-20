@@ -1430,7 +1430,7 @@ const MapDrawTools = class {
       this._sketchGraphicsLayer = this.mapView.map.layers.getItemAt(sketchIndex);
     }
     else {
-      this._sketchGraphicsLayer = new this.GraphicsLayer({ title });
+      this._sketchGraphicsLayer = new this.GraphicsLayer({ title, listMode: "hide" });
       publicNotificationStore.state.managedLayers.push(title);
       this.mapView.map.layers.add(this._sketchGraphicsLayer);
     }
@@ -1706,7 +1706,7 @@ const RefineSelectionTools = class {
       this._sketchGraphicsLayer = this.mapView.map.layers.getItemAt(sketchIndex);
     }
     else {
-      this._sketchGraphicsLayer = new this.GraphicsLayer({ title });
+      this._sketchGraphicsLayer = new this.GraphicsLayer({ title, listMode: "hide" });
       publicNotificationStore.state.managedLayers.push(title);
       this.mapView.map.layers.add(this._sketchGraphicsLayer);
     }

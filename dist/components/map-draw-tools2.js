@@ -133,7 +133,7 @@ const MapDrawTools = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement 
       this._sketchGraphicsLayer = this.mapView.map.layers.getItemAt(sketchIndex);
     }
     else {
-      this._sketchGraphicsLayer = new this.GraphicsLayer({ title });
+      this._sketchGraphicsLayer = new this.GraphicsLayer({ title, listMode: "hide" });
       state.managedLayers.push(title);
       this.mapView.map.layers.add(this._sketchGraphicsLayer);
     }

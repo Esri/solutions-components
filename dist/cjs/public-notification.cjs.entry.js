@@ -82,17 +82,6 @@ const PublicNotification = class {
     }
   }
   /**
-   * Called each time the selectionSets prop is changed.
-   */
-  async selectionSetsWatchHandler(v, oldV) {
-    if (v && v !== oldV && v.length > 0) {
-      const nonRefineSets = v.filter(ss => ss.workflowType !== interfaces.EWorkflowType.REFINE);
-      if (nonRefineSets.length === 0) {
-        this._selectionSets = [];
-      }
-    }
-  }
-  /**
    * Called each time the sketchLineSymbol prop is changed.
    */
   async sketchLineSymbolWatchHandler(v, oldV) {
@@ -334,7 +323,7 @@ const PublicNotification = class {
    * @protected
    */
   _getListPage() {
-    const hasSets = this._selectionSets.filter(ss => ss.workflowType !== interfaces.EWorkflowType.REFINE).length > 0;
+    const hasSets = this._hasSelections();
     const total = publicNotificationUtils.getTotal(this._selectionSets);
     return hasSets ? (index.h("calcite-panel", null, index.h("div", { class: "padding-top-sides-1" }, index.h("calcite-label", { class: "font-bold" }, this._translations.myLists)), this._getNotice(this._translations.listHasSetsTip, "padding-sides-1 padding-bottom-1"), this._getMapLayerPicker(), index.h("div", { class: "display-block padding-sides-1 height-1-1-2" }, index.h("div", { class: "display-block float-left" }, index.h("calcite-label", { alignment: "start", class: "font-bold" }, this._translations.notifications)), index.h("div", { class: "display-block float-right" }, index.h("calcite-input-message", { active: true, class: "info-blue margin-top-0", scale: "m" }, this._translations.uniqueCout.replace("{{n}}", total.toString())))), hasSets ? this._getSelectionSetList() : (index.h("div", { class: "info-message" }, index.h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this._translations.noNotifications))), index.h("div", { class: "display-flex padding-1" }, index.h("calcite-button", { onClick: () => { this._setPageType(interfaces.EPageType.SELECT); }, width: "full" }, this._translations.add)), this._showModal(this._showLayerSelectionChangeModal))) : (index.h("calcite-panel", null, index.h("div", { class: "padding-top-sides-1" }, index.h("calcite-label", { class: "font-bold" }, this._translations.myLists)), index.h("div", { class: "padding-sides-1" }, index.h("calcite-label", null, this._translations.notifications)), index.h("div", { class: "info-message padding-bottom-1" }, index.h("calcite-input-message", { active: true, class: "info-blue", scale: "m" }, this._translations.noNotifications)), this._getNotice(this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1"), this._getMapLayerPicker(), index.h("div", { class: "display-flex padding-1" }, index.h("calcite-button", { onClick: () => { this._setPageType(interfaces.EPageType.SELECT); }, width: "full" }, this._translations.add))));
   }
@@ -359,7 +348,8 @@ const PublicNotification = class {
     // REFINE is handled seperately from the core selection sets
     // You can only access after clicking the refine action
     this._selectionSets.reduce((prev, cur, i) => {
-      if (cur.workflowType !== interfaces.EWorkflowType.REFINE) {
+      const validSet = this._isValidSet(cur);
+      if (validSet) {
         prev.push((index.h("calcite-list-item", { description: this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString()), label: cur.label, onClick: () => this._gotoSelection(cur, this.mapView) }, this._getAction(true, "pencil", "", (evt) => this._openSelection(cur, evt), false, "actions-end"), this._getAction(true, "x", "", (evt) => this._deleteSelection(i, evt), false, "actions-end"))));
       }
       return prev;
@@ -400,14 +390,25 @@ const PublicNotification = class {
     await this._updateAddresseeLayer(id);
   }
   /**
-   * Check if any selection sets exist.
+   * Check if any valid selection sets exist.
    *
-   * @returns true if selection sets exist
+   * @returns true if valid selection sets exist
    *
    * @protected
    */
   _hasSelections() {
-    return this._selectionSets.length > 0;
+    return this._selectionSets.filter(ss => this._isValidSet(ss)).length > 0;
+  }
+  /**
+   * Check if a selection set is valid (exists or has at least one added if its a refine set)
+   *
+   * @returns true if selection set is valid
+   *
+   * @protected
+   */
+  _isValidSet(ss) {
+    var _a, _b;
+    return ss.workflowType === interfaces.EWorkflowType.REFINE ? ((_b = (_a = ss === null || ss === void 0 ? void 0 : ss.refineIds) === null || _a === void 0 ? void 0 : _a.addIds) === null || _b === void 0 ? void 0 : _b.length) > 0 : true;
   }
   /**
    * Create the Select page that shows the selection workflows
@@ -526,7 +527,8 @@ const PublicNotification = class {
    */
   _getSelectionLists() {
     return this._selectionSets.reduce((prev, cur) => {
-      if (cur.workflowType !== interfaces.EWorkflowType.REFINE) {
+      const validSet = this._isValidSet(cur);
+      if (validSet) {
         if (!this._downloadActive && cur.download) {
           this._downloadActive = true;
         }
@@ -689,7 +691,7 @@ const PublicNotification = class {
    * @protected
    */
   async _updateSelectionSets(layerView) {
-    const _selectionSets = this._selectionSets.filter(selectionSet => selectionSet.workflowType !== interfaces.EWorkflowType.REFINE);
+    const _selectionSets = this._selectionSets;
     const oidDefs = [];
     _selectionSets.forEach(selectionSet => {
       selectionSet.layerView = layerView;
@@ -773,11 +775,16 @@ const PublicNotification = class {
    */
   _openSelection(selectionSet, evt) {
     evt.stopPropagation();
-    this._activeSelection = selectionSet;
-    this._distance = this._activeSelection.distance;
-    this._unit = this._activeSelection.unit;
-    this._customLabel = this._activeSelection.label;
-    this._pageType = interfaces.EPageType.SELECT;
+    if (selectionSet.workflowType === interfaces.EWorkflowType.REFINE) {
+      this._pageType = interfaces.EPageType.REFINE;
+    }
+    else {
+      this._activeSelection = selectionSet;
+      this._distance = this._activeSelection.distance;
+      this._unit = this._activeSelection.unit;
+      this._customLabel = this._activeSelection.label;
+      this._pageType = interfaces.EPageType.SELECT;
+    }
   }
   /**
    * Highlight any selected features in the map
@@ -826,7 +833,6 @@ const PublicNotification = class {
   static get watchers() { return {
     "mapView": ["mapViewWatchHandler"],
     "searchConfiguration": ["watchSearchConfigurationHandler"],
-    "_selectionSets": ["selectionSetsWatchHandler"],
     "sketchLineSymbol": ["sketchLineSymbolWatchHandler"],
     "sketchPointSymbol": ["sketchPointSymbolWatchHandler"],
     "sketchPolygonSymbol": ["sketchPolygonSymbolWatchHandler"],
