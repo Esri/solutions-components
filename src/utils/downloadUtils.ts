@@ -141,7 +141,7 @@ function _convertPopupFieldsToLabelSpec(
  * "<div style='text-align: left;'>{NAME}<br />{STREET}<br />{CITY}, {STATE} {ZIP} <br /></div>"
  * @return Label spec with lines separated by `lineSeparatorChar`
  */
-function _convertPopupTextToLabelSpec(
+export function _convertPopupTextToLabelSpec(
   popupInfo: string,
 ): string {
   // Replace <br> variants with the line separator character
@@ -153,19 +153,30 @@ function _convertPopupTextToLabelSpec(
   // Remove </p>
   popupInfo = popupInfo.replace(/<\/p>/gi, "");
 
-  // Remove \n
-  popupInfo = popupInfo.replace(/\n/gi, "");
+  // Replace \n with the line separator character
+  popupInfo = popupInfo.replace(/\n/gi, "|");
 
-  // Remove remaining HTML tags, replace 0xA0 that popup uses for spaces, and replace some char representations,
-  // and split the label back into individual lines
-  const labelSpec = popupInfo
+  // Remove remaining HTML tags, replace 0xA0 that popup uses for spaces, and replace some char representations
+  let labelSpec = popupInfo
     .replace(/<[\s.]*[^<>]*\/?>/gi, "")
     .replace(/\xA0/gi, " ")
     .replace(/&lt;/gi, "<")
     .replace(/&gt;/gi, ">")
     .replace(/&nbsp;/gi, " ");
 
-  return labelSpec;
+  // Trim each line
+  labelSpec = labelSpec.replace(/\s*\|\s*/g, "|");
+
+  // Remove empty lines
+  while (labelSpec.match(/\|\|/)) {
+    labelSpec = labelSpec.replace(/\|\|/, "|");
+  }
+
+  // Remove leading and trailing line feeds
+  labelSpec = labelSpec.replace(/^\|/, "");
+  labelSpec = labelSpec.replace(/\|$/, "");
+
+  return labelSpec.trim();
 };
 
 /**

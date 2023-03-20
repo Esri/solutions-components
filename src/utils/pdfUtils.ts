@@ -36,7 +36,7 @@ export function exportPDF(
   labels: string[][],
   labelPageDescription: PDFLabels.ILabel
 ): void {
-  _downloadPDFFile(labels, labelPageDescription, title);
+  downloadPDFFile(title, labels, labelPageDescription);
 }
 
 //#endregion
@@ -45,21 +45,21 @@ export function exportPDF(
 /**
  * Downloads the PDF file.
  *
+ * @param title Title (without file extension) to use for file; defaults to "export"
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
- * @param fileTitle Title (without file extension) to use for file; defaults to "export"
  */
-function _downloadPDFFile(
+function downloadPDFFile(
+  title: string,
   labels: string[][],
-  labelPageDescription: PDFLabels.ILabel,
-  fileTitle: string
+  labelPageDescription: PDFLabels.ILabel
 ): void {
   const pdfLib = new PDFCreator_jsPDF.PDFCreator_jsPDF();
   pdfLib.initialize(
     {
       pageType: "ANSI_A"
     }, getAssetPath(`../assets/arcgis-pdf-creator/`), "en",
-    fileTitle, false
+    title, false
   )
   .then(
     () => {
