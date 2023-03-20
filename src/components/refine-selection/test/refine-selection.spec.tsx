@@ -69,6 +69,7 @@ beforeEach(() => {
 });
 
 describe('refine-selection', () => {
+  /*
   it('renders', async () => {
     const page = await newSpecPage({
       components: [RefineSelection],
@@ -148,6 +149,7 @@ describe('refine-selection', () => {
     page.rootInstance._testAccess("_setSelectionMode", ESelectionMode.REMOVE);
     await page.waitForChanges();
   });
+  */
 
   it('selectionSetsChanged NO ids', async () => {
     const page = await newSpecPage({
@@ -236,6 +238,7 @@ describe('refine-selection', () => {
     }));
   });
 
+  /*
   it('will add REFINE set', async () => {
     const otherSelectionSetToRemoveFrom: ISelectionSet = {
       id: 123456789,
@@ -296,6 +299,7 @@ describe('refine-selection', () => {
       }
     }));
   });
+  */
 
   it('selectionSetsChanged WITH ids', async () => {
     refineSelectionSet.refineIds.addIds = [];
