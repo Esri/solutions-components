@@ -115,7 +115,7 @@ export async function downloadPDF(
  * @param bypassFieldVisiblity Indicates if the configured fieldInfo visibility property should be ignored
  * @return Label spec with lines separated by `lineSeparatorChar`
  */
-function _convertPopupFieldsToLabelSpec(
+export function _convertPopupFieldsToLabelSpec(
   fieldInfos: __esri.FieldInfo[],
   bypassFieldVisiblity = false
 ): string {
@@ -263,13 +263,14 @@ async function _createArcadeExecutors(
  * Creates a title from a list of selection set names.
  *
  * @param selectionSetNames Names to use in title
- * @return Title
+ * @return Title composed of the selectionSetNames separated by commas; if there are no
+ * selection set names supplied, "download" is returned
  */
-function _createTitle(
+export function _createTitle(
   selectionSetNames: string[]
 ): string {
   // Windows doesn't permit the characters \/:*?"<>|
-  const title = selectionSetNames.join(", ");
+  const title = selectionSetNames.length > 0 ? selectionSetNames.join(", ") : "download";
   return title;
 }
 

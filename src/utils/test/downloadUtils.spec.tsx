@@ -18,6 +18,38 @@ import * as downloadUtils from "../downloadUtils";
 
 describe("downloadUtils", () => {
 
+  describe("_convertPopupFieldsToLabelSpec", () => {
+
+    it("handles fieldname visibility", () => {
+      const fieldInfos: __esri.FieldInfo[] = [
+        { fieldName: "A", visible: true },
+        { fieldName: "B", visible: true },
+        { fieldName: "C", visible: false },
+        { fieldName: "D", visible: true }
+      ];
+      const bypassFieldVisiblity = false;
+      const expectedLabelSpec = "{A}|{B}|{D}";
+
+      const labelSpec = downloadUtils._convertPopupFieldsToLabelSpec(fieldInfos, bypassFieldVisiblity);
+      expect(labelSpec).toEqual(expectedLabelSpec);
+    });
+
+    it("handles fieldname ignoring visibility", () => {
+      const fieldInfos: __esri.FieldInfo[] = [
+        { fieldName: "A", visible: true },
+        { fieldName: "B", visible: true },
+        { fieldName: "C", visible: false },
+        { fieldName: "D", visible: true }
+      ];
+      const bypassFieldVisiblity = true;
+      const expectedLabelSpec = "{A}|{B}|{C}|{D}";
+
+      const labelSpec = downloadUtils._convertPopupFieldsToLabelSpec(fieldInfos, bypassFieldVisiblity);
+      expect(labelSpec).toEqual(expectedLabelSpec);
+    });
+
+  });
+
   describe("_convertPopupTextToLabelSpec", () => {
 
     it("handles <br> variants", () => {
@@ -66,6 +98,34 @@ describe("downloadUtils", () => {
 
       const labelSpec = downloadUtils._convertPopupTextToLabelSpec(popupInfo);
       expect(labelSpec).toEqual(expectedLabelSpec);
+    });
+
+  });
+
+  describe("_createTitle", () => {
+
+    it("handles no selection set names", () => {
+      const selectionSetNames: string[] = [];
+      const expectedTitle = "download";
+
+      const title = downloadUtils._createTitle(selectionSetNames);
+      expect(title).toEqual(expectedTitle);
+    });
+
+    it("handles one selection set name", () => {
+      const selectionSetNames: string[] = ["fred"];
+      const expectedTitle = "fred";
+
+      const title = downloadUtils._createTitle(selectionSetNames);
+      expect(title).toEqual(expectedTitle);
+    });
+
+    it("handles two selection set names", () => {
+      const selectionSetNames: string[] = ["fred", "ginger"];
+      const expectedTitle = "fred,ginger";
+
+      const title = downloadUtils._createTitle(selectionSetNames);
+      expect(title).toEqual(expectedTitle);
     });
 
   });
