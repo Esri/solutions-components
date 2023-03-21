@@ -1,6 +1,6 @@
 /* @preserve
 * arcgis-pdf-creator v0.0.1
-* Mon Mar 20 2023 13:48:56 GMT-0700 (Pacific Daylight Time)
+* Tue Mar 21 2023 09:48:46 GMT-0700 (Pacific Daylight Time)
 */
 'use strict';
 
@@ -43,12 +43,13 @@
          * @param labels Array of labels; each label consists of one or more line strings
          * @param labelSpec Properties describing page dimensions of labels sheet
          * @param startingPageNum The 1-based page number to start printing labels into; page is assumed to be blank & to exist
+         * @param heading Line to add at top of label page outside of labels
          * @param progressCallback Callback with percent done in range 0..100
          * @returns Promise which, when resolved, returns the 1-based page number of the last page containing labels
          *
          * @class PDFLabels
          */
-        addLabelsToDoc(labels, labelSpec, startingPageNum, progressCallback) {
+        addLabelsToDoc(labels, labelSpec, startingPageNum, heading, progressCallback) {
             return new Promise((resolve) => {
                 const labelsPerPageDisplay = labelSpec.numLabelsAcross * labelSpec.numLabelsDown;
                 let column;
@@ -59,6 +60,9 @@
                 // Draw
                 let currentPageNum = startingPageNum;
                 const topOfFirstLabel = labelSpec.pageProperties.topMargin - this.PDFCreator.pageOptions.topMargin;
+                if (heading) {
+                    this._drawSupplementalText(heading, 0, -0.1);
+                }
                 for (let iLabel = 0, iNonBlankLabel = 0; iLabel < labels.length; iLabel++) {
                     if (progressCallback) {
                         progressCallback(Math.round(iLabel / labels.length * 100));
@@ -74,6 +78,9 @@
                             // Advance to next page
                             this.PDFCreator.addPage();
                             ++currentPageNum;
+                            if (heading) {
+                                this._drawSupplementalText(heading, 0, -0.1);
+                            }
                         }
                         // Prep the new page
                         column = 0;
@@ -254,6 +261,22 @@
                 trimmedLines.push(line);
             });
             return trimmedLines;
+        }
+        /**
+         * Draws supplemental text such as a heading or footer.
+         *
+         * @param text Text to draw
+         * @param left Offset from left edge of document to left edge of text
+         * @param top Offset from top of document to top of text
+         */
+        _drawSupplementalText(text, left, top) {
+            const fontPoints = 6;
+            this.PDFCreator.drawText(text, {
+                left,
+                top,
+                fontPoints,
+                fontColor: "000000"
+            });
         }
         /**
          * Trims a set of text lines to fit within specified bounds.
