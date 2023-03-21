@@ -270,7 +270,6 @@ function _createTitle(
 ): string {
   // Windows doesn't permit the characters \/:*?"<>|
   const title = selectionSetNames.join(", ");
-  console.log("_createTitle from " + JSON.stringify(selectionSetNames) + ": " + title);//???
   return title;
 }
 

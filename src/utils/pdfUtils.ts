@@ -58,8 +58,10 @@ function downloadPDFFile(
   pdfLib.initialize(
     {
       pageType: "ANSI_A"
-    }, getAssetPath(`../assets/arcgis-pdf-creator/`), "en",
-    title, false
+    },
+    getAssetPath(`../assets/arcgis-pdf-creator/`),
+    "en",
+    title
   )
   .then(
     () => {
@@ -70,7 +72,8 @@ function downloadPDFFile(
           await labeller.addLabelsToDoc(
             labels,
             labelPageDescription.labelSpec,
-            1
+            1,  // startingPageNum
+            title  // heading
           );
 
           pdfLib.save();
