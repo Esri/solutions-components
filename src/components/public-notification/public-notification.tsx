@@ -324,22 +324,6 @@ export class PublicNotification {
   }
 
   /**
-   * Called each time the selectionSets prop is changed.
-   */
-  @Watch("_selectionSets")
-  async selectionSetsWatchHandler(
-    v: ISelectionSet[],
-    oldV: ISelectionSet[]
-  ): Promise<void> {
-    if (v && v !== oldV && v.length > 0) {
-      const nonRefineSets = v.filter(ss => ss.workflowType !== EWorkflowType.REFINE)
-      if (nonRefineSets.length === 0) {
-        this._selectionSets = [];
-      }
-    }
-  }
-
-  /**
    * Called each time the sketchLineSymbol prop is changed.
    */
   @Watch("sketchLineSymbol")
@@ -697,7 +681,7 @@ export class PublicNotification {
    * @protected
    */
   protected _getListPage(): VNode {
-    const hasSets = this._selectionSets.filter(ss => ss.workflowType !== EWorkflowType.REFINE).length > 0;
+    const hasSets = this._hasSelections();
     const total = utils.getTotal(this._selectionSets);
     return hasSets ? (
       <calcite-panel>
@@ -781,7 +765,8 @@ export class PublicNotification {
           // REFINE is handled seperately from the core selection sets
           // You can only access after clicking the refine action
           this._selectionSets.reduce((prev, cur, i) => {
-            if (cur.workflowType !== EWorkflowType.REFINE) {
+            const validSet = this._isValidSet(cur);
+            if (validSet) {
               prev.push((
                 <calcite-list-item
                   description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
@@ -866,14 +851,27 @@ export class PublicNotification {
   }
 
   /**
-   * Check if any selection sets exist.
+   * Check if any valid selection sets exist.
    *
-   * @returns true if selection sets exist
+   * @returns true if valid selection sets exist
    *
    * @protected
    */
   protected _hasSelections(): boolean {
-    return this._selectionSets.length > 0;
+    return this._selectionSets.filter(ss => this._isValidSet(ss)).length > 0;
+  }
+
+  /**
+   * Check if a selection set is valid (exists or has at least one added if its a refine set)
+   *
+   * @returns true if selection set is valid
+   *
+   * @protected
+   */
+  protected _isValidSet(
+    ss: ISelectionSet
+  ): boolean {
+    return ss.workflowType === EWorkflowType.REFINE ? ss?.refineIds?.addIds?.length > 0 : true;
   }
 
   /**
@@ -1192,7 +1190,8 @@ export class PublicNotification {
    */
   protected _getSelectionLists(): VNode {
     return this._selectionSets.reduce((prev, cur) => {
-      if (cur.workflowType !== EWorkflowType.REFINE) {
+      const validSet = this._isValidSet(cur);
+      if (validSet) {
         if (!this._downloadActive && cur.download) {
           this._downloadActive = true;
         }
@@ -1405,9 +1404,7 @@ export class PublicNotification {
   protected async _updateSelectionSets(
     layerView: __esri.FeatureLayerView
   ): Promise<void> {
-    const _selectionSets = this._selectionSets.filter(
-      selectionSet => selectionSet.workflowType !== EWorkflowType.REFINE
-    );
+    const _selectionSets = this._selectionSets;
     const oidDefs = [];
     _selectionSets.forEach(selectionSet => {
       selectionSet.layerView = layerView;
@@ -1511,11 +1508,15 @@ export class PublicNotification {
     evt: CustomEvent
   ): void {
     evt.stopPropagation();
-    this._activeSelection = selectionSet;
-    this._distance = this._activeSelection.distance;
-    this._unit = this._activeSelection.unit;
-    this._customLabel = this._activeSelection.label;
-    this._pageType = EPageType.SELECT;
+    if (selectionSet.workflowType === EWorkflowType.REFINE) {
+      this._pageType = EPageType.REFINE;
+    } else {
+      this._activeSelection = selectionSet;
+      this._distance = this._activeSelection.distance;
+      this._unit = this._activeSelection.unit;
+      this._customLabel = this._activeSelection.label;
+      this._pageType = EPageType.SELECT;
+    }
   }
 
   /**
