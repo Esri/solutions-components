@@ -862,6 +862,20 @@ export class PublicNotification {
   }
 
   /**
+   * Check if any duplicates exist
+   *
+   * @returns true if duplicates are found
+   *
+   * @protected
+   */
+  protected _hasDuplicates(): boolean {
+    const selectedIds = this._selectionSets.reduce((prev, cur) => {
+      return prev.concat(cur.download ? cur.selectedIds : [])
+    }, []);
+    return selectedIds.length > new Set(selectedIds).size;
+  }
+
+  /**
    * Check if a selection set is valid (exists or has at least one added if its a refine set)
    *
    * @returns true if selection set is valid
@@ -1036,6 +1050,7 @@ export class PublicNotification {
   ): VNode {
     const isPdf = type === EExportType.PDF;
     const hasSelections = this._hasSelections();
+    const hasDuplicates = this._hasDuplicates();
     return (
       <calcite-panel>
         <div>
@@ -1053,12 +1068,18 @@ export class PublicNotification {
                 {this._getSelectionLists()}
                 <div class="margin-side-1 padding-top-1 border-bottom" />
                 <div class="padding-top-sides-1">
-                  <calcite-label class={isPdf ? "display-none" : ""} layout="inline">
-                    <calcite-checkbox disabled={!this._downloadActive} ref={(el) => { this._removeDuplicatesCSV = el }} />
+                  <calcite-label class={isPdf ? "display-none" : ""} disabled={!hasDuplicates} layout="inline">
+                    <calcite-checkbox
+                      disabled={!hasDuplicates}
+                      ref={(el) => { this._removeDuplicatesCSV = el }}
+                    />
                     {this._translations.removeDuplicate}
                   </calcite-label>
-                  <calcite-label class={isPdf ? "" : "display-none"} layout="inline">
-                    <calcite-checkbox disabled={!this._downloadActive} ref={(el) => { this._removeDuplicatesPDF = el }} />
+                  <calcite-label class={isPdf ? "" : "display-none"} disabled={!hasDuplicates} layout="inline">
+                    <calcite-checkbox
+                      disabled={!hasDuplicates}
+                      ref={(el) => { this._removeDuplicatesPDF = el }}
+                    />
                     {this._translations.removeDuplicate}
                   </calcite-label>
                 </div>
