@@ -1,3 +1,9 @@
 {
-
+  "header": "Crowdsource Manager",
+	"layout": "Layout",
+	"open": "Open",
+	"close": "Close",
+	"grid": "Grid",
+	"vertical": "Vertical",
+	"horizontal": "Horizontal"
 }

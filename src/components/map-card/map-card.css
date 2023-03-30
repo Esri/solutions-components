@@ -64,6 +64,10 @@
   display: flex;
 }
 
+.display-grid {
+  display: inline-grid;
+}
+
 /* only used if we need to do the map action seperately */
 .block-button {
   border-bottom: 0;
@@ -75,13 +79,6 @@
 
 .block-button:active {
   background-color: var(--calcite-ui-foreground-3);
-}
-
-.map-view {
-  padding: 0;
-  margin: 0;
-  height: 100%;
-  width: 100%;
 }
 
 .map-list {

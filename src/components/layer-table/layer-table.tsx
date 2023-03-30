@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
+import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { getMapLayerView, goToSelection } from "../../utils/mapViewUtils";
+import { getMapLayerView, goToSelection, getMapLayerIds } from "../../utils/mapViewUtils";
 import { queryAllFeatures } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
-
-// TODO look for options to better handle very large number of records
-//  has a hard time especially with select all when we have many rows
-// TODO test with data that contains domains
 
 @Component({
   tag: 'layer-table',
   styleUrl: 'layer-table.css',
-  shadow: true,
+  shadow: false, // FeatureTable styles don't load in shadow dom
 })
 export class LayerTable {
   //--------------------------------------------------------------------------
@@ -56,15 +53,20 @@ export class LayerTable {
   //--------------------------------------------------------------------------
 
   /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
+   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
    */
-  @State() _translations: typeof LayerTable_T9n;
+  @State() _layerView: __esri.FeatureLayerView;
 
   /**
    * A list of indexes that are currently selected
    */
   @State() _selectedIndexes: number[] = [];
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() _translations: typeof LayerTable_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -73,19 +75,14 @@ export class LayerTable {
   //--------------------------------------------------------------------------
 
   /**
+   * esri/widgets/FeatureTable: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FeatureTable.html
+   */
+  protected FeatureTable: typeof import("esri/widgets/FeatureTable");
+
+  /**
    * HTMLEditRecordModalElement: Modal used to edit multiple records
    */
   protected _editMultipleMpdal: HTMLEditRecordModalElement;
-
-  /**
-   * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
-   */
-  protected _graphics: __esri.Graphic[] = [];
-
-  /**
-   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-   */
-  protected _layerView: __esri.FeatureLayerView;
 
   /**
    * string[]: List of field names to display
@@ -93,15 +90,36 @@ export class LayerTable {
   protected _fieldNames: string[] = [];
 
   /**
+   * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   */
+  protected _graphics: __esri.Graphic[] = [];
+
+  /**
    * HTMLCalciteCheckboxElement: Element to force selection of all records
    */
   protected _selectAllElement: HTMLCalciteCheckboxElement;
+
+  /**
+   * esri/widgets/FeatureTable: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FeatureTable.html
+   */
+  protected _table: __esri.FeatureTable;
+
+  /**
+   * HTMLDivElement: Element to hold the FeatureTable
+   */
+  protected _tableNode: HTMLDivElement;
 
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  @Watch("mapView")
+  async mapViewWatchHandler(): Promise<void> {
+    const mapLayerIds = await getMapLayerIds(this.mapView);
+    this._layerView = await getMapLayerView(this.mapView, mapLayerIds[0]);
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -128,22 +146,25 @@ export class LayerTable {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
+    await this._initModules();
   }
 
   /**
    * Renders the component.
    */
   render() {
+    if (!this._layerView) {
+      return null;
+    }
     return (
       <Host>
         {this._getTableControlRow()}
-        <div class="data-container">
-          <div class="table-container">
-            <div class="table">
-              {this._getTableHeader()}
-              {this._getTableRows()}
-            </div>
-          </div>
+        <div class="table-div width-full">
+          <calcite-panel class="height-full width-full">
+            <div
+              ref={this.onTableNodeCreate}
+            />
+          </calcite-panel>
         </div>
         <edit-record-modal
           ref={(el) => this._editMultipleMpdal = el}
@@ -157,6 +178,20 @@ export class LayerTable {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
+    const [FeatureTable] = await loadModules([
+      "esri/widgets/FeatureTable"
+    ]);
+    this.FeatureTable = FeatureTable;
+  }
 
   /**
    * Gets a row of controls that can be used for various interactions with the table
@@ -244,162 +279,36 @@ export class LayerTable {
   }
 
   /**
-   * Gets the table header with a select all control and column headers for each field
+   * Store a reference to the table node after it's first created
+   * and initializes the FeatureTable
    *
-   * @returns The dom node that contains the header
+   * @returns void
    */
-  protected _getTableHeader(): VNode {
-    return (
-      <div class="header">
-        <div class="table-header-cell padding-3-4">
-          <calcite-checkbox
-            class="display-flex justify-center"
-            onClick={() => this._selectAll(this._selectAllElement.checked)}
-            ref={(el) => this._selectAllElement = el}
-          />
-        </div>
-        {this._fieldNames.map(name => this._getTableHeaderCell(name))}
-      </div>
-    );
+  private onTableNodeCreate = (node: HTMLDivElement) => {
+    this._tableNode = node;
+    this._getTable(node);
   }
 
   /**
-   * Gets a header cell for the table header
+   * Initialize the FeatureTable
    *
-   * @param name the string to display in the cell
-   *
-   * @returns The dom node that contains the header cell
+   * @returns void
    */
-  protected _getTableHeaderCell(
-    name: string
-  ): VNode {
-    return (
-      <div class="table-header-cell field-width">
-        {name}
-      </div>
-    );
-  }
-
-  /**
-   * Gets the table rows for all features
-   *
-   * @returns The dom node that contains the body of the table
-   */
-  protected _getTableRows(): VNode[] {
-    return (
-      <div class="table-body">
-        {this._graphics.map((g, i) => this._getTableRow(g, i))}
-      </div>
-    );
-  }
-
-  /**
-   * Gets the individual table row for a feature
-   *
-   * @param g the graphic the row is based on
-   * @param index the index location of the row within the table
-   *
-   * @returns The dom node that contains the row
-   */
-  protected _getTableRow(
-    g: __esri.Graphic,
-    index: number
-  ): VNode {
-    // TODO think through this more...should build the fieldType info once up front rather
-    // than on every single value...
-    const checked = this._selectedIndexes.indexOf(index) > -1;
-    return (
-      <div class="row">
-        <div class="table-cell table-border padding-3-4">
-          <calcite-checkbox
-            checked={checked}
-            class="display-flex justify-center"
-            onClick={() => this._rowSelected(index)}
-            value={index}
-          />
-        </div>
-        {
-          this._fieldNames.map(name => {
-            const field = this._layerView.layer.fieldsIndex.get(name);
-            return this._getTableRowCell(g.attributes[name], field, checked);
-          })
-        }
-      </div>
-    );
-  }
-
-  /**
-   * Gets the individual table cell for the provided field
-   *
-   * @param v the value to display
-   * @param field the field the row is based on
-   * @param rowSelected when true editable fields will render a control that will allow the value to be updated
-   *
-   * @returns The dom node that contains the table cell
-   */
-  protected _getTableRowCell(
-    v: string,
-    field: __esri.Field,
-    rowSelected: boolean
-  ): VNode {
-    const editable = field.editable && rowSelected;
-    const inputType = this._getInputType(field.type);
-    // TODO find some domain data to test with..this has not been tested
-    let domainInput;
-    const domain = field.domain;
-    if (domain) {
-      if (domain.type === "coded-value") {
-        domainInput = (
-          <calcite-select label=''>
-            {domain.codedValues.map(cv => {
-              return (<calcite-option label={cv.name} selected={v === cv.code.toString()} value={cv.code} />);
-            })}
-          </calcite-select>
-        )
-      } else {
-        // range domain
-        const range = domain as __esri.RangeDomain;
-        domainInput = (<calcite-input max={range.maxValue} min={range.minValue} type="number" value={v} />);
-      }
-    };
-
-    return (
-      <div class="table-cell table-border field-width">
-        {editable && domainInput ? domainInput : editable ? (<calcite-input type={inputType} value={v} />) : v}
-      </div>
-    );
-  }
-
-  /**
-   * Simple lookup that will get the appropriate edit control for the value type
-   *
-   * @param type the Esri field type
-   *
-   * @returns A string for the type of control to create based on the provided field type
-   */
-  protected _getInputType(
-    type: string
-  ): "number" | "datetime-local" | "text" {
-    // JS API field types
-    // "string" | "small-integer" | "integer" | "single" | "double" | "long" | "date" | "oid" | "geometry" | "blob" | "raster" | "guid" | "global-id" | "xml"
-    // not sure about these: "geometry" | "blob" | "raster" |  | "xml"
-
-    // Calcite input types
-    // color date datetime-local email file image month number password search tel text(default) textarea time url week
-    const inputTypes = {
-      "string": 'text',
-      "small-integer": "number",
-      "integer": "number",
-      "single": "number",
-      "double": "number",
-      "long": "number",
-      "date": "datetime-local",
-      "oid": "number",
-      "guid": "text",
-      "global-id": "text"
-    };
-
-    return Object.keys(inputTypes).indexOf(type) > -1 ? inputTypes[type] : "text";
+  protected _getTable(node: HTMLDivElement): void {
+    if (this._layerView?.layer) {
+      this._table = new this.FeatureTable({
+        layer: this._layerView.layer,
+        view: this.mapView,
+        editingEnabled: true,
+        highlightOnRowSelectEnabled: true,
+        multiSortEnabled: false,
+        visibleElements: {
+          header: false,
+          menu: false
+        },
+        container: node
+      } as __esri.FeatureTableProperties);
+    }
   }
 
   /**
@@ -544,6 +453,8 @@ export class LayerTable {
     this._fieldNames = this._layerView.layer.fields.map(f => f.alias || f.name);
     this._graphics = await queryAllFeatures(0, this._layerView.layer, []);
     this._selectedIndexes = [];
+    this._table.layer = this._layerView.layer;
+    this._table.render();
   }
 
   /**
