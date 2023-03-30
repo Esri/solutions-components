@@ -61,16 +61,13 @@ graph TD;
   calcite-handle --> calcite-icon
   calcite-pick-list-item --> calcite-icon
   calcite-pick-list-item --> calcite-action
+  layer-table --> calcite-panel
   layer-table --> edit-record-modal
   layer-table --> map-layer-picker
   layer-table --> calcite-button
   layer-table --> calcite-split-button
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
-  layer-table --> calcite-checkbox
-  layer-table --> calcite-select
-  layer-table --> calcite-option
-  layer-table --> calcite-input
   edit-record-modal --> calcite-modal
   edit-record-modal --> calcite-label
   edit-record-modal --> calcite-button

@@ -22,7 +22,7 @@ import { ELayoutMode, IMapInfo } from '../../utils/interfaces';
 @Component({
   tag: 'crowdsource-manager',
   styleUrl: 'crowdsource-manager.css',
-  shadow: true,
+  shadow: false,
 })
 export class CrowdsourceManager {
   //--------------------------------------------------------------------------
@@ -203,13 +203,13 @@ export class CrowdsourceManager {
     let sizeClass = "";
     switch (layoutMode) {
       case ELayoutMode.HORIZONTAL:
-        sizeClass = `${panelOpen ? "height-1-2" : "height-full-a"} width-full display-flex flex-column`;
+        sizeClass = `${panelOpen ? "height-1-2" : "height-full"} width-full display-flex flex-column`;
         break;
       case ELayoutMode.GRID:
-        sizeClass = `${panelOpen ? "width-2-3" : "width-full-a"} height-full display-flex`;
+        sizeClass = `${panelOpen ? "width-2-3" : "width-full"} height-full display-flex`;
         break;
       case ELayoutMode.VERTICAL:
-        sizeClass = `${panelOpen ? "width-1-2" : "width-full-a"} height-full display-flex`;
+        sizeClass = `${panelOpen ? "width-1-2" : "width-full"} height-full display-flex`;
         break;
     }
     return sizeClass;
