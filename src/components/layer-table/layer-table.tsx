@@ -53,10 +53,9 @@ export class LayerTable {
   //--------------------------------------------------------------------------
 
   /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
+   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
    */
-  @State() _translations: typeof LayerTable_T9n;
+  @State() _layerView: __esri.FeatureLayerView;
 
   /**
    * A list of indexes that are currently selected
@@ -64,9 +63,10 @@ export class LayerTable {
   @State() _selectedIndexes: number[] = [];
 
   /**
-   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
    */
-  @State() _layerView: __esri.FeatureLayerView;
+  @State() _translations: typeof LayerTable_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -85,23 +85,29 @@ export class LayerTable {
   protected _editMultipleMpdal: HTMLEditRecordModalElement;
 
   /**
-   * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
-   */
-  protected _graphics: __esri.Graphic[] = [];
-
-  /**
    * string[]: List of field names to display
    */
   protected _fieldNames: string[] = [];
+
+  /**
+   * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   */
+  protected _graphics: __esri.Graphic[] = [];
 
   /**
    * HTMLCalciteCheckboxElement: Element to force selection of all records
    */
   protected _selectAllElement: HTMLCalciteCheckboxElement;
 
-  protected _tableNode: HTMLDivElement;
+  /**
+   * esri/widgets/FeatureTable: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FeatureTable.html
+   */
+  protected _table: __esri.FeatureTable;
 
-  protected table: __esri.FeatureTable;
+  /**
+   * HTMLDivElement: Element to hold the FeatureTable
+   */
+  protected _tableNode: HTMLDivElement;
 
   //--------------------------------------------------------------------------
   //
@@ -272,15 +278,26 @@ export class LayerTable {
     );
   }
 
+  /**
+   * Store a reference to the table node after it's first created
+   * and initializes the FeatureTable
+   *
+   * @returns void
+   */
   private onTableNodeCreate = (node: HTMLDivElement) => {
     this._tableNode = node;
     this._getTable(node);
   }
 
+  /**
+   * Initialize the FeatureTable
+   *
+   * @returns void
+   */
   protected _getTable(node: HTMLDivElement): void {
     if (this._layerView?.layer) {
-      this.table = new this.FeatureTable({
-        layer: this._layerView?.layer,
+      this._table = new this.FeatureTable({
+        layer: this._layerView.layer,
         view: this.mapView,
         editingEnabled: true,
         highlightOnRowSelectEnabled: true,
@@ -436,8 +453,8 @@ export class LayerTable {
     this._fieldNames = this._layerView.layer.fields.map(f => f.alias || f.name);
     this._graphics = await queryAllFeatures(0, this._layerView.layer, []);
     this._selectedIndexes = [];
-    this.table.layer = this._layerView.layer;
-    this.table.render();
+    this._table.layer = this._layerView.layer;
+    this._table.render();
   }
 
   /**
