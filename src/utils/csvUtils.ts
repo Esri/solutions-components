@@ -14,47 +14,28 @@
  * limitations under the License.
  */
 
+//#region Declarations
+
+import * as csvDownload from "./csvDownload";
+
+//#endregion
 //#region Public functions
 
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
+ * @param title Title to use for file
  * @param labels Labels to write
  */
 export function exportCSV(
+  title: string,
   labels: string[][],
 ): void {
   // Format values to string so it doesn't get tripped up when a value has a comma
   // another option could be to export with a different delimiter
   const outputLines = labels.map(label => Object.values(label).map(v => `"${v}"`).join(",") + "\r\n");
 
-  _downloadCSVFile(outputLines, `notify-${Date.now().toString()}`);
-}
-
-//#endregion
-//#region Private functions
-
-/**
- * Download the CSV file
- *
- * @param outputLines Lines of output to write to file
- * @param fileTitle Title (without file extension) to use for file; defaults to "export"
- *
- * @see {@link https://medium.com/@danny.pule/export-json-to-csv-file-using-javascript-a0b7bc5b00d2}
- */
-function _downloadCSVFile(
-  outputLines: string[],
-  fileTitle: string
-): void {
-  const link = document.createElement("a");
-  if (link.download !== undefined) {
-    link.href = URL.createObjectURL(new Blob(outputLines, { type: "text/csv;charset=utf-8;" }));
-    link.download = `${fileTitle}.csv` || "export.csv";
-    link.style.visibility = "hidden";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
+  csvDownload.downloadCSVFile(title, outputLines);
 }
 
 //#endregion

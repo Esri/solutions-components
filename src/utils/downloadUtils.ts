@@ -68,11 +68,9 @@ export async function downloadCSV(
   removeDuplicates = false,
   addColumnTitle = false
 ): Promise<void> {
-  console.log("downloadCSV using selectionSetNames " + JSON.stringify(selectionSetNames));//???
-  console.log("downloadCSV removeDuplicates", removeDuplicates);//???
   const labels = await _prepareLabels(layer, ids, removeDuplicates, formatUsingLayerPopup, addColumnTitle);
 
-  exportCSV(labels);
+  exportCSV(_createTitle(selectionSetNames), labels);
 
   return Promise.resolve();
 }
@@ -94,8 +92,6 @@ export async function downloadPDF(
   removeDuplicates: boolean,
   labelPageDescription: ILabel
 ): Promise<void> {
-  console.log("downloadPDF using selectionSetNames " + JSON.stringify(selectionSetNames));//???
-  console.log("downloadPDF removeDuplicates", removeDuplicates);//???
   let labels = await _prepareLabels(layer, ids, removeDuplicates);
 
   labels =
@@ -104,7 +100,7 @@ export async function downloadPDF(
     // Remove empty labels
     .filter(label => label.length > 0);
 
-  exportPDF(labels, labelPageDescription);
+  exportPDF(_createTitle(selectionSetNames), labels, labelPageDescription);
 
   return Promise.resolve();
 }
@@ -119,7 +115,7 @@ export async function downloadPDF(
  * @param bypassFieldVisiblity Indicates if the configured fieldInfo visibility property should be ignored
  * @return Label spec with lines separated by `lineSeparatorChar`
  */
-function _convertPopupFieldsToLabelSpec(
+export function _convertPopupFieldsToLabelSpec(
   fieldInfos: __esri.FieldInfo[],
   bypassFieldVisiblity = false
 ): string {
@@ -145,7 +141,7 @@ function _convertPopupFieldsToLabelSpec(
  * "<div style='text-align: left;'>{NAME}<br />{STREET}<br />{CITY}, {STATE} {ZIP} <br /></div>"
  * @return Label spec with lines separated by `lineSeparatorChar`
  */
-function _convertPopupTextToLabelSpec(
+export function _convertPopupTextToLabelSpec(
   popupInfo: string,
 ): string {
   // Replace <br> variants with the line separator character
@@ -157,19 +153,30 @@ function _convertPopupTextToLabelSpec(
   // Remove </p>
   popupInfo = popupInfo.replace(/<\/p>/gi, "");
 
-  // Remove \n
-  popupInfo = popupInfo.replace(/\n/gi, "");
+  // Replace \n with the line separator character
+  popupInfo = popupInfo.replace(/\n/gi, "|");
 
-  // Remove remaining HTML tags, replace 0xA0 that popup uses for spaces, and replace some char representations,
-  // and split the label back into individual lines
-  const labelSpec = popupInfo
+  // Remove remaining HTML tags, replace 0xA0 that popup uses for spaces, and replace some char representations
+  let labelSpec = popupInfo
     .replace(/<[\s.]*[^<>]*\/?>/gi, "")
     .replace(/\xA0/gi, " ")
     .replace(/&lt;/gi, "<")
     .replace(/&gt;/gi, ">")
     .replace(/&nbsp;/gi, " ");
 
-  return labelSpec;
+  // Trim each line
+  labelSpec = labelSpec.replace(/\s*\|\s*/g, "|");
+
+  // Remove empty lines
+  while (labelSpec.match(/\|\|/)) {
+    labelSpec = labelSpec.replace(/\|\|/, "|");
+  }
+
+  // Remove leading and trailing line feeds
+  labelSpec = labelSpec.replace(/^\|/, "");
+  labelSpec = labelSpec.replace(/\|$/, "");
+
+  return labelSpec.trim();
 };
 
 /**
@@ -250,6 +257,21 @@ async function _createArcadeExecutors(
       return arcadeExecutors;
     }
   );
+}
+
+/**
+ * Creates a title from a list of selection set names.
+ *
+ * @param selectionSetNames Names to use in title
+ * @return Title composed of the selectionSetNames separated by commas; if there are no
+ * selection set names supplied, "download" is returned
+ */
+export function _createTitle(
+  selectionSetNames: string[]
+): string {
+  // Windows doesn't permit the characters \/:*?"<>|
+  const title = selectionSetNames.length > 0 ? selectionSetNames.join(", ") : "download";
+  return title;
 }
 
 /**

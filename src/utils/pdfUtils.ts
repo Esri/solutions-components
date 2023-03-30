@@ -27,14 +27,16 @@ export { ILabel } from "../assets/arcgis-pdf-creator/PDFLabels";
 /**
  * Exports a PDF of labels.
  *
+ * @param title Title to use for file
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
  */
 export function exportPDF(
+  title: string,
   labels: string[][],
   labelPageDescription: PDFLabels.ILabel
 ): void {
-  _downloadPDFFile(labels, labelPageDescription, `notify-${Date.now().toString()}`);
+  downloadPDFFile(title, labels, labelPageDescription);
 }
 
 //#endregion
@@ -43,21 +45,23 @@ export function exportPDF(
 /**
  * Downloads the PDF file.
  *
+ * @param title Title (without file extension) to use for file; defaults to "export"
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
- * @param fileTitle Title (without file extension) to use for file; defaults to "export"
  */
-function _downloadPDFFile(
+function downloadPDFFile(
+  title: string,
   labels: string[][],
-  labelPageDescription: PDFLabels.ILabel,
-  fileTitle: string
+  labelPageDescription: PDFLabels.ILabel
 ): void {
   const pdfLib = new PDFCreator_jsPDF.PDFCreator_jsPDF();
   pdfLib.initialize(
     {
       pageType: "ANSI_A"
-    }, getAssetPath(`../assets/arcgis-pdf-creator/`), "en",
-    fileTitle, false
+    },
+    getAssetPath(`../assets/arcgis-pdf-creator/`),
+    "en",
+    title
   )
   .then(
     () => {
@@ -68,7 +72,8 @@ function _downloadPDFFile(
           await labeller.addLabelsToDoc(
             labels,
             labelPageDescription.labelSpec,
-            1
+            1,  // startingPageNum
+            title  // heading
           );
 
           pdfLib.save();

@@ -71,16 +71,6 @@ describe('pdf-download', () => {
     `);
   });
 
-  describe('converting the text of a custom popup into a multiline label specification', () => {
-    it('converts <br> to linefeed', () => {
-      const samplePopup = "<div style='text-align: left;'>{NAME}<br />{STREET}<br > {CITY}, {STATE} {ZIP} <br/></div>";
-      const expectedLabelSpec = ["{NAME}", "{STREET}", "{CITY}, {STATE} {ZIP}"];
-
-      const labelSpec = PdfDownload.PdfDownload.prototype._convertPopupToLabelSpec(samplePopup);
-      expect(labelSpec).toEqual(expectedLabelSpec);
-    });
-  });
-
   xit('downloads csv', async () => {
     const exportCSVMock = jest.fn();
     jest.spyOn(csvUtils, "exportCSV").mockImplementation(exportCSVMock);
