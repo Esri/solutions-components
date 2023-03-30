@@ -121,9 +121,9 @@ export class CrowdsourceManager {
         >
           <div class="display-flex" slot="header-actions-end">
             <div class="header-text">Layout</div>
-            {this._getAction("grid-background", ELayoutMode.GRID)}
-            {this._getAction("horizontal-background", ELayoutMode.VERTICAL)}
-            {this._getAction("vertical-background", ELayoutMode.HORIZONTAL)}
+            {this._getAction("grid-background", ELayoutMode.GRID, this._translations.grid)}
+            {this._getAction("horizontal-background", ELayoutMode.VERTICAL, this._translations.horizontal)}
+            {this._getAction("vertical-background", ELayoutMode.HORIZONTAL, this._translations.vertical)}
           </div>
           {this._getBody(this._layoutMode, this._panelOpen)}
         </calcite-panel>
@@ -139,7 +139,8 @@ export class CrowdsourceManager {
 
   protected _getAction(
     imgClass: string,
-    layoutMode: ELayoutMode
+    layoutMode: ELayoutMode,
+    tip: string
   ): VNode {
     return (
       <div>
@@ -155,7 +156,7 @@ export class CrowdsourceManager {
           <div class={imgClass + " img-background"} />
         </calcite-action>
         <calcite-tooltip label="" placement="bottom" reference-element={imgClass}>
-          <span>tip</span>
+          <span>{tip}</span>
         </calcite-tooltip>
       </div>
     );
