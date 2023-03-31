@@ -25,6 +25,11 @@ export enum ELayoutMode {
   VERTICAL = "VERTICAL"
 }
 
+export enum EDrawToolsMode {
+  DRAW = "DRAW",
+  REFINE = "REFINE"
+}
+
 /**
  * Resource update types
  */

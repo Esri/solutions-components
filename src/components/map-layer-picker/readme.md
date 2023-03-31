@@ -27,6 +27,7 @@
 ### Used by
 
  - [layer-table](../layer-table)
+ - [new-draw-tools](../new-draw-tools)
  - [public-notification](../public-notification)
  - [refine-selection-tools](../refine-selection-tools)
 
@@ -50,6 +51,7 @@ graph TD;
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
   layer-table --> map-layer-picker
+  new-draw-tools --> map-layer-picker
   public-notification --> map-layer-picker
   refine-selection-tools --> map-layer-picker
   style map-layer-picker fill:#f9f,stroke:#333,stroke-width:4px

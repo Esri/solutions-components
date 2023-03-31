@@ -57,11 +57,6 @@ Promise when complete
 
 ## Dependencies
 
-### Used by
-
- - [map-select-tools](../map-select-tools)
- - [refine-selection](../refine-selection)
-
 ### Depends on
 
 - [map-layer-picker](../map-layer-picker)
@@ -83,8 +78,6 @@ graph TD;
   calcite-combobox-item --> calcite-icon
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
-  map-select-tools --> refine-selection-tools
-  refine-selection --> refine-selection-tools
   style refine-selection-tools fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

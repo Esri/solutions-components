@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
-import { ERefineMode, ESelectionMode, EWorkflowType, ISelectionSet } from "../../utils/interfaces";
+import { ERefineMode, ESelectionMode, EWorkflowType, ISelectionSet, EDrawToolsMode } from "../../utils/interfaces";
 import * as utils from "../../utils/publicNotificationUtils";
 import RefineSelection_T9n from "../../assets/t9n/refine-selection/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -186,8 +186,9 @@ export class RefineSelection {
                 {this._translations.remove}
               </calcite-radio-group-item>
             </calcite-radio-group>
-            <refine-selection-tools
+            <new-draw-tools
               border={true}
+              drawToolsMode={EDrawToolsMode.REFINE}
               enabledLayerIds={this.enabledLayerIds}
               ids={utils.getSelectionIds(this.selectionSets)}
               layerViews={[this.addresseeLayer]}

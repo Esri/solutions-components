@@ -34,7 +34,7 @@
 
 - calcite-radio-group
 - calcite-radio-group-item
-- [refine-selection-tools](../refine-selection-tools)
+- [new-draw-tools](../new-draw-tools)
 - calcite-list
 - calcite-list-item
 
@@ -43,12 +43,12 @@
 graph TD;
   refine-selection --> calcite-radio-group
   refine-selection --> calcite-radio-group-item
-  refine-selection --> refine-selection-tools
+  refine-selection --> new-draw-tools
   refine-selection --> calcite-list
   refine-selection --> calcite-list-item
   calcite-radio-group-item --> calcite-icon
-  refine-selection-tools --> map-layer-picker
-  refine-selection-tools --> calcite-action
+  new-draw-tools --> map-layer-picker
+  new-draw-tools --> calcite-action
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-combobox-item

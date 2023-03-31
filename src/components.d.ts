@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EExpandType, ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, IRefineSelectionEvent, ISearchConfiguration, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
+import { DistanceUnit, EDrawToolsMode, EExpandType, ERefineMode, ESelectionMode, ESketchType, EWorkflowType, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, IRefineSelectionEvent, ISearchConfiguration, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -279,6 +279,27 @@ export namespace Components {
           * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
          */
         "values": IMediaCardValues[];
+    }
+    interface NewDrawTools {
+        "active": boolean;
+        "border": boolean;
+        "clear": () => Promise<void>;
+        "clearHighlight": () => Promise<void>;
+        "drawToolsMode": EDrawToolsMode;
+        "enabledLayerIds": string[];
+        "graphics": __esri.Graphic[];
+        "ids": number[];
+        "layerView": __esri.FeatureLayerView;
+        "layerViews": __esri.FeatureLayerView[];
+        "mapView": __esri.MapView;
+        "mode": ESelectionMode;
+        "pointSymbol": __esri.SimpleMarkerSymbol;
+        "polygonSymbol": __esri.SimpleFillSymbol;
+        "polylineSymbol": __esri.SimpleLineSymbol;
+        "refineMode": ERefineMode;
+        "refineSelectionSet": ISelectionSet;
+        "reset": () => Promise<void>;
+        "useLayerPicker": boolean;
     }
     interface PciCalculator {
     }
@@ -650,6 +671,10 @@ export interface MapSelectToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapSelectToolsElement;
 }
+export interface NewDrawToolsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLNewDrawToolsElement;
+}
 export interface PublicNotificationCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLPublicNotificationElement;
@@ -791,6 +816,12 @@ declare global {
         prototype: HTMLMediaCardElement;
         new (): HTMLMediaCardElement;
     };
+    interface HTMLNewDrawToolsElement extends Components.NewDrawTools, HTMLStencilElement {
+    }
+    var HTMLNewDrawToolsElement: {
+        prototype: HTMLNewDrawToolsElement;
+        new (): HTMLNewDrawToolsElement;
+    };
     interface HTMLPciCalculatorElement extends Components.PciCalculator, HTMLStencilElement {
     }
     var HTMLPciCalculatorElement: {
@@ -912,6 +943,7 @@ declare global {
         "map-search": HTMLMapSearchElement;
         "map-select-tools": HTMLMapSelectToolsElement;
         "media-card": HTMLMediaCardElement;
+        "new-draw-tools": HTMLNewDrawToolsElement;
         "pci-calculator": HTMLPciCalculatorElement;
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
@@ -1215,6 +1247,28 @@ declare namespace LocalJSX {
           * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
          */
         "values"?: IMediaCardValues[];
+    }
+    interface NewDrawTools {
+        "active"?: boolean;
+        "border"?: boolean;
+        "drawToolsMode"?: EDrawToolsMode;
+        "enabledLayerIds"?: string[];
+        "graphics"?: __esri.Graphic[];
+        "ids"?: number[];
+        "layerView"?: __esri.FeatureLayerView;
+        "layerViews"?: __esri.FeatureLayerView[];
+        "mapView"?: __esri.MapView;
+        "mode"?: ESelectionMode;
+        "onRefineSelectionGraphicsChange"?: (event: NewDrawToolsCustomEvent<IRefineSelectionEvent>) => void;
+        "onRefineSelectionIdsChange"?: (event: NewDrawToolsCustomEvent<{ addIds: any[]; removeIds: any[]; }>) => void;
+        "onSelectionLoadingChange"?: (event: NewDrawToolsCustomEvent<boolean>) => void;
+        "onSketchGraphicsChange"?: (event: NewDrawToolsCustomEvent<__esri.Graphic[]>) => void;
+        "pointSymbol"?: __esri.SimpleMarkerSymbol;
+        "polygonSymbol"?: __esri.SimpleFillSymbol;
+        "polylineSymbol"?: __esri.SimpleLineSymbol;
+        "refineMode"?: ERefineMode;
+        "refineSelectionSet"?: ISelectionSet;
+        "useLayerPicker"?: boolean;
     }
     interface PciCalculator {
     }
@@ -1558,6 +1612,7 @@ declare namespace LocalJSX {
         "map-search": MapSearch;
         "map-select-tools": MapSelectTools;
         "media-card": MediaCard;
+        "new-draw-tools": NewDrawTools;
         "pci-calculator": PciCalculator;
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
@@ -1599,6 +1654,7 @@ declare module "@stencil/core" {
             "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
             "media-card": LocalJSX.MediaCard & JSXBase.HTMLAttributes<HTMLMediaCardElement>;
+            "new-draw-tools": LocalJSX.NewDrawTools & JSXBase.HTMLAttributes<HTMLNewDrawToolsElement>;
             "pci-calculator": LocalJSX.PciCalculator & JSXBase.HTMLAttributes<HTMLPciCalculatorElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;

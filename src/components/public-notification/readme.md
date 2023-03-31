@@ -117,12 +117,11 @@ graph TD;
   map-select-tools --> calcite-radio-group-item
   map-select-tools --> calcite-label
   map-select-tools --> calcite-checkbox
-  map-select-tools --> map-draw-tools
-  map-select-tools --> refine-selection-tools
+  map-select-tools --> new-draw-tools
   map-select-tools --> buffer-tools
   calcite-radio-group-item --> calcite-icon
-  refine-selection-tools --> map-layer-picker
-  refine-selection-tools --> calcite-action
+  new-draw-tools --> map-layer-picker
+  new-draw-tools --> calcite-action
   buffer-tools --> calcite-option
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select
@@ -132,7 +131,7 @@ graph TD;
   calcite-slider --> calcite-graph
   refine-selection --> calcite-radio-group
   refine-selection --> calcite-radio-group-item
-  refine-selection --> refine-selection-tools
+  refine-selection --> new-draw-tools
   refine-selection --> calcite-list
   refine-selection --> calcite-list-item
   pdf-download --> calcite-select

@@ -71,8 +71,7 @@ Promise with the new selection set
 - calcite-radio-group-item
 - calcite-label
 - calcite-checkbox
-- [map-draw-tools](../map-draw-tools)
-- [refine-selection-tools](../refine-selection-tools)
+- [new-draw-tools](../new-draw-tools)
 - [buffer-tools](../buffer-tools)
 
 ### Graph
@@ -82,12 +81,11 @@ graph TD;
   map-select-tools --> calcite-radio-group-item
   map-select-tools --> calcite-label
   map-select-tools --> calcite-checkbox
-  map-select-tools --> map-draw-tools
-  map-select-tools --> refine-selection-tools
+  map-select-tools --> new-draw-tools
   map-select-tools --> buffer-tools
   calcite-radio-group-item --> calcite-icon
-  refine-selection-tools --> map-layer-picker
-  refine-selection-tools --> calcite-action
+  new-draw-tools --> map-layer-picker
+  new-draw-tools --> calcite-action
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-combobox-item

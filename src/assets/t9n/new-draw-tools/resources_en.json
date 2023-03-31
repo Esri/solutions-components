@@ -1,0 +1,11 @@
+{
+    "sketchLayer": "Sketch Layer",
+
+    "selectLayers": "Select Layer(s)",
+    "select": "Select",
+    "selectLine": "Select by line",
+    "selectPolygon": "Select by polygon",
+    "selectRectangle": "Select by rectangle",
+    "undo": "Undo",
+    "redo": "Redo"
+}

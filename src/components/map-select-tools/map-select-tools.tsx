@@ -18,7 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop,
 import { loadModules } from "../../utils/loadModules";
 import { highlightFeatures, goToSelection } from "../../utils/mapViewUtils";
 import { getQueryGeoms, queryObjectIds } from "../../utils/queryUtils";
-import { DistanceUnit, ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration, EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode, ESketchType } from "../../utils/interfaces";
+import { DistanceUnit, ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration, EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode, ESketchType, EDrawToolsMode } from "../../utils/interfaces";
 import state from "../../utils/publicNotificationStore";
 import MapSelectTools_T9n from "../../assets/t9n/map-select-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -488,9 +488,10 @@ export class MapSelectTools {
           </calcite-label>
         </div>
         <div class={useDrawClass}>
-          <map-draw-tools
+          <new-draw-tools
             active={true}
             border={true}
+            drawToolsMode={EDrawToolsMode.DRAW}
             mapView={this.mapView}
             pointSymbol={this.sketchPointSymbol}
             polygonSymbol={this.sketchPolygonSymbol}
@@ -499,9 +500,10 @@ export class MapSelectTools {
           />
         </div>
         <div class={useSelectClass}>
-          <refine-selection-tools
+          <new-draw-tools
             active={true}
             border={true}
+            drawToolsMode={EDrawToolsMode.REFINE}
             enabledLayerIds={this.enabledLayerIds}
             layerView={this.selectLayerView}
             layerViews={this._refineSelectLayers}
