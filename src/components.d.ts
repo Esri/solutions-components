@@ -134,41 +134,6 @@ export namespace Components {
          */
         "mapView": __esri.MapView;
     }
-    interface MapDrawTools {
-        /**
-          * boolean: sketch is used by multiple components...need a way to know who should respond...
-         */
-        "active": boolean;
-        /**
-          * boolean: Optionally draw a border around the draw tools
-         */
-        "border": boolean;
-        /**
-          * Clears the user drawn graphics
-          * @returns Promise that resolves when the operation is complete
-         */
-        "clear": () => Promise<void>;
-        /**
-          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
-         */
-        "graphics": __esri.Graphic[];
-        /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView": __esri.MapView;
-        /**
-          * esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
-         */
-        "pointSymbol": __esri.SimpleMarkerSymbol;
-        /**
-          * esri/symbols/SimpleFillSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
-         */
-        "polygonSymbol": __esri.SimpleFillSymbol;
-        /**
-          * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
-         */
-        "polylineSymbol": __esri.SimpleLineSymbol;
-    }
     interface MapLayerPicker {
         /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
@@ -419,66 +384,6 @@ export namespace Components {
          */
         "selectionSets": ISelectionSet[];
     }
-    interface RefineSelectionTools {
-        /**
-          * boolean: sketch is used by multiple components...need a way to know who should respond...
-         */
-        "active": boolean;
-        /**
-          * boolean: Optionally draw a border around the draw tools
-         */
-        "border": boolean;
-        /**
-          * Clear current highlight handle
-          * @returns Promise when complete
-         */
-        "clearHighlight": () => Promise<void>;
-        /**
-          * string[]: Optional list of enabled layer ids  If empty all layers will be available
-         */
-        "enabledLayerIds": string[];
-        /**
-          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
-         */
-        "graphics": __esri.Graphic[];
-        /**
-          * number: The oids of the selected features
-         */
-        "ids": number[];
-        /**
-          * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
-         */
-        "layerView": __esri.FeatureLayerView;
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "layerViews": __esri.FeatureLayerView[];
-        /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView": __esri.MapView;
-        /**
-          * utils/interfaces/ESelectionMode: ADD, REMOVE
-         */
-        "mode": ESelectionMode;
-        /**
-          * utils/interfaces/ERefineMode: ALL, SUBSET
-         */
-        "refineMode": ERefineMode;
-        /**
-          * utils/interfaces/ISelectionSet: Refine selection set
-         */
-        "refineSelectionSet": ISelectionSet;
-        /**
-          * Reset the ids collection
-          * @returns Promise when complete
-         */
-        "reset": () => Promise<void>;
-        /**
-          * boolean: Used to control the visibility of the layer picker
-         */
-        "useLayerPicker": boolean;
-    }
     interface SolutionConfiguration {
         /**
           * Credentials for requests, which can be a serialized UserSession
@@ -654,10 +559,6 @@ export interface MapCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapCardElement;
 }
-export interface MapDrawToolsCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLMapDrawToolsElement;
-}
 export interface MapLayerPickerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapLayerPickerElement;
@@ -681,10 +582,6 @@ export interface PublicNotificationCustomEvent<T> extends CustomEvent<T> {
 export interface RefineSelectionCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLRefineSelectionElement;
-}
-export interface RefineSelectionToolsCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLRefineSelectionToolsElement;
 }
 export interface SolutionContentsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -785,12 +682,6 @@ declare global {
         prototype: HTMLMapCardElement;
         new (): HTMLMapCardElement;
     };
-    interface HTMLMapDrawToolsElement extends Components.MapDrawTools, HTMLStencilElement {
-    }
-    var HTMLMapDrawToolsElement: {
-        prototype: HTMLMapDrawToolsElement;
-        new (): HTMLMapDrawToolsElement;
-    };
     interface HTMLMapLayerPickerElement extends Components.MapLayerPicker, HTMLStencilElement {
     }
     var HTMLMapLayerPickerElement: {
@@ -844,12 +735,6 @@ declare global {
     var HTMLRefineSelectionElement: {
         prototype: HTMLRefineSelectionElement;
         new (): HTMLRefineSelectionElement;
-    };
-    interface HTMLRefineSelectionToolsElement extends Components.RefineSelectionTools, HTMLStencilElement {
-    }
-    var HTMLRefineSelectionToolsElement: {
-        prototype: HTMLRefineSelectionToolsElement;
-        new (): HTMLRefineSelectionToolsElement;
     };
     interface HTMLSolutionConfigurationElement extends Components.SolutionConfiguration, HTMLStencilElement {
     }
@@ -937,7 +822,6 @@ declare global {
         "layer-table": HTMLLayerTableElement;
         "list-item": HTMLListItemElement;
         "map-card": HTMLMapCardElement;
-        "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
         "map-search": HTMLMapSearchElement;
         "map-select-tools": HTMLMapSelectToolsElement;
@@ -947,7 +831,6 @@ declare global {
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
         "refine-selection": HTMLRefineSelectionElement;
-        "refine-selection-tools": HTMLRefineSelectionToolsElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-contents": HTMLSolutionContentsElement;
         "solution-item": HTMLSolutionItemElement;
@@ -1092,40 +975,6 @@ declare namespace LocalJSX {
           * Emitted when a new map is loaded
          */
         "onMapChanged"?: (event: MapCardCustomEvent<__esri.MapView>) => void;
-    }
-    interface MapDrawTools {
-        /**
-          * boolean: sketch is used by multiple components...need a way to know who should respond...
-         */
-        "active"?: boolean;
-        /**
-          * boolean: Optionally draw a border around the draw tools
-         */
-        "border"?: boolean;
-        /**
-          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
-         */
-        "graphics"?: __esri.Graphic[];
-        /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView"?: __esri.MapView;
-        /**
-          * Emitted on demand when the sketch graphics change.
-         */
-        "onSketchGraphicsChange"?: (event: MapDrawToolsCustomEvent<__esri.Graphic[]>) => void;
-        /**
-          * esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
-         */
-        "pointSymbol"?: __esri.SimpleMarkerSymbol;
-        /**
-          * esri/symbols/SimpleFillSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
-         */
-        "polygonSymbol"?: __esri.SimpleFillSymbol;
-        /**
-          * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
-         */
-        "polylineSymbol"?: __esri.SimpleLineSymbol;
     }
     interface MapLayerPicker {
         /**
@@ -1382,68 +1231,6 @@ declare namespace LocalJSX {
          */
         "selectionSets"?: ISelectionSet[];
     }
-    interface RefineSelectionTools {
-        /**
-          * boolean: sketch is used by multiple components...need a way to know who should respond...
-         */
-        "active"?: boolean;
-        /**
-          * boolean: Optionally draw a border around the draw tools
-         */
-        "border"?: boolean;
-        /**
-          * string[]: Optional list of enabled layer ids  If empty all layers will be available
-         */
-        "enabledLayerIds"?: string[];
-        /**
-          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
-         */
-        "graphics"?: __esri.Graphic[];
-        /**
-          * number: The oids of the selected features
-         */
-        "ids"?: number[];
-        /**
-          * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
-         */
-        "layerView"?: __esri.FeatureLayerView;
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "layerViews"?: __esri.FeatureLayerView[];
-        /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView"?: __esri.MapView;
-        /**
-          * utils/interfaces/ESelectionMode: ADD, REMOVE
-         */
-        "mode"?: ESelectionMode;
-        /**
-          * Emitted on demand when selection graphics change.
-         */
-        "onRefineSelectionGraphicsChange"?: (event: RefineSelectionToolsCustomEvent<IRefineSelectionEvent>) => void;
-        /**
-          * Emitted on demand when selection ids change
-         */
-        "onRefineSelectionIdsChange"?: (event: RefineSelectionToolsCustomEvent<{ addIds: any[]; removeIds: any[]; }>) => void;
-        /**
-          * Emitted on demand when selection starts or ends.
-         */
-        "onSelectionLoadingChange"?: (event: RefineSelectionToolsCustomEvent<boolean>) => void;
-        /**
-          * utils/interfaces/ERefineMode: ALL, SUBSET
-         */
-        "refineMode"?: ERefineMode;
-        /**
-          * utils/interfaces/ISelectionSet: Refine selection set
-         */
-        "refineSelectionSet"?: ISelectionSet;
-        /**
-          * boolean: Used to control the visibility of the layer picker
-         */
-        "useLayerPicker"?: boolean;
-    }
     interface SolutionConfiguration {
         /**
           * Credentials for requests, which can be a serialized UserSession
@@ -1605,7 +1392,6 @@ declare namespace LocalJSX {
         "layer-table": LayerTable;
         "list-item": ListItem;
         "map-card": MapCard;
-        "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
         "map-search": MapSearch;
         "map-select-tools": MapSelectTools;
@@ -1615,7 +1401,6 @@ declare namespace LocalJSX {
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
         "refine-selection": RefineSelection;
-        "refine-selection-tools": RefineSelectionTools;
         "solution-configuration": SolutionConfiguration;
         "solution-contents": SolutionContents;
         "solution-item": SolutionItem;
@@ -1647,7 +1432,6 @@ declare module "@stencil/core" {
             "layer-table": LocalJSX.LayerTable & JSXBase.HTMLAttributes<HTMLLayerTableElement>;
             "list-item": LocalJSX.ListItem & JSXBase.HTMLAttributes<HTMLListItemElement>;
             "map-card": LocalJSX.MapCard & JSXBase.HTMLAttributes<HTMLMapCardElement>;
-            "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
             "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
@@ -1657,7 +1441,6 @@ declare module "@stencil/core" {
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
             "refine-selection": LocalJSX.RefineSelection & JSXBase.HTMLAttributes<HTMLRefineSelectionElement>;
-            "refine-selection-tools": LocalJSX.RefineSelectionTools & JSXBase.HTMLAttributes<HTMLRefineSelectionToolsElement>;
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;
