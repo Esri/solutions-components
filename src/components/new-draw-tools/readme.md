@@ -17,11 +17,9 @@
 | `layerView`          | --                 |             | `FeatureLayerView`                             | `undefined` |
 | `layerViews`         | --                 |             | `FeatureLayerView[]`                           | `[]`        |
 | `mapView`            | --                 |             | `MapView`                                      | `undefined` |
-| `mode`               | `mode`             |             | `ESelectionMode.ADD \| ESelectionMode.REMOVE`  | `undefined` |
 | `pointSymbol`        | --                 |             | `SimpleMarkerSymbol`                           | `undefined` |
 | `polygonSymbol`      | --                 |             | `SimpleFillSymbol`                             | `undefined` |
 | `polylineSymbol`     | --                 |             | `SimpleLineSymbol`                             | `undefined` |
-| `refineMode`         | `refine-mode`      |             | `ERefineMode.ALL \| ERefineMode.SUBSET`        | `undefined` |
 | `refineSelectionSet` | --                 |             | `ISelectionSet`                                | `undefined` |
 | `useLayerPicker`     | `use-layer-picker` |             | `boolean`                                      | `true`      |
 
@@ -74,7 +72,6 @@ Type: `Promise<void>`
 ### Used by
 
  - [map-select-tools](../map-select-tools)
- - [refine-selection](../refine-selection)
 
 ### Depends on
 
@@ -98,7 +95,6 @@ graph TD;
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
   map-select-tools --> new-draw-tools
-  refine-selection --> new-draw-tools
   style new-draw-tools fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

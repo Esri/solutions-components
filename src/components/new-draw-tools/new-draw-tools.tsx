@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
-import { ERefineMode, ESelectionMode, ESelectionType, IRefineOperation, IRefineSelectionEvent, ISelectionSet } from "../../utils/interfaces";
+import { ESelectionType, IRefineOperation, IRefineSelectionEvent, ISelectionSet } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
 import { getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
 import { queryFeaturesByGeometry } from "../../utils/queryUtils";
@@ -59,10 +59,6 @@ export class NewDrawTools {
 
   @Prop() layerViews: __esri.FeatureLayerView[] = [];
 
-  @Prop() mode: ESelectionMode;
-
-  @Prop() refineMode: ERefineMode;
-
   @Prop({ mutable: true }) refineSelectionSet: ISelectionSet;
 
   @Prop() useLayerPicker = true;
@@ -101,14 +97,9 @@ export class NewDrawTools {
 
   protected GraphicsLayer: typeof import("esri/layers/GraphicsLayer");
 
-  protected _sketchGraphicsLayer: __esri.GraphicsLayer;
-
-  //REFINE/////////////////////////////////////////////////////
   protected SketchViewModel: typeof import("esri/widgets/Sketch/SketchViewModel");
-  //REFINE/////////////////////////////////////////////////////
 
-  //DRAW/////////////////////////////////////////////////////
-  //DRAW/////////////////////////////////////////////////////
+  protected _sketchGraphicsLayer: __esri.GraphicsLayer;
 
   //REFINE/////////////////////////////////////////////////////
   protected _featuresCollection: { [key: string]: __esri.Graphic[] } = {};
@@ -348,7 +339,14 @@ export class NewDrawTools {
   protected _initSketchViewModel(): void {
     this._sketchViewModel = new this.SketchViewModel({
       layer: this._sketchGraphicsLayer,
-      view: this.mapView
+      view: this.mapView,
+      defaultUpdateOptions: {
+        tool: "reshape",
+        toggleToolOnClick: false
+      },
+      polylineSymbol: this.polylineSymbol,
+      pointSymbol: this.pointSymbol,
+      polygonSymbol: this.polygonSymbol
     });
 
     this._sketchViewModel.on("create", (evt) => {
@@ -365,17 +363,6 @@ export class NewDrawTools {
         }
       }
     });
-
-    this._sketchViewModel.defaultUpdateOptions = {
-      tool: "reshape",
-      toggleToolOnClick: false
-    };
-
-    // see if this will actually be necessary
-    // these would need to be set when creating the component
-    this._sketchViewModel.polylineSymbol = this.polylineSymbol;
-    this._sketchViewModel.pointSymbol = this.pointSymbol;
-    this._sketchViewModel.polygonSymbol = this.polygonSymbol;
 
     this._sketchViewModel.on("update", (evt) => {
       if (evt.state === "active") {
@@ -495,15 +482,11 @@ export class NewDrawTools {
         })
       });
 
-      if (this.refineMode === ERefineMode.SUBSET) {
-        this.refineSelectionGraphicsChange.emit({
-          graphics,
-          useOIDs: this.layerViews[0].layer.title === this.layerView.layer.title
-        });
-      } else {
-        const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
-        await this._updateIds(oids, this.mode, this.refineSelectionSet.undoStack, this.mode);
-      }
+      this.refineSelectionGraphicsChange.emit({
+        graphics,
+        useOIDs: this.layerViews[0].layer.title === this.layerView.layer.title
+      });
+
       this._clear();
     });
   }
@@ -524,24 +507,16 @@ export class NewDrawTools {
 
   protected async _updateIds(
     oids: number[],
-    mode: ESelectionMode,
     operationStack: IRefineOperation[],
-    operationMode: ESelectionMode
   ): Promise<void> {
     const idUpdates = { addIds: [], removeIds: [] };
-    if (mode === ESelectionMode.ADD) {
-      idUpdates.addIds = oids.filter(id => this.ids.indexOf(id) < 0);
-      this.ids = [...this.ids, ...idUpdates.addIds];
-      if (idUpdates.addIds.length > 0) {
-        operationStack.push({ mode: operationMode, ids: idUpdates.addIds });
-      }
-    } else {
-      idUpdates.removeIds = oids.filter(id => this.ids.indexOf(id) > -1);
-      this.ids = this.ids.filter(id => idUpdates.removeIds.indexOf(id) < 0);
-      if (idUpdates.removeIds.length > 0) {
-        operationStack.push({ mode: operationMode, ids: idUpdates.removeIds });
-      }
+
+    idUpdates.addIds = oids.filter(id => this.ids.indexOf(id) < 0);
+    this.ids = [...this.ids, ...idUpdates.addIds];
+    if (idUpdates.addIds.length > 0) {
+      operationStack.push({ ids: idUpdates.addIds });
     }
+
     await this._highlightFeatures(this.ids).then(() => {
       this.refineSelectionIdsChange.emit(idUpdates);
     });
@@ -551,9 +526,7 @@ export class NewDrawTools {
     const undoOp = this.refineSelectionSet.undoStack.pop();
     void this._updateIds(
       undoOp.ids,
-      undoOp.mode === ESelectionMode.ADD ? ESelectionMode.REMOVE : ESelectionMode.ADD,
-      this.refineSelectionSet.redoStack,
-      undoOp.mode
+      this.refineSelectionSet.redoStack
     );
   }
 
@@ -561,9 +534,7 @@ export class NewDrawTools {
     const redoOp = this.refineSelectionSet.redoStack.pop();
     void this._updateIds(
       redoOp.ids,
-      redoOp.mode,
-      this.refineSelectionSet.undoStack,
-      redoOp.mode
+      this.refineSelectionSet.undoStack
     );
   }
   //REFINE/////////////////////////////////////////////////////

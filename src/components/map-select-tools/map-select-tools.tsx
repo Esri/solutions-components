@@ -18,7 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop,
 import { loadModules } from "../../utils/loadModules";
 import { highlightFeatures, goToSelection } from "../../utils/mapViewUtils";
 import { getQueryGeoms, queryObjectIds } from "../../utils/queryUtils";
-import { DistanceUnit, ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration, EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode, ESketchType, EDrawToolsMode } from "../../utils/interfaces";
+import { DistanceUnit, ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration, EWorkflowType, ISelectionSet, ESketchType, EDrawToolsMode } from "../../utils/interfaces";
 import state from "../../utils/publicNotificationStore";
 import MapSelectTools_T9n from "../../assets/t9n/map-select-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -142,7 +142,7 @@ export class MapSelectTools {
   @State() protected _translations: typeof MapSelectTools_T9n;
 
   /**
-   * EWorkflowType: "SEARCH", "SELECT", "SKETCH", "REFINE"
+   * EWorkflowType: "SEARCH", "SELECT", "SKETCH"
    */
   @State() _workflowType: EWorkflowType;
 
@@ -296,7 +296,7 @@ export class MapSelectTools {
     oldValue: EWorkflowType
   ): Promise<void> {
     if (newValue !== oldValue) {
-      this.mapView.popup.autoOpenEnabled = ["SELECT", "SKETCH", "REFINE", "SEARCH"].indexOf(newValue) < 0;
+      this.mapView.popup.autoOpenEnabled = ["SELECT", "SKETCH", "SEARCH"].indexOf(newValue) < 0;
       this.workflowTypeChange.emit(newValue);
     }
   }
@@ -342,7 +342,7 @@ export class MapSelectTools {
       selectedIds: this._selectedIds,
       layerView: this.selectLayerView,
       geometries: this.geometries,
-      refineSelectLayers: this._refineTools.layerViews,
+      refineSelectLayers: (this._refineTools || this._drawTools).layerViews,
       skipGeomOIDs: this._skipGeomOIDs
     } as ISelectionSet;
   }
@@ -506,29 +506,20 @@ export class MapSelectTools {
   protected _getDrawTools(
     useLayerFeatures: boolean
   ): VNode {
-    return !useLayerFeatures ? (
+    return (
       <new-draw-tools
         active={true}
-        drawToolsMode={EDrawToolsMode.DRAW}
+        drawToolsMode={!useLayerFeatures ? EDrawToolsMode.DRAW : EDrawToolsMode.REFINE}
+        enabledLayerIds={!useLayerFeatures ? undefined : this.enabledLayerIds}
+        layerView={!useLayerFeatures ? undefined : this.selectLayerView}
+        layerViews={!useLayerFeatures ? undefined : this._refineSelectLayers}
         mapView={this.mapView}
         pointSymbol={this.sketchPointSymbol}
         polygonSymbol={this.sketchPolygonSymbol}
         polylineSymbol={this.sketchLineSymbol}
         ref={(el) => { this._drawTools = el }}
       />
-    ) : (
-      <new-draw-tools
-        active={true}
-        drawToolsMode={EDrawToolsMode.REFINE}
-        enabledLayerIds={this.enabledLayerIds}
-        layerView={this.selectLayerView}
-        layerViews={this._refineSelectLayers}
-        mapView={this.mapView}
-        mode={ESelectionMode.ADD}
-        ref={(el) => { this._refineTools = el }}
-        refineMode={ERefineMode.SUBSET}
-      />
-    )
+    );
   }
 
   //--------------------------------------------------------------------------

@@ -21,7 +21,6 @@
 | `noResultText`            | `no-result-text`            | string: The value to show for no results when left empty the default text "0 selected features from {layerTitle}" will be shown                                                                                                                                                                                                                                                                             | `string`                                        | `undefined`           |
 | `searchConfiguration`     | --                          | ISearchConfiguration: Configuration details for the Search widget                                                                                                                                                                                                                                                                                                                                           | `ISearchConfiguration`                          | `undefined`           |
 | `selectionLayerIds`       | --                          | string[]: List of layer ids that should be shown as potential selection layers when skectching with "Use layer features" option                                                                                                                                                                                                                                                                             | `string[]`                                      | `[]`                  |
-| `showRefineSelection`     | `show-refine-selection`     | boolean: When true the refine selection workflow will be included in the UI                                                                                                                                                                                                                                                                                                                                 | `boolean`                                       | `false`               |
 | `showSearchSettings`      | `show-search-settings`      | boolean: When false no buffer distance or unit controls will be exposed                                                                                                                                                                                                                                                                                                                                     | `boolean`                                       | `true`                |
 | `sketchLineSymbol`        | `sketch-line-symbol`        | esri/symbols/SimpleLineSymbol \| JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html  A JSON representation of the instance in the ArcGIS format. See the ArcGIS REST API documentation for examples of the structure of various input JSON objects. https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm    | `any`                                           | `undefined`           |
 | `sketchPointSymbol`       | `sketch-point-symbol`       | esri/symbols/SimpleMarkerSymbol \| JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html  A JSON representation of the instance in the ArcGIS format. See the ArcGIS REST API documentation for examples of the structure of various input JSON objects. https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm | `any`                                           | `undefined`           |
@@ -57,7 +56,6 @@
 - calcite-loader
 - calcite-icon
 - calcite-input
-- [refine-selection](../refine-selection)
 - calcite-checkbox
 - [pdf-download](../pdf-download)
 - calcite-notice
@@ -82,7 +80,6 @@ graph TD;
   public-notification --> calcite-loader
   public-notification --> calcite-icon
   public-notification --> calcite-input
-  public-notification --> refine-selection
   public-notification --> calcite-checkbox
   public-notification --> pdf-download
   public-notification --> calcite-notice
@@ -129,11 +126,6 @@ graph TD;
   calcite-slider --> calcite-graph
   new-draw-tools --> map-layer-picker
   new-draw-tools --> calcite-action
-  refine-selection --> calcite-radio-group
-  refine-selection --> calcite-radio-group-item
-  refine-selection --> new-draw-tools
-  refine-selection --> calcite-list
-  refine-selection --> calcite-list-item
   pdf-download --> calcite-select
   pdf-download --> calcite-option
   calcite-notice --> calcite-icon

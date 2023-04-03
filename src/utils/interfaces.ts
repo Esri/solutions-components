@@ -49,19 +49,8 @@ export enum EExportType {
 export enum EPageType {
   LIST,
   SELECT,
-  REFINE,
   PDF,
   CSV
-}
-
-export enum ERefineMode {
-  ALL="ALL", // Used for the refine selection workflow
-  SUBSET="SUBSET" // Used as a part interactive selection "Use layer features"
-}
-
-export enum ESelectionMode {
-  ADD="ADD",
-  REMOVE="REMOVE"
 }
 
 export enum EWorkflowType {
@@ -419,7 +408,6 @@ export interface IQueryExtentResponse {
 }
 
 export interface IRefineOperation {
-  mode: ESelectionMode;
   ids: number[];
 }
 
