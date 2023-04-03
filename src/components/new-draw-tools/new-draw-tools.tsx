@@ -46,8 +46,6 @@ export class NewDrawTools {
 
   @Prop() active = false;
 
-  @Prop() border = false;
-
   @Prop({ mutable: true }) graphics: __esri.Graphic[];
 
   @Prop({ mutable: true }) mapView: __esri.MapView;
@@ -110,7 +108,6 @@ export class NewDrawTools {
   //REFINE/////////////////////////////////////////////////////
 
   //DRAW/////////////////////////////////////////////////////
-  protected Sketch: typeof import("esri/widgets/Sketch");
   //DRAW/////////////////////////////////////////////////////
 
   //REFINE/////////////////////////////////////////////////////
@@ -127,8 +124,6 @@ export class NewDrawTools {
   protected _selectionTimer;
 
   protected _sketchElement: HTMLElement;
-
-  protected _sketchWidget: __esri.Sketch;
   //DRAW/////////////////////////////////////////////////////
 
   //--------------------------------------------------------------------------
@@ -222,86 +217,74 @@ export class NewDrawTools {
   }
 
   render(): VNode {
-    if (this.drawToolsMode === EDrawToolsMode.REFINE) {
-      const showLayerPickerClass = this.useLayerPicker ? "div-visible" : "div-not-visible";
-      const drawClass = this.border ? " border" : "";
-      const showUndoRedo = this.refineMode === ERefineMode.ALL ? "div-visible" : "div-not-visible";
-      return (
-        <Host>
-          <div>
-            <map-layer-picker
-              class={showLayerPickerClass}
-              enabledLayerIds={this.enabledLayerIds}
-              mapView={this.mapView}
-              onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
-              selectedLayerIds={this.layerViews.map(l => l.layer.id)}
-              selectionMode={"single"}
-            />
-            <div class={"margin-top-1" + drawClass}>
-              <div class="esri-sketch esri-widget">
-                <div class="esri-sketch__panel">
-                  <div class="esri-sketch__tool-section esri-sketch__section">
-                    <calcite-action
-                      disabled={!this._selectEnabled}
-                      icon="pin"
-                      onClick={() => this._setSelectionMode(ESelectionType.POINT)}
-                      scale="s"
-                      text={this._translations.select}
-                    />
-                    <calcite-action
-                      disabled={!this._selectEnabled}
-                      icon="line"
-                      onClick={() => this._setSelectionMode(ESelectionType.LINE)}
-                      scale="s"
-                      text={this._translations.selectLine}
-                    />
-                    <calcite-action
-                      disabled={!this._selectEnabled}
-                      icon="polygon"
-                      onClick={() => this._setSelectionMode(ESelectionType.POLY)}
-                      scale="s"
-                      text={this._translations.selectPolygon}
-                    />
-                    <calcite-action
-                      disabled={!this._selectEnabled}
-                      icon="rectangle"
-                      onClick={() => this._setSelectionMode(ESelectionType.RECT)}
-                      scale="s"
-                      text={this._translations.selectRectangle}
-                    />
-                  </div>
-                  <div class={showUndoRedo + " esri-sketch__tool-section esri-sketch__section"}>
-                    <calcite-action
-                      disabled={this.refineSelectionSet?.undoStack ? this.refineSelectionSet.undoStack.length === 0 : true}
-                      icon="undo"
-                      onClick={() => this._undo()}
-                      scale="s"
-                      text={this._translations.undo}
-                    />
-                    <calcite-action
-                      disabled={this.refineSelectionSet?.redoStack ? this.refineSelectionSet.redoStack.length === 0 : true}
-                      icon="redo"
-                      onClick={() => this._redo()}
-                      scale="s"
-                      text={this._translations.redo}
-                    />
-                  </div>
+    const showLayerPickerClass = this.useLayerPicker && this.drawToolsMode !== EDrawToolsMode.DRAW ? "div-visible" : "div-not-visible";
+
+    const undoEnabled = this.drawToolsMode === EDrawToolsMode.REFINE && this.refineSelectionSet?.undoStack ?
+      this.refineSelectionSet.undoStack.length > 0 : this._sketchViewModel?.canUndo();
+
+    const redoEnabled = this.drawToolsMode === EDrawToolsMode.REFINE && this.refineSelectionSet?.redoStack ?
+      this.refineSelectionSet.redoStack.length > 0 : this._sketchViewModel?.canRedo();
+
+    return (
+      <Host>
+        <div>
+          <map-layer-picker
+            class={showLayerPickerClass}
+            enabledLayerIds={this.enabledLayerIds}
+            mapView={this.mapView}
+            onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
+            selectedLayerIds={this.layerViews.map(l => l.layer.id)}
+            selectionMode={"single"}
+          />
+          <div class={"margin-top-1 border"}>
+            <div class="esri-sketch esri-widget">
+              <div class="esri-sketch__panel">
+                <div class="esri-sketch__tool-section esri-sketch__section">
+                  <calcite-action
+                    icon="pin"
+                    onClick={() => this._setSelectionMode(ESelectionType.POINT)}
+                    scale="s"
+                    text={this._translations.select}
+                  />
+                  <calcite-action
+                    icon="line"
+                    onClick={() => this._setSelectionMode(ESelectionType.LINE)}
+                    scale="s"
+                    text={this._translations.selectLine}
+                  />
+                  <calcite-action
+                    icon="polygon"
+                    onClick={() => this._setSelectionMode(ESelectionType.POLY)}
+                    scale="s"
+                    text={this._translations.selectPolygon}
+                  />
+                  <calcite-action
+                    icon="rectangle"
+                    onClick={() => this._setSelectionMode(ESelectionType.RECT)}
+                    scale="s"
+                    text={this._translations.selectRectangle}
+                  />
                 </div>
+                <calcite-action
+                  disabled={!undoEnabled}
+                  icon="undo"
+                  onClick={() => this._undo()}
+                  scale="s"
+                  text={this._translations.undo}
+                />
+                <calcite-action
+                  disabled={!redoEnabled}
+                  icon="redo"
+                  onClick={() => this._redo()}
+                  scale="s"
+                  text={this._translations.redo}
+                />
               </div>
             </div>
           </div>
-        </Host>
-      );
-    } else {
-      const drawClass = this.border ? "border" : "";
-      return (
-        <Host>
-          <div class={drawClass}>
-            <div ref={(el) => { this._sketchElement = el }} />
-          </div>
-        </Host>
-      );
-    }
+        </div>
+      </Host>
+    );
   }
 
   disconnectedCallback(): void {
@@ -327,14 +310,12 @@ export class NewDrawTools {
   //--------------------------------------------------------------------------
 
   protected async _initModules(): Promise<void> {
-    const [GraphicsLayer, SketchViewModel, Sketch] = await loadModules([
+    const [GraphicsLayer, SketchViewModel] = await loadModules([
       "esri/layers/GraphicsLayer",
-      "esri/widgets/Sketch/SketchViewModel",
-      "esri/widgets/Sketch"
+      "esri/widgets/Sketch/SketchViewModel"
     ]);
     this.GraphicsLayer = GraphicsLayer;
     this.SketchViewModel = SketchViewModel;
-    this.Sketch = Sketch;
   }
 
   protected _initGraphicsLayer(): void {
@@ -359,34 +340,66 @@ export class NewDrawTools {
   }
 
   protected _init(): void {
-    if (this.drawToolsMode === EDrawToolsMode.REFINE) {
-      this._initGraphicsLayer();
-      this._initSketchViewModel();
-    } else {
-      if (this.mapView && this._sketchElement) {
-        this._initGraphicsLayer();
-        this._initDrawTools();
-      }
-    }
+    this._initGraphicsLayer();
+    this._initSketchViewModel();
   }
 
   //REFINE/////////////////////////////////////////////////////
   protected _initSketchViewModel(): void {
     this._sketchViewModel = new this.SketchViewModel({
       layer: this._sketchGraphicsLayer,
-      defaultUpdateOptions: {
-        tool: "reshape",
-        toggleToolOnClick: false
-      },
       view: this.mapView
     });
 
-    this._sketchViewModel.on("create", (event) => {
-      if (event.state === "complete" && this.active) {
-        this._featuresCollection = {};
-        this._sketchGeometry = event.graphic.geometry;
-        void this._selectFeatures(this._sketchGeometry);
+    this._sketchViewModel.on("create", (evt) => {
+      if (evt.state === "complete") {
+        if (this.drawToolsMode === EDrawToolsMode.DRAW) {
+          this.graphics = [evt.graphic];
+          this.sketchGraphicsChange.emit(this.graphics);
+        } else {
+          if (this.active) {
+            this._featuresCollection = {};
+            this._sketchGeometry = evt.graphic.geometry;
+            void this._selectFeatures(this._sketchGeometry);
+          }
+        }
       }
+    });
+
+    this._sketchViewModel.defaultUpdateOptions = {
+      tool: "reshape",
+      toggleToolOnClick: false
+    };
+
+    // see if this will actually be necessary
+    // these would need to be set when creating the component
+    this._sketchViewModel.polylineSymbol = this.polylineSymbol;
+    this._sketchViewModel.pointSymbol = this.pointSymbol;
+    this._sketchViewModel.polygonSymbol = this.polygonSymbol;
+
+    this._sketchViewModel.on("update", (evt) => {
+      if (evt.state === "active") {
+        clearTimeout(this._selectionTimer);
+        this._selectionTimer = setTimeout(() => {
+          this.graphics = evt.graphics;
+          this.sketchGraphicsChange.emit(this.graphics);
+        }, 500);
+      }
+    });
+
+    this._sketchViewModel.on("delete", () => {
+      this.graphics = [];
+      this.sketchGraphicsChange.emit(this.graphics);
+    });
+
+    this._sketchViewModel.on("undo", (evt) => {
+      this.graphics = evt.graphics;
+      this.sketchGraphicsChange.emit(this.graphics);
+    });
+
+    this._sketchViewModel.on("redo", (evt) => {
+      this.graphics = evt.graphics;
+      this.sketchGraphicsChange.emit(this.graphics);
     });
   }
 
@@ -420,7 +433,6 @@ export class NewDrawTools {
         this._clear();
       });
     });
-
   }
 
   protected async _layerSelectionChange(
@@ -452,7 +464,6 @@ export class NewDrawTools {
     switch (this._selectionMode) {
       case ESelectionType.POINT:
         this._sketchViewModel.create("point");
-        //this._initHitTest();
         break;
       case ESelectionType.LINE:
         this._sketchViewModel.create("polyline");
@@ -558,63 +569,6 @@ export class NewDrawTools {
   //REFINE/////////////////////////////////////////////////////
 
   //DRAW/////////////////////////////////////////////////////
-  protected _initDrawTools(): void {
-    this._sketchWidget = new this.Sketch({
-      layer: this._sketchGraphicsLayer,
-      view: this.mapView,
-      container: this._sketchElement,
-      creationMode: "single",
-      defaultCreateOptions: {
-        "mode": "hybrid"
-      }
-    });
-
-    this._sketchWidget.viewModel.polylineSymbol = this.polylineSymbol;
-    this._sketchWidget.viewModel.pointSymbol = this.pointSymbol;
-    this._sketchWidget.viewModel.polygonSymbol = this.polygonSymbol;
-
-    this._sketchWidget.visibleElements = {
-      selectionTools: {
-        "lasso-selection": false,
-        "rectangle-selection": false
-      }, createTools: {
-        "circle": false
-      },
-      undoRedoMenu: false
-    }
-
-    this._sketchWidget.on("update", (evt) => {
-      if (evt.state === "active") {
-        clearTimeout(this._selectionTimer);
-        this._selectionTimer = setTimeout(() => {
-          this.graphics = evt.graphics;
-          this.sketchGraphicsChange.emit(this.graphics);
-        }, 500);
-      }
-    });
-
-    this._sketchWidget.on("delete", () => {
-      this.graphics = [];
-      this.sketchGraphicsChange.emit(this.graphics);
-    });
-
-    this._sketchWidget.on("undo", (evt) => {
-      this.graphics = evt.graphics;
-      this.sketchGraphicsChange.emit(this.graphics);
-    });
-
-    this._sketchWidget.on("redo", (evt) => {
-      this.graphics = evt.graphics;
-      this.sketchGraphicsChange.emit(this.graphics);
-    });
-
-    this._sketchWidget.on("create", (evt) => {
-      if (evt.state === "complete") {
-        this.graphics = [evt.graphic];
-        this.sketchGraphicsChange.emit(this.graphics);
-      }
-    });
-  }
 
   protected _clearSketch(): void {
     this.graphics = [];

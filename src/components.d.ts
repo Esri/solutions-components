@@ -282,7 +282,6 @@ export namespace Components {
     }
     interface NewDrawTools {
         "active": boolean;
-        "border": boolean;
         "clear": () => Promise<void>;
         "clearHighlight": () => Promise<void>;
         "drawToolsMode": EDrawToolsMode;
@@ -1250,7 +1249,6 @@ declare namespace LocalJSX {
     }
     interface NewDrawTools {
         "active"?: boolean;
-        "border"?: boolean;
         "drawToolsMode"?: EDrawToolsMode;
         "enabledLayerIds"?: string[];
         "graphics"?: __esri.Graphic[];

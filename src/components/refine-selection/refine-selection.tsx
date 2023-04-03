@@ -89,9 +89,9 @@ export class RefineSelection {
   protected _addEnabled = true;
 
   /**
-   * HTMLRefineSelectionToolsElement: The html element for the refine selection tools
+   * HTMLNewDrawToolsElement: The html element for the refine selection tools
    */
-  protected _refineTools: HTMLRefineSelectionToolsElement;
+  protected _refineTools: HTMLNewDrawToolsElement;
 
   //--------------------------------------------------------------------------
   //
@@ -187,7 +187,6 @@ export class RefineSelection {
               </calcite-radio-group-item>
             </calcite-radio-group>
             <new-draw-tools
-              border={true}
               drawToolsMode={EDrawToolsMode.REFINE}
               enabledLayerIds={this.enabledLayerIds}
               ids={utils.getSelectionIds(this.selectionSets)}

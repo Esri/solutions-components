@@ -10,7 +10,6 @@
 | Property             | Attribute          | Description | Type                                           | Default     |
 | -------------------- | ------------------ | ----------- | ---------------------------------------------- | ----------- |
 | `active`             | `active`           |             | `boolean`                                      | `false`     |
-| `border`             | `border`           |             | `boolean`                                      | `false`     |
 | `drawToolsMode`      | `draw-tools-mode`  |             | `EDrawToolsMode.DRAW \| EDrawToolsMode.REFINE` | `undefined` |
 | `enabledLayerIds`    | --                 |             | `string[]`                                     | `[]`        |
 | `graphics`           | --                 |             | `Graphic[]`                                    | `undefined` |

@@ -193,9 +193,9 @@ export class MapSelectTools {
   protected _bufferTools: HTMLBufferToolsElement;
 
   /**
-   * HTMLMapDrawToolsElement: The container div for the sketch widget
+   * HTMLNewDrawToolsElement: The container div for the sketch widget
    */
-  protected _drawTools: HTMLMapDrawToolsElement;
+  protected _drawTools: HTMLNewDrawToolsElement;
 
   /**
    * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
@@ -203,9 +203,9 @@ export class MapSelectTools {
   protected _refineSelectLayers: __esri.FeatureLayerView[];
 
   /**
-   * HTMLRefineSelectionToolsElement: The container div for the sketch widget
+   * HTMLNewDrawToolsElement: The container div for the sketch widget
    */
-  protected _refineTools: HTMLRefineSelectionToolsElement;
+  protected _refineTools: HTMLNewDrawToolsElement;
 
   /**
    * HTMLElement: The container div for the search widget
@@ -443,9 +443,7 @@ export class MapSelectTools {
 
     const drawEnabled = this._workflowType === EWorkflowType.SKETCH || this._workflowType === EWorkflowType.SELECT;
     const showBufferToolsClass = this.showBufferTools ? "search-distance" : "div-not-visible";
-
-    const useSelectClass = this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
-    const useDrawClass = !this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
+    const showDrawToolsClass = drawEnabled ? "div-visible" : "div-not-visible";
 
     const showLayerChoiceClass = searchEnabled ? "div-not-visible" : "div-visible";
 
@@ -487,31 +485,8 @@ export class MapSelectTools {
             {"Use layer features"}
           </calcite-label>
         </div>
-        <div class={useDrawClass}>
-          <new-draw-tools
-            active={true}
-            border={true}
-            drawToolsMode={EDrawToolsMode.DRAW}
-            mapView={this.mapView}
-            pointSymbol={this.sketchPointSymbol}
-            polygonSymbol={this.sketchPolygonSymbol}
-            polylineSymbol={this.sketchLineSymbol}
-            ref={(el) => { this._drawTools = el }}
-          />
-        </div>
-        <div class={useSelectClass}>
-          <new-draw-tools
-            active={true}
-            border={true}
-            drawToolsMode={EDrawToolsMode.REFINE}
-            enabledLayerIds={this.enabledLayerIds}
-            layerView={this.selectLayerView}
-            layerViews={this._refineSelectLayers}
-            mapView={this.mapView}
-            mode={ESelectionMode.ADD}
-            ref={(el) => { this._refineTools = el }}
-            refineMode={ERefineMode.SUBSET}
-          />
+        <div class={showDrawToolsClass}>
+          {this._getDrawTools(this._layerSelectChecked)}
         </div>
         <calcite-label class={showBufferToolsClass}>
           {this._translations.searchDistance}
@@ -526,6 +501,34 @@ export class MapSelectTools {
         <slot />
       </Host>
     );
+  }
+
+  protected _getDrawTools(
+    useLayerFeatures: boolean
+  ): VNode {
+    return !useLayerFeatures ? (
+      <new-draw-tools
+        active={true}
+        drawToolsMode={EDrawToolsMode.DRAW}
+        mapView={this.mapView}
+        pointSymbol={this.sketchPointSymbol}
+        polygonSymbol={this.sketchPolygonSymbol}
+        polylineSymbol={this.sketchLineSymbol}
+        ref={(el) => { this._drawTools = el }}
+      />
+    ) : (
+      <new-draw-tools
+        active={true}
+        drawToolsMode={EDrawToolsMode.REFINE}
+        enabledLayerIds={this.enabledLayerIds}
+        layerView={this.selectLayerView}
+        layerViews={this._refineSelectLayers}
+        mapView={this.mapView}
+        mode={ESelectionMode.ADD}
+        ref={(el) => { this._refineTools = el }}
+        refineMode={ERefineMode.SUBSET}
+      />
+    )
   }
 
   //--------------------------------------------------------------------------
