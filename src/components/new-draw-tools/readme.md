@@ -7,56 +7,33 @@
 
 ## Properties
 
-| Property             | Attribute          | Description | Type                                           | Default     |
-| -------------------- | ------------------ | ----------- | ---------------------------------------------- | ----------- |
-| `active`             | `active`           |             | `boolean`                                      | `false`     |
-| `drawToolsMode`      | `draw-tools-mode`  |             | `EDrawToolsMode.DRAW \| EDrawToolsMode.REFINE` | `undefined` |
-| `enabledLayerIds`    | --                 |             | `string[]`                                     | `[]`        |
-| `graphics`           | --                 |             | `Graphic[]`                                    | `undefined` |
-| `ids`                | --                 |             | `number[]`                                     | `[]`        |
-| `layerView`          | --                 |             | `FeatureLayerView`                             | `undefined` |
-| `layerViews`         | --                 |             | `FeatureLayerView[]`                           | `[]`        |
-| `mapView`            | --                 |             | `MapView`                                      | `undefined` |
-| `pointSymbol`        | --                 |             | `SimpleMarkerSymbol`                           | `undefined` |
-| `polygonSymbol`      | --                 |             | `SimpleFillSymbol`                             | `undefined` |
-| `polylineSymbol`     | --                 |             | `SimpleLineSymbol`                             | `undefined` |
-| `refineSelectionSet` | --                 |             | `ISelectionSet`                                | `undefined` |
-| `useLayerPicker`     | `use-layer-picker` |             | `boolean`                                      | `true`      |
+| Property          | Attribute          | Description | Type                                           | Default     |
+| ----------------- | ------------------ | ----------- | ---------------------------------------------- | ----------- |
+| `active`          | `active`           |             | `boolean`                                      | `false`     |
+| `drawToolsMode`   | `draw-tools-mode`  |             | `EDrawToolsMode.DRAW \| EDrawToolsMode.REFINE` | `undefined` |
+| `enabledLayerIds` | --                 |             | `string[]`                                     | `[]`        |
+| `graphics`        | --                 |             | `Graphic[]`                                    | `undefined` |
+| `layerView`       | --                 |             | `FeatureLayerView`                             | `undefined` |
+| `layerViews`      | --                 |             | `FeatureLayerView[]`                           | `[]`        |
+| `mapView`         | --                 |             | `MapView`                                      | `undefined` |
+| `pointSymbol`     | --                 |             | `SimpleMarkerSymbol`                           | `undefined` |
+| `polygonSymbol`   | --                 |             | `SimpleFillSymbol`                             | `undefined` |
+| `polylineSymbol`  | --                 |             | `SimpleLineSymbol`                             | `undefined` |
+| `useLayerPicker`  | `use-layer-picker` |             | `boolean`                                      | `true`      |
 
 
 ## Events
 
-| Event                           | Description | Type                                                |
-| ------------------------------- | ----------- | --------------------------------------------------- |
-| `refineSelectionGraphicsChange` |             | `CustomEvent<IRefineSelectionEvent>`                |
-| `refineSelectionIdsChange`      |             | `CustomEvent<{ addIds: any[]; removeIds: any[]; }>` |
-| `selectionLoadingChange`        |             | `CustomEvent<boolean>`                              |
-| `sketchGraphicsChange`          |             | `CustomEvent<Graphic[]>`                            |
+| Event                          | Description | Type                                 |
+| ------------------------------ | ----------- | ------------------------------------ |
+| `layerSelectionGraphicsChange` |             | `CustomEvent<IRefineSelectionEvent>` |
+| `selectionLoadingChange`       |             | `CustomEvent<boolean>`               |
+| `sketchGraphicsChange`         |             | `CustomEvent<Graphic[]>`             |
 
 
 ## Methods
 
 ### `clear() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-### `clearHighlight() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-### `reset() => Promise<void>`
 
 
 

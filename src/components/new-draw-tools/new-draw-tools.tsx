@@ -15,9 +15,9 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
-import { ESelectionType, IRefineOperation, IRefineSelectionEvent, ISelectionSet } from "../../utils/interfaces";
+import { ESelectionType, IRefineSelectionEvent } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
-import { getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
+import { getMapLayerView } from "../../utils/mapViewUtils";
 import { queryFeaturesByGeometry } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
 import NewDrawTools_T9n from "../../assets/t9n/new-draw-tools/resources.json";
@@ -33,14 +33,21 @@ import { EDrawToolsMode } from "../../utils/interfaces";
 })
 export class NewDrawTools {
 
+  // TODO...currently when you re-open a list it will rerun the selection.
+  // The reason I did this was if you removed a feature with refine...this would allow for a possible re-set.
+  // Now that you cannot refine seems like we should always just hightlight the ids as it will be faster.
+
+  // TODO now that I think about it more...I don't know that we have any reason to use the viewModel
+  // I was thinking at the start it would let us have a better undo-redo workflow...actually...it still may
+  // chat with the team on the preference...it needs to either undo-redo operations to a single graphic...
+  // or we could retain that as well as individual grapgics that have been added/removed for a single list...
+  // so keep using viewModel for now
+
   // Could drop the layer select from the view model approach...still retain refine-select-tools and just have it do layer select and host the common draw
 
   @Element() el: HTMLNewDrawToolsElement;
 
   //NEW///////////////////////////////////////////////////////////
-
-  // for now I'm just keeping all the code from both...will set draw tools mode and just do one set of things or the other and look for consolidation points
-
   @Prop() drawToolsMode: EDrawToolsMode;
   //NEW///////////////////////////////////////////////////////////
 
@@ -53,18 +60,15 @@ export class NewDrawTools {
   //REFINE/////////////////////////////////////////////////////
   @Prop() enabledLayerIds: string[] = [];
 
-  @Prop() ids: number[] = [];
-
   @Prop() layerView: __esri.FeatureLayerView;
 
   @Prop() layerViews: __esri.FeatureLayerView[] = [];
-
-  @Prop({ mutable: true }) refineSelectionSet: ISelectionSet;
 
   @Prop() useLayerPicker = true;
   //REFINE/////////////////////////////////////////////////////
 
   //DRAW/////////////////////////////////////////////////////
+  // These will be useful if we support user config of the symbols to use...
   @Prop({ mutable: true }) pointSymbol: __esri.SimpleMarkerSymbol;
 
   @Prop({ mutable: true }) polylineSymbol: __esri.SimpleLineSymbol;
@@ -86,9 +90,6 @@ export class NewDrawTools {
   @State() _selectionMode: ESelectionType;
   //REFINE/////////////////////////////////////////////////////
 
-  //DRAW/////////////////////////////////////////////////////
-  //DRAW/////////////////////////////////////////////////////
-
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -104,18 +105,10 @@ export class NewDrawTools {
   //REFINE/////////////////////////////////////////////////////
   protected _featuresCollection: { [key: string]: __esri.Graphic[] } = {};
 
-  protected _hitTestHandle: __esri.Handle;
-
   protected _sketchGeometry: __esri.Geometry;
 
   protected _sketchViewModel: __esri.SketchViewModel;
   //REFINE/////////////////////////////////////////////////////
-
-  //DRAW/////////////////////////////////////////////////////
-  protected _selectionTimer;
-
-  protected _sketchElement: HTMLElement;
-  //DRAW/////////////////////////////////////////////////////
 
   //--------------------------------------------------------------------------
   //
@@ -123,16 +116,6 @@ export class NewDrawTools {
   //
   //--------------------------------------------------------------------------
 
-  //REFINE/////////////////////////////////////////////////////
-  @Watch("ids")
-  idsWatchHandler(v: any, oldV: any): void {
-    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
-      void this._highlightFeatures(v);
-    }
-  }
-  //REFINE/////////////////////////////////////////////////////
-
-  //DRAW/////////////////////////////////////////////////////
   @Watch("graphics")
   graphicsWatchHandler(v: any, oldV: any): void {
     if (v && v.length > 0 && JSON.stringify(v) !== JSON.stringify(oldV) && this._sketchGraphicsLayer) {
@@ -147,7 +130,6 @@ export class NewDrawTools {
       this._init();
     }
   }
-  //DRAW/////////////////////////////////////////////////////
 
   //--------------------------------------------------------------------------
   //
@@ -155,24 +137,10 @@ export class NewDrawTools {
   //
   //--------------------------------------------------------------------------
 
-  //REFINE/////////////////////////////////////////////////////
-  @Method()
-  async reset(): Promise<void> {
-    this.ids = [];
-  }
-
-  @Method()
-  async clearHighlight(): Promise<void> {
-    this._clearHighlight();
-  }
-  //REFINE/////////////////////////////////////////////////////
-
-  //DRAW/////////////////////////////////////////////////////
   @Method()
   async clear(): Promise<void> {
     this._clearSketch();
   }
-  //DRAW/////////////////////////////////////////////////////
 
   //--------------------------------------------------------------------------
   //
@@ -180,17 +148,11 @@ export class NewDrawTools {
   //
   //--------------------------------------------------------------------------
 
-  //REFINE/////////////////////////////////////////////////////
   @Event() selectionLoadingChange: EventEmitter<boolean>;
 
-  @Event() refineSelectionGraphicsChange: EventEmitter<IRefineSelectionEvent>;
+  @Event() layerSelectionGraphicsChange: EventEmitter<IRefineSelectionEvent>;
 
-  @Event() refineSelectionIdsChange: EventEmitter<{ addIds: any[]; removeIds: any[]; }>;
-  //REFINE/////////////////////////////////////////////////////
-
-  //DRAW/////////////////////////////////////////////////////
   @Event() sketchGraphicsChange: EventEmitter<__esri.Graphic[]>;
-  //DRAW/////////////////////////////////////////////////////
 
   //--------------------------------------------------------------------------
   //
@@ -210,11 +172,8 @@ export class NewDrawTools {
   render(): VNode {
     const showLayerPickerClass = this.useLayerPicker && this.drawToolsMode !== EDrawToolsMode.DRAW ? "div-visible" : "div-not-visible";
 
-    const undoEnabled = this.drawToolsMode === EDrawToolsMode.REFINE && this.refineSelectionSet?.undoStack ?
-      this.refineSelectionSet.undoStack.length > 0 : this._sketchViewModel?.canUndo();
-
-    const redoEnabled = this.drawToolsMode === EDrawToolsMode.REFINE && this.refineSelectionSet?.redoStack ?
-      this.refineSelectionSet.redoStack.length > 0 : this._sketchViewModel?.canRedo();
+    const undoEnabled = this._sketchViewModel?.canUndo();
+    const redoEnabled = this._sketchViewModel?.canRedo();
 
     return (
       <Host>
@@ -278,22 +237,6 @@ export class NewDrawTools {
     );
   }
 
-  disconnectedCallback(): void {
-    if (this.drawToolsMode === EDrawToolsMode.REFINE) {
-      this.active = false;
-    }
-  }
-
-  connectedCallback(): void {
-    if (this.drawToolsMode === EDrawToolsMode.REFINE) {
-      this.active = true;
-      if (this.ids.length > 0) {
-        this._selectEnabled = true;
-        void this._highlightFeatures(this.ids);
-      }
-    }
-  }
-
   //--------------------------------------------------------------------------
   //
   //  Functions (protected)
@@ -335,7 +278,6 @@ export class NewDrawTools {
     this._initSketchViewModel();
   }
 
-  //REFINE/////////////////////////////////////////////////////
   protected _initSketchViewModel(): void {
     this._sketchViewModel = new this.SketchViewModel({
       layer: this._sketchGraphicsLayer,
@@ -365,18 +307,17 @@ export class NewDrawTools {
     });
 
     this._sketchViewModel.on("update", (evt) => {
-      if (evt.state === "active") {
-        clearTimeout(this._selectionTimer);
-        this._selectionTimer = setTimeout(() => {
-          this.graphics = evt.graphics;
-          this.sketchGraphicsChange.emit(this.graphics);
-        }, 500);
+      const eventType = evt?.toolEventInfo?.type;
+      if (eventType === "reshape-stop" || eventType === "move-stop") {
+        this.graphics = this.drawToolsMode === EDrawToolsMode.REFINE ? this.graphics.map(g => {
+          // can only modify one at a time so safe to only check the first
+          const evtGraphic = evt.graphics[0];
+          // TODO THIS would need to be captured from the layer
+          return (g?.attributes?.OBJECTID === evtGraphic?.attributes?.OBJECTID) ?
+            evtGraphic : g;
+        }) : evt.graphics;
+        this.sketchGraphicsChange.emit(this.graphics);
       }
-    });
-
-    this._sketchViewModel.on("delete", () => {
-      this.graphics = [];
-      this.sketchGraphicsChange.emit(this.graphics);
     });
 
     this._sketchViewModel.on("undo", (evt) => {
@@ -387,38 +328,6 @@ export class NewDrawTools {
     this._sketchViewModel.on("redo", (evt) => {
       this.graphics = evt.graphics;
       this.sketchGraphicsChange.emit(this.graphics);
-    });
-  }
-
-  protected _clear(): void {
-    this._sketchGeometry = null;
-    this._sketchViewModel.cancel();
-    this._sketchGraphicsLayer.removeAll();
-  }
-
-  protected _initHitTest(): void {
-    if (this._hitTestHandle) {
-      this._hitTestHandle.remove();
-    }
-    this._hitTestHandle = this.mapView.on("click", (event) => {
-      event.stopPropagation();
-      const opts = {
-        include: this.layerViews.map(lv => lv.layer)
-      };
-      void this.mapView.hitTest(event, opts).then((response) => {
-        let graphics = [];
-        if (response.results.length > 0) {
-          graphics = response.results.reduce((prev, cur) => {
-            const g = (cur as any)?.graphic;
-            if (g) {
-              prev.push(g);
-            }
-            return prev;
-          }, []);
-        }
-        this.refineSelectionGraphicsChange.emit({ graphics, useOIDs: false });
-        this._clear();
-      });
     });
   }
 
@@ -443,11 +352,6 @@ export class NewDrawTools {
     mode: ESelectionType
   ): void {
     this._selectionMode = mode;
-
-    if (this._hitTestHandle) {
-      this._hitTestHandle.remove();
-    }
-
     switch (this._selectionMode) {
       case ESelectionType.POINT:
         this._sketchViewModel.create("point");
@@ -482,69 +386,38 @@ export class NewDrawTools {
         })
       });
 
-      this.refineSelectionGraphicsChange.emit({
+      this.layerSelectionGraphicsChange.emit({
         graphics,
         useOIDs: this.layerViews[0].layer.title === this.layerView.layer.title
       });
 
-      this._clear();
-    });
-  }
-
-  protected async _highlightFeatures(
-    ids: number[],
-    updateExtent = false
-  ): Promise<void> {
-    this._clearHighlight();
-    if (ids.length > 0) {
-      state.highlightHandle = await highlightFeatures(ids, this.layerViews[0], this.mapView, updateExtent);
-    }
-  }
-
-  protected _clearHighlight(): void {
-    state.highlightHandle?.remove();
-  }
-
-  protected async _updateIds(
-    oids: number[],
-    operationStack: IRefineOperation[],
-  ): Promise<void> {
-    const idUpdates = { addIds: [], removeIds: [] };
-
-    idUpdates.addIds = oids.filter(id => this.ids.indexOf(id) < 0);
-    this.ids = [...this.ids, ...idUpdates.addIds];
-    if (idUpdates.addIds.length > 0) {
-      operationStack.push({ ids: idUpdates.addIds });
-    }
-
-    await this._highlightFeatures(this.ids).then(() => {
-      this.refineSelectionIdsChange.emit(idUpdates);
+      graphics.forEach((g: __esri.Graphic) => {
+        const geom = g.geometry;
+        g.symbol = geom.type === "point" ?
+          this._sketchViewModel.pointSymbol : geom.type === "polyline" ?
+            this._sketchViewModel.polylineSymbol : geom.type === "polygon" ?
+              this._sketchViewModel.polygonSymbol : undefined;
+      });
+      this.graphics = graphics;
     });
   }
 
   protected _undo(): void {
-    const undoOp = this.refineSelectionSet.undoStack.pop();
-    void this._updateIds(
-      undoOp.ids,
-      this.refineSelectionSet.redoStack
-    );
+    this._sketchViewModel.undo();
   }
 
   protected _redo(): void {
-    const redoOp = this.refineSelectionSet.redoStack.pop();
-    void this._updateIds(
-      redoOp.ids,
-      this.refineSelectionSet.undoStack
-    );
+    this._sketchViewModel.redo();
   }
-  //REFINE/////////////////////////////////////////////////////
 
-  //DRAW/////////////////////////////////////////////////////
+  protected _clear(): void {
+    this._sketchGeometry = null;
+    this._sketchViewModel.cancel();
+    this._sketchGraphicsLayer.removeAll();
+  }
 
   protected _clearSketch(): void {
     this.graphics = [];
     this._sketchGraphicsLayer?.removeAll();
   }
-  //DRAW/////////////////////////////////////////////////////
-
 }

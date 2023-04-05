@@ -314,7 +314,7 @@ export class MapSelectTools {
    */
   @Method()
   async clearSelection(): Promise<void> {
-    return this._clearResults();
+    return this._clearResults(true, true, true);
   }
 
   /**
@@ -405,8 +405,8 @@ export class MapSelectTools {
    * Listen to changes in the refine graphics
    *
    */
-  @Listen("refineSelectionGraphicsChange", { target: "window" })
-  refineSelectionGraphicsChange(event: CustomEvent): Promise<void> {
+  @Listen("layerSelectionGraphicsChange", { target: "window" })
+  layerSelectionGraphicsChange(event: CustomEvent): Promise<void> {
     const graphics = event.detail.graphics;
     const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g.layer.objectIdField]) : [];
     this._updateSelection(EWorkflowType.SELECT, graphics, this._selectionLabel || this._translations.select, event.detail.useOIDs, oids);
@@ -871,7 +871,8 @@ export class MapSelectTools {
    */
   protected async _clearResults(
     clearSearchWidget = true,
-    clearLabel = true
+    clearLabel = true,
+    clearDrawTools = false
   ): Promise<void> {
     this._selectedIds = [];
 
@@ -891,7 +892,7 @@ export class MapSelectTools {
 
     // for sketch
     // checking for clear as it would throw off tests
-    if (this._drawTools?.clear) {
+    if (this._drawTools?.clear && clearDrawTools) {
       await this._drawTools.clear();
     }
     this.selectionSetChange.emit(this._selectedIds.length);

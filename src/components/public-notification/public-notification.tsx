@@ -754,19 +754,16 @@ export class PublicNotification {
           // REFINE is handled seperately from the core selection sets
           // You can only access after clicking the refine action
           this._selectionSets.reduce((prev, cur, i) => {
-            //const validSet = this._isValidSet(cur);
-           // if (validSet) {
-              prev.push((
-                <calcite-list-item
-                  description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
-                  label={cur.label}
-                  onClick={() => this._gotoSelection(cur, this.mapView)}
-                >
-                  {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
-                  {this._getAction(true, "x", "", (evt): Promise<void> => this._deleteSelection(i, evt), false, "actions-end")}
-                </calcite-list-item>
-              ));
-           //}
+            prev.push((
+              <calcite-list-item
+                description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
+                label={cur.label}
+                onClick={() => this._gotoSelection(cur, this.mapView)}
+              >
+                {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
+                {this._getAction(true, "x", "", (evt): Promise<void> => this._deleteSelection(i, evt), false, "actions-end")}
+              </calcite-list-item>
+            ));
             return prev;
           }, [])
         }
@@ -1157,25 +1154,22 @@ export class PublicNotification {
    */
   protected _getSelectionLists(): VNode {
     return this._selectionSets.reduce((prev, cur) => {
-      //const validSet = this._isValidSet(cur);
-      //if (validSet) {
-        if (!this._downloadActive && cur.download) {
-          this._downloadActive = true;
-        }
-        prev.push((
-          <div class="display-flex padding-sides-1 padding-bottom-1">
-            <calcite-checkbox checked={cur.download} class="align-center" onClick={() => { void this._toggleDownload(cur.id) }} />
-            <calcite-list class="list-border margin-start-1-2 w-100" id="download-list">
-              <calcite-list-item
-                description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
-                disabled={!cur.download}
-                label={cur.label}
-                onClick={() => { void this._toggleDownload(cur.id) }}
-              />
-            </calcite-list>
-          </div>
-        ));
-      //}
+      if (!this._downloadActive && cur.download) {
+        this._downloadActive = true;
+      }
+      prev.push((
+        <div class="display-flex padding-sides-1 padding-bottom-1">
+          <calcite-checkbox checked={cur.download} class="align-center" onClick={() => { void this._toggleDownload(cur.id) }} />
+          <calcite-list class="list-border margin-start-1-2 w-100" id="download-list">
+            <calcite-list-item
+              description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
+              disabled={!cur.download}
+              label={cur.label}
+              onClick={() => { void this._toggleDownload(cur.id) }}
+            />
+          </calcite-list>
+        </div>
+      ));
       return prev;
     }, []) || (<div />);
   }

@@ -425,7 +425,7 @@ xdescribe('map-select-tools', () => {
       ),
     });
 
-    page.win.dispatchEvent(new CustomEvent("refineSelectionGraphicsChange", {detail: undefined}));
+    page.win.dispatchEvent(new CustomEvent("layerSelectionGraphicsChange", {detail: undefined}));
     expect(page.root.geometries.length).toEqual(0);
 
     page.doc.addEventListener("selectionSetChange", (evt: CustomEvent) => {
@@ -439,7 +439,7 @@ xdescribe('map-select-tools', () => {
       },
       geometry: {}
     };
-    page.win.dispatchEvent(new CustomEvent("refineSelectionGraphicsChange", {detail: [_unknown]}));
+    page.win.dispatchEvent(new CustomEvent("layerSelectionGraphicsChange", {detail: [_unknown]}));
     expect(page.root.geometries.length).toEqual(1);
   });
 });

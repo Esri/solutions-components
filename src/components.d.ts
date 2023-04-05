@@ -248,19 +248,15 @@ export namespace Components {
     interface NewDrawTools {
         "active": boolean;
         "clear": () => Promise<void>;
-        "clearHighlight": () => Promise<void>;
         "drawToolsMode": EDrawToolsMode;
         "enabledLayerIds": string[];
         "graphics": __esri.Graphic[];
-        "ids": number[];
         "layerView": __esri.FeatureLayerView;
         "layerViews": __esri.FeatureLayerView[];
         "mapView": __esri.MapView;
         "pointSymbol": __esri.SimpleMarkerSymbol;
         "polygonSymbol": __esri.SimpleFillSymbol;
         "polylineSymbol": __esri.SimpleLineSymbol;
-        "refineSelectionSet": ISelectionSet;
-        "reset": () => Promise<void>;
         "useLayerPicker": boolean;
     }
     interface PciCalculator {
@@ -1064,18 +1060,15 @@ declare namespace LocalJSX {
         "drawToolsMode"?: EDrawToolsMode;
         "enabledLayerIds"?: string[];
         "graphics"?: __esri.Graphic[];
-        "ids"?: number[];
         "layerView"?: __esri.FeatureLayerView;
         "layerViews"?: __esri.FeatureLayerView[];
         "mapView"?: __esri.MapView;
-        "onRefineSelectionGraphicsChange"?: (event: NewDrawToolsCustomEvent<IRefineSelectionEvent>) => void;
-        "onRefineSelectionIdsChange"?: (event: NewDrawToolsCustomEvent<{ addIds: any[]; removeIds: any[]; }>) => void;
+        "onLayerSelectionGraphicsChange"?: (event: NewDrawToolsCustomEvent<IRefineSelectionEvent>) => void;
         "onSelectionLoadingChange"?: (event: NewDrawToolsCustomEvent<boolean>) => void;
         "onSketchGraphicsChange"?: (event: NewDrawToolsCustomEvent<__esri.Graphic[]>) => void;
         "pointSymbol"?: __esri.SimpleMarkerSymbol;
         "polygonSymbol"?: __esri.SimpleFillSymbol;
         "polylineSymbol"?: __esri.SimpleLineSymbol;
-        "refineSelectionSet"?: ISelectionSet;
         "useLayerPicker"?: boolean;
     }
     interface PciCalculator {
