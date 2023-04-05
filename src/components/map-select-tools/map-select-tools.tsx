@@ -454,25 +454,25 @@ export class MapSelectTools {
     return (
       <Host>
         <div class="padding-bottom-1">
-          <calcite-radio-group
+          <calcite-segmented-control
             class="w-100"
-            onCalciteRadioGroupChange={(evt) => this._workflowChange(evt)}
+            onCalciteSegmentedControlChange={(evt) => this._workflowChange(evt)}
           >
-            <calcite-radio-group-item
+            <calcite-segmented-control-item
               checked={searchEnabled}
               class="w-50 end-border"
               value={EWorkflowType.SEARCH}
             >
               {this._translations.search}
-            </calcite-radio-group-item>
-            <calcite-radio-group-item
+            </calcite-segmented-control-item>
+            <calcite-segmented-control-item
               checked={drawEnabled}
               class="w-50"
               value={EWorkflowType.SKETCH}
             >
               {this._translations.sketch}
-            </calcite-radio-group-item>
-          </calcite-radio-group>
+            </calcite-segmented-control-item>
+          </calcite-segmented-control>
         </div>
         <div class={showSearchClass}>
           <div class="search-widget" ref={(el) => { this._searchElement = el }} />
@@ -742,7 +742,7 @@ export class MapSelectTools {
    * @protected
    */
   protected _workflowChange(evt: CustomEvent): void {
-    this._workflowType = evt.detail;
+    this._workflowType = (evt.target as HTMLCalciteSegmentedControlItemElement).value as EWorkflowType;
   }
 
   /**

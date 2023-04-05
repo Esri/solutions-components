@@ -262,7 +262,7 @@ export class CrowdsourceManager {
               class="toggle-node"
               icon={icon}
               id={id}
-              onclick={() => this._toggleLayout()}
+              onClick={() => this._toggleLayout()}
               text=""
             />
             <calcite-tooltip label={tooltip} placement="bottom" reference-element={id}>
