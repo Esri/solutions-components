@@ -67,8 +67,8 @@ Promise with the new selection set
 
 ### Depends on
 
-- calcite-radio-group
-- calcite-radio-group-item
+- calcite-segmented-control
+- calcite-segmented-control-item
 - calcite-label
 - calcite-checkbox
 - [buffer-tools](../buffer-tools)
@@ -77,13 +77,13 @@ Promise with the new selection set
 ### Graph
 ```mermaid
 graph TD;
-  map-select-tools --> calcite-radio-group
-  map-select-tools --> calcite-radio-group-item
+  map-select-tools --> calcite-segmented-control
+  map-select-tools --> calcite-segmented-control-item
   map-select-tools --> calcite-label
   map-select-tools --> calcite-checkbox
   map-select-tools --> buffer-tools
   map-select-tools --> new-draw-tools
-  calcite-radio-group-item --> calcite-icon
+  calcite-segmented-control-item --> calcite-icon
   buffer-tools --> calcite-option
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select

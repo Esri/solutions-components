@@ -113,7 +113,7 @@ export class PciCalculator {
         <div class={deductClass}>
           <div class="position-right">
             <calcite-action
-              appearance='clear'
+              appearance='transparent'
               class="float-end"
               icon="x"
               onClick={() => this._toggleShowAddDeduct()}
@@ -151,7 +151,7 @@ export class PciCalculator {
           ref={(el) => { this._deductValuesElement = el }}
         />
         <calcite-action
-          appearance='clear'
+          appearance='transparent'
           icon="plus-circle"
           onClick={() => this._toggleShowAddDeduct()}
           scale="s"

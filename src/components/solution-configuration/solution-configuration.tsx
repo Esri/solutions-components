@@ -126,7 +126,7 @@ export class SolutionConfiguration {
       <Host>
         {
           !this._solutionIsLoaded
-            ? <calcite-loader active label='' />
+            ? <calcite-loader label='' />
             : null
         }
         <div class="configuration-container">

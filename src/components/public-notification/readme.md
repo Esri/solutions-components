@@ -108,21 +108,26 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
+  calcite-list --> calcite-scrim
+  calcite-list --> calcite-filter
+  calcite-filter --> calcite-input
+  calcite-input --> calcite-progress
+  calcite-input --> calcite-icon
+  calcite-list-item --> calcite-icon
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
-  map-select-tools --> calcite-radio-group
-  map-select-tools --> calcite-radio-group-item
+  map-select-tools --> calcite-segmented-control
+  map-select-tools --> calcite-segmented-control-item
   map-select-tools --> calcite-label
   map-select-tools --> calcite-checkbox
   map-select-tools --> buffer-tools
   map-select-tools --> new-draw-tools
   calcite-radio-group-item --> calcite-icon
+  calcite-segmented-control-item --> calcite-icon
   buffer-tools --> calcite-option
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select
   buffer-tools --> calcite-slider
-  calcite-input --> calcite-progress
-  calcite-input --> calcite-icon
   calcite-slider --> calcite-graph
   new-draw-tools --> map-layer-picker
   new-draw-tools --> calcite-action
