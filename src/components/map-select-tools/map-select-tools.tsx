@@ -392,27 +392,6 @@ export class MapSelectTools {
     this.searchConfiguration = event.detail;
   }
 
-  /**
-   * Listen to changes in the sketch graphics
-   *
-   */
-  @Listen("sketchGraphicsChange", { target: "window" })
-  sketchGraphicsChange(event: CustomEvent): void {
-    this._updateSelection(EWorkflowType.SKETCH, event.detail, this._selectionLabel || this._translations.sketch, false);
-  }
-
-  /**
-   * Listen to changes in the refine graphics
-   *
-   */
-  @Listen("layerSelectionGraphicsChange", { target: "window" })
-  layerSelectionGraphicsChange(event: CustomEvent): Promise<void> {
-    const graphics = event.detail.graphics;
-    const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g.layer.objectIdField]) : [];
-    this._updateSelection(EWorkflowType.SELECT, graphics, this._selectionLabel || this._translations.select, event.detail.useOIDs, oids);
-    return this._highlightFeatures(oids);
-  }
-
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -514,6 +493,8 @@ export class MapSelectTools {
         layerView={!useLayerFeatures ? undefined : this.selectLayerView}
         layerViews={!useLayerFeatures ? undefined : this._refineSelectLayers}
         mapView={this.mapView}
+        onLayerSelectionGraphicsChange={(evt) => this._layerSelectionGraphicsChanged(evt)}
+        onSketchGraphicsChange={(evt) => this._sketchGraphicsChanged(evt)}
         pointSymbol={this.sketchPointSymbol}
         polygonSymbol={this.sketchPolygonSymbol}
         polylineSymbol={this.sketchLineSymbol}
@@ -720,6 +701,25 @@ export class MapSelectTools {
         this.mapView.map.layers.add(this._bufferGraphicsLayer);
       }
     }
+  }
+
+  /**
+   * Handle changes in the sketch graphics
+   *
+   */
+  _sketchGraphicsChanged(event: CustomEvent): void {
+    this._updateSelection(EWorkflowType.SKETCH, event.detail, this._selectionLabel || this._translations.sketch, false);
+  }
+
+  /**
+   * Handle changes in the graphics from layer features
+   *
+   */
+  _layerSelectionGraphicsChanged(event: CustomEvent): Promise<void> {
+    const graphics = event.detail.graphics;
+    const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g.layer.objectIdField]) : [];
+    this._updateSelection(EWorkflowType.SELECT, graphics, this._selectionLabel || this._translations.select, event.detail.useOIDs, oids);
+    return this._highlightFeatures(oids);
   }
 
   /**

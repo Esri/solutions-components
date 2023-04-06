@@ -98,7 +98,7 @@ export class NewDrawTools {
 
   protected GraphicsLayer: typeof import("esri/layers/GraphicsLayer");
 
-  protected SketchViewModel: typeof import("esri/widgets/Sketch/SketchViewModel");
+  protected Sketch: typeof import("esri/widgets/Sketch");
 
   protected _sketchGraphicsLayer: __esri.GraphicsLayer;
 
@@ -107,8 +107,13 @@ export class NewDrawTools {
 
   protected _sketchGeometry: __esri.Geometry;
 
-  protected _sketchViewModel: __esri.SketchViewModel;
+  protected _sketchWidget: __esri.Sketch;
   //REFINE/////////////////////////////////////////////////////
+
+  /**
+   * The container element for the sketch widget
+   */
+  protected _sketchElement: HTMLElement;
 
   //--------------------------------------------------------------------------
   //
@@ -172,9 +177,6 @@ export class NewDrawTools {
   render(): VNode {
     const showLayerPickerClass = this.useLayerPicker && this.drawToolsMode !== EDrawToolsMode.DRAW ? "div-visible" : "div-not-visible";
 
-    const undoEnabled = this._sketchViewModel?.canUndo();
-    const redoEnabled = this._sketchViewModel?.canRedo();
-
     return (
       <Host>
         <div>
@@ -186,51 +188,8 @@ export class NewDrawTools {
             selectedLayerIds={this.layerViews.map(l => l.layer.id)}
             selectionMode={"single"}
           />
-          <div class={"margin-top-1 border"}>
-            <div class="esri-sketch esri-widget">
-              <div class="esri-sketch__panel">
-                <div class="esri-sketch__tool-section esri-sketch__section">
-                  <calcite-action
-                    icon="pin"
-                    onClick={() => this._setSelectionMode(ESelectionType.POINT)}
-                    scale="s"
-                    text={this._translations.select}
-                  />
-                  <calcite-action
-                    icon="line"
-                    onClick={() => this._setSelectionMode(ESelectionType.LINE)}
-                    scale="s"
-                    text={this._translations.selectLine}
-                  />
-                  <calcite-action
-                    icon="polygon"
-                    onClick={() => this._setSelectionMode(ESelectionType.POLY)}
-                    scale="s"
-                    text={this._translations.selectPolygon}
-                  />
-                  <calcite-action
-                    icon="rectangle"
-                    onClick={() => this._setSelectionMode(ESelectionType.RECT)}
-                    scale="s"
-                    text={this._translations.selectRectangle}
-                  />
-                </div>
-                <calcite-action
-                  disabled={!undoEnabled}
-                  icon="undo"
-                  onClick={() => this._undo()}
-                  scale="s"
-                  text={this._translations.undo}
-                />
-                <calcite-action
-                  disabled={!redoEnabled}
-                  icon="redo"
-                  onClick={() => this._redo()}
-                  scale="s"
-                  text={this._translations.redo}
-                />
-              </div>
-            </div>
+          <div class="border">
+            <div ref={(el) => { this._sketchElement = el }} />
           </div>
         </div>
       </Host>
@@ -244,12 +203,12 @@ export class NewDrawTools {
   //--------------------------------------------------------------------------
 
   protected async _initModules(): Promise<void> {
-    const [GraphicsLayer, SketchViewModel] = await loadModules([
+    const [GraphicsLayer, Sketch] = await loadModules([
       "esri/layers/GraphicsLayer",
-      "esri/widgets/Sketch/SketchViewModel"
+      "esri/widgets/Sketch"
     ]);
     this.GraphicsLayer = GraphicsLayer;
-    this.SketchViewModel = SketchViewModel;
+    this.Sketch = Sketch;
   }
 
   protected _initGraphicsLayer(): void {
@@ -274,24 +233,41 @@ export class NewDrawTools {
   }
 
   protected _init(): void {
-    this._initGraphicsLayer();
-    this._initSketchViewModel();
+    if (this.mapView && this._sketchElement) {
+      this._initGraphicsLayer();
+      this._initSketchViewModel();
+    }
   }
 
   protected _initSketchViewModel(): void {
-    this._sketchViewModel = new this.SketchViewModel({
+    this._sketchWidget = new this.Sketch({
       layer: this._sketchGraphicsLayer,
       view: this.mapView,
+      container: this._sketchElement,
       defaultUpdateOptions: {
         tool: "reshape",
         toggleToolOnClick: false
       },
-      polylineSymbol: this.polylineSymbol,
-      pointSymbol: this.pointSymbol,
-      polygonSymbol: this.polygonSymbol
+      creationMode: "single",
+      defaultCreateOptions: {
+        mode: "hybrid"
+      },
+      visibleElements: {
+        selectionTools: {
+          "lasso-selection": false,
+          "rectangle-selection": false
+        }, createTools: {
+          circle: false
+        }//,
+        //undoRedoMenu: false
+      }
     });
 
-    this._sketchViewModel.on("create", (evt) => {
+    this._sketchWidget.viewModel.polylineSymbol = this.polylineSymbol;
+    this._sketchWidget.viewModel.pointSymbol = this.pointSymbol;
+    this._sketchWidget.viewModel.polygonSymbol = this.polygonSymbol;
+
+    this._sketchWidget.on("create", (evt) => {
       if (evt.state === "complete") {
         if (this.drawToolsMode === EDrawToolsMode.DRAW) {
           this.graphics = [evt.graphic];
@@ -306,7 +282,7 @@ export class NewDrawTools {
       }
     });
 
-    this._sketchViewModel.on("update", (evt) => {
+    this._sketchWidget.on("update", (evt) => {
       const eventType = evt?.toolEventInfo?.type;
       if (eventType === "reshape-stop" || eventType === "move-stop") {
         this.graphics = this.drawToolsMode === EDrawToolsMode.REFINE ? this.graphics.map(g => {
@@ -320,12 +296,17 @@ export class NewDrawTools {
       }
     });
 
-    this._sketchViewModel.on("undo", (evt) => {
+    this._sketchWidget.on("delete", () => {
+      this.graphics = [];
+      this.sketchGraphicsChange.emit(this.graphics);
+    });
+
+    this._sketchWidget.on("undo", (evt) => {
       this.graphics = evt.graphics;
       this.sketchGraphicsChange.emit(this.graphics);
     });
 
-    this._sketchViewModel.on("redo", (evt) => {
+    this._sketchWidget.on("redo", (evt) => {
       this.graphics = evt.graphics;
       this.sketchGraphicsChange.emit(this.graphics);
     });
@@ -348,26 +329,6 @@ export class NewDrawTools {
     }
   }
 
-  protected _setSelectionMode(
-    mode: ESelectionType
-  ): void {
-    this._selectionMode = mode;
-    switch (this._selectionMode) {
-      case ESelectionType.POINT:
-        this._sketchViewModel.create("point");
-        break;
-      case ESelectionType.LINE:
-        this._sketchViewModel.create("polyline");
-        break;
-      case ESelectionType.POLY:
-        this._sketchViewModel.create("polygon");
-        break;
-      case ESelectionType.RECT:
-        this._sketchViewModel.create("rectangle");
-        break;
-    }
-  }
-
   protected async _selectFeatures(
     geom: __esri.Geometry
   ): Promise<void> {
@@ -386,33 +347,25 @@ export class NewDrawTools {
         })
       });
 
+      graphics.forEach((g: __esri.Graphic) => {
+        const geom = g.geometry;
+        g.symbol = geom.type === "point" ?
+          this._sketchWidget.viewModel.pointSymbol : geom.type === "polyline" ?
+            this._sketchWidget.viewModel.polylineSymbol : geom.type === "polygon" ?
+              this._sketchWidget.viewModel.polygonSymbol : undefined;
+      });
+      this.graphics = graphics;
+
       this.layerSelectionGraphicsChange.emit({
         graphics,
         useOIDs: this.layerViews[0].layer.title === this.layerView.layer.title
       });
-
-      graphics.forEach((g: __esri.Graphic) => {
-        const geom = g.geometry;
-        g.symbol = geom.type === "point" ?
-          this._sketchViewModel.pointSymbol : geom.type === "polyline" ?
-            this._sketchViewModel.polylineSymbol : geom.type === "polygon" ?
-              this._sketchViewModel.polygonSymbol : undefined;
-      });
-      this.graphics = graphics;
     });
-  }
-
-  protected _undo(): void {
-    this._sketchViewModel.undo();
-  }
-
-  protected _redo(): void {
-    this._sketchViewModel.redo();
   }
 
   protected _clear(): void {
     this._sketchGeometry = null;
-    this._sketchViewModel.cancel();
+    this._sketchWidget.viewModel.cancel();
     this._sketchGraphicsLayer.removeAll();
   }
 

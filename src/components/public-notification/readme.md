@@ -129,7 +129,6 @@ graph TD;
   buffer-tools --> calcite-slider
   calcite-slider --> calcite-graph
   new-draw-tools --> map-layer-picker
-  new-draw-tools --> calcite-action
   pdf-download --> calcite-select
   pdf-download --> calcite-option
   calcite-notice --> calcite-icon

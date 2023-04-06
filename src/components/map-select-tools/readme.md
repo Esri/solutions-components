@@ -93,7 +93,6 @@ graph TD;
   calcite-select --> calcite-icon
   calcite-slider --> calcite-graph
   new-draw-tools --> map-layer-picker
-  new-draw-tools --> calcite-action
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-combobox-item
@@ -102,8 +101,6 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
-  calcite-action --> calcite-loader
-  calcite-action --> calcite-icon
   public-notification --> map-select-tools
   style map-select-tools fill:#f9f,stroke:#333,stroke-width:4px
 ```
