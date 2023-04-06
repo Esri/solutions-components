@@ -695,13 +695,13 @@ export class PublicNotification {
             <calcite-label alignment="start" class="font-bold">{this._translations.notifications}</calcite-label>
           </div>
           <div class="display-block float-right">
-            <calcite-input-message active class="info-blue margin-top-0" scale="m">{this._translations.uniqueCout.replace("{{n}}", total.toString())}</calcite-input-message>
+            <calcite-input-message class="info-blue margin-top-0" scale="m">{this._translations.uniqueCout.replace("{{n}}", total.toString())}</calcite-input-message>
           </div>
         </div>
         {
           hasSets ? this._getSelectionSetList() : (
             <div class="info-message">
-              <calcite-input-message active class="info-blue" scale="m">{this._translations.noNotifications}</calcite-input-message>
+              <calcite-input-message class="info-blue" scale="m">{this._translations.noNotifications}</calcite-input-message>
             </div>
           )
         }
@@ -719,7 +719,7 @@ export class PublicNotification {
           <calcite-label>{this._translations.notifications}</calcite-label>
         </div>
         <div class="info-message padding-bottom-1">
-          <calcite-input-message active class="info-blue" scale="m">{this._translations.noNotifications}</calcite-input-message>
+          <calcite-input-message class="info-blue" scale="m">{this._translations.noNotifications}</calcite-input-message>
         </div>
         {this._getNotice(this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1")}
         {this._getMapLayerPicker()}
@@ -843,11 +843,11 @@ export class PublicNotification {
    * @returns the page node
    * @protected
    */
-  protected async _handleLayerChange(): Promise<void> {
+  protected _handleLayerChange(): void {
     this._showLayerSelectionChangeModal = false;
     const id: string = this._layerSelectionChangeEvt?.detail?.length > 0 ?
       this._layerSelectionChangeEvt.detail[0] : "";
-    await this._updateAddresseeLayer(id);
+    void this._updateAddresseeLayer(id);
   }
 
   /**
@@ -941,13 +941,13 @@ export class PublicNotification {
           {
             this._selectionLoading ? (
               <div>
-                <calcite-loader active class="info-blue" inline={true} label={selectionLoading} scale="m" type="indeterminate" />
+                <calcite-loader class="info-blue" inline={true} label={selectionLoading} scale="m" type="indeterminate" />
               </div>
             ) : (
               <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
             )
           }
-          <calcite-input-message active class="info-blue" scale="m">
+          <calcite-input-message class="info-blue" scale="m">
             {
               this._selectionLoading ? selectionLoading :
                 this.noResultText && this._numSelected === 0 ? this.noResultText :
@@ -1050,7 +1050,7 @@ export class PublicNotification {
   ): VNode {
     const isPdf = type === EExportType.PDF;
     const hasSelections = this._hasSelections();
-    const hasDuplicates = this._hasDuplicates();
+    // const hasDuplicates = this._hasDuplicates();
     return (
       <calcite-panel>
         <div>
@@ -1068,16 +1068,14 @@ export class PublicNotification {
                 {this._getSelectionLists()}
                 <div class="margin-side-1 padding-top-1 border-bottom" />
                 <div class="padding-top-sides-1">
-                  <calcite-label class={isPdf ? "display-none" : ""} disabled={!hasDuplicates} layout="inline">
+                  <calcite-label class={isPdf ? "display-none" : ""} layout="inline">
                     <calcite-checkbox
-                      disabled={!hasDuplicates}
                       ref={(el) => { this._removeDuplicatesCSV = el }}
                     />
                     {this._translations.removeDuplicate}
                   </calcite-label>
-                  <calcite-label class={isPdf ? "" : "display-none"} disabled={!hasDuplicates} layout="inline">
+                  <calcite-label class={isPdf ? "" : "display-none"} layout="inline">
                     <calcite-checkbox
-                      disabled={!hasDuplicates}
                       ref={(el) => { this._removeDuplicatesPDF = el }}
                     />
                     {this._translations.removeDuplicate}
@@ -1172,7 +1170,7 @@ export class PublicNotification {
     noticeClass = "padding-1"
   ): VNode {
     return (
-      <calcite-notice class={noticeClass} color="green" icon="lightbulb" open={true}>
+      <calcite-notice class={noticeClass} icon="lightbulb" kind="success" open={true}>
         <div slot="message">{message}</div>
       </calcite-notice>
     );

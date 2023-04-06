@@ -358,8 +358,8 @@ export class LayerTable {
    *
    * @returns a promise that will resolve when the operation is complete
    */
-  protected async _exportToCSV(): Promise<void> {
-    return downloadUtils.downloadCSV(
+  protected _exportToCSV(): void {
+    void downloadUtils.downloadCSV(
       [],
       this._layerView.layer,
       this._getSelectedIds(),

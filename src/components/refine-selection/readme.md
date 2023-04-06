@@ -32,8 +32,6 @@
 
 ### Depends on
 
-- calcite-radio-group
-- calcite-radio-group-item
 - [refine-selection-tools](../refine-selection-tools)
 - calcite-list
 - calcite-list-item
@@ -41,12 +39,9 @@
 ### Graph
 ```mermaid
 graph TD;
-  refine-selection --> calcite-radio-group
-  refine-selection --> calcite-radio-group-item
   refine-selection --> refine-selection-tools
   refine-selection --> calcite-list
   refine-selection --> calcite-list-item
-  calcite-radio-group-item --> calcite-icon
   refine-selection-tools --> map-layer-picker
   refine-selection-tools --> calcite-action
   map-layer-picker --> calcite-select
@@ -60,6 +55,13 @@ graph TD;
   calcite-combobox-item --> calcite-icon
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
+  calcite-list --> calcite-scrim
+  calcite-list --> calcite-filter
+  calcite-scrim --> calcite-loader
+  calcite-filter --> calcite-input
+  calcite-input --> calcite-progress
+  calcite-input --> calcite-icon
+  calcite-list-item --> calcite-icon
   public-notification --> refine-selection
   style refine-selection fill:#f9f,stroke:#333,stroke-width:4px
 ```
