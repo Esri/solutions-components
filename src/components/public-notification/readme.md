@@ -122,7 +122,6 @@ graph TD;
   map-select-tools --> calcite-checkbox
   map-select-tools --> buffer-tools
   map-select-tools --> new-draw-tools
-  calcite-radio-group-item --> calcite-icon
   calcite-segmented-control-item --> calcite-icon
   buffer-tools --> calcite-option
   buffer-tools --> calcite-input
