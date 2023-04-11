@@ -15,16 +15,13 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
-import { ESelectionType, IRefineSelectionEvent } from "../../utils/interfaces";
+import { EDrawToolsMode, ESelectionType, EWorkflowType, ISketchGraphicsChange } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
 import { getMapLayerView } from "../../utils/mapViewUtils";
 import { queryFeaturesByGeometry } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
 import NewDrawTools_T9n from "../../assets/t9n/new-draw-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-
-// NEW
-import { EDrawToolsMode } from "../../utils/interfaces";
 
 @Component({
   tag: 'new-draw-tools',
@@ -159,9 +156,7 @@ export class NewDrawTools {
 
   @Event() selectionLoadingChange: EventEmitter<boolean>;
 
-  @Event() layerSelectionGraphicsChange: EventEmitter<IRefineSelectionEvent>;
-
-  @Event() sketchGraphicsChange: EventEmitter<__esri.Graphic[]>;
+  @Event() sketchGraphicsChange: EventEmitter<ISketchGraphicsChange>;
 
   //--------------------------------------------------------------------------
   //
@@ -283,7 +278,11 @@ export class NewDrawTools {
       if (evt.state === "complete") {
         if (this.drawToolsMode === EDrawToolsMode.DRAW) {
           this.graphics = [evt.graphic];
-          this.sketchGraphicsChange.emit(this.graphics);
+          this.sketchGraphicsChange.emit({
+            graphics: this.graphics,
+            useOIDs: false,
+            type: EWorkflowType.SKETCH
+          });
         } else {
           if (this.active) {
             this._featuresCollection = {};
@@ -304,23 +303,39 @@ export class NewDrawTools {
           return (g?.attributes?.OBJECTID === evtGraphic?.attributes?.OBJECTID) ?
             evtGraphic : g;
         }) : evt.graphics;
-        this.sketchGraphicsChange.emit(this.graphics);
+        this.sketchGraphicsChange.emit({
+          graphics: this.graphics,
+          useOIDs: false,
+          type: EWorkflowType.SKETCH
+        });
       }
     });
 
     this._sketchWidget.on("delete", () => {
       this.graphics = [];
-      this.sketchGraphicsChange.emit(this.graphics);
+      this.sketchGraphicsChange.emit({
+        graphics: this.graphics,
+        useOIDs: false,
+        type: EWorkflowType.SKETCH
+      });
     });
 
     this._sketchWidget.on("undo", (evt) => {
       this.graphics = evt.graphics;
-      this.sketchGraphicsChange.emit(this.graphics);
+      this.sketchGraphicsChange.emit({
+        graphics: this.graphics,
+        useOIDs: false,
+        type: EWorkflowType.SKETCH
+      });
     });
 
     this._sketchWidget.on("redo", (evt) => {
       this.graphics = evt.graphics;
-      this.sketchGraphicsChange.emit(this.graphics);
+      this.sketchGraphicsChange.emit({
+        graphics: this.graphics,
+        useOIDs: false,
+        type: EWorkflowType.SKETCH
+      });
     });
   }
 
@@ -359,18 +374,24 @@ export class NewDrawTools {
         })
       });
 
+      let hasOID = false;
+
       graphics.forEach((g: __esri.Graphic) => {
         const geom = g.geometry;
         g.symbol = geom.type === "point" ?
           this._sketchWidget.viewModel.pointSymbol : geom.type === "polyline" ?
             this._sketchWidget.viewModel.polylineSymbol : geom.type === "polygon" ?
               this._sketchWidget.viewModel.polygonSymbol : undefined;
+        hasOID = g?.layer?.hasOwnProperty("objectIdField") || g.hasOwnProperty("getObjectId");
       });
       this.graphics = graphics;
 
-      this.layerSelectionGraphicsChange.emit({
+      // OIDs are used when the addressee layer and the current "use layer features" layer are the same
+      const useOIDs = (this.layerViews[0].layer.title === this.layerView.layer.title) && hasOID;
+      this.sketchGraphicsChange.emit({
         graphics,
-        useOIDs: this.layerViews[0].layer.title === this.layerView.layer.title
+        useOIDs,
+        type: EWorkflowType.SELECT
       });
     });
   }

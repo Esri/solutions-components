@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EDrawToolsMode, EExpandType, ESketchType, EWorkflowType, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, IRefineSelectionEvent, ISearchConfiguration, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
+import { DistanceUnit, EDrawToolsMode, EExpandType, ESketchType, EWorkflowType, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -1063,9 +1063,8 @@ declare namespace LocalJSX {
         "layerView"?: __esri.FeatureLayerView;
         "layerViews"?: __esri.FeatureLayerView[];
         "mapView"?: __esri.MapView;
-        "onLayerSelectionGraphicsChange"?: (event: NewDrawToolsCustomEvent<IRefineSelectionEvent>) => void;
         "onSelectionLoadingChange"?: (event: NewDrawToolsCustomEvent<boolean>) => void;
-        "onSketchGraphicsChange"?: (event: NewDrawToolsCustomEvent<__esri.Graphic[]>) => void;
+        "onSketchGraphicsChange"?: (event: NewDrawToolsCustomEvent<ISketchGraphicsChange>) => void;
         "pointSymbol"?: __esri.SimpleMarkerSymbol;
         "polygonSymbol"?: __esri.SimpleFillSymbol;
         "polylineSymbol"?: __esri.SimpleLineSymbol;

@@ -24,11 +24,10 @@
 
 ## Events
 
-| Event                          | Description | Type                                 |
-| ------------------------------ | ----------- | ------------------------------------ |
-| `layerSelectionGraphicsChange` |             | `CustomEvent<IRefineSelectionEvent>` |
-| `selectionLoadingChange`       |             | `CustomEvent<boolean>`               |
-| `sketchGraphicsChange`         |             | `CustomEvent<Graphic[]>`             |
+| Event                    | Description | Type                                 |
+| ------------------------ | ----------- | ------------------------------------ |
+| `selectionLoadingChange` |             | `CustomEvent<boolean>`               |
+| `sketchGraphicsChange`   |             | `CustomEvent<ISketchGraphicsChange>` |
 
 
 ## Methods

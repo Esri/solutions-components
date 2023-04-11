@@ -392,9 +392,10 @@ export interface ISelectionSet {
   skipGeomOIDs?: number[];
 }
 
-export interface IRefineSelectionEvent {
+export interface ISketchGraphicsChange {
   graphics: __esri.Graphic[];
   useOIDs: boolean;
+  type: EWorkflowType;
 }
 
 export interface IRefineIds {

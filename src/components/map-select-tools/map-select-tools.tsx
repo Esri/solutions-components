@@ -489,11 +489,10 @@ export class MapSelectTools {
       <new-draw-tools
         active={true}
         drawToolsMode={!useLayerFeatures ? EDrawToolsMode.DRAW : EDrawToolsMode.REFINE}
-        enabledLayerIds={!useLayerFeatures ? undefined : this.enabledLayerIds}
-        layerView={!useLayerFeatures ? undefined : this.selectLayerView}
-        layerViews={!useLayerFeatures ? undefined : this._refineSelectLayers}
+        enabledLayerIds={this.enabledLayerIds}
+        layerView={this.selectLayerView}
+        layerViews={this._refineSelectLayers}
         mapView={this.mapView}
-        onLayerSelectionGraphicsChange={(evt) => this._layerSelectionGraphicsChanged(evt)}
         onSketchGraphicsChange={(evt) => this._sketchGraphicsChanged(evt)}
         pointSymbol={this.sketchPointSymbol}
         polygonSymbol={this.sketchPolygonSymbol}
@@ -707,19 +706,26 @@ export class MapSelectTools {
    * Handle changes in the sketch graphics
    *
    */
-  _sketchGraphicsChanged(event: CustomEvent): void {
-    this._updateSelection(EWorkflowType.SKETCH, event.detail, this._selectionLabel || this._translations.sketch, false);
-  }
-
-  /**
-   * Handle changes in the graphics from layer features
-   *
-   */
-  _layerSelectionGraphicsChanged(event: CustomEvent): Promise<void> {
+  protected async _sketchGraphicsChanged(event: CustomEvent): Promise<void> {
+    const type = event.detail.type;
     const graphics = event.detail.graphics;
-    const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g.layer.objectIdField]) : [];
-    this._updateSelection(EWorkflowType.SELECT, graphics, this._selectionLabel || this._translations.select, event.detail.useOIDs, oids);
-    return this._highlightFeatures(oids);
+    const label = this._selectionLabel || this._translations.select;
+
+    const oids = graphics.reduce((prev, cur) => {
+      if (cur?.layer?.objectIdField) {
+        prev.push(cur.attributes[cur.layer.objectIdField]);
+      } else if (cur.getObjectId) {
+        prev.push(cur.getObjectId());
+      }
+      return prev;
+    }, []);
+
+    const useOIDs = event.detail.useOIDs && oids.length > 0;
+    this._updateSelection(type, graphics, label, useOIDs, oids);
+
+    if (useOIDs) {
+      await this._highlightFeatures(oids);
+    }
   }
 
   /**
