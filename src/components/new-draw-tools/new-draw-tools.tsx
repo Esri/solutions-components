@@ -98,9 +98,13 @@ export class NewDrawTools {
 
   protected GraphicsLayer: typeof import("esri/layers/GraphicsLayer");
 
+  protected SketchViewModel: typeof import("esri/widgets/Sketch/SketchViewModel");
+
   protected Sketch: typeof import("esri/widgets/Sketch");
 
   protected _sketchGraphicsLayer: __esri.GraphicsLayer;
+
+  protected _sketchViewModel: __esri.SketchViewModel;
 
   //REFINE/////////////////////////////////////////////////////
   protected _featuresCollection: { [key: string]: __esri.Graphic[] } = {};
@@ -203,12 +207,14 @@ export class NewDrawTools {
   //--------------------------------------------------------------------------
 
   protected async _initModules(): Promise<void> {
-    const [GraphicsLayer, Sketch] = await loadModules([
+    const [GraphicsLayer, Sketch, SketchViewModel] = await loadModules([
       "esri/layers/GraphicsLayer",
-      "esri/widgets/Sketch"
+      "esri/widgets/Sketch",
+      "esri/widgets/Sketch/SketchViewModel"
     ]);
     this.GraphicsLayer = GraphicsLayer;
     this.Sketch = Sketch;
+    this.SketchViewModel = SketchViewModel;
   }
 
   protected _initGraphicsLayer(): void {
@@ -235,11 +241,11 @@ export class NewDrawTools {
   protected _init(): void {
     if (this.mapView && this._sketchElement) {
       this._initGraphicsLayer();
-      this._initSketchViewModel();
+      this._initSketch();
     }
   }
 
-  protected _initSketchViewModel(): void {
+  protected _initSketch(): void {
     this._sketchWidget = new this.Sketch({
       layer: this._sketchGraphicsLayer,
       view: this.mapView,
@@ -258,9 +264,15 @@ export class NewDrawTools {
           "rectangle-selection": false
         }, createTools: {
           circle: false
-        }//,
-        //undoRedoMenu: false
+        },
+        undoRedoMenu: true
       }
+    });
+    this
+
+    this._sketchViewModel = new this.SketchViewModel({
+      view: this.mapView,
+      layer: this._sketchGraphicsLayer
     });
 
     this._sketchWidget.viewModel.polylineSymbol = this.polylineSymbol;
