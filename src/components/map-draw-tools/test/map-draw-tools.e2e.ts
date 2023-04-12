@@ -1,11 +1,11 @@
 import { newE2EPage } from '@stencil/core/testing';
 
-describe('new-draw-tools', () => {
+describe('map-draw-tools', () => {
   it('renders', async () => {
     const page = await newE2EPage();
-    await page.setContent('<new-draw-tools></new-draw-tools>');
+    await page.setContent('<map-draw-tools></map-draw-tools>');
 
-    const element = await page.find('new-draw-tools');
+    const element = await page.find('map-draw-tools');
     expect(element).toHaveClass('hydrated');
   });
 });

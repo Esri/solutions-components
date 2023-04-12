@@ -134,6 +134,20 @@ export namespace Components {
          */
         "mapView": __esri.MapView;
     }
+    interface MapDrawTools {
+        "active": boolean;
+        "clear": () => Promise<void>;
+        "drawToolsMode": EDrawToolsMode;
+        "enabledLayerIds": string[];
+        "graphics": __esri.Graphic[];
+        "layerView": __esri.FeatureLayerView;
+        "layerViews": __esri.FeatureLayerView[];
+        "mapView": __esri.MapView;
+        "pointSymbol": __esri.SimpleMarkerSymbol;
+        "polygonSymbol": __esri.SimpleFillSymbol;
+        "polylineSymbol": __esri.SimpleLineSymbol;
+        "useLayerPicker": boolean;
+    }
     interface MapLayerPicker {
         /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
@@ -244,20 +258,6 @@ export namespace Components {
           * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
          */
         "values": IMediaCardValues[];
-    }
-    interface NewDrawTools {
-        "active": boolean;
-        "clear": () => Promise<void>;
-        "drawToolsMode": EDrawToolsMode;
-        "enabledLayerIds": string[];
-        "graphics": __esri.Graphic[];
-        "layerView": __esri.FeatureLayerView;
-        "layerViews": __esri.FeatureLayerView[];
-        "mapView": __esri.MapView;
-        "pointSymbol": __esri.SimpleMarkerSymbol;
-        "polygonSymbol": __esri.SimpleFillSymbol;
-        "polylineSymbol": __esri.SimpleLineSymbol;
-        "useLayerPicker": boolean;
     }
     interface PciCalculator {
     }
@@ -529,6 +529,10 @@ export interface MapCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapCardElement;
 }
+export interface MapDrawToolsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapDrawToolsElement;
+}
 export interface MapLayerPickerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapLayerPickerElement;
@@ -540,10 +544,6 @@ export interface MapSearchCustomEvent<T> extends CustomEvent<T> {
 export interface MapSelectToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapSelectToolsElement;
-}
-export interface NewDrawToolsCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLNewDrawToolsElement;
 }
 export interface PublicNotificationCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -648,6 +648,12 @@ declare global {
         prototype: HTMLMapCardElement;
         new (): HTMLMapCardElement;
     };
+    interface HTMLMapDrawToolsElement extends Components.MapDrawTools, HTMLStencilElement {
+    }
+    var HTMLMapDrawToolsElement: {
+        prototype: HTMLMapDrawToolsElement;
+        new (): HTMLMapDrawToolsElement;
+    };
     interface HTMLMapLayerPickerElement extends Components.MapLayerPicker, HTMLStencilElement {
     }
     var HTMLMapLayerPickerElement: {
@@ -671,12 +677,6 @@ declare global {
     var HTMLMediaCardElement: {
         prototype: HTMLMediaCardElement;
         new (): HTMLMediaCardElement;
-    };
-    interface HTMLNewDrawToolsElement extends Components.NewDrawTools, HTMLStencilElement {
-    }
-    var HTMLNewDrawToolsElement: {
-        prototype: HTMLNewDrawToolsElement;
-        new (): HTMLNewDrawToolsElement;
     };
     interface HTMLPciCalculatorElement extends Components.PciCalculator, HTMLStencilElement {
     }
@@ -782,11 +782,11 @@ declare global {
         "layer-table": HTMLLayerTableElement;
         "list-item": HTMLListItemElement;
         "map-card": HTMLMapCardElement;
+        "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
         "map-search": HTMLMapSearchElement;
         "map-select-tools": HTMLMapSelectToolsElement;
         "media-card": HTMLMediaCardElement;
-        "new-draw-tools": HTMLNewDrawToolsElement;
         "pci-calculator": HTMLPciCalculatorElement;
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
@@ -935,6 +935,21 @@ declare namespace LocalJSX {
          */
         "onMapChanged"?: (event: MapCardCustomEvent<__esri.MapView>) => void;
     }
+    interface MapDrawTools {
+        "active"?: boolean;
+        "drawToolsMode"?: EDrawToolsMode;
+        "enabledLayerIds"?: string[];
+        "graphics"?: __esri.Graphic[];
+        "layerView"?: __esri.FeatureLayerView;
+        "layerViews"?: __esri.FeatureLayerView[];
+        "mapView"?: __esri.MapView;
+        "onSelectionLoadingChange"?: (event: MapDrawToolsCustomEvent<boolean>) => void;
+        "onSketchGraphicsChange"?: (event: MapDrawToolsCustomEvent<ISketchGraphicsChange>) => void;
+        "pointSymbol"?: __esri.SimpleMarkerSymbol;
+        "polygonSymbol"?: __esri.SimpleFillSymbol;
+        "polylineSymbol"?: __esri.SimpleLineSymbol;
+        "useLayerPicker"?: boolean;
+    }
     interface MapLayerPicker {
         /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
@@ -1054,21 +1069,6 @@ declare namespace LocalJSX {
           * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
          */
         "values"?: IMediaCardValues[];
-    }
-    interface NewDrawTools {
-        "active"?: boolean;
-        "drawToolsMode"?: EDrawToolsMode;
-        "enabledLayerIds"?: string[];
-        "graphics"?: __esri.Graphic[];
-        "layerView"?: __esri.FeatureLayerView;
-        "layerViews"?: __esri.FeatureLayerView[];
-        "mapView"?: __esri.MapView;
-        "onSelectionLoadingChange"?: (event: NewDrawToolsCustomEvent<boolean>) => void;
-        "onSketchGraphicsChange"?: (event: NewDrawToolsCustomEvent<ISketchGraphicsChange>) => void;
-        "pointSymbol"?: __esri.SimpleMarkerSymbol;
-        "polygonSymbol"?: __esri.SimpleFillSymbol;
-        "polylineSymbol"?: __esri.SimpleLineSymbol;
-        "useLayerPicker"?: boolean;
     }
     interface PciCalculator {
     }
@@ -1317,11 +1317,11 @@ declare namespace LocalJSX {
         "layer-table": LayerTable;
         "list-item": ListItem;
         "map-card": MapCard;
+        "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
         "map-search": MapSearch;
         "map-select-tools": MapSelectTools;
         "media-card": MediaCard;
-        "new-draw-tools": NewDrawTools;
         "pci-calculator": PciCalculator;
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
@@ -1356,11 +1356,11 @@ declare module "@stencil/core" {
             "layer-table": LocalJSX.LayerTable & JSXBase.HTMLAttributes<HTMLLayerTableElement>;
             "list-item": LocalJSX.ListItem & JSXBase.HTMLAttributes<HTMLListItemElement>;
             "map-card": LocalJSX.MapCard & JSXBase.HTMLAttributes<HTMLMapCardElement>;
+            "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
             "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
             "media-card": LocalJSX.MediaCard & JSXBase.HTMLAttributes<HTMLMediaCardElement>;
-            "new-draw-tools": LocalJSX.NewDrawTools & JSXBase.HTMLAttributes<HTMLNewDrawToolsElement>;
             "pci-calculator": LocalJSX.PciCalculator & JSXBase.HTMLAttributes<HTMLPciCalculatorElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;

@@ -121,14 +121,14 @@ graph TD;
   map-select-tools --> calcite-label
   map-select-tools --> calcite-checkbox
   map-select-tools --> buffer-tools
-  map-select-tools --> new-draw-tools
+  map-select-tools --> map-draw-tools
   calcite-segmented-control-item --> calcite-icon
   buffer-tools --> calcite-option
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select
   buffer-tools --> calcite-slider
   calcite-slider --> calcite-graph
-  new-draw-tools --> map-layer-picker
+  map-draw-tools --> map-layer-picker
   pdf-download --> calcite-select
   pdf-download --> calcite-option
   calcite-notice --> calcite-icon

@@ -193,9 +193,9 @@ export class MapSelectTools {
   protected _bufferTools: HTMLBufferToolsElement;
 
   /**
-   * HTMLNewDrawToolsElement: The container div for the sketch widget
+   * HTMLMapDrawToolsElement: The container div for the sketch widget
    */
-  protected _drawTools: HTMLNewDrawToolsElement;
+  protected _drawTools: HTMLMapDrawToolsElement;
 
   /**
    * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
@@ -484,7 +484,7 @@ export class MapSelectTools {
     useLayerFeatures: boolean
   ): VNode {
     return (
-      <new-draw-tools
+      <map-draw-tools
         active={true}
         drawToolsMode={!useLayerFeatures ? EDrawToolsMode.DRAW : EDrawToolsMode.SELECT}
         enabledLayerIds={this.enabledLayerIds}

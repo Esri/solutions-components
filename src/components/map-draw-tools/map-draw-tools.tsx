@@ -20,21 +20,21 @@ import { loadModules } from "../../utils/loadModules";
 import { getMapLayerView } from "../../utils/mapViewUtils";
 import { queryFeaturesByGeometry } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
-import NewDrawTools_T9n from "../../assets/t9n/new-draw-tools/resources.json";
+import MapDrawTools_T9n from "../../assets/t9n/map-draw-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
-  tag: 'new-draw-tools',
-  styleUrl: 'new-draw-tools.css',
+  tag: 'map-draw-tools',
+  styleUrl: 'map-draw-tools.css',
   shadow: false,
 })
-export class NewDrawTools {
+export class MapDrawTools {
 
   // TODO...currently when you re-open a list it will rerun the selection.
   // The reason I did this was if you removed a feature with refine...this would allow for a possible re-set.
   // Now that you cannot refine seems like we should always just hightlight the ids as it will be faster.
 
-  @Element() el: HTMLNewDrawToolsElement;
+  @Element() el: HTMLMapDrawToolsElement;
 
   @Prop() drawToolsMode: EDrawToolsMode;
 
@@ -65,7 +65,7 @@ export class NewDrawTools {
   //
   //--------------------------------------------------------------------------
 
-  @State() _translations: typeof NewDrawTools_T9n;
+  @State() _translations: typeof MapDrawTools_T9n;
 
   @State() _selectEnabled = false;
 
@@ -215,7 +215,7 @@ export class NewDrawTools {
 
   protected async _getTranslations(): Promise<void> {
     const translations = await getLocaleComponentStrings(this.el);
-    this._translations = translations[0] as typeof NewDrawTools_T9n;
+    this._translations = translations[0] as typeof MapDrawTools_T9n;
   }
 
   protected _init(): void {

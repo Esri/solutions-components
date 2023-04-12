@@ -1,4 +1,4 @@
-# new-draw-tools
+# map-draw-tools
 
 
 
@@ -56,7 +56,7 @@ Type: `Promise<void>`
 ### Graph
 ```mermaid
 graph TD;
-  new-draw-tools --> map-layer-picker
+  map-draw-tools --> map-layer-picker
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-combobox-item
@@ -66,8 +66,8 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
-  map-select-tools --> new-draw-tools
-  style new-draw-tools fill:#f9f,stroke:#333,stroke-width:4px
+  map-select-tools --> map-draw-tools
+  style map-draw-tools fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------

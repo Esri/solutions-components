@@ -72,7 +72,7 @@ Promise with the new selection set
 - calcite-label
 - calcite-checkbox
 - [buffer-tools](../buffer-tools)
-- [new-draw-tools](../new-draw-tools)
+- [map-draw-tools](../map-draw-tools)
 
 ### Graph
 ```mermaid
@@ -82,7 +82,7 @@ graph TD;
   map-select-tools --> calcite-label
   map-select-tools --> calcite-checkbox
   map-select-tools --> buffer-tools
-  map-select-tools --> new-draw-tools
+  map-select-tools --> map-draw-tools
   calcite-segmented-control-item --> calcite-icon
   buffer-tools --> calcite-option
   buffer-tools --> calcite-input
@@ -92,7 +92,7 @@ graph TD;
   calcite-input --> calcite-icon
   calcite-select --> calcite-icon
   calcite-slider --> calcite-graph
-  new-draw-tools --> map-layer-picker
+  map-draw-tools --> map-layer-picker
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-combobox-item
