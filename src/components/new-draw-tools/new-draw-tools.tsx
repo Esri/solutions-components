@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
-import { EDrawToolsMode, ESelectionType, EWorkflowType, ISketchGraphicsChange } from "../../utils/interfaces";
+import { EDrawToolsMode, ESelectionType, ISketchGraphicsChange } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
 import { getMapLayerView } from "../../utils/mapViewUtils";
 import { queryFeaturesByGeometry } from "../../utils/queryUtils";
@@ -44,9 +44,7 @@ export class NewDrawTools {
 
   @Element() el: HTMLNewDrawToolsElement;
 
-  //NEW///////////////////////////////////////////////////////////
   @Prop() drawToolsMode: EDrawToolsMode;
-  //NEW///////////////////////////////////////////////////////////
 
   @Prop() active = false;
 
@@ -54,7 +52,6 @@ export class NewDrawTools {
 
   @Prop({ mutable: true }) mapView: __esri.MapView;
 
-  //REFINE/////////////////////////////////////////////////////
   @Prop() enabledLayerIds: string[] = [];
 
   @Prop() layerView: __esri.FeatureLayerView;
@@ -62,16 +59,13 @@ export class NewDrawTools {
   @Prop() layerViews: __esri.FeatureLayerView[] = [];
 
   @Prop() useLayerPicker = true;
-  //REFINE/////////////////////////////////////////////////////
 
-  //DRAW/////////////////////////////////////////////////////
   // These will be useful if we support user config of the symbols to use...
   @Prop({ mutable: true }) pointSymbol: __esri.SimpleMarkerSymbol;
 
   @Prop({ mutable: true }) polylineSymbol: __esri.SimpleLineSymbol;
 
   @Prop({ mutable: true }) polygonSymbol: __esri.SimpleFillSymbol;
-  //DRAW/////////////////////////////////////////////////////
 
   //--------------------------------------------------------------------------
   //
@@ -81,11 +75,9 @@ export class NewDrawTools {
 
   @State() _translations: typeof NewDrawTools_T9n;
 
-  //REFINE/////////////////////////////////////////////////////
   @State() _selectEnabled = false;
 
   @State() _selectionMode: ESelectionType;
-  //REFINE/////////////////////////////////////////////////////
 
   //--------------------------------------------------------------------------
   //
@@ -103,13 +95,11 @@ export class NewDrawTools {
 
   protected _sketchViewModel: __esri.SketchViewModel;
 
-  //REFINE/////////////////////////////////////////////////////
   protected _featuresCollection: { [key: string]: __esri.Graphic[] } = {};
 
   protected _sketchGeometry: __esri.Geometry;
 
   protected _sketchWidget: __esri.Sketch;
-  //REFINE/////////////////////////////////////////////////////
 
   /**
    * The container element for the sketch widget
@@ -174,19 +164,10 @@ export class NewDrawTools {
   }
 
   render(): VNode {
-    const showLayerPickerClass = this.useLayerPicker && this.drawToolsMode !== EDrawToolsMode.DRAW ? "div-visible" : "div-not-visible";
-
     return (
       <Host>
         <div>
-          <map-layer-picker
-            class={showLayerPickerClass}
-            enabledLayerIds={this.enabledLayerIds}
-            mapView={this.mapView}
-            onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
-            selectedLayerIds={this.layerViews.map(l => l.layer.id)}
-            selectionMode={"single"}
-          />
+          {this._getLayerPicker()}
           <div class="border">
             <div ref={(el) => { this._sketchElement = el }} />
           </div>
@@ -210,6 +191,18 @@ export class NewDrawTools {
     this.GraphicsLayer = GraphicsLayer;
     this.Sketch = Sketch;
     this.SketchViewModel = SketchViewModel;
+  }
+
+  protected _getLayerPicker(): VNode {
+    return this.useLayerPicker && this.drawToolsMode !== EDrawToolsMode.DRAW ? (
+      <map-layer-picker
+        enabledLayerIds={this.enabledLayerIds}
+        mapView={this.mapView}
+        onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
+        selectedLayerIds={this.layerViews.map(l => l.layer.id)}
+        selectionMode={"single"}
+      />
+    ) : null;
   }
 
   protected _initGraphicsLayer(): void {
@@ -281,7 +274,7 @@ export class NewDrawTools {
           this.sketchGraphicsChange.emit({
             graphics: this.graphics,
             useOIDs: false,
-            type: EWorkflowType.SKETCH
+            type: this.drawToolsMode
           });
         } else {
           if (this.active) {
@@ -299,14 +292,13 @@ export class NewDrawTools {
         this.graphics = this.drawToolsMode === EDrawToolsMode.REFINE ? this.graphics.map(g => {
           // can only modify one at a time so safe to only check the first
           const evtGraphic = evt.graphics[0];
-          // TODO THIS would need to be captured from the layer
-          return (g?.attributes?.OBJECTID === evtGraphic?.attributes?.OBJECTID) ?
+          return (g.getObjectId() === evtGraphic.getObjectId()) ?
             evtGraphic : g;
         }) : evt.graphics;
         this.sketchGraphicsChange.emit({
           graphics: this.graphics,
           useOIDs: false,
-          type: EWorkflowType.SKETCH
+          type: this.drawToolsMode
         });
       }
     });
@@ -316,7 +308,7 @@ export class NewDrawTools {
       this.sketchGraphicsChange.emit({
         graphics: this.graphics,
         useOIDs: false,
-        type: EWorkflowType.SKETCH
+        type: this.drawToolsMode
       });
     });
 
@@ -325,7 +317,7 @@ export class NewDrawTools {
       this.sketchGraphicsChange.emit({
         graphics: this.graphics,
         useOIDs: false,
-        type: EWorkflowType.SKETCH
+        type: this.drawToolsMode
       });
     });
 
@@ -334,7 +326,7 @@ export class NewDrawTools {
       this.sketchGraphicsChange.emit({
         graphics: this.graphics,
         useOIDs: false,
-        type: EWorkflowType.SKETCH
+        type: this.drawToolsMode
       });
     });
   }
@@ -391,18 +383,14 @@ export class NewDrawTools {
       this.sketchGraphicsChange.emit({
         graphics,
         useOIDs,
-        type: EWorkflowType.SELECT
+        type: this.drawToolsMode
       });
     });
   }
 
-  protected _clear(): void {
+  protected _clearSketch(): void {
     this._sketchGeometry = null;
     this._sketchWidget.viewModel.cancel();
-    this._sketchGraphicsLayer.removeAll();
-  }
-
-  protected _clearSketch(): void {
     this.graphics = [];
     this._sketchGraphicsLayer?.removeAll();
   }

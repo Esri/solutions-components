@@ -384,6 +384,7 @@ export interface ISelectionSet {
   selectedIds: number[];
   layerView: __esri.FeatureLayerView;
   geometries: __esri.Geometry[];
+  graphics: __esri.Graphic[];
   refineSelectLayers: __esri.FeatureLayerView[];
   refineIds: IRefineIds;
   redoStack?: IRefineOperation[];
@@ -395,7 +396,7 @@ export interface ISelectionSet {
 export interface ISketchGraphicsChange {
   graphics: __esri.Graphic[];
   useOIDs: boolean;
-  type: EWorkflowType;
+  type: EDrawToolsMode;
 }
 
 export interface IRefineIds {

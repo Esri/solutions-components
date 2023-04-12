@@ -245,6 +245,8 @@ export class MapSelectTools {
    */
   protected _skipGeomOIDs: number[];
 
+  protected _graphics: __esri.Graphic[] = [];
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -314,7 +316,7 @@ export class MapSelectTools {
    */
   @Method()
   async clearSelection(): Promise<void> {
-    return this._clearResults(true, true, true);
+    return this._clearResults(true, true);
   }
 
   /**
@@ -342,6 +344,7 @@ export class MapSelectTools {
       selectedIds: this._selectedIds,
       layerView: this.selectLayerView,
       geometries: this.geometries,
+      graphics: this._graphics,
       refineSelectLayers: (this._refineTools || this._drawTools).layerViews,
       skipGeomOIDs: this._skipGeomOIDs
     } as ISelectionSet;
@@ -490,6 +493,7 @@ export class MapSelectTools {
         active={true}
         drawToolsMode={!useLayerFeatures ? EDrawToolsMode.DRAW : EDrawToolsMode.REFINE}
         enabledLayerIds={this.enabledLayerIds}
+        graphics={this._graphics}
         layerView={this.selectLayerView}
         layerViews={this._refineSelectLayers}
         mapView={this.mapView}
@@ -558,6 +562,10 @@ export class MapSelectTools {
 
       this.geometries = [
         ...this.selectionSet?.geometries || []
+      ];
+
+      this._graphics = [
+        ...this.selectionSet?.graphics || []
       ];
       // reset selection label base
       this._selectionLabel = this.selectionSet?.label || this._getSelectionBaseLabel();
@@ -707,7 +715,7 @@ export class MapSelectTools {
    *
    */
   protected async _sketchGraphicsChanged(event: CustomEvent): Promise<void> {
-    const type = event.detail.type;
+    const type = event.detail.type === EDrawToolsMode.DRAW ? EWorkflowType.SKETCH : EWorkflowType.SELECT;
     const graphics = event.detail.graphics;
     const label = this._selectionLabel || this._translations.select;
 
@@ -797,17 +805,9 @@ export class MapSelectTools {
     );
     this.selectionLoadingChange.emit(false);
 
-    // Add geometries used for selecting features as graphics
-    this._drawTools.graphics = this.geometries.map(geom => {
-      const props = {
-        "geometry": geom,
-        "symbol": geom.type === "point" ?
-          this.sketchPointSymbol : geom.type === "polyline" ?
-            this.sketchLineSymbol : geom.type === "polygon" ?
-              this.sketchPolygonSymbol : undefined
-      };
-      return new this.Graphic(props)
-    });
+    // stored as graphics now in addition to the geoms
+    this._drawTools.graphics = this._graphics;
+
     await this._highlightFeatures(this._selectedIds);
   }
 
@@ -877,8 +877,7 @@ export class MapSelectTools {
    */
   protected async _clearResults(
     clearSearchWidget = true,
-    clearLabel = true,
-    clearDrawTools = false
+    clearLabel = true
   ): Promise<void> {
     this._selectedIds = [];
 
@@ -896,9 +895,9 @@ export class MapSelectTools {
 
     state.highlightHandle?.remove();
 
-    // for sketch
     // checking for clear as it would throw off tests
-    if (this._drawTools?.clear && clearDrawTools) {
+    if (this._drawTools?.clear) {
+      this._graphics = [];
       await this._drawTools.clear();
     }
     this.selectionSetChange.emit(this._selectedIds.length);
@@ -926,6 +925,7 @@ export class MapSelectTools {
     // see https://github.com/Esri/solutions-components/issues/148
     this._skipGeomOIDs = useOIDs ? oids : undefined;
     this.geometries = Array.isArray(graphics) ? graphics.map(g => g.geometry) : this.geometries;
+    this._graphics = graphics;
     this._workflowType = type;
     this._selectionLabel = label;
   }
