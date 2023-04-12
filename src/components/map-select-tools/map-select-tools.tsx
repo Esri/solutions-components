@@ -127,6 +127,10 @@ export class MapSelectTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * boolean: When true drawn graphics will select features from the chosen select layer...
+   * then the selected features from the select layer will be used to select features from the addressee layer
+   */
   @State() _layerSelectChecked: boolean;
 
   /**
@@ -240,6 +244,9 @@ export class MapSelectTools {
    */
   protected _skipGeomOIDs: number[];
 
+  /**
+   * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   */
   protected _graphics: __esri.Graphic[] = [];
 
   //--------------------------------------------------------------------------
@@ -358,19 +365,16 @@ export class MapSelectTools {
 
   /**
    * Emitted on demand when the selection set changes.
-   *
    */
   @Event() selectionSetChange: EventEmitter<number>;
 
   /**
    * Emitted on demand when the sketch type changes.
-   *
    */
   @Event() sketchTypeChange: EventEmitter<ESketchType>;
 
   /**
    * Emitted on demand when the workflow type changes.
-   *
    */
   @Event() workflowTypeChange: EventEmitter<EWorkflowType>;
 
@@ -463,7 +467,20 @@ export class MapSelectTools {
           </calcite-label>
         </div>
         <div class={showDrawToolsClass}>
-          {this._getDrawTools(this._layerSelectChecked)}
+          <map-draw-tools
+            active={true}
+            drawToolsMode={!this._layerSelectChecked ? EDrawToolsMode.DRAW : EDrawToolsMode.SELECT}
+            enabledLayerIds={this.enabledLayerIds}
+            graphics={this._graphics}
+            layerView={this.selectLayerView}
+            layerViews={this._selectLayers}
+            mapView={this.mapView}
+            onSketchGraphicsChange={(evt) => this._sketchGraphicsChanged(evt)}
+            pointSymbol={this.sketchPointSymbol}
+            polygonSymbol={this.sketchPolygonSymbol}
+            polylineSymbol={this.sketchLineSymbol}
+            ref={(el) => { this._drawTools = el }}
+          />
         </div>
         <calcite-label class={showBufferToolsClass}>
           {this._translations.searchDistance}
@@ -477,27 +494,6 @@ export class MapSelectTools {
         </calcite-label>
         <slot />
       </Host>
-    );
-  }
-
-  protected _getDrawTools(
-    useLayerFeatures: boolean
-  ): VNode {
-    return (
-      <map-draw-tools
-        active={true}
-        drawToolsMode={!useLayerFeatures ? EDrawToolsMode.DRAW : EDrawToolsMode.SELECT}
-        enabledLayerIds={this.enabledLayerIds}
-        graphics={this._graphics}
-        layerView={this.selectLayerView}
-        layerViews={this._selectLayers}
-        mapView={this.mapView}
-        onSketchGraphicsChange={(evt) => this._sketchGraphicsChanged(evt)}
-        pointSymbol={this.sketchPointSymbol}
-        polygonSymbol={this.sketchPolygonSymbol}
-        polylineSymbol={this.sketchLineSymbol}
-        ref={(el) => { this._drawTools = el }}
-      />
     );
   }
 

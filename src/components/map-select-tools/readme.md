@@ -71,8 +71,8 @@ Promise with the new selection set
 - calcite-segmented-control-item
 - calcite-label
 - calcite-checkbox
-- [buffer-tools](../buffer-tools)
 - [map-draw-tools](../map-draw-tools)
+- [buffer-tools](../buffer-tools)
 
 ### Graph
 ```mermaid
@@ -81,26 +81,26 @@ graph TD;
   map-select-tools --> calcite-segmented-control-item
   map-select-tools --> calcite-label
   map-select-tools --> calcite-checkbox
-  map-select-tools --> buffer-tools
   map-select-tools --> map-draw-tools
+  map-select-tools --> buffer-tools
   calcite-segmented-control-item --> calcite-icon
+  map-draw-tools --> map-layer-picker
+  map-layer-picker --> calcite-select
+  map-layer-picker --> calcite-combobox
+  map-layer-picker --> calcite-combobox-item
+  map-layer-picker --> calcite-option
+  calcite-select --> calcite-icon
+  calcite-combobox --> calcite-chip
+  calcite-combobox --> calcite-icon
+  calcite-chip --> calcite-icon
+  calcite-combobox-item --> calcite-icon
   buffer-tools --> calcite-option
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select
   buffer-tools --> calcite-slider
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
-  calcite-select --> calcite-icon
   calcite-slider --> calcite-graph
-  map-draw-tools --> map-layer-picker
-  map-layer-picker --> calcite-select
-  map-layer-picker --> calcite-combobox
-  map-layer-picker --> calcite-combobox-item
-  map-layer-picker --> calcite-option
-  calcite-combobox --> calcite-chip
-  calcite-combobox --> calcite-icon
-  calcite-chip --> calcite-icon
-  calcite-combobox-item --> calcite-icon
   public-notification --> map-select-tools
   style map-select-tools fill:#f9f,stroke:#333,stroke-width:4px
 ```
