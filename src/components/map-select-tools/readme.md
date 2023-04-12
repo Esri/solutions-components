@@ -28,12 +28,12 @@
 
 ## Events
 
-| Event                    | Description                                       | Type                                                                                                        |
-| ------------------------ | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `selectionLoadingChange` | Emitted on demand when selection starts or ends.  | `CustomEvent<boolean>`                                                                                      |
-| `selectionSetChange`     | Emitted on demand when the selection set changes. | `CustomEvent<number>`                                                                                       |
-| `sketchTypeChange`       | Emitted on demand when the sketch type changes.   | `CustomEvent<ESketchType.INTERACTIVE \| ESketchType.LAYER>`                                                 |
-| `workflowTypeChange`     | Emitted on demand when the workflow type changes. | `CustomEvent<EWorkflowType.REFINE \| EWorkflowType.SEARCH \| EWorkflowType.SELECT \| EWorkflowType.SKETCH>` |
+| Event                    | Description                                       | Type                                                                                |
+| ------------------------ | ------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `selectionLoadingChange` | Emitted on demand when selection starts or ends.  | `CustomEvent<boolean>`                                                              |
+| `selectionSetChange`     | Emitted on demand when the selection set changes. | `CustomEvent<number>`                                                               |
+| `sketchTypeChange`       | Emitted on demand when the sketch type changes.   | `CustomEvent<ESketchType.INTERACTIVE \| ESketchType.LAYER>`                         |
+| `workflowTypeChange`     | Emitted on demand when the workflow type changes. | `CustomEvent<EWorkflowType.SEARCH \| EWorkflowType.SELECT \| EWorkflowType.SKETCH>` |
 
 
 ## Methods

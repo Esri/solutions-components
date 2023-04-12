@@ -200,12 +200,7 @@ export class MapSelectTools {
   /**
    * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
    */
-  protected _refineSelectLayers: __esri.FeatureLayerView[];
-
-  /**
-   * HTMLNewDrawToolsElement: The container div for the sketch widget
-   */
-  protected _refineTools: HTMLNewDrawToolsElement;
+  protected _selectLayers: __esri.FeatureLayerView[];
 
   /**
    * HTMLElement: The container div for the search widget
@@ -345,7 +340,7 @@ export class MapSelectTools {
       layerView: this.selectLayerView,
       geometries: this.geometries,
       graphics: this._graphics,
-      refineSelectLayers: (this._refineTools || this._drawTools).layerViews,
+      selectLayers: this._drawTools.layerViews,
       skipGeomOIDs: this._skipGeomOIDs
     } as ISelectionSet;
   }
@@ -491,11 +486,11 @@ export class MapSelectTools {
     return (
       <new-draw-tools
         active={true}
-        drawToolsMode={!useLayerFeatures ? EDrawToolsMode.DRAW : EDrawToolsMode.REFINE}
+        drawToolsMode={!useLayerFeatures ? EDrawToolsMode.DRAW : EDrawToolsMode.SELECT}
         enabledLayerIds={this.enabledLayerIds}
         graphics={this._graphics}
         layerView={this.selectLayerView}
-        layerViews={this._refineSelectLayers}
+        layerViews={this._selectLayers}
         mapView={this.mapView}
         onSketchGraphicsChange={(evt) => this._sketchGraphicsChanged(evt)}
         pointSymbol={this.sketchPointSymbol}
@@ -555,7 +550,7 @@ export class MapSelectTools {
       this._searchTerm = this.selectionSet?.searchResult?.name;
       this._workflowType = this.selectionSet?.workflowType;
       this._searchResult = this.selectionSet?.searchResult;
-      this._refineSelectLayers = this.selectionSet?.refineSelectLayers;
+      this._selectLayers = this.selectionSet?.selectLayers;
       this._selectedIds = this.selectionSet?.selectedIds;
       this._skipGeomOIDs =  this.selectionSet?.skipGeomOIDs;
       this._layerSelectChecked = this.selectionSet?.workflowType === EWorkflowType.SELECT;

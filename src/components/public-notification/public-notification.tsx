@@ -751,8 +751,6 @@ export class PublicNotification {
     return (
       <calcite-list class="list-border margin-sides-1">
         {
-          // REFINE is handled seperately from the core selection sets
-          // You can only access after clicking the refine action
           this._selectionSets.reduce((prev, cur, i) => {
             prev.push((
               <calcite-list-item
@@ -1222,7 +1220,7 @@ export class PublicNotification {
    */
   protected _getDownloadSelectionSets(): ISelectionSet[] {
     return this._selectionSets.filter(ss => {
-      return ss.download || ss.workflowType === EWorkflowType.REFINE;
+      return ss.download;
     });
   }
 
@@ -1352,7 +1350,6 @@ export class PublicNotification {
 
   /**
    * Update selection sets when the addressee layer changes.
-   * Will remove any "refine" selection set.
    * Will use stored search, select, and sketch geometries and any buffers to select from the new addressee layer.
    *
    * @param layerView The new addressee layer view to select from

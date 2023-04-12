@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { EWorkflowType, ISelectionSet, IQueryExtentResponse } from "./interfaces";
+import { ISelectionSet, IQueryExtentResponse } from "./interfaces";
 
 /**
  * Query the layer for all features
@@ -171,7 +171,7 @@ export function getSelectionSetQuery(
   geometryEngine: __esri.geometryEngine
 ): Promise<number[]> {
   let q = Promise.resolve([]);
-  if (selectionSet.workflowType !== EWorkflowType.REFINE) {
+  if (selectionSet.workflowType) {
     if (!selectionSet.buffer) {
       const queryGeoms = getQueryGeoms(
         selectionSet.geometries,

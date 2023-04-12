@@ -10,7 +10,7 @@
 | Property          | Attribute          | Description | Type                                           | Default     |
 | ----------------- | ------------------ | ----------- | ---------------------------------------------- | ----------- |
 | `active`          | `active`           |             | `boolean`                                      | `false`     |
-| `drawToolsMode`   | `draw-tools-mode`  |             | `EDrawToolsMode.DRAW \| EDrawToolsMode.REFINE` | `undefined` |
+| `drawToolsMode`   | `draw-tools-mode`  |             | `EDrawToolsMode.DRAW \| EDrawToolsMode.SELECT` | `undefined` |
 | `enabledLayerIds` | --                 |             | `string[]`                                     | `[]`        |
 | `graphics`        | --                 |             | `Graphic[]`                                    | `undefined` |
 | `layerView`       | --                 |             | `FeatureLayerView`                             | `undefined` |

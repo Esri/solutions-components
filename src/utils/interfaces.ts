@@ -27,7 +27,7 @@ export enum ELayoutMode {
 
 export enum EDrawToolsMode {
   DRAW = "DRAW",
-  REFINE = "REFINE"
+  SELECT = "SELECT"
 }
 
 /**
@@ -56,8 +56,7 @@ export enum EPageType {
 export enum EWorkflowType {
   SEARCH="SEARCH",
   SELECT="SELECT",
-  SKETCH="SKETCH",
-  REFINE="REFINE"
+  SKETCH="SKETCH"
 }
 
 export enum ESelectionType {
@@ -385,11 +384,7 @@ export interface ISelectionSet {
   layerView: __esri.FeatureLayerView;
   geometries: __esri.Geometry[];
   graphics: __esri.Graphic[];
-  refineSelectLayers: __esri.FeatureLayerView[];
-  refineIds: IRefineIds;
-  redoStack?: IRefineOperation[];
-  undoStack?: IRefineOperation[];
-  //skipGeomQuery?: boolean;
+  selectLayers: __esri.FeatureLayerView[];
   skipGeomOIDs?: number[];
 }
 
@@ -399,18 +394,9 @@ export interface ISketchGraphicsChange {
   type: EDrawToolsMode;
 }
 
-export interface IRefineIds {
-  addIds: number[];
-  removeIds: number[];
-}
-
 export interface IQueryExtentResponse {
   count: number;
   extent: __esri.Extent;
-}
-
-export interface IRefineOperation {
-  ids: number[];
 }
 
 export interface IInfoCardValues {

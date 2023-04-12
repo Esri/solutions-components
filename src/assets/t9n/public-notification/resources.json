@@ -1,5 +1,4 @@
 {
-    "refineSelection": "Refine selection",
     "downloadPDF": "Download PDF",
     "downloadCSV": "Download CSV",
     "downloadNoLists": "There are no lists to export. Go to My lists to create a list of features.",
@@ -17,8 +16,6 @@
     "selectedAddresses": "{{n}} selected addresses from {{layer}}",
     "selectionLoading": "Selection loading",
     "selectPDFLabelOption": "Select PDF label option",
-    "refineTip": "Refine and finalize your lists by using sketch tools to add or remove features across all selection sets.",
-    "refineTipNoSelections": "There are no selections to refine. Go to My lists to create a list of features.",
     "removeDuplicate": "Remove duplicate addresses",
     "selectLayerAndAdd": "Choose a layer, click Add, and select features to create a list that you can export to CSV or PDF for download.",
     "selectSearchTip": "Search for an address, place, or feature to make a selection.",

@@ -34,14 +34,6 @@ export class NewDrawTools {
   // The reason I did this was if you removed a feature with refine...this would allow for a possible re-set.
   // Now that you cannot refine seems like we should always just hightlight the ids as it will be faster.
 
-  // TODO now that I think about it more...I don't know that we have any reason to use the viewModel
-  // I was thinking at the start it would let us have a better undo-redo workflow...actually...it still may
-  // chat with the team on the preference...it needs to either undo-redo operations to a single graphic...
-  // or we could retain that as well as individual grapgics that have been added/removed for a single list...
-  // so keep using viewModel for now
-
-  // Could drop the layer select from the view model approach...still retain refine-select-tools and just have it do layer select and host the common draw
-
   @Element() el: HTMLNewDrawToolsElement;
 
   @Prop() drawToolsMode: EDrawToolsMode;
@@ -289,7 +281,7 @@ export class NewDrawTools {
     this._sketchWidget.on("update", (evt) => {
       const eventType = evt?.toolEventInfo?.type;
       if (eventType === "reshape-stop" || eventType === "move-stop") {
-        this.graphics = this.drawToolsMode === EDrawToolsMode.REFINE ? this.graphics.map(g => {
+        this.graphics = this.drawToolsMode === EDrawToolsMode.SELECT ? this.graphics.map(g => {
           // can only modify one at a time so safe to only check the first
           const evtGraphic = evt.graphics[0];
           return (g.getObjectId() === evtGraphic.getObjectId()) ?
