@@ -24,39 +24,79 @@ import MapDrawTools_T9n from "../../assets/t9n/map-draw-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
-  tag: 'map-draw-tools',
-  styleUrl: 'map-draw-tools.css',
+  tag: "map-draw-tools",
+  styleUrl: "map-draw-tools.css",
   shadow: false,
 })
 export class MapDrawTools {
-
-  // TODO...currently when you re-open a list it will rerun the selection.
-  // The reason I did this was if you removed a feature with refine...this would allow for a possible re-set.
-  // Now that you cannot refine seems like we should always just hightlight the ids as it will be faster.
-
+  //--------------------------------------------------------------------------
+  //
+  //  Host element access
+  //
+  //--------------------------------------------------------------------------
   @Element() el: HTMLMapDrawToolsElement;
 
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (public)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * EDrawToolsMode: Will the drawn graphic select features from the addressee layer (DRAW) or
+   *  from a select layer whose features will then be used select features from the addressee layer (SELECT)
+   */
   @Prop() drawToolsMode: EDrawToolsMode;
 
+  /**
+   * boolean: sketch is used by multiple components...need a way to know who should respond...
+   */
   @Prop() active = false;
 
+  /**
+   * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   */
   @Prop({ mutable: true }) graphics: __esri.Graphic[];
 
+  /**
+   * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   */
   @Prop({ mutable: true }) mapView: __esri.MapView;
 
+  /**
+   * string[]: Optional list of enabled layer ids
+   *  If empty all layers will be available
+   */
   @Prop() enabledLayerIds: string[] = [];
 
+  /**
+   * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
+   */
   @Prop() layerView: __esri.FeatureLayerView;
 
+  /**
+   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   */
   @Prop() layerViews: __esri.FeatureLayerView[] = [];
 
+  /**
+   * boolean: Used to control the visibility of the layer picker
+   */
   @Prop() useLayerPicker = true;
 
-  // These will be useful if we support user config of the symbols to use...
+  /**
+   * esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+   */
   @Prop({ mutable: true }) pointSymbol: __esri.SimpleMarkerSymbol;
 
+  /**
+   * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+   */
   @Prop({ mutable: true }) polylineSymbol: __esri.SimpleLineSymbol;
 
+  /**
+   * esri/symbols/SimpleFillSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+   */
   @Prop({ mutable: true }) polygonSymbol: __esri.SimpleFillSymbol;
 
   //--------------------------------------------------------------------------
@@ -65,10 +105,20 @@ export class MapDrawTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
   @State() _translations: typeof MapDrawTools_T9n;
 
+  /**
+   * boolean: Is "use layer" enabled
+   */
   @State() _selectEnabled = false;
 
+  /**
+   * utils/interfaces/ESelectionType: POINT, LINE, POLY, RECT
+   */
   @State() _selectionMode: ESelectionType;
 
   //--------------------------------------------------------------------------
@@ -77,19 +127,43 @@ export class MapDrawTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html?#constructors-summary
+   */
   protected GraphicsLayer: typeof import("esri/layers/GraphicsLayer");
 
+  /**
+   * esri/widgets/Sketch/SketchViewModel: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch-SketchViewModel.html
+   * The sketch view model constructor
+   */
   protected SketchViewModel: typeof import("esri/widgets/Sketch/SketchViewModel");
 
+  /**
+   * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html#constructors-summary
+   */
   protected Sketch: typeof import("esri/widgets/Sketch");
 
-  protected _sketchGraphicsLayer: __esri.GraphicsLayer;
-
-  protected _sketchViewModel: __esri.SketchViewModel;
-
+  /**
+   * {<layer id>: Graphic[]}: Collection of graphics returned from queries to the layer
+   */
   protected _featuresCollection: { [key: string]: __esri.Graphic[] } = {};
 
+  /**
+   * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
+   */
   protected _sketchGeometry: __esri.Geometry;
+
+  /**
+   * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
+   * The graphics layer used to show selections.
+   */
+  protected _sketchGraphicsLayer: __esri.GraphicsLayer;
+
+  /**
+   * esri/widgets/Sketch/SketchViewModel: The html element for selecting buffer unit
+   * The sketch view model used to create graphics
+   */
+  protected _sketchViewModel: __esri.SketchViewModel;
 
   protected _sketchWidget: __esri.Sketch;
 
@@ -104,6 +178,9 @@ export class MapDrawTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Called each time the graphics prop is changed.
+   */
   @Watch("graphics")
   graphicsWatchHandler(v: any, oldV: any): void {
     if (v && v.length > 0 && JSON.stringify(v) !== JSON.stringify(oldV) && this._sketchGraphicsLayer) {
@@ -112,6 +189,9 @@ export class MapDrawTools {
     }
   }
 
+  /**
+   * Called each time the mapView prop is changed.
+   */
   @Watch("mapView")
   mapViewWatchHandler(v: any, oldV: any): void {
     if (v && v !== oldV) {
@@ -125,6 +205,11 @@ export class MapDrawTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Clears the user drawn graphics
+   *
+   * @returns Promise that resolves when the operation is complete
+   */
   @Method()
   async clear(): Promise<void> {
     this._clearSketch();
@@ -136,8 +221,14 @@ export class MapDrawTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Emitted on demand when selection starts or ends.
+   */
   @Event() selectionLoadingChange: EventEmitter<boolean>;
 
+  /**
+   * Emitted on demand when the sketch graphics change.
+   */
   @Event() sketchGraphicsChange: EventEmitter<ISketchGraphicsChange>;
 
   //--------------------------------------------------------------------------
@@ -146,15 +237,28 @@ export class MapDrawTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   *
+   * @returns Promise when complete
+   */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
   }
 
+  /**
+   * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
+   *
+   * @returns Promise when complete
+   */
   componentDidLoad(): void {
     this._init();
   }
 
+  /**
+   * Renders the component.
+   */
   render(): VNode {
     return (
       <Host>
@@ -174,17 +278,13 @@ export class MapDrawTools {
   //
   //--------------------------------------------------------------------------
 
-  protected async _initModules(): Promise<void> {
-    const [GraphicsLayer, Sketch, SketchViewModel] = await loadModules([
-      "esri/layers/GraphicsLayer",
-      "esri/widgets/Sketch",
-      "esri/widgets/Sketch/SketchViewModel"
-    ]);
-    this.GraphicsLayer = GraphicsLayer;
-    this.Sketch = Sketch;
-    this.SketchViewModel = SketchViewModel;
-  }
-
+  /**
+   * Create a map layer picker that will be used during SELECT draw mode operations
+   *
+   * @returns a map layer picker node
+   *
+   * @protected
+   */
   protected _getLayerPicker(): VNode {
     return this.useLayerPicker && this.drawToolsMode !== EDrawToolsMode.DRAW ? (
       <map-layer-picker
@@ -197,6 +297,42 @@ export class MapDrawTools {
     ) : null;
   }
 
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
+    const [GraphicsLayer, Sketch, SketchViewModel] = await loadModules([
+      "esri/layers/GraphicsLayer",
+      "esri/widgets/Sketch",
+      "esri/widgets/Sketch/SketchViewModel"
+    ]);
+    this.GraphicsLayer = GraphicsLayer;
+    this.Sketch = Sketch;
+    this.SketchViewModel = SketchViewModel;
+  }
+
+  /**
+   * Initialize the graphics layer and the tools that support creating new graphics
+   *
+   * @protected
+   */
+  protected _init(): void {
+    if (this.mapView && this._sketchElement) {
+      this._initGraphicsLayer();
+      this._initSketch();
+    }
+  }
+
+  /**
+   * Initialize the graphics layer
+   *
+   * @returns Promise when the operation has completed
+   * @protected
+   */
   protected _initGraphicsLayer(): void {
     const title = this._translations.sketchLayer;
     const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === title);
@@ -213,18 +349,11 @@ export class MapDrawTools {
     }
   }
 
-  protected async _getTranslations(): Promise<void> {
-    const translations = await getLocaleComponentStrings(this.el);
-    this._translations = translations[0] as typeof MapDrawTools_T9n;
-  }
-
-  protected _init(): void {
-    if (this.mapView && this._sketchElement) {
-      this._initGraphicsLayer();
-      this._initSketch();
-    }
-  }
-
+  /**
+   * Initialize the skecth widget
+   *
+   * @protected
+   */
   protected _initSketch(): void {
     this._sketchWidget = new this.Sketch({
       layer: this._sketchGraphicsLayer,
@@ -323,6 +452,13 @@ export class MapDrawTools {
     });
   }
 
+  /**
+   * Gets the layer views from the map when the layer selection changes
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
   protected async _layerSelectionChange(
     evt: CustomEvent
   ): Promise<void> {
@@ -340,6 +476,15 @@ export class MapDrawTools {
     }
   }
 
+  /**
+   * Select features based on the input geometry
+   *
+   * @param geom the geometry used for selection
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
   protected async _selectFeatures(
     geom: __esri.Geometry
   ): Promise<void> {
@@ -380,10 +525,25 @@ export class MapDrawTools {
     });
   }
 
+  /**
+   * Clear any stored graphics and remove all graphics from the graphics layer
+   *
+   * @protected
+   */
   protected _clearSketch(): void {
     this._sketchGeometry = null;
     this._sketchWidget.viewModel.cancel();
     this.graphics = [];
     this._sketchGraphicsLayer?.removeAll();
+  }
+
+  /**
+   * Fetches the component's translations
+   *
+   * @protected
+   */
+  protected async _getTranslations(): Promise<void> {
+    const translations = await getLocaleComponentStrings(this.el);
+    this._translations = translations[0] as typeof MapDrawTools_T9n;
   }
 }

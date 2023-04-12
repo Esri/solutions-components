@@ -135,17 +135,54 @@ export namespace Components {
         "mapView": __esri.MapView;
     }
     interface MapDrawTools {
+        /**
+          * boolean: sketch is used by multiple components...need a way to know who should respond...
+         */
         "active": boolean;
+        /**
+          * Clears the user drawn graphics
+          * @returns Promise that resolves when the operation is complete
+         */
         "clear": () => Promise<void>;
+        /**
+          * EDrawToolsMode: Will the drawn graphic select features from the addressee layer (DRAW) or  from a select layer whose features will then be used select features from the addressee layer (SELECT)
+         */
         "drawToolsMode": EDrawToolsMode;
+        /**
+          * string[]: Optional list of enabled layer ids  If empty all layers will be available
+         */
         "enabledLayerIds": string[];
+        /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
         "graphics": __esri.Graphic[];
+        /**
+          * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
+         */
         "layerView": __esri.FeatureLayerView;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
         "layerViews": __esri.FeatureLayerView[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
         "mapView": __esri.MapView;
+        /**
+          * esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+         */
         "pointSymbol": __esri.SimpleMarkerSymbol;
+        /**
+          * esri/symbols/SimpleFillSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+         */
         "polygonSymbol": __esri.SimpleFillSymbol;
+        /**
+          * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+         */
         "polylineSymbol": __esri.SimpleLineSymbol;
+        /**
+          * boolean: Used to control the visibility of the layer picker
+         */
         "useLayerPicker": boolean;
     }
     interface MapLayerPicker {
@@ -936,18 +973,57 @@ declare namespace LocalJSX {
         "onMapChanged"?: (event: MapCardCustomEvent<__esri.MapView>) => void;
     }
     interface MapDrawTools {
+        /**
+          * boolean: sketch is used by multiple components...need a way to know who should respond...
+         */
         "active"?: boolean;
+        /**
+          * EDrawToolsMode: Will the drawn graphic select features from the addressee layer (DRAW) or  from a select layer whose features will then be used select features from the addressee layer (SELECT)
+         */
         "drawToolsMode"?: EDrawToolsMode;
+        /**
+          * string[]: Optional list of enabled layer ids  If empty all layers will be available
+         */
         "enabledLayerIds"?: string[];
+        /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
         "graphics"?: __esri.Graphic[];
+        /**
+          * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
+         */
         "layerView"?: __esri.FeatureLayerView;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
         "layerViews"?: __esri.FeatureLayerView[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when selection starts or ends.
+         */
         "onSelectionLoadingChange"?: (event: MapDrawToolsCustomEvent<boolean>) => void;
+        /**
+          * Emitted on demand when the sketch graphics change.
+         */
         "onSketchGraphicsChange"?: (event: MapDrawToolsCustomEvent<ISketchGraphicsChange>) => void;
+        /**
+          * esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+         */
         "pointSymbol"?: __esri.SimpleMarkerSymbol;
+        /**
+          * esri/symbols/SimpleFillSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+         */
         "polygonSymbol"?: __esri.SimpleFillSymbol;
+        /**
+          * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+         */
         "polylineSymbol"?: __esri.SimpleLineSymbol;
+        /**
+          * boolean: Used to control the visibility of the layer picker
+         */
         "useLayerPicker"?: boolean;
     }
     interface MapLayerPicker {
