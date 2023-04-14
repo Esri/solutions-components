@@ -233,11 +233,11 @@ export class BufferTools {
   protected _setDistance(
     event: CustomEvent
   ): void {
-    const v = parseInt(event.detail.value, 10);
+    const v = parseInt((event.target as HTMLCalciteInputElement).value, 10);
     if (this.distance !== v && v >= this.min) {
       this.distanceChanged.emit({
         oldValue: this.distance,
-        newValue: event.detail.value
+        newValue: v
       });
       this.distance = v;
       if (this.distance > 0) {

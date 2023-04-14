@@ -25,6 +25,11 @@ export enum ELayoutMode {
   VERTICAL = "VERTICAL"
 }
 
+export enum EDrawToolsMode {
+  DRAW = "DRAW",
+  SELECT = "SELECT"
+}
+
 /**
  * Resource update types
  */
@@ -44,26 +49,14 @@ export enum EExportType {
 export enum EPageType {
   LIST,
   SELECT,
-  REFINE,
   PDF,
   CSV
-}
-
-export enum ERefineMode {
-  ALL="ALL", // Used for the refine selection workflow
-  SUBSET="SUBSET" // Used as a part interactive selection "Use layer features"
-}
-
-export enum ESelectionMode {
-  ADD="ADD",
-  REMOVE="REMOVE"
 }
 
 export enum EWorkflowType {
   SEARCH="SEARCH",
   SELECT="SELECT",
-  SKETCH="SKETCH",
-  REFINE="REFINE"
+  SKETCH="SKETCH"
 }
 
 export enum ESelectionType {
@@ -390,32 +383,20 @@ export interface ISelectionSet {
   selectedIds: number[];
   layerView: __esri.FeatureLayerView;
   geometries: __esri.Geometry[];
-  refineSelectLayers: __esri.FeatureLayerView[];
-  refineIds: IRefineIds;
-  redoStack?: IRefineOperation[];
-  undoStack?: IRefineOperation[];
-  //skipGeomQuery?: boolean;
+  graphics: __esri.Graphic[];
+  selectLayers: __esri.FeatureLayerView[];
   skipGeomOIDs?: number[];
 }
 
-export interface IRefineSelectionEvent {
+export interface ISketchGraphicsChange {
   graphics: __esri.Graphic[];
   useOIDs: boolean;
-}
-
-export interface IRefineIds {
-  addIds: number[];
-  removeIds: number[];
+  type: EDrawToolsMode;
 }
 
 export interface IQueryExtentResponse {
   count: number;
   extent: __esri.Extent;
-}
-
-export interface IRefineOperation {
-  mode: ESelectionMode;
-  ids: number[];
 }
 
 export interface IInfoCardValues {

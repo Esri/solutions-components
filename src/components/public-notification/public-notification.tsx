@@ -109,11 +109,6 @@ export class PublicNotification {
   @Prop() selectionLayerIds: string[] = [];
 
   /**
-   * boolean: When true the refine selection workflow will be included in the UI
-   */
-  @Prop() showRefineSelection = false;
-
-  /**
    * boolean: When false no buffer distance or unit controls will be exposed
    */
   @Prop() showSearchSettings = true;
@@ -168,7 +163,7 @@ export class PublicNotification {
   @State() _numSelected = 0;
 
   /**
-   * utils/interfaces/EPageType: LIST | SELECT | REFINE | PDF | CSV
+   * utils/interfaces/EPageType: LIST | SELECT | PDF | CSV
    */
   @State() _pageType: EPageType = EPageType.LIST;
 
@@ -373,7 +368,7 @@ export class PublicNotification {
     this._checkPopups();
     this._clearHighlight();
 
-    if (oldPageType === EPageType.SELECT || oldPageType === EPageType.REFINE) {
+    if (oldPageType === EPageType.SELECT) {
       // clear any draw shapes or buffers
       await this._clearSelection()
     }
@@ -471,7 +466,6 @@ export class PublicNotification {
         <calcite-shell>
           <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
             {this._getActionGroup("list-check", EPageType.LIST, this._translations.myLists)}
-            {this.showRefineSelection ? this._getActionGroup("test-data", EPageType.REFINE, this._translations.refineSelection) : undefined}
             {this._getActionGroup("file-pdf", EPageType.PDF, this._translations.downloadPDF)}
             {this._getActionGroup("file-csv", EPageType.CSV, this._translations.downloadCSV)}
           </calcite-action-bar>
@@ -603,9 +597,8 @@ export class PublicNotification {
     pageType: EPageType,
     tip: string
   ): VNode {
-    const groupClass = this.showRefineSelection ? "action-center w-1-4" : "action-center w-1-3";
     return (
-      <calcite-action-group class={groupClass} layout="horizontal">
+      <calcite-action-group class="action-center w-1-3" layout="horizontal">
         <calcite-action
           active={this._pageType === pageType}
           alignment="center"
@@ -655,10 +648,6 @@ export class PublicNotification {
 
       case EPageType.SELECT:
         page = this._getSelectPage();
-        break;
-
-      case EPageType.REFINE:
-        page = this._getRefinePage();
         break;
 
       case EPageType.PDF:
@@ -762,22 +751,17 @@ export class PublicNotification {
     return (
       <calcite-list class="list-border margin-sides-1">
         {
-          // REFINE is handled seperately from the core selection sets
-          // You can only access after clicking the refine action
           this._selectionSets.reduce((prev, cur, i) => {
-            const validSet = this._isValidSet(cur);
-            if (validSet) {
-              prev.push((
-                <calcite-list-item
-                  description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
-                  label={cur.label}
-                  onClick={() => this._gotoSelection(cur, this.mapView)}
-                >
-                  {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
-                  {this._getAction(true, "x", "", (evt): Promise<void> => this._deleteSelection(i, evt), false, "actions-end")}
-                </calcite-list-item>
-              ));
-            }
+            prev.push((
+              <calcite-list-item
+                description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
+                label={cur.label}
+                onClick={() => this._gotoSelection(cur, this.mapView)}
+              >
+                {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
+                {this._getAction(true, "x", "", (evt): Promise<void> => this._deleteSelection(i, evt), false, "actions-end")}
+              </calcite-list-item>
+            ));
             return prev;
           }, [])
         }
@@ -858,7 +842,7 @@ export class PublicNotification {
    * @protected
    */
   protected _hasSelections(): boolean {
-    return this._selectionSets.filter(ss => this._isValidSet(ss)).length > 0;
+    return this._selectionSets.length > 0;
   }
 
   /**
@@ -873,19 +857,6 @@ export class PublicNotification {
       return prev.concat(cur.download ? cur.selectedIds : [])
     }, []);
     return selectedIds.length > new Set(selectedIds).size;
-  }
-
-  /**
-   * Check if a selection set is valid (exists or has at least one added if its a refine set)
-   *
-   * @returns true if selection set is valid
-   *
-   * @protected
-   */
-  protected _isValidSet(
-    ss: ISelectionSet
-  ): boolean {
-    return ss.workflowType === EWorkflowType.REFINE ? ss?.refineIds?.addIds?.length > 0 : true;
   }
 
   /**
@@ -982,36 +953,6 @@ export class PublicNotification {
             (): void => { void this._home() }
           )
         }
-      </calcite-panel>
-    );
-  }
-
-  /**
-   * Create the Refine page that users can interactively add/remove features from existing selection sets
-   *
-   * @returns the page node
-   * @protected
-   */
-  protected _getRefinePage(): VNode {
-    const hasSelections = this._hasSelections();
-    return (
-      <calcite-panel>
-        {this._getLabel(this._translations.refineSelection)}
-        {
-          hasSelections ? (
-            <div>
-              {this._getNotice(this._translations.refineTip, "padding-sides-1")}
-              <refine-selection
-                addresseeLayer={this.addresseeLayer}
-                enabledLayerIds={this.selectionLayerIds}
-                mapView={this.mapView}
-                selectionSets={this._selectionSets}
-              />
-            </div>
-          ) :
-            this._getNotice(this._translations.refineTipNoSelections, "padding-sides-1")
-        }
-
       </calcite-panel>
     );
   }
@@ -1209,25 +1150,22 @@ export class PublicNotification {
    */
   protected _getSelectionLists(): VNode {
     return this._selectionSets.reduce((prev, cur) => {
-      const validSet = this._isValidSet(cur);
-      if (validSet) {
-        if (!this._downloadActive && cur.download) {
-          this._downloadActive = true;
-        }
-        prev.push((
-          <div class="display-flex padding-sides-1 padding-bottom-1">
-            <calcite-checkbox checked={cur.download} class="align-center" onClick={() => { void this._toggleDownload(cur.id) }} />
-            <calcite-list class="list-border margin-start-1-2 w-100" id="download-list">
-              <calcite-list-item
-                description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
-                disabled={!cur.download}
-                label={cur.label}
-                onClick={() => { void this._toggleDownload(cur.id) }}
-              />
-            </calcite-list>
-          </div>
-        ));
+      if (!this._downloadActive && cur.download) {
+        this._downloadActive = true;
       }
+      prev.push((
+        <div class="display-flex padding-sides-1 padding-bottom-1">
+          <calcite-checkbox checked={cur.download} class="align-center" onClick={() => { void this._toggleDownload(cur.id) }} />
+          <calcite-list class="list-border margin-start-1-2 w-100" id="download-list">
+            <calcite-list-item
+              description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
+              disabled={!cur.download}
+              label={cur.label}
+              onClick={() => { void this._toggleDownload(cur.id) }}
+            />
+          </calcite-list>
+        </div>
+      ));
       return prev;
     }, []) || (<div />);
   }
@@ -1282,7 +1220,7 @@ export class PublicNotification {
    */
   protected _getDownloadSelectionSets(): ISelectionSet[] {
     return this._selectionSets.filter(ss => {
-      return ss.download || ss.workflowType === EWorkflowType.REFINE;
+      return ss.download;
     });
   }
 
@@ -1412,7 +1350,6 @@ export class PublicNotification {
 
   /**
    * Update selection sets when the addressee layer changes.
-   * Will remove any "refine" selection set.
    * Will use stored search, select, and sketch geometries and any buffers to select from the new addressee layer.
    *
    * @param layerView The new addressee layer view to select from
@@ -1527,15 +1464,11 @@ export class PublicNotification {
     evt: CustomEvent
   ): void {
     evt.stopPropagation();
-    if (selectionSet.workflowType === EWorkflowType.REFINE) {
-      this._pageType = EPageType.REFINE;
-    } else {
-      this._activeSelection = selectionSet;
-      this._distance = this._activeSelection.distance;
-      this._unit = this._activeSelection.unit;
-      this._customLabel = this._activeSelection.label;
-      this._pageType = EPageType.SELECT;
-    }
+    this._activeSelection = selectionSet;
+    this._distance = this._activeSelection.distance;
+    this._unit = this._activeSelection.unit;
+    this._customLabel = this._activeSelection.label;
+    this._pageType = EPageType.SELECT;
   }
 
   /**

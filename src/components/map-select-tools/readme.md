@@ -28,12 +28,12 @@
 
 ## Events
 
-| Event                    | Description                                       | Type                                                                                                        |
-| ------------------------ | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `selectionLoadingChange` | Emitted on demand when selection starts or ends.  | `CustomEvent<boolean>`                                                                                      |
-| `selectionSetChange`     | Emitted on demand when the selection set changes. | `CustomEvent<number>`                                                                                       |
-| `sketchTypeChange`       | Emitted on demand when the sketch type changes.   | `CustomEvent<ESketchType.INTERACTIVE \| ESketchType.LAYER>`                                                 |
-| `workflowTypeChange`     | Emitted on demand when the workflow type changes. | `CustomEvent<EWorkflowType.REFINE \| EWorkflowType.SEARCH \| EWorkflowType.SELECT \| EWorkflowType.SKETCH>` |
+| Event                    | Description                                       | Type                                                                                |
+| ------------------------ | ------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `selectionLoadingChange` | Emitted on demand when selection starts or ends.  | `CustomEvent<boolean>`                                                              |
+| `selectionSetChange`     | Emitted on demand when the selection set changes. | `CustomEvent<number>`                                                               |
+| `sketchTypeChange`       | Emitted on demand when the sketch type changes.   | `CustomEvent<ESketchType.INTERACTIVE \| ESketchType.LAYER>`                         |
+| `workflowTypeChange`     | Emitted on demand when the workflow type changes. | `CustomEvent<EWorkflowType.SEARCH \| EWorkflowType.SELECT \| EWorkflowType.SKETCH>` |
 
 
 ## Methods
@@ -72,7 +72,6 @@ Promise with the new selection set
 - calcite-label
 - calcite-checkbox
 - [map-draw-tools](../map-draw-tools)
-- [refine-selection-tools](../refine-selection-tools)
 - [buffer-tools](../buffer-tools)
 
 ### Graph
@@ -83,11 +82,9 @@ graph TD;
   map-select-tools --> calcite-label
   map-select-tools --> calcite-checkbox
   map-select-tools --> map-draw-tools
-  map-select-tools --> refine-selection-tools
   map-select-tools --> buffer-tools
   calcite-segmented-control-item --> calcite-icon
-  refine-selection-tools --> map-layer-picker
-  refine-selection-tools --> calcite-action
+  map-draw-tools --> map-layer-picker
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-combobox-item
@@ -97,8 +94,6 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
-  calcite-action --> calcite-loader
-  calcite-action --> calcite-icon
   buffer-tools --> calcite-option
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select

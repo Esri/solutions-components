@@ -18,7 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop,
 import { loadModules } from "../../utils/loadModules";
 import { highlightFeatures, goToSelection } from "../../utils/mapViewUtils";
 import { getQueryGeoms, queryObjectIds } from "../../utils/queryUtils";
-import { DistanceUnit, ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration, EWorkflowType, ESelectionMode, ISelectionSet, ERefineMode, ESketchType } from "../../utils/interfaces";
+import { DistanceUnit, ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration, EWorkflowType, ISelectionSet, ESketchType, EDrawToolsMode } from "../../utils/interfaces";
 import state from "../../utils/publicNotificationStore";
 import MapSelectTools_T9n from "../../assets/t9n/map-select-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -127,6 +127,10 @@ export class MapSelectTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * boolean: When true drawn graphics will select features from the chosen select layer...
+   * then the selected features from the select layer will be used to select features from the addressee layer
+   */
   @State() _layerSelectChecked: boolean;
 
   /**
@@ -142,7 +146,7 @@ export class MapSelectTools {
   @State() protected _translations: typeof MapSelectTools_T9n;
 
   /**
-   * EWorkflowType: "SEARCH", "SELECT", "SKETCH", "REFINE"
+   * EWorkflowType: "SEARCH", "SELECT", "SKETCH"
    */
   @State() _workflowType: EWorkflowType;
 
@@ -200,12 +204,7 @@ export class MapSelectTools {
   /**
    * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
    */
-  protected _refineSelectLayers: __esri.FeatureLayerView[];
-
-  /**
-   * HTMLRefineSelectionToolsElement: The container div for the sketch widget
-   */
-  protected _refineTools: HTMLRefineSelectionToolsElement;
+  protected _selectLayers: __esri.FeatureLayerView[];
 
   /**
    * HTMLElement: The container div for the search widget
@@ -244,6 +243,11 @@ export class MapSelectTools {
    *          see https://github.com/Esri/solutions-components/issues/148
    */
   protected _skipGeomOIDs: number[];
+
+  /**
+   * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   */
+  protected _graphics: __esri.Graphic[] = [];
 
   //--------------------------------------------------------------------------
   //
@@ -296,7 +300,7 @@ export class MapSelectTools {
     oldValue: EWorkflowType
   ): Promise<void> {
     if (newValue !== oldValue) {
-      this.mapView.popup.autoOpenEnabled = ["SELECT", "SKETCH", "REFINE", "SEARCH"].indexOf(newValue) < 0;
+      this.mapView.popup.autoOpenEnabled = ["SELECT", "SKETCH", "SEARCH"].indexOf(newValue) < 0;
       this.workflowTypeChange.emit(newValue);
     }
   }
@@ -314,7 +318,7 @@ export class MapSelectTools {
    */
   @Method()
   async clearSelection(): Promise<void> {
-    return this._clearResults();
+    return this._clearResults(true, true);
   }
 
   /**
@@ -342,7 +346,8 @@ export class MapSelectTools {
       selectedIds: this._selectedIds,
       layerView: this.selectLayerView,
       geometries: this.geometries,
-      refineSelectLayers: this._refineTools.layerViews,
+      graphics: this._graphics,
+      selectLayers: this._drawTools.layerViews,
       skipGeomOIDs: this._skipGeomOIDs
     } as ISelectionSet;
   }
@@ -360,19 +365,16 @@ export class MapSelectTools {
 
   /**
    * Emitted on demand when the selection set changes.
-   *
    */
   @Event() selectionSetChange: EventEmitter<number>;
 
   /**
    * Emitted on demand when the sketch type changes.
-   *
    */
   @Event() sketchTypeChange: EventEmitter<ESketchType>;
 
   /**
    * Emitted on demand when the workflow type changes.
-   *
    */
   @Event() workflowTypeChange: EventEmitter<EWorkflowType>;
 
@@ -390,27 +392,6 @@ export class MapSelectTools {
   @Listen("searchConfigurationChange", { target: "window" })
   searchConfigurationChangeChanged(event: CustomEvent): void {
     this.searchConfiguration = event.detail;
-  }
-
-  /**
-   * Listen to changes in the sketch graphics
-   *
-   */
-  @Listen("sketchGraphicsChange", { target: "window" })
-  sketchGraphicsChange(event: CustomEvent): void {
-    this._updateSelection(EWorkflowType.SKETCH, event.detail, this._selectionLabel || this._translations.sketch, false);
-  }
-
-  /**
-   * Listen to changes in the refine graphics
-   *
-   */
-  @Listen("refineSelectionGraphicsChange", { target: "window" })
-  refineSelectionGraphicsChange(event: CustomEvent): Promise<void> {
-    const graphics = event.detail.graphics;
-    const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g.layer.objectIdField]) : [];
-    this._updateSelection(EWorkflowType.SELECT, graphics, this._selectionLabel || this._translations.select, event.detail.useOIDs, oids);
-    return this._highlightFeatures(oids);
   }
 
   //--------------------------------------------------------------------------
@@ -443,9 +424,7 @@ export class MapSelectTools {
 
     const drawEnabled = this._workflowType === EWorkflowType.SKETCH || this._workflowType === EWorkflowType.SELECT;
     const showBufferToolsClass = this.showBufferTools ? "search-distance" : "div-not-visible";
-
-    const useSelectClass = this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
-    const useDrawClass = !this._layerSelectChecked && !searchEnabled ? " div-visible" : " div-not-visible";
+    const showDrawToolsClass = drawEnabled ? "div-visible" : "div-not-visible";
 
     const showLayerChoiceClass = searchEnabled ? "div-not-visible" : "div-visible";
 
@@ -487,28 +466,20 @@ export class MapSelectTools {
             {"Use layer features"}
           </calcite-label>
         </div>
-        <div class={useDrawClass}>
+        <div class={showDrawToolsClass}>
           <map-draw-tools
             active={true}
-            border={true}
+            drawToolsMode={!this._layerSelectChecked ? EDrawToolsMode.DRAW : EDrawToolsMode.SELECT}
+            enabledLayerIds={this.enabledLayerIds}
+            graphics={this._graphics}
+            layerView={this.selectLayerView}
+            layerViews={this._selectLayers}
             mapView={this.mapView}
+            onSketchGraphicsChange={(evt) => this._sketchGraphicsChanged(evt)}
             pointSymbol={this.sketchPointSymbol}
             polygonSymbol={this.sketchPolygonSymbol}
             polylineSymbol={this.sketchLineSymbol}
             ref={(el) => { this._drawTools = el }}
-          />
-        </div>
-        <div class={useSelectClass}>
-          <refine-selection-tools
-            active={true}
-            border={true}
-            enabledLayerIds={this.enabledLayerIds}
-            layerView={this.selectLayerView}
-            layerViews={this._refineSelectLayers}
-            mapView={this.mapView}
-            mode={ESelectionMode.ADD}
-            ref={(el) => { this._refineTools = el }}
-            refineMode={ERefineMode.SUBSET}
           />
         </div>
         <calcite-label class={showBufferToolsClass}>
@@ -575,13 +546,17 @@ export class MapSelectTools {
       this._searchTerm = this.selectionSet?.searchResult?.name;
       this._workflowType = this.selectionSet?.workflowType;
       this._searchResult = this.selectionSet?.searchResult;
-      this._refineSelectLayers = this.selectionSet?.refineSelectLayers;
+      this._selectLayers = this.selectionSet?.selectLayers;
       this._selectedIds = this.selectionSet?.selectedIds;
       this._skipGeomOIDs =  this.selectionSet?.skipGeomOIDs;
       this._layerSelectChecked = this.selectionSet?.workflowType === EWorkflowType.SELECT;
 
       this.geometries = [
         ...this.selectionSet?.geometries || []
+      ];
+
+      this._graphics = [
+        ...this.selectionSet?.graphics || []
       ];
       // reset selection label base
       this._selectionLabel = this.selectionSet?.label || this._getSelectionBaseLabel();
@@ -727,6 +702,32 @@ export class MapSelectTools {
   }
 
   /**
+   * Handle changes in the sketch graphics
+   *
+   */
+  protected async _sketchGraphicsChanged(event: CustomEvent): Promise<void> {
+    const type = event.detail.type === EDrawToolsMode.DRAW ? EWorkflowType.SKETCH : EWorkflowType.SELECT;
+    const graphics = event.detail.graphics;
+    const label = this._selectionLabel || this._translations.select;
+
+    const oids = graphics.reduce((prev, cur) => {
+      if (cur?.layer?.objectIdField) {
+        prev.push(cur.attributes[cur.layer.objectIdField]);
+      } else if (cur.getObjectId) {
+        prev.push(cur.getObjectId());
+      }
+      return prev;
+    }, []);
+
+    const useOIDs = event.detail.useOIDs && oids.length > 0;
+    this._updateSelection(type, graphics, label, useOIDs, oids);
+
+    if (useOIDs) {
+      await this._highlightFeatures(oids);
+    }
+  }
+
+  /**
    * Store the layer select checked change
    *
    * @protected
@@ -795,17 +796,9 @@ export class MapSelectTools {
     );
     this.selectionLoadingChange.emit(false);
 
-    // Add geometries used for selecting features as graphics
-    this._drawTools.graphics = this.geometries.map(geom => {
-      const props = {
-        "geometry": geom,
-        "symbol": geom.type === "point" ?
-          this.sketchPointSymbol : geom.type === "polyline" ?
-            this.sketchLineSymbol : geom.type === "polygon" ?
-              this.sketchPolygonSymbol : undefined
-      };
-      return new this.Graphic(props)
-    });
+    // stored as graphics now in addition to the geoms
+    this._drawTools.graphics = this._graphics;
+
     await this._highlightFeatures(this._selectedIds);
   }
 
@@ -893,9 +886,9 @@ export class MapSelectTools {
 
     state.highlightHandle?.remove();
 
-    // for sketch
     // checking for clear as it would throw off tests
     if (this._drawTools?.clear) {
+      this._graphics = [];
       await this._drawTools.clear();
     }
     this.selectionSetChange.emit(this._selectedIds.length);
@@ -923,6 +916,7 @@ export class MapSelectTools {
     // see https://github.com/Esri/solutions-components/issues/148
     this._skipGeomOIDs = useOIDs ? oids : undefined;
     this.geometries = Array.isArray(graphics) ? graphics.map(g => g.geometry) : this.geometries;
+    this._graphics = graphics;
     this._workflowType = type;
     this._selectionLabel = label;
   }
