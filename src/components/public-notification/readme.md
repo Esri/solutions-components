@@ -58,6 +58,7 @@
 - calcite-input
 - calcite-checkbox
 - [pdf-download](../pdf-download)
+- calcite-input-text
 - calcite-notice
 
 ### Graph
@@ -82,6 +83,7 @@ graph TD;
   public-notification --> calcite-input
   public-notification --> calcite-checkbox
   public-notification --> pdf-download
+  public-notification --> calcite-input-text
   public-notification --> calcite-notice
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
@@ -131,6 +133,8 @@ graph TD;
   calcite-slider --> calcite-graph
   pdf-download --> calcite-select
   pdf-download --> calcite-option
+  calcite-input-text --> calcite-progress
+  calcite-input-text --> calcite-icon
   calcite-notice --> calcite-icon
   style public-notification fill:#f9f,stroke:#333,stroke-width:4px
 ```

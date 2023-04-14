@@ -236,6 +236,16 @@ export class PublicNotification {
   protected _geometryEngine: __esri.geometryEngine;
 
   /**
+   * Should a map be included in PDF output?
+   */
+  protected _includeMap: HTMLCalciteCheckboxElement;
+
+  /**
+   * Should a title be added to every page of the PDF?
+   */
+  protected _includeTitle: HTMLCalciteCheckboxElement;
+
+  /**
    * esri/symbols/support/jsonUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-support-jsonUtils.html
    */
   protected _jsonUtils: __esri.symbolsSupportJsonUtils;
@@ -274,6 +284,11 @@ export class PublicNotification {
    * HTMLMapSelectToolsElement: The select tools element
    */
   protected _selectTools: HTMLMapSelectToolsElement;
+
+  /**
+   * Text to be used as title on PDF pages
+   */
+  protected _title: HTMLCalciteInputTextElement;
 
   /**
    * string: The current buffer unit
@@ -1031,6 +1046,25 @@ export class PublicNotification {
                       ref={(el) => { this._downloadTools = el }}
                     />
                   </div>
+                  <calcite-label layout="inline">
+                    <calcite-checkbox
+                      ref={(el) => { this._includeMap = el }}
+                    />
+                    {this._translations.includeMap}
+                  </calcite-label>
+                  <calcite-label layout="inline">
+                    <calcite-checkbox
+                      ref={(el) => { this._includeTitle = el }}
+                    />
+                    {this._translations.includeTitle}
+                  </calcite-label>
+                  <calcite-label layout="inline">
+                    {this._translations.title}
+                    <calcite-input-text
+                      class={this._includeTitle.checked ? "" : "display-none"}
+                      ref={(el) => { this._title = el }}
+                    />
+                  </calcite-label>
                 </div>
                 <div class="padding-1 display-flex">
                   <calcite-button

@@ -61,7 +61,7 @@ function downloadPDFFile(
     },
     getAssetPath(`../assets/arcgis-pdf-creator/`),
     "en",
-    title
+    title  // filename without ".pdf"
   )
   .then(
     () => {
