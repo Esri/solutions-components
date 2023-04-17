@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
-import { DistanceUnit, EExportType, EPageType, ESketchType, EWorkflowType, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
+import { DistanceUnit, EPageType, ESketchType, EWorkflowType, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
 import { goToSelection, getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
 import { getSelectionSetQuery } from "../../utils/queryUtils";
@@ -152,10 +152,25 @@ export class PublicNotification {
   @State() addresseeLayer: __esri.FeatureLayerView;
 
   /**
+   * boolean: When true a title will be added above the map on export
+   */
+  @State() _addTitle = false;
+
+  /**
    * boolean: Enabled when we have 1 or more selection sets that is enabled in the download pages.
    * By default all selection sets are enabled for download when they are first created.
    */
   @State() _downloadActive = true;
+
+  /**
+   * boolean: When true CSV export options will be shown and a CSV file will be exported if the Export button is clicked
+   */
+  @State() _exportCSV = false;
+
+  /**
+   * boolean: When true PDF export options will be shown and a PDF file will be exported if the Export button is clicked
+   */
+  @State() _exportPDF = true;
 
   /**
    * number: The number of selected features
@@ -234,6 +249,11 @@ export class PublicNotification {
    * esri/geometry/geometryEngine: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
    */
   protected _geometryEngine: __esri.geometryEngine;
+
+  /**
+   * boolean: When true a image of the current map will be included in the PDF if the Export button is clicked
+   */
+  protected _includeMap = false;
 
   /**
    * esri/symbols/support/jsonUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-support-jsonUtils.html
@@ -466,8 +486,7 @@ export class PublicNotification {
         <calcite-shell>
           <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
             {this._getActionGroup("list-check", EPageType.LIST, this._translations.myLists)}
-            {this._getActionGroup("file-pdf", EPageType.PDF, this._translations.downloadPDF)}
-            {this._getActionGroup("file-csv", EPageType.CSV, this._translations.downloadCSV)}
+            {this._getActionGroup("export", EPageType.EXPORT, this._translations.export)}
           </calcite-action-bar>
           {this._getPage(this._pageType)}
         </calcite-shell>
@@ -598,7 +617,7 @@ export class PublicNotification {
     tip: string
   ): VNode {
     return (
-      <calcite-action-group class="action-center w-1-3" layout="horizontal">
+      <calcite-action-group class="action-center w-1-2" layout="horizontal">
         <calcite-action
           active={this._pageType === pageType}
           alignment="center"
@@ -650,12 +669,8 @@ export class PublicNotification {
         page = this._getSelectPage();
         break;
 
-      case EPageType.PDF:
-        page = this._getPDFPage();
-        break;
-
-      case EPageType.CSV:
-        page = this._getCSVPage();
+      case EPageType.EXPORT:
+        page = this._getExportPage();
         break;
 
     }
@@ -674,9 +689,7 @@ export class PublicNotification {
     const total = utils.getTotal(this._selectionSets);
     return hasSets ? (
       <calcite-panel>
-        <div class="padding-top-sides-1">
-          <calcite-label class="font-bold">{this._translations.myLists}</calcite-label>
-        </div>
+        {this._getLabel(this._translations.myLists)}
         {this._getNotice(this._translations.listHasSetsTip, "padding-sides-1 padding-bottom-1")}
         {this._getMapLayerPicker()}
         <div class="display-block padding-sides-1 height-1-1-2">
@@ -853,10 +866,36 @@ export class PublicNotification {
    * @protected
    */
   protected _hasDuplicates(): boolean {
-    const selectedIds = this._selectionSets.reduce((prev, cur) => {
+    const selectedIds = this._getSelectedIds();
+    return this._getNumDuplicates(selectedIds) > 0;
+  }
+
+  /**
+   * Return the number of duplicates
+   *
+   * @param ids the list of currently selected ids
+   *
+   * @returns the number of duplicates
+   *
+   * @protected
+   */
+  protected _getNumDuplicates(
+    ids: number[]
+  ): number {
+    return ids.length - new Set(ids).size;
+  }
+
+  /**
+   * Get the complete list of selected ids
+   *
+   * @returns all currently selected IDs
+   *
+   * @protected
+   */
+  protected _getSelectedIds(): number[] {
+    return this._selectionSets.reduce((prev, cur) => {
       return prev.concat(cur.download ? cur.selectedIds : [])
     }, []);
-    return selectedIds.length > new Set(selectedIds).size;
   }
 
   /**
@@ -958,87 +997,51 @@ export class PublicNotification {
   }
 
   /**
-   * Create the PDF download page that shows the download options
-   *
-   * @returns the page node
-   * @protected
-   */
-  protected _getPDFPage(): VNode {
-    return this._getDownloadPage(EExportType.PDF);
-  }
-
-  /**
-   * Create the CSV download page that shows the download options
-   *
-   * @returns the page node
-   * @protected
-   */
-  protected _getCSVPage(): VNode {
-    return this._getDownloadPage(EExportType.CSV);
-  }
-
-  /**
    * Create the main download page that has the shared aspects of both PDF and CSV
    * But only show the current PDF or CSV page content
    *
-   * @param type EExportType of the current type expected
-   *
    * @returns the page node
    * @protected
    */
-  protected _getDownloadPage(
-    type: EExportType
-  ): VNode {
-    const isPdf = type === EExportType.PDF;
+  protected _getExportPage(): VNode {
     const hasSelections = this._hasSelections();
-    // const hasDuplicates = this._hasDuplicates();
+    const numDuplicates = this._getNumDuplicates(this._getSelectedIds());
     return (
       <calcite-panel>
         <div>
-          <div class="padding-top-sides-1">
-            <calcite-label class="font-bold">
-              {isPdf ? this._translations.downloadPDF : this._translations.downloadCSV}
-            </calcite-label>
-          </div>
+          {this._getLabel(this._translations.export, true)}
           {
             hasSelections ? (
               <div>
-                <div class="padding-top-sides-1">
-                  <calcite-label>{this._translations.notifications}</calcite-label>
-                </div>
+                {this._getNotice(this._translations.exportTip, "padding-top-sides-1")}
+                {this._getLabel(this._translations.myLists)}
                 {this._getSelectionLists()}
-                <div class="margin-side-1 padding-top-1 border-bottom" />
-                <div class="padding-top-sides-1">
-                  <calcite-label class={isPdf ? "display-none" : ""} layout="inline">
-                    <calcite-checkbox
-                      ref={(el) => { this._removeDuplicatesCSV = el }}
-                    />
-                    {this._translations.removeDuplicate}
-                  </calcite-label>
-                  <calcite-label class={isPdf ? "" : "display-none"} layout="inline">
+                <div class="padding-sides-1">
+                  <calcite-label layout="inline">
                     <calcite-checkbox
                       ref={(el) => { this._removeDuplicatesPDF = el }}
                     />
-                    {this._translations.removeDuplicate}
+                    <div class="display-flex">
+                      {this._translations.removeDuplicate}
+                      <div class="info-message padding-start-1-2">
+                        <calcite-input-message class="info-blue margin-top-0" scale="m">
+                          {` ${this._translations.numDuplicates.replace("{{n}}", numDuplicates.toString())}`}
+                        </calcite-input-message>
+                      </div>
+                    </div>
                   </calcite-label>
                 </div>
-                <div class={isPdf ? "" : "display-none"}>
-                  {this._getLabel(this._translations.selectPDFLabelOption, false)}
-                  <div class={"padding-sides-1"}>
-                    <pdf-download
-                      disabled={!this._downloadActive}
-                      layerView={this.addresseeLayer}
-                      ref={(el) => { this._downloadTools = el }}
-                    />
-                  </div>
-                </div>
+                <div class="border-bottom" />
+                {this._getPDFOptions()}
+                <div class="border-bottom" />
+                {this._getCSVOptions()}
                 <div class="padding-1 display-flex">
                   <calcite-button
                     disabled={!this._downloadActive}
-                    onClick={isPdf ? () => this._downloadPDF() : () => this._downloadCSV()}
+                    onClick={() => this._export()}
                     width="full"
                   >
-                    {isPdf ? this._translations.downloadPDF : this._translations.downloadCSV}
+                    {this._translations.export}
                   </calcite-button>
                 </div>
               </div>
@@ -1048,6 +1051,109 @@ export class PublicNotification {
           }
         </div>
       </calcite-panel>
+    );
+  }
+
+  /**
+   * Return the PDF portion of the export page
+   *
+   * @returns the node with all PDF export options
+   *
+   * @protected
+   */
+  protected _getPDFOptions(): VNode {
+    const pdfOptionsClass = this._exportPDF ? "display-block" : "display-none";
+    const titleOptionsClass = this._addTitle ? "display-block" : "display-none";
+    return (
+      <div>
+        {this._getLabel(this._translations.pdf, true)}
+        <div class="padding-1 display-flex">
+          <calcite-label
+            class="label-margin-0 "
+          >
+            {this._translations.exportPDF}
+          </calcite-label>
+          <calcite-switch
+            checked={this._exportPDF}
+            class="position-right"
+            onCalciteSwitchChange={() => this._exportPDF = !this._exportPDF}
+          />
+        </div>
+        <div class={pdfOptionsClass}>
+          <div class={"padding-sides-1"}>
+            <calcite-label
+              class="label-margin-0"
+            >
+              {this._translations.selectPDFLabelOption}
+            </calcite-label>
+          </div>
+          <div class="padding-sides-1">
+            <pdf-download
+              disabled={!this._downloadActive}
+              layerView={this.addresseeLayer}
+              ref={(el) => { this._downloadTools = el }}
+            />
+          </div>
+          <div class="padding-top-sides-1">
+            <calcite-label
+              class="label-margin-0"
+              layout="inline"
+            >
+              <calcite-checkbox
+                checked={this._addTitle}
+                onCalciteCheckboxChange={() => this._addTitle = !this._addTitle}
+              />
+              {this._translations.addTitle}
+            </calcite-label>
+          </div>
+          <div
+            class={titleOptionsClass}
+          >
+            {this._getLabel(this._translations.title, true, "")}
+            <calcite-input-text
+              class="padding-sides-1"
+              placeholder={this._translations.titlePlaceholder}
+            />
+          </div>
+          <div class="padding-top-sides-1">
+            <calcite-label layout="inline">
+              <calcite-checkbox
+                onCalciteCheckboxChange={() => this._includeMap = !this._includeMap}
+              />
+              {this._translations.includeMap}
+            </calcite-label>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  /**
+   * Return the CSV portion of the export page
+   *
+   * @returns the node with all CSV export options
+   *
+   * @protected
+   */
+  protected _getCSVOptions(): VNode {
+    return (
+      <div>
+        <div class="padding-top-sides-1">
+          <calcite-label class="font-bold">
+            {this._translations.csv}
+          </calcite-label>
+        </div>
+        <div class="padding-sides-1 display-flex">
+          <calcite-label>
+            {this._translations.exportCSV}
+          </calcite-label>
+          <calcite-switch
+            checked={this._exportCSV}
+            class="position-right"
+            onCalciteSwitchChange={() => this._exportCSV = !this._exportCSV}
+          />
+        </div>
+      </div>
     );
   }
 
@@ -1122,19 +1228,21 @@ export class PublicNotification {
    *
    * @param label value to display in the label
    * @param disableSpacing should extra calcite defined spacing be applied
+   * @param labelClass by default label will be bold unless overridden here
    *
    * @returns the label node
    * @protected
    */
   protected _getLabel(
     label: string,
-    disableSpacing = false
+    disableSpacing = false,
+    labelClass = "font-bold"
   ): VNode {
+    labelClass += disableSpacing ? " label-margin-0" : "";
     return (
       <div class={"padding-top-sides-1"}>
         <calcite-label
-          class="font-bold"
-          disable-spacing={disableSpacing}
+          class={labelClass}
         >
           {label}
         </calcite-label>
@@ -1156,7 +1264,7 @@ export class PublicNotification {
       prev.push((
         <div class="display-flex padding-sides-1 padding-bottom-1">
           <calcite-checkbox checked={cur.download} class="align-center" onClick={() => { void this._toggleDownload(cur.id) }} />
-          <calcite-list class="list-border margin-start-1-2 w-100" id="download-list">
+          <calcite-list class="list-border margin-start-1-2 width-full" id="download-list">
             <calcite-list-item
               description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
               disabled={!cur.download}
@@ -1188,6 +1296,23 @@ export class PublicNotification {
     });
     this._downloadActive = isActive;
     await this._highlightFeatures();
+  }
+
+  /**
+   * Download all selection sets as PDF or CSV or alert the user that they need to choose at least 1 export format
+   *
+   * @protected
+   */
+  protected _export(): void {
+    if (this._exportPDF) {
+      this._downloadPDF();
+    }
+    if (this._exportCSV) {
+      this._downloadCSV();
+    }
+    if (!this._exportPDF && !this._exportCSV) {
+      // TODO show a message saying they need to enable at least one of the options
+    }
   }
 
   /**

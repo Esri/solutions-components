@@ -35,12 +35,8 @@
     width: 100%;
   }
 
-  .w-1-3 {
-    width: 33.3%;
-  }
-
-  .w-1-4 {
-    width: 25%;
+  .w-1-2 {
+    width: 50%;
   }
 
   .action-center {
@@ -123,42 +119,12 @@
     display: none;
   }
 
-  .main-label {
-    float: left;
-  }
-
-  html[dir="rtl"] .main-label {
-    float: right;
-  }
-
-  .back-label:hover {
-    cursor: pointer;
-    color: var(--calcite-ui-brand-hover);
-  }
-
   .border-bottom {
     border-bottom: 1px solid var(--calcite-ui-border-2);
   }
 
-  .margin-side-1 {
-    margin-inline-start: 1rem;
-    margin-inline-end: 1rem;
-  }
-
-  .border-top {
-    border-top: 1px solid var(--calcite-ui-border-2);
-  }
-
-  .w-100 {
-    width: 100%;
-  }
-
-  .w-50 {
-    width: 50%;
-  }
-
-  .padding-1-2 {
-    padding: 0.5rem;
+  .padding-start-1-2 {
+    padding-inline-start: 0.5rem;
   }
 
   .list-border {
@@ -202,7 +168,16 @@
     background-color: var(--calcite-ui-foreground-2);
   }
 
-  .num-selected {
-    align-items: center;
-    display: flex;
+  .position-right {
+    position: absolute;
+    right: 1rem;
+  }
+
+  .position-right[dir="rtl"] {
+    position: absolute;
+    left: 1rem;
+  }
+
+  .label-margin-0 {
+    --calcite-label-margin-bottom: 0;
   }

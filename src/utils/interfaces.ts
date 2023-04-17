@@ -41,16 +41,10 @@ export enum EUpdateType {
   Obsolete
 }
 
-export enum EExportType {
-  PDF,
-  CSV
-}
-
 export enum EPageType {
   LIST,
   SELECT,
-  PDF,
-  CSV
+  EXPORT
 }
 
 export enum EWorkflowType {

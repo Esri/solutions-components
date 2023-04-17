@@ -1,8 +1,8 @@
 {
     "pdf": "PDF",
-    "downloadPDF": "Export PDF",
+    "exportPDF": "Export PDF",
     "csv": "CSV",
-    "downloadCSV": "Export CSV",
+    "exportCSV": "Export CSV",
     "downloadNoLists": "There are no lists to export. Go to My lists to create a list of features.",
     "add": "Create new list",
     "remove": "Remove",
@@ -18,7 +18,7 @@
     "selectedAddresses": "{{n}} selected addresses from {{layer}}",
     "selectionLoading": "Selection loading",
     "selectPDFLabelOption": "PDF label option",
-    "removeDuplicate": "Remove duplicates",
+    "removeDuplicate": "Remove duplicates:",
     "numDuplicates": "{{n}} duplicates",
     "selectLayerAndAdd": "To create a list, select an input layer and click Create new list. Features from the selected input layer will be added to your list.",
     "selectSearchTip": "Use tools like sketch, search distance, or selection layer to select features from the input layer to add to your list.",
@@ -36,5 +36,6 @@
     "exportTip": "Select lists to include in file export. Choose to export lists to either a .csv or .pdf file.",
     "title": "Title",
     "addTitle": "Add title",
+    "titlePlaceholder": "Enter title here",
     "includeMap": "Include map"
 }
