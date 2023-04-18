@@ -16,9 +16,9 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import { highlightFeatures, goToSelection } from "../../utils/mapViewUtils";
-import { getQueryGeoms, queryObjectIds } from "../../utils/queryUtils";
-import { DistanceUnit, ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration, ISelectionSet, ESketchType, EDrawToolsMode } from "../../utils/interfaces";
+import { highlightFeatures, getMapLayerView, goToSelection } from "../../utils/mapViewUtils";
+import { getQueryGeoms, queryFeaturesByGeometry, queryObjectIds } from "../../utils/queryUtils";
+import { DistanceUnit, ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
 import state from "../../utils/publicNotificationStore";
 import MapSelectTools_T9n from "../../assets/t9n/map-select-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -318,7 +318,7 @@ export class MapSelectTools {
       layerView: this.selectLayerView,
       geometries: this.geometries,
       graphics: this._graphics,
-      selectLayers: this._drawTools.layerViews,
+      selectLayers: this.layerViews,
       skipGeomOIDs: this._skipGeomOIDs
     } as ISelectionSet;
   }
@@ -338,11 +338,6 @@ export class MapSelectTools {
    * Emitted on demand when the selection set changes.
    */
   @Event() selectionSetChange: EventEmitter<number>;
-
-  /**
-   * Emitted on demand when the sketch type changes.
-   */
-  @Event() sketchTypeChange: EventEmitter<ESketchType>;
 
   /**
    * Handle changes to the selection sets
@@ -392,11 +387,7 @@ export class MapSelectTools {
         <div class="padding-top-1">
           <map-draw-tools
             active={true}
-            drawToolsMode={EDrawToolsMode.DRAW}
-            enabledLayerIds={this.enabledLayerIds}
             graphics={this._graphics}
-            layerView={this.selectLayerView}
-            layerViews={this._selectLayers}
             mapView={this.mapView}
             onSketchGraphicsChange={(evt) => this._sketchGraphicsChanged(evt)}
             pointSymbol={this.sketchPointSymbol}
@@ -462,9 +453,121 @@ export class MapSelectTools {
           />
         </div>
 
-        <div class={useLayerFeaturesClass}/>
+        <div class={useLayerFeaturesClass + " padding-top-1"}>
+          {this._getLayerPicker()}
+        </div>
       </div>
     );
+  }
+
+  /**
+   * {<layer id>: Graphic[]}: Collection of graphics returned from queries to the layer
+   */
+  protected _featuresCollection: { [key: string]: __esri.Graphic[] } = {};
+
+  /**
+   * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
+   */
+  protected _sketchGeometry: __esri.Geometry;
+
+  /**
+   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   */
+  @Prop() layerViews: __esri.FeatureLayerView[] = [];
+
+  /**
+   * Create a map layer picker that will be used during SELECT draw mode operations
+   *
+   * @returns a map layer picker node
+   *
+   * @protected
+   */
+  protected _getLayerPicker(): VNode {
+    return (
+      <map-layer-picker
+        enabledLayerIds={this.enabledLayerIds}
+        mapView={this.mapView}
+        onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
+        selectedLayerIds={this.layerViews.map(l => l.layer.id)}
+        selectionMode={"single"}
+      />
+    );
+  }
+
+  /**
+ * Gets the layer views from the map when the layer selection changes
+ *
+ * @returns Promise resolving when function is done
+ *
+ * @protected
+ */
+  protected async _layerSelectionChange(
+    evt: CustomEvent
+  ): Promise<void> {
+    if (Array.isArray(evt.detail) && evt.detail.length > 0) {
+      //this._selectEnabled = true;
+      const layerPromises = evt.detail.map(id => {
+        return getMapLayerView(this.mapView, id)
+      });
+
+      return Promise.all(layerPromises).then((layerViews) => {
+        this.layerViews = layerViews;
+      });
+    }
+    // else {
+    //   this._selectEnabled = false;
+    // }
+  }
+
+  /**
+   * Select features based on the input geometry
+   *
+   * @param geom the geometry used for selection
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _selectLayerFeatures(
+    geom: __esri.Geometry
+  ): Promise<void> {
+    this.selectionLoadingChange.emit(true);
+    const queryFeaturePromises = this.layerViews.map(layerView => {
+      this._featuresCollection[layerView.layer.id] = [];
+      return queryFeaturesByGeometry(0, layerView.layer, geom, this._featuresCollection)
+    });
+
+    return Promise.all(queryFeaturePromises).then(async response => {
+      this.selectionLoadingChange.emit(false);
+      let graphics = [];
+      response.forEach(r => {
+        Object.keys(r).forEach(k => {
+          graphics = graphics.concat(r[k]);
+        })
+      });
+
+      let hasOID = false;
+
+      graphics.forEach((g: __esri.Graphic) => {
+        const geom = g.geometry;
+        g.symbol = geom.type === "point" ?
+          this.sketchPointSymbol : geom.type === "polyline" ?
+            this.sketchLineSymbol : geom.type === "polygon" ?
+              this.sketchPolygonSymbol : undefined;
+        hasOID = g?.layer?.hasOwnProperty("objectIdField") || g.hasOwnProperty("getObjectId");
+      });
+      //this.graphics = graphics;
+
+      // OIDs are used when the addressee layer and the current "use layer features" layer are the same
+      const useOIDs = (this.layerViews[0].layer.title === this.selectLayerView.layer.title) && hasOID;
+
+      await this._sketchGraphicsChanged({
+        detail: {
+          graphics,
+          useOIDs
+        }
+      } as CustomEvent, true);
+    });
   }
 
   //--------------------------------------------------------------------------
@@ -668,26 +771,32 @@ export class MapSelectTools {
    * Handle changes in the sketch graphics
    *
    */
-  protected async _sketchGraphicsChanged(event: CustomEvent): Promise<void> {
+  protected async _sketchGraphicsChanged(event: CustomEvent, forceUpdate = false): Promise<void> {
 
     // TODO need to check if "Use layer features" is enabled to know if we should select or select with selection
     const graphics = event.detail.graphics;
     const label = this._selectionLabel || this._translations.select;
 
-    const oids = graphics.reduce((prev, cur) => {
-      if (cur?.layer?.objectIdField) {
-        prev.push(cur.attributes[cur.layer.objectIdField]);
-      } else if (cur.getObjectId) {
-        prev.push(cur.getObjectId());
+    if (this._useLayerFeaturesEnabled && !forceUpdate) {
+      // Will only ever be a single graphic
+      const geometries = Array.isArray(graphics) ? graphics.map(g => g.geometry) : this.geometries;
+      await this._selectLayerFeatures(geometries[0]);
+    } else {
+      const oids = graphics.reduce((prev, cur) => {
+        if (cur?.layer?.objectIdField) {
+          prev.push(cur.attributes[cur.layer.objectIdField]);
+        } else if (cur.getObjectId) {
+          prev.push(cur.getObjectId());
+        }
+        return prev;
+      }, []);
+
+      const useOIDs = event.detail.useOIDs && oids.length > 0;
+      this._updateSelection(graphics, label, useOIDs, oids);
+
+      if (useOIDs) {
+        await this._highlightFeatures(oids);
       }
-      return prev;
-    }, []);
-
-    const useOIDs = event.detail.useOIDs && oids.length > 0;
-    this._updateSelection(graphics, label, useOIDs, oids);
-
-    if (useOIDs) {
-      await this._highlightFeatures(oids);
     }
   }
 

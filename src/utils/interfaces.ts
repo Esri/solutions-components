@@ -25,11 +25,6 @@ export enum ELayoutMode {
   VERTICAL = "VERTICAL"
 }
 
-export enum EDrawToolsMode {
-  DRAW = "DRAW",
-  SELECT = "SELECT"
-}
-
 /**
  * Resource update types
  */
@@ -47,22 +42,11 @@ export enum EPageType {
   EXPORT
 }
 
-export enum EWorkflowType {
-  SEARCH="SEARCH",
-  SELECT="SELECT",
-  SKETCH="SKETCH"
-}
-
 export enum ESelectionType {
   POINT="POINT",
   LINE="LINE",
   POLY="POLY",
   RECT="RECT"
-}
-
-export enum ESketchType {
-  "LAYER"="LAYER",
-  "INTERACTIVE"="INTERACTIVE"
 }
 
 export enum EExpandType {
@@ -367,7 +351,6 @@ export interface ISearchResult {
 
 export interface ISelectionSet {
   id: number; // Date.Now() when the item is created...used to update a selection set
-  workflowType: EWorkflowType;
   searchResult: any;
   buffer: __esri.Geometry;
   distance: number;
@@ -385,7 +368,6 @@ export interface ISelectionSet {
 export interface ISketchGraphicsChange {
   graphics: __esri.Graphic[];
   useOIDs: boolean;
-  type: EDrawToolsMode;
 }
 
 export interface IQueryExtentResponse {

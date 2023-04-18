@@ -123,7 +123,7 @@ graph TD;
   map-select-tools --> calcite-label
   map-select-tools --> calcite-switch
   map-select-tools --> buffer-tools
-  map-draw-tools --> map-layer-picker
+  map-select-tools --> map-layer-picker
   buffer-tools --> calcite-option
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select

@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
-import { DistanceUnit, EPageType, ESketchType, EWorkflowType, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
+import { DistanceUnit, EPageType, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
 import { goToSelection, getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
 import { getSelectionSetQuery } from "../../utils/queryUtils";
@@ -196,17 +196,6 @@ export class PublicNotification {
    * utils/interfaces/ISelectionSet: An array of user defined selection sets
    */
   @State() _selectionSets: ISelectionSet[] = [];
-
-  /**
-   * ESketchType: The current type of sketch
-   * used to control information messages.
-   */
-  @State() _sketchType: ESketchType = ESketchType.INTERACTIVE;
-
-  /**
-   * utils/interfaces/EWorkflowType: SEARCH | SELECT | SKETCH
-   */
-  @State() _selectionWorkflowType = EWorkflowType.SEARCH;
 
   /**
    * boolean: When true a modal will be shown to alert users of potential changes to selection sets.
@@ -443,14 +432,6 @@ export class PublicNotification {
   @Listen("selectionSetsChanged", { target: "window" })
   selectionSetsChanged(event: CustomEvent): void {
     this._selectionSets = [...event.detail];
-  }
-
-  /**
-   * Handle changes to the selection sets
-   */
-  @Listen("sketchTypeChange", { target: "window" })
-  sketchTypeChange(event: CustomEvent): void {
-    this._sketchType = event.detail;
   }
 
   /**
@@ -874,14 +855,7 @@ export class PublicNotification {
    * @protected
    */
   protected _getSelectPage(): VNode {
-    const searchTip = this._translations.selectSearchTip;
-    const selectTip = this._translations.selectLayerTip;
-    const sketchTip = this._sketchType === ESketchType.INTERACTIVE ?
-      this._translations.selectSketchTip :
-      this._translations.selectLayerTip;
-
-    const noticeText = this._selectionWorkflowType === EWorkflowType.SELECT ? selectTip :
-      this._selectionWorkflowType === EWorkflowType.SKETCH ? sketchTip : searchTip;
+    const noticeText = this._translations.selectSearchTip;
 
     const nameLabelClass = this.customLabelEnabled ? "" : "display-none";
 
@@ -936,16 +910,17 @@ export class PublicNotification {
             }
           </calcite-input-message>
         </div>
-        <div class={"padding-sides-1 " + nameLabelClass}>
+        <div class="border-bottom" />
+        <div class={"padding-sides-1 padding-top-1 " + nameLabelClass}>
           <calcite-label
             class="font-bold"
           >
-            {"List name"}
+            {this._translations.listName}
             <calcite-input
               onInput={() => {
                 this.labelChange.emit(this._labelName.value);
               }}
-              placeholder="Insert label here..."
+              placeholder={this._translations.listNamePlaceholder}
               ref={(el) => { this._labelName = el }}
               value={this._customLabel || ""}
             />
@@ -1334,17 +1309,6 @@ export class PublicNotification {
       this._labelName.value = this._customLabel;
       this.labelChange.emit(this._labelName.value);
     }
-  }
-
-  /**
-   * Store the current workflow type
-   *
-   * @protected
-   */
-  protected _updateForWorkflowType(
-    evt: CustomEvent
-  ): void {
-    this._selectionWorkflowType = evt.detail;
   }
 
   /**

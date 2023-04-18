@@ -171,23 +171,21 @@ export function getSelectionSetQuery(
   geometryEngine: __esri.geometryEngine
 ): Promise<number[]> {
   let q = Promise.resolve([]);
-  if (selectionSet.workflowType) {
-    if (!selectionSet.buffer) {
-      const queryGeoms = getQueryGeoms(
-        selectionSet.geometries,
-        geometryEngine
-      );
-      q = queryObjectIds(
-        queryGeoms,
-        selectionSet.layerView.layer
-      );
-    } else {
-      // buffer is a single unioned geom
-      q = queryObjectIds(
-        [selectionSet.buffer],
-        selectionSet.layerView.layer
-      );
-    }
+  if (!selectionSet.buffer) {
+    const queryGeoms = getQueryGeoms(
+      selectionSet.geometries,
+      geometryEngine
+    );
+    q = queryObjectIds(
+      queryGeoms,
+      selectionSet.layerView.layer
+    );
+  } else {
+    // buffer is a single unioned geom
+    q = queryObjectIds(
+      [selectionSet.buffer],
+      selectionSet.layerView.layer
+    );
   }
   return q;
 }

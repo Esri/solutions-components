@@ -15,10 +15,8 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
-import { EDrawToolsMode, ESelectionType, ISketchGraphicsChange } from "../../utils/interfaces";
+import { ESelectionType, ISketchGraphicsChange } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
-import { getMapLayerView } from "../../utils/mapViewUtils";
-import { queryFeaturesByGeometry } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
 import MapDrawTools_T9n from "../../assets/t9n/map-draw-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -43,12 +41,6 @@ export class MapDrawTools {
   //--------------------------------------------------------------------------
 
   /**
-   * EDrawToolsMode: Will the drawn graphic select features from the addressee layer (DRAW) or
-   *  from a select layer whose features will then be used select features from the addressee layer (SELECT)
-   */
-  @Prop() drawToolsMode: EDrawToolsMode;
-
-  /**
    * boolean: sketch is used by multiple components...need a way to know who should respond...
    */
   @Prop() active = false;
@@ -62,27 +54,6 @@ export class MapDrawTools {
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop({ mutable: true }) mapView: __esri.MapView;
-
-  /**
-   * string[]: Optional list of enabled layer ids
-   *  If empty all layers will be available
-   */
-  @Prop() enabledLayerIds: string[] = [];
-
-  /**
-   * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
-   */
-  @Prop() layerView: __esri.FeatureLayerView;
-
-  /**
-   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-   */
-  @Prop() layerViews: __esri.FeatureLayerView[] = [];
-
-  /**
-   * boolean: Used to control the visibility of the layer picker
-   */
-  @Prop() useLayerPicker = true;
 
   /**
    * esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
@@ -112,11 +83,6 @@ export class MapDrawTools {
   @State() _translations: typeof MapDrawTools_T9n;
 
   /**
-   * boolean: Is "use layer" enabled
-   */
-  @State() _selectEnabled = false;
-
-  /**
    * utils/interfaces/ESelectionType: POINT, LINE, POLY, RECT
    */
   @State() _selectionMode: ESelectionType;
@@ -144,27 +110,19 @@ export class MapDrawTools {
   protected Sketch: typeof import("esri/widgets/Sketch");
 
   /**
-   * {<layer id>: Graphic[]}: Collection of graphics returned from queries to the layer
-   */
-  protected _featuresCollection: { [key: string]: __esri.Graphic[] } = {};
-
-  /**
-   * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
-   */
-  protected _sketchGeometry: __esri.Geometry;
-
-  /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
    * The graphics layer used to show selections.
    */
   protected _sketchGraphicsLayer: __esri.GraphicsLayer;
 
   /**
-   * esri/widgets/Sketch/SketchViewModel: The html element for selecting buffer unit
-   * The sketch view model used to create graphics
+   * esri/widgets/Sketch/SketchViewModel: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch-SketchViewModel.html
    */
   protected _sketchViewModel: __esri.SketchViewModel;
 
+  /**
+   * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html#constructors-summary
+   */
   protected _sketchWidget: __esri.Sketch;
 
   /**
@@ -262,11 +220,8 @@ export class MapDrawTools {
   render(): VNode {
     return (
       <Host>
-        <div>
-          {this._getLayerPicker()}
-          <div class="border">
-            <div ref={(el) => { this._sketchElement = el }} />
-          </div>
+        <div class="border">
+          <div ref={(el) => { this._sketchElement = el }} />
         </div>
       </Host>
     );
@@ -277,25 +232,6 @@ export class MapDrawTools {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Create a map layer picker that will be used during SELECT draw mode operations
-   *
-   * @returns a map layer picker node
-   *
-   * @protected
-   */
-  protected _getLayerPicker(): VNode {
-    return this.useLayerPicker && this.drawToolsMode !== EDrawToolsMode.DRAW ? (
-      <map-layer-picker
-        enabledLayerIds={this.enabledLayerIds}
-        mapView={this.mapView}
-        onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
-        selectedLayerIds={this.layerViews.map(l => l.layer.id)}
-        selectionMode={"single"}
-      />
-    ) : null;
-  }
 
   /**
    * Load esri javascript api modules
@@ -390,36 +326,21 @@ export class MapDrawTools {
 
     this._sketchWidget.on("create", (evt) => {
       if (evt.state === "complete") {
-        if (this.drawToolsMode === EDrawToolsMode.DRAW) {
-          this.graphics = [evt.graphic];
-          this.sketchGraphicsChange.emit({
-            graphics: this.graphics,
-            useOIDs: false,
-            type: this.drawToolsMode
-          });
-        } else {
-          if (this.active) {
-            this._featuresCollection = {};
-            this._sketchGeometry = evt.graphic.geometry;
-            void this._selectFeatures(this._sketchGeometry);
-          }
-        }
+        this.graphics = [evt.graphic];
+        this.sketchGraphicsChange.emit({
+          graphics: this.graphics,
+          useOIDs: false
+        });
       }
     });
 
     this._sketchWidget.on("update", (evt) => {
       const eventType = evt?.toolEventInfo?.type;
       if (eventType === "reshape-stop" || eventType === "move-stop") {
-        this.graphics = this.drawToolsMode === EDrawToolsMode.SELECT ? this.graphics.map(g => {
-          // can only modify one at a time so safe to only check the first
-          const evtGraphic = evt.graphics[0];
-          return (g.getObjectId() === evtGraphic.getObjectId()) ?
-            evtGraphic : g;
-        }) : evt.graphics;
+        this.graphics = evt.graphics;
         this.sketchGraphicsChange.emit({
           graphics: this.graphics,
-          useOIDs: false,
-          type: this.drawToolsMode
+          useOIDs: false
         });
       }
     });
@@ -428,8 +349,7 @@ export class MapDrawTools {
       this.graphics = [];
       this.sketchGraphicsChange.emit({
         graphics: this.graphics,
-        useOIDs: false,
-        type: this.drawToolsMode
+        useOIDs: false
       });
     });
 
@@ -437,8 +357,7 @@ export class MapDrawTools {
       this.graphics = evt.graphics;
       this.sketchGraphicsChange.emit({
         graphics: this.graphics,
-        useOIDs: false,
-        type: this.drawToolsMode
+        useOIDs: false
       });
     });
 
@@ -446,81 +365,7 @@ export class MapDrawTools {
       this.graphics = evt.graphics;
       this.sketchGraphicsChange.emit({
         graphics: this.graphics,
-        useOIDs: false,
-        type: this.drawToolsMode
-      });
-    });
-  }
-
-  /**
-   * Gets the layer views from the map when the layer selection changes
-   *
-   * @returns Promise resolving when function is done
-   *
-   * @protected
-   */
-  protected async _layerSelectionChange(
-    evt: CustomEvent
-  ): Promise<void> {
-    if (Array.isArray(evt.detail) && evt.detail.length > 0) {
-      this._selectEnabled = true;
-      const layerPromises = evt.detail.map(id => {
-        return getMapLayerView(this.mapView, id)
-      });
-
-      return Promise.all(layerPromises).then((layerViews) => {
-        this.layerViews = layerViews;
-      });
-    } else {
-      this._selectEnabled = false;
-    }
-  }
-
-  /**
-   * Select features based on the input geometry
-   *
-   * @param geom the geometry used for selection
-   *
-   * @returns Promise resolving when function is done
-   *
-   * @protected
-   */
-  protected async _selectFeatures(
-    geom: __esri.Geometry
-  ): Promise<void> {
-    this.selectionLoadingChange.emit(true);
-    const queryFeaturePromises = this.layerViews.map(layerView => {
-      this._featuresCollection[layerView.layer.id] = [];
-      return queryFeaturesByGeometry(0, layerView.layer, geom, this._featuresCollection)
-    });
-
-    return Promise.all(queryFeaturePromises).then(async response => {
-      this.selectionLoadingChange.emit(false);
-      let graphics = [];
-      response.forEach(r => {
-        Object.keys(r).forEach(k => {
-          graphics = graphics.concat(r[k]);
-        })
-      });
-
-      let hasOID = false;
-
-      graphics.forEach((g: __esri.Graphic) => {
-        const geom = g.geometry;
-        g.symbol = geom.type === "point" ?
-          this._sketchWidget.viewModel.pointSymbol : geom.type === "polyline" ?
-            this._sketchWidget.viewModel.polylineSymbol : geom.type === "polygon" ?
-              this._sketchWidget.viewModel.polygonSymbol : undefined;
-        hasOID = g?.layer?.hasOwnProperty("objectIdField") || g.hasOwnProperty("getObjectId");
-      });
-      this.graphics = graphics;
-
-      // OIDs are used when the addressee layer and the current "use layer features" layer are the same
-      const useOIDs = (this.layerViews[0].layer.title === this.layerView.layer.title) && hasOID;
-      this.sketchGraphicsChange.emit({
-        graphics,
-        useOIDs,
-        type: this.drawToolsMode
+        useOIDs: false
       });
     });
   }
@@ -531,7 +376,6 @@ export class MapDrawTools {
    * @protected
    */
   protected _clearSketch(): void {
-    this._sketchGeometry = null;
     this._sketchWidget.viewModel.cancel();
     this.graphics = [];
     this._sketchGraphicsLayer?.removeAll();

@@ -16,6 +16,7 @@
 | `enabledLayerIds`       | --                        | string[]: Optional list of enabled layer ids  If empty all layers will be available                                                                        | `string[]`                                      | `[]`                  |
 | `geometries`            | --                        | esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html                                                            | `Geometry[]`                                    | `[]`                  |
 | `isUpdate`              | `is-update`               | boolean: When true a new label is not generated for the stored selection set                                                                               | `boolean`                                       | `false`               |
+| `layerViews`            | --                        | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html                  | `FeatureLayerView[]`                            | `[]`                  |
 | `mapView`               | --                        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                                     | `MapView`                                       | `undefined`           |
 | `searchConfiguration`   | --                        | ISearchConfiguration: Configuration details for the Search widget                                                                                          | `ISearchConfiguration`                          | `undefined`           |
 | `selectLayerView`       | --                        | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html                  | `FeatureLayerView`                              | `undefined`           |
@@ -27,11 +28,10 @@
 
 ## Events
 
-| Event                    | Description                                       | Type                                                        |
-| ------------------------ | ------------------------------------------------- | ----------------------------------------------------------- |
-| `selectionLoadingChange` | Emitted on demand when selection starts or ends.  | `CustomEvent<boolean>`                                      |
-| `selectionSetChange`     | Emitted on demand when the selection set changes. | `CustomEvent<number>`                                       |
-| `sketchTypeChange`       | Emitted on demand when the sketch type changes.   | `CustomEvent<ESketchType.INTERACTIVE \| ESketchType.LAYER>` |
+| Event                    | Description                                       | Type                   |
+| ------------------------ | ------------------------------------------------- | ---------------------- |
+| `selectionLoadingChange` | Emitted on demand when selection starts or ends.  | `CustomEvent<boolean>` |
+| `selectionSetChange`     | Emitted on demand when the selection set changes. | `CustomEvent<number>`  |
 
 
 ## Methods
@@ -69,6 +69,7 @@ Promise with the new selection set
 - calcite-label
 - calcite-switch
 - [buffer-tools](../buffer-tools)
+- [map-layer-picker](../map-layer-picker)
 
 ### Graph
 ```mermaid
@@ -77,23 +78,23 @@ graph TD;
   map-select-tools --> calcite-label
   map-select-tools --> calcite-switch
   map-select-tools --> buffer-tools
-  map-draw-tools --> map-layer-picker
-  map-layer-picker --> calcite-select
-  map-layer-picker --> calcite-combobox
-  map-layer-picker --> calcite-combobox-item
-  map-layer-picker --> calcite-option
-  calcite-select --> calcite-icon
-  calcite-combobox --> calcite-chip
-  calcite-combobox --> calcite-icon
-  calcite-chip --> calcite-icon
-  calcite-combobox-item --> calcite-icon
+  map-select-tools --> map-layer-picker
   buffer-tools --> calcite-option
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select
   buffer-tools --> calcite-slider
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
+  calcite-select --> calcite-icon
   calcite-slider --> calcite-graph
+  map-layer-picker --> calcite-select
+  map-layer-picker --> calcite-combobox
+  map-layer-picker --> calcite-combobox-item
+  map-layer-picker --> calcite-option
+  calcite-combobox --> calcite-chip
+  calcite-combobox --> calcite-icon
+  calcite-chip --> calcite-icon
+  calcite-combobox-item --> calcite-icon
   public-notification --> map-select-tools
   style map-select-tools fill:#f9f,stroke:#333,stroke-width:4px
 ```

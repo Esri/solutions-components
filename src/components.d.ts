@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EDrawToolsMode, EExpandType, ESketchType, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
+import { DistanceUnit, EExpandType, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -145,25 +145,9 @@ export namespace Components {
          */
         "clear": () => Promise<void>;
         /**
-          * EDrawToolsMode: Will the drawn graphic select features from the addressee layer (DRAW) or  from a select layer whose features will then be used select features from the addressee layer (SELECT)
-         */
-        "drawToolsMode": EDrawToolsMode;
-        /**
-          * string[]: Optional list of enabled layer ids  If empty all layers will be available
-         */
-        "enabledLayerIds": string[];
-        /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "graphics": __esri.Graphic[];
-        /**
-          * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
-         */
-        "layerView": __esri.FeatureLayerView;
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "layerViews": __esri.FeatureLayerView[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -180,10 +164,6 @@ export namespace Components {
           * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
          */
         "polylineSymbol": __esri.SimpleLineSymbol;
-        /**
-          * boolean: Used to control the visibility of the layer picker
-         */
-        "useLayerPicker": boolean;
     }
     interface MapLayerPicker {
         /**
@@ -257,6 +237,10 @@ export namespace Components {
           * boolean: When true a new label is not generated for the stored selection set
          */
         "isUpdate": boolean;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "layerViews": __esri.FeatureLayerView[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -974,25 +958,9 @@ declare namespace LocalJSX {
          */
         "active"?: boolean;
         /**
-          * EDrawToolsMode: Will the drawn graphic select features from the addressee layer (DRAW) or  from a select layer whose features will then be used select features from the addressee layer (SELECT)
-         */
-        "drawToolsMode"?: EDrawToolsMode;
-        /**
-          * string[]: Optional list of enabled layer ids  If empty all layers will be available
-         */
-        "enabledLayerIds"?: string[];
-        /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "graphics"?: __esri.Graphic[];
-        /**
-          * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
-         */
-        "layerView"?: __esri.FeatureLayerView;
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "layerViews"?: __esri.FeatureLayerView[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -1017,10 +985,6 @@ declare namespace LocalJSX {
           * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
          */
         "polylineSymbol"?: __esri.SimpleLineSymbol;
-        /**
-          * boolean: Used to control the visibility of the layer picker
-         */
-        "useLayerPicker"?: boolean;
     }
     interface MapLayerPicker {
         /**
@@ -1088,6 +1052,10 @@ declare namespace LocalJSX {
          */
         "isUpdate"?: boolean;
         /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "layerViews"?: __esri.FeatureLayerView[];
+        /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
@@ -1099,10 +1067,6 @@ declare namespace LocalJSX {
           * Emitted on demand when the selection set changes.
          */
         "onSelectionSetChange"?: (event: MapSelectToolsCustomEvent<number>) => void;
-        /**
-          * Emitted on demand when the sketch type changes.
-         */
-        "onSketchTypeChange"?: (event: MapSelectToolsCustomEvent<ESketchType>) => void;
         /**
           * ISearchConfiguration: Configuration details for the Search widget
          */

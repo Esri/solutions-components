@@ -37,5 +37,7 @@
     "title": "Title",
     "addTitle": "Add title",
     "titlePlaceholder": "Enter title here",
-    "includeMap": "Include map"
+    "includeMap": "Include map",
+    "listName": "List name",
+    "listNamePlaceholder": "Enter name here"
 }
