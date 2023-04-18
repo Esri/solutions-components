@@ -18,7 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop,
 import { loadModules } from "../../utils/loadModules";
 import { highlightFeatures, goToSelection } from "../../utils/mapViewUtils";
 import { getQueryGeoms, queryObjectIds } from "../../utils/queryUtils";
-import { DistanceUnit, ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration, EWorkflowType, ISelectionSet, ESketchType, EDrawToolsMode } from "../../utils/interfaces";
+import { DistanceUnit, ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration, ISelectionSet, ESketchType, EDrawToolsMode } from "../../utils/interfaces";
 import state from "../../utils/publicNotificationStore";
 import MapSelectTools_T9n from "../../assets/t9n/map-select-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -99,11 +99,6 @@ export class MapSelectTools {
   @Prop() selectLayerView: __esri.FeatureLayerView;
 
   /**
-   * boolean: When true the buffer tools will be available for use
-   */
-  @Prop() showBufferTools = true;
-
-  /**
    * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
    *
    */
@@ -128,10 +123,9 @@ export class MapSelectTools {
   //--------------------------------------------------------------------------
 
   /**
-   * boolean: When true drawn graphics will select features from the chosen select layer...
-   * then the selected features from the select layer will be used to select features from the addressee layer
+   * boolean: when true buffer tools controls are enabled
    */
-  @State() _layerSelectChecked: boolean;
+  @State() _searchDistanceEnabled = false;
 
   /**
    * string: Text entered by the end user.
@@ -146,9 +140,9 @@ export class MapSelectTools {
   @State() protected _translations: typeof MapSelectTools_T9n;
 
   /**
-   * EWorkflowType: "SEARCH", "SELECT", "SKETCH"
+   * boolean: when true drawn graphics will be used to select features
    */
-  @State() _workflowType: EWorkflowType;
+  @State() _useLayerFeaturesEnabled = false;
 
   //--------------------------------------------------------------------------
   //
@@ -222,12 +216,6 @@ export class MapSelectTools {
   protected _searchWidget: __esri.widgetsSearch;
 
   /**
-   * HTMLCalciteCheckboxElement: The checkbox element that controls if user drawn graphics
-   * are used, if checked, to first make a selection on the layer and use the returned geomerties to select from the addressee layer
-   */
-  protected _selectFromLayerElement: HTMLCalciteCheckboxElement;
-
-  /**
    * number[]: the oids of the selected features
    */
   protected _selectedIds: number[] = [];
@@ -289,22 +277,6 @@ export class MapSelectTools {
     }
   }
 
-  /**
-   * Called each time the workflowType prop is changed and emits the workflowTypeChange event.
-   *
-   * @returns Promise when complete
-   */
-  @Watch("_workflowType")
-  async workflowTypeHandler(
-    newValue: EWorkflowType,
-    oldValue: EWorkflowType
-  ): Promise<void> {
-    if (newValue !== oldValue) {
-      this.mapView.popup.autoOpenEnabled = ["SELECT", "SKETCH", "SEARCH"].indexOf(newValue) < 0;
-      this.workflowTypeChange.emit(newValue);
-    }
-  }
-
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
@@ -335,7 +307,6 @@ export class MapSelectTools {
     const isBaseLabel = this._selectionLabel === this._getSelectionBaseLabel();
     return {
       id: this.isUpdate ? this.selectionSet.id : Date.now(),
-      workflowType: this._workflowType,
       searchResult: this._searchResult,
       buffer: this._bufferGeometry,
       distance: this._bufferTools.distance,
@@ -372,11 +343,6 @@ export class MapSelectTools {
    * Emitted on demand when the sketch type changes.
    */
   @Event() sketchTypeChange: EventEmitter<ESketchType>;
-
-  /**
-   * Emitted on demand when the workflow type changes.
-   */
-  @Event() workflowTypeChange: EventEmitter<EWorkflowType>;
 
   /**
    * Handle changes to the selection sets
@@ -419,57 +385,14 @@ export class MapSelectTools {
    * Renders the component.
    */
   render(): VNode {
-    const searchEnabled = this._workflowType === EWorkflowType.SEARCH;
-    const showSearchClass = searchEnabled ? " div-visible-search" : " div-not-visible";
-
-    const drawEnabled = this._workflowType === EWorkflowType.SKETCH || this._workflowType === EWorkflowType.SELECT;
-    const showBufferToolsClass = this.showBufferTools ? "search-distance" : "div-not-visible";
-    const showDrawToolsClass = drawEnabled ? "div-visible" : "div-not-visible";
-
-    const showLayerChoiceClass = searchEnabled ? "div-not-visible" : "div-visible";
-
-    const bufferDistance = typeof this.selectionSet?.distance === "number" ? this.selectionSet.distance : this.defaultBufferDistance;
-
     return (
       <Host>
-        <div class="padding-bottom-1">
-          <calcite-segmented-control
-            class="w-100"
-            onCalciteSegmentedControlChange={(evt) => this._workflowChange(evt)}
-          >
-            <calcite-segmented-control-item
-              checked={searchEnabled}
-              class="w-50 end-border"
-              value={EWorkflowType.SEARCH}
-            >
-              {this._translations.search}
-            </calcite-segmented-control-item>
-            <calcite-segmented-control-item
-              checked={drawEnabled}
-              class="w-50"
-              value={EWorkflowType.SKETCH}
-            >
-              {this._translations.sketch}
-            </calcite-segmented-control-item>
-          </calcite-segmented-control>
-        </div>
-        <div class={showSearchClass}>
-          <div class="search-widget" ref={(el) => { this._searchElement = el }} />
-        </div>
-        <div class={showLayerChoiceClass}>
-          <calcite-label layout="inline">
-            <calcite-checkbox
-              checked={this._layerSelectChecked}
-              onCalciteCheckboxChange={() => this._layerSelectChanged()}
-              ref={(el) => this._selectFromLayerElement = el}
-            />
-            {"Use layer features"}
-          </calcite-label>
-        </div>
-        <div class={showDrawToolsClass}>
+        <div class="search-widget" ref={(el) => { this._searchElement = el }} />
+
+        <div class="padding-top-1">
           <map-draw-tools
             active={true}
-            drawToolsMode={!this._layerSelectChecked ? EDrawToolsMode.DRAW : EDrawToolsMode.SELECT}
+            drawToolsMode={EDrawToolsMode.DRAW}
             enabledLayerIds={this.enabledLayerIds}
             graphics={this._graphics}
             layerView={this.selectLayerView}
@@ -482,8 +405,34 @@ export class MapSelectTools {
             ref={(el) => { this._drawTools = el }}
           />
         </div>
-        <calcite-label class={showBufferToolsClass}>
-          {this._translations.searchDistance}
+
+        {this._getBufferOptions()}
+
+        {this._getUseLayerFeaturesOptions()}
+      </Host>
+    );
+  }
+
+  protected _getBufferOptions(): VNode {
+    const showBufferToolsClass = this._searchDistanceEnabled ? "search-distance" : "div-not-visible";
+
+    const bufferDistance = typeof this.selectionSet?.distance === "number" ? this.selectionSet.distance : this.defaultBufferDistance;
+    return (
+      <div>
+        <div class="padding-top-1 display-flex">
+          <calcite-label
+            class="label-margin-0 "
+          >
+            {this._translations.searchDistance}
+          </calcite-label>
+          <calcite-switch
+            checked={this._searchDistanceEnabled}
+            class="position-right"
+            onCalciteSwitchChange={() => this._searchDistanceEnabled = !this._searchDistanceEnabled}
+          />
+        </div>
+
+        <div class={showBufferToolsClass}>
           <buffer-tools
             distance={bufferDistance}
             geometries={this.geometries}
@@ -491,9 +440,30 @@ export class MapSelectTools {
             ref={(el) => this._bufferTools = el}
             unit={this.selectionSet?.unit || this.defaultBufferUnit}
           />
-        </calcite-label>
-        <slot />
-      </Host>
+        </div>
+      </div>
+    );
+  }
+
+  protected _getUseLayerFeaturesOptions(): VNode {
+    const useLayerFeaturesClass = this._useLayerFeaturesEnabled ? "div-visible" : "div-not-visible";
+    return (
+      <div>
+        <div class="padding-top-1 badding-bottom-1 display-flex">
+          <calcite-label
+            class="label-margin-0 "
+          >
+            {this._translations.useLayerFeatures}
+          </calcite-label>
+          <calcite-switch
+            checked={this._useLayerFeaturesEnabled}
+            class="position-right"
+            onCalciteSwitchChange={() => this._useLayerFeaturesEnabled = !this._useLayerFeaturesEnabled}
+          />
+        </div>
+
+        <div class={useLayerFeaturesClass}/>
+      </div>
     );
   }
 
@@ -544,12 +514,10 @@ export class MapSelectTools {
   protected async _initSelectionSet(): Promise<void> {
     if (this.selectionSet) {
       this._searchTerm = this.selectionSet?.searchResult?.name;
-      this._workflowType = this.selectionSet?.workflowType;
       this._searchResult = this.selectionSet?.searchResult;
       this._selectLayers = this.selectionSet?.selectLayers;
       this._selectedIds = this.selectionSet?.selectedIds;
       this._skipGeomOIDs =  this.selectionSet?.skipGeomOIDs;
-      this._layerSelectChecked = this.selectionSet?.workflowType === EWorkflowType.SELECT;
 
       this.geometries = [
         ...this.selectionSet?.geometries || []
@@ -563,7 +531,6 @@ export class MapSelectTools {
 
       await goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     } else {
-      this._workflowType = EWorkflowType.SEARCH;
       this.mapView.popup.autoOpenEnabled = false;
     }
   }
@@ -574,10 +541,7 @@ export class MapSelectTools {
    * @protected
    */
   protected _getSelectionBaseLabel(): string {
-    return this._workflowType === EWorkflowType.SKETCH ?
-      this._translations.sketch : this._workflowType === EWorkflowType.SELECT ?
-        this._translations.select : this._workflowType === EWorkflowType.SEARCH && this._searchResult ?
-          this._searchResult?.name : this.selectionSet?.label;
+    return this.selectionSet?.label || "need to think through this";
   }
 
   /**
@@ -609,7 +573,6 @@ export class MapSelectTools {
           const useOIDs = searchResults.source?.layer?.id && searchResults.source.layer.id === this.selectLayerView.layer.id;
           const oids = useOIDs ? [searchResults.result.feature.getObjectId()] : undefined;
           this._updateSelection(
-            EWorkflowType.SEARCH,
             [searchResults.result.feature],
             searchResults?.result?.name,
             useOIDs,
@@ -706,7 +669,8 @@ export class MapSelectTools {
    *
    */
   protected async _sketchGraphicsChanged(event: CustomEvent): Promise<void> {
-    const type = event.detail.type === EDrawToolsMode.DRAW ? EWorkflowType.SKETCH : EWorkflowType.SELECT;
+
+    // TODO need to check if "Use layer features" is enabled to know if we should select or select with selection
     const graphics = event.detail.graphics;
     const label = this._selectionLabel || this._translations.select;
 
@@ -720,30 +684,11 @@ export class MapSelectTools {
     }, []);
 
     const useOIDs = event.detail.useOIDs && oids.length > 0;
-    this._updateSelection(type, graphics, label, useOIDs, oids);
+    this._updateSelection(graphics, label, useOIDs, oids);
 
     if (useOIDs) {
       await this._highlightFeatures(oids);
     }
-  }
-
-  /**
-   * Store the layer select checked change
-   *
-   * @protected
-   */
-  protected _layerSelectChanged(): void {
-    this._layerSelectChecked = this._selectFromLayerElement.checked;
-    this.sketchTypeChange.emit(this._layerSelectChecked ? ESketchType.LAYER : ESketchType.INTERACTIVE);
-  }
-
-  /**
-   * Store workflow type change
-   *
-   * @protected
-   */
-  protected _workflowChange(evt: CustomEvent): void {
-    this._workflowType = (evt.target as HTMLCalciteSegmentedControlItemElement).value as EWorkflowType;
   }
 
   /**
@@ -906,7 +851,6 @@ export class MapSelectTools {
    * @protected
    */
   protected _updateSelection(
-    type: EWorkflowType,
     graphics: __esri.Graphic[],
     label: string,
     useOIDs: boolean,
@@ -917,7 +861,6 @@ export class MapSelectTools {
     this._skipGeomOIDs = useOIDs ? oids : undefined;
     this.geometries = Array.isArray(graphics) ? graphics.map(g => g.geometry) : this.geometries;
     this._graphics = graphics;
-    this._workflowType = type;
     this._selectionLabel = label;
   }
 

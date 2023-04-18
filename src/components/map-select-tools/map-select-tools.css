@@ -37,6 +37,10 @@
   padding-bottom: 1rem;
 }
 
+.padding-top-1 {
+  padding-top: 1rem;
+}
+
 .search-widget {
   width: 100% !important;
   border: 1px solid var(--calcite-ui-border-input);

@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EDrawToolsMode, EExpandType, ESketchType, EWorkflowType, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
+import { DistanceUnit, EDrawToolsMode, EExpandType, ESketchType, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -273,10 +273,6 @@ export namespace Components {
           * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
          */
         "selectionSet": ISelectionSet;
-        /**
-          * boolean: When true the buffer tools will be available for use
-         */
-        "showBufferTools": boolean;
         /**
           * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
          */
@@ -1108,10 +1104,6 @@ declare namespace LocalJSX {
          */
         "onSketchTypeChange"?: (event: MapSelectToolsCustomEvent<ESketchType>) => void;
         /**
-          * Emitted on demand when the workflow type changes.
-         */
-        "onWorkflowTypeChange"?: (event: MapSelectToolsCustomEvent<EWorkflowType>) => void;
-        /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
         "searchConfiguration"?: ISearchConfiguration;
@@ -1123,10 +1115,6 @@ declare namespace LocalJSX {
           * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
          */
         "selectionSet"?: ISelectionSet;
-        /**
-          * boolean: When true the buffer tools will be available for use
-         */
-        "showBufferTools"?: boolean;
         /**
           * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
          */

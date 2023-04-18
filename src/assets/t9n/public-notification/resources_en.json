@@ -7,7 +7,7 @@
     "add": "Create new list",
     "remove": "Remove",
     "back": "Back",
-    "addresseeLayer": "Addressee layer",
+    "inputLayer": "Input layer",
     "selectedFeatures": "{{n}} selected features",
     "noNotifications": "You have no notification list yet.",
     "notifications": "Notifications",

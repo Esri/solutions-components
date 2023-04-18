@@ -20,7 +20,6 @@
 | `searchConfiguration`   | --                        | ISearchConfiguration: Configuration details for the Search widget                                                                                          | `ISearchConfiguration`                          | `undefined`           |
 | `selectLayerView`       | --                        | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html                  | `FeatureLayerView`                              | `undefined`           |
 | `selectionSet`          | --                        | utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.                                                        | `ISelectionSet`                                 | `undefined`           |
-| `showBufferTools`       | `show-buffer-tools`       | boolean: When true the buffer tools will be available for use                                                                                              | `boolean`                                       | `true`                |
 | `sketchLineSymbol`      | --                        | esri/symbols/SimpleLineSymbol \| JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html    | `SimpleLineSymbol`                              | `undefined`           |
 | `sketchPointSymbol`     | --                        | esri/symbols/SimpleMarkerSymbol \| JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html | `SimpleMarkerSymbol`                            | `undefined`           |
 | `sketchPolygonSymbol`   | --                        | esri/symbols/SimpleFillSymbol \| JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html     | `SimpleFillSymbol`                              | `undefined`           |
@@ -28,12 +27,11 @@
 
 ## Events
 
-| Event                    | Description                                       | Type                                                                                |
-| ------------------------ | ------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `selectionLoadingChange` | Emitted on demand when selection starts or ends.  | `CustomEvent<boolean>`                                                              |
-| `selectionSetChange`     | Emitted on demand when the selection set changes. | `CustomEvent<number>`                                                               |
-| `sketchTypeChange`       | Emitted on demand when the sketch type changes.   | `CustomEvent<ESketchType.INTERACTIVE \| ESketchType.LAYER>`                         |
-| `workflowTypeChange`     | Emitted on demand when the workflow type changes. | `CustomEvent<EWorkflowType.SEARCH \| EWorkflowType.SELECT \| EWorkflowType.SKETCH>` |
+| Event                    | Description                                       | Type                                                        |
+| ------------------------ | ------------------------------------------------- | ----------------------------------------------------------- |
+| `selectionLoadingChange` | Emitted on demand when selection starts or ends.  | `CustomEvent<boolean>`                                      |
+| `selectionSetChange`     | Emitted on demand when the selection set changes. | `CustomEvent<number>`                                       |
+| `sketchTypeChange`       | Emitted on demand when the sketch type changes.   | `CustomEvent<ESketchType.INTERACTIVE \| ESketchType.LAYER>` |
 
 
 ## Methods
@@ -67,23 +65,18 @@ Promise with the new selection set
 
 ### Depends on
 
-- calcite-segmented-control
-- calcite-segmented-control-item
-- calcite-label
-- calcite-checkbox
 - [map-draw-tools](../map-draw-tools)
+- calcite-label
+- calcite-switch
 - [buffer-tools](../buffer-tools)
 
 ### Graph
 ```mermaid
 graph TD;
-  map-select-tools --> calcite-segmented-control
-  map-select-tools --> calcite-segmented-control-item
-  map-select-tools --> calcite-label
-  map-select-tools --> calcite-checkbox
   map-select-tools --> map-draw-tools
+  map-select-tools --> calcite-label
+  map-select-tools --> calcite-switch
   map-select-tools --> buffer-tools
-  calcite-segmented-control-item --> calcite-icon
   map-draw-tools --> map-layer-picker
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox

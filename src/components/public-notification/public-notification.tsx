@@ -708,7 +708,7 @@ export class PublicNotification {
   protected _getMapLayerPicker(): VNode {
     return (
       <div class="display-flex padding-sides-1 padding-bottom-1">
-        <calcite-label class="font-bold width-full label-margin-0">{this._translations.addresseeLayer}
+        <calcite-label class="font-bold width-full label-margin-0">{this._translations.inputLayer}
           <map-layer-picker
             enabledLayerIds={this.addresseeLayerIds}
             mapView={this.mapView}
@@ -729,23 +729,25 @@ export class PublicNotification {
    */
   protected _getSelectionSetList(): VNode {
     return (
-      <calcite-list class="list-border margin-sides-1">
-        {
-          this._selectionSets.reduce((prev, cur, i) => {
-            prev.push((
-              <calcite-list-item
-                description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
-                label={cur.label}
-                onClick={() => this._gotoSelection(cur, this.mapView)}
-              >
-                {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
-                {this._getAction(true, "x", "", (evt): Promise<void> => this._deleteSelection(i, evt), false, "actions-end")}
-              </calcite-list-item>
-            ));
-            return prev;
-          }, [])
-        }
-      </calcite-list>
+      <div class="padding-top-1-2 padding-bottom-1-2">
+        <calcite-list class="list-border margin-sides-1">
+          {
+            this._selectionSets.reduce((prev, cur, i) => {
+              prev.push((
+                <calcite-list-item
+                  description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
+                  label={cur.label}
+                  onClick={() => this._gotoSelection(cur, this.mapView)}
+                >
+                  {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
+                  {this._getAction(true, "x", "", (evt): Promise<void> => this._deleteSelection(i, evt), false, "actions-end")}
+                </calcite-list-item>
+              ));
+              return prev;
+            }, [])
+          }
+        </calcite-list>
+      </div>
     );
   }
 
@@ -905,18 +907,16 @@ export class PublicNotification {
             isUpdate={!!this._activeSelection}
             mapView={this.mapView}
             onSelectionSetChange={(evt) => this._updateForSelection(evt)}
-            onWorkflowTypeChange={(evt) => this._updateForWorkflowType(evt)}
             ref={(el) => { this._selectTools = el }}
             searchConfiguration={this._searchConfiguration}
             selectLayerView={this.addresseeLayer}
             selectionSet={this._activeSelection}
-            showBufferTools={this.showSearchSettings}
             sketchLineSymbol={this.sketchLineSymbol}
             sketchPointSymbol={this.sketchPointSymbol}
             sketchPolygonSymbol={this.sketchPolygonSymbol}
           />
         </div>
-        <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
+        <div class="padding-1" style={{ "align-items": "end", "display": "flex" }}>
           {
             this._selectionLoading ? (
               <div>

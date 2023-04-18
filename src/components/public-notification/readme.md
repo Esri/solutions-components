@@ -119,13 +119,10 @@ graph TD;
   calcite-list-item --> calcite-icon
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
-  map-select-tools --> calcite-segmented-control
-  map-select-tools --> calcite-segmented-control-item
-  map-select-tools --> calcite-label
-  map-select-tools --> calcite-checkbox
   map-select-tools --> map-draw-tools
+  map-select-tools --> calcite-label
+  map-select-tools --> calcite-switch
   map-select-tools --> buffer-tools
-  calcite-segmented-control-item --> calcite-icon
   map-draw-tools --> map-layer-picker
   buffer-tools --> calcite-option
   buffer-tools --> calcite-input
