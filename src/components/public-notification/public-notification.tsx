@@ -686,48 +686,15 @@ export class PublicNotification {
    */
   protected _getListPage(): VNode {
     const hasSets = this._hasSelections();
-    const total = utils.getTotal(this._selectionSets);
-    return hasSets ? (
+    return (
       <calcite-panel>
         {this._getLabel(this._translations.myLists)}
-        {this._getNotice(this._translations.listHasSetsTip, "padding-sides-1 padding-bottom-1")}
-        {this._getMapLayerPicker()}
-        <div class="display-block padding-sides-1 height-1-1-2">
-          <div class="display-block float-left">
-            <calcite-label alignment="start" class="font-bold">{this._translations.notifications}</calcite-label>
-          </div>
-          <div class="display-block float-right">
-            <calcite-input-message class="info-blue margin-top-0" scale="m">{this._translations.uniqueCout.replace("{{n}}", total.toString())}</calcite-input-message>
-          </div>
-        </div>
-        {
-          hasSets ? this._getSelectionSetList() : (
-            <div class="info-message">
-              <calcite-input-message class="info-blue" scale="m">{this._translations.noNotifications}</calcite-input-message>
-            </div>
-          )
-        }
+        {this._getNotice(hasSets ? this._translations.listHasSetsTip : this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1")}
+        {hasSets ? this._getSelectionSetList() : (null)}
         <div class="display-flex padding-1">
           <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full">{this._translations.add}</calcite-button>
         </div>
         {this._showModal(this._showLayerSelectionChangeModal)}
-      </calcite-panel>
-    ) : (
-      <calcite-panel>
-        <div class="padding-top-sides-1">
-          <calcite-label class="font-bold">{this._translations.myLists}</calcite-label>
-        </div>
-        <div class="padding-sides-1">
-          <calcite-label>{this._translations.notifications}</calcite-label>
-        </div>
-        <div class="info-message padding-bottom-1">
-          <calcite-input-message class="info-blue" scale="m">{this._translations.noNotifications}</calcite-input-message>
-        </div>
-        {this._getNotice(this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1")}
-        {this._getMapLayerPicker()}
-        <div class="display-flex padding-1">
-          <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full">{this._translations.add}</calcite-button>
-        </div>
       </calcite-panel>
     );
   }
@@ -740,8 +707,8 @@ export class PublicNotification {
    */
   protected _getMapLayerPicker(): VNode {
     return (
-      <div class="display-flex padding-sides-1">
-        <calcite-label class="font-bold width-full">{this._translations.addresseeLayer}
+      <div class="display-flex padding-sides-1 padding-bottom-1">
+        <calcite-label class="font-bold width-full label-margin-0">{this._translations.addresseeLayer}
           <map-layer-picker
             enabledLayerIds={this.addresseeLayerIds}
             mapView={this.mapView}
@@ -923,8 +890,10 @@ export class PublicNotification {
 
     return (
       <calcite-panel>
-        {this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", this.addresseeLayer?.layer.title))}
+        {this._getLabel(this._translations.stepTwoFull, true)}
         {this._getNotice(noticeText)}
+        {this._getMapLayerPicker()}
+        <div class="border-bottom" />
         <div class={"padding-top-sides-1"}>
           <map-select-tools
             bufferColor={this.bufferColor}

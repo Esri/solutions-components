@@ -45,9 +45,8 @@
 - calcite-action
 - calcite-tooltip
 - calcite-panel
-- calcite-label
-- calcite-input-message
 - calcite-button
+- calcite-label
 - [map-layer-picker](../map-layer-picker)
 - calcite-list
 - calcite-list-item
@@ -55,6 +54,7 @@
 - [map-select-tools](../map-select-tools)
 - calcite-loader
 - calcite-icon
+- calcite-input-message
 - calcite-input
 - calcite-checkbox
 - calcite-switch
@@ -71,9 +71,8 @@ graph TD;
   public-notification --> calcite-action
   public-notification --> calcite-tooltip
   public-notification --> calcite-panel
-  public-notification --> calcite-label
-  public-notification --> calcite-input-message
   public-notification --> calcite-button
+  public-notification --> calcite-label
   public-notification --> map-layer-picker
   public-notification --> calcite-list
   public-notification --> calcite-list-item
@@ -81,6 +80,7 @@ graph TD;
   public-notification --> map-select-tools
   public-notification --> calcite-loader
   public-notification --> calcite-icon
+  public-notification --> calcite-input-message
   public-notification --> calcite-input
   public-notification --> calcite-checkbox
   public-notification --> calcite-switch
@@ -100,7 +100,6 @@ graph TD;
   calcite-panel --> calcite-action-menu
   calcite-panel --> calcite-scrim
   calcite-scrim --> calcite-loader
-  calcite-input-message --> calcite-icon
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   map-layer-picker --> calcite-select
@@ -133,6 +132,7 @@ graph TD;
   buffer-tools --> calcite-select
   buffer-tools --> calcite-slider
   calcite-slider --> calcite-graph
+  calcite-input-message --> calcite-icon
   pdf-download --> calcite-select
   pdf-download --> calcite-option
   calcite-input-text --> calcite-progress
