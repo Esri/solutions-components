@@ -319,7 +319,9 @@ export class MapSelectTools {
       geometries: this.geometries,
       graphics: this._graphics,
       selectLayers: this.layerViews,
-      skipGeomOIDs: this._skipGeomOIDs
+      skipGeomOIDs: this._skipGeomOIDs,
+      searchDistanceEnabled: this._searchDistanceEnabled,
+      useLayerFeaturesEnabled: this._useLayerFeaturesEnabled
     } as ISelectionSet;
   }
 
@@ -406,7 +408,6 @@ export class MapSelectTools {
 
   protected _getBufferOptions(): VNode {
     const showBufferToolsClass = this._searchDistanceEnabled ? "search-distance" : "div-not-visible";
-
     const bufferDistance = typeof this.selectionSet?.distance === "number" ? this.selectionSet.distance : this.defaultBufferDistance;
     return (
       <div>
@@ -419,12 +420,13 @@ export class MapSelectTools {
           <calcite-switch
             checked={this._searchDistanceEnabled}
             class="position-right"
-            onCalciteSwitchChange={() => this._searchDistanceEnabled = !this._searchDistanceEnabled}
+            onCalciteSwitchChange={() => this._toggleSearchDistanceEnabled()}
           />
         </div>
 
         <div class={showBufferToolsClass}>
           <buffer-tools
+            disabled={!this._searchDistanceEnabled}
             distance={bufferDistance}
             geometries={this.geometries}
             onBufferComplete={(evt) => this._bufferComplete(evt)}
@@ -434,6 +436,10 @@ export class MapSelectTools {
         </div>
       </div>
     );
+  }
+
+  protected _toggleSearchDistanceEnabled(): void {
+    this._searchDistanceEnabled = !this._searchDistanceEnabled
   }
 
   protected _getUseLayerFeaturesOptions(): VNode {
@@ -616,11 +622,13 @@ export class MapSelectTools {
    */
   protected async _initSelectionSet(): Promise<void> {
     if (this.selectionSet) {
-      this._searchTerm = this.selectionSet?.searchResult?.name;
-      this._searchResult = this.selectionSet?.searchResult;
-      this._selectLayers = this.selectionSet?.selectLayers;
-      this._selectedIds = this.selectionSet?.selectedIds;
-      this._skipGeomOIDs =  this.selectionSet?.skipGeomOIDs;
+      this._searchTerm = this.selectionSet.searchResult?.name;
+      this._searchResult = this.selectionSet.searchResult;
+      this._selectLayers = this.selectionSet.selectLayers;
+      this._selectedIds = this.selectionSet.selectedIds;
+      this._skipGeomOIDs =  this.selectionSet.skipGeomOIDs;
+      this._searchDistanceEnabled = this.selectionSet.searchDistanceEnabled;
+      this._useLayerFeaturesEnabled = this.selectionSet.useLayerFeaturesEnabled;
 
       this.geometries = [
         ...this.selectionSet?.geometries || []

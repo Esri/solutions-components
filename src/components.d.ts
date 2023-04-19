@@ -19,6 +19,7 @@ export namespace Components {
           * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
          */
         "appearance": "slider" | "text";
+        "disabled": boolean;
         /**
           * number: The distance used for buffer
          */
@@ -833,6 +834,7 @@ declare namespace LocalJSX {
           * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
          */
         "appearance"?: "slider" | "text";
+        "disabled"?: boolean;
         /**
           * number: The distance used for buffer
          */

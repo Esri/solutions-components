@@ -79,6 +79,8 @@ export class BufferTools {
    */
   @Prop({ mutable: true }) unit: DistanceUnit = "meters";
 
+  @Prop() disabled = false;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -125,6 +127,11 @@ export class BufferTools {
    */
   @Watch("geometries")
   geometriesWatchHandler(): void {
+    this._buffer();
+  }
+
+  @Watch("disabled")
+  disabledWatchHandler(): void {
     this._buffer();
   }
 
@@ -270,22 +277,26 @@ export class BufferTools {
    * @protected
    */
   protected _buffer(): void {
-    if (this._bufferTimeout) {
-      clearTimeout(this._bufferTimeout);
-    }
-
-    this._bufferTimeout = setTimeout(() => {
-      // needs to be wgs 84 or Web Mercator
-      if (this.geometries?.length > 0 && this.unit && this.distance > 0) {
-        const buffer = this._geometryEngine.geodesicBuffer(
-          this.geometries,
-          this.distance,
-          this.unit,
-          this.unionResults
-        );
-        this.bufferComplete.emit(buffer);
+    if (!this.disabled) {
+      if (this._bufferTimeout) {
+        clearTimeout(this._bufferTimeout);
       }
-    }, 400);
+
+      this._bufferTimeout = setTimeout(() => {
+        // needs to be wgs 84 or Web Mercator
+        if (this.geometries?.length > 0 && this.unit && this.distance > 0) {
+          const buffer = this._geometryEngine.geodesicBuffer(
+            this.geometries,
+            this.distance,
+            this.unit,
+            this.unionResults
+          );
+          this.bufferComplete.emit(buffer);
+        }
+      }, 400);
+    } else {
+      this.bufferComplete.emit(undefined);
+    }
   }
 
   /**

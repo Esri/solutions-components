@@ -363,6 +363,9 @@ export interface ISelectionSet {
   graphics: __esri.Graphic[];
   selectLayers: __esri.FeatureLayerView[];
   skipGeomOIDs?: number[];
+
+  searchDistanceEnabled: boolean;
+  useLayerFeaturesEnabled: boolean;
 }
 
 export interface ISketchGraphicsChange {
