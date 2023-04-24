@@ -300,7 +300,7 @@ export namespace Components {
           * @param addColumnTitle Indicates if column headings should be included in output
           * @returns Promise resolving when function is done
          */
-        "downloadCSV": (selectionSetNames: string[], ids: number[], removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>;
+        "downloadCSV": (layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>;
         /**
           * Downloads pdf of mailing labels for the provided list of ids
           * @param selectionSetNames Names of the selection sets used to provide ids
@@ -308,11 +308,7 @@ export namespace Components {
           * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
           * @returns Promise resolving when function is done
          */
-        "downloadPDF": (selectionSetNames: string[], ids: number[], removeDuplicates: boolean) => Promise<void>;
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "layerView": __esri.FeatureLayerView;
+        "downloadPDF": (layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates: boolean) => Promise<void>;
     }
     interface PublicNotification {
         /**
@@ -1119,10 +1115,6 @@ declare namespace LocalJSX {
           * boolean: Controls the enabled/disabled state of download
          */
         "disabled"?: boolean;
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "layerView"?: __esri.FeatureLayerView;
     }
     interface PublicNotification {
         /**

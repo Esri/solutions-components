@@ -28,7 +28,6 @@
 
  - [layer-table](../layer-table)
  - [map-select-tools](../map-select-tools)
- - [public-notification](../public-notification)
 
 ### Depends on
 
@@ -51,7 +50,6 @@ graph TD;
   calcite-combobox-item --> calcite-icon
   layer-table --> map-layer-picker
   map-select-tools --> map-layer-picker
-  public-notification --> map-layer-picker
   style map-layer-picker fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

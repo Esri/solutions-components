@@ -443,9 +443,10 @@ export class MapSelectTools {
   render(): VNode {
     return (
       <Host>
-        <div class="padding-sides-1">
+        {this._getMapLayerPicker()}
+        <div class="border-bottom" />
+        <div class="padding-top-sides-1">
           <div class="search-widget" ref={(el) => { this._searchElement = el }} />
-
           <div class="padding-top-1">
             <map-draw-tools
               active={true}
@@ -462,7 +463,6 @@ export class MapSelectTools {
           {this._getUseLayerFeaturesOptions()}
           {this._getNumSelected()}
         </div>
-
         <div class="border-bottom" />
         {this._getNameInput()}
       </Host>
@@ -511,7 +511,7 @@ export class MapSelectTools {
     const useLayerFeaturesClass = this._useLayerFeaturesEnabled ? "div-visible" : "div-not-visible";
     return (
       <div>
-        <div class="padding-top-1 badding-bottom-1 display-flex">
+        <div class="padding-top-1 display-flex">
           <calcite-label
             class="label-margin-0 "
           >
@@ -592,6 +592,28 @@ export class MapSelectTools {
     );
   }
 
+    /**
+   * Create the UI element that will expose the addressee layers
+   *
+   * @returns addressee layer list node
+   * @protected
+   */
+    protected _getMapLayerPicker(): VNode {
+      return (
+        <div class="display-flex padding-sides-1 padding-bottom-1">
+          <calcite-label class="font-bold width-full label-margin-0">{this._translations.inputLayer}
+            <map-layer-picker
+              enabledLayerIds={this.enabledLayerIds}
+              mapView={this.mapView}
+              onLayerSelectionChange={(evt) => this._inputLayerSelectionChange(evt)}
+              selectedLayerIds={this.selectionSet ? [this.selectionSet.layerView.layer.id] : []}
+              selectionMode={"single"}
+            />
+          </calcite-label>
+        </div>
+      );
+    }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (protected)
@@ -648,6 +670,7 @@ export class MapSelectTools {
       this._distance = this.selectionSet.searchDistanceEnabled ? this.selectionSet.distance : 0;
       this._unit = this.selectionSet.unit;
       this._workflowType = this.selectionSet.workflowType;
+      this.selectLayerView = this.selectionSet.layerView;
 
       this.geometries = [
         ...this.selectionSet?.geometries || []
@@ -854,13 +877,13 @@ export class MapSelectTools {
   protected async _highlightFeatures(
     ids: number[]
   ): Promise<void> {
-    state.highlightHandle?.remove();
+    state.removeHandles();
     if (ids.length > 0) {
-      state.highlightHandle = await highlightFeatures(
+      state.highlightHandles.push(await highlightFeatures(
         ids,
         this.selectLayerView,
         this.mapView
-      );
+      ));
     }
     this._numSelected = ids.length;
     this.selectionSetChange.emit(ids.length);
@@ -989,7 +1012,7 @@ export class MapSelectTools {
       this._clearSearchWidget();
     }
 
-    state.highlightHandle?.remove();
+    state.removeHandles();
 
     // checking for clear as it would throw off tests
     if (this._drawTools?.clear) {
@@ -1072,6 +1095,23 @@ export class MapSelectTools {
       return Promise.all(layerPromises).then((layerViews) => {
         this.layerViews = layerViews;
       });
+    }
+  }
+
+  /**
+   * Fetch the layer from the map
+   *
+   * @param evt layer selection change event
+   *
+   * @returns Promise when the function has completed
+   * @protected
+   */
+  protected async _inputLayerSelectionChange(
+    evt: CustomEvent
+  ): Promise<void> {
+    const id: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
+    if (!this.selectLayerView || id !== this.selectLayerView.layer.id) {
+      this.selectLayerView = await getMapLayerView(this.mapView, id);
     }
   }
 

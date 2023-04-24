@@ -17,8 +17,7 @@
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import { DistanceUnit, EPageType, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
-import { goToSelection, getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
-import { getSelectionSetQuery } from "../../utils/queryUtils";
+import { goToSelection, highlightFeatures } from "../../utils/mapViewUtils";
 import state from "../../utils/publicNotificationStore";
 import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -147,11 +146,6 @@ export class PublicNotification {
   //--------------------------------------------------------------------------
 
   /**
-   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-   */
-  @State() addresseeLayer: __esri.FeatureLayerView;
-
-  /**
    * boolean: When true a title will be added above the map on export
    */
   @State() _addTitle = false;
@@ -186,11 +180,6 @@ export class PublicNotification {
    * utils/interfaces/ISelectionSet: An array of user defined selection sets
    */
   @State() _selectionSets: ISelectionSet[] = [];
-
-  /**
-   * boolean: When true a modal will be shown to alert users of potential changes to selection sets.
-   */
-  @State() _showLayerSelectionChangeModal = false;
 
   /**
    * Contains the translations for this component.
@@ -228,11 +217,6 @@ export class PublicNotification {
    * esri/symbols/support/jsonUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-support-jsonUtils.html
    */
   protected _jsonUtils: __esri.symbolsSupportJsonUtils;
-
-  /**
-   * CustomEvent: Used to prevent default behavior of layer selection change
-   */
-  protected _layerSelectionChangeEvt: CustomEvent;
 
   /**
    * HTMLCalciteCheckboxElement: When enabled popups will be shown on map click
@@ -619,30 +603,7 @@ export class PublicNotification {
         <div class="display-flex padding-1">
           <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full">{this._translations.add}</calcite-button>
         </div>
-        {this._showModal(this._showLayerSelectionChangeModal)}
       </calcite-panel>
-    );
-  }
-
-  /**
-   * Create the UI element that will expose the addressee layers
-   *
-   * @returns addressee layer list node
-   * @protected
-   */
-  protected _getMapLayerPicker(): VNode {
-    return (
-      <div class="display-flex padding-sides-1 padding-bottom-1">
-        <calcite-label class="font-bold width-full label-margin-0">{this._translations.inputLayer}
-          <map-layer-picker
-            enabledLayerIds={this.addresseeLayerIds}
-            mapView={this.mapView}
-            onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
-            selectedLayerIds={this.addresseeLayer ? [this.addresseeLayer?.layer.id] : []}
-            selectionMode={"single"}
-          />
-        </calcite-label>
-      </div>
     );
   }
 
@@ -674,71 +635,6 @@ export class PublicNotification {
         </calcite-list>
       </div>
     );
-  }
-
-  /**
-   * Alert the user of the potential change to the selection sets and ask if they would like to proceed.
-   *
-   * @returns the page node
-   * @protected
-   */
-  protected _showModal(
-    open: boolean
-  ): VNode {
-    return (
-      <calcite-modal
-        aria-labelledby="modal-title"
-        background-color="grey"
-        color="red"
-        open={open}
-        scale="s"
-        width="s"
-      >
-        <div id="modal-title" slot="header">{this._translations.shouldProceed}</div>
-        <div slot="content">{this._translations.proceedInfo}</div>
-        <calcite-button
-          appearance="outline"
-          onClick={() => this._cancelLayerChange()}
-          slot="secondary"
-          width="full"
-        >
-          {this._translations.cancel}
-        </calcite-button>
-        <calcite-button
-          onClick={() => this._handleLayerChange()}
-          slot="primary"
-          width="full"
-        >
-          {this._translations.proceed}
-        </calcite-button>
-      </calcite-modal>
-    )
-  }
-
-  /**
-   * Prevent the default behavior of layer selection change and close the modal.
-   *
-   * @returns the page node
-   * @protected
-   */
-  protected _cancelLayerChange(): void {
-    this._layerSelectionChangeEvt.preventDefault();
-    this._layerSelectionChangeEvt.stopPropagation();
-    this._layerSelectionChangeEvt = undefined;
-    this._showLayerSelectionChangeModal = false;
-  }
-
-  /**
-   * Allow the default behavior of layer selection change and close the modal.
-   *
-   * @returns the page node
-   * @protected
-   */
-  protected _handleLayerChange(): void {
-    this._showLayerSelectionChangeModal = false;
-    const id: string = this._layerSelectionChangeEvt?.detail?.length > 0 ?
-      this._layerSelectionChangeEvt.detail[0] : "";
-    void this._updateAddresseeLayer(id);
   }
 
   /**
@@ -804,8 +700,6 @@ export class PublicNotification {
       <calcite-panel>
         {this._getLabel(this._translations.stepTwoFull, true)}
         {this._getNotice(noticeText)}
-        {this._getMapLayerPicker()}
-        <div class="border-bottom" />
         <div class={"padding-top-1"}>
           <map-select-tools
             bufferColor={this.bufferColor}
@@ -821,7 +715,6 @@ export class PublicNotification {
             onSelectionSetChange={(evt) => this._updateForSelection(evt)}
             ref={(el) => { this._selectTools = el }}
             searchConfiguration={this._searchConfiguration}
-            selectLayerView={this.addresseeLayer}
             selectionSet={this._activeSelection}
             sketchLineSymbol={this.sketchLineSymbol}
             sketchPointSymbol={this.sketchPointSymbol}
@@ -936,7 +829,6 @@ export class PublicNotification {
           <div class="padding-sides-1">
             <pdf-download
               disabled={!this._downloadActive}
-              layerView={this.addresseeLayer}
               ref={(el) => { this._downloadTools = el }}
             />
           </div>
@@ -1167,9 +1059,15 @@ export class PublicNotification {
    * @protected
    */
   protected _downloadPDF(): void {
-    const ids = utils.getSelectionIds(this._getDownloadSelectionSets());
-    const selectionSetNames = this._selectionSets.map(set => set.label);
-    void this._downloadTools.downloadPDF(selectionSetNames, ids, this._removeDuplicatesPDF.checked);
+    const idSets = utils.getSelectionIdsAndViews(this._getDownloadSelectionSets());
+    idSets.forEach(idSet => {
+      void this._downloadTools.downloadPDF(
+        idSet.layerView,
+        idSet.selectionSetNames,
+        idSet.ids,
+        this._removeDuplicatesPDF.checked
+      );
+    });
   }
 
   /**
@@ -1178,9 +1076,15 @@ export class PublicNotification {
    * @protected
    */
   protected _downloadCSV(): void {
-    const ids = utils.getSelectionIds(this._getDownloadSelectionSets());
-    const selectionSetNames = this._selectionSets.map(set => set.label);
-    void this._downloadTools.downloadCSV(selectionSetNames, ids, this._removeDuplicatesCSV.checked);
+    const idSets = utils.getSelectionIdsAndViews(this._getDownloadSelectionSets());
+    idSets.forEach(idSet => {
+      void this._downloadTools.downloadCSV(
+        idSet.layerView,
+        idSet.selectionSetNames,
+        idSet.ids,
+        this._removeDuplicatesCSV.checked
+      );
+    });
   }
 
   /**
@@ -1250,75 +1154,6 @@ export class PublicNotification {
       this.mapView.popup.autoOpenEnabled = this._popupsEnabled;
     }
     this._setPageType(EPageType.LIST);
-  }
-
-  /**
-   * Fetch the addressee layer from the map if no selection sets exist.
-   * Alert the user of the potential change to the selection sets if they exist.
-   *
-   * @param evt layer selection change event
-   *
-   * @returns Promise when the function has completed
-   * @protected
-   */
-  protected async _layerSelectionChange(
-    evt: CustomEvent
-  ): Promise<void> {
-    const id: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
-    if (id !== this.addresseeLayer?.layer.id) {
-      this._showLayerSelectionChangeModal = this.addresseeLayer?.layer.id !== undefined && this._selectionSets.length > 0;
-      if (this._showLayerSelectionChangeModal) {
-        this._layerSelectionChangeEvt = evt;
-      } else {
-        await this._updateAddresseeLayer(id);
-      }
-    }
-  }
-
-  /**
-   * Fetch the new addressee layer and update the selection sets
-   *
-   * @param id the id of the layer to fetch
-   *
-   * @returns Promise when the function has completed
-   * @protected
-   */
-  protected async _updateAddresseeLayer(
-    id: string
-  ): Promise<void> {
-    this.addresseeLayer = await getMapLayerView(this.mapView, id);
-    await this._updateSelectionSets(this.addresseeLayer);
-  }
-
-  /**
-   * Update selection sets when the addressee layer changes.
-   * Will use stored search, select, and sketch geometries and any buffers to select from the new addressee layer.
-   *
-   * @param layerView The new addressee layer view to select from
-   *
-   * @returns Promise when the function has completed
-   * @protected
-   */
-  protected async _updateSelectionSets(
-    layerView: __esri.FeatureLayerView
-  ): Promise<void> {
-    const _selectionSets = this._selectionSets;
-    const oidDefs = [];
-    _selectionSets.forEach(selectionSet => {
-      selectionSet.layerView = layerView;
-      selectionSet.selectedIds = [];
-      oidDefs.push(getSelectionSetQuery(selectionSet, this._geometryEngine));
-    });
-
-    return Promise.all(oidDefs).then(async (results): Promise<void> => {
-      results.forEach((result, i) => {
-        _selectionSets[i].selectedIds = result;
-      });
-      await this._highlightFeatures();
-      this._selectionSets = [
-        ..._selectionSets
-      ];
-    });
   }
 
   /**
@@ -1414,13 +1249,17 @@ export class PublicNotification {
    */
   protected async _highlightFeatures(): Promise<void> {
     this._clearHighlight();
-    const ids = utils.getSelectionIds(this._selectionSets);
-    if (ids.length > 0) {
-      state.highlightHandle = await highlightFeatures(
-        ids,
-        this.addresseeLayer,
-        this.mapView
-      );
+    const idSets = utils.getSelectionIdsAndViews(this._selectionSets);
+    const idKeys = Object.keys(idSets);
+    if (idKeys.length > 0) {
+      for (let i = 0; i < idKeys.length; i++) {
+        const idSet = idSets[idKeys[i]];
+        state.highlightHandles.push(await highlightFeatures(
+          idSet.ids,
+          idSet.layerView,
+          this.mapView
+        ));
+      }
     }
   }
 
@@ -1441,8 +1280,8 @@ export class PublicNotification {
    * @protected
    */
   protected _clearHighlight(): void {
-    if (state && state.highlightHandle) {
-      state.highlightHandle?.remove();
+    if (state && state.highlightHandles) {
+      state.removeHandles();
     }
   }
 

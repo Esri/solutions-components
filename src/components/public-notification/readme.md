@@ -45,12 +45,10 @@
 - calcite-tooltip
 - calcite-panel
 - calcite-button
-- calcite-label
-- [map-layer-picker](../map-layer-picker)
 - calcite-list
 - calcite-list-item
-- calcite-modal
 - [map-select-tools](../map-select-tools)
+- calcite-label
 - calcite-checkbox
 - calcite-input-message
 - calcite-switch
@@ -68,12 +66,10 @@ graph TD;
   public-notification --> calcite-tooltip
   public-notification --> calcite-panel
   public-notification --> calcite-button
-  public-notification --> calcite-label
-  public-notification --> map-layer-picker
   public-notification --> calcite-list
   public-notification --> calcite-list-item
-  public-notification --> calcite-modal
   public-notification --> map-select-tools
+  public-notification --> calcite-label
   public-notification --> calcite-checkbox
   public-notification --> calcite-input-message
   public-notification --> calcite-switch
@@ -95,23 +91,12 @@ graph TD;
   calcite-scrim --> calcite-loader
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
-  map-layer-picker --> calcite-select
-  map-layer-picker --> calcite-combobox
-  map-layer-picker --> calcite-combobox-item
-  map-layer-picker --> calcite-option
-  calcite-select --> calcite-icon
-  calcite-combobox --> calcite-chip
-  calcite-combobox --> calcite-icon
-  calcite-chip --> calcite-icon
-  calcite-combobox-item --> calcite-icon
   calcite-list --> calcite-scrim
   calcite-list --> calcite-filter
   calcite-filter --> calcite-input
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-list-item --> calcite-icon
-  calcite-modal --> calcite-scrim
-  calcite-modal --> calcite-icon
   map-select-tools --> map-draw-tools
   map-select-tools --> calcite-label
   map-select-tools --> calcite-switch
@@ -125,7 +110,16 @@ graph TD;
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select
   buffer-tools --> calcite-slider
+  calcite-select --> calcite-icon
   calcite-slider --> calcite-graph
+  map-layer-picker --> calcite-select
+  map-layer-picker --> calcite-combobox
+  map-layer-picker --> calcite-combobox-item
+  map-layer-picker --> calcite-option
+  calcite-combobox --> calcite-chip
+  calcite-combobox --> calcite-icon
+  calcite-chip --> calcite-icon
+  calcite-combobox-item --> calcite-icon
   calcite-input-message --> calcite-icon
   pdf-download --> calcite-select
   pdf-download --> calcite-option

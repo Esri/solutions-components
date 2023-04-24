@@ -8,5 +8,6 @@
     "sketch": "Sketch",
     "bufferLayer": "Buffer Layer",
     "sketchLayer": "Sketch Layer",
-    "useLayerFeatures": "Use layer features"
+    "useLayerFeatures": "Use layer features",
+    "inputLayer": "Input layer"
 }

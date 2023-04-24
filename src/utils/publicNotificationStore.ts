@@ -17,22 +17,27 @@
 import { createStore } from "@stencil/store";
 
 const { state, onChange } = createStore({
-    // List of layers added and managed by the component
-    managedLayers: [],
-    // Handle: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Handles.html#Handle
-    highlightHandle: undefined,
-    // ILayerHash title: id lookup to be used across components
-    layerNameHash: {}
+	// List of layers added and managed by the component
+	managedLayers: [],
+	// Handle[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Handles.html#Handle
+	highlightHandles: [],
+	// ILayerHash title: id lookup to be used across components
+	layerNameHash: {},
+	// remove all handles
+	removeHandles: () => {
+		state.highlightHandles.forEach(h => h?.remove());
+		state.highlightHandles = [];
+	}
 });
 
 const managedLayersChangedEvent = new CustomEvent("managedLayersChanged", {
-    bubbles: true,
-    cancelable: false,
-    composed: true
+	bubbles: true,
+	cancelable: false,
+	composed: true
 });
 
 onChange("managedLayers", () => {
-    dispatchEvent(managedLayersChangedEvent);
+	dispatchEvent(managedLayersChangedEvent);
 });
 
 export default state;
