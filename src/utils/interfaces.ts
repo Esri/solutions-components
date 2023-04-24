@@ -54,6 +54,12 @@ export enum EExpandType {
   COLLAPSE="COLLAPSE"
 }
 
+export enum EWorkflowType {
+  SEARCH="SEARCH",
+  SELECT="SELECT",
+  SKETCH="SKETCH"
+}
+
 /* eslint-enable no-unused-vars */
 
 export type SelectionMode = "single" | "multi";
@@ -363,7 +369,7 @@ export interface ISelectionSet {
   graphics: __esri.Graphic[];
   selectLayers: __esri.FeatureLayerView[];
   skipGeomOIDs?: number[];
-
+  workflowType: EWorkflowType;
   searchDistanceEnabled: boolean;
   useLayerFeaturesEnabled: boolean;
 }

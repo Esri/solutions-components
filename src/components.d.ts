@@ -214,6 +214,10 @@ export namespace Components {
          */
         "clearSelection": () => Promise<void>;
         /**
+          * boolean: When true the user can define a name for each notification list
+         */
+        "customLabelEnabled": boolean;
+        /**
           * number: The default value to show for the buffer distance
          */
         "defaultBufferDistance": number;
@@ -246,6 +250,10 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * string: The value to show for no results when left empty the default text "0 selected features from {layerTitle}" will be shown
+         */
+        "noResultText": string;
         /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
@@ -1034,6 +1042,10 @@ declare namespace LocalJSX {
          */
         "bufferOutlineColor"?: any;
         /**
+          * boolean: When true the user can define a name for each notification list
+         */
+        "customLabelEnabled"?: boolean;
+        /**
           * number: The default value to show for the buffer distance
          */
         "defaultBufferDistance"?: number;
@@ -1062,9 +1074,9 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
-          * Emitted on demand when selection starts or ends.
+          * string: The value to show for no results when left empty the default text "0 selected features from {layerTitle}" will be shown
          */
-        "onSelectionLoadingChange"?: (event: MapSelectToolsCustomEvent<boolean>) => void;
+        "noResultText"?: string;
         /**
           * Emitted on demand when the selection set changes.
          */
@@ -1153,10 +1165,6 @@ declare namespace LocalJSX {
           * string: The value to show for no results when left empty the default text "0 selected features from {layerTitle}" will be shown
          */
         "noResultText"?: string;
-        /**
-          * Emitted on demand when a buffer is generated.
-         */
-        "onLabelChange"?: (event: PublicNotificationCustomEvent<string>) => void;
         /**
           * Emitted on demand when searchConfiguration gets a new value
          */

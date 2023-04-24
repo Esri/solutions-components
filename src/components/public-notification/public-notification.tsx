@@ -21,7 +21,7 @@ import { goToSelection, getMapLayerView, highlightFeatures } from "../../utils/m
 import { getSelectionSetQuery } from "../../utils/queryUtils";
 import state from "../../utils/publicNotificationStore";
 import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
-import { getComponentClosestLanguage, getLocaleComponentStrings } from "../../utils/locale";
+import { getLocaleComponentStrings } from "../../utils/locale";
 import * as utils from "../../utils/publicNotificationUtils";
 
 @Component({
@@ -173,11 +173,6 @@ export class PublicNotification {
   @State() _exportPDF = true;
 
   /**
-   * number: The number of selected features
-   */
-  @State() _numSelected = 0;
-
-  /**
    * utils/interfaces/EPageType: LIST | SELECT | PDF | CSV
    */
   @State() _pageType: EPageType = EPageType.LIST;
@@ -186,11 +181,6 @@ export class PublicNotification {
    * boolean: Save is enabled when we have 1 or more selected features
    */
   @State() _saveEnabled = false;
-
-  /**
-   * boolean: When true a loading indicator will be shown in place of the number of selected features
-   */
-  @State() _selectionLoading = false;
 
   /**
    * utils/interfaces/ISelectionSet: An array of user defined selection sets
@@ -220,16 +210,6 @@ export class PublicNotification {
   protected _activeSelection: ISelectionSet;
 
   /**
-   * string: The current custom label
-   */
-  protected _customLabel: string;
-
-  /**
-   * number: The current buffer distance
-   */
-  protected _distance: number;
-
-  /**
    * HTMLPdfDownloadElement: The pdf tools element
    */
   protected _downloadTools: HTMLPdfDownloadElement;
@@ -248,11 +228,6 @@ export class PublicNotification {
    * esri/symbols/support/jsonUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-support-jsonUtils.html
    */
   protected _jsonUtils: __esri.symbolsSupportJsonUtils;
-
-  /**
-   * CustomEvent: Used to prevent default behavior of layer selection change
-   */
-  protected _labelName: HTMLCalciteInputElement;
 
   /**
    * CustomEvent: Used to prevent default behavior of layer selection change
@@ -285,9 +260,9 @@ export class PublicNotification {
   protected _selectTools: HTMLMapSelectToolsElement;
 
   /**
-   * string: The current buffer unit
+   * number: The number of selected features
    */
-  protected _unit: string;
+  protected _numSelected = 0;
 
   //--------------------------------------------------------------------------
   //
@@ -400,31 +375,9 @@ export class PublicNotification {
   //--------------------------------------------------------------------------
 
   /**
-   * Emitted on demand when a buffer is generated.
-   */
-  @Event() labelChange: EventEmitter<string>;
-
-  /**
    * Emitted on demand when searchConfiguration gets a new value
    */
   @Event() searchConfigurationChange: EventEmitter<ISearchConfiguration>;
-
-  /**
-   * Handle changes to the buffer distance value
-   */
-  @Listen("distanceChanged", { target: "window" })
-  distanceChanged(event: CustomEvent): void {
-    this._updateLabel(event, "distance");
-    this._distance = event.detail.newValue;
-  }
-
-  /**
-   * Handle changes when selection is loading
-   */
-  @Listen("selectionLoadingChange", { target: "window" })
-  selectionLoadingChange(event: CustomEvent): void {
-    this._selectionLoading = event.detail;
-  }
 
   /**
    * Handle changes to the selection sets
@@ -432,15 +385,6 @@ export class PublicNotification {
   @Listen("selectionSetsChanged", { target: "window" })
   selectionSetsChanged(event: CustomEvent): void {
     this._selectionSets = [...event.detail];
-  }
-
-  /**
-   * Handle changes to the buffer unit
-   */
-  @Listen("unitChanged", { target: "window" })
-  unitChanged(event: CustomEvent): void {
-    this._updateLabel(event, "unit");
-    this._unit = event.detail.newValue;
   }
 
   //--------------------------------------------------------------------------
@@ -856,30 +800,24 @@ export class PublicNotification {
    */
   protected _getSelectPage(): VNode {
     const noticeText = this._translations.selectSearchTip;
-
-    const nameLabelClass = this.customLabelEnabled ? "" : "display-none";
-
-    // TODO find out if ... is appropriate for other languages
-    const locale = getComponentClosestLanguage(this.el);
-    const selectionLoading = locale && locale === "en" ?
-      `${this._translations.selectionLoading}...` : this._translations.selectionLoading;
-
     return (
       <calcite-panel>
         {this._getLabel(this._translations.stepTwoFull, true)}
         {this._getNotice(noticeText)}
         {this._getMapLayerPicker()}
         <div class="border-bottom" />
-        <div class={"padding-top-sides-1"}>
+        <div class={"padding-top-1"}>
           <map-select-tools
             bufferColor={this.bufferColor}
             bufferOutlineColor={this.bufferOutlineColor}
             class="font-bold"
+            customLabelEnabled={this.customLabelEnabled}
             defaultBufferDistance={this.defaultBufferDistance}
             defaultBufferUnit={this.defaultBufferUnit}
             enabledLayerIds={this.selectionLayerIds}
             isUpdate={!!this._activeSelection}
             mapView={this.mapView}
+            noResultText={this.noResultText}
             onSelectionSetChange={(evt) => this._updateForSelection(evt)}
             ref={(el) => { this._selectTools = el }}
             searchConfiguration={this._searchConfiguration}
@@ -889,42 +827,6 @@ export class PublicNotification {
             sketchPointSymbol={this.sketchPointSymbol}
             sketchPolygonSymbol={this.sketchPolygonSymbol}
           />
-        </div>
-        <div class="padding-1" style={{ "align-items": "end", "display": "flex" }}>
-          {
-            this._selectionLoading ? (
-              <div>
-                <calcite-loader class="info-blue" inline={true} label={selectionLoading} scale="m" type="indeterminate" />
-              </div>
-            ) : (
-              <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
-            )
-          }
-          <calcite-input-message class="info-blue" scale="m">
-            {
-              this._selectionLoading ? selectionLoading :
-                this.noResultText && this._numSelected === 0 ? this.noResultText :
-                  this._translations.selectedAddresses.replace(
-                    "{{n}}", this._numSelected.toString()).replace("{{layer}}", this.addresseeLayer?.layer.title || ""
-                    )
-            }
-          </calcite-input-message>
-        </div>
-        <div class="border-bottom" />
-        <div class={"padding-sides-1 padding-top-1 " + nameLabelClass}>
-          <calcite-label
-            class="font-bold"
-          >
-            {this._translations.listName}
-            <calcite-input
-              onInput={() => {
-                this.labelChange.emit(this._labelName.value);
-              }}
-              placeholder={this._translations.listNamePlaceholder}
-              ref={(el) => { this._labelName = el }}
-              value={this._customLabel || ""}
-            />
-          </calcite-label>
         </div>
         {
           this._getPageNavButtons(
@@ -1294,24 +1196,6 @@ export class PublicNotification {
   }
 
   /**
-   * Update custom label UI with buffer values
-   *
-   * @protected
-   */
-  protected _updateLabel(
-    evt: CustomEvent,
-    type: "unit" | "distance"
-  ): void {
-    if (this._customLabel) {
-      const oldV = type === "unit" ? `${this._distance} ${evt.detail.oldValue}` : `${evt.detail.oldValue} ${this._unit}`;
-      const newV = type === "unit" ? `${this._distance} ${evt.detail.newValue}` : `${evt.detail.newValue} ${this._unit}`;
-      this._customLabel = this._customLabel.replace(oldV, newV);
-      this._labelName.value = this._customLabel;
-      this.labelChange.emit(this._labelName.value);
-    }
-  }
-
-  /**
    * Create a calcite action
    *
    * @param enabled controls the enabled state of the control
@@ -1466,9 +1350,6 @@ export class PublicNotification {
     await this._selectTools?.clearSelection();
     this._numSelected = 0;
     this._activeSelection = undefined;
-    this._customLabel = undefined;
-    this._distance = undefined;
-    this._unit = undefined;
   }
 
   /**
@@ -1523,9 +1404,6 @@ export class PublicNotification {
   ): void {
     evt.stopPropagation();
     this._activeSelection = selectionSet;
-    this._distance = this._activeSelection.distance;
-    this._unit = this._activeSelection.unit;
-    this._customLabel = this._activeSelection.label;
     this._pageType = EPageType.SELECT;
   }
 

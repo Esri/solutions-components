@@ -31,7 +31,6 @@
 
 | Event                       | Description                                                 | Type                                |
 | --------------------------- | ----------------------------------------------------------- | ----------------------------------- |
-| `labelChange`               | Emitted on demand when a buffer is generated.               | `CustomEvent<string>`               |
 | `searchConfigurationChange` | Emitted on demand when searchConfiguration gets a new value | `CustomEvent<ISearchConfiguration>` |
 
 
@@ -52,11 +51,8 @@
 - calcite-list-item
 - calcite-modal
 - [map-select-tools](../map-select-tools)
-- calcite-loader
-- calcite-icon
-- calcite-input-message
-- calcite-input
 - calcite-checkbox
+- calcite-input-message
 - calcite-switch
 - [pdf-download](../pdf-download)
 - calcite-input-text
@@ -78,11 +74,8 @@ graph TD;
   public-notification --> calcite-list-item
   public-notification --> calcite-modal
   public-notification --> map-select-tools
-  public-notification --> calcite-loader
-  public-notification --> calcite-icon
-  public-notification --> calcite-input-message
-  public-notification --> calcite-input
   public-notification --> calcite-checkbox
+  public-notification --> calcite-input-message
   public-notification --> calcite-switch
   public-notification --> pdf-download
   public-notification --> calcite-input-text
@@ -124,6 +117,10 @@ graph TD;
   map-select-tools --> calcite-switch
   map-select-tools --> buffer-tools
   map-select-tools --> map-layer-picker
+  map-select-tools --> calcite-loader
+  map-select-tools --> calcite-icon
+  map-select-tools --> calcite-input-message
+  map-select-tools --> calcite-input
   buffer-tools --> calcite-option
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select

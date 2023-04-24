@@ -66,3 +66,11 @@
   display: flex;
   padding-top: 1rem;
 }
+
+.font-bold {
+  font: bold;
+}
+
+.border-bottom {
+  border-bottom: 1px solid var(--calcite-ui-border-2);
+}

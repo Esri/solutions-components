@@ -15,8 +15,6 @@
     "stepTwoFull": "Create new list",
     "cancel": "Cancel",
     "done": "Done",
-    "selectedAddresses": "{{n}} selected addresses from {{layer}}",
-    "selectionLoading": "Selection loading",
     "selectPDFLabelOption": "PDF label option",
     "removeDuplicate": "Remove duplicates:",
     "numDuplicates": "{{n}} duplicates",
@@ -37,7 +35,5 @@
     "title": "Title",
     "addTitle": "Add title",
     "titlePlaceholder": "Enter title here",
-    "includeMap": "Include map",
-    "listName": "List name",
-    "listNamePlaceholder": "Enter name here"
+    "includeMap": "Include map"
 }
