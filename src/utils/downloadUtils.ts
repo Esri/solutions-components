@@ -351,6 +351,32 @@ async function _prepareLabels(
 
   // Get the features to export
   const featureSet = await queryFeaturesByID(ids, layer);
+  let features = featureSet.features;
+
+  if (!removeDuplicates && ids.length > features.length) {
+    const oidField = layer.objectIdField;
+    features = featureSet.features.reduce((prev, cur) => {
+      const id = cur.attributes[oidField];
+      // remove the first instance of the id
+      const i = ids.indexOf(id);
+      if (i > -1) {
+        ids = ids.splice(i, 1);
+      }
+      // add the first instance of the feature to the new array
+      prev.push(cur);
+      // test for any duplicates
+      if (ids.indexOf(id) > -1) {
+        // could be more than once..
+        const _ids = ids.filter(_id => _id !== id);
+        const num = ids.length - _ids.length;
+        for (let _i = 0; _i < num; _i++) {
+          prev.push(cur);
+        }
+        ids = _ids;
+      }
+      return prev;
+    }, []);
+  }
 
   // Get field data types. Do we have any domain-based fields?
   const attributeTypes: IAttributeTypes = {};
@@ -414,7 +440,7 @@ async function _prepareLabels(
     const attributeMatches = labelFormat.match(attributeRegExp);
 
     // Convert feature attributes into an array of labels
-    labels = featureSet.features.map(
+    labels = features.map(
       feature => {
         let labelPrep = labelFormat;
 
@@ -454,7 +480,7 @@ async function _prepareLabels(
 
   } else {
     // Export all attributes
-    labels = featureSet.features.map(
+    labels = features.map(
       feature => {
         return Object.keys(feature.attributes).map(
           (attributeName: string) => {
@@ -468,15 +494,6 @@ async function _prepareLabels(
     );
   }
 
-  // Remove duplicates
-  if (removeDuplicates) {
-    const labelsAsStrings: string[] = labels.map(label => JSON.stringify(label));
-    const uniqueLabels = new Set(labelsAsStrings);
-    labels = Array.from(uniqueLabels,
-      labelString => JSON.parse(labelString)
-    );
-  }
-
   // Add header names
   if (includeHeaderNames) {
     let headerNames = [];
@@ -485,7 +502,7 @@ async function _prepareLabels(
       headerNames = labelFormat.replace(/\{/g, "").replace(/\}/g, "").split(lineSeparatorChar);
 
     } else {
-      const featuresAttrs = featureSet.features[0].attributes;
+      const featuresAttrs = features[0].attributes;
       Object.keys(featuresAttrs).forEach(k => {
         headerNames.push(k);
       });

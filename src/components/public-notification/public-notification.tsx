@@ -146,6 +146,11 @@ export class PublicNotification {
   //--------------------------------------------------------------------------
 
   /**
+   * boolean: When true a map will be added on export
+   */
+  @State() _addMap = false;
+
+  /**
    * boolean: When true a title will be added above the map on export
    */
   @State() _addTitle = false;
@@ -209,11 +214,6 @@ export class PublicNotification {
   protected _geometryEngine: __esri.geometryEngine;
 
   /**
-   * boolean: When true a image of the current map will be included in the PDF if the Export button is clicked
-   */
-  protected _includeMap = false;
-
-  /**
    * esri/symbols/support/jsonUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-support-jsonUtils.html
    */
   protected _jsonUtils: __esri.symbolsSupportJsonUtils;
@@ -224,14 +224,9 @@ export class PublicNotification {
   protected _popupsEnabled: boolean;
 
   /**
-   * HTMLCalciteCheckboxElement: The remove duplicates checkbox element for CSV downloads
-   */
-  protected _removeDuplicatesCSV: HTMLCalciteCheckboxElement;
-
-  /**
    * HTMLCalciteCheckboxElement: The remove duplicates checkbox element for PDF downloads
    */
-  protected _removeDuplicatesPDF: HTMLCalciteCheckboxElement;
+  protected _removeDuplicates: HTMLCalciteCheckboxElement;
 
   /**
    * ISearchConfiguration: Configuration details for the Search widget
@@ -758,7 +753,7 @@ export class PublicNotification {
                 <div class="padding-sides-1">
                   <calcite-label layout="inline">
                     <calcite-checkbox
-                      ref={(el) => { this._removeDuplicatesPDF = el }}
+                      ref={(el) => { this._removeDuplicates = el }}
                     />
                     <div class="display-flex">
                       {this._translations.removeDuplicate}
@@ -803,6 +798,7 @@ export class PublicNotification {
   protected _getPDFOptions(): VNode {
     const pdfOptionsClass = this._exportPDF ? "display-block" : "display-none";
     const titleOptionsClass = this._addTitle ? "display-block" : "display-none";
+    const mapOptionsClass = this._addMap ? "display-block" : "display-none";
     return (
       <div>
         {this._getLabel(this._translations.pdf, true)}
@@ -832,35 +828,41 @@ export class PublicNotification {
               ref={(el) => { this._downloadTools = el }}
             />
           </div>
-          <div class="padding-top-sides-1">
-            <calcite-label
-              class="label-margin-0"
-              layout="inline"
-            >
-              <calcite-checkbox
-                checked={this._addTitle}
-                onCalciteCheckboxChange={() => this._addTitle = !this._addTitle}
-              />
-              {this._translations.addTitle}
-            </calcite-label>
-          </div>
-          <div
-            class={titleOptionsClass}
-          >
-            {this._getLabel(this._translations.title, true, "")}
-            <calcite-input-text
-              class="padding-sides-1"
-              placeholder={this._translations.titlePlaceholder}
-            />
-          </div>
+
           <div class="padding-top-sides-1">
             <calcite-label layout="inline">
               <calcite-checkbox
-                onCalciteCheckboxChange={() => this._includeMap = !this._includeMap}
+                checked={this._addMap}
+                onCalciteCheckboxChange={() => this._addMap = !this._addMap}
               />
               {this._translations.includeMap}
             </calcite-label>
           </div>
+
+          <div class={mapOptionsClass + " padding-bottom-1"}>
+            <div class="padding-top-sides-1">
+              <calcite-label
+                class="label-margin-0"
+                layout="inline"
+              >
+                <calcite-checkbox
+                  checked={this._addTitle}
+                  onCalciteCheckboxChange={() => this._addTitle = !this._addTitle}
+                />
+                {this._translations.addTitle}
+              </calcite-label>
+            </div>
+            <div
+              class={titleOptionsClass}
+            >
+              {this._getLabel(this._translations.title, true, "")}
+              <calcite-input-text
+                class="padding-sides-1"
+                placeholder={this._translations.titlePlaceholder}
+              />
+            </div>
+          </div>
+
         </div>
       </div>
     );
@@ -1059,13 +1061,15 @@ export class PublicNotification {
    * @protected
    */
   protected _downloadPDF(): void {
-    const idSets = utils.getSelectionIdsAndViews(this._getDownloadSelectionSets());
-    idSets.forEach(idSet => {
+    const downloadSets = this._getDownloadSelectionSets();
+    const idSets = utils.getSelectionIdsAndViews(downloadSets);
+    Object.keys(idSets).forEach(k => {
+      const idSet = idSets[k];
       void this._downloadTools.downloadPDF(
         idSet.layerView,
         idSet.selectionSetNames,
         idSet.ids,
-        this._removeDuplicatesPDF.checked
+        this._removeDuplicates.checked
       );
     });
   }
@@ -1076,13 +1080,15 @@ export class PublicNotification {
    * @protected
    */
   protected _downloadCSV(): void {
-    const idSets = utils.getSelectionIdsAndViews(this._getDownloadSelectionSets());
-    idSets.forEach(idSet => {
+    const downloadSets = this._getDownloadSelectionSets();
+    const idSets = utils.getSelectionIdsAndViews(downloadSets);
+    Object.keys(idSets).forEach(k => {
+      const idSet = idSets[k];
       void this._downloadTools.downloadCSV(
         idSet.layerView,
         idSet.selectionSetNames,
         idSet.ids,
-        this._removeDuplicatesCSV.checked
+        this._removeDuplicates.checked
       );
     });
   }
