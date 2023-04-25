@@ -360,7 +360,7 @@ async function _prepareLabels(
       // remove the first instance of the id
       const i = ids.indexOf(id);
       if (i > -1) {
-        ids = ids.splice(i, 1);
+        ids.splice(i, 1);
       }
       // add the first instance of the feature to the new array
       prev.push(cur);
