@@ -27,8 +27,7 @@
 ### Used by
 
  - [layer-table](../layer-table)
- - [map-draw-tools](../map-draw-tools)
- - [public-notification](../public-notification)
+ - [map-select-tools](../map-select-tools)
 
 ### Depends on
 
@@ -50,8 +49,7 @@ graph TD;
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
   layer-table --> map-layer-picker
-  map-draw-tools --> map-layer-picker
-  public-notification --> map-layer-picker
+  map-select-tools --> map-layer-picker
   style map-layer-picker fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -31,7 +31,6 @@
 
 | Event                       | Description                                                 | Type                                |
 | --------------------------- | ----------------------------------------------------------- | ----------------------------------- |
-| `labelChange`               | Emitted on demand when a buffer is generated.               | `CustomEvent<string>`               |
 | `searchConfigurationChange` | Emitted on demand when searchConfiguration gets a new value | `CustomEvent<ISearchConfiguration>` |
 
 
@@ -45,19 +44,16 @@
 - calcite-action
 - calcite-tooltip
 - calcite-panel
-- calcite-label
-- calcite-input-message
 - calcite-button
-- [map-layer-picker](../map-layer-picker)
 - calcite-list
 - calcite-list-item
-- calcite-modal
 - [map-select-tools](../map-select-tools)
-- calcite-loader
-- calcite-icon
-- calcite-input
+- calcite-label
 - calcite-checkbox
+- calcite-input-message
+- calcite-switch
 - [pdf-download](../pdf-download)
+- calcite-input-text
 - calcite-notice
 
 ### Graph
@@ -69,19 +65,16 @@ graph TD;
   public-notification --> calcite-action
   public-notification --> calcite-tooltip
   public-notification --> calcite-panel
-  public-notification --> calcite-label
-  public-notification --> calcite-input-message
   public-notification --> calcite-button
-  public-notification --> map-layer-picker
   public-notification --> calcite-list
   public-notification --> calcite-list-item
-  public-notification --> calcite-modal
   public-notification --> map-select-tools
-  public-notification --> calcite-loader
-  public-notification --> calcite-icon
-  public-notification --> calcite-input
+  public-notification --> calcite-label
   public-notification --> calcite-checkbox
+  public-notification --> calcite-input-message
+  public-notification --> calcite-switch
   public-notification --> pdf-download
+  public-notification --> calcite-input-text
   public-notification --> calcite-notice
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
@@ -96,41 +89,42 @@ graph TD;
   calcite-panel --> calcite-action-menu
   calcite-panel --> calcite-scrim
   calcite-scrim --> calcite-loader
-  calcite-input-message --> calcite-icon
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
-  map-layer-picker --> calcite-select
-  map-layer-picker --> calcite-combobox
-  map-layer-picker --> calcite-combobox-item
-  map-layer-picker --> calcite-option
-  calcite-select --> calcite-icon
-  calcite-combobox --> calcite-chip
-  calcite-combobox --> calcite-icon
-  calcite-chip --> calcite-icon
-  calcite-combobox-item --> calcite-icon
   calcite-list --> calcite-scrim
   calcite-list --> calcite-filter
   calcite-filter --> calcite-input
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-list-item --> calcite-icon
-  calcite-modal --> calcite-scrim
-  calcite-modal --> calcite-icon
-  map-select-tools --> calcite-segmented-control
-  map-select-tools --> calcite-segmented-control-item
-  map-select-tools --> calcite-label
-  map-select-tools --> calcite-checkbox
   map-select-tools --> map-draw-tools
+  map-select-tools --> calcite-label
+  map-select-tools --> calcite-switch
   map-select-tools --> buffer-tools
-  calcite-segmented-control-item --> calcite-icon
-  map-draw-tools --> map-layer-picker
+  map-select-tools --> map-layer-picker
+  map-select-tools --> calcite-loader
+  map-select-tools --> calcite-icon
+  map-select-tools --> calcite-input-message
+  map-select-tools --> calcite-input
   buffer-tools --> calcite-option
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select
   buffer-tools --> calcite-slider
+  calcite-select --> calcite-icon
   calcite-slider --> calcite-graph
+  map-layer-picker --> calcite-select
+  map-layer-picker --> calcite-combobox
+  map-layer-picker --> calcite-combobox-item
+  map-layer-picker --> calcite-option
+  calcite-combobox --> calcite-chip
+  calcite-combobox --> calcite-icon
+  calcite-chip --> calcite-icon
+  calcite-combobox-item --> calcite-icon
+  calcite-input-message --> calcite-icon
   pdf-download --> calcite-select
   pdf-download --> calcite-option
+  calcite-input-text --> calcite-progress
+  calcite-input-text --> calcite-icon
   calcite-notice --> calcite-icon
   style public-notification fill:#f9f,stroke:#333,stroke-width:4px
 ```

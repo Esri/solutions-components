@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ISelectionSet, IQueryExtentResponse } from "./interfaces";
+import { IQueryExtentResponse } from "./interfaces";
 
 /**
  * Query the layer for all features
@@ -156,40 +156,6 @@ export function getQueryGeoms(
     ..._unionGeoms(geometries, "polyline", geometryEngine),
     ..._unionGeoms(geometries, "point", geometryEngine)
   ];
-}
-
-/**
- * Get the appropriate ObjectIds query for the provided selection set
- *
- * @param selectionSet the current selection set to fetch the query for
- * @param geometryEngine the geometry engine instance to perform the union of the user drawn graphics or buffers
- *
- * @returns A promise that will resolve with ids that intersect the selection sets geometries
- */
-export function getSelectionSetQuery(
-  selectionSet: ISelectionSet,
-  geometryEngine: __esri.geometryEngine
-): Promise<number[]> {
-  let q = Promise.resolve([]);
-  if (selectionSet.workflowType) {
-    if (!selectionSet.buffer) {
-      const queryGeoms = getQueryGeoms(
-        selectionSet.geometries,
-        geometryEngine
-      );
-      q = queryObjectIds(
-        queryGeoms,
-        selectionSet.layerView.layer
-      );
-    } else {
-      // buffer is a single unioned geom
-      q = queryObjectIds(
-        [selectionSet.buffer],
-        selectionSet.layerView.layer
-      );
-    }
-  }
-  return q;
 }
 
 /**

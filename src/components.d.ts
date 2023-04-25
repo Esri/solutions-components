@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EDrawToolsMode, EExpandType, ESketchType, EWorkflowType, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
+import { DistanceUnit, EExpandType, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -19,6 +19,7 @@ export namespace Components {
           * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
          */
         "appearance": "slider" | "text";
+        "disabled": boolean;
         /**
           * number: The distance used for buffer
          */
@@ -145,25 +146,9 @@ export namespace Components {
          */
         "clear": () => Promise<void>;
         /**
-          * EDrawToolsMode: Will the drawn graphic select features from the addressee layer (DRAW) or  from a select layer whose features will then be used select features from the addressee layer (SELECT)
-         */
-        "drawToolsMode": EDrawToolsMode;
-        /**
-          * string[]: Optional list of enabled layer ids  If empty all layers will be available
-         */
-        "enabledLayerIds": string[];
-        /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "graphics": __esri.Graphic[];
-        /**
-          * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
-         */
-        "layerView": __esri.FeatureLayerView;
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "layerViews": __esri.FeatureLayerView[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -180,10 +165,6 @@ export namespace Components {
           * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
          */
         "polylineSymbol": __esri.SimpleLineSymbol;
-        /**
-          * boolean: Used to control the visibility of the layer picker
-         */
-        "useLayerPicker": boolean;
     }
     interface MapLayerPicker {
         /**
@@ -233,6 +214,10 @@ export namespace Components {
          */
         "clearSelection": () => Promise<void>;
         /**
+          * boolean: When true the user can define a name for each notification list
+         */
+        "customLabelEnabled": boolean;
+        /**
           * number: The default value to show for the buffer distance
          */
         "defaultBufferDistance": number;
@@ -258,9 +243,17 @@ export namespace Components {
          */
         "isUpdate": boolean;
         /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "layerViews": __esri.FeatureLayerView[];
+        /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * string: The value to show for no results when left empty the default text "0 selected features from {layerTitle}" will be shown
+         */
+        "noResultText": string;
         /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
@@ -273,10 +266,6 @@ export namespace Components {
           * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
          */
         "selectionSet": ISelectionSet;
-        /**
-          * boolean: When true the buffer tools will be available for use
-         */
-        "showBufferTools": boolean;
         /**
           * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
          */
@@ -311,7 +300,7 @@ export namespace Components {
           * @param addColumnTitle Indicates if column headings should be included in output
           * @returns Promise resolving when function is done
          */
-        "downloadCSV": (selectionSetNames: string[], ids: number[], removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>;
+        "downloadCSV": (layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>;
         /**
           * Downloads pdf of mailing labels for the provided list of ids
           * @param selectionSetNames Names of the selection sets used to provide ids
@@ -319,11 +308,7 @@ export namespace Components {
           * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
           * @returns Promise resolving when function is done
          */
-        "downloadPDF": (selectionSetNames: string[], ids: number[], removeDuplicates: boolean) => Promise<void>;
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "layerView": __esri.FeatureLayerView;
+        "downloadPDF": (layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates: boolean) => Promise<void>;
     }
     interface PublicNotification {
         /**
@@ -853,6 +838,7 @@ declare namespace LocalJSX {
           * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
          */
         "appearance"?: "slider" | "text";
+        "disabled"?: boolean;
         /**
           * number: The distance used for buffer
          */
@@ -978,25 +964,9 @@ declare namespace LocalJSX {
          */
         "active"?: boolean;
         /**
-          * EDrawToolsMode: Will the drawn graphic select features from the addressee layer (DRAW) or  from a select layer whose features will then be used select features from the addressee layer (SELECT)
-         */
-        "drawToolsMode"?: EDrawToolsMode;
-        /**
-          * string[]: Optional list of enabled layer ids  If empty all layers will be available
-         */
-        "enabledLayerIds"?: string[];
-        /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "graphics"?: __esri.Graphic[];
-        /**
-          * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
-         */
-        "layerView"?: __esri.FeatureLayerView;
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "layerViews"?: __esri.FeatureLayerView[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -1021,10 +991,6 @@ declare namespace LocalJSX {
           * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
          */
         "polylineSymbol"?: __esri.SimpleLineSymbol;
-        /**
-          * boolean: Used to control the visibility of the layer picker
-         */
-        "useLayerPicker"?: boolean;
     }
     interface MapLayerPicker {
         /**
@@ -1072,6 +1038,10 @@ declare namespace LocalJSX {
          */
         "bufferOutlineColor"?: any;
         /**
+          * boolean: When true the user can define a name for each notification list
+         */
+        "customLabelEnabled"?: boolean;
+        /**
           * number: The default value to show for the buffer distance
          */
         "defaultBufferDistance"?: number;
@@ -1092,25 +1062,21 @@ declare namespace LocalJSX {
          */
         "isUpdate"?: boolean;
         /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "layerViews"?: __esri.FeatureLayerView[];
+        /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         /**
-          * Emitted on demand when selection starts or ends.
+          * string: The value to show for no results when left empty the default text "0 selected features from {layerTitle}" will be shown
          */
-        "onSelectionLoadingChange"?: (event: MapSelectToolsCustomEvent<boolean>) => void;
+        "noResultText"?: string;
         /**
           * Emitted on demand when the selection set changes.
          */
         "onSelectionSetChange"?: (event: MapSelectToolsCustomEvent<number>) => void;
-        /**
-          * Emitted on demand when the sketch type changes.
-         */
-        "onSketchTypeChange"?: (event: MapSelectToolsCustomEvent<ESketchType>) => void;
-        /**
-          * Emitted on demand when the workflow type changes.
-         */
-        "onWorkflowTypeChange"?: (event: MapSelectToolsCustomEvent<EWorkflowType>) => void;
         /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
@@ -1123,10 +1089,6 @@ declare namespace LocalJSX {
           * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
          */
         "selectionSet"?: ISelectionSet;
-        /**
-          * boolean: When true the buffer tools will be available for use
-         */
-        "showBufferTools"?: boolean;
         /**
           * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
          */
@@ -1153,10 +1115,6 @@ declare namespace LocalJSX {
           * boolean: Controls the enabled/disabled state of download
          */
         "disabled"?: boolean;
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "layerView"?: __esri.FeatureLayerView;
     }
     interface PublicNotification {
         /**
@@ -1199,10 +1157,6 @@ declare namespace LocalJSX {
           * string: The value to show for no results when left empty the default text "0 selected features from {layerTitle}" will be shown
          */
         "noResultText"?: string;
-        /**
-          * Emitted on demand when a buffer is generated.
-         */
-        "onLabelChange"?: (event: PublicNotificationCustomEvent<string>) => void;
         /**
           * Emitted on demand when searchConfiguration gets a new value
          */
