@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
-import { DistanceUnit, EPageType, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
+import { DistanceUnit, EPageType, IExportInfos, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
 import { goToSelection, highlightFeatures } from "../../utils/mapViewUtils";
 import state from "../../utils/publicNotificationStore";
@@ -1044,14 +1044,20 @@ export class PublicNotification {
    * @protected
    */
   protected _export(): void {
-    if (this._exportPDF) {
-      this._downloadPDF();
-    }
-    if (this._exportCSV) {
-      this._downloadCSV();
-    }
+    let exportInfos: IExportInfos;
+
     if (!this._exportPDF && !this._exportCSV) {
       // TODO show a message saying they need to enable at least one of the options
+    } else {
+      exportInfos = utils.getSelectionIdsAndViews(this._selectionSets);
+      console.log(exportInfos);
+    }
+
+    if (this._exportPDF) {
+      this._downloadPDF(exportInfos);
+    }
+    if (this._exportCSV) {
+      this._downloadCSV(exportInfos);
     }
   }
 
@@ -1060,15 +1066,15 @@ export class PublicNotification {
    *
    * @protected
    */
-  protected _downloadPDF(): void {
-    const downloadSets = this._getDownloadSelectionSets();
-    const idSets = utils.getSelectionIdsAndViews(downloadSets);
-    Object.keys(idSets).forEach(k => {
-      const idSet = idSets[k];
+  protected _downloadPDF(
+    exportInfos: IExportInfos
+  ): void {
+    Object.keys(exportInfos).forEach(k => {
+      const exportInfo = exportInfos[k];
       void this._downloadTools.downloadPDF(
-        idSet.layerView,
-        idSet.selectionSetNames,
-        idSet.ids,
+        exportInfo.layerView,
+        exportInfo.selectionSetNames,
+        exportInfo.ids,
         this._removeDuplicates.checked
       );
     });
@@ -1079,29 +1085,17 @@ export class PublicNotification {
    *
    * @protected
    */
-  protected _downloadCSV(): void {
-    const downloadSets = this._getDownloadSelectionSets();
-    const idSets = utils.getSelectionIdsAndViews(downloadSets);
-    Object.keys(idSets).forEach(k => {
-      const idSet = idSets[k];
+  protected _downloadCSV(
+    exportInfos: IExportInfos
+  ): void {
+    Object.keys(exportInfos).forEach(k => {
+      const exportInfo = exportInfos[k];
       void this._downloadTools.downloadCSV(
-        idSet.layerView,
-        idSet.selectionSetNames,
-        idSet.ids,
+        exportInfo.layerView,
+        exportInfo.selectionSetNames,
+        exportInfo.ids,
         this._removeDuplicates.checked
       );
-    });
-  }
-
-  /**
-   * Get all enabled selection sets
-   *
-   * @returns the selection sets
-   * @protected
-   */
-  protected _getDownloadSelectionSets(): ISelectionSet[] {
-    return this._selectionSets.filter(ss => {
-      return ss.download;
     });
   }
 

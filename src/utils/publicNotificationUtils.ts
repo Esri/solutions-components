@@ -18,7 +18,7 @@
  | Helper functions used in multiple components for public notification
 */
 
-import { ISelectionSet } from "./interfaces";
+import { IExportInfos, ISelectionSet } from "./interfaces";
 
 export function getSelectionIds(
   selectionSets: ISelectionSet[]
@@ -33,8 +33,9 @@ export function getSelectionIds(
 
 export function getSelectionIdsAndViews(
   selectionSets: ISelectionSet[]
-): any {
-  return selectionSets.reduce((prev, cur) => {
+): IExportInfos {
+  const exportSelectionSets = _getDownloadSelectionSets(selectionSets)
+  return exportSelectionSets.reduce((prev, cur) => {
     if (Object.keys(prev).indexOf(cur.layerView.layer.id) > -1) {
       prev[cur.layerView.layer.id].ids = [
         ...prev[cur.layerView.layer.id].ids,
@@ -57,3 +58,18 @@ export function getTotal(
 ): number {
   return [...new Set(getSelectionIds(selectionSets))].length;
 }
+
+/**
+ * Get all enabled selection sets
+ *
+ * @returns the selection sets
+ * @protected
+ */
+function _getDownloadSelectionSets(
+  selectionSets: ISelectionSet[]
+): ISelectionSet[] {
+  return selectionSets.filter(ss => {
+    return ss.download;
+  });
+}
+
