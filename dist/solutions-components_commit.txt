@@ -1,0 +1,7 @@
+Built 04/26/2023 12:36:07.48 
+enh/pn-map-and-title-ui
+commit 6692cfbf257ecd567d667b1bfb51d9e0f9bbfcbc
+Author: Mike Tschudi <mtschudi@esri.com>
+Date:   Fri Apr 14 16:20:25 2023 -0700
+
+    Add UI
