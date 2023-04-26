@@ -1,0 +1,13 @@
+{
+    "listName": "List name",
+    "listNamePlaceholder": "Enter name here",
+    "searchDistance": "Search distance",
+    "select": "Layer",
+    "selectedAddresses": "{{n}} selected addresses from {{layer}}",
+    "selectionLoading": "Selection loading",
+    "sketch": "Sketch",
+    "bufferLayer": "Buffer Layer",
+    "sketchLayer": "Sketch Layer",
+    "useLayerFeatures": "Use layer features",
+    "inputLayer": "Input layer"
+}

@@ -1,0 +1,7 @@
+{
+    "add": "Add",
+    "remove": "Remove",
+    "featuresAdded": "Features added: {{n}}",
+    "featuresRemoved": "Features removed: {{n}}",
+    "totalSelected": "Total selected: {{n}}"
+}
