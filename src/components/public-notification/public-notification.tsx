@@ -21,7 +21,6 @@ import { goToSelection, highlightFeatures } from "../../utils/mapViewUtils";
 import state from "../../utils/publicNotificationStore";
 import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import * as utils from "../../utils/publicNotificationUtils";
 
 @Component({
   tag: "public-notification",
@@ -1045,58 +1044,55 @@ export class PublicNotification {
    */
   protected _export(): void {
     let exportInfos: IExportInfos;
-
     if (!this._exportPDF && !this._exportCSV) {
       // TODO show a message saying they need to enable at least one of the options
     } else {
-      exportInfos = utils.getSelectionIdsAndViews(this._selectionSets);
-      console.log(exportInfos);
-    }
-
-    if (this._exportPDF) {
-      this._downloadPDF(exportInfos);
-    }
-    if (this._exportCSV) {
-      this._downloadCSV(exportInfos);
+      exportInfos = this._getSelectionIdsAndViews(this._selectionSets, true);
+      if (this._exportPDF) {
+        void this._downloadTools.downloadPDF(
+          exportInfos,
+          this._removeDuplicates.checked
+        );
+      }
+      if (this._exportCSV) {
+        void this._downloadTools.downloadCSV(
+          exportInfos,
+          this._removeDuplicates.checked
+        );
+      }
     }
   }
 
   /**
-   * Download all selection sets as PDF
-   *
-   * @protected
-   */
-  protected _downloadPDF(
-    exportInfos: IExportInfos
-  ): void {
-    Object.keys(exportInfos).forEach(k => {
-      const exportInfo = exportInfos[k];
-      void this._downloadTools.downloadPDF(
-        exportInfo.layerView,
-        exportInfo.selectionSetNames,
-        exportInfo.ids,
-        this._removeDuplicates.checked
-      );
-    });
-  }
-
-  /**
-   * Download all selection sets as CSV
-   *
-   * @protected
-   */
-  protected _downloadCSV(
-    exportInfos: IExportInfos
-  ): void {
-    Object.keys(exportInfos).forEach(k => {
-      const exportInfo = exportInfos[k];
-      void this._downloadTools.downloadCSV(
-        exportInfo.layerView,
-        exportInfo.selectionSetNames,
-        exportInfo.ids,
-        this._removeDuplicates.checked
-      );
-    });
+  * Sort selection sets by layer and retain key export details
+  *
+  * @param selectionSets selection sets to evaluate
+  *
+  * @returns key export details from the selection sets
+  * @protected
+  */
+  protected _getSelectionIdsAndViews(
+    selectionSets: ISelectionSet[],
+    downloadSetsOnly = false
+  ): IExportInfos {
+    const exportSelectionSets = downloadSetsOnly ?
+      selectionSets.filter(ss => ss.download) : selectionSets;
+    return exportSelectionSets.reduce((prev, cur) => {
+      if (Object.keys(prev).indexOf(cur.layerView.layer.id) > -1) {
+        prev[cur.layerView.layer.id].ids = [
+          ...prev[cur.layerView.layer.id].ids,
+          ...cur.selectedIds
+        ];
+        prev[cur.layerView.layer.id].selectionSetNames.push(cur.label)
+      } else {
+        prev[cur.layerView.layer.id] = {
+          ids: cur.selectedIds,
+          layerView: cur.layerView,
+          selectionSetNames: [cur.label]
+        }
+      }
+      return prev;
+    }, {});
   }
 
   /**
@@ -1249,7 +1245,7 @@ export class PublicNotification {
    */
   protected async _highlightFeatures(): Promise<void> {
     this._clearHighlight();
-    const idSets = utils.getSelectionIdsAndViews(this._selectionSets);
+    const idSets = this._getSelectionIdsAndViews(this._selectionSets);
     const idKeys = Object.keys(idSets);
     if (idKeys.length > 0) {
       for (let i = 0; i < idKeys.length; i++) {
