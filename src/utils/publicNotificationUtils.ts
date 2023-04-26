@@ -31,6 +31,27 @@ export function getSelectionIds(
   }, []);
 }
 
+export function getSelectionIdsAndViews(
+  selectionSets: ISelectionSet[]
+): any {
+  return selectionSets.reduce((prev, cur) => {
+    if (Object.keys(prev).indexOf(cur.layerView.layer.id) > -1) {
+      prev[cur.layerView.layer.id].ids = [
+        ...prev[cur.layerView.layer.id].ids,
+        ...cur.selectedIds
+      ];
+      prev[cur.layerView.layer.id].selectionSetNames.push(cur.label)
+    } else {
+      prev[cur.layerView.layer.id] = {
+        ids: cur.selectedIds,
+        layerView: cur.layerView,
+        selectionSetNames: [cur.label]
+      }
+    }
+    return prev;
+  }, {});
+}
+
 export function getTotal(
   selectionSets: ISelectionSet[]
 ): number {

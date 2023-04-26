@@ -10,6 +10,7 @@
 | Property       | Attribute       | Description                                                                                                       | Type                                            | Default     |
 | -------------- | --------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ----------- |
 | `appearance`   | `appearance`    | string: The appearance of display. Can be a "slider" or "text" inputs for distance/value                          | `"slider" \| "text"`                            | `"text"`    |
+| `disabled`     | `disabled`      |                                                                                                                   | `boolean`                                       | `false`     |
 | `distance`     | `distance`      | number: The distance used for buffer                                                                              | `number`                                        | `0`         |
 | `geometries`   | --              | esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html | `Geometry[]`                                    | `[]`        |
 | `max`          | `max`           | number: The component's maximum selectable value.                                                                 | `number`                                        | `undefined` |

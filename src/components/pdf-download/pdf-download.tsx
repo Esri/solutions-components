@@ -46,11 +46,6 @@ export class PdfDownload {
    */
   @Prop() disabled = false;
 
-  /**
-   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-   */
-  @Prop() layerView: __esri.FeatureLayerView;
-
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -102,6 +97,7 @@ export class PdfDownload {
    */
   @Method()
   async downloadCSV(
+    layerView: __esri.FeatureLayerView,
     selectionSetNames: string[],
     ids: number[],
     removeDuplicates: boolean,
@@ -109,7 +105,7 @@ export class PdfDownload {
   ): Promise<void> {
     return downloadUtils.downloadCSV(
       selectionSetNames,
-      this.layerView.layer,
+      layerView.layer,
       ids,
       true, // formatUsingLayerPopup
       removeDuplicates,
@@ -127,13 +123,14 @@ export class PdfDownload {
    */
   @Method()
   async downloadPDF(
+    layerView: __esri.FeatureLayerView,
     selectionSetNames: string[],
     ids: number[],
     removeDuplicates: boolean
   ): Promise<void> {
     return downloadUtils.downloadPDF(
       selectionSetNames,
-      this.layerView.layer,
+      layerView.layer,
       ids,
       removeDuplicates,
       this._labelInfoElement.selectedOption.value as downloadUtils.ILabel

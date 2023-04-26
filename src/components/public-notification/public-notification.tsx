@@ -15,13 +15,12 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
-import { DistanceUnit, EExportType, EPageType, ESketchType, EWorkflowType, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
+import { DistanceUnit, EPageType, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
-import { goToSelection, getMapLayerView, highlightFeatures } from "../../utils/mapViewUtils";
-import { getSelectionSetQuery } from "../../utils/queryUtils";
+import { goToSelection, highlightFeatures } from "../../utils/mapViewUtils";
 import state from "../../utils/publicNotificationStore";
 import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
-import { getComponentClosestLanguage, getLocaleComponentStrings } from "../../utils/locale";
+import { getLocaleComponentStrings } from "../../utils/locale";
 import * as utils from "../../utils/publicNotificationUtils";
 
 @Component({
@@ -147,9 +146,14 @@ export class PublicNotification {
   //--------------------------------------------------------------------------
 
   /**
-   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   * boolean: When true a map will be added on export
    */
-  @State() addresseeLayer: __esri.FeatureLayerView;
+  @State() _addMap = false;
+
+  /**
+   * boolean: When true a title will be added above the map on export
+   */
+  @State() _addTitle = false;
 
   /**
    * boolean: Enabled when we have 1 or more selection sets that is enabled in the download pages.
@@ -158,9 +162,14 @@ export class PublicNotification {
   @State() _downloadActive = true;
 
   /**
-   * number: The number of selected features
+   * boolean: When true CSV export options will be shown and a CSV file will be exported if the Export button is clicked
    */
-  @State() _numSelected = 0;
+  @State() _exportCSV = false;
+
+  /**
+   * boolean: When true PDF export options will be shown and a PDF file will be exported if the Export button is clicked
+   */
+  @State() _exportPDF = true;
 
   /**
    * utils/interfaces/EPageType: LIST | SELECT | PDF | CSV
@@ -173,30 +182,9 @@ export class PublicNotification {
   @State() _saveEnabled = false;
 
   /**
-   * boolean: When true a loading indicator will be shown in place of the number of selected features
-   */
-  @State() _selectionLoading = false;
-
-  /**
    * utils/interfaces/ISelectionSet: An array of user defined selection sets
    */
   @State() _selectionSets: ISelectionSet[] = [];
-
-  /**
-   * ESketchType: The current type of sketch
-   * used to control information messages.
-   */
-  @State() _sketchType: ESketchType = ESketchType.INTERACTIVE;
-
-  /**
-   * utils/interfaces/EWorkflowType: SEARCH | SELECT | SKETCH
-   */
-  @State() _selectionWorkflowType = EWorkflowType.SEARCH;
-
-  /**
-   * boolean: When true a modal will be shown to alert users of potential changes to selection sets.
-   */
-  @State() _showLayerSelectionChangeModal = false;
 
   /**
    * Contains the translations for this component.
@@ -214,16 +202,6 @@ export class PublicNotification {
    * ISelectionSet: The current active selection set
    */
   protected _activeSelection: ISelectionSet;
-
-  /**
-   * string: The current custom label
-   */
-  protected _customLabel: string;
-
-  /**
-   * number: The current buffer distance
-   */
-  protected _distance: number;
 
   /**
    * HTMLPdfDownloadElement: The pdf tools element
@@ -251,29 +229,14 @@ export class PublicNotification {
   protected _jsonUtils: __esri.symbolsSupportJsonUtils;
 
   /**
-   * CustomEvent: Used to prevent default behavior of layer selection change
-   */
-  protected _labelName: HTMLCalciteInputElement;
-
-  /**
-   * CustomEvent: Used to prevent default behavior of layer selection change
-   */
-  protected _layerSelectionChangeEvt: CustomEvent;
-
-  /**
    * HTMLCalciteCheckboxElement: When enabled popups will be shown on map click
    */
   protected _popupsEnabled: boolean;
 
   /**
-   * HTMLCalciteCheckboxElement: The remove duplicates checkbox element for CSV downloads
-   */
-  protected _removeDuplicatesCSV: HTMLCalciteCheckboxElement;
-
-  /**
    * HTMLCalciteCheckboxElement: The remove duplicates checkbox element for PDF downloads
    */
-  protected _removeDuplicatesPDF: HTMLCalciteCheckboxElement;
+  protected _removeDuplicates: HTMLCalciteCheckboxElement;
 
   /**
    * ISearchConfiguration: Configuration details for the Search widget
@@ -291,9 +254,9 @@ export class PublicNotification {
   protected _title: HTMLCalciteInputTextElement;
 
   /**
-   * string: The current buffer unit
+   * number: The number of selected features
    */
-  protected _unit: string;
+  protected _numSelected = 0;
 
   //--------------------------------------------------------------------------
   //
@@ -406,31 +369,9 @@ export class PublicNotification {
   //--------------------------------------------------------------------------
 
   /**
-   * Emitted on demand when a buffer is generated.
-   */
-  @Event() labelChange: EventEmitter<string>;
-
-  /**
    * Emitted on demand when searchConfiguration gets a new value
    */
   @Event() searchConfigurationChange: EventEmitter<ISearchConfiguration>;
-
-  /**
-   * Handle changes to the buffer distance value
-   */
-  @Listen("distanceChanged", { target: "window" })
-  distanceChanged(event: CustomEvent): void {
-    this._updateLabel(event, "distance");
-    this._distance = event.detail.newValue;
-  }
-
-  /**
-   * Handle changes when selection is loading
-   */
-  @Listen("selectionLoadingChange", { target: "window" })
-  selectionLoadingChange(event: CustomEvent): void {
-    this._selectionLoading = event.detail;
-  }
 
   /**
    * Handle changes to the selection sets
@@ -438,23 +379,6 @@ export class PublicNotification {
   @Listen("selectionSetsChanged", { target: "window" })
   selectionSetsChanged(event: CustomEvent): void {
     this._selectionSets = [...event.detail];
-  }
-
-  /**
-   * Handle changes to the selection sets
-   */
-  @Listen("sketchTypeChange", { target: "window" })
-  sketchTypeChange(event: CustomEvent): void {
-    this._sketchType = event.detail;
-  }
-
-  /**
-   * Handle changes to the buffer unit
-   */
-  @Listen("unitChanged", { target: "window" })
-  unitChanged(event: CustomEvent): void {
-    this._updateLabel(event, "unit");
-    this._unit = event.detail.newValue;
   }
 
   //--------------------------------------------------------------------------
@@ -481,8 +405,7 @@ export class PublicNotification {
         <calcite-shell>
           <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
             {this._getActionGroup("list-check", EPageType.LIST, this._translations.myLists)}
-            {this._getActionGroup("file-pdf", EPageType.PDF, this._translations.downloadPDF)}
-            {this._getActionGroup("file-csv", EPageType.CSV, this._translations.downloadCSV)}
+            {this._getActionGroup("export", EPageType.EXPORT, this._translations.export)}
           </calcite-action-bar>
           {this._getPage(this._pageType)}
         </calcite-shell>
@@ -613,7 +536,7 @@ export class PublicNotification {
     tip: string
   ): VNode {
     return (
-      <calcite-action-group class="action-center w-1-3" layout="horizontal">
+      <calcite-action-group class="action-center w-1-2" layout="horizontal">
         <calcite-action
           active={this._pageType === pageType}
           alignment="center"
@@ -665,12 +588,8 @@ export class PublicNotification {
         page = this._getSelectPage();
         break;
 
-      case EPageType.PDF:
-        page = this._getPDFPage();
-        break;
-
-      case EPageType.CSV:
-        page = this._getCSVPage();
+      case EPageType.EXPORT:
+        page = this._getExportPage();
         break;
 
     }
@@ -686,73 +605,15 @@ export class PublicNotification {
    */
   protected _getListPage(): VNode {
     const hasSets = this._hasSelections();
-    const total = utils.getTotal(this._selectionSets);
-    return hasSets ? (
-      <calcite-panel>
-        <div class="padding-top-sides-1">
-          <calcite-label class="font-bold">{this._translations.myLists}</calcite-label>
-        </div>
-        {this._getNotice(this._translations.listHasSetsTip, "padding-sides-1 padding-bottom-1")}
-        {this._getMapLayerPicker()}
-        <div class="display-block padding-sides-1 height-1-1-2">
-          <div class="display-block float-left">
-            <calcite-label alignment="start" class="font-bold">{this._translations.notifications}</calcite-label>
-          </div>
-          <div class="display-block float-right">
-            <calcite-input-message class="info-blue margin-top-0" scale="m">{this._translations.uniqueCout.replace("{{n}}", total.toString())}</calcite-input-message>
-          </div>
-        </div>
-        {
-          hasSets ? this._getSelectionSetList() : (
-            <div class="info-message">
-              <calcite-input-message class="info-blue" scale="m">{this._translations.noNotifications}</calcite-input-message>
-            </div>
-          )
-        }
-        <div class="display-flex padding-1">
-          <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full">{this._translations.add}</calcite-button>
-        </div>
-        {this._showModal(this._showLayerSelectionChangeModal)}
-      </calcite-panel>
-    ) : (
-      <calcite-panel>
-        <div class="padding-top-sides-1">
-          <calcite-label class="font-bold">{this._translations.myLists}</calcite-label>
-        </div>
-        <div class="padding-sides-1">
-          <calcite-label>{this._translations.notifications}</calcite-label>
-        </div>
-        <div class="info-message padding-bottom-1">
-          <calcite-input-message class="info-blue" scale="m">{this._translations.noNotifications}</calcite-input-message>
-        </div>
-        {this._getNotice(this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1")}
-        {this._getMapLayerPicker()}
-        <div class="display-flex padding-1">
-          <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full">{this._translations.add}</calcite-button>
-        </div>
-      </calcite-panel>
-    );
-  }
-
-  /**
-   * Create the UI element that will expose the addressee layers
-   *
-   * @returns addressee layer list node
-   * @protected
-   */
-  protected _getMapLayerPicker(): VNode {
     return (
-      <div class="display-flex padding-sides-1">
-        <calcite-label class="font-bold width-full">{this._translations.addresseeLayer}
-          <map-layer-picker
-            enabledLayerIds={this.addresseeLayerIds}
-            mapView={this.mapView}
-            onLayerSelectionChange={(evt) => this._layerSelectionChange(evt)}
-            selectedLayerIds={this.addresseeLayer ? [this.addresseeLayer?.layer.id] : []}
-            selectionMode={"single"}
-          />
-        </calcite-label>
-      </div>
+      <calcite-panel>
+        {this._getLabel(this._translations.myLists)}
+        {this._getNotice(hasSets ? this._translations.listHasSetsTip : this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1")}
+        {hasSets ? this._getSelectionSetList() : (null)}
+        <div class="display-flex padding-1">
+          <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full">{this._translations.add}</calcite-button>
+        </div>
+      </calcite-panel>
     );
   }
 
@@ -764,89 +625,26 @@ export class PublicNotification {
    */
   protected _getSelectionSetList(): VNode {
     return (
-      <calcite-list class="list-border margin-sides-1">
-        {
-          this._selectionSets.reduce((prev, cur, i) => {
-            prev.push((
-              <calcite-list-item
-                description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
-                label={cur.label}
-                onClick={() => this._gotoSelection(cur, this.mapView)}
-              >
-                {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
-                {this._getAction(true, "x", "", (evt): Promise<void> => this._deleteSelection(i, evt), false, "actions-end")}
-              </calcite-list-item>
-            ));
-            return prev;
-          }, [])
-        }
-      </calcite-list>
+      <div class="padding-top-1-2 padding-bottom-1-2">
+        <calcite-list class="list-border margin-sides-1">
+          {
+            this._selectionSets.reduce((prev, cur, i) => {
+              prev.push((
+                <calcite-list-item
+                  description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
+                  label={cur.label}
+                  onClick={() => this._gotoSelection(cur, this.mapView)}
+                >
+                  {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
+                  {this._getAction(true, "x", "", (evt): Promise<void> => this._deleteSelection(i, evt), false, "actions-end")}
+                </calcite-list-item>
+              ));
+              return prev;
+            }, [])
+          }
+        </calcite-list>
+      </div>
     );
-  }
-
-  /**
-   * Alert the user of the potential change to the selection sets and ask if they would like to proceed.
-   *
-   * @returns the page node
-   * @protected
-   */
-  protected _showModal(
-    open: boolean
-  ): VNode {
-    return (
-      <calcite-modal
-        aria-labelledby="modal-title"
-        background-color="grey"
-        color="red"
-        open={open}
-        scale="s"
-        width="s"
-      >
-        <div id="modal-title" slot="header">{this._translations.shouldProceed}</div>
-        <div slot="content">{this._translations.proceedInfo}</div>
-        <calcite-button
-          appearance="outline"
-          onClick={() => this._cancelLayerChange()}
-          slot="secondary"
-          width="full"
-        >
-          {this._translations.cancel}
-        </calcite-button>
-        <calcite-button
-          onClick={() => this._handleLayerChange()}
-          slot="primary"
-          width="full"
-        >
-          {this._translations.proceed}
-        </calcite-button>
-      </calcite-modal>
-    )
-  }
-
-  /**
-   * Prevent the default behavior of layer selection change and close the modal.
-   *
-   * @returns the page node
-   * @protected
-   */
-  protected _cancelLayerChange(): void {
-    this._layerSelectionChangeEvt.preventDefault();
-    this._layerSelectionChangeEvt.stopPropagation();
-    this._layerSelectionChangeEvt = undefined;
-    this._showLayerSelectionChangeModal = false;
-  }
-
-  /**
-   * Allow the default behavior of layer selection change and close the modal.
-   *
-   * @returns the page node
-   * @protected
-   */
-  protected _handleLayerChange(): void {
-    this._showLayerSelectionChangeModal = false;
-    const id: string = this._layerSelectionChangeEvt?.detail?.length > 0 ?
-      this._layerSelectionChangeEvt.detail[0] : "";
-    void this._updateAddresseeLayer(id);
   }
 
   /**
@@ -868,10 +666,36 @@ export class PublicNotification {
    * @protected
    */
   protected _hasDuplicates(): boolean {
-    const selectedIds = this._selectionSets.reduce((prev, cur) => {
+    const selectedIds = this._getSelectedIds();
+    return this._getNumDuplicates(selectedIds) > 0;
+  }
+
+  /**
+   * Return the number of duplicates
+   *
+   * @param ids the list of currently selected ids
+   *
+   * @returns the number of duplicates
+   *
+   * @protected
+   */
+  protected _getNumDuplicates(
+    ids: number[]
+  ): number {
+    return ids.length - new Set(ids).size;
+  }
+
+  /**
+   * Get the complete list of selected ids
+   *
+   * @returns all currently selected IDs
+   *
+   * @protected
+   */
+  protected _getSelectedIds(): number[] {
+    return this._selectionSets.reduce((prev, cur) => {
       return prev.concat(cur.download ? cur.selectedIds : [])
     }, []);
-    return selectedIds.length > new Set(selectedIds).size;
   }
 
   /**
@@ -881,82 +705,31 @@ export class PublicNotification {
    * @protected
    */
   protected _getSelectPage(): VNode {
-    const searchTip = this._translations.selectSearchTip;
-    const selectTip = this._translations.selectLayerTip;
-    const sketchTip = this._sketchType === ESketchType.INTERACTIVE ?
-      this._translations.selectSketchTip :
-      this._translations.selectLayerTip;
-
-    const noticeText = this._selectionWorkflowType === EWorkflowType.SELECT ? selectTip :
-      this._selectionWorkflowType === EWorkflowType.SKETCH ? sketchTip : searchTip;
-
-    const nameLabelClass = this.customLabelEnabled ? "" : "display-none";
-
-    // TODO find out if ... is appropriate for other languages
-    const locale = getComponentClosestLanguage(this.el);
-    const selectionLoading = locale && locale === "en" ?
-      `${this._translations.selectionLoading}...` : this._translations.selectionLoading;
-
+    const noticeText = this._translations.selectSearchTip;
     return (
       <calcite-panel>
-        {this._getLabel(this._translations.stepTwoFull.replace("{{layer}}", this.addresseeLayer?.layer.title))}
+        {this._getLabel(this._translations.stepTwoFull, true)}
         {this._getNotice(noticeText)}
-        <div class={"padding-top-sides-1"}>
+        <div class={"padding-top-1"}>
           <map-select-tools
             bufferColor={this.bufferColor}
             bufferOutlineColor={this.bufferOutlineColor}
             class="font-bold"
+            customLabelEnabled={this.customLabelEnabled}
             defaultBufferDistance={this.defaultBufferDistance}
             defaultBufferUnit={this.defaultBufferUnit}
             enabledLayerIds={this.selectionLayerIds}
             isUpdate={!!this._activeSelection}
             mapView={this.mapView}
+            noResultText={this.noResultText}
             onSelectionSetChange={(evt) => this._updateForSelection(evt)}
-            onWorkflowTypeChange={(evt) => this._updateForWorkflowType(evt)}
             ref={(el) => { this._selectTools = el }}
             searchConfiguration={this._searchConfiguration}
-            selectLayerView={this.addresseeLayer}
             selectionSet={this._activeSelection}
-            showBufferTools={this.showSearchSettings}
             sketchLineSymbol={this.sketchLineSymbol}
             sketchPointSymbol={this.sketchPointSymbol}
             sketchPolygonSymbol={this.sketchPolygonSymbol}
           />
-        </div>
-        <div class="padding-sides-1 padding-bottom-1" style={{ "align-items": "end", "display": "flex" }}>
-          {
-            this._selectionLoading ? (
-              <div>
-                <calcite-loader class="info-blue" inline={true} label={selectionLoading} scale="m" type="indeterminate" />
-              </div>
-            ) : (
-              <calcite-icon class="info-blue padding-end-1-2" icon="feature-layer" scale="s" />
-            )
-          }
-          <calcite-input-message class="info-blue" scale="m">
-            {
-              this._selectionLoading ? selectionLoading :
-                this.noResultText && this._numSelected === 0 ? this.noResultText :
-                  this._translations.selectedAddresses.replace(
-                    "{{n}}", this._numSelected.toString()).replace("{{layer}}", this.addresseeLayer?.layer.title || ""
-                    )
-            }
-          </calcite-input-message>
-        </div>
-        <div class={"padding-sides-1 " + nameLabelClass}>
-          <calcite-label
-            class="font-bold"
-          >
-            {"List name"}
-            <calcite-input
-              onInput={() => {
-                this.labelChange.emit(this._labelName.value);
-              }}
-              placeholder="Insert label here..."
-              ref={(el) => { this._labelName = el }}
-              value={this._customLabel || ""}
-            />
-          </calcite-label>
         </div>
         {
           this._getPageNavButtons(
@@ -973,106 +746,51 @@ export class PublicNotification {
   }
 
   /**
-   * Create the PDF download page that shows the download options
-   *
-   * @returns the page node
-   * @protected
-   */
-  protected _getPDFPage(): VNode {
-    return this._getDownloadPage(EExportType.PDF);
-  }
-
-  /**
-   * Create the CSV download page that shows the download options
-   *
-   * @returns the page node
-   * @protected
-   */
-  protected _getCSVPage(): VNode {
-    return this._getDownloadPage(EExportType.CSV);
-  }
-
-  /**
    * Create the main download page that has the shared aspects of both PDF and CSV
    * But only show the current PDF or CSV page content
    *
-   * @param type EExportType of the current type expected
-   *
    * @returns the page node
    * @protected
    */
-  protected _getDownloadPage(
-    type: EExportType
-  ): VNode {
-    const isPdf = type === EExportType.PDF;
+  protected _getExportPage(): VNode {
     const hasSelections = this._hasSelections();
-    // const hasDuplicates = this._hasDuplicates();
+    const numDuplicates = this._getNumDuplicates(this._getSelectedIds());
     return (
       <calcite-panel>
         <div>
-          <div class="padding-top-sides-1">
-            <calcite-label class="font-bold">
-              {isPdf ? this._translations.downloadPDF : this._translations.downloadCSV}
-            </calcite-label>
-          </div>
+          {this._getLabel(this._translations.export, true)}
           {
             hasSelections ? (
               <div>
-                <div class="padding-top-sides-1">
-                  <calcite-label>{this._translations.notifications}</calcite-label>
-                </div>
+                {this._getNotice(this._translations.exportTip, "padding-top-sides-1")}
+                {this._getLabel(this._translations.myLists)}
                 {this._getSelectionLists()}
-                <div class="margin-side-1 padding-top-1 border-bottom" />
-                <div class="padding-top-sides-1">
-                  <calcite-label class={isPdf ? "display-none" : ""} layout="inline">
+                <div class="padding-sides-1">
+                  <calcite-label layout="inline">
                     <calcite-checkbox
-                      ref={(el) => { this._removeDuplicatesCSV = el }}
+                      ref={(el) => { this._removeDuplicates = el }}
                     />
-                    {this._translations.removeDuplicate}
-                  </calcite-label>
-                  <calcite-label class={isPdf ? "" : "display-none"} layout="inline">
-                    <calcite-checkbox
-                      ref={(el) => { this._removeDuplicatesPDF = el }}
-                    />
-                    {this._translations.removeDuplicate}
+                    <div class="display-flex">
+                      {this._translations.removeDuplicate}
+                      <div class="info-message padding-start-1-2">
+                        <calcite-input-message class="info-blue margin-top-0" scale="m">
+                          {` ${this._translations.numDuplicates.replace("{{n}}", numDuplicates.toString())}`}
+                        </calcite-input-message>
+                      </div>
+                    </div>
                   </calcite-label>
                 </div>
-                <div class={isPdf ? "" : "display-none"}>
-                  {this._getLabel(this._translations.selectPDFLabelOption, false)}
-                  <div class={"padding-sides-1"}>
-                    <pdf-download
-                      disabled={!this._downloadActive}
-                      layerView={this.addresseeLayer}
-                      ref={(el) => { this._downloadTools = el }}
-                    />
-                  </div>
-                  <calcite-label layout="inline">
-                    <calcite-checkbox
-                      ref={(el) => { this._includeMap = el }}
-                    />
-                    {this._translations.includeMap}
-                  </calcite-label>
-                  <calcite-label layout="inline">
-                    <calcite-checkbox
-                      ref={(el) => { this._includeTitle = el }}
-                    />
-                    {this._translations.includeTitle}
-                  </calcite-label>
-                  <calcite-label layout="inline">
-                    {this._translations.title}
-                    <calcite-input-text
-                      class={this._includeTitle.checked ? "" : "display-none"}
-                      ref={(el) => { this._title = el }}
-                    />
-                  </calcite-label>
-                </div>
+                <div class="border-bottom" />
+                {this._getPDFOptions()}
+                <div class="border-bottom" />
+                {this._getCSVOptions()}
                 <div class="padding-1 display-flex">
                   <calcite-button
                     disabled={!this._downloadActive}
-                    onClick={isPdf ? () => this._downloadPDF() : () => this._downloadCSV()}
+                    onClick={() => this._export()}
                     width="full"
                   >
-                    {isPdf ? this._translations.downloadPDF : this._translations.downloadCSV}
+                    {this._translations.export}
                   </calcite-button>
                 </div>
               </div>
@@ -1082,6 +800,115 @@ export class PublicNotification {
           }
         </div>
       </calcite-panel>
+    );
+  }
+
+  /**
+   * Return the PDF portion of the export page
+   *
+   * @returns the node with all PDF export options
+   *
+   * @protected
+   */
+  protected _getPDFOptions(): VNode {
+    const pdfOptionsClass = this._exportPDF ? "display-block" : "display-none";
+    const titleOptionsClass = this._addTitle ? "display-block" : "display-none";
+    const mapOptionsClass = this._addMap ? "display-block" : "display-none";
+    return (
+      <div>
+        {this._getLabel(this._translations.pdf, true)}
+        <div class="padding-1 display-flex">
+          <calcite-label
+            class="label-margin-0 "
+          >
+            {this._translations.exportPDF}
+          </calcite-label>
+          <calcite-switch
+            checked={this._exportPDF}
+            class="position-right"
+            onCalciteSwitchChange={() => this._exportPDF = !this._exportPDF}
+          />
+        </div>
+        <div class={pdfOptionsClass}>
+          <div class={"padding-sides-1"}>
+            <calcite-label
+              class="label-margin-0"
+            >
+              {this._translations.selectPDFLabelOption}
+            </calcite-label>
+          </div>
+          <div class="padding-sides-1">
+            <pdf-download
+              disabled={!this._downloadActive}
+              ref={(el) => { this._downloadTools = el }}
+            />
+          </div>
+
+          <div class="padding-top-sides-1">
+            <calcite-label layout="inline">
+              <calcite-checkbox
+                checked={this._addMap}
+                onCalciteCheckboxChange={() => this._addMap = !this._addMap}
+              />
+              {this._translations.includeMap}
+            </calcite-label>
+          </div>
+
+          <div class={mapOptionsClass + " padding-bottom-1"}>
+            <div class="padding-top-sides-1">
+              <calcite-label
+                class="label-margin-0"
+                layout="inline"
+              >
+                <calcite-checkbox
+                  checked={this._addTitle}
+                  onCalciteCheckboxChange={() => this._addTitle = !this._addTitle}
+                />
+                {this._translations.addTitle}
+              </calcite-label>
+            </div>
+            <div
+              class={titleOptionsClass}
+            >
+              {this._getLabel(this._translations.title, true, "")}
+              <calcite-input-text
+                class="padding-sides-1"
+                placeholder={this._translations.titlePlaceholder}
+              />
+            </div>
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
+  /**
+   * Return the CSV portion of the export page
+   *
+   * @returns the node with all CSV export options
+   *
+   * @protected
+   */
+  protected _getCSVOptions(): VNode {
+    return (
+      <div>
+        <div class="padding-top-sides-1">
+          <calcite-label class="font-bold">
+            {this._translations.csv}
+          </calcite-label>
+        </div>
+        <div class="padding-sides-1 display-flex">
+          <calcite-label>
+            {this._translations.exportCSV}
+          </calcite-label>
+          <calcite-switch
+            checked={this._exportCSV}
+            class="position-right"
+            onCalciteSwitchChange={() => this._exportCSV = !this._exportCSV}
+          />
+        </div>
+      </div>
     );
   }
 
@@ -1156,19 +983,21 @@ export class PublicNotification {
    *
    * @param label value to display in the label
    * @param disableSpacing should extra calcite defined spacing be applied
+   * @param labelClass by default label will be bold unless overridden here
    *
    * @returns the label node
    * @protected
    */
   protected _getLabel(
     label: string,
-    disableSpacing = false
+    disableSpacing = false,
+    labelClass = "font-bold"
   ): VNode {
+    labelClass += disableSpacing ? " label-margin-0" : "";
     return (
       <div class={"padding-top-sides-1"}>
         <calcite-label
-          class="font-bold"
-          disable-spacing={disableSpacing}
+          class={labelClass}
         >
           {label}
         </calcite-label>
@@ -1190,7 +1019,7 @@ export class PublicNotification {
       prev.push((
         <div class="display-flex padding-sides-1 padding-bottom-1">
           <calcite-checkbox checked={cur.download} class="align-center" onClick={() => { void this._toggleDownload(cur.id) }} />
-          <calcite-list class="list-border margin-start-1-2 w-100" id="download-list">
+          <calcite-list class="list-border margin-start-1-2 width-full" id="download-list">
             <calcite-list-item
               description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
               disabled={!cur.download}
@@ -1225,14 +1054,39 @@ export class PublicNotification {
   }
 
   /**
+   * Download all selection sets as PDF or CSV or alert the user that they need to choose at least 1 export format
+   *
+   * @protected
+   */
+  protected _export(): void {
+    if (this._exportPDF) {
+      this._downloadPDF();
+    }
+    if (this._exportCSV) {
+      this._downloadCSV();
+    }
+    if (!this._exportPDF && !this._exportCSV) {
+      // TODO show a message saying they need to enable at least one of the options
+    }
+  }
+
+  /**
    * Download all selection sets as PDF
    *
    * @protected
    */
   protected _downloadPDF(): void {
-    const ids = utils.getSelectionIds(this._getDownloadSelectionSets());
-    const selectionSetNames = this._selectionSets.map(set => set.label);
-    void this._downloadTools.downloadPDF(selectionSetNames, ids, this._removeDuplicatesPDF.checked);
+    const downloadSets = this._getDownloadSelectionSets();
+    const idSets = utils.getSelectionIdsAndViews(downloadSets);
+    Object.keys(idSets).forEach(k => {
+      const idSet = idSets[k];
+      void this._downloadTools.downloadPDF(
+        idSet.layerView,
+        idSet.selectionSetNames,
+        idSet.ids,
+        this._removeDuplicates.checked
+      );
+    });
   }
 
   /**
@@ -1241,9 +1095,17 @@ export class PublicNotification {
    * @protected
    */
   protected _downloadCSV(): void {
-    const ids = utils.getSelectionIds(this._getDownloadSelectionSets());
-    const selectionSetNames = this._selectionSets.map(set => set.label);
-    void this._downloadTools.downloadCSV(selectionSetNames, ids, this._removeDuplicatesCSV.checked);
+    const downloadSets = this._getDownloadSelectionSets();
+    const idSets = utils.getSelectionIdsAndViews(downloadSets);
+    Object.keys(idSets).forEach(k => {
+      const idSet = idSets[k];
+      void this._downloadTools.downloadCSV(
+        idSet.layerView,
+        idSet.selectionSetNames,
+        idSet.ids,
+        this._removeDuplicates.checked
+      );
+    });
   }
 
   /**
@@ -1256,35 +1118,6 @@ export class PublicNotification {
     return this._selectionSets.filter(ss => {
       return ss.download;
     });
-  }
-
-  /**
-   * Update custom label UI with buffer values
-   *
-   * @protected
-   */
-  protected _updateLabel(
-    evt: CustomEvent,
-    type: "unit" | "distance"
-  ): void {
-    if (this._customLabel) {
-      const oldV = type === "unit" ? `${this._distance} ${evt.detail.oldValue}` : `${evt.detail.oldValue} ${this._unit}`;
-      const newV = type === "unit" ? `${this._distance} ${evt.detail.newValue}` : `${evt.detail.newValue} ${this._unit}`;
-      this._customLabel = this._customLabel.replace(oldV, newV);
-      this._labelName.value = this._customLabel;
-      this.labelChange.emit(this._labelName.value);
-    }
-  }
-
-  /**
-   * Store the current workflow type
-   *
-   * @protected
-   */
-  protected _updateForWorkflowType(
-    evt: CustomEvent
-  ): void {
-    this._selectionWorkflowType = evt.detail;
   }
 
   /**
@@ -1345,75 +1178,6 @@ export class PublicNotification {
   }
 
   /**
-   * Fetch the addressee layer from the map if no selection sets exist.
-   * Alert the user of the potential change to the selection sets if they exist.
-   *
-   * @param evt layer selection change event
-   *
-   * @returns Promise when the function has completed
-   * @protected
-   */
-  protected async _layerSelectionChange(
-    evt: CustomEvent
-  ): Promise<void> {
-    const id: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
-    if (id !== this.addresseeLayer?.layer.id) {
-      this._showLayerSelectionChangeModal = this.addresseeLayer?.layer.id !== undefined && this._selectionSets.length > 0;
-      if (this._showLayerSelectionChangeModal) {
-        this._layerSelectionChangeEvt = evt;
-      } else {
-        await this._updateAddresseeLayer(id);
-      }
-    }
-  }
-
-  /**
-   * Fetch the new addressee layer and update the selection sets
-   *
-   * @param id the id of the layer to fetch
-   *
-   * @returns Promise when the function has completed
-   * @protected
-   */
-  protected async _updateAddresseeLayer(
-    id: string
-  ): Promise<void> {
-    this.addresseeLayer = await getMapLayerView(this.mapView, id);
-    await this._updateSelectionSets(this.addresseeLayer);
-  }
-
-  /**
-   * Update selection sets when the addressee layer changes.
-   * Will use stored search, select, and sketch geometries and any buffers to select from the new addressee layer.
-   *
-   * @param layerView The new addressee layer view to select from
-   *
-   * @returns Promise when the function has completed
-   * @protected
-   */
-  protected async _updateSelectionSets(
-    layerView: __esri.FeatureLayerView
-  ): Promise<void> {
-    const _selectionSets = this._selectionSets;
-    const oidDefs = [];
-    _selectionSets.forEach(selectionSet => {
-      selectionSet.layerView = layerView;
-      selectionSet.selectedIds = [];
-      oidDefs.push(getSelectionSetQuery(selectionSet, this._geometryEngine));
-    });
-
-    return Promise.all(oidDefs).then(async (results): Promise<void> => {
-      results.forEach((result, i) => {
-        _selectionSets[i].selectedIds = result;
-      });
-      await this._highlightFeatures();
-      this._selectionSets = [
-        ..._selectionSets
-      ];
-    });
-  }
-
-  /**
    * Update the selection sets with any new selections from the select tools
    *
    * @returns Promise when the function has completed
@@ -1442,9 +1206,6 @@ export class PublicNotification {
     await this._selectTools?.clearSelection();
     this._numSelected = 0;
     this._activeSelection = undefined;
-    this._customLabel = undefined;
-    this._distance = undefined;
-    this._unit = undefined;
   }
 
   /**
@@ -1499,9 +1260,6 @@ export class PublicNotification {
   ): void {
     evt.stopPropagation();
     this._activeSelection = selectionSet;
-    this._distance = this._activeSelection.distance;
-    this._unit = this._activeSelection.unit;
-    this._customLabel = this._activeSelection.label;
     this._pageType = EPageType.SELECT;
   }
 
@@ -1512,13 +1270,17 @@ export class PublicNotification {
    */
   protected async _highlightFeatures(): Promise<void> {
     this._clearHighlight();
-    const ids = utils.getSelectionIds(this._selectionSets);
-    if (ids.length > 0) {
-      state.highlightHandle = await highlightFeatures(
-        ids,
-        this.addresseeLayer,
-        this.mapView
-      );
+    const idSets = utils.getSelectionIdsAndViews(this._selectionSets);
+    const idKeys = Object.keys(idSets);
+    if (idKeys.length > 0) {
+      for (let i = 0; i < idKeys.length; i++) {
+        const idSet = idSets[idKeys[i]];
+        state.highlightHandles.push(await highlightFeatures(
+          idSet.ids,
+          idSet.layerView,
+          this.mapView
+        ));
+      }
     }
   }
 
@@ -1539,8 +1301,8 @@ export class PublicNotification {
    * @protected
    */
   protected _clearHighlight(): void {
-    if (state && state.highlightHandle) {
-      state.highlightHandle?.remove();
+    if (state && state.highlightHandles) {
+      state.removeHandles();
     }
   }
 

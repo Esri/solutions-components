@@ -25,11 +25,6 @@ export enum ELayoutMode {
   VERTICAL = "VERTICAL"
 }
 
-export enum EDrawToolsMode {
-  DRAW = "DRAW",
-  SELECT = "SELECT"
-}
-
 /**
  * Resource update types
  */
@@ -41,22 +36,10 @@ export enum EUpdateType {
   Obsolete
 }
 
-export enum EExportType {
-  PDF,
-  CSV
-}
-
 export enum EPageType {
   LIST,
   SELECT,
-  PDF,
-  CSV
-}
-
-export enum EWorkflowType {
-  SEARCH="SEARCH",
-  SELECT="SELECT",
-  SKETCH="SKETCH"
+  EXPORT
 }
 
 export enum ESelectionType {
@@ -66,14 +49,15 @@ export enum ESelectionType {
   RECT="RECT"
 }
 
-export enum ESketchType {
-  "LAYER"="LAYER",
-  "INTERACTIVE"="INTERACTIVE"
-}
-
 export enum EExpandType {
   EXPAND="EXPAND",
   COLLAPSE="COLLAPSE"
+}
+
+export enum EWorkflowType {
+  SEARCH="SEARCH",
+  SELECT="SELECT",
+  SKETCH="SKETCH"
 }
 
 /* eslint-enable no-unused-vars */
@@ -373,7 +357,6 @@ export interface ISearchResult {
 
 export interface ISelectionSet {
   id: number; // Date.Now() when the item is created...used to update a selection set
-  workflowType: EWorkflowType;
   searchResult: any;
   buffer: __esri.Geometry;
   distance: number;
@@ -386,12 +369,14 @@ export interface ISelectionSet {
   graphics: __esri.Graphic[];
   selectLayers: __esri.FeatureLayerView[];
   skipGeomOIDs?: number[];
+  workflowType: EWorkflowType;
+  searchDistanceEnabled: boolean;
+  useLayerFeaturesEnabled: boolean;
 }
 
 export interface ISketchGraphicsChange {
   graphics: __esri.Graphic[];
   useOIDs: boolean;
-  type: EDrawToolsMode;
 }
 
 export interface IQueryExtentResponse {
