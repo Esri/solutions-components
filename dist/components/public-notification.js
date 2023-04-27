@@ -399,7 +399,7 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
   _getExportPage() {
     const hasSelections = this._hasSelections();
     const numDuplicates = this._getNumDuplicates(this._getSelectedIds());
-    return (h("calcite-panel", null, h("div", null, this._getLabel(this._translations.export, true), hasSelections ? (h("div", null, this._getNotice(this._translations.exportTip, "padding-top-sides-1"), this._getLabel(this._translations.myLists), this._getSelectionLists(), h("div", { class: "padding-sides-1" }, h("calcite-label", { layout: "inline" }, h("calcite-checkbox", { ref: (el) => { this._removeDuplicates = el; } }), h("div", { class: "display-flex" }, this._translations.removeDuplicate, h("div", { class: "info-message padding-start-1-2" }, h("calcite-input-message", { class: "info-blue margin-top-0", scale: "m" }, ` ${this._translations.numDuplicates.replace("{{n}}", numDuplicates.toString())}`))))), h("div", { class: "border-bottom" }), h("div", { class: "padding-top-sides-1" }, h("calcite-segmented-control", { class: "w-100", onCalciteSegmentedControlChange: (evt) => this._exportTypeChange(evt) }, h("calcite-segmented-control-item", { checked: this._exportType === EExportType.PDF, class: "w-50 end-border", value: EExportType.PDF }, this._translations.pdf), h("calcite-segmented-control-item", { checked: this._exportType === EExportType.CSV, class: "w-50", value: EExportType.CSV }, this._translations.csv))), h("div", { class: "padding-bottom-1" }, this._getExportOptions()), h("div", { class: "padding-1 display-flex" }, h("calcite-button", { disabled: !this._downloadActive, onClick: () => this._export(), width: "full" }, this._translations.export)))) : (this._getNotice(this._translations.downloadNoLists, "padding-sides-1 padding-bottom-1")))));
+    return (h("calcite-panel", null, h("div", null, this._getLabel(this._translations.export, true), hasSelections ? (h("div", null, this._getNotice(this._translations.exportTip, "padding-top-sides-1"), this._getLabel(this._translations.myLists), this._getSelectionLists(), h("div", { class: "padding-sides-1" }, h("calcite-label", { layout: "inline" }, h("calcite-checkbox", { ref: (el) => { this._removeDuplicates = el; } }), h("div", { class: "display-flex" }, this._translations.removeDuplicate, h("div", { class: "info-message padding-start-1-2" }, h("calcite-input-message", { class: "info-blue margin-top-0", scale: "m" }, ` ${this._translations.numDuplicates.replace("{{n}}", numDuplicates.toString())}`))))), h("div", { class: "border-bottom" }), h("div", { class: "padding-top-sides-1" }, h("calcite-segmented-control", { class: "w-100", onCalciteSegmentedControlChange: (evt) => this._exportTypeChange(evt) }, h("calcite-segmented-control-item", { checked: this._exportType === EExportType.PDF, class: "w-50 end-border", value: EExportType.PDF }, this._translations.pdf), h("calcite-segmented-control-item", { checked: this._exportType === EExportType.CSV, class: "w-50", value: EExportType.CSV }, this._translations.csv))), h("div", { class: "padding-bottom-1" }, this._getExportOptions()), h("div", { class: "padding-1 display-flex" }, h("calcite-button", { disabled: !this._downloadActive, onClick: () => void this._export(), width: "full" }, this._translations.export)))) : (this._getNotice(this._translations.downloadNoLists, "padding-sides-1 padding-bottom-1")))));
   }
   _exportTypeChange(evt) {
     this._exportType = evt.target.value;
@@ -408,7 +408,7 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
     const displayClass = this._exportType === EExportType.PDF ? "display-block" : "display-none";
     const titleOptionsClass = this._addTitle ? "display-block" : "display-none";
     const mapOptionsClass = this._addMap ? "display-block" : "display-none";
-    return (h("div", { class: displayClass }, this._getLabel(this._translations.pdfOptions, true), h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "label-margin-0" }, this._translations.selectPDFLabelOption)), h("div", { class: "padding-sides-1" }, h("pdf-download", { disabled: !this._downloadActive, ref: (el) => { this._downloadTools = el; } })), h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "label-margin-0", layout: "inline" }, h("calcite-checkbox", { checked: this._addMap, onCalciteCheckboxChange: () => this._addMap = !this._addMap }), this._translations.includeMap)), h("div", { class: mapOptionsClass }, h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "label-margin-0", layout: "inline" }, h("calcite-checkbox", { checked: this._addTitle, onCalciteCheckboxChange: () => this._addTitle = !this._addTitle }), this._translations.addTitle)), h("div", { class: titleOptionsClass }, this._getLabel(this._translations.title, true, ""), h("calcite-input-text", { class: "padding-sides-1", placeholder: this._translations.titlePlaceholder })))));
+    return (h("div", { class: displayClass }, this._getLabel(this._translations.pdfOptions, true), h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "label-margin-0" }, this._translations.selectPDFLabelOption)), h("div", { class: "padding-sides-1" }, h("pdf-download", { disabled: !this._downloadActive, ref: (el) => { this._downloadTools = el; } })), h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "label-margin-0", layout: "inline" }, h("calcite-checkbox", { checked: this._addMap, onCalciteCheckboxChange: () => this._addMap = !this._addMap }), this._translations.includeMap)), h("div", { class: mapOptionsClass }, h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "label-margin-0", layout: "inline" }, h("calcite-checkbox", { checked: this._addTitle, onCalciteCheckboxChange: () => this._addTitle = !this._addTitle }), this._translations.addTitle)), h("div", { class: titleOptionsClass }, this._getLabel(this._translations.title, true, ""), h("calcite-input-text", { class: "padding-sides-1", placeholder: this._translations.titlePlaceholder, ref: (el) => { this._title = el; } })))));
   }
   /**
    * Create the stacked navigation buttons for a page
@@ -489,10 +489,17 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
    *
    * @protected
    */
-  _export() {
+  async _export() {
     const exportInfos = this._getSelectionIdsAndViews(this._selectionSets, true);
     if (this._exportType === EExportType.PDF) {
-      void this._downloadTools.downloadPDF(exportInfos, this._removeDuplicates.checked);
+      // Generate a map screenshot
+      let screenshot;
+      if (this._addMap && this.mapView) {
+        screenshot = await this.mapView.takeScreenshot({ width: 1500, height: 2000 });
+        console.log("screenshot", screenshot); //???
+      }
+      // Create the labels for each selection set
+      void this._downloadTools.downloadPDF(exportInfos, this._removeDuplicates.checked, this._addTitle ? this._title.value : "");
     }
     if (this._exportType === EExportType.CSV) {
       void this._downloadTools.downloadCSV(exportInfos, this._removeDuplicates.checked);

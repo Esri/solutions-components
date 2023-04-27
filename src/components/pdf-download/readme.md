@@ -24,7 +24,7 @@ Type: `Promise<void>`
 
 Promise resolving when function is done
 
-### `downloadPDF(exportInfos: IExportInfos, removeDuplicates: boolean) => Promise<void>`
+### `downloadPDF(exportInfos: IExportInfos, removeDuplicates?: boolean, title?: string) => Promise<void>`
 
 Downloads pdf of mailing labels for the provided list of ids
 

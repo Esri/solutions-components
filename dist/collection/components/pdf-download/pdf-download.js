@@ -42,8 +42,7 @@ export class PdfDownload {
   /**
    * Downloads csv of mailing labels for the provided list of ids
    *
-   * @param selectionSetNames Names of the selection sets used to provide ids
-   * @param ids List of ids to download
+   * @param exportInfos Information about items to be exported
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
    * @param addColumnTitle Indicates if column headings should be included in output
    * @returns Promise resolving when function is done
@@ -58,12 +57,12 @@ export class PdfDownload {
   /**
    * Downloads pdf of mailing labels for the provided list of ids
    *
-   * @param selectionSetNames Names of the selection sets used to provide ids
-   * @param ids List of ids to download
+   * @param exportInfos Information about items to be exported
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+   * @param title Title for each page
    * @returns Promise resolving when function is done
    */
-  async downloadPDF(exportInfos, removeDuplicates) {
+  async downloadPDF(exportInfos, removeDuplicates = false, title = "") {
     Object.keys(exportInfos).forEach(k => {
       const exportInfo = exportInfos[k];
       void downloadUtils.downloadPDF(exportInfo.selectionSetNames, exportInfo.layerView.layer, exportInfo.ids, this._labelInfoElement.selectedOption.value, removeDuplicates, title);
@@ -195,8 +194,11 @@ export class PdfDownload {
         "complexType": {
           "signature": "(exportInfos: IExportInfos, removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>",
           "parameters": [{
-              "tags": [],
-              "text": ""
+              "tags": [{
+                  "name": "param",
+                  "text": "exportInfos Information about items to be exported"
+                }],
+              "text": "Information about items to be exported"
             }, {
               "tags": [{
                   "name": "param",
@@ -225,10 +227,7 @@ export class PdfDownload {
           "text": "Downloads csv of mailing labels for the provided list of ids",
           "tags": [{
               "name": "param",
-              "text": "selectionSetNames Names of the selection sets used to provide ids"
-            }, {
-              "name": "param",
-              "text": "ids List of ids to download"
+              "text": "exportInfos Information about items to be exported"
             }, {
               "name": "param",
               "text": "removeDuplicates When true a single label is generated when multiple featues have a shared address value"
@@ -243,16 +242,25 @@ export class PdfDownload {
       },
       "downloadPDF": {
         "complexType": {
-          "signature": "(exportInfos: IExportInfos, removeDuplicates: boolean) => Promise<void>",
+          "signature": "(exportInfos: IExportInfos, removeDuplicates?: boolean, title?: string) => Promise<void>",
           "parameters": [{
-              "tags": [],
-              "text": ""
+              "tags": [{
+                  "name": "param",
+                  "text": "exportInfos Information about items to be exported"
+                }],
+              "text": "Information about items to be exported"
             }, {
               "tags": [{
                   "name": "param",
                   "text": "removeDuplicates When true a single label is generated when multiple featues have a shared address value"
                 }],
               "text": "When true a single label is generated when multiple featues have a shared address value"
+            }, {
+              "tags": [{
+                  "name": "param",
+                  "text": "title Title for each page"
+                }],
+              "text": "Title for each page"
             }],
           "references": {
             "Promise": {
@@ -272,13 +280,13 @@ export class PdfDownload {
           "text": "Downloads pdf of mailing labels for the provided list of ids",
           "tags": [{
               "name": "param",
-              "text": "selectionSetNames Names of the selection sets used to provide ids"
-            }, {
-              "name": "param",
-              "text": "ids List of ids to download"
+              "text": "exportInfos Information about items to be exported"
             }, {
               "name": "param",
               "text": "removeDuplicates When true a single label is generated when multiple featues have a shared address value"
+            }, {
+              "name": "param",
+              "text": "title Title for each page"
             }, {
               "name": "returns",
               "text": "Promise resolving when function is done"

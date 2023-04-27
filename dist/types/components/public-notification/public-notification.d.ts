@@ -167,6 +167,10 @@ export declare class PublicNotification {
    */
   protected _selectTools: HTMLMapSelectToolsElement;
   /**
+   * Text to be used as title on PDF pages
+   */
+  protected _title: HTMLCalciteInputTextElement;
+  /**
    * number: The number of selected features
    */
   protected _numSelected: number;
@@ -399,7 +403,7 @@ export declare class PublicNotification {
    *
    * @protected
    */
-  protected _export(): void;
+  protected _export(): Promise<void>;
   /**
   * Sort selection sets by layer and retain key export details
   *

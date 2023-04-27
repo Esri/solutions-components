@@ -368,7 +368,7 @@ const PublicNotification = class {
   _getExportPage() {
     const hasSelections = this._hasSelections();
     const numDuplicates = this._getNumDuplicates(this._getSelectedIds());
-    return (index.h("calcite-panel", null, index.h("div", null, this._getLabel(this._translations.export, true), hasSelections ? (index.h("div", null, this._getNotice(this._translations.exportTip, "padding-top-sides-1"), this._getLabel(this._translations.myLists), this._getSelectionLists(), index.h("div", { class: "padding-sides-1" }, index.h("calcite-label", { layout: "inline" }, index.h("calcite-checkbox", { ref: (el) => { this._removeDuplicates = el; } }), index.h("div", { class: "display-flex" }, this._translations.removeDuplicate, index.h("div", { class: "info-message padding-start-1-2" }, index.h("calcite-input-message", { class: "info-blue margin-top-0", scale: "m" }, ` ${this._translations.numDuplicates.replace("{{n}}", numDuplicates.toString())}`))))), index.h("div", { class: "border-bottom" }), index.h("div", { class: "padding-top-sides-1" }, index.h("calcite-segmented-control", { class: "w-100", onCalciteSegmentedControlChange: (evt) => this._exportTypeChange(evt) }, index.h("calcite-segmented-control-item", { checked: this._exportType === interfaces.EExportType.PDF, class: "w-50 end-border", value: interfaces.EExportType.PDF }, this._translations.pdf), index.h("calcite-segmented-control-item", { checked: this._exportType === interfaces.EExportType.CSV, class: "w-50", value: interfaces.EExportType.CSV }, this._translations.csv))), index.h("div", { class: "padding-bottom-1" }, this._getExportOptions()), index.h("div", { class: "padding-1 display-flex" }, index.h("calcite-button", { disabled: !this._downloadActive, onClick: () => this._export(), width: "full" }, this._translations.export)))) : (this._getNotice(this._translations.downloadNoLists, "padding-sides-1 padding-bottom-1")))));
+    return (index.h("calcite-panel", null, index.h("div", null, this._getLabel(this._translations.export, true), hasSelections ? (index.h("div", null, this._getNotice(this._translations.exportTip, "padding-top-sides-1"), this._getLabel(this._translations.myLists), this._getSelectionLists(), index.h("div", { class: "padding-sides-1" }, index.h("calcite-label", { layout: "inline" }, index.h("calcite-checkbox", { ref: (el) => { this._removeDuplicates = el; } }), index.h("div", { class: "display-flex" }, this._translations.removeDuplicate, index.h("div", { class: "info-message padding-start-1-2" }, index.h("calcite-input-message", { class: "info-blue margin-top-0", scale: "m" }, ` ${this._translations.numDuplicates.replace("{{n}}", numDuplicates.toString())}`))))), index.h("div", { class: "border-bottom" }), index.h("div", { class: "padding-top-sides-1" }, index.h("calcite-segmented-control", { class: "w-100", onCalciteSegmentedControlChange: (evt) => this._exportTypeChange(evt) }, index.h("calcite-segmented-control-item", { checked: this._exportType === interfaces.EExportType.PDF, class: "w-50 end-border", value: interfaces.EExportType.PDF }, this._translations.pdf), index.h("calcite-segmented-control-item", { checked: this._exportType === interfaces.EExportType.CSV, class: "w-50", value: interfaces.EExportType.CSV }, this._translations.csv))), index.h("div", { class: "padding-bottom-1" }, this._getExportOptions()), index.h("div", { class: "padding-1 display-flex" }, index.h("calcite-button", { disabled: !this._downloadActive, onClick: () => void this._export(), width: "full" }, this._translations.export)))) : (this._getNotice(this._translations.downloadNoLists, "padding-sides-1 padding-bottom-1")))));
   }
   _exportTypeChange(evt) {
     this._exportType = evt.target.value;
@@ -377,7 +377,7 @@ const PublicNotification = class {
     const displayClass = this._exportType === interfaces.EExportType.PDF ? "display-block" : "display-none";
     const titleOptionsClass = this._addTitle ? "display-block" : "display-none";
     const mapOptionsClass = this._addMap ? "display-block" : "display-none";
-    return (index.h("div", { class: displayClass }, this._getLabel(this._translations.pdfOptions, true), index.h("div", { class: "padding-top-sides-1" }, index.h("calcite-label", { class: "label-margin-0" }, this._translations.selectPDFLabelOption)), index.h("div", { class: "padding-sides-1" }, index.h("pdf-download", { disabled: !this._downloadActive, ref: (el) => { this._downloadTools = el; } })), index.h("div", { class: "padding-top-sides-1" }, index.h("calcite-label", { class: "label-margin-0", layout: "inline" }, index.h("calcite-checkbox", { checked: this._addMap, onCalciteCheckboxChange: () => this._addMap = !this._addMap }), this._translations.includeMap)), index.h("div", { class: mapOptionsClass }, index.h("div", { class: "padding-top-sides-1" }, index.h("calcite-label", { class: "label-margin-0", layout: "inline" }, index.h("calcite-checkbox", { checked: this._addTitle, onCalciteCheckboxChange: () => this._addTitle = !this._addTitle }), this._translations.addTitle)), index.h("div", { class: titleOptionsClass }, this._getLabel(this._translations.title, true, ""), index.h("calcite-input-text", { class: "padding-sides-1", placeholder: this._translations.titlePlaceholder })))));
+    return (index.h("div", { class: displayClass }, this._getLabel(this._translations.pdfOptions, true), index.h("div", { class: "padding-top-sides-1" }, index.h("calcite-label", { class: "label-margin-0" }, this._translations.selectPDFLabelOption)), index.h("div", { class: "padding-sides-1" }, index.h("pdf-download", { disabled: !this._downloadActive, ref: (el) => { this._downloadTools = el; } })), index.h("div", { class: "padding-top-sides-1" }, index.h("calcite-label", { class: "label-margin-0", layout: "inline" }, index.h("calcite-checkbox", { checked: this._addMap, onCalciteCheckboxChange: () => this._addMap = !this._addMap }), this._translations.includeMap)), index.h("div", { class: mapOptionsClass }, index.h("div", { class: "padding-top-sides-1" }, index.h("calcite-label", { class: "label-margin-0", layout: "inline" }, index.h("calcite-checkbox", { checked: this._addTitle, onCalciteCheckboxChange: () => this._addTitle = !this._addTitle }), this._translations.addTitle)), index.h("div", { class: titleOptionsClass }, this._getLabel(this._translations.title, true, ""), index.h("calcite-input-text", { class: "padding-sides-1", placeholder: this._translations.titlePlaceholder, ref: (el) => { this._title = el; } })))));
   }
   /**
    * Create the stacked navigation buttons for a page
@@ -458,10 +458,17 @@ const PublicNotification = class {
    *
    * @protected
    */
-  _export() {
+  async _export() {
     const exportInfos = this._getSelectionIdsAndViews(this._selectionSets, true);
     if (this._exportType === interfaces.EExportType.PDF) {
-      void this._downloadTools.downloadPDF(exportInfos, this._removeDuplicates.checked);
+      // Generate a map screenshot
+      let screenshot;
+      if (this._addMap && this.mapView) {
+        screenshot = await this.mapView.takeScreenshot({ width: 1500, height: 2000 });
+        console.log("screenshot", screenshot); //???
+      }
+      // Create the labels for each selection set
+      void this._downloadTools.downloadPDF(exportInfos, this._removeDuplicates.checked, this._addTitle ? this._title.value : "");
     }
     if (this._exportType === interfaces.EExportType.CSV) {
       void this._downloadTools.downloadCSV(exportInfos, this._removeDuplicates.checked);

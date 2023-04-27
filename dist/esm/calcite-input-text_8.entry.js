@@ -2187,8 +2187,7 @@ const PdfDownload = class {
   /**
    * Downloads csv of mailing labels for the provided list of ids
    *
-   * @param selectionSetNames Names of the selection sets used to provide ids
-   * @param ids List of ids to download
+   * @param exportInfos Information about items to be exported
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
    * @param addColumnTitle Indicates if column headings should be included in output
    * @returns Promise resolving when function is done
@@ -2203,12 +2202,12 @@ const PdfDownload = class {
   /**
    * Downloads pdf of mailing labels for the provided list of ids
    *
-   * @param selectionSetNames Names of the selection sets used to provide ids
-   * @param ids List of ids to download
+   * @param exportInfos Information about items to be exported
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+   * @param title Title for each page
    * @returns Promise resolving when function is done
    */
-  async downloadPDF(exportInfos, removeDuplicates) {
+  async downloadPDF(exportInfos, removeDuplicates = false, title = "") {
     Object.keys(exportInfos).forEach(k => {
       const exportInfo = exportInfos[k];
       void downloadPDF(exportInfo.selectionSetNames, exportInfo.layerView.layer, exportInfo.ids, this._labelInfoElement.selectedOption.value, removeDuplicates, title);
