@@ -21,6 +21,7 @@ import PdfDownload_T9n from "../../assets/t9n/pdf-download/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { Component, Element, Host, h, Method, Prop, State, VNode } from "@stencil/core";
 import { getLocaleComponentStrings } from "../../utils/locale";
+import { IExportInfos } from "../../utils/interfaces";
 
 @Component({
   tag: "pdf-download",
@@ -97,20 +98,21 @@ export class PdfDownload {
    */
   @Method()
   async downloadCSV(
-    layerView: __esri.FeatureLayerView,
-    selectionSetNames: string[],
-    ids: number[],
+    exportInfos: IExportInfos,
     removeDuplicates: boolean,
     addColumnTitle = true
   ): Promise<void> {
-    return downloadUtils.downloadCSV(
-      selectionSetNames,
-      layerView.layer,
-      ids,
-      true, // formatUsingLayerPopup
-      removeDuplicates,
-      addColumnTitle
-    );
+    Object.keys(exportInfos).forEach(k => {
+      const exportInfo = exportInfos[k];
+      void downloadUtils.downloadCSV(
+        exportInfo.selectionSetNames,
+        exportInfo.layerView.layer,
+        exportInfo.ids,
+        true, // formatUsingLayerPopup
+        removeDuplicates,
+        addColumnTitle
+      );
+    });
   }
 
   /**
@@ -123,18 +125,19 @@ export class PdfDownload {
    */
   @Method()
   async downloadPDF(
-    layerView: __esri.FeatureLayerView,
-    selectionSetNames: string[],
-    ids: number[],
+    exportInfos: IExportInfos,
     removeDuplicates: boolean
   ): Promise<void> {
-    return downloadUtils.downloadPDF(
-      selectionSetNames,
-      layerView.layer,
-      ids,
-      removeDuplicates,
-      this._labelInfoElement.selectedOption.value as downloadUtils.ILabel
-    );
+    Object.keys(exportInfos).forEach(k => {
+      const exportInfo = exportInfos[k];
+      void downloadUtils.downloadPDF(
+        exportInfo.selectionSetNames,
+        exportInfo.layerView.layer,
+        exportInfo.ids,
+        removeDuplicates,
+        this._labelInfoElement.selectedOption.value as downloadUtils.ILabel
+      );
+    });
   }
 
   //--------------------------------------------------------------------------
