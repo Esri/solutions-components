@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
-import { DistanceUnit, EPageType, IExportInfos, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
+import { DistanceUnit, EExportType, EPageType, IExportInfos, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
 import { goToSelection, highlightFeatures } from "../../utils/mapViewUtils";
 import state from "../../utils/publicNotificationStore";
@@ -161,14 +161,9 @@ export class PublicNotification {
   @State() _downloadActive = true;
 
   /**
-   * boolean: When true CSV export options will be shown and a CSV file will be exported if the Export button is clicked
+   * utils/interfaces/EExportType: PDF or CSV
    */
-  @State() _exportCSV = false;
-
-  /**
-   * boolean: When true PDF export options will be shown and a PDF file will be exported if the Export button is clicked
-   */
-  @State() _exportPDF = true;
+  @State() _exportType: EExportType = EExportType.PDF;
 
   /**
    * utils/interfaces/EPageType: LIST | SELECT | PDF | CSV
@@ -764,10 +759,33 @@ export class PublicNotification {
                     </div>
                   </calcite-label>
                 </div>
+
                 <div class="border-bottom" />
-                {this._getPDFOptions()}
-                <div class="border-bottom" />
-                {this._getCSVOptions()}
+                <div class="padding-top-sides-1">
+                  <calcite-segmented-control
+                    class="w-100"
+                    onCalciteSegmentedControlChange={(evt) => this._exportTypeChange(evt)}
+                  >
+                    <calcite-segmented-control-item
+                      checked={this._exportType === EExportType.PDF}
+                      class="w-50 end-border"
+                      value={EExportType.PDF}
+                    >
+                      {this._translations.pdf}
+
+                    </calcite-segmented-control-item>
+                    <calcite-segmented-control-item
+                      checked={this._exportType === EExportType.CSV}
+                      class="w-50"
+                      value={EExportType.CSV}
+                    >
+                      {this._translations.csv}
+                    </calcite-segmented-control-item>
+                  </calcite-segmented-control>
+                </div>
+                <div class="padding-bottom-1">
+                  {this._getExportOptions()}
+                </div>
                 <div class="padding-1 display-flex">
                   <calcite-button
                     disabled={!this._downloadActive}
@@ -787,110 +805,65 @@ export class PublicNotification {
     );
   }
 
-  /**
-   * Return the PDF portion of the export page
-   *
-   * @returns the node with all PDF export options
-   *
-   * @protected
-   */
-  protected _getPDFOptions(): VNode {
-    const pdfOptionsClass = this._exportPDF ? "display-block" : "display-none";
+  protected _exportTypeChange(
+    evt: CustomEvent
+  ): void {
+    this._exportType = (evt.target as HTMLCalciteSegmentedControlItemElement).value as EExportType;
+  }
+
+  protected _getExportOptions(): VNode {
+    const displayClass = this._exportType === EExportType.PDF ? "display-block" : "display-none";
     const titleOptionsClass = this._addTitle ? "display-block" : "display-none";
     const mapOptionsClass = this._addMap ? "display-block" : "display-none";
     return (
-      <div>
-        {this._getLabel(this._translations.pdf, true)}
-        <div class="padding-1 display-flex">
+      <div class={displayClass}>
+        {this._getLabel(this._translations.pdfOptions, true)}
+        <div class="padding-top-sides-1">
           <calcite-label
-            class="label-margin-0 "
+            class="label-margin-0"
           >
-            {this._translations.exportPDF}
+            {this._translations.selectPDFLabelOption}
           </calcite-label>
-          <calcite-switch
-            checked={this._exportPDF}
-            class="position-right"
-            onCalciteSwitchChange={() => this._exportPDF = !this._exportPDF}
+        </div>
+        <div class="padding-sides-1">
+          <pdf-download
+            disabled={!this._downloadActive}
+            ref={(el) => { this._downloadTools = el }}
           />
         </div>
-        <div class={pdfOptionsClass}>
-          <div class={"padding-sides-1"}>
+
+        <div class="padding-top-sides-1">
+          <calcite-label class="label-margin-0" layout="inline">
+            <calcite-checkbox
+              checked={this._addMap}
+              onCalciteCheckboxChange={() => this._addMap = !this._addMap}
+            />
+            {this._translations.includeMap}
+          </calcite-label>
+        </div>
+
+        <div class={mapOptionsClass}>
+          <div class="padding-top-sides-1">
             <calcite-label
               class="label-margin-0"
+              layout="inline"
             >
-              {this._translations.selectPDFLabelOption}
+              <calcite-checkbox
+                checked={this._addTitle}
+                onCalciteCheckboxChange={() => this._addTitle = !this._addTitle}
+              />
+              {this._translations.addTitle}
             </calcite-label>
           </div>
-          <div class="padding-sides-1">
-            <pdf-download
-              disabled={!this._downloadActive}
-              ref={(el) => { this._downloadTools = el }}
+          <div
+            class={titleOptionsClass}
+          >
+            {this._getLabel(this._translations.title, true, "")}
+            <calcite-input-text
+              class="padding-sides-1"
+              placeholder={this._translations.titlePlaceholder}
             />
           </div>
-
-          <div class="padding-top-sides-1">
-            <calcite-label layout="inline">
-              <calcite-checkbox
-                checked={this._addMap}
-                onCalciteCheckboxChange={() => this._addMap = !this._addMap}
-              />
-              {this._translations.includeMap}
-            </calcite-label>
-          </div>
-
-          <div class={mapOptionsClass + " padding-bottom-1"}>
-            <div class="padding-top-sides-1">
-              <calcite-label
-                class="label-margin-0"
-                layout="inline"
-              >
-                <calcite-checkbox
-                  checked={this._addTitle}
-                  onCalciteCheckboxChange={() => this._addTitle = !this._addTitle}
-                />
-                {this._translations.addTitle}
-              </calcite-label>
-            </div>
-            <div
-              class={titleOptionsClass}
-            >
-              {this._getLabel(this._translations.title, true, "")}
-              <calcite-input-text
-                class="padding-sides-1"
-                placeholder={this._translations.titlePlaceholder}
-              />
-            </div>
-          </div>
-
-        </div>
-      </div>
-    );
-  }
-
-  /**
-   * Return the CSV portion of the export page
-   *
-   * @returns the node with all CSV export options
-   *
-   * @protected
-   */
-  protected _getCSVOptions(): VNode {
-    return (
-      <div>
-        <div class="padding-top-sides-1">
-          <calcite-label class="font-bold">
-            {this._translations.csv}
-          </calcite-label>
-        </div>
-        <div class="padding-sides-1 display-flex">
-          <calcite-label>
-            {this._translations.exportCSV}
-          </calcite-label>
-          <calcite-switch
-            checked={this._exportCSV}
-            class="position-right"
-            onCalciteSwitchChange={() => this._exportCSV = !this._exportCSV}
-          />
         </div>
       </div>
     );
@@ -1043,23 +1016,18 @@ export class PublicNotification {
    * @protected
    */
   protected _export(): void {
-    let exportInfos: IExportInfos;
-    if (!this._exportPDF && !this._exportCSV) {
-      // TODO show a message saying they need to enable at least one of the options
-    } else {
-      exportInfos = this._getSelectionIdsAndViews(this._selectionSets, true);
-      if (this._exportPDF) {
-        void this._downloadTools.downloadPDF(
-          exportInfos,
-          this._removeDuplicates.checked
-        );
-      }
-      if (this._exportCSV) {
-        void this._downloadTools.downloadCSV(
-          exportInfos,
-          this._removeDuplicates.checked
-        );
-      }
+    const exportInfos: IExportInfos = this._getSelectionIdsAndViews(this._selectionSets, true);
+    if (this._exportType === EExportType.PDF) {
+      void this._downloadTools.downloadPDF(
+        exportInfos,
+        this._removeDuplicates.checked
+      );
+    }
+    if (this._exportType === EExportType.CSV) {
+      void this._downloadTools.downloadCSV(
+        exportInfos,
+        this._removeDuplicates.checked
+      );
     }
   }
 

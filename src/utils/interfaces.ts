@@ -60,6 +60,11 @@ export enum EWorkflowType {
   SKETCH="SKETCH"
 }
 
+export enum EExportType {
+  CSV="CSV",
+  PDF="PDF"
+}
+
 /* eslint-enable no-unused-vars */
 
 export type SelectionMode = "single" | "multi";
