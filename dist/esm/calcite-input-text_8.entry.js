@@ -22,7 +22,7 @@ import { g as goToSelection, h as highlightFeatures, q as queryObjectIds, a as g
 import { d as EWorkflowType } from './interfaces-9f6e2f3b.js';
 import { s as state } from './publicNotificationStore-c36d95bf.js';
 import { a as getComponentClosestLanguage, g as getLocaleComponentStrings } from './locale-54cac39a.js';
-import { d as downloadCSV, a as downloadPDF } from './downloadUtils-305e69e9.js';
+import { d as downloadCSV, a as downloadPDF } from './downloadUtils-29987ebf.js';
 import './guid-2069664e.js';
 import './key-218d8d4d.js';
 import './index-4c4a4f3d.js';
@@ -2205,12 +2205,13 @@ const PdfDownload = class {
    * @param exportInfos Information about items to be exported
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
    * @param title Title for each page
+   * @param initialImageDataUrl Data URL of image for first page
    * @returns Promise resolving when function is done
    */
-  async downloadPDF(exportInfos, removeDuplicates = false, title = "") {
+  async downloadPDF(exportInfos, removeDuplicates = false, title = "", initialImageDataUrl = "") {
     Object.keys(exportInfos).forEach(k => {
       const exportInfo = exportInfos[k];
-      void downloadPDF(exportInfo.selectionSetNames, exportInfo.layerView.layer, exportInfo.ids, this._labelInfoElement.selectedOption.value, removeDuplicates, title);
+      void downloadPDF(exportInfo.selectionSetNames, exportInfo.layerView.layer, exportInfo.ids, this._labelInfoElement.selectedOption.value, removeDuplicates, title, initialImageDataUrl);
     });
   }
   //--------------------------------------------------------------------------

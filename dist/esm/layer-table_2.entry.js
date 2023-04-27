@@ -7,7 +7,7 @@ import { r as registerInstance, h, H as Host, g as getElement, c as createEvent 
 import { l as loadModules } from './loadModules-cd3569de.js';
 import { g as getLocaleComponentStrings } from './locale-54cac39a.js';
 import { e as getMapLayerIds, b as getMapLayerView, g as goToSelection, f as queryAllFeatures } from './mapViewUtils-9f405325.js';
-import { d as downloadCSV } from './downloadUtils-305e69e9.js';
+import { d as downloadCSV } from './downloadUtils-29987ebf.js';
 import { e as EExpandType } from './interfaces-9f6e2f3b.js';
 import './_commonjsHelpers-d5f9d613.js';
 

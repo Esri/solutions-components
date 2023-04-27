@@ -1023,21 +1023,24 @@ export class PublicNotification {
    */
   protected async _export(): Promise<void> {
     const exportInfos: IExportInfos = this._getSelectionIdsAndViews(this._selectionSets, true);
+
     if (this._exportType === EExportType.PDF) {
       // Generate a map screenshot
-      let screenshot: __esri.Screenshot;
+      let initialImageDataUrl = "";
       if (this._addMap && this.mapView) {
-        screenshot = await this.mapView.takeScreenshot({width: 1500, height: 2000});
-        console.log("screenshot", screenshot);//???
+        const screenshot = await this.mapView.takeScreenshot({width: 1500, height: 2000});
+        initialImageDataUrl = screenshot?.dataUrl;
       }
 
       // Create the labels for each selection set
       void this._downloadTools.downloadPDF(
         exportInfos,
         this._removeDuplicates.checked,
-        this._addTitle ? this._title.value : ""
+        this._addTitle ? this._title.value : "",
+        initialImageDataUrl
       );
     }
+
     if (this._exportType === EExportType.CSV) {
       void this._downloadTools.downloadCSV(
         exportInfos,

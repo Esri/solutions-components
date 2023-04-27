@@ -1,7 +1,7 @@
-Built 04/27/2023 13:52:01.71 
+Built 04/27/2023 15:55:46.02 
 enh/pn-map-and-title-ui
-commit 4ac31d02f02e9eede081cee590b911db861cec92
+commit bb826dc0e1a12e2d7e93cb4e0a4dba38ade1e848
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Thu Apr 27 13:35:03 2023 -0700
+Date:   Thu Apr 27 15:20:49 2023 -0700
 
-    Remove unused strings
+    Export map image

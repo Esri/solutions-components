@@ -16,6 +16,7 @@
 
 //#region Declarations
 
+import * as PDFCreator from "../assets/arcgis-pdf-creator/PDFCreator";
 import * as PDFCreator_jsPDF from "../assets/arcgis-pdf-creator/PDFCreator_jsPDF";
 import * as PDFLabels from "../assets/arcgis-pdf-creator/PDFLabels";
 import { getAssetPath } from "@stencil/core";
@@ -31,14 +32,16 @@ export { ILabel } from "../assets/arcgis-pdf-creator/PDFLabels";
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
  * @param title Title for each page
+* @param initialImageDataUrl Data URL of image for first page
  */
 export function exportPDF(
   filename: string,
   labels: string[][],
   labelPageDescription: PDFLabels.ILabel,
-  title = ""
+  title = "",
+  initialImageDataUrl = ""
 ): void {
-  downloadPDFFile(filename, labels, labelPageDescription, title);
+  downloadPDFFile(filename, labels, labelPageDescription, title, initialImageDataUrl);
 }
 
 //#endregion
@@ -51,12 +54,14 @@ export function exportPDF(
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
  * @param title Title for each page
+ * @param initialImageDataUrl Data URL of image for first page
  */
 function downloadPDFFile(
   filename: string,
   labels: string[][],
   labelPageDescription: PDFLabels.ILabel,
-  title = ""
+  title = "",
+  initialImageDataUrl = ""
 ): void {
   const pdfLib = new PDFCreator_jsPDF.PDFCreator_jsPDF();
   pdfLib.initialize(
@@ -73,10 +78,28 @@ function downloadPDFFile(
       labeller.initialize(pdfLib)
       .then(
         async () => {
+          const labelSpec = labelPageDescription.labelSpec;
+
+          let startingPageNum = 1;
+          if (initialImageDataUrl) {
+            const pageProperties = labelSpec.pageProperties;
+            const pageSize = PDFCreator.PDFCreator.getPageSize(pageProperties.pageType);
+
+            // Add the screenshot to the PDF
+            pdfLib.drawImage(initialImageDataUrl, {
+              x: pageProperties.leftMargin,
+              y: pageProperties.topMargin,
+              width: pageSize.width - pageProperties.leftMargin - pageProperties.rightMargin,
+              height: pageSize.height - pageProperties.topMargin - pageProperties.bottomMargin
+            });
+            pdfLib.addPage();
+            ++startingPageNum;
+          }
+
           await labeller.addLabelsToDoc(
             labels,
-            labelPageDescription.labelSpec,
-            1,  // startingPageNum
+            labelSpec,
+            startingPageNum,
             title  // heading
           );
 

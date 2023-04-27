@@ -305,9 +305,10 @@ export namespace Components {
           * @param exportInfos Information about items to be exported
           * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
           * @param title Title for each page
+          * @param initialImageDataUrl Data URL of image for first page
           * @returns Promise resolving when function is done
          */
-        "downloadPDF": (exportInfos: IExportInfos, removeDuplicates?: boolean, title?: string) => Promise<void>;
+        "downloadPDF": (exportInfos: IExportInfos, removeDuplicates?: boolean, title?: string, initialImageDataUrl?: string) => Promise<void>;
     }
     interface PublicNotification {
         /**

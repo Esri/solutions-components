@@ -458,13 +458,13 @@ const PublicNotification = class {
     const exportInfos = this._getSelectionIdsAndViews(this._selectionSets, true);
     if (this._exportType === EExportType.PDF) {
       // Generate a map screenshot
-      let screenshot;
+      let initialImageDataUrl = "";
       if (this._addMap && this.mapView) {
-        screenshot = await this.mapView.takeScreenshot({ width: 1500, height: 2000 });
-        console.log("screenshot", screenshot); //???
+        const screenshot = await this.mapView.takeScreenshot({ width: 1500, height: 2000 });
+        initialImageDataUrl = screenshot === null || screenshot === void 0 ? void 0 : screenshot.dataUrl;
       }
       // Create the labels for each selection set
-      void this._downloadTools.downloadPDF(exportInfos, this._removeDuplicates.checked, this._addTitle ? this._title.value : "");
+      void this._downloadTools.downloadPDF(exportInfos, this._removeDuplicates.checked, this._addTitle ? this._title.value : "", initialImageDataUrl);
     }
     if (this._exportType === EExportType.CSV) {
       void this._downloadTools.downloadCSV(exportInfos, this._removeDuplicates.checked);

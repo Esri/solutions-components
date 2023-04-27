@@ -84,6 +84,7 @@ export async function downloadCSV(
  * @param labelPageDescription Provides PDF page layout info
  * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
  * @param title Title for each page
+ * @param initialImageDataUrl Data URL of image for first page
  * @returns Promise resolving when function is done
  */
 export async function downloadPDF(
@@ -92,7 +93,8 @@ export async function downloadPDF(
   ids: number[],
   labelPageDescription: ILabel,
   removeDuplicates = false,
-  title = ""
+  title = "",
+  initialImageDataUrl = ""
 ): Promise<void> {
   let labels = await _prepareLabels(layer, ids, removeDuplicates);
 
@@ -102,7 +104,7 @@ export async function downloadPDF(
     // Remove empty labels
     .filter(label => label.length > 0);
 
-  exportPDF(_createFilename(selectionSetNames), labels, labelPageDescription, title);
+  exportPDF(_createFilename(selectionSetNames), labels, labelPageDescription, title, initialImageDataUrl);
 
   return Promise.resolve();
 }

@@ -249,12 +249,13 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
    * @param exportInfos Information about items to be exported
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
    * @param title Title for each page
+   * @param initialImageDataUrl Data URL of image for first page
    * @returns Promise resolving when function is done
    */
-  async downloadPDF(exportInfos, removeDuplicates = false, title = "") {
+  async downloadPDF(exportInfos, removeDuplicates = false, title = "", initialImageDataUrl = "") {
     Object.keys(exportInfos).forEach(k => {
       const exportInfo = exportInfos[k];
-      void downloadPDF(exportInfo.selectionSetNames, exportInfo.layerView.layer, exportInfo.ids, this._labelInfoElement.selectedOption.value, removeDuplicates, title);
+      void downloadPDF(exportInfo.selectionSetNames, exportInfo.layerView.layer, exportInfo.ids, this._labelInfoElement.selectedOption.value, removeDuplicates, title, initialImageDataUrl);
     });
   }
   //--------------------------------------------------------------------------

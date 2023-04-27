@@ -120,13 +120,15 @@ export class PdfDownload {
    * @param exportInfos Information about items to be exported
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
    * @param title Title for each page
+   * @param initialImageDataUrl Data URL of image for first page
    * @returns Promise resolving when function is done
    */
   @Method()
   async downloadPDF(
     exportInfos: IExportInfos,
     removeDuplicates = false,
-    title = ""
+    title = "",
+    initialImageDataUrl = ""
   ): Promise<void> {
     Object.keys(exportInfos).forEach(k => {
       const exportInfo = exportInfos[k];
@@ -136,7 +138,8 @@ export class PdfDownload {
         exportInfo.ids,
         this._labelInfoElement.selectedOption.value as downloadUtils.ILabel,
         removeDuplicates,
-        title
+        title,
+        initialImageDataUrl
       );
     });
   }

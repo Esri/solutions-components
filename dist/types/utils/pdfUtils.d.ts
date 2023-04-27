@@ -22,5 +22,6 @@ export { ILabel } from "../assets/arcgis-pdf-creator/PDFLabels";
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
  * @param title Title for each page
+* @param initialImageDataUrl Data URL of image for first page
  */
-export declare function exportPDF(filename: string, labels: string[][], labelPageDescription: PDFLabels.ILabel, title?: string): void;
+export declare function exportPDF(filename: string, labels: string[][], labelPageDescription: PDFLabels.ILabel, title?: string, initialImageDataUrl?: string): void;

@@ -26,7 +26,7 @@ const mapViewUtils = require('./mapViewUtils-7e04e61c.js');
 const interfaces = require('./interfaces-2b40fc8e.js');
 const publicNotificationStore = require('./publicNotificationStore-cd1a32c3.js');
 const locale$1 = require('./locale-b113c6b2.js');
-const downloadUtils = require('./downloadUtils-8359ed84.js');
+const downloadUtils = require('./downloadUtils-bc16aa57.js');
 require('./guid-c58d5ead.js');
 require('./key-d55baa11.js');
 require('./index-e1b1954f.js');
@@ -2209,12 +2209,13 @@ const PdfDownload = class {
    * @param exportInfos Information about items to be exported
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
    * @param title Title for each page
+   * @param initialImageDataUrl Data URL of image for first page
    * @returns Promise resolving when function is done
    */
-  async downloadPDF(exportInfos, removeDuplicates = false, title = "") {
+  async downloadPDF(exportInfos, removeDuplicates = false, title = "", initialImageDataUrl = "") {
     Object.keys(exportInfos).forEach(k => {
       const exportInfo = exportInfos[k];
-      void downloadUtils.downloadPDF(exportInfo.selectionSetNames, exportInfo.layerView.layer, exportInfo.ids, this._labelInfoElement.selectedOption.value, removeDuplicates, title);
+      void downloadUtils.downloadPDF(exportInfo.selectionSetNames, exportInfo.layerView.layer, exportInfo.ids, this._labelInfoElement.selectedOption.value, removeDuplicates, title, initialImageDataUrl);
     });
   }
   //--------------------------------------------------------------------------
