@@ -165,11 +165,6 @@ export namespace Components {
           * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
          */
         "polylineSymbol": __esri.SimpleLineSymbol;
-        /**
-          * Set the sketch widget to update mode with the current graphic
-          * @returns Promise that resolves when the operation is complete
-         */
-        "updateGraphics": () => Promise<void>;
     }
     interface MapLayerPicker {
         /**

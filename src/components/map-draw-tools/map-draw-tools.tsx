@@ -173,16 +173,6 @@ export class MapDrawTools {
     this._clearSketch();
   }
 
-  /**
-   * Set the sketch widget to update mode with the current graphic
-   *
-   * @returns Promise that resolves when the operation is complete
-   */
-  @Method()
-  async updateGraphics(): Promise<void> {
-    this._updateGraphics();
-  }
-
   //--------------------------------------------------------------------------
   //
   //  Events (public)
@@ -389,27 +379,6 @@ export class MapDrawTools {
     this._sketchWidget.viewModel.cancel();
     this.graphics = [];
     this._sketchGraphicsLayer?.removeAll();
-  }
-
-  /**
-   * Set the sketch widget to update mode with the current graphic
-   *
-   * reshape tool only supports a single graphic
-   *
-   * @protected
-   */
-  protected _updateGraphics(): void {
-    setTimeout(() => {
-      if (this.graphics.length === 1) {
-        void this._sketchWidget.update(this.graphics, {
-          tool: "reshape",
-          enableRotation: false,
-          enableScaling: false,
-          preserveAspectRatio: false,
-          toggleToolOnClick: false
-        });
-      }
-    }, 100);
   }
 
   /**

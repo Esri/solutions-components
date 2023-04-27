@@ -37,16 +37,6 @@ Type: `Promise<void>`
 
 Promise that resolves when the operation is complete
 
-### `updateGraphics() => Promise<void>`
-
-Set the sketch widget to update mode with the current graphic
-
-#### Returns
-
-Type: `Promise<void>`
-
-Promise that resolves when the operation is complete
-
 
 ## Dependencies
 

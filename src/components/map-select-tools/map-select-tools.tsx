@@ -830,10 +830,6 @@ export class MapSelectTools {
 
     this._workflowType = this._useLayerFeaturesEnabled ? EWorkflowType.SELECT : EWorkflowType.SKETCH;
 
-    if (this._workflowType === EWorkflowType.SKETCH) {
-      this._drawTools.updateGraphics();
-    }
-
     this._updateLabel();
     this._clearSearchWidget();
     if (this._useLayerFeaturesEnabled && !forceUpdate) {
