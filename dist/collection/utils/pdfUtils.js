@@ -31,11 +31,10 @@ export { ILabel } from "../assets/arcgis-pdf-creator/PDFLabels";
  * @param filename Name to use for file (without file extension); defaults to "export"
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
- * @param includeTitle When true, a title is included on every page
- * @param title Title for each page when `includeTitle` is true
+ * @param title Title for each page
  */
-export function exportPDF(filename, labels, labelPageDescription, includeTitle = false, title = "") {
-  downloadPDFFile(filename, labels, labelPageDescription, includeTitle, title);
+export function exportPDF(filename, labels, labelPageDescription, title = "") {
+  downloadPDFFile(filename, labels, labelPageDescription, title);
 }
 //#endregion
 //#region Private functions
@@ -45,10 +44,9 @@ export function exportPDF(filename, labels, labelPageDescription, includeTitle =
  * @param filename Name to use for file (without file extension); defaults to "export"
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
- * @param includeTitle When true, a title is included on every page
- * @param title Title for each page when `includeTitle` is true
+ * @param title Title for each page
  */
-function downloadPDFFile(filename, labels, labelPageDescription, includeTitle = false, title = "") {
+function downloadPDFFile(filename, labels, labelPageDescription, title = "") {
   const pdfLib = new PDFCreator_jsPDF.PDFCreator_jsPDF();
   pdfLib.initialize({
     pageType: "ANSI_A"
@@ -59,7 +57,7 @@ function downloadPDFFile(filename, labels, labelPageDescription, includeTitle = 
     labeller.initialize(pdfLib)
       .then(async () => {
       await labeller.addLabelsToDoc(labels, labelPageDescription.labelSpec, 1, // startingPageNum
-      includeTitle ? title : "" // heading
+      title // heading
       );
       pdfLib.save();
     });

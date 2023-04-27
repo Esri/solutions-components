@@ -306,12 +306,10 @@ export namespace Components {
           * @param selectionSetNames Names of the selection sets used to provide ids
           * @param ids List of ids to download
           * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-          * @param includeMap When true, the first page of the output is a map showing the selection area
-          * @param includeTitle When true, a title is included on every page
-          * @param title Title for each page when `includeTitle` is true
+          * @param title Title for each page
           * @returns Promise resolving when function is done
          */
-        "downloadPDF": (layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates?: boolean, includeMap?: boolean, includeTitle?: boolean, title?: string) => Promise<void>;
+        "downloadPDF": (layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates?: boolean, title?: string) => Promise<void>;
     }
     interface PublicNotification {
         /**

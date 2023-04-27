@@ -83,9 +83,7 @@ export async function downloadCSV(
  * @param ids List of ids to download
  * @param labelPageDescription Provides PDF page layout info
  * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
- * @param includeMap When true, the first page of the output is a map showing the selection area
- * @param includeTitle When true, a title is included on every page
- * @param title Title for each page when `includeTitle` is true
+ * @param title Title for each page
  * @returns Promise resolving when function is done
  */
 export async function downloadPDF(
@@ -94,8 +92,6 @@ export async function downloadPDF(
   ids: number[],
   labelPageDescription: ILabel,
   removeDuplicates = false,
-  includeMap = false,
-  includeTitle = false,
   title = ""
 ): Promise<void> {
   let labels = await _prepareLabels(layer, ids, removeDuplicates);
@@ -106,9 +102,7 @@ export async function downloadPDF(
     // Remove empty labels
     .filter(label => label.length > 0);
 
-  console.log("include map: " + includeMap.toString());//???
-  console.log("title: " + title);//???
-  exportPDF(_createFilename(selectionSetNames), labels, labelPageDescription, includeTitle, title);
+  exportPDF(_createFilename(selectionSetNames), labels, labelPageDescription, title);
 
   return Promise.resolve();
 }

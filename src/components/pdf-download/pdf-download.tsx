@@ -119,9 +119,7 @@ export class PdfDownload {
    * @param selectionSetNames Names of the selection sets used to provide ids
    * @param ids List of ids to download
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * @param includeMap When true, the first page of the output is a map showing the selection area
-   * @param includeTitle When true, a title is included on every page
-   * @param title Title for each page when `includeTitle` is true
+   * @param title Title for each page
    * @returns Promise resolving when function is done
    */
   @Method()
@@ -130,8 +128,6 @@ export class PdfDownload {
     selectionSetNames: string[],
     ids: number[],
     removeDuplicates = false,
-    includeMap = false,
-    includeTitle = false,
     title = ""
   ): Promise<void> {
     return downloadUtils.downloadPDF(
@@ -140,8 +136,6 @@ export class PdfDownload {
       ids,
       this._labelInfoElement.selectedOption.value as downloadUtils.ILabel,
       removeDuplicates,
-      includeMap,
-      includeTitle,
       title
     );
   }

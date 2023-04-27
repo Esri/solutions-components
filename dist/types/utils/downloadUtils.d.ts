@@ -37,12 +37,10 @@ export declare function downloadCSV(selectionSetNames: string[], layer: __esri.F
  * @param ids List of ids to download
  * @param labelPageDescription Provides PDF page layout info
  * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
- * @param includeMap When true, the first page of the output is a map showing the selection area
- * @param includeTitle When true, a title is included on every page
- * @param title Title for each page when `includeTitle` is true
+ * @param title Title for each page
  * @returns Promise resolving when function is done
  */
-export declare function downloadPDF(selectionSetNames: string[], layer: __esri.FeatureLayer, ids: number[], labelPageDescription: ILabel, removeDuplicates?: boolean, includeMap?: boolean, includeTitle?: boolean, title?: string): Promise<void>;
+export declare function downloadPDF(selectionSetNames: string[], layer: __esri.FeatureLayer, ids: number[], labelPageDescription: ILabel, removeDuplicates?: boolean, title?: string): Promise<void>;
 /**
  * Converts a set of fieldInfos into template lines.
  *

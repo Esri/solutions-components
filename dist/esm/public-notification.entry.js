@@ -4,11 +4,11 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-d298aca9.js';
-import { a as EPageType } from './interfaces-cd9c07ee.js';
-import { l as loadModules } from './loadModules-cd3569de.js';
-import { g as goToSelection, h as highlightFeatures } from './mapViewUtils-9f405325.js';
 import { s as state } from './publicNotificationStore-c36d95bf.js';
+import { a as EPageType } from './interfaces-cd9c07ee.js';
 import { g as getLocaleComponentStrings } from './locale-54cac39a.js';
+import { g as goToSelection, h as highlightFeatures } from './mapViewUtils-9f405325.js';
+import { l as loadModules } from './loadModules-cd3569de.js';
 import './index-4c4a4f3d.js';
 import './_commonjsHelpers-d5f9d613.js';
 
@@ -506,7 +506,7 @@ const PublicNotification = class {
    */
   _export() {
     if (this._exportPDF) {
-      this._downloadPDF();
+      void this._downloadPDF();
     }
     if (this._exportCSV) {
       this._downloadCSV();
@@ -517,12 +517,19 @@ const PublicNotification = class {
    *
    * @protected
    */
-  _downloadPDF() {
+  async _downloadPDF() {
+    // Generate a map screenshot
+    let screenshot;
+    if (this._addMap && this.mapView) {
+      screenshot = await this.mapView.takeScreenshot({ width: 1500, height: 2000 });
+      console.log("screenshot", screenshot); //???
+    }
+    // Create the labels for each selection set
     const downloadSets = this._getDownloadSelectionSets();
     const idSets = getSelectionIdsAndViews(downloadSets);
     Object.keys(idSets).forEach(k => {
       const idSet = idSets[k];
-      void this._downloadTools.downloadPDF(idSet.layerView, idSet.selectionSetNames, idSet.ids, this._removeDuplicates.checked, this._addMap, this._addTitle, this._title.value);
+      void this._downloadTools.downloadPDF(idSet.layerView, idSet.selectionSetNames, idSet.ids, this._removeDuplicates.checked, this._addTitle ? this._title.value : "");
     });
   }
   /**

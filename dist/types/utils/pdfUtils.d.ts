@@ -21,7 +21,6 @@ export { ILabel } from "../assets/arcgis-pdf-creator/PDFLabels";
  * @param filename Name to use for file (without file extension); defaults to "export"
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
- * @param includeTitle When true, a title is included on every page
- * @param title Title for each page when `includeTitle` is true
+ * @param title Title for each page
  */
-export declare function exportPDF(filename: string, labels: string[][], labelPageDescription: PDFLabels.ILabel, includeTitle?: boolean, title?: string): void;
+export declare function exportPDF(filename: string, labels: string[][], labelPageDescription: PDFLabels.ILabel, title?: string): void;

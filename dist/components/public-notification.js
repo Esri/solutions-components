@@ -4,11 +4,11 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 import { proxyCustomElement, HTMLElement, createEvent, h, Host } from '@stencil/core/internal/client';
-import { a as EPageType } from './interfaces.js';
-import { l as loadModules } from './loadModules.js';
-import { g as goToSelection, h as highlightFeatures, d as defineCustomElement$4 } from './map-layer-picker2.js';
 import { s as state } from './publicNotificationStore.js';
+import { a as EPageType } from './interfaces.js';
 import { g as getLocaleComponentStrings } from './locale.js';
+import { g as goToSelection, h as highlightFeatures, d as defineCustomElement$4 } from './map-layer-picker2.js';
+import { l as loadModules } from './loadModules.js';
 import { d as defineCustomElement$A } from './buffer-tools2.js';
 import { d as defineCustomElement$z } from './action.js';
 import { d as defineCustomElement$y } from './action-bar.js';
@@ -539,7 +539,7 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
    */
   _export() {
     if (this._exportPDF) {
-      this._downloadPDF();
+      void this._downloadPDF();
     }
     if (this._exportCSV) {
       this._downloadCSV();
@@ -550,12 +550,19 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
    *
    * @protected
    */
-  _downloadPDF() {
+  async _downloadPDF() {
+    // Generate a map screenshot
+    let screenshot;
+    if (this._addMap && this.mapView) {
+      screenshot = await this.mapView.takeScreenshot({ width: 1500, height: 2000 });
+      console.log("screenshot", screenshot); //???
+    }
+    // Create the labels for each selection set
     const downloadSets = this._getDownloadSelectionSets();
     const idSets = getSelectionIdsAndViews(downloadSets);
     Object.keys(idSets).forEach(k => {
       const idSet = idSets[k];
-      void this._downloadTools.downloadPDF(idSet.layerView, idSet.selectionSetNames, idSet.ids, this._removeDuplicates.checked, this._addMap, this._addTitle, this._title.value);
+      void this._downloadTools.downloadPDF(idSet.layerView, idSet.selectionSetNames, idSet.ids, this._removeDuplicates.checked, this._addTitle ? this._title.value : "");
     });
   }
   /**

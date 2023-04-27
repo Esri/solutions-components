@@ -8,11 +8,11 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 const index = require('./index-6654298b.js');
-const interfaces = require('./interfaces-043b0758.js');
-const loadModules = require('./loadModules-ae7715f2.js');
-const mapViewUtils = require('./mapViewUtils-7e04e61c.js');
 const publicNotificationStore = require('./publicNotificationStore-cd1a32c3.js');
+const interfaces = require('./interfaces-043b0758.js');
 const locale = require('./locale-b113c6b2.js');
+const mapViewUtils = require('./mapViewUtils-7e04e61c.js');
+const loadModules = require('./loadModules-ae7715f2.js');
 require('./index-e1b1954f.js');
 require('./_commonjsHelpers-384729db.js');
 
@@ -510,7 +510,7 @@ const PublicNotification = class {
    */
   _export() {
     if (this._exportPDF) {
-      this._downloadPDF();
+      void this._downloadPDF();
     }
     if (this._exportCSV) {
       this._downloadCSV();
@@ -521,12 +521,19 @@ const PublicNotification = class {
    *
    * @protected
    */
-  _downloadPDF() {
+  async _downloadPDF() {
+    // Generate a map screenshot
+    let screenshot;
+    if (this._addMap && this.mapView) {
+      screenshot = await this.mapView.takeScreenshot({ width: 1500, height: 2000 });
+      console.log("screenshot", screenshot); //???
+    }
+    // Create the labels for each selection set
     const downloadSets = this._getDownloadSelectionSets();
     const idSets = getSelectionIdsAndViews(downloadSets);
     Object.keys(idSets).forEach(k => {
       const idSet = idSets[k];
-      void this._downloadTools.downloadPDF(idSet.layerView, idSet.selectionSetNames, idSet.ids, this._removeDuplicates.checked, this._addMap, this._addTitle, this._title.value);
+      void this._downloadTools.downloadPDF(idSet.layerView, idSet.selectionSetNames, idSet.ids, this._removeDuplicates.checked, this._addTitle ? this._title.value : "");
     });
   }
   /**

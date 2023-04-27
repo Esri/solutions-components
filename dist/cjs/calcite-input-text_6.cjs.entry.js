@@ -26,7 +26,7 @@ const mapViewUtils = require('./mapViewUtils-7e04e61c.js');
 const interfaces = require('./interfaces-043b0758.js');
 const publicNotificationStore = require('./publicNotificationStore-cd1a32c3.js');
 const locale$1 = require('./locale-b113c6b2.js');
-const downloadUtils = require('./downloadUtils-fecaaf49.js');
+const downloadUtils = require('./downloadUtils-6e2e442a.js');
 require('./guid-c58d5ead.js');
 require('./key-d55baa11.js');
 require('./index-e1b1954f.js');
@@ -1971,13 +1971,11 @@ const PdfDownload = class {
    * @param selectionSetNames Names of the selection sets used to provide ids
    * @param ids List of ids to download
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * @param includeMap When true, the first page of the output is a map showing the selection area
-   * @param includeTitle When true, a title is included on every page
-   * @param title Title for each page when `includeTitle` is true
+   * @param title Title for each page
    * @returns Promise resolving when function is done
    */
-  async downloadPDF(layerView, selectionSetNames, ids, removeDuplicates = false, includeMap = false, includeTitle = false, title = "") {
-    return downloadUtils.downloadPDF(selectionSetNames, layerView.layer, ids, this._labelInfoElement.selectedOption.value, removeDuplicates, includeMap, includeTitle, title);
+  async downloadPDF(layerView, selectionSetNames, ids, removeDuplicates = false, title = "") {
+    return downloadUtils.downloadPDF(selectionSetNames, layerView.layer, ids, this._labelInfoElement.selectedOption.value, removeDuplicates, title);
   }
   //--------------------------------------------------------------------------
   //

@@ -30,17 +30,15 @@ export { ILabel } from "../assets/arcgis-pdf-creator/PDFLabels";
  * @param filename Name to use for file (without file extension); defaults to "export"
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
- * @param includeTitle When true, a title is included on every page
- * @param title Title for each page when `includeTitle` is true
+ * @param title Title for each page
  */
 export function exportPDF(
   filename: string,
   labels: string[][],
   labelPageDescription: PDFLabels.ILabel,
-  includeTitle = false,
   title = ""
 ): void {
-  downloadPDFFile(filename, labels, labelPageDescription, includeTitle, title);
+  downloadPDFFile(filename, labels, labelPageDescription, title);
 }
 
 //#endregion
@@ -52,14 +50,12 @@ export function exportPDF(
  * @param filename Name to use for file (without file extension); defaults to "export"
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
- * @param includeTitle When true, a title is included on every page
- * @param title Title for each page when `includeTitle` is true
+ * @param title Title for each page
  */
 function downloadPDFFile(
   filename: string,
   labels: string[][],
   labelPageDescription: PDFLabels.ILabel,
-  includeTitle = false,
   title = ""
 ): void {
   const pdfLib = new PDFCreator_jsPDF.PDFCreator_jsPDF();
@@ -81,7 +77,7 @@ function downloadPDFFile(
             labels,
             labelPageDescription.labelSpec,
             1,  // startingPageNum
-            includeTitle ? title : ""  // heading
+            title  // heading
           );
 
           pdfLib.save();

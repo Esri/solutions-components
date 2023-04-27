@@ -24,7 +24,7 @@ Type: `Promise<void>`
 
 Promise resolving when function is done
 
-### `downloadPDF(layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates?: boolean, includeMap?: boolean, includeTitle?: boolean, title?: string) => Promise<void>`
+### `downloadPDF(layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates?: boolean, title?: string) => Promise<void>`
 
 Downloads pdf of mailing labels for the provided list of ids.
 

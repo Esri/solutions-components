@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 /// <reference types="arcgis-js-api" />
+import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
 import { EventEmitter, VNode } from "../../stencil-public-runtime";
 import { DistanceUnit, EPageType, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
-import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
 export declare class PublicNotification {
   el: HTMLPublicNotificationElement;
   /**
@@ -427,7 +427,7 @@ export declare class PublicNotification {
    *
    * @protected
    */
-  protected _downloadPDF(): void;
+  protected _downloadPDF(): Promise<void>;
   /**
    * Download all selection sets as CSV
    *

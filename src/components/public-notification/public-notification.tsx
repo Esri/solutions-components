@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
+import * as utils from "../../utils/publicNotificationUtils";
+import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
+import state from "../../utils/publicNotificationStore";
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import { DistanceUnit, EPageType, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
-import { loadModules } from "../../utils/loadModules";
-import { goToSelection, highlightFeatures } from "../../utils/mapViewUtils";
-import state from "../../utils/publicNotificationStore";
-import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import * as utils from "../../utils/publicNotificationUtils";
+import { goToSelection, highlightFeatures } from "../../utils/mapViewUtils";
+import { loadModules } from "../../utils/loadModules";
 
 @Component({
   tag: "public-notification",
@@ -1051,7 +1051,7 @@ export class PublicNotification {
    */
   protected _export(): void {
     if (this._exportPDF) {
-      this._downloadPDF();
+      void this._downloadPDF();
     }
     if (this._exportCSV) {
       this._downloadCSV();
@@ -1066,7 +1066,15 @@ export class PublicNotification {
    *
    * @protected
    */
-  protected _downloadPDF(): void {
+  protected async _downloadPDF(): Promise<void> {
+    // Generate a map screenshot
+    let screenshot: __esri.Screenshot;
+    if (this._addMap && this.mapView) {
+      screenshot = await this.mapView.takeScreenshot({width: 1500, height: 2000});
+      console.log("screenshot", screenshot);//???
+    }
+
+    // Create the labels for each selection set
     const downloadSets = this._getDownloadSelectionSets();
     const idSets = utils.getSelectionIdsAndViews(downloadSets);
     Object.keys(idSets).forEach(k => {
@@ -1076,9 +1084,7 @@ export class PublicNotification {
         idSet.selectionSetNames,
         idSet.ids,
         this._removeDuplicates.checked,
-        this._addMap,
-        this._addTitle,
-        this._title.value
+        this._addTitle ? this._title.value : ""
       );
     });
   }

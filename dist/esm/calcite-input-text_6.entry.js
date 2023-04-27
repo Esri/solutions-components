@@ -22,7 +22,7 @@ import { g as goToSelection, h as highlightFeatures, q as queryObjectIds, a as g
 import { c as EWorkflowType } from './interfaces-cd9c07ee.js';
 import { s as state } from './publicNotificationStore-c36d95bf.js';
 import { a as getComponentClosestLanguage, g as getLocaleComponentStrings } from './locale-54cac39a.js';
-import { d as downloadCSV, a as downloadPDF } from './downloadUtils-8f57f590.js';
+import { d as downloadCSV, a as downloadPDF } from './downloadUtils-5b8b5a4a.js';
 import './guid-2069664e.js';
 import './key-218d8d4d.js';
 import './index-4c4a4f3d.js';
@@ -1967,13 +1967,11 @@ const PdfDownload = class {
    * @param selectionSetNames Names of the selection sets used to provide ids
    * @param ids List of ids to download
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * @param includeMap When true, the first page of the output is a map showing the selection area
-   * @param includeTitle When true, a title is included on every page
-   * @param title Title for each page when `includeTitle` is true
+   * @param title Title for each page
    * @returns Promise resolving when function is done
    */
-  async downloadPDF(layerView, selectionSetNames, ids, removeDuplicates = false, includeMap = false, includeTitle = false, title = "") {
-    return downloadPDF(selectionSetNames, layerView.layer, ids, this._labelInfoElement.selectedOption.value, removeDuplicates, includeMap, includeTitle, title);
+  async downloadPDF(layerView, selectionSetNames, ids, removeDuplicates = false, title = "") {
+    return downloadPDF(selectionSetNames, layerView.layer, ids, this._labelInfoElement.selectedOption.value, removeDuplicates, title);
   }
   //--------------------------------------------------------------------------
   //

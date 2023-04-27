@@ -18,13 +18,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import * as utils from "../../utils/publicNotificationUtils";
+import state from "../../utils/publicNotificationStore";
 import { Host, h } from "@stencil/core";
 import { EPageType } from "../../utils/interfaces";
-import { loadModules } from "../../utils/loadModules";
-import { goToSelection, highlightFeatures } from "../../utils/mapViewUtils";
-import state from "../../utils/publicNotificationStore";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import * as utils from "../../utils/publicNotificationUtils";
+import { goToSelection, highlightFeatures } from "../../utils/mapViewUtils";
+import { loadModules } from "../../utils/loadModules";
 export class PublicNotification {
   constructor() {
     /**
@@ -480,7 +480,7 @@ export class PublicNotification {
    */
   _export() {
     if (this._exportPDF) {
-      this._downloadPDF();
+      void this._downloadPDF();
     }
     if (this._exportCSV) {
       this._downloadCSV();
@@ -494,12 +494,19 @@ export class PublicNotification {
    *
    * @protected
    */
-  _downloadPDF() {
+  async _downloadPDF() {
+    // Generate a map screenshot
+    let screenshot;
+    if (this._addMap && this.mapView) {
+      screenshot = await this.mapView.takeScreenshot({ width: 1500, height: 2000 });
+      console.log("screenshot", screenshot); //???
+    }
+    // Create the labels for each selection set
     const downloadSets = this._getDownloadSelectionSets();
     const idSets = utils.getSelectionIdsAndViews(downloadSets);
     Object.keys(idSets).forEach(k => {
       const idSet = idSets[k];
-      void this._downloadTools.downloadPDF(idSet.layerView, idSet.selectionSetNames, idSet.ids, this._removeDuplicates.checked, this._addMap, this._addTitle, this._title.value);
+      void this._downloadTools.downloadPDF(idSet.layerView, idSet.selectionSetNames, idSet.ids, this._removeDuplicates.checked, this._addTitle ? this._title.value : "");
     });
   }
   /**
