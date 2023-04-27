@@ -293,7 +293,7 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * Downloads csv of mailing labels for the provided list of ids
+          * Downloads csv of mailing labels for the provided list of ids.
           * @param selectionSetNames Names of the selection sets used to provide ids
           * @param ids List of ids to download
           * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
@@ -302,13 +302,16 @@ export namespace Components {
          */
         "downloadCSV": (layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>;
         /**
-          * Downloads pdf of mailing labels for the provided list of ids
+          * Downloads pdf of mailing labels for the provided list of ids.
           * @param selectionSetNames Names of the selection sets used to provide ids
           * @param ids List of ids to download
           * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+          * @param includeMap When true, the first page of the output is a map showing the selection area
+          * @param includeTitle When true, a title is included on every page
+          * @param title Title for each page when `includeTitle` is true
           * @returns Promise resolving when function is done
          */
-        "downloadPDF": (layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates: boolean) => Promise<void>;
+        "downloadPDF": (layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates?: boolean, includeMap?: boolean, includeTitle?: boolean, title?: string) => Promise<void>;
     }
     interface PublicNotification {
         /**

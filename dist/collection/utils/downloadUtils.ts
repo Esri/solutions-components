@@ -70,7 +70,7 @@ export async function downloadCSV(
 ): Promise<void> {
   const labels = await _prepareLabels(layer, ids, removeDuplicates, formatUsingLayerPopup, addColumnTitle);
 
-  exportCSV(_createTitle(selectionSetNames), labels);
+  exportCSV(_createFilename(selectionSetNames), labels);
 
   return Promise.resolve();
 }
@@ -81,16 +81,22 @@ export async function downloadCSV(
  * @param selectionSetNames Names of the selection sets used to provide ids
  * @param layer Layer providing features and attributes for download
  * @param ids List of ids to download
- * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
  * @param labelPageDescription Provides PDF page layout info
+ * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+ * @param includeMap When true, the first page of the output is a map showing the selection area
+ * @param includeTitle When true, a title is included on every page
+ * @param title Title for each page when `includeTitle` is true
  * @returns Promise resolving when function is done
  */
 export async function downloadPDF(
   selectionSetNames: string[],
   layer: __esri.FeatureLayer,
   ids: number[],
-  removeDuplicates: boolean,
-  labelPageDescription: ILabel
+  labelPageDescription: ILabel,
+  removeDuplicates = false,
+  includeMap = false,
+  includeTitle = false,
+  title = ""
 ): Promise<void> {
   let labels = await _prepareLabels(layer, ids, removeDuplicates);
 
@@ -100,7 +106,9 @@ export async function downloadPDF(
     // Remove empty labels
     .filter(label => label.length > 0);
 
-  exportPDF(_createTitle(selectionSetNames), labels, labelPageDescription);
+  console.log("include map: " + includeMap.toString());//???
+  console.log("title: " + title);//???
+  exportPDF(_createFilename(selectionSetNames), labels, labelPageDescription, includeTitle, title);
 
   return Promise.resolve();
 }
@@ -266,7 +274,7 @@ async function _createArcadeExecutors(
  * @return Title composed of the selectionSetNames separated by commas; if there are no
  * selection set names supplied, "download" is returned
  */
-export function _createTitle(
+export function _createFilename(
   selectionSetNames: string[]
 ): string {
   // Windows doesn't permit the characters \/:*?"<>|

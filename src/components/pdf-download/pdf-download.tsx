@@ -87,7 +87,7 @@ export class PdfDownload {
   //--------------------------------------------------------------------------
 
   /**
-   * Downloads csv of mailing labels for the provided list of ids
+   * Downloads csv of mailing labels for the provided list of ids.
    *
    * @param selectionSetNames Names of the selection sets used to provide ids
    * @param ids List of ids to download
@@ -114,11 +114,14 @@ export class PdfDownload {
   }
 
   /**
-   * Downloads pdf of mailing labels for the provided list of ids
+   * Downloads pdf of mailing labels for the provided list of ids.
    *
    * @param selectionSetNames Names of the selection sets used to provide ids
    * @param ids List of ids to download
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+   * @param includeMap When true, the first page of the output is a map showing the selection area
+   * @param includeTitle When true, a title is included on every page
+   * @param title Title for each page when `includeTitle` is true
    * @returns Promise resolving when function is done
    */
   @Method()
@@ -126,14 +129,20 @@ export class PdfDownload {
     layerView: __esri.FeatureLayerView,
     selectionSetNames: string[],
     ids: number[],
-    removeDuplicates: boolean
+    removeDuplicates = false,
+    includeMap = false,
+    includeTitle = false,
+    title = ""
   ): Promise<void> {
     return downloadUtils.downloadPDF(
       selectionSetNames,
       layerView.layer,
       ids,
+      this._labelInfoElement.selectedOption.value as downloadUtils.ILabel,
       removeDuplicates,
-      this._labelInfoElement.selectedOption.value as downloadUtils.ILabel
+      includeMap,
+      includeTitle,
+      title
     );
   }
 

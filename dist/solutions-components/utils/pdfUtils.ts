@@ -27,16 +27,20 @@ export { ILabel } from "../assets/arcgis-pdf-creator/PDFLabels";
 /**
  * Exports a PDF of labels.
  *
- * @param title Title to use for file
+ * @param filename Name to use for file (without file extension); defaults to "export"
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
+ * @param includeTitle When true, a title is included on every page
+ * @param title Title for each page when `includeTitle` is true
  */
 export function exportPDF(
-  title: string,
+  filename: string,
   labels: string[][],
-  labelPageDescription: PDFLabels.ILabel
+  labelPageDescription: PDFLabels.ILabel,
+  includeTitle = false,
+  title = ""
 ): void {
-  downloadPDFFile(title, labels, labelPageDescription);
+  downloadPDFFile(filename, labels, labelPageDescription, includeTitle, title);
 }
 
 //#endregion
@@ -45,14 +49,18 @@ export function exportPDF(
 /**
  * Downloads the PDF file.
  *
- * @param title Title (without file extension) to use for file; defaults to "export"
+ * @param filename Name to use for file (without file extension); defaults to "export"
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
+ * @param includeTitle When true, a title is included on every page
+ * @param title Title for each page when `includeTitle` is true
  */
 function downloadPDFFile(
-  title: string,
+  filename: string,
   labels: string[][],
-  labelPageDescription: PDFLabels.ILabel
+  labelPageDescription: PDFLabels.ILabel,
+  includeTitle = false,
+  title = ""
 ): void {
   const pdfLib = new PDFCreator_jsPDF.PDFCreator_jsPDF();
   pdfLib.initialize(
@@ -61,7 +69,7 @@ function downloadPDFFile(
     },
     getAssetPath(`../assets/arcgis-pdf-creator/`),
     "en",
-    title  // filename without ".pdf"
+    filename  // filename without ".pdf"
   )
   .then(
     () => {
@@ -73,7 +81,7 @@ function downloadPDFFile(
             labels,
             labelPageDescription.labelSpec,
             1,  // startingPageNum
-            title  // heading
+            includeTitle ? title : ""  // heading
           );
 
           pdfLib.save();

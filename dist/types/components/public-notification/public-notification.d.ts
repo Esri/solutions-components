@@ -151,14 +151,6 @@ export declare class PublicNotification {
    */
   protected _geometryEngine: __esri.geometryEngine;
   /**
-   * Should a map be included in PDF output?
-   */
-  protected _includeMap: HTMLCalciteCheckboxElement;
-  /**
-   * Should a title be added to every page of the PDF?
-   */
-  protected _includeTitle: HTMLCalciteCheckboxElement;
-  /**
    * esri/symbols/support/jsonUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-support-jsonUtils.html
    */
   protected _jsonUtils: __esri.symbolsSupportJsonUtils;

@@ -1,7 +1,8 @@
-Built 04/26/2023 12:36:07.48 
+Built 04/27/2023  9:09:55.67 
 enh/pn-map-and-title-ui
-commit 6692cfbf257ecd567d667b1bfb51d9e0f9bbfcbc
+commit e2392280306892208a8a317e8bf84b331c2e86f6
+Merge: ad7ae34b 15f22b83
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Fri Apr 14 16:20:25 2023 -0700
+Date:   Wed Apr 26 13:23:40 2023 -0700
 
-    Add UI
+    Merge branch 'develop' into enh/pn-map-and-title-ui

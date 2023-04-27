@@ -25,13 +25,13 @@ import * as csvDownload from "./csvDownload";
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
- * @param title Title to use for file
+ * @param filename Name to use for file
  * @param labels Labels to write
  */
-export function exportCSV(title, labels) {
+export function exportCSV(filename, labels) {
   // Format values to string so it doesn't get tripped up when a value has a comma
   // another option could be to export with a different delimiter
   const outputLines = labels.map(label => Object.values(label).map(v => `"${v}"`).join(",") + "\r\n");
-  csvDownload.downloadCSVFile(title, outputLines);
+  csvDownload.downloadCSVFile(filename, outputLines);
 }
 //#endregion

@@ -229,7 +229,7 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
   //
   //--------------------------------------------------------------------------
   /**
-   * Downloads csv of mailing labels for the provided list of ids
+   * Downloads csv of mailing labels for the provided list of ids.
    *
    * @param selectionSetNames Names of the selection sets used to provide ids
    * @param ids List of ids to download
@@ -242,15 +242,18 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
     removeDuplicates, addColumnTitle);
   }
   /**
-   * Downloads pdf of mailing labels for the provided list of ids
+   * Downloads pdf of mailing labels for the provided list of ids.
    *
    * @param selectionSetNames Names of the selection sets used to provide ids
    * @param ids List of ids to download
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+   * @param includeMap When true, the first page of the output is a map showing the selection area
+   * @param includeTitle When true, a title is included on every page
+   * @param title Title for each page when `includeTitle` is true
    * @returns Promise resolving when function is done
    */
-  async downloadPDF(layerView, selectionSetNames, ids, removeDuplicates) {
-    return downloadPDF(selectionSetNames, layerView.layer, ids, removeDuplicates, this._labelInfoElement.selectedOption.value);
+  async downloadPDF(layerView, selectionSetNames, ids, removeDuplicates = false, includeMap = false, includeTitle = false, title = "") {
+    return downloadPDF(selectionSetNames, layerView.layer, ids, this._labelInfoElement.selectedOption.value, removeDuplicates, includeMap, includeTitle, title);
   }
   //--------------------------------------------------------------------------
   //

@@ -16,7 +16,7 @@
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
- * @param title Title to use for file
+ * @param filename Name to use for file
  * @param labels Labels to write
  */
-export declare function exportCSV(title: string, labels: string[][]): void;
+export declare function exportCSV(filename: string, labels: string[][]): void;

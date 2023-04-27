@@ -16,7 +16,7 @@
 
 ### `downloadCSV(layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>`
 
-Downloads csv of mailing labels for the provided list of ids
+Downloads csv of mailing labels for the provided list of ids.
 
 #### Returns
 
@@ -24,9 +24,9 @@ Type: `Promise<void>`
 
 Promise resolving when function is done
 
-### `downloadPDF(layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates: boolean) => Promise<void>`
+### `downloadPDF(layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates?: boolean, includeMap?: boolean, includeTitle?: boolean, title?: string) => Promise<void>`
 
-Downloads pdf of mailing labels for the provided list of ids
+Downloads pdf of mailing labels for the provided list of ids.
 
 #### Returns
 

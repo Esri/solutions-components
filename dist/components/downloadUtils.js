@@ -65,14 +65,14 @@ function downloadCSVFile(title, outputLines) {
 /**
  * Export a csv of the attributes from the features that match the provided ids
  *
- * @param title Title to use for file
+ * @param filename Name to use for file
  * @param labels Labels to write
  */
-function exportCSV(title, labels) {
+function exportCSV(filename, labels) {
   // Format values to string so it doesn't get tripped up when a value has a comma
   // another option could be to export with a different delimiter
   const outputLines = labels.map(label => Object.values(label).map(v => `"${v}"`).join(",") + "\r\n");
-  downloadCSVFile(title, outputLines);
+  downloadCSVFile(filename, outputLines);
 }
 //#endregion
 
@@ -2148,34 +2148,38 @@ class PDFLabels {
 /**
  * Exports a PDF of labels.
  *
- * @param title Title to use for file
+ * @param filename Name to use for file (without file extension); defaults to "export"
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
+ * @param includeTitle When true, a title is included on every page
+ * @param title Title for each page when `includeTitle` is true
  */
-function exportPDF(title, labels, labelPageDescription) {
-  downloadPDFFile(title, labels, labelPageDescription);
+function exportPDF(filename, labels, labelPageDescription, includeTitle = false, title = "") {
+  downloadPDFFile(filename, labels, labelPageDescription, includeTitle, title);
 }
 //#endregion
 //#region Private functions
 /**
  * Downloads the PDF file.
  *
- * @param title Title (without file extension) to use for file; defaults to "export"
+ * @param filename Name to use for file (without file extension); defaults to "export"
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
+ * @param includeTitle When true, a title is included on every page
+ * @param title Title for each page when `includeTitle` is true
  */
-function downloadPDFFile(title, labels, labelPageDescription) {
+function downloadPDFFile(filename, labels, labelPageDescription, includeTitle = false, title = "") {
   const pdfLib = new PDFCreator_jsPDF();
   pdfLib.initialize({
     pageType: "ANSI_A"
-  }, getAssetPath(`../assets/arcgis-pdf-creator/`), "en", title // filename without ".pdf"
+  }, getAssetPath(`../assets/arcgis-pdf-creator/`), "en", filename // filename without ".pdf"
   )
     .then(() => {
     const labeller = new PDFLabels();
     labeller.initialize(pdfLib)
       .then(async () => {
       await labeller.addLabelsToDoc(labels, labelPageDescription.labelSpec, 1, // startingPageNum
-      title // heading
+      includeTitle ? title : "" // heading
       );
       pdfLib.save();
     });
@@ -2215,7 +2219,7 @@ const lineSeparatorChar = "|";
  */
 async function downloadCSV(selectionSetNames, layer, ids, formatUsingLayerPopup, removeDuplicates = false, addColumnTitle = false) {
   const labels = await _prepareLabels(layer, ids, removeDuplicates, formatUsingLayerPopup, addColumnTitle);
-  exportCSV(_createTitle(selectionSetNames), labels);
+  exportCSV(_createFilename(selectionSetNames), labels);
   return Promise.resolve();
 }
 /**
@@ -2224,18 +2228,23 @@ async function downloadCSV(selectionSetNames, layer, ids, formatUsingLayerPopup,
  * @param selectionSetNames Names of the selection sets used to provide ids
  * @param layer Layer providing features and attributes for download
  * @param ids List of ids to download
- * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
  * @param labelPageDescription Provides PDF page layout info
+ * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+ * @param includeMap When true, the first page of the output is a map showing the selection area
+ * @param includeTitle When true, a title is included on every page
+ * @param title Title for each page when `includeTitle` is true
  * @returns Promise resolving when function is done
  */
-async function downloadPDF(selectionSetNames, layer, ids, removeDuplicates, labelPageDescription) {
+async function downloadPDF(selectionSetNames, layer, ids, labelPageDescription, removeDuplicates = false, includeMap = false, includeTitle = false, title = "") {
   let labels = await _prepareLabels(layer, ids, removeDuplicates);
   labels =
     // Remove empty lines in labels
     labels.map(labelLines => labelLines.filter(line => line.length > 0))
       // Remove empty labels
       .filter(label => label.length > 0);
-  exportPDF(_createTitle(selectionSetNames), labels, labelPageDescription);
+  console.log("include map: " + includeMap.toString()); //???
+  console.log("title: " + title); //???
+  exportPDF(_createFilename(selectionSetNames), labels, labelPageDescription, includeTitle, title);
   return Promise.resolve();
 }
 //#endregion
@@ -2361,7 +2370,7 @@ async function _createArcadeExecutors(labelFormat, layer) {
  * @return Title composed of the selectionSetNames separated by commas; if there are no
  * selection set names supplied, "download" is returned
  */
-function _createTitle(selectionSetNames) {
+function _createFilename(selectionSetNames) {
   // Windows doesn't permit the characters \/:*?"<>|
   const title = selectionSetNames.length > 0 ? selectionSetNames.join(", ") : "download";
   return title;

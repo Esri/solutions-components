@@ -214,16 +214,6 @@ export class PublicNotification {
   protected _geometryEngine: __esri.geometryEngine;
 
   /**
-   * Should a map be included in PDF output?
-   */
-  protected _includeMap: HTMLCalciteCheckboxElement;
-
-  /**
-   * Should a title be added to every page of the PDF?
-   */
-  protected _includeTitle: HTMLCalciteCheckboxElement;
-
-  /**
    * esri/symbols/support/jsonUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-support-jsonUtils.html
    */
   protected _jsonUtils: __esri.symbolsSupportJsonUtils;
@@ -874,6 +864,7 @@ export class PublicNotification {
               <calcite-input-text
                 class="padding-sides-1"
                 placeholder={this._translations.titlePlaceholder}
+                ref={(el) => { this._title = el }}
               />
             </div>
           </div>
@@ -1084,7 +1075,10 @@ export class PublicNotification {
         idSet.layerView,
         idSet.selectionSetNames,
         idSet.ids,
-        this._removeDuplicates.checked
+        this._removeDuplicates.checked,
+        this._addMap,
+        this._addTitle,
+        this._title.value
       );
     });
   }

@@ -28,34 +28,38 @@ export { ILabel } from "../assets/arcgis-pdf-creator/PDFLabels";
 /**
  * Exports a PDF of labels.
  *
- * @param title Title to use for file
+ * @param filename Name to use for file (without file extension); defaults to "export"
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
+ * @param includeTitle When true, a title is included on every page
+ * @param title Title for each page when `includeTitle` is true
  */
-export function exportPDF(title, labels, labelPageDescription) {
-  downloadPDFFile(title, labels, labelPageDescription);
+export function exportPDF(filename, labels, labelPageDescription, includeTitle = false, title = "") {
+  downloadPDFFile(filename, labels, labelPageDescription, includeTitle, title);
 }
 //#endregion
 //#region Private functions
 /**
  * Downloads the PDF file.
  *
- * @param title Title (without file extension) to use for file; defaults to "export"
+ * @param filename Name to use for file (without file extension); defaults to "export"
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
+ * @param includeTitle When true, a title is included on every page
+ * @param title Title for each page when `includeTitle` is true
  */
-function downloadPDFFile(title, labels, labelPageDescription) {
+function downloadPDFFile(filename, labels, labelPageDescription, includeTitle = false, title = "") {
   const pdfLib = new PDFCreator_jsPDF.PDFCreator_jsPDF();
   pdfLib.initialize({
     pageType: "ANSI_A"
-  }, getAssetPath(`../assets/arcgis-pdf-creator/`), "en", title // filename without ".pdf"
+  }, getAssetPath(`../assets/arcgis-pdf-creator/`), "en", filename // filename without ".pdf"
   )
     .then(() => {
     const labeller = new PDFLabels.PDFLabels();
     labeller.initialize(pdfLib)
       .then(async () => {
       await labeller.addLabelsToDoc(labels, labelPageDescription.labelSpec, 1, // startingPageNum
-      title // heading
+      includeTitle ? title : "" // heading
       );
       pdfLib.save();
     });
