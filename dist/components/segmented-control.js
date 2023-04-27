@@ -3,25 +3,21 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-const index = require('./index-6654298b.js');
-const dom = require('./dom-24094fab.js');
-const form = require('./form-102203a5.js');
-const interactive = require('./interactive-772d59fe.js');
-const label = require('./label-5bd96bc0.js');
-const loadable = require('./loadable-c64a459b.js');
-require('./guid-c58d5ead.js');
-require('./resources-1f836572.js');
+import { proxyCustomElement, HTMLElement, createEvent, h, Host, Build } from '@stencil/core/internal/client';
+import { c as getElementDir } from './dom.js';
+import { a as afterConnectDefaultValueSet, c as connectForm, d as disconnectForm, H as HiddenFormInputSlot } from './form.js';
+import { u as updateHostInteraction } from './interactive.js';
+import { c as connectLabel, d as disconnectLabel } from './label2.js';
+import { s as setUpLoadableComponent, a as setComponentLoaded, c as componentLoaded } from './loadable.js';
 
 const segmentedControlCss = "@keyframes in{0%{opacity:0}100%{opacity:1}}@keyframes in-down{0%{opacity:0;transform:translate3D(0, -5px, 0)}100%{opacity:1;transform:translate3D(0, 0, 0)}}@keyframes in-up{0%{opacity:0;transform:translate3D(0, 5px, 0)}100%{opacity:1;transform:translate3D(0, 0, 0)}}@keyframes in-scale{0%{opacity:0;transform:scale3D(0.95, 0.95, 1)}100%{opacity:1;transform:scale3D(1, 1, 1)}}:root{--calcite-animation-timing:calc(150ms * var(--calcite-internal-duration-factor));--calcite-internal-duration-factor:var(--calcite-duration-factor, 1);--calcite-internal-animation-timing-fast:calc(100ms * var(--calcite-internal-duration-factor));--calcite-internal-animation-timing-medium:calc(200ms * var(--calcite-internal-duration-factor));--calcite-internal-animation-timing-slow:calc(300ms * var(--calcite-internal-duration-factor))}.calcite-animate{opacity:0;animation-fill-mode:both;animation-duration:var(--calcite-animation-timing)}.calcite-animate__in{animation-name:in}.calcite-animate__in-down{animation-name:in-down}.calcite-animate__in-up{animation-name:in-up}.calcite-animate__in-scale{animation-name:in-scale}@media (prefers-reduced-motion: reduce){:root{--calcite-internal-duration-factor:0.01}}:root{--calcite-floating-ui-transition:var(--calcite-animation-timing);--calcite-floating-ui-z-index:600}:host([hidden]){display:none}:host([disabled]){pointer-events:none;cursor:default;-webkit-user-select:none;-moz-user-select:none;user-select:none;opacity:var(--calcite-ui-opacity-disabled)}:host{display:flex;background-color:var(--calcite-ui-foreground-1);inline-size:-moz-fit-content;inline-size:fit-content;outline:1px solid var(--calcite-ui-border-input);outline-offset:-1px}:host([appearance=outline]){background-color:transparent}:host([disabled]) ::slotted([calcite-hydrated][disabled]),:host([disabled]) [calcite-hydrated][disabled]{opacity:1}:host([layout=vertical]){flex-direction:column;align-items:flex-start;align-self:flex-start}:host([width=full]){inline-size:100%;min-inline-size:-moz-fit-content;min-inline-size:fit-content}:host([width=full]) ::slotted(calcite-segmented-control-item){flex:1 1 auto}:host([width=full][layout=vertical]) ::slotted(calcite-segmented-control-item){justify-content:flex-start}::slotted(input[slot=hidden-form-input]){margin:0 !important;opacity:0 !important;outline:none !important;padding:0 !important;position:absolute !important;inset:0 !important;transform:none !important;-webkit-appearance:none !important;z-index:-1 !important}";
 
-const SegmentedControl = class {
-  constructor(hostRef) {
-    index.registerInstance(this, hostRef);
-    this.calciteSegmentedControlChange = index.createEvent(this, "calciteSegmentedControlChange", 6);
+const SegmentedControl = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
+  constructor() {
+    super();
+    this.__registerHost();
+    this.__attachShadow();
+    this.calciteSegmentedControlChange = createEvent(this, "calciteSegmentedControlChange", 6);
     //--------------------------------------------------------------------------
     //
     //  Event Listeners
@@ -69,7 +65,7 @@ const SegmentedControl = class {
   //
   //--------------------------------------------------------------------------
   componentWillLoad() {
-    loadable.setUpLoadableComponent(this);
+    setUpLoadableComponent(this);
     const items = this.getItems();
     const lastChecked = Array.from(items)
       .filter((item) => item.checked)
@@ -82,22 +78,22 @@ const SegmentedControl = class {
     }
   }
   componentDidLoad() {
-    form.afterConnectDefaultValueSet(this, this.value);
-    loadable.setComponentLoaded(this);
+    afterConnectDefaultValueSet(this, this.value);
+    setComponentLoaded(this);
   }
   connectedCallback() {
-    label.connectLabel(this);
-    form.connectForm(this);
+    connectLabel(this);
+    connectForm(this);
   }
   disconnectedCallback() {
-    label.disconnectLabel(this);
-    form.disconnectForm(this);
+    disconnectLabel(this);
+    disconnectForm(this);
   }
   componentDidRender() {
-    interactive.updateHostInteraction(this);
+    updateHostInteraction(this);
   }
   render() {
-    return (index.h(index.Host, { onClick: this.handleClick, role: "radiogroup" }, index.h("slot", null), index.h(form.HiddenFormInputSlot, { component: this })));
+    return (h(Host, { onClick: this.handleClick, role: "radiogroup" }, h("slot", null), h(HiddenFormInputSlot, { component: this })));
   }
   handleSelected(event) {
     event.preventDefault();
@@ -112,7 +108,7 @@ const SegmentedControl = class {
       return;
     }
     let adjustedKey = key;
-    if (dom.getElementDir(el) === "rtl") {
+    if (getElementDir(el) === "rtl") {
       if (key === "ArrowRight") {
         adjustedKey = "ArrowLeft";
       }
@@ -156,7 +152,7 @@ const SegmentedControl = class {
   /** Sets focus on the component. */
   async setFocus() {
     var _a;
-    await loadable.componentLoaded(this);
+    await componentLoaded(this);
     (_a = (this.selectedItem || this.getItems()[0])) === null || _a === void 0 ? void 0 : _a.focus();
   }
   //--------------------------------------------------------------------------
@@ -190,16 +186,42 @@ const SegmentedControl = class {
       }
     });
     this.selectedItem = match;
-    if (match) {
+    if (Build.isBrowser && match) {
       match.focus();
     }
   }
-  get el() { return index.getElement(this); }
+  get el() { return this; }
   static get watchers() { return {
     "value": ["valueHandler"],
     "selectedItem": ["handleSelectedItemChange"]
   }; }
-};
-SegmentedControl.style = segmentedControlCss;
+  static get style() { return segmentedControlCss; }
+}, [1, "calcite-segmented-control", {
+    "appearance": [513],
+    "disabled": [516],
+    "form": [513],
+    "required": [516],
+    "layout": [513],
+    "name": [513],
+    "scale": [513],
+    "value": [1025],
+    "selectedItem": [1040],
+    "width": [513],
+    "setFocus": [64]
+  }, [[0, "calciteInternalSegmentedControlItemChange", "handleSelected"], [0, "keydown", "handleKeyDown"]]]);
+function defineCustomElement() {
+  if (typeof customElements === "undefined") {
+    return;
+  }
+  const components = ["calcite-segmented-control"];
+  components.forEach(tagName => { switch (tagName) {
+    case "calcite-segmented-control":
+      if (!customElements.get(tagName)) {
+        customElements.define(tagName, SegmentedControl);
+      }
+      break;
+  } });
+}
+defineCustomElement();
 
-exports.calcite_segmented_control = SegmentedControl;
+export { SegmentedControl as S, defineCustomElement as d };

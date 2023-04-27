@@ -6,7 +6,7 @@
 import { proxyCustomElement, HTMLElement, createEvent, h, Host } from '@stencil/core/internal/client';
 import { l as loadModules } from './loadModules.js';
 import { g as getLocaleComponentStrings } from './locale.js';
-import { b as EExpandType } from './interfaces.js';
+import { c as EExpandType } from './interfaces.js';
 import { d as defineCustomElement$d } from './action.js';
 import { d as defineCustomElement$c } from './action-bar.js';
 import { d as defineCustomElement$b } from './action-group.js';

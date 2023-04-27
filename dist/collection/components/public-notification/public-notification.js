@@ -18,13 +18,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as utils from "../../utils/publicNotificationUtils";
-import state from "../../utils/publicNotificationStore";
 import { Host, h } from "@stencil/core";
-import { EPageType } from "../../utils/interfaces";
-import { getLocaleComponentStrings } from "../../utils/locale";
-import { goToSelection, highlightFeatures } from "../../utils/mapViewUtils";
+import { EExportType, EPageType } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
+import { goToSelection, highlightFeatures } from "../../utils/mapViewUtils";
+import state from "../../utils/publicNotificationStore";
+import { getLocaleComponentStrings } from "../../utils/locale";
 export class PublicNotification {
   constructor() {
     /**
@@ -50,8 +49,7 @@ export class PublicNotification {
     this._addMap = false;
     this._addTitle = false;
     this._downloadActive = true;
-    this._exportCSV = false;
-    this._exportPDF = true;
+    this._exportType = EExportType.PDF;
     this._pageType = EPageType.LIST;
     this._saveEnabled = false;
     this._selectionSets = [];
@@ -374,30 +372,16 @@ export class PublicNotification {
   _getExportPage() {
     const hasSelections = this._hasSelections();
     const numDuplicates = this._getNumDuplicates(this._getSelectedIds());
-    return (h("calcite-panel", null, h("div", null, this._getLabel(this._translations.export, true), hasSelections ? (h("div", null, this._getNotice(this._translations.exportTip, "padding-top-sides-1"), this._getLabel(this._translations.myLists), this._getSelectionLists(), h("div", { class: "padding-sides-1" }, h("calcite-label", { layout: "inline" }, h("calcite-checkbox", { ref: (el) => { this._removeDuplicates = el; } }), h("div", { class: "display-flex" }, this._translations.removeDuplicate, h("div", { class: "info-message padding-start-1-2" }, h("calcite-input-message", { class: "info-blue margin-top-0", scale: "m" }, ` ${this._translations.numDuplicates.replace("{{n}}", numDuplicates.toString())}`))))), h("div", { class: "border-bottom" }), this._getPDFOptions(), h("div", { class: "border-bottom" }), this._getCSVOptions(), h("div", { class: "padding-1 display-flex" }, h("calcite-button", { disabled: !this._downloadActive, onClick: () => this._export(), width: "full" }, this._translations.export)))) : (this._getNotice(this._translations.downloadNoLists, "padding-sides-1 padding-bottom-1")))));
+    return (h("calcite-panel", null, h("div", null, this._getLabel(this._translations.export, true), hasSelections ? (h("div", null, this._getNotice(this._translations.exportTip, "padding-top-sides-1"), this._getLabel(this._translations.myLists), this._getSelectionLists(), h("div", { class: "padding-sides-1" }, h("calcite-label", { layout: "inline" }, h("calcite-checkbox", { ref: (el) => { this._removeDuplicates = el; } }), h("div", { class: "display-flex" }, this._translations.removeDuplicate, h("div", { class: "info-message padding-start-1-2" }, h("calcite-input-message", { class: "info-blue margin-top-0", scale: "m" }, ` ${this._translations.numDuplicates.replace("{{n}}", numDuplicates.toString())}`))))), h("div", { class: "border-bottom" }), h("div", { class: "padding-top-sides-1" }, h("calcite-segmented-control", { class: "w-100", onCalciteSegmentedControlChange: (evt) => this._exportTypeChange(evt) }, h("calcite-segmented-control-item", { checked: this._exportType === EExportType.PDF, class: "w-50 end-border", value: EExportType.PDF }, this._translations.pdf), h("calcite-segmented-control-item", { checked: this._exportType === EExportType.CSV, class: "w-50", value: EExportType.CSV }, this._translations.csv))), h("div", { class: "padding-bottom-1" }, this._getExportOptions()), h("div", { class: "padding-1 display-flex" }, h("calcite-button", { disabled: !this._downloadActive, onClick: () => this._export(), width: "full" }, this._translations.export)))) : (this._getNotice(this._translations.downloadNoLists, "padding-sides-1 padding-bottom-1")))));
   }
-  /**
-   * Return the PDF portion of the export page
-   *
-   * @returns the node with all PDF export options
-   *
-   * @protected
-   */
-  _getPDFOptions() {
-    const pdfOptionsClass = this._exportPDF ? "display-block" : "display-none";
+  _exportTypeChange(evt) {
+    this._exportType = evt.target.value;
+  }
+  _getExportOptions() {
+    const displayClass = this._exportType === EExportType.PDF ? "display-block" : "display-none";
     const titleOptionsClass = this._addTitle ? "display-block" : "display-none";
     const mapOptionsClass = this._addMap ? "display-block" : "display-none";
-    return (h("div", null, this._getLabel(this._translations.pdf, true), h("div", { class: "padding-1 display-flex" }, h("calcite-label", { class: "label-margin-0 " }, this._translations.exportPDF), h("calcite-switch", { checked: this._exportPDF, class: "position-right", onCalciteSwitchChange: () => this._exportPDF = !this._exportPDF })), h("div", { class: pdfOptionsClass }, h("div", { class: "padding-sides-1" }, h("calcite-label", { class: "label-margin-0" }, this._translations.selectPDFLabelOption)), h("div", { class: "padding-sides-1" }, h("pdf-download", { disabled: !this._downloadActive, ref: (el) => { this._downloadTools = el; } })), h("div", { class: "padding-top-sides-1" }, h("calcite-label", { layout: "inline" }, h("calcite-checkbox", { checked: this._addMap, onCalciteCheckboxChange: () => this._addMap = !this._addMap }), this._translations.includeMap)), h("div", { class: mapOptionsClass + " padding-bottom-1" }, h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "label-margin-0", layout: "inline" }, h("calcite-checkbox", { checked: this._addTitle, onCalciteCheckboxChange: () => this._addTitle = !this._addTitle }), this._translations.addTitle)), h("div", { class: titleOptionsClass }, this._getLabel(this._translations.title, true, ""), h("calcite-input-text", { class: "padding-sides-1", placeholder: this._translations.titlePlaceholder, ref: (el) => { this._title = el; } }))))));
-  }
-  /**
-   * Return the CSV portion of the export page
-   *
-   * @returns the node with all CSV export options
-   *
-   * @protected
-   */
-  _getCSVOptions() {
-    return (h("div", null, h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "font-bold" }, this._translations.csv)), h("div", { class: "padding-sides-1 display-flex" }, h("calcite-label", null, this._translations.exportCSV), h("calcite-switch", { checked: this._exportCSV, class: "position-right", onCalciteSwitchChange: () => this._exportCSV = !this._exportCSV }))));
+    return (h("div", { class: displayClass }, this._getLabel(this._translations.pdfOptions, true), h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "label-margin-0" }, this._translations.selectPDFLabelOption)), h("div", { class: "padding-sides-1" }, h("pdf-download", { disabled: !this._downloadActive, ref: (el) => { this._downloadTools = el; } })), h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "label-margin-0", layout: "inline" }, h("calcite-checkbox", { checked: this._addMap, onCalciteCheckboxChange: () => this._addMap = !this._addMap }), this._translations.includeMap)), h("div", { class: mapOptionsClass }, h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "label-margin-0", layout: "inline" }, h("calcite-checkbox", { checked: this._addTitle, onCalciteCheckboxChange: () => this._addTitle = !this._addTitle }), this._translations.addTitle)), h("div", { class: titleOptionsClass }, this._getLabel(this._translations.title, true, ""), h("calcite-input-text", { class: "padding-sides-1", placeholder: this._translations.titlePlaceholder })))));
   }
   /**
    * Create the stacked navigation buttons for a page
@@ -479,59 +463,42 @@ export class PublicNotification {
    * @protected
    */
   _export() {
-    if (this._exportPDF) {
-      void this._downloadPDF();
+    const exportInfos = this._getSelectionIdsAndViews(this._selectionSets, true);
+    if (this._exportType === EExportType.PDF) {
+      void this._downloadTools.downloadPDF(exportInfos, this._removeDuplicates.checked);
     }
-    if (this._exportCSV) {
-      this._downloadCSV();
-    }
-    if (!this._exportPDF && !this._exportCSV) {
-      // TODO show a message saying they need to enable at least one of the options
+    if (this._exportType === EExportType.CSV) {
+      void this._downloadTools.downloadCSV(exportInfos, this._removeDuplicates.checked);
     }
   }
   /**
-   * Download all selection sets as PDF
-   *
-   * @protected
-   */
-  async _downloadPDF() {
-    // Generate a map screenshot
-    let screenshot;
-    if (this._addMap && this.mapView) {
-      screenshot = await this.mapView.takeScreenshot({ width: 1500, height: 2000 });
-      console.log("screenshot", screenshot); //???
-    }
-    // Create the labels for each selection set
-    const downloadSets = this._getDownloadSelectionSets();
-    const idSets = utils.getSelectionIdsAndViews(downloadSets);
-    Object.keys(idSets).forEach(k => {
-      const idSet = idSets[k];
-      void this._downloadTools.downloadPDF(idSet.layerView, idSet.selectionSetNames, idSet.ids, this._removeDuplicates.checked, this._addTitle ? this._title.value : "");
-    });
-  }
-  /**
-   * Download all selection sets as CSV
-   *
-   * @protected
-   */
-  _downloadCSV() {
-    const downloadSets = this._getDownloadSelectionSets();
-    const idSets = utils.getSelectionIdsAndViews(downloadSets);
-    Object.keys(idSets).forEach(k => {
-      const idSet = idSets[k];
-      void this._downloadTools.downloadCSV(idSet.layerView, idSet.selectionSetNames, idSet.ids, this._removeDuplicates.checked);
-    });
-  }
-  /**
-   * Get all enabled selection sets
-   *
-   * @returns the selection sets
-   * @protected
-   */
-  _getDownloadSelectionSets() {
-    return this._selectionSets.filter(ss => {
-      return ss.download;
-    });
+  * Sort selection sets by layer and retain key export details
+  *
+  * @param selectionSets selection sets to evaluate
+  *
+  * @returns key export details from the selection sets
+  * @protected
+  */
+  _getSelectionIdsAndViews(selectionSets, downloadSetsOnly = false) {
+    const exportSelectionSets = downloadSetsOnly ?
+      selectionSets.filter(ss => ss.download) : selectionSets;
+    return exportSelectionSets.reduce((prev, cur) => {
+      if (Object.keys(prev).indexOf(cur.layerView.layer.id) > -1) {
+        prev[cur.layerView.layer.id].ids = [
+          ...prev[cur.layerView.layer.id].ids,
+          ...cur.selectedIds
+        ];
+        prev[cur.layerView.layer.id].selectionSetNames.push(cur.label);
+      }
+      else {
+        prev[cur.layerView.layer.id] = {
+          ids: cur.selectedIds,
+          layerView: cur.layerView,
+          selectionSetNames: [cur.label]
+        };
+      }
+      return prev;
+    }, {});
   }
   /**
    * Create a calcite action
@@ -646,7 +613,7 @@ export class PublicNotification {
    */
   async _highlightFeatures() {
     this._clearHighlight();
-    const idSets = utils.getSelectionIdsAndViews(this._selectionSets);
+    const idSets = this._getSelectionIdsAndViews(this._selectionSets);
     const idKeys = Object.keys(idSets);
     if (idKeys.length > 0) {
       for (let i = 0; i < idKeys.length; i++) {
@@ -1002,8 +969,7 @@ export class PublicNotification {
       "_addMap": {},
       "_addTitle": {},
       "_downloadActive": {},
-      "_exportCSV": {},
-      "_exportPDF": {},
+      "_exportType": {},
       "_pageType": {},
       "_saveEnabled": {},
       "_selectionSets": {},

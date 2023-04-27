@@ -60,6 +60,11 @@ export enum EWorkflowType {
   SKETCH="SKETCH"
 }
 
+export enum EExportType {
+  CSV="CSV",
+  PDF="PDF"
+}
+
 /* eslint-enable no-unused-vars */
 
 export type SelectionMode = "single" | "multi";
@@ -397,4 +402,14 @@ export interface IMediaCardValues {
 export interface IMapInfo {
   id: string;
   name: string;
+}
+
+export interface IExportInfos {
+  [key: string]: IExportLayerInfo;
+}
+
+export interface IExportLayerInfo {
+  ids: number[],
+  layerView: __esri.FeatureLayerView
+  selectionSetNames: string[]
 }

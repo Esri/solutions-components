@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EExpandType, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
+import { DistanceUnit, EExpandType, IExportInfos, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -293,23 +293,22 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * Downloads csv of mailing labels for the provided list of ids.
+          * Downloads csv of mailing labels for the provided list of ids
           * @param selectionSetNames Names of the selection sets used to provide ids
           * @param ids List of ids to download
           * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
           * @param addColumnTitle Indicates if column headings should be included in output
           * @returns Promise resolving when function is done
          */
-        "downloadCSV": (layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>;
+        "downloadCSV": (exportInfos: IExportInfos, removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>;
         /**
-          * Downloads pdf of mailing labels for the provided list of ids.
+          * Downloads pdf of mailing labels for the provided list of ids
           * @param selectionSetNames Names of the selection sets used to provide ids
           * @param ids List of ids to download
           * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-          * @param title Title for each page
           * @returns Promise resolving when function is done
          */
-        "downloadPDF": (layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates?: boolean, title?: string) => Promise<void>;
+        "downloadPDF": (exportInfos: IExportInfos, removeDuplicates: boolean) => Promise<void>;
     }
     interface PublicNotification {
         /**

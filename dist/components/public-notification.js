@@ -4,37 +4,39 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 import { proxyCustomElement, HTMLElement, createEvent, h, Host } from '@stencil/core/internal/client';
-import { s as state } from './publicNotificationStore.js';
-import { a as EPageType } from './interfaces.js';
-import { g as getLocaleComponentStrings } from './locale.js';
-import { g as goToSelection, h as highlightFeatures, d as defineCustomElement$4 } from './map-layer-picker2.js';
+import { a as EExportType, b as EPageType } from './interfaces.js';
 import { l as loadModules } from './loadModules.js';
-import { d as defineCustomElement$A } from './buffer-tools2.js';
-import { d as defineCustomElement$z } from './action.js';
-import { d as defineCustomElement$y } from './action-bar.js';
-import { d as defineCustomElement$x } from './action-group.js';
-import { d as defineCustomElement$w } from './action-menu.js';
-import { d as defineCustomElement$v } from './button.js';
-import { d as defineCustomElement$u } from './checkbox.js';
-import { d as defineCustomElement$t } from './chip.js';
-import { d as defineCustomElement$s } from './combobox.js';
-import { d as defineCustomElement$r } from './combobox-item.js';
-import { d as defineCustomElement$q } from './filter.js';
-import { d as defineCustomElement$p } from './graph.js';
-import { d as defineCustomElement$o } from './icon.js';
-import { d as defineCustomElement$n } from './input.js';
-import { d as defineCustomElement$m } from './input-message.js';
-import { d as defineCustomElement$l } from './input-text.js';
-import { d as defineCustomElement$k } from './label.js';
-import { d as defineCustomElement$j } from './list.js';
-import { d as defineCustomElement$i } from './list-item2.js';
-import { d as defineCustomElement$h } from './loader.js';
-import { d as defineCustomElement$g } from './notice.js';
-import { d as defineCustomElement$f } from './option.js';
-import { d as defineCustomElement$e } from './panel.js';
-import { d as defineCustomElement$d } from './popover.js';
-import { d as defineCustomElement$c } from './progress.js';
-import { d as defineCustomElement$b } from './scrim.js';
+import { g as goToSelection, h as highlightFeatures, d as defineCustomElement$4 } from './map-layer-picker2.js';
+import { s as state } from './publicNotificationStore.js';
+import { g as getLocaleComponentStrings } from './locale.js';
+import { d as defineCustomElement$C } from './buffer-tools2.js';
+import { d as defineCustomElement$B } from './action.js';
+import { d as defineCustomElement$A } from './action-bar.js';
+import { d as defineCustomElement$z } from './action-group.js';
+import { d as defineCustomElement$y } from './action-menu.js';
+import { d as defineCustomElement$x } from './button.js';
+import { d as defineCustomElement$w } from './checkbox.js';
+import { d as defineCustomElement$v } from './chip.js';
+import { d as defineCustomElement$u } from './combobox.js';
+import { d as defineCustomElement$t } from './combobox-item.js';
+import { d as defineCustomElement$s } from './filter.js';
+import { d as defineCustomElement$r } from './graph.js';
+import { d as defineCustomElement$q } from './icon.js';
+import { d as defineCustomElement$p } from './input.js';
+import { d as defineCustomElement$o } from './input-message.js';
+import { d as defineCustomElement$n } from './input-text.js';
+import { d as defineCustomElement$m } from './label.js';
+import { d as defineCustomElement$l } from './list.js';
+import { d as defineCustomElement$k } from './list-item2.js';
+import { d as defineCustomElement$j } from './loader.js';
+import { d as defineCustomElement$i } from './notice.js';
+import { d as defineCustomElement$h } from './option.js';
+import { d as defineCustomElement$g } from './panel.js';
+import { d as defineCustomElement$f } from './popover.js';
+import { d as defineCustomElement$e } from './progress.js';
+import { d as defineCustomElement$d } from './scrim.js';
+import { d as defineCustomElement$c } from './segmented-control.js';
+import { d as defineCustomElement$b } from './segmented-control-item.js';
 import { d as defineCustomElement$a } from './select.js';
 import { d as defineCustomElement$9 } from './shell.js';
 import { d as defineCustomElement$8 } from './slider.js';
@@ -43,41 +45,6 @@ import { d as defineCustomElement$6 } from './tooltip.js';
 import { d as defineCustomElement$5 } from './map-draw-tools2.js';
 import { d as defineCustomElement$3 } from './map-select-tools2.js';
 import { d as defineCustomElement$2 } from './pdf-download2.js';
-
-/** @license
- * Copyright 2022 Esri
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-function getSelectionIdsAndViews(selectionSets) {
-  return selectionSets.reduce((prev, cur) => {
-    if (Object.keys(prev).indexOf(cur.layerView.layer.id) > -1) {
-      prev[cur.layerView.layer.id].ids = [
-        ...prev[cur.layerView.layer.id].ids,
-        ...cur.selectedIds
-      ];
-      prev[cur.layerView.layer.id].selectionSetNames.push(cur.label);
-    }
-    else {
-      prev[cur.layerView.layer.id] = {
-        ids: cur.selectedIds,
-        layerView: cur.layerView,
-        selectionSetNames: [cur.label]
-      };
-    }
-    return prev;
-  }, {});
-}
 
 const publicNotificationCss = ":host{display:block;--calcite-input-message-spacing-value:0}.align-center{align-items:center}.border-bottom-1{border-width:0px;border-bottom-width:1px;border-style:solid;border-color:var(--calcite-ui-border-3)}.action-bar-size{height:3.5rem;width:100%}.w-1-2{width:50%}.action-center{-webkit-box-align:center;-webkit-align-items:center;-ms-grid-row-align:center;align-items:center;align-content:center;justify-content:center}.width-full{width:100%}.height-full{height:100%}.padding-1{padding:1rem}.padding-top-sides-1{-webkit-padding-before:1rem;padding-block-start:1rem;-webkit-padding-start:1rem;padding-inline-start:1rem;-webkit-padding-end:1rem;padding-inline-end:1rem}.padding-sides-1{-webkit-padding-start:1rem;padding-inline-start:1rem;-webkit-padding-end:1rem;padding-inline-end:1rem}.padding-end-1-2{-webkit-padding-end:.5rem;padding-inline-end:.5rem}.padding-top-1-2{-webkit-padding-before:.5rem;padding-block-start:.5rem}.padding-top-1{padding-top:1rem}.padding-bottom-1{padding-bottom:1rem}.padding-bottom-1-2{padding-bottom:.5rem}.info-blue{color:#00A0FF}.info-message{justify-content:center;display:grid}.font-bold{font-weight:bold}.display-flex{display:flex}.display-block{display:block}.display-none{display:none}.border-bottom{border-bottom:1px solid var(--calcite-ui-border-2)}.padding-start-1-2{-webkit-padding-start:0.5rem;padding-inline-start:0.5rem}.list-border{border:1px solid var(--calcite-ui-border-2)}.margin-sides-1{-webkit-margin-start:1rem;margin-inline-start:1rem;-webkit-margin-end:1rem;margin-inline-end:1rem}.margin-start-1-2{-webkit-margin-start:0.5rem;margin-inline-start:0.5rem}.float-right{float:right}.float-right[dir=\"rtl\"]{float:left}.float-left{float:left}.float-left[dir=\"rtl\"]{float:right}.margin-top-0{-webkit-margin-before:0 !important;margin-block-start:0 !important}.height-1-1-2{height:1.5rem}.main-background{background-color:var(--calcite-ui-foreground-2)}.position-right{position:absolute;right:1rem}.position-right[dir=\"rtl\"]{position:absolute;left:1rem}.label-margin-0{--calcite-label-margin-bottom:0}";
 
@@ -109,8 +76,7 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
     this._addMap = false;
     this._addTitle = false;
     this._downloadActive = true;
-    this._exportCSV = false;
-    this._exportPDF = true;
+    this._exportType = EExportType.PDF;
     this._pageType = EPageType.LIST;
     this._saveEnabled = false;
     this._selectionSets = [];
@@ -433,30 +399,16 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
   _getExportPage() {
     const hasSelections = this._hasSelections();
     const numDuplicates = this._getNumDuplicates(this._getSelectedIds());
-    return (h("calcite-panel", null, h("div", null, this._getLabel(this._translations.export, true), hasSelections ? (h("div", null, this._getNotice(this._translations.exportTip, "padding-top-sides-1"), this._getLabel(this._translations.myLists), this._getSelectionLists(), h("div", { class: "padding-sides-1" }, h("calcite-label", { layout: "inline" }, h("calcite-checkbox", { ref: (el) => { this._removeDuplicates = el; } }), h("div", { class: "display-flex" }, this._translations.removeDuplicate, h("div", { class: "info-message padding-start-1-2" }, h("calcite-input-message", { class: "info-blue margin-top-0", scale: "m" }, ` ${this._translations.numDuplicates.replace("{{n}}", numDuplicates.toString())}`))))), h("div", { class: "border-bottom" }), this._getPDFOptions(), h("div", { class: "border-bottom" }), this._getCSVOptions(), h("div", { class: "padding-1 display-flex" }, h("calcite-button", { disabled: !this._downloadActive, onClick: () => this._export(), width: "full" }, this._translations.export)))) : (this._getNotice(this._translations.downloadNoLists, "padding-sides-1 padding-bottom-1")))));
+    return (h("calcite-panel", null, h("div", null, this._getLabel(this._translations.export, true), hasSelections ? (h("div", null, this._getNotice(this._translations.exportTip, "padding-top-sides-1"), this._getLabel(this._translations.myLists), this._getSelectionLists(), h("div", { class: "padding-sides-1" }, h("calcite-label", { layout: "inline" }, h("calcite-checkbox", { ref: (el) => { this._removeDuplicates = el; } }), h("div", { class: "display-flex" }, this._translations.removeDuplicate, h("div", { class: "info-message padding-start-1-2" }, h("calcite-input-message", { class: "info-blue margin-top-0", scale: "m" }, ` ${this._translations.numDuplicates.replace("{{n}}", numDuplicates.toString())}`))))), h("div", { class: "border-bottom" }), h("div", { class: "padding-top-sides-1" }, h("calcite-segmented-control", { class: "w-100", onCalciteSegmentedControlChange: (evt) => this._exportTypeChange(evt) }, h("calcite-segmented-control-item", { checked: this._exportType === EExportType.PDF, class: "w-50 end-border", value: EExportType.PDF }, this._translations.pdf), h("calcite-segmented-control-item", { checked: this._exportType === EExportType.CSV, class: "w-50", value: EExportType.CSV }, this._translations.csv))), h("div", { class: "padding-bottom-1" }, this._getExportOptions()), h("div", { class: "padding-1 display-flex" }, h("calcite-button", { disabled: !this._downloadActive, onClick: () => this._export(), width: "full" }, this._translations.export)))) : (this._getNotice(this._translations.downloadNoLists, "padding-sides-1 padding-bottom-1")))));
   }
-  /**
-   * Return the PDF portion of the export page
-   *
-   * @returns the node with all PDF export options
-   *
-   * @protected
-   */
-  _getPDFOptions() {
-    const pdfOptionsClass = this._exportPDF ? "display-block" : "display-none";
+  _exportTypeChange(evt) {
+    this._exportType = evt.target.value;
+  }
+  _getExportOptions() {
+    const displayClass = this._exportType === EExportType.PDF ? "display-block" : "display-none";
     const titleOptionsClass = this._addTitle ? "display-block" : "display-none";
     const mapOptionsClass = this._addMap ? "display-block" : "display-none";
-    return (h("div", null, this._getLabel(this._translations.pdf, true), h("div", { class: "padding-1 display-flex" }, h("calcite-label", { class: "label-margin-0 " }, this._translations.exportPDF), h("calcite-switch", { checked: this._exportPDF, class: "position-right", onCalciteSwitchChange: () => this._exportPDF = !this._exportPDF })), h("div", { class: pdfOptionsClass }, h("div", { class: "padding-sides-1" }, h("calcite-label", { class: "label-margin-0" }, this._translations.selectPDFLabelOption)), h("div", { class: "padding-sides-1" }, h("pdf-download", { disabled: !this._downloadActive, ref: (el) => { this._downloadTools = el; } })), h("div", { class: "padding-top-sides-1" }, h("calcite-label", { layout: "inline" }, h("calcite-checkbox", { checked: this._addMap, onCalciteCheckboxChange: () => this._addMap = !this._addMap }), this._translations.includeMap)), h("div", { class: mapOptionsClass + " padding-bottom-1" }, h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "label-margin-0", layout: "inline" }, h("calcite-checkbox", { checked: this._addTitle, onCalciteCheckboxChange: () => this._addTitle = !this._addTitle }), this._translations.addTitle)), h("div", { class: titleOptionsClass }, this._getLabel(this._translations.title, true, ""), h("calcite-input-text", { class: "padding-sides-1", placeholder: this._translations.titlePlaceholder, ref: (el) => { this._title = el; } }))))));
-  }
-  /**
-   * Return the CSV portion of the export page
-   *
-   * @returns the node with all CSV export options
-   *
-   * @protected
-   */
-  _getCSVOptions() {
-    return (h("div", null, h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "font-bold" }, this._translations.csv)), h("div", { class: "padding-sides-1 display-flex" }, h("calcite-label", null, this._translations.exportCSV), h("calcite-switch", { checked: this._exportCSV, class: "position-right", onCalciteSwitchChange: () => this._exportCSV = !this._exportCSV }))));
+    return (h("div", { class: displayClass }, this._getLabel(this._translations.pdfOptions, true), h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "label-margin-0" }, this._translations.selectPDFLabelOption)), h("div", { class: "padding-sides-1" }, h("pdf-download", { disabled: !this._downloadActive, ref: (el) => { this._downloadTools = el; } })), h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "label-margin-0", layout: "inline" }, h("calcite-checkbox", { checked: this._addMap, onCalciteCheckboxChange: () => this._addMap = !this._addMap }), this._translations.includeMap)), h("div", { class: mapOptionsClass }, h("div", { class: "padding-top-sides-1" }, h("calcite-label", { class: "label-margin-0", layout: "inline" }, h("calcite-checkbox", { checked: this._addTitle, onCalciteCheckboxChange: () => this._addTitle = !this._addTitle }), this._translations.addTitle)), h("div", { class: titleOptionsClass }, this._getLabel(this._translations.title, true, ""), h("calcite-input-text", { class: "padding-sides-1", placeholder: this._translations.titlePlaceholder })))));
   }
   /**
    * Create the stacked navigation buttons for a page
@@ -538,56 +490,42 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
    * @protected
    */
   _export() {
-    if (this._exportPDF) {
-      void this._downloadPDF();
+    const exportInfos = this._getSelectionIdsAndViews(this._selectionSets, true);
+    if (this._exportType === EExportType.PDF) {
+      void this._downloadTools.downloadPDF(exportInfos, this._removeDuplicates.checked);
     }
-    if (this._exportCSV) {
-      this._downloadCSV();
+    if (this._exportType === EExportType.CSV) {
+      void this._downloadTools.downloadCSV(exportInfos, this._removeDuplicates.checked);
     }
   }
   /**
-   * Download all selection sets as PDF
-   *
-   * @protected
-   */
-  async _downloadPDF() {
-    // Generate a map screenshot
-    let screenshot;
-    if (this._addMap && this.mapView) {
-      screenshot = await this.mapView.takeScreenshot({ width: 1500, height: 2000 });
-      console.log("screenshot", screenshot); //???
-    }
-    // Create the labels for each selection set
-    const downloadSets = this._getDownloadSelectionSets();
-    const idSets = getSelectionIdsAndViews(downloadSets);
-    Object.keys(idSets).forEach(k => {
-      const idSet = idSets[k];
-      void this._downloadTools.downloadPDF(idSet.layerView, idSet.selectionSetNames, idSet.ids, this._removeDuplicates.checked, this._addTitle ? this._title.value : "");
-    });
-  }
-  /**
-   * Download all selection sets as CSV
-   *
-   * @protected
-   */
-  _downloadCSV() {
-    const downloadSets = this._getDownloadSelectionSets();
-    const idSets = getSelectionIdsAndViews(downloadSets);
-    Object.keys(idSets).forEach(k => {
-      const idSet = idSets[k];
-      void this._downloadTools.downloadCSV(idSet.layerView, idSet.selectionSetNames, idSet.ids, this._removeDuplicates.checked);
-    });
-  }
-  /**
-   * Get all enabled selection sets
-   *
-   * @returns the selection sets
-   * @protected
-   */
-  _getDownloadSelectionSets() {
-    return this._selectionSets.filter(ss => {
-      return ss.download;
-    });
+  * Sort selection sets by layer and retain key export details
+  *
+  * @param selectionSets selection sets to evaluate
+  *
+  * @returns key export details from the selection sets
+  * @protected
+  */
+  _getSelectionIdsAndViews(selectionSets, downloadSetsOnly = false) {
+    const exportSelectionSets = downloadSetsOnly ?
+      selectionSets.filter(ss => ss.download) : selectionSets;
+    return exportSelectionSets.reduce((prev, cur) => {
+      if (Object.keys(prev).indexOf(cur.layerView.layer.id) > -1) {
+        prev[cur.layerView.layer.id].ids = [
+          ...prev[cur.layerView.layer.id].ids,
+          ...cur.selectedIds
+        ];
+        prev[cur.layerView.layer.id].selectionSetNames.push(cur.label);
+      }
+      else {
+        prev[cur.layerView.layer.id] = {
+          ids: cur.selectedIds,
+          layerView: cur.layerView,
+          selectionSetNames: [cur.label]
+        };
+      }
+      return prev;
+    }, {});
   }
   /**
    * Create a calcite action
@@ -702,7 +640,7 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
    */
   async _highlightFeatures() {
     this._clearHighlight();
-    const idSets = getSelectionIdsAndViews(this._selectionSets);
+    const idSets = this._getSelectionIdsAndViews(this._selectionSets);
     const idKeys = Object.keys(idSets);
     if (idKeys.length > 0) {
       for (let i = 0; i < idKeys.length; i++) {
@@ -771,8 +709,7 @@ const PublicNotification$1 = /*@__PURE__*/ proxyCustomElement(class extends HTML
     "_addMap": [32],
     "_addTitle": [32],
     "_downloadActive": [32],
-    "_exportCSV": [32],
-    "_exportPDF": [32],
+    "_exportType": [32],
     "_pageType": [32],
     "_saveEnabled": [32],
     "_selectionSets": [32],
@@ -782,7 +719,7 @@ function defineCustomElement$1() {
   if (typeof customElements === "undefined") {
     return;
   }
-  const components = ["public-notification", "buffer-tools", "calcite-action", "calcite-action-bar", "calcite-action-group", "calcite-action-menu", "calcite-button", "calcite-checkbox", "calcite-chip", "calcite-combobox", "calcite-combobox-item", "calcite-filter", "calcite-graph", "calcite-icon", "calcite-input", "calcite-input-message", "calcite-input-text", "calcite-label", "calcite-list", "calcite-list-item", "calcite-loader", "calcite-notice", "calcite-option", "calcite-panel", "calcite-popover", "calcite-progress", "calcite-scrim", "calcite-select", "calcite-shell", "calcite-slider", "calcite-switch", "calcite-tooltip", "map-draw-tools", "map-layer-picker", "map-select-tools", "pdf-download"];
+  const components = ["public-notification", "buffer-tools", "calcite-action", "calcite-action-bar", "calcite-action-group", "calcite-action-menu", "calcite-button", "calcite-checkbox", "calcite-chip", "calcite-combobox", "calcite-combobox-item", "calcite-filter", "calcite-graph", "calcite-icon", "calcite-input", "calcite-input-message", "calcite-input-text", "calcite-label", "calcite-list", "calcite-list-item", "calcite-loader", "calcite-notice", "calcite-option", "calcite-panel", "calcite-popover", "calcite-progress", "calcite-scrim", "calcite-segmented-control", "calcite-segmented-control-item", "calcite-select", "calcite-shell", "calcite-slider", "calcite-switch", "calcite-tooltip", "map-draw-tools", "map-layer-picker", "map-select-tools", "pdf-download"];
   components.forEach(tagName => { switch (tagName) {
     case "public-notification":
       if (!customElements.get(tagName)) {
@@ -791,130 +728,140 @@ function defineCustomElement$1() {
       break;
     case "buffer-tools":
       if (!customElements.get(tagName)) {
-        defineCustomElement$A();
+        defineCustomElement$C();
       }
       break;
     case "calcite-action":
       if (!customElements.get(tagName)) {
-        defineCustomElement$z();
+        defineCustomElement$B();
       }
       break;
     case "calcite-action-bar":
       if (!customElements.get(tagName)) {
-        defineCustomElement$y();
+        defineCustomElement$A();
       }
       break;
     case "calcite-action-group":
       if (!customElements.get(tagName)) {
-        defineCustomElement$x();
+        defineCustomElement$z();
       }
       break;
     case "calcite-action-menu":
       if (!customElements.get(tagName)) {
-        defineCustomElement$w();
+        defineCustomElement$y();
       }
       break;
     case "calcite-button":
       if (!customElements.get(tagName)) {
-        defineCustomElement$v();
+        defineCustomElement$x();
       }
       break;
     case "calcite-checkbox":
       if (!customElements.get(tagName)) {
-        defineCustomElement$u();
+        defineCustomElement$w();
       }
       break;
     case "calcite-chip":
       if (!customElements.get(tagName)) {
-        defineCustomElement$t();
+        defineCustomElement$v();
       }
       break;
     case "calcite-combobox":
       if (!customElements.get(tagName)) {
-        defineCustomElement$s();
+        defineCustomElement$u();
       }
       break;
     case "calcite-combobox-item":
       if (!customElements.get(tagName)) {
-        defineCustomElement$r();
+        defineCustomElement$t();
       }
       break;
     case "calcite-filter":
       if (!customElements.get(tagName)) {
-        defineCustomElement$q();
+        defineCustomElement$s();
       }
       break;
     case "calcite-graph":
       if (!customElements.get(tagName)) {
-        defineCustomElement$p();
+        defineCustomElement$r();
       }
       break;
     case "calcite-icon":
       if (!customElements.get(tagName)) {
-        defineCustomElement$o();
+        defineCustomElement$q();
       }
       break;
     case "calcite-input":
       if (!customElements.get(tagName)) {
-        defineCustomElement$n();
+        defineCustomElement$p();
       }
       break;
     case "calcite-input-message":
       if (!customElements.get(tagName)) {
-        defineCustomElement$m();
+        defineCustomElement$o();
       }
       break;
     case "calcite-input-text":
       if (!customElements.get(tagName)) {
-        defineCustomElement$l();
+        defineCustomElement$n();
       }
       break;
     case "calcite-label":
       if (!customElements.get(tagName)) {
-        defineCustomElement$k();
+        defineCustomElement$m();
       }
       break;
     case "calcite-list":
       if (!customElements.get(tagName)) {
-        defineCustomElement$j();
+        defineCustomElement$l();
       }
       break;
     case "calcite-list-item":
       if (!customElements.get(tagName)) {
-        defineCustomElement$i();
+        defineCustomElement$k();
       }
       break;
     case "calcite-loader":
       if (!customElements.get(tagName)) {
-        defineCustomElement$h();
+        defineCustomElement$j();
       }
       break;
     case "calcite-notice":
       if (!customElements.get(tagName)) {
-        defineCustomElement$g();
+        defineCustomElement$i();
       }
       break;
     case "calcite-option":
       if (!customElements.get(tagName)) {
-        defineCustomElement$f();
+        defineCustomElement$h();
       }
       break;
     case "calcite-panel":
       if (!customElements.get(tagName)) {
-        defineCustomElement$e();
+        defineCustomElement$g();
       }
       break;
     case "calcite-popover":
       if (!customElements.get(tagName)) {
-        defineCustomElement$d();
+        defineCustomElement$f();
       }
       break;
     case "calcite-progress":
       if (!customElements.get(tagName)) {
-        defineCustomElement$c();
+        defineCustomElement$e();
       }
       break;
     case "calcite-scrim":
+      if (!customElements.get(tagName)) {
+        defineCustomElement$d();
+      }
+      break;
+    case "calcite-segmented-control":
+      if (!customElements.get(tagName)) {
+        defineCustomElement$c();
+      }
+      break;
+    case "calcite-segmented-control-item":
       if (!customElements.get(tagName)) {
         defineCustomElement$b();
       }

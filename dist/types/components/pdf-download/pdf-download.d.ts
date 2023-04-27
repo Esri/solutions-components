@@ -17,6 +17,7 @@
 import "@esri/calcite-components";
 import PdfDownload_T9n from "../../assets/t9n/pdf-download/resources.json";
 import { VNode } from "../../stencil-public-runtime";
+import { IExportInfos } from "../../utils/interfaces";
 export declare class PdfDownload {
   el: HTMLPdfDownloadElement;
   /**
@@ -37,7 +38,7 @@ export declare class PdfDownload {
    */
   protected _intl: __esri.intl;
   /**
-   * Downloads csv of mailing labels for the provided list of ids.
+   * Downloads csv of mailing labels for the provided list of ids
    *
    * @param selectionSetNames Names of the selection sets used to provide ids
    * @param ids List of ids to download
@@ -45,17 +46,16 @@ export declare class PdfDownload {
    * @param addColumnTitle Indicates if column headings should be included in output
    * @returns Promise resolving when function is done
    */
-  downloadCSV(layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates: boolean, addColumnTitle?: boolean): Promise<void>;
+  downloadCSV(exportInfos: IExportInfos, removeDuplicates: boolean, addColumnTitle?: boolean): Promise<void>;
   /**
-   * Downloads pdf of mailing labels for the provided list of ids.
+   * Downloads pdf of mailing labels for the provided list of ids
    *
    * @param selectionSetNames Names of the selection sets used to provide ids
    * @param ids List of ids to download
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * @param title Title for each page
    * @returns Promise resolving when function is done
    */
-  downloadPDF(layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates?: boolean, title?: string): Promise<void>;
+  downloadPDF(exportInfos: IExportInfos, removeDuplicates: boolean): Promise<void>;
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */

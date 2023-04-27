@@ -50,6 +50,10 @@ export declare enum EWorkflowType {
   SELECT = "SELECT",
   SKETCH = "SKETCH"
 }
+export declare enum EExportType {
+  CSV = "CSV",
+  PDF = "PDF"
+}
 export type SelectionMode = "single" | "multi";
 export type ValidSize = 6 | 10 | 14 | 20 | 30 | 60 | 80;
 export type DistanceUnit = "feet" | "meters" | "miles" | "kilometers";
@@ -343,4 +347,12 @@ export interface IMediaCardValues {
 export interface IMapInfo {
   id: string;
   name: string;
+}
+export interface IExportInfos {
+  [key: string]: IExportLayerInfo;
+}
+export interface IExportLayerInfo {
+  ids: number[];
+  layerView: __esri.FeatureLayerView;
+  selectionSetNames: string[];
 }

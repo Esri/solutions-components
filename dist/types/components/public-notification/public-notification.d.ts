@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 /// <reference types="arcgis-js-api" />
-import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
 import { EventEmitter, VNode } from "../../stencil-public-runtime";
-import { DistanceUnit, EPageType, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
+import { DistanceUnit, EExportType, EPageType, IExportInfos, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
+import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
 export declare class PublicNotification {
   el: HTMLPublicNotificationElement;
   /**
@@ -114,13 +114,9 @@ export declare class PublicNotification {
    */
   _downloadActive: boolean;
   /**
-   * boolean: When true CSV export options will be shown and a CSV file will be exported if the Export button is clicked
+   * utils/interfaces/EExportType: PDF or CSV
    */
-  _exportCSV: boolean;
-  /**
-   * boolean: When true PDF export options will be shown and a PDF file will be exported if the Export button is clicked
-   */
-  _exportPDF: boolean;
+  _exportType: EExportType;
   /**
    * utils/interfaces/EPageType: LIST | SELECT | PDF | CSV
    */
@@ -170,10 +166,6 @@ export declare class PublicNotification {
    * HTMLMapSelectToolsElement: The select tools element
    */
   protected _selectTools: HTMLMapSelectToolsElement;
-  /**
-   * Text to be used as title on PDF pages
-   */
-  protected _title: HTMLCalciteInputTextElement;
   /**
    * number: The number of selected features
    */
@@ -350,22 +342,8 @@ export declare class PublicNotification {
    * @protected
    */
   protected _getExportPage(): VNode;
-  /**
-   * Return the PDF portion of the export page
-   *
-   * @returns the node with all PDF export options
-   *
-   * @protected
-   */
-  protected _getPDFOptions(): VNode;
-  /**
-   * Return the CSV portion of the export page
-   *
-   * @returns the node with all CSV export options
-   *
-   * @protected
-   */
-  protected _getCSVOptions(): VNode;
+  protected _exportTypeChange(evt: CustomEvent): void;
+  protected _getExportOptions(): VNode;
   /**
    * Create the stacked navigation buttons for a page
    *
@@ -423,24 +401,14 @@ export declare class PublicNotification {
    */
   protected _export(): void;
   /**
-   * Download all selection sets as PDF
-   *
-   * @protected
-   */
-  protected _downloadPDF(): Promise<void>;
-  /**
-   * Download all selection sets as CSV
-   *
-   * @protected
-   */
-  protected _downloadCSV(): void;
-  /**
-   * Get all enabled selection sets
-   *
-   * @returns the selection sets
-   * @protected
-   */
-  protected _getDownloadSelectionSets(): ISelectionSet[];
+  * Sort selection sets by layer and retain key export details
+  *
+  * @param selectionSets selection sets to evaluate
+  *
+  * @returns key export details from the selection sets
+  * @protected
+  */
+  protected _getSelectionIdsAndViews(selectionSets: ISelectionSet[], downloadSetsOnly?: boolean): IExportInfos;
   /**
    * Create a calcite action
    *

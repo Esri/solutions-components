@@ -4,7 +4,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 import { proxyCustomElement, HTMLElement, h, Host } from '@stencil/core/internal/client';
-import { d as EUpdateType } from './interfaces.js';
+import { e as EUpdateType } from './interfaces.js';
 import { s as state, E as EFileType } from './solution-store.js';
 import { g as getLocaleComponentStrings } from './locale.js';
 import { d as defineCustomElement$a } from './action.js';

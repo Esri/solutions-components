@@ -51,7 +51,8 @@
 - calcite-label
 - calcite-checkbox
 - calcite-input-message
-- calcite-switch
+- calcite-segmented-control
+- calcite-segmented-control-item
 - [pdf-download](../pdf-download)
 - calcite-input-text
 - calcite-notice
@@ -72,7 +73,8 @@ graph TD;
   public-notification --> calcite-label
   public-notification --> calcite-checkbox
   public-notification --> calcite-input-message
-  public-notification --> calcite-switch
+  public-notification --> calcite-segmented-control
+  public-notification --> calcite-segmented-control-item
   public-notification --> pdf-download
   public-notification --> calcite-input-text
   public-notification --> calcite-notice
@@ -121,6 +123,7 @@ graph TD;
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
   calcite-input-message --> calcite-icon
+  calcite-segmented-control-item --> calcite-icon
   pdf-download --> calcite-select
   pdf-download --> calcite-option
   calcite-input-text --> calcite-progress

@@ -3,41 +3,37 @@
  * Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-const index = require('./index-6654298b.js');
-const dom = require('./dom-24094fab.js');
-const form = require('./form-102203a5.js');
-const interactive = require('./interactive-772d59fe.js');
-const label = require('./label-5bd96bc0.js');
-const loadable = require('./loadable-c64a459b.js');
-const locale = require('./locale-e2cae6e8.js');
-const observers = require('./observers-b0934d2a.js');
-const resources = require('./resources-1f836572.js');
-const t9n = require('./t9n-4664a8db.js');
-const utils = require('./utils-c20c0c56.js');
-const debounce = require('./debounce-69c3bada.js');
-const conditionalSlot = require('./conditionalSlot-892b4bc1.js');
-const resources$1 = require('./resources-6c9cce1c.js');
-const loadModules = require('./loadModules-ae7715f2.js');
-const mapViewUtils = require('./mapViewUtils-7e04e61c.js');
-const interfaces = require('./interfaces-043b0758.js');
-const publicNotificationStore = require('./publicNotificationStore-cd1a32c3.js');
-const locale$1 = require('./locale-b113c6b2.js');
-const downloadUtils = require('./downloadUtils-6e2e442a.js');
-require('./guid-c58d5ead.js');
-require('./key-d55baa11.js');
-require('./index-e1b1954f.js');
-require('./_commonjsHelpers-384729db.js');
+import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-d298aca9.js';
+import { a as getSlotted, e as setRequestedIcon, g as getElementProp, b as getElementDir, t as toAriaBoolean, s as slotChangeHasAssignedElement } from './dom-0fc13266.js';
+import { s as submitForm, c as connectForm, d as disconnectForm, H as HiddenFormInputSlot, a as afterConnectDefaultValueSet } from './form-cd8d9adb.js';
+import { u as updateHostInteraction } from './interactive-b1987dfd.js';
+import { c as connectLabel, d as disconnectLabel, g as getLabelText } from './label-5af7aec9.js';
+import { s as setUpLoadableComponent, a as setComponentLoaded, c as componentLoaded } from './loadable-e6dce690.js';
+import { c as connectLocalized, d as disconnectLocalized } from './locale-aabc8f45.js';
+import { c as createObserver } from './observers-81c91acd.js';
+import { C as CSS_UTILITY } from './resources-e83f65b3.js';
+import { u as updateMessages, c as connectMessages, d as disconnectMessages, s as setUpMessages } from './t9n-a539118a.js';
+import { u as updateListItemChildren, a as getListItemChildren, M as MAX_COLUMNS, g as getDepth, I as ICONS, C as CSS$4, S as SLOTS$3 } from './utils-dbb88f30.js';
+import { d as debounce } from './debounce-4c884e5c.js';
+import { c as connectConditionalSlotComponent, d as disconnectConditionalSlotComponent } from './conditionalSlot-d3eebe7f.js';
+import { K as KindIcons } from './resources-cfdc6def.js';
+import { l as loadModules } from './loadModules-cd3569de.js';
+import { g as goToSelection, h as highlightFeatures, q as queryObjectIds, a as getQueryGeoms, b as getMapLayerView, c as queryFeaturesByGeometry } from './mapViewUtils-9f405325.js';
+import { d as EWorkflowType } from './interfaces-9f6e2f3b.js';
+import { s as state } from './publicNotificationStore-c36d95bf.js';
+import { a as getComponentClosestLanguage, g as getLocaleComponentStrings } from './locale-54cac39a.js';
+import { d as downloadCSV, a as downloadPDF } from './downloadUtils-305e69e9.js';
+import './guid-2069664e.js';
+import './key-218d8d4d.js';
+import './index-4c4a4f3d.js';
+import './_commonjsHelpers-d5f9d613.js';
 
 /*!
  * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.2.0
  */
-const CSS$2 = {
+const CSS$3 = {
   loader: "loader",
   clearButton: "clear-button",
   editingEnabled: "editing-enabled",
@@ -50,7 +46,7 @@ const CSS$2 = {
   actionWrapper: "action-wrapper",
   resizeIconWrapper: "resize-icon-wrapper"
 };
-const SLOTS$1 = {
+const SLOTS$2 = {
   action: "action"
 };
 
@@ -58,13 +54,13 @@ const inputTextCss = "@keyframes in{0%{opacity:0}100%{opacity:1}}@keyframes in-d
 
 const InputText = class {
   constructor(hostRef) {
-    index.registerInstance(this, hostRef);
-    this.calciteInternalInputTextFocus = index.createEvent(this, "calciteInternalInputTextFocus", 7);
-    this.calciteInternalInputTextBlur = index.createEvent(this, "calciteInternalInputTextBlur", 7);
-    this.calciteInputTextInput = index.createEvent(this, "calciteInputTextInput", 7);
-    this.calciteInputTextChange = index.createEvent(this, "calciteInputTextChange", 7);
+    registerInstance(this, hostRef);
+    this.calciteInternalInputTextFocus = createEvent(this, "calciteInternalInputTextFocus", 7);
+    this.calciteInternalInputTextBlur = createEvent(this, "calciteInternalInputTextBlur", 7);
+    this.calciteInputTextInput = createEvent(this, "calciteInputTextInput", 7);
+    this.calciteInputTextChange = createEvent(this, "calciteInputTextChange", 7);
     this.previousValueOrigin = "initial";
-    this.mutationObserver = observers.createObserver("mutation", () => this.setDisabledAction());
+    this.mutationObserver = createObserver("mutation", () => this.setDisabledAction());
     this.userChangedValue = false;
     //--------------------------------------------------------------------------
     //
@@ -80,7 +76,7 @@ const InputText = class {
         event.preventDefault();
       }
       if (event.key === "Enter" && !event.defaultPrevented) {
-        if (form.submitForm(this)) {
+        if (submitForm(this)) {
           event.preventDefault();
         }
       }
@@ -107,7 +103,7 @@ const InputText = class {
       this.emitChangeIfUserModified();
     };
     this.clickHandler = (event) => {
-      const slottedActionEl = dom.getSlotted(this.el, "action");
+      const slottedActionEl = getSlotted(this.el, "action");
       if (event.target !== slottedActionEl) {
         this.setFocus();
       }
@@ -228,13 +224,13 @@ const InputText = class {
     this.userChangedValue = false;
   }
   updateRequestedIcon() {
-    this.requestedIcon = dom.setRequestedIcon({}, this.icon, "text");
+    this.requestedIcon = setRequestedIcon({}, this.icon, "text");
   }
   get isClearable() {
     return this.clearable && this.value.length > 0;
   }
   effectiveLocaleChange() {
-    t9n.updateMessages(this, this.effectiveLocale);
+    updateMessages(this, this.effectiveLocale);
   }
   //--------------------------------------------------------------------------
   //
@@ -243,40 +239,40 @@ const InputText = class {
   //--------------------------------------------------------------------------
   connectedCallback() {
     var _a;
-    locale.connectLocalized(this);
-    t9n.connectMessages(this);
-    this.scale = dom.getElementProp(this.el, "scale", this.scale);
+    connectLocalized(this);
+    connectMessages(this);
+    this.scale = getElementProp(this.el, "scale", this.scale);
     this.inlineEditableEl = this.el.closest("calcite-inline-editable");
     if (this.inlineEditableEl) {
       this.editingEnabled = this.inlineEditableEl.editingEnabled || false;
     }
     this.setPreviousEmittedValue(this.value);
     this.setPreviousValue(this.value);
-    label.connectLabel(this);
-    form.connectForm(this);
+    connectLabel(this);
+    connectForm(this);
     (_a = this.mutationObserver) === null || _a === void 0 ? void 0 : _a.observe(this.el, { childList: true });
     this.setDisabledAction();
     this.el.addEventListener("calciteInternalHiddenInputChange", this.hiddenInputChangeHandler);
   }
   disconnectedCallback() {
     var _a;
-    label.disconnectLabel(this);
-    form.disconnectForm(this);
-    locale.disconnectLocalized(this);
-    t9n.disconnectMessages(this);
+    disconnectLabel(this);
+    disconnectForm(this);
+    disconnectLocalized(this);
+    disconnectMessages(this);
     (_a = this.mutationObserver) === null || _a === void 0 ? void 0 : _a.disconnect();
     this.el.removeEventListener("calciteInternalHiddenInputChange", this.hiddenInputChangeHandler);
   }
   async componentWillLoad() {
-    loadable.setUpLoadableComponent(this);
-    this.requestedIcon = dom.setRequestedIcon({}, this.icon, "text");
-    await t9n.setUpMessages(this);
+    setUpLoadableComponent(this);
+    this.requestedIcon = setRequestedIcon({}, this.icon, "text");
+    await setUpMessages(this);
   }
   componentDidLoad() {
-    loadable.setComponentLoaded(this);
+    setComponentLoaded(this);
   }
   componentDidRender() {
-    interactive.updateHostInteraction(this);
+    updateHostInteraction(this);
   }
   //--------------------------------------------------------------------------
   //
@@ -286,7 +282,7 @@ const InputText = class {
   /** Sets focus on the component. */
   async setFocus() {
     var _a;
-    await loadable.componentLoaded(this);
+    await componentLoaded(this);
     (_a = this.childEl) === null || _a === void 0 ? void 0 : _a.focus();
   }
   /** Selects the text of the component's `value`. */
@@ -312,7 +308,7 @@ const InputText = class {
     }
   }
   setDisabledAction() {
-    const slottedActionEl = dom.getSlotted(this.el, "action");
+    const slottedActionEl = getSlotted(this.el, "action");
     if (!slottedActionEl) {
       return;
     }
@@ -333,22 +329,22 @@ const InputText = class {
   //
   // --------------------------------------------------------------------------
   render() {
-    const dir = dom.getElementDir(this.el);
-    const loader = (index.h("div", { class: CSS$2.loader }, index.h("calcite-progress", { label: this.messages.loading, type: "indeterminate" })));
-    const inputClearButton = (index.h("button", { "aria-label": this.messages.clear, class: CSS$2.clearButton, disabled: this.disabled || this.readOnly, onClick: this.clearInputTextValue, tabIndex: -1, type: "button" }, index.h("calcite-icon", { icon: "x", scale: this.scale === "l" ? "m" : "s" })));
-    const iconEl = (index.h("calcite-icon", { class: CSS$2.inputIcon, flipRtl: this.iconFlipRtl, icon: this.requestedIcon, scale: this.scale === "l" ? "m" : "s" }));
-    const prefixText = index.h("div", { class: CSS$2.prefix }, this.prefixText);
-    const suffixText = index.h("div", { class: CSS$2.suffix }, this.suffixText);
-    const childEl = (index.h("input", { "aria-label": label.getLabelText(this), autocomplete: this.autocomplete, autofocus: this.autofocus ? true : null, class: {
-        [CSS$2.editingEnabled]: this.editingEnabled,
-        [CSS$2.inlineChild]: !!this.inlineEditableEl
+    const dir = getElementDir(this.el);
+    const loader = (h("div", { class: CSS$3.loader }, h("calcite-progress", { label: this.messages.loading, type: "indeterminate" })));
+    const inputClearButton = (h("button", { "aria-label": this.messages.clear, class: CSS$3.clearButton, disabled: this.disabled || this.readOnly, onClick: this.clearInputTextValue, tabIndex: -1, type: "button" }, h("calcite-icon", { icon: "x", scale: this.scale === "l" ? "m" : "s" })));
+    const iconEl = (h("calcite-icon", { class: CSS$3.inputIcon, flipRtl: this.iconFlipRtl, icon: this.requestedIcon, scale: this.scale === "l" ? "m" : "s" }));
+    const prefixText = h("div", { class: CSS$3.prefix }, this.prefixText);
+    const suffixText = h("div", { class: CSS$3.suffix }, this.suffixText);
+    const childEl = (h("input", { "aria-label": getLabelText(this), autocomplete: this.autocomplete, autofocus: this.autofocus ? true : null, class: {
+        [CSS$3.editingEnabled]: this.editingEnabled,
+        [CSS$3.inlineChild]: !!this.inlineEditableEl
       }, defaultValue: this.defaultValue, disabled: this.disabled ? true : null, enterKeyHint: this.enterKeyHint, inputMode: this.inputMode, maxLength: this.maxLength, minLength: this.minLength, name: this.name, onBlur: this.inputTextBlurHandler, onFocus: this.inputTextFocusHandler, onInput: this.inputTextInputHandler, onKeyDown: this.inputTextKeyDownHandler, pattern: this.pattern, placeholder: this.placeholder || "", readOnly: this.readOnly, required: this.required ? true : null, tabIndex: this.disabled || (this.inlineEditableEl && !this.editingEnabled) ? -1 : null, type: "text", value: this.value,
       // eslint-disable-next-line react/jsx-sort-props
       ref: this.setChildElRef }));
-    return (index.h(index.Host, { onClick: this.clickHandler, onKeyDown: this.keyDownHandler }, index.h("div", { class: { [CSS$2.inputWrapper]: true, [resources.CSS_UTILITY.rtl]: dir === "rtl" } }, this.prefixText ? prefixText : null, index.h("div", { class: CSS$2.wrapper }, childEl, this.isClearable ? inputClearButton : null, this.requestedIcon ? iconEl : null, this.loading ? loader : null), index.h("div", { class: CSS$2.actionWrapper }, index.h("slot", { name: SLOTS$1.action })), this.suffixText ? suffixText : null, index.h(form.HiddenFormInputSlot, { component: this }))));
+    return (h(Host, { onClick: this.clickHandler, onKeyDown: this.keyDownHandler }, h("div", { class: { [CSS$3.inputWrapper]: true, [CSS_UTILITY.rtl]: dir === "rtl" } }, this.prefixText ? prefixText : null, h("div", { class: CSS$3.wrapper }, childEl, this.isClearable ? inputClearButton : null, this.requestedIcon ? iconEl : null, this.loading ? loader : null), h("div", { class: CSS$3.actionWrapper }, h("slot", { name: SLOTS$2.action })), this.suffixText ? suffixText : null, h(HiddenFormInputSlot, { component: this }))));
   }
   static get assetsDirs() { return ["assets"]; }
-  get el() { return index.getElement(this); }
+  get el() { return getElement(this); }
   static get watchers() { return {
     "disabled": ["disabledWatcher"],
     "messageOverrides": ["onMessagesChange"],
@@ -364,7 +360,7 @@ InputText.style = inputTextCss;
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.2.0
  */
-const CSS$1 = {
+const CSS$2 = {
   container: "container",
   table: "table",
   scrim: "scrim",
@@ -378,18 +374,18 @@ const listCss = "@keyframes in{0%{opacity:0}100%{opacity:1}}@keyframes in-down{0
 const listItemSelector = "calcite-list-item";
 const List = class {
   constructor(hostRef) {
-    index.registerInstance(this, hostRef);
-    this.calciteListFilter = index.createEvent(this, "calciteListFilter", 6);
+    registerInstance(this, hostRef);
+    this.calciteListFilter = createEvent(this, "calciteListFilter", 6);
     this.listItems = [];
     this.enabledListItems = [];
-    this.mutationObserver = observers.createObserver("mutation", () => this.updateListItems());
+    this.mutationObserver = createObserver("mutation", () => this.updateListItems());
     // --------------------------------------------------------------------------
     //
     //  Private Methods
     //
     // --------------------------------------------------------------------------
     this.handleDefaultSlotChange = (event) => {
-      utils.updateListItemChildren(utils.getListItemChildren(event));
+      updateListItemChildren(getListItemChildren(event));
     };
     this.setActiveListItem = () => {
       const { enabledListItems } = this;
@@ -399,10 +395,10 @@ const List = class {
         }
       }
     };
-    this.updateSelectedItems = debounce.debounce(() => {
+    this.updateSelectedItems = debounce(() => {
       this.selectedItems = this.enabledListItems.filter((item) => item.selected);
     }, debounceTimeout);
-    this.updateFilteredItems = debounce.debounce(() => {
+    this.updateFilteredItems = debounce(() => {
       const { listItems, filteredData, filterText } = this;
       const values = filteredData.map((item) => item.value);
       const groups = new Set();
@@ -562,13 +558,13 @@ const List = class {
     (_a = this.mutationObserver) === null || _a === void 0 ? void 0 : _a.disconnect();
   }
   componentWillLoad() {
-    loadable.setUpLoadableComponent(this);
+    setUpLoadableComponent(this);
   }
   componentDidRender() {
-    interactive.updateHostInteraction(this);
+    updateHostInteraction(this);
   }
   componentDidLoad() {
-    loadable.setComponentLoaded(this);
+    setComponentLoaded(this);
     const { filterEl } = this;
     const filteredItems = filterEl === null || filterEl === void 0 ? void 0 : filterEl.filteredItems;
     if (filteredItems) {
@@ -584,7 +580,7 @@ const List = class {
   /** Sets focus on the component's first focusable element. */
   async setFocus() {
     var _a;
-    await loadable.componentLoaded(this);
+    await componentLoaded(this);
     (_a = this.enabledListItems.find((listItem) => listItem.active)) === null || _a === void 0 ? void 0 : _a.setFocus();
   }
   // --------------------------------------------------------------------------
@@ -594,9 +590,9 @@ const List = class {
   // --------------------------------------------------------------------------
   render() {
     const { loading, label, disabled, dataForFilter, filterEnabled, filterPlaceholder, filterText } = this;
-    return (index.h("div", { class: CSS$1.container }, loading ? index.h("calcite-scrim", { class: CSS$1.scrim, loading: loading }) : null, index.h("table", { "aria-busy": dom.toAriaBoolean(loading), "aria-label": label || "", class: CSS$1.table, onKeyDown: this.handleListKeydown, role: "treegrid" }, filterEnabled ? (index.h("thead", null, index.h("tr", { class: { [CSS$1.sticky]: true } }, index.h("th", { colSpan: utils.MAX_COLUMNS }, index.h("calcite-filter", { "aria-label": filterPlaceholder, disabled: loading || disabled, items: dataForFilter, onCalciteFilterChange: this.handleFilter, placeholder: filterPlaceholder, value: filterText,
+    return (h("div", { class: CSS$2.container }, loading ? h("calcite-scrim", { class: CSS$2.scrim, loading: loading }) : null, h("table", { "aria-busy": toAriaBoolean(loading), "aria-label": label || "", class: CSS$2.table, onKeyDown: this.handleListKeydown, role: "treegrid" }, filterEnabled ? (h("thead", null, h("tr", { class: { [CSS$2.sticky]: true } }, h("th", { colSpan: MAX_COLUMNS }, h("calcite-filter", { "aria-label": filterPlaceholder, disabled: loading || disabled, items: dataForFilter, onCalciteFilterChange: this.handleFilter, placeholder: filterPlaceholder, value: filterText,
       // eslint-disable-next-line react/jsx-sort-props
-      ref: (el) => (this.filterEl = el) }))))) : null, index.h("tbody", { class: CSS$1.tableContainer }, index.h("slot", { onSlotchange: this.handleDefaultSlotChange })))));
+      ref: (el) => (this.filterEl = el) }))))) : null, h("tbody", { class: CSS$2.tableContainer }, h("slot", { onSlotchange: this.handleDefaultSlotChange })))));
   }
   updateListItems() {
     const { selectionAppearance, selectionMode } = this;
@@ -614,7 +610,7 @@ const List = class {
     this.updateSelectedItems();
     this.updateFilteredItems();
   }
-  get el() { return index.getElement(this); }
+  get el() { return getElement(this); }
   static get watchers() { return {
     "filterEnabled": ["handleFilterEnabledChange"],
     "selectionMode": ["handleSelectionAppearanceChange"],
@@ -629,35 +625,35 @@ const focusMap = new Map();
 const listSelector = "calcite-list";
 const ListItem = class {
   constructor(hostRef) {
-    index.registerInstance(this, hostRef);
-    this.calciteListItemSelect = index.createEvent(this, "calciteListItemSelect", 6);
-    this.calciteInternalListItemSelect = index.createEvent(this, "calciteInternalListItemSelect", 6);
-    this.calciteInternalListItemActive = index.createEvent(this, "calciteInternalListItemActive", 6);
-    this.calciteInternalFocusPreviousItem = index.createEvent(this, "calciteInternalFocusPreviousItem", 6);
+    registerInstance(this, hostRef);
+    this.calciteListItemSelect = createEvent(this, "calciteListItemSelect", 6);
+    this.calciteInternalListItemSelect = createEvent(this, "calciteInternalListItemSelect", 6);
+    this.calciteInternalListItemActive = createEvent(this, "calciteInternalListItemActive", 6);
+    this.calciteInternalFocusPreviousItem = createEvent(this, "calciteInternalFocusPreviousItem", 6);
     // --------------------------------------------------------------------------
     //
     //  Private Methods
     //
     // --------------------------------------------------------------------------
     this.handleContentSlotChange = (event) => {
-      this.hasCustomContent = dom.slotChangeHasAssignedElement(event);
+      this.hasCustomContent = slotChangeHasAssignedElement(event);
     };
     this.handleActionsStartSlotChange = (event) => {
-      this.hasActionsStart = dom.slotChangeHasAssignedElement(event);
+      this.hasActionsStart = slotChangeHasAssignedElement(event);
     };
     this.handleActionsEndSlotChange = (event) => {
-      this.hasActionsEnd = dom.slotChangeHasAssignedElement(event);
+      this.hasActionsEnd = slotChangeHasAssignedElement(event);
     };
     this.handleContentStartSlotChange = (event) => {
-      this.hasContentStart = dom.slotChangeHasAssignedElement(event);
+      this.hasContentStart = slotChangeHasAssignedElement(event);
     };
     this.handleContentEndSlotChange = (event) => {
-      this.hasContentEnd = dom.slotChangeHasAssignedElement(event);
+      this.hasContentEnd = slotChangeHasAssignedElement(event);
     };
     this.handleDefaultSlotChange = (event) => {
       const { parentListEl } = this;
-      const listItemChildren = utils.getListItemChildren(event);
-      utils.updateListItemChildren(listItemChildren);
+      const listItemChildren = getListItemChildren(event);
+      updateListItemChildren(listItemChildren);
       const openable = !!listItemChildren.length;
       if (openable && parentListEl && !parentListEl.openable) {
         parentListEl.openable = true;
@@ -785,18 +781,18 @@ const ListItem = class {
   connectedCallback() {
     const { el } = this;
     this.parentListEl = el.closest(listSelector);
-    this.level = utils.getDepth(el) + 1;
-    this.visualLevel = utils.getDepth(el, true);
+    this.level = getDepth(el) + 1;
+    this.visualLevel = getDepth(el, true);
     this.setSelectionDefaults();
   }
   componentWillLoad() {
-    loadable.setUpLoadableComponent(this);
+    setUpLoadableComponent(this);
   }
   componentDidLoad() {
-    loadable.setComponentLoaded(this);
+    setComponentLoaded(this);
   }
   componentDidRender() {
-    interactive.updateHostInteraction(this, "managed");
+    updateHostInteraction(this, "managed");
   }
   // --------------------------------------------------------------------------
   //
@@ -805,7 +801,7 @@ const ListItem = class {
   // --------------------------------------------------------------------------
   /** Sets focus on the component. */
   async setFocus() {
-    await loadable.componentLoaded(this);
+    await componentLoaded(this);
     const { containerEl, contentEl, actionsStartEl, actionsEndEl, parentListEl } = this;
     const focusIndex = focusMap.get(parentListEl);
     if (typeof focusIndex === "number") {
@@ -830,44 +826,44 @@ const ListItem = class {
     if (selectionMode === "none" || selectionAppearance === "border") {
       return null;
     }
-    return (index.h("td", { class: utils.CSS.selectionContainer, key: "selection-container", onClick: this.itemClicked }, index.h("calcite-icon", { icon: selected
+    return (h("td", { class: CSS$4.selectionContainer, key: "selection-container", onClick: this.itemClicked }, h("calcite-icon", { icon: selected
         ? selectionMode === "multiple"
-          ? utils.ICONS.selectedMultiple
-          : utils.ICONS.selectedSingle
-        : utils.ICONS.unselected, scale: "s" })));
+          ? ICONS.selectedMultiple
+          : ICONS.selectedSingle
+        : ICONS.unselected, scale: "s" })));
   }
   renderOpen() {
     const { el, open, openable, parentListEl } = this;
-    const dir = dom.getElementDir(el);
-    return openable ? (index.h("td", { class: utils.CSS.openContainer, key: "open-container", onClick: this.toggleOpen }, index.h("calcite-icon", { icon: open ? utils.ICONS.open : dir === "rtl" ? utils.ICONS.closedRTL : utils.ICONS.closedLTR, scale: "s" }))) : (parentListEl === null || parentListEl === void 0 ? void 0 : parentListEl.openable) ? (index.h("td", { class: utils.CSS.openContainer, key: "open-container", onClick: this.itemClicked }, index.h("calcite-icon", { icon: utils.ICONS.blank, scale: "s" }))) : null;
+    const dir = getElementDir(el);
+    return openable ? (h("td", { class: CSS$4.openContainer, key: "open-container", onClick: this.toggleOpen }, h("calcite-icon", { icon: open ? ICONS.open : dir === "rtl" ? ICONS.closedRTL : ICONS.closedLTR, scale: "s" }))) : (parentListEl === null || parentListEl === void 0 ? void 0 : parentListEl.openable) ? (h("td", { class: CSS$4.openContainer, key: "open-container", onClick: this.itemClicked }, h("calcite-icon", { icon: ICONS.blank, scale: "s" }))) : null;
   }
   renderActionsStart() {
     const { label, hasActionsStart } = this;
-    return (index.h("td", { "aria-label": label, class: utils.CSS.actionsStart, hidden: !hasActionsStart, key: "actions-start-container", role: "gridcell",
+    return (h("td", { "aria-label": label, class: CSS$4.actionsStart, hidden: !hasActionsStart, key: "actions-start-container", role: "gridcell",
       // eslint-disable-next-line react/jsx-sort-props
-      ref: (el) => (this.actionsStartEl = el) }, index.h("slot", { name: utils.SLOTS.actionsStart, onSlotchange: this.handleActionsStartSlotChange })));
+      ref: (el) => (this.actionsStartEl = el) }, h("slot", { name: SLOTS$3.actionsStart, onSlotchange: this.handleActionsStartSlotChange })));
   }
   renderActionsEnd() {
     const { label, hasActionsEnd } = this;
-    return (index.h("td", { "aria-label": label, class: utils.CSS.actionsEnd, hidden: !hasActionsEnd, key: "actions-end-container", role: "gridcell",
+    return (h("td", { "aria-label": label, class: CSS$4.actionsEnd, hidden: !hasActionsEnd, key: "actions-end-container", role: "gridcell",
       // eslint-disable-next-line react/jsx-sort-props
-      ref: (el) => (this.actionsEndEl = el) }, index.h("slot", { name: utils.SLOTS.actionsEnd, onSlotchange: this.handleActionsEndSlotChange })));
+      ref: (el) => (this.actionsEndEl = el) }, h("slot", { name: SLOTS$3.actionsEnd, onSlotchange: this.handleActionsEndSlotChange })));
   }
   renderContentStart() {
     const { hasContentStart } = this;
-    return (index.h("div", { class: utils.CSS.contentStart, hidden: !hasContentStart }, index.h("slot", { name: utils.SLOTS.contentStart, onSlotchange: this.handleContentStartSlotChange })));
+    return (h("div", { class: CSS$4.contentStart, hidden: !hasContentStart }, h("slot", { name: SLOTS$3.contentStart, onSlotchange: this.handleContentStartSlotChange })));
   }
   renderCustomContent() {
     const { hasCustomContent } = this;
-    return (index.h("div", { class: utils.CSS.customContent, hidden: !hasCustomContent }, index.h("slot", { name: utils.SLOTS.content, onSlotchange: this.handleContentSlotChange })));
+    return (h("div", { class: CSS$4.customContent, hidden: !hasCustomContent }, h("slot", { name: SLOTS$3.content, onSlotchange: this.handleContentSlotChange })));
   }
   renderContentEnd() {
     const { hasContentEnd } = this;
-    return (index.h("div", { class: utils.CSS.contentEnd, hidden: !hasContentEnd }, index.h("slot", { name: utils.SLOTS.contentEnd, onSlotchange: this.handleContentEndSlotChange })));
+    return (h("div", { class: CSS$4.contentEnd, hidden: !hasContentEnd }, h("slot", { name: SLOTS$3.contentEnd, onSlotchange: this.handleContentEndSlotChange })));
   }
   renderContentProperties() {
     const { label, description, hasCustomContent } = this;
-    return !hasCustomContent && (!!label || !!description) ? (index.h("div", { class: utils.CSS.content, key: "content" }, label ? (index.h("div", { class: utils.CSS.label, key: "label" }, label)) : null, description ? (index.h("div", { class: utils.CSS.description, key: "description" }, description)) : null)) : null;
+    return !hasCustomContent && (!!label || !!description) ? (h("div", { class: CSS$4.content, key: "content" }, label ? (h("div", { class: CSS$4.label, key: "label" }, label)) : null, description ? (h("div", { class: CSS$4.description, key: "description" }, description)) : null)) : null;
   }
   renderContentContainer() {
     const { description, label, selectionMode, hasCustomContent } = this;
@@ -878,10 +874,10 @@ const ListItem = class {
       this.renderContentProperties(),
       this.renderContentEnd()
     ];
-    return (index.h("td", { "aria-label": label, class: {
-        [utils.CSS.contentContainer]: true,
-        [utils.CSS.contentContainerSelectable]: selectionMode !== "none",
-        [utils.CSS.contentContainerHasCenterContent]: hasCenterContent
+    return (h("td", { "aria-label": label, class: {
+        [CSS$4.contentContainer]: true,
+        [CSS$4.contentContainerSelectable]: selectionMode !== "none",
+        [CSS$4.contentContainerHasCenterContent]: hasCenterContent
       }, key: "content-container", onClick: this.itemClicked, role: "gridcell",
       // eslint-disable-next-line react/jsx-sort-props
       ref: (el) => (this.contentEl = el) }, content));
@@ -891,16 +887,16 @@ const ListItem = class {
     const showBorder = selectionMode !== "none" && selectionAppearance === "border";
     const borderSelected = showBorder && selected;
     const borderUnselected = showBorder && !selected;
-    return (index.h(index.Host, null, index.h("tr", { "aria-expanded": openable ? dom.toAriaBoolean(open) : null, "aria-label": label, "aria-level": level, "aria-posinset": setPosition, "aria-selected": dom.toAriaBoolean(selected), "aria-setsize": setSize, class: {
-        [utils.CSS.container]: true,
-        [utils.CSS.containerBorderSelected]: borderSelected,
-        [utils.CSS.containerBorderUnselected]: borderUnselected
+    return (h(Host, null, h("tr", { "aria-expanded": openable ? toAriaBoolean(open) : null, "aria-label": label, "aria-level": level, "aria-posinset": setPosition, "aria-selected": toAriaBoolean(selected), "aria-setsize": setSize, class: {
+        [CSS$4.container]: true,
+        [CSS$4.containerBorderSelected]: borderSelected,
+        [CSS$4.containerBorderUnselected]: borderUnselected
       }, onFocus: this.focusCellNull, onKeyDown: this.handleItemKeyDown, role: "row", style: { "--calcite-list-item-spacing-indent-multiplier": `${this.visualLevel}` }, tabIndex: active ? 0 : -1,
       // eslint-disable-next-line react/jsx-sort-props
-      ref: (el) => (this.containerEl = el) }, this.renderSelected(), this.renderOpen(), this.renderActionsStart(), this.renderContentContainer(), this.renderActionsEnd()), index.h("div", { class: {
-        [utils.CSS.nestedContainer]: true,
-        [utils.CSS.nestedContainerHidden]: openable && !open
-      } }, index.h("slot", { onSlotchange: this.handleDefaultSlotChange }))));
+      ref: (el) => (this.containerEl = el) }, this.renderSelected(), this.renderOpen(), this.renderActionsStart(), this.renderContentContainer(), this.renderActionsEnd()), h("div", { class: {
+        [CSS$4.nestedContainer]: true,
+        [CSS$4.nestedContainerHidden]: openable && !open
+      } }, h("slot", { onSlotchange: this.handleDefaultSlotChange }))));
   }
   setSelectionDefaults() {
     const { parentListEl, selectionMode, selectionAppearance } = this;
@@ -914,7 +910,7 @@ const ListItem = class {
       this.selectionAppearance = parentListEl.selectionAppearance;
     }
   }
-  get el() { return index.getElement(this); }
+  get el() { return getElement(this); }
   static get watchers() { return {
     "active": ["activeHandler"],
     "selected": ["handleSelectedChange"]
@@ -927,13 +923,13 @@ ListItem.style = listItemCss;
  * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
  * v1.2.0
  */
-const SLOTS = {
+const SLOTS$1 = {
   title: "title",
   message: "message",
   link: "link",
   actionsEnd: "actions-end"
 };
-const CSS = {
+const CSS$1 = {
   actionsEnd: "actions-end",
   close: "notice-close",
   container: "container",
@@ -945,9 +941,9 @@ const noticeCss = "@keyframes in{0%{opacity:0}100%{opacity:1}}@keyframes in-down
 
 const Notice = class {
   constructor(hostRef) {
-    index.registerInstance(this, hostRef);
-    this.calciteNoticeClose = index.createEvent(this, "calciteNoticeClose", 6);
-    this.calciteNoticeOpen = index.createEvent(this, "calciteNoticeOpen", 6);
+    registerInstance(this, hostRef);
+    this.calciteNoticeClose = createEvent(this, "calciteNoticeClose", 6);
+    this.calciteNoticeOpen = createEvent(this, "calciteNoticeOpen", 6);
     //--------------------------------------------------------------------------
     //
     //  Private Methods
@@ -973,7 +969,7 @@ const Notice = class {
     /* wired up by t9n util */
   }
   updateRequestedIcon() {
-    this.requestedIcon = dom.setRequestedIcon(resources$1.KindIcons, this.icon, this.kind);
+    this.requestedIcon = setRequestedIcon(KindIcons, this.icon, this.kind);
   }
   //--------------------------------------------------------------------------
   //
@@ -981,30 +977,30 @@ const Notice = class {
   //
   //--------------------------------------------------------------------------
   connectedCallback() {
-    conditionalSlot.connectConditionalSlotComponent(this);
-    locale.connectLocalized(this);
-    t9n.connectMessages(this);
+    connectConditionalSlotComponent(this);
+    connectLocalized(this);
+    connectMessages(this);
   }
   disconnectedCallback() {
-    conditionalSlot.disconnectConditionalSlotComponent(this);
-    locale.disconnectLocalized(this);
-    t9n.disconnectMessages(this);
+    disconnectConditionalSlotComponent(this);
+    disconnectLocalized(this);
+    disconnectMessages(this);
   }
   async componentWillLoad() {
-    loadable.setUpLoadableComponent(this);
-    this.requestedIcon = dom.setRequestedIcon(resources$1.KindIcons, this.icon, this.kind);
-    await t9n.setUpMessages(this);
+    setUpLoadableComponent(this);
+    this.requestedIcon = setRequestedIcon(KindIcons, this.icon, this.kind);
+    await setUpMessages(this);
   }
   componentDidLoad() {
-    loadable.setComponentLoaded(this);
+    setComponentLoaded(this);
   }
   render() {
     const { el } = this;
-    const closeButton = (index.h("button", { "aria-label": this.messages.close, class: CSS.close, onClick: this.close,
+    const closeButton = (h("button", { "aria-label": this.messages.close, class: CSS$1.close, onClick: this.close,
       // eslint-disable-next-line react/jsx-sort-props
-      ref: (el) => (this.closeButton = el) }, index.h("calcite-icon", { icon: "x", scale: this.scale === "l" ? "m" : "s" })));
-    const hasActionEnd = dom.getSlotted(el, SLOTS.actionsEnd);
-    return (index.h("div", { class: CSS.container }, this.requestedIcon ? (index.h("div", { class: CSS.icon }, index.h("calcite-icon", { flipRtl: this.iconFlipRtl, icon: this.requestedIcon, scale: this.scale === "l" ? "m" : "s" }))) : null, index.h("div", { class: CSS.content }, index.h("slot", { name: SLOTS.title }), index.h("slot", { name: SLOTS.message }), index.h("slot", { name: SLOTS.link })), hasActionEnd ? (index.h("div", { class: CSS.actionsEnd }, index.h("slot", { name: SLOTS.actionsEnd }))) : null, this.closable ? closeButton : null));
+      ref: (el) => (this.closeButton = el) }, h("calcite-icon", { icon: "x", scale: this.scale === "l" ? "m" : "s" })));
+    const hasActionEnd = getSlotted(el, SLOTS$1.actionsEnd);
+    return (h("div", { class: CSS$1.container }, this.requestedIcon ? (h("div", { class: CSS$1.icon }, h("calcite-icon", { flipRtl: this.iconFlipRtl, icon: this.requestedIcon, scale: this.scale === "l" ? "m" : "s" }))) : null, h("div", { class: CSS$1.content }, h("slot", { name: SLOTS$1.title }), h("slot", { name: SLOTS$1.message }), h("slot", { name: SLOTS$1.link })), hasActionEnd ? (h("div", { class: CSS$1.actionsEnd }, h("slot", { name: SLOTS$1.actionsEnd }))) : null, this.closable ? closeButton : null));
   }
   //--------------------------------------------------------------------------
   //
@@ -1013,7 +1009,7 @@ const Notice = class {
   //--------------------------------------------------------------------------
   /** Sets focus on the component's first focusable element. */
   async setFocus() {
-    await loadable.componentLoaded(this);
+    await componentLoaded(this);
     const noticeLinkEl = this.el.querySelector("calcite-link");
     if (!this.closeButton && !noticeLinkEl) {
       return;
@@ -1026,10 +1022,10 @@ const Notice = class {
     }
   }
   effectiveLocaleChange() {
-    t9n.updateMessages(this, this.effectiveLocale);
+    updateMessages(this, this.effectiveLocale);
   }
   static get assetsDirs() { return ["assets"]; }
-  get el() { return index.getElement(this); }
+  get el() { return getElement(this); }
   static get watchers() { return {
     "messageOverrides": ["onMessagesChange"],
     "icon": ["updateRequestedIcon"],
@@ -1039,12 +1035,248 @@ const Notice = class {
 };
 Notice.style = noticeCss;
 
+const segmentedControlCss = "@keyframes in{0%{opacity:0}100%{opacity:1}}@keyframes in-down{0%{opacity:0;transform:translate3D(0, -5px, 0)}100%{opacity:1;transform:translate3D(0, 0, 0)}}@keyframes in-up{0%{opacity:0;transform:translate3D(0, 5px, 0)}100%{opacity:1;transform:translate3D(0, 0, 0)}}@keyframes in-scale{0%{opacity:0;transform:scale3D(0.95, 0.95, 1)}100%{opacity:1;transform:scale3D(1, 1, 1)}}:root{--calcite-animation-timing:calc(150ms * var(--calcite-internal-duration-factor));--calcite-internal-duration-factor:var(--calcite-duration-factor, 1);--calcite-internal-animation-timing-fast:calc(100ms * var(--calcite-internal-duration-factor));--calcite-internal-animation-timing-medium:calc(200ms * var(--calcite-internal-duration-factor));--calcite-internal-animation-timing-slow:calc(300ms * var(--calcite-internal-duration-factor))}.calcite-animate{opacity:0;animation-fill-mode:both;animation-duration:var(--calcite-animation-timing)}.calcite-animate__in{animation-name:in}.calcite-animate__in-down{animation-name:in-down}.calcite-animate__in-up{animation-name:in-up}.calcite-animate__in-scale{animation-name:in-scale}@media (prefers-reduced-motion: reduce){:root{--calcite-internal-duration-factor:0.01}}:root{--calcite-floating-ui-transition:var(--calcite-animation-timing);--calcite-floating-ui-z-index:600}:host([hidden]){display:none}:host([disabled]){pointer-events:none;cursor:default;-webkit-user-select:none;-moz-user-select:none;user-select:none;opacity:var(--calcite-ui-opacity-disabled)}:host{display:flex;background-color:var(--calcite-ui-foreground-1);inline-size:-moz-fit-content;inline-size:fit-content;outline:1px solid var(--calcite-ui-border-input);outline-offset:-1px}:host([appearance=outline]){background-color:transparent}:host([disabled]) ::slotted([calcite-hydrated][disabled]),:host([disabled]) [calcite-hydrated][disabled]{opacity:1}:host([layout=vertical]){flex-direction:column;align-items:flex-start;align-self:flex-start}:host([width=full]){inline-size:100%;min-inline-size:-moz-fit-content;min-inline-size:fit-content}:host([width=full]) ::slotted(calcite-segmented-control-item){flex:1 1 auto}:host([width=full][layout=vertical]) ::slotted(calcite-segmented-control-item){justify-content:flex-start}::slotted(input[slot=hidden-form-input]){margin:0 !important;opacity:0 !important;outline:none !important;padding:0 !important;position:absolute !important;inset:0 !important;transform:none !important;-webkit-appearance:none !important;z-index:-1 !important}";
+
+const SegmentedControl = class {
+  constructor(hostRef) {
+    registerInstance(this, hostRef);
+    this.calciteSegmentedControlChange = createEvent(this, "calciteSegmentedControlChange", 6);
+    //--------------------------------------------------------------------------
+    //
+    //  Event Listeners
+    //
+    //--------------------------------------------------------------------------
+    this.handleClick = (event) => {
+      if (event.target.localName === "calcite-segmented-control-item") {
+        this.selectItem(event.target, true);
+      }
+    };
+    this.appearance = "solid";
+    this.disabled = false;
+    this.form = undefined;
+    this.required = false;
+    this.layout = "horizontal";
+    this.name = undefined;
+    this.scale = "m";
+    this.value = null;
+    this.selectedItem = undefined;
+    this.width = "auto";
+  }
+  valueHandler(value) {
+    const items = this.getItems();
+    items.forEach((item) => (item.checked = item.value === value));
+  }
+  handleSelectedItemChange(newItem, oldItem) {
+    this.value = newItem === null || newItem === void 0 ? void 0 : newItem.value;
+    if (newItem === oldItem) {
+      return;
+    }
+    const items = this.getItems();
+    const match = Array.from(items)
+      .filter((item) => item === newItem)
+      .pop();
+    if (match) {
+      this.selectItem(match);
+    }
+    else if (items[0]) {
+      items[0].tabIndex = 0;
+    }
+  }
+  //--------------------------------------------------------------------------
+  //
+  //  Lifecycle
+  //
+  //--------------------------------------------------------------------------
+  componentWillLoad() {
+    setUpLoadableComponent(this);
+    const items = this.getItems();
+    const lastChecked = Array.from(items)
+      .filter((item) => item.checked)
+      .pop();
+    if (lastChecked) {
+      this.selectItem(lastChecked);
+    }
+    else if (items[0]) {
+      items[0].tabIndex = 0;
+    }
+  }
+  componentDidLoad() {
+    afterConnectDefaultValueSet(this, this.value);
+    setComponentLoaded(this);
+  }
+  connectedCallback() {
+    connectLabel(this);
+    connectForm(this);
+  }
+  disconnectedCallback() {
+    disconnectLabel(this);
+    disconnectForm(this);
+  }
+  componentDidRender() {
+    updateHostInteraction(this);
+  }
+  render() {
+    return (h(Host, { onClick: this.handleClick, role: "radiogroup" }, h("slot", null), h(HiddenFormInputSlot, { component: this })));
+  }
+  handleSelected(event) {
+    event.preventDefault();
+    this.selectItem(event.target);
+    event.stopPropagation();
+  }
+  handleKeyDown(event) {
+    const keys = ["ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown", " "];
+    const { key } = event;
+    const { el, selectedItem } = this;
+    if (keys.indexOf(key) === -1) {
+      return;
+    }
+    let adjustedKey = key;
+    if (getElementDir(el) === "rtl") {
+      if (key === "ArrowRight") {
+        adjustedKey = "ArrowLeft";
+      }
+      if (key === "ArrowLeft") {
+        adjustedKey = "ArrowRight";
+      }
+    }
+    const items = this.getItems();
+    let selectedIndex = -1;
+    items.forEach((item, index) => {
+      if (item === selectedItem) {
+        selectedIndex = index;
+      }
+    });
+    switch (adjustedKey) {
+      case "ArrowLeft":
+      case "ArrowUp":
+        event.preventDefault();
+        const previous = selectedIndex < 1 ? items.item(items.length - 1) : items.item(selectedIndex - 1);
+        this.selectItem(previous, true);
+        return;
+      case "ArrowRight":
+      case "ArrowDown":
+        event.preventDefault();
+        const next = selectedIndex === -1 ? items.item(1) : items.item(selectedIndex + 1) || items.item(0);
+        this.selectItem(next, true);
+        return;
+      case " ":
+        event.preventDefault();
+        this.selectItem(event.target, true);
+        return;
+      default:
+        return;
+    }
+  }
+  // --------------------------------------------------------------------------
+  //
+  //  Methods
+  //
+  // --------------------------------------------------------------------------
+  /** Sets focus on the component. */
+  async setFocus() {
+    var _a;
+    await componentLoaded(this);
+    (_a = (this.selectedItem || this.getItems()[0])) === null || _a === void 0 ? void 0 : _a.focus();
+  }
+  //--------------------------------------------------------------------------
+  //
+  //  Private Methods
+  //
+  //--------------------------------------------------------------------------
+  onLabelClick() {
+    this.setFocus();
+  }
+  getItems() {
+    return this.el.querySelectorAll("calcite-segmented-control-item");
+  }
+  selectItem(selected, emit = false) {
+    if (selected === this.selectedItem) {
+      return;
+    }
+    const items = this.getItems();
+    let match = null;
+    items.forEach((item) => {
+      const matches = item.value === selected.value;
+      if ((matches && !item.checked) || (!matches && item.checked)) {
+        item.checked = matches;
+      }
+      item.tabIndex = matches ? 0 : -1;
+      if (matches) {
+        match = item;
+        if (emit) {
+          this.calciteSegmentedControlChange.emit();
+        }
+      }
+    });
+    this.selectedItem = match;
+    if (match) {
+      match.focus();
+    }
+  }
+  get el() { return getElement(this); }
+  static get watchers() { return {
+    "value": ["valueHandler"],
+    "selectedItem": ["handleSelectedItemChange"]
+  }; }
+};
+SegmentedControl.style = segmentedControlCss;
+
+/*!
+ * All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+ * See https://github.com/Esri/calcite-components/blob/master/LICENSE.md for details.
+ * v1.2.0
+ */
+const SLOTS = {
+  input: "input"
+};
+const CSS = {
+  segmentedControlItemIcon: "segmented-control-item-icon"
+};
+
+const segmentedControlItemCss = "@keyframes in{0%{opacity:0}100%{opacity:1}}@keyframes in-down{0%{opacity:0;transform:translate3D(0, -5px, 0)}100%{opacity:1;transform:translate3D(0, 0, 0)}}@keyframes in-up{0%{opacity:0;transform:translate3D(0, 5px, 0)}100%{opacity:1;transform:translate3D(0, 0, 0)}}@keyframes in-scale{0%{opacity:0;transform:scale3D(0.95, 0.95, 1)}100%{opacity:1;transform:scale3D(1, 1, 1)}}:root{--calcite-animation-timing:calc(150ms * var(--calcite-internal-duration-factor));--calcite-internal-duration-factor:var(--calcite-duration-factor, 1);--calcite-internal-animation-timing-fast:calc(100ms * var(--calcite-internal-duration-factor));--calcite-internal-animation-timing-medium:calc(200ms * var(--calcite-internal-duration-factor));--calcite-internal-animation-timing-slow:calc(300ms * var(--calcite-internal-duration-factor))}.calcite-animate{opacity:0;animation-fill-mode:both;animation-duration:var(--calcite-animation-timing)}.calcite-animate__in{animation-name:in}.calcite-animate__in-down{animation-name:in-down}.calcite-animate__in-up{animation-name:in-up}.calcite-animate__in-scale{animation-name:in-scale}@media (prefers-reduced-motion: reduce){:root{--calcite-internal-duration-factor:0.01}}:root{--calcite-floating-ui-transition:var(--calcite-animation-timing);--calcite-floating-ui-z-index:600}:host([hidden]){display:none}:host{display:flex;cursor:pointer;align-self:stretch;font-weight:var(--calcite-font-weight-normal);transition:background-color var(--calcite-internal-animation-timing-fast) ease-in-out, border-color var(--calcite-animation-timing) ease-in-out}:host label{pointer-events:none;margin:0.125rem;box-sizing:border-box;display:flex;flex:1 1 0%;align-items:center;color:var(--calcite-ui-text-3);transition:background-color var(--calcite-internal-animation-timing-fast) ease-in-out, border-color var(--calcite-internal-animation-timing-fast) ease-in-out, color var(--calcite-internal-animation-timing-fast) ease-in-out}.label--horizontal{justify-content:center}:host{outline-color:transparent}:host(:focus){outline:2px solid var(--calcite-ui-brand);outline-offset:-1px}.label--scale-s{padding-inline:0.5rem;font-size:var(--calcite-font-size--2);line-height:1rem;padding-block:0.125rem}.label--scale-m{padding-inline:0.75rem;font-size:var(--calcite-font-size--1);line-height:1rem;padding-block:0.375rem}.label--scale-l{padding-inline:1rem;padding-block:0.625rem;font-size:var(--calcite-font-size-0);line-height:1.25rem}:host(:hover) label{background-color:var(--calcite-ui-foreground-2);color:var(--calcite-ui-text-1)}:host(:active) label{background-color:var(--calcite-ui-foreground-3)}:host([checked]) label{cursor:default;border-color:var(--calcite-ui-brand);background-color:var(--calcite-ui-brand);color:var(--calcite-ui-background)}:host([checked]) .label--outline,:host([checked]) .label--outline-fill{border-color:var(--calcite-ui-brand);background-color:var(--calcite-ui-foreground-1);box-shadow:inset 0 0 0 1px var(--calcite-ui-brand);color:var(--calcite-ui-brand)}:host([checked]) .label--outline{background-color:transparent}::slotted(input){display:none}@media (forced-colors: active){:host([checked]) label{background-color:highlight}:host([checked]) .label--outline,:host([checked]) .label--outline-fill{outline:2px solid transparent;outline-offset:2px}:host([checked]) label:not([class~=label--outline]) .segmented-control-item-icon{color:highlightText}}.segmented-control-item-icon{position:relative;margin:0px;display:inline-flex;line-height:inherit}:host([icon-start]) .label--scale-s .segmented-control-item-icon{-webkit-margin-end:0.5rem;margin-inline-end:0.5rem}:host([icon-end]) .label--scale-s .segmented-control-item-icon{-webkit-margin-start:0.5rem;margin-inline-start:0.5rem}:host([icon-start]) .label--scale-m .segmented-control-item-icon{-webkit-margin-end:0.75rem;margin-inline-end:0.75rem}:host([icon-end]) .label--scale-m .segmented-control-item-icon{-webkit-margin-start:0.75rem;margin-inline-start:0.75rem}:host([icon-start]) .label--scale-l .segmented-control-item-icon{-webkit-margin-end:1rem;margin-inline-end:1rem}:host([icon-end]) .label--scale-l .segmented-control-item-icon{-webkit-margin-start:1rem;margin-inline-start:1rem}";
+
+const SegmentedControlItem = class {
+  constructor(hostRef) {
+    registerInstance(this, hostRef);
+    this.calciteInternalSegmentedControlItemChange = createEvent(this, "calciteInternalSegmentedControlItemChange", 6);
+    this.checked = false;
+    this.iconFlipRtl = false;
+    this.iconStart = undefined;
+    this.iconEnd = undefined;
+    this.value = undefined;
+  }
+  handleCheckedChange() {
+    this.calciteInternalSegmentedControlItemChange.emit();
+  }
+  render() {
+    const { checked, value } = this;
+    const scale = getElementProp(this.el, "scale", "m");
+    const appearance = getElementProp(this.el, "appearance", "solid");
+    const layout = getElementProp(this.el, "layout", "horizontal");
+    const iconStartEl = this.iconStart ? (h("calcite-icon", { class: CSS.segmentedControlItemIcon, flipRtl: this.iconFlipRtl, icon: this.iconStart, key: "icon-start", scale: "s" })) : null;
+    const iconEndEl = this.iconEnd ? (h("calcite-icon", { class: CSS.segmentedControlItemIcon, flipRtl: this.iconFlipRtl, icon: this.iconEnd, key: "icon-end", scale: "s" })) : null;
+    return (h(Host, { "aria-checked": toAriaBoolean(checked), "aria-label": value, role: "radio" }, h("label", { class: {
+        "label--scale-s": scale === "s",
+        "label--scale-m": scale === "m",
+        "label--scale-l": scale === "l",
+        "label--horizontal": layout === "horizontal",
+        "label--outline": appearance === "outline",
+        "label--outline-fill": appearance === "outline-fill"
+      } }, this.iconStart ? iconStartEl : null, h("slot", null, value), h("slot", { name: SLOTS.input }), this.iconEnd ? iconEndEl : null)));
+  }
+  get el() { return getElement(this); }
+  static get watchers() { return {
+    "checked": ["handleCheckedChange"]
+  }; }
+};
+SegmentedControlItem.style = segmentedControlItemCss;
+
 const mapSelectToolsCss = ":host{display:block}.div-visible{display:inherit}.div-visible-search{display:flex;height:44px;align-items:center;padding-bottom:0}.div-not-visible{display:none}.padding-bottom-1{padding-bottom:1rem}.padding-top-1{padding-top:1rem}.search-widget{width:100% !important;border:1px solid var(--calcite-ui-border-input)}.w-100{width:100%}.w-50{width:50%}.search-distance-container{padding-top:\"1rem\" !important}.end-border{-webkit-border-end:1px solid var(--calcite-ui-border-2);border-inline-end:1px solid var(--calcite-ui-border-2)}.search-distance{display:flex;padding-top:1rem}.font-bold{font:bold}.border-bottom{border-bottom:1px solid var(--calcite-ui-border-2)}";
 
 const MapSelectTools = class {
   constructor(hostRef) {
-    index.registerInstance(this, hostRef);
-    this.selectionSetChange = index.createEvent(this, "selectionSetChange", 7);
+    registerInstance(this, hostRef);
+    this.selectionSetChange = createEvent(this, "selectionSetChange", 7);
     /**
      * number[]: the oids of the selected features
      */
@@ -1197,7 +1429,7 @@ const MapSelectTools = class {
    * Renders the component.
    */
   render() {
-    return (index.h(index.Host, null, this._getMapLayerPicker(), index.h("div", { class: "border-bottom" }), index.h("div", { class: "padding-top-sides-1" }, index.h("div", { class: "search-widget", ref: (el) => { this._searchElement = el; } }), index.h("div", { class: "padding-top-1" }, index.h("map-draw-tools", { active: true, graphics: this._graphics, mapView: this.mapView, onSketchGraphicsChange: (evt) => this._sketchGraphicsChanged(evt), pointSymbol: this.sketchPointSymbol, polygonSymbol: this.sketchPolygonSymbol, polylineSymbol: this.sketchLineSymbol, ref: (el) => { this._drawTools = el; } })), this._getBufferOptions(), this._getUseLayerFeaturesOptions(), this._getNumSelected()), index.h("div", { class: "border-bottom" }), this._getNameInput()));
+    return (h(Host, null, this._getMapLayerPicker(), h("div", { class: "border-bottom" }), h("div", { class: "padding-top-sides-1" }, h("div", { class: "search-widget", ref: (el) => { this._searchElement = el; } }), h("div", { class: "padding-top-1" }, h("map-draw-tools", { active: true, graphics: this._graphics, mapView: this.mapView, onSketchGraphicsChange: (evt) => this._sketchGraphicsChanged(evt), pointSymbol: this.sketchPointSymbol, polygonSymbol: this.sketchPolygonSymbol, polylineSymbol: this.sketchLineSymbol, ref: (el) => { this._drawTools = el; } })), this._getBufferOptions(), this._getUseLayerFeaturesOptions(), this._getNumSelected()), h("div", { class: "border-bottom" }), this._getNameInput()));
   }
   /**
    * Renders the buffer tools component.
@@ -1206,24 +1438,24 @@ const MapSelectTools = class {
     var _a, _b;
     const showBufferToolsClass = this._searchDistanceEnabled ? "search-distance" : "div-not-visible";
     const bufferDistance = typeof ((_a = this.selectionSet) === null || _a === void 0 ? void 0 : _a.distance) === "number" ? this.selectionSet.distance : this.defaultBufferDistance;
-    return (index.h("div", null, index.h("div", { class: "padding-top-1 display-flex" }, index.h("calcite-label", { class: "label-margin-0 " }, this._translations.searchDistance), index.h("calcite-switch", { checked: this._searchDistanceEnabled, class: "position-right", onCalciteSwitchChange: () => this._searchDistanceEnabled = !this._searchDistanceEnabled })), index.h("div", { class: showBufferToolsClass }, index.h("buffer-tools", { disabled: !this._searchDistanceEnabled, distance: bufferDistance, geometries: this.geometries, onBufferComplete: (evt) => this._bufferComplete(evt), ref: (el) => this._bufferTools = el, unit: ((_b = this.selectionSet) === null || _b === void 0 ? void 0 : _b.unit) || this.defaultBufferUnit }))));
+    return (h("div", null, h("div", { class: "padding-top-1 display-flex" }, h("calcite-label", { class: "label-margin-0 " }, this._translations.searchDistance), h("calcite-switch", { checked: this._searchDistanceEnabled, class: "position-right", onCalciteSwitchChange: () => this._searchDistanceEnabled = !this._searchDistanceEnabled })), h("div", { class: showBufferToolsClass }, h("buffer-tools", { disabled: !this._searchDistanceEnabled, distance: bufferDistance, geometries: this.geometries, onBufferComplete: (evt) => this._bufferComplete(evt), ref: (el) => this._bufferTools = el, unit: ((_b = this.selectionSet) === null || _b === void 0 ? void 0 : _b.unit) || this.defaultBufferUnit }))));
   }
   /**
    * Renders the map layer picker component.
    */
   _getUseLayerFeaturesOptions() {
     const useLayerFeaturesClass = this._useLayerFeaturesEnabled ? "div-visible" : "div-not-visible";
-    return (index.h("div", null, index.h("div", { class: "padding-top-1 display-flex" }, index.h("calcite-label", { class: "label-margin-0 " }, this._translations.useLayerFeatures), index.h("calcite-switch", { checked: this._useLayerFeaturesEnabled, class: "position-right", onCalciteSwitchChange: () => this._useLayerFeaturesEnabled = !this._useLayerFeaturesEnabled })), index.h("div", { class: useLayerFeaturesClass + " padding-top-1" }, index.h("map-layer-picker", { enabledLayerIds: this.enabledLayerIds, mapView: this.mapView, onLayerSelectionChange: (evt) => { void this._layerSelectionChange(evt); }, selectedLayerIds: this.layerViews.map(l => l.layer.id), selectionMode: "single" }))));
+    return (h("div", null, h("div", { class: "padding-top-1 display-flex" }, h("calcite-label", { class: "label-margin-0 " }, this._translations.useLayerFeatures), h("calcite-switch", { checked: this._useLayerFeaturesEnabled, class: "position-right", onCalciteSwitchChange: () => this._useLayerFeaturesEnabled = !this._useLayerFeaturesEnabled })), h("div", { class: useLayerFeaturesClass + " padding-top-1" }, h("map-layer-picker", { enabledLayerIds: this.enabledLayerIds, mapView: this.mapView, onLayerSelectionChange: (evt) => { void this._layerSelectionChange(evt); }, selectedLayerIds: this.layerViews.map(l => l.layer.id), selectionMode: "single" }))));
   }
   /**
    * Renders the number of selected features
    */
   _getNumSelected() {
     var _a;
-    const locale = locale$1.getComponentClosestLanguage(this.el);
+    const locale = getComponentClosestLanguage(this.el);
     const selectionLoading = locale && locale === "en" ?
       `${this._translations.selectionLoading}...` : this._translations.selectionLoading;
-    return (index.h("div", { class: "padding-top-1 padding-bottom-1", style: { "align-items": "end", "display": "flex" } }, this._selectionLoading ? (index.h("div", null, index.h("calcite-loader", { class: "info-blue", inline: true, label: selectionLoading, scale: "m", type: "indeterminate" }))) : (index.h("calcite-icon", { class: "info-blue padding-end-1-2", icon: "feature-layer", scale: "s" })), index.h("calcite-input-message", { class: "info-blue", scale: "m" }, this._selectionLoading ? selectionLoading :
+    return (h("div", { class: "padding-top-1 padding-bottom-1", style: { "align-items": "end", "display": "flex" } }, this._selectionLoading ? (h("div", null, h("calcite-loader", { class: "info-blue", inline: true, label: selectionLoading, scale: "m", type: "indeterminate" }))) : (h("calcite-icon", { class: "info-blue padding-end-1-2", icon: "feature-layer", scale: "s" })), h("calcite-input-message", { class: "info-blue", scale: "m" }, this._selectionLoading ? selectionLoading :
       this.noResultText && this._numSelected === 0 ? this.noResultText :
         this._translations.selectedAddresses.replace("{{n}}", this._numSelected.toString()).replace("{{layer}}", ((_a = this.selectLayerView) === null || _a === void 0 ? void 0 : _a.layer.title) || ""))));
   }
@@ -1232,7 +1464,7 @@ const MapSelectTools = class {
    */
   _getNameInput() {
     const nameLabelClass = this.customLabelEnabled ? "" : "display-none";
-    return (index.h("div", { class: "padding-sides-1 padding-top-1 " + nameLabelClass }, index.h("calcite-label", { class: "font-bold" }, this._translations.listName, index.h("calcite-input", { onInput: () => {
+    return (h("div", { class: "padding-sides-1 padding-top-1 " + nameLabelClass }, h("calcite-label", { class: "font-bold" }, this._translations.listName, h("calcite-input", { onInput: () => {
         this._selectionLabel = this._labelName.value;
       }, placeholder: this._translations.listNamePlaceholder, ref: (el) => { this._labelName = el; }, value: this._selectionLabel || "" }))));
   }
@@ -1243,7 +1475,7 @@ const MapSelectTools = class {
  * @protected
  */
   _getMapLayerPicker() {
-    return (index.h("div", { class: "display-flex padding-sides-1 padding-bottom-1" }, index.h("calcite-label", { class: "font-bold width-full label-margin-0" }, this._translations.inputLayer, index.h("map-layer-picker", { enabledLayerIds: this.enabledLayerIds, mapView: this.mapView, onLayerSelectionChange: (evt) => this._inputLayerSelectionChange(evt), selectedLayerIds: this.selectionSet ? [this.selectionSet.layerView.layer.id] : [], selectionMode: "single" }))));
+    return (h("div", { class: "display-flex padding-sides-1 padding-bottom-1" }, h("calcite-label", { class: "font-bold width-full label-margin-0" }, this._translations.inputLayer, h("map-layer-picker", { enabledLayerIds: this.enabledLayerIds, mapView: this.mapView, onLayerSelectionChange: (evt) => this._inputLayerSelectionChange(evt), selectedLayerIds: this.selectionSet ? [this.selectionSet.layerView.layer.id] : [], selectionMode: "single" }))));
   }
   //--------------------------------------------------------------------------
   //
@@ -1258,7 +1490,7 @@ const MapSelectTools = class {
    * @protected
    */
   async _initModules() {
-    const [GraphicsLayer, Graphic, Search, geometryEngine, FeatureLayer] = await loadModules.loadModules([
+    const [GraphicsLayer, Graphic, Search, geometryEngine, FeatureLayer] = await loadModules([
       "esri/layers/GraphicsLayer",
       "esri/Graphic",
       "esri/widgets/Search",
@@ -1307,7 +1539,7 @@ const MapSelectTools = class {
         ...((_c = this.selectionSet) === null || _c === void 0 ? void 0 : _c.graphics) || []
       ];
       this._selectionLabel = (_d = this.selectionSet) === null || _d === void 0 ? void 0 : _d.label;
-      await mapViewUtils.goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
+      await goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     }
     else {
       this.mapView.popup.autoOpenEnabled = false;
@@ -1334,7 +1566,7 @@ const MapSelectTools = class {
           this._searchResult = searchResults.result;
           const useOIDs = ((_b = (_a = searchResults.source) === null || _a === void 0 ? void 0 : _a.layer) === null || _b === void 0 ? void 0 : _b.id) && searchResults.source.layer.id === this.selectLayerView.layer.id;
           const oids = useOIDs ? [searchResults.result.feature.getObjectId()] : undefined;
-          this._workflowType = interfaces.EWorkflowType.SEARCH;
+          this._workflowType = EWorkflowType.SEARCH;
           this._updateLabel();
           this._updateSelection([searchResults.result.feature], useOIDs, oids);
         }
@@ -1416,7 +1648,7 @@ const MapSelectTools = class {
     }
     else {
       this._bufferGraphicsLayer = new this.GraphicsLayer({ title, listMode: "hide" });
-      publicNotificationStore.state.managedLayers.push(title);
+      state.managedLayers.push(title);
       const sketchIndex = this.mapView.map.layers.findIndex((l) => l.title === this._translations.sketchLayer);
       if (sketchIndex > -1) {
         this.mapView.map.layers.add(this._bufferGraphicsLayer, sketchIndex);
@@ -1432,7 +1664,7 @@ const MapSelectTools = class {
    */
   async _sketchGraphicsChanged(event, forceUpdate = false) {
     const graphics = event.detail.graphics;
-    this._workflowType = this._useLayerFeaturesEnabled ? interfaces.EWorkflowType.SELECT : interfaces.EWorkflowType.SKETCH;
+    this._workflowType = this._useLayerFeaturesEnabled ? EWorkflowType.SELECT : EWorkflowType.SKETCH;
     this._updateLabel();
     this._clearSearchWidget();
     if (this._useLayerFeaturesEnabled && !forceUpdate) {
@@ -1479,9 +1711,9 @@ const MapSelectTools = class {
    * @protected
    */
   async _highlightFeatures(ids) {
-    publicNotificationStore.state.removeHandles();
+    state.removeHandles();
     if (ids.length > 0) {
-      publicNotificationStore.state.highlightHandles.push(await mapViewUtils.highlightFeatures(ids, this.selectLayerView, this.mapView));
+      state.highlightHandles.push(await highlightFeatures(ids, this.selectLayerView, this.mapView));
     }
     this._numSelected = ids.length;
     this.selectionSetChange.emit(ids.length);
@@ -1495,7 +1727,7 @@ const MapSelectTools = class {
    */
   async _selectFeatures(geometries) {
     this._selectionLoading = true;
-    this._selectedIds = await mapViewUtils.queryObjectIds(geometries, this.selectLayerView.layer);
+    this._selectedIds = await queryObjectIds(geometries, this.selectLayerView.layer);
     this._selectionLoading = false;
     // stored as graphics now in addition to the geoms
     this._drawTools.graphics = this._graphics;
@@ -1558,7 +1790,7 @@ const MapSelectTools = class {
    * @protected
    */
   _geomQuery(geometries) {
-    const queryGeoms = mapViewUtils.getQueryGeoms(geometries, this._geometryEngine);
+    const queryGeoms = getQueryGeoms(geometries, this._geometryEngine);
     return this._selectFeatures(queryGeoms);
   }
   /**
@@ -1584,7 +1816,7 @@ const MapSelectTools = class {
     if (clearSearchWidget && this._searchWidget) {
       this._clearSearchWidget();
     }
-    publicNotificationStore.state.removeHandles();
+    state.removeHandles();
     // checking for clear as it would throw off tests
     if ((_a = this._drawTools) === null || _a === void 0 ? void 0 : _a.clear) {
       this._graphics = [];
@@ -1629,8 +1861,8 @@ const MapSelectTools = class {
     const hasSketch = this._selectionLabel.indexOf(this._translations.sketch) > -1;
     const hasSelect = this._selectionLabel.indexOf(this._translations.select) > -1;
     const hasSearch = this._selectionLabel.indexOf((_a = this._searchResult) === null || _a === void 0 ? void 0 : _a.name) > -1;
-    const label = this._workflowType === interfaces.EWorkflowType.SEARCH ? (_b = this._searchResult) === null || _b === void 0 ? void 0 : _b.name :
-      this._workflowType === interfaces.EWorkflowType.SELECT ?
+    const label = this._workflowType === EWorkflowType.SEARCH ? (_b = this._searchResult) === null || _b === void 0 ? void 0 : _b.name :
+      this._workflowType === EWorkflowType.SELECT ?
         this._translations.select : this._translations.sketch;
     const unit = !this._unit ? this._bufferTools.unit : this._unit;
     const distance = isNaN(this._distance) ? this._bufferTools.distance : this._distance;
@@ -1648,7 +1880,7 @@ const MapSelectTools = class {
   async _layerSelectionChange(evt) {
     if (Array.isArray(evt.detail) && evt.detail.length > 0) {
       const layerPromises = evt.detail.map(id => {
-        return mapViewUtils.getMapLayerView(this.mapView, id);
+        return getMapLayerView(this.mapView, id);
       });
       return Promise.all(layerPromises).then((layerViews) => {
         this.layerViews = layerViews;
@@ -1667,7 +1899,7 @@ const MapSelectTools = class {
     var _a;
     const id = ((_a = evt === null || evt === void 0 ? void 0 : evt.detail) === null || _a === void 0 ? void 0 : _a.length) > 0 ? evt.detail[0] : "";
     if (!this.selectLayerView || id !== this.selectLayerView.layer.id) {
-      this.selectLayerView = await mapViewUtils.getMapLayerView(this.mapView, id);
+      this.selectLayerView = await getMapLayerView(this.mapView, id);
     }
   }
   /**
@@ -1690,7 +1922,7 @@ const MapSelectTools = class {
     this._selectionLoading = true;
     const queryFeaturePromises = this.layerViews.map(layerView => {
       this._featuresCollection[layerView.layer.id] = [];
-      return mapViewUtils.queryFeaturesByGeometry(0, layerView.layer, geom, this._featuresCollection);
+      return queryFeaturesByGeometry(0, layerView.layer, geom, this._featuresCollection);
     });
     return Promise.all(queryFeaturePromises).then(async (response) => {
       this._selectionLoading = false;
@@ -1726,10 +1958,10 @@ const MapSelectTools = class {
    * @protected
    */
   async _getTranslations() {
-    const translations = await locale$1.getLocaleComponentStrings(this.el);
+    const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0];
   }
-  get el() { return index.getElement(this); }
+  get el() { return getElement(this); }
   static get watchers() { return {
     "geometries": ["watchGeometriesHandler"],
     "searchConfiguration": ["watchSearchConfigurationHandler"]
@@ -1938,7 +2170,7 @@ const pdfDownloadCss = ":host{display:block}";
 
 const PdfDownload = class {
   constructor(hostRef) {
-    index.registerInstance(this, hostRef);
+    registerInstance(this, hostRef);
     this.disabled = false;
     this._translations = undefined;
   }
@@ -1953,7 +2185,7 @@ const PdfDownload = class {
   //
   //--------------------------------------------------------------------------
   /**
-   * Downloads csv of mailing labels for the provided list of ids.
+   * Downloads csv of mailing labels for the provided list of ids
    *
    * @param selectionSetNames Names of the selection sets used to provide ids
    * @param ids List of ids to download
@@ -1961,21 +2193,26 @@ const PdfDownload = class {
    * @param addColumnTitle Indicates if column headings should be included in output
    * @returns Promise resolving when function is done
    */
-  async downloadCSV(layerView, selectionSetNames, ids, removeDuplicates, addColumnTitle = true) {
-    return downloadUtils.downloadCSV(selectionSetNames, layerView.layer, ids, true, // formatUsingLayerPopup
-    removeDuplicates, addColumnTitle);
+  async downloadCSV(exportInfos, removeDuplicates, addColumnTitle = true) {
+    Object.keys(exportInfos).forEach(k => {
+      const exportInfo = exportInfos[k];
+      void downloadCSV(exportInfo.selectionSetNames, exportInfo.layerView.layer, exportInfo.ids, true, // formatUsingLayerPopup
+      removeDuplicates, addColumnTitle);
+    });
   }
   /**
-   * Downloads pdf of mailing labels for the provided list of ids.
+   * Downloads pdf of mailing labels for the provided list of ids
    *
    * @param selectionSetNames Names of the selection sets used to provide ids
    * @param ids List of ids to download
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * @param title Title for each page
    * @returns Promise resolving when function is done
    */
-  async downloadPDF(layerView, selectionSetNames, ids, removeDuplicates = false, title = "") {
-    return downloadUtils.downloadPDF(selectionSetNames, layerView.layer, ids, this._labelInfoElement.selectedOption.value, removeDuplicates, title);
+  async downloadPDF(exportInfos, removeDuplicates) {
+    Object.keys(exportInfos).forEach(k => {
+      const exportInfo = exportInfos[k];
+      void downloadPDF(exportInfo.selectionSetNames, exportInfo.layerView.layer, exportInfo.ids, this._labelInfoElement.selectedOption.value, removeDuplicates, title);
+    });
   }
   //--------------------------------------------------------------------------
   //
@@ -1998,7 +2235,7 @@ const PdfDownload = class {
    * Renders the component.
    */
   render() {
-    return (index.h(index.Host, null, index.h("calcite-select", { disabled: this.disabled, label: "", ref: (el) => { this._labelInfoElement = el; } }, this._renderItems())));
+    return (h(Host, null, h("calcite-select", { disabled: this.disabled, label: "", ref: (el) => { this._labelInfoElement = el; } }, this._renderItems())));
   }
   //--------------------------------------------------------------------------
   //
@@ -2013,7 +2250,7 @@ const PdfDownload = class {
    * @protected
    */
   async _initModules() {
-    const [intl] = await loadModules.loadModules([
+    const [intl] = await loadModules([
       "esri/intl"
     ]);
     this._intl = intl;
@@ -2037,7 +2274,7 @@ const PdfDownload = class {
    * @protected
    */
   async _getTranslations() {
-    const translations = await locale$1.getLocaleComponentStrings(this.el);
+    const translations = await getLocaleComponentStrings(this.el);
     this._translations = translations[0];
   }
   /**
@@ -2055,16 +2292,11 @@ const PdfDownload = class {
       return _a < _b ? -1 : _a > _b ? 1 : 0;
     });
     return sortedPdfIndo.map((l) => {
-      return (index.h("calcite-option", { value: l }, this._getLabelSizeText(l)));
+      return (h("calcite-option", { value: l }, this._getLabelSizeText(l)));
     });
   }
-  get el() { return index.getElement(this); }
+  get el() { return getElement(this); }
 };
 PdfDownload.style = pdfDownloadCss;
 
-exports.calcite_input_text = InputText;
-exports.calcite_list = List;
-exports.calcite_list_item = ListItem;
-exports.calcite_notice = Notice;
-exports.map_select_tools = MapSelectTools;
-exports.pdf_download = PdfDownload;
+export { InputText as calcite_input_text, List as calcite_list, ListItem as calcite_list_item, Notice as calcite_notice, SegmentedControl as calcite_segmented_control, SegmentedControlItem as calcite_segmented_control_item, MapSelectTools as map_select_tools, PdfDownload as pdf_download };

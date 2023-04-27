@@ -21,6 +21,7 @@ import PdfDownload_T9n from "../../assets/t9n/pdf-download/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { Component, Element, Host, h, Method, Prop, State, VNode } from "@stencil/core";
 import { getLocaleComponentStrings } from "../../utils/locale";
+import { IExportInfos } from "../../utils/interfaces";
 
 @Component({
   tag: "pdf-download",
@@ -87,7 +88,7 @@ export class PdfDownload {
   //--------------------------------------------------------------------------
 
   /**
-   * Downloads csv of mailing labels for the provided list of ids.
+   * Downloads csv of mailing labels for the provided list of ids
    *
    * @param selectionSetNames Names of the selection sets used to provide ids
    * @param ids List of ids to download
@@ -97,47 +98,47 @@ export class PdfDownload {
    */
   @Method()
   async downloadCSV(
-    layerView: __esri.FeatureLayerView,
-    selectionSetNames: string[],
-    ids: number[],
+    exportInfos: IExportInfos,
     removeDuplicates: boolean,
     addColumnTitle = true
   ): Promise<void> {
-    return downloadUtils.downloadCSV(
-      selectionSetNames,
-      layerView.layer,
-      ids,
-      true, // formatUsingLayerPopup
-      removeDuplicates,
-      addColumnTitle
-    );
+    Object.keys(exportInfos).forEach(k => {
+      const exportInfo = exportInfos[k];
+      void downloadUtils.downloadCSV(
+        exportInfo.selectionSetNames,
+        exportInfo.layerView.layer,
+        exportInfo.ids,
+        true, // formatUsingLayerPopup
+        removeDuplicates,
+        addColumnTitle
+      );
+    });
   }
 
   /**
-   * Downloads pdf of mailing labels for the provided list of ids.
+   * Downloads pdf of mailing labels for the provided list of ids
    *
    * @param selectionSetNames Names of the selection sets used to provide ids
    * @param ids List of ids to download
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * @param title Title for each page
    * @returns Promise resolving when function is done
    */
   @Method()
   async downloadPDF(
-    layerView: __esri.FeatureLayerView,
-    selectionSetNames: string[],
-    ids: number[],
-    removeDuplicates = false,
-    title = ""
+    exportInfos: IExportInfos,
+    removeDuplicates: boolean
   ): Promise<void> {
-    return downloadUtils.downloadPDF(
-      selectionSetNames,
-      layerView.layer,
-      ids,
-      this._labelInfoElement.selectedOption.value as downloadUtils.ILabel,
-      removeDuplicates,
-      title
-    );
+    Object.keys(exportInfos).forEach(k => {
+      const exportInfo = exportInfos[k];
+      void downloadUtils.downloadPDF(
+        exportInfo.selectionSetNames,
+        exportInfo.layerView.layer,
+        exportInfo.ids,
+        this._labelInfoElement.selectedOption.value as downloadUtils.ILabel,
+        removeDuplicates,
+        title
+      );
+    });
   }
 
   //--------------------------------------------------------------------------

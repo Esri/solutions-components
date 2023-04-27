@@ -229,7 +229,7 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
   //
   //--------------------------------------------------------------------------
   /**
-   * Downloads csv of mailing labels for the provided list of ids.
+   * Downloads csv of mailing labels for the provided list of ids
    *
    * @param selectionSetNames Names of the selection sets used to provide ids
    * @param ids List of ids to download
@@ -237,21 +237,26 @@ const PdfDownload = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
    * @param addColumnTitle Indicates if column headings should be included in output
    * @returns Promise resolving when function is done
    */
-  async downloadCSV(layerView, selectionSetNames, ids, removeDuplicates, addColumnTitle = true) {
-    return downloadCSV(selectionSetNames, layerView.layer, ids, true, // formatUsingLayerPopup
-    removeDuplicates, addColumnTitle);
+  async downloadCSV(exportInfos, removeDuplicates, addColumnTitle = true) {
+    Object.keys(exportInfos).forEach(k => {
+      const exportInfo = exportInfos[k];
+      void downloadCSV(exportInfo.selectionSetNames, exportInfo.layerView.layer, exportInfo.ids, true, // formatUsingLayerPopup
+      removeDuplicates, addColumnTitle);
+    });
   }
   /**
-   * Downloads pdf of mailing labels for the provided list of ids.
+   * Downloads pdf of mailing labels for the provided list of ids
    *
    * @param selectionSetNames Names of the selection sets used to provide ids
    * @param ids List of ids to download
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * @param title Title for each page
    * @returns Promise resolving when function is done
    */
-  async downloadPDF(layerView, selectionSetNames, ids, removeDuplicates = false, title = "") {
-    return downloadPDF(selectionSetNames, layerView.layer, ids, this._labelInfoElement.selectedOption.value, removeDuplicates, title);
+  async downloadPDF(exportInfos, removeDuplicates) {
+    Object.keys(exportInfos).forEach(k => {
+      const exportInfo = exportInfos[k];
+      void downloadPDF(exportInfo.selectionSetNames, exportInfo.layerView.layer, exportInfo.ids, this._labelInfoElement.selectedOption.value, removeDuplicates, title);
+    });
   }
   //--------------------------------------------------------------------------
   //

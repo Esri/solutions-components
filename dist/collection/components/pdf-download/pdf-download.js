@@ -40,7 +40,7 @@ export class PdfDownload {
   //
   //--------------------------------------------------------------------------
   /**
-   * Downloads csv of mailing labels for the provided list of ids.
+   * Downloads csv of mailing labels for the provided list of ids
    *
    * @param selectionSetNames Names of the selection sets used to provide ids
    * @param ids List of ids to download
@@ -48,21 +48,26 @@ export class PdfDownload {
    * @param addColumnTitle Indicates if column headings should be included in output
    * @returns Promise resolving when function is done
    */
-  async downloadCSV(layerView, selectionSetNames, ids, removeDuplicates, addColumnTitle = true) {
-    return downloadUtils.downloadCSV(selectionSetNames, layerView.layer, ids, true, // formatUsingLayerPopup
-    removeDuplicates, addColumnTitle);
+  async downloadCSV(exportInfos, removeDuplicates, addColumnTitle = true) {
+    Object.keys(exportInfos).forEach(k => {
+      const exportInfo = exportInfos[k];
+      void downloadUtils.downloadCSV(exportInfo.selectionSetNames, exportInfo.layerView.layer, exportInfo.ids, true, // formatUsingLayerPopup
+      removeDuplicates, addColumnTitle);
+    });
   }
   /**
-   * Downloads pdf of mailing labels for the provided list of ids.
+   * Downloads pdf of mailing labels for the provided list of ids
    *
    * @param selectionSetNames Names of the selection sets used to provide ids
    * @param ids List of ids to download
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-   * @param title Title for each page
    * @returns Promise resolving when function is done
    */
-  async downloadPDF(layerView, selectionSetNames, ids, removeDuplicates = false, title = "") {
-    return downloadUtils.downloadPDF(selectionSetNames, layerView.layer, ids, this._labelInfoElement.selectedOption.value, removeDuplicates, title);
+  async downloadPDF(exportInfos, removeDuplicates) {
+    Object.keys(exportInfos).forEach(k => {
+      const exportInfo = exportInfos[k];
+      void downloadUtils.downloadPDF(exportInfo.selectionSetNames, exportInfo.layerView.layer, exportInfo.ids, this._labelInfoElement.selectedOption.value, removeDuplicates, title);
+    });
   }
   //--------------------------------------------------------------------------
   //
@@ -188,22 +193,10 @@ export class PdfDownload {
     return {
       "downloadCSV": {
         "complexType": {
-          "signature": "(layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>",
+          "signature": "(exportInfos: IExportInfos, removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>",
           "parameters": [{
               "tags": [],
               "text": ""
-            }, {
-              "tags": [{
-                  "name": "param",
-                  "text": "selectionSetNames Names of the selection sets used to provide ids"
-                }],
-              "text": "Names of the selection sets used to provide ids"
-            }, {
-              "tags": [{
-                  "name": "param",
-                  "text": "ids List of ids to download"
-                }],
-              "text": "List of ids to download"
             }, {
               "tags": [{
                   "name": "param",
@@ -221,14 +214,15 @@ export class PdfDownload {
             "Promise": {
               "location": "global"
             },
-            "___esri": {
-              "location": "global"
+            "IExportInfos": {
+              "location": "import",
+              "path": "../../utils/interfaces"
             }
           },
           "return": "Promise<void>"
         },
         "docs": {
-          "text": "Downloads csv of mailing labels for the provided list of ids.",
+          "text": "Downloads csv of mailing labels for the provided list of ids",
           "tags": [{
               "name": "param",
               "text": "selectionSetNames Names of the selection sets used to provide ids"
@@ -249,41 +243,24 @@ export class PdfDownload {
       },
       "downloadPDF": {
         "complexType": {
-          "signature": "(layerView: __esri.FeatureLayerView, selectionSetNames: string[], ids: number[], removeDuplicates?: boolean, title?: string) => Promise<void>",
+          "signature": "(exportInfos: IExportInfos, removeDuplicates: boolean) => Promise<void>",
           "parameters": [{
               "tags": [],
               "text": ""
             }, {
               "tags": [{
                   "name": "param",
-                  "text": "selectionSetNames Names of the selection sets used to provide ids"
-                }],
-              "text": "Names of the selection sets used to provide ids"
-            }, {
-              "tags": [{
-                  "name": "param",
-                  "text": "ids List of ids to download"
-                }],
-              "text": "List of ids to download"
-            }, {
-              "tags": [{
-                  "name": "param",
                   "text": "removeDuplicates When true a single label is generated when multiple featues have a shared address value"
                 }],
               "text": "When true a single label is generated when multiple featues have a shared address value"
-            }, {
-              "tags": [{
-                  "name": "param",
-                  "text": "title Title for each page"
-                }],
-              "text": "Title for each page"
             }],
           "references": {
             "Promise": {
               "location": "global"
             },
-            "___esri": {
-              "location": "global"
+            "IExportInfos": {
+              "location": "import",
+              "path": "../../utils/interfaces"
             },
             "downloadUtils": {
               "location": "global"
@@ -292,7 +269,7 @@ export class PdfDownload {
           "return": "Promise<void>"
         },
         "docs": {
-          "text": "Downloads pdf of mailing labels for the provided list of ids.",
+          "text": "Downloads pdf of mailing labels for the provided list of ids",
           "tags": [{
               "name": "param",
               "text": "selectionSetNames Names of the selection sets used to provide ids"
@@ -302,9 +279,6 @@ export class PdfDownload {
             }, {
               "name": "param",
               "text": "removeDuplicates When true a single label is generated when multiple featues have a shared address value"
-            }, {
-              "name": "param",
-              "text": "title Title for each page"
             }, {
               "name": "returns",
               "text": "Promise resolving when function is done"

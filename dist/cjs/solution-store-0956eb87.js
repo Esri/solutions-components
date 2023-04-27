@@ -6,7 +6,7 @@
 'use strict';
 
 const index = require('./index-e1b1954f.js');
-const interfaces = require('./interfaces-043b0758.js');
+const interfaces = require('./interfaces-2b40fc8e.js');
 const _commonjsHelpers = require('./_commonjsHelpers-384729db.js');
 
 /*! *****************************************************************************

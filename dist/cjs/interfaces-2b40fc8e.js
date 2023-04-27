@@ -61,3 +61,8 @@ exports.EWorkflowType = void 0;
   EWorkflowType["SELECT"] = "SELECT";
   EWorkflowType["SKETCH"] = "SKETCH";
 })(exports.EWorkflowType || (exports.EWorkflowType = {}));
+exports.EExportType = void 0;
+(function (EExportType) {
+  EExportType["CSV"] = "CSV";
+  EExportType["PDF"] = "PDF";
+})(exports.EExportType || (exports.EExportType = {}));

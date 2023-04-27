@@ -11,8 +11,8 @@ const index = require('./index-6654298b.js');
 const loadModules = require('./loadModules-ae7715f2.js');
 const locale = require('./locale-b113c6b2.js');
 const mapViewUtils = require('./mapViewUtils-7e04e61c.js');
-const downloadUtils = require('./downloadUtils-6e2e442a.js');
-const interfaces = require('./interfaces-043b0758.js');
+const downloadUtils = require('./downloadUtils-8359ed84.js');
+const interfaces = require('./interfaces-2b40fc8e.js');
 require('./_commonjsHelpers-384729db.js');
 
 const layerTableCss = ":host{display:block}.table-div{height:calc(100% - 35px)}.display-flex{display:flex}.table-border{border:1px solid var(--calcite-ui-border-2)}";

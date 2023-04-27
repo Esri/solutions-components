@@ -1,8 +1,3 @@
-/*!
- * Copyright 2022 Esri
- * Licensed under the Apache License, Version 2.0
- * http://www.apache.org/licenses/LICENSE-2.0
- */
 /** @license
  * Copyright 2022 Esri
  *
@@ -19,32 +14,32 @@
  * limitations under the License.
  */
 export function getSelectionIds(selectionSets) {
-  return Object.keys(selectionSets).reduce((prev, cur) => {
-    return [
-      ...prev,
-      ...selectionSets[cur].download ? selectionSets[cur].selectedIds : []
-    ];
-  }, []);
+    return Object.keys(selectionSets).reduce((prev, cur) => {
+        return [
+            ...prev,
+            ...selectionSets[cur].download ? selectionSets[cur].selectedIds : []
+        ];
+    }, []);
 }
 export function getSelectionIdsAndViews(selectionSets) {
-  return selectionSets.reduce((prev, cur) => {
-    if (Object.keys(prev).indexOf(cur.layerView.layer.id) > -1) {
-      prev[cur.layerView.layer.id].ids = [
-        ...prev[cur.layerView.layer.id].ids,
-        ...cur.selectedIds
-      ];
-      prev[cur.layerView.layer.id].selectionSetNames.push(cur.label);
-    }
-    else {
-      prev[cur.layerView.layer.id] = {
-        ids: cur.selectedIds,
-        layerView: cur.layerView,
-        selectionSetNames: [cur.label]
-      };
-    }
-    return prev;
-  }, {});
+    return selectionSets.reduce((prev, cur) => {
+        if (Object.keys(prev).indexOf(cur.layerView.layer.id) > -1) {
+            prev[cur.layerView.layer.id].ids = [
+                ...prev[cur.layerView.layer.id].ids,
+                ...cur.selectedIds
+            ];
+            prev[cur.layerView.layer.id].selectionSetNames.push(cur.label);
+        }
+        else {
+            prev[cur.layerView.layer.id] = {
+                ids: cur.selectedIds,
+                layerView: cur.layerView,
+                selectionSetNames: [cur.label]
+            };
+        }
+        return prev;
+    }, {});
 }
 export function getTotal(selectionSets) {
-  return [...new Set(getSelectionIds(selectionSets))].length;
+    return [...new Set(getSelectionIds(selectionSets))].length;
 }

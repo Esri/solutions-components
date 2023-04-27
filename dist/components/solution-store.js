@@ -4,7 +4,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 import { c as createStore } from './index2.js';
-import { d as EUpdateType } from './interfaces.js';
+import { e as EUpdateType } from './interfaces.js';
 import { c as createCommonjsModule, a as commonjsGlobal, b as commonjsRequire } from './_commonjsHelpers.js';
 
 /*! *****************************************************************************

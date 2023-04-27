@@ -1,7 +1,7 @@
-Built 04/27/2023 11:18:55.51 
+Built 04/27/2023 13:20:06.25 
 enh/pn-map-and-title-ui
-commit 508db61b85815f2e233845ca071f8077282ae52b
+commit 489f9ff507c72d934548f03c888ef810ccb55f09
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Thu Apr 27 09:17:49 2023 -0700
+Date:   Thu Apr 27 11:25:05 2023 -0700
 
-    Update download utils to match UI updates
+    Refactor to prepare for map screenshot capability

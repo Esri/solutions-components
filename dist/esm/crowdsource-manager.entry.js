@@ -5,7 +5,7 @@
  */
 import { r as registerInstance, h, H as Host, g as getElement } from './index-d298aca9.js';
 import { g as getLocaleComponentStrings } from './locale-54cac39a.js';
-import { E as ELayoutMode } from './interfaces-cd9c07ee.js';
+import { E as ELayoutMode } from './interfaces-9f6e2f3b.js';
 import './_commonjsHelpers-d5f9d613.js';
 
 const crowdsourceManagerCss = ":host{display:block;--calcite-label-margin-bottom:0px}.pad-top-51{padding-top:51px}.header-title{display:flex;float:left}.header-controls-label{display:flex;float:right}.header-controls{height:50px}.img-background{background-repeat:no-repeat;background-size:100% 100%;width:38px;height:26px}.grid-background{background-image:url('../../assets/data/images/grid.png')}.vertical-background{background-image:url('../../assets/data/images/horizontal.png')}.horizontal-background{background-image:url('../../assets/data/images/vertical.png')}.action-center{-webkit-box-align:center;-webkit-align-items:center;-ms-grid-row-align:center;align-items:center;align-content:center;justify-content:center}.background-transparent{background-color:transparent}.display-flex{display:flex}.header-text{font-size:var(--calcite-font-size-0);font-weight:var(--calcite-font-weight-medium);padding-inline:0.75rem;padding-block:0.875rem;line-height:1.25rem}.width-full{width:100%}.width-1-2{position:relative;width:50%}.width-1-3{position:relative;width:33.33%}.width-2-3{position:relative;width:66.66%}.width-0{width:0}.height-full{height:100%}.height-1-2{position:relative;height:50%}.height-0{height:0}.toggle-node{width:48px;height:48px}.overflow-hidden{overflow:hidden}.flex-column{flex-direction:column}.border{border-width:1px;border-style:solid;border-color:var(--calcite-ui-border-3)}.position-relative{position:relative}";

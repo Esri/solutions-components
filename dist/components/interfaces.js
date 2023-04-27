@@ -59,5 +59,10 @@ var EWorkflowType;
   EWorkflowType["SELECT"] = "SELECT";
   EWorkflowType["SKETCH"] = "SKETCH";
 })(EWorkflowType || (EWorkflowType = {}));
+var EExportType;
+(function (EExportType) {
+  EExportType["CSV"] = "CSV";
+  EExportType["PDF"] = "PDF";
+})(EExportType || (EExportType = {}));
 
-export { ELayoutMode as E, EPageType as a, EExpandType as b, EWorkflowType as c, EUpdateType as d };
+export { ELayoutMode as E, EExportType as a, EPageType as b, EExpandType as c, EWorkflowType as d, EUpdateType as e };
