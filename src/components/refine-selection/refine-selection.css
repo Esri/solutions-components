@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
- :host {
+:host {
   display: block;
-}
-
-.border {
-  outline: 1px solid var(--calcite-ui-border-input);
 }
 
 .div-visible {
@@ -44,42 +40,47 @@ html[dir="rtl"] .main-label {
   float: right;
 }
 
+.border {
+  outline: 1px solid var(--calcite-ui-border-input);
+}
+
 .margin-top-1 {
   margin-top: 1rem;
 }
 
-.border-left {
-  border-left: 1px solid rgba(110,110,110,.3);
+/* COPY FROM JS */
+.esri-sketch {
+  display: flex;
+  flex-flow: column wrap;
 }
 
-.border-left[dir="rtl"] {
-  border-right: 1px solid rgba(110,110,110,.3);
-}
-
-/* from js api */
 .esri-widget {
   box-sizing: border-box;
   color: #323232;
   font-size: 14px;
   font-family: "Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
   line-height: 1.3em;
-  background-color: #fff;
-  --esri-widget-padding-v: 12px;
-  --esri-widget-padding-h: 15px;
-  --esri-widget-padding: var(--esri-widget-padding-v) var(--esri-widget-padding-h);
+  background-color: var(--calcite-ui-foreground-1);
 }
 
+/* DIV CHILD */
 .esri-sketch__panel {
   align-items: center;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   padding: 0;
+} */
+
+/* DIV CHILD CHILD */
+.esri-sketch__tool-section {
+  border-right: 1px solid rgba(110,110,110,.3);
 }
 
 .esri-sketch__section {
   align-items: center;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   padding: 0 7px;
   margin: 6px 0;
+  border-right: 1px solid rgba(110,110,110,.3);
 }

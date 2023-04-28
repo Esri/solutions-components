@@ -88,6 +88,9 @@ graph TD;
   map-select-tools --> calcite-icon
   map-select-tools --> calcite-input-message
   map-select-tools --> calcite-input
+  map-draw-tools --> calcite-action
+  calcite-action --> calcite-loader
+  calcite-action --> calcite-icon
   buffer-tools --> calcite-option
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select

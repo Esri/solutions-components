@@ -39,7 +39,13 @@ export enum EUpdateType {
 export enum EPageType {
   LIST,
   SELECT,
-  EXPORT
+  EXPORT,
+  REFINE
+}
+
+export enum ESelectionMode {
+  ADD="ADD",
+  REMOVE="REMOVE"
 }
 
 export enum ESelectionType {
@@ -57,12 +63,18 @@ export enum EExpandType {
 export enum EWorkflowType {
   SEARCH="SEARCH",
   SELECT="SELECT",
-  SKETCH="SKETCH"
+  SKETCH="SKETCH",
+  REFINE="REFINE"
 }
 
 export enum EExportType {
   CSV="CSV",
   PDF="PDF"
+}
+
+export enum EDrawMode {
+  SKETCH="SKETCH",
+  REFINE="REFINE"
 }
 
 /* eslint-enable no-unused-vars */
@@ -377,6 +389,20 @@ export interface ISelectionSet {
   workflowType: EWorkflowType;
   searchDistanceEnabled: boolean;
   useLayerFeaturesEnabled: boolean;
+
+  refineIds: IRefineIds;
+  redoStack?: IRefineOperation[];
+  undoStack?: IRefineOperation[];
+}
+
+export interface IRefineIds {
+  addIds: number[];
+  removeIds: number[];
+}
+
+export interface IRefineOperation {
+  mode: ESelectionMode;
+  ids: number[];
 }
 
 export interface ISketchGraphicsChange {

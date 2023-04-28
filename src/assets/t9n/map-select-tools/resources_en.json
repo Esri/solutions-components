@@ -3,7 +3,7 @@
     "listNamePlaceholder": "Enter name here",
     "searchDistance": "Search distance",
     "select": "Layer",
-    "selectedAddresses": "{{n}} selected addresses from {{layer}}",
+    "selectedFeatures": "{{n}} selected features",
     "selectionLoading": "Selection loading",
     "sketch": "Sketch",
     "bufferLayer": "Buffer Layer",

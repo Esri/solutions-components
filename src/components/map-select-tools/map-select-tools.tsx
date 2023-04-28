@@ -559,9 +559,8 @@ export class MapSelectTools {
           {
             this._selectionLoading ? selectionLoading :
               this.noResultText && this._numSelected === 0 ? this.noResultText :
-                this._translations.selectedAddresses.replace(
-                  "{{n}}", this._numSelected.toString()).replace("{{layer}}", this.selectLayerView?.layer.title || ""
-                  )
+                this._translations.selectedFeatures.replace(
+                  "{{n}}", this._numSelected.toString())
           }
         </calcite-input-message>
       </div>
@@ -826,6 +825,8 @@ export class MapSelectTools {
    *
    */
   protected async _sketchGraphicsChanged(event: CustomEvent, forceUpdate = false): Promise<void> {
+    console.log("MST _sketchGraphicsChanged")
+
     const graphics = event.detail.graphics;
 
     this._workflowType = this._useLayerFeaturesEnabled ? EWorkflowType.SELECT : EWorkflowType.SKETCH;
