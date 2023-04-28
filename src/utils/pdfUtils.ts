@@ -16,6 +16,7 @@
 
 //#region Declarations
 
+import * as PDFCreator from "../assets/arcgis-pdf-creator/PDFCreator";
 import * as PDFCreator_jsPDF from "../assets/arcgis-pdf-creator/PDFCreator_jsPDF";
 import * as PDFLabels from "../assets/arcgis-pdf-creator/PDFLabels";
 import { getAssetPath } from "@stencil/core";
@@ -27,16 +28,20 @@ export { ILabel } from "../assets/arcgis-pdf-creator/PDFLabels";
 /**
  * Exports a PDF of labels.
  *
- * @param title Title to use for file
+ * @param filename Name to use for file (without file extension); defaults to "export"
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
+ * @param title Title for each page
+* @param initialImageDataUrl Data URL of image for first page
  */
 export function exportPDF(
-  title: string,
+  filename: string,
   labels: string[][],
-  labelPageDescription: PDFLabels.ILabel
+  labelPageDescription: PDFLabels.ILabel,
+  title = "",
+  initialImageDataUrl = ""
 ): void {
-  downloadPDFFile(title, labels, labelPageDescription);
+  downloadPDFFile(filename, labels, labelPageDescription, title, initialImageDataUrl);
 }
 
 //#endregion
@@ -45,14 +50,18 @@ export function exportPDF(
 /**
  * Downloads the PDF file.
  *
- * @param title Title (without file extension) to use for file; defaults to "export"
+ * @param filename Name to use for file (without file extension); defaults to "export"
  * @param labels Labels to write
  * @param labelPageDescription Page format to use for labels
+ * @param title Title for each page
+ * @param initialImageDataUrl Data URL of image for first page
  */
 function downloadPDFFile(
-  title: string,
+  filename: string,
   labels: string[][],
-  labelPageDescription: PDFLabels.ILabel
+  labelPageDescription: PDFLabels.ILabel,
+  title = "",
+  initialImageDataUrl = ""
 ): void {
   const pdfLib = new PDFCreator_jsPDF.PDFCreator_jsPDF();
   pdfLib.initialize(
@@ -61,7 +70,7 @@ function downloadPDFFile(
     },
     getAssetPath(`../assets/arcgis-pdf-creator/`),
     "en",
-    title
+    filename  // filename without ".pdf"
   )
   .then(
     () => {
@@ -69,10 +78,35 @@ function downloadPDFFile(
       labeller.initialize(pdfLib)
       .then(
         async () => {
+          const labelSpec = labelPageDescription.labelSpec;
+
+          let startingPageNum = 1;
+
+          // Add the screenshot to the PDF
+          if (initialImageDataUrl) {
+            const pageProperties = labelSpec.pageProperties;
+            const pageSize = PDFCreator.PDFCreator.getPageSize(pageProperties.pageType);
+
+            pdfLib.drawImage(initialImageDataUrl, {
+              x: pageProperties.leftMargin,
+              y: pageProperties.topMargin,
+              width: pageSize.width - pageProperties.leftMargin - pageProperties.rightMargin,
+              height: pageSize.height - pageProperties.topMargin - pageProperties.bottomMargin
+            });
+
+            if (title) {
+              labeller.drawSupplementalText(title, 0, -0.1);
+            }
+
+            pdfLib.addPage();
+            ++startingPageNum;
+          }
+
+          // Add the labels to the PDF
           await labeller.addLabelsToDoc(
             labels,
-            labelPageDescription.labelSpec,
-            1,  // startingPageNum
+            labelSpec,
+            startingPageNum,
             title  // heading
           );
 
