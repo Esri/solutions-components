@@ -78,7 +78,7 @@ function exportCSV(filename, labels) {
 
 /* @preserve
 * arcgis-pdf-creator v0.0.1
-* Tue Mar 21 2023 10:44:29 GMT-0700 (Pacific Daylight Time)
+* Thu Apr 27 2023 17:20:32 GMT-0700 (Pacific Daylight Time)
 */
 /** @license
  * Copyright 2022 Esri
@@ -103,7 +103,6 @@ function exportCSV(filename, labels) {
 
   Superclass: PDFCreator
   Subclass for the jsPDF library: PDFCreator_jsPDF
-  Subclass for the pdf_lib library: PDFCreator_pdf_lib
 */
 //--------------------------------------------------------------------------------------------------------------------//
 var EPageType;
@@ -113,69 +112,73 @@ var EPageType;
 })(EPageType || (EPageType = {}));
 //====================================================================================================================//
 class PDFCreator {
-    constructor() {
-        // Properties are public for testing purposes
-        this.dataPath = "";
-        this.lang = "en";
-        this.title = "";
-        this.fontProps = {
-            fontResolutionInchesPerPoint: 1 / 72,
-            fontFullHeightRatio: 1.28
-        };
-        this.lineOptions = {
-            x1: 0,
-            y1: 0,
-            x2: 0,
-            y2: 0,
-            lineProperties: {
-                thickness: 0.1,
-                color: "000000",
-                opacity: 1 // 0..1
-            }
-        };
-        this.pageOptions = {
-            pageType: EPageType.ANSI_A,
-            width: 8.5,
-            height: 11,
-            leftMargin: 0.25,
-            rightMargin: 0.25,
-            topMargin: 0.25,
-            bottomMargin: 0.25,
-            drawNeatline: false
-        };
-        this.rectangleOptions = {
-            left: 0,
-            top: 0,
-            width: 8.5,
-            height: 11,
-            lineProperties: {
-                thickness: 0.1,
-                color: "000000",
-                opacity: 1 // 0..1
-            },
-            fillColor: "",
-            fillOpacity: 1 // 0..1
-        };
-        this.tableOptions = {
-            lineProperties: {
-                thickness: 0.1,
-                color: "",
-                opacity: 1 // 0..1
-            },
-            textProperties: {
-                left: 0,
-                top: 0,
-                fontPoints: 1,
-                fontColor: "000000" // i.e., black
-            }
-        };
-        this.textOptions = {
+    // Properties are public for testing purposes
+    dataPath = "";
+    lang = "en";
+    title = "";
+    fontProps = {
+        fontResolutionInchesPerPoint: 1 / 72,
+        fontFullHeightRatio: 1.28
+    };
+    imageOptions = {
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0, // inches
+    };
+    lineOptions = {
+        x1: 0,
+        y1: 0,
+        x2: 0,
+        y2: 0,
+        lineProperties: {
+            thickness: 0.1,
+            color: "000000",
+            opacity: 1 // 0..1
+        }
+    };
+    pageOptions = {
+        pageType: EPageType.ANSI_A,
+        width: 8.5,
+        height: 11,
+        leftMargin: 0.25,
+        rightMargin: 0.25,
+        topMargin: 0.25,
+        bottomMargin: 0.25,
+        drawNeatline: false
+    };
+    rectangleOptions = {
+        left: 0,
+        top: 0,
+        width: 8.5,
+        height: 11,
+        lineProperties: {
+            thickness: 0.1,
+            color: "000000",
+            opacity: 1 // 0..1
+        },
+        fillColor: "",
+        fillOpacity: 1 // 0..1
+    };
+    tableOptions = {
+        lineProperties: {
+            thickness: 0.1,
+            color: "",
+            opacity: 1 // 0..1
+        },
+        textProperties: {
             left: 0,
             top: 0,
             fontPoints: 1,
             fontColor: "000000" // i.e., black
-        };
-    }
+        }
+    };
+    textOptions = {
+        left: 0,
+        top: 0,
+        fontPoints: 1,
+        fontColor: "000000" // i.e., black
+    };
     //-- Static methods ------------------------------------------------------------------------------------------------//
     /**
      * @class PDFCreator
@@ -199,6 +202,8 @@ class PDFCreator {
     }
     //-- Public methods ------------------------------------------------------------------------------------------------//
     /**
+     * Adds a page to the document being created.
+     *
      * @class PDFCreator
      */
     addPage() {
@@ -219,6 +224,16 @@ class PDFCreator {
     applyOpacity(colorIntensity, opacity) {
         const backgroundColorIntensity = 1;
         return (colorIntensity * opacity) + backgroundColorIntensity * (1 - opacity);
+    }
+    /**
+     * Draws a PNG image into the page.
+     *
+     * @params imageDataUrl Image to add to page
+     * @params options Position information
+     *
+     * @class PDFCreator
+     */
+    drawImage(imageDataUrl, options) {
     }
     /**
      * @class PDFCreator
@@ -1534,7 +1549,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var r,n,i,a,
 
 /* @preserve
 * arcgis-pdf-creator v0.0.1
-* Tue Mar 21 2023 10:44:29 GMT-0700 (Pacific Daylight Time)
+* Thu Apr 27 2023 17:20:32 GMT-0700 (Pacific Daylight Time)
 */
 
 /** @license
@@ -1554,12 +1569,15 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var r,n,i,a,
  */
 //--------------------------------------------------------------------------------------------------------------------//
 class PDFCreator_jsPDF extends PDFCreator {
+    jsDoc;
     constructor(jspdfToUse = null) {
         super();
         this.jsDoc = jspdfToUse;
     }
     //-- Public methods ------------------------------------------------------------------------------------------------//
     /**
+     * Adds a page to the document being created.
+     *
      * @class PDFCreator_jsPDF
      */
     addPage() {
@@ -1596,6 +1614,20 @@ class PDFCreator_jsPDF extends PDFCreator {
             }
         }
         return jsPDF_lang;
+    }
+    /**
+     * Draws a PNG image into the page.
+     *
+     * @params imageDataUrl Image to add to page
+     * @params options Position information
+     *
+     * @class PDFCreator
+     */
+    drawImage(imageDataUrl, options) {
+        const alias = ""; // "alias of the image (if used multiple times)"
+        const compression = "NONE"; // "compression of the generated JPEG, can have the values 'NONE', 'FAST', 'MEDIUM' and 'SLOW'"
+        const rotation = 0; // "rotation of the image in degrees (0-359)"
+        this.jsDoc.addImage(imageDataUrl, "PNG", options.x, options.y, options.width, options.height, alias, compression, rotation);
     }
     /**
      * @class PDFCreator_jsPDF
@@ -1762,7 +1794,7 @@ class PDFCreator_jsPDF extends PDFCreator {
 
 /* @preserve
 * arcgis-pdf-creator v0.0.1
-* Tue Mar 21 2023 10:44:29 GMT-0700 (Pacific Daylight Time)
+* Thu Apr 27 2023 17:20:32 GMT-0700 (Pacific Daylight Time)
 */
 /** @license
  * Copyright 2022 Esri
@@ -1825,7 +1857,7 @@ function drawGridOfBoxes(PDFCreator, options = {
 
 /* @preserve
 * arcgis-pdf-creator v0.0.1
-* Tue Mar 21 2023 10:44:29 GMT-0700 (Pacific Daylight Time)
+* Thu Apr 27 2023 17:20:32 GMT-0700 (Pacific Daylight Time)
 */
 
 /** @license
@@ -1845,6 +1877,9 @@ function drawGridOfBoxes(PDFCreator, options = {
  */
 //====================================================================================================================//
 class PDFLabels {
+    // Properties are public for testing purposes
+    PDFCreator;
+    labelFormats;
     //-- Public methods ------------------------------------------------------------------------------------------------//
     /**
      * Add labels to a PDF doc, starting at the beginning of the specified PDF doc page.
@@ -1870,7 +1905,7 @@ class PDFLabels {
             let currentPageNum = startingPageNum;
             const topOfFirstLabel = labelSpec.pageProperties.topMargin - this.PDFCreator.pageOptions.topMargin;
             if (heading) {
-                this._drawSupplementalText(heading, 0, -0.1);
+                this.drawSupplementalText(heading, 0, -0.1);
             }
             for (let iLabel = 0, iNonBlankLabel = 0; iLabel < labels.length; iLabel++) {
                 if (progressCallback) {
@@ -1888,7 +1923,7 @@ class PDFLabels {
                         this.PDFCreator.addPage();
                         ++currentPageNum;
                         if (heading) {
-                            this._drawSupplementalText(heading, 0, -0.1);
+                            this.drawSupplementalText(heading, 0, -0.1);
                         }
                     }
                     // Prep the new page
@@ -1948,6 +1983,22 @@ class PDFLabels {
                 lineProperties: labelBoundaryLinesProperties
             });
         }
+    }
+    /**
+     * Draws supplemental text such as a heading or footer.
+     *
+     * @param text Text to draw
+     * @param left Offset from left edge of document to left edge of text
+     * @param top Offset from top of document to top of text
+     */
+    drawSupplementalText(text, left, top) {
+        const fontPoints = 6;
+        this.PDFCreator.drawText(text, {
+            left,
+            top,
+            fontPoints,
+            fontColor: "000000"
+        });
     }
     /**
      * Returns the UI descriptions of the label formats.
@@ -2072,22 +2123,6 @@ class PDFLabels {
         return trimmedLines;
     }
     /**
-     * Draws supplemental text such as a heading or footer.
-     *
-     * @param text Text to draw
-     * @param left Offset from left edge of document to left edge of text
-     * @param top Offset from top of document to top of text
-     */
-    _drawSupplementalText(text, left, top) {
-        const fontPoints = 6;
-        this.PDFCreator.drawText(text, {
-            left,
-            top,
-            fontPoints,
-            fontColor: "000000"
-        });
-    }
-    /**
      * Trims a set of text lines to fit within specified bounds.
      *
      * @param lines Text lines to be checked
@@ -2180,19 +2215,23 @@ function downloadPDFFile(filename, labels, labelPageDescription, title = "", ini
       .then(async () => {
       const labelSpec = labelPageDescription.labelSpec;
       let startingPageNum = 1;
+      // Add the screenshot to the PDF
       if (initialImageDataUrl) {
         const pageProperties = labelSpec.pageProperties;
         const pageSize = PDFCreator.getPageSize(pageProperties.pageType);
-        // Add the screenshot to the PDF
         pdfLib.drawImage(initialImageDataUrl, {
           x: pageProperties.leftMargin,
           y: pageProperties.topMargin,
           width: pageSize.width - pageProperties.leftMargin - pageProperties.rightMargin,
           height: pageSize.height - pageProperties.topMargin - pageProperties.bottomMargin
         });
+        if (title) {
+          labeller.drawSupplementalText(title, 0, -0.1);
+        }
         pdfLib.addPage();
         ++startingPageNum;
       }
+      // Add the labels to the PDF
       await labeller.addLabelsToDoc(labels, labelSpec, startingPageNum, title // heading
       );
       pdfLib.save();

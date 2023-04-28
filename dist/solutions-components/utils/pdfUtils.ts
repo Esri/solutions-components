@@ -81,21 +81,28 @@ function downloadPDFFile(
           const labelSpec = labelPageDescription.labelSpec;
 
           let startingPageNum = 1;
+
+          // Add the screenshot to the PDF
           if (initialImageDataUrl) {
             const pageProperties = labelSpec.pageProperties;
             const pageSize = PDFCreator.PDFCreator.getPageSize(pageProperties.pageType);
 
-            // Add the screenshot to the PDF
             pdfLib.drawImage(initialImageDataUrl, {
               x: pageProperties.leftMargin,
               y: pageProperties.topMargin,
               width: pageSize.width - pageProperties.leftMargin - pageProperties.rightMargin,
               height: pageSize.height - pageProperties.topMargin - pageProperties.bottomMargin
             });
+
+            if (title) {
+              labeller.drawSupplementalText(title, 0, -0.1);
+            }
+
             pdfLib.addPage();
             ++startingPageNum;
           }
 
+          // Add the labels to the PDF
           await labeller.addLabelsToDoc(
             labels,
             labelSpec,

@@ -1,9 +1,9 @@
 /* @preserve
 * arcgis-pdf-creator v0.0.1
-* Tue Mar 21 2023 10:44:29 GMT-0700 (Pacific Daylight Time)
+* Thu Apr 27 2023 17:20:32 GMT-0700 (Pacific Daylight Time)
 */
-import * as jspdf from 'jspdf';
 import { PDFCreator, EPageType } from './PDFCreator.js';
+import { jsPDF } from 'jspdf';
 
 /** @license
  * Copyright 2022 Esri
@@ -22,12 +22,15 @@ import { PDFCreator, EPageType } from './PDFCreator.js';
  */
 //--------------------------------------------------------------------------------------------------------------------//
 class PDFCreator_jsPDF extends PDFCreator {
+    jsDoc;
     constructor(jspdfToUse = null) {
         super();
         this.jsDoc = jspdfToUse;
     }
     //-- Public methods ------------------------------------------------------------------------------------------------//
     /**
+     * Adds a page to the document being created.
+     *
      * @class PDFCreator_jsPDF
      */
     addPage() {
@@ -64,6 +67,20 @@ class PDFCreator_jsPDF extends PDFCreator {
             }
         }
         return jsPDF_lang;
+    }
+    /**
+     * Draws a PNG image into the page.
+     *
+     * @params imageDataUrl Image to add to page
+     * @params options Position information
+     *
+     * @class PDFCreator
+     */
+    drawImage(imageDataUrl, options) {
+        const alias = ""; // "alias of the image (if used multiple times)"
+        const compression = "NONE"; // "compression of the generated JPEG, can have the values 'NONE', 'FAST', 'MEDIUM' and 'SLOW'"
+        const rotation = 0; // "rotation of the image in degrees (0-359)"
+        this.jsDoc.addImage(imageDataUrl, "PNG", options.x, options.y, options.width, options.height, alias, compression, rotation);
     }
     /**
      * @class PDFCreator_jsPDF
@@ -143,7 +160,7 @@ class PDFCreator_jsPDF extends PDFCreator {
         await super.initialize(pageProperties, dataPath, lang, title, drawNeatline);
         // Start the PDF document if it hasn't already been started
         if (!this.jsDoc) {
-            this.jsDoc = new jspdf.jsPDF({
+            this.jsDoc = new jsPDF({
                 format: pageProperties.pageType === EPageType.A4 ? "a4" : "letter",
                 orientation: "portrait",
                 putOnlyUsedFonts: true,

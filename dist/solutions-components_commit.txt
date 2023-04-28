@@ -1,7 +1,7 @@
-Built 04/27/2023 15:55:46.02 
+Built 04/27/2023 17:23:10.34 
 enh/pn-map-and-title-ui
-commit bb826dc0e1a12e2d7e93cb4e0a4dba38ade1e848
+commit 211b2635132716e43109bab10c2094f726375412
 Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Thu Apr 27 15:20:49 2023 -0700
+Date:   Thu Apr 27 15:57:06 2023 -0700
 
     Export map image
