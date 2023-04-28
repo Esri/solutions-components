@@ -1,7 +1,0 @@
-Built 04/27/2023 17:20:32.82 
-develop
-commit eddae57aa75905aa3a9829ea7c580555b0b57278
-Author: Mike Tschudi <mtschudi@esri.com>
-Date:   Thu Apr 27 17:20:02 2023 -0700
-
-    Make drawSupplementalText a public method
