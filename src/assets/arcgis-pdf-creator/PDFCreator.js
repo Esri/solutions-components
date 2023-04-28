@@ -1,6 +1,6 @@
 /* @preserve
 * arcgis-pdf-creator v0.0.1
-* Tue Mar 21 2023 10:44:29 GMT-0700 (Pacific Daylight Time)
+* Thu Apr 27 2023 17:20:32 GMT-0700 (Pacific Daylight Time)
 */
 /** @license
  * Copyright 2022 Esri
@@ -25,7 +25,6 @@
 
   Superclass: PDFCreator
   Subclass for the jsPDF library: PDFCreator_jsPDF
-  Subclass for the pdf_lib library: PDFCreator_pdf_lib
 */
 //--------------------------------------------------------------------------------------------------------------------//
 var EPageType;
@@ -35,69 +34,73 @@ var EPageType;
 })(EPageType || (EPageType = {}));
 //====================================================================================================================//
 class PDFCreator {
-    constructor() {
-        // Properties are public for testing purposes
-        this.dataPath = "";
-        this.lang = "en";
-        this.title = "";
-        this.fontProps = {
-            fontResolutionInchesPerPoint: 1 / 72,
-            fontFullHeightRatio: 1.28
-        };
-        this.lineOptions = {
-            x1: 0,
-            y1: 0,
-            x2: 0,
-            y2: 0,
-            lineProperties: {
-                thickness: 0.1,
-                color: "000000",
-                opacity: 1 // 0..1
-            }
-        };
-        this.pageOptions = {
-            pageType: EPageType.ANSI_A,
-            width: 8.5,
-            height: 11,
-            leftMargin: 0.25,
-            rightMargin: 0.25,
-            topMargin: 0.25,
-            bottomMargin: 0.25,
-            drawNeatline: false
-        };
-        this.rectangleOptions = {
-            left: 0,
-            top: 0,
-            width: 8.5,
-            height: 11,
-            lineProperties: {
-                thickness: 0.1,
-                color: "000000",
-                opacity: 1 // 0..1
-            },
-            fillColor: "",
-            fillOpacity: 1 // 0..1
-        };
-        this.tableOptions = {
-            lineProperties: {
-                thickness: 0.1,
-                color: "",
-                opacity: 1 // 0..1
-            },
-            textProperties: {
-                left: 0,
-                top: 0,
-                fontPoints: 1,
-                fontColor: "000000" // i.e., black
-            }
-        };
-        this.textOptions = {
+    // Properties are public for testing purposes
+    dataPath = "";
+    lang = "en";
+    title = "";
+    fontProps = {
+        fontResolutionInchesPerPoint: 1 / 72,
+        fontFullHeightRatio: 1.28
+    };
+    imageOptions = {
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0, // inches
+    };
+    lineOptions = {
+        x1: 0,
+        y1: 0,
+        x2: 0,
+        y2: 0,
+        lineProperties: {
+            thickness: 0.1,
+            color: "000000",
+            opacity: 1 // 0..1
+        }
+    };
+    pageOptions = {
+        pageType: EPageType.ANSI_A,
+        width: 8.5,
+        height: 11,
+        leftMargin: 0.25,
+        rightMargin: 0.25,
+        topMargin: 0.25,
+        bottomMargin: 0.25,
+        drawNeatline: false
+    };
+    rectangleOptions = {
+        left: 0,
+        top: 0,
+        width: 8.5,
+        height: 11,
+        lineProperties: {
+            thickness: 0.1,
+            color: "000000",
+            opacity: 1 // 0..1
+        },
+        fillColor: "",
+        fillOpacity: 1 // 0..1
+    };
+    tableOptions = {
+        lineProperties: {
+            thickness: 0.1,
+            color: "",
+            opacity: 1 // 0..1
+        },
+        textProperties: {
             left: 0,
             top: 0,
             fontPoints: 1,
             fontColor: "000000" // i.e., black
-        };
-    }
+        }
+    };
+    textOptions = {
+        left: 0,
+        top: 0,
+        fontPoints: 1,
+        fontColor: "000000" // i.e., black
+    };
     //-- Static methods ------------------------------------------------------------------------------------------------//
     /**
      * @class PDFCreator
@@ -121,6 +124,8 @@ class PDFCreator {
     }
     //-- Public methods ------------------------------------------------------------------------------------------------//
     /**
+     * Adds a page to the document being created.
+     *
      * @class PDFCreator
      */
     addPage() {
@@ -141,6 +146,16 @@ class PDFCreator {
     applyOpacity(colorIntensity, opacity) {
         const backgroundColorIntensity = 1;
         return (colorIntensity * opacity) + backgroundColorIntensity * (1 - opacity);
+    }
+    /**
+     * Draws a PNG image into the page.
+     *
+     * @params imageDataUrl Image to add to page
+     * @params options Position information
+     *
+     * @class PDFCreator
+     */
+    drawImage(imageDataUrl, options) {
     }
     /**
      * @class PDFCreator

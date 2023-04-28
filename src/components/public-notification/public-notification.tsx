@@ -238,6 +238,11 @@ export class PublicNotification {
   protected _selectTools: HTMLMapSelectToolsElement;
 
   /**
+   * Text to be used as title on PDF pages
+   */
+  protected _title: HTMLCalciteInputTextElement;
+
+  /**
    * number: The number of selected features
    */
   protected _numSelected = 0;
@@ -800,7 +805,7 @@ export class PublicNotification {
                 <div class="padding-1 display-flex">
                   <calcite-button
                     disabled={!this._downloadActive}
-                    onClick={() => this._export()}
+                    onClick={() => void this._export()}
                     width="full"
                   >
                     {this._translations.export}
@@ -873,6 +878,7 @@ export class PublicNotification {
             <calcite-input-text
               class="padding-sides-1"
               placeholder={this._translations.titlePlaceholder}
+              ref={(el) => { this._title = el }}
             />
           </div>
         </div>
@@ -1053,14 +1059,26 @@ export class PublicNotification {
    *
    * @protected
    */
-  protected _export(): void {
+  protected async _export(): Promise<void> {
     const exportInfos: IExportInfos = this._getSelectionIdsAndViews(this._selectionSets, true);
+
     if (this._exportType === EExportType.PDF) {
+      // Generate a map screenshot
+      let initialImageDataUrl = "";
+      if (this._addMap && this.mapView) {
+        const screenshot = await this.mapView.takeScreenshot({width: 1500, height: 2000});
+        initialImageDataUrl = screenshot?.dataUrl;
+      }
+
+      // Create the labels for each selection set
       void this._downloadTools.downloadPDF(
         exportInfos,
-        this._removeDuplicates.checked
+        this._removeDuplicates.checked,
+        this._addTitle ? this._title.value : "",
+        initialImageDataUrl
       );
     }
+
     if (this._exportType === EExportType.CSV) {
       void this._downloadTools.downloadCSV(
         exportInfos,

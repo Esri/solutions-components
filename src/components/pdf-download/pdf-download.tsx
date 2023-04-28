@@ -90,8 +90,7 @@ export class PdfDownload {
   /**
    * Downloads csv of mailing labels for the provided list of ids
    *
-   * @param selectionSetNames Names of the selection sets used to provide ids
-   * @param ids List of ids to download
+   * @param exportInfos Information about items to be exported
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
    * @param addColumnTitle Indicates if column headings should be included in output
    * @returns Promise resolving when function is done
@@ -118,15 +117,18 @@ export class PdfDownload {
   /**
    * Downloads pdf of mailing labels for the provided list of ids
    *
-   * @param selectionSetNames Names of the selection sets used to provide ids
-   * @param ids List of ids to download
+   * @param exportInfos Information about items to be exported
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+   * @param title Title for each page
+   * @param initialImageDataUrl Data URL of image for first page
    * @returns Promise resolving when function is done
    */
   @Method()
   async downloadPDF(
     exportInfos: IExportInfos,
-    removeDuplicates: boolean
+    removeDuplicates = false,
+    title = "",
+    initialImageDataUrl = ""
   ): Promise<void> {
     Object.keys(exportInfos).forEach(k => {
       const exportInfo = exportInfos[k];
@@ -134,8 +136,10 @@ export class PdfDownload {
         exportInfo.selectionSetNames,
         exportInfo.layerView.layer,
         exportInfo.ids,
+        this._labelInfoElement.selectedOption.value as downloadUtils.ILabel,
         removeDuplicates,
-        this._labelInfoElement.selectedOption.value as downloadUtils.ILabel
+        title,
+        initialImageDataUrl
       );
     });
   }

@@ -1,6 +1,6 @@
 /* @preserve
 * arcgis-pdf-creator v0.0.1
-* Tue Mar 21 2023 10:44:29 GMT-0700 (Pacific Daylight Time)
+* Thu Apr 27 2023 17:20:32 GMT-0700 (Pacific Daylight Time)
 */
 import { drawGridOfBoxes } from './grid.js';
 
@@ -21,6 +21,9 @@ import { drawGridOfBoxes } from './grid.js';
  */
 //====================================================================================================================//
 class PDFLabels {
+    // Properties are public for testing purposes
+    PDFCreator;
+    labelFormats;
     //-- Public methods ------------------------------------------------------------------------------------------------//
     /**
      * Add labels to a PDF doc, starting at the beginning of the specified PDF doc page.
@@ -46,7 +49,7 @@ class PDFLabels {
             let currentPageNum = startingPageNum;
             const topOfFirstLabel = labelSpec.pageProperties.topMargin - this.PDFCreator.pageOptions.topMargin;
             if (heading) {
-                this._drawSupplementalText(heading, 0, -0.1);
+                this.drawSupplementalText(heading, 0, -0.1);
             }
             for (let iLabel = 0, iNonBlankLabel = 0; iLabel < labels.length; iLabel++) {
                 if (progressCallback) {
@@ -64,7 +67,7 @@ class PDFLabels {
                         this.PDFCreator.addPage();
                         ++currentPageNum;
                         if (heading) {
-                            this._drawSupplementalText(heading, 0, -0.1);
+                            this.drawSupplementalText(heading, 0, -0.1);
                         }
                     }
                     // Prep the new page
@@ -124,6 +127,22 @@ class PDFLabels {
                 lineProperties: labelBoundaryLinesProperties
             });
         }
+    }
+    /**
+     * Draws supplemental text such as a heading or footer.
+     *
+     * @param text Text to draw
+     * @param left Offset from left edge of document to left edge of text
+     * @param top Offset from top of document to top of text
+     */
+    drawSupplementalText(text, left, top) {
+        const fontPoints = 6;
+        this.PDFCreator.drawText(text, {
+            left,
+            top,
+            fontPoints,
+            fontColor: "000000"
+        });
     }
     /**
      * Returns the UI descriptions of the label formats.
@@ -246,22 +265,6 @@ class PDFLabels {
             trimmedLines.push(line);
         });
         return trimmedLines;
-    }
-    /**
-     * Draws supplemental text such as a heading or footer.
-     *
-     * @param text Text to draw
-     * @param left Offset from left edge of document to left edge of text
-     * @param top Offset from top of document to top of text
-     */
-    _drawSupplementalText(text, left, top) {
-        const fontPoints = 6;
-        this.PDFCreator.drawText(text, {
-            left,
-            top,
-            fontPoints,
-            fontColor: "000000"
-        });
     }
     /**
      * Trims a set of text lines to fit within specified bounds.
