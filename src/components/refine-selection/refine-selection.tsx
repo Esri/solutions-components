@@ -176,8 +176,6 @@ export class RefineSelection {
     console.log("RS componentWillLoad")
     await this._getTranslations();
 
-
-
     const refineSet = this._getRefineSelectionSet(this.selectionSets);
     if (!refineSet) {
       this.selectionSets = this._initRefineSelectionSet(this.selectionSets);
