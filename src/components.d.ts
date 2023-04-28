@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EExpandType, IExportInfos, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
+import { DistanceUnit, EDrawMode, EExpandType, IExportInfos, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -145,6 +145,10 @@ export namespace Components {
           * @returns Promise that resolves when the operation is complete
          */
         "clear": () => Promise<void>;
+        /**
+          * utils/interfaces: Controls how the draw tools are rendered  SKETCH mode supports snapping REFINE mode supports undo/redo
+         */
+        "drawMode": EDrawMode;
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
@@ -360,6 +364,10 @@ export namespace Components {
          */
         "selectionLayerIds": string[];
         /**
+          * boolean: When true the refine selection workflow will be included in the UI
+         */
+        "showRefineSelection": boolean;
+        /**
           * boolean: When false no buffer distance or unit controls will be exposed
          */
         "showSearchSettings": boolean;
@@ -375,6 +383,38 @@ export namespace Components {
           * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html  A JSON representation of the instance in the ArcGIS format. See the ArcGIS REST API documentation for examples of the structure of various input JSON objects. https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
          */
         "sketchPolygonSymbol": __esri.SimpleFillSymbol | any;
+    }
+    interface RefineSelection {
+        "GraphicsLayer": any;
+        "SketchViewModel": any;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "addresseeLayer": __esri.FeatureLayerView;
+        /**
+          * string[]: Optional list of enabled layer ids  If empty all layers will be available
+         */
+        "enabledLayerIds": string[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * utils/interfaces/ISelectionSet: An array of user defined selection sets
+         */
+        "selectionSets": ISelectionSet[];
+        /**
+          * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+         */
+        "sketchLineSymbol": __esri.SimpleLineSymbol;
+        /**
+          * esri/symbols/SimpleMarkerSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+         */
+        "sketchPointSymbol": __esri.SimpleMarkerSymbol;
+        /**
+          * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+         */
+        "sketchPolygonSymbol": __esri.SimpleFillSymbol;
     }
     interface SolutionConfiguration {
         /**
@@ -571,6 +611,10 @@ export interface PublicNotificationCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLPublicNotificationElement;
 }
+export interface RefineSelectionCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLRefineSelectionElement;
+}
 export interface SolutionContentsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLSolutionContentsElement;
@@ -718,6 +762,12 @@ declare global {
         prototype: HTMLPublicNotificationElement;
         new (): HTMLPublicNotificationElement;
     };
+    interface HTMLRefineSelectionElement extends Components.RefineSelection, HTMLStencilElement {
+    }
+    var HTMLRefineSelectionElement: {
+        prototype: HTMLRefineSelectionElement;
+        new (): HTMLRefineSelectionElement;
+    };
     interface HTMLSolutionConfigurationElement extends Components.SolutionConfiguration, HTMLStencilElement {
     }
     var HTMLSolutionConfigurationElement: {
@@ -812,6 +862,7 @@ declare global {
         "pci-calculator": HTMLPciCalculatorElement;
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
+        "refine-selection": HTMLRefineSelectionElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-contents": HTMLSolutionContentsElement;
         "solution-item": HTMLSolutionItemElement;
@@ -964,6 +1015,10 @@ declare namespace LocalJSX {
          */
         "active"?: boolean;
         /**
+          * utils/interfaces: Controls how the draw tools are rendered  SKETCH mode supports snapping REFINE mode supports undo/redo
+         */
+        "drawMode"?: EDrawMode;
+        /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "graphics"?: __esri.Graphic[];
@@ -971,6 +1026,8 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        "onDrawRedo"?: (event: MapDrawToolsCustomEvent<void>) => void;
+        "onDrawUndo"?: (event: MapDrawToolsCustomEvent<void>) => void;
         /**
           * Emitted on demand when selection starts or ends.
          */
@@ -1170,6 +1227,10 @@ declare namespace LocalJSX {
          */
         "selectionLayerIds"?: string[];
         /**
+          * boolean: When true the refine selection workflow will be included in the UI
+         */
+        "showRefineSelection"?: boolean;
+        /**
           * boolean: When false no buffer distance or unit controls will be exposed
          */
         "showSearchSettings"?: boolean;
@@ -1185,6 +1246,42 @@ declare namespace LocalJSX {
           * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html  A JSON representation of the instance in the ArcGIS format. See the ArcGIS REST API documentation for examples of the structure of various input JSON objects. https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
          */
         "sketchPolygonSymbol"?: __esri.SimpleFillSymbol | any;
+    }
+    interface RefineSelection {
+        "GraphicsLayer"?: any;
+        "SketchViewModel"?: any;
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "addresseeLayer"?: __esri.FeatureLayerView;
+        /**
+          * string[]: Optional list of enabled layer ids  If empty all layers will be available
+         */
+        "enabledLayerIds"?: string[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when selection sets change.
+         */
+        "onSelectionSetsChanged"?: (event: RefineSelectionCustomEvent<ISelectionSet[]>) => void;
+        /**
+          * utils/interfaces/ISelectionSet: An array of user defined selection sets
+         */
+        "selectionSets"?: ISelectionSet[];
+        /**
+          * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+         */
+        "sketchLineSymbol"?: __esri.SimpleLineSymbol;
+        /**
+          * esri/symbols/SimpleMarkerSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+         */
+        "sketchPointSymbol"?: __esri.SimpleMarkerSymbol;
+        /**
+          * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+         */
+        "sketchPolygonSymbol"?: __esri.SimpleFillSymbol;
     }
     interface SolutionConfiguration {
         /**
@@ -1355,6 +1452,7 @@ declare namespace LocalJSX {
         "pci-calculator": PciCalculator;
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
+        "refine-selection": RefineSelection;
         "solution-configuration": SolutionConfiguration;
         "solution-contents": SolutionContents;
         "solution-item": SolutionItem;
@@ -1394,6 +1492,7 @@ declare module "@stencil/core" {
             "pci-calculator": LocalJSX.PciCalculator & JSXBase.HTMLAttributes<HTMLPciCalculatorElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
+            "refine-selection": LocalJSX.RefineSelection & JSXBase.HTMLAttributes<HTMLRefineSelectionElement>;
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;

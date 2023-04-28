@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
-import { ESelectionType, ISketchGraphicsChange } from "../../utils/interfaces";
+import { EDrawMode, ESelectionType, ISketchGraphicsChange } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
 import state from "../../utils/publicNotificationStore";
 import MapDrawTools_T9n from "../../assets/t9n/map-draw-tools/resources.json";
@@ -44,6 +44,14 @@ export class MapDrawTools {
    * boolean: sketch is used by multiple components...need a way to know who should respond...
    */
   @Prop() active = false;
+
+  /**
+   * utils/interfaces: Controls how the draw tools are rendered
+   *
+   * SKETCH mode supports snapping
+   * REFINE mode supports undo/redo
+   */
+  @Prop() drawMode: EDrawMode = EDrawMode.SKETCH;
 
   /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
@@ -86,6 +94,16 @@ export class MapDrawTools {
    * utils/interfaces/ESelectionType: POINT, LINE, POLY, RECT
    */
   @State() _selectionMode: ESelectionType;
+
+  /**
+   * boolean: when eanbled the user can undo the previous operation
+   */
+  @State() _undoEnabled = false;
+
+  /**
+   * boolean: when eanbled the user can redo the previous operation
+   */
+  @State() _redoEnabled = false;
 
   //--------------------------------------------------------------------------
   //
@@ -189,6 +207,10 @@ export class MapDrawTools {
    */
   @Event() sketchGraphicsChange: EventEmitter<ISketchGraphicsChange>;
 
+  @Event() drawUndo: EventEmitter<void>;
+
+  @Event() drawRedo: EventEmitter<void>;
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -218,10 +240,32 @@ export class MapDrawTools {
    * Renders the component.
    */
   render(): VNode {
+    const containerClass = this.drawMode === EDrawMode.SKETCH ?
+      "border" : "border esri-widget esri-sketch__panel";
+
+    const undoRedoClass = this.drawMode === EDrawMode.SKETCH ?
+      "display-none" : "esri-widget esri-sketch__panel border-left esri-sketch__section";
+
     return (
       <Host>
-        <div class="border">
+        <div class={containerClass}>
           <div ref={(el) => { this._sketchElement = el }} />
+          <div class={undoRedoClass}>
+            <calcite-action
+              disabled={!this._undoEnabled}
+              icon="undo"
+              onClick={() => this._undo()}
+              scale="s"
+              text={this._translations.undo}
+            />
+            <calcite-action
+              disabled={!this._redoEnabled}
+              icon="redo"
+              onClick={() => this._redo()}
+              scale="s"
+              text={this._translations.redo}
+            />
+          </div>
         </div>
       </Host>
     );
@@ -310,7 +354,8 @@ export class MapDrawTools {
         }, createTools: {
           circle: false
         },
-        undoRedoMenu: true
+        undoRedoMenu: false,
+        settingsMenu: this.drawMode === EDrawMode.SKETCH
       }
     });
     this
@@ -379,6 +424,14 @@ export class MapDrawTools {
     this._sketchWidget.viewModel.cancel();
     this.graphics = [];
     this._sketchGraphicsLayer?.removeAll();
+  }
+
+  protected _undo(): void {
+    this.drawUndo.emit();
+  }
+
+  protected _redo(): void {
+    this.drawRedo.emit();
   }
 
   /**

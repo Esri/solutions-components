@@ -826,6 +826,8 @@ export class MapSelectTools {
    *
    */
   protected async _sketchGraphicsChanged(event: CustomEvent, forceUpdate = false): Promise<void> {
+    console.log("MST _sketchGraphicsChanged")
+
     const graphics = event.detail.graphics;
 
     this._workflowType = this._useLayerFeaturesEnabled ? EWorkflowType.SELECT : EWorkflowType.SKETCH;

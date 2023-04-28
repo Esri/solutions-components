@@ -107,6 +107,11 @@ export class PublicNotification {
   @Prop() selectionLayerIds: string[] = [];
 
   /**
+   * boolean: When true the refine selection workflow will be included in the UI
+   */
+  @Prop() showRefineSelection = false;
+
+  /**
    * boolean: When false no buffer distance or unit controls will be exposed
    */
   @Prop() showSearchSettings = true;
@@ -166,7 +171,7 @@ export class PublicNotification {
   @State() _exportType: EExportType = EExportType.PDF;
 
   /**
-   * utils/interfaces/EPageType: LIST | SELECT | PDF | CSV
+   * utils/interfaces/EPageType: LIST | SELECT | EXPORT | REFINE
    */
   @State() _pageType: EPageType = EPageType.LIST;
 
@@ -325,7 +330,7 @@ export class PublicNotification {
     this._checkPopups();
     this._clearHighlight();
 
-    if (oldPageType === EPageType.SELECT) {
+    if (oldPageType === EPageType.SELECT || oldPageType === EPageType.REFINE) {
       // clear any draw shapes or buffers
       await this._clearSelection()
     }
@@ -385,6 +390,7 @@ export class PublicNotification {
           <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
             {this._getActionGroup("list-check", EPageType.LIST, this._translations.myLists)}
             {this._getActionGroup("export", EPageType.EXPORT, this._translations.export)}
+            {this.showRefineSelection ? this._getActionGroup("test-data", EPageType.REFINE, this._translations.refineSelection) : null}
           </calcite-action-bar>
           {this._getPage(this._pageType)}
         </calcite-shell>
@@ -514,8 +520,9 @@ export class PublicNotification {
     pageType: EPageType,
     tip: string
   ): VNode {
+    const sizeClass = this.showRefineSelection ? " w-1-3" : " w-1-2";
     return (
-      <calcite-action-group class="action-center w-1-2" layout="horizontal">
+      <calcite-action-group class={"action-center" + sizeClass} layout="horizontal">
         <calcite-action
           active={this._pageType === pageType}
           alignment="center"
@@ -569,6 +576,10 @@ export class PublicNotification {
 
       case EPageType.EXPORT:
         page = this._getExportPage();
+        break;
+
+      case EPageType.REFINE:
+        page = this._getRefinePage();
         break;
 
     }
@@ -737,7 +748,7 @@ export class PublicNotification {
     return (
       <calcite-panel>
         <div>
-          {this._getLabel(this._translations.export, true)}
+          {this._getLabel(this._translations.export, false)}
           {
             hasSelections ? (
               <div>
@@ -866,6 +877,33 @@ export class PublicNotification {
           </div>
         </div>
       </div>
+    );
+  }
+
+  protected _getRefinePage(): VNode {
+    const hasSelections = this._hasSelections();
+    return (
+      <calcite-panel>
+        {this._getLabel(this._translations.refineSelection)}
+        {
+          hasSelections ? (
+            <div>
+              {this._getNotice(this._translations.refineTip, "padding-sides-1")}
+              <refine-selection
+                //addresseeLayer={this.input}
+                enabledLayerIds={this.selectionLayerIds}
+                mapView={this.mapView}
+                selectionSets={this._selectionSets}
+                sketchLineSymbol={this.sketchLineSymbol}
+                sketchPointSymbol={this.sketchPointSymbol}
+                sketchPolygonSymbol={this.sketchPolygonSymbol}
+              />
+            </div>
+          ) :
+            this._getNotice(this._translations.refineTipNoSelections, "padding-sides-1")
+        }
+
+      </calcite-panel>
     );
   }
 

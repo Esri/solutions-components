@@ -21,6 +21,7 @@
 | `noResultText`            | `no-result-text`            | string: The value to show for no results when left empty the default text "0 selected features from {layerTitle}" will be shown                                                                                                                                                                                                                                                                             | `string`                                        | `undefined`           |
 | `searchConfiguration`     | --                          | ISearchConfiguration: Configuration details for the Search widget                                                                                                                                                                                                                                                                                                                                           | `ISearchConfiguration`                          | `undefined`           |
 | `selectionLayerIds`       | --                          | string[]: List of layer ids that should be shown as potential selection layers when skectching with "Use layer features" option                                                                                                                                                                                                                                                                             | `string[]`                                      | `[]`                  |
+| `showRefineSelection`     | `show-refine-selection`     | boolean: When true the refine selection workflow will be included in the UI                                                                                                                                                                                                                                                                                                                                 | `boolean`                                       | `false`               |
 | `showSearchSettings`      | `show-search-settings`      | boolean: When false no buffer distance or unit controls will be exposed                                                                                                                                                                                                                                                                                                                                     | `boolean`                                       | `true`                |
 | `sketchLineSymbol`        | `sketch-line-symbol`        | esri/symbols/SimpleLineSymbol \| JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html  A JSON representation of the instance in the ArcGIS format. See the ArcGIS REST API documentation for examples of the structure of various input JSON objects. https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm    | `any`                                           | `undefined`           |
 | `sketchPointSymbol`       | `sketch-point-symbol`       | esri/symbols/SimpleMarkerSymbol \| JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html  A JSON representation of the instance in the ArcGIS format. See the ArcGIS REST API documentation for examples of the structure of various input JSON objects. https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm | `any`                                           | `undefined`           |
@@ -55,6 +56,7 @@
 - calcite-segmented-control-item
 - [pdf-download](../pdf-download)
 - calcite-input-text
+- [refine-selection](../refine-selection)
 - calcite-notice
 
 ### Graph
@@ -77,6 +79,7 @@ graph TD;
   public-notification --> calcite-segmented-control-item
   public-notification --> pdf-download
   public-notification --> calcite-input-text
+  public-notification --> refine-selection
   public-notification --> calcite-notice
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
@@ -108,6 +111,7 @@ graph TD;
   map-select-tools --> calcite-icon
   map-select-tools --> calcite-input-message
   map-select-tools --> calcite-input
+  map-draw-tools --> calcite-action
   buffer-tools --> calcite-option
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select
@@ -128,6 +132,11 @@ graph TD;
   pdf-download --> calcite-option
   calcite-input-text --> calcite-progress
   calcite-input-text --> calcite-icon
+  refine-selection --> calcite-segmented-control
+  refine-selection --> calcite-segmented-control-item
+  refine-selection --> map-draw-tools
+  refine-selection --> calcite-list
+  refine-selection --> calcite-list-item
   calcite-notice --> calcite-icon
   style public-notification fill:#f9f,stroke:#333,stroke-width:4px
 ```

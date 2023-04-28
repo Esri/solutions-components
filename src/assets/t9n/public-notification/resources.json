@@ -33,6 +33,9 @@
     "titlePlaceholder": "Enter title here",
     "includeMap": "Include map",
     "pdfOptions": "PDF Options",
-    "csvOptions": "CSV Options"
+    "csvOptions": "CSV Options",
+    "refineSelection": "Refine selection",
+    "refineTip": "Refine and finalize your lists by using sketch tools to add or remove features across all selection sets.",
+    "refineTipNoSelections": "There are no selections to refine. Go to My lists to create a list of features."
 
 }
