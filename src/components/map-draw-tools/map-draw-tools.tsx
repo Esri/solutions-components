@@ -78,6 +78,16 @@ export class MapDrawTools {
    */
   @Prop({ mutable: true }) polygonSymbol: __esri.SimpleFillSymbol;
 
+  /**
+   * boolean: when eanbled the user can redo the previous operation
+   */
+  @Prop() redoEnabled = false;
+
+  /**
+   * boolean: when eanbled the user can undo the previous operation
+   */
+  @Prop() undoEnabled = false;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -94,16 +104,6 @@ export class MapDrawTools {
    * utils/interfaces/ESelectionType: POINT, LINE, POLY, RECT
    */
   @State() _selectionMode: ESelectionType;
-
-  /**
-   * boolean: when eanbled the user can undo the previous operation
-   */
-  @State() _undoEnabled = false;
-
-  /**
-   * boolean: when eanbled the user can redo the previous operation
-   */
-  @State() _redoEnabled = false;
 
   //--------------------------------------------------------------------------
   //
@@ -252,14 +252,14 @@ export class MapDrawTools {
           <div ref={(el) => { this._sketchElement = el }} />
           <div class={undoRedoClass}>
             <calcite-action
-              disabled={!this._undoEnabled}
+              disabled={!this.undoEnabled}
               icon="undo"
               onClick={() => this._undo()}
               scale="s"
               text={this._translations.undo}
             />
             <calcite-action
-              disabled={!this._redoEnabled}
+              disabled={!this.redoEnabled}
               icon="redo"
               onClick={() => this._redo()}
               scale="s"

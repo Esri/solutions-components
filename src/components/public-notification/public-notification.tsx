@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
-import { DistanceUnit, EExportType, EPageType, IExportInfos, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
+import { DistanceUnit, EExportType, EPageType, EWorkflowType, IExportInfos, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
 import { goToSelection, highlightFeatures } from "../../utils/mapViewUtils";
 import state from "../../utils/publicNotificationStore";
@@ -1259,7 +1259,8 @@ export class PublicNotification {
   ): void {
     evt.stopPropagation();
     this._activeSelection = selectionSet;
-    this._pageType = EPageType.SELECT;
+    this._pageType = selectionSet.workflowType === EWorkflowType.REFINE ?
+      EPageType.REFINE : EPageType.SELECT;
   }
 
   /**

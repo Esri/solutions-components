@@ -15,7 +15,7 @@
  */
 
 import { queryExtent } from "./queryUtils";
-import { ILayerHash } from "./interfaces";
+import { EWorkflowType, ILayerHash, ISelectionSet } from "./interfaces";
 
 /**
  * Gets the layer names from the current map
@@ -123,6 +123,37 @@ export async function highlightFeatures(
     await goToSelection(ids, layerView, mapView, false);
   }
   return layerView.highlight(ids);
+}
+
+export async function highlightFeatures2(
+  selectionSets: ISelectionSet[]
+): Promise<__esri.Handle[]> {
+
+  const hmm = selectionSets.reduce((prev, cur) => {
+    const lv = cur.layerView;
+    const id = lv.layer.id;
+    if (Object.keys(prev).indexOf(id) > -1) {
+      prev[id].ids = [
+        ...new Set([...cur.selectedIds, ...prev[id].ids])
+      ];
+
+    } else {
+      prev[id] = {
+        layerView: lv,
+        ids: cur.selectedIds
+      }
+    }
+    if (cur.workflowType === EWorkflowType.REFINE && cur.refineIds.removeIds.length > 0) {
+      prev[id].ids = prev[id].ids.filter(_id => cur.refineIds.removeIds.indexOf(_id) < 0);
+    }
+    return prev;
+  }, {});
+
+  return Object.keys(hmm).reduce((prev, cur) => {
+    const current = hmm[cur];
+    prev.push(current.layerView.highlight(current.ids));
+    return prev;
+  }, []);
 }
 
 /**

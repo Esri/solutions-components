@@ -100,6 +100,12 @@ export interface IPdfOptions {
   enabledSizeValues: ValidSize[];
 }
 
+export interface IRefineOperation {
+  ids: number[];
+  mode: ESelectionMode;
+  layerView: __esri.FeatureLayerView;
+}
+
 export interface ISearchConfiguration {
   activeSourceIndex?: number;
   allPlaceholder?: string;
@@ -398,11 +404,6 @@ export interface ISelectionSet {
 export interface IRefineIds {
   addIds: number[];
   removeIds: number[];
-}
-
-export interface IRefineOperation {
-  mode: ESelectionMode;
-  ids: number[];
 }
 
 export interface ISketchGraphicsChange {
