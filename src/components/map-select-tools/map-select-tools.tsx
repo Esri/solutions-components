@@ -605,7 +605,7 @@ export class MapSelectTools {
               enabledLayerIds={this.enabledLayerIds}
               mapView={this.mapView}
               onLayerSelectionChange={(evt) => this._inputLayerSelectionChange(evt)}
-              selectedLayerIds={this.selectionSet ? [this.selectionSet.layerView.layer.id] : []}
+              selectedLayerIds={this.selectLayerView ? [this.selectLayerView.layer.id] : this.selectionSet ? [this.selectionSet.layerView.layer.id] : []}
               selectionMode={"single"}
             />
           </calcite-label>
@@ -825,8 +825,6 @@ export class MapSelectTools {
    *
    */
   protected async _sketchGraphicsChanged(event: CustomEvent, forceUpdate = false): Promise<void> {
-    console.log("MST _sketchGraphicsChanged")
-
     const graphics = event.detail.graphics;
 
     this._workflowType = this._useLayerFeaturesEnabled ? EWorkflowType.SELECT : EWorkflowType.SKETCH;

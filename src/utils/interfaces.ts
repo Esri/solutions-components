@@ -395,15 +395,19 @@ export interface ISelectionSet {
   workflowType: EWorkflowType;
   searchDistanceEnabled: boolean;
   useLayerFeaturesEnabled: boolean;
-
-  refineIds: IRefineIds;
+  refineInfos: IRefineInfo;
   redoStack?: IRefineOperation[];
   undoStack?: IRefineOperation[];
+}
+
+export interface IRefineInfo {
+  [key: string]: IRefineIds;
 }
 
 export interface IRefineIds {
   addIds: number[];
   removeIds: number[];
+  layerView: __esri.FeatureLayerView;
 }
 
 export interface ISketchGraphicsChange {

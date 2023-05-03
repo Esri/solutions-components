@@ -125,35 +125,48 @@ export async function highlightFeatures(
   return layerView.highlight(ids);
 }
 
-export async function highlightFeatures2(
+export async function highlightAllFeatures(
   selectionSets: ISelectionSet[]
 ): Promise<__esri.Handle[]> {
 
-  const hmm = selectionSets.reduce((prev, cur) => {
+  const highlightInfos = getIdSets(selectionSets);
+
+  return Object.keys(highlightInfos).reduce((prev, cur) => {
+    const highlightInfo = highlightInfos[cur];
+    prev.push(highlightInfo.layerView.highlight(highlightInfo.ids));
+    return prev;
+  }, []);
+}
+
+export function getIdSets(
+  selectionSets: ISelectionSet[]
+): any {
+  return selectionSets.reduce((prev, cur) => {
     const lv = cur.layerView;
-    const id = lv.layer.id;
-    if (Object.keys(prev).indexOf(id) > -1) {
+    const id = lv?.layer.id;
+    if (id && Object.keys(prev).indexOf(id) > -1) {
       prev[id].ids = [
         ...new Set([...cur.selectedIds, ...prev[id].ids])
       ];
-
-    } else {
+    } else if (id) {
       prev[id] = {
         layerView: lv,
         ids: cur.selectedIds
       }
     }
-    if (cur.workflowType === EWorkflowType.REFINE && cur.refineIds.removeIds.length > 0) {
-      prev[id].ids = prev[id].ids.filter(_id => cur.refineIds.removeIds.indexOf(_id) < 0);
+    if (cur.workflowType === EWorkflowType.REFINE) {
+      Object.keys(cur.refineInfos).forEach(k => {
+        const refineInfo = cur.refineInfos[k];
+        if (Object.keys(prev).indexOf(k) > -1) {
+          prev[k].ids = [
+            ...new Set([...refineInfo.addIds, ...prev[k].ids])
+          ];
+          prev[k].ids = prev[k].ids.filter(_id => refineInfo.removeIds.indexOf(_id) < 0)
+        }
+      });
     }
     return prev;
   }, {});
-
-  return Object.keys(hmm).reduce((prev, cur) => {
-    const current = hmm[cur];
-    prev.push(current.layerView.highlight(current.ids));
-    return prev;
-  }, []);
 }
 
 /**
