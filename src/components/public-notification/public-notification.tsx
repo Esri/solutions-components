@@ -633,6 +633,11 @@ export class PublicNotification {
                   label={cur.label}
                   onClick={() => this._gotoSelection(cur, this.mapView)}
                 >
+                  <div slot="content">
+                    <div class="list-label">{cur.label}</div>
+                    <div class="list-description">{cur?.layerView.layer.title}</div>
+                    <div class="list-description">{this._translations.selectedFeatures.replace("{{n}}", ids.length.toString())}</div>
+                  </div>
                   {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
                   {this._getAction(true, "x", "", (evt): Promise<void> => this._deleteSelection(i, evt), false, "actions-end")}
                 </calcite-list-item>

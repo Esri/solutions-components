@@ -412,8 +412,10 @@ export class MapSelectTools {
    */
   @Listen("unitChanged", { target: "window" })
   unitChanged(event: CustomEvent): void {
-    this._unit = event.detail.newValue;
-    this._updateLabel();
+    if (event.detail.newValue !== event.detail.oldValue) {
+      this._unit = event.detail.newValue;
+      this._updateLabel();
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -679,7 +681,7 @@ export class MapSelectTools {
         ...this.selectionSet?.graphics || []
       ];
 
-      this._selectionLabel = this.selectionSet?.label
+      this._selectionLabel = this.selectionSet?.label;
 
       await goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     } else {
@@ -992,7 +994,7 @@ export class MapSelectTools {
    */
   protected async _clearResults(
     clearSearchWidget = true,
-    clearLabel = true
+    clearLabel = false
   ): Promise<void> {
     this._selectedIds = [];
     this._distance = undefined;
@@ -1111,6 +1113,7 @@ export class MapSelectTools {
     const id: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
     if (!this.selectLayerView || id !== this.selectLayerView.layer.id) {
       this.selectLayerView = await getMapLayerView(this.mapView, id);
+      this._updateLabel();
     }
   }
 
@@ -1118,8 +1121,10 @@ export class MapSelectTools {
    * Handle changes to the buffer distance value
    */
   protected _distanceChanged(detail: any): void {
-    this._distance = detail.newValue;
-    this._updateLabel();
+    if (detail.newValue !== detail.oldValue) {
+      this._distance = detail.newValue;
+      this._updateLabel();
+    }
   }
 
   /**
