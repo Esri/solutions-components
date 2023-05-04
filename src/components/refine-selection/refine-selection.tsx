@@ -266,6 +266,8 @@ export class RefineSelection {
   /**
    * Set the user selected layer as the current refine layer
    *
+   * @param evt contains the selected layer id
+   *
    * @protected
    */
   protected _layerSelectionChange(
@@ -278,6 +280,8 @@ export class RefineSelection {
   /**
    * Store the current selection mode
    *
+   * @param selectionMode the current selection mode ADD || REMOVE
+   *
    * @protected
    */
   protected _setSelectionMode(
@@ -288,6 +292,9 @@ export class RefineSelection {
 
   /**
    * Select features based on the user drawn geometry
+   *
+   * @param evt ISketchGraphicsChange stores the new graphics and a boolean useOIDs
+   * useOIDs is leveraged in some situations to use the feature OIDs rather than the graphic geometry
    *
    * @protected
    */
@@ -322,6 +329,8 @@ export class RefineSelection {
   /**
    * Set the refine layer...any adds or removes will be done against this layer
    *
+   * @param id the id of the layer that should be used as the current refine layer
+   *
    * @protected
    */
   protected async _setRefineSet(
@@ -341,11 +350,14 @@ export class RefineSelection {
   /**
    * Initialize the refine selection set
    *
+   * @param id the layer id to use for the refine selection set
+   * @param selectionSet the current refine selection set
+   *
    * @protected
    */
   protected async _initRefineSet(
     id: string,
-    selectionSet?: ISelectionSet
+    selectionSet: ISelectionSet
   ): Promise<void> {
     const refineInfo = {};
     refineInfo[id] = {
@@ -461,7 +473,7 @@ export class RefineSelection {
   /**
    * Get the total number od ids across all selection sets
    *
-   * @returns the list node
+   * @returns the total number of ids
    * @protected
    */
   protected _getTotal(
