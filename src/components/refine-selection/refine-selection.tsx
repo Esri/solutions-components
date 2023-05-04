@@ -375,7 +375,8 @@ export class RefineSelection {
         useLayerFeaturesEnabled: false,
         refineInfos: refineInfo,
         redoStack: [],
-        undoStack: []
+        undoStack: [],
+        sketchGraphic: undefined
       };
       this.selectionSets.push(this._refineSelectionSet);
     }

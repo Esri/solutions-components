@@ -398,6 +398,7 @@ export interface ISelectionSet {
   refineInfos: IRefineInfo;
   redoStack?: IRefineOperation[];
   undoStack?: IRefineOperation[];
+  sketchGraphic: __esri.Graphic; // See: https://github.com/Esri/solutions-components/issues/208
 }
 
 export interface IRefineInfo {

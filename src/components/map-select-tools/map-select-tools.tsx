@@ -269,6 +269,12 @@ export class MapSelectTools {
   protected _skipGeomOIDs: number[];
 
   /**
+   * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   * Added to support https://github.com/Esri/solutions-components/issues/208
+   */
+  protected _sketchGraphic: __esri.Graphic;
+
+  /**
    * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
   protected _graphics: __esri.Graphic[] = [];
@@ -287,11 +293,6 @@ export class MapSelectTools {
    * {<layer id>: Graphic[]}: Collection of graphics returned from queries to the layer
    */
   protected _featuresCollection: { [key: string]: __esri.Graphic[] } = {};
-
-  /**
-   * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
-   */
-  protected _sketchGeometry: __esri.Geometry;
 
   //--------------------------------------------------------------------------
   //
@@ -376,7 +377,8 @@ export class MapSelectTools {
       skipGeomOIDs: this._skipGeomOIDs,
       searchDistanceEnabled: this._searchDistanceEnabled,
       workflowType: this._workflowType,
-      useLayerFeaturesEnabled: this._useLayerFeaturesEnabled
+      useLayerFeaturesEnabled: this._useLayerFeaturesEnabled,
+      sketchGraphic: this._sketchGraphic
     } as ISelectionSet;
   }
 
@@ -522,7 +524,7 @@ export class MapSelectTools {
           <calcite-switch
             checked={this._useLayerFeaturesEnabled}
             class="position-right"
-            onCalciteSwitchChange={() => this._useLayerFeaturesEnabled = !this._useLayerFeaturesEnabled}
+            onCalciteSwitchChange={() => { this._useLayerFeaturesEnabledChanged() }}
           />
         </div>
 
@@ -672,6 +674,7 @@ export class MapSelectTools {
       this._unit = this.selectionSet.unit;
       this._workflowType = this.selectionSet.workflowType;
       this.selectLayerView = this.selectionSet.layerView;
+      this._sketchGraphic = this.selectionSet.sketchGraphic;
 
       this.geometries = [
         ...this.selectionSet?.geometries || []
@@ -828,6 +831,10 @@ export class MapSelectTools {
    */
   protected async _sketchGraphicsChanged(event: CustomEvent, forceUpdate = false): Promise<void> {
     const graphics = event.detail.graphics;
+
+    if (!forceUpdate) {
+      this._sketchGraphic = graphics[0];
+    }
 
     this._workflowType = this._useLayerFeaturesEnabled ? EWorkflowType.SELECT : EWorkflowType.SKETCH;
 
@@ -1095,6 +1102,16 @@ export class MapSelectTools {
 
       return Promise.all(layerPromises).then((layerViews) => {
         this.layerViews = layerViews;
+        this._featuresCollection = {};
+
+        if (this._sketchGraphic) {
+          void this._sketchGraphicsChanged({
+            detail: {
+              graphics: [this._sketchGraphic],
+              useOIDs: false
+            }
+          } as CustomEvent);
+        }
       });
     }
   }
@@ -1176,6 +1193,21 @@ export class MapSelectTools {
         }
       } as CustomEvent, true);
     });
+  }
+
+  /**
+   * Store use layer features value and re-select features based on the original sketch graphic
+   *
+   * @protected
+   */
+  protected _useLayerFeaturesEnabledChanged(): void {
+    this._useLayerFeaturesEnabled = !this._useLayerFeaturesEnabled;
+    void this._sketchGraphicsChanged({
+      detail: {
+        graphics: [this._sketchGraphic],
+        useOIDs: false
+      }
+    } as CustomEvent);
   }
 
   /**
