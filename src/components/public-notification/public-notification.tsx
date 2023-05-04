@@ -871,7 +871,6 @@ export class PublicNotification {
   protected _getExportOptions(): VNode {
     const displayClass = this._exportType === EExportType.PDF ? "display-block" : "display-none";
     const titleOptionsClass = this._addTitle ? "display-block" : "display-none";
-    const mapOptionsClass = this._addMap ? "display-block" : "display-none";
     return (
       <div class={displayClass}>
         {this._getLabel(this._translations.pdfOptions, true)}
@@ -890,6 +889,27 @@ export class PublicNotification {
         </div>
 
         <div class="padding-top-sides-1">
+          <calcite-label
+            class="label-margin-0"
+            layout="inline"
+          >
+            <calcite-checkbox
+              checked={this._addTitle}
+              onCalciteCheckboxChange={() => this._addTitle = !this._addTitle}
+            />
+            {this._translations.addTitle}
+          </calcite-label>
+        </div>
+        <div class={titleOptionsClass}>
+          {this._getLabel(this._translations.title, true, "")}
+          <calcite-input-text
+            class="padding-sides-1"
+            placeholder={this._translations.titlePlaceholder}
+            ref={(el) => { this._title = el }}
+          />
+        </div>
+
+        <div class="padding-top-sides-1">
           <calcite-label class="label-margin-0" layout="inline">
             <calcite-checkbox
               checked={this._addMap}
@@ -897,31 +917,6 @@ export class PublicNotification {
             />
             {this._translations.includeMap}
           </calcite-label>
-        </div>
-
-        <div class={mapOptionsClass}>
-          <div class="padding-top-sides-1">
-            <calcite-label
-              class="label-margin-0"
-              layout="inline"
-            >
-              <calcite-checkbox
-                checked={this._addTitle}
-                onCalciteCheckboxChange={() => this._addTitle = !this._addTitle}
-              />
-              {this._translations.addTitle}
-            </calcite-label>
-          </div>
-          <div
-            class={titleOptionsClass}
-          >
-            {this._getLabel(this._translations.title, true, "")}
-            <calcite-input-text
-              class="padding-sides-1"
-              placeholder={this._translations.titlePlaceholder}
-              ref={(el) => { this._title = el }}
-            />
-          </div>
         </div>
       </div>
     );
