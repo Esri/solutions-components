@@ -102,7 +102,7 @@ export class MapSelectTools {
   /**
    * ISearchConfiguration: Configuration details for the Search widget
    */
-  @Prop({mutable: true}) searchConfiguration: ISearchConfiguration;
+  @Prop({ mutable: true }) searchConfiguration: ISearchConfiguration;
 
   /**
    * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
@@ -593,27 +593,27 @@ export class MapSelectTools {
     );
   }
 
-    /**
+  /**
    * Create the UI element that will expose the addressee layers
    *
    * @returns addressee layer list node
    * @protected
    */
-    protected _getMapLayerPicker(): VNode {
-      return (
-        <div class="display-flex padding-sides-1 padding-bottom-1">
-          <calcite-label class="font-bold width-full label-margin-0">{this._translations.inputLayer}
-            <map-layer-picker
-              enabledLayerIds={this.enabledLayerIds}
-              mapView={this.mapView}
-              onLayerSelectionChange={(evt) => this._inputLayerSelectionChange(evt)}
-              selectedLayerIds={this.selectLayerView ? [this.selectLayerView.layer.id] : this.selectionSet ? [this.selectionSet.layerView.layer.id] : []}
-              selectionMode={"single"}
-            />
-          </calcite-label>
-        </div>
-      );
-    }
+  protected _getMapLayerPicker(): VNode {
+    return (
+      <div class="display-flex padding-sides-1 padding-bottom-1">
+        <calcite-label class="font-bold width-full label-margin-0">{this._translations.inputLayer}
+          <map-layer-picker
+            enabledLayerIds={this.enabledLayerIds}
+            mapView={this.mapView}
+            onLayerSelectionChange={(evt) => this._inputLayerSelectionChange(evt)}
+            selectedLayerIds={this.selectLayerView ? [this.selectLayerView.layer.id] : this.selectionSet ? [this.selectionSet.layerView.layer.id] : []}
+            selectionMode={"single"}
+          />
+        </calcite-label>
+      </div>
+    );
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -665,7 +665,7 @@ export class MapSelectTools {
       this._searchResult = this.selectionSet.searchResult;
       this._selectLayers = this.selectionSet.selectLayers;
       this._selectedIds = this.selectionSet.selectedIds;
-      this._skipGeomOIDs =  this.selectionSet.skipGeomOIDs;
+      this._skipGeomOIDs = this.selectionSet.skipGeomOIDs;
       this._searchDistanceEnabled = this.selectionSet.searchDistanceEnabled;
       this._useLayerFeaturesEnabled = this.selectionSet.useLayerFeaturesEnabled;
       this._distance = this.selectionSet.searchDistanceEnabled ? this.selectionSet.distance : 0;

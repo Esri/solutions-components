@@ -1032,7 +1032,13 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the redo action is clicked.
+         */
         "onDrawRedo"?: (event: MapDrawToolsCustomEvent<void>) => void;
+        /**
+          * Emitted on demand when the undo action is clicked.
+         */
         "onDrawUndo"?: (event: MapDrawToolsCustomEvent<void>) => void;
         /**
           * Emitted on demand when selection starts or ends.

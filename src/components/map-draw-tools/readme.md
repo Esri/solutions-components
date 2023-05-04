@@ -24,8 +24,8 @@
 
 | Event                    | Description                                        | Type                                 |
 | ------------------------ | -------------------------------------------------- | ------------------------------------ |
-| `drawRedo`               |                                                    | `CustomEvent<void>`                  |
-| `drawUndo`               |                                                    | `CustomEvent<void>`                  |
+| `drawRedo`               | Emitted on demand when the redo action is clicked. | `CustomEvent<void>`                  |
+| `drawUndo`               | Emitted on demand when the undo action is clicked. | `CustomEvent<void>`                  |
 | `selectionLoadingChange` | Emitted on demand when selection starts or ends.   | `CustomEvent<boolean>`               |
 | `sketchGraphicsChange`   | Emitted on demand when the sketch graphics change. | `CustomEvent<ISketchGraphicsChange>` |
 

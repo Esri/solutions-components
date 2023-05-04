@@ -93,8 +93,14 @@ export class RefineSelection {
    */
   @State() _translations: typeof RefineSelection_T9n;
 
+  /**
+   * The current selection mode ADD or REMOVE
+   */
   @State() _selectionMode: ESelectionMode = ESelectionMode.ADD;
 
+  /**
+   * The current layer to refine
+   */
   @State() _refineLayer: __esri.FeatureLayerView;
 
   //--------------------------------------------------------------------------
@@ -109,21 +115,33 @@ export class RefineSelection {
   protected _addEnabled = true;
 
   /**
-   * HTMLRefineSelectionToolsElement: The html element for the refine selection tools
+   * HTMLMapDrawToolsElement: The tools used to create graphics
    */
   protected _drawTools: HTMLMapDrawToolsElement;
 
+  /**
+   * ISelectionSet[]: The current list of selection sets
+   */
   protected _refineSets: ISelectionSet[] = [];
 
+  /**
+   * string[]: The list of all layers that have current selections
+   */
   protected _enabledLayerIds: string[] = [];
 
+  /**
+   * HTMLMapLayerPickerElement: The layer picker used to define what layer you are refining
+   */
   protected _layerPicker: HTMLMapLayerPickerElement;
 
   /**
- * {<layer id>: Graphic[]}: Collection of graphics returned from queries to the layer
- */
+   * {<layer id>: Graphic[]}: Collection of graphics returned from queries to the layer
+   */
   protected _featuresCollection: { [key: string]: __esri.Graphic[] } = {};
 
+  /**
+   * ISelectionSet: The current selection set to refine
+   */
   protected _refineSelectionSet: ISelectionSet;
 
   //--------------------------------------------------------------------------
@@ -245,6 +263,11 @@ export class RefineSelection {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Set the user selected layer as the current refine layer
+   *
+   * @protected
+   */
   protected _layerSelectionChange(
     evt: CustomEvent
   ): void {
@@ -252,12 +275,22 @@ export class RefineSelection {
     void this._setRefineSet(id);
   }
 
+  /**
+   * Store the current selection mode
+   *
+   * @protected
+   */
   protected _setSelectionMode(
     selectionMode: ESelectionMode
   ): void {
     this._selectionMode = selectionMode;
   }
 
+  /**
+   * Select features based on the user drawn geometry
+   *
+   * @protected
+   */
   protected _sketchGraphicsChanged(
     evt: CustomEvent
   ): void {
@@ -265,6 +298,11 @@ export class RefineSelection {
     void this._selectFeatures(geom);
   }
 
+  /**
+   * Get the layer ids for all layers in the selection sets
+   *
+   * @protected
+   */
   protected _getEnabledLayerIds(): string[] {
     return this.selectionSets.reduce((prev, cur) => {
       const id = cur?.layerView?.layer.id;
@@ -281,6 +319,11 @@ export class RefineSelection {
     }, []);
   }
 
+  /**
+   * Set the refine layer...any adds or removes will be done against this layer
+   *
+   * @protected
+   */
   protected async _setRefineSet(
     id: string
   ): Promise<void> {
@@ -295,6 +338,11 @@ export class RefineSelection {
     this._refineLayer = this._refineSelectionSet.refineInfos[id].layerView;
   }
 
+  /**
+   * Initialize the refine selection set
+   *
+   * @protected
+   */
   protected async _initRefineSet(
     id: string,
     selectionSet?: ISelectionSet
@@ -409,6 +457,12 @@ export class RefineSelection {
     )];
   }
 
+  /**
+   * Get the total number od ids across all selection sets
+   *
+   * @returns the list node
+   * @protected
+   */
   protected _getTotal(
     selectionSets: ISelectionSet[]
   ): number {

@@ -207,8 +207,14 @@ export class MapDrawTools {
    */
   @Event() sketchGraphicsChange: EventEmitter<ISketchGraphicsChange>;
 
+  /**
+   * Emitted on demand when the undo action is clicked.
+   */
   @Event() drawUndo: EventEmitter<void>;
 
+  /**
+   * Emitted on demand when the redo action is clicked.
+   */
   @Event() drawRedo: EventEmitter<void>;
 
   //--------------------------------------------------------------------------
@@ -426,10 +432,20 @@ export class MapDrawTools {
     this._sketchGraphicsLayer?.removeAll();
   }
 
+  /**
+   * Emit the undo event
+   *
+   * @protected
+   */
   protected _undo(): void {
     this.drawUndo.emit();
   }
 
+  /**
+   * Emit the undo event
+   *
+   * @protected
+   */
   protected _redo(): void {
     this.drawRedo.emit();
   }

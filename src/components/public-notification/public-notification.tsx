@@ -98,7 +98,7 @@ export class PublicNotification {
   /**
    * ISearchConfiguration: Configuration details for the Search widget
    */
-  @Prop({mutable: true}) searchConfiguration: ISearchConfiguration;
+  @Prop({ mutable: true }) searchConfiguration: ISearchConfiguration;
 
   /**
    * string[]: List of layer ids that should be shown as potential selection layers
@@ -671,6 +671,13 @@ export class PublicNotification {
     return validateRefineSet && hasRefineSet ? hasValidRefineSet || this._selectionSets.length > 1 : this._selectionSets.length > 0;
   }
 
+  /**
+   * Check if any refine sets contain addIds
+   *
+   * @returns true if addIds are found
+   *
+   * @protected
+   */
   protected _hasValidRefineSet(
     selectionSet: ISelectionSet
   ): boolean {
@@ -845,12 +852,22 @@ export class PublicNotification {
     );
   }
 
+  /**
+   * Store the user selected export type CSV || PDF
+   *
+   * @protected
+   */
   protected _exportTypeChange(
     evt: CustomEvent
   ): void {
     this._exportType = (evt.target as HTMLCalciteSegmentedControlItemElement).value as EExportType;
   }
 
+  /**
+   * Render the export options to the user
+   *
+   * @protected
+   */
   protected _getExportOptions(): VNode {
     const displayClass = this._exportType === EExportType.PDF ? "display-block" : "display-none";
     const titleOptionsClass = this._addTitle ? "display-block" : "display-none";
@@ -910,6 +927,11 @@ export class PublicNotification {
     );
   }
 
+  /**
+   * Render the refine page
+   *
+   * @protected
+   */
   protected _getRefinePage(): VNode {
     const hasSelections = this._hasSelections();
     return (
@@ -920,7 +942,6 @@ export class PublicNotification {
             <div>
               {this._getNotice(this._translations.refineTip, "padding-sides-1")}
               <refine-selection
-                //addresseeLayer={this.input}
                 enabledLayerIds={this.selectionLayerIds}
                 mapView={this.mapView}
                 selectionSets={this._selectionSets}
@@ -1100,7 +1121,7 @@ export class PublicNotification {
       // Generate a map screenshot
       let initialImageDataUrl = "";
       if (this._addMap && this.mapView) {
-        const screenshot = await this.mapView.takeScreenshot({width: 1500, height: 2000});
+        const screenshot = await this.mapView.takeScreenshot({ width: 1500, height: 2000 });
         initialImageDataUrl = screenshot?.dataUrl;
       }
 
@@ -1152,6 +1173,18 @@ export class PublicNotification {
     }, {});
   }
 
+  /**
+   * Store the ids and selection set names for export
+   *
+   * @param exportInfos the current export infos object to update
+   * @param id the layer id for the selection set
+   * @param label the selection sets label
+   * @param newIds the current ids
+   * @param layerView the layer associated with the selection set
+   *
+   * @returns key export details from the selection sets
+   * @protected
+   */
   protected _updateExportInfos(
     exportInfos: IExportInfos,
     id: string,
