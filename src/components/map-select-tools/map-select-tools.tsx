@@ -828,8 +828,15 @@ export class MapSelectTools {
   /**
    * Handle changes in the sketch graphics
    *
+   * @param event stores the graphics that will be used to select features
+   * @param forceUpdate when true the drawn graphic will be used to select features from
+   * use layer features layer...then the selected layer features will be used to select from the main input layer
+   *
    */
-  protected async _sketchGraphicsChanged(event: CustomEvent, forceUpdate = false): Promise<void> {
+  protected async _sketchGraphicsChanged(
+    event: CustomEvent,
+    forceUpdate = false
+  ): Promise<void> {
     const graphics = event.detail.graphics;
 
     if (!forceUpdate) {
@@ -879,6 +886,8 @@ export class MapSelectTools {
 
   /**
    * Highlight the features in the map
+   *
+   * @param ids the ids that should be highlighted
    *
    * @protected
    */
