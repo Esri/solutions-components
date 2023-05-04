@@ -333,6 +333,11 @@ export class PublicNotification {
     oldPageType: EPageType
   ): Promise<void> {
     this._checkPopups();
+
+    if (this.mapView?.popup) {
+      this.mapView.popup.autoOpenEnabled = pageType !== EPageType.LIST ? false : this._popupsEnabled;
+    }
+
     this._clearHighlight();
 
     if (oldPageType === EPageType.SELECT || oldPageType === EPageType.REFINE) {
@@ -586,7 +591,6 @@ export class PublicNotification {
       case EPageType.REFINE:
         page = this._getRefinePage();
         break;
-
     }
     return page;
   }
@@ -1254,9 +1258,6 @@ export class PublicNotification {
    */
   protected async _home(): Promise<void> {
     await this._clearSelection();
-    if (typeof this._popupsEnabled === 'boolean' && this.mapView.popup) {
-      this.mapView.popup.autoOpenEnabled = this._popupsEnabled;
-    }
     this._setPageType(EPageType.LIST);
   }
 

@@ -177,6 +177,11 @@ export namespace Components {
           * boolean: when eanbled the user can undo the previous operation
          */
         "undoEnabled": boolean;
+        /**
+          * Set the sketch widget to update mode with the current graphic
+          * @returns Promise that resolves when the operation is complete
+         */
+        "updateGraphics": () => Promise<void>;
     }
     interface MapLayerPicker {
         /**

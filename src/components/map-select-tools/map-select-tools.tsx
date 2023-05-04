@@ -687,8 +687,6 @@ export class MapSelectTools {
       this._selectionLabel = this.selectionSet?.label;
 
       await goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
-    } else {
-      this.mapView.popup.autoOpenEnabled = false;
     }
   }
 
@@ -844,6 +842,10 @@ export class MapSelectTools {
     }
 
     this._workflowType = this._useLayerFeaturesEnabled ? EWorkflowType.SELECT : EWorkflowType.SKETCH;
+
+    if (this._workflowType === EWorkflowType.SKETCH) {
+      this._drawTools.updateGraphics();
+    }
 
     this._updateLabel();
     this._clearSearchWidget();
