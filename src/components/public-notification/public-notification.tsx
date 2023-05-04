@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
-import { DistanceUnit, EExportType, EPageType, IExportInfos, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
+import { DistanceUnit, EExportType, EPageType, EWorkflowType, IExportInfos, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
 import { goToSelection, highlightFeatures } from "../../utils/mapViewUtils";
 import state from "../../utils/publicNotificationStore";
@@ -98,7 +98,7 @@ export class PublicNotification {
   /**
    * ISearchConfiguration: Configuration details for the Search widget
    */
-  @Prop({mutable: true}) searchConfiguration: ISearchConfiguration;
+  @Prop({ mutable: true }) searchConfiguration: ISearchConfiguration;
 
   /**
    * string[]: List of layer ids that should be shown as potential selection layers
@@ -394,8 +394,8 @@ export class PublicNotification {
         <calcite-shell>
           <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
             {this._getActionGroup("list-check", EPageType.LIST, this._translations.myLists)}
-            {this._getActionGroup("export", EPageType.EXPORT, this._translations.export)}
             {this.showRefineSelection ? this._getActionGroup("test-data", EPageType.REFINE, this._translations.refineSelection) : null}
+            {this._getActionGroup("export", EPageType.EXPORT, this._translations.export)}
           </calcite-action-bar>
           {this._getPage(this._pageType)}
         </calcite-shell>
@@ -624,12 +624,20 @@ export class PublicNotification {
         <calcite-list class="list-border margin-sides-1">
           {
             this._selectionSets.reduce((prev, cur, i) => {
+              const ids = cur.workflowType !== EWorkflowType.REFINE ? cur.selectedIds :
+                Object.keys(cur.refineInfos).reduce((p, c) => [...p, ...cur.refineInfos[c].addIds], []);
+
               prev.push((
                 <calcite-list-item
-                  description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
+                  description={this._translations.selectedFeatures.replace("{{n}}", ids.length.toString())}
                   label={cur.label}
                   onClick={() => this._gotoSelection(cur, this.mapView)}
                 >
+                  <div slot="content">
+                    <div class="list-label">{cur.label}</div>
+                    <div class="list-description">{cur?.layerView.layer.title}</div>
+                    <div class="list-description">{this._translations.selectedFeatures.replace("{{n}}", ids.length.toString())}</div>
+                  </div>
                   {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
                   {this._getAction(true, "x", "", (evt): Promise<void> => this._deleteSelection(i, evt), false, "actions-end")}
                 </calcite-list-item>
@@ -649,8 +657,31 @@ export class PublicNotification {
    *
    * @protected
    */
-  protected _hasSelections(): boolean {
-    return this._selectionSets.length > 0;
+  protected _hasSelections(
+    validateRefineSet = false
+  ): boolean {
+    let refineSet;
+    const hasRefineSet = this._selectionSets.some(ss => {
+      if (ss.workflowType === EWorkflowType.REFINE) {
+        refineSet = ss;
+        return true;
+      }
+    });
+    const hasValidRefineSet = hasRefineSet ? this._hasValidRefineSet(refineSet) : false;
+    return validateRefineSet && hasRefineSet ? hasValidRefineSet || this._selectionSets.length > 1 : this._selectionSets.length > 0;
+  }
+
+  /**
+   * Check if any refine sets contain addIds
+   *
+   * @returns true if addIds are found
+   *
+   * @protected
+   */
+  protected _hasValidRefineSet(
+    selectionSet: ISelectionSet
+  ): boolean {
+    return Object.keys(selectionSet.refineInfos).some(k => selectionSet.refineInfos[k].addIds.length > 0);
   }
 
   /**
@@ -748,7 +779,7 @@ export class PublicNotification {
    * @protected
    */
   protected _getExportPage(): VNode {
-    const hasSelections = this._hasSelections();
+    const hasSelections = this._hasSelections(this.showRefineSelection);
     const numDuplicates = this._getNumDuplicates(this._getSelectedIds());
     return (
       <calcite-panel>
@@ -821,12 +852,22 @@ export class PublicNotification {
     );
   }
 
+  /**
+   * Store the user selected export type CSV || PDF
+   *
+   * @protected
+   */
   protected _exportTypeChange(
     evt: CustomEvent
   ): void {
     this._exportType = (evt.target as HTMLCalciteSegmentedControlItemElement).value as EExportType;
   }
 
+  /**
+   * Render the export options to the user
+   *
+   * @protected
+   */
   protected _getExportOptions(): VNode {
     const displayClass = this._exportType === EExportType.PDF ? "display-block" : "display-none";
     const titleOptionsClass = this._addTitle ? "display-block" : "display-none";
@@ -881,6 +922,11 @@ export class PublicNotification {
     );
   }
 
+  /**
+   * Render the refine page
+   *
+   * @protected
+   */
   protected _getRefinePage(): VNode {
     const hasSelections = this._hasSelections();
     return (
@@ -891,7 +937,6 @@ export class PublicNotification {
             <div>
               {this._getNotice(this._translations.refineTip, "padding-sides-1")}
               <refine-selection
-                //addresseeLayer={this.input}
                 enabledLayerIds={this.selectionLayerIds}
                 mapView={this.mapView}
                 selectionSets={this._selectionSets}
@@ -1009,22 +1054,32 @@ export class PublicNotification {
    */
   protected _getSelectionLists(): VNode {
     return this._selectionSets.reduce((prev, cur) => {
-      if (!this._downloadActive && cur.download) {
+      let hasAdds = false;
+      if (cur.workflowType === EWorkflowType.REFINE) {
+        hasAdds = this._hasValidRefineSet(cur);
+      }
+
+      const validSet = cur.workflowType !== EWorkflowType.REFINE || hasAdds;
+
+      if (!this._downloadActive && cur.download && validSet) {
         this._downloadActive = true;
       }
-      prev.push((
-        <div class="display-flex padding-sides-1 padding-bottom-1">
-          <calcite-checkbox checked={cur.download} class="align-center" onClick={() => { void this._toggleDownload(cur.id) }} />
-          <calcite-list class="list-border margin-start-1-2 width-full" id="download-list">
-            <calcite-list-item
-              description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
-              disabled={!cur.download}
-              label={cur.label}
-              onClick={() => { void this._toggleDownload(cur.id) }}
-            />
-          </calcite-list>
-        </div>
-      ));
+
+      if (validSet) {
+        prev.push((
+          <div class="display-flex padding-sides-1 padding-bottom-1">
+            <calcite-checkbox checked={cur.download} class="align-center" onClick={() => { void this._toggleDownload(cur.id) }} />
+            <calcite-list class="list-border margin-start-1-2 width-full" id="download-list">
+              <calcite-list-item
+                description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
+                disabled={!cur.download}
+                label={cur.label}
+                onClick={() => { void this._toggleDownload(cur.id) }}
+              />
+            </calcite-list>
+          </div>
+        ));
+      }
       return prev;
     }, []) || (<div />);
   }
@@ -1061,7 +1116,7 @@ export class PublicNotification {
       // Generate a map screenshot
       let initialImageDataUrl = "";
       if (this._addMap && this.mapView) {
-        const screenshot = await this.mapView.takeScreenshot({width: 1500, height: 2000});
+        const screenshot = await this.mapView.takeScreenshot({ width: 1500, height: 2000 });
         initialImageDataUrl = screenshot?.dataUrl;
       }
 
@@ -1097,21 +1152,55 @@ export class PublicNotification {
     const exportSelectionSets = downloadSetsOnly ?
       selectionSets.filter(ss => ss.download) : selectionSets;
     return exportSelectionSets.reduce((prev, cur) => {
-      if (Object.keys(prev).indexOf(cur.layerView.layer.id) > -1) {
-        prev[cur.layerView.layer.id].ids = [
-          ...prev[cur.layerView.layer.id].ids,
-          ...cur.selectedIds
-        ];
-        prev[cur.layerView.layer.id].selectionSetNames.push(cur.label)
+      if (cur.workflowType === EWorkflowType.REFINE) {
+        Object.keys(cur.refineInfos).forEach(k => {
+          const refineInfo = cur.refineInfos[k];
+          if (refineInfo.addIds) {
+            const _id = refineInfo.layerView.layer.id;
+            prev = this._updateExportInfos(prev, _id, cur.label, refineInfo.addIds, refineInfo.layerView);
+          }
+        });
       } else {
-        prev[cur.layerView.layer.id] = {
-          ids: cur.selectedIds,
-          layerView: cur.layerView,
-          selectionSetNames: [cur.label]
-        }
+        const id = cur?.layerView?.layer.id;
+        prev = this._updateExportInfos(prev, id, cur.label, cur.selectedIds, cur.layerView);
       }
       return prev;
     }, {});
+  }
+
+  /**
+   * Store the ids and selection set names for export
+   *
+   * @param exportInfos the current export infos object to update
+   * @param id the layer id for the selection set
+   * @param label the selection sets label
+   * @param newIds the current ids
+   * @param layerView the layer associated with the selection set
+   *
+   * @returns key export details from the selection sets
+   * @protected
+   */
+  protected _updateExportInfos(
+    exportInfos: IExportInfos,
+    id: string,
+    label: string,
+    newIds: number[],
+    layerView: __esri.FeatureLayerView
+  ): IExportInfos {
+    if (id && Object.keys(exportInfos).indexOf(id) > -1) {
+      exportInfos[id].ids = [...new Set([
+        ...exportInfos[id].ids,
+        ...newIds
+      ])];
+      exportInfos[id].selectionSetNames.push(label)
+    } else if (id) {
+      exportInfos[id] = {
+        ids: newIds,
+        layerView: layerView,
+        selectionSetNames: [label]
+      }
+    }
+    return exportInfos;
   }
 
   /**
@@ -1254,7 +1343,8 @@ export class PublicNotification {
   ): void {
     evt.stopPropagation();
     this._activeSelection = selectionSet;
-    this._pageType = EPageType.SELECT;
+    this._pageType = selectionSet.workflowType === EWorkflowType.REFINE ?
+      EPageType.REFINE : EPageType.SELECT;
   }
 
   /**

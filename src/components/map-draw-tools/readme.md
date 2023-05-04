@@ -7,23 +7,25 @@
 
 ## Properties
 
-| Property         | Attribute   | Description                                                                                                                         | Type                                   | Default            |
-| ---------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | ------------------ |
-| `active`         | `active`    | boolean: sketch is used by multiple components...need a way to know who should respond...                                           | `boolean`                              | `false`            |
-| `drawMode`       | `draw-mode` | utils/interfaces: Controls how the draw tools are rendered  SKETCH mode supports snapping REFINE mode supports undo/redo            | `EDrawMode.REFINE \| EDrawMode.SKETCH` | `EDrawMode.SKETCH` |
-| `graphics`       | --          | esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html                                       | `Graphic[]`                            | `undefined`        |
-| `mapView`        | --          | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                              | `MapView`                              | `undefined`        |
-| `pointSymbol`    | --          | esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html | `SimpleMarkerSymbol`                   | `undefined`        |
-| `polygonSymbol`  | --          | esri/symbols/SimpleFillSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html     | `SimpleFillSymbol`                     | `undefined`        |
-| `polylineSymbol` | --          | esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html     | `SimpleLineSymbol`                     | `undefined`        |
+| Property         | Attribute      | Description                                                                                                                         | Type                                   | Default            |
+| ---------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | ------------------ |
+| `active`         | `active`       | boolean: sketch is used by multiple components...need a way to know who should respond...                                           | `boolean`                              | `false`            |
+| `drawMode`       | `draw-mode`    | utils/interfaces: Controls how the draw tools are rendered  SKETCH mode supports snapping REFINE mode supports undo/redo            | `EDrawMode.REFINE \| EDrawMode.SKETCH` | `EDrawMode.SKETCH` |
+| `graphics`       | --             | esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html                                       | `Graphic[]`                            | `undefined`        |
+| `mapView`        | --             | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                              | `MapView`                              | `undefined`        |
+| `pointSymbol`    | --             | esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html | `SimpleMarkerSymbol`                   | `undefined`        |
+| `polygonSymbol`  | --             | esri/symbols/SimpleFillSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html     | `SimpleFillSymbol`                     | `undefined`        |
+| `polylineSymbol` | --             | esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html     | `SimpleLineSymbol`                     | `undefined`        |
+| `redoEnabled`    | `redo-enabled` | boolean: when eanbled the user can redo the previous operation                                                                      | `boolean`                              | `false`            |
+| `undoEnabled`    | `undo-enabled` | boolean: when eanbled the user can undo the previous operation                                                                      | `boolean`                              | `false`            |
 
 
 ## Events
 
 | Event                    | Description                                        | Type                                 |
 | ------------------------ | -------------------------------------------------- | ------------------------------------ |
-| `drawRedo`               |                                                    | `CustomEvent<void>`                  |
-| `drawUndo`               |                                                    | `CustomEvent<void>`                  |
+| `drawRedo`               | Emitted on demand when the redo action is clicked. | `CustomEvent<void>`                  |
+| `drawUndo`               | Emitted on demand when the undo action is clicked. | `CustomEvent<void>`                  |
 | `selectionLoadingChange` | Emitted on demand when selection starts or ends.   | `CustomEvent<boolean>`               |
 | `sketchGraphicsChange`   | Emitted on demand when the sketch graphics change. | `CustomEvent<ISketchGraphicsChange>` |
 

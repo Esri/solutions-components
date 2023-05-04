@@ -102,7 +102,7 @@ export class MapSelectTools {
   /**
    * ISearchConfiguration: Configuration details for the Search widget
    */
-  @Prop({mutable: true}) searchConfiguration: ISearchConfiguration;
+  @Prop({ mutable: true }) searchConfiguration: ISearchConfiguration;
 
   /**
    * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
@@ -269,6 +269,12 @@ export class MapSelectTools {
   protected _skipGeomOIDs: number[];
 
   /**
+   * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   * Added to support https://github.com/Esri/solutions-components/issues/208
+   */
+  protected _sketchGraphic: __esri.Graphic;
+
+  /**
    * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
   protected _graphics: __esri.Graphic[] = [];
@@ -287,11 +293,6 @@ export class MapSelectTools {
    * {<layer id>: Graphic[]}: Collection of graphics returned from queries to the layer
    */
   protected _featuresCollection: { [key: string]: __esri.Graphic[] } = {};
-
-  /**
-   * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
-   */
-  protected _sketchGeometry: __esri.Geometry;
 
   //--------------------------------------------------------------------------
   //
@@ -376,7 +377,8 @@ export class MapSelectTools {
       skipGeomOIDs: this._skipGeomOIDs,
       searchDistanceEnabled: this._searchDistanceEnabled,
       workflowType: this._workflowType,
-      useLayerFeaturesEnabled: this._useLayerFeaturesEnabled
+      useLayerFeaturesEnabled: this._useLayerFeaturesEnabled,
+      sketchGraphic: this._sketchGraphic
     } as ISelectionSet;
   }
 
@@ -412,8 +414,10 @@ export class MapSelectTools {
    */
   @Listen("unitChanged", { target: "window" })
   unitChanged(event: CustomEvent): void {
-    this._unit = event.detail.newValue;
-    this._updateLabel();
+    if (event.detail.newValue !== event.detail.oldValue) {
+      this._unit = event.detail.newValue;
+      this._updateLabel();
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -520,7 +524,7 @@ export class MapSelectTools {
           <calcite-switch
             checked={this._useLayerFeaturesEnabled}
             class="position-right"
-            onCalciteSwitchChange={() => this._useLayerFeaturesEnabled = !this._useLayerFeaturesEnabled}
+            onCalciteSwitchChange={() => { this._useLayerFeaturesEnabledChanged() }}
           />
         </div>
 
@@ -591,27 +595,27 @@ export class MapSelectTools {
     );
   }
 
-    /**
+  /**
    * Create the UI element that will expose the addressee layers
    *
    * @returns addressee layer list node
    * @protected
    */
-    protected _getMapLayerPicker(): VNode {
-      return (
-        <div class="display-flex padding-sides-1 padding-bottom-1">
-          <calcite-label class="font-bold width-full label-margin-0">{this._translations.inputLayer}
-            <map-layer-picker
-              enabledLayerIds={this.enabledLayerIds}
-              mapView={this.mapView}
-              onLayerSelectionChange={(evt) => this._inputLayerSelectionChange(evt)}
-              selectedLayerIds={this.selectionSet ? [this.selectionSet.layerView.layer.id] : []}
-              selectionMode={"single"}
-            />
-          </calcite-label>
-        </div>
-      );
-    }
+  protected _getMapLayerPicker(): VNode {
+    return (
+      <div class="display-flex padding-sides-1 padding-bottom-1">
+        <calcite-label class="font-bold width-full label-margin-0">{this._translations.inputLayer}
+          <map-layer-picker
+            enabledLayerIds={this.enabledLayerIds}
+            mapView={this.mapView}
+            onLayerSelectionChange={(evt) => this._inputLayerSelectionChange(evt)}
+            selectedLayerIds={this.selectLayerView ? [this.selectLayerView.layer.id] : this.selectionSet ? [this.selectionSet.layerView.layer.id] : []}
+            selectionMode={"single"}
+          />
+        </calcite-label>
+      </div>
+    );
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -663,13 +667,14 @@ export class MapSelectTools {
       this._searchResult = this.selectionSet.searchResult;
       this._selectLayers = this.selectionSet.selectLayers;
       this._selectedIds = this.selectionSet.selectedIds;
-      this._skipGeomOIDs =  this.selectionSet.skipGeomOIDs;
+      this._skipGeomOIDs = this.selectionSet.skipGeomOIDs;
       this._searchDistanceEnabled = this.selectionSet.searchDistanceEnabled;
       this._useLayerFeaturesEnabled = this.selectionSet.useLayerFeaturesEnabled;
       this._distance = this.selectionSet.searchDistanceEnabled ? this.selectionSet.distance : 0;
       this._unit = this.selectionSet.unit;
       this._workflowType = this.selectionSet.workflowType;
       this.selectLayerView = this.selectionSet.layerView;
+      this._sketchGraphic = this.selectionSet.sketchGraphic;
 
       this.geometries = [
         ...this.selectionSet?.geometries || []
@@ -679,7 +684,7 @@ export class MapSelectTools {
         ...this.selectionSet?.graphics || []
       ];
 
-      this._selectionLabel = this.selectionSet?.label
+      this._selectionLabel = this.selectionSet?.label;
 
       await goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     } else {
@@ -823,11 +828,20 @@ export class MapSelectTools {
   /**
    * Handle changes in the sketch graphics
    *
+   * @param event stores the graphics that will be used to select features
+   * @param forceUpdate when true the drawn graphic will be used to select features from
+   * use layer features layer...then the selected layer features will be used to select from the main input layer
+   *
    */
-  protected async _sketchGraphicsChanged(event: CustomEvent, forceUpdate = false): Promise<void> {
-    console.log("MST _sketchGraphicsChanged")
-
+  protected async _sketchGraphicsChanged(
+    event: CustomEvent,
+    forceUpdate = false
+  ): Promise<void> {
     const graphics = event.detail.graphics;
+
+    if (!forceUpdate) {
+      this._sketchGraphic = graphics[0];
+    }
 
     this._workflowType = this._useLayerFeaturesEnabled ? EWorkflowType.SELECT : EWorkflowType.SKETCH;
 
@@ -872,6 +886,8 @@ export class MapSelectTools {
 
   /**
    * Highlight the features in the map
+   *
+   * @param ids the ids that should be highlighted
    *
    * @protected
    */
@@ -994,7 +1010,7 @@ export class MapSelectTools {
    */
   protected async _clearResults(
     clearSearchWidget = true,
-    clearLabel = true
+    clearLabel = false
   ): Promise<void> {
     this._selectedIds = [];
     this._distance = undefined;
@@ -1095,6 +1111,16 @@ export class MapSelectTools {
 
       return Promise.all(layerPromises).then((layerViews) => {
         this.layerViews = layerViews;
+        this._featuresCollection = {};
+
+        if (this._sketchGraphic) {
+          void this._sketchGraphicsChanged({
+            detail: {
+              graphics: [this._sketchGraphic],
+              useOIDs: false
+            }
+          } as CustomEvent);
+        }
       });
     }
   }
@@ -1113,6 +1139,8 @@ export class MapSelectTools {
     const id: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
     if (!this.selectLayerView || id !== this.selectLayerView.layer.id) {
       this.selectLayerView = await getMapLayerView(this.mapView, id);
+      this._updateLabel();
+      await this._highlightWithOIDsOrGeoms();
     }
   }
 
@@ -1120,8 +1148,10 @@ export class MapSelectTools {
    * Handle changes to the buffer distance value
    */
   protected _distanceChanged(detail: any): void {
-    this._distance = detail.newValue;
-    this._updateLabel();
+    if (detail.newValue !== detail.oldValue) {
+      this._distance = detail.newValue;
+      this._updateLabel();
+    }
   }
 
   /**
@@ -1172,6 +1202,21 @@ export class MapSelectTools {
         }
       } as CustomEvent, true);
     });
+  }
+
+  /**
+   * Store use layer features value and re-select features based on the original sketch graphic
+   *
+   * @protected
+   */
+  protected _useLayerFeaturesEnabledChanged(): void {
+    this._useLayerFeaturesEnabled = !this._useLayerFeaturesEnabled;
+    void this._sketchGraphicsChanged({
+      detail: {
+        graphics: [this._sketchGraphic],
+        useOIDs: false
+      }
+    } as CustomEvent);
   }
 
   /**

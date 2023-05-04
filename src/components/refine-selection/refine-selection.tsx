@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode } from "@stencil/core";
-import { EDrawMode, ESelectionMode, EWorkflowType, ISelectionSet } from "../../utils/interfaces";
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode } from "@stencil/core";
+import { EDrawMode, ESelectionMode, EWorkflowType, IRefineOperation, ISelectionSet } from "../../utils/interfaces";
+import { getIdSets, getMapLayerView, highlightAllFeatures } from "../../utils/mapViewUtils";
+import { queryFeaturesByGeometry } from "../../utils/queryUtils";
 import RefineSelection_T9n from "../../assets/t9n/refine-selection/resources.json";
+import state from "../../utils/publicNotificationStore";
 import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
@@ -60,10 +63,6 @@ export class RefineSelection {
    */
   @Prop({ mutable: true }) selectionSets: ISelectionSet[] = [];
 
-  @Prop() GraphicsLayer: any;
-
-  @Prop() SketchViewModel: any;
-
   /**
    * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
    *
@@ -94,8 +93,14 @@ export class RefineSelection {
    */
   @State() _translations: typeof RefineSelection_T9n;
 
+  /**
+   * The current selection mode ADD or REMOVE
+   */
   @State() _selectionMode: ESelectionMode = ESelectionMode.ADD;
 
+  /**
+   * The current layer to refine
+   */
   @State() _refineLayer: __esri.FeatureLayerView;
 
   //--------------------------------------------------------------------------
@@ -110,27 +115,40 @@ export class RefineSelection {
   protected _addEnabled = true;
 
   /**
-   * HTMLRefineSelectionToolsElement: The html element for the refine selection tools
+   * HTMLMapDrawToolsElement: The tools used to create graphics
    */
   protected _drawTools: HTMLMapDrawToolsElement;
 
-  protected _refineSets
+  /**
+   * ISelectionSet[]: The current list of selection sets
+   */
+  protected _refineSets: ISelectionSet[] = [];
+
+  /**
+   * string[]: The list of all layers that have current selections
+   */
+  protected _enabledLayerIds: string[] = [];
+
+  /**
+   * HTMLMapLayerPickerElement: The layer picker used to define what layer you are refining
+   */
+  protected _layerPicker: HTMLMapLayerPickerElement;
+
+  /**
+   * {<layer id>: Graphic[]}: Collection of graphics returned from queries to the layer
+   */
+  protected _featuresCollection: { [key: string]: __esri.Graphic[] } = {};
+
+  /**
+   * ISelectionSet: The current selection set to refine
+   */
+  protected _refineSelectionSet: ISelectionSet;
 
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Called each time the addresseeLayer is changed.
-   * Add a new clean refine set for the new addressee layer.
-   */
-  // @Watch("addresseeLayer")
-  // addresseeLayerWatchHandler(): void {
-  //   const selectionSets = this.selectionSets.filter(ss => ss.workflowType !== EWorkflowType.REFINE);
-  //   this.selectionSets = this._initRefineSelectionSet(selectionSets);
-  // }
 
   //--------------------------------------------------------------------------
   //
@@ -145,23 +163,15 @@ export class RefineSelection {
   //--------------------------------------------------------------------------
 
   /**
+   * Emitted on demand when selection starts or ends.
+   */
+  @Event() selectionLoadingChange: EventEmitter<boolean>;
+
+  /**
    * Emitted on demand when selection sets change.
    *
    */
   @Event() selectionSetsChanged: EventEmitter<ISelectionSet[]>;
-
-  /**
-   * Handles changes to refine selection ids.
-   *
-   */
-  @Listen("refineSelectionIdsChange", { target: "window" })
-  refineSelectionIdsChange(event: CustomEvent): void {
-    const addIds = event.detail?.addIds || [];
-    const removeIds = event.detail?.removeIds || [];
-
-    this._updateSelectionSets(removeIds);
-    this._updateRefineSelectionSet(addIds, removeIds);
-  }
 
   //--------------------------------------------------------------------------
   //
@@ -173,31 +183,37 @@ export class RefineSelection {
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
   async componentWillLoad(): Promise<void> {
-    console.log("RS componentWillLoad")
     await this._getTranslations();
-
-    const refineSet = this._getRefineSelectionSet(this.selectionSets);
-    if (!refineSet) {
-      this.selectionSets = this._initRefineSelectionSet(this.selectionSets);
-    }
+    this._enabledLayerIds = this._getEnabledLayerIds();
+    await this._setRefineSet(this._enabledLayerIds[0]);
   }
 
   /**
    * Renders the component.
    */
   render(): VNode {
+    const layerPickerClass = this._enabledLayerIds.length > 1 ? "display-block" : "display-none";
     return (
       <Host>
+        <div class={layerPickerClass + " padding-top-sides-1"}>
+          <map-layer-picker
+            enabledLayerIds={this._enabledLayerIds}
+            mapView={this.mapView}
+            onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
+            ref={(el) => { this._layerPicker = el }}
+            selectedLayerIds={[this._refineLayer.layer.id]}
+            selectionMode={"single"}
+          />
+        </div>
         <div class="padding-1">
           <div class="padding-bottom-1">
             <calcite-segmented-control
               class="w-100"
-              onCalciteSegmentedControlChange={(evt) => this._modeChanged(evt)}
             >
               <calcite-segmented-control-item
                 checked={this._addEnabled}
                 class="w-50"
-                //onClick={() => this._setSelectionMode(ESelectionMode.ADD)}
+                onClick={() => this._setSelectionMode(ESelectionMode.ADD)}
                 value={ESelectionMode.ADD}
               >
                 {this._translations.add}
@@ -205,7 +221,7 @@ export class RefineSelection {
               <calcite-segmented-control-item
                 checked={!this._addEnabled}
                 class="w-50"
-                //onClick={() => this._setSelectionMode(ESelectionMode.REMOVE)}
+                onClick={() => this._setSelectionMode(ESelectionMode.REMOVE)}
                 value={ESelectionMode.REMOVE}
               >
                 {this._translations.remove}
@@ -223,7 +239,9 @@ export class RefineSelection {
               pointSymbol={this.sketchPointSymbol}
               polygonSymbol={this.sketchPolygonSymbol}
               polylineSymbol={this.sketchLineSymbol}
+              redoEnabled={this._refineSelectionSet?.redoStack.length > 0}
               ref={(el) => { this._drawTools = el }}
+              undoEnabled={this._refineSelectionSet?.undoStack.length > 0}
             />
           </div>
           <br />
@@ -246,23 +264,134 @@ export class RefineSelection {
   //--------------------------------------------------------------------------
 
   /**
-   * Store the Add/Remove mode
+   * Set the user selected layer as the current refine layer
+   *
+   * @param evt contains the selected layer id
    *
    * @protected
    */
-  protected _modeChanged(
+  protected _layerSelectionChange(
     evt: CustomEvent
   ): void {
-    this._selectionMode = evt.detail;
+    const id = evt.detail[0];
+    void this._setRefineSet(id);
   }
 
+  /**
+   * Store the current selection mode
+   *
+   * @param selectionMode the current selection mode ADD || REMOVE
+   *
+   * @protected
+   */
+  protected _setSelectionMode(
+    selectionMode: ESelectionMode
+  ): void {
+    this._selectionMode = selectionMode;
+  }
+
+  /**
+   * Select features based on the user drawn geometry
+   *
+   * @param evt ISketchGraphicsChange stores the new graphics and a boolean useOIDs
+   * useOIDs is leveraged in some situations to use the feature OIDs rather than the graphic geometry
+   *
+   * @protected
+   */
   protected _sketchGraphicsChanged(
     evt: CustomEvent
   ): void {
-    console.log("RS _sketchGraphicsChanged")
-    // console.log("this.active")
-    // console.log(this.active)
-    console.log(evt)
+    const geom = evt.detail?.graphics[0].geometry;
+    void this._selectFeatures(geom);
+  }
+
+  /**
+   * Get the layer ids for all layers in the selection sets
+   *
+   * @protected
+   */
+  protected _getEnabledLayerIds(): string[] {
+    return this.selectionSets.reduce((prev, cur) => {
+      const id = cur?.layerView?.layer.id;
+      if (id && prev.indexOf(id) < 0) {
+        prev.push(id);
+      } else if (cur.workflowType === EWorkflowType.REFINE) {
+        Object.keys(cur.refineInfos).forEach(k => {
+          if (prev.indexOf(k) < 0) {
+            prev.push(k);
+          }
+        });
+      }
+      return prev;
+    }, []);
+  }
+
+  /**
+   * Set the refine layer...any adds or removes will be done against this layer
+   *
+   * @param id the id of the layer that should be used as the current refine layer
+   *
+   * @protected
+   */
+  protected async _setRefineSet(
+    id: string
+  ): Promise<void> {
+    if (!this.selectionSets.some((ss) => {
+      if (ss.workflowType === EWorkflowType.REFINE) {
+        this._refineSelectionSet = ss;
+        return Object.keys(ss.refineInfos).indexOf(id) > -1;
+      }
+    })) {
+      await this._initRefineSet(id, this._refineSelectionSet);
+    }
+    this._refineLayer = this._refineSelectionSet.refineInfos[id].layerView;
+  }
+
+  /**
+   * Initialize the refine selection set
+   *
+   * @param id the layer id to use for the refine selection set
+   * @param selectionSet the current refine selection set
+   *
+   * @protected
+   */
+  protected async _initRefineSet(
+    id: string,
+    selectionSet: ISelectionSet
+  ): Promise<void> {
+    const refineInfo = {};
+    refineInfo[id] = {
+      addIds: [],
+      removeIds: [],
+      layerView: await getMapLayerView(this.mapView, id)
+    };
+
+    if (selectionSet) {
+      selectionSet.refineInfos = { ...selectionSet.refineInfos, ...refineInfo };
+    } else {
+      this._refineSelectionSet = {
+        id: Date.now(),
+        searchResult: undefined,
+        buffer: undefined,
+        distance: 0,
+        download: false, // TODO think through this again...really only true if we have adds
+        unit: "feet",
+        label: "Refine",
+        selectedIds: [],
+        layerView: undefined,
+        geometries: [],
+        graphics: [],
+        selectLayers: [],
+        workflowType: EWorkflowType.REFINE,
+        searchDistanceEnabled: false,
+        useLayerFeaturesEnabled: false,
+        refineInfos: refineInfo,
+        redoStack: [],
+        undoStack: [],
+        sketchGraphic: undefined
+      };
+      this.selectionSets.push(this._refineSelectionSet);
+    }
   }
 
   /**
@@ -273,14 +402,13 @@ export class RefineSelection {
    * @protected
    */
   protected _undo(): void {
-    console.log("_undo")
-    // const undoOp = this.refineSelectionSet.undoStack.pop();
-    // void this._updateIds(
-    //   undoOp.ids,
-    //   undoOp.mode === ESelectionMode.ADD ? ESelectionMode.REMOVE : ESelectionMode.ADD,
-    //   this.refineSelectionSet.redoStack,
-    //   undoOp.mode
-    // );
+    const undoOp = this._refineSelectionSet.undoStack.pop();
+    void this._updateIds(
+      undoOp.ids,
+      undoOp.mode === ESelectionMode.ADD ? ESelectionMode.REMOVE : ESelectionMode.ADD,
+      this._refineSelectionSet.redoStack,
+      undoOp.layerView
+    );
   }
 
   /**
@@ -291,26 +419,14 @@ export class RefineSelection {
    * @protected
    */
   protected _redo(): void {
-    console.log("_redo")
-    // const redoOp = this.refineSelectionSet.redoStack.pop();
-    // void this._updateIds(
-    //   redoOp.ids,
-    //   redoOp.mode,
-    //   this.refineSelectionSet.undoStack,
-    //   redoOp.mode
-    // );
+    const redoOp = this._refineSelectionSet.redoStack.pop();
+    void this._updateIds(
+      redoOp.ids,
+      redoOp.mode === ESelectionMode.ADD ? ESelectionMode.REMOVE : ESelectionMode.ADD,
+      this._refineSelectionSet.undoStack,
+      redoOp.layerView
+    );
   }
-
-  /**
-   * Set the refine tools selection mode
-   *
-   * @protected
-   */
-  // protected _setSelectionMode(
-  //   mode: ESelectionMode
-  // ): void {
-  //   this._Tools.mode = mode;
-  // }
 
   /**
    * Create a list to show the number added/removed/total unique selected
@@ -320,9 +436,21 @@ export class RefineSelection {
    */
   protected _getRefineSelectionSetList(): VNode[] {
     const total = this._getTotal(this.selectionSets);
-    const refineSet = this._getRefineSelectionSet(this.selectionSets);
-    const numAdded = refineSet?.refineIds.addIds.length || 0;
-    const numRemoved = refineSet?.refineIds.removeIds.length || 0;
+
+    let refineSet;
+    this.selectionSets.some(ss => {
+      if (ss.workflowType === EWorkflowType.REFINE) {
+        refineSet = ss;
+        return true;
+      }
+    });
+
+    let numAdded = 0;
+    let numRemoved = 0;
+    Object.keys(refineSet.refineInfos).forEach(k => {
+      numAdded += refineSet.refineInfos[k].addIds.length;
+      numRemoved += refineSet.refineInfos[k].removeIds.length;
+    });
 
     return [(
       <calcite-list-item
@@ -342,154 +470,21 @@ export class RefineSelection {
     )];
   }
 
-  protected _getSelectionIds(
-    selectionSets: ISelectionSet[]
-  ): number[] {
-    return Object.keys(selectionSets).reduce((prev, cur) => {
-      return [
-        ...prev,
-        ...selectionSets[cur].download ? selectionSets[cur].selectedIds : []
-      ]
-    }, []);
-  }
-
+  /**
+   * Get the total number od ids across all selection sets
+   *
+   * @returns the total number of ids
+   * @protected
+   */
   protected _getTotal(
     selectionSets: ISelectionSet[]
   ): number {
-    return [...new Set(this._getSelectionIds(selectionSets))].length;
-  }
-
-  /**
-   * Fetch the refine selection set
-   *
-   * @returns the refine selection set
-   * @protected
-   */
-  protected _getRefineSelectionSet(
-    selectionSets: ISelectionSet[]
-  ): ISelectionSet {
-    let refineSelectionSet: ISelectionSet;
-    selectionSets.some(ss => {
-      if (ss.workflowType === EWorkflowType.REFINE) {
-        refineSelectionSet = ss;
-        return true;
-      }
-    });
-    return refineSelectionSet;
-  }
-
-  /**
-   * Remove ids from existing selection sets.
-   * Remove any selection sets than have no selected ids
-   * This can update any selection set not just the refine set.
-   * We do not do something similar for adds as we will only ever add from refine tools to the single REFINE selection set.
-   *
-   * @param removeIds the ids to remove
-   *
-   * @protected
-   */
-  protected _updateSelectionSets(
-    removeIds: number[]
-  ): void {
-    if (removeIds.length > 0) {
-      this.selectionSets = this.selectionSets.reduce((prev, cur) => {
-        cur.selectedIds = cur.selectedIds.filter(id => removeIds.indexOf(id) < 0);
-        if (cur.selectedIds.length > 0 || cur.workflowType === EWorkflowType.REFINE) {
-          prev.push(cur);
-        }
-        return prev;
-      }, []);
-      this.selectionSetsChanged.emit(this.selectionSets);
-    }
-  }
-
-  /**
-   * Update the refine selection set with any adds or removes
-   *
-   * @param addIds any ids to add
-   * @param removeIds any ids to remove
-   *
-   * @returns Promise resolving when function is done
-   * @protected
-   */
-  protected _updateRefineSelectionSet(
-    addIds: number[],
-    removeIds: number[]
-  ): void {
-    const selectionSet = this._getRefineSelectionSet(this.selectionSets);
-    this._updateRefineIds(selectionSet, addIds, removeIds);
-    this.selectionSetsChanged.emit(this.selectionSets);
-  }
-
-  /**
-   * Update the ids stored for the refine selection set
-   *
-   * @param selectionSet the refine selection set
-   * @param addIds any ids to add
-   * @param removeIds any ids to remove
-   *
-   * @returns updated selection sets
-   * @protected
-   */
-  protected _updateRefineIds(
-    selectionSet: ISelectionSet,
-    addIds: number[],
-    removeIds: number[]
-  ): ISelectionSet[] {
-    // remove ids if they exist in the current add or remove list
-    selectionSet.refineIds.addIds = selectionSet.refineIds.addIds.filter(id => removeIds.indexOf(id) < 0)
-    selectionSet.refineIds.removeIds = selectionSet.refineIds.removeIds.filter(id => addIds.indexOf(id) < 0)
-
-    const _addIds = [...new Set(selectionSet.refineIds.addIds.concat(addIds))];
-    const _removeIds = [...new Set(selectionSet.refineIds.removeIds.concat(removeIds))];
-    selectionSet.refineIds = {
-      addIds: _addIds.filter(id => _removeIds.indexOf(id) < 0),
-      removeIds: _removeIds.filter(id => _addIds.indexOf(id) < 0)
-    }
-    selectionSet.selectedIds = selectionSet.refineIds.addIds.length > 0 ?
-      [...new Set(selectionSet.selectedIds.concat(selectionSet.refineIds.addIds))] :
-      selectionSet.selectedIds.filter(id => selectionSet.refineIds.removeIds.indexOf(id) < 0);
-
-    return this.selectionSets.map(ss => {
-      return ss.workflowType === EWorkflowType.REFINE ? selectionSet : ss;
-    });
-  }
-
-  /**
-   * Add a new refine selection set
-   *
-   * @returns updated selection sets
-   * @protected
-   */
-  protected _initRefineSelectionSet(
-    selectionSets: ISelectionSet[]
-  ): ISelectionSet[] {
-    return [
-      ...selectionSets,
-      ({
-        id: Date.now(),
-        searchResult: undefined,
-        buffer: undefined,
-        distance: 0,
-        download: true, // TODO think through this again...really only true if we have adds
-        unit: "feet",
-        label: "Refine",
-        selectedIds: [],
-        layerView: this.addresseeLayer,
-        geometries: [],
-        graphics: [],
-        selectLayers: [],
-        workflowType: EWorkflowType.REFINE,
-        searchDistanceEnabled: false,
-        useLayerFeaturesEnabled: false,
-        refineIds: {
-          addIds: [],
-          removeIds: []
-        },
-        redoStack: [],
-        undoStack: []
-      })
-    ];
+    const idSets = getIdSets(selectionSets);
+    return Object.keys(idSets).reduce((prev, cur) => {
+      const idSet = idSets[cur];
+      prev += idSet.ids.length;
+      return prev;
+    }, 0);
   }
 
   /**
@@ -502,228 +497,155 @@ export class RefineSelection {
     this._translations = translations[0] as typeof RefineSelection_T9n;
   }
 
-  /** Provides access to protected methods for unit testing.
- *
- *  @param methodName Name of protected method to run
- *  @param arg1 First argument to forward to method, e.g., for "_modeChanged", `ESelectionMode`
- *  @returns
- */
-  public _testAccess(
-    methodName: string,
-    arg1?: any
-  ): any {
-    switch (methodName) {
-      case "_modeChanged":
-        return this._modeChanged(arg1);
-      // case "_setSelectionMode":
-      //   return this._setSelectionMode(arg1);
-      // case "_getRefineSelectionSetList":
-      //   return this._getRefineSelectionSetList();
-      // case "_getRefineSelectionSet":
-      //   return this._getRefineSelectionSet(arg1);
-      // case "_updateSelectionSets":
-      //   return this._updateSelectionSets(arg1);
-      // case "_updateRefineSelectionSet":
-      //   return this._updateRefineSelectionSet(arg1, arg2);
-      // case "_updateRefineIds":
-      //   return this._updateRefineIds(arg1, arg2, arg3);
-      // case "_addRefineSelectionSet":
-      //   return this._addRefineSelectionSet(arg1, arg2);
-    }
-    return null;
+  /**
+   * Select features based on the input geometry
+   *
+   * @param geom the geometry used for selection
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _selectFeatures(
+    geom: __esri.Geometry
+  ): Promise<void> {
+    this.selectionLoadingChange.emit(true);
+
+    this._featuresCollection[this._refineLayer?.layer.id] = [];
+    const response = await queryFeaturesByGeometry(0, this._refineLayer?.layer, geom, this._featuresCollection);
+
+    this.selectionLoadingChange.emit(false);
+    let graphics = [];
+
+    Object.keys(response).forEach(k => {
+      if (k === this._refineLayer?.layer.id) {
+        graphics = graphics.concat(response[k]);
+      }
+    });
+
+    const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
+    await this._updateIds(oids, this._selectionMode, this._refineSelectionSet.undoStack, this._refineLayer);
+
+    this._drawTools.clear();
   }
 
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // from refine selection tools //////////////////////////////////////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /**
+   * Highlight any selected features in the map
+   *
+   * @returns Promise resolving when function is done
+   * @protected
+   */
+  protected async _highlightFeatures(): Promise<void> {
+    this._clearHighlight();
+    state.highlightHandles = await highlightAllFeatures(this.selectionSets);
+  }
 
-    /**
-     * Clear selection based on map click
-     *
-     * @protected
-     */
-    // protected _initHitTest(): void {
-    //   if (this._hitTestHandle) {
-    //     this._hitTestHandle.remove();
-    //   }
-    //   this._hitTestHandle = this.mapView.on("click", (event) => {
-    //     event.stopPropagation();
-    //     const opts = {
-    //       include: this.layerViews.map(lv => lv.layer)
-    //     };
-    //     void this.mapView.hitTest(event, opts).then((response) => {
-    //       let graphics = [];
-    //       if (response.results.length > 0) {
-    //         graphics = response.results.reduce((prev, cur) => {
-    //           const g = (cur as any)?.graphic;
-    //           if (g) {
-    //             prev.push(g);
-    //           }
-    //           return prev;
-    //         }, []);
-    //       }
-    //       this.refineSelectionGraphicsChange.emit({graphics, useOIDs: false});
-    //       this._clear();
-    //     });
-    //   });
+  /**
+   * Clear any highlighted features in the map
+   *
+   * @protected
+   */
+  protected _clearHighlight(): void {
+    state.removeHandles();
+  }
 
-    // }
+  /**
+   * Update the ids for any ADD or REMOVE operation and highlight the features.
+   *
+   * @param oids the ids to add or remove
+   * @param mode ADD or REMOVE this will control if the ids are added or removed
+   * @param operationStack the undo or redo stack to push the operation to
+   * @param operationMode ADD or REMOVE the mode of the individual refine operation
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _updateIds(
+    ids: number[],
+    mode: ESelectionMode,
+    operationStack: IRefineOperation[],
+    layerView: __esri.FeatureLayerView
+  ): Promise<void> {
+    let selectionSetsChanged = false;
+    const refineInfos = this._refineSelectionSet.refineInfos;
+    const layerId = layerView.layer.id;
+    const newRefineInfo = {};
+    newRefineInfo[layerId] = {
+      addIds: [],
+      removeIds: [],
+      layerView
+    };
+    const idUpdates = Object.keys(refineInfos).indexOf(layerId) > -1 ?
+      refineInfos[layerId] : newRefineInfo[layerId];
 
-    /**
-     * Gets the layer views from the map when the layer selection changes
-     *
-     * @returns Promise resolving when function is done
-     *
-     * @protected
-     */
-    // protected async _layerSelectionChange(
-    //   evt: CustomEvent
-    // ): Promise<void> {
-    //   if (Array.isArray(evt.detail) && evt.detail.length > 0) {
-    //     this._selectEnabled = true;
-    //     const layerPromises = evt.detail.map(id => {
-    //       return getMapLayerView(this.mapView, id)
-    //     });
+    if (mode === ESelectionMode.ADD) {
+      idUpdates.addIds = [...new Set([...ids, ...idUpdates.addIds])]
+      if (idUpdates.addIds.length > 0) {
+        operationStack.push({
+          ids,
+          mode,
+          layerView
+        });
+      }
+      if (idUpdates.removeIds.length > 0) {
+        idUpdates.removeIds = idUpdates.removeIds.filter(id => ids.indexOf(id) < 0)
+      }
+    } else {
+      // ids are a result of the drawn geom...so it's possible they could contain ids that do
+      // not exist in other selection sets
+      const validIds = this.selectionSets.reduce((prev, cur) => {
+        ids.forEach(id => {
+          if (cur.workflowType !== EWorkflowType.REFINE) {
+            if (cur.selectedIds.indexOf(id) > -1) {
+              prev.push(id);
+            }
+          } else {
+            Object.keys(cur.refineInfos).some(k => {
+              const refineInfo = cur.refineInfos[k];
+              if (refineInfo.layerView.layer.id === layerView.layer.id && refineInfo.addIds.indexOf(id) > -1) {
+                prev.push(id);
+                return true;
+              }
+            })
+          }
+        })
+        return prev;
+      }, []);
 
-    //     return Promise.all(layerPromises).then((layerViews) => {
-    //       this.layerViews = layerViews;
-    //     });
-    //   } else {
-    //     this._selectEnabled = false;
-    //   }
-    // }
+      idUpdates.removeIds = [...new Set([...validIds, ...idUpdates.removeIds])];
+      idUpdates.addIds = idUpdates.addIds.filter(id => validIds.indexOf(id) < 0);
+      if (idUpdates.removeIds.length > 0) {
+        operationStack.push({
+          ids: validIds,
+          mode,
+          layerView
+        });
+      }
 
-    /**
-     * Store the current selection mode
-     *
-     * @protected
-     */
-    // protected _setSelectionMode(
-    //   mode: ESelectionType
-    // ): void {
-    //   this._selectionMode = mode;
+      this.selectionSets = this.selectionSets.reduce((prev, cur) => {
+        if (cur.workflowType !== EWorkflowType.REFINE &&
+          cur.layerView.layer.id === layerView.layer.id) {
+          cur.selectedIds = cur.selectedIds.filter(id => idUpdates.removeIds.indexOf(id) < 0);
+          if (cur.selectedIds.length > 0) {
+            prev.push(cur);
+          } else {
+            selectionSetsChanged = true;
+          }
+        } else {
+          prev.push(cur);
+        }
+        return prev;
+      }, []);
+    }
 
-    //   if (this._hitTestHandle) {
-    //     this._hitTestHandle.remove();
-    //   }
+    this._refineSelectionSet.refineInfos[layerId] = idUpdates;
+    this.selectionSets = [...this.selectionSets];
 
-    //   switch (this._selectionMode) {
-    //     case ESelectionType.POINT:
-    //       this._sketchViewModel.create("point");
-    //       //this._initHitTest();
-    //       break;
-    //     case ESelectionType.LINE:
-    //       this._sketchViewModel.create("polyline");
-    //       break;
-    //     case ESelectionType.POLY:
-    //       this._sketchViewModel.create("polygon");
-    //       break;
-    //     case ESelectionType.RECT:
-    //       this._sketchViewModel.create("rectangle");
-    //       break;
-    //   }
-    // }
+    if (selectionSetsChanged) {
+      this.selectionSetsChanged.emit(this.selectionSets);
+    }
 
-    /**
-     * Select features based on the input geometry
-     *
-     * @param geom the geometry used for selection
-     *
-     * @returns Promise resolving when function is done
-     *
-     * @protected
-     */
-    // protected async _selectFeatures(
-    //   geom: __esri.Geometry
-    // ): Promise<void> {
-    //   this.selectionLoadingChange.emit(true);
-    //   const queryFeaturePromises = this.layerViews.map(layerView => {
-    //     this._featuresCollection[layerView.layer.id] = [];
-    //     return queryFeaturesByGeometry(0, layerView.layer, geom, this._featuresCollection)
-    //   });
-
-    //   return Promise.all(queryFeaturePromises).then(async response => {
-    //     this.selectionLoadingChange.emit(false);
-    //     let graphics = [];
-    //     response.forEach(r => {
-    //       Object.keys(r).forEach(k => {
-    //         graphics = graphics.concat(r[k]);
-    //       })
-    //     });
-
-    //     if (this.refineMode === ERefineMode.SUBSET) {
-    //       this.refineSelectionGraphicsChange.emit({
-    //         graphics,
-    //         useOIDs: this.layerViews[0].layer.title === this.layerView.layer.title
-    //       });
-    //     } else {
-    //       const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
-    //       await this._updateIds(oids, this.mode, this.refineSelectionSet.undoStack, this.mode);
-    //     }
-    //     this._clear();
-    //   });
-    // }
-
-    /**
-     * Highlight any selected features in the map
-     *
-     * @returns Promise resolving when function is done
-     * @protected
-     */
-    // protected async _highlightFeatures(
-    //   ids: number[],
-    //   updateExtent = false
-    // ): Promise<void> {
-    //   this._clearHighlight();
-    //   if (ids.length > 0) {
-    //     state.highlightHandle = await highlightFeatures(ids, this.layerViews[0], this.mapView, updateExtent);
-    //   }
-    // }
-
-    /**
-     * Clear any highlighted features in the map
-     *
-     * @protected
-     */
-    // protected _clearHighlight(): void {
-    //   state.highlightHandle?.remove();
-    // }
-
-    /**
-     * Update the ids for any ADD or REMOVE operation and highlight the features.
-     *
-     * @param oids the ids to add or remove
-     * @param mode ADD or REMOVE this will control if the ids are added or removed
-     * @param operationStack the undo or redo stack to push the operation to
-     * @param operationMode ADD or REMOVE the mode of the individual refine operation
-     *
-     * @returns Promise resolving when function is done
-     *
-     * @protected
-     */
-    // protected async _updateIds(
-    //   oids: number[],
-    //   mode: ESelectionMode,
-    //   operationStack: IRefineOperation[],
-    //   operationMode: ESelectionMode
-    // ): Promise<void> {
-    //   const idUpdates = { addIds: [], removeIds: [] };
-    //   if (mode === ESelectionMode.ADD) {
-    //     idUpdates.addIds = oids.filter(id => this.ids.indexOf(id) < 0);
-    //     this.ids = [...this.ids, ...idUpdates.addIds];
-    //     if (idUpdates.addIds.length > 0) {
-    //       operationStack.push({ mode: operationMode, ids: idUpdates.addIds });
-    //     }
-    //   } else {
-    //     idUpdates.removeIds = oids.filter(id => this.ids.indexOf(id) > -1);
-    //     this.ids = this.ids.filter(id => idUpdates.removeIds.indexOf(id) < 0);
-    //     if (idUpdates.removeIds.length > 0) {
-    //       operationStack.push({ mode: operationMode, ids: idUpdates.removeIds });
-    //     }
-    //   }
-    //   await this._highlightFeatures(this.ids).then(() => {
-    //     this.refineSelectionIdsChange.emit(idUpdates);
-    //   });
-    // }
-
+    await this._highlightFeatures();
+  }
 }

@@ -100,6 +100,12 @@ export interface IPdfOptions {
   enabledSizeValues: ValidSize[];
 }
 
+export interface IRefineOperation {
+  ids: number[];
+  mode: ESelectionMode;
+  layerView: __esri.FeatureLayerView;
+}
+
 export interface ISearchConfiguration {
   activeSourceIndex?: number;
   allPlaceholder?: string;
@@ -389,20 +395,20 @@ export interface ISelectionSet {
   workflowType: EWorkflowType;
   searchDistanceEnabled: boolean;
   useLayerFeaturesEnabled: boolean;
-
-  refineIds: IRefineIds;
+  refineInfos: IRefineInfo;
   redoStack?: IRefineOperation[];
   undoStack?: IRefineOperation[];
+  sketchGraphic: __esri.Graphic; // See: https://github.com/Esri/solutions-components/issues/208
+}
+
+export interface IRefineInfo {
+  [key: string]: IRefineIds;
 }
 
 export interface IRefineIds {
   addIds: number[];
   removeIds: number[];
-}
-
-export interface IRefineOperation {
-  mode: ESelectionMode;
-  ids: number[];
+  layerView: __esri.FeatureLayerView;
 }
 
 export interface ISketchGraphicsChange {
