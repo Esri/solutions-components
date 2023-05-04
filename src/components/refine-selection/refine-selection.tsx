@@ -347,7 +347,7 @@ export class RefineSelection {
     id: string,
     selectionSet?: ISelectionSet
   ): Promise<void> {
-    const refineInfo  = {};
+    const refineInfo = {};
     refineInfo[id] = {
       addIds: [],
       removeIds: [],
@@ -484,155 +484,155 @@ export class RefineSelection {
     this._translations = translations[0] as typeof RefineSelection_T9n;
   }
 
-    /**
-     * Select features based on the input geometry
-     *
-     * @param geom the geometry used for selection
-     *
-     * @returns Promise resolving when function is done
-     *
-     * @protected
-     */
-    protected async _selectFeatures(
-      geom: __esri.Geometry
-    ): Promise<void> {
-      this.selectionLoadingChange.emit(true);
+  /**
+   * Select features based on the input geometry
+   *
+   * @param geom the geometry used for selection
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _selectFeatures(
+    geom: __esri.Geometry
+  ): Promise<void> {
+    this.selectionLoadingChange.emit(true);
 
-      this._featuresCollection[this._refineLayer?.layer.id] = [];
-      const response = await queryFeaturesByGeometry(0, this._refineLayer?.layer, geom, this._featuresCollection);
+    this._featuresCollection[this._refineLayer?.layer.id] = [];
+    const response = await queryFeaturesByGeometry(0, this._refineLayer?.layer, geom, this._featuresCollection);
 
-      this.selectionLoadingChange.emit(false);
-      let graphics = [];
+    this.selectionLoadingChange.emit(false);
+    let graphics = [];
 
-      Object.keys(response).forEach(k => {
-        if (k === this._refineLayer?.layer.id) {
-          graphics = graphics.concat(response[k]);
-        }
-      });
+    Object.keys(response).forEach(k => {
+      if (k === this._refineLayer?.layer.id) {
+        graphics = graphics.concat(response[k]);
+      }
+    });
 
-      const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
-      await this._updateIds(oids, this._selectionMode, this._refineSelectionSet.undoStack, this._refineLayer);
+    const oids = Array.isArray(graphics) ? graphics.map(g => g.attributes[g?.layer?.objectIdField]) : [];
+    await this._updateIds(oids, this._selectionMode, this._refineSelectionSet.undoStack, this._refineLayer);
 
-      this._drawTools.clear();
-    }
+    this._drawTools.clear();
+  }
 
-    /**
-     * Highlight any selected features in the map
-     *
-     * @returns Promise resolving when function is done
-     * @protected
-     */
-    protected async _highlightFeatures(): Promise<void> {
-      this._clearHighlight();
-      state.highlightHandles = await highlightAllFeatures(this.selectionSets);
-    }
+  /**
+   * Highlight any selected features in the map
+   *
+   * @returns Promise resolving when function is done
+   * @protected
+   */
+  protected async _highlightFeatures(): Promise<void> {
+    this._clearHighlight();
+    state.highlightHandles = await highlightAllFeatures(this.selectionSets);
+  }
 
-    /**
-     * Clear any highlighted features in the map
-     *
-     * @protected
-     */
-    protected _clearHighlight(): void {
-      state.removeHandles();
-    }
+  /**
+   * Clear any highlighted features in the map
+   *
+   * @protected
+   */
+  protected _clearHighlight(): void {
+    state.removeHandles();
+  }
 
-    /**
-     * Update the ids for any ADD or REMOVE operation and highlight the features.
-     *
-     * @param oids the ids to add or remove
-     * @param mode ADD or REMOVE this will control if the ids are added or removed
-     * @param operationStack the undo or redo stack to push the operation to
-     * @param operationMode ADD or REMOVE the mode of the individual refine operation
-     *
-     * @returns Promise resolving when function is done
-     *
-     * @protected
-     */
-    protected async _updateIds(
-      ids: number[],
-      mode: ESelectionMode,
-      operationStack: IRefineOperation[],
-      layerView: __esri.FeatureLayerView
-    ): Promise<void> {
-      let selectionSetsChanged = false;
-      const refineInfos = this._refineSelectionSet.refineInfos;
-      const layerId = layerView.layer.id;
-      const newRefineInfo = {};
-      newRefineInfo[layerId] = {
-        addIds: [],
-        removeIds: [],
-        layerView
-      };
-      const idUpdates = Object.keys(refineInfos).indexOf(layerId) > -1 ?
-        refineInfos[layerId] : newRefineInfo[layerId];
+  /**
+   * Update the ids for any ADD or REMOVE operation and highlight the features.
+   *
+   * @param oids the ids to add or remove
+   * @param mode ADD or REMOVE this will control if the ids are added or removed
+   * @param operationStack the undo or redo stack to push the operation to
+   * @param operationMode ADD or REMOVE the mode of the individual refine operation
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _updateIds(
+    ids: number[],
+    mode: ESelectionMode,
+    operationStack: IRefineOperation[],
+    layerView: __esri.FeatureLayerView
+  ): Promise<void> {
+    let selectionSetsChanged = false;
+    const refineInfos = this._refineSelectionSet.refineInfos;
+    const layerId = layerView.layer.id;
+    const newRefineInfo = {};
+    newRefineInfo[layerId] = {
+      addIds: [],
+      removeIds: [],
+      layerView
+    };
+    const idUpdates = Object.keys(refineInfos).indexOf(layerId) > -1 ?
+      refineInfos[layerId] : newRefineInfo[layerId];
 
-      if (mode === ESelectionMode.ADD) {
-        idUpdates.addIds = [...new Set([...ids, ...idUpdates.addIds])]
-        if (idUpdates.addIds.length > 0) {
-          operationStack.push({
-            ids,
-            mode,
-            layerView
-         });
-        }
-        if (idUpdates.removeIds.length > 0) {
-          idUpdates.removeIds = idUpdates.removeIds.filter(id => ids.indexOf(id) < 0)
-        }
-      } else {
-        // ids are a result of the drawn geom...so it's possible they could contain ids that do
-        // not exist in other selection sets
-        const validIds = this.selectionSets.reduce((prev, cur) => {
-          ids.forEach(id => {
-            if (cur.workflowType !== EWorkflowType.REFINE) {
-              if (cur.selectedIds.indexOf(id) > -1) {
-                prev.push(id);
-              }
-            } else {
-              Object.keys(cur.refineInfos).some(k => {
-                const refineInfo = cur.refineInfos[k];
-                if (refineInfo.layerView.layer.id === layerView.layer.id && refineInfo.addIds.indexOf(id) > -1) {
-                  prev.push(id);
-                  return true;
-                }
-              })
-            }
-          })
-          return prev;
-        }, []);
-
-        idUpdates.removeIds = [...new Set([...validIds, ...idUpdates.removeIds])];
-        idUpdates.addIds = idUpdates.addIds.filter(id => validIds.indexOf(id) < 0);
-        if (idUpdates.removeIds.length > 0) {
-          operationStack.push({
-            ids: validIds,
-            mode,
-            layerView
-          });
-        }
-
-        this.selectionSets = this.selectionSets.reduce((prev, cur) => {
-          if (cur.workflowType !== EWorkflowType.REFINE &&
-            cur.layerView.layer.id === layerView.layer.id) {
-            cur.selectedIds = cur.selectedIds.filter(id => idUpdates.removeIds.indexOf(id) < 0);
-            if (cur.selectedIds.length > 0) {
-              prev.push(cur);
-            } else {
-              selectionSetsChanged = true;
+    if (mode === ESelectionMode.ADD) {
+      idUpdates.addIds = [...new Set([...ids, ...idUpdates.addIds])]
+      if (idUpdates.addIds.length > 0) {
+        operationStack.push({
+          ids,
+          mode,
+          layerView
+        });
+      }
+      if (idUpdates.removeIds.length > 0) {
+        idUpdates.removeIds = idUpdates.removeIds.filter(id => ids.indexOf(id) < 0)
+      }
+    } else {
+      // ids are a result of the drawn geom...so it's possible they could contain ids that do
+      // not exist in other selection sets
+      const validIds = this.selectionSets.reduce((prev, cur) => {
+        ids.forEach(id => {
+          if (cur.workflowType !== EWorkflowType.REFINE) {
+            if (cur.selectedIds.indexOf(id) > -1) {
+              prev.push(id);
             }
           } else {
-            prev.push(cur);
+            Object.keys(cur.refineInfos).some(k => {
+              const refineInfo = cur.refineInfos[k];
+              if (refineInfo.layerView.layer.id === layerView.layer.id && refineInfo.addIds.indexOf(id) > -1) {
+                prev.push(id);
+                return true;
+              }
+            })
           }
-          return prev;
-        }, []);
+        })
+        return prev;
+      }, []);
+
+      idUpdates.removeIds = [...new Set([...validIds, ...idUpdates.removeIds])];
+      idUpdates.addIds = idUpdates.addIds.filter(id => validIds.indexOf(id) < 0);
+      if (idUpdates.removeIds.length > 0) {
+        operationStack.push({
+          ids: validIds,
+          mode,
+          layerView
+        });
       }
 
-      this._refineSelectionSet.refineInfos[layerId] = idUpdates;
-      this.selectionSets = [...this.selectionSets];
-
-      if (selectionSetsChanged) {
-        this.selectionSetsChanged.emit(this.selectionSets);
-      }
-
-      await this._highlightFeatures();
+      this.selectionSets = this.selectionSets.reduce((prev, cur) => {
+        if (cur.workflowType !== EWorkflowType.REFINE &&
+          cur.layerView.layer.id === layerView.layer.id) {
+          cur.selectedIds = cur.selectedIds.filter(id => idUpdates.removeIds.indexOf(id) < 0);
+          if (cur.selectedIds.length > 0) {
+            prev.push(cur);
+          } else {
+            selectionSetsChanged = true;
+          }
+        } else {
+          prev.push(cur);
+        }
+        return prev;
+      }, []);
     }
+
+    this._refineSelectionSet.refineInfos[layerId] = idUpdates;
+    this.selectionSets = [...this.selectionSets];
+
+    if (selectionSetsChanged) {
+      this.selectionSetsChanged.emit(this.selectionSets);
+    }
+
+    await this._highlightFeatures();
+  }
 }

@@ -125,6 +125,14 @@ export async function highlightFeatures(
   return layerView.highlight(ids);
 }
 
+/**
+ * Highlights features from all sets including the refine set
+ *
+ * @param selectionSets The selection sets to highlight
+ *
+ * @returns Promise resolving with the highlight handles
+ *
+ */
 export async function highlightAllFeatures(
   selectionSets: ISelectionSet[]
 ): Promise<__esri.Handle[]> {
@@ -138,6 +146,14 @@ export async function highlightAllFeatures(
   }, []);
 }
 
+/**
+ * Highlights features from all sets including the refine set
+ *
+ * @param selectionSets The selection sets to highlight
+ *
+ * @returns Promise resolving with the highlight handles
+ *
+ */
 export function getIdSets(
   selectionSets: ISelectionSet[]
 ): any {
@@ -145,9 +161,10 @@ export function getIdSets(
     const lv = cur.layerView;
     const id = lv?.layer.id;
     if (id && Object.keys(prev).indexOf(id) > -1) {
-      prev[id].ids = [
-        ...new Set([...cur.selectedIds, ...prev[id].ids])
-      ];
+      prev[id].ids = [...new Set([
+        ...cur.selectedIds,
+        ...prev[id].ids
+      ])];
     } else if (id) {
       prev[id] = {
         layerView: lv,
@@ -158,9 +175,10 @@ export function getIdSets(
       Object.keys(cur.refineInfos).forEach(k => {
         const refineInfo = cur.refineInfos[k];
         if (Object.keys(prev).indexOf(k) > -1) {
-          prev[k].ids = [
-            ...new Set([...refineInfo.addIds, ...prev[k].ids])
-          ];
+          prev[k].ids = [...new Set([
+            ...refineInfo.addIds,
+            ...prev[k].ids
+          ])];
           prev[k].ids = prev[k].ids.filter(_id => refineInfo.removeIds.indexOf(_id) < 0)
         }
       });
