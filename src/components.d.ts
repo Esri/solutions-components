@@ -169,6 +169,14 @@ export namespace Components {
           * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
          */
         "polylineSymbol": __esri.SimpleLineSymbol;
+        /**
+          * boolean: when eanbled the user can redo the previous operation
+         */
+        "redoEnabled": boolean;
+        /**
+          * boolean: when eanbled the user can undo the previous operation
+         */
+        "undoEnabled": boolean;
     }
     interface MapLayerPicker {
         /**
@@ -385,8 +393,6 @@ export namespace Components {
         "sketchPolygonSymbol": __esri.SimpleFillSymbol | any;
     }
     interface RefineSelection {
-        "GraphicsLayer": any;
-        "SketchViewModel": any;
         /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
@@ -1026,7 +1032,13 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the redo action is clicked.
+         */
         "onDrawRedo"?: (event: MapDrawToolsCustomEvent<void>) => void;
+        /**
+          * Emitted on demand when the undo action is clicked.
+         */
         "onDrawUndo"?: (event: MapDrawToolsCustomEvent<void>) => void;
         /**
           * Emitted on demand when selection starts or ends.
@@ -1048,6 +1060,14 @@ declare namespace LocalJSX {
           * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
          */
         "polylineSymbol"?: __esri.SimpleLineSymbol;
+        /**
+          * boolean: when eanbled the user can redo the previous operation
+         */
+        "redoEnabled"?: boolean;
+        /**
+          * boolean: when eanbled the user can undo the previous operation
+         */
+        "undoEnabled"?: boolean;
     }
     interface MapLayerPicker {
         /**
@@ -1248,8 +1268,6 @@ declare namespace LocalJSX {
         "sketchPolygonSymbol"?: __esri.SimpleFillSymbol | any;
     }
     interface RefineSelection {
-        "GraphicsLayer"?: any;
-        "SketchViewModel"?: any;
         /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
@@ -1262,6 +1280,10 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when selection starts or ends.
+         */
+        "onSelectionLoadingChange"?: (event: RefineSelectionCustomEvent<boolean>) => void;
         /**
           * Emitted on demand when selection sets change.
          */

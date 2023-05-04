@@ -132,6 +132,7 @@ graph TD;
   pdf-download --> calcite-option
   calcite-input-text --> calcite-progress
   calcite-input-text --> calcite-icon
+  refine-selection --> map-layer-picker
   refine-selection --> calcite-segmented-control
   refine-selection --> calcite-segmented-control-item
   refine-selection --> map-draw-tools
