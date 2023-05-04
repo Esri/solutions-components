@@ -1114,6 +1114,7 @@ export class MapSelectTools {
     if (!this.selectLayerView || id !== this.selectLayerView.layer.id) {
       this.selectLayerView = await getMapLayerView(this.mapView, id);
       this._updateLabel();
+      await this._highlightWithOIDsOrGeoms();
     }
   }
 
