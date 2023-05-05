@@ -792,9 +792,9 @@ export class PublicNotification {
           {
             hasSelections ? (
               <div>
-                {this._getNotice(this._translations.exportTip, "padding-top-sides-1")}
+                {this._getNotice(this._translations.exportTip, "padding-sides-1")}
                 {this._getLabel(this._translations.myLists)}
-                {this._getSelectionLists()}
+                {this._getExportSelectionLists()}
                 <div class="padding-sides-1">
                   <calcite-label layout="inline">
                     <calcite-checkbox
@@ -1056,7 +1056,7 @@ export class PublicNotification {
    * @returns the list node
    * @protectedlabel
    */
-  protected _getSelectionLists(): VNode {
+  protected _getExportSelectionLists(): VNode {
     return this._selectionSets.reduce((prev, cur) => {
       const ids = this._getSelectionSetIds(cur);
 
@@ -1352,7 +1352,7 @@ export class PublicNotification {
    */
   protected async _highlightFeatures(): Promise<void> {
     this._clearHighlight();
-    const idSets = this._getSelectionIdsAndViews(this._selectionSets);
+    const idSets = this._getSelectionIdsAndViews(this._selectionSets, this._pageType === EPageType.EXPORT);
     const idKeys = Object.keys(idSets);
     if (idKeys.length > 0) {
       for (let i = 0; i < idKeys.length; i++) {
