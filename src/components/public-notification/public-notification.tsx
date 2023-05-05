@@ -628,9 +628,7 @@ export class PublicNotification {
         <calcite-list class="list-border margin-sides-1">
           {
             this._selectionSets.reduce((prev, cur, i) => {
-              const ids = cur.workflowType !== EWorkflowType.REFINE ? cur.selectedIds :
-                Object.keys(cur.refineInfos).reduce((p, c) => [...p, ...cur.refineInfos[c].addIds], []);
-
+              const ids = this._getSelectionSetIds(cur);
               prev.push((
                 <calcite-list-item
                   description={this._translations.selectedFeatures.replace("{{n}}", ids.length.toString())}
@@ -639,7 +637,7 @@ export class PublicNotification {
                 >
                   <div slot="content">
                     <div class="list-label">{cur.label}</div>
-                    <div class="list-description">{cur?.layerView.layer.title}</div>
+                    <div class="list-description">{cur?.layerView?.layer.title}</div>
                     <div class="list-description">{this._translations.selectedFeatures.replace("{{n}}", ids.length.toString())}</div>
                   </div>
                   {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
@@ -655,6 +653,22 @@ export class PublicNotification {
   }
 
   /**
+   * Get the ids for a given selection set
+   * For most sets this will be selectedIds
+   * For the Refine set we are only concerned with IDs from ADD operations on any of the layers
+   *
+   * @returns an array of the IDs
+   *
+   * @protected
+   */
+  protected _getSelectionSetIds(
+    selectionSet: ISelectionSet
+  ): number [] {
+    return selectionSet.workflowType !== EWorkflowType.REFINE ? selectionSet.selectedIds :
+      Object.keys(selectionSet.refineInfos).reduce((p, c) => [...p, ...selectionSet.refineInfos[c].addIds], []);
+  }
+
+  /**
    * Check if any valid selection sets exist.
    *
    * @returns true if valid selection sets exist
@@ -664,28 +678,14 @@ export class PublicNotification {
   protected _hasSelections(
     validateRefineSet = false
   ): boolean {
-    let refineSet;
+    let ids = [];
     const hasRefineSet = this._selectionSets.some(ss => {
       if (ss.workflowType === EWorkflowType.REFINE) {
-        refineSet = ss;
+        ids = this._getSelectionSetIds(ss);
         return true;
       }
     });
-    const hasValidRefineSet = hasRefineSet ? this._hasValidRefineSet(refineSet) : false;
-    return validateRefineSet && hasRefineSet ? hasValidRefineSet || this._selectionSets.length > 1 : this._selectionSets.length > 0;
-  }
-
-  /**
-   * Check if any refine sets contain addIds
-   *
-   * @returns true if addIds are found
-   *
-   * @protected
-   */
-  protected _hasValidRefineSet(
-    selectionSet: ISelectionSet
-  ): boolean {
-    return Object.keys(selectionSet.refineInfos).some(k => selectionSet.refineInfos[k].addIds.length > 0);
+    return validateRefineSet && hasRefineSet ? ids.length > 0 || this._selectionSets.length > 1 : this._selectionSets.length > 0;
   }
 
   /**
@@ -1058,12 +1058,9 @@ export class PublicNotification {
    */
   protected _getSelectionLists(): VNode {
     return this._selectionSets.reduce((prev, cur) => {
-      let hasAdds = false;
-      if (cur.workflowType === EWorkflowType.REFINE) {
-        hasAdds = this._hasValidRefineSet(cur);
-      }
+      const ids = this._getSelectionSetIds(cur);
 
-      const validSet = cur.workflowType !== EWorkflowType.REFINE || hasAdds;
+      const validSet = cur.workflowType !== EWorkflowType.REFINE || ids.length > 0;
 
       if (!this._downloadActive && cur.download && validSet) {
         this._downloadActive = true;
@@ -1075,7 +1072,7 @@ export class PublicNotification {
             <calcite-checkbox checked={cur.download} class="align-center" onClick={() => { void this._toggleDownload(cur.id) }} />
             <calcite-list class="list-border margin-start-1-2 width-full" id="download-list">
               <calcite-list-item
-                description={this._translations.selectedFeatures.replace("{{n}}", cur.selectedIds.length.toString())}
+                description={this._translations.selectedFeatures.replace("{{n}}", ids.length.toString())}
                 disabled={!cur.download}
                 label={cur.label}
                 onClick={() => { void this._toggleDownload(cur.id) }}
