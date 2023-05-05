@@ -721,11 +721,15 @@ export class MapSelectTools {
           const oids = useOIDs ? [searchResults.result.feature.getObjectId()] : undefined;
           this._workflowType = EWorkflowType.SEARCH;
           this._updateLabel();
+
+          const graphics = [searchResults.result.feature];
           this._updateSelection(
-            [searchResults.result.feature],
+            graphics,
             useOIDs,
             oids
           );
+          this._drawTools.graphics = graphics;
+          this._drawTools.updateGraphics();
         } else {
           const clearLabel = this._searchClearLabel();
           void this._clearResults(false, clearLabel);
