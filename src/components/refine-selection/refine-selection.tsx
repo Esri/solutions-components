@@ -374,7 +374,7 @@ export class RefineSelection {
         searchResult: undefined,
         buffer: undefined,
         distance: 0,
-        download: false, // TODO think through this again...really only true if we have adds
+        download: true,
         unit: "feet",
         label: "Refine",
         selectedIds: [],

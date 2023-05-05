@@ -687,8 +687,6 @@ export class MapSelectTools {
       this._selectionLabel = this.selectionSet?.label;
 
       await goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
-    } else {
-      this.mapView.popup.autoOpenEnabled = false;
     }
   }
 
@@ -723,11 +721,15 @@ export class MapSelectTools {
           const oids = useOIDs ? [searchResults.result.feature.getObjectId()] : undefined;
           this._workflowType = EWorkflowType.SEARCH;
           this._updateLabel();
+
+          const graphics = [searchResults.result.feature];
           this._updateSelection(
-            [searchResults.result.feature],
+            graphics,
             useOIDs,
             oids
           );
+          this._drawTools.graphics = graphics;
+          this._drawTools.updateGraphics();
         } else {
           const clearLabel = this._searchClearLabel();
           void this._clearResults(false, clearLabel);
@@ -838,34 +840,39 @@ export class MapSelectTools {
     forceUpdate = false
   ): Promise<void> {
     const graphics = event.detail.graphics;
+    if (graphics.length > 0 && graphics[0]) {
+      if (!forceUpdate) {
+        this._sketchGraphic = graphics[0];
+      }
 
-    if (!forceUpdate) {
-      this._sketchGraphic = graphics[0];
-    }
+      this._workflowType = this._useLayerFeaturesEnabled ? EWorkflowType.SELECT : EWorkflowType.SKETCH;
 
-    this._workflowType = this._useLayerFeaturesEnabled ? EWorkflowType.SELECT : EWorkflowType.SKETCH;
+      if (this._workflowType === EWorkflowType.SKETCH) {
+        this._drawTools.updateGraphics();
+      }
 
-    this._updateLabel();
-    this._clearSearchWidget();
-    if (this._useLayerFeaturesEnabled && !forceUpdate) {
-      // Will only ever be a single graphic
-      const geometries = Array.isArray(graphics) ? graphics.map(g => g.geometry) : this.geometries;
-      await this._selectLayerFeatures(geometries[0]);
-    } else {
-      const oids = graphics.reduce((prev, cur) => {
-        if (cur?.layer?.objectIdField) {
-          prev.push(cur.attributes[cur.layer.objectIdField]);
-        } else if (cur.getObjectId) {
-          prev.push(cur.getObjectId());
+      this._updateLabel();
+      this._clearSearchWidget();
+      if (this._useLayerFeaturesEnabled && !forceUpdate) {
+        // Will only ever be a single graphic
+        const geometries = Array.isArray(graphics) ? graphics.map(g => g.geometry) : this.geometries;
+        await this._selectLayerFeatures(geometries[0]);
+      } else {
+        const oids = graphics.reduce((prev, cur) => {
+          if (cur?.layer?.objectIdField) {
+            prev.push(cur.attributes[cur.layer.objectIdField]);
+          } else if (cur.getObjectId) {
+            prev.push(cur.getObjectId());
+          }
+          return prev;
+        }, []);
+
+        const useOIDs = event.detail.useOIDs && oids.length > 0;
+        this._updateSelection(graphics, useOIDs, oids);
+
+        if (useOIDs) {
+          await this._highlightFeatures(oids);
         }
-        return prev;
-      }, []);
-
-      const useOIDs = event.detail.useOIDs && oids.length > 0;
-      this._updateSelection(graphics, useOIDs, oids);
-
-      if (useOIDs) {
-        await this._highlightFeatures(oids);
       }
     }
   }
