@@ -1219,12 +1219,14 @@ export class MapSelectTools {
    */
   protected _useLayerFeaturesEnabledChanged(): void {
     this._useLayerFeaturesEnabled = !this._useLayerFeaturesEnabled;
-    void this._sketchGraphicsChanged({
-      detail: {
-        graphics: [this._sketchGraphic],
-        useOIDs: false
-      }
-    } as CustomEvent);
+    if (this._sketchGraphic) {
+      void this._sketchGraphicsChanged({
+        detail: {
+          graphics: [this._sketchGraphic],
+          useOIDs: false
+        }
+      } as CustomEvent);
+    }
   }
 
   /**
