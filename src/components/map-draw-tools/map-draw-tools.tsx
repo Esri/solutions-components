@@ -54,6 +54,11 @@ export class MapDrawTools {
   @Prop() drawMode: EDrawMode = EDrawMode.SKETCH;
 
   /**
+   * boolean: when true you will be able to make additional modifications to the sketched geometry
+   */
+  @Prop() editGraphicsEnabled = true;
+
+  /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
   @Prop({ mutable: true }) graphics: __esri.Graphic[];
@@ -396,13 +401,18 @@ export class MapDrawTools {
     });
 
     this._sketchWidget.on("update", (evt) => {
-      const eventType = evt?.toolEventInfo?.type;
-      if (eventType === "reshape-stop" || eventType === "move-stop") {
-        this.graphics = evt.graphics;
-        this.sketchGraphicsChange.emit({
-          graphics: this.graphics,
-          useOIDs: false
-        });
+      if (!this.editGraphicsEnabled) {
+        this._sketchWidget.viewModel.cancel();
+        this._sketchViewModel.cancel();
+      } else {
+        const eventType = evt?.toolEventInfo?.type;
+        if (eventType === "reshape-stop" || eventType === "move-stop") {
+          this.graphics = evt.graphics;
+          this.sketchGraphicsChange.emit({
+            graphics: this.graphics,
+            useOIDs: false
+          });
+        }
       }
     });
 

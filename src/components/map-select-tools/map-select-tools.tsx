@@ -454,6 +454,7 @@ export class MapSelectTools {
           <div class="padding-top-1">
             <map-draw-tools
               active={true}
+              editGraphicsEnabled={!this._useLayerFeaturesEnabled}
               graphics={this._graphics}
               mapView={this.mapView}
               onSketchGraphicsChange={(evt) => this._sketchGraphicsChanged(evt)}

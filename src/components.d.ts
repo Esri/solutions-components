@@ -150,6 +150,10 @@ export namespace Components {
          */
         "drawMode": EDrawMode;
         /**
+          * boolean: when true you will be able to make additional modifications to the sketched geometry
+         */
+        "editGraphicsEnabled": boolean;
+        /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "graphics": __esri.Graphic[];
@@ -1029,6 +1033,10 @@ declare namespace LocalJSX {
           * utils/interfaces: Controls how the draw tools are rendered  SKETCH mode supports snapping REFINE mode supports undo/redo
          */
         "drawMode"?: EDrawMode;
+        /**
+          * boolean: when true you will be able to make additional modifications to the sketched geometry
+         */
+        "editGraphicsEnabled"?: boolean;
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
