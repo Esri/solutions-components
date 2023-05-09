@@ -454,6 +454,7 @@ export class MapSelectTools {
           <div class="padding-top-1">
             <map-draw-tools
               active={true}
+              editGraphicsEnabled={!this._useLayerFeaturesEnabled}
               graphics={this._graphics}
               mapView={this.mapView}
               onSketchGraphicsChange={(evt) => this._sketchGraphicsChanged(evt)}
@@ -686,6 +687,10 @@ export class MapSelectTools {
 
       this._selectionLabel = this.selectionSet?.label;
 
+      if (!this._useLayerFeaturesEnabled) {
+        this._drawTools?.updateGraphics();
+      }
+
       await goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     }
   }
@@ -874,6 +879,8 @@ export class MapSelectTools {
           await this._highlightFeatures(oids);
         }
       }
+    } else {
+      await this._clearResults(true, true);
     }
   }
 
@@ -1218,12 +1225,14 @@ export class MapSelectTools {
    */
   protected _useLayerFeaturesEnabledChanged(): void {
     this._useLayerFeaturesEnabled = !this._useLayerFeaturesEnabled;
-    void this._sketchGraphicsChanged({
-      detail: {
-        graphics: [this._sketchGraphic],
-        useOIDs: false
-      }
-    } as CustomEvent);
+    if (this._sketchGraphic) {
+      void this._sketchGraphicsChanged({
+        detail: {
+          graphics: [this._sketchGraphic],
+          useOIDs: false
+        }
+      } as CustomEvent);
+    }
   }
 
   /**

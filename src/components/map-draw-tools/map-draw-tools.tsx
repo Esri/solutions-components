@@ -54,6 +54,11 @@ export class MapDrawTools {
   @Prop() drawMode: EDrawMode = EDrawMode.SKETCH;
 
   /**
+   * boolean: when true you will be able to make additional modifications to the sketched geometry
+   */
+  @Prop() editGraphicsEnabled = true;
+
+  /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
   @Prop({ mutable: true }) graphics: __esri.Graphic[];
@@ -351,18 +356,24 @@ export class MapDrawTools {
    * @protected
    */
   protected _initSketch(): void {
-    this._sketchWidget = new this.Sketch({
+    const sketchOptions: __esri.SketchViewModelProperties | __esri.SketchProperties = {
       layer: this._sketchGraphicsLayer,
       view: this.mapView,
-      container: this._sketchElement,
-      defaultUpdateOptions: {
-        tool: "reshape",
-        toggleToolOnClick: false
-      },
-      creationMode: "single",
       defaultCreateOptions: {
         mode: "hybrid"
       },
+      defaultUpdateOptions: {
+        preserveAspectRatio: false,
+        enableScaling: false,
+        enableRotation: false,
+        tool: "reshape",
+        toggleToolOnClick: false
+      }
+    };
+    this._sketchWidget = new this.Sketch({
+      ...sketchOptions,
+      container: this._sketchElement,
+      creationMode: "single",
       visibleElements: {
         selectionTools: {
           "lasso-selection": false,
@@ -374,11 +385,9 @@ export class MapDrawTools {
         settingsMenu: this.drawMode === EDrawMode.SKETCH
       }
     });
-    this
 
     this._sketchViewModel = new this.SketchViewModel({
-      view: this.mapView,
-      layer: this._sketchGraphicsLayer
+      ...sketchOptions
     });
 
     this._sketchWidget.viewModel.polylineSymbol = this.polylineSymbol;
@@ -396,13 +405,18 @@ export class MapDrawTools {
     });
 
     this._sketchWidget.on("update", (evt) => {
-      const eventType = evt?.toolEventInfo?.type;
-      if (eventType === "reshape-stop" || eventType === "move-stop") {
-        this.graphics = evt.graphics;
-        this.sketchGraphicsChange.emit({
-          graphics: this.graphics,
-          useOIDs: false
-        });
+      if (!this.editGraphicsEnabled) {
+        this._sketchWidget.viewModel.cancel();
+        this._sketchViewModel.cancel();
+      } else {
+        const eventType = evt?.toolEventInfo?.type;
+        if (eventType === "reshape-stop" || eventType === "move-stop") {
+          this.graphics = evt.graphics;
+          this.sketchGraphicsChange.emit({
+            graphics: this.graphics,
+            useOIDs: false
+          });
+        }
       }
     });
 
