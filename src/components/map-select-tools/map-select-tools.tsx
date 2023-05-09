@@ -687,6 +687,10 @@ export class MapSelectTools {
 
       this._selectionLabel = this.selectionSet?.label;
 
+      if (!this._useLayerFeaturesEnabled) {
+        this._drawTools?.updateGraphics();
+      }
+
       await goToSelection(this.selectionSet.selectedIds, this.selectionSet.layerView, this.mapView, false);
     }
   }
