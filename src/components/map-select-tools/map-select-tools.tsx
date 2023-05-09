@@ -879,6 +879,8 @@ export class MapSelectTools {
           await this._highlightFeatures(oids);
         }
       }
+    } else {
+      await this._clearResults(true, true);
     }
   }
 
