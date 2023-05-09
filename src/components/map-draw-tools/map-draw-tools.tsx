@@ -356,18 +356,24 @@ export class MapDrawTools {
    * @protected
    */
   protected _initSketch(): void {
-    this._sketchWidget = new this.Sketch({
+    const sketchOptions: __esri.SketchViewModelProperties | __esri.SketchProperties = {
       layer: this._sketchGraphicsLayer,
       view: this.mapView,
-      container: this._sketchElement,
-      defaultUpdateOptions: {
-        tool: "reshape",
-        toggleToolOnClick: false
-      },
-      creationMode: "single",
       defaultCreateOptions: {
         mode: "hybrid"
       },
+      defaultUpdateOptions: {
+        preserveAspectRatio: false,
+        enableScaling: false,
+        enableRotation: false,
+        tool: "reshape",
+        toggleToolOnClick: false
+      }
+    };
+    this._sketchWidget = new this.Sketch({
+      ...sketchOptions,
+      container: this._sketchElement,
+      creationMode: "single",
       visibleElements: {
         selectionTools: {
           "lasso-selection": false,
@@ -379,11 +385,9 @@ export class MapDrawTools {
         settingsMenu: this.drawMode === EDrawMode.SKETCH
       }
     });
-    this
 
     this._sketchViewModel = new this.SketchViewModel({
-      view: this.mapView,
-      layer: this._sketchGraphicsLayer
+      ...sketchOptions
     });
 
     this._sketchWidget.viewModel.polylineSymbol = this.polylineSymbol;
