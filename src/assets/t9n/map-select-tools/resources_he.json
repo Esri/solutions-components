@@ -1,0 +1,13 @@
+{
+  "listName": "כן_List name___________________ש",
+  "listNamePlaceholder": "כן_Enter name here________________ש",
+  "searchDistance": "כן_Search distance________________ש",
+  "select": "כן_Layer___________ש",
+  "selectedFeatures": "כן_{{n}} selected features________________________ש",
+  "selectionLoading": "כן_Selection loading__________________ש",
+  "sketch": "כן_Sketch_____________ש",
+  "bufferLayer": "כן_Buffer Layer_____________ש",
+  "sketchLayer": "כן_Sketch Layer_____________ש",
+  "useLayerFeatures": "כן_Use layer features___________________ש",
+  "inputLayer": "כן_Input layer____________ש"
+}
