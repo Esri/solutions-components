@@ -1,0 +1,13 @@
+{
+  "listName": "須_List name___________________鷗",
+  "listNamePlaceholder": "須_Enter name here________________鷗",
+  "searchDistance": "須_Search distance________________鷗",
+  "select": "須_Layer___________鷗",
+  "selectedFeatures": "須_{{n}} selected features________________________鷗",
+  "selectionLoading": "須_Selection loading__________________鷗",
+  "sketch": "須_Sketch_____________鷗",
+  "bufferLayer": "須_Buffer Layer_____________鷗",
+  "sketchLayer": "須_Sketch Layer_____________鷗",
+  "useLayerFeatures": "須_Use layer features___________________鷗",
+  "inputLayer": "須_Input layer____________鷗"
+}

@@ -1,0 +1,13 @@
+{
+  "listName": "한_List name___________________빠",
+  "listNamePlaceholder": "한_Enter name here________________빠",
+  "searchDistance": "한_Search distance________________빠",
+  "select": "한_Layer___________빠",
+  "selectedFeatures": "한_{{n}} selected features________________________빠",
+  "selectionLoading": "한_Selection loading__________________빠",
+  "sketch": "한_Sketch_____________빠",
+  "bufferLayer": "한_Buffer Layer_____________빠",
+  "sketchLayer": "한_Sketch Layer_____________빠",
+  "useLayerFeatures": "한_Use layer features___________________빠",
+  "inputLayer": "한_Input layer____________빠"
+}
