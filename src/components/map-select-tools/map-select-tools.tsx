@@ -484,15 +484,15 @@ export class MapSelectTools {
       <div>
         <div class="padding-top-1 display-flex">
           <calcite-label
-            class="label-margin-0 "
+            class="label-margin-0 w-100"
+            layout="inline-space-between"
           >
             {this._translations.searchDistance}
+            <calcite-switch
+              checked={this._searchDistanceEnabled}
+              onCalciteSwitchChange={() => this._searchDistanceEnabled = !this._searchDistanceEnabled}
+            />
           </calcite-label>
-          <calcite-switch
-            checked={this._searchDistanceEnabled}
-            class="position-right"
-            onCalciteSwitchChange={() => this._searchDistanceEnabled = !this._searchDistanceEnabled}
-          />
         </div>
 
         <div class={showBufferToolsClass}>
@@ -518,15 +518,15 @@ export class MapSelectTools {
       <div>
         <div class="padding-top-1 display-flex">
           <calcite-label
-            class="label-margin-0 "
+            class="label-margin-0 w-100"
+            layout="inline-space-between"
           >
             {this._translations.useLayerFeatures}
+            <calcite-switch
+              checked={this._useLayerFeaturesEnabled}
+              onCalciteSwitchChange={() => { this._useLayerFeaturesEnabledChanged() }}
+            />
           </calcite-label>
-          <calcite-switch
-            checked={this._useLayerFeaturesEnabled}
-            class="position-right"
-            onCalciteSwitchChange={() => { this._useLayerFeaturesEnabledChanged() }}
-          />
         </div>
 
         <div class={useLayerFeaturesClass + " padding-top-1"}>
