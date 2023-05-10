@@ -150,6 +150,10 @@ export namespace Components {
          */
         "drawMode": EDrawMode;
         /**
+          * boolean: when true you will be able to make additional modifications to the sketched geometry
+         */
+        "editGraphicsEnabled": boolean;
+        /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "graphics": __esri.Graphic[];
@@ -177,6 +181,11 @@ export namespace Components {
           * boolean: when eanbled the user can undo the previous operation
          */
         "undoEnabled": boolean;
+        /**
+          * Set the sketch widget to update mode with the current graphic
+          * @returns Promise that resolves when the operation is complete
+         */
+        "updateGraphics": () => Promise<void>;
     }
     interface MapLayerPicker {
         /**
@@ -1024,6 +1033,10 @@ declare namespace LocalJSX {
           * utils/interfaces: Controls how the draw tools are rendered  SKETCH mode supports snapping REFINE mode supports undo/redo
          */
         "drawMode"?: EDrawMode;
+        /**
+          * boolean: when true you will be able to make additional modifications to the sketched geometry
+         */
+        "editGraphicsEnabled"?: boolean;
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
