@@ -1,0 +1,13 @@
+{
+  "listName": "ng_List name___________________ny",
+  "listNamePlaceholder": "ng_Enter name here________________ny",
+  "searchDistance": "ng_Search distance________________ny",
+  "select": "ng_Layer___________ny",
+  "selectedFeatures": "ng_{{n}} selected features________________________ny",
+  "selectionLoading": "ng_Selection loading__________________ny",
+  "sketch": "ng_Sketch_____________ny",
+  "bufferLayer": "ng_Buffer Layer_____________ny",
+  "sketchLayer": "ng_Sketch Layer_____________ny",
+  "useLayerFeatures": "ng_Use layer features___________________ny",
+  "inputLayer": "ng_Input layer____________ny"
+}

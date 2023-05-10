@@ -1,0 +1,13 @@
+{
+  "listName": "試_List name___________________驗",
+  "listNamePlaceholder": "試_Enter name here________________驗",
+  "searchDistance": "試_Search distance________________驗",
+  "select": "試_Layer___________驗",
+  "selectedFeatures": "試_{{n}} selected features________________________驗",
+  "selectionLoading": "試_Selection loading__________________驗",
+  "sketch": "試_Sketch_____________驗",
+  "bufferLayer": "試_Buffer Layer_____________驗",
+  "sketchLayer": "試_Sketch Layer_____________驗",
+  "useLayerFeatures": "試_Use layer features___________________驗",
+  "inputLayer": "試_Input layer____________驗"
+}
