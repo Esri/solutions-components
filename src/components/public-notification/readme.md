@@ -105,7 +105,7 @@ graph TD;
   map-select-tools --> map-draw-tools
   map-select-tools --> calcite-label
   map-select-tools --> calcite-icon
-  map-select-tools --> calcite-tooltip
+  map-select-tools --> calcite-popover
   map-select-tools --> calcite-switch
   map-select-tools --> buffer-tools
   map-select-tools --> map-layer-picker
