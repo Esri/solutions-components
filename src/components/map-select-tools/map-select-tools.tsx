@@ -487,7 +487,13 @@ export class MapSelectTools {
             class="label-margin-0 w-100"
             layout="inline-space-between"
           >
-            {this._translations.searchDistance}
+            <div class="tooltip-container">
+              {this._translations.searchDistance}
+              <calcite-icon class="padding-start-1-2 icon" icon="question" id="search-distance-icon" scale="s"/>
+              <calcite-tooltip label="Data disclaimer" placement="auto" reference-element="search-distance-icon">
+                <span>{this._translations.useSearchDistanceTootip}</span>
+              </calcite-tooltip>
+            </div>
             <calcite-switch
               checked={this._searchDistanceEnabled}
               onCalciteSwitchChange={() => this._searchDistanceEnabled = !this._searchDistanceEnabled}
@@ -521,7 +527,13 @@ export class MapSelectTools {
             class="label-margin-0 w-100"
             layout="inline-space-between"
           >
-            {this._translations.useLayerFeatures}
+            <div class="tooltip-container">
+              {this._translations.useLayerFeatures}
+              <calcite-icon class="padding-start-1-2 icon" icon="question" id="use-layer-features-icon" scale="s" />
+              <calcite-tooltip label="Data disclaimer" placement="auto" reference-element="use-layer-features-icon">
+                <span>{this._translations.useLayerFeaturesTooltip}</span>
+              </calcite-tooltip>
+            </div>
             <calcite-switch
               checked={this._useLayerFeaturesEnabled}
               onCalciteSwitchChange={() => { this._useLayerFeaturesEnabledChanged() }}
