@@ -74,3 +74,16 @@
 .border-bottom {
   border-bottom: 1px solid var(--calcite-ui-border-2);
 }
+
+.tooltip-container {
+  justify-content: center;
+  display: flex;
+}
+
+.padding-start-1-2 {
+  padding-inline-start: 0.5rem;
+}
+
+.icon {
+  --calcite-ui-icon-color: var(--calcite-ui-brand);
+}

@@ -9,5 +9,7 @@
     "bufferLayer": "Buffer Layer",
     "sketchLayer": "Sketch Layer",
     "useLayerFeatures": "Use layer features",
-    "inputLayer": "Input layer"
+    "inputLayer": "Input layer",
+    "useLayerFeaturesTooltip": "Select a layer that can be used as a boundary or intersecting feature for the input layer",
+    "useSearchDistanceTootip": "Define a distance for a search buffer that will select input features that intersect the buffer"
 }

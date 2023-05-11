@@ -22,7 +22,7 @@
     "selectLayerTip": "Draw shapes to select features from the chosen selection layer; the results will be used to select features from the addressee layer",
     "selectSketchTip": "Use sketch tools to draw graphics in the map to select intersecting features in the addressee layer.",
     "optionalSearchDistance": "and optionally add search distance.",
-    "listHasSetsTip": "Edit or delete existing lists or choose a layer and click Create new list",
+    "listHasSetsTip": "Edit or delete existing lists or click Create new list.",
     "uniqueCout": "Unique Count: {{n}}",
     "searchDistance": "Search distance",
     "useLayerFeatures": "Use layer features",
@@ -35,6 +35,6 @@
     "pdfOptions": "PDF Options",
     "csvOptions": "CSV Options",
     "refineSelection": "Refine selection",
-    "refineTip": "Refine and finalize your lists by using sketch tools to add or remove features across all selection sets.",
+    "refineTip": "Refine and finalize your lists by using sketch tools to add or remove features from corresponding input layer.",
     "refineTipNoSelections": "There are no selections to refine. Go to My lists to create a list of features."
 }
