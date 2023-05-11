@@ -69,7 +69,7 @@ Promise with the new selection set
 - [map-draw-tools](../map-draw-tools)
 - calcite-label
 - calcite-icon
-- calcite-tooltip
+- calcite-popover
 - calcite-switch
 - [buffer-tools](../buffer-tools)
 - [map-layer-picker](../map-layer-picker)
@@ -83,7 +83,7 @@ graph TD;
   map-select-tools --> map-draw-tools
   map-select-tools --> calcite-label
   map-select-tools --> calcite-icon
-  map-select-tools --> calcite-tooltip
+  map-select-tools --> calcite-popover
   map-select-tools --> calcite-switch
   map-select-tools --> buffer-tools
   map-select-tools --> map-layer-picker
@@ -93,6 +93,8 @@ graph TD;
   map-draw-tools --> calcite-action
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
+  calcite-popover --> calcite-action
+  calcite-popover --> calcite-icon
   buffer-tools --> calcite-option
   buffer-tools --> calcite-input
   buffer-tools --> calcite-select

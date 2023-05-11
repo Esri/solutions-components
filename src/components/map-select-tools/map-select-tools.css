@@ -76,7 +76,7 @@
 }
 
 .tooltip-container {
-  justify-content: center;
+  /* justify-content: center; */
   display: flex;
 }
 
@@ -86,4 +86,10 @@
 
 .icon {
   --calcite-ui-icon-color: var(--calcite-ui-brand);
+}
+
+.tooltip-message {
+  padding: 5px 8px;
+  font-weight: var(--calcite-font-weight-normal);
+  color: var(--calcite-ui-text-2);
 }
