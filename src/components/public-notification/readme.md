@@ -104,11 +104,12 @@ graph TD;
   calcite-list-item --> calcite-icon
   map-select-tools --> map-draw-tools
   map-select-tools --> calcite-label
+  map-select-tools --> calcite-icon
+  map-select-tools --> calcite-tooltip
   map-select-tools --> calcite-switch
   map-select-tools --> buffer-tools
   map-select-tools --> map-layer-picker
   map-select-tools --> calcite-loader
-  map-select-tools --> calcite-icon
   map-select-tools --> calcite-input-message
   map-select-tools --> calcite-input
   map-draw-tools --> calcite-action
