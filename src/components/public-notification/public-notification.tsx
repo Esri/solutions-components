@@ -629,21 +629,32 @@ export class PublicNotification {
           {
             this._selectionSets.reduce((prev, cur, i) => {
               const ids = this._getSelectionSetIds(cur);
-              prev.push((
-                <calcite-list-item
-                  description={this._translations.selectedFeatures.replace("{{n}}", ids.length.toString())}
-                  label={cur.label}
-                  onClick={() => this._gotoSelection(cur, this.mapView)}
-                >
-                  <div slot="content">
-                    <div class="list-label">{cur.label}</div>
-                    <div class="list-description">{cur?.layerView?.layer.title}</div>
-                    <div class="list-description">{this._translations.selectedFeatures.replace("{{n}}", ids.length.toString())}</div>
-                  </div>
-                  {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
-                  {this._getAction(true, "x", "", (evt): Promise<void> => this._deleteSelection(i, evt), false, "actions-end")}
-                </calcite-list-item>
-              ));
+              let validSet = true;
+              if (cur.workflowType === EWorkflowType.REFINE) {
+                const numIds = Object.keys(cur.refineInfos).reduce((_prev, _cur) => {
+                  const refineInfo = cur.refineInfos[_cur];
+                  _prev += refineInfo.addIds.length + refineInfo.removeIds.length;
+                  return _prev;
+                }, 0);
+                validSet = numIds > 0;
+              }
+              if (validSet) {
+                prev.push((
+                  <calcite-list-item
+                    description={this._translations.selectedFeatures.replace("{{n}}", ids.length.toString())}
+                    label={cur.label}
+                    onClick={() => this._gotoSelection(cur, this.mapView)}
+                  >
+                    <div slot="content">
+                      <div class="list-label">{cur.label}</div>
+                      <div class="list-description">{cur?.layerView?.layer.title}</div>
+                      <div class="list-description">{this._translations.selectedFeatures.replace("{{n}}", ids.length.toString())}</div>
+                    </div>
+                    {this._getAction(true, "pencil", "", (evt): void => this._openSelection(cur, evt), false, "actions-end")}
+                    {this._getAction(true, "x", "", (evt): Promise<void> => this._deleteSelection(i, evt), false, "actions-end")}
+                  </calcite-list-item>
+                ));
+              }
               return prev;
             }, [])
           }
