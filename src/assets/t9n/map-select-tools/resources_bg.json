@@ -1,0 +1,13 @@
+{
+  "listName": "й_List name___________________й",
+  "listNamePlaceholder": "й_Enter name here________________й",
+  "searchDistance": "й_Search distance________________й",
+  "select": "й_Layer___________й",
+  "selectedFeatures": "й_{{n}} selected features________________________й",
+  "selectionLoading": "й_Selection loading__________________й",
+  "sketch": "й_Sketch_____________й",
+  "bufferLayer": "й_Buffer Layer_____________й",
+  "sketchLayer": "й_Sketch Layer_____________й",
+  "useLayerFeatures": "й_Use layer features___________________й",
+  "inputLayer": "й_Input layer____________й"
+}

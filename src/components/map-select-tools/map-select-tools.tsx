@@ -484,17 +484,31 @@ export class MapSelectTools {
       <div>
         <div class="padding-top-1 display-flex">
           <calcite-label
-            class="label-margin-0 "
+            class="label-margin-0 w-100"
+            layout="inline-space-between"
           >
-            {this._translations.searchDistance}
+            <div class="tooltip-container">
+              {this._translations.searchDistance}
+              <calcite-icon
+                class="padding-start-1-2 icon"
+                icon="question"
+                id="search-distance-icon"
+                scale="s"
+              />
+            </div>
           </calcite-label>
+          <calcite-popover
+            closable={true}
+            label=""
+            referenceElement="search-distance-icon"
+          >
+            <span class="tooltip-message">{this._translations.useSearchDistanceTootip}</span>
+          </calcite-popover>
           <calcite-switch
             checked={this._searchDistanceEnabled}
-            class="position-right"
             onCalciteSwitchChange={() => this._searchDistanceEnabled = !this._searchDistanceEnabled}
           />
         </div>
-
         <div class={showBufferToolsClass}>
           <buffer-tools
             disabled={!this._searchDistanceEnabled}
@@ -518,17 +532,31 @@ export class MapSelectTools {
       <div>
         <div class="padding-top-1 display-flex">
           <calcite-label
-            class="label-margin-0 "
+            class="label-margin-0 w-100"
+            layout="inline-space-between"
           >
-            {this._translations.useLayerFeatures}
+            <div class="tooltip-container">
+              {this._translations.useLayerFeatures}
+              <calcite-icon
+                class="padding-start-1-2 icon"
+                icon="question"
+                id="use-layer-features-icon"
+                scale="s"
+              />
+            </div>
           </calcite-label>
+          <calcite-popover
+            closable={true}
+            label=""
+            referenceElement="use-layer-features-icon"
+          >
+            <span class="tooltip-message">{this._translations.useLayerFeaturesTooltip}</span>
+          </calcite-popover>
           <calcite-switch
             checked={this._useLayerFeaturesEnabled}
-            class="position-right"
             onCalciteSwitchChange={() => { this._useLayerFeaturesEnabledChanged() }}
           />
         </div>
-
         <div class={useLayerFeaturesClass + " padding-top-1"}>
           <map-layer-picker
             enabledLayerIds={this.enabledLayerIds}
