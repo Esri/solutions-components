@@ -44,6 +44,25 @@ interface IAttributeTypes {
   [attributeName: string]: string;
 }
 
+interface ILayerRelationshipQuery {
+  layer: __esri.FeatureLayer;
+  relatedQuery: IRelatedFeaturesQuery;
+}
+
+interface ILayerRelationshipQueryHash {
+  [relationshipId: string]: ILayerRelationshipQuery;
+}
+
+// Class RelationshipQuery doesn't appear to work, and so since
+// https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html#queryRelatedFeatures
+// says that the relationshipQuery argument is autocast, we'll set up a variant for the class
+interface IRelatedFeaturesQuery {
+  outFields: string[];
+  relationshipId: string;
+  returnGeometry: boolean;
+  objectIds?: number;
+}
+
 const lineSeparatorChar = "|";
 
 //#endregion
@@ -278,6 +297,44 @@ export function _createFilename(
 }
 
 /**
+ * Creates relationship queries for each relationship flag in a popup.
+ * @param layer Layer whose popup is to be examined
+ * @return Hash of relationships by their id, or null if there are no relationship flags in the
+ * popup; each relationship has the properties layer and relatedQuery for the related layer
+ * and the query for that layer
+ */
+export function _createRelationshipQueries(
+  layer: __esri.FeatureLayer,
+): ILayerRelationshipQueryHash {
+
+  const relationships: ILayerRelationshipQueryHash = {};
+  const relationshipFieldPattern = /\{relationships\/\d+\//gm;
+  const relationshipIdPattern = /\d+/;
+
+  // Test if this popup has any relationship references
+  const matches = layer.popupTemplate.content[0].text.match(relationshipFieldPattern);
+  if (matches) {
+    matches.forEach(match => {
+      // Add a query to a found relationship if we don't already have one
+      const id = match.match(relationshipIdPattern)[0];
+      if (!relationships.hasOwnProperty(id)) {
+        const relatedQuery: IRelatedFeaturesQuery = {
+          outFields: ['*'],
+          relationshipId: id,
+          returnGeometry: false
+        };
+        relationships[id] = {
+          layer,
+          relatedQuery
+        } as ILayerRelationshipQuery;
+      }
+    });
+  }
+
+  return relationships;
+}
+
+/**
  * Prepares an attribute's value by applying domain and type information.
  *
  * @param attributeValue Value of attribute
@@ -366,6 +423,7 @@ async function _prepareLabels(
 
   // Get the label formatting, if any
   let labelFormat: string;
+  let relationshipQueries: ILayerRelationshipQueryHash = {};
   let arcadeExecutors: IArcadeExecutors = {};
   if (layer.popupEnabled) {
     layer.popupTemplate.fieldInfos.forEach(
@@ -398,6 +456,9 @@ async function _prepareLabels(
     } else if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "text") {
       labelFormat = _convertPopupTextToLabelSpec(layer.popupTemplate.content[0].text);
 
+      // Do we need any relationship queries?
+      relationshipQueries = _createRelationshipQueries(layer);
+
       // Do we need any Arcade executors?
       arcadeExecutors = await _createArcadeExecutors(labelFormat, layer);
     }
@@ -411,37 +472,88 @@ async function _prepareLabels(
     const attributeRegExp = /\{\w+\}/g;
 
     // Find the label fields that we need to replace with values
-    const arcadeExpressionMatches = labelFormat.match(arcadeExpressionRegExp);
-    const attributeMatches = labelFormat.match(attributeRegExp);
+    const arcadeExpressionMatches = labelFormat.match(arcadeExpressionRegExp) ?? [];
+    const attributeMatches = labelFormat.match(attributeRegExp) ?? [];
 
     // Convert feature attributes into an array of labels
-    labels = featureSet.features.map(
-      feature => {
+    const relationshipKeys = Object.keys(relationshipQueries);
+    labels = await Promise.all(featureSet.features.map(
+      async feature => {
         let labelPrep = labelFormat;
 
-        // Replace Arcade expressions
-        if (arcadeExpressionMatches) {
-          arcadeExpressionMatches.forEach(
-            (match: string) => {
-              const expressionName = match.substring(match.indexOf("/") + 1, match.length - 1);
-              const value = arcadeExecutors[expressionName].execute({"$feature": feature});
-              labelPrep = labelPrep.replace(match, value);
-            }
-          )
-        }
+        // Replace Arcade expressions in this feature
+        arcadeExpressionMatches.forEach(
+          (match: string) => {
+            const expressionName = match.substring(match.indexOf("/") + 1, match.length - 1);
+            const value = arcadeExecutors[expressionName].execute({"$feature": feature});
+            labelPrep = labelPrep.replace(match, value);
+          }
+        )
 
-        // Replace non-Arcade fields
-        if (attributeMatches) {
-          attributeMatches.forEach(
-            (match: string) => {
-              const attributeName = match.substring(1, match.length - 1);
-              const value = _prepareAttributeValue(feature.attributes[attributeName],
-                attributeTypes[attributeName], attributeDomains[attributeName],
-                attributeFormats[attributeName], intl);
-              labelPrep = labelPrep.replace(match, value);
-            }
-          )
-        }
+        // Replace relationship expressions in this feature
+        const relatedFeatureQueries = [] as Promise<__esri.FeatureSet>[];
+        const relationshipIds = [] as string[];
+        relationshipKeys.forEach(
+          (relationshipId) => {
+            const relationship = relationshipQueries[relationshipId];
+            const objectId = feature.attributes[relationship.layer.objectIdField];
+            const relatedQuery = {
+              ...relationship.relatedQuery,
+              objectIds: [objectId]
+            };
+            relatedFeatureQueries.push(relationship.layer.queryRelatedFeatures(relatedQuery as any));
+            relationshipIds.push(relationshipId);
+          }
+        );
+
+        // Wait for all of the queries for related records for this label
+        const relatedFeatureQueryResults = await Promise.all(relatedFeatureQueries);
+        relatedFeatureQueryResults.forEach(
+          (relatedFeatureQueryResult, i) => {
+            // We have an object with FeatureSets grouped by source layer or table objectIds
+            const relationshipId = relationshipIds[i];
+
+            // Run through the source layer or table objectIds
+            Object.keys(relatedFeatureQueryResult).forEach(
+              relatedFeatureSetId => {
+                // We have a feature set
+                const relatedFeatures = relatedFeatureQueryResult[relatedFeatureSetId].features;
+
+                // Get the values from each feature and replace them in the label
+                relatedFeatures.forEach(
+                  feature => {
+                    // Merge the base and related feature attributes and create the label
+                    // Prefix related feature's attributes with "relationships/<id>/" to match popup
+                    const rePrefix = "\{relationships/" + relationshipId + "/";
+                    const reSuffix = "\}";
+
+                    const attributes = feature.attributes;
+                    Object.keys(attributes).forEach(
+                      attributeName => {
+                        // Replace the value using the attribute name as a relationship
+                        const attributeRelationshipRegExp = new RegExp(rePrefix + attributeName + reSuffix, "g");
+                        labelPrep = labelPrep.replaceAll(attributeRelationshipRegExp, attributes[attributeName]);
+                      }
+                    );
+                  }
+                );
+              }
+            );
+          }
+        );
+
+        // Replace non-Arcade fields in this feature
+        attributeMatches.forEach(
+          (match: string) => {
+            const attributeName = match.substring(1, match.length - 1);
+
+            const value = _prepareAttributeValue(feature.attributes[attributeName],
+              attributeTypes[attributeName], attributeDomains[attributeName],
+              attributeFormats[attributeName], intl);
+            labelPrep = labelPrep.replace(match, value);
+
+          }
+        )
 
         // Split label into lines
         let label = labelPrep.split(lineSeparatorChar);
@@ -451,7 +563,7 @@ async function _prepareLabels(
 
         return label;
       }
-    );
+    ));
 
   } else {
     // Export all attributes
