@@ -15,12 +15,13 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
-import { DistanceUnit, EExportType, EPageType, EWorkflowType, IExportInfos, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
+import { DistanceUnit, EExportType, EPageType, EWorkflowType, IExportInfo, IExportInfos, IRefineIds, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
 import { goToSelection, highlightFeatures } from "../../utils/mapViewUtils";
 import state from "../../utils/publicNotificationStore";
 import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
+import { consolidateLabels, removeDuplicateLabels } from "../../utils/downloadUtils";
 
 @Component({
   tag: "public-notification",
@@ -169,6 +170,11 @@ export class PublicNotification {
    * utils/interfaces/EExportType: PDF or CSV
    */
   @State() _exportType: EExportType = EExportType.PDF;
+
+  /**
+   * number: The number of duplicate labels from all selection sets
+   */
+  @State() _numDuplicates = 0;
 
   /**
    * utils/interfaces/EPageType: LIST | SELECT | EXPORT | REFINE
@@ -336,6 +342,10 @@ export class PublicNotification {
 
     if (this.mapView?.popup) {
       this.mapView.popup.autoOpenEnabled = pageType !== EPageType.LIST ? false : this._popupsEnabled;
+    }
+
+    if (pageType === EPageType.EXPORT) {
+      this._numDuplicates = await this._getNumDuplicates();
     }
 
     this._clearHighlight();
@@ -700,43 +710,72 @@ export class PublicNotification {
   }
 
   /**
-   * Check if any duplicates exist
+   * Check if any duplicate labels exist
    *
    * @returns true if duplicates are found
    *
    * @protected
    */
-  protected _hasDuplicates(): boolean {
-    const selectedIds = this._getSelectedIds();
-    return this._getNumDuplicates(selectedIds) > 0;
+  protected async _getNumDuplicates(): Promise<number> {
+    const exportInfos: IExportInfos = this._getExportInfos();
+    const labels = await consolidateLabels(exportInfos);
+    const duplicatesRemoved = removeDuplicateLabels(labels)
+    return labels.length - duplicatesRemoved.length;
   }
 
   /**
-   * Return the number of duplicates
+   * Get key details about what to export
    *
-   * @param ids the list of currently selected ids
-   *
-   * @returns the number of duplicates
+   * @returns IExportInfos that contain ids and layer
    *
    * @protected
    */
-  protected _getNumDuplicates(
-    ids: number[]
-  ): number {
-    return ids.length - new Set(ids).size;
-  }
-
-  /**
-   * Get the complete list of selected ids
-   *
-   * @returns all currently selected IDs
-   *
-   * @protected
-   */
-  protected _getSelectedIds(): number[] {
+  protected _getExportInfos(): IExportInfos {
     return this._selectionSets.reduce((prev, cur) => {
-      return prev.concat(cur.download ? cur.selectedIds : [])
-    }, []);
+      if (cur.download) {
+        if (cur.workflowType !== EWorkflowType.REFINE) {
+          const id = cur.layerView.layer.id;
+          this._updateIds(id, cur.layerView, cur.selectedIds, prev);
+        } else {
+          // REFINE stores ids differently as it can contain ids from multiple layers
+          // REFINE will only ever be 1 ISelectionSet
+          Object.keys(cur.refineInfos).forEach(k => {
+            const refineIds: IRefineIds = cur.refineInfos[k];
+            this._updateIds(k, refineIds.layerView, refineIds.addIds, prev);
+          });
+        }
+      }
+      return prev;
+    }, {});
+  }
+
+  /**
+   * Consolidate ids for each layer
+   *
+   * @param id the layer id from the selectionSet
+   * @param layerView the layerView from the selectionSet
+   * @param ids the selectedIds from the selectionSet
+   * @param obj the object that will store the consolidated ids and layer info
+   *
+   * @returns IExportInfo key details that will be used for export
+   *
+   * @protected
+   */
+  protected _updateIds(
+    id: string,
+    layerView: __esri.FeatureLayerView,
+    ids: number[],
+    obj: any
+  ): IExportInfo {
+    if (obj[id]) {
+      obj[id].ids = obj[id].ids.concat(ids);
+    } else {
+      obj[id] = {
+        layerView,
+        ids
+      }
+    }
+    return obj;
   }
 
   /**
@@ -795,7 +834,7 @@ export class PublicNotification {
    */
   protected _getExportPage(): VNode {
     const hasSelections = this._hasSelections(this.showRefineSelection);
-    const numDuplicates = this._getNumDuplicates(this._getSelectedIds());
+    const displayDuplicatesClass = this._numDuplicates > 0 ? "display-block" : "display-none";
     return (
       <calcite-panel>
         <div>
@@ -806,7 +845,7 @@ export class PublicNotification {
                 {this._getNotice(this._translations.exportTip, "padding-sides-1")}
                 {this._getLabel(this._translations.myLists)}
                 {this._getExportSelectionLists()}
-                <div class="padding-sides-1">
+                <div class={"padding-sides-1 " + displayDuplicatesClass}>
                   <calcite-label layout="inline">
                     <calcite-checkbox
                       ref={(el) => { this._removeDuplicates = el }}
@@ -815,7 +854,7 @@ export class PublicNotification {
                       {this._translations.removeDuplicate}
                       <div class="info-message padding-start-1-2">
                         <calcite-input-message class="info-blue margin-top-0" scale="m">
-                          {` ${this._translations.numDuplicates.replace("{{n}}", numDuplicates.toString())}`}
+                          {` ${this._translations.numDuplicates.replace("{{n}}", this._numDuplicates.toString())}`}
                         </calcite-input-message>
                       </div>
                     </div>
@@ -1113,6 +1152,7 @@ export class PublicNotification {
       return ss;
     });
     this._downloadActive = isActive;
+    this._numDuplicates = await this._getNumDuplicates();
     await this._highlightFeatures();
   }
 

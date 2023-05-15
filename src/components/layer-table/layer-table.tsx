@@ -21,6 +21,7 @@ import { getLocaleComponentStrings } from "../../utils/locale";
 import { getMapLayerView, goToSelection, getMapLayerIds } from "../../utils/mapViewUtils";
 import { queryAllFeatures } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
+import { IExportInfos } from "../../utils/interfaces";
 
 @Component({
   tag: 'layer-table',
@@ -359,12 +360,15 @@ export class LayerTable {
    * @returns a promise that will resolve when the operation is complete
    */
   protected _exportToCSV(): void {
+    const exportInfos: IExportInfos = {};
+    exportInfos[this._layerView.layer.id] = {
+      selectionSetNames: [],
+      ids: this._getSelectedIds(),
+      layerView: this._layerView
+    }
     void downloadUtils.downloadCSV(
-      [],
-      this._layerView.layer,
-      this._getSelectedIds(),
+      exportInfos,
       false, // formatUsingLayerPopup
-      false, // removeDuplicates
       true, // addColumnTitle
     );
   }
