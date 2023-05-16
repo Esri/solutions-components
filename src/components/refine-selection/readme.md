@@ -34,7 +34,10 @@
 
 ### Depends on
 
+- calcite-label
+- calcite-icon
 - [map-layer-picker](../map-layer-picker)
+- calcite-popover
 - calcite-segmented-control
 - calcite-segmented-control-item
 - [map-draw-tools](../map-draw-tools)
@@ -44,7 +47,10 @@
 ### Graph
 ```mermaid
 graph TD;
+  refine-selection --> calcite-label
+  refine-selection --> calcite-icon
   refine-selection --> map-layer-picker
+  refine-selection --> calcite-popover
   refine-selection --> calcite-segmented-control
   refine-selection --> calcite-segmented-control-item
   refine-selection --> map-draw-tools
@@ -59,10 +65,12 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
-  calcite-segmented-control-item --> calcite-icon
-  map-draw-tools --> calcite-action
+  calcite-popover --> calcite-action
+  calcite-popover --> calcite-icon
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
+  calcite-segmented-control-item --> calcite-icon
+  map-draw-tools --> calcite-action
   calcite-list --> calcite-scrim
   calcite-list --> calcite-filter
   calcite-scrim --> calcite-loader
