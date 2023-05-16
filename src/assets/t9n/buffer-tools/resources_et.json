@@ -1,6 +1,6 @@
 {
-  "feet": "Š_Feet_________ä",
-  "meters": "Š_Meters_____________ä",
-  "miles": "Š_Miles___________ä",
-  "kilometers": "Š_Kilometers_____________________ä"
+  "feet": "ft",
+  "meters": "m",
+  "miles": "mi",
+  "kilometers": "km"
 }

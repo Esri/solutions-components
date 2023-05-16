@@ -1,13 +1,15 @@
 {
-  "listName": "כן_List name___________________ש",
-  "listNamePlaceholder": "כן_Enter name here________________ש",
-  "searchDistance": "כן_Search distance________________ש",
-  "select": "כן_Layer___________ש",
-  "selectedFeatures": "כן_{{n}} selected features________________________ש",
-  "selectionLoading": "כן_Selection loading__________________ש",
-  "sketch": "כן_Sketch_____________ש",
-  "bufferLayer": "כן_Buffer Layer_____________ש",
-  "sketchLayer": "כן_Sketch Layer_____________ש",
-  "useLayerFeatures": "כן_Use layer features___________________ש",
-  "inputLayer": "כן_Input layer____________ש"
+  "listName": "שם רשימה",
+  "listNamePlaceholder": "הזן שם כאן",
+  "searchDistance": "מרחק חיפוש",
+  "select": "שכבה",
+  "selectedFeatures": "נבחרו {{n}} ישויות",
+  "selectionLoading": "טוען בחירה",
+  "sketch": "שרטוט",
+  "bufferLayer": "שכבת חיץ",
+  "sketchLayer": "שכבת שרטוט",
+  "useLayerFeatures": "השתמש בישויות שכבה",
+  "inputLayer": "שכבת קלט",
+  "useLayerFeaturesTooltip": "כן_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ש.",
+  "useSearchDistanceTootip": "כן_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ש."
 }

@@ -1,13 +1,15 @@
 {
-  "listName": "Ж_List name___________________Я",
-  "listNamePlaceholder": "Ж_Enter name here________________Я",
-  "searchDistance": "Ж_Search distance________________Я",
-  "select": "Ж_Layer___________Я",
-  "selectedFeatures": "Ж_{{n}} selected features________________________Я",
-  "selectionLoading": "Ж_Selection loading__________________Я",
-  "sketch": "Ж_Sketch_____________Я",
-  "bufferLayer": "Ж_Buffer Layer_____________Я",
-  "sketchLayer": "Ж_Sketch Layer_____________Я",
-  "useLayerFeatures": "Ж_Use layer features___________________Я",
-  "inputLayer": "Ж_Input layer____________Я"
+  "listName": "Имя списка",
+  "listNamePlaceholder": "Введите имя здесь",
+  "searchDistance": "Расстояние поиска",
+  "select": "Слой",
+  "selectedFeatures": "{{n}} выбранных объектов",
+  "selectionLoading": "Загрузка выборки",
+  "sketch": "Скетч",
+  "bufferLayer": "Слой буфера",
+  "sketchLayer": "Слой скетча",
+  "useLayerFeatures": "Использовать слой объектов",
+  "inputLayer": "Входной слой",
+  "useLayerFeaturesTooltip": "Ж_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________Я.",
+  "useSearchDistanceTootip": "Ж_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________Я."
 }

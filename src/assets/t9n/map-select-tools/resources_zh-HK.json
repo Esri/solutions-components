@@ -1,13 +1,15 @@
 {
-  "listName": "試_List name___________________驗",
-  "listNamePlaceholder": "試_Enter name here________________驗",
-  "searchDistance": "試_Search distance________________驗",
-  "select": "試_Layer___________驗",
-  "selectedFeatures": "試_{{n}} selected features________________________驗",
-  "selectionLoading": "試_Selection loading__________________驗",
-  "sketch": "試_Sketch_____________驗",
-  "bufferLayer": "試_Buffer Layer_____________驗",
-  "sketchLayer": "試_Sketch Layer_____________驗",
-  "useLayerFeatures": "試_Use layer features___________________驗",
-  "inputLayer": "試_Input layer____________驗"
+  "listName": "清單名稱",
+  "listNamePlaceholder": "在這裡輸入名稱",
+  "searchDistance": "搜尋距離",
+  "select": "圖層",
+  "selectedFeatures": "{{n}} 個選擇的圖徵",
+  "selectionLoading": "選擇載入中",
+  "sketch": "描繪",
+  "bufferLayer": "缓衝區圖層",
+  "sketchLayer": "描繪圖層",
+  "useLayerFeatures": "使用圖層圖徵",
+  "inputLayer": "輸入圖層",
+  "useLayerFeaturesTooltip": "試_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________驗.",
+  "useSearchDistanceTootip": "試_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________驗."
 }

@@ -1,13 +1,15 @@
 {
-  "listName": "بيت_List name___________________لاحقة",
-  "listNamePlaceholder": "بيت_Enter name here________________لاحقة",
-  "searchDistance": "بيت_Search distance________________لاحقة",
-  "select": "بيت_Layer___________لاحقة",
-  "selectedFeatures": "بيت_{{n}} selected features________________________لاحقة",
-  "selectionLoading": "بيت_Selection loading__________________لاحقة",
-  "sketch": "بيت_Sketch_____________لاحقة",
-  "bufferLayer": "بيت_Buffer Layer_____________لاحقة",
-  "sketchLayer": "بيت_Sketch Layer_____________لاحقة",
-  "useLayerFeatures": "بيت_Use layer features___________________لاحقة",
-  "inputLayer": "بيت_Input layer____________لاحقة"
+  "listName": "اسم القائمة",
+  "listNamePlaceholder": "أدخل الاسم هنا",
+  "searchDistance": "مسافة البحث",
+  "select": "الطبقة",
+  "selectedFeatures": "{{n}} معالم محددة",
+  "selectionLoading": "تحميل التحديد",
+  "sketch": "مخطط",
+  "bufferLayer": "طبقة النطاق",
+  "sketchLayer": "طبقة المخطط",
+  "useLayerFeatures": "استخدام معالم الطبقة",
+  "inputLayer": "الطبقة المدخلة",
+  "useLayerFeaturesTooltip": "بيت_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________لاحقة.",
+  "useSearchDistanceTootip": "بيت_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________لاحقة."
 }

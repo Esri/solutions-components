@@ -1,13 +1,15 @@
 {
-  "listName": "Ř_List name___________________ů",
-  "listNamePlaceholder": "Ř_Enter name here________________ů",
-  "searchDistance": "Ř_Search distance________________ů",
-  "select": "Ř_Layer___________ů",
-  "selectedFeatures": "Ř_{{n}} selected features________________________ů",
-  "selectionLoading": "Ř_Selection loading__________________ů",
-  "sketch": "Ř_Sketch_____________ů",
-  "bufferLayer": "Ř_Buffer Layer_____________ů",
-  "sketchLayer": "Ř_Sketch Layer_____________ů",
-  "useLayerFeatures": "Ř_Use layer features___________________ů",
-  "inputLayer": "Ř_Input layer____________ů"
+  "listName": "Název seznamu",
+  "listNamePlaceholder": "Zde zadejte název",
+  "searchDistance": "Vzdálenost vyhledávání",
+  "select": "Vrstva",
+  "selectedFeatures": "{{n}} vybraných prvků",
+  "selectionLoading": "Výběr se načítá",
+  "sketch": "Skica",
+  "bufferLayer": "Vrstva obalové zóny",
+  "sketchLayer": "Vrstva skici",
+  "useLayerFeatures": "Použít prvky vrstvy",
+  "inputLayer": "Vstupní vrstva",
+  "useLayerFeaturesTooltip": "Ř_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ů.",
+  "useSearchDistanceTootip": "Ř_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ů."
 }

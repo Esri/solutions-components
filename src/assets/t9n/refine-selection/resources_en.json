@@ -3,5 +3,7 @@
     "remove": "Remove",
     "featuresAdded": "Features added: {{n}}",
     "featuresRemoved": "Features removed: {{n}}",
-    "totalSelected": "Total selected: {{n}}"
+    "totalSelected": "Total selected: {{n}}",
+    "inputLayer": "Input layer",
+    "inputLayerTip": "Choose input layer to review selected features from, update selected features from one input layer at a time."
 }

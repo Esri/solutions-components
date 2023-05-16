@@ -1,13 +1,15 @@
 {
-  "listName": "ґ_List name___________________Ї",
-  "listNamePlaceholder": "ґ_Enter name here________________Ї",
-  "searchDistance": "ґ_Search distance________________Ї",
-  "select": "ґ_Layer___________Ї",
-  "selectedFeatures": "ґ_{{n}} selected features________________________Ї",
-  "selectionLoading": "ґ_Selection loading__________________Ї",
-  "sketch": "ґ_Sketch_____________Ї",
-  "bufferLayer": "ґ_Buffer Layer_____________Ї",
-  "sketchLayer": "ґ_Sketch Layer_____________Ї",
-  "useLayerFeatures": "ґ_Use layer features___________________Ї",
-  "inputLayer": "ґ_Input layer____________Ї"
+  "listName": "Ім'я списку",
+  "listNamePlaceholder": "Введіть ім'я тут",
+  "searchDistance": "Відстань пошуку",
+  "select": "Шар",
+  "selectedFeatures": "{{n}} об'єкти(-ів) вибрано",
+  "selectionLoading": "Завантаження вибору",
+  "sketch": "Скетч",
+  "bufferLayer": "Буферний шар",
+  "sketchLayer": "Шар скетчу",
+  "useLayerFeatures": "Використовувати об’єкти шару",
+  "inputLayer": "Вхідний шар",
+  "useLayerFeaturesTooltip": "ґ_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________Ї.",
+  "useSearchDistanceTootip": "ґ_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________Ї."
 }
