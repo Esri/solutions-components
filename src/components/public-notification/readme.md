@@ -52,6 +52,8 @@
 - calcite-label
 - calcite-checkbox
 - calcite-input-message
+- calcite-icon
+- calcite-popover
 - calcite-segmented-control
 - calcite-segmented-control-item
 - [pdf-download](../pdf-download)
@@ -75,6 +77,8 @@ graph TD;
   public-notification --> calcite-label
   public-notification --> calcite-checkbox
   public-notification --> calcite-input-message
+  public-notification --> calcite-icon
+  public-notification --> calcite-popover
   public-notification --> calcite-segmented-control
   public-notification --> calcite-segmented-control-item
   public-notification --> pdf-download
