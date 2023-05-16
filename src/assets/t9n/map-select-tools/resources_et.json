@@ -1,13 +1,15 @@
 {
-  "listName": "Š_List name___________________ä",
-  "listNamePlaceholder": "Š_Enter name here________________ä",
-  "searchDistance": "Š_Search distance________________ä",
-  "select": "Š_Layer___________ä",
-  "selectedFeatures": "Š_{{n}} selected features________________________ä",
-  "selectionLoading": "Š_Selection loading__________________ä",
-  "sketch": "Š_Sketch_____________ä",
-  "bufferLayer": "Š_Buffer Layer_____________ä",
-  "sketchLayer": "Š_Sketch Layer_____________ä",
-  "useLayerFeatures": "Š_Use layer features___________________ä",
-  "inputLayer": "Š_Input layer____________ä"
+  "listName": "Loendi nimi",
+  "listNamePlaceholder": "Sisestage nimi siia",
+  "searchDistance": "Otsitav vahemaa",
+  "select": "Kiht",
+  "selectedFeatures": "{{n}} valitud objektid",
+  "selectionLoading": "Valiku laadimine",
+  "sketch": "Visand",
+  "bufferLayer": "Puhvrikiht",
+  "sketchLayer": "Visandikiht",
+  "useLayerFeatures": "Kasuta kihi objekte",
+  "inputLayer": "Sisendkiht",
+  "useLayerFeaturesTooltip": "Š_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ä.",
+  "useSearchDistanceTootip": "Š_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ä."
 }

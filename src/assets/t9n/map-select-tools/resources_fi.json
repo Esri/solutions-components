@@ -1,13 +1,15 @@
 {
-  "listName": "Å_List name___________________ö",
-  "listNamePlaceholder": "Å_Enter name here________________ö",
-  "searchDistance": "Å_Search distance________________ö",
-  "select": "Å_Layer___________ö",
-  "selectedFeatures": "Å_{{n}} selected features________________________ö",
-  "selectionLoading": "Å_Selection loading__________________ö",
-  "sketch": "Å_Sketch_____________ö",
-  "bufferLayer": "Å_Buffer Layer_____________ö",
-  "sketchLayer": "Å_Sketch Layer_____________ö",
-  "useLayerFeatures": "Å_Use layer features___________________ö",
-  "inputLayer": "Å_Input layer____________ö"
+  "listName": "Luettelon nimi",
+  "listNamePlaceholder": "Kirjoita nimi tähän",
+  "searchDistance": "Hakuetäisyys",
+  "select": "Karttataso",
+  "selectedFeatures": "{{n}} valittua kohdetta",
+  "selectionLoading": "Valintaa ladataan",
+  "sketch": "Luonnos",
+  "bufferLayer": "Puskurikarttataso",
+  "sketchLayer": "Luonnoskarttataso",
+  "useLayerFeatures": "Käytä karttatason kohteita",
+  "inputLayer": "Lähtöaineiston karttataso",
+  "useLayerFeaturesTooltip": "Å_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ö.",
+  "useSearchDistanceTootip": "Å_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ö."
 }

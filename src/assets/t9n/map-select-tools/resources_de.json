@@ -1,13 +1,15 @@
 {
-  "listName": "ä_List name___________________Ü",
-  "listNamePlaceholder": "ä_Enter name here________________Ü",
-  "searchDistance": "ä_Search distance________________Ü",
-  "select": "ä_Layer___________Ü",
-  "selectedFeatures": "ä_{{n}} selected features________________________Ü",
-  "selectionLoading": "ä_Selection loading__________________Ü",
-  "sketch": "ä_Sketch_____________Ü",
-  "bufferLayer": "ä_Buffer Layer_____________Ü",
-  "sketchLayer": "ä_Sketch Layer_____________Ü",
-  "useLayerFeatures": "ä_Use layer features___________________Ü",
-  "inputLayer": "ä_Input layer____________Ü"
+  "listName": "Listenname",
+  "listNamePlaceholder": "Name hier eingeben",
+  "searchDistance": "Suchentfernung",
+  "select": "Layer",
+  "selectedFeatures": "{{n}} ausgewählte Features",
+  "selectionLoading": "Auswahl wird geladen",
+  "sketch": "Skizzieren",
+  "bufferLayer": "Puffer-Layer",
+  "sketchLayer": "Skizzen-Layer",
+  "useLayerFeatures": "Layer-Features verwenden",
+  "inputLayer": "Eingabe-Layer",
+  "useLayerFeaturesTooltip": "ä_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________Ü.",
+  "useSearchDistanceTootip": "ä_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________Ü."
 }

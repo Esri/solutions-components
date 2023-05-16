@@ -1,13 +1,15 @@
 {
-  "listName": "한_List name___________________빠",
-  "listNamePlaceholder": "한_Enter name here________________빠",
-  "searchDistance": "한_Search distance________________빠",
-  "select": "한_Layer___________빠",
-  "selectedFeatures": "한_{{n}} selected features________________________빠",
-  "selectionLoading": "한_Selection loading__________________빠",
-  "sketch": "한_Sketch_____________빠",
-  "bufferLayer": "한_Buffer Layer_____________빠",
-  "sketchLayer": "한_Sketch Layer_____________빠",
-  "useLayerFeatures": "한_Use layer features___________________빠",
-  "inputLayer": "한_Input layer____________빠"
+  "listName": "목록 이름",
+  "listNamePlaceholder": "여기에 이름 입력",
+  "searchDistance": "검색 거리",
+  "select": "레이어",
+  "selectedFeatures": "선택한 피처 {{n}}개",
+  "selectionLoading": "선택 항목을 불러오는 중",
+  "sketch": "스케치",
+  "bufferLayer": "버퍼 레이어",
+  "sketchLayer": "스케치 레이어",
+  "useLayerFeatures": "레이어 피처 사용",
+  "inputLayer": "입력 레이어",
+  "useLayerFeaturesTooltip": "한_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________빠.",
+  "useSearchDistanceTootip": "한_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________빠."
 }

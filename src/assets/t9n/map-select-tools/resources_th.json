@@ -1,13 +1,15 @@
 {
-  "listName": "ก้_List name___________________ษฺ",
-  "listNamePlaceholder": "ก้_Enter name here________________ษฺ",
-  "searchDistance": "ก้_Search distance________________ษฺ",
-  "select": "ก้_Layer___________ษฺ",
-  "selectedFeatures": "ก้_{{n}} selected features________________________ษฺ",
-  "selectionLoading": "ก้_Selection loading__________________ษฺ",
-  "sketch": "ก้_Sketch_____________ษฺ",
-  "bufferLayer": "ก้_Buffer Layer_____________ษฺ",
-  "sketchLayer": "ก้_Sketch Layer_____________ษฺ",
-  "useLayerFeatures": "ก้_Use layer features___________________ษฺ",
-  "inputLayer": "ก้_Input layer____________ษฺ"
+  "listName": "ชื่อรายการ",
+  "listNamePlaceholder": "ป้อนชื่อที่นี่",
+  "searchDistance": "ระยะทางการค้นหา",
+  "select": "ชั้นข้อมูล",
+  "selectedFeatures": "{{n}} ฟีเจอร์ที่เลือก",
+  "selectionLoading": "กำลังโหลดรายการที่เลือก",
+  "sketch": "วาด",
+  "bufferLayer": "ชั้นข้อมูลบัฟเฟอร์",
+  "sketchLayer": "ชั้นข้อมูลการวาด",
+  "useLayerFeatures": "ใช้ฟีเจอร์ชั้นข้อมูล",
+  "inputLayer": "ชั้นข้อมูลอินพุท",
+  "useLayerFeaturesTooltip": "ก้_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ษฺ.",
+  "useSearchDistanceTootip": "ก้_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ษฺ."
 }

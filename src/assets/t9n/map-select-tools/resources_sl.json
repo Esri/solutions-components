@@ -1,13 +1,15 @@
 {
-  "listName": "Š_List name___________________č",
-  "listNamePlaceholder": "Š_Enter name here________________č",
-  "searchDistance": "Š_Search distance________________č",
-  "select": "Š_Layer___________č",
-  "selectedFeatures": "Š_{{n}} selected features________________________č",
-  "selectionLoading": "Š_Selection loading__________________č",
-  "sketch": "Š_Sketch_____________č",
-  "bufferLayer": "Š_Buffer Layer_____________č",
-  "sketchLayer": "Š_Sketch Layer_____________č",
-  "useLayerFeatures": "Š_Use layer features___________________č",
-  "inputLayer": "Š_Input layer____________č"
+  "listName": "Ime seznama",
+  "listNamePlaceholder": "Tukaj vnesi ime",
+  "searchDistance": "Poišči razdaljo",
+  "select": "Sloj",
+  "selectedFeatures": "Število izbranih geoobjektov: {{n}}",
+  "selectionLoading": "Nalaganje izbire",
+  "sketch": "Skiciraj",
+  "bufferLayer": "Sloj obrisa",
+  "sketchLayer": "Sloj skice",
+  "useLayerFeatures": "Uporabi geoobjekte sloja",
+  "inputLayer": "Vhodni sloj",
+  "useLayerFeaturesTooltip": "Š_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________č.",
+  "useSearchDistanceTootip": "Š_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________č."
 }
