@@ -36,5 +36,6 @@
     "csvOptions": "CSV Options",
     "refineSelection": "Refine selection",
     "refineTip": "Refine and finalize your lists by using sketch tools to add or remove features across all selection sets.",
-    "refineTipNoSelections": "There are no selections to refine. Go to My lists to create a list of features."
+    "refineTipNoSelections": "There are no selections to refine. Go to My lists to create a list of features.",
+    "duplicatesTip": "Duplicate features are always removed. When enabled labels from each layer will be compared and any duplicate labels will be removed."
 }
