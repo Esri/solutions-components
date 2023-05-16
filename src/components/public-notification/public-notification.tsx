@@ -843,22 +843,37 @@ export class PublicNotification {
             hasSelections ? (
               <div>
                 {this._getNotice(this._translations.exportTip, "padding-sides-1")}
-                {this._getLabel(this._translations.myLists)}
+                {this._getLabel(this._translations.exportListsLabel)}
                 {this._getExportSelectionLists()}
                 <div class={"padding-sides-1 " + displayDuplicatesClass}>
-                  <calcite-label layout="inline">
-                    <calcite-checkbox
-                      ref={(el) => { this._removeDuplicates = el }}
-                    />
-                    <div class="display-flex">
-                      {this._translations.removeDuplicate}
-                      <div class="info-message padding-start-1-2">
-                        <calcite-input-message class="info-blue margin-top-0" scale="m">
-                          {` ${this._translations.numDuplicates.replace("{{n}}", this._numDuplicates.toString())}`}
-                        </calcite-input-message>
+                  <div class="display-flex">
+                    <calcite-label layout="inline">
+                      <calcite-checkbox
+                        ref={(el) => { this._removeDuplicates = el }}
+                      />
+                      <div class="display-flex">
+                        {this._translations.removeDuplicate}
+                        <div class="info-message padding-start-1-2">
+                          <calcite-input-message class="info-blue margin-top-0" scale="m">
+                            {` ${this._translations.numDuplicates.replace("{{n}}", numDuplicates.toString())}`}
+                          </calcite-input-message>
+                        </div>
                       </div>
-                    </div>
-                  </calcite-label>
+                    </calcite-label>
+                    <calcite-icon
+                      class="padding-start-1-2 icon"
+                      icon="question"
+                      id="remove-duplicates-icon"
+                      scale="s"
+                    />
+                  </div>
+                  <calcite-popover
+                    closable={true}
+                    label=""
+                    referenceElement="remove-duplicates-icon"
+                  >
+                    <span class="tooltip-message">{this._translations.duplicatesTip}</span>
+                  </calcite-popover>
                 </div>
 
                 <div class="border-bottom" />
