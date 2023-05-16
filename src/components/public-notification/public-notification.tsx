@@ -790,7 +790,7 @@ export class PublicNotification {
       <calcite-panel>
         {this._getLabel(this._translations.stepTwoFull, true)}
         {this._getNotice(noticeText)}
-        <div class={"padding-top-1"}>
+        <div>
           <map-select-tools
             bufferColor={this.bufferColor}
             bufferOutlineColor={this.bufferOutlineColor}

@@ -196,14 +196,34 @@ export class RefineSelection {
     return (
       <Host>
         <div class={layerPickerClass + " padding-top-sides-1"}>
-          <map-layer-picker
-            enabledLayerIds={this._enabledLayerIds}
-            mapView={this.mapView}
-            onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
-            ref={(el) => { this._layerPicker = el }}
-            selectedLayerIds={[this._refineLayer.layer.id]}
-            selectionMode={"single"}
-          />
+          <div class="display-flex">
+            <calcite-label class="font-bold width-full label-margin-0">
+              <div class="display-flex">
+                {this._translations.inputLayer}
+                <calcite-icon
+                  class="padding-start-1-2 icon"
+                  icon="question"
+                  id="refine-input-layer"
+                  scale="s"
+                />
+              </div>
+              <map-layer-picker
+                enabledLayerIds={this._enabledLayerIds}
+                mapView={this.mapView}
+                onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
+                ref={(el) => { this._layerPicker = el }}
+                selectedLayerIds={[this._refineLayer.layer.id]}
+                selectionMode={"single"}
+              />
+            </calcite-label>
+            <calcite-popover
+              closable={true}
+              label=""
+              referenceElement="refine-input-layer"
+            >
+              <span class="tooltip-message">{this._translations.inputLayerTip}</span>
+            </calcite-popover>
+          </div>
         </div>
         <div class="padding-1">
           <div class="padding-bottom-1">

@@ -84,3 +84,23 @@ html[dir="rtl"] .main-label {
   margin: 6px 0;
   border-right: 1px solid rgba(110,110,110,.3);
 }
+
+.display-flex {
+  display: flex;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.width-full {
+  width: 100%;
+}
+
+.label-margin-0 {
+  --calcite-label-margin-bottom: 0;
+}
+
+.padding-start-1-2 {
+  padding-inline-start: 0.5rem;
+}
