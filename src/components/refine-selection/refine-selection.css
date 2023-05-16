@@ -85,6 +85,22 @@ html[dir="rtl"] .main-label {
   border-right: 1px solid rgba(110,110,110,.3);
 }
 
-.tooltip-container {
+.display-flex {
   display: flex;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.width-full {
+  width: 100%;
+}
+
+.label-margin-0 {
+  --calcite-label-margin-bottom: 0;
+}
+
+.padding-start-1-2 {
+  padding-inline-start: 0.5rem;
 }

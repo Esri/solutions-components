@@ -198,7 +198,7 @@ export class RefineSelection {
         <div class={layerPickerClass + " padding-top-sides-1"}>
           <div class="display-flex">
             <calcite-label class="font-bold width-full label-margin-0">
-              <div class="tooltip-container">
+              <div class="display-flex">
                 {this._translations.inputLayer}
                 <calcite-icon
                   class="padding-start-1-2 icon"
