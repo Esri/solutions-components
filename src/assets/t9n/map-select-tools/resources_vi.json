@@ -1,13 +1,15 @@
 {
-  "listName": "Đ_List name___________________ớ",
-  "listNamePlaceholder": "Đ_Enter name here________________ớ",
-  "searchDistance": "Đ_Search distance________________ớ",
-  "select": "Đ_Layer___________ớ",
-  "selectedFeatures": "Đ_{{n}} selected features________________________ớ",
-  "selectionLoading": "Đ_Selection loading__________________ớ",
-  "sketch": "Đ_Sketch_____________ớ",
-  "bufferLayer": "Đ_Buffer Layer_____________ớ",
-  "sketchLayer": "Đ_Sketch Layer_____________ớ",
-  "useLayerFeatures": "Đ_Use layer features___________________ớ",
-  "inputLayer": "Đ_Input layer____________ớ"
+  "listName": "Tên danh sách",
+  "listNamePlaceholder": "Nhập tên ở đây",
+  "searchDistance": "Khoảng cách tìm kiếm",
+  "select": "Lớp",
+  "selectedFeatures": "{{n}} đối tượng được chọn",
+  "selectionLoading": "Đang tải lựa chọn",
+  "sketch": "Phác họa",
+  "bufferLayer": "Lớp Vùng đệm",
+  "sketchLayer": "Lớp Phác họa",
+  "useLayerFeatures": "Sử dụng các đối tượng trong lớp",
+  "inputLayer": "Lớp đầu vào",
+  "useLayerFeaturesTooltip": "Đ_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ớ.",
+  "useSearchDistanceTootip": "Đ_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ớ."
 }

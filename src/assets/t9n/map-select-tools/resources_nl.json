@@ -1,13 +1,15 @@
 {
-  "listName": "Ĳ_List name___________________ä",
-  "listNamePlaceholder": "Ĳ_Enter name here________________ä",
-  "searchDistance": "Ĳ_Search distance________________ä",
-  "select": "Ĳ_Layer___________ä",
-  "selectedFeatures": "Ĳ_{{n}} selected features________________________ä",
-  "selectionLoading": "Ĳ_Selection loading__________________ä",
-  "sketch": "Ĳ_Sketch_____________ä",
-  "bufferLayer": "Ĳ_Buffer Layer_____________ä",
-  "sketchLayer": "Ĳ_Sketch Layer_____________ä",
-  "useLayerFeatures": "Ĳ_Use layer features___________________ä",
-  "inputLayer": "Ĳ_Input layer____________ä"
+  "listName": "Naam lijst",
+  "listNamePlaceholder": "Naam hier invoeren",
+  "searchDistance": "Zoekafstand",
+  "select": "Laag",
+  "selectedFeatures": "{{n}} geselecteerde objecten",
+  "selectionLoading": "De selectie wordt geladen",
+  "sketch": "Schetsen",
+  "bufferLayer": "Bufferlaag",
+  "sketchLayer": "Tekenlaag",
+  "useLayerFeatures": "Laagobjecten gebruiken",
+  "inputLayer": "Invoerlaag",
+  "useLayerFeaturesTooltip": "Ĳ_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ä.",
+  "useSearchDistanceTootip": "Ĳ_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ä."
 }

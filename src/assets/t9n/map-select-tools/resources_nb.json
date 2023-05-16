@@ -1,13 +1,15 @@
 {
-  "listName": "å_List name___________________ø",
-  "listNamePlaceholder": "å_Enter name here________________ø",
-  "searchDistance": "å_Search distance________________ø",
-  "select": "å_Layer___________ø",
-  "selectedFeatures": "å_{{n}} selected features________________________ø",
-  "selectionLoading": "å_Selection loading__________________ø",
-  "sketch": "å_Sketch_____________ø",
-  "bufferLayer": "å_Buffer Layer_____________ø",
-  "sketchLayer": "å_Sketch Layer_____________ø",
-  "useLayerFeatures": "å_Use layer features___________________ø",
-  "inputLayer": "å_Input layer____________ø"
+  "listName": "Listenavn",
+  "listNamePlaceholder": "Skriv inn navn her",
+  "searchDistance": "Søkeavstand",
+  "select": "Lag",
+  "selectedFeatures": "{{n}} valgte geoobjekter",
+  "selectionLoading": "Utvalg lastes inn",
+  "sketch": "Skisse",
+  "bufferLayer": "Bufferlag",
+  "sketchLayer": "Skisselag",
+  "useLayerFeatures": "Bruk laggeoobjekter",
+  "inputLayer": "Inndatalag",
+  "useLayerFeaturesTooltip": "å_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ø.",
+  "useSearchDistanceTootip": "å_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ø."
 }

@@ -1,13 +1,15 @@
 {
-  "listName": "é_List name___________________È",
-  "listNamePlaceholder": "é_Enter name here________________È",
-  "searchDistance": "é_Search distance________________È",
-  "select": "é_Layer___________È",
-  "selectedFeatures": "é_{{n}} selected features________________________È",
-  "selectionLoading": "é_Selection loading__________________È",
-  "sketch": "é_Sketch_____________È",
-  "bufferLayer": "é_Buffer Layer_____________È",
-  "sketchLayer": "é_Sketch Layer_____________È",
-  "useLayerFeatures": "é_Use layer features___________________È",
-  "inputLayer": "é_Input layer____________È"
+  "listName": "Nome elenco",
+  "listNamePlaceholder": "Inserisci nome qui",
+  "searchDistance": "Distanza di ricerca",
+  "select": "Layer",
+  "selectedFeatures": "{{n}} feature selezionate",
+  "selectionLoading": "Caricamento selezione",
+  "sketch": "Schizzo",
+  "bufferLayer": "Layer buffer",
+  "sketchLayer": "Layer schizzo",
+  "useLayerFeatures": "Utilizza feature del layer",
+  "inputLayer": "Layer di input",
+  "useLayerFeaturesTooltip": "é_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________È.",
+  "useSearchDistanceTootip": "é_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________È."
 }

@@ -1,13 +1,15 @@
 {
-  "listName": "ķ_List name___________________ū",
-  "listNamePlaceholder": "ķ_Enter name here________________ū",
-  "searchDistance": "ķ_Search distance________________ū",
-  "select": "ķ_Layer___________ū",
-  "selectedFeatures": "ķ_{{n}} selected features________________________ū",
-  "selectionLoading": "ķ_Selection loading__________________ū",
-  "sketch": "ķ_Sketch_____________ū",
-  "bufferLayer": "ķ_Buffer Layer_____________ū",
-  "sketchLayer": "ķ_Sketch Layer_____________ū",
-  "useLayerFeatures": "ķ_Use layer features___________________ū",
-  "inputLayer": "ķ_Input layer____________ū"
+  "listName": "Saraksta nosaukums",
+  "listNamePlaceholder": "Ievadiet nosaukumu šeit",
+  "searchDistance": "Meklēšanas attālums",
+  "select": "Slānis",
+  "selectedFeatures": "{{n}} izvēlētie elementi",
+  "selectionLoading": "Izvēle tiek ielādēta",
+  "sketch": "Skice",
+  "bufferLayer": "Buferzonas slānis",
+  "sketchLayer": "Skiču slānis",
+  "useLayerFeatures": "Izmantot slāņa elementus",
+  "inputLayer": "Ievades slānis",
+  "useLayerFeaturesTooltip": "ķ_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ū.",
+  "useSearchDistanceTootip": "ķ_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ū."
 }

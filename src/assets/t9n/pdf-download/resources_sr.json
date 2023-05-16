@@ -1,3 +1,3 @@
 {
-  "pdfLabel": "Č_{{n}} per page | {{labelSize}}_______________________________ž"
+  "pdfLabel": "{{n}} po stranici | {{labelSize}}"
 }
