@@ -651,7 +651,6 @@ export class PublicNotification {
               if (validSet) {
                 prev.push((
                   <calcite-list-item
-                    description={this._translations.selectedFeatures.replace("{{n}}", ids.length.toString())}
                     label={cur.label}
                     onClick={() => this._gotoSelection(cur, this.mapView)}
                   >
@@ -1138,11 +1137,16 @@ export class PublicNotification {
             <calcite-checkbox checked={cur.download} class="align-center" onClick={() => { void this._toggleDownload(cur.id) }} />
             <calcite-list class="list-border margin-start-1-2 width-full" id="download-list">
               <calcite-list-item
-                description={this._translations.selectedFeatures.replace("{{n}}", ids.length.toString())}
                 disabled={!cur.download}
                 label={cur.label}
                 onClick={() => { void this._toggleDownload(cur.id) }}
-              />
+              >
+                <div slot="content">
+                  <div class="list-label">{cur.label}</div>
+                  <div class="list-description">{cur?.layerView?.layer.title}</div>
+                  <div class="list-description">{this._translations.selectedFeatures.replace("{{n}}", ids.length.toString())}</div>
+                </div>
+              </calcite-list-item>
             </calcite-list>
           </div>
         ));
