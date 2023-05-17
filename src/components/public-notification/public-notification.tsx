@@ -719,7 +719,7 @@ export class PublicNotification {
   protected async _getNumDuplicates(): Promise<number> {
     const exportInfos: IExportInfos = this._getExportInfos();
     const labels = await consolidateLabels(exportInfos);
-    const duplicatesRemoved = removeDuplicateLabels(labels)
+    const duplicatesRemoved = removeDuplicateLabels(labels);
     return labels.length - duplicatesRemoved.length;
   }
 
@@ -855,7 +855,7 @@ export class PublicNotification {
                         {this._translations.removeDuplicate}
                         <div class="info-message padding-start-1-2">
                           <calcite-input-message class="info-blue margin-top-0" scale="m">
-                            {` ${this._translations.numDuplicates.replace("{{n}}", numDuplicates.toString())}`}
+                            {` ${this._translations.numDuplicates.replace("{{n}}", this._numDuplicates.toString())}`}
                           </calcite-input-message>
                         </div>
                       </div>

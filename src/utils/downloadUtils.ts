@@ -84,12 +84,25 @@ export async function downloadCSV(
   removeDuplicates = false,
   addColumnTitle = false
 ): Promise<void> {
-  let labels = await consolidateLabels(exportInfos, formatUsingLayerPopup, addColumnTitle);
-  const selectionSetNames = _getSelectionSetNames(exportInfos);
-
+  let labels = await consolidateLabels(exportInfos, formatUsingLayerPopup, addColumnTitle, true);
   labels = removeDuplicates ? removeDuplicateLabels(labels) : labels;
 
-  exportCSV(_createFilename(selectionSetNames), labels);
+  const layerIds = Object.keys(exportInfos);
+
+  let layerLabels = [];
+  labels.forEach(label => {
+    const id = label[0];
+    // layerIds are stored as value separator at the end of the values for a given layer
+    if (layerIds.indexOf(id) < 0) {
+      layerLabels.push(label);
+    } else {
+      const selectionSetNames = _getSelectionSetNames(exportInfos, new RegExp(`\\b${id}\\b`));
+
+      // once we see the layerId we have reached the end of it's values and should export
+      exportCSV(_createFilename(selectionSetNames), layerLabels);
+      layerLabels = [];
+    }
+  });
 
   return Promise.resolve();
 }
@@ -624,12 +637,15 @@ export function removeDuplicateLabels(
  * @returns selectionSetNames that will be used for export filenames
  */
 function _getSelectionSetNames(
-  exportInfos: IExportInfos
+  exportInfos: IExportInfos,
+  id = /.+/
 ): string[] {
   let selectionSetNames: string[] = [];
   Object.keys(exportInfos).forEach(k => {
     const exportInfo: IExportInfo = exportInfos[k];
-    selectionSetNames = selectionSetNames.concat(exportInfo.selectionSetNames);
+    if (id.test(k)) {
+      selectionSetNames = selectionSetNames.concat(exportInfo.selectionSetNames);
+    }
   });
   return selectionSetNames;
 }
@@ -646,13 +662,18 @@ function _getSelectionSetNames(
 export async function consolidateLabels(
   exportInfos: IExportInfos,
   formatUsingLayerPopup = true,
-  includeHeaderNames = false
+  includeHeaderNames = false,
+  isCSVExport = false
 ): Promise<string[][]> {
   const labelRequests = [];
 
   Object.keys(exportInfos).forEach(k => {
     const labelInfo: IExportInfo = exportInfos[k];
     labelRequests.push(_prepareLabels(labelInfo.layerView.layer, labelInfo.ids, formatUsingLayerPopup, includeHeaderNames));
+    if (isCSVExport) {
+      // add the layer id as a temp value separator that we can use to split values for CSV export
+      labelRequests.push(Promise.resolve([[k]]));
+    }
   });
 
   const labels = await Promise.all(labelRequests);
