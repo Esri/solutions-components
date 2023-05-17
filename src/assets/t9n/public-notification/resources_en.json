@@ -17,7 +17,7 @@
     "selectPDFLabelOption": "Format options",
     "removeDuplicate": "Remove duplicates:",
     "numDuplicates": "{{n}} duplicates",
-    "selectLayerAndAdd": "Use selection tools to choose which features to include and then click Create list.",
+    "selectLayerAndAdd": "Create lists of features to export as CSV and PDF. Use selection tools to choose which features to include and then click Create list.",
     "selectSearchTip": "Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features.",
     "selectLayerTip": "Draw shapes to select features from the chosen selection layer; the results will be used to select features from the addressee layer",
     "selectSketchTip": "Use sketch tools to draw graphics in the map to select intersecting features in the addressee layer.",
