@@ -20,6 +20,7 @@ import { exportCSV } from "./csvUtils";
 import { ILabel, exportPDF } from "./pdfUtils";
 import { loadModules } from "./loadModules";
 import { queryFeaturesByID } from "./queryUtils";
+import { IExportInfo, IExportInfos } from "../utils/interfaces";
 
 export { ILabel } from "./pdfUtils";
 
@@ -70,9 +71,7 @@ const lineSeparatorChar = "|";
 /**
  * Downloads csv of mailing labels for the provided list of ids
  *
- * @param selectionSetNames Names of the selection sets used to provide ids
- * @param layer Layer providing features and attributes for download
- * @param ids List of ids to download
+ * @param exportInfos Key details about what to export (ids, layer, and selectionSetNames)
  * @param formatUsingLayerPopup When true, the layer's popup is used to choose attributes for each column; when false,
  * all attributes are exported
  * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
@@ -80,16 +79,30 @@ const lineSeparatorChar = "|";
  * @returns Promise resolving when function is done
  */
 export async function downloadCSV(
-  selectionSetNames: string[],
-  layer: __esri.FeatureLayer,
-  ids: number[],
+  exportInfos: IExportInfos,
   formatUsingLayerPopup: boolean,
   removeDuplicates = false,
   addColumnTitle = false
 ): Promise<void> {
-  const labels = await _prepareLabels(layer, ids, removeDuplicates, formatUsingLayerPopup, addColumnTitle);
+  let labels = await consolidateLabels(exportInfos, formatUsingLayerPopup, addColumnTitle, true);
+  labels = removeDuplicates ? removeDuplicateLabels(labels) : labels;
 
-  exportCSV(_createFilename(selectionSetNames), labels);
+  const layerIds = Object.keys(exportInfos);
+
+  let layerLabels = [];
+  labels.forEach(label => {
+    const id = label[0];
+    // layerIds are stored as value separator at the end of the values for a given layer
+    if (layerIds.indexOf(id) < 0) {
+      layerLabels.push(label);
+    } else {
+      const selectionSetNames = _getSelectionSetNames(exportInfos, new RegExp(`\\b${id}\\b`));
+
+      // once we see the layerId we have reached the end of it's values and should export
+      exportCSV(_createFilename(selectionSetNames), layerLabels);
+      layerLabels = [];
+    }
+  });
 
   return Promise.resolve();
 }
@@ -97,9 +110,7 @@ export async function downloadCSV(
 /**
  * Downloads csv of mailing labels for the provided list of ids
  *
- * @param selectionSetNames Names of the selection sets used to provide ids
- * @param layer Layer providing features and attributes for download
- * @param ids List of ids to download
+ * @param exportInfos Key details about what to export (ids, layer, and selectionSetNames)
  * @param labelPageDescription Provides PDF page layout info
  * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
  * @param title Title for each page
@@ -107,21 +118,22 @@ export async function downloadCSV(
  * @returns Promise resolving when function is done
  */
 export async function downloadPDF(
-  selectionSetNames: string[],
-  layer: __esri.FeatureLayer,
-  ids: number[],
+  exportInfos: IExportInfos,
   labelPageDescription: ILabel,
   removeDuplicates = false,
   title = "",
   initialImageDataUrl = ""
 ): Promise<void> {
-  let labels = await _prepareLabels(layer, ids, removeDuplicates);
+  let labels = await consolidateLabels(exportInfos);
+  const selectionSetNames = _getSelectionSetNames(exportInfos);
 
   labels =
     // Remove empty lines in labels
     labels.map(labelLines => labelLines.filter(line => line.length > 0))
     // Remove empty labels
     .filter(label => label.length > 0);
+
+  labels = removeDuplicates ? removeDuplicateLabels(labels) : labels;
 
   exportPDF(_createFilename(selectionSetNames), labels, labelPageDescription, title, initialImageDataUrl);
 
@@ -395,7 +407,6 @@ function _prepareAttributeValue(
  *
  * @param layer Layer from which to fetch features
  * @param ids List of ids to download
- * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
  * @param formatUsingLayerPopup When true, the layer's popup is used to choose attributes for each column; when false,
  * all attributes are exported
  * @param includeHeaderNames Add the label format at the front of the list of generated labels
@@ -404,7 +415,6 @@ function _prepareAttributeValue(
 async function _prepareLabels(
   layer: __esri.FeatureLayer,
   ids: number[],
-  removeDuplicates = true,
   formatUsingLayerPopup = true,
   includeHeaderNames = false
 ): Promise<string[][]> {
@@ -584,15 +594,6 @@ async function _prepareLabels(
     );
   }
 
-  // Remove duplicates
-  if (removeDuplicates) {
-    const labelsAsStrings: string[] = labels.map(label => JSON.stringify(label));
-    const uniqueLabels = new Set(labelsAsStrings);
-    labels = Array.from(uniqueLabels,
-      labelString => JSON.parse(labelString)
-    );
-  }
-
   // Add header names
   if (includeHeaderNames) {
     let headerNames = [];
@@ -611,6 +612,72 @@ async function _prepareLabels(
   }
 
   return Promise.resolve(labels);
+}
+
+/**
+ * Remove any duplicate labels
+ *
+ * @param labels Labels to evaluate for duplicates
+ * @returns labels with duplicates removed
+ */
+export function removeDuplicateLabels(
+  labels: string[][]
+): string[][] {
+  const labelsAsStrings: string[] = labels.map(label => JSON.stringify(label));
+  const uniqueLabels = new Set(labelsAsStrings);
+  return Array.from(uniqueLabels,
+    labelString => JSON.parse(labelString)
+  );
+}
+
+/**
+ * Extract selectionSetNames from the provided exportInfos
+ *
+ * @param exportInfos Key details about what to export (ids, layer, and selectionSetNames)
+ * @returns selectionSetNames that will be used for export filenames
+ */
+function _getSelectionSetNames(
+  exportInfos: IExportInfos,
+  id = /.+/
+): string[] {
+  let selectionSetNames: string[] = [];
+  Object.keys(exportInfos).forEach(k => {
+    const exportInfo: IExportInfo = exportInfos[k];
+    if (id.test(k)) {
+      selectionSetNames = selectionSetNames.concat(exportInfo.selectionSetNames);
+    }
+  });
+  return selectionSetNames;
+}
+
+/**
+ * Create and consolidate labels from all layers
+ *
+ * @param exportInfos Key details about what to export (ids, layer, and selectionSetNames)
+ * @param formatUsingLayerPopup When true, the layer's popup is used to choose attributes for each column; when false,
+ * all attributes are exported
+ * @param includeHeaderNames Add the label format at the front of the list of generated labels
+ * @returns selectionSetNames that will be used for export filenames
+ */
+export async function consolidateLabels(
+  exportInfos: IExportInfos,
+  formatUsingLayerPopup = true,
+  includeHeaderNames = false,
+  isCSVExport = false
+): Promise<string[][]> {
+  const labelRequests = [];
+
+  Object.keys(exportInfos).forEach(k => {
+    const labelInfo: IExportInfo = exportInfos[k];
+    labelRequests.push(_prepareLabels(labelInfo.layerView.layer, labelInfo.ids, formatUsingLayerPopup, includeHeaderNames));
+    if (isCSVExport) {
+      // add the layer id as a temp value separator that we can use to split values for CSV export
+      labelRequests.push(Promise.resolve([[k]]));
+    }
+  });
+
+  const labels = await Promise.all(labelRequests);
+  return labels.reduce((prev, cur) => prev.concat(cur), []);
 }
 
 //#endregion

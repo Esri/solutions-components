@@ -284,6 +284,10 @@ export namespace Components {
          */
         "selectLayerView": __esri.FeatureLayerView;
         /**
+          * string[]: List of layer ids that should be shown as potential selection layers when skectching with "Use layer features" option
+         */
+        "selectionLayerIds": string[];
+        /**
           * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
          */
         "selectionSet": ISelectionSet;
@@ -1175,6 +1179,10 @@ declare namespace LocalJSX {
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
         "selectLayerView"?: __esri.FeatureLayerView;
+        /**
+          * string[]: List of layer ids that should be shown as potential selection layers when skectching with "Use layer features" option
+         */
+        "selectionLayerIds"?: string[];
         /**
           * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
          */

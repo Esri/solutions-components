@@ -437,10 +437,10 @@ export interface IMapInfo {
 }
 
 export interface IExportInfos {
-  [key: string]: IExportLayerInfo;
+  [key: string]: IExportInfo;
 }
 
-export interface IExportLayerInfo {
+export interface IExportInfo {
   ids: number[],
   layerView: __esri.FeatureLayerView
   selectionSetNames: string[]

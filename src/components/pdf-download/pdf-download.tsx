@@ -101,17 +101,12 @@ export class PdfDownload {
     removeDuplicates: boolean,
     addColumnTitle = true
   ): Promise<void> {
-    Object.keys(exportInfos).forEach(k => {
-      const exportInfo = exportInfos[k];
-      void downloadUtils.downloadCSV(
-        exportInfo.selectionSetNames,
-        exportInfo.layerView.layer,
-        exportInfo.ids,
-        true, // formatUsingLayerPopup
-        removeDuplicates,
-        addColumnTitle
-      );
-    });
+    void downloadUtils.downloadCSV(
+      exportInfos,
+      true, // formatUsingLayerPopup
+      removeDuplicates,
+      addColumnTitle
+    );
   }
 
   /**
@@ -130,18 +125,13 @@ export class PdfDownload {
     title = "",
     initialImageDataUrl = ""
   ): Promise<void> {
-    Object.keys(exportInfos).forEach(k => {
-      const exportInfo = exportInfos[k];
-      void downloadUtils.downloadPDF(
-        exportInfo.selectionSetNames,
-        exportInfo.layerView.layer,
-        exportInfo.ids,
-        this._labelInfoElement.selectedOption.value as downloadUtils.ILabel,
-        removeDuplicates,
-        title,
-        initialImageDataUrl
-      );
-    });
+    void downloadUtils.downloadPDF(
+      exportInfos,
+      this._labelInfoElement.selectedOption.value as downloadUtils.ILabel,
+      removeDuplicates,
+      title,
+      initialImageDataUrl
+    );
   }
 
   //--------------------------------------------------------------------------

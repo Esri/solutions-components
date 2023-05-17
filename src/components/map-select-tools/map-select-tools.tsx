@@ -110,6 +110,12 @@ export class MapSelectTools {
   @Prop({ reflect: false }) selectionSet: ISelectionSet;
 
   /**
+   * string[]: List of layer ids that should be shown as potential selection layers
+   * when skectching with "Use layer features" option
+   */
+  @Prop() selectionLayerIds: string[] = [];
+
+  /**
    * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
    */
   @Prop() selectLayerView: __esri.FeatureLayerView;
@@ -559,7 +565,7 @@ export class MapSelectTools {
         </div>
         <div class={useLayerFeaturesClass + " padding-top-1"}>
           <map-layer-picker
-            enabledLayerIds={this.enabledLayerIds}
+            enabledLayerIds={this.selectionLayerIds}
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
             selectedLayerIds={this.layerViews.map(l => l.layer.id)}
