@@ -759,13 +759,14 @@ export class PublicNotification {
             customLabelEnabled={this.customLabelEnabled}
             defaultBufferDistance={this.defaultBufferDistance}
             defaultBufferUnit={this.defaultBufferUnit}
-            enabledLayerIds={this.selectionLayerIds}
+            enabledLayerIds={this.addresseeLayerIds}
             isUpdate={!!this._activeSelection}
             mapView={this.mapView}
             noResultText={this.noResultText}
             onSelectionSetChange={(evt) => this._updateForSelection(evt)}
             ref={(el) => { this._selectTools = el }}
             searchConfiguration={this._searchConfiguration}
+            selectionLayerIds={this.selectionLayerIds}
             selectionSet={this._activeSelection}
             sketchLineSymbol={this.sketchLineSymbol}
             sketchPointSymbol={this.sketchPointSymbol}
