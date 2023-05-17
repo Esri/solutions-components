@@ -14,8 +14,8 @@
   "stepTwoFull": "Opprett ny liste",
   "cancel": "Avbryt",
   "done": "Ferdig",
-  "selectPDFLabelOption": "PDF-etikettvalg",
-  "removeDuplicate": "å_Remove duplicate labels_________________________ø:",
+  "selectPDFLabelOption": "å_Format options_______________ø",
+  "removeDuplicate": "å_Remove duplicates___________________ø:",
   "numDuplicates": "{{n}} duplikater",
   "selectLayerAndAdd": "å_Use selection tools to choose which features to include and then click Create list___________________________________________ø.",
   "selectSearchTip": "å_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________ø.",
@@ -35,7 +35,8 @@
   "pdfOptions": "PDF-alternativer",
   "csvOptions": "CSV-alternativer",
   "refineSelection": "Begrens utvalg",
-  "refineTip": "å_Refine and finalize your lists by using sketch tools to add or remove features across all selection sets______________________________________________________ø.",
+  "refineTip": "å_Refine and finalize your lists by using sketch tools to add or remove selected features_____________________________________________ø.",
   "refineTipNoSelections": "Det er ingen utvalg å finjustere. Gå til Mine lister for å opprette en liste med geoobjekter.",
-  "duplicatesTip": "å_Duplicate features are always removed. When enabled labels from each layer will be compared and any duplicate labels will be removed____________________________________________________________________ø."
+  "duplicatesTip": "å_Duplicate features are always removed. When enabled, pop-ups from each layer will be compared and any duplicate pop-up information will be removed___________________________________________________________________________ø.",
+  "exportListsLabel": "å_My lists_________________ø"
 }

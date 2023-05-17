@@ -14,8 +14,8 @@
   "stepTwoFull": "Nieuwe lijst maken",
   "cancel": "Annuleren",
   "done": "Gereed",
-  "selectPDFLabelOption": "Optie PDF-label",
-  "removeDuplicate": "Ĳ_Remove duplicate labels_________________________ä:",
+  "selectPDFLabelOption": "Ĳ_Format options_______________ä",
+  "removeDuplicate": "Ĳ_Remove duplicates___________________ä:",
   "numDuplicates": "{{n}} duplicaten",
   "selectLayerAndAdd": "Ĳ_Use selection tools to choose which features to include and then click Create list___________________________________________ä.",
   "selectSearchTip": "Ĳ_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________ä.",
@@ -35,7 +35,8 @@
   "pdfOptions": "PDF-opties",
   "csvOptions": "CSV-opties",
   "refineSelection": "Selectie verfijnen",
-  "refineTip": "Ĳ_Refine and finalize your lists by using sketch tools to add or remove features across all selection sets______________________________________________________ä.",
+  "refineTip": "Ĳ_Refine and finalize your lists by using sketch tools to add or remove selected features_____________________________________________ä.",
   "refineTipNoSelections": "Er zijn geen selecties die u kunt verfijnen Ga naar Mijn lijsten om een lijst met objecten te maken.",
-  "duplicatesTip": "Ĳ_Duplicate features are always removed. When enabled labels from each layer will be compared and any duplicate labels will be removed____________________________________________________________________ä."
+  "duplicatesTip": "Ĳ_Duplicate features are always removed. When enabled, pop-ups from each layer will be compared and any duplicate pop-up information will be removed___________________________________________________________________________ä.",
+  "exportListsLabel": "Ĳ_My lists_________________ä"
 }

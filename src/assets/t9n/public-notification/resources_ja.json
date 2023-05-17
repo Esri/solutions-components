@@ -14,8 +14,8 @@
   "stepTwoFull": "新しいリストの作成",
   "cancel": "キャンセル",
   "done": "完了",
-  "selectPDFLabelOption": "PDF ラベル オプション",
-  "removeDuplicate": "須_Remove duplicate labels_________________________鷗:",
+  "selectPDFLabelOption": "須_Format options_______________鷗",
+  "removeDuplicate": "須_Remove duplicates___________________鷗:",
   "numDuplicates": "{{n}} の重複",
   "selectLayerAndAdd": "須_Use selection tools to choose which features to include and then click Create list___________________________________________鷗.",
   "selectSearchTip": "須_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________鷗.",
@@ -35,7 +35,8 @@
   "pdfOptions": "PDF オプション",
   "csvOptions": "CSV オプション",
   "refineSelection": "選択の調整",
-  "refineTip": "須_Refine and finalize your lists by using sketch tools to add or remove features across all selection sets______________________________________________________鷗.",
+  "refineTip": "須_Refine and finalize your lists by using sketch tools to add or remove selected features_____________________________________________鷗.",
   "refineTipNoSelections": "絞り込む選択セットがありません。 マイ リストに移動して、フィーチャのリストを作成します。",
-  "duplicatesTip": "須_Duplicate features are always removed. When enabled labels from each layer will be compared and any duplicate labels will be removed____________________________________________________________________鷗."
+  "duplicatesTip": "須_Duplicate features are always removed. When enabled, pop-ups from each layer will be compared and any duplicate pop-up information will be removed___________________________________________________________________________鷗.",
+  "exportListsLabel": "須_My lists_________________鷗"
 }

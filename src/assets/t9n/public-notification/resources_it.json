@@ -14,8 +14,8 @@
   "stepTwoFull": "Crea nuovo elenco",
   "cancel": "Annulla",
   "done": "Completato",
-  "selectPDFLabelOption": "Opzione etichetta PDF",
-  "removeDuplicate": "é_Remove duplicate labels_________________________È:",
+  "selectPDFLabelOption": "é_Format options_______________È",
+  "removeDuplicate": "é_Remove duplicates___________________È:",
   "numDuplicates": "{{n}} duplicati",
   "selectLayerAndAdd": "é_Use selection tools to choose which features to include and then click Create list___________________________________________È.",
   "selectSearchTip": "é_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________È.",
@@ -35,7 +35,8 @@
   "pdfOptions": "Opzioni PDF",
   "csvOptions": "Opzioni CSV",
   "refineSelection": "Ottimizza selezione",
-  "refineTip": "é_Refine and finalize your lists by using sketch tools to add or remove features across all selection sets______________________________________________________È.",
+  "refineTip": "é_Refine and finalize your lists by using sketch tools to add or remove selected features_____________________________________________È.",
   "refineTipNoSelections": "Non ci sono selezioni da affinare. Vai su I miei elenchi per creare un elenco di feature.",
-  "duplicatesTip": "é_Duplicate features are always removed. When enabled labels from each layer will be compared and any duplicate labels will be removed____________________________________________________________________È."
+  "duplicatesTip": "é_Duplicate features are always removed. When enabled, pop-ups from each layer will be compared and any duplicate pop-up information will be removed___________________________________________________________________________È.",
+  "exportListsLabel": "é_My lists_________________È"
 }

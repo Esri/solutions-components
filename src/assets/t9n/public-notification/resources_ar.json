@@ -14,8 +14,8 @@
   "stepTwoFull": "إنشاء قائمة جديدة",
   "cancel": "إلغاء الأمر",
   "done": "تم",
-  "selectPDFLabelOption": "خيار تسمية PDF",
-  "removeDuplicate": "بيت_Remove duplicate labels_________________________لاحقة:",
+  "selectPDFLabelOption": "بيت_Format options_______________لاحقة",
+  "removeDuplicate": "بيت_Remove duplicates___________________لاحقة:",
   "numDuplicates": "{{n}} عناصر مكررة",
   "selectLayerAndAdd": "بيت_Use selection tools to choose which features to include and then click Create list___________________________________________لاحقة.",
   "selectSearchTip": "بيت_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________لاحقة.",
@@ -35,7 +35,8 @@
   "pdfOptions": "خيارات PDF",
   "csvOptions": "خيارات CSV",
   "refineSelection": "تحسين التحديد",
-  "refineTip": "بيت_Refine and finalize your lists by using sketch tools to add or remove features across all selection sets______________________________________________________لاحقة.",
+  "refineTip": "بيت_Refine and finalize your lists by using sketch tools to add or remove selected features_____________________________________________لاحقة.",
   "refineTipNoSelections": "لا يوجد أي تحديدات لتحسينها. انتقل إلى القوائم الخاصة بي لإنشاء قائمة من المعالم.",
-  "duplicatesTip": "بيت_Duplicate features are always removed. When enabled labels from each layer will be compared and any duplicate labels will be removed____________________________________________________________________لاحقة."
+  "duplicatesTip": "بيت_Duplicate features are always removed. When enabled, pop-ups from each layer will be compared and any duplicate pop-up information will be removed___________________________________________________________________________لاحقة.",
+  "exportListsLabel": "بيت_My lists_________________لاحقة"
 }

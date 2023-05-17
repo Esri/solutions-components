@@ -14,8 +14,8 @@
   "stepTwoFull": "Opret ny liste",
   "cancel": "Annullér",
   "done": "Udført",
-  "selectPDFLabelOption": "PDF-etiketindstilling",
-  "removeDuplicate": "ø_Remove duplicate labels_________________________å:",
+  "selectPDFLabelOption": "ø_Format options_______________å",
+  "removeDuplicate": "ø_Remove duplicates___________________å:",
   "numDuplicates": "{{n}} dubletter",
   "selectLayerAndAdd": "ø_Use selection tools to choose which features to include and then click Create list___________________________________________å.",
   "selectSearchTip": "ø_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________å.",
@@ -35,7 +35,8 @@
   "pdfOptions": "PDF-indstillinger",
   "csvOptions": "CSV-indstillinger",
   "refineSelection": "Forfin valget",
-  "refineTip": "ø_Refine and finalize your lists by using sketch tools to add or remove features across all selection sets______________________________________________________å.",
+  "refineTip": "ø_Refine and finalize your lists by using sketch tools to add or remove selected features_____________________________________________å.",
   "refineTipNoSelections": "Der er ingen markeringer at forfine. Gå til Mine lister for at oprette en liste med objekter.",
-  "duplicatesTip": "ø_Duplicate features are always removed. When enabled labels from each layer will be compared and any duplicate labels will be removed____________________________________________________________________å."
+  "duplicatesTip": "ø_Duplicate features are always removed. When enabled, pop-ups from each layer will be compared and any duplicate pop-up information will be removed___________________________________________________________________________å.",
+  "exportListsLabel": "ø_My lists_________________å"
 }

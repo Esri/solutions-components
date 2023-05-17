@@ -14,8 +14,8 @@
   "stepTwoFull": "Δημιουργία νέας λίστας",
   "cancel": "Ακύρωση",
   "done": "Τέλος",
-  "selectPDFLabelOption": "Επιλογή ετικέτας PDF",
-  "removeDuplicate": "Đ_Remove duplicate labels_________________________ớ:",
+  "selectPDFLabelOption": "Đ_Format options_______________ớ",
+  "removeDuplicate": "Đ_Remove duplicates___________________ớ:",
   "numDuplicates": "{{n}} διπλότυπα",
   "selectLayerAndAdd": "Đ_Use selection tools to choose which features to include and then click Create list___________________________________________ớ.",
   "selectSearchTip": "Đ_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________ớ.",
@@ -35,7 +35,8 @@
   "pdfOptions": "Επιλογές PDF",
   "csvOptions": "Επιλογές CSV",
   "refineSelection": "Περιορισμός επιλογής",
-  "refineTip": "Đ_Refine and finalize your lists by using sketch tools to add or remove features across all selection sets______________________________________________________ớ.",
+  "refineTip": "Đ_Refine and finalize your lists by using sketch tools to add or remove selected features_____________________________________________ớ.",
   "refineTipNoSelections": "Δεν υπάρχουν επιλογές προς περιορισμό. Μεταβείτε στην ενότητα «Οι λίστες μου» για να δημιουργήσετε λίστα χαρακτηριστικών.",
-  "duplicatesTip": "Đ_Duplicate features are always removed. When enabled labels from each layer will be compared and any duplicate labels will be removed____________________________________________________________________ớ."
+  "duplicatesTip": "Đ_Duplicate features are always removed. When enabled, pop-ups from each layer will be compared and any duplicate pop-up information will be removed___________________________________________________________________________ớ.",
+  "exportListsLabel": "Đ_My lists_________________ớ"
 }

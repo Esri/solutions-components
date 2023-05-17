@@ -14,8 +14,8 @@
   "stepTwoFull": "Kurti naują sąrašą",
   "cancel": "Atšaukti",
   "done": "Atlikta",
-  "selectPDFLabelOption": "PDF žymės parinktis",
-  "removeDuplicate": "Į_Remove duplicate labels_________________________š:",
+  "selectPDFLabelOption": "Į_Format options_______________š",
+  "removeDuplicate": "Į_Remove duplicates___________________š:",
   "numDuplicates": "{{n}} dublikatai (-ų)",
   "selectLayerAndAdd": "Į_Use selection tools to choose which features to include and then click Create list___________________________________________š.",
   "selectSearchTip": "Į_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________š.",
@@ -35,7 +35,8 @@
   "pdfOptions": "PDF parinktys",
   "csvOptions": "CSV parinktys",
   "refineSelection": "Tikslinti pasirinkimą",
-  "refineTip": "Į_Refine and finalize your lists by using sketch tools to add or remove features across all selection sets______________________________________________________š.",
+  "refineTip": "Į_Refine and finalize your lists by using sketch tools to add or remove selected features_____________________________________________š.",
   "refineTipNoSelections": "Nėra pasirinkimo apimties, kurią galima būtų patikslinti. Norėdami sukurti elementų sąrašą, eikite į Mano sąrašai.",
-  "duplicatesTip": "Į_Duplicate features are always removed. When enabled labels from each layer will be compared and any duplicate labels will be removed____________________________________________________________________š."
+  "duplicatesTip": "Į_Duplicate features are always removed. When enabled, pop-ups from each layer will be compared and any duplicate pop-up information will be removed___________________________________________________________________________š.",
+  "exportListsLabel": "Į_My lists_________________š"
 }

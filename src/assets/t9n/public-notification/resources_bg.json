@@ -14,8 +14,8 @@
   "stepTwoFull": "Създаване на нов списък",
   "cancel": "Отказ",
   "done": "Готово",
-  "selectPDFLabelOption": "Опция за PDF етикет",
-  "removeDuplicate": "й_Remove duplicate labels_________________________й:",
+  "selectPDFLabelOption": "й_Format options_______________й",
+  "removeDuplicate": "й_Remove duplicates___________________й:",
   "numDuplicates": "{{n}} дублирания",
   "selectLayerAndAdd": "й_Use selection tools to choose which features to include and then click Create list___________________________________________й.",
   "selectSearchTip": "й_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________й.",
@@ -35,7 +35,8 @@
   "pdfOptions": "PDF опции",
   "csvOptions": "CSV опции",
   "refineSelection": "Прецизиране на избор",
-  "refineTip": "й_Refine and finalize your lists by using sketch tools to add or remove features across all selection sets______________________________________________________й.",
+  "refineTip": "й_Refine and finalize your lists by using sketch tools to add or remove selected features_____________________________________________й.",
   "refineTipNoSelections": "Няма селекции за прецизиране. Отидете в Моите списъци, за да създадете списък с обекти.",
-  "duplicatesTip": "й_Duplicate features are always removed. When enabled labels from each layer will be compared and any duplicate labels will be removed____________________________________________________________________й."
+  "duplicatesTip": "й_Duplicate features are always removed. When enabled, pop-ups from each layer will be compared and any duplicate pop-up information will be removed___________________________________________________________________________й.",
+  "exportListsLabel": "й_My lists_________________й"
 }

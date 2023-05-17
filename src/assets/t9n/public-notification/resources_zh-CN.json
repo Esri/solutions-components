@@ -14,8 +14,8 @@
   "stepTwoFull": "新建列表",
   "cancel": "取消",
   "done": "完成",
-  "selectPDFLabelOption": "PDF 标注选项",
-  "removeDuplicate": "试_Remove duplicate labels_________________________验:",
+  "selectPDFLabelOption": "试_Format options_______________验",
+  "removeDuplicate": "试_Remove duplicates___________________验:",
   "numDuplicates": "{{n}} 个重复项",
   "selectLayerAndAdd": "试_Use selection tools to choose which features to include and then click Create list___________________________________________验.",
   "selectSearchTip": "试_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________验.",
@@ -35,7 +35,8 @@
   "pdfOptions": "PDF 选项",
   "csvOptions": "CSV 选项",
   "refineSelection": "优化选择",
-  "refineTip": "试_Refine and finalize your lists by using sketch tools to add or remove features across all selection sets______________________________________________________验.",
+  "refineTip": "试_Refine and finalize your lists by using sketch tools to add or remove selected features_____________________________________________验.",
   "refineTipNoSelections": "不存在要优化的选择内容。 转到“我的列表”以创建要素列表。",
-  "duplicatesTip": "试_Duplicate features are always removed. When enabled labels from each layer will be compared and any duplicate labels will be removed____________________________________________________________________验."
+  "duplicatesTip": "试_Duplicate features are always removed. When enabled, pop-ups from each layer will be compared and any duplicate pop-up information will be removed___________________________________________________________________________验.",
+  "exportListsLabel": "试_My lists_________________验"
 }

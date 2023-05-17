@@ -14,8 +14,8 @@
   "stepTwoFull": "צור רשימה חדשה",
   "cancel": "ביטול",
   "done": "בוצע",
-  "selectPDFLabelOption": "אפשרות תווית PDF",
-  "removeDuplicate": "כן_Remove duplicate labels_________________________ש:",
+  "selectPDFLabelOption": "כן_Format options_______________ש",
+  "removeDuplicate": "כן_Remove duplicates___________________ש:",
   "numDuplicates": "{{n}} כפילויות",
   "selectLayerAndAdd": "כן_Use selection tools to choose which features to include and then click Create list___________________________________________ש.",
   "selectSearchTip": "כן_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________ש.",
@@ -35,7 +35,8 @@
   "pdfOptions": "אפשרויות PDF",
   "csvOptions": "אפשרויות CSV",
   "refineSelection": "חידוד בחירה",
-  "refineTip": "כן_Refine and finalize your lists by using sketch tools to add or remove features across all selection sets______________________________________________________ש.",
+  "refineTip": "כן_Refine and finalize your lists by using sketch tools to add or remove selected features_____________________________________________ש.",
   "refineTipNoSelections": "אין בחירות לחידוד. עבור אל 'הרשימות שלי' כדי ליצור רשימת ישויות.",
-  "duplicatesTip": "כן_Duplicate features are always removed. When enabled labels from each layer will be compared and any duplicate labels will be removed____________________________________________________________________ש."
+  "duplicatesTip": "כן_Duplicate features are always removed. When enabled, pop-ups from each layer will be compared and any duplicate pop-up information will be removed___________________________________________________________________________ש.",
+  "exportListsLabel": "כן_My lists_________________ש"
 }

@@ -14,8 +14,8 @@
   "stepTwoFull": "Buat daftar baru",
   "cancel": "Batalkan",
   "done": "Selesai",
-  "selectPDFLabelOption": "Opsi label PDF",
-  "removeDuplicate": "ng_Remove duplicate labels_________________________ny:",
+  "selectPDFLabelOption": "ng_Format options_______________ny",
+  "removeDuplicate": "ng_Remove duplicates___________________ny:",
   "numDuplicates": "{{n}} duplikat",
   "selectLayerAndAdd": "ng_Use selection tools to choose which features to include and then click Create list___________________________________________ny.",
   "selectSearchTip": "ng_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________ny.",
@@ -35,7 +35,8 @@
   "pdfOptions": "Opsi PDF",
   "csvOptions": "Opsi CSV",
   "refineSelection": "Perjelas pilihan",
-  "refineTip": "ng_Refine and finalize your lists by using sketch tools to add or remove features across all selection sets______________________________________________________ny.",
+  "refineTip": "ng_Refine and finalize your lists by using sketch tools to add or remove selected features_____________________________________________ny.",
   "refineTipNoSelections": "Tidak ada pilihan yang dapat diperjelas. Buka Daftar saya untuk membuat daftar fitur.",
-  "duplicatesTip": "ng_Duplicate features are always removed. When enabled labels from each layer will be compared and any duplicate labels will be removed____________________________________________________________________ny."
+  "duplicatesTip": "ng_Duplicate features are always removed. When enabled, pop-ups from each layer will be compared and any duplicate pop-up information will be removed___________________________________________________________________________ny.",
+  "exportListsLabel": "ng_My lists_________________ny"
 }

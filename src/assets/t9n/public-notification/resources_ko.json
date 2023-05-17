@@ -14,8 +14,8 @@
   "stepTwoFull": "새 목록 생성",
   "cancel": "취소",
   "done": "완료",
-  "selectPDFLabelOption": "PDF 레이블 옵션",
-  "removeDuplicate": "한_Remove duplicate labels_________________________빠:",
+  "selectPDFLabelOption": "한_Format options_______________빠",
+  "removeDuplicate": "한_Remove duplicates___________________빠:",
   "numDuplicates": "중복 {{n}}개",
   "selectLayerAndAdd": "한_Use selection tools to choose which features to include and then click Create list___________________________________________빠.",
   "selectSearchTip": "한_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________빠.",
@@ -35,7 +35,8 @@
   "pdfOptions": "PDF 옵션",
   "csvOptions": "CSV 옵션",
   "refineSelection": "선택 항목 세부 조정",
-  "refineTip": "한_Refine and finalize your lists by using sketch tools to add or remove features across all selection sets______________________________________________________빠.",
+  "refineTip": "한_Refine and finalize your lists by using sketch tools to add or remove selected features_____________________________________________빠.",
   "refineTipNoSelections": "세부 조정할 선택 항목이 없습니다. 내 목록으로 이동하여 피처 목록을 생성합니다.",
-  "duplicatesTip": "한_Duplicate features are always removed. When enabled labels from each layer will be compared and any duplicate labels will be removed____________________________________________________________________빠."
+  "duplicatesTip": "한_Duplicate features are always removed. When enabled, pop-ups from each layer will be compared and any duplicate pop-up information will be removed___________________________________________________________________________빠.",
+  "exportListsLabel": "한_My lists_________________빠"
 }

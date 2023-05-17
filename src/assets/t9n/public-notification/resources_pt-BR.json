@@ -14,8 +14,8 @@
   "stepTwoFull": "Criar nova lista",
   "cancel": "Cancelar",
   "done": "Concluir",
-  "selectPDFLabelOption": "Opção de rótulo em PDF",
-  "removeDuplicate": "ã_Remove duplicate labels_________________________Ç:",
+  "selectPDFLabelOption": "ã_Format options_______________Ç",
+  "removeDuplicate": "ã_Remove duplicates___________________Ç:",
   "numDuplicates": "{{n}} duplicados",
   "selectLayerAndAdd": "ã_Use selection tools to choose which features to include and then click Create list___________________________________________Ç.",
   "selectSearchTip": "ã_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________Ç.",
@@ -35,7 +35,8 @@
   "pdfOptions": "Opções do PDF",
   "csvOptions": "Opções do CSV",
   "refineSelection": "Refinar seleção",
-  "refineTip": "ã_Refine and finalize your lists by using sketch tools to add or remove features across all selection sets______________________________________________________Ç.",
+  "refineTip": "ã_Refine and finalize your lists by using sketch tools to add or remove selected features_____________________________________________Ç.",
   "refineTipNoSelections": "Não há seleções para refinar. Vá até Minhas listas para criar uma lista de feições.",
-  "duplicatesTip": "ã_Duplicate features are always removed. When enabled labels from each layer will be compared and any duplicate labels will be removed____________________________________________________________________Ç."
+  "duplicatesTip": "ã_Duplicate features are always removed. When enabled, pop-ups from each layer will be compared and any duplicate pop-up information will be removed___________________________________________________________________________Ç.",
+  "exportListsLabel": "ã_My lists_________________Ç"
 }
