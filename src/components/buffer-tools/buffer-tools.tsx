@@ -311,7 +311,7 @@ export class BufferTools {
     return (
       <div class="c-container">
         <calcite-input
-          class="padding-end-1"
+          class="padding-end-1 w-50"
           max={this.max && this.max > 0 ? this.max : undefined}
           min={this.min}
           number-button-type="vertical"
@@ -321,7 +321,7 @@ export class BufferTools {
           value={this.distance ? this.distance.toString() : undefined}
         />
         <calcite-select
-          class="flex-1"
+          class="flex-1 w-50"
           label="label"
           onCalciteSelectChange={() => this._setUnit(this._unitElement.value as DistanceUnit)}
           ref={(el) => { this._unitElement = el }}
