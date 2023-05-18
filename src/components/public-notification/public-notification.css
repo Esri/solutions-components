@@ -14,196 +14,202 @@
  * limitations under the License.
  */
 
- :host {
-    display: block;
-    --calcite-input-message-spacing-value: 0;
-  }
+:host {
+  display: block;
+  --calcite-input-message-spacing-value: 0;
+}
 
-  .align-center {
-    align-items: center;
-  }
+.align-center {
+  align-items: center;
+}
 
-  .border-bottom-1 {
-    border-width: 0px;
-    border-bottom-width: 1px;
-    border-style: solid;
-    border-color: var(--calcite-ui-border-3);
-  }
+.border-bottom-1 {
+  border-width: 0px;
+  border-bottom-width: 1px;
+  border-style: solid;
+  border-color: var(--calcite-ui-border-3);
+}
 
-  .action-bar-size {
-    height: 3.5rem;
-    width: 100%;
-  }
+.action-bar-size {
+  height: 3.5rem;
+  width: 100%;
+}
 
-  .w-1-2 {
-    width: 50%;
-  }
+.w-1-2 {
+  width: 50%;
+}
 
-  .w-1-3 {
-    width: 33.33%;
-  }
+.w-1-3 {
+  width: 33.33%;
+}
 
-  .action-center {
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-grid-row-align: center;
-    align-items: center;
-    -webkit-align-content: center;
-    align-content: center;
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-  }
+.action-center {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-grid-row-align: center;
+  align-items: center;
+  -webkit-align-content: center;
+  align-content: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
 
-  .width-full {
-    width: 100%;
-  }
+.width-full {
+  width: 100%;
+}
 
-  .height-full {
-    height: 100%;
-  }
+.height-full {
+  height: 100%;
+}
 
-  .padding-1 {
-    padding: 1rem;
-  }
+.padding-1 {
+  padding: 1rem;
+}
 
-  .padding-top-sides-1 {
-    padding-block-start: 1rem;
-    padding-inline-start: 1rem;
-    padding-inline-end: 1rem;
-  }
+.padding-top-sides-1 {
+  padding-block-start: 1rem;
+  padding-inline-start: 1rem;
+  padding-inline-end: 1rem;
+}
 
-  .padding-sides-1 {
-    padding-inline-start: 1rem;
-    padding-inline-end: 1rem;
-  }
+.padding-sides-1 {
+  padding-inline-start: 1rem;
+  padding-inline-end: 1rem;
+}
 
-  .padding-end-1-2 {
-    padding-inline-end: .5rem;
-  }
+.padding-end-1-2 {
+  padding-inline-end: .5rem;
+}
 
-  .padding-top-1-2 {
-    padding-block-start: .5rem;
-  }
+.padding-top-1-2 {
+  padding-block-start: .5rem;
+}
 
-  .padding-top-1 {
-    padding-top: 1rem;
-  }
+.padding-top-1 {
+  padding-top: 1rem;
+}
 
-  .padding-bottom-1 {
-    padding-bottom: 1rem;
-  }
+.padding-bottom-1 {
+  padding-bottom: 1rem;
+}
 
-  .padding-bottom-1-2 {
-    padding-bottom: .5rem;
-  }
+.padding-bottom-1-2 {
+  padding-bottom: .5rem;
+}
 
-  .info-blue {
-    /* This would be better but not the right color in light theme */
-    /* color: var(--calcite-ui-info); */
+.info-blue {
+  /* This would be better but not the right color in light theme */
+  /* color: var(--calcite-ui-info); */
 
-    /* This is --calcite-ui-info value for dark theme*/
-    color: #00A0FF;
-  }
+  /* This is --calcite-ui-info value for dark theme*/
+  color: #00A0FF;
+}
 
-  .info-message {
-    justify-content: center;
-    display: grid;
-  }
+.info-message {
+  justify-content: center;
+  display: grid;
+}
 
-  .font-bold {
-    font-weight: bold;
-  }
+.font-bold {
+  font-weight: bold;
+}
 
-  .display-flex {
-    display: flex;
-  }
+.display-flex {
+  display: flex;
+}
 
-  .display-block {
-    display: block;
-  }
+.display-block {
+  display: block;
+}
 
-  .display-none {
-    display: none;
-  }
+.display-none {
+  display: none;
+}
 
-  .border-bottom {
-    border-bottom: 1px solid var(--calcite-ui-border-2);
-  }
+.border-bottom {
+  border-bottom: 1px solid var(--calcite-ui-border-2);
+}
 
-  .padding-start-1-2 {
-    padding-inline-start: 0.5rem;
-  }
+.padding-start-1-2 {
+  padding-inline-start: 0.5rem;
+}
 
-  .list-border {
-    border: 1px solid var(--calcite-ui-border-2);
-  }
+.list-border {
+  border: 1px solid var(--calcite-ui-border-2);
+}
 
-  .margin-sides-1 {
-    margin-inline-start: 1rem;
-    margin-inline-end: 1rem;
-  }
+.margin-sides-1 {
+  margin-inline-start: 1rem;
+  margin-inline-end: 1rem;
+}
 
-  .margin-start-1-2 {
-    margin-inline-start: 0.5rem;
-  }
+.margin-start-1-2 {
+  margin-inline-start: 0.5rem;
+}
 
-  .float-right {
-    float: right;
-  }
+.float-right {
+  float: right;
+}
 
-  .float-right[dir="rtl"] {
-    float: left;
-  }
+.float-right[dir="rtl"] {
+  float: left;
+}
 
-  .float-left {
-    float: left;
-  }
+.float-left {
+  float: left;
+}
 
-  .float-left[dir="rtl"] {
-    float: right;
-  }
+.float-left[dir="rtl"] {
+  float: right;
+}
 
-  .margin-top-0 {
-    margin-block-start: 0 !important;
-  }
+.margin-top-0 {
+  margin-block-start: 0 !important;
+}
 
-  .height-1-1-2 {
-    height: 1.5rem;
-  }
+.height-1-1-2 {
+  height: 1.5rem;
+}
 
-  .main-background {
-    background-color: var(--calcite-ui-foreground-2);
-  }
+.main-background {
+  background-color: var(--calcite-ui-foreground-2);
+}
 
-  .position-right {
-    position: absolute;
-    right: 1rem;
-  }
+.position-right {
+  position: absolute;
+  right: 1rem;
+}
 
-  .position-right[dir="rtl"] {
-    position: absolute;
-    left: 1rem;
-  }
+.position-right[dir="rtl"] {
+  position: absolute;
+  left: 1rem;
+}
 
-  .label-margin-0 {
-    --calcite-label-margin-bottom: 0;
-  }
+.label-margin-0 {
+  --calcite-label-margin-bottom: 0;
+}
 
-  .list-label {
-    color: var(--calcite-ui-text-1);
-  }
+.list-label {
+  color: var(--calcite-ui-text-1);
+}
 
-  .list-label,
-  .list-description {
-    font-family: var(--calcite-sans-family);
-    font-size: var(--calcite-font-size--2);
-    font-weight: var(--calcite-font-weight-normal);
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
+.list-label,
+.list-description {
+  font-family: var(--calcite-sans-family);
+  font-size: var(--calcite-font-size--2);
+  font-weight: var(--calcite-font-weight-normal);
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
 
-  .list-description {
-    margin-block-start: 0.125rem;
-    color: var(--calcite-ui-text-3);
-  }
+.list-description {
+  margin-block-start: 0.125rem;
+  color: var(--calcite-ui-text-3);
+}
+
+.img-container {
+  object-fit: scale-down;
+  width: 100%;
+  height: 100%;
+}

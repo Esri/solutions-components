@@ -618,11 +618,27 @@ export class PublicNotification {
       <calcite-panel>
         {this._getLabel(this._translations.myLists)}
         {this._getNotice(hasSets ? this._translations.listHasSetsTip : this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1")}
-        {hasSets ? this._getSelectionSetList() : (null)}
+        {hasSets ? this._getSelectionSetList() : (this._getOnboardingImage())}
         <div class="display-flex padding-1">
           <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full">{this._translations.add}</calcite-button>
         </div>
       </calcite-panel>
+    );
+  }
+
+  /**
+   * Display an image to help illustrate the basic workflow of the widget
+   *
+   * @returns the image node to display
+   * @protected
+   */
+  protected _getOnboardingImage(): VNode {
+    const href = window.location.href;
+    const url = href.substring(0, href.lastIndexOf('/'));
+    return (
+      <div class="display-flex padding-sides-1">
+        <img class="img-container" src={`${url}/data/generic.png`} />
+      </div>
     );
   }
 
