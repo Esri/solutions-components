@@ -35,7 +35,7 @@
     "@stencil/postcss": "^2.1.0",
     "@stencil/sass": "^2.0.0",
     "@stencil/store": "^2.0.1",
-    "@types/arcgis-js-api": "^4.25.0-next.20221031",
+    "@types/arcgis-js-api": "^4.26.0-next",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.11.11",
     "@types/puppeteer": "^5.4.2",
