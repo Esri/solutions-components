@@ -84,6 +84,6 @@ html[dir="rtl"] .main-label {
   margin: 6px 0;
 }
 
-.esri-sketch__section.esri-sketch__info-section>calcite-action:first-of-type {
+.esri-sketch__section.esri-sketch__tool-section:first-of-type {
   display: none;
 }

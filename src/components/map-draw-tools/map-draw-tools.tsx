@@ -375,6 +375,7 @@ export class MapDrawTools {
       container: this._sketchElement,
       creationMode: "single",
       visibleElements: {
+        duplicateButton: false,
         selectionTools: {
           "lasso-selection": false,
           "rectangle-selection": false
@@ -383,7 +384,7 @@ export class MapDrawTools {
         },
         undoRedoMenu: false,
         settingsMenu: this.drawMode === EDrawMode.SKETCH
-      }
+      } as any // temp workaround since we need duplicateButton flag that is not in 4.26 types but will be in the 4.27 modules we get from IA
     });
 
     this._sketchViewModel = new this.SketchViewModel({
@@ -422,6 +423,7 @@ export class MapDrawTools {
 
     this._sketchWidget.on("delete", () => {
       this.graphics = [];
+      this._setDefaultCreateTool();
       this.sketchGraphicsChange.emit({
         graphics: this.graphics,
         useOIDs: false
@@ -443,6 +445,8 @@ export class MapDrawTools {
         useOIDs: false
       });
     });
+
+    this._setDefaultCreateTool();
   }
 
   /**
@@ -454,6 +458,17 @@ export class MapDrawTools {
     this._sketchWidget.viewModel.cancel();
     this.graphics = [];
     this._sketchGraphicsLayer?.removeAll();
+  }
+
+  /**
+   * Set the default create tool when we have no existing graphics
+   *
+   * @protected
+   */
+  protected _setDefaultCreateTool(): void {
+    if (!this.graphics || this.graphics.length === 0) {
+      this._sketchWidget.viewModel.create("rectangle");
+    }
   }
 
   /**
