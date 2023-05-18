@@ -423,6 +423,7 @@ export class MapDrawTools {
 
     this._sketchWidget.on("delete", () => {
       this.graphics = [];
+      this._setDefaultCreateTool();
       this.sketchGraphicsChange.emit({
         graphics: this.graphics,
         useOIDs: false
@@ -444,6 +445,8 @@ export class MapDrawTools {
         useOIDs: false
       });
     });
+
+    this._setDefaultCreateTool();
   }
 
   /**
@@ -455,6 +458,17 @@ export class MapDrawTools {
     this._sketchWidget.viewModel.cancel();
     this.graphics = [];
     this._sketchGraphicsLayer?.removeAll();
+  }
+
+  /**
+   * Set the default create tool when we have no existing graphics
+   *
+   * @protected
+   */
+  protected _setDefaultCreateTool(): void {
+    if (!this.graphics || this.graphics.length === 0) {
+      this._sketchWidget.viewModel.create("rectangle");
+    }
   }
 
   /**
