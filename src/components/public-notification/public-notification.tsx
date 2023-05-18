@@ -22,6 +22,7 @@ import state from "../../utils/publicNotificationStore";
 import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { consolidateLabels, removeDuplicateLabels } from "../../utils/downloadUtils";
+import { getAssetPath } from "@stencil/core";
 
 @Component({
   tag: "public-notification",
@@ -224,6 +225,11 @@ export class PublicNotification {
   protected _jsonUtils: __esri.symbolsSupportJsonUtils;
 
   /**
+   * string: The url to the onboarding image
+   */
+  protected _onboardingImageUrl = "";
+
+  /**
    * HTMLCalciteCheckboxElement: When enabled popups will be shown on map click
    */
   protected _popupsEnabled: boolean;
@@ -398,6 +404,7 @@ export class PublicNotification {
     await this._getTranslations();
     await this._initModules();
     this._initSymbols();
+    this._onboardingImageUrl = getAssetPath(`../assets/data/images/generic.png`);
   }
 
   /**
@@ -633,11 +640,9 @@ export class PublicNotification {
    * @protected
    */
   protected _getOnboardingImage(): VNode {
-    const href = window.location.href;
-    const url = href.substring(0, href.lastIndexOf('/'));
     return (
       <div class="display-flex padding-sides-1">
-        <img class="img-container" src={`${url}/data/generic.png`} />
+        <img class="img-container" src={this._onboardingImageUrl} />
       </div>
     );
   }
