@@ -22,6 +22,7 @@ import state from "../../utils/publicNotificationStore";
 import NewPublicNotification_T9n from "../../assets/t9n/public-notification/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { consolidateLabels, removeDuplicateLabels } from "../../utils/downloadUtils";
+import { getAssetPath } from "@stencil/core";
 
 @Component({
   tag: "public-notification",
@@ -224,6 +225,11 @@ export class PublicNotification {
   protected _jsonUtils: __esri.symbolsSupportJsonUtils;
 
   /**
+   * string: The url to the onboarding image
+   */
+  protected _onboardingImageUrl = "";
+
+  /**
    * HTMLCalciteCheckboxElement: When enabled popups will be shown on map click
    */
   protected _popupsEnabled: boolean;
@@ -398,6 +404,7 @@ export class PublicNotification {
     await this._getTranslations();
     await this._initModules();
     this._initSymbols();
+    this._onboardingImageUrl = getAssetPath(`../assets/data/images/generic.png`);
   }
 
   /**
@@ -618,11 +625,25 @@ export class PublicNotification {
       <calcite-panel>
         {this._getLabel(this._translations.myLists)}
         {this._getNotice(hasSets ? this._translations.listHasSetsTip : this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1")}
-        {hasSets ? this._getSelectionSetList() : (null)}
+        {hasSets ? this._getSelectionSetList() : (this._getOnboardingImage())}
         <div class="display-flex padding-1">
           <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full">{this._translations.add}</calcite-button>
         </div>
       </calcite-panel>
+    );
+  }
+
+  /**
+   * Display an image to help illustrate the basic workflow of the widget
+   *
+   * @returns the image node to display
+   * @protected
+   */
+  protected _getOnboardingImage(): VNode {
+    return (
+      <div class="display-flex padding-sides-1">
+        <img class="img-container" src={this._onboardingImageUrl} />
+      </div>
     );
   }
 
