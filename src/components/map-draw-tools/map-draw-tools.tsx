@@ -395,6 +395,7 @@ export class MapDrawTools {
     this._sketchWidget.viewModel.pointSymbol = this.pointSymbol;
     this._sketchWidget.viewModel.polygonSymbol = this.polygonSymbol;
 
+    let forceCreate = false;
     this._sketchWidget.on("create", (evt) => {
       if (evt.state === "complete") {
         this.graphics = [evt.graphic];
@@ -402,6 +403,18 @@ export class MapDrawTools {
           graphics: this.graphics,
           useOIDs: false
         });
+
+        if (this.drawMode === EDrawMode.REFINE) {
+          // calling create during complete will force the cancel event
+          // https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html#event-create
+          forceCreate = true;
+          this._sketchWidget.viewModel.create(evt.tool);
+        }
+      }
+
+      if (evt.state === "cancel" && this.drawMode === EDrawMode.REFINE && forceCreate) {
+        forceCreate = !forceCreate;
+        this._sketchWidget.viewModel.create(evt.tool);
       }
     });
 
@@ -423,7 +436,6 @@ export class MapDrawTools {
 
     this._sketchWidget.on("delete", () => {
       this.graphics = [];
-      this._setDefaultCreateTool();
       this.sketchGraphicsChange.emit({
         graphics: this.graphics,
         useOIDs: false
@@ -445,8 +457,6 @@ export class MapDrawTools {
         useOIDs: false
       });
     });
-
-    this._setDefaultCreateTool();
   }
 
   /**
@@ -458,17 +468,6 @@ export class MapDrawTools {
     this._sketchWidget.viewModel.cancel();
     this.graphics = [];
     this._sketchGraphicsLayer?.removeAll();
-  }
-
-  /**
-   * Set the default create tool when we have no existing graphics
-   *
-   * @protected
-   */
-  protected _setDefaultCreateTool(): void {
-    if (!this.graphics || this.graphics.length === 0) {
-      this._sketchWidget.viewModel.create("rectangle");
-    }
   }
 
   /**
