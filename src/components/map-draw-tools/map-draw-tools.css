@@ -83,7 +83,3 @@ html[dir="rtl"] .main-label {
   padding: 0 7px;
   margin: 6px 0;
 }
-
-.esri-sketch__section.esri-sketch__tool-section:first-of-type {
-  display: none;
-}
