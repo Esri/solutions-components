@@ -761,7 +761,9 @@ export class PublicNotification {
           // REFINE will only ever be 1 ISelectionSet
           Object.keys(cur.refineInfos).forEach(k => {
             const refineIds: IRefineIds = cur.refineInfos[k];
-            this._updateIds(k, refineIds.layerView, refineIds.addIds, prev);
+            if (refineIds.addIds.length > 0) {
+              this._updateIds(k, refineIds.layerView, refineIds.addIds, prev);
+            }
           });
         }
       }

@@ -258,6 +258,18 @@ export class MapDrawTools {
   }
 
   /**
+   * StencilJS: Called every time the component is disconnected from the DOM
+   *
+   * @returns void
+   */
+  disconnectedCallback(): void {
+    // cancel any existing create operations
+    this._sketchWidget.cancel();
+    // clear any current temp sketch
+    this._clearSketch();
+  }
+
+  /**
    * Renders the component.
    */
   render(): VNode {
