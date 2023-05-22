@@ -715,9 +715,11 @@ export class MapSelectTools {
         ...this.selectionSet?.geometries || []
       ];
 
-      this._graphics = [
-        ...this.selectionSet?.graphics || []
-      ];
+      // restore graphics from geometries to avoid issues with temp modifications to graphics that were aborted
+      this._graphics = this.geometries.map(geometry => new this.Graphic({
+        geometry,
+        symbol: this.selectionSet?.graphics[0].symbol
+      }));
 
       this._selectionLabel = this.selectionSet?.label;
 
