@@ -715,9 +715,15 @@ export class MapSelectTools {
         ...this.selectionSet?.geometries || []
       ];
 
-      this._graphics = [
-        ...this.selectionSet?.graphics || []
-      ];
+      // restore graphics from geometries to avoid issues with temp modifications to graphics that were aborted
+      this._graphics = this.geometries.map(geometry => {
+        const symbol = geometry.type === "point" ? this.sketchPointSymbol :
+          geometry.type === "polyline" ? this.sketchLineSymbol : this.sketchPolygonSymbol;
+        return new this.Graphic({
+          geometry,
+          symbol
+        })
+      });
 
       this._selectionLabel = this.selectionSet?.label;
 
