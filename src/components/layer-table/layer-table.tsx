@@ -211,40 +211,95 @@ export class LayerTable {
         <div>
           <calcite-button
             appearance='transparent'
-            color='neutral'
             disabled={!featuresSelected}
             iconStart='magnifying-glass'
+            kind='neutral'
             onClick={() => this._zoom()}
           >
             {this._translations.zoom}
           </calcite-button>
           <calcite-button
             appearance='transparent'
-            color='neutral'
             disabled={!multiFeaturesSelected}
             iconStart='pencil'
+            kind='neutral'
             onClick={() => this._editMultiple()}
           >
             {this._translations.editMultiple}
           </calcite-button>
           <calcite-button
             appearance='transparent'
-            color='neutral'
+            iconStart='filter'
+            kind='neutral'
+            onClick={() => this._filter()}
+          >
+            {this._translations.filters}
+          </calcite-button>
+          <calcite-button
+            appearance='transparent'
             disabled={!featuresSelected}
             iconStart='trash'
+            kind='neutral'
             onClick={() => this._delete()}
           >
             {this._translations.delete}
           </calcite-button>
+
+          <calcite-combobox
+            label=''
+            placeholder={this._translations.more}
+            scale="l"
+            selectionMode="single"
+          >
+            <calcite-combobox-item
+              icon='list-check-all'
+              onClick={() => this._selectAll(true)}
+              textLabel={this._translations.selectAll}
+              value={this._translations.selectAll}
+            />
+            <calcite-combobox-item
+              icon='list-check-all'
+              onClick={() => this._selectAll(true)}
+              textLabel="Natural Resources"
+              value="Natural Resources"
+            />
+            <calcite-combobox-item
+              icon='list-check-all'
+              onClick={() => this._selectAll(true)}
+              textLabel="Natural Resources"
+              value="Natural Resources"
+            />
+            <calcite-combobox-item
+              icon='list-check-all'
+              onClick={() => this._selectAll(true)}
+              textLabel="Natural Resources"
+              value="Natural Resources"
+            />
+            <calcite-combobox-item
+              icon='list-check-all'
+              onClick={() => this._selectAll(true)}
+              textLabel="Natural Resources"
+              value="Natural Resources"
+            />
+            <calcite-combobox-item
+              icon='list-check-all'
+              onClick={() => this._selectAll(true)}
+              textLabel="Natural Resources"
+              value="Natural Resources"
+            />
+
+          </calcite-combobox>
+
           <calcite-split-button
             appearance="transparent"
-            color="neutral"
-            primary-text={this._translations.more}
+            kind='neutral'
+            primaryText={this._translations.more}
+
           >
             <calcite-dropdown-group selection-mode="none">
               <calcite-dropdown-item
                 iconStart='list-check-all'
-                onClick={() => this._selectAll(true)}
+
               >
                 {this._translations.selectAll}
               </calcite-dropdown-item>
@@ -337,6 +392,10 @@ export class LayerTable {
    */
   protected _clearSelection(): void {
     this._selectedIndexes = [];
+  }
+
+  protected _filter(): void {
+    alert("do whatever this button is supposed to do")
   }
 
   /**
