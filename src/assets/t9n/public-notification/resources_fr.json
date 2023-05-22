@@ -17,7 +17,7 @@
   "selectPDFLabelOption": "æ_Format options_______________Â",
   "removeDuplicate": "æ_Remove duplicates___________________Â:",
   "numDuplicates": "{{n}} doublons",
-  "selectLayerAndAdd": "æ_Use selection tools to choose which features to include and then click Create list___________________________________________Â.",
+  "selectLayerAndAdd": "æ_Create lists of features to export as CSV and PDF. Use selection tools to choose which features to include and then click Create list____________________________________________________________________Â.",
   "selectSearchTip": "æ_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________Â.",
   "selectLayerTip": "Dessinez des formes pour sélectionner des entités dans la couche de sélection choisie. Les résultats servent à sélectionner des entités dans la couche de destinataires",
   "selectSketchTip": "Utilisez les outils de dessin pour tracer des graphismes sur la carte et sélectionner les entités d’intersection dans la couche de destinataires.",

@@ -1,0 +1,9 @@
+{
+  "add": "한_Add_______빠",
+  "remove": "한_Remove_____________빠",
+  "featuresAdded": "한_Features added: {{n}}______________________빠",
+  "featuresRemoved": "한_Features removed: {{n}}________________________빠",
+  "totalSelected": "한_Total selected: {{n}}______________________빠",
+  "inputLayer": "한_Input layer____________빠",
+  "inputLayerTip": "한_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________빠."
+}

@@ -17,7 +17,7 @@
   "selectPDFLabelOption": "ก้_Format options_______________ษฺ",
   "removeDuplicate": "ก้_Remove duplicates___________________ษฺ:",
   "numDuplicates": "{{n}} รายการซ้ำ",
-  "selectLayerAndAdd": "ก้_Use selection tools to choose which features to include and then click Create list___________________________________________ษฺ.",
+  "selectLayerAndAdd": "ก้_Create lists of features to export as CSV and PDF. Use selection tools to choose which features to include and then click Create list____________________________________________________________________ษฺ.",
   "selectSearchTip": "ก้_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________ษฺ.",
   "selectLayerTip": "วาดรูปทรงเพื่อเลือกฟีเจอร์จากชั้นข้อมูลการเลือกที่ต้องการ ผลลัพธ์จะถูกนำไปใช้ในการเลือกฟีเจอร์จากชั้นข้อมูลผู้รับ",
   "selectSketchTip": "ใช้เครื่องมือการวาดเพื่อวาดกราฟิกในแผนที่ เพื่อเลือกฟีเจอร์ที่ตัดกันในชั้นข้อมูลผู้รับ",

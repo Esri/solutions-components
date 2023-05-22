@@ -17,7 +17,7 @@
   "selectPDFLabelOption": "Į_Format options_______________š",
   "removeDuplicate": "Į_Remove duplicates___________________š:",
   "numDuplicates": "{{n}} dublikatai (-ų)",
-  "selectLayerAndAdd": "Į_Use selection tools to choose which features to include and then click Create list___________________________________________š.",
+  "selectLayerAndAdd": "Į_Create lists of features to export as CSV and PDF. Use selection tools to choose which features to include and then click Create list____________________________________________________________________š.",
   "selectSearchTip": "Į_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________š.",
   "selectLayerTip": "Braižykite figūras, kuriose galite pasirinkti elementus. Rezultatai bus naudojami adresato sluoksnio ypatybėms pasirinkti",
   "selectSketchTip": "Naudokite eskizų įrankius, norėdami kurti grafiką žemėlapyje, kad galėtumėte pasirinkti susikertančias adresato sluoksnio ypatybes.",

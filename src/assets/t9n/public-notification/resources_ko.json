@@ -17,7 +17,7 @@
   "selectPDFLabelOption": "한_Format options_______________빠",
   "removeDuplicate": "한_Remove duplicates___________________빠:",
   "numDuplicates": "중복 {{n}}개",
-  "selectLayerAndAdd": "한_Use selection tools to choose which features to include and then click Create list___________________________________________빠.",
+  "selectLayerAndAdd": "한_Create lists of features to export as CSV and PDF. Use selection tools to choose which features to include and then click Create list____________________________________________________________________빠.",
   "selectSearchTip": "한_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________빠.",
   "selectLayerTip": "쉐이프를 그려 선택한 선택 레이어에서 피처를 선택합니다. 결과는 수신인 레이어에서 피처를 선택하는 데 사용됩니다.",
   "selectSketchTip": "스케치 도구를 사용하여 맵에 그래픽을 그려 수신인 레이어에서 교차 피처를 선택합니다.",

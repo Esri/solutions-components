@@ -1,0 +1,9 @@
+{
+  "add": "بيت_Add_______لاحقة",
+  "remove": "بيت_Remove_____________لاحقة",
+  "featuresAdded": "بيت_Features added: {{n}}______________________لاحقة",
+  "featuresRemoved": "بيت_Features removed: {{n}}________________________لاحقة",
+  "totalSelected": "بيت_Total selected: {{n}}______________________لاحقة",
+  "inputLayer": "بيت_Input layer____________لاحقة",
+  "inputLayerTip": "بيت_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________لاحقة."
+}

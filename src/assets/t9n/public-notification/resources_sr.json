@@ -17,7 +17,7 @@
   "selectPDFLabelOption": "Č_Format options_______________ž",
   "removeDuplicate": "Č_Remove duplicates___________________ž:",
   "numDuplicates": "{{n}} duplikata",
-  "selectLayerAndAdd": "Č_Use selection tools to choose which features to include and then click Create list___________________________________________ž.",
+  "selectLayerAndAdd": "Č_Create lists of features to export as CSV and PDF. Use selection tools to choose which features to include and then click Create list____________________________________________________________________ž.",
   "selectSearchTip": "Č_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________ž.",
   "selectLayerTip": "Nacrtajte oblike da biste selektovali geoobjekte iz izabranog sloja za selekciju; rezultati će se koristiti za selekciju geoobjekata iz sloja primaoca",
   "selectSketchTip": "Koristite alatke za skiciranje da biste nacrtali grafiku na mapi i da biste selektovali geoobjekte koji se ukrštaju u sloju primaoca.",

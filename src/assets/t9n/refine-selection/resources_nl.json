@@ -1,0 +1,9 @@
+{
+  "add": "Ĳ_Add_______ä",
+  "remove": "Ĳ_Remove_____________ä",
+  "featuresAdded": "Ĳ_Features added: {{n}}______________________ä",
+  "featuresRemoved": "Ĳ_Features removed: {{n}}________________________ä",
+  "totalSelected": "Ĳ_Total selected: {{n}}______________________ä",
+  "inputLayer": "Ĳ_Input layer____________ä",
+  "inputLayerTip": "Ĳ_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________ä."
+}

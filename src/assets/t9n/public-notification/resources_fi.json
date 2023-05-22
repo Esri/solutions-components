@@ -17,7 +17,7 @@
   "selectPDFLabelOption": "Å_Format options_______________ö",
   "removeDuplicate": "Å_Remove duplicates___________________ö:",
   "numDuplicates": "{{n}} kaksoiskappaletta",
-  "selectLayerAndAdd": "Å_Use selection tools to choose which features to include and then click Create list___________________________________________ö.",
+  "selectLayerAndAdd": "Å_Create lists of features to export as CSV and PDF. Use selection tools to choose which features to include and then click Create list____________________________________________________________________ö.",
   "selectSearchTip": "Å_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________ö.",
   "selectLayerTip": "Piirtämällä muotoja voit valita kohteita valitusta valintakarttatasosta; tulosten avulla valitaan kohteita vastaanottajan karttatasosta",
   "selectSketchTip": "Luonnostyökaluilla voit piirtää kaavioita karttaan ja valita leikkaavia kohteita vastaanottajan karttatasossa.",

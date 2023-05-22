@@ -1,0 +1,9 @@
+{
+  "add": "試_Add_______驗",
+  "remove": "試_Remove_____________驗",
+  "featuresAdded": "試_Features added: {{n}}______________________驗",
+  "featuresRemoved": "試_Features removed: {{n}}________________________驗",
+  "totalSelected": "試_Total selected: {{n}}______________________驗",
+  "inputLayer": "試_Input layer____________驗",
+  "inputLayerTip": "試_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________驗."
+}

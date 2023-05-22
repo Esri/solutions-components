@@ -17,7 +17,7 @@
   "selectPDFLabelOption": "試_Format options_______________驗",
   "removeDuplicate": "試_Remove duplicates___________________驗:",
   "numDuplicates": "{{n}} 個重複項目",
-  "selectLayerAndAdd": "試_Use selection tools to choose which features to include and then click Create list___________________________________________驗.",
+  "selectLayerAndAdd": "試_Create lists of features to export as CSV and PDF. Use selection tools to choose which features to include and then click Create list____________________________________________________________________驗.",
   "selectSearchTip": "試_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________驗.",
   "selectLayerTip": "繪製形狀以從選定的選擇圖層中選擇圖徵；結果將用於從收件者圖層中選擇圖徵",
   "selectSketchTip": "使用描繪工具，在地圖中繪製圖形以選擇地址圖層中的相交圖徵。",

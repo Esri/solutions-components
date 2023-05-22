@@ -17,7 +17,7 @@
   "selectPDFLabelOption": "Š_Format options_______________ä",
   "removeDuplicate": "Š_Remove duplicates___________________ä:",
   "numDuplicates": "{{n}} duplikaati",
-  "selectLayerAndAdd": "Š_Use selection tools to choose which features to include and then click Create list___________________________________________ä.",
+  "selectLayerAndAdd": "Š_Create lists of features to export as CSV and PDF. Use selection tools to choose which features to include and then click Create list____________________________________________________________________ä.",
   "selectSearchTip": "Š_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________ä.",
   "selectLayerTip": "Joonistage kujundid, et valida objekte valitud valikukihilt; tulemusi kasutatakse objektide valimiseks adressaadi kihilt",
   "selectSketchTip": "Kasutage visandustööriistu kaardile graafika joonistamiseks, et valida lõikuvaid objekte adressaadi kihilt.",

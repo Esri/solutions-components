@@ -17,7 +17,7 @@
   "selectPDFLabelOption": "Ж_Format options_______________Я",
   "removeDuplicate": "Ж_Remove duplicates___________________Я:",
   "numDuplicates": "{{n}} дубликатов",
-  "selectLayerAndAdd": "Ж_Use selection tools to choose which features to include and then click Create list___________________________________________Я.",
+  "selectLayerAndAdd": "Ж_Create lists of features to export as CSV and PDF. Use selection tools to choose which features to include and then click Create list____________________________________________________________________Я.",
   "selectSearchTip": "Ж_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________Я.",
   "selectLayerTip": "Нарисуйте области, чтобы выбрать объекты из слоя выборки; результаты будут использоваться для выбора объектов из слоя адресатов",
   "selectSketchTip": "Используйте инструменты скетча, чтобы нарисовать графику на карте для выборки пересекающихся объектов в слое адресатов.",

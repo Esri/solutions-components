@@ -1,0 +1,9 @@
+{
+  "add": "ķ_Add_______ū",
+  "remove": "ķ_Remove_____________ū",
+  "featuresAdded": "ķ_Features added: {{n}}______________________ū",
+  "featuresRemoved": "ķ_Features removed: {{n}}________________________ū",
+  "totalSelected": "ķ_Total selected: {{n}}______________________ū",
+  "inputLayer": "ķ_Input layer____________ū",
+  "inputLayerTip": "ķ_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________ū."
+}

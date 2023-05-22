@@ -17,7 +17,7 @@
   "selectPDFLabelOption": "Ř_Format options_______________ů",
   "removeDuplicate": "Ř_Remove duplicates___________________ů:",
   "numDuplicates": "{{n}} duplikátů",
-  "selectLayerAndAdd": "Ř_Use selection tools to choose which features to include and then click Create list___________________________________________ů.",
+  "selectLayerAndAdd": "Ř_Create lists of features to export as CSV and PDF. Use selection tools to choose which features to include and then click Create list____________________________________________________________________ů.",
   "selectSearchTip": "Ř_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________ů.",
   "selectLayerTip": "Nakreslete do mapy tvary, pomocí nichž vyberete prvky ze zvolené vrstvy výběru. Výsledky se použijí pro výběr prvků z vrstvy adresátů.",
   "selectSketchTip": "Pomocí nástrojů skicování nakreslete do mapy grafiku. Tím se vyberou prvky, které leží v průniku s vrstvou adresátů.",

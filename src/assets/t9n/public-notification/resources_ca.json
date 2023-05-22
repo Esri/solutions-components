@@ -17,7 +17,7 @@
   "selectPDFLabelOption": "ó_Format options_______________à",
   "removeDuplicate": "ó_Remove duplicates___________________à:",
   "numDuplicates": "{{n}} duplicats",
-  "selectLayerAndAdd": "ó_Use selection tools to choose which features to include and then click Create list___________________________________________à.",
+  "selectLayerAndAdd": "ó_Create lists of features to export as CSV and PDF. Use selection tools to choose which features to include and then click Create list____________________________________________________________________à.",
   "selectSearchTip": "ó_Select features from the input layer to add to your list. Draw with sketch tools, specify a search distance, and use features from another layer to select overlapping features_________________________________________________________________________________________à.",
   "selectLayerTip": "Dibuixeu formes per seleccionar entitats de la capa de selecció triada; els resultats es faran servir per seleccionar entitats de la capa de destinataris",
   "selectSketchTip": "Feu servir les eines d'esbós per dibuixar gràfics al mapa per seleccionar entitats que s'intersequen a la capa de destinataris.",
