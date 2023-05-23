@@ -173,6 +173,11 @@ export class PublicNotification {
   @State() _exportType: EExportType = EExportType.PDF;
 
   /**
+   * boolean: When window size is 600px or less this value will be true
+   */
+  @State() _isMobile: boolean;
+
+  /**
    * number: The number of duplicate labels from all selection sets
    */
   @State() _numDuplicates = 0;
@@ -196,7 +201,7 @@ export class PublicNotification {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() protected _translations: typeof NewPublicNotification_T9n;
+  @State() _translations: typeof NewPublicNotification_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -248,6 +253,11 @@ export class PublicNotification {
    * HTMLMapSelectToolsElement: The select tools element
    */
   protected _selectTools: HTMLMapSelectToolsElement;
+
+  /**
+   * MediaQueryList: Information about the media query to know when we have went into mobile mode
+   */
+  protected _mediaQuery: MediaQueryList;
 
   /**
    * Text to be used as title on PDF pages
@@ -398,6 +408,14 @@ export class PublicNotification {
   //--------------------------------------------------------------------------
 
   /**
+   * StencilJS: Called every time the component is connected to the DOM
+   */
+  connectedCallback(): void {
+    this._mediaQuery = window.matchMedia("(max-width: 600px)");
+    this._mediaQuery.addEventListener("change", (evt) => this._setIsMobile(evt));
+  }
+
+  /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
   async componentWillLoad(): Promise<void> {
@@ -411,10 +429,11 @@ export class PublicNotification {
    * Renders the component.
    */
   render(): void {
+    const headerSlot = this._isMobile ? "footer" : "header";
     return (
       <Host>
         <calcite-shell>
-          <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
+          <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot={headerSlot}>
             {this._getActionGroup("list-check", EPageType.LIST, this._translations.myLists)}
             {this.showRefineSelection ? this._getActionGroup("test-data", EPageType.REFINE, this._translations.refineSelection) : null}
             {this._getActionGroup("export", EPageType.EXPORT, this._translations.export)}
@@ -423,6 +442,13 @@ export class PublicNotification {
         </calcite-shell>
       </Host>
     );
+  }
+
+  /**
+   * StencilJS: Called every time the component is disconnected from the DOM
+   */
+  disconnectedCallback(): void {
+    this._mediaQuery.removeEventListener("change", (evt) => this._setIsMobile(evt));
   }
 
   //--------------------------------------------------------------------------
@@ -530,6 +556,19 @@ export class PublicNotification {
       },
       "style": "esriSFSSolid"
     }) as __esri.SimpleFillSymbol;
+  }
+
+  /**
+   * Set _isMobile to true when the view is 600px or less
+   *
+   * @param evt event from media query
+   *
+   * @protected
+   */
+  protected _setIsMobile(
+    evt: MediaQueryListEvent
+  ): void {
+    this._isMobile = evt.matches;
   }
 
   /**
@@ -1067,7 +1106,7 @@ export class PublicNotification {
     bottomFunc: () => void
   ): VNode {
     return (
-      <div>
+      <div class="padding-bottom-1">
         <div class="display-flex padding-top-sides-1">
           <calcite-button
             disabled={topDisabled}
