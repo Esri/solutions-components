@@ -125,8 +125,8 @@ graph TD;
   calcite-slider --> calcite-graph
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
-  map-layer-picker --> calcite-combobox-item
   map-layer-picker --> calcite-option
+  map-layer-picker --> calcite-combobox-item
   calcite-combobox --> calcite-chip
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon

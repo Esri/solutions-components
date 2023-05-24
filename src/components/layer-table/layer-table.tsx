@@ -207,6 +207,9 @@ export class LayerTable {
         <map-layer-picker
           mapView={this.mapView}
           onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
+          placeholderIcon='layers'
+          scale='l'
+          type='combobox'
         />
         <div>
           <calcite-button

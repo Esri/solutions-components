@@ -49,6 +49,8 @@ export class MapLayerPicker {
    */
   @Prop() mapView: __esri.MapView;
 
+  @Prop() placeholderIcon = "";
+
   /**
    * string[]: list of layer ids that have been selected by the end user
    */
@@ -60,6 +62,10 @@ export class MapLayerPicker {
    * Should the component support selection against a single layer or multiple layers.
    */
   @Prop({ mutable: true, reflect: true }) selectionMode: SelectionMode = "single";
+
+  @Prop() scale: "s" | "m" | "l" = "m";
+
+  @Prop() type: "select" | "combobox" = "select";
 
   //--------------------------------------------------------------------------
   //
@@ -147,7 +153,7 @@ export class MapLayerPicker {
       <Host>
         <div class="map-layer-picker-container">
           <div class="map-layer-picker">
-            {this.selectionMode === "multi" ? this._getCombobox() : this._getSelect()}
+            {this.selectionMode === "multi" || this.type === "combobox" ? this._getCombobox() : this._getSelect()}
           </div>
         </div>
       </Host>
@@ -173,8 +179,9 @@ export class MapLayerPicker {
         label=""
         onCalciteSelectChange={(evt) => this._layerSelectionChange(evt)}
         ref={(el) => { this._layerElement = el }}
+        scale={this.scale}
       >
-        {this._addMapLayersOptions()}
+        {this._addSelectMapLayersOptions()}
       </calcite-select>
     );
   }
@@ -191,9 +198,11 @@ export class MapLayerPicker {
       <calcite-combobox
         label=""
         onCalciteComboboxChange={(evt) => this._layerSelectionChange(evt)}
+        placeholder-icon={this.placeholderIcon}
+        scale={this.scale}
         selection-mode={this.selectionMode}
       >
-        {this._addMapLayersOptions()}
+        {this._addComboboxMapLayersOptions()}
       </calcite-combobox>
     );
   }
@@ -203,17 +212,26 @@ export class MapLayerPicker {
    *
    * @returns Array of ComboBox items or Select options for the ids of the layers
    */
-  _addMapLayersOptions(): VNode[] {
+  _addSelectMapLayersOptions(): VNode[] {
     return this.layerIds.reduce((prev, cur) => {
       if (state.managedLayers.indexOf(state.layerNameHash[cur]) < 0 && (this.enabledLayerIds.length > 0 ? this.enabledLayerIds.indexOf(cur) > -1 : true)) {
         prev.push(
-          this.selectionMode === "multi" && this.selectedLayerIds.indexOf(cur) > -1 ?
+          this.selectedLayerIds.indexOf(cur) > -1 ?
+            (<calcite-option label={state.layerNameHash[cur]} selected={true} value={cur} />) :
+            (<calcite-option label={state.layerNameHash[cur]} value={cur} />)
+        );
+      }
+      return prev;
+    }, []);
+  }
+
+  _addComboboxMapLayersOptions(): VNode[] {
+    return this.layerIds.reduce((prev, cur) => {
+      if (state.managedLayers.indexOf(state.layerNameHash[cur]) < 0 && (this.enabledLayerIds.length > 0 ? this.enabledLayerIds.indexOf(cur) > -1 : true)) {
+        prev.push(
+          this.selectedLayerIds.indexOf(cur) > -1 ?
             (<calcite-combobox-item selected textLabel={state.layerNameHash[cur]} value={cur} />) :
-            this.selectionMode === "multi" ?
-              (<calcite-combobox-item textLabel={state.layerNameHash[cur]} value={cur} />) :
-              this.selectedLayerIds.indexOf(cur) > -1 ?
-                (<calcite-option label={state.layerNameHash[cur]} selected={true} value={cur} />) :
-                (<calcite-option label={state.layerNameHash[cur]} value={cur} />)
+            (<calcite-combobox-item textLabel={state.layerNameHash[cur]} value={cur} />)
         );
       }
       return prev;

@@ -196,6 +196,8 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        "placeholderIcon": string;
+        "scale": "s" | "m" | "l";
         /**
           * string[]: list of layer ids that have been selected by the end user
          */
@@ -204,6 +206,7 @@ export namespace Components {
           * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
          */
         "selectionMode": SelectionMode;
+        "type": "select" | "combobox";
     }
     interface MapSearch {
         /**
@@ -1099,6 +1102,8 @@ declare namespace LocalJSX {
           * Emitted on demand when a layer is selected
          */
         "onLayerSelectionChange"?: (event: MapLayerPickerCustomEvent<string[]>) => void;
+        "placeholderIcon"?: string;
+        "scale"?: "s" | "m" | "l";
         /**
           * string[]: list of layer ids that have been selected by the end user
          */
@@ -1107,6 +1112,7 @@ declare namespace LocalJSX {
           * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
          */
         "selectionMode"?: SelectionMode;
+        "type"?: "select" | "combobox";
     }
     interface MapSearch {
         /**
