@@ -216,3 +216,10 @@
 .font-weight-500 {
   font-weight: 500;
 }
+
+.background-override {
+  width: 100%;
+  --calcite-ui-foreground-3: var(--calcite-ui-brand);
+  --calcite-ui-foreground-2: var(--calcite-ui-brand-hover);
+  --calcite-ui-text-1: var(--calcite-ui-text-inverse)
+}

@@ -589,16 +589,18 @@ export class PublicNotification {
     const sizeClass = this.showRefineSelection ? " w-1-3" : " w-1-2";
     return (
       <calcite-action-group class={"action-center" + sizeClass} layout="horizontal">
-        <calcite-action
-          active={this._pageType === pageType}
-          alignment="center"
-          class="width-full height-full"
-          compact={false}
-          icon={icon}
-          id={icon}
-          onClick={() => { this._setPageType(pageType) }}
-          text=""
-        />
+        <div class="background-override">
+          <calcite-action
+            active={this._pageType === pageType}
+            alignment="center"
+            class="width-full height-full"
+            compact={false}
+            icon={icon}
+            id={icon}
+            onClick={() => { this._setPageType(pageType) }}
+            text=""
+          />
+        </div>
         <calcite-tooltip label="" placement="bottom" reference-element={icon}>
           <span>{tip}</span>
         </calcite-tooltip>
