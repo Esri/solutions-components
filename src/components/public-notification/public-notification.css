@@ -218,6 +218,7 @@
 }
 
 .background-override {
+  height: 100%;
   width: 100%;
   --calcite-ui-foreground-3: var(--calcite-ui-brand);
   --calcite-ui-foreground-2: var(--calcite-ui-brand-hover);
