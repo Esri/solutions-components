@@ -666,7 +666,7 @@ export class PublicNotification {
         {this._getNotice(hasSets ? this._translations.listHasSetsTip : this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1")}
         {hasSets ? this._getSelectionSetList() : (this._getOnboardingImage())}
         <div class="display-flex padding-1">
-          <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full">{this._translations.add}</calcite-button>
+          <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full"><span class="font-weight-500">{this._translations.add}</span></calcite-button>
         </div>
       </calcite-panel>
     );
@@ -949,15 +949,18 @@ export class PublicNotification {
                       class="w-50 end-border"
                       value={EExportType.PDF}
                     >
-                      {this._translations.pdf}
-
+                      <span class="font-weight-500">
+                        {this._translations.pdf}
+                      </span>
                     </calcite-segmented-control-item>
                     <calcite-segmented-control-item
                       checked={this._exportType === EExportType.CSV}
                       class="w-50"
                       value={EExportType.CSV}
                     >
-                      {this._translations.csv}
+                      <span class="font-weight-500">
+                        {this._translations.csv}
+                      </span>
                     </calcite-segmented-control-item>
                   </calcite-segmented-control>
                 </div>
@@ -970,7 +973,9 @@ export class PublicNotification {
                     onClick={() => void this._export()}
                     width="full"
                   >
-                    {this._translations.export}
+                    <span class="font-weight-500">
+                      {this._translations.export}
+                    </span>
                   </calcite-button>
                 </div>
               </div>
@@ -1113,7 +1118,9 @@ export class PublicNotification {
             onClick={topFunc}
             width="full"
           >
-            {topLabel}
+            <span class="font-weight-500">
+              {topLabel}
+            </span>
           </calcite-button>
         </div>
         <div class="display-flex padding-top-1-2 padding-sides-1">
@@ -1123,7 +1130,9 @@ export class PublicNotification {
             onClick={bottomFunc}
             width="full"
           >
-            {bottomLabel}
+            <span class="font-weight-500">
+              {bottomLabel}
+            </span>
           </calcite-button>
         </div>
       </div>
