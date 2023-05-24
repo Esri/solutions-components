@@ -104,3 +104,7 @@ html[dir="rtl"] .main-label {
 .padding-start-1-2 {
   padding-inline-start: 0.5rem;
 }
+
+.font-weight-500 {
+  font-weight: 500;
+}

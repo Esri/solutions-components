@@ -236,7 +236,9 @@ export class RefineSelection {
                 onClick={() => this._setSelectionMode(ESelectionMode.ADD)}
                 value={ESelectionMode.ADD}
               >
-                {this._translations.add}
+                <span class="font-weight-500">
+                  {this._translations.add}
+                </span>
               </calcite-segmented-control-item>
               <calcite-segmented-control-item
                 checked={!this._addEnabled}
@@ -244,7 +246,9 @@ export class RefineSelection {
                 onClick={() => this._setSelectionMode(ESelectionMode.REMOVE)}
                 value={ESelectionMode.REMOVE}
               >
-                {this._translations.remove}
+                <span class="font-weight-500">
+                  {this._translations.remove}
+                </span>
               </calcite-segmented-control-item>
             </calcite-segmented-control>
           </div>
