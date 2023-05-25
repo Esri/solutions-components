@@ -1,0 +1,9 @@
+{
+  "add": "ก้_Add_______ษฺ",
+  "remove": "ก้_Remove_____________ษฺ",
+  "featuresAdded": "ก้_Features added: {{n}}______________________ษฺ",
+  "featuresRemoved": "ก้_Features removed: {{n}}________________________ษฺ",
+  "totalSelected": "ก้_Total selected: {{n}}______________________ษฺ",
+  "inputLayer": "ก้_Input layer____________ษฺ",
+  "inputLayerTip": "ก้_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________ษฺ."
+}

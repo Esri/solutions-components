@@ -14,21 +14,49 @@
  * limitations under the License.
  */
 
+import { h } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { MapSearch } from '../map-search';
+import * as locale from "../../../utils/locale";
+import * as translations from "../../../assets/t9n/map-search/resources.json";
 
-xdescribe('map-search', () => {
-  it('renders', async () => {
+jest.setTimeout(30000);
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
+let mapView;
+
+beforeEach(() => {
+  jest.spyOn(locale, "getLocaleComponentStrings").mockImplementation(() => [
+    translations
+  ] as any);
+
+  mapView = {
+    map: {
+      layers: {
+        add: () => {},
+        getItemAt: () => { return -1 },
+        findIndex: () => { return -1 }
+      }
+    }
+  } as unknown as any;
+});
+
+describe('map-search', () => {
+  xit('renders', async () => {
     const page = await newSpecPage({
       components: [MapSearch],
-      html: `<map-search></map-search>`,
+      template: () => (<map-search mapView={mapView}></map-search>),
     });
     expect(page.root).toEqualHtml(`
       <map-search>
-        <mock:shadow-root>
-          <slot></slot>
-        </mock:shadow-root>
+        <div class="search-widget"></div>
       </map-search>
     `);
+
+    await page.root.clear();
+
   });
 });

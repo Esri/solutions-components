@@ -1,0 +1,15 @@
+{
+  "listName": "Nome da lista",
+  "listNamePlaceholder": "Insira o nome aqui",
+  "searchDistance": "Distância de pesquisa",
+  "select": "Camada",
+  "selectedFeatures": "{{n}} feições selecionadas",
+  "selectionLoading": "Carregando seleção",
+  "sketch": "Esboço",
+  "bufferLayer": "Camada de Buffer",
+  "sketchLayer": "Camada de Esboço",
+  "useLayerFeatures": "Usar feições da camada",
+  "inputLayer": "Camada de entrada",
+  "useLayerFeaturesTooltip": "ã_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________Ç.",
+  "useSearchDistanceTootip": "ã_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________Ç."
+}

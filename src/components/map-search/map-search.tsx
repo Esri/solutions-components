@@ -16,7 +16,7 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import { ISearchResult } from "../../utils/interfaces";
+import { ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration, ISearchResult } from "../../utils/interfaces";
 import MapSearch_T9n from "../../assets/t9n/map-search/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 
@@ -44,9 +44,14 @@ export class MapSearch {
    */
   @Prop() mapView: __esri.MapView;
 
+  /**
+   * ISearchConfiguration: Configuration details for the Search widget
+   */
+  @Prop({mutable: true}) searchConfiguration: ISearchConfiguration;
+
   //--------------------------------------------------------------------------
   //
-  //  Properties (protected)
+  //  State (internal)
   //
   //--------------------------------------------------------------------------
 
@@ -62,10 +67,21 @@ export class MapSearch {
    */
   @State() protected _translations: typeof MapSearch_T9n;
 
+  //--------------------------------------------------------------------------
+  //
+  //  Properties (protected)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * esri/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+   */
+  protected FeatureLayer: typeof import("esri/layers/FeatureLayer");
+
   /**
    * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
    */
-  protected Search: typeof __esri.widgetsSearch
+  protected Search: typeof import("esri/widgets/Search");
 
   /**
    * HTMLElement: The container div for the search widget
@@ -164,12 +180,12 @@ export class MapSearch {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [Search]: [
-      __esri.widgetsSearchConstructor
-    ] = await loadModules([
-      "esri/widgets/Search"
+    const [Search, FeatureLayer] = await loadModules([
+      "esri/widgets/Search",
+      "esri/layers/FeatureLayer"
     ]);
     this.Search = Search;
+    this.FeatureLayer = FeatureLayer;
   }
 
   /**
@@ -188,10 +204,13 @@ export class MapSearch {
    */
   protected _initSearchWidget(): void {
     if (this.mapView && this._searchElement) {
+      const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this.mapView);
+
       const searchOptions: __esri.widgetsSearchProperties = {
         view: this.mapView,
         container: this._searchElement,
-        searchTerm: this._searchTerm
+        searchTerm: this._searchTerm,
+        ...searchConfiguration
       };
 
       this._searchWidget = new this.Search(searchOptions);
@@ -212,6 +231,46 @@ export class MapSearch {
         }
       });
     }
+  }
+
+  /**
+   * Initialize the search widget based on user defined configuration
+   *
+   * @param searchConfiguration search configuration defined by the user
+   * @param view the current map view
+   *
+   * @protected
+   */
+  protected _getSearchConfig(
+    searchConfiguration: ISearchConfiguration,
+    view: __esri.MapView
+  ): ISearchConfiguration {
+    const sources = searchConfiguration?.sources;
+    if (sources) {
+      sources.forEach(source => {
+        const isLayerSource = source.hasOwnProperty("layer");
+        if (isLayerSource) {
+          const layerSource = source as ILayerSourceConfigItem;
+          const layerFromMap = layerSource.layer?.id
+            ? view.map.findLayerById(layerSource.layer.id)
+            : null;
+          if (layerFromMap) {
+            layerSource.layer = layerFromMap as __esri.FeatureLayer;
+          } else if (layerSource?.layer?.url) {
+            layerSource.layer = new this.FeatureLayer(layerSource?.layer?.url as any);
+          }
+        }
+      });
+    }
+    searchConfiguration?.sources?.forEach(source => {
+      const isLocatorSource = source.hasOwnProperty("locator");
+      if (isLocatorSource) {
+        const locatorSource = source as ILocatorSourceConfigItem;
+        locatorSource.url = locatorSource.url;
+        delete locatorSource.url;
+      }
+    });
+    return searchConfiguration;
   }
 
   /**

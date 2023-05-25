@@ -7,5 +7,6 @@
     "meters": "Meters",
     "kilometers": "Kilometers",
     "miles": "Miles"
-  }
+  },
+  "showSearchDistance": "Show buffer options"
 }

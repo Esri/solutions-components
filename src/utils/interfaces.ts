@@ -19,6 +19,12 @@ import {
   IItemTemplate
 } from '@esri/solution-common';
 
+export enum ELayoutMode {
+  GRID = "GRID",
+  HORIZONTAL = "HORIZONTAL",
+  VERTICAL = "VERTICAL"
+}
+
 /**
  * Resource update types
  */
@@ -30,27 +36,28 @@ export enum EUpdateType {
   Obsolete
 }
 
-export enum EExportType {
-  PDF,
-  CSV
-}
-
 export enum EPageType {
   LIST,
   SELECT,
-  REFINE,
-  PDF,
-  CSV
-}
-
-export enum ERefineMode {
-  ALL="ALL",
-  SUBSET="SUBSET"
+  EXPORT,
+  REFINE
 }
 
 export enum ESelectionMode {
   ADD="ADD",
   REMOVE="REMOVE"
+}
+
+export enum ESelectionType {
+  POINT="POINT",
+  LINE="LINE",
+  POLY="POLY",
+  RECT="RECT"
+}
+
+export enum EExpandType {
+  EXPAND="EXPAND",
+  COLLAPSE="COLLAPSE"
 }
 
 export enum EWorkflowType {
@@ -60,15 +67,95 @@ export enum EWorkflowType {
   REFINE="REFINE"
 }
 
-export enum ESelectionType {
-  POINT="POINT",
-  LINE="LINE",
-  POLY="POLY",
-  RECT="RECT"
+export enum EExportType {
+  CSV="CSV",
+  PDF="PDF"
 }
+
+export enum EDrawMode {
+  SKETCH="SKETCH",
+  REFINE="REFINE"
+}
+
 /* eslint-enable no-unused-vars */
 
 export type SelectionMode = "single" | "multi";
+
+export type ValidSize = 6|10|14|20|30|60|80;
+
+export type DistanceUnit = "feet"|"meters"|"miles"|"kilometers";
+
+export interface IExportOptions {
+  csvOptions: ICsvOptions;
+  pdfOptions: IPdfOptions;
+}
+
+export interface ICsvOptions {
+  enabled: boolean;
+  addColumnTitle: boolean;
+}
+
+export interface IPdfOptions {
+  enabled: boolean;
+  enabledSizeValues: ValidSize[];
+}
+
+export interface IRefineOperation {
+  ids: number[];
+  mode: ESelectionMode;
+  layerView: __esri.FeatureLayerView;
+}
+
+export interface ISearchConfiguration {
+  activeSourceIndex?: number;
+  allPlaceholder?: string;
+  includeDefaultSources?: boolean;
+  searchAllEnabled?: boolean;
+  sources?: Array<ILocatorSourceConfigItem | ILayerSourceConfigItem>;
+}
+
+export interface ISearchSourceConfigItem {
+  maxResults: number;
+  maxSuggestions: number;
+  minSuggestCharacters: number;
+  name: string;
+  suggestionsEnabled: boolean;
+  placeholder: string;
+  withinViewEnabled: boolean;
+  zoomScale: number;
+  outFields?: string[];
+}
+
+export interface ILocatorSourceConfigItem extends ISearchSourceConfigItem {
+  url: string;
+  singleLineFieldName: string;
+  countryCode: string;
+}
+
+export interface ILayerSourceConfigItem extends ISearchSourceConfigItem {
+  displayField: string;
+  exactMatch: boolean;
+  layer: {
+    url: string | __esri.FeatureLayer;
+    id: string;
+  };
+  outFields: string[];
+  searchFields: string;
+  popupTemplate: any;
+  popupEnabled: boolean;
+}
+
+export interface IValueChange {
+  oldValue: number | string;
+  newValue: number | string;
+}
+
+/**
+ * Layer id and title key value pair
+ */
+export interface ILayerHash {
+  [key: string]: string;
+}
 
 /**
  * Key details from the templates item
@@ -293,23 +380,40 @@ export interface ISearchResult {
 
 export interface ISelectionSet {
   id: number; // Date.Now() when the item is created...used to update a selection set
-  workflowType: EWorkflowType;
   searchResult: any;
   buffer: __esri.Geometry;
   distance: number;
   download: boolean;
-  unit: __esri.LinearUnits;
+  unit: DistanceUnit;
   label: string;
   selectedIds: number[];
   layerView: __esri.FeatureLayerView;
   geometries: __esri.Geometry[];
-  refineSelectLayers: __esri.FeatureLayerView[];
-  refineIds: IRefineIds;
+  graphics: __esri.Graphic[];
+  selectLayers: __esri.FeatureLayerView[];
+  skipGeomOIDs?: number[];
+  workflowType: EWorkflowType;
+  searchDistanceEnabled: boolean;
+  useLayerFeaturesEnabled: boolean;
+  refineInfos: IRefineInfo;
+  redoStack?: IRefineOperation[];
+  undoStack?: IRefineOperation[];
+  sketchGraphic: __esri.Graphic; // See: https://github.com/Esri/solutions-components/issues/208
+}
+
+export interface IRefineInfo {
+  [key: string]: IRefineIds;
 }
 
 export interface IRefineIds {
   addIds: number[];
   removeIds: number[];
+  layerView: __esri.FeatureLayerView;
+}
+
+export interface ISketchGraphicsChange {
+  graphics: __esri.Graphic[];
+  useOIDs: boolean;
 }
 
 export interface IQueryExtentResponse {
@@ -317,7 +421,27 @@ export interface IQueryExtentResponse {
   extent: __esri.Extent;
 }
 
-export interface IRefineOperation {
-  mode: ESelectionMode;
-  ids: number[];
+export interface IInfoCardValues {
+  [key: string]: string;
+}
+
+export interface IMediaCardValues {
+  name: string;
+  description: string;
+  url: string;
+}
+
+export interface IMapInfo {
+  id: string;
+  name: string;
+}
+
+export interface IExportInfos {
+  [key: string]: IExportInfo;
+}
+
+export interface IExportInfo {
+  ids: number[],
+  layerView: __esri.FeatureLayerView
+  selectionSetNames: string[]
 }

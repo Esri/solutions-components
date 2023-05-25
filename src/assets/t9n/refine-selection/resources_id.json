@@ -1,0 +1,9 @@
+{
+  "add": "ng_Add_______ny",
+  "remove": "ng_Remove_____________ny",
+  "featuresAdded": "ng_Features added: {{n}}______________________ny",
+  "featuresRemoved": "ng_Features removed: {{n}}________________________ny",
+  "totalSelected": "ng_Total selected: {{n}}______________________ny",
+  "inputLayer": "ng_Input layer____________ny",
+  "inputLayerTip": "ng_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________ny."
+}

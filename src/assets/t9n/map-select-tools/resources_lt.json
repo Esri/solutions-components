@@ -1,0 +1,15 @@
+{
+  "listName": "Sąrašo pavadinimas",
+  "listNamePlaceholder": "Įrašykite pavadinimą čia",
+  "searchDistance": "Paieškos atstumas",
+  "select": "Sluoksnis",
+  "selectedFeatures": "Pasirinkta elementų: {{n}}",
+  "selectionLoading": "Įkeliamas pasirinkimas",
+  "sketch": "Eskizas",
+  "bufferLayer": "Buferio sluoksnis",
+  "sketchLayer": "Eskizo sluoksnis",
+  "useLayerFeatures": "Naudoti sluoksnio elementus",
+  "inputLayer": "Įvesties sluoksnis",
+  "useLayerFeaturesTooltip": "Į_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________š.",
+  "useSearchDistanceTootip": "Į_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________š."
+}

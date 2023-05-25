@@ -15,6 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
+import { EDrawMode, ESelectionType, ISketchGraphicsChange } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules";
 import state from "../../utils/publicNotificationStore";
 import MapDrawTools_T9n from "../../assets/t9n/map-draw-tools/resources.json";
@@ -45,9 +46,22 @@ export class MapDrawTools {
   @Prop() active = false;
 
   /**
-   * boolean: Optionally draw a border around the draw tools
+   * utils/interfaces: Controls how the draw tools are rendered
+   *
+   * SKETCH mode supports snapping
+   * REFINE mode supports undo/redo
    */
-  @Prop() border = false;
+  @Prop() drawMode: EDrawMode = EDrawMode.SKETCH;
+
+  /**
+   * boolean: when true you will be able to make additional modifications to the sketched geometry
+   */
+  @Prop() editGraphicsEnabled = true;
+
+  /**
+   * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   */
+  @Prop({ mutable: true }) graphics: __esri.Graphic[];
 
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -70,9 +84,31 @@ export class MapDrawTools {
   @Prop({ mutable: true }) polygonSymbol: __esri.SimpleFillSymbol;
 
   /**
-   * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   * boolean: when eanbled the user can redo the previous operation
    */
-  @Prop({ mutable: true }) graphics: __esri.Graphic[] = [];
+  @Prop() redoEnabled = false;
+
+  /**
+   * boolean: when eanbled the user can undo the previous operation
+   */
+  @Prop() undoEnabled = false;
+
+  //--------------------------------------------------------------------------
+  //
+  //  State (internal)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() _translations: typeof MapDrawTools_T9n;
+
+  /**
+   * utils/interfaces/ESelectionType: POINT, LINE, POLY, RECT
+   */
+  @State() _selectionMode: ESelectionType;
 
   //--------------------------------------------------------------------------
   //
@@ -81,35 +117,41 @@ export class MapDrawTools {
   //--------------------------------------------------------------------------
 
   /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-  @State() protected _translations: typeof MapDrawTools_T9n;
-
-  /**
    * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html?#constructors-summary
    */
-  protected GraphicsLayer: typeof __esri.GraphicsLayer;
+  protected GraphicsLayer: typeof import("esri/layers/GraphicsLayer");
+
+  /**
+   * esri/widgets/Sketch/SketchViewModel: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch-SketchViewModel.html
+   * The sketch view model constructor
+   */
+  protected SketchViewModel: typeof import("esri/widgets/Sketch/SketchViewModel");
 
   /**
    * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html#constructors-summary
    */
-  protected Sketch: typeof __esri.Sketch;
+  protected Sketch: typeof import("esri/widgets/Sketch");
+
+  /**
+   * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
+   * The graphics layer used to show selections.
+   */
+  protected _sketchGraphicsLayer: __esri.GraphicsLayer;
+
+  /**
+   * esri/widgets/Sketch/SketchViewModel: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch-SketchViewModel.html
+   */
+  protected _sketchViewModel: __esri.SketchViewModel;
+
+  /**
+   * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html#constructors-summary
+   */
+  protected _sketchWidget: __esri.Sketch;
 
   /**
    * The container element for the sketch widget
    */
   protected _sketchElement: HTMLElement;
-
-  /**
-   * esri/layers/GraphicsLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
-   */
-  protected _sketchGraphicsLayer: __esri.GraphicsLayer;
-
-  /**
-   * esri/widgets/Sketch: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
-   */
-  protected _sketchWidget: __esri.Sketch;
 
   //--------------------------------------------------------------------------
   //
@@ -119,11 +161,10 @@ export class MapDrawTools {
 
   /**
    * Called each time the graphics prop is changed.
-   *
    */
   @Watch("graphics")
   graphicsWatchHandler(v: any, oldV: any): void {
-    if (v && v.length > 0 && JSON.stringify(v) !== JSON.stringify(oldV || [])) {
+    if (v && v.length > 0 && JSON.stringify(v) !== JSON.stringify(oldV) && this._sketchGraphicsLayer) {
       this._sketchGraphicsLayer.removeAll();
       this._sketchGraphicsLayer.addMany(v);
     }
@@ -131,7 +172,6 @@ export class MapDrawTools {
 
   /**
    * Called each time the mapView prop is changed.
-   *
    */
   @Watch("mapView")
   mapViewWatchHandler(v: any, oldV: any): void {
@@ -156,6 +196,16 @@ export class MapDrawTools {
     this._clearSketch();
   }
 
+  /**
+   * Set the sketch widget to update mode with the current graphic
+   *
+   * @returns Promise that resolves when the operation is complete
+   */
+  @Method()
+  async updateGraphics(): Promise<void> {
+    this._updateGraphics();
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Events (public)
@@ -163,10 +213,24 @@ export class MapDrawTools {
   //--------------------------------------------------------------------------
 
   /**
-   * Emitted on demand when the sketch graphics change.
-   *
+   * Emitted on demand when selection starts or ends.
    */
-  @Event() sketchGraphicsChange: EventEmitter<__esri.Graphic[]>;
+  @Event() selectionLoadingChange: EventEmitter<boolean>;
+
+  /**
+   * Emitted on demand when the sketch graphics change.
+   */
+  @Event() sketchGraphicsChange: EventEmitter<ISketchGraphicsChange>;
+
+  /**
+   * Emitted on demand when the undo action is clicked.
+   */
+  @Event() drawUndo: EventEmitter<void>;
+
+  /**
+   * Emitted on demand when the redo action is clicked.
+   */
+  @Event() drawRedo: EventEmitter<void>;
 
   //--------------------------------------------------------------------------
   //
@@ -194,14 +258,47 @@ export class MapDrawTools {
   }
 
   /**
+   * StencilJS: Called every time the component is disconnected from the DOM
+   *
+   * @returns void
+   */
+  disconnectedCallback(): void {
+    // cancel any existing create operations
+    this._sketchWidget.cancel();
+    // clear any current temp sketch
+    this._clearSketch();
+  }
+
+  /**
    * Renders the component.
    */
   render(): VNode {
-    const drawClass = this.border ? "border" : "";
+    const containerClass = this.drawMode === EDrawMode.SKETCH ?
+      "border" : "border esri-widget esri-sketch__panel";
+
+    const undoRedoClass = this.drawMode === EDrawMode.SKETCH ?
+      "display-none" : "esri-widget esri-sketch__panel border-left esri-sketch__section";
+
     return (
       <Host>
-        <div class={drawClass}>
+        <div class={containerClass}>
           <div ref={(el) => { this._sketchElement = el }} />
+          <div class={undoRedoClass}>
+            <calcite-action
+              disabled={!this.undoEnabled}
+              icon="undo"
+              onClick={() => this._undo()}
+              scale="s"
+              text={this._translations.undo}
+            />
+            <calcite-action
+              disabled={!this.redoEnabled}
+              icon="redo"
+              onClick={() => this._redo()}
+              scale="s"
+              text={this._translations.redo}
+            />
+          </div>
         </div>
       </Host>
     );
@@ -221,15 +318,14 @@ export class MapDrawTools {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [GraphicsLayer, Sketch]: [
-      __esri.GraphicsLayerConstructor,
-      __esri.SketchConstructor
-    ] = await loadModules([
+    const [GraphicsLayer, Sketch, SketchViewModel] = await loadModules([
       "esri/layers/GraphicsLayer",
-      "esri/widgets/Sketch"
+      "esri/widgets/Sketch",
+      "esri/widgets/Sketch/SketchViewModel"
     ]);
     this.GraphicsLayer = GraphicsLayer;
     this.Sketch = Sketch;
+    this.SketchViewModel = SketchViewModel;
   }
 
   /**
@@ -240,13 +336,14 @@ export class MapDrawTools {
   protected _init(): void {
     if (this.mapView && this._sketchElement) {
       this._initGraphicsLayer();
-      this._initDrawTools();
+      this._initSketch();
     }
   }
 
   /**
-   * Create or find the graphics layer and add any existing graphics
+   * Initialize the graphics layer
    *
+   * @returns Promise when the operation has completed
    * @protected
    */
   protected _initGraphicsLayer(): void {
@@ -255,7 +352,7 @@ export class MapDrawTools {
     if (sketchIndex > -1) {
       this._sketchGraphicsLayer = this.mapView.map.layers.getItemAt(sketchIndex) as __esri.GraphicsLayer;
     } else {
-      this._sketchGraphicsLayer = new this.GraphicsLayer({ title });
+      this._sketchGraphicsLayer = new this.GraphicsLayer({ title, listMode: "hide" });
       state.managedLayers.push(title);
       this.mapView.map.layers.add(this._sketchGraphicsLayer);
     }
@@ -266,41 +363,112 @@ export class MapDrawTools {
   }
 
   /**
-   * Initialize the skecth widget and store the associated symbols for each geometry type
+   * Initialize the skecth widget
    *
    * @protected
    */
-  protected _initDrawTools(): void {
-    this._sketchWidget = new this.Sketch({
+  protected _initSketch(): void {
+    const sketchOptions: __esri.SketchViewModelProperties | __esri.SketchProperties = {
       layer: this._sketchGraphicsLayer,
       view: this.mapView,
-      container: this._sketchElement,
-      creationMode: "update",
       defaultCreateOptions: {
-        "mode": "hybrid"
+        mode: "hybrid"
+      },
+      defaultUpdateOptions: {
+        preserveAspectRatio: false,
+        enableScaling: false,
+        enableRotation: false,
+        tool: "reshape",
+        toggleToolOnClick: false
+      }
+    };
+    this._sketchWidget = new this.Sketch({
+      ...sketchOptions,
+      container: this._sketchElement,
+      creationMode: "single",
+      visibleElements: {
+        duplicateButton: false,
+        selectionTools: {
+          "lasso-selection": false,
+          "rectangle-selection": false
+        }, createTools: {
+          circle: false
+        },
+        undoRedoMenu: false,
+        settingsMenu: this.drawMode === EDrawMode.SKETCH
+      } as any // temp workaround since we need duplicateButton flag that is not in 4.26 types but will be in the 4.27 modules we get from IA
+    });
+
+    this._sketchViewModel = new this.SketchViewModel({
+      ...sketchOptions
+    });
+
+    this._sketchWidget.viewModel.polylineSymbol = this.polylineSymbol;
+    this._sketchWidget.viewModel.pointSymbol = this.pointSymbol;
+    this._sketchWidget.viewModel.polygonSymbol = this.polygonSymbol;
+
+    let forceCreate = false;
+    this._sketchWidget.on("create", (evt) => {
+      if (evt.state === "complete") {
+        this.graphics = [evt.graphic];
+        this.sketchGraphicsChange.emit({
+          graphics: this.graphics,
+          useOIDs: false
+        });
+
+        if (this.drawMode === EDrawMode.REFINE) {
+          // calling create during complete will force the cancel event
+          // https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html#event-create
+          forceCreate = true;
+          this._sketchWidget.viewModel.create(evt.tool);
+        }
+      }
+
+      if (evt.state === "cancel" && this.drawMode === EDrawMode.REFINE && forceCreate) {
+        forceCreate = !forceCreate;
+        this._sketchWidget.viewModel.create(evt.tool);
       }
     });
 
-    this.pointSymbol = this._sketchWidget.viewModel.pointSymbol as __esri.SimpleMarkerSymbol;
-    this.polylineSymbol = this._sketchWidget.viewModel.polylineSymbol as __esri.SimpleLineSymbol;
-    this.polygonSymbol = this._sketchWidget.viewModel.polygonSymbol as __esri.SimpleFillSymbol;
-
-    this._sketchWidget.visibleElements = {
-      selectionTools: {
-        "lasso-selection": false,
-        "rectangle-selection": false
-      }, createTools: {
-        "circle": false,
-        "point": false
-      }
-    }
-
     this._sketchWidget.on("update", (evt) => {
-      if (evt.state === "complete" && this.active) {
-        this.graphics = this._sketchGraphicsLayer.graphics.toArray();
-        this.sketchGraphicsChange.emit(this.graphics);
+      if (!this.editGraphicsEnabled) {
+        this._sketchWidget.viewModel.cancel();
+        this._sketchViewModel.cancel();
+      } else {
+        const eventType = evt?.toolEventInfo?.type;
+        if (eventType === "reshape-stop" || eventType === "move-stop") {
+          this.graphics = evt.graphics;
+          this.sketchGraphicsChange.emit({
+            graphics: this.graphics,
+            useOIDs: false
+          });
+        }
       }
-    })
+    });
+
+    this._sketchWidget.on("delete", () => {
+      this.graphics = [];
+      this.sketchGraphicsChange.emit({
+        graphics: this.graphics,
+        useOIDs: false
+      });
+    });
+
+    this._sketchWidget.on("undo", (evt) => {
+      this.graphics = evt.graphics;
+      this.sketchGraphicsChange.emit({
+        graphics: this.graphics,
+        useOIDs: false
+      });
+    });
+
+    this._sketchWidget.on("redo", (evt) => {
+      this.graphics = evt.graphics;
+      this.sketchGraphicsChange.emit({
+        graphics: this.graphics,
+        useOIDs: false
+      });
+    });
   }
 
   /**
@@ -309,8 +477,48 @@ export class MapDrawTools {
    * @protected
    */
   protected _clearSketch(): void {
-    this.graphics = undefined;
-    this._sketchGraphicsLayer.removeAll();
+    this._sketchWidget.viewModel.cancel();
+    this.graphics = [];
+    this._sketchGraphicsLayer?.removeAll();
+  }
+
+  /**
+   * Emit the undo event
+   *
+   * @protected
+   */
+  protected _undo(): void {
+    this.drawUndo.emit();
+  }
+
+  /**
+   * Emit the undo event
+   *
+   * @protected
+   */
+  protected _redo(): void {
+    this.drawRedo.emit();
+  }
+
+  /**
+   * Set the sketch widget to update mode with the current graphic
+   *
+   * reshape tool only supports a single graphic
+   *
+   * @protected
+   */
+  protected _updateGraphics(): void {
+    setTimeout(() => {
+      if (this.graphics.length === 1) {
+        void this._sketchWidget.update(this.graphics, {
+          tool: "reshape",
+          enableRotation: false,
+          enableScaling: false,
+          preserveAspectRatio: false,
+          toggleToolOnClick: false
+        });
+      }
+    }, 100);
   }
 
   /**

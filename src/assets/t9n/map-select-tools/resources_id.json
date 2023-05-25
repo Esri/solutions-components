@@ -1,0 +1,15 @@
+{
+  "listName": "Nama daftar",
+  "listNamePlaceholder": "Masukkan nama di sini",
+  "searchDistance": "Jarak pencarian",
+  "select": "Layer",
+  "selectedFeatures": "{{n}} fitur yang dipilih",
+  "selectionLoading": "Pilihan dimuat",
+  "sketch": "Sketsa",
+  "bufferLayer": "Layer Buffer",
+  "sketchLayer": "Layer Sketsa",
+  "useLayerFeatures": "Gunakan fitur layer",
+  "inputLayer": "Layer input",
+  "useLayerFeaturesTooltip": "ng_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ny.",
+  "useSearchDistanceTootip": "ng_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ny."
+}

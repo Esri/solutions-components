@@ -7,12 +7,12 @@
 
 ## Properties
 
-| Property         | Attribute        | Description                                                                                                           | Type                  | Default     |
-| ---------------- | ---------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------- | ----------- |
-| `layerNames`     | --               | string[]: list of layer names from the map                                                                            | `string[]`            | `[]`        |
-| `mapView`        | --               | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                | `MapView`             | `undefined` |
-| `selectedLayers` | --               | string[]: list of layers that have been selected by the end user                                                      | `string[]`            | `[]`        |
-| `selectionMode`  | `selection-mode` | SelectionMode: "single" \| "multi"  Should the component support selection against a single layer or multiple layers. | `"multi" \| "single"` | `"single"`  |
+| Property           | Attribute        | Description                                                                                                           | Type                  | Default     |
+| ------------------ | ---------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------- | ----------- |
+| `enabledLayerIds`  | --               | string[]: Optional list of enabled layer ids  If empty all layers will be available                                   | `string[]`            | `[]`        |
+| `mapView`          | --               | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                | `MapView`             | `undefined` |
+| `selectedLayerIds` | --               | string[]: list of layer ids that have been selected by the end user                                                   | `string[]`            | `[]`        |
+| `selectionMode`    | `selection-mode` | SelectionMode: "single" \| "multi"  Should the component support selection against a single layer or multiple layers. | `"multi" \| "single"` | `"single"`  |
 
 
 ## Events
@@ -26,8 +26,9 @@
 
 ### Used by
 
- - [public-notification](../public-notification)
- - [refine-selection-tools](../refine-selection-tools)
+ - [layer-table](../layer-table)
+ - [map-select-tools](../map-select-tools)
+ - [refine-selection](../refine-selection)
 
 ### Depends on
 
@@ -48,8 +49,9 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
-  public-notification --> map-layer-picker
-  refine-selection-tools --> map-layer-picker
+  layer-table --> map-layer-picker
+  map-select-tools --> map-layer-picker
+  refine-selection --> map-layer-picker
   style map-layer-picker fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

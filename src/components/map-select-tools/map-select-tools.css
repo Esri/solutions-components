@@ -37,6 +37,10 @@
   padding-bottom: 1rem;
 }
 
+.padding-top-1 {
+  padding-top: 1rem;
+}
+
 .search-widget {
   width: 100% !important;
   border: 1px solid var(--calcite-ui-border-input);
@@ -56,4 +60,35 @@
 
 .end-border {
   border-inline-end: 1px solid var(--calcite-ui-border-2);
+}
+
+.search-distance {
+  display: flex;
+  padding-top: 1rem;
+}
+
+.font-bold {
+  font: bold;
+}
+
+.border-bottom {
+  border-bottom: 1px solid var(--calcite-ui-border-2);
+}
+
+.tooltip-container {
+  display: flex;
+}
+
+.padding-start-1-2 {
+  padding-inline-start: 0.5rem;
+}
+
+.icon {
+  --calcite-ui-icon-color: var(--calcite-ui-brand);
+}
+
+.tooltip-message {
+  padding: 5px 8px;
+  font-weight: var(--calcite-font-weight-normal);
+  color: var(--calcite-ui-text-2);
 }

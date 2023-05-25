@@ -1,0 +1,15 @@
+{
+  "listName": "Nazwa listy",
+  "listNamePlaceholder": "Wprowadź tutaj nazwę",
+  "searchDistance": "Odległość wyszukiwania",
+  "select": "Warstwa",
+  "selectedFeatures": "Wybrane obiekty: {{n}}",
+  "selectionLoading": "Wczytywanie wyboru",
+  "sketch": "Szkic",
+  "bufferLayer": "Warstwa bufora",
+  "sketchLayer": "Warstwa szkicu",
+  "useLayerFeatures": "Użyj obiektów warstwy",
+  "inputLayer": "Warstwa wejściowa",
+  "useLayerFeaturesTooltip": "ł_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ą.",
+  "useSearchDistanceTootip": "ł_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ą."
+}

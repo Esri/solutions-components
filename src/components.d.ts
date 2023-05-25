@@ -5,14 +5,21 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ERefineMode, ESelectionMode, EWorkflowType, IInventoryItem, ISearchResult, ISelectionSet, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, SelectionMode } from "./utils/interfaces";
+import { DistanceUnit, EDrawMode, EExpandType, IExportInfos, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
+    interface AddRecordModal {
+        /**
+          * When true the component is displayed
+         */
+        "open": boolean;
+    }
     interface BufferTools {
         /**
           * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
          */
         "appearance": "slider" | "text";
+        "disabled": boolean;
         /**
           * number: The distance used for buffer
          */
@@ -24,11 +31,11 @@ export namespace Components {
         /**
           * number: The component's maximum selectable value.
          */
-        "sliderMax": number;
+        "max": number;
         /**
           * number: The component's minimum selectable value.
          */
-        "sliderMin": number;
+        "min": number;
         /**
           * number: Displays tick marks on the number line at a specified interval.
          */
@@ -38,80 +45,39 @@ export namespace Components {
          */
         "unionResults": boolean;
         /**
-          * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
+          * DistanceUnit: "feet"|"meters"|"miles"|"kilometers"
          */
-        "unit": __esri.LinearUnits;
+        "unit": DistanceUnit;
     }
-    interface CheckList {
-        /**
-          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
-         */
-        "defaultChecked": boolean;
-        /**
-          * Returns a key/value pair that represents the checkbox value and checked state
-          * @returns Promise with the state of the checkboxes
-         */
-        "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
-        /**
-          * string []: The values to render beside the checkboxes
-         */
-        "values": string[];
+    interface CardManager {
     }
-    interface ConfigBufferTools {
-        /**
-          * "VERTICAL" | "HORIZONTAL": Specifies how the controls chould be aligned.
-         */
-        "alignment": "VERTICAL" | "HORIZONTAL";
-        /**
-          * number: Default distance value.
-         */
-        "distance": number;
-        /**
-          * Returns a key/value pair that represents the checkbox value and checked state
-          * @returns Promise with the state of the checkboxes
-         */
-        "getConfigInfo": () => Promise<{ [key: string]: string | number; }>;
-        /**
-          * string: Default unit value. Should be a unit listed in assets/t9n/config-buffer-tools/resources
-         */
-        "unit": any;
+    interface CommentCard {
     }
-    interface ConfigDrawTools {
+    interface CrowdsourceManager {
         /**
-          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+          * IMapInfo[]: array of map infos (name and id)
          */
-        "defaultChecked": boolean;
-        /**
-          * Returns a key/value pair that represents the checkbox value and checked state
-          * @returns Promise with the state of the checkboxes
-         */
-        "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
+        "mapInfos": IMapInfo[];
     }
-    interface ConfigLayerPicker {
-        /**
-          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
-         */
-        "defaultChecked": boolean;
-        /**
-          * Returns a key/value pair that represents the checkbox value and checked state
-          * @returns Promise with the state of the checkboxes
-         */
-        "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
-        /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView": __esri.MapView;
+    interface CrowdsourceReporter {
     }
-    interface ConfigPdfDownload {
+    interface DeductCalculator {
+    }
+    interface EditRecordModal {
         /**
-          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+          * When true the component is displayed
          */
-        "defaultChecked": boolean;
+        "open": boolean;
+    }
+    interface InfoCard {
         /**
-          * Returns a key/value pair that represents the checkbox value and checked state
-          * @returns Promise with the state of the checkboxes
+          * string: the components title
          */
-        "getConfigInfo": () => Promise<{ [key: string]: boolean; }>;
+        "cardTitle": string;
+        /**
+          * IInfoCardValues: key value pairs to show in the components table
+         */
+        "values": IInfoCardValues;
     }
     interface JsonEditor {
         /**
@@ -151,20 +117,42 @@ export namespace Components {
          */
         "value": any;
     }
+    interface LayerTable {
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+    }
+    interface ListItem {
+    }
+    interface MapCard {
+        /**
+          * IMapInfo[]: array of map infos (name and id)
+         */
+        "mapInfos": IMapInfo[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+    }
     interface MapDrawTools {
         /**
           * boolean: sketch is used by multiple components...need a way to know who should respond...
          */
         "active": boolean;
         /**
-          * boolean: Optionally draw a border around the draw tools
-         */
-        "border": boolean;
-        /**
           * Clears the user drawn graphics
           * @returns Promise that resolves when the operation is complete
          */
         "clear": () => Promise<void>;
+        /**
+          * utils/interfaces: Controls how the draw tools are rendered  SKETCH mode supports snapping REFINE mode supports undo/redo
+         */
+        "drawMode": EDrawMode;
+        /**
+          * boolean: when true you will be able to make additional modifications to the sketched geometry
+         */
+        "editGraphicsEnabled": boolean;
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
@@ -185,20 +173,33 @@ export namespace Components {
           * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
          */
         "polylineSymbol": __esri.SimpleLineSymbol;
+        /**
+          * boolean: when eanbled the user can redo the previous operation
+         */
+        "redoEnabled": boolean;
+        /**
+          * boolean: when eanbled the user can undo the previous operation
+         */
+        "undoEnabled": boolean;
+        /**
+          * Set the sketch widget to update mode with the current graphic
+          * @returns Promise that resolves when the operation is complete
+         */
+        "updateGraphics": () => Promise<void>;
     }
     interface MapLayerPicker {
         /**
-          * string[]: list of layer names from the map
+          * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
-        "layerNames": string[];
+        "enabledLayerIds": string[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
         /**
-          * string[]: list of layers that have been selected by the end user
+          * string[]: list of layer ids that have been selected by the end user
          */
-        "selectedLayers": string[];
+        "selectedLayerIds": string[];
         /**
           * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
          */
@@ -214,13 +215,41 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
     }
     interface MapSelectTools {
+        /**
+          * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferColor": any;
+        /**
+          * string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferOutlineColor": any;
         /**
           * Clear any selection results
           * @returns Promise when the results have been cleared
          */
         "clearSelection": () => Promise<void>;
+        /**
+          * boolean: When true the user can define a name for each notification list
+         */
+        "customLabelEnabled": boolean;
+        /**
+          * number: The default value to show for the buffer distance
+         */
+        "defaultBufferDistance": number;
+        /**
+          * number: The default value to show for the buffer unit
+         */
+        "defaultBufferUnit": DistanceUnit;
+        /**
+          * string[]: Optional list of enabled layer ids  If empty all layers will be available
+         */
+        "enabledLayerIds": string[];
         /**
           * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
          */
@@ -235,93 +264,6 @@ export namespace Components {
          */
         "isUpdate": boolean;
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView": __esri.MapView;
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "selectLayerView": __esri.FeatureLayerView;
-        /**
-          * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
-         */
-        "selectionSet": ISelectionSet;
-    }
-    interface PdfDownload {
-        /**
-          * boolean: Controls the enabled/disabled state of download
-         */
-        "disabled": boolean;
-        /**
-          * Downloads csv of mailing labels for the provided list of ids
-          * @param ids List of ids to download
-          * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-          * @returns Promise resolving when function is done
-         */
-        "downloadCSV": (ids: number[], removeDuplicates: boolean) => Promise<void>;
-        /**
-          * Downloads pdf of mailing labels for the provided list of ids
-          * @param ids List of ids to download
-          * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
-          * @returns Promise resolving when function is done
-         */
-        "downloadPDF": (ids: number[], removeDuplicates: boolean) => Promise<void>;
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "layerView": __esri.FeatureLayerView;
-    }
-    interface PublicNotification {
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "addresseeLayer": __esri.FeatureLayerView;
-        /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView": __esri.MapView;
-    }
-    interface RefineSelection {
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "addresseeLayer": __esri.FeatureLayerView;
-        /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView": __esri.MapView;
-        /**
-          * utils/interfaces/ISelectionSet: An array of user defined selection sets
-         */
-        "selectionSets": ISelectionSet[];
-    }
-    interface RefineSelectionTools {
-        /**
-          * boolean: sketch is used by multiple components...need a way to know who should respond...
-         */
-        "active": boolean;
-        /**
-          * boolean: Optionally draw a border around the draw tools
-         */
-        "border": boolean;
-        /**
-          * Clear current highlight handle
-          * @returns Promise when complete
-         */
-        "clearHighlight": () => Promise<void>;
-        /**
-          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
-         */
-        "graphics": __esri.Graphic[];
-        /**
-          * number: The oids of the selected features
-         */
-        "ids": number[];
-        /**
-          * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
-         */
-        "layerView": __esri.FeatureLayerView;
-        /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
         "layerViews": __esri.FeatureLayerView[];
@@ -330,30 +272,177 @@ export namespace Components {
          */
         "mapView": __esri.MapView;
         /**
-          * utils/interfaces/ESelectionMode: ADD, REMOVE
+          * string: The value to show for no results when left empty the default text "0 selected features from {layerTitle}" will be shown
          */
-        "mode": ESelectionMode;
+        "noResultText": string;
         /**
-          * utils/interfaces/ERefineMode: ALL, SUBSET
+          * ISearchConfiguration: Configuration details for the Search widget
          */
-        "refineMode": ERefineMode;
+        "searchConfiguration": ISearchConfiguration;
         /**
-          * Reset the ids collection
-          * @returns Promise when complete
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
-        "reset": () => Promise<void>;
+        "selectLayerView": __esri.FeatureLayerView;
         /**
-          * boolean: Used to control the visibility of the layer picker
+          * string[]: List of layer ids that should be shown as potential selection layers when skectching with "Use layer features" option
          */
-        "useLayerPicker": boolean;
+        "selectionLayerIds": string[];
+        /**
+          * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
+         */
+        "selectionSet": ISelectionSet;
+        /**
+          * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+         */
+        "sketchLineSymbol": __esri.SimpleLineSymbol;
+        /**
+          * esri/symbols/SimpleMarkerSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+         */
+        "sketchPointSymbol": __esri.SimpleMarkerSymbol;
+        /**
+          * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+         */
+        "sketchPolygonSymbol": __esri.SimpleFillSymbol;
+    }
+    interface MediaCard {
+        /**
+          * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
+         */
+        "values": IMediaCardValues[];
+    }
+    interface PciCalculator {
+    }
+    interface PdfDownload {
+        /**
+          * boolean: Controls the enabled/disabled state of download
+         */
+        "disabled": boolean;
+        /**
+          * Downloads csv of mailing labels for the provided list of ids
+          * @param exportInfos Information about items to be exported
+          * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+          * @param addColumnTitle Indicates if column headings should be included in output
+          * @returns Promise resolving when function is done
+         */
+        "downloadCSV": (exportInfos: IExportInfos, removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>;
+        /**
+          * Downloads pdf of mailing labels for the provided list of ids
+          * @param exportInfos Information about items to be exported
+          * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
+          * @param title Title for each page
+          * @param initialImageDataUrl Data URL of image for first page
+          * @returns Promise resolving when function is done
+         */
+        "downloadPDF": (exportInfos: IExportInfos, removeDuplicates?: boolean, title?: string, initialImageDataUrl?: string) => Promise<void>;
+    }
+    interface PublicNotification {
+        /**
+          * string[]: List of layer ids that should be shown as potential addressee layers
+         */
+        "addresseeLayerIds": string[];
+        /**
+          * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferColor": any;
+        /**
+          * string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferOutlineColor": any;
+        /**
+          * boolean: When true the user can define a name for each notification list
+         */
+        "customLabelEnabled": boolean;
+        /**
+          * number: The default value to show for the buffer distance
+         */
+        "defaultBufferDistance": number;
+        /**
+          * number: The default value to show for the buffer unit ("feet"|"meters"|"miles"|"kilometers")
+         */
+        "defaultBufferUnit": DistanceUnit;
+        /**
+          * The effect that will be applied when featureHighlightEnabled is true  esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
+         */
+        "featureEffect": __esri.FeatureEffect;
+        /**
+          * boolean: When enabled features will be highlighted when their notification list item is clicked.
+         */
+        "featureHighlightEnabled": boolean;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * string: The value to show for no results when left empty the default text "0 selected features from {layerTitle}" will be shown
+         */
+        "noResultText": string;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
+        /**
+          * string[]: List of layer ids that should be shown as potential selection layers when skectching with "Use layer features" option
+         */
+        "selectionLayerIds": string[];
+        /**
+          * boolean: When true the refine selection workflow will be included in the UI
+         */
+        "showRefineSelection": boolean;
+        /**
+          * boolean: When false no buffer distance or unit controls will be exposed
+         */
+        "showSearchSettings": boolean;
+        /**
+          * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html  A JSON representation of the instance in the ArcGIS format. See the ArcGIS REST API documentation for examples of the structure of various input JSON objects. https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
+         */
+        "sketchLineSymbol": __esri.SimpleLineSymbol | any;
+        /**
+          * esri/symbols/SimpleMarkerSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html  A JSON representation of the instance in the ArcGIS format. See the ArcGIS REST API documentation for examples of the structure of various input JSON objects. https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
+         */
+        "sketchPointSymbol": __esri.SimpleMarkerSymbol | any;
+        /**
+          * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html  A JSON representation of the instance in the ArcGIS format. See the ArcGIS REST API documentation for examples of the structure of various input JSON objects. https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
+         */
+        "sketchPolygonSymbol": __esri.SimpleFillSymbol | any;
+    }
+    interface RefineSelection {
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "addresseeLayer": __esri.FeatureLayerView;
+        /**
+          * string[]: Optional list of enabled layer ids  If empty all layers will be available
+         */
+        "enabledLayerIds": string[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * utils/interfaces/ISelectionSet: An array of user defined selection sets
+         */
+        "selectionSets": ISelectionSet[];
+        /**
+          * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+         */
+        "sketchLineSymbol": __esri.SimpleLineSymbol;
+        /**
+          * esri/symbols/SimpleMarkerSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+         */
+        "sketchPointSymbol": __esri.SimpleMarkerSymbol;
+        /**
+          * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+         */
+        "sketchPolygonSymbol": __esri.SimpleFillSymbol;
     }
     interface SolutionConfiguration {
         /**
-          * Credentials for requests
+          * Credentials for requests, which can be a serialized UserSession
          */
         "authentication": UserSession;
         "getSpatialReferenceInfo": () => Promise<ISolutionSpatialReferenceInfo>;
         "saveSolution": () => Promise<void>;
+        "serializedAuthentication": string;
         /**
           * Used to show/hide loading indicator
          */
@@ -513,6 +602,14 @@ export interface BufferToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLBufferToolsElement;
 }
+export interface DeductCalculatorCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDeductCalculatorElement;
+}
+export interface MapCardCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapCardElement;
+}
 export interface MapDrawToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapDrawToolsElement;
@@ -529,13 +626,13 @@ export interface MapSelectToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapSelectToolsElement;
 }
+export interface PublicNotificationCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLPublicNotificationElement;
+}
 export interface RefineSelectionCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLRefineSelectionElement;
-}
-export interface RefineSelectionToolsCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLRefineSelectionToolsElement;
 }
 export interface SolutionContentsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -558,47 +655,83 @@ export interface StoreManagerCustomEvent<T> extends CustomEvent<T> {
     target: HTMLStoreManagerElement;
 }
 declare global {
+    interface HTMLAddRecordModalElement extends Components.AddRecordModal, HTMLStencilElement {
+    }
+    var HTMLAddRecordModalElement: {
+        prototype: HTMLAddRecordModalElement;
+        new (): HTMLAddRecordModalElement;
+    };
     interface HTMLBufferToolsElement extends Components.BufferTools, HTMLStencilElement {
     }
     var HTMLBufferToolsElement: {
         prototype: HTMLBufferToolsElement;
         new (): HTMLBufferToolsElement;
     };
-    interface HTMLCheckListElement extends Components.CheckList, HTMLStencilElement {
+    interface HTMLCardManagerElement extends Components.CardManager, HTMLStencilElement {
     }
-    var HTMLCheckListElement: {
-        prototype: HTMLCheckListElement;
-        new (): HTMLCheckListElement;
+    var HTMLCardManagerElement: {
+        prototype: HTMLCardManagerElement;
+        new (): HTMLCardManagerElement;
     };
-    interface HTMLConfigBufferToolsElement extends Components.ConfigBufferTools, HTMLStencilElement {
+    interface HTMLCommentCardElement extends Components.CommentCard, HTMLStencilElement {
     }
-    var HTMLConfigBufferToolsElement: {
-        prototype: HTMLConfigBufferToolsElement;
-        new (): HTMLConfigBufferToolsElement;
+    var HTMLCommentCardElement: {
+        prototype: HTMLCommentCardElement;
+        new (): HTMLCommentCardElement;
     };
-    interface HTMLConfigDrawToolsElement extends Components.ConfigDrawTools, HTMLStencilElement {
+    interface HTMLCrowdsourceManagerElement extends Components.CrowdsourceManager, HTMLStencilElement {
     }
-    var HTMLConfigDrawToolsElement: {
-        prototype: HTMLConfigDrawToolsElement;
-        new (): HTMLConfigDrawToolsElement;
+    var HTMLCrowdsourceManagerElement: {
+        prototype: HTMLCrowdsourceManagerElement;
+        new (): HTMLCrowdsourceManagerElement;
     };
-    interface HTMLConfigLayerPickerElement extends Components.ConfigLayerPicker, HTMLStencilElement {
+    interface HTMLCrowdsourceReporterElement extends Components.CrowdsourceReporter, HTMLStencilElement {
     }
-    var HTMLConfigLayerPickerElement: {
-        prototype: HTMLConfigLayerPickerElement;
-        new (): HTMLConfigLayerPickerElement;
+    var HTMLCrowdsourceReporterElement: {
+        prototype: HTMLCrowdsourceReporterElement;
+        new (): HTMLCrowdsourceReporterElement;
     };
-    interface HTMLConfigPdfDownloadElement extends Components.ConfigPdfDownload, HTMLStencilElement {
+    interface HTMLDeductCalculatorElement extends Components.DeductCalculator, HTMLStencilElement {
     }
-    var HTMLConfigPdfDownloadElement: {
-        prototype: HTMLConfigPdfDownloadElement;
-        new (): HTMLConfigPdfDownloadElement;
+    var HTMLDeductCalculatorElement: {
+        prototype: HTMLDeductCalculatorElement;
+        new (): HTMLDeductCalculatorElement;
+    };
+    interface HTMLEditRecordModalElement extends Components.EditRecordModal, HTMLStencilElement {
+    }
+    var HTMLEditRecordModalElement: {
+        prototype: HTMLEditRecordModalElement;
+        new (): HTMLEditRecordModalElement;
+    };
+    interface HTMLInfoCardElement extends Components.InfoCard, HTMLStencilElement {
+    }
+    var HTMLInfoCardElement: {
+        prototype: HTMLInfoCardElement;
+        new (): HTMLInfoCardElement;
     };
     interface HTMLJsonEditorElement extends Components.JsonEditor, HTMLStencilElement {
     }
     var HTMLJsonEditorElement: {
         prototype: HTMLJsonEditorElement;
         new (): HTMLJsonEditorElement;
+    };
+    interface HTMLLayerTableElement extends Components.LayerTable, HTMLStencilElement {
+    }
+    var HTMLLayerTableElement: {
+        prototype: HTMLLayerTableElement;
+        new (): HTMLLayerTableElement;
+    };
+    interface HTMLListItemElement extends Components.ListItem, HTMLStencilElement {
+    }
+    var HTMLListItemElement: {
+        prototype: HTMLListItemElement;
+        new (): HTMLListItemElement;
+    };
+    interface HTMLMapCardElement extends Components.MapCard, HTMLStencilElement {
+    }
+    var HTMLMapCardElement: {
+        prototype: HTMLMapCardElement;
+        new (): HTMLMapCardElement;
     };
     interface HTMLMapDrawToolsElement extends Components.MapDrawTools, HTMLStencilElement {
     }
@@ -624,6 +757,18 @@ declare global {
         prototype: HTMLMapSelectToolsElement;
         new (): HTMLMapSelectToolsElement;
     };
+    interface HTMLMediaCardElement extends Components.MediaCard, HTMLStencilElement {
+    }
+    var HTMLMediaCardElement: {
+        prototype: HTMLMediaCardElement;
+        new (): HTMLMediaCardElement;
+    };
+    interface HTMLPciCalculatorElement extends Components.PciCalculator, HTMLStencilElement {
+    }
+    var HTMLPciCalculatorElement: {
+        prototype: HTMLPciCalculatorElement;
+        new (): HTMLPciCalculatorElement;
+    };
     interface HTMLPdfDownloadElement extends Components.PdfDownload, HTMLStencilElement {
     }
     var HTMLPdfDownloadElement: {
@@ -641,12 +786,6 @@ declare global {
     var HTMLRefineSelectionElement: {
         prototype: HTMLRefineSelectionElement;
         new (): HTMLRefineSelectionElement;
-    };
-    interface HTMLRefineSelectionToolsElement extends Components.RefineSelectionTools, HTMLStencilElement {
-    }
-    var HTMLRefineSelectionToolsElement: {
-        prototype: HTMLRefineSelectionToolsElement;
-        new (): HTMLRefineSelectionToolsElement;
     };
     interface HTMLSolutionConfigurationElement extends Components.SolutionConfiguration, HTMLStencilElement {
     }
@@ -721,21 +860,28 @@ declare global {
         new (): HTMLStoreManagerElement;
     };
     interface HTMLElementTagNameMap {
+        "add-record-modal": HTMLAddRecordModalElement;
         "buffer-tools": HTMLBufferToolsElement;
-        "check-list": HTMLCheckListElement;
-        "config-buffer-tools": HTMLConfigBufferToolsElement;
-        "config-draw-tools": HTMLConfigDrawToolsElement;
-        "config-layer-picker": HTMLConfigLayerPickerElement;
-        "config-pdf-download": HTMLConfigPdfDownloadElement;
+        "card-manager": HTMLCardManagerElement;
+        "comment-card": HTMLCommentCardElement;
+        "crowdsource-manager": HTMLCrowdsourceManagerElement;
+        "crowdsource-reporter": HTMLCrowdsourceReporterElement;
+        "deduct-calculator": HTMLDeductCalculatorElement;
+        "edit-record-modal": HTMLEditRecordModalElement;
+        "info-card": HTMLInfoCardElement;
         "json-editor": HTMLJsonEditorElement;
+        "layer-table": HTMLLayerTableElement;
+        "list-item": HTMLListItemElement;
+        "map-card": HTMLMapCardElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
         "map-search": HTMLMapSearchElement;
         "map-select-tools": HTMLMapSelectToolsElement;
+        "media-card": HTMLMediaCardElement;
+        "pci-calculator": HTMLPciCalculatorElement;
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
         "refine-selection": HTMLRefineSelectionElement;
-        "refine-selection-tools": HTMLRefineSelectionToolsElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-contents": HTMLSolutionContentsElement;
         "solution-item": HTMLSolutionItemElement;
@@ -751,11 +897,18 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface AddRecordModal {
+        /**
+          * When true the component is displayed
+         */
+        "open"?: boolean;
+    }
     interface BufferTools {
         /**
           * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
          */
         "appearance"?: "slider" | "text";
+        "disabled"?: boolean;
         /**
           * number: The distance used for buffer
          */
@@ -765,17 +918,25 @@ declare namespace LocalJSX {
          */
         "geometries"?: __esri.Geometry[];
         /**
+          * number: The component's maximum selectable value.
+         */
+        "max"?: number;
+        /**
+          * number: The component's minimum selectable value.
+         */
+        "min"?: number;
+        /**
           * Emitted on demand when a buffer is generated.
          */
         "onBufferComplete"?: (event: BufferToolsCustomEvent<__esri.Polygon | __esri.Polygon[]>) => void;
         /**
-          * number: The component's maximum selectable value.
+          * Emitted on demand when the distance value changes
          */
-        "sliderMax"?: number;
+        "onDistanceChanged"?: (event: BufferToolsCustomEvent<IValueChange>) => void;
         /**
-          * number: The component's minimum selectable value.
+          * Emitted on demand when the unit changes
          */
-        "sliderMin"?: number;
+        "onUnitChanged"?: (event: BufferToolsCustomEvent<IValueChange>) => void;
         /**
           * number: Displays tick marks on the number line at a specified interval.
          */
@@ -785,55 +946,43 @@ declare namespace LocalJSX {
          */
         "unionResults"?: boolean;
         /**
-          * LinearUnits: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#LinearUnits
+          * DistanceUnit: "feet"|"meters"|"miles"|"kilometers"
          */
-        "unit"?: __esri.LinearUnits;
+        "unit"?: DistanceUnit;
     }
-    interface CheckList {
-        /**
-          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
-         */
-        "defaultChecked"?: boolean;
-        /**
-          * string []: The values to render beside the checkboxes
-         */
-        "values"?: string[];
+    interface CardManager {
     }
-    interface ConfigBufferTools {
-        /**
-          * "VERTICAL" | "HORIZONTAL": Specifies how the controls chould be aligned.
-         */
-        "alignment"?: "VERTICAL" | "HORIZONTAL";
-        /**
-          * number: Default distance value.
-         */
-        "distance"?: number;
-        /**
-          * string: Default unit value. Should be a unit listed in assets/t9n/config-buffer-tools/resources
-         */
-        "unit"?: any;
+    interface CommentCard {
     }
-    interface ConfigDrawTools {
+    interface CrowdsourceManager {
         /**
-          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+          * IMapInfo[]: array of map infos (name and id)
          */
-        "defaultChecked"?: boolean;
+        "mapInfos"?: IMapInfo[];
     }
-    interface ConfigLayerPicker {
-        /**
-          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
-         */
-        "defaultChecked"?: boolean;
-        /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView"?: __esri.MapView;
+    interface CrowdsourceReporter {
     }
-    interface ConfigPdfDownload {
+    interface DeductCalculator {
         /**
-          * boolean: All checkboxes checked state will be set with this value on first render. Default is true
+          * Emitted on demand when the user clicks to calculate the deduct value
          */
-        "defaultChecked"?: boolean;
+        "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<string>) => void;
+    }
+    interface EditRecordModal {
+        /**
+          * When true the component is displayed
+         */
+        "open"?: boolean;
+    }
+    interface InfoCard {
+        /**
+          * string: the components title
+         */
+        "cardTitle"?: string;
+        /**
+          * IInfoCardValues: key value pairs to show in the components table
+         */
+        "values"?: IInfoCardValues;
     }
     interface JsonEditor {
         /**
@@ -853,15 +1002,45 @@ declare namespace LocalJSX {
          */
         "value"?: any;
     }
+    interface LayerTable {
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+    }
+    interface ListItem {
+    }
+    interface MapCard {
+        /**
+          * IMapInfo[]: array of map infos (name and id)
+         */
+        "mapInfos"?: IMapInfo[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * Emitted when the expand button is clicked
+         */
+        "onExpandMap"?: (event: MapCardCustomEvent<EExpandType>) => void;
+        /**
+          * Emitted when a new map is loaded
+         */
+        "onMapChanged"?: (event: MapCardCustomEvent<__esri.MapView>) => void;
+    }
     interface MapDrawTools {
         /**
           * boolean: sketch is used by multiple components...need a way to know who should respond...
          */
         "active"?: boolean;
         /**
-          * boolean: Optionally draw a border around the draw tools
+          * utils/interfaces: Controls how the draw tools are rendered  SKETCH mode supports snapping REFINE mode supports undo/redo
          */
-        "border"?: boolean;
+        "drawMode"?: EDrawMode;
+        /**
+          * boolean: when true you will be able to make additional modifications to the sketched geometry
+         */
+        "editGraphicsEnabled"?: boolean;
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
@@ -871,9 +1050,21 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
+          * Emitted on demand when the redo action is clicked.
+         */
+        "onDrawRedo"?: (event: MapDrawToolsCustomEvent<void>) => void;
+        /**
+          * Emitted on demand when the undo action is clicked.
+         */
+        "onDrawUndo"?: (event: MapDrawToolsCustomEvent<void>) => void;
+        /**
+          * Emitted on demand when selection starts or ends.
+         */
+        "onSelectionLoadingChange"?: (event: MapDrawToolsCustomEvent<boolean>) => void;
+        /**
           * Emitted on demand when the sketch graphics change.
          */
-        "onSketchGraphicsChange"?: (event: MapDrawToolsCustomEvent<__esri.Graphic[]>) => void;
+        "onSketchGraphicsChange"?: (event: MapDrawToolsCustomEvent<ISketchGraphicsChange>) => void;
         /**
           * esri/symbols/SimpleMarkerSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
          */
@@ -886,12 +1077,20 @@ declare namespace LocalJSX {
           * esri/symbols/SimpleLineSymbol: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
          */
         "polylineSymbol"?: __esri.SimpleLineSymbol;
+        /**
+          * boolean: when eanbled the user can redo the previous operation
+         */
+        "redoEnabled"?: boolean;
+        /**
+          * boolean: when eanbled the user can undo the previous operation
+         */
+        "undoEnabled"?: boolean;
     }
     interface MapLayerPicker {
         /**
-          * string[]: list of layer names from the map
+          * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
-        "layerNames"?: string[];
+        "enabledLayerIds"?: string[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -901,9 +1100,9 @@ declare namespace LocalJSX {
          */
         "onLayerSelectionChange"?: (event: MapLayerPickerCustomEvent<string[]>) => void;
         /**
-          * string[]: list of layers that have been selected by the end user
+          * string[]: list of layer ids that have been selected by the end user
          */
-        "selectedLayers"?: string[];
+        "selectedLayerIds"?: string[];
         /**
           * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
          */
@@ -918,8 +1117,36 @@ declare namespace LocalJSX {
           * Emitted on demand when the status of the search widget changes
          */
         "onSearchChange"?: (event: MapSearchCustomEvent<ISearchResult>) => void;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
     }
     interface MapSelectTools {
+        /**
+          * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferColor"?: any;
+        /**
+          * string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferOutlineColor"?: any;
+        /**
+          * boolean: When true the user can define a name for each notification list
+         */
+        "customLabelEnabled"?: boolean;
+        /**
+          * number: The default value to show for the buffer distance
+         */
+        "defaultBufferDistance"?: number;
+        /**
+          * number: The default value to show for the buffer unit
+         */
+        "defaultBufferUnit"?: DistanceUnit;
+        /**
+          * string[]: Optional list of enabled layer ids  If empty all layers will be available
+         */
+        "enabledLayerIds"?: string[];
         /**
           * esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html
          */
@@ -929,86 +1156,6 @@ declare namespace LocalJSX {
          */
         "isUpdate"?: boolean;
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView"?: __esri.MapView;
-        /**
-          * Emitted on demand when the selection set changes.
-         */
-        "onSelectionSetChange"?: (event: MapSelectToolsCustomEvent<number>) => void;
-        /**
-          * Emitted on demand when the workflow type changes.
-         */
-        "onWorkflowTypeChange"?: (event: MapSelectToolsCustomEvent<EWorkflowType>) => void;
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "selectLayerView"?: __esri.FeatureLayerView;
-        /**
-          * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
-         */
-        "selectionSet"?: ISelectionSet;
-    }
-    interface PdfDownload {
-        /**
-          * boolean: Controls the enabled/disabled state of download
-         */
-        "disabled"?: boolean;
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "layerView"?: __esri.FeatureLayerView;
-    }
-    interface PublicNotification {
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "addresseeLayer"?: __esri.FeatureLayerView;
-        /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView"?: __esri.MapView;
-    }
-    interface RefineSelection {
-        /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
-         */
-        "addresseeLayer"?: __esri.FeatureLayerView;
-        /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView"?: __esri.MapView;
-        /**
-          * Emitted on demand when selection sets change.
-         */
-        "onSelectionSetsChanged"?: (event: RefineSelectionCustomEvent<ISelectionSet[]>) => void;
-        /**
-          * utils/interfaces/ISelectionSet: An array of user defined selection sets
-         */
-        "selectionSets"?: ISelectionSet[];
-    }
-    interface RefineSelectionTools {
-        /**
-          * boolean: sketch is used by multiple components...need a way to know who should respond...
-         */
-        "active"?: boolean;
-        /**
-          * boolean: Optionally draw a border around the draw tools
-         */
-        "border"?: boolean;
-        /**
-          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
-         */
-        "graphics"?: __esri.Graphic[];
-        /**
-          * number: The oids of the selected features
-         */
-        "ids"?: number[];
-        /**
-          * esri/views/layers/LayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-LayerView.html
-         */
-        "layerView"?: __esri.FeatureLayerView;
-        /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
         "layerViews"?: __esri.FeatureLayerView[];
@@ -1017,31 +1164,174 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
-          * utils/interfaces/ESelectionMode: ADD, REMOVE
+          * string: The value to show for no results when left empty the default text "0 selected features from {layerTitle}" will be shown
          */
-        "mode"?: ESelectionMode;
+        "noResultText"?: string;
         /**
-          * Emitted on demand when selection graphics change.
+          * Emitted on demand when the selection set changes.
          */
-        "onRefineSelectionGraphicsChange"?: (event: RefineSelectionToolsCustomEvent<any[]>) => void;
+        "onSelectionSetChange"?: (event: MapSelectToolsCustomEvent<number>) => void;
         /**
-          * Emitted on demand when selection ids change
+          * ISearchConfiguration: Configuration details for the Search widget
          */
-        "onRefineSelectionIdsChange"?: (event: RefineSelectionToolsCustomEvent<{ addIds: any[]; removeIds: any[]; }>) => void;
+        "searchConfiguration"?: ISearchConfiguration;
         /**
-          * utils/interfaces/ERefineMode: ALL, SUBSET
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
-        "refineMode"?: ERefineMode;
+        "selectLayerView"?: __esri.FeatureLayerView;
         /**
-          * boolean: Used to control the visibility of the layer picker
+          * string[]: List of layer ids that should be shown as potential selection layers when skectching with "Use layer features" option
          */
-        "useLayerPicker"?: boolean;
+        "selectionLayerIds"?: string[];
+        /**
+          * utils/interfaces/ISelectionSet: Used to store key details about any selections that have been made.
+         */
+        "selectionSet"?: ISelectionSet;
+        /**
+          * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+         */
+        "sketchLineSymbol"?: __esri.SimpleLineSymbol;
+        /**
+          * esri/symbols/SimpleMarkerSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+         */
+        "sketchPointSymbol"?: __esri.SimpleMarkerSymbol;
+        /**
+          * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+         */
+        "sketchPolygonSymbol"?: __esri.SimpleFillSymbol;
+    }
+    interface MediaCard {
+        /**
+          * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
+         */
+        "values"?: IMediaCardValues[];
+    }
+    interface PciCalculator {
+    }
+    interface PdfDownload {
+        /**
+          * boolean: Controls the enabled/disabled state of download
+         */
+        "disabled"?: boolean;
+    }
+    interface PublicNotification {
+        /**
+          * string[]: List of layer ids that should be shown as potential addressee layers
+         */
+        "addresseeLayerIds"?: string[];
+        /**
+          * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferColor"?: any;
+        /**
+          * string | number[] | object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
+         */
+        "bufferOutlineColor"?: any;
+        /**
+          * boolean: When true the user can define a name for each notification list
+         */
+        "customLabelEnabled"?: boolean;
+        /**
+          * number: The default value to show for the buffer distance
+         */
+        "defaultBufferDistance"?: number;
+        /**
+          * number: The default value to show for the buffer unit ("feet"|"meters"|"miles"|"kilometers")
+         */
+        "defaultBufferUnit"?: DistanceUnit;
+        /**
+          * The effect that will be applied when featureHighlightEnabled is true  esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
+         */
+        "featureEffect"?: __esri.FeatureEffect;
+        /**
+          * boolean: When enabled features will be highlighted when their notification list item is clicked.
+         */
+        "featureHighlightEnabled"?: boolean;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * string: The value to show for no results when left empty the default text "0 selected features from {layerTitle}" will be shown
+         */
+        "noResultText"?: string;
+        /**
+          * Emitted on demand when searchConfiguration gets a new value
+         */
+        "onSearchConfigurationChange"?: (event: PublicNotificationCustomEvent<ISearchConfiguration>) => void;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
+        /**
+          * string[]: List of layer ids that should be shown as potential selection layers when skectching with "Use layer features" option
+         */
+        "selectionLayerIds"?: string[];
+        /**
+          * boolean: When true the refine selection workflow will be included in the UI
+         */
+        "showRefineSelection"?: boolean;
+        /**
+          * boolean: When false no buffer distance or unit controls will be exposed
+         */
+        "showSearchSettings"?: boolean;
+        /**
+          * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html  A JSON representation of the instance in the ArcGIS format. See the ArcGIS REST API documentation for examples of the structure of various input JSON objects. https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
+         */
+        "sketchLineSymbol"?: __esri.SimpleLineSymbol | any;
+        /**
+          * esri/symbols/SimpleMarkerSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html  A JSON representation of the instance in the ArcGIS format. See the ArcGIS REST API documentation for examples of the structure of various input JSON objects. https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
+         */
+        "sketchPointSymbol"?: __esri.SimpleMarkerSymbol | any;
+        /**
+          * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html  A JSON representation of the instance in the ArcGIS format. See the ArcGIS REST API documentation for examples of the structure of various input JSON objects. https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
+         */
+        "sketchPolygonSymbol"?: __esri.SimpleFillSymbol | any;
+    }
+    interface RefineSelection {
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "addresseeLayer"?: __esri.FeatureLayerView;
+        /**
+          * string[]: Optional list of enabled layer ids  If empty all layers will be available
+         */
+        "enabledLayerIds"?: string[];
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when selection starts or ends.
+         */
+        "onSelectionLoadingChange"?: (event: RefineSelectionCustomEvent<boolean>) => void;
+        /**
+          * Emitted on demand when selection sets change.
+         */
+        "onSelectionSetsChanged"?: (event: RefineSelectionCustomEvent<ISelectionSet[]>) => void;
+        /**
+          * utils/interfaces/ISelectionSet: An array of user defined selection sets
+         */
+        "selectionSets"?: ISelectionSet[];
+        /**
+          * esri/symbols/SimpleLineSymbol | JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html
+         */
+        "sketchLineSymbol"?: __esri.SimpleLineSymbol;
+        /**
+          * esri/symbols/SimpleMarkerSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html
+         */
+        "sketchPointSymbol"?: __esri.SimpleMarkerSymbol;
+        /**
+          * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
+         */
+        "sketchPolygonSymbol"?: __esri.SimpleFillSymbol;
     }
     interface SolutionConfiguration {
         /**
-          * Credentials for requests
+          * Credentials for requests, which can be a serialized UserSession
          */
         "authentication"?: UserSession;
+        "serializedAuthentication"?: string;
         /**
           * Used to show/hide loading indicator
          */
@@ -1184,21 +1474,28 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface IntrinsicElements {
+        "add-record-modal": AddRecordModal;
         "buffer-tools": BufferTools;
-        "check-list": CheckList;
-        "config-buffer-tools": ConfigBufferTools;
-        "config-draw-tools": ConfigDrawTools;
-        "config-layer-picker": ConfigLayerPicker;
-        "config-pdf-download": ConfigPdfDownload;
+        "card-manager": CardManager;
+        "comment-card": CommentCard;
+        "crowdsource-manager": CrowdsourceManager;
+        "crowdsource-reporter": CrowdsourceReporter;
+        "deduct-calculator": DeductCalculator;
+        "edit-record-modal": EditRecordModal;
+        "info-card": InfoCard;
         "json-editor": JsonEditor;
+        "layer-table": LayerTable;
+        "list-item": ListItem;
+        "map-card": MapCard;
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
         "map-search": MapSearch;
         "map-select-tools": MapSelectTools;
+        "media-card": MediaCard;
+        "pci-calculator": PciCalculator;
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
         "refine-selection": RefineSelection;
-        "refine-selection-tools": RefineSelectionTools;
         "solution-configuration": SolutionConfiguration;
         "solution-contents": SolutionContents;
         "solution-item": SolutionItem;
@@ -1217,21 +1514,28 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "add-record-modal": LocalJSX.AddRecordModal & JSXBase.HTMLAttributes<HTMLAddRecordModalElement>;
             "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
-            "check-list": LocalJSX.CheckList & JSXBase.HTMLAttributes<HTMLCheckListElement>;
-            "config-buffer-tools": LocalJSX.ConfigBufferTools & JSXBase.HTMLAttributes<HTMLConfigBufferToolsElement>;
-            "config-draw-tools": LocalJSX.ConfigDrawTools & JSXBase.HTMLAttributes<HTMLConfigDrawToolsElement>;
-            "config-layer-picker": LocalJSX.ConfigLayerPicker & JSXBase.HTMLAttributes<HTMLConfigLayerPickerElement>;
-            "config-pdf-download": LocalJSX.ConfigPdfDownload & JSXBase.HTMLAttributes<HTMLConfigPdfDownloadElement>;
+            "card-manager": LocalJSX.CardManager & JSXBase.HTMLAttributes<HTMLCardManagerElement>;
+            "comment-card": LocalJSX.CommentCard & JSXBase.HTMLAttributes<HTMLCommentCardElement>;
+            "crowdsource-manager": LocalJSX.CrowdsourceManager & JSXBase.HTMLAttributes<HTMLCrowdsourceManagerElement>;
+            "crowdsource-reporter": LocalJSX.CrowdsourceReporter & JSXBase.HTMLAttributes<HTMLCrowdsourceReporterElement>;
+            "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;
+            "edit-record-modal": LocalJSX.EditRecordModal & JSXBase.HTMLAttributes<HTMLEditRecordModalElement>;
+            "info-card": LocalJSX.InfoCard & JSXBase.HTMLAttributes<HTMLInfoCardElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
+            "layer-table": LocalJSX.LayerTable & JSXBase.HTMLAttributes<HTMLLayerTableElement>;
+            "list-item": LocalJSX.ListItem & JSXBase.HTMLAttributes<HTMLListItemElement>;
+            "map-card": LocalJSX.MapCard & JSXBase.HTMLAttributes<HTMLMapCardElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
             "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
+            "media-card": LocalJSX.MediaCard & JSXBase.HTMLAttributes<HTMLMediaCardElement>;
+            "pci-calculator": LocalJSX.PciCalculator & JSXBase.HTMLAttributes<HTMLPciCalculatorElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
             "refine-selection": LocalJSX.RefineSelection & JSXBase.HTMLAttributes<HTMLRefineSelectionElement>;
-            "refine-selection-tools": LocalJSX.RefineSelectionTools & JSXBase.HTMLAttributes<HTMLRefineSelectionToolsElement>;
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;

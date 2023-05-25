@@ -1,0 +1,15 @@
+{
+  "listName": "Име в списък",
+  "listNamePlaceholder": "Въведете име тук",
+  "searchDistance": "Търсене на разстояние",
+  "select": "Слой",
+  "selectedFeatures": "{{n}} избрани обекти",
+  "selectionLoading": "Зареждане на избор",
+  "sketch": "Скициране",
+  "bufferLayer": "Буферен слой",
+  "sketchLayer": "Слой със скица",
+  "useLayerFeatures": "Използване на обекти на слоя",
+  "inputLayer": "Входен слой",
+  "useLayerFeaturesTooltip": "й_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________й.",
+  "useSearchDistanceTootip": "й_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________й."
+}

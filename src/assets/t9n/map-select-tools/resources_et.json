@@ -1,0 +1,15 @@
+{
+  "listName": "Loendi nimi",
+  "listNamePlaceholder": "Sisestage nimi siia",
+  "searchDistance": "Otsitav vahemaa",
+  "select": "Kiht",
+  "selectedFeatures": "{{n}} valitud objektid",
+  "selectionLoading": "Valiku laadimine",
+  "sketch": "Visand",
+  "bufferLayer": "Puhvrikiht",
+  "sketchLayer": "Visandikiht",
+  "useLayerFeatures": "Kasuta kihi objekte",
+  "inputLayer": "Sisendkiht",
+  "useLayerFeaturesTooltip": "Š_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ä.",
+  "useSearchDistanceTootip": "Š_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ä."
+}

@@ -45,9 +45,15 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
 
   /**
-   * Credentials for requests
+   * Credentials for requests, which can be a serialized UserSession
    */
   @Prop({ mutable: true }) authentication = new UserSession({});
+
+  @Prop({ mutable: true }) serializedAuthentication = "";
+
+  @Watch("serializedAuthentication") async serializedAuthenticationWatchHandler(): Promise<void> {
+    this.authentication = this.serializedAuthentication ? UserSession.deserialize(this.serializedAuthentication) : new UserSession({});
+  }
 
   /**
    * Contains the current solution item id
@@ -70,6 +76,10 @@ export class SolutionConfiguration {
   //--------------------------------------------------------------------------
 
   constructor() {
+    if (this.serializedAuthentication) {
+      this.authentication = UserSession.deserialize(this.serializedAuthentication);
+    }
+
     void this._loadSolution(this.solutionItemId);
 
     window.addEventListener("solutionStoreHasChanges",
@@ -116,7 +126,7 @@ export class SolutionConfiguration {
       <Host>
         {
           !this._solutionIsLoaded
-            ? <calcite-loader active label='' />
+            ? <calcite-loader label='' />
             : null
         }
         <div class="configuration-container">
@@ -129,7 +139,7 @@ export class SolutionConfiguration {
                   null
                 }
               </calcite-tab-nav>
-              <calcite-tab active class="config-tab">
+              <calcite-tab class="config-tab" selected={true}>
                 <div class="config-solution">
                   <div class={this._treeOpen ? "config-inventory" : "config-inventory-hide"}>
                     <solution-contents

@@ -35,4 +35,4 @@ coverage/
 src/**/*.js
 !src/**/assets/**/*.js
 !src/demos/**/*.js
-arcgis-pdf-creator/
+*.tgz

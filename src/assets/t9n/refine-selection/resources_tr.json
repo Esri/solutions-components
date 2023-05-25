@@ -1,0 +1,9 @@
+{
+  "add": "ı_Add_______İ",
+  "remove": "ı_Remove_____________İ",
+  "featuresAdded": "ı_Features added: {{n}}______________________İ",
+  "featuresRemoved": "ı_Features removed: {{n}}________________________İ",
+  "totalSelected": "ı_Total selected: {{n}}______________________İ",
+  "inputLayer": "ı_Input layer____________İ",
+  "inputLayerTip": "ı_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________İ."
+}

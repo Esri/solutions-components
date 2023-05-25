@@ -14,7 +14,39 @@
  * limitations under the License.
  */
 
-import { EWorkflowType, ISelectionSet, IQueryExtentResponse } from "./interfaces";
+import { IQueryExtentResponse } from "./interfaces";
+
+/**
+ * Query the layer for all features
+ *
+ * @param start zero-based index indicating where to begin retrieving features
+ * @param layer the layer to retrieve features from
+ * @param graphics stores the features
+ *
+ * @returns Promise with the featureSet from the layer that match the provided ids
+ */
+export async function queryAllFeatures(
+  start: number,
+  layer: __esri.FeatureLayer,
+  graphics: __esri.Graphic[]
+): Promise<__esri.Graphic[]> {
+  const num = layer.capabilities.query.maxRecordCount;
+  const query = layer.createQuery();
+  query.start = start;
+  query.num = num;
+  // TODO think through this once I'm back on crowdsource...seems like we may want an arg to control this
+  query.where = layer.definitionExpression || "1=1";
+
+  const result = await layer.queryFeatures(query);
+
+  graphics = graphics.concat(
+    result.features
+  );
+
+  return result.exceededTransferLimit ?
+    queryAllFeatures(start += num, layer, graphics) :
+    Promise.resolve(graphics);
+}
 
 /**
  * Query the layer for OIDs based on any user drawn geometries or buffers
@@ -29,12 +61,12 @@ export async function queryObjectIds(
   layer: __esri.FeatureLayer
 ): Promise<number[]> {
   let ids = [];
-  const queryDefs = geometries.map(g => _intersectQuery(g, layer))
+  const queryDefs = geometries ? geometries.map(g => _intersectQuery(g, layer)) : [Promise.resolve()];
   const results = await Promise.all(queryDefs);
   results.forEach(resultIds => {
     ids = [
       ...ids,
-      ...resultIds
+      ...resultIds || []
     ]
   });
   return ids;
@@ -53,7 +85,6 @@ export async function queryObjectIds(
   layer: __esri.FeatureLayer
 ): Promise<__esri.FeatureSet> {
   const q = layer.createQuery();
-  q.outFields = ["*"];
   q.objectIds = ids;
   return layer.queryFeatures(q);
 }
@@ -75,16 +106,13 @@ export async function queryFeaturesByGeometry(
   featuresCollection: {[key: string]: __esri.Graphic[]}
 ): Promise<{[key: string]: __esri.Graphic[]}> {
   const num = layer.capabilities.query.maxRecordCount;
-  const query = {
-    start,
-    num,
-    outFields: ["*"],
-    returnGeometry: true,
-    geometry
-  };
+  const query = layer.createQuery();
+  query.start = start;
+  query.num = num;
+  query.geometry = geometry;
 
   const result = await layer.queryFeatures(query);
-  featuresCollection[layer.title] = featuresCollection[layer.title].concat(
+  featuresCollection[layer.id] = featuresCollection[layer.id].concat(
     result.features
   );
 
@@ -131,40 +159,6 @@ export function getQueryGeoms(
 }
 
 /**
- * Get the appropriate ObjectIds query for the provided selection set
- *
- * @param selectionSet the current selection set to fetch the query for
- * @param geometryEngine the geometry engine instance to perform the union of the user drawn graphics or buffers
- *
- * @returns A promise that will resolve with ids that intersect the selection sets geometries
- */
-export function getSelectionSetQuery(
-  selectionSet: ISelectionSet,
-  geometryEngine: __esri.geometryEngine
-): Promise<number[]> {
-  let q = Promise.resolve([]);
-  if (selectionSet.workflowType !== EWorkflowType.REFINE) {
-    if (!selectionSet.buffer) {
-      const queryGeoms = getQueryGeoms(
-        selectionSet.geometries,
-        geometryEngine
-      );
-      q = queryObjectIds(
-        queryGeoms,
-        selectionSet.layerView.layer
-      );
-    } else {
-      // buffer is a single unioned geom
-      q = queryObjectIds(
-        [selectionSet.buffer],
-        selectionSet.layerView.layer
-      );
-    }
-  }
-  return q;
-}
-
-/**
  * Union geometries based on geometry type
  *
  * @param geometries array of geometries to union
@@ -178,7 +172,7 @@ export function getSelectionSetQuery(
   type: string,
   geometryEngine: __esri.geometryEngine
 ): __esri.Geometry[] {
-  const geoms = geometries.filter(g => g.type === type);
+  const geoms = geometries?.filter(g => g.type === type) || [];
   return geoms.length <= 1 ? geoms : [geometryEngine.union(geoms)];
 }
 

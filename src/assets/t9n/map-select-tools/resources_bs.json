@@ -1,0 +1,15 @@
+{
+  "listName": "Navedi naziv",
+  "listNamePlaceholder": "Ovdje unesite naziv",
+  "searchDistance": "Pretraži udaljenost",
+  "select": "Sloj",
+  "selectedFeatures": "{{n}} odabrani geoobjekti",
+  "selectionLoading": "Učitavanje odabira",
+  "sketch": "Skica",
+  "bufferLayer": "Sloj pojasa",
+  "sketchLayer": "Sloj skice",
+  "useLayerFeatures": "Upotrijebi geoobjekte sloja",
+  "inputLayer": "Unesi sloj",
+  "useLayerFeaturesTooltip": "Č_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ž.",
+  "useSearchDistanceTootip": "Č_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ž."
+}

@@ -1,0 +1,15 @@
+{
+  "listName": "Nume listă",
+  "listNamePlaceholder": "Introduceți numele aici",
+  "searchDistance": "Căutare distanţă",
+  "select": "Strat tematic",
+  "selectedFeatures": "{{n}} obiecte spațiale selectate",
+  "selectionLoading": "Încărcare selecție",
+  "sketch": "Schiţă",
+  "bufferLayer": "Strat tematic buffer",
+  "sketchLayer": "Strat tematic schiță",
+  "useLayerFeatures": "Utilizare obiecte spațiale strat tematic",
+  "inputLayer": "Strat tematic de intrare",
+  "useLayerFeaturesTooltip": "Ă_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ș.",
+  "useSearchDistanceTootip": "Ă_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ș."
+}

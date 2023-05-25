@@ -1,0 +1,15 @@
+{
+  "listName": "שם רשימה",
+  "listNamePlaceholder": "הזן שם כאן",
+  "searchDistance": "מרחק חיפוש",
+  "select": "שכבה",
+  "selectedFeatures": "נבחרו {{n}} ישויות",
+  "selectionLoading": "טוען בחירה",
+  "sketch": "שרטוט",
+  "bufferLayer": "שכבת חיץ",
+  "sketchLayer": "שכבת שרטוט",
+  "useLayerFeatures": "השתמש בישויות שכבה",
+  "inputLayer": "שכבת קלט",
+  "useLayerFeaturesTooltip": "כן_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ש.",
+  "useSearchDistanceTootip": "כן_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ש."
+}

@@ -1,0 +1,15 @@
+{
+  "listName": "Listnamn",
+  "listNamePlaceholder": "Ange namn här",
+  "searchDistance": "Sökavstånd",
+  "select": "Lager",
+  "selectedFeatures": "{{n}} valda geoobjekt",
+  "selectionLoading": "Val läses in",
+  "sketch": "Skiss",
+  "bufferLayer": "Buffertlager",
+  "sketchLayer": "Skisslager",
+  "useLayerFeatures": "Använd lagergeoobjekt",
+  "inputLayer": "Indatalager",
+  "useLayerFeaturesTooltip": "Å_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ö.",
+  "useSearchDistanceTootip": "Å_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ö."
+}

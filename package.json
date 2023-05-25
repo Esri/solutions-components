@@ -1,6 +1,6 @@
 {
   "name": "@esri/solutions-components",
-  "version": "0.2.3",
+  "version": "0.5.16",
   "description": "Web Components for Esri's Solutions Applications",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -10,12 +10,12 @@
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/solutions/solutions.js",
+  "unpkg": "dist/solutions-components/solutions-components.esm.js",
   "files": [
     "dist/"
   ],
   "scripts": {
-    "build": "stencil build --docs",
+    "build": "npm run lint:ts && stencil build --docs",
     "build:debug": "stencil build -c stencil.debugconfig.ts",
     "start": "stencil build --dev --watch --serve",
     "clean:src": "start cmd.exe /c cleanSrc.bat",
@@ -31,12 +31,12 @@
   },
   "devDependencies": {
     "@esri/eslint-plugin-calcite-components": "^0.2.2",
-    "@stencil/core": "^2.18.1",
+    "@esri/solution-common": "3.0.1",
     "@stencil/postcss": "^2.1.0",
     "@stencil/sass": "^2.0.0",
     "@stencil/store": "^2.0.1",
-    "@types/arcgis-js-api": "^4.24.0",
-    "@types/jest": "^27.0.3",
+    "@types/arcgis-js-api": "^4.26.0-next",
+    "@types/jest": "^27.5.2",
     "@types/node": "^16.11.11",
     "@types/puppeteer": "^5.4.2",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
@@ -53,8 +53,8 @@
     "esri-loader": "3.4.0",
     "form-request-submit-polyfill": "^2.0.0",
     "gh-release": "^6.0.3",
-    "jest": "^26.6.3",
-    "jest-cli": "^26.6.3",
+    "jest": "^27.5.1",
+    "jest-cli": "^27.5.1",
     "pify": "^5.0.0",
     "prettier": "2.4.1",
     "puppeteer": "^13.5.1",
@@ -66,8 +66,16 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
-    "@arcgis/core": "^4.24.7",
-    "minimist": "^1.2.6"
+    "@esri/hub-common": "^12.37.1",
+    "@esri/hub-initiatives": "^12.4.1",
+    "@esri/hub-sites": "^12.6.0",
+    "@esri/hub-teams": "^12.4.1",
+    "@pdf-lib/fontkit": "^1.1.1",
+    "@stencil/core": "^2.20.0",
+    "focus-trap": "7.2.0",
+    "jspdf": "^2.5.1",
+    "minimist": "^1.2.6",
+    "pdf-lib": "^1.17.1"
   },
   "peerDependencies": {
     "@esri/arcgis-rest-auth": "^3.4.2",
@@ -75,12 +83,7 @@
     "@esri/arcgis-rest-portal": "^3.4.2",
     "@esri/arcgis-rest-request": "^3.4.2",
     "@esri/arcgis-rest-service-admin": "^3.4.2",
-    "@esri/calcite-components": "1.0.0-beta.97",
-    "@esri/hub-common": "9.29.0",
-    "@esri/hub-initiatives": "9.29.0",
-    "@esri/hub-sites": "9.29.0",
-    "@esri/hub-teams": "9.29.0",
-    "@esri/solution-common": "1.5.3"
+    "@esri/calcite-components": "^1.0.7"
   },
   "repository": {
     "type": "git",

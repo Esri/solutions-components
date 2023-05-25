@@ -6,6 +6,99 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.5.16] - May 25th 2023
+
+## [0.5.15] - May 24th 2023
+
+## [0.5.14] - May 23rd 2023
+
+## [0.5.13] - May 22nd 2023
+
+## [0.5.12] - May 21st 2023
+
+## [0.5.11] - May 18th 2023
+
+## [0.5.10] - May 17th 2023
+
+## [0.5.9] - May 16th 2023
+
+## [0.5.8] - May 12th 2023
+
+## [0.5.7] - May 11th 2023
+
+## [0.5.6] - May 10th 2023
+
+## [0.5.5] - May 10th 2023
+
+## [0.5.4] - May 9th 2023
+
+## [0.5.3] - May 5th 2023
+
+## [0.5.2] - April 5th 2023
+
+## [0.5.1] - February 28th 2023
+
+## [0.5.0] - February 23rd 2023
+
+## [0.4.12] - February 22nd 2023
+
+## [0.4.11] - February 22nd 2023
+
+## [0.4.10] - February 17th 2023
+
+## [0.4.9] - February 17th 2023
+
+## [0.4.8] - February 17th 2023
+
+## [0.4.7] - February 16th 2023
+
+## [0.4.6] - February 16th 2023
+
+## [0.4.5] - February 14th 2023
+
+## [0.4.4] - February 13th 2023
+
+## [0.4.3] - February 12th 2023
+
+## [0.4.2] - February 11th 2023
+
+## [0.4.1] - February 10th 2023
+
+## [0.4.0] - February 9th 2023
+
+## [0.3.9] - February 8th 2023
+
+## [0.3.8] - February 7th 2023
+
+## [0.3.7] - February 3rd 2023
+
+## [0.3.6] - February 2nd 2023
+
+## [0.3.5] - February 1st 2023
+
+## [0.3.4] - January 30th 2023
+
+## [0.3.3] - January 27th 2023
+
+## [0.3.2] - January 26th 2023
+
+## [0.3.1] - January 23th 2023
+
+## [0.3.0] - January 23th 2023
+
+## [0.2.9] - January 20th 2023
+
+## [0.2.8] - January 13th 2023
+
+## [0.2.7] - January 12th 2023
+
+## [0.2.6] - January 10th 2023
+
+## [0.2.5] - December 20th 2022
+* Fixed `unpkg` path in `package.json`
+
+## [0.2.4] - December 20th 2022
+
 ## [0.2.3] - November 10th 2022
 
 ## [0.2.2] - November 10th 2022
@@ -27,5 +120,50 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 [0.2.1]: https://github.com/Esri/solution.js/compare/v0.2.0...v0.2.1 "v0.2.1"
 [0.2.2]: https://github.com/Esri/solution.js/compare/v0.2.1...v0.2.2 "v0.2.2"
 [0.2.3]: https://github.com/Esri/solution.js/compare/v0.2.2...v0.2.3 "v0.2.3"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.2.3...HEAD "Unreleased Changes"
-
+[0.2.4]: https://github.com/Esri/solution.js/compare/v0.2.3...v0.2.4 "v0.2.4"
+[0.2.5]: https://github.com/Esri/solution.js/compare/v0.2.4...v0.2.5 "v0.2.5"
+[0.2.6]: https://github.com/Esri/solution.js/compare/v0.2.5...v0.2.6 "v0.2.6"
+[0.2.7]: https://github.com/Esri/solution.js/compare/v0.2.6...v0.2.7 "v0.2.7"
+[0.2.8]: https://github.com/Esri/solution.js/compare/v0.2.7...v0.2.8 "v0.2.8"
+[0.2.9]: https://github.com/Esri/solution.js/compare/v0.2.8...v0.2.9 "v0.2.9"
+[0.3.0]: https://github.com/Esri/solution.js/compare/v0.2.9...v0.3.0 "v0.3.0"
+[0.3.1]: https://github.com/Esri/solution.js/compare/v0.2.9...v0.3.1 "v0.3.1"
+[0.3.2]: https://github.com/Esri/solution.js/compare/v0.3.1...v0.3.2 "v0.3.2"
+[0.3.3]: https://github.com/Esri/solution.js/compare/v0.3.2...v0.3.3 "v0.3.3"
+[0.3.4]: https://github.com/Esri/solution.js/compare/v0.3.3...v0.3.4 "v0.3.4"
+[0.3.5]: https://github.com/Esri/solution.js/compare/v0.3.4...v0.3.5 "v0.3.5"
+[0.3.6]: https://github.com/Esri/solution.js/compare/v0.3.5...v0.3.6 "v0.3.6"
+[0.3.7]: https://github.com/Esri/solution.js/compare/v0.3.6...v0.3.7 "v0.3.7"
+[0.3.8]: https://github.com/Esri/solution.js/compare/v0.3.7...v0.3.8 "v0.3.8"
+[0.3.9]: https://github.com/Esri/solution.js/compare/v0.3.8...v0.3.9 "v0.3.9"
+[0.4.0]: https://github.com/Esri/solution.js/compare/v0.3.9...v0.4.0 "v0.4.0"
+[0.4.1]: https://github.com/Esri/solution.js/compare/v0.4.0...v0.4.1 "v0.4.1"
+[0.4.2]: https://github.com/Esri/solution.js/compare/v0.4.1...v0.4.2 "v0.4.2"
+[0.4.3]: https://github.com/Esri/solution.js/compare/v0.4.2...v0.4.3 "v0.4.3"
+[0.4.4]: https://github.com/Esri/solution.js/compare/v0.4.3...v0.4.4 "v0.4.4"
+[0.4.5]: https://github.com/Esri/solution.js/compare/v0.4.4...v0.4.5 "v0.4.5"
+[0.4.6]: https://github.com/Esri/solution.js/compare/v0.4.5...v0.4.6 "v0.4.6"
+[0.4.7]: https://github.com/Esri/solution.js/compare/v0.4.6...v0.4.7 "v0.4.7"
+[0.4.8]: https://github.com/Esri/solution.js/compare/v0.4.7...v0.4.8 "v0.4.8"
+[0.4.9]: https://github.com/Esri/solution.js/compare/v0.4.8...v0.4.9 "v0.4.9"
+[0.4.10]: https://github.com/Esri/solution.js/compare/v0.4.9...v0.4.10 "v0.4.10"
+[0.4.11]: https://github.com/Esri/solution.js/compare/v0.4.10...v0.4.11 "v0.4.11"
+[0.4.12]: https://github.com/Esri/solution.js/compare/v0.4.11...v0.4.12 "v0.4.12"
+[0.5.0]: https://github.com/Esri/solution.js/compare/v0.4.12...v0.5.0 "v0.5.0"
+[0.5.1]: https://github.com/Esri/solution.js/compare/v0.5.0...v0.5.1 "v0.5.1"
+[0.5.2]: https://github.com/Esri/solution.js/compare/v0.5.1...v0.5.2 "v0.5.2"
+[0.5.3]: https://github.com/Esri/solution.js/compare/v0.5.2...v0.5.3 "v0.5.3"
+[0.5.4]: https://github.com/Esri/solution.js/compare/v0.5.3...v0.5.4 "v0.5.4"
+[0.5.5]: https://github.com/Esri/solution.js/compare/v0.5.4...v0.5.5 "v0.5.5"
+[0.5.6]: https://github.com/Esri/solution.js/compare/v0.5.5...v0.5.6 "v0.5.6"
+[0.5.7]: https://github.com/Esri/solution.js/compare/v0.5.6...v0.5.7 "v0.5.7"
+[0.5.8]: https://github.com/Esri/solution.js/compare/v0.5.7...v0.5.8 "v0.5.8"
+[0.5.9]: https://github.com/Esri/solution.js/compare/v0.5.8...v0.5.9 "v0.5.9"
+[0.5.10]: https://github.com/Esri/solution.js/compare/v0.5.9...v0.5.10 "v0.5.10"
+[0.5.11]: https://github.com/Esri/solution.js/compare/v0.5.10...v0.5.11 "v0.5.11"
+[0.5.12]: https://github.com/Esri/solution.js/compare/v0.5.11...v0.5.12 "v0.5.12"
+[0.5.13]: https://github.com/Esri/solution.js/compare/v0.5.12...v0.5.13 "v0.5.13"
+[0.5.14]: https://github.com/Esri/solution.js/compare/v0.5.13...v0.5.14 "v0.5.14"
+[0.5.15]: https://github.com/Esri/solution.js/compare/v0.5.14...v0.5.15 "v0.5.15"
+[0.5.16]: https://github.com/Esri/solution.js/compare/v0.5.15...v0.5.16 "v0.5.16"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.5.15...HEAD "Unreleased Changes"

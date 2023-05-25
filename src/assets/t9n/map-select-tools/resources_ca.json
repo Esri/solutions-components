@@ -1,0 +1,15 @@
+{
+  "listName": "Nom de la llista",
+  "listNamePlaceholder": "Introduïu un nom aquí",
+  "searchDistance": "Distància de cerca",
+  "select": "Capa",
+  "selectedFeatures": "{{n}} entitats seleccionades",
+  "selectionLoading": "S'està carregant la selecció",
+  "sketch": "Esbós",
+  "bufferLayer": "Capa d'àrea d'influència",
+  "sketchLayer": "Capa d'esbós",
+  "useLayerFeatures": "Utilitza entitats de la capa",
+  "inputLayer": "Capa d'entrada",
+  "useLayerFeaturesTooltip": "ó_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________à.",
+  "useSearchDistanceTootip": "ó_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________à."
+}
