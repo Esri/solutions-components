@@ -164,11 +164,14 @@ export class PdfDownload {
           disabled={this.disabled}
           label=""
           ref={(el) => { this._labelInfoElement = el }}
-        >
-          {this._renderItems()}
-        </calcite-select>
+        />
       </Host>
     );
+  }
+
+  componentDidRender(): void {
+    // Render the options outside of Stencil's rendering so that it doesn't mangle RTL text with embedded LTR
+    this._renderOptions();
   }
 
   //--------------------------------------------------------------------------
@@ -203,7 +206,9 @@ export class PdfDownload {
     labelInfo: any
   ): string {
     const lNum = labelInfo.descriptionPDF.labelsPerPageDisplay;
-    const lSize = `${labelInfo.descriptionPDF.labelWidthDisplay} x ${labelInfo.descriptionPDF.labelHeightDisplay}`;
+    const lSize =
+      "&lrm;" + (labelInfo.descriptionPDF.labelWidthDisplay as string) + " x " +
+      (labelInfo.descriptionPDF.labelHeightDisplay as string) + "&rlm;";
     return this._translations.pdfLabel.replace("{{n}}", lNum).replace("{{labelSize}}", lSize);
   }
 
@@ -218,21 +223,22 @@ export class PdfDownload {
   }
 
   /**
-   * Renders the pdf export size options
-   *
-   * @returns Node array of size options
+   * Renders the pdf export size options and adds them to the `select` component
    *
    * @protected
    */
-  protected _renderItems(): VNode[] {
+  protected _renderOptions(): void {
     const s: any = pdfLabelFormats;
     const sortedPdfIndo = (s.default || s).sort((a, b) => {
       const _a = parseInt(a.descriptionPDF.labelsPerPageDisplay, 10);
       const _b = parseInt(b.descriptionPDF.labelsPerPageDisplay, 10);
       return _a < _b ? -1 : _a > _b ? 1 : 0
     });
-    return sortedPdfIndo.map((l) => {
-      return (<calcite-option value={l}>{this._getLabelSizeText(l)}</calcite-option>)
+    sortedPdfIndo.forEach((l) => {
+      const option = document.createElement("calcite-option");
+      option.value = l;
+      option.innerHTML = this._getLabelSizeText(l);
+      this._labelInfoElement.appendChild(option);
     });
   }
 
