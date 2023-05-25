@@ -173,6 +173,11 @@ export class PublicNotification {
   @State() _exportType: EExportType = EExportType.PDF;
 
   /**
+   * boolean: When window size is 600px or less this value will be true
+   */
+  @State() _isMobile: boolean;
+
+  /**
    * number: The number of duplicate labels from all selection sets
    */
   @State() _numDuplicates = 0;
@@ -196,7 +201,7 @@ export class PublicNotification {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() protected _translations: typeof NewPublicNotification_T9n;
+  @State() _translations: typeof NewPublicNotification_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -248,6 +253,11 @@ export class PublicNotification {
    * HTMLMapSelectToolsElement: The select tools element
    */
   protected _selectTools: HTMLMapSelectToolsElement;
+
+  /**
+   * MediaQueryList: Information about the media query to know when we have went into mobile mode
+   */
+  protected _mediaQuery: MediaQueryList;
 
   /**
    * Text to be used as title on PDF pages
@@ -398,6 +408,14 @@ export class PublicNotification {
   //--------------------------------------------------------------------------
 
   /**
+   * StencilJS: Called every time the component is connected to the DOM
+   */
+  connectedCallback(): void {
+    this._mediaQuery = window.matchMedia("(max-width: 600px)");
+    this._mediaQuery.addEventListener("change", (evt) => this._setIsMobile(evt));
+  }
+
+  /**
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
   async componentWillLoad(): Promise<void> {
@@ -411,10 +429,11 @@ export class PublicNotification {
    * Renders the component.
    */
   render(): void {
+    const headerSlot = this._isMobile ? "footer" : "header";
     return (
       <Host>
         <calcite-shell>
-          <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
+          <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot={headerSlot}>
             {this._getActionGroup("list-check", EPageType.LIST, this._translations.myLists)}
             {this.showRefineSelection ? this._getActionGroup("test-data", EPageType.REFINE, this._translations.refineSelection) : null}
             {this._getActionGroup("export", EPageType.EXPORT, this._translations.export)}
@@ -423,6 +442,13 @@ export class PublicNotification {
         </calcite-shell>
       </Host>
     );
+  }
+
+  /**
+   * StencilJS: Called every time the component is disconnected from the DOM
+   */
+  disconnectedCallback(): void {
+    this._mediaQuery.removeEventListener("change", (evt) => this._setIsMobile(evt));
   }
 
   //--------------------------------------------------------------------------
@@ -533,6 +559,19 @@ export class PublicNotification {
   }
 
   /**
+   * Set _isMobile to true when the view is 600px or less
+   *
+   * @param evt event from media query
+   *
+   * @protected
+   */
+  protected _setIsMobile(
+    evt: MediaQueryListEvent
+  ): void {
+    this._isMobile = evt.matches;
+  }
+
+  /**
    * Get a calcite action group for the current action
    *
    * @param icon the icon to display for the current action
@@ -550,16 +589,18 @@ export class PublicNotification {
     const sizeClass = this.showRefineSelection ? " w-1-3" : " w-1-2";
     return (
       <calcite-action-group class={"action-center" + sizeClass} layout="horizontal">
-        <calcite-action
-          active={this._pageType === pageType}
-          alignment="center"
-          class="width-full height-full"
-          compact={false}
-          icon={icon}
-          id={icon}
-          onClick={() => { this._setPageType(pageType) }}
-          text=""
-        />
+        <div class="background-override">
+          <calcite-action
+            active={this._pageType === pageType}
+            alignment="center"
+            class="width-full height-full"
+            compact={false}
+            icon={icon}
+            id={icon}
+            onClick={() => { this._setPageType(pageType) }}
+            text=""
+          />
+        </div>
         <calcite-tooltip label="" placement="bottom" reference-element={icon}>
           <span>{tip}</span>
         </calcite-tooltip>
@@ -627,7 +668,7 @@ export class PublicNotification {
         {this._getNotice(hasSets ? this._translations.listHasSetsTip : this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1")}
         {hasSets ? this._getSelectionSetList() : (this._getOnboardingImage())}
         <div class="display-flex padding-1">
-          <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full">{this._translations.add}</calcite-button>
+          <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full"><span class="font-weight-500">{this._translations.add}</span></calcite-button>
         </div>
       </calcite-panel>
     );
@@ -910,15 +951,18 @@ export class PublicNotification {
                       class="w-50 end-border"
                       value={EExportType.PDF}
                     >
-                      {this._translations.pdf}
-
+                      <span class="font-weight-500">
+                        {this._translations.pdf}
+                      </span>
                     </calcite-segmented-control-item>
                     <calcite-segmented-control-item
                       checked={this._exportType === EExportType.CSV}
                       class="w-50"
                       value={EExportType.CSV}
                     >
-                      {this._translations.csv}
+                      <span class="font-weight-500">
+                        {this._translations.csv}
+                      </span>
                     </calcite-segmented-control-item>
                   </calcite-segmented-control>
                 </div>
@@ -931,7 +975,9 @@ export class PublicNotification {
                     onClick={() => void this._export()}
                     width="full"
                   >
-                    {this._translations.export}
+                    <span class="font-weight-500">
+                      {this._translations.export}
+                    </span>
                   </calcite-button>
                 </div>
               </div>
@@ -1067,14 +1113,16 @@ export class PublicNotification {
     bottomFunc: () => void
   ): VNode {
     return (
-      <div>
+      <div class="padding-bottom-1">
         <div class="display-flex padding-top-sides-1">
           <calcite-button
             disabled={topDisabled}
             onClick={topFunc}
             width="full"
           >
-            {topLabel}
+            <span class="font-weight-500">
+              {topLabel}
+            </span>
           </calcite-button>
         </div>
         <div class="display-flex padding-top-1-2 padding-sides-1">
@@ -1084,7 +1132,9 @@ export class PublicNotification {
             onClick={bottomFunc}
             width="full"
           >
-            {bottomLabel}
+            <span class="font-weight-500">
+              {bottomLabel}
+            </span>
           </calcite-button>
         </div>
       </div>
