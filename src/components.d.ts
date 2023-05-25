@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EDrawMode, EExpandType, IExportInfos, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
+import { DistanceUnit, EDrawMode, EExpandType, IExportInfos, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -202,10 +202,6 @@ export namespace Components {
           * string[]: list of layer ids that have been selected by the end user
          */
         "selectedLayerIds": string[];
-        /**
-          * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
-         */
-        "selectionMode": SelectionMode;
         "type": "select" | "combobox";
     }
     interface MapSearch {
@@ -1108,10 +1104,6 @@ declare namespace LocalJSX {
           * string[]: list of layer ids that have been selected by the end user
          */
         "selectedLayerIds"?: string[];
-        /**
-          * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
-         */
-        "selectionMode"?: SelectionMode;
         "type"?: "select" | "combobox";
     }
     interface MapSearch {

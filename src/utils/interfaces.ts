@@ -79,8 +79,6 @@ export enum EDrawMode {
 
 /* eslint-enable no-unused-vars */
 
-export type SelectionMode = "single" | "multi";
-
 export type ValidSize = 6|10|14|20|30|60|80;
 
 export type DistanceUnit = "feet"|"meters"|"miles"|"kilometers";

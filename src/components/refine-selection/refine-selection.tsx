@@ -213,7 +213,6 @@ export class RefineSelection {
                 onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
                 ref={(el) => { this._layerPicker = el }}
                 selectedLayerIds={[this._refineLayer.layer.id]}
-                selectionMode={"single"}
               />
             </calcite-label>
             <calcite-popover

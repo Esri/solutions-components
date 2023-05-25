@@ -16,7 +16,6 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
 import { getMapLayerHash, getMapLayerIds } from "../../utils/mapViewUtils";
-import { SelectionMode } from "../../utils/interfaces";
 import state from "../../utils/publicNotificationStore";
 
 @Component({
@@ -56,13 +55,6 @@ export class MapLayerPicker {
    */
   @Prop({ mutable: true }) selectedLayerIds: string[] = [];
 
-  /**
-   * SelectionMode: "single" | "multi"
-   *
-   * Should the component support selection against a single layer or multiple layers.
-   */
-  @Prop({ mutable: true, reflect: true }) selectionMode: SelectionMode = "single";
-
   @Prop() scale: "s" | "m" | "l" = "m";
 
   @Prop() type: "select" | "combobox" = "select";
@@ -87,7 +79,7 @@ export class MapLayerPicker {
   /**
    * HTMLCalciteSelectElement: The html element for selecting layers
    */
-  protected _layerElement: HTMLCalciteSelectElement;
+  protected _layerElement: HTMLCalciteSelectElement | HTMLCalciteComboboxElement;
 
   //--------------------------------------------------------------------------
   //
@@ -103,9 +95,7 @@ export class MapLayerPicker {
   async watchStateHandler(newValue: boolean, oldValue: boolean): Promise<void> {
     if (newValue !== oldValue) {
       await this._setLayers();
-      if (this.selectionMode === "single") {
-        this.layerSelectionChange.emit([this.layerIds[0]]);
-      }
+      this.layerSelectionChange.emit([this.layerIds[0]]);
     }
   }
 
@@ -138,7 +128,7 @@ export class MapLayerPicker {
    */
   async componentWillLoad(): Promise<void> {
     await this._setLayers();
-    if (this.selectionMode === "single" && (this.layerIds.length > 0 || this.selectedLayerIds.length === 1)) {
+    if (this.layerIds.length > 0 || this.selectedLayerIds.length === 1) {
       this.layerSelectionChange.emit(
         this.selectedLayerIds.length === 1 ? [this.selectedLayerIds[0]] : [this.layerIds[0]]
       );
@@ -153,7 +143,7 @@ export class MapLayerPicker {
       <Host>
         <div class="map-layer-picker-container">
           <div class="map-layer-picker">
-            {this.selectionMode === "multi" || this.type === "combobox" ? this._getCombobox() : this._getSelect()}
+            {this.type === "combobox" ? this._getCombobox() : this._getSelect()}
           </div>
         </div>
       </Host>
@@ -177,7 +167,7 @@ export class MapLayerPicker {
     return (
       <calcite-select
         label=""
-        onCalciteSelectChange={(evt) => this._layerSelectionChange(evt)}
+        onCalciteSelectChange={() => this._layerSelectionChange()}
         ref={(el) => { this._layerElement = el }}
         scale={this.scale}
       >
@@ -197,10 +187,11 @@ export class MapLayerPicker {
     return (
       <calcite-combobox
         label=""
-        onCalciteComboboxChange={(evt) => this._layerSelectionChange(evt)}
+        onCalciteComboboxChange={() => this._layerSelectionChange()}
         placeholder-icon={this.placeholderIcon}
+        ref={(el) => { this._layerElement = el }}
         scale={this.scale}
-        selection-mode={this.selectionMode}
+        selection-mode="single"
       >
         {this._addComboboxMapLayersOptions()}
       </calcite-combobox>
@@ -230,7 +221,7 @@ export class MapLayerPicker {
       if (state.managedLayers.indexOf(state.layerNameHash[cur]) < 0 && (this.enabledLayerIds.length > 0 ? this.enabledLayerIds.indexOf(cur) > -1 : true)) {
         prev.push(
           this.selectedLayerIds.indexOf(cur) > -1 ?
-            (<calcite-combobox-item selected textLabel={state.layerNameHash[cur]} value={cur} />) :
+            (<calcite-combobox-item icon="layers" iconFlipRtl={true} selected textLabel={state.layerNameHash[cur]} value={cur} />) :
             (<calcite-combobox-item textLabel={state.layerNameHash[cur]} value={cur} />)
         );
       }
@@ -267,13 +258,8 @@ export class MapLayerPicker {
    *
    * @returns Promise when the operation has completed
    */
-  _layerSelectionChange(evt: CustomEvent): void {
-    this.selectedLayerIds = this.selectionMode === "single" ?
-      [this._layerElement.value] : evt.detail?.selectedItems.map(
-        (item: HTMLCalciteComboboxItemElement) => {
-          return item.value;
-        }
-      ) || [];
+  _layerSelectionChange(): void {
+    this.selectedLayerIds = Array.isArray(this._layerElement.value) ? this._layerElement.value : [this._layerElement.value];
     this.layerSelectionChange.emit(this.selectedLayerIds);
   }
 }
