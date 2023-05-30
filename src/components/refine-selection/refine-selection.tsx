@@ -232,7 +232,7 @@ export class RefineSelection {
             >
               <calcite-segmented-control-item
                 checked={this._addEnabled}
-                class="w-50"
+                class="w-50 word-wrap-anywhere"
                 onClick={() => this._setSelectionMode(ESelectionMode.ADD)}
                 value={ESelectionMode.ADD}
               >
@@ -242,7 +242,7 @@ export class RefineSelection {
               </calcite-segmented-control-item>
               <calcite-segmented-control-item
                 checked={!this._addEnabled}
-                class="w-50"
+                class="w-50 word-wrap-anywhere"
                 onClick={() => this._setSelectionMode(ESelectionMode.REMOVE)}
                 value={ESelectionMode.REMOVE}
               >
