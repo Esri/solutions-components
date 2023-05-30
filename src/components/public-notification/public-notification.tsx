@@ -1156,7 +1156,7 @@ export class PublicNotification {
   ): VNode {
     return (
       <calcite-notice class={noticeClass} icon="lightbulb" kind="success" open={true}>
-        <div slot="message">{message}</div>
+        <div class="word-wrap-anywhere" slot="message">{message}</div>
       </calcite-notice>
     );
   }
