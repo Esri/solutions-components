@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h } from '@stencil/core';
+import { Component, Element, Host, h, Prop } from '@stencil/core';
 
 @Component({
   tag: 'comment-card',
@@ -34,6 +34,9 @@ export class CommentCard {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  // not sure what this will look like yet
+  @Prop() commentsCardValues: any;
 
   //--------------------------------------------------------------------------
   //
@@ -74,7 +77,9 @@ export class CommentCard {
   render() {
     return (
       <Host>
-        <slot />
+        <div class="w-100">
+          {this.commentsCardValues}
+        </div>
       </Host>
     );
   }

@@ -50,8 +50,21 @@ export namespace Components {
         "unit": DistanceUnit;
     }
     interface CardManager {
+        /**
+          * any: Still need to understand what this one will look like
+         */
+        "commentsCardValues": any;
+        /**
+          * IInfoCardValues: key value pairs to show in the info card component
+         */
+        "infoCardValues": IInfoCardValues;
+        /**
+          * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
+         */
+        "mediaCardValues": IMediaCardValues[];
     }
     interface CommentCard {
+        "commentsCardValues": any;
     }
     interface CrowdsourceManager {
         /**
@@ -950,8 +963,21 @@ declare namespace LocalJSX {
         "unit"?: DistanceUnit;
     }
     interface CardManager {
+        /**
+          * any: Still need to understand what this one will look like
+         */
+        "commentsCardValues"?: any;
+        /**
+          * IInfoCardValues: key value pairs to show in the info card component
+         */
+        "infoCardValues"?: IInfoCardValues;
+        /**
+          * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
+         */
+        "mediaCardValues"?: IMediaCardValues[];
     }
     interface CommentCard {
+        "commentsCardValues"?: any;
     }
     interface CrowdsourceManager {
         /**

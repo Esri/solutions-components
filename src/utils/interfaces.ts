@@ -19,6 +19,12 @@ import {
   IItemTemplate
 } from '@esri/solution-common';
 
+export enum ECardType {
+  COMMENT="COMMENT",
+  INFO="INFO",
+  MEDIA="MEDIA"
+}
+
 export enum ELayoutMode {
   GRID = "GRID",
   HORIZONTAL = "HORIZONTAL",

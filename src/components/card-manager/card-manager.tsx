@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, State } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State } from '@stencil/core';
 import CardManager_T9n from "../../assets/t9n/card-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-
-// TODO maybe just move to the manager component directly
+import { ECardType, IInfoCardValues, IMediaCardValues } from "../../utils/interfaces";
 
 @Component({
   tag: 'card-manager',
@@ -39,6 +38,21 @@ export class CardManager {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * IInfoCardValues: key value pairs to show in the info card component
+   */
+  @Prop() infoCardValues: IInfoCardValues = {};
+
+  /**
+   * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
+   */
+  @Prop() mediaCardValues: IMediaCardValues[] = [];
+
+  /**
+   * any: Still need to understand what this one will look like
+   */
+  @Prop() commentsCardValues: any;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -51,15 +65,15 @@ export class CardManager {
    */
   @State() _translations: typeof CardManager_T9n;
 
-  protected _showInfoCard;
+  /**
+   * Controls what card type to display
+   */
+  @State() _currentCardType = ECardType.INFO;
 
-  protected _showMediaCard;
-
-  protected _showCommentsCard;
-
-  protected _fakeValues;
-
-  protected _fakeInfos;
+  /**
+   * Reference element that controls switching between cards
+   */
+  protected _cardTypeElement: HTMLCalciteSegmentedControlElement;
 
   //--------------------------------------------------------------------------
   //
@@ -85,48 +99,68 @@ export class CardManager {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   *
+   * @returns Promise when complete
+   */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
-
-    const href = window.location.href;
-    const url = href.substring(0, href.lastIndexOf('/'));
-    const img = `${url}/data/generic.png`;
-    this._fakeValues = [{
-      name: "Filename.png",
-      description: "This is an example of what a media description looks like.",
-      url: img
-    }, {
-      name: "Filename2.png",
-      description: "Another example of what a media description looks like.",
-      url: img
-    }, {
-      name: "Filename3.png",
-      description: "And another example of a media description.",
-      url: img
-    }];
-    this._fakeInfos = {
-      "Details": "Details info goes here",
-      "Name": "Name here",
-      "Phone": "(000) 000-0000",
-      "Email": "example@gmail.com",
-      "Date": "May 11, 2022"
-    };
   }
 
+  /**
+   * Renders the component.
+   */
   render() {
-    // const mediaCardClass =;
-    // const infoCardClass = "";
+
+    const infoChecked= this._currentCardType === ECardType.INFO;
+    const mediaChecked = this._currentCardType === ECardType.MEDIA;
+    const commentsChecked = this._currentCardType === ECardType.COMMENT;
+
+    const infoCardClass = infoChecked ? "" : "display-none";
+    const mediaCardClass = mediaChecked ? "" : "display-none";
+    const commentsCardClass = commentsChecked ? "" : "display-none";
     return (
       <Host>
         <div class="display-inline-table">
           <div class="w-100 display-flex padding-bottom-1">
-            <calcite-button appearance='outline' class="w-1-2">{this._translations.information}</calcite-button>
-            <calcite-button class="w-1-2">{this._translations.media}</calcite-button>
-            {/* <calcite-button>{this._translations.comments}</calcite-button> */}
+            <calcite-segmented-control
+              onCalciteSegmentedControlChange={() => this._setDisplayCard()}
+              ref={(el) => { this._cardTypeElement = el }}
+              width='full'
+            >
+              <calcite-segmented-control-item
+                checked={infoChecked}
+                value={ECardType.INFO}
+              >
+                {this._translations.information}
+              </calcite-segmented-control-item>
+              <calcite-segmented-control-item
+                checked={mediaChecked}
+                value={ECardType.MEDIA}
+              >
+                {this._translations.media}
+              </calcite-segmented-control-item>
+              <calcite-segmented-control-item
+                checked={commentsChecked}
+                value={ECardType.COMMENT}
+              >
+                {this._translations.comments}
+              </calcite-segmented-control-item>
+            </calcite-segmented-control>
           </div>
           <div>
-            <media-card class="" values={this._fakeValues} />
-            <info-card class="display-none" values={this._fakeInfos} />
+            <info-card
+              class={infoCardClass}
+              values={this.infoCardValues}
+            />
+            <media-card
+              class={mediaCardClass}
+              values={this.mediaCardValues}
+            />
+            <comment-card
+              class={commentsCardClass}
+            />
           </div>
         </div>
       </Host>
@@ -140,6 +174,15 @@ export class CardManager {
   //--------------------------------------------------------------------------
 
   /**
+   * Set the current card type to display
+   *
+   * @protected
+   */
+  protected _setDisplayCard(): void {
+    this._currentCardType = this._cardTypeElement.value as ECardType;
+  }
+
+  /**
    * Fetches the component's translations
    *
    * @returns Promise when complete
@@ -149,5 +192,4 @@ export class CardManager {
     const messages = await getLocaleComponentStrings(this.el);
     this._translations = messages[0] as typeof CardManager_T9n;
   }
-
 }

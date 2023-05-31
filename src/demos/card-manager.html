@@ -46,8 +46,9 @@
         const url = href.substring(0, href.lastIndexOf('/'));
         const img = `${url}/data/generic.png`;
 
-        const demo = document.getElementById("demo-media");
-        demo.values = [{
+        const demo = document.getElementById("demo");
+
+        demo.mediaCardValues = [{
           name: "Filename.png",
           description: "This is an example of what a media description looks like.",
           url: img
@@ -60,6 +61,14 @@
           description: "And another example of a media description.",
           url: img
         }];
+
+        demo.infoCardValues = {
+          "Details": "Details info goes here",
+          "Name": "Name here",
+          "Phone": "(000) 000-0000",
+          "Email": "example@gmail.com",
+          "Date": "May 11, 2022"
+        };
 
       }
   </script>
