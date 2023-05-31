@@ -224,3 +224,7 @@
   --calcite-ui-foreground-2: var(--calcite-ui-brand-hover);
   --calcite-ui-text-1: var(--calcite-ui-text-inverse)
 }
+
+.word-wrap-anywhere {
+  word-wrap: anywhere;
+}
