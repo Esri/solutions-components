@@ -108,3 +108,7 @@ html[dir="rtl"] .main-label {
 .font-weight-500 {
   font-weight: 500;
 }
+
+.word-wrap-anywhere {
+  word-wrap: anywhere;
+}

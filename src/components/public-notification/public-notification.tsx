@@ -665,7 +665,7 @@ export class PublicNotification {
     return (
       <calcite-panel>
         {this._getLabel(this._translations.myLists)}
-        {this._getNotice(hasSets ? this._translations.listHasSetsTip : this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1")}
+        {this._getNotice(hasSets ? this._translations.listHasSetsTip : this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1", "word-wrap-anywhere")}
         {hasSets ? this._getSelectionSetList() : (this._getOnboardingImage())}
         <div class="display-flex padding-1">
           <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full"><span class="font-weight-500">{this._translations.add}</span></calcite-button>
@@ -852,7 +852,7 @@ export class PublicNotification {
     return (
       <calcite-panel>
         {this._getLabel(this._translations.stepTwoFull, true)}
-        {this._getNotice(noticeText)}
+        {this._getNotice(noticeText, "padding-1", "word-wrap-anywhere")}
         <div>
           <map-select-tools
             bufferColor={this.bufferColor}
@@ -1152,11 +1152,12 @@ export class PublicNotification {
    */
   protected _getNotice(
     message: string,
-    noticeClass = "padding-1"
+    noticeClass = "padding-1",
+    messageClass = ""
   ): VNode {
     return (
       <calcite-notice class={noticeClass} icon="lightbulb" kind="success" open={true}>
-        <div slot="message">{message}</div>
+        <div class={messageClass} slot="message">{message}</div>
       </calcite-notice>
     );
   }
