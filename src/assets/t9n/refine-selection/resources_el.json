@@ -1,9 +1,9 @@
 {
-  "add": "Đ_Add_______ớ",
-  "remove": "Đ_Remove_____________ớ",
-  "featuresAdded": "Đ_Features added: {{n}}______________________ớ",
-  "featuresRemoved": "Đ_Features removed: {{n}}________________________ớ",
-  "totalSelected": "Đ_Total selected: {{n}}______________________ớ",
-  "inputLayer": "Đ_Input layer____________ớ",
-  "inputLayerTip": "Đ_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________ớ."
+  "add": "Προσθήκη",
+  "remove": "Κατάργηση",
+  "featuresAdded": "Προστέθηκαν στοιχεία: {{n}}",
+  "featuresRemoved": "Καταργήθηκαν στοιχεία: {{n}}",
+  "totalSelected": "Σύνολο επιλεγμένων: {{n}}",
+  "inputLayer": "Θεματικό επίπεδο εισόδου",
+  "inputLayerTip": "Επιλέξτε θεματικό επίπεδο εισόδου για να ελέγξετε επιλεγμένα στοιχεία, ενημερώστε επιλεγμένα στοιχεία από ένα θεματικό επίπεδο εισόδου κάθε φορά."
 }

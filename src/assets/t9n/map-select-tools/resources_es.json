@@ -10,6 +10,6 @@
   "sketchLayer": "Capa de boceto",
   "useLayerFeatures": "Usar entidades de capa",
   "inputLayer": "Capa de entrada",
-  "useLayerFeaturesTooltip": "á_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________Ó.",
-  "useSearchDistanceTootip": "á_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________Ó."
+  "useLayerFeaturesTooltip": "Elija una capa y utilice la herramienta de bosquejo para señalar las entidades que se pueden utilizar como límites con el fin de seleccionar entidades intersecantes de la capa de entrada.",
+  "useSearchDistanceTootip": "Defina una distancia para la zona de influencia de búsqueda que seleccionará las entidades de entrada que cortan la zona de influencia."
 }

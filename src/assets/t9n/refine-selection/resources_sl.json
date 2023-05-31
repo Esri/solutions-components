@@ -1,9 +1,9 @@
 {
-  "add": "Š_Add_______č",
-  "remove": "Š_Remove_____________č",
-  "featuresAdded": "Š_Features added: {{n}}______________________č",
-  "featuresRemoved": "Š_Features removed: {{n}}________________________č",
-  "totalSelected": "Š_Total selected: {{n}}______________________č",
-  "inputLayer": "Š_Input layer____________č",
-  "inputLayerTip": "Š_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________č."
+  "add": "Dodaj",
+  "remove": "Odstrani",
+  "featuresAdded": "Dodani geoobjekti: {{n}}",
+  "featuresRemoved": "Odstranjeni geoobjekti: {{n}}",
+  "totalSelected": "Skupaj izbranih: {{n}}",
+  "inputLayer": "Vhodni sloj",
+  "inputLayerTip": "Izberite geobjektni sloj za pregled izbranih funkcij, posodobite izbrane funkcije iz enega geobjekta naenkrat."
 }

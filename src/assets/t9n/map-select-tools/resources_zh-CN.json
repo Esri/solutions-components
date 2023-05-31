@@ -10,6 +10,6 @@
   "sketchLayer": "草图图层",
   "useLayerFeatures": "使用图层要素",
   "inputLayer": "输入图层",
-  "useLayerFeaturesTooltip": "试_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________验.",
-  "useSearchDistanceTootip": "试_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________验."
+  "useLayerFeaturesTooltip": "选择图层，并使用草图工具指向可用作边界的要素，以从输入图层中选择相交要素。",
+  "useSearchDistanceTootip": "定义搜索缓冲区的距离，该距离将选择与缓冲区相交的输入要素。"
 }

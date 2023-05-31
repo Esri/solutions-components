@@ -1,9 +1,9 @@
 {
-  "add": "כן_Add_______ש",
-  "remove": "כן_Remove_____________ש",
-  "featuresAdded": "כן_Features added: {{n}}______________________ש",
-  "featuresRemoved": "כן_Features removed: {{n}}________________________ש",
-  "totalSelected": "כן_Total selected: {{n}}______________________ש",
-  "inputLayer": "כן_Input layer____________ש",
-  "inputLayerTip": "כן_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________ש."
+  "add": "הוספה",
+  "remove": "הסרה",
+  "featuresAdded": "ישויות שנוספו: {{n}}",
+  "featuresRemoved": "ישויות שהוסרו: {{n}}",
+  "totalSelected": "סה\"כ נבחרו: {{n}}",
+  "inputLayer": "שכבת קלט",
+  "inputLayerTip": "בחר שכבת קלט כדי לעיין בישויות שנבחרו מתוכה, עדכן את הישויות שנבחרו משכבת קלט אחת בכל פעם."
 }

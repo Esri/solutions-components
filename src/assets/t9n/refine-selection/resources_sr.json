@@ -1,9 +1,9 @@
 {
-  "add": "Č_Add_______ž",
-  "remove": "Č_Remove_____________ž",
-  "featuresAdded": "Č_Features added: {{n}}______________________ž",
-  "featuresRemoved": "Č_Features removed: {{n}}________________________ž",
-  "totalSelected": "Č_Total selected: {{n}}______________________ž",
-  "inputLayer": "Č_Input layer____________ž",
-  "inputLayerTip": "Č_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________ž."
+  "add": "Dodaj",
+  "remove": "Ukloni",
+  "featuresAdded": "Dodate osobine: {{n}}",
+  "featuresRemoved": "Uklonjene osobine: {{n}}",
+  "totalSelected": "Ukupno odabrano: {{n}}",
+  "inputLayer": "Ulazni sloj",
+  "inputLayerTip": "Odaberite ulazni sloj da pregledate osobine, ažurirate odabrane osobine iz ulaznih slojeva - jedan po jedan."
 }

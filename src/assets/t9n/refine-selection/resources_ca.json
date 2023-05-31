@@ -1,9 +1,9 @@
 {
-  "add": "ó_Add_______à",
-  "remove": "ó_Remove_____________à",
-  "featuresAdded": "ó_Features added: {{n}}______________________à",
-  "featuresRemoved": "ó_Features removed: {{n}}________________________à",
-  "totalSelected": "ó_Total selected: {{n}}______________________à",
-  "inputLayer": "ó_Input layer____________à",
-  "inputLayerTip": "ó_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________à."
+  "add": "Afegeix",
+  "remove": "Elimina",
+  "featuresAdded": "Entitats afegides: {{n}}",
+  "featuresRemoved": "Entitats eliminades: {{n}}",
+  "totalSelected": "Total seleccionat: {{n}}",
+  "inputLayer": "Capa d'entrada",
+  "inputLayerTip": "Trieu la capa d'entrada les entitats seleccionades de la qual voleu revisar. Actualitzeu les entitats seleccionades d'una capa d'entitats cada vegada."
 }

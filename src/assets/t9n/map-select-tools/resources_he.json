@@ -10,6 +10,6 @@
   "sketchLayer": "שכבת שרטוט",
   "useLayerFeatures": "השתמש בישויות שכבה",
   "inputLayer": "שכבת קלט",
-  "useLayerFeaturesTooltip": "כן_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ש.",
-  "useSearchDistanceTootip": "כן_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ש."
+  "useLayerFeaturesTooltip": "בחר שכבה והשתמש בכלי הסקיצה כדי להצביע על ישויות שיכולות לשמש כגבול לצורך בחירת ישויות מצטלבות מתוך שכבת הקלט.",
+  "useSearchDistanceTootip": "הגדר מרחק לכל חיץ חיפוש שישמש לבחירת ישויות קלט המצטלבות עם החיץ."
 }

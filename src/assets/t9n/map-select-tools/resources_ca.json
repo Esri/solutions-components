@@ -10,6 +10,6 @@
   "sketchLayer": "Capa d'esbós",
   "useLayerFeatures": "Utilitza entitats de la capa",
   "inputLayer": "Capa d'entrada",
-  "useLayerFeaturesTooltip": "ó_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________à.",
-  "useSearchDistanceTootip": "ó_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________à."
+  "useLayerFeaturesTooltip": "Trieu una capa i feu servir les eines d'esbós per apuntar a entitats que es poden fer servir com a límits per seleccionar les entitats intersecants de la capa d'entrada.",
+  "useSearchDistanceTootip": "Definiu la distància d'una àrea d'influència de cerca que seleccionarà les entitats d'entrada que intersequen amb l'àrea d'influència."
 }

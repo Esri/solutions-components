@@ -1,9 +1,9 @@
 {
-  "add": "ã_Add_______Ç",
-  "remove": "ã_Remove_____________Ç",
-  "featuresAdded": "ã_Features added: {{n}}______________________Ç",
-  "featuresRemoved": "ã_Features removed: {{n}}________________________Ç",
-  "totalSelected": "ã_Total selected: {{n}}______________________Ç",
-  "inputLayer": "ã_Input layer____________Ç",
-  "inputLayerTip": "ã_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________Ç."
+  "add": "Adicionar",
+  "remove": "Remover",
+  "featuresAdded": "Feições adicionadas: {{n}}",
+  "featuresRemoved": "Feições removidas: {{n}}",
+  "totalSelected": "Total selecionado: {{n}}",
+  "inputLayer": "Camada de entrada",
+  "inputLayerTip": "Escolha a camada de entrada para revisar as feições selecionadas, atualize as feições selecionadas de uma camada de entrada por vez."
 }

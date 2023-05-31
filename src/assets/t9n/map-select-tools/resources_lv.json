@@ -10,6 +10,6 @@
   "sketchLayer": "Skiču slānis",
   "useLayerFeatures": "Izmantot slāņa elementus",
   "inputLayer": "Ievades slānis",
-  "useLayerFeaturesTooltip": "ķ_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ū.",
-  "useSearchDistanceTootip": "ķ_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ū."
+  "useLayerFeaturesTooltip": "Izvēlieties slāni un izmantojiet skiču rīkus, lai norādītu elementus, kurus var izmantot kā robežu, lai atlasītu krustojošos elementus no ievades slāņa.",
+  "useSearchDistanceTootip": "Nosakiet attālumu meklēšanas buferzonai, kas izvēlēsies ievades elementus, kas šķērso buferzonu."
 }

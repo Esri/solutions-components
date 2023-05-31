@@ -10,6 +10,6 @@
   "sketchLayer": "Layer Sketsa",
   "useLayerFeatures": "Gunakan fitur layer",
   "inputLayer": "Layer input",
-  "useLayerFeaturesTooltip": "ng_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ny.",
-  "useSearchDistanceTootip": "ng_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ny."
+  "useLayerFeaturesTooltip": "Pilih layer dan gunakan alat sketsa untuk menunjuk ke fitur yang dapat digunakan sebagai batas untuk memilih fitur yang berpotongan dari layer input.",
+  "useSearchDistanceTootip": "Tentukan jarak untuk buffer pencarian yang akan memilih fitur input yang memotong buffer."
 }

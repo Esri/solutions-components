@@ -1,9 +1,9 @@
 {
-  "add": "试_Add_______验",
-  "remove": "试_Remove_____________验",
-  "featuresAdded": "试_Features added: {{n}}______________________验",
-  "featuresRemoved": "试_Features removed: {{n}}________________________验",
-  "totalSelected": "试_Total selected: {{n}}______________________验",
-  "inputLayer": "试_Input layer____________验",
-  "inputLayerTip": "试_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________验."
+  "add": "添加",
+  "remove": "移除",
+  "featuresAdded": "添加的要素：{{n}}",
+  "featuresRemoved": "移除的要素：{{n}}",
+  "totalSelected": "所选总数：{{n}}",
+  "inputLayer": "输入图层",
+  "inputLayerTip": "选择输入图层以查看所选要素，一次从一个输入图层更新所选要素。"
 }

@@ -10,6 +10,6 @@
   "sketchLayer": "Слой със скица",
   "useLayerFeatures": "Използване на обекти на слоя",
   "inputLayer": "Входен слой",
-  "useLayerFeaturesTooltip": "й_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________й.",
-  "useSearchDistanceTootip": "й_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________й."
+  "useLayerFeaturesTooltip": "Изберете слой и използвайте инструментите за скициране, за да посочите обекти, които могат да се използват като граница за селекция на пресичащи се обекти от входния слой.",
+  "useSearchDistanceTootip": "Дефиниране на разстояние за буфер за търсене, при което се селектират входни обекти, които пресичат буфера."
 }

@@ -10,6 +10,6 @@
   "sketchLayer": "Warstwa szkicu",
   "useLayerFeatures": "Użyj obiektów warstwy",
   "inputLayer": "Warstwa wejściowa",
-  "useLayerFeaturesTooltip": "ł_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ą.",
-  "useSearchDistanceTootip": "ł_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ą."
+  "useLayerFeaturesTooltip": "Wybierz warstwę i za pomocą narzędzi do szkicowania wskaż obiekty, których można użyć jako granicy w celu wybrania przecinających się obiektów z warstwy wejściowej.",
+  "useSearchDistanceTootip": "Zdefiniuj odległość dla bufora wyszukiwania, który posłuży do wybrania obiektów wejściowych przecinających ten bufor."
 }

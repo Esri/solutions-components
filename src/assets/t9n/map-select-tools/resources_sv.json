@@ -10,6 +10,6 @@
   "sketchLayer": "Skisslager",
   "useLayerFeatures": "Använd lagergeoobjekt",
   "inputLayer": "Indatalager",
-  "useLayerFeaturesTooltip": "Å_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ö.",
-  "useSearchDistanceTootip": "Å_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ö."
+  "useLayerFeaturesTooltip": "Välj ett lager och använd skissverktygen för att peka på geoobjekt som kan användas som en gräns för att välja geoobjekt som skär varandra från indatalagret.",
+  "useSearchDistanceTootip": "Definiera ett avstånd för en sökbuffert som kommer att markera indatageoobjekt som korsar bufferten."
 }
