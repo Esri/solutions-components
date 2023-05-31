@@ -48,8 +48,8 @@ graph TD;
   map-card --> calcite-icon
   map-card --> calcite-tooltip
   map-card --> calcite-block
-  map-card --> calcite-pick-list
-  map-card --> calcite-pick-list-item
+  map-card --> calcite-list
+  map-card --> calcite-list-item
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
@@ -59,14 +59,16 @@ graph TD;
   calcite-block --> calcite-loader
   calcite-block --> calcite-action-menu
   calcite-handle --> calcite-icon
-  calcite-pick-list-item --> calcite-icon
-  calcite-pick-list-item --> calcite-action
+  calcite-list --> calcite-scrim
+  calcite-list --> calcite-filter
+  calcite-filter --> calcite-input
+  calcite-input --> calcite-progress
+  calcite-input --> calcite-icon
+  calcite-list-item --> calcite-icon
   layer-table --> calcite-panel
   layer-table --> edit-record-modal
   layer-table --> map-layer-picker
   layer-table --> calcite-button
-  layer-table --> calcite-combobox
-  layer-table --> calcite-combobox-item
   layer-table --> calcite-split-button
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
@@ -78,8 +80,6 @@ graph TD;
   calcite-modal --> calcite-icon
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
-  calcite-input --> calcite-progress
-  calcite-input --> calcite-icon
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-option

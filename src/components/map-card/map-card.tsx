@@ -348,10 +348,10 @@ export class MapCard {
     const listClass = show ? "map-list" : "display-none";
     return (
       <div class={listClass}>
-        <calcite-pick-list id="mapList">
+        <calcite-list id="mapList">
           {this.mapInfos.map(mapInfo => {
             return (
-              <calcite-pick-list-item
+              <calcite-list-item
                 label={mapInfo.name}
                 onClick={() => this._webMapSelected(mapInfo.id)}
                 selected={mapInfo.id === this._loadedId}
@@ -359,7 +359,7 @@ export class MapCard {
               />
             )
           })}
-        </calcite-pick-list>
+        </calcite-list>
       </div>
     );
   }

@@ -29,3 +29,7 @@
 .table-border {
   border: 1px solid var(--calcite-ui-border-2);
 }
+
+.w-400 {
+  width: 400px;
+}

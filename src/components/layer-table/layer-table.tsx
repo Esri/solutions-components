@@ -204,13 +204,15 @@ export class LayerTable {
     const multiFeaturesSelected = this._selectedIndexes.length > 1;
     return (
       <div class="display-flex table-border">
-        <map-layer-picker
-          mapView={this.mapView}
-          onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
-          placeholderIcon='layers'
-          scale='l'
-          type='combobox'
-        />
+        <div class="w-400">
+          <map-layer-picker
+            mapView={this.mapView}
+            onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
+            placeholderIcon='layers'
+            scale='l'
+            type='combobox'
+          />
+        </div>
         <div>
           <calcite-button
             appearance='transparent'
@@ -248,61 +250,14 @@ export class LayerTable {
             {this._translations.delete}
           </calcite-button>
 
-          <calcite-combobox
-            label=''
-            placeholder={this._translations.more}
-            scale="l"
-            selectionMode="single"
-          >
-            <calcite-combobox-item
-              icon='list-check-all'
-              onClick={() => this._selectAll(true)}
-              textLabel={this._translations.selectAll}
-              value={this._translations.selectAll}
-            />
-            <calcite-combobox-item
-              icon='list-check-all'
-              onClick={() => this._selectAll(true)}
-              textLabel="Natural Resources"
-              value="Natural Resources"
-            />
-            <calcite-combobox-item
-              icon='list-check-all'
-              onClick={() => this._selectAll(true)}
-              textLabel="Natural Resources"
-              value="Natural Resources"
-            />
-            <calcite-combobox-item
-              icon='list-check-all'
-              onClick={() => this._selectAll(true)}
-              textLabel="Natural Resources"
-              value="Natural Resources"
-            />
-            <calcite-combobox-item
-              icon='list-check-all'
-              onClick={() => this._selectAll(true)}
-              textLabel="Natural Resources"
-              value="Natural Resources"
-            />
-            <calcite-combobox-item
-              icon='list-check-all'
-              onClick={() => this._selectAll(true)}
-              textLabel="Natural Resources"
-              value="Natural Resources"
-            />
-
-          </calcite-combobox>
-
           <calcite-split-button
             appearance="transparent"
             kind='neutral'
             primaryText={this._translations.more}
-
           >
             <calcite-dropdown-group selection-mode="none">
               <calcite-dropdown-item
                 iconStart='list-check-all'
-
               >
                 {this._translations.selectAll}
               </calcite-dropdown-item>

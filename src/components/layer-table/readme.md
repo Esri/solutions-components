@@ -24,8 +24,6 @@
 - [edit-record-modal](../edit-record-modal)
 - [map-layer-picker](../map-layer-picker)
 - calcite-button
-- calcite-combobox
-- calcite-combobox-item
 - calcite-split-button
 - calcite-dropdown-group
 - calcite-dropdown-item
@@ -37,8 +35,6 @@ graph TD;
   layer-table --> edit-record-modal
   layer-table --> map-layer-picker
   layer-table --> calcite-button
-  layer-table --> calcite-combobox
-  layer-table --> calcite-combobox-item
   layer-table --> calcite-split-button
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
