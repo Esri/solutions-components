@@ -18,6 +18,7 @@
 
 ### Depends on
 
+- calcite-shell
 - calcite-segmented-control
 - calcite-segmented-control-item
 - [info-card](../info-card)
@@ -27,6 +28,7 @@
 ### Graph
 ```mermaid
 graph TD;
+  card-manager --> calcite-shell
   card-manager --> calcite-segmented-control
   card-manager --> calcite-segmented-control-item
   card-manager --> info-card
@@ -34,8 +36,8 @@ graph TD;
   card-manager --> comment-card
   calcite-segmented-control-item --> calcite-icon
   info-card --> calcite-label
-  media-card --> calcite-label
   media-card --> calcite-button
+  media-card --> calcite-label
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   style card-manager fill:#f9f,stroke:#333,stroke-width:4px

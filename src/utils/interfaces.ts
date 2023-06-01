@@ -25,6 +25,11 @@ export enum ECardType {
   MEDIA="MEDIA"
 }
 
+export enum EImageDisplayType {
+  GRID="GRID",
+  GALLERY="GALLERY"
+}
+
 export enum ELayoutMode {
   GRID = "GRID",
   HORIZONTAL = "HORIZONTAL",

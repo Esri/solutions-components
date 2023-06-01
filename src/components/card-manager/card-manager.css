@@ -37,3 +37,11 @@
 .padding-bottom-1 {
   padding-bottom: 1rem;
 }
+
+.position-relative {
+  position: relative;
+}
+
+.focus-margin {
+  margin: 1px 1px 0px 1px;
+}

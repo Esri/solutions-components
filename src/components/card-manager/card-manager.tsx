@@ -122,9 +122,10 @@ export class CardManager {
     const commentsCardClass = commentsChecked ? "" : "display-none";
     return (
       <Host>
-        <div class="display-inline-table">
-          <div class="w-100 display-flex padding-bottom-1">
+        <calcite-shell class="position-relative">
+          <div class="w-100 display-flex padding-bottom-1" slot="header">
             <calcite-segmented-control
+              class="focus-margin"
               onCalciteSegmentedControlChange={() => this._setDisplayCard()}
               ref={(el) => { this._cardTypeElement = el }}
               width='full'
@@ -149,20 +150,22 @@ export class CardManager {
               </calcite-segmented-control-item>
             </calcite-segmented-control>
           </div>
-          <div>
-            <info-card
-              class={infoCardClass}
-              values={this.infoCardValues}
-            />
-            <media-card
-              class={mediaCardClass}
-              values={this.mediaCardValues}
-            />
-            <comment-card
-              class={commentsCardClass}
-            />
+          <div class="display-inline-table">
+            <div>
+              <info-card
+                class={infoCardClass}
+                values={this.infoCardValues}
+              />
+              <media-card
+                class={mediaCardClass}
+                values={this.mediaCardValues}
+              />
+              <comment-card
+                class={commentsCardClass}
+              />
+            </div>
           </div>
-        </div>
+        </calcite-shell>
       </Host>
     );
   }

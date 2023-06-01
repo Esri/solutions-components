@@ -54,3 +54,57 @@
   width: 100%;
   height: 100%;
 }
+
+.position-relative {
+  position: relative;
+}
+
+.image-button-container {
+  position: absolute;
+  right: 0.25rem;
+  top: 0.25rem;
+  background-color: var(--calcite-ui-background);
+  padding: 0.25rem;
+}
+
+html[dir="rtl"] .image-button-container {
+  position: absolute;
+  left: 0.25rem;
+  top: 0.25rem;
+}
+
+.padding-right-25 {
+  padding-right: 0.5rem;
+}
+
+html[dir="rtl"] .padding-right-25 {
+  padding-left: 0.25rem;
+}
+
+div.image-container {
+  border: 1px solid #ccc;
+}
+
+div.image-container:hover {
+  border: 1px solid #777;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+div.image-container img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+}
+
+.container {
+  padding: 0px 6px 6px 0px;
+  float: left;
+  width: 33%;
+}
+
+.container:nth-child(3n) {
+  padding-right: 0px;
+}

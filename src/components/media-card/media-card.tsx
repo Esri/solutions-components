@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
 import MediaCard_T9n from "../../assets/t9n/media-card/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { IMediaCardValues } from '../../utils/interfaces';
+import { EImageDisplayType, IMediaCardValues } from '../../utils/interfaces';
 
 @Component({
   tag: 'media-card',
@@ -48,6 +48,11 @@ export class MediaCard {
   //  State (internal)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * The display type controls how the images will be viewed
+   */
+  @State() _displayType = EImageDisplayType.GALLERY;
 
   /**
    * The index controls what image from values to display
@@ -130,26 +135,93 @@ export class MediaCard {
    * Renders the component.
    */
   render() {
+    return (
+      <Host>
+        <div class="position-relative">
+          <div class="image-button-container">
+            <calcite-button
+              appearance="outline-fill"
+              class="padding-right-25"
+              icon-start="grid"
+              onClick={() => this._setImageDisplay(EImageDisplayType.GRID)}
+              scale="s"
+            />
+            <calcite-button
+              appearance="outline-fill"
+              icon-start="image"
+              onClick={() => this._setImageDisplay(EImageDisplayType.GALLERY)}
+              scale="s"
+            />
+          </div>
+          {this._getImageDisplay()}
+        </div>
+      </Host>
+    );
+  }
+
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (protected)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * Render the image view based on the current display type
+   *
+   * @protected
+   */
+  protected _getImageDisplay(): VNode {
+    return this._displayType === EImageDisplayType.GRID ?
+      this._getGridDisplay() : this._getGallerydDisplay();
+  }
+
+  /**
+   * Render the Grid image view
+   *
+   * @protected
+   */
+  protected _getGridDisplay(): VNode {
+    return (
+      <div>
+        {
+          this.values.map(v => {
+            return (
+              <div class="container">
+                <div class="image-container">
+                  <img alt={v.name} src={v.url} />
+                </div>
+              </div>
+            )
+          })
+        }
+        <div class="clearfix"/>
+      </div>
+    );
+  }
+
+  /**
+   * Render the Gallery image view
+   *
+   * @protected
+   */
+  protected _getGallerydDisplay(): VNode {
     const v = this.values?.length > 0 ? this.values[this._index] : undefined;
     const total = (this.values || []).length;
     const imgNum = this._index + 1;
     return (
-      <Host>
-        <div>
-          <div class="display-flex">
-            <img class="img-container" src={v?.url} />
-          </div>
-          <calcite-label scale='s'>
-            <span class="font-italic padding-bottom-1">
-              {v?.name}
-            </span>
-          </calcite-label>
-          <calcite-label>
-            <span class="padding-bottom-1">
-              {v?.description}
-            </span>
-          </calcite-label>
-        </div>
+      <div>
+        <img class="img-container" src={v?.url} />
+
+        <calcite-label scale='s'>
+          <span class="font-italic padding-bottom-1">
+            {v?.name}
+          </span>
+        </calcite-label>
+        <calcite-label>
+          <span class="padding-bottom-1">
+            {v?.description}
+          </span>
+        </calcite-label>
 
         <div class="button-container">
           <div class="count-container">
@@ -176,15 +248,9 @@ export class MediaCard {
             </calcite-button>
           </div>
         </div>
-      </Host>
+      </div>
     );
   }
-
-  //--------------------------------------------------------------------------
-  //
-  //  Functions (protected)
-  //
-  //--------------------------------------------------------------------------
 
   /**
    * Resets the index to 0
@@ -211,6 +277,17 @@ export class MediaCard {
    */
   protected _decrementIndex(): void {
     this._index -= 1;
+  }
+
+  /**
+   * Store the current display type
+   *
+   * @protected
+   */
+  protected _setImageDisplay(
+    displayType: EImageDisplayType
+  ): void {
+    this._displayType = displayType;
   }
 
   /**
