@@ -139,11 +139,11 @@ export class MediaCard {
     const galleryButtonApperance = this._displayType === EImageDisplayType.GALLERY ? "solid" : "outline-fill";
     return (
       <Host>
-        <div class="position-relative">
+        <div>
           <div class="image-button-container">
             <calcite-button
               appearance={gridButonApperance}
-              class="padding-right-25"
+              class="padding-right-5"
               icon-start="grid"
               onClick={() => this._setImageDisplay(EImageDisplayType.GRID)}
               scale="s"
@@ -190,7 +190,9 @@ export class MediaCard {
             return (
               <div class="container">
                 <div class="image-container">
-                  <img alt={v.name} src={v.url} />
+                  <a href={v.url} target="_blank">
+                    <img alt={v.name} src={v.url} />
+                  </a>
                 </div>
               </div>
             )
@@ -219,7 +221,7 @@ export class MediaCard {
             {v?.name}
           </span>
         </calcite-label>
-        <calcite-label>
+        <calcite-label class="min-height-50">
           <span class="padding-bottom-1">
             {v?.description}
           </span>
@@ -243,7 +245,7 @@ export class MediaCard {
             >{this._translations.previous}
             </calcite-button>
             <calcite-button
-              class="padding-start-1 button-width"
+              class="padding-start-1 button-width margin-right-5"
               disabled={(this.values || []).length === imgNum}
               onClick={() => this._incrementIndex()}
             >{this._translations.next}
