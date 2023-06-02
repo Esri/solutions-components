@@ -65,6 +65,7 @@ export namespace Components {
     }
     interface CommentCard {
         "commentsCardValues": any;
+        "feature": __esri.Feature;
     }
     interface CrowdsourceManager {
         /**
@@ -978,6 +979,7 @@ declare namespace LocalJSX {
     }
     interface CommentCard {
         "commentsCardValues"?: any;
+        "feature"?: __esri.Feature;
     }
     interface CrowdsourceManager {
         /**

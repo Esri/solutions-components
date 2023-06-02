@@ -40,6 +40,8 @@ graph TD;
   media-card --> calcite-label
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
+  comment-card --> calcite-shell
+  comment-card --> calcite-button
   style card-manager fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

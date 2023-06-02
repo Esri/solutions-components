@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State } from '@stencil/core';
+import { Component, Element, Host, h, Listen, Prop, State } from '@stencil/core';
 import CardManager_T9n from "../../assets/t9n/card-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { ECardType, IInfoCardValues, IMediaCardValues } from "../../utils/interfaces";
@@ -39,6 +39,11 @@ export class CardManager {
   //--------------------------------------------------------------------------
 
   /**
+   * any: Still need to understand what this one will look like
+   */
+  @Prop() commentsCardValues: any;
+
+  /**
    * IInfoCardValues: key value pairs to show in the info card component
    */
   @Prop() infoCardValues: IInfoCardValues = {};
@@ -47,11 +52,6 @@ export class CardManager {
    * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
    */
   @Prop() mediaCardValues: IMediaCardValues[] = [];
-
-  /**
-   * any: Still need to understand what this one will look like
-   */
-  @Prop() commentsCardValues: any;
 
   //--------------------------------------------------------------------------
   //
@@ -69,6 +69,8 @@ export class CardManager {
    * Controls what card type to display
    */
   @State() _currentCardType = ECardType.INFO;
+
+  @State() features: __esri.Feature[];
 
   /**
    * Reference element that controls switching between cards
@@ -92,6 +94,14 @@ export class CardManager {
   //  Events (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Handle changes to the buffer distance value
+   */
+  @Listen("selectionChange", { target: "window" })
+  mapChanged(event: CustomEvent): void {
+    this.features = event.detail;
+  }
 
   //--------------------------------------------------------------------------
   //

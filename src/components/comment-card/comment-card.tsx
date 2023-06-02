@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State } from '@stencil/core';
+import CommentCard_T9n from "../../assets/t9n/comment-card/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
   tag: 'comment-card',
@@ -38,11 +40,19 @@ export class CommentCard {
   // not sure what this will look like yet
   @Prop() commentsCardValues: any;
 
+  @Prop() feature: __esri.Feature;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() _translations: typeof CommentCard_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -74,12 +84,27 @@ export class CommentCard {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   *
+   * @returns Promise when complete
+   */
+  async componentWillLoad(): Promise<void> {
+    await this._getTranslations();
+  }
+
+  /**
+   * Renders the component.
+   */
   render() {
     return (
       <Host>
-        <div class="w-100">
-          {this.commentsCardValues}
-        </div>
+        <calcite-shell>
+          <div class="w-100 background">
+            {this.feature?.view.popup.content}
+          </div>
+          <calcite-button class="button-placement" slot="footer">{this._translations.addRecord}</calcite-button>
+        </calcite-shell>
       </Host>
     );
   }
@@ -97,8 +122,8 @@ export class CommentCard {
    * @protected
    */
   protected async _getTranslations(): Promise<void> {
-    // const messages = await getLocaleComponentStrings(this.el);
-    // this._translations = messages[0] as typeof BufferTools_T9n;
+    const messages = await getLocaleComponentStrings(this.el);
+    this._translations = messages[0] as typeof CommentCard_T9n;
   }
 
 }
