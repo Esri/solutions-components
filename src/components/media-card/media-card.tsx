@@ -135,19 +135,21 @@ export class MediaCard {
    * Renders the component.
    */
   render() {
+    const gridButonApperance = this._displayType === EImageDisplayType.GRID ? "solid" : "outline-fill";
+    const galleryButtonApperance = this._displayType === EImageDisplayType.GALLERY ? "solid" : "outline-fill";
     return (
       <Host>
         <div class="position-relative">
           <div class="image-button-container">
             <calcite-button
-              appearance="outline-fill"
+              appearance={gridButonApperance}
               class="padding-right-25"
               icon-start="grid"
               onClick={() => this._setImageDisplay(EImageDisplayType.GRID)}
               scale="s"
             />
             <calcite-button
-              appearance="outline-fill"
+              appearance={galleryButtonApperance}
               icon-start="image"
               onClick={() => this._setImageDisplay(EImageDisplayType.GALLERY)}
               scale="s"
