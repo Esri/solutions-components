@@ -779,6 +779,7 @@ export class MapSelectTools {
           const clearLabel = this._searchClearLabel();
           void this._clearResults(false, clearLabel);
         }
+        this._searchWidget.resultGraphic.visible = false;
       });
     }
   }
