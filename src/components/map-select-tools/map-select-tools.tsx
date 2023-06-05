@@ -753,6 +753,7 @@ export class MapSelectTools {
 
       this._searchWidget = new this.Search(searchOptions);
       this._searchWidget.popupEnabled = false;
+      this._searchWidget.resultGraphicEnabled = false;
 
       this._searchWidget.on("search-clear", () => {
         const clearLabel = this._searchClearLabel();

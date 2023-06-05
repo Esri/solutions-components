@@ -357,7 +357,7 @@ export class PublicNotification {
     this._checkPopups();
 
     if (this.mapView?.popup) {
-      this.mapView.popup.autoOpenEnabled = pageType !== EPageType.LIST ? false : this._popupsEnabled;
+      (this.mapView as any).popupEnabled = pageType !== EPageType.LIST ? false : this._popupsEnabled;
     }
 
     if (pageType === EPageType.EXPORT) {
@@ -1518,7 +1518,9 @@ export class PublicNotification {
    */
   protected _checkPopups(): void {
     if (typeof this._popupsEnabled !== 'boolean') {
-      this._popupsEnabled = this.mapView?.popup.autoOpenEnabled;
+      // this is a temp workaround to handle a mapView spec change
+      // I don't see where we can get early access to 4.27 types in our package.json
+      this._popupsEnabled = (this.mapView as any)?.popupEnabled;
     }
   }
 
