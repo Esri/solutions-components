@@ -776,6 +776,7 @@ export class MapSelectTools {
           );
           this._drawTools.graphics = graphics;
           this._drawTools.updateGraphics();
+          this._searchWidget.resultGraphic.visible = false;
         } else {
           const clearLabel = this._searchClearLabel();
           void this._clearResults(false, clearLabel);
