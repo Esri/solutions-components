@@ -38,6 +38,10 @@
   padding-bottom: 1rem;
 }
 
+.padding-1 {
+  padding: 1rem;
+}
+
 .position-relative {
   position: relative;
 }
@@ -48,4 +52,9 @@
 
 .overflow-auto {
   overflow: auto;
+}
+
+.border {
+  border: 1px solid var(--calcite-ui-border-2);
+  border-radius: 5px;
 }

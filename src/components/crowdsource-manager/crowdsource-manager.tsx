@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Listen, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { ELayoutMode, IMapInfo } from '../../utils/interfaces';
@@ -94,24 +94,24 @@ export class CrowdsourceManager {
   //
   //--------------------------------------------------------------------------
 
-  /**
-   * Handle changes to the buffer distance value
-   */
-  @Listen("mapChanged", { target: "window" })
-  mapChanged(event: CustomEvent): void {
-    this._mapView = event.detail;
-  }
-
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   *
+   * @returns Promise when complete
+   */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
   }
 
+  /**
+   * Renders the component.
+   */
   render() {
     return (
       <Host>
@@ -238,8 +238,11 @@ export class CrowdsourceManager {
     const mapSizeClass = this._getMapSizeClass(layoutMode, panelOpen);
     return (
       <div class={`${mapSizeClass} overflow-hidden`}>
-        <div style={{ "overflow": "hidden" }} >
+        <div class="height-50 overflow-hidden" >
           <map-card mapInfos={this.mapInfos}/>
+        </div>
+        <div>
+          <card-manager class="height-50-margin"/>
         </div>
       </div>
     );

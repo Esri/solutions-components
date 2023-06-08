@@ -134,11 +134,18 @@
 }
 
 .border {
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--calcite-ui-border-3);
+  border-width: 1px solid var(--calcite-ui-border-3);
 }
 
 .position-relative {
   position: relative;
+}
+
+.height-50 {
+  height: 50%;
+}
+
+.height-50-margin {
+  margin: 1rem 0rem 1rem 1rem;
+  height: calc(50% - 4rem);
 }

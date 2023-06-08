@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core';
 import AddRecordModal_T9n from "../../assets/t9n/add-record-modal/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 
@@ -42,7 +42,7 @@ export class AddRecordModal {
   /**
    * When true the component is displayed
    */
-  @Prop({ mutable: true }) open = false;
+  @Prop({ mutable: true, reflect: true }) open = false;
 
   //--------------------------------------------------------------------------
   //
@@ -85,6 +85,16 @@ export class AddRecordModal {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Emitted on demand when a buffer is generated.
+   */
+  @Event() modalClosed: EventEmitter<void>;
+
+  /**
+   * Emitted on demand when a buffer is generated.
+   */
+  @Event() modalOpened: EventEmitter<void>;
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -107,7 +117,7 @@ export class AddRecordModal {
     return (
       <Host>
         <div>
-          <calcite-modal open={this.open} width="s">
+          <calcite-modal onCalciteModalClose={() => this._modalClose()} onCalciteModalOpen={() => this._modalOpen()} open={this.open} width="s">
             <div class="font-500" slot="header">{this._translations.addRecord}</div>
             <div slot="content">
               <div>
@@ -196,6 +206,24 @@ export class AddRecordModal {
   // TODO needs to be implemented will handle save of the record
   protected _save(): void {
     this.open = false;
+  }
+
+  /**
+   * Emit the modal close event
+   *
+   * @returns void
+   */
+  protected _modalClose(): void {
+    this.modalClosed.emit();
+  }
+
+  /**
+   * Emit the modal open event
+   *
+   * @returns void
+   */
+  protected _modalOpen(): void {
+    this.modalOpened.emit();
   }
 
   /**

@@ -611,9 +611,17 @@ export namespace Components {
         "value": string;
     }
 }
+export interface AddRecordModalCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLAddRecordModalElement;
+}
 export interface BufferToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLBufferToolsElement;
+}
+export interface CommentCardCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCommentCardElement;
 }
 export interface DeductCalculatorCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -912,6 +920,14 @@ declare global {
 declare namespace LocalJSX {
     interface AddRecordModal {
         /**
+          * Emitted on demand when a buffer is generated.
+         */
+        "onModalClosed"?: (event: AddRecordModalCustomEvent<void>) => void;
+        /**
+          * Emitted on demand when a buffer is generated.
+         */
+        "onModalOpened"?: (event: AddRecordModalCustomEvent<void>) => void;
+        /**
           * When true the component is displayed
          */
         "open"?: boolean;
@@ -980,6 +996,10 @@ declare namespace LocalJSX {
     interface CommentCard {
         "commentsCardValues"?: any;
         "feature"?: __esri.Feature;
+        /**
+          * Emitted on demand when a buffer is generated.
+         */
+        "onOpenAddRecord"?: (event: CommentCardCustomEvent<void>) => void;
     }
     interface CrowdsourceManager {
         /**

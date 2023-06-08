@@ -60,17 +60,25 @@ export class CardManager {
   //--------------------------------------------------------------------------
 
   /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
+   * When true the add record modal will be displayed
    */
-  @State() _translations: typeof CardManager_T9n;
+  @State() _addRecordOpen = false;
 
   /**
    * Controls what card type to display
    */
   @State() _currentCardType = ECardType.INFO;
 
-  @State() features: __esri.Feature[];
+  /**
+   * The current selected features
+   */
+  @State() _features: __esri.Feature[];
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() _translations: typeof CardManager_T9n;
 
   /**
    * Reference element that controls switching between cards
@@ -96,11 +104,19 @@ export class CardManager {
   //--------------------------------------------------------------------------
 
   /**
-   * Handle changes to the buffer distance value
+   * Store the selected features
    */
   @Listen("selectionChange", { target: "window" })
   mapChanged(event: CustomEvent): void {
-    this.features = event.detail;
+    this._features = event.detail;
+  }
+
+  /**
+   * Sets the state flag that will open the modal
+   */
+  @Listen("openAddRecord", { target: "window" })
+  openAddRecord(): void {
+    this._addRecordOpen = true;
   }
 
   //--------------------------------------------------------------------------
@@ -132,7 +148,7 @@ export class CardManager {
     const commentsCardClass = commentsChecked ? "" : "display-none";
     return (
       <Host>
-        <div class="overflow-auto">
+        <div class="border padding-1 overflow-auto">
           <calcite-shell class="position-relative">
             <div class="w-100 display-flex padding-bottom-1" slot="header">
               <calcite-segmented-control
@@ -178,6 +194,7 @@ export class CardManager {
             </div>
           </calcite-shell>
         </div>
+        <add-record-modal onModalClosed={() => this._addRecordClosed()} open={this._addRecordOpen}/>
       </Host>
     );
   }
@@ -187,6 +204,10 @@ export class CardManager {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  protected _addRecordClosed(): void {
+    this._addRecordOpen = false;
+  }
 
   /**
    * Set the current card type to display

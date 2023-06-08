@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core';
 import CommentCard_T9n from "../../assets/t9n/comment-card/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 
@@ -78,6 +78,11 @@ export class CommentCard {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Event that will trigger the opening of the add record modal
+   */
+  @Event() openAddRecord: EventEmitter<void>;
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -103,7 +108,13 @@ export class CommentCard {
           <div class="w-100 background">
             {this.feature?.view.popup.content}
           </div>
-          <calcite-button class="button-placement" slot="footer">{this._translations.addRecord}</calcite-button>
+          <calcite-button
+            class="button-placement"
+            onClick={() => this._addRecord()}
+            slot="footer"
+          >
+            {this._translations.addRecord}
+          </calcite-button>
         </calcite-shell>
       </Host>
     );
@@ -114,6 +125,16 @@ export class CommentCard {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Emit the open add record event
+   *
+   * @returns void
+   * @protected
+   */
+  protected _addRecord(): void {
+    this.openAddRecord.emit();
+  }
 
   /**
    * Fetches the component's translations

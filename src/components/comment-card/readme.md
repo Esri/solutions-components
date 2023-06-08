@@ -13,6 +13,13 @@
 | `feature`            | --                     |             | `Feature` | `undefined` |
 
 
+## Events
+
+| Event           | Description                                   | Type                |
+| --------------- | --------------------------------------------- | ------------------- |
+| `openAddRecord` | Emitted on demand when a buffer is generated. | `CustomEvent<void>` |
+
+
 ## Dependencies
 
 ### Used by
