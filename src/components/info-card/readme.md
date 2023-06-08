@@ -21,11 +21,13 @@
 
 ### Depends on
 
+- calcite-shell
 - calcite-label
 
 ### Graph
 ```mermaid
 graph TD;
+  info-card --> calcite-shell
   info-card --> calcite-label
   card-manager --> info-card
   style info-card fill:#f9f,stroke:#333,stroke-width:4px

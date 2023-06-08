@@ -21,12 +21,14 @@
 ### Depends on
 
 - calcite-button
+- calcite-shell
 - calcite-label
 
 ### Graph
 ```mermaid
 graph TD;
   media-card --> calcite-button
+  media-card --> calcite-shell
   media-card --> calcite-label
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon

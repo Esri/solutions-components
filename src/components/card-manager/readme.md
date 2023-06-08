@@ -35,8 +35,10 @@ graph TD;
   card-manager --> media-card
   card-manager --> comment-card
   calcite-segmented-control-item --> calcite-icon
+  info-card --> calcite-shell
   info-card --> calcite-label
   media-card --> calcite-button
+  media-card --> calcite-shell
   media-card --> calcite-label
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon

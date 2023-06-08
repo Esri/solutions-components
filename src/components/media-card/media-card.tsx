@@ -135,26 +135,9 @@ export class MediaCard {
    * Renders the component.
    */
   render() {
-    const gridButonApperance = this._displayType === EImageDisplayType.GRID ? "solid" : "outline-fill";
-    const galleryButtonApperance = this._displayType === EImageDisplayType.GALLERY ? "solid" : "outline-fill";
     return (
       <Host>
         <div>
-          <div class="image-button-container">
-            <calcite-button
-              appearance={gridButonApperance}
-              class="padding-right-5"
-              icon-start="grid"
-              onClick={() => this._setImageDisplay(EImageDisplayType.GRID)}
-              scale="s"
-            />
-            <calcite-button
-              appearance={galleryButtonApperance}
-              icon-start="image"
-              onClick={() => this._setImageDisplay(EImageDisplayType.GALLERY)}
-              scale="s"
-            />
-          </div>
           {this._getImageDisplay()}
         </div>
       </Host>
@@ -167,14 +150,37 @@ export class MediaCard {
   //
   //--------------------------------------------------------------------------
 
+  protected _getImageButtonContainer() : VNode {
+    const gridButonApperance = this._displayType === EImageDisplayType.GRID ? "solid" : "outline-fill";
+    const galleryButtonApperance = this._displayType === EImageDisplayType.GALLERY ? "solid" : "outline-fill";
+    return (
+      <div class="image-button-container">
+        <calcite-button
+          appearance={gridButonApperance}
+          class="padding-right-5"
+          icon-start="grid"
+          onClick={() => this._setImageDisplay(EImageDisplayType.GRID)}
+          scale="s"
+        />
+        <calcite-button
+          appearance={galleryButtonApperance}
+          icon-start="image"
+          onClick={() => this._setImageDisplay(EImageDisplayType.GALLERY)}
+          scale="s"
+        />
+      </div>
+    );
+  }
+
   /**
    * Render the image view based on the current display type
    *
    * @protected
    */
   protected _getImageDisplay(): VNode {
+    const toggleButtons = this._getImageButtonContainer();
     return this._displayType === EImageDisplayType.GRID ?
-      this._getGridDisplay() : this._getGallerydDisplay();
+      this._getGridDisplay(toggleButtons) : this._getGallerydDisplay(toggleButtons);
   }
 
   /**
@@ -182,23 +188,28 @@ export class MediaCard {
    *
    * @protected
    */
-  protected _getGridDisplay(): VNode {
+  protected _getGridDisplay(
+    toggleButtons: VNode
+  ): VNode {
     return (
       <div>
-        {
-          this.values.map(v => {
-            return (
-              <div class="container">
-                <div class="image-container">
-                  <a href={v.url} target="_blank">
-                    <img alt={v.name} src={v.url} />
-                  </a>
+        {toggleButtons}
+        <div class="clearfix">
+          {
+            this.values.map(v => {
+              return (
+                <div class="container">
+                  <div class="image-container">
+                    <a href={v.url} target="_blank">
+                      <img alt={v.name} src={v.url} />
+                    </a>
+                  </div>
                 </div>
-              </div>
-            )
-          })
-        }
-        <div class="clearfix"/>
+              )
+            })
+          }
+          <div class="clearfix" />
+        </div>
       </div>
     );
   }
@@ -208,12 +219,15 @@ export class MediaCard {
    *
    * @protected
    */
-  protected _getGallerydDisplay(): VNode {
+  protected _getGallerydDisplay(
+    toggleButtons: VNode
+  ): VNode {
     const v = this.values?.length > 0 ? this.values[this._index] : undefined;
     const total = (this.values || []).length;
     const imgNum = this._index + 1;
     return (
-      <div>
+      <calcite-shell>
+        {toggleButtons}
         <img class="img-container" src={v?.url} />
 
         <calcite-label scale='s'>
@@ -227,7 +241,7 @@ export class MediaCard {
           </span>
         </calcite-label>
 
-        <div class="button-container">
+        <div class="button-container" slot="footer">
           <div class="count-container">
             <calcite-label>
               <span>
@@ -245,14 +259,14 @@ export class MediaCard {
             >{this._translations.previous}
             </calcite-button>
             <calcite-button
-              class="padding-start-1 button-width margin-right-5"
+              class="padding-start-1 button-width"
               disabled={(this.values || []).length === imgNum}
               onClick={() => this._incrementIndex()}
             >{this._translations.next}
             </calcite-button>
           </div>
         </div>
-      </div>
+      </calcite-shell>
     );
   }
 

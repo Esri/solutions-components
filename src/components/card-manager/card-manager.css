@@ -45,3 +45,7 @@
 .focus-margin {
   margin: 1px 1px 0px 1px;
 }
+
+.overflow-auto {
+  overflow: auto;
+}

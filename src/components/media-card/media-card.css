@@ -83,14 +83,6 @@ html[dir="rtl"] .image-button-container {
   padding-right: 0.5rem;
 }
 
-.margin-right-5 {
-  margin-right: 5px;
-}
-
-html[dir="rtl"] .margin-right-5 {
-  margin-left: 5px;
-}
-
 html[dir="rtl"] .padding-right-5 {
   padding-left: 0.5rem;
 }
@@ -103,10 +95,6 @@ div.image-container {
 div.image-container:hover {
   border: 1px solid var(--calcite-ui-brand-hover);
 }
-
-/* * {
-  box-sizing: border-box;
-} */
 
 div.image-container img {
   width: 100%;
@@ -124,4 +112,8 @@ div.image-container img {
 
 .container:nth-child(3n) {
   padding-right: 0px;
+}
+
+html[dir="rtl"] .container:nth-child(3n) {
+  padding-left: 0px;
 }

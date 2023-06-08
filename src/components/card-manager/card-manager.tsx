@@ -132,50 +132,52 @@ export class CardManager {
     const commentsCardClass = commentsChecked ? "" : "display-none";
     return (
       <Host>
-        <calcite-shell class="position-relative">
-          <div class="w-100 display-flex padding-bottom-1" slot="header">
-            <calcite-segmented-control
-              class="focus-margin"
-              onCalciteSegmentedControlChange={() => this._setDisplayCard()}
-              ref={(el) => { this._cardTypeElement = el }}
-              width='full'
-            >
-              <calcite-segmented-control-item
-                checked={infoChecked}
-                value={ECardType.INFO}
+        <div class="overflow-auto">
+          <calcite-shell class="position-relative">
+            <div class="w-100 display-flex padding-bottom-1" slot="header">
+              <calcite-segmented-control
+                class="focus-margin"
+                onCalciteSegmentedControlChange={() => this._setDisplayCard()}
+                ref={(el) => { this._cardTypeElement = el }}
+                width='full'
               >
-                {this._translations.information}
-              </calcite-segmented-control-item>
-              <calcite-segmented-control-item
-                checked={mediaChecked}
-                value={ECardType.MEDIA}
-              >
-                {this._translations.media}
-              </calcite-segmented-control-item>
-              <calcite-segmented-control-item
-                checked={commentsChecked}
-                value={ECardType.COMMENT}
-              >
-                {this._translations.comments}
-              </calcite-segmented-control-item>
-            </calcite-segmented-control>
-          </div>
-          <div class="display-inline-table">
-            <div>
-              <info-card
-                class={infoCardClass}
-                values={this.infoCardValues}
-              />
-              <media-card
-                class={mediaCardClass}
-                values={this.mediaCardValues}
-              />
-              <comment-card
-                class={commentsCardClass}
-              />
+                <calcite-segmented-control-item
+                  checked={infoChecked}
+                  value={ECardType.INFO}
+                >
+                  {this._translations.information}
+                </calcite-segmented-control-item>
+                <calcite-segmented-control-item
+                  checked={mediaChecked}
+                  value={ECardType.MEDIA}
+                >
+                  {this._translations.media}
+                </calcite-segmented-control-item>
+                <calcite-segmented-control-item
+                  checked={commentsChecked}
+                  value={ECardType.COMMENT}
+                >
+                  {this._translations.comments}
+                </calcite-segmented-control-item>
+              </calcite-segmented-control>
             </div>
-          </div>
-        </calcite-shell>
+            <div class="display-inline-table">
+              <div>
+                <info-card
+                  class={infoCardClass}
+                  values={this.infoCardValues}
+                />
+                <media-card
+                  class={mediaCardClass}
+                  values={this.mediaCardValues}
+                />
+                <comment-card
+                  class={commentsCardClass}
+                />
+              </div>
+            </div>
+          </calcite-shell>
+        </div>
       </Host>
     );
   }

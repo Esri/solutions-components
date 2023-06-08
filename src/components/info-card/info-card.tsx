@@ -89,7 +89,7 @@ export class InfoCard {
   render() {
     return (
       <Host>
-        <div>
+        <calcite-shell>
           <div class="bottom-border">
             <calcite-label >{this.cardTitle}</calcite-label>
           </div>
@@ -100,7 +100,7 @@ export class InfoCard {
               </tbody>
             </table>
           </div>
-        </div>
+        </calcite-shell>
       </Host>
     );
   }
