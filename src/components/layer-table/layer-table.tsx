@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -116,6 +116,9 @@ export class LayerTable {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * watch for changes in map view and get the first layer
+   */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
     const mapLayerIds = await getMapLayerIds(this.mapView);
@@ -133,6 +136,11 @@ export class LayerTable {
   //  Events (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Emitted on demand when a layer is selected
+   */
+  @Event() featureSelectionChange: EventEmitter<number[]>;
 
   //--------------------------------------------------------------------------
   //
@@ -322,6 +330,10 @@ export class LayerTable {
         },
         container: node
       } as __esri.FeatureTableProperties);
+
+      this._table.highlightIds.on("change", () => {
+        this.featureSelectionChange.emit(this._table.highlightIds.toArray())
+      });
     }
   }
 

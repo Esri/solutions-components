@@ -40,8 +40,6 @@ export class CommentCard {
   // not sure what this will look like yet
   @Prop() commentsCardValues: any;
 
-  @Prop() feature: __esri.Feature;
-
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -105,9 +103,6 @@ export class CommentCard {
     return (
       <Host>
         <calcite-shell>
-          <div class="w-100 background">
-            {this.feature?.view.popup.content}
-          </div>
           <calcite-button
             class="button-placement"
             onClick={() => this._addRecord()}

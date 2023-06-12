@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EDrawMode, EExpandType, IExportInfos, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
+import { DistanceUnit, EDrawMode, EExpandType, IExportInfos, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -55,9 +55,13 @@ export namespace Components {
          */
         "commentsCardValues": any;
         /**
-          * IInfoCardValues: key value pairs to show in the info card component
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
-        "infoCardValues": IInfoCardValues;
+        "layerView": __esri.FeatureLayerView;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
         /**
           * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
          */
@@ -65,7 +69,6 @@ export namespace Components {
     }
     interface CommentCard {
         "commentsCardValues": any;
-        "feature": __esri.Feature;
     }
     interface CrowdsourceManager {
         /**
@@ -85,13 +88,13 @@ export namespace Components {
     }
     interface InfoCard {
         /**
-          * string: the components title
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
-        "cardTitle": string;
+        "graphic": __esri.Graphic;
         /**
-          * IInfoCardValues: key value pairs to show in the components table
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
-        "values": IInfoCardValues;
+        "mapView": __esri.MapView;
     }
     interface JsonEditor {
         /**
@@ -225,7 +228,7 @@ export namespace Components {
          */
         "clear": () => Promise<void>;
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
         /**
@@ -281,7 +284,7 @@ export namespace Components {
          */
         "layerViews": __esri.FeatureLayerView[];
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
         /**
@@ -382,7 +385,7 @@ export namespace Components {
          */
         "featureHighlightEnabled": boolean;
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
         /**
@@ -428,7 +431,7 @@ export namespace Components {
          */
         "enabledLayerIds": string[];
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
         /**
@@ -626,6 +629,10 @@ export interface CommentCardCustomEvent<T> extends CustomEvent<T> {
 export interface DeductCalculatorCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLDeductCalculatorElement;
+}
+export interface LayerTableCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLLayerTableElement;
 }
 export interface MapCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -985,9 +992,13 @@ declare namespace LocalJSX {
          */
         "commentsCardValues"?: any;
         /**
-          * IInfoCardValues: key value pairs to show in the info card component
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
-        "infoCardValues"?: IInfoCardValues;
+        "layerView"?: __esri.FeatureLayerView;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
         /**
           * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
          */
@@ -995,9 +1006,8 @@ declare namespace LocalJSX {
     }
     interface CommentCard {
         "commentsCardValues"?: any;
-        "feature"?: __esri.Feature;
         /**
-          * Emitted on demand when a buffer is generated.
+          * Event that will trigger the opening of the add record modal
          */
         "onOpenAddRecord"?: (event: CommentCardCustomEvent<void>) => void;
     }
@@ -1023,13 +1033,13 @@ declare namespace LocalJSX {
     }
     interface InfoCard {
         /**
-          * string: the components title
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
-        "cardTitle"?: string;
+        "graphic"?: __esri.Graphic;
         /**
-          * IInfoCardValues: key value pairs to show in the components table
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
-        "values"?: IInfoCardValues;
+        "mapView"?: __esri.MapView;
     }
     interface JsonEditor {
         /**
@@ -1054,6 +1064,10 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when a layer is selected
+         */
+        "onFeatureSelectionChange"?: (event: LayerTableCustomEvent<number[]>) => void;
     }
     interface ListItem {
     }
@@ -1156,7 +1170,7 @@ declare namespace LocalJSX {
     }
     interface MapSearch {
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         /**
@@ -1206,7 +1220,7 @@ declare namespace LocalJSX {
          */
         "layerViews"?: __esri.FeatureLayerView[];
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         /**
@@ -1294,7 +1308,7 @@ declare namespace LocalJSX {
          */
         "featureHighlightEnabled"?: boolean;
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         /**
@@ -1344,7 +1358,7 @@ declare namespace LocalJSX {
          */
         "enabledLayerIds"?: string[];
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         /**

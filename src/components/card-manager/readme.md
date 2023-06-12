@@ -7,11 +7,12 @@
 
 ## Properties
 
-| Property             | Attribute              | Description                                                                                   | Type                 | Default     |
-| -------------------- | ---------------------- | --------------------------------------------------------------------------------------------- | -------------------- | ----------- |
-| `commentsCardValues` | `comments-card-values` | any: Still need to understand what this one will look like                                    | `any`                | `undefined` |
-| `infoCardValues`     | --                     | IInfoCardValues: key value pairs to show in the info card component                           | `IInfoCardValues`    | `{}`        |
-| `mediaCardValues`    | --                     | IMediaCardValues[]: Array of objects that contain the name, description, and image to display | `IMediaCardValues[]` | `[]`        |
+| Property             | Attribute              | Description                                                                                                                               | Type                 | Default     |
+| -------------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ----------- |
+| `commentsCardValues` | `comments-card-values` | any: Still need to understand what this one will look like                                                                                | `any`                | `undefined` |
+| `layerView`          | --                     | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView`   | `undefined` |
+| `mapView`            | --                     | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                 | `MapView`            | `undefined` |
+| `mediaCardValues`    | --                     | IMediaCardValues[]: Array of objects that contain the name, description, and image to display                                             | `IMediaCardValues[]` | `[]`        |
 
 
 ## Dependencies
@@ -42,7 +43,6 @@ graph TD;
   card-manager --> add-record-modal
   calcite-segmented-control-item --> calcite-icon
   info-card --> calcite-shell
-  info-card --> calcite-label
   media-card --> calcite-button
   media-card --> calcite-shell
   media-card --> calcite-label

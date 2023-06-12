@@ -7,17 +7,16 @@
 
 ## Properties
 
-| Property             | Attribute              | Description | Type      | Default     |
-| -------------------- | ---------------------- | ----------- | --------- | ----------- |
-| `commentsCardValues` | `comments-card-values` |             | `any`     | `undefined` |
-| `feature`            | --                     |             | `Feature` | `undefined` |
+| Property             | Attribute              | Description | Type  | Default     |
+| -------------------- | ---------------------- | ----------- | ----- | ----------- |
+| `commentsCardValues` | `comments-card-values` |             | `any` | `undefined` |
 
 
 ## Events
 
-| Event           | Description                                   | Type                |
-| --------------- | --------------------------------------------- | ------------------- |
-| `openAddRecord` | Emitted on demand when a buffer is generated. | `CustomEvent<void>` |
+| Event           | Description                                                 | Type                |
+| --------------- | ----------------------------------------------------------- | ------------------- |
+| `openAddRecord` | Event that will trigger the opening of the add record modal | `CustomEvent<void>` |
 
 
 ## Dependencies

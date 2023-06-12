@@ -17,12 +17,14 @@
 import { Component, Element, Host, h, Listen, Prop, State } from '@stencil/core';
 import CardManager_T9n from "../../assets/t9n/card-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { ECardType, IInfoCardValues, IMediaCardValues } from "../../utils/interfaces";
+import { ECardType, IMediaCardValues } from "../../utils/interfaces";
+import { queryFeaturesByID } from "../../utils/queryUtils";
+import { getMapLayerView } from "../../utils/mapViewUtils";
 
 @Component({
   tag: 'card-manager',
   styleUrl: 'card-manager.css',
-  shadow: true,
+  shadow: false,
 })
 export class CardManager {
   //--------------------------------------------------------------------------
@@ -44,9 +46,14 @@ export class CardManager {
   @Prop() commentsCardValues: any;
 
   /**
-   * IInfoCardValues: key value pairs to show in the info card component
+   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
    */
-  @Prop() infoCardValues: IInfoCardValues = {};
+  @Prop() layerView: __esri.FeatureLayerView;
+
+  /**
+   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   */
+  @Prop() mapView: __esri.MapView;
 
   /**
    * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
@@ -70,9 +77,9 @@ export class CardManager {
   @State() _currentCardType = ECardType.INFO;
 
   /**
-   * The current selected features
+   * The current selected graphics
    */
-  @State() _features: __esri.Feature[];
+  @State() _graphics: __esri.Graphic[];
 
   /**
    * Contains the translations for this component.
@@ -104,11 +111,26 @@ export class CardManager {
   //--------------------------------------------------------------------------
 
   /**
-   * Store the selected features
+   * Query the layer for the provided ids and store the result graphics
    */
-  @Listen("selectionChange", { target: "window" })
-  mapChanged(event: CustomEvent): void {
-    this._features = event.detail;
+  @Listen("featureSelectionChange", { target: "window" })
+  async featureSelectionChange(
+    evt: CustomEvent
+  ): Promise<void> {
+    const ids = evt.detail;
+    const featureSet = await queryFeaturesByID(ids, this.layerView.layer)
+    this._graphics = featureSet.features;
+  }
+
+  /**
+   * Get the layer view for the provided layer id
+   */
+  @Listen("layerSelectionChange", { target: "window" })
+  async layerSelectionChange(
+    evt: CustomEvent
+  ): Promise<void> {
+    const id: string = evt.detail[0];
+    this.layerView = await getMapLayerView(this.mapView, id);
   }
 
   /**
@@ -138,7 +160,6 @@ export class CardManager {
    * Renders the component.
    */
   render() {
-
     const infoChecked= this._currentCardType === ECardType.INFO;
     const mediaChecked = this._currentCardType === ECardType.MEDIA;
     const commentsChecked = this._currentCardType === ECardType.COMMENT;
@@ -146,6 +167,9 @@ export class CardManager {
     const infoCardClass = infoChecked ? "" : "display-none";
     const mediaCardClass = mediaChecked ? "" : "display-none";
     const commentsCardClass = commentsChecked ? "" : "display-none";
+
+    // TODO ask team what I'm supposed to do with multi-select
+    const graphic = this._graphics?.length > 0 ? this._graphics[0] : undefined;
     return (
       <Host>
         <div class="border padding-1 overflow-auto">
@@ -181,7 +205,8 @@ export class CardManager {
               <div>
                 <info-card
                   class={infoCardClass}
-                  values={this.infoCardValues}
+                  graphic={graphic}
+                  mapView={this.mapView}
                 />
                 <media-card
                   class={mediaCardClass}

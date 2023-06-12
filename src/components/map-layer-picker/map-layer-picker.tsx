@@ -92,11 +92,9 @@ export class MapLayerPicker {
    *
    */
   @Watch("mapView")
-  async watchStateHandler(newValue: boolean, oldValue: boolean): Promise<void> {
-    if (newValue !== oldValue) {
-      await this._setLayers();
-      this.layerSelectionChange.emit([this.layerIds[0]]);
-    }
+  async mapViewWatchHandler(): Promise<void> {
+    await this._setLayers();
+    this.layerSelectionChange.emit([this.layerIds[0]]);
   }
 
   //--------------------------------------------------------------------------

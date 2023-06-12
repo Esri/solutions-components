@@ -12,6 +12,13 @@
 | `mapView` | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView` | `undefined` |
 
 
+## Events
+
+| Event                    | Description                                | Type                    |
+| ------------------------ | ------------------------------------------ | ----------------------- |
+| `featureSelectionChange` | Emitted on demand when a layer is selected | `CustomEvent<number[]>` |
+
+
 ## Dependencies
 
 ### Used by

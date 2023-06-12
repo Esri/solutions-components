@@ -430,10 +430,6 @@ export interface IQueryExtentResponse {
   extent: __esri.Extent;
 }
 
-export interface IInfoCardValues {
-  [key: string]: string;
-}
-
 export interface IMediaCardValues {
   name: string;
   description: string;

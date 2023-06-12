@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, VNode } from '@stencil/core';
-import { IInfoCardValues } from '../../utils/interfaces';
+import { Component, Element, Host, h, Prop, Watch } from '@stencil/core';
+import { loadModules } from "../../utils/loadModules";
 
 @Component({
   tag: 'info-card',
   styleUrl: 'info-card.css',
-  shadow: true,
+  shadow: false,
 })
 export class InfoCard {
   //--------------------------------------------------------------------------
@@ -38,14 +38,14 @@ export class InfoCard {
   //--------------------------------------------------------------------------
 
   /**
-   * string: the components title
+   * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
-  @Prop() cardTitle = "";
+  @Prop() graphic: __esri.Graphic;
 
   /**
-   * IInfoCardValues: key value pairs to show in the components table
+   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
-  @Prop() values: IInfoCardValues = {};
+  @Prop() mapView: __esri.MapView;
 
   //--------------------------------------------------------------------------
   //
@@ -59,11 +59,41 @@ export class InfoCard {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * esri/widgets/Feature: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Feature.html
+   * used for module import
+   */
+  protected Feature: typeof import("esri/widgets/Feature");
+
+  /**
+   * esri/widgets/Feature: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Feature.html
+   * used for widget instance
+   */
+  protected _feature: __esri.Feature;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Watch for changes to the graphic and update the feature widget
+   */
+  @Watch("graphic")
+  graphicWatchHandler(): void {
+    if (this._feature && this.graphic) {
+      this._feature.graphic = this.graphic;
+    }
+  }
+
+  /**
+   * Watch for changes to the mapView and re-init the Feature widget
+   */
+  @Watch("mapView")
+  mapViewWatchHandler(): void {
+    this._initFeatureWidget();
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -84,22 +114,29 @@ export class InfoCard {
   //--------------------------------------------------------------------------
 
   /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   *
+   * @returns Promise when complete
+   */
+  async componentWillLoad(): Promise<void> {
+    await this._initModules();;
+  }
+
+  /**
+   * StencilJS: Init the feature widget after the comoponent loads
+   */
+  async componentDidLoad(): Promise<void> {
+    this._initFeatureWidget();
+  }
+
+  /**
    * Renders the component.
    */
   render() {
     return (
       <Host>
         <calcite-shell>
-          <div class="bottom-border">
-            <calcite-label >{this.cardTitle}</calcite-label>
-          </div>
-          <div class="padding-top-1-2">
-            <table>
-              <tbody>
-                {this._getRows()}
-              </tbody>
-            </table>
-          </div>
+          <div class="esri-widget" id="feature-node"/>
         </calcite-shell>
       </Host>
     );
@@ -112,27 +149,33 @@ export class InfoCard {
   //--------------------------------------------------------------------------
 
   /**
-   * Render the user defined values as table rows
+   * Load esri javascript api modules
    *
-   * @returns array of row nodes
+   * @returns Promise resolving when function is done
+   *
    * @protected
    */
-  protected _getRows(): VNode[] {
-    return Object.keys(this.values).map(k => {
-      return (
-        <tr>
-          <td>
-            <calcite-label>
-              <span class="font-color-3">{k}</span>
-            </calcite-label>
-          </td>
-          <td>
-            <calcite-label>
-              <span>{this.values[k]}</span>
-            </calcite-label>
-          </td>
-        </tr>
-      );
-    })
+  protected async _initModules(): Promise<void> {
+    const [Feature] = await loadModules([
+      "esri/widgets/Feature"
+    ]);
+    this.Feature = Feature;
+  }
+
+  /**
+   * Init the Feature widget so we can display the popup content
+   *
+   * @protected
+   */
+  protected _initFeatureWidget(): void {
+    if (this.mapView && !this._feature) {
+      // map and spatialReference must be set for Arcade
+      // expressions to execute and display content
+      this._feature = new this.Feature({
+        map: this.mapView.map,
+        spatialReference: this.mapView.spatialReference,
+        container: "feature-node"
+      });
+    }
   }
 }

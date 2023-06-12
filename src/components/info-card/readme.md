@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property    | Attribute    | Description                                                      | Type              | Default |
-| ----------- | ------------ | ---------------------------------------------------------------- | ----------------- | ------- |
-| `cardTitle` | `card-title` | string: the components title                                     | `string`          | `""`    |
-| `values`    | --           | IInfoCardValues: key value pairs to show in the components table | `IInfoCardValues` | `{}`    |
+| Property  | Attribute | Description                                                                                               | Type      | Default     |
+| --------- | --------- | --------------------------------------------------------------------------------------------------------- | --------- | ----------- |
+| `graphic` | --        | esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html             | `Graphic` | `undefined` |
+| `mapView` | --        | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView` | `undefined` |
 
 
 ## Dependencies
@@ -22,13 +22,11 @@
 ### Depends on
 
 - calcite-shell
-- calcite-label
 
 ### Graph
 ```mermaid
 graph TD;
   info-card --> calcite-shell
-  info-card --> calcite-label
   card-manager --> info-card
   style info-card fill:#f9f,stroke:#333,stroke-width:4px
 ```

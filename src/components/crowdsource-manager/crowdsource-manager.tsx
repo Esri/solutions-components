@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Host, h, Listen, Prop, State, VNode } from '@stencil/core';
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { ELayoutMode, IMapInfo } from '../../utils/interfaces';
@@ -93,6 +93,16 @@ export class CrowdsourceManager {
   //  Events (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Listen for mapChanged event to be fired then store the new mapView so components will be updated
+   */
+  @Listen("mapChanged", { target: "window" })
+  async mapChanged(
+    evt: CustomEvent
+  ): Promise<void> {
+    this._mapView = evt.detail;
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -242,7 +252,7 @@ export class CrowdsourceManager {
           <map-card mapInfos={this.mapInfos}/>
         </div>
         <div>
-          <card-manager class="height-50-margin"/>
+          <card-manager class="height-50-margin" mapView={this?._mapView}/>
         </div>
       </div>
     );
