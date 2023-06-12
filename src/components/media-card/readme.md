@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property | Attribute | Description                                                                                   | Type                 | Default |
-| -------- | --------- | --------------------------------------------------------------------------------------------- | -------------------- | ------- |
-| `values` | --        | IMediaCardValues[]: Array of objects that contain the name, description, and image to display | `IMediaCardValues[]` | `[]`    |
+| Property    | Attribute    | Description                                                                                   | Type                 | Default |
+| ----------- | ------------ | --------------------------------------------------------------------------------------------- | -------------------- | ------- |
+| `isLoading` | `is-loading` | boolean: when true a loading indicator will be shown                                          | `boolean`            | `false` |
+| `values`    | --           | IMediaCardValues[]: Array of objects that contain the name, description, and image to display | `IMediaCardValues[]` | `[]`    |
 
 
 ## Dependencies
@@ -20,6 +21,7 @@
 
 ### Depends on
 
+- calcite-loader
 - calcite-button
 - calcite-shell
 - calcite-label
@@ -27,6 +29,7 @@
 ### Graph
 ```mermaid
 graph TD;
+  media-card --> calcite-loader
   media-card --> calcite-button
   media-card --> calcite-shell
   media-card --> calcite-label

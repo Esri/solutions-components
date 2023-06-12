@@ -69,6 +69,10 @@ export namespace Components {
     }
     interface CommentCard {
         "commentsCardValues": any;
+        /**
+          * boolean: when true a loading indicator will be shown
+         */
+        "isLoading": boolean;
     }
     interface CrowdsourceManager {
         /**
@@ -91,6 +95,10 @@ export namespace Components {
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "graphic": __esri.Graphic;
+        /**
+          * boolean: when true a loading indicator will be shown
+         */
+        "isLoading": boolean;
         /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -321,6 +329,10 @@ export namespace Components {
         "sketchPolygonSymbol": __esri.SimpleFillSymbol;
     }
     interface MediaCard {
+        /**
+          * boolean: when true a loading indicator will be shown
+         */
+        "isLoading": boolean;
         /**
           * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
          */
@@ -1007,6 +1019,10 @@ declare namespace LocalJSX {
     interface CommentCard {
         "commentsCardValues"?: any;
         /**
+          * boolean: when true a loading indicator will be shown
+         */
+        "isLoading"?: boolean;
+        /**
           * Event that will trigger the opening of the add record modal
          */
         "onOpenAddRecord"?: (event: CommentCardCustomEvent<void>) => void;
@@ -1036,6 +1052,10 @@ declare namespace LocalJSX {
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "graphic"?: __esri.Graphic;
+        /**
+          * boolean: when true a loading indicator will be shown
+         */
+        "isLoading"?: boolean;
         /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -1261,6 +1281,10 @@ declare namespace LocalJSX {
         "sketchPolygonSymbol"?: __esri.SimpleFillSymbol;
     }
     interface MediaCard {
+        /**
+          * boolean: when true a loading indicator will be shown
+         */
+        "isLoading"?: boolean;
         /**
           * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
          */

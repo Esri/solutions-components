@@ -72,6 +72,11 @@ export class CardManager {
   @State() _addRecordOpen = false;
 
   /**
+   * When true a loading indicator will be shown in the current card
+   */
+  @State() _cardLoading = false;
+
+  /**
    * Controls what card type to display
    */
   @State() _currentCardType = ECardType.INFO;
@@ -118,8 +123,10 @@ export class CardManager {
     evt: CustomEvent
   ): Promise<void> {
     const ids = evt.detail;
-    const featureSet = await queryFeaturesByID(ids, this.layerView.layer)
-    this._graphics = featureSet.features;
+    this._cardLoading = true;
+    const featureSet = ids.length > 0 ? await queryFeaturesByID(ids, this.layerView.layer, false) : undefined;
+    this._cardLoading = false;
+    this._graphics = featureSet?.features || [];
   }
 
   /**
@@ -206,14 +213,17 @@ export class CardManager {
                 <info-card
                   class={infoCardClass}
                   graphic={graphic}
+                  isLoading={this._cardLoading}
                   mapView={this.mapView}
                 />
                 <media-card
                   class={mediaCardClass}
+                  isLoading={this._cardLoading}
                   values={this.mediaCardValues}
                 />
                 <comment-card
                   class={commentsCardClass}
+                  isLoading={this._cardLoading}
                 />
               </div>
             </div>

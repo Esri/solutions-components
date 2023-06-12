@@ -117,3 +117,7 @@ div.image-container img {
 html[dir="rtl"] .container:nth-child(3n) {
   padding-left: 0px;
 }
+
+.display-none {
+  display: none;
+}

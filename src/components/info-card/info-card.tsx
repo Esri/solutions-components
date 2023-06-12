@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, Watch } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, Watch } from '@stencil/core';
+import InfoCard_T9n from "../../assets/t9n/info-card/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
 import { loadModules } from "../../utils/loadModules";
 
 @Component({
@@ -43,6 +45,11 @@ export class InfoCard {
   @Prop() graphic: __esri.Graphic;
 
   /**
+   * boolean: when true a loading indicator will be shown
+   */
+  @Prop() isLoading = false;
+
+  /**
    * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
@@ -52,6 +59,12 @@ export class InfoCard {
   //  State (internal)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() _translations: typeof InfoCard_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -82,7 +95,8 @@ export class InfoCard {
    */
   @Watch("graphic")
   graphicWatchHandler(): void {
-    if (this._feature && this.graphic) {
+    this._initFeatureWidget();
+    if (this._feature) {
       this._feature.graphic = this.graphic;
     }
   }
@@ -119,24 +133,21 @@ export class InfoCard {
    * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
-    await this._initModules();;
-  }
-
-  /**
-   * StencilJS: Init the feature widget after the comoponent loads
-   */
-  async componentDidLoad(): Promise<void> {
-    this._initFeatureWidget();
+    await this._initModules();
+    await this._getTranslations();
   }
 
   /**
    * Renders the component.
    */
   render() {
+    const loadingClass = this.isLoading ? "" : "display-none";
+    const featureNodeClass = this.isLoading ? "display-none" : "";
     return (
       <Host>
         <calcite-shell>
-          <div class="esri-widget" id="feature-node"/>
+          <calcite-loader class={loadingClass} label={this._translations.fetchingData} />
+          <div class={"esri-widget " + featureNodeClass} id="feature-node" />
         </calcite-shell>
       </Host>
     );
@@ -178,4 +189,15 @@ export class InfoCard {
       });
     }
   }
+
+    /**
+   * Fetches the component's translations
+   *
+   * @returns Promise when complete
+   * @protected
+   */
+    protected async _getTranslations(): Promise<void> {
+      const messages = await getLocaleComponentStrings(this.el);
+      this._translations = messages[0] as typeof InfoCard_T9n;
+    }
 }

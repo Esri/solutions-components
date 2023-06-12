@@ -421,7 +421,7 @@ async function _prepareLabels(
   const [intl] = await loadModules(["esri/intl"]);
 
   // Get the features to export
-  const featureSet = await queryFeaturesByID(ids, layer);
+  const featureSet = await queryFeaturesByID(ids, layer, true);
 
   // Get field data types. Do we have any domain-based fields?
   const attributeTypes: IAttributeTypes = {};

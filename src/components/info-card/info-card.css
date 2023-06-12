@@ -45,3 +45,7 @@ tr:nth-child(odd) {
 .font-color-3 {
   color: var(--calcite-ui-text-3);
 }
+
+.display-none {
+  display: none;
+}

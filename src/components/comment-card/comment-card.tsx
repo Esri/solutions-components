@@ -40,6 +40,11 @@ export class CommentCard {
   // not sure what this will look like yet
   @Prop() commentsCardValues: any;
 
+  /**
+   * boolean: when true a loading indicator will be shown
+   */
+  @Prop() isLoading = false;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -100,9 +105,12 @@ export class CommentCard {
    * Renders the component.
    */
   render() {
+    const loadingClass = this.isLoading ? "" : "display-none";
+    const commentCardClass = this.isLoading ? "display-none" : "";
     return (
       <Host>
-        <calcite-shell>
+        <calcite-loader class={loadingClass} label={this._translations.fetchingData} />
+        <calcite-shell class={commentCardClass}>
           <calcite-button
             class="button-placement"
             onClick={() => this._addRecord()}

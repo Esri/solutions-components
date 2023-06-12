@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property             | Attribute              | Description | Type  | Default     |
-| -------------------- | ---------------------- | ----------- | ----- | ----------- |
-| `commentsCardValues` | `comments-card-values` |             | `any` | `undefined` |
+| Property             | Attribute              | Description                                          | Type      | Default     |
+| -------------------- | ---------------------- | ---------------------------------------------------- | --------- | ----------- |
+| `commentsCardValues` | `comments-card-values` |                                                      | `any`     | `undefined` |
+| `isLoading`          | `is-loading`           | boolean: when true a loading indicator will be shown | `boolean` | `false`     |
 
 
 ## Events
@@ -27,12 +28,14 @@
 
 ### Depends on
 
+- calcite-loader
 - calcite-shell
 - calcite-button
 
 ### Graph
 ```mermaid
 graph TD;
+  comment-card --> calcite-loader
   comment-card --> calcite-shell
   comment-card --> calcite-button
   calcite-button --> calcite-loader

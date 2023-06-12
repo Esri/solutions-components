@@ -43,6 +43,11 @@ export class MediaCard {
    */
   @Prop() values: IMediaCardValues[] = [];
 
+  /**
+   * boolean: when true a loading indicator will be shown
+   */
+  @Prop() isLoading = false;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -135,9 +140,12 @@ export class MediaCard {
    * Renders the component.
    */
   render() {
+    const loadingClass = this.isLoading ? "" : "display-none";
+    const mediaCardClass = this.isLoading ? "display-none" : "";
     return (
       <Host>
-        <div>
+        <calcite-loader class={loadingClass} label={this._translations.fetchingData} />
+        <div class={mediaCardClass}>
           {this._getImageDisplay()}
         </div>
       </Host>

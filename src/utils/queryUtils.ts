@@ -82,10 +82,12 @@ export async function queryObjectIds(
  */
  export async function queryFeaturesByID(
   ids: number[],
-  layer: __esri.FeatureLayer
+  layer: __esri.FeatureLayer,
+  returnGeometry: boolean
 ): Promise<__esri.FeatureSet> {
   const q = layer.createQuery();
   q.objectIds = ids;
+  q.returnGeometry = returnGeometry;
   return layer.queryFeatures(q);
 }
 

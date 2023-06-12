@@ -43,11 +43,14 @@ graph TD;
   card-manager --> add-record-modal
   calcite-segmented-control-item --> calcite-icon
   info-card --> calcite-shell
+  info-card --> calcite-loader
+  media-card --> calcite-loader
   media-card --> calcite-button
   media-card --> calcite-shell
   media-card --> calcite-label
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
+  comment-card --> calcite-loader
   comment-card --> calcite-shell
   comment-card --> calcite-button
   add-record-modal --> calcite-modal
