@@ -397,7 +397,7 @@ export class MapDrawTools {
         },
         undoRedoMenu: false,
         settingsMenu: this.drawMode === EDrawMode.SKETCH
-      } as any // temp workaround since we need duplicateButton flag that is not in 4.26 types but will be in the 4.27 modules we get from IA
+      }
     });
 
     this._sketchViewModel = new this.SketchViewModel({
