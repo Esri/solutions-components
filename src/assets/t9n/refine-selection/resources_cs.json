@@ -1,9 +1,9 @@
 {
-  "add": "Ř_Add_______ů",
-  "remove": "Ř_Remove_____________ů",
-  "featuresAdded": "Ř_Features added: {{n}}______________________ů",
-  "featuresRemoved": "Ř_Features removed: {{n}}________________________ů",
-  "totalSelected": "Ř_Total selected: {{n}}______________________ů",
-  "inputLayer": "Ř_Input layer____________ů",
-  "inputLayerTip": "Ř_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________ů."
+  "add": "Přidat",
+  "remove": "Odebrat",
+  "featuresAdded": "Přidané prvky: {{n}}",
+  "featuresRemoved": "Odebrané prvky: {{n}}",
+  "totalSelected": "Celkem vybráno: {{n}}",
+  "inputLayer": "Vstupní vrstva",
+  "inputLayerTip": "Zvolte vstupní vrstvu, ve které chcete vybrané prvky zkontrolovat, a aktualizujte vybrané prvky postupně po jedné vstupní vrstvě."
 }

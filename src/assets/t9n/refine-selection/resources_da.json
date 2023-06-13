@@ -1,9 +1,9 @@
 {
-  "add": "ø_Add_______å",
-  "remove": "ø_Remove_____________å",
-  "featuresAdded": "ø_Features added: {{n}}______________________å",
-  "featuresRemoved": "ø_Features removed: {{n}}________________________å",
-  "totalSelected": "ø_Total selected: {{n}}______________________å",
-  "inputLayer": "ø_Input layer____________å",
-  "inputLayerTip": "ø_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________å."
+  "add": "Tilføj",
+  "remove": "Fjern",
+  "featuresAdded": "Objekter tilføjet: {{n}}",
+  "featuresRemoved": "Objekter fjernet: {{n}}",
+  "totalSelected": "I alt markeret: {{n}}",
+  "inputLayer": "Input-lag",
+  "inputLayerTip": "Vælg inputlag til at gennemgå de valgte objekter, opdater de valgte objekter fra ét inputlag ad gangen."
 }

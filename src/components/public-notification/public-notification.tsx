@@ -357,7 +357,7 @@ export class PublicNotification {
     this._checkPopups();
 
     if (this.mapView?.popup) {
-      this.mapView.popup.autoOpenEnabled = pageType !== EPageType.LIST ? false : this._popupsEnabled;
+      this.mapView.popupEnabled = pageType !== EPageType.LIST ? false : this._popupsEnabled;
     }
 
     if (pageType === EPageType.EXPORT) {
@@ -1518,7 +1518,7 @@ export class PublicNotification {
    */
   protected _checkPopups(): void {
     if (typeof this._popupsEnabled !== 'boolean') {
-      this._popupsEnabled = this.mapView?.popup.autoOpenEnabled;
+      this._popupsEnabled = this.mapView?.popupEnabled;
     }
   }
 

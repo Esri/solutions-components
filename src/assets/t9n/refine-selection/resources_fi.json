@@ -1,9 +1,9 @@
 {
-  "add": "Å_Add_______ö",
-  "remove": "Å_Remove_____________ö",
-  "featuresAdded": "Å_Features added: {{n}}______________________ö",
-  "featuresRemoved": "Å_Features removed: {{n}}________________________ö",
-  "totalSelected": "Å_Total selected: {{n}}______________________ö",
-  "inputLayer": "Å_Input layer____________ö",
-  "inputLayerTip": "Å_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________ö."
+  "add": "Lisää",
+  "remove": "Poista",
+  "featuresAdded": "Lisätyt kohteet: {{n}}",
+  "featuresRemoved": "Poistetut kohteet: {{n}}",
+  "totalSelected": "Valittu yhteensä: {{n}}",
+  "inputLayer": "Lähtöaineiston karttataso",
+  "inputLayerTip": "Valitse lähtöaineiston karttataso, josta voit tarkastella valittuja kohteita. Päivitä valitut kohteet yhdestä lähtöaineiston karttatasosta kerrallaan."
 }

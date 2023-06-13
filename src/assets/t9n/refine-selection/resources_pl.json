@@ -1,9 +1,9 @@
 {
-  "add": "ł_Add_______ą",
-  "remove": "ł_Remove_____________ą",
-  "featuresAdded": "ł_Features added: {{n}}______________________ą",
-  "featuresRemoved": "ł_Features removed: {{n}}________________________ą",
-  "totalSelected": "ł_Total selected: {{n}}______________________ą",
-  "inputLayer": "ł_Input layer____________ą",
-  "inputLayerTip": "ł_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________ą."
+  "add": "Dodaj",
+  "remove": "Usuń",
+  "featuresAdded": "Dodane obiekty: {{n}}",
+  "featuresRemoved": "Usunięte obiekty: {{n}}",
+  "totalSelected": "Wybrane łącznie: {{n}}",
+  "inputLayer": "Warstwa wejściowa",
+  "inputLayerTip": "Wybierz warstwę wejściową zawierającą wybrane obiekty, które chcesz przejrzeć. Aktualizuj wybrane obiekty z jednej warstwy wejściowej naraz."
 }

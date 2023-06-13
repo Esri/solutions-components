@@ -1,9 +1,9 @@
 {
-  "add": "ґ_Add_______Ї",
-  "remove": "ґ_Remove_____________Ї",
-  "featuresAdded": "ґ_Features added: {{n}}______________________Ї",
-  "featuresRemoved": "ґ_Features removed: {{n}}________________________Ї",
-  "totalSelected": "ґ_Total selected: {{n}}______________________Ї",
-  "inputLayer": "ґ_Input layer____________Ї",
-  "inputLayerTip": "ґ_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________Ї."
+  "add": "Додати",
+  "remove": "Вилучити",
+  "featuresAdded": "Об'єктів додано: {{n}}",
+  "featuresRemoved": "Об'єктів видалено: {{n}}",
+  "totalSelected": "Усього вибрано: {{n}}",
+  "inputLayer": "Вхідний шар",
+  "inputLayerTip": "Виберіть вхідний шар для перегляду вибраних об’єктів, оновіть вибрані об’єкти з одного вхідного шару за раз."
 }

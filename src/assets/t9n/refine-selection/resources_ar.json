@@ -1,9 +1,9 @@
 {
-  "add": "بيت_Add_______لاحقة",
-  "remove": "بيت_Remove_____________لاحقة",
-  "featuresAdded": "بيت_Features added: {{n}}______________________لاحقة",
-  "featuresRemoved": "بيت_Features removed: {{n}}________________________لاحقة",
-  "totalSelected": "بيت_Total selected: {{n}}______________________لاحقة",
-  "inputLayer": "بيت_Input layer____________لاحقة",
-  "inputLayerTip": "بيت_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________لاحقة."
+  "add": "إضافة",
+  "remove": "إزالة",
+  "featuresAdded": "المعالم التي تمت إضافتها: {{n}}",
+  "featuresRemoved": "المعالم التي تمت إزالتها: {{n}}",
+  "totalSelected": "إجمالي المحدد: {{n}}",
+  "inputLayer": "الطبقة المدخلة",
+  "inputLayerTip": "اختر طبقة الإدخال لمراجعة المعالم المحددة منها، وتحديث المعالم المحددة من طبقة إدخال واحدة في كل مرة."
 }

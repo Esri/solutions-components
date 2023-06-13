@@ -1,9 +1,9 @@
 {
-  "add": "Ă_Add_______ș",
-  "remove": "Ă_Remove_____________ș",
-  "featuresAdded": "Ă_Features added: {{n}}______________________ș",
-  "featuresRemoved": "Ă_Features removed: {{n}}________________________ș",
-  "totalSelected": "Ă_Total selected: {{n}}______________________ș",
-  "inputLayer": "Ă_Input layer____________ș",
-  "inputLayerTip": "Ă_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________ș."
+  "add": "Adăugare",
+  "remove": "Eliminare",
+  "featuresAdded": "Obiecte spațiale adăugate: {{n}}",
+  "featuresRemoved": "Obiecte spațiale eliminate: {{n}}",
+  "totalSelected": "Total selectate: {{n}}",
+  "inputLayer": "Strat tematic de intrare",
+  "inputLayerTip": "Alegeți stratul tematic de intrare pentru a consulta obiectele spațiale din acesta, actualizați obiectele spațiale selectate dintr-un strat tematic la un moment dat."
 }

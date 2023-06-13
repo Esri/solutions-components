@@ -10,6 +10,6 @@
   "sketchLayer": "ชั้นข้อมูลการวาด",
   "useLayerFeatures": "ใช้ฟีเจอร์ชั้นข้อมูล",
   "inputLayer": "ชั้นข้อมูลอินพุท",
-  "useLayerFeaturesTooltip": "ก้_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ษฺ.",
-  "useSearchDistanceTootip": "ก้_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ษฺ."
+  "useLayerFeaturesTooltip": "เลือกชั้นข้อมูล แล้วใช้เครื่องมือการวาดเพื่อชี้ไปยังฟีเจอร์ที่สามารถใช้เป็นขอบเขตในการเลือกฟีเจอร์ที่ตัดกันจากชั้นข้อมูลอินพุทได้",
+  "useSearchDistanceTootip": "กำหนดระยะทางสำหรับบัฟเฟอร์การค้นหาที่จะเลือกฟีเจอร์อินพุทที่ตัดกับบัฟเฟอร์"
 }

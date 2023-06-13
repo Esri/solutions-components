@@ -10,6 +10,6 @@
   "sketchLayer": "スケッチ レイヤー",
   "useLayerFeatures": "レイヤー フィーチャの使用",
   "inputLayer": "入力レイヤー",
-  "useLayerFeaturesTooltip": "須_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________鷗.",
-  "useSearchDistanceTootip": "須_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________鷗."
+  "useLayerFeaturesTooltip": "レイヤーを選択し、スケッチ ツールを使用して、境界として使用できるフィーチャをポイントすることで、交差するフィーチャを入力レイヤーから選択します。",
+  "useSearchDistanceTootip": "検索バッファーの距離を定義して、バッファーと交差する入力フィーチャを選択します。"
 }

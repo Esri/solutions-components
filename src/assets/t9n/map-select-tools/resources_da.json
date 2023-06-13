@@ -10,6 +10,6 @@
   "sketchLayer": "Skitselag",
   "useLayerFeatures": "Brug lagobjekter",
   "inputLayer": "Input-lag",
-  "useLayerFeaturesTooltip": "ø_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________å.",
-  "useSearchDistanceTootip": "ø_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________å."
+  "useLayerFeaturesTooltip": "Vælg et lag, og brug skitseværktøjerne til at pege på objekter, der kan bruges som en grænse til at vælge gennemskærende objekter fra inputlaget.",
+  "useSearchDistanceTootip": "Definer en afstand til en søgebuffer, som vil vælge de inputobjekter, der gennemskærer bufferen."
 }

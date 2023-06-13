@@ -1,9 +1,9 @@
 {
-  "add": "Đ_Add_______ớ",
-  "remove": "Đ_Remove_____________ớ",
-  "featuresAdded": "Đ_Features added: {{n}}______________________ớ",
-  "featuresRemoved": "Đ_Features removed: {{n}}________________________ớ",
-  "totalSelected": "Đ_Total selected: {{n}}______________________ớ",
-  "inputLayer": "Đ_Input layer____________ớ",
-  "inputLayerTip": "Đ_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________ớ."
+  "add": "Thêm",
+  "remove": "Gỡ bỏ",
+  "featuresAdded": "Đối tượng đã thêm: {{n}}",
+  "featuresRemoved": "Đối tượng đã xoá: {{n}}",
+  "totalSelected": "Tổng số đối tượng đã chọn: {{n}}",
+  "inputLayer": "Lớp đầu vào",
+  "inputLayerTip": "Chọn lớp đầu vào để xem lại các đối tượng đã chọn, cập nhật các đối tượng đã chọn từ một lớp đầu vào tại một thời điểm."
 }

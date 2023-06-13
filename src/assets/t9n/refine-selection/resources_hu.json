@@ -1,9 +1,9 @@
 {
-  "add": "í_Add_______ő",
-  "remove": "í_Remove_____________ő",
-  "featuresAdded": "í_Features added: {{n}}______________________ő",
-  "featuresRemoved": "í_Features removed: {{n}}________________________ő",
-  "totalSelected": "í_Total selected: {{n}}______________________ő",
-  "inputLayer": "í_Input layer____________ő",
-  "inputLayerTip": "í_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________ő."
+  "add": "Hozzáadás",
+  "remove": "Eltávolítás",
+  "featuresAdded": "Hozzáadott vektoros elemek: {{n}}",
+  "featuresRemoved": "Eltávolított vektoros elemek: {{n}}",
+  "totalSelected": "Kijelölve összesen: {{n}}",
+  "inputLayer": "Bemenő réteg",
+  "inputLayerTip": "Válasszon bemeneti réteget a kijelölt vektoros elemek ellenőrzéséhez, valamint a kijelölt vektoros elemek egy bemeneti rétegből egyszerre történő frissítéséhez."
 }

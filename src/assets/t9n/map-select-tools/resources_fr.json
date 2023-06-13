@@ -10,6 +10,6 @@
   "sketchLayer": "Couche de dessin",
   "useLayerFeatures": "Utiliser des entités de la couche",
   "inputLayer": "Couche en entrée",
-  "useLayerFeaturesTooltip": "æ_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________Â.",
-  "useSearchDistanceTootip": "æ_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________Â."
+  "useLayerFeaturesTooltip": "Choisir une couche et utiliser les outils de dessin afin de désigner les entités qui peuvent être utilisées comme limites pour sélectionner les entités d’intersection dans la couche en entrée.",
+  "useSearchDistanceTootip": "Définir une distance pour une zone tampon de recherche qui servira à sélectionner les entités en entrée qui intersectent la zone tampon."
 }

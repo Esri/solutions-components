@@ -10,6 +10,6 @@
   "sketchLayer": "스케치 레이어",
   "useLayerFeatures": "레이어 피처 사용",
   "inputLayer": "입력 레이어",
-  "useLayerFeaturesTooltip": "한_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________빠.",
-  "useSearchDistanceTootip": "한_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________빠."
+  "useLayerFeaturesTooltip": "레이어를 선택하고 스케치 도구를 사용하여 입력 레이어에서 교차 피처를 선택하기 위한 경계로 사용할 수 있는 피처를 가리킵니다.",
+  "useSearchDistanceTootip": "버퍼와 교차하는 입력 피처를 선택할 검색 버퍼의 거리를 정의합니다."
 }

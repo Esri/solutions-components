@@ -10,6 +10,6 @@
   "sketchLayer": "Tekenlaag",
   "useLayerFeatures": "Laagobjecten gebruiken",
   "inputLayer": "Invoerlaag",
-  "useLayerFeaturesTooltip": "Ĳ_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ä.",
-  "useSearchDistanceTootip": "Ĳ_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ä."
+  "useLayerFeaturesTooltip": "Kies een laag en gebruik de schetstool om objecten aan te wijzen die als een grens kunnen worden gebruikt voor het selecteren van kruisende objecten uit de invoerlaag.",
+  "useSearchDistanceTootip": "Definieer een afstand voor een zoekbuffer die invoerobjecten zal selecteren die met de buffer kruisen."
 }
