@@ -149,7 +149,6 @@
   height: 50%;
 }
 
-.height-50-margin {
-  margin: 1rem 0rem 1rem 1rem;
-  height: calc(50% - 4rem);
+.adjusted-height-50 {
+  height: calc(50% - 17px);
 }

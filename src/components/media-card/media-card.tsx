@@ -234,9 +234,9 @@ export class MediaCard {
     const total = (this.values || []).length;
     const imgNum = this._index + 1;
     return (
-      <calcite-shell class="position-relative">
+      <calcite-shell>
         {toggleButtons}
-        <img class="img-container" src={v?.url} />
+        <img src={v?.url} />
 
         <calcite-label scale='s'>
           <span class="font-italic padding-bottom-1">

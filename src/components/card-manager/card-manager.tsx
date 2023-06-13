@@ -179,8 +179,8 @@ export class CardManager {
     const graphic = this._graphics?.length > 0 ? this._graphics[0] : undefined;
     return (
       <Host>
-        <div class="border-rounded padding-1 overflow-auto">
-          <calcite-shell class="position-relative">
+        <div class="border-rounded overflow-auto">
+          <calcite-shell class="position-relative padding-1">
             <div class="w-100 display-flex padding-bottom-1" slot="header">
               <calcite-segmented-control
                 class="focus-margin"
@@ -208,24 +208,22 @@ export class CardManager {
                 </calcite-segmented-control-item>
               </calcite-segmented-control>
             </div>
-            <div class="display-inline-table">
-              <div>
-                <info-card
-                  class={infoCardClass}
-                  graphic={graphic}
-                  isLoading={this._cardLoading}
-                  mapView={this.mapView}
-                />
-                <media-card
-                  class={mediaCardClass}
-                  isLoading={this._cardLoading}
-                  values={this.mediaCardValues}
-                />
-                <comment-card
-                  class={commentsCardClass}
-                  isLoading={this._cardLoading}
-                />
-              </div>
+            <div>
+              <info-card
+                class={infoCardClass}
+                graphic={graphic}
+                isLoading={this._cardLoading}
+                mapView={this.mapView}
+              />
+              <media-card
+                class={mediaCardClass}
+                isLoading={this._cardLoading}
+                values={this.mediaCardValues}
+              />
+              <comment-card
+                class={commentsCardClass}
+                isLoading={this._cardLoading}
+              />
             </div>
           </calcite-shell>
         </div>

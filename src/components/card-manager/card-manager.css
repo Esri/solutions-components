@@ -15,11 +15,7 @@
  */
 
 :host {
-  display: block;
-}
-
-.display-inline-table {
-  display: inline-table;
+  display: block !important;
 }
 
 .display-flex {
@@ -57,4 +53,8 @@
 .border-rounded {
   border: 1px solid var(--calcite-ui-border-2);
   border-radius: 5px;
+}
+
+card-manager {
+  display: block;
 }

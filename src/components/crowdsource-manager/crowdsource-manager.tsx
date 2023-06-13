@@ -248,11 +248,11 @@ export class CrowdsourceManager {
     const mapSizeClass = this._getMapSizeClass(layoutMode, panelOpen);
     return (
       <div class={`${mapSizeClass} overflow-hidden`}>
-        <div class="height-50 overflow-hidden" >
+        <div class="adjusted-height-50 overflow-hidden" >
           <map-card mapInfos={this.mapInfos}/>
         </div>
         <div class="padding-1">
-          <card-manager class="height-50-margin" mapView={this?._mapView}/>
+          <card-manager class="adjusted-height-50" mapView={this?._mapView}/>
         </div>
       </div>
     );
