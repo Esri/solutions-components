@@ -179,7 +179,7 @@ export class CardManager {
     const graphic = this._graphics?.length > 0 ? this._graphics[0] : undefined;
     return (
       <Host>
-        <div class="border padding-1 overflow-auto">
+        <div class="border-rounded padding-1 overflow-auto">
           <calcite-shell class="position-relative">
             <div class="w-100 display-flex padding-bottom-1" slot="header">
               <calcite-segmented-control

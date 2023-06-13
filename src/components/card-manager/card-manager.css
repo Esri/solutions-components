@@ -54,7 +54,7 @@
   overflow: auto;
 }
 
-.border {
+.border-rounded {
   border: 1px solid var(--calcite-ui-border-2);
   border-radius: 5px;
 }

@@ -41,3 +41,7 @@ html[dir="rtl"] .button-placement {
 .display-none {
   display: none;
 }
+
+.position-relative {
+  position: relative;
+}

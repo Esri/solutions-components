@@ -23,6 +23,10 @@
   padding-top: 51px;
 }
 
+.padding-1 {
+  padding: 1rem;
+}
+
 .header-title {
   display: flex;
   float: left;
@@ -134,7 +138,7 @@
 }
 
 .border {
-  border-width: 1px solid var(--calcite-ui-border-3);
+  border: 1px solid var(--calcite-ui-border-3);
 }
 
 .position-relative {

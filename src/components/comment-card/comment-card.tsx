@@ -110,7 +110,7 @@ export class CommentCard {
     return (
       <Host>
         <calcite-loader class={loadingClass} label={this._translations.fetchingData} />
-        <calcite-shell class={commentCardClass}>
+        <calcite-shell class={"position-relative" + commentCardClass}>
           <calcite-button
             class="button-placement"
             onClick={() => this._addRecord()}
