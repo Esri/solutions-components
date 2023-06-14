@@ -173,6 +173,11 @@ export class PublicNotification {
   @State() _exportType: EExportType = EExportType.PDF;
 
   /**
+   * boolean: Flag that will control a loading indicator on the export button
+   */
+  @State() _fetchingData = false;
+
+  /**
    * boolean: When window size is 600px or less this value will be true
    */
   @State() _isMobile: boolean;
@@ -361,7 +366,9 @@ export class PublicNotification {
     }
 
     if (pageType === EPageType.EXPORT) {
+      this._fetchingData = true;
       this._numDuplicates = await this._getNumDuplicates();
+      this._fetchingData = false;
     }
 
     this._clearHighlight();
@@ -972,6 +979,7 @@ export class PublicNotification {
                 <div class="padding-1 display-flex">
                   <calcite-button
                     disabled={!this._downloadActive}
+                    loading={this._fetchingData}
                     onClick={() => void this._export()}
                     width="full"
                   >
@@ -1246,7 +1254,9 @@ export class PublicNotification {
       return ss;
     });
     this._downloadActive = isActive;
+    this._fetchingData = true;
     this._numDuplicates = await this._getNumDuplicates();
+    this._fetchingData = false;
     await this._highlightFeatures();
   }
 
@@ -1266,20 +1276,24 @@ export class PublicNotification {
         initialImageDataUrl = screenshot?.dataUrl;
       }
 
+      this._fetchingData = true;
       // Create the labels for each selection set
-      void this._downloadTools.downloadPDF(
+      await this._downloadTools.downloadPDF(
         exportInfos,
         this._removeDuplicates.checked,
         this._addTitle ? this._title.value : "",
         initialImageDataUrl
       );
+      this._fetchingData = false;
     }
 
     if (this._exportType === EExportType.CSV) {
-      void this._downloadTools.downloadCSV(
+      this._fetchingData = true;
+      await this._downloadTools.downloadCSV(
         exportInfos,
         this._removeDuplicates.checked
       );
+      this._fetchingData = false;
     }
   }
 

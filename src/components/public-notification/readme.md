@@ -106,6 +106,7 @@ graph TD;
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-list-item --> calcite-icon
+  calcite-list-item --> calcite-action
   map-select-tools --> map-draw-tools
   map-select-tools --> calcite-label
   map-select-tools --> calcite-icon

@@ -80,15 +80,29 @@ export async function queryObjectIds(
  *
  * @returns Promise with the featureSet from the layer that match the provided ids
  */
- export async function queryFeaturesByID(
+export async function queryFeaturesByID(
   ids: number[],
   layer: __esri.FeatureLayer,
-  returnGeometry: boolean
-): Promise<__esri.FeatureSet> {
+  start: number,
+  graphics: __esri.Graphic[]
+): Promise<__esri.Graphic[]> {
+  const num = layer.capabilities.query.maxRecordCount;
   const q = layer.createQuery();
-  q.objectIds = ids;
-  q.returnGeometry = returnGeometry;
-  return layer.queryFeatures(q);
+  q.start = start;
+  q.num = num;
+  q.objectIds = ids.slice(start, num);
+
+  const result = await layer.queryFeatures(q);
+
+  graphics = graphics.concat(
+    result.features
+  );
+
+  const remainingIds = ids.slice(num, ids.length);
+
+  return remainingIds.length > 0 ?
+    queryFeaturesByID(remainingIds, layer, start += num, graphics) :
+    Promise.resolve(graphics);
 }
 
 /**

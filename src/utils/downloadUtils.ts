@@ -421,7 +421,7 @@ async function _prepareLabels(
   const [intl] = await loadModules(["esri/intl"]);
 
   // Get the features to export
-  const featureSet = await queryFeaturesByID(ids, layer, true);
+  const featureSet = await queryFeaturesByID(ids, layer, 0, []);
 
   // Get field data types. Do we have any domain-based fields?
   const attributeTypes: IAttributeTypes = {};
@@ -490,7 +490,7 @@ async function _prepareLabels(
 
     // Convert feature attributes into an array of labels
     const relationshipKeys = Object.keys(relationshipQueries);
-    labels = await Promise.all(featureSet.features.map(
+    labels = await Promise.all(featureSet.map(
       async feature => {
         let labelPrep = labelFormat;
 
@@ -580,7 +580,7 @@ async function _prepareLabels(
 
   } else {
     // Export all attributes
-    labels = featureSet.features.map(
+    labels = featureSet.map(
       feature => {
         return Object.keys(feature.attributes).map(
           (attributeName: string) => {
@@ -602,7 +602,7 @@ async function _prepareLabels(
       headerNames = labelFormat.replace(/\{/g, "").replace(/\}/g, "").split(lineSeparatorChar);
 
     } else {
-      const featuresAttrs = featureSet.features[0].attributes;
+      const featuresAttrs = featureSet[0].attributes;
       Object.keys(featuresAttrs).forEach(k => {
         headerNames.push(k);
       });
