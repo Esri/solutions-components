@@ -124,9 +124,10 @@ export class CardManager {
   ): Promise<void> {
     const ids = evt.detail;
     this._cardLoading = true;
-    const featureSet = ids.length > 0 ? await queryFeaturesByID(ids, this.layerView.layer, false) : undefined;
+    // only query if we have some ids...query with no ids will result in all features being returned
+    const featureSet = ids.length > 0 ? await queryFeaturesByID(ids, this.layerView.layer, 0, []) : [];
     this._cardLoading = false;
-    this._graphics = featureSet?.features || [];
+    this._graphics = featureSet;
   }
 
   /**
