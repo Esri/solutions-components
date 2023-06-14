@@ -101,7 +101,7 @@ export class PdfDownload {
     removeDuplicates: boolean,
     addColumnTitle = true
   ): Promise<void> {
-    void downloadUtils.downloadCSV(
+    return downloadUtils.downloadCSV(
       exportInfos,
       true, // formatUsingLayerPopup
       removeDuplicates,
@@ -125,9 +125,9 @@ export class PdfDownload {
     title = "",
     initialImageDataUrl = ""
   ): Promise<void> {
-    void downloadUtils.downloadPDF(
+    return downloadUtils.downloadPDF(
       exportInfos,
-      this._labelInfoElement.selectedOption.value as downloadUtils.ILabel,
+      this._labelInfoElement.selectedOption?.value as downloadUtils.ILabel,
       removeDuplicates,
       title,
       initialImageDataUrl
@@ -234,11 +234,16 @@ export class PdfDownload {
       const _b = parseInt(b.descriptionPDF.labelsPerPageDisplay, 10);
       return _a < _b ? -1 : _a > _b ? 1 : 0
     });
-    sortedPdfIndo.forEach((l) => {
+    sortedPdfIndo.forEach((l, i) => {
       const option = document.createElement("calcite-option");
       option.value = l;
       option.innerHTML = this._getLabelSizeText(l);
       this._labelInfoElement.appendChild(option);
+      if (i === 0) {
+        // Setting selected wasn't enough to trigger it being the 'selectedOption'
+        option.selected = true;
+        this._labelInfoElement.selectedOption = option;
+      }
     });
   }
 
