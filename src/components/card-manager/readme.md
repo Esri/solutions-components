@@ -44,12 +44,23 @@ graph TD;
   calcite-segmented-control-item --> calcite-icon
   info-card --> calcite-shell
   info-card --> calcite-loader
+  info-card --> calcite-button
+  info-card --> edit-record-modal
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
+  edit-record-modal --> calcite-modal
+  edit-record-modal --> calcite-label
+  edit-record-modal --> calcite-button
+  edit-record-modal --> calcite-input
+  calcite-modal --> calcite-scrim
+  calcite-modal --> calcite-icon
+  calcite-scrim --> calcite-loader
+  calcite-input --> calcite-progress
+  calcite-input --> calcite-icon
   media-card --> calcite-loader
   media-card --> calcite-button
   media-card --> calcite-shell
   media-card --> calcite-label
-  calcite-button --> calcite-loader
-  calcite-button --> calcite-icon
   comment-card --> calcite-loader
   comment-card --> calcite-shell
   comment-card --> calcite-button
@@ -57,11 +68,6 @@ graph TD;
   add-record-modal --> calcite-label
   add-record-modal --> calcite-input
   add-record-modal --> calcite-button
-  calcite-modal --> calcite-scrim
-  calcite-modal --> calcite-icon
-  calcite-scrim --> calcite-loader
-  calcite-input --> calcite-progress
-  calcite-input --> calcite-icon
   crowdsource-manager --> card-manager
   style card-manager fill:#f9f,stroke:#333,stroke-width:4px
 ```

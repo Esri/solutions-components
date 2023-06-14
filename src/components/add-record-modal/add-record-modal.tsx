@@ -117,8 +117,18 @@ export class AddRecordModal {
     return (
       <Host>
         <div>
-          <calcite-modal onCalciteModalClose={() => this._modalClose()} onCalciteModalOpen={() => this._modalOpen()} open={this.open} width="s">
-            <div class="font-500" slot="header">{this._translations.addRecord}</div>
+          <calcite-modal
+            onCalciteModalClose={() => this._modalClose()}
+            onCalciteModalOpen={() => this._modalOpen()}
+            open={this.open}
+            width="s"
+          >
+            <div
+              class="font-500"
+              slot="header"
+            >
+              {this._translations.addRecord}
+            </div>
             <div slot="content">
               <div>
                 <div class="padding-bottom-1">

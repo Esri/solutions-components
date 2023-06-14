@@ -642,6 +642,10 @@ export interface DeductCalculatorCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLDeductCalculatorElement;
 }
+export interface EditRecordModalCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLEditRecordModalElement;
+}
 export interface LayerTableCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLLayerTableElement;
@@ -1042,6 +1046,14 @@ declare namespace LocalJSX {
         "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<string>) => void;
     }
     interface EditRecordModal {
+        /**
+          * Emitted on demand when a buffer is generated.
+         */
+        "onModalClosed"?: (event: EditRecordModalCustomEvent<void>) => void;
+        /**
+          * Emitted on demand when a buffer is generated.
+         */
+        "onModalOpened"?: (event: EditRecordModalCustomEvent<void>) => void;
         /**
           * When true the component is displayed
          */

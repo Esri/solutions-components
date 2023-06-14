@@ -61,6 +61,11 @@ export class InfoCard {
   //--------------------------------------------------------------------------
 
   /**
+   * When true the add record modal will be displayed
+   */
+  @State() _editRecordOpen = false;
+
+  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
@@ -146,8 +151,29 @@ export class InfoCard {
     return (
       <Host>
         <calcite-shell>
-          <calcite-loader class={loadingClass} label={this._translations.fetchingData} />
-          <div class={"esri-widget " + featureNodeClass} id="feature-node" />
+          <calcite-loader
+            class={loadingClass}
+            label={this._translations.fetchingData}
+          />
+          <div
+            class={"esri-widget " + featureNodeClass}
+            id="feature-node"
+          />
+          <div slot="footer">
+            <calcite-button
+              appearance="outline"
+              iconStart="pencil"
+              onClick={() => this._openEditRecord()}
+              width="full"
+            >
+              {this._translations.edit}
+            </calcite-button>
+          </div>
+          <edit-record-modal
+            onModalClosed={() => this._editRecordClosed()}
+            open={this._editRecordOpen}
+            slot='modals'
+          />
         </calcite-shell>
       </Host>
     );
@@ -190,14 +216,28 @@ export class InfoCard {
     }
   }
 
-    /**
+  /**
+   * Close the edit record modal
+   */
+  protected _editRecordClosed(): void {
+    this._editRecordOpen = false;
+  }
+
+  /**
+   * Open the edit record modal
+   */
+  protected _openEditRecord(): void {
+    this._editRecordOpen = true;
+  }
+
+  /**
    * Fetches the component's translations
    *
    * @returns Promise when complete
    * @protected
    */
-    protected async _getTranslations(): Promise<void> {
-      const messages = await getLocaleComponentStrings(this.el);
-      this._translations = messages[0] as typeof InfoCard_T9n;
-    }
+  protected async _getTranslations(): Promise<void> {
+    const messages = await getLocaleComponentStrings(this.el);
+    this._translations = messages[0] as typeof InfoCard_T9n;
+  }
 }

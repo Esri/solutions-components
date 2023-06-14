@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode } from '@stencil/core';
 import EditRecordModal_T9n from "../../assets/t9n/edit-record-modal/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 
@@ -78,6 +78,16 @@ export class EditRecordModal {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Emitted on demand when a buffer is generated.
+   */
+  @Event() modalClosed: EventEmitter<void>;
+
+  /**
+   * Emitted on demand when a buffer is generated.
+   */
+  @Event() modalOpened: EventEmitter<void>;
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -100,8 +110,18 @@ export class EditRecordModal {
     return (
       <Host>
         <div>
-          <calcite-modal open={this.open} width="s">
-            <div class="font-500" slot="header">{this._translations.editMultiple}</div>
+          <calcite-modal
+            onCalciteModalClose={() => this._modalClose()}
+            onCalciteModalOpen={() => this._modalOpen()}
+            open={this.open}
+            width="s"
+          >
+            <div
+              class="font-500"
+              slot="header"
+            >
+              {this._translations.editMultiple}
+            </div>
             <div slot="content">
               <calcite-label class="font-italic">
                 {this._translations.infoMessage}
@@ -158,12 +178,35 @@ export class EditRecordModal {
     });
   }
 
+  /**
+   * Closes the modal
+   *
+   * @returns void
+   */
   protected _cancel(): void {
     this.open = false;
   }
 
   protected _save(): void {
     this.open = false;
+  }
+
+  /**
+   * Emit the modal close event
+   *
+   * @returns void
+   */
+  protected _modalClose(): void {
+    this.modalClosed.emit();
+  }
+
+  /**
+   * Emit the modal open event
+   *
+   * @returns void
+   */
+  protected _modalOpen(): void {
+    this.modalOpened.emit();
   }
 
   /**

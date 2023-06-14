@@ -12,10 +12,19 @@
 | `open`   | `open`    | When true the component is displayed | `boolean` | `false` |
 
 
+## Events
+
+| Event         | Description                                   | Type                |
+| ------------- | --------------------------------------------- | ------------------- |
+| `modalClosed` | Emitted on demand when a buffer is generated. | `CustomEvent<void>` |
+| `modalOpened` | Emitted on demand when a buffer is generated. | `CustomEvent<void>` |
+
+
 ## Dependencies
 
 ### Used by
 
+ - [info-card](../info-card)
  - [layer-table](../layer-table)
 
 ### Depends on
@@ -39,6 +48,7 @@ graph TD;
   calcite-button --> calcite-icon
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
+  info-card --> edit-record-modal
   layer-table --> edit-record-modal
   style edit-record-modal fill:#f9f,stroke:#333,stroke-width:4px
 ```
