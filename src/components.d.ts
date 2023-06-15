@@ -86,6 +86,14 @@ export namespace Components {
     }
     interface EditRecordModal {
         /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "graphic": __esri.Graphic;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
           * When true the component is displayed
          */
         "open": boolean;
@@ -1046,6 +1054,14 @@ declare namespace LocalJSX {
         "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<string>) => void;
     }
     interface EditRecordModal {
+        /**
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "graphic"?: __esri.Graphic;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
         /**
           * Emitted on demand when a buffer is generated.
          */

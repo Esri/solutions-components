@@ -159,7 +159,7 @@ export class InfoCard {
             class={"esri-widget " + featureNodeClass}
             id="feature-node"
           />
-          <div slot="footer">
+          <div class="padding-1-2 display-flex" slot="footer">
             <calcite-button
               appearance="outline"
               iconStart="pencil"
@@ -170,6 +170,8 @@ export class InfoCard {
             </calcite-button>
           </div>
           <edit-record-modal
+            graphic={this.graphic}
+            mapView={this.mapView}
             onModalClosed={() => this._editRecordClosed()}
             open={this._editRecordOpen}
             slot='modals'

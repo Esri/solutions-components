@@ -71,6 +71,7 @@ graph TD;
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-list-item --> calcite-icon
+  calcite-list-item --> calcite-action
   crowdsource-manager --> map-card
   style map-card fill:#f9f,stroke:#333,stroke-width:4px
 ```

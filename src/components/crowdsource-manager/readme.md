@@ -67,6 +67,7 @@ graph TD;
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-list-item --> calcite-icon
+  calcite-list-item --> calcite-action
   card-manager --> calcite-shell
   card-manager --> calcite-segmented-control
   card-manager --> calcite-segmented-control-item
@@ -82,8 +83,8 @@ graph TD;
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   edit-record-modal --> calcite-modal
-  edit-record-modal --> calcite-label
   edit-record-modal --> calcite-button
+  edit-record-modal --> calcite-label
   edit-record-modal --> calcite-input
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon

@@ -7,9 +7,11 @@
 
 ## Properties
 
-| Property | Attribute | Description                          | Type      | Default |
-| -------- | --------- | ------------------------------------ | --------- | ------- |
-| `open`   | `open`    | When true the component is displayed | `boolean` | `false` |
+| Property  | Attribute | Description                                                                                               | Type      | Default     |
+| --------- | --------- | --------------------------------------------------------------------------------------------------------- | --------- | ----------- |
+| `graphic` | --        | esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html             | `Graphic` | `undefined` |
+| `mapView` | --        | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView` | `undefined` |
+| `open`    | `open`    | When true the component is displayed                                                                      | `boolean` | `false`     |
 
 
 ## Events
@@ -30,16 +32,16 @@
 ### Depends on
 
 - calcite-modal
-- calcite-label
 - calcite-button
+- calcite-label
 - calcite-input
 
 ### Graph
 ```mermaid
 graph TD;
   edit-record-modal --> calcite-modal
-  edit-record-modal --> calcite-label
   edit-record-modal --> calcite-button
+  edit-record-modal --> calcite-label
   edit-record-modal --> calcite-input
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon

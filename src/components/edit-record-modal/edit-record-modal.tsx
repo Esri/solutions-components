@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
+import { loadModules } from "../../utils/loadModules";
 import EditRecordModal_T9n from "../../assets/t9n/edit-record-modal/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
   tag: 'edit-record-modal',
   styleUrl: 'edit-record-modal.css',
-  shadow: true,
+  shadow: false,
 })
 export class EditRecordModal {
   //--------------------------------------------------------------------------
@@ -36,6 +37,16 @@ export class EditRecordModal {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   */
+  @Prop() graphic: __esri.Graphic;
+
+  /**
+   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   */
+  @Prop() mapView: __esri.MapView;
 
   /**
    * When true the component is displayed
@@ -60,11 +71,38 @@ export class EditRecordModal {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * esri/widgets/FeatureForm: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FeatureForm.html
+   * The feature form constructor
+   */
+  protected FeatureForm: typeof import("esri/widgets/FeatureForm");
+
+  protected _featureForm: __esri.FeatureForm;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Watch for changes to the graphic and update the feature widget
+   */
+  @Watch("graphic")
+  graphicWatchHandler(): void {
+    this._initFeatureFormWidget();
+    if (this._featureForm) {
+      this._featureForm.feature = this.graphic;
+    }
+  }
+
+  /**
+   * Watch for changes to the mapView and re-init the Feature widget
+   */
+  @Watch("mapView")
+  mapViewWatchHandler(): void {
+    this._initFeatureFormWidget();
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -100,6 +138,7 @@ export class EditRecordModal {
    * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
+    await this._initModules();
     await this._getTranslations();
   }
 
@@ -123,10 +162,12 @@ export class EditRecordModal {
               {this._translations.editMultiple}
             </div>
             <div slot="content">
-              <calcite-label class="font-italic">
+              {/* <calcite-label class="font-italic">
                 {this._translations.infoMessage}
               </calcite-label>
-              {this._getFieldInputs()}
+              {this._getFieldInputs()} */}
+
+              <div id="feature-form"/>
             </div>
             <calcite-button
               appearance="outline"
@@ -155,6 +196,57 @@ export class EditRecordModal {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
+    const [FeatureForm] = await loadModules([
+      "esri/widgets/FeatureForm"
+    ]);
+    this.FeatureForm = FeatureForm;
+  }
+
+  /**
+   * Init the Feature widget so we can display the popup content
+   *
+   * @protected
+   */
+  protected _initFeatureFormWidget(): void {
+    if (this.mapView && !this._featureForm) {
+      const elements = this._getFormTemplateElements();
+
+      this._featureForm = new this.FeatureForm({
+        container: "feature-form",
+        feature: this.graphic,
+        formTemplate: {
+          title: "Damage assessments",
+          description: "Provide information for insurance",
+          elements
+        }
+      });
+    }
+  }
+
+  protected _getFormTemplateElements(): any {
+    if (this.graphic) {
+      const layer = this.graphic.layer as __esri.FeatureLayer;
+      return layer.fields.reduce((prev, cur) => {
+        if (cur.editable) {
+          prev.push({
+            type: "field",
+            fieldName: cur.name,
+            label: cur.alias
+          });
+        }
+        return prev;
+      }, []);
+    }
+  }
 
   protected _getFieldInputs(): VNode[] {
     // TODO don't follow what these are so just hard-coding for now

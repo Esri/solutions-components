@@ -56,8 +56,8 @@ graph TD;
   calcite-popover --> calcite-icon
   calcite-scrim --> calcite-loader
   edit-record-modal --> calcite-modal
-  edit-record-modal --> calcite-label
   edit-record-modal --> calcite-button
+  edit-record-modal --> calcite-label
   edit-record-modal --> calcite-input
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
