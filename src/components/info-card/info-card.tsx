@@ -18,6 +18,7 @@ import { Component, Element, Host, h, Prop, State, Watch } from '@stencil/core';
 import InfoCard_T9n from "../../assets/t9n/info-card/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { loadModules } from "../../utils/loadModules";
+import { EEditMode } from '../../utils/interfaces';
 
 @Component({
   tag: 'info-card',
@@ -170,6 +171,7 @@ export class InfoCard {
             </calcite-button>
           </div>
           <edit-record-modal
+            editMode={EEditMode.SINGLE}
             graphic={this.graphic}
             mapView={this.mapView}
             onModalClosed={() => this._editRecordClosed()}

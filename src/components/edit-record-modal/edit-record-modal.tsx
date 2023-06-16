@@ -18,6 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, W
 import { loadModules } from "../../utils/loadModules";
 import EditRecordModal_T9n from "../../assets/t9n/edit-record-modal/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
+import { EEditMode } from "../../utils/interfaces";
 
 @Component({
   tag: 'edit-record-modal',
@@ -52,6 +53,8 @@ export class EditRecordModal {
    * When true the component is displayed
    */
   @Prop({ mutable: true }) open = false;
+
+  @Prop() editMode = EEditMode.SINGLE;
 
   //--------------------------------------------------------------------------
   //
@@ -146,6 +149,8 @@ export class EditRecordModal {
    * Renders the component.
    */
   render() {
+    const header = this.editMode === EEditMode.SINGLE ?
+      this._translations.edit : this._translations.editMultiple;
     return (
       <Host>
         <div>
@@ -160,7 +165,7 @@ export class EditRecordModal {
               class="font-500"
               slot="header"
             >
-              {this._translations.editMultiple}
+              {header}
             </div>
             <div slot="content">
               <div id="feature-form"/>

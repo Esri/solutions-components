@@ -7,11 +7,12 @@
 
 ## Properties
 
-| Property  | Attribute | Description                                                                                               | Type      | Default     |
-| --------- | --------- | --------------------------------------------------------------------------------------------------------- | --------- | ----------- |
-| `graphic` | --        | esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html             | `Graphic` | `undefined` |
-| `mapView` | --        | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView` | `undefined` |
-| `open`    | `open`    | When true the component is displayed                                                                      | `boolean` | `false`     |
+| Property   | Attribute   | Description                                                                                               | Type                                  | Default            |
+| ---------- | ----------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------- | ------------------ |
+| `editMode` | `edit-mode` |                                                                                                           | `EEditMode.MULTI \| EEditMode.SINGLE` | `EEditMode.SINGLE` |
+| `graphic`  | --          | esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html             | `Graphic`                             | `undefined`        |
+| `mapView`  | --          | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                             | `undefined`        |
+| `open`     | `open`      | When true the component is displayed                                                                      | `boolean`                             | `false`            |
 
 
 ## Events

@@ -21,7 +21,7 @@ import { getLocaleComponentStrings } from "../../utils/locale";
 import { getMapLayerView, goToSelection, getMapLayerIds } from "../../utils/mapViewUtils";
 import { queryAllFeatures } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
-import { IExportInfos } from "../../utils/interfaces";
+import { EEditMode, IExportInfos } from "../../utils/interfaces";
 
 @Component({
   tag: 'layer-table',
@@ -187,6 +187,7 @@ export class LayerTable {
             </calcite-panel>
           </div>
           <edit-record-modal
+            editMode={EEditMode.MULTI}
             ref={(el) => this._editMultipleMpdal = el}
             slot="modals"
           />

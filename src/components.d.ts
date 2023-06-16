@@ -85,6 +85,7 @@ export namespace Components {
     interface DeductCalculator {
     }
     interface EditRecordModal {
+        "editMode": EEditMode;
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
@@ -1054,6 +1055,7 @@ declare namespace LocalJSX {
         "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<string>) => void;
     }
     interface EditRecordModal {
+        "editMode"?: EEditMode;
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
