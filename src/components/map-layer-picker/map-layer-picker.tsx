@@ -148,6 +148,15 @@ export class MapLayerPicker {
     );
   }
 
+  /**
+ * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
+ */
+  async componentDidLoad(): Promise<void> {
+    if (this.layerIds.length > 0 || this.selectedLayerIds.length === 1) {
+      this._layerElement.value = this.selectedLayerIds.length === 1 ? this.selectedLayerIds[0] : this.layerIds[0];
+    }
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (protected)
@@ -184,6 +193,7 @@ export class MapLayerPicker {
   _getCombobox(): VNode {
     return (
       <calcite-combobox
+        clearDisabled={true}
         label=""
         onCalciteComboboxChange={() => this._layerSelectionChange()}
         placeholder-icon={this.placeholderIcon}
@@ -205,9 +215,7 @@ export class MapLayerPicker {
     return this.layerIds.reduce((prev, cur) => {
       if (state.managedLayers.indexOf(state.layerNameHash[cur]) < 0 && (this.enabledLayerIds.length > 0 ? this.enabledLayerIds.indexOf(cur) > -1 : true)) {
         prev.push(
-          this.selectedLayerIds.indexOf(cur) > -1 ?
-            (<calcite-option label={state.layerNameHash[cur]} selected={true} value={cur} />) :
-            (<calcite-option label={state.layerNameHash[cur]} value={cur} />)
+          (<calcite-option label={state.layerNameHash[cur]} value={cur} />)
         );
       }
       return prev;
@@ -218,9 +226,7 @@ export class MapLayerPicker {
     return this.layerIds.reduce((prev, cur) => {
       if (state.managedLayers.indexOf(state.layerNameHash[cur]) < 0 && (this.enabledLayerIds.length > 0 ? this.enabledLayerIds.indexOf(cur) > -1 : true)) {
         prev.push(
-          this.selectedLayerIds.indexOf(cur) > -1 ?
-            (<calcite-combobox-item icon="layers" iconFlipRtl={true} selected textLabel={state.layerNameHash[cur]} value={cur} />) :
-            (<calcite-combobox-item textLabel={state.layerNameHash[cur]} value={cur} />)
+          (<calcite-combobox-item textLabel={state.layerNameHash[cur]} value={cur} />)
         );
       }
       return prev;
@@ -257,7 +263,10 @@ export class MapLayerPicker {
    * @returns Promise when the operation has completed
    */
   _layerSelectionChange(): void {
-    this.selectedLayerIds = Array.isArray(this._layerElement.value) ? this._layerElement.value : [this._layerElement.value];
-    this.layerSelectionChange.emit(this.selectedLayerIds);
+    const ids = Array.isArray(this._layerElement.value) ? this._layerElement.value : [this._layerElement.value];
+    if (JSON.stringify(ids) !== JSON.stringify([""])) {
+      this.selectedLayerIds = ids;
+      this.layerSelectionChange.emit(this.selectedLayerIds);
+    }
   }
 }
