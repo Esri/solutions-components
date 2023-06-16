@@ -53,6 +53,8 @@ export class LayerTable {
   //
   //--------------------------------------------------------------------------
 
+  @State() _fetchingData = false;
+
   /**
    * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
    */
@@ -165,19 +167,30 @@ export class LayerTable {
     if (!this._layerView) {
       return null;
     }
+    const tableNodeClass = this._fetchingData ? "display-none" : "";
+    const loadingClass = this._fetchingData ? "" : "display-none";
     return (
       <Host>
-        {this._getTableControlRow()}
-        <div class="table-div width-full">
-          <calcite-panel class="height-full width-full">
-            <div
-              ref={this.onTableNodeCreate}
-            />
-          </calcite-panel>
-        </div>
-        <edit-record-modal
-          ref={(el) => this._editMultipleMpdal = el}
-        />
+        <calcite-shell>
+          {this._getTableControlRow("header")}
+          <div class="height-full width-full">
+            <calcite-panel class="height-full width-full">
+              <calcite-loader
+                class={loadingClass}
+                label={this._translations.fetchingData}
+                scale='l'
+              />
+              <div
+                class={tableNodeClass}
+                ref={this.onTableNodeCreate}
+              />
+            </calcite-panel>
+          </div>
+          <edit-record-modal
+            ref={(el) => this._editMultipleMpdal = el}
+            slot="modals"
+          />
+        </calcite-shell>
       </Host>
     );
   }
@@ -207,11 +220,13 @@ export class LayerTable {
    *
    * @returns The dom node that contains the controls
    */
-  protected _getTableControlRow(): VNode {
+  protected _getTableControlRow(
+    slot?: string
+  ): VNode {
     const featuresSelected = this._selectedIndexes.length > 0;
     const multiFeaturesSelected = this._selectedIndexes.length > 1;
     return (
-      <div class="display-flex table-border">
+      <div class="display-flex table-border" slot={slot}>
         <div class="w-400">
           <map-layer-picker
             mapView={this.mapView}
@@ -480,14 +495,19 @@ export class LayerTable {
   protected async _layerSelectionChanged(
     evt: CustomEvent
   ): Promise<void> {
-    const layerName: string = evt.detail[0];
-    this._layerView = await getMapLayerView(this.mapView, layerName);
-    // TODO rethink this...when we use later we need to be able to lookup with name
-    this._fieldNames = this._layerView.layer.fields.map(f => f.alias || f.name);
-    this._graphics = await queryAllFeatures(0, this._layerView.layer, []);
-    this._selectedIndexes = [];
-    this._table.layer = this._layerView.layer;
-    this._table.render();
+    const id: string = evt.detail[0];
+    if (id !== this._layerView?.layer.id) {
+      this._fetchingData = true;
+      this._table.highlightIds.removeAll();
+      this._layerView = await getMapLayerView(this.mapView, id);
+      // TODO rethink this...when we use later we need to be able to lookup with name
+      this._fieldNames = this._layerView.layer.fields.map(f => f.alias || f.name);
+      this._graphics = await queryAllFeatures(0, this._layerView.layer, []);
+      this._selectedIndexes = [];
+      this._table.layer = this._layerView.layer;
+      this._table.render();
+      this._fetchingData = false;
+    }
   }
 
   /**

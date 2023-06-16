@@ -153,6 +153,7 @@ export class EditRecordModal {
             onCalciteModalClose={() => this._modalClose()}
             onCalciteModalOpen={() => this._modalOpen()}
             open={this.open}
+            outsideCloseDisabled={true}
             width="s"
           >
             <div
@@ -162,11 +163,6 @@ export class EditRecordModal {
               {this._translations.editMultiple}
             </div>
             <div slot="content">
-              {/* <calcite-label class="font-italic">
-                {this._translations.infoMessage}
-              </calcite-label>
-              {this._getFieldInputs()} */}
-
               <div id="feature-form"/>
             </div>
             <calcite-button
@@ -224,8 +220,6 @@ export class EditRecordModal {
         container: "feature-form",
         feature: this.graphic,
         formTemplate: {
-          title: "Damage assessments",
-          description: "Provide information for insurance",
           elements
         }
       });

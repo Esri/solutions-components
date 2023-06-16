@@ -27,7 +27,9 @@
 
 ### Depends on
 
+- calcite-shell
 - calcite-panel
+- calcite-loader
 - [edit-record-modal](../edit-record-modal)
 - [map-layer-picker](../map-layer-picker)
 - calcite-button
@@ -38,7 +40,9 @@
 ### Graph
 ```mermaid
 graph TD;
+  layer-table --> calcite-shell
   layer-table --> calcite-panel
+  layer-table --> calcite-loader
   layer-table --> edit-record-modal
   layer-table --> map-layer-picker
   layer-table --> calcite-button

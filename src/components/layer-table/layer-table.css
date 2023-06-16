@@ -18,8 +18,12 @@
   display: block;
 }
 
-.table-div {
-  height: calc(100% - 35px);
+.height-full {
+  height: 100%;
+}
+
+.width-full {
+  width: 100%;
 }
 
 .display-flex {

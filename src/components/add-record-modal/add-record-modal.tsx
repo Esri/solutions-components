@@ -121,6 +121,7 @@ export class AddRecordModal {
             onCalciteModalClose={() => this._modalClose()}
             onCalciteModalOpen={() => this._modalOpen()}
             open={this.open}
+            outsideCloseDisabled={true}
             width="s"
           >
             <div

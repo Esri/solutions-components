@@ -266,27 +266,35 @@ export class CrowdsourceManager {
     const icon = this._getDividerIcon(layoutMode, panelOpen);
     const tooltip = panelOpen ? this._translations.close : this._translations.open;
     const id = "toggle-layout";
-    const toggleSizeClass = layoutMode === ELayoutMode.HORIZONTAL ? "divider-h" : "divider-w";
+    const toggleLayout = layoutMode === ELayoutMode.HORIZONTAL ? "horizontal" : "vertical";
+    const toggleSlot = layoutMode === ELayoutMode.HORIZONTAL ? "header" : "panel-start";
     return (
-      <div class={tableSizeClass}>
-        <div class={`border ${toggleSizeClass}`}>
-          <div class="toggle-node">
-            <calcite-action
-              class="toggle-node"
-              icon={icon}
-              id={id}
-              onClick={() => this._toggleLayout()}
-              text=""
-            />
-            <calcite-tooltip label={tooltip} placement="bottom" reference-element={id}>
-              <span>{tooltip}</span>
-            </calcite-tooltip>
-          </div>
-        </div>
-        <div class="width-full height-full">
-          <layer-table mapView={this?._mapView}/>
-        </div>
-      </div>
+      <calcite-shell class={tableSizeClass}>
+        <calcite-action-bar
+          class="border"
+          expandDisabled={true}
+          layout={toggleLayout}
+          slot={toggleSlot}
+        >
+          <calcite-action
+            class="toggle-node"
+            icon={icon}
+            id={id}
+            onClick={() => this._toggleLayout()}
+            text=""
+          />
+          <calcite-tooltip
+            label={tooltip}
+            placement="bottom"
+            reference-element={id}
+          >
+            <span>{tooltip}</span>
+          </calcite-tooltip>
+        </calcite-action-bar>
+        <calcite-shell-panel class="width-full height-full">
+          <layer-table mapView={this?._mapView} />
+        </calcite-shell-panel>
+      </calcite-shell>
     );
   }
 

@@ -8,5 +8,6 @@
   "selectAll": "Select all",
   "showSelected": "Show selected",
   "switchSelected": "Switch selected",
-  "zoom": "Zoom"
+  "zoom": "Zoom",
+  "fetchingData": "Fetching Data"
 }
