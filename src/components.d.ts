@@ -89,7 +89,7 @@ export namespace Components {
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
-        "graphic": __esri.Graphic;
+        "graphics": __esri.Graphic[];
         /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -152,6 +152,11 @@ export namespace Components {
         "value": any;
     }
     interface LayerTable {
+        /**
+          * Get the selected graphics
+          * @returns Promise that resolves when the operation is complete
+         */
+        "getSelectedGraphics": () => Promise<__esri.Graphic[]>;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -1059,7 +1064,7 @@ declare namespace LocalJSX {
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
-        "graphic"?: __esri.Graphic;
+        "graphics"?: __esri.Graphic[];
         /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */

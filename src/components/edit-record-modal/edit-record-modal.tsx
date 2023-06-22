@@ -42,7 +42,7 @@ export class EditRecordModal {
   /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
-  @Prop() graphic: __esri.Graphic;
+  @Prop({mutable: true}) graphics: __esri.Graphic[];
 
   /**
    * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -82,6 +82,12 @@ export class EditRecordModal {
 
   protected _featureForm: __esri.FeatureForm;
 
+  protected _layer: __esri.FeatureLayer;
+
+  protected _editControlElements: any[];
+
+  protected _edits: {[key: string]: any} = {};
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -91,11 +97,11 @@ export class EditRecordModal {
   /**
    * Watch for changes to the graphic and update the feature widget
    */
-  @Watch("graphic")
-  graphicWatchHandler(): void {
+  @Watch("graphics")
+  graphicsWatchHandler(): void {
     this._initFeatureFormWidget();
-    if (this._featureForm) {
-      this._featureForm.feature = this.graphic;
+    if (this.editMode === EEditMode.SINGLE && this._featureForm) {
+      this._featureForm.feature = this.graphics[0];
     }
   }
 
@@ -145,6 +151,19 @@ export class EditRecordModal {
     await this._getTranslations();
   }
 
+  // special handeling when used with layer-table
+  // this allows us to only fetch graphics when the modal is opened rather than with every render of the layer-table
+  async componentWillRender(): Promise<void> {
+    const layerTableElements: HTMLCollection = document.getElementsByTagName("layer-table");
+    if (layerTableElements.length === 1 && this.editMode === EEditMode.MULTI) {
+      const layerTable: HTMLLayerTableElement = layerTableElements[0] as HTMLLayerTableElement;
+      this.graphics = await layerTable.getSelectedGraphics();
+    }
+    if (this.graphics.length > 0 && this.graphics[0]?.layer) {
+      this._layer = this.graphics[0].layer as __esri.FeatureLayer;
+    }
+  }
+
   /**
    * Renders the component.
    */
@@ -155,6 +174,7 @@ export class EditRecordModal {
       <Host>
         <div>
           <calcite-modal
+            docked={true}
             onCalciteModalClose={() => this._modalClose()}
             onCalciteModalOpen={() => this._modalOpen()}
             open={this.open}
@@ -168,7 +188,10 @@ export class EditRecordModal {
               {header}
             </div>
             <div slot="content">
-              <div id="feature-form"/>
+              {
+                this.editMode === EEditMode.MULTI ?
+                  this._getFieldInputs() : (<div id="feature-form"/>)
+              }
             </div>
             <calcite-button
               appearance="outline"
@@ -218,12 +241,12 @@ export class EditRecordModal {
    * @protected
    */
   protected _initFeatureFormWidget(): void {
-    if (this.mapView && !this._featureForm) {
+    if (this.editMode === EEditMode.SINGLE && this.mapView && !this._featureForm) {
+      const feature: __esri.Graphic = this.graphics[0];
       const elements = this._getFormTemplateElements();
-
       this._featureForm = new this.FeatureForm({
         container: "feature-form",
-        feature: this.graphic,
+        feature,
         formTemplate: {
           elements
         }
@@ -232,9 +255,8 @@ export class EditRecordModal {
   }
 
   protected _getFormTemplateElements(): any {
-    if (this.graphic) {
-      const layer = this.graphic.layer as __esri.FeatureLayer;
-      return layer.fields.reduce((prev, cur) => {
+    if (this.graphics.length > 0 && this._layer) {
+      return this._layer.fields.reduce((prev, cur) => {
         if (cur.editable) {
           prev.push({
             type: "field",
@@ -248,25 +270,163 @@ export class EditRecordModal {
   }
 
   protected _getFieldInputs(): VNode[] {
-    // TODO don't follow what these are so just hard-coding for now
-    const labels = [
-      this._translations.label,
-      this._translations.label,
-      this._translations.label,
-      this._translations.label,
-      this._translations.label
-    ];
+    if (this.graphics.length > 0 && this._layer) {
+      const fields = this._layer.fields.filter(f => f.editable);
+      this._editControlElements = [];
+      return fields.map(field => {
+        return (
+          <div>
+            {this._getFieldInput(field)}
+          </div>
+        );
+      });
+    }
+  }
 
-    return labels.map(label => {
-      return (
-        <div class="padding-bottom-1">
-          <calcite-label class="font-bold">
-            {label}
-            <calcite-input placeholder={this._translations.textField} type="text" />
+  _getFieldInput(
+    field: any
+  ): VNode {
+    let fieldNode: VNode;
+    switch (field.type) {
+      case "string":
+        fieldNode = (
+          <calcite-label>
+            {field.alias}
+            {
+              field.domain ? this._getDomainInput(field) : (
+                <calcite-input-text
+                  id={field.name}
+                  maxLength={field.length}
+                  onCalciteInputTextChange={evt => this._stringInputChanged(evt)}
+                  placeholder={this._translations.textField}
+                  ref={(el) => this._editControlElements.push(el)}
+                />)
+            }
           </calcite-label>
-        </div>
-      );
-    });
+        );
+        break;
+      case "small-integer" || "integer" || "single" || "double" || "long":
+        fieldNode = (
+          <calcite-label>
+            {field.alias}
+            {
+              field.domain ? this._getDomainInput(field) :
+              (<calcite-input-number
+                id={field.name}
+                maxLength={field.length}
+                onCalciteInputNumberChange={(evt) => this._numberInputChanged(evt)}
+                placeholder={this._translations.textField}
+                ref={(el) => this._editControlElements.push(el)}
+              />)
+            }
+          </calcite-label>
+        );
+        break;
+      case "date":
+        fieldNode = (
+          <calcite-label>
+            {field.alias}
+            <calcite-input-date-picker
+              id={field.name}
+              onCalciteInputDatePickerChange={evt => this._dateInputChanged(evt)}
+              overlayPositioning='fixed'
+              placement='top'
+              ref={(el) => this._editControlElements.push(el)}
+            />
+          </calcite-label>
+        );
+        break;
+      default:
+        fieldNode = (
+          <calcite-label>
+            {field.alias}
+            <calcite-input-text
+              id={field.name}
+              maxLength={field.length}
+              onCalciteInputTextChange={evt => this._stringInputChanged(evt)}
+              placeholder={this._translations.textField}
+              ref={(el) => this._editControlElements.push(el)}
+            />
+          </calcite-label>
+        );
+        break;
+    }
+    return fieldNode;
+  }
+
+  protected _getDomainInput(
+    field: __esri.Field
+  ): VNode {
+    let node;
+    const domain = field.domain;
+    switch (domain.type) {
+      case "coded-value":
+        node = (
+          <calcite-combobox
+            clearDisabled={true}
+            id={field.name}
+            label={field.alias}
+            onCalciteComboboxChange={evt => this._domainInputChanged(evt)}
+            placeholder={this._translations.selectValue}
+            ref={(el) => this._editControlElements.push(el)}
+            selectionMode="single"
+          >
+            {
+              domain.codedValues.map(cv => {
+                return (<calcite-combobox-item textLabel={cv.name} value={cv.code}/>)
+              })
+            }
+          </calcite-combobox>
+        );
+        break;
+
+      // need to look into this one more
+      //case "inherited":
+        //break;
+
+      case "range":
+        node = (
+          <calcite-input-number
+            max={domain.maxValue}
+            maxLength={field.length}
+            min={domain.minValue}
+          />
+        );
+        break;
+    }
+    return node;
+  }
+
+  protected _dateInputChanged(evt: CustomEvent): void {
+    const target = evt.target as HTMLCalciteDatePickerElement;
+    // should we only store this if it has a value?
+    // If we do we prevent the ability to delete values across the seletced features
+    // If we don't we could delete values that they may not want to delete
+    this._edits[target.id] = target.value;
+  }
+
+  protected _domainInputChanged(evt: CustomEvent): void {
+    const target = evt.target as HTMLCalciteInputTextElement;
+    // should we only store this if it has a value?
+    // If we do we prevent the ability to delete values across the seletced features
+    // If we don't we could delete values that they may not want to delete
+    this._edits[target.id] = target.value;
+  }
+
+  protected _numberInputChanged(evt: CustomEvent): void {
+    const target = evt.target as HTMLCalciteInputNumberElement;
+    // should we only store this if it has a value?
+    // If we do we prevent the ability to delete values across the seletced features
+    // If we don't we could delete values that they may not want to delete
+    this._edits[target.id] = target.value;
+  }
+
+  protected _stringInputChanged(evt: CustomEvent): void {
+    const target = evt.target as HTMLCalciteInputTextElement;
+    // should we only store this if it has a value?
+    // If we do we prevent the ability to delete values across the seletced features
+    // If we don't we could delete values that they may not want to delete
+    this._edits[target.id] = target.value;
   }
 
   /**
@@ -276,10 +436,30 @@ export class EditRecordModal {
    */
   protected _cancel(): void {
     this.open = false;
+    this._clearInputs();
+  }
+
+  protected _clearInputs(): void {
+    this._editControlElements.forEach(c => {
+      console.log(c);
+      // TODO figure out a way to clear these as the following does not work
+      // console.log(c.value);
+      // console.log("c.selectedItems")
+      // console.log(c.selectedItems)
+      // c.value = undefined;
+      // c.selectedItems = undefined;
+    });
   }
 
   protected _save(): void {
-    this.open = false;
+    const attributes = this.editMode === EEditMode.SINGLE ?
+      this._featureForm.getValues() : this._edits;
+    if (attributes) {
+      console.log(attributes);
+      // this._layer.applyEdits({
+      //   updateFeatures: [{ attributes } as any]
+      // });
+    }
   }
 
   /**
@@ -310,5 +490,4 @@ export class EditRecordModal {
     const messages = await getLocaleComponentStrings(this.el);
     this._translations = messages[0] as typeof EditRecordModal_T9n;
   }
-
 }

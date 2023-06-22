@@ -19,6 +19,19 @@
 | `featureSelectionChange` | Emitted on demand when a layer is selected | `CustomEvent<number[]>` |
 
 
+## Methods
+
+### `getSelectedGraphics() => Promise<__esri.Graphic[]>`
+
+Get the selected graphics
+
+#### Returns
+
+Type: `Promise<Graphic[]>`
+
+Promise that resolves when the operation is complete
+
+
 ## Dependencies
 
 ### Used by
@@ -62,22 +75,37 @@ graph TD;
   edit-record-modal --> calcite-modal
   edit-record-modal --> calcite-button
   edit-record-modal --> calcite-label
-  edit-record-modal --> calcite-input
+  edit-record-modal --> calcite-input-text
+  edit-record-modal --> calcite-input-number
+  edit-record-modal --> calcite-input-date-picker
+  edit-record-modal --> calcite-combobox
+  edit-record-modal --> calcite-combobox-item
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
+  calcite-input-text --> calcite-progress
+  calcite-input-text --> calcite-icon
+  calcite-input-number --> calcite-progress
+  calcite-input-number --> calcite-icon
+  calcite-input-date-picker --> calcite-input
+  calcite-input-date-picker --> calcite-date-picker
+  calcite-input-date-picker --> calcite-icon
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
+  calcite-date-picker --> calcite-date-picker-month-header
+  calcite-date-picker --> calcite-date-picker-month
+  calcite-date-picker-month-header --> calcite-icon
+  calcite-date-picker-month --> calcite-date-picker-day
+  calcite-combobox --> calcite-chip
+  calcite-combobox --> calcite-icon
+  calcite-chip --> calcite-icon
+  calcite-combobox-item --> calcite-icon
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-option
   map-layer-picker --> calcite-combobox-item
   calcite-select --> calcite-icon
-  calcite-combobox --> calcite-chip
-  calcite-combobox --> calcite-icon
-  calcite-chip --> calcite-icon
-  calcite-combobox-item --> calcite-icon
   calcite-split-button --> calcite-button
   calcite-split-button --> calcite-dropdown
   calcite-dropdown-item --> calcite-icon

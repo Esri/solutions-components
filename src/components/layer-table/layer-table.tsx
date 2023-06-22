@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from '@stencil/core';
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { getMapLayerView, goToSelection, getMapLayerIds } from "../../utils/mapViewUtils";
-import { queryAllFeatures } from "../../utils/queryUtils";
+import { getMapLayerView, getMapLayerIds } from "../../utils/mapViewUtils";
+import { queryAllFeatures, queryFeaturesByID } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { EEditMode, IExportInfos } from "../../utils/interfaces";
 
@@ -132,6 +132,17 @@ export class LayerTable {
   //  Methods (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Get the selected graphics
+   *
+   * @returns Promise that resolves when the operation is complete
+   */
+  @Method()
+  async getSelectedGraphics(): Promise<__esri.Graphic[]> {
+    return this._selectedIndexes.length > 0 ?
+      await this._getGraphics(this._selectedIndexes) : [];
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -305,7 +316,7 @@ export class LayerTable {
               </calcite-dropdown-item>
               <calcite-dropdown-item
                 iconStart='export'
-                onClick={() => this._exportToCSV()}
+                onClick={() => void this._exportToCSV()}
               >
                 {this._translations.exportCSV}
               </calcite-dropdown-item>
@@ -348,7 +359,8 @@ export class LayerTable {
       } as __esri.FeatureTableProperties);
 
       this._table.highlightIds.on("change", () => {
-        this.featureSelectionChange.emit(this._table.highlightIds.toArray())
+        this._selectedIndexes = this._table.highlightIds.toArray();
+        this.featureSelectionChange.emit(this._selectedIndexes);
       });
     }
   }
@@ -404,11 +416,12 @@ export class LayerTable {
    *
    * @returns a promise that will resolve when the operation is complete
    */
-  protected _exportToCSV(): void {
+  protected async _exportToCSV(): Promise<void> {
     const exportInfos: IExportInfos = {};
+    const ids = await this._getSelectedIds();
     exportInfos[this._layerView.layer.id] = {
       selectionSetNames: [],
-      ids: this._getSelectedIds(),
+      ids,
       layerView: this._layerView
     }
     void downloadUtils.downloadCSV(
@@ -424,8 +437,7 @@ export class LayerTable {
    * @returns a promise that will resolve when the operation is complete
    */
   protected _zoom(): void {
-    const ids = this._getSelectedIds();
-    void goToSelection(ids, this._layerView, this.mapView, true);
+    this._table.zoomToSelection();
   }
 
   /**
@@ -453,10 +465,10 @@ export class LayerTable {
    *
    * @returns An array of selected graphics
    */
-  protected _getGraphics(
-    indexes: number[]
-  ): __esri.Graphic[] {
-    return this._graphics.filter((_g, i) => indexes.indexOf(i) > -1);
+  protected async _getGraphics(
+    ids: number[]
+  ): Promise<__esri.Graphic[]> {
+    return ids.length > 0 ? queryFeaturesByID(ids, this._table.layer as __esri.FeatureLayer, []) : [];
   }
 
   /**
@@ -464,8 +476,8 @@ export class LayerTable {
    *
    * @returns An array of object ids
    */
-  protected _getSelectedIds(): number[] {
-    const graphics = this._getGraphics(this._selectedIndexes);
+  protected async _getSelectedIds(): Promise<number[]> {
+    const graphics = await this._getGraphics(this._selectedIndexes);
     return graphics.map(g => g.getObjectId());
   }
 

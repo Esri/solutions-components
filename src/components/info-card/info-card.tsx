@@ -172,7 +172,7 @@ export class InfoCard {
           </div>
           <edit-record-modal
             editMode={EEditMode.SINGLE}
-            graphic={this.graphic}
+            graphics={[this.graphic]}
             mapView={this.mapView}
             onModalClosed={() => this._editRecordClosed()}
             open={this._editRecordOpen}
