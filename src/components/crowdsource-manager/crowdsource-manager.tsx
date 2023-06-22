@@ -125,18 +125,20 @@ export class CrowdsourceManager {
   render() {
     return (
       <Host>
-        <calcite-panel
-          class="width-full height-full"
-          heading={this._translations.header}
-        >
-          <div class="display-flex" slot="header-actions-end">
-            <div class="header-text">Layout</div>
-            {this._getAction("grid-background", ELayoutMode.GRID, this._translations.grid)}
-            {this._getAction("horizontal-background", ELayoutMode.VERTICAL, this._translations.horizontal)}
-            {this._getAction("vertical-background", ELayoutMode.HORIZONTAL, this._translations.vertical)}
-          </div>
-          {this._getBody(this._layoutMode, this._panelOpen)}
-        </calcite-panel>
+        <calcite-shell>
+          <calcite-panel
+            class="width-full height-full"
+            heading={this._translations.header}
+          >
+            <div class="display-flex" slot="header-actions-end">
+              <div class="header-text">Layout</div>
+              {this._getAction("grid-background", ELayoutMode.GRID, this._translations.grid)}
+              {this._getAction("horizontal-background", ELayoutMode.VERTICAL, this._translations.horizontal)}
+              {this._getAction("vertical-background", ELayoutMode.HORIZONTAL, this._translations.vertical)}
+            </div>
+            {this._getBody(this._layoutMode, this._panelOpen)}
+          </calcite-panel>
+        </calcite-shell>
       </Host>
     );
   }
@@ -232,12 +234,12 @@ export class CrowdsourceManager {
   ): VNode {
     const displayFlex = layoutMode === ELayoutMode.HORIZONTAL ? "" : "display-flex";
     return (
-      <calcite-shell class={"width-full height-full pad-top-51"}>
+      <calcite-panel class={"width-full height-full"}>
         <div class={`width-full height-full ${displayFlex}`}>
           {this._getMap(layoutMode, panelOpen)}
           {this._getTable(layoutMode, panelOpen)}
         </div>
-      </calcite-shell>
+      </calcite-panel>
     );
   }
 

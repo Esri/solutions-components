@@ -53,6 +53,8 @@ export class LayerTable {
   //
   //--------------------------------------------------------------------------
 
+  @State() _editMultipleOpen = false;
+
   @State() _fetchingData = false;
 
   /**
@@ -81,11 +83,6 @@ export class LayerTable {
    * esri/widgets/FeatureTable: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FeatureTable.html
    */
   protected FeatureTable: typeof import("esri/widgets/FeatureTable");
-
-  /**
-   * HTMLEditRecordModalElement: Modal used to edit multiple records
-   */
-  protected _editMultipleMpdal: HTMLEditRecordModalElement;
 
   /**
    * string[]: List of field names to display
@@ -199,7 +196,8 @@ export class LayerTable {
           </div>
           <edit-record-modal
             editMode={EEditMode.MULTI}
-            ref={(el) => this._editMultipleMpdal = el}
+            onModalClosed={() => this._editMultipleClosed()}
+            open={this._editMultipleOpen}
             slot="modals"
           />
         </calcite-shell>
@@ -248,83 +246,94 @@ export class LayerTable {
             type='combobox'
           />
         </div>
-        <div>
-          <calcite-button
+        <calcite-action-bar
+          expandDisabled={true}
+          expanded={true}
+          layout='horizontal'
+        >
+          <calcite-action
             appearance='transparent'
             disabled={!featuresSelected}
-            iconStart='magnifying-glass'
-            kind='neutral'
+            icon='magnifying-glass'
+            label={this._translations.zoom}
             onClick={() => this._zoom()}
-          >
-            {this._translations.zoom}
-          </calcite-button>
-          <calcite-button
+            text={this._translations.zoom}
+            textEnabled={true}
+          />
+          <calcite-action
             appearance='transparent'
             disabled={!multiFeaturesSelected}
-            iconStart='pencil'
-            kind='neutral'
+            icon='pencil'
+            label={this._translations.editMultiple}
             onClick={() => this._editMultiple()}
-          >
-            {this._translations.editMultiple}
-          </calcite-button>
-          <calcite-button
+            text={this._translations.editMultiple}
+            textEnabled
+          />
+          <calcite-action
             appearance='transparent'
-            iconStart='filter'
-            kind='neutral'
+            icon='filter'
             onClick={() => this._filter()}
-          >
-            {this._translations.filters}
-          </calcite-button>
-          <calcite-button
+            text={this._translations.filters}
+            text-enabled="true"
+            textEnabled={true}
+          />
+          <calcite-action
             appearance='transparent'
             disabled={!featuresSelected}
-            iconStart='trash'
-            kind='neutral'
+            icon='trash'
             onClick={() => this._delete()}
-          >
-            {this._translations.delete}
-          </calcite-button>
-
-          <calcite-split-button
+            text={this._translations.delete}
+            text-enabled
+            textEnabled={true}
+          />
+        </calcite-action-bar>
+        <calcite-dropdown class="padding-5">
+          <calcite-button
             appearance="transparent"
+            iconEnd='chevron-down'
             kind='neutral'
-            primaryText={this._translations.more}
+            slot="trigger"
           >
-            <calcite-dropdown-group selection-mode="none">
-              <calcite-dropdown-item
-                iconStart='list-check-all'
-              >
-                {this._translations.selectAll}
-              </calcite-dropdown-item>
-              <calcite-dropdown-item
-                iconStart='selected-items-filter'
-                onClick={() => this._showSelected()}
-              >
-                {this._translations.showSelected}
-              </calcite-dropdown-item>
-              <calcite-dropdown-item
-                iconStart='erase'
-                onClick={() => this._clearSelection()}
-              >
-                {this._translations.clearSelection}
-              </calcite-dropdown-item>
-              <calcite-dropdown-item
-                iconStart='refresh'
-                onClick={() => this._switchSelected()}
-              >
-                {this._translations.switchSelected}
-              </calcite-dropdown-item>
-              <calcite-dropdown-item
-                iconStart='export'
-                onClick={() => void this._exportToCSV()}
-              >
-                {this._translations.exportCSV}
-              </calcite-dropdown-item>
-            </calcite-dropdown-group>
-          </calcite-split-button>
-        </div>
+            {this._translations.more}
+          </calcite-button>
+          <calcite-dropdown-group selection-mode="none">
+            <calcite-dropdown-item
+              iconStart='list-check-all'
+            >
+              {this._translations.selectAll}
+            </calcite-dropdown-item>
+            <calcite-dropdown-item
+              iconStart='selected-items-filter'
+              onClick={() => this._showSelected()}
+            >
+              {this._translations.showSelected}
+            </calcite-dropdown-item>
+            <calcite-dropdown-item
+              iconStart='erase'
+              onClick={() => this._clearSelection()}
+            >
+              {this._translations.clearSelection}
+            </calcite-dropdown-item>
+            <calcite-dropdown-item
+              iconStart='refresh'
+              onClick={() => this._switchSelected()}
+            >
+              {this._translations.switchSelected}
+            </calcite-dropdown-item>
+            <calcite-dropdown-item
+              iconStart='export'
+              onClick={() => void this._exportToCSV()}
+            >
+              {this._translations.exportCSV}
+            </calcite-dropdown-item>
+          </calcite-dropdown-group>
+        </calcite-dropdown>
       </div>
     );
+  }
+
+  protected _editMultipleClosed(): void {
+    this._editMultipleOpen = false;
   }
 
   /**
@@ -446,7 +455,7 @@ export class LayerTable {
    * @returns void
    */
   protected _editMultiple(): void {
-    this._editMultipleMpdal.open = true;
+    this._editMultipleOpen = true;
   }
 
   /**

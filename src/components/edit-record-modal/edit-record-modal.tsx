@@ -323,16 +323,26 @@ export class EditRecordModal {
         );
         break;
       case "date":
+        console.log(field)
         fieldNode = (
           <calcite-label>
             {field.alias}
             <calcite-input-date-picker
-              id={field.name}
+              id={`${field.name}--date`}
               onCalciteInputDatePickerChange={evt => this._dateInputChanged(evt)}
               overlayPositioning='fixed'
               placement='top'
               ref={(el) => this._editControlElements.push(el)}
             />
+            {/* Don't see how to tell if this should be on or not...thought maybe checking valueType but
+             it's null for the fields I tested but this time picker is still shown for fields in the FeatureForm.
+
+             Not showing by default for now...will change as necessary
+             */}
+            {/* <calcite-input-time-picker
+              id={`${field.name}--time`}
+              onCalciteInputTimePickerChange={evt => this._timeInputChanged(evt)}
+            /> */}
           </calcite-label>
         );
         break;
@@ -402,7 +412,7 @@ export class EditRecordModal {
     // should we only store this if it has a value?
     // If we do we prevent the ability to delete values across the seletced features
     // If we don't we could delete values that they may not want to delete
-    this._edits[target.id] = target.value;
+    this._edits[target.id.replace("--date", "")] = target.value;
   }
 
   protected _domainInputChanged(evt: CustomEvent): void {
@@ -427,6 +437,14 @@ export class EditRecordModal {
     // If we do we prevent the ability to delete values across the seletced features
     // If we don't we could delete values that they may not want to delete
     this._edits[target.id] = target.value;
+  }
+
+  protected _timeInputChanged(evt: CustomEvent): void {
+    const target = evt.target as HTMLCalciteInputTimePickerElement;
+    // should we only store this if it has a value?
+    // If we do we prevent the ability to delete values across the seletced features
+    // If we don't we could delete values that they may not want to delete
+    this._edits[target.id.replace("--time", "")] = target.value;
   }
 
   /**

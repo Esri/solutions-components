@@ -45,8 +45,10 @@ Promise that resolves when the operation is complete
 - calcite-loader
 - [edit-record-modal](../edit-record-modal)
 - [map-layer-picker](../map-layer-picker)
+- calcite-action-bar
+- calcite-action
+- calcite-dropdown
 - calcite-button
-- calcite-split-button
 - calcite-dropdown-group
 - calcite-dropdown-item
 
@@ -58,8 +60,10 @@ graph TD;
   layer-table --> calcite-loader
   layer-table --> edit-record-modal
   layer-table --> map-layer-picker
+  layer-table --> calcite-action-bar
+  layer-table --> calcite-action
+  layer-table --> calcite-dropdown
   layer-table --> calcite-button
-  layer-table --> calcite-split-button
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
   calcite-panel --> calcite-action
@@ -106,8 +110,9 @@ graph TD;
   map-layer-picker --> calcite-option
   map-layer-picker --> calcite-combobox-item
   calcite-select --> calcite-icon
-  calcite-split-button --> calcite-button
-  calcite-split-button --> calcite-dropdown
+  calcite-action-bar --> calcite-action-group
+  calcite-action-group --> calcite-action-menu
+  calcite-action-group --> calcite-action
   calcite-dropdown-item --> calcite-icon
   crowdsource-manager --> layer-table
   style layer-table fill:#f9f,stroke:#333,stroke-width:4px

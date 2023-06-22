@@ -16,10 +16,10 @@
 
 ### Depends on
 
+- calcite-shell
 - calcite-panel
 - calcite-action
 - calcite-tooltip
-- calcite-shell
 - [map-card](../map-card)
 - [card-manager](../card-manager)
 - calcite-action-bar
@@ -29,10 +29,10 @@
 ### Graph
 ```mermaid
 graph TD;
+  crowdsource-manager --> calcite-shell
   crowdsource-manager --> calcite-panel
   crowdsource-manager --> calcite-action
   crowdsource-manager --> calcite-tooltip
-  crowdsource-manager --> calcite-shell
   crowdsource-manager --> map-card
   crowdsource-manager --> card-manager
   crowdsource-manager --> calcite-action-bar
@@ -127,8 +127,10 @@ graph TD;
   layer-table --> calcite-loader
   layer-table --> edit-record-modal
   layer-table --> map-layer-picker
+  layer-table --> calcite-action-bar
+  layer-table --> calcite-action
+  layer-table --> calcite-dropdown
   layer-table --> calcite-button
-  layer-table --> calcite-split-button
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
   map-layer-picker --> calcite-select
@@ -136,8 +138,6 @@ graph TD;
   map-layer-picker --> calcite-option
   map-layer-picker --> calcite-combobox-item
   calcite-select --> calcite-icon
-  calcite-split-button --> calcite-button
-  calcite-split-button --> calcite-dropdown
   calcite-dropdown-item --> calcite-icon
   style crowdsource-manager fill:#f9f,stroke:#333,stroke-width:4px
 ```
