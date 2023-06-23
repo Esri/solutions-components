@@ -41,11 +41,6 @@ export class CardManager {
   //--------------------------------------------------------------------------
 
   /**
-   * any: Still need to understand what this one will look like
-   */
-  @Prop() commentsCardValues: any;
-
-  /**
    * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
    */
   @Prop() layerView: __esri.FeatureLayerView;

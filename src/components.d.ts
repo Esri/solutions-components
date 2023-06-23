@@ -51,10 +51,6 @@ export namespace Components {
     }
     interface CardManager {
         /**
-          * any: Still need to understand what this one will look like
-         */
-        "commentsCardValues": any;
-        /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
         "layerView": __esri.FeatureLayerView;
@@ -68,7 +64,6 @@ export namespace Components {
         "mediaCardValues": IMediaCardValues[];
     }
     interface CommentCard {
-        "commentsCardValues": any;
         /**
           * boolean: when true a loading indicator will be shown
          */
@@ -85,9 +80,12 @@ export namespace Components {
     interface DeductCalculator {
     }
     interface EditRecordModal {
+        /**
+          * "MULTI" | "SINGLE": "SINGLE" edit mode is intended to be used to edit a single existing feature                     "MULTI" edit mode is intended to apply edits across a collection of features
+         */
         "editMode": EEditMode;
         /**
-          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+          * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "graphics": __esri.Graphic[];
         /**
@@ -227,6 +225,9 @@ export namespace Components {
         "updateGraphics": () => Promise<void>;
     }
     interface MapLayerPicker {
+        /**
+          * "transparent" | "solid": controls the button appearance when using the "dropdown" type
+         */
         "appearance": "transparent" | "solid";
         /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
@@ -967,11 +968,11 @@ declare global {
 declare namespace LocalJSX {
     interface AddRecordModal {
         /**
-          * Emitted on demand when a buffer is generated.
+          * Emitted on demand the modal is closed
          */
         "onModalClosed"?: (event: AddRecordModalCustomEvent<void>) => void;
         /**
-          * Emitted on demand when a buffer is generated.
+          * Emitted on demand the modal is opened
          */
         "onModalOpened"?: (event: AddRecordModalCustomEvent<void>) => void;
         /**
@@ -1028,10 +1029,6 @@ declare namespace LocalJSX {
     }
     interface CardManager {
         /**
-          * any: Still need to understand what this one will look like
-         */
-        "commentsCardValues"?: any;
-        /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
          */
         "layerView"?: __esri.FeatureLayerView;
@@ -1045,7 +1042,6 @@ declare namespace LocalJSX {
         "mediaCardValues"?: IMediaCardValues[];
     }
     interface CommentCard {
-        "commentsCardValues"?: any;
         /**
           * boolean: when true a loading indicator will be shown
          */
@@ -1070,9 +1066,12 @@ declare namespace LocalJSX {
         "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<string>) => void;
     }
     interface EditRecordModal {
+        /**
+          * "MULTI" | "SINGLE": "SINGLE" edit mode is intended to be used to edit a single existing feature                     "MULTI" edit mode is intended to apply edits across a collection of features
+         */
         "editMode"?: EEditMode;
         /**
-          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+          * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "graphics"?: __esri.Graphic[];
         /**
@@ -1080,11 +1079,11 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
-          * Emitted on demand when a buffer is generated.
+          * Emitted on demand when the modal is closed
          */
         "onModalClosed"?: (event: EditRecordModalCustomEvent<void>) => void;
         /**
-          * Emitted on demand when a buffer is generated.
+          * Emitted on demand when the modal is opened
          */
         "onModalOpened"?: (event: EditRecordModalCustomEvent<void>) => void;
         /**
@@ -1213,6 +1212,9 @@ declare namespace LocalJSX {
         "undoEnabled"?: boolean;
     }
     interface MapLayerPicker {
+        /**
+          * "transparent" | "solid": controls the button appearance when using the "dropdown" type
+         */
         "appearance"?: "transparent" | "solid";
         /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available

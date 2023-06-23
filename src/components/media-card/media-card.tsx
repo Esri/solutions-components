@@ -158,6 +158,11 @@ export class MediaCard {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Create the buttons that will switch between "GRID" and "GALLERY" display
+   *
+   * @protected
+   */
   protected _getImageButtonContainer() : VNode {
     const gridButonApperance = this._displayType === EImageDisplayType.GRID ? "solid" : "outline-fill";
     const galleryButtonApperance = this._displayType === EImageDisplayType.GALLERY ? "solid" : "outline-fill";

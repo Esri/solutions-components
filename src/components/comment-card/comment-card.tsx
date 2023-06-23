@@ -37,9 +37,6 @@ export class CommentCard {
   //
   //--------------------------------------------------------------------------
 
-  // not sure what this will look like yet
-  @Prop() commentsCardValues: any;
-
   /**
    * boolean: when true a loading indicator will be shown
    */

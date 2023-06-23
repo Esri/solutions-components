@@ -86,12 +86,12 @@ export class AddRecordModal {
   //--------------------------------------------------------------------------
 
   /**
-   * Emitted on demand when a buffer is generated.
+   * Emitted on demand the modal is closed
    */
   @Event() modalClosed: EventEmitter<void>;
 
   /**
-   * Emitted on demand when a buffer is generated.
+   * Emitted on demand the modal is opened
    */
   @Event() modalOpened: EventEmitter<void>;
 

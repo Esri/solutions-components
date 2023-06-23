@@ -40,7 +40,7 @@ export class EditRecordModal {
   //--------------------------------------------------------------------------
 
   /**
-   * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
   @Prop({mutable: true}) graphics: __esri.Graphic[];
 
@@ -54,6 +54,10 @@ export class EditRecordModal {
    */
   @Prop({ mutable: true }) open = false;
 
+  /**
+   * "MULTI" | "SINGLE": "SINGLE" edit mode is intended to be used to edit a single existing feature
+   *                     "MULTI" edit mode is intended to apply edits across a collection of features
+   */
   @Prop() editMode = EEditMode.SINGLE;
 
   //--------------------------------------------------------------------------
@@ -80,12 +84,26 @@ export class EditRecordModal {
    */
   protected FeatureForm: typeof import("esri/widgets/FeatureForm");
 
+  /**
+   * esri/widgets/FeatureForm: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FeatureForm.html
+   * The feature form instance
+   */
   protected _featureForm: __esri.FeatureForm;
 
+  /**
+   * esri/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+   */
   protected _layer: __esri.FeatureLayer;
 
+  /**
+   * any[]: Collection of edit controls created in "MULTI" edit mode
+   * These can be calcite-input-text, calcite-input-number, calcite-input-date-picker, calcite-input-time-picker, or calcite-combobox
+   */
   protected _editControlElements: any[];
 
+  /**
+   * Key value pair: Store the field name and new value to be used to apply edits in "MULTI" edit mode.
+   */
   protected _edits: {[key: string]: any} = {};
 
   //--------------------------------------------------------------------------
@@ -95,7 +113,7 @@ export class EditRecordModal {
   //--------------------------------------------------------------------------
 
   /**
-   * Watch for changes to the graphic and update the feature widget
+   * Watch for changes to the graphics and update the feature widget
    */
   @Watch("graphics")
   graphicsWatchHandler(): void {
@@ -126,12 +144,12 @@ export class EditRecordModal {
   //--------------------------------------------------------------------------
 
   /**
-   * Emitted on demand when a buffer is generated.
+   * Emitted on demand when the modal is closed
    */
   @Event() modalClosed: EventEmitter<void>;
 
   /**
-   * Emitted on demand when a buffer is generated.
+   * Emitted on demand when the modal is opened
    */
   @Event() modalOpened: EventEmitter<void>;
 
@@ -151,8 +169,10 @@ export class EditRecordModal {
     await this._getTranslations();
   }
 
-  // special handeling when used with layer-table
-  // this allows us to only fetch graphics when the modal is opened rather than with every render of the layer-table
+  /**
+   * Special handeling when used with layer-table.
+   * This allows us to only fetch graphics when the modal is opened rather than with every render of the layer-table.
+   */
   async componentWillRender(): Promise<void> {
     const layerTableElements: HTMLCollection = document.getElementsByTagName("layer-table");
     if (layerTableElements.length === 1 && this.editMode === EEditMode.MULTI) {
@@ -254,6 +274,11 @@ export class EditRecordModal {
     }
   }
 
+  /**
+   * Get the default Form Template to be used in the FeatureForm
+   *
+   * @protected
+   */
   protected _getFormTemplateElements(): any {
     if (this.graphics.length > 0 && this._layer) {
       return this._layer.fields.reduce((prev, cur) => {
@@ -269,6 +294,11 @@ export class EditRecordModal {
     }
   }
 
+  /**
+   * Get the controls for all editable fields when using "MULTI" edit mode
+   *
+   * @protected
+   */
   protected _getFieldInputs(): VNode[] {
     if (this.graphics.length > 0 && this._layer) {
       const fields = this._layer.fields.filter(f => f.editable);
@@ -283,6 +313,11 @@ export class EditRecordModal {
     }
   }
 
+  /**
+   * Get the input for all editable fields when using "MULTI" edit mode
+   *
+   * @protected
+   */
   _getFieldInput(
     field: any
   ): VNode {
@@ -337,7 +372,7 @@ export class EditRecordModal {
             {/* Don't see how to tell if this should be on or not...thought maybe checking valueType but
              it's null for the fields I tested but this time picker is still shown for fields in the FeatureForm.
 
-             Not showing by default for now...will change as necessary
+             Not showing by default for now...will change as necessary after I speak with the team
              */}
             {/* <calcite-input-time-picker
               id={`${field.name}--time`}
@@ -364,6 +399,11 @@ export class EditRecordModal {
     return fieldNode;
   }
 
+  /**
+   * Get the input control when a field has a domain
+   *
+   * @protected
+   */
   protected _getDomainInput(
     field: __esri.Field
   ): VNode {
@@ -392,7 +432,7 @@ export class EditRecordModal {
 
       // need to look into this one more
       //case "inherited":
-        //break;
+      //break;
 
       case "range":
         node = (
@@ -407,6 +447,11 @@ export class EditRecordModal {
     return node;
   }
 
+  /**
+   * Store the selected date value
+   *
+   * @protected
+   */
   protected _dateInputChanged(evt: CustomEvent): void {
     const target = evt.target as HTMLCalciteDatePickerElement;
     // should we only store this if it has a value?
@@ -415,6 +460,11 @@ export class EditRecordModal {
     this._edits[target.id.replace("--date", "")] = target.value;
   }
 
+  /**
+   * Store the selected text value
+   *
+   * @protected
+   */
   protected _domainInputChanged(evt: CustomEvent): void {
     const target = evt.target as HTMLCalciteInputTextElement;
     // should we only store this if it has a value?
@@ -423,6 +473,11 @@ export class EditRecordModal {
     this._edits[target.id] = target.value;
   }
 
+  /**
+   * Store the selected number value
+   *
+   * @protected
+   */
   protected _numberInputChanged(evt: CustomEvent): void {
     const target = evt.target as HTMLCalciteInputNumberElement;
     // should we only store this if it has a value?
@@ -431,6 +486,11 @@ export class EditRecordModal {
     this._edits[target.id] = target.value;
   }
 
+  /**
+   * Store the selected string value
+   *
+   * @protected
+   */
   protected _stringInputChanged(evt: CustomEvent): void {
     const target = evt.target as HTMLCalciteInputTextElement;
     // should we only store this if it has a value?
@@ -439,6 +499,11 @@ export class EditRecordModal {
     this._edits[target.id] = target.value;
   }
 
+  /**
+   * Store the selected time value
+   *
+   * @protected
+   */
   protected _timeInputChanged(evt: CustomEvent): void {
     const target = evt.target as HTMLCalciteInputTimePickerElement;
     // should we only store this if it has a value?
@@ -457,6 +522,11 @@ export class EditRecordModal {
     this._clearInputs();
   }
 
+  /**
+   * Clear the input controls so they do not retain values on close
+   *
+   * @returns void
+   */
   protected _clearInputs(): void {
     this._editControlElements.forEach(c => {
       console.log(c);
@@ -469,11 +539,17 @@ export class EditRecordModal {
     });
   }
 
+  /**
+   * Apply the edits to the layer
+   *
+   * @returns void
+   */
   protected _save(): void {
     const attributes = this.editMode === EEditMode.SINGLE ?
       this._featureForm.getValues() : this._edits;
     if (attributes) {
       console.log(attributes);
+      // Holding off on this for a moment until we talk through a few things for MULTI edit
       // this._layer.applyEdits({
       //   updateFeatures: [{ attributes } as any]
       // });

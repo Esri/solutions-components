@@ -53,8 +53,14 @@ export class LayerTable {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * boolean: When true the edit multiple modal is shown
+   */
   @State() _editMultipleOpen = false;
 
+  /**
+   * boolean: When true a loading indicator will be shown in place of the layer table
+   */
   @State() _fetchingData = false;
 
   /**
@@ -63,7 +69,7 @@ export class LayerTable {
   @State() _layerView: __esri.FeatureLayerView;
 
   /**
-   * A list of indexes that are currently selected
+   * number[]: A list of indexes that are currently selected
    */
   @State() _selectedIndexes: number[] = [];
 
@@ -333,6 +339,9 @@ export class LayerTable {
     );
   }
 
+  /**
+   * Cloase the edit multiple modal
+   */
   protected _editMultipleClosed(): void {
     this._editMultipleOpen = false;
   }

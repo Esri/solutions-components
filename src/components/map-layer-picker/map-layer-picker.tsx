@@ -37,6 +37,9 @@ export class MapLayerPicker {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * "transparent" | "solid": controls the button appearance when using the "dropdown" type
+   */
   @Prop() appearance: "transparent" | "solid" = "transparent";
 
   /**
@@ -292,9 +295,9 @@ export class MapLayerPicker {
   }
 
   /**
-   * Hydrate a select or combobox component with the ids of the layers in the map
+   * Hydrate a select component with the ids of the layers in the map
    *
-   * @returns Array of ComboBox items or Select options for the ids of the layers
+   * @returns Array of select options for the ids of the layers
    */
   _addSelectMapLayersOptions(): VNode[] {
     return this.layerIds.reduce((prev, cur) => {
@@ -307,6 +310,11 @@ export class MapLayerPicker {
     }, []);
   }
 
+  /**
+   * Hydrate a combobox component with the ids of the layers in the map
+   *
+   * @returns Array of ComboBox items for the ids of the layers
+   */
   _addComboboxMapLayersOptions(): VNode[] {
     return this.layerIds.reduce((prev, cur) => {
       if (state.managedLayers.indexOf(state.layerNameHash[cur]) < 0 && (this.enabledLayerIds.length > 0 ? this.enabledLayerIds.indexOf(cur) > -1 : true)) {
