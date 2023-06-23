@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, Watch } from "@stencil/core";
 import InfoCard_T9n from "../../assets/t9n/info-card/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { loadModules } from "../../utils/loadModules";
-import { EEditMode } from '../../utils/interfaces';
+import { EEditMode } from "../../utils/interfaces";
 
 @Component({
-  tag: 'info-card',
-  styleUrl: 'info-card.css',
+  tag: "info-card",
+  styleUrl: "info-card.css",
   shadow: false,
 })
 export class InfoCard {
@@ -176,7 +176,7 @@ export class InfoCard {
             mapView={this.mapView}
             onModalClosed={() => this._editRecordClosed()}
             open={this._editRecordOpen}
-            slot='modals'
+            slot="modals"
           />
         </calcite-shell>
       </Host>

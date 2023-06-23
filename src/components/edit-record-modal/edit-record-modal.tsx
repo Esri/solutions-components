@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
 import EditRecordModal_T9n from "../../assets/t9n/edit-record-modal/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { EEditMode } from "../../utils/interfaces";
 
 @Component({
-  tag: 'edit-record-modal',
-  styleUrl: 'edit-record-modal.css',
+  tag: "edit-record-modal",
+  styleUrl: "edit-record-modal.css",
   shadow: false,
 })
 export class EditRecordModal {
@@ -366,8 +366,8 @@ export class EditRecordModal {
             <calcite-input-date-picker
               id={`${field.name}--date`}
               onCalciteInputDatePickerChange={evt => this._dateInputChanged(evt)}
-              overlayPositioning='fixed'
-              placement='top'
+              overlayPositioning="fixed"
+              placement="top"
               ref={(el) => this._editControlElements.push(el)}
             />
             {/* Don't see how to tell if this should be on or not...thought maybe checking valueType but

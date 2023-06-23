@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
 import MediaCard_T9n from "../../assets/t9n/media-card/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { EImageDisplayType, IMediaCardValues } from '../../utils/interfaces';
+import { EImageDisplayType, IMediaCardValues } from "../../utils/interfaces";
 
 @Component({
-  tag: 'media-card',
-  styleUrl: 'media-card.css',
+  tag: "media-card",
+  styleUrl: "media-card.css",
   shadow: true,
 })
 export class MediaCard {
@@ -243,7 +243,7 @@ export class MediaCard {
         {toggleButtons}
         <img src={v?.url} />
 
-        <calcite-label scale='s'>
+        <calcite-label scale="s">
           <span class="font-italic padding-bottom-1">
             {v?.name}
           </span>

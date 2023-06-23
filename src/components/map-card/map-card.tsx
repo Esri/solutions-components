@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
 import MapCard_T9n from "../../assets/t9n/map-card/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -29,8 +29,8 @@ import { EExpandType, IMapInfo } from "../../utils/interfaces";
 // TODO map list should close if the user clicks something else...hope this will be easy when I figure out how to set focus when it opens
 
 @Component({
-  tag: 'map-card',
-  styleUrl: 'map-card.css',
+  tag: "map-card",
+  styleUrl: "map-card.css",
   shadow: false,
 })
 export class MapCard {
@@ -320,7 +320,7 @@ export class MapCard {
       <calcite-action-group class="action-center width-1-6" layout="horizontal">
         <calcite-block
           class="action-center block-button width-full height-full display-grid"
-          heading=''
+          heading=""
           onClick={() => this._chooseMap()}
         >
           <calcite-icon icon="map" scale="s" slot="icon" />

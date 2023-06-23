@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from "@stencil/core";
 import CommentCard_T9n from "../../assets/t9n/comment-card/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
-  tag: 'comment-card',
-  styleUrl: 'comment-card.css',
+  tag: "comment-card",
+  styleUrl: "comment-card.css",
   shadow: true,
 })
 export class CommentCard {

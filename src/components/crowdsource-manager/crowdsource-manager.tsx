@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Listen, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Host, h, Listen, Prop, State, VNode } from "@stencil/core";
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { ELayoutMode, IMapInfo } from '../../utils/interfaces';
+import { ELayoutMode, IMapInfo } from "../../utils/interfaces";
 
 @Component({
-  tag: 'crowdsource-manager',
-  styleUrl: 'crowdsource-manager.css',
+  tag: "crowdsource-manager",
+  styleUrl: "crowdsource-manager.css",
   shadow: false,
 })
 export class CrowdsourceManager {

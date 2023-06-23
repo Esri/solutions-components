@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from "@stencil/core";
 import AddRecordModal_T9n from "../../assets/t9n/add-record-modal/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 
 // TODO implement save logic
 
 @Component({
-  tag: 'add-record-modal',
-  styleUrl: 'add-record-modal.css',
+  tag: "add-record-modal",
+  styleUrl: "add-record-modal.css",
   shadow: true,
 })
 export class AddRecordModal {
@@ -135,13 +135,13 @@ export class AddRecordModal {
                 <div class="padding-bottom-1">
                   <calcite-label class="font-bold">
                     {this._translations.source}
-                    <calcite-input placeholder={this._translations.textField} type='textarea' />
+                    <calcite-input placeholder={this._translations.textField} type="textarea" />
                   </calcite-label>
                 </div>
                 <div class="padding-bottom-1">
                   <calcite-label class="font-bold">
                     {this._translations.publicView}
-                    <calcite-input placeholder={this._translations.textField} type='textarea' />
+                    <calcite-input placeholder={this._translations.textField} type="textarea" />
                   </calcite-label>
                 </div>
                 <div class="padding-bottom-1">
@@ -160,7 +160,7 @@ export class AddRecordModal {
                         appearance="solid"
                         color="neutral"
                         onClick={() => this._browse()}
-                        width='auto'>
+                        width="auto">
                         {this._translations.browse}
                       </calcite-button>
                     </div>

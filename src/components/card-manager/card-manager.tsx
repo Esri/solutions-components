@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Listen, Prop, State } from '@stencil/core';
+import { Component, Element, Host, h, Listen, Prop, State } from "@stencil/core";
 import CardManager_T9n from "../../assets/t9n/card-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { ECardType, IMediaCardValues } from "../../utils/interfaces";
@@ -22,8 +22,8 @@ import { queryFeaturesByID } from "../../utils/queryUtils";
 import { getMapLayerView } from "../../utils/mapViewUtils";
 
 @Component({
-  tag: 'card-manager',
-  styleUrl: 'card-manager.css',
+  tag: "card-manager",
+  styleUrl: "card-manager.css",
   shadow: false,
 })
 export class CardManager {
@@ -182,7 +182,7 @@ export class CardManager {
                 class="focus-margin"
                 onCalciteSegmentedControlChange={() => this._setDisplayCard()}
                 ref={(el) => { this._cardTypeElement = el }}
-                width='full'
+                width="full"
               >
                 <calcite-segmented-control-item
                   checked={infoChecked}
