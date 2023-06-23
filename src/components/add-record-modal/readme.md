@@ -14,10 +14,10 @@
 
 ## Events
 
-| Event         | Description                                   | Type                |
-| ------------- | --------------------------------------------- | ------------------- |
-| `modalClosed` | Emitted on demand when a buffer is generated. | `CustomEvent<void>` |
-| `modalOpened` | Emitted on demand when a buffer is generated. | `CustomEvent<void>` |
+| Event         | Description                           | Type                |
+| ------------- | ------------------------------------- | ------------------- |
+| `modalClosed` | Emitted on demand the modal is closed | `CustomEvent<void>` |
+| `modalOpened` | Emitted on demand the modal is opened | `CustomEvent<void>` |
 
 
 ## Dependencies

@@ -7,12 +7,11 @@
 
 ## Properties
 
-| Property             | Attribute              | Description                                                                                                                               | Type                 | Default     |
-| -------------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ----------- |
-| `commentsCardValues` | `comments-card-values` | any: Still need to understand what this one will look like                                                                                | `any`                | `undefined` |
-| `layerView`          | --                     | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView`   | `undefined` |
-| `mapView`            | --                     | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                 | `MapView`            | `undefined` |
-| `mediaCardValues`    | --                     | IMediaCardValues[]: Array of objects that contain the name, description, and image to display                                             | `IMediaCardValues[]` | `[]`        |
+| Property          | Attribute | Description                                                                                                                               | Type                 | Default     |
+| ----------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ----------- |
+| `layerView`       | --        | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html | `FeatureLayerView`   | `undefined` |
+| `mapView`         | --        | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                 | `MapView`            | `undefined` |
+| `mediaCardValues` | --        | IMediaCardValues[]: Array of objects that contain the name, description, and image to display                                             | `IMediaCardValues[]` | `[]`        |
 
 
 ## Dependencies

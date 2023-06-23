@@ -7,10 +7,9 @@
 
 ## Properties
 
-| Property             | Attribute              | Description                                          | Type      | Default     |
-| -------------------- | ---------------------- | ---------------------------------------------------- | --------- | ----------- |
-| `commentsCardValues` | `comments-card-values` |                                                      | `any`     | `undefined` |
-| `isLoading`          | `is-loading`           | boolean: when true a loading indicator will be shown | `boolean` | `false`     |
+| Property    | Attribute    | Description                                          | Type      | Default |
+| ----------- | ------------ | ---------------------------------------------------- | --------- | ------- |
+| `isLoading` | `is-loading` | boolean: when true a loading indicator will be shown | `boolean` | `false` |
 
 
 ## Events

@@ -9,7 +9,7 @@
 
 | Property           | Attribute          | Description                                                                                            | Type                                   | Default         |
 | ------------------ | ------------------ | ------------------------------------------------------------------------------------------------------ | -------------------------------------- | --------------- |
-| `appearance`       | `appearance`       |                                                                                                        | `"solid" \| "transparent"`             | `"transparent"` |
+| `appearance`       | `appearance`       | "transparent" \| "solid": controls the button appearance when using the "dropdown" type                | `"solid" \| "transparent"`             | `"transparent"` |
 | `enabledLayerIds`  | --                 | string[]: Optional list of enabled layer ids  If empty all layers will be available                    | `string[]`                             | `[]`            |
 | `mapView`          | --                 | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                              | `undefined`     |
 | `placeholderIcon`  | `placeholder-icon` | string: optional placeholder icon used with "combobox" type                                            | `string`                               | `""`            |
