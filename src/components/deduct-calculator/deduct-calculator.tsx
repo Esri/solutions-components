@@ -20,12 +20,12 @@
 // It has been requested that we have a simple way to demo and test the functionality.
 // I am putting here now just to keep together with other current work.
 
-import { Component, Element, Event, EventEmitter, Host, h, VNode } from '@stencil/core';
-import { calculateDeductValue, EDistressType, ESeverity } from '../../utils/pciUtils';
+import { Component, Element, Event, EventEmitter, Host, h, VNode } from "@stencil/core";
+import { calculateDeductValue, EDistressType, ESeverity } from "../../utils/pciUtils";
 
 @Component({
-  tag: 'deduct-calculator',
-  styleUrl: 'deduct-calculator.css',
+  tag: "deduct-calculator",
+  styleUrl: "deduct-calculator.css",
   shadow: true,
 })
 export class DeductCalculator {
@@ -151,7 +151,7 @@ export class DeductCalculator {
         max={100}
         min={0}
         ref={(el) => { this._densityElement = el }}
-        type='number'
+        type="number"
       />
     );
   }
@@ -166,7 +166,7 @@ export class DeductCalculator {
    */
   protected _getTypeInput(): VNode {
     return (
-      <calcite-select label='' ref={(el) => { this._typeElement = el }}>
+      <calcite-select label="" ref={(el) => { this._typeElement = el }}>
         {
           this._types.map((t, i) => <calcite-option value={EDistressType[t].toString()}>{`${t} (${i + 1})`}</calcite-option>)
         }
@@ -184,7 +184,7 @@ export class DeductCalculator {
    */
   protected _getSeverityInput(): VNode {
     return (
-      <calcite-select label='' ref={(el) => { this._severityElement = el }}>
+      <calcite-select label="" ref={(el) => { this._severityElement = el }}>
         <calcite-option value={ESeverity.H}>High</calcite-option>
         <calcite-option value={ESeverity.M}>Medium</calcite-option>
         <calcite-option value={ESeverity.L}>Low</calcite-option>

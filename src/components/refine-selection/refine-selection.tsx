@@ -54,7 +54,7 @@ export class RefineSelection {
   @Prop() enabledLayerIds: string[] = [];
 
   /**
-   * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
 
@@ -213,7 +213,6 @@ export class RefineSelection {
                 onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
                 ref={(el) => { this._layerPicker = el }}
                 selectedLayerIds={[this._refineLayer.layer.id]}
-                selectionMode={"single"}
               />
             </calcite-label>
             <calcite-popover

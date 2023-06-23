@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Listen, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Host, h, Listen, Prop, State, VNode } from "@stencil/core";
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { ELayoutMode, IMapInfo } from '../../utils/interfaces';
+import { ELayoutMode, IMapInfo } from "../../utils/interfaces";
 
 @Component({
-  tag: 'crowdsource-manager',
-  styleUrl: 'crowdsource-manager.css',
+  tag: "crowdsource-manager",
+  styleUrl: "crowdsource-manager.css",
   shadow: false,
 })
 export class CrowdsourceManager {
@@ -95,11 +95,13 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
-   * Handle changes to the buffer distance value
+   * Listen for mapChanged event to be fired then store the new mapView so components will be updated
    */
   @Listen("mapChanged", { target: "window" })
-  mapChanged(event: CustomEvent): void {
-    this._mapView = event.detail;
+  async mapChanged(
+    evt: CustomEvent
+  ): Promise<void> {
+    this._mapView = evt.detail;
   }
 
   //--------------------------------------------------------------------------
@@ -108,25 +110,35 @@ export class CrowdsourceManager {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   *
+   * @returns Promise when complete
+   */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
   }
 
+  /**
+   * Renders the component.
+   */
   render() {
     return (
       <Host>
-        <calcite-panel
-          class="width-full height-full"
-          heading={this._translations.header}
-        >
-          <div class="display-flex" slot="header-actions-end">
-            <div class="header-text">Layout</div>
-            {this._getAction("grid-background", ELayoutMode.GRID, this._translations.grid)}
-            {this._getAction("horizontal-background", ELayoutMode.VERTICAL, this._translations.horizontal)}
-            {this._getAction("vertical-background", ELayoutMode.HORIZONTAL, this._translations.vertical)}
-          </div>
-          {this._getBody(this._layoutMode, this._panelOpen)}
-        </calcite-panel>
+        <calcite-shell>
+          <calcite-panel
+            class="width-full height-full"
+            heading={this._translations.header}
+          >
+            <div class="display-flex" slot="header-actions-end">
+              <div class="header-text">Layout</div>
+              {this._getAction("grid-background", ELayoutMode.GRID, this._translations.grid)}
+              {this._getAction("horizontal-background", ELayoutMode.VERTICAL, this._translations.horizontal)}
+              {this._getAction("vertical-background", ELayoutMode.HORIZONTAL, this._translations.vertical)}
+            </div>
+            {this._getBody(this._layoutMode, this._panelOpen)}
+          </calcite-panel>
+        </calcite-shell>
       </Host>
     );
   }
@@ -222,12 +234,12 @@ export class CrowdsourceManager {
   ): VNode {
     const displayFlex = layoutMode === ELayoutMode.HORIZONTAL ? "" : "display-flex";
     return (
-      <calcite-shell class={"width-full height-full pad-top-51"}>
+      <calcite-panel class={"width-full height-full"}>
         <div class={`width-full height-full ${displayFlex}`}>
           {this._getMap(layoutMode, panelOpen)}
           {this._getTable(layoutMode, panelOpen)}
         </div>
-      </calcite-shell>
+      </calcite-panel>
     );
   }
 
@@ -238,8 +250,11 @@ export class CrowdsourceManager {
     const mapSizeClass = this._getMapSizeClass(layoutMode, panelOpen);
     return (
       <div class={`${mapSizeClass} overflow-hidden`}>
-        <div style={{ "overflow": "hidden" }} >
+        <div class="adjusted-height-50 overflow-hidden" >
           <map-card mapInfos={this.mapInfos}/>
+        </div>
+        <div class="padding-1">
+          <card-manager class="adjusted-height-50" mapView={this?._mapView}/>
         </div>
       </div>
     );
@@ -253,27 +268,35 @@ export class CrowdsourceManager {
     const icon = this._getDividerIcon(layoutMode, panelOpen);
     const tooltip = panelOpen ? this._translations.close : this._translations.open;
     const id = "toggle-layout";
-    const toggleSizeClass = layoutMode === ELayoutMode.HORIZONTAL ? "divider-h" : "divider-w";
+    const toggleLayout = layoutMode === ELayoutMode.HORIZONTAL ? "horizontal" : "vertical";
+    const toggleSlot = layoutMode === ELayoutMode.HORIZONTAL ? "header" : "panel-start";
     return (
-      <div class={tableSizeClass}>
-        <div class={`border ${toggleSizeClass}`}>
-          <div class="toggle-node">
-            <calcite-action
-              class="toggle-node"
-              icon={icon}
-              id={id}
-              onClick={() => this._toggleLayout()}
-              text=""
-            />
-            <calcite-tooltip label={tooltip} placement="bottom" reference-element={id}>
-              <span>{tooltip}</span>
-            </calcite-tooltip>
-          </div>
-        </div>
-        <div class="width-full height-full">
-          <layer-table mapView={this?._mapView}/>
-        </div>
-      </div>
+      <calcite-shell class={tableSizeClass}>
+        <calcite-action-bar
+          class="border"
+          expandDisabled={true}
+          layout={toggleLayout}
+          slot={toggleSlot}
+        >
+          <calcite-action
+            class="toggle-node"
+            icon={icon}
+            id={id}
+            onClick={() => this._toggleLayout()}
+            text=""
+          />
+          <calcite-tooltip
+            label={tooltip}
+            placement="bottom"
+            reference-element={id}
+          >
+            <span>{tooltip}</span>
+          </calcite-tooltip>
+        </calcite-action-bar>
+        <calcite-shell-panel class="width-full height-full">
+          <layer-table mapView={this?._mapView} />
+        </calcite-shell-panel>
+      </calcite-shell>
     );
   }
 

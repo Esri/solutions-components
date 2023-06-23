@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property              | Attribute | Description                                                                                            | Type                   | Default     |
-| --------------------- | --------- | ------------------------------------------------------------------------------------------------------ | ---------------------- | ----------- |
-| `mapView`             | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`              | `undefined` |
-| `searchConfiguration` | --        | ISearchConfiguration: Configuration details for the Search widget                                      | `ISearchConfiguration` | `undefined` |
+| Property              | Attribute | Description                                                                                               | Type                   | Default     |
+| --------------------- | --------- | --------------------------------------------------------------------------------------------------------- | ---------------------- | ----------- |
+| `mapView`             | --        | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`              | `undefined` |
+| `searchConfiguration` | --        | ISearchConfiguration: Configuration details for the Search widget                                         | `ISearchConfiguration` | `undefined` |
 
 
 ## Events

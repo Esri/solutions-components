@@ -18,8 +18,12 @@
   display: block;
 }
 
-.table-div {
-  height: calc(100% - 35px);
+.height-full {
+  height: 100%;
+}
+
+.width-full {
+  width: 100%;
 }
 
 .display-flex {
@@ -28,4 +32,16 @@
 
 .table-border {
   border: 1px solid var(--calcite-ui-border-2);
+}
+
+.border-end {
+  border-inline-end: 1px solid var(--calcite-ui-border-2);
+}
+
+.w-400 {
+  width: 400px;
+}
+
+.padding-5 {
+  padding: 5px;
 }

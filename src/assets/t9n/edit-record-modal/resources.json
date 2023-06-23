@@ -1,8 +1,10 @@
 {
   "cancel": "Cancel",
+  "edit": "Edit",
   "editMultiple": "Edit Multiple",
   "infoMessage": "These changes will apply to all selected fields.",
   "label": "Label",
   "save": "Save",
-  "textField": "Text Field"
+  "textField": "Text Field",
+  "selectValue": "Select a value"
 }

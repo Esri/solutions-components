@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, VNode } from '@stencil/core';
-import { IInfoCardValues } from '../../utils/interfaces';
+import { Component, Element, Host, h, Prop, State, Watch } from "@stencil/core";
+import InfoCard_T9n from "../../assets/t9n/info-card/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
+import { loadModules } from "../../utils/loadModules";
+import { EEditMode } from "../../utils/interfaces";
 
 @Component({
-  tag: 'info-card',
-  styleUrl: 'info-card.css',
-  shadow: true,
+  tag: "info-card",
+  styleUrl: "info-card.css",
+  shadow: false,
 })
 export class InfoCard {
   //--------------------------------------------------------------------------
@@ -38,14 +41,19 @@ export class InfoCard {
   //--------------------------------------------------------------------------
 
   /**
-   * string: the components title
+   * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
-  @Prop() cardTitle = "";
+  @Prop() graphic: __esri.Graphic;
 
   /**
-   * IInfoCardValues: key value pairs to show in the components table
+   * boolean: when true a loading indicator will be shown
    */
-  @Prop() values: IInfoCardValues = {};
+  @Prop() isLoading = false;
+
+  /**
+   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   */
+  @Prop() mapView: __esri.MapView;
 
   //--------------------------------------------------------------------------
   //
@@ -53,17 +61,59 @@ export class InfoCard {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * When true the add record modal will be displayed
+   */
+  @State() _editRecordOpen = false;
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() _translations: typeof InfoCard_T9n;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * esri/widgets/Feature: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Feature.html
+   * used for module import
+   */
+  protected Feature: typeof import("esri/widgets/Feature");
+
+  /**
+   * esri/widgets/Feature: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Feature.html
+   * used for widget instance
+   */
+  protected _feature: __esri.Feature;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Watch for changes to the graphic and update the feature widget
+   */
+  @Watch("graphic")
+  graphicWatchHandler(): void {
+    this._initFeatureWidget();
+    if (this._feature) {
+      this._feature.graphic = this.graphic;
+    }
+  }
+
+  /**
+   * Watch for changes to the mapView and re-init the Feature widget
+   */
+  @Watch("mapView")
+  mapViewWatchHandler(): void {
+    this._initFeatureWidget();
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -84,23 +134,51 @@ export class InfoCard {
   //--------------------------------------------------------------------------
 
   /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   *
+   * @returns Promise when complete
+   */
+  async componentWillLoad(): Promise<void> {
+    await this._initModules();
+    await this._getTranslations();
+  }
+
+  /**
    * Renders the component.
    */
   render() {
+    const loadingClass = this.isLoading ? "" : "display-none";
+    const featureNodeClass = this.isLoading ? "display-none" : "";
     return (
       <Host>
-        <div>
-          <div class="bottom-border">
-            <calcite-label >{this.cardTitle}</calcite-label>
+        <calcite-shell>
+          <calcite-loader
+            class={loadingClass}
+            label={this._translations.fetchingData}
+          />
+          <div
+            class={"esri-widget " + featureNodeClass}
+            id="feature-node"
+          />
+          <div class="padding-1-2 display-flex" slot="footer">
+            <calcite-button
+              appearance="outline"
+              iconStart="pencil"
+              onClick={() => this._openEditRecord()}
+              width="full"
+            >
+              {this._translations.edit}
+            </calcite-button>
           </div>
-          <div class="padding-top-1-2">
-            <table>
-              <tbody>
-                {this._getRows()}
-              </tbody>
-            </table>
-          </div>
-        </div>
+          <edit-record-modal
+            editMode={EEditMode.SINGLE}
+            graphics={[this.graphic]}
+            mapView={this.mapView}
+            onModalClosed={() => this._editRecordClosed()}
+            open={this._editRecordOpen}
+            slot="modals"
+          />
+        </calcite-shell>
       </Host>
     );
   }
@@ -112,27 +190,58 @@ export class InfoCard {
   //--------------------------------------------------------------------------
 
   /**
-   * Render the user defined values as table rows
+   * Load esri javascript api modules
    *
-   * @returns array of row nodes
+   * @returns Promise resolving when function is done
+   *
    * @protected
    */
-  protected _getRows(): VNode[] {
-    return Object.keys(this.values).map(k => {
-      return (
-        <tr>
-          <td>
-            <calcite-label>
-              <span class="font-color-3">{k}</span>
-            </calcite-label>
-          </td>
-          <td>
-            <calcite-label>
-              <span>{this.values[k]}</span>
-            </calcite-label>
-          </td>
-        </tr>
-      );
-    })
+  protected async _initModules(): Promise<void> {
+    const [Feature] = await loadModules([
+      "esri/widgets/Feature"
+    ]);
+    this.Feature = Feature;
+  }
+
+  /**
+   * Init the Feature widget so we can display the popup content
+   *
+   * @protected
+   */
+  protected _initFeatureWidget(): void {
+    if (this.mapView && !this._feature) {
+      // map and spatialReference must be set for Arcade
+      // expressions to execute and display content
+      this._feature = new this.Feature({
+        map: this.mapView.map,
+        spatialReference: this.mapView.spatialReference,
+        container: "feature-node"
+      });
+    }
+  }
+
+  /**
+   * Close the edit record modal
+   */
+  protected _editRecordClosed(): void {
+    this._editRecordOpen = false;
+  }
+
+  /**
+   * Open the edit record modal
+   */
+  protected _openEditRecord(): void {
+    this._editRecordOpen = true;
+  }
+
+  /**
+   * Fetches the component's translations
+   *
+   * @returns Promise when complete
+   * @protected
+   */
+  protected async _getTranslations(): Promise<void> {
+    const messages = await getLocaleComponentStrings(this.el);
+    this._translations = messages[0] as typeof InfoCard_T9n;
   }
 }

@@ -19,10 +19,26 @@ import {
   IItemTemplate
 } from '@esri/solution-common';
 
+export enum ECardType {
+  COMMENT="COMMENT",
+  INFO="INFO",
+  MEDIA="MEDIA"
+}
+
+export enum EImageDisplayType {
+  GRID="GRID",
+  GALLERY="GALLERY"
+}
+
 export enum ELayoutMode {
   GRID = "GRID",
   HORIZONTAL = "HORIZONTAL",
   VERTICAL = "VERTICAL"
+}
+
+export enum EEditMode {
+  MULTI = "MULTI",
+  SINGLE = "SINGLE"
 }
 
 /**
@@ -78,8 +94,6 @@ export enum EDrawMode {
 }
 
 /* eslint-enable no-unused-vars */
-
-export type SelectionMode = "single" | "multi";
 
 export type ValidSize = 6|10|14|20|30|60|80;
 
@@ -419,10 +433,6 @@ export interface ISketchGraphicsChange {
 export interface IQueryExtentResponse {
   count: number;
   extent: __esri.Extent;
-}
-
-export interface IInfoCardValues {
-  [key: string]: string;
 }
 
 export interface IMediaCardValues {

@@ -1,4 +1,5 @@
 {
   "next": "Next",
-  "previous": "Previous"
+  "previous": "Previous",
+  "fetchingData": "Fetching data"
 }

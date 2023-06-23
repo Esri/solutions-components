@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from "@stencil/core";
 import AddRecordModal_T9n from "../../assets/t9n/add-record-modal/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 
 // TODO implement save logic
 
 @Component({
-  tag: 'add-record-modal',
-  styleUrl: 'add-record-modal.css',
+  tag: "add-record-modal",
+  styleUrl: "add-record-modal.css",
   shadow: true,
 })
 export class AddRecordModal {
@@ -42,7 +42,7 @@ export class AddRecordModal {
   /**
    * When true the component is displayed
    */
-  @Prop({ mutable: true }) open = false;
+  @Prop({ mutable: true, reflect: true }) open = false;
 
   //--------------------------------------------------------------------------
   //
@@ -85,6 +85,16 @@ export class AddRecordModal {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Emitted on demand the modal is closed
+   */
+  @Event() modalClosed: EventEmitter<void>;
+
+  /**
+   * Emitted on demand the modal is opened
+   */
+  @Event() modalOpened: EventEmitter<void>;
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -107,20 +117,31 @@ export class AddRecordModal {
     return (
       <Host>
         <div>
-          <calcite-modal open={this.open} width="s">
-            <div class="font-500" slot="header">{this._translations.addRecord}</div>
+          <calcite-modal
+            onCalciteModalClose={() => this._modalClose()}
+            onCalciteModalOpen={() => this._modalOpen()}
+            open={this.open}
+            outsideCloseDisabled={true}
+            width="s"
+          >
+            <div
+              class="font-500"
+              slot="header"
+            >
+              {this._translations.addRecord}
+            </div>
             <div slot="content">
               <div>
                 <div class="padding-bottom-1">
                   <calcite-label class="font-bold">
                     {this._translations.source}
-                    <calcite-input placeholder={this._translations.textField} type='textarea' />
+                    <calcite-input placeholder={this._translations.textField} type="textarea" />
                   </calcite-label>
                 </div>
                 <div class="padding-bottom-1">
                   <calcite-label class="font-bold">
                     {this._translations.publicView}
-                    <calcite-input placeholder={this._translations.textField} type='textarea' />
+                    <calcite-input placeholder={this._translations.textField} type="textarea" />
                   </calcite-label>
                 </div>
                 <div class="padding-bottom-1">
@@ -139,7 +160,7 @@ export class AddRecordModal {
                         appearance="solid"
                         color="neutral"
                         onClick={() => this._browse()}
-                        width='auto'>
+                        width="auto">
                         {this._translations.browse}
                       </calcite-button>
                     </div>
@@ -196,6 +217,24 @@ export class AddRecordModal {
   // TODO needs to be implemented will handle save of the record
   protected _save(): void {
     this.open = false;
+  }
+
+  /**
+   * Emit the modal close event
+   *
+   * @returns void
+   */
+  protected _modalClose(): void {
+    this.modalClosed.emit();
+  }
+
+  /**
+   * Emit the modal open event
+   *
+   * @returns void
+   */
+  protected _modalOpen(): void {
+    this.modalOpened.emit();
   }
 
   /**

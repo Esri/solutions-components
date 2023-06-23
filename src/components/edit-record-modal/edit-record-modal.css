@@ -33,3 +33,7 @@
 .font-italic {
   font-style: italic;
 }
+
+#feature-form {
+  --calcite-ui-background: none;
+}

@@ -30,23 +30,27 @@
 
     <link
       rel="stylesheet"
-      href="https://js.arcgis.com/4.25/esri/themes/light/main.css"
+      href="https://js.arcgis.com/4.27/esri/themes/light/main.css"
     />
     <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
     <link rel="stylesheet" href="../solutions-components.css" type="text/css">
 
-    <script src="https://js.arcgis.com/4.25/"></script>
+    <script src="https://js.arcgis.com/4.27/"></script>
     <script type="module" src="../solutions-components.esm.js"></script>
 
     <script>
       function addValues() {
         const demo = document.getElementById("demo");
-        demo.mapInfos = [{
+        demo.mapInfos = [
+        {
           id: "863e4f6f2a7840db896cc1b1606d552d",
           name: "Name of map 1"
         }, {
           id: "3715f4899bea4b2a948347c5c2357e58",
           name: "Name of map 2"
+        }, {
+          id: "4fa949c89bb04ecb8a9f5ad119448333",
+          name: "CS TIL DATA"
         }];
       }
     </script>

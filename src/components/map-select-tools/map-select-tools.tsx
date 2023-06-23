@@ -89,7 +89,7 @@ export class MapSelectTools {
   @Prop() layerViews: __esri.FeatureLayerView[] = [];
 
   /**
-   * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
 
@@ -569,7 +569,6 @@ export class MapSelectTools {
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
             selectedLayerIds={this.layerViews.map(l => l.layer.id)}
-            selectionMode={"single"}
           />
         </div>
       </div>
@@ -645,7 +644,6 @@ export class MapSelectTools {
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => this._inputLayerSelectionChange(evt)}
             selectedLayerIds={this.selectLayerView ? [this.selectLayerView.layer.id] : this.selectionSet ? [this.selectionSet.layerView.layer.id] : []}
-            selectionMode={"single"}
           />
         </calcite-label>
       </div>

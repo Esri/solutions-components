@@ -19,8 +19,8 @@
   --calcite-label-margin-bottom: 0px;
 }
 
-.pad-top-51 {
-  padding-top: 51px;
+.padding-1 {
+  padding: 1rem;
 }
 
 .header-title {
@@ -134,11 +134,17 @@
 }
 
 .border {
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--calcite-ui-border-3);
+  border: 1px solid var(--calcite-ui-border-3);
 }
 
 .position-relative {
   position: relative;
+}
+
+.height-50 {
+  height: 50%;
+}
+
+.adjusted-height-50 {
+  height: calc(50% - 17px);
 }

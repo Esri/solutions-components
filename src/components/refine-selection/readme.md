@@ -11,7 +11,7 @@
 | --------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ----------- |
 | `addresseeLayer`      | --        | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html                  | `FeatureLayerView`   | `undefined` |
 | `enabledLayerIds`     | --        | string[]: Optional list of enabled layer ids  If empty all layers will be available                                                                        | `string[]`           | `[]`        |
-| `mapView`             | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                                     | `MapView`            | `undefined` |
+| `mapView`             | --        | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                                  | `MapView`            | `undefined` |
 | `selectionSets`       | --        | utils/interfaces/ISelectionSet: An array of user defined selection sets                                                                                    | `ISelectionSet[]`    | `[]`        |
 | `sketchLineSymbol`    | --        | esri/symbols/SimpleLineSymbol \| JSON representation : https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleLineSymbol.html    | `SimpleLineSymbol`   | `undefined` |
 | `sketchPointSymbol`   | --        | esri/symbols/SimpleMarkerSymbol \| JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleMarkerSymbol.html | `SimpleMarkerSymbol` | `undefined` |
@@ -58,12 +58,19 @@ graph TD;
   refine-selection --> calcite-list-item
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
-  map-layer-picker --> calcite-combobox-item
+  map-layer-picker --> calcite-dropdown
+  map-layer-picker --> calcite-button
+  map-layer-picker --> calcite-dropdown-group
+  map-layer-picker --> calcite-dropdown-item
   map-layer-picker --> calcite-option
+  map-layer-picker --> calcite-combobox-item
   calcite-select --> calcite-icon
   calcite-combobox --> calcite-chip
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
+  calcite-dropdown-item --> calcite-icon
   calcite-combobox-item --> calcite-icon
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon

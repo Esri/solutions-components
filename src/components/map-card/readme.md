@@ -35,8 +35,8 @@
 - calcite-icon
 - calcite-tooltip
 - calcite-block
-- calcite-pick-list
-- calcite-pick-list-item
+- calcite-list
+- calcite-list-item
 
 ### Graph
 ```mermaid
@@ -47,8 +47,8 @@ graph TD;
   map-card --> calcite-icon
   map-card --> calcite-tooltip
   map-card --> calcite-block
-  map-card --> calcite-pick-list
-  map-card --> calcite-pick-list-item
+  map-card --> calcite-list
+  map-card --> calcite-list-item
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
@@ -65,8 +65,13 @@ graph TD;
   calcite-block --> calcite-action-menu
   calcite-scrim --> calcite-loader
   calcite-handle --> calcite-icon
-  calcite-pick-list-item --> calcite-icon
-  calcite-pick-list-item --> calcite-action
+  calcite-list --> calcite-scrim
+  calcite-list --> calcite-filter
+  calcite-filter --> calcite-input
+  calcite-input --> calcite-progress
+  calcite-input --> calcite-icon
+  calcite-list-item --> calcite-icon
+  calcite-list-item --> calcite-action
   crowdsource-manager --> map-card
   style map-card fill:#f9f,stroke:#333,stroke-width:4px
 ```

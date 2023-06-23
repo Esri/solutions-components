@@ -101,30 +101,4 @@ xdescribe('map-layer-picker', () => {
       </map-layer-picker>
     `);
   });
-
-  it('renders multi selection mode', async () => {
-    const page = await newSpecPage({
-      autoApplyChanges: true,
-      components: [MapLayerPicker],
-      template: () => (
-        <map-layer-picker
-          mapView={mapView}
-          selectedLayers={["A"]}
-          selectionMode="multi"
-        ></map-layer-picker>
-      ),
-    });
-    expect(page.root).toEqualHtml(`
-      <map-layer-picker selection-mode="multi">
-       <div class="map-layer-picker-container">
-         <div class="map-layer-picker">
-          <calcite-combobox label="" selection-mode="multi">
-            <calcite-combobox-item selected="" textlabel="A" value="A"></calcite-combobox-item>
-            <calcite-combobox-item textlabel="B" value="B"></calcite-combobox-item>
-          </calcite-combobox>
-         </div>
-       </div>
-      </map-layer-picker>
-    `);
-  });
 });

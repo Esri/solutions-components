@@ -7,12 +7,15 @@
 
 ## Properties
 
-| Property           | Attribute        | Description                                                                                                           | Type                  | Default     |
-| ------------------ | ---------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------- | ----------- |
-| `enabledLayerIds`  | --               | string[]: Optional list of enabled layer ids  If empty all layers will be available                                   | `string[]`            | `[]`        |
-| `mapView`          | --               | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                | `MapView`             | `undefined` |
-| `selectedLayerIds` | --               | string[]: list of layer ids that have been selected by the end user                                                   | `string[]`            | `[]`        |
-| `selectionMode`    | `selection-mode` | SelectionMode: "single" \| "multi"  Should the component support selection against a single layer or multiple layers. | `"multi" \| "single"` | `"single"`  |
+| Property           | Attribute          | Description                                                                                            | Type                                   | Default         |
+| ------------------ | ------------------ | ------------------------------------------------------------------------------------------------------ | -------------------------------------- | --------------- |
+| `appearance`       | `appearance`       | "transparent" \| "solid": controls the button appearance when using the "dropdown" type                | `"solid" \| "transparent"`             | `"transparent"` |
+| `enabledLayerIds`  | --                 | string[]: Optional list of enabled layer ids  If empty all layers will be available                    | `string[]`                             | `[]`            |
+| `mapView`          | --                 | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                              | `undefined`     |
+| `placeholderIcon`  | `placeholder-icon` | string: optional placeholder icon used with "combobox" type                                            | `string`                               | `""`            |
+| `scale`            | `scale`            | "s" \| "m" \| "l": scale to render the component                                                       | `"l" \| "m" \| "s"`                    | `"m"`           |
+| `selectedLayerIds` | --                 | string[]: list of layer ids that have been selected by the end user                                    | `string[]`                             | `[]`            |
+| `type`             | `type`             | "select" \| "combobox" \| "dropdown": type of component to leverage                                    | `"combobox" \| "dropdown" \| "select"` | `"select"`      |
 
 
 ## Events
@@ -34,20 +37,31 @@
 
 - calcite-select
 - calcite-combobox
-- calcite-combobox-item
+- calcite-dropdown
+- calcite-button
+- calcite-dropdown-group
+- calcite-dropdown-item
 - calcite-option
+- calcite-combobox-item
 
 ### Graph
 ```mermaid
 graph TD;
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
-  map-layer-picker --> calcite-combobox-item
+  map-layer-picker --> calcite-dropdown
+  map-layer-picker --> calcite-button
+  map-layer-picker --> calcite-dropdown-group
+  map-layer-picker --> calcite-dropdown-item
   map-layer-picker --> calcite-option
+  map-layer-picker --> calcite-combobox-item
   calcite-select --> calcite-icon
   calcite-combobox --> calcite-chip
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
+  calcite-dropdown-item --> calcite-icon
   calcite-combobox-item --> calcite-icon
   layer-table --> map-layer-picker
   map-select-tools --> map-layer-picker

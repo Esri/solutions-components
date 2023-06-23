@@ -18,7 +18,7 @@
 | `geometries`            | --                        | esri/geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry.html                                                            | `Geometry[]`                                    | `[]`                  |
 | `isUpdate`              | `is-update`               | boolean: When true a new label is not generated for the stored selection set                                                                               | `boolean`                                       | `false`               |
 | `layerViews`            | --                        | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html                  | `FeatureLayerView[]`                            | `[]`                  |
-| `mapView`               | --                        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                                     | `MapView`                                       | `undefined`           |
+| `mapView`               | --                        | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                                  | `MapView`                                       | `undefined`           |
 | `noResultText`          | `no-result-text`          | string: The value to show for no results when left empty the default text "0 selected features from {layerTitle}" will be shown                            | `string`                                        | `undefined`           |
 | `searchConfiguration`   | --                        | ISearchConfiguration: Configuration details for the Search widget                                                                                          | `ISearchConfiguration`                          | `undefined`           |
 | `selectLayerView`       | --                        | esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html                  | `FeatureLayerView`                              | `undefined`           |
@@ -106,11 +106,18 @@ graph TD;
   calcite-slider --> calcite-graph
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
-  map-layer-picker --> calcite-combobox-item
+  map-layer-picker --> calcite-dropdown
+  map-layer-picker --> calcite-button
+  map-layer-picker --> calcite-dropdown-group
+  map-layer-picker --> calcite-dropdown-item
   map-layer-picker --> calcite-option
+  map-layer-picker --> calcite-combobox-item
   calcite-combobox --> calcite-chip
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
+  calcite-dropdown-item --> calcite-icon
   calcite-combobox-item --> calcite-icon
   calcite-input-message --> calcite-icon
   public-notification --> map-select-tools

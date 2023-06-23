@@ -16,7 +16,6 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
 import { getMapLayerHash, getMapLayerIds } from "../../utils/mapViewUtils";
-import { SelectionMode } from "../../utils/interfaces";
 import state from "../../utils/publicNotificationStore";
 
 @Component({
@@ -39,6 +38,11 @@ export class MapLayerPicker {
   //--------------------------------------------------------------------------
 
   /**
+   * "transparent" | "solid": controls the button appearance when using the "dropdown" type
+   */
+  @Prop() appearance: "transparent" | "solid" = "transparent";
+
+  /**
    * string[]: Optional list of enabled layer ids
    *  If empty all layers will be available
    */
@@ -50,16 +54,24 @@ export class MapLayerPicker {
   @Prop() mapView: __esri.MapView;
 
   /**
+   * string: optional placeholder icon used with "combobox" type
+   */
+  @Prop() placeholderIcon = "";
+
+  /**
    * string[]: list of layer ids that have been selected by the end user
    */
   @Prop({ mutable: true }) selectedLayerIds: string[] = [];
 
   /**
-   * SelectionMode: "single" | "multi"
-   *
-   * Should the component support selection against a single layer or multiple layers.
+   * "s" | "m" | "l": scale to render the component
    */
-  @Prop({ mutable: true, reflect: true }) selectionMode: SelectionMode = "single";
+  @Prop() scale: "s" | "m" | "l" = "m";
+
+  /**
+   * "select" | "combobox" | "dropdown": type of component to leverage
+   */
+  @Prop() type: "select" | "combobox" | "dropdown" = "select";
 
   //--------------------------------------------------------------------------
   //
@@ -72,6 +84,11 @@ export class MapLayerPicker {
    */
   @State() layerIds: string[] = [];
 
+  /**
+   * string: lcurrent layer name to display when using "dropdown" type
+   */
+  @State() selectedLayerName = "";
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -81,7 +98,7 @@ export class MapLayerPicker {
   /**
    * HTMLCalciteSelectElement: The html element for selecting layers
    */
-  protected _layerElement: HTMLCalciteSelectElement;
+  protected _layerElement: HTMLCalciteSelectElement | HTMLCalciteComboboxElement;
 
   //--------------------------------------------------------------------------
   //
@@ -94,13 +111,9 @@ export class MapLayerPicker {
    *
    */
   @Watch("mapView")
-  async watchStateHandler(newValue: boolean, oldValue: boolean): Promise<void> {
-    if (newValue !== oldValue) {
-      await this._setLayers();
-      if (this.selectionMode === "single") {
-        this.layerSelectionChange.emit([this.layerIds[0]]);
-      }
-    }
+  async mapViewWatchHandler(): Promise<void> {
+    await this._setLayers();
+    this._setSelectedLayer(this.layerIds[0]);
   }
 
   //--------------------------------------------------------------------------
@@ -132,7 +145,7 @@ export class MapLayerPicker {
    */
   async componentWillLoad(): Promise<void> {
     await this._setLayers();
-    if (this.selectionMode === "single" && (this.layerIds.length > 0 || this.selectedLayerIds.length === 1)) {
+    if (this.layerIds.length > 0 || this.selectedLayerIds.length === 1) {
       this.layerSelectionChange.emit(
         this.selectedLayerIds.length === 1 ? [this.selectedLayerIds[0]] : [this.layerIds[0]]
       );
@@ -147,11 +160,28 @@ export class MapLayerPicker {
       <Host>
         <div class="map-layer-picker-container">
           <div class="map-layer-picker">
-            {this.selectionMode === "multi" ? this._getCombobox() : this._getSelect()}
+            {
+              this.type === "combobox" ? this._getCombobox() :
+                this.type === "select" ? this._getSelect() : this._getDropdown()
+            }
           </div>
         </div>
       </Host>
     );
+  }
+
+  /**
+   * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
+   */
+  async componentDidLoad(): Promise<void> {
+    if (this.layerIds.length > 0 || this.selectedLayerIds.length === 1) {
+      const id = this.selectedLayerIds.length === 1 ? this.selectedLayerIds[0] : this.layerIds[0];
+      if (this.type === "select") {
+        this._layerElement.value = id;
+      } else if (this.type === "dropdown") {
+        this.selectedLayerName = state.layerNameHash[id];
+      }
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -171,10 +201,11 @@ export class MapLayerPicker {
     return (
       <calcite-select
         label=""
-        onCalciteSelectChange={(evt) => this._layerSelectionChange(evt)}
+        onCalciteSelectChange={() => this._layerSelectionChange()}
         ref={(el) => { this._layerElement = el }}
+        scale={this.scale}
       >
-        {this._addMapLayersOptions()}
+        {this._addSelectMapLayersOptions()}
       </calcite-select>
     );
   }
@@ -189,31 +220,106 @@ export class MapLayerPicker {
   _getCombobox(): VNode {
     return (
       <calcite-combobox
+        clearDisabled={true}
         label=""
-        onCalciteComboboxChange={(evt) => this._layerSelectionChange(evt)}
-        selection-mode={this.selectionMode}
+        onCalciteComboboxChange={() => this._layerSelectionChange()}
+        placeholder-icon={this.placeholderIcon}
+        ref={(el) => { this._layerElement = el }}
+        scale={this.scale}
+        selection-mode="single"
       >
-        {this._addMapLayersOptions()}
+        {this._addComboboxMapLayersOptions()}
       </calcite-combobox>
     );
   }
 
   /**
-   * Hydrate a select or combobox component with the ids of the layers in the map
+   * Hydrate a dropdown component with items to display the layer names
    *
-   * @returns Array of ComboBox items or Select options for the ids of the layers
+   * @returns Array of Dropdown items with layer names
    */
-  _addMapLayersOptions(): VNode[] {
+  _getDropdown(): VNode {
+    return (
+      <calcite-dropdown class="layer-picker-dropdown">
+        <calcite-button
+          alignment="icon-end-space-between"
+          appearance={this.appearance}
+          iconEnd="chevron-down"
+          iconStart="layers"
+          kind="neutral"
+          slot="trigger"
+          width="full"
+        >
+          <div>
+            {this.selectedLayerName}
+          </div>
+        </calcite-button>
+        <calcite-dropdown-group selection-mode="single">
+          {this._getDropdownItems()}
+        </calcite-dropdown-group>
+      </calcite-dropdown>
+    );
+  }
+
+  /**
+   * Hydrate a dropdown component with items to display the layer names
+   *
+   * @returns Array of Dropdown items with layer names
+   */
+  _getDropdownItems(): VNode[] {
     return this.layerIds.reduce((prev, cur) => {
       if (state.managedLayers.indexOf(state.layerNameHash[cur]) < 0 && (this.enabledLayerIds.length > 0 ? this.enabledLayerIds.indexOf(cur) > -1 : true)) {
         prev.push(
-          this.selectionMode === "multi" && this.selectedLayerIds.indexOf(cur) > -1 ?
-            (<calcite-combobox-item selected textLabel={state.layerNameHash[cur]} value={cur} />) :
-            this.selectionMode === "multi" ?
-              (<calcite-combobox-item textLabel={state.layerNameHash[cur]} value={cur} />) :
-              this.selectedLayerIds.indexOf(cur) > -1 ?
-                (<calcite-option label={state.layerNameHash[cur]} selected={true} value={cur} />) :
-                (<calcite-option label={state.layerNameHash[cur]} value={cur} />)
+          (
+            <calcite-dropdown-item
+              onClick={() => void this._setSelectedLayer(cur)}
+            >
+              {state.layerNameHash[cur]}
+            </calcite-dropdown-item>
+          )
+        );
+      }
+      return prev;
+    }, []);
+  }
+
+  /**
+   * Store the layer name based on the user selection
+   */
+  _setSelectedLayer(
+    id: string
+  ): void {
+    this.selectedLayerName = state.layerNameHash[id];
+    this.selectedLayerIds = [id];
+    this.layerSelectionChange.emit(this.selectedLayerIds);
+  }
+
+  /**
+   * Hydrate a select component with the ids of the layers in the map
+   *
+   * @returns Array of select options for the ids of the layers
+   */
+  _addSelectMapLayersOptions(): VNode[] {
+    return this.layerIds.reduce((prev, cur) => {
+      if (state.managedLayers.indexOf(state.layerNameHash[cur]) < 0 && (this.enabledLayerIds.length > 0 ? this.enabledLayerIds.indexOf(cur) > -1 : true)) {
+        prev.push(
+          (<calcite-option label={state.layerNameHash[cur]} value={cur} />)
+        );
+      }
+      return prev;
+    }, []);
+  }
+
+  /**
+   * Hydrate a combobox component with the ids of the layers in the map
+   *
+   * @returns Array of ComboBox items for the ids of the layers
+   */
+  _addComboboxMapLayersOptions(): VNode[] {
+    return this.layerIds.reduce((prev, cur) => {
+      if (state.managedLayers.indexOf(state.layerNameHash[cur]) < 0 && (this.enabledLayerIds.length > 0 ? this.enabledLayerIds.indexOf(cur) > -1 : true)) {
+        prev.push(
+          (<calcite-combobox-item textLabel={state.layerNameHash[cur]} value={cur} />)
         );
       }
       return prev;
@@ -249,13 +355,11 @@ export class MapLayerPicker {
    *
    * @returns Promise when the operation has completed
    */
-  _layerSelectionChange(evt: CustomEvent): void {
-    this.selectedLayerIds = this.selectionMode === "single" ?
-      [this._layerElement.value] : evt.detail?.selectedItems.map(
-        (item: HTMLCalciteComboboxItemElement) => {
-          return item.value;
-        }
-      ) || [];
-    this.layerSelectionChange.emit(this.selectedLayerIds);
+  _layerSelectionChange(): void {
+    const ids = Array.isArray(this._layerElement.value) ? this._layerElement.value : [this._layerElement.value];
+    if (JSON.stringify(ids) !== JSON.stringify([""])) {
+      this.selectedLayerIds = ids;
+      this.layerSelectionChange.emit(this.selectedLayerIds);
+    }
   }
 }

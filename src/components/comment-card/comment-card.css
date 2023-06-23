@@ -17,3 +17,27 @@
 :host {
   display: block;
 }
+
+.w-100 {
+  width: 100%;
+}
+
+.background {
+  background: var(--calcite-ui-foreground-2);
+}
+
+.button-placement {
+  float: right;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+html[dir="rtl"] .button-placement {
+  float: left;
+  margin-left: 5px;
+  margin-bottom: 5px;
+}
+
+.display-none {
+  display: none;
+}

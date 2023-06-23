@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EDrawMode, EExpandType, IExportInfos, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
+import { DistanceUnit, EDrawMode, EExpandType, IExportInfos, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface AddRecordModal {
@@ -50,8 +50,24 @@ export namespace Components {
         "unit": DistanceUnit;
     }
     interface CardManager {
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "layerView": __esri.FeatureLayerView;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
+         */
+        "mediaCardValues": IMediaCardValues[];
     }
     interface CommentCard {
+        /**
+          * boolean: when true a loading indicator will be shown
+         */
+        "isLoading": boolean;
     }
     interface CrowdsourceManager {
         /**
@@ -65,19 +81,35 @@ export namespace Components {
     }
     interface EditRecordModal {
         /**
+          * "MULTI" | "SINGLE": "SINGLE" edit mode is intended to be used to edit a single existing feature                     "MULTI" edit mode is intended to apply edits across a collection of features
+         */
+        "editMode": EEditMode;
+        /**
+          * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "graphics": __esri.Graphic[];
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
           * When true the component is displayed
          */
         "open": boolean;
     }
     interface InfoCard {
         /**
-          * string: the components title
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
-        "cardTitle": string;
+        "graphic": __esri.Graphic;
         /**
-          * IInfoCardValues: key value pairs to show in the components table
+          * boolean: when true a loading indicator will be shown
          */
-        "values": IInfoCardValues;
+        "isLoading": boolean;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
     }
     interface JsonEditor {
         /**
@@ -118,6 +150,11 @@ export namespace Components {
         "value": any;
     }
     interface LayerTable {
+        /**
+          * Get the selected graphics
+          * @returns Promise that resolves when the operation is complete
+         */
+        "getSelectedGraphics": () => Promise<__esri.Graphic[]>;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -189,6 +226,10 @@ export namespace Components {
     }
     interface MapLayerPicker {
         /**
+          * "transparent" | "solid": controls the button appearance when using the "dropdown" type
+         */
+        "appearance": "transparent" | "solid";
+        /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
         "enabledLayerIds": string[];
@@ -197,13 +238,21 @@ export namespace Components {
          */
         "mapView": __esri.MapView;
         /**
+          * string: optional placeholder icon used with "combobox" type
+         */
+        "placeholderIcon": string;
+        /**
+          * "s" | "m" | "l": scale to render the component
+         */
+        "scale": "s" | "m" | "l";
+        /**
           * string[]: list of layer ids that have been selected by the end user
          */
         "selectedLayerIds": string[];
         /**
-          * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
+          * "select" | "combobox" | "dropdown": type of component to leverage
          */
-        "selectionMode": SelectionMode;
+        "type": "select" | "combobox" | "dropdown";
     }
     interface MapSearch {
         /**
@@ -212,7 +261,7 @@ export namespace Components {
          */
         "clear": () => Promise<void>;
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
         /**
@@ -268,7 +317,7 @@ export namespace Components {
          */
         "layerViews": __esri.FeatureLayerView[];
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
         /**
@@ -305,6 +354,10 @@ export namespace Components {
         "sketchPolygonSymbol": __esri.SimpleFillSymbol;
     }
     interface MediaCard {
+        /**
+          * boolean: when true a loading indicator will be shown
+         */
+        "isLoading": boolean;
         /**
           * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
          */
@@ -369,7 +422,7 @@ export namespace Components {
          */
         "featureHighlightEnabled": boolean;
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
         /**
@@ -415,7 +468,7 @@ export namespace Components {
          */
         "enabledLayerIds": string[];
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
         /**
@@ -598,13 +651,29 @@ export namespace Components {
         "value": string;
     }
 }
+export interface AddRecordModalCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLAddRecordModalElement;
+}
 export interface BufferToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLBufferToolsElement;
 }
+export interface CommentCardCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCommentCardElement;
+}
 export interface DeductCalculatorCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLDeductCalculatorElement;
+}
+export interface EditRecordModalCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLEditRecordModalElement;
+}
+export interface LayerTableCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLLayerTableElement;
 }
 export interface MapCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -899,6 +968,14 @@ declare global {
 declare namespace LocalJSX {
     interface AddRecordModal {
         /**
+          * Emitted on demand the modal is closed
+         */
+        "onModalClosed"?: (event: AddRecordModalCustomEvent<void>) => void;
+        /**
+          * Emitted on demand the modal is opened
+         */
+        "onModalOpened"?: (event: AddRecordModalCustomEvent<void>) => void;
+        /**
           * When true the component is displayed
          */
         "open"?: boolean;
@@ -951,8 +1028,28 @@ declare namespace LocalJSX {
         "unit"?: DistanceUnit;
     }
     interface CardManager {
+        /**
+          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+         */
+        "layerView"?: __esri.FeatureLayerView;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
+         */
+        "mediaCardValues"?: IMediaCardValues[];
     }
     interface CommentCard {
+        /**
+          * boolean: when true a loading indicator will be shown
+         */
+        "isLoading"?: boolean;
+        /**
+          * Event that will trigger the opening of the add record modal
+         */
+        "onOpenAddRecord"?: (event: CommentCardCustomEvent<void>) => void;
     }
     interface CrowdsourceManager {
         /**
@@ -970,19 +1067,43 @@ declare namespace LocalJSX {
     }
     interface EditRecordModal {
         /**
+          * "MULTI" | "SINGLE": "SINGLE" edit mode is intended to be used to edit a single existing feature                     "MULTI" edit mode is intended to apply edits across a collection of features
+         */
+        "editMode"?: EEditMode;
+        /**
+          * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "graphics"?: __esri.Graphic[];
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the modal is closed
+         */
+        "onModalClosed"?: (event: EditRecordModalCustomEvent<void>) => void;
+        /**
+          * Emitted on demand when the modal is opened
+         */
+        "onModalOpened"?: (event: EditRecordModalCustomEvent<void>) => void;
+        /**
           * When true the component is displayed
          */
         "open"?: boolean;
     }
     interface InfoCard {
         /**
-          * string: the components title
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
-        "cardTitle"?: string;
+        "graphic"?: __esri.Graphic;
         /**
-          * IInfoCardValues: key value pairs to show in the components table
+          * boolean: when true a loading indicator will be shown
          */
-        "values"?: IInfoCardValues;
+        "isLoading"?: boolean;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
     }
     interface JsonEditor {
         /**
@@ -1007,6 +1128,10 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when a layer is selected
+         */
+        "onFeatureSelectionChange"?: (event: LayerTableCustomEvent<number[]>) => void;
     }
     interface ListItem {
     }
@@ -1088,6 +1213,10 @@ declare namespace LocalJSX {
     }
     interface MapLayerPicker {
         /**
+          * "transparent" | "solid": controls the button appearance when using the "dropdown" type
+         */
+        "appearance"?: "transparent" | "solid";
+        /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
         "enabledLayerIds"?: string[];
@@ -1100,17 +1229,25 @@ declare namespace LocalJSX {
          */
         "onLayerSelectionChange"?: (event: MapLayerPickerCustomEvent<string[]>) => void;
         /**
+          * string: optional placeholder icon used with "combobox" type
+         */
+        "placeholderIcon"?: string;
+        /**
+          * "s" | "m" | "l": scale to render the component
+         */
+        "scale"?: "s" | "m" | "l";
+        /**
           * string[]: list of layer ids that have been selected by the end user
          */
         "selectedLayerIds"?: string[];
         /**
-          * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
+          * "select" | "combobox" | "dropdown": type of component to leverage
          */
-        "selectionMode"?: SelectionMode;
+        "type"?: "select" | "combobox" | "dropdown";
     }
     interface MapSearch {
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         /**
@@ -1160,7 +1297,7 @@ declare namespace LocalJSX {
          */
         "layerViews"?: __esri.FeatureLayerView[];
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         /**
@@ -1201,6 +1338,10 @@ declare namespace LocalJSX {
         "sketchPolygonSymbol"?: __esri.SimpleFillSymbol;
     }
     interface MediaCard {
+        /**
+          * boolean: when true a loading indicator will be shown
+         */
+        "isLoading"?: boolean;
         /**
           * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
          */
@@ -1248,7 +1389,7 @@ declare namespace LocalJSX {
          */
         "featureHighlightEnabled"?: boolean;
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         /**
@@ -1298,7 +1439,7 @@ declare namespace LocalJSX {
          */
         "enabledLayerIds"?: string[];
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         /**

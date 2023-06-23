@@ -38,10 +38,22 @@ tr:nth-child(odd) {
   border-bottom: 1px solid var(--calcite-ui-border-1);
 }
 
+.padding-1-2 {
+  padding: 0.5rem;
+}
+
 .padding-top-1-2 {
   padding-top: 0.5rem;
 }
 
 .font-color-3 {
   color: var(--calcite-ui-text-3);
+}
+
+.display-none {
+  display: none;
+}
+
+.display-flex {
+  display: flex;
 }

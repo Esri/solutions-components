@@ -12,7 +12,19 @@
 | `open`   | `open`    | When true the component is displayed | `boolean` | `false` |
 
 
+## Events
+
+| Event         | Description                           | Type                |
+| ------------- | ------------------------------------- | ------------------- |
+| `modalClosed` | Emitted on demand the modal is closed | `CustomEvent<void>` |
+| `modalOpened` | Emitted on demand the modal is opened | `CustomEvent<void>` |
+
+
 ## Dependencies
+
+### Used by
+
+ - [card-manager](../card-manager)
 
 ### Depends on
 
@@ -35,6 +47,7 @@ graph TD;
   calcite-input --> calcite-icon
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
+  card-manager --> add-record-modal
   style add-record-modal fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

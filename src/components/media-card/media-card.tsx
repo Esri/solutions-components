@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
 import MediaCard_T9n from "../../assets/t9n/media-card/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { IMediaCardValues } from '../../utils/interfaces';
+import { EImageDisplayType, IMediaCardValues } from "../../utils/interfaces";
 
 @Component({
-  tag: 'media-card',
-  styleUrl: 'media-card.css',
+  tag: "media-card",
+  styleUrl: "media-card.css",
   shadow: true,
 })
 export class MediaCard {
@@ -43,11 +43,21 @@ export class MediaCard {
    */
   @Prop() values: IMediaCardValues[] = [];
 
+  /**
+   * boolean: when true a loading indicator will be shown
+   */
+  @Prop() isLoading = false;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * The display type controls how the images will be viewed
+   */
+  @State() _displayType = EImageDisplayType.GALLERY;
 
   /**
    * The index controls what image from values to display
@@ -130,28 +140,121 @@ export class MediaCard {
    * Renders the component.
    */
   render() {
+    const loadingClass = this.isLoading ? "" : "display-none";
+    const mediaCardClass = this.isLoading ? "display-none" : "";
+    return (
+      <Host>
+        <calcite-loader class={loadingClass} label={this._translations.fetchingData} />
+        <div class={mediaCardClass}>
+          {this._getImageDisplay()}
+        </div>
+      </Host>
+    );
+  }
+
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (protected)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * Create the buttons that will switch between "GRID" and "GALLERY" display
+   *
+   * @protected
+   */
+  protected _getImageButtonContainer() : VNode {
+    const gridButonApperance = this._displayType === EImageDisplayType.GRID ? "solid" : "outline-fill";
+    const galleryButtonApperance = this._displayType === EImageDisplayType.GALLERY ? "solid" : "outline-fill";
+    return (
+      <div class="image-button-container">
+        <calcite-button
+          appearance={gridButonApperance}
+          class="padding-right-5"
+          icon-start="grid"
+          onClick={() => this._setImageDisplay(EImageDisplayType.GRID)}
+          scale="s"
+        />
+        <calcite-button
+          appearance={galleryButtonApperance}
+          icon-start="image"
+          onClick={() => this._setImageDisplay(EImageDisplayType.GALLERY)}
+          scale="s"
+        />
+      </div>
+    );
+  }
+
+  /**
+   * Render the image view based on the current display type
+   *
+   * @protected
+   */
+  protected _getImageDisplay(): VNode {
+    const toggleButtons = this._getImageButtonContainer();
+    return this._displayType === EImageDisplayType.GRID ?
+      this._getGridDisplay(toggleButtons) : this._getGallerydDisplay(toggleButtons);
+  }
+
+  /**
+   * Render the Grid image view
+   *
+   * @protected
+   */
+  protected _getGridDisplay(
+    toggleButtons: VNode
+  ): VNode {
+    return (
+      <div>
+        {toggleButtons}
+        <div class="clearfix">
+          {
+            this.values.map(v => {
+              return (
+                <div class="container">
+                  <div class="image-container">
+                    <a href={v.url} target="_blank">
+                      <img alt={v.name} src={v.url} />
+                    </a>
+                  </div>
+                </div>
+              )
+            })
+          }
+          <div class="clearfix" />
+        </div>
+      </div>
+    );
+  }
+
+  /**
+   * Render the Gallery image view
+   *
+   * @protected
+   */
+  protected _getGallerydDisplay(
+    toggleButtons: VNode
+  ): VNode {
     const v = this.values?.length > 0 ? this.values[this._index] : undefined;
     const total = (this.values || []).length;
     const imgNum = this._index + 1;
     return (
-      <Host>
-        <div>
-          <div class="display-flex">
-            <img class="img-container" src={v?.url} />
-          </div>
-          <calcite-label scale='s'>
-            <span class="font-italic padding-bottom-1">
-              {v?.name}
-            </span>
-          </calcite-label>
-          <calcite-label>
-            <span class="padding-bottom-1">
-              {v?.description}
-            </span>
-          </calcite-label>
-        </div>
+      <calcite-shell>
+        {toggleButtons}
+        <img src={v?.url} />
 
-        <div class="button-container">
+        <calcite-label scale="s">
+          <span class="font-italic padding-bottom-1">
+            {v?.name}
+          </span>
+        </calcite-label>
+        <calcite-label class="min-height-50">
+          <span class="padding-bottom-1">
+            {v?.description}
+          </span>
+        </calcite-label>
+
+        <div class="button-container" slot="footer">
           <div class="count-container">
             <calcite-label>
               <span>
@@ -176,15 +279,9 @@ export class MediaCard {
             </calcite-button>
           </div>
         </div>
-      </Host>
+      </calcite-shell>
     );
   }
-
-  //--------------------------------------------------------------------------
-  //
-  //  Functions (protected)
-  //
-  //--------------------------------------------------------------------------
 
   /**
    * Resets the index to 0
@@ -211,6 +308,17 @@ export class MediaCard {
    */
   protected _decrementIndex(): void {
     this._index -= 1;
+  }
+
+  /**
+   * Store the current display type
+   *
+   * @protected
+   */
+  protected _setImageDisplay(
+    displayType: EImageDisplayType
+  ): void {
+    this._displayType = displayType;
   }
 
   /**

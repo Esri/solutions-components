@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h } from '@stencil/core';
+import { Component, Element, Host, h } from "@stencil/core";
 
 @Component({
-  tag: 'crowdsource-reporter',
-  styleUrl: 'crowdsource-reporter.css',
+  tag: "crowdsource-reporter",
+  styleUrl: "crowdsource-reporter.css",
   shadow: true,
 })
 export class CrowdsourceReporter {
