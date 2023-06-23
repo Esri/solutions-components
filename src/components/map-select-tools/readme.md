@@ -106,11 +106,18 @@ graph TD;
   calcite-slider --> calcite-graph
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
+  map-layer-picker --> calcite-dropdown
+  map-layer-picker --> calcite-button
+  map-layer-picker --> calcite-dropdown-group
+  map-layer-picker --> calcite-dropdown-item
   map-layer-picker --> calcite-option
   map-layer-picker --> calcite-combobox-item
   calcite-combobox --> calcite-chip
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
+  calcite-dropdown-item --> calcite-icon
   calcite-combobox-item --> calcite-icon
   calcite-input-message --> calcite-icon
   public-notification --> map-select-tools

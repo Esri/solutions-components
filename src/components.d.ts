@@ -227,6 +227,7 @@ export namespace Components {
         "updateGraphics": () => Promise<void>;
     }
     interface MapLayerPicker {
+        "appearance": "transparent" | "solid";
         /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
@@ -235,13 +236,22 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * string: optional placeholder icon used with "combobox" type
+         */
         "placeholderIcon": string;
+        /**
+          * "s" | "m" | "l": scale to render the component
+         */
         "scale": "s" | "m" | "l";
         /**
           * string[]: list of layer ids that have been selected by the end user
          */
         "selectedLayerIds": string[];
-        "type": "select" | "combobox";
+        /**
+          * "select" | "combobox" | "dropdown": type of component to leverage
+         */
+        "type": "select" | "combobox" | "dropdown";
     }
     interface MapSearch {
         /**
@@ -1203,6 +1213,7 @@ declare namespace LocalJSX {
         "undoEnabled"?: boolean;
     }
     interface MapLayerPicker {
+        "appearance"?: "transparent" | "solid";
         /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
@@ -1215,13 +1226,22 @@ declare namespace LocalJSX {
           * Emitted on demand when a layer is selected
          */
         "onLayerSelectionChange"?: (event: MapLayerPickerCustomEvent<string[]>) => void;
+        /**
+          * string: optional placeholder icon used with "combobox" type
+         */
         "placeholderIcon"?: string;
+        /**
+          * "s" | "m" | "l": scale to render the component
+         */
         "scale"?: "s" | "m" | "l";
         /**
           * string[]: list of layer ids that have been selected by the end user
          */
         "selectedLayerIds"?: string[];
-        "type"?: "select" | "combobox";
+        /**
+          * "select" | "combobox" | "dropdown": type of component to leverage
+         */
+        "type"?: "select" | "combobox" | "dropdown";
     }
     interface MapSearch {
         /**

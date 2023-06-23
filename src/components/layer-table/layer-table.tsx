@@ -237,13 +237,14 @@ export class LayerTable {
     const multiFeaturesSelected = this._selectedIndexes.length > 1;
     return (
       <div class="display-flex table-border" slot={slot}>
-        <div class="w-400">
+        <div class="w-400 border-end">
           <map-layer-picker
+            appearance='solid'
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
             placeholderIcon='layers'
             scale='l'
-            type='combobox'
+            type="dropdown"
           />
         </div>
         <calcite-action-bar
@@ -252,7 +253,7 @@ export class LayerTable {
           layout='horizontal'
         >
           <calcite-action
-            appearance='transparent'
+            appearance='solid'
             disabled={!featuresSelected}
             icon='magnifying-glass'
             label={this._translations.zoom}
@@ -261,7 +262,7 @@ export class LayerTable {
             textEnabled={true}
           />
           <calcite-action
-            appearance='transparent'
+            appearance='solid'
             disabled={!multiFeaturesSelected}
             icon='pencil'
             label={this._translations.editMultiple}
@@ -270,7 +271,7 @@ export class LayerTable {
             textEnabled
           />
           <calcite-action
-            appearance='transparent'
+            appearance='solid'
             icon='filter'
             onClick={() => this._filter()}
             text={this._translations.filters}
@@ -278,7 +279,7 @@ export class LayerTable {
             textEnabled={true}
           />
           <calcite-action
-            appearance='transparent'
+            appearance='solid'
             disabled={!featuresSelected}
             icon='trash'
             onClick={() => this._delete()}
@@ -287,7 +288,7 @@ export class LayerTable {
             textEnabled={true}
           />
         </calcite-action-bar>
-        <calcite-dropdown class="padding-5">
+        <calcite-dropdown>
           <calcite-button
             appearance="transparent"
             iconEnd='chevron-down'

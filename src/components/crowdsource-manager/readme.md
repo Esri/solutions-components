@@ -135,6 +135,10 @@ graph TD;
   layer-table --> calcite-dropdown-item
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
+  map-layer-picker --> calcite-dropdown
+  map-layer-picker --> calcite-button
+  map-layer-picker --> calcite-dropdown-group
+  map-layer-picker --> calcite-dropdown-item
   map-layer-picker --> calcite-option
   map-layer-picker --> calcite-combobox-item
   calcite-select --> calcite-icon

@@ -34,6 +34,10 @@
   border: 1px solid var(--calcite-ui-border-2);
 }
 
+.border-end {
+  border-inline-end: 1px solid var(--calcite-ui-border-2);
+}
+
 .w-400 {
   width: 400px;
 }

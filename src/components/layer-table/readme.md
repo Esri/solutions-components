@@ -107,13 +107,17 @@ graph TD;
   calcite-combobox-item --> calcite-icon
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
+  map-layer-picker --> calcite-dropdown
+  map-layer-picker --> calcite-button
+  map-layer-picker --> calcite-dropdown-group
+  map-layer-picker --> calcite-dropdown-item
   map-layer-picker --> calcite-option
   map-layer-picker --> calcite-combobox-item
   calcite-select --> calcite-icon
+  calcite-dropdown-item --> calcite-icon
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
-  calcite-dropdown-item --> calcite-icon
   crowdsource-manager --> layer-table
   style layer-table fill:#f9f,stroke:#333,stroke-width:4px
 ```
