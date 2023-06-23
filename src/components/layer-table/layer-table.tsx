@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -24,8 +24,8 @@ import * as downloadUtils from "../../utils/downloadUtils";
 import { EEditMode, IExportInfos } from "../../utils/interfaces";
 
 @Component({
-  tag: 'layer-table',
-  styleUrl: 'layer-table.css',
+  tag: "layer-table",
+  styleUrl: "layer-table.css",
   shadow: false, // FeatureTable styles don't load in shadow dom
 })
 export class LayerTable {
@@ -192,7 +192,7 @@ export class LayerTable {
               <calcite-loader
                 class={loadingClass}
                 label={this._translations.fetchingData}
-                scale='l'
+                scale="l"
               />
               <div
                 class={tableNodeClass}
@@ -245,49 +245,49 @@ export class LayerTable {
       <div class="display-flex table-border" slot={slot}>
         <div class="w-400 border-end">
           <map-layer-picker
-            appearance='solid'
+            appearance="solid"
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
-            placeholderIcon='layers'
-            scale='l'
+            placeholderIcon="layers"
+            scale="l"
             type="dropdown"
           />
         </div>
         <calcite-action-bar
           expandDisabled={true}
           expanded={true}
-          layout='horizontal'
+          layout="horizontal"
         >
           <calcite-action
-            appearance='solid'
+            appearance="solid"
             disabled={!featuresSelected}
-            icon='magnifying-glass'
+            icon="magnifying-glass"
             label={this._translations.zoom}
             onClick={() => this._zoom()}
             text={this._translations.zoom}
             textEnabled={true}
           />
           <calcite-action
-            appearance='solid'
+            appearance="solid"
             disabled={!multiFeaturesSelected}
-            icon='pencil'
+            icon="pencil"
             label={this._translations.editMultiple}
             onClick={() => this._editMultiple()}
             text={this._translations.editMultiple}
             textEnabled
           />
           <calcite-action
-            appearance='solid'
-            icon='filter'
+            appearance="solid"
+            icon="filter"
             onClick={() => this._filter()}
             text={this._translations.filters}
             text-enabled="true"
             textEnabled={true}
           />
           <calcite-action
-            appearance='solid'
+            appearance="solid"
             disabled={!featuresSelected}
-            icon='trash'
+            icon="trash"
             onClick={() => this._delete()}
             text={this._translations.delete}
             text-enabled
@@ -295,40 +295,53 @@ export class LayerTable {
           />
         </calcite-action-bar>
         <calcite-dropdown>
+        <calcite-action
+            appearance="solid"
+            disabled={!featuresSelected}
+            label=""
+            slot="trigger"
+            text=""
+          >
           <calcite-button
             appearance="transparent"
-            iconEnd='chevron-down'
-            kind='neutral'
-            slot="trigger"
+            iconEnd="chevron-down"
+            kind="neutral"
           >
             {this._translations.more}
           </calcite-button>
+          </calcite-action>
           <calcite-dropdown-group selection-mode="none">
             <calcite-dropdown-item
-              iconStart='list-check-all'
+              iconStart="list-check-all"
             >
               {this._translations.selectAll}
             </calcite-dropdown-item>
             <calcite-dropdown-item
-              iconStart='selected-items-filter'
+              iconStart="selected-items-filter"
               onClick={() => this._showSelected()}
             >
               {this._translations.showSelected}
             </calcite-dropdown-item>
             <calcite-dropdown-item
-              iconStart='erase'
+              iconStart="erase"
               onClick={() => this._clearSelection()}
             >
               {this._translations.clearSelection}
             </calcite-dropdown-item>
             <calcite-dropdown-item
-              iconStart='refresh'
+              iconStart="refresh"
               onClick={() => this._switchSelected()}
             >
               {this._translations.switchSelected}
             </calcite-dropdown-item>
             <calcite-dropdown-item
-              iconStart='export'
+              iconStart="refresh"
+              onClick={() => this._refresh()}
+            >
+              {this._translations.refresh}
+            </calcite-dropdown-item>
+            <calcite-dropdown-item
+              iconStart="export"
               onClick={() => void this._exportToCSV()}
             >
               {this._translations.exportCSV}
@@ -448,6 +461,15 @@ export class LayerTable {
       false, // formatUsingLayerPopup
       true, // addColumnTitle
     );
+  }
+
+  /**
+   * Query the layer for any new changes
+   *
+   * @returns void
+   */
+  protected _refresh(): void {
+    alert("refresh the data")
   }
 
   /**

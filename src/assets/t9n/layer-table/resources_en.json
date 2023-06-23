@@ -9,5 +9,6 @@
   "showSelected": "Show selected",
   "switchSelected": "Switch selected",
   "zoom": "Zoom",
-  "fetchingData": "Fetching Data"
+  "fetchingData": "Fetching Data",
+  "refresh": "Refresh"
 }

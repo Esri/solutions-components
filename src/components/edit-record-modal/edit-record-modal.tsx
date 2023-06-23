@@ -172,6 +172,8 @@ export class EditRecordModal {
   /**
    * Special handeling when used with layer-table.
    * This allows us to only fetch graphics when the modal is opened rather than with every render of the layer-table.
+   *
+   * @returns Promise when complete
    */
   async componentWillRender(): Promise<void> {
     const layerTableElements: HTMLCollection = document.getElementsByTagName("layer-table");
@@ -245,8 +247,6 @@ export class EditRecordModal {
    * Load esri javascript api modules
    *
    * @returns Promise resolving when function is done
-   *
-   * @protected
    */
   protected async _initModules(): Promise<void> {
     const [FeatureForm] = await loadModules([
@@ -258,7 +258,7 @@ export class EditRecordModal {
   /**
    * Init the Feature widget so we can display the popup content
    *
-   * @protected
+   * @returns void
    */
   protected _initFeatureFormWidget(): void {
     if (this.editMode === EEditMode.SINGLE && this.mapView && !this._featureForm) {
@@ -277,7 +277,7 @@ export class EditRecordModal {
   /**
    * Get the default Form Template to be used in the FeatureForm
    *
-   * @protected
+   * @returns A default Form Template
    */
   protected _getFormTemplateElements(): any {
     if (this.graphics.length > 0 && this._layer) {
@@ -297,7 +297,7 @@ export class EditRecordModal {
   /**
    * Get the controls for all editable fields when using "MULTI" edit mode
    *
-   * @protected
+   * @returns Array of input nodes to display
    */
   protected _getFieldInputs(): VNode[] {
     if (this.graphics.length > 0 && this._layer) {
@@ -316,10 +316,12 @@ export class EditRecordModal {
   /**
    * Get the input for all editable fields when using "MULTI" edit mode
    *
-   * @protected
+   * @param field An editable field to create an input for user interaction
+   *
+   * @returns Input node to display
    */
   _getFieldInput(
-    field: any
+    field: __esri.Field
   ): VNode {
     let fieldNode: VNode;
     switch (field.type) {
@@ -358,7 +360,6 @@ export class EditRecordModal {
         );
         break;
       case "date":
-        console.log(field)
         fieldNode = (
           <calcite-label>
             {field.alias}
@@ -400,9 +401,11 @@ export class EditRecordModal {
   }
 
   /**
-   * Get the input control when a field has a domain
+   * Get the input for a field with a domain when using "MULTI" edit mode
    *
-   * @protected
+   * @param field An editable field that has a domain to create an input for user interaction
+   *
+   * @returns Input node to display
    */
   protected _getDomainInput(
     field: __esri.Field
@@ -450,9 +453,13 @@ export class EditRecordModal {
   /**
    * Store the selected date value
    *
-   * @protected
+   * @param evt the event from the user interaction
+   *
+   * @returns void
    */
-  protected _dateInputChanged(evt: CustomEvent): void {
+  protected _dateInputChanged(
+    evt: CustomEvent
+  ): void {
     const target = evt.target as HTMLCalciteDatePickerElement;
     // should we only store this if it has a value?
     // If we do we prevent the ability to delete values across the seletced features
@@ -463,9 +470,13 @@ export class EditRecordModal {
   /**
    * Store the selected text value
    *
-   * @protected
+   * @param evt the event from the user interaction
+   *
+   * @returns void
    */
-  protected _domainInputChanged(evt: CustomEvent): void {
+  protected _domainInputChanged(
+    evt: CustomEvent
+  ): void {
     const target = evt.target as HTMLCalciteInputTextElement;
     // should we only store this if it has a value?
     // If we do we prevent the ability to delete values across the seletced features
@@ -476,9 +487,13 @@ export class EditRecordModal {
   /**
    * Store the selected number value
    *
-   * @protected
+   * @param evt the event from the user interaction
+   *
+   * @returns void
    */
-  protected _numberInputChanged(evt: CustomEvent): void {
+  protected _numberInputChanged(
+    evt: CustomEvent
+  ): void {
     const target = evt.target as HTMLCalciteInputNumberElement;
     // should we only store this if it has a value?
     // If we do we prevent the ability to delete values across the seletced features
@@ -489,9 +504,13 @@ export class EditRecordModal {
   /**
    * Store the selected string value
    *
-   * @protected
+   * @param evt the event from the user interaction
+   *
+   * @returns void
    */
-  protected _stringInputChanged(evt: CustomEvent): void {
+  protected _stringInputChanged(
+    evt: CustomEvent
+  ): void {
     const target = evt.target as HTMLCalciteInputTextElement;
     // should we only store this if it has a value?
     // If we do we prevent the ability to delete values across the seletced features
@@ -502,9 +521,13 @@ export class EditRecordModal {
   /**
    * Store the selected time value
    *
-   * @protected
+   * @param evt the event from the user interaction
+   *
+   * @returns void
    */
-  protected _timeInputChanged(evt: CustomEvent): void {
+  protected _timeInputChanged(
+    evt: CustomEvent
+  ): void {
     const target = evt.target as HTMLCalciteInputTimePickerElement;
     // should we only store this if it has a value?
     // If we do we prevent the ability to delete values across the seletced features
@@ -578,7 +601,6 @@ export class EditRecordModal {
    * Fetches the component's translations
    *
    * @returns Promise when complete
-   * @protected
    */
   protected async _getTranslations(): Promise<void> {
     const messages = await getLocaleComponentStrings(this.el);

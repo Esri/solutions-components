@@ -113,7 +113,7 @@ export class MapLayerPicker {
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
     await this._setLayers();
-    this.layerSelectionChange.emit([this.layerIds[0]]);
+    this._setSelectedLayer(this.layerIds[0]);
   }
 
   //--------------------------------------------------------------------------
@@ -245,8 +245,8 @@ export class MapLayerPicker {
           alignment="icon-end-space-between"
           appearance={this.appearance}
           iconEnd="chevron-down"
-          iconStart='layers'
-          kind='neutral'
+          iconStart="layers"
+          kind="neutral"
           slot="trigger"
           width="full"
         >
