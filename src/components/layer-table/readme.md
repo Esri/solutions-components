@@ -77,6 +77,7 @@ graph TD;
   calcite-popover --> calcite-icon
   calcite-scrim --> calcite-loader
   edit-record-modal --> calcite-modal
+  edit-record-modal --> calcite-notice
   edit-record-modal --> calcite-button
   edit-record-modal --> calcite-label
   edit-record-modal --> calcite-input-text
@@ -86,6 +87,7 @@ graph TD;
   edit-record-modal --> calcite-combobox-item
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
+  calcite-notice --> calcite-icon
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   calcite-input-text --> calcite-progress

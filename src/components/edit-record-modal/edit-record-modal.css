@@ -36,4 +36,5 @@
 
 #feature-form {
   --calcite-ui-background: none;
+  padding-top: 0px;
 }

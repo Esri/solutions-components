@@ -6,5 +6,6 @@
   "label": "Label",
   "save": "Save",
   "textField": "Text Field",
-  "selectValue": "Select a value"
+  "selectValue": "Select a value",
+  "enableEditing": "Editing must be enabled to modify the field values."
 }

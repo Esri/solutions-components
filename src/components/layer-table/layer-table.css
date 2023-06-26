@@ -38,10 +38,14 @@
   border-inline-end: 1px solid var(--calcite-ui-border-2);
 }
 
-.w-400 {
-  width: 400px;
+.min-width-400 {
+  min-width: 400px;
 }
 
 .padding-5 {
   padding: 5px;
+}
+
+.height-51 {
+  height: 51px;
 }

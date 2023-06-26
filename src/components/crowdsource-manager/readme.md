@@ -23,7 +23,6 @@
 - [map-card](../map-card)
 - [card-manager](../card-manager)
 - calcite-action-bar
-- calcite-shell-panel
 - [layer-table](../layer-table)
 
 ### Graph
@@ -36,7 +35,6 @@ graph TD;
   crowdsource-manager --> map-card
   crowdsource-manager --> card-manager
   crowdsource-manager --> calcite-action-bar
-  crowdsource-manager --> calcite-shell-panel
   crowdsource-manager --> layer-table
   calcite-panel --> calcite-action
   calcite-panel --> calcite-action-menu
@@ -87,6 +85,7 @@ graph TD;
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   edit-record-modal --> calcite-modal
+  edit-record-modal --> calcite-notice
   edit-record-modal --> calcite-button
   edit-record-modal --> calcite-label
   edit-record-modal --> calcite-input-text
@@ -96,6 +95,7 @@ graph TD;
   edit-record-modal --> calcite-combobox-item
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
+  calcite-notice --> calcite-icon
   calcite-input-text --> calcite-progress
   calcite-input-text --> calcite-icon
   calcite-input-number --> calcite-progress

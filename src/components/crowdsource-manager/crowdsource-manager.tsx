@@ -293,9 +293,9 @@ export class CrowdsourceManager {
             <span>{tooltip}</span>
           </calcite-tooltip>
         </calcite-action-bar>
-        <calcite-shell-panel class="width-full height-full">
+        <div class="width-full height-full">
           <layer-table mapView={this?._mapView} />
-        </calcite-shell-panel>
+        </div>
       </calcite-shell>
     );
   }

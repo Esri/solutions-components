@@ -242,8 +242,8 @@ export class LayerTable {
     const featuresSelected = this._selectedIndexes.length > 0;
     const multiFeaturesSelected = this._selectedIndexes.length > 1;
     return (
-      <div class="display-flex table-border" slot={slot}>
-        <div class="w-400 border-end">
+      <div class="display-flex table-border height-51" slot={slot}>
+        <div class="min-width-400 border-end">
           <map-layer-picker
             appearance="solid"
             mapView={this.mapView}
