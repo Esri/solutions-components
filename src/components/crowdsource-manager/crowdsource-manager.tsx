@@ -293,7 +293,7 @@ export class CrowdsourceManager {
             <span>{tooltip}</span>
           </calcite-tooltip>
         </calcite-action-bar>
-        <div class="width-full height-full">
+        <div class="width-full height-full position-relative">
           <layer-table mapView={this?._mapView} />
         </div>
       </calcite-shell>

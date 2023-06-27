@@ -20,6 +20,8 @@ import EditRecordModal_T9n from "../../assets/t9n/edit-record-modal/resources.js
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { EEditMode } from "../../utils/interfaces";
 
+// TODO clearInputs does not clear date fields
+
 @Component({
   tag: "edit-record-modal",
   styleUrl: "edit-record-modal.css",
@@ -592,13 +594,7 @@ export class EditRecordModal {
   protected _clearInputs(): void {
     if (this.editMode === EEditMode.MULTI) {
       this._editControlElements?.forEach(c => {
-        console.log(c);
-        // TODO figure out a way to clear these as the following does not work
-        // console.log(c.value);
-        // console.log("c.selectedItems")
-        // console.log(c.selectedItems)
-        // c.value = undefined;
-        // c.selectedItems = undefined;
+        c.value = "";
       });
     }
   }
@@ -627,6 +623,7 @@ export class EditRecordModal {
    */
   protected _modalClose(): void {
     this.modalClosed.emit();
+    this._clearInputs();
   }
 
   /**
