@@ -10,5 +10,10 @@
   "switchSelected": "Switch selected",
   "zoom": "Zoom",
   "fetchingData": "Fetching Data",
-  "refresh": "Refresh"
+  "refresh": "Refresh",
+  "enableEditing": "Editing must be enabled on the layer.",
+  "confirm": "Are you sure?",
+  "deleteRows": "Delete Data",
+  "deleteDisabled": "Delete Disabled",
+  "editMultipleDisabled": "Edit Multiple Disabled"
 }

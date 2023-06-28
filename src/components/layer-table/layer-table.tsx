@@ -54,6 +54,11 @@ export class LayerTable {
   //--------------------------------------------------------------------------
 
   /**
+   * boolean: When true a alert will be shown to indicate a problem or confirm the current action
+   */
+  @State() _alertOpen = false;
+
+  /**
    * boolean: When true the edit multiple modal is shown
    */
   @State() _editMultipleOpen = false;
@@ -91,9 +96,49 @@ export class LayerTable {
   protected FeatureTable: typeof import("esri/widgets/FeatureTable");
 
   /**
+   * any: The function that the alerts action should execute
+   */
+  protected _alertActionFunction: any;
+
+  /**
+   * string: The alerts action text...will be displayed when _alertShowAction is True
+   */
+  protected _alertActionText: string;
+
+  /**
+   * string: main icon of the alert
+   */
+  protected _alertIcon: string;
+
+  /**
+   * "warning" | "danger": the kind of alert to display
+   */
+  protected _alertKind: "warning" | "danger";
+
+  /**
+   * boolean: When true a action link will be deisplayed
+   */
+  protected _alertShowAction: boolean;
+
+  /**
+   * string: main message of the alert
+   */
+  protected _alertMessage: string;
+
+  /**
+   * string: the alerts title
+   */
+  protected _alertTitle: string;
+
+  /**
    * number[]: A list of all IDs for the current layer
    */
   protected _allIds: number[] = [];
+
+  /**
+   * boolean: When false alerts will be shown to indicate that the layer must have editing enabled for edit actions
+   */
+  protected _editEnabled: boolean;
 
   /**
    * HTMLCalciteCheckboxElement: Element to force selection of all records
@@ -128,6 +173,14 @@ export class LayerTable {
   async mapViewWatchHandler(): Promise<void> {
     const mapLayerIds = await getMapLayerIds(this.mapView);
     this._layerView = await getMapLayerView(this.mapView, mapLayerIds[0]);
+  }
+
+  /**
+   * watch for changes in layer view and verify if it has editing enabled
+   */
+  @Watch("_layerView")
+  async _layerViewWatchHandler(): Promise<void> {
+    this._editEnabled = this._layerView?.layer.editingEnabled;
   }
 
   //--------------------------------------------------------------------------
@@ -183,6 +236,7 @@ export class LayerTable {
     }
     const tableNodeClass = this._fetchingData ? "display-none" : "";
     const loadingClass = this._fetchingData ? "" : "display-none";
+    const alertActionClass = this._alertShowAction ? "" : "display-none";
     return (
       <Host>
         <calcite-shell>
@@ -206,6 +260,28 @@ export class LayerTable {
             open={this._editMultipleOpen}
             slot="modals"
           />
+          <calcite-alert
+            icon={this._alertIcon}
+            kind={this._alertKind}
+            label="A report alert"
+            onCalciteAlertClose={() => this._alertClosed()}
+            open={this._alertOpen}
+            placement="top"
+          >
+            <div slot="title">
+              {this._alertTitle}
+            </div>
+            <div slot="message">
+              {this._alertMessage}
+            </div>
+            <calcite-link
+              class={alertActionClass}
+              onClick={this._alertActionFunction}
+              slot="link"
+            >
+              {this._alertActionText}
+            </calcite-link>
+          </calcite-alert>
         </calcite-shell>
       </Host>
     );
@@ -380,7 +456,7 @@ export class LayerTable {
       this._table = new this.FeatureTable({
         layer: this._layerView.layer,
         view: this.mapView,
-        editingEnabled: true,
+        editingEnabled: this._editEnabled,
         highlightOnRowSelectEnabled: true,
         multiSortEnabled: false,
         visibleElements: {
@@ -395,6 +471,15 @@ export class LayerTable {
         this.featureSelectionChange.emit(this._selectedIndexes);
       });
     }
+  }
+
+  /**
+   * Set the alertOpen member to false when the alert is closed
+   *
+   * @returns void
+   */
+  protected _alertClosed(): void {
+    this._alertOpen = false;
   }
 
   /**
@@ -490,23 +575,50 @@ export class LayerTable {
   }
 
   /**
-   * Open the edit multiple modal
+   * Open the edit multiple modal or shows an alert if the layer does not have editing enabled
    *
    * @returns void
    */
   protected _editMultiple(): void {
-    this._editMultipleOpen = true;
+    if (this._editEnabled) {
+      this._editMultipleOpen = true;
+    } else {
+      this._alertIcon = "layer-broken";
+      this._alertTitle = this._translations.editMultipleDisabled;
+      this._alertShowAction = false;
+      this._alertMessage = this._translations.enableEditing;
+      this._alertKind = "warning";
+      this._alertOpen = true;
+    }
   }
 
   /**
-   * Delete all selected records
+   * Delete all selected records or shows an alert if the layer does not have editing enabled
    *
    * @returns a promise that will resolve when the operation is complete
    */
   protected _delete(): void {
-    void this._layerView.layer.applyEdits({
-      deleteFeatures: this._table.highlightIds.toArray()
-    });
+    if (this._editEnabled) {
+      this._alertIcon = "trash";
+      this._alertTitle = this._translations.deleteRows;
+      this._alertActionText = this._translations.delete;
+      this._alertShowAction = true;
+      this._alertMessage = this._translations.confirm;
+      this._alertKind = "danger";
+      this._alertActionFunction = () => {
+        void this._layerView.layer.applyEdits({
+          deleteFeatures: this._table.highlightIds.toArray()
+        });
+        this._alertOpen = false;
+      }
+    } else {
+      this._alertIcon = "layer-broken";
+      this._alertTitle = this._translations.deleteDisabled;
+      this._alertShowAction = false;
+      this._alertMessage = this._translations.enableEditing;
+      this._alertKind = "warning";
+    }
+    this._alertOpen = true;
   }
 
   /**

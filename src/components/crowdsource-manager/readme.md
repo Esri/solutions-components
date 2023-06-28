@@ -126,6 +126,8 @@ graph TD;
   layer-table --> calcite-panel
   layer-table --> calcite-loader
   layer-table --> edit-record-modal
+  layer-table --> calcite-alert
+  layer-table --> calcite-link
   layer-table --> map-layer-picker
   layer-table --> calcite-action-bar
   layer-table --> calcite-action
@@ -133,6 +135,9 @@ graph TD;
   layer-table --> calcite-button
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
+  calcite-alert --> calcite-icon
+  calcite-alert --> calcite-chip
+  calcite-link --> calcite-icon
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown

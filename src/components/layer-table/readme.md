@@ -44,6 +44,8 @@ Promise that resolves when the operation is complete
 - calcite-panel
 - calcite-loader
 - [edit-record-modal](../edit-record-modal)
+- calcite-alert
+- calcite-link
 - [map-layer-picker](../map-layer-picker)
 - calcite-action-bar
 - calcite-action
@@ -59,6 +61,8 @@ graph TD;
   layer-table --> calcite-panel
   layer-table --> calcite-loader
   layer-table --> edit-record-modal
+  layer-table --> calcite-alert
+  layer-table --> calcite-link
   layer-table --> map-layer-picker
   layer-table --> calcite-action-bar
   layer-table --> calcite-action
@@ -107,6 +111,9 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
+  calcite-alert --> calcite-icon
+  calcite-alert --> calcite-chip
+  calcite-link --> calcite-icon
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown
