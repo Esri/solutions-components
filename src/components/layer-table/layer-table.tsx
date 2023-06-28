@@ -19,7 +19,7 @@ import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getMapLayerView, getMapLayerIds } from "../../utils/mapViewUtils";
-import { queryAllFeatures, queryFeaturesByID } from "../../utils/queryUtils";
+import { queryFeaturesByID, queryAllIds } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { EEditMode, IExportInfos } from "../../utils/interfaces";
 
@@ -91,19 +91,19 @@ export class LayerTable {
   protected FeatureTable: typeof import("esri/widgets/FeatureTable");
 
   /**
-   * string[]: List of field names to display
+   * number[]: A list of all IDs for the current layer
    */
-  protected _fieldNames: string[] = [];
-
-  /**
-   * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
-   */
-  protected _graphics: __esri.Graphic[] = [];
+  protected _allIds: number[] = [];
 
   /**
    * HTMLCalciteCheckboxElement: Element to force selection of all records
    */
   protected _selectAllElement: HTMLCalciteCheckboxElement;
+
+  /**
+   * boolean: When true only selected records will be shown in the table
+   */
+  protected _showOnlySelected = false;
 
   /**
    * esri/widgets/FeatureTable: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FeatureTable.html
@@ -274,7 +274,7 @@ export class LayerTable {
             label={this._translations.editMultiple}
             onClick={() => this._editMultiple()}
             text={this._translations.editMultiple}
-            textEnabled
+            textEnabled={true}
           />
           <calcite-action
             appearance="solid"
@@ -295,24 +295,24 @@ export class LayerTable {
           />
         </calcite-action-bar>
         <calcite-dropdown>
-        <calcite-action
+          <calcite-action
             appearance="solid"
-            disabled={!featuresSelected}
             label=""
             slot="trigger"
             text=""
           >
-          <calcite-button
-            appearance="transparent"
-            iconEnd="chevron-down"
-            kind="neutral"
-          >
-            {this._translations.more}
-          </calcite-button>
+            <calcite-button
+              appearance="transparent"
+              iconEnd="chevron-down"
+              kind="neutral"
+            >
+              {this._translations.more}
+            </calcite-button>
           </calcite-action>
           <calcite-dropdown-group selection-mode="none">
             <calcite-dropdown-item
               iconStart="list-check-all"
+              onClick={() => this._selectAll()}
             >
               {this._translations.selectAll}
             </calcite-dropdown-item>
@@ -404,15 +404,20 @@ export class LayerTable {
    *
    * @returns void
    */
-  protected _selectAll(
-    checked: boolean
-  ): void {
-    this._selectedIndexes = checked ? this._graphics.map((_g, i) => i) : [];
+  protected _selectAll(): void {
+    const ids = this._allIds;
+    this._table.highlightIds.addMany(ids);
+    this._selectedIndexes = ids;
   }
 
   // need to discuss with team
   protected _showSelected(): void {
-    console.log("_showSelected");
+    this._showOnlySelected = !this._showOnlySelected;
+    if (this._showOnlySelected) {
+      this._table.filterBySelection();
+    } else {
+      this._table.clearSelectionFilter();
+    }
   }
 
   /**
@@ -422,6 +427,7 @@ export class LayerTable {
    */
   protected _clearSelection(): void {
     this._selectedIndexes = [];
+    this._table.highlightIds.removeAll();
   }
 
   protected _filter(): void {
@@ -435,12 +441,14 @@ export class LayerTable {
    */
   protected _switchSelected(): void {
     const currentIndexes = [...this._selectedIndexes];
-    this._selectedIndexes = this._graphics.reduce((prev, _cur, i) => {
+    this._selectedIndexes = this._allIds.reduce((prev, _cur, i) => {
       if (currentIndexes.indexOf(i) < 0) {
         prev.push(i);
       }
       return prev;
     }, []);
+    this._table.highlightIds.removeAll();
+    this._table.highlightIds.addMany(this._selectedIndexes);
   }
 
   /**
@@ -450,7 +458,7 @@ export class LayerTable {
    */
   protected async _exportToCSV(): Promise<void> {
     const exportInfos: IExportInfos = {};
-    const ids = await this._getSelectedIds();
+    const ids = this._table.highlightIds.toArray();
     exportInfos[this._layerView.layer.id] = {
       selectionSetNames: [],
       ids,
@@ -464,12 +472,12 @@ export class LayerTable {
   }
 
   /**
-   * Query the layer for any new changes
+   * Refreshes the table and maintains the curent scroll position
    *
    * @returns void
    */
   protected _refresh(): void {
-    alert("refresh the data")
+    void this._table.refresh();
   }
 
   /**
@@ -496,7 +504,9 @@ export class LayerTable {
    * @returns a promise that will resolve when the operation is complete
    */
   protected _delete(): void {
-    console.log("delete")
+    void this._layerView.layer.applyEdits({
+      deleteFeatures: this._table.highlightIds.toArray()
+    });
   }
 
   /**
@@ -513,35 +523,6 @@ export class LayerTable {
   }
 
   /**
-   * Gets the object ids for all selected rows
-   *
-   * @returns An array of object ids
-   */
-  protected async _getSelectedIds(): Promise<number[]> {
-    const graphics = await this._getGraphics(this._selectedIndexes);
-    return graphics.map(g => g.getObjectId());
-  }
-
-  /**
-   * Update the selected indexes based on the current row
-   *
-   * @param index the index of the selected row
-   *
-   * @returns void
-   */
-  protected _rowSelected(
-    index: number
-  ): void {
-    const indexOfSelected = this._selectedIndexes.indexOf(index);
-    if (indexOfSelected > -1) {
-      this._selectedIndexes.splice(indexOfSelected, 1);
-      this._selectedIndexes = [...this._selectedIndexes];
-    } else {
-      this._selectedIndexes = [...this._selectedIndexes, index];
-    }
-  }
-
-  /**
    * Handles layer selection change to show new table
    *
    * @returns a promise that will resolve when the operation is complete
@@ -550,13 +531,11 @@ export class LayerTable {
     evt: CustomEvent
   ): Promise<void> {
     const id: string = evt.detail[0];
-    if (id !== this._layerView?.layer.id) {
+    if (id !== this._layerView?.layer.id || this._allIds.length === 0) {
       this._fetchingData = true;
       this._table.highlightIds.removeAll();
       this._layerView = await getMapLayerView(this.mapView, id);
-      // TODO rethink this...when we use later we need to be able to lookup with name
-      this._fieldNames = this._layerView.layer.fields.map(f => f.alias || f.name);
-      this._graphics = await queryAllFeatures(0, this._layerView.layer, []);
+      this._allIds = await queryAllIds(this._layerView.layer)
       this._selectedIndexes = [];
       this._table.layer = this._layerView.layer;
       this._table.render();

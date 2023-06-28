@@ -49,6 +49,21 @@ export async function queryAllFeatures(
 }
 
 /**
+ * Query the layer for all IDs
+ *
+ * @param layer the layer to retrieve features from
+ *
+ * @returns Promise with the featureSet from the layer that match the provided ids
+ */
+export async function queryAllIds(
+  layer: __esri.FeatureLayer
+): Promise<number[]> {
+  const query = layer.createQuery();
+  query.where = "1=1";
+  return await layer.queryObjectIds(query);
+}
+
+/**
  * Query the layer for OIDs based on any user drawn geometries or buffers
  *
  * @param geometries Array of geometries used for the selection of ids from the layer
