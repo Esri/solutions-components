@@ -263,7 +263,7 @@ export class LayerTable {
           <calcite-alert
             icon={this._alertIcon}
             kind={this._alertKind}
-            label="A report alert"
+            label=""
             onCalciteAlertClose={() => this._alertClosed()}
             open={this._alertOpen}
             placement="top"

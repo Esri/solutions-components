@@ -62,6 +62,11 @@ export class InfoCard {
   //--------------------------------------------------------------------------
 
   /**
+   * boolean: When true a alert will be shown to indicate a problem or confirm the current action
+   */
+  @State() _alertOpen = false;
+
+  /**
    * When true the add record modal will be displayed
    */
   @State() _editRecordOpen = false;
@@ -85,6 +90,11 @@ export class InfoCard {
   protected Features: typeof import("esri/widgets/Features");
 
   /**
+   * boolean: When false alerts will be shown to indicate that the layer must have editing enabled for edit actions
+   */
+  protected _editEnabled: boolean;
+
+  /**
    * esri/widgets/Feature: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Feature.html
    * used for widget instance
    */
@@ -105,6 +115,9 @@ export class InfoCard {
     if (this._features) {
       this._features.features = this.graphics;
       this._features.visible = this.graphics.length > 0 && this.graphics[0] !== undefined;
+      if (this._features.visible) {
+        this._editEnabled = (this.graphics[0]?.layer as __esri.FeatureLayer).editingEnabled;
+      }
     }
   }
 
@@ -180,6 +193,21 @@ export class InfoCard {
             open={this._editRecordOpen}
             slot="modals"
           />
+          <calcite-alert
+            icon={"layer-broken"}
+            kind={"warning"}
+            label=""
+            onCalciteAlertClose={() => this._alertClosed()}
+            open={this._alertOpen}
+            placement="top"
+          >
+            <div slot="title">
+              {this._translations.editDisabled}
+            </div>
+            <div slot="message">
+              {this._translations.enableEditing}
+            </div>
+          </calcite-alert>
         </calcite-shell>
       </Host>
     );
@@ -227,6 +255,15 @@ export class InfoCard {
   }
 
   /**
+   * Set the alertOpen member to false when the alert is closed
+   *
+   * @returns void
+   */
+  protected _alertClosed(): void {
+    this._alertOpen = false;
+  }
+
+  /**
    * Close the edit record modal
    */
   protected _editRecordClosed(): void {
@@ -237,7 +274,11 @@ export class InfoCard {
    * Open the edit record modal
    */
   protected _openEditRecord(): void {
-    this._editRecordOpen = true;
+    if (this._editEnabled) {
+      this._editRecordOpen = true;
+    } else {
+      this._alertOpen = true;
+    }
   }
 
   /**

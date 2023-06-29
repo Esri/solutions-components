@@ -82,6 +82,7 @@ graph TD;
   info-card --> calcite-loader
   info-card --> calcite-button
   info-card --> edit-record-modal
+  info-card --> calcite-alert
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   edit-record-modal --> calcite-modal
@@ -111,6 +112,8 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
+  calcite-alert --> calcite-icon
+  calcite-alert --> calcite-chip
   media-card --> calcite-loader
   media-card --> calcite-button
   media-card --> calcite-shell
@@ -135,8 +138,6 @@ graph TD;
   layer-table --> calcite-button
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
-  calcite-alert --> calcite-icon
-  calcite-alert --> calcite-chip
   calcite-link --> calcite-icon
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
