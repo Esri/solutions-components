@@ -173,6 +173,7 @@ export class InfoCard {
           </div>
           <edit-record-modal
             editMode={EEditMode.SINGLE}
+            graphicIndex={this._features?.selectedFeatureIndex}
             graphics={this.graphics}
             mapView={this.mapView}
             onModalClosed={() => this._editRecordClosed()}
@@ -217,7 +218,8 @@ export class InfoCard {
         visible: true,
         visibleElements: {
           actionBar: false,
-          closeButton: false
+          closeButton: false,
+          heading: false
         }
       });
       this._features.close();

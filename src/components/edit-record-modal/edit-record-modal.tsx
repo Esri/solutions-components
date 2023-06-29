@@ -62,6 +62,11 @@ export class EditRecordModal {
    */
   @Prop() editMode = EEditMode.SINGLE;
 
+  /**
+   * The index of the current graphic
+   */
+  @Prop() graphicIndex = 0;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -122,11 +127,19 @@ export class EditRecordModal {
   /**
    * Watch for changes to the graphics and update the feature widget
    */
+  @Watch("graphicIndex")
+  graphicIndexWatchHandler(): void {
+    this._featureForm.feature = this.graphics[this.graphicIndex];
+  }
+
+  /**
+   * Watch for changes to the graphics and update the feature widget
+   */
   @Watch("graphics")
   graphicsWatchHandler(): void {
     this._initFeatureFormWidget();
-    if (this.editMode === EEditMode.SINGLE && this._featureForm && this.graphics[0]) {
-      this._featureForm.feature = this.graphics[0];
+    if (this.editMode === EEditMode.SINGLE && this._featureForm && this.graphics[this.graphicIndex]) {
+      this._featureForm.feature = this.graphics[this.graphicIndex];
       this._featureForm.disabled = !this._featureForm.layer.editingEnabled;
 
       this._editingDisabled = !this._featureForm.layer.editingEnabled;
@@ -292,7 +305,7 @@ export class EditRecordModal {
    */
   protected _initFeatureFormWidget(): void {
     if (this.editMode === EEditMode.SINGLE && this.mapView && !this._featureForm && this.graphics && this.graphics.length > 0 && this.graphics[0]) {
-      const feature: __esri.Graphic = this.graphics[0];
+      const feature: __esri.Graphic = this.graphics[this.graphicIndex];
       const elements = this._getFormTemplateElements();
       this._featureForm = new this.FeatureForm({
         container: "feature-form",

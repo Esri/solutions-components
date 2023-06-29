@@ -85,6 +85,10 @@ export namespace Components {
          */
         "editMode": EEditMode;
         /**
+          * The index of the current graphic
+         */
+        "graphicIndex": number;
+        /**
           * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "graphics": __esri.Graphic[];
@@ -1070,6 +1074,10 @@ declare namespace LocalJSX {
           * "MULTI" | "SINGLE": "SINGLE" edit mode is intended to be used to edit a single existing feature                     "MULTI" edit mode is intended to apply edits across a collection of features
          */
         "editMode"?: EEditMode;
+        /**
+          * The index of the current graphic
+         */
+        "graphicIndex"?: number;
         /**
           * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
