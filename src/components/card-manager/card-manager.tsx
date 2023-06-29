@@ -171,8 +171,6 @@ export class CardManager {
     const mediaCardClass = mediaChecked ? "" : "display-none";
     const commentsCardClass = commentsChecked ? "" : "display-none";
 
-    // TODO ask team what I'm supposed to do with multi-select
-    const graphic = this._graphics?.length > 0 ? this._graphics[0] : undefined;
     return (
       <Host>
         <div class="border-rounded overflow-auto">
@@ -207,7 +205,7 @@ export class CardManager {
             <div>
               <info-card
                 class={infoCardClass}
-                graphic={graphic}
+                graphics={this._graphics}
                 isLoading={this._cardLoading}
                 mapView={this.mapView}
               />

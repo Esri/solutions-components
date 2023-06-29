@@ -43,7 +43,7 @@ export class InfoCard {
   /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
-  @Prop() graphic: __esri.Graphic;
+  @Prop() graphics: __esri.Graphic[];
 
   /**
    * boolean: when true a loading indicator will be shown
@@ -82,13 +82,13 @@ export class InfoCard {
    * esri/widgets/Feature: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Feature.html
    * used for module import
    */
-  protected Feature: typeof import("esri/widgets/Feature");
+  protected Features: typeof import("esri/widgets/Features");
 
   /**
    * esri/widgets/Feature: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Feature.html
    * used for widget instance
    */
-  protected _feature: __esri.Feature;
+  protected _features: __esri.Features;
 
   //--------------------------------------------------------------------------
   //
@@ -99,11 +99,12 @@ export class InfoCard {
   /**
    * Watch for changes to the graphic and update the feature widget
    */
-  @Watch("graphic")
-  graphicWatchHandler(): void {
-    this._initFeatureWidget();
-    if (this._feature) {
-      this._feature.graphic = this.graphic;
+  @Watch("graphics")
+  graphicsWatchHandler(): void {
+    this._initFeaturesWidget();
+    if (this._features) {
+      this._features.features = this.graphics;
+      this._features.visible = this.graphics.length > 0 && this.graphics[0] !== undefined;
     }
   }
 
@@ -112,7 +113,7 @@ export class InfoCard {
    */
   @Watch("mapView")
   mapViewWatchHandler(): void {
-    this._initFeatureWidget();
+    this._initFeaturesWidget();
   }
 
   //--------------------------------------------------------------------------
@@ -158,7 +159,7 @@ export class InfoCard {
           />
           <div
             class={"esri-widget " + featureNodeClass}
-            id="feature-node"
+            id="features-node"
           />
           <div class="padding-1-2 display-flex" slot="footer">
             <calcite-button
@@ -172,7 +173,7 @@ export class InfoCard {
           </div>
           <edit-record-modal
             editMode={EEditMode.SINGLE}
-            graphics={[this.graphic]}
+            graphics={this.graphics}
             mapView={this.mapView}
             onModalClosed={() => this._editRecordClosed()}
             open={this._editRecordOpen}
@@ -197,10 +198,10 @@ export class InfoCard {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [Feature] = await loadModules([
-      "esri/widgets/Feature"
+    const [Features] = await loadModules([
+      "esri/widgets/Features"
     ]);
-    this.Feature = Feature;
+    this.Features = Features;
   }
 
   /**
@@ -208,15 +209,18 @@ export class InfoCard {
    *
    * @protected
    */
-  protected _initFeatureWidget(): void {
-    if (this.mapView && !this._feature) {
-      // map and spatialReference must be set for Arcade
-      // expressions to execute and display content
-      this._feature = new this.Feature({
-        map: this.mapView.map,
-        spatialReference: this.mapView.spatialReference,
-        container: "feature-node"
+  protected _initFeaturesWidget(): void {
+    if (this.mapView && !this._features) {
+      this._features = new this.Features({
+        view: this.mapView,
+        container: "features-node",
+        visible: true,
+        visibleElements: {
+          actionBar: false,
+          closeButton: false
+        }
       });
+      this._features.close();
     }
   }
 

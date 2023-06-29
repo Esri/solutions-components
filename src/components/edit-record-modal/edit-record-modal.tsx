@@ -191,7 +191,7 @@ export class EditRecordModal {
       const layerTable: HTMLLayerTableElement = layerTableElements[0] as HTMLLayerTableElement;
       this.graphics = await layerTable.getSelectedGraphics();
     }
-    if (this.graphics.length > 0 && this.graphics[0]?.layer) {
+    if (this.graphics?.length > 0 && this.graphics[0]?.layer) {
       this._layer = this.graphics[0].layer as __esri.FeatureLayer;
     }
   }
@@ -205,7 +205,7 @@ export class EditRecordModal {
 
     // This is a temp workaround hopefully...this._editingDisabled should reflect the current state but does not
     // when you use MULTI edit mode...is fine in SINGLE
-    const editDisabled = this.graphics.length > 0 && this.graphics[0] ?
+    const editDisabled = this.graphics?.length > 0 && this.graphics[0] ?
       !(this.graphics[0].layer as __esri.FeatureLayer).editingEnabled : true;
 
     return (
@@ -291,7 +291,7 @@ export class EditRecordModal {
    * @returns void
    */
   protected _initFeatureFormWidget(): void {
-    if (this.editMode === EEditMode.SINGLE && this.mapView && !this._featureForm) {
+    if (this.editMode === EEditMode.SINGLE && this.mapView && !this._featureForm && this.graphics && this.graphics.length > 0 && this.graphics[0]) {
       const feature: __esri.Graphic = this.graphics[0];
       const elements = this._getFormTemplateElements();
       this._featureForm = new this.FeatureForm({

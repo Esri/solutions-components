@@ -101,7 +101,7 @@ export namespace Components {
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
-        "graphic": __esri.Graphic;
+        "graphics": __esri.Graphic[];
         /**
           * boolean: when true a loading indicator will be shown
          */
@@ -1095,7 +1095,7 @@ declare namespace LocalJSX {
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
-        "graphic"?: __esri.Graphic;
+        "graphics"?: __esri.Graphic[];
         /**
           * boolean: when true a loading indicator will be shown
          */
