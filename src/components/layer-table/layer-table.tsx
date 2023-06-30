@@ -171,8 +171,11 @@ export class LayerTable {
    */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
+    this._fetchingData = true;
     const mapLayerIds = await getMapLayerIds(this.mapView);
     this._layerView = await getMapLayerView(this.mapView, mapLayerIds[0]);
+    this._resetTable();
+    this._fetchingData = false;
   }
 
   /**
@@ -470,6 +473,19 @@ export class LayerTable {
         this._selectedIndexes = this._table.highlightIds.toArray();
         this.featureSelectionChange.emit(this._selectedIndexes);
       });
+    }
+  }
+
+  /**
+   * Reset basic table props
+   *
+   * @returns void
+   */
+  protected _resetTable(): void {
+    if (this._layerView?.layer && this._table) {
+      this._table.layer = this._layerView.layer;
+      this._table.view = this.mapView;
+      this._table.editingEnabled = this._editEnabled;
     }
   }
 

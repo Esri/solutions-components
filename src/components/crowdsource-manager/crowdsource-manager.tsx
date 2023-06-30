@@ -102,6 +102,7 @@ export class CrowdsourceManager {
     evt: CustomEvent
   ): Promise<void> {
     this._mapView = evt.detail;
+    this._mapView.popupEnabled = false;
   }
 
   //--------------------------------------------------------------------------

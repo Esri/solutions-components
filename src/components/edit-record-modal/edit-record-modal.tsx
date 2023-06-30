@@ -129,7 +129,9 @@ export class EditRecordModal {
    */
   @Watch("graphicIndex")
   graphicIndexWatchHandler(): void {
-    this._featureForm.feature = this.graphics[this.graphicIndex];
+    if (this.graphics?.length && this.graphics[0]) {
+      this._featureForm.feature = this.graphics[this.graphicIndex];
+    }
   }
 
   /**
