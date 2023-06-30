@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Method, Prop, State, VNode, Watch } from "@stencil/core";
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -141,6 +141,11 @@ export class LayerTable {
   protected _editEnabled: boolean;
 
   /**
+   * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
+   */
+  protected reactiveUtils: typeof import ("esri/core/reactiveUtils");
+
+  /**
    * HTMLCalciteCheckboxElement: Element to force selection of all records
    */
   protected _selectAllElement: HTMLCalciteCheckboxElement;
@@ -175,6 +180,13 @@ export class LayerTable {
     const mapLayerIds = await getMapLayerIds(this.mapView);
     this._layerView = await getMapLayerView(this.mapView, mapLayerIds[0]);
     this._resetTable();
+    this.reactiveUtils.on(
+      () => this.mapView,
+      "click",
+      (event) => {
+        void this._mapClicked(event);
+      }
+    );
     this._fetchingData = false;
   }
 
@@ -304,10 +316,12 @@ export class LayerTable {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [FeatureTable] = await loadModules([
-      "esri/widgets/FeatureTable"
+    const [FeatureTable, reactiveUtils] = await loadModules([
+      "esri/widgets/FeatureTable",
+      "esri/core/reactiveUtils"
     ]);
     this.FeatureTable = FeatureTable;
+    this.reactiveUtils = reactiveUtils;
   }
 
   /**
@@ -486,6 +500,31 @@ export class LayerTable {
       this._table.layer = this._layerView.layer;
       this._table.view = this.mapView;
       this._table.editingEnabled = this._editEnabled;
+    }
+  }
+
+  /**
+   * Handle map click events to keep table and map click selection in sync
+   *
+   * @returns void
+   */
+  protected async _mapClicked(
+    evt: CustomEvent
+  ): Promise<void> {
+   const opts = {
+     include: this._layerView.layer
+   };
+    const hitTestResult = await this.mapView.hitTest(evt.detail, opts);
+    if (hitTestResult.results.length > 0) {
+      hitTestResult.results.forEach((result: any) => {
+       const id = (result.graphic as __esri.Graphic).getObjectId();
+       const index = this._table.highlightIds.indexOf(id);
+       if (index > -1) {
+         this._table.highlightIds.removeAt(index);
+       } else {
+         this._table.highlightIds.add(id);
+       }
+      });
     }
   }
 
