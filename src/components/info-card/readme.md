@@ -14,6 +14,19 @@
 | `mapView`   | --           | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`   | `undefined` |
 
 
+## Methods
+
+### `getSelectedFeature() => Promise<any>`
+
+Get the current selected feature from the Features widget
+
+#### Returns
+
+Type: `Promise<any>`
+
+Promise resolving with the current feature
+
+
 ## Dependencies
 
 ### Used by

@@ -244,6 +244,7 @@ export class MapLayerPicker {
         <calcite-button
           alignment="icon-end-space-between"
           appearance={this.appearance}
+          class="max-width-350"
           iconEnd="chevron-down"
           iconStart="layers"
           kind="neutral"

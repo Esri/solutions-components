@@ -64,6 +64,31 @@ export async function queryAllIds(
 }
 
 /**
+ * Query the feature for any image attachments
+ *
+ * @param layer the layer to retrieve attachments from
+ *
+ * @returns Promise with any attachments from the feature
+ */
+export async function queryAttachments(
+  layer: __esri.FeatureLayer,
+  objectIds: number[]
+): Promise<any> {
+  return await layer.queryAttachments({
+    attachmentTypes: [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/jpg",
+      "image/tif",
+      "image/tiff",
+      "image/bmp"
+    ],
+    objectIds
+  });
+}
+
+/**
  * Query the layer for OIDs based on any user drawn geometries or buffers
  *
  * @param geometries Array of geometries used for the selection of ids from the layer

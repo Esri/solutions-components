@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, Watch } from "@stencil/core";
+import { Component, Element, Host, h, Method, Prop, State, Watch } from "@stencil/core";
 import InfoCard_T9n from "../../assets/t9n/info-card/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { loadModules } from "../../utils/loadModules";
@@ -134,6 +134,16 @@ export class InfoCard {
   //  Methods (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Get the current selected feature from the Features widget
+   *
+   * @returns Promise resolving with the current feature
+   */
+  @Method()
+  async getSelectedFeature(): Promise<any> {
+    return this._features.selectedFeature;
+  }
 
   //--------------------------------------------------------------------------
   //

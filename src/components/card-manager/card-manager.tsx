@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Listen, Prop, State } from "@stencil/core";
+import { Component, Element, Host, h, Listen, Prop, State, Watch } from "@stencil/core";
 import CardManager_T9n from "../../assets/t9n/card-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { ECardType, IMediaCardValues } from "../../utils/interfaces";
-import { queryFeaturesByID } from "../../utils/queryUtils";
+import { queryAttachments, queryFeaturesByID } from "../../utils/queryUtils";
 import { getMapLayerView } from "../../utils/mapViewUtils";
 
 @Component({
@@ -92,11 +92,47 @@ export class CardManager {
    */
   protected _cardTypeElement: HTMLCalciteSegmentedControlElement;
 
+  /**
+   * The graphic that is currently selected in info-card features widget
+   */
+  protected _currentGraphic: __esri.Graphic;
+
+  /**
+   * The current graphics attachments
+   */
+  protected _attachments: any;
+
+  /**
+   * Check the layers capabilities to see if queryAttachments is supported
+   *
+   * queryAttachments will return an error if the layer's capabilities.data.supportsAttachment property is false.
+   * Attachments for multiple features can be queried if the layer's capabilities.operations.supportsQueryAttachments is true.
+   */
+  protected _attachmentsSupported: boolean;
+
+  /**
+   * Reference to the info card to be used to check for the current graphic
+   */
+  protected _infoCard: HTMLInfoCardElement;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * watch for changes in the card type
+   */
+  @Watch("_currentCardType")
+  async _currentCardTypeWatchHandler(): Promise<void> {
+    if (this._currentCardType === ECardType.MEDIA) {
+      // check the info-card for the current feature
+      // doing this because the Features widget does not expose an event for next/prev
+      this._currentGraphic = await this._infoCard.getSelectedFeature();
+      await this._setMediaCardValues([this._currentGraphic.getObjectId()]);
+    }
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -121,8 +157,30 @@ export class CardManager {
     this._cardLoading = true;
     // only query if we have some ids...query with no ids will result in all features being returned
     const featureSet = ids.length > 0 ? await queryFeaturesByID(ids, this.layerView.layer, []) : [];
-    this._cardLoading = false;
     this._graphics = featureSet;
+    this._cardLoading = false;
+  }
+
+  /**
+   * Query the current graphic for any attachments
+   */
+  protected async _setMediaCardValues(
+    ids: number[]
+  ): Promise<void> {
+    if (this._attachmentsSupported) {
+      this._attachments = await queryAttachments(this.layerView.layer, ids);
+      this.mediaCardValues = Object.keys(this._attachments).length > 0 ? ids.reduce((prev, cur) => {
+        const attachments = this._attachments[cur];
+        attachments.forEach(attachment => {
+          prev.push({
+            name: attachment.name,
+            description: "",
+            url: attachment.url
+          });
+        });
+        return prev;
+      }, []) : [];
+    }
   }
 
   /**
@@ -134,6 +192,7 @@ export class CardManager {
   ): Promise<void> {
     const id: string = evt.detail[0];
     this.layerView = await getMapLayerView(this.mapView, id);
+    this._attachmentsSupported = this._checkAttachmentSupport();
   }
 
   /**
@@ -208,6 +267,7 @@ export class CardManager {
                 graphics={this._graphics}
                 isLoading={this._cardLoading}
                 mapView={this.mapView}
+                ref={(el) => { this._infoCard = el }}
               />
               <media-card
                 class={mediaCardClass}
@@ -232,8 +292,21 @@ export class CardManager {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Set the add record open flag when the modal is closed
+   */
   protected _addRecordClosed(): void {
     this._addRecordOpen = false;
+  }
+
+  /**
+   * Check the layers capabilities to see if attachments are supported
+   */
+  protected _checkAttachmentSupport(): boolean {
+    const supportsAttachment = this.layerView.layer?.capabilities?.data?.supportsAttachment;
+    // Need to talk through this when we meet next week
+    //const supportsMultiFeaturesAttachment = this.layerView.layer.capabilities.operations.supportsQueryAttachments;
+    return supportsAttachment;
   }
 
   /**

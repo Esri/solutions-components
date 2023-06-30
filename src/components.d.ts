@@ -103,6 +103,11 @@ export namespace Components {
     }
     interface InfoCard {
         /**
+          * Get the current selected feature from the Features widget
+          * @returns Promise resolving with the current feature
+         */
+        "getSelectedFeature": () => Promise<any>;
+        /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "graphics": __esri.Graphic[];

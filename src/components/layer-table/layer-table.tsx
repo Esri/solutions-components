@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Method, Prop, State, VNode, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -336,7 +336,7 @@ export class LayerTable {
     const multiFeaturesSelected = this._selectedIndexes.length > 1;
     return (
       <div class="display-flex table-border height-51" slot={slot}>
-        <div class="min-width-400 border-end">
+        <div class="border-end">
           <map-layer-picker
             appearance="solid"
             mapView={this.mapView}
