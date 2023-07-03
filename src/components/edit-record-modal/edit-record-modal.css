@@ -38,3 +38,7 @@
   --calcite-ui-background: none;
   padding-top: 0px;
 }
+
+.padding-sides-bottom-1 {
+  padding: 0 1rem 1rem 1rem;
+}

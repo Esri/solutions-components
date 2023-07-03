@@ -519,6 +519,7 @@ export class LayerTable {
   protected _resetTable(): void {
     if (this._layerView?.layer && this._table) {
       this._table.layer = this._layerView.layer;
+      this._editEnabled = this._layerView.layer.editingEnabled;
       this._table.view = this.mapView;
       this._table.editingEnabled = this._editEnabled;
       this._table.clearSelectionFilter();

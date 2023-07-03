@@ -254,17 +254,6 @@ export class CardManager {
                 <calcite-tooltip label="" placement="bottom" reference-element="information">
                   <span>{this._translations.information}</span>
                 </calcite-tooltip>
-                {/* {
-                  this._attachmentsSupported ? (
-                    <calcite-segmented-control-item
-                      checked={mediaChecked}
-                      id="media"
-                      value={ECardType.MEDIA}
-                    >
-                      {this._translations.media}
-                    </calcite-segmented-control-item>
-                  ) : (undefined)
-                } */}
                 <calcite-segmented-control-item
                   checked={mediaChecked}
                   class={mediaClass}

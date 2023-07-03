@@ -223,6 +223,8 @@ export class EditRecordModal {
     const editDisabled = this.graphics?.length > 0 && this.graphics[0] ?
       !(this.graphics[0].layer as __esri.FeatureLayer).editingEnabled : true;
 
+    const contentClass = this.editMode === EEditMode.MULTI ? "padding-sides-bottom-1" : "";
+
     return (
       <Host>
         <div>
@@ -254,7 +256,7 @@ export class EditRecordModal {
                 </calcite-notice>
               ) : undefined
             }
-            <div slot="content">
+            <div class={contentClass} slot="content">
               {
                 this.editMode === EEditMode.MULTI ?
                   this._getFieldInputs(editDisabled) : (<div id="feature-form" />)
