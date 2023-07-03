@@ -25,6 +25,7 @@
 - calcite-button
 - calcite-shell
 - calcite-label
+- calcite-tooltip
 
 ### Graph
 ```mermaid
@@ -33,6 +34,7 @@ graph TD;
   media-card --> calcite-button
   media-card --> calcite-shell
   media-card --> calcite-label
+  media-card --> calcite-tooltip
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   card-manager --> media-card

@@ -357,37 +357,53 @@ export class LayerTable {
             appearance="solid"
             disabled={!featuresSelected}
             icon="magnifying-glass"
+            id="magnifying-glass"
             label={this._translations.zoom}
             onClick={() => this._zoom()}
             text={this._translations.zoom}
             textEnabled={true}
           />
+          <calcite-tooltip label="" placement="bottom" reference-element="magnifying-glass">
+            <span>{this._translations.zoom}</span>
+          </calcite-tooltip>
           <calcite-action
             appearance="solid"
             disabled={!multiFeaturesSelected}
             icon="pencil"
+            id="pencil"
             label={this._translations.editMultiple}
             onClick={() => this._editMultiple()}
             text={this._translations.editMultiple}
             textEnabled={true}
           />
+          <calcite-tooltip label="" placement="bottom" reference-element="pencil">
+            <span>{this._translations.editMultiple}</span>
+          </calcite-tooltip>
           <calcite-action
             appearance="solid"
             icon="filter"
+            id="filter"
             onClick={() => this._filter()}
             text={this._translations.filters}
             text-enabled="true"
             textEnabled={true}
           />
+          <calcite-tooltip label="" placement="bottom" reference-element="filter">
+            <span>{this._translations.filters}</span>
+          </calcite-tooltip>
           <calcite-action
             appearance="solid"
             disabled={!featuresSelected}
             icon="trash"
+            id="trash"
             onClick={() => this._delete()}
             text={this._translations.delete}
             text-enabled
             textEnabled={true}
           />
+          <calcite-tooltip label="" placement="bottom" reference-element="trash">
+            <span>{this._translations.delete}</span>
+          </calcite-tooltip>
         </calcite-action-bar>
         <calcite-dropdown>
           <calcite-action
@@ -557,7 +573,12 @@ export class LayerTable {
     this._selectedIndexes = ids;
   }
 
-  // need to discuss with team
+  /**
+   * Toggle the show only selected flag
+   *  When showOnly is true only the selected features will be shown in the table
+   *
+   * @returns void
+   */
   protected _showSelected(): void {
     this._showOnlySelected = !this._showOnlySelected;
     if (this._showOnlySelected) {

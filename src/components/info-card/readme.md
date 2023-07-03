@@ -38,6 +38,7 @@ Promise resolving with the current feature
 - calcite-shell
 - calcite-loader
 - calcite-button
+- calcite-tooltip
 - [edit-record-modal](../edit-record-modal)
 - calcite-alert
 
@@ -47,6 +48,7 @@ graph TD;
   info-card --> calcite-shell
   info-card --> calcite-loader
   info-card --> calcite-button
+  info-card --> calcite-tooltip
   info-card --> edit-record-modal
   info-card --> calcite-alert
   calcite-button --> calcite-loader

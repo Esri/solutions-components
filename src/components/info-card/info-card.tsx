@@ -188,11 +188,15 @@ export class InfoCard {
             <calcite-button
               appearance="outline"
               iconStart="pencil"
+              id="solutions-edit"
               onClick={() => this._openEditRecord()}
               width="full"
             >
               {this._translations.edit}
             </calcite-button>
+            <calcite-tooltip label="" placement="bottom" reference-element="solutions-edit">
+              <span>{this._translations.edit}</span>
+            </calcite-tooltip>
           </div>
           <edit-record-modal
             editMode={EEditMode.SINGLE}

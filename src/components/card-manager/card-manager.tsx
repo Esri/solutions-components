@@ -246,26 +246,46 @@ export class CardManager {
               >
                 <calcite-segmented-control-item
                   checked={infoChecked}
+                  id="information"
                   value={ECardType.INFO}
                 >
                   {this._translations.information}
                 </calcite-segmented-control-item>
-                {
+                <calcite-tooltip label="" placement="bottom" reference-element="information">
+                  <span>{this._translations.information}</span>
+                </calcite-tooltip>
+                {/* {
                   this._attachmentsSupported ? (
                     <calcite-segmented-control-item
                       checked={mediaChecked}
+                      id="media"
                       value={ECardType.MEDIA}
                     >
                       {this._translations.media}
                     </calcite-segmented-control-item>
                   ) : (undefined)
-                }
+                } */}
+                <calcite-segmented-control-item
+                  checked={mediaChecked}
+                  class={mediaClass}
+                  id="media"
+                  value={ECardType.MEDIA}
+                >
+                  {this._translations.media}
+                </calcite-segmented-control-item>
+                <calcite-tooltip label="" placement="bottom" reference-element="media">
+                  <span>{this._translations.media}</span>
+                </calcite-tooltip>
                 <calcite-segmented-control-item
                   checked={commentsChecked}
+                  id="comments"
                   value={ECardType.COMMENT}
                 >
                   {this._translations.comments}
                 </calcite-segmented-control-item>
+                <calcite-tooltip label="" placement="bottom" reference-element="comments">
+                  <span>{this._translations.comments}</span>
+                </calcite-tooltip>
               </calcite-segmented-control>
             </div>
             <div>

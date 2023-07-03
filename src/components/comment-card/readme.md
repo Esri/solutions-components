@@ -30,6 +30,7 @@
 - calcite-loader
 - calcite-shell
 - calcite-button
+- calcite-tooltip
 
 ### Graph
 ```mermaid
@@ -37,6 +38,7 @@ graph TD;
   comment-card --> calcite-loader
   comment-card --> calcite-shell
   comment-card --> calcite-button
+  comment-card --> calcite-tooltip
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   card-manager --> comment-card
