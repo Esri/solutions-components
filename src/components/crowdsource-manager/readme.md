@@ -76,6 +76,7 @@ graph TD;
   card-manager --> info-card
   card-manager --> media-card
   card-manager --> comment-card
+  card-manager --> calcite-notice
   card-manager --> add-record-modal
   calcite-segmented-control-item --> calcite-icon
   info-card --> calcite-shell

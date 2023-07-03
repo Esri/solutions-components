@@ -229,11 +229,14 @@ export class CardManager {
     const infoCardClass = infoChecked ? "" : "display-none";
     const mediaCardClass = mediaChecked ? "" : "display-none";
     const commentsCardClass = commentsChecked ? "" : "display-none";
+    const featuresClass = this._graphics?.length > 0 ? "" : "display-none";
+    const messageClass = this._graphics?.length > 0 ? "display-none" : "";
+    const mediaClass = this._attachmentsSupported ? "" : "display-none";
 
     return (
       <Host>
         <div class="border-rounded overflow-auto">
-          <calcite-shell class="position-relative padding-1">
+          <calcite-shell class={"position-relative padding-1 " + featuresClass}>
             <div class="w-100 display-flex padding-bottom-1" slot="header">
               <calcite-segmented-control
                 class="focus-margin"
@@ -247,12 +250,16 @@ export class CardManager {
                 >
                   {this._translations.information}
                 </calcite-segmented-control-item>
-                <calcite-segmented-control-item
-                  checked={mediaChecked}
-                  value={ECardType.MEDIA}
-                >
-                  {this._translations.media}
-                </calcite-segmented-control-item>
+                {
+                  this._attachmentsSupported ? (
+                    <calcite-segmented-control-item
+                      checked={mediaChecked}
+                      value={ECardType.MEDIA}
+                    >
+                      {this._translations.media}
+                    </calcite-segmented-control-item>
+                  ) : (undefined)
+                }
                 <calcite-segmented-control-item
                   checked={commentsChecked}
                   value={ECardType.COMMENT}
@@ -270,7 +277,7 @@ export class CardManager {
                 ref={(el) => { this._infoCard = el }}
               />
               <media-card
-                class={mediaCardClass}
+                class={`${mediaCardClass} ${mediaClass}` }
                 isLoading={this._cardLoading}
                 values={this.mediaCardValues}
               />
@@ -280,8 +287,13 @@ export class CardManager {
               />
             </div>
           </calcite-shell>
+          <div class={"padding-1 " + messageClass}>
+            <calcite-notice icon="table" open>
+              <div slot="message">{this._translations.selectFeaturesToStart}</div>
+            </calcite-notice>
+          </div>
         </div>
-        <add-record-modal onModalClosed={() => this._addRecordClosed()} open={this._addRecordOpen}/>
+        <add-record-modal onModalClosed={() => this._addRecordClosed()} open={this._addRecordOpen} />
       </Host>
     );
   }

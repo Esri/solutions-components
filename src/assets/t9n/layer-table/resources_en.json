@@ -15,5 +15,6 @@
   "confirm": "Are you sure?",
   "deleteRows": "Delete Data",
   "deleteDisabled": "Delete Disabled",
-  "editMultipleDisabled": "Edit Multiple Disabled"
+  "editMultipleDisabled": "Edit Multiple Disabled",
+  "showAll": "Show all"
 }

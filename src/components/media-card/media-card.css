@@ -119,3 +119,8 @@ html[dir="rtl"] .container:nth-child(3n) {
 .display-none {
   display: none;
 }
+
+.img-overflow-scale {
+  overflow: hidden;
+  object-fit: scale-down;
+}

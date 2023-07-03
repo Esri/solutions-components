@@ -79,6 +79,11 @@ export class LayerTable {
   @State() _selectedIndexes: number[] = [];
 
   /**
+   * boolean: When true only selected records will be shown in the table
+   */
+  @State() _showOnlySelected = false;
+
+  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
@@ -151,11 +156,6 @@ export class LayerTable {
   protected _selectAllElement: HTMLCalciteCheckboxElement;
 
   /**
-   * boolean: When true only selected records will be shown in the table
-   */
-  protected _showOnlySelected = false;
-
-  /**
    * esri/widgets/FeatureTable: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FeatureTable.html
    */
   protected _table: __esri.FeatureTable;
@@ -195,7 +195,9 @@ export class LayerTable {
    */
   @Watch("_layerView")
   async _layerViewWatchHandler(): Promise<void> {
-    this._editEnabled = this._layerView?.layer.editingEnabled;
+    this._fetchingData = true;
+    this._resetTable();
+    this._fetchingData = false;
   }
 
   //--------------------------------------------------------------------------
@@ -413,7 +415,10 @@ export class LayerTable {
               iconStart="selected-items-filter"
               onClick={() => this._showSelected()}
             >
-              {this._translations.showSelected}
+              {
+                this._showOnlySelected ? this._translations.showAll :
+                  this._translations.showSelected
+              }
             </calcite-dropdown-item>
             <calcite-dropdown-item
               iconStart="erase"
@@ -500,6 +505,8 @@ export class LayerTable {
       this._table.layer = this._layerView.layer;
       this._table.view = this.mapView;
       this._table.editingEnabled = this._editEnabled;
+      this._table.clearSelectionFilter();
+      this._showOnlySelected = false;
     }
   }
 

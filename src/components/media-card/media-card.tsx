@@ -241,7 +241,7 @@ export class MediaCard {
     return (
       <calcite-shell>
         {toggleButtons}
-        <img src={v?.url} />
+        <img class="img-overflow-scale" src={v?.url} />
 
         <calcite-label scale="s">
           <span class="font-italic padding-bottom-1">

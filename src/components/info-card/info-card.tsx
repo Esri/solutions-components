@@ -258,9 +258,13 @@ export class InfoCard {
           actionBar: false,
           closeButton: false,
           heading: false
+        },
+        viewModel: {
+          featureViewModelAbilities: {
+            attachmentsContent: false
+          }
         }
       });
-      this._features.close();
     }
   }
 

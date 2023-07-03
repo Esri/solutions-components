@@ -28,6 +28,7 @@
 - [info-card](../info-card)
 - [media-card](../media-card)
 - [comment-card](../comment-card)
+- calcite-notice
 - [add-record-modal](../add-record-modal)
 
 ### Graph
@@ -39,6 +40,7 @@ graph TD;
   card-manager --> info-card
   card-manager --> media-card
   card-manager --> comment-card
+  card-manager --> calcite-notice
   card-manager --> add-record-modal
   calcite-segmented-control-item --> calcite-icon
   info-card --> calcite-shell
