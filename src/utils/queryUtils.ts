@@ -49,6 +49,46 @@ export async function queryAllFeatures(
 }
 
 /**
+ * Query the layer for all IDs
+ *
+ * @param layer the layer to retrieve features from
+ *
+ * @returns Promise with the featureSet from the layer that match the provided ids
+ */
+export async function queryAllIds(
+  layer: __esri.FeatureLayer
+): Promise<number[]> {
+  const query = layer.createQuery();
+  query.where = "1=1";
+  return await layer.queryObjectIds(query);
+}
+
+/**
+ * Query the feature for any image attachments
+ *
+ * @param layer the layer to retrieve attachments from
+ *
+ * @returns Promise with any attachments from the feature
+ */
+export async function queryAttachments(
+  layer: __esri.FeatureLayer,
+  objectIds: number[]
+): Promise<any> {
+  return await layer.queryAttachments({
+    attachmentTypes: [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/jpg",
+      "image/tif",
+      "image/tiff",
+      "image/bmp"
+    ],
+    objectIds
+  });
+}
+
+/**
  * Query the layer for OIDs based on any user drawn geometries or buffers
  *
  * @param geometries Array of geometries used for the selection of ids from the layer

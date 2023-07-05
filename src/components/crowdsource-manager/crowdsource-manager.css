@@ -121,8 +121,8 @@
 }
 
 .toggle-node {
-  width: 48px;
-  height: 48px;
+  width: 51px;
+  height: 51px;
 }
 
 .overflow-hidden {
@@ -147,4 +147,18 @@
 
 .adjusted-height-50 {
   height: calc(50% - 17px);
+}
+
+.icon-color {
+  --calcite-ui-icon-color: var(--calcite-ui-brand);
+}
+
+.icon {
+  cursor: pointer;
+}
+
+.tooltip-message {
+  padding: 5px 8px;
+  font-weight: var(--calcite-font-weight-normal);
+  color: var(--calcite-ui-text-2);
 }

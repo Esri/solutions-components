@@ -59,6 +59,7 @@ graph TD;
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown
+  map-layer-picker --> calcite-action
   map-layer-picker --> calcite-button
   map-layer-picker --> calcite-dropdown-group
   map-layer-picker --> calcite-dropdown-item
@@ -68,14 +69,14 @@ graph TD;
   calcite-combobox --> calcite-chip
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
+  calcite-action --> calcite-loader
+  calcite-action --> calcite-icon
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   calcite-dropdown-item --> calcite-icon
   calcite-combobox-item --> calcite-icon
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
-  calcite-action --> calcite-loader
-  calcite-action --> calcite-icon
   calcite-segmented-control-item --> calcite-icon
   map-draw-tools --> calcite-action
   calcite-list --> calcite-scrim

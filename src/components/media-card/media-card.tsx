@@ -241,7 +241,7 @@ export class MediaCard {
     return (
       <calcite-shell>
         {toggleButtons}
-        <img src={v?.url} />
+        <img class="img-overflow-scale" src={v?.url} />
 
         <calcite-label scale="s">
           <span class="font-italic padding-bottom-1">
@@ -268,15 +268,23 @@ export class MediaCard {
               class="padding-start-1 button-width"
               color="neutral"
               disabled={imgNum === 1 || (this.values || []).length === 0}
+              id="solutions-previous"
               onClick={() => this._decrementIndex()}
             >{this._translations.previous}
             </calcite-button>
+            <calcite-tooltip label="" placement="bottom" reference-element="solutions-previous">
+              <span>{this._translations.previous}</span>
+            </calcite-tooltip>
             <calcite-button
               class="padding-start-1 button-width"
               disabled={(this.values || []).length === imgNum}
+              id="solutions-next"
               onClick={() => this._incrementIndex()}
             >{this._translations.next}
             </calcite-button>
+            <calcite-tooltip label="" placement="bottom" reference-element="solutions-next">
+              <span>{this._translations.next}</span>
+            </calcite-tooltip>
           </div>
         </div>
       </calcite-shell>

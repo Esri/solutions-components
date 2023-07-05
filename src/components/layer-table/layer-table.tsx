@@ -19,7 +19,7 @@ import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getMapLayerView, getMapLayerIds } from "../../utils/mapViewUtils";
-import { queryAllFeatures, queryFeaturesByID } from "../../utils/queryUtils";
+import { queryFeaturesByID, queryAllIds } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { EEditMode, IExportInfos } from "../../utils/interfaces";
 
@@ -54,6 +54,11 @@ export class LayerTable {
   //--------------------------------------------------------------------------
 
   /**
+   * boolean: When true a alert will be shown to indicate a problem or confirm the current action
+   */
+  @State() _alertOpen = false;
+
+  /**
    * boolean: When true the edit multiple modal is shown
    */
   @State() _editMultipleOpen = false;
@@ -74,6 +79,11 @@ export class LayerTable {
   @State() _selectedIndexes: number[] = [];
 
   /**
+   * boolean: When true only selected records will be shown in the table
+   */
+  @State() _showOnlySelected = false;
+
+  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
@@ -91,14 +101,54 @@ export class LayerTable {
   protected FeatureTable: typeof import("esri/widgets/FeatureTable");
 
   /**
-   * string[]: List of field names to display
+   * any: The function that the alerts action should execute
    */
-  protected _fieldNames: string[] = [];
+  protected _alertActionFunction: any;
 
   /**
-   * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   * string: The alerts action text...will be displayed when _alertShowAction is True
    */
-  protected _graphics: __esri.Graphic[] = [];
+  protected _alertActionText: string;
+
+  /**
+   * string: main icon of the alert
+   */
+  protected _alertIcon: string;
+
+  /**
+   * "warning" | "danger": the kind of alert to display
+   */
+  protected _alertKind: "warning" | "danger";
+
+  /**
+   * boolean: When true a action link will be deisplayed
+   */
+  protected _alertShowAction: boolean;
+
+  /**
+   * string: main message of the alert
+   */
+  protected _alertMessage: string;
+
+  /**
+   * string: the alerts title
+   */
+  protected _alertTitle: string;
+
+  /**
+   * number[]: A list of all IDs for the current layer
+   */
+  protected _allIds: number[] = [];
+
+  /**
+   * boolean: When false alerts will be shown to indicate that the layer must have editing enabled for edit actions
+   */
+  protected _editEnabled: boolean;
+
+  /**
+   * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
+   */
+  protected reactiveUtils: typeof import("esri/core/reactiveUtils");
 
   /**
    * HTMLCalciteCheckboxElement: Element to force selection of all records
@@ -126,8 +176,28 @@ export class LayerTable {
    */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
+    this._fetchingData = true;
     const mapLayerIds = await getMapLayerIds(this.mapView);
     this._layerView = await getMapLayerView(this.mapView, mapLayerIds[0]);
+    this._resetTable();
+    this.reactiveUtils.on(
+      () => this.mapView,
+      "click",
+      (event) => {
+        void this._mapClicked(event);
+      }
+    );
+    this._fetchingData = false;
+  }
+
+  /**
+   * watch for changes in layer view and verify if it has editing enabled
+   */
+  @Watch("_layerView")
+  async _layerViewWatchHandler(): Promise<void> {
+    this._fetchingData = true;
+    this._resetTable();
+    this._fetchingData = false;
   }
 
   //--------------------------------------------------------------------------
@@ -183,6 +253,7 @@ export class LayerTable {
     }
     const tableNodeClass = this._fetchingData ? "display-none" : "";
     const loadingClass = this._fetchingData ? "" : "display-none";
+    const alertActionClass = this._alertShowAction ? "" : "display-none";
     return (
       <Host>
         <calcite-shell>
@@ -206,6 +277,28 @@ export class LayerTable {
             open={this._editMultipleOpen}
             slot="modals"
           />
+          <calcite-alert
+            icon={this._alertIcon}
+            kind={this._alertKind}
+            label=""
+            onCalciteAlertClose={() => this._alertClosed()}
+            open={this._alertOpen}
+            placement="top"
+          >
+            <div slot="title">
+              {this._alertTitle}
+            </div>
+            <div slot="message">
+              {this._alertMessage}
+            </div>
+            <calcite-link
+              class={alertActionClass}
+              onClick={this._alertActionFunction}
+              slot="link"
+            >
+              {this._alertActionText}
+            </calcite-link>
+          </calcite-alert>
         </calcite-shell>
       </Host>
     );
@@ -225,10 +318,12 @@ export class LayerTable {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [FeatureTable] = await loadModules([
-      "esri/widgets/FeatureTable"
+    const [FeatureTable, reactiveUtils] = await loadModules([
+      "esri/widgets/FeatureTable",
+      "esri/core/reactiveUtils"
     ]);
     this.FeatureTable = FeatureTable;
+    this.reactiveUtils = reactiveUtils;
   }
 
   /**
@@ -242,77 +337,104 @@ export class LayerTable {
     const featuresSelected = this._selectedIndexes.length > 0;
     const multiFeaturesSelected = this._selectedIndexes.length > 1;
     return (
-      <div class="display-flex table-border" slot={slot}>
-        <div class="w-400 border-end">
-          <map-layer-picker
-            appearance="solid"
-            mapView={this.mapView}
-            onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
-            placeholderIcon="layers"
-            scale="l"
-            type="dropdown"
-          />
-        </div>
+      <div class="display-flex table-border height-51" slot={slot}>
         <calcite-action-bar
           expandDisabled={true}
           expanded={true}
           layout="horizontal"
         >
+          <div class="border-end">
+            <map-layer-picker
+              appearance="transparent"
+              mapView={this.mapView}
+              onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
+              placeholderIcon="layers"
+              scale="l"
+              type="dropdown"
+            />
+          </div>
           <calcite-action
             appearance="solid"
             disabled={!featuresSelected}
             icon="magnifying-glass"
+            id="magnifying-glass"
             label={this._translations.zoom}
             onClick={() => this._zoom()}
             text={this._translations.zoom}
             textEnabled={true}
           />
+          <calcite-tooltip label="" placement="bottom" reference-element="magnifying-glass">
+            <span>{this._translations.zoom}</span>
+          </calcite-tooltip>
           <calcite-action
             appearance="solid"
             disabled={!multiFeaturesSelected}
-            icon="pencil"
+            id="pencil"
             label={this._translations.editMultiple}
             onClick={() => this._editMultiple()}
-            text={this._translations.editMultiple}
-            textEnabled
-          />
+            text=""
+          >
+            <calcite-button
+              appearance="transparent"
+              iconStart="pencil"
+              kind="brand"
+            >
+              {this._translations.editMultiple}
+            </calcite-button>
+          </calcite-action>
+          <calcite-tooltip label="" placement="bottom" reference-element="pencil">
+            <span>{this._translations.editMultiple}</span>
+          </calcite-tooltip>
           <calcite-action
             appearance="solid"
             icon="filter"
+            id="filter"
             onClick={() => this._filter()}
             text={this._translations.filters}
             text-enabled="true"
             textEnabled={true}
           />
+          <calcite-tooltip label="" placement="bottom" reference-element="filter">
+            <span>{this._translations.filters}</span>
+          </calcite-tooltip>
           <calcite-action
             appearance="solid"
             disabled={!featuresSelected}
-            icon="trash"
+            id="trash"
             onClick={() => this._delete()}
-            text={this._translations.delete}
-            text-enabled
-            textEnabled={true}
-          />
+            text=""
+          >
+            <calcite-button
+              appearance="transparent"
+              iconStart="trash"
+              kind="danger"
+            >
+              {this._translations.delete}
+            </calcite-button>
+          </calcite-action>
+          <calcite-tooltip label="" placement="bottom" reference-element="trash">
+            <span>{this._translations.delete}</span>
+          </calcite-tooltip>
         </calcite-action-bar>
         <calcite-dropdown>
-        <calcite-action
+          <calcite-action
             appearance="solid"
-            disabled={!featuresSelected}
             label=""
             slot="trigger"
             text=""
           >
-          <calcite-button
-            appearance="transparent"
-            iconEnd="chevron-down"
-            kind="neutral"
-          >
-            {this._translations.more}
-          </calcite-button>
+            <calcite-button
+              appearance="transparent"
+              iconEnd="chevron-down"
+              kind="neutral"
+            >
+              {this._translations.more}
+            </calcite-button>
           </calcite-action>
           <calcite-dropdown-group selection-mode="none">
             <calcite-dropdown-item
               iconStart="list-check-all"
+              onClick={() => this._selectAll()}
             >
               {this._translations.selectAll}
             </calcite-dropdown-item>
@@ -320,7 +442,10 @@ export class LayerTable {
               iconStart="selected-items-filter"
               onClick={() => this._showSelected()}
             >
-              {this._translations.showSelected}
+              {
+                this._showOnlySelected ? this._translations.showAll :
+                  this._translations.showSelected
+              }
             </calcite-dropdown-item>
             <calcite-dropdown-item
               iconStart="erase"
@@ -380,7 +505,7 @@ export class LayerTable {
       this._table = new this.FeatureTable({
         layer: this._layerView.layer,
         view: this.mapView,
-        editingEnabled: true,
+        editingEnabled: this._editEnabled,
         highlightOnRowSelectEnabled: true,
         multiSortEnabled: false,
         visibleElements: {
@@ -398,21 +523,81 @@ export class LayerTable {
   }
 
   /**
+   * Reset basic table props
+   *
+   * @returns void
+   */
+  protected _resetTable(): void {
+    if (this._layerView?.layer && this._table) {
+      this._table.layer = this._layerView.layer;
+      this._editEnabled = this._layerView.layer.editingEnabled;
+      this._table.view = this.mapView;
+      this._table.editingEnabled = this._editEnabled;
+      this._table.clearSelectionFilter();
+      this._showOnlySelected = false;
+    }
+  }
+
+  /**
+   * Handle map click events to keep table and map click selection in sync
+   *
+   * @returns void
+   */
+  protected async _mapClicked(
+    evt: CustomEvent
+  ): Promise<void> {
+    const opts = {
+      include: this._layerView.layer
+    };
+    const hitTestResult = await this.mapView.hitTest(evt.detail, opts);
+    if (hitTestResult.results.length > 0) {
+      hitTestResult.results.forEach((result: any) => {
+        const id = (result.graphic as __esri.Graphic).getObjectId();
+        const index = this._table.highlightIds.indexOf(id);
+        if (index > -1) {
+          this._table.highlightIds.removeAt(index);
+        } else {
+          this._table.highlightIds.add(id);
+        }
+      });
+    }
+  }
+
+  /**
+   * Set the alertOpen member to false when the alert is closed
+   *
+   * @returns void
+   */
+  protected _alertClosed(): void {
+    this._alertOpen = false;
+  }
+
+  /**
    * Select or deselect all rows
    *
    * @param checked When true all rows will be selected
    *
    * @returns void
    */
-  protected _selectAll(
-    checked: boolean
-  ): void {
-    this._selectedIndexes = checked ? this._graphics.map((_g, i) => i) : [];
+  protected _selectAll(): void {
+    const ids = this._allIds;
+    this._table.highlightIds.addMany(ids);
+    this._selectedIndexes = ids;
   }
 
-  // need to discuss with team
+  /**
+   * Toggle the show only selected flag
+   *  When showOnly is true only the selected features will be shown in the table
+   *
+   * @returns void
+   */
   protected _showSelected(): void {
-    console.log("_showSelected");
+    this._showOnlySelected = !this._showOnlySelected;
+    if (this._showOnlySelected) {
+      this._table.filterBySelection();
+    } else {
+      this._table.clearSelectionFilter();
+    }
   }
 
   /**
@@ -422,6 +607,7 @@ export class LayerTable {
    */
   protected _clearSelection(): void {
     this._selectedIndexes = [];
+    this._table.highlightIds.removeAll();
   }
 
   protected _filter(): void {
@@ -435,12 +621,14 @@ export class LayerTable {
    */
   protected _switchSelected(): void {
     const currentIndexes = [...this._selectedIndexes];
-    this._selectedIndexes = this._graphics.reduce((prev, _cur, i) => {
+    this._selectedIndexes = this._allIds.reduce((prev, _cur, i) => {
       if (currentIndexes.indexOf(i) < 0) {
         prev.push(i);
       }
       return prev;
     }, []);
+    this._table.highlightIds.removeAll();
+    this._table.highlightIds.addMany(this._selectedIndexes);
   }
 
   /**
@@ -450,7 +638,7 @@ export class LayerTable {
    */
   protected async _exportToCSV(): Promise<void> {
     const exportInfos: IExportInfos = {};
-    const ids = await this._getSelectedIds();
+    const ids = this._table.highlightIds.toArray();
     exportInfos[this._layerView.layer.id] = {
       selectionSetNames: [],
       ids,
@@ -464,12 +652,12 @@ export class LayerTable {
   }
 
   /**
-   * Query the layer for any new changes
+   * Refreshes the table and maintains the curent scroll position
    *
    * @returns void
    */
   protected _refresh(): void {
-    alert("refresh the data")
+    void this._table.refresh();
   }
 
   /**
@@ -482,21 +670,50 @@ export class LayerTable {
   }
 
   /**
-   * Open the edit multiple modal
+   * Open the edit multiple modal or shows an alert if the layer does not have editing enabled
    *
    * @returns void
    */
   protected _editMultiple(): void {
-    this._editMultipleOpen = true;
+    if (this._editEnabled) {
+      this._editMultipleOpen = true;
+    } else {
+      this._alertIcon = "layer-broken";
+      this._alertTitle = this._translations.editMultipleDisabled;
+      this._alertShowAction = false;
+      this._alertMessage = this._translations.enableEditing;
+      this._alertKind = "warning";
+      this._alertOpen = true;
+    }
   }
 
   /**
-   * Delete all selected records
+   * Delete all selected records or shows an alert if the layer does not have editing enabled
    *
    * @returns a promise that will resolve when the operation is complete
    */
   protected _delete(): void {
-    console.log("delete")
+    if (this._editEnabled) {
+      this._alertIcon = "trash";
+      this._alertTitle = this._translations.deleteRows;
+      this._alertActionText = this._translations.delete;
+      this._alertShowAction = true;
+      this._alertMessage = this._translations.confirm;
+      this._alertKind = "danger";
+      this._alertActionFunction = () => {
+        void this._layerView.layer.applyEdits({
+          deleteFeatures: this._table.highlightIds.toArray()
+        });
+        this._alertOpen = false;
+      }
+    } else {
+      this._alertIcon = "layer-broken";
+      this._alertTitle = this._translations.deleteDisabled;
+      this._alertShowAction = false;
+      this._alertMessage = this._translations.enableEditing;
+      this._alertKind = "warning";
+    }
+    this._alertOpen = true;
   }
 
   /**
@@ -513,35 +730,6 @@ export class LayerTable {
   }
 
   /**
-   * Gets the object ids for all selected rows
-   *
-   * @returns An array of object ids
-   */
-  protected async _getSelectedIds(): Promise<number[]> {
-    const graphics = await this._getGraphics(this._selectedIndexes);
-    return graphics.map(g => g.getObjectId());
-  }
-
-  /**
-   * Update the selected indexes based on the current row
-   *
-   * @param index the index of the selected row
-   *
-   * @returns void
-   */
-  protected _rowSelected(
-    index: number
-  ): void {
-    const indexOfSelected = this._selectedIndexes.indexOf(index);
-    if (indexOfSelected > -1) {
-      this._selectedIndexes.splice(indexOfSelected, 1);
-      this._selectedIndexes = [...this._selectedIndexes];
-    } else {
-      this._selectedIndexes = [...this._selectedIndexes, index];
-    }
-  }
-
-  /**
    * Handles layer selection change to show new table
    *
    * @returns a promise that will resolve when the operation is complete
@@ -550,13 +738,11 @@ export class LayerTable {
     evt: CustomEvent
   ): Promise<void> {
     const id: string = evt.detail[0];
-    if (id !== this._layerView?.layer.id) {
+    if (id !== this._layerView?.layer.id || this._allIds.length === 0) {
       this._fetchingData = true;
       this._table.highlightIds.removeAll();
       this._layerView = await getMapLayerView(this.mapView, id);
-      // TODO rethink this...when we use later we need to be able to lookup with name
-      this._fieldNames = this._layerView.layer.fields.map(f => f.alias || f.name);
-      this._graphics = await queryAllFeatures(0, this._layerView.layer, []);
+      this._allIds = await queryAllIds(this._layerView.layer)
       this._selectedIndexes = [];
       this._table.layer = this._layerView.layer;
       this._table.render();

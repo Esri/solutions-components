@@ -14,34 +14,21 @@
  * limitations under the License.
  */
 
-:host {
-  display: block;
-}
+import { newSpecPage } from '@stencil/core/testing';
+import { MapTools } from '../map-tools';
 
-.height-full {
-  height: 100%;
-}
-
-.width-full {
-  width: 100%;
-}
-
-.display-flex {
-  display: flex;
-}
-
-.table-border {
-  border: 1px solid var(--calcite-ui-border-2);
-}
-
-.border-end {
-  border-inline-end: 1px solid var(--calcite-ui-border-2);
-}
-
-.padding-5 {
-  padding: 5px;
-}
-
-.height-51 {
-  height: 51px;
-}
+xdescribe('map-tools', () => {
+  it('renders', async () => {
+    const page = await newSpecPage({
+      components: [MapTools],
+      html: `<map-tools></map-tools>`,
+    });
+    expect(page.root).toEqualHtml(`
+      <map-tools>
+        <mock:shadow-root>
+          <slot></slot>
+        </mock:shadow-root>
+      </map-tools>
+    `);
+  });
+});

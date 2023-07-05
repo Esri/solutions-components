@@ -85,6 +85,10 @@ export namespace Components {
          */
         "editMode": EEditMode;
         /**
+          * The index of the current graphic
+         */
+        "graphicIndex": number;
+        /**
           * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "graphics": __esri.Graphic[];
@@ -99,9 +103,14 @@ export namespace Components {
     }
     interface InfoCard {
         /**
+          * Get the current selected feature from the Features widget
+          * @returns Promise resolving with the current feature
+         */
+        "getSelectedFeature": () => Promise<any>;
+        /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
-        "graphic": __esri.Graphic;
+        "graphics": __esri.Graphic[];
         /**
           * boolean: when true a loading indicator will be shown
          */
@@ -352,6 +361,13 @@ export namespace Components {
           * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
          */
         "sketchPolygonSymbol": __esri.SimpleFillSymbol;
+    }
+    interface MapTools {
+        "layout": "horizontal" | "vertical";
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
     }
     interface MediaCard {
         /**
@@ -695,6 +711,10 @@ export interface MapSelectToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapSelectToolsElement;
 }
+export interface MapToolsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapToolsElement;
+}
 export interface PublicNotificationCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLPublicNotificationElement;
@@ -826,6 +846,12 @@ declare global {
         prototype: HTMLMapSelectToolsElement;
         new (): HTMLMapSelectToolsElement;
     };
+    interface HTMLMapToolsElement extends Components.MapTools, HTMLStencilElement {
+    }
+    var HTMLMapToolsElement: {
+        prototype: HTMLMapToolsElement;
+        new (): HTMLMapToolsElement;
+    };
     interface HTMLMediaCardElement extends Components.MediaCard, HTMLStencilElement {
     }
     var HTMLMediaCardElement: {
@@ -946,6 +972,7 @@ declare global {
         "map-layer-picker": HTMLMapLayerPickerElement;
         "map-search": HTMLMapSearchElement;
         "map-select-tools": HTMLMapSelectToolsElement;
+        "map-tools": HTMLMapToolsElement;
         "media-card": HTMLMediaCardElement;
         "pci-calculator": HTMLPciCalculatorElement;
         "pdf-download": HTMLPdfDownloadElement;
@@ -1071,6 +1098,10 @@ declare namespace LocalJSX {
          */
         "editMode"?: EEditMode;
         /**
+          * The index of the current graphic
+         */
+        "graphicIndex"?: number;
+        /**
           * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
         "graphics"?: __esri.Graphic[];
@@ -1095,7 +1126,7 @@ declare namespace LocalJSX {
         /**
           * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
-        "graphic"?: __esri.Graphic;
+        "graphics"?: __esri.Graphic[];
         /**
           * boolean: when true a loading indicator will be shown
          */
@@ -1144,10 +1175,6 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        /**
-          * Emitted when the expand button is clicked
-         */
-        "onExpandMap"?: (event: MapCardCustomEvent<EExpandType>) => void;
         /**
           * Emitted when a new map is loaded
          */
@@ -1336,6 +1363,17 @@ declare namespace LocalJSX {
           * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
          */
         "sketchPolygonSymbol"?: __esri.SimpleFillSymbol;
+    }
+    interface MapTools {
+        "layout"?: "horizontal" | "vertical";
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * Emitted when the expand button is clicked
+         */
+        "onExpandMap"?: (event: MapToolsCustomEvent<EExpandType>) => void;
     }
     interface MediaCard {
         /**
@@ -1632,6 +1670,7 @@ declare namespace LocalJSX {
         "map-layer-picker": MapLayerPicker;
         "map-search": MapSearch;
         "map-select-tools": MapSelectTools;
+        "map-tools": MapTools;
         "media-card": MediaCard;
         "pci-calculator": PciCalculator;
         "pdf-download": PdfDownload;
@@ -1672,6 +1711,7 @@ declare module "@stencil/core" {
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
             "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
+            "map-tools": LocalJSX.MapTools & JSXBase.HTMLAttributes<HTMLMapToolsElement>;
             "media-card": LocalJSX.MediaCard & JSXBase.HTMLAttributes<HTMLMediaCardElement>;
             "pci-calculator": LocalJSX.PciCalculator & JSXBase.HTMLAttributes<HTMLPciCalculatorElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;

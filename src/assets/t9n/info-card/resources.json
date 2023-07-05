@@ -1,4 +1,6 @@
 {
   "fetchingData": "Fetching data",
-  "edit": "Edit"
+  "edit": "Edit",
+  "enableEditing": "Editing must be enabled on the layer.",
+  "editDisabled": "Editing Disabled"
 }

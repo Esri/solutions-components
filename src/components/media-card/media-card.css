@@ -46,6 +46,7 @@
 .button-container {
   display: flex;
   justify-content: space-between;
+  padding-top: 1rem;
 }
 
 .count-container {
@@ -78,7 +79,7 @@ html[dir="rtl"] .padding-right-5 {
 }
 
 div.image-container {
-  border: 1px solid var(--calcite-ui-background);
+  border: 1px solid var(--calcite-ui-foreground-3);
   box-sizing: border-box
 }
 
@@ -117,4 +118,9 @@ html[dir="rtl"] .container:nth-child(3n) {
 
 .display-none {
   display: none;
+}
+
+.img-overflow-scale {
+  overflow: hidden;
+  object-fit: scale-down;
 }

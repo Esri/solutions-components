@@ -18,12 +18,13 @@
 
 - calcite-shell
 - calcite-panel
+- calcite-icon
+- calcite-popover
 - calcite-action
 - calcite-tooltip
 - [map-card](../map-card)
 - [card-manager](../card-manager)
 - calcite-action-bar
-- calcite-shell-panel
 - [layer-table](../layer-table)
 
 ### Graph
@@ -31,12 +32,13 @@
 graph TD;
   crowdsource-manager --> calcite-shell
   crowdsource-manager --> calcite-panel
+  crowdsource-manager --> calcite-icon
+  crowdsource-manager --> calcite-popover
   crowdsource-manager --> calcite-action
   crowdsource-manager --> calcite-tooltip
   crowdsource-manager --> map-card
   crowdsource-manager --> card-manager
   crowdsource-manager --> calcite-action-bar
-  crowdsource-manager --> calcite-shell-panel
   crowdsource-manager --> layer-table
   calcite-panel --> calcite-action
   calcite-panel --> calcite-action-menu
@@ -48,23 +50,21 @@ graph TD;
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
   calcite-scrim --> calcite-loader
+  map-card --> map-tools
   map-card --> calcite-action-bar
-  map-card --> calcite-action-group
-  map-card --> calcite-action
-  map-card --> calcite-icon
-  map-card --> calcite-tooltip
-  map-card --> calcite-block
+  map-card --> calcite-button
   map-card --> calcite-list
   map-card --> calcite-list-item
+  map-tools --> calcite-action
+  map-tools --> calcite-action-bar
+  map-tools --> calcite-action-group
+  map-tools --> calcite-icon
+  map-tools --> calcite-tooltip
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
-  calcite-block --> calcite-scrim
-  calcite-block --> calcite-icon
-  calcite-block --> calcite-handle
-  calcite-block --> calcite-loader
-  calcite-block --> calcite-action-menu
-  calcite-handle --> calcite-icon
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   calcite-list --> calcite-scrim
   calcite-list --> calcite-filter
   calcite-filter --> calcite-input
@@ -75,18 +75,21 @@ graph TD;
   card-manager --> calcite-shell
   card-manager --> calcite-segmented-control
   card-manager --> calcite-segmented-control-item
+  card-manager --> calcite-tooltip
   card-manager --> info-card
   card-manager --> media-card
   card-manager --> comment-card
+  card-manager --> calcite-notice
   card-manager --> add-record-modal
   calcite-segmented-control-item --> calcite-icon
   info-card --> calcite-shell
   info-card --> calcite-loader
   info-card --> calcite-button
+  info-card --> calcite-tooltip
   info-card --> edit-record-modal
-  calcite-button --> calcite-loader
-  calcite-button --> calcite-icon
+  info-card --> calcite-alert
   edit-record-modal --> calcite-modal
+  edit-record-modal --> calcite-notice
   edit-record-modal --> calcite-button
   edit-record-modal --> calcite-label
   edit-record-modal --> calcite-input-text
@@ -96,6 +99,7 @@ graph TD;
   edit-record-modal --> calcite-combobox-item
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
+  calcite-notice --> calcite-icon
   calcite-input-text --> calcite-progress
   calcite-input-text --> calcite-icon
   calcite-input-number --> calcite-progress
@@ -111,13 +115,17 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
+  calcite-alert --> calcite-icon
+  calcite-alert --> calcite-chip
   media-card --> calcite-loader
   media-card --> calcite-button
   media-card --> calcite-shell
   media-card --> calcite-label
+  media-card --> calcite-tooltip
   comment-card --> calcite-loader
   comment-card --> calcite-shell
   comment-card --> calcite-button
+  comment-card --> calcite-tooltip
   add-record-modal --> calcite-modal
   add-record-modal --> calcite-label
   add-record-modal --> calcite-input
@@ -126,16 +134,21 @@ graph TD;
   layer-table --> calcite-panel
   layer-table --> calcite-loader
   layer-table --> edit-record-modal
-  layer-table --> map-layer-picker
+  layer-table --> calcite-alert
+  layer-table --> calcite-link
   layer-table --> calcite-action-bar
+  layer-table --> map-layer-picker
   layer-table --> calcite-action
-  layer-table --> calcite-dropdown
+  layer-table --> calcite-tooltip
   layer-table --> calcite-button
+  layer-table --> calcite-dropdown
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
+  calcite-link --> calcite-icon
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown
+  map-layer-picker --> calcite-action
   map-layer-picker --> calcite-button
   map-layer-picker --> calcite-dropdown-group
   map-layer-picker --> calcite-dropdown-item

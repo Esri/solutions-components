@@ -7,11 +7,24 @@
 
 ## Properties
 
-| Property    | Attribute    | Description                                                                                               | Type      | Default     |
-| ----------- | ------------ | --------------------------------------------------------------------------------------------------------- | --------- | ----------- |
-| `graphic`   | --           | esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html             | `Graphic` | `undefined` |
-| `isLoading` | `is-loading` | boolean: when true a loading indicator will be shown                                                      | `boolean` | `false`     |
-| `mapView`   | --           | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView` | `undefined` |
+| Property    | Attribute    | Description                                                                                               | Type        | Default     |
+| ----------- | ------------ | --------------------------------------------------------------------------------------------------------- | ----------- | ----------- |
+| `graphics`  | --           | esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html             | `Graphic[]` | `undefined` |
+| `isLoading` | `is-loading` | boolean: when true a loading indicator will be shown                                                      | `boolean`   | `false`     |
+| `mapView`   | --           | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`   | `undefined` |
+
+
+## Methods
+
+### `getSelectedFeature() => Promise<any>`
+
+Get the current selected feature from the Features widget
+
+#### Returns
+
+Type: `Promise<any>`
+
+Promise resolving with the current feature
 
 
 ## Dependencies
@@ -25,7 +38,9 @@
 - calcite-shell
 - calcite-loader
 - calcite-button
+- calcite-tooltip
 - [edit-record-modal](../edit-record-modal)
+- calcite-alert
 
 ### Graph
 ```mermaid
@@ -33,10 +48,13 @@ graph TD;
   info-card --> calcite-shell
   info-card --> calcite-loader
   info-card --> calcite-button
+  info-card --> calcite-tooltip
   info-card --> edit-record-modal
+  info-card --> calcite-alert
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   edit-record-modal --> calcite-modal
+  edit-record-modal --> calcite-notice
   edit-record-modal --> calcite-button
   edit-record-modal --> calcite-label
   edit-record-modal --> calcite-input-text
@@ -47,6 +65,7 @@ graph TD;
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
   calcite-scrim --> calcite-loader
+  calcite-notice --> calcite-icon
   calcite-input-text --> calcite-progress
   calcite-input-text --> calcite-icon
   calcite-input-number --> calcite-progress
@@ -64,6 +83,8 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
+  calcite-alert --> calcite-icon
+  calcite-alert --> calcite-chip
   card-manager --> info-card
   style info-card fill:#f9f,stroke:#333,stroke-width:4px
 ```

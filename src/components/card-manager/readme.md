@@ -25,9 +25,11 @@
 - calcite-shell
 - calcite-segmented-control
 - calcite-segmented-control-item
+- calcite-tooltip
 - [info-card](../info-card)
 - [media-card](../media-card)
 - [comment-card](../comment-card)
+- calcite-notice
 - [add-record-modal](../add-record-modal)
 
 ### Graph
@@ -36,18 +38,23 @@ graph TD;
   card-manager --> calcite-shell
   card-manager --> calcite-segmented-control
   card-manager --> calcite-segmented-control-item
+  card-manager --> calcite-tooltip
   card-manager --> info-card
   card-manager --> media-card
   card-manager --> comment-card
+  card-manager --> calcite-notice
   card-manager --> add-record-modal
   calcite-segmented-control-item --> calcite-icon
   info-card --> calcite-shell
   info-card --> calcite-loader
   info-card --> calcite-button
+  info-card --> calcite-tooltip
   info-card --> edit-record-modal
+  info-card --> calcite-alert
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   edit-record-modal --> calcite-modal
+  edit-record-modal --> calcite-notice
   edit-record-modal --> calcite-button
   edit-record-modal --> calcite-label
   edit-record-modal --> calcite-input-text
@@ -58,6 +65,7 @@ graph TD;
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
   calcite-scrim --> calcite-loader
+  calcite-notice --> calcite-icon
   calcite-input-text --> calcite-progress
   calcite-input-text --> calcite-icon
   calcite-input-number --> calcite-progress
@@ -75,13 +83,17 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
+  calcite-alert --> calcite-icon
+  calcite-alert --> calcite-chip
   media-card --> calcite-loader
   media-card --> calcite-button
   media-card --> calcite-shell
   media-card --> calcite-label
+  media-card --> calcite-tooltip
   comment-card --> calcite-loader
   comment-card --> calcite-shell
   comment-card --> calcite-button
+  comment-card --> calcite-tooltip
   add-record-modal --> calcite-modal
   add-record-modal --> calcite-label
   add-record-modal --> calcite-input

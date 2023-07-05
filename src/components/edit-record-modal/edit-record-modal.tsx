@@ -20,6 +20,8 @@ import EditRecordModal_T9n from "../../assets/t9n/edit-record-modal/resources.js
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { EEditMode } from "../../utils/interfaces";
 
+// TODO clearInputs does not clear date fields
+
 @Component({
   tag: "edit-record-modal",
   styleUrl: "edit-record-modal.css",
@@ -59,6 +61,11 @@ export class EditRecordModal {
    *                     "MULTI" edit mode is intended to apply edits across a collection of features
    */
   @Prop() editMode = EEditMode.SINGLE;
+
+  /**
+   * The index of the current graphic
+   */
+  @Prop() graphicIndex = 0;
 
   //--------------------------------------------------------------------------
   //
@@ -106,6 +113,11 @@ export class EditRecordModal {
    */
   protected _edits: {[key: string]: any} = {};
 
+  /**
+   * boolean: When true edit controls will be disabled
+   */
+  protected _editingDisabled: boolean;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -115,11 +127,24 @@ export class EditRecordModal {
   /**
    * Watch for changes to the graphics and update the feature widget
    */
+  @Watch("graphicIndex")
+  graphicIndexWatchHandler(): void {
+    if (this.graphics?.length && this.graphics[0]) {
+      this._featureForm.feature = this.graphics[this.graphicIndex];
+    }
+  }
+
+  /**
+   * Watch for changes to the graphics and update the feature widget
+   */
   @Watch("graphics")
   graphicsWatchHandler(): void {
     this._initFeatureFormWidget();
-    if (this.editMode === EEditMode.SINGLE && this._featureForm) {
-      this._featureForm.feature = this.graphics[0];
+    if (this.editMode === EEditMode.SINGLE && this._featureForm && this.graphics[this.graphicIndex]) {
+      this._featureForm.feature = this.graphics[this.graphicIndex];
+      this._featureForm.disabled = !this._featureForm.layer.editingEnabled;
+
+      this._editingDisabled = !this._featureForm.layer.editingEnabled;
     }
   }
 
@@ -181,7 +206,7 @@ export class EditRecordModal {
       const layerTable: HTMLLayerTableElement = layerTableElements[0] as HTMLLayerTableElement;
       this.graphics = await layerTable.getSelectedGraphics();
     }
-    if (this.graphics.length > 0 && this.graphics[0]?.layer) {
+    if (this.graphics?.length > 0 && this.graphics[0]?.layer) {
       this._layer = this.graphics[0].layer as __esri.FeatureLayer;
     }
   }
@@ -192,6 +217,14 @@ export class EditRecordModal {
   render() {
     const header = this.editMode === EEditMode.SINGLE ?
       this._translations.edit : this._translations.editMultiple;
+
+    // This is a temp workaround hopefully...this._editingDisabled should reflect the current state but does not
+    // when you use MULTI edit mode...is fine in SINGLE
+    const editDisabled = this.graphics?.length > 0 && this.graphics[0] ?
+      !(this.graphics[0].layer as __esri.FeatureLayer).editingEnabled : true;
+
+    const contentClass = this.editMode === EEditMode.MULTI ? "padding-sides-bottom-1" : "";
+
     return (
       <Host>
         <div>
@@ -209,10 +242,24 @@ export class EditRecordModal {
             >
               {header}
             </div>
-            <div slot="content">
+            {
+              editDisabled ? (
+                <calcite-notice
+                  kind="warning"
+                  open={true}
+                  slot="content-top"
+                  width="full"
+                >
+                  <div slot="message">
+                    {this._translations.enableEditing}
+                  </div>
+                </calcite-notice>
+              ) : undefined
+            }
+            <div class={contentClass} slot="content">
               {
                 this.editMode === EEditMode.MULTI ?
-                  this._getFieldInputs() : (<div id="feature-form"/>)
+                  this._getFieldInputs(editDisabled) : (<div id="feature-form" />)
               }
             </div>
             <calcite-button
@@ -261,15 +308,16 @@ export class EditRecordModal {
    * @returns void
    */
   protected _initFeatureFormWidget(): void {
-    if (this.editMode === EEditMode.SINGLE && this.mapView && !this._featureForm) {
-      const feature: __esri.Graphic = this.graphics[0];
+    if (this.editMode === EEditMode.SINGLE && this.mapView && !this._featureForm && this.graphics && this.graphics.length > 0 && this.graphics[0]) {
+      const feature: __esri.Graphic = this.graphics[this.graphicIndex];
       const elements = this._getFormTemplateElements();
       this._featureForm = new this.FeatureForm({
         container: "feature-form",
         feature,
         formTemplate: {
           elements
-        }
+        },
+        map: this.mapView.map
       });
     }
   }
@@ -299,14 +347,16 @@ export class EditRecordModal {
    *
    * @returns Array of input nodes to display
    */
-  protected _getFieldInputs(): VNode[] {
+  protected _getFieldInputs(
+    editDisabled: boolean
+  ): VNode[] {
     if (this.graphics.length > 0 && this._layer) {
       const fields = this._layer.fields.filter(f => f.editable);
       this._editControlElements = [];
       return fields.map(field => {
         return (
           <div>
-            {this._getFieldInput(field)}
+            {this._getFieldInput(field, editDisabled)}
           </div>
         );
       });
@@ -321,7 +371,8 @@ export class EditRecordModal {
    * @returns Input node to display
    */
   _getFieldInput(
-    field: __esri.Field
+    field: __esri.Field,
+    editDisabled: boolean
   ): VNode {
     let fieldNode: VNode;
     switch (field.type) {
@@ -330,8 +381,9 @@ export class EditRecordModal {
           <calcite-label>
             {field.alias}
             {
-              field.domain ? this._getDomainInput(field) : (
+              field.domain ? this._getDomainInput(field, editDisabled) : (
                 <calcite-input-text
+                  disabled={editDisabled}
                   id={field.name}
                   maxLength={field.length}
                   onCalciteInputTextChange={evt => this._stringInputChanged(evt)}
@@ -347,8 +399,9 @@ export class EditRecordModal {
           <calcite-label>
             {field.alias}
             {
-              field.domain ? this._getDomainInput(field) :
+              field.domain ? this._getDomainInput(field, editDisabled) :
               (<calcite-input-number
+                disabled={editDisabled}
                 id={field.name}
                 maxLength={field.length}
                 onCalciteInputNumberChange={(evt) => this._numberInputChanged(evt)}
@@ -364,6 +417,7 @@ export class EditRecordModal {
           <calcite-label>
             {field.alias}
             <calcite-input-date-picker
+              disabled={editDisabled}
               id={`${field.name}--date`}
               onCalciteInputDatePickerChange={evt => this._dateInputChanged(evt)}
               overlayPositioning="fixed"
@@ -387,6 +441,7 @@ export class EditRecordModal {
           <calcite-label>
             {field.alias}
             <calcite-input-text
+              disabled={editDisabled}
               id={field.name}
               maxLength={field.length}
               onCalciteInputTextChange={evt => this._stringInputChanged(evt)}
@@ -408,7 +463,8 @@ export class EditRecordModal {
    * @returns Input node to display
    */
   protected _getDomainInput(
-    field: __esri.Field
+    field: __esri.Field,
+    editDisabled: boolean
   ): VNode {
     let node;
     const domain = field.domain;
@@ -417,6 +473,7 @@ export class EditRecordModal {
         node = (
           <calcite-combobox
             clearDisabled={true}
+            disabled={editDisabled}
             id={field.name}
             label={field.alias}
             onCalciteComboboxChange={evt => this._domainInputChanged(evt)}
@@ -440,6 +497,7 @@ export class EditRecordModal {
       case "range":
         node = (
           <calcite-input-number
+            disabled={editDisabled}
             max={domain.maxValue}
             maxLength={field.length}
             min={domain.minValue}
@@ -551,15 +609,11 @@ export class EditRecordModal {
    * @returns void
    */
   protected _clearInputs(): void {
-    this._editControlElements.forEach(c => {
-      console.log(c);
-      // TODO figure out a way to clear these as the following does not work
-      // console.log(c.value);
-      // console.log("c.selectedItems")
-      // console.log(c.selectedItems)
-      // c.value = undefined;
-      // c.selectedItems = undefined;
-    });
+    if (this.editMode === EEditMode.MULTI) {
+      this._editControlElements?.forEach(c => {
+        c.value = "";
+      });
+    }
   }
 
   /**
@@ -586,6 +640,7 @@ export class EditRecordModal {
    */
   protected _modalClose(): void {
     this.modalClosed.emit();
+    this._clearInputs();
   }
 
   /**

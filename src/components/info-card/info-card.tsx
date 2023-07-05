@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, Watch } from "@stencil/core";
+import { Component, Element, Host, h, Method, Prop, State, Watch } from "@stencil/core";
 import InfoCard_T9n from "../../assets/t9n/info-card/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { loadModules } from "../../utils/loadModules";
@@ -43,7 +43,7 @@ export class InfoCard {
   /**
    * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
    */
-  @Prop() graphic: __esri.Graphic;
+  @Prop() graphics: __esri.Graphic[];
 
   /**
    * boolean: when true a loading indicator will be shown
@@ -60,6 +60,11 @@ export class InfoCard {
   //  State (internal)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * boolean: When true a alert will be shown to indicate a problem or confirm the current action
+   */
+  @State() _alertOpen = false;
 
   /**
    * When true the add record modal will be displayed
@@ -82,13 +87,18 @@ export class InfoCard {
    * esri/widgets/Feature: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Feature.html
    * used for module import
    */
-  protected Feature: typeof import("esri/widgets/Feature");
+  protected Features: typeof import("esri/widgets/Features");
+
+  /**
+   * boolean: When false alerts will be shown to indicate that the layer must have editing enabled for edit actions
+   */
+  protected _editEnabled: boolean;
 
   /**
    * esri/widgets/Feature: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Feature.html
    * used for widget instance
    */
-  protected _feature: __esri.Feature;
+  protected _features: __esri.Features;
 
   //--------------------------------------------------------------------------
   //
@@ -99,11 +109,15 @@ export class InfoCard {
   /**
    * Watch for changes to the graphic and update the feature widget
    */
-  @Watch("graphic")
-  graphicWatchHandler(): void {
-    this._initFeatureWidget();
-    if (this._feature) {
-      this._feature.graphic = this.graphic;
+  @Watch("graphics")
+  graphicsWatchHandler(): void {
+    this._initFeaturesWidget();
+    if (this._features) {
+      this._features.features = this.graphics;
+      this._features.visible = this.graphics.length > 0 && this.graphics[0] !== undefined;
+      if (this._features.visible) {
+        this._editEnabled = (this.graphics[0]?.layer as __esri.FeatureLayer).editingEnabled;
+      }
     }
   }
 
@@ -112,7 +126,7 @@ export class InfoCard {
    */
   @Watch("mapView")
   mapViewWatchHandler(): void {
-    this._initFeatureWidget();
+    this._initFeaturesWidget();
   }
 
   //--------------------------------------------------------------------------
@@ -120,6 +134,16 @@ export class InfoCard {
   //  Methods (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Get the current selected feature from the Features widget
+   *
+   * @returns Promise resolving with the current feature
+   */
+  @Method()
+  async getSelectedFeature(): Promise<any> {
+    return this._features.selectedFeature;
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -158,26 +182,46 @@ export class InfoCard {
           />
           <div
             class={"esri-widget " + featureNodeClass}
-            id="feature-node"
+            id="features-node"
           />
           <div class="padding-1-2 display-flex" slot="footer">
             <calcite-button
               appearance="outline"
               iconStart="pencil"
+              id="solutions-edit"
               onClick={() => this._openEditRecord()}
               width="full"
             >
               {this._translations.edit}
             </calcite-button>
+            <calcite-tooltip label="" placement="bottom" reference-element="solutions-edit">
+              <span>{this._translations.edit}</span>
+            </calcite-tooltip>
           </div>
           <edit-record-modal
             editMode={EEditMode.SINGLE}
-            graphics={[this.graphic]}
+            graphicIndex={this._features?.selectedFeatureIndex}
+            graphics={this.graphics}
             mapView={this.mapView}
             onModalClosed={() => this._editRecordClosed()}
             open={this._editRecordOpen}
             slot="modals"
           />
+          <calcite-alert
+            icon={"layer-broken"}
+            kind={"warning"}
+            label=""
+            onCalciteAlertClose={() => this._alertClosed()}
+            open={this._alertOpen}
+            placement="top"
+          >
+            <div slot="title">
+              {this._translations.editDisabled}
+            </div>
+            <div slot="message">
+              {this._translations.enableEditing}
+            </div>
+          </calcite-alert>
         </calcite-shell>
       </Host>
     );
@@ -197,10 +241,10 @@ export class InfoCard {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [Feature] = await loadModules([
-      "esri/widgets/Feature"
+    const [Features] = await loadModules([
+      "esri/widgets/Features"
     ]);
-    this.Feature = Feature;
+    this.Features = Features;
   }
 
   /**
@@ -208,16 +252,33 @@ export class InfoCard {
    *
    * @protected
    */
-  protected _initFeatureWidget(): void {
-    if (this.mapView && !this._feature) {
-      // map and spatialReference must be set for Arcade
-      // expressions to execute and display content
-      this._feature = new this.Feature({
-        map: this.mapView.map,
-        spatialReference: this.mapView.spatialReference,
-        container: "feature-node"
+  protected _initFeaturesWidget(): void {
+    if (this.mapView && !this._features) {
+      this._features = new this.Features({
+        view: this.mapView,
+        container: "features-node",
+        visible: true,
+        visibleElements: {
+          actionBar: false,
+          closeButton: false,
+          heading: false
+        },
+        viewModel: {
+          featureViewModelAbilities: {
+            attachmentsContent: false
+          }
+        }
       });
     }
+  }
+
+  /**
+   * Set the alertOpen member to false when the alert is closed
+   *
+   * @returns void
+   */
+  protected _alertClosed(): void {
+    this._alertOpen = false;
   }
 
   /**
@@ -231,7 +292,11 @@ export class InfoCard {
    * Open the edit record modal
    */
   protected _openEditRecord(): void {
-    this._editRecordOpen = true;
+    if (this._editEnabled) {
+      this._editRecordOpen = true;
+    } else {
+      this._alertOpen = true;
+    }
   }
 
   /**

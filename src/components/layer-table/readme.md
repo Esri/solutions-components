@@ -44,11 +44,14 @@ Promise that resolves when the operation is complete
 - calcite-panel
 - calcite-loader
 - [edit-record-modal](../edit-record-modal)
-- [map-layer-picker](../map-layer-picker)
+- calcite-alert
+- calcite-link
 - calcite-action-bar
+- [map-layer-picker](../map-layer-picker)
 - calcite-action
-- calcite-dropdown
+- calcite-tooltip
 - calcite-button
+- calcite-dropdown
 - calcite-dropdown-group
 - calcite-dropdown-item
 
@@ -59,11 +62,14 @@ graph TD;
   layer-table --> calcite-panel
   layer-table --> calcite-loader
   layer-table --> edit-record-modal
-  layer-table --> map-layer-picker
+  layer-table --> calcite-alert
+  layer-table --> calcite-link
   layer-table --> calcite-action-bar
+  layer-table --> map-layer-picker
   layer-table --> calcite-action
-  layer-table --> calcite-dropdown
+  layer-table --> calcite-tooltip
   layer-table --> calcite-button
+  layer-table --> calcite-dropdown
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
   calcite-panel --> calcite-action
@@ -77,6 +83,7 @@ graph TD;
   calcite-popover --> calcite-icon
   calcite-scrim --> calcite-loader
   edit-record-modal --> calcite-modal
+  edit-record-modal --> calcite-notice
   edit-record-modal --> calcite-button
   edit-record-modal --> calcite-label
   edit-record-modal --> calcite-input-text
@@ -86,6 +93,7 @@ graph TD;
   edit-record-modal --> calcite-combobox-item
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
+  calcite-notice --> calcite-icon
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   calcite-input-text --> calcite-progress
@@ -105,9 +113,16 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
   calcite-combobox-item --> calcite-icon
+  calcite-alert --> calcite-icon
+  calcite-alert --> calcite-chip
+  calcite-link --> calcite-icon
+  calcite-action-bar --> calcite-action-group
+  calcite-action-group --> calcite-action-menu
+  calcite-action-group --> calcite-action
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown
+  map-layer-picker --> calcite-action
   map-layer-picker --> calcite-button
   map-layer-picker --> calcite-dropdown-group
   map-layer-picker --> calcite-dropdown-item
@@ -115,9 +130,6 @@ graph TD;
   map-layer-picker --> calcite-combobox-item
   calcite-select --> calcite-icon
   calcite-dropdown-item --> calcite-icon
-  calcite-action-bar --> calcite-action-group
-  calcite-action-group --> calcite-action-menu
-  calcite-action-group --> calcite-action
   crowdsource-manager --> layer-table
   style layer-table fill:#f9f,stroke:#333,stroke-width:4px
 ```

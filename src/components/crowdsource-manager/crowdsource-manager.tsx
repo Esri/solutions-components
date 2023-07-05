@@ -102,6 +102,7 @@ export class CrowdsourceManager {
     evt: CustomEvent
   ): Promise<void> {
     this._mapView = evt.detail;
+    this._mapView.popupEnabled = false;
   }
 
   //--------------------------------------------------------------------------
@@ -131,7 +132,26 @@ export class CrowdsourceManager {
             heading={this._translations.header}
           >
             <div class="display-flex" slot="header-actions-end">
-              <div class="header-text">Layout</div>
+              <div class="display-flex action-center">
+                <calcite-icon
+                  class="icon icon-color"
+                  icon="information"
+                  id="app-information-icon"
+                  scale="s"
+                />
+                <calcite-popover
+                  closable={true}
+                  label=""
+                  referenceElement="app-information-icon"
+                >
+                  <span class="tooltip-message">
+                    {this._translations.appInfo}
+                  </span>
+                </calcite-popover>
+              </div>
+              <div class="header-text">
+                {this._translations.layout}
+              </div>
               {this._getAction("grid-background", ELayoutMode.GRID, this._translations.grid)}
               {this._getAction("horizontal-background", ELayoutMode.VERTICAL, this._translations.horizontal)}
               {this._getAction("vertical-background", ELayoutMode.HORIZONTAL, this._translations.vertical)}
@@ -293,9 +313,9 @@ export class CrowdsourceManager {
             <span>{tooltip}</span>
           </calcite-tooltip>
         </calcite-action-bar>
-        <calcite-shell-panel class="width-full height-full">
+        <div class="width-full height-full position-relative">
           <layer-table mapView={this?._mapView} />
-        </calcite-shell-panel>
+        </div>
       </calcite-shell>
     );
   }

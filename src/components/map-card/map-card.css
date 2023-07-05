@@ -21,7 +21,7 @@
 }
 
 .action-bar-size {
-  height: 3rem;
+  height: 51px;
   width: 100%;
 }
 
@@ -111,3 +111,10 @@
 /* .block-button:focus {
   @apply bg-foreground-2 text-color-1 fill-color-1 focus-inset;
 } */
+
+.map-tools {
+  position: absolute;
+  top: 40px;
+  right: 0px;
+  padding: 1rem;
+}

@@ -83,7 +83,7 @@
     "@esri/arcgis-rest-portal": "^3.4.2",
     "@esri/arcgis-rest-request": "^3.4.2",
     "@esri/arcgis-rest-service-admin": "^3.4.2",
-    "@esri/calcite-components": "^1.4.2"
+    "@esri/calcite-components": "^1.4.3"
   },
   "repository": {
     "type": "git",

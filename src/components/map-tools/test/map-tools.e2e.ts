@@ -14,34 +14,14 @@
  * limitations under the License.
  */
 
-:host {
-  display: block;
-}
+import { newE2EPage } from '@stencil/core/testing';
 
-.height-full {
-  height: 100%;
-}
+xdescribe('map-tools', () => {
+  it('renders', async () => {
+    const page = await newE2EPage();
+    await page.setContent('<map-tools></map-tools>');
 
-.width-full {
-  width: 100%;
-}
-
-.display-flex {
-  display: flex;
-}
-
-.table-border {
-  border: 1px solid var(--calcite-ui-border-2);
-}
-
-.border-end {
-  border-inline-end: 1px solid var(--calcite-ui-border-2);
-}
-
-.padding-5 {
-  padding: 5px;
-}
-
-.height-51 {
-  height: 51px;
-}
+    const element = await page.find('map-tools');
+    expect(element).toHaveClass('hydrated');
+  });
+});

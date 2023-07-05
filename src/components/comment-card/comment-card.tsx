@@ -110,11 +110,15 @@ export class CommentCard {
         <calcite-shell class={commentCardClass}>
           <calcite-button
             class="button-placement"
+            id="addRecord"
             onClick={() => this._addRecord()}
             slot="footer"
           >
             {this._translations.addRecord}
           </calcite-button>
+          <calcite-tooltip label="" placement="bottom" reference-element="addRecord">
+            <span>{this._translations.addRecord}</span>
+          </calcite-tooltip>
         </calcite-shell>
       </Host>
     );

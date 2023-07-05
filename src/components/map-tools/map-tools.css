@@ -18,30 +18,14 @@
   display: block;
 }
 
-.height-full {
-  height: 100%;
+.display-none {
+  display: none;
 }
 
-.width-full {
-  width: 100%;
+.border {
+  border: 1px solid var(--calcite-ui-border-3);
 }
 
-.display-flex {
-  display: flex;
-}
-
-.table-border {
-  border: 1px solid var(--calcite-ui-border-2);
-}
-
-.border-end {
-  border-inline-end: 1px solid var(--calcite-ui-border-2);
-}
-
-.padding-5 {
-  padding: 5px;
-}
-
-.height-51 {
-  height: 51px;
+.margin-top-1-2 {
+  margin-top: 0.5rem;
 }
