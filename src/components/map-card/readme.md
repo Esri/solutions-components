@@ -15,10 +15,9 @@
 
 ## Events
 
-| Event        | Description                               | Type                                                      |
-| ------------ | ----------------------------------------- | --------------------------------------------------------- |
-| `expandMap`  | Emitted when the expand button is clicked | `CustomEvent<EExpandType.COLLAPSE \| EExpandType.EXPAND>` |
-| `mapChanged` | Emitted when a new map is loaded          | `CustomEvent<MapView>`                                    |
+| Event        | Description                      | Type                   |
+| ------------ | -------------------------------- | ---------------------- |
+| `mapChanged` | Emitted when a new map is loaded | `CustomEvent<MapView>` |
 
 
 ## Dependencies
@@ -29,44 +28,39 @@
 
 ### Depends on
 
+- [map-tools](../map-tools)
 - calcite-action-bar
-- calcite-action-group
-- calcite-action
-- calcite-icon
-- calcite-tooltip
-- calcite-block
+- calcite-button
 - calcite-list
 - calcite-list-item
 
 ### Graph
 ```mermaid
 graph TD;
+  map-card --> map-tools
   map-card --> calcite-action-bar
-  map-card --> calcite-action-group
-  map-card --> calcite-action
-  map-card --> calcite-icon
-  map-card --> calcite-tooltip
-  map-card --> calcite-block
+  map-card --> calcite-button
   map-card --> calcite-list
   map-card --> calcite-list-item
+  map-tools --> calcite-action
+  map-tools --> calcite-action-bar
+  map-tools --> calcite-action-group
+  map-tools --> calcite-icon
+  map-tools --> calcite-tooltip
+  calcite-action --> calcite-loader
+  calcite-action --> calcite-icon
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
   calcite-action-menu --> calcite-action
   calcite-action-menu --> calcite-popover
-  calcite-action --> calcite-loader
-  calcite-action --> calcite-icon
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
-  calcite-block --> calcite-scrim
-  calcite-block --> calcite-icon
-  calcite-block --> calcite-handle
-  calcite-block --> calcite-loader
-  calcite-block --> calcite-action-menu
-  calcite-scrim --> calcite-loader
-  calcite-handle --> calcite-icon
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   calcite-list --> calcite-scrim
   calcite-list --> calcite-filter
+  calcite-scrim --> calcite-loader
   calcite-filter --> calcite-input
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon

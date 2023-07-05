@@ -241,20 +241,21 @@ export class MapLayerPicker {
   _getDropdown(): VNode {
     return (
       <calcite-dropdown class="layer-picker-dropdown">
-        <calcite-button
-          alignment="icon-end-space-between"
-          appearance={this.appearance}
-          class="max-width-350"
-          iconEnd="chevron-down"
-          iconStart="layers"
-          kind="neutral"
-          slot="trigger"
-          width="full"
-        >
-          <div>
-            {this.selectedLayerName}
-          </div>
-        </calcite-button>
+        <calcite-action slot="trigger" text="">
+          <calcite-button
+            alignment="icon-end-space-between"
+            appearance={this.appearance}
+            class="max-width-350"
+            iconEnd="chevron-down"
+            iconStart="layers"
+            kind="neutral"
+            width="full"
+          >
+            <div>
+              {this.selectedLayerName}
+            </div>
+          </calcite-button>
+        </calcite-action>
         <calcite-dropdown-group selection-mode="single">
           {this._getDropdownItems()}
         </calcite-dropdown-group>

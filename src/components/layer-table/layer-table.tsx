@@ -148,7 +148,7 @@ export class LayerTable {
   /**
    * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
    */
-  protected reactiveUtils: typeof import ("esri/core/reactiveUtils");
+  protected reactiveUtils: typeof import("esri/core/reactiveUtils");
 
   /**
    * HTMLCalciteCheckboxElement: Element to force selection of all records
@@ -338,21 +338,21 @@ export class LayerTable {
     const multiFeaturesSelected = this._selectedIndexes.length > 1;
     return (
       <div class="display-flex table-border height-51" slot={slot}>
-        <div class="border-end">
-          <map-layer-picker
-            appearance="solid"
-            mapView={this.mapView}
-            onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
-            placeholderIcon="layers"
-            scale="l"
-            type="dropdown"
-          />
-        </div>
         <calcite-action-bar
           expandDisabled={true}
           expanded={true}
           layout="horizontal"
         >
+          <div class="border-end">
+            <map-layer-picker
+              appearance="transparent"
+              mapView={this.mapView}
+              onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
+              placeholderIcon="layers"
+              scale="l"
+              type="dropdown"
+            />
+          </div>
           <calcite-action
             appearance="solid"
             disabled={!featuresSelected}
@@ -535,19 +535,19 @@ export class LayerTable {
   protected async _mapClicked(
     evt: CustomEvent
   ): Promise<void> {
-   const opts = {
-     include: this._layerView.layer
-   };
+    const opts = {
+      include: this._layerView.layer
+    };
     const hitTestResult = await this.mapView.hitTest(evt.detail, opts);
     if (hitTestResult.results.length > 0) {
       hitTestResult.results.forEach((result: any) => {
-       const id = (result.graphic as __esri.Graphic).getObjectId();
-       const index = this._table.highlightIds.indexOf(id);
-       if (index > -1) {
-         this._table.highlightIds.removeAt(index);
-       } else {
-         this._table.highlightIds.add(id);
-       }
+        const id = (result.graphic as __esri.Graphic).getObjectId();
+        const index = this._table.highlightIds.indexOf(id);
+        if (index > -1) {
+          this._table.highlightIds.removeAt(index);
+        } else {
+          this._table.highlightIds.add(id);
+        }
       });
     }
   }

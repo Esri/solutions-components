@@ -46,8 +46,8 @@ Promise that resolves when the operation is complete
 - [edit-record-modal](../edit-record-modal)
 - calcite-alert
 - calcite-link
-- [map-layer-picker](../map-layer-picker)
 - calcite-action-bar
+- [map-layer-picker](../map-layer-picker)
 - calcite-action
 - calcite-tooltip
 - calcite-dropdown
@@ -64,8 +64,8 @@ graph TD;
   layer-table --> edit-record-modal
   layer-table --> calcite-alert
   layer-table --> calcite-link
-  layer-table --> map-layer-picker
   layer-table --> calcite-action-bar
+  layer-table --> map-layer-picker
   layer-table --> calcite-action
   layer-table --> calcite-tooltip
   layer-table --> calcite-dropdown
@@ -116,9 +116,13 @@ graph TD;
   calcite-alert --> calcite-icon
   calcite-alert --> calcite-chip
   calcite-link --> calcite-icon
+  calcite-action-bar --> calcite-action-group
+  calcite-action-group --> calcite-action-menu
+  calcite-action-group --> calcite-action
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown
+  map-layer-picker --> calcite-action
   map-layer-picker --> calcite-button
   map-layer-picker --> calcite-dropdown-group
   map-layer-picker --> calcite-dropdown-item
@@ -126,9 +130,6 @@ graph TD;
   map-layer-picker --> calcite-combobox-item
   calcite-select --> calcite-icon
   calcite-dropdown-item --> calcite-icon
-  calcite-action-bar --> calcite-action-group
-  calcite-action-group --> calcite-action-menu
-  calcite-action-group --> calcite-action
   crowdsource-manager --> layer-table
   style layer-table fill:#f9f,stroke:#333,stroke-width:4px
 ```

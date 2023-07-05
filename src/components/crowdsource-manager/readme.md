@@ -46,23 +46,21 @@ graph TD;
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
   calcite-scrim --> calcite-loader
+  map-card --> map-tools
   map-card --> calcite-action-bar
-  map-card --> calcite-action-group
-  map-card --> calcite-action
-  map-card --> calcite-icon
-  map-card --> calcite-tooltip
-  map-card --> calcite-block
+  map-card --> calcite-button
   map-card --> calcite-list
   map-card --> calcite-list-item
+  map-tools --> calcite-action
+  map-tools --> calcite-action-bar
+  map-tools --> calcite-action-group
+  map-tools --> calcite-icon
+  map-tools --> calcite-tooltip
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
-  calcite-block --> calcite-scrim
-  calcite-block --> calcite-icon
-  calcite-block --> calcite-handle
-  calcite-block --> calcite-loader
-  calcite-block --> calcite-action-menu
-  calcite-handle --> calcite-icon
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   calcite-list --> calcite-scrim
   calcite-list --> calcite-filter
   calcite-filter --> calcite-input
@@ -86,8 +84,6 @@ graph TD;
   info-card --> calcite-tooltip
   info-card --> edit-record-modal
   info-card --> calcite-alert
-  calcite-button --> calcite-loader
-  calcite-button --> calcite-icon
   edit-record-modal --> calcite-modal
   edit-record-modal --> calcite-notice
   edit-record-modal --> calcite-button
@@ -136,8 +132,8 @@ graph TD;
   layer-table --> edit-record-modal
   layer-table --> calcite-alert
   layer-table --> calcite-link
-  layer-table --> map-layer-picker
   layer-table --> calcite-action-bar
+  layer-table --> map-layer-picker
   layer-table --> calcite-action
   layer-table --> calcite-tooltip
   layer-table --> calcite-dropdown
@@ -148,6 +144,7 @@ graph TD;
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown
+  map-layer-picker --> calcite-action
   map-layer-picker --> calcite-button
   map-layer-picker --> calcite-dropdown-group
   map-layer-picker --> calcite-dropdown-item

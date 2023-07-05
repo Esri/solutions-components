@@ -18,7 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, W
 import MapCard_T9n from "../../assets/t9n/map-card/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { EExpandType, IMapInfo } from "../../utils/interfaces";
+import { IMapInfo } from "../../utils/interfaces";
 
 // TODO navigation and accessability isn't right for the map list
 //   tab does not go into the list when it's open
@@ -76,9 +76,9 @@ export class MapCard {
   @State() _translations: typeof MapCard_T9n;
 
   /**
-   * string: id of the map to display
+   * IMapInfo: id and name of the map to display
    */
-  @State() _webMapId = "";
+  @State() _webMapInfo: IMapInfo;
 
   //--------------------------------------------------------------------------
   //
@@ -113,10 +113,10 @@ export class MapCard {
   //--------------------------------------------------------------------------
 
   /**
-   * Called each time the _webMapId prop is changed.
+   * Called each time the _webMapInfo prop is changed.
    */
-  @Watch("_webMapId")
-  _webMapIdWatchHandler(v: any, oldV: any): void {
+  @Watch("_webMapInfo")
+  _webMapInfoWatchHandler(v: IMapInfo, oldV: IMapInfo): void {
     if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
       this._loadMap(v);
     }
@@ -126,9 +126,9 @@ export class MapCard {
    * Called each time the mapInfos prop is changed.
    */
   @Watch("mapInfos")
-  mapInfosWatchHandler(v: any, oldV: any): void {
+  mapInfosWatchHandler(v: IMapInfo[], oldV: IMapInfo[]): void {
     if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
-      this._loadMap(v[0].id);
+      this._loadMap(v[0]);
     }
   }
 
@@ -143,11 +143,6 @@ export class MapCard {
   //  Events (public)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Emitted when the expand button is clicked
-   */
-  @Event() expandMap: EventEmitter<EExpandType>;
 
   /**
    * Emitted when a new map is loaded
@@ -173,7 +168,7 @@ export class MapCard {
    */
   componentDidRender() {
     // the container node for the map view needs to exist before the view is created
-    this._loadMap(this._webMapId);
+    this._loadMap(this._webMapInfo);
   }
 
   /**
@@ -185,6 +180,7 @@ export class MapCard {
         {this._getToolbar()}
         {this._getMapNameList(this._mapListExpanded)}
         <div class="map-height" ref={(el) => (this._mapDiv = el)}/>
+        <map-tools class="map-tools"/>
       </Host>
     );
   }
@@ -223,32 +219,27 @@ export class MapCard {
       <div class="display-flex">
         <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
           {this._getMapPicker()}
-          {this._getActionGroup("home", false, this._translations.home, () => this._goHome())}
-          {this._getActionGroup("list", false, this._translations.list, () => this._showList())}
-          {this._getActionGroup("magnifying-glass-plus", false, this._translations.search, () => this._search())}
-          {this._getActionGroup("plus", false, this._translations.zoomIn, () => this._zoomIn())}
-          {this._getActionGroup("minus", false, this._translations.zoomOut, () => this._zoomOut())}
-          {this._getActionGroup("expand", false, this._translations.expand, () => this._expand())}
         </calcite-action-bar>
       </div>
     );
   }
 
   /**
-   * Load the webmap for the provided id
+   * Load the webmap for the provided webMapInfo
    *
-   * @param id the webmap id to load
+   * @param webMapInfo the webmap id and name to load
    *
    * @returns void
    *
    * @protected
    */
   protected _loadMap(
-    id: string
+    webMapInfo: IMapInfo
   ): void {
+    const id = webMapInfo?.id;
     // on the first render use the first child of the provided mapInfos
-    if (id === "" && this.mapInfos.length > 0) {
-      id = this.mapInfos[0].id;
+    if ((id === "" || !id) && this.mapInfos.length > 0) {
+      this._webMapInfo = this.mapInfos[0];
     }
     if (this._loadedId !== id) {
       const webMap = new this.WebMap({
@@ -268,45 +259,6 @@ export class MapCard {
   }
 
   /**
-   * Get a calcite action group for the current action
-   *
-   * @param icon the icon to display for the current action
-   * @param disabled should the action be disabled
-   * @param tip information tip to display helpful details to end user
-   * @param func the associated onClick function to execute
-   *
-   * @returns the dom node for the action group
-   *
-   * @protected
-   */
-  protected _getActionGroup(
-    icon: string,
-    disabled: boolean,
-    tip: string,
-    func: any
-  ): VNode {
-    return (
-      <calcite-action-group class="action-center width-1-6" layout="horizontal">
-        <calcite-action
-          alignment="center"
-          class="width-full height-full"
-          compact={false}
-          disabled={disabled}
-          icon={icon}
-          id={icon}
-          onClick={func}
-          text=""
-        >
-          <calcite-icon icon={"cheveron-up"} scale="s" slot="icon" />
-        </calcite-action>
-        <calcite-tooltip label="" placement="bottom" reference-element={icon}>
-          <span>{tip}</span>
-        </calcite-tooltip>
-      </calcite-action-group>
-    );
-  }
-
-  /**
    * Get a calcite action group for the map list
    * Actions do not support multiple icons so this uses a block
    *
@@ -317,19 +269,17 @@ export class MapCard {
   protected _getMapPicker(): VNode {
     const mapListIcon = this._mapListExpanded ? "chevron-up" : "chevron-down";
     return (
-      <calcite-action-group class="action-center width-1-6" layout="horizontal">
-        <calcite-block
-          class="action-center block-button width-full height-full display-grid"
-          heading=""
-          onClick={() => this._chooseMap()}
-        >
-          <calcite-icon icon="map" scale="s" slot="icon" />
-          <calcite-icon icon={mapListIcon} scale="s" slot="icon" />
-          <calcite-tooltip label="" placement="bottom">
-            <span>{this._translations.mapName}</span>
-          </calcite-tooltip>
-        </calcite-block>
-      </calcite-action-group>
+      <calcite-button
+        alignment="icon-end-space-between"
+        appearance="solid"
+        class="width-full height-full"
+        iconEnd={mapListIcon}
+        kind="neutral"
+        onClick={() => this._chooseMap()}
+        width="full"
+      >
+        {this._webMapInfo?.name}
+      </calcite-button>
     );
   }
 
@@ -353,7 +303,7 @@ export class MapCard {
             return (
               <calcite-list-item
                 label={mapInfo.name}
-                onClick={() => this._webMapSelected(mapInfo.id)}
+                onClick={() => this._webMapSelected(mapInfo)}
                 selected={mapInfo.id === this._loadedId}
                 value={mapInfo.id}
               />
@@ -367,17 +317,17 @@ export class MapCard {
   /**
    * Fired when the user clicks on the map list
    *
-   * @param id the web map id selected from the list
+   * @param webMapInfo the web map id and name selected from the list
    *
    * @returns void
    *
    * @protected
    */
   protected _webMapSelected(
-    id: string
+    webMapInfo: IMapInfo
   ): void {
     this._mapListExpanded = false;
-    this._webMapId = id;
+    this._webMapInfo = webMapInfo;
   }
 
   /**
@@ -389,47 +339,6 @@ export class MapCard {
    */
   protected _chooseMap(): void {
     this._mapListExpanded = !this._mapListExpanded;
-    if (this._mapListExpanded) {
-      //const mapList = document.getElementById("mapList");
-      // TODO figure out why this doesn't work
-      //await (mapList.children[0] as HTMLCalcitePickListItemElement).setFocus();
-    }
-  }
-
-  // Need to discuss this with the team
-  protected _goHome(): void {
-    alert("go home")
-  }
-
-  // need to discuss this with the team
-  protected _showList(): void {
-    alert("show list")
-  }
-
-  // Need to discuss this with the team
-  protected _search(): void {
-    alert("search")
-  }
-
-  // Need to explore map fixed zoom in considerations
-  protected _zoomIn(): void {
-    alert("zoom in")
-  }
-
-  // Need to explore map fixed zoom out considerations
-  protected _zoomOut(): void {
-    alert("zoom out")
-  }
-
-  /**
-   * Emit the expand map event
-   *
-   * @returns void
-   *
-   * @protected
-   */
-  protected _expand(): void {
-    this.expandMap.emit(EExpandType.EXPAND);
   }
 
   /**
