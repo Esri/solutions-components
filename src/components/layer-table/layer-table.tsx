@@ -369,13 +369,19 @@ export class LayerTable {
           <calcite-action
             appearance="solid"
             disabled={!multiFeaturesSelected}
-            icon="pencil"
             id="pencil"
             label={this._translations.editMultiple}
             onClick={() => this._editMultiple()}
-            text={this._translations.editMultiple}
-            textEnabled={true}
-          />
+            text=""
+          >
+            <calcite-button
+              appearance="transparent"
+              iconStart="pencil"
+              kind="brand"
+            >
+              {this._translations.editMultiple}
+            </calcite-button>
+          </calcite-action>
           <calcite-tooltip label="" placement="bottom" reference-element="pencil">
             <span>{this._translations.editMultiple}</span>
           </calcite-tooltip>
@@ -394,13 +400,18 @@ export class LayerTable {
           <calcite-action
             appearance="solid"
             disabled={!featuresSelected}
-            icon="trash"
             id="trash"
             onClick={() => this._delete()}
-            text={this._translations.delete}
-            text-enabled
-            textEnabled={true}
-          />
+            text=""
+          >
+            <calcite-button
+              appearance="transparent"
+              iconStart="trash"
+              kind="danger"
+            >
+              {this._translations.delete}
+            </calcite-button>
+          </calcite-action>
           <calcite-tooltip label="" placement="bottom" reference-element="trash">
             <span>{this._translations.delete}</span>
           </calcite-tooltip>
