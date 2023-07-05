@@ -79,7 +79,7 @@ html[dir="rtl"] .padding-right-5 {
 }
 
 div.image-container {
-  border: 1px solid var(--calcite-ui-background);
+  border: 1px solid var(--calcite-ui-foreground-3);
   box-sizing: border-box
 }
 

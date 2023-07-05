@@ -18,6 +18,8 @@
 
 - calcite-shell
 - calcite-panel
+- calcite-icon
+- calcite-popover
 - calcite-action
 - calcite-tooltip
 - [map-card](../map-card)
@@ -30,6 +32,8 @@
 graph TD;
   crowdsource-manager --> calcite-shell
   crowdsource-manager --> calcite-panel
+  crowdsource-manager --> calcite-icon
+  crowdsource-manager --> calcite-popover
   crowdsource-manager --> calcite-action
   crowdsource-manager --> calcite-tooltip
   crowdsource-manager --> map-card
