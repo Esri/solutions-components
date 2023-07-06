@@ -23,6 +23,10 @@
   padding: 1rem;
 }
 
+.padding-1-2 {
+  padding: 0.5rem;
+}
+
 .header-title {
   display: flex;
   float: left;
@@ -146,7 +150,7 @@
 }
 
 .adjusted-height-50 {
-  height: calc(50% - 17px);
+  height: calc(50% - 0.5rem);
 }
 
 .icon-color {

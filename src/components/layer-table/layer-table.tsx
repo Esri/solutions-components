@@ -544,12 +544,12 @@ export class LayerTable {
    * @returns void
    */
   protected async _mapClicked(
-    evt: CustomEvent
+    evt: any
   ): Promise<void> {
     const opts = {
       include: this._layerView.layer
     };
-    const hitTestResult = await this.mapView.hitTest(evt.detail, opts);
+    const hitTestResult = await this.mapView.hitTest(evt.screenPoint, opts);
     if (hitTestResult.results.length > 0) {
       hitTestResult.results.forEach((result: any) => {
         const id = (result.graphic as __esri.Graphic).getObjectId();
@@ -560,6 +560,9 @@ export class LayerTable {
           this._table.highlightIds.add(id);
         }
       });
+      if (this._showOnlySelected) {
+        this._table.filterBySelection();
+      }
     }
   }
 
