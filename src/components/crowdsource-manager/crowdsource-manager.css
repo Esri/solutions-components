@@ -153,6 +153,10 @@
   height: calc(50% - 0.5rem);
 }
 
+.adjusted-height-100 {
+  height: calc(100% - 1rem);
+}
+
 .icon-color {
   --calcite-ui-icon-color: var(--calcite-ui-brand);
 }
@@ -165,4 +169,8 @@
   padding: 5px 8px;
   font-weight: var(--calcite-font-weight-normal);
   color: var(--calcite-ui-text-2);
+}
+
+.display-none {
+  display: none;
 }

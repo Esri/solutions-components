@@ -267,14 +267,16 @@ export class CrowdsourceManager {
     layoutMode: ELayoutMode,
     panelOpen: boolean
   ): VNode {
+    const mapDisplayClass = layoutMode === ELayoutMode.GRID ? "" : "display-none";
+    const cardManagerHeight = layoutMode === ELayoutMode.GRID ? "adjusted-height-50" : "adjusted-height-100";
     const mapSizeClass = this._getMapSizeClass(layoutMode, panelOpen);
     return (
       <div class={`${mapSizeClass} overflow-hidden`}>
-        <div class="adjusted-height-50 overflow-hidden" >
+        <div class={"adjusted-height-50 overflow-hidden " + mapDisplayClass} >
           <map-card mapInfos={this.mapInfos}/>
         </div>
         <div class="padding-1-2">
-          <card-manager class="adjusted-height-50" mapView={this?._mapView}/>
+          <card-manager class={cardManagerHeight} mapView={this?._mapView}/>
         </div>
       </div>
     );
