@@ -18,7 +18,6 @@ import { Component, Element, Host, h, Method, Prop, State, Watch } from "@stenci
 import InfoCard_T9n from "../../assets/t9n/info-card/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { loadModules } from "../../utils/loadModules";
-import { EEditMode } from "../../utils/interfaces";
 
 @Component({
   tag: "info-card",
@@ -199,7 +198,6 @@ export class InfoCard {
             </calcite-tooltip>
           </div>
           <edit-record-modal
-            editMode={EEditMode.SINGLE}
             graphicIndex={this._features?.selectedFeatureIndex}
             graphics={this.graphics}
             mapView={this.mapView}

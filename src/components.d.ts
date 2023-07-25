@@ -81,10 +81,6 @@ export namespace Components {
     }
     interface EditRecordModal {
         /**
-          * "MULTI" | "SINGLE": "SINGLE" edit mode is intended to be used to edit a single existing feature                     "MULTI" edit mode is intended to apply edits across a collection of features
-         */
-        "editMode": EEditMode;
-        /**
           * The index of the current graphic
          */
         "graphicIndex": number;
@@ -1093,10 +1089,6 @@ declare namespace LocalJSX {
         "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<string>) => void;
     }
     interface EditRecordModal {
-        /**
-          * "MULTI" | "SINGLE": "SINGLE" edit mode is intended to be used to edit a single existing feature                     "MULTI" edit mode is intended to apply edits across a collection of features
-         */
-        "editMode"?: EEditMode;
         /**
           * The index of the current graphic
          */
