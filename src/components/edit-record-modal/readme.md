@@ -35,7 +35,6 @@
 
 - calcite-modal
 - calcite-notice
-- calcite-button
 - calcite-label
 - calcite-input-text
 - calcite-input-number
@@ -48,7 +47,6 @@
 graph TD;
   edit-record-modal --> calcite-modal
   edit-record-modal --> calcite-notice
-  edit-record-modal --> calcite-button
   edit-record-modal --> calcite-label
   edit-record-modal --> calcite-input-text
   edit-record-modal --> calcite-input-number
@@ -59,8 +57,6 @@ graph TD;
   calcite-modal --> calcite-icon
   calcite-scrim --> calcite-loader
   calcite-notice --> calcite-icon
-  calcite-button --> calcite-loader
-  calcite-button --> calcite-icon
   calcite-input-text --> calcite-progress
   calcite-input-text --> calcite-icon
   calcite-input-number --> calcite-progress

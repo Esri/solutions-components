@@ -55,7 +55,6 @@ graph TD;
   calcite-button --> calcite-icon
   edit-record-modal --> calcite-modal
   edit-record-modal --> calcite-notice
-  edit-record-modal --> calcite-button
   edit-record-modal --> calcite-label
   edit-record-modal --> calcite-input-text
   edit-record-modal --> calcite-input-number

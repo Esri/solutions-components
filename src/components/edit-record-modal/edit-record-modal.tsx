@@ -86,6 +86,24 @@ export class EditRecordModal {
   //--------------------------------------------------------------------------
 
   /**
+   * esri/widgets/Editor: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Editor.html
+   * The Editor constructor
+   */
+  protected _editHandle: __esri.WatchHandle;
+
+  /**
+   * esri/widgets/Editor: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Editor.html
+   * The Editor constructor
+   */
+  protected Editor: typeof import("esri/widgets/Editor");
+
+  /**
+   * esri/widgets/Editor: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Editor.html
+   * The Editor instance
+   */
+  protected _editor: __esri.Editor;
+
+  /**
    * esri/widgets/FeatureForm: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FeatureForm.html
    * The feature form constructor
    */
@@ -103,6 +121,11 @@ export class EditRecordModal {
   protected _layer: __esri.FeatureLayer;
 
   /**
+   * HTMLDivElement: https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement
+   */
+  protected _editContainer: HTMLDivElement;
+
+  /**
    * any[]: Collection of edit controls created in "MULTI" edit mode
    * These can be calcite-input-text, calcite-input-number, calcite-input-date-picker, calcite-input-time-picker, or calcite-combobox
    */
@@ -118,6 +141,11 @@ export class EditRecordModal {
    */
   protected _editingDisabled: boolean;
 
+  /**
+   * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
+   */
+  protected reactiveUtils: typeof import("esri/core/reactiveUtils");
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -129,9 +157,7 @@ export class EditRecordModal {
    */
   @Watch("graphicIndex")
   graphicIndexWatchHandler(): void {
-    if (this.graphics?.length && this.graphics[0]) {
-      this._featureForm.feature = this.graphics[this.graphicIndex];
-    }
+    this._initEditorWidget();
   }
 
   /**
@@ -139,13 +165,7 @@ export class EditRecordModal {
    */
   @Watch("graphics")
   graphicsWatchHandler(): void {
-    this._initFeatureFormWidget();
-    if (this.editMode === EEditMode.SINGLE && this._featureForm && this.graphics[this.graphicIndex]) {
-      this._featureForm.feature = this.graphics[this.graphicIndex];
-      this._featureForm.disabled = !this._featureForm.layer.editingEnabled;
-
-      this._editingDisabled = !this._featureForm.layer.editingEnabled;
-    }
+    this._initEditorWidget();
   }
 
   /**
@@ -153,7 +173,7 @@ export class EditRecordModal {
    */
   @Watch("mapView")
   mapViewWatchHandler(): void {
-    this._initFeatureFormWidget();
+    this._initEditorWidget();
   }
 
   //--------------------------------------------------------------------------
@@ -202,7 +222,8 @@ export class EditRecordModal {
    */
   async componentWillRender(): Promise<void> {
     const layerTableElements: HTMLCollection = document.getElementsByTagName("layer-table");
-    if (layerTableElements.length === 1 && this.editMode === EEditMode.MULTI) {
+    // if (layerTableElements.length === 1 && this.editMode === EEditMode.MULTI) {
+    if (layerTableElements.length === 1) {
       const layerTable: HTMLLayerTableElement = layerTableElements[0] as HTMLLayerTableElement;
       this.graphics = await layerTable.getSelectedGraphics();
     }
@@ -230,6 +251,7 @@ export class EditRecordModal {
         <div>
           <calcite-modal
             docked={true}
+            onCalciteModalBeforeOpen={() => void this._modalBeforeOpen()}
             onCalciteModalClose={() => this._modalClose()}
             onCalciteModalOpen={() => this._modalOpen()}
             open={this.open}
@@ -259,10 +281,12 @@ export class EditRecordModal {
             <div class={contentClass} slot="content">
               {
                 this.editMode === EEditMode.MULTI ?
-                  this._getFieldInputs(editDisabled) : (<div id="feature-form" />)
+                  this._getFieldInputs(editDisabled) :
+                  (<div id="feature-form" ref={(el) => this._editContainer = el} />)
               }
             </div>
-            <calcite-button
+            {/* These would need to be shown for multi edit if it stays but I think it's coming out.. */}
+            {/* <calcite-button
               appearance="outline"
               onClick={() => this._cancel()}
               slot="secondary"
@@ -277,7 +301,7 @@ export class EditRecordModal {
               width="full"
             >
               {this._translations.save}
-            </calcite-button>
+            </calcite-button> */}
           </calcite-modal>
         </div>
       </Host>
@@ -296,29 +320,52 @@ export class EditRecordModal {
    * @returns Promise resolving when function is done
    */
   protected async _initModules(): Promise<void> {
-    const [FeatureForm] = await loadModules([
-      "esri/widgets/FeatureForm"
+    const [FeatureForm, Editor, reactiveUtils] = await loadModules([
+      "esri/widgets/FeatureForm",
+      "esri/widgets/Editor",
+      "esri/core/reactiveUtils"
     ]);
     this.FeatureForm = FeatureForm;
+    this.Editor = Editor;
+    this.reactiveUtils = reactiveUtils;
   }
 
   /**
-   * Init the Feature widget so we can display the popup content
+   * Init the Editor widget so we can display the popup content
    *
    * @returns void
    */
-  protected _initFeatureFormWidget(): void {
-    if (this.editMode === EEditMode.SINGLE && this.mapView && !this._featureForm && this.graphics && this.graphics.length > 0 && this.graphics[0]) {
-      const feature: __esri.Graphic = this.graphics[this.graphicIndex];
-      const elements = this._getFormTemplateElements();
-      this._featureForm = new this.FeatureForm({
-        container: "feature-form",
-        feature,
-        formTemplate: {
-          elements
+  protected _initEditorWidget(): void {
+    if (this.editMode === EEditMode.SINGLE && this.mapView && this.graphics && this.graphics.length > 0 && this.graphics[0]) {
+      if (this._editor) {
+        this._editor.destroy()
+      }
+      const container = document.createElement("div");
+      this._editor = new this.Editor({
+        allowedWorkflows: "update",
+        view: this.mapView,
+        visibleElements: {
+          snappingControls: false,
+          sketchTooltipControls: false
         },
-        map: this.mapView.map
+        container
       });
+
+      if (this._editHandle) {
+        this._editHandle.remove();
+      }
+
+      this._editHandle = this.reactiveUtils.when(
+        () => this._editor.viewModel.state === "ready",
+        () => {
+          if (this.graphicIndex > -1 && this.graphics.length > 0 && this.open) {
+            void this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
+          }
+        }
+      );
+
+      // had issues with destroy before adding like this
+      this._editContainer.appendChild(container);
     }
   }
 
@@ -650,6 +697,15 @@ export class EditRecordModal {
    */
   protected _modalOpen(): void {
     this.modalOpened.emit();
+  }
+
+  /**
+   * Force the editor to start with the feature edit workflow
+   *
+   * @returns void
+   */
+  protected async _modalBeforeOpen(): Promise<void> {
+    await this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex])
   }
 
   /**

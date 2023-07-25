@@ -84,7 +84,6 @@ graph TD;
   calcite-scrim --> calcite-loader
   edit-record-modal --> calcite-modal
   edit-record-modal --> calcite-notice
-  edit-record-modal --> calcite-button
   edit-record-modal --> calcite-label
   edit-record-modal --> calcite-input-text
   edit-record-modal --> calcite-input-number
@@ -94,8 +93,6 @@ graph TD;
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
   calcite-notice --> calcite-icon
-  calcite-button --> calcite-loader
-  calcite-button --> calcite-icon
   calcite-input-text --> calcite-progress
   calcite-input-text --> calcite-icon
   calcite-input-number --> calcite-progress
@@ -129,6 +126,8 @@ graph TD;
   map-layer-picker --> calcite-option
   map-layer-picker --> calcite-combobox-item
   calcite-select --> calcite-icon
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   calcite-dropdown-item --> calcite-icon
   crowdsource-manager --> layer-table
   style layer-table fill:#f9f,stroke:#333,stroke-width:4px
