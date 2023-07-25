@@ -109,14 +109,14 @@ export class InfoCard {
    * Watch for changes to the graphic and update the feature widget
    */
   @Watch("graphics")
-  graphicsWatchHandler(): void {
-    this._initFeaturesWidget();
-    if (this._features) {
+  async graphicsWatchHandler(): Promise<void> {
+    await this._initFeaturesWidget();
+    if (this._features && this.graphics.length > 0) {
+      this._editEnabled = (this.graphics[0]?.layer as __esri.FeatureLayer).editingEnabled;
       this._features.features = this.graphics;
-      this._features.visible = this.graphics.length > 0 && this.graphics[0] !== undefined;
-      if (this._features.visible) {
-        this._editEnabled = (this.graphics[0]?.layer as __esri.FeatureLayer).editingEnabled;
-      }
+      this._features.open({
+        features: this.graphics
+      });
     }
   }
 
@@ -124,8 +124,8 @@ export class InfoCard {
    * Watch for changes to the mapView and re-init the Feature widget
    */
   @Watch("mapView")
-  mapViewWatchHandler(): void {
-    this._initFeaturesWidget();
+  async mapViewWatchHandler(): Promise<void> {
+    await this._initFeaturesWidget();
   }
 
   //--------------------------------------------------------------------------
@@ -250,21 +250,21 @@ export class InfoCard {
    *
    * @protected
    */
-  protected _initFeaturesWidget(): void {
-    if (this.mapView && !this._features) {
-      this._features = new this.Features({
-        view: this.mapView,
-        container: "features-node",
-        visible: true,
-        visibleElements: {
-          actionBar: false,
-          closeButton: false,
-          heading: false
-        },
-        viewModel: {
-          featureViewModelAbilities: {
-            attachmentsContent: false
-          }
+  protected async _initFeaturesWidget(): Promise<void> {
+    if (this.mapView) {
+      await this.mapView.when(() => {
+        if (!this._features) {
+          this._features = new this.Features({
+            container: "features-node",
+            visibleElements: {
+              actionBar: false,
+              closeButton: false,
+              heading: false
+            },
+            view: this.mapView
+          });
+        } else {
+          this._features.view = this.mapView;
         }
       });
     }
