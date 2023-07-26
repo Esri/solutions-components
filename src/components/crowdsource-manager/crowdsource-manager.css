@@ -23,6 +23,10 @@
   padding: 1rem;
 }
 
+.padding-1-2 {
+  padding: 0.5rem;
+}
+
 .header-title {
   display: flex;
   float: left;
@@ -146,7 +150,11 @@
 }
 
 .adjusted-height-50 {
-  height: calc(50% - 17px);
+  height: calc(50% - 0.5rem);
+}
+
+.adjusted-height-100 {
+  height: calc(100% - 1rem);
 }
 
 .icon-color {
@@ -161,4 +169,8 @@
   padding: 5px 8px;
   font-weight: var(--calcite-font-weight-normal);
   color: var(--calcite-ui-text-2);
+}
+
+.display-none {
+  display: none;
 }

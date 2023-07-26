@@ -21,7 +21,7 @@ import { getLocaleComponentStrings } from "../../utils/locale";
 import { getMapLayerView, getMapLayerIds } from "../../utils/mapViewUtils";
 import { queryFeaturesByID, queryAllIds } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
-import { EEditMode, IExportInfos } from "../../utils/interfaces";
+import { IExportInfos, IMapClick } from "../../utils/interfaces";
 
 @Component({
   tag: "layer-table",
@@ -57,11 +57,6 @@ export class LayerTable {
    * boolean: When true a alert will be shown to indicate a problem or confirm the current action
    */
   @State() _alertOpen = false;
-
-  /**
-   * boolean: When true the edit multiple modal is shown
-   */
-  @State() _editMultipleOpen = false;
 
   /**
    * boolean: When true a loading indicator will be shown in place of the layer table
@@ -271,12 +266,6 @@ export class LayerTable {
               />
             </calcite-panel>
           </div>
-          <edit-record-modal
-            editMode={EEditMode.MULTI}
-            onModalClosed={() => this._editMultipleClosed()}
-            open={this._editMultipleOpen}
-            slot="modals"
-          />
           <calcite-alert
             icon={this._alertIcon}
             kind={this._alertKind}
@@ -335,7 +324,6 @@ export class LayerTable {
     slot?: string
   ): VNode {
     const featuresSelected = this._selectedIndexes.length > 0;
-    const multiFeaturesSelected = this._selectedIndexes.length > 1;
     return (
       <div class="display-flex table-border height-51" slot={slot}>
         <calcite-action-bar
@@ -365,25 +353,6 @@ export class LayerTable {
           />
           <calcite-tooltip label="" placement="bottom" reference-element="magnifying-glass">
             <span>{this._translations.zoom}</span>
-          </calcite-tooltip>
-          <calcite-action
-            appearance="solid"
-            disabled={!multiFeaturesSelected}
-            id="pencil"
-            label={this._translations.editMultiple}
-            onClick={() => this._editMultiple()}
-            text=""
-          >
-            <calcite-button
-              appearance="transparent"
-              iconStart="pencil"
-              kind="brand"
-            >
-              {this._translations.editMultiple}
-            </calcite-button>
-          </calcite-action>
-          <calcite-tooltip label="" placement="bottom" reference-element="pencil">
-            <span>{this._translations.editMultiple}</span>
           </calcite-tooltip>
           <calcite-action
             appearance="solid"
@@ -478,13 +447,6 @@ export class LayerTable {
   }
 
   /**
-   * Cloase the edit multiple modal
-   */
-  protected _editMultipleClosed(): void {
-    this._editMultipleOpen = false;
-  }
-
-  /**
    * Store a reference to the table node after it's first created
    * and initializes the FeatureTable
    *
@@ -544,12 +506,12 @@ export class LayerTable {
    * @returns void
    */
   protected async _mapClicked(
-    evt: CustomEvent
+    evt: IMapClick
   ): Promise<void> {
     const opts = {
       include: this._layerView.layer
     };
-    const hitTestResult = await this.mapView.hitTest(evt.detail, opts);
+    const hitTestResult = await this.mapView.hitTest(evt.screenPoint, opts);
     if (hitTestResult.results.length > 0) {
       hitTestResult.results.forEach((result: any) => {
         const id = (result.graphic as __esri.Graphic).getObjectId();
@@ -560,6 +522,9 @@ export class LayerTable {
           this._table.highlightIds.add(id);
         }
       });
+      if (this._showOnlySelected) {
+        this._table.filterBySelection();
+      }
     }
   }
 
@@ -667,24 +632,6 @@ export class LayerTable {
    */
   protected _zoom(): void {
     this._table.zoomToSelection();
-  }
-
-  /**
-   * Open the edit multiple modal or shows an alert if the layer does not have editing enabled
-   *
-   * @returns void
-   */
-  protected _editMultiple(): void {
-    if (this._editEnabled) {
-      this._editMultipleOpen = true;
-    } else {
-      this._alertIcon = "layer-broken";
-      this._alertTitle = this._translations.editMultipleDisabled;
-      this._alertShowAction = false;
-      this._alertMessage = this._translations.enableEditing;
-      this._alertKind = "warning";
-      this._alertOpen = true;
-    }
   }
 
   /**

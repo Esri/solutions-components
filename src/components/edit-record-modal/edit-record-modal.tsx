@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
 import EditRecordModal_T9n from "../../assets/t9n/edit-record-modal/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { EEditMode } from "../../utils/interfaces";
-
-// TODO clearInputs does not clear date fields
 
 @Component({
   tag: "edit-record-modal",
@@ -57,12 +54,6 @@ export class EditRecordModal {
   @Prop({ mutable: true }) open = false;
 
   /**
-   * "MULTI" | "SINGLE": "SINGLE" edit mode is intended to be used to edit a single existing feature
-   *                     "MULTI" edit mode is intended to apply edits across a collection of features
-   */
-  @Prop() editMode = EEditMode.SINGLE;
-
-  /**
    * The index of the current graphic
    */
   @Prop() graphicIndex = 0;
@@ -86,21 +77,32 @@ export class EditRecordModal {
   //--------------------------------------------------------------------------
 
   /**
-   * esri/widgets/FeatureForm: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FeatureForm.html
-   * The feature form constructor
+   * esri/widgets/Editor: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Editor.html
+   * The Editor constructor
    */
-  protected FeatureForm: typeof import("esri/widgets/FeatureForm");
+  protected _editHandle: __esri.WatchHandle;
 
   /**
-   * esri/widgets/FeatureForm: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FeatureForm.html
-   * The feature form instance
+   * esri/widgets/Editor: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Editor.html
+   * The Editor constructor
    */
-  protected _featureForm: __esri.FeatureForm;
+  protected Editor: typeof import("esri/widgets/Editor");
+
+  /**
+   * esri/widgets/Editor: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Editor.html
+   * The Editor instance
+   */
+  protected _editor: __esri.Editor;
 
   /**
    * esri/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
    */
   protected _layer: __esri.FeatureLayer;
+
+  /**
+   * HTMLDivElement: https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement
+   */
+  protected _editContainer: HTMLDivElement;
 
   /**
    * any[]: Collection of edit controls created in "MULTI" edit mode
@@ -109,14 +111,14 @@ export class EditRecordModal {
   protected _editControlElements: any[];
 
   /**
-   * Key value pair: Store the field name and new value to be used to apply edits in "MULTI" edit mode.
-   */
-  protected _edits: {[key: string]: any} = {};
-
-  /**
    * boolean: When true edit controls will be disabled
    */
   protected _editingDisabled: boolean;
+
+  /**
+   * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
+   */
+  protected reactiveUtils: typeof import("esri/core/reactiveUtils");
 
   //--------------------------------------------------------------------------
   //
@@ -129,9 +131,7 @@ export class EditRecordModal {
    */
   @Watch("graphicIndex")
   graphicIndexWatchHandler(): void {
-    if (this.graphics?.length && this.graphics[0]) {
-      this._featureForm.feature = this.graphics[this.graphicIndex];
-    }
+    this._initEditorWidget();
   }
 
   /**
@@ -139,13 +139,7 @@ export class EditRecordModal {
    */
   @Watch("graphics")
   graphicsWatchHandler(): void {
-    this._initFeatureFormWidget();
-    if (this.editMode === EEditMode.SINGLE && this._featureForm && this.graphics[this.graphicIndex]) {
-      this._featureForm.feature = this.graphics[this.graphicIndex];
-      this._featureForm.disabled = !this._featureForm.layer.editingEnabled;
-
-      this._editingDisabled = !this._featureForm.layer.editingEnabled;
-    }
+    this._initEditorWidget();
   }
 
   /**
@@ -153,7 +147,7 @@ export class EditRecordModal {
    */
   @Watch("mapView")
   mapViewWatchHandler(): void {
-    this._initFeatureFormWidget();
+    this._initEditorWidget();
   }
 
   //--------------------------------------------------------------------------
@@ -202,7 +196,7 @@ export class EditRecordModal {
    */
   async componentWillRender(): Promise<void> {
     const layerTableElements: HTMLCollection = document.getElementsByTagName("layer-table");
-    if (layerTableElements.length === 1 && this.editMode === EEditMode.MULTI) {
+    if (layerTableElements.length === 1) {
       const layerTable: HTMLLayerTableElement = layerTableElements[0] as HTMLLayerTableElement;
       this.graphics = await layerTable.getSelectedGraphics();
     }
@@ -215,21 +209,17 @@ export class EditRecordModal {
    * Renders the component.
    */
   render() {
-    const header = this.editMode === EEditMode.SINGLE ?
-      this._translations.edit : this._translations.editMultiple;
-
     // This is a temp workaround hopefully...this._editingDisabled should reflect the current state but does not
     // when you use MULTI edit mode...is fine in SINGLE
     const editDisabled = this.graphics?.length > 0 && this.graphics[0] ?
       !(this.graphics[0].layer as __esri.FeatureLayer).editingEnabled : true;
-
-    const contentClass = this.editMode === EEditMode.MULTI ? "padding-sides-bottom-1" : "";
 
     return (
       <Host>
         <div>
           <calcite-modal
             docked={true}
+            onCalciteModalBeforeOpen={() => void this._modalBeforeOpen()}
             onCalciteModalClose={() => this._modalClose()}
             onCalciteModalOpen={() => this._modalOpen()}
             open={this.open}
@@ -240,7 +230,7 @@ export class EditRecordModal {
               class="font-500"
               slot="header"
             >
-              {header}
+              {this._translations.edit}
             </div>
             {
               editDisabled ? (
@@ -256,28 +246,12 @@ export class EditRecordModal {
                 </calcite-notice>
               ) : undefined
             }
-            <div class={contentClass} slot="content">
-              {
-                this.editMode === EEditMode.MULTI ?
-                  this._getFieldInputs(editDisabled) : (<div id="feature-form" />)
-              }
+            <div slot="content">
+              <div
+                id="feature-form"
+                ref={(el) => this._editContainer = el}
+              />
             </div>
-            <calcite-button
-              appearance="outline"
-              onClick={() => this._cancel()}
-              slot="secondary"
-              width="full"
-            >
-              {this._translations.cancel}
-            </calcite-button>
-            <calcite-button
-              appearance="solid"
-              onClick={() => this._save()}
-              slot="primary"
-              width="full"
-            >
-              {this._translations.save}
-            </calcite-button>
           </calcite-modal>
         </div>
       </Host>
@@ -296,29 +270,50 @@ export class EditRecordModal {
    * @returns Promise resolving when function is done
    */
   protected async _initModules(): Promise<void> {
-    const [FeatureForm] = await loadModules([
-      "esri/widgets/FeatureForm"
+    const [Editor, reactiveUtils] = await loadModules([
+      "esri/widgets/Editor",
+      "esri/core/reactiveUtils"
     ]);
-    this.FeatureForm = FeatureForm;
+    this.Editor = Editor;
+    this.reactiveUtils = reactiveUtils;
   }
 
   /**
-   * Init the Feature widget so we can display the popup content
+   * Init the Editor widget so we can display the popup content
    *
    * @returns void
    */
-  protected _initFeatureFormWidget(): void {
-    if (this.editMode === EEditMode.SINGLE && this.mapView && !this._featureForm && this.graphics && this.graphics.length > 0 && this.graphics[0]) {
-      const feature: __esri.Graphic = this.graphics[this.graphicIndex];
-      const elements = this._getFormTemplateElements();
-      this._featureForm = new this.FeatureForm({
-        container: "feature-form",
-        feature,
-        formTemplate: {
-          elements
+  protected _initEditorWidget(): void {
+    if (this.mapView && this.graphics && this.graphics.length > 0 && this.graphics[0]) {
+      if (this._editor) {
+        this._editor.destroy()
+      }
+      const container = document.createElement("div");
+      this._editor = new this.Editor({
+        allowedWorkflows: "update",
+        view: this.mapView,
+        visibleElements: {
+          snappingControls: false,
+          sketchTooltipControls: false
         },
-        map: this.mapView.map
+        container
       });
+
+      if (this._editHandle) {
+        this._editHandle.remove();
+      }
+
+      this._editHandle = this.reactiveUtils.when(
+        () => this._editor.viewModel.state === "ready",
+        () => {
+          if (this.graphicIndex > -1 && this.graphics.length > 0 && this.open) {
+            void this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
+          }
+        }
+      );
+
+      // had issues with destroy before adding like this
+      this._editContainer.appendChild(container);
     }
   }
 
@@ -343,294 +338,12 @@ export class EditRecordModal {
   }
 
   /**
-   * Get the controls for all editable fields when using "MULTI" edit mode
-   *
-   * @returns Array of input nodes to display
-   */
-  protected _getFieldInputs(
-    editDisabled: boolean
-  ): VNode[] {
-    if (this.graphics.length > 0 && this._layer) {
-      const fields = this._layer.fields.filter(f => f.editable);
-      this._editControlElements = [];
-      return fields.map(field => {
-        return (
-          <div>
-            {this._getFieldInput(field, editDisabled)}
-          </div>
-        );
-      });
-    }
-  }
-
-  /**
-   * Get the input for all editable fields when using "MULTI" edit mode
-   *
-   * @param field An editable field to create an input for user interaction
-   *
-   * @returns Input node to display
-   */
-  _getFieldInput(
-    field: __esri.Field,
-    editDisabled: boolean
-  ): VNode {
-    let fieldNode: VNode;
-    switch (field.type) {
-      case "string":
-        fieldNode = (
-          <calcite-label>
-            {field.alias}
-            {
-              field.domain ? this._getDomainInput(field, editDisabled) : (
-                <calcite-input-text
-                  disabled={editDisabled}
-                  id={field.name}
-                  maxLength={field.length}
-                  onCalciteInputTextChange={evt => this._stringInputChanged(evt)}
-                  placeholder={this._translations.textField}
-                  ref={(el) => this._editControlElements.push(el)}
-                />)
-            }
-          </calcite-label>
-        );
-        break;
-      case "small-integer" || "integer" || "single" || "double" || "long":
-        fieldNode = (
-          <calcite-label>
-            {field.alias}
-            {
-              field.domain ? this._getDomainInput(field, editDisabled) :
-              (<calcite-input-number
-                disabled={editDisabled}
-                id={field.name}
-                maxLength={field.length}
-                onCalciteInputNumberChange={(evt) => this._numberInputChanged(evt)}
-                placeholder={this._translations.textField}
-                ref={(el) => this._editControlElements.push(el)}
-              />)
-            }
-          </calcite-label>
-        );
-        break;
-      case "date":
-        fieldNode = (
-          <calcite-label>
-            {field.alias}
-            <calcite-input-date-picker
-              disabled={editDisabled}
-              id={`${field.name}--date`}
-              onCalciteInputDatePickerChange={evt => this._dateInputChanged(evt)}
-              overlayPositioning="fixed"
-              placement="top"
-              ref={(el) => this._editControlElements.push(el)}
-            />
-            {/* Don't see how to tell if this should be on or not...thought maybe checking valueType but
-             it's null for the fields I tested but this time picker is still shown for fields in the FeatureForm.
-
-             Not showing by default for now...will change as necessary after I speak with the team
-             */}
-            {/* <calcite-input-time-picker
-              id={`${field.name}--time`}
-              onCalciteInputTimePickerChange={evt => this._timeInputChanged(evt)}
-            /> */}
-          </calcite-label>
-        );
-        break;
-      default:
-        fieldNode = (
-          <calcite-label>
-            {field.alias}
-            <calcite-input-text
-              disabled={editDisabled}
-              id={field.name}
-              maxLength={field.length}
-              onCalciteInputTextChange={evt => this._stringInputChanged(evt)}
-              placeholder={this._translations.textField}
-              ref={(el) => this._editControlElements.push(el)}
-            />
-          </calcite-label>
-        );
-        break;
-    }
-    return fieldNode;
-  }
-
-  /**
-   * Get the input for a field with a domain when using "MULTI" edit mode
-   *
-   * @param field An editable field that has a domain to create an input for user interaction
-   *
-   * @returns Input node to display
-   */
-  protected _getDomainInput(
-    field: __esri.Field,
-    editDisabled: boolean
-  ): VNode {
-    let node;
-    const domain = field.domain;
-    switch (domain.type) {
-      case "coded-value":
-        node = (
-          <calcite-combobox
-            clearDisabled={true}
-            disabled={editDisabled}
-            id={field.name}
-            label={field.alias}
-            onCalciteComboboxChange={evt => this._domainInputChanged(evt)}
-            placeholder={this._translations.selectValue}
-            ref={(el) => this._editControlElements.push(el)}
-            selectionMode="single"
-          >
-            {
-              domain.codedValues.map(cv => {
-                return (<calcite-combobox-item textLabel={cv.name} value={cv.code}/>)
-              })
-            }
-          </calcite-combobox>
-        );
-        break;
-
-      // need to look into this one more
-      //case "inherited":
-      //break;
-
-      case "range":
-        node = (
-          <calcite-input-number
-            disabled={editDisabled}
-            max={domain.maxValue}
-            maxLength={field.length}
-            min={domain.minValue}
-          />
-        );
-        break;
-    }
-    return node;
-  }
-
-  /**
-   * Store the selected date value
-   *
-   * @param evt the event from the user interaction
-   *
-   * @returns void
-   */
-  protected _dateInputChanged(
-    evt: CustomEvent
-  ): void {
-    const target = evt.target as HTMLCalciteDatePickerElement;
-    // should we only store this if it has a value?
-    // If we do we prevent the ability to delete values across the seletced features
-    // If we don't we could delete values that they may not want to delete
-    this._edits[target.id.replace("--date", "")] = target.value;
-  }
-
-  /**
-   * Store the selected text value
-   *
-   * @param evt the event from the user interaction
-   *
-   * @returns void
-   */
-  protected _domainInputChanged(
-    evt: CustomEvent
-  ): void {
-    const target = evt.target as HTMLCalciteInputTextElement;
-    // should we only store this if it has a value?
-    // If we do we prevent the ability to delete values across the seletced features
-    // If we don't we could delete values that they may not want to delete
-    this._edits[target.id] = target.value;
-  }
-
-  /**
-   * Store the selected number value
-   *
-   * @param evt the event from the user interaction
-   *
-   * @returns void
-   */
-  protected _numberInputChanged(
-    evt: CustomEvent
-  ): void {
-    const target = evt.target as HTMLCalciteInputNumberElement;
-    // should we only store this if it has a value?
-    // If we do we prevent the ability to delete values across the seletced features
-    // If we don't we could delete values that they may not want to delete
-    this._edits[target.id] = target.value;
-  }
-
-  /**
-   * Store the selected string value
-   *
-   * @param evt the event from the user interaction
-   *
-   * @returns void
-   */
-  protected _stringInputChanged(
-    evt: CustomEvent
-  ): void {
-    const target = evt.target as HTMLCalciteInputTextElement;
-    // should we only store this if it has a value?
-    // If we do we prevent the ability to delete values across the seletced features
-    // If we don't we could delete values that they may not want to delete
-    this._edits[target.id] = target.value;
-  }
-
-  /**
-   * Store the selected time value
-   *
-   * @param evt the event from the user interaction
-   *
-   * @returns void
-   */
-  protected _timeInputChanged(
-    evt: CustomEvent
-  ): void {
-    const target = evt.target as HTMLCalciteInputTimePickerElement;
-    // should we only store this if it has a value?
-    // If we do we prevent the ability to delete values across the seletced features
-    // If we don't we could delete values that they may not want to delete
-    this._edits[target.id.replace("--time", "")] = target.value;
-  }
-
-  /**
    * Closes the modal
    *
    * @returns void
    */
   protected _cancel(): void {
     this.open = false;
-    this._clearInputs();
-  }
-
-  /**
-   * Clear the input controls so they do not retain values on close
-   *
-   * @returns void
-   */
-  protected _clearInputs(): void {
-    if (this.editMode === EEditMode.MULTI) {
-      this._editControlElements?.forEach(c => {
-        c.value = "";
-      });
-    }
-  }
-
-  /**
-   * Apply the edits to the layer
-   *
-   * @returns void
-   */
-  protected _save(): void {
-    const attributes = this.editMode === EEditMode.SINGLE ?
-      this._featureForm.getValues() : this._edits;
-    if (attributes) {
-      console.log(attributes);
-      // Holding off on this for a moment until we talk through a few things for MULTI edit
-      // this._layer.applyEdits({
-      //   updateFeatures: [{ attributes } as any]
-      // });
-    }
   }
 
   /**
@@ -640,7 +353,6 @@ export class EditRecordModal {
    */
   protected _modalClose(): void {
     this.modalClosed.emit();
-    this._clearInputs();
   }
 
   /**
@@ -650,6 +362,15 @@ export class EditRecordModal {
    */
   protected _modalOpen(): void {
     this.modalOpened.emit();
+  }
+
+  /**
+   * Force the editor to start with the feature edit workflow
+   *
+   * @returns void
+   */
+  protected async _modalBeforeOpen(): Promise<void> {
+    await this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex])
   }
 
   /**

@@ -97,23 +97,13 @@ div.image-container img {
 .container {
   padding: 0px 6px 6px 0px;
   float: left;
-  width: 33%;
   box-sizing: border-box
 }
 
 html[dir="rtl"] .container {
   padding: 0px 0px 6px 6px;
   float: right;
-  width: 33%;
   box-sizing: border-box
-}
-
-.container:nth-child(3n) {
-  padding-right: 0px;
-}
-
-html[dir="rtl"] .container:nth-child(3n) {
-  padding-left: 0px;
 }
 
 .display-none {

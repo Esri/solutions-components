@@ -36,11 +36,6 @@ export enum ELayoutMode {
   VERTICAL = "VERTICAL"
 }
 
-export enum EEditMode {
-  MULTI = "MULTI",
-  SINGLE = "SINGLE"
-}
-
 /**
  * Resource update types
  */
@@ -98,6 +93,19 @@ export enum EDrawMode {
 export type ValidSize = 6|10|14|20|30|60|80;
 
 export type DistanceUnit = "feet"|"meters"|"miles"|"kilometers";
+
+export interface IMapClick {
+  mapPoint: __esri.Point,
+  screenPoint: __esri.MapViewScreenPoint,
+  x: number,
+  y: number,
+  button: number,
+  buttons: 0 | 1 | 2,
+  type: string,
+  stopPropagation: any,
+  timestamp: number,
+  native: PointerEvent
+}
 
 export interface IExportOptions {
   csvOptions: ICsvOptions;
