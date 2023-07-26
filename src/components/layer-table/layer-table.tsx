@@ -21,7 +21,7 @@ import { getLocaleComponentStrings } from "../../utils/locale";
 import { getMapLayerView, getMapLayerIds } from "../../utils/mapViewUtils";
 import { queryFeaturesByID, queryAllIds } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
-import { IExportInfos } from "../../utils/interfaces";
+import { IExportInfos, IMapClick } from "../../utils/interfaces";
 
 @Component({
   tag: "layer-table",
@@ -506,7 +506,7 @@ export class LayerTable {
    * @returns void
    */
   protected async _mapClicked(
-    evt: any
+    evt: IMapClick
   ): Promise<void> {
     const opts = {
       include: this._layerView.layer
