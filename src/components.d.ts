@@ -58,10 +58,6 @@ export namespace Components {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
-        /**
-          * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
-         */
-        "mediaCardValues": IMediaCardValues[];
     }
     interface CommentCard {
         /**
@@ -1059,10 +1055,6 @@ declare namespace LocalJSX {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        /**
-          * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
-         */
-        "mediaCardValues"?: IMediaCardValues[];
     }
     interface CommentCard {
         /**

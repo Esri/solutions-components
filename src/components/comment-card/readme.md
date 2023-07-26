@@ -21,10 +21,6 @@
 
 ## Dependencies
 
-### Used by
-
- - [card-manager](../card-manager)
-
 ### Depends on
 
 - calcite-loader
@@ -41,7 +37,6 @@ graph TD;
   comment-card --> calcite-tooltip
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
-  card-manager --> comment-card
   style comment-card fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -22,10 +22,6 @@
 
 ## Dependencies
 
-### Used by
-
- - [card-manager](../card-manager)
-
 ### Depends on
 
 - calcite-modal
@@ -47,7 +43,6 @@ graph TD;
   calcite-input --> calcite-icon
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
-  card-manager --> add-record-modal
   style add-record-modal fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
