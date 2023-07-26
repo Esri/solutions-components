@@ -156,7 +156,7 @@ export class CardManager {
     const ids = evt.detail;
     this._cardLoading = true;
     // only query if we have some ids...query with no ids will result in all features being returned
-    const featureSet = ids.length > 0 ? await queryFeaturesByID(ids, this.layerView.layer, []) : [];
+    const featureSet = ids.length > 0 ? await queryFeaturesByID(ids, this.layerView.layer, [], false, this.mapView.spatialReference) : [];
     this._graphics = featureSet;
     this._cardLoading = false;
   }

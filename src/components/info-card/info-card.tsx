@@ -110,10 +110,8 @@ export class InfoCard {
    */
   @Watch("graphics")
   async graphicsWatchHandler(): Promise<void> {
-    await this._initFeaturesWidget();
-    if (this._features && this.graphics.length > 0) {
+    if (this.graphics.length > 0) {
       this._editEnabled = (this.graphics[0]?.layer as __esri.FeatureLayer).editingEnabled;
-      this._features.features = this.graphics;
       this._features.open({
         features: this.graphics
       });
@@ -125,7 +123,9 @@ export class InfoCard {
    */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
-    await this._initFeaturesWidget();
+    await this.mapView.when(async () => {
+      await this._initFeaturesWidget();
+    });
   }
 
   //--------------------------------------------------------------------------
@@ -251,22 +251,18 @@ export class InfoCard {
    * @protected
    */
   protected async _initFeaturesWidget(): Promise<void> {
-    if (this.mapView) {
-      await this.mapView.when(() => {
-        if (!this._features) {
-          this._features = new this.Features({
-            container: "features-node",
-            visibleElements: {
-              actionBar: false,
-              closeButton: false,
-              heading: false
-            },
-            view: this.mapView
-          });
-        } else {
-          this._features.view = this.mapView;
-        }
+    if (!this._features) {
+      this._features = new this.Features({
+        container: "features-node",
+        visibleElements: {
+          actionBar: false,
+          closeButton: false,
+          heading: false
+        },
+        view: this.mapView
       });
+    } else {
+      this._features.view = this.mapView;
     }
   }
 
