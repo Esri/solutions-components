@@ -16,21 +16,21 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import EditRecordModal_T9n from "../../assets/t9n/edit-record-modal/resources.json";
+import EditCard_T9n from "../../assets/t9n/edit-card/resources.json"
 import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
-  tag: "edit-record-modal",
-  styleUrl: "edit-record-modal.css",
+  tag: 'edit-card',
+  styleUrl: 'edit-card.css',
   shadow: false,
 })
-export class EditRecordModal {
+export class EditCard {
   //--------------------------------------------------------------------------
   //
   //  Host element access
   //
   //--------------------------------------------------------------------------
-  @Element() el: HTMLEditRecordModalElement;
+  @Element() el: HTMLEditCardElement;
 
   //--------------------------------------------------------------------------
   //
@@ -68,7 +68,7 @@ export class EditRecordModal {
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
-  @State() _translations: typeof EditRecordModal_T9n;
+  @State() _translations: typeof EditCard_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -325,6 +325,7 @@ export class EditRecordModal {
    */
   protected async _getTranslations(): Promise<void> {
     const messages = await getLocaleComponentStrings(this.el);
-    this._translations = messages[0] as typeof EditRecordModal_T9n;
+    this._translations = messages[0] as typeof EditCard_T9n;
   }
+
 }

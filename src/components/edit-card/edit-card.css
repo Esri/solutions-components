@@ -14,21 +14,41 @@
  * limitations under the License.
  */
 
-import { newSpecPage } from '@stencil/core/testing';
-import { EditRecordModal } from '../edit-record-modal';
+ :host {
+  display: block;
+}
 
-xdescribe('edit-record-modal', () => {
-  it('renders', async () => {
-    const page = await newSpecPage({
-      components: [EditRecordModal],
-      html: `<edit-record-modal></edit-record-modal>`,
-    });
-    expect(page.root).toEqualHtml(`
-      <edit-record-modal>
-        <mock:shadow-root>
-          <slot></slot>
-        </mock:shadow-root>
-      </edit-record-modal>
-    `);
-  });
-});
+.padding-bottom-1 {
+  padding-bottom: 1rem;
+}
+
+.font-bold {
+  font-weight: var(--calcite-font-weight-bold);
+}
+
+.font-500 {
+  font-weight: var(--calcite-font-weight-medium);
+}
+
+.font-italic {
+  font-style: italic;
+}
+
+#feature-form {
+  --calcite-ui-background: none;
+  padding-top: 0px;
+}
+
+.padding-sides-bottom-1 {
+  padding: 0 1rem 1rem 1rem;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.esri-editor__prompt--danger {
+  position: relative !important;
+  width: 100% !important;
+  background-color: var(--calcite-ui-foreground-1) !important;
+}

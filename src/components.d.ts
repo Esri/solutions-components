@@ -63,7 +63,7 @@ export namespace Components {
     }
     interface DeductCalculator {
     }
-    interface EditRecordModal {
+    interface EditCard {
         /**
           * The index of the current graphic
          */
@@ -630,9 +630,9 @@ export interface DeductCalculatorCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLDeductCalculatorElement;
 }
-export interface EditRecordModalCustomEvent<T> extends CustomEvent<T> {
+export interface EditCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
-    target: HTMLEditRecordModalElement;
+    target: HTMLEditCardElement;
 }
 export interface LayerTableCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -717,11 +717,11 @@ declare global {
         prototype: HTMLDeductCalculatorElement;
         new (): HTMLDeductCalculatorElement;
     };
-    interface HTMLEditRecordModalElement extends Components.EditRecordModal, HTMLStencilElement {
+    interface HTMLEditCardElement extends Components.EditCard, HTMLStencilElement {
     }
-    var HTMLEditRecordModalElement: {
-        prototype: HTMLEditRecordModalElement;
-        new (): HTMLEditRecordModalElement;
+    var HTMLEditCardElement: {
+        prototype: HTMLEditCardElement;
+        new (): HTMLEditCardElement;
     };
     interface HTMLInfoCardElement extends Components.InfoCard, HTMLStencilElement {
     }
@@ -879,7 +879,7 @@ declare global {
         "crowdsource-manager": HTMLCrowdsourceManagerElement;
         "crowdsource-reporter": HTMLCrowdsourceReporterElement;
         "deduct-calculator": HTMLDeductCalculatorElement;
-        "edit-record-modal": HTMLEditRecordModalElement;
+        "edit-card": HTMLEditCardElement;
         "info-card": HTMLInfoCardElement;
         "json-editor": HTMLJsonEditorElement;
         "layer-table": HTMLLayerTableElement;
@@ -979,7 +979,7 @@ declare namespace LocalJSX {
          */
         "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<string>) => void;
     }
-    interface EditRecordModal {
+    interface EditCard {
         /**
           * The index of the current graphic
          */
@@ -995,7 +995,7 @@ declare namespace LocalJSX {
         /**
           * Emitted on demand when the Editor widget should be closed
          */
-        "onCloseEdit"?: (event: EditRecordModalCustomEvent<void>) => void;
+        "onCloseEdit"?: (event: EditCardCustomEvent<void>) => void;
         /**
           * When true the component is displayed
          */
@@ -1513,7 +1513,7 @@ declare namespace LocalJSX {
         "crowdsource-manager": CrowdsourceManager;
         "crowdsource-reporter": CrowdsourceReporter;
         "deduct-calculator": DeductCalculator;
-        "edit-record-modal": EditRecordModal;
+        "edit-card": EditCard;
         "info-card": InfoCard;
         "json-editor": JsonEditor;
         "layer-table": LayerTable;
@@ -1550,7 +1550,7 @@ declare module "@stencil/core" {
             "crowdsource-manager": LocalJSX.CrowdsourceManager & JSXBase.HTMLAttributes<HTMLCrowdsourceManagerElement>;
             "crowdsource-reporter": LocalJSX.CrowdsourceReporter & JSXBase.HTMLAttributes<HTMLCrowdsourceReporterElement>;
             "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;
-            "edit-record-modal": LocalJSX.EditRecordModal & JSXBase.HTMLAttributes<HTMLEditRecordModalElement>;
+            "edit-card": LocalJSX.EditCard & JSXBase.HTMLAttributes<HTMLEditCardElement>;
             "info-card": LocalJSX.InfoCard & JSXBase.HTMLAttributes<HTMLInfoCardElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "layer-table": LocalJSX.LayerTable & JSXBase.HTMLAttributes<HTMLLayerTableElement>;

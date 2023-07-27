@@ -203,7 +203,7 @@ export class InfoCard {
               <span>{this._translations.edit}</span>
             </calcite-tooltip>
           </div>
-          <edit-record-modal
+          <edit-card
             class={editClass}
             graphicIndex={this._features?.selectedFeatureIndex}
             graphics={this.graphics}

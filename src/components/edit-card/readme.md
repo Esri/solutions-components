@@ -1,4 +1,4 @@
-# edit-record-modal
+# edit-card
 
 
 
@@ -35,10 +35,10 @@
 ### Graph
 ```mermaid
 graph TD;
-  edit-record-modal --> calcite-notice
+  edit-card --> calcite-notice
   calcite-notice --> calcite-icon
-  info-card --> edit-record-modal
-  style edit-record-modal fill:#f9f,stroke:#333,stroke-width:4px
+  info-card --> edit-card
+  style edit-card fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------
