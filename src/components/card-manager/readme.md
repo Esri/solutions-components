@@ -39,11 +39,7 @@ graph TD;
   info-card --> calcite-alert
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
-  edit-record-modal --> calcite-modal
   edit-record-modal --> calcite-notice
-  calcite-modal --> calcite-scrim
-  calcite-modal --> calcite-icon
-  calcite-scrim --> calcite-loader
   calcite-notice --> calcite-icon
   calcite-alert --> calcite-icon
   calcite-alert --> calcite-chip

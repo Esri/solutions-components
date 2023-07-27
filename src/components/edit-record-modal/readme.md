@@ -17,10 +17,9 @@
 
 ## Events
 
-| Event         | Description                                | Type                |
-| ------------- | ------------------------------------------ | ------------------- |
-| `modalClosed` | Emitted on demand when the modal is closed | `CustomEvent<void>` |
-| `modalOpened` | Emitted on demand when the modal is opened | `CustomEvent<void>` |
+| Event       | Description                                               | Type                |
+| ----------- | --------------------------------------------------------- | ------------------- |
+| `closeEdit` | Emitted on demand when the Editor widget should be closed | `CustomEvent<void>` |
 
 
 ## Dependencies
@@ -31,17 +30,12 @@
 
 ### Depends on
 
-- calcite-modal
 - calcite-notice
 
 ### Graph
 ```mermaid
 graph TD;
-  edit-record-modal --> calcite-modal
   edit-record-modal --> calcite-notice
-  calcite-modal --> calcite-scrim
-  calcite-modal --> calcite-icon
-  calcite-scrim --> calcite-loader
   calcite-notice --> calcite-icon
   info-card --> edit-record-modal
   style edit-record-modal fill:#f9f,stroke:#333,stroke-width:4px

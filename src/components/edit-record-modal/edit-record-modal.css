@@ -42,3 +42,13 @@
 .padding-sides-bottom-1 {
   padding: 0 1rem 1rem 1rem;
 }
+
+.position-relative {
+  position: relative;
+}
+
+.esri-editor__prompt--danger {
+  position: relative !important;
+  width: 100% !important;
+  background-color: var(--calcite-ui-foreground-1) !important;
+}

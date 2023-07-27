@@ -993,13 +993,9 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
-          * Emitted on demand when the modal is closed
+          * Emitted on demand when the Editor widget should be closed
          */
-        "onModalClosed"?: (event: EditRecordModalCustomEvent<void>) => void;
-        /**
-          * Emitted on demand when the modal is opened
-         */
-        "onModalOpened"?: (event: EditRecordModalCustomEvent<void>) => void;
+        "onCloseEdit"?: (event: EditRecordModalCustomEvent<void>) => void;
         /**
           * When true the component is displayed
          */

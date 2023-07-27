@@ -77,8 +77,12 @@ export class EditRecordModal {
   //--------------------------------------------------------------------------
 
   /**
-   * esri/widgets/Editor: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Editor.html
-   * The Editor constructor
+   * esri/widgets/Editor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
+   */
+  protected _attachmentHandle: __esri.WatchHandle;
+
+  /**
+   * esri/widgets/Editor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
    */
   protected _editHandle: __esri.WatchHandle;
 
@@ -114,6 +118,11 @@ export class EditRecordModal {
    * boolean: When true edit controls will be disabled
    */
   protected _editingDisabled: boolean;
+
+  /**
+   * boolean: When true the Editor widget should be closed
+   */
+  protected _shouldClose = false;
 
   /**
    * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
@@ -163,14 +172,9 @@ export class EditRecordModal {
   //--------------------------------------------------------------------------
 
   /**
-   * Emitted on demand when the modal is closed
+   * Emitted on demand when the Editor widget should be closed
    */
-  @Event() modalClosed: EventEmitter<void>;
-
-  /**
-   * Emitted on demand when the modal is opened
-   */
-  @Event() modalOpened: EventEmitter<void>;
+  @Event() closeEdit: EventEmitter<void>;
 
   //--------------------------------------------------------------------------
   //
@@ -216,43 +220,27 @@ export class EditRecordModal {
 
     return (
       <Host>
-        <div>
-          <calcite-modal
-            docked={true}
-            onCalciteModalBeforeOpen={() => void this._modalBeforeOpen()}
-            onCalciteModalClose={() => this._modalClose()}
-            onCalciteModalOpen={() => this._modalOpen()}
-            open={this.open}
-            outsideCloseDisabled={true}
-            width="s"
-          >
+        <div class="position-relative">
+          {
+            editDisabled ? (
+              <calcite-notice
+                kind="warning"
+                open={true}
+                slot="content-top"
+                width="full"
+              >
+                <div slot="message">
+                  {this._translations.enableEditing}
+                </div>
+              </calcite-notice>
+            ) : undefined
+          }
+          <div slot="content">
             <div
-              class="font-500"
-              slot="header"
-            >
-              {this._translations.edit}
-            </div>
-            {
-              editDisabled ? (
-                <calcite-notice
-                  kind="warning"
-                  open={true}
-                  slot="content-top"
-                  width="full"
-                >
-                  <div slot="message">
-                    {this._translations.enableEditing}
-                  </div>
-                </calcite-notice>
-              ) : undefined
-            }
-            <div slot="content">
-              <div
-                id="feature-form"
-                ref={(el) => this._editContainer = el}
-              />
-            </div>
-          </calcite-modal>
+              id="feature-form"
+              ref={(el) => this._editContainer = el}
+            />
+          </div>
         </div>
       </Host>
     );
@@ -299,15 +287,28 @@ export class EditRecordModal {
         container
       });
 
-      if (this._editHandle) {
+      if (this._editHandle && this._attachmentHandle) {
         this._editHandle.remove();
+        this._attachmentHandle.remove();
       }
+
+      this._attachmentHandle = this.reactiveUtils.when(
+        () => this._editor.viewModel.state === "adding-attachment" || this._editor.viewModel.state === "editing-attachment",
+        () => {
+          this._shouldClose = false;
+        }
+      );
 
       this._editHandle = this.reactiveUtils.when(
         () => this._editor.viewModel.state === "ready",
         () => {
-          if (this.graphicIndex > -1 && this.graphics.length > 0 && this.open) {
+          if (this._shouldClose) {
+            this.closeEdit.emit();
+            this._shouldClose = false;
+          }
+          if (this.graphicIndex > -1 && this.graphics.length > 0 && this.open && !this._shouldClose) {
             void this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
+            this._shouldClose = true;
           }
         }
       );
@@ -315,62 +316,6 @@ export class EditRecordModal {
       // had issues with destroy before adding like this
       this._editContainer.appendChild(container);
     }
-  }
-
-  /**
-   * Get the default Form Template to be used in the FeatureForm
-   *
-   * @returns A default Form Template
-   */
-  protected _getFormTemplateElements(): any {
-    if (this.graphics.length > 0 && this._layer) {
-      return this._layer.fields.reduce((prev, cur) => {
-        if (cur.editable) {
-          prev.push({
-            type: "field",
-            fieldName: cur.name,
-            label: cur.alias
-          });
-        }
-        return prev;
-      }, []);
-    }
-  }
-
-  /**
-   * Closes the modal
-   *
-   * @returns void
-   */
-  protected _cancel(): void {
-    this.open = false;
-  }
-
-  /**
-   * Emit the modal close event
-   *
-   * @returns void
-   */
-  protected _modalClose(): void {
-    this.modalClosed.emit();
-  }
-
-  /**
-   * Emit the modal open event
-   *
-   * @returns void
-   */
-  protected _modalOpen(): void {
-    this.modalOpened.emit();
-  }
-
-  /**
-   * Force the editor to start with the feature edit workflow
-   *
-   * @returns void
-   */
-  protected async _modalBeforeOpen(): Promise<void> {
-    await this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex])
   }
 
   /**
