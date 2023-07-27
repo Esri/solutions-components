@@ -275,7 +275,7 @@ export class CrowdsourceManager {
         <div class={"adjusted-height-50 overflow-hidden " + mapDisplayClass} >
           <map-card mapInfos={this.mapInfos}/>
         </div>
-        <div class="padding-1-2">
+        <div class="padding-1-2 height-full">
           <card-manager class={cardManagerHeight} mapView={this?._mapView}/>
         </div>
       </div>
