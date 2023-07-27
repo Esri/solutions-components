@@ -175,7 +175,7 @@ export class InfoCard {
    */
   render() {
     const loadingClass = this.isLoading ? "" : "display-none";
-    const featureNodeClass = this.isLoading || this._editRecordOpen ? "display-none" : "";
+    const featureNodeClass = this.isLoading || this._editRecordOpen ? "display-none" : "position-absolute";
     const editClass = !this.isLoading && this._editRecordOpen ? "position-absolute" : "display-none";
     const editButtonClass = !this.isLoading && this._editRecordOpen ? "display-none" : "";
     return (
