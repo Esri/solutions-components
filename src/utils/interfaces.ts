@@ -19,12 +19,6 @@ import {
   IItemTemplate
 } from '@esri/solution-common';
 
-export enum ECardType {
-  COMMENT="COMMENT",
-  INFO="INFO",
-  MEDIA="MEDIA"
-}
-
 export enum EImageDisplayType {
   GRID="GRID",
   GALLERY="GALLERY"

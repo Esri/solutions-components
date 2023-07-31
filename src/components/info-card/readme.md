@@ -39,7 +39,7 @@ Promise resolving with the current feature
 - calcite-loader
 - calcite-button
 - calcite-tooltip
-- [edit-record-modal](../edit-record-modal)
+- [edit-card](../edit-card)
 - calcite-alert
 
 ### Graph
@@ -49,15 +49,11 @@ graph TD;
   info-card --> calcite-loader
   info-card --> calcite-button
   info-card --> calcite-tooltip
-  info-card --> edit-record-modal
+  info-card --> edit-card
   info-card --> calcite-alert
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
-  edit-record-modal --> calcite-modal
-  edit-record-modal --> calcite-notice
-  calcite-modal --> calcite-scrim
-  calcite-modal --> calcite-icon
-  calcite-scrim --> calcite-loader
+  edit-card --> calcite-notice
   calcite-notice --> calcite-icon
   calcite-alert --> calcite-icon
   calcite-alert --> calcite-chip

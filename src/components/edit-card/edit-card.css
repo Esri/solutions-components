@@ -14,11 +14,41 @@
  * limitations under the License.
  */
 
-:host {
+ :host {
   display: block;
 }
 
-.search-widget {
+.padding-bottom-1 {
+  padding-bottom: 1rem;
+}
+
+.font-bold {
+  font-weight: var(--calcite-font-weight-bold);
+}
+
+.font-500 {
+  font-weight: var(--calcite-font-weight-medium);
+}
+
+.font-italic {
+  font-style: italic;
+}
+
+#feature-form {
+  --calcite-ui-background: none;
+  padding-top: 0px;
+}
+
+.padding-sides-bottom-1 {
+  padding: 0 1rem 1rem 1rem;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.esri-editor__prompt--danger {
+  position: relative !important;
   width: 100% !important;
-  border: 1px solid var(--calcite-ui-border-input);
+  background-color: var(--calcite-ui-foreground-1) !important;
 }

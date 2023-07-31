@@ -124,7 +124,9 @@ export async function queryObjectIds(
 export async function queryFeaturesByID(
   ids: number[],
   layer: __esri.FeatureLayer,
-  graphics: __esri.Graphic[]
+  graphics: __esri.Graphic[],
+  returnGeometry: boolean,
+  outSpatialReference?: __esri.SpatialReference
 ): Promise<__esri.Graphic[]> {
   const num = layer.capabilities.query.maxRecordCount;
   const start = 0;
@@ -132,7 +134,11 @@ export async function queryFeaturesByID(
   const q = layer.createQuery();
   q.start = start;
   q.num = num;
+  q.returnGeometry = returnGeometry;
   q.objectIds = ids.slice(start, num);
+  if (outSpatialReference) {
+    q.outSpatialReference = outSpatialReference;
+  }
 
   const result = await layer.queryFeatures(q);
 
@@ -141,9 +147,8 @@ export async function queryFeaturesByID(
   );
 
   const remainingIds = ids.slice(num, ids.length);
-
   return remainingIds.length > 0 ?
-    queryFeaturesByID(remainingIds, layer, graphics) :
+    queryFeaturesByID(remainingIds, layer, graphics, returnGeometry, outSpatialReference) :
     Promise.resolve(graphics);
 }
 

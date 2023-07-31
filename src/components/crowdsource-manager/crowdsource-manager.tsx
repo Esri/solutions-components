@@ -153,8 +153,8 @@ export class CrowdsourceManager {
                 {this._translations.layout}
               </div>
               {this._getAction("grid-background", ELayoutMode.GRID, this._translations.grid)}
-              {this._getAction("horizontal-background", ELayoutMode.VERTICAL, this._translations.horizontal)}
-              {this._getAction("vertical-background", ELayoutMode.HORIZONTAL, this._translations.vertical)}
+              {this._getAction("horizontal-background", ELayoutMode.VERTICAL, this._translations.vertical)}
+              {this._getAction("vertical-background", ELayoutMode.HORIZONTAL, this._translations.horizontal)}
             </div>
             {this._getBody(this._layoutMode, this._panelOpen)}
           </calcite-panel>
@@ -275,7 +275,7 @@ export class CrowdsourceManager {
         <div class={"adjusted-height-50 overflow-hidden " + mapDisplayClass} >
           <map-card mapInfos={this.mapInfos}/>
         </div>
-        <div class="padding-1-2">
+        <div class="padding-1-2 height-full">
           <card-manager class={cardManagerHeight} mapView={this?._mapView}/>
         </div>
       </div>

@@ -467,7 +467,7 @@ export class LayerTable {
       this._table = new this.FeatureTable({
         layer: this._layerView.layer,
         view: this.mapView,
-        editingEnabled: this._editEnabled,
+        //editingEnabled: this._editEnabled,
         highlightOnRowSelectEnabled: true,
         multiSortEnabled: false,
         visibleElements: {
@@ -673,7 +673,13 @@ export class LayerTable {
   protected async _getGraphics(
     ids: number[]
   ): Promise<__esri.Graphic[]> {
-    return ids.length > 0 ? queryFeaturesByID(ids, this._table.layer as __esri.FeatureLayer, []) : [];
+    return ids.length > 0 ? queryFeaturesByID(
+      ids,
+      this._table.layer as __esri.FeatureLayer,
+      [],
+      false,
+      this.mapView.spatialReference
+    ) : [];
   }
 
   /**

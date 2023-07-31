@@ -5,15 +5,9 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EDrawMode, EExpandType, IExportInfos, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
+import { DistanceUnit, EDrawMode, EExpandType, IExportInfos, IInventoryItem, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
-    interface AddRecordModal {
-        /**
-          * When true the component is displayed
-         */
-        "open": boolean;
-    }
     interface BufferTools {
         /**
           * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
@@ -58,16 +52,6 @@ export namespace Components {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
-        /**
-          * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
-         */
-        "mediaCardValues": IMediaCardValues[];
-    }
-    interface CommentCard {
-        /**
-          * boolean: when true a loading indicator will be shown
-         */
-        "isLoading": boolean;
     }
     interface CrowdsourceManager {
         /**
@@ -79,7 +63,7 @@ export namespace Components {
     }
     interface DeductCalculator {
     }
-    interface EditRecordModal {
+    interface EditCard {
         /**
           * The index of the current graphic
          */
@@ -259,21 +243,6 @@ export namespace Components {
          */
         "type": "select" | "combobox" | "dropdown";
     }
-    interface MapSearch {
-        /**
-          * Clears the state of the search widget
-          * @returns Promise that resolves when the operation is complete
-         */
-        "clear": () => Promise<void>;
-        /**
-          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView": __esri.MapView;
-        /**
-          * ISearchConfiguration: Configuration details for the Search widget
-         */
-        "searchConfiguration": ISearchConfiguration;
-    }
     interface MapSelectTools {
         /**
           * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
@@ -364,16 +333,6 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
-    }
-    interface MediaCard {
-        /**
-          * boolean: when true a loading indicator will be shown
-         */
-        "isLoading": boolean;
-        /**
-          * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
-         */
-        "values": IMediaCardValues[];
     }
     interface PciCalculator {
     }
@@ -663,25 +622,17 @@ export namespace Components {
         "value": string;
     }
 }
-export interface AddRecordModalCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLAddRecordModalElement;
-}
 export interface BufferToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLBufferToolsElement;
-}
-export interface CommentCardCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLCommentCardElement;
 }
 export interface DeductCalculatorCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLDeductCalculatorElement;
 }
-export interface EditRecordModalCustomEvent<T> extends CustomEvent<T> {
+export interface EditCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
-    target: HTMLEditRecordModalElement;
+    target: HTMLEditCardElement;
 }
 export interface LayerTableCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -698,10 +649,6 @@ export interface MapDrawToolsCustomEvent<T> extends CustomEvent<T> {
 export interface MapLayerPickerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapLayerPickerElement;
-}
-export interface MapSearchCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLMapSearchElement;
 }
 export interface MapSelectToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -740,12 +687,6 @@ export interface StoreManagerCustomEvent<T> extends CustomEvent<T> {
     target: HTMLStoreManagerElement;
 }
 declare global {
-    interface HTMLAddRecordModalElement extends Components.AddRecordModal, HTMLStencilElement {
-    }
-    var HTMLAddRecordModalElement: {
-        prototype: HTMLAddRecordModalElement;
-        new (): HTMLAddRecordModalElement;
-    };
     interface HTMLBufferToolsElement extends Components.BufferTools, HTMLStencilElement {
     }
     var HTMLBufferToolsElement: {
@@ -757,12 +698,6 @@ declare global {
     var HTMLCardManagerElement: {
         prototype: HTMLCardManagerElement;
         new (): HTMLCardManagerElement;
-    };
-    interface HTMLCommentCardElement extends Components.CommentCard, HTMLStencilElement {
-    }
-    var HTMLCommentCardElement: {
-        prototype: HTMLCommentCardElement;
-        new (): HTMLCommentCardElement;
     };
     interface HTMLCrowdsourceManagerElement extends Components.CrowdsourceManager, HTMLStencilElement {
     }
@@ -782,11 +717,11 @@ declare global {
         prototype: HTMLDeductCalculatorElement;
         new (): HTMLDeductCalculatorElement;
     };
-    interface HTMLEditRecordModalElement extends Components.EditRecordModal, HTMLStencilElement {
+    interface HTMLEditCardElement extends Components.EditCard, HTMLStencilElement {
     }
-    var HTMLEditRecordModalElement: {
-        prototype: HTMLEditRecordModalElement;
-        new (): HTMLEditRecordModalElement;
+    var HTMLEditCardElement: {
+        prototype: HTMLEditCardElement;
+        new (): HTMLEditCardElement;
     };
     interface HTMLInfoCardElement extends Components.InfoCard, HTMLStencilElement {
     }
@@ -830,12 +765,6 @@ declare global {
         prototype: HTMLMapLayerPickerElement;
         new (): HTMLMapLayerPickerElement;
     };
-    interface HTMLMapSearchElement extends Components.MapSearch, HTMLStencilElement {
-    }
-    var HTMLMapSearchElement: {
-        prototype: HTMLMapSearchElement;
-        new (): HTMLMapSearchElement;
-    };
     interface HTMLMapSelectToolsElement extends Components.MapSelectTools, HTMLStencilElement {
     }
     var HTMLMapSelectToolsElement: {
@@ -847,12 +776,6 @@ declare global {
     var HTMLMapToolsElement: {
         prototype: HTMLMapToolsElement;
         new (): HTMLMapToolsElement;
-    };
-    interface HTMLMediaCardElement extends Components.MediaCard, HTMLStencilElement {
-    }
-    var HTMLMediaCardElement: {
-        prototype: HTMLMediaCardElement;
-        new (): HTMLMediaCardElement;
     };
     interface HTMLPciCalculatorElement extends Components.PciCalculator, HTMLStencilElement {
     }
@@ -951,14 +874,12 @@ declare global {
         new (): HTMLStoreManagerElement;
     };
     interface HTMLElementTagNameMap {
-        "add-record-modal": HTMLAddRecordModalElement;
         "buffer-tools": HTMLBufferToolsElement;
         "card-manager": HTMLCardManagerElement;
-        "comment-card": HTMLCommentCardElement;
         "crowdsource-manager": HTMLCrowdsourceManagerElement;
         "crowdsource-reporter": HTMLCrowdsourceReporterElement;
         "deduct-calculator": HTMLDeductCalculatorElement;
-        "edit-record-modal": HTMLEditRecordModalElement;
+        "edit-card": HTMLEditCardElement;
         "info-card": HTMLInfoCardElement;
         "json-editor": HTMLJsonEditorElement;
         "layer-table": HTMLLayerTableElement;
@@ -966,10 +887,8 @@ declare global {
         "map-card": HTMLMapCardElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
-        "map-search": HTMLMapSearchElement;
         "map-select-tools": HTMLMapSelectToolsElement;
         "map-tools": HTMLMapToolsElement;
-        "media-card": HTMLMediaCardElement;
         "pci-calculator": HTMLPciCalculatorElement;
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
@@ -989,20 +908,6 @@ declare global {
     }
 }
 declare namespace LocalJSX {
-    interface AddRecordModal {
-        /**
-          * Emitted on demand the modal is closed
-         */
-        "onModalClosed"?: (event: AddRecordModalCustomEvent<void>) => void;
-        /**
-          * Emitted on demand the modal is opened
-         */
-        "onModalOpened"?: (event: AddRecordModalCustomEvent<void>) => void;
-        /**
-          * When true the component is displayed
-         */
-        "open"?: boolean;
-    }
     interface BufferTools {
         /**
           * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
@@ -1059,20 +964,6 @@ declare namespace LocalJSX {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        /**
-          * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
-         */
-        "mediaCardValues"?: IMediaCardValues[];
-    }
-    interface CommentCard {
-        /**
-          * boolean: when true a loading indicator will be shown
-         */
-        "isLoading"?: boolean;
-        /**
-          * Event that will trigger the opening of the add record modal
-         */
-        "onOpenAddRecord"?: (event: CommentCardCustomEvent<void>) => void;
     }
     interface CrowdsourceManager {
         /**
@@ -1088,7 +979,7 @@ declare namespace LocalJSX {
          */
         "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<string>) => void;
     }
-    interface EditRecordModal {
+    interface EditCard {
         /**
           * The index of the current graphic
          */
@@ -1102,13 +993,9 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
-          * Emitted on demand when the modal is closed
+          * Emitted on demand when the Editor widget should be closed
          */
-        "onModalClosed"?: (event: EditRecordModalCustomEvent<void>) => void;
-        /**
-          * Emitted on demand when the modal is opened
-         */
-        "onModalOpened"?: (event: EditRecordModalCustomEvent<void>) => void;
+        "onCloseEdit"?: (event: EditCardCustomEvent<void>) => void;
         /**
           * When true the component is displayed
          */
@@ -1264,20 +1151,6 @@ declare namespace LocalJSX {
          */
         "type"?: "select" | "combobox" | "dropdown";
     }
-    interface MapSearch {
-        /**
-          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView"?: __esri.MapView;
-        /**
-          * Emitted on demand when the status of the search widget changes
-         */
-        "onSearchChange"?: (event: MapSearchCustomEvent<ISearchResult>) => void;
-        /**
-          * ISearchConfiguration: Configuration details for the Search widget
-         */
-        "searchConfiguration"?: ISearchConfiguration;
-    }
     interface MapSelectTools {
         /**
           * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
@@ -1366,16 +1239,6 @@ declare namespace LocalJSX {
           * Emitted when the expand button is clicked
          */
         "onExpandMap"?: (event: MapToolsCustomEvent<EExpandType>) => void;
-    }
-    interface MediaCard {
-        /**
-          * boolean: when true a loading indicator will be shown
-         */
-        "isLoading"?: boolean;
-        /**
-          * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
-         */
-        "values"?: IMediaCardValues[];
     }
     interface PciCalculator {
     }
@@ -1645,14 +1508,12 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface IntrinsicElements {
-        "add-record-modal": AddRecordModal;
         "buffer-tools": BufferTools;
         "card-manager": CardManager;
-        "comment-card": CommentCard;
         "crowdsource-manager": CrowdsourceManager;
         "crowdsource-reporter": CrowdsourceReporter;
         "deduct-calculator": DeductCalculator;
-        "edit-record-modal": EditRecordModal;
+        "edit-card": EditCard;
         "info-card": InfoCard;
         "json-editor": JsonEditor;
         "layer-table": LayerTable;
@@ -1660,10 +1521,8 @@ declare namespace LocalJSX {
         "map-card": MapCard;
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
-        "map-search": MapSearch;
         "map-select-tools": MapSelectTools;
         "map-tools": MapTools;
-        "media-card": MediaCard;
         "pci-calculator": PciCalculator;
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
@@ -1686,14 +1545,12 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "add-record-modal": LocalJSX.AddRecordModal & JSXBase.HTMLAttributes<HTMLAddRecordModalElement>;
             "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
             "card-manager": LocalJSX.CardManager & JSXBase.HTMLAttributes<HTMLCardManagerElement>;
-            "comment-card": LocalJSX.CommentCard & JSXBase.HTMLAttributes<HTMLCommentCardElement>;
             "crowdsource-manager": LocalJSX.CrowdsourceManager & JSXBase.HTMLAttributes<HTMLCrowdsourceManagerElement>;
             "crowdsource-reporter": LocalJSX.CrowdsourceReporter & JSXBase.HTMLAttributes<HTMLCrowdsourceReporterElement>;
             "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;
-            "edit-record-modal": LocalJSX.EditRecordModal & JSXBase.HTMLAttributes<HTMLEditRecordModalElement>;
+            "edit-card": LocalJSX.EditCard & JSXBase.HTMLAttributes<HTMLEditCardElement>;
             "info-card": LocalJSX.InfoCard & JSXBase.HTMLAttributes<HTMLInfoCardElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "layer-table": LocalJSX.LayerTable & JSXBase.HTMLAttributes<HTMLLayerTableElement>;
@@ -1701,10 +1558,8 @@ declare module "@stencil/core" {
             "map-card": LocalJSX.MapCard & JSXBase.HTMLAttributes<HTMLMapCardElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
-            "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
             "map-tools": LocalJSX.MapTools & JSXBase.HTMLAttributes<HTMLMapToolsElement>;
-            "media-card": LocalJSX.MediaCard & JSXBase.HTMLAttributes<HTMLMediaCardElement>;
             "pci-calculator": LocalJSX.PciCalculator & JSXBase.HTMLAttributes<HTMLPciCalculatorElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;

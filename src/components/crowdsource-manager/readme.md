@@ -73,42 +73,19 @@ graph TD;
   calcite-list-item --> calcite-icon
   calcite-list-item --> calcite-action
   card-manager --> calcite-shell
-  card-manager --> calcite-segmented-control
-  card-manager --> calcite-segmented-control-item
-  card-manager --> calcite-tooltip
   card-manager --> info-card
-  card-manager --> media-card
-  card-manager --> comment-card
   card-manager --> calcite-notice
-  card-manager --> add-record-modal
-  calcite-segmented-control-item --> calcite-icon
   info-card --> calcite-shell
   info-card --> calcite-loader
   info-card --> calcite-button
   info-card --> calcite-tooltip
-  info-card --> edit-record-modal
+  info-card --> edit-card
   info-card --> calcite-alert
-  edit-record-modal --> calcite-modal
-  edit-record-modal --> calcite-notice
-  calcite-modal --> calcite-scrim
-  calcite-modal --> calcite-icon
+  edit-card --> calcite-notice
   calcite-notice --> calcite-icon
   calcite-alert --> calcite-icon
   calcite-alert --> calcite-chip
   calcite-chip --> calcite-icon
-  media-card --> calcite-loader
-  media-card --> calcite-button
-  media-card --> calcite-shell
-  media-card --> calcite-label
-  media-card --> calcite-tooltip
-  comment-card --> calcite-loader
-  comment-card --> calcite-shell
-  comment-card --> calcite-button
-  comment-card --> calcite-tooltip
-  add-record-modal --> calcite-modal
-  add-record-modal --> calcite-label
-  add-record-modal --> calcite-input
-  add-record-modal --> calcite-button
   layer-table --> calcite-shell
   layer-table --> calcite-panel
   layer-table --> calcite-loader

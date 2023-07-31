@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Method, Prop, State, Watch } from "@stencil/core";
+import { Component, Element, Host, h, Listen, Method, Prop, State, Watch } from "@stencil/core";
 import InfoCard_T9n from "../../assets/t9n/info-card/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { loadModules } from "../../utils/loadModules";
@@ -110,10 +110,8 @@ export class InfoCard {
    */
   @Watch("graphics")
   async graphicsWatchHandler(): Promise<void> {
-    await this._initFeaturesWidget();
-    if (this._features && this.graphics.length > 0) {
+    if (this.graphics.length > 0) {
       this._editEnabled = (this.graphics[0]?.layer as __esri.FeatureLayer).editingEnabled;
-      this._features.features = this.graphics;
       this._features.open({
         features: this.graphics
       });
@@ -125,7 +123,9 @@ export class InfoCard {
    */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
-    await this._initFeaturesWidget();
+    await this.mapView.when(async () => {
+      await this._initFeaturesWidget();
+    });
   }
 
   //--------------------------------------------------------------------------
@@ -150,6 +150,10 @@ export class InfoCard {
   //
   //--------------------------------------------------------------------------
 
+  @Listen("closeEdit", { target: "window" })
+  async closeEdit(): Promise<void> {
+    this._editRecordOpen = false;
+  }
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -171,7 +175,9 @@ export class InfoCard {
    */
   render() {
     const loadingClass = this.isLoading ? "" : "display-none";
-    const featureNodeClass = this.isLoading ? "display-none" : "";
+    const featureNodeClass = this.isLoading || this._editRecordOpen ? "display-none" : "position-absolute";
+    const editClass = !this.isLoading && this._editRecordOpen ? "position-absolute" : "display-none";
+    const editButtonClass = !this.isLoading && this._editRecordOpen ? "display-none" : "";
     return (
       <Host>
         <calcite-shell>
@@ -183,7 +189,7 @@ export class InfoCard {
             class={"esri-widget " + featureNodeClass}
             id="features-node"
           />
-          <div class="padding-1-2 display-flex" slot="footer">
+          <div class={"padding-1-2 display-flex " + editButtonClass} slot="footer">
             <calcite-button
               appearance="outline"
               iconStart="pencil"
@@ -197,13 +203,12 @@ export class InfoCard {
               <span>{this._translations.edit}</span>
             </calcite-tooltip>
           </div>
-          <edit-record-modal
+          <edit-card
+            class={editClass}
             graphicIndex={this._features?.selectedFeatureIndex}
             graphics={this.graphics}
             mapView={this.mapView}
-            onModalClosed={() => this._editRecordClosed()}
             open={this._editRecordOpen}
-            slot="modals"
           />
           <calcite-alert
             icon={"layer-broken"}
@@ -251,22 +256,18 @@ export class InfoCard {
    * @protected
    */
   protected async _initFeaturesWidget(): Promise<void> {
-    if (this.mapView) {
-      await this.mapView.when(() => {
-        if (!this._features) {
-          this._features = new this.Features({
-            container: "features-node",
-            visibleElements: {
-              actionBar: false,
-              closeButton: false,
-              heading: false
-            },
-            view: this.mapView
-          });
-        } else {
-          this._features.view = this.mapView;
-        }
+    if (!this._features) {
+      this._features = new this.Features({
+        container: "features-node",
+        visibleElements: {
+          actionBar: false,
+          closeButton: false,
+          heading: false
+        },
+        view: this.mapView
       });
+    } else {
+      this._features.view = this.mapView;
     }
   }
 
