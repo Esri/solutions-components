@@ -18,6 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Watch } 
 import { loadModules } from "../../utils/loadModules";
 import EditCard_T9n from "../../assets/t9n/edit-card/resources.json"
 import { getLocaleComponentStrings } from "../../utils/locale";
+import { EEditMode } from "../../utils/interfaces";
 
 @Component({
   tag: 'edit-card',
@@ -37,6 +38,11 @@ export class EditCard {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   */
+  @Prop() editMode: EEditMode = EEditMode.UPDATE;
 
   /**
    * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
@@ -129,6 +135,9 @@ export class EditCard {
    */
   protected reactiveUtils: typeof import("esri/core/reactiveUtils");
 
+  protected _notice: HTMLCalciteNoticeElement;
+
+  protected _isCreatingFeatures = false;
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -136,7 +145,16 @@ export class EditCard {
   //--------------------------------------------------------------------------
 
   /**
-   * Watch for changes to the graphics and update the feature widget
+   * Watch for changes to the editMode and update the editor widget
+   */
+  @Watch("editMode")
+  editModeWatchHandler(): void {
+    console.log("editModeWatchHandler")
+    this._initEditorWidget();
+  }
+
+  /**
+   * Watch for changes to the graphics and update the editor widget
    */
   @Watch("graphicIndex")
   graphicIndexWatchHandler(): void {
@@ -144,7 +162,7 @@ export class EditCard {
   }
 
   /**
-   * Watch for changes to the graphics and update the feature widget
+   * Watch for changes to the graphics and update the editor widget
    */
   @Watch("graphics")
   graphicsWatchHandler(): void {
@@ -152,7 +170,7 @@ export class EditCard {
   }
 
   /**
-   * Watch for changes to the mapView and re-init the Feature widget
+   * Watch for changes to the mapView and re-init the editor widget
    */
   @Watch("mapView")
   mapViewWatchHandler(): void {
@@ -203,10 +221,23 @@ export class EditCard {
     if (layerTableElements.length === 1) {
       const layerTable: HTMLLayerTableElement = layerTableElements[0] as HTMLLayerTableElement;
       this.graphics = await layerTable.getSelectedGraphics();
+      const layerView = await layerTable.getLayerView();
+      this._layer = layerView?.layer;
     }
-    if (this.graphics?.length > 0 && this.graphics[0]?.layer) {
-      this._layer = this.graphics[0].layer as __esri.FeatureLayer;
+  }
+
+  componentDidRender(): void {
+    if (this._notice && !this._layer?.editingEnabled) {
+      this._notice.open = true;
     }
+  }
+
+  componentShouldUpdate(n: any, o:any, name: any): boolean {
+    console.log("=======================================componentShouldUpdate==================================================")
+    console.log(`new: ${n}`)
+    console.log(`old: ${o}`)
+    console.log(`name: ${name}`)
+    return true;
   }
 
   /**
@@ -215,32 +246,83 @@ export class EditCard {
   render() {
     // This is a temp workaround hopefully...this._editingDisabled should reflect the current state but does not
     // when you use MULTI edit mode...is fine in SINGLE
-    const editDisabled = this.graphics?.length > 0 && this.graphics[0] ?
-      !(this.graphics[0].layer as __esri.FeatureLayer).editingEnabled : true;
+    const editDisabled = !this._layer?.editingEnabled;
+    //const backButtonClass = editDisabled ? "" : "display-none";
+    //const backButtonClass = "";
 
+    // console.log("this.editMode")
+    // console.log(this.editMode)
+    // console.log("this._isCreatingFeatures")
+    // console.log(this._isCreatingFeatures)
+    // console.log("this._editor?.viewModel.syncing")
+    // console.log(this._editor?.viewModel.syncing)
+
+    //let backButtonClass = "";
+    //let backButtonContainerClass = "display-flex";
+
+    console.log("=======================================RENDER==================================================")
+    console.log(`this._isCreatingFeatures: ${this._isCreatingFeatures}`)
+
+    console.log(`this._featureTemplatesViewModelState: ${this._featureTemplatesViewModelState}`)
+    console.log(`this._editor.viewModel.featureTemplatesViewModel.state: ${this._editor?.viewModel?.featureTemplatesViewModel.state}`)
+
+    console.log(`this._sketchViewModelState: ${this._sketchViewModelState}`)
+    console.log(`this._editor.viewModel.sketchViewModel.state: ${this._editor?.viewModel?.sketchViewModel.state}`)
+
+    console.log(`this._featureFormViewModelState: ${this._featureFormViewModelState}`)
+    console.log(`this._editor.viewModel.featureFormViewModel.state: ${this._editor?.viewModel?.featureFormViewModel.state}`)
+
+    if (this.editMode === EEditMode.ADD && (
+      (this._isCreatingFeatures && this._featureTemplatesViewModelState === "ready") ||
+      (this._sketchViewModelState === "active" && this._isCreatingFeatures) ||
+      this._sketchViewModelState === "ready"
+    )) {
+      console.log("Show back button")
+    } else {
+      //backButtonClass = "display-none";
+      //backButtonContainerClass = "display-none";
+      console.log("DO NOT Show back button")
+    }
     return (
       <Host>
         <div class="position-relative">
           {
             editDisabled ? (
               <calcite-notice
+                closable={true}
                 kind="warning"
+                onCalciteNoticeClose={() => this._closeEdit()}
                 open={true}
-                slot="content-top"
+                ref={(el) => this._notice = el}
                 width="full"
               >
                 <div slot="message">
                   {this._translations.enableEditing}
                 </div>
               </calcite-notice>
-            ) : undefined
+            ) : ((this.editMode === EEditMode.ADD && !this._isCreatingFeatures) || this.editMode === EEditMode.UPDATE) ? (
+                <div
+                  id="feature-form"
+                  ref={(el) => this._editContainer = el}
+                />
+            ) : (
+                  <div>
+                    <calcite-action
+                      appearance="solid"
+                      aria-label="Back"
+                      class={"back-button hydrated"}
+                      icon="chevron-left" // needs to handle rtl
+                      //onClick={() => this._backClicked()}
+                      scale="s"
+                      text=""
+                    />
+                    <div
+                      id="feature-form"
+                      ref={(el) => this._editContainer = el}
+                    />
+                  </div>
+            )
           }
-          <div slot="content">
-            <div
-              id="feature-form"
-              ref={(el) => this._editContainer = el}
-            />
-          </div>
         </div>
       </Host>
     );
@@ -272,13 +354,21 @@ export class EditCard {
    * @returns void
    */
   protected _initEditorWidget(): void {
-    if (this.mapView && this.graphics && this.graphics.length > 0 && this.graphics[0]) {
+    //console.log("_initEditorWidget")
+    if (this.mapView && this._editContainer && (this.graphics && (this.graphics.length > 0 && this.graphics[0]) || this.editMode === EEditMode.ADD) ) {
+    //console.log("IN _initEditorWidget")
+
       if (this._editor) {
         this._editor.destroy()
       }
+      console.log(this.editMode === EEditMode.UPDATE ? "update" : "create-features")
       const container = document.createElement("div");
       this._editor = new this.Editor({
-        allowedWorkflows: "update",
+        allowedWorkflows: this.editMode === EEditMode.UPDATE ? "update" : "create-features",
+        layerInfos: this.editMode === EEditMode.ADD ? [{
+          layer: this._layer,
+          attachmentsOnUpdateEnabled: false
+        }] : undefined,
         view: this.mapView,
         visibleElements: {
           snappingControls: false,
@@ -303,19 +393,161 @@ export class EditCard {
         () => this._editor.viewModel.state === "ready",
         () => {
           if (this._shouldClose) {
-            this.closeEdit.emit();
-            this._shouldClose = false;
+            this._closeEdit();
           }
-          if (this.graphicIndex > -1 && this.graphics.length > 0 && this.open && !this._shouldClose) {
+          if (this.editMode === EEditMode.UPDATE && this.graphicIndex > -1 && this.graphics.length > 0 && this.open && !this._shouldClose) {
             void this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
             this._shouldClose = true;
           }
         }
       );
 
+      this.reactiveUtils.when(
+        () => this._editor.viewModel.state === "editing-new-feature",
+        () => {
+          console.log("editing-new-feature")
+        }
+      );
+
+      this.reactiveUtils.when(
+        () => this._editor.viewModel.state === "editing-existing-feature",
+        () => {
+          console.log("editing-existing-feature")
+        }
+      );
+
+      this.reactiveUtils.when(
+        () => this._editor.viewModel.state === "awaiting-update-feature-candidate",
+        () => {
+          console.log("awaiting-update-feature-candidate")
+        }
+      );
+
+      this.reactiveUtils.when(
+        () => this._editor.viewModel.state === "awaiting-feature-creation-info",
+        () => {
+          console.log("awaiting-feature-creation-info")
+        }
+      );
+
+      this.reactiveUtils.when(
+        () => this._editor.viewModel.state === "awaiting-feature-to-update",
+        () => {
+          console.log("awaiting-feature-to-update")
+        }
+      );
+
+      this.reactiveUtils.when(
+        () => this._editor.viewModel.state === "awaiting-feature-to-create",
+        () => {
+          console.log("awaiting-feature-to-create")
+        }
+      );
+
+      this.reactiveUtils.when(
+        () => this._editor.viewModel.state === "creating-features",
+        () => {
+          this._isCreatingFeatures = true;
+          console.log("creating-features")
+        }
+      );
+
+      this.reactiveUtils.when(
+        () => this._editor.viewModel.featureTemplatesViewModel.state === "disabled",
+        () => {
+          this._featureTemplatesViewModelState = "disabled";
+          console.log("featureTemplatesViewModel disabled")
+        }
+      );
+
+      this.reactiveUtils.when(
+        () => this._editor.viewModel.featureTemplatesViewModel.state === "ready",
+        () => {
+          this._featureTemplatesViewModelState = "ready";
+          console.log("featureTemplatesViewModel ready")
+        }
+      );
+
+      this.reactiveUtils.when(
+        () => this._editor.viewModel.featureTemplatesViewModel.state === "loading",
+        () => {
+          this._featureTemplatesViewModelState = "loading";
+          console.log("featureTemplatesViewModel loading")
+        }
+      );
+
+      this.reactiveUtils.when(
+        () => this._editor.viewModel.featureFormViewModel.state === "disabled",
+        () => {
+          this._featureFormViewModelState = "disabled";
+          console.log("featureFormViewModel disabled")
+        }
+      );
+
+      this.reactiveUtils.when(
+        () => this._editor.viewModel.featureFormViewModel.state === "ready",
+        () => {
+          this._featureFormViewModelState = "ready";
+          console.log("featureFormViewModel ready")
+        }
+      );
+
+      this.reactiveUtils.when(
+        () => this._editor.viewModel.sketchViewModel.state === "active",
+        () => {
+          this._sketchViewModelState = "active";
+          this._isCreatingFeatures = true;
+          console.log("sketchViewModel active")
+        }
+      );
+
+      this.reactiveUtils.when(
+        () => this._editor.viewModel.sketchViewModel.state === "disabled",
+        () => {
+          this._sketchViewModelState = "disabled";
+          this._isCreatingFeatures = false;
+          console.log("sketchViewModel disabled")
+        }
+      );
+
+      this.reactiveUtils.when(
+        () => this._editor.viewModel.sketchViewModel.state === "ready",
+        () => {
+          this._sketchViewModelState = "ready";
+          this._isCreatingFeatures = false;
+          console.log("sketchViewModel ready")
+        }
+      );
+
+      this._editor.viewModel.featureFormViewModel.on("value-change", () => {
+        this._featureFormViewModelState = "value-change";
+        console.log("featureFormViewModel value-change")
+      })
+
+      this._editor.viewModel.featureFormViewModel.on("submit", () => {
+        this._featureFormViewModelState = "submit";
+        console.log("featureFormViewModel submit")
+      })
+
+      this._editor.viewModel.featureTemplatesViewModel.on("select", () => {
+        this._featureTemplatesViewModelState = "select"
+        console.log("featureFormViewModel select")
+      });
+
       // had issues with destroy before adding like this
       this._editContainer.appendChild(container);
     }
+  }
+
+  protected _featureFormViewModelState: "select" | "ready" | "disabled" | "value-change" | "submit";
+
+  protected _sketchViewModelState: "ready" | "active" | "disabled";
+
+  protected _featureTemplatesViewModelState: "ready" | "disabled" | "loading" | "select";
+
+  protected _closeEdit(): void {
+    this.closeEdit.emit();
+    this._shouldClose = false;
   }
 
   /**

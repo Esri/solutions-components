@@ -30,6 +30,11 @@ export enum ELayoutMode {
   VERTICAL = "VERTICAL"
 }
 
+export enum EEditMode {
+  ADD = "ADD",
+  UPDATE = "UPDATE"
+}
+
 /**
  * Resource update types
  */

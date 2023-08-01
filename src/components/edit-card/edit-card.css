@@ -47,8 +47,28 @@
   position: relative;
 }
 
+.position-absolute {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
 .esri-editor__prompt--danger {
   position: relative !important;
   width: 100% !important;
   background-color: var(--calcite-ui-foreground-1) !important;
+}
+
+.back-button {
+  height: 50px;
+  border-style: solid;
+  border-color: var(--calcite-ui-border-3);
+  border-block-end-color: var(--calcite-ui-border-3);
+  border-block-end-width: 2px;
+  border-block-end-style: solid;
+  border-block-start-width: 0px;
+  border-inline-start-width: 0px;
+  border-inline-end-width: 1px;
 }

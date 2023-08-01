@@ -24,6 +24,9 @@
 - calcite-shell
 - [info-card](../info-card)
 - calcite-notice
+- calcite-icon
+- calcite-fab
+- [edit-card](../edit-card)
 
 ### Graph
 ```mermaid
@@ -31,6 +34,9 @@ graph TD;
   card-manager --> calcite-shell
   card-manager --> info-card
   card-manager --> calcite-notice
+  card-manager --> calcite-icon
+  card-manager --> calcite-fab
+  card-manager --> edit-card
   info-card --> calcite-shell
   info-card --> calcite-loader
   info-card --> calcite-button
@@ -40,10 +46,14 @@ graph TD;
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   edit-card --> calcite-notice
+  edit-card --> calcite-action
   calcite-notice --> calcite-icon
+  calcite-action --> calcite-loader
+  calcite-action --> calcite-icon
   calcite-alert --> calcite-icon
   calcite-alert --> calcite-chip
   calcite-chip --> calcite-icon
+  calcite-fab --> calcite-button
   crowdsource-manager --> card-manager
   style card-manager fill:#f9f,stroke:#333,stroke-width:4px
 ```

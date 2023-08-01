@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EDrawMode, EExpandType, IExportInfos, IInventoryItem, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
+import { DistanceUnit, EDrawMode, EEditMode, EExpandType, IExportInfos, IInventoryItem, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BufferTools {
@@ -64,6 +64,10 @@ export namespace Components {
     interface DeductCalculator {
     }
     interface EditCard {
+        /**
+          * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "editMode": EEditMode;
         /**
           * The index of the current graphic
          */
@@ -139,6 +143,11 @@ export namespace Components {
         "value": any;
     }
     interface LayerTable {
+        /**
+          * Get the current layer view
+          * @returns Promise that resolves with the current layer view
+         */
+        "getLayerView": () => Promise<__esri.FeatureLayerView>;
         /**
           * Get the selected graphics
           * @returns Promise that resolves when the operation is complete
@@ -980,6 +989,10 @@ declare namespace LocalJSX {
         "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<string>) => void;
     }
     interface EditCard {
+        /**
+          * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "editMode"?: EEditMode;
         /**
           * The index of the current graphic
          */

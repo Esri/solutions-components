@@ -202,6 +202,16 @@ export class LayerTable {
   //--------------------------------------------------------------------------
 
   /**
+   * Get the current layer view
+   *
+   * @returns Promise that resolves with the current layer view
+   */
+  @Method()
+  async getLayerView(): Promise<__esri.FeatureLayerView> {
+    return this._layerView;
+  }
+
+  /**
    * Get the selected graphics
    *
    * @returns Promise that resolves when the operation is complete

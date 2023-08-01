@@ -21,6 +21,16 @@
 
 ## Methods
 
+### `getLayerView() => Promise<__esri.FeatureLayerView>`
+
+Get the current layer view
+
+#### Returns
+
+Type: `Promise<FeatureLayerView>`
+
+Promise that resolves with the current layer view
+
 ### `getSelectedGraphics() => Promise<__esri.Graphic[]>`
 
 Get the selected graphics

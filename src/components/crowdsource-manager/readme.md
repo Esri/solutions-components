@@ -75,6 +75,9 @@ graph TD;
   card-manager --> calcite-shell
   card-manager --> info-card
   card-manager --> calcite-notice
+  card-manager --> calcite-icon
+  card-manager --> calcite-fab
+  card-manager --> edit-card
   info-card --> calcite-shell
   info-card --> calcite-loader
   info-card --> calcite-button
@@ -82,10 +85,12 @@ graph TD;
   info-card --> edit-card
   info-card --> calcite-alert
   edit-card --> calcite-notice
+  edit-card --> calcite-action
   calcite-notice --> calcite-icon
   calcite-alert --> calcite-icon
   calcite-alert --> calcite-chip
   calcite-chip --> calcite-icon
+  calcite-fab --> calcite-button
   layer-table --> calcite-shell
   layer-table --> calcite-panel
   layer-table --> calcite-loader

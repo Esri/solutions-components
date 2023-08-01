@@ -154,6 +154,7 @@ export class InfoCard {
   async closeEdit(): Promise<void> {
     this._editRecordOpen = false;
   }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
