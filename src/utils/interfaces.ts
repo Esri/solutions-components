@@ -167,9 +167,9 @@ export interface IValueChange {
 }
 
 /**
- * Layer id and title key value pair
+ * Layer or table id and title key value pair
  */
-export interface ILayerHash {
+export interface IMapItemHash {
   [key: string]: string;
 }
 

@@ -212,7 +212,7 @@ export class RefineSelection {
                 mapView={this.mapView}
                 onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
                 ref={(el) => { this._layerPicker = el }}
-                selectedLayerIds={[this._refineLayer.layer.id]}
+                selectedIds={[this._refineLayer.layer.id]}
               />
             </calcite-label>
             <calcite-popover

@@ -568,7 +568,7 @@ export class MapSelectTools {
             enabledLayerIds={this.selectionLayerIds}
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
-            selectedLayerIds={this.layerViews.map(l => l.layer.id)}
+            selectedIds={this.layerViews.map(l => l.layer.id)}
           />
         </div>
       </div>
@@ -643,7 +643,7 @@ export class MapSelectTools {
             enabledLayerIds={this.enabledLayerIds}
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => this._inputLayerSelectionChange(evt)}
-            selectedLayerIds={this.selectLayerView ? [this.selectLayerView.layer.id] : this.selectionSet ? [this.selectionSet.layerView.layer.id] : []}
+            selectedIds={this.selectLayerView ? [this.selectLayerView.layer.id] : this.selectionSet ? [this.selectionSet.layerView.layer.id] : []}
           />
         </calcite-label>
       </div>
