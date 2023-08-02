@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property   | Attribute  | Description                                              | Type      | Default |
-| ---------- | ---------- | -------------------------------------------------------- | --------- | ------- |
-| `disabled` | `disabled` | boolean: Controls the enabled/disabled state of download | `boolean` | `false` |
+| Property                  | Attribute                     | Description                                              | Type      | Default     |
+| ------------------------- | ----------------------------- | -------------------------------------------------------- | --------- | ----------- |
+| `defaultNumLabelsPerPage` | `default-num-labels-per-page` | number: The default number of labels per page to export  | `number`  | `undefined` |
+| `disabled`                | `disabled`                    | boolean: Controls the enabled/disabled state of download | `boolean` | `false`     |
 
 
 ## Methods

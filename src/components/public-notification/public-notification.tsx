@@ -74,6 +74,11 @@ export class PublicNotification {
   @Prop() defaultBufferUnit: DistanceUnit;
 
   /**
+   * number: The default number of labels per page to export
+   */
+  @Prop() defaultNumLabelsPerPage;
+
+  /**
    * The effect that will be applied when featureHighlightEnabled is true
    *
    * esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
@@ -1029,6 +1034,7 @@ export class PublicNotification {
         </div>
         <div class="padding-sides-1">
           <pdf-download
+            defaultNumLabelsPerPage={this.defaultNumLabelsPerPage}
             disabled={!this._downloadActive}
             ref={(el) => { this._downloadTools = el }}
           />
