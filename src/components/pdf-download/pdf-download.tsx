@@ -43,6 +43,11 @@ export class PdfDownload {
   //--------------------------------------------------------------------------
 
   /**
+   * number: The default number of labels per page to export
+   */
+  @Prop() defaultNumLabelsPerPage: number;
+
+  /**
    * boolean: Controls the enabled/disabled state of download
    */
   @Prop() disabled = false;
@@ -239,7 +244,7 @@ export class PdfDownload {
       option.value = l;
       option.innerHTML = this._getLabelSizeText(l);
       this._labelInfoElement.appendChild(option);
-      if (i === 0) {
+      if (this.defaultNumLabelsPerPage ? parseInt(l.descriptionPDF.labelsPerPageDisplay, 10) === this.defaultNumLabelsPerPage : i === 0) {
         // Setting selected wasn't enough to trigger it being the 'selectedOption'
         option.selected = true;
         this._labelInfoElement.selectedOption = option;

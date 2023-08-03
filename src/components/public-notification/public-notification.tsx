@@ -74,6 +74,16 @@ export class PublicNotification {
   @Prop() defaultBufferUnit: DistanceUnit;
 
   /**
+   * string: The default value to use for the export title
+   */
+  @Prop() defaultExportTitle = "";
+
+  /**
+   * number: The default number of labels per page to export
+   */
+  @Prop() defaultNumLabelsPerPage;
+
+  /**
    * The effect that will be applied when featureHighlightEnabled is true
    *
    * esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
@@ -265,9 +275,14 @@ export class PublicNotification {
   protected _mediaQuery: MediaQueryList;
 
   /**
+   * Component that contains the text to be used as the title for PDF pages
+   */
+  protected _titleElement: HTMLCalciteInputTextElement;
+
+  /**
    * Text to be used as title on PDF pages
    */
-  protected _title: HTMLCalciteInputTextElement;
+  protected _titleValue = undefined;
 
   /**
    * number: The number of selected features
@@ -1017,6 +1032,7 @@ export class PublicNotification {
   protected _getExportOptions(): VNode {
     const displayClass = this._exportType === EExportType.PDF ? "display-block" : "display-none";
     const titleOptionsClass = this._addTitle ? "display-block" : "display-none";
+    const title = this._titleValue !== undefined ? this._titleValue : this.defaultExportTitle ? this.defaultExportTitle : "";
     return (
       <div class={displayClass}>
         {this._getLabel(this._translations.pdfOptions, true)}
@@ -1029,6 +1045,7 @@ export class PublicNotification {
         </div>
         <div class="padding-sides-1">
           <pdf-download
+            defaultNumLabelsPerPage={this.defaultNumLabelsPerPage}
             disabled={!this._downloadActive}
             ref={(el) => { this._downloadTools = el }}
           />
@@ -1050,8 +1067,10 @@ export class PublicNotification {
           {this._getLabel(this._translations.title, true, "")}
           <calcite-input-text
             class="padding-sides-1"
+            onCalciteInputTextInput={() => this._changeTitle()}
             placeholder={this._translations.titlePlaceholder}
-            ref={(el) => { this._title = el }}
+            ref={(el) => { this._titleElement = el }}
+            value={title}
           />
         </div>
 
@@ -1147,6 +1166,13 @@ export class PublicNotification {
         </div>
       </div>
     )
+  }
+
+  /**
+   * Store the user defined title value
+   */
+  protected _changeTitle(): void {
+    this._titleValue = this._titleElement.value;
   }
 
   /**
@@ -1281,7 +1307,7 @@ export class PublicNotification {
       await this._downloadTools.downloadPDF(
         exportInfos,
         this._removeDuplicates.checked,
-        this._addTitle ? this._title.value : "",
+        this._addTitle ? this._titleElement.value : "",
         initialImageDataUrl
       );
       this._fetchingData = false;
