@@ -346,6 +346,10 @@ export namespace Components {
     }
     interface PdfDownload {
         /**
+          * number: The default number of labels per page to export
+         */
+        "defaultNumLabelsPerPage": number;
+        /**
           * boolean: Controls the enabled/disabled state of download
          */
         "disabled": boolean;
@@ -392,6 +396,14 @@ export namespace Components {
           * number: The default value to show for the buffer unit ("feet"|"meters"|"miles"|"kilometers")
          */
         "defaultBufferUnit": DistanceUnit;
+        /**
+          * string: The default value to use for the export title
+         */
+        "defaultExportTitle": string;
+        /**
+          * number: The default number of labels per page to export
+         */
+        "defaultNumLabelsPerPage": any;
         /**
           * The effect that will be applied when featureHighlightEnabled is true  esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
          */
@@ -1260,6 +1272,10 @@ declare namespace LocalJSX {
     }
     interface PdfDownload {
         /**
+          * number: The default number of labels per page to export
+         */
+        "defaultNumLabelsPerPage"?: number;
+        /**
           * boolean: Controls the enabled/disabled state of download
          */
         "disabled"?: boolean;
@@ -1289,6 +1305,14 @@ declare namespace LocalJSX {
           * number: The default value to show for the buffer unit ("feet"|"meters"|"miles"|"kilometers")
          */
         "defaultBufferUnit"?: DistanceUnit;
+        /**
+          * string: The default value to use for the export title
+         */
+        "defaultExportTitle"?: string;
+        /**
+          * number: The default number of labels per page to export
+         */
+        "defaultNumLabelsPerPage"?: any;
         /**
           * The effect that will be applied when featureHighlightEnabled is true  esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
          */
