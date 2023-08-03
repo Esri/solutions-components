@@ -389,6 +389,10 @@ export namespace Components {
          */
         "defaultBufferUnit": DistanceUnit;
         /**
+          * string: The default value to use for the export title
+         */
+        "defaultExportTitle": string;
+        /**
           * number: The default number of labels per page to export
          */
         "defaultNumLabelsPerPage": any;
@@ -1285,6 +1289,10 @@ declare namespace LocalJSX {
           * number: The default value to show for the buffer unit ("feet"|"meters"|"miles"|"kilometers")
          */
         "defaultBufferUnit"?: DistanceUnit;
+        /**
+          * string: The default value to use for the export title
+         */
+        "defaultExportTitle"?: string;
         /**
           * number: The default number of labels per page to export
          */
