@@ -16,7 +16,7 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode } from "@stencil/core";
 import { EDrawMode, ESelectionMode, EWorkflowType, IRefineOperation, ISelectionSet } from "../../utils/interfaces";
-import { getIdSets, getMapLayerView, highlightAllFeatures } from "../../utils/mapViewUtils";
+import { getIdSets, getFeatureLayerView, highlightAllFeatures } from "../../utils/mapViewUtils";
 import { queryFeaturesByGeometry } from "../../utils/queryUtils";
 import RefineSelection_T9n from "../../assets/t9n/refine-selection/resources.json";
 import state from "../../utils/publicNotificationStore";
@@ -386,7 +386,7 @@ export class RefineSelection {
     refineInfo[id] = {
       addIds: [],
       removeIds: [],
-      layerView: await getMapLayerView(this.mapView, id)
+      layerView: await getFeatureLayerView(this.mapView, id)
     };
 
     if (selectionSet) {

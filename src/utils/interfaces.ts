@@ -453,7 +453,8 @@ export interface IExportInfos {
 }
 
 export interface IExportInfo {
-  ids: number[],
-  layerView: __esri.FeatureLayerView
-  selectionSetNames: string[]
+  ids: number[];
+  layer?: __esri.FeatureLayer;
+  layerView?: __esri.FeatureLayerView;
+  selectionSetNames: string[];
 }

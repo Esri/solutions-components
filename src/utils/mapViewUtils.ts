@@ -54,7 +54,6 @@ export async function getMapTableHash(
   let tableHash = {};
   await mapView.when(() => {
     tableHash = mapView.map.allTables.toArray().reduce((prev, cur) => {
-      console.log(cur.type)
       prev[cur.id] = cur.title;
       return prev;
     }, {});
@@ -116,11 +115,11 @@ export async function getMapTableIds(
  * @returns Promise resolving with the fetched layer view
  *
  */
-export async function getMapLayerView(
+export async function getFeatureLayerView(
   mapView: __esri.MapView,
   id: string
 ): Promise<__esri.FeatureLayerView> {
-  const layer = await getMapLayer(mapView, id);
+  const layer = await getLayer(mapView, id);
   return layer ? await mapView.whenLayerView(layer) : undefined;
 }
 
@@ -133,7 +132,7 @@ export async function getMapLayerView(
  * @returns Promise resolving with the fetched layer
  *
  */
-export async function getMapLayer(
+export async function getLayer(
   mapView: __esri.MapView,
   id: string
 ): Promise<__esri.FeatureLayer> {

@@ -45,9 +45,9 @@ export namespace Components {
     }
     interface CardManager {
         /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+          * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
          */
-        "layerView": __esri.FeatureLayerView;
+        "layer": __esri.FeatureLayer;
         /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -977,9 +977,9 @@ declare namespace LocalJSX {
     }
     interface CardManager {
         /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+          * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
          */
-        "layerView"?: __esri.FeatureLayerView;
+        "layer"?: __esri.FeatureLayer;
         /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
