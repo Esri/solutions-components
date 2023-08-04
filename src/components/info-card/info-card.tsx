@@ -264,10 +264,13 @@ export class InfoCard {
           closeButton: false,
           heading: false
         },
-        view: this.mapView
+        view: this.mapView,
+        viewModel: {
+          featureViewModelAbilities: {
+            attachmentsContent: true
+          }
+        }
       });
-    } else {
-      this._features.view = this.mapView;
     }
   }
 
