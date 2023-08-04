@@ -384,6 +384,19 @@ export class LayerTable {
           <calcite-tooltip label="" placement="bottom" reference-element="trash">
             <span>{this._translations.delete}</span>
           </calcite-tooltip>
+          <calcite-action
+            appearance="solid"
+            disabled={!featuresSelected}
+            icon="erase"
+            id="erase"
+            onClick={() => this._clearSelection()}
+            text={this._translations.clearSelection}
+            text-enabled="true"
+            textEnabled={true}
+          />
+          <calcite-tooltip label="" placement="bottom" reference-element="erase">
+            <span>{this._translations.clearSelection}</span>
+          </calcite-tooltip>
         </calcite-action-bar>
         <calcite-dropdown>
           <calcite-action
@@ -415,12 +428,6 @@ export class LayerTable {
                 this._showOnlySelected ? this._translations.showAll :
                   this._translations.showSelected
               }
-            </calcite-dropdown-item>
-            <calcite-dropdown-item
-              iconStart="erase"
-              onClick={() => this._clearSelection()}
-            >
-              {this._translations.clearSelection}
             </calcite-dropdown-item>
             <calcite-dropdown-item
               iconStart="refresh"
