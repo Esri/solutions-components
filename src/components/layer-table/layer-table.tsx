@@ -409,7 +409,7 @@ export class LayerTable {
             </calcite-dropdown-item>
             <calcite-dropdown-item
               iconStart="selected-items-filter"
-              onClick={() => this._showSelected()}
+              onClick={() => this._toggleShowSelected()}
             >
               {
                 this._showOnlySelected ? this._translations.showAll :
@@ -479,6 +479,13 @@ export class LayerTable {
 
       this._table.highlightIds.on("change", () => {
         this._selectedIndexes = this._table.highlightIds.toArray();
+        if (this._showOnlySelected) {
+          if (this._selectedIndexes.length > 0) {
+            this._table.filterBySelection();
+          } else {
+            this._toggleShowSelected();
+          }
+        }
         this.featureSelectionChange.emit(this._selectedIndexes);
       });
     }
@@ -556,7 +563,7 @@ export class LayerTable {
    *
    * @returns void
    */
-  protected _showSelected(): void {
+  protected _toggleShowSelected(): void {
     this._showOnlySelected = !this._showOnlySelected;
     if (this._showOnlySelected) {
       this._table.filterBySelection();
