@@ -505,6 +505,8 @@ export class LayerTable {
    */
   protected _resetTable(): void {
     if (this._layer && this._table) {
+      this._clearSelection();
+      this.featureSelectionChange.emit(this._selectedIndexes);
       this._table.layer = this._layer;
       this._editEnabled = this._layer.editingEnabled;
       this._table.view = this.mapView;
