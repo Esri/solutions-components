@@ -262,13 +262,10 @@ export class InfoCard {
         visibleElements: {
           actionBar: false,
           closeButton: false,
-          heading: false
+          heading: true
         },
-        view: this.mapView,
         viewModel: {
-          featureViewModelAbilities: {
-            attachmentsContent: true
-          }
+          view: this.mapView
         }
       });
     }
