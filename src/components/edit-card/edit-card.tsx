@@ -322,7 +322,6 @@ export class EditCard {
       this._activeWorkflowHandle = this.reactiveUtils.watch(
         () => (this._editor.viewModel.activeWorkflow as any)?.activeWorkflow,
         (activeWorkflow) => {
-          console.log("activeWorkflow.activeWorkflow.type: ", activeWorkflow?.type)
           if (activeWorkflow?.type === "update-table-record" || activeWorkflow?.type === "create-features") {
             this._shouldClose = false;
           }
