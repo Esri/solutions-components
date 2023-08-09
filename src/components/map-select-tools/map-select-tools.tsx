@@ -16,7 +16,7 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import { highlightFeatures, getMapLayerView, goToSelection } from "../../utils/mapViewUtils";
+import { highlightFeatures, getFeatureLayerView, goToSelection } from "../../utils/mapViewUtils";
 import { getQueryGeoms, queryFeaturesByGeometry, queryObjectIds } from "../../utils/queryUtils";
 import { DistanceUnit, EWorkflowType, ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
 import state from "../../utils/publicNotificationStore";
@@ -568,7 +568,7 @@ export class MapSelectTools {
             enabledLayerIds={this.selectionLayerIds}
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
-            selectedLayerIds={this.layerViews.map(l => l.layer.id)}
+            selectedIds={this.layerViews.map(l => l.layer.id)}
           />
         </div>
       </div>
@@ -643,7 +643,7 @@ export class MapSelectTools {
             enabledLayerIds={this.enabledLayerIds}
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => this._inputLayerSelectionChange(evt)}
-            selectedLayerIds={this.selectLayerView ? [this.selectLayerView.layer.id] : this.selectionSet ? [this.selectionSet.layerView.layer.id] : []}
+            selectedIds={this.selectLayerView ? [this.selectLayerView.layer.id] : this.selectionSet ? [this.selectionSet.layerView.layer.id] : []}
           />
         </calcite-label>
       </div>
@@ -1159,7 +1159,7 @@ export class MapSelectTools {
   ): Promise<void> {
     if (Array.isArray(evt.detail) && evt.detail.length > 0) {
       const layerPromises = evt.detail.map(id => {
-        return getMapLayerView(this.mapView, id)
+        return getFeatureLayerView(this.mapView, id)
       });
 
       return Promise.all(layerPromises).then((layerViews) => {
@@ -1191,7 +1191,7 @@ export class MapSelectTools {
   ): Promise<void> {
     const id: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
     if (!this.selectLayerView || id !== this.selectLayerView.layer.id) {
-      this.selectLayerView = await getMapLayerView(this.mapView, id);
+      this.selectLayerView = await getFeatureLayerView(this.mapView, id);
       this._updateLabel();
 
       this._bufferGeometry ? await this._selectFeatures([this._bufferGeometry]) :

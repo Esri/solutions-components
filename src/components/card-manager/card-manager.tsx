@@ -18,7 +18,7 @@ import { Component, Element, Host, h, Listen, Prop, State } from "@stencil/core"
 import CardManager_T9n from "../../assets/t9n/card-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { queryFeaturesByID } from "../../utils/queryUtils";
-import { getMapLayerView } from "../../utils/mapViewUtils";
+import { getLayer } from "../../utils/mapViewUtils";
 
 @Component({
   tag: "card-manager",
@@ -40,9 +40,9 @@ export class CardManager {
   //--------------------------------------------------------------------------
 
   /**
-   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
    */
-  @Prop() layerView: __esri.FeatureLayerView;
+  @Prop() layer: __esri.FeatureLayer;
 
   /**
    * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -99,7 +99,7 @@ export class CardManager {
     const ids = evt.detail;
     this._cardLoading = true;
     // only query if we have some ids...query with no ids will result in all features being returned
-    const featureSet = ids.length > 0 ? await queryFeaturesByID(ids, this.layerView.layer, [], false, this.mapView.spatialReference) : [];
+    const featureSet = ids.length > 0 ? await queryFeaturesByID(ids, this.layer, [], false, this.mapView.spatialReference) : [];
     this._graphics = featureSet;
     this._cardLoading = false;
   }
@@ -112,7 +112,7 @@ export class CardManager {
     evt: CustomEvent
   ): Promise<void> {
     const id: string = evt.detail[0];
-    this.layerView = await getMapLayerView(this.mapView, id);
+    this.layer = await getLayer(this.mapView, id);
   }
 
   //--------------------------------------------------------------------------

@@ -15,7 +15,7 @@
  */
 
 import { queryExtent } from "./queryUtils";
-import { EWorkflowType, ILayerHash, ISelectionSet } from "./interfaces";
+import { EWorkflowType, IMapItemHash, ISelectionSet } from "./interfaces";
 
 /**
  * Gets the layer names from the current map
@@ -27,7 +27,7 @@ import { EWorkflowType, ILayerHash, ISelectionSet } from "./interfaces";
  */
 export async function getMapLayerHash(
   mapView: __esri.MapView
-): Promise<ILayerHash> {
+): Promise<IMapItemHash> {
   let layerHash = {};
   await mapView.when(() => {
     layerHash = mapView.map.allLayers.toArray().reduce((prev, cur) => {
@@ -38,6 +38,27 @@ export async function getMapLayerHash(
     }, {});
   });
   return layerHash;
+}
+
+/**
+ * Gets the table names from the current map
+ *
+ * @param mapView the map view to fetch the table names from
+ *
+ * @returns Promise resolving with an array of table names
+ *
+ */
+export async function getMapTableHash(
+  mapView: __esri.MapView
+): Promise<IMapItemHash> {
+  let tableHash = {};
+  await mapView.when(() => {
+    tableHash = mapView.map.allTables.toArray().reduce((prev, cur) => {
+      prev[cur.id] = cur.title;
+      return prev;
+    }, {});
+  });
+  return tableHash;
 }
 
 /**
@@ -64,6 +85,28 @@ export async function getMapLayerIds(
 }
 
 /**
+ * Gets the table names from the current map
+ *
+ * @param mapView the map view to fetch the table names from
+ *
+ * @returns Promise resolving with an array of table names
+ *
+ */
+export async function getMapTableIds(
+  mapView: __esri.MapView
+): Promise<string[]> {
+  // TODO...seems like its the same as the hash...see if I can remove this
+  let tableIds = [];
+  await mapView.when(() => {
+    tableIds = mapView.map.allTables.toArray().reduce((prev, cur) => {
+      prev.push(cur.id);
+      return prev;
+    }, []);
+  });
+  return tableIds;
+}
+
+/**
  * Get a layer view by id
  *
  * @param mapView the map view to fetch the layer from
@@ -72,11 +115,11 @@ export async function getMapLayerIds(
  * @returns Promise resolving with the fetched layer view
  *
  */
-export async function getMapLayerView(
+export async function getFeatureLayerView(
   mapView: __esri.MapView,
   id: string
 ): Promise<__esri.FeatureLayerView> {
-  const layer = await getMapLayer(mapView, id);
+  const layer = await getLayer(mapView, id);
   return layer ? await mapView.whenLayerView(layer) : undefined;
 }
 
@@ -89,13 +132,16 @@ export async function getMapLayerView(
  * @returns Promise resolving with the fetched layer
  *
  */
-export async function getMapLayer(
+export async function getLayer(
   mapView: __esri.MapView,
   id: string
 ): Promise<__esri.FeatureLayer> {
   let layers = [];
   await mapView.when(() => {
-    layers = mapView.map.allLayers.toArray().filter((l) => {
+    layers = [
+      ...mapView.map.allLayers.toArray(),
+      ...mapView.map.allTables.toArray()
+    ].filter((l) => {
       return l.id === id;
     });
   });
@@ -111,7 +157,6 @@ export async function getMapLayer(
  * @param updateExtent optional (default false) boolean to indicate if we should zoom to the extent
  *
  * @returns Promise resolving with the highlight handle
- *
  */
 export async function highlightFeatures(
   ids: number[],

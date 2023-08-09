@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
-import { getMapLayerHash, getMapLayerIds } from "../../utils/mapViewUtils";
+import { getMapLayerHash, getMapLayerIds, getMapTableHash, getMapTableIds } from "../../utils/mapViewUtils";
 import state from "../../utils/publicNotificationStore";
 
 @Component({
@@ -49,6 +49,12 @@ export class MapLayerPicker {
   @Prop() enabledLayerIds: string[] = [];
 
   /**
+   * string[]: Optional list of enabled table ids
+   *  If empty all tables will be available
+   */
+  @Prop() enabledTableIds: string[] = [];
+
+  /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
@@ -61,12 +67,17 @@ export class MapLayerPicker {
   /**
    * string[]: list of layer ids that have been selected by the end user
    */
-  @Prop({ mutable: true }) selectedLayerIds: string[] = [];
+  @Prop({ mutable: true }) selectedIds: string[] = [];
 
   /**
    * "s" | "m" | "l": scale to render the component
    */
   @Prop() scale: "s" | "m" | "l" = "m";
+
+  /**
+   * boolean: when true standalone tables will also be available
+   */
+  @Prop() showTables = true;
 
   /**
    * "select" | "combobox" | "dropdown": type of component to leverage
@@ -80,14 +91,14 @@ export class MapLayerPicker {
   //--------------------------------------------------------------------------
 
   /**
-   * string[]: list of layer ids from the map
+   * string[]: list of layer and table (if showTables is true) ids from the map
    */
-  @State() layerIds: string[] = [];
+  @State() ids: string[] = [];
 
   /**
    * string: lcurrent layer name to display when using "dropdown" type
    */
-  @State() selectedLayerName = "";
+  @State() selectedName = "";
 
   //--------------------------------------------------------------------------
   //
@@ -113,7 +124,11 @@ export class MapLayerPicker {
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
     await this._setLayers();
-    this._setSelectedLayer(this.layerIds[0]);
+    const hasLayers = Object.keys(state.layerNameHash).length > 0;
+    const hasTables = Object.keys(state.tableNameHash).length > 0 && this.showTables;
+    if (hasLayers || hasTables) {
+      this._setSelectedLayer(this.ids[0], hasLayers ? "layer" : "table");
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -145,9 +160,9 @@ export class MapLayerPicker {
    */
   async componentWillLoad(): Promise<void> {
     await this._setLayers();
-    if (this.layerIds.length > 0 || this.selectedLayerIds.length === 1) {
+    if (this.ids.length > 0 || this.selectedIds.length === 1) {
       this.layerSelectionChange.emit(
-        this.selectedLayerIds.length === 1 ? [this.selectedLayerIds[0]] : [this.layerIds[0]]
+        this.selectedIds.length === 1 ? [this.selectedIds[0]] : [this.ids[0]]
       );
     }
   }
@@ -174,12 +189,14 @@ export class MapLayerPicker {
    * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
    */
   async componentDidLoad(): Promise<void> {
-    if (this.layerIds.length > 0 || this.selectedLayerIds.length === 1) {
-      const id = this.selectedLayerIds.length === 1 ? this.selectedLayerIds[0] : this.layerIds[0];
+    if (this.ids.length > 0 || this.selectedIds.length === 1) {
+      const id = this.selectedIds.length === 1 ? this.selectedIds[0] : this.ids[0];
       if (this.type === "select") {
         this._layerElement.value = id;
       } else if (this.type === "dropdown") {
-        this.selectedLayerName = state.layerNameHash[id];
+        this.selectedName = Object.keys(state.layerNameHash).indexOf(id) > -1 ?
+          state.layerNameHash[id] : Object.keys(state.tableNameHash).indexOf(id) > -1 ?
+            state.tableNameHash[id] : "";
       }
     }
   }
@@ -205,7 +222,7 @@ export class MapLayerPicker {
         ref={(el) => { this._layerElement = el }}
         scale={this.scale}
       >
-        {this._addSelectMapLayersOptions()}
+        {this._getMapLayerOptions()}
       </calcite-select>
     );
   }
@@ -228,7 +245,7 @@ export class MapLayerPicker {
         scale={this.scale}
         selection-mode="single"
       >
-        {this._addComboboxMapLayersOptions()}
+        {this._getMapLayerOptions()}
       </calcite-combobox>
     );
   }
@@ -252,80 +269,64 @@ export class MapLayerPicker {
             width="full"
           >
             <div>
-              {this.selectedLayerName}
+              {this.selectedName}
             </div>
           </calcite-button>
         </calcite-action>
         <calcite-dropdown-group selection-mode="single">
-          {this._getDropdownItems()}
+          {this._getMapLayerOptions()}
         </calcite-dropdown-group>
       </calcite-dropdown>
     );
   }
 
   /**
-   * Hydrate a dropdown component with items to display the layer names
+   * Get the appropriate type of dom nodes for each valid layer or table
    *
-   * @returns Array of Dropdown items with layer names
+   * @returns Array of dom nodes with the names of the layers and optionally of the tables
    */
-  _getDropdownItems(): VNode[] {
-    return this.layerIds.reduce((prev, cur) => {
-      if (state.managedLayers.indexOf(state.layerNameHash[cur]) < 0 && (this.enabledLayerIds.length > 0 ? this.enabledLayerIds.indexOf(cur) > -1 : true)) {
-        prev.push(
-          (
-            <calcite-dropdown-item
-              onClick={() => void this._setSelectedLayer(cur)}
-            >
-              {state.layerNameHash[cur]}
-            </calcite-dropdown-item>
-          )
-        );
+  _getMapLayerOptions(): VNode[] {
+    return this.ids.reduce((prev, cur) => {
+      if (this._validLayer(cur)) {
+        prev.push(this._getItem(cur, "layer"));
+      } else if (this._validTable(cur)) {
+        prev.push(this._getItem(cur, "table"));
       }
       return prev;
     }, []);
+  }
+
+  /**
+   * Get the appropriate type of dom node for the current layer or table id
+   *
+   * @returns A dom node with the name of the layer or table
+   */
+  _getItem(
+    id: string,
+    itemType: "layer" | "table"
+  ): VNode {
+    const name = itemType === "layer" ? state.layerNameHash[id] : state.tableNameHash[id];
+    return this.type === "combobox" ? (<calcite-combobox-item textLabel={name} value={id} />) :
+      this.type === "select" ? (<calcite-option label={name} value={id} />) :
+        (
+          <calcite-dropdown-item
+            onClick={() => void this._setSelectedLayer(id, itemType)}
+          >
+            {name}
+          </calcite-dropdown-item>
+        );
   }
 
   /**
    * Store the layer name based on the user selection
    */
   _setSelectedLayer(
-    id: string
+    id: string,
+    type: "layer" | "table"
   ): void {
-    this.selectedLayerName = state.layerNameHash[id];
-    this.selectedLayerIds = [id];
-    this.layerSelectionChange.emit(this.selectedLayerIds);
-  }
-
-  /**
-   * Hydrate a select component with the ids of the layers in the map
-   *
-   * @returns Array of select options for the ids of the layers
-   */
-  _addSelectMapLayersOptions(): VNode[] {
-    return this.layerIds.reduce((prev, cur) => {
-      if (state.managedLayers.indexOf(state.layerNameHash[cur]) < 0 && (this.enabledLayerIds.length > 0 ? this.enabledLayerIds.indexOf(cur) > -1 : true)) {
-        prev.push(
-          (<calcite-option label={state.layerNameHash[cur]} value={cur} />)
-        );
-      }
-      return prev;
-    }, []);
-  }
-
-  /**
-   * Hydrate a combobox component with the ids of the layers in the map
-   *
-   * @returns Array of ComboBox items for the ids of the layers
-   */
-  _addComboboxMapLayersOptions(): VNode[] {
-    return this.layerIds.reduce((prev, cur) => {
-      if (state.managedLayers.indexOf(state.layerNameHash[cur]) < 0 && (this.enabledLayerIds.length > 0 ? this.enabledLayerIds.indexOf(cur) > -1 : true)) {
-        prev.push(
-          (<calcite-combobox-item textLabel={state.layerNameHash[cur]} value={cur} />)
-        );
-      }
-      return prev;
-    }, []);
+    this.selectedName = type === "layer" ? state.layerNameHash[id] : state.tableNameHash[id];
+    this.selectedIds = [id];
+    this.layerSelectionChange.emit(this.selectedIds);
   }
 
   /**
@@ -336,8 +337,12 @@ export class MapLayerPicker {
   async _setLayers(): Promise<void> {
     if (this.mapView) {
       const mapLayerIds = await getMapLayerIds(this.mapView);
-      this.layerIds = mapLayerIds.filter(n => this.enabledLayerIds?.length > 0 ? this.enabledLayerIds.indexOf(n) > -1 : true);
-      await this._initLayerHashState();
+      const mapTableIds = this.showTables ? await getMapTableIds(this.mapView) : [];
+      this.ids = [
+        ...mapLayerIds.filter(n => this.enabledLayerIds?.length > 0 ? this.enabledLayerIds.indexOf(n) > -1 : true),
+        ...mapTableIds.filter(n => this.enabledTableIds?.length > 0 ? this.enabledTableIds.indexOf(n) > -1 : true),
+      ];
+      await this._initStateHash();
     }
   }
 
@@ -346,10 +351,38 @@ export class MapLayerPicker {
    *
    * @returns Promise when the operation has completed
    */
-  protected async _initLayerHashState(): Promise<void> {
+  protected async _initStateHash(): Promise<void> {
     if (this.mapView) {
       state.layerNameHash = await getMapLayerHash(this.mapView);
+      state.tableNameHash = this.showTables ? await getMapTableHash(this.mapView) : {};
     }
+  }
+
+  /**
+   * Evaluate if the id exists in the current hash and verify if it should be excluded
+   *
+   * @returns boolean when true the layer will be used in the current layer picker type
+   */
+  protected _validLayer(
+    id: string
+  ): boolean {
+    const name = state.layerNameHash[id];
+    return name && state.managedLayers.indexOf(name) < 0 && (this.enabledLayerIds.length > 0 ?
+      this.enabledLayerIds.indexOf(id) > -1 : name);
+  }
+
+  /**
+   * Evaluate if the id exists in the current hash and verify if it should be excluded
+   *
+   * @returns boolean when true the table will be used in the current layer picker type
+   */
+  protected _validTable(
+    id: string
+  ): boolean {
+    const name = state.tableNameHash[id];
+    const validName = name && this.showTables;
+    return validName ? state.managedTables.indexOf(name) < 0 &&
+      (this.enabledTableIds.length > 0 ? this.enabledTableIds.indexOf(id) > -1 : true) : validName;
   }
 
   /**
@@ -360,8 +393,8 @@ export class MapLayerPicker {
   _layerSelectionChange(): void {
     const ids = Array.isArray(this._layerElement.value) ? this._layerElement.value : [this._layerElement.value];
     if (JSON.stringify(ids) !== JSON.stringify([""])) {
-      this.selectedLayerIds = ids;
-      this.layerSelectionChange.emit(this.selectedLayerIds);
+      this.selectedIds = ids;
+      this.layerSelectionChange.emit(this.selectedIds);
     }
   }
 }

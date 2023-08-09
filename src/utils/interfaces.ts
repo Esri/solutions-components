@@ -167,9 +167,9 @@ export interface IValueChange {
 }
 
 /**
- * Layer id and title key value pair
+ * Layer or table id and title key value pair
  */
-export interface ILayerHash {
+export interface IMapItemHash {
   [key: string]: string;
 }
 
@@ -453,7 +453,8 @@ export interface IExportInfos {
 }
 
 export interface IExportInfo {
-  ids: number[],
-  layerView: __esri.FeatureLayerView
-  selectionSetNames: string[]
+  ids: number[];
+  layer?: __esri.FeatureLayer;
+  layerView?: __esri.FeatureLayerView;
+  selectionSetNames: string[];
 }

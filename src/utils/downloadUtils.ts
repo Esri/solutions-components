@@ -669,7 +669,7 @@ export async function consolidateLabels(
 
   Object.keys(exportInfos).forEach(k => {
     const labelInfo: IExportInfo = exportInfos[k];
-    labelRequests.push(_prepareLabels(labelInfo.layerView.layer, labelInfo.ids, formatUsingLayerPopup, includeHeaderNames));
+    labelRequests.push(_prepareLabels(labelInfo.layerView?.layer || labelInfo.layer, labelInfo.ids, formatUsingLayerPopup, includeHeaderNames));
     if (isCSVExport) {
       // add the layer id as a temp value separator that we can use to split values for CSV export
       labelRequests.push(Promise.resolve([[k]]));

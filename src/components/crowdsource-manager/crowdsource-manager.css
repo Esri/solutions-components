@@ -52,11 +52,11 @@
   background-image: url('../../assets/data/images/grid.png');
 }
 
-.vertical-background {
+.horizontal-background {
   background-image: url('../../assets/data/images/horizontal.png');
 }
 
-.horizontal-background {
+.vertical-background {
   background-image: url('../../assets/data/images/vertical.png');
 }
 

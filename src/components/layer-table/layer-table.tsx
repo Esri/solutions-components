@@ -18,7 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, 
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { getMapLayerView, getMapLayerIds } from "../../utils/mapViewUtils";
+import { getLayer, getMapLayerIds } from "../../utils/mapViewUtils";
 import { queryFeaturesByID, queryAllIds } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { IExportInfos, IMapClick } from "../../utils/interfaces";
@@ -64,9 +64,9 @@ export class LayerTable {
   @State() _fetchingData = false;
 
   /**
-   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
    */
-  @State() _layerView: __esri.FeatureLayerView;
+  @State() _layer: __esri.FeatureLayer;
 
   /**
    * number[]: A list of indexes that are currently selected
@@ -173,7 +173,7 @@ export class LayerTable {
   async mapViewWatchHandler(): Promise<void> {
     this._fetchingData = true;
     const mapLayerIds = await getMapLayerIds(this.mapView);
-    this._layerView = await getMapLayerView(this.mapView, mapLayerIds[0]);
+    this._layer = await getLayer(this.mapView, mapLayerIds[0]);
     this._resetTable();
     this.reactiveUtils.on(
       () => this.mapView,
@@ -188,8 +188,8 @@ export class LayerTable {
   /**
    * watch for changes in layer view and verify if it has editing enabled
    */
-  @Watch("_layerView")
-  async _layerViewWatchHandler(): Promise<void> {
+  @Watch("_layer")
+  async _layerWatchHandler(): Promise<void> {
     this._fetchingData = true;
     this._resetTable();
     this._fetchingData = false;
@@ -243,7 +243,7 @@ export class LayerTable {
    * Renders the component.
    */
   render() {
-    if (!this._layerView) {
+    if (!this._layer) {
       return null;
     }
     const tableNodeClass = this._fetchingData ? "display-none" : "";
@@ -384,6 +384,19 @@ export class LayerTable {
           <calcite-tooltip label="" placement="bottom" reference-element="trash">
             <span>{this._translations.delete}</span>
           </calcite-tooltip>
+          <calcite-action
+            appearance="solid"
+            disabled={!featuresSelected}
+            icon="erase"
+            id="erase"
+            onClick={() => this._clearSelection()}
+            text={this._translations.clearSelection}
+            text-enabled="true"
+            textEnabled={true}
+          />
+          <calcite-tooltip label="" placement="bottom" reference-element="erase">
+            <span>{this._translations.clearSelection}</span>
+          </calcite-tooltip>
         </calcite-action-bar>
         <calcite-dropdown>
           <calcite-action
@@ -409,18 +422,12 @@ export class LayerTable {
             </calcite-dropdown-item>
             <calcite-dropdown-item
               iconStart="selected-items-filter"
-              onClick={() => this._showSelected()}
+              onClick={() => this._toggleShowSelected()}
             >
               {
                 this._showOnlySelected ? this._translations.showAll :
                   this._translations.showSelected
               }
-            </calcite-dropdown-item>
-            <calcite-dropdown-item
-              iconStart="erase"
-              onClick={() => this._clearSelection()}
-            >
-              {this._translations.clearSelection}
             </calcite-dropdown-item>
             <calcite-dropdown-item
               iconStart="refresh"
@@ -463,9 +470,9 @@ export class LayerTable {
    * @returns void
    */
   protected _getTable(node: HTMLDivElement): void {
-    if (this._layerView?.layer) {
+    if (this._layer) {
       this._table = new this.FeatureTable({
-        layer: this._layerView.layer,
+        layer: this._layer,
         view: this.mapView,
         //editingEnabled: this._editEnabled,
         highlightOnRowSelectEnabled: true,
@@ -479,6 +486,13 @@ export class LayerTable {
 
       this._table.highlightIds.on("change", () => {
         this._selectedIndexes = this._table.highlightIds.toArray();
+        if (this._showOnlySelected) {
+          if (this._selectedIndexes.length > 0) {
+            this._table.filterBySelection();
+          } else {
+            this._toggleShowSelected();
+          }
+        }
         this.featureSelectionChange.emit(this._selectedIndexes);
       });
     }
@@ -490,9 +504,11 @@ export class LayerTable {
    * @returns void
    */
   protected _resetTable(): void {
-    if (this._layerView?.layer && this._table) {
-      this._table.layer = this._layerView.layer;
-      this._editEnabled = this._layerView.layer.editingEnabled;
+    if (this._layer && this._table) {
+      this._clearSelection();
+      this.featureSelectionChange.emit(this._selectedIndexes);
+      this._table.layer = this._layer;
+      this._editEnabled = this._layer.editingEnabled;
       this._table.view = this.mapView;
       this._table.editingEnabled = this._editEnabled;
       this._table.clearSelectionFilter();
@@ -509,7 +525,7 @@ export class LayerTable {
     evt: IMapClick
   ): Promise<void> {
     const opts = {
-      include: this._layerView.layer
+      include: this._layer
     };
     const hitTestResult = await this.mapView.hitTest(evt.screenPoint, opts);
     if (hitTestResult.results.length > 0) {
@@ -556,7 +572,7 @@ export class LayerTable {
    *
    * @returns void
    */
-  protected _showSelected(): void {
+  protected _toggleShowSelected(): void {
     this._showOnlySelected = !this._showOnlySelected;
     if (this._showOnlySelected) {
       this._table.filterBySelection();
@@ -604,10 +620,10 @@ export class LayerTable {
   protected async _exportToCSV(): Promise<void> {
     const exportInfos: IExportInfos = {};
     const ids = this._table.highlightIds.toArray();
-    exportInfos[this._layerView.layer.id] = {
+    exportInfos[this._layer.id] = {
       selectionSetNames: [],
       ids,
-      layerView: this._layerView
+      layer: this._layer
     }
     void downloadUtils.downloadCSV(
       exportInfos,
@@ -648,7 +664,7 @@ export class LayerTable {
       this._alertMessage = this._translations.confirm;
       this._alertKind = "danger";
       this._alertActionFunction = () => {
-        void this._layerView.layer.applyEdits({
+        void this._layer.applyEdits({
           deleteFeatures: this._table.highlightIds.toArray()
         });
         this._alertOpen = false;
@@ -691,13 +707,13 @@ export class LayerTable {
     evt: CustomEvent
   ): Promise<void> {
     const id: string = evt.detail[0];
-    if (id !== this._layerView?.layer.id || this._allIds.length === 0) {
+    if (id !== this._layer.id || this._allIds.length === 0) {
       this._fetchingData = true;
       this._table.highlightIds.removeAll();
-      this._layerView = await getMapLayerView(this.mapView, id);
-      this._allIds = await queryAllIds(this._layerView.layer)
+      this._layer = await getLayer(this.mapView, id);
+      this._allIds = await queryAllIds(this._layer)
       this._selectedIndexes = [];
-      this._table.layer = this._layerView.layer;
+      this._table.layer = this._layer;
       this._table.render();
       this._fetchingData = false;
     }

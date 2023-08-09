@@ -41,23 +41,38 @@
     <script>
       function addValues() {
         const demo = document.getElementById("demo");
+
+        let custom = [];
+        var vars = window.location.search.substring(1).split('&');
+        vars.forEach((v) => {
+          let paramName = v.split('=');
+          if (paramName[0] === "id") {
+            custom = [{
+              id:paramName[1],
+              name: "Map from URL"
+            }];
+          }
+        });
+
         demo.mapInfos = [
-        {
-          id: "863e4f6f2a7840db896cc1b1606d552d",
-          name: "IA map"
-        }, {
-          id: "3715f4899bea4b2a948347c5c2357e58",
-          name: "PN Map"
-        }, {
-          id: "4fa949c89bb04ecb8a9f5ad119448333",
-          name: "CS TIL DATA"
-        }, {
-          id: "f5b01c17a09941eaad63e7b4e6c7d880",
-          name: "Attachments Map"
-        }, {
-          id: "ce3dec81bf714d3bb71da9691ab686d1",
-          name: "Popup Configured Map"
-        }];
+          ...custom,
+          ...[{
+            id: "863e4f6f2a7840db896cc1b1606d552d",
+            name: "IA map"
+          }, {
+            id: "3715f4899bea4b2a948347c5c2357e58",
+            name: "PN Map"
+          }, {
+            id: "4fa949c89bb04ecb8a9f5ad119448333",
+            name: "CS TIL DATA"
+          }, {
+            id: "f5b01c17a09941eaad63e7b4e6c7d880",
+            name: "Attachments Map"
+          }, {
+            id: "ce3dec81bf714d3bb71da9691ab686d1",
+            name: "Popup Configured Map"
+          }]
+        ];
       }
     </script>
   </head>

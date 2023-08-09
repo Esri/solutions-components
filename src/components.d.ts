@@ -45,9 +45,9 @@ export namespace Components {
     }
     interface CardManager {
         /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+          * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
          */
-        "layerView": __esri.FeatureLayerView;
+        "layer": __esri.FeatureLayer;
         /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -223,6 +223,10 @@ export namespace Components {
          */
         "enabledLayerIds": string[];
         /**
+          * string[]: Optional list of enabled table ids  If empty all tables will be available
+         */
+        "enabledTableIds": string[];
+        /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
@@ -237,7 +241,11 @@ export namespace Components {
         /**
           * string[]: list of layer ids that have been selected by the end user
          */
-        "selectedLayerIds": string[];
+        "selectedIds": string[];
+        /**
+          * boolean: when true standalone tables will also be available
+         */
+        "showTables": boolean;
         /**
           * "select" | "combobox" | "dropdown": type of component to leverage
          */
@@ -969,9 +977,9 @@ declare namespace LocalJSX {
     }
     interface CardManager {
         /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+          * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
          */
-        "layerView"?: __esri.FeatureLayerView;
+        "layer"?: __esri.FeatureLayer;
         /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -1139,6 +1147,10 @@ declare namespace LocalJSX {
          */
         "enabledLayerIds"?: string[];
         /**
+          * string[]: Optional list of enabled table ids  If empty all tables will be available
+         */
+        "enabledTableIds"?: string[];
+        /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
@@ -1157,7 +1169,11 @@ declare namespace LocalJSX {
         /**
           * string[]: list of layer ids that have been selected by the end user
          */
-        "selectedLayerIds"?: string[];
+        "selectedIds"?: string[];
+        /**
+          * boolean: when true standalone tables will also be available
+         */
+        "showTables"?: boolean;
         /**
           * "select" | "combobox" | "dropdown": type of component to leverage
          */

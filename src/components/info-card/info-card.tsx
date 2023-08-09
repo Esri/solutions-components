@@ -262,12 +262,12 @@ export class InfoCard {
         visibleElements: {
           actionBar: false,
           closeButton: false,
-          heading: false
+          heading: true
         },
-        view: this.mapView
+        viewModel: {
+          view: this.mapView
+        }
       });
-    } else {
-      this._features.view = this.mapView;
     }
   }
 

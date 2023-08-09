@@ -76,13 +76,18 @@ export class EditCard {
   //
   //--------------------------------------------------------------------------
 
+ /**
+   * esri/core/Accessor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
+   */
+ protected _activeWorkflowHandle: __esri.WatchHandle;
+
   /**
-   * esri/widgets/Editor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
+   * esri/core/Accessor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
    */
   protected _attachmentHandle: __esri.WatchHandle;
 
   /**
-   * esri/widgets/Editor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
+   * esri/core/Accessor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
    */
   protected _editHandle: __esri.WatchHandle;
 
@@ -287,9 +292,10 @@ export class EditCard {
         container
       });
 
-      if (this._editHandle && this._attachmentHandle) {
+      if (this._editHandle && this._attachmentHandle && this._activeWorkflowHandle) {
         this._editHandle.remove();
         this._attachmentHandle.remove();
+        this._activeWorkflowHandle.remove();
       }
 
       this._attachmentHandle = this.reactiveUtils.when(
@@ -309,6 +315,15 @@ export class EditCard {
           if (this.graphicIndex > -1 && this.graphics.length > 0 && this.open && !this._shouldClose) {
             void this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
             this._shouldClose = true;
+          }
+        }
+      );
+
+      this._activeWorkflowHandle = this.reactiveUtils.watch(
+        () => (this._editor.viewModel.activeWorkflow as any)?.activeWorkflow,
+        (activeWorkflow) => {
+          if (activeWorkflow?.type === "update-table-record" || activeWorkflow?.type === "create-features") {
+            this._shouldClose = false;
           }
         }
       );
