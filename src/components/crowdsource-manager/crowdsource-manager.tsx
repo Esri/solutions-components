@@ -43,6 +43,11 @@ export class CrowdsourceManager {
    */
   @Prop() mapInfos: IMapInfo[] = [];
 
+  /**
+   * boolean: when true no map is displayed for the app
+   */
+  @Prop() hideMap = true;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -156,7 +161,7 @@ export class CrowdsourceManager {
               {this._getAction("vertical-background", ELayoutMode.VERTICAL, this._translations.vertical)}
               {this._getAction("horizontal-background", ELayoutMode.HORIZONTAL, this._translations.horizontal)}
             </div>
-            {this._getBody(this._layoutMode, this._panelOpen)}
+            {this._getBody(this._layoutMode, this._panelOpen, this.hideMap)}
           </calcite-panel>
         </calcite-shell>
       </Host>
@@ -250,13 +255,14 @@ export class CrowdsourceManager {
 
   protected _getBody(
     layoutMode: ELayoutMode,
-    panelOpen: boolean
+    panelOpen: boolean,
+    hideMap: boolean
   ): VNode {
     const displayFlex = layoutMode === ELayoutMode.HORIZONTAL ? "" : "display-flex";
     return (
       <calcite-panel class={"width-full height-full"}>
         <div class={`width-full height-full ${displayFlex}`}>
-          {this._getMap(layoutMode, panelOpen)}
+          {this._getMap(layoutMode, panelOpen, hideMap)}
           {this._getTable(layoutMode, panelOpen)}
         </div>
       </calcite-panel>
@@ -265,7 +271,8 @@ export class CrowdsourceManager {
 
   protected _getMap(
     layoutMode: ELayoutMode,
-    panelOpen: boolean
+    panelOpen: boolean,
+    hideMap: boolean
   ): VNode {
     const mapDisplayClass = layoutMode === ELayoutMode.GRID ? "" : "display-none";
     const cardManagerHeight = layoutMode === ELayoutMode.GRID ? "adjusted-height-50" : "adjusted-height-100";
@@ -273,7 +280,7 @@ export class CrowdsourceManager {
     return (
       <div class={`${mapSizeClass} overflow-hidden`}>
         <div class={"adjusted-height-50 overflow-hidden " + mapDisplayClass} >
-          <map-card mapInfos={this.mapInfos}/>
+          {hideMap ? undefined : (<map-card mapInfos={this.mapInfos}/>)}
         </div>
         <div class="padding-1-2 height-full">
           <card-manager class={cardManagerHeight} mapView={this?._mapView}/>

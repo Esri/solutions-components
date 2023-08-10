@@ -55,6 +55,10 @@ export namespace Components {
     }
     interface CrowdsourceManager {
         /**
+          * boolean: when true no map is displayed for the app
+         */
+        "hideMap": boolean;
+        /**
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos": IMapInfo[];
@@ -986,6 +990,10 @@ declare namespace LocalJSX {
         "mapView"?: __esri.MapView;
     }
     interface CrowdsourceManager {
+        /**
+          * boolean: when true no map is displayed for the app
+         */
+        "hideMap"?: boolean;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */
