@@ -9,7 +9,7 @@
 
 | Property   | Attribute  | Description                                        | Type         | Default |
 | ---------- | ---------- | -------------------------------------------------- | ------------ | ------- |
-| `hideMap`  | `hide-map` | boolean: when true no map is displayed for the app | `boolean`    | `true`  |
+| `hideMap`  | `hide-map` | boolean: when true no map is displayed for the app | `boolean`    | `false` |
 | `mapInfos` | --         | IMapInfo[]: array of map infos (name and id)       | `IMapInfo[]` | `[]`    |
 
 

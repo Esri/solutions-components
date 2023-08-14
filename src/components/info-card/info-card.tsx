@@ -115,6 +115,9 @@ export class InfoCard {
       this._features.open({
         features: this.graphics
       });
+    } else {
+      this._features.clear();
+      this._features.close();
     }
   }
 
@@ -258,16 +261,16 @@ export class InfoCard {
   protected async _initFeaturesWidget(): Promise<void> {
     if (!this._features) {
       this._features = new this.Features({
+        view: this.mapView,
         container: "features-node",
         visibleElements: {
           actionBar: false,
           closeButton: false,
           heading: true
-        },
-        viewModel: {
-          view: this.mapView
         }
       });
+    } else {
+      this._features.view = this.mapView;
     }
   }
 

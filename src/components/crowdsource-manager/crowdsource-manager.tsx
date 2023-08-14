@@ -46,7 +46,7 @@ export class CrowdsourceManager {
   /**
    * boolean: when true no map is displayed for the app
    */
-  @Prop() hideMap = true;
+  @Prop() hideMap = false;
 
   //--------------------------------------------------------------------------
   //
