@@ -39,14 +39,19 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
-   * IMapInfo[]: array of map infos (name and id)
+   * boolean: when true the grid will display like the previous manager app with the table across the top
    */
-  @Prop() mapInfos: IMapInfo[] = [];
+  @Prop() classicGrid = false;
 
   /**
    * boolean: when true no map is displayed for the app
    */
   @Prop() hideMap = false;
+
+  /**
+   * IMapInfo[]: array of map infos (name and id)
+   */
+  @Prop() mapInfos: IMapInfo[] = [];
 
   //--------------------------------------------------------------------------
   //
@@ -203,15 +208,26 @@ export class CrowdsourceManager {
     layoutMode: ELayoutMode,
     panelOpen: boolean
   ): string {
+    console.log(layoutMode)
     let icon = "";
     switch (layoutMode) {
       case ELayoutMode.HORIZONTAL:
-        icon = panelOpen ? "chevrons-up" : "chevrons-down";
+        icon = this.classicGrid ?
+          (panelOpen ? "chevrons-down" : "chevrons-up") :
+          (panelOpen ? "chevrons-up" : "chevrons-down");
         break;
-      default:
-        icon = panelOpen ? "chevrons-left" : "chevrons-right";
+      case ELayoutMode.VERTICAL:
+        icon = this.classicGrid ?
+          (panelOpen ? "chevrons-right" : "chevrons-left") :
+          (panelOpen ? "chevrons-left" : "chevrons-right");
+        break;
+      case ELayoutMode.GRID:
+        icon = this.classicGrid ?
+          (panelOpen ? "chevrons-up" : "chevrons-down") :
+          (panelOpen ? "chevrons-left" : "chevrons-right");
         break;
     }
+    console.log(icon)
     return icon;
   }
 
@@ -225,7 +241,8 @@ export class CrowdsourceManager {
         sizeClass = `${panelOpen ? "height-1-2" : "height-0"} width-full position-relative`;
         break;
       case ELayoutMode.GRID:
-        sizeClass = `height-full position-relative ${panelOpen ? "width-1-3" : "width-0"}`;
+        sizeClass = this.classicGrid ? `${panelOpen ? "position-relative" : "position-absolute-53"} height-full width-full display-flex` :
+          `height-full position-relative ${panelOpen ? "width-1-3" : "width-0"}`;
         break;
       case ELayoutMode.VERTICAL:
         sizeClass = `height-full position-relative ${panelOpen ? "width-1-2" : "width-0"}`;
@@ -244,7 +261,9 @@ export class CrowdsourceManager {
         sizeClass = `${panelOpen ? "height-1-2" : "height-full"} width-full display-flex flex-column`;
         break;
       case ELayoutMode.GRID:
-        sizeClass = `${panelOpen ? "width-2-3" : "width-full"} height-full display-flex`;
+        sizeClass = this.classicGrid ?
+          `${panelOpen ? "height-full" : "height-53"} position-relative width-full display-flex` :
+          `${panelOpen ? "width-2-3" : "width-full"} height-full display-flex`;
         break;
       case ELayoutMode.VERTICAL:
         sizeClass = `${panelOpen ? "width-1-2" : "width-full"} height-full display-flex`;
@@ -258,10 +277,18 @@ export class CrowdsourceManager {
     panelOpen: boolean,
     hideMap: boolean
   ): VNode {
-    const displayFlex = layoutMode === ELayoutMode.HORIZONTAL ? "" : "display-flex";
-    return (
+    const contentClass = this.classicGrid && layoutMode === ELayoutMode.GRID && panelOpen ? "display-grid" :
+      layoutMode === ELayoutMode.HORIZONTAL ? "" : "display-flex";
+    return this.classicGrid ? (
       <calcite-panel class={"width-full height-full"}>
-        <div class={`width-full height-full ${displayFlex}`}>
+        <div class={`width-full height-full ${contentClass}`}>
+          {this._getTable(layoutMode, panelOpen)}
+          {this._getMap(layoutMode, panelOpen, hideMap)}
+        </div>
+      </calcite-panel>
+    ) : (
+      <calcite-panel class={"width-full height-full"}>
+        <div class={`width-full height-full ${contentClass}`}>
           {this._getMap(layoutMode, panelOpen, hideMap)}
           {this._getTable(layoutMode, panelOpen)}
         </div>
@@ -274,16 +301,23 @@ export class CrowdsourceManager {
     panelOpen: boolean,
     hideMap: boolean
   ): VNode {
-    const mapDisplayClass = layoutMode === ELayoutMode.GRID ? "" : "display-none";
-    const cardManagerHeight = layoutMode === ELayoutMode.GRID ? "adjusted-height-50" : "adjusted-height-100";
+    const mapDisplayClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "display-flex height-full width-1-2" :
+      layoutMode === ELayoutMode.GRID && !hideMap ? "" : "display-none";
+    const cardManagerHeight = this.classicGrid && layoutMode === ELayoutMode.GRID ? "" :
+      layoutMode === ELayoutMode.GRID  && !hideMap ? "adjusted-height-50" : "adjusted-height-100";
+    //
     const mapSizeClass = this._getMapSizeClass(layoutMode, panelOpen);
+    const mapContainerClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "width-full" : "adjusted-height-50";
+
+    const cardManagerContainer = this.classicGrid && layoutMode === ELayoutMode.GRID ?
+      "width-full adjusted-height-100" : "width-50 height-full";
     return (
       <div class={`${mapSizeClass} overflow-hidden`}>
-        <div class={"adjusted-height-50 overflow-hidden " + mapDisplayClass} >
-          {hideMap ? undefined : (<map-card mapInfos={this.mapInfos}/>)}
+        <div class={`${mapContainerClass} overflow-hidden ${mapDisplayClass}`} >
+          <map-card class="width-full" mapInfos={this.mapInfos}/>
         </div>
-        <div class="padding-1-2 height-full">
-          <card-manager class={cardManagerHeight} mapView={this?._mapView}/>
+        <div class={`padding-1-2 ${cardManagerContainer}`}>
+          <card-manager class={`${cardManagerHeight} width-full`} mapView={this?._mapView}/>
         </div>
       </div>
     );
@@ -297,8 +331,10 @@ export class CrowdsourceManager {
     const icon = this._getDividerIcon(layoutMode, panelOpen);
     const tooltip = panelOpen ? this._translations.close : this._translations.open;
     const id = "toggle-layout";
-    const toggleLayout = layoutMode === ELayoutMode.HORIZONTAL ? "horizontal" : "vertical";
-    const toggleSlot = layoutMode === ELayoutMode.HORIZONTAL ? "header" : "panel-start";
+    const toggleLayout = layoutMode === ELayoutMode.HORIZONTAL || this.classicGrid ? "horizontal" : "vertical";
+    const toggleSlot = this.classicGrid && layoutMode !== ELayoutMode.VERTICAL ? "footer" :
+      this.classicGrid && layoutMode === ELayoutMode.VERTICAL ? "panel-end" :
+        layoutMode === ELayoutMode.HORIZONTAL  ? "header" : "panel-start";
     return (
       <calcite-shell class={tableSizeClass}>
         <calcite-action-bar

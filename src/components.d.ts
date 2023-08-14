@@ -55,6 +55,10 @@ export namespace Components {
     }
     interface CrowdsourceManager {
         /**
+          * boolean: when true the grid will display like the previous manager app with the table across the top
+         */
+        "classicGrid": boolean;
+        /**
           * boolean: when true no map is displayed for the app
          */
         "hideMap": boolean;
@@ -990,6 +994,10 @@ declare namespace LocalJSX {
         "mapView"?: __esri.MapView;
     }
     interface CrowdsourceManager {
+        /**
+          * boolean: when true the grid will display like the previous manager app with the table across the top
+         */
+        "classicGrid"?: boolean;
         /**
           * boolean: when true no map is displayed for the app
          */

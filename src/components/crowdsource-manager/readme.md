@@ -7,10 +7,11 @@
 
 ## Properties
 
-| Property   | Attribute  | Description                                        | Type         | Default |
-| ---------- | ---------- | -------------------------------------------------- | ------------ | ------- |
-| `hideMap`  | `hide-map` | boolean: when true no map is displayed for the app | `boolean`    | `false` |
-| `mapInfos` | --         | IMapInfo[]: array of map infos (name and id)       | `IMapInfo[]` | `[]`    |
+| Property      | Attribute      | Description                                                                                          | Type         | Default |
+| ------------- | -------------- | ---------------------------------------------------------------------------------------------------- | ------------ | ------- |
+| `classicGrid` | `classic-grid` | boolean: when true the grid will display like the previous manager app with the table across the top | `boolean`    | `false` |
+| `hideMap`     | `hide-map`     | boolean: when true no map is displayed for the app                                                   | `boolean`    | `false` |
+| `mapInfos`    | --             | IMapInfo[]: array of map infos (name and id)                                                         | `IMapInfo[]` | `[]`    |
 
 
 ## Dependencies

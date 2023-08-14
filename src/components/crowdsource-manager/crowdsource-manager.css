@@ -174,3 +174,12 @@
 .display-none {
   display: none;
 }
+
+.height-53 {
+  height: 53px;
+}
+
+.position-absolute-53 {
+  position: absolute;
+  top: 53px;
+}
