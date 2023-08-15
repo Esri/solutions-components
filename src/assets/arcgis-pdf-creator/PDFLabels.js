@@ -1,8 +1,10 @@
 /* @preserve
 * arcgis-pdf-creator v0.0.1
-* Thu Apr 27 2023 17:20:32 GMT-0700 (Pacific Daylight Time)
+* Tue Aug 15 2023 09:31:48 GMT-0700 (Pacific Daylight Time)
 */
-import { drawGridOfBoxes } from './grid.js';
+'use strict';
+
+var grid = require('./grid.js');
 
 /** @license
  * Copyright 2022 Esri
@@ -114,7 +116,7 @@ class PDFLabels {
     drawLabelGuidelines(labelSpec, labelBoundaryLinesProperties = null) {
         // Label boundaries
         if (labelBoundaryLinesProperties !== null) {
-            drawGridOfBoxes(this.PDFCreator, {
+            grid.drawGridOfBoxes(this.PDFCreator, {
                 // Margins in the page spec are absolute but we draw in within the margins
                 x0: labelSpec.pageProperties.leftMargin - this.PDFCreator.pageOptions.leftMargin,
                 y0: labelSpec.pageProperties.topMargin - this.PDFCreator.pageOptions.topMargin,
@@ -307,4 +309,4 @@ class PDFLabels {
     }
 }
 
-export { PDFLabels };
+exports.PDFLabels = PDFLabels;

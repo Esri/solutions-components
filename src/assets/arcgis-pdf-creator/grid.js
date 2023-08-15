@@ -1,7 +1,9 @@
 /* @preserve
 * arcgis-pdf-creator v0.0.1
-* Thu Apr 27 2023 17:20:32 GMT-0700 (Pacific Daylight Time)
+* Tue Aug 15 2023 09:31:48 GMT-0700 (Pacific Daylight Time)
 */
+'use strict';
+
 /** @license
  * Copyright 2022 Esri
  *
@@ -161,4 +163,8 @@ function numberOfTicks(total, marginA, marginB, interval) {
     return 1 + Math.floor(((total - marginA - marginB) / interval) + 0.01);
 }
 
-export { drawGridOfBoxes, drawHorizontallMeasurementTicks, drawMeasurementLines, drawVerticalMeasurementTicks, numberOfTicks };
+exports.drawGridOfBoxes = drawGridOfBoxes;
+exports.drawHorizontallMeasurementTicks = drawHorizontallMeasurementTicks;
+exports.drawMeasurementLines = drawMeasurementLines;
+exports.drawVerticalMeasurementTicks = drawVerticalMeasurementTicks;
+exports.numberOfTicks = numberOfTicks;
