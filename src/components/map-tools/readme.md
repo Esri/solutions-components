@@ -9,7 +9,7 @@
 
 | Property  | Attribute | Description                                                                                            | Type                         | Default      |
 | --------- | --------- | ------------------------------------------------------------------------------------------------------ | ---------------------------- | ------------ |
-| `layout`  | `layout`  |                                                                                                        | `"horizontal" \| "vertical"` | `"vertical"` |
+| `layout`  | `layout`  | "horizontal" \| "vertical": used to control the orientation of the tools                               | `"horizontal" \| "vertical"` | `"vertical"` |
 | `mapView` | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                    | `undefined`  |
 
 

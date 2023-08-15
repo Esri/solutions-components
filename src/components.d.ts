@@ -360,6 +360,9 @@ export namespace Components {
         "sketchPolygonSymbol": __esri.SimpleFillSymbol;
     }
     interface MapTools {
+        /**
+          * "horizontal" | "vertical": used to control the orientation of the tools
+         */
         "layout": "horizontal" | "vertical";
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -1344,6 +1347,9 @@ declare namespace LocalJSX {
         "sketchPolygonSymbol"?: __esri.SimpleFillSymbol;
     }
     interface MapTools {
+        /**
+          * "horizontal" | "vertical": used to control the orientation of the tools
+         */
         "layout"?: "horizontal" | "vertical";
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html

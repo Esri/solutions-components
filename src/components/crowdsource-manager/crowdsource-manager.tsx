@@ -165,6 +165,15 @@ export class CrowdsourceManager {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Get the icon name to use for the divider icon based on the current layout
+   *
+   * @param layoutMode ELayoutMode the current layout mode
+   * @param panelOpen boolean indicates if all panels are open
+   *
+   * @returns the icon name
+   * @protected
+   */
   protected _getDividerIcon(
     layoutMode: ELayoutMode,
     panelOpen: boolean
@@ -190,6 +199,15 @@ export class CrowdsourceManager {
     return icon;
   }
 
+  /**
+   * Get the css selector names to use for the map based on the current layout
+   *
+   * @param layoutMode ELayoutMode the current layout mode
+   * @param panelOpen boolean indicates if all panels are open
+   *
+   * @returns the css selectors
+   * @protected
+   */
   protected _getMapSizeClass(
     layoutMode: ELayoutMode,
     panelOpen: boolean
@@ -210,6 +228,15 @@ export class CrowdsourceManager {
     return sizeClass;
   }
 
+  /**
+   * Get the css selector names to use for the table based on the current layout
+   *
+   * @param layoutMode ELayoutMode the current layout mode
+   * @param panelOpen boolean indicates if all panels are open
+   *
+   * @returns the css selectors
+   * @protected
+   */
   protected _getTableSizeClass(
     layoutMode: ELayoutMode,
     panelOpen: boolean
@@ -231,6 +258,16 @@ export class CrowdsourceManager {
     return sizeClass;
   }
 
+  /**
+   * Get the table and map nodes based for the current layout
+   *
+   * @param layoutMode ELayoutMode the current layout mode
+   * @param panelOpen boolean indicates if all panels are open
+   * @param hideMap when true no map is displayed
+   *
+   * @returns the parent node that contains the table and map
+   * @protected
+   */
   protected _getBody(
     layoutMode: ELayoutMode,
     panelOpen: boolean,
@@ -255,6 +292,16 @@ export class CrowdsourceManager {
     );
   }
 
+  /**
+   * Get the map node based for the current layout
+   *
+   * @param layoutMode ELayoutMode the current layout mode
+   * @param panelOpen boolean indicates if all panels are open
+   * @param hideMap when true no map is displayed
+   *
+   * @returns the map node
+   * @protected
+   */
   protected _getMap(
     layoutMode: ELayoutMode,
     panelOpen: boolean,
@@ -282,6 +329,15 @@ export class CrowdsourceManager {
     );
   }
 
+  /**
+   * Get the table node based for the current layout
+   *
+   * @param layoutMode ELayoutMode the current layout mode
+   * @param panelOpen boolean indicates if all panels are open
+   *
+   * @returns the table node
+   * @protected
+   */
   protected _getTable(
     layoutMode: ELayoutMode,
     panelOpen: boolean
@@ -324,6 +380,13 @@ export class CrowdsourceManager {
     );
   }
 
+  /**
+   * Open/Close the appropriate panel.
+   * The panel that is toggled is dependent upon the layout mode and if using classic grid or not
+   *
+   * @returns void
+   * @protected
+   */
   protected _toggleLayout(): void {
     this._panelOpen = !this._panelOpen;
   }

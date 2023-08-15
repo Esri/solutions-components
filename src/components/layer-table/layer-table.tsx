@@ -228,27 +228,34 @@ export class LayerTable {
    */
   @Event() featureSelectionChange: EventEmitter<number[]>;
 
+  /**
+   * Scroll and zoom to the selected feature from the Features widget.
+   *
+   * @param evt CustomEvent the graphic for the current selection
+   */
   @Listen("selectionChanged", { target: "window" })
   async selectionChanged(
     evt: CustomEvent
   ): Promise<void> {
-    const g: __esri.Graphic = evt.detail;
-    const oid = g.getObjectId();
-    const i: number = this._table.viewModel.getObjectIdIndex(oid);
+    if (this.zoomAndScrollToSelected) {
+      const g: __esri.Graphic = evt.detail;
+      const oid = g.getObjectId();
+      const i: number = this._table.viewModel.getObjectIdIndex(oid);
 
-    this._table.scrollToIndex(i);
-    const layer = g.layer;
-    const layerViews = this.mapView.allLayerViews.toArray();
-    let layerView: __esri.FeatureLayerView;
-    layerViews.some(lv => {
-      if (lv.layer.title === layer.title && lv.layer.type === 'feature') {
-        layerView = lv as __esri.FeatureLayerView;
-        return true;
+      this._table.scrollToIndex(i);
+      const layer = g.layer;
+      const layerViews = this.mapView.allLayerViews.toArray();
+      let layerView: __esri.FeatureLayerView;
+      layerViews.some(lv => {
+        if (lv.layer.title === layer.title && lv.layer.type === 'feature') {
+          layerView = lv as __esri.FeatureLayerView;
+          return true;
+        }
+      });
+
+      if (layerView) {
+        await goToSelection([oid], layerView, this.mapView, true);
       }
-    });
-
-    if (layerView) {
-      await goToSelection([oid], layerView, this.mapView, true);
     }
   }
 
@@ -346,6 +353,8 @@ export class LayerTable {
 
   /**
    * Gets a row of controls that can be used for various interactions with the table
+   *
+   * @param slot string optional slot to display the control within
    *
    * @returns The dom node that contains the controls
    */
@@ -486,9 +495,13 @@ export class LayerTable {
    * Store a reference to the table node after it's first created
    * and initializes the FeatureTable
    *
+   * @param node HTMLDivElement The node representing the DOM element that will contain the widget.
+   *
    * @returns void
    */
-  private onTableNodeCreate = (node: HTMLDivElement) => {
+  private onTableNodeCreate = (
+    node: HTMLDivElement
+  ) => {
     this._tableNode = node;
     this._getTable(node);
   }
@@ -496,9 +509,13 @@ export class LayerTable {
   /**
    * Initialize the FeatureTable
    *
+   * @param node HTMLDivElement The node representing the DOM element that will contain the widget.
+   *
    * @returns void
    */
-  protected _getTable(node: HTMLDivElement): void {
+  protected _getTable(
+    node: HTMLDivElement
+  ): void {
     if (this._layer) {
       this._table = new this.FeatureTable({
         layer: this._layer,
@@ -548,6 +565,8 @@ export class LayerTable {
   /**
    * Handle map click events to keep table and map click selection in sync
    *
+   * @param evt IMapClick map click event details
+   *
    * @returns void
    */
   protected async _mapClicked(
@@ -585,8 +604,6 @@ export class LayerTable {
   /**
    * Select or deselect all rows
    *
-   * @param checked When true all rows will be selected
-   *
    * @returns void
    */
   protected _selectAll(): void {
@@ -620,6 +637,11 @@ export class LayerTable {
     this._table.highlightIds.removeAll();
   }
 
+  /**
+   * Show the filter options
+   *
+   * @returns void
+   */
   protected _filter(): void {
     alert("do whatever this button is supposed to do")
   }
@@ -711,7 +733,7 @@ export class LayerTable {
   /**
    * Get the graphics for all selected indexes
    *
-   * @param indexes the indexes for the graphics to fetch
+   * @param ids the ids for the graphics to fetch
    *
    * @returns An array of selected graphics
    */
@@ -729,6 +751,8 @@ export class LayerTable {
 
   /**
    * Handles layer selection change to show new table
+   *
+   * @param evt CustomEvent the id for the current layer
    *
    * @returns a promise that will resolve when the operation is complete
    */
