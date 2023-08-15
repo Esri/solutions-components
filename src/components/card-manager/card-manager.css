@@ -55,6 +55,10 @@
   border-radius: 5px;
 }
 
+.height-full {
+  height: 100%;
+}
+
 card-manager {
   display: block;
 }

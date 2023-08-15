@@ -1,5 +1,5 @@
 /** @license
- * Copyright 2022 Esri
+ * Copyright 2023 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,21 @@
  * limitations under the License.
  */
 
-:host {
-  display: block;
-  --calcite-label-margin-bottom: 0;
-  --calcite-block-padding: 0;
-}
+import { newSpecPage } from '@stencil/core/testing';
+import { LayoutManager } from '../layout-manager';
 
-.map-height {
-  height: calc(100% - 58px);
-}
-
-/* Not sure how else to do this
-  tried navigation gamepad settings but enabled: false still shows this */
-
-.esri-zoom {
-  display: none !important;
-}
-
-.map-tools {
-  position: absolute;
-  top: 40px;
-  right: 0px;
-  padding: 1rem;
-}
+xdescribe('layout-manager', () => {
+  it('renders', async () => {
+    const page = await newSpecPage({
+      components: [LayoutManager],
+      html: `<layout-manager></layout-manager>`,
+    });
+    expect(page.root).toEqualHtml(`
+      <layout-manager>
+        <mock:shadow-root>
+          <slot></slot>
+        </mock:shadow-root>
+      </layout-manager>
+    `);
+  });
+});

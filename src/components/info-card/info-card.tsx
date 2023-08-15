@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Listen, Method, Prop, State, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Method, Prop, State, Watch } from "@stencil/core";
 import InfoCard_T9n from "../../assets/t9n/info-card/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { loadModules } from "../../utils/loadModules";
@@ -53,6 +53,11 @@ export class InfoCard {
    * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
+
+  /**
+   * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+   */
+  @Prop() zoomAndScrollToSelected: boolean;
 
   //--------------------------------------------------------------------------
   //
@@ -99,6 +104,11 @@ export class InfoCard {
    */
   protected _features: __esri.Features;
 
+  /**
+   * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
+   */
+  protected reactiveUtils: typeof import("esri/core/reactiveUtils");
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -115,6 +125,9 @@ export class InfoCard {
       this._features.open({
         features: this.graphics
       });
+    } else {
+      this._features.clear();
+      this._features.close();
     }
   }
 
@@ -150,10 +163,21 @@ export class InfoCard {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Emitted on demand when the selected index changes
+   */
+  @Event() selectionChanged: EventEmitter<__esri.Graphic>;
+
+  /**
+   * Respond to and close the edit record display
+   *
+   * @returns a promise when the operation has completed
+   */
   @Listen("closeEdit", { target: "window" })
   async closeEdit(): Promise<void> {
     this._editRecordOpen = false;
   }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -244,30 +268,44 @@ export class InfoCard {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [Features] = await loadModules([
-      "esri/widgets/Features"
+    const [Features, reactiveUtils] = await loadModules([
+      "esri/widgets/Features",
+      "esri/core/reactiveUtils"
     ]);
     this.Features = Features;
+    this.reactiveUtils = reactiveUtils;
   }
 
   /**
    * Init the Feature widget so we can display the popup content
+   *
+   * @returns a promise when the operation has completed
    *
    * @protected
    */
   protected async _initFeaturesWidget(): Promise<void> {
     if (!this._features) {
       this._features = new this.Features({
+        view: this.mapView,
         container: "features-node",
         visibleElements: {
           actionBar: false,
           closeButton: false,
           heading: true
-        },
-        viewModel: {
-          view: this.mapView
         }
       });
+
+      if (this.zoomAndScrollToSelected) {
+        this.reactiveUtils.watch(
+          () => this._features.selectedFeatureIndex,
+          (i) => {
+            if (i > -1) {
+              this.selectionChanged.emit(this._features.selectedFeature);
+            }
+          });
+      }
+    } else {
+      this._features.view = this.mapView;
     }
   }
 
@@ -281,14 +319,18 @@ export class InfoCard {
   }
 
   /**
-   * Close the edit record modal
+   * Close the edit record
+   *
+   * @returns void
    */
   protected _editRecordClosed(): void {
     this._editRecordOpen = false;
   }
 
   /**
-   * Open the edit record modal
+   * Open the edit record
+   *
+   * @returns void
    */
   protected _openEditRecord(): void {
     if (this._editEnabled) {

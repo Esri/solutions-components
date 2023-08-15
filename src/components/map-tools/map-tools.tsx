@@ -39,6 +39,9 @@ export class MapTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * "horizontal" | "vertical": used to control the orientation of the tools
+   */
   @Prop() layout: "horizontal" | "vertical" = "vertical";
 
   /**
@@ -204,6 +207,13 @@ export class MapTools {
     alert("zoom out")
   }
 
+  /**
+   * Show/Hide the basemap picker
+   *
+   * @returns void
+   *
+   * @protected
+   */
   protected _toggleBasemapPicker(): void {
     this._showBasemapPicker = !this._showBasemapPicker;
   }
@@ -219,6 +229,13 @@ export class MapTools {
     this.expandMap.emit(EExpandType.EXPAND);
   }
 
+  /**
+   * Show/Hide the map tools
+   *
+   * @returns void
+   *
+   * @protected
+   */
   protected _toggleTools(): void {
     this._showTools = !this._showTools;
   }

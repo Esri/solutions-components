@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EDrawMode, EExpandType, IExportInfos, IInventoryItem, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
+import { DistanceUnit, EDrawMode, EExpandType, ELayoutMode, IExportInfos, IInventoryItem, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BufferTools {
@@ -55,6 +55,14 @@ export namespace Components {
     }
     interface CrowdsourceManager {
         /**
+          * boolean: when true the grid will display like the previous manager app with the table across the top
+         */
+        "classicGrid": boolean;
+        /**
+          * boolean: when true no map is displayed for the app
+         */
+        "hideMap": boolean;
+        /**
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos": IMapInfo[];
@@ -99,6 +107,10 @@ export namespace Components {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected": boolean;
     }
     interface JsonEditor {
         /**
@@ -148,6 +160,12 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected": boolean;
+    }
+    interface LayoutManager {
     }
     interface ListItem {
     }
@@ -251,6 +269,12 @@ export namespace Components {
          */
         "type": "select" | "combobox" | "dropdown";
     }
+    interface MapPicker {
+        /**
+          * IMapInfo[]: array of map infos (name and id)
+         */
+        "mapInfos": IMapInfo[];
+    }
     interface MapSelectTools {
         /**
           * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
@@ -336,6 +360,9 @@ export namespace Components {
         "sketchPolygonSymbol": __esri.SimpleFillSymbol;
     }
     interface MapTools {
+        /**
+          * "horizontal" | "vertical": used to control the orientation of the tools
+         */
         "layout": "horizontal" | "vertical";
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -654,9 +681,17 @@ export interface EditCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLEditCardElement;
 }
+export interface InfoCardCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLInfoCardElement;
+}
 export interface LayerTableCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLLayerTableElement;
+}
+export interface LayoutManagerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLLayoutManagerElement;
 }
 export interface MapCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -669,6 +704,10 @@ export interface MapDrawToolsCustomEvent<T> extends CustomEvent<T> {
 export interface MapLayerPickerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapLayerPickerElement;
+}
+export interface MapPickerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapPickerElement;
 }
 export interface MapSelectToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -761,6 +800,12 @@ declare global {
         prototype: HTMLLayerTableElement;
         new (): HTMLLayerTableElement;
     };
+    interface HTMLLayoutManagerElement extends Components.LayoutManager, HTMLStencilElement {
+    }
+    var HTMLLayoutManagerElement: {
+        prototype: HTMLLayoutManagerElement;
+        new (): HTMLLayoutManagerElement;
+    };
     interface HTMLListItemElement extends Components.ListItem, HTMLStencilElement {
     }
     var HTMLListItemElement: {
@@ -784,6 +829,12 @@ declare global {
     var HTMLMapLayerPickerElement: {
         prototype: HTMLMapLayerPickerElement;
         new (): HTMLMapLayerPickerElement;
+    };
+    interface HTMLMapPickerElement extends Components.MapPicker, HTMLStencilElement {
+    }
+    var HTMLMapPickerElement: {
+        prototype: HTMLMapPickerElement;
+        new (): HTMLMapPickerElement;
     };
     interface HTMLMapSelectToolsElement extends Components.MapSelectTools, HTMLStencilElement {
     }
@@ -903,10 +954,12 @@ declare global {
         "info-card": HTMLInfoCardElement;
         "json-editor": HTMLJsonEditorElement;
         "layer-table": HTMLLayerTableElement;
+        "layout-manager": HTMLLayoutManagerElement;
         "list-item": HTMLListItemElement;
         "map-card": HTMLMapCardElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
+        "map-picker": HTMLMapPickerElement;
         "map-select-tools": HTMLMapSelectToolsElement;
         "map-tools": HTMLMapToolsElement;
         "pci-calculator": HTMLPciCalculatorElement;
@@ -987,6 +1040,14 @@ declare namespace LocalJSX {
     }
     interface CrowdsourceManager {
         /**
+          * boolean: when true the grid will display like the previous manager app with the table across the top
+         */
+        "classicGrid"?: boolean;
+        /**
+          * boolean: when true no map is displayed for the app
+         */
+        "hideMap"?: boolean;
+        /**
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos"?: IMapInfo[];
@@ -1034,6 +1095,14 @@ declare namespace LocalJSX {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the selected index changes
+         */
+        "onSelectionChanged"?: (event: InfoCardCustomEvent<__esri.Graphic>) => void;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected"?: boolean;
     }
     interface JsonEditor {
         /**
@@ -1062,6 +1131,16 @@ declare namespace LocalJSX {
           * Emitted on demand when a layer is selected
          */
         "onFeatureSelectionChange"?: (event: LayerTableCustomEvent<number[]>) => void;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected"?: boolean;
+    }
+    interface LayoutManager {
+        /**
+          * Emitted when the layout should change
+         */
+        "onLayoutChanged"?: (event: LayoutManagerCustomEvent<ELayoutMode>) => void;
     }
     interface ListItem {
     }
@@ -1179,6 +1258,16 @@ declare namespace LocalJSX {
          */
         "type"?: "select" | "combobox" | "dropdown";
     }
+    interface MapPicker {
+        /**
+          * IMapInfo[]: array of map infos (name and id)
+         */
+        "mapInfos"?: IMapInfo[];
+        /**
+          * Emitted when a new map is loaded
+         */
+        "onMapInfoChange"?: (event: MapPickerCustomEvent<IMapInfo>) => void;
+    }
     interface MapSelectTools {
         /**
           * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
@@ -1258,6 +1347,9 @@ declare namespace LocalJSX {
         "sketchPolygonSymbol"?: __esri.SimpleFillSymbol;
     }
     interface MapTools {
+        /**
+          * "horizontal" | "vertical": used to control the orientation of the tools
+         */
         "layout"?: "horizontal" | "vertical";
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -1557,10 +1649,12 @@ declare namespace LocalJSX {
         "info-card": InfoCard;
         "json-editor": JsonEditor;
         "layer-table": LayerTable;
+        "layout-manager": LayoutManager;
         "list-item": ListItem;
         "map-card": MapCard;
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
+        "map-picker": MapPicker;
         "map-select-tools": MapSelectTools;
         "map-tools": MapTools;
         "pci-calculator": PciCalculator;
@@ -1594,10 +1688,12 @@ declare module "@stencil/core" {
             "info-card": LocalJSX.InfoCard & JSXBase.HTMLAttributes<HTMLInfoCardElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "layer-table": LocalJSX.LayerTable & JSXBase.HTMLAttributes<HTMLLayerTableElement>;
+            "layout-manager": LocalJSX.LayoutManager & JSXBase.HTMLAttributes<HTMLLayoutManagerElement>;
             "list-item": LocalJSX.ListItem & JSXBase.HTMLAttributes<HTMLListItemElement>;
             "map-card": LocalJSX.MapCard & JSXBase.HTMLAttributes<HTMLMapCardElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
+            "map-picker": LocalJSX.MapPicker & JSXBase.HTMLAttributes<HTMLMapPickerElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
             "map-tools": LocalJSX.MapTools & JSXBase.HTMLAttributes<HTMLMapToolsElement>;
             "pci-calculator": LocalJSX.PciCalculator & JSXBase.HTMLAttributes<HTMLPciCalculatorElement>;

@@ -39,6 +39,16 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
+   * boolean: when true the grid will display like the previous manager app with the table across the top
+   */
+  @Prop() classicGrid = false;
+
+  /**
+   * boolean: when true no map is displayed for the app
+   */
+  @Prop() hideMap = false;
+
+  /**
    * IMapInfo[]: array of map infos (name and id)
    */
   @Prop() mapInfos: IMapInfo[] = [];
@@ -95,6 +105,16 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
+   * Listen for layoutChanged event to be fired so we can adjust the layout
+   */
+  @Listen("layoutChanged", { target: "window" })
+  async layoutChanged(
+    evt: CustomEvent
+  ): Promise<void> {
+    this._layoutMode = evt.detail;
+  }
+
+  /**
    * Listen for mapChanged event to be fired then store the new mapView so components will be updated
    */
   @Listen("mapChanged", { target: "window" })
@@ -131,32 +151,8 @@ export class CrowdsourceManager {
             class="width-full height-full"
             heading={this._translations.header}
           >
-            <div class="display-flex" slot="header-actions-end">
-              <div class="display-flex action-center">
-                <calcite-icon
-                  class="icon icon-color"
-                  icon="information"
-                  id="app-information-icon"
-                  scale="s"
-                />
-                <calcite-popover
-                  closable={true}
-                  label=""
-                  referenceElement="app-information-icon"
-                >
-                  <span class="tooltip-message">
-                    {this._translations.appInfo}
-                  </span>
-                </calcite-popover>
-              </div>
-              <div class="header-text">
-                {this._translations.layout}
-              </div>
-              {this._getAction("grid-background", ELayoutMode.GRID, this._translations.grid)}
-              {this._getAction("vertical-background", ELayoutMode.VERTICAL, this._translations.vertical)}
-              {this._getAction("horizontal-background", ELayoutMode.HORIZONTAL, this._translations.horizontal)}
-            </div>
-            {this._getBody(this._layoutMode, this._panelOpen)}
+            <layout-manager slot="header-actions-end"/>
+            {this._getBody(this._layoutMode, this._panelOpen, this.hideMap)}
           </calcite-panel>
         </calcite-shell>
       </Host>
@@ -169,31 +165,15 @@ export class CrowdsourceManager {
   //
   //--------------------------------------------------------------------------
 
-  protected _getAction(
-    imgClass: string,
-    layoutMode: ELayoutMode,
-    tip: string
-  ): VNode {
-    return (
-      <div>
-        <calcite-action
-          alignment="center"
-          appearance="transparent"
-          compact={false}
-          id={imgClass}
-          indicator={layoutMode === this._layoutMode}
-          onClick={() => { this._setLayoutMode(layoutMode) }}
-          text=""
-        >
-          <div class={imgClass + " img-background"} />
-        </calcite-action>
-        <calcite-tooltip label="" placement="bottom" reference-element={imgClass}>
-          <span>{tip}</span>
-        </calcite-tooltip>
-      </div>
-    );
-  }
-
+  /**
+   * Get the icon name to use for the divider icon based on the current layout
+   *
+   * @param layoutMode ELayoutMode the current layout mode
+   * @param panelOpen boolean indicates if all panels are open
+   *
+   * @returns the icon name
+   * @protected
+   */
   protected _getDividerIcon(
     layoutMode: ELayoutMode,
     panelOpen: boolean
@@ -201,15 +181,33 @@ export class CrowdsourceManager {
     let icon = "";
     switch (layoutMode) {
       case ELayoutMode.HORIZONTAL:
-        icon = panelOpen ? "chevrons-up" : "chevrons-down";
+        icon = this.classicGrid ?
+          (panelOpen ? "chevrons-down" : "chevrons-up") :
+          (panelOpen ? "chevrons-up" : "chevrons-down");
         break;
-      default:
-        icon = panelOpen ? "chevrons-left" : "chevrons-right";
+      case ELayoutMode.VERTICAL:
+        icon = this.classicGrid ?
+          (panelOpen ? "chevrons-right" : "chevrons-left") :
+          (panelOpen ? "chevrons-left" : "chevrons-right");
+        break;
+      case ELayoutMode.GRID:
+        icon = this.classicGrid ?
+          (panelOpen ? "chevrons-up" : "chevrons-down") :
+          (panelOpen ? "chevrons-left" : "chevrons-right");
         break;
     }
     return icon;
   }
 
+  /**
+   * Get the css selector names to use for the map based on the current layout
+   *
+   * @param layoutMode ELayoutMode the current layout mode
+   * @param panelOpen boolean indicates if all panels are open
+   *
+   * @returns the css selectors
+   * @protected
+   */
   protected _getMapSizeClass(
     layoutMode: ELayoutMode,
     panelOpen: boolean
@@ -220,7 +218,8 @@ export class CrowdsourceManager {
         sizeClass = `${panelOpen ? "height-1-2" : "height-0"} width-full position-relative`;
         break;
       case ELayoutMode.GRID:
-        sizeClass = `height-full position-relative ${panelOpen ? "width-1-3" : "width-0"}`;
+        sizeClass = this.classicGrid ? `${panelOpen ? "position-relative" : "position-absolute-53"} height-full width-full display-flex` :
+          `height-full position-relative ${panelOpen ? "width-1-3" : "width-0"}`;
         break;
       case ELayoutMode.VERTICAL:
         sizeClass = `height-full position-relative ${panelOpen ? "width-1-2" : "width-0"}`;
@@ -229,6 +228,15 @@ export class CrowdsourceManager {
     return sizeClass;
   }
 
+  /**
+   * Get the css selector names to use for the table based on the current layout
+   *
+   * @param layoutMode ELayoutMode the current layout mode
+   * @param panelOpen boolean indicates if all panels are open
+   *
+   * @returns the css selectors
+   * @protected
+   */
   protected _getTableSizeClass(
     layoutMode: ELayoutMode,
     panelOpen: boolean
@@ -239,7 +247,9 @@ export class CrowdsourceManager {
         sizeClass = `${panelOpen ? "height-1-2" : "height-full"} width-full display-flex flex-column`;
         break;
       case ELayoutMode.GRID:
-        sizeClass = `${panelOpen ? "width-2-3" : "width-full"} height-full display-flex`;
+        sizeClass = this.classicGrid ?
+          `${panelOpen ? "height-full" : "height-53"} position-relative width-full display-flex` :
+          `${panelOpen ? "width-2-3" : "width-full"} height-full display-flex`;
         break;
       case ELayoutMode.VERTICAL:
         sizeClass = `${panelOpen ? "width-1-2" : "width-full"} height-full display-flex`;
@@ -248,40 +258,86 @@ export class CrowdsourceManager {
     return sizeClass;
   }
 
+  /**
+   * Get the table and map nodes based for the current layout
+   *
+   * @param layoutMode ELayoutMode the current layout mode
+   * @param panelOpen boolean indicates if all panels are open
+   * @param hideMap when true no map is displayed
+   *
+   * @returns the parent node that contains the table and map
+   * @protected
+   */
   protected _getBody(
     layoutMode: ELayoutMode,
-    panelOpen: boolean
+    panelOpen: boolean,
+    hideMap: boolean
   ): VNode {
-    const displayFlex = layoutMode === ELayoutMode.HORIZONTAL ? "" : "display-flex";
-    return (
+    const contentClass = this.classicGrid && layoutMode === ELayoutMode.GRID && panelOpen ? "display-grid" :
+      layoutMode === ELayoutMode.HORIZONTAL ? "" : "display-flex";
+    return this.classicGrid ? (
       <calcite-panel class={"width-full height-full"}>
-        <div class={`width-full height-full ${displayFlex}`}>
-          {this._getMap(layoutMode, panelOpen)}
+        <div class={`width-full height-full ${contentClass}`}>
+          {this._getTable(layoutMode, panelOpen)}
+          {this._getMap(layoutMode, panelOpen, hideMap)}
+        </div>
+      </calcite-panel>
+    ) : (
+      <calcite-panel class={"width-full height-full"}>
+        <div class={`width-full height-full ${contentClass}`}>
+          {this._getMap(layoutMode, panelOpen, hideMap)}
           {this._getTable(layoutMode, panelOpen)}
         </div>
       </calcite-panel>
     );
   }
 
+  /**
+   * Get the map node based for the current layout
+   *
+   * @param layoutMode ELayoutMode the current layout mode
+   * @param panelOpen boolean indicates if all panels are open
+   * @param hideMap when true no map is displayed
+   *
+   * @returns the map node
+   * @protected
+   */
   protected _getMap(
     layoutMode: ELayoutMode,
-    panelOpen: boolean
+    panelOpen: boolean,
+    hideMap: boolean
   ): VNode {
-    const mapDisplayClass = layoutMode === ELayoutMode.GRID ? "" : "display-none";
-    const cardManagerHeight = layoutMode === ELayoutMode.GRID ? "adjusted-height-50" : "adjusted-height-100";
+    const mapDisplayClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "display-flex height-full width-1-2" :
+      layoutMode === ELayoutMode.GRID && !hideMap ? "" : "display-none";
+    const cardManagerHeight = this.classicGrid && layoutMode === ELayoutMode.GRID ? "" :
+      layoutMode === ELayoutMode.GRID  && !hideMap ? "adjusted-height-50" : "adjusted-height-100";
+    //
     const mapSizeClass = this._getMapSizeClass(layoutMode, panelOpen);
+    const mapContainerClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "width-full" : "adjusted-height-50";
+
+    const cardManagerContainer = this.classicGrid && layoutMode === ELayoutMode.GRID ?
+      "width-full adjusted-height-100" : "width-50 height-full";
     return (
       <div class={`${mapSizeClass} overflow-hidden`}>
-        <div class={"adjusted-height-50 overflow-hidden " + mapDisplayClass} >
-          <map-card mapInfos={this.mapInfos}/>
+        <div class={`${mapContainerClass} overflow-hidden ${mapDisplayClass}`} >
+          <map-card class="width-full" mapInfos={this.mapInfos}/>
         </div>
-        <div class="padding-1-2 height-full">
-          <card-manager class={cardManagerHeight} mapView={this?._mapView}/>
+        <div class={`padding-1-2 ${cardManagerContainer}`}>
+          <card-manager class={`${cardManagerHeight} width-full`} mapView={this?._mapView}/>
         </div>
       </div>
     );
   }
 
+  /**
+   * Get the table node based for the current layout
+   *
+   * @param layoutMode ELayoutMode the current layout mode
+   * @param panelOpen boolean indicates if all panels are open
+   *
+   * @returns the table node
+   * @protected
+   */
   protected _getTable(
     layoutMode: ELayoutMode,
     panelOpen: boolean
@@ -290,8 +346,10 @@ export class CrowdsourceManager {
     const icon = this._getDividerIcon(layoutMode, panelOpen);
     const tooltip = panelOpen ? this._translations.close : this._translations.open;
     const id = "toggle-layout";
-    const toggleLayout = layoutMode === ELayoutMode.HORIZONTAL ? "horizontal" : "vertical";
-    const toggleSlot = layoutMode === ELayoutMode.HORIZONTAL ? "header" : "panel-start";
+    const toggleLayout = layoutMode === ELayoutMode.HORIZONTAL || this.classicGrid ? "horizontal" : "vertical";
+    const toggleSlot = this.classicGrid && layoutMode !== ELayoutMode.VERTICAL ? "footer" :
+      this.classicGrid && layoutMode === ELayoutMode.VERTICAL ? "panel-end" :
+        layoutMode === ELayoutMode.HORIZONTAL  ? "header" : "panel-start";
     return (
       <calcite-shell class={tableSizeClass}>
         <calcite-action-bar
@@ -322,12 +380,13 @@ export class CrowdsourceManager {
     );
   }
 
-  protected _setLayoutMode(
-    layoutMode: ELayoutMode
-  ): void {
-    this._layoutMode = layoutMode;
-  }
-
+  /**
+   * Open/Close the appropriate panel.
+   * The panel that is toggled is dependent upon the layout mode and if using classic grid or not
+   *
+   * @returns void
+   * @protected
+   */
   protected _toggleLayout(): void {
     this._panelOpen = !this._panelOpen;
   }

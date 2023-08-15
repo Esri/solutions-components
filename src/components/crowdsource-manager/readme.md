@@ -7,9 +7,11 @@
 
 ## Properties
 
-| Property   | Attribute | Description                                  | Type         | Default |
-| ---------- | --------- | -------------------------------------------- | ------------ | ------- |
-| `mapInfos` | --        | IMapInfo[]: array of map infos (name and id) | `IMapInfo[]` | `[]`    |
+| Property      | Attribute      | Description                                                                                          | Type         | Default |
+| ------------- | -------------- | ---------------------------------------------------------------------------------------------------- | ------------ | ------- |
+| `classicGrid` | `classic-grid` | boolean: when true the grid will display like the previous manager app with the table across the top | `boolean`    | `false` |
+| `hideMap`     | `hide-map`     | boolean: when true no map is displayed for the app                                                   | `boolean`    | `false` |
+| `mapInfos`    | --             | IMapInfo[]: array of map infos (name and id)                                                         | `IMapInfo[]` | `[]`    |
 
 
 ## Dependencies
@@ -18,13 +20,12 @@
 
 - calcite-shell
 - calcite-panel
-- calcite-icon
-- calcite-popover
-- calcite-action
-- calcite-tooltip
+- [layout-manager](../layout-manager)
 - [map-card](../map-card)
 - [card-manager](../card-manager)
 - calcite-action-bar
+- calcite-action
+- calcite-tooltip
 - [layer-table](../layer-table)
 
 ### Graph
@@ -32,13 +33,12 @@
 graph TD;
   crowdsource-manager --> calcite-shell
   crowdsource-manager --> calcite-panel
-  crowdsource-manager --> calcite-icon
-  crowdsource-manager --> calcite-popover
-  crowdsource-manager --> calcite-action
-  crowdsource-manager --> calcite-tooltip
+  crowdsource-manager --> layout-manager
   crowdsource-manager --> map-card
   crowdsource-manager --> card-manager
   crowdsource-manager --> calcite-action-bar
+  crowdsource-manager --> calcite-action
+  crowdsource-manager --> calcite-tooltip
   crowdsource-manager --> layer-table
   calcite-panel --> calcite-action
   calcite-panel --> calcite-action-menu
@@ -50,21 +50,21 @@ graph TD;
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
   calcite-scrim --> calcite-loader
+  layout-manager --> calcite-icon
+  layout-manager --> calcite-popover
+  layout-manager --> calcite-action
+  layout-manager --> calcite-tooltip
+  map-card --> map-picker
   map-card --> map-tools
-  map-card --> calcite-action-bar
-  map-card --> calcite-button
-  map-card --> calcite-list
-  map-card --> calcite-list-item
-  map-tools --> calcite-action
-  map-tools --> calcite-action-bar
-  map-tools --> calcite-action-group
-  map-tools --> calcite-icon
-  map-tools --> calcite-tooltip
+  map-picker --> calcite-button
+  map-picker --> calcite-action-bar
+  map-picker --> calcite-list
+  map-picker --> calcite-list-item
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
-  calcite-button --> calcite-loader
-  calcite-button --> calcite-icon
   calcite-list --> calcite-scrim
   calcite-list --> calcite-filter
   calcite-filter --> calcite-input
@@ -72,6 +72,11 @@ graph TD;
   calcite-input --> calcite-icon
   calcite-list-item --> calcite-icon
   calcite-list-item --> calcite-action
+  map-tools --> calcite-action
+  map-tools --> calcite-action-bar
+  map-tools --> calcite-action-group
+  map-tools --> calcite-icon
+  map-tools --> calcite-tooltip
   card-manager --> calcite-shell
   card-manager --> info-card
   card-manager --> calcite-notice

@@ -1,5 +1,5 @@
 /** @license
- * Copyright 2022 Esri
+ * Copyright 2023 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,44 @@
 
 :host {
   display: block;
-  --calcite-label-margin-bottom: 0;
-  --calcite-block-padding: 0;
 }
 
-.map-height {
-  height: calc(100% - 58px);
+.width-full {
+  width: 100%;
 }
 
-/* Not sure how else to do this
-  tried navigation gamepad settings but enabled: false still shows this */
-
-.esri-zoom {
-  display: none !important;
+.height-full {
+  height: 100%;
 }
 
-.map-tools {
+.display-flex {
+  display: flex;
+}
+
+.border-bottom-1 {
+  border-width: 0px;
+  border-bottom-width: 1px;
+  border-style: solid;
+  border-color: var(--calcite-ui-border-3);
+}
+
+.action-bar-size {
+  height: 51px;
+  width: 100%;
+}
+
+.map-list {
   position: absolute;
-  top: 40px;
-  right: 0px;
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: calcite-scrim-fade-in var(--calcite-internal-animation-timing-medium) ease-in-out;
+  background-color: var(--calcite-scrim-background);
+  z-index: 1;
+  width: 100%;
+  height: fit-content;
+}
+
+.display-none {
+  display: none;
 }
