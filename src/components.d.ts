@@ -157,6 +157,8 @@ export namespace Components {
          */
         "mapView": __esri.MapView;
     }
+    interface LayoutManager {
+    }
     interface ListItem {
     }
     interface MapCard {
@@ -779,6 +781,12 @@ declare global {
         prototype: HTMLLayerTableElement;
         new (): HTMLLayerTableElement;
     };
+    interface HTMLLayoutManagerElement extends Components.LayoutManager, HTMLStencilElement {
+    }
+    var HTMLLayoutManagerElement: {
+        prototype: HTMLLayoutManagerElement;
+        new (): HTMLLayoutManagerElement;
+    };
     interface HTMLListItemElement extends Components.ListItem, HTMLStencilElement {
     }
     var HTMLListItemElement: {
@@ -927,6 +935,7 @@ declare global {
         "info-card": HTMLInfoCardElement;
         "json-editor": HTMLJsonEditorElement;
         "layer-table": HTMLLayerTableElement;
+        "layout-manager": HTMLLayoutManagerElement;
         "list-item": HTMLListItemElement;
         "map-card": HTMLMapCardElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
@@ -1095,6 +1104,8 @@ declare namespace LocalJSX {
           * Emitted on demand when a layer is selected
          */
         "onFeatureSelectionChange"?: (event: LayerTableCustomEvent<number[]>) => void;
+    }
+    interface LayoutManager {
     }
     interface ListItem {
     }
@@ -1600,6 +1611,7 @@ declare namespace LocalJSX {
         "info-card": InfoCard;
         "json-editor": JsonEditor;
         "layer-table": LayerTable;
+        "layout-manager": LayoutManager;
         "list-item": ListItem;
         "map-card": MapCard;
         "map-draw-tools": MapDrawTools;
@@ -1638,6 +1650,7 @@ declare module "@stencil/core" {
             "info-card": LocalJSX.InfoCard & JSXBase.HTMLAttributes<HTMLInfoCardElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "layer-table": LocalJSX.LayerTable & JSXBase.HTMLAttributes<HTMLLayerTableElement>;
+            "layout-manager": LocalJSX.LayoutManager & JSXBase.HTMLAttributes<HTMLLayoutManagerElement>;
             "list-item": LocalJSX.ListItem & JSXBase.HTMLAttributes<HTMLListItemElement>;
             "map-card": LocalJSX.MapCard & JSXBase.HTMLAttributes<HTMLMapCardElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
