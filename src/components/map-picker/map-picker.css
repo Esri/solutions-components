@@ -1,0 +1,43 @@
+:host {
+  display: block;
+}
+
+.width-full {
+  width: 100%;
+}
+
+.height-full {
+  height: 100%;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.border-bottom-1 {
+  border-width: 0px;
+  border-bottom-width: 1px;
+  border-style: solid;
+  border-color: var(--calcite-ui-border-3);
+}
+
+.action-bar-size {
+  height: 51px;
+  width: 100%;
+}
+
+.map-list {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: calcite-scrim-fade-in var(--calcite-internal-animation-timing-medium) ease-in-out;
+  background-color: var(--calcite-scrim-background);
+  z-index: 1;
+  width: 100%;
+  height: fit-content;
+}
+
+.display-none {
+  display: none;
+}

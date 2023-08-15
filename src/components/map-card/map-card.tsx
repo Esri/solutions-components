@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
-import MapCard_T9n from "../../assets/t9n/map-card/resources.json";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import { getLocaleComponentStrings } from "../../utils/locale";
 import { IMapInfo } from "../../utils/interfaces";
 
 // TODO navigation and accessability isn't right for the map list
@@ -65,17 +63,6 @@ export class MapCard {
   //--------------------------------------------------------------------------
 
   /**
-   * boolean: controls the state of the map list
-   */
-  @State() _mapListExpanded = false;
-
-  /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-  @State() _translations: typeof MapCard_T9n;
-
-  /**
    * IMapInfo: id and name of the map to display
    */
   @State() _webMapInfo: IMapInfo;
@@ -112,26 +99,6 @@ export class MapCard {
   //
   //--------------------------------------------------------------------------
 
-  /**
-   * Called each time the _webMapInfo prop is changed.
-   */
-  @Watch("_webMapInfo")
-  _webMapInfoWatchHandler(v: IMapInfo, oldV: IMapInfo): void {
-    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
-      this._loadMap(v);
-    }
-  }
-
-  /**
-   * Called each time the mapInfos prop is changed.
-   */
-  @Watch("mapInfos")
-  mapInfosWatchHandler(v: IMapInfo[], oldV: IMapInfo[]): void {
-    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
-      this._loadMap(v[0]);
-    }
-  }
-
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
@@ -149,6 +116,16 @@ export class MapCard {
    */
   @Event() mapChanged: EventEmitter<__esri.MapView>;
 
+  /**
+   * Listen for changes to map info and load the appropriate map
+   */
+  @Listen("mapInfoChange", { target: "window" })
+  async mapInfoChange(
+    evt: CustomEvent
+  ): Promise<void> {
+    this._loadMap(evt.detail);
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -159,16 +136,7 @@ export class MapCard {
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
   async componentWillLoad(): Promise<void> {
-    await this._getTranslations();
     await this._initModules();
-  }
-
-  /**
-   * StencilJS: Called after every render.
-   */
-  componentDidRender() {
-    // the container node for the map view needs to exist before the view is created
-    this._loadMap(this._webMapInfo);
   }
 
   /**
@@ -177,8 +145,7 @@ export class MapCard {
   render() {
     return (
       <Host>
-        {this._getToolbar()}
-        {this._getMapNameList(this._mapListExpanded)}
+        <map-picker mapInfos={this.mapInfos}/>
         <div class="map-height" ref={(el) => (this._mapDiv = el)}/>
         <map-tools class="map-tools"/>
       </Host>
@@ -208,23 +175,6 @@ export class MapCard {
   }
 
   /**
-   * Create the toolbar (controls used for map and app interactions)
-   *
-   * @returns The dom node with the toolbar
-   *
-   * @protected
-   */
-  protected _getToolbar(): VNode {
-    return (
-      <div class="display-flex">
-        <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
-          {this._getMapPicker()}
-        </calcite-action-bar>
-      </div>
-    );
-  }
-
-  /**
    * Load the webmap for the provided webMapInfo
    *
    * @param webMapInfo the webmap id and name to load
@@ -236,11 +186,13 @@ export class MapCard {
   protected _loadMap(
     webMapInfo: IMapInfo
   ): void {
-    const id = webMapInfo?.id;
+    let id = webMapInfo?.id;
     // on the first render use the first child of the provided mapInfos
-    if ((id === "" || !id) && this.mapInfos.length > 0) {
-      this._webMapInfo = this.mapInfos[0];
-    }
+    this._webMapInfo = (id === "" || !id) && this.mapInfos.length > 0 ?
+      this.mapInfos[0] : webMapInfo;
+
+    id = this._webMapInfo.id;
+
     if (this._loadedId !== id) {
       const webMap = new this.WebMap({
         portalItem: { id }
@@ -249,107 +201,12 @@ export class MapCard {
       this.mapView = new this.MapView({
         container: this._mapDiv,
         map: webMap,
-        // TODO consider this more...seems to cause less overflow issues when the component is resized
         resizeAlign: "top-left"
       });
 
       this._loadedId = id;
       this.mapChanged.emit(this.mapView);
     }
-  }
-
-  /**
-   * Get a calcite action group for the map list
-   * Actions do not support multiple icons so this uses a block
-   *
-   * @returns the dom node for the action group
-   *
-   * @protected
-   */
-  protected _getMapPicker(): VNode {
-    const mapListIcon = this._mapListExpanded ? "chevron-up" : "chevron-down";
-    return (
-      <calcite-button
-        alignment="icon-end-space-between"
-        appearance="solid"
-        class="width-full height-full"
-        iconEnd={mapListIcon}
-        kind="neutral"
-        onClick={() => this._chooseMap()}
-        width="full"
-      >
-        {this._webMapInfo?.name}
-      </calcite-button>
-    );
-  }
-
-  /**
-   * Get a pick list for all maps in mapInfos
-   *
-   * @param show boolean to indicate if the list should be shown or hidden
-   *
-   * @returns the dom node for the list of maps
-   *
-   * @protected
-   */
-  protected _getMapNameList(
-    show: boolean
-  ): VNode {
-    const listClass = show ? "map-list" : "display-none";
-    return (
-      <div class={listClass}>
-        <calcite-list id="mapList">
-          {this.mapInfos.map(mapInfo => {
-            return (
-              <calcite-list-item
-                label={mapInfo.name}
-                onClick={() => this._webMapSelected(mapInfo)}
-                selected={mapInfo.id === this._loadedId}
-                value={mapInfo.id}
-              />
-            )
-          })}
-        </calcite-list>
-      </div>
-    );
-  }
-
-  /**
-   * Fired when the user clicks on the map list
-   *
-   * @param webMapInfo the web map id and name selected from the list
-   *
-   * @returns void
-   *
-   * @protected
-   */
-  protected _webMapSelected(
-    webMapInfo: IMapInfo
-  ): void {
-    this._mapListExpanded = false;
-    this._webMapInfo = webMapInfo;
-  }
-
-  /**
-   * Toggles the open/close state of the map list
-   *
-   * @returns the dom node for the action group
-   *
-   * @protected
-   */
-  protected _chooseMap(): void {
-    this._mapListExpanded = !this._mapListExpanded;
-  }
-
-  /**
-   * Fetches the component's translations
-   *
-   * @returns Promise when complete
-   * @protected
-   */
-  protected async _getTranslations(): Promise<void> {
-    const messages = await getLocaleComponentStrings(this.el);
-    this._translations = messages[0] as typeof MapCard_T9n;
   }
 
 }

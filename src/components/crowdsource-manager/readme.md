@@ -52,21 +52,17 @@ graph TD;
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
   calcite-scrim --> calcite-loader
+  map-card --> map-picker
   map-card --> map-tools
-  map-card --> calcite-action-bar
-  map-card --> calcite-button
-  map-card --> calcite-list
-  map-card --> calcite-list-item
-  map-tools --> calcite-action
-  map-tools --> calcite-action-bar
-  map-tools --> calcite-action-group
-  map-tools --> calcite-icon
-  map-tools --> calcite-tooltip
+  map-picker --> calcite-button
+  map-picker --> calcite-action-bar
+  map-picker --> calcite-list
+  map-picker --> calcite-list-item
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
-  calcite-button --> calcite-loader
-  calcite-button --> calcite-icon
   calcite-list --> calcite-scrim
   calcite-list --> calcite-filter
   calcite-filter --> calcite-input
@@ -74,6 +70,11 @@ graph TD;
   calcite-input --> calcite-icon
   calcite-list-item --> calcite-icon
   calcite-list-item --> calcite-action
+  map-tools --> calcite-action
+  map-tools --> calcite-action-bar
+  map-tools --> calcite-action-group
+  map-tools --> calcite-icon
+  map-tools --> calcite-tooltip
   card-manager --> calcite-shell
   card-manager --> info-card
   card-manager --> calcite-notice

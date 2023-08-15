@@ -28,36 +28,29 @@
 
 ### Depends on
 
+- [map-picker](../map-picker)
 - [map-tools](../map-tools)
-- calcite-action-bar
-- calcite-button
-- calcite-list
-- calcite-list-item
 
 ### Graph
 ```mermaid
 graph TD;
+  map-card --> map-picker
   map-card --> map-tools
-  map-card --> calcite-action-bar
-  map-card --> calcite-button
-  map-card --> calcite-list
-  map-card --> calcite-list-item
-  map-tools --> calcite-action
-  map-tools --> calcite-action-bar
-  map-tools --> calcite-action-group
-  map-tools --> calcite-icon
-  map-tools --> calcite-tooltip
-  calcite-action --> calcite-loader
-  calcite-action --> calcite-icon
+  map-picker --> calcite-button
+  map-picker --> calcite-action-bar
+  map-picker --> calcite-list
+  map-picker --> calcite-list-item
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
   calcite-action-menu --> calcite-action
   calcite-action-menu --> calcite-popover
+  calcite-action --> calcite-loader
+  calcite-action --> calcite-icon
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
-  calcite-button --> calcite-loader
-  calcite-button --> calcite-icon
   calcite-list --> calcite-scrim
   calcite-list --> calcite-filter
   calcite-scrim --> calcite-loader
@@ -66,6 +59,11 @@ graph TD;
   calcite-input --> calcite-icon
   calcite-list-item --> calcite-icon
   calcite-list-item --> calcite-action
+  map-tools --> calcite-action
+  map-tools --> calcite-action-bar
+  map-tools --> calcite-action-group
+  map-tools --> calcite-icon
+  map-tools --> calcite-tooltip
   crowdsource-manager --> map-card
   style map-card fill:#f9f,stroke:#333,stroke-width:4px
 ```

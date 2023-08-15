@@ -259,6 +259,12 @@ export namespace Components {
          */
         "type": "select" | "combobox" | "dropdown";
     }
+    interface MapPicker {
+        /**
+          * IMapInfo[]: array of map infos (name and id)
+         */
+        "mapInfos": IMapInfo[];
+    }
     interface MapSelectTools {
         /**
           * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
@@ -678,6 +684,10 @@ export interface MapLayerPickerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapLayerPickerElement;
 }
+export interface MapPickerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapPickerElement;
+}
 export interface MapSelectToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapSelectToolsElement;
@@ -792,6 +802,12 @@ declare global {
     var HTMLMapLayerPickerElement: {
         prototype: HTMLMapLayerPickerElement;
         new (): HTMLMapLayerPickerElement;
+    };
+    interface HTMLMapPickerElement extends Components.MapPicker, HTMLStencilElement {
+    }
+    var HTMLMapPickerElement: {
+        prototype: HTMLMapPickerElement;
+        new (): HTMLMapPickerElement;
     };
     interface HTMLMapSelectToolsElement extends Components.MapSelectTools, HTMLStencilElement {
     }
@@ -915,6 +931,7 @@ declare global {
         "map-card": HTMLMapCardElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
+        "map-picker": HTMLMapPickerElement;
         "map-select-tools": HTMLMapSelectToolsElement;
         "map-tools": HTMLMapToolsElement;
         "pci-calculator": HTMLPciCalculatorElement;
@@ -1194,6 +1211,16 @@ declare namespace LocalJSX {
           * "select" | "combobox" | "dropdown": type of component to leverage
          */
         "type"?: "select" | "combobox" | "dropdown";
+    }
+    interface MapPicker {
+        /**
+          * IMapInfo[]: array of map infos (name and id)
+         */
+        "mapInfos"?: IMapInfo[];
+        /**
+          * Emitted when a new map is loaded
+         */
+        "onMapInfoChange"?: (event: MapPickerCustomEvent<IMapInfo>) => void;
     }
     interface MapSelectTools {
         /**
@@ -1577,6 +1604,7 @@ declare namespace LocalJSX {
         "map-card": MapCard;
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
+        "map-picker": MapPicker;
         "map-select-tools": MapSelectTools;
         "map-tools": MapTools;
         "pci-calculator": PciCalculator;
@@ -1614,6 +1642,7 @@ declare module "@stencil/core" {
             "map-card": LocalJSX.MapCard & JSXBase.HTMLAttributes<HTMLMapCardElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
+            "map-picker": LocalJSX.MapPicker & JSXBase.HTMLAttributes<HTMLMapPickerElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
             "map-tools": LocalJSX.MapTools & JSXBase.HTMLAttributes<HTMLMapToolsElement>;
             "pci-calculator": LocalJSX.PciCalculator & JSXBase.HTMLAttributes<HTMLPciCalculatorElement>;
