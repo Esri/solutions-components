@@ -105,6 +105,16 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
+   * Listen for layoutChanged event to be fired so we can adjust the layout
+   */
+  @Listen("layoutChanged", { target: "window" })
+  async layoutChanged(
+    evt: CustomEvent
+  ): Promise<void> {
+    this._layoutMode = evt.detail;
+  }
+
+  /**
    * Listen for mapChanged event to be fired then store the new mapView so components will be updated
    */
   @Listen("mapChanged", { target: "window" })
@@ -141,31 +151,7 @@ export class CrowdsourceManager {
             class="width-full height-full"
             heading={this._translations.header}
           >
-            <div class="display-flex" slot="header-actions-end">
-              <div class="display-flex action-center">
-                <calcite-icon
-                  class="icon icon-color"
-                  icon="information"
-                  id="app-information-icon"
-                  scale="s"
-                />
-                <calcite-popover
-                  closable={true}
-                  label=""
-                  referenceElement="app-information-icon"
-                >
-                  <span class="tooltip-message">
-                    {this._translations.appInfo}
-                  </span>
-                </calcite-popover>
-              </div>
-              <div class="header-text">
-                {this._translations.layout}
-              </div>
-              {this._getAction("grid-background", ELayoutMode.GRID, this._translations.grid)}
-              {this._getAction("vertical-background", ELayoutMode.VERTICAL, this._translations.vertical)}
-              {this._getAction("horizontal-background", ELayoutMode.HORIZONTAL, this._translations.horizontal)}
-            </div>
+            <layout-manager slot="header-actions-end"/>
             {this._getBody(this._layoutMode, this._panelOpen, this.hideMap)}
           </calcite-panel>
         </calcite-shell>
@@ -179,36 +165,10 @@ export class CrowdsourceManager {
   //
   //--------------------------------------------------------------------------
 
-  protected _getAction(
-    imgClass: string,
-    layoutMode: ELayoutMode,
-    tip: string
-  ): VNode {
-    return (
-      <div>
-        <calcite-action
-          alignment="center"
-          appearance="transparent"
-          compact={false}
-          id={imgClass}
-          indicator={layoutMode === this._layoutMode}
-          onClick={() => { this._setLayoutMode(layoutMode) }}
-          text=""
-        >
-          <div class={imgClass + " img-background"} />
-        </calcite-action>
-        <calcite-tooltip label="" placement="bottom" reference-element={imgClass}>
-          <span>{tip}</span>
-        </calcite-tooltip>
-      </div>
-    );
-  }
-
   protected _getDividerIcon(
     layoutMode: ELayoutMode,
     panelOpen: boolean
   ): string {
-    console.log(layoutMode)
     let icon = "";
     switch (layoutMode) {
       case ELayoutMode.HORIZONTAL:
@@ -227,7 +187,6 @@ export class CrowdsourceManager {
           (panelOpen ? "chevrons-left" : "chevrons-right");
         break;
     }
-    console.log(icon)
     return icon;
   }
 
@@ -363,12 +322,6 @@ export class CrowdsourceManager {
         </div>
       </calcite-shell>
     );
-  }
-
-  protected _setLayoutMode(
-    layoutMode: ELayoutMode
-  ): void {
-    this._layoutMode = layoutMode;
   }
 
   protected _toggleLayout(): void {

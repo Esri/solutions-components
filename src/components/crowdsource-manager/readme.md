@@ -20,13 +20,12 @@
 
 - calcite-shell
 - calcite-panel
-- calcite-icon
-- calcite-popover
-- calcite-action
-- calcite-tooltip
+- [layout-manager](../layout-manager)
 - [map-card](../map-card)
 - [card-manager](../card-manager)
 - calcite-action-bar
+- calcite-action
+- calcite-tooltip
 - [layer-table](../layer-table)
 
 ### Graph
@@ -34,13 +33,12 @@
 graph TD;
   crowdsource-manager --> calcite-shell
   crowdsource-manager --> calcite-panel
-  crowdsource-manager --> calcite-icon
-  crowdsource-manager --> calcite-popover
-  crowdsource-manager --> calcite-action
-  crowdsource-manager --> calcite-tooltip
+  crowdsource-manager --> layout-manager
   crowdsource-manager --> map-card
   crowdsource-manager --> card-manager
   crowdsource-manager --> calcite-action-bar
+  crowdsource-manager --> calcite-action
+  crowdsource-manager --> calcite-tooltip
   crowdsource-manager --> layer-table
   calcite-panel --> calcite-action
   calcite-panel --> calcite-action-menu
@@ -52,6 +50,10 @@ graph TD;
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
   calcite-scrim --> calcite-loader
+  layout-manager --> calcite-icon
+  layout-manager --> calcite-popover
+  layout-manager --> calcite-action
+  layout-manager --> calcite-tooltip
   map-card --> map-picker
   map-card --> map-tools
   map-picker --> calcite-button

@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EDrawMode, EExpandType, IExportInfos, IInventoryItem, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
+import { DistanceUnit, EDrawMode, EExpandType, ELayoutMode, IExportInfos, IInventoryItem, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BufferTools {
@@ -674,6 +674,10 @@ export interface LayerTableCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLLayerTableElement;
 }
+export interface LayoutManagerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLLayoutManagerElement;
+}
 export interface MapCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapCardElement;
@@ -1106,6 +1110,10 @@ declare namespace LocalJSX {
         "onFeatureSelectionChange"?: (event: LayerTableCustomEvent<number[]>) => void;
     }
     interface LayoutManager {
+        /**
+          * Emitted when the layout should change
+         */
+        "onLayoutChanged"?: (event: LayoutManagerCustomEvent<ELayoutMode>) => void;
     }
     interface ListItem {
     }
