@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property  | Attribute | Description                                                                                            | Type      | Default     |
-| --------- | --------- | ------------------------------------------------------------------------------------------------------ | --------- | ----------- |
-| `mapView` | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView` | `undefined` |
+| Property                  | Attribute                     | Description                                                                                                        | Type      | Default     |
+| ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | --------- | ----------- |
+| `mapView`                 | --                            | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html             | `MapView` | `undefined` |
+| `zoomAndScrollToSelected` | `zoom-and-scroll-to-selected` | boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table | `boolean` | `true`      |
 
 
 ## Events

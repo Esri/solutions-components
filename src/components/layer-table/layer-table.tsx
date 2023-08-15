@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Method, Prop, State, VNode, Watch } from "@stencil/core";
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { getLayer, getMapLayerIds } from "../../utils/mapViewUtils";
+import { getLayer, getMapLayerIds, goToSelection } from "../../utils/mapViewUtils";
 import { queryFeaturesByID, queryAllIds } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { IExportInfos, IMapClick } from "../../utils/interfaces";
@@ -46,6 +46,11 @@ export class LayerTable {
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
+
+  /**
+   * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+   */
+  @Prop() zoomAndScrollToSelected = true;
 
   //--------------------------------------------------------------------------
   //
@@ -222,6 +227,30 @@ export class LayerTable {
    * Emitted on demand when a layer is selected
    */
   @Event() featureSelectionChange: EventEmitter<number[]>;
+
+  @Listen("selectionChanged", { target: "window" })
+  async selectionChanged(
+    evt: CustomEvent
+  ): Promise<void> {
+    const g: __esri.Graphic = evt.detail;
+    const oid = g.getObjectId();
+    const i: number = this._table.viewModel.getObjectIdIndex(oid);
+
+    this._table.scrollToIndex(i);
+    const layer = g.layer;
+    const layerViews = this.mapView.allLayerViews.toArray();
+    let layerView: __esri.FeatureLayerView;
+    layerViews.some(lv => {
+      if (lv.layer.title === layer.title && lv.layer.type === 'feature') {
+        layerView = lv as __esri.FeatureLayerView;
+        return true;
+      }
+    });
+
+    if (layerView) {
+      await goToSelection([oid], layerView, this.mapView, true);
+    }
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -475,7 +504,7 @@ export class LayerTable {
         layer: this._layer,
         view: this.mapView,
         //editingEnabled: this._editEnabled,
-        highlightOnRowSelectEnabled: true,
+        highlightEnabled: true,
         multiSortEnabled: false,
         visibleElements: {
           header: false,

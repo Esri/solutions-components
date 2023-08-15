@@ -107,6 +107,10 @@ export namespace Components {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected": boolean;
     }
     interface JsonEditor {
         /**
@@ -156,6 +160,10 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected": boolean;
     }
     interface LayoutManager {
     }
@@ -670,6 +678,10 @@ export interface EditCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLEditCardElement;
 }
+export interface InfoCardCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLInfoCardElement;
+}
 export interface LayerTableCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLLayerTableElement;
@@ -1080,6 +1092,14 @@ declare namespace LocalJSX {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the selected index changes
+         */
+        "onSelectionChanged"?: (event: InfoCardCustomEvent<__esri.Graphic>) => void;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected"?: boolean;
     }
     interface JsonEditor {
         /**
@@ -1108,6 +1128,10 @@ declare namespace LocalJSX {
           * Emitted on demand when a layer is selected
          */
         "onFeatureSelectionChange"?: (event: LayerTableCustomEvent<number[]>) => void;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected"?: boolean;
     }
     interface LayoutManager {
         /**

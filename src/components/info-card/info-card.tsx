@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Listen, Method, Prop, State, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Method, Prop, State, Watch } from "@stencil/core";
 import InfoCard_T9n from "../../assets/t9n/info-card/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { loadModules } from "../../utils/loadModules";
@@ -53,6 +53,11 @@ export class InfoCard {
    * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
+
+  /**
+   * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+   */
+  @Prop() zoomAndScrollToSelected: boolean;
 
   //--------------------------------------------------------------------------
   //
@@ -98,6 +103,11 @@ export class InfoCard {
    * used for widget instance
    */
   protected _features: __esri.Features;
+
+  /**
+   * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
+   */
+  protected reactiveUtils: typeof import("esri/core/reactiveUtils");
 
   //--------------------------------------------------------------------------
   //
@@ -153,10 +163,16 @@ export class InfoCard {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Emitted on demand when the selected index changes
+   */
+  @Event() selectionChanged: EventEmitter<__esri.Graphic>;
+
   @Listen("closeEdit", { target: "window" })
   async closeEdit(): Promise<void> {
     this._editRecordOpen = false;
   }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -247,10 +263,12 @@ export class InfoCard {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [Features] = await loadModules([
-      "esri/widgets/Features"
+    const [Features, reactiveUtils] = await loadModules([
+      "esri/widgets/Features",
+      "esri/core/reactiveUtils"
     ]);
     this.Features = Features;
+    this.reactiveUtils = reactiveUtils;
   }
 
   /**
@@ -269,6 +287,14 @@ export class InfoCard {
           heading: true
         }
       });
+
+      this.reactiveUtils.watch(
+        () => this._features.selectedFeatureIndex,
+        (i) => {
+          if (i > -1) {
+            this.selectionChanged.emit(this._features.selectedFeature);
+          }
+        });
     } else {
       this._features.view = this.mapView;
     }
