@@ -1,9 +1,11 @@
 /* @preserve
 * arcgis-pdf-creator v0.0.1
-* Thu Apr 27 2023 17:20:32 GMT-0700 (Pacific Daylight Time)
+* Tue Aug 15 2023 09:31:48 GMT-0700 (Pacific Daylight Time)
 */
-import { PDFCreator, EPageType } from './PDFCreator.js';
-import { jsPDF } from 'jspdf';
+'use strict';
+
+var PDFCreator = require('./PDFCreator.js');
+var jspdf = require('jspdf');
 
 /** @license
  * Copyright 2022 Esri
@@ -21,7 +23,7 @@ import { jsPDF } from 'jspdf';
  * limitations under the License.
  */
 //--------------------------------------------------------------------------------------------------------------------//
-class PDFCreator_jsPDF extends PDFCreator {
+class PDFCreator_jsPDF extends PDFCreator.PDFCreator {
     jsDoc;
     constructor(jspdfToUse = null) {
         super();
@@ -160,8 +162,8 @@ class PDFCreator_jsPDF extends PDFCreator {
         await super.initialize(pageProperties, dataPath, lang, title, drawNeatline);
         // Start the PDF document if it hasn't already been started
         if (!this.jsDoc) {
-            this.jsDoc = new jsPDF({
-                format: pageProperties.pageType === EPageType.A4 ? "a4" : "letter",
+            this.jsDoc = new jspdf.jsPDF({
+                format: pageProperties.pageType === PDFCreator.EPageType.A4 ? "a4" : "letter",
                 orientation: "portrait",
                 putOnlyUsedFonts: true,
                 unit: "in"
@@ -245,4 +247,4 @@ class PDFCreator_jsPDF extends PDFCreator {
     }
 }
 
-export { PDFCreator_jsPDF };
+exports.PDFCreator_jsPDF = PDFCreator_jsPDF;

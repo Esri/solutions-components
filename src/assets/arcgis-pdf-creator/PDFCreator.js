@@ -1,7 +1,9 @@
 /* @preserve
 * arcgis-pdf-creator v0.0.1
-* Thu Apr 27 2023 17:20:32 GMT-0700 (Pacific Daylight Time)
+* Tue Aug 15 2023 09:31:48 GMT-0700 (Pacific Daylight Time)
 */
+'use strict';
+
 /** @license
  * Copyright 2022 Esri
  *
@@ -27,11 +29,11 @@
   Subclass for the jsPDF library: PDFCreator_jsPDF
 */
 //--------------------------------------------------------------------------------------------------------------------//
-var EPageType;
+exports.EPageType = void 0;
 (function (EPageType) {
     EPageType["A4"] = "A4";
     EPageType["ANSI_A"] = "ANSI A";
-})(EPageType || (EPageType = {}));
+})(exports.EPageType || (exports.EPageType = {}));
 //====================================================================================================================//
 class PDFCreator {
     // Properties are public for testing purposes
@@ -60,7 +62,7 @@ class PDFCreator {
         }
     };
     pageOptions = {
-        pageType: EPageType.ANSI_A,
+        pageType: exports.EPageType.ANSI_A,
         width: 8.5,
         height: 11,
         leftMargin: 0.25,
@@ -107,15 +109,15 @@ class PDFCreator {
      */
     static getPageSize(pageType) {
         if (typeof pageType === "string") {
-            pageType = pageType === EPageType.A4 ? EPageType.A4 : EPageType.ANSI_A;
+            pageType = pageType === exports.EPageType.A4 ? exports.EPageType.A4 : exports.EPageType.ANSI_A;
         }
         switch (pageType) {
-            case EPageType.A4:
+            case exports.EPageType.A4:
                 return {
                     width: 8.25,
                     height: 11.708333
                 };
-            case EPageType.ANSI_A:
+            case exports.EPageType.ANSI_A:
                 return {
                     width: 8.5,
                     height: 11
@@ -322,7 +324,7 @@ class PDFCreator {
      */
     async initialize(pageProperties = {}, dataPath = "", lang = "en", title = "", drawNeatline = false) {
         if (JSON.stringify(pageProperties) !== "{}") {
-            this.pageOptions.pageType = pageProperties.pageType === EPageType.A4 ? EPageType.A4 : EPageType.ANSI_A;
+            this.pageOptions.pageType = pageProperties.pageType === exports.EPageType.A4 ? exports.EPageType.A4 : exports.EPageType.ANSI_A;
             const pageSize = PDFCreator.getPageSize(this.pageOptions.pageType);
             this.pageOptions.width = pageSize.width;
             this.pageOptions.height = pageSize.height;
@@ -405,4 +407,4 @@ class PDFCreator {
     }
 }
 
-export { EPageType, PDFCreator };
+exports.PDFCreator = PDFCreator;
