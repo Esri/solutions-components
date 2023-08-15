@@ -381,7 +381,7 @@ async function _prepareLabels(
 
           // Replace "<br>" and "\n\t" with line separator character
           labelPrep = labelPrep
-            .replace(/<br>/gi, lineSeparatorChar)
+            .replace(/<br\s*\/?>/gi, lineSeparatorChar)
             .replace(/\\n\\t/gi, lineSeparatorChar)
             .replace(/\|\|/g, lineSeparatorChar)
             .replace(/^\|/, "")
