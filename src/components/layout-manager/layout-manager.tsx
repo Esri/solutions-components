@@ -141,6 +141,15 @@ export class LayoutManager {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Store and emit the current layout mode
+   *
+   * @param imgClass string the css class to use
+   * @param layoutMode ELayoutMode the associated layout mode for the current action
+   * @param tip string the value to display as the tooltip for the action
+   *
+   * @protected
+   */
   protected _getAction(
     imgClass: string,
     layoutMode: ELayoutMode,
@@ -166,6 +175,13 @@ export class LayoutManager {
     );
   }
 
+  /**
+   * Store and emit the current layout mode
+   *
+   * @param layoutMode ELayoutMode the current layout mode
+   *
+   * @protected
+   */
   protected _setLayoutMode(
     layoutMode: ELayoutMode
   ): void {

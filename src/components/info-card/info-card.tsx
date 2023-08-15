@@ -168,6 +168,11 @@ export class InfoCard {
    */
   @Event() selectionChanged: EventEmitter<__esri.Graphic>;
 
+  /**
+   * Respond to and close the edit record display
+   *
+   * @returns a promise when the operation has completed
+   */
   @Listen("closeEdit", { target: "window" })
   async closeEdit(): Promise<void> {
     this._editRecordOpen = false;
@@ -274,6 +279,8 @@ export class InfoCard {
   /**
    * Init the Feature widget so we can display the popup content
    *
+   * @returns a promise when the operation has completed
+   *
    * @protected
    */
   protected async _initFeaturesWidget(): Promise<void> {
@@ -288,13 +295,15 @@ export class InfoCard {
         }
       });
 
-      this.reactiveUtils.watch(
-        () => this._features.selectedFeatureIndex,
-        (i) => {
-          if (i > -1) {
-            this.selectionChanged.emit(this._features.selectedFeature);
-          }
-        });
+      if (this.zoomAndScrollToSelected) {
+        this.reactiveUtils.watch(
+          () => this._features.selectedFeatureIndex,
+          (i) => {
+            if (i > -1) {
+              this.selectionChanged.emit(this._features.selectedFeature);
+            }
+          });
+      }
     } else {
       this._features.view = this.mapView;
     }
@@ -310,14 +319,18 @@ export class InfoCard {
   }
 
   /**
-   * Close the edit record modal
+   * Close the edit record
+   *
+   * @returns void
    */
   protected _editRecordClosed(): void {
     this._editRecordOpen = false;
   }
 
   /**
-   * Open the edit record modal
+   * Open the edit record
+   *
+   * @returns void
    */
   protected _openEditRecord(): void {
     if (this._editEnabled) {
