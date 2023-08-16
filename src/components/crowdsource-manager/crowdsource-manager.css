@@ -108,3 +108,7 @@
   position: absolute;
   top: 53px;
 }
+
+.display-grid {
+  display: grid;
+}

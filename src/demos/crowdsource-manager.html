@@ -44,13 +44,28 @@
 
         let custom = [];
         var vars = window.location.search.substring(1).split('&');
-        vars.forEach((v) => {
-          let paramName = v.split('=');
-          if (paramName[0] === "id") {
-            custom = [{
-              id:paramName[1],
-              name: "Map from URL"
-            }];
+        vars.forEach((param) => {
+          let vals = param.split('=');
+          const v = vals[1];
+          switch (vals[0]) {
+            case "id":
+              custom = [{
+                id: v,
+                name: "Map from URL"
+              }];
+              break;
+            // TODO enable when ready for review...have some questions that I need to discuss with the team
+            // case "hideMap":
+            //   demo.hideMap = v.toLocaleLowerCase() === "true";
+            //   break;
+            case "classicGrid":
+              demo.classicGrid = v.toLocaleLowerCase() === "true";
+              break;
+            case "zoomAndScrollToSelected":
+              demo.zoomAndScrollToSelected = v.toLocaleLowerCase() === "true";
+              break;
+            default:
+              break;
           }
         });
 
