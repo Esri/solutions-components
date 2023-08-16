@@ -102,13 +102,13 @@ describe("downloadUtils", () => {
 
   });
 
-  describe("_createFilename", () => {
+  describe("_createTitle", () => {
 
     it("handles no selection set names", () => {
       const selectionSetNames: string[] = [];
       const expectedTitle = "download";
 
-      const title = downloadUtils._createFilename(selectionSetNames);
+      const title = downloadUtils._createTitle(selectionSetNames);
       expect(title).toEqual(expectedTitle);
     });
 
@@ -116,15 +116,15 @@ describe("downloadUtils", () => {
       const selectionSetNames: string[] = ["fred"];
       const expectedTitle = "fred";
 
-      const title = downloadUtils._createFilename(selectionSetNames);
+      const title = downloadUtils._createTitle(selectionSetNames);
       expect(title).toEqual(expectedTitle);
     });
 
     it("handles two selection set names", () => {
       const selectionSetNames: string[] = ["fred", "ginger"];
-      const expectedTitle = "fred, ginger";
+      const expectedTitle = "fred,ginger";
 
-      const title = downloadUtils._createFilename(selectionSetNames);
+      const title = downloadUtils._createTitle(selectionSetNames);
       expect(title).toEqual(expectedTitle);
     });
 
