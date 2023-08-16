@@ -49,6 +49,11 @@ export class CardManager {
    */
   @Prop() mapView: __esri.MapView;
 
+  /**
+   * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+   */
+  @Prop() zoomAndScrollToSelected: boolean;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -146,6 +151,7 @@ export class CardManager {
                 graphics={this._graphics}
                 isLoading={this._cardLoading}
                 mapView={this.mapView}
+                zoomAndScrollToSelected={this.zoomAndScrollToSelected}
               />
             </div>
           </calcite-shell>

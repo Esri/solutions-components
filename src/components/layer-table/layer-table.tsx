@@ -50,7 +50,7 @@ export class LayerTable {
   /**
    * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
    */
-  @Prop() zoomAndScrollToSelected = true;
+  @Prop() zoomAndScrollToSelected: boolean;
 
   //--------------------------------------------------------------------------
   //

@@ -54,6 +54,10 @@ export namespace Components {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected": boolean;
     }
     interface CrowdsourceManager {
         /**
@@ -68,6 +72,10 @@ export namespace Components {
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos": IMapInfo[];
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected": boolean;
     }
     interface CrowdsourceReporter {
     }
@@ -1039,6 +1047,10 @@ declare namespace LocalJSX {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected"?: boolean;
     }
     interface CrowdsourceManager {
         /**
@@ -1053,6 +1065,10 @@ declare namespace LocalJSX {
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos"?: IMapInfo[];
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected"?: boolean;
     }
     interface CrowdsourceReporter {
     }

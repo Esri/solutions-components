@@ -53,6 +53,11 @@ export class CrowdsourceManager {
    */
   @Prop() mapInfos: IMapInfo[] = [];
 
+  /**
+   * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+   */
+  @Prop() zoomAndScrollToSelected = false;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -323,7 +328,11 @@ export class CrowdsourceManager {
           <map-card class="width-full" mapInfos={this.mapInfos}/>
         </div>
         <div class={`padding-1-2 ${cardManagerContainer}`}>
-          <card-manager class={`${cardManagerHeight} width-full`} mapView={this?._mapView}/>
+          <card-manager
+            class={`${cardManagerHeight} width-full`}
+            mapView={this?._mapView}
+            zoomAndScrollToSelected={this.zoomAndScrollToSelected}
+          />
         </div>
       </div>
     );
@@ -374,7 +383,10 @@ export class CrowdsourceManager {
           </calcite-tooltip>
         </calcite-action-bar>
         <div class="width-full height-full position-relative">
-          <layer-table mapView={this?._mapView} />
+          <layer-table
+            mapView={this?._mapView}
+            zoomAndScrollToSelected={this.zoomAndScrollToSelected}
+          />
         </div>
       </calcite-shell>
     );

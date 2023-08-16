@@ -7,11 +7,12 @@
 
 ## Properties
 
-| Property      | Attribute      | Description                                                                                          | Type         | Default |
-| ------------- | -------------- | ---------------------------------------------------------------------------------------------------- | ------------ | ------- |
-| `classicGrid` | `classic-grid` | boolean: when true the grid will display like the previous manager app with the table across the top | `boolean`    | `false` |
-| `hideMap`     | `hide-map`     | boolean: when true no map is displayed for the app                                                   | `boolean`    | `false` |
-| `mapInfos`    | --             | IMapInfo[]: array of map infos (name and id)                                                         | `IMapInfo[]` | `[]`    |
+| Property                  | Attribute                     | Description                                                                                                        | Type         | Default |
+| ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------ | ------- |
+| `classicGrid`             | `classic-grid`                | boolean: when true the grid will display like the previous manager app with the table across the top               | `boolean`    | `false` |
+| `hideMap`                 | `hide-map`                    | boolean: when true no map is displayed for the app                                                                 | `boolean`    | `false` |
+| `mapInfos`                | --                            | IMapInfo[]: array of map infos (name and id)                                                                       | `IMapInfo[]` | `[]`    |
+| `zoomAndScrollToSelected` | `zoom-and-scroll-to-selected` | boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table | `boolean`    | `false` |
 
 
 ## Dependencies
