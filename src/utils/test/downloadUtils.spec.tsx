@@ -26,7 +26,7 @@ describe("downloadUtils", () => {
         { fieldName: "B", visible: true },
         { fieldName: "C", visible: false },
         { fieldName: "D", visible: true }
-      ];
+      ] as any[];
       const bypassFieldVisiblity = false;
       const expectedLabelSpec = "{A}|{B}|{D}";
 
@@ -40,7 +40,7 @@ describe("downloadUtils", () => {
         { fieldName: "B", visible: true },
         { fieldName: "C", visible: false },
         { fieldName: "D", visible: true }
-      ];
+      ] as any[];
       const bypassFieldVisiblity = true;
       const expectedLabelSpec = "{A}|{B}|{C}|{D}";
 

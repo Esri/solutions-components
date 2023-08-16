@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+/*
 import { h } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { MapLayerPicker } from '../map-layer-picker';
@@ -102,3 +103,4 @@ xdescribe('map-layer-picker', () => {
     `);
   });
 });
+*/
