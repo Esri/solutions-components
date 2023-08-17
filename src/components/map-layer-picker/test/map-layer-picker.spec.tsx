@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+xdescribe('map-layer-picker', () => {
+  it('is a placeholder', () => {
+  });
+});
+
+
 /*
 import { h } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
