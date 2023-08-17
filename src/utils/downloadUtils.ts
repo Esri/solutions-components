@@ -349,12 +349,12 @@ export function _createRelationshipQueries(
 
 /**
  * Extracts Arcade expression references from the lines of a label format.
- * 
+ *
  * @param labelFormat Label to examine
  * @return Array of Arcade expression references, e.g., ["{expression/expr1}", "{expression/expr2}"]
  */
 export function _getExpressionsFromLabel(
-  labelFormat: string  
+  labelFormat: string
 ): string[] {
   const arcadeExpressionRegExp = /\{expression\/\w+\}/g;
   return labelFormat.match(arcadeExpressionRegExp) ?? [];
@@ -362,7 +362,7 @@ export function _getExpressionsFromLabel(
 
 /**
  * Extracts field name expressions from the lines of a label format.
- * 
+ *
  * @param labelFormat Label to examine
  * @returns Array of field name expressions, e.g., ["{NAME}", "{STREET}", "{CITY}", "{STATE}", "{ZIP}"]
  */
@@ -535,11 +535,18 @@ async function _prepareLabels(
         let labelPrep = labelFormat;
 
         // Replace Arcade expressions in this feature
+        const executions: Promise<any>[] = [];
         arcadeExpressionMatches.forEach(
           (match: string) => {
             const expressionName = match.substring(match.indexOf("/") + 1, match.length - 1);
-            const value = arcadeExecutors[expressionName].execute({"$feature": feature});
-            labelPrep = labelPrep.replace(match, value);
+            executions.push(arcadeExecutors[expressionName].executeAsync({"$feature": feature}));
+          }
+        )
+
+        const values = await Promise.all(executions);
+        values.forEach(
+          (value: string, i: number) => {
+            labelPrep = labelPrep.replace(arcadeExpressionMatches[i], value);
           }
         )
 
