@@ -47,7 +47,7 @@ export const config: Config = {
   ],
   testing: {
     transform: {
-      "^.+\\.[jt]sx?$": "C:\\Users\\mike6491\\ag\\solutions-components\\node_modules\\@stencil\\core\\testing\\jest-preprocessor.js"
+      "^.+\\.[jt]sx?$": "<rootDir>/node_modules/@stencil/core/testing/jest-preprocessor.js"
     }
   },
   plugins: [
