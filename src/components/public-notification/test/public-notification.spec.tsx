@@ -19,9 +19,9 @@ import { newSpecPage } from '@stencil/core/testing';
 import { PublicNotification } from '../public-notification';
 import * as locale from "../../../utils/locale";
 import * as translations from "../../../assets/t9n/map-draw-tools/resources.json";
-import { geometryEngine, LayerView } from "../../../utils/test/mocks/jsApi";
-import * as queryUtils from "../../../utils/queryUtils";
+//import * as queryUtils from "../../../utils/queryUtils";
 import { EWorkflowType, ISelectionSet } from "../../../utils/interfaces";
+import { LayerView } from "../../../utils/test/mocks/jsApi";
 
 jest.setTimeout(30000);
 
@@ -52,8 +52,8 @@ beforeEach(() => {
 xdescribe('public-notification', () => {
   it('renders', async () => {
 
-    const getSelectionSetQueryMock = jest.fn();
-    jest.spyOn(queryUtils, "getSelectionSetQuery").mockImplementation(getSelectionSetQueryMock)
+    //const getSelectionSetQueryMock = jest.fn();
+    //jest.spyOn(queryUtils, "getSelectionSetQuery").mockImplementation(getSelectionSetQueryMock)
 
     const page = await newSpecPage({
       autoApplyChanges: true,
@@ -121,15 +121,14 @@ xdescribe('public-notification', () => {
   });
 
   it('handles selectionSetsWatchHandler', async () => {
-    const getSelectionSetQueryMock = jest.fn();
-    jest.spyOn(queryUtils, "getSelectionSetQuery").mockImplementation(getSelectionSetQueryMock);
+    //const getSelectionSetQueryMock = jest.fn();
+    //jest.spyOn(queryUtils, "getSelectionSetQuery").mockImplementation(getSelectionSetQueryMock);
 
     const page = await newSpecPage({
       autoApplyChanges: true,
       components: [PublicNotification],
       template: () => (
         <public-notification
-          addresseeLayer={new LayerView() as unknown as any}
           mapView={mapView}
         ></public-notification>
       ),
@@ -138,7 +137,6 @@ xdescribe('public-notification', () => {
 
     page.win.dispatchEvent(new CustomEvent("selectionSetsChanged", {detail: [{
       id: 123456789,
-      workflowType: EWorkflowType.SKETCH,
       searchResult: undefined,
       buffer: {} as unknown as any,
       distance: 100,
@@ -148,13 +146,16 @@ xdescribe('public-notification', () => {
       selectedIds: [],
       layerView: new LayerView() as unknown as any,
       geometries: [],
-      refineSelectLayers: [],
-      refineIds: undefined
+      graphics: [],
+      selectLayers: [],
+      workflowType: EWorkflowType.SKETCH,
+      searchDistanceEnabled: true,
+      useLayerFeaturesEnabled: true,
+      refineInfos: undefined,
+      sketchGraphic: undefined
     }] as ISelectionSet[]}));
 
     page.win.dispatchEvent(new CustomEvent("selectionSetsChanged", {detail: [{
-      id: 123456789,
-      workflowType: EWorkflowType.REFINE,
       searchResult: undefined,
       buffer: {} as unknown as any,
       distance: 100,
@@ -164,8 +165,13 @@ xdescribe('public-notification', () => {
       selectedIds: [],
       layerView: new LayerView() as unknown as any,
       geometries: [],
-      refineSelectLayers: [],
-      refineIds: undefined
+      graphics: [],
+      selectLayers: [],
+      workflowType: EWorkflowType.REFINE,
+      searchDistanceEnabled: true,
+      useLayerFeaturesEnabled: true,
+      refineInfos: undefined,
+      sketchGraphic: undefined
     }] as ISelectionSet[]}));
   });
 });

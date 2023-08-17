@@ -167,8 +167,6 @@ xdescribe('buffer-tools', () => {
     expect(bufferTools.appearance).toEqual('text');
     expect(bufferTools.distance).toEqual(0);
     expect(bufferTools.geometries).toEqual([]);
-    expect(bufferTools.sliderMax).toEqual(100);
-    expect(bufferTools.sliderMin).toEqual(0);
     expect(bufferTools.sliderTicks).toEqual(10);
     expect(bufferTools.unionResults).toEqual(true);
     expect(bufferTools.unit).toEqual('meters');

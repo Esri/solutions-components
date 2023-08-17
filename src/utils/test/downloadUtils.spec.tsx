@@ -26,7 +26,7 @@ describe("downloadUtils", () => {
         { fieldName: "B", visible: true },
         { fieldName: "C", visible: false },
         { fieldName: "D", visible: true }
-      ];
+      ] as any[];
       const bypassFieldVisiblity = false;
       const expectedLabelSpec = "{A}|{B}|{D}";
 
@@ -40,7 +40,7 @@ describe("downloadUtils", () => {
         { fieldName: "B", visible: true },
         { fieldName: "C", visible: false },
         { fieldName: "D", visible: true }
-      ];
+      ] as any[];
       const bypassFieldVisiblity = true;
       const expectedLabelSpec = "{A}|{B}|{C}|{D}";
 
@@ -102,13 +102,13 @@ describe("downloadUtils", () => {
 
   });
 
-  describe("_createTitle", () => {
+  describe("_createFilename", () => {
 
     it("handles no selection set names", () => {
       const selectionSetNames: string[] = [];
       const expectedTitle = "download";
 
-      const title = downloadUtils._createTitle(selectionSetNames);
+      const title = downloadUtils._createFilename(selectionSetNames);
       expect(title).toEqual(expectedTitle);
     });
 
@@ -116,15 +116,15 @@ describe("downloadUtils", () => {
       const selectionSetNames: string[] = ["fred"];
       const expectedTitle = "fred";
 
-      const title = downloadUtils._createTitle(selectionSetNames);
+      const title = downloadUtils._createFilename(selectionSetNames);
       expect(title).toEqual(expectedTitle);
     });
 
     it("handles two selection set names", () => {
       const selectionSetNames: string[] = ["fred", "ginger"];
-      const expectedTitle = "fred,ginger";
+      const expectedTitle = "fred, ginger";
 
-      const title = downloadUtils._createTitle(selectionSetNames);
+      const title = downloadUtils._createFilename(selectionSetNames);
       expect(title).toEqual(expectedTitle);
     });
 
