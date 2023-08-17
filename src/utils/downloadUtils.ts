@@ -348,6 +348,35 @@ export function _createRelationshipQueries(
 }
 
 /**
+ * Extracts Arcade expression references from the lines of a label format.
+ * 
+ * @param labelFormat Label to examine
+ * @return Array of Arcade expression references, e.g., ["{expression/expr1}", "{expression/expr2}"]
+ */
+export function _getExpressionsFromLabel(
+  labelFormat: string  
+): string[] {
+  const arcadeExpressionRegExp = /\{expression\/\w+\}/g;
+  return labelFormat.match(arcadeExpressionRegExp) ?? [];
+}
+
+/**
+ * Extracts field name expressions from the lines of a label format.
+ * 
+ * @param labelFormat Label to examine
+ * @returns Array of field name expressions, e.g., ["{NAME}", "{STREET}", "{CITY}", "{STATE}", "{ZIP}"]
+ */
+export function _getFieldsFromLabel(
+  labelFormat: string
+): string[] {
+  //const fieldNames: string[] = [];
+  const attributeRegExp = /\{\w+\}/g;
+  const fieldNames = labelFormat.match(attributeRegExp) ?? [];
+
+  return fieldNames;
+}
+
+/**
  * Prepares an attribute's value by applying domain and type information.
  *
  * @param attributeValue Value of attribute
@@ -481,12 +510,9 @@ async function _prepareLabels(
   let labels: string[][];
   // eslint-disable-next-line unicorn/prefer-ternary
   if (labelFormat) {
-    const arcadeExpressionRegExp = /\{expression\/\w+\}/g;
-    const attributeRegExp = /\{\w+\}/g;
-
     // Find the label fields that we need to replace with values
-    const arcadeExpressionMatches = labelFormat.match(arcadeExpressionRegExp) ?? [];
-    const attributeMatches = labelFormat.match(attributeRegExp) ?? [];
+    const arcadeExpressionMatches = _getExpressionsFromLabel(labelFormat);
+    const attributeMatches = _getFieldsFromLabel(labelFormat);
 
     // Convert feature attributes into an array of labels
     const relationshipKeys = Object.keys(relationshipQueries);

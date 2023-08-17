@@ -130,4 +130,22 @@ describe("downloadUtils", () => {
 
   });
 
+  describe("_getExpressionsFromLabel", () => {
+    it("handles a label with ASCII expression names", () => {
+      const labelSpec = "{expression/expr0}\n{OWNERNM1}\n{PSTLADDRESS}\n{PSTLCITY}, {PSTLSTATE} {PSTLZIP5}";
+      const expectedExpressionNames = ["{expression/expr0}"];
+      const expressionNames = downloadUtils._getExpressionsFromLabel(labelSpec);
+      expect(expressionNames).toEqual(expectedExpressionNames);
+    });
+  });
+
+  describe("_getFieldsFromLabel", () => {
+    it("handles a label with ASCII field names", () => {
+      const labelSpec = "{expression/expr0}\n{OWNERNM1}\n{PSTLADDRESS}\n{PSTLCITY}, {PSTLSTATE} {PSTLZIP5}";
+      const expectedFieldNames = ["{OWNERNM1}", "{PSTLADDRESS}", "{PSTLCITY}", "{PSTLSTATE}", "{PSTLZIP5}"];
+      const fieldNames = downloadUtils._getFieldsFromLabel(labelSpec);
+      expect(fieldNames).toEqual(expectedFieldNames);
+    });
+  });
+
 });
