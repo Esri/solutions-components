@@ -369,11 +369,25 @@ export function _getExpressionsFromLabel(
 export function _getFieldsFromLabel(
   labelFormat: string
 ): string[] {
-  //const fieldNames: string[] = [];
-  const attributeRegExp = /\{\w+\}/g;
-  const fieldNames = labelFormat.match(attributeRegExp) ?? [];
+  // Get all fields
+  const fieldExpressions: string[] = [];
 
-  return fieldNames;
+  let iStart = 0;
+  while (iStart < labelFormat.length) {
+    const iOpen = labelFormat.indexOf("{", iStart); // Find the next open brace
+    if (iOpen < 0) { break; } // No more open braces
+    const iClose = labelFormat.indexOf("}", iOpen); // Find the matching close brace
+    if (iClose < 0) { break; } // No more close braces
+    const fieldName = labelFormat.substring(iOpen, iClose + 1); // Extract the field name with braces
+    fieldExpressions.push(fieldName);
+    iStart = iClose + 1; // Start looking for the next field name after the close brace
+  }
+
+  // Get the Arcade expressions
+  const arcadeExpressions = _getExpressionsFromLabel(labelFormat);
+
+  // Remove the Arcade expressions from the returned list of field expressions
+  return fieldExpressions.filter(fieldExpression => arcadeExpressions.indexOf(fieldExpression) < 0);
 }
 
 /**
