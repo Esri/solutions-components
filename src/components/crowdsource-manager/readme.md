@@ -68,12 +68,15 @@ graph TD;
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
   calcite-list --> calcite-scrim
+  calcite-list --> calcite-stack
   calcite-list --> calcite-filter
   calcite-filter --> calcite-input
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-list-item --> calcite-icon
+  calcite-list-item --> calcite-handle
   calcite-list-item --> calcite-action
+  calcite-handle --> calcite-icon
   map-tools --> calcite-action
   map-tools --> calcite-action-bar
   map-tools --> calcite-action-group
