@@ -65,6 +65,11 @@ export class MapPicker {
   //--------------------------------------------------------------------------
 
   /**
+   * HTMLCalciteListElement: this list of map names
+   */
+  protected _list: HTMLCalciteListElement;
+
+  /**
    * string: the id of map currently displayed
    */
   protected _loadedId = "";
@@ -129,6 +134,15 @@ export class MapPicker {
         {this._getMapNameList(this._mapListExpanded)}
       </Host>
     );
+  }
+
+  /**
+   * Called after each render
+   */
+  async componentDidRender() {
+    if (this._mapListExpanded) {
+      await this._list.setFocus();
+    }
   }
 
   /**
@@ -204,7 +218,7 @@ export class MapPicker {
     const listClass = show ? "map-list" : "display-none";
     return (
       <div class={listClass}>
-        <calcite-list id="mapList">
+        <calcite-list id="mapList" ref={(el) => this._list = el} selectionAppearance="border">
           {this.mapInfos.map(mapInfo => {
             return (
               <calcite-list-item

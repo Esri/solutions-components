@@ -65,6 +65,10 @@ export namespace Components {
          */
         "classicGrid": boolean;
         /**
+          * boolean: when true no header is displayed for the app
+         */
+        "hideHeader": boolean;
+        /**
           * boolean: when true no map is displayed for the app
          */
         "hideMap": boolean;
@@ -1057,6 +1061,10 @@ declare namespace LocalJSX {
           * boolean: when true the grid will display like the previous manager app with the table across the top
          */
         "classicGrid"?: boolean;
+        /**
+          * boolean: when true no header is displayed for the app
+         */
+        "hideHeader"?: boolean;
         /**
           * boolean: when true no map is displayed for the app
          */

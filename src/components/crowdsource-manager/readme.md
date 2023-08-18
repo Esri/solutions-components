@@ -10,6 +10,7 @@
 | Property                  | Attribute                     | Description                                                                                                        | Type         | Default |
 | ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------ | ------- |
 | `classicGrid`             | `classic-grid`                | boolean: when true the grid will display like the previous manager app with the table across the top               | `boolean`    | `false` |
+| `hideHeader`              | `hide-header`                 | boolean: when true no header is displayed for the app                                                              | `boolean`    | `true`  |
 | `hideMap`                 | `hide-map`                    | boolean: when true no map is displayed for the app                                                                 | `boolean`    | `false` |
 | `mapInfos`                | --                            | IMapInfo[]: array of map infos (name and id)                                                                       | `IMapInfo[]` | `[]`    |
 | `zoomAndScrollToSelected` | `zoom-and-scroll-to-selected` | boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table | `boolean`    | `false` |
@@ -67,12 +68,15 @@ graph TD;
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
   calcite-list --> calcite-scrim
+  calcite-list --> calcite-stack
   calcite-list --> calcite-filter
   calcite-filter --> calcite-input
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-list-item --> calcite-icon
+  calcite-list-item --> calcite-handle
   calcite-list-item --> calcite-action
+  calcite-handle --> calcite-icon
   map-tools --> calcite-action
   map-tools --> calcite-action-bar
   map-tools --> calcite-action-group
