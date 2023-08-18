@@ -400,7 +400,7 @@ export function _getFieldsFromLabel(
  * @param intl esri/intl
  * @return Attribute value modified appropriate to domain and type
  */
-function _prepareAttributeValue(
+export function _prepareAttributeValue(
   attributeValue: any,
   attributeType: string,
   attributeDomain: __esri.CodedValueDomain | __esri.RangeDomain | __esri.InheritedDomain | null,
@@ -683,7 +683,7 @@ export function removeDuplicateLabels(
  * @param exportInfos Key details about what to export (ids, layer, and selectionSetNames)
  * @returns selectionSetNames that will be used for export filenames
  */
-function _getSelectionSetNames(
+export function _getSelectionSetNames(
   exportInfos: IExportInfos,
   id = /.+/
 ): string[] {

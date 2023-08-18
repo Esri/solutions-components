@@ -421,4 +421,120 @@ describe("downloadUtils", () => {
     });
   });
 
+  describe('_prepareAttributeValue', () => {
+    it('should format date attributes using the specified date format', () => {
+      const attributeValue = new Date('2022-01-01T00:00:00.000Z');
+      const attributeType = 'date';
+      const attributeDomain = null;
+      const attributeFormat = {
+        dateFormat: 'short-date'
+      };
+      const intl = {
+        formatDate: jest.fn().mockReturnValue('01/01/2022'),
+        convertDateFormatToIntlOptions: jest.fn().mockReturnValue({})
+      };
+      const result = downloadUtils._prepareAttributeValue(attributeValue, attributeType, attributeDomain, attributeFormat as any, intl);
+      expect(result).toEqual('01/01/2022');
+      expect(intl.formatDate).toHaveBeenCalledWith(attributeValue, {});
+      expect(intl.convertDateFormatToIntlOptions).toHaveBeenCalledWith('short-date');
+    });
+  
+    it('should format number attributes using the specified number format', () => {
+      const attributeValue = 1234.5678;
+      const attributeType = 'double';
+      const attributeDomain = null;
+      const attributeFormat = {
+        places: 2,
+        digitSeparator: true
+      };
+      const intl = {
+        formatNumber: jest.fn().mockReturnValue('1,234.57'),
+        convertNumberFormatToIntlOptions: jest.fn().mockReturnValue({})
+      };
+      const result = downloadUtils._prepareAttributeValue(attributeValue, attributeType, attributeDomain, attributeFormat as any, intl);
+      expect(result).toEqual('1,234.57');
+      expect(intl.formatNumber).toHaveBeenCalledWith(attributeValue, {});
+      expect(intl.convertNumberFormatToIntlOptions).toHaveBeenCalledWith(attributeFormat);
+    });
+  
+    it('should return the attribute value if no format is specified', () => {
+      const attributeValue = 'Value';
+      const attributeType = 'string';
+      const attributeDomain = null;
+      const attributeFormat = null;
+      const intl = {};
+      const result = downloadUtils._prepareAttributeValue(attributeValue, attributeType, attributeDomain, attributeFormat, intl);
+      expect(result).toEqual('Value');
+    });
+  
+    it('should return the domain name for coded-value domain fields', () => {
+      const attributeValue = '1';
+      const attributeType = 'string';
+      const attributeDomain = {
+        type: 'coded-value',
+        name: 'Domain',
+        codedValues: [
+          {
+            name: 'Value 1',
+            code: '1'
+          },
+          {
+            name: 'Value 2',
+            code: '2'
+          }
+        ],
+        getName: function (code: string) {
+          return this.codedValues.find((codedValue: any) => codedValue.code === code)?.name;
+        }
+      } as __esri.CodedValueDomain;
+      const attributeFormat = null;
+      const intl = {};
+      const result = downloadUtils._prepareAttributeValue(attributeValue, attributeType, attributeDomain as any, attributeFormat, intl);
+      expect(result).toEqual('Value 1');
+    });
+  });
+
+  describe('removeDuplicateLabels', () => {
+    it('should remove duplicate labels', () => {
+      const labels = [
+        ['Label 1', 'Value 1'],
+        ['Label 2', 'Value 2'],
+        ['Label 1', 'Value 1']
+      ];
+      const result = downloadUtils.removeDuplicateLabels(labels);
+      expect(result).toEqual([
+        ['Label 1', 'Value 1'],
+        ['Label 2', 'Value 2']
+      ]);
+    });
+  });
+
+  describe('_getSelectionSetNames', () => {
+    it('should return selection set names for matching IDs', () => {
+      const exportInfos = {
+        'layer1': {
+          selectionSetNames: ['Selection Set 1', 'Selection Set 2']
+        },
+        'layer2': {
+          selectionSetNames: ['Selection Set 3']
+        }
+      };
+      const result = downloadUtils._getSelectionSetNames(exportInfos as any, /^layer/);
+      expect(result).toEqual(['Selection Set 1', 'Selection Set 2', 'Selection Set 3']);
+    });
+  
+    it('should return an empty array if no matching IDs are found', () => {
+      const exportInfos = {
+        'layer1': {
+          selectionSetNames: ['Selection Set 1', 'Selection Set 2']
+        },
+        'layer2': {
+          selectionSetNames: ['Selection Set 3']
+        }
+      };
+      const result = downloadUtils._getSelectionSetNames(exportInfos as any, /^foo/);
+      expect(result).toEqual([]);
+    });
+  });
+
 });
