@@ -44,6 +44,11 @@ export class CrowdsourceManager {
   @Prop() classicGrid = false;
 
   /**
+   * boolean: when true no header is displayed for the app
+   */
+  @Prop() hideHeader = true;
+
+  /**
    * boolean: when true no map is displayed for the app
    */
   @Prop() hideMap = false;
@@ -154,9 +159,9 @@ export class CrowdsourceManager {
         <calcite-shell>
           <calcite-panel
             class="width-full height-full"
-            heading={this._translations.header}
+            heading={this.hideHeader ? undefined : this._translations.header}
           >
-            <layout-manager slot="header-actions-end"/>
+            {this.hideHeader ? undefined : (<layout-manager slot="header-actions-end"/>)}
             {this._getBody(this._layoutMode, this._panelOpen, this.hideMap)}
           </calcite-panel>
         </calcite-shell>
