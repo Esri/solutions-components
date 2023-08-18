@@ -80,6 +80,10 @@
   border: 1px solid var(--calcite-ui-border-3);
 }
 
+.border-bottom {
+  border-bottom: 1px solid var(--calcite-ui-border-3);
+}
+
 .position-relative {
   position: relative;
 }
