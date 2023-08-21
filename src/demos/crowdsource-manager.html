@@ -42,6 +42,7 @@
       function addValues() {
         const demo = document.getElementById("demo");
 
+        let headerSet = false;
         let custom = [];
         var vars = window.location.search.substring(1).split('&');
         vars.forEach((param) => {
@@ -64,10 +65,20 @@
             case "zoomAndScrollToSelected":
               demo.zoomAndScrollToSelected = v.toLocaleLowerCase() === "true";
               break;
+            case "hideHeader":
+              demo.hideHeader = v.toLocaleLowerCase() === "true";
+              headerSet = true;
+              break;
             default:
               break;
           }
         });
+
+        if (!headerSet) {
+          // Want the header to be disabled by default for IA
+          // Want the header to be enabled by default for the demo app
+          demo.hideHeader = false;
+        }
 
         demo.mapInfos = [
           ...custom,

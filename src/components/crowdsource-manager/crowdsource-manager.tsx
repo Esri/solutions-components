@@ -44,6 +44,11 @@ export class CrowdsourceManager {
   @Prop() classicGrid = false;
 
   /**
+   * boolean: when true no header is displayed for the app
+   */
+  @Prop() hideHeader = true;
+
+  /**
    * boolean: when true no map is displayed for the app
    */
   @Prop() hideMap = false;
@@ -154,9 +159,9 @@ export class CrowdsourceManager {
         <calcite-shell>
           <calcite-panel
             class="width-full height-full"
-            heading={this._translations.header}
+            heading={this.hideHeader ? undefined : this._translations.header}
           >
-            <layout-manager slot="header-actions-end"/>
+            {this.hideHeader ? undefined : (<layout-manager slot="header-actions-end"/>)}
             {this._getBody(this._layoutMode, this._panelOpen, this.hideMap)}
           </calcite-panel>
         </calcite-shell>
@@ -284,13 +289,13 @@ export class CrowdsourceManager {
       <calcite-panel class={"width-full height-full"}>
         <div class={`width-full height-full ${contentClass}`}>
           {this._getTable(layoutMode, panelOpen)}
-          {this._getMap(layoutMode, panelOpen, hideMap)}
+          {this._getMapAndCard(layoutMode, panelOpen, hideMap)}
         </div>
       </calcite-panel>
     ) : (
       <calcite-panel class={"width-full height-full"}>
         <div class={`width-full height-full ${contentClass}`}>
-          {this._getMap(layoutMode, panelOpen, hideMap)}
+          {this._getMapAndCard(layoutMode, panelOpen, hideMap)}
           {this._getTable(layoutMode, panelOpen)}
         </div>
       </calcite-panel>
@@ -298,7 +303,7 @@ export class CrowdsourceManager {
   }
 
   /**
-   * Get the map node based for the current layout
+   * Get the map and card nodes based for the current layout options
    *
    * @param layoutMode ELayoutMode the current layout mode
    * @param panelOpen boolean indicates if all panels are open
@@ -307,33 +312,72 @@ export class CrowdsourceManager {
    * @returns the map node
    * @protected
    */
-  protected _getMap(
+  protected _getMapAndCard(
     layoutMode: ELayoutMode,
     panelOpen: boolean,
     hideMap: boolean
   ): VNode {
+    const mapSizeClass = this._getMapSizeClass(layoutMode, panelOpen);
+    return this.classicGrid ? (
+      <div class={`${mapSizeClass} overflow-hidden`}>
+        {this._getCardNode(layoutMode, hideMap)}
+        {this._getMapNode(layoutMode, hideMap)}
+      </div>
+    ) : (
+      <div class={`${mapSizeClass} overflow-hidden`}>
+        {this._getMapNode(layoutMode, hideMap)}
+        {this._getCardNode(layoutMode, hideMap)}
+      </div>
+    );
+  }
+
+  /**
+   * Get the map node based for the current layout options
+   *
+   * @param layoutMode ELayoutMode the current layout mode
+   * @param hideMap when true no map is displayed
+   *
+   * @returns the map node
+   * @protected
+   */
+  protected _getMapNode(
+    layoutMode: ELayoutMode,
+    hideMap: boolean
+  ): VNode {
     const mapDisplayClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "display-flex height-full width-1-2" :
       layoutMode === ELayoutMode.GRID && !hideMap ? "" : "display-none";
-    const cardManagerHeight = this.classicGrid && layoutMode === ELayoutMode.GRID ? "" :
-      layoutMode === ELayoutMode.GRID  && !hideMap ? "adjusted-height-50" : "adjusted-height-100";
-    //
-    const mapSizeClass = this._getMapSizeClass(layoutMode, panelOpen);
     const mapContainerClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "width-full" : "adjusted-height-50";
+    return (
+      <div class={`${mapContainerClass} overflow-hidden ${mapDisplayClass}`} >
+        <map-card class="width-full" mapInfos={this.mapInfos} />
+      </div>
+    );
+  }
 
+  /**
+   * Get the card node based for the current layout options
+   *
+   * @param layoutMode ELayoutMode the current layout mode
+   * @param hideMap when true no map is displayed
+   *
+   * @returns the map node
+   * @protected
+   */
+  protected _getCardNode(
+    layoutMode: ELayoutMode,
+    hideMap: boolean
+  ): VNode {
+    const cardManagerHeight = this.classicGrid && layoutMode === ELayoutMode.GRID ? "" :
+      layoutMode === ELayoutMode.GRID && !hideMap ? "adjusted-height-50" : "adjusted-height-100";
     const cardManagerContainer = this.classicGrid && layoutMode === ELayoutMode.GRID ?
       "width-full adjusted-height-100" : "width-50 height-full";
     return (
-      <div class={`${mapSizeClass} overflow-hidden`}>
-        <div class={`${mapContainerClass} overflow-hidden ${mapDisplayClass}`} >
-          <map-card class="width-full" mapInfos={this.mapInfos}/>
-        </div>
-        <div class={`padding-1-2 ${cardManagerContainer}`}>
-          <card-manager
-            class={`${cardManagerHeight} width-full`}
-            mapView={this?._mapView}
-            zoomAndScrollToSelected={this.zoomAndScrollToSelected}
-          />
-        </div>
+      <div class={`padding-1-2 ${cardManagerContainer}`}>
+        <card-manager
+          class={`${cardManagerHeight} width-full`}
+          mapView={this?._mapView}
+          zoomAndScrollToSelected={this.zoomAndScrollToSelected}
+        />
       </div>
     );
   }
@@ -360,7 +404,7 @@ export class CrowdsourceManager {
       this.classicGrid && layoutMode === ELayoutMode.VERTICAL ? "panel-end" :
         layoutMode === ELayoutMode.HORIZONTAL  ? "header" : "panel-start";
     return (
-      <calcite-shell class={tableSizeClass}>
+      <calcite-shell class={tableSizeClass + " border-bottom"}>
         <calcite-action-bar
           class="border"
           expandDisabled={true}

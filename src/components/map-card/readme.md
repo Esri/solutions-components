@@ -52,13 +52,16 @@ graph TD;
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
   calcite-list --> calcite-scrim
+  calcite-list --> calcite-stack
   calcite-list --> calcite-filter
   calcite-scrim --> calcite-loader
   calcite-filter --> calcite-input
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-list-item --> calcite-icon
+  calcite-list-item --> calcite-handle
   calcite-list-item --> calcite-action
+  calcite-handle --> calcite-icon
   map-tools --> calcite-action
   map-tools --> calcite-action-bar
   map-tools --> calcite-action-group

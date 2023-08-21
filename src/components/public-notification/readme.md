@@ -103,12 +103,15 @@ graph TD;
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   calcite-list --> calcite-scrim
+  calcite-list --> calcite-stack
   calcite-list --> calcite-filter
   calcite-filter --> calcite-input
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-list-item --> calcite-icon
+  calcite-list-item --> calcite-handle
   calcite-list-item --> calcite-action
+  calcite-handle --> calcite-icon
   map-select-tools --> map-draw-tools
   map-select-tools --> calcite-label
   map-select-tools --> calcite-icon
