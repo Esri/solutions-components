@@ -18,6 +18,21 @@ import * as downloadUtils from "../downloadUtils";
 
 describe("downloadUtils", () => {
 
+  describe('removeDuplicateLabels', () => {
+    it('should remove duplicate labels', () => {
+      const labels = [
+        ['Label 1', 'Value 1'],
+        ['Label 2', 'Value 2'],
+        ['Label 1', 'Value 1']
+      ];
+      const result = downloadUtils.removeDuplicateLabels(labels);
+      expect(result).toEqual([
+        ['Label 1', 'Value 1'],
+        ['Label 2', 'Value 2']
+      ]);
+    });
+  });
+
   describe("_convertPopupFieldsToLabelSpec", () => {
 
     it("handles fieldname visibility", () => {
@@ -429,6 +444,34 @@ describe("downloadUtils", () => {
     });
   });
 
+  describe('_getSelectionSetNames', () => {
+    it('should return selection set names for matching IDs', () => {
+      const exportInfos = {
+        'layer1': {
+          selectionSetNames: ['Selection Set 1', 'Selection Set 2']
+        },
+        'layer2': {
+          selectionSetNames: ['Selection Set 3']
+        }
+      };
+      const result = downloadUtils._getSelectionSetNames(exportInfos as any, /^layer/);
+      expect(result).toEqual(['Selection Set 1', 'Selection Set 2', 'Selection Set 3']);
+    });
+
+    it('should return an empty array if no matching IDs are found', () => {
+      const exportInfos = {
+        'layer1': {
+          selectionSetNames: ['Selection Set 1', 'Selection Set 2']
+        },
+        'layer2': {
+          selectionSetNames: ['Selection Set 3']
+        }
+      };
+      const result = downloadUtils._getSelectionSetNames(exportInfos as any, /^foo/);
+      expect(result).toEqual([]);
+    });
+  });
+
   describe('_prepareAttributeValue', () => {
     it('should format date attributes using the specified date format', () => {
       const attributeValue = new Date('2022-01-01T00:00:00.000Z');
@@ -499,49 +542,6 @@ describe("downloadUtils", () => {
       const intl = {};
       const result = downloadUtils._prepareAttributeValue(attributeValue, attributeType, attributeDomain as any, attributeFormat, intl);
       expect(result).toEqual('Value 1');
-    });
-  });
-
-  describe('removeDuplicateLabels', () => {
-    it('should remove duplicate labels', () => {
-      const labels = [
-        ['Label 1', 'Value 1'],
-        ['Label 2', 'Value 2'],
-        ['Label 1', 'Value 1']
-      ];
-      const result = downloadUtils.removeDuplicateLabels(labels);
-      expect(result).toEqual([
-        ['Label 1', 'Value 1'],
-        ['Label 2', 'Value 2']
-      ]);
-    });
-  });
-
-  describe('_getSelectionSetNames', () => {
-    it('should return selection set names for matching IDs', () => {
-      const exportInfos = {
-        'layer1': {
-          selectionSetNames: ['Selection Set 1', 'Selection Set 2']
-        },
-        'layer2': {
-          selectionSetNames: ['Selection Set 3']
-        }
-      };
-      const result = downloadUtils._getSelectionSetNames(exportInfos as any, /^layer/);
-      expect(result).toEqual(['Selection Set 1', 'Selection Set 2', 'Selection Set 3']);
-    });
-
-    it('should return an empty array if no matching IDs are found', () => {
-      const exportInfos = {
-        'layer1': {
-          selectionSetNames: ['Selection Set 1', 'Selection Set 2']
-        },
-        'layer2': {
-          selectionSetNames: ['Selection Set 3']
-        }
-      };
-      const result = downloadUtils._getSelectionSetNames(exportInfos as any, /^foo/);
-      expect(result).toEqual([]);
     });
   });
 
