@@ -444,6 +444,226 @@ describe("downloadUtils", () => {
     });
   });
 
+  describe('_getLabelFormat', () => {
+    it('should prepare labels from visible popup fields', async () => {
+      const popupTemplate = {
+        title: '{name}',
+        content: [{
+          type: 'fields'
+        }],
+        fieldInfos: [{
+          fieldName: 'name',
+          visible: true
+        }, {
+          fieldName: 'age',
+          format: {
+            places: 0,
+            digitSeparator: true
+          },
+          visible: true
+        }, {
+          fieldName: 'start',
+          format: {
+            dateFormat: 'short-date'
+          },
+          visible: true
+        }]
+      };
+      const layer = {
+        popupEnabled: true,
+        popupTemplate
+      };
+      const formatUsingLayerPopup = true;
+
+      const attributeFormats: downloadUtils.IAttributeFormats = {};
+      const result = await downloadUtils._getLabelFormat(layer as any, formatUsingLayerPopup, attributeFormats);
+      expect(result).toEqual('{name}|{age}|{start}');
+    });
+
+    it('should prepare labels from a partial set of visible popup fields', async () => {
+      const popupTemplate = {
+        title: '{name}',
+        content: [{
+          type: 'fields'
+        }],
+        fieldInfos: [{
+          fieldName: 'name',
+          visible: false
+        }, {
+          fieldName: 'age',
+          format: {
+            places: 0,
+            digitSeparator: true
+          },
+          visible: false
+        }, {
+          fieldName: 'start',
+          format: {
+            dateFormat: 'short-date'
+          },
+          visible: true
+        }]
+      };
+      const layer = {
+        popupEnabled: true,
+        popupTemplate
+      };
+      const formatUsingLayerPopup = true;
+
+      const attributeFormats: downloadUtils.IAttributeFormats = {};
+      const result = await downloadUtils._getLabelFormat(layer as any, formatUsingLayerPopup, attributeFormats);
+      expect(result).toEqual('{start}');
+    });
+
+    it('should prepare labels from invisible popup fields, but title is present', async () => {
+      const popupTemplate = {
+        title: '{name}',
+        content: [{
+          type: 'fields'
+        }],
+        fieldInfos: [{
+          fieldName: 'name',
+          visible: false
+        }, {
+          fieldName: 'age',
+          format: {
+            places: 0,
+            digitSeparator: true
+          },
+          visible: false
+        }, {
+          fieldName: 'start',
+          format: {
+            dateFormat: 'short-date'
+          },
+          visible: false
+        }]
+      };
+      const layer = {
+        popupEnabled: true,
+        popupTemplate
+      };
+      const formatUsingLayerPopup = true;
+
+      const attributeFormats: downloadUtils.IAttributeFormats = {};
+      const result = await downloadUtils._getLabelFormat(layer as any, formatUsingLayerPopup, attributeFormats);
+      expect(result).toEqual('{name}');
+    });
+
+    it('should prepare labels from invisible popup fields with no title present', async () => {
+      const popupTemplate = {
+        title: '',
+        content: [{
+          type: 'fields'
+        }],
+        fieldInfos: [{
+          fieldName: 'name',
+          visible: false
+        }, {
+          fieldName: 'age',
+          format: {
+            places: 0,
+            digitSeparator: true
+          },
+          visible: false
+        }, {
+          fieldName: 'start',
+          format: {
+            dateFormat: 'short-date'
+          },
+          visible: false
+        }]
+      };
+      const layer = {
+        popupEnabled: true,
+        popupTemplate
+      };
+      const formatUsingLayerPopup = true;
+
+      const attributeFormats: downloadUtils.IAttributeFormats = {};
+      const result = await downloadUtils._getLabelFormat(layer as any, formatUsingLayerPopup, attributeFormats);
+      expect(result).toEqual('{name}|{age}|{start}');
+    });
+
+    it('should prepare labels from popup text', async () => {
+      const popupTemplate = {
+        title: '{name}',
+        content: [{
+          type: 'text',
+          text: '<p>{name} {age} years &nbsp;</p><p>started: {start}</p>'
+        }],
+        fieldInfos: [{
+          fieldName: 'name',
+          visible: true
+        }, {
+          fieldName: 'age',
+          format: {
+            places: 0,
+            digitSeparator: true
+          },
+          visible: true
+        }, {
+          fieldName: 'start',
+          format: {
+            dateFormat: 'short-date'
+          },
+          visible: true
+        }]
+      };
+      const layer = {
+        popupEnabled: true,
+        popupTemplate
+      };
+      const formatUsingLayerPopup = true;
+
+      const attributeFormats: downloadUtils.IAttributeFormats = {};
+      const result = await downloadUtils._getLabelFormat(layer as any, formatUsingLayerPopup, attributeFormats);
+      expect(result).toEqual('{name} {age} years|started: {start}');
+    });
+
+    it('should prepare labels without popup; formatUsingLayerPopup is true', async () => {
+      const layer = {
+        popupEnabled: false,
+        fields: [
+          {
+            name: 'name',
+            type: 'string'
+          },
+          {
+            name: 'age',
+            type: 'integer'
+          }
+        ]
+      } as __esri.FeatureLayer;
+      const formatUsingLayerPopup = true;
+
+      const attributeFormats: downloadUtils.IAttributeFormats = {};
+      const result = await downloadUtils._getLabelFormat(layer, formatUsingLayerPopup, attributeFormats);
+      expect(result).toBeUndefined();
+    });
+
+    it('should prepare labels without popup; formatUsingLayerPopup is false', async () => {
+      const layer = {
+        popupEnabled: false,
+        fields: [
+          {
+            name: 'name',
+            type: 'string'
+          },
+          {
+            name: 'age',
+            type: 'integer'
+          }
+        ]
+      } as __esri.FeatureLayer;
+      const formatUsingLayerPopup = false;
+
+      const attributeFormats: downloadUtils.IAttributeFormats = {};
+      const result = await downloadUtils._getLabelFormat(layer, formatUsingLayerPopup, attributeFormats);
+      expect(result).toBeUndefined();
+    });
+  });
+
   describe('_getSelectionSetNames', () => {
     it('should return selection set names for matching IDs', () => {
       const exportInfos = {

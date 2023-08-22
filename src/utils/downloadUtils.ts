@@ -24,24 +24,24 @@ import { IExportInfo, IExportInfos } from "../utils/interfaces";
 
 export { ILabel } from "./pdfUtils";
 
-interface IAttributeDomains {
+export interface IAttributeDomains {
   [attributeName: string]: __esri.CodedValueDomain | __esri.RangeDomain | __esri.InheritedDomain | null;
 }
 
-interface IAttributeFormats {
+export interface IAttributeFormats {
   [attributeName: string]: __esri.FieldInfoFormat;
 }
 
-interface IAttributeTypes {
+export interface IAttributeTypes {
   [attributeName: string]: string;
 }
 
-interface ILayerRelationshipQuery {
+export interface ILayerRelationshipQuery {
   layer: __esri.FeatureLayer;
   relatedQuery: IRelatedFeaturesQuery;
 }
 
-interface ILayerRelationshipQueryHash {
+export interface ILayerRelationshipQueryHash {
   [relationshipId: string]: ILayerRelationshipQuery;
 }
 
@@ -372,7 +372,7 @@ export function _getFieldNamesFromFieldExpressions(
  * all attributes are exported
  * @param attributeFormats Empty object to hold the formats for each attribute in a feature; the object is filled
  * with formats by this function
- * @returns
+ * @returns The format of a single label, e.g., "{NAME}|{STREET}|{CITY}, {STATE} {ZIP}"
  */
 export function _getLabelFormat(
   layer: __esri.FeatureLayer,
@@ -398,14 +398,11 @@ export function _getLabelFormat(
       // If popup is configured with "no attribute information", then no fields will visible
       if (labelFormat.length === 0) {
         // Can we use the popup title?
-        // eslint-disable-next-line unicorn/prefer-ternary
-        if (typeof layer.popupTemplate.title === "string") {
-          labelFormat = layer.popupTemplate.title;
-
-        // Otherwise revert to using attributes
-        } else {
-          labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos, true);
-        }
+        labelFormat = layer.popupTemplate.title && typeof layer.popupTemplate.title === "string" ?
+          layer.popupTemplate.title
+          :
+          // Otherwise revert to using attributes
+          _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos, true);
       }
 
     } else if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "text") {
