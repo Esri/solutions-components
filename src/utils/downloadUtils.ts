@@ -366,7 +366,7 @@ export function _getExpressionsFromLabel(
  * @param labelFormat Label to examine
  * @returns Array of field name expressions, e.g., ["{NAME}", "{STREET}", "{CITY}", "{STATE}", "{ZIP}"]
  */
-export function _getFieldsFromLabel(
+export function _getFieldExpressionsFromLabel(
   labelFormat: string
 ): string[] {
   // Get all fields
@@ -391,6 +391,20 @@ export function _getFieldsFromLabel(
 }
 
 /**
+ * Extracts field names from field name expressions.
+ *
+ * @param fieldExpressions Array of field name expressions, e.g., ["{NAME}", "{STREET}", "{CITY}", "{STATE}", "{ZIP}"]
+ * @returns Array of field names, e.g., ["NAME", "STREET", "CITY", "STATE", "ZIP"]
+ */
+export function _getFieldNamesFromFieldExpressions(
+  fieldExpressions: string[]
+): string[] {
+  return fieldExpressions.map(
+    expr => expr.substring(1, expr.length - 1)
+  )
+}
+
+/**
  * Prepares an attribute's value by applying domain and type information.
  *
  * @param attributeValue Value of attribute
@@ -398,7 +412,7 @@ export function _getFieldsFromLabel(
  * @param attributeDomain Domain info for attribute, if any
  * @param attributeFormat Format info for attribute, if any
  * @param intl esri/intl
- * @return Attribute value modified appropriate to domain and type
+ * @return Attribute value modified appropriate to domain and type and converted to a string
  */
 export function _prepareAttributeValue(
   attributeValue: any,
@@ -406,11 +420,11 @@ export function _prepareAttributeValue(
   attributeDomain: __esri.CodedValueDomain | __esri.RangeDomain | __esri.InheritedDomain | null,
   attributeFormat: __esri.FieldInfoFormat,
   intl: any
-): any {
+): string {
   if (attributeDomain && (attributeDomain as __esri.CodedValueDomain).type === "coded-value") {
     // "coded-value" domain field
     const value = (attributeDomain as __esri.CodedValueDomain).getName(attributeValue);
-    return value;
+    return value.toString();
   } else {
     // Non-domain field or unsupported domain type
     let value = attributeValue;
@@ -418,7 +432,7 @@ export function _prepareAttributeValue(
     switch (attributeType) {
       case "date":
         if (attributeFormat?.dateFormat) {
-          const dateFormatIntlOptions = intl.convertDateFormatToIntlOptions(attributeFormat.dateFormat);
+          const dateFormatIntlOptions = intl.convertDateFormatToIntlOptions(attributeFormat.dateFormat as any);
           value = intl.formatDate(value, dateFormatIntlOptions);
         } else {
           value = intl.formatDate(value);
@@ -455,7 +469,7 @@ export function _prepareAttributeValue(
  * @param includeHeaderNames Add the label format at the front of the list of generated labels
  * @returns Promise resolving when function is done
  */
-async function _prepareLabels(
+export async function _prepareLabels(
   layer: __esri.FeatureLayer,
   ids: number[],
   formatUsingLayerPopup = true,
@@ -526,7 +540,8 @@ async function _prepareLabels(
   if (labelFormat) {
     // Find the label fields that we need to replace with values
     const arcadeExpressionMatches = _getExpressionsFromLabel(labelFormat);
-    const attributeMatches = _getFieldsFromLabel(labelFormat);
+    const attributeExpressionMatches = _getFieldExpressionsFromLabel(labelFormat);
+    const attributeNames = _getFieldNamesFromFieldExpressions(attributeExpressionMatches);
 
     // Convert feature attributes into an array of labels
     const relationshipKeys = Object.keys(relationshipQueries);
@@ -603,16 +618,14 @@ async function _prepareLabels(
         );
 
         // Replace non-Arcade fields in this feature
-        attributeMatches.forEach(
-          (match: string) => {
-            const attributeName = match.substring(1, match.length - 1);
-
+        attributeNames.forEach(
+          (attributeName: string, i: number) => {
             const value = _prepareAttributeValue(feature.attributes[attributeName],
               attributeTypes[attributeName], attributeDomains[attributeName],
               attributeFormats[attributeName], intl);
-            labelPrep = labelPrep.replace(match, value);
+            labelPrep = labelPrep.replace(attributeExpressionMatches[i], value);
 
-          }
+          },
         )
 
         // Split label into lines
@@ -625,37 +638,34 @@ async function _prepareLabels(
       }
     ));
 
+    // Add header names
+    if (includeHeaderNames) {
+      labels.unshift(attributeNames);
+    }
+
   } else {
     // Export all attributes
     labels = featureSet.map(
       feature => {
         return Object.keys(feature.attributes).map(
           (attributeName: string) => {
-            const value =  _prepareAttributeValue(feature.attributes[attributeName],
+            return _prepareAttributeValue(feature.attributes[attributeName],
               attributeTypes[attributeName], attributeDomains[attributeName],
               null, intl);
-            return `${value}`;
           }
         );
       }
     );
-  }
 
-  // Add header names
-  if (includeHeaderNames) {
-    let headerNames = [];
-
-    if (labelFormat) {
-      headerNames = labelFormat.replace(/\{/g, "").replace(/\}/g, "").split(lineSeparatorChar);
-
-    } else {
+    // Add header names
+    if (includeHeaderNames) {
+      let headerNames = [];
       const featuresAttrs = featureSet[0].attributes;
       Object.keys(featuresAttrs).forEach(k => {
         headerNames.push(k);
       });
+      labels.unshift(headerNames);
     }
-
-    labels.unshift(headerNames);
   }
 
   return Promise.resolve(labels);
