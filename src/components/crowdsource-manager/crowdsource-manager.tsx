@@ -156,7 +156,7 @@ export class CrowdsourceManager {
   render() {
     return (
       <Host>
-        <calcite-shell>
+        <calcite-shell class="position-relative">
           <calcite-panel
             class="width-full height-full"
             heading={this.hideHeader ? undefined : this._translations.header}
