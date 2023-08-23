@@ -98,6 +98,9 @@ export class MapTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * When the _showBasemapPicker property is true display the basemap gallery
+   */
   @Watch("_showBasemapPicker")
   async _showBasemapPickerWatchHandler(
     v: boolean
@@ -208,6 +211,13 @@ export class MapTools {
     this.BasemapGallery = BasemapGallery;
   }
 
+  /**
+   * Initialize the basemap gallery or reset the current view if it already exists
+   *
+   * @returns void
+   *
+   * @protected
+   */
   protected _initBaseMapGallery(
     view: __esri.MapView
   ): void {
