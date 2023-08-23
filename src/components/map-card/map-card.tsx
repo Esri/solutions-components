@@ -93,6 +93,11 @@ export class MapCard {
    */
   protected _mapDiv: HTMLDivElement;
 
+  /**
+   * HTMLMapToolsElement: the container div for the map tools
+   */
+  protected _mapTools: HTMLMapToolsElement;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -147,7 +152,7 @@ export class MapCard {
       <Host>
         <map-picker mapInfos={this.mapInfos}/>
         <div class="map-height" ref={(el) => (this._mapDiv = el)}/>
-        <map-tools class="map-tools"/>
+        <map-tools mapView={this.mapView} ref={(el) => this._mapTools = el}/>
       </Host>
     );
   }
@@ -206,6 +211,7 @@ export class MapCard {
 
       this._loadedId = id;
       this.mapChanged.emit(this.mapView);
+      this.mapView.ui.add(this._mapTools, { position: "top-right", index: 0});
     }
   }
 

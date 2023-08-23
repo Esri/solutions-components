@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from '@stencil/core';
 import MapTools_T9n from "../../assets/t9n/map-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { EExpandType } from "../../utils/interfaces";
+import { loadModules } from "../../utils/loadModules"
 
 @Component({
   tag: 'map-tools',
@@ -77,11 +78,42 @@ export class MapTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * esri/widgets/BasemapGallery: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-BasemapGallery.html
+   *
+   * BasemapGallery constructor
+   */
+  protected BasemapGallery: typeof import("esri/widgets/BasemapGallery");
+
+  /**
+   * esri/widgets/BasemapGallery: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-BasemapGallery.html
+   *
+   * BasemapGallery instance
+   */
+  protected _baseMapGallery: __esri.BasemapGallery;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  @Watch("_showBasemapPicker")
+  async _showBasemapPickerWatchHandler(
+    v: boolean
+  ): Promise<void> {
+    if (v) {
+      if (!this._baseMapGallery) {
+        this._initBaseMapGallery(this.mapView);
+      }
+      this.mapView.ui.add(this._baseMapGallery, {
+        position: "top-right",
+        index: 1
+      });
+    } else {
+      this.mapView.ui.remove(this._baseMapGallery);
+    }
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -100,6 +132,16 @@ export class MapTools {
    */
   @Event() expandMap: EventEmitter<EExpandType>;
 
+  /**
+   * Listen for changes to map info and load the appropriate map
+   */
+  @Listen("mapChanged", { target: "window" })
+  async mapChanged(
+    evt: CustomEvent
+  ): Promise<void> {
+    this._initBaseMapGallery(evt?.detail);
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -111,6 +153,7 @@ export class MapTools {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
+    return this._initModules();
   }
 
   /**
@@ -121,7 +164,7 @@ export class MapTools {
     const toolsClass = this._showTools ? "" : "display-none";
     return (
       <Host>
-        <div class="display-flex">
+        <div>
           <calcite-action
             alignment="center"
             class="border"
@@ -140,8 +183,44 @@ export class MapTools {
             {this._getActionGroup("basemap", false, this._translations.basemap, () => this._toggleBasemapPicker())}
           </calcite-action-bar>
         </div>
+        <div id="basemap-container" />
       </Host>
     );
+  }
+
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (protected)
+  //
+  //--------------------------------------------------------------------------
+
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
+    const [BasemapGallery] = await loadModules([
+      "esri/widgets/BasemapGallery"
+    ]);
+    this.BasemapGallery = BasemapGallery;
+  }
+
+  protected _initBaseMapGallery(
+    view: __esri.MapView
+  ): void {
+    if (view && this.BasemapGallery) {
+      if (!this._baseMapGallery) {
+        this._baseMapGallery = new this.BasemapGallery({
+          container: "basemap-container",
+          view
+        });
+      } else {
+        this._baseMapGallery.view = view;
+      }
+    }
   }
 
   /**
@@ -216,6 +295,7 @@ export class MapTools {
    */
   protected _toggleBasemapPicker(): void {
     this._showBasemapPicker = !this._showBasemapPicker;
+    this._showTools = false;
   }
 
   /**
@@ -237,6 +317,9 @@ export class MapTools {
    * @protected
    */
   protected _toggleTools(): void {
+    if (!this._showTools) {
+      this._showBasemapPicker = false;
+    }
     this._showTools = !this._showTools;
   }
 

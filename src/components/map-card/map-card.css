@@ -30,10 +30,3 @@
 .esri-zoom {
   display: none !important;
 }
-
-.map-tools {
-  position: absolute;
-  top: 40px;
-  right: 0px;
-  padding: 1rem;
-}
