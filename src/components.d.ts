@@ -289,6 +289,8 @@ export namespace Components {
          */
         "mapInfos": IMapInfo[];
     }
+    interface MapSearch {
+    }
     interface MapSelectTools {
         /**
           * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
@@ -850,6 +852,12 @@ declare global {
         prototype: HTMLMapPickerElement;
         new (): HTMLMapPickerElement;
     };
+    interface HTMLMapSearchElement extends Components.MapSearch, HTMLStencilElement {
+    }
+    var HTMLMapSearchElement: {
+        prototype: HTMLMapSearchElement;
+        new (): HTMLMapSearchElement;
+    };
     interface HTMLMapSelectToolsElement extends Components.MapSelectTools, HTMLStencilElement {
     }
     var HTMLMapSelectToolsElement: {
@@ -974,6 +982,7 @@ declare global {
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
         "map-picker": HTMLMapPickerElement;
+        "map-search": HTMLMapSearchElement;
         "map-select-tools": HTMLMapSelectToolsElement;
         "map-tools": HTMLMapToolsElement;
         "pci-calculator": HTMLPciCalculatorElement;
@@ -1293,6 +1302,8 @@ declare namespace LocalJSX {
           * Emitted when a new map is loaded
          */
         "onMapInfoChange"?: (event: MapPickerCustomEvent<IMapInfo>) => void;
+    }
+    interface MapSearch {
     }
     interface MapSelectTools {
         /**
@@ -1681,6 +1692,7 @@ declare namespace LocalJSX {
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
         "map-picker": MapPicker;
+        "map-search": MapSearch;
         "map-select-tools": MapSelectTools;
         "map-tools": MapTools;
         "pci-calculator": PciCalculator;
@@ -1720,6 +1732,7 @@ declare module "@stencil/core" {
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
             "map-picker": LocalJSX.MapPicker & JSXBase.HTMLAttributes<HTMLMapPickerElement>;
+            "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
             "map-tools": LocalJSX.MapTools & JSXBase.HTMLAttributes<HTMLMapToolsElement>;
             "pci-calculator": LocalJSX.PciCalculator & JSXBase.HTMLAttributes<HTMLPciCalculatorElement>;
