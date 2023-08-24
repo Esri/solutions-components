@@ -77,6 +77,10 @@ export namespace Components {
          */
         "mapInfos": IMapInfo[];
         /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
+        /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected": boolean;
@@ -192,6 +196,10 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
     }
     interface MapDrawTools {
         /**
@@ -290,6 +298,30 @@ export namespace Components {
         "mapInfos": IMapInfo[];
     }
     interface MapSearch {
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * boolean: When true the selected feature popup will be shown when serach result is found
+         */
+        "popupEnabled": boolean;
+        /**
+          * boolean: When true a graphic will be added for the search result
+         */
+        "resultGraphicEnabled": boolean;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
+        /**
+          * string: Text entered by the end user. Used to search against the locator.
+         */
+        "searchTerm": string;
+        /**
+          * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
+         */
+        "searchWidget": __esri.widgetsSearch;
     }
     interface MapSelectTools {
         /**
@@ -384,6 +416,10 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
     }
     interface PciCalculator {
     }
@@ -1083,6 +1119,10 @@ declare namespace LocalJSX {
          */
         "mapInfos"?: IMapInfo[];
         /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
+        /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected"?: boolean;
@@ -1192,6 +1232,10 @@ declare namespace LocalJSX {
           * Emitted when a new map is loaded
          */
         "onMapChanged"?: (event: MapCardCustomEvent<__esri.MapView>) => void;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
     }
     interface MapDrawTools {
         /**
@@ -1304,6 +1348,30 @@ declare namespace LocalJSX {
         "onMapInfoChange"?: (event: MapPickerCustomEvent<IMapInfo>) => void;
     }
     interface MapSearch {
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * boolean: When true the selected feature popup will be shown when serach result is found
+         */
+        "popupEnabled"?: boolean;
+        /**
+          * boolean: When true a graphic will be added for the search result
+         */
+        "resultGraphicEnabled"?: boolean;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
+        /**
+          * string: Text entered by the end user. Used to search against the locator.
+         */
+        "searchTerm"?: string;
+        /**
+          * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
+         */
+        "searchWidget"?: __esri.widgetsSearch;
     }
     interface MapSelectTools {
         /**
@@ -1396,6 +1464,10 @@ declare namespace LocalJSX {
           * Emitted when the expand button is clicked
          */
         "onExpandMap"?: (event: MapToolsCustomEvent<EExpandType>) => void;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
     }
     interface PciCalculator {
     }

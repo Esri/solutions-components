@@ -16,13 +16,12 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import { IMapInfo } from "../../utils/interfaces";
+import { IMapInfo, ISearchConfiguration } from "../../utils/interfaces";
 
 // TODO navigation and accessability isn't right for the map list
 //   tab does not go into the list when it's open
 //   focus is not set when it opens
-// TODO clarify what the Home and List buttons are supposed to do
-// TODO handle zoom in/out
+// TODO clarify what the List button is supposed to do
 // TODO map list button tooltip does not work
 // TODO map list should close if the user clicks something else...hope this will be easy when I figure out how to set focus when it opens
 
@@ -55,6 +54,11 @@ export class MapCard {
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
+
+  /**
+   * ISearchConfiguration: Configuration details for the Search widget
+   */
+  @Prop() searchConfiguration: ISearchConfiguration;
 
   //--------------------------------------------------------------------------
   //
@@ -152,7 +156,11 @@ export class MapCard {
       <Host>
         <map-picker mapInfos={this.mapInfos}/>
         <div class="map-height" ref={(el) => (this._mapDiv = el)}/>
-        <map-tools mapView={this.mapView} ref={(el) => this._mapTools = el}/>
+        <map-tools
+          mapView={this.mapView}
+          ref={(el) => this._mapTools = el}
+          searchConfiguration={this.searchConfiguration}
+        />
       </Host>
     );
   }

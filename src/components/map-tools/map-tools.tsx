@@ -17,7 +17,7 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
 import MapTools_T9n from "../../assets/t9n/map-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { EExpandType } from "../../utils/interfaces";
+import { EExpandType, ISearchConfiguration } from "../../utils/interfaces";
 import { loadModules } from "../../utils/loadModules"
 
 @Component({
@@ -50,6 +50,11 @@ export class MapTools {
    */
   @Prop() mapView: __esri.MapView;
 
+  /**
+   * ISearchConfiguration: Configuration details for the Search widget
+   */
+  @Prop() searchConfiguration: ISearchConfiguration;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -71,6 +76,11 @@ export class MapTools {
    * When true the basemap picker will be displayed
    */
   @State() _showBasemapPicker = false;
+
+  /**
+   * When true the search widget will be displayed
+   */
+  @State() _showSearchWidget = false;
 
   //--------------------------------------------------------------------------
   //
@@ -96,6 +106,11 @@ export class MapTools {
    * esri/geometry/Extent: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Extent.html
    */
   protected _homeExtent: __esri.Extent;
+
+  /**
+   * HTMLMapSearchElement: The search element node
+   */
+  protected _searchElement: HTMLMapSearchElement;
 
   //--------------------------------------------------------------------------
   //
@@ -131,6 +146,24 @@ export class MapTools {
       });
     } else {
       this.mapView.ui.remove(this._baseMapGallery);
+    }
+  }
+
+  /**
+   * When the _showSearchWidget property is true display the search widget
+   */
+  @Watch("_showSearchWidget")
+  async _showSearchWidgetWatchHandler(
+    v: boolean
+  ): Promise<void> {
+    console.log("_showSearchWidget changed")
+    if (v) {
+      this.mapView.ui.add(this._searchElement.searchWidget, {
+        position: "top-right",
+        index: 1
+      });
+    } else {
+      this.mapView.ui.remove(this._searchElement.searchWidget);
     }
   }
 
@@ -171,6 +204,7 @@ export class MapTools {
   render() {
     const toggleIcon = this._showTools ? "chevrons-up" : "chevrons-down";
     const toolsClass = this._showTools ? "" : "display-none";
+    const searchClass = this._showSearchWidget ? "" : "display-none";
     return (
       <Host>
         <div>
@@ -193,6 +227,12 @@ export class MapTools {
           </calcite-action-bar>
         </div>
         <div id="basemap-container" />
+        <map-search
+          class={searchClass}
+          mapView={this.mapView}
+          ref={(el) => { this._searchElement = el }}
+          searchConfiguration={this.searchConfiguration}
+        />
       </Host>
     );
   }
@@ -295,7 +335,8 @@ export class MapTools {
 
   // Need to discuss this with the team
   protected _search(): void {
-    alert("search")
+    this._showSearchWidget = !this._showSearchWidget;
+    this._showTools = false;
   }
 
   /**
@@ -371,6 +412,7 @@ export class MapTools {
   protected _toggleTools(): void {
     if (!this._showTools) {
       this._showBasemapPicker = false;
+      this._showSearchWidget = false;
     }
     this._showTools = !this._showTools;
   }

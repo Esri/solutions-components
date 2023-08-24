@@ -17,7 +17,7 @@
 import { Component, Element, Host, h, Listen, Prop, State, VNode } from "@stencil/core";
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { ELayoutMode, IMapInfo } from "../../utils/interfaces";
+import { ELayoutMode, IMapInfo, ISearchConfiguration } from "../../utils/interfaces";
 
 @Component({
   tag: "crowdsource-manager",
@@ -57,6 +57,11 @@ export class CrowdsourceManager {
    * IMapInfo[]: array of map infos (name and id)
    */
   @Prop() mapInfos: IMapInfo[] = [];
+
+  /**
+   * ISearchConfiguration: Configuration details for the Search widget
+   */
+  @Prop() searchConfiguration: ISearchConfiguration;
 
   /**
    * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
@@ -349,7 +354,7 @@ export class CrowdsourceManager {
     const mapContainerClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "width-full" : "adjusted-height-50";
     return (
       <div class={`${mapContainerClass} overflow-hidden ${mapDisplayClass}`} >
-        <map-card class="width-full" mapInfos={this.mapInfos} />
+        <map-card class="width-full" mapInfos={this.mapInfos} searchConfiguration={this.searchConfiguration}/>
       </div>
     );
   }
