@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
 import MapTools_T9n from "../../assets/t9n/map-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { EExpandType } from "../../utils/interfaces";
@@ -92,11 +92,27 @@ export class MapTools {
    */
   protected _baseMapGallery: __esri.BasemapGallery;
 
+  /**
+   * esri/geometry/Extent: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Extent.html
+   */
+  protected _homeExtent: __esri.Extent;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Store the home extent and update the basemap gallery when the map view changes
+   */
+  @Watch("mapView")
+  async mapViewWatchHandler(): Promise<void> {
+    await this.mapView.when(() => {
+      this._homeExtent = this.mapView.extent;
+      this._initBaseMapGallery(this.mapView);
+    });
+  }
 
   /**
    * When the _showBasemapPicker property is true display the basemap gallery
@@ -135,16 +151,6 @@ export class MapTools {
    */
   @Event() expandMap: EventEmitter<EExpandType>;
 
-  /**
-   * Listen for changes to map info and load the appropriate map
-   */
-  @Listen("mapChanged", { target: "window" })
-  async mapChanged(
-    evt: CustomEvent
-  ): Promise<void> {
-    this._initBaseMapGallery(evt?.detail);
-  }
-
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -177,7 +183,7 @@ export class MapTools {
             text=""
           />
           <calcite-action-bar class={`border margin-top-1-2 ${toolsClass}`} expand-disabled layout={this.layout}>
-            {this._getActionGroup("home", false, this._translations.home, () => this._goHome())}
+            {this._getActionGroup("home", false, this._translations.home, () => void this._goHome())}
             {this._getActionGroup("plus", false, this._translations.zoomIn, () => void this._zoomIn())}
             {this._getActionGroup("minus", false, this._translations.zoomOut, () => void this._zoomOut())}
             {this._getActionGroup("list", false, this._translations.list, () => this._showList())}
@@ -271,9 +277,15 @@ export class MapTools {
     );
   }
 
-  // Need to discuss this with the team
-  protected _goHome(): void {
-    alert("go home")
+  /**
+   * Go to the exent that was first used when loading the map
+   *
+   * @returns void
+   *
+   * @protected
+   */
+  protected async _goHome(): Promise<void> {
+    await this.mapView.goTo(this._homeExtent);
   }
 
   // need to discuss this with the team

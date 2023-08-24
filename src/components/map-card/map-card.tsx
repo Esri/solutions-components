@@ -128,7 +128,7 @@ export class MapCard {
   async mapInfoChange(
     evt: CustomEvent
   ): Promise<void> {
-    this._loadMap(evt.detail);
+    await this._loadMap(evt.detail);
   }
 
   //--------------------------------------------------------------------------
@@ -188,9 +188,9 @@ export class MapCard {
    *
    * @protected
    */
-  protected _loadMap(
+  protected async _loadMap(
     webMapInfo: IMapInfo
-  ): void {
+  ): Promise<void> {
     let id = webMapInfo?.id;
     // on the first render use the first child of the provided mapInfos
     this._webMapInfo = (id === "" || !id) && this.mapInfos.length > 0 ?
@@ -208,10 +208,11 @@ export class MapCard {
         map: webMap,
         resizeAlign: "top-left"
       });
-
-      this._loadedId = id;
-      this.mapChanged.emit(this.mapView);
-      this.mapView.ui.add(this._mapTools, { position: "top-right", index: 0});
+      await this.mapView.when(() => {
+        this._loadedId = id;
+        this.mapChanged.emit(this.mapView);
+        this.mapView.ui.add(this._mapTools, { position: "top-right", index: 0});
+      });
     }
   }
 
