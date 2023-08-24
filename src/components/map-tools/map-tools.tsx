@@ -178,8 +178,8 @@ export class MapTools {
           />
           <calcite-action-bar class={`border margin-top-1-2 ${toolsClass}`} expand-disabled layout={this.layout}>
             {this._getActionGroup("home", false, this._translations.home, () => this._goHome())}
-            {this._getActionGroup("plus", false, this._translations.zoomIn, () => this._zoomIn())}
-            {this._getActionGroup("minus", false, this._translations.zoomOut, () => this._zoomOut())}
+            {this._getActionGroup("plus", false, this._translations.zoomIn, () => void this._zoomIn())}
+            {this._getActionGroup("minus", false, this._translations.zoomOut, () => void this._zoomOut())}
             {this._getActionGroup("list", false, this._translations.list, () => this._showList())}
             {this._getActionGroup("magnifying-glass", false, this._translations.search, () => this._search())}
             {this._getActionGroup("expand", false, this._translations.expand, () => this._expand())}
@@ -286,14 +286,44 @@ export class MapTools {
     alert("search")
   }
 
-  // Need to explore map fixed zoom in considerations
-  protected _zoomIn(): void {
-    alert("zoom in")
+  /**
+   * Fixed zoom in
+   *
+   * @returns void
+   *
+   * @protected
+   */
+  protected async _zoomIn(): Promise<void> {
+    await this._zoom(this.mapView.zoom + 1);
   }
 
-  // Need to explore map fixed zoom out considerations
-  protected _zoomOut(): void {
-    alert("zoom out")
+  /**
+   * Fixed zoom out
+   *
+   * @returns void
+   *
+   * @protected
+   */
+  protected async _zoomOut(): Promise<void> {
+    await this._zoom(this.mapView.zoom - 1);
+  }
+
+  /**
+   * Zoom in/out at the maps current center point
+   *
+   * @param zoom Number to zoom level to go to
+   *
+   * @returns void
+   *
+   * @protected
+   */
+  protected async _zoom(
+    zoom: number
+  ): Promise<void> {
+    await this.mapView?.goTo({
+      target: this.mapView.center,
+      zoom
+    });
   }
 
   /**
