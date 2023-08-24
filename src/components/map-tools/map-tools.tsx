@@ -18,7 +18,6 @@ import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, W
 import MapTools_T9n from "../../assets/t9n/map-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { EExpandType, ISearchConfiguration } from "../../utils/interfaces";
-import { loadModules } from "../../utils/loadModules"
 
 @Component({
   tag: 'map-tools',
@@ -75,7 +74,7 @@ export class MapTools {
   /**
    * When true the basemap picker will be displayed
    */
-  @State() _showBasemapPicker = false;
+  @State() _showBasemapWidget = false;
 
   /**
    * When true the search widget will be displayed
@@ -89,18 +88,9 @@ export class MapTools {
   //--------------------------------------------------------------------------
 
   /**
-   * esri/widgets/BasemapGallery: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-BasemapGallery.html
-   *
-   * BasemapGallery constructor
+   * HTMLMapSearchElement: The search element node
    */
-  protected BasemapGallery: typeof import("esri/widgets/BasemapGallery");
-
-  /**
-   * esri/widgets/BasemapGallery: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-BasemapGallery.html
-   *
-   * BasemapGallery instance
-   */
-  protected _baseMapGallery: __esri.BasemapGallery;
+  protected _basemapElement: HTMLBasemapGalleryElement;
 
   /**
    * esri/geometry/Extent: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Extent.html
@@ -119,33 +109,29 @@ export class MapTools {
   //--------------------------------------------------------------------------
 
   /**
-   * Store the home extent and update the basemap gallery when the map view changes
+   * Store the home extent when the map view changes
    */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
     await this.mapView.when(() => {
       this._homeExtent = this.mapView.extent;
-      this._initBaseMapGallery(this.mapView);
     });
   }
 
   /**
-   * When the _showBasemapPicker property is true display the basemap gallery
+   * When the _showBasemapWidget property is true display the basemap gallery
    */
-  @Watch("_showBasemapPicker")
-  async _showBasemapPickerWatchHandler(
+  @Watch("_showBasemapWidget")
+  async _showBasemapWidgetWatchHandler(
     v: boolean
   ): Promise<void> {
     if (v) {
-      if (!this._baseMapGallery) {
-        this._initBaseMapGallery(this.mapView);
-      }
-      this.mapView.ui.add(this._baseMapGallery, {
+      this.mapView.ui.add(this._basemapElement.basemapWidget, {
         position: "top-right",
         index: 1
       });
     } else {
-      this.mapView.ui.remove(this._baseMapGallery);
+      this.mapView.ui.remove(this._basemapElement.basemapWidget);
     }
   }
 
@@ -195,7 +181,6 @@ export class MapTools {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
-    return this._initModules();
   }
 
   /**
@@ -205,6 +190,7 @@ export class MapTools {
     const toggleIcon = this._showTools ? "chevrons-up" : "chevrons-down";
     const toolsClass = this._showTools ? "" : "display-none";
     const searchClass = this._showSearchWidget ? "" : "display-none";
+    const basemapClass = this._showBasemapWidget ? "" : "display-none";
     return (
       <Host>
         <div>
@@ -226,7 +212,11 @@ export class MapTools {
             {this._getActionGroup("basemap", false, this._translations.basemap, () => this._toggleBasemapPicker())}
           </calcite-action-bar>
         </div>
-        <div id="basemap-container" />
+        <basemap-gallery
+          class={basemapClass}
+          mapView={this.mapView}
+          ref={(el) => {this._basemapElement = el}}
+        />
         <map-search
           class={searchClass}
           mapView={this.mapView}
@@ -242,42 +232,6 @@ export class MapTools {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Load esri javascript api modules
-   *
-   * @returns Promise resolving when function is done
-   *
-   * @protected
-   */
-  protected async _initModules(): Promise<void> {
-    const [BasemapGallery] = await loadModules([
-      "esri/widgets/BasemapGallery"
-    ]);
-    this.BasemapGallery = BasemapGallery;
-  }
-
-  /**
-   * Initialize the basemap gallery or reset the current view if it already exists
-   *
-   * @returns void
-   *
-   * @protected
-   */
-  protected _initBaseMapGallery(
-    view: __esri.MapView
-  ): void {
-    if (view && this.BasemapGallery) {
-      if (!this._baseMapGallery) {
-        this._baseMapGallery = new this.BasemapGallery({
-          container: "basemap-container",
-          view
-        });
-      } else {
-        this._baseMapGallery.view = view;
-      }
-    }
-  }
 
   /**
    * Get a calcite action group for the current action
@@ -387,7 +341,7 @@ export class MapTools {
    * @protected
    */
   protected _toggleBasemapPicker(): void {
-    this._showBasemapPicker = !this._showBasemapPicker;
+    this._showBasemapWidget = !this._showBasemapWidget;
     this._showTools = false;
   }
 
@@ -411,7 +365,7 @@ export class MapTools {
    */
   protected _toggleTools(): void {
     if (!this._showTools) {
-      this._showBasemapPicker = false;
+      this._showBasemapWidget = false;
       this._showSearchWidget = false;
     }
     this._showTools = !this._showTools;

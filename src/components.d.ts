@@ -10,6 +10,16 @@ import { UserSession } from "@esri/solution-common";
 export { DistanceUnit, EDrawMode, EExpandType, ELayoutMode, IExportInfos, IInventoryItem, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
 export { UserSession } from "@esri/solution-common";
 export namespace Components {
+    interface BasemapGallery {
+        /**
+          * esri/widgets/BasemapGallery: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-BasemapGallery.html  BasemapGallery instance
+         */
+        "basemapWidget": __esri.BasemapGallery;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+    }
     interface BufferTools {
         /**
           * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
@@ -196,10 +206,6 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
-        /**
-          * ISearchConfiguration: Configuration details for the Search widget
-         */
-        "searchConfiguration": ISearchConfiguration;
     }
     interface MapDrawTools {
         /**
@@ -798,6 +804,12 @@ export interface StoreManagerCustomEvent<T> extends CustomEvent<T> {
     target: HTMLStoreManagerElement;
 }
 declare global {
+    interface HTMLBasemapGalleryElement extends Components.BasemapGallery, HTMLStencilElement {
+    }
+    var HTMLBasemapGalleryElement: {
+        prototype: HTMLBasemapGalleryElement;
+        new (): HTMLBasemapGalleryElement;
+    };
     interface HTMLBufferToolsElement extends Components.BufferTools, HTMLStencilElement {
     }
     var HTMLBufferToolsElement: {
@@ -1003,6 +1015,7 @@ declare global {
         new (): HTMLStoreManagerElement;
     };
     interface HTMLElementTagNameMap {
+        "basemap-gallery": HTMLBasemapGalleryElement;
         "buffer-tools": HTMLBufferToolsElement;
         "card-manager": HTMLCardManagerElement;
         "crowdsource-manager": HTMLCrowdsourceManagerElement;
@@ -1040,6 +1053,16 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface BasemapGallery {
+        /**
+          * esri/widgets/BasemapGallery: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-BasemapGallery.html  BasemapGallery instance
+         */
+        "basemapWidget"?: __esri.BasemapGallery;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+    }
     interface BufferTools {
         /**
           * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
@@ -1232,10 +1255,6 @@ declare namespace LocalJSX {
           * Emitted when a new map is loaded
          */
         "onMapChanged"?: (event: MapCardCustomEvent<__esri.MapView>) => void;
-        /**
-          * ISearchConfiguration: Configuration details for the Search widget
-         */
-        "searchConfiguration"?: ISearchConfiguration;
     }
     interface MapDrawTools {
         /**
@@ -1749,6 +1768,7 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface IntrinsicElements {
+        "basemap-gallery": BasemapGallery;
         "buffer-tools": BufferTools;
         "card-manager": CardManager;
         "crowdsource-manager": CrowdsourceManager;
@@ -1789,6 +1809,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "basemap-gallery": LocalJSX.BasemapGallery & JSXBase.HTMLAttributes<HTMLBasemapGalleryElement>;
             "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
             "card-manager": LocalJSX.CardManager & JSXBase.HTMLAttributes<HTMLCardManagerElement>;
             "crowdsource-manager": LocalJSX.CrowdsourceManager & JSXBase.HTMLAttributes<HTMLCrowdsourceManagerElement>;
