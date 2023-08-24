@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
 import MapTools_T9n from "../../assets/t9n/map-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { EExpandType } from "../../utils/interfaces";
+import { EExpandType, ISearchConfiguration } from "../../utils/interfaces";
 
 @Component({
   tag: 'map-tools',
@@ -49,6 +49,11 @@ export class MapTools {
    */
   @Prop() mapView: __esri.MapView;
 
+  /**
+   * ISearchConfiguration: Configuration details for the Search widget
+   */
+  @Prop() searchConfiguration: ISearchConfiguration;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -69,7 +74,12 @@ export class MapTools {
   /**
    * When true the basemap picker will be displayed
    */
-  @State() _showBasemapPicker = false;
+  @State() _showBasemapWidget = false;
+
+  /**
+   * When true the search widget will be displayed
+   */
+  @State() _showSearchWidget = false;
 
   //--------------------------------------------------------------------------
   //
@@ -77,11 +87,71 @@ export class MapTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * HTMLMapSearchElement: The search element node
+   */
+  protected _basemapElement: HTMLBasemapGalleryElement;
+
+  /**
+   * esri/geometry/Extent: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Extent.html
+   */
+  protected _homeExtent: __esri.Extent;
+
+  /**
+   * HTMLMapSearchElement: The search element node
+   */
+  protected _searchElement: HTMLMapSearchElement;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Store the home extent when the map view changes
+   */
+  @Watch("mapView")
+  async mapViewWatchHandler(): Promise<void> {
+    await this.mapView.when(() => {
+      this._homeExtent = this.mapView.extent;
+    });
+  }
+
+  /**
+   * When the _showBasemapWidget property is true display the basemap gallery
+   */
+  @Watch("_showBasemapWidget")
+  async _showBasemapWidgetWatchHandler(
+    v: boolean
+  ): Promise<void> {
+    if (v) {
+      this.mapView.ui.add(this._basemapElement.basemapWidget, {
+        position: "top-right",
+        index: 1
+      });
+    } else {
+      this.mapView.ui.remove(this._basemapElement.basemapWidget);
+    }
+  }
+
+  /**
+   * When the _showSearchWidget property is true display the search widget
+   */
+  @Watch("_showSearchWidget")
+  async _showSearchWidgetWatchHandler(
+    v: boolean
+  ): Promise<void> {
+    console.log("_showSearchWidget changed")
+    if (v) {
+      this.mapView.ui.add(this._searchElement.searchWidget, {
+        position: "top-right",
+        index: 1
+      });
+    } else {
+      this.mapView.ui.remove(this._searchElement.searchWidget);
+    }
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -119,9 +189,11 @@ export class MapTools {
   render() {
     const toggleIcon = this._showTools ? "chevrons-up" : "chevrons-down";
     const toolsClass = this._showTools ? "" : "display-none";
+    const searchClass = this._showSearchWidget ? "" : "display-none";
+    const basemapClass = this._showBasemapWidget ? "" : "display-none";
     return (
       <Host>
-        <div class="display-flex">
+        <div>
           <calcite-action
             alignment="center"
             class="border"
@@ -131,18 +203,35 @@ export class MapTools {
             text=""
           />
           <calcite-action-bar class={`border margin-top-1-2 ${toolsClass}`} expand-disabled layout={this.layout}>
-            {this._getActionGroup("home", false, this._translations.home, () => this._goHome())}
-            {this._getActionGroup("plus", false, this._translations.zoomIn, () => this._zoomIn())}
-            {this._getActionGroup("minus", false, this._translations.zoomOut, () => this._zoomOut())}
+            {this._getActionGroup("home", false, this._translations.home, () => void this._goHome())}
+            {this._getActionGroup("plus", false, this._translations.zoomIn, () => void this._zoomIn())}
+            {this._getActionGroup("minus", false, this._translations.zoomOut, () => void this._zoomOut())}
             {this._getActionGroup("list", false, this._translations.list, () => this._showList())}
             {this._getActionGroup("magnifying-glass", false, this._translations.search, () => this._search())}
             {this._getActionGroup("expand", false, this._translations.expand, () => this._expand())}
             {this._getActionGroup("basemap", false, this._translations.basemap, () => this._toggleBasemapPicker())}
           </calcite-action-bar>
         </div>
+        <basemap-gallery
+          class={basemapClass}
+          mapView={this.mapView}
+          ref={(el) => {this._basemapElement = el}}
+        />
+        <map-search
+          class={searchClass}
+          mapView={this.mapView}
+          ref={(el) => { this._searchElement = el }}
+          searchConfiguration={this.searchConfiguration}
+        />
       </Host>
     );
   }
+
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (protected)
+  //
+  //--------------------------------------------------------------------------
 
   /**
    * Get a calcite action group for the current action
@@ -182,9 +271,15 @@ export class MapTools {
     );
   }
 
-  // Need to discuss this with the team
-  protected _goHome(): void {
-    alert("go home")
+  /**
+   * Go to the exent that was first used when loading the map
+   *
+   * @returns void
+   *
+   * @protected
+   */
+  protected async _goHome(): Promise<void> {
+    await this.mapView.goTo(this._homeExtent);
   }
 
   // need to discuss this with the team
@@ -194,17 +289,48 @@ export class MapTools {
 
   // Need to discuss this with the team
   protected _search(): void {
-    alert("search")
+    this._showSearchWidget = !this._showSearchWidget;
+    this._showTools = false;
   }
 
-  // Need to explore map fixed zoom in considerations
-  protected _zoomIn(): void {
-    alert("zoom in")
+  /**
+   * Fixed zoom in
+   *
+   * @returns void
+   *
+   * @protected
+   */
+  protected async _zoomIn(): Promise<void> {
+    await this._zoom(this.mapView.zoom + 1);
   }
 
-  // Need to explore map fixed zoom out considerations
-  protected _zoomOut(): void {
-    alert("zoom out")
+  /**
+   * Fixed zoom out
+   *
+   * @returns void
+   *
+   * @protected
+   */
+  protected async _zoomOut(): Promise<void> {
+    await this._zoom(this.mapView.zoom - 1);
+  }
+
+  /**
+   * Zoom in/out at the maps current center point
+   *
+   * @param zoom Number to zoom level to go to
+   *
+   * @returns void
+   *
+   * @protected
+   */
+  protected async _zoom(
+    zoom: number
+  ): Promise<void> {
+    await this.mapView?.goTo({
+      target: this.mapView.center,
+      zoom
+    });
   }
 
   /**
@@ -215,7 +341,8 @@ export class MapTools {
    * @protected
    */
   protected _toggleBasemapPicker(): void {
-    this._showBasemapPicker = !this._showBasemapPicker;
+    this._showBasemapWidget = !this._showBasemapWidget;
+    this._showTools = false;
   }
 
   /**
@@ -237,6 +364,10 @@ export class MapTools {
    * @protected
    */
   protected _toggleTools(): void {
+    if (!this._showTools) {
+      this._showBasemapWidget = false;
+      this._showSearchWidget = false;
+    }
     this._showTools = !this._showTools;
   }
 

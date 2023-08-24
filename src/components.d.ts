@@ -10,6 +10,16 @@ import { UserSession } from "@esri/solution-common";
 export { DistanceUnit, EDrawMode, EExpandType, ELayoutMode, IExportInfos, IInventoryItem, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
 export { UserSession } from "@esri/solution-common";
 export namespace Components {
+    interface BasemapGallery {
+        /**
+          * esri/widgets/BasemapGallery: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-BasemapGallery.html  BasemapGallery instance
+         */
+        "basemapWidget": __esri.BasemapGallery;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+    }
     interface BufferTools {
         /**
           * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
@@ -76,6 +86,10 @@ export namespace Components {
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos": IMapInfo[];
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
         /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
@@ -289,6 +303,32 @@ export namespace Components {
          */
         "mapInfos": IMapInfo[];
     }
+    interface MapSearch {
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * boolean: When true the selected feature popup will be shown when serach result is found
+         */
+        "popupEnabled": boolean;
+        /**
+          * boolean: When true a graphic will be added for the search result
+         */
+        "resultGraphicEnabled": boolean;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
+        /**
+          * string: Text entered by the end user. Used to search against the locator.
+         */
+        "searchTerm": string;
+        /**
+          * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
+         */
+        "searchWidget": __esri.widgetsSearch;
+    }
     interface MapSelectTools {
         /**
           * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
@@ -382,6 +422,10 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
     }
     interface PciCalculator {
     }
@@ -760,6 +804,12 @@ export interface StoreManagerCustomEvent<T> extends CustomEvent<T> {
     target: HTMLStoreManagerElement;
 }
 declare global {
+    interface HTMLBasemapGalleryElement extends Components.BasemapGallery, HTMLStencilElement {
+    }
+    var HTMLBasemapGalleryElement: {
+        prototype: HTMLBasemapGalleryElement;
+        new (): HTMLBasemapGalleryElement;
+    };
     interface HTMLBufferToolsElement extends Components.BufferTools, HTMLStencilElement {
     }
     var HTMLBufferToolsElement: {
@@ -849,6 +899,12 @@ declare global {
     var HTMLMapPickerElement: {
         prototype: HTMLMapPickerElement;
         new (): HTMLMapPickerElement;
+    };
+    interface HTMLMapSearchElement extends Components.MapSearch, HTMLStencilElement {
+    }
+    var HTMLMapSearchElement: {
+        prototype: HTMLMapSearchElement;
+        new (): HTMLMapSearchElement;
     };
     interface HTMLMapSelectToolsElement extends Components.MapSelectTools, HTMLStencilElement {
     }
@@ -959,6 +1015,7 @@ declare global {
         new (): HTMLStoreManagerElement;
     };
     interface HTMLElementTagNameMap {
+        "basemap-gallery": HTMLBasemapGalleryElement;
         "buffer-tools": HTMLBufferToolsElement;
         "card-manager": HTMLCardManagerElement;
         "crowdsource-manager": HTMLCrowdsourceManagerElement;
@@ -974,6 +1031,7 @@ declare global {
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
         "map-picker": HTMLMapPickerElement;
+        "map-search": HTMLMapSearchElement;
         "map-select-tools": HTMLMapSelectToolsElement;
         "map-tools": HTMLMapToolsElement;
         "pci-calculator": HTMLPciCalculatorElement;
@@ -995,6 +1053,16 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface BasemapGallery {
+        /**
+          * esri/widgets/BasemapGallery: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-BasemapGallery.html  BasemapGallery instance
+         */
+        "basemapWidget"?: __esri.BasemapGallery;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+    }
     interface BufferTools {
         /**
           * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
@@ -1073,6 +1141,10 @@ declare namespace LocalJSX {
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos"?: IMapInfo[];
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
         /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
@@ -1294,6 +1366,32 @@ declare namespace LocalJSX {
          */
         "onMapInfoChange"?: (event: MapPickerCustomEvent<IMapInfo>) => void;
     }
+    interface MapSearch {
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * boolean: When true the selected feature popup will be shown when serach result is found
+         */
+        "popupEnabled"?: boolean;
+        /**
+          * boolean: When true a graphic will be added for the search result
+         */
+        "resultGraphicEnabled"?: boolean;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
+        /**
+          * string: Text entered by the end user. Used to search against the locator.
+         */
+        "searchTerm"?: string;
+        /**
+          * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
+         */
+        "searchWidget"?: __esri.widgetsSearch;
+    }
     interface MapSelectTools {
         /**
           * string | number[] |  object with r, g, b, a: https://developers.arcgis.com/javascript/latest/api-reference/esri-Color.html
@@ -1385,6 +1483,10 @@ declare namespace LocalJSX {
           * Emitted when the expand button is clicked
          */
         "onExpandMap"?: (event: MapToolsCustomEvent<EExpandType>) => void;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
     }
     interface PciCalculator {
     }
@@ -1666,6 +1768,7 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface IntrinsicElements {
+        "basemap-gallery": BasemapGallery;
         "buffer-tools": BufferTools;
         "card-manager": CardManager;
         "crowdsource-manager": CrowdsourceManager;
@@ -1681,6 +1784,7 @@ declare namespace LocalJSX {
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
         "map-picker": MapPicker;
+        "map-search": MapSearch;
         "map-select-tools": MapSelectTools;
         "map-tools": MapTools;
         "pci-calculator": PciCalculator;
@@ -1705,6 +1809,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "basemap-gallery": LocalJSX.BasemapGallery & JSXBase.HTMLAttributes<HTMLBasemapGalleryElement>;
             "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
             "card-manager": LocalJSX.CardManager & JSXBase.HTMLAttributes<HTMLCardManagerElement>;
             "crowdsource-manager": LocalJSX.CrowdsourceManager & JSXBase.HTMLAttributes<HTMLCrowdsourceManagerElement>;
@@ -1720,6 +1825,7 @@ declare module "@stencil/core" {
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
             "map-picker": LocalJSX.MapPicker & JSXBase.HTMLAttributes<HTMLMapPickerElement>;
+            "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
             "map-tools": LocalJSX.MapTools & JSXBase.HTMLAttributes<HTMLMapToolsElement>;
             "pci-calculator": LocalJSX.PciCalculator & JSXBase.HTMLAttributes<HTMLPciCalculatorElement>;

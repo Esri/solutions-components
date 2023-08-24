@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-:host {
-  display: block;
-  --calcite-label-margin-bottom: 0;
-  --calcite-block-padding: 0;
-}
+import { newSpecPage } from '@stencil/core/testing';
+import { BasemapGallery } from '../basemap-gallery';
 
-.map-height {
-  height: calc(100% - 58px);
-}
-
-/* Not sure how else to do this
-  tried navigation gamepad settings but enabled: false still shows this */
-
-.esri-zoom {
-  display: none !important;
-}
+xdescribe('basemap-gallery', () => {
+  it('renders', async () => {
+    const page = await newSpecPage({
+      components: [BasemapGallery],
+      html: `<basemap-gallery></basemap-gallery>`,
+    });
+    expect(page.root).toEqualHtml(`
+      <basemap-gallery>
+        <mock:shadow-root>
+          <slot></slot>
+        </mock:shadow-root>
+      </basemap-gallery>
+    `);
+  });
+});

@@ -446,6 +446,8 @@ export interface IMediaCardValues {
 export interface IMapInfo {
   id: string;
   name: string;
+  searchConfiguration?: ISearchConfiguration;
+  filters?: any[]; // TODO generate an interface for this once we know how it will be passed in
 }
 
 export interface IExportInfos {

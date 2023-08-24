@@ -16,13 +16,12 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import { IMapInfo } from "../../utils/interfaces";
+import { IMapInfo, ISearchConfiguration } from "../../utils/interfaces";
 
 // TODO navigation and accessability isn't right for the map list
 //   tab does not go into the list when it's open
 //   focus is not set when it opens
-// TODO clarify what the Home and List buttons are supposed to do
-// TODO handle zoom in/out
+// TODO clarify what the List button is supposed to do
 // TODO map list button tooltip does not work
 // TODO map list should close if the user clicks something else...hope this will be easy when I figure out how to set focus when it opens
 
@@ -63,6 +62,11 @@ export class MapCard {
   //--------------------------------------------------------------------------
 
   /**
+   * ISearchConfiguration: Configuration details for the Search widget
+   */
+  @State() _searchConfiguration: ISearchConfiguration;
+
+  /**
    * IMapInfo: id and name of the map to display
    */
   @State() _webMapInfo: IMapInfo;
@@ -92,6 +96,11 @@ export class MapCard {
    * HTMLDivElement: the container div for the map
    */
   protected _mapDiv: HTMLDivElement;
+
+  /**
+   * HTMLMapToolsElement: the container div for the map tools
+   */
+  protected _mapTools: HTMLMapToolsElement;
 
   //--------------------------------------------------------------------------
   //
@@ -123,7 +132,7 @@ export class MapCard {
   async mapInfoChange(
     evt: CustomEvent
   ): Promise<void> {
-    this._loadMap(evt.detail);
+    await this._loadMap(evt.detail);
   }
 
   //--------------------------------------------------------------------------
@@ -147,7 +156,11 @@ export class MapCard {
       <Host>
         <map-picker mapInfos={this.mapInfos}/>
         <div class="map-height" ref={(el) => (this._mapDiv = el)}/>
-        <map-tools class="map-tools"/>
+        <map-tools
+          mapView={this.mapView}
+          ref={(el) => this._mapTools = el}
+          searchConfiguration={this._searchConfiguration}
+        />
       </Host>
     );
   }
@@ -183,9 +196,9 @@ export class MapCard {
    *
    * @protected
    */
-  protected _loadMap(
+  protected async _loadMap(
     webMapInfo: IMapInfo
-  ): void {
+  ): Promise<void> {
     let id = webMapInfo?.id;
     // on the first render use the first child of the provided mapInfos
     this._webMapInfo = (id === "" || !id) && this.mapInfos.length > 0 ?
@@ -203,9 +216,12 @@ export class MapCard {
         map: webMap,
         resizeAlign: "top-left"
       });
-
-      this._loadedId = id;
-      this.mapChanged.emit(this.mapView);
+      await this.mapView.when(() => {
+        this._loadedId = id;
+        this._searchConfiguration = this._webMapInfo.searchConfiguration;
+        this.mapChanged.emit(this.mapView);
+        this.mapView.ui.add(this._mapTools, { position: "top-right", index: 0});
+      });
     }
   }
 

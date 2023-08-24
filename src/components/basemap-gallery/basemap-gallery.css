@@ -16,17 +16,4 @@
 
 :host {
   display: block;
-  --calcite-label-margin-bottom: 0;
-  --calcite-block-padding: 0;
-}
-
-.map-height {
-  height: calc(100% - 58px);
-}
-
-/* Not sure how else to do this
-  tried navigation gamepad settings but enabled: false still shows this */
-
-.esri-zoom {
-  display: none !important;
 }
