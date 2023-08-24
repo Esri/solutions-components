@@ -68,6 +68,11 @@ export class BasemapGallery {
    */
   protected BasemapGallery: typeof import("esri/widgets/BasemapGallery");
 
+  /**
+   * HTMLElement: The container div for the basemap gallery widget
+   */
+  protected _basemapElement: HTMLElement;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -112,7 +117,7 @@ export class BasemapGallery {
   render() {
     return (
       <Host>
-        <slot/>
+        <div ref={(el) => { this._basemapElement = el }} />
       </Host>
     );
   }
@@ -150,7 +155,7 @@ export class BasemapGallery {
     if (view && this.BasemapGallery) {
       if (!this.basemapWidget) {
         this.basemapWidget = new this.BasemapGallery({
-          container: "basemap-container",
+          container: this._basemapElement,
           view
         });
       } else {
