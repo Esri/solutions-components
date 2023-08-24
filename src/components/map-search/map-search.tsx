@@ -199,7 +199,7 @@ export class MapSearch {
    * @protected
    */
   protected _initSearchWidget(): void {
-    if (this.mapView && this._searchElement && !this.searchWidget) {
+    if (this.mapView && this._searchElement && !this.searchWidget && this.searchConfiguration) {
 
       const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this.mapView);
 
@@ -232,7 +232,7 @@ export class MapSearch {
     view: __esri.MapView
   ): ISearchConfiguration {
     const INCLUDE_DEFAULT_SOURCES = "includeDefaultSources";
-    const sources = searchConfiguration?.sources;
+    const sources = searchConfiguration.sources;
 
     if (sources?.length > 0) {
       searchConfiguration[INCLUDE_DEFAULT_SOURCES] = false;
