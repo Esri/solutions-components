@@ -354,7 +354,7 @@ export class CrowdsourceManager {
     const mapContainerClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "width-full" : "adjusted-height-50";
     return (
       <div class={`${mapContainerClass} overflow-hidden ${mapDisplayClass}`} >
-        <map-card class="width-full" mapInfos={this.mapInfos} searchConfiguration={this.searchConfiguration}/>
+        <map-card class="width-full" mapInfos={this.mapInfos}/>
       </div>
     );
   }

@@ -55,16 +55,16 @@ export class MapCard {
    */
   @Prop() mapView: __esri.MapView;
 
-  /**
-   * ISearchConfiguration: Configuration details for the Search widget
-   */
-  @Prop() searchConfiguration: ISearchConfiguration;
-
   //--------------------------------------------------------------------------
   //
   //  State (internal)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * ISearchConfiguration: Configuration details for the Search widget
+   */
+  @State() _searchConfiguration: ISearchConfiguration;
 
   /**
    * IMapInfo: id and name of the map to display
@@ -159,7 +159,7 @@ export class MapCard {
         <map-tools
           mapView={this.mapView}
           ref={(el) => this._mapTools = el}
-          searchConfiguration={this.searchConfiguration}
+          searchConfiguration={this._searchConfiguration}
         />
       </Host>
     );
@@ -218,6 +218,7 @@ export class MapCard {
       });
       await this.mapView.when(() => {
         this._loadedId = id;
+        this._searchConfiguration = this._webMapInfo.searchConfiguration;
         this.mapChanged.emit(this.mapView);
         this.mapView.ui.add(this._mapTools, { position: "top-right", index: 0});
       });
