@@ -84,6 +84,11 @@ export class LayerTable {
   @State() _showOnlySelected = false;
 
   /**
+   * boolean: When true the user has defined a sort order that should override the default order
+   */
+  @State() _sortActive = false;
+
+  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
@@ -165,6 +170,11 @@ export class LayerTable {
    */
   protected _tableNode: HTMLDivElement;
 
+  /**
+   * bool: When true the table is being sorted
+   */
+  protected _tableSorting = false;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -179,7 +189,6 @@ export class LayerTable {
     this._fetchingData = true;
     const mapLayerIds = await getMapLayerIds(this.mapView);
     this._layer = await getLayer(this.mapView, mapLayerIds[0]);
-    this._resetTable();
     this.reactiveUtils.on(
       () => this.mapView,
       "click",
@@ -196,8 +205,18 @@ export class LayerTable {
   @Watch("_layer")
   async _layerWatchHandler(): Promise<void> {
     this._fetchingData = true;
-    this._resetTable();
+    await this._resetTable();
     this._fetchingData = false;
+  }
+
+  /**
+   * When sortActive is false the user has not defined a sort and we should use the default sort
+   */
+  @Watch("_sortActive")
+  async _sortActiveWatchHandler(): Promise<void> {
+    if (!this._sortActive) {
+      await this._sortTable();
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -503,7 +522,6 @@ export class LayerTable {
     node: HTMLDivElement
   ) => {
     this._tableNode = node;
-    this._getTable(node);
   }
 
   /**
@@ -513,33 +531,43 @@ export class LayerTable {
    *
    * @returns void
    */
-  protected _getTable(
+  protected async _getTable(
     node: HTMLDivElement
-  ): void {
+  ): Promise<void> {
     if (this._layer) {
-      this._table = new this.FeatureTable({
-        layer: this._layer,
-        view: this.mapView,
-        //editingEnabled: this._editEnabled,
-        highlightEnabled: true,
-        multiSortEnabled: false,
-        visibleElements: {
-          header: false,
-          menu: false
-        },
-        container: node
-      } as __esri.FeatureTableProperties);
+      await this._layer.when(async () => {
+        this._table = new this.FeatureTable({
+          layer: this._layer,
+          view: this.mapView,
+          //editingEnabled: this._editEnabled,
+          highlightEnabled: true,
+          multiSortEnabled: false,
+          visibleElements: {
+            header: false,
+            menu: false
+          },
+          container: node
+        } as __esri.FeatureTableProperties);
 
-      this._table.highlightIds.on("change", () => {
-        this._selectedIndexes = this._table.highlightIds.toArray();
-        if (this._showOnlySelected) {
-          if (this._selectedIndexes.length > 0) {
-            this._table.filterBySelection();
-          } else {
-            this._toggleShowSelected();
-          }
-        }
-        this.featureSelectionChange.emit(this._selectedIndexes);
+        await this._table.when(async () => {
+          this._table.highlightIds.on("change", () => {
+            this._selectedIndexes = this._table.highlightIds.toArray();
+            if (this._showOnlySelected) {
+              if (this._selectedIndexes.length > 0) {
+                this._table.filterBySelection();
+              } else {
+                this._toggleShowSelected();
+              }
+            }
+            this.featureSelectionChange.emit(this._selectedIndexes);
+          });
+
+          this.reactiveUtils.watch(
+            () => this._table.activeSortOrders,
+            (sortOrders) => {
+              this._sortActive = sortOrders.length > 0 && sortOrders[0]?.direction === "asc" || sortOrders[0]?.direction === "desc";
+            });
+        });
       });
     }
   }
@@ -549,9 +577,10 @@ export class LayerTable {
    *
    * @returns void
    */
-  protected _resetTable(): void {
+  protected async _resetTable(): Promise<void> {
     if (this._layer && this._table) {
       this._clearSelection();
+      this._allIds = [];
       this.featureSelectionChange.emit(this._selectedIndexes);
       this._table.layer = this._layer;
       this._editEnabled = this._layer.editingEnabled;
@@ -559,6 +588,27 @@ export class LayerTable {
       this._table.editingEnabled = this._editEnabled;
       this._table.clearSelectionFilter();
       this._showOnlySelected = false;
+      this._sortActive = false;
+      await this._sortTable();
+    }
+  }
+
+  /**
+   * Sort the objectid field in descending order
+   *
+   * @returns void
+   */
+  protected async _sortTable(): Promise<void> {
+    if (this._table && this._layer && !this._sortActive) {
+      if (!this._tableSorting) {
+        this._tableSorting = true;
+        await this._table.when(async () => {
+          await this._layer.when(async () => {
+            this._table.sortColumn(this._layer.objectIdField, "desc");
+            this._tableSorting = false;
+          });
+        });
+      }
     }
   }
 
@@ -762,14 +812,21 @@ export class LayerTable {
     const id: string = evt.detail[0];
     if (id !== this._layer.id || this._allIds.length === 0) {
       this._fetchingData = true;
-      this._table.highlightIds.removeAll();
       this._layer = await getLayer(this.mapView, id);
       this._allIds = await queryAllIds(this._layer)
+      if (!this._table) {
+        await this._getTable(this._tableNode);
+      }
+      await this._table.when(() => {
+        this._table.highlightIds.removeAll();
+      });
       this._selectedIndexes = [];
       this._table.layer = this._layer;
       this._table.render();
-      this._fetchingData = false;
     }
+    this._sortActive = false;
+    await this._sortTable();
+    this._fetchingData = false;
   }
 
   /**
