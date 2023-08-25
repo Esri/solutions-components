@@ -91,6 +91,10 @@ export namespace Components {
          */
         "searchConfiguration": ISearchConfiguration;
         /**
+          * boolean: when true the table will be sorted by objectid in descending order by default
+         */
+        "showNewestFirst": boolean;
+        /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected": boolean;
@@ -188,6 +192,10 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * boolean: when true the table will be sorted by objectid in descending order by default
+         */
+        "showNewestFirst": boolean;
         /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
@@ -1146,6 +1154,10 @@ declare namespace LocalJSX {
          */
         "searchConfiguration"?: ISearchConfiguration;
         /**
+          * boolean: when true the table will be sorted by objectid in descending order by default
+         */
+        "showNewestFirst"?: boolean;
+        /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected"?: boolean;
@@ -1229,6 +1241,10 @@ declare namespace LocalJSX {
           * Emitted on demand when a layer is selected
          */
         "onFeatureSelectionChange"?: (event: LayerTableCustomEvent<number[]>) => void;
+        /**
+          * boolean: when true the table will be sorted by objectid in descending order by default
+         */
+        "showNewestFirst"?: boolean;
         /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */

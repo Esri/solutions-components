@@ -48,6 +48,11 @@ export class LayerTable {
   @Prop() mapView: __esri.MapView;
 
   /**
+   * boolean: when true the table will be sorted by objectid in descending order by default
+   */
+  @Prop() showNewestFirst: boolean;
+
+  /**
    * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
    */
   @Prop() zoomAndScrollToSelected: boolean;
@@ -600,7 +605,7 @@ export class LayerTable {
    */
   protected async _sortTable(): Promise<void> {
     if (this._table && this._layer && !this._sortActive) {
-      if (!this._tableSorting) {
+      if (!this._tableSorting && this.showNewestFirst) {
         this._tableSorting = true;
         await this._table.when(async () => {
           await this._layer.when(async () => {
