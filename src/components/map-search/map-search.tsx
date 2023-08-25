@@ -163,7 +163,6 @@ export class MapSearch {
    * Renders the component.
    */
   render() {
-    console.log("render map search")
     return (
       <Host>
         <div class="search-widget" ref={(el) => { this._searchElement = el }} />
@@ -199,16 +198,20 @@ export class MapSearch {
    * @protected
    */
   protected _initSearchWidget(): void {
-    if (this.mapView && this._searchElement && !this.searchWidget && this.searchConfiguration) {
+    if (this.mapView && this._searchElement && !this.searchWidget) {
 
-      const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this.mapView);
-
-      const searchOptions: __esri.widgetsSearchProperties = {
+      let searchOptions: __esri.widgetsSearchProperties = {
         view: this.mapView,
         container: this._searchElement,
-        searchTerm: this.searchTerm,
-        ...searchConfiguration
+        searchTerm: this.searchTerm
       };
+
+      if (this.searchConfiguration) {
+        const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this.mapView);
+        searchOptions = {
+          ...searchConfiguration
+        }
+      }
       this.searchWidget = new this.Search(searchOptions);
       this.searchWidget.popupEnabled = this.popupEnabled;
       this.searchWidget.resultGraphicEnabled = this.resultGraphicEnabled;
