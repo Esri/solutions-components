@@ -44,6 +44,11 @@ export class CrowdsourceManager {
   @Prop() classicGrid = false;
 
   /**
+   * boolean: when true the table will be sorted by objectid in descending order by default
+   */
+  @Prop() showNewestFirst = false;
+
+  /**
    * boolean: when true no header is displayed for the app
    */
   @Prop() hideHeader = true;
@@ -434,6 +439,7 @@ export class CrowdsourceManager {
         <div class="width-full height-full position-relative">
           <layer-table
             mapView={this?._mapView}
+            showNewestFirst={this.showNewestFirst}
             zoomAndScrollToSelected={this.zoomAndScrollToSelected}
           />
         </div>
