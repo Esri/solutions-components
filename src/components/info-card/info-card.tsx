@@ -121,7 +121,8 @@ export class InfoCard {
   @Watch("graphics")
   async graphicsWatchHandler(): Promise<void> {
     if (this.graphics.length > 0) {
-      this._editEnabled = (this.graphics[0]?.layer as __esri.FeatureLayer).editingEnabled;
+      const featureLayer = (this.graphics[0]?.layer as __esri.FeatureLayer);
+      this._editEnabled = featureLayer.editingEnabled && featureLayer.capabilities.operations.supportsUpdate;
       this._features.open({
         features: this.graphics
       });
