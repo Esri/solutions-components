@@ -214,16 +214,14 @@ export class InfoCard {
             class={"esri-widget " + featureNodeClass}
             id="features-node"
           />
-          <div class={"padding-1-2 display-flex " + editButtonClass} slot="footer">
-            <calcite-button
-              appearance="outline"
-              iconStart="pencil"
+          <div class={`${editButtonClass} edit-btn edit-btn-position`}>
+            <calcite-action
+              appearance="transparent"
+              icon="pencil"
               id="solutions-edit"
               onClick={() => this._openEditRecord()}
-              width="full"
-            >
-              {this._translations.edit}
-            </calcite-button>
+              scale="m"
+            />
             <calcite-tooltip label="" placement="bottom" reference-element="solutions-edit">
               <span>{this._translations.edit}</span>
             </calcite-tooltip>

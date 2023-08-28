@@ -34,12 +34,12 @@ graph TD;
   card-manager --> calcite-notice
   info-card --> calcite-shell
   info-card --> calcite-loader
-  info-card --> calcite-button
+  info-card --> calcite-action
   info-card --> calcite-tooltip
   info-card --> edit-card
   info-card --> calcite-alert
-  calcite-button --> calcite-loader
-  calcite-button --> calcite-icon
+  calcite-action --> calcite-loader
+  calcite-action --> calcite-icon
   edit-card --> calcite-notice
   calcite-notice --> calcite-icon
   calcite-alert --> calcite-icon
