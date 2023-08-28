@@ -36,6 +36,11 @@ export interface IAttributeTypes {
   [attributeName: string]: string;
 }
 
+export interface ILabelFormat {
+  type: "pattern" | "executor" | "unsupported";
+  format: string | __esri.ArcadeExecutor | undefined;
+}
+
 export interface ILayerRelationshipQuery {
   layer: __esri.FeatureLayer;
   relatedQuery: IRelatedFeaturesQuery;
@@ -188,12 +193,12 @@ export function removeDuplicateLabels(
  *
  * @param fieldInfos Layer's fieldInfos structure
  * @param bypassFieldVisiblity Indicates if the configured fieldInfo visibility property should be ignored
- * @return Label spec with lines separated by `lineSeparatorChar`
+ * @return "pattern" label spec with lines separated by `lineSeparatorChar`
  */
 export function _convertPopupFieldsToLabelSpec(
   fieldInfos: __esri.FieldInfo[],
   bypassFieldVisiblity = false
-): string {
+): ILabelFormat {
   const labelSpec: string[] = [];
 
   // Every visible attribute is used
@@ -205,7 +210,10 @@ export function _convertPopupFieldsToLabelSpec(
     }
   );
 
-  return labelSpec.join(lineSeparatorChar);
+  return {
+    type: "pattern",
+    format: labelSpec.join(lineSeparatorChar)
+  } as ILabelFormat;
 };
 
 /**
@@ -214,11 +222,11 @@ export function _convertPopupFieldsToLabelSpec(
  *
  * @param popupInfo Layer's popupInfo structure containing description, fieldInfos, and expressionInfos, e.g.,
  * "<div style='text-align: left;'>{NAME}<br />{STREET}<br />{CITY}, {STATE} {ZIP} <br /></div>"
- * @return Label spec with lines separated by `lineSeparatorChar`
+ * @return "pattern" label spec with lines separated by `lineSeparatorChar`
  */
 export function _convertPopupTextToLabelSpec(
   popupInfo: string,
-): string {
+): ILabelFormat {
   // Replace <br> variants with the line separator character
   popupInfo = popupInfo.replace(/<br\s*\/?>/gi, lineSeparatorChar);
 
@@ -251,8 +259,52 @@ export function _convertPopupTextToLabelSpec(
   labelSpec = labelSpec.replace(/^\|/, "");
   labelSpec = labelSpec.replace(/\|$/, "");
 
-  return labelSpec.trim();
+  return {
+    type: "pattern",
+    format: labelSpec.trim()
+  } as ILabelFormat;
 };
+
+/**
+ * Converts an Arcade expression of a custom popup into a multiline label specification.
+ *
+ * @param expressionInfo Structure containing expression and info about it
+ * @return Promise resolving to an "executor" label spec
+ */
+/*
+export async function _convertPopupArcadeToLabelSpec(
+  expressionInfo: __esri.ElementExpressionInfo
+): Promise<ILabelFormat> {
+  // Generate an Arcade executor
+  const arcade = await import("@arcgis/core/arcade.js");
+  const labelingProfile: __esri.Profile = {
+    variables: [
+      {
+        name: "$feature",
+        type: "feature"
+      },
+      {
+        name: "$layer",
+        type: "featureSet"
+      },
+      {
+        name: "$datastore",
+        type: "featureSetCollection"
+      },
+      {
+        name: "$map",
+        type: "featureSetCollection"
+      }
+    ]
+  };
+  const executor = await arcade.createArcadeExecutor(expressionInfo.expression, labelingProfile);
+
+  return Promise.resolve({
+    type: "executor",
+    format: executor
+  } as ILabelFormat);
+}
+*/
 
 /**
  * Creates a title from a list of selection set names.
@@ -372,14 +424,19 @@ export function _getFieldNamesFromFieldExpressions(
  * all attributes are exported
  * @param attributeFormats Empty object to hold the formats for each attribute in a feature; the object is filled
  * with formats by this function
- * @returns The format of a single label, e.g., "{NAME}|{STREET}|{CITY}, {STATE} {ZIP}"
+ * @returns A Promise resolving to the format of a single label, e.g., for ILabelFormat type "pattern":
+ * "{NAME}|{STREET}|{CITY}, {STATE} {ZIP}"
  */
-export function _getLabelFormat(
+export async function _getLabelFormat(
   layer: __esri.FeatureLayer,
   formatUsingLayerPopup: boolean,
   attributeFormats: IAttributeFormats
-): string {
-  let labelFormat: string;
+): Promise<ILabelFormat> {
+  let labelFormat: ILabelFormat = {
+    type: "unsupported",
+    format: undefined
+  };
+
   if (layer.popupEnabled) {
     layer.popupTemplate.fieldInfos.forEach(
       // Extract any format info that we have
@@ -390,27 +447,32 @@ export function _getLabelFormat(
       }
     );
 
-    // What data fields are used in the labels?
-    // Example labelFormat: ['{NAME}', '{STREET}', '{CITY}, {STATE} {ZIP}']
+    // What is the nature of the label content?
+    // Fields list
     if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "fields") {
       labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos);
 
       // If popup is configured with "no attribute information", then no fields will visible
-      if (labelFormat.length === 0) {
+      if ((labelFormat.format as string).length === 0) {
         // Can we use the popup title?
         labelFormat = layer.popupTemplate.title && typeof layer.popupTemplate.title === "string" ?
-          layer.popupTemplate.title
+          { type: "pattern", format: layer.popupTemplate.title } as ILabelFormat
           :
           // Otherwise revert to using attributes
           _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos, true);
       }
 
+    // Example text: '<p>{name} {age} years &nbsp;</p><p>started: {start}</p>'
     } else if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "text") {
       labelFormat = _convertPopupTextToLabelSpec(layer.popupTemplate.content[0].text);
+
+    // Example expression: 'var feat = $feature\nvar label = `\n\t${feat["name"]} ${feat["age"]} years <br>\n\tstarted: ${feat["start"]}\n`\n\nreturn { \n  type : \'text\', \n  text : label\n}',
+    //} else if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "expression") {
+    //  labelFormat = await _convertPopupArcadeToLabelSpec(layer.popupTemplate.content[0].expressionInfo);
     }
   }
 
-  return labelFormat;
+  return Promise.resolve(labelFormat);
 }
 
 /**
@@ -519,16 +581,21 @@ export async function _prepareLabels(
   const attributeFormats: IAttributeFormats = {};
 
   // Get the label formatting, if any
-  const labelFormat = _getLabelFormat(layer, formatUsingLayerPopup, attributeFormats);
+  const labelFormat: ILabelFormat = await _getLabelFormat(layer, formatUsingLayerPopup, attributeFormats);
 
   // Apply the label format
-  const labels = labelFormat ?
-    // Export attributes in format
-    await _prepareLabelsFromSet(featureSet, attributeTypes, attributeDomains,
-      attributeFormats, labelFormat, includeHeaderNames)
-    :
+  const labels = labelFormat.type === "unsupported" ?
     // Export all attributes
-    await _prepareLabelsFromAll(featureSet, attributeTypes, attributeDomains, includeHeaderNames);
+    await _prepareLabelsFromAll(featureSet, attributeTypes, attributeDomains, includeHeaderNames)
+    : labelFormat.type == "pattern" ?
+    // Export attributes in format
+    await _prepareLabelsFromPattern(featureSet, attributeTypes, attributeDomains,
+      attributeFormats, labelFormat.format as string, includeHeaderNames)
+    :
+    // Export attributes in expression
+    await _prepareLabelsUsingExecutor();
+    //await _prepareLabelsUsingExecutor(featureSet, attributeTypes, attributeDomains,
+    //  attributeFormats, labelFormat.format as __esri.ArcadeExecutor, includeHeaderNames);
 
   return Promise.resolve(labels);
 }
@@ -587,7 +654,7 @@ export async function _prepareLabelsFromAll(
  * @param includeHeaderNames Add the label format at the front of the list of generated labels
  * @returns Promise resolving with list of labels, each of which is a list of label lines
  */
-export async function _prepareLabelsFromSet(
+export async function _prepareLabelsFromPattern(
   featureSet: __esri.Graphic[],
   attributeTypes: IAttributeTypes,
   attributeDomains: IAttributeDomains,
@@ -631,6 +698,22 @@ export async function _prepareLabelsFromSet(
   if (includeHeaderNames) {
     labels.unshift(attributeNames);
   }
+
+  return Promise.resolve(labels);
+}
+
+export async function _prepareLabelsUsingExecutor(
+  /*
+  featureSet: __esri.Graphic[],
+  attributeTypes: IAttributeTypes,
+  attributeDomains: IAttributeDomains,
+  attributeFormats: IAttributeFormats,
+  labelFormat: __esri.ArcadeExecutor,
+  includeHeaderNames = false
+  */
+): Promise<string[][]> {
+  //const arcade = await import("@arcgis/core/arcade.js");
+  const labels: string[][] = undefined;//???
 
   return Promise.resolve(labels);
 }

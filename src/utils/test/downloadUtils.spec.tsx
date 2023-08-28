@@ -19,6 +19,7 @@ import * as downloadUtils from "../downloadUtils";
 describe("downloadUtils", () => {
 
   describe('removeDuplicateLabels', () => {
+
     it('should remove duplicate labels', () => {
       const labels = [
         ['Label 1', 'Value 1'],
@@ -31,6 +32,7 @@ describe("downloadUtils", () => {
         ['Label 2', 'Value 2']
       ]);
     });
+
   });
 
   describe("_convertPopupFieldsToLabelSpec", () => {
@@ -45,8 +47,10 @@ describe("downloadUtils", () => {
       const bypassFieldVisiblity = false;
       const expectedLabelSpec = "{A}|{B}|{D}";
 
-      const labelSpec = downloadUtils._convertPopupFieldsToLabelSpec(fieldInfos, bypassFieldVisiblity);
-      expect(labelSpec).toEqual(expectedLabelSpec);
+      const result: downloadUtils.ILabelFormat =
+        downloadUtils._convertPopupFieldsToLabelSpec(fieldInfos, bypassFieldVisiblity);
+      expect(result.type).toEqual("pattern");
+      expect(result.format).toEqual(expectedLabelSpec);
     });
 
     it("handles fieldname ignoring visibility", () => {
@@ -59,8 +63,10 @@ describe("downloadUtils", () => {
       const bypassFieldVisiblity = true;
       const expectedLabelSpec = "{A}|{B}|{C}|{D}";
 
-      const labelSpec = downloadUtils._convertPopupFieldsToLabelSpec(fieldInfos, bypassFieldVisiblity);
-      expect(labelSpec).toEqual(expectedLabelSpec);
+      const result: downloadUtils.ILabelFormat =
+        downloadUtils._convertPopupFieldsToLabelSpec(fieldInfos, bypassFieldVisiblity);
+      expect(result.type).toEqual("pattern");
+      expect(result.format).toEqual(expectedLabelSpec);
     });
 
   });
@@ -71,51 +77,125 @@ describe("downloadUtils", () => {
       const popupInfo = "<div style='text-align: left;'>{NAME}<br />{STREET}<br/>{CITY}, {STATE} {ZIP} <br></div>";
       const expectedLabelSpec = "{NAME}|{STREET}|{CITY}, {STATE} {ZIP}";
 
-      const labelSpec = downloadUtils._convertPopupTextToLabelSpec(popupInfo);
-      expect(labelSpec).toEqual(expectedLabelSpec);
+      const result: downloadUtils.ILabelFormat = downloadUtils._convertPopupTextToLabelSpec(popupInfo);
+      expect(result.type).toEqual("pattern");
+      expect(result.format).toEqual(expectedLabelSpec);
     });
 
     it("handles <p>", () => {
       const popupInfo = "<p>{NAME}</p><p>{STREET}</p><p>{CITY}, {STATE} {ZIP}</p>";
       const expectedLabelSpec = "{NAME}|{STREET}|{CITY}, {STATE} {ZIP}";
 
-      const labelSpec = downloadUtils._convertPopupTextToLabelSpec(popupInfo);
-      expect(labelSpec).toEqual(expectedLabelSpec);
+      const result: downloadUtils.ILabelFormat = downloadUtils._convertPopupTextToLabelSpec(popupInfo);
+      expect(result.type).toEqual("pattern");
+      expect(result.format).toEqual(expectedLabelSpec);
     });
 
     it("handles popup's use of \xA0", () => {
-      const popupInfo = "<div style='text-align: left;'>{NAME}<br />{STREET}<br />{CITY},\xA0{STATE}\xA0{ZIP}\xA0<br /></div>";
+      const popupInfo =
+        "<div style='text-align: left;'>{NAME}<br />{STREET}<br />{CITY},\xA0{STATE}\xA0{ZIP}\xA0<br /></div>";
       const expectedLabelSpec = "{NAME}|{STREET}|{CITY}, {STATE} {ZIP}";
 
-      const labelSpec = downloadUtils._convertPopupTextToLabelSpec(popupInfo);
-      expect(labelSpec).toEqual(expectedLabelSpec);
+      const result: downloadUtils.ILabelFormat = downloadUtils._convertPopupTextToLabelSpec(popupInfo);
+      expect(result.type).toEqual("pattern");
+      expect(result.format).toEqual(expectedLabelSpec);
     });
 
     it("removes newlines and blank lines, and trims each line", () => {
-      const popupInfo = "  \n\n   {NAME}   \n  \n\n   {STREET}\n{CITY}, {STATE} {ZIP}\n\n  \n ";
+      const popupInfo =
+        "  \n\n   {NAME}   \n  \n\n   {STREET}\n{CITY}, {STATE} {ZIP}\n\n  \n ";
       const expectedLabelSpec = "{NAME}|{STREET}|{CITY}, {STATE} {ZIP}";
 
-      const labelSpec = downloadUtils._convertPopupTextToLabelSpec(popupInfo);
-      expect(labelSpec).toEqual(expectedLabelSpec);
+      const result: downloadUtils.ILabelFormat = downloadUtils._convertPopupTextToLabelSpec(popupInfo);
+      expect(result.type).toEqual("pattern");
+      expect(result.format).toEqual(expectedLabelSpec);
     });
 
     it("removes extra HTML", () => {
-      const popupInfo = "\n<div style='text-align: left;'><span style='font-weight:bold'>{NAME}</span><br />{STREET}<br />{CITY},\xA0{STATE}\xA0{ZIP}\xA0<br /></div>\n";
+      const popupInfo =
+        "\n<div style='text-align: left;'><span style='font-weight:bold'>{NAME}</span><br />{STREET}<br />{CITY},\xA0{STATE}\xA0{ZIP}\xA0<br /></div>\n";
       const expectedLabelSpec = "{NAME}|{STREET}|{CITY}, {STATE} {ZIP}";
 
-      const labelSpec = downloadUtils._convertPopupTextToLabelSpec(popupInfo);
-      expect(labelSpec).toEqual(expectedLabelSpec);
+      const result: downloadUtils.ILabelFormat = downloadUtils._convertPopupTextToLabelSpec(popupInfo);
+      expect(result.type).toEqual("pattern");
+      expect(result.format).toEqual(expectedLabelSpec);
     });
 
     it("handles some special characters", () => {
-      const popupInfo = "<div style='text-align: left;'>&lt;{NAME}&gt;<br />{STREET}<br/>{CITY},&nbsp;{STATE}&nbsp;{ZIP}<br></div>";
+      const popupInfo =
+        "<div style='text-align: left;'>&lt;{NAME}&gt;<br />{STREET}<br/>{CITY},&nbsp;{STATE}&nbsp;{ZIP}<br></div>";
       const expectedLabelSpec = "<{NAME}>|{STREET}|{CITY}, {STATE} {ZIP}";
 
-      const labelSpec = downloadUtils._convertPopupTextToLabelSpec(popupInfo);
-      expect(labelSpec).toEqual(expectedLabelSpec);
+      const result: downloadUtils.ILabelFormat = downloadUtils._convertPopupTextToLabelSpec(popupInfo);
+      expect(result.type).toEqual("pattern");
+      expect(result.format).toEqual(expectedLabelSpec);
     });
 
   });
+
+  /*
+  describe("_convertPopupArcadeToLabelSpec", () => {
+
+    //jest.spyOn(utils, "default").mockImplementation(() => { return {Promise}});  // 1
+    //jest.spyOn(utils, "default").mockImplementation(() => Promise);  // 2
+    //jest.mock("../../../node_modules/esri-loader/dist/esm/utils/index.js", () => {{Promise}});
+    //jest.mock("../../../node_modules/esri-loader/dist/esm/utils/index.js", () => Promise);
+    //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => {{Promise}});
+    //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => {{Promise: Promise}});
+    //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => Promise);
+
+    it("handles <br> variants", async () => {
+      //console.log("global.Promise", global.Promise);
+      //console.log("window.Promise 1", window.Promise);
+      //utils.Promise = window.Promise = global.Promise;
+      //console.log("window.Promise 2", window.Promise);
+      //console.log("utils 1", utils, utils.Promise);
+      //jest.resetModules();
+      //console.log("window.Promise 3", window.Promise);
+      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => {{Promise}});
+      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils/index.js", () => {{Promise}});
+      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => Promise);
+      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils/index.js", () => Promise);
+      //jest.spyOn(utils, "Promise").mockImplementation(Promise[Symbol.species]);  // 2
+      //jest.spyOn(utils, "Promise").mockImplementation(
+      //  (executor: (resolve: (value: unknown) => void, reject: (reason?: any) => void) => void) => new Promise<unknown>(executor)
+      //);
+      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils/index.js",
+      //  ((executor: (resolve: (value: unknown) => void, reject: (reason?: any) => void) => void) => new Promise<unknown>(executor))
+      //);
+      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => Promise<unknown>);
+      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", (executor) => new PromiseConstructor<T>(executor));
+      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => Promise);
+      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils/index.js", () => Promise);
+      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils/index.js", () => { return (executor) => new Promise<unknown>(executor) });
+      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils/index.js", () => { return { Promise: (executor) => new Promise<unknown>(executor) }});
+      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => { return { Promise: (executor) => new Promise<unknown>(executor) }});
+      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => { return { Promise: Promise<unknown> }});
+      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => { return { Promise: Promise }});
+      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils/index.js", () => { return { Promise: Promise }});
+      //console.log("utils 2", utils, utils.Promise);
+      //console.log("typeof window", typeof window);
+      //console.log("window['Promise']", window['Promise']);
+
+      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => { return {
+      //  Promise: jest.fn().mockImplementation(() => { return window['Promise']; })
+      //} });
+
+      const expressionInfo: __esri.ElementExpressionInfo = {
+        expression: 'var feat = $feature\nvar label = `\n\t${feat["name"]} ${feat["age"]} years <br>\n\tstarted: ${feat["start"]}\n`\n\nreturn { \n  type : \'text\', \n  text : label\n}'
+      } as any;
+
+      //console.log("window.Promise 4", window.Promise);//???
+      //console.log("utils.Promise", utils.Promise);//???
+      const result: downloadUtils.ILabelFormat = await downloadUtils._convertPopupArcadeToLabelSpec(expressionInfo);
+      expect(result.type).toEqual("executor");
+      expect(typeof result.format).toEqual("ArcadeExecutor");
+
+      //jest.clearAllMocks();
+    });
+
+  });
+  */
 
   describe("_createFilename", () => {
 
@@ -146,15 +226,18 @@ describe("downloadUtils", () => {
   });
 
   describe("_getExpressionsFromLabel", () => {
+
     it("handles a label with ASCII expression names", () => {
       const labelSpec = "{expression/expr0}\n{OWNERNM1}\n{PSTLADDRESS}\n{PSTLCITY}, {PSTLSTATE} {PSTLZIP5}";
       const expectedExpressions = ["{expression/expr0}"];
       const expressions = downloadUtils._getExpressionsFromLabel(labelSpec);
       expect(expressions).toEqual(expectedExpressions);
     });
+
   });
 
   describe("_getFieldExpressionsFromLabel", () => {
+
     it("handles a label with ASCII field names", () => {
       const labelSpec = "{expression/expr0}\n{OWNERNM1}\n{PSTLADDRESS}\n{PSTLCITY}, {PSTLSTATE} {PSTLZIP5}";
       const expectedFields = ["{OWNERNM1}", "{PSTLADDRESS}", "{PSTLCITY}", "{PSTLSTATE}", "{PSTLZIP5}"];
@@ -434,17 +517,21 @@ describe("downloadUtils", () => {
       const fields = downloadUtils._getFieldExpressionsFromLabel(labelSpec);
       expect(fields).toEqual(expectedFields);
     });
+
   });
 
   describe('_getFieldNamesFromFieldExpressions', () => {
+
     it("extracts field names from field name expressions", () => {
       const expressions = ["{NAME}", "{STREET}", "{CITY}", "{STATE}", "{ZIP}"];
       const names = ["NAME", "STREET", "CITY", "STATE", "ZIP"];
       expect(downloadUtils._getFieldNamesFromFieldExpressions(expressions)).toEqual(names);
     });
+
   });
 
   describe('_getLabelFormat', () => {
+
     it('should prepare labels from visible popup fields', async () => {
       const popupTemplate = {
         title: '{name}',
@@ -476,8 +563,10 @@ describe("downloadUtils", () => {
       const formatUsingLayerPopup = true;
 
       const attributeFormats: downloadUtils.IAttributeFormats = {};
-      const result = await downloadUtils._getLabelFormat(layer as any, formatUsingLayerPopup, attributeFormats);
-      expect(result).toEqual('{name}|{age}|{start}');
+      const result: downloadUtils.ILabelFormat =
+        await downloadUtils._getLabelFormat(layer as any, formatUsingLayerPopup, attributeFormats);
+      expect(result.type).toEqual('pattern');
+      expect(result.format).toEqual('{name}|{age}|{start}');
     });
 
     it('should prepare labels from a partial set of visible popup fields', async () => {
@@ -511,8 +600,10 @@ describe("downloadUtils", () => {
       const formatUsingLayerPopup = true;
 
       const attributeFormats: downloadUtils.IAttributeFormats = {};
-      const result = await downloadUtils._getLabelFormat(layer as any, formatUsingLayerPopup, attributeFormats);
-      expect(result).toEqual('{start}');
+      const result: downloadUtils.ILabelFormat =
+        await downloadUtils._getLabelFormat(layer as any, formatUsingLayerPopup, attributeFormats);
+      expect(result.type).toEqual('pattern');
+      expect(result.format).toEqual('{start}');
     });
 
     it('should prepare labels from invisible popup fields, but title is present', async () => {
@@ -546,8 +637,10 @@ describe("downloadUtils", () => {
       const formatUsingLayerPopup = true;
 
       const attributeFormats: downloadUtils.IAttributeFormats = {};
-      const result = await downloadUtils._getLabelFormat(layer as any, formatUsingLayerPopup, attributeFormats);
-      expect(result).toEqual('{name}');
+      const result: downloadUtils.ILabelFormat =
+        await downloadUtils._getLabelFormat(layer as any, formatUsingLayerPopup, attributeFormats);
+      expect(result.type).toEqual('pattern');
+      expect(result.format).toEqual('{name}');
     });
 
     it('should prepare labels from invisible popup fields with no title present', async () => {
@@ -581,8 +674,10 @@ describe("downloadUtils", () => {
       const formatUsingLayerPopup = true;
 
       const attributeFormats: downloadUtils.IAttributeFormats = {};
-      const result = await downloadUtils._getLabelFormat(layer as any, formatUsingLayerPopup, attributeFormats);
-      expect(result).toEqual('{name}|{age}|{start}');
+      const result: downloadUtils.ILabelFormat =
+        await downloadUtils._getLabelFormat(layer as any, formatUsingLayerPopup, attributeFormats);
+      expect(result.type).toEqual('pattern');
+      expect(result.format).toEqual('{name}|{age}|{start}');
     });
 
     it('should prepare labels from popup text', async () => {
@@ -617,9 +712,56 @@ describe("downloadUtils", () => {
       const formatUsingLayerPopup = true;
 
       const attributeFormats: downloadUtils.IAttributeFormats = {};
-      const result = await downloadUtils._getLabelFormat(layer as any, formatUsingLayerPopup, attributeFormats);
-      expect(result).toEqual('{name} {age} years|started: {start}');
+      const result: downloadUtils.ILabelFormat =
+        await downloadUtils._getLabelFormat(layer as any, formatUsingLayerPopup, attributeFormats);
+      expect(result.type).toEqual('pattern');
+      expect(result.format).toEqual('{name} {age} years|started: {start}');
     });
+
+    /*
+    it('should prepare labels from popup Arcade', async () => {
+      const popupTemplate = {
+        title: '{name}',
+        content: [{
+          type: 'expression',
+          expressionInfo: {
+            title: 'New expression',
+            expression: 'var feat = $feature\nvar label = `\n\t${feat["name"]} ${feat["age"]} years <br>\n\tstarted: ${feat["start"]}\n`\n\nreturn { \n  type : \'text\', \n  text : label\n}',
+            returnType: 'dictionary'
+          }
+        }],
+        fieldInfos: [{
+          fieldName: 'name',
+          visible: true
+        }, {
+          fieldName: 'age',
+          format: {
+            places: 0,
+            digitSeparator: true
+          },
+          visible: true
+        }, {
+          fieldName: 'start',
+          format: {
+            dateFormat: 'short-date'
+          },
+          visible: true
+        }]
+      };
+      const layer = {
+        popupEnabled: true,
+        popupTemplate
+      };
+      const formatUsingLayerPopup = true;
+
+      const attributeFormats: downloadUtils.IAttributeFormats = {};
+      const result: downloadUtils.ILabelFormat =
+        await downloadUtils._getLabelFormat(layer as any, formatUsingLayerPopup, attributeFormats);
+      expect(result.type).toEqual('executor');
+      console.log(JSON.stringify(result, null, 2));//???
+      expect(result.format).toEqual('{name} {age} years|started: {start}');
+    });
+    */
 
     it('should prepare labels without popup; formatUsingLayerPopup is true', async () => {
       const layer = {
@@ -638,8 +780,10 @@ describe("downloadUtils", () => {
       const formatUsingLayerPopup = true;
 
       const attributeFormats: downloadUtils.IAttributeFormats = {};
-      const result = await downloadUtils._getLabelFormat(layer, formatUsingLayerPopup, attributeFormats);
-      expect(result).toBeUndefined();
+      const result: downloadUtils.ILabelFormat =
+        await downloadUtils._getLabelFormat(layer as any, formatUsingLayerPopup, attributeFormats);
+      expect(result.type).toEqual('unsupported');
+      expect(result.format).toBeUndefined();
     });
 
     it('should prepare labels without popup; formatUsingLayerPopup is false', async () => {
@@ -659,12 +803,16 @@ describe("downloadUtils", () => {
       const formatUsingLayerPopup = false;
 
       const attributeFormats: downloadUtils.IAttributeFormats = {};
-      const result = await downloadUtils._getLabelFormat(layer, formatUsingLayerPopup, attributeFormats);
-      expect(result).toBeUndefined();
+      const result: downloadUtils.ILabelFormat =
+        await downloadUtils._getLabelFormat(layer as any, formatUsingLayerPopup, attributeFormats);
+      expect(result.type).toEqual('unsupported');
+      expect(result.format).toBeUndefined();
     });
+
   });
 
   describe('_getSelectionSetNames', () => {
+
     it('should return selection set names for matching IDs', () => {
       const exportInfos = {
         'layer1': {
@@ -690,9 +838,11 @@ describe("downloadUtils", () => {
       const result = downloadUtils._getSelectionSetNames(exportInfos as any, /^foo/);
       expect(result).toEqual([]);
     });
+
   });
 
   describe('_prepareAttributeValue', () => {
+
     it('should format date attributes using the specified date format', () => {
       const attributeValue = new Date('2022-01-01T00:00:00.000Z');
       const attributeType = 'date';
@@ -763,6 +913,7 @@ describe("downloadUtils", () => {
       const result = downloadUtils._prepareAttributeValue(attributeValue, attributeType, attributeDomain as any, attributeFormat, intl);
       expect(result).toEqual('Value 1');
     });
+
   });
 
 });
