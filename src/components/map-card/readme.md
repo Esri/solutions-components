@@ -64,6 +64,8 @@ graph TD;
   calcite-handle --> calcite-icon
   map-tools --> calcite-action
   map-tools --> calcite-action-bar
+  map-tools --> basemap-gallery
+  map-tools --> map-search
   map-tools --> calcite-action-group
   map-tools --> calcite-icon
   map-tools --> calcite-tooltip

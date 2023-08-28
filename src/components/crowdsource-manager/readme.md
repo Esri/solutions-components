@@ -7,13 +7,15 @@
 
 ## Properties
 
-| Property                  | Attribute                     | Description                                                                                                        | Type         | Default |
-| ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------ | ------- |
-| `classicGrid`             | `classic-grid`                | boolean: when true the grid will display like the previous manager app with the table across the top               | `boolean`    | `false` |
-| `hideHeader`              | `hide-header`                 | boolean: when true no header is displayed for the app                                                              | `boolean`    | `true`  |
-| `hideMap`                 | `hide-map`                    | boolean: when true no map is displayed for the app                                                                 | `boolean`    | `false` |
-| `mapInfos`                | --                            | IMapInfo[]: array of map infos (name and id)                                                                       | `IMapInfo[]` | `[]`    |
-| `zoomAndScrollToSelected` | `zoom-and-scroll-to-selected` | boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table | `boolean`    | `false` |
+| Property                  | Attribute                     | Description                                                                                                        | Type                   | Default     |
+| ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------- | ----------- |
+| `classicGrid`             | `classic-grid`                | boolean: when true the grid will display like the previous manager app with the table across the top               | `boolean`              | `false`     |
+| `hideHeader`              | `hide-header`                 | boolean: when true no header is displayed for the app                                                              | `boolean`              | `true`      |
+| `hideMap`                 | `hide-map`                    | boolean: when true no map is displayed for the app                                                                 | `boolean`              | `false`     |
+| `mapInfos`                | --                            | IMapInfo[]: array of map infos (name and id)                                                                       | `IMapInfo[]`           | `[]`        |
+| `searchConfiguration`     | --                            | ISearchConfiguration: Configuration details for the Search widget                                                  | `ISearchConfiguration` | `undefined` |
+| `showNewestFirst`         | `show-newest-first`           | boolean: when true the table will be sorted by objectid in descending order by default                             | `boolean`              | `false`     |
+| `zoomAndScrollToSelected` | `zoom-and-scroll-to-selected` | boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table | `boolean`              | `false`     |
 
 
 ## Dependencies
@@ -79,6 +81,8 @@ graph TD;
   calcite-handle --> calcite-icon
   map-tools --> calcite-action
   map-tools --> calcite-action-bar
+  map-tools --> basemap-gallery
+  map-tools --> map-search
   map-tools --> calcite-action-group
   map-tools --> calcite-icon
   map-tools --> calcite-tooltip

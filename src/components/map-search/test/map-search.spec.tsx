@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-:host {
-  display: block;
-  --calcite-label-margin-bottom: 0;
-  --calcite-block-padding: 0;
-}
+import { newSpecPage } from '@stencil/core/testing';
+import { MapSearch } from '../map-search';
 
-.map-height {
-  height: calc(100% - 58px);
-}
-
-/* Not sure how else to do this
-  tried navigation gamepad settings but enabled: false still shows this */
-
-.esri-zoom {
-  display: none !important;
-}
+xdescribe('map-search', () => {
+  it('renders', async () => {
+    const page = await newSpecPage({
+      components: [MapSearch],
+      html: `<map-search></map-search>`,
+    });
+    expect(page.root).toEqualHtml(`
+      <map-search>
+        <mock:shadow-root>
+          <slot></slot>
+        </mock:shadow-root>
+      </map-search>
+    `);
+  });
+});

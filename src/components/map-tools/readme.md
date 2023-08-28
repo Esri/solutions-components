@@ -7,10 +7,11 @@
 
 ## Properties
 
-| Property  | Attribute | Description                                                                                            | Type                         | Default      |
-| --------- | --------- | ------------------------------------------------------------------------------------------------------ | ---------------------------- | ------------ |
-| `layout`  | `layout`  | "horizontal" \| "vertical": used to control the orientation of the tools                               | `"horizontal" \| "vertical"` | `"vertical"` |
-| `mapView` | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                    | `undefined`  |
+| Property              | Attribute | Description                                                                                            | Type                         | Default      |
+| --------------------- | --------- | ------------------------------------------------------------------------------------------------------ | ---------------------------- | ------------ |
+| `layout`              | `layout`  | "horizontal" \| "vertical": used to control the orientation of the tools                               | `"horizontal" \| "vertical"` | `"vertical"` |
+| `mapView`             | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                    | `undefined`  |
+| `searchConfiguration` | --        | ISearchConfiguration: Configuration details for the Search widget                                      | `ISearchConfiguration`       | `undefined`  |
 
 
 ## Events
@@ -30,6 +31,8 @@
 
 - calcite-action
 - calcite-action-bar
+- [basemap-gallery](../basemap-gallery)
+- [map-search](../map-search)
 - calcite-action-group
 - calcite-icon
 - calcite-tooltip
@@ -39,6 +42,8 @@
 graph TD;
   map-tools --> calcite-action
   map-tools --> calcite-action-bar
+  map-tools --> basemap-gallery
+  map-tools --> map-search
   map-tools --> calcite-action-group
   map-tools --> calcite-icon
   map-tools --> calcite-tooltip

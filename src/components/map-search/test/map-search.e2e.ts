@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-:host {
-  display: block;
-  --calcite-label-margin-bottom: 0;
-  --calcite-block-padding: 0;
-}
+import { newE2EPage } from '@stencil/core/testing';
 
-.map-height {
-  height: calc(100% - 58px);
-}
+xdescribe('map-search', () => {
+  it('renders', async () => {
+    const page = await newE2EPage();
+    await page.setContent('<map-search></map-search>');
 
-/* Not sure how else to do this
-  tried navigation gamepad settings but enabled: false still shows this */
-
-.esri-zoom {
-  display: none !important;
-}
+    const element = await page.find('map-search');
+    expect(element).toHaveClass('hydrated');
+  });
+});
