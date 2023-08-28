@@ -46,12 +46,7 @@ export class CrowdsourceManager {
   /**
    * boolean: when true the table will be sorted by objectid in descending order by default
    */
-  @Prop() showNewestFirst = false;
-
-  /**
-   * boolean: when true no header is displayed for the app
-   */
-  @Prop() hideHeader = true;
+  @Prop() showNewestFirst = true;
 
   /**
    * boolean: when true no map is displayed for the app
@@ -169,9 +164,7 @@ export class CrowdsourceManager {
         <calcite-shell class="position-relative">
           <calcite-panel
             class="width-full height-full"
-            heading={this.hideHeader ? undefined : this._translations.header}
           >
-            {this.hideHeader ? undefined : (<layout-manager slot="header-actions-end"/>)}
             {this._getBody(this._layoutMode, this._panelOpen, this.hideMap)}
           </calcite-panel>
         </calcite-shell>
