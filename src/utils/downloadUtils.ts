@@ -271,12 +271,11 @@ export function _convertPopupTextToLabelSpec(
  * @param expressionInfo Structure containing expression and info about it
  * @return Promise resolving to an "executor" label spec
  */
-/*
 export async function _convertPopupArcadeToLabelSpec(
   expressionInfo: __esri.ElementExpressionInfo
 ): Promise<ILabelFormat> {
   // Generate an Arcade executor
-  const arcade = await import("@arcgis/core/arcade.js");
+  const [arcade] = await loadModules(["esri/arcade"]);
   const labelingProfile: __esri.Profile = {
     variables: [
       {
@@ -304,7 +303,6 @@ export async function _convertPopupArcadeToLabelSpec(
     format: executor
   } as ILabelFormat);
 }
-*/
 
 /**
  * Creates a title from a list of selection set names.
@@ -467,8 +465,8 @@ export async function _getLabelFormat(
       labelFormat = _convertPopupTextToLabelSpec(layer.popupTemplate.content[0].text);
 
     // Example expression: 'var feat = $feature\nvar label = `\n\t${feat["name"]} ${feat["age"]} years <br>\n\tstarted: ${feat["start"]}\n`\n\nreturn { \n  type : \'text\', \n  text : label\n}',
-    //} else if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "expression") {
-    //  labelFormat = await _convertPopupArcadeToLabelSpec(layer.popupTemplate.content[0].expressionInfo);
+    } else if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "expression") {
+      labelFormat = await _convertPopupArcadeToLabelSpec(layer.popupTemplate.content[0].expressionInfo);
     }
   }
 
@@ -593,9 +591,8 @@ export async function _prepareLabels(
       attributeFormats, labelFormat.format as string, includeHeaderNames)
     :
     // Export attributes in expression
-    await _prepareLabelsUsingExecutor();
-    //await _prepareLabelsUsingExecutor(featureSet, attributeTypes, attributeDomains,
-    //  attributeFormats, labelFormat.format as __esri.ArcadeExecutor, includeHeaderNames);
+    await _prepareLabelsUsingExecutor(featureSet, attributeTypes, attributeDomains,
+      attributeFormats, labelFormat.format as __esri.ArcadeExecutor, includeHeaderNames);
 
   return Promise.resolve(labels);
 }
@@ -703,15 +700,14 @@ export async function _prepareLabelsFromPattern(
 }
 
 export async function _prepareLabelsUsingExecutor(
-  /*
   featureSet: __esri.Graphic[],
   attributeTypes: IAttributeTypes,
   attributeDomains: IAttributeDomains,
   attributeFormats: IAttributeFormats,
   labelFormat: __esri.ArcadeExecutor,
   includeHeaderNames = false
-  */
 ): Promise<string[][]> {
+  const [arcade] = await loadModules(["esri/arcade"]);
   //const arcade = await import("@arcgis/core/arcade.js");
   const labels: string[][] = undefined;//???
 

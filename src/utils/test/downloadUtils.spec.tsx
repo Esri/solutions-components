@@ -15,6 +15,7 @@
  */
 
 import * as downloadUtils from "../downloadUtils";
+import * as esriLoader from 'esri-loader';
 
 describe("downloadUtils", () => {
 
@@ -133,69 +134,28 @@ describe("downloadUtils", () => {
 
   });
 
-  /*
   describe("_convertPopupArcadeToLabelSpec", () => {
 
-    //jest.spyOn(utils, "default").mockImplementation(() => { return {Promise}});  // 1
-    //jest.spyOn(utils, "default").mockImplementation(() => Promise);  // 2
-    //jest.mock("../../../node_modules/esri-loader/dist/esm/utils/index.js", () => {{Promise}});
-    //jest.mock("../../../node_modules/esri-loader/dist/esm/utils/index.js", () => Promise);
-    //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => {{Promise}});
-    //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => {{Promise: Promise}});
-    //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => Promise);
-
     it("handles <br> variants", async () => {
-      //console.log("global.Promise", global.Promise);
-      //console.log("window.Promise 1", window.Promise);
-      //utils.Promise = window.Promise = global.Promise;
-      //console.log("window.Promise 2", window.Promise);
-      //console.log("utils 1", utils, utils.Promise);
-      //jest.resetModules();
-      //console.log("window.Promise 3", window.Promise);
-      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => {{Promise}});
-      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils/index.js", () => {{Promise}});
-      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => Promise);
-      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils/index.js", () => Promise);
-      //jest.spyOn(utils, "Promise").mockImplementation(Promise[Symbol.species]);  // 2
-      //jest.spyOn(utils, "Promise").mockImplementation(
-      //  (executor: (resolve: (value: unknown) => void, reject: (reason?: any) => void) => void) => new Promise<unknown>(executor)
-      //);
-      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils/index.js",
-      //  ((executor: (resolve: (value: unknown) => void, reject: (reason?: any) => void) => void) => new Promise<unknown>(executor))
-      //);
-      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => Promise<unknown>);
-      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", (executor) => new PromiseConstructor<T>(executor));
-      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => Promise);
-      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils/index.js", () => Promise);
-      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils/index.js", () => { return (executor) => new Promise<unknown>(executor) });
-      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils/index.js", () => { return { Promise: (executor) => new Promise<unknown>(executor) }});
-      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => { return { Promise: (executor) => new Promise<unknown>(executor) }});
-      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => { return { Promise: Promise<unknown> }});
-      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => { return { Promise: Promise }});
-      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils/index.js", () => { return { Promise: Promise }});
-      //console.log("utils 2", utils, utils.Promise);
-      //console.log("typeof window", typeof window);
-      //console.log("window['Promise']", window['Promise']);
-
-      //jest.mock("../../../node_modules/esri-loader/dist/esm/utils", () => { return {
-      //  Promise: jest.fn().mockImplementation(() => { return window['Promise']; })
-      //} });
+      const Arcade = {
+        createArcadeExecutor: (): Promise<__esri.ArcadeExecutor> => {
+          const executor: __esri.ArcadeExecutor = {} as __esri.ArcadeExecutor;
+          return Promise.resolve(executor);
+        }
+      };
+      const loadModulesSpy = jest.spyOn(esriLoader, 'loadModules').mockResolvedValue([Arcade]);
 
       const expressionInfo: __esri.ElementExpressionInfo = {
         expression: 'var feat = $feature\nvar label = `\n\t${feat["name"]} ${feat["age"]} years <br>\n\tstarted: ${feat["start"]}\n`\n\nreturn { \n  type : \'text\', \n  text : label\n}'
       } as any;
 
-      //console.log("window.Promise 4", window.Promise);//???
-      //console.log("utils.Promise", utils.Promise);//???
       const result: downloadUtils.ILabelFormat = await downloadUtils._convertPopupArcadeToLabelSpec(expressionInfo);
       expect(result.type).toEqual("executor");
-      expect(typeof result.format).toEqual("ArcadeExecutor");
 
-      //jest.clearAllMocks();
+      loadModulesSpy.mockRestore();
     });
 
   });
-  */
 
   describe("_createFilename", () => {
 
@@ -718,8 +678,15 @@ describe("downloadUtils", () => {
       expect(result.format).toEqual('{name} {age} years|started: {start}');
     });
 
-    /*
     it('should prepare labels from popup Arcade', async () => {
+      const Arcade = {
+        createArcadeExecutor: (): Promise<__esri.ArcadeExecutor> => {
+          const executor: __esri.ArcadeExecutor = {} as __esri.ArcadeExecutor;
+          return Promise.resolve(executor);
+        }
+      };
+      const loadModulesSpy = jest.spyOn(esriLoader, 'loadModules').mockResolvedValue([Arcade]);
+
       const popupTemplate = {
         title: '{name}',
         content: [{
@@ -758,10 +725,9 @@ describe("downloadUtils", () => {
       const result: downloadUtils.ILabelFormat =
         await downloadUtils._getLabelFormat(layer as any, formatUsingLayerPopup, attributeFormats);
       expect(result.type).toEqual('executor');
-      console.log(JSON.stringify(result, null, 2));//???
-      expect(result.format).toEqual('{name} {age} years|started: {start}');
+
+      loadModulesSpy.mockRestore();
     });
-    */
 
     it('should prepare labels without popup; formatUsingLayerPopup is true', async () => {
       const layer = {
