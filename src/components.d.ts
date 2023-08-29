@@ -301,6 +301,16 @@ export namespace Components {
          */
         "type": "select" | "combobox" | "dropdown";
     }
+    interface MapLegend {
+        /**
+          * esri/widgets/Legend: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Legend.html  Legend instance
+         */
+        "legendWidget": __esri.Legend;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+    }
     interface MapPicker {
         /**
           * IMapInfo[]: array of map infos (name and id)
@@ -898,6 +908,12 @@ declare global {
         prototype: HTMLMapLayerPickerElement;
         new (): HTMLMapLayerPickerElement;
     };
+    interface HTMLMapLegendElement extends Components.MapLegend, HTMLStencilElement {
+    }
+    var HTMLMapLegendElement: {
+        prototype: HTMLMapLegendElement;
+        new (): HTMLMapLegendElement;
+    };
     interface HTMLMapPickerElement extends Components.MapPicker, HTMLStencilElement {
     }
     var HTMLMapPickerElement: {
@@ -1034,6 +1050,7 @@ declare global {
         "map-card": HTMLMapCardElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
+        "map-legend": HTMLMapLegendElement;
         "map-picker": HTMLMapPickerElement;
         "map-search": HTMLMapSearchElement;
         "map-select-tools": HTMLMapSelectToolsElement;
@@ -1363,6 +1380,16 @@ declare namespace LocalJSX {
           * "select" | "combobox" | "dropdown": type of component to leverage
          */
         "type"?: "select" | "combobox" | "dropdown";
+    }
+    interface MapLegend {
+        /**
+          * esri/widgets/Legend: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Legend.html  Legend instance
+         */
+        "legendWidget"?: __esri.Legend;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
     }
     interface MapPicker {
         /**
@@ -1791,6 +1818,7 @@ declare namespace LocalJSX {
         "map-card": MapCard;
         "map-draw-tools": MapDrawTools;
         "map-layer-picker": MapLayerPicker;
+        "map-legend": MapLegend;
         "map-picker": MapPicker;
         "map-search": MapSearch;
         "map-select-tools": MapSelectTools;
@@ -1832,6 +1860,7 @@ declare module "@stencil/core" {
             "map-card": LocalJSX.MapCard & JSXBase.HTMLAttributes<HTMLMapCardElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
+            "map-legend": LocalJSX.MapLegend & JSXBase.HTMLAttributes<HTMLMapLegendElement>;
             "map-picker": LocalJSX.MapPicker & JSXBase.HTMLAttributes<HTMLMapPickerElement>;
             "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
