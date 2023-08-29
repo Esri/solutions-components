@@ -33,6 +33,7 @@
 - calcite-action-bar
 - [basemap-gallery](../basemap-gallery)
 - [map-search](../map-search)
+- [map-legend](../map-legend)
 - calcite-action-group
 - calcite-icon
 - calcite-tooltip
@@ -44,6 +45,7 @@ graph TD;
   map-tools --> calcite-action-bar
   map-tools --> basemap-gallery
   map-tools --> map-search
+  map-tools --> map-legend
   map-tools --> calcite-action-group
   map-tools --> calcite-icon
   map-tools --> calcite-tooltip
