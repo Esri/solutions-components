@@ -610,8 +610,6 @@ export async function _prepareLabels(
     :
     // Export attributes in expression
     await _prepareLabelsUsingExecutor(featureSet, labelFormat.format as __esri.ArcadeExecutor);
-    //await _prepareLabelsUsingExecutor(featureSet, attributeTypes, attributeDomains,
-    //  attributeFormats, labelFormat.format as __esri.ArcadeExecutor, includeHeaderNames);
 
   return Promise.resolve(labels);
 }
@@ -720,11 +718,7 @@ export async function _prepareLabelsFromPattern(
 
 export async function _prepareLabelsUsingExecutor(
   featureSet: __esri.Graphic[],
-  //ttributeTypes: IAttributeTypes,
-  //attributeDomains: IAttributeDomains,
-  //attributeFormats: IAttributeFormats,
   labelFormat: __esri.ArcadeExecutor
-  //includeHeaderNames = false
 ): Promise<string[][]> {
   // Convert feature attributes into an array of labels
   const execResults = await Promise.all(featureSet.map(
@@ -736,13 +730,6 @@ export async function _prepareLabelsUsingExecutor(
   const labels = execResults.map(
     result => _cleanupLabel(result.text).split(lineSeparatorChar)
   )
-
-  // Add header names
-  /*
-  if (includeHeaderNames) {
-    labels.unshift(attributeNames);
-  }
-  */
 
   return Promise.resolve(labels);
 }
