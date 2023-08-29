@@ -570,7 +570,8 @@ export class LayerTable {
           this.reactiveUtils.watch(
             () => this._table.activeSortOrders,
             (sortOrders) => {
-              this._sortActive = sortOrders.length > 0 && sortOrders[0]?.direction === "asc" || sortOrders[0]?.direction === "desc";
+              this._sortActive = (sortOrders.length > 0 && sortOrders[0]?.direction === "asc" || sortOrders[0]?.direction === "desc") ||
+                sortOrders[0]?.direction === null && sortOrders[0]?.fieldName === this._layer.objectIdField;
             });
         });
       });
