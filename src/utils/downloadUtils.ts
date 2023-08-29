@@ -189,6 +189,52 @@ export function removeDuplicateLabels(
 //#region Private functions
 
 /**
+ * Converts the text of a custom popup into a multiline label specification; conversion splits text into
+ * lines on <br>s, and removes HTML tags.
+ *
+ * @param labelText Layer's popup text, e.g.,
+ * "<div style='text-align: left;'>{NAME}<br />{STREET}<br />{CITY}, {STATE} {ZIP} <br /></div>"
+ * @return Cleaned-up popup text with lines separated by `lineSeparatorChar`
+ */
+export function _cleanupLabel(
+  labelText: string,
+): string {
+  // Replace <br> variants with the line separator character
+  labelText = labelText.replace(/<br\s*\/?>/gi, lineSeparatorChar);
+
+  // Replace <p> variants with the line separator character, except in the first position
+  labelText = labelText.replace(/<p[^>]*>/gi, lineSeparatorChar).trim().replace(/^\|/, "");
+
+  // Remove </p>
+  labelText = labelText.replace(/<\/p>/gi, "");
+
+  // Replace \n with the line separator character
+  labelText = labelText.replace(/\n/gi, "|");
+
+  // Remove remaining HTML tags, replace 0xA0 that popup uses for spaces, and replace some char representations
+  labelText = labelText
+    .replace(/<[\s.]*[^<>]*\/?>/gi, "")
+    .replace(/\xA0/gi, " ")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&nbsp;/gi, " ");
+
+  // Trim each line
+  labelText = labelText.replace(/\s*\|\s*/g, "|");
+
+  // Remove empty lines
+  while (labelText.match(/\|\|/)) {
+    labelText = labelText.replace(/\|\|/, "|");
+  }
+
+  // Remove leading and trailing line feeds
+  labelText = labelText.replace(/^\|/, "");
+  labelText = labelText.replace(/\|$/, "");
+
+  return labelText;
+};
+
+/**
  * Converts a set of fieldInfos into template lines.
  *
  * @param fieldInfos Layer's fieldInfos structure
@@ -220,48 +266,16 @@ export function _convertPopupFieldsToLabelSpec(
  * Converts the text of a custom popup into a multiline label specification; conversion splits text into
  * lines on <br>s, and removes HTML tags. It does not handle Arcade and related records.
  *
- * @param popupInfo Layer's popupInfo structure containing description, fieldInfos, and expressionInfos, e.g.,
+ * @param labelText Layer's labelText structure containing description, fieldInfos, and expressionInfos, e.g.,
  * "<div style='text-align: left;'>{NAME}<br />{STREET}<br />{CITY}, {STATE} {ZIP} <br /></div>"
  * @return "pattern" label spec with lines separated by `lineSeparatorChar`
  */
 export function _convertPopupTextToLabelSpec(
   popupInfo: string,
 ): ILabelFormat {
-  // Replace <br> variants with the line separator character
-  popupInfo = popupInfo.replace(/<br\s*\/?>/gi, lineSeparatorChar);
-
-  // Replace <p> variants with the line separator character, except in the first position
-  popupInfo = popupInfo.replace(/<p[^>]*>/gi, lineSeparatorChar).trim().replace(/^\|/, "");
-
-  // Remove </p>
-  popupInfo = popupInfo.replace(/<\/p>/gi, "");
-
-  // Replace \n with the line separator character
-  popupInfo = popupInfo.replace(/\n/gi, "|");
-
-  // Remove remaining HTML tags, replace 0xA0 that popup uses for spaces, and replace some char representations
-  let labelSpec = popupInfo
-    .replace(/<[\s.]*[^<>]*\/?>/gi, "")
-    .replace(/\xA0/gi, " ")
-    .replace(/&lt;/gi, "<")
-    .replace(/&gt;/gi, ">")
-    .replace(/&nbsp;/gi, " ");
-
-  // Trim each line
-  labelSpec = labelSpec.replace(/\s*\|\s*/g, "|");
-
-  // Remove empty lines
-  while (labelSpec.match(/\|\|/)) {
-    labelSpec = labelSpec.replace(/\|\|/, "|");
-  }
-
-  // Remove leading and trailing line feeds
-  labelSpec = labelSpec.replace(/^\|/, "");
-  labelSpec = labelSpec.replace(/\|$/, "");
-
   return {
     type: "pattern",
-    format: labelSpec.trim()
+    format: _cleanupLabel(popupInfo)
   } as ILabelFormat;
 };
 
@@ -510,6 +524,10 @@ export function _prepareAttributeValue(
   attributeFormat: __esri.FieldInfoFormat,
   intl: any
 ): string {
+  if (attributeValue === null || typeof attributeValue === "undefined") {
+    return "";
+  }
+
   if (attributeDomain && (attributeDomain as __esri.CodedValueDomain).type === "coded-value") {
     // "coded-value" domain field
     const value = (attributeDomain as __esri.CodedValueDomain).getName(attributeValue);
@@ -591,8 +609,9 @@ export async function _prepareLabels(
       attributeFormats, labelFormat.format as string, includeHeaderNames)
     :
     // Export attributes in expression
-    await _prepareLabelsUsingExecutor(featureSet, attributeTypes, attributeDomains,
-      attributeFormats, labelFormat.format as __esri.ArcadeExecutor, includeHeaderNames);
+    await _prepareLabelsUsingExecutor(featureSet, labelFormat.format as __esri.ArcadeExecutor);
+    //await _prepareLabelsUsingExecutor(featureSet, attributeTypes, attributeDomains,
+    //  attributeFormats, labelFormat.format as __esri.ArcadeExecutor, includeHeaderNames);
 
   return Promise.resolve(labels);
 }
@@ -685,7 +704,7 @@ export async function _prepareLabelsFromPattern(
       let label = labelPrep.split(lineSeparatorChar);
 
       // Trim lines
-      label = label.map(line => line.trim());
+      label = label.map(line => _cleanupLabel(line));
 
       return label;
     }
@@ -701,15 +720,29 @@ export async function _prepareLabelsFromPattern(
 
 export async function _prepareLabelsUsingExecutor(
   featureSet: __esri.Graphic[],
-  attributeTypes: IAttributeTypes,
-  attributeDomains: IAttributeDomains,
-  attributeFormats: IAttributeFormats,
-  labelFormat: __esri.ArcadeExecutor,
-  includeHeaderNames = false
+  //ttributeTypes: IAttributeTypes,
+  //attributeDomains: IAttributeDomains,
+  //attributeFormats: IAttributeFormats,
+  labelFormat: __esri.ArcadeExecutor
+  //includeHeaderNames = false
 ): Promise<string[][]> {
-  const [arcade] = await loadModules(["esri/arcade"]);
-  //const arcade = await import("@arcgis/core/arcade.js");
-  const labels: string[][] = undefined;//???
+  // Convert feature attributes into an array of labels
+  const execResults = await Promise.all(featureSet.map(
+    async feature => {
+      return labelFormat.executeAsync({"$feature": feature});
+    }
+  ));
+
+  const labels = execResults.map(
+    result => _cleanupLabel(result.text).split(lineSeparatorChar)
+  )
+
+  // Add header names
+  /*
+  if (includeHeaderNames) {
+    labels.unshift(attributeNames);
+  }
+  */
 
   return Promise.resolve(labels);
 }

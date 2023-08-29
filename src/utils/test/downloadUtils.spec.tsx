@@ -36,6 +36,71 @@ describe("downloadUtils", () => {
 
   });
 
+  describe("_cleanupLabel", () => {
+
+    it("handles <br> variants", () => {
+      const labelText = "<div style='text-align: left;'>{NAME}<br />{STREET}<br/>{CITY}, {STATE} {ZIP} <br></div>";
+      const expectedCleanedText = "{NAME}|{STREET}|{CITY}, {STATE} {ZIP}";
+
+      const result: string = downloadUtils._cleanupLabel(labelText);
+      expect(result).toEqual(expectedCleanedText);
+    });
+
+    it("handles <p>", () => {
+      const labelText = "<p>{NAME}</p><p>{STREET}</p><p>{CITY}, {STATE} {ZIP}</p>";
+      const expectedCleanedText = "{NAME}|{STREET}|{CITY}, {STATE} {ZIP}";
+
+      const result: string = downloadUtils._cleanupLabel(labelText);
+      expect(result).toEqual(expectedCleanedText);
+    });
+
+    it("handles popup's use of \xA0", () => {
+      const labelText =
+        "<div style='text-align: left;'>{NAME}<br />{STREET}<br />{CITY},\xA0{STATE}\xA0{ZIP}\xA0<br /></div>";
+      const expectedCleanedText = "{NAME}|{STREET}|{CITY}, {STATE} {ZIP}";
+
+      const result: string = downloadUtils._cleanupLabel(labelText);
+      expect(result).toEqual(expectedCleanedText);
+    });
+
+    it("removes newlines and blank lines, and trims each line", () => {
+      const labelText =
+        "  \n\n   {NAME}   \n  \n\n   {STREET}\n{CITY}, {STATE} {ZIP}\n\n  \n ";
+      const expectedCleanedText = "{NAME}|{STREET}|{CITY}, {STATE} {ZIP}";
+
+      const result: string = downloadUtils._cleanupLabel(labelText);
+      expect(result).toEqual(expectedCleanedText);
+    });
+
+    it("handles tabs", () => {
+      const labelText =
+        "  \t\t   {NAME}   \n  \n\n   {STREET}\n{CITY}, {STATE} {ZIP}";
+      const expectedCleanedText = "{NAME}|{STREET}|{CITY}, {STATE} {ZIP}";
+
+      const result: string = downloadUtils._cleanupLabel(labelText);
+      expect(result).toEqual(expectedCleanedText);
+    });
+
+    it("removes extra HTML", () => {
+      const labelText =
+        "\n<div style='text-align: left;'><span style='font-weight:bold'>{NAME}</span><br />{STREET}<br />{CITY},\xA0{STATE}\xA0{ZIP}\xA0<br /></div>\n";
+      const expectedCleanedText = "{NAME}|{STREET}|{CITY}, {STATE} {ZIP}";
+
+      const result: string = downloadUtils._cleanupLabel(labelText);
+      expect(result).toEqual(expectedCleanedText);
+    });
+
+    it("handles some special characters", () => {
+      const labelText =
+        "<div style='text-align: left;'>&lt;{NAME}&gt;<br />{STREET}<br/>{CITY},&nbsp;{STATE}&nbsp;{ZIP}<br></div>";
+      const expectedCleanedText = "<{NAME}>|{STREET}|{CITY}, {STATE} {ZIP}";
+
+      const result: string = downloadUtils._cleanupLabel(labelText);
+      expect(result).toEqual(expectedCleanedText);
+    });
+
+  });
+
   describe("_convertPopupFieldsToLabelSpec", () => {
 
     it("handles fieldname visibility", () => {
