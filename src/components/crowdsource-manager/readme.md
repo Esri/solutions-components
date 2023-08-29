@@ -10,11 +10,10 @@
 | Property                  | Attribute                     | Description                                                                                                        | Type                   | Default     |
 | ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------- | ----------- |
 | `classicGrid`             | `classic-grid`                | boolean: when true the grid will display like the previous manager app with the table across the top               | `boolean`              | `false`     |
-| `hideHeader`              | `hide-header`                 | boolean: when true no header is displayed for the app                                                              | `boolean`              | `true`      |
 | `hideMap`                 | `hide-map`                    | boolean: when true no map is displayed for the app                                                                 | `boolean`              | `false`     |
 | `mapInfos`                | --                            | IMapInfo[]: array of map infos (name and id)                                                                       | `IMapInfo[]`           | `[]`        |
 | `searchConfiguration`     | --                            | ISearchConfiguration: Configuration details for the Search widget                                                  | `ISearchConfiguration` | `undefined` |
-| `showNewestFirst`         | `show-newest-first`           | boolean: when true the table will be sorted by objectid in descending order by default                             | `boolean`              | `false`     |
+| `showNewestFirst`         | `show-newest-first`           | boolean: when true the table will be sorted by objectid in descending order by default                             | `boolean`              | `true`      |
 | `zoomAndScrollToSelected` | `zoom-and-scroll-to-selected` | boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table | `boolean`              | `false`     |
 
 
@@ -24,7 +23,6 @@
 
 - calcite-shell
 - calcite-panel
-- [layout-manager](../layout-manager)
 - [map-card](../map-card)
 - [card-manager](../card-manager)
 - calcite-action-bar
@@ -37,7 +35,6 @@
 graph TD;
   crowdsource-manager --> calcite-shell
   crowdsource-manager --> calcite-panel
-  crowdsource-manager --> layout-manager
   crowdsource-manager --> map-card
   crowdsource-manager --> card-manager
   crowdsource-manager --> calcite-action-bar
@@ -54,10 +51,6 @@ graph TD;
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
   calcite-scrim --> calcite-loader
-  layout-manager --> calcite-icon
-  layout-manager --> calcite-popover
-  layout-manager --> calcite-action
-  layout-manager --> calcite-tooltip
   map-card --> map-picker
   map-card --> map-tools
   map-picker --> calcite-button
@@ -91,7 +84,7 @@ graph TD;
   card-manager --> calcite-notice
   info-card --> calcite-shell
   info-card --> calcite-loader
-  info-card --> calcite-button
+  info-card --> calcite-action
   info-card --> calcite-tooltip
   info-card --> edit-card
   info-card --> calcite-alert

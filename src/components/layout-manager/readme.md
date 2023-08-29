@@ -14,10 +14,6 @@
 
 ## Dependencies
 
-### Used by
-
- - [crowdsource-manager](../crowdsource-manager)
-
 ### Depends on
 
 - calcite-icon
@@ -36,7 +32,6 @@ graph TD;
   calcite-popover --> calcite-icon
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
-  crowdsource-manager --> layout-manager
   style layout-manager fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

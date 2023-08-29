@@ -121,7 +121,8 @@ export class InfoCard {
   @Watch("graphics")
   async graphicsWatchHandler(): Promise<void> {
     if (this.graphics.length > 0) {
-      this._editEnabled = (this.graphics[0]?.layer as __esri.FeatureLayer).editingEnabled;
+      const featureLayer = (this.graphics[0]?.layer as __esri.FeatureLayer);
+      this._editEnabled = featureLayer.editingEnabled && featureLayer.capabilities.operations.supportsUpdate;
       this._features.open({
         features: this.graphics
       });
@@ -213,16 +214,14 @@ export class InfoCard {
             class={"esri-widget " + featureNodeClass}
             id="features-node"
           />
-          <div class={"padding-1-2 display-flex " + editButtonClass} slot="footer">
-            <calcite-button
-              appearance="outline"
-              iconStart="pencil"
+          <div class={`${editButtonClass} edit-btn edit-btn-position`}>
+            <calcite-action
+              appearance="transparent"
+              icon="pencil"
               id="solutions-edit"
               onClick={() => this._openEditRecord()}
-              width="full"
-            >
-              {this._translations.edit}
-            </calcite-button>
+              scale="m"
+            />
             <calcite-tooltip label="" placement="bottom" reference-element="solutions-edit">
               <span>{this._translations.edit}</span>
             </calcite-tooltip>
