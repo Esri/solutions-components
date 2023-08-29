@@ -658,7 +658,7 @@ export async function _prepareLabelsFromAll(
 }
 
 /**
- * Creates labels from all attributes in items.
+ * Creates labels from attributes in a layer popup.
  *
  * @param featureSet Features to convert to labels
  * @param attributeTypes Type for each attribute in a feature
@@ -716,6 +716,13 @@ export async function _prepareLabelsFromPattern(
   return Promise.resolve(labels);
 }
 
+/**
+ * Creates labels from attributes in an Arcade label.
+ *
+ * @param featureSet Features to convert to labels
+ * @param labelFormat Arcade executor for label
+ * @returns Promise resolving with list of labels, each of which is a list of label lines
+ */
 export async function _prepareLabelsUsingExecutor(
   featureSet: __esri.Graphic[],
   labelFormat: __esri.ArcadeExecutor
