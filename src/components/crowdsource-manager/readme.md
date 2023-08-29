@@ -76,6 +76,7 @@ graph TD;
   map-tools --> calcite-action-bar
   map-tools --> basemap-gallery
   map-tools --> map-search
+  map-tools --> map-legend
   map-tools --> calcite-action-group
   map-tools --> calcite-icon
   map-tools --> calcite-tooltip
