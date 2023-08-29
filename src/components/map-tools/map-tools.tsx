@@ -77,6 +77,11 @@ export class MapTools {
   @State() _showBasemapWidget = false;
 
   /**
+   * When true the legend widget will be displayed
+   */
+  @State() _showLegendWidget = false;
+
+  /**
    * When true the search widget will be displayed
    */
   @State() _showSearchWidget = false;
@@ -96,6 +101,11 @@ export class MapTools {
    * esri/geometry/Extent: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Extent.html
    */
   protected _homeExtent: __esri.Extent;
+
+  /**
+   * HTMLLegendElement: The legend element node
+   */
+  protected _legendElement: HTMLMapLegendElement;
 
   /**
    * HTMLMapSearchElement: The search element node
@@ -136,13 +146,29 @@ export class MapTools {
   }
 
   /**
+   * When the _showLegendWidget property is true display the search widget
+   */
+  @Watch("_showLegendWidget")
+  async _showLegendWidgetWatchHandler(
+    v: boolean
+  ): Promise<void> {
+    if (v) {
+      this.mapView.ui.add(this._legendElement.legendWidget, {
+        position: "top-right",
+        index: 1
+      });
+    } else {
+      this.mapView.ui.remove(this._legendElement.legendWidget);
+    }
+  }
+
+  /**
    * When the _showSearchWidget property is true display the search widget
    */
   @Watch("_showSearchWidget")
   async _showSearchWidgetWatchHandler(
     v: boolean
   ): Promise<void> {
-    console.log("_showSearchWidget changed")
     if (v) {
       this.mapView.ui.add(this._searchElement.searchWidget, {
         position: "top-right",
@@ -191,6 +217,7 @@ export class MapTools {
     const toolsClass = this._showTools ? "" : "display-none";
     const searchClass = this._showSearchWidget ? "" : "display-none";
     const basemapClass = this._showBasemapWidget ? "" : "display-none";
+    const legendClass = this._showLegendWidget ? "" : "display-none";
     return (
       <Host>
         <div>
@@ -206,7 +233,7 @@ export class MapTools {
             {this._getActionGroup("home", false, this._translations.home, () => void this._goHome())}
             {this._getActionGroup("plus", false, this._translations.zoomIn, () => void this._zoomIn())}
             {this._getActionGroup("minus", false, this._translations.zoomOut, () => void this._zoomOut())}
-            {this._getActionGroup("list", false, this._translations.list, () => this._showList())}
+            {this._getActionGroup("legend", false, this._translations.legend, () => this._showLegend())}
             {this._getActionGroup("magnifying-glass", false, this._translations.search, () => this._search())}
             {this._getActionGroup("expand", false, this._translations.expand, () => this._expand())}
             {this._getActionGroup("basemap", false, this._translations.basemap, () => this._toggleBasemapPicker())}
@@ -222,6 +249,11 @@ export class MapTools {
           mapView={this.mapView}
           ref={(el) => { this._searchElement = el }}
           searchConfiguration={this.searchConfiguration}
+        />
+        <map-legend
+          class={legendClass}
+          mapView={this.mapView}
+          ref={(el) => {this._legendElement = el}}
         />
       </Host>
     );
@@ -283,8 +315,9 @@ export class MapTools {
   }
 
   // need to discuss this with the team
-  protected _showList(): void {
-    alert("show list")
+  protected _showLegend(): void {
+    this._showLegendWidget = !this._showLegendWidget;
+    this._showTools = false;
   }
 
   // Need to discuss this with the team
@@ -367,6 +400,7 @@ export class MapTools {
     if (!this._showTools) {
       this._showBasemapWidget = false;
       this._showSearchWidget = false;
+      this._showLegendWidget = false;
     }
     this._showTools = !this._showTools;
   }
