@@ -708,14 +708,15 @@ export class LayerTable {
    */
   protected _switchSelected(): void {
     const currentIndexes = [...this._selectedIndexes];
-    this._selectedIndexes = this._allIds.reduce((prev, _cur, i) => {
-      if (currentIndexes.indexOf(i) < 0) {
-        prev.push(i);
+    this._table.highlightIds.removeAll();
+    const ids = this._allIds.reduce((prev, _cur) => {
+      if (currentIndexes.indexOf(_cur) < 0) {
+        prev.push(_cur);
       }
       return prev;
     }, []);
-    this._table.highlightIds.removeAll();
-    this._table.highlightIds.addMany(this._selectedIndexes);
+    this._table.highlightIds.addMany(ids);
+    this._selectedIndexes = ids;
   }
 
   /**
