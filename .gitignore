@@ -28,6 +28,7 @@ UserInterfaceState.xcuserstate
 # Tools, notes, outputs
 __*.*
 __*
+.vs/
 .vscode/
 coverage/
 
