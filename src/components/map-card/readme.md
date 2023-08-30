@@ -15,9 +15,9 @@
 
 ## Events
 
-| Event        | Description                      | Type                   |
-| ------------ | -------------------------------- | ---------------------- |
-| `mapChanged` | Emitted when a new map is loaded | `CustomEvent<MapView>` |
+| Event        | Description                      | Type                      |
+| ------------ | -------------------------------- | ------------------------- |
+| `mapChanged` | Emitted when a new map is loaded | `CustomEvent<IMapChange>` |
 
 
 ## Dependencies

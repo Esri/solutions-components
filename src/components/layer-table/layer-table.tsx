@@ -21,7 +21,7 @@ import { getLocaleComponentStrings } from "../../utils/locale";
 import { getLayer, getMapLayerIds, goToSelection } from "../../utils/mapViewUtils";
 import { queryFeaturesByID, queryAllIds } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
-import { IExportInfos, IMapClick } from "../../utils/interfaces";
+import { IExportInfos, ILayerInfo, IMapClick, IMapInfo } from "../../utils/interfaces";
 
 @Component({
   tag: "layer-table",
@@ -41,6 +41,11 @@ export class LayerTable {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * IMapInfo: key configuration details about the current map
+   */
+  @Prop() mapInfo: IMapInfo;
 
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -537,7 +542,8 @@ export class LayerTable {
    * @returns void
    */
   protected async _getTable(
-    node: HTMLDivElement
+    node: HTMLDivElement,
+    columnTemplates?: __esri.FieldColumnTemplate[] | __esri.GroupColumnTemplate[]
   ): Promise<void> {
     if (this._layer) {
       await this._layer.when(async () => {
@@ -550,6 +556,9 @@ export class LayerTable {
           visibleElements: {
             header: false,
             menu: false
+          },
+          tableTemplate: {
+            columnTemplates
           },
           container: node
         } as __esri.FeatureTableProperties);
@@ -588,7 +597,9 @@ export class LayerTable {
       this._clearSelection();
       this._allIds = [];
       this.featureSelectionChange.emit(this._selectedIndexes);
+      const columnTemplates = this._getColumnTemplates(this._layer.id);
       this._table.layer = this._layer;
+      this._table.tableTemplate.columnTemplates = columnTemplates;
       this._editEnabled = this._layer.editingEnabled;
       this._table.view = this.mapView;
       this._table.editingEnabled = this._editEnabled;
@@ -819,10 +830,13 @@ export class LayerTable {
     const id: string = evt.detail[0];
     if (id !== this._layer.id || this._allIds.length === 0) {
       this._fetchingData = true;
+      const columnTemplates = this._getColumnTemplates(id);
       this._layer = await getLayer(this.mapView, id);
       this._allIds = await queryAllIds(this._layer)
       if (!this._table) {
-        await this._getTable(this._tableNode);
+        await this._getTable(this._tableNode, columnTemplates);
+      } else if (columnTemplates) {
+        this._table.tableTemplate.columnTemplates = columnTemplates;
       }
       await this._table.when(() => {
         this._table.highlightIds.removeAll();
@@ -834,6 +848,26 @@ export class LayerTable {
     this._sortActive = false;
     await this._sortTable();
     this._fetchingData = false;
+  }
+
+  /**
+   * Get any columnt templates for the current map
+   *
+   * @param id item ID of the current map
+   *
+   * @returns a list of column templates if they exist
+   */
+  protected _getColumnTemplates(
+    id: string
+  ): __esri.FieldColumnTemplate[] | __esri.GroupColumnTemplate[] {
+    let layerInfo: ILayerInfo;
+    this.mapInfo.layerInfos?.some(li => {
+      if (li.id === id) {
+        layerInfo = li;
+        return true;
+      }
+    });
+    return layerInfo?.columnTemplates;
   }
 
   /**
