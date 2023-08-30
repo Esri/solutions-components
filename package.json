@@ -30,7 +30,6 @@
     "update-browserslist": "npx browserslist@latest --update-db"
   },
   "devDependencies": {
-    "@arcgis/core": "^4.27.6",
     "@babel/core": "^7.22.10",
     "@babel/preset-env": "^7.22.10",
     "@babel/preset-typescript": "^7.22.5",
