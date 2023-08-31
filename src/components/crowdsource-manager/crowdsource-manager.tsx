@@ -17,7 +17,7 @@
 import { Component, Element, Host, h, Listen, Prop, State, VNode } from "@stencil/core";
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { ELayoutMode, IMapInfo, ISearchConfiguration } from "../../utils/interfaces";
+import { ELayoutMode, IMapChange, IMapInfo, ISearchConfiguration } from "../../utils/interfaces";
 
 @Component({
   tag: "crowdsource-manager",
@@ -101,6 +101,11 @@ export class CrowdsourceManager {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * IMapInfo: The current map info stores configuration details
+   */
+  protected _mapInfo: IMapInfo;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -136,7 +141,9 @@ export class CrowdsourceManager {
   async mapChanged(
     evt: CustomEvent
   ): Promise<void> {
-    this._mapView = evt.detail;
+    const mapChange: IMapChange = evt.detail;
+    this._mapInfo = this._getMapInfo(mapChange.id);
+    this._mapView = mapChange.mapView;
     this._mapView.popupEnabled = false;
   }
 
@@ -431,6 +438,7 @@ export class CrowdsourceManager {
         </calcite-action-bar>
         <div class="width-full height-full position-relative">
           <layer-table
+            mapInfo={this._mapInfo}
             mapView={this?._mapView}
             showNewestFirst={this.showNewestFirst}
             zoomAndScrollToSelected={this.zoomAndScrollToSelected}
@@ -449,6 +457,25 @@ export class CrowdsourceManager {
    */
   protected _toggleLayout(): void {
     this._panelOpen = !this._panelOpen;
+  }
+
+  /**
+   * Get the current map info (configuration details) when maps change
+   *
+   * @returns IMapInfo for the provided id
+   * @protected
+   */
+  protected _getMapInfo(
+    id: string
+  ): IMapInfo {
+    let mapInfo: IMapInfo;
+    this.mapInfos.some(mi => {
+      if (mi.id === id) {
+        mapInfo = mi;
+        return true;
+      }
+    })
+    return mapInfo;
   }
 
   /**

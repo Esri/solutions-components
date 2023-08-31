@@ -448,6 +448,17 @@ export interface IMapInfo {
   name: string;
   searchConfiguration?: ISearchConfiguration;
   filters?: any[]; // TODO generate an interface for this once we know how it will be passed in
+  layerInfos?: ILayerInfo[];
+}
+
+export interface ILayerInfo {
+  id: string;
+  columnTemplates: __esri.FieldColumnTemplate[] | __esri.GroupColumnTemplate[];
+}
+
+export interface IMapChange {
+  id: string;
+  mapView: __esri.MapView;
 }
 
 export interface IExportInfos {
