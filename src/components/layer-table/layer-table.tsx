@@ -330,6 +330,9 @@ export class LayerTable {
                 ref={this.onTableNodeCreate}
               />
             </calcite-panel>
+            <div class="bottom-left background text-color">
+              {`${this._allIds.length} ${this._translations.records}, ${this._selectedIndexes.length} ${this._translations.selected}`}
+            </div>
           </div>
           <calcite-alert
             icon={this._alertIcon}
