@@ -1,9 +1,6 @@
 {
-  "home": "Home",
   "legend": "Legend",
   "search": "Search",
-  "zoomIn": "Zoom In",
-  "zoomOut": "Zoom Out",
   "expand": "Expand",
   "basemap": "Basemap"
 }

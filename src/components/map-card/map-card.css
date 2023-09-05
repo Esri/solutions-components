@@ -23,10 +23,3 @@
 .map-height {
   height: calc(100% - 58px);
 }
-
-/* Not sure how else to do this
-  tried navigation gamepad settings but enabled: false still shows this */
-
-.esri-zoom {
-  display: none !important;
-}
