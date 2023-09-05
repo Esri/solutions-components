@@ -5,9 +5,9 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EDrawMode, EExpandType, ELayoutMode, IExportInfos, IInventoryItem, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
+import { DistanceUnit, EDrawMode, EExpandType, ELayoutMode, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
-export { DistanceUnit, EDrawMode, EExpandType, ELayoutMode, IExportInfos, IInventoryItem, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
+export { DistanceUnit, EDrawMode, EExpandType, ELayoutMode, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
 export { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BasemapGallery {
@@ -184,6 +184,10 @@ export namespace Components {
           * @returns Promise that resolves when the operation is complete
          */
         "getSelectedGraphics": () => Promise<__esri.Graphic[]>;
+        /**
+          * IMapInfo: key configuration details about the current map
+         */
+        "mapInfo": IMapInfo;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -1243,6 +1247,10 @@ declare namespace LocalJSX {
     }
     interface LayerTable {
         /**
+          * IMapInfo: key configuration details about the current map
+         */
+        "mapInfo"?: IMapInfo;
+        /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
@@ -1279,7 +1287,7 @@ declare namespace LocalJSX {
         /**
           * Emitted when a new map is loaded
          */
-        "onMapChanged"?: (event: MapCardCustomEvent<__esri.MapView>) => void;
+        "onMapChanged"?: (event: MapCardCustomEvent<IMapChange>) => void;
     }
     interface MapDrawTools {
         /**

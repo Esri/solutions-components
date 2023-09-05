@@ -16,7 +16,7 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import { IMapInfo, ISearchConfiguration } from "../../utils/interfaces";
+import { IMapChange, IMapInfo, ISearchConfiguration } from "../../utils/interfaces";
 
 // TODO navigation and accessability isn't right for the map list
 //   tab does not go into the list when it's open
@@ -123,7 +123,7 @@ export class MapCard {
   /**
    * Emitted when a new map is loaded
    */
-  @Event() mapChanged: EventEmitter<__esri.MapView>;
+  @Event() mapChanged: EventEmitter<IMapChange>;
 
   /**
    * Listen for changes to map info and load the appropriate map
@@ -219,7 +219,10 @@ export class MapCard {
       await this.mapView.when(() => {
         this._loadedId = id;
         this._searchConfiguration = this._webMapInfo.searchConfiguration;
-        this.mapChanged.emit(this.mapView);
+        this.mapChanged.emit({
+          id: id,
+          mapView: this.mapView
+        });
         this.mapView.ui.add(this._mapTools, { position: "top-right", index: 0});
       });
     }
