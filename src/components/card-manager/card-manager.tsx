@@ -145,7 +145,7 @@ export class CardManager {
     return (
       <Host>
         <div class="border-rounded overflow-auto height-full">
-          <calcite-shell class={"position-relative padding-1 " + featuresClass}>
+          <calcite-shell class={"position-relative " + featuresClass}>
             <div>
               <info-card
                 graphics={this._graphics}

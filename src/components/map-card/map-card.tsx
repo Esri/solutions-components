@@ -223,21 +223,20 @@ export class MapCard {
         map: webMap,
         resizeAlign: "top-left"
       });
-      await this.mapView.when(() => {
-        this._loadedId = id;
-        this._searchConfiguration = this._webMapInfo.searchConfiguration;
 
+      this._loadedId = id;
+      this._searchConfiguration = this._webMapInfo.searchConfiguration;
+
+      this.mapChanged.emit({
+        id: id,
+        mapView: this.mapView
+      });
+      await this.mapView.when(() => {
         const home = new this.Home({
           view: this.mapView
         });
-
         this.mapView.ui.add(home, { position: "top-left", index: 3});
         this.mapView.ui.add(this._mapTools, { position: "top-right", index: 0});
-
-        this.mapChanged.emit({
-          id: id,
-          mapView: this.mapView
-        });
       });
     }
   }

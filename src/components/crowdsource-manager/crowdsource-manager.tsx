@@ -75,6 +75,11 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
+   * When true the info panel with the popup details will take the full height and prevent the map from displaying
+   */
+  @State() _expandPopup = false;
+
+  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
@@ -142,6 +147,9 @@ export class CrowdsourceManager {
     evt: CustomEvent
   ): Promise<void> {
     const mapChange: IMapChange = evt.detail;
+    // close popup by default when the map changes otherwise other components that rely on the view don't work since it
+    // doesn't seem to fully load when it's not visible
+    this._expandPopup = false;
     this._mapInfo = this._getMapInfo(mapChange.id);
     this._mapView = mapChange.mapView;
     this._mapView.popupEnabled = false;
@@ -336,6 +344,7 @@ export class CrowdsourceManager {
     ) : (
       <div class={`${mapSizeClass} overflow-hidden`}>
         {this._getMapNode(layoutMode, hideMap)}
+        {this._getPopupExpandNode()}
         {this._getCardNode(layoutMode, hideMap)}
       </div>
     );
@@ -356,12 +365,52 @@ export class CrowdsourceManager {
   ): VNode {
     const mapDisplayClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "display-flex height-full width-1-2" :
       layoutMode === ELayoutMode.GRID && !hideMap ? "" : "display-none";
-    const mapContainerClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "width-full" : "adjusted-height-50";
+    const mapContainerClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "width-full" : this._expandPopup ? "height-50-px" : "adjusted-height-50";
     return (
       <div class={`${mapContainerClass} overflow-hidden ${mapDisplayClass}`} >
         <map-card class="width-full" mapInfos={this.mapInfos}/>
       </div>
     );
+  }
+
+  /**
+   * Get the expand node for the popup information
+   *
+   * @returns the expand node
+   * @protected
+   */
+  protected _getPopupExpandNode(): VNode {
+    const icon = this._expandPopup ? "chevrons-down" : "chevrons-up";
+    return (
+      <div class="height-49-px calcite-mode-dark">
+        <calcite-panel>
+          <div
+            class="display-flex align-items-center"
+            slot="header-content"
+          >
+            <calcite-icon class="padding-inline-end-75" icon="information" scale="s" />
+            <div>
+              {this._translations.information}
+            </div>
+          </div>
+          <calcite-action
+            class="height-49-px"
+            icon={icon}
+            onClick={() => this._togglePopup()}
+            slot="header-actions-end"
+          />
+        </calcite-panel>
+      </div>
+    );
+  }
+
+  /**
+   * Toggle the popup information
+   *
+   * @protected
+   */
+  protected _togglePopup(): void {
+    this._expandPopup = !this._expandPopup;
   }
 
   /**
@@ -378,9 +427,9 @@ export class CrowdsourceManager {
     hideMap: boolean
   ): VNode {
     const cardManagerHeight = this.classicGrid && layoutMode === ELayoutMode.GRID ? "" :
-      layoutMode === ELayoutMode.GRID && !hideMap ? "adjusted-height-50" : "adjusted-height-100";
+      layoutMode === ELayoutMode.GRID && !this._expandPopup && !hideMap ? "adjusted-height-50" : "adjusted-height-100";
     const cardManagerContainer = this.classicGrid && layoutMode === ELayoutMode.GRID ?
-      "width-full adjusted-height-100" : "width-50 height-full";
+      "width-full adjusted-height-100" : this._expandPopup ? "width-50 adjusted-height-100-50" : "width-50 height-full";
     return (
       <div class={`padding-1-2 ${cardManagerContainer}`}>
         <card-manager

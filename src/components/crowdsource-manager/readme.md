@@ -24,9 +24,10 @@
 - calcite-shell
 - calcite-panel
 - [map-card](../map-card)
+- calcite-icon
+- calcite-action
 - [card-manager](../card-manager)
 - calcite-action-bar
-- calcite-action
 - calcite-tooltip
 - [layer-table](../layer-table)
 
@@ -36,9 +37,10 @@ graph TD;
   crowdsource-manager --> calcite-shell
   crowdsource-manager --> calcite-panel
   crowdsource-manager --> map-card
+  crowdsource-manager --> calcite-icon
+  crowdsource-manager --> calcite-action
   crowdsource-manager --> card-manager
   crowdsource-manager --> calcite-action-bar
-  crowdsource-manager --> calcite-action
   crowdsource-manager --> calcite-tooltip
   crowdsource-manager --> layer-table
   calcite-panel --> calcite-action
