@@ -87,7 +87,7 @@ graph TD;
   card-manager --> calcite-notice
   info-card --> calcite-shell
   info-card --> calcite-loader
-  info-card --> calcite-action
+  info-card --> calcite-button
   info-card --> calcite-tooltip
   info-card --> edit-card
   info-card --> calcite-alert
