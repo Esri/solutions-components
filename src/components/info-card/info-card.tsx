@@ -403,9 +403,11 @@ export class InfoCard {
    * @returns the index of total string
    */
   protected _getCount(): string {
-    const index = this._features?.viewModel.selectedFeatureIndex + 1;
-    const total = this._features?.features?.length;
-    return `${index} ${this._translations.of} ${total}`;
+    const index = (this._features?.viewModel.selectedFeatureIndex + 1).toString();
+    const total = this._features?.features?.length.toString();
+    return this._translations.indexOfTotal
+      .replace("{{index}}", index)
+      .replace("{{total}}", total);
   }
 
   /**

@@ -5,5 +5,5 @@
   "editDisabled": "Editing Disabled",
   "next": "Next",
   "back": "Back",
-  "of": "of"
+  "indexOfTotal": "{{index}} of {{total}}"
 }
