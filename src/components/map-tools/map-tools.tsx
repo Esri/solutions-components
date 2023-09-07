@@ -208,13 +208,14 @@ export class MapTools {
         <div>
           <calcite-action
             alignment="center"
-            class="border"
+            class="border square-40"
             compact={false}
             icon={toggleIcon}
             onClick={() => { this._toggleTools() }}
+            scale="s"
             text=""
           />
-          <calcite-action-bar class={`border margin-top-1-2 ${toolsClass}`} expand-disabled layout={this.layout}>
+          <calcite-action-bar class={`width-40 border margin-top-1-2 ${toolsClass}`} expand-disabled layout={this.layout}>
             {this._getActionGroup("legend", false, this._translations.legend, () => this._showLegend())}
             {this._getActionGroup("magnifying-glass", false, this._translations.search, () => this._search())}
             {this._getActionGroup("expand", false, this._translations.expand, () => this._expand())}
@@ -266,14 +267,16 @@ export class MapTools {
     func: any
   ): VNode {
     return (
-      <calcite-action-group>
+      <calcite-action-group class="square-40-41">
         <calcite-action
           alignment="center"
+          class="square-40"
           compact={false}
           disabled={disabled}
           icon={icon}
           id={icon}
           onClick={func}
+          scale="s"
           text=""
         >
           <calcite-icon icon={"cheveron-up"} scale="s" slot="icon" />

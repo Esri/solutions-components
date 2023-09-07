@@ -29,3 +29,17 @@
 .margin-top-1-2 {
   margin-top: 0.5rem;
 }
+
+.square-40 {
+  width: 40px;
+  height: 40px;
+}
+
+.width-40 {
+  width: 40px;
+}
+
+.square-40-41 {
+  width: 40px;
+  height: 41px;
+}
