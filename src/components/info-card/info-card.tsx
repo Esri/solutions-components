@@ -71,6 +71,12 @@ export class InfoCard {
   @State() _alertOpen = false;
 
   /**
+   * string: Current index of total string
+   * This value is not displayed but will force a render if it changes
+   */
+  @State() _count = "";
+
+  /**
    * When true the add record modal will be displayed
    */
   @State() _editRecordOpen = false;
@@ -214,14 +220,46 @@ export class InfoCard {
             class={"esri-widget " + featureNodeClass}
             id="features-node"
           />
+          <div class={`${editButtonClass} display-flex padding-1-2 button-container`} slot="footer">
+            <div class="min-width-100">
+              <calcite-button
+                appearance="outline"
+                id="solutions-back"
+                onClick={() => this._back()}
+                width="full"
+              >
+                {this._translations.back}
+              </calcite-button>
+              <calcite-tooltip label="" placement="top" reference-element="solutions-back">
+                <span>{this._translations.back}</span>
+              </calcite-tooltip>
+            </div>
+            <div>
+              {this._getCount()}
+            </div>
+            <div class="min-width-100">
+              <calcite-button
+                appearance="outline"
+                id="solutions-next"
+                onClick={() => this._next()}
+                width="full"
+              >
+                {this._translations.next}
+              </calcite-button>
+              <calcite-tooltip label="" placement="top" reference-element="solutions-next">
+                <span>{this._translations.next}</span>
+              </calcite-tooltip>
+            </div>
+          </div>
           <div class={`${editButtonClass} edit-btn edit-btn-position`}>
-            <calcite-action
-              appearance="transparent"
-              icon="pencil"
+            <calcite-button
+              appearance="outline"
+              icon-start="pencil"
               id="solutions-edit"
               onClick={() => this._openEditRecord()}
-              scale="m"
-            />
+            >
+              {this._translations.edit}
+            </calcite-button>
             <calcite-tooltip label="" placement="bottom" reference-element="solutions-edit">
               <span>{this._translations.edit}</span>
             </calcite-tooltip>
@@ -337,6 +375,39 @@ export class InfoCard {
     } else {
       this._alertOpen = true;
     }
+  }
+
+  /**
+   * Go to the previous feature in the features widget
+   *
+   * @returns void
+   */
+  protected _back(): void {
+    this._features.previous();
+    this._count = this._getCount();
+  }
+
+  /**
+   * Go to the next feature in the features widget
+   *
+   * @returns void
+   */
+  protected _next(): void {
+    this._features.next();
+    this._count = this._getCount();
+  }
+
+  /**
+   * Get the current index of total string
+   *
+   * @returns the index of total string
+   */
+  protected _getCount(): string {
+    const index = (this._features?.viewModel.selectedFeatureIndex + 1).toString();
+    const total = this._features?.features?.length.toString();
+    return this._translations.indexOfTotal
+      .replace("{{index}}", index)
+      .replace("{{total}}", total);
   }
 
   /**

@@ -314,6 +314,8 @@ export class LayerTable {
     const tableNodeClass = this._fetchingData ? "display-none" : "";
     const loadingClass = this._fetchingData ? "" : "display-none";
     const alertActionClass = this._alertShowAction ? "" : "display-none";
+    const total = this._allIds.length.toString();
+    const selected = this._selectedIndexes.length.toString();
     return (
       <Host>
         <calcite-shell>
@@ -330,6 +332,13 @@ export class LayerTable {
                 ref={this.onTableNodeCreate}
               />
             </calcite-panel>
+            <div class="bottom-left background text-color">
+              {
+                this._translations.recordsSelected
+                  .replace("{{total}}", total)
+                  .replace("{{selected}}", selected)
+              }
+            </div>
           </div>
           <calcite-alert
             icon={this._alertIcon}

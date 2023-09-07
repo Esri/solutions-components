@@ -45,3 +45,23 @@
 .height-51 {
   height: 51px;
 }
+
+.bottom-left {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+html[dir="rtl"] .bottom-left {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.background {
+  background-color: var(--calcite-ui-background);
+}
+
+.text-color {
+  color: var(--calcite-ui-text-1);
+}

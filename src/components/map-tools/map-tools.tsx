@@ -98,11 +98,6 @@ export class MapTools {
   protected _basemapElement: HTMLBasemapGalleryElement;
 
   /**
-   * esri/geometry/Extent: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Extent.html
-   */
-  protected _homeExtent: __esri.Extent;
-
-  /**
    * HTMLLegendElement: The legend element node
    */
   protected _legendElement: HTMLMapLegendElement;
@@ -117,16 +112,6 @@ export class MapTools {
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Store the home extent when the map view changes
-   */
-  @Watch("mapView")
-  async mapViewWatchHandler(): Promise<void> {
-    await this.mapView.when(() => {
-      this._homeExtent = this.mapView.extent;
-    });
-  }
 
   /**
    * When the _showBasemapWidget property is true display the basemap gallery
@@ -223,16 +208,14 @@ export class MapTools {
         <div>
           <calcite-action
             alignment="center"
-            class="border"
+            class="border square-40"
             compact={false}
             icon={toggleIcon}
             onClick={() => { this._toggleTools() }}
+            scale="s"
             text=""
           />
-          <calcite-action-bar class={`border margin-top-1-2 ${toolsClass}`} expand-disabled layout={this.layout}>
-            {this._getActionGroup("home", false, this._translations.home, () => void this._goHome())}
-            {this._getActionGroup("plus", false, this._translations.zoomIn, () => void this._zoomIn())}
-            {this._getActionGroup("minus", false, this._translations.zoomOut, () => void this._zoomOut())}
+          <calcite-action-bar class={`width-40 border margin-top-1-2 ${toolsClass}`} expand-disabled layout={this.layout}>
             {this._getActionGroup("legend", false, this._translations.legend, () => this._showLegend())}
             {this._getActionGroup("magnifying-glass", false, this._translations.search, () => this._search())}
             {this._getActionGroup("expand", false, this._translations.expand, () => this._expand())}
@@ -284,34 +267,25 @@ export class MapTools {
     func: any
   ): VNode {
     return (
-      <calcite-action-group>
+      <calcite-action-group class="square-40-41">
         <calcite-action
           alignment="center"
+          class="square-40"
           compact={false}
           disabled={disabled}
           icon={icon}
           id={icon}
           onClick={func}
+          scale="s"
           text=""
         >
           <calcite-icon icon={"cheveron-up"} scale="s" slot="icon" />
         </calcite-action>
-        <calcite-tooltip label="" placement="bottom" reference-element={icon}>
+        <calcite-tooltip label="" placement="trailing" reference-element={icon}>
           <span>{tip}</span>
         </calcite-tooltip>
       </calcite-action-group>
     );
-  }
-
-  /**
-   * Go to the exent that was first used when loading the map
-   *
-   * @returns void
-   *
-   * @protected
-   */
-  protected async _goHome(): Promise<void> {
-    await this.mapView.goTo(this._homeExtent);
   }
 
   // need to discuss this with the team
@@ -324,46 +298,6 @@ export class MapTools {
   protected _search(): void {
     this._showSearchWidget = !this._showSearchWidget;
     this._showTools = false;
-  }
-
-  /**
-   * Fixed zoom in
-   *
-   * @returns void
-   *
-   * @protected
-   */
-  protected async _zoomIn(): Promise<void> {
-    await this._zoom(this.mapView.zoom + 1);
-  }
-
-  /**
-   * Fixed zoom out
-   *
-   * @returns void
-   *
-   * @protected
-   */
-  protected async _zoomOut(): Promise<void> {
-    await this._zoom(this.mapView.zoom - 1);
-  }
-
-  /**
-   * Zoom in/out at the maps current center point
-   *
-   * @param zoom Number to zoom level to go to
-   *
-   * @returns void
-   *
-   * @protected
-   */
-  protected async _zoom(
-    zoom: number
-  ): Promise<void> {
-    await this.mapView?.goTo({
-      target: this.mapView.center,
-      zoom
-    });
   }
 
   /**

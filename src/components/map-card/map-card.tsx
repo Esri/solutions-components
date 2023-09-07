@@ -78,6 +78,11 @@ export class MapCard {
   //--------------------------------------------------------------------------
 
   /**
+   * esri/widgets/Home: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Home.html
+   */
+  protected Home: typeof import("esri/widgets/Home");
+
+  /**
    * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   protected MapView: typeof import("esri/views/MapView");
@@ -179,12 +184,14 @@ export class MapCard {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [WebMap, MapView] = await loadModules([
+    const [WebMap, MapView, Home] = await loadModules([
       "esri/WebMap",
-      "esri/views/MapView"
+      "esri/views/MapView",
+      "esri/widgets/Home"
     ]);
     this.WebMap = WebMap;
     this.MapView = MapView;
+    this.Home = Home;
   }
 
   /**
@@ -216,13 +223,19 @@ export class MapCard {
         map: webMap,
         resizeAlign: "top-left"
       });
+
+      this._loadedId = id;
+      this._searchConfiguration = this._webMapInfo.searchConfiguration;
+
+      this.mapChanged.emit({
+        id: id,
+        mapView: this.mapView
+      });
       await this.mapView.when(() => {
-        this._loadedId = id;
-        this._searchConfiguration = this._webMapInfo.searchConfiguration;
-        this.mapChanged.emit({
-          id: id,
-          mapView: this.mapView
+        const home = new this.Home({
+          view: this.mapView
         });
+        this.mapView.ui.add(home, { position: "top-left", index: 3});
         this.mapView.ui.add(this._mapTools, { position: "top-right", index: 0});
       });
     }
