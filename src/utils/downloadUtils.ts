@@ -24,6 +24,10 @@ import { IExportInfo, IExportInfos } from "../utils/interfaces";
 
 export { ILabel } from "./pdfUtils";
 
+export interface IAttributeOrigNames {
+  [lowercaseName: string]: string;
+}
+
 export interface IAttributeDomains {
   [attributeName: string]: __esri.CodedValueDomain | __esri.RangeDomain | __esri.InheritedDomain | null;
 }
@@ -436,8 +440,8 @@ export function _getFieldNamesFromFieldExpressions(
  * all attributes are exported
  * @param attributeFormats Empty object to hold the formats for each attribute in a feature; the object is filled
  * with formats by this function
- * @returns A Promise resolving to the format of a single label, e.g., for ILabelFormat type "pattern":
- * "{NAME}|{STREET}|{CITY}, {STATE} {ZIP}"
+ * @returns A Promise resolving to the format of a single label with fields coerced to lowercase, e.g.,
+ * for ILabelFormat type "pattern": "{name}|{street}|{city}, {state} {zip}"
  */
 export async function _getLabelFormat(
   layer: __esri.FeatureLayer,
@@ -454,7 +458,7 @@ export async function _getLabelFormat(
       // Extract any format info that we have
       fieldInfo => {
         if (fieldInfo.format) {
-          attributeFormats[fieldInfo.fieldName] = fieldInfo.format;
+          attributeFormats[fieldInfo.fieldName.toLowerCase()] = fieldInfo.format;
         }
       }
     );
@@ -586,12 +590,15 @@ export async function _prepareLabels(
   const featureSet = await queryFeaturesByID(ids, layer, [], false);
 
   // Get field data types. Do we have any domain-based fields?
+  const attributeOrigNames: IAttributeOrigNames = {};
   const attributeTypes: IAttributeTypes = {};
   const attributeDomains: IAttributeDomains = {};
   layer.fields.forEach(
     field => {
-      attributeTypes[field.name] = field.type;
-      attributeDomains[field.name] = field.domain;
+      const lowercaseFieldname = field.name.toLowerCase();
+      attributeOrigNames[lowercaseFieldname] = field.name;
+      attributeDomains[lowercaseFieldname] = field.domain;
+      attributeTypes[lowercaseFieldname] = field.type;
     }
   );
   const attributeFormats: IAttributeFormats = {};
@@ -605,7 +612,7 @@ export async function _prepareLabels(
     await _prepareLabelsFromAll(featureSet, attributeTypes, attributeDomains, includeHeaderNames)
     : labelFormat.type == "pattern" ?
     // Export attributes in format
-    await _prepareLabelsFromPattern(featureSet, attributeTypes, attributeDomains,
+    await _prepareLabelsFromPattern(featureSet, attributeOrigNames, attributeTypes, attributeDomains,
       attributeFormats, labelFormat.format as string, includeHeaderNames)
     :
     // Export attributes in expression
@@ -636,8 +643,9 @@ export async function _prepareLabelsFromAll(
     feature => {
       return Object.keys(feature.attributes).map(
         (attributeName: string) => {
+          const lowercaseFieldname = attributeName.toLowerCase();
           return _prepareAttributeValue(feature.attributes[attributeName],
-            attributeTypes[attributeName], attributeDomains[attributeName],
+            attributeTypes[lowercaseFieldname], attributeDomains[lowercaseFieldname],
             null, intl);
         }
       );
@@ -661,6 +669,7 @@ export async function _prepareLabelsFromAll(
  * Creates labels from attributes in a layer popup.
  *
  * @param featureSet Features to convert to labels
+ * @param attributeOrigNames Mapping from lowercase field names to original field names
  * @param attributeTypes Type for each attribute in a feature
  * @param attributeDomains Domains for each attribute in a feature
  * @param attributeFormats Formats for each attribute in a feature
@@ -670,6 +679,7 @@ export async function _prepareLabelsFromAll(
  */
 export async function _prepareLabelsFromPattern(
   featureSet: __esri.Graphic[],
+  attributeOrigNames: IAttributeOrigNames,
   attributeTypes: IAttributeTypes,
   attributeDomains: IAttributeDomains,
   attributeFormats: IAttributeFormats,
@@ -690,9 +700,10 @@ export async function _prepareLabelsFromPattern(
       // Replace non-Arcade fields in this feature
       attributeNames.forEach(
         (attributeName: string, i: number) => {
-          const value = _prepareAttributeValue(feature.attributes[attributeName],
-            attributeTypes[attributeName], attributeDomains[attributeName],
-            attributeFormats[attributeName], intl);
+          const lowercaseFieldname = attributeName.toLowerCase();
+          const value = _prepareAttributeValue(feature.attributes[attributeOrigNames[lowercaseFieldname]],
+            attributeTypes[lowercaseFieldname], attributeDomains[lowercaseFieldname],
+            attributeFormats[lowercaseFieldname], intl);
           labelPrep = labelPrep.replace(attributeExpressionMatches[i], value);
 
         },
