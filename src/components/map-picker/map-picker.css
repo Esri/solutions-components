@@ -49,11 +49,15 @@
   overflow: hidden;
   animation: calcite-scrim-fade-in var(--calcite-internal-animation-timing-medium) ease-in-out;
   background-color: var(--calcite-scrim-background);
-  z-index: 1;
+  z-index: 1000;
   width: 100%;
   height: fit-content;
 }
 
 .display-none {
   display: none;
+}
+
+.action-bar-color {
+  background-color: var(--calcite-ui-border-3) !important;
 }

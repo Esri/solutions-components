@@ -174,7 +174,7 @@ export class MapPicker {
     return (
       <calcite-button
         alignment="icon-end-space-between"
-        appearance="solid"
+        appearance="transparent"
         class="width-full height-full"
         iconEnd={mapListIcon}
         kind="neutral"
@@ -196,7 +196,7 @@ export class MapPicker {
   protected _getToolbar(): VNode {
     return (
       <div class="display-flex">
-        <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
+        <calcite-action-bar class="action-bar-color border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
           {this._getMapPicker()}
         </calcite-action-bar>
       </div>
