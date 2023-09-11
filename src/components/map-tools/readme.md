@@ -29,35 +29,24 @@
 
 ### Depends on
 
-- calcite-action
-- calcite-action-bar
 - [basemap-gallery](../basemap-gallery)
 - [map-search](../map-search)
 - [map-legend](../map-legend)
-- calcite-action-group
+- calcite-action
 - calcite-icon
 - calcite-tooltip
 
 ### Graph
 ```mermaid
 graph TD;
-  map-tools --> calcite-action
-  map-tools --> calcite-action-bar
   map-tools --> basemap-gallery
   map-tools --> map-search
   map-tools --> map-legend
-  map-tools --> calcite-action-group
+  map-tools --> calcite-action
   map-tools --> calcite-icon
   map-tools --> calcite-tooltip
   calcite-action --> calcite-loader
   calcite-action --> calcite-icon
-  calcite-action-bar --> calcite-action-group
-  calcite-action-group --> calcite-action-menu
-  calcite-action-group --> calcite-action
-  calcite-action-menu --> calcite-action
-  calcite-action-menu --> calcite-popover
-  calcite-popover --> calcite-action
-  calcite-popover --> calcite-icon
   map-card --> map-tools
   style map-tools fill:#f9f,stroke:#333,stroke-width:4px
 ```

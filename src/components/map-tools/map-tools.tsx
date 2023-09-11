@@ -203,24 +203,19 @@ export class MapTools {
     const searchClass = this._showSearchWidget ? "" : "display-none";
     const basemapClass = this._showBasemapWidget ? "" : "display-none";
     const legendClass = this._showLegendWidget ? "" : "display-none";
+    const expandTip = this._showTools ? this._translations.collapse : this._translations.expand;
     return (
       <Host>
         <div>
-          <calcite-action
-            alignment="center"
-            class="border square-40"
-            compact={false}
-            icon={toggleIcon}
-            onClick={() => { this._toggleTools() }}
-            scale="s"
-            text=""
-          />
-          <calcite-action-bar class={`width-40 border margin-top-1-2 ${toolsClass}`} expand-disabled layout={this.layout}>
+          <div class="box-shadow">
+            {this._getActionGroup(toggleIcon, false, expandTip, () => this._toggleTools())}
+          </div>
+          <div class={`margin-top-1-2 box-shadow ${toolsClass}`}>
             {this._getActionGroup("legend", false, this._translations.legend, () => this._showLegend())}
             {this._getActionGroup("magnifying-glass", false, this._translations.search, () => this._search())}
             {this._getActionGroup("expand", false, this._translations.expand, () => this._expand())}
             {this._getActionGroup("basemap", false, this._translations.basemap, () => this._toggleBasemapPicker())}
-          </calcite-action-bar>
+          </div>
         </div>
         <basemap-gallery
           class={basemapClass}
@@ -267,7 +262,7 @@ export class MapTools {
     func: any
   ): VNode {
     return (
-      <calcite-action-group class="square-40-41">
+      <div class="border-bottom">
         <calcite-action
           alignment="center"
           class="square-40"
@@ -284,7 +279,7 @@ export class MapTools {
         <calcite-tooltip label="" placement="trailing" reference-element={icon}>
           <span>{tip}</span>
         </calcite-tooltip>
-      </calcite-action-group>
+      </div>
     );
   }
 

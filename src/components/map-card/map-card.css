@@ -23,3 +23,7 @@
 .map-height {
   height: calc(100% - 58px);
 }
+
+.box-shadow {
+  box-shadow: none !important;
+}

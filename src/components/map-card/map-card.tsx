@@ -162,6 +162,7 @@ export class MapCard {
         <map-picker mapInfos={this.mapInfos}/>
         <div class="map-height" ref={(el) => (this._mapDiv = el)}/>
         <map-tools
+          class={"box-shadow"}
           mapView={this.mapView}
           ref={(el) => this._mapTools = el}
           searchConfiguration={this._searchConfiguration}
@@ -228,18 +229,17 @@ export class MapCard {
       this._loadedId = id;
       this._searchConfiguration = this._webMapInfo.searchConfiguration;
 
+      this.mapChanged.emit({
+        id: id,
+        mapView: this.mapView
+      });
+
       await this.mapView.when(() => {
         const home = new this.Home({
           view: this.mapView
         });
         this.mapView.ui.add(home, { position: "top-left", index: 3});
         this.mapView.ui.add(this._mapTools, { position: "top-right", index: 0});
-      });
-
-      console.log("emit mapView")
-      this.mapChanged.emit({
-        id: id,
-        mapView: this.mapView
       });
     }
   }

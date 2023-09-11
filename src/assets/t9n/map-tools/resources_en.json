@@ -2,5 +2,6 @@
   "legend": "Legend",
   "search": "Search",
   "expand": "Expand",
-  "basemap": "Basemap"
+  "basemap": "Basemap",
+  "collapse": "Collapse"
 }

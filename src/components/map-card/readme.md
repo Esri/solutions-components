@@ -62,12 +62,10 @@ graph TD;
   calcite-list-item --> calcite-handle
   calcite-list-item --> calcite-action
   calcite-handle --> calcite-icon
-  map-tools --> calcite-action
-  map-tools --> calcite-action-bar
   map-tools --> basemap-gallery
   map-tools --> map-search
   map-tools --> map-legend
-  map-tools --> calcite-action-group
+  map-tools --> calcite-action
   map-tools --> calcite-icon
   map-tools --> calcite-tooltip
   crowdsource-manager --> map-card
