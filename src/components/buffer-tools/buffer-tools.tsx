@@ -283,14 +283,21 @@ export class BufferTools {
       }
 
       this._bufferTimeout = setTimeout(() => {
-        // needs to be wgs 84 or Web Mercator
         if (this.geometries?.length > 0 && this.unit && this.distance > 0) {
-          const buffer = this._geometryEngine.geodesicBuffer(
-            this.geometries,
-            this.distance,
-            this.unit,
-            this.unionResults
-          );
+          const geom = this.geometries[0];
+          const sr = geom.spatialReference;
+          const buffer = (sr.isWGS84 || sr.isWebMercator) ?
+            this._geometryEngine.geodesicBuffer(
+              this.geometries,
+              this.distance,
+              this.unit,
+              this.unionResults
+            ) : this._geometryEngine.buffer(
+              this.geometries,
+              this.distance,
+              this.unit,
+              this.unionResults
+            );
           this.bufferComplete.emit(buffer);
         }
       }, 400);
