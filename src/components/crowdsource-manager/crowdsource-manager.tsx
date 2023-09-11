@@ -174,6 +174,7 @@ export class CrowdsourceManager {
    * Renders the component.
    */
   render() {
+    console.log("CM render")
     return (
       <Host>
         <calcite-shell class="position-relative">

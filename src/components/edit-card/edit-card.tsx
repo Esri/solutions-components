@@ -293,6 +293,7 @@ export class EditCard {
       });
 
       if (this._editHandle && this._attachmentHandle && this._activeWorkflowHandle) {
+        console.log("remove handles")
         this._editHandle.remove();
         this._attachmentHandle.remove();
         this._activeWorkflowHandle.remove();
@@ -306,8 +307,12 @@ export class EditCard {
       );
 
       this._editHandle = this.reactiveUtils.when(
-        () => this._editor.viewModel.state === "ready",
         () => {
+          console.log("this._editor.viewModel.state: " + this._editor.viewModel.state.toString())
+          return this._editor.viewModel.state === "ready";
+        },
+        () => {
+          console.log("this._shouldClose: " + this._shouldClose.toString())
           if (this._shouldClose) {
             this.closeEdit.emit();
             this._shouldClose = false;

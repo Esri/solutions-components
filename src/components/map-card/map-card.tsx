@@ -206,6 +206,7 @@ export class MapCard {
   protected async _loadMap(
     webMapInfo: IMapInfo
   ): Promise<void> {
+    console.log("_loadMap")
     let id = webMapInfo?.id;
     // on the first render use the first child of the provided mapInfos
     this._webMapInfo = (id === "" || !id) && this.mapInfos.length > 0 ?
@@ -227,16 +228,18 @@ export class MapCard {
       this._loadedId = id;
       this._searchConfiguration = this._webMapInfo.searchConfiguration;
 
-      this.mapChanged.emit({
-        id: id,
-        mapView: this.mapView
-      });
       await this.mapView.when(() => {
         const home = new this.Home({
           view: this.mapView
         });
         this.mapView.ui.add(home, { position: "top-left", index: 3});
         this.mapView.ui.add(this._mapTools, { position: "top-right", index: 0});
+      });
+
+      console.log("emit mapView")
+      this.mapChanged.emit({
+        id: id,
+        mapView: this.mapView
       });
     }
   }
