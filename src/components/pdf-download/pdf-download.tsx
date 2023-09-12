@@ -174,7 +174,7 @@ export class PdfDownload {
     );
   }
 
-  componentDidRender(): void {
+  componentDidLoad(): void {
     // Render the options outside of Stencil's rendering so that it doesn't mangle RTL text with embedded LTR
     this._renderOptions();
   }
