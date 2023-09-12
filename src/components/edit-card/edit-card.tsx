@@ -306,9 +306,7 @@ export class EditCard {
       );
 
       this._editHandle = this.reactiveUtils.when(
-        () => {
-          return this._editor.viewModel.state === "ready";
-        },
+        () => this._editor.viewModel.state === "ready",
         () => {
           if (this._shouldClose) {
             this.closeEdit.emit();
