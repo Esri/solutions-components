@@ -207,7 +207,6 @@ export class MapCard {
   protected async _loadMap(
     webMapInfo: IMapInfo
   ): Promise<void> {
-    console.log("_loadMap")
     let id = webMapInfo?.id;
     // on the first render use the first child of the provided mapInfos
     this._webMapInfo = (id === "" || !id) && this.mapInfos.length > 0 ?

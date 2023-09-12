@@ -146,7 +146,6 @@ export class InfoCard {
    */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
-    console.log("mapViewWatchHandler")
     return await this._initFeaturesWidget();
   }
 
@@ -323,10 +322,7 @@ export class InfoCard {
    * @protected
    */
   protected async _initFeaturesWidget(): Promise<void> {
-    console.log("_initFeaturesWidget")
     return await this.mapView.when(() => {
-    console.log("_initFeaturesWidget mapView when")
-
       if (!this._features) {
         this._features = new this.Features({
           view: this.mapView,
