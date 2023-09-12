@@ -60,11 +60,6 @@ export enum ESelectionType {
   RECT="RECT"
 }
 
-export enum EExpandType {
-  EXPAND="EXPAND",
-  COLLAPSE="COLLAPSE"
-}
-
 export enum EWorkflowType {
   SEARCH="SEARCH",
   SELECT="SELECT",

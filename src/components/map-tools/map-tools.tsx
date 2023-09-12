@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
 import MapTools_T9n from "../../assets/t9n/map-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { EExpandType, ISearchConfiguration } from "../../utils/interfaces";
+import { ISearchConfiguration } from "../../utils/interfaces";
 
 @Component({
   tag: 'map-tools',
@@ -77,6 +77,11 @@ export class MapTools {
   @State() _showBasemapWidget = false;
 
   /**
+   * When true the map will be displayed in fullscreen mode
+   */
+  @State() _showFullscreen = false;
+
+  /**
    * When true the legend widget will be displayed
    */
   @State() _showLegendWidget = false;
@@ -96,6 +101,11 @@ export class MapTools {
    * HTMLMapSearchElement: The search element node
    */
   protected _basemapElement: HTMLBasemapGalleryElement;
+
+  /**
+   * HTMLMapFullscreenElement: The fullscreen element node
+   */
+  protected _fullscreenElement: HTMLMapFullscreenElement;
 
   /**
    * HTMLLegendElement: The legend element node
@@ -127,6 +137,21 @@ export class MapTools {
       });
     } else {
       this.mapView.ui.remove(this._basemapElement.basemapWidget);
+    }
+  }
+
+  /**
+   * When the _showBasemapWidget property is true display the basemap gallery
+   */
+  @Watch("_showFullscreen")
+  async _showFullscreenWatchHandler(
+    v: boolean
+  ): Promise<void> {
+    const fs = this._fullscreenElement.fullscreenWidget;
+    if (v) {
+      fs.viewModel.enter();
+    } else {
+      fs.viewModel.exit();
     }
   }
 
@@ -176,11 +201,6 @@ export class MapTools {
   //
   //--------------------------------------------------------------------------
 
-  /**
-   * Emitted when the expand button is clicked
-   */
-  @Event() expandMap: EventEmitter<EExpandType>;
-
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -203,24 +223,22 @@ export class MapTools {
     const searchClass = this._showSearchWidget ? "" : "display-none";
     const basemapClass = this._showBasemapWidget ? "" : "display-none";
     const legendClass = this._showLegendWidget ? "" : "display-none";
+    const fullscreenClass = this._showFullscreen ? "" : "display-none";
+    const fullscreenIcon = this._showFullscreen ? "full-screen-exit" : "full-screen";
+    const fullscreenTip = this._showFullscreen ? this._translations.exitFullscreen : this._translations.enterFullscreen;
+    const expandTip = this._showTools ? this._translations.collapse : this._translations.expand;
     return (
       <Host>
         <div>
-          <calcite-action
-            alignment="center"
-            class="border square-40"
-            compact={false}
-            icon={toggleIcon}
-            onClick={() => { this._toggleTools() }}
-            scale="s"
-            text=""
-          />
-          <calcite-action-bar class={`width-40 border margin-top-1-2 ${toolsClass}`} expand-disabled layout={this.layout}>
+          <div class="box-shadow">
+            {this._getActionGroup(toggleIcon, false, expandTip, () => this._toggleTools())}
+          </div>
+          <div class={`margin-top-1-2 box-shadow ${toolsClass}`}>
             {this._getActionGroup("legend", false, this._translations.legend, () => this._showLegend())}
             {this._getActionGroup("magnifying-glass", false, this._translations.search, () => this._search())}
-            {this._getActionGroup("expand", false, this._translations.expand, () => this._expand())}
+            {this._getActionGroup(fullscreenIcon, false, fullscreenTip, () => this._expand())}
             {this._getActionGroup("basemap", false, this._translations.basemap, () => this._toggleBasemapPicker())}
-          </calcite-action-bar>
+          </div>
         </div>
         <basemap-gallery
           class={basemapClass}
@@ -237,6 +255,11 @@ export class MapTools {
           class={legendClass}
           mapView={this.mapView}
           ref={(el) => {this._legendElement = el}}
+        />
+        <map-fullscreen
+          class={fullscreenClass}
+          mapView={this.mapView}
+          ref={(el) => {this._fullscreenElement = el}}
         />
       </Host>
     );
@@ -267,7 +290,7 @@ export class MapTools {
     func: any
   ): VNode {
     return (
-      <calcite-action-group class="square-40-41">
+      <div class="border-bottom">
         <calcite-action
           alignment="center"
           class="square-40"
@@ -284,7 +307,7 @@ export class MapTools {
         <calcite-tooltip label="" placement="trailing" reference-element={icon}>
           <span>{tip}</span>
         </calcite-tooltip>
-      </calcite-action-group>
+      </div>
     );
   }
 
@@ -313,14 +336,14 @@ export class MapTools {
   }
 
   /**
-   * Emit the expand map event
+   * Enter/Exit fullscreen mode
    *
    * @returns void
    *
    * @protected
    */
   protected _expand(): void {
-    this.expandMap.emit(EExpandType.EXPAND);
+    this._showFullscreen = !this._showFullscreen;
   }
 
   /**
