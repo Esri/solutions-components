@@ -749,13 +749,14 @@ export class LayerTable {
     const exportInfos: IExportInfos = {};
     const ids = this._table.highlightIds.toArray();
     exportInfos[this._layer.id] = {
-      selectionSetNames: [],
+      selectionSetNames: [this._layer.title],
       ids,
       layer: this._layer
     }
     void downloadUtils.downloadCSV(
       exportInfos,
       false, // formatUsingLayerPopup
+      false, // removeDuplicates
       true, // addColumnTitle
     );
   }
