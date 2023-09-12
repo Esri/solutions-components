@@ -3,5 +3,7 @@
   "search": "Search",
   "expand": "Expand",
   "basemap": "Basemap",
-  "collapse": "Collapse"
+  "collapse": "Collapse",
+  "enterFullscreen": "Enter fullscreen",
+  "exitFullscreen": "Exit fullscreen"
 }

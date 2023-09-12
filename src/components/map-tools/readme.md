@@ -14,13 +14,6 @@
 | `searchConfiguration` | --        | ISearchConfiguration: Configuration details for the Search widget                                      | `ISearchConfiguration`       | `undefined`  |
 
 
-## Events
-
-| Event       | Description                               | Type                                                      |
-| ----------- | ----------------------------------------- | --------------------------------------------------------- |
-| `expandMap` | Emitted when the expand button is clicked | `CustomEvent<EExpandType.COLLAPSE \| EExpandType.EXPAND>` |
-
-
 ## Dependencies
 
 ### Used by
@@ -32,6 +25,7 @@
 - [basemap-gallery](../basemap-gallery)
 - [map-search](../map-search)
 - [map-legend](../map-legend)
+- [map-fullscreen](../map-fullscreen)
 - calcite-action
 - calcite-icon
 - calcite-tooltip
@@ -42,6 +36,7 @@ graph TD;
   map-tools --> basemap-gallery
   map-tools --> map-search
   map-tools --> map-legend
+  map-tools --> map-fullscreen
   map-tools --> calcite-action
   map-tools --> calcite-icon
   map-tools --> calcite-tooltip

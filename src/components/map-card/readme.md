@@ -65,6 +65,7 @@ graph TD;
   map-tools --> basemap-gallery
   map-tools --> map-search
   map-tools --> map-legend
+  map-tools --> map-fullscreen
   map-tools --> calcite-action
   map-tools --> calcite-icon
   map-tools --> calcite-tooltip
