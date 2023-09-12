@@ -506,7 +506,7 @@ export class LayerTable {
               }
             </calcite-dropdown-item>
             <calcite-dropdown-item
-              iconStart="refresh"
+              iconStart="compare"
               onClick={() => this._switchSelected()}
             >
               {this._translations.switchSelected}
