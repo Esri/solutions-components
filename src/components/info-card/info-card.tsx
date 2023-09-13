@@ -221,7 +221,7 @@ export class InfoCard {
             class={"esri-widget " + featureNodeClass}
             id="features-node"
           />
-          <div class={`${editButtonClass} display-flex padding-1-2 button-container`} slot="footer">
+          <div class={`${editButtonClass} display-flex padding-1-2 button-container top-border`} slot="footer">
             <div class="min-width-100">
               <calcite-button
                 appearance="outline"

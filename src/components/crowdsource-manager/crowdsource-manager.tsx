@@ -453,7 +453,7 @@ export class CrowdsourceManager {
     const cardManagerContainer = this.classicGrid && layoutMode === ELayoutMode.GRID ?
       "width-full adjusted-height-100" : this._expandPopup ? "width-50 adjusted-height-100-50" : "width-50 height-full";
     return (
-      <div class={`padding-1-2 ${cardManagerContainer}`}>
+      <div class={`${cardManagerContainer}`}>
         <card-manager
           class={`${cardManagerHeight} width-full`}
           mapView={this?._mapView}

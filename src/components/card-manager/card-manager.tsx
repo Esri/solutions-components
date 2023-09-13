@@ -144,7 +144,7 @@ export class CardManager {
 
     return (
       <Host>
-        <div class="border-rounded overflow-auto height-full">
+        <div class="overflow-auto height-full">
           <calcite-shell class={"position-relative " + featuresClass}>
             <div>
               <info-card
