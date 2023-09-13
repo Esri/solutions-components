@@ -126,6 +126,9 @@ export class InfoCard {
    */
   @Watch("graphics")
   async graphicsWatchHandler(): Promise<void> {
+    if (!this._features) {
+      await this._initFeaturesWidget();
+    }
     if (this.graphics.length > 0) {
       const featureLayer = (this.graphics[0]?.layer as __esri.FeatureLayer);
       this._editEnabled = featureLayer.editingEnabled && featureLayer.capabilities.operations.supportsUpdate;
@@ -143,9 +146,7 @@ export class InfoCard {
    */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
-    await this.mapView.when(async () => {
-      await this._initFeaturesWidget();
-    });
+    return await this._initFeaturesWidget();
   }
 
   //--------------------------------------------------------------------------
@@ -321,29 +322,30 @@ export class InfoCard {
    * @protected
    */
   protected async _initFeaturesWidget(): Promise<void> {
-    if (!this._features) {
-      this._features = new this.Features({
-        view: this.mapView,
-        container: "features-node",
-        visibleElements: {
-          actionBar: false,
-          closeButton: false,
-          heading: true
+    return await this.mapView.when(() => {
+      if (!this._features) {
+        this._features = new this.Features({
+          view: this.mapView,
+          container: "features-node",
+          visibleElements: {
+            actionBar: false,
+            closeButton: false,
+            heading: true
+          }
+        });
+        if (this.zoomAndScrollToSelected) {
+          this.reactiveUtils.watch(
+            () => this._features.selectedFeatureIndex,
+            (i) => {
+              if (i > -1) {
+                this.selectionChanged.emit(this._features.selectedFeature);
+              }
+            });
         }
-      });
-
-      if (this.zoomAndScrollToSelected) {
-        this.reactiveUtils.watch(
-          () => this._features.selectedFeatureIndex,
-          (i) => {
-            if (i > -1) {
-              this.selectionChanged.emit(this._features.selectedFeature);
-            }
-          });
+      } else {
+        this._features.view = this.mapView;
       }
-    } else {
-      this._features.view = this.mapView;
-    }
+    });
   }
 
   /**

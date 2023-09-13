@@ -107,9 +107,20 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
+   * IMapChange: The current map change details
+   */
+  protected _mapChange: IMapChange;
+
+  /**
    * IMapInfo: The current map info stores configuration details
    */
   protected _mapInfo: IMapInfo;
+
+  /**
+   * boolean: When true the map view will be set after render due to popup obstructing the view
+   * MapView.when is not fired when mapView is not currently visible
+   */
+  protected _shouldSetMapView = false;
 
   //--------------------------------------------------------------------------
   //
@@ -146,13 +157,13 @@ export class CrowdsourceManager {
   async mapChanged(
     evt: CustomEvent
   ): Promise<void> {
-    const mapChange: IMapChange = evt.detail;
-    // close popup by default when the map changes otherwise other components that rely on the view don't work since it
-    // doesn't seem to fully load when it's not visible
-    this._expandPopup = false;
-    this._mapInfo = this._getMapInfo(mapChange.id);
-    this._mapView = mapChange.mapView;
-    this._mapView.popupEnabled = false;
+    this._mapChange = evt.detail;
+    if (this._expandPopup) {
+      this._shouldSetMapView = true;
+      this._expandPopup = false;
+    } else {
+      this._setMapView();
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -185,6 +196,17 @@ export class CrowdsourceManager {
         </calcite-shell>
       </Host>
     );
+  }
+
+  /**
+   * Called after each render
+   * Used to delay the setting of the mapView when the popup is expaneded and obstructs the view
+   */
+  componentDidRender() {
+    if (this._shouldSetMapView) {
+      this._shouldSetMapView = false;
+      this._setMapView();
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -525,6 +547,17 @@ export class CrowdsourceManager {
       }
     })
     return mapInfo;
+  }
+
+  /**
+   * Set the current map info when maps change
+   *
+   * @protected
+   */
+  protected _setMapView(): void {
+    this._mapInfo = this._getMapInfo(this._mapChange.id);
+    this._mapView = this._mapChange.mapView;
+    this._mapView.popupEnabled = false;
   }
 
   /**

@@ -162,6 +162,7 @@ export class MapCard {
         <map-picker mapInfos={this.mapInfos}/>
         <div class="map-height" ref={(el) => (this._mapDiv = el)}/>
         <map-tools
+          class={"box-shadow"}
           mapView={this.mapView}
           ref={(el) => this._mapTools = el}
           searchConfiguration={this._searchConfiguration}
@@ -231,6 +232,7 @@ export class MapCard {
         id: id,
         mapView: this.mapView
       });
+
       await this.mapView.when(() => {
         const home = new this.Home({
           view: this.mapView

@@ -506,7 +506,7 @@ export class LayerTable {
               }
             </calcite-dropdown-item>
             <calcite-dropdown-item
-              iconStart="refresh"
+              iconStart="compare"
               onClick={() => this._switchSelected()}
             >
               {this._translations.switchSelected}
@@ -749,13 +749,14 @@ export class LayerTable {
     const exportInfos: IExportInfos = {};
     const ids = this._table.highlightIds.toArray();
     exportInfos[this._layer.id] = {
-      selectionSetNames: [],
+      selectionSetNames: [this._layer.title],
       ids,
       layer: this._layer
     }
     void downloadUtils.downloadCSV(
       exportInfos,
       false, // formatUsingLayerPopup
+      false, // removeDuplicates
       true, // addColumnTitle
     );
   }

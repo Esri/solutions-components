@@ -5,9 +5,9 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EDrawMode, EExpandType, ELayoutMode, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
+import { DistanceUnit, EDrawMode, ELayoutMode, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
-export { DistanceUnit, EDrawMode, EExpandType, ELayoutMode, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
+export { DistanceUnit, EDrawMode, ELayoutMode, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
 export { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BasemapGallery {
@@ -266,6 +266,16 @@ export namespace Components {
           * @returns Promise that resolves when the operation is complete
          */
         "updateGraphics": () => Promise<void>;
+    }
+    interface MapFullscreen {
+        /**
+          * esri/widgets/Fullscreen: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Fullscreen.html
+         */
+        "fullscreenWidget": __esri.Fullscreen;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
     }
     interface MapLayerPicker {
         /**
@@ -789,10 +799,6 @@ export interface MapSelectToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapSelectToolsElement;
 }
-export interface MapToolsCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLMapToolsElement;
-}
 export interface PublicNotificationCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLPublicNotificationElement;
@@ -905,6 +911,12 @@ declare global {
     var HTMLMapDrawToolsElement: {
         prototype: HTMLMapDrawToolsElement;
         new (): HTMLMapDrawToolsElement;
+    };
+    interface HTMLMapFullscreenElement extends Components.MapFullscreen, HTMLStencilElement {
+    }
+    var HTMLMapFullscreenElement: {
+        prototype: HTMLMapFullscreenElement;
+        new (): HTMLMapFullscreenElement;
     };
     interface HTMLMapLayerPickerElement extends Components.MapLayerPicker, HTMLStencilElement {
     }
@@ -1053,6 +1065,7 @@ declare global {
         "list-item": HTMLListItemElement;
         "map-card": HTMLMapCardElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
+        "map-fullscreen": HTMLMapFullscreenElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
         "map-legend": HTMLMapLegendElement;
         "map-picker": HTMLMapPickerElement;
@@ -1347,6 +1360,16 @@ declare namespace LocalJSX {
          */
         "undoEnabled"?: boolean;
     }
+    interface MapFullscreen {
+        /**
+          * esri/widgets/Fullscreen: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Fullscreen.html
+         */
+        "fullscreenWidget"?: __esri.Fullscreen;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+    }
     interface MapLayerPicker {
         /**
           * "transparent" | "solid": controls the button appearance when using the "dropdown" type
@@ -1522,10 +1545,6 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        /**
-          * Emitted when the expand button is clicked
-         */
-        "onExpandMap"?: (event: MapToolsCustomEvent<EExpandType>) => void;
         /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
@@ -1825,6 +1844,7 @@ declare namespace LocalJSX {
         "list-item": ListItem;
         "map-card": MapCard;
         "map-draw-tools": MapDrawTools;
+        "map-fullscreen": MapFullscreen;
         "map-layer-picker": MapLayerPicker;
         "map-legend": MapLegend;
         "map-picker": MapPicker;
@@ -1867,6 +1887,7 @@ declare module "@stencil/core" {
             "list-item": LocalJSX.ListItem & JSXBase.HTMLAttributes<HTMLListItemElement>;
             "map-card": LocalJSX.MapCard & JSXBase.HTMLAttributes<HTMLMapCardElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
+            "map-fullscreen": LocalJSX.MapFullscreen & JSXBase.HTMLAttributes<HTMLMapFullscreenElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
             "map-legend": LocalJSX.MapLegend & JSXBase.HTMLAttributes<HTMLMapLegendElement>;
             "map-picker": LocalJSX.MapPicker & JSXBase.HTMLAttributes<HTMLMapPickerElement>;

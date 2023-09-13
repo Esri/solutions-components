@@ -14,36 +14,14 @@
  * limitations under the License.
  */
 
-:host {
-  display: block;
-}
+import { newE2EPage } from '@stencil/core/testing';
 
-.display-none {
-  display: none;
-}
+xdescribe('map-fullscreen', () => {
+  it('renders', async () => {
+    const page = await newE2EPage();
+    await page.setContent('<map-fullscreen></map-fullscreen>');
 
-.margin-top-1-2 {
-  margin-top: 0.5rem;
-}
-
-.square-40 {
-  width: 40px;
-  height: 40px;
-}
-
-.width-40 {
-  width: 40px;
-}
-
-.square-40-41 {
-  width: 40px;
-  height: 41px;
-}
-
-.border-bottom {
-  border-bottom: 1px solid var(--calcite-ui-border-3);
-}
-
-.box-shadow {
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
+    const element = await page.find('map-fullscreen');
+    expect(element).toHaveClass('hydrated');
+  });
+});
