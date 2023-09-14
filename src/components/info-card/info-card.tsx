@@ -221,49 +221,52 @@ export class InfoCard {
             class={"esri-widget " + featureNodeClass}
             id="features-node"
           />
-          <div class={`${editButtonClass} display-flex padding-1-2 button-container top-border`} slot="footer">
-            <div class="min-width-100">
-              <calcite-button
-                appearance="outline"
-                id="solutions-back"
-                onClick={() => this._back()}
-                width="full"
-              >
-                {this._translations.back}
-              </calcite-button>
-              <calcite-tooltip label="" placement="top" reference-element="solutions-back">
-                <span>{this._translations.back}</span>
-              </calcite-tooltip>
-            </div>
-            <div>
-              {this._getCount()}
-            </div>
-            <div class="min-width-100">
-              <calcite-button
-                appearance="outline"
-                id="solutions-next"
-                onClick={() => this._next()}
-                width="full"
-              >
-                {this._translations.next}
-              </calcite-button>
-              <calcite-tooltip label="" placement="top" reference-element="solutions-next">
-                <span>{this._translations.next}</span>
-              </calcite-tooltip>
-            </div>
-          </div>
-          <div class={`${editButtonClass} edit-btn edit-btn-position`}>
-            <calcite-button
-              appearance="outline"
-              icon-start="pencil"
-              id="solutions-edit"
-              onClick={() => this._openEditRecord()}
-            >
-              {this._translations.edit}
-            </calcite-button>
-            <calcite-tooltip label="" placement="bottom" reference-element="solutions-edit">
-              <span>{this._translations.edit}</span>
-            </calcite-tooltip>
+          <div class={`${editButtonClass} width-100`} slot="footer">
+              <div class="display-flex top-border padding-1-2">
+                <calcite-button
+                  appearance="solid"
+                  icon-start="pencil"
+                  id="solutions-edit"
+                  onClick={() => this._openEditRecord()}
+                  width="full"
+                >
+                  {this._translations.edit}
+                </calcite-button>
+                <calcite-tooltip label="" placement="bottom" reference-element="solutions-edit">
+                  <span>{this._translations.edit}</span>
+                </calcite-tooltip>
+              </div>
+              <div class="display-flex padding-1-2 button-container top-border">
+                <div class="min-width-100">
+                  <calcite-button
+                    appearance="outline"
+                    id="solutions-back"
+                    onClick={() => this._back()}
+                    width="full"
+                  >
+                    {this._translations.back}
+                  </calcite-button>
+                  <calcite-tooltip label="" placement="top" reference-element="solutions-back">
+                    <span>{this._translations.back}</span>
+                  </calcite-tooltip>
+                </div>
+                <div>
+                  {this._getCount()}
+                </div>
+                <div class="min-width-100">
+                  <calcite-button
+                    appearance="outline"
+                    id="solutions-next"
+                    onClick={() => this._next()}
+                    width="full"
+                  >
+                    {this._translations.next}
+                  </calcite-button>
+                  <calcite-tooltip label="" placement="top" reference-element="solutions-next">
+                    <span>{this._translations.next}</span>
+                  </calcite-tooltip>
+                </div>
+              </div>
           </div>
           <edit-card
             class={editClass}
