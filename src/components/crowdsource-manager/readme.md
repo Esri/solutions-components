@@ -98,8 +98,6 @@ graph TD;
   layer-table --> calcite-shell
   layer-table --> calcite-panel
   layer-table --> calcite-loader
-  layer-table --> calcite-alert
-  layer-table --> calcite-link
   layer-table --> calcite-action-bar
   layer-table --> map-layer-picker
   layer-table --> calcite-action
@@ -108,7 +106,9 @@ graph TD;
   layer-table --> calcite-dropdown
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
-  calcite-link --> calcite-icon
+  layer-table --> calcite-alert
+  layer-table --> calcite-scrim
+  layer-table --> calcite-icon
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown

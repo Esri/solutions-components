@@ -116,39 +116,9 @@ export class LayerTable {
   protected FeatureTable: typeof import("esri/widgets/FeatureTable");
 
   /**
-   * any: The function that the alerts action should execute
+   * boolean: When true the user will be asked to confirm the delete operation
    */
-  protected _alertActionFunction: any;
-
-  /**
-   * string: The alerts action text...will be displayed when _alertShowAction is True
-   */
-  protected _alertActionText: string;
-
-  /**
-   * string: main icon of the alert
-   */
-  protected _alertIcon: string;
-
-  /**
-   * "warning" | "danger": the kind of alert to display
-   */
-  protected _alertKind: "warning" | "danger";
-
-  /**
-   * boolean: When true a action link will be deisplayed
-   */
-  protected _alertShowAction: boolean;
-
-  /**
-   * string: main message of the alert
-   */
-  protected _alertMessage: string;
-
-  /**
-   * string: the alerts title
-   */
-  protected _alertTitle: string;
+  protected _confirmDelete: boolean;
 
   /**
    * number[]: A list of all IDs for the current layer
@@ -313,7 +283,6 @@ export class LayerTable {
     }
     const tableNodeClass = this._fetchingData ? "display-none" : "";
     const loadingClass = this._fetchingData ? "" : "display-none";
-    const alertActionClass = this._alertShowAction ? "" : "display-none";
     const total = this._allIds.length.toString();
     const selected = this._selectedIndexes.length.toString();
     return (
@@ -340,29 +309,9 @@ export class LayerTable {
               }
             </div>
           </div>
-          <calcite-alert
-            icon={this._alertIcon}
-            kind={this._alertKind}
-            label=""
-            onCalciteAlertClose={() => this._alertClosed()}
-            open={this._alertOpen}
-            placement="top"
-          >
-            <div slot="title">
-              {this._alertTitle}
-            </div>
-            <div slot="message">
-              {this._alertMessage}
-            </div>
-            <calcite-link
-              class={alertActionClass}
-              onClick={this._alertActionFunction}
-              slot="link"
-            >
-              {this._alertActionText}
-            </calcite-link>
-          </calcite-alert>
+          {this._getEditDisabledWarning()}
         </calcite-shell>
+        {this._deleteMessage()}
       </Host>
     );
   }
@@ -639,6 +588,100 @@ export class LayerTable {
   }
 
   /**
+   * Show warning when editing is disabled
+   *
+   * @returns node with warning message
+   */
+  protected _getEditDisabledWarning(): VNode {
+    return (
+      <calcite-alert
+        icon="layer-broken"
+        kind="warning"
+        label=""
+        onCalciteAlertClose={() => this._alertClosed()}
+        open={this._alertOpen && !this._confirmDelete}
+        placement="top"
+      >
+        <div slot="title">
+          {this._translations.deleteDisabled}
+        </div>
+        <div slot="message">
+          {this._translations.enableEditing}
+        </div>
+      </calcite-alert>
+    );
+  }
+
+  /**
+   * Show delete confirmation message
+   *
+   * @returns node to confirm or deny the delete operation
+   */
+  protected _deleteMessage(): VNode {
+    const showClass = this._confirmDelete ? "" : "display-none";
+    return (
+      <calcite-scrim class={showClass}>
+      <div class="esri-editor__prompt--danger">
+        <div class="esri-editor__prompt__header">
+          <calcite-icon
+            aria-hidden="true"
+            icon="exclamation-mark-triangle"
+            scale="m"
+          />
+          <h4
+            aria-level="4"
+            class="esri-widget__heading esri-editor__prompt__header__heading"
+            role="heading"
+          >
+            {this._translations.deleteFeature}
+          </h4>
+        </div>
+        <div class="esri-editor__prompt__message">
+          {this._translations.confirm}
+        </div>
+        <div class="esri-editor__prompt__divider" />
+        <div class="esri-editor__prompt__actions">
+          <calcite-button
+            alignment="center"
+            appearance="outline"
+            kind="danger"
+            onClick={() => this._alertClosed()}
+            scale="m"
+            type="button"
+            width="half"
+          >
+            {this._translations.keepFeature}
+          </calcite-button>
+          <calcite-button
+            alignment="center"
+            appearance="solid"
+            kind="danger"
+            onClick={() => this._deleteFeatures()}
+            scale="m"
+            type="button"
+            width="half"
+          >
+            {this._translations.delete}
+          </calcite-button>
+        </div>
+      </div>
+    </calcite-scrim>
+    );
+  }
+
+  /**
+   * Delete the currently selected features
+   *
+   * @returns void
+   */
+  protected _deleteFeatures(): void {
+    void this._layer.applyEdits({
+      deleteFeatures: this._table.highlightIds.toArray()
+    });
+    this._alertClosed();
+  }
+
+  /**
    * Handle map click events to keep table and map click selection in sync
    *
    * @param evt IMapClick map click event details
@@ -675,6 +718,7 @@ export class LayerTable {
    */
   protected _alertClosed(): void {
     this._alertOpen = false;
+    this._confirmDelete = false;
   }
 
   /**
@@ -786,24 +830,7 @@ export class LayerTable {
    */
   protected _delete(): void {
     if (this._editEnabled) {
-      this._alertIcon = "trash";
-      this._alertTitle = this._translations.deleteRows;
-      this._alertActionText = this._translations.delete;
-      this._alertShowAction = true;
-      this._alertMessage = this._translations.confirm;
-      this._alertKind = "danger";
-      this._alertActionFunction = () => {
-        void this._layer.applyEdits({
-          deleteFeatures: this._table.highlightIds.toArray()
-        });
-        this._alertOpen = false;
-      }
-    } else {
-      this._alertIcon = "layer-broken";
-      this._alertTitle = this._translations.deleteDisabled;
-      this._alertShowAction = false;
-      this._alertMessage = this._translations.enableEditing;
-      this._alertKind = "warning";
+      this._confirmDelete = true;
     }
     this._alertOpen = true;
   }
