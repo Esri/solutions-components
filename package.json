@@ -1,6 +1,6 @@
 {
   "name": "@esri/solutions-components",
-  "version": "0.6.12",
+  "version": "0.6.13",
   "description": "Web Components for Esri's Solutions Applications",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
