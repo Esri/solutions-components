@@ -95,6 +95,7 @@ export class PdfDownload {
   /**
    * Downloads csv of mailing labels for the provided list of ids
    *
+   * @param webmap Webmap containing layer
    * @param exportInfos Information about items to be exported
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
    * @param addColumnTitle Indicates if column headings should be included in output
@@ -102,11 +103,13 @@ export class PdfDownload {
    */
   @Method()
   async downloadCSV(
+    webmap: __esri.Map,
     exportInfos: IExportInfos,
     removeDuplicates: boolean,
     addColumnTitle = true
   ): Promise<void> {
     return downloadUtils.downloadCSV(
+      webmap,
       exportInfos,
       true, // formatUsingLayerPopup
       removeDuplicates,
@@ -117,6 +120,7 @@ export class PdfDownload {
   /**
    * Downloads pdf of mailing labels for the provided list of ids
    *
+   * @param webmap Webmap containing layer
    * @param exportInfos Information about items to be exported
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
    * @param title Title for each page
@@ -125,12 +129,15 @@ export class PdfDownload {
    */
   @Method()
   async downloadPDF(
+    webmap: __esri.Map,
     exportInfos: IExportInfos,
     removeDuplicates = false,
     title = "",
     initialImageDataUrl = ""
   ): Promise<void> {
+    console.log("pdf-download downloadPDF");//???
     return downloadUtils.downloadPDF(
+      webmap,
       exportInfos,
       this._labelInfoElement.selectedOption?.value as downloadUtils.ILabel,
       removeDuplicates,

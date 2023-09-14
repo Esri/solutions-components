@@ -468,21 +468,23 @@ export namespace Components {
         "disabled": boolean;
         /**
           * Downloads csv of mailing labels for the provided list of ids
+          * @param webmap Webmap containing layer
           * @param exportInfos Information about items to be exported
           * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
           * @param addColumnTitle Indicates if column headings should be included in output
           * @returns Promise resolving when function is done
          */
-        "downloadCSV": (exportInfos: IExportInfos, removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>;
+        "downloadCSV": (webmap: __esri.Map, exportInfos: IExportInfos, removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>;
         /**
           * Downloads pdf of mailing labels for the provided list of ids
+          * @param webmap Webmap containing layer
           * @param exportInfos Information about items to be exported
           * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
           * @param title Title for each page
           * @param initialImageDataUrl Data URL of image for first page
           * @returns Promise resolving when function is done
          */
-        "downloadPDF": (exportInfos: IExportInfos, removeDuplicates?: boolean, title?: string, initialImageDataUrl?: string) => Promise<void>;
+        "downloadPDF": (webmap: __esri.Map, exportInfos: IExportInfos, removeDuplicates?: boolean, title?: string, initialImageDataUrl?: string) => Promise<void>;
     }
     interface PublicNotification {
         /**

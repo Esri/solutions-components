@@ -21,6 +21,7 @@ import { ILabel, exportPDF } from "./pdfUtils";
 import { loadModules } from "./loadModules";
 import { queryFeaturesByID } from "./queryUtils";
 import { IExportInfo, IExportInfos } from "../utils/interfaces";
+//import * as common from "@esri/solution-common";
 
 export { ILabel } from "./pdfUtils";
 
@@ -45,6 +46,13 @@ export interface ILabelFormat {
   format: string | __esri.ArcadeExecutor | undefined;
 }
 
+export interface ILabelFormatProps {
+  layer: __esri.FeatureLayer;
+  attributeFormats: IAttributeFormats;
+  relationshipId: number | undefined;
+  labelFormat: ILabelFormat;
+}
+
 export interface ILayerRelationshipQuery {
   layer: __esri.FeatureLayer;
   relatedQuery: IRelatedFeaturesQuery;
@@ -66,6 +74,34 @@ interface IRelatedFeaturesQuery {
 
 const lineSeparatorChar = "|";
 
+import {
+  IFeature,
+  IQueryRelatedOptions,
+  IQueryRelatedResponse,
+  IRelatedRecordGroup,
+  queryRelated
+} from "@esri/arcgis-rest-feature-layer";
+/**
+ * Get the related records for a feature service.
+ *
+ * @param url Feature service's URL, e.g., layer.url
+ * @param relationshipId Id of relationship
+ * @param objectIds Objects in the feature service whose related records are sought
+ */
+export function getFeatureServiceRelatedRecords(
+  url: string,
+  relationshipId?: number,
+  objectIds?: number[]
+): Promise<IQueryRelatedResponse> {
+  const options: IQueryRelatedOptions = {
+    url: url + `/${relationshipId}`,
+    relationshipId,
+    objectIds
+  }
+
+  return queryRelated(options);
+}
+
 //#endregion
 // ------------------------------------------------------------------------------------------------------------------ //
 //#region Public functions
@@ -73,6 +109,7 @@ const lineSeparatorChar = "|";
 /**
  * Create and consolidate labels from all layers
  *
+ * @param webmap Webmap containing layer
  * @param exportInfos Key details about what to export (ids, layer, and selectionSetNames)
  * @param formatUsingLayerPopup When true, the layer's popup is used to choose attributes for each column; when false,
  * all attributes are exported
@@ -80,6 +117,7 @@ const lineSeparatorChar = "|";
  * @returns selectionSetNames that will be used for export filenames
  */
 export async function consolidateLabels(
+  webmap: __esri.Map,
   exportInfos: IExportInfos,
   formatUsingLayerPopup = true,
   includeHeaderNames = false,
@@ -89,7 +127,9 @@ export async function consolidateLabels(
 
   Object.keys(exportInfos).forEach(k => {
     const labelInfo: IExportInfo = exportInfos[k];
-    labelRequests.push(_prepareLabels(labelInfo.layerView?.layer || labelInfo.layer, labelInfo.ids, formatUsingLayerPopup, includeHeaderNames));
+    labelRequests.push(
+      _prepareLabels(webmap, labelInfo.layerView?.layer || labelInfo.layer, labelInfo.ids, formatUsingLayerPopup, includeHeaderNames)
+    );
     if (isCSVExport) {
       // add the layer id as a temp value separator that we can use to split values for CSV export
       labelRequests.push(Promise.resolve([[k]]));
@@ -103,6 +143,7 @@ export async function consolidateLabels(
 /**
  * Downloads csv of mailing labels for the provided list of ids
  *
+ * @param webmap Webmap containing layer
  * @param exportInfos Key details about what to export (ids, layer, and selectionSetNames)
  * @param formatUsingLayerPopup When true, the layer's popup is used to choose attributes for each column; when false,
  * all attributes are exported
@@ -111,12 +152,13 @@ export async function consolidateLabels(
  * @returns Promise resolving when function is done
  */
 export async function downloadCSV(
+  webmap: __esri.Map,
   exportInfos: IExportInfos,
   formatUsingLayerPopup: boolean,
   removeDuplicates = false,
   addColumnTitle = false
 ): Promise<void> {
-  let labels = await consolidateLabels(exportInfos, formatUsingLayerPopup, addColumnTitle, true);
+  let labels = await consolidateLabels(webmap, exportInfos, formatUsingLayerPopup, addColumnTitle, true);
   labels = removeDuplicates ? removeDuplicateLabels(labels) : labels;
 
   const layerIds = Object.keys(exportInfos);
@@ -142,6 +184,7 @@ export async function downloadCSV(
 /**
  * Downloads csv of mailing labels for the provided list of ids
  *
+ * @param webmap Webmap containing layer
  * @param exportInfos Key details about what to export (ids, layer, and selectionSetNames)
  * @param labelPageDescription Provides PDF page layout info
  * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
@@ -150,13 +193,15 @@ export async function downloadCSV(
  * @returns Promise resolving when function is done
  */
 export async function downloadPDF(
+  webmap: __esri.Map,
   exportInfos: IExportInfos,
   labelPageDescription: ILabel,
   removeDuplicates = false,
   title = "",
   initialImageDataUrl = ""
 ): Promise<void> {
-  let labels = await consolidateLabels(exportInfos);
+  console.log("downloadUtils downloadPDF");//???
+  let labels = await consolidateLabels(webmap, exportInfos);
   const selectionSetNames = _getSelectionSetNames(exportInfos);
 
   labels =
@@ -338,44 +383,6 @@ export function _createFilename(
 }
 
 /**
- * Creates relationship queries for each relationship flag in a popup.
- * @param layer Layer whose popup is to be examined
- * @return Hash of relationships by their id, or null if there are no relationship flags in the
- * popup; each relationship has the properties layer and relatedQuery for the related layer
- * and the query for that layer
- */
-export function _createRelationshipQueries(
-  layer: __esri.FeatureLayer,
-): ILayerRelationshipQueryHash {
-
-  const relationships: ILayerRelationshipQueryHash = {};
-  const relationshipFieldPattern = /\{relationships\/\d+\//gm;
-  const relationshipIdPattern = /\d+/;
-
-  // Test if this popup has any relationship references
-  const matches = layer.popupTemplate.content[0].text.match(relationshipFieldPattern);
-  if (matches) {
-    matches.forEach(match => {
-      // Add a query to a found relationship if we don't already have one
-      const id = match.match(relationshipIdPattern)[0];
-      if (!relationships.hasOwnProperty(id)) {
-        const relatedQuery: IRelatedFeaturesQuery = {
-          outFields: ['*'],
-          relationshipId: id,
-          returnGeometry: false
-        };
-        relationships[id] = {
-          layer,
-          relatedQuery
-        } as ILayerRelationshipQuery;
-      }
-    });
-  }
-
-  return relationships;
-}
-
-/**
  * Extracts Arcade expression references from the lines of a label format.
  *
  * @param labelFormat Label to examine
@@ -435,22 +442,26 @@ export function _getFieldNamesFromFieldExpressions(
 /**
  * Extracts the label format from the layer.
  *
+ * @param webmap Webmap containing layer
  * @param layer Layer with label format
  * @param formatUsingLayerPopup When true, the layer's popup is used to choose attributes for each column; when false,
  * all attributes are exported
- * @param attributeFormats Empty object to hold the formats for each attribute in a feature; the object is filled
- * with formats by this function
  * @returns A Promise resolving to the format of a single label with fields coerced to lowercase, e.g.,
- * for ILabelFormat type "pattern": "{name}|{street}|{city}, {state} {zip}"
+ * for ILabelFormatProps type "pattern": "{name}|{street}|{city}, {state} {zip}"
  */
 export async function _getLabelFormat(
+  webmap: __esri.Map,
   layer: __esri.FeatureLayer,
-  formatUsingLayerPopup: boolean,
-  attributeFormats: IAttributeFormats
-): Promise<ILabelFormat> {
-  let labelFormat: ILabelFormat = {
-    type: "unsupported",
-    format: undefined
+  formatUsingLayerPopup: boolean
+): Promise<ILabelFormatProps> {
+  let labelFormatProps: ILabelFormatProps = {
+    layer,
+    attributeFormats: {},
+    relationshipId: undefined,
+    labelFormat: {
+      type: "unsupported",
+      format: undefined
+    }
   };
 
   if (layer.popupEnabled) {
@@ -458,37 +469,105 @@ export async function _getLabelFormat(
       // Extract any format info that we have
       fieldInfo => {
         if (fieldInfo.format) {
-          attributeFormats[fieldInfo.fieldName.toLowerCase()] = fieldInfo.format;
+          labelFormatProps.attributeFormats[fieldInfo.fieldName.toLowerCase()] = fieldInfo.format;
         }
       }
     );
 
-    // What is the nature of the label content?
-    // Fields list
-    if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "fields") {
-      labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos);
-
-      // If popup is configured with "no attribute information", then no fields will visible
-      if ((labelFormat.format as string).length === 0) {
-        // Can we use the popup title?
-        labelFormat = layer.popupTemplate.title && typeof layer.popupTemplate.title === "string" ?
-          { type: "pattern", format: layer.popupTemplate.title } as ILabelFormat
-          :
-          // Otherwise revert to using attributes
-          _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos, true);
+    /*
+    TODO: handle exprn in text label
+    webmapTablePopups text [
+      {
+        "type": "text",
+        "text": "<p>{expression/expr0}&nbsp;&nbsp;&nbsp;<br />{OWNERNM1}&nbsp;&nbsp;&nbsp;<br />{PSTLADDRESS}&nbsp;&nbsp;&nbsp;<br />{PSTLCITY} , {PSTLSTATE}, {PSTLZIP5}&nbsp;</p>"
       }
+    ]
+    index.3878dde2.js:924 webmapTablePopups exr [
+      {
+        "name": "expr0",
+        "title": "New expression",
+        "expression": "// Write a script to return a value to show in the pop-up. \n// For example, get the average of 4 fields:\n// Average($feature.SalesQ1, $feature.SalesQ2, $feature.SalesQ3, $feature.SalesQ4)\nvar relatedFeatures = FeatureSetByRelationshipName($feature, \"\", [\"*\"], false)\nreturn First(relatedFeatures)['SITEADDID']\n",
+        "returnType": "string"
+      }
+    ]
+    */
 
-    // Example text: '<p>{name} {age} years &nbsp;</p><p>started: {start}</p>'
-    } else if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "text") {
-      labelFormat = _convertPopupTextToLabelSpec(layer.popupTemplate.content[0].text);
+    // What is the nature of the label content?
 
-    // Example expression: 'var feat = $feature\nvar label = `\n\t${feat["name"]} ${feat["age"]} years <br>\n\tstarted: ${feat["start"]}\n`\n\nreturn { \n  type : \'text\', \n  text : label\n}',
-    } else if (formatUsingLayerPopup && layer.popupTemplate?.content[0]?.type === "expression") {
-      labelFormat = await _convertPopupArcadeToLabelSpec(layer.popupTemplate.content[0].expressionInfo);
+    // Fields list
+    if (formatUsingLayerPopup) {
+      const labelFormatType = layer.popupTemplate?.content[0]?.type;
+      console.log("_getLabelFormat labelFormatType", layer.id, labelFormatType);//???
+
+      if (labelFormatType === "relationship") {
+        if (webmap) {
+          const relationshipId = layer.popupTemplate.content[0].relationshipId;
+          const webmapLayers0 = webmap.layers.toArray().concat(webmap.tables.toArray()) as __esri.FeatureLayer[];//???
+          console.log(layer.id, webmapLayers0.map(layer=>layer.id));//???
+          console.log("relationshipId", relationshipId);//???
+          webmapLayers0.forEach(layer=>{console.log(layer.id, layer.relationships ? layer.relationships.map(rel=>rel.id) : "")});//???
+
+          const webmapLayers = webmap.layers.toArray().concat(webmap.tables.toArray())
+          .filter((entry: __esri.FeatureLayer) =>
+            entry.type === "feature"
+            && entry.id !== layer.id
+            && entry.relationships
+            && entry.relationships.some(relationship => relationship.id === relationshipId));
+
+          // Get the "feature" layer or table that contains the desired relationship id
+          /*const relatedLayerCollection = webmap.layers.concat(webmap.tables)
+          .filter((entry: __esri.FeatureLayer) =>
+            entry.type === "feature"
+            && entry.id !== layer.id
+            && entry.relationships.some(relationship => relationship.id === labelFormat.relationshipId));
+            *///???
+
+          labelFormatProps = await _getLabelFormat(webmap, webmapLayers[0] as __esri.FeatureLayer, formatUsingLayerPopup);
+          labelFormatProps.relationshipId = relationshipId;
+
+          /*
+          const webmapPopupFeature = webmap.layers.concat(webmap.tables)
+            // Get the "feature" layer or table that contains the desired relationship id
+            .filter((entry: __esri.FeatureLayer) =>
+              entry.type === "feature" && entry.relationships.some(relationship => relationship.id === relationshipId))
+            // Extract the popup template
+            .map((entry: __esri.FeatureLayer) => entry.popupTemplate);
+          console.log("webmapPopupFeature text", JSON.stringify(webmapPopupFeature.at(0).content, null, 2));//???
+          console.log("webmapPopupFeature expr", JSON.stringify(webmapPopupFeature.at(0).expressionInfos, null, 2));//???
+          //labelFormat = _convertPopupTextToLabelSpec(webmapPopupFeature.at(0).content[0].text);
+          */
+        } else { console.warn("Path is missing a webmap");//???
+        }
+
+      } else if (labelFormatType === "fields") {
+        labelFormatProps.labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos);
+
+        // If popup is configured with "no attribute information", then no fields will visible
+        if ((labelFormatProps.labelFormat.format as string).length === 0) {
+          // Can we use the popup title?
+          labelFormatProps.labelFormat = layer.popupTemplate.title && typeof layer.popupTemplate.title === "string" ?
+            { type: "pattern", format: layer.popupTemplate.title } as ILabelFormat
+            :
+            // Otherwise revert to using attributes
+            _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos, true);
+        }
+
+      // Example text: '<p>{name} {age} years &nbsp;</p><p>started: {start}</p>'
+      } else if (labelFormatType === "text") {
+        labelFormatProps.labelFormat = _convertPopupTextToLabelSpec(layer.popupTemplate.content[0].text);
+
+      // Example expression: 'var feat = $feature\nvar label = `\n\t${feat["name"]} ${feat["age"]} years <br>\n\tstarted: ${feat["start"]}\n`\n\nreturn { \n  type : \'text\', \n  text : label\n}',
+      } else if (labelFormatType === "expression") {
+        labelFormatProps.labelFormat = await _convertPopupArcadeToLabelSpec(layer.popupTemplate.content[0].expressionInfo);
+
+      // Fallback to all fields
+      } else {
+        labelFormatProps.labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos);
+      }
     }
   }
 
-  return Promise.resolve(labelFormat);
+  return Promise.resolve(labelFormatProps);
 }
 
 /**
@@ -573,6 +652,7 @@ export function _prepareAttributeValue(
 /**
  * Creates labels from items.
  *
+ * @param webmap Webmap containing layer
  * @param layer Layer from which to fetch features
  * @param ids List of ids to download
  * @param formatUsingLayerPopup When true, the layer's popup is used to choose attributes for each column; when false,
@@ -581,19 +661,52 @@ export function _prepareAttributeValue(
  * @returns Promise resolving when function is done
  */
 export async function _prepareLabels(
+  webmap: __esri.Map,
   layer: __esri.FeatureLayer,
   ids: number[],
   formatUsingLayerPopup = true,
   includeHeaderNames = false
 ): Promise<string[][]> {
-  // Get the features to export
-  const featureSet = await queryFeaturesByID(ids, layer, [], false);
+  // Get the label formatting, if any
+  const labelFormatProps: ILabelFormatProps = await _getLabelFormat(webmap, layer, formatUsingLayerPopup);
+  console.log("_getLabelFormat labelFormatProps", JSON.stringify(labelFormatProps,null,2));//???
+
+  let featureSet: IFeature[] = [];
+  if (typeof(labelFormatProps.relationshipId) !== "undefined") {
+    // Get the related items for each id
+    console.log("queryFeaturesByID related ids:", ids);//???
+    const relatedRecResponse = await getFeatureServiceRelatedRecords(layer.url, labelFormatProps.relationshipId, ids);
+
+    relatedRecResponse.relatedRecordGroups.forEach(
+      (relatedRecGroup: IRelatedRecordGroup) => {
+        //???console.log("relatedRecGroup", JSON.stringify(relatedRecGroup,null,2));//???
+        featureSet = featureSet.concat(relatedRecGroup.relatedRecords);
+      }
+    );
+
+  } else {
+    // Get the features to export
+    console.log("queryFeaturesByID selected ids:", ids);//???
+    const graphics = await queryFeaturesByID(ids, layer, [], false);
+    featureSet = graphics.map(
+      (graphic: __esri.Graphic) => {
+        return {
+          attributes: graphic.attributes
+        } as IFeature;
+      }
+    )
+  }
+
+  // Because the label may actually come from a related layer, we'll use the layer that comes back from _getLabelFormat.
+  // That function returns the supplied layer in all cases except for a "relationship" type of popup.
+  const featureLayer = labelFormatProps.layer;
+  console.log("featureSet", JSON.stringify(featureSet, null, 2));//???
 
   // Get field data types. Do we have any domain-based fields?
   const attributeOrigNames: IAttributeOrigNames = {};
   const attributeTypes: IAttributeTypes = {};
   const attributeDomains: IAttributeDomains = {};
-  layer.fields.forEach(
+  featureLayer.fields.forEach(
     field => {
       const lowercaseFieldname = field.name.toLowerCase();
       attributeOrigNames[lowercaseFieldname] = field.name;
@@ -601,23 +714,23 @@ export async function _prepareLabels(
       attributeTypes[lowercaseFieldname] = field.type;
     }
   );
-  const attributeFormats: IAttributeFormats = {};
-
-  // Get the label formatting, if any
-  const labelFormat: ILabelFormat = await _getLabelFormat(layer, formatUsingLayerPopup, attributeFormats);
 
   // Apply the label format
-  const labels = labelFormat.type === "unsupported" ?
-    // Export all attributes
-    await _prepareLabelsFromAll(featureSet, attributeTypes, attributeDomains, includeHeaderNames)
-    : labelFormat.type == "pattern" ?
+  const labels
+    = labelFormatProps.labelFormat.type === "pattern" ?
     // Export attributes in format
     await _prepareLabelsFromPattern(featureSet, attributeOrigNames, attributeTypes, attributeDomains,
-      attributeFormats, labelFormat.format as string, includeHeaderNames)
-    :
-    // Export attributes in expression
-    await _prepareLabelsUsingExecutor(featureSet, labelFormat.format as __esri.ArcadeExecutor);
+      labelFormatProps.attributeFormats, labelFormatProps.labelFormat.format as string, includeHeaderNames)
 
+    : labelFormatProps.labelFormat.type === "executor" ?
+    // Export attributes in expression
+    await _prepareLabelsUsingExecutor(featureSet, labelFormatProps.labelFormat.format as __esri.ArcadeExecutor)
+
+    :
+    // Export all attributes
+    await _prepareLabelsFromAll(featureSet, attributeTypes, attributeDomains, includeHeaderNames);
+
+  console.log("labels", JSON.stringify(labels, null, 2));//???
   return Promise.resolve(labels);
 }
 
@@ -631,7 +744,7 @@ export async function _prepareLabels(
  * @returns Promise resolving with list of labels, each of which is a list of label lines
  */
 export async function _prepareLabelsFromAll(
-  featureSet: __esri.Graphic[],
+  featureSet: IFeature[],
   attributeTypes: IAttributeTypes,
   attributeDomains: IAttributeDomains,
   includeHeaderNames = false
@@ -678,7 +791,7 @@ export async function _prepareLabelsFromAll(
  * @returns Promise resolving with list of labels, each of which is a list of label lines
  */
 export async function _prepareLabelsFromPattern(
-  featureSet: __esri.Graphic[],
+  featureSet: IFeature[],
   attributeOrigNames: IAttributeOrigNames,
   attributeTypes: IAttributeTypes,
   attributeDomains: IAttributeDomains,
@@ -735,7 +848,7 @@ export async function _prepareLabelsFromPattern(
  * @returns Promise resolving with list of labels, each of which is a list of label lines
  */
 export async function _prepareLabelsUsingExecutor(
-  featureSet: __esri.Graphic[],
+  featureSet: IFeature[],
   labelFormat: __esri.ArcadeExecutor
 ): Promise<string[][]> {
   // Convert feature attributes into an array of labels

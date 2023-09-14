@@ -801,7 +801,7 @@ export class PublicNotification {
    */
   protected async _getNumDuplicates(): Promise<number> {
     const exportInfos: IExportInfos = this._getExportInfos();
-    const labels = await consolidateLabels(exportInfos);
+    const labels = await consolidateLabels(this.mapView.map, exportInfos);//???
     const duplicatesRemoved = removeDuplicateLabels(labels);
     return labels.length - duplicatesRemoved.length;
   }
@@ -1293,6 +1293,7 @@ export class PublicNotification {
    */
   protected async _export(): Promise<void> {
     const exportInfos: IExportInfos = this._getSelectionIdsAndViews(this._selectionSets, true);
+    console.log("public-notification.tsx export");//???
 
     if (this._exportType === EExportType.PDF) {
       // Generate a map screenshot
@@ -1304,7 +1305,9 @@ export class PublicNotification {
 
       this._fetchingData = true;
       // Create the labels for each selection set
+      console.log("public-notification downloadPDF");//???
       await this._downloadTools.downloadPDF(
+        this.mapView.map,
         exportInfos,
         this._removeDuplicates.checked,
         this._addTitle ? this._titleElement.value : "",
@@ -1316,6 +1319,7 @@ export class PublicNotification {
     if (this._exportType === EExportType.CSV) {
       this._fetchingData = true;
       await this._downloadTools.downloadCSV(
+        this.mapView.map,
         exportInfos,
         this._removeDuplicates.checked
       );
