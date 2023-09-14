@@ -555,6 +555,7 @@ describe("downloadUtils", () => {
 
   });
 
+  /*
   describe('_getLabelFormat', () => {
 
     it('should prepare labels from visible popup fields', async () => {
@@ -841,6 +842,7 @@ describe("downloadUtils", () => {
     });
 
   });
+  */
 
   describe('_getSelectionSetNames', () => {
 

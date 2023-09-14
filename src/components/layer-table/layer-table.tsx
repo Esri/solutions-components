@@ -829,6 +829,7 @@ export class LayerTable {
       layer: this._layer
     }
     void downloadUtils.downloadCSV(
+      null,//???
       exportInfos,
       false, // formatUsingLayerPopup
       false, // removeDuplicates
