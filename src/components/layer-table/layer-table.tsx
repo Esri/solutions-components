@@ -146,6 +146,11 @@ export class LayerTable {
   protected _editEnabled: boolean;
 
   /**
+   * boolean: When false alerts will be shown to indicate that the layer must have delete and editing enabled
+   */
+  protected _deleteEnabled: boolean;
+
+  /**
    * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
    */
   protected reactiveUtils: typeof import("esri/core/reactiveUtils");
@@ -537,6 +542,8 @@ export class LayerTable {
           container: node
         } as __esri.FeatureTableProperties);
 
+        this._checkEditEnabled();
+
         await this._table.when(async () => {
           this._table.highlightIds.on("change", () => {
             this._selectedIndexes = this._table.highlightIds.toArray();
@@ -574,7 +581,7 @@ export class LayerTable {
       const columnTemplates = this._getColumnTemplates(this._layer.id);
       this._table.layer = this._layer;
       this._table.tableTemplate.columnTemplates = columnTemplates;
-      this._editEnabled = this._layer.editingEnabled;
+      this._checkEditEnabled();
       this._table.view = this.mapView;
       this._table.editingEnabled = this._editEnabled;
       this._table.clearSelectionFilter();
@@ -582,6 +589,16 @@ export class LayerTable {
       this._sortActive = false;
       await this._sortTable();
     }
+  }
+
+  /**
+   * Verify edit capabilities of the layer
+   *
+   * @returns void
+   */
+  protected _checkEditEnabled(): void {
+    this._editEnabled = this._layer.editingEnabled && this._layer.capabilities.operations.supportsUpdate;
+    this._deleteEnabled = this._layer.editingEnabled && this._layer.capabilities.operations.supportsDelete;
   }
 
   /**
