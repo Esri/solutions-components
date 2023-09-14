@@ -135,7 +135,6 @@ export class PdfDownload {
     title = "",
     initialImageDataUrl = ""
   ): Promise<void> {
-    console.log("pdf-download downloadPDF");//???
     return downloadUtils.downloadPDF(
       webmap,
       exportInfos,

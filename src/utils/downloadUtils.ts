@@ -25,6 +25,7 @@ import { IExportInfo, IExportInfos } from "../utils/interfaces";
 
 export { ILabel } from "./pdfUtils";
 
+/*
 interface IArcadeExecutors {
   [expressionName: string]: __esri.ArcadeExecutor;
 }
@@ -32,6 +33,7 @@ interface IArcadeExecutors {
 interface IArcadeExecutorPromises {
   [expressionName: string]: Promise<__esri.ArcadeExecutor>;
 }
+*/
 
 export interface IAttributeOrigNames {
   [lowercaseName: string]: string;
@@ -208,7 +210,6 @@ export async function downloadPDF(
   title = "",
   initialImageDataUrl = ""
 ): Promise<void> {
-  console.log("downloadUtils downloadPDF");//???
   let labels = await consolidateLabels(webmap, exportInfos);
   const selectionSetNames = _getSelectionSetNames(exportInfos);
 
@@ -383,6 +384,7 @@ export async function _convertPopupArcadeToLabelSpec(
  * @param layer Layer from which to fetch features
  * @return Promise resolving to a set of executors keyed using the expression name
  */
+/*
 async function _createArcadeExecutors(
   labelFormat: string,
   layer: __esri.FeatureLayer
@@ -454,6 +456,7 @@ async function _createArcadeExecutors(
     }
   );
 }
+*/
 
 /**
  * Creates a title from a list of selection set names.
@@ -562,50 +565,24 @@ export async function _getLabelFormat(
       }
     );
 
-    /*
-    TODO: handle exprn in text label
-    webmapTablePopups text [
-      {
-        "type": "text",
-        "text": "<p>{expression/expr0}&nbsp;&nbsp;&nbsp;<br />{OWNERNM1}&nbsp;&nbsp;&nbsp;<br />{PSTLADDRESS}&nbsp;&nbsp;&nbsp;<br />{PSTLCITY} , {PSTLSTATE}, {PSTLZIP5}&nbsp;</p>"
-      }
-    ]
-    index.3878dde2.js:924 webmapTablePopups exr [
-      {
-        "name": "expr0",
-        "title": "New expression",
-        "expression": "// Write a script to return a value to show in the pop-up. \n// For example, get the average of 4 fields:\n// Average($feature.SalesQ1, $feature.SalesQ2, $feature.SalesQ3, $feature.SalesQ4)\nvar relatedFeatures = FeatureSetByRelationshipName($feature, \"\", [\"*\"], false)\nreturn First(relatedFeatures)['SITEADDID']\n",
-        "returnType": "string"
-      }
-    ]
-    */
-
     // What is the nature of the label content?
 
     // Fields list
     if (formatUsingLayerPopup) {
       const labelFormatType = layer.popupTemplate?.content[0]?.type;
-      console.log("_getLabelFormat labelFormatType", layer.id, labelFormatType);//???
 
       if (labelFormatType === "relationship") {
-        if (webmap) {
-          const relationshipId = layer.popupTemplate.content[0].relationshipId;
-          const webmapLayers0 = webmap.layers.toArray().concat(webmap.tables.toArray()) as __esri.FeatureLayer[];//???
-          console.log(layer.id, webmapLayers0.map(layer=>layer.id));//???
-          console.log("relationshipId", relationshipId);//???
-          webmapLayers0.forEach(layer=>{console.log(layer.id, layer.relationships ? layer.relationships.map(rel=>rel.id) : "")});//???
+        const relationshipId = layer.popupTemplate.content[0].relationshipId;
 
-          const webmapLayers = webmap.layers.toArray().concat(webmap.tables.toArray())
-          .filter((entry: __esri.FeatureLayer) =>
-            entry.type === "feature"
-            && entry.id !== layer.id
-            && entry.relationships
-            && entry.relationships.some(relationship => relationship.id === relationshipId));
+        const webmapLayers = webmap.layers.toArray().concat(webmap.tables.toArray())
+        .filter((entry: __esri.FeatureLayer) =>
+          entry.type === "feature"
+          && entry.id !== layer.id
+          && entry.relationships
+          && entry.relationships.some(relationship => relationship.id === relationshipId));
 
-          labelFormatProps = await _getLabelFormat(webmap, webmapLayers[0] as __esri.FeatureLayer, formatUsingLayerPopup);
-          labelFormatProps.relationshipId = relationshipId;
-        } else { console.warn("Path is missing a webmap");//???
-        }
+        labelFormatProps = await _getLabelFormat(webmap, webmapLayers[0] as __esri.FeatureLayer, formatUsingLayerPopup);
+        labelFormatProps.relationshipId = relationshipId;
 
       } else if (labelFormatType === "fields") {
         labelFormatProps.labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos);
@@ -737,38 +714,35 @@ export async function _prepareLabels(
 ): Promise<string[][]> {
   // Get the label formatting, if any
   const labelFormatProps: ILabelFormatProps = await _getLabelFormat(webmap, layer, formatUsingLayerPopup);
-  console.log("_getLabelFormat labelFormatProps", JSON.stringify(labelFormatProps,null,2));//???
-
-  let featureSet: IFeature[] = [];
-  if (typeof(labelFormatProps.relationshipId) !== "undefined") {
-    // Get the related items for each id
-    console.log("queryFeaturesByID related ids:", ids);//???
-    const relatedRecResponse = await getFeatureServiceRelatedRecords(layer.url, labelFormatProps.relationshipId, ids);
-
-    relatedRecResponse.relatedRecordGroups.forEach(
-      (relatedRecGroup: IRelatedRecordGroup) => {
-        //???console.log("relatedRecGroup", JSON.stringify(relatedRecGroup,null,2));//???
-        featureSet = featureSet.concat(relatedRecGroup.relatedRecords);
-      }
-    );
-
-  } else {
-    // Get the features to export
-    console.log("queryFeaturesByID selected ids:", ids);//???
-    const graphics = await queryFeaturesByID(ids, layer, [], false);
-    featureSet = graphics.map(
-      (graphic: __esri.Graphic) => {
-        return {
-          attributes: graphic.attributes
-        } as IFeature;
-      }
-    )
-  }
 
   // Because the label may actually come from a related layer, we'll use the layer that comes back from _getLabelFormat.
   // That function returns the supplied layer in all cases except for a "relationship" type of popup.
   const featureLayer = labelFormatProps.layer;
-  console.log("featureSet", JSON.stringify(featureSet, null, 2));//???
+
+  let featureSet: __esri.Graphic[] = [];
+  if (typeof(labelFormatProps.relationshipId) !== "undefined") {
+    // Get the related items for each id
+    const relatedRecResponse = await getFeatureServiceRelatedRecords(layer.url, labelFormatProps.relationshipId, ids);
+
+    const objectIdField = layer.objectIdField;
+    let relatedFeatureIds: number[] = [];
+    relatedRecResponse.relatedRecordGroups.forEach(
+      (relatedRecGroup: IRelatedRecordGroup) => {
+        relatedFeatureIds = relatedFeatureIds.concat(relatedRecGroup.relatedRecords.map((rec: IFeature) => rec.attributes[objectIdField]));
+      }
+    );
+
+    // Remove duplicates
+    relatedFeatureIds.sort();
+    relatedFeatureIds = relatedFeatureIds.filter((id, i) => i === 0 ? true : id !== relatedFeatureIds[i-1]);
+
+    // Get the full items
+    featureSet = await queryFeaturesByID(relatedFeatureIds, featureLayer, [], false);
+
+  } else {
+    // Get the features to export
+    featureSet = await queryFeaturesByID(ids, featureLayer, [], false);
+  }
 
   // Get field data types. Do we have any domain-based fields?
   const attributeOrigNames: IAttributeOrigNames = {};
@@ -787,7 +761,7 @@ export async function _prepareLabels(
   const labels
     = labelFormatProps.labelFormat.type === "pattern" ?
     // Export attributes in format
-    await _prepareLabelsFromPattern(layer, featureSet, attributeOrigNames, attributeTypes, attributeDomains,
+    await _prepareLabelsFromPattern(/*layer,*/ featureSet, attributeOrigNames, attributeTypes, attributeDomains,
       labelFormatProps.attributeFormats, labelFormatProps.labelFormat.format as string, includeHeaderNames)
 
     : labelFormatProps.labelFormat.type === "executor" ?
@@ -798,7 +772,6 @@ export async function _prepareLabels(
     // Export all attributes
     await _prepareLabelsFromAll(featureSet, attributeTypes, attributeDomains, includeHeaderNames);
 
-  console.log("labels", JSON.stringify(labels, null, 2));//???
   return Promise.resolve(labels);
 }
 
@@ -812,7 +785,7 @@ export async function _prepareLabels(
  * @returns Promise resolving with list of labels, each of which is a list of label lines
  */
 export async function _prepareLabelsFromAll(
-  featureSet: IFeature[],
+  featureSet: __esri.Graphic[],
   attributeTypes: IAttributeTypes,
   attributeDomains: IAttributeDomains,
   includeHeaderNames = false
@@ -859,8 +832,8 @@ export async function _prepareLabelsFromAll(
  * @returns Promise resolving with list of labels, each of which is a list of label lines
  */
 export async function _prepareLabelsFromPattern(
-  layer: __esri.FeatureLayer,
-  featureSet: IFeature[],
+  //layer: __esri.FeatureLayer,
+  featureSet: __esri.Graphic[],
   attributeOrigNames: IAttributeOrigNames,
   attributeTypes: IAttributeTypes,
   attributeDomains: IAttributeDomains,
@@ -875,31 +848,26 @@ export async function _prepareLabelsFromPattern(
   const attributeNames = _getFieldNamesFromFieldExpressions(attributeExpressionMatches);
 
   // Do we need any Arcade executors?
-  const arcadeExecutors = await _createArcadeExecutors(labelFormat, layer);
-  const arcadeExpressionRegExp = /\{expression\/\w+\}/g;
-  //???const attributeRegExp = /\{\w+\}/g;
+  //const arcadeExecutors = await _createArcadeExecutors(labelFormat, layer);
+  //const arcadeExpressionRegExp = /\{expression\/\w+\}/g;
 
   // Find the label fields that we need to replace with values
-  const arcadeExpressionMatches = labelFormat.match(arcadeExpressionRegExp) ?? [];
-  //???const attributeMatches = labelFormat.match(attributeRegExp) ?? [];
-  console.log("arcadeExpressionMatches", arcadeExpressionMatches);//???
+  //const arcadeExpressionMatches = labelFormat.match(arcadeExpressionRegExp) ?? [];
 
-  console.log("_prepareLabelsFromPattern format", labelFormat);//???
   // Convert feature attributes into an array of labels
   const labels = await Promise.all(featureSet.map(
     async feature => {
       let labelPrep = labelFormat;
 
+      /*
       // Replace Arcade expressions in this feature
-      console.log("arcade label before", labelPrep);//???
       for (let i = 0; i < arcadeExpressionMatches.length; i++) {
         const match: string = arcadeExpressionMatches[i];
         const expressionName = match.substring(match.indexOf("/") + 1, match.length - 1);
-        const value = await arcadeExecutors[expressionName].executeAsync({"$feature": feature, "$layer": layer});
-        console.log("arcade # match, expr, value", i, match, expressionName, value);//???
+        const value = await arcadeExecutors[expressionName].executeAsync({"$feature": feature, "$layer", layer});
         labelPrep = labelPrep.replace(match, value);
-        console.log("arcade label after", labelPrep);//???
       }
+      */
 
       // Replace non-Arcade fields in this feature
       attributeNames.forEach(
@@ -939,7 +907,7 @@ export async function _prepareLabelsFromPattern(
  * @returns Promise resolving with list of labels, each of which is a list of label lines
  */
 export async function _prepareLabelsUsingExecutor(
-  featureSet: IFeature[],
+  featureSet: __esri.Graphic[],
   labelFormat: __esri.ArcadeExecutor
 ): Promise<string[][]> {
   // Convert feature attributes into an array of labels
