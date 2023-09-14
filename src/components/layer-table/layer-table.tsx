@@ -634,55 +634,45 @@ export class LayerTable {
    * @returns node to confirm or deny the delete operation
    */
   protected _deleteMessage(): VNode {
-    const showClass = this._confirmDelete ? "" : "display-none";
     return (
-      <calcite-scrim class={showClass}>
-      <div class="esri-editor__prompt--danger">
-        <div class="esri-editor__prompt__header">
+      <calcite-modal
+        aria-labelledby="modal-title"
+        kind="danger"
+        open={this._confirmDelete}
+      >
+        <div
+          class="display-flex align-center"
+          id="modal-title"
+          slot="header"
+        >
           <calcite-icon
             aria-hidden="true"
+            class="padding-end-1 danger-color"
             icon="exclamation-mark-triangle"
             scale="m"
           />
-          <h4
-            aria-level="4"
-            class="esri-widget__heading esri-editor__prompt__header__heading"
-            role="heading"
-          >
-            {this._translations.deleteFeature}
-          </h4>
+          {this._translations.deleteFeature}
         </div>
-        <div class="esri-editor__prompt__message">
+        <div slot="content">
           {this._translations.confirm}
         </div>
-        <div class="esri-editor__prompt__divider" />
-        <div class="esri-editor__prompt__actions">
-          <calcite-button
-            alignment="center"
-            appearance="outline"
-            kind="danger"
-            onClick={() => this._alertClosed()}
-            scale="m"
-            type="button"
-            width="half"
-          >
-            {this._translations.keepFeature}
-          </calcite-button>
-          <calcite-button
-            alignment="center"
-            appearance="solid"
-            kind="danger"
-            loading={this._isDeleting}
-            onClick={() => void this._deleteFeatures()}
-            scale="m"
-            type="button"
-            width="half"
-          >
-            {this._translations.delete}
-          </calcite-button>
-        </div>
-      </div>
-    </calcite-scrim>
+        <calcite-button
+          appearance="outline"
+          kind="danger"
+          onClick={() => this._alertClosed()}
+          slot="secondary"
+          width="full"
+        >
+          {this._translations.cancel}
+        </calcite-button>
+        <calcite-button
+          kind="danger"
+          loading={this._isDeleting}
+          onClick={() => void this._deleteFeatures()}
+          slot="primary" width="full">
+          {this._translations.delete}
+        </calcite-button>
+      </calcite-modal>
     );
   }
 

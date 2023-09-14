@@ -68,7 +68,7 @@ tr:nth-child(odd) {
 }
 
 .edit-btn {
-  z-index: 999;
+  z-index: 99;
   position: absolute;
 }
 

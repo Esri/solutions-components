@@ -12,11 +12,11 @@
   "fetchingData": "Fetching Data",
   "refresh": "Refresh",
   "enableEditing": "Editing must be enabled on the layer.",
-  "confirm": "This feature will be permanently removed.",
+  "confirm": "These features will be permanently removed.",
   "deleteFeature": "Delete feature",
   "deleteDisabled": "Delete Disabled",
   "editMultipleDisabled": "Edit Multiple Disabled",
   "showAll": "Show all",
   "recordsSelected": "{{total}} records, {{selected}} selected",
-  "keepFeature": "Keep feature"
+  "cancel": "Cancel"
 }

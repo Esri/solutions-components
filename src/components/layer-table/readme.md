@@ -57,7 +57,7 @@ Promise that resolves when the operation is complete
 - calcite-dropdown-group
 - calcite-dropdown-item
 - calcite-alert
-- calcite-scrim
+- calcite-modal
 - calcite-icon
 
 ### Graph
@@ -75,7 +75,7 @@ graph TD;
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
   layer-table --> calcite-alert
-  layer-table --> calcite-scrim
+  layer-table --> calcite-modal
   layer-table --> calcite-icon
   calcite-panel --> calcite-action
   calcite-panel --> calcite-action-menu
@@ -109,6 +109,8 @@ graph TD;
   calcite-dropdown-item --> calcite-icon
   calcite-alert --> calcite-icon
   calcite-alert --> calcite-chip
+  calcite-modal --> calcite-scrim
+  calcite-modal --> calcite-icon
   crowdsource-manager --> layer-table
   style layer-table fill:#f9f,stroke:#333,stroke-width:4px
 ```

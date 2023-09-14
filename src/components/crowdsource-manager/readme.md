@@ -109,7 +109,7 @@ graph TD;
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
   layer-table --> calcite-alert
-  layer-table --> calcite-scrim
+  layer-table --> calcite-modal
   layer-table --> calcite-icon
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
@@ -125,6 +125,8 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-combobox-item --> calcite-icon
   calcite-dropdown-item --> calcite-icon
+  calcite-modal --> calcite-scrim
+  calcite-modal --> calcite-icon
   style crowdsource-manager fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
