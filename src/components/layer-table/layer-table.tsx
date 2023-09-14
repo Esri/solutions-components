@@ -43,6 +43,16 @@ export class LayerTable {
   //--------------------------------------------------------------------------
 
   /**
+   * boolean: when true the layer table will auto refresh the data
+   */
+  @Prop() enableAutoRefresh: boolean;
+
+  /**
+   * boolean: when true edits can be applied directly within the table
+   */
+  @Prop() enableInlineEdit: boolean;
+
+  /**
    * IMapInfo: key configuration details about the current map
    */
   @Prop() mapInfo: IMapInfo;
@@ -77,6 +87,11 @@ export class LayerTable {
    * boolean: When true a loading indicator will be shown in place of the layer table
    */
   @State() _fetchingData = false;
+
+  /**
+   * boolean: When true a loading indicator will be shown in the delete button
+   */
+  @State() _isDeleting = false;
 
   /**
    * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
@@ -116,39 +131,9 @@ export class LayerTable {
   protected FeatureTable: typeof import("esri/widgets/FeatureTable");
 
   /**
-   * any: The function that the alerts action should execute
+   * boolean: When true the user will be asked to confirm the delete operation
    */
-  protected _alertActionFunction: any;
-
-  /**
-   * string: The alerts action text...will be displayed when _alertShowAction is True
-   */
-  protected _alertActionText: string;
-
-  /**
-   * string: main icon of the alert
-   */
-  protected _alertIcon: string;
-
-  /**
-   * "warning" | "danger": the kind of alert to display
-   */
-  protected _alertKind: "warning" | "danger";
-
-  /**
-   * boolean: When true a action link will be deisplayed
-   */
-  protected _alertShowAction: boolean;
-
-  /**
-   * string: main message of the alert
-   */
-  protected _alertMessage: string;
-
-  /**
-   * string: the alerts title
-   */
-  protected _alertTitle: string;
+  protected _confirmDelete: boolean;
 
   /**
    * number[]: A list of all IDs for the current layer
@@ -159,6 +144,11 @@ export class LayerTable {
    * boolean: When false alerts will be shown to indicate that the layer must have editing enabled for edit actions
    */
   protected _editEnabled: boolean;
+
+  /**
+   * boolean: When false alerts will be shown to indicate that the layer must have delete and editing enabled
+   */
+  protected _deleteEnabled: boolean;
 
   /**
    * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
@@ -313,7 +303,6 @@ export class LayerTable {
     }
     const tableNodeClass = this._fetchingData ? "display-none" : "";
     const loadingClass = this._fetchingData ? "" : "display-none";
-    const alertActionClass = this._alertShowAction ? "" : "display-none";
     const total = this._allIds.length.toString();
     const selected = this._selectedIndexes.length.toString();
     return (
@@ -340,29 +329,9 @@ export class LayerTable {
               }
             </div>
           </div>
-          <calcite-alert
-            icon={this._alertIcon}
-            kind={this._alertKind}
-            label=""
-            onCalciteAlertClose={() => this._alertClosed()}
-            open={this._alertOpen}
-            placement="top"
-          >
-            <div slot="title">
-              {this._alertTitle}
-            </div>
-            <div slot="message">
-              {this._alertMessage}
-            </div>
-            <calcite-link
-              class={alertActionClass}
-              onClick={this._alertActionFunction}
-              slot="link"
-            >
-              {this._alertActionText}
-            </calcite-link>
-          </calcite-alert>
+          {this._getEditDisabledWarning()}
         </calcite-shell>
+        {this._deleteMessage()}
       </Host>
     );
   }
@@ -557,9 +526,10 @@ export class LayerTable {
     if (this._layer) {
       await this._layer.when(async () => {
         this._table = new this.FeatureTable({
+          autoRefreshEnabled: this.enableAutoRefresh,
           layer: this._layer,
           view: this.mapView,
-          //editingEnabled: this._editEnabled,
+          editingEnabled: this._editEnabled && this.enableInlineEdit,
           highlightEnabled: true,
           multiSortEnabled: false,
           visibleElements: {
@@ -571,6 +541,8 @@ export class LayerTable {
           },
           container: node
         } as __esri.FeatureTableProperties);
+
+        this._checkEditEnabled();
 
         await this._table.when(async () => {
           this._table.highlightIds.on("change", () => {
@@ -609,7 +581,7 @@ export class LayerTable {
       const columnTemplates = this._getColumnTemplates(this._layer.id);
       this._table.layer = this._layer;
       this._table.tableTemplate.columnTemplates = columnTemplates;
-      this._editEnabled = this._layer.editingEnabled;
+      this._checkEditEnabled();
       this._table.view = this.mapView;
       this._table.editingEnabled = this._editEnabled;
       this._table.clearSelectionFilter();
@@ -617,6 +589,16 @@ export class LayerTable {
       this._sortActive = false;
       await this._sortTable();
     }
+  }
+
+  /**
+   * Verify edit capabilities of the layer
+   *
+   * @returns void
+   */
+  protected _checkEditEnabled(): void {
+    this._editEnabled = this._layer.editingEnabled && this._layer.capabilities.operations.supportsUpdate;
+    this._deleteEnabled = this._layer.editingEnabled && this._layer.capabilities.operations.supportsDelete;
   }
 
   /**
@@ -636,6 +618,98 @@ export class LayerTable {
         });
       }
     }
+  }
+
+  /**
+   * Show warning when editing is disabled
+   *
+   * @returns node with warning message
+   */
+  protected _getEditDisabledWarning(): VNode {
+    return (
+      <calcite-alert
+        icon="layer-broken"
+        kind="warning"
+        label=""
+        onCalciteAlertClose={() => this._alertClosed()}
+        open={this._alertOpen && !this._confirmDelete}
+        placement="top"
+      >
+        <div slot="title">
+          {this._translations.deleteDisabled}
+        </div>
+        <div slot="message">
+          {this._translations.enableEditing}
+        </div>
+      </calcite-alert>
+    );
+  }
+
+  /**
+   * Show delete confirmation message
+   *
+   * @returns node to confirm or deny the delete operation
+   */
+  protected _deleteMessage(): VNode {
+    return (
+      <calcite-modal
+        aria-labelledby="modal-title"
+        kind="danger"
+        open={this._confirmDelete}
+      >
+        <div
+          class="display-flex align-center"
+          id="modal-title"
+          slot="header"
+        >
+          <calcite-icon
+            aria-hidden="true"
+            class="padding-end-1 danger-color"
+            icon="exclamation-mark-triangle"
+            scale="m"
+          />
+          {this._translations.deleteFeature}
+        </div>
+        <div slot="content">
+          {this._translations.confirm}
+        </div>
+        <calcite-button
+          appearance="outline"
+          kind="danger"
+          onClick={() => this._alertClosed()}
+          slot="secondary"
+          width="full"
+        >
+          {this._translations.cancel}
+        </calcite-button>
+        <calcite-button
+          kind="danger"
+          loading={this._isDeleting}
+          onClick={() => void this._deleteFeatures()}
+          slot="primary" width="full">
+          {this._translations.delete}
+        </calcite-button>
+      </calcite-modal>
+    );
+  }
+
+  /**
+   * Delete the currently selected features
+   *
+   * @returns void
+   */
+  protected async _deleteFeatures(): Promise<void> {
+    this._isDeleting = true;
+    const deleteFeatures = this._table.highlightIds.toArray().map((objectId) => {
+      return {objectId};
+    })
+    await this._layer.applyEdits({
+      deleteFeatures
+    });
+    await this._table.refresh();
+    this._allIds = await queryAllIds(this._layer);
+    this._isDeleting = false;
+    this._alertClosed();
   }
 
   /**
@@ -675,6 +749,7 @@ export class LayerTable {
    */
   protected _alertClosed(): void {
     this._alertOpen = false;
+    this._confirmDelete = false;
   }
 
   /**
@@ -787,24 +862,7 @@ export class LayerTable {
    */
   protected _delete(): void {
     if (this._editEnabled) {
-      this._alertIcon = "trash";
-      this._alertTitle = this._translations.deleteRows;
-      this._alertActionText = this._translations.delete;
-      this._alertShowAction = true;
-      this._alertMessage = this._translations.confirm;
-      this._alertKind = "danger";
-      this._alertActionFunction = () => {
-        void this._layer.applyEdits({
-          deleteFeatures: this._table.highlightIds.toArray()
-        });
-        this._alertOpen = false;
-      }
-    } else {
-      this._alertIcon = "layer-broken";
-      this._alertTitle = this._translations.deleteDisabled;
-      this._alertShowAction = false;
-      this._alertMessage = this._translations.enableEditing;
-      this._alertKind = "warning";
+      this._confirmDelete = true;
     }
     this._alertOpen = true;
   }

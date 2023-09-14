@@ -75,6 +75,14 @@ export namespace Components {
          */
         "classicGrid": boolean;
         /**
+          * boolean: when true the layer table will auto refresh the data
+         */
+        "enableAutoRefresh": boolean;
+        /**
+          * boolean: when true edits can be applied directly within the table
+         */
+        "enableInlineEdit": boolean;
+        /**
           * boolean: when true no map is displayed for the app
          */
         "hideMap": boolean;
@@ -179,6 +187,14 @@ export namespace Components {
         "value": any;
     }
     interface LayerTable {
+        /**
+          * boolean: when true the layer table will auto refresh the data
+         */
+        "enableAutoRefresh": boolean;
+        /**
+          * boolean: when true edits can be applied directly within the table
+         */
+        "enableInlineEdit": boolean;
         /**
           * Get the selected graphics
           * @returns Promise that resolves when the operation is complete
@@ -1170,6 +1186,14 @@ declare namespace LocalJSX {
          */
         "classicGrid"?: boolean;
         /**
+          * boolean: when true the layer table will auto refresh the data
+         */
+        "enableAutoRefresh"?: boolean;
+        /**
+          * boolean: when true edits can be applied directly within the table
+         */
+        "enableInlineEdit"?: boolean;
+        /**
           * boolean: when true no map is displayed for the app
          */
         "hideMap"?: boolean;
@@ -1261,6 +1285,14 @@ declare namespace LocalJSX {
         "value"?: any;
     }
     interface LayerTable {
+        /**
+          * boolean: when true the layer table will auto refresh the data
+         */
+        "enableAutoRefresh"?: boolean;
+        /**
+          * boolean: when true edits can be applied directly within the table
+         */
+        "enableInlineEdit"?: boolean;
         /**
           * IMapInfo: key configuration details about the current map
          */
