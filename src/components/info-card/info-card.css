@@ -67,20 +67,6 @@ tr:nth-child(odd) {
   overflow: auto;
 }
 
-.edit-btn {
-  z-index: 999;
-  position: absolute;
-}
-
-.edit-btn-position {
-  right: 0.5rem;
-  top: 0.5rem;
-}
-
-html[dir="rtl"] .edit-btn-position {
-  left: 0;
-}
-
 .esri-features__footer {
   display: none !important;
 }
@@ -90,6 +76,20 @@ html[dir="rtl"] .edit-btn-position {
   align-items: center;
 }
 
+.top-border {
+  border-top: 1px solid var(--calcite-ui-border-1);
+}
+
 .min-width-100 {
   min-width: 100px;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.esri-features__container {
+  padding: 0.5rem !important;
+  background-color: var(--calcite-ui-foreground-1) !important;
+  height: 100% !important;
 }

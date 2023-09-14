@@ -10,6 +10,8 @@
 | Property                  | Attribute                     | Description                                                                                                        | Type                   | Default     |
 | ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------- | ----------- |
 | `classicGrid`             | `classic-grid`                | boolean: when true the grid will display like the previous manager app with the table across the top               | `boolean`              | `false`     |
+| `enableAutoRefresh`       | `enable-auto-refresh`         | boolean: when true the layer table will auto refresh the data                                                      | `boolean`              | `true`      |
+| `enableInlineEdit`        | `enable-inline-edit`          | boolean: when true edits can be applied directly within the table                                                  | `boolean`              | `false`     |
 | `hideMap`                 | `hide-map`                    | boolean: when true no map is displayed for the app                                                                 | `boolean`              | `false`     |
 | `mapInfos`                | --                            | IMapInfo[]: array of map infos (name and id)                                                                       | `IMapInfo[]`           | `[]`        |
 | `searchConfiguration`     | --                            | ISearchConfiguration: Configuration details for the Search widget                                                  | `ISearchConfiguration` | `undefined` |
@@ -98,8 +100,6 @@ graph TD;
   layer-table --> calcite-shell
   layer-table --> calcite-panel
   layer-table --> calcite-loader
-  layer-table --> calcite-alert
-  layer-table --> calcite-link
   layer-table --> calcite-action-bar
   layer-table --> map-layer-picker
   layer-table --> calcite-action
@@ -108,7 +108,9 @@ graph TD;
   layer-table --> calcite-dropdown
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
-  calcite-link --> calcite-icon
+  layer-table --> calcite-alert
+  layer-table --> calcite-modal
+  layer-table --> calcite-icon
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown
@@ -123,6 +125,8 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-combobox-item --> calcite-icon
   calcite-dropdown-item --> calcite-icon
+  calcite-modal --> calcite-scrim
+  calcite-modal --> calcite-icon
   style crowdsource-manager fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
