@@ -43,6 +43,16 @@ export class LayerTable {
   //--------------------------------------------------------------------------
 
   /**
+   * boolean: when true the layer table will auto refresh the data
+   */
+  @Prop() enableAutoRefresh: boolean;
+
+  /**
+   * boolean: when true edits can be applied directly within the table
+   */
+  @Prop() enableInlineEdit: boolean;
+
+  /**
    * IMapInfo: key configuration details about the current map
    */
   @Prop() mapInfo: IMapInfo;
@@ -511,9 +521,10 @@ export class LayerTable {
     if (this._layer) {
       await this._layer.when(async () => {
         this._table = new this.FeatureTable({
+          autoRefreshEnabled: this.enableAutoRefresh,
           layer: this._layer,
           view: this.mapView,
-          //editingEnabled: this._editEnabled,
+          editingEnabled: this._editEnabled && this.enableInlineEdit,
           highlightEnabled: true,
           multiSortEnabled: false,
           visibleElements: {

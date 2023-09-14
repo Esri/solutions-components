@@ -44,6 +44,16 @@ export class CrowdsourceManager {
   @Prop() classicGrid = false;
 
   /**
+   * boolean: when true the layer table will auto refresh the data
+   */
+  @Prop() enableAutoRefresh = true;
+
+  /**
+   * boolean: when true edits can be applied directly within the table
+   */
+  @Prop() enableInlineEdit = false;
+
+  /**
    * boolean: when true the table will be sorted by objectid in descending order by default
    */
   @Prop() showNewestFirst = true;
@@ -509,6 +519,8 @@ export class CrowdsourceManager {
         </calcite-action-bar>
         <div class="width-full height-full position-relative">
           <layer-table
+            enableAutoRefresh={this.enableAutoRefresh}
+            enableInlineEdit={this.enableInlineEdit}
             mapInfo={this._mapInfo}
             mapView={this?._mapView}
             showNewestFirst={this.showNewestFirst}

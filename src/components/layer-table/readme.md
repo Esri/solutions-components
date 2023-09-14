@@ -9,6 +9,8 @@
 
 | Property                  | Attribute                     | Description                                                                                                        | Type       | Default     |
 | ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------- | ----------- |
+| `enableAutoRefresh`       | `enable-auto-refresh`         | boolean: when true the layer table will auto refresh the data                                                      | `boolean`  | `undefined` |
+| `enableInlineEdit`        | `enable-inline-edit`          | boolean: when true edits can be applied directly within the table                                                  | `boolean`  | `undefined` |
 | `mapInfo`                 | --                            | IMapInfo: key configuration details about the current map                                                          | `IMapInfo` | `undefined` |
 | `mapView`                 | --                            | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html             | `MapView`  | `undefined` |
 | `showNewestFirst`         | `show-newest-first`           | boolean: when true the table will be sorted by objectid in descending order by default                             | `boolean`  | `undefined` |
