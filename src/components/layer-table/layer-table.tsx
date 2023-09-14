@@ -79,6 +79,11 @@ export class LayerTable {
   @State() _fetchingData = false;
 
   /**
+   * boolean: When true a loading indicator will be shown in the delete button
+   */
+  @State() _isDeleting = false;
+
+  /**
    * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
    */
   @State() _layer: __esri.FeatureLayer;
@@ -656,7 +661,8 @@ export class LayerTable {
             alignment="center"
             appearance="solid"
             kind="danger"
-            onClick={() => this._deleteFeatures()}
+            loading={this._isDeleting}
+            onClick={() => void this._deleteFeatures()}
             scale="m"
             type="button"
             width="half"
@@ -674,10 +680,17 @@ export class LayerTable {
    *
    * @returns void
    */
-  protected _deleteFeatures(): void {
-    void this._layer.applyEdits({
-      deleteFeatures: this._table.highlightIds.toArray()
+  protected async _deleteFeatures(): Promise<void> {
+    this._isDeleting = true;
+    const deleteFeatures = this._table.highlightIds.toArray().map((objectId) => {
+      return {objectId};
+    })
+    await this._layer.applyEdits({
+      deleteFeatures
     });
+    await this._table.refresh();
+    this._allIds = await queryAllIds(this._layer);
+    this._isDeleting = false;
     this._alertClosed();
   }
 
