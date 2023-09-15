@@ -102,12 +102,12 @@ graph TD;
   layer-table --> calcite-loader
   layer-table --> calcite-action-bar
   layer-table --> map-layer-picker
-  layer-table --> calcite-action
-  layer-table --> calcite-tooltip
-  layer-table --> calcite-button
   layer-table --> calcite-dropdown
+  layer-table --> calcite-action
+  layer-table --> calcite-button
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
+  layer-table --> calcite-tooltip
   layer-table --> calcite-alert
   layer-table --> calcite-modal
   layer-table --> calcite-icon

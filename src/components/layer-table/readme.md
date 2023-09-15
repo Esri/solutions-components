@@ -50,12 +50,12 @@ Promise that resolves when the operation is complete
 - calcite-loader
 - calcite-action-bar
 - [map-layer-picker](../map-layer-picker)
-- calcite-action
-- calcite-tooltip
-- calcite-button
 - calcite-dropdown
+- calcite-action
+- calcite-button
 - calcite-dropdown-group
 - calcite-dropdown-item
+- calcite-tooltip
 - calcite-alert
 - calcite-modal
 - calcite-icon
@@ -68,12 +68,12 @@ graph TD;
   layer-table --> calcite-loader
   layer-table --> calcite-action-bar
   layer-table --> map-layer-picker
-  layer-table --> calcite-action
-  layer-table --> calcite-tooltip
-  layer-table --> calcite-button
   layer-table --> calcite-dropdown
+  layer-table --> calcite-action
+  layer-table --> calcite-button
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
+  layer-table --> calcite-tooltip
   layer-table --> calcite-alert
   layer-table --> calcite-modal
   layer-table --> calcite-icon

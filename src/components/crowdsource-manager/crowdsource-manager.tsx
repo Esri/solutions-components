@@ -171,9 +171,10 @@ export class CrowdsourceManager {
     if (this._expandPopup) {
       this._shouldSetMapView = true;
       this._expandPopup = false;
-    } else {
-      this._setMapView();
     }
+    await this._mapChange.mapView.when(() => {
+      this._setMapView();
+    });
   }
 
   //--------------------------------------------------------------------------
