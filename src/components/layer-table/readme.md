@@ -9,6 +9,8 @@
 
 | Property                  | Attribute                     | Description                                                                                                        | Type       | Default     |
 | ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------- | ----------- |
+| `enableAutoRefresh`       | `enable-auto-refresh`         | boolean: when true the layer table will auto refresh the data                                                      | `boolean`  | `undefined` |
+| `enableInlineEdit`        | `enable-inline-edit`          | boolean: when true edits can be applied directly within the table                                                  | `boolean`  | `undefined` |
 | `mapInfo`                 | --                            | IMapInfo: key configuration details about the current map                                                          | `IMapInfo` | `undefined` |
 | `mapView`                 | --                            | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html             | `MapView`  | `undefined` |
 | `showNewestFirst`         | `show-newest-first`           | boolean: when true the table will be sorted by objectid in descending order by default                             | `boolean`  | `undefined` |
@@ -46,8 +48,6 @@ Promise that resolves when the operation is complete
 - calcite-shell
 - calcite-panel
 - calcite-loader
-- calcite-alert
-- calcite-link
 - calcite-action-bar
 - [map-layer-picker](../map-layer-picker)
 - calcite-action
@@ -56,6 +56,9 @@ Promise that resolves when the operation is complete
 - calcite-dropdown
 - calcite-dropdown-group
 - calcite-dropdown-item
+- calcite-alert
+- calcite-modal
+- calcite-icon
 
 ### Graph
 ```mermaid
@@ -63,8 +66,6 @@ graph TD;
   layer-table --> calcite-shell
   layer-table --> calcite-panel
   layer-table --> calcite-loader
-  layer-table --> calcite-alert
-  layer-table --> calcite-link
   layer-table --> calcite-action-bar
   layer-table --> map-layer-picker
   layer-table --> calcite-action
@@ -73,6 +74,9 @@ graph TD;
   layer-table --> calcite-dropdown
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
+  layer-table --> calcite-alert
+  layer-table --> calcite-modal
+  layer-table --> calcite-icon
   calcite-panel --> calcite-action
   calcite-panel --> calcite-action-menu
   calcite-panel --> calcite-scrim
@@ -83,10 +87,6 @@ graph TD;
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
   calcite-scrim --> calcite-loader
-  calcite-alert --> calcite-icon
-  calcite-alert --> calcite-chip
-  calcite-chip --> calcite-icon
-  calcite-link --> calcite-icon
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
@@ -102,10 +102,15 @@ graph TD;
   calcite-select --> calcite-icon
   calcite-combobox --> calcite-chip
   calcite-combobox --> calcite-icon
+  calcite-chip --> calcite-icon
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   calcite-combobox-item --> calcite-icon
   calcite-dropdown-item --> calcite-icon
+  calcite-alert --> calcite-icon
+  calcite-alert --> calcite-chip
+  calcite-modal --> calcite-scrim
+  calcite-modal --> calcite-icon
   crowdsource-manager --> layer-table
   style layer-table fill:#f9f,stroke:#333,stroke-width:4px
 ```

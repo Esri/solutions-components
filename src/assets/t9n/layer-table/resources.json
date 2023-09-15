@@ -12,10 +12,11 @@
   "fetchingData": "Fetching Data",
   "refresh": "Refresh",
   "enableEditing": "Editing must be enabled on the layer.",
-  "confirm": "Are you sure?",
-  "deleteRows": "Delete Data",
+  "confirm": "These features will be permanently removed.",
+  "deleteFeature": "Delete feature",
   "deleteDisabled": "Delete Disabled",
   "editMultipleDisabled": "Edit Multiple Disabled",
   "showAll": "Show all",
-  "recordsSelected": "{{total}} records, {{selected}} selected"
+  "recordsSelected": "{{total}} records, {{selected}} selected",
+  "cancel": "Cancel"
 }

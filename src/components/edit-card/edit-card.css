@@ -52,3 +52,11 @@
   width: 100% !important;
   background-color: var(--calcite-ui-foreground-1) !important;
 }
+
+.esri-feature__content-node {
+  background-color: var(--calcite-ui-foreground-1) !important;
+}
+
+.esri-editor__panel-toolbar {
+  display: none !important;
+}

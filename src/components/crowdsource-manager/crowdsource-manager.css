@@ -93,11 +93,11 @@
 }
 
 .adjusted-height-50 {
-  height: calc(50% - 0.5rem - 25px);
+  height: calc(50% - 25px);
 }
 
 .adjusted-height-100 {
-  height: calc(100% - 1rem - 50px);
+  height: calc(100% - 50px);
 }
 
 .adjusted-height-100-50 {

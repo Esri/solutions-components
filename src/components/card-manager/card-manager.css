@@ -50,11 +50,6 @@
   overflow: auto;
 }
 
-.border-rounded {
-  border: 1px solid var(--calcite-ui-border-2);
-  border-radius: 5px;
-}
-
 .height-full {
   height: 100%;
 }
