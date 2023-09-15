@@ -70,7 +70,8 @@ export async function getMapTableHash(
  *
  */
 export async function getMapLayerIds(
-  mapView: __esri.MapView
+  mapView: __esri.MapView,
+  onlyShowUpdatableLayers = false
 ): Promise<string[]> {
   let layerIds = [];
   await mapView.when(() => {
@@ -81,7 +82,15 @@ export async function getMapLayerIds(
       return prev;
     }, []);
   });
-  return layerIds;
+  return onlyShowUpdatableLayers ? await layerIds.reduce(async (prev, cur) => {
+    const layer = await getLayer(mapView, cur);
+    await layer.when(() => {
+      if (layer.editingEnabled && layer.capabilities.operations.supportsUpdate) {
+        prev.push(cur);
+      }
+    });
+    return prev;
+  }, []) : layerIds;
 }
 
 /**
@@ -93,7 +102,8 @@ export async function getMapLayerIds(
  *
  */
 export async function getMapTableIds(
-  mapView: __esri.MapView
+  mapView: __esri.MapView,
+  onlyShowUpdatableTables = false
 ): Promise<string[]> {
   // TODO...seems like its the same as the hash...see if I can remove this
   let tableIds = [];
@@ -103,7 +113,16 @@ export async function getMapTableIds(
       return prev;
     }, []);
   });
-  return tableIds;
+
+  return onlyShowUpdatableTables ? await tableIds.reduce(async (prev, cur) => {
+    const table = await getLayer(mapView, cur);
+    await table.when(() => {
+      if (table.editingEnabled && table.capabilities.operations.supportsUpdate) {
+        prev.push(cur);
+      }
+    });
+    return prev;
+  }, []) : tableIds;
 }
 
 /**
