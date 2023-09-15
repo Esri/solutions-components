@@ -60,6 +60,11 @@ export class MapLayerPicker {
   @Prop() mapView: __esri.MapView;
 
   /**
+   * boolean: When true only editable layers that support the update capability will be available
+   */
+  @Prop() onlyShowUpdatableLayers: boolean;
+
+  /**
    * string: optional placeholder icon used with "combobox" type
    */
   @Prop() placeholderIcon = "";
@@ -336,8 +341,8 @@ export class MapLayerPicker {
    */
   async _setLayers(): Promise<void> {
     if (this.mapView) {
-      const mapLayerIds = await getMapLayerIds(this.mapView);
-      const mapTableIds = this.showTables ? await getMapTableIds(this.mapView) : [];
+      const mapLayerIds = await getMapLayerIds(this.mapView, this.onlyShowUpdatableLayers);
+      const mapTableIds = this.showTables ? await getMapTableIds(this.mapView, this.onlyShowUpdatableLayers) : [];
       this.ids = [
         ...mapLayerIds.filter(n => this.enabledLayerIds?.length > 0 ? this.enabledLayerIds.indexOf(n) > -1 : true),
         ...mapTableIds.filter(n => this.enabledTableIds?.length > 0 ? this.enabledTableIds.indexOf(n) > -1 : true),
