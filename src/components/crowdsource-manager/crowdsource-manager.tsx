@@ -168,13 +168,20 @@ export class CrowdsourceManager {
     evt: CustomEvent
   ): Promise<void> {
     this._mapChange = evt.detail;
+    await this._mapChange.mapView.when(() => {
+      this._setMapView();
+    });
+  }
+
+  /**
+   * Listen for beforeMapChanged and minimize the popup if it's expanded
+   */
+  @Listen("beforeMapChanged", { target: "window" })
+  async beforeMapChanged(): Promise<void> {
     if (this._expandPopup) {
       this._shouldSetMapView = true;
       this._expandPopup = false;
     }
-    await this._mapChange.mapView.when(() => {
-      this._setMapView();
-    });
   }
 
   //--------------------------------------------------------------------------
