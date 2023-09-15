@@ -311,6 +311,10 @@ export namespace Components {
          */
         "mapView": __esri.MapView;
         /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers": boolean;
+        /**
           * string: optional placeholder icon used with "combobox" type
          */
         "placeholderIcon": string;
@@ -1332,6 +1336,10 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
+          * Emitted before a new map is loaded
+         */
+        "onBeforeMapChanged"?: (event: MapCardCustomEvent<void>) => void;
+        /**
           * Emitted when a new map is loaded
          */
         "onMapChanged"?: (event: MapCardCustomEvent<IMapChange>) => void;
@@ -1425,6 +1433,10 @@ declare namespace LocalJSX {
           * Emitted on demand when a layer is selected
          */
         "onLayerSelectionChange"?: (event: MapLayerPickerCustomEvent<string[]>) => void;
+        /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers"?: boolean;
         /**
           * string: optional placeholder icon used with "combobox" type
          */
