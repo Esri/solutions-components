@@ -21,50 +21,97 @@ import { EWorkflowType, IMapItemHash, ISelectionSet } from "./interfaces";
  * Gets the layer names from the current map
  *
  * @param mapView the map view to fetch the layer names from
+ * @param onlyShowUpdatableLayers when true only layers that support editing and updates will be returned
+ * @param onlyIDs when true an array of ids is returned
+ *                when false a id/name hash is returned
  *
  * @returns Promise resolving with an array of layer names
  *
  */
 export async function getMapLayerHash(
-  mapView: __esri.MapView
-): Promise<IMapItemHash> {
-  let layerHash = {};
+  mapView: __esri.MapView,
+  onlyShowUpdatableLayers: boolean,
+  onlyIDs: boolean
+): Promise<IMapItemHash | string[]> {
+  let layerHash;
   await mapView.when(() => {
     layerHash = mapView.map.allLayers.toArray().reduce((prev, cur) => {
       if (cur.type === "feature") {
-        prev[cur.id] = cur.title;
+        if (onlyIDs) {
+          (prev as Array<string>).push(cur.id);
+        } else {
+          prev[cur.id] = cur.title;
+        }
       }
       return prev;
-    }, {});
+    }, onlyIDs ? [] : {});
   });
-  return layerHash;
+
+  return onlyShowUpdatableLayers ? Object.keys(layerHash).reduce(async (prev, cur) => {
+    const layer = await getLayerOrTable(mapView, cur);
+    await layer.when(() => {
+      if (layer.editingEnabled && layer.capabilities.operations.supportsUpdate) {
+        if (onlyIDs) {
+          (prev as Array<string>).push(cur);
+        } else {
+          prev[cur] = layerHash[cur];
+        }
+      }
+    });
+    return prev;
+  }, onlyIDs ? [] : {}) : layerHash;
 }
 
 /**
  * Gets the table names from the current map
  *
  * @param mapView the map view to fetch the table names from
+ * @param onlyShowUpdatableLayers when true only layers that support editing and updates will be returned
+ * @param onlyIDs when true an array of ids is returned
+ *                when false a id/name hash is returned
  *
  * @returns Promise resolving with an array of table names
  *
  */
 export async function getMapTableHash(
-  mapView: __esri.MapView
-): Promise<IMapItemHash> {
-  let tableHash = {};
+  mapView: __esri.MapView,
+  onlyShowUpdatableTables: boolean,
+  onlyIDs: boolean
+): Promise<IMapItemHash | string[]> {
+  let tableHash;
   await mapView.when(() => {
     tableHash = mapView.map.allTables.toArray().reduce((prev, cur) => {
-      prev[cur.id] = cur.title;
+      if (onlyIDs) {
+        // when only IDs is used it will be an array
+        (prev as Array<string>).push(cur.id);
+      } else {
+        prev[cur.id] = cur.title;
+      }
       return prev;
-    }, {});
+    }, onlyIDs ? [] : {});
   });
-  return tableHash;
+
+  const ids = onlyIDs ? tableHash : Object.keys(tableHash);
+  return onlyShowUpdatableTables ? ids.reduce(async (prev, cur) => {
+    const item = await getLayerOrTable(mapView, cur);
+    await item.when(() => {
+      if (item.editingEnabled && item.capabilities.operations.supportsUpdate) {
+        if (onlyIDs) {
+          prev.push(cur);
+        } else {
+          prev[cur] = tableHash[cur];
+        }
+      }
+    });
+    return prev;
+  }, onlyIDs ? [] : {}) : tableHash;
 }
 
 /**
  * Gets the layer names from the current map
  *
  * @param mapView the map view to fetch the layer names from
+ * @param onlyShowUpdatableLayers when true only layers that support editing and updates will be returned
  *
  * @returns Promise resolving with an array of layer names
  *
@@ -83,7 +130,7 @@ export async function getMapLayerIds(
     }, []);
   });
   return onlyShowUpdatableLayers ? await layerIds.reduce(async (prev, cur) => {
-    const layer = await getLayer(mapView, cur);
+    const layer = await getLayerOrTable(mapView, cur);
     await layer.when(() => {
       if (layer.editingEnabled && layer.capabilities.operations.supportsUpdate) {
         prev.push(cur);
@@ -97,6 +144,7 @@ export async function getMapLayerIds(
  * Gets the table names from the current map
  *
  * @param mapView the map view to fetch the table names from
+ * @param onlyShowUpdatableLayers when true only layers that support editing and updates will be returned
  *
  * @returns Promise resolving with an array of table names
  *
@@ -115,7 +163,7 @@ export async function getMapTableIds(
   });
 
   return onlyShowUpdatableTables ? await tableIds.reduce(async (prev, cur) => {
-    const table = await getLayer(mapView, cur);
+    const table = await getLayerOrTable(mapView, cur);
     await table.when(() => {
       if (table.editingEnabled && table.capabilities.operations.supportsUpdate) {
         prev.push(cur);
@@ -138,20 +186,20 @@ export async function getFeatureLayerView(
   mapView: __esri.MapView,
   id: string
 ): Promise<__esri.FeatureLayerView> {
-  const layer = await getLayer(mapView, id);
+  const layer = await getLayerOrTable(mapView, id);
   return layer ? await mapView.whenLayerView(layer) : undefined;
 }
 
 /**
- * Get a layer by id
+ * Get a layer or table by id
  *
  * @param mapView the map view to fetch the layer from
- * @param id the id if the layer to fetch
+ * @param id the id of the layer or table to fetch
  *
- * @returns Promise resolving with the fetched layer
+ * @returns Promise resolving with the fetched layer or table
  *
  */
-export async function getLayer(
+export async function getLayerOrTable(
   mapView: __esri.MapView,
   id: string
 ): Promise<__esri.FeatureLayer> {

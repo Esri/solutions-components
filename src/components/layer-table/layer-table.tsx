@@ -18,7 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Listen, Method, Prop,
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { getLayer, getMapLayerIds, goToSelection } from "../../utils/mapViewUtils";
+import { getLayerOrTable, getMapLayerIds, goToSelection } from "../../utils/mapViewUtils";
 import { queryFeaturesByID, queryAllIds } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { IExportInfos, ILayerInfo, IMapClick, IMapInfo } from "../../utils/interfaces";
@@ -193,7 +193,7 @@ export class LayerTable {
   async mapViewWatchHandler(): Promise<void> {
     this._fetchingData = true;
     const mapLayerIds = await getMapLayerIds(this.mapView);
-    this._layer = await getLayer(this.mapView, mapLayerIds[0]);
+    this._layer = await getLayerOrTable(this.mapView, mapLayerIds[0]);
     this.reactiveUtils.on(
       () => this.mapView,
       "click",
@@ -970,7 +970,7 @@ export class LayerTable {
     if (id !== this._layer.id || this._allIds.length === 0) {
       this._fetchingData = true;
       const columnTemplates = this._getColumnTemplates(id);
-      this._layer = await getLayer(this.mapView, id);
+      this._layer = await getLayerOrTable(this.mapView, id);
       this._allIds = await queryAllIds(this._layer)
       if (!this._table) {
         await this._getTable(this._tableNode, columnTemplates);

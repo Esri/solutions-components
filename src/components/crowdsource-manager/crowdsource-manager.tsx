@@ -71,7 +71,7 @@ export class CrowdsourceManager {
   /**
    * boolean: When true only editable layers that support the update capability will be available
    */
-  @Prop() onlyShowUpdatableLayers: boolean;
+  @Prop() onlyShowUpdatableLayers = false;
 
   /**
    * ISearchConfiguration: Configuration details for the Search widget
