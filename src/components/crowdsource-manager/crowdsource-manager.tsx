@@ -69,6 +69,11 @@ export class CrowdsourceManager {
   @Prop() mapInfos: IMapInfo[] = [];
 
   /**
+   * boolean: When true only editable layers that support the update capability will be available
+   */
+  @Prop() onlyShowUpdatableLayers: boolean;
+
+  /**
    * ISearchConfiguration: Configuration details for the Search widget
    */
   @Prop() searchConfiguration: ISearchConfiguration;
@@ -531,6 +536,7 @@ export class CrowdsourceManager {
             enableInlineEdit={this.enableInlineEdit}
             mapInfo={this._mapInfo}
             mapView={this?._mapView}
+            onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
             showNewestFirst={this.showNewestFirst}
             zoomAndScrollToSelected={this.zoomAndScrollToSelected}
           />

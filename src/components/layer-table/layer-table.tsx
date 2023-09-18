@@ -63,6 +63,11 @@ export class LayerTable {
   @Prop() mapView: __esri.MapView;
 
   /**
+   * boolean: When true only editable layers that support the update capability will be available
+   */
+  @Prop() onlyShowUpdatableLayers: boolean;
+
+  /**
    * boolean: when true the table will be sorted by objectid in descending order by default
    */
   @Prop() showNewestFirst: boolean;
@@ -381,6 +386,7 @@ export class LayerTable {
               appearance="transparent"
               mapView={this.mapView}
               onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
+              onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
               placeholderIcon="layers"
               scale="l"
               type="dropdown"
