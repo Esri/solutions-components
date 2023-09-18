@@ -15,7 +15,7 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
-import { getMapLayerHash, getMapLayerIds, getMapTableHash, getMapTableIds } from "../../utils/mapViewUtils";
+import { getMapLayerHash, getMapTableHash } from "../../utils/mapViewUtils";
 import state from "../../utils/publicNotificationStore";
 import { IMapItemHash } from "../../utils/interfaces";
 
@@ -352,13 +352,13 @@ export class MapLayerPicker {
    */
   async _setLayers(): Promise<void> {
     if (this.mapView) {
-      const mapLayerIds = await getMapLayerIds(this.mapView, this.onlyShowUpdatableLayers);
-      const mapTableIds = this.showTables ? await getMapTableIds(this.mapView, this.onlyShowUpdatableLayers) : [];
+      await this._initLayerTableHash();
+      const mapLayerIds = Object.keys(this._layerNameHash);
+      const mapTableIds = this.showTables ? Object.keys(this._tableNameHash) : [];
       this.ids = [
         ...mapLayerIds.filter(n => this.enabledLayerIds?.length > 0 ? this.enabledLayerIds.indexOf(n) > -1 : true),
         ...mapTableIds.filter(n => this.enabledTableIds?.length > 0 ? this.enabledTableIds.indexOf(n) > -1 : true),
       ];
-      await this._initStateHash();
     }
   }
 
@@ -367,12 +367,10 @@ export class MapLayerPicker {
    *
    * @returns Promise when the operation has completed
    */
-  protected async _initStateHash(): Promise<void> {
-    if (this.mapView) {
-      this._layerNameHash = await getMapLayerHash(this.mapView);
-      this._tableNameHash = this.showTables ? await getMapTableHash(
-        this.mapView, this.onlyShowUpdatableLayers, false) : {};
-    }
+  protected async _initLayerTableHash(): Promise<void> {
+    this._layerNameHash = await getMapLayerHash(this.mapView, this.onlyShowUpdatableLayers);
+    this._tableNameHash = this.showTables ? await getMapTableHash(
+      this.mapView, this.onlyShowUpdatableLayers) : {};
   }
 
   /**
