@@ -18,7 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Listen, Method, Prop,
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { getLayerOrTable, getMapLayerHash, goToSelection } from "../../utils/mapViewUtils";
+import { getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
 import { queryFeaturesByID, queryAllIds } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { IExportInfos, ILayerInfo, IMapClick, IMapInfo } from "../../utils/interfaces";
@@ -156,6 +156,11 @@ export class LayerTable {
   protected _deleteEnabled: boolean;
 
   /**
+   * IHandle: The map click handle
+   */
+  protected _mapClickHandle: IHandle;
+
+  /**
    * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
    */
   protected reactiveUtils: typeof import("esri/core/reactiveUtils");
@@ -191,18 +196,16 @@ export class LayerTable {
    */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
-    this._fetchingData = true;
-    const mapLayerHash = await getMapLayerHash(this.mapView, this.onlyShowUpdatableLayers);
-    const mapLayerIds = Object.keys(mapLayerHash);
-    this._layer = await getLayerOrTable(this.mapView, mapLayerIds[0]);
-    this.reactiveUtils.on(
+    if (this._mapClickHandle) {
+      this._mapClickHandle.remove();
+    }
+    this._mapClickHandle = this.reactiveUtils.on(
       () => this.mapView,
       "click",
       (event) => {
         void this._mapClicked(event);
       }
     );
-    this._fetchingData = false;
   }
 
   /**
@@ -304,9 +307,6 @@ export class LayerTable {
    * Renders the component.
    */
   render() {
-    if (!this._layer) {
-      return null;
-    }
     const tableNodeClass = this._fetchingData ? "display-none" : "";
     const loadingClass = this._fetchingData ? "" : "display-none";
     const total = this._allIds.length.toString();
@@ -968,11 +968,11 @@ export class LayerTable {
     evt: CustomEvent
   ): Promise<void> {
     const id: string = evt.detail[0];
-    if (id !== this._layer.id || this._allIds.length === 0) {
+    if (id !== this._layer?.id || this._allIds.length === 0) {
       this._fetchingData = true;
       const columnTemplates = this._getColumnTemplates(id);
       this._layer = await getLayerOrTable(this.mapView, id);
-      this._allIds = await queryAllIds(this._layer)
+      this._allIds = await queryAllIds(this._layer);
       if (!this._table) {
         await this._getTable(this._tableNode, columnTemplates);
       } else if (columnTemplates) {
