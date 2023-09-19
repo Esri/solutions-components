@@ -69,6 +69,11 @@ export class CrowdsourceManager {
   @Prop() mapInfos: IMapInfo[] = [];
 
   /**
+   * boolean: When true only editable layers that support the update capability will be available
+   */
+  @Prop() onlyShowUpdatableLayers = true;
+
+  /**
    * ISearchConfiguration: Configuration details for the Search widget
    */
   @Prop() searchConfiguration: ISearchConfiguration;
@@ -168,11 +173,19 @@ export class CrowdsourceManager {
     evt: CustomEvent
   ): Promise<void> {
     this._mapChange = evt.detail;
+    await this._mapChange.mapView.when(() => {
+      this._setMapView();
+    });
+  }
+
+  /**
+   * Listen for beforeMapChanged and minimize the popup if it's expanded
+   */
+  @Listen("beforeMapChanged", { target: "window" })
+  async beforeMapChanged(): Promise<void> {
     if (this._expandPopup) {
       this._shouldSetMapView = true;
       this._expandPopup = false;
-    } else {
-      this._setMapView();
     }
   }
 
@@ -523,6 +536,7 @@ export class CrowdsourceManager {
             enableInlineEdit={this.enableInlineEdit}
             mapInfo={this._mapInfo}
             mapView={this?._mapView}
+            onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
             showNewestFirst={this.showNewestFirst}
             zoomAndScrollToSelected={this.zoomAndScrollToSelected}
           />

@@ -15,9 +15,10 @@
 
 ## Events
 
-| Event        | Description                      | Type                      |
-| ------------ | -------------------------------- | ------------------------- |
-| `mapChanged` | Emitted when a new map is loaded | `CustomEvent<IMapChange>` |
+| Event              | Description                        | Type                      |
+| ------------------ | ---------------------------------- | ------------------------- |
+| `beforeMapChanged` | Emitted before a new map is loaded | `CustomEvent<void>`       |
+| `mapChanged`       | Emitted when a new map is loaded   | `CustomEvent<IMapChange>` |
 
 
 ## Dependencies
@@ -40,6 +41,8 @@ graph TD;
   map-picker --> calcite-action-bar
   map-picker --> calcite-list
   map-picker --> calcite-list-item
+  map-picker --> calcite-icon
+  map-picker --> calcite-tooltip
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   calcite-action-bar --> calcite-action-group

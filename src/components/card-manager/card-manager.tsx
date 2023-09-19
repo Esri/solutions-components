@@ -18,7 +18,7 @@ import { Component, Element, Host, h, Listen, Prop, State } from "@stencil/core"
 import CardManager_T9n from "../../assets/t9n/card-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { queryFeaturesByID } from "../../utils/queryUtils";
-import { getLayer } from "../../utils/mapViewUtils";
+import { getLayerOrTable } from "../../utils/mapViewUtils";
 
 @Component({
   tag: "card-manager",
@@ -117,7 +117,7 @@ export class CardManager {
     evt: CustomEvent
   ): Promise<void> {
     const id: string = evt.detail[0];
-    this.layer = await getLayer(this.mapView, id);
+    this.layer = await getLayerOrTable(this.mapView, id);
   }
 
   //--------------------------------------------------------------------------

@@ -7,17 +7,18 @@
 
 ## Properties
 
-| Property          | Attribute          | Description                                                                                            | Type                                   | Default         |
-| ----------------- | ------------------ | ------------------------------------------------------------------------------------------------------ | -------------------------------------- | --------------- |
-| `appearance`      | `appearance`       | "transparent" \| "solid": controls the button appearance when using the "dropdown" type                | `"solid" \| "transparent"`             | `"transparent"` |
-| `enabledLayerIds` | --                 | string[]: Optional list of enabled layer ids  If empty all layers will be available                    | `string[]`                             | `[]`            |
-| `enabledTableIds` | --                 | string[]: Optional list of enabled table ids  If empty all tables will be available                    | `string[]`                             | `[]`            |
-| `mapView`         | --                 | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                              | `undefined`     |
-| `placeholderIcon` | `placeholder-icon` | string: optional placeholder icon used with "combobox" type                                            | `string`                               | `""`            |
-| `scale`           | `scale`            | "s" \| "m" \| "l": scale to render the component                                                       | `"l" \| "m" \| "s"`                    | `"m"`           |
-| `selectedIds`     | --                 | string[]: list of layer ids that have been selected by the end user                                    | `string[]`                             | `[]`            |
-| `showTables`      | `show-tables`      | boolean: when true standalone tables will also be available                                            | `boolean`                              | `true`          |
-| `type`            | `type`             | "select" \| "combobox" \| "dropdown": type of component to leverage                                    | `"combobox" \| "dropdown" \| "select"` | `"select"`      |
+| Property                  | Attribute                    | Description                                                                                            | Type                                   | Default         |
+| ------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------------- | --------------- |
+| `appearance`              | `appearance`                 | "transparent" \| "solid": controls the button appearance when using the "dropdown" type                | `"solid" \| "transparent"`             | `"transparent"` |
+| `enabledLayerIds`         | --                           | string[]: Optional list of enabled layer ids  If empty all layers will be available                    | `string[]`                             | `[]`            |
+| `enabledTableIds`         | --                           | string[]: Optional list of enabled table ids  If empty all tables will be available                    | `string[]`                             | `[]`            |
+| `mapView`                 | --                           | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                              | `undefined`     |
+| `onlyShowUpdatableLayers` | `only-show-updatable-layers` | boolean: When true only editable layers that support the update capability will be available           | `boolean`                              | `undefined`     |
+| `placeholderIcon`         | `placeholder-icon`           | string: optional placeholder icon used with "combobox" type                                            | `string`                               | `""`            |
+| `scale`                   | `scale`                      | "s" \| "m" \| "l": scale to render the component                                                       | `"l" \| "m" \| "s"`                    | `"m"`           |
+| `selectedIds`             | --                           | string[]: list of layer ids that have been selected by the end user                                    | `string[]`                             | `[]`            |
+| `showTables`              | `show-tables`                | boolean: when true standalone tables will also be available                                            | `boolean`                              | `true`          |
+| `type`                    | `type`                       | "select" \| "combobox" \| "dropdown": type of component to leverage                                    | `"combobox" \| "dropdown" \| "select"` | `"select"`      |
 
 
 ## Events

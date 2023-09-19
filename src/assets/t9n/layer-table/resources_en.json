@@ -17,6 +17,6 @@
   "deleteDisabled": "Delete Disabled",
   "editMultipleDisabled": "Edit Multiple Disabled",
   "showAll": "Show all",
-  "recordsSelected": "{{total}} records, {{selected}} selected",
+  "recordsSelected": "Total: {{total}} | Selection: {{selected}}",
   "cancel": "Cancel"
 }

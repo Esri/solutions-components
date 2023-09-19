@@ -21,14 +21,16 @@ import { EWorkflowType, IMapItemHash, ISelectionSet } from "./interfaces";
  * Gets the layer names from the current map
  *
  * @param mapView the map view to fetch the layer names from
+ * @param onlyShowUpdatableLayers when true only layers that support editing and updates will be returned
  *
  * @returns Promise resolving with an array of layer names
  *
  */
 export async function getMapLayerHash(
-  mapView: __esri.MapView
+  mapView: __esri.MapView,
+  onlyShowUpdatableLayers: boolean
 ): Promise<IMapItemHash> {
-  let layerHash = {};
+  let layerHash;
   await mapView.when(() => {
     layerHash = mapView.map.allLayers.toArray().reduce((prev, cur) => {
       if (cur.type === "feature") {
@@ -37,73 +39,47 @@ export async function getMapLayerHash(
       return prev;
     }, {});
   });
-  return layerHash;
+
+  return onlyShowUpdatableLayers ? Object.keys(layerHash).reduce(async (prev, cur) => {
+    const layer = await getLayerOrTable(mapView, cur);
+    await layer.when(() => {
+      if (layer.editingEnabled && layer.capabilities.operations.supportsUpdate) {
+        prev[cur] = layerHash[cur];
+      }
+    });
+    return prev;
+  }, {}) : layerHash;
 }
 
 /**
  * Gets the table names from the current map
  *
  * @param mapView the map view to fetch the table names from
+ * @param onlyShowUpdatableLayers when true only layers that support editing and updates will be returned
  *
  * @returns Promise resolving with an array of table names
  *
  */
 export async function getMapTableHash(
-  mapView: __esri.MapView
+  mapView: __esri.MapView,
+  onlyShowUpdatableTables: boolean
 ): Promise<IMapItemHash> {
-  let tableHash = {};
+  let tableHash;
   await mapView.when(() => {
     tableHash = mapView.map.allTables.toArray().reduce((prev, cur) => {
       prev[cur.id] = cur.title;
       return prev;
     }, {});
   });
-  return tableHash;
-}
 
-/**
- * Gets the layer names from the current map
- *
- * @param mapView the map view to fetch the layer names from
- *
- * @returns Promise resolving with an array of layer names
- *
- */
-export async function getMapLayerIds(
-  mapView: __esri.MapView
-): Promise<string[]> {
-  let layerIds = [];
-  await mapView.when(() => {
-    layerIds = mapView.map.allLayers.toArray().reduce((prev, cur) => {
-      if (cur.type === "feature") {
-        prev.push(cur.id);
-      }
-      return prev;
-    }, []);
-  });
-  return layerIds;
-}
-
-/**
- * Gets the table names from the current map
- *
- * @param mapView the map view to fetch the table names from
- *
- * @returns Promise resolving with an array of table names
- *
- */
-export async function getMapTableIds(
-  mapView: __esri.MapView
-): Promise<string[]> {
-  // TODO...seems like its the same as the hash...see if I can remove this
-  let tableIds = [];
-  await mapView.when(() => {
-    tableIds = mapView.map.allTables.toArray().reduce((prev, cur) => {
-      prev.push(cur.id);
-      return prev;
-    }, []);
-  });
-  return tableIds;
+  return onlyShowUpdatableTables ? Object.keys(tableHash).reduce(async (prev, cur) => {
+    const item = await getLayerOrTable(mapView, cur);
+    await item.load();
+    if (item.editingEnabled && item.capabilities.operations.supportsUpdate) {
+      prev[cur] = tableHash[cur];
+    };
+    return prev;
+  }, {}) : tableHash;
 }
 
 /**
@@ -119,20 +95,20 @@ export async function getFeatureLayerView(
   mapView: __esri.MapView,
   id: string
 ): Promise<__esri.FeatureLayerView> {
-  const layer = await getLayer(mapView, id);
+  const layer = await getLayerOrTable(mapView, id);
   return layer ? await mapView.whenLayerView(layer) : undefined;
 }
 
 /**
- * Get a layer by id
+ * Get a layer or table by id
  *
  * @param mapView the map view to fetch the layer from
- * @param id the id if the layer to fetch
+ * @param id the id of the layer or table to fetch
  *
- * @returns Promise resolving with the fetched layer
+ * @returns Promise resolving with the fetched layer or table
  *
  */
-export async function getLayer(
+export async function getLayerOrTable(
   mapView: __esri.MapView,
   id: string
 ): Promise<__esri.FeatureLayer> {

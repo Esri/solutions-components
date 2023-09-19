@@ -18,7 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Listen, Method, Prop,
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { getLayer, getMapLayerIds, goToSelection } from "../../utils/mapViewUtils";
+import { getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
 import { queryFeaturesByID, queryAllIds } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { IExportInfos, ILayerInfo, IMapClick, IMapInfo } from "../../utils/interfaces";
@@ -61,6 +61,11 @@ export class LayerTable {
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
+
+  /**
+   * boolean: When true only editable layers that support the update capability will be available
+   */
+  @Prop() onlyShowUpdatableLayers: boolean;
 
   /**
    * boolean: when true the table will be sorted by objectid in descending order by default
@@ -151,6 +156,11 @@ export class LayerTable {
   protected _deleteEnabled: boolean;
 
   /**
+   * IHandle: The map click handle
+   */
+  protected _mapClickHandle: IHandle;
+
+  /**
    * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
    */
   protected reactiveUtils: typeof import("esri/core/reactiveUtils");
@@ -186,17 +196,16 @@ export class LayerTable {
    */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
-    this._fetchingData = true;
-    const mapLayerIds = await getMapLayerIds(this.mapView);
-    this._layer = await getLayer(this.mapView, mapLayerIds[0]);
-    this.reactiveUtils.on(
+    if (this._mapClickHandle) {
+      this._mapClickHandle.remove();
+    }
+    this._mapClickHandle = this.reactiveUtils.on(
       () => this.mapView,
       "click",
       (event) => {
         void this._mapClicked(event);
       }
     );
-    this._fetchingData = false;
   }
 
   /**
@@ -298,9 +307,6 @@ export class LayerTable {
    * Renders the component.
    */
   render() {
-    if (!this._layer) {
-      return null;
-    }
     const tableNodeClass = this._fetchingData ? "display-none" : "";
     const loadingClass = this._fetchingData ? "" : "display-none";
     const total = this._allIds.length.toString();
@@ -381,67 +387,44 @@ export class LayerTable {
               appearance="transparent"
               mapView={this.mapView}
               onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
+              onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
               placeholderIcon="layers"
               scale="l"
               type="dropdown"
             />
           </div>
-          <calcite-action
-            appearance="solid"
-            disabled={!featuresSelected}
-            icon="magnifying-glass"
-            id="magnifying-glass"
-            label={this._translations.zoom}
-            onClick={() => this._zoom()}
-            text={this._translations.zoom}
-            textEnabled={true}
-          />
-          <calcite-tooltip label="" placement="bottom" reference-element="magnifying-glass">
-            <span>{this._translations.zoom}</span>
-          </calcite-tooltip>
-          <calcite-action
-            appearance="solid"
-            icon="filter"
-            id="filter"
-            onClick={() => this._filter()}
-            text={this._translations.filters}
-            text-enabled="true"
-            textEnabled={true}
-          />
-          <calcite-tooltip label="" placement="bottom" reference-element="filter">
-            <span>{this._translations.filters}</span>
-          </calcite-tooltip>
-          <calcite-action
-            appearance="solid"
-            disabled={!featuresSelected}
-            id="trash"
-            onClick={() => this._delete()}
-            text=""
-          >
-            <calcite-button
-              appearance="transparent"
-              iconStart="trash"
-              kind="danger"
-            >
-              {this._translations.delete}
-            </calcite-button>
-          </calcite-action>
-          <calcite-tooltip label="" placement="bottom" reference-element="trash">
-            <span>{this._translations.delete}</span>
-          </calcite-tooltip>
-          <calcite-action
-            appearance="solid"
-            disabled={!featuresSelected}
-            icon="erase"
-            id="erase"
-            onClick={() => this._clearSelection()}
-            text={this._translations.clearSelection}
-            text-enabled="true"
-            textEnabled={true}
-          />
-          <calcite-tooltip label="" placement="bottom" reference-element="erase">
-            <span>{this._translations.clearSelection}</span>
-          </calcite-tooltip>
+          {
+            this._getAction(
+              "zoom-to-object",
+              this._translations.zoom,
+              () => this._zoom(),
+              !featuresSelected
+            )
+          }
+          {
+            this._getAction(
+              "filter",
+              this._translations.filters,
+              () => this._filter(),
+              false
+            )
+          }
+          {
+            this._deleteEnabled ? this._getDangerAction(
+              "trash",
+              this._translations.delete,
+              () => this._delete(),
+              !featuresSelected
+            ) : undefined
+          }
+          {
+            this._getAction(
+              "erase",
+              this._translations.clearSelection,
+              () => this._clearSelection(),
+              !featuresSelected
+            )
+          }
         </calcite-action-bar>
         <calcite-dropdown>
           <calcite-action
@@ -499,6 +482,89 @@ export class LayerTable {
   }
 
   /**
+   * Get an action and tooltip
+   *
+   * @param icon string the name of the icon to display, will also be used as the id
+   * @param label string the text to display and label the action
+   * @param func any the function to execute
+   * @param disabled boolean when true the user will not be able to interact with the action
+   *
+   * @returns VNode The node representing the DOM element that will contain the action
+   */
+  private _getAction(
+    icon: string,
+    label: string,
+    func: any,
+    disabled: boolean
+  ): VNode {
+    return (
+      <div class={"display-flex"}>
+        <calcite-action
+          appearance="solid"
+          disabled={disabled}
+          icon={icon}
+          id={icon}
+          label={label}
+          onClick={func}
+          text={label}
+          textEnabled={true}
+        />
+        <calcite-tooltip
+          label=""
+          placement="bottom"
+          reference-element={icon}
+        >
+          <span>{label}</span>
+        </calcite-tooltip>
+      </div>
+    )
+  }
+
+  /**
+   * Get an action with danger color icon and text
+   *
+   * @param icon string the name of the icon to display, will also be used as the id
+   * @param label string the text to display and label the action
+   * @param func any the function to execute
+   * @param disabled boolean when true the user will not be able to interact with the action
+   *
+   * @returns VNode The node representing the DOM element that will contain the action
+   */
+  private _getDangerAction(
+    icon: string,
+    label: string,
+    func: any,
+    disabled: boolean
+  ): VNode {
+    return (
+      <div class="display-flex">
+        <calcite-action
+          appearance="solid"
+          disabled={disabled}
+          id={icon}
+          onClick={func}
+          text=""
+        >
+          <calcite-button
+            appearance="transparent"
+            iconStart={icon}
+            kind="danger"
+          >
+            {label}
+          </calcite-button>
+        </calcite-action>
+        <calcite-tooltip
+          label=""
+          placement="bottom"
+          reference-element={icon}
+        >
+          <span>{label}</span>
+        </calcite-tooltip>
+      </div>
+    )
+  }
+
+  /**
    * Store a reference to the table node after it's first created
    * and initializes the FeatureTable
    *
@@ -524,7 +590,7 @@ export class LayerTable {
     columnTemplates?: __esri.FieldColumnTemplate[] | __esri.GroupColumnTemplate[]
   ): Promise<void> {
     if (this._layer) {
-      await this._layer.when(async () => {
+      await this._layer.when(() => {
         this._table = new this.FeatureTable({
           autoRefreshEnabled: this.enableAutoRefresh,
           layer: this._layer,
@@ -541,29 +607,29 @@ export class LayerTable {
           },
           container: node
         } as __esri.FeatureTableProperties);
+      });
 
-        this._checkEditEnabled();
+      this._checkEditEnabled();
 
-        await this._table.when(async () => {
-          this._table.highlightIds.on("change", () => {
-            this._selectedIndexes = this._table.highlightIds.toArray();
-            if (this._showOnlySelected) {
-              if (this._selectedIndexes.length > 0) {
-                this._table.filterBySelection();
-              } else {
-                this._toggleShowSelected();
-              }
+      await this._table.when(() => {
+        this._table.highlightIds.on("change", () => {
+          this._selectedIndexes = this._table.highlightIds.toArray();
+          if (this._showOnlySelected) {
+            if (this._selectedIndexes.length > 0) {
+              this._table.filterBySelection();
+            } else {
+              this._toggleShowSelected();
             }
-            this.featureSelectionChange.emit(this._selectedIndexes);
-          });
-
-          this.reactiveUtils.watch(
-            () => this._table.activeSortOrders,
-            (sortOrders) => {
-              this._sortActive = (sortOrders.length > 0 && sortOrders[0]?.direction === "asc" || sortOrders[0]?.direction === "desc") ||
-                sortOrders[0]?.direction === null && sortOrders[0]?.fieldName === this._layer.objectIdField;
-            });
+          }
+          this.featureSelectionChange.emit(this._selectedIndexes);
         });
+
+        this.reactiveUtils.watch(
+          () => this._table.activeSortOrders,
+          (sortOrders) => {
+            this._sortActive = (sortOrders.length > 0 && sortOrders[0]?.direction === "asc" || sortOrders[0]?.direction === "desc") ||
+              sortOrders[0]?.direction === null && sortOrders[0]?.fieldName === this._layer.objectIdField;
+          });
       });
     }
   }
@@ -578,13 +644,19 @@ export class LayerTable {
       this._clearSelection();
       this._allIds = [];
       this.featureSelectionChange.emit(this._selectedIndexes);
-      const columnTemplates = this._getColumnTemplates(this._layer.id);
-      this._table.layer = this._layer;
-      this._table.tableTemplate.columnTemplates = columnTemplates;
-      this._checkEditEnabled();
-      this._table.view = this.mapView;
-      this._table.editingEnabled = this._editEnabled;
-      this._table.clearSelectionFilter();
+      await this._layer.when(() => {
+        const columnTemplates = this._getColumnTemplates(this._layer.id);
+        this._table.layer = this._layer;
+        this._table.tableTemplate.columnTemplates = columnTemplates;
+        this._table.view = this.mapView;
+        this._checkEditEnabled();
+        this._table.editingEnabled = this._editEnabled && this.enableInlineEdit;
+      });
+
+      await this._table.when(() => {
+        this._table.clearSelectionFilter();
+      });
+
       this._showOnlySelected = false;
       this._sortActive = false;
       await this._sortTable();
@@ -610,11 +682,10 @@ export class LayerTable {
     if (this._table && this._layer && !this._sortActive) {
       if (!this._tableSorting && this.showNewestFirst) {
         this._tableSorting = true;
-        await this._table.when(async () => {
-          await this._layer.when(async () => {
-            this._table.sortColumn(this._layer.objectIdField, "desc");
-            this._tableSorting = false;
-          });
+        await this._table.when();
+        await this._layer.when(() => {
+          this._table.sortColumn(this._layer.objectIdField, "desc");
+          this._tableSorting = false;
         });
       }
     }
@@ -897,11 +968,11 @@ export class LayerTable {
     evt: CustomEvent
   ): Promise<void> {
     const id: string = evt.detail[0];
-    if (id !== this._layer.id || this._allIds.length === 0) {
+    if (id !== this._layer?.id || this._allIds.length === 0) {
       this._fetchingData = true;
       const columnTemplates = this._getColumnTemplates(id);
-      this._layer = await getLayer(this.mapView, id);
-      this._allIds = await queryAllIds(this._layer)
+      this._layer = await getLayerOrTable(this.mapView, id);
+      this._allIds = await queryAllIds(this._layer);
       if (!this._table) {
         await this._getTable(this._tableNode, columnTemplates);
       } else if (columnTemplates) {

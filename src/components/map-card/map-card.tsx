@@ -131,6 +131,11 @@ export class MapCard {
   @Event() mapChanged: EventEmitter<IMapChange>;
 
   /**
+   * Emitted before a new map is loaded
+   */
+  @Event() beforeMapChanged: EventEmitter<void>;
+
+  /**
    * Listen for changes to map info and load the appropriate map
    */
   @Listen("mapInfoChange", { target: "window" })
@@ -228,10 +233,7 @@ export class MapCard {
       this._loadedId = id;
       this._searchConfiguration = this._webMapInfo.searchConfiguration;
 
-      this.mapChanged.emit({
-        id: id,
-        mapView: this.mapView
-      });
+      this.beforeMapChanged.emit();
 
       await this.mapView.when(() => {
         const home = new this.Home({
@@ -239,6 +241,11 @@ export class MapCard {
         });
         this.mapView.ui.add(home, { position: "top-left", index: 3});
         this.mapView.ui.add(this._mapTools, { position: "top-right", index: 0});
+
+        this.mapChanged.emit({
+          id: id,
+          mapView: this.mapView
+        });
       });
     }
   }

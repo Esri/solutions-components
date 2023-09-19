@@ -91,6 +91,10 @@ export namespace Components {
          */
         "mapInfos": IMapInfo[];
         /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers": boolean;
+        /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
         "searchConfiguration": ISearchConfiguration;
@@ -209,6 +213,10 @@ export namespace Components {
          */
         "mapView": __esri.MapView;
         /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers": boolean;
+        /**
           * boolean: when true the table will be sorted by objectid in descending order by default
          */
         "showNewestFirst": boolean;
@@ -310,6 +318,10 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers": boolean;
         /**
           * string: optional placeholder icon used with "combobox" type
          */
@@ -1202,6 +1214,10 @@ declare namespace LocalJSX {
          */
         "mapInfos"?: IMapInfo[];
         /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers"?: boolean;
+        /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
         "searchConfiguration"?: ISearchConfiguration;
@@ -1306,6 +1322,10 @@ declare namespace LocalJSX {
          */
         "onFeatureSelectionChange"?: (event: LayerTableCustomEvent<number[]>) => void;
         /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers"?: boolean;
+        /**
           * boolean: when true the table will be sorted by objectid in descending order by default
          */
         "showNewestFirst"?: boolean;
@@ -1331,6 +1351,10 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted before a new map is loaded
+         */
+        "onBeforeMapChanged"?: (event: MapCardCustomEvent<void>) => void;
         /**
           * Emitted when a new map is loaded
          */
@@ -1425,6 +1449,10 @@ declare namespace LocalJSX {
           * Emitted on demand when a layer is selected
          */
         "onLayerSelectionChange"?: (event: MapLayerPickerCustomEvent<string[]>) => void;
+        /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers"?: boolean;
         /**
           * string: optional placeholder icon used with "combobox" type
          */
