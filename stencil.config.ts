@@ -9,7 +9,7 @@ import { generatePreactTypes } from "./support/preact";
 export const config: Config = {
   namespace: 'solutions-components',
   globalStyle: 'src/assets/styles/styles.scss',
-  minifyJs: false,
+  minifyJs: true,
   minifyCss: true,
   sourceMap: false,
   outputTargets: [
