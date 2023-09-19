@@ -222,7 +222,7 @@ export class MapPicker {
 
       let layerEditable = false;
       await webmap.when();
-      const layers = webmap.layers.toArray();
+      const layers = webmap.layers.toArray().concat(webmap.allTables.toArray());
       for (let ii = 0; ii < layers.length; ii++) {
         const layer: any = layers[ii];
         await layer.load();
