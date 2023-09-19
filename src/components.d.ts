@@ -1256,6 +1256,10 @@ declare namespace LocalJSX {
          */
         "onCloseEdit"?: (event: EditCardCustomEvent<void>) => void;
         /**
+          * Emitted on demand when edits are completed on current edit layer
+         */
+        "onEditsComplete"?: (event: EditCardCustomEvent<void>) => void;
+        /**
           * When true the component is displayed
          */
         "open"?: boolean;

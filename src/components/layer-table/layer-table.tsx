@@ -287,6 +287,15 @@ export class LayerTable {
     }
   }
 
+  /**
+   * Refresh the table when edits are completed
+   *
+   */
+  @Listen("editsComplete", { target: "window" })
+  editsComplete(): void {
+    this._refresh();
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
