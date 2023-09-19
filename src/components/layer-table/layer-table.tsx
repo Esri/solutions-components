@@ -395,7 +395,7 @@ export class LayerTable {
           </div>
           {
             this._getAction(
-              "magnifying-glass",
+              "zoom-to-object",
               this._translations.zoom,
               () => this._zoom(),
               !featuresSelected
