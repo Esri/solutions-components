@@ -444,6 +444,7 @@ export interface IMapInfo {
   searchConfiguration?: ISearchConfiguration;
   filters?: any[]; // TODO generate an interface for this once we know how it will be passed in
   layerInfos?: ILayerInfo[];
+  _hasValidLayers?: boolean;
 }
 
 export interface ILayerInfo {

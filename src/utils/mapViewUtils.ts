@@ -74,11 +74,13 @@ export async function getMapTableHash(
 
   return onlyShowUpdatableTables ? Object.keys(tableHash).reduce(async (prev, cur) => {
     const item = await getLayerOrTable(mapView, cur);
-    await item.when(() => {
-      if (item.editingEnabled && item.capabilities.operations.supportsUpdate) {
-        prev[cur] = tableHash[cur];
-      }
-    });
+    // This .when never seems to resolve...just checking editingEnabled until this is figured out
+    //await item.when(() => {
+    //if (item.editingEnabled && item.capabilities.operations.supportsUpdate) {
+    if (item.editingEnabled) {
+      prev[cur] = tableHash[cur];
+    }
+    //});
     return prev;
   }, {}) : tableHash;
 }

@@ -15,6 +15,9 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
+import MapPicker_T9n from "../../assets/t9n/map-picker/resources.json";
+import { loadModules } from "../../utils/loadModules";
+import { getLocaleComponentStrings } from "../../utils/locale";
 import { IMapInfo } from "../../utils/interfaces";
 
 @Component({
@@ -54,6 +57,12 @@ export class MapPicker {
   @State() _mapListExpanded = false;
 
   /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() _translations: typeof MapPicker_T9n;
+
+  /**
    * IMapInfo: id and name of the map to display
    */
   @State() _webMapInfo: IMapInfo;
@@ -63,6 +72,11 @@ export class MapPicker {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * esri/WebMap: https://developers.arcgis.com/javascript/latest/api-reference/esri-WebMap.html
+   */
+  protected WebMap: typeof import("esri/WebMap");
 
   /**
    * HTMLCalciteListElement: this list of map names
@@ -95,9 +109,9 @@ export class MapPicker {
    * Called each time the mapInfos prop is changed.
    */
   @Watch("mapInfos")
-  mapInfosWatchHandler(v: IMapInfo[], oldV: IMapInfo[]): void {
+  async mapInfosWatchHandler(v: IMapInfo[], oldV: IMapInfo[]): Promise<void> {
     if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
-      this.mapInfoChange.emit(v[0]);
+      await this._validateMaps(v);
     }
   }
 
@@ -125,6 +139,14 @@ export class MapPicker {
   //--------------------------------------------------------------------------
 
   /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   */
+  async componentWillLoad(): Promise<void> {
+    await this._getTranslations();
+    await this._initModules();
+  }
+
+  /**
    * Renders the component.
    */
   render() {
@@ -148,9 +170,10 @@ export class MapPicker {
   /**
    * Called once after the component has loaded
    */
-  componentDidLoad() {
+  async componentDidLoad() {
     const webMapInfo = this.mapInfos && this.mapInfos.length > 0 ? this.mapInfos[0] : undefined;
     if (webMapInfo) {
+      await this._validateMaps(this.mapInfos);
       this._webMapSelected(webMapInfo);
     }
   }
@@ -160,6 +183,64 @@ export class MapPicker {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Load esri javascript api modules
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _initModules(): Promise<void> {
+    const [WebMap] = await loadModules([
+      "esri/WebMap"
+    ]);
+    this.WebMap = WebMap;
+  }
+
+  /**
+   * Validate that each map has at least one layer that has editing enabled and supports the Update edit actions
+   *
+   * @param mapInfos IMapInfo[] the current list of maps info
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _validateMaps(
+    mapInfos: IMapInfo[]
+  ): Promise<void> {
+    let mapInfoEmitted = false;
+    for (let i = 0; i < mapInfos.length; i++) {
+      const mapInfo = mapInfos[i];
+      const webmap = new this.WebMap({
+        portalItem: {
+          id: mapInfo.id
+        }
+      });
+      await webmap.load();
+
+      let layerEditable = false;
+      await webmap.when();
+      const layers = webmap.layers.toArray();
+      for (let ii = 0; ii < layers.length; ii++) {
+        const layer: any = layers[ii];
+        await layer.load();
+        await layer.when();
+        layerEditable = layerEditable || layer?.editingEnabled && layer?.capabilities?.operations?.supportsUpdate;
+        if (layerEditable) {
+          if (!mapInfoEmitted) {
+            // Emit the first mapInfo that is found that has at least one editable layer
+            // this allows the rest of the UI to load while the other maps are checked
+            this._webMapSelected(mapInfo);
+            mapInfoEmitted = true;
+          }
+          break;
+        }
+      }
+      mapInfo._hasValidLayers = layerEditable;
+    }
+  }
 
   /**
    * Get a calcite action group for the map list
@@ -216,17 +297,44 @@ export class MapPicker {
     show: boolean
   ): VNode {
     const listClass = show ? "map-list" : "display-none";
+    const loading = this.mapInfos[this.mapInfos.length -1]._hasValidLayers === undefined;
     return (
       <div class={listClass}>
-        <calcite-list id="mapList" ref={(el) => this._list = el} selectionAppearance="border">
+        <calcite-list
+          id="mapList"
+          loading={loading}
+          ref={(el) => this._list = el}
+          selectionAppearance="border"
+        >
           {this.mapInfos.map(mapInfo => {
-            return (
+            return mapInfo._hasValidLayers ? (
               <calcite-list-item
                 label={mapInfo.name}
                 onClick={() => this._webMapSelected(mapInfo)}
                 selected={mapInfo.id === this._loadedId}
                 value={mapInfo.id}
               />
+            ) : (
+                <div>
+                  <calcite-list-item
+                    class="border-bottom-1"
+                    disabled={true}
+                    id={mapInfo.id}
+                    label={mapInfo.name}
+                    onClick={() => this._webMapSelected(mapInfo)}
+                    selected={mapInfo.id === this._loadedId}
+                    value={mapInfo.id}
+                  >
+                    <calcite-icon icon="exclamation-mark-triangle" scale="s" slot="content-start" />
+                  </calcite-list-item>
+                  <calcite-tooltip
+                    label={this._translations.enableEditUpdate}
+                    placement="bottom"
+                    reference-element={mapInfo.id}
+                  >
+                    <span>{this._translations.enableEditUpdate}</span>
+                  </calcite-tooltip>
+                </div>
             )
           })}
         </calcite-list>
@@ -259,6 +367,17 @@ export class MapPicker {
    */
   protected _chooseMap(): void {
     this._mapListExpanded = !this._mapListExpanded;
+  }
+
+  /**
+   * Fetches the component's translations
+   *
+   * @returns Promise when complete
+   * @protected
+   */
+  protected async _getTranslations(): Promise<void> {
+    const messages = await getLocaleComponentStrings(this.el);
+    this._translations = messages[0] as typeof MapPicker_T9n;
   }
 
 }
