@@ -453,7 +453,7 @@ export class CrowdsourceManager {
           class="width-full"
           enableBasemap={this.enableBasemap}
           enableFullscreen={this.enableFullscreen}
-          enableLegend={this.enableFullscreen}
+          enableLegend={this.enableLegend}
           enableSearch={this.enableSearch}
           mapInfos={this.mapInfos}
         />
