@@ -92,6 +92,7 @@ graph TD;
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
   map-layer-picker --> calcite-notice
+  map-layer-picker --> calcite-tooltip
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown

@@ -1,3 +1,4 @@
 {
-	"noLayersFound": "No valid layers found"
+	"noLayersFound": "No valid layers found",
+	"enableEditUpdate": "One or more layers must support editing with the 'Update' capability."
 }

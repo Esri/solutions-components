@@ -253,9 +253,22 @@ export class MapLayerPicker {
   protected _getInvalidPlaceholder(): VNode {
     return (
       <div>
-        <calcite-notice class="height-100" icon="layers-reference" kind="danger" open>
+        <calcite-notice
+          class="height-100"
+          icon="exclamation-mark-triangle"
+          id="no-valid-layers"
+          kind="danger"
+          open
+        >
           <div slot="message">{this._translations.noLayersFound}</div>
         </calcite-notice>
+        <calcite-tooltip
+          label={this._translations.enableEditUpdate}
+          placement="bottom"
+          reference-element="no-valid-layers"
+        >
+          <span>{this._translations.enableEditUpdate}</span>
+        </calcite-tooltip>
       </div>
     );
   }
