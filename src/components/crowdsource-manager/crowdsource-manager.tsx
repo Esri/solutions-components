@@ -17,7 +17,7 @@
 import { Component, Element, Host, h, Listen, Prop, State, VNode } from "@stencil/core";
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { ELayoutMode, IMapChange, IMapInfo, ISearchConfiguration } from "../../utils/interfaces";
+import { ELayoutMode, IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration } from "../../utils/interfaces";
 
 @Component({
   tag: "crowdsource-manager",
@@ -49,9 +49,44 @@ export class CrowdsourceManager {
   @Prop() enableAutoRefresh = true;
 
   /**
+   * boolean: when true the fullscreen widget will be available
+   */
+  @Prop() enableFullscreen = true;
+
+  /**
    * boolean: when true edits can be applied directly within the table
    */
   @Prop() enableInlineEdit = false;
+
+  /**
+   * boolean: when true the legend widget will be available
+   */
+  @Prop() enableLegend = true;
+
+  /**
+   * boolean: when true the search widget will be available
+   */
+  @Prop() enableSearch = true;
+
+  /**
+   * boolean: when true the home widget will be available
+   */
+  @Prop() enableHome = true;
+
+  /**
+   * boolean: when true the zoom widget will be available
+   */
+  @Prop() enableZoom = true;
+
+  /**
+   * boolean: when true the basemap widget will be available
+   */
+  @Prop() enableBasemap = true;
+
+  /**
+   * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+   */
+  @Prop() basemapConfig: IBasemapConfig;
 
   /**
    * boolean: when true the table will be sorted by objectid in descending order by default
@@ -413,7 +448,15 @@ export class CrowdsourceManager {
     const mapContainerClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "width-full" : this._expandPopup ? "height-50-px" : "adjusted-height-50";
     return (
       <div class={`${mapContainerClass} overflow-hidden ${mapDisplayClass}`} >
-        <map-card class="width-full" mapInfos={this.mapInfos}/>
+        <map-card
+          basemapConfig={this.basemapConfig}
+          class="width-full"
+          enableBasemap={this.enableBasemap}
+          enableFullscreen={this.enableFullscreen}
+          enableLegend={this.enableFullscreen}
+          enableSearch={this.enableSearch}
+          mapInfos={this.mapInfos}
+        />
       </div>
     );
   }

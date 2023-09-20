@@ -7,10 +7,15 @@
 
 ## Properties
 
-| Property   | Attribute | Description                                                                                            | Type         | Default     |
-| ---------- | --------- | ------------------------------------------------------------------------------------------------------ | ------------ | ----------- |
-| `mapInfos` | --        | IMapInfo[]: array of map infos (name and id)                                                           | `IMapInfo[]` | `[]`        |
-| `mapView`  | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`    | `undefined` |
+| Property           | Attribute           | Description                                                                                            | Type             | Default     |
+| ------------------ | ------------------- | ------------------------------------------------------------------------------------------------------ | ---------------- | ----------- |
+| `basemapConfig`    | --                  | IBasemapConfig: List of any basemaps to filter out from the basemap widget                             | `IBasemapConfig` | `undefined` |
+| `enableBasemap`    | `enable-basemap`    | boolean: when true the basemap widget will be available                                                | `boolean`        | `undefined` |
+| `enableFullscreen` | `enable-fullscreen` | boolean: when true the fullscreen widget will be available                                             | `boolean`        | `undefined` |
+| `enableLegend`     | `enable-legend`     | boolean: when true the legend widget will be available                                                 | `boolean`        | `undefined` |
+| `enableSearch`     | `enable-search`     | boolean: when true the search widget will be available                                                 | `boolean`        | `undefined` |
+| `mapInfos`         | --                  | IMapInfo[]: array of map infos (name and id)                                                           | `IMapInfo[]`     | `[]`        |
+| `mapView`          | --                  | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`        | `undefined` |
 
 
 ## Events

@@ -7,11 +7,16 @@
 
 ## Properties
 
-| Property              | Attribute | Description                                                                                            | Type                         | Default      |
-| --------------------- | --------- | ------------------------------------------------------------------------------------------------------ | ---------------------------- | ------------ |
-| `layout`              | `layout`  | "horizontal" \| "vertical": used to control the orientation of the tools                               | `"horizontal" \| "vertical"` | `"vertical"` |
-| `mapView`             | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                    | `undefined`  |
-| `searchConfiguration` | --        | ISearchConfiguration: Configuration details for the Search widget                                      | `ISearchConfiguration`       | `undefined`  |
+| Property              | Attribute           | Description                                                                                            | Type                         | Default      |
+| --------------------- | ------------------- | ------------------------------------------------------------------------------------------------------ | ---------------------------- | ------------ |
+| `basemapConfig`       | --                  | IBasemapConfig: List of any basemaps to filter out from the basemap widget                             | `IBasemapConfig`             | `undefined`  |
+| `enableBasemap`       | `enable-basemap`    | boolean: when true the basemap widget will be available                                                | `boolean`                    | `undefined`  |
+| `enableFullscreen`    | `enable-fullscreen` | boolean: when true the fullscreen widget will be available                                             | `boolean`                    | `undefined`  |
+| `enableLegend`        | `enable-legend`     | boolean: when true the legend widget will be available                                                 | `boolean`                    | `undefined`  |
+| `enableSearch`        | `enable-search`     | boolean: when true the search widget will be available                                                 | `boolean`                    | `undefined`  |
+| `layout`              | `layout`            | "horizontal" \| "vertical": used to control the orientation of the tools                               | `"horizontal" \| "vertical"` | `"vertical"` |
+| `mapView`             | --                  | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                    | `undefined`  |
+| `searchConfiguration` | --                  | ISearchConfiguration: Configuration details for the Search widget                                      | `ISearchConfiguration`       | `undefined`  |
 
 
 ## Dependencies
