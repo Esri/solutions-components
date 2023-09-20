@@ -165,7 +165,12 @@ export interface IValueChange {
  * Layer or table id and title key value pair
  */
 export interface IMapItemHash {
-  [key: string]: string;
+  [key: string]: ILayerHashInfo;
+}
+
+export interface ILayerHashInfo {
+  name: string;
+  supportsUpdate: boolean;
 }
 
 /**

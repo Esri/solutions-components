@@ -211,8 +211,8 @@ export class MapLayerPicker {
         this._layerElement.value = id;
       } else if (this.type === "dropdown") {
         this.selectedName = Object.keys(this._layerNameHash).indexOf(id) > -1 ?
-          this._layerNameHash[id] : Object.keys(this._tableNameHash).indexOf(id) > -1 ?
-            this._tableNameHash[id] : "";
+          this._layerNameHash[id].name : Object.keys(this._tableNameHash).indexOf(id) > -1 ?
+            this._tableNameHash[id].name : "";
       }
     }
   }
@@ -321,7 +321,7 @@ export class MapLayerPicker {
     id: string,
     itemType: "layer" | "table"
   ): VNode {
-    const name = itemType === "layer" ? this._layerNameHash[id] : this._tableNameHash[id];
+    const name = itemType === "layer" ? this._layerNameHash[id].name : this._tableNameHash[id].name;
     return this.type === "combobox" ? (<calcite-combobox-item textLabel={name} value={id} />) :
       this.type === "select" ? (<calcite-option label={name} value={id} />) :
         (
@@ -340,7 +340,7 @@ export class MapLayerPicker {
     id: string,
     type: "layer" | "table"
   ): void {
-    this.selectedName = type === "layer" ? this._layerNameHash[id] : this._tableNameHash[id];
+    this.selectedName = type === "layer" ? this._layerNameHash[id].name : this._tableNameHash[id].name;
     this.selectedIds = [id];
     this.layerSelectionChange.emit(this.selectedIds);
   }
@@ -381,7 +381,7 @@ export class MapLayerPicker {
   protected _validLayer(
     id: string
   ): boolean {
-    const name = this._layerNameHash[id];
+    const name = this._layerNameHash[id]?.name;
     return name && state.managedLayers.indexOf(name) < 0 && (this.enabledLayerIds.length > 0 ?
       this.enabledLayerIds.indexOf(id) > -1 : true);
   }
@@ -394,7 +394,7 @@ export class MapLayerPicker {
   protected _validTable(
     id: string
   ): boolean {
-    const name = this._tableNameHash[id];
+    const name = this._tableNameHash[id]?.name;
     const validName = name && this.showTables;
     return validName ? state.managedTables.indexOf(name) < 0 &&
       (this.enabledTableIds.length > 0 ? this.enabledTableIds.indexOf(id) > -1 : true) : validName;
