@@ -17,9 +17,10 @@
 
 ## Events
 
-| Event       | Description                                               | Type                |
-| ----------- | --------------------------------------------------------- | ------------------- |
-| `closeEdit` | Emitted on demand when the Editor widget should be closed | `CustomEvent<void>` |
+| Event           | Description                                                      | Type                |
+| --------------- | ---------------------------------------------------------------- | ------------------- |
+| `closeEdit`     | Emitted on demand when the Editor widget should be closed        | `CustomEvent<void>` |
+| `editsComplete` | Emitted on demand when edits are completed on current edit layer | `CustomEvent<void>` |
 
 
 ## Dependencies

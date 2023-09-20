@@ -34,7 +34,10 @@ export async function getMapLayerHash(
   await mapView.when(() => {
     layerHash = mapView.map.allLayers.toArray().reduce((prev, cur) => {
       if (cur.type === "feature") {
-        prev[cur.id] = cur.title;
+        prev[cur.id] = {
+          name: cur.title,
+          supportsUpdate: undefined
+        };
       }
       return prev;
     }, {});
@@ -43,9 +46,10 @@ export async function getMapLayerHash(
   return onlyShowUpdatableLayers ? Object.keys(layerHash).reduce(async (prev, cur) => {
     const layer = await getLayerOrTable(mapView, cur);
     await layer.when(() => {
-      if (layer.editingEnabled && layer.capabilities.operations.supportsUpdate) {
-        prev[cur] = layerHash[cur];
-      }
+      prev[cur] = {
+        name: layerHash[cur].name,
+        supportsUpdate: layer.editingEnabled && layer.capabilities.operations.supportsUpdate
+      };
     });
     return prev;
   }, {}) : layerHash;
@@ -67,7 +71,10 @@ export async function getMapTableHash(
   let tableHash;
   await mapView.when(() => {
     tableHash = mapView.map.allTables.toArray().reduce((prev, cur) => {
-      prev[cur.id] = cur.title;
+      prev[cur.id] = {
+        name: cur.title,
+        supportsUpdate: undefined
+      };
       return prev;
     }, {});
   });
@@ -75,8 +82,9 @@ export async function getMapTableHash(
   return onlyShowUpdatableTables ? Object.keys(tableHash).reduce(async (prev, cur) => {
     const item = await getLayerOrTable(mapView, cur);
     await item.load();
-    if (item.editingEnabled && item.capabilities.operations.supportsUpdate) {
-      prev[cur] = tableHash[cur];
+    prev[cur] = {
+      name: tableHash[cur].name,
+      supportsUpdate: item.editingEnabled && item.capabilities.operations.supportsUpdate
     };
     return prev;
   }, {}) : tableHash;

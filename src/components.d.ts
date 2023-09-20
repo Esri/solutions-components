@@ -1256,6 +1256,10 @@ declare namespace LocalJSX {
          */
         "onCloseEdit"?: (event: EditCardCustomEvent<void>) => void;
         /**
+          * Emitted on demand when edits are completed on current edit layer
+         */
+        "onEditsComplete"?: (event: EditCardCustomEvent<void>) => void;
+        /**
           * When true the component is displayed
          */
         "open"?: boolean;
@@ -1449,6 +1453,10 @@ declare namespace LocalJSX {
           * Emitted on demand when a layer is selected
          */
         "onLayerSelectionChange"?: (event: MapLayerPickerCustomEvent<string[]>) => void;
+        /**
+          * Emitted on demand when no valid layers are found
+         */
+        "onNoLayersFound"?: (event: MapLayerPickerCustomEvent<void>) => void;
         /**
           * boolean: When true only editable layers that support the update capability will be available
          */

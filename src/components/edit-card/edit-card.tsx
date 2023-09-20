@@ -92,6 +92,11 @@ export class EditCard {
   protected _editHandle: __esri.WatchHandle;
 
   /**
+   * esri/core/Accessor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
+   */
+  protected _layerEditHandle: __esri.WatchHandle;
+
+  /**
    * esri/widgets/Editor: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Editor.html
    * The Editor constructor
    */
@@ -181,6 +186,11 @@ export class EditCard {
    */
   @Event() closeEdit: EventEmitter<void>;
 
+  /**
+   * Emitted on demand when edits are completed on current edit layer
+   */
+  @Event() editsComplete: EventEmitter<void>;
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -211,6 +221,10 @@ export class EditCard {
     }
     if (this.graphics?.length > 0 && this.graphics[0]?.layer) {
       this._layer = this.graphics[0].layer as __esri.FeatureLayer;
+      if (this._layerEditHandle) {
+        this._layerEditHandle.remove();
+      }
+      this._layerEditHandle = this._layer.on("edits", () => this.editsComplete.emit());
     }
   }
 

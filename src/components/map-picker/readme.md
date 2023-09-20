@@ -31,8 +31,6 @@
 - calcite-action-bar
 - calcite-list
 - calcite-list-item
-- calcite-icon
-- calcite-tooltip
 
 ### Graph
 ```mermaid
@@ -41,8 +39,6 @@ graph TD;
   map-picker --> calcite-action-bar
   map-picker --> calcite-list
   map-picker --> calcite-list-item
-  map-picker --> calcite-icon
-  map-picker --> calcite-tooltip
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   calcite-action-bar --> calcite-action-group
