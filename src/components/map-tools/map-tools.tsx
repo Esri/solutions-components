@@ -17,7 +17,7 @@
 import { Component, Element, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
 import MapTools_T9n from "../../assets/t9n/map-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { ISearchConfiguration } from "../../utils/interfaces";
+import { IBasemapConfig, ISearchConfiguration } from "../../utils/interfaces";
 
 @Component({
   tag: 'map-tools',
@@ -38,6 +38,31 @@ export class MapTools {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * boolean: when true the legend widget will be available
+   */
+  @Prop() enableLegend: boolean;
+
+  /**
+   * boolean: when true the fullscreen widget will be available
+   */
+  @Prop() enableFullscreen: boolean;
+
+  /**
+   * boolean: when true the search widget will be available
+   */
+  @Prop() enableSearch: boolean;
+
+  /**
+   * boolean: when true the basemap widget will be available
+   */
+  @Prop() enableBasemap: boolean;
+
+  /**
+   * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+   */
+  @Prop() basemapConfig: IBasemapConfig;
 
   /**
    * "horizontal" | "vertical": used to control the orientation of the tools
@@ -227,20 +252,38 @@ export class MapTools {
     const fullscreenIcon = this._showFullscreen ? "full-screen-exit" : "full-screen";
     const fullscreenTip = this._showFullscreen ? this._translations.exitFullscreen : this._translations.enterFullscreen;
     const expandTip = this._showTools ? this._translations.collapse : this._translations.expand;
+    const containerClass = !this.enableBasemap && !this.enableFullscreen && !this.enableLegend && !this.enableSearch ? "display-none" : "";
     return (
       <Host>
-        <div>
+        <div class={containerClass}>
           <div class="box-shadow">
             {this._getActionGroup(toggleIcon, false, expandTip, () => this._toggleTools())}
           </div>
           <div class={`margin-top-1-2 box-shadow ${toolsClass}`}>
-            {this._getActionGroup("legend", false, this._translations.legend, () => this._showLegend())}
-            {this._getActionGroup("magnifying-glass", false, this._translations.search, () => this._search())}
-            {this._getActionGroup(fullscreenIcon, false, fullscreenTip, () => this._expand())}
-            {this._getActionGroup("basemap", false, this._translations.basemap, () => this._toggleBasemapPicker())}
+            {
+              this.enableLegend ?
+                this._getActionGroup("legend", false, this._translations.legend, () => this._showLegend()) :
+                undefined
+            }
+            {
+              this.enableSearch ?
+                this._getActionGroup("magnifying-glass", false, this._translations.search, () => this._search()) :
+                undefined
+            }
+            {
+              this.enableFullscreen ?
+                this._getActionGroup(fullscreenIcon, false, fullscreenTip, () => this._expand()) :
+                undefined
+            }
+            {
+              this.enableBasemap ?
+                this._getActionGroup("basemap", false, this._translations.basemap, () => this._toggleBasemapPicker()) :
+                undefined
+            }
           </div>
         </div>
         <basemap-gallery
+          basemapConfig={this.basemapConfig}
           class={basemapClass}
           mapView={this.mapView}
           ref={(el) => {this._basemapElement = el}}

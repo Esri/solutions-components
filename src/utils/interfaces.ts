@@ -450,6 +450,7 @@ export interface IMapInfo {
   filters?: any[]; // TODO generate an interface for this once we know how it will be passed in
   layerInfos?: ILayerInfo[];
   _hasValidLayers?: boolean;
+  visible: boolean;
 }
 
 export interface ILayerInfo {
@@ -471,4 +472,8 @@ export interface IExportInfo {
   layer?: __esri.FeatureLayer;
   layerView?: __esri.FeatureLayerView;
   selectionSetNames: string[];
+}
+
+export interface IBasemapConfig {
+  basemapIdsToFilter: string[];
 }

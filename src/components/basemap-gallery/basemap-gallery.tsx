@@ -16,6 +16,7 @@
 
 import { Component, Element, Host, h, Prop, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
+import { IBasemapConfig } from '../../utils/interfaces';
 
 @Component({
   tag: 'basemap-gallery',
@@ -41,6 +42,11 @@ export class BasemapGallery {
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
+
+  /**
+   * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+   */
+  @Prop() basemapConfig: IBasemapConfig;
 
   /**
    * esri/widgets/BasemapGallery: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-BasemapGallery.html

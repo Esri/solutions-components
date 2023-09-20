@@ -5,12 +5,16 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EDrawMode, ELayoutMode, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
+import { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
-export { DistanceUnit, EDrawMode, ELayoutMode, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
+export { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
 export { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BasemapGallery {
+        /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig": IBasemapConfig;
         /**
           * esri/widgets/BasemapGallery: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-BasemapGallery.html  BasemapGallery instance
          */
@@ -71,6 +75,10 @@ export namespace Components {
     }
     interface CrowdsourceManager {
         /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig": IBasemapConfig;
+        /**
           * boolean: when true the grid will display like the previous manager app with the table across the top
          */
         "classicGrid": boolean;
@@ -79,9 +87,33 @@ export namespace Components {
          */
         "enableAutoRefresh": boolean;
         /**
+          * boolean: when true the basemap widget will be available
+         */
+        "enableBasemap": boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFullscreen": boolean;
+        /**
+          * boolean: when true the home widget will be available
+         */
+        "enableHome": boolean;
+        /**
           * boolean: when true edits can be applied directly within the table
          */
         "enableInlineEdit": boolean;
+        /**
+          * boolean: when true the legend widget will be available
+         */
+        "enableLegend": boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch": boolean;
+        /**
+          * boolean: when true the zoom widget will be available
+         */
+        "enableZoom": boolean;
         /**
           * boolean: when true no map is displayed for the app
          */
@@ -230,6 +262,26 @@ export namespace Components {
     interface ListItem {
     }
     interface MapCard {
+        /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig": IBasemapConfig;
+        /**
+          * boolean: when true the basemap widget will be available
+         */
+        "enableBasemap": boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFullscreen": boolean;
+        /**
+          * boolean: when true the legend widget will be available
+         */
+        "enableLegend": boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch": boolean;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */
@@ -470,6 +522,26 @@ export namespace Components {
         "sketchPolygonSymbol": __esri.SimpleFillSymbol;
     }
     interface MapTools {
+        /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig": IBasemapConfig;
+        /**
+          * boolean: when true the basemap widget will be available
+         */
+        "enableBasemap": boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFullscreen": boolean;
+        /**
+          * boolean: when true the legend widget will be available
+         */
+        "enableLegend": boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch": boolean;
         /**
           * "horizontal" | "vertical": used to control the orientation of the tools
          */
@@ -1123,6 +1195,10 @@ declare global {
 declare namespace LocalJSX {
     interface BasemapGallery {
         /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig"?: IBasemapConfig;
+        /**
           * esri/widgets/BasemapGallery: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-BasemapGallery.html  BasemapGallery instance
          */
         "basemapWidget"?: __esri.BasemapGallery;
@@ -1194,6 +1270,10 @@ declare namespace LocalJSX {
     }
     interface CrowdsourceManager {
         /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig"?: IBasemapConfig;
+        /**
           * boolean: when true the grid will display like the previous manager app with the table across the top
          */
         "classicGrid"?: boolean;
@@ -1202,9 +1282,33 @@ declare namespace LocalJSX {
          */
         "enableAutoRefresh"?: boolean;
         /**
+          * boolean: when true the basemap widget will be available
+         */
+        "enableBasemap"?: boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFullscreen"?: boolean;
+        /**
+          * boolean: when true the home widget will be available
+         */
+        "enableHome"?: boolean;
+        /**
           * boolean: when true edits can be applied directly within the table
          */
         "enableInlineEdit"?: boolean;
+        /**
+          * boolean: when true the legend widget will be available
+         */
+        "enableLegend"?: boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch"?: boolean;
+        /**
+          * boolean: when true the zoom widget will be available
+         */
+        "enableZoom"?: boolean;
         /**
           * boolean: when true no map is displayed for the app
          */
@@ -1347,6 +1451,26 @@ declare namespace LocalJSX {
     interface ListItem {
     }
     interface MapCard {
+        /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig"?: IBasemapConfig;
+        /**
+          * boolean: when true the basemap widget will be available
+         */
+        "enableBasemap"?: boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFullscreen"?: boolean;
+        /**
+          * boolean: when true the legend widget will be available
+         */
+        "enableLegend"?: boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch"?: boolean;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */
@@ -1607,6 +1731,26 @@ declare namespace LocalJSX {
         "sketchPolygonSymbol"?: __esri.SimpleFillSymbol;
     }
     interface MapTools {
+        /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig"?: IBasemapConfig;
+        /**
+          * boolean: when true the basemap widget will be available
+         */
+        "enableBasemap"?: boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFullscreen"?: boolean;
+        /**
+          * boolean: when true the legend widget will be available
+         */
+        "enableLegend"?: boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch"?: boolean;
         /**
           * "horizontal" | "vertical": used to control the orientation of the tools
          */
