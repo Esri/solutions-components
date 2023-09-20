@@ -112,6 +112,7 @@ graph TD;
   layer-table --> calcite-alert
   layer-table --> calcite-modal
   layer-table --> calcite-icon
+  map-layer-picker --> calcite-notice
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown

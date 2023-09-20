@@ -296,6 +296,17 @@ export class LayerTable {
     this._refresh();
   }
 
+  /**
+   * Refresh the table when edits are completed
+   *
+   */
+  @Listen("noLayersFound", { target: "window" })
+  noLayersFound(): void {
+    this._layer = undefined;
+    this._allIds = [];
+    this._clearSelection();
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -435,7 +446,7 @@ export class LayerTable {
             )
           }
         </calcite-action-bar>
-        <calcite-dropdown>
+        <calcite-dropdown disabled={this._layer === undefined}>
           <calcite-action
             appearance="solid"
             label=""
@@ -506,11 +517,12 @@ export class LayerTable {
     func: any,
     disabled: boolean
   ): VNode {
+    const _disabled = this._layer === undefined ? true : disabled;
     return (
       <div class={"display-flex"}>
         <calcite-action
           appearance="solid"
-          disabled={disabled}
+          disabled={_disabled}
           icon={icon}
           id={icon}
           label={label}
@@ -545,11 +557,12 @@ export class LayerTable {
     func: any,
     disabled: boolean
   ): VNode {
+    const _disabled = this._layer === undefined ? true : disabled;
     return (
       <div class="display-flex">
         <calcite-action
           appearance="solid"
-          disabled={disabled}
+          disabled={_disabled}
           id={icon}
           onClick={func}
           text=""
@@ -636,8 +649,8 @@ export class LayerTable {
         this.reactiveUtils.watch(
           () => this._table.activeSortOrders,
           (sortOrders) => {
-            this._sortActive = (sortOrders.length > 0 && sortOrders[0]?.direction === "asc" || sortOrders[0]?.direction === "desc") ||
-              sortOrders[0]?.direction === null && sortOrders[0]?.fieldName === this._layer.objectIdField;
+            this._sortActive = this._layer ? (sortOrders.length > 0 && sortOrders[0]?.direction === "asc" || sortOrders[0]?.direction === "desc") ||
+              sortOrders[0]?.direction === null && sortOrders[0]?.fieldName === this._layer.objectIdField : false;
           });
       });
     }
@@ -649,26 +662,31 @@ export class LayerTable {
    * @returns void
    */
   protected async _resetTable(): Promise<void> {
-    if (this._layer && this._table) {
+    if (this._table) {
       this._clearSelection();
       this._allIds = [];
       this.featureSelectionChange.emit(this._selectedIndexes);
-      await this._layer.when(() => {
-        const columnTemplates = this._getColumnTemplates(this._layer.id);
-        this._table.layer = this._layer;
-        this._table.tableTemplate.columnTemplates = columnTemplates;
+      if (this._layer) {
+        await this._layer.when(() => {
+          const columnTemplates = this._getColumnTemplates(this._layer.id);
+          this._table.layer = this._layer;
+          this._table.tableTemplate.columnTemplates = columnTemplates;
+          this._table.view = this.mapView;
+          this._checkEditEnabled();
+          this._table.editingEnabled = this._editEnabled && this.enableInlineEdit;
+        });
+
+        await this._table.when(() => {
+          this._table.clearSelectionFilter();
+        });
+
+        this._showOnlySelected = false;
+        this._sortActive = false;
+        await this._sortTable();
+      } else {
         this._table.view = this.mapView;
-        this._checkEditEnabled();
-        this._table.editingEnabled = this._editEnabled && this.enableInlineEdit;
-      });
-
-      await this._table.when(() => {
-        this._table.clearSelectionFilter();
-      });
-
-      this._showOnlySelected = false;
-      this._sortActive = false;
-      await this._sortTable();
+        this._table.layer = this._layer;
+      }
     }
   }
 

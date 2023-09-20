@@ -23,9 +23,10 @@
 
 ## Events
 
-| Event                  | Description                                | Type                    |
-| ---------------------- | ------------------------------------------ | ----------------------- |
-| `layerSelectionChange` | Emitted on demand when a layer is selected | `CustomEvent<string[]>` |
+| Event                  | Description                                      | Type                    |
+| ---------------------- | ------------------------------------------------ | ----------------------- |
+| `layerSelectionChange` | Emitted on demand when a layer is selected       | `CustomEvent<string[]>` |
+| `noLayersFound`        | Emitted on demand when no valid layers are found | `CustomEvent<void>`     |
 
 
 ## Dependencies
@@ -38,6 +39,7 @@
 
 ### Depends on
 
+- calcite-notice
 - calcite-select
 - calcite-combobox
 - calcite-dropdown
@@ -51,6 +53,7 @@
 ### Graph
 ```mermaid
 graph TD;
+  map-layer-picker --> calcite-notice
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown
@@ -60,6 +63,7 @@ graph TD;
   map-layer-picker --> calcite-combobox-item
   map-layer-picker --> calcite-option
   map-layer-picker --> calcite-dropdown-item
+  calcite-notice --> calcite-icon
   calcite-select --> calcite-icon
   calcite-combobox --> calcite-chip
   calcite-combobox --> calcite-icon

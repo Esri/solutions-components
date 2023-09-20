@@ -1454,6 +1454,10 @@ declare namespace LocalJSX {
          */
         "onLayerSelectionChange"?: (event: MapLayerPickerCustomEvent<string[]>) => void;
         /**
+          * Emitted on demand when no valid layers are found
+         */
+        "onNoLayersFound"?: (event: MapLayerPickerCustomEvent<void>) => void;
+        /**
           * boolean: When true only editable layers that support the update capability will be available
          */
         "onlyShowUpdatableLayers"?: boolean;

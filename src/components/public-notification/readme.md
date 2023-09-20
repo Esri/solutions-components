@@ -129,6 +129,7 @@ graph TD;
   buffer-tools --> calcite-slider
   calcite-select --> calcite-icon
   calcite-slider --> calcite-graph
+  map-layer-picker --> calcite-notice
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown
@@ -138,6 +139,7 @@ graph TD;
   map-layer-picker --> calcite-combobox-item
   map-layer-picker --> calcite-option
   map-layer-picker --> calcite-dropdown-item
+  calcite-notice --> calcite-icon
   calcite-combobox --> calcite-chip
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
@@ -158,7 +160,6 @@ graph TD;
   refine-selection --> map-draw-tools
   refine-selection --> calcite-list
   refine-selection --> calcite-list-item
-  calcite-notice --> calcite-icon
   style public-notification fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
