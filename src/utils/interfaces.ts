@@ -450,7 +450,7 @@ export interface IMapInfo {
   filters?: any[]; // TODO generate an interface for this once we know how it will be passed in
   layerInfos?: ILayerInfo[];
   _hasValidLayers?: boolean;
-  visible: boolean;
+  visible?: boolean;
 }
 
 export interface ILayerInfo {
