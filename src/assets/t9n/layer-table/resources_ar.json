@@ -1,0 +1,22 @@
+{
+  "clearSelection": "بيت_Clear selection________________لاحقة",
+  "delete": "بيت_Delete_____________لاحقة",
+  "editMultiple": "بيت_Edit Multiple______________لاحقة",
+  "exportCSV": "بيت_Export to CSV______________لاحقة",
+  "filters": "بيت_Filters_______________لاحقة",
+  "more": "بيت_More_________لاحقة",
+  "selectAll": "بيت_Select all_____________________لاحقة",
+  "showSelected": "بيت_Show selected______________لاحقة",
+  "switchSelected": "بيت_Switch selected________________لاحقة",
+  "zoom": "بيت_Zoom_________لاحقة",
+  "fetchingData": "بيت_Fetching Data______________لاحقة",
+  "refresh": "بيت_Refresh_______________لاحقة",
+  "enableEditing": "بيت_Editing must be enabled on the layer____________________لاحقة.",
+  "confirm": "بيت_These features will be permanently removed_______________________لاحقة.",
+  "deleteFeature": "بيت_Delete feature_______________لاحقة",
+  "deleteDisabled": "بيت_Delete Disabled________________لاحقة",
+  "editMultipleDisabled": "بيت_Edit Multiple Disabled_______________________لاحقة",
+  "showAll": "بيت_Show all_________________لاحقة",
+  "recordsSelected": "بيت_Total: {{total}} | Selection: {{selected}}______________________لاحقة",
+  "cancel": "بيت_Cancel_____________لاحقة"
+}

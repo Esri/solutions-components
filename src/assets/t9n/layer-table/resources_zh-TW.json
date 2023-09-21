@@ -1,0 +1,22 @@
+{
+  "clearSelection": "試_Clear selection________________驗",
+  "delete": "試_Delete_____________驗",
+  "editMultiple": "試_Edit Multiple______________驗",
+  "exportCSV": "試_Export to CSV______________驗",
+  "filters": "試_Filters_______________驗",
+  "more": "試_More_________驗",
+  "selectAll": "試_Select all_____________________驗",
+  "showSelected": "試_Show selected______________驗",
+  "switchSelected": "試_Switch selected________________驗",
+  "zoom": "試_Zoom_________驗",
+  "fetchingData": "試_Fetching Data______________驗",
+  "refresh": "試_Refresh_______________驗",
+  "enableEditing": "試_Editing must be enabled on the layer____________________驗.",
+  "confirm": "試_These features will be permanently removed_______________________驗.",
+  "deleteFeature": "試_Delete feature_______________驗",
+  "deleteDisabled": "試_Delete Disabled________________驗",
+  "editMultipleDisabled": "試_Edit Multiple Disabled_______________________驗",
+  "showAll": "試_Show all_________________驗",
+  "recordsSelected": "試_Total: {{total}} | Selection: {{selected}}______________________驗",
+  "cancel": "試_Cancel_____________驗"
+}

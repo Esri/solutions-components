@@ -1,0 +1,22 @@
+{
+  "clearSelection": "Č_Clear selection________________ž",
+  "delete": "Č_Delete_____________ž",
+  "editMultiple": "Č_Edit Multiple______________ž",
+  "exportCSV": "Č_Export to CSV______________ž",
+  "filters": "Č_Filters_______________ž",
+  "more": "Č_More_________ž",
+  "selectAll": "Č_Select all_____________________ž",
+  "showSelected": "Č_Show selected______________ž",
+  "switchSelected": "Č_Switch selected________________ž",
+  "zoom": "Č_Zoom_________ž",
+  "fetchingData": "Č_Fetching Data______________ž",
+  "refresh": "Č_Refresh_______________ž",
+  "enableEditing": "Č_Editing must be enabled on the layer____________________ž.",
+  "confirm": "Č_These features will be permanently removed_______________________ž.",
+  "deleteFeature": "Č_Delete feature_______________ž",
+  "deleteDisabled": "Č_Delete Disabled________________ž",
+  "editMultipleDisabled": "Č_Edit Multiple Disabled_______________________ž",
+  "showAll": "Č_Show all_________________ž",
+  "recordsSelected": "Č_Total: {{total}} | Selection: {{selected}}______________________ž",
+  "cancel": "Č_Cancel_____________ž"
+}
