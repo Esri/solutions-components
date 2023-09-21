@@ -20,12 +20,14 @@
 
 .map-layer-picker-container {
   width: 100%;
+  height: 100%;
 }
 
 .map-layer-picker {
   position: relative;
   width: 100%;
   display: inline-block;
+  height: 100%;
 }
 
 .padding-bottom-1 {

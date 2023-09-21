@@ -148,25 +148,27 @@ export class EditCard {
   /**
    * Watch for changes to the graphics and update the feature widget
    */
-  @Watch("graphicIndex")
-  graphicIndexWatchHandler(): void {
-    this._initEditorWidget();
-  }
-
-  /**
-   * Watch for changes to the graphics and update the feature widget
-   */
   @Watch("graphics")
-  graphicsWatchHandler(): void {
-    this._initEditorWidget();
+  async graphicsWatchHandler(): Promise<void> {
+    if (this.graphics.length === 0) {
+      this._shouldClose = false;
+      this.closeEdit.emit();
+    }
   }
 
-  /**
-   * Watch for changes to the mapView and re-init the Feature widget
-   */
-  @Watch("mapView")
-  mapViewWatchHandler(): void {
-    this._initEditorWidget();
+  @Watch("open")
+  async openWatchHandler(v: boolean): Promise<void> {
+    if (v && this.graphics?.length > 0 && this.graphicIndex > -1) {
+      this._initEditorWidget();
+      if (this.graphicIndex > -1 && this.graphics.length > 0 && this.open && !this._shouldClose) {
+        await this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
+        this._shouldClose = true;
+      }
+    }
+    if (!v) {
+      this._shouldClose = false;
+      this.closeEdit.emit();
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -313,7 +315,9 @@ export class EditCard {
       }
 
       this._attachmentHandle = this.reactiveUtils.when(
-        () => this._editor.viewModel.state === "adding-attachment" || this._editor.viewModel.state === "editing-attachment",
+        () => this._editor.viewModel.state === "adding-attachment" ||
+          this._editor.viewModel.state === "editing-attachment" ||
+          this._editor.viewModel.state === "creating-features",
         () => {
           this._shouldClose = false;
         }
@@ -323,10 +327,9 @@ export class EditCard {
         () => this._editor.viewModel.state === "ready",
         () => {
           if (this._shouldClose) {
-            this.closeEdit.emit();
             this._shouldClose = false;
-          }
-          if (this.graphicIndex > -1 && this.graphics.length > 0 && this.open && !this._shouldClose) {
+            this.closeEdit.emit();
+          } else if (this.graphicIndex > -1 && this.graphics.length > 0 && this.open && !this._shouldClose) {
             void this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
             this._shouldClose = true;
           }
