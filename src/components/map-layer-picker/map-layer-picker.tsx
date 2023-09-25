@@ -322,6 +322,7 @@ export class MapLayerPicker {
    * @returns Array of Dropdown items with layer names
    */
   _getDropdown(): VNode {
+    const id = "map-layer-picker";
     return (
       <calcite-dropdown class="layer-picker-dropdown">
         <calcite-action slot="trigger" text="">
@@ -331,6 +332,7 @@ export class MapLayerPicker {
             class="max-width-350"
             iconEnd="chevron-down"
             iconStart="layers"
+            id={id}
             kind="neutral"
             width="full"
           >
@@ -338,6 +340,13 @@ export class MapLayerPicker {
               {this.selectedName}
             </div>
           </calcite-button>
+          <calcite-tooltip
+            label=""
+            placement="bottom"
+            reference-element={id}
+          >
+            <span>{this._translations.switchLayer}</span>
+          </calcite-tooltip>
         </calcite-action>
         <calcite-dropdown-group selection-mode="single">
           {this._getMapLayerOptions()}

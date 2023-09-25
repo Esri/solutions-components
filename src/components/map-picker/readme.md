@@ -28,6 +28,7 @@
 ### Depends on
 
 - calcite-button
+- calcite-tooltip
 - calcite-action-bar
 - calcite-list
 - calcite-list-item
@@ -36,6 +37,7 @@
 ```mermaid
 graph TD;
   map-picker --> calcite-button
+  map-picker --> calcite-tooltip
   map-picker --> calcite-action-bar
   map-picker --> calcite-list
   map-picker --> calcite-list-item

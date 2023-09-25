@@ -36,9 +36,9 @@
 - [map-card](../map-card)
 - calcite-icon
 - calcite-action
+- calcite-tooltip
 - [card-manager](../card-manager)
 - calcite-action-bar
-- calcite-tooltip
 - [layer-table](../layer-table)
 
 ### Graph
@@ -49,9 +49,9 @@ graph TD;
   crowdsource-manager --> map-card
   crowdsource-manager --> calcite-icon
   crowdsource-manager --> calcite-action
+  crowdsource-manager --> calcite-tooltip
   crowdsource-manager --> card-manager
   crowdsource-manager --> calcite-action-bar
-  crowdsource-manager --> calcite-tooltip
   crowdsource-manager --> layer-table
   calcite-panel --> calcite-action
   calcite-panel --> calcite-action-menu
@@ -66,6 +66,7 @@ graph TD;
   map-card --> map-picker
   map-card --> map-tools
   map-picker --> calcite-button
+  map-picker --> calcite-tooltip
   map-picker --> calcite-action-bar
   map-picker --> calcite-list
   map-picker --> calcite-list-item
@@ -113,9 +114,9 @@ graph TD;
   layer-table --> calcite-dropdown
   layer-table --> calcite-action
   layer-table --> calcite-button
+  layer-table --> calcite-tooltip
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
-  layer-table --> calcite-tooltip
   layer-table --> calcite-alert
   layer-table --> calcite-modal
   layer-table --> calcite-icon

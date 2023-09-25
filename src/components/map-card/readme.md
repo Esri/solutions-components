@@ -43,6 +43,7 @@ graph TD;
   map-card --> map-picker
   map-card --> map-tools
   map-picker --> calcite-button
+  map-picker --> calcite-tooltip
   map-picker --> calcite-action-bar
   map-picker --> calcite-list
   map-picker --> calcite-list-item

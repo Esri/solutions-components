@@ -384,6 +384,8 @@ export class LayerTable {
     this.reactiveUtils = reactiveUtils;
   }
 
+  protected down: any;
+
   /**
    * Gets a row of controls that can be used for various interactions with the table
    *
@@ -395,6 +397,7 @@ export class LayerTable {
     slot?: string
   ): VNode {
     const featuresSelected = this._selectedIndexes.length > 0;
+    const id = "more-table-options";
     return (
       <div class="display-flex table-border height-51" slot={slot}>
         <calcite-action-bar
@@ -449,7 +452,9 @@ export class LayerTable {
         <calcite-dropdown disabled={this._layer === undefined}>
           <calcite-action
             appearance="solid"
+            id={id}
             label=""
+            ref={el => this.down = el}
             slot="trigger"
             text=""
           >
@@ -461,6 +466,13 @@ export class LayerTable {
               {this._translations.more}
             </calcite-button>
           </calcite-action>
+          <calcite-tooltip
+            label=""
+            placement="bottom"
+            reference-element={this.down}
+          >
+            <span>{this._translations.moreOptions}</span>
+          </calcite-tooltip>
           <calcite-dropdown-group selection-mode="none">
             <calcite-dropdown-item
               iconStart="list-check-all"

@@ -469,6 +469,8 @@ export class CrowdsourceManager {
    */
   protected _getPopupExpandNode(): VNode {
     const icon = this._expandPopup ? "chevrons-down" : "chevrons-up";
+    const id = "expand-popup";
+    const tooltip = this._expandPopup ? this._translations.collapsePopup : this._translations.expandPopup;
     return (
       <div class="height-49-px calcite-mode-dark">
         <calcite-panel>
@@ -484,9 +486,17 @@ export class CrowdsourceManager {
           <calcite-action
             class="height-49-px"
             icon={icon}
+            id={id}
             onClick={() => this._togglePopup()}
             slot="header-actions-end"
           />
+          <calcite-tooltip
+            label=""
+            placement="bottom"
+            reference-element={id}
+          >
+            <span>{tooltip}</span>
+          </calcite-tooltip>
         </calcite-panel>
       </div>
     );
