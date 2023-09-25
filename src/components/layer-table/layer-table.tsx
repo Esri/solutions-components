@@ -1040,16 +1040,12 @@ export class LayerTable {
     let columnTemplates = layerInfo?.columnTemplates;
     if (fieldInfos) {
       columnTemplates = columnTemplates ? columnTemplates.map(columnTemplate => {
-        const name = columnTemplate.fieldName;
-        let fieldInfo;
-        if (fieldInfos.some(fi => {
-          if (fi.fieldName === name) {
-            fieldInfo = fi;
+        fieldInfos.some(fieldInfo => {
+          if (fieldInfo.fieldName === columnTemplate.fieldName) {
+            columnTemplate.label = fieldInfo.label;
             return true;
           }
-        })) {
-          columnTemplate.label = fieldInfo.label;
-        }
+        });
         return columnTemplate;
       }) : fieldInfos.map(fieldInfo => {
         return {
