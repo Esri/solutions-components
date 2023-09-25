@@ -46,6 +46,7 @@ export const config: Config = {
     },
   ],
   testing: {
+    browserHeadless: "new",
     transform: {
       "^.+\\.[jt]sx?$": "<rootDir>/node_modules/@stencil/core/testing/jest-preprocessor.js"
     }
