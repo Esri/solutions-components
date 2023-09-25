@@ -609,7 +609,7 @@ export class LayerTable {
    */
   protected async _getTable(
     node: HTMLDivElement,
-    columnTemplates?: __esri.FieldColumnTemplate[] | __esri.GroupColumnTemplate[]
+    columnTemplates?: __esri.FieldColumnTemplate[]
   ): Promise<void> {
     if (this._layer) {
       await this._layer.when(() => {
@@ -668,7 +668,7 @@ export class LayerTable {
       this.featureSelectionChange.emit(this._selectedIndexes);
       if (this._layer) {
         await this._layer.when(() => {
-          const columnTemplates = this._getColumnTemplates(this._layer.id);
+          const columnTemplates = this._getColumnTemplates(this._layer.id, this._layer?.popupTemplate?.fieldInfos);
           this._table.layer = this._layer;
           this._table.tableTemplate.columnTemplates = columnTemplates;
           this._table.view = this.mapView;
@@ -997,8 +997,9 @@ export class LayerTable {
     const id: string = evt.detail[0];
     if (id !== this._layer?.id || this._allIds.length === 0) {
       this._fetchingData = true;
-      const columnTemplates = this._getColumnTemplates(id);
       this._layer = await getLayerOrTable(this.mapView, id);
+      const columnTemplates = this._getColumnTemplates(id, this._layer?.popupTemplate?.fieldInfos);
+      console.log(this._layer)
       this._allIds = await queryAllIds(this._layer);
       if (!this._table) {
         await this._getTable(this._tableNode, columnTemplates);
@@ -1025,8 +1026,9 @@ export class LayerTable {
    * @returns a list of column templates if they exist
    */
   protected _getColumnTemplates(
-    id: string
-  ): __esri.FieldColumnTemplate[] | __esri.GroupColumnTemplate[] {
+    id: string,
+    fieldInfos: __esri.FieldInfo[]
+  ): __esri.FieldColumnTemplate[] {
     let layerInfo: ILayerInfo;
     this.mapInfo.layerInfos?.some(li => {
       if (li.id === id) {
@@ -1034,7 +1036,31 @@ export class LayerTable {
         return true;
       }
     });
-    return layerInfo?.columnTemplates;
+
+    let columnTemplates = layerInfo?.columnTemplates;
+    if (fieldInfos) {
+      columnTemplates = columnTemplates ? columnTemplates.map(columnTemplate => {
+        const name = columnTemplate.fieldName;
+        let fieldInfo;
+        if (fieldInfos.some(fi => {
+          if (fi.fieldName === name) {
+            fieldInfo = fi;
+            return true;
+          }
+        })) {
+          columnTemplate.label = fieldInfo.label;
+        }
+        return columnTemplate;
+      }) : fieldInfos.map(fieldInfo => {
+        return {
+          type: "field",
+          fieldName: fieldInfo.fieldName,
+          label: fieldInfo.label,
+          visible: fieldInfo.visible
+        } as __esri.FieldColumnTemplate;
+      })
+    }
+    return columnTemplates;
   }
 
   /**

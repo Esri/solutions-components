@@ -455,7 +455,7 @@ export interface IMapInfo {
 
 export interface ILayerInfo {
   id: string;
-  columnTemplates: __esri.FieldColumnTemplate[] | __esri.GroupColumnTemplate[];
+  columnTemplates: __esri.FieldColumnTemplate[];
 }
 
 export interface IMapChange {
