@@ -226,7 +226,13 @@ export class EditCard {
       if (this._layerEditHandle) {
         this._layerEditHandle.remove();
       }
-      this._layerEditHandle = this._layer.on("edits", () => this.editsComplete.emit());
+      this._layerEditHandle = this._layer.on("edits", () => {
+        this.editsComplete.emit();
+        this._shouldClose = false;
+        this._initEditorWidget();
+        void this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
+        this._shouldClose = true;
+      });
     }
   }
 
