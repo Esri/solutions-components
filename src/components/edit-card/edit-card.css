@@ -60,3 +60,7 @@
 .esri-editor__panel-toolbar {
   display: none !important;
 }
+
+.esri-feature-relationship__list {
+  border-top: 1px solid var(--calcite-ui-border-3);
+}
