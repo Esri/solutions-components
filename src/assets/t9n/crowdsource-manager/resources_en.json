@@ -2,5 +2,7 @@
   "header": "Crowdsource Manager",
 	"open": "Open",
 	"close": "Close",
-	"information": "Information"
+	"information": "Information",
+	"expandPopup": "expand pop-up",
+	"collapsePopup": "collapse pop-up"
 }

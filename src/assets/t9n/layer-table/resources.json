@@ -18,5 +18,6 @@
   "editMultipleDisabled": "Edit Multiple Disabled",
   "showAll": "Show all",
   "recordsSelected": "Total: {{total}} | Selection: {{selected}}",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "moreOptions": "More table options"
 }
