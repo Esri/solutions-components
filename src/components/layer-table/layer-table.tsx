@@ -199,13 +199,15 @@ export class LayerTable {
     if (this._mapClickHandle) {
       this._mapClickHandle.remove();
     }
-    this._mapClickHandle = this.reactiveUtils.on(
-      () => this.mapView,
-      "click",
-      (event) => {
-        void this._mapClicked(event);
-      }
-    );
+    if (this.mapView) {
+      this._mapClickHandle = this.reactiveUtils.on(
+        () => this.mapView,
+        "click",
+        (event) => {
+          void this._mapClicked(event);
+        }
+      );
+    }
   }
 
   /**
@@ -895,7 +897,7 @@ export class LayerTable {
    */
   protected _clearSelection(): void {
     this._selectedIndexes = [];
-    this._table.highlightIds.removeAll();
+    this._table?.highlightIds.removeAll();
   }
 
   /**
