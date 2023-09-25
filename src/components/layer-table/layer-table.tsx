@@ -1010,7 +1010,6 @@ export class LayerTable {
       this._fetchingData = true;
       this._layer = await getLayerOrTable(this.mapView, id);
       const columnTemplates = this._getColumnTemplates(id, this._layer?.popupTemplate?.fieldInfos);
-      console.log(this._layer)
       this._allIds = await queryAllIds(this._layer);
       if (!this._table) {
         await this._getTable(this._tableNode, columnTemplates);
