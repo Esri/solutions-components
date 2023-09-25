@@ -386,8 +386,6 @@ export class LayerTable {
     this.reactiveUtils = reactiveUtils;
   }
 
-  protected down: any;
-
   /**
    * Gets a row of controls that can be used for various interactions with the table
    *
@@ -456,7 +454,6 @@ export class LayerTable {
             appearance="solid"
             id={id}
             label=""
-            ref={el => this.down = el}
             slot="trigger"
             text=""
           >
@@ -471,7 +468,7 @@ export class LayerTable {
           <calcite-tooltip
             label=""
             placement="bottom"
-            reference-element={this.down}
+            reference-element={id}
           >
             <span>{this._translations.moreOptions}</span>
           </calcite-tooltip>
