@@ -1065,8 +1065,7 @@ export class LayerTable {
         return {
           type: "field",
           fieldName: fieldInfo.fieldName,
-          label: fieldInfo.label,
-          visible: fieldInfo.visible
+          label: fieldInfo.label
         } as __esri.FieldColumnTemplate;
       })
     }
