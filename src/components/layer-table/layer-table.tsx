@@ -199,13 +199,15 @@ export class LayerTable {
     if (this._mapClickHandle) {
       this._mapClickHandle.remove();
     }
-    this._mapClickHandle = this.reactiveUtils.on(
-      () => this.mapView,
-      "click",
-      (event) => {
-        void this._mapClicked(event);
-      }
-    );
+    if (this.mapView) {
+      this._mapClickHandle = this.reactiveUtils.on(
+        () => this.mapView,
+        "click",
+        (event) => {
+          void this._mapClicked(event);
+        }
+      );
+    }
   }
 
   /**
@@ -395,6 +397,7 @@ export class LayerTable {
     slot?: string
   ): VNode {
     const featuresSelected = this._selectedIndexes.length > 0;
+    const id = "more-table-options";
     return (
       <div class="display-flex table-border height-51" slot={slot}>
         <calcite-action-bar
@@ -449,6 +452,7 @@ export class LayerTable {
         <calcite-dropdown disabled={this._layer === undefined}>
           <calcite-action
             appearance="solid"
+            id={id}
             label=""
             slot="trigger"
             text=""
@@ -461,6 +465,13 @@ export class LayerTable {
               {this._translations.more}
             </calcite-button>
           </calcite-action>
+          <calcite-tooltip
+            label=""
+            placement="bottom"
+            reference-element={id}
+          >
+            <span>{this._translations.moreOptions}</span>
+          </calcite-tooltip>
           <calcite-dropdown-group selection-mode="none">
             <calcite-dropdown-item
               iconStart="list-check-all"
@@ -609,7 +620,7 @@ export class LayerTable {
    */
   protected async _getTable(
     node: HTMLDivElement,
-    columnTemplates?: __esri.FieldColumnTemplate[] | __esri.GroupColumnTemplate[]
+    columnTemplates?: __esri.FieldColumnTemplate[]
   ): Promise<void> {
     if (this._layer) {
       await this._layer.when(() => {
@@ -668,7 +679,7 @@ export class LayerTable {
       this.featureSelectionChange.emit(this._selectedIndexes);
       if (this._layer) {
         await this._layer.when(() => {
-          const columnTemplates = this._getColumnTemplates(this._layer.id);
+          const columnTemplates = this._getColumnTemplates(this._layer.id, this._layer?.popupTemplate?.fieldInfos);
           this._table.layer = this._layer;
           this._table.tableTemplate.columnTemplates = columnTemplates;
           this._table.view = this.mapView;
@@ -883,7 +894,7 @@ export class LayerTable {
    */
   protected _clearSelection(): void {
     this._selectedIndexes = [];
-    this._table.highlightIds.removeAll();
+    this._table?.highlightIds.removeAll();
   }
 
   /**
@@ -997,8 +1008,9 @@ export class LayerTable {
     const id: string = evt.detail[0];
     if (id !== this._layer?.id || this._allIds.length === 0) {
       this._fetchingData = true;
-      const columnTemplates = this._getColumnTemplates(id);
       this._layer = await getLayerOrTable(this.mapView, id);
+      const columnTemplates = this._getColumnTemplates(id, this._layer?.popupTemplate?.fieldInfos);
+      console.log(this._layer)
       this._allIds = await queryAllIds(this._layer);
       if (!this._table) {
         await this._getTable(this._tableNode, columnTemplates);
@@ -1025,8 +1037,9 @@ export class LayerTable {
    * @returns a list of column templates if they exist
    */
   protected _getColumnTemplates(
-    id: string
-  ): __esri.FieldColumnTemplate[] | __esri.GroupColumnTemplate[] {
+    id: string,
+    fieldInfos: __esri.FieldInfo[]
+  ): __esri.FieldColumnTemplate[] {
     let layerInfo: ILayerInfo;
     this.mapInfo.layerInfos?.some(li => {
       if (li.id === id) {
@@ -1034,7 +1047,26 @@ export class LayerTable {
         return true;
       }
     });
-    return layerInfo?.columnTemplates;
+
+    let columnTemplates = layerInfo?.columnTemplates;
+    if (fieldInfos) {
+      columnTemplates = columnTemplates ? columnTemplates.map(columnTemplate => {
+        fieldInfos.some(fieldInfo => {
+          if (fieldInfo.fieldName === columnTemplate.fieldName) {
+            columnTemplate.label = fieldInfo.label;
+            return true;
+          }
+        });
+        return columnTemplate;
+      }) : fieldInfos.map(fieldInfo => {
+        return {
+          type: "field",
+          fieldName: fieldInfo.fieldName,
+          label: fieldInfo.label
+        } as __esri.FieldColumnTemplate;
+      })
+    }
+    return columnTemplates;
   }
 
   /**
