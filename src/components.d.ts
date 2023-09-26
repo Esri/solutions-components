@@ -701,19 +701,9 @@ export namespace Components {
     }
     interface SolutionSpatialRef {
         /**
-          * Returns the spatial reference description of the supplied value. (Exposes protected method `_createSpatialRefDisplay` for testing.)
-          * @param value WKID or WKT or null for default
-          * @returns If component is using a WKID, description using WKID; otherwise, the WKT; defaults to 102100
-         */
-        "createSpatialRefDisplay": (value: string) => Promise<ISpatialRefRepresentation>;
-        /**
           * The wkid that will be used as the default when no user selection has been made.
          */
         "defaultWkid": number;
-        /**
-          * Returns the current spatial reference description. (Exposes protected variable `spatialRef` for testing.)
-         */
-        "getSpatialRef": () => Promise<ISpatialRefRepresentation>;
         /**
           * When true, all but the main switch are disabled to prevent interaction.
          */
@@ -726,12 +716,6 @@ export namespace Components {
           * Contains the public value for this component, which is a wkid or a wkt.
          */
         "value": string;
-        /**
-          * Converts a WKID into a spatial reference description. (Exposes protected method `_wkidToDisplay` for testing.)
-          * @param wkid WKID to look up
-          * @returns Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
-         */
-        "wkidToDisplay": (wkid: number) => Promise<string>;
     }
     interface SolutionTemplateData {
         /**
@@ -769,6 +753,10 @@ export namespace Components {
           * The wkid that will be used as the default when no user selection has been made.
          */
         "defaultWkid": number;
+        /**
+          * When true, all are disabled to prevent interaction.
+         */
+        "disabled": boolean;
         /**
           * Returns the current spatial reference description. (Exposes protected variable `spatialRef` for testing.)
          */
@@ -1890,6 +1878,10 @@ declare namespace LocalJSX {
           * The wkid that will be used as the default when no user selection has been made.
          */
         "defaultWkid"?: number;
+        /**
+          * When true, all are disabled to prevent interaction.
+         */
+        "disabled"?: boolean;
         "onSpatialReferenceChange"?: (event: SpatialRefCustomEvent<{ name: string, enabled: boolean }>) => void;
         /**
           * Contains the public value for this component, which is a wkid or a wkt.

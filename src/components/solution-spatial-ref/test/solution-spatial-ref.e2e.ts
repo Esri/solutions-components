@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-// import { newE2EPage } from '@stencil/core/testing';
+import { E2EPage, newE2EPage } from '@stencil/core/testing';
 
 describe('solution-spatial-ref', () => {
-  it('renders', async () => {
-    //TEST commented out for now.
-    // need to work out how we pass translations
-    // e2e tests don't seem to support a similar apporach to the unit tests where we can use template to load JSX
-    // could flatten the translations further so it would contain no sub groups
-    // could set default translations for each file
-    //  and could still have a test to compare the default with the actual as a way to verify
-    expect("a").toEqual("a");
 
-    // const page = await newE2EPage();
-    // await page.setContent('<solution-spatial-ref></solution-spatial-ref>');
-
-    // const element = await page.find('solution-spatial-ref');
-    // expect(element).toHaveClass('hydrated');
+  let page: E2EPage;
+  beforeEach(async () => {
+    page = await newE2EPage();
   });
+
+  it('renders', async () => {
+    await page.setContent('<solution-spatial-ref/>');
+
+    const solution_spatial_ref = await page.find('solution-spatial-ref');
+    expect(solution_spatial_ref).toHaveClass('hydrated');
+    expect(await solution_spatial_ref.getProperty('defaultWkid')).toBe(102100);
+    expect(await solution_spatial_ref.getProperty('value')).toBe('102100');
+  });
+
 });

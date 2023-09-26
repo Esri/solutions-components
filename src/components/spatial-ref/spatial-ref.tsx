@@ -49,6 +49,11 @@ export class SpatialRef {
   @Prop({ mutable: true, reflect: true }) defaultWkid = 102100;
 
   /**
+  * When true, all are disabled to prevent interaction.
+  */
+  @Prop({ mutable: true, reflect: true }) disabled = false;
+
+  /**
    * Contains the public value for this component, which is a wkid or a wkt.
    */
   @Prop({ mutable: true, reflect: true }) value: string = this.defaultWkid.toString();
@@ -88,6 +93,7 @@ export class SpatialRef {
       <Host>
         <div>
           <calcite-input
+            disabled={this.disabled}
             id="calcite-sr-search"
             onKeyUp={(evt) => this._searchInputKeyDown(evt)}
             placeholder={this._translations.spatialReferencePlaceholder}
