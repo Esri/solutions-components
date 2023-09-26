@@ -1,0 +1,22 @@
+{
+  "clearSelection": "한_Clear selection________________빠",
+  "delete": "한_Delete_____________빠",
+  "editMultiple": "한_Edit Multiple______________빠",
+  "exportCSV": "한_Export to CSV______________빠",
+  "filters": "한_Filters_______________빠",
+  "more": "한_More_________빠",
+  "selectAll": "한_Select all_____________________빠",
+  "showSelected": "한_Show selected______________빠",
+  "switchSelected": "한_Switch selected________________빠",
+  "zoom": "한_Zoom_________빠",
+  "fetchingData": "한_Fetching Data______________빠",
+  "refresh": "한_Refresh_______________빠",
+  "enableEditing": "한_Editing must be enabled on the layer____________________빠.",
+  "confirm": "한_These features will be permanently removed_______________________빠.",
+  "deleteFeature": "한_Delete feature_______________빠",
+  "deleteDisabled": "한_Delete Disabled________________빠",
+  "editMultipleDisabled": "한_Edit Multiple Disabled_______________________빠",
+  "showAll": "한_Show all_________________빠",
+  "recordsSelected": "한_Total: {{total}} | Selection: {{selected}}______________________빠",
+  "cancel": "한_Cancel_____________빠"
+}

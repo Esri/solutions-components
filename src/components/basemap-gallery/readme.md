@@ -9,6 +9,7 @@
 
 | Property        | Attribute | Description                                                                                                                                          | Type             | Default     |
 | --------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ----------- |
+| `basemapConfig` | --        | IBasemapConfig: List of any basemaps to filter out from the basemap widget                                                                           | `IBasemapConfig` | `undefined` |
 | `basemapWidget` | --        | esri/widgets/BasemapGallery: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-BasemapGallery.html  BasemapGallery instance | `BasemapGallery` | `undefined` |
 | `mapView`       | --        | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                                               | `MapView`        | `undefined` |
 

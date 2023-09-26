@@ -165,7 +165,12 @@ export interface IValueChange {
  * Layer or table id and title key value pair
  */
 export interface IMapItemHash {
-  [key: string]: string;
+  [key: string]: ILayerHashInfo;
+}
+
+export interface ILayerHashInfo {
+  name: string;
+  supportsUpdate: boolean;
 }
 
 /**
@@ -444,11 +449,13 @@ export interface IMapInfo {
   searchConfiguration?: ISearchConfiguration;
   filters?: any[]; // TODO generate an interface for this once we know how it will be passed in
   layerInfos?: ILayerInfo[];
+  _hasValidLayers?: boolean;
+  visible?: boolean;
 }
 
 export interface ILayerInfo {
   id: string;
-  columnTemplates: __esri.FieldColumnTemplate[] | __esri.GroupColumnTemplate[];
+  columnTemplates: __esri.FieldColumnTemplate[];
 }
 
 export interface IMapChange {
@@ -465,4 +472,8 @@ export interface IExportInfo {
   layer?: __esri.FeatureLayer;
   layerView?: __esri.FeatureLayerView;
   selectionSetNames: string[];
+}
+
+export interface IBasemapConfig {
+  basemapIdsToFilter: string[];
 }

@@ -1,0 +1,22 @@
+{
+  "clearSelection": "ก้_Clear selection________________ษฺ",
+  "delete": "ก้_Delete_____________ษฺ",
+  "editMultiple": "ก้_Edit Multiple______________ษฺ",
+  "exportCSV": "ก้_Export to CSV______________ษฺ",
+  "filters": "ก้_Filters_______________ษฺ",
+  "more": "ก้_More_________ษฺ",
+  "selectAll": "ก้_Select all_____________________ษฺ",
+  "showSelected": "ก้_Show selected______________ษฺ",
+  "switchSelected": "ก้_Switch selected________________ษฺ",
+  "zoom": "ก้_Zoom_________ษฺ",
+  "fetchingData": "ก้_Fetching Data______________ษฺ",
+  "refresh": "ก้_Refresh_______________ษฺ",
+  "enableEditing": "ก้_Editing must be enabled on the layer____________________ษฺ.",
+  "confirm": "ก้_These features will be permanently removed_______________________ษฺ.",
+  "deleteFeature": "ก้_Delete feature_______________ษฺ",
+  "deleteDisabled": "ก้_Delete Disabled________________ษฺ",
+  "editMultipleDisabled": "ก้_Edit Multiple Disabled_______________________ษฺ",
+  "showAll": "ก้_Show all_________________ษฺ",
+  "recordsSelected": "ก้_Total: {{total}} | Selection: {{selected}}______________________ษฺ",
+  "cancel": "ก้_Cancel_____________ษฺ"
+}

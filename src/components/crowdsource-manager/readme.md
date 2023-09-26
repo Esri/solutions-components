@@ -9,11 +9,19 @@
 
 | Property                  | Attribute                     | Description                                                                                                        | Type                   | Default     |
 | ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------- | ----------- |
+| `basemapConfig`           | --                            | IBasemapConfig: List of any basemaps to filter out from the basemap widget                                         | `IBasemapConfig`       | `undefined` |
 | `classicGrid`             | `classic-grid`                | boolean: when true the grid will display like the previous manager app with the table across the top               | `boolean`              | `false`     |
 | `enableAutoRefresh`       | `enable-auto-refresh`         | boolean: when true the layer table will auto refresh the data                                                      | `boolean`              | `true`      |
+| `enableBasemap`           | `enable-basemap`              | boolean: when true the basemap widget will be available                                                            | `boolean`              | `true`      |
+| `enableFullscreen`        | `enable-fullscreen`           | boolean: when true the fullscreen widget will be available                                                         | `boolean`              | `true`      |
+| `enableHome`              | `enable-home`                 | boolean: when true the home widget will be available                                                               | `boolean`              | `true`      |
 | `enableInlineEdit`        | `enable-inline-edit`          | boolean: when true edits can be applied directly within the table                                                  | `boolean`              | `false`     |
+| `enableLegend`            | `enable-legend`               | boolean: when true the legend widget will be available                                                             | `boolean`              | `true`      |
+| `enableSearch`            | `enable-search`               | boolean: when true the search widget will be available                                                             | `boolean`              | `true`      |
+| `enableZoom`              | `enable-zoom`                 | boolean: when true the zoom widget will be available                                                               | `boolean`              | `true`      |
 | `hideMap`                 | `hide-map`                    | boolean: when true no map is displayed for the app                                                                 | `boolean`              | `false`     |
 | `mapInfos`                | --                            | IMapInfo[]: array of map infos (name and id)                                                                       | `IMapInfo[]`           | `[]`        |
+| `onlyShowUpdatableLayers` | `only-show-updatable-layers`  | boolean: When true only editable layers that support the update capability will be available                       | `boolean`              | `true`      |
 | `searchConfiguration`     | --                            | ISearchConfiguration: Configuration details for the Search widget                                                  | `ISearchConfiguration` | `undefined` |
 | `showNewestFirst`         | `show-newest-first`           | boolean: when true the table will be sorted by objectid in descending order by default                             | `boolean`              | `true`      |
 | `zoomAndScrollToSelected` | `zoom-and-scroll-to-selected` | boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table | `boolean`              | `false`     |
@@ -28,9 +36,9 @@
 - [map-card](../map-card)
 - calcite-icon
 - calcite-action
+- calcite-tooltip
 - [card-manager](../card-manager)
 - calcite-action-bar
-- calcite-tooltip
 - [layer-table](../layer-table)
 
 ### Graph
@@ -41,9 +49,9 @@ graph TD;
   crowdsource-manager --> map-card
   crowdsource-manager --> calcite-icon
   crowdsource-manager --> calcite-action
+  crowdsource-manager --> calcite-tooltip
   crowdsource-manager --> card-manager
   crowdsource-manager --> calcite-action-bar
-  crowdsource-manager --> calcite-tooltip
   crowdsource-manager --> layer-table
   calcite-panel --> calcite-action
   calcite-panel --> calcite-action-menu
@@ -58,6 +66,7 @@ graph TD;
   map-card --> map-picker
   map-card --> map-tools
   map-picker --> calcite-button
+  map-picker --> calcite-tooltip
   map-picker --> calcite-action-bar
   map-picker --> calcite-list
   map-picker --> calcite-list-item
@@ -102,15 +111,17 @@ graph TD;
   layer-table --> calcite-loader
   layer-table --> calcite-action-bar
   layer-table --> map-layer-picker
-  layer-table --> calcite-action
-  layer-table --> calcite-tooltip
-  layer-table --> calcite-button
   layer-table --> calcite-dropdown
+  layer-table --> calcite-action
+  layer-table --> calcite-button
+  layer-table --> calcite-tooltip
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
   layer-table --> calcite-alert
   layer-table --> calcite-modal
   layer-table --> calcite-icon
+  map-layer-picker --> calcite-notice
+  map-layer-picker --> calcite-tooltip
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown

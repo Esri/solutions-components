@@ -13,6 +13,7 @@
 | `enableInlineEdit`        | `enable-inline-edit`          | boolean: when true edits can be applied directly within the table                                                  | `boolean`  | `undefined` |
 | `mapInfo`                 | --                            | IMapInfo: key configuration details about the current map                                                          | `IMapInfo` | `undefined` |
 | `mapView`                 | --                            | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html             | `MapView`  | `undefined` |
+| `onlyShowUpdatableLayers` | `only-show-updatable-layers`  | boolean: When true only editable layers that support the update capability will be available                       | `boolean`  | `undefined` |
 | `showNewestFirst`         | `show-newest-first`           | boolean: when true the table will be sorted by objectid in descending order by default                             | `boolean`  | `undefined` |
 | `zoomAndScrollToSelected` | `zoom-and-scroll-to-selected` | boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table | `boolean`  | `undefined` |
 
@@ -50,10 +51,10 @@ Promise that resolves when the operation is complete
 - calcite-loader
 - calcite-action-bar
 - [map-layer-picker](../map-layer-picker)
-- calcite-action
-- calcite-tooltip
-- calcite-button
 - calcite-dropdown
+- calcite-action
+- calcite-button
+- calcite-tooltip
 - calcite-dropdown-group
 - calcite-dropdown-item
 - calcite-alert
@@ -68,10 +69,10 @@ graph TD;
   layer-table --> calcite-loader
   layer-table --> calcite-action-bar
   layer-table --> map-layer-picker
-  layer-table --> calcite-action
-  layer-table --> calcite-tooltip
-  layer-table --> calcite-button
   layer-table --> calcite-dropdown
+  layer-table --> calcite-action
+  layer-table --> calcite-button
+  layer-table --> calcite-tooltip
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
   layer-table --> calcite-alert
@@ -90,6 +91,8 @@ graph TD;
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
+  map-layer-picker --> calcite-notice
+  map-layer-picker --> calcite-tooltip
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown
@@ -99,6 +102,7 @@ graph TD;
   map-layer-picker --> calcite-combobox-item
   map-layer-picker --> calcite-option
   map-layer-picker --> calcite-dropdown-item
+  calcite-notice --> calcite-icon
   calcite-select --> calcite-icon
   calcite-combobox --> calcite-chip
   calcite-combobox --> calcite-icon

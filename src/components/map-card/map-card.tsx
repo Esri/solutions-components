@@ -16,7 +16,7 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import { IMapChange, IMapInfo, ISearchConfiguration } from "../../utils/interfaces";
+import { IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration } from "../../utils/interfaces";
 
 // TODO navigation and accessability isn't right for the map list
 //   tab does not go into the list when it's open
@@ -44,6 +44,31 @@ export class MapCard {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * boolean: when true the legend widget will be available
+   */
+  @Prop() enableLegend: boolean;
+
+  /**
+   * boolean: when true the fullscreen widget will be available
+   */
+  @Prop() enableFullscreen: boolean;
+
+  /**
+   * boolean: when true the search widget will be available
+   */
+  @Prop() enableSearch: boolean;
+
+  /**
+   * boolean: when true the basemap widget will be available
+   */
+  @Prop() enableBasemap: boolean;
+
+  /**
+   * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+   */
+  @Prop() basemapConfig: IBasemapConfig;
 
   /**
    * IMapInfo[]: array of map infos (name and id)
@@ -131,6 +156,11 @@ export class MapCard {
   @Event() mapChanged: EventEmitter<IMapChange>;
 
   /**
+   * Emitted before a new map is loaded
+   */
+  @Event() beforeMapChanged: EventEmitter<void>;
+
+  /**
    * Listen for changes to map info and load the appropriate map
    */
   @Listen("mapInfoChange", { target: "window" })
@@ -162,7 +192,12 @@ export class MapCard {
         <map-picker mapInfos={this.mapInfos}/>
         <div class="map-height" ref={(el) => (this._mapDiv = el)}/>
         <map-tools
+          basemapConfig={this.basemapConfig}
           class={"box-shadow"}
+          enableBasemap={this.enableBasemap}
+          enableFullscreen={this.enableFullscreen}
+          enableLegend={this.enableLegend}
+          enableSearch={this.enableSearch}
           mapView={this.mapView}
           ref={(el) => this._mapTools = el}
           searchConfiguration={this._searchConfiguration}
@@ -228,10 +263,7 @@ export class MapCard {
       this._loadedId = id;
       this._searchConfiguration = this._webMapInfo.searchConfiguration;
 
-      this.mapChanged.emit({
-        id: id,
-        mapView: this.mapView
-      });
+      this.beforeMapChanged.emit();
 
       await this.mapView.when(() => {
         const home = new this.Home({
@@ -239,6 +271,11 @@ export class MapCard {
         });
         this.mapView.ui.add(home, { position: "top-left", index: 3});
         this.mapView.ui.add(this._mapTools, { position: "top-right", index: 0});
+
+        this.mapChanged.emit({
+          id: id,
+          mapView: this.mapView
+        });
       });
     }
   }

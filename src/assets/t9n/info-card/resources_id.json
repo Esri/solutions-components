@@ -1,0 +1,9 @@
+{
+  "fetchingData": "ng_Fetching data______________ny",
+  "edit": "ng_Edit_________ny",
+  "enableEditing": "ng_Update capability must be enabled on the layer_________________________ny.",
+  "editDisabled": "ng_Editing Disabled_________________ny",
+  "next": "ng_Next_________ny",
+  "back": "ng_Back_________ny",
+  "indexOfTotal": "ng_{{index}} of {{total}}_______________________ny"
+}

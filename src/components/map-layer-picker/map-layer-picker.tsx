@@ -15,8 +15,11 @@
  */
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
-import { getMapLayerHash, getMapLayerIds, getMapTableHash, getMapTableIds } from "../../utils/mapViewUtils";
+import MapLayerPicker_T9n from "../../assets/t9n/map-layer-picker/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
+import { getMapLayerHash, getMapTableHash } from "../../utils/mapViewUtils";
 import state from "../../utils/publicNotificationStore";
+import { IMapItemHash } from "../../utils/interfaces";
 
 @Component({
   tag: "map-layer-picker",
@@ -60,6 +63,11 @@ export class MapLayerPicker {
   @Prop() mapView: __esri.MapView;
 
   /**
+   * boolean: When true only editable layers that support the update capability will be available
+   */
+  @Prop() onlyShowUpdatableLayers: boolean;
+
+  /**
    * string: optional placeholder icon used with "combobox" type
    */
   @Prop() placeholderIcon = "";
@@ -91,14 +99,25 @@ export class MapLayerPicker {
   //--------------------------------------------------------------------------
 
   /**
+   * boolean: when true the map contains valid layers and all expected tools will be enabled
+   */
+  @State() _hasValidLayers = true;
+
+  /**
    * string[]: list of layer and table (if showTables is true) ids from the map
    */
   @State() ids: string[] = [];
 
   /**
-   * string: lcurrent layer name to display when using "dropdown" type
+   * string: current layer name to display when using "dropdown" type
    */
   @State() selectedName = "";
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() _translations: typeof MapLayerPicker_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -110,6 +129,16 @@ export class MapLayerPicker {
    * HTMLCalciteSelectElement: The html element for selecting layers
    */
   protected _layerElement: HTMLCalciteSelectElement | HTMLCalciteComboboxElement;
+
+  /**
+   * IMapItemHash: id/name lookup
+   */
+  protected _layerNameHash: IMapItemHash;
+
+  /**
+   * IMapItemHash: id/name lookup
+   */
+  protected _tableNameHash: IMapItemHash;
 
   //--------------------------------------------------------------------------
   //
@@ -124,10 +153,12 @@ export class MapLayerPicker {
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
     await this._setLayers();
-    const hasLayers = Object.keys(state.layerNameHash).length > 0;
-    const hasTables = Object.keys(state.tableNameHash).length > 0 && this.showTables;
-    if (hasLayers || hasTables) {
-      this._setSelectedLayer(this.ids[0], hasLayers ? "layer" : "table");
+    if (this.ids.length > 0) {
+      this._hasValidLayers = true;
+      this._setSelectedLayer(this.ids[0]);
+    } else {
+      this._hasValidLayers = false;
+      this.noLayersFound.emit();
     }
   }
 
@@ -142,6 +173,12 @@ export class MapLayerPicker {
   //  Events (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Emitted on demand when no valid layers are found
+   *
+   */
+  @Event() noLayersFound: EventEmitter<void>;
 
   /**
    * Emitted on demand when a layer is selected
@@ -159,6 +196,7 @@ export class MapLayerPicker {
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
   async componentWillLoad(): Promise<void> {
+    await this._getTranslations();
     await this._setLayers();
     if (this.ids.length > 0 || this.selectedIds.length === 1) {
       this.layerSelectionChange.emit(
@@ -176,7 +214,7 @@ export class MapLayerPicker {
         <div class="map-layer-picker-container">
           <div class="map-layer-picker">
             {
-              this.type === "combobox" ? this._getCombobox() :
+              !this._hasValidLayers ? this._getInvalidPlaceholder() : this.type === "combobox" ? this._getCombobox() :
                 this.type === "select" ? this._getSelect() : this._getDropdown()
             }
           </div>
@@ -194,9 +232,9 @@ export class MapLayerPicker {
       if (this.type === "select") {
         this._layerElement.value = id;
       } else if (this.type === "dropdown") {
-        this.selectedName = Object.keys(state.layerNameHash).indexOf(id) > -1 ?
-          state.layerNameHash[id] : Object.keys(state.tableNameHash).indexOf(id) > -1 ?
-            state.tableNameHash[id] : "";
+        this.selectedName = Object.keys(this._layerNameHash).indexOf(id) > -1 ?
+          this._layerNameHash[id].name : Object.keys(this._tableNameHash).indexOf(id) > -1 ?
+            this._tableNameHash[id].name : "";
       }
     }
   }
@@ -206,6 +244,34 @@ export class MapLayerPicker {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Create a notice to inform the user that no layers were found
+   *
+   * @returns Calcite Notice component with the message
+   */
+  protected _getInvalidPlaceholder(): VNode {
+    return (
+      <div>
+        <calcite-notice
+          class="height-100"
+          icon="exclamation-mark-triangle"
+          id="no-valid-layers"
+          kind="danger"
+          open
+        >
+          <div slot="message">{this._translations.noLayersFound}</div>
+        </calcite-notice>
+        <calcite-tooltip
+          label={this._translations.enableEditUpdate}
+          placement="bottom"
+          reference-element="no-valid-layers"
+        >
+          <span>{this._translations.enableEditUpdate}</span>
+        </calcite-tooltip>
+      </div>
+    );
+  }
 
   /**
    * Create a list of layers from the map
@@ -256,6 +322,7 @@ export class MapLayerPicker {
    * @returns Array of Dropdown items with layer names
    */
   _getDropdown(): VNode {
+    const id = "map-layer-picker";
     return (
       <calcite-dropdown class="layer-picker-dropdown">
         <calcite-action slot="trigger" text="">
@@ -265,6 +332,7 @@ export class MapLayerPicker {
             class="max-width-350"
             iconEnd="chevron-down"
             iconStart="layers"
+            id={id}
             kind="neutral"
             width="full"
           >
@@ -272,6 +340,13 @@ export class MapLayerPicker {
               {this.selectedName}
             </div>
           </calcite-button>
+          <calcite-tooltip
+            label=""
+            placement="bottom"
+            reference-element={id}
+          >
+            <span>{this._translations.switchLayer}</span>
+          </calcite-tooltip>
         </calcite-action>
         <calcite-dropdown-group selection-mode="single">
           {this._getMapLayerOptions()}
@@ -305,12 +380,15 @@ export class MapLayerPicker {
     id: string,
     itemType: "layer" | "table"
   ): VNode {
-    const name = itemType === "layer" ? state.layerNameHash[id] : state.tableNameHash[id];
-    return this.type === "combobox" ? (<calcite-combobox-item textLabel={name} value={id} />) :
-      this.type === "select" ? (<calcite-option label={name} value={id} />) :
+    const item = itemType === "layer" ? this._layerNameHash[id] : this._tableNameHash[id];
+    const disabled = this.onlyShowUpdatableLayers ? !item.supportsUpdate : false;
+    const name = item.name;
+    return this.type === "combobox" ? (<calcite-combobox-item disabled={disabled} textLabel={name} value={id} />) :
+      this.type === "select" ? (<calcite-option disabled={disabled} label={name} value={id} />) :
         (
           <calcite-dropdown-item
-            onClick={() => void this._setSelectedLayer(id, itemType)}
+            disabled={disabled}
+            onClick={disabled ? undefined : () => void this._setSelectedLayer(id)}
           >
             {name}
           </calcite-dropdown-item>
@@ -321,10 +399,12 @@ export class MapLayerPicker {
    * Store the layer name based on the user selection
    */
   _setSelectedLayer(
-    id: string,
-    type: "layer" | "table"
+    id: string
   ): void {
-    this.selectedName = type === "layer" ? state.layerNameHash[id] : state.tableNameHash[id];
+    const item = Object.keys(this._layerNameHash).indexOf(id) > -1 ?
+      this._layerNameHash[id] : Object.keys(this._tableNameHash).indexOf(id) > -1 ?
+      this._tableNameHash[id] : undefined;
+    this.selectedName = item?.name;
     this.selectedIds = [id];
     this.layerSelectionChange.emit(this.selectedIds);
   }
@@ -336,14 +416,32 @@ export class MapLayerPicker {
    */
   async _setLayers(): Promise<void> {
     if (this.mapView) {
-      const mapLayerIds = await getMapLayerIds(this.mapView);
-      const mapTableIds = this.showTables ? await getMapTableIds(this.mapView) : [];
+      await this._initLayerTableHash();
+      const mapLayerIds = this.onlyShowUpdatableLayers ?
+        this._getEditableIds(this._layerNameHash) : Object.keys(this._layerNameHash);
+      const mapTableIds = this.showTables ? this.onlyShowUpdatableLayers ?
+        this._getEditableIds(this._tableNameHash) : Object.keys(this._tableNameHash) : [];
       this.ids = [
         ...mapLayerIds.filter(n => this.enabledLayerIds?.length > 0 ? this.enabledLayerIds.indexOf(n) > -1 : true),
         ...mapTableIds.filter(n => this.enabledTableIds?.length > 0 ? this.enabledTableIds.indexOf(n) > -1 : true),
       ];
-      await this._initStateHash();
     }
+  }
+
+  /**
+   * Fetch the ids of all layers that support edits with the update capability
+   *
+   * @returns array of layer ids
+   */
+  protected _getEditableIds(
+    hash: IMapItemHash
+  ): string[] {
+    return Object.keys(hash).reduce((prev, cur) => {
+      if (hash[cur].supportsUpdate) {
+        prev.push(cur);
+      }
+      return prev;
+    }, []);
   }
 
   /**
@@ -351,11 +449,10 @@ export class MapLayerPicker {
    *
    * @returns Promise when the operation has completed
    */
-  protected async _initStateHash(): Promise<void> {
-    if (this.mapView) {
-      state.layerNameHash = await getMapLayerHash(this.mapView);
-      state.tableNameHash = this.showTables ? await getMapTableHash(this.mapView) : {};
-    }
+  protected async _initLayerTableHash(): Promise<void> {
+    this._layerNameHash = await getMapLayerHash(this.mapView, this.onlyShowUpdatableLayers);
+    this._tableNameHash = this.showTables ? await getMapTableHash(
+      this.mapView, this.onlyShowUpdatableLayers) : {};
   }
 
   /**
@@ -366,9 +463,9 @@ export class MapLayerPicker {
   protected _validLayer(
     id: string
   ): boolean {
-    const name = state.layerNameHash[id];
+    const name = this._layerNameHash[id]?.name;
     return name && state.managedLayers.indexOf(name) < 0 && (this.enabledLayerIds.length > 0 ?
-      this.enabledLayerIds.indexOf(id) > -1 : name);
+      this.enabledLayerIds.indexOf(id) > -1 : true);
   }
 
   /**
@@ -379,7 +476,7 @@ export class MapLayerPicker {
   protected _validTable(
     id: string
   ): boolean {
-    const name = state.tableNameHash[id];
+    const name = this._tableNameHash[id]?.name;
     const validName = name && this.showTables;
     return validName ? state.managedTables.indexOf(name) < 0 &&
       (this.enabledTableIds.length > 0 ? this.enabledTableIds.indexOf(id) > -1 : true) : validName;
@@ -396,5 +493,16 @@ export class MapLayerPicker {
       this.selectedIds = ids;
       this.layerSelectionChange.emit(this.selectedIds);
     }
+  }
+
+  /**
+   * Fetches the component's translations
+   *
+   * @returns Promise when complete
+   * @protected
+   */
+  protected async _getTranslations(): Promise<void> {
+    const messages = await getLocaleComponentStrings(this.el);
+    this._translations = messages[0] as typeof MapLayerPicker_T9n;
   }
 }

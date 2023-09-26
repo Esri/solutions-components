@@ -23,10 +23,6 @@ const { state, onChange } = createStore({
 	managedTables: [],
 	// Handle[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Handles.html#Handle
 	highlightHandles: [],
-	// IMapItemHash title: id lookup to be used across components
-	layerNameHash: {},
-	// IMapItemHash title: id lookup to be used across components
-	tableNameHash: {},
 	// remove all handles
 	removeHandles: () => {
 		state.highlightHandles.forEach(h => h?.remove());

@@ -1,0 +1,9 @@
+{
+  "fetchingData": "須_Fetching data______________鷗",
+  "edit": "須_Edit_________鷗",
+  "enableEditing": "須_Update capability must be enabled on the layer_________________________鷗.",
+  "editDisabled": "須_Editing Disabled_________________鷗",
+  "next": "須_Next_________鷗",
+  "back": "須_Back_________鷗",
+  "indexOfTotal": "須_{{index}} of {{total}}_______________________鷗"
+}

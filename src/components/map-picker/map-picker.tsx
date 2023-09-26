@@ -16,6 +16,8 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
 import { IMapInfo } from "../../utils/interfaces";
+import MapPicker_T9n from "../../assets/t9n/map-picker/resources.json";
+import { getLocaleComponentStrings } from "../../utils/locale";
 
 @Component({
   tag: 'map-picker',
@@ -52,6 +54,12 @@ export class MapPicker {
    * boolean: controls the state of the map list
    */
   @State() _mapListExpanded = false;
+
+  /**
+   * Contains the translations for this component.
+   * All UI strings should be defined here.
+   */
+  @State() _translations: typeof MapPicker_T9n;
 
   /**
    * IMapInfo: id and name of the map to display
@@ -95,9 +103,9 @@ export class MapPicker {
    * Called each time the mapInfos prop is changed.
    */
   @Watch("mapInfos")
-  mapInfosWatchHandler(v: IMapInfo[], oldV: IMapInfo[]): void {
+  async mapInfosWatchHandler(v: IMapInfo[], oldV: IMapInfo[]): Promise<void> {
     if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
-      this.mapInfoChange.emit(v[0]);
+      this._webMapSelected(v[0]);
     }
   }
 
@@ -125,6 +133,15 @@ export class MapPicker {
   //--------------------------------------------------------------------------
 
   /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   *
+   * @returns Promise when complete
+   */
+  async componentWillLoad(): Promise<void> {
+    await this._getTranslations();
+  }
+
+  /**
    * Renders the component.
    */
   render() {
@@ -148,7 +165,7 @@ export class MapPicker {
   /**
    * Called once after the component has loaded
    */
-  componentDidLoad() {
+  async componentDidLoad() {
     const webMapInfo = this.mapInfos && this.mapInfos.length > 0 ? this.mapInfos[0] : undefined;
     if (webMapInfo) {
       this._webMapSelected(webMapInfo);
@@ -170,19 +187,32 @@ export class MapPicker {
    * @protected
    */
   protected _getMapPicker(): VNode {
+    const id = "map-picker-expand-toggle";
     const mapListIcon = this._mapListExpanded ? "chevron-up" : "chevron-down";
     return (
-      <calcite-button
-        alignment="icon-end-space-between"
-        appearance="transparent"
-        class="width-full height-full"
-        iconEnd={mapListIcon}
-        kind="neutral"
-        onClick={() => this._chooseMap()}
-        width="full"
-      >
-        {this._webMapInfo?.name}
-      </calcite-button>
+      <div class="width-full">
+        <calcite-button
+          alignment="icon-end-space-between"
+          appearance="transparent"
+          class="width-full height-full"
+          iconEnd={mapListIcon}
+          id={id}
+          kind="neutral"
+          onClick={() => this._chooseMap()}
+          width="full"
+        >
+          {this._webMapInfo?.name}
+        </calcite-button>
+        <calcite-tooltip
+          label=""
+          placement="bottom"
+          reference-element={id}
+        >
+          <span>
+            {this._translations.switchMap}
+          </span>
+        </calcite-tooltip>
+      </div>
     );
   }
 
@@ -196,7 +226,12 @@ export class MapPicker {
   protected _getToolbar(): VNode {
     return (
       <div class="display-flex">
-        <calcite-action-bar class="action-bar-color border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
+        <calcite-action-bar
+          class="action-bar-color border-bottom-1 action-bar-size"
+          expand-disabled
+          layout="horizontal"
+          slot="header"
+        >
           {this._getMapPicker()}
         </calcite-action-bar>
       </div>
@@ -218,7 +253,11 @@ export class MapPicker {
     const listClass = show ? "map-list" : "display-none";
     return (
       <div class={listClass}>
-        <calcite-list id="mapList" ref={(el) => this._list = el} selectionAppearance="border">
+        <calcite-list
+          id="mapList"
+          ref={(el) => this._list = el}
+          selectionAppearance="border"
+        >
           {this.mapInfos.map(mapInfo => {
             return (
               <calcite-list-item
@@ -261,4 +300,14 @@ export class MapPicker {
     this._mapListExpanded = !this._mapListExpanded;
   }
 
+  /**
+   * Fetches the component's translations
+   *
+   * @returns Promise when complete
+   * @protected
+   */
+  protected async _getTranslations(): Promise<void> {
+    const messages = await getLocaleComponentStrings(this.el);
+    this._translations = messages[0] as typeof MapPicker_T9n;
+  }
 }
