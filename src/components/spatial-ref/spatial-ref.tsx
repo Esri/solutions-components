@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, h, Host, Method, Prop, State, Watch, VNode } from '@stencil/core';
 import '@esri/calcite-components';
-import { wkids } from './spatialreferences';
-import { nodeListToArray } from '../../utils/common';
-import { ISpatialRefRepresentation, IWkidDescription } from '../../utils/interfaces';
 import SpatialRef_T9n from '../../assets/t9n/spatial-ref/resources.json';
+import { Component, Element, Event, EventEmitter, h, Host, Method, Prop, State, Watch, VNode } from '@stencil/core';
 import { getLocaleComponentStrings } from '../../utils/locale';
+import { ISpatialRefRepresentation, IWkidDescription } from '../../utils/interfaces';
+import { IValueChange } from "../../utils/interfaces";
+import { nodeListToArray } from '../../utils/common';
+import { wkids } from './spatialreferences';
 
 @Component({
   tag: 'spatial-ref',
@@ -60,6 +61,10 @@ export class SpatialRef {
 
   @Watch("value")
   valueChanged(newValue: string): void {
+    this.spatialReferenceChange.emit({
+      oldValue: this.value,
+      newValue: newValue
+    });
     this._spatialRef = this._createSpatialRefDisplay(newValue);
     const searchBox = document.getElementById("calcite-sr-search") as HTMLCalciteInputElement;
     if (searchBox) {
@@ -142,7 +147,7 @@ export class SpatialRef {
   //
   //--------------------------------------------------------------------------
 
-  @Event() spatialReferenceChange: EventEmitter<{ name: string, enabled: boolean }>;
+  @Event() spatialReferenceChange: EventEmitter<IValueChange>;
 
   //--------------------------------------------------------------------------
   //

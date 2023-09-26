@@ -35,8 +35,8 @@ describe('spatial-ref', () => {
   it('select first value after typing in search field', async () => {
     await page.setContent('<spatial-ref/>');
 
-    const spatialRef = await page.find('spatial-ref');
-    expect(await spatialRef.getProperty('value')).toBe('102100');
+    const spatial_ref = await page.find('spatial-ref');
+    expect(await spatial_ref.getProperty('value')).toBe('102100');
 
     const input = await page.find('calcite-input >>> input');
     await input.focus();
@@ -44,14 +44,14 @@ describe('spatial-ref', () => {
     await page.waitForChanges();
     await page.keyboard.press('Enter');
     await page.waitForChanges();
-    expect(await spatialRef.getProperty('value')).toBe('2862');
+    expect(await spatial_ref.getProperty('value')).toBe('2862');
   });
 
   it('select tabbed-to value after typing in search field', async () => {
     await page.setContent('<spatial-ref/>');
 
-    const spatialRef = await page.find('spatial-ref');
-    expect(await spatialRef.getProperty('value')).toBe('102100');
+    const spatial_ref = await page.find('spatial-ref');
+    expect(await spatial_ref.getProperty('value')).toBe('102100');
 
     const input = await page.find('calcite-input >>> input');
     await input.focus();
@@ -75,7 +75,7 @@ describe('spatial-ref', () => {
     await page.waitForChanges();
     await page.keyboard.press('Enter');
     await page.waitForChanges();
-    expect(await spatialRef.getProperty('value')).toBe('2865');
+    expect(await spatial_ref.getProperty('value')).toBe('2865');
   });
 
 });

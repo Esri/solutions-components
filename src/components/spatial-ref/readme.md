@@ -16,9 +16,9 @@
 
 ## Events
 
-| Event                    | Description | Type                                               |
-| ------------------------ | ----------- | -------------------------------------------------- |
-| `spatialReferenceChange` |             | `CustomEvent<{ name: string; enabled: boolean; }>` |
+| Event                    | Description | Type                        |
+| ------------------------ | ----------- | --------------------------- |
+| `spatialReferenceChange` |             | `CustomEvent<IValueChange>` |
 
 
 ## Methods

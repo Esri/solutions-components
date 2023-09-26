@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, h, Host, Prop, State, VNode } from '@stencil/core';
 import '@esri/calcite-components';
-import state from "../../utils/solution-store";
-import { nodeListToArray } from '../../utils/common';
 import SolutionSpatialRef_T9n from '../../assets/t9n/solution-spatial-ref/resources.json';
+import state from "../../utils/solution-store";
+import { Component, Element, Event, EventEmitter, h, Host, Listen, Prop, State, VNode } from '@stencil/core';
 import { getLocaleComponentStrings } from '../../utils/locale';
+import { nodeListToArray } from '../../utils/common';
 
 @Component({
   tag: 'solution-spatial-ref',
@@ -144,6 +144,14 @@ export class SolutionSpatialRef {
   //--------------------------------------------------------------------------
 
   @Event() featureServiceSpatialReferenceChange: EventEmitter<{ name: string, enabled: boolean }>;
+
+  /**
+   * Handle changes to the buffer distance value
+   */
+  @Listen("spatialReferenceChange", { target: "window" })
+  spatialReferenceChange(event: CustomEvent): void {
+    this.value = event.detail.newValue;
+  }
 
   //--------------------------------------------------------------------------
   //

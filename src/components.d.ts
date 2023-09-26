@@ -2062,7 +2062,7 @@ declare namespace LocalJSX {
           * When true, all are disabled to prevent interaction.
          */
         "disabled"?: boolean;
-        "onSpatialReferenceChange"?: (event: SpatialRefCustomEvent<{ name: string, enabled: boolean }>) => void;
+        "onSpatialReferenceChange"?: (event: SpatialRefCustomEvent<IValueChange>) => void;
         /**
           * Contains the public value for this component, which is a wkid or a wkt.
          */

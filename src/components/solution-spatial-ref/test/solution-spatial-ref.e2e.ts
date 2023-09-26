@@ -32,4 +32,21 @@ describe('solution-spatial-ref', () => {
     expect(await solution_spatial_ref.getProperty('value')).toBe('102100');
   });
 
+  it('echoes value of contained spatial-ref component', async () => {
+    await page.setContent('<solution-spatial-ref/>');
+    await page.waitForChanges();
+
+    const newSpatialRef = '2243';
+    const spatial_ref = await page.find('spatial-ref');
+    await page.waitForChanges();
+    await spatial_ref.setProperty('value', newSpatialRef);
+    await page.waitForChanges();
+    /*
+    expect(await spatial_ref.getProperty('value')).toBe(newSpatialRef);
+    */
+
+    const solution_spatial_ref = await page.find('solution-spatial-ref');
+    expect(await solution_spatial_ref.getProperty('value')).toBe(newSpatialRef);
+  });
+
 });
