@@ -45,12 +45,12 @@ export async function getMapLayerHash(
 
   return onlyShowUpdatableLayers ? Object.keys(layerHash).reduce(async (prev, cur) => {
     const layer = await getLayerOrTable(mapView, cur);
-    await layer.when(() => {
-      prev[cur] = {
-        name: layerHash[cur].name,
-        supportsUpdate: layer.editingEnabled && layer.capabilities.operations.supportsUpdate
-      };
-    });
+    await layer.load();
+    await layer.when();
+    prev[cur] = {
+      name: layerHash[cur].name,
+      supportsUpdate: layer.editingEnabled && layer.capabilities.operations.supportsUpdate
+    };
     return prev;
   }, {}) : layerHash;
 }
