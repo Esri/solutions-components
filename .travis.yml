@@ -10,3 +10,4 @@ env:
   - MOZ_HEADLESS=1
 addons:
   chrome: stable
+  firefox: latest

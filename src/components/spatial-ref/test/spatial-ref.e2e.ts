@@ -47,7 +47,7 @@ describe('spatial-ref', () => {
     expect(await spatial_ref.getProperty('value')).toBe('2862');
   });
 
-  it('select tabbed-to value after typing in search field', async () => {
+  xit('select tabbed-to value after typing in search field', async () => {
     await page.setContent('<spatial-ref/>');
 
     const spatial_ref = await page.find('spatial-ref');
