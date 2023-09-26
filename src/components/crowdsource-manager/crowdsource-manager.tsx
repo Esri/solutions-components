@@ -478,8 +478,8 @@ export class CrowdsourceManager {
             class="display-flex align-items-center"
             slot="header-content"
           >
-            <calcite-icon class="padding-inline-end-75" icon="information" scale="s" />
-            <div>
+            <calcite-icon icon="information" scale="s" />
+            <div class="padding-inline-start-75">
               {this._translations.information}
             </div>
           </div>
