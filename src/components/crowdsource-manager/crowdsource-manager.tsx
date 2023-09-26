@@ -455,7 +455,7 @@ export class CrowdsourceManager {
           enableFullscreen={this.enableFullscreen}
           enableLegend={this.enableLegend}
           enableSearch={this.enableSearch}
-          mapInfos={this.mapInfos}
+          mapInfos={this.mapInfos.filter(mapInfo => mapInfo.visible !== false)}
         />
       </div>
     );
