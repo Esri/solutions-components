@@ -42,17 +42,11 @@ export async function getMapLayerHash(
       return prev;
     }, {});
   });
-
-  return onlyShowUpdatableLayers ? Object.keys(layerHash).reduce(async (prev, cur) => {
-    const layer = await getLayerOrTable(mapView, cur);
-    await layer.load();
-    await layer.when();
-    prev[cur] = {
-      name: layerHash[cur].name,
-      supportsUpdate: layer.editingEnabled && layer.capabilities.operations.supportsUpdate
-    };
-    return prev;
-  }, {}) : layerHash;
+  return _getFinalHash(
+    onlyShowUpdatableLayers,
+    layerHash,
+    mapView
+  );
 }
 
 /**
@@ -78,16 +72,45 @@ export async function getMapTableHash(
       return prev;
     }, {});
   });
+  return _getFinalHash(
+    onlyShowUpdatableTables,
+    tableHash,
+    mapView
+  );
+}
 
-  return onlyShowUpdatableTables ? Object.keys(tableHash).reduce(async (prev, cur) => {
-    const item = await getLayerOrTable(mapView, cur);
-    await item.load();
-    prev[cur] = {
-      name: tableHash[cur].name,
-      supportsUpdate: item.editingEnabled && item.capabilities.operations.supportsUpdate
-    };
-    return prev;
-  }, {}) : tableHash;
+/**
+ * Get the final hash
+ *
+ * @param onlyShowUpdatable boolean when true only layers that support editing and the update capability will be returned
+ * @param hash IMapItemHash key: layer id, values: name, supportsUpdate
+ * @param mapView the map view to fetch the layer from
+ *
+ * @returns Promise resolving with IMapItemHash
+ *
+ */
+async function _getFinalHash(
+  onlyShowUpdatable: boolean,
+  hash: IMapItemHash,
+  mapView: __esri.MapView
+): Promise<IMapItemHash> {
+  if (onlyShowUpdatable) {
+    const editableHash = {};
+    const keys = Object.keys(hash);
+    for (let i = 0; i < keys.length; i++) {
+      const id = keys[i];
+      const layer = await getLayerOrTable(mapView, id);
+      await layer.load();
+      await layer.when();
+      editableHash[id] = {
+        name: hash[id].name,
+        supportsUpdate: layer.editingEnabled && layer.capabilities.operations.supportsUpdate
+      };
+    }
+    return editableHash;
+  } else {
+    return hash;
+  }
 }
 
 /**
