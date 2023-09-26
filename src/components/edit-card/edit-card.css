@@ -63,8 +63,12 @@
 
 .esri-feature-relationship__list {
   border-top: 1px solid var(--calcite-ui-border-3);
+  border-bottom: 1px solid var(--calcite-ui-border-3);
+  margin-top: 12px;
 }
 
 .esri-feature-form__related-records_list {
   border-top: 1px solid var(--calcite-ui-border-3);
+  border-bottom: 1px solid var(--calcite-ui-border-3);
+  margin-top: 12px;
 }
