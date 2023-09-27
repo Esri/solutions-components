@@ -16,8 +16,8 @@
 
 import {
   getInventoryItems
-} from "./templates";
-import * as electionOutreach from '../demos/data/election-outreach.json';
+} from "../templates";
+import * as electionOutreach from '../../demos/data/election-outreach.json';
 
 describe("getInventoryItems", () => {
   it("can get inventory items", () => {
