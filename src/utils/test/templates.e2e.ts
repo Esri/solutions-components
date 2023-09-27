@@ -14,44 +14,16 @@
  * limitations under the License.
  */
 
-.spatial-ref-switch {
-  @apply m-inline-end-2;
-}
+import {
+  getInventoryItems
+} from "../templates";
+import * as electionOutreach from '../../demos/data/election-outreach.json';
 
-.spatial-ref-component {
-  @apply mt-2.5
-    m-inline-start-10;
-}
-
-#spatialRefDefn .sc-calcite-label-h label.sc-calcite-label {
-  @apply m-0;
-  background-color: $solutions-light-purple;
-}
-
-.spatial-ref-default {
-  @apply m-0;
-}
-
-.spatial-ref-item-title {
-  @apply mb-2
-    text-sm;
-}
-
-.spatial-ref-item-switch {
-  @apply m-inline-end-2;
-}
-
-.switch-label {
-  @apply m-1
-    text-sm;
-}
-
-.disabled-div {
-  @apply pointer-events-none
-    opacity-40;
-}
-
-.spatial-ref-desc {
-  padding-bottom: .5rem;
-  @apply p-inline-start-1;
-}
+describe("getInventoryItems", () => {
+  it("can get inventory items", () => {
+    const templates = electionOutreach.templates;
+    expect(templates.length).toEqual(11)
+    const actual = getInventoryItems(templates);
+    expect(actual.length).toEqual(5);
+  });
+});

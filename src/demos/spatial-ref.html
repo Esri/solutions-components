@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
-  <title>Solution Spatial Reference</title>
+  <title>Spatial Reference</title>
   <!--
    | Copyright 2022 Esri
    |
@@ -34,11 +34,10 @@
   <script type="module" src="../solutions-components.esm.js"></script>
 </head>
 <body>
-  <h1>Demo Solution Spatial Reference</h1>
+  <h1>Demo Spatial Reference</h1>
   <main id="appContainer">
     <div class="content full-height">
-      <store-manager id="helper"></store-manager>
-      <solution-spatial-ref id="demo"/>
+      <spatial-ref id="demo"/>
     </div>
   </main>
 
@@ -47,13 +46,7 @@
   <script>
     require([],  // for loading i18n in setLocale
     function () {
-      fetch("./data/election-outreach.json").then(result => {
-        result.json().then(data => {
-          document.getElementById("appContainer").style.opacity = "1";
-          const helper = document.getElementById("helper");
-          helper.value = JSON.stringify(data.templates);
-        });
-      });
+      document.getElementById("appContainer").style.opacity = "1";
     });
   </script>
 </body>

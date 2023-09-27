@@ -14,16 +14,10 @@
  * limitations under the License.
  */
 
-import {
-  getInventoryItems
-} from "./templates";
-import * as electionOutreach from '../demos/data/election-outreach.json';
+.spatial-ref-container {
+  max-height: 200px;
+  @apply
+    overflow-y-auto
+    mb-4;
+}
 
-describe("getInventoryItems", () => {
-  it("can get inventory items", () => {
-    const templates = electionOutreach.templates;
-    expect(templates.length).toEqual(11)
-    const actual = getInventoryItems(templates);
-    expect(actual.length).toEqual(5);
-  });
-});

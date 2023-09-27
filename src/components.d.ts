@@ -807,19 +807,9 @@ export namespace Components {
     }
     interface SolutionSpatialRef {
         /**
-          * Returns the spatial reference description of the supplied value. (Exposes protected method `_createSpatialRefDisplay` for testing.)
-          * @param value WKID or WKT or null for default
-          * @returns If component is using a WKID, description using WKID; otherwise, the WKT; defaults to 102100
-         */
-        "createSpatialRefDisplay": (value: string) => Promise<ISpatialRefRepresentation>;
-        /**
           * The wkid that will be used as the default when no user selection has been made.
          */
         "defaultWkid": number;
-        /**
-          * Returns the current spatial reference description. (Exposes protected variable `spatialRef` for testing.)
-         */
-        "getSpatialRef": () => Promise<ISpatialRefRepresentation>;
         /**
           * When true, all but the main switch are disabled to prevent interaction.
          */
@@ -832,12 +822,6 @@ export namespace Components {
           * Contains the public value for this component, which is a wkid or a wkt.
          */
         "value": string;
-        /**
-          * Converts a WKID into a spatial reference description. (Exposes protected method `_wkidToDisplay` for testing.)
-          * @param wkid WKID to look up
-          * @returns Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
-         */
-        "wkidToDisplay": (wkid: number) => Promise<string>;
     }
     interface SolutionTemplateData {
         /**
@@ -863,6 +847,36 @@ export namespace Components {
           * Contains the public value for this component.
          */
         "value": string;
+    }
+    interface SpatialRef {
+        /**
+          * Returns the spatial reference description of the supplied value. (Exposes protected method `_createSpatialRefDisplay` for testing.)
+          * @param value WKID or WKT or null for default
+          * @returns If component is using a WKID, description using WKID; otherwise, the WKT; defaults to 102100
+         */
+        "createSpatialRefDisplay": (value: string) => Promise<ISpatialRefRepresentation>;
+        /**
+          * The wkid that will be used as the default when no user selection has been made.
+         */
+        "defaultWkid": number;
+        /**
+          * When true, all are disabled to prevent interaction.
+         */
+        "disabled": boolean;
+        /**
+          * Returns the current spatial reference description. (Exposes protected variable `spatialRef` for testing.)
+         */
+        "getSpatialRef": () => Promise<ISpatialRefRepresentation>;
+        /**
+          * Contains the public value for this component, which is a wkid or a wkt.
+         */
+        "value": string;
+        /**
+          * Converts a WKID into a spatial reference description. (Exposes protected method `_wkidToDisplay` for testing.)
+          * @param wkid WKID to look up
+          * @returns Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
+         */
+        "wkidToDisplay": (wkid: number) => Promise<string>;
     }
     interface StoreManager {
         /**
@@ -946,6 +960,10 @@ export interface SolutionSpatialRefCustomEvent<T> extends CustomEvent<T> {
 export interface SolutionVariablesCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLSolutionVariablesElement;
+}
+export interface SpatialRefCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSpatialRefElement;
 }
 export interface StoreManagerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1174,6 +1192,12 @@ declare global {
         prototype: HTMLSolutionVariablesElement;
         new (): HTMLSolutionVariablesElement;
     };
+    interface HTMLSpatialRefElement extends Components.SpatialRef, HTMLStencilElement {
+    }
+    var HTMLSpatialRefElement: {
+        prototype: HTMLSpatialRefElement;
+        new (): HTMLSpatialRefElement;
+    };
     interface HTMLStoreManagerElement extends Components.StoreManager, HTMLStencilElement {
     }
     var HTMLStoreManagerElement: {
@@ -1218,6 +1242,7 @@ declare global {
         "solution-spatial-ref": HTMLSolutionSpatialRefElement;
         "solution-template-data": HTMLSolutionTemplateDataElement;
         "solution-variables": HTMLSolutionVariablesElement;
+        "spatial-ref": HTMLSpatialRefElement;
         "store-manager": HTMLStoreManagerElement;
     }
 }
@@ -2083,6 +2108,21 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    interface SpatialRef {
+        /**
+          * The wkid that will be used as the default when no user selection has been made.
+         */
+        "defaultWkid"?: number;
+        /**
+          * When true, all are disabled to prevent interaction.
+         */
+        "disabled"?: boolean;
+        "onSpatialReferenceChange"?: (event: SpatialRefCustomEvent<IValueChange>) => void;
+        /**
+          * Contains the public value for this component, which is a wkid or a wkt.
+         */
+        "value"?: string;
+    }
     interface StoreManager {
         /**
           * Credentials for requests
@@ -2136,6 +2176,7 @@ declare namespace LocalJSX {
         "solution-spatial-ref": SolutionSpatialRef;
         "solution-template-data": SolutionTemplateData;
         "solution-variables": SolutionVariables;
+        "spatial-ref": SpatialRef;
         "store-manager": StoreManager;
     }
 }
@@ -2180,6 +2221,7 @@ declare module "@stencil/core" {
             "solution-spatial-ref": LocalJSX.SolutionSpatialRef & JSXBase.HTMLAttributes<HTMLSolutionSpatialRefElement>;
             "solution-template-data": LocalJSX.SolutionTemplateData & JSXBase.HTMLAttributes<HTMLSolutionTemplateDataElement>;
             "solution-variables": LocalJSX.SolutionVariables & JSXBase.HTMLAttributes<HTMLSolutionVariablesElement>;
+            "spatial-ref": LocalJSX.SpatialRef & JSXBase.HTMLAttributes<HTMLSpatialRefElement>;
             "store-manager": LocalJSX.StoreManager & JSXBase.HTMLAttributes<HTMLStoreManagerElement>;
         }
     }
