@@ -5,5 +5,6 @@
   "basemap": "Basemap",
   "collapse": "Collapse",
   "enterFullscreen": "Enter fullscreen",
-  "exitFullscreen": "Exit fullscreen"
+  "exitFullscreen": "Exit fullscreen",
+  "floorFilter": "Floor filter"
 }

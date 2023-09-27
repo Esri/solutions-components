@@ -51,6 +51,11 @@ export class CrowdsourceManager {
   /**
    * boolean: when true the fullscreen widget will be available
    */
+  @Prop() enableFloorFilter = true;
+
+  /**
+   * boolean: when true the fullscreen widget will be available
+   */
   @Prop() enableFullscreen = true;
 
   /**
@@ -452,6 +457,7 @@ export class CrowdsourceManager {
           basemapConfig={this.basemapConfig}
           class="width-full"
           enableBasemap={this.enableBasemap}
+          enableFloorFilter={this.enableFloorFilter}
           enableFullscreen={this.enableFullscreen}
           enableLegend={this.enableLegend}
           enableSearch={this.enableSearch}

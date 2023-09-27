@@ -51,6 +51,11 @@ export class MapCard {
   @Prop() enableLegend: boolean;
 
   /**
+   * boolean: when true the floor filter widget will be available
+   */
+  @Prop() enableFloorFilter: boolean;
+
+  /**
    * boolean: when true the fullscreen widget will be available
    */
   @Prop() enableFullscreen: boolean;
@@ -195,6 +200,7 @@ export class MapCard {
           basemapConfig={this.basemapConfig}
           class={"box-shadow"}
           enableBasemap={this.enableBasemap}
+          enableFloorFilter={this.enableFloorFilter}
           enableFullscreen={this.enableFullscreen}
           enableLegend={this.enableLegend}
           enableSearch={this.enableSearch}

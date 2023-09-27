@@ -45,6 +45,11 @@ export class MapTools {
   @Prop() enableLegend: boolean;
 
   /**
+   * boolean: when true the floor filter widget will be available
+   */
+  @Prop() enableFloorFilter: boolean;
+
+  /**
    * boolean: when true the fullscreen widget will be available
    */
   @Prop() enableFullscreen: boolean;
@@ -102,6 +107,11 @@ export class MapTools {
   @State() _showBasemapWidget = false;
 
   /**
+   * When true the floor filter widget will be displayed
+   */
+  @State() _showFloorFilter = false;
+
+  /**
    * When true the map will be displayed in fullscreen mode
    */
   @State() _showFullscreen = false;
@@ -126,6 +136,11 @@ export class MapTools {
    * HTMLMapSearchElement: The search element node
    */
   protected _basemapElement: HTMLBasemapGalleryElement;
+
+  /**
+   * HTMLFloorFilterElement: The floor filter element node
+   */
+  protected _floorFilterElement: HTMLFloorFilterElement;
 
   /**
    * HTMLMapFullscreenElement: The fullscreen element node
@@ -167,6 +182,24 @@ export class MapTools {
 
   /**
    * When the _showBasemapWidget property is true display the basemap gallery
+   */
+  @Watch("_showFloorFilter")
+  async _showFloorFilterWatchHandler(
+    v: boolean
+  ): Promise<void> {
+    const widget = this._floorFilterElement.floorFilterWidget;
+    if (v) {
+      this.mapView.ui.add(widget, {
+        position: "top-right",
+        index: 1
+      });
+    } else {
+      this.mapView.ui.remove(widget);
+    }
+  }
+
+  /**
+   * When the _showFullscreen property is true the app will consume the full screen
    */
   @Watch("_showFullscreen")
   async _showFullscreenWatchHandler(
@@ -248,6 +281,7 @@ export class MapTools {
     const searchClass = this._showSearchWidget ? "" : "display-none";
     const basemapClass = this._showBasemapWidget ? "" : "display-none";
     const legendClass = this._showLegendWidget ? "" : "display-none";
+    const floorFilterClass = this._showFloorFilter ? "" : "display-none";
     const fullscreenClass = this._showFullscreen ? "" : "display-none";
     const fullscreenIcon = this._showFullscreen ? "full-screen-exit" : "full-screen";
     const fullscreenTip = this._showFullscreen ? this._translations.exitFullscreen : this._translations.enterFullscreen;
@@ -280,6 +314,11 @@ export class MapTools {
                 this._getActionGroup("basemap", false, this._translations.basemap, () => this._toggleBasemapPicker()) :
                 undefined
             }
+            {
+              this.enableFloorFilter ?
+                this._getActionGroup("urban-model", false, this._translations.floorFilter, () => this._toggleFloorFilter()) :
+                undefined
+            }
           </div>
         </div>
         <basemap-gallery
@@ -303,6 +342,11 @@ export class MapTools {
           class={fullscreenClass}
           mapView={this.mapView}
           ref={(el) => {this._fullscreenElement = el}}
+        />
+        <floor-filter
+          class={floorFilterClass}
+          mapView={this.mapView}
+          ref={(el) => {this._floorFilterElement = el}}
         />
       </Host>
     );
@@ -375,6 +419,18 @@ export class MapTools {
    */
   protected _toggleBasemapPicker(): void {
     this._showBasemapWidget = !this._showBasemapWidget;
+    this._showTools = false;
+  }
+
+  /**
+   * Show/Hide the floor filter
+   *
+   * @returns void
+   *
+   * @protected
+   */
+  protected _toggleFloorFilter(): void {
+    this._showFloorFilter = !this._showFloorFilter;
     this._showTools = false;
   }
 
