@@ -137,3 +137,18 @@
 .align-items-center {
   align-items: center;
 }
+
+.esri-floor-filter__close-levels-button {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.esri-floor-filter__level-button {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.esri-floor-filter__browse-button {
+  width: 40px !important;
+  height: 40px !important;
+}

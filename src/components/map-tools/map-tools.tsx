@@ -457,6 +457,7 @@ export class MapTools {
       this._showBasemapWidget = false;
       this._showSearchWidget = false;
       this._showLegendWidget = false;
+      this._showFloorFilter = false;
     }
     this._showTools = !this._showTools;
   }
