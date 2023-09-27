@@ -1430,6 +1430,10 @@ declare namespace LocalJSX {
          */
         "onFeatureSelectionChange"?: (event: LayerTableCustomEvent<number[]>) => void;
         /**
+          * Emitted on demand when the filters button is clicked
+         */
+        "onOpenFilterOptions"?: (event: LayerTableCustomEvent<void>) => void;
+        /**
           * boolean: When true only editable layers that support the update capability will be available
          */
         "onlyShowUpdatableLayers"?: boolean;

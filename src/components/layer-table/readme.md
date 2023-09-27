@@ -20,9 +20,10 @@
 
 ## Events
 
-| Event                    | Description                                | Type                    |
-| ------------------------ | ------------------------------------------ | ----------------------- |
-| `featureSelectionChange` | Emitted on demand when a layer is selected | `CustomEvent<number[]>` |
+| Event                    | Description                                          | Type                    |
+| ------------------------ | ---------------------------------------------------- | ----------------------- |
+| `featureSelectionChange` | Emitted on demand when a layer is selected           | `CustomEvent<number[]>` |
+| `openFilterOptions`      | Emitted on demand when the filters button is clicked | `CustomEvent<void>`     |
 
 
 ## Methods
