@@ -22,42 +22,6 @@
 | `featureServiceSpatialReferenceChange` |             | `CustomEvent<{ name: string; enabled: boolean; }>` |
 
 
-## Methods
-
-### `createSpatialRefDisplay(value: string) => Promise<ISpatialRefRepresentation>`
-
-Returns the spatial reference description of the supplied value.
-(Exposes protected method `_createSpatialRefDisplay` for testing.)
-
-#### Returns
-
-Type: `Promise<ISpatialRefRepresentation>`
-
-If component is using a WKID, description using WKID; otherwise, the WKT; defaults to 102100
-
-### `getSpatialRef() => Promise<ISpatialRefRepresentation>`
-
-Returns the current spatial reference description.
-(Exposes protected variable `spatialRef` for testing.)
-
-#### Returns
-
-Type: `Promise<ISpatialRefRepresentation>`
-
-
-
-### `wkidToDisplay(wkid: number) => Promise<string>`
-
-Converts a WKID into a spatial reference description.
-(Exposes protected method `_wkidToDisplay` for testing.)
-
-#### Returns
-
-Type: `Promise<string>`
-
-Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
-
-
 ## Dependencies
 
 ### Used by
@@ -68,18 +32,17 @@ Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
 
 - calcite-label
 - calcite-switch
-- calcite-input
-- calcite-tree
-- calcite-tree-item
+- [spatial-ref](../spatial-ref)
 
 ### Graph
 ```mermaid
 graph TD;
   solution-spatial-ref --> calcite-label
   solution-spatial-ref --> calcite-switch
-  solution-spatial-ref --> calcite-input
-  solution-spatial-ref --> calcite-tree
-  solution-spatial-ref --> calcite-tree-item
+  solution-spatial-ref --> spatial-ref
+  spatial-ref --> calcite-input
+  spatial-ref --> calcite-tree
+  spatial-ref --> calcite-tree-item
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-tree-item --> calcite-icon
