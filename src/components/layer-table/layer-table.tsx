@@ -259,6 +259,11 @@ export class LayerTable {
   @Event() featureSelectionChange: EventEmitter<number[]>;
 
   /**
+   * Emitted on demand when the filters button is clicked
+   */
+  @Event() openFilterOptions: EventEmitter<void>;
+
+  /**
    * Scroll and zoom to the selected feature from the Features widget.
    *
    * @param evt CustomEvent the graphic for the current selection
@@ -425,12 +430,12 @@ export class LayerTable {
             )
           }
           {
-            this._getAction(
+            this.mapInfo?.filters ? this._getAction(
               "filter",
               this._translations.filters,
               () => this._filter(),
               false
-            )
+            ) : undefined
           }
           {
             this._deleteEnabled ? this._getDangerAction(
@@ -903,7 +908,7 @@ export class LayerTable {
    * @returns void
    */
   protected _filter(): void {
-    alert("do whatever this button is supposed to do")
+    this.openFilterOptions.emit();
   }
 
   /**

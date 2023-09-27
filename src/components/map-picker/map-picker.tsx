@@ -227,7 +227,7 @@ export class MapPicker {
     return (
       <div class="display-flex">
         <calcite-action-bar
-          class="action-bar-color border-bottom-1 action-bar-size"
+          class="border-bottom-1 action-bar-size"
           expand-disabled
           layout="horizontal"
           slot="header"

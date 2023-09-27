@@ -13,6 +13,7 @@
 | `classicGrid`             | `classic-grid`                | boolean: when true the grid will display like the previous manager app with the table across the top               | `boolean`              | `false`     |
 | `enableAutoRefresh`       | `enable-auto-refresh`         | boolean: when true the layer table will auto refresh the data                                                      | `boolean`              | `true`      |
 | `enableBasemap`           | `enable-basemap`              | boolean: when true the basemap widget will be available                                                            | `boolean`              | `true`      |
+| `enableFloorFilter`       | `enable-floor-filter`         | boolean: when true the fullscreen widget will be available                                                         | `boolean`              | `true`      |
 | `enableFullscreen`        | `enable-fullscreen`           | boolean: when true the fullscreen widget will be available                                                         | `boolean`              | `true`      |
 | `enableHome`              | `enable-home`                 | boolean: when true the home widget will be available                                                               | `boolean`              | `true`      |
 | `enableInlineEdit`        | `enable-inline-edit`          | boolean: when true edits can be applied directly within the table                                                  | `boolean`              | `false`     |
@@ -24,6 +25,7 @@
 | `onlyShowUpdatableLayers` | `only-show-updatable-layers`  | boolean: When true only editable layers that support the update capability will be available                       | `boolean`              | `true`      |
 | `searchConfiguration`     | --                            | ISearchConfiguration: Configuration details for the Search widget                                                  | `ISearchConfiguration` | `undefined` |
 | `showNewestFirst`         | `show-newest-first`           | boolean: when true the table will be sorted by objectid in descending order by default                             | `boolean`              | `true`      |
+| `theme`                   | `theme`                       | "light" \| "dark": Calcite theme to be used                                                                        | `"dark" \| "light"`    | `"light"`   |
 | `zoomAndScrollToSelected` | `zoom-and-scroll-to-selected` | boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table | `boolean`              | `false`     |
 
 
@@ -89,6 +91,7 @@ graph TD;
   map-tools --> map-search
   map-tools --> map-legend
   map-tools --> map-fullscreen
+  map-tools --> floor-filter
   map-tools --> calcite-action
   map-tools --> calcite-icon
   map-tools --> calcite-tooltip

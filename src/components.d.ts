@@ -93,6 +93,10 @@ export namespace Components {
         /**
           * boolean: when true the fullscreen widget will be available
          */
+        "enableFloorFilter": boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
         "enableFullscreen": boolean;
         /**
           * boolean: when true the home widget will be available
@@ -135,6 +139,10 @@ export namespace Components {
          */
         "showNewestFirst": boolean;
         /**
+          * "light" | "dark": Calcite theme to be used
+         */
+        "theme": "light" | "dark";
+        /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected": boolean;
@@ -160,6 +168,16 @@ export namespace Components {
           * When true the component is displayed
          */
         "open": boolean;
+    }
+    interface FloorFilter {
+        /**
+          * esri/widgets/FloorFilter: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FloorFilter.html  FloorFilter instance
+         */
+        "floorFilterWidget": __esri.FloorFilter;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
     }
     interface InfoCard {
         /**
@@ -270,6 +288,10 @@ export namespace Components {
           * boolean: when true the basemap widget will be available
          */
         "enableBasemap": boolean;
+        /**
+          * boolean: when true the floor filter widget will be available
+         */
+        "enableFloorFilter": boolean;
         /**
           * boolean: when true the fullscreen widget will be available
          */
@@ -530,6 +552,10 @@ export namespace Components {
           * boolean: when true the basemap widget will be available
          */
         "enableBasemap": boolean;
+        /**
+          * boolean: when true the floor filter widget will be available
+         */
+        "enableFloorFilter": boolean;
         /**
           * boolean: when true the fullscreen widget will be available
          */
@@ -990,6 +1016,12 @@ declare global {
         prototype: HTMLEditCardElement;
         new (): HTMLEditCardElement;
     };
+    interface HTMLFloorFilterElement extends Components.FloorFilter, HTMLStencilElement {
+    }
+    var HTMLFloorFilterElement: {
+        prototype: HTMLFloorFilterElement;
+        new (): HTMLFloorFilterElement;
+    };
     interface HTMLInfoCardElement extends Components.InfoCard, HTMLStencilElement {
     }
     var HTMLInfoCardElement: {
@@ -1184,6 +1216,7 @@ declare global {
         "crowdsource-reporter": HTMLCrowdsourceReporterElement;
         "deduct-calculator": HTMLDeductCalculatorElement;
         "edit-card": HTMLEditCardElement;
+        "floor-filter": HTMLFloorFilterElement;
         "info-card": HTMLInfoCardElement;
         "json-editor": HTMLJsonEditorElement;
         "layer-table": HTMLLayerTableElement;
@@ -1313,6 +1346,10 @@ declare namespace LocalJSX {
         /**
           * boolean: when true the fullscreen widget will be available
          */
+        "enableFloorFilter"?: boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
         "enableFullscreen"?: boolean;
         /**
           * boolean: when true the home widget will be available
@@ -1355,6 +1392,10 @@ declare namespace LocalJSX {
          */
         "showNewestFirst"?: boolean;
         /**
+          * "light" | "dark": Calcite theme to be used
+         */
+        "theme"?: "light" | "dark";
+        /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected"?: boolean;
@@ -1392,6 +1433,16 @@ declare namespace LocalJSX {
           * When true the component is displayed
          */
         "open"?: boolean;
+    }
+    interface FloorFilter {
+        /**
+          * esri/widgets/FloorFilter: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FloorFilter.html  FloorFilter instance
+         */
+        "floorFilterWidget"?: __esri.FloorFilter;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
     }
     interface InfoCard {
         /**
@@ -1455,6 +1506,10 @@ declare namespace LocalJSX {
          */
         "onFeatureSelectionChange"?: (event: LayerTableCustomEvent<number[]>) => void;
         /**
+          * Emitted on demand when the filters button is clicked
+         */
+        "onOpenFilterOptions"?: (event: LayerTableCustomEvent<void>) => void;
+        /**
           * boolean: When true only editable layers that support the update capability will be available
          */
         "onlyShowUpdatableLayers"?: boolean;
@@ -1484,6 +1539,10 @@ declare namespace LocalJSX {
           * boolean: when true the basemap widget will be available
          */
         "enableBasemap"?: boolean;
+        /**
+          * boolean: when true the floor filter widget will be available
+         */
+        "enableFloorFilter"?: boolean;
         /**
           * boolean: when true the fullscreen widget will be available
          */
@@ -1764,6 +1823,10 @@ declare namespace LocalJSX {
           * boolean: when true the basemap widget will be available
          */
         "enableBasemap"?: boolean;
+        /**
+          * boolean: when true the floor filter widget will be available
+         */
+        "enableFloorFilter"?: boolean;
         /**
           * boolean: when true the fullscreen widget will be available
          */
@@ -2091,6 +2154,7 @@ declare namespace LocalJSX {
         "crowdsource-reporter": CrowdsourceReporter;
         "deduct-calculator": DeductCalculator;
         "edit-card": EditCard;
+        "floor-filter": FloorFilter;
         "info-card": InfoCard;
         "json-editor": JsonEditor;
         "layer-table": LayerTable;
@@ -2135,6 +2199,7 @@ declare module "@stencil/core" {
             "crowdsource-reporter": LocalJSX.CrowdsourceReporter & JSXBase.HTMLAttributes<HTMLCrowdsourceReporterElement>;
             "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;
             "edit-card": LocalJSX.EditCard & JSXBase.HTMLAttributes<HTMLEditCardElement>;
+            "floor-filter": LocalJSX.FloorFilter & JSXBase.HTMLAttributes<HTMLFloorFilterElement>;
             "info-card": LocalJSX.InfoCard & JSXBase.HTMLAttributes<HTMLInfoCardElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "layer-table": LocalJSX.LayerTable & JSXBase.HTMLAttributes<HTMLLayerTableElement>;
