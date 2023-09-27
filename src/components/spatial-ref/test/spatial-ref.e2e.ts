@@ -59,7 +59,8 @@ describe('spatial-ref', () => {
     await page.waitForChanges();
 
     // Enter the list of suggested projections
-    await page.keyboard.press('Tab');
+    await page.keyboard.down('Tab');
+    await page.keyboard.up('Tab');
     await page.waitForChanges();
 
     // And tab down to one of them
