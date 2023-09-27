@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "18"
+  - "17"
 cache: npm
 before_script:
   - export NODE_OPTIONS=--max_old_space_size=32768
