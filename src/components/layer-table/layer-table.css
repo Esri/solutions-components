@@ -77,3 +77,11 @@ html[dir="rtl"] .bottom-left {
 .danger-color {
   color: var(--calcite-ui-danger);
 }
+
+.esri-feature-table vaadin-grid {
+  border: none !important;
+}
+
+vaadin-grid-cell-content {
+  padding: var(--lumo-space-xs) var(--lumo-space-m) !important;
+}
