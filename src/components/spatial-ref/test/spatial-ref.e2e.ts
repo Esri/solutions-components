@@ -47,7 +47,7 @@ describe('spatial-ref', () => {
     expect(await spatial_ref.getProperty('value')).toBe('2862');
   });
 
-  xit('select tabbed-to value after typing in search field', async () => {
+  it('select tabbed-to value after typing in search field', async () => {
     await page.setContent('<spatial-ref/>');
 
     const spatial_ref = await page.find('spatial-ref');
@@ -63,11 +63,14 @@ describe('spatial-ref', () => {
     await page.waitForChanges();
 
     // And tab down to one of them
-    await page.keyboard.press('Tab');
+    await page.keyboard.down('Tab');
+    await page.keyboard.up('Tab');
     await page.waitForChanges();
-    await page.keyboard.press('Tab');
+    await page.keyboard.down('Tab');
+    await page.keyboard.up('Tab');
     await page.waitForChanges();
-    await page.keyboard.press('Tab');
+    await page.keyboard.down('Tab');
+    await page.keyboard.up('Tab');
     await page.waitForChanges();
 
     // Select it, and use second selection to make it the current projection
