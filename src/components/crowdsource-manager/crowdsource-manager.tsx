@@ -119,6 +119,11 @@ export class CrowdsourceManager {
   @Prop() searchConfiguration: ISearchConfiguration;
 
   /**
+   * "light" | "dark": Calcite theme to be used
+   */
+  @Prop() theme: "light" | "dark" = "light";
+
+  /**
    * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
    */
   @Prop() zoomAndScrollToSelected = false;
@@ -429,8 +434,7 @@ export class CrowdsourceManager {
     ) : (
       <div class={`${mapSizeClass} overflow-hidden`}>
         {this._getMapNode(layoutMode, hideMap)}
-        {this._getPopupExpandNode()}
-        {this._getCardNode(layoutMode, hideMap)}
+        {this._getPopupExpandNode(layoutMode, hideMap)}
       </div>
     );
   }
@@ -473,12 +477,16 @@ export class CrowdsourceManager {
    * @returns the expand node
    * @protected
    */
-  protected _getPopupExpandNode(): VNode {
+  protected _getPopupExpandNode(
+    layoutMode: ELayoutMode,
+    hideMap: boolean
+  ): VNode {
     const icon = this._expandPopup ? "chevrons-down" : "chevrons-up";
     const id = "expand-popup";
     const tooltip = this._expandPopup ? this._translations.collapsePopup : this._translations.expandPopup;
+    const themeClass = this.theme === "light" ? "calcite-mode-light" : "calcite-mode-dark";
     return (
-      <div class="height-49-px calcite-mode-dark">
+      <div class="calcite-mode-dark">
         <calcite-panel>
           <div
             class="display-flex align-items-center"
@@ -497,12 +505,14 @@ export class CrowdsourceManager {
             slot="header-actions-end"
           />
           <calcite-tooltip
+            class={themeClass}
             label=""
             placement="bottom"
             reference-element={id}
           >
             <span>{tooltip}</span>
           </calcite-tooltip>
+          {this._getCardNode(layoutMode, hideMap)}
         </calcite-panel>
       </div>
     );
@@ -531,11 +541,12 @@ export class CrowdsourceManager {
     hideMap: boolean
   ): VNode {
     const cardManagerHeight = this.classicGrid && layoutMode === ELayoutMode.GRID ? "" :
-      layoutMode === ELayoutMode.GRID && !this._expandPopup && !hideMap ? "adjusted-height-50" : "adjusted-height-100";
+      layoutMode === ELayoutMode.GRID && !this._expandPopup && !hideMap ? "height-50" : "";
     const cardManagerContainer = this.classicGrid && layoutMode === ELayoutMode.GRID ?
       "width-full adjusted-height-100" : this._expandPopup ? "width-50 adjusted-height-100-50" : "width-50 height-full";
+    const themeClass = this.theme === "light" ? "calcite-mode-light" : "calcite-mode-dark";
     return (
-      <div class={`${cardManagerContainer}`}>
+      <div class={`${cardManagerContainer} ${themeClass}`}>
         <card-manager
           class={`${cardManagerHeight} width-full`}
           mapView={this?._mapView}

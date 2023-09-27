@@ -155,11 +155,13 @@ export class CardManager {
               />
             </div>
           </calcite-shell>
-          <div class={"padding-1 " + messageClass}>
-            <calcite-notice icon="table" open>
-              <div slot="message">{this._translations.selectFeaturesToStart}</div>
-            </calcite-notice>
-          </div>
+          <calcite-shell class={"position-relative " + messageClass}>
+            <div class={"padding-1"}>
+              <calcite-notice icon="table" open>
+                <div slot="message">{this._translations.selectFeaturesToStart}</div>
+              </calcite-notice>
+            </div>
+          </calcite-shell>
         </div>
       </Host>
     );

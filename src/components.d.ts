@@ -139,6 +139,10 @@ export namespace Components {
          */
         "showNewestFirst": boolean;
         /**
+          * "light" | "dark": Calcite theme to be used
+         */
+        "theme": "light" | "dark";
+        /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
         "zoomAndScrollToSelected": boolean;
@@ -1362,6 +1366,10 @@ declare namespace LocalJSX {
           * boolean: when true the table will be sorted by objectid in descending order by default
          */
         "showNewestFirst"?: boolean;
+        /**
+          * "light" | "dark": Calcite theme to be used
+         */
+        "theme"?: "light" | "dark";
         /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
