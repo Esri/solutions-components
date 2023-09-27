@@ -58,10 +58,6 @@
   display: none;
 }
 
-.action-bar-color {
-  background-color: var(--calcite-ui-border-3) !important;
-}
-
 .align-center {
   align-items: center;
 }

@@ -210,6 +210,7 @@ export class InfoCard {
     const featureNodeClass = this.isLoading || this._editRecordOpen ? "display-none" : "position-absolute";
     const editClass = !this.isLoading && this._editRecordOpen ? "position-absolute" : "display-none";
     const editButtonClass = !this.isLoading && this._editRecordOpen ? "display-none" : "";
+    const nextBackDisabled = this._features?.features?.length < 2;
     return (
       <Host>
         <calcite-shell>
@@ -240,6 +241,7 @@ export class InfoCard {
                 <div class="min-width-100">
                   <calcite-button
                     appearance="outline"
+                    disabled={nextBackDisabled}
                     id="solutions-back"
                     onClick={() => this._back()}
                     width="full"
@@ -256,6 +258,7 @@ export class InfoCard {
                 <div class="min-width-100">
                   <calcite-button
                     appearance="outline"
+                    disabled={nextBackDisabled}
                     id="solutions-next"
                     onClick={() => this._next()}
                     width="full"
