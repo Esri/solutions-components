@@ -15,7 +15,7 @@
  */
 
 import { newSpecPage } from '@stencil/core/testing';
-import { FloorFilter } from '../floor-filter';
+import { FloorFilter } from '../../../src/components/floor-filter/floor-filter';
 
 xdescribe('floor-filter', () => {
   it('renders', async () => {
