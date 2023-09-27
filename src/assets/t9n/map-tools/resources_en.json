@@ -1,9 +1,9 @@
 {
-  "home": "Home",
-  "list": "List",
+  "legend": "Legend",
   "search": "Search",
-  "zoomIn": "Zoom In",
-  "zoomOut": "Zoom Out",
   "expand": "Expand",
-  "basemap": "Basemap"
+  "basemap": "Basemap",
+  "collapse": "Collapse",
+  "enterFullscreen": "Enter fullscreen",
+  "exitFullscreen": "Exit fullscreen"
 }

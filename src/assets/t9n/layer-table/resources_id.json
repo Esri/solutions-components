@@ -1,0 +1,22 @@
+{
+  "clearSelection": "ng_Clear selection________________ny",
+  "delete": "ng_Delete_____________ny",
+  "editMultiple": "ng_Edit Multiple______________ny",
+  "exportCSV": "ng_Export to CSV______________ny",
+  "filters": "ng_Filters_______________ny",
+  "more": "ng_More_________ny",
+  "selectAll": "ng_Select all_____________________ny",
+  "showSelected": "ng_Show selected______________ny",
+  "switchSelected": "ng_Switch selected________________ny",
+  "zoom": "ng_Zoom_________ny",
+  "fetchingData": "ng_Fetching Data______________ny",
+  "refresh": "ng_Refresh_______________ny",
+  "enableEditing": "ng_Editing must be enabled on the layer____________________ny.",
+  "confirm": "ng_These features will be permanently removed_______________________ny.",
+  "deleteFeature": "ng_Delete feature_______________ny",
+  "deleteDisabled": "ng_Delete Disabled________________ny",
+  "editMultipleDisabled": "ng_Edit Multiple Disabled_______________________ny",
+  "showAll": "ng_Show all_________________ny",
+  "recordsSelected": "ng_Total: {{total}} | Selection: {{selected}}______________________ny",
+  "cancel": "ng_Cancel_____________ny"
+}

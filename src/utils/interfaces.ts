@@ -60,11 +60,6 @@ export enum ESelectionType {
   RECT="RECT"
 }
 
-export enum EExpandType {
-  EXPAND="EXPAND",
-  COLLAPSE="COLLAPSE"
-}
-
 export enum EWorkflowType {
   SEARCH="SEARCH",
   SELECT="SELECT",
@@ -167,10 +162,15 @@ export interface IValueChange {
 }
 
 /**
- * Layer id and title key value pair
+ * Layer or table id and title key value pair
  */
-export interface ILayerHash {
-  [key: string]: string;
+export interface IMapItemHash {
+  [key: string]: ILayerHashInfo;
+}
+
+export interface ILayerHashInfo {
+  name: string;
+  supportsUpdate: boolean;
 }
 
 /**
@@ -446,6 +446,21 @@ export interface IMediaCardValues {
 export interface IMapInfo {
   id: string;
   name: string;
+  searchConfiguration?: ISearchConfiguration;
+  filters?: any[]; // TODO generate an interface for this once we know how it will be passed in
+  layerInfos?: ILayerInfo[];
+  _hasValidLayers?: boolean;
+  visible?: boolean;
+}
+
+export interface ILayerInfo {
+  id: string;
+  columnTemplates: __esri.FieldColumnTemplate[];
+}
+
+export interface IMapChange {
+  id: string;
+  mapView: __esri.MapView;
 }
 
 export interface IExportInfos {
@@ -453,7 +468,12 @@ export interface IExportInfos {
 }
 
 export interface IExportInfo {
-  ids: number[],
-  layerView: __esri.FeatureLayerView
-  selectionSetNames: string[]
+  ids: number[];
+  layer?: __esri.FeatureLayer;
+  layerView?: __esri.FeatureLayerView;
+  selectionSetNames: string[];
+}
+
+export interface IBasemapConfig {
+  basemapIdsToFilter: string[];
 }

@@ -74,6 +74,7 @@ html[dir="rtl"] .main-label {
   display: flex;
   flex-flow: row wrap;
   padding: 0;
+  justify-content: flex-start !important;
 }
 
 .esri-sketch__section {

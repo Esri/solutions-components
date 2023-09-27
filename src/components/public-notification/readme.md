@@ -103,12 +103,15 @@ graph TD;
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   calcite-list --> calcite-scrim
+  calcite-list --> calcite-stack
   calcite-list --> calcite-filter
   calcite-filter --> calcite-input
   calcite-input --> calcite-progress
   calcite-input --> calcite-icon
   calcite-list-item --> calcite-icon
+  calcite-list-item --> calcite-handle
   calcite-list-item --> calcite-action
+  calcite-handle --> calcite-icon
   map-select-tools --> map-draw-tools
   map-select-tools --> calcite-label
   map-select-tools --> calcite-icon
@@ -126,20 +129,23 @@ graph TD;
   buffer-tools --> calcite-slider
   calcite-select --> calcite-icon
   calcite-slider --> calcite-graph
+  map-layer-picker --> calcite-notice
+  map-layer-picker --> calcite-tooltip
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown
   map-layer-picker --> calcite-action
   map-layer-picker --> calcite-button
   map-layer-picker --> calcite-dropdown-group
-  map-layer-picker --> calcite-dropdown-item
-  map-layer-picker --> calcite-option
   map-layer-picker --> calcite-combobox-item
+  map-layer-picker --> calcite-option
+  map-layer-picker --> calcite-dropdown-item
+  calcite-notice --> calcite-icon
   calcite-combobox --> calcite-chip
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
-  calcite-dropdown-item --> calcite-icon
   calcite-combobox-item --> calcite-icon
+  calcite-dropdown-item --> calcite-icon
   calcite-input-message --> calcite-icon
   calcite-segmented-control-item --> calcite-icon
   pdf-download --> calcite-select
@@ -155,7 +161,6 @@ graph TD;
   refine-selection --> map-draw-tools
   refine-selection --> calcite-list
   refine-selection --> calcite-list-item
-  calcite-notice --> calcite-icon
   style public-notification fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -20,7 +20,6 @@ import * as PdfDownload from '../pdf-download';
 import * as locale from "../../../utils/locale";
 import * as translations from "../../../assets/t9n/pdf-download/resources.json";
 import * as csvUtils from "../../../utils/csvUtils";
-import { LayerView } from "../../../utils/test/mocks/jsApi";
 
 jest.setTimeout(30000);
 
@@ -78,10 +77,9 @@ describe('pdf-download', () => {
     const consoleLogMock = jest.fn();
     jest.spyOn(console, "log").mockImplementation(consoleLogMock);
 
-    const layerView = new LayerView() as unknown as any;
     const page = await newSpecPage({
       components: [PdfDownload],
-      template: () => (<pdf-download layerView={layerView}></pdf-download>),
+      template: () => (<pdf-download></pdf-download>),
     });
 
     await page.root.downloadCSV([], true);

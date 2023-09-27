@@ -6,6 +6,34 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.6.17] - Sept 26th 2023
+
+## [0.6.16] - Sept 25th 2023
+
+## [0.6.15] - Sept 21st 2023
+
+## [0.6.14] - Sept 20th 2023
+
+## [0.6.13] - Sept 14th 2023
+
+## [0.6.12] - Sept 12th 2023
+
+## [0.6.11] - Sept 8th 2023
+
+## [0.6.10] - Sept 7th 2023
+
+## [0.6.9] - Aug 31st 2023
+
+## [0.6.8] - Aug 25th 2023
+
+## [0.6.7] - Aug 21st 2023
+
+## [0.6.6] - Aug 18th 2023
+
+## [0.6.5] - Aug 17th 2023
+
+## [0.6.4] - Aug 9th 2023
+
 ## [0.6.3] - Aug 3rd 2023
 
 ## [0.6.2] - June 15th 2023
@@ -190,4 +218,18 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 [0.6.1]: https://github.com/Esri/solution.js/compare/v0.6.0...v0.6.1 "v0.6.1"
 [0.6.2]: https://github.com/Esri/solution.js/compare/v0.6.1...v0.6.2 "v0.6.2"
 [0.6.3]: https://github.com/Esri/solution.js/compare/v0.6.2...v0.6.3 "v0.6.3"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.6.3...HEAD "Unreleased Changes"
+[0.6.4]: https://github.com/Esri/solution.js/compare/v0.6.3...v0.6.4 "v0.6.4"
+[0.6.5]: https://github.com/Esri/solution.js/compare/v0.6.4...v0.6.5 "v0.6.5"
+[0.6.6]: https://github.com/Esri/solution.js/compare/v0.6.5...v0.6.6 "v0.6.6"
+[0.6.7]: https://github.com/Esri/solution.js/compare/v0.6.6...v0.6.7 "v0.6.7"
+[0.6.8]: https://github.com/Esri/solution.js/compare/v0.6.7...v0.6.8 "v0.6.8"
+[0.6.9]: https://github.com/Esri/solution.js/compare/v0.6.8...v0.6.9 "v0.6.9"
+[0.6.10]: https://github.com/Esri/solution.js/compare/v0.6.9...v0.6.10 "v0.6.10"
+[0.6.11]: https://github.com/Esri/solution.js/compare/v0.6.10...v0.6.11 "v0.6.11"
+[0.6.12]: https://github.com/Esri/solution.js/compare/v0.6.11...v0.6.12 "v0.6.12"
+[0.6.13]: https://github.com/Esri/solution.js/compare/v0.6.12...v0.6.13 "v0.6.13"
+[0.6.14]: https://github.com/Esri/solution.js/compare/v0.6.13...v0.6.14 "v0.6.14"
+[0.6.15]: https://github.com/Esri/solution.js/compare/v0.6.14...v0.6.15 "v0.6.15"
+[0.6.16]: https://github.com/Esri/solution.js/compare/v0.6.15...v0.6.16 "v0.6.16"
+[0.6.17]: https://github.com/Esri/solution.js/compare/v0.6.16...v0.6.17 "v0.6.17"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.6.17...HEAD "Unreleased Changes"

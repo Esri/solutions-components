@@ -42,9 +42,14 @@ export const config: Config = {
     },
     {
       type: "dist-custom-elements",
-      autoDefineCustomElements: true
+      customElementsExportBehavior: 'auto-define-custom-elements'
     },
   ],
+  testing: {
+    transform: {
+      "^.+\\.[jt]sx?$": "<rootDir>/node_modules/@stencil/core/testing/jest-preprocessor.js"
+    }
+  },
   plugins: [
     sass({
       injectGlobalPaths: ["src/assets/styles/includes.scss"]

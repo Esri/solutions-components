@@ -1,0 +1,9 @@
+{
+  "fetchingData": "试_Fetching data______________验",
+  "edit": "试_Edit_________验",
+  "enableEditing": "试_Update capability must be enabled on the layer_________________________验.",
+  "editDisabled": "试_Editing Disabled_________________验",
+  "next": "试_Next_________验",
+  "back": "试_Back_________验",
+  "indexOfTotal": "试_{{index}} of {{total}}_______________________验"
+}

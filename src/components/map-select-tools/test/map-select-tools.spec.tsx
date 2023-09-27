@@ -50,7 +50,7 @@ beforeEach(() => {
   });
 
   jest.spyOn(queryUtils, "queryObjectIds").mockImplementation(async (oids) => {
-    return oids.map((oid, i) => i);
+    return oids.map((_, i) => i);
   });
 
   jest.spyOn(console, 'warn').mockImplementation(() => {});
@@ -184,9 +184,8 @@ xdescribe('map-select-tools', () => {
 
     const selectionSet: ISelectionSet = {
       id: 12345,
-      workflowType: EWorkflowType.SELECT,
       searchResult: undefined,
-      buffer: _unknown,
+      buffer: {} as unknown as any,
       distance: 100,
       download: true,
       unit: "feet",
@@ -194,8 +193,13 @@ xdescribe('map-select-tools', () => {
       selectedIds: [0],
       layerView,
       geometries: [_unknown],
-      refineSelectLayers: [],
-      refineIds: undefined
+      graphics: [],
+      selectLayers: [],
+      workflowType: EWorkflowType.SELECT,
+      searchDistanceEnabled: true,
+      useLayerFeaturesEnabled: true,
+      refineInfos: undefined,
+      sketchGraphic: undefined
     };
 
     const page = await newSpecPage({
@@ -254,7 +258,6 @@ xdescribe('map-select-tools', () => {
 
     const selectionSet: ISelectionSet = {
       id: 12345,
-      workflowType: EWorkflowType.SKETCH,
       searchResult: undefined,
       buffer: _unknown,
       distance: 100,
@@ -264,8 +267,13 @@ xdescribe('map-select-tools', () => {
       selectedIds: [0],
       layerView,
       geometries: [_unknown],
-      refineSelectLayers: [],
-      refineIds: undefined
+      graphics: [],
+      selectLayers: [],
+      workflowType: EWorkflowType.SKETCH,
+      searchDistanceEnabled: true,
+      useLayerFeaturesEnabled: true,
+      refineInfos: undefined,
+      sketchGraphic: undefined
     };
 
     const page = await newSpecPage({
@@ -324,7 +332,6 @@ xdescribe('map-select-tools', () => {
 
     const selectionSet: ISelectionSet = {
       id: 12345,
-      workflowType: EWorkflowType.SEARCH,
       searchResult: undefined,
       buffer: _unknown,
       distance: 100,
@@ -334,8 +341,13 @@ xdescribe('map-select-tools', () => {
       selectedIds: [0,1],
       layerView,
       geometries: [_unknown, _unknown],
-      refineSelectLayers: [],
-      refineIds: undefined
+      graphics: [],
+      selectLayers: [],
+      workflowType: EWorkflowType.SEARCH,
+      searchDistanceEnabled: true,
+      useLayerFeaturesEnabled: true,
+      refineInfos: undefined,
+      sketchGraphic: undefined
     };
 
     const page = await newSpecPage({

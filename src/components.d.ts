@@ -5,9 +5,25 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EDrawMode, EExpandType, IExportInfos, IInventoryItem, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
+import { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
+export { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
+export { UserSession } from "@esri/solution-common";
 export namespace Components {
+    interface BasemapGallery {
+        /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig": IBasemapConfig;
+        /**
+          * esri/widgets/BasemapGallery: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-BasemapGallery.html  BasemapGallery instance
+         */
+        "basemapWidget": __esri.BasemapGallery;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+    }
     interface BufferTools {
         /**
           * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
@@ -45,19 +61,83 @@ export namespace Components {
     }
     interface CardManager {
         /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+          * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
          */
-        "layerView": __esri.FeatureLayerView;
+        "layer": __esri.FeatureLayer;
         /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected": boolean;
     }
     interface CrowdsourceManager {
+        /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig": IBasemapConfig;
+        /**
+          * boolean: when true the grid will display like the previous manager app with the table across the top
+         */
+        "classicGrid": boolean;
+        /**
+          * boolean: when true the layer table will auto refresh the data
+         */
+        "enableAutoRefresh": boolean;
+        /**
+          * boolean: when true the basemap widget will be available
+         */
+        "enableBasemap": boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFullscreen": boolean;
+        /**
+          * boolean: when true the home widget will be available
+         */
+        "enableHome": boolean;
+        /**
+          * boolean: when true edits can be applied directly within the table
+         */
+        "enableInlineEdit": boolean;
+        /**
+          * boolean: when true the legend widget will be available
+         */
+        "enableLegend": boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch": boolean;
+        /**
+          * boolean: when true the zoom widget will be available
+         */
+        "enableZoom": boolean;
+        /**
+          * boolean: when true no map is displayed for the app
+         */
+        "hideMap": boolean;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos": IMapInfo[];
+        /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers": boolean;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
+        /**
+          * boolean: when true the table will be sorted by objectid in descending order by default
+         */
+        "showNewestFirst": boolean;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected": boolean;
     }
     interface CrowdsourceReporter {
     }
@@ -99,6 +179,10 @@ export namespace Components {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected": boolean;
     }
     interface JsonEditor {
         /**
@@ -140,18 +224,64 @@ export namespace Components {
     }
     interface LayerTable {
         /**
+          * boolean: when true the layer table will auto refresh the data
+         */
+        "enableAutoRefresh": boolean;
+        /**
+          * boolean: when true edits can be applied directly within the table
+         */
+        "enableInlineEdit": boolean;
+        /**
           * Get the selected graphics
           * @returns Promise that resolves when the operation is complete
          */
         "getSelectedGraphics": () => Promise<__esri.Graphic[]>;
         /**
+          * IMapInfo: key configuration details about the current map
+         */
+        "mapInfo": IMapInfo;
+        /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers": boolean;
+        /**
+          * boolean: when true the table will be sorted by objectid in descending order by default
+         */
+        "showNewestFirst": boolean;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected": boolean;
+    }
+    interface LayoutManager {
     }
     interface ListItem {
     }
     interface MapCard {
+        /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig": IBasemapConfig;
+        /**
+          * boolean: when true the basemap widget will be available
+         */
+        "enableBasemap": boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFullscreen": boolean;
+        /**
+          * boolean: when true the legend widget will be available
+         */
+        "enableLegend": boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch": boolean;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */
@@ -213,6 +343,16 @@ export namespace Components {
          */
         "updateGraphics": () => Promise<void>;
     }
+    interface MapFullscreen {
+        /**
+          * esri/widgets/Fullscreen: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Fullscreen.html
+         */
+        "fullscreenWidget": __esri.Fullscreen;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+    }
     interface MapLayerPicker {
         /**
           * "transparent" | "solid": controls the button appearance when using the "dropdown" type
@@ -223,9 +363,17 @@ export namespace Components {
          */
         "enabledLayerIds": string[];
         /**
+          * string[]: Optional list of enabled table ids  If empty all tables will be available
+         */
+        "enabledTableIds": string[];
+        /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers": boolean;
         /**
           * string: optional placeholder icon used with "combobox" type
          */
@@ -237,11 +385,57 @@ export namespace Components {
         /**
           * string[]: list of layer ids that have been selected by the end user
          */
-        "selectedLayerIds": string[];
+        "selectedIds": string[];
+        /**
+          * boolean: when true standalone tables will also be available
+         */
+        "showTables": boolean;
         /**
           * "select" | "combobox" | "dropdown": type of component to leverage
          */
         "type": "select" | "combobox" | "dropdown";
+    }
+    interface MapLegend {
+        /**
+          * esri/widgets/Legend: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Legend.html  Legend instance
+         */
+        "legendWidget": __esri.Legend;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+    }
+    interface MapPicker {
+        /**
+          * IMapInfo[]: array of map infos (name and id)
+         */
+        "mapInfos": IMapInfo[];
+    }
+    interface MapSearch {
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * boolean: When true the selected feature popup will be shown when serach result is found
+         */
+        "popupEnabled": boolean;
+        /**
+          * boolean: When true a graphic will be added for the search result
+         */
+        "resultGraphicEnabled": boolean;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
+        /**
+          * string: Text entered by the end user. Used to search against the locator.
+         */
+        "searchTerm": string;
+        /**
+          * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
+         */
+        "searchWidget": __esri.widgetsSearch;
     }
     interface MapSelectTools {
         /**
@@ -328,11 +522,38 @@ export namespace Components {
         "sketchPolygonSymbol": __esri.SimpleFillSymbol;
     }
     interface MapTools {
+        /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig": IBasemapConfig;
+        /**
+          * boolean: when true the basemap widget will be available
+         */
+        "enableBasemap": boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFullscreen": boolean;
+        /**
+          * boolean: when true the legend widget will be available
+         */
+        "enableLegend": boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch": boolean;
+        /**
+          * "horizontal" | "vertical": used to control the orientation of the tools
+         */
         "layout": "horizontal" | "vertical";
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
     }
     interface PciCalculator {
     }
@@ -347,21 +568,23 @@ export namespace Components {
         "disabled": boolean;
         /**
           * Downloads csv of mailing labels for the provided list of ids
+          * @param webmap Webmap containing layer
           * @param exportInfos Information about items to be exported
           * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
           * @param addColumnTitle Indicates if column headings should be included in output
           * @returns Promise resolving when function is done
          */
-        "downloadCSV": (exportInfos: IExportInfos, removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>;
+        "downloadCSV": (webmap: __esri.Map, exportInfos: IExportInfos, removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>;
         /**
           * Downloads pdf of mailing labels for the provided list of ids
+          * @param webmap Webmap containing layer
           * @param exportInfos Information about items to be exported
           * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
           * @param title Title for each page
           * @param initialImageDataUrl Data URL of image for first page
           * @returns Promise resolving when function is done
          */
-        "downloadPDF": (exportInfos: IExportInfos, removeDuplicates?: boolean, title?: string, initialImageDataUrl?: string) => Promise<void>;
+        "downloadPDF": (webmap: __esri.Map, exportInfos: IExportInfos, removeDuplicates?: boolean, title?: string, initialImageDataUrl?: string) => Promise<void>;
     }
     interface PublicNotification {
         /**
@@ -646,9 +869,17 @@ export interface EditCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLEditCardElement;
 }
+export interface InfoCardCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLInfoCardElement;
+}
 export interface LayerTableCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLLayerTableElement;
+}
+export interface LayoutManagerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLLayoutManagerElement;
 }
 export interface MapCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -662,13 +893,13 @@ export interface MapLayerPickerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapLayerPickerElement;
 }
+export interface MapPickerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapPickerElement;
+}
 export interface MapSelectToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapSelectToolsElement;
-}
-export interface MapToolsCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLMapToolsElement;
 }
 export interface PublicNotificationCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -699,6 +930,12 @@ export interface StoreManagerCustomEvent<T> extends CustomEvent<T> {
     target: HTMLStoreManagerElement;
 }
 declare global {
+    interface HTMLBasemapGalleryElement extends Components.BasemapGallery, HTMLStencilElement {
+    }
+    var HTMLBasemapGalleryElement: {
+        prototype: HTMLBasemapGalleryElement;
+        new (): HTMLBasemapGalleryElement;
+    };
     interface HTMLBufferToolsElement extends Components.BufferTools, HTMLStencilElement {
     }
     var HTMLBufferToolsElement: {
@@ -753,6 +990,12 @@ declare global {
         prototype: HTMLLayerTableElement;
         new (): HTMLLayerTableElement;
     };
+    interface HTMLLayoutManagerElement extends Components.LayoutManager, HTMLStencilElement {
+    }
+    var HTMLLayoutManagerElement: {
+        prototype: HTMLLayoutManagerElement;
+        new (): HTMLLayoutManagerElement;
+    };
     interface HTMLListItemElement extends Components.ListItem, HTMLStencilElement {
     }
     var HTMLListItemElement: {
@@ -771,11 +1014,35 @@ declare global {
         prototype: HTMLMapDrawToolsElement;
         new (): HTMLMapDrawToolsElement;
     };
+    interface HTMLMapFullscreenElement extends Components.MapFullscreen, HTMLStencilElement {
+    }
+    var HTMLMapFullscreenElement: {
+        prototype: HTMLMapFullscreenElement;
+        new (): HTMLMapFullscreenElement;
+    };
     interface HTMLMapLayerPickerElement extends Components.MapLayerPicker, HTMLStencilElement {
     }
     var HTMLMapLayerPickerElement: {
         prototype: HTMLMapLayerPickerElement;
         new (): HTMLMapLayerPickerElement;
+    };
+    interface HTMLMapLegendElement extends Components.MapLegend, HTMLStencilElement {
+    }
+    var HTMLMapLegendElement: {
+        prototype: HTMLMapLegendElement;
+        new (): HTMLMapLegendElement;
+    };
+    interface HTMLMapPickerElement extends Components.MapPicker, HTMLStencilElement {
+    }
+    var HTMLMapPickerElement: {
+        prototype: HTMLMapPickerElement;
+        new (): HTMLMapPickerElement;
+    };
+    interface HTMLMapSearchElement extends Components.MapSearch, HTMLStencilElement {
+    }
+    var HTMLMapSearchElement: {
+        prototype: HTMLMapSearchElement;
+        new (): HTMLMapSearchElement;
     };
     interface HTMLMapSelectToolsElement extends Components.MapSelectTools, HTMLStencilElement {
     }
@@ -886,6 +1153,7 @@ declare global {
         new (): HTMLStoreManagerElement;
     };
     interface HTMLElementTagNameMap {
+        "basemap-gallery": HTMLBasemapGalleryElement;
         "buffer-tools": HTMLBufferToolsElement;
         "card-manager": HTMLCardManagerElement;
         "crowdsource-manager": HTMLCrowdsourceManagerElement;
@@ -895,10 +1163,15 @@ declare global {
         "info-card": HTMLInfoCardElement;
         "json-editor": HTMLJsonEditorElement;
         "layer-table": HTMLLayerTableElement;
+        "layout-manager": HTMLLayoutManagerElement;
         "list-item": HTMLListItemElement;
         "map-card": HTMLMapCardElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
+        "map-fullscreen": HTMLMapFullscreenElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
+        "map-legend": HTMLMapLegendElement;
+        "map-picker": HTMLMapPickerElement;
+        "map-search": HTMLMapSearchElement;
         "map-select-tools": HTMLMapSelectToolsElement;
         "map-tools": HTMLMapToolsElement;
         "pci-calculator": HTMLPciCalculatorElement;
@@ -920,6 +1193,20 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface BasemapGallery {
+        /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig"?: IBasemapConfig;
+        /**
+          * esri/widgets/BasemapGallery: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-BasemapGallery.html  BasemapGallery instance
+         */
+        "basemapWidget"?: __esri.BasemapGallery;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+    }
     interface BufferTools {
         /**
           * string: The appearance of display. Can be a "slider" or "text" inputs for distance/value
@@ -969,19 +1256,83 @@ declare namespace LocalJSX {
     }
     interface CardManager {
         /**
-          * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+          * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
          */
-        "layerView"?: __esri.FeatureLayerView;
+        "layer"?: __esri.FeatureLayer;
         /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected"?: boolean;
     }
     interface CrowdsourceManager {
+        /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig"?: IBasemapConfig;
+        /**
+          * boolean: when true the grid will display like the previous manager app with the table across the top
+         */
+        "classicGrid"?: boolean;
+        /**
+          * boolean: when true the layer table will auto refresh the data
+         */
+        "enableAutoRefresh"?: boolean;
+        /**
+          * boolean: when true the basemap widget will be available
+         */
+        "enableBasemap"?: boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFullscreen"?: boolean;
+        /**
+          * boolean: when true the home widget will be available
+         */
+        "enableHome"?: boolean;
+        /**
+          * boolean: when true edits can be applied directly within the table
+         */
+        "enableInlineEdit"?: boolean;
+        /**
+          * boolean: when true the legend widget will be available
+         */
+        "enableLegend"?: boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch"?: boolean;
+        /**
+          * boolean: when true the zoom widget will be available
+         */
+        "enableZoom"?: boolean;
+        /**
+          * boolean: when true no map is displayed for the app
+         */
+        "hideMap"?: boolean;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos"?: IMapInfo[];
+        /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers"?: boolean;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
+        /**
+          * boolean: when true the table will be sorted by objectid in descending order by default
+         */
+        "showNewestFirst"?: boolean;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected"?: boolean;
     }
     interface CrowdsourceReporter {
     }
@@ -1009,6 +1360,10 @@ declare namespace LocalJSX {
          */
         "onCloseEdit"?: (event: EditCardCustomEvent<void>) => void;
         /**
+          * Emitted on demand when edits are completed on current edit layer
+         */
+        "onEditsComplete"?: (event: EditCardCustomEvent<void>) => void;
+        /**
           * When true the component is displayed
          */
         "open"?: boolean;
@@ -1026,6 +1381,14 @@ declare namespace LocalJSX {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the selected index changes
+         */
+        "onSelectionChanged"?: (event: InfoCardCustomEvent<__esri.Graphic>) => void;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected"?: boolean;
     }
     interface JsonEditor {
         /**
@@ -1047,6 +1410,18 @@ declare namespace LocalJSX {
     }
     interface LayerTable {
         /**
+          * boolean: when true the layer table will auto refresh the data
+         */
+        "enableAutoRefresh"?: boolean;
+        /**
+          * boolean: when true edits can be applied directly within the table
+         */
+        "enableInlineEdit"?: boolean;
+        /**
+          * IMapInfo: key configuration details about the current map
+         */
+        "mapInfo"?: IMapInfo;
+        /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
@@ -1054,10 +1429,48 @@ declare namespace LocalJSX {
           * Emitted on demand when a layer is selected
          */
         "onFeatureSelectionChange"?: (event: LayerTableCustomEvent<number[]>) => void;
+        /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers"?: boolean;
+        /**
+          * boolean: when true the table will be sorted by objectid in descending order by default
+         */
+        "showNewestFirst"?: boolean;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected"?: boolean;
+    }
+    interface LayoutManager {
+        /**
+          * Emitted when the layout should change
+         */
+        "onLayoutChanged"?: (event: LayoutManagerCustomEvent<ELayoutMode>) => void;
     }
     interface ListItem {
     }
     interface MapCard {
+        /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig"?: IBasemapConfig;
+        /**
+          * boolean: when true the basemap widget will be available
+         */
+        "enableBasemap"?: boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFullscreen"?: boolean;
+        /**
+          * boolean: when true the legend widget will be available
+         */
+        "enableLegend"?: boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch"?: boolean;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */
@@ -1067,9 +1480,13 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
+          * Emitted before a new map is loaded
+         */
+        "onBeforeMapChanged"?: (event: MapCardCustomEvent<void>) => void;
+        /**
           * Emitted when a new map is loaded
          */
-        "onMapChanged"?: (event: MapCardCustomEvent<__esri.MapView>) => void;
+        "onMapChanged"?: (event: MapCardCustomEvent<IMapChange>) => void;
     }
     interface MapDrawTools {
         /**
@@ -1129,6 +1546,16 @@ declare namespace LocalJSX {
          */
         "undoEnabled"?: boolean;
     }
+    interface MapFullscreen {
+        /**
+          * esri/widgets/Fullscreen: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Fullscreen.html
+         */
+        "fullscreenWidget"?: __esri.Fullscreen;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+    }
     interface MapLayerPicker {
         /**
           * "transparent" | "solid": controls the button appearance when using the "dropdown" type
@@ -1139,6 +1566,10 @@ declare namespace LocalJSX {
          */
         "enabledLayerIds"?: string[];
         /**
+          * string[]: Optional list of enabled table ids  If empty all tables will be available
+         */
+        "enabledTableIds"?: string[];
+        /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
@@ -1146,6 +1577,14 @@ declare namespace LocalJSX {
           * Emitted on demand when a layer is selected
          */
         "onLayerSelectionChange"?: (event: MapLayerPickerCustomEvent<string[]>) => void;
+        /**
+          * Emitted on demand when no valid layers are found
+         */
+        "onNoLayersFound"?: (event: MapLayerPickerCustomEvent<void>) => void;
+        /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers"?: boolean;
         /**
           * string: optional placeholder icon used with "combobox" type
          */
@@ -1157,11 +1596,61 @@ declare namespace LocalJSX {
         /**
           * string[]: list of layer ids that have been selected by the end user
          */
-        "selectedLayerIds"?: string[];
+        "selectedIds"?: string[];
+        /**
+          * boolean: when true standalone tables will also be available
+         */
+        "showTables"?: boolean;
         /**
           * "select" | "combobox" | "dropdown": type of component to leverage
          */
         "type"?: "select" | "combobox" | "dropdown";
+    }
+    interface MapLegend {
+        /**
+          * esri/widgets/Legend: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Legend.html  Legend instance
+         */
+        "legendWidget"?: __esri.Legend;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+    }
+    interface MapPicker {
+        /**
+          * IMapInfo[]: array of map infos (name and id)
+         */
+        "mapInfos"?: IMapInfo[];
+        /**
+          * Emitted when a new map is loaded
+         */
+        "onMapInfoChange"?: (event: MapPickerCustomEvent<IMapInfo>) => void;
+    }
+    interface MapSearch {
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * boolean: When true the selected feature popup will be shown when serach result is found
+         */
+        "popupEnabled"?: boolean;
+        /**
+          * boolean: When true a graphic will be added for the search result
+         */
+        "resultGraphicEnabled"?: boolean;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
+        /**
+          * string: Text entered by the end user. Used to search against the locator.
+         */
+        "searchTerm"?: string;
+        /**
+          * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
+         */
+        "searchWidget"?: __esri.widgetsSearch;
     }
     interface MapSelectTools {
         /**
@@ -1242,15 +1731,38 @@ declare namespace LocalJSX {
         "sketchPolygonSymbol"?: __esri.SimpleFillSymbol;
     }
     interface MapTools {
+        /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig"?: IBasemapConfig;
+        /**
+          * boolean: when true the basemap widget will be available
+         */
+        "enableBasemap"?: boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFullscreen"?: boolean;
+        /**
+          * boolean: when true the legend widget will be available
+         */
+        "enableLegend"?: boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch"?: boolean;
+        /**
+          * "horizontal" | "vertical": used to control the orientation of the tools
+         */
         "layout"?: "horizontal" | "vertical";
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         /**
-          * Emitted when the expand button is clicked
+          * ISearchConfiguration: Configuration details for the Search widget
          */
-        "onExpandMap"?: (event: MapToolsCustomEvent<EExpandType>) => void;
+        "searchConfiguration"?: ISearchConfiguration;
     }
     interface PciCalculator {
     }
@@ -1532,6 +2044,7 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface IntrinsicElements {
+        "basemap-gallery": BasemapGallery;
         "buffer-tools": BufferTools;
         "card-manager": CardManager;
         "crowdsource-manager": CrowdsourceManager;
@@ -1541,10 +2054,15 @@ declare namespace LocalJSX {
         "info-card": InfoCard;
         "json-editor": JsonEditor;
         "layer-table": LayerTable;
+        "layout-manager": LayoutManager;
         "list-item": ListItem;
         "map-card": MapCard;
         "map-draw-tools": MapDrawTools;
+        "map-fullscreen": MapFullscreen;
         "map-layer-picker": MapLayerPicker;
+        "map-legend": MapLegend;
+        "map-picker": MapPicker;
+        "map-search": MapSearch;
         "map-select-tools": MapSelectTools;
         "map-tools": MapTools;
         "pci-calculator": PciCalculator;
@@ -1569,6 +2087,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "basemap-gallery": LocalJSX.BasemapGallery & JSXBase.HTMLAttributes<HTMLBasemapGalleryElement>;
             "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
             "card-manager": LocalJSX.CardManager & JSXBase.HTMLAttributes<HTMLCardManagerElement>;
             "crowdsource-manager": LocalJSX.CrowdsourceManager & JSXBase.HTMLAttributes<HTMLCrowdsourceManagerElement>;
@@ -1578,10 +2097,15 @@ declare module "@stencil/core" {
             "info-card": LocalJSX.InfoCard & JSXBase.HTMLAttributes<HTMLInfoCardElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "layer-table": LocalJSX.LayerTable & JSXBase.HTMLAttributes<HTMLLayerTableElement>;
+            "layout-manager": LocalJSX.LayoutManager & JSXBase.HTMLAttributes<HTMLLayoutManagerElement>;
             "list-item": LocalJSX.ListItem & JSXBase.HTMLAttributes<HTMLListItemElement>;
             "map-card": LocalJSX.MapCard & JSXBase.HTMLAttributes<HTMLMapCardElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
+            "map-fullscreen": LocalJSX.MapFullscreen & JSXBase.HTMLAttributes<HTMLMapFullscreenElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
+            "map-legend": LocalJSX.MapLegend & JSXBase.HTMLAttributes<HTMLMapLegendElement>;
+            "map-picker": LocalJSX.MapPicker & JSXBase.HTMLAttributes<HTMLMapPickerElement>;
+            "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
             "map-tools": LocalJSX.MapTools & JSXBase.HTMLAttributes<HTMLMapToolsElement>;
             "pci-calculator": LocalJSX.PciCalculator & JSXBase.HTMLAttributes<HTMLPciCalculatorElement>;

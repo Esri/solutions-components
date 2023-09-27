@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Listen, Method, Prop, State, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Method, Prop, State, Watch } from "@stencil/core";
 import InfoCard_T9n from "../../assets/t9n/info-card/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { loadModules } from "../../utils/loadModules";
@@ -54,6 +54,11 @@ export class InfoCard {
    */
   @Prop() mapView: __esri.MapView;
 
+  /**
+   * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+   */
+  @Prop() zoomAndScrollToSelected: boolean;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -64,6 +69,12 @@ export class InfoCard {
    * boolean: When true a alert will be shown to indicate a problem or confirm the current action
    */
   @State() _alertOpen = false;
+
+  /**
+   * string: Current index of total string
+   * This value is not displayed but will force a render if it changes
+   */
+  @State() _count = "";
 
   /**
    * When true the add record modal will be displayed
@@ -99,6 +110,11 @@ export class InfoCard {
    */
   protected _features: __esri.Features;
 
+  /**
+   * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
+   */
+  protected reactiveUtils: typeof import("esri/core/reactiveUtils");
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -110,11 +126,18 @@ export class InfoCard {
    */
   @Watch("graphics")
   async graphicsWatchHandler(): Promise<void> {
+    if (!this._features) {
+      await this._initFeaturesWidget();
+    }
     if (this.graphics.length > 0) {
-      this._editEnabled = (this.graphics[0]?.layer as __esri.FeatureLayer).editingEnabled;
+      const featureLayer = (this.graphics[0]?.layer as __esri.FeatureLayer);
+      this._editEnabled = featureLayer.editingEnabled && featureLayer.capabilities.operations.supportsUpdate;
       this._features.open({
         features: this.graphics
       });
+    } else {
+      this._features.clear();
+      this._features.close();
     }
   }
 
@@ -123,9 +146,7 @@ export class InfoCard {
    */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
-    await this.mapView.when(async () => {
-      await this._initFeaturesWidget();
-    });
+    return await this._initFeaturesWidget();
   }
 
   //--------------------------------------------------------------------------
@@ -150,10 +171,21 @@ export class InfoCard {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Emitted on demand when the selected index changes
+   */
+  @Event() selectionChanged: EventEmitter<__esri.Graphic>;
+
+  /**
+   * Respond to and close the edit record display
+   *
+   * @returns a promise when the operation has completed
+   */
   @Listen("closeEdit", { target: "window" })
   async closeEdit(): Promise<void> {
     this._editRecordOpen = false;
   }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
@@ -189,19 +221,52 @@ export class InfoCard {
             class={"esri-widget " + featureNodeClass}
             id="features-node"
           />
-          <div class={"padding-1-2 display-flex " + editButtonClass} slot="footer">
-            <calcite-button
-              appearance="outline"
-              iconStart="pencil"
-              id="solutions-edit"
-              onClick={() => this._openEditRecord()}
-              width="full"
-            >
-              {this._translations.edit}
-            </calcite-button>
-            <calcite-tooltip label="" placement="bottom" reference-element="solutions-edit">
-              <span>{this._translations.edit}</span>
-            </calcite-tooltip>
+          <div class={`${editButtonClass} width-100`} slot="footer">
+              <div class="display-flex top-border padding-1-2">
+                <calcite-button
+                  appearance="solid"
+                  icon-start="pencil"
+                  id="solutions-edit"
+                  onClick={() => this._openEditRecord()}
+                  width="full"
+                >
+                  {this._translations.edit}
+                </calcite-button>
+                <calcite-tooltip label="" placement="bottom" reference-element="solutions-edit">
+                  <span>{this._translations.edit}</span>
+                </calcite-tooltip>
+              </div>
+              <div class="display-flex padding-1-2 button-container top-border">
+                <div class="min-width-100">
+                  <calcite-button
+                    appearance="outline"
+                    id="solutions-back"
+                    onClick={() => this._back()}
+                    width="full"
+                  >
+                    {this._translations.back}
+                  </calcite-button>
+                  <calcite-tooltip label="" placement="top" reference-element="solutions-back">
+                    <span>{this._translations.back}</span>
+                  </calcite-tooltip>
+                </div>
+                <div>
+                  {this._getCount()}
+                </div>
+                <div class="min-width-100">
+                  <calcite-button
+                    appearance="outline"
+                    id="solutions-next"
+                    onClick={() => this._next()}
+                    width="full"
+                  >
+                    {this._translations.next}
+                  </calcite-button>
+                  <calcite-tooltip label="" placement="top" reference-element="solutions-next">
+                    <span>{this._translations.next}</span>
+                  </calcite-tooltip>
+                </div>
+              </div>
           </div>
           <edit-card
             class={editClass}
@@ -244,31 +309,46 @@ export class InfoCard {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [Features] = await loadModules([
-      "esri/widgets/Features"
+    const [Features, reactiveUtils] = await loadModules([
+      "esri/widgets/Features",
+      "esri/core/reactiveUtils"
     ]);
     this.Features = Features;
+    this.reactiveUtils = reactiveUtils;
   }
 
   /**
    * Init the Feature widget so we can display the popup content
    *
+   * @returns a promise when the operation has completed
+   *
    * @protected
    */
   protected async _initFeaturesWidget(): Promise<void> {
-    if (!this._features) {
-      this._features = new this.Features({
-        container: "features-node",
-        visibleElements: {
-          actionBar: false,
-          closeButton: false,
-          heading: false
-        },
-        view: this.mapView
-      });
-    } else {
-      this._features.view = this.mapView;
-    }
+    return await this.mapView.when(() => {
+      if (!this._features) {
+        this._features = new this.Features({
+          view: this.mapView,
+          container: "features-node",
+          visibleElements: {
+            actionBar: false,
+            closeButton: false,
+            heading: true
+          }
+        });
+        if (this.zoomAndScrollToSelected) {
+          this.reactiveUtils.watch(
+            () => this._features.selectedFeatureIndex,
+            (i) => {
+              if (i > -1) {
+                this.selectionChanged.emit(this._features.selectedFeature);
+              }
+            });
+        }
+      } else {
+        this._features.view = this.mapView;
+      }
+    });
   }
 
   /**
@@ -281,14 +361,18 @@ export class InfoCard {
   }
 
   /**
-   * Close the edit record modal
+   * Close the edit record
+   *
+   * @returns void
    */
   protected _editRecordClosed(): void {
     this._editRecordOpen = false;
   }
 
   /**
-   * Open the edit record modal
+   * Open the edit record
+   *
+   * @returns void
    */
   protected _openEditRecord(): void {
     if (this._editEnabled) {
@@ -296,6 +380,39 @@ export class InfoCard {
     } else {
       this._alertOpen = true;
     }
+  }
+
+  /**
+   * Go to the previous feature in the features widget
+   *
+   * @returns void
+   */
+  protected _back(): void {
+    this._features.previous();
+    this._count = this._getCount();
+  }
+
+  /**
+   * Go to the next feature in the features widget
+   *
+   * @returns void
+   */
+  protected _next(): void {
+    this._features.next();
+    this._count = this._getCount();
+  }
+
+  /**
+   * Get the current index of total string
+   *
+   * @returns the index of total string
+   */
+  protected _getCount(): string {
+    const index = (this._features?.viewModel.selectedFeatureIndex + 1).toString();
+    const total = this._features?.features?.length.toString();
+    return this._translations.indexOfTotal
+      .replace("{{index}}", index)
+      .replace("{{total}}", total);
   }
 
   /**

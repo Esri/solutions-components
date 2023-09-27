@@ -1,0 +1,16 @@
+{
+  "filename": ["src/assets/arcgis-pdf-creator/*.js", "src/components/**/*.tsx?", "src/utils/**/*.tsx?"],
+  "targets": "> 0.25%, not dead",
+  "presets": [
+    [
+      "es2015",
+      {
+        "modules": false
+      }
+    ],
+    ["@babel/preset-env", {
+      "esmodules": true
+    }],
+    "@babel/preset-typescript"
+  ]
+}

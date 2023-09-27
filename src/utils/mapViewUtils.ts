@@ -15,52 +15,102 @@
  */
 
 import { queryExtent } from "./queryUtils";
-import { EWorkflowType, ILayerHash, ISelectionSet } from "./interfaces";
+import { EWorkflowType, IMapItemHash, ISelectionSet } from "./interfaces";
 
 /**
  * Gets the layer names from the current map
  *
  * @param mapView the map view to fetch the layer names from
+ * @param onlyShowUpdatableLayers when true only layers that support editing and updates will be returned
  *
  * @returns Promise resolving with an array of layer names
  *
  */
 export async function getMapLayerHash(
-  mapView: __esri.MapView
-): Promise<ILayerHash> {
-  let layerHash = {};
+  mapView: __esri.MapView,
+  onlyShowUpdatableLayers: boolean
+): Promise<IMapItemHash> {
+  let layerHash;
   await mapView.when(() => {
     layerHash = mapView.map.allLayers.toArray().reduce((prev, cur) => {
       if (cur.type === "feature") {
-        prev[cur.id] = cur.title;
+        prev[cur.id] = {
+          name: cur.title,
+          supportsUpdate: undefined
+        };
       }
       return prev;
     }, {});
   });
-  return layerHash;
+  return _getFinalHash(
+    onlyShowUpdatableLayers,
+    layerHash,
+    mapView
+  );
 }
 
 /**
- * Gets the layer names from the current map
+ * Gets the table names from the current map
  *
- * @param mapView the map view to fetch the layer names from
+ * @param mapView the map view to fetch the table names from
+ * @param onlyShowUpdatableLayers when true only layers that support editing and updates will be returned
  *
- * @returns Promise resolving with an array of layer names
+ * @returns Promise resolving with an array of table names
  *
  */
-export async function getMapLayerIds(
-  mapView: __esri.MapView
-): Promise<string[]> {
-  let layerIds = [];
+export async function getMapTableHash(
+  mapView: __esri.MapView,
+  onlyShowUpdatableTables: boolean
+): Promise<IMapItemHash> {
+  let tableHash;
   await mapView.when(() => {
-    layerIds = mapView.map.allLayers.toArray().reduce((prev, cur) => {
-      if (cur.type === "feature") {
-        prev.push(cur.id);
-      }
+    tableHash = mapView.map.allTables.toArray().reduce((prev, cur) => {
+      prev[cur.id] = {
+        name: cur.title,
+        supportsUpdate: undefined
+      };
       return prev;
-    }, []);
+    }, {});
   });
-  return layerIds;
+  return _getFinalHash(
+    onlyShowUpdatableTables,
+    tableHash,
+    mapView
+  );
+}
+
+/**
+ * Get the final hash
+ *
+ * @param onlyShowUpdatable boolean when true only layers that support editing and the update capability will be returned
+ * @param hash IMapItemHash key: layer id, values: name, supportsUpdate
+ * @param mapView the map view to fetch the layer from
+ *
+ * @returns Promise resolving with IMapItemHash
+ *
+ */
+async function _getFinalHash(
+  onlyShowUpdatable: boolean,
+  hash: IMapItemHash,
+  mapView: __esri.MapView
+): Promise<IMapItemHash> {
+  if (onlyShowUpdatable) {
+    const editableHash = {};
+    const keys = Object.keys(hash);
+    for (let i = 0; i < keys.length; i++) {
+      const id = keys[i];
+      const layer = await getLayerOrTable(mapView, id);
+      await layer.load();
+      await layer.when();
+      editableHash[id] = {
+        name: hash[id].name,
+        supportsUpdate: layer.editingEnabled && layer.capabilities.operations.supportsUpdate
+      };
+    }
+    return editableHash;
+  } else {
+    return hash;
+  }
 }
 
 /**
@@ -72,30 +122,33 @@ export async function getMapLayerIds(
  * @returns Promise resolving with the fetched layer view
  *
  */
-export async function getMapLayerView(
+export async function getFeatureLayerView(
   mapView: __esri.MapView,
   id: string
 ): Promise<__esri.FeatureLayerView> {
-  const layer = await getMapLayer(mapView, id);
+  const layer = await getLayerOrTable(mapView, id);
   return layer ? await mapView.whenLayerView(layer) : undefined;
 }
 
 /**
- * Get a layer by id
+ * Get a layer or table by id
  *
  * @param mapView the map view to fetch the layer from
- * @param id the id if the layer to fetch
+ * @param id the id of the layer or table to fetch
  *
- * @returns Promise resolving with the fetched layer
+ * @returns Promise resolving with the fetched layer or table
  *
  */
-export async function getMapLayer(
+export async function getLayerOrTable(
   mapView: __esri.MapView,
   id: string
 ): Promise<__esri.FeatureLayer> {
   let layers = [];
   await mapView.when(() => {
-    layers = mapView.map.allLayers.toArray().filter((l) => {
+    layers = [
+      ...mapView.map.allLayers.toArray(),
+      ...mapView.map.allTables.toArray()
+    ].filter((l) => {
       return l.id === id;
     });
   });
@@ -111,7 +164,6 @@ export async function getMapLayer(
  * @param updateExtent optional (default false) boolean to indicate if we should zoom to the extent
  *
  * @returns Promise resolving with the highlight handle
- *
  */
 export async function highlightFeatures(
   ids: number[],

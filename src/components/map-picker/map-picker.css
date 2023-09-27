@@ -1,0 +1,67 @@
+/** @license
+ * Copyright 2023 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+:host {
+  display: block;
+}
+
+.width-full {
+  width: 100%;
+}
+
+.height-full {
+  height: 100%;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.border-bottom-1 {
+  border-width: 0px;
+  border-bottom-width: 1px;
+  border-style: solid;
+  border-color: var(--calcite-ui-border-3);
+}
+
+.action-bar-size {
+  height: 51px;
+  width: 100%;
+}
+
+.map-list {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: calcite-scrim-fade-in var(--calcite-internal-animation-timing-medium) ease-in-out;
+  background-color: var(--calcite-ui-background);
+  z-index: 1000;
+  width: 100%;
+  height: fit-content;
+}
+
+.display-none {
+  display: none;
+}
+
+.action-bar-color {
+  background-color: var(--calcite-ui-border-3) !important;
+}
+
+.align-center {
+  align-items: center;
+}

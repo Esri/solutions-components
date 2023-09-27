@@ -19,10 +19,10 @@ import { createStore } from "@stencil/store";
 const { state, onChange } = createStore({
 	// List of layers added and managed by the component
 	managedLayers: [],
+	// List of tables added and managed by the component
+	managedTables: [],
 	// Handle[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Handles.html#Handle
 	highlightHandles: [],
-	// ILayerHash title: id lookup to be used across components
-	layerNameHash: {},
 	// remove all handles
 	removeHandles: () => {
 		state.highlightHandles.forEach(h => h?.remove());

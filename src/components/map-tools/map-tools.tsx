@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
 import MapTools_T9n from "../../assets/t9n/map-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { EExpandType } from "../../utils/interfaces";
+import { IBasemapConfig, ISearchConfiguration } from "../../utils/interfaces";
 
 @Component({
   tag: 'map-tools',
@@ -39,12 +39,45 @@ export class MapTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * boolean: when true the legend widget will be available
+   */
+  @Prop() enableLegend: boolean;
+
+  /**
+   * boolean: when true the fullscreen widget will be available
+   */
+  @Prop() enableFullscreen: boolean;
+
+  /**
+   * boolean: when true the search widget will be available
+   */
+  @Prop() enableSearch: boolean;
+
+  /**
+   * boolean: when true the basemap widget will be available
+   */
+  @Prop() enableBasemap: boolean;
+
+  /**
+   * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+   */
+  @Prop() basemapConfig: IBasemapConfig;
+
+  /**
+   * "horizontal" | "vertical": used to control the orientation of the tools
+   */
   @Prop() layout: "horizontal" | "vertical" = "vertical";
 
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
+
+  /**
+   * ISearchConfiguration: Configuration details for the Search widget
+   */
+  @Prop() searchConfiguration: ISearchConfiguration;
 
   //--------------------------------------------------------------------------
   //
@@ -66,7 +99,22 @@ export class MapTools {
   /**
    * When true the basemap picker will be displayed
    */
-  @State() _showBasemapPicker = false;
+  @State() _showBasemapWidget = false;
+
+  /**
+   * When true the map will be displayed in fullscreen mode
+   */
+  @State() _showFullscreen = false;
+
+  /**
+   * When true the legend widget will be displayed
+   */
+  @State() _showLegendWidget = false;
+
+  /**
+   * When true the search widget will be displayed
+   */
+  @State() _showSearchWidget = false;
 
   //--------------------------------------------------------------------------
   //
@@ -74,11 +122,97 @@ export class MapTools {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * HTMLMapSearchElement: The search element node
+   */
+  protected _basemapElement: HTMLBasemapGalleryElement;
+
+  /**
+   * HTMLMapFullscreenElement: The fullscreen element node
+   */
+  protected _fullscreenElement: HTMLMapFullscreenElement;
+
+  /**
+   * HTMLLegendElement: The legend element node
+   */
+  protected _legendElement: HTMLMapLegendElement;
+
+  /**
+   * HTMLMapSearchElement: The search element node
+   */
+  protected _searchElement: HTMLMapSearchElement;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * When the _showBasemapWidget property is true display the basemap gallery
+   */
+  @Watch("_showBasemapWidget")
+  async _showBasemapWidgetWatchHandler(
+    v: boolean
+  ): Promise<void> {
+    if (v) {
+      this.mapView.ui.add(this._basemapElement.basemapWidget, {
+        position: "top-right",
+        index: 1
+      });
+    } else {
+      this.mapView.ui.remove(this._basemapElement.basemapWidget);
+    }
+  }
+
+  /**
+   * When the _showBasemapWidget property is true display the basemap gallery
+   */
+  @Watch("_showFullscreen")
+  async _showFullscreenWatchHandler(
+    v: boolean
+  ): Promise<void> {
+    const fs = this._fullscreenElement.fullscreenWidget;
+    if (v) {
+      fs.viewModel.enter();
+    } else {
+      fs.viewModel.exit();
+    }
+  }
+
+  /**
+   * When the _showLegendWidget property is true display the search widget
+   */
+  @Watch("_showLegendWidget")
+  async _showLegendWidgetWatchHandler(
+    v: boolean
+  ): Promise<void> {
+    if (v) {
+      this.mapView.ui.add(this._legendElement.legendWidget, {
+        position: "top-right",
+        index: 1
+      });
+    } else {
+      this.mapView.ui.remove(this._legendElement.legendWidget);
+    }
+  }
+
+  /**
+   * When the _showSearchWidget property is true display the search widget
+   */
+  @Watch("_showSearchWidget")
+  async _showSearchWidgetWatchHandler(
+    v: boolean
+  ): Promise<void> {
+    if (v) {
+      this.mapView.ui.add(this._searchElement.searchWidget, {
+        position: "top-right",
+        index: 1
+      });
+    } else {
+      this.mapView.ui.remove(this._searchElement.searchWidget);
+    }
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -91,11 +225,6 @@ export class MapTools {
   //  Events (public)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Emitted when the expand button is clicked
-   */
-  @Event() expandMap: EventEmitter<EExpandType>;
 
   //--------------------------------------------------------------------------
   //
@@ -116,30 +245,74 @@ export class MapTools {
   render() {
     const toggleIcon = this._showTools ? "chevrons-up" : "chevrons-down";
     const toolsClass = this._showTools ? "" : "display-none";
+    const searchClass = this._showSearchWidget ? "" : "display-none";
+    const basemapClass = this._showBasemapWidget ? "" : "display-none";
+    const legendClass = this._showLegendWidget ? "" : "display-none";
+    const fullscreenClass = this._showFullscreen ? "" : "display-none";
+    const fullscreenIcon = this._showFullscreen ? "full-screen-exit" : "full-screen";
+    const fullscreenTip = this._showFullscreen ? this._translations.exitFullscreen : this._translations.enterFullscreen;
+    const expandTip = this._showTools ? this._translations.collapse : this._translations.expand;
+    const containerClass = !this.enableBasemap && !this.enableFullscreen && !this.enableLegend && !this.enableSearch ? "display-none" : "";
     return (
       <Host>
-        <div class="display-flex">
-          <calcite-action
-            alignment="center"
-            class="border"
-            compact={false}
-            icon={toggleIcon}
-            onClick={() => { this._toggleTools() }}
-            text=""
-          />
-          <calcite-action-bar class={`border margin-top-1-2 ${toolsClass}`} expand-disabled layout={this.layout}>
-            {this._getActionGroup("home", false, this._translations.home, () => this._goHome())}
-            {this._getActionGroup("plus", false, this._translations.zoomIn, () => this._zoomIn())}
-            {this._getActionGroup("minus", false, this._translations.zoomOut, () => this._zoomOut())}
-            {this._getActionGroup("list", false, this._translations.list, () => this._showList())}
-            {this._getActionGroup("magnifying-glass", false, this._translations.search, () => this._search())}
-            {this._getActionGroup("expand", false, this._translations.expand, () => this._expand())}
-            {this._getActionGroup("basemap", false, this._translations.basemap, () => this._toggleBasemapPicker())}
-          </calcite-action-bar>
+        <div class={containerClass}>
+          <div class="box-shadow">
+            {this._getActionGroup(toggleIcon, false, expandTip, () => this._toggleTools())}
+          </div>
+          <div class={`margin-top-1-2 box-shadow ${toolsClass}`}>
+            {
+              this.enableLegend ?
+                this._getActionGroup("legend", false, this._translations.legend, () => this._showLegend()) :
+                undefined
+            }
+            {
+              this.enableSearch ?
+                this._getActionGroup("magnifying-glass", false, this._translations.search, () => this._search()) :
+                undefined
+            }
+            {
+              this.enableFullscreen ?
+                this._getActionGroup(fullscreenIcon, false, fullscreenTip, () => this._expand()) :
+                undefined
+            }
+            {
+              this.enableBasemap ?
+                this._getActionGroup("basemap", false, this._translations.basemap, () => this._toggleBasemapPicker()) :
+                undefined
+            }
+          </div>
         </div>
+        <basemap-gallery
+          basemapConfig={this.basemapConfig}
+          class={basemapClass}
+          mapView={this.mapView}
+          ref={(el) => {this._basemapElement = el}}
+        />
+        <map-search
+          class={searchClass}
+          mapView={this.mapView}
+          ref={(el) => { this._searchElement = el }}
+          searchConfiguration={this.searchConfiguration}
+        />
+        <map-legend
+          class={legendClass}
+          mapView={this.mapView}
+          ref={(el) => {this._legendElement = el}}
+        />
+        <map-fullscreen
+          class={fullscreenClass}
+          mapView={this.mapView}
+          ref={(el) => {this._fullscreenElement = el}}
+        />
       </Host>
     );
   }
+
+  //--------------------------------------------------------------------------
+  //
+  //  Functions (protected)
+  //
+  //--------------------------------------------------------------------------
 
   /**
    * Get a calcite action group for the current action
@@ -160,66 +333,75 @@ export class MapTools {
     func: any
   ): VNode {
     return (
-      <calcite-action-group>
+      <div class="border-bottom">
         <calcite-action
           alignment="center"
+          class="square-40"
           compact={false}
           disabled={disabled}
           icon={icon}
           id={icon}
           onClick={func}
+          scale="s"
           text=""
         >
           <calcite-icon icon={"cheveron-up"} scale="s" slot="icon" />
         </calcite-action>
-        <calcite-tooltip label="" placement="bottom" reference-element={icon}>
+        <calcite-tooltip label="" placement="trailing" reference-element={icon}>
           <span>{tip}</span>
         </calcite-tooltip>
-      </calcite-action-group>
+      </div>
     );
   }
 
-  // Need to discuss this with the team
-  protected _goHome(): void {
-    alert("go home")
-  }
-
   // need to discuss this with the team
-  protected _showList(): void {
-    alert("show list")
+  protected _showLegend(): void {
+    this._showLegendWidget = !this._showLegendWidget;
+    this._showTools = false;
   }
 
   // Need to discuss this with the team
   protected _search(): void {
-    alert("search")
-  }
-
-  // Need to explore map fixed zoom in considerations
-  protected _zoomIn(): void {
-    alert("zoom in")
-  }
-
-  // Need to explore map fixed zoom out considerations
-  protected _zoomOut(): void {
-    alert("zoom out")
-  }
-
-  protected _toggleBasemapPicker(): void {
-    this._showBasemapPicker = !this._showBasemapPicker;
+    this._showSearchWidget = !this._showSearchWidget;
+    this._showTools = false;
   }
 
   /**
-   * Emit the expand map event
+   * Show/Hide the basemap picker
+   *
+   * @returns void
+   *
+   * @protected
+   */
+  protected _toggleBasemapPicker(): void {
+    this._showBasemapWidget = !this._showBasemapWidget;
+    this._showTools = false;
+  }
+
+  /**
+   * Enter/Exit fullscreen mode
    *
    * @returns void
    *
    * @protected
    */
   protected _expand(): void {
-    this.expandMap.emit(EExpandType.EXPAND);
+    this._showFullscreen = !this._showFullscreen;
   }
 
+  /**
+   * Show/Hide the map tools
+   *
+   * @returns void
+   *
+   * @protected
+   */
   protected _toggleTools(): void {
+    if (!this._showTools) {
+      this._showBasemapWidget = false;
+      this._showSearchWidget = false;
+      this._showLegendWidget = false;
+    }
     this._showTools = !this._showTools;
   }
 
