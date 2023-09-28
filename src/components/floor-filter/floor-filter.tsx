@@ -38,6 +38,11 @@ export class FloorFilter {
   //--------------------------------------------------------------------------
 
   /**
+   * boolean: when true the Floor Filter widget will be available
+   */
+  @Prop() enabled: boolean;
+
+  /**
    * esri/widgets/FloorFilter: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FloorFilter.html
    *
    * FloorFilter instance
@@ -149,7 +154,7 @@ export class FloorFilter {
   protected _initFloorFilter(
     view: __esri.MapView
   ): void {
-    if (view && this.FloorFilter) {
+    if (view && this.enabled && this.FloorFilter) {
       if (!this.floorFilterWidget) {
         this.floorFilterWidget = new this.FloorFilter({
           container: this._floorFilterElement,

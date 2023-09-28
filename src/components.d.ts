@@ -171,6 +171,10 @@ export namespace Components {
     }
     interface FloorFilter {
         /**
+          * boolean: when true the Floor Filter widget will be available
+         */
+        "enabled": boolean;
+        /**
           * esri/widgets/FloorFilter: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FloorFilter.html  FloorFilter instance
          */
         "floorFilterWidget": __esri.FloorFilter;
@@ -1435,6 +1439,10 @@ declare namespace LocalJSX {
         "open"?: boolean;
     }
     interface FloorFilter {
+        /**
+          * boolean: when true the Floor Filter widget will be available
+         */
+        "enabled"?: boolean;
         /**
           * esri/widgets/FloorFilter: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FloorFilter.html  FloorFilter instance
          */
