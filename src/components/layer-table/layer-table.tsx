@@ -458,7 +458,7 @@ export class LayerTable {
               "selected-items-filter",
               this._showOnlySelected ? this._translations.showAll : this._translations.showSelected,
               () => this._toggleShowSelected(),
-              false
+              !featuresSelected
             )
           }
         </calcite-action-bar>
