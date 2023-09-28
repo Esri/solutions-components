@@ -484,7 +484,7 @@ export class CrowdsourceManager {
     const icon = this._expandPopup ? "chevrons-down" : "chevrons-up";
     const id = "expand-popup";
     const tooltip = this._expandPopup ? this._translations.collapsePopup : this._translations.expandPopup;
-    const themeClass = this.theme === "light" ? "calcite-mode-light" : "calcite-mode-dark";
+    const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
       <div class="calcite-mode-dark">
         <calcite-panel>
@@ -544,7 +544,7 @@ export class CrowdsourceManager {
       layoutMode === ELayoutMode.GRID && !this._expandPopup && !hideMap ? "height-50" : "";
     const cardManagerContainer = this.classicGrid && layoutMode === ELayoutMode.GRID ?
       "width-full adjusted-height-100" : this._expandPopup ? "width-50 adjusted-height-100-50" : "width-50 height-full";
-    const themeClass = this.theme === "light" ? "calcite-mode-light" : "calcite-mode-dark";
+    const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
       <div class={`${cardManagerContainer} ${themeClass}`}>
         <card-manager
