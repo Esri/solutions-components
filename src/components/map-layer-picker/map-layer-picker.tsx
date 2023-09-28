@@ -209,14 +209,22 @@ export class MapLayerPicker {
    * Renders the component.
    */
   render(): VNode {
+    const id = "map-layer-picker";
     return (
       <Host>
         <div class="map-layer-picker-container">
           <div class="map-layer-picker">
             {
-              !this._hasValidLayers ? this._getInvalidPlaceholder() : this.type === "combobox" ? this._getCombobox() :
-                this.type === "select" ? this._getSelect() : this._getDropdown()
+              !this._hasValidLayers ? this._getInvalidPlaceholder() : this.type === "combobox" ? this._getCombobox(id) :
+                this.type === "select" ? this._getSelect(id) : this._getDropdown(id)
             }
+            <calcite-tooltip
+              label=""
+              placement="bottom"
+              reference-element={id}
+            >
+              <span>{this._translations.switchLayer}</span>
+            </calcite-tooltip>
           </div>
         </div>
       </Host>
@@ -275,14 +283,18 @@ export class MapLayerPicker {
 
   /**
    * Create a list of layers from the map
-   *
    * Used for selecting a single layer.
+   *
+   * @param id the id for the select component used to support the tooltip
    *
    * @returns Calcite Select component with the ids of the layers from the map
    */
-  _getSelect(): VNode {
+  _getSelect(
+    id: string
+  ): VNode {
     return (
       <calcite-select
+        id={id}
         label=""
         onCalciteSelectChange={() => this._layerSelectionChange()}
         ref={(el) => { this._layerElement = el }}
@@ -295,15 +307,19 @@ export class MapLayerPicker {
 
   /**
    * Create a list of layer ids from the map
-   *
    * Used for selecting multiple layers
+   *
+   * @param id the id for the combobox component used to support the tooltip
    *
    * @returns Calcite ComboBox component with the ids of the layers from the map
    */
-  _getCombobox(): VNode {
+  _getCombobox(
+    id: string
+  ): VNode {
     return (
       <calcite-combobox
         clearDisabled={true}
+        id={id}
         label=""
         onCalciteComboboxChange={() => this._layerSelectionChange()}
         placeholder-icon={this.placeholderIcon}
@@ -319,20 +335,22 @@ export class MapLayerPicker {
   /**
    * Hydrate a dropdown component with items to display the layer names
    *
+   * @param id the id for the dropdown component used to support the tooltip
+   *
    * @returns Array of Dropdown items with layer names
    */
-  _getDropdown(): VNode {
-    const id = "map-layer-picker";
+  _getDropdown(
+    id: string
+  ): VNode {
     return (
       <calcite-dropdown class="layer-picker-dropdown">
-        <calcite-action slot="trigger" text="">
+        <calcite-action id={id} slot="trigger" text="">
           <calcite-button
             alignment="icon-end-space-between"
             appearance={this.appearance}
             class="max-width-350"
             iconEnd="chevron-down"
             iconStart="layers"
-            id={id}
             kind="neutral"
             width="full"
           >
@@ -340,13 +358,6 @@ export class MapLayerPicker {
               {this.selectedName}
             </div>
           </calcite-button>
-          <calcite-tooltip
-            label=""
-            placement="bottom"
-            reference-element={id}
-          >
-            <span>{this._translations.switchLayer}</span>
-          </calcite-tooltip>
         </calcite-action>
         <calcite-dropdown-group selection-mode="single">
           {this._getMapLayerOptions()}

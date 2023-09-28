@@ -16,6 +16,7 @@
 
 :host {
   display: block;
+  --solutions-theme-foreground-color: var(--calcite-ui-foreground-1);
 }
 
 .width-full {

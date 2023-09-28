@@ -453,6 +453,14 @@ export class LayerTable {
               !featuresSelected
             )
           }
+          {
+            this._getAction(
+              "selected-items-filter",
+              this._showOnlySelected ? this._translations.showAll : this._translations.showSelected,
+              () => this._toggleShowSelected(),
+              !featuresSelected
+            )
+          }
         </calcite-action-bar>
         <calcite-dropdown disabled={this._layer === undefined}>
           <calcite-action
@@ -470,28 +478,12 @@ export class LayerTable {
               {this._translations.more}
             </calcite-button>
           </calcite-action>
-          <calcite-tooltip
-            label=""
-            placement="bottom"
-            reference-element={id}
-          >
-            <span>{this._translations.moreOptions}</span>
-          </calcite-tooltip>
           <calcite-dropdown-group selection-mode="none">
             <calcite-dropdown-item
               iconStart="list-check-all"
               onClick={() => this._selectAll()}
             >
               {this._translations.selectAll}
-            </calcite-dropdown-item>
-            <calcite-dropdown-item
-              iconStart="selected-items-filter"
-              onClick={() => this._toggleShowSelected()}
-            >
-              {
-                this._showOnlySelected ? this._translations.showAll :
-                  this._translations.showSelected
-              }
             </calcite-dropdown-item>
             <calcite-dropdown-item
               iconStart="compare"
@@ -513,6 +505,13 @@ export class LayerTable {
             </calcite-dropdown-item>
           </calcite-dropdown-group>
         </calcite-dropdown>
+        <calcite-tooltip
+          label=""
+          placement="bottom"
+          reference-element={id}
+        >
+          <span>{this._translations.moreOptions}</span>
+        </calcite-tooltip>
       </div>
     );
   }
@@ -842,6 +841,7 @@ export class LayerTable {
     const hitTestResult = await this.mapView.hitTest(evt.screenPoint, opts);
     if (hitTestResult.results.length > 0) {
       hitTestResult.results.forEach((result: any) => {
+        this._clearSelection();
         const id = (result.graphic as __esri.Graphic).getObjectId();
         const index = this._table.highlightIds.indexOf(id);
         if (index > -1) {
@@ -924,7 +924,7 @@ export class LayerTable {
         prev.push(_cur);
       }
       return prev;
-    }, []);
+    }, []).sort((a,b) => a - b);
     this._table.highlightIds.addMany(ids);
     this._selectedIndexes = ids;
   }
