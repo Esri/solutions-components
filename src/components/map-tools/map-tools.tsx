@@ -345,6 +345,7 @@ export class MapTools {
         />
         <floor-filter
           class={floorFilterClass}
+          enabled={this.enableFloorFilter}
           mapView={this.mapView}
           ref={(el) => {this._floorFilterElement = el}}
         />
