@@ -453,6 +453,14 @@ export class LayerTable {
               !featuresSelected
             )
           }
+          {
+            this._getAction(
+              "selected-items-filter",
+              this._showOnlySelected ? this._translations.showAll : this._translations.showSelected,
+              () => this._toggleShowSelected(),
+              false
+            )
+          }
         </calcite-action-bar>
         <calcite-dropdown disabled={this._layer === undefined}>
           <calcite-action
@@ -476,15 +484,6 @@ export class LayerTable {
               onClick={() => this._selectAll()}
             >
               {this._translations.selectAll}
-            </calcite-dropdown-item>
-            <calcite-dropdown-item
-              iconStart="selected-items-filter"
-              onClick={() => this._toggleShowSelected()}
-            >
-              {
-                this._showOnlySelected ? this._translations.showAll :
-                  this._translations.showSelected
-              }
             </calcite-dropdown-item>
             <calcite-dropdown-item
               iconStart="compare"
@@ -842,6 +841,7 @@ export class LayerTable {
     const hitTestResult = await this.mapView.hitTest(evt.screenPoint, opts);
     if (hitTestResult.results.length > 0) {
       hitTestResult.results.forEach((result: any) => {
+        this._clearSelection();
         const id = (result.graphic as __esri.Graphic).getObjectId();
         const index = this._table.highlightIds.indexOf(id);
         if (index > -1) {
