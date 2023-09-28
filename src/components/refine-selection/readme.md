@@ -56,8 +56,8 @@ graph TD;
   refine-selection --> map-draw-tools
   refine-selection --> calcite-list
   refine-selection --> calcite-list-item
-  map-layer-picker --> calcite-notice
   map-layer-picker --> calcite-tooltip
+  map-layer-picker --> calcite-notice
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown

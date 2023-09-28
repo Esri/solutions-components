@@ -470,13 +470,6 @@ export class LayerTable {
               {this._translations.more}
             </calcite-button>
           </calcite-action>
-          <calcite-tooltip
-            label=""
-            placement="bottom"
-            reference-element={id}
-          >
-            <span>{this._translations.moreOptions}</span>
-          </calcite-tooltip>
           <calcite-dropdown-group selection-mode="none">
             <calcite-dropdown-item
               iconStart="list-check-all"
@@ -513,6 +506,13 @@ export class LayerTable {
             </calcite-dropdown-item>
           </calcite-dropdown-group>
         </calcite-dropdown>
+        <calcite-tooltip
+          label=""
+          placement="bottom"
+          reference-element={id}
+        >
+          <span>{this._translations.moreOptions}</span>
+        </calcite-tooltip>
       </div>
     );
   }
