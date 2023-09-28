@@ -924,7 +924,7 @@ export class LayerTable {
         prev.push(_cur);
       }
       return prev;
-    }, []);
+    }, []).sort((a,b) => a - b);
     this._table.highlightIds.addMany(ids);
     this._selectedIndexes = ids;
   }
