@@ -485,8 +485,9 @@ export class CrowdsourceManager {
     const id = "expand-popup";
     const tooltip = this._expandPopup ? this._translations.collapsePopup : this._translations.expandPopup;
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
+    const height = this._expandPopup ? "height-full" : "height-50";
     return (
-      <div class="calcite-mode-dark">
+      <div class={"calcite-mode-dark " + height}>
         <calcite-panel>
           <div
             class="display-flex align-items-center"
@@ -541,7 +542,7 @@ export class CrowdsourceManager {
     hideMap: boolean
   ): VNode {
     const cardManagerHeight = this.classicGrid && layoutMode === ELayoutMode.GRID ? "" :
-      layoutMode === ELayoutMode.GRID && !this._expandPopup && !hideMap ? "height-50" : "";
+      layoutMode === ELayoutMode.GRID && !this._expandPopup && !hideMap ? "height-50" : "height-full";
     const cardManagerContainer = this.classicGrid && layoutMode === ELayoutMode.GRID ?
       "width-full adjusted-height-100" : this._expandPopup ? "width-50 adjusted-height-100-50" : "width-50 height-full";
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
