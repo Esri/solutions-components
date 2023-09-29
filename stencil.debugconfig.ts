@@ -1,10 +1,10 @@
-import autoprefixer from "autoprefixer";
+import autoprefixer from 'autoprefixer';
 import { Config } from '@stencil/core';
-import { sass } from "@stencil/sass";
-import { postcss } from "@stencil/postcss";
-import tailwindcss from "tailwindcss";
-import tailwindConfig from "./tailwind.config";
-import { generatePreactTypes } from "./support/preact";
+import { sass } from '@stencil/sass';
+import { postcss } from '@stencil/postcss';
+import tailwindcss from 'tailwindcss';
+import tailwindConfig from './tailwind.config';
+import { generatePreactTypes } from './support/preact';
 
 export const config: Config = {
   namespace: 'solutions-components',
@@ -36,14 +36,28 @@ export const config: Config = {
       type: 'docs-readme'
     },
     {
-       type: "custom",
-       name: "preact",
+       type: 'custom',
+       name: 'preact',
        generator: generatePreactTypes
     },
+    {
+      type: 'dist-custom-elements',
+      customElementsExportBehavior: 'auto-define-custom-elements'
+    },
   ],
+  testing: {
+    browserHeadless: 'new',
+    testPathIgnorePatterns: [
+      'dist/',
+      'placeholder_tests'
+    ],
+    transform: {
+      '^.+\\.[jt]sx?$': '<rootDir>/node_modules/@stencil/core/testing/jest-preprocessor.js'
+    }
+  },
   plugins: [
     sass({
-      injectGlobalPaths: ["src/assets/styles/includes.scss"]
+      injectGlobalPaths: ['src/assets/styles/includes.scss']
     }),
     postcss({
       plugins: [
