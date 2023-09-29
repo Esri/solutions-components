@@ -213,6 +213,7 @@ export class RefineSelection {
                 onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
                 ref={(el) => { this._layerPicker = el }}
                 selectedIds={[this._refineLayer.layer.id]}
+                showTables={false}
               />
             </calcite-label>
             <calcite-popover

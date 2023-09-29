@@ -418,6 +418,7 @@ export class LayerTable {
               onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
               placeholderIcon="layers"
               scale="l"
+              showTables={true}
               type="dropdown"
             />
           </div>

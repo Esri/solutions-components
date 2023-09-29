@@ -17,7 +17,7 @@
 | `placeholderIcon`         | `placeholder-icon`           | string: optional placeholder icon used with "combobox" type                                            | `string`                               | `""`            |
 | `scale`                   | `scale`                      | "s" \| "m" \| "l": scale to render the component                                                       | `"l" \| "m" \| "s"`                    | `"m"`           |
 | `selectedIds`             | --                           | string[]: list of layer ids that have been selected by the end user                                    | `string[]`                             | `[]`            |
-| `showTables`              | `show-tables`                | boolean: when true standalone tables will also be available                                            | `boolean`                              | `true`          |
+| `showTables`              | `show-tables`                | boolean: when true standalone tables will also be available                                            | `boolean`                              | `undefined`     |
 | `type`                    | `type`                       | "select" \| "combobox" \| "dropdown": type of component to leverage                                    | `"combobox" \| "dropdown" \| "select"` | `"select"`      |
 
 

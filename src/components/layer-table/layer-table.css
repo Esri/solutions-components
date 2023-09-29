@@ -84,4 +84,9 @@ html[dir="rtl"] .bottom-left {
 
 vaadin-grid-cell-content {
   padding: var(--lumo-space-xs) var(--lumo-space-m) !important;
+  font-size: 14px !important;
+}
+
+.esri-field-column__header-content {
+  background-color: var(--calcite-ui-foreground-3);
 }
