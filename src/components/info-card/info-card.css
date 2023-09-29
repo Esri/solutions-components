@@ -51,7 +51,7 @@ tr:nth-child(odd) {
 }
 
 .display-none {
-  display: none;
+  display: none !important;
 }
 
 .display-flex {
