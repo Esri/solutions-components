@@ -68,11 +68,13 @@
     <script type="module" src="../solutions-components.esm.js"></script>
 
     <script>
-      require(["esri/WebMap", "esri/views/MapView", "esri/widgets/Legend"], (
+      require(["esri/WebMap", "esri/views/MapView", "esri/widgets/Legend", "esri/config"], (
         WebMap,
         MapView,
-        Legend
+        Legend,
+        esriConfig
       ) => {
+        //esriConfig.portalUrl = "https://solutions.mapsdevext.arcgis.com";
         var webMap = new WebMap({
           portalItem: {
             // solutions

@@ -85,7 +85,7 @@ export class MapLayerPicker {
   /**
    * boolean: when true standalone tables will also be available
    */
-  @Prop() showTables = true;
+  @Prop() showTables: boolean;
 
   /**
    * "select" | "combobox" | "dropdown": type of component to leverage
