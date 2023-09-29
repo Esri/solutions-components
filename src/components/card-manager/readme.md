@@ -41,6 +41,7 @@ graph TD;
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
   edit-card --> calcite-notice
+  edit-card --> calcite-loader
   calcite-notice --> calcite-icon
   calcite-alert --> calcite-icon
   calcite-alert --> calcite-chip

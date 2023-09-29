@@ -65,6 +65,11 @@ export class EditCard {
   //--------------------------------------------------------------------------
 
   /**
+   * boolean: When true a loading indicator will be shown while the editor loads
+   */
+  @State() _editorLoading = false;
+
+  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
@@ -159,11 +164,13 @@ export class EditCard {
   @Watch("open")
   async openWatchHandler(v: boolean): Promise<void> {
     if (v && this.graphics?.length > 0 && this.graphicIndex > -1) {
+      this._editorLoading = true;
       this._initEditorWidget();
       if (this.graphicIndex > -1 && this.graphics.length > 0 && this.open && !this._shouldClose) {
         await this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
         this._shouldClose = true;
       }
+      this._editorLoading = false;
     }
     if (!v) {
       this._shouldClose = false;
@@ -227,11 +234,13 @@ export class EditCard {
         this._layerEditHandle.remove();
       }
       this._layerEditHandle = this._layer.on("edits", () => {
+        this._editorLoading = true;
         this.editsComplete.emit();
         this._shouldClose = false;
         this._initEditorWidget();
         void this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
         this._shouldClose = true;
+        this._editorLoading = false;
       });
     }
   }
@@ -244,7 +253,8 @@ export class EditCard {
     // when you use MULTI edit mode...is fine in SINGLE
     const editDisabled = this.graphics?.length > 0 && this.graphics[0] ?
       !(this.graphics[0].layer as __esri.FeatureLayer).editingEnabled : true;
-
+      const tableNodeClass = this._editorLoading ? "display-none" : "";
+      const loadingClass = this._editorLoading ? "" : "display-none";
     return (
       <Host>
         <div class="position-relative">
@@ -264,8 +274,13 @@ export class EditCard {
           }
           <div slot="content">
             <div
+              class={tableNodeClass}
               id="feature-form"
               ref={(el) => this._editContainer = el}
+            />
+            <calcite-loader
+              class={loadingClass}
+              scale="s"
             />
           </div>
         </div>

@@ -32,11 +32,13 @@
 ### Depends on
 
 - calcite-notice
+- calcite-loader
 
 ### Graph
 ```mermaid
 graph TD;
   edit-card --> calcite-notice
+  edit-card --> calcite-loader
   calcite-notice --> calcite-icon
   info-card --> edit-card
   style edit-card fill:#f9f,stroke:#333,stroke-width:4px
