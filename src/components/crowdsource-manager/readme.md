@@ -105,6 +105,7 @@ graph TD;
   info-card --> edit-card
   info-card --> calcite-alert
   edit-card --> calcite-notice
+  edit-card --> calcite-loader
   calcite-notice --> calcite-icon
   calcite-alert --> calcite-icon
   calcite-alert --> calcite-chip
