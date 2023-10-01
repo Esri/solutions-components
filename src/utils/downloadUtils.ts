@@ -104,7 +104,7 @@ export function getFeatureServiceRelatedRecords(
   objectIds?: number[]
 ): Promise<IQueryRelatedResponse> {
   const options: IQueryRelatedOptions = {
-    url: url + `/${relationshipId}`,
+    url,
     relationshipId,
     objectIds
   }
