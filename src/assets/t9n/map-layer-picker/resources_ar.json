@@ -1,4 +1,5 @@
 {
-  "noLayersFound": "بيت_No valid layers found______________________لاحقة",
-  "enableEditUpdate": "بيت_One or more layers must support editing with the 'Update' capability____________________________________لاحقة."
+  "noLayersFound": "بيت_No editable layers found_________________________لاحقة",
+  "enableEditUpdate": "بيت_One or more layers must support editing with the 'Update' capability____________________________________لاحقة.",
+  "switchLayer": "بيت_Switch layer_____________لاحقة"
 }

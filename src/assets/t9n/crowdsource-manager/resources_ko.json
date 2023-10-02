@@ -1,6 +1,8 @@
 {
-  "header": "한_Crowdsource Manager____________________빠",
-  "open": "한_Open_________빠",
-  "close": "한_Close___________빠",
-  "information": "한_Information____________빠"
+  "header": "크라우드소스 관리자",
+  "open": "열기",
+  "close": "닫기",
+  "information": "정보",
+  "expandPopup": "한_Expand pop-up______________빠",
+  "collapsePopup": "한_Collapse pop-up________________빠"
 }

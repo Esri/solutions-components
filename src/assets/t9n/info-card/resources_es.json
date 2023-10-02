@@ -1,9 +1,9 @@
 {
-  "fetchingData": "á_Fetching data______________Ó",
-  "edit": "á_Edit_________Ó",
-  "enableEditing": "á_Update capability must be enabled on the layer_________________________Ó.",
-  "editDisabled": "á_Editing Disabled_________________Ó",
-  "next": "á_Next_________Ó",
-  "back": "á_Back_________Ó",
-  "indexOfTotal": "á_{{index}} of {{total}}_______________________Ó"
+  "fetchingData": "Obteniendo datos",
+  "edit": "Editar",
+  "enableEditing": "La capacidad de actualización debe estar habilitada en la capa.",
+  "editDisabled": "Edición deshabilitada",
+  "next": "Siguiente",
+  "back": "Atrás",
+  "indexOfTotal": "{{index}} de {{total}}"
 }

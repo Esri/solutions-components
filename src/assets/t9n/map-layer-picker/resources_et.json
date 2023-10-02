@@ -1,4 +1,5 @@
 {
-  "noLayersFound": "Š_No valid layers found______________________ä",
-  "enableEditUpdate": "Š_One or more layers must support editing with the 'Update' capability____________________________________ä."
+  "noLayersFound": "Š_No editable layers found_________________________ä",
+  "enableEditUpdate": "Š_One or more layers must support editing with the 'Update' capability____________________________________ä.",
+  "switchLayer": "Š_Switch layer_____________ä"
 }

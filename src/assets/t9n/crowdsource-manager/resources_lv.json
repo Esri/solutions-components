@@ -1,6 +1,8 @@
 {
-  "header": "ķ_Crowdsource Manager____________________ū",
-  "open": "ķ_Open_________ū",
-  "close": "ķ_Close___________ū",
-  "information": "ķ_Information____________ū"
+  "header": "Crowdsource Manager",
+  "open": "Atvērt",
+  "close": "Aizvērt",
+  "information": "Informācija",
+  "expandPopup": "ķ_Expand pop-up______________ū",
+  "collapsePopup": "ķ_Collapse pop-up________________ū"
 }

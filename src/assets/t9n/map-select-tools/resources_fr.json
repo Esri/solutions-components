@@ -11,5 +11,6 @@
   "useLayerFeatures": "Utiliser des entités de la couche",
   "inputLayer": "Couche en entrée",
   "useLayerFeaturesTooltip": "Choisir une couche et utiliser les outils de dessin afin de désigner les entités qui peuvent être utilisées comme limites pour sélectionner les entités d’intersection dans la couche en entrée.",
-  "useSearchDistanceTootip": "Définir une distance pour une zone tampon de recherche qui servira à sélectionner les entités en entrée qui intersectent la zone tampon."
+  "useSearchDistanceTootip": "Définir une distance pour une zone tampon de recherche qui servira à sélectionner les entités en entrée qui intersectent la zone tampon.",
+  "placeholder": "Rechercher une adresse ou un lieu"
 }

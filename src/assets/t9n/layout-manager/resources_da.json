@@ -1,7 +1,7 @@
 {
-  "layout": "ø_Layout_____________å",
-  "grid": "ø_Grid_________å",
-  "vertical": "ø_Vertical_________________å",
-  "horizontal": "ø_Horizontal_____________________å",
-  "appInfo": "ø_Some basic information about the app___________________å"
+  "layout": "Layout",
+  "grid": "Gitter",
+  "vertical": "Lodret",
+  "horizontal": "Vandret",
+  "appInfo": "Grundlæggende oplysninger om app'en"
 }

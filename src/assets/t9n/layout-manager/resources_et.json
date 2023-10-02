@@ -1,7 +1,7 @@
 {
-  "layout": "Š_Layout_____________ä",
-  "grid": "Š_Grid_________ä",
-  "vertical": "Š_Vertical_________________ä",
-  "horizontal": "Š_Horizontal_____________________ä",
-  "appInfo": "Š_Some basic information about the app___________________ä"
+  "layout": "Paigutus",
+  "grid": "Ruudustik",
+  "vertical": "Vertikaalne",
+  "horizontal": "Horisontaalne",
+  "appInfo": "Mõned põhiandmed rakenduse kohta"
 }

@@ -1,6 +1,8 @@
 {
-  "header": "ı_Crowdsource Manager____________________İ",
-  "open": "ı_Open_________İ",
-  "close": "ı_Close___________İ",
-  "information": "ı_Information____________İ"
+  "header": "Crowdsource Manager",
+  "open": "Aç",
+  "close": "Kapat",
+  "information": "Bilgi",
+  "expandPopup": "ı_Expand pop-up______________İ",
+  "collapsePopup": "ı_Collapse pop-up________________İ"
 }

@@ -1,9 +1,10 @@
 {
-  "legend": "ł_Legend_____________ą",
-  "search": "ł_Search_____________ą",
-  "expand": "ł_Expand_____________ą",
-  "basemap": "ł_Basemap_______________ą",
-  "collapse": "ł_Collapse_________________ą",
-  "enterFullscreen": "ł_Enter fullscreen_________________ą",
-  "exitFullscreen": "ł_Exit fullscreen________________ą"
+  "legend": "Legenda",
+  "search": "Szukaj",
+  "expand": "Rozwiń",
+  "basemap": "Mapa bazowa",
+  "collapse": "Zwiń",
+  "enterFullscreen": "Otwórz widok pełnoekranowy",
+  "exitFullscreen": "Zamknij widok pełnoekranowy",
+  "floorFilter": "ł_Floor filter_____________ą"
 }

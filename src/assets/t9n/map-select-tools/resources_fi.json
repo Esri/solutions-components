@@ -11,5 +11,6 @@
   "useLayerFeatures": "Käytä karttatason kohteita",
   "inputLayer": "Lähtöaineiston karttataso",
   "useLayerFeaturesTooltip": "Valitse leikkaavia kohteita lähtöaineiston karttatasosta valitsemalla karttataso ja käyttämällä luonnostyökaluja, joilla voidaan osoittaa rajana käytettäviin kohteisiin.",
-  "useSearchDistanceTootip": "Määritä etäisyys hakupuskurille, joka valitsee puskurin leikkaavat lähtöaineiston kohteet."
+  "useSearchDistanceTootip": "Määritä etäisyys hakupuskurille, joka valitsee puskurin leikkaavat lähtöaineiston kohteet.",
+  "placeholder": "Etsi osoite tai paikka"
 }

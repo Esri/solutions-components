@@ -1,9 +1,9 @@
 {
-  "fetchingData": "Į_Fetching data______________š",
-  "edit": "Į_Edit_________š",
-  "enableEditing": "Į_Update capability must be enabled on the layer_________________________š.",
-  "editDisabled": "Į_Editing Disabled_________________š",
-  "next": "Į_Next_________š",
-  "back": "Į_Back_________š",
-  "indexOfTotal": "Į_{{index}} of {{total}}_______________________š"
+  "fetchingData": "Gaunami duomenys",
+  "edit": "Redaguoti",
+  "enableEditing": "Sluoksnyje turi būti įjungtas funkcijų naujinimas.",
+  "editDisabled": "Redagavimas išjungtas",
+  "next": "Kitas",
+  "back": "Atgal",
+  "indexOfTotal": "{{index}} iš {{total}}"
 }

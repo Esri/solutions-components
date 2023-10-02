@@ -1,9 +1,10 @@
 {
-  "legend": "ı_Legend_____________İ",
-  "search": "ı_Search_____________İ",
-  "expand": "ı_Expand_____________İ",
-  "basemap": "ı_Basemap_______________İ",
-  "collapse": "ı_Collapse_________________İ",
-  "enterFullscreen": "ı_Enter fullscreen_________________İ",
-  "exitFullscreen": "ı_Exit fullscreen________________İ"
+  "legend": "Lejant",
+  "search": "Ara",
+  "expand": "Genişlet",
+  "basemap": "Altlık Harita",
+  "collapse": "Daralt",
+  "enterFullscreen": "Tam ekrana gir",
+  "exitFullscreen": "Tam ekrandan çık",
+  "floorFilter": "ı_Floor filter_____________İ"
 }

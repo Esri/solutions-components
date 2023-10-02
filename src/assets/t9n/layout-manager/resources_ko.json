@@ -1,7 +1,7 @@
 {
-  "layout": "한_Layout_____________빠",
-  "grid": "한_Grid_________빠",
-  "vertical": "한_Vertical_________________빠",
-  "horizontal": "한_Horizontal_____________________빠",
-  "appInfo": "한_Some basic information about the app___________________빠"
+  "layout": "레이아웃",
+  "grid": "그리드",
+  "vertical": "수직",
+  "horizontal": "수평",
+  "appInfo": "앱에 대한 일부 기본 정보"
 }

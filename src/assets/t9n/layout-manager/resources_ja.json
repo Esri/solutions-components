@@ -1,7 +1,7 @@
 {
-  "layout": "須_Layout_____________鷗",
-  "grid": "須_Grid_________鷗",
-  "vertical": "須_Vertical_________________鷗",
-  "horizontal": "須_Horizontal_____________________鷗",
-  "appInfo": "須_Some basic information about the app___________________鷗"
+  "layout": "レイアウト",
+  "grid": "グリッド",
+  "vertical": "鉛直",
+  "horizontal": "水平",
+  "appInfo": "アプリに関する一部の基本情報"
 }

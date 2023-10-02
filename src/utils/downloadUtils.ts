@@ -201,7 +201,8 @@ export async function downloadPDF(
 
   labels = removeDuplicates ? removeDuplicateLabels(labels) : labels;
 
-  exportPDF(_createFilename(selectionSetNames), labels, labelPageDescription, title, initialImageDataUrl);
+  const exportTitle = title ? title : _createFilename(selectionSetNames);
+  exportPDF(exportTitle, labels, labelPageDescription, title, initialImageDataUrl);
 
   return Promise.resolve();
 }

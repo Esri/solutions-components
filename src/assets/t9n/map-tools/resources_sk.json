@@ -1,9 +1,10 @@
 {
-  "legend": "ĺ_Legend_____________ľ",
-  "search": "ĺ_Search_____________ľ",
-  "expand": "ĺ_Expand_____________ľ",
-  "basemap": "ĺ_Basemap_______________ľ",
-  "collapse": "ĺ_Collapse_________________ľ",
-  "enterFullscreen": "ĺ_Enter fullscreen_________________ľ",
-  "exitFullscreen": "ĺ_Exit fullscreen________________ľ"
+  "legend": "Legenda",
+  "search": "Vyhľadať",
+  "expand": "Rozbaliť",
+  "basemap": "Podkladová mapa",
+  "collapse": "Zbaliť",
+  "enterFullscreen": "Zobraziť na celú obrazovku",
+  "exitFullscreen": "Odísť z celej obrazovky",
+  "floorFilter": "ĺ_Floor filter_____________ľ"
 }

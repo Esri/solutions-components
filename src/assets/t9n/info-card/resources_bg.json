@@ -1,9 +1,9 @@
 {
-  "fetchingData": "й_Fetching data______________й",
-  "edit": "й_Edit_________й",
-  "enableEditing": "й_Update capability must be enabled on the layer_________________________й.",
-  "editDisabled": "й_Editing Disabled_________________й",
-  "next": "й_Next_________й",
-  "back": "й_Back_________й",
-  "indexOfTotal": "й_{{index}} of {{total}}_______________________й"
+  "fetchingData": "Извличане на данни",
+  "edit": "Редактиране",
+  "enableEditing": "За слоя трябва да бъде активирана опцията за актуализиране.",
+  "editDisabled": "Редактирането е деактивирано",
+  "next": "Напред",
+  "back": "Назад",
+  "indexOfTotal": "{{index}} от {{total}}"
 }

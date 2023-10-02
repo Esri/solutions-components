@@ -1,6 +1,8 @@
 {
-  "header": "ng_Crowdsource Manager____________________ny",
-  "open": "ng_Open_________ny",
-  "close": "ng_Close___________ny",
-  "information": "ng_Information____________ny"
+  "header": "Crowdsource Manager",
+  "open": "Buka",
+  "close": "Tutup",
+  "information": "Informasi",
+  "expandPopup": "ng_Expand pop-up______________ny",
+  "collapsePopup": "ng_Collapse pop-up________________ny"
 }

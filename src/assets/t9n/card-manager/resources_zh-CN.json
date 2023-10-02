@@ -1,6 +1,6 @@
 {
-  "information": "试_Information____________验",
-  "media": "试_Media___________验",
-  "comments": "试_Comments_________________验",
-  "selectFeaturesToStart": "试_Select a record to get started_______________________________验"
+  "information": "信息",
+  "media": "媒体",
+  "comments": "评论",
+  "selectFeaturesToStart": "选择一条记录开始"
 }

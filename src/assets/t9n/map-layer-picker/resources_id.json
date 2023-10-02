@@ -1,4 +1,5 @@
 {
-  "noLayersFound": "ng_No valid layers found______________________ny",
-  "enableEditUpdate": "ng_One or more layers must support editing with the 'Update' capability____________________________________ny."
+  "noLayersFound": "ng_No editable layers found_________________________ny",
+  "enableEditUpdate": "ng_One or more layers must support editing with the 'Update' capability____________________________________ny.",
+  "switchLayer": "ng_Switch layer_____________ny"
 }

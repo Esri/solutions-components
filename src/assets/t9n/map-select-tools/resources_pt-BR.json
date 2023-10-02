@@ -11,5 +11,6 @@
   "useLayerFeatures": "Usar feições da camada",
   "inputLayer": "Camada de entrada",
   "useLayerFeaturesTooltip": "Escolha uma camada e use as ferramentas de esboço para apontar para as feições que podem ser usadas como um limite para selecionar as feições de intersecção da camada de entrada.",
-  "useSearchDistanceTootip": "Defina uma distância para um buffer de pesquisa que selecionará feições de entrada que interseccionam o buffer."
+  "useSearchDistanceTootip": "Defina uma distância para um buffer de pesquisa que selecionará feições de entrada que interseccionam o buffer.",
+  "placeholder": "Localizar endereço ou lugar"
 }

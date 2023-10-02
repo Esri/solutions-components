@@ -1,9 +1,10 @@
 {
-  "legend": "Đ_Legend_____________ớ",
-  "search": "Đ_Search_____________ớ",
-  "expand": "Đ_Expand_____________ớ",
-  "basemap": "Đ_Basemap_______________ớ",
-  "collapse": "Đ_Collapse_________________ớ",
-  "enterFullscreen": "Đ_Enter fullscreen_________________ớ",
-  "exitFullscreen": "Đ_Exit fullscreen________________ớ"
+  "legend": "Chú giải",
+  "search": "Tìm kiếm",
+  "expand": "Mở rộng",
+  "basemap": "Bản đồ nền",
+  "collapse": "Thu gọn",
+  "enterFullscreen": "Vào chế độ toàn màn hình",
+  "exitFullscreen": "Thoát chế độ toàn màn hình",
+  "floorFilter": "Đ_Floor filter_____________ớ"
 }

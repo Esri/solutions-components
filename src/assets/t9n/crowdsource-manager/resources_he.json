@@ -1,6 +1,8 @@
 {
-  "header": "כן_Crowdsource Manager____________________ש",
-  "open": "כן_Open_________ש",
-  "close": "כן_Close___________ש",
-  "information": "כן_Information____________ש"
+  "header": "Crowdsource Manager",
+  "open": "פתוח",
+  "close": "סגירה",
+  "information": "מידע",
+  "expandPopup": "כן_Expand pop-up______________ש",
+  "collapsePopup": "כן_Collapse pop-up________________ש"
 }

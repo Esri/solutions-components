@@ -1,7 +1,7 @@
 {
-  "layout": "æ_Layout_____________Â",
-  "grid": "æ_Grid_________Â",
-  "vertical": "æ_Vertical_________________Â",
-  "horizontal": "æ_Horizontal_____________________Â",
-  "appInfo": "æ_Some basic information about the app___________________Â"
+  "layout": "Mise en page",
+  "grid": "Grille",
+  "vertical": "Vertical",
+  "horizontal": "Horizontal",
+  "appInfo": "Informations de base sur l’application"
 }

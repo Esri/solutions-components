@@ -1,6 +1,8 @@
 {
-  "header": "ø_Crowdsource Manager____________________å",
-  "open": "ø_Open_________å",
-  "close": "ø_Close___________å",
-  "information": "ø_Information____________å"
+  "header": "Crowdsource Manager",
+  "open": "Åbn",
+  "close": "Luk",
+  "information": "Oplysninger",
+  "expandPopup": "ø_Expand pop-up______________å",
+  "collapsePopup": "ø_Collapse pop-up________________å"
 }

@@ -1,9 +1,9 @@
 {
-  "fetchingData": "í_Fetching data______________ő",
-  "edit": "í_Edit_________ő",
-  "enableEditing": "í_Update capability must be enabled on the layer_________________________ő.",
-  "editDisabled": "í_Editing Disabled_________________ő",
-  "next": "í_Next_________ő",
-  "back": "í_Back_________ő",
-  "indexOfTotal": "í_{{index}} of {{total}}_______________________ő"
+  "fetchingData": "Adatok lekérése",
+  "edit": "Szerkesztés",
+  "enableEditing": "A frissítési képességnek engedélyezve kell lennie a rétegen.",
+  "editDisabled": "Szerkesztés letiltva",
+  "next": "Tovább",
+  "back": "Vissza",
+  "indexOfTotal": "{{index}}/{{total}}"
 }

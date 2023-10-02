@@ -1,6 +1,6 @@
 {
-  "information": "ä_Information____________Ü",
-  "media": "ä_Media___________Ü",
-  "comments": "ä_Comments_________________Ü",
-  "selectFeaturesToStart": "ä_Select a record to get started_______________________________Ü"
+  "information": "Informationen",
+  "media": "Medien",
+  "comments": "Kommentare",
+  "selectFeaturesToStart": "Zum Einstieg einen Datensatz auswählen"
 }

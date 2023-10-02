@@ -1,7 +1,7 @@
 {
-  "layout": "試_Layout_____________驗",
-  "grid": "試_Grid_________驗",
-  "vertical": "試_Vertical_________________驗",
-  "horizontal": "試_Horizontal_____________________驗",
-  "appInfo": "試_Some basic information about the app___________________驗"
+  "layout": "版面配置",
+  "grid": "網格",
+  "vertical": "垂直",
+  "horizontal": "水平對齊",
+  "appInfo": "應用程式相關的部分基本資訊"
 }

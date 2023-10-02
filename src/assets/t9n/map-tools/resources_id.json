@@ -1,9 +1,10 @@
 {
-  "legend": "ng_Legend_____________ny",
-  "search": "ng_Search_____________ny",
-  "expand": "ng_Expand_____________ny",
-  "basemap": "ng_Basemap_______________ny",
-  "collapse": "ng_Collapse_________________ny",
-  "enterFullscreen": "ng_Enter fullscreen_________________ny",
-  "exitFullscreen": "ng_Exit fullscreen________________ny"
+  "legend": "Legenda",
+  "search": "Cari",
+  "expand": "Bentang",
+  "basemap": "Peta Dasar",
+  "collapse": "Tutup",
+  "enterFullscreen": "Masuk ke layar penuh",
+  "exitFullscreen": "Keluar dari layar penuh",
+  "floorFilter": "ng_Floor filter_____________ny"
 }

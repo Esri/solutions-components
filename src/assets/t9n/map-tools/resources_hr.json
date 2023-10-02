@@ -1,9 +1,10 @@
 {
-  "legend": "Č_Legend_____________ž",
-  "search": "Č_Search_____________ž",
-  "expand": "Č_Expand_____________ž",
-  "basemap": "Č_Basemap_______________ž",
-  "collapse": "Č_Collapse_________________ž",
-  "enterFullscreen": "Č_Enter fullscreen_________________ž",
-  "exitFullscreen": "Č_Exit fullscreen________________ž"
+  "legend": "Legenda",
+  "search": "Pretraživanje",
+  "expand": "Proširi",
+  "basemap": "Kartografska podloga",
+  "collapse": "Sažmi",
+  "enterFullscreen": "Otvori preko čitavog zaslona",
+  "exitFullscreen": "Izađi iz punog zaslona",
+  "floorFilter": "Č_Floor filter_____________ž"
 }

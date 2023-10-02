@@ -1,6 +1,8 @@
 {
-  "header": "Ж_Crowdsource Manager____________________Я",
-  "open": "Ж_Open_________Я",
-  "close": "Ж_Close___________Я",
-  "information": "Ж_Information____________Я"
+  "header": "Crowdsource Manager",
+  "open": "Открыть",
+  "close": "Закрыть",
+  "information": "Информация",
+  "expandPopup": "Ж_Expand pop-up______________Я",
+  "collapsePopup": "Ж_Collapse pop-up________________Я"
 }

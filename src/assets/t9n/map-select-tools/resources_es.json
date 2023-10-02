@@ -11,5 +11,6 @@
   "useLayerFeatures": "Usar entidades de capa",
   "inputLayer": "Capa de entrada",
   "useLayerFeaturesTooltip": "Elija una capa y utilice la herramienta de bosquejo para señalar las entidades que se pueden utilizar como límites con el fin de seleccionar entidades intersecantes de la capa de entrada.",
-  "useSearchDistanceTootip": "Defina una distancia para la zona de influencia de búsqueda que seleccionará las entidades de entrada que cortan la zona de influencia."
+  "useSearchDistanceTootip": "Defina una distancia para la zona de influencia de búsqueda que seleccionará las entidades de entrada que cortan la zona de influencia.",
+  "placeholder": "Buscar dirección o lugar"
 }

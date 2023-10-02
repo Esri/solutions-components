@@ -1,9 +1,10 @@
 {
-  "legend": "Š_Legend_____________ä",
-  "search": "Š_Search_____________ä",
-  "expand": "Š_Expand_____________ä",
-  "basemap": "Š_Basemap_______________ä",
-  "collapse": "Š_Collapse_________________ä",
-  "enterFullscreen": "Š_Enter fullscreen_________________ä",
-  "exitFullscreen": "Š_Exit fullscreen________________ä"
+  "legend": "Legendiga kaart",
+  "search": "Otsing",
+  "expand": "Laienda",
+  "basemap": "Aluskaart",
+  "collapse": "Ahenda",
+  "enterFullscreen": "Ava täiskreaanvaade",
+  "exitFullscreen": "Välju täisekraanvaatest",
+  "floorFilter": "Š_Floor filter_____________ä"
 }

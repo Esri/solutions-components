@@ -1,7 +1,7 @@
 {
-  "layout": "Ă_Layout_____________ș",
-  "grid": "Ă_Grid_________ș",
-  "vertical": "Ă_Vertical_________________ș",
-  "horizontal": "Ă_Horizontal_____________________ș",
-  "appInfo": "Ă_Some basic information about the app___________________ș"
+  "layout": "Configuraţie",
+  "grid": "Grilă",
+  "vertical": "Vertical",
+  "horizontal": "Orizontal",
+  "appInfo": "Unele informații de bază despre aplicație"
 }
