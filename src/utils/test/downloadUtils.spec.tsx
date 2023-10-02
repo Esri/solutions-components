@@ -16,6 +16,7 @@
 
 import * as downloadUtils from "../downloadUtils";
 import * as esriLoader from 'esri-loader';
+import * as restFeatureLayer from "@esri/arcgis-rest-feature-layer";
 
 describe("downloadUtils", () => {
 
@@ -257,6 +258,53 @@ describe("downloadUtils", () => {
       const expectedExpressions = ["{expression/expr0}"];
       const expressions = downloadUtils._getExpressionsFromLabel(labelSpec);
       expect(expressions).toEqual(expectedExpressions);
+    });
+
+  });
+
+  describe("_getFeatureServiceRelatedRecords", () => {
+
+    it("handles a feature layer", () => {
+      const url = "https://servicesdev.arcgis.com/D2C14713795/ArcGIS/rest/services/addresses/FeatureServer/0";
+      const layerId = 5;
+      const expectedOptions: restFeatureLayer.IQueryRelatedOptions = {
+        url
+      };
+      const queryResponse: restFeatureLayer.IQueryRelatedResponse = { relatedRecordGroups: [] };
+      const queryRelatedSpy = jest.spyOn(restFeatureLayer, "queryRelated").mockResolvedValue(queryResponse);
+      void downloadUtils._getFeatureServiceRelatedRecords(url, layerId);
+      expect(queryRelatedSpy).toHaveBeenCalledWith(expectedOptions);
+      queryRelatedSpy.mockRestore();
+    });
+
+    it("handles a feature service", () => {
+      const url = "https://servicesdev.arcgis.com/D2C14713795/ArcGIS/rest/services/addresses/FeatureServer";
+      const layerId = 5;
+      const expectedOptions: restFeatureLayer.IQueryRelatedOptions = {
+        url: "https://servicesdev.arcgis.com/D2C14713795/ArcGIS/rest/services/addresses/FeatureServer/5"
+      };
+      const queryResponse: restFeatureLayer.IQueryRelatedResponse = { relatedRecordGroups: [] };
+      const queryRelatedSpy = jest.spyOn(restFeatureLayer, "queryRelated").mockResolvedValue(queryResponse);
+      void downloadUtils._getFeatureServiceRelatedRecords(url, layerId);
+      expect(queryRelatedSpy).toHaveBeenCalledWith(expectedOptions);
+      queryRelatedSpy.mockRestore();
+    });
+
+    it("handles a feature layer with relationship id and object ids supplied", () => {
+      const url = "https://servicesdev.arcgis.com/D2C14713795/ArcGIS/rest/services/addresses/FeatureServer/0";
+      const layerId = 5;
+      const relationshipId = 3;
+      const objectIds = [7, 8, 9];
+      const expectedOptions: restFeatureLayer.IQueryRelatedOptions = {
+        url,
+        relationshipId,
+        objectIds
+      };
+      const queryResponse: restFeatureLayer.IQueryRelatedResponse = { relatedRecordGroups: [] };
+      const queryRelatedSpy = jest.spyOn(restFeatureLayer, "queryRelated").mockResolvedValue(queryResponse);
+      void downloadUtils._getFeatureServiceRelatedRecords(url, layerId, relationshipId, objectIds);
+      expect(queryRelatedSpy).toHaveBeenCalledWith(expectedOptions);
+      queryRelatedSpy.mockRestore();
     });
 
   });

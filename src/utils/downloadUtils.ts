@@ -91,26 +91,6 @@ import {
   IRelatedRecordGroup,
   queryRelated
 } from "@esri/arcgis-rest-feature-layer";
-/**
- * Get the related records for a feature service.
- *
- * @param url Feature service's URL, e.g., layer.url
- * @param relationshipId Id of relationship
- * @param objectIds Objects in the feature service whose related records are sought
- */
-export function getFeatureServiceRelatedRecords(
-  url: string,
-  relationshipId?: number,
-  objectIds?: number[]
-): Promise<IQueryRelatedResponse> {
-  const options: IQueryRelatedOptions = {
-    url: url + `/${relationshipId}`,
-    relationshipId,
-    objectIds
-  }
-
-  return queryRelated(options);
-}
 
 //#endregion
 // ------------------------------------------------------------------------------------------------------------------ //
@@ -487,6 +467,35 @@ export function _getExpressionsFromLabel(
 }
 
 /**
+ * Get the related records for a feature service.
+ *
+ * @param url Feature service's URL, e.g., layer.url
+ * @param layerId Id of layer within a feature service
+ * @param relationshipId Id of relationship
+ * @param objectIds Objects in the feature service whose related records are sought
+ */
+export function _getFeatureServiceRelatedRecords(
+  url: string,
+  layerId: number,
+  relationshipId?: number,
+  objectIds?: number[]
+): Promise<IQueryRelatedResponse> {
+  // See if the URL points to a service rather than a layer
+  const endOfUrl = url.substring(url.lastIndexOf("/") + 1);
+  if (isNaN(parseInt(endOfUrl))) {
+    url += "/" + layerId.toString();
+  }
+
+  const options: IQueryRelatedOptions = {
+    url,
+    relationshipId,
+    objectIds
+  }
+
+  return queryRelated(options);
+}
+
+/**
  * Extracts field name expressions from the lines of a label format.
  *
  * @param labelFormat Label to examine
@@ -722,7 +731,7 @@ export async function _prepareLabels(
   let featureSet: __esri.Graphic[] = [];
   if (typeof(labelFormatProps.relationshipId) !== "undefined") {
     // Get the related items for each id
-    const relatedRecResponse = await getFeatureServiceRelatedRecords(layer.url, labelFormatProps.relationshipId, ids);
+    const relatedRecResponse = await _getFeatureServiceRelatedRecords(layer.url, layer.layerId, labelFormatProps.relationshipId, ids);
 
     const objectIdField = layer.objectIdField;
     let relatedFeatureIds: number[] = [];
