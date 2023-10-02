@@ -1,9 +1,10 @@
 {
-  "legend": "한_Legend_____________빠",
-  "search": "한_Search_____________빠",
-  "expand": "한_Expand_____________빠",
-  "basemap": "한_Basemap_______________빠",
-  "collapse": "한_Collapse_________________빠",
-  "enterFullscreen": "한_Enter fullscreen_________________빠",
-  "exitFullscreen": "한_Exit fullscreen________________빠"
+  "legend": "범례",
+  "search": "검색",
+  "expand": "확장",
+  "basemap": "베이스맵",
+  "collapse": "축소",
+  "enterFullscreen": "전체 화면 시작",
+  "exitFullscreen": "전체 화면 종료",
+  "floorFilter": "한_Floor filter_____________빠"
 }

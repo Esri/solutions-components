@@ -1,9 +1,9 @@
 {
-  "fetchingData": "Ř_Fetching data______________ů",
-  "edit": "Ř_Edit_________ů",
-  "enableEditing": "Ř_Update capability must be enabled on the layer_________________________ů.",
-  "editDisabled": "Ř_Editing Disabled_________________ů",
-  "next": "Ř_Next_________ů",
-  "back": "Ř_Back_________ů",
-  "indexOfTotal": "Ř_{{index}} of {{total}}_______________________ů"
+  "fetchingData": "Načítání dat",
+  "edit": "Upravit",
+  "enableEditing": "Ve vrstvě musí být povolena možnost aktualizace.",
+  "editDisabled": "Editace zakázána",
+  "next": "Další",
+  "back": "Zpět",
+  "indexOfTotal": "{{index}} z {{total}}"
 }

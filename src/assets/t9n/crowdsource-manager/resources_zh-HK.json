@@ -1,6 +1,8 @@
 {
-  "header": "試_Crowdsource Manager____________________驗",
-  "open": "試_Open_________驗",
-  "close": "試_Close___________驗",
-  "information": "試_Information____________驗"
+  "header": "群眾外包管理程式",
+  "open": "開啟",
+  "close": "關閉",
+  "information": "資訊",
+  "expandPopup": "試_Expand pop-up______________驗",
+  "collapsePopup": "試_Collapse pop-up________________驗"
 }

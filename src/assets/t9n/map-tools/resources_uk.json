@@ -1,9 +1,10 @@
 {
-  "legend": "ґ_Legend_____________Ї",
-  "search": "ґ_Search_____________Ї",
-  "expand": "ґ_Expand_____________Ї",
-  "basemap": "ґ_Basemap_______________Ї",
-  "collapse": "ґ_Collapse_________________Ї",
-  "enterFullscreen": "ґ_Enter fullscreen_________________Ї",
-  "exitFullscreen": "ґ_Exit fullscreen________________Ї"
+  "legend": "Легенда",
+  "search": "Пошук",
+  "expand": "Розширити",
+  "basemap": "Базова карта",
+  "collapse": "Згорнути",
+  "enterFullscreen": "Увійти в повноекранний режим",
+  "exitFullscreen": "Вийти з повноекранного режиму",
+  "floorFilter": "ґ_Floor filter_____________Ї"
 }

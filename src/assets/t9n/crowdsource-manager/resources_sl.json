@@ -1,6 +1,8 @@
 {
-  "header": "Š_Crowdsource Manager____________________č",
-  "open": "Š_Open_________č",
-  "close": "Š_Close___________č",
-  "information": "Š_Information____________č"
+  "header": "Crowdsource Manager",
+  "open": "Odpri",
+  "close": "Zapri",
+  "information": "Informacije",
+  "expandPopup": "Š_Expand pop-up______________č",
+  "collapsePopup": "Š_Collapse pop-up________________č"
 }

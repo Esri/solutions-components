@@ -1,9 +1,10 @@
 {
-  "legend": "須_Legend_____________鷗",
-  "search": "須_Search_____________鷗",
-  "expand": "須_Expand_____________鷗",
-  "basemap": "須_Basemap_______________鷗",
-  "collapse": "須_Collapse_________________鷗",
-  "enterFullscreen": "須_Enter fullscreen_________________鷗",
-  "exitFullscreen": "須_Exit fullscreen________________鷗"
+  "legend": "凡例",
+  "search": "検索",
+  "expand": "展開",
+  "basemap": "ベースマップ",
+  "collapse": "折りたたむ",
+  "enterFullscreen": "全画面にする",
+  "exitFullscreen": "全画面を終了",
+  "floorFilter": "須_Floor filter_____________鷗"
 }

@@ -1,7 +1,7 @@
 {
-  "layout": "ґ_Layout_____________Ї",
-  "grid": "ґ_Grid_________Ї",
-  "vertical": "ґ_Vertical_________________Ї",
-  "horizontal": "ґ_Horizontal_____________________Ї",
-  "appInfo": "ґ_Some basic information about the app___________________Ї"
+  "layout": "Компонування",
+  "grid": "Грід",
+  "vertical": "Вертикальна",
+  "horizontal": "Горизонтальна",
+  "appInfo": "Деякі основні відомості про додаток"
 }

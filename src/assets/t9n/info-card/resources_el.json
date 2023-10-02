@@ -1,9 +1,9 @@
 {
-  "fetchingData": "Đ_Fetching data______________ớ",
-  "edit": "Đ_Edit_________ớ",
-  "enableEditing": "Đ_Update capability must be enabled on the layer_________________________ớ.",
-  "editDisabled": "Đ_Editing Disabled_________________ớ",
-  "next": "Đ_Next_________ớ",
-  "back": "Đ_Back_________ớ",
-  "indexOfTotal": "Đ_{{index}} of {{total}}_______________________ớ"
+  "fetchingData": "Ανάκτηση δεδομένων",
+  "edit": "Επεξεργασία",
+  "enableEditing": "Πρέπει να είναι ενεργοποιημένη η δυνατότητα ενημέρωσης σε αυτό το θεματικό επίπεδο.",
+  "editDisabled": "Η επεξεργασία απενεργοποιήθηκε",
+  "next": "Επόμενο",
+  "back": "Πίσω",
+  "indexOfTotal": "{{index}} από {{total}}"
 }

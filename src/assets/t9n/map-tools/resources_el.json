@@ -1,9 +1,10 @@
 {
-  "legend": "Đ_Legend_____________ớ",
-  "search": "Đ_Search_____________ớ",
-  "expand": "Đ_Expand_____________ớ",
-  "basemap": "Đ_Basemap_______________ớ",
-  "collapse": "Đ_Collapse_________________ớ",
-  "enterFullscreen": "Đ_Enter fullscreen_________________ớ",
-  "exitFullscreen": "Đ_Exit fullscreen________________ớ"
+  "legend": "Υπόμνημα",
+  "search": "Αναζήτηση",
+  "expand": "Ανάπτυξη",
+  "basemap": "Υπόβαθρο",
+  "collapse": "Σύμπτυξη",
+  "enterFullscreen": "Είσοδος σε πλήρη οθόνη",
+  "exitFullscreen": "Έξοδος από πλήρη οθόνη",
+  "floorFilter": "Đ_Floor filter_____________ớ"
 }

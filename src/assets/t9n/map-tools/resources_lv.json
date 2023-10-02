@@ -1,9 +1,10 @@
 {
-  "legend": "ķ_Legend_____________ū",
-  "search": "ķ_Search_____________ū",
-  "expand": "ķ_Expand_____________ū",
-  "basemap": "ķ_Basemap_______________ū",
-  "collapse": "ķ_Collapse_________________ū",
-  "enterFullscreen": "ķ_Enter fullscreen_________________ū",
-  "exitFullscreen": "ķ_Exit fullscreen________________ū"
+  "legend": "Apzīmējumi",
+  "search": "Meklēt",
+  "expand": "Izvērst",
+  "basemap": "Pamatkarte",
+  "collapse": "Sakļaut",
+  "enterFullscreen": "Atvērt pilnekrāna režīmu",
+  "exitFullscreen": "Aizvērt pilnekrāna režīmu",
+  "floorFilter": "ķ_Floor filter_____________ū"
 }

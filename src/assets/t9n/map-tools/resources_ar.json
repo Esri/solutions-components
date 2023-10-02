@@ -1,9 +1,10 @@
 {
-  "legend": "بيت_Legend_____________لاحقة",
-  "search": "بيت_Search_____________لاحقة",
-  "expand": "بيت_Expand_____________لاحقة",
-  "basemap": "بيت_Basemap_______________لاحقة",
-  "collapse": "بيت_Collapse_________________لاحقة",
-  "enterFullscreen": "بيت_Enter fullscreen_________________لاحقة",
-  "exitFullscreen": "بيت_Exit fullscreen________________لاحقة"
+  "legend": "وسيلة الإيضاح",
+  "search": "بحث",
+  "expand": "توسيع",
+  "basemap": "خريطة أساس",
+  "collapse": "طي",
+  "enterFullscreen": "الدخول في وضع ملء الشاشة",
+  "exitFullscreen": "الخروج من وضع ملء الشاشة",
+  "floorFilter": "بيت_Floor filter_____________لاحقة"
 }

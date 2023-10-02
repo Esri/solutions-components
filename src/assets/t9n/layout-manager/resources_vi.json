@@ -1,7 +1,7 @@
 {
-  "layout": "Đ_Layout_____________ớ",
-  "grid": "Đ_Grid_________ớ",
-  "vertical": "Đ_Vertical_________________ớ",
-  "horizontal": "Đ_Horizontal_____________________ớ",
-  "appInfo": "Đ_Some basic information about the app___________________ớ"
+  "layout": "Bố cục",
+  "grid": "Lưới",
+  "vertical": "Dọc",
+  "horizontal": "Ngang",
+  "appInfo": "Một số thông tin cơ bản về ứng dụng"
 }

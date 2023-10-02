@@ -1,4 +1,5 @@
 {
-  "noLayersFound": "試_No valid layers found______________________驗",
-  "enableEditUpdate": "試_One or more layers must support editing with the 'Update' capability____________________________________驗."
+  "noLayersFound": "試_No editable layers found_________________________驗",
+  "enableEditUpdate": "試_One or more layers must support editing with the 'Update' capability____________________________________驗.",
+  "switchLayer": "試_Switch layer_____________驗"
 }

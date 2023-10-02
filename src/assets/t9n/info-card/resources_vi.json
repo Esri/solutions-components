@@ -1,9 +1,9 @@
 {
-  "fetchingData": "Đ_Fetching data______________ớ",
-  "edit": "Đ_Edit_________ớ",
-  "enableEditing": "Đ_Update capability must be enabled on the layer_________________________ớ.",
-  "editDisabled": "Đ_Editing Disabled_________________ớ",
-  "next": "Đ_Next_________ớ",
-  "back": "Đ_Back_________ớ",
-  "indexOfTotal": "Đ_{{index}} of {{total}}_______________________ớ"
+  "fetchingData": "Đang tìm nạp dữ liệu",
+  "edit": "Chỉnh sửa",
+  "enableEditing": "Chức năng cập nhật phải được bật trên lớp.",
+  "editDisabled": "Đã tắt Chỉnh sửa",
+  "next": "Tiếp",
+  "back": "Quay lại",
+  "indexOfTotal": "{{index}} / {{total}}"
 }

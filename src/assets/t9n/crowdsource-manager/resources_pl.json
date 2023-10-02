@@ -1,6 +1,8 @@
 {
-  "header": "ł_Crowdsource Manager____________________ą",
-  "open": "ł_Open_________ą",
-  "close": "ł_Close___________ą",
-  "information": "ł_Information____________ą"
+  "header": "Menedżer zgłoszeń użytkowników",
+  "open": "Otwórz",
+  "close": "Zamknij",
+  "information": "Informacje",
+  "expandPopup": "ł_Expand pop-up______________ą",
+  "collapsePopup": "ł_Collapse pop-up________________ą"
 }

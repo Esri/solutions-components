@@ -1,6 +1,8 @@
 {
-  "header": "Đ_Crowdsource Manager____________________ớ",
-  "open": "Đ_Open_________ớ",
-  "close": "Đ_Close___________ớ",
-  "information": "Đ_Information____________ớ"
+  "header": "Crowdsource Manager",
+  "open": "Άνοιγμα",
+  "close": "Κλείσιμο",
+  "information": "Πληροφορίες",
+  "expandPopup": "Đ_Expand pop-up______________ớ",
+  "collapsePopup": "Đ_Collapse pop-up________________ớ"
 }

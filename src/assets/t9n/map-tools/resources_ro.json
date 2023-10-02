@@ -1,9 +1,10 @@
 {
-  "legend": "Ă_Legend_____________ș",
-  "search": "Ă_Search_____________ș",
-  "expand": "Ă_Expand_____________ș",
-  "basemap": "Ă_Basemap_______________ș",
-  "collapse": "Ă_Collapse_________________ș",
-  "enterFullscreen": "Ă_Enter fullscreen_________________ș",
-  "exitFullscreen": "Ă_Exit fullscreen________________ș"
+  "legend": "Legendă",
+  "search": "Căutare",
+  "expand": "Extindere",
+  "basemap": "Hartă fundal",
+  "collapse": "Restrângere",
+  "enterFullscreen": "Accesare ecran complet",
+  "exitFullscreen": "Ieşire din ecran complet",
+  "floorFilter": "Ă_Floor filter_____________ș"
 }

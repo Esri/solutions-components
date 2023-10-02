@@ -1,7 +1,7 @@
 {
-  "layout": "ĺ_Layout_____________ľ",
-  "grid": "ĺ_Grid_________ľ",
-  "vertical": "ĺ_Vertical_________________ľ",
-  "horizontal": "ĺ_Horizontal_____________________ľ",
-  "appInfo": "ĺ_Some basic information about the app___________________ľ"
+  "layout": "Rozloženie",
+  "grid": "Mriežka",
+  "vertical": "Vertikálne",
+  "horizontal": "Horizontálne",
+  "appInfo": "Niektoré základné informácie o aplikácii"
 }

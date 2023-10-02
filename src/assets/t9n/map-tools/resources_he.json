@@ -1,9 +1,10 @@
 {
-  "legend": "כן_Legend_____________ש",
-  "search": "כן_Search_____________ש",
-  "expand": "כן_Expand_____________ש",
-  "basemap": "כן_Basemap_______________ש",
-  "collapse": "כן_Collapse_________________ש",
-  "enterFullscreen": "כן_Enter fullscreen_________________ש",
-  "exitFullscreen": "כן_Exit fullscreen________________ש"
+  "legend": "מקרא",
+  "search": "חיפוש",
+  "expand": "הרחב",
+  "basemap": "מפת בסיס",
+  "collapse": "צמצם",
+  "enterFullscreen": "עבור למסך מלא",
+  "exitFullscreen": "צא ממסך מלא",
+  "floorFilter": "כן_Floor filter_____________ש"
 }

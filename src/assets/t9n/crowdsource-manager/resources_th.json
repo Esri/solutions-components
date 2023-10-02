@@ -1,6 +1,8 @@
 {
-  "header": "ก้_Crowdsource Manager____________________ษฺ",
-  "open": "ก้_Open_________ษฺ",
-  "close": "ก้_Close___________ษฺ",
-  "information": "ก้_Information____________ษฺ"
+  "header": "Crowdsource Manager",
+  "open": "เปิด",
+  "close": "ปิด",
+  "information": "ข้อมูล",
+  "expandPopup": "ก้_Expand pop-up______________ษฺ",
+  "collapsePopup": "ก้_Collapse pop-up________________ษฺ"
 }

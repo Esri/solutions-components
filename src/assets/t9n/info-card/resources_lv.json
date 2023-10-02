@@ -1,9 +1,9 @@
 {
-  "fetchingData": "ķ_Fetching data______________ū",
-  "edit": "ķ_Edit_________ū",
-  "enableEditing": "ķ_Update capability must be enabled on the layer_________________________ū.",
-  "editDisabled": "ķ_Editing Disabled_________________ū",
-  "next": "ķ_Next_________ū",
-  "back": "ķ_Back_________ū",
-  "indexOfTotal": "ķ_{{index}} of {{total}}_______________________ū"
+  "fetchingData": "Tvert datus",
+  "edit": "Rediģēt",
+  "enableEditing": "Slānī jābūt iespējotai atjaunināšanas iespējai.",
+  "editDisabled": "Rediģēšana atspējota",
+  "next": "Tālāk",
+  "back": "Atpakaļ",
+  "indexOfTotal": "{{index}} no {{total}}"
 }

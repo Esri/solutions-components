@@ -1,7 +1,7 @@
 {
-  "layout": "Ĳ_Layout_____________ä",
-  "grid": "Ĳ_Grid_________ä",
-  "vertical": "Ĳ_Vertical_________________ä",
-  "horizontal": "Ĳ_Horizontal_____________________ä",
-  "appInfo": "Ĳ_Some basic information about the app___________________ä"
+  "layout": "Lay-out",
+  "grid": "Raster",
+  "vertical": "Verticaal",
+  "horizontal": "Horizontaal",
+  "appInfo": "Basisinformatie over de app"
 }

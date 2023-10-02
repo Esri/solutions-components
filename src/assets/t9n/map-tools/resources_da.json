@@ -1,9 +1,10 @@
 {
-  "legend": "ø_Legend_____________å",
-  "search": "ø_Search_____________å",
-  "expand": "ø_Expand_____________å",
-  "basemap": "ø_Basemap_______________å",
-  "collapse": "ø_Collapse_________________å",
-  "enterFullscreen": "ø_Enter fullscreen_________________å",
-  "exitFullscreen": "ø_Exit fullscreen________________å"
+  "legend": "Forklaring",
+  "search": "Søg",
+  "expand": "Udvid",
+  "basemap": "Baggrundskort",
+  "collapse": "Skjul",
+  "enterFullscreen": "Start fuldskærmsvisning",
+  "exitFullscreen": "Afslut fuldskærmsvisning",
+  "floorFilter": "ø_Floor filter_____________å"
 }

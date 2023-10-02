@@ -1,6 +1,8 @@
 {
-  "header": "Į_Crowdsource Manager____________________š",
-  "open": "Į_Open_________š",
-  "close": "Į_Close___________š",
-  "information": "Į_Information____________š"
+  "header": "Sutelktinių išteklių vadovas",
+  "open": "Atverti",
+  "close": "Uždaryti",
+  "information": "Informacija",
+  "expandPopup": "Į_Expand pop-up______________š",
+  "collapsePopup": "Į_Collapse pop-up________________š"
 }

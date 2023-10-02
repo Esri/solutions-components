@@ -1,6 +1,8 @@
 {
-  "header": "ґ_Crowdsource Manager____________________Ї",
-  "open": "ґ_Open_________Ї",
-  "close": "ґ_Close___________Ї",
-  "information": "ґ_Information____________Ї"
+  "header": "Crowdsource Manager",
+  "open": "Відкрити",
+  "close": "Закрити",
+  "information": "Інформація",
+  "expandPopup": "ґ_Expand pop-up______________Ї",
+  "collapsePopup": "ґ_Collapse pop-up________________Ї"
 }

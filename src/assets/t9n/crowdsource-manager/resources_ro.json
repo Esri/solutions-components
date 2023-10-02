@@ -1,6 +1,8 @@
 {
-  "header": "Ă_Crowdsource Manager____________________ș",
-  "open": "Ă_Open_________ș",
-  "close": "Ă_Close___________ș",
-  "information": "Ă_Information____________ș"
+  "header": "Crowdsource Manager",
+  "open": "Deschidere",
+  "close": "Închidere",
+  "information": "Informaţii",
+  "expandPopup": "Ă_Expand pop-up______________ș",
+  "collapsePopup": "Ă_Collapse pop-up________________ș"
 }

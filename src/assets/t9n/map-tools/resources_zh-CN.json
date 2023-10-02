@@ -1,9 +1,10 @@
 {
-  "legend": "试_Legend_____________验",
-  "search": "试_Search_____________验",
-  "expand": "试_Expand_____________验",
-  "basemap": "试_Basemap_______________验",
-  "collapse": "试_Collapse_________________验",
-  "enterFullscreen": "试_Enter fullscreen_________________验",
-  "exitFullscreen": "试_Exit fullscreen________________验"
+  "legend": "图例",
+  "search": "搜索",
+  "expand": "展开",
+  "basemap": "底图",
+  "collapse": "折叠",
+  "enterFullscreen": "进入全屏模式",
+  "exitFullscreen": "退出全屏模式",
+  "floorFilter": "试_Floor filter_____________验"
 }
