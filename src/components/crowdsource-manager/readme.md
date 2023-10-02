@@ -13,6 +13,7 @@
 | `classicGrid`             | `classic-grid`                | boolean: when true the grid will display like the previous manager app with the table across the top               | `boolean`              | `false`     |
 | `enableAutoRefresh`       | `enable-auto-refresh`         | boolean: when true the layer table will auto refresh the data                                                      | `boolean`              | `true`      |
 | `enableBasemap`           | `enable-basemap`              | boolean: when true the basemap widget will be available                                                            | `boolean`              | `true`      |
+| `enableCSV`               | `enable-c-s-v`                | boolean: when true the export to csv button will be available                                                      | `boolean`              | `true`      |
 | `enableFloorFilter`       | `enable-floor-filter`         | boolean: when true the fullscreen widget will be available                                                         | `boolean`              | `true`      |
 | `enableFullscreen`        | `enable-fullscreen`           | boolean: when true the fullscreen widget will be available                                                         | `boolean`              | `true`      |
 | `enableHome`              | `enable-home`                 | boolean: when true the home widget will be available                                                               | `boolean`              | `true`      |

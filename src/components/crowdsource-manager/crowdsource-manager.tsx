@@ -49,6 +49,11 @@ export class CrowdsourceManager {
   @Prop() enableAutoRefresh = true;
 
   /**
+   * boolean: when true the export to csv button will be available
+   */
+  @Prop() enableCSV = true;
+
+  /**
    * boolean: when true the fullscreen widget will be available
    */
   @Prop() enableFloorFilter = true;
@@ -595,6 +600,7 @@ export class CrowdsourceManager {
         <div class="width-full height-full position-relative">
           <layer-table
             enableAutoRefresh={this.enableAutoRefresh}
+            enableCSV={this.enableCSV}
             enableInlineEdit={this.enableInlineEdit}
             mapInfo={this._mapInfo}
             mapView={this?._mapView}
