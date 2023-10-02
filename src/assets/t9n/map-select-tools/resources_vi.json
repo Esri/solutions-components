@@ -11,5 +11,6 @@
   "useLayerFeatures": "Sử dụng các đối tượng trong lớp",
   "inputLayer": "Lớp đầu vào",
   "useLayerFeaturesTooltip": "Chọn một lớp và sử dụng các công cụ phác hoạ để chỉ đến đối tượng mà có thể được sử dụng làm ranh giới để chọn đối tượng giao cắt từ lớp đầu vào.",
-  "useSearchDistanceTootip": "Xác định khoảng cách cho vùng đệm tìm kiếm mà sẽ chọn đối tượng đầu vào sẽ giao cắt với vùng đệm."
+  "useSearchDistanceTootip": "Xác định khoảng cách cho vùng đệm tìm kiếm mà sẽ chọn đối tượng đầu vào sẽ giao cắt với vùng đệm.",
+  "placeholder": "Tìm địa chỉ hoặc địa điểm"
 }

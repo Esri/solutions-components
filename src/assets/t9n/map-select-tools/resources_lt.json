@@ -11,5 +11,6 @@
   "useLayerFeatures": "Naudoti sluoksnio elementus",
   "inputLayer": "Įvesties sluoksnis",
   "useLayerFeaturesTooltip": "Pasirinkite sluoksnį ir naudokite eskizavimo įrankius, kad nurodytumėte elementus, kurie gali būti naudojami kaip riba, norint pasirinkti susikertančius įvesties sluoksnio elementus.",
-  "useSearchDistanceTootip": "Apibrėžkite paieškos buferio zonos atstumą, kuriuo bus pasirenkami įvesties elementai, susikertantys su buferio zona."
+  "useSearchDistanceTootip": "Apibrėžkite paieškos buferio zonos atstumą, kuriuo bus pasirenkami įvesties elementai, susikertantys su buferio zona.",
+  "placeholder": "Surasti adresą arba vietą"
 }

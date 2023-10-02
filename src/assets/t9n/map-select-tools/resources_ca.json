@@ -11,5 +11,6 @@
   "useLayerFeatures": "Utilitza entitats de la capa",
   "inputLayer": "Capa d'entrada",
   "useLayerFeaturesTooltip": "Trieu una capa i feu servir les eines d'esbós per apuntar a entitats que es poden fer servir com a límits per seleccionar les entitats intersecants de la capa d'entrada.",
-  "useSearchDistanceTootip": "Definiu la distància d'una àrea d'influència de cerca que seleccionarà les entitats d'entrada que intersequen amb l'àrea d'influència."
+  "useSearchDistanceTootip": "Definiu la distància d'una àrea d'influència de cerca que seleccionarà les entitats d'entrada que intersequen amb l'àrea d'influència.",
+  "placeholder": "Cerca una adreça o un lloc"
 }

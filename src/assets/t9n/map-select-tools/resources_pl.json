@@ -11,5 +11,6 @@
   "useLayerFeatures": "Użyj obiektów warstwy",
   "inputLayer": "Warstwa wejściowa",
   "useLayerFeaturesTooltip": "Wybierz warstwę i za pomocą narzędzi do szkicowania wskaż obiekty, których można użyć jako granicy w celu wybrania przecinających się obiektów z warstwy wejściowej.",
-  "useSearchDistanceTootip": "Zdefiniuj odległość dla bufora wyszukiwania, który posłuży do wybrania obiektów wejściowych przecinających ten bufor."
+  "useSearchDistanceTootip": "Zdefiniuj odległość dla bufora wyszukiwania, który posłuży do wybrania obiektów wejściowych przecinających ten bufor.",
+  "placeholder": "Znajdź adres lub miejsce"
 }

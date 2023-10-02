@@ -11,5 +11,6 @@
   "useLayerFeatures": "Utilizar elementos da camada",
   "inputLayer": "Camada de entrada",
   "useLayerFeaturesTooltip": "Selecione uma camada e utilize as ferramentas de desenho para apontar para elementos que podem ser utilizados como um limite para selecionar elementos de interseção a partir da camada de entrada.",
-  "useSearchDistanceTootip": "Defina uma distância para um buffer de pesquisa que irá selecionar elementos de entrada que intersetam o buffer."
+  "useSearchDistanceTootip": "Defina uma distância para um buffer de pesquisa que irá selecionar elementos de entrada que intersetam o buffer.",
+  "placeholder": "Encontrar um endereço ou local"
 }

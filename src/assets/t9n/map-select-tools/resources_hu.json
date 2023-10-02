@@ -11,5 +11,6 @@
   "useLayerFeatures": "Réteg vektoros elemek használata",
   "inputLayer": "Bemenő réteg",
   "useLayerFeaturesTooltip": "Válasszon réteget, és a vázlateszközök használatával jelölje ki azokat a vektoros elemeket, amelyek a bemeneti réteg határaiként vagy metszéspontjaiként használhatók.",
-  "useSearchDistanceTootip": "Határozzon meg egy távolságot a keresési pufferhez, amely kiválasztja a puffert metsző bemeneti vektoros elemeket."
+  "useSearchDistanceTootip": "Határozzon meg egy távolságot a keresési pufferhez, amely kiválasztja a puffert metsző bemeneti vektoros elemeket.",
+  "placeholder": "Cím vagy hely keresése"
 }

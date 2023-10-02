@@ -11,5 +11,6 @@
   "useLayerFeatures": "Bruk laggeoobjekter",
   "inputLayer": "Inndatalag",
   "useLayerFeaturesTooltip": "Velg et lag og bruk skisseverktøyene til å peke til et geoobjekt som kan brukes som en grense for å velge kryssende geoobjekter fra inndatalaget.",
-  "useSearchDistanceTootip": "Definer en avstand for en søkebuffer som velger inndatageoobjekter som krysser bufferen."
+  "useSearchDistanceTootip": "Definer en avstand for en søkebuffer som velger inndatageoobjekter som krysser bufferen.",
+  "placeholder": "Finn adresse eller sted"
 }
