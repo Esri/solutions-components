@@ -75,6 +75,13 @@ export class BasemapGallery {
   protected BasemapGallery: typeof import("esri/widgets/BasemapGallery");
 
   /**
+   * esri/widgets/BasemapGallery/support/PortalBasemapsSource: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-BasemapGallery-support-PortalBasemapsSource.html
+   *
+   * PortalBasemapsSource constructor
+   */
+  protected PortalBasemapsSource: typeof import("esri/widgets/BasemapGallery/support/PortalBasemapsSource");
+
+  /**
    * HTMLElement: The container div for the basemap gallery widget
    */
   protected _basemapElement: HTMLElement;
@@ -88,7 +95,7 @@ export class BasemapGallery {
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
     await this.mapView.when(() => {
-      this._initBaseMapGallery(this.mapView);
+      void this._initBaseMapGallery(this.mapView);
     });
   }
 
@@ -142,10 +149,12 @@ export class BasemapGallery {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [BasemapGallery] = await loadModules([
-      "esri/widgets/BasemapGallery"
+    const [BasemapGallery, PortalBasemapsSource] = await loadModules([
+      "esri/widgets/BasemapGallery",
+      "esri/widgets/BasemapGallery/support/PortalBasemapsSource"
     ]);
     this.BasemapGallery = BasemapGallery;
+    this.PortalBasemapsSource = PortalBasemapsSource;
   }
 
   /**
@@ -155,18 +164,26 @@ export class BasemapGallery {
    *
    * @protected
    */
-  protected _initBaseMapGallery(
+  protected async _initBaseMapGallery(
     view: __esri.MapView
-  ): void {
-    if (view && this.BasemapGallery) {
-      if (!this.basemapWidget) {
-        this.basemapWidget = new this.BasemapGallery({
-          container: this._basemapElement,
-          view
-        });
-      } else {
-        this.basemapWidget.view = view;
+  ): Promise<void> {
+    if (this.BasemapGallery) {
+      if (this.basemapWidget) {
+        this.basemapWidget.destroy();
       }
+
+      const source = new this.PortalBasemapsSource({
+        filterFunction: (basemap: __esri.Basemap) => {
+          return !this.basemapConfig.basemapIdsToFilter.includes(basemap.portalItem.id);
+        }
+      });
+      await source.refresh();
+
+      this.basemapWidget = new this.BasemapGallery({
+        container: this._basemapElement,
+        view,
+        source
+      });
     }
   }
 }
