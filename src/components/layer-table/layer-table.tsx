@@ -48,6 +48,11 @@ export class LayerTable {
   @Prop() enableAutoRefresh: boolean;
 
   /**
+   * boolean: when true the export to csv button will be available
+   */
+  @Prop() enableCSV: boolean;
+
+  /**
    * boolean: when true edits can be applied directly within the table
    */
   @Prop() enableInlineEdit: boolean;
@@ -498,12 +503,17 @@ export class LayerTable {
             >
               {this._translations.refresh}
             </calcite-dropdown-item>
-            <calcite-dropdown-item
-              iconStart="export"
-              onClick={() => void this._exportToCSV()}
-            >
-              {this._translations.exportCSV}
-            </calcite-dropdown-item>
+            {
+              this.enableCSV ?
+                (
+                  <calcite-dropdown-item
+                    iconStart="export"
+                    onClick={() => void this._exportToCSV()}
+                  >
+                    {this._translations.exportCSV}
+                  </calcite-dropdown-item>
+                ) : undefined
+            }
           </calcite-dropdown-group>
         </calcite-dropdown>
         <calcite-tooltip

@@ -91,6 +91,10 @@ export namespace Components {
          */
         "enableBasemap": boolean;
         /**
+          * boolean: when true the export to csv button will be available
+         */
+        "enableCSV": boolean;
+        /**
           * boolean: when true the fullscreen widget will be available
          */
         "enableFloorFilter": boolean;
@@ -249,6 +253,10 @@ export namespace Components {
           * boolean: when true the layer table will auto refresh the data
          */
         "enableAutoRefresh": boolean;
+        /**
+          * boolean: when true the export to csv button will be available
+         */
+        "enableCSV": boolean;
         /**
           * boolean: when true edits can be applied directly within the table
          */
@@ -1348,6 +1356,10 @@ declare namespace LocalJSX {
          */
         "enableBasemap"?: boolean;
         /**
+          * boolean: when true the export to csv button will be available
+         */
+        "enableCSV"?: boolean;
+        /**
           * boolean: when true the fullscreen widget will be available
          */
         "enableFloorFilter"?: boolean;
@@ -1497,6 +1509,10 @@ declare namespace LocalJSX {
           * boolean: when true the layer table will auto refresh the data
          */
         "enableAutoRefresh"?: boolean;
+        /**
+          * boolean: when true the export to csv button will be available
+         */
+        "enableCSV"?: boolean;
         /**
           * boolean: when true edits can be applied directly within the table
          */
