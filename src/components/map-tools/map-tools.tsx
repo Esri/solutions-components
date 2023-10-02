@@ -331,6 +331,7 @@ export class MapTools {
           class={searchClass}
           mapView={this.mapView}
           ref={(el) => { this._searchElement = el }}
+          resultGraphicEnabled={true}
           searchConfiguration={this.searchConfiguration}
         />
         <map-legend
