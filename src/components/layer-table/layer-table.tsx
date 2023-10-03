@@ -89,9 +89,9 @@ export class LayerTable {
   //--------------------------------------------------------------------------
 
   /**
-   * boolean: When true a alert will be shown to indicate a problem or confirm the current action
+   * boolean: When true the user will be asked to confirm the delete operation
    */
-  @State() _alertOpen = false;
+  @State() _confirmDelete = false;
 
   /**
    * boolean: When true a loading indicator will be shown in place of the layer table
@@ -139,11 +139,6 @@ export class LayerTable {
    * esri/widgets/FeatureTable: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FeatureTable.html
    */
   protected FeatureTable: typeof import("esri/widgets/FeatureTable");
-
-  /**
-   * boolean: When true the user will be asked to confirm the delete operation
-   */
-  protected _confirmDelete: boolean;
 
   /**
    * number[]: A list of all IDs for the current layer
@@ -367,7 +362,6 @@ export class LayerTable {
               }
             </div>
           </div>
-          {this._getEditDisabledWarning()}
         </calcite-shell>
         {this._deleteMessage()}
       </Host>
@@ -745,31 +739,6 @@ export class LayerTable {
   }
 
   /**
-   * Show warning when editing is disabled
-   *
-   * @returns node with warning message
-   */
-  protected _getEditDisabledWarning(): VNode {
-    return (
-      <calcite-alert
-        icon="layer-broken"
-        kind="warning"
-        label=""
-        onCalciteAlertClose={() => this._alertClosed()}
-        open={this._alertOpen && !this._confirmDelete}
-        placement="top"
-      >
-        <div slot="title">
-          {this._translations.deleteDisabled}
-        </div>
-        <div slot="message">
-          {this._translations.enableEditing}
-        </div>
-      </calcite-alert>
-    );
-  }
-
-  /**
    * Show delete confirmation message
    *
    * @returns node to confirm or deny the delete operation
@@ -779,6 +748,7 @@ export class LayerTable {
       <calcite-modal
         aria-labelledby="modal-title"
         kind="danger"
+        onCalciteModalClose={() => this._deleteClosed()}
         open={this._confirmDelete}
       >
         <div
@@ -800,7 +770,7 @@ export class LayerTable {
         <calcite-button
           appearance="outline"
           kind="danger"
-          onClick={() => this._alertClosed()}
+          onClick={() => this._deleteClosed()}
           slot="secondary"
           width="full"
         >
@@ -833,7 +803,7 @@ export class LayerTable {
     await this._table.refresh();
     this._allIds = await queryAllIds(this._layer);
     this._isDeleting = false;
-    this._alertClosed();
+    this._deleteClosed();
   }
 
   /**
@@ -872,8 +842,7 @@ export class LayerTable {
    *
    * @returns void
    */
-  protected _alertClosed(): void {
-    this._alertOpen = false;
+  protected _deleteClosed(): void {
     this._confirmDelete = false;
   }
 
@@ -986,10 +955,7 @@ export class LayerTable {
    * @returns a promise that will resolve when the operation is complete
    */
   protected _delete(): void {
-    if (this._editEnabled) {
-      this._confirmDelete = true;
-    }
-    this._alertOpen = true;
+    this._confirmDelete = true;
   }
 
   /**
