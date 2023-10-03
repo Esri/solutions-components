@@ -27,19 +27,6 @@
 | `openFilterOptions`      | Emitted on demand when the filters button is clicked | `CustomEvent<void>`     |
 
 
-## Methods
-
-### `getSelectedGraphics() => Promise<__esri.Graphic[]>`
-
-Get the selected graphics
-
-#### Returns
-
-Type: `Promise<Graphic[]>`
-
-Promise that resolves when the operation is complete
-
-
 ## Dependencies
 
 ### Used by
@@ -59,7 +46,6 @@ Promise that resolves when the operation is complete
 - calcite-dropdown-group
 - calcite-dropdown-item
 - calcite-tooltip
-- calcite-alert
 - calcite-modal
 - calcite-icon
 
@@ -77,7 +63,6 @@ graph TD;
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
   layer-table --> calcite-tooltip
-  layer-table --> calcite-alert
   layer-table --> calcite-modal
   layer-table --> calcite-icon
   calcite-panel --> calcite-action
@@ -113,8 +98,6 @@ graph TD;
   calcite-button --> calcite-icon
   calcite-combobox-item --> calcite-icon
   calcite-dropdown-item --> calcite-icon
-  calcite-alert --> calcite-icon
-  calcite-alert --> calcite-chip
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
   crowdsource-manager --> layer-table

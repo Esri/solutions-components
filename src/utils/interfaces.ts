@@ -476,4 +476,5 @@ export interface IExportInfo {
 
 export interface IBasemapConfig {
   basemapIdsToFilter: string[];
+  basemapGroupId: string;
 }

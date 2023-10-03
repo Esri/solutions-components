@@ -577,7 +577,7 @@ export class CrowdsourceManager {
     return (
       <calcite-shell class={tableSizeClass + " border-bottom"}>
         <calcite-action-bar
-          class="border"
+          class="border-sides"
           expandDisabled={true}
           layout={toggleLayout}
           slot={toggleSlot}

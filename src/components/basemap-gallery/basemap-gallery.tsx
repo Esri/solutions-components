@@ -173,6 +173,7 @@ export class BasemapGallery {
       }
 
       const source = new this.PortalBasemapsSource({
+        query: this.basemapConfig.basemapGroupId ? `id:${this.basemapConfig.basemapGroupId}` : null,
         filterFunction: (basemap: __esri.Basemap) => {
           return !this.basemapConfig.basemapIdsToFilter.includes(basemap.portalItem.id);
         }

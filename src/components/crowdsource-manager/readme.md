@@ -122,7 +122,6 @@ graph TD;
   layer-table --> calcite-dropdown-group
   layer-table --> calcite-dropdown-item
   layer-table --> calcite-tooltip
-  layer-table --> calcite-alert
   layer-table --> calcite-modal
   layer-table --> calcite-icon
   map-layer-picker --> calcite-tooltip

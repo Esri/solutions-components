@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Method, Prop, State, VNode, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
-import { queryFeaturesByID, queryAllIds } from "../../utils/queryUtils";
+import { queryAllIds } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { IExportInfos, ILayerInfo, IMapClick, IMapInfo } from "../../utils/interfaces";
 
@@ -89,9 +89,9 @@ export class LayerTable {
   //--------------------------------------------------------------------------
 
   /**
-   * boolean: When true a alert will be shown to indicate a problem or confirm the current action
+   * boolean: When true the user will be asked to confirm the delete operation
    */
-  @State() _alertOpen = false;
+  @State() _confirmDelete = false;
 
   /**
    * boolean: When true a loading indicator will be shown in place of the layer table
@@ -139,11 +139,6 @@ export class LayerTable {
    * esri/widgets/FeatureTable: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FeatureTable.html
    */
   protected FeatureTable: typeof import("esri/widgets/FeatureTable");
-
-  /**
-   * boolean: When true the user will be asked to confirm the delete operation
-   */
-  protected _confirmDelete: boolean;
 
   /**
    * number[]: A list of all IDs for the current layer
@@ -240,17 +235,6 @@ export class LayerTable {
   //  Methods (public)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Get the selected graphics
-   *
-   * @returns Promise that resolves when the operation is complete
-   */
-  @Method()
-  async getSelectedGraphics(): Promise<__esri.Graphic[]> {
-    return this._selectedIndexes.length > 0 ?
-      await this._getGraphics(this._selectedIndexes) : [];
-  }
 
   //--------------------------------------------------------------------------
   //
@@ -367,7 +351,6 @@ export class LayerTable {
               }
             </div>
           </div>
-          {this._getEditDisabledWarning()}
         </calcite-shell>
         {this._deleteMessage()}
       </Host>
@@ -409,7 +392,7 @@ export class LayerTable {
     const featuresSelected = this._selectedIndexes.length > 0;
     const id = "more-table-options";
     return (
-      <div class="display-flex table-border height-51" slot={slot}>
+      <div class="display-flex border-bottom height-51" slot={slot}>
         <calcite-action-bar
           expandDisabled={true}
           expanded={true}
@@ -661,7 +644,8 @@ export class LayerTable {
 
       await this._table.when(() => {
         this._table.highlightIds.on("change", () => {
-          this._selectedIndexes = this._table.highlightIds.toArray();
+          // https://github.com/Esri/solutions-components/issues/365
+          this._selectedIndexes = this._table.highlightIds.toArray().reverse();
           if (this._showOnlySelected) {
             if (this._selectedIndexes.length > 0) {
               this._table.filterBySelection();
@@ -745,31 +729,6 @@ export class LayerTable {
   }
 
   /**
-   * Show warning when editing is disabled
-   *
-   * @returns node with warning message
-   */
-  protected _getEditDisabledWarning(): VNode {
-    return (
-      <calcite-alert
-        icon="layer-broken"
-        kind="warning"
-        label=""
-        onCalciteAlertClose={() => this._alertClosed()}
-        open={this._alertOpen && !this._confirmDelete}
-        placement="top"
-      >
-        <div slot="title">
-          {this._translations.deleteDisabled}
-        </div>
-        <div slot="message">
-          {this._translations.enableEditing}
-        </div>
-      </calcite-alert>
-    );
-  }
-
-  /**
    * Show delete confirmation message
    *
    * @returns node to confirm or deny the delete operation
@@ -779,6 +738,7 @@ export class LayerTable {
       <calcite-modal
         aria-labelledby="modal-title"
         kind="danger"
+        onCalciteModalClose={() => this._deleteClosed()}
         open={this._confirmDelete}
       >
         <div
@@ -800,7 +760,7 @@ export class LayerTable {
         <calcite-button
           appearance="outline"
           kind="danger"
-          onClick={() => this._alertClosed()}
+          onClick={() => this._deleteClosed()}
           slot="secondary"
           width="full"
         >
@@ -833,7 +793,7 @@ export class LayerTable {
     await this._table.refresh();
     this._allIds = await queryAllIds(this._layer);
     this._isDeleting = false;
-    this._alertClosed();
+    this._deleteClosed();
   }
 
   /**
@@ -872,8 +832,7 @@ export class LayerTable {
    *
    * @returns void
    */
-  protected _alertClosed(): void {
-    this._alertOpen = false;
+  protected _deleteClosed(): void {
     this._confirmDelete = false;
   }
 
@@ -986,29 +945,7 @@ export class LayerTable {
    * @returns a promise that will resolve when the operation is complete
    */
   protected _delete(): void {
-    if (this._editEnabled) {
-      this._confirmDelete = true;
-    }
-    this._alertOpen = true;
-  }
-
-  /**
-   * Get the graphics for all selected indexes
-   *
-   * @param ids the ids for the graphics to fetch
-   *
-   * @returns An array of selected graphics
-   */
-  protected async _getGraphics(
-    ids: number[]
-  ): Promise<__esri.Graphic[]> {
-    return ids.length > 0 ? queryFeaturesByID(
-      ids,
-      this._table.layer as __esri.FeatureLayer,
-      [],
-      false,
-      this.mapView.spatialReference
-    ) : [];
+    this._confirmDelete = true;
   }
 
   /**
