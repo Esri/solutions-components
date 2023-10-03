@@ -105,7 +105,8 @@ export class CardManager {
     this._cardLoading = true;
     // only query if we have some ids...query with no ids will result in all features being returned
     const featureSet = ids.length > 0 ? await queryFeaturesByID(ids, this.layer, [], false, this.mapView.spatialReference) : [];
-    this._graphics = featureSet.sort((a,b) => ids.indexOf(b.getObjectId()) - ids.indexOf(a.getObjectId()));
+    // https://github.com/Esri/solutions-components/issues/365
+    this._graphics = featureSet.sort((a,b) => ids.indexOf(a.getObjectId()) - ids.indexOf(b.getObjectId()));
     this._cardLoading = false;
   }
 

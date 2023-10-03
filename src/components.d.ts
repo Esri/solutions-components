@@ -262,11 +262,6 @@ export namespace Components {
          */
         "enableInlineEdit": boolean;
         /**
-          * Get the selected graphics
-          * @returns Promise that resolves when the operation is complete
-         */
-        "getSelectedGraphics": () => Promise<__esri.Graphic[]>;
-        /**
           * IMapInfo: key configuration details about the current map
          */
         "mapInfo": IMapInfo;

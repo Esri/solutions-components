@@ -27,19 +27,6 @@
 | `openFilterOptions`      | Emitted on demand when the filters button is clicked | `CustomEvent<void>`     |
 
 
-## Methods
-
-### `getSelectedGraphics() => Promise<__esri.Graphic[]>`
-
-Get the selected graphics
-
-#### Returns
-
-Type: `Promise<Graphic[]>`
-
-Promise that resolves when the operation is complete
-
-
 ## Dependencies
 
 ### Used by

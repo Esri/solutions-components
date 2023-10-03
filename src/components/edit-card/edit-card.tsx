@@ -223,11 +223,6 @@ export class EditCard {
    * @returns Promise when complete
    */
   async componentWillRender(): Promise<void> {
-    const layerTableElements: HTMLCollection = document.getElementsByTagName("layer-table");
-    if (layerTableElements.length === 1) {
-      const layerTable: HTMLLayerTableElement = layerTableElements[0] as HTMLLayerTableElement;
-      this.graphics = await layerTable.getSelectedGraphics();
-    }
     if (this.graphics?.length > 0 && this.graphics[0]?.layer) {
       this._layer = this.graphics[0].layer as __esri.FeatureLayer;
       if (this._layerEditHandle) {

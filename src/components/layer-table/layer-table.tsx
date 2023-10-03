@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Method, Prop, State, VNode, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
-import { queryFeaturesByID, queryAllIds } from "../../utils/queryUtils";
+import { queryAllIds } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { IExportInfos, ILayerInfo, IMapClick, IMapInfo } from "../../utils/interfaces";
 
@@ -235,17 +235,6 @@ export class LayerTable {
   //  Methods (public)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Get the selected graphics
-   *
-   * @returns Promise that resolves when the operation is complete
-   */
-  @Method()
-  async getSelectedGraphics(): Promise<__esri.Graphic[]> {
-    return this._selectedIndexes.length > 0 ?
-      await this._getGraphics(this._selectedIndexes) : [];
-  }
 
   //--------------------------------------------------------------------------
   //
@@ -655,7 +644,8 @@ export class LayerTable {
 
       await this._table.when(() => {
         this._table.highlightIds.on("change", () => {
-          this._selectedIndexes = this._table.highlightIds.toArray();
+          // https://github.com/Esri/solutions-components/issues/365
+          this._selectedIndexes = this._table.highlightIds.toArray().reverse();
           if (this._showOnlySelected) {
             if (this._selectedIndexes.length > 0) {
               this._table.filterBySelection();
@@ -956,25 +946,6 @@ export class LayerTable {
    */
   protected _delete(): void {
     this._confirmDelete = true;
-  }
-
-  /**
-   * Get the graphics for all selected indexes
-   *
-   * @param ids the ids for the graphics to fetch
-   *
-   * @returns An array of selected graphics
-   */
-  protected async _getGraphics(
-    ids: number[]
-  ): Promise<__esri.Graphic[]> {
-    return ids.length > 0 ? queryFeaturesByID(
-      ids,
-      this._table.layer as __esri.FeatureLayer,
-      [],
-      false,
-      this.mapView.spatialReference
-    ) : [];
   }
 
   /**
