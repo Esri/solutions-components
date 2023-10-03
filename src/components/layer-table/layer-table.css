@@ -38,6 +38,10 @@
   border-inline-end: 1px solid var(--calcite-ui-border-2);
 }
 
+.border-bottom {
+  border-bottom: 1px solid var(--calcite-ui-border-2);
+}
+
 .padding-5 {
   padding: 5px;
 }

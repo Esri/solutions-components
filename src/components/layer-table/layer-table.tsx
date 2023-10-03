@@ -409,7 +409,7 @@ export class LayerTable {
     const featuresSelected = this._selectedIndexes.length > 0;
     const id = "more-table-options";
     return (
-      <div class="display-flex table-border height-51" slot={slot}>
+      <div class="display-flex border-bottom height-51" slot={slot}>
         <calcite-action-bar
           expandDisabled={true}
           expanded={true}
