@@ -608,9 +608,9 @@ export class PublicNotification {
     pageType: EPageType,
     tip: string
   ): VNode {
-    const sizeClass = this.showRefineSelection ? " w-1-3" : " w-1-2";
+    const sizeClass = this.showRefineSelection ? "w-1-3" : "w-1-2";
     return (
-      <calcite-action-group class={"action-center" + sizeClass} layout="horizontal">
+      <calcite-action-group class={sizeClass} layout="horizontal">
         <div class="background-override">
           <calcite-action
             active={this._pageType === pageType}
