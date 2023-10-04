@@ -156,8 +156,7 @@ export class EditCard {
   @Watch("graphics")
   async graphicsWatchHandler(): Promise<void> {
     if (this.graphics.length === 0) {
-      this._shouldClose = false;
-      this.closeEdit.emit();
+      this._closeEdit();
     }
   }
 
@@ -167,14 +166,12 @@ export class EditCard {
       this._editorLoading = true;
       this._initEditorWidget();
       if (this.graphicIndex > -1 && this.graphics.length > 0 && this.open && !this._shouldClose) {
-        await this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
-        this._shouldClose = true;
+        await this._startUpdate();
       }
       this._editorLoading = false;
     }
     if (!v) {
-      this._shouldClose = false;
-      this.closeEdit.emit();
+      this._closeEdit();
     }
   }
 
@@ -229,13 +226,8 @@ export class EditCard {
         this._layerEditHandle.remove();
       }
       this._layerEditHandle = this._layer.on("edits", () => {
-        this._editorLoading = true;
         this.editsComplete.emit();
-        this._shouldClose = false;
-        this._initEditorWidget();
-        void this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
-        this._shouldClose = true;
-        this._editorLoading = false;
+        this._closeEdit();
       });
     }
   }
@@ -343,11 +335,9 @@ export class EditCard {
         () => this._editor.viewModel.state === "ready",
         () => {
           if (this._shouldClose) {
-            this._shouldClose = false;
-            this.closeEdit.emit();
+            this._closeEdit();
           } else if (this.graphicIndex > -1 && this.graphics.length > 0 && this.open && !this._shouldClose) {
-            void this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
-            this._shouldClose = true;
+            void this._startUpdate();
           }
         }
       );
@@ -364,6 +354,26 @@ export class EditCard {
       // had issues with destroy before adding like this
       this._editContainer.appendChild(container);
     }
+  }
+
+  /**
+   * Close the edit widget
+   *
+   * @returns void
+   */
+  protected _closeEdit(): void {
+    this._shouldClose = false;
+    this.closeEdit.emit();
+  }
+
+  /**
+   * Start the update workflow for the editor widget
+   *
+   * @returns void
+   */
+  protected async _startUpdate(): Promise<void> {
+    await this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);
+    this._shouldClose = true;
   }
 
   /**
