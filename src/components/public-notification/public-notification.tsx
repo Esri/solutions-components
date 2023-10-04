@@ -608,9 +608,9 @@ export class PublicNotification {
     pageType: EPageType,
     tip: string
   ): VNode {
-    const sizeClass = this.showRefineSelection ? " w-1-3" : " w-1-2";
+    const sizeClass = this.showRefineSelection ? "w-1-3" : "w-1-2";
     return (
-      <calcite-action-group class={"action-center" + sizeClass} layout="horizontal">
+      <calcite-action-group class={sizeClass} layout="horizontal">
         <div class="background-override">
           <calcite-action
             active={this._pageType === pageType}
@@ -1032,7 +1032,7 @@ export class PublicNotification {
   protected _getExportOptions(): VNode {
     const displayClass = this._exportType === EExportType.PDF ? "display-block" : "display-none";
     const titleOptionsClass = this._addTitle ? "display-block" : "display-none";
-    const title = this._titleValue !== undefined ? this._titleValue : this.defaultExportTitle ? this.defaultExportTitle : "";
+    const title = this._titleValue ? this._titleValue : this.defaultExportTitle ? this.defaultExportTitle : "";
     return (
       <div class={displayClass}>
         {this._getLabel(this._translations.pdfOptions, true)}
