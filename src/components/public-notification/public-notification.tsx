@@ -1032,7 +1032,7 @@ export class PublicNotification {
   protected _getExportOptions(): VNode {
     const displayClass = this._exportType === EExportType.PDF ? "display-block" : "display-none";
     const titleOptionsClass = this._addTitle ? "display-block" : "display-none";
-    const title = this._titleValue !== undefined ? this._titleValue : this.defaultExportTitle ? this.defaultExportTitle : "";
+    const title = this._titleValue ? this._titleValue : this.defaultExportTitle ? this.defaultExportTitle : "";
     return (
       <div class={displayClass}>
         {this._getLabel(this._translations.pdfOptions, true)}
