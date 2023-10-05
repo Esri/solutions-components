@@ -331,7 +331,7 @@ export class LayerTable {
       <Host>
         <calcite-shell>
           {this._getTableControlRow("header")}
-          <div class="height-full width-full">
+          <div class="height-full-adjusted width-full">
             <calcite-panel class="height-full width-full">
               <calcite-loader
                 class={loadingClass}
@@ -343,7 +343,7 @@ export class LayerTable {
                 ref={this.onTableNodeCreate}
               />
             </calcite-panel>
-            <div class="bottom-left background text-color">
+            <div class="bottom-left text-color">
               {
                 this._translations.recordsSelected
                   .replace("{{total}}", total)
