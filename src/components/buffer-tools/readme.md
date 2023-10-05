@@ -29,6 +29,19 @@
 | `unitChanged`     | Emitted on demand when the unit changes           | `CustomEvent<IValueChange>`         |
 
 
+## Methods
+
+### `getTranslatedUnit(unit: string) => Promise<string>`
+
+Get the translated unit for display
+
+#### Returns
+
+Type: `Promise<string>`
+
+Promise resolving with the translated unit
+
+
 ## Dependencies
 
 ### Used by

@@ -309,6 +309,10 @@ export class EditCard {
       this._editor = new this.Editor({
         allowedWorkflows: "update",
         view: this.mapView,
+        layerInfos: [{
+          layer: this._layer,
+          geometryUpdatesEnabled: false
+        }],
         visibleElements: {
           snappingControls: false,
           sketchTooltipControls: false

@@ -47,7 +47,6 @@
 - calcite-dropdown-item
 - calcite-tooltip
 - calcite-modal
-- calcite-icon
 
 ### Graph
 ```mermaid
@@ -64,7 +63,6 @@ graph TD;
   layer-table --> calcite-dropdown-item
   layer-table --> calcite-tooltip
   layer-table --> calcite-modal
-  layer-table --> calcite-icon
   calcite-panel --> calcite-action
   calcite-panel --> calcite-action-menu
   calcite-panel --> calcite-scrim

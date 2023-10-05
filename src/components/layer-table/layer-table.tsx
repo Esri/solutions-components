@@ -331,7 +331,7 @@ export class LayerTable {
       <Host>
         <calcite-shell>
           {this._getTableControlRow("header")}
-          <div class="height-full width-full">
+          <div class="height-full-adjusted width-full">
             <calcite-panel class="height-full width-full">
               <calcite-loader
                 class={loadingClass}
@@ -343,7 +343,7 @@ export class LayerTable {
                 ref={this.onTableNodeCreate}
               />
             </calcite-panel>
-            <div class="bottom-left background text-color">
+            <div class="bottom-left text-color">
               {
                 this._translations.recordsSelected
                   .replace("{{total}}", total)
@@ -746,12 +746,6 @@ export class LayerTable {
           id="modal-title"
           slot="header"
         >
-          <calcite-icon
-            aria-hidden="true"
-            class="padding-end-1 danger-color"
-            icon="exclamation-mark-triangle"
-            scale="m"
-          />
           {this._translations.deleteFeature}
         </div>
         <div slot="content">
