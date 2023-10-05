@@ -222,10 +222,8 @@ export class CrowdsourceManager {
   async mapChanged(
     evt: CustomEvent
   ): Promise<void> {
-    console.log("mapChanged")
     this._mapChange = evt.detail;
     await this._mapChange.mapView.when(() => {
-      console.log("mapView.when")
       this._setMapView();
     });
   }
