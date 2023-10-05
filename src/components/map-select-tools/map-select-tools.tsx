@@ -365,7 +365,7 @@ export class MapSelectTools {
   async getSelection(): Promise<ISelectionSet> {
     // Allow any non whitespace
     if (!/\S+/gm.test(this._selectionLabel)) {
-      this._updateLabel();
+      await this._updateLabel();
     }
     return {
       id: this.isUpdate ? this.selectionSet.id : Date.now(),
@@ -411,18 +411,18 @@ export class MapSelectTools {
    * Handle changes to the buffer distance value
    */
   @Listen("distanceChanged", { target: "window" })
-  distanceChanged(event: CustomEvent): void {
-    this._distanceChanged(event.detail);
+  async distanceChanged(event: CustomEvent): Promise<void> {
+    await this._distanceChanged(event.detail);
   }
 
   /**
    * Handle changes to the buffer unit
    */
   @Listen("unitChanged", { target: "window" })
-  unitChanged(event: CustomEvent): void {
+  async unitChanged(event: CustomEvent): Promise<void> {
     if (event.detail.newValue !== event.detail.oldValue) {
       this._unit = event.detail.newValue;
-      this._updateLabel();
+      await this._updateLabel();
     }
   }
 
@@ -772,7 +772,7 @@ export class MapSelectTools {
           const useOIDs = searchResults.source?.layer?.id && searchResults.source.layer.id === this.selectLayerView.layer.id;
           const oids = useOIDs ? [searchResults.result.feature.getObjectId()] : undefined;
           this._workflowType = EWorkflowType.SEARCH;
-          this._updateLabel();
+          void this._updateLabel();
 
           const graphics = [searchResults.result.feature];
           this._updateSelection(
@@ -903,7 +903,7 @@ export class MapSelectTools {
         this._drawTools.updateGraphics();
       }
 
-      this._updateLabel();
+      await this._updateLabel();
       this._clearSearchWidget();
       if (this._useLayerFeaturesEnabled && !forceUpdate) {
         // Will only ever be a single graphic
@@ -1041,7 +1041,7 @@ export class MapSelectTools {
 
     // mock this b/c the tools can store a value that is different than what is shown in the map
     // this occurs when a distance is set but then buffer is disabled
-    this._distanceChanged({
+    await this._distanceChanged({
       oldValue,
       newValue
     });
@@ -1138,7 +1138,7 @@ export class MapSelectTools {
    *
    * @protected
    */
-  protected _updateLabel(): void {
+  protected async _updateLabel(): Promise<void> {
     const hasSketch = this._selectionLabel.indexOf(this._translations.sketch) > -1;
     const hasSelect = this._selectionLabel.indexOf(this._translations.select) > -1;
     const hasSearch = this._selectionLabel.indexOf(this._searchResult?.name) > -1;
@@ -1147,7 +1147,8 @@ export class MapSelectTools {
       this._workflowType === EWorkflowType.SELECT ?
         this._translations.select : this._translations.sketch;
 
-    const unit = !this._unit ? this._bufferTools.unit : this._unit;
+    const _unit = !this._unit ? this._bufferTools.unit : this._unit;
+    const unit = await this._bufferTools.getTranslatedUnit(_unit)
     const distance = isNaN(this._distance) ? this._bufferTools.distance : this._distance;
 
     this._selectionLabel = hasSketch || hasSelect || hasSearch || !this._selectionLabel ?
@@ -1200,7 +1201,7 @@ export class MapSelectTools {
     const id: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
     if (!this.selectLayerView || id !== this.selectLayerView.layer.id) {
       this.selectLayerView = await getFeatureLayerView(this.mapView, id);
-      this._updateLabel();
+      await this._updateLabel();
 
       this._bufferGeometry ? await this._selectFeatures([this._bufferGeometry]) :
         await this._highlightWithOIDsOrGeoms();
@@ -1210,10 +1211,10 @@ export class MapSelectTools {
   /**
    * Handle changes to the buffer distance value
    */
-  protected _distanceChanged(detail: any): void {
+  protected async _distanceChanged(detail: any): Promise<void> {
     if (detail.newValue !== detail.oldValue) {
       this._distance = detail.newValue;
-      this._updateLabel();
+      await this._updateLabel();
     }
   }
 

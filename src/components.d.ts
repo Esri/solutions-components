@@ -39,6 +39,11 @@ export namespace Components {
          */
         "geometries": __esri.Geometry[];
         /**
+          * Get the translated unit for display
+          * @returns Promise resolving with the translated unit
+         */
+        "getTranslatedUnit": (unit: string) => Promise<string>;
+        /**
           * number: The component's maximum selectable value.
          */
         "max": number;
