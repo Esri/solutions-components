@@ -746,12 +746,6 @@ export class LayerTable {
           id="modal-title"
           slot="header"
         >
-          <calcite-icon
-            aria-hidden="true"
-            class="padding-end-1 danger-color"
-            icon="exclamation-mark-triangle"
-            scale="m"
-          />
           {this._translations.deleteFeature}
         </div>
         <div slot="content">
