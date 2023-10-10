@@ -21,7 +21,7 @@ import { getLocaleComponentStrings } from "../../utils/locale";
 import { getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
 import { queryAllIds } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
-import { IExportInfos, ILayerInfo, IMapClick, IMapInfo } from "../../utils/interfaces";
+import { IExportInfos, ILayerInfo, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo } from "../../utils/interfaces";
 
 @Component({
   tag: "layer-table",
@@ -94,6 +94,11 @@ export class LayerTable {
   @State() _confirmDelete = false;
 
   /**
+   * IToolSizeInfo[]: The controls that currently fit based on toolbar size
+   */
+  @State() _controlsThatFit: IToolSizeInfo[];
+
+  /**
    * boolean: When true a loading indicator will be shown in place of the layer table
    */
   @State() _fetchingData = false;
@@ -151,6 +156,11 @@ export class LayerTable {
   protected _editEnabled: boolean;
 
   /**
+   * IToolSizeInfo[]: The default list of tool size info for tools that should display outside of the dropdown
+   */
+  protected _defaultVisibleToolSizeInfos: IToolSizeInfo[];
+
+  /**
    * boolean: When false alerts will be shown to indicate that the layer must have delete and editing enabled
    */
   protected _deleteEnabled: boolean;
@@ -164,6 +174,11 @@ export class LayerTable {
    * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
    */
   protected reactiveUtils: typeof import("esri/core/reactiveUtils");
+
+  /**
+   * ResizeObserver: The observer that watches for toolbar size changes
+   */
+  protected _resizeObserver: ResizeObserver;
 
   /**
    * HTMLCalciteCheckboxElement: Element to force selection of all records
@@ -185,11 +200,49 @@ export class LayerTable {
    */
   protected _tableSorting = false;
 
+  /**
+   * any: Timeout used to limit redundancy for toolbar resizing
+   */
+  protected _timeout: any;
+
+  /**
+   * HTMLDivElement: The toolbars containing node
+   */
+  protected _toolbar: HTMLDivElement;
+
+  /**
+   * IToolSizeInfo[]: Id and Width for the current tools
+   */
+  protected _toolbarSizeInfos: IToolSizeInfo[];
+
+  /**
+   * IToolInfo[]: Key details used for creating the tools
+   */
+  protected _toolInfos: IToolInfo[];
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * watch for changes to the list of controls that will currently fit in the display
+   */
+  @Watch("_controlsThatFit")
+  _controlsThatFitWatchHandler(): void {
+    const ids = this._controlsThatFit ? this._controlsThatFit.reduce((prev, cur) => {
+      prev.push(cur.id)
+      return prev;
+    }, []) : [];
+    this._toolInfos = this._toolInfos.map(ti => {
+      if (ti && this._controlsThatFit) {
+        const id = this._getId(ti.icon);
+        ti.isOverflow = ids.indexOf(id) < 0;
+        return ti;
+      }
+    })
+  }
 
   /**
    * watch for changes in map view and get the first layer
@@ -317,6 +370,8 @@ export class LayerTable {
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
+    this._initToolInfos();
+    this._resizeObserver = new ResizeObserver(() => this._onResize())
   }
 
   /**
@@ -357,6 +412,20 @@ export class LayerTable {
     );
   }
 
+  /**
+   * Called once after the component is loaded
+   */
+  async componentDidLoad(): Promise<void> {
+    this._resizeObserver.observe(this._toolbar)
+  }
+
+  /**
+   * Called after the component is rendered
+   */
+  componentDidRender(): void {
+    this._updateToolbar()
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (protected)
@@ -380,6 +449,15 @@ export class LayerTable {
   }
 
   /**
+   * Update the toolbar when its size changes
+   *
+   * @returns void
+   */
+  protected _onResize(): void {
+    this._updateToolbar()
+  }
+
+  /**
    * Gets a row of controls that can be used for various interactions with the table
    *
    * @param slot string optional slot to display the control within
@@ -389,125 +467,304 @@ export class LayerTable {
   protected _getTableControlRow(
     slot?: string
   ): VNode {
-    const featuresSelected = this._selectedIndexes.length > 0;
     const id = "more-table-options";
     return (
-      <div class="display-flex border-bottom height-51" slot={slot}>
-        <calcite-action-bar
-          expandDisabled={true}
-          expanded={true}
-          layout="horizontal"
-        >
-          <div class="border-end">
-            <map-layer-picker
-              appearance="transparent"
-              mapView={this.mapView}
-              onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
-              onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
-              placeholderIcon="layers"
-              scale="l"
-              showTables={true}
-              type="dropdown"
-            />
-          </div>
-          {
-            this._getAction(
-              "zoom-to-object",
-              this._translations.zoom,
-              () => this._zoom(),
-              !featuresSelected
-            )
-          }
-          {
-            this.mapInfo?.filters ? this._getAction(
-              "filter",
-              this._translations.filters,
-              () => this._filter(),
-              false
-            ) : undefined
-          }
-          {
-            this._deleteEnabled ? this._getDangerAction(
-              "trash",
-              this._translations.delete,
-              () => this._delete(),
-              !featuresSelected
-            ) : undefined
-          }
-          {
-            this._getAction(
-              "erase",
-              this._translations.clearSelection,
-              () => this._clearSelection(),
-              !featuresSelected
-            )
-          }
-          {
-            this._getAction(
-              "selected-items-filter",
-              this._showOnlySelected ? this._translations.showAll : this._translations.showSelected,
-              () => this._toggleShowSelected(),
-              !featuresSelected
-            )
-          }
-        </calcite-action-bar>
-        <calcite-dropdown disabled={this._layer === undefined}>
-          <calcite-action
-            appearance="solid"
-            id={id}
-            label=""
-            slot="trigger"
-            text=""
-          >
-            <calcite-button
-              appearance="transparent"
-              iconEnd="chevron-down"
-              kind="neutral"
-            >
-              {this._translations.more}
-            </calcite-button>
-          </calcite-action>
-          <calcite-dropdown-group selection-mode="none">
-            <calcite-dropdown-item
-              iconStart="list-check-all"
-              onClick={() => this._selectAll()}
-            >
-              {this._translations.selectAll}
-            </calcite-dropdown-item>
-            <calcite-dropdown-item
-              iconStart="compare"
-              onClick={() => this._switchSelected()}
-            >
-              {this._translations.switchSelected}
-            </calcite-dropdown-item>
-            <calcite-dropdown-item
-              iconStart="refresh"
-              onClick={() => this._refresh()}
-            >
-              {this._translations.refresh}
-            </calcite-dropdown-item>
-            {
-              this.enableCSV ?
-                (
-                  <calcite-dropdown-item
-                    iconStart="export"
-                    onClick={() => void this._exportToCSV()}
-                  >
-                    {this._translations.exportCSV}
-                  </calcite-dropdown-item>
-                ) : undefined
-            }
-          </calcite-dropdown-group>
-        </calcite-dropdown>
-        <calcite-tooltip
-          label=""
-          placement="bottom"
-          reference-element={id}
-        >
-          <span>{this._translations.moreOptions}</span>
-        </calcite-tooltip>
+      <div
+        class="display-flex border-bottom height-51"
+        ref={(el) => this._toolbar = el}
+        slot={slot}
+      >
+        {this._getActionBar()}
+        {this._getDropdown(id)}
+        {this._getToolTip("", "bottom", id, this._translations.moreOptions)}
       </div>
     );
+  }
+
+  /**
+   * Gets a row of controls that can be used for various interactions with the table
+   *
+   * @param slot string optional slot to display the control within
+   *
+   * @returns The dom node that contains the controls
+   */
+  protected _getActionBar(): VNode {
+    return (
+      <calcite-action-bar
+        expandDisabled={true}
+        expanded={true}
+        id={this._getId("bar")}
+        layout="horizontal"
+      >
+        <div class="border-end" id="solutions-map-layer-picker-container">
+          <map-layer-picker
+            appearance="transparent"
+            mapView={this.mapView}
+            onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
+            onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
+            placeholderIcon="layers"
+            scale="l"
+            showTables={true}
+            type="dropdown"
+          />
+        </div>
+        {this._getActions()}
+      </calcite-action-bar>
+    );
+  }
+
+  /**
+   * Get the actions that are used for various interactions with the table
+   *
+   * @returns VNode[] the action nodes
+   */
+  protected _getActions(): VNode[] {
+    const actions = this._getActionItems();
+    return actions.reduce((prev, cur) => {
+      if (cur && !cur.isOverflow) {
+        prev.push(
+          cur.isDanger ?
+            this._getDangerAction(cur.icon, cur.label, cur.func, cur.disabled) :
+            this._getAction(cur.icon, cur.label, cur.func, cur.disabled)
+        )
+      }
+      return prev;
+    }, [])
+  }
+
+  /**
+   * Get the full list of toolInfos.
+   * Order is important. They should be listed in the order they should display in the UI from
+   * Left to Right for the action bar and Top to Bottom for the dropdown.
+   *
+   * @returns void
+   */
+  protected _initToolInfos(): void {
+    const featuresSelected = this._selectedIndexes.length > 0;
+    this._toolInfos = [{
+      icon: "zoom-to-object",
+      label: this._translations.zoom,
+      func: () => this._zoom(),
+      disabled: !featuresSelected,
+      isOverflow: false
+    }, this.mapInfo?.filters ? {
+      icon: "filter",
+      label: this._translations.filters,
+      func: () => this._filter(),
+      disabled: false,
+      isOverflow: false
+    } : undefined,
+    this._deleteEnabled ? {
+      icon: "trash",
+      label: this._translations.delete,
+      func: () => this._delete(),
+      disabled: !featuresSelected,
+      isDanger: true,
+      isOverflow: false
+    } : undefined, {
+      icon: "erase",
+      label: this._translations.clearSelection,
+      func: () => this._clearSelection(),
+      disabled: !featuresSelected,
+      isOverflow: false
+    }, {
+      icon: "selected-items-filter",
+      label: this._showOnlySelected ? this._translations.showAll : this._translations.showSelected,
+      func: () => this._toggleShowSelected(),
+      disabled: !featuresSelected,
+      isOverflow: false
+    }, {
+      icon: "list-check-all",
+      func: () => this._selectAll(),
+      label: this._translations.selectAll,
+      disabled: false,
+      isOverflow: true
+    }, {
+      icon: "compare",
+      func: () => this._switchSelected(),
+      label: this._translations.switchSelected,
+      disabled: false,
+      isOverflow: true
+    }, {
+      icon: "refresh",
+      func: () => this._refresh(),
+      label: this._translations.refresh,
+      disabled: false,
+      isOverflow: true
+    },
+    this.enableCSV ? {
+      icon: "export",
+      func: () => void this._exportToCSV(),
+      label: this._translations.exportCSV,
+      disabled: false,
+      isOverflow: true
+    } : undefined];
+  }
+
+  /**
+   * Add/Remove tools from the action bar and dropdown based on available size
+   *
+   * @returns void
+   */
+  protected _updateToolbar(): void {
+    if (this._timeout) {
+      clearTimeout(this._timeout)
+    }
+
+    this._timeout = setTimeout(() => {
+      clearTimeout(this._timeout)
+
+      this._setToolbarSizeInfos();
+
+      const toolbarWidth = this._toolbar.offsetWidth;
+      let controlsWidth = this._toolbarSizeInfos.reduce((prev, cur) => {
+        prev += cur.width;
+        return prev;
+      }, 0)
+
+      const skipControls = ["solutions-more", "solutions-map-layer-picker-container"];
+      if (controlsWidth > toolbarWidth) {
+        if (this._toolbarSizeInfos.length > 0) {
+          const controlsThatFit = [...this._toolbarSizeInfos].reverse().reduce((prev, cur) => {
+            if (skipControls.indexOf(cur.id) < 0) {
+              if (controlsWidth > toolbarWidth) {
+                controlsWidth -= cur.width;
+              } else {
+                prev.push(cur);
+              }
+            }
+            return prev;
+          }, []).reverse();
+
+          if (JSON.stringify(controlsThatFit) !== JSON.stringify(this._controlsThatFit)) {
+            this._controlsThatFit = controlsThatFit;
+          }
+        }
+      } else {
+        if (this._defaultVisibleToolSizeInfos) {
+          const currentTools = this._toolbarSizeInfos.reduce((prev, cur) => {
+            prev.push(cur.id);
+            return prev;
+          }, []);
+
+          const controlsThatFit = [...this._defaultVisibleToolSizeInfos].reduce((prev, cur) => {
+            if (skipControls.indexOf(cur.id) < 0 &&
+              (currentTools.indexOf(cur.id) > -1 || (controlsWidth + cur.width) <= toolbarWidth)
+            ) {
+              if (currentTools.indexOf(cur.id) < 0) {
+                controlsWidth += cur.width;
+              }
+              prev.push(cur);
+            }
+            return prev;
+          }, []);
+
+          if (JSON.stringify(controlsThatFit) !== JSON.stringify(this._controlsThatFit)) {
+            this._controlsThatFit = controlsThatFit;
+          }
+        }
+      }
+    }, 5);
+  }
+
+  /**
+   * Get the id and size for the toolbars current items
+   *
+   * @returns void
+   */
+  protected _setToolbarSizeInfos(): void {
+    let hasWidth = false;
+    this._toolbarSizeInfos = [];
+    this._toolbar.childNodes.forEach((c: any, i) => {
+      // handle the action bar
+      if (i === 0) {
+        c.childNodes.forEach((actionbarChild: any) => {
+          this._toolbarSizeInfos.push({
+            id: actionbarChild.id,
+            width: actionbarChild.offsetWidth
+          });
+          if (!hasWidth) {
+            hasWidth = actionbarChild.offsetWidth > 0;
+          }
+        });
+      } else if (!c.referenceElement) {
+        // skip tooltips
+        this._toolbarSizeInfos.push({
+          id: c.id,
+          width: c.offsetWidth
+        });
+        if (!hasWidth) {
+          hasWidth = c.offsetWidth > 0;
+        }
+      }
+    });
+    if (hasWidth && !this._defaultVisibleToolSizeInfos) {
+      this._defaultVisibleToolSizeInfos = [...this._toolbarSizeInfos];
+    }
+  }
+
+  /**
+   * Get a list of toolInfos that should display outside of the dropdown
+   *
+   * @returns IToolInfo[] the list of toolInfos that should not display in the overflow dropdown
+   */
+  protected _getActionItems(): IToolInfo[] {
+    return this._toolInfos.filter(toolInfo => toolInfo && !toolInfo.isOverflow)
+  }
+
+  /**
+   * Get a list of toolInfos that should display in the dropdown
+   *
+   * @param id string the id for the dropdown and its tooltip
+   *
+   * @returns VNode the dropdown node
+   */
+  protected _getDropdown(
+    id: string
+  ): VNode {
+    const dropdownItems = this._getDropdownItems();
+    return (
+      <calcite-dropdown disabled={this._layer === undefined} id="solutions-more">
+      <calcite-action
+        appearance="solid"
+        id={id}
+        label=""
+        slot="trigger"
+        text=""
+      >
+        <calcite-button
+          appearance="transparent"
+          iconEnd="chevron-down"
+          kind="neutral"
+        >
+          {this._translations.more}
+        </calcite-button>
+      </calcite-action>
+      <calcite-dropdown-group selection-mode="none">
+        {
+          dropdownItems.map(item => {
+            return (
+              <calcite-dropdown-item
+                iconStart={item.icon}
+                onClick={item.func}
+              >
+                {item.label}
+              </calcite-dropdown-item>
+            )
+          })
+        }
+      </calcite-dropdown-group>
+    </calcite-dropdown>
+    )
+  }
+
+  /**
+   * Get a list of toolInfos that should display in the dropdown
+   *
+   * @returns IToolInfo[] the list of toolInfos that should display in the dropdown
+   */
+  protected _getDropdownItems(): IToolInfo[] {
+    return this._toolInfos.filter(toolInfo => toolInfo && toolInfo.isOverflow)
   }
 
   /**
@@ -520,7 +777,7 @@ export class LayerTable {
    *
    * @returns VNode The node representing the DOM element that will contain the action
    */
-  private _getAction(
+  protected _getAction(
     icon: string,
     label: string,
     func: any,
@@ -528,7 +785,7 @@ export class LayerTable {
   ): VNode {
     const _disabled = this._layer === undefined ? true : disabled;
     return (
-      <div class={"display-flex"}>
+      <div class={"display-flex"} id={this._getId(icon)}>
         <calcite-action
           appearance="solid"
           disabled={_disabled}
@@ -539,15 +796,49 @@ export class LayerTable {
           text={label}
           textEnabled={true}
         />
-        <calcite-tooltip
-          label=""
-          placement="bottom"
-          reference-element={icon}
-        >
-          <span>{label}</span>
-        </calcite-tooltip>
+        {this._getToolTip("", "bottom", icon, label)}
       </div>
     )
+  }
+
+  /**
+   * Get a tooltip
+   *
+   * @param label string accessible name for the component
+   * @param placement string where the tooltip should display
+   * @param referenceElement string the element the tooltip will be associated with
+   * @param text string the text to display in the tooltip
+   *
+   * @returns VNode The tooltip node
+   */
+  protected _getToolTip(
+    label: string,
+    placement: string,
+    referenceElement: string,
+    text: string
+  ): VNode {
+    return (
+      <calcite-tooltip
+        label={label}
+        placement={placement}
+        reference-element={referenceElement}
+      >
+        <span>{text}</span>
+      </calcite-tooltip>
+    )
+  }
+
+  /**
+   * Get an id with a prefix to the user supplied value
+   *
+   * @param id the unique value for the id
+   *
+   * @returns the new id with the prefix value
+   */
+  protected _getId(
+    id: string
+  ): string {
+    return `solutions-action-${id}`;
   }
 
   /**
@@ -584,13 +875,7 @@ export class LayerTable {
             {label}
           </calcite-button>
         </calcite-action>
-        <calcite-tooltip
-          label=""
-          placement="bottom"
-          reference-element={icon}
-        >
-          <span>{label}</span>
-        </calcite-tooltip>
+        {this._getToolTip("", "bottom", icon, label)}
       </div>
     )
   }

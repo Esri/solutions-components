@@ -478,3 +478,17 @@ export interface IBasemapConfig {
   basemapIdsToFilter: string[];
   basemapGroupId: string;
 }
+
+export interface IToolInfo {
+  icon: string;
+  func: any;
+  label: string;
+  disabled: boolean;
+  isDanger?: boolean;
+  isOverflow: boolean;
+}
+
+export interface IToolSizeInfo {
+  id: string;
+  width: number;
+}
