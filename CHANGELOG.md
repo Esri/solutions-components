@@ -271,4 +271,5 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 [0.6.28]: https://github.com/Esri/solution.js/compare/v0.6.27...v0.6.28 "v0.6.28"
 [0.6.29]: https://github.com/Esri/solution.js/compare/v0.6.28...v0.6.29 "v0.6.29"
 [0.6.30]: https://github.com/Esri/solution.js/compare/v0.6.29...v0.6.30 "v0.6.30"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.6.30...HEAD "Unreleased Changes"
+[0.6.31]: https://github.com/Esri/solution.js/compare/v0.6.30...v0.6.31 "v0.6.31"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.6.31...HEAD "Unreleased Changes"
