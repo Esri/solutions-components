@@ -433,8 +433,8 @@ export class MapLayerPicker {
       const mapTableIds = this.showTables ? this.onlyShowUpdatableLayers ?
         this._getEditableIds(this._tableNameHash) : Object.keys(this._tableNameHash) : [];
       this.ids = [
-        ...mapLayerIds.filter(n => this.enabledLayerIds?.length > 0 ? this.enabledLayerIds.indexOf(n) > -1 : true),
-        ...mapTableIds.filter(n => this.enabledTableIds?.length > 0 ? this.enabledTableIds.indexOf(n) > -1 : true),
+        ...mapLayerIds.reverse().filter(n => this.enabledLayerIds?.length > 0 ? this.enabledLayerIds.reverse().indexOf(n) > -1 : true),
+        ...mapTableIds.reverse().filter(n => this.enabledTableIds?.length > 0 ? this.enabledTableIds.reverse().indexOf(n) > -1 : true),
       ];
     }
   }
