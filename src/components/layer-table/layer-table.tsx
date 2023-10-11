@@ -274,6 +274,14 @@ export class LayerTable {
   }
 
   /**
+   * watch for selection changes
+   */
+  @Watch("_selectedIndexes")
+  async _selectedIndexesWatchHandler(): Promise<void> {
+    this._validateEnabledActions();
+  }
+
+  /**
    * When sortActive is false the user has not defined a sort and we should use the default sort
    */
   @Watch("_sortActive")
@@ -423,7 +431,7 @@ export class LayerTable {
    * Called after the component is rendered
    */
   componentDidRender(): void {
-    this._updateToolbar()
+    this._updateToolbar();
   }
 
   //--------------------------------------------------------------------------
@@ -533,6 +541,26 @@ export class LayerTable {
   }
 
   /**
+   * Update actions enabled prop based on number of selected indexes
+   *
+   * @returns void
+   */
+  _validateEnabledActions(): void {
+    const featuresSelected = this._selectedIndexes.length > 0;
+    const selectionDependant = [
+      "zoom-to-object",
+      "trash",
+      "erase",
+      "selected-items-filter"
+    ];
+    this._toolInfos.forEach(ti => {
+      if (ti && selectionDependant.indexOf(ti.icon) > -1) {
+        ti.disabled = !featuresSelected;
+      }
+    });
+  }
+
+  /**
    * Get the full list of toolInfos.
    * Order is important. They should be listed in the order they should display in the UI from
    * Left to Right for the action bar and Top to Bottom for the dropdown.
@@ -599,6 +627,8 @@ export class LayerTable {
       disabled: false,
       isOverflow: true
     } : undefined];
+
+    this._defaultVisibleToolSizeInfos = undefined;
   }
 
   /**
@@ -636,9 +666,7 @@ export class LayerTable {
             return prev;
           }, []).reverse();
 
-          if (JSON.stringify(controlsThatFit) !== JSON.stringify(this._controlsThatFit)) {
-            this._controlsThatFit = controlsThatFit;
-          }
+          this._setControlsThatFit(controlsThatFit, skipControls);
         }
       } else {
         if (this._defaultVisibleToolSizeInfos) {
@@ -659,12 +687,32 @@ export class LayerTable {
             return prev;
           }, []);
 
-          if (JSON.stringify(controlsThatFit) !== JSON.stringify(this._controlsThatFit)) {
-            this._controlsThatFit = controlsThatFit;
-          }
+          this._setControlsThatFit(controlsThatFit, skipControls);
         }
       }
     }, 5);
+  }
+
+  /**
+   * Validate if controls that fit the current display has changed or
+   * is different from what is currently displayed
+   *
+   * @returns void
+   */
+  _setControlsThatFit(
+    controlsThatFit: IToolSizeInfo[],
+    skipControls: string[]
+  ): void {
+    let update = JSON.stringify(controlsThatFit) !== JSON.stringify(this._controlsThatFit);
+    const actionbar = document.getElementById("solutions-action-bar");
+    actionbar.childNodes.forEach((n: any) => {
+      if (skipControls.indexOf(n.id) < 0 && !update) {
+        update = this._controlsThatFit.map(c => c.id).indexOf(n.id) < 0;
+      }
+    })
+    if (update) {
+      this._controlsThatFit = [...controlsThatFit];
+    }
   }
 
   /**
@@ -859,7 +907,7 @@ export class LayerTable {
   ): VNode {
     const _disabled = this._layer === undefined ? true : disabled;
     return (
-      <div class="display-flex">
+      <div class="display-flex" id={this._getId(icon)}>
         <calcite-action
           appearance="solid"
           disabled={_disabled}
@@ -969,6 +1017,7 @@ export class LayerTable {
           this._table.view = this.mapView;
           this._checkEditEnabled();
           this._table.editingEnabled = this._editEnabled && this.enableInlineEdit;
+          this._initToolInfos();
         });
 
         await this._table.when(() => {
