@@ -500,7 +500,6 @@ export class CrowdsourceManager {
             </div>
           </div>
           <calcite-action
-            class="height-49-px"
             icon={icon}
             id={id}
             onClick={() => this._togglePopup()}
