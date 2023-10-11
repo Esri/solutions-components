@@ -240,11 +240,11 @@ export class EditCard {
     // when you use MULTI edit mode...is fine in SINGLE
     const editDisabled = this.graphics?.length > 0 && this.graphics[0] ?
       !(this.graphics[0].layer as __esri.FeatureLayer).editingEnabled : true;
-      const tableNodeClass = this._editorLoading ? "display-none" : "";
+      const tableNodeClass = this._editorLoading ? "display-none" : "position-absolute";
       const loadingClass = this._editorLoading ? "" : "display-none";
     return (
       <Host>
-        <div class="position-relative">
+        <div class="position-absolute">
           {
             editDisabled ? (
               <calcite-notice
@@ -259,7 +259,7 @@ export class EditCard {
               </calcite-notice>
             ) : undefined
           }
-          <div slot="content">
+          <div class="position-absolute" slot="content">
             <div
               class={tableNodeClass}
               id="feature-form"
