@@ -349,8 +349,8 @@ export class LayerTable {
    *
    */
   @Listen("editsComplete", { target: "window" })
-  editsComplete(): void {
-    this._refresh();
+  async editsComplete(): Promise<void> {
+    await this._refresh();
   }
 
   /**
@@ -1254,8 +1254,9 @@ export class LayerTable {
    *
    * @returns void
    */
-  protected _refresh(): void {
-    void this._table.refresh();
+  protected async _refresh(): Promise<void> {
+    await this._table.refresh();
+    this.featureSelectionChange.emit(this._selectedIndexes);
   }
 
   /**
