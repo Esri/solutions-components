@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
 import EditCard_T9n from "../../assets/t9n/edit-card/resources.json"
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -156,7 +156,7 @@ export class EditCard {
   @Watch("graphics")
   async graphicsWatchHandler(): Promise<void> {
     if (this.graphics.length === 0) {
-      this._closeEdit();
+      await this._closeEdit();
     }
   }
 
@@ -171,7 +171,7 @@ export class EditCard {
       this._editorLoading = false;
     }
     if (!v) {
-      this._closeEdit();
+      await this._closeEdit();
     }
   }
 
@@ -196,6 +196,11 @@ export class EditCard {
    * Emitted on demand when edits are completed on current edit layer
    */
   @Event() editsComplete: EventEmitter<void>;
+
+  @Listen("featureSelectionChange", { target: "window" })
+  async featureSelectionChange(): Promise<void> {
+    await this._closeEdit();
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -227,7 +232,7 @@ export class EditCard {
       }
       this._layerEditHandle = this._layer.on("edits", () => {
         this.editsComplete.emit();
-        this._closeEdit();
+        void this._closeEdit();
       });
     }
   }
@@ -339,7 +344,7 @@ export class EditCard {
         () => this._editor.viewModel.state === "ready",
         () => {
           if (this._shouldClose) {
-            this._closeEdit();
+            void this._closeEdit();
           } else if (this.graphicIndex > -1 && this.graphics.length > 0 && this.open && !this._shouldClose) {
             void this._startUpdate();
           }
@@ -365,7 +370,12 @@ export class EditCard {
    *
    * @returns void
    */
-  protected _closeEdit(): void {
+  protected async _closeEdit(): Promise<void> {
+    this._shouldClose = true;
+    if (this._editor?.activeWorkflow) {
+      await this._editor?.cancelWorkflow();
+    }
+    this._editor?.destroy();
     this._shouldClose = false;
     this.closeEdit.emit();
   }
