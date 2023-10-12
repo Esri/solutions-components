@@ -1009,33 +1009,33 @@ export class LayerTable {
    * @returns void
    */
   protected async _resetTable(): Promise<void> {
-    if (this._table) {
-      this._clearSelection();
-      this._allIds = [];
-      this.featureSelectionChange.emit(this._selectedIndexes);
-      if (this._layer) {
-        await this._layer.when(() => {
-          const columnTemplates = this._getColumnTemplates(this._layer.id, this._layer?.popupTemplate?.fieldInfos);
-          this._table.layer = this._layer;
-          this._table.tableTemplate.columnTemplates = columnTemplates;
-          this._table.view = this.mapView;
-          this._checkEditEnabled();
-          this._table.editingEnabled = this._editEnabled && this.enableInlineEdit;
-          this._initToolInfos();
-        });
+    this._clearSelection();
+    this._allIds = [];
+    this.featureSelectionChange.emit(this._selectedIndexes);
 
-        await this._table.when(() => {
-          this._table.clearSelectionFilter();
-        });
+    const columnTemplates = this._getColumnTemplates(this._layer.id, this._layer?.popupTemplate?.fieldInfos);
+    this._allIds = await queryAllIds(this._layer);
 
-        this._showOnlySelected = false;
-        this._sortActive = false;
-        await this._sortTable();
-      } else {
-        this._table.view = this.mapView;
-        this._table.layer = this._layer;
-      }
+    if (!this._table) {
+      await this._getTable(this._tableNode, columnTemplates);
+    } else if (columnTemplates) {
+      this._table.tableTemplate.columnTemplates = columnTemplates;
     }
+
+    this._table.layer = this._layer;
+    this._table.view = this.mapView;
+    this._checkEditEnabled();
+    this._table.editingEnabled = this._editEnabled && this.enableInlineEdit;
+    this._initToolInfos();
+
+    await this._table.when(() => {
+      this._table.highlightIds.removeAll();
+      this._table.clearSelectionFilter();
+    });
+
+    this._showOnlySelected = false;
+    this._sortActive = false;
+    await this._sortTable();
   }
 
   /**
@@ -1294,26 +1294,11 @@ export class LayerTable {
     const id: string = evt.detail[0];
     if (id !== this._layer?.id || this._allIds.length === 0) {
       this._fetchingData = true;
-      this._layer = await getLayerOrTable(this.mapView, id);
-      await this._layer.when(async () => {
-        const columnTemplates = this._getColumnTemplates(id, this._layer?.popupTemplate?.fieldInfos);
-        this._allIds = await queryAllIds(this._layer);
-        if (!this._table) {
-          await this._getTable(this._tableNode, columnTemplates);
-        } else if (columnTemplates) {
-          this._table.tableTemplate.columnTemplates = columnTemplates;
-        }
-        await this._table.when(() => {
-          this._table.highlightIds.removeAll();
-        });
-        this._selectedIndexes = [];
-        this._table.layer = this._layer;
-        this._initToolInfos();
-        this._table.render();
+      const layer = await getLayerOrTable(this.mapView, id);
+      await layer.when(() => {
+        this._layer = layer;
       });
     }
-    this._sortActive = false;
-    await this._sortTable();
     this._fetchingData = false;
   }
 
