@@ -311,7 +311,11 @@ export class LayerTable {
   /**
    * Emitted on demand when the filters button is clicked
    */
-  @Event() openFilterOptions: EventEmitter<void>;
+  @Event({
+    eventName: 'openFilterOptions',
+    composed: true,
+    bubbles: true
+  }) openFilterOptions: EventEmitter<void>;
 
   /**
    * Scroll and zoom to the selected feature from the Features widget.
@@ -379,7 +383,7 @@ export class LayerTable {
     await this._getTranslations();
     await this._initModules();
     this._initToolInfos();
-    this._resizeObserver = new ResizeObserver(() => this._onResize())
+    this._resizeObserver = new ResizeObserver(() => this._onResize());
   }
 
   /**
@@ -1291,19 +1295,22 @@ export class LayerTable {
     if (id !== this._layer?.id || this._allIds.length === 0) {
       this._fetchingData = true;
       this._layer = await getLayerOrTable(this.mapView, id);
-      const columnTemplates = this._getColumnTemplates(id, this._layer?.popupTemplate?.fieldInfos);
-      this._allIds = await queryAllIds(this._layer);
-      if (!this._table) {
-        await this._getTable(this._tableNode, columnTemplates);
-      } else if (columnTemplates) {
-        this._table.tableTemplate.columnTemplates = columnTemplates;
-      }
-      await this._table.when(() => {
-        this._table.highlightIds.removeAll();
+      await this._layer.when(async () => {
+        const columnTemplates = this._getColumnTemplates(id, this._layer?.popupTemplate?.fieldInfos);
+        this._allIds = await queryAllIds(this._layer);
+        if (!this._table) {
+          await this._getTable(this._tableNode, columnTemplates);
+        } else if (columnTemplates) {
+          this._table.tableTemplate.columnTemplates = columnTemplates;
+        }
+        await this._table.when(() => {
+          this._table.highlightIds.removeAll();
+        });
+        this._selectedIndexes = [];
+        this._table.layer = this._layer;
+        this._initToolInfos();
+        this._table.render();
       });
-      this._selectedIndexes = [];
-      this._table.layer = this._layer;
-      this._table.render();
     }
     this._sortActive = false;
     await this._sortTable();
