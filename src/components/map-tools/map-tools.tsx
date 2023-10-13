@@ -91,6 +91,11 @@ export class MapTools {
   //--------------------------------------------------------------------------
 
   /**
+   * When true the map supports floor awareness
+   */
+  @State() _hasFloorInfo = false;
+
+  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
@@ -162,6 +167,16 @@ export class MapTools {
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * When the mapView loads check if it supports floor awareness
+   */
+  @Watch("mapView")
+  async mapViewWatchHandler(): Promise<void> {
+    await this.mapView.when(() => {
+      this._hasFloorInfo = (this.mapView?.map as any)?.floorInfo;
+    });
+  }
 
   /**
    * When the _showBasemapWidget property is true display the basemap gallery
@@ -315,7 +330,7 @@ export class MapTools {
                 undefined
             }
             {
-              this.enableFloorFilter ?
+              this.enableFloorFilter && this._hasFloorInfo ?
                 this._getActionGroup("urban-model", false, this._translations.floorFilter, () => this._toggleFloorFilter()) :
                 undefined
             }

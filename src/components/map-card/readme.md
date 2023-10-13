@@ -15,6 +15,7 @@
 | `enableFullscreen`  | `enable-fullscreen`   | boolean: when true the fullscreen widget will be available                                             | `boolean`        | `undefined` |
 | `enableLegend`      | `enable-legend`       | boolean: when true the legend widget will be available                                                 | `boolean`        | `undefined` |
 | `enableSearch`      | `enable-search`       | boolean: when true the search widget will be available                                                 | `boolean`        | `undefined` |
+| `hidden`            | `hidden`              | boolean: When true the map display will be hidden                                                      | `boolean`        | `undefined` |
 | `mapInfos`          | --                    | IMapInfo[]: array of map infos (name and id)                                                           | `IMapInfo[]`     | `[]`        |
 | `mapView`           | --                    | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`        | `undefined` |
 
