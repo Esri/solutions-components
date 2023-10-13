@@ -466,7 +466,7 @@ export class CrowdsourceManager {
           basemapConfig={this.basemapConfig}
           class="width-full"
           enableBasemap={this.enableBasemap}
-          enableFloorFilter={this.enableFloorFilter && (this._mapView?.map as any)?.floorInfo}
+          enableFloorFilter={this.enableFloorFilter}
           enableFullscreen={this.enableFullscreen}
           enableLegend={this.enableLegend}
           enableSearch={this.enableSearch}

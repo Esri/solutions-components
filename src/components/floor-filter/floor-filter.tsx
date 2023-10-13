@@ -154,7 +154,7 @@ export class FloorFilter {
   protected _initFloorFilter(
     view: __esri.MapView
   ): void {
-    if (view && this.enabled && this.FloorFilter) {
+    if (view && this.enabled && this.FloorFilter && (view?.map as any)?.floorInfo) {
       if (!this.floorFilterWidget) {
         this.floorFilterWidget = new this.FloorFilter({
           container: this._floorFilterElement,
