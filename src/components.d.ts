@@ -317,6 +317,10 @@ export namespace Components {
          */
         "enableSearch": boolean;
         /**
+          * boolean: When true the map display will be hidden
+         */
+        "hidden": boolean;
+        /**
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos": IMapInfo[];
@@ -1579,6 +1583,10 @@ declare namespace LocalJSX {
           * boolean: when true the search widget will be available
          */
         "enableSearch"?: boolean;
+        /**
+          * boolean: When true the map display will be hidden
+         */
+        "hidden"?: boolean;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */

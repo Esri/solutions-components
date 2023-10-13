@@ -459,7 +459,7 @@ export class CrowdsourceManager {
   ): VNode {
     const mapDisplayClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "display-flex height-full width-1-2" :
       layoutMode === ELayoutMode.GRID && !hideMap ? "" : "display-none";
-    const mapContainerClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "width-full" : this._expandPopup ? "height-50-px" : "adjusted-height-50";
+    const mapContainerClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "width-full" : "adjusted-height-50";
     return (
       <div class={`${mapContainerClass} overflow-hidden ${mapDisplayClass}`} >
         <map-card
@@ -470,6 +470,7 @@ export class CrowdsourceManager {
           enableFullscreen={this.enableFullscreen}
           enableLegend={this.enableLegend}
           enableSearch={this.enableSearch}
+          hidden={this._expandPopup}
           mapInfos={this.mapInfos?.filter(mapInfo => mapInfo.visible !== false)}
         />
       </div>
@@ -487,8 +488,9 @@ export class CrowdsourceManager {
     const id = "expand-popup";
     const tooltip = this._expandPopup ? this._translations.collapsePopup : this._translations.expandPopup;
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
+    const popupNodeClass = !this._expandPopup ? "height-full" : "position-absolute-50";
     return (
-      <div class={"calcite-mode-dark height-full"}>
+      <div class={"calcite-mode-dark " + popupNodeClass}>
         <calcite-panel>
           <div
             class="display-flex align-items-center"
@@ -539,10 +541,9 @@ export class CrowdsourceManager {
    */
   protected _getCardNode(): VNode {
     const cardManagerHeight = !this._expandPopup ? "height-50" : "height-full";
-    const cardManagerContainer = this._expandPopup ? "width-50 adjusted-height-100-50" : "width-50 height-full";
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
-      <div class={`${cardManagerContainer} ${themeClass}`}>
+      <div class={`width-50 height-full ${themeClass}`}>
         <card-manager
           class={`${cardManagerHeight} width-full`}
           mapView={this?._mapView}

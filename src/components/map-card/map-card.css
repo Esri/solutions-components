@@ -21,9 +21,13 @@
 }
 
 .map-height {
-  height: calc(100% - 58px);
+  height: calc(100% - 51px);
 }
 
 .box-shadow {
   box-shadow: none !important;
+}
+
+.visibility-hidden {
+  visibility: hidden;
 }

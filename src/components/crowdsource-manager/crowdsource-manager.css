@@ -154,3 +154,11 @@
   width: 40px !important;
   height: 40px !important;
 }
+
+.position-absolute-50 {
+  position: absolute;
+  top: 50px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}

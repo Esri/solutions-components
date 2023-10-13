@@ -76,6 +76,11 @@ export class MapCard {
   @Prop() basemapConfig: IBasemapConfig;
 
   /**
+   * boolean: When true the map display will be hidden
+   */
+  @Prop() hidden: boolean;
+
+  /**
    * IMapInfo[]: array of map infos (name and id)
    */
   @Prop() mapInfos: IMapInfo[] = [];
@@ -192,10 +197,11 @@ export class MapCard {
    * Renders the component.
    */
   render() {
+    const mapClass = this.hidden ? "visibility-hidden" : "";
     return (
       <Host>
         <map-picker mapInfos={this.mapInfos}/>
-        <div class="map-height" ref={(el) => (this._mapDiv = el)}/>
+        <div class={`map-height ${mapClass}`} ref={(el) => (this._mapDiv = el)}/>
         <map-tools
           basemapConfig={this.basemapConfig}
           class={"box-shadow"}
