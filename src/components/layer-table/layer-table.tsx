@@ -654,7 +654,7 @@ export class LayerTable {
       let controlsWidth = this._toolbarSizeInfos.reduce((prev, cur) => {
         prev += cur.width;
         return prev;
-      }, 0)
+      }, 0);
 
       const skipControls = ["solutions-more", "solutions-map-layer-picker-container"];
       if (controlsWidth > toolbarWidth) {
@@ -679,14 +679,19 @@ export class LayerTable {
             return prev;
           }, []);
 
+          let forceFinish = false;
           const controlsThatFit = [...this._defaultVisibleToolSizeInfos].reduce((prev, cur) => {
-            if (skipControls.indexOf(cur.id) < 0 &&
+            if (!forceFinish && skipControls.indexOf(cur.id) < 0 &&
               (currentTools.indexOf(cur.id) > -1 || (controlsWidth + cur.width) <= toolbarWidth)
             ) {
               if (currentTools.indexOf(cur.id) < 0) {
                 controlsWidth += cur.width;
               }
               prev.push(cur);
+            } else if (skipControls.indexOf(cur.id) < 0 && (controlsWidth + cur.width) > toolbarWidth) {
+              // exist the first time we evalute this as true...otherwise it will add the next control that will fit
+              // and not preserve the overall order of controls
+              forceFinish = true;
             }
             return prev;
           }, []);
@@ -775,7 +780,7 @@ export class LayerTable {
     id: string
   ): VNode {
     const dropdownItems = this._getDropdownItems();
-    return (
+    return dropdownItems.length > 0 ? (
       <calcite-dropdown disabled={this._layer === undefined} id="solutions-more">
       <calcite-action
         appearance="solid"
@@ -807,7 +812,7 @@ export class LayerTable {
         }
       </calcite-dropdown-group>
     </calcite-dropdown>
-    )
+    ) : undefined;
   }
 
   /**
