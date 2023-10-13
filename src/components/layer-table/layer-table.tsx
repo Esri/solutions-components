@@ -689,7 +689,7 @@ export class LayerTable {
               }
               prev.push(cur);
             } else if (skipControls.indexOf(cur.id) < 0 && (controlsWidth + cur.width) > toolbarWidth) {
-              // exist the first time we evalute this as true...otherwise it will add the next control that will fit
+              // exit the first time we evalute this as true...otherwise it will add the next control that will fit
               // and not preserve the overall order of controls
               forceFinish = true;
             }
