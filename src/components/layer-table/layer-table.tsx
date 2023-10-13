@@ -610,26 +610,26 @@ export class LayerTable {
       func: () => this._selectAll(),
       label: this._translations.selectAll,
       disabled: false,
-      isOverflow: true
+      isOverflow: false
     }, {
       icon: "compare",
       func: () => this._switchSelected(),
       label: this._translations.switchSelected,
       disabled: false,
-      isOverflow: true
+      isOverflow: false
     }, {
       icon: "refresh",
       func: () => this._refresh(),
       label: this._translations.refresh,
       disabled: false,
-      isOverflow: true
+      isOverflow: false
     },
     this.enableCSV ? {
       icon: "export",
       func: () => void this._exportToCSV(),
       label: this._translations.exportCSV,
       disabled: false,
-      isOverflow: true
+      isOverflow: false
     } : undefined];
 
     this._defaultVisibleToolSizeInfos = undefined;
