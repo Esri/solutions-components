@@ -924,21 +924,100 @@ describe("downloadUtils", () => {
 
   describe('_prepareAttributeValue', () => {
 
-    it('should format date attributes using the specified date format', () => {
-      const attributeValue = new Date('2022-01-01T00:00:00.000Z');
+    it('should format date attributes', () => {
+      const attributeValue = new Date('2022-02-01T00:00:00.000Z');
       const attributeType = 'date';
       const attributeDomain = null;
-      const attributeFormat = {
-        dateFormat: 'short-date'
-      };
+      const attributeFormat = null;
       const intl = {
-        formatDate: jest.fn().mockReturnValue('01/01/2022'),
+        formatDate: jest.fn().mockReturnValue('02/01/2022'),
         convertDateFormatToIntlOptions: jest.fn().mockReturnValue({})
       };
       const result = downloadUtils._prepareAttributeValue(attributeValue, attributeType, attributeDomain, attributeFormat as any, intl);
-      expect(result).toEqual('01/01/2022');
+      expect(result).toEqual('02/01/2022');
+      expect(intl.formatDate).toHaveBeenCalledWith(attributeValue);
+      expect(intl.convertDateFormatToIntlOptions).not.toHaveBeenCalled();
+    });
+
+    it('should format date-only attributes', () => {
+      const attributeValue = '2020-02-01';
+      const attributeType = 'date-only';
+      const attributeDomain = null;
+      const attributeFormat = null;
+      const intl = {
+        formatDateOnly: jest.fn().mockReturnValue('02/01/2022'),
+        convertDateFormatToIntlOptions: jest.fn().mockReturnValue({})
+      };
+      const result = downloadUtils._prepareAttributeValue(attributeValue, attributeType, attributeDomain, attributeFormat as any, intl);
+      expect(result).toEqual('02/01/2022');
+      expect(intl.formatDateOnly).toHaveBeenCalledWith(attributeValue);
+      expect(intl.convertDateFormatToIntlOptions).not.toHaveBeenCalled();
+    });
+
+    it('should format time-only attributes', () => {
+      const attributeValue = '14:51:44.2533333';
+      const attributeType = 'time-only';
+      const attributeDomain = null;
+      const attributeFormat = null;
+      const intl = {
+        formatTimeOnly: jest.fn().mockReturnValue('14:41'),
+        convertDateFormatToIntlOptions: jest.fn().mockReturnValue({})
+      };
+      const result = downloadUtils._prepareAttributeValue(attributeValue, attributeType, attributeDomain, attributeFormat as any, intl);
+      expect(result).toEqual('14:41');
+      expect(intl.formatTimeOnly).toHaveBeenCalledWith(attributeValue);
+      expect(intl.convertDateFormatToIntlOptions).not.toHaveBeenCalled();
+    });
+
+    it('should format date attributes using the specified date format', () => {
+      const attributeValue = new Date('2022-02-01T00:00:00.000Z');
+      const attributeType = 'date';
+      const attributeDomain = null;
+      const attributeFormat = {
+        dateFormat: 'shortdate'
+      };
+      const intl = {
+        formatDate: jest.fn().mockReturnValue('02/01/2022'),
+        convertDateFormatToIntlOptions: jest.fn().mockReturnValue({})
+      };
+      const result = downloadUtils._prepareAttributeValue(attributeValue, attributeType, attributeDomain, attributeFormat as any, intl);
+      expect(result).toEqual('02/01/2022');
       expect(intl.formatDate).toHaveBeenCalledWith(attributeValue, {});
-      expect(intl.convertDateFormatToIntlOptions).toHaveBeenCalledWith('short-date');
+      expect(intl.convertDateFormatToIntlOptions).toHaveBeenCalledWith('shortdate');
+    });
+
+    it('should format date-only attributes using the specified date format', () => {
+      const attributeValue = '2020-02-01';
+      const attributeType = 'date-only';
+      const attributeDomain = null;
+      const attributeFormat = {
+        dateFormat: 'shortdate'
+      };
+      const intl = {
+        formatDateOnly: jest.fn().mockReturnValue('02/01/2022'),
+        convertDateFormatToIntlOptions: jest.fn().mockReturnValue({})
+      };
+      const result = downloadUtils._prepareAttributeValue(attributeValue, attributeType, attributeDomain, attributeFormat as any, intl);
+      expect(result).toEqual('02/01/2022');
+      expect(intl.formatDateOnly).toHaveBeenCalledWith(attributeValue, {});
+      expect(intl.convertDateFormatToIntlOptions).toHaveBeenCalledWith('shortdate');
+    });
+
+    it('should format time-only attributes using the specified date format', () => {
+      const attributeValue = '14:51:44.2533333';
+      const attributeType = 'time-only';
+      const attributeDomain = null;
+      const attributeFormat = {
+        dateFormat: 'shortdate'
+      };
+      const intl = {
+        formatTimeOnly: jest.fn().mockReturnValue('14:41'),
+        convertDateFormatToIntlOptions: jest.fn().mockReturnValue({})
+      };
+      const result = downloadUtils._prepareAttributeValue(attributeValue, attributeType, attributeDomain, attributeFormat as any, intl);
+      expect(result).toEqual('14:41');
+      expect(intl.formatTimeOnly).toHaveBeenCalledWith(attributeValue, {});
+      expect(intl.convertDateFormatToIntlOptions).toHaveBeenCalledWith('shortdate');
     });
 
     it('should format number attributes using the specified number format', () => {
