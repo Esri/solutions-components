@@ -59,7 +59,7 @@ export async function queryAllIds(
   layer: __esri.FeatureLayer
 ): Promise<number[]> {
   const query = layer.createQuery();
-  query.where = "1=1";
+  query.where = layer.definitionExpression || "1=1";
   return await layer.queryObjectIds(query);
 }
 
