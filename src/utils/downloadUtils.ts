@@ -688,6 +688,26 @@ export function _prepareAttributeValue(
         value = value.replace(/\xe2\x80\xaf/g, "");
         break;
 
+      case "date-only":
+        // Value is a string, e.g., "2020-12-08"
+        if (attributeFormat?.dateFormat) {
+          const dateFormatIntlOptions = intl.convertDateFormatToIntlOptions(attributeFormat.dateFormat as any);
+          value = intl.formatDateOnly(value, dateFormatIntlOptions);
+        } else {
+          value = intl.formatDateOnly(value);
+        }
+        break;
+
+      case "time-only":
+        // Value is a string, e.g., "14:51:44.2533333"
+        if (attributeFormat?.dateFormat) {
+          const dateFormatIntlOptions = intl.convertDateFormatToIntlOptions(attributeFormat.dateFormat as any);
+          value = intl.formatTimeOnly(value, dateFormatIntlOptions);
+        } else {
+          value = intl.formatTimeOnly(value);
+        }
+        break;
+
       case "double":
       case "integer":
       case "long":
