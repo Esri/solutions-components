@@ -578,6 +578,7 @@ export class LayerTable {
    */
   protected _initToolInfos(): void {
     const featuresSelected = this._selectedIndexes.length > 0;
+    const featuresEmpty = this._allIds.length === 0;
     this._toolInfos = [this.enableZoom ? {
       icon: "zoom-to-object",
       label: this._translations.zoom,
@@ -615,13 +616,13 @@ export class LayerTable {
       icon: "list-check-all",
       func: () => this._selectAll(),
       label: this._translations.selectAll,
-      disabled: false,
+      disabled: featuresEmpty,
       isOverflow: false
     }, {
       icon: "compare",
       func: () => this._switchSelected(),
       label: this._translations.switchSelected,
-      disabled: false,
+      disabled: featuresEmpty,
       isOverflow: false
     }, {
       icon: "refresh",
@@ -634,7 +635,7 @@ export class LayerTable {
       icon: "export",
       func: () => void this._exportToCSV(),
       label: this._translations.exportCSV,
-      disabled: false,
+      disabled: featuresEmpty,
       isOverflow: false
     } : undefined];
 
