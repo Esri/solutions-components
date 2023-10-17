@@ -13,6 +13,7 @@
 | `enableBasemap`     | `enable-basemap`      | boolean: when true the basemap widget will be available                                                | `boolean`        | `undefined` |
 | `enableFloorFilter` | `enable-floor-filter` | boolean: when true the floor filter widget will be available                                           | `boolean`        | `undefined` |
 | `enableFullscreen`  | `enable-fullscreen`   | boolean: when true the fullscreen widget will be available                                             | `boolean`        | `undefined` |
+| `enableHome`        | `enable-home`         | boolean: when true the home widget will be available                                                   | `boolean`        | `undefined` |
 | `enableLegend`      | `enable-legend`       | boolean: when true the legend widget will be available                                                 | `boolean`        | `undefined` |
 | `enableSearch`      | `enable-search`       | boolean: when true the search widget will be available                                                 | `boolean`        | `undefined` |
 | `hidden`            | `hidden`              | boolean: When true the map display will be hidden                                                      | `boolean`        | `undefined` |

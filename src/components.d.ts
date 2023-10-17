@@ -267,6 +267,10 @@ export namespace Components {
          */
         "enableInlineEdit": boolean;
         /**
+          * boolean: when true the zoom button will be enabled
+         */
+        "enableZoom": boolean;
+        /**
           * IMapInfo: key configuration details about the current map
          */
         "mapInfo": IMapInfo;
@@ -308,6 +312,10 @@ export namespace Components {
           * boolean: when true the fullscreen widget will be available
          */
         "enableFullscreen": boolean;
+        /**
+          * boolean: when true the home widget will be available
+         */
+        "enableHome": boolean;
         /**
           * boolean: when true the legend widget will be available
          */
@@ -1522,6 +1530,10 @@ declare namespace LocalJSX {
          */
         "enableInlineEdit"?: boolean;
         /**
+          * boolean: when true the zoom button will be enabled
+         */
+        "enableZoom"?: boolean;
+        /**
           * IMapInfo: key configuration details about the current map
          */
         "mapInfo"?: IMapInfo;
@@ -1575,6 +1587,10 @@ declare namespace LocalJSX {
           * boolean: when true the fullscreen widget will be available
          */
         "enableFullscreen"?: boolean;
+        /**
+          * boolean: when true the home widget will be available
+         */
+        "enableHome"?: boolean;
         /**
           * boolean: when true the legend widget will be available
          */
