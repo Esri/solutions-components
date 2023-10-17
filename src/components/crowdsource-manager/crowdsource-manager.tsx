@@ -46,7 +46,7 @@ export class CrowdsourceManager {
   /**
    * boolean: when true the layer table will auto refresh the data
    */
-  @Prop() enableAutoRefresh = true;
+  @Prop() enableAutoRefresh = false;
 
   /**
    * boolean: when true the export to csv button will be available
@@ -468,6 +468,7 @@ export class CrowdsourceManager {
           enableBasemap={this.enableBasemap}
           enableFloorFilter={this.enableFloorFilter}
           enableFullscreen={this.enableFullscreen}
+          enableHome={this.enableHome}
           enableLegend={this.enableLegend}
           enableSearch={this.enableSearch}
           hidden={this._expandPopup}
@@ -602,6 +603,7 @@ export class CrowdsourceManager {
             enableAutoRefresh={this.enableAutoRefresh}
             enableCSV={this.enableCSV}
             enableInlineEdit={this.enableInlineEdit}
+            enableZoom={this.enableZoom}
             mapInfo={this._mapInfo}
             mapView={this?._mapView}
             onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
@@ -651,6 +653,9 @@ export class CrowdsourceManager {
   protected _setMapView(): void {
     this._mapInfo = this._getMapInfo(this._mapChange.id);
     this._mapView = this._mapChange.mapView;
+    if (!this.enableZoom && this._mapView?.ui?.components.indexOf("zoom") > -1) {
+      this._mapView.ui.components = this._mapView.ui.components.filter(c => c !== "zoom");
+    }
     this._mapView.popupEnabled = false;
   }
 

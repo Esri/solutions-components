@@ -46,6 +46,11 @@ export class MapCard {
   //--------------------------------------------------------------------------
 
   /**
+   * boolean: when true the home widget will be available
+   */
+  @Prop() enableHome: boolean;
+
+  /**
    * boolean: when true the legend widget will be available
    */
   @Prop() enableLegend: boolean;
@@ -278,10 +283,12 @@ export class MapCard {
       this.beforeMapChanged.emit();
 
       await this.mapView.when(() => {
-        const home = new this.Home({
-          view: this.mapView
-        });
-        this.mapView.ui.add(home, { position: "top-left", index: 3});
+        if (this.enableHome) {
+          const home = new this.Home({
+            view: this.mapView
+          });
+          this.mapView.ui.add(home, { position: "top-left", index: 3 });
+        }
         this.mapView.ui.add(this._mapTools, { position: "top-right", index: 0});
 
         this.mapChanged.emit({
