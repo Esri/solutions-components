@@ -653,6 +653,9 @@ export class CrowdsourceManager {
   protected _setMapView(): void {
     this._mapInfo = this._getMapInfo(this._mapChange.id);
     this._mapView = this._mapChange.mapView;
+    if (!this.enableZoom && this._mapView?.ui?.components.indexOf("zoom") > -1) {
+      this._mapView.ui.components = this._mapView.ui.components.filter(c => c !== "zoom");
+    }
     this._mapView.popupEnabled = false;
   }
 
