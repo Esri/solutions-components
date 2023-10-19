@@ -87,6 +87,11 @@ export class EditCard {
    */
  protected _activeWorkflowHandle: __esri.WatchHandle;
 
+ /**
+   * esri/core/Accessor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
+   */
+ protected _addRelatedRecordHandle: __esri.WatchHandle;
+
   /**
    * esri/core/Accessor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
    */
@@ -335,6 +340,7 @@ export class EditCard {
         this._editHandle.remove();
         this._attachmentHandle.remove();
         this._activeWorkflowHandle.remove();
+        this._addRelatedRecordHandle.remove();
       }
 
       this._attachmentHandle = this.reactiveUtils.when(
@@ -363,6 +369,16 @@ export class EditCard {
           if (activeWorkflow?.type === "update-table-record" || activeWorkflow?.type === "create-features") {
             this._shouldClose = false;
           }
+        }
+      );
+
+      // Temp workaround until a new prop is added at 4.29
+      this._addRelatedRecordHandle = this.reactiveUtils.when(
+        () => !!(this._editor.viewModel.featureFormViewModel as any).relatedRecordCallbacks,
+        () => {
+          (this._editor.viewModel.featureFormViewModel as any).relatedRecordCallbacks.addRelatedRecord = null;
+        }, {
+          once: true
         }
       );
 
