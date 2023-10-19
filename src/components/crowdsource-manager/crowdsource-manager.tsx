@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Listen, Prop, State, VNode } from "@stencil/core";
+import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { ELayoutMode, IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration } from "../../utils/interfaces";
@@ -192,6 +192,14 @@ export class CrowdsourceManager {
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * When true the map zoom tools will be available
+   */
+  @Watch("enableZoom")
+  enableZoomWatchHandler(): void {
+    this._initMapZoom();
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -653,10 +661,25 @@ export class CrowdsourceManager {
   protected _setMapView(): void {
     this._mapInfo = this._getMapInfo(this._mapChange.id);
     this._mapView = this._mapChange.mapView;
-    if (!this.enableZoom && this._mapView?.ui?.components.indexOf("zoom") > -1) {
-      this._mapView.ui.components = this._mapView.ui.components.filter(c => c !== "zoom");
-    }
+    this._initMapZoom();
     this._mapView.popupEnabled = false;
+  }
+
+  /**
+   * Add/remove zoom tools based on enableZoom prop
+   *
+   * @protected
+   */
+  protected _initMapZoom(): void {
+    if (!this.enableZoom) {
+      this._mapView.ui.remove("zoom");
+    } else if (this.enableZoom) {
+      this._mapView.ui.add({
+        component: "zoom",
+        position: "top-left",
+        index: 0
+      });
+    }
   }
 
   /**

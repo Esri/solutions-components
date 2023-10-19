@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
 import { IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration } from "../../utils/interfaces";
 
@@ -133,6 +133,11 @@ export class MapCard {
   protected WebMap: typeof import("esri/WebMap");
 
   /**
+   * esri/widgets/Home: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Home.html
+   */
+  protected _homeWidget: __esri.Home;
+
+  /**
    * string: the id of map currently displayed
    */
   protected _loadedId = "";
@@ -152,6 +157,14 @@ export class MapCard {
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Add/remove home widget
+   */
+  @Watch("enableHome")
+  enableHomeWatchHandler(): void {
+    this._initHome();
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -283,19 +296,29 @@ export class MapCard {
       this.beforeMapChanged.emit();
 
       await this.mapView.when(() => {
-        if (this.enableHome) {
-          const home = new this.Home({
-            view: this.mapView
-          });
-          this.mapView.ui.add(home, { position: "top-left", index: 3 });
-        }
+        this._initHome();
         this.mapView.ui.add(this._mapTools, { position: "top-right", index: 0});
-
         this.mapChanged.emit({
           id: id,
           mapView: this.mapView
         });
       });
+    }
+  }
+
+  /**
+   * Add/remove the home widget base on enableHome prop
+   *
+   * @protected
+   */
+  protected _initHome(): void {
+    if (this.enableHome) {
+      this._homeWidget = new this.Home({
+        view: this.mapView
+      });
+      this.mapView.ui.add(this._homeWidget, { position: "top-left", index: 3 });
+    } else if (this._homeWidget){
+      this.mapView.ui.remove(this._homeWidget);
     }
   }
 
