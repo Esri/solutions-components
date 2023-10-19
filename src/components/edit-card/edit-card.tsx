@@ -18,6 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, 
 import { loadModules } from "../../utils/loadModules";
 import EditCard_T9n from "../../assets/t9n/edit-card/resources.json"
 import { getLocaleComponentStrings } from "../../utils/locale";
+import { getAllLayers } from "../../utils/mapViewUtils";
 
 @Component({
   tag: 'edit-card',
@@ -164,7 +165,7 @@ export class EditCard {
   async openWatchHandler(v: boolean): Promise<void> {
     if (v && this.graphics?.length > 0 && this.graphicIndex > -1) {
       this._editorLoading = true;
-      this._initEditorWidget();
+      await this._initEditorWidget();
       if (this.graphicIndex > -1 && this.graphics.length > 0 && this.open && !this._shouldClose) {
         await this._startUpdate();
       }
@@ -305,19 +306,24 @@ export class EditCard {
    *
    * @returns void
    */
-  protected _initEditorWidget(): void {
+  protected async _initEditorWidget(): Promise<void> {
     if (this.mapView && this.graphics && this.graphics.length > 0 && this.graphics[0]) {
       if (this._editor) {
         this._editor.destroy()
       }
       const container = document.createElement("div");
+      const layers = await getAllLayers(this.mapView)
+      const layerInfos = layers.map(layer => {
+        return {
+          layer,
+          geometryUpdatesEnabled: false,
+          addEnabled: false
+        } as __esri.LayerInfo
+      });
       this._editor = new this.Editor({
         allowedWorkflows: "update",
         view: this.mapView,
-        layerInfos: [{
-          layer: this._layer,
-          geometryUpdatesEnabled: false
-        }],
+        layerInfos,
         visibleElements: {
           snappingControls: false,
           sketchTooltipControls: false
