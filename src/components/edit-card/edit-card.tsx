@@ -18,6 +18,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, 
 import { loadModules } from "../../utils/loadModules";
 import EditCard_T9n from "../../assets/t9n/edit-card/resources.json"
 import { getLocaleComponentStrings } from "../../utils/locale";
+import { getAllLayers } from "../../utils/mapViewUtils";
 
 @Component({
   tag: 'edit-card',
@@ -85,6 +86,11 @@ export class EditCard {
    * esri/core/Accessor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
    */
  protected _activeWorkflowHandle: __esri.WatchHandle;
+
+ /**
+   * esri/core/Accessor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
+   */
+ protected _addRelatedRecordHandle: __esri.WatchHandle;
 
   /**
    * esri/core/Accessor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
@@ -164,7 +170,7 @@ export class EditCard {
   async openWatchHandler(v: boolean): Promise<void> {
     if (v && this.graphics?.length > 0 && this.graphicIndex > -1) {
       this._editorLoading = true;
-      this._initEditorWidget();
+      await this._initEditorWidget();
       if (this.graphicIndex > -1 && this.graphics.length > 0 && this.open && !this._shouldClose) {
         await this._startUpdate();
       }
@@ -305,19 +311,24 @@ export class EditCard {
    *
    * @returns void
    */
-  protected _initEditorWidget(): void {
+  protected async _initEditorWidget(): Promise<void> {
     if (this.mapView && this.graphics && this.graphics.length > 0 && this.graphics[0]) {
       if (this._editor) {
         this._editor.destroy()
       }
       const container = document.createElement("div");
+      const layers = await getAllLayers(this.mapView)
+      const layerInfos = layers.map(layer => {
+        return {
+          layer,
+          geometryUpdatesEnabled: false,
+          addEnabled: false
+        } as __esri.LayerInfo
+      });
       this._editor = new this.Editor({
         allowedWorkflows: "update",
         view: this.mapView,
-        layerInfos: [{
-          layer: this._layer,
-          geometryUpdatesEnabled: false
-        }],
+        layerInfos,
         visibleElements: {
           snappingControls: false,
           sketchTooltipControls: false
@@ -329,6 +340,7 @@ export class EditCard {
         this._editHandle.remove();
         this._attachmentHandle.remove();
         this._activeWorkflowHandle.remove();
+        this._addRelatedRecordHandle.remove();
       }
 
       this._attachmentHandle = this.reactiveUtils.when(
@@ -357,6 +369,16 @@ export class EditCard {
           if (activeWorkflow?.type === "update-table-record" || activeWorkflow?.type === "create-features") {
             this._shouldClose = false;
           }
+        }
+      );
+
+      // Temp workaround until a new prop is added at 4.29
+      this._addRelatedRecordHandle = this.reactiveUtils.when(
+        () => !!(this._editor.viewModel.featureFormViewModel as any).relatedRecordCallbacks,
+        () => {
+          (this._editor.viewModel.featureFormViewModel as any).relatedRecordCallbacks.addRelatedRecord = null;
+        }, {
+          once: true
         }
       );
 

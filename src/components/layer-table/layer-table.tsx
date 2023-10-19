@@ -232,6 +232,36 @@ export class LayerTable {
   //--------------------------------------------------------------------------
 
   /**
+   * Reset the toolInfos when zoom tool is enabled/disabled
+   */
+  @Watch("enableZoom")
+  enableZoomWatchHandler(): void {
+    if (this._toolInfos?.length > 0) {
+      this._initToolInfos();
+    }
+  }
+
+  /**
+   * Reset the toolInfos when export csv is enabled/disabled
+   */
+  @Watch("enableCSV")
+  enableCSVWatchHandler(): void {
+    if (this._toolInfos?.length > 0) {
+      this._initToolInfos();
+    }
+  }
+
+  /**
+   * Update the table when enableInlineEdit is enabled/disabled
+   */
+  @Watch("enableInlineEdit")
+  enableInlineEditWatchHandler(): void {
+    if (this._table) {
+      this._table.editingEnabled = this._editEnabled && this.enableInlineEdit;
+    }
+  }
+
+  /**
    * watch for changes to the list of controls that will currently fit in the display
    */
   @Watch("_controlsThatFit")
@@ -555,7 +585,7 @@ export class LayerTable {
    * @returns void
    */
   _validateEnabledActions(): void {
-    const featuresSelected = this._selectedIndexes.length > 0;
+    const featuresSelected = this._featuresSelected();
     const selectionDependant = [
       "zoom-to-object",
       "trash",
@@ -577,8 +607,8 @@ export class LayerTable {
    * @returns void
    */
   protected _initToolInfos(): void {
-    const featuresSelected = this._selectedIndexes.length > 0;
-    const featuresEmpty = this._allIds.length === 0;
+    const featuresSelected = this._featuresSelected();
+    const featuresEmpty = this._featuresEmpty();
     this._toolInfos = [this.enableZoom ? {
       icon: "zoom-to-object",
       label: this._translations.zoom,
@@ -640,6 +670,24 @@ export class LayerTable {
     } : undefined];
 
     this._defaultVisibleToolSizeInfos = undefined;
+  }
+
+  /**
+   * Returns true when one ore more features are selected
+   *
+   * @returns boolean
+   */
+  protected _featuresSelected(): boolean {
+    return this._selectedIndexes.length > 0;
+  }
+
+  /**
+   * Return true when we have no features
+   *
+   * @returns boolean
+   */
+  protected _featuresEmpty(): boolean {
+    return this._allIds.length === 0;
   }
 
   /**
@@ -996,7 +1044,7 @@ export class LayerTable {
           // https://github.com/Esri/solutions-components/issues/365
           this._selectedIndexes = this._table.highlightIds.toArray().reverse();
           if (this._showOnlySelected) {
-            if (this._selectedIndexes.length > 0) {
+            if (this._featuresSelected()) {
               this._table.filterBySelection();
             } else {
               this._toggleShowSelected();
@@ -1304,7 +1352,7 @@ export class LayerTable {
     evt: CustomEvent
   ): Promise<void> {
     const id: string = evt.detail[0];
-    if (id !== this._layer?.id || this._allIds.length === 0) {
+    if (id !== this._layer?.id || this._featuresEmpty()) {
       this._fetchingData = true;
       const layer = await getLayerOrTable(this.mapView, id);
       await layer.when(() => {

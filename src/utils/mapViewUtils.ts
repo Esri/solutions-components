@@ -156,6 +156,26 @@ export async function getLayerOrTable(
 }
 
 /**
+ * Gets all of the layers from the current map when the map and their layerView is ready
+ *
+ * @param mapView the map view to fetch the layer names from
+ *
+ * @returns Promise resolving with an array of all layers
+ *
+ */
+export async function getAllLayers(
+  mapView: __esri.MapView
+): Promise<__esri.Layer[]> {
+  const layers = mapView.map.allLayers.toArray();
+  let layerViewPromises;
+  await mapView.when(() => {
+    layerViewPromises = layers.map(l => mapView.whenLayerView(l));
+  });
+  await Promise.allSettled(layerViewPromises);
+  return layers;
+}
+
+/**
  * Highlight features by OID
  *
  * @param ids the OIDs from the layer to highlight
