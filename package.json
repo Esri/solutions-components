@@ -30,9 +30,10 @@
     "update-browserslist": "npx browserslist@latest --update-db"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.10",
-    "@babel/preset-env": "^7.22.10",
-    "@babel/preset-typescript": "^7.22.5",
+    "@babel/core": "^7.23.2",
+    "@babel/preset-env": "^7.23.2",
+    "@babel/preset-typescript": "^7.23.2",
+    "@babel/types": "^7.23.0",
     "@esri/eslint-plugin-calcite-components": "^0.2.2",
     "@esri/solution-common": "3.0.1",
     "@stencil/postcss": "^2.1.0",
@@ -45,7 +46,7 @@
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.39.0",
     "autoprefixer": "10.4.4",
-    "babel-jest": "^29.6.2",
+    "babel-jest": "^29.7.0",
     "dotenv": "^10.0.0",
     "eslint": "^8.47.0",
     "eslint-config-prettier": "8.3.0",
