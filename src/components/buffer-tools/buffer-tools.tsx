@@ -155,6 +155,9 @@ export class BufferTools {
   async getTranslatedUnit(
     unit: string
   ): Promise<string> {
+    if (!this._units) {
+      await this._defineTranslations();
+    }
     return this._units[unit];
   }
 
@@ -191,9 +194,8 @@ export class BufferTools {
    * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
-    await this._getTranslations();
+    await this._defineTranslations();
     await this._initModules();
-    this._initTranslatedUnits();
   }
 
   /**
@@ -212,6 +214,18 @@ export class BufferTools {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Loads translations and defines unit names using those translations.
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _defineTranslations(): Promise<void> {
+    await this._getTranslations();
+    this._initTranslatedUnits();
+  }
 
   /**
    * Load esri javascript api modules
