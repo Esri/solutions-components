@@ -595,7 +595,7 @@ export async function _getLabelFormat(
           );
 
         if (webmapLayers.length > 0) {
-          labelFormatProps = await _getLabelFormat(webmap, webmapLayers[0] as __esri.FeatureLayer, formatUsingLayerPopup);
+          labelFormatProps = await _getLabelFormat(webmap, webmapLayers[0], formatUsingLayerPopup);
           labelFormatProps.relationshipId = relationshipId;
 
         } else {
@@ -609,7 +609,7 @@ export async function _getLabelFormat(
             (webmapLayer: __esri.FeatureLayer) => {
               if (webmapLayer.type === "feature" && webmapLayer.layerId != layer.layerId && webmapLayer.url) {
                 // Query the feature layer/table for properties missing from the webmap version
-                const webmapLayerUrl = webmapLayer.url + "/" + webmapLayer.layerId;
+                const webmapLayerUrl = webmapLayer.url + "/" + webmapLayer.layerId.toString();
                 relationshipCandidatePromises.push(
                   common.getJson(webmapLayerUrl/*, authentication*/)
                 );
@@ -621,7 +621,7 @@ export async function _getLabelFormat(
           )
 
           // Of the queried feature layers/tables, find the one with the matching relationship id
-          let relationshipCandidates = await Promise.all(relationshipCandidatePromises);
+          const relationshipCandidates = await Promise.all(relationshipCandidatePromises);
           let labelFormatPropsPromise: Promise<ILabelFormatProps>;
           if (
             !relationshipCandidates.some(
@@ -631,7 +631,7 @@ export async function _getLabelFormat(
                   && candidateLayer.relationships.some(relationship => relationship.id === relationshipId)
                 ) {
                   // Found the matching relationship; get the label format from it
-                  labelFormatPropsPromise = _getLabelFormat(webmap, webmapLayers[i] as __esri.FeatureLayer, formatUsingLayerPopup);
+                  labelFormatPropsPromise = _getLabelFormat(webmap, webmapLayers[i], formatUsingLayerPopup);
                   return true;
                 } else {
                   return false;
