@@ -135,6 +135,15 @@ export class BasemapGallery {
     );
   }
 
+  /**
+   * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
+   */
+  async componentDidLoad(): Promise<void> {
+    if (this.mapView) {
+      await this.mapViewWatchHandler();
+    }
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (protected)
