@@ -152,8 +152,6 @@ export class MapCard {
    */
   protected _mapTools: HTMLMapToolsElement;
 
-  protected esriConfig: typeof import("esri/config");
-
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -211,7 +209,6 @@ export class MapCard {
    */
   async componentWillLoad(): Promise<void> {
     await this._initModules();
-    this.esriConfig.portalUrl = "https://sg-em-devext.mapsdevext.arcgis.com";
   }
 
   /**
@@ -253,16 +250,14 @@ export class MapCard {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [WebMap, MapView, Home, esriConfig] = await loadModules([
+    const [WebMap, MapView, Home] = await loadModules([
       "esri/WebMap",
       "esri/views/MapView",
-      "esri/widgets/Home",
-      "esri/config"
+      "esri/widgets/Home"
     ]);
     this.WebMap = WebMap;
     this.MapView = MapView;
     this.Home = Home;
-    this.esriConfig = esriConfig;
   }
 
   /**
