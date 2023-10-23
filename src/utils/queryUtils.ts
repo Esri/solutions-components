@@ -128,14 +128,16 @@ export async function queryFeaturesByID(
   returnGeometry: boolean,
   outSpatialReference?: __esri.SpatialReference
 ): Promise<__esri.Graphic[]> {
-  const num = layer.capabilities.query.maxRecordCount;
+  const num = layer.capabilities?.query.maxRecordCount;
   const start = 0;
 
   const q = layer.createQuery();
   q.start = start;
-  q.num = num;
   q.returnGeometry = returnGeometry;
   q.objectIds = ids.slice(start, num);
+  if (num) {
+    q.num = num;
+  }
   if (outSpatialReference) {
     q.outSpatialReference = outSpatialReference;
   }

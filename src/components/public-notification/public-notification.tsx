@@ -81,7 +81,7 @@ export class PublicNotification {
   /**
    * number: The default number of labels per page to export
    */
-  @Prop() defaultNumLabelsPerPage;
+  @Prop() defaultNumLabelsPerPage = 6;
 
   /**
    * The effect that will be applied when featureHighlightEnabled is true

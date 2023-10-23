@@ -21,7 +21,7 @@ import { ILabel, exportPDF } from "./pdfUtils";
 import { loadModules } from "./loadModules";
 import { queryFeaturesByID } from "./queryUtils";
 import { IExportInfo, IExportInfos } from "../utils/interfaces";
-//import * as common from "@esri/solution-common";
+import * as common from "@esri/solution-common";
 
 export { ILabel } from "./pdfUtils";
 
@@ -584,15 +584,68 @@ export async function _getLabelFormat(
       if (labelFormatType === "relationship") {
         const relationshipId = layer.popupTemplate.content[0].relationshipId;
 
-        const webmapLayers = webmap.layers.toArray().concat(webmap.tables.toArray())
-        .filter((entry: __esri.FeatureLayer) =>
-          entry.type === "feature"
-          && entry.id !== layer.id
-          && entry.relationships
-          && entry.relationships.some(relationship => relationship.id === relationshipId));
+        // Get related layer
+        let webmapLayers = webmap.layers.toArray().concat(webmap.tables.toArray()) as  __esri.FeatureLayer[];
+        webmapLayers = webmapLayers.filter(
+          (webmapLayer: __esri.FeatureLayer) =>
+            webmapLayer.type === "feature"
+            && webmapLayer.id !== layer.id
+            && webmapLayer.relationships
+            && webmapLayer.relationships.some(relationship => relationship.id === relationshipId)
+          );
 
-        labelFormatProps = await _getLabelFormat(webmap, webmapLayers[0] as __esri.FeatureLayer, formatUsingLayerPopup);
-        labelFormatProps.relationshipId = relationshipId;
+        if (webmapLayers.length > 0) {
+          labelFormatProps = await _getLabelFormat(webmap, webmapLayers[0], formatUsingLayerPopup);
+          labelFormatProps.relationshipId = relationshipId;
+
+        } else {
+          // Related layer info is not in webmap; get the label info from the related layer
+          webmapLayers = webmap.layers.toArray().concat(webmap.tables.toArray()) as  __esri.FeatureLayer[];
+
+          // Keep only feature layers and tables that have the type "feature" and whose layerId doesn't
+          // match the one we entered this function with and who have a URL that we can query
+          const relationshipCandidatePromises: Promise<any>[] = [];
+          webmapLayers = webmapLayers.filter(
+            (webmapLayer: __esri.FeatureLayer) => {
+              if (webmapLayer.type === "feature" && webmapLayer.layerId != layer.layerId && webmapLayer.url) {
+                // Query the feature layer/table for properties missing from the webmap version
+                const webmapLayerUrl = webmapLayer.url + "/" + webmapLayer.layerId.toString();
+                relationshipCandidatePromises.push(
+                  common.getJson(webmapLayerUrl/*, authentication*/)
+                );
+                return true;
+              } else {
+                return false;
+              }
+            }
+          )
+
+          // Of the queried feature layers/tables, find the one with the matching relationship id
+          const relationshipCandidates = await Promise.all(relationshipCandidatePromises);
+          let labelFormatPropsPromise: Promise<ILabelFormatProps>;
+          if (
+            !relationshipCandidates.some(
+              (candidateLayer: any, i: number) => {
+                if (
+                  candidateLayer.relationships
+                  && candidateLayer.relationships.some(relationship => relationship.id === relationshipId)
+                ) {
+                  // Found the matching relationship; get the label format from it
+                  labelFormatPropsPromise = _getLabelFormat(webmap, webmapLayers[i], formatUsingLayerPopup);
+                  return true;
+                } else {
+                  return false;
+                }
+              }
+            )
+          ) {
+            // Fallback to all fields
+            labelFormatProps.labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos);
+          } else {
+            labelFormatProps = await labelFormatPropsPromise;
+            labelFormatProps.relationshipId = relationshipId;
+          }
+        }
 
       } else if (labelFormatType === "fields") {
         labelFormatProps.labelFormat = _convertPopupFieldsToLabelSpec(layer.popupTemplate.fieldInfos);
