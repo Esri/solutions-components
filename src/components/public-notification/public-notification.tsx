@@ -1045,7 +1045,7 @@ export class PublicNotification {
         </div>
         <div class="padding-sides-1">
           <pdf-download
-            defaultNumLabelsPerPage={this.defaultNumLabelsPerPage}
+            defaultNumLabelsPerPage={parseInt(this.defaultNumLabelsPerPage.toString(), 10)}
             disabled={!this._downloadActive}
             ref={(el) => { this._downloadTools = el }}
           />
