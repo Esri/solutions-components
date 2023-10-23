@@ -668,7 +668,7 @@ export namespace Components {
         /**
           * number: The default number of labels per page to export
          */
-        "defaultNumLabelsPerPage": any;
+        "defaultNumLabelsPerPage": number;
         /**
           * The effect that will be applied when featureHighlightEnabled is true  esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
          */
@@ -1944,7 +1944,7 @@ declare namespace LocalJSX {
         /**
           * number: The default number of labels per page to export
          */
-        "defaultNumLabelsPerPage"?: any;
+        "defaultNumLabelsPerPage"?: number;
         /**
           * The effect that will be applied when featureHighlightEnabled is true  esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
          */
