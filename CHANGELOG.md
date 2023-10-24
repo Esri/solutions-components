@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.6.39] - Oct 24th 2023
+
 ## [0.6.38] - Oct 23rd 2023
 
 ## [0.6.37] - Oct 23rd 2023
@@ -295,4 +297,5 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 [0.6.36]: https://github.com/Esri/solution.js/compare/v0.6.35...v0.6.36 "v0.6.36"
 [0.6.37]: https://github.com/Esri/solution.js/compare/v0.6.36...v0.6.37 "v0.6.37"
 [0.6.38]: https://github.com/Esri/solution.js/compare/v0.6.37...v0.6.38 "v0.6.38"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.6.38...HEAD "Unreleased Changes"
+[0.6.39]: https://github.com/Esri/solution.js/compare/v0.6.38...v0.6.39 "v0.6.39"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.6.39...HEAD "Unreleased Changes"
