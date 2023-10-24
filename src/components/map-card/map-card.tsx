@@ -16,7 +16,7 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import { IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration } from "../../utils/interfaces";
+import { IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
 
 // TODO navigation and accessability isn't right for the map list
 //   tab does not go into the list when it's open
@@ -94,6 +94,11 @@ export class MapCard {
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
+
+  /**
+   * theme: "light" | "dark" theme to be used
+   */
+  @Prop() theme: theme;
 
   //--------------------------------------------------------------------------
   //
@@ -216,13 +221,14 @@ export class MapCard {
    */
   render() {
     const mapClass = this.hidden ? "visibility-hidden" : "";
+    const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
       <Host>
         <map-picker mapInfos={this.mapInfos}/>
         <div class={`map-height ${mapClass}`} ref={(el) => (this._mapDiv = el)}/>
         <map-tools
           basemapConfig={this.basemapConfig}
-          class={"box-shadow"}
+          class={`box-shadow ${themeClass}`}
           enableBasemap={this.enableBasemap}
           enableFloorFilter={this.enableFloorFilter}
           enableFullscreen={this.enableFullscreen}

@@ -17,7 +17,7 @@
 import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { ELayoutMode, IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration } from "../../utils/interfaces";
+import { ELayoutMode, IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
 
 @Component({
   tag: "crowdsource-manager",
@@ -124,9 +124,9 @@ export class CrowdsourceManager {
   @Prop() searchConfiguration: ISearchConfiguration;
 
   /**
-   * "light" | "dark": Calcite theme to be used
+   * theme: "light" | "dark" theme to be used
    */
-  @Prop() theme: "light" | "dark" = "light";
+  @Prop() theme: theme = "light";
 
   /**
    * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
@@ -481,6 +481,7 @@ export class CrowdsourceManager {
           enableSearch={this.enableSearch}
           hidden={this._expandPopup}
           mapInfos={this.mapInfos?.filter(mapInfo => mapInfo.visible !== false)}
+          theme={this.theme}
         />
       </div>
     );

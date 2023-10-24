@@ -5,9 +5,9 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
+import { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
-export { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange } from "./utils/interfaces";
+export { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 export { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface BasemapGallery {
@@ -148,9 +148,9 @@ export namespace Components {
          */
         "showNewestFirst": boolean;
         /**
-          * "light" | "dark": Calcite theme to be used
+          * theme: "light" | "dark" theme to be used
          */
-        "theme": "light" | "dark";
+        "theme": theme;
         /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
@@ -336,6 +336,10 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * theme: "light" | "dark" theme to be used
+         */
+        "theme": theme;
     }
     interface MapDrawTools {
         /**
@@ -1420,9 +1424,9 @@ declare namespace LocalJSX {
          */
         "showNewestFirst"?: boolean;
         /**
-          * "light" | "dark": Calcite theme to be used
+          * theme: "light" | "dark" theme to be used
          */
-        "theme"?: "light" | "dark";
+        "theme"?: theme;
         /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
@@ -1619,6 +1623,10 @@ declare namespace LocalJSX {
           * Emitted when a new map is loaded
          */
         "onMapChanged"?: (event: MapCardCustomEvent<IMapChange>) => void;
+        /**
+          * theme: "light" | "dark" theme to be used
+         */
+        "theme"?: theme;
     }
     interface MapDrawTools {
         /**
