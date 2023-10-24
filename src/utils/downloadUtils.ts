@@ -1000,9 +1000,9 @@ export async function _prepareLabelsUsingExecutor(
     }
   ));
 
-  const labels = execResults.map(
-    result => _cleanupLabel(result.text).split(lineSeparatorChar)
-  )
+  const labels = execResults
+    .filter(result => result.text)
+    .map(result => _cleanupLabel(result.text).split(lineSeparatorChar))
 
   return Promise.resolve(labels);
 }
