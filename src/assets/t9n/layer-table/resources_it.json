@@ -12,12 +12,12 @@
   "fetchingData": "Recupero dei dati",
   "refresh": "Aggiorna",
   "enableEditing": "La modifica deve essere abilitata nel layer.",
-  "confirm": "é_These features will be permanently removed_______________________È.",
-  "deleteFeature": "é_Delete feature_______________È",
+  "confirm": "Queste feature saranno rimosse in modo permanente.",
+  "deleteFeature": "Elimina feature",
   "deleteDisabled": "Eliminazione disabilitata",
   "editMultipleDisabled": "Modifica multipla disabilitata",
   "showAll": "Mostra tutto",
-  "recordsSelected": "é_Total: {{total}} | Selection: {{selected}}______________________È",
-  "cancel": "é_Cancel_____________È",
-  "moreOptions": "é_More table options___________________È"
+  "recordsSelected": "Totale: {{total}} | Selezione: {{selected}}",
+  "cancel": "Annulla",
+  "moreOptions": "Altre opzioni tabella"
 }

@@ -1,5 +1,5 @@
 {
-  "noLayersFound": "í_No editable layers found_________________________ő",
-  "enableEditUpdate": "í_One or more layers must support editing with the 'Update' capability____________________________________ő.",
-  "switchLayer": "í_Switch layer_____________ő"
+  "noLayersFound": "Nem találhatók szerkeszthető rétegek",
+  "enableEditUpdate": "Egy vagy több rétegnek támogatnia kell a „Frissítés” funkcióval történő szerkesztést.",
+  "switchLayer": "Réteg váltása"
 }

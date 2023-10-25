@@ -3,6 +3,6 @@
   "open": "Ouvrir",
   "close": "Fermer",
   "information": "Informations",
-  "expandPopup": "æ_Expand pop-up______________Â",
-  "collapsePopup": "æ_Collapse pop-up________________Â"
+  "expandPopup": "Développer la fenêtre contextuelle",
+  "collapsePopup": "Réduire la fenêtre contextuelle"
 }

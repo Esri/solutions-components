@@ -12,12 +12,12 @@
   "fetchingData": "正在擷取資料",
   "refresh": "重新整理",
   "enableEditing": "必須在圖層上啟用編輯。",
-  "confirm": "試_These features will be permanently removed_______________________驗.",
-  "deleteFeature": "試_Delete feature_______________驗",
+  "confirm": "將永久移除這些圖徵。",
+  "deleteFeature": "刪除圖徵",
   "deleteDisabled": "已停用刪除",
   "editMultipleDisabled": "已停用編輯多個",
   "showAll": "顯示全部",
-  "recordsSelected": "試_Total: {{total}} | Selection: {{selected}}______________________驗",
-  "cancel": "試_Cancel_____________驗",
-  "moreOptions": "試_More table options___________________驗"
+  "recordsSelected": "總計: {{total}} | 選擇: {{selected}}",
+  "cancel": "取消",
+  "moreOptions": "更多表格選項"
 }

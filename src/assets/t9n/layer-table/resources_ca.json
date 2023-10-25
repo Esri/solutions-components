@@ -12,12 +12,12 @@
   "fetchingData": "S'estan recuperant les dades",
   "refresh": "Actualitza",
   "enableEditing": "Heu de tenir l'edició habilitada a la capa.",
-  "confirm": "ó_These features will be permanently removed_______________________à.",
-  "deleteFeature": "ó_Delete feature_______________à",
+  "confirm": "Aquestes entitats s'eliminaran permanentment.",
+  "deleteFeature": "Suprimeix l'entitat",
   "deleteDisabled": "Supressió deshabilitada",
   "editMultipleDisabled": "Edició múltiple deshabilitada",
   "showAll": "Mostra-ho tot",
-  "recordsSelected": "ó_Total: {{total}} | Selection: {{selected}}______________________à",
-  "cancel": "ó_Cancel_____________à",
-  "moreOptions": "ó_More table options___________________à"
+  "recordsSelected": "Total: {{total}} | Selecció: {{selected}}",
+  "cancel": "Cancel·la",
+  "moreOptions": "Més opcions de taula"
 }

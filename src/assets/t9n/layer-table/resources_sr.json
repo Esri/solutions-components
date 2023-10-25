@@ -12,12 +12,12 @@
   "fetchingData": "Preuzimanje podataka",
   "refresh": "Osveži",
   "enableEditing": "Uređivanje mora da bude omogućeno na sloju.",
-  "confirm": "Č_These features will be permanently removed_______________________ž.",
-  "deleteFeature": "Č_Delete feature_______________ž",
+  "confirm": "Ove karakteristike će biti trajno uklonjene.",
+  "deleteFeature": "Obriši geoobjekat",
   "deleteDisabled": "Brisanje je onemogućeno",
   "editMultipleDisabled": "Uredi višestruko je onemogućeno",
   "showAll": "Prikaži sve",
-  "recordsSelected": "Č_Total: {{total}} | Selection: {{selected}}______________________ž",
-  "cancel": "Č_Cancel_____________ž",
-  "moreOptions": "Č_More table options___________________ž"
+  "recordsSelected": "Ukupno: {{total}} | Odabir: {{selected}}",
+  "cancel": "Otkaži",
+  "moreOptions": "Više opcija za tabelu"
 }

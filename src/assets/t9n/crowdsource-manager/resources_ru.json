@@ -3,6 +3,6 @@
   "open": "Открыть",
   "close": "Закрыть",
   "information": "Информация",
-  "expandPopup": "Ж_Expand pop-up______________Я",
-  "collapsePopup": "Ж_Collapse pop-up________________Я"
+  "expandPopup": "Развернуть всплывающее окно",
+  "collapsePopup": "Свернуть всплывающее окно"
 }

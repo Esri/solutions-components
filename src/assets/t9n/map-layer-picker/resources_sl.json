@@ -1,5 +1,5 @@
 {
-  "noLayersFound": "Š_No editable layers found_________________________č",
-  "enableEditUpdate": "Š_One or more layers must support editing with the 'Update' capability____________________________________č.",
-  "switchLayer": "Š_Switch layer_____________č"
+  "noLayersFound": "Ni bilo najdenih uredljivih slojev",
+  "enableEditUpdate": "Eden ali več slojev mora podpirati urejanje z zmogljivostjo \"Posodobitve\".",
+  "switchLayer": "Preklopi sloj"
 }

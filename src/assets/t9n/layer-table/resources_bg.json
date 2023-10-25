@@ -12,12 +12,12 @@
   "fetchingData": "Извличане на данни",
   "refresh": "Обновяване",
   "enableEditing": "За този слой трябва да бъде активирана опцията за редактиране.",
-  "confirm": "й_These features will be permanently removed_______________________й.",
-  "deleteFeature": "й_Delete feature_______________й",
+  "confirm": "Тези обекти ще бъдат премахнати завинаги.",
+  "deleteFeature": "Изтриване на обект",
   "deleteDisabled": "Изтриването е деактивирано",
   "editMultipleDisabled": "Редактиране на множество е деактивирано",
   "showAll": "Показване на всички",
-  "recordsSelected": "й_Total: {{total}} | Selection: {{selected}}______________________й",
-  "cancel": "й_Cancel_____________й",
-  "moreOptions": "й_More table options___________________й"
+  "recordsSelected": "Общо: {{total}} | Избор: {{selected}}",
+  "cancel": "Отказ",
+  "moreOptions": "Още опции за таблица"
 }

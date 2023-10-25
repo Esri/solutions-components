@@ -12,12 +12,12 @@
   "fetchingData": "Bezig met ophalen gegevens",
   "refresh": "Vernieuwen",
   "enableEditing": "Bewerken moet zijn ingeschakeld voor de laag.",
-  "confirm": "Ĳ_These features will be permanently removed_______________________ä.",
-  "deleteFeature": "Ĳ_Delete feature_______________ä",
+  "confirm": "Deze objecten worden permanent verwijderd.",
+  "deleteFeature": "Object verwijderen",
   "deleteDisabled": "Wissen is uitgeschakeld",
   "editMultipleDisabled": "Meerdere bewerken is uitgeschakeld",
   "showAll": "Alles weergeven",
-  "recordsSelected": "Ĳ_Total: {{total}} | Selection: {{selected}}______________________ä",
-  "cancel": "Ĳ_Cancel_____________ä",
-  "moreOptions": "Ĳ_More table options___________________ä"
+  "recordsSelected": "Totaal: {{total}} | Selectie: {{selected}}",
+  "cancel": "Annuleren",
+  "moreOptions": "Meer tabelopties"
 }

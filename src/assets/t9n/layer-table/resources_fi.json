@@ -12,12 +12,12 @@
   "fetchingData": "Noudetaan aineistoa",
   "refresh": "Päivitä",
   "enableEditing": "Muokkaus on otettava käyttöön karttatasossa.",
-  "confirm": "Å_These features will be permanently removed_______________________ö.",
-  "deleteFeature": "Å_Delete feature_______________ö",
+  "confirm": "Nämä kohteet poistetaan pysyvästi.",
+  "deleteFeature": "Poista kohde",
   "deleteDisabled": "Poista käytöstä poistetut",
   "editMultipleDisabled": "Muokkaa useaa käytöstä poistettua",
   "showAll": "Näytä kaikki",
-  "recordsSelected": "Å_Total: {{total}} | Selection: {{selected}}______________________ö",
-  "cancel": "Å_Cancel_____________ö",
-  "moreOptions": "Å_More table options___________________ö"
+  "recordsSelected": "Yhteensä: {{total}} | Valinta: {{selected}}",
+  "cancel": "Peruuta",
+  "moreOptions": "Muut taulun asetukset"
 }

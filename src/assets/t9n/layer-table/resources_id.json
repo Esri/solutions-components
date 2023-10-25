@@ -12,12 +12,12 @@
   "fetchingData": "Mengambil data",
   "refresh": "Muat Ulang",
   "enableEditing": "Pengeditan harus diaktifkan di layer",
-  "confirm": "ng_These features will be permanently removed_______________________ny.",
-  "deleteFeature": "ng_Delete feature_______________ny",
+  "confirm": "Fitur-fitur ini akan dihapus secara permanen.",
+  "deleteFeature": "Hapus fitur",
   "deleteDisabled": "Hapus yang Dinonaktifkan",
   "editMultipleDisabled": "Edit Ganda yang Dinonaktifkan",
   "showAll": "Tampilkan semua",
-  "recordsSelected": "ng_Total: {{total}} | Selection: {{selected}}______________________ny",
-  "cancel": "ng_Cancel_____________ny",
-  "moreOptions": "ng_More table options___________________ny"
+  "recordsSelected": "Total: {{total}} | Pilihan: {{selected}}",
+  "cancel": "Batalkan",
+  "moreOptions": "Opsi tabel lainnya"
 }

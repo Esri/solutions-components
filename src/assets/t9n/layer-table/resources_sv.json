@@ -12,12 +12,12 @@
   "fetchingData": "Hämtar data",
   "refresh": "Uppdatera",
   "enableEditing": "Redigering måste vara aktiverad på lagret.",
-  "confirm": "Å_These features will be permanently removed_______________________ö.",
-  "deleteFeature": "Å_Delete feature_______________ö",
+  "confirm": "Dessa geoobjekt tas bort permanent.",
+  "deleteFeature": "Ta bort geoobjekt",
   "deleteDisabled": "Ta bort inaktiverat",
   "editMultipleDisabled": "Redigera flera inaktiverat",
   "showAll": "Visa alla",
-  "recordsSelected": "Å_Total: {{total}} | Selection: {{selected}}______________________ö",
-  "cancel": "Å_Cancel_____________ö",
-  "moreOptions": "Å_More table options___________________ö"
+  "recordsSelected": "Totalt: {{total}} | Urval: {{selected}}",
+  "cancel": "Avbryt",
+  "moreOptions": "Fler tabellalternativ"
 }

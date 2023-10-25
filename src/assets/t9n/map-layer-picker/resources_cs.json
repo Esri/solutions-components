@@ -1,5 +1,5 @@
 {
-  "noLayersFound": "Ř_No editable layers found_________________________ů",
-  "enableEditUpdate": "Ř_One or more layers must support editing with the 'Update' capability____________________________________ů.",
-  "switchLayer": "Ř_Switch layer_____________ů"
+  "noLayersFound": "Nebyly nalezeny žádné vrstvy, které lze editovat.",
+  "enableEditUpdate": "Jedna nebo více vrstev musí podporovat editaci pomocí funkce ‚Aktualizovat‘.",
+  "switchLayer": "Přepnout vrstvu"
 }

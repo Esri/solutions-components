@@ -12,12 +12,12 @@
   "fetchingData": "Gaunami duomenys",
   "refresh": "Atnaujinti",
   "enableEditing": "Sluoksnyje turi būti įjungtas redagavimas.",
-  "confirm": "Į_These features will be permanently removed_______________________š.",
-  "deleteFeature": "Į_Delete feature_______________š",
+  "confirm": "Šie elementai bus pašalinti visam laikui.",
+  "deleteFeature": "Ištrinti elementą",
   "deleteDisabled": "Trinti išjungtus",
   "editMultipleDisabled": "Redaguoti kelis išjungtus",
   "showAll": "Rodyti visus",
-  "recordsSelected": "Į_Total: {{total}} | Selection: {{selected}}______________________š",
-  "cancel": "Į_Cancel_____________š",
-  "moreOptions": "Į_More table options___________________š"
+  "recordsSelected": "Iš viso: {{total}} | Pasirinkta: {{selected}}",
+  "cancel": "Atšaukti",
+  "moreOptions": "Daugiau lentelės parinkčių"
 }

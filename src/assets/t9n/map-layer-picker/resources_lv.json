@@ -1,5 +1,5 @@
 {
-  "noLayersFound": "ķ_No editable layers found_________________________ū",
-  "enableEditUpdate": "ķ_One or more layers must support editing with the 'Update' capability____________________________________ū.",
-  "switchLayer": "ķ_Switch layer_____________ū"
+  "noLayersFound": "Nav atrasts neviens rediģējams slānis",
+  "enableEditUpdate": "Vienam vai vairākiem slāņiem jāatbalsta rediģēšana, izmantojot atjaunināšanas iespēju.",
+  "switchLayer": "Pārslēgt slāni"
 }

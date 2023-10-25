@@ -12,12 +12,12 @@
   "fetchingData": "Obteniendo datos",
   "refresh": "Actualizar",
   "enableEditing": "La edición debe estar habilitada en la capa.",
-  "confirm": "á_These features will be permanently removed_______________________Ó.",
-  "deleteFeature": "á_Delete feature_______________Ó",
+  "confirm": "Estas entidades se eliminarán de forma permanente.",
+  "deleteFeature": "Eliminar entidad",
   "deleteDisabled": "Eliminar deshabilitado",
   "editMultipleDisabled": "Editar varios deshabilitado",
   "showAll": "Mostrar todo",
-  "recordsSelected": "á_Total: {{total}} | Selection: {{selected}}______________________Ó",
-  "cancel": "á_Cancel_____________Ó",
-  "moreOptions": "á_More table options___________________Ó"
+  "recordsSelected": "Total: {{total}} | Selección: {{selected}}",
+  "cancel": "Cancelar",
+  "moreOptions": "Más opciones de tabla"
 }

@@ -3,6 +3,6 @@
   "open": "Otvoriť",
   "close": "Zatvoriť",
   "information": "Informácie",
-  "expandPopup": "ĺ_Expand pop-up______________ľ",
-  "collapsePopup": "ĺ_Collapse pop-up________________ľ"
+  "expandPopup": "Rozbaliť kontextové okno",
+  "collapsePopup": "Zbaliť kontextové okno"
 }

@@ -3,6 +3,6 @@
   "open": "Buka",
   "close": "Tutup",
   "information": "Informasi",
-  "expandPopup": "ng_Expand pop-up______________ny",
-  "collapsePopup": "ng_Collapse pop-up________________ny"
+  "expandPopup": "Perluas pop-up",
+  "collapsePopup": "Perkecil pop-up"
 }

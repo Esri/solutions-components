@@ -12,12 +12,12 @@
   "fetchingData": "מאחזר נתונים",
   "refresh": "רענן",
   "enableEditing": "יש לאפשר עריכה בשכבה זו.",
-  "confirm": "כן_These features will be permanently removed_______________________ש.",
-  "deleteFeature": "כן_Delete feature_______________ש",
+  "confirm": "ישויות אלה יוסרו לצמיתות.",
+  "deleteFeature": "מחק ישות",
   "deleteDisabled": "המחיקה מושבתת",
   "editMultipleDisabled": "עריכת פריטים מרובים מושבתת",
   "showAll": "הצג הכול",
-  "recordsSelected": "כן_Total: {{total}} | Selection: {{selected}}______________________ש",
-  "cancel": "כן_Cancel_____________ש",
-  "moreOptions": "כן_More table options___________________ש"
+  "recordsSelected": "(סה\"כ: {{total}} | בחירה: {{selected}})",
+  "cancel": "ביטול",
+  "moreOptions": "אפשרויות טבלה נוספות"
 }

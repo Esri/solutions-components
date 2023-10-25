@@ -3,6 +3,6 @@
   "open": "열기",
   "close": "닫기",
   "information": "정보",
-  "expandPopup": "한_Expand pop-up______________빠",
-  "collapsePopup": "한_Collapse pop-up________________빠"
+  "expandPopup": "팝업 확장",
+  "collapsePopup": "팝업 축소"
 }

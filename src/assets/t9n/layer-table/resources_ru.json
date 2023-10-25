@@ -12,12 +12,12 @@
   "fetchingData": "Извлечение данных",
   "refresh": "Обновить",
   "enableEditing": "Для слоя должно быть включено редактирование.",
-  "confirm": "Ж_These features will be permanently removed_______________________Я.",
-  "deleteFeature": "Ж_Delete feature_______________Я",
+  "confirm": "Эти объекты будут удалены навсегда.",
+  "deleteFeature": "Удалить объект",
   "deleteDisabled": "Удаление отключено",
   "editMultipleDisabled": "Редактировать несколько отключено",
   "showAll": "Показать все",
-  "recordsSelected": "Ж_Total: {{total}} | Selection: {{selected}}______________________Я",
-  "cancel": "Ж_Cancel_____________Я",
-  "moreOptions": "Ж_More table options___________________Я"
+  "recordsSelected": "Всего: {{total}} | Выборка: {{selected}}",
+  "cancel": "Отмена",
+  "moreOptions": "Дополнительные опции таблицы"
 }

@@ -12,12 +12,12 @@
   "fetchingData": "Andmete toomine",
   "refresh": "Värskenda",
   "enableEditing": "Muutmine peab olema kihis lubatud",
-  "confirm": "Š_These features will be permanently removed_______________________ä.",
-  "deleteFeature": "Š_Delete feature_______________ä",
+  "confirm": "Need objektid eemaldatakse jäädavalt.",
+  "deleteFeature": "Kustuta objekt",
   "deleteDisabled": "Kustuta keelatud",
   "editMultipleDisabled": "Mitme keelatud üksuse muutmine",
   "showAll": "Kuva kõik",
-  "recordsSelected": "Š_Total: {{total}} | Selection: {{selected}}______________________ä",
-  "cancel": "Š_Cancel_____________ä",
-  "moreOptions": "Š_More table options___________________ä"
+  "recordsSelected": "Kokku: {{total}} | Valik: {{selected}}",
+  "cancel": "Loobu",
+  "moreOptions": "Rohkem tabelivalikuid"
 }

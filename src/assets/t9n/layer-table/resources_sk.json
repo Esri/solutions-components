@@ -12,12 +12,12 @@
   "fetchingData": "Získavanie dát",
   "refresh": "Obnoviť",
   "enableEditing": "Pre vrstvu musí byť povolená editácia.",
-  "confirm": "ĺ_These features will be permanently removed_______________________ľ.",
-  "deleteFeature": "ĺ_Delete feature_______________ľ",
+  "confirm": "Tieto prvky budú natrvalo odstránené.",
+  "deleteFeature": "Zmazať prvok",
   "deleteDisabled": "Odstrániť nepovolené",
   "editMultipleDisabled": "Editovať viacnásobne nepovolené",
   "showAll": "Zobraziť všetko",
-  "recordsSelected": "ĺ_Total: {{total}} | Selection: {{selected}}______________________ľ",
-  "cancel": "ĺ_Cancel_____________ľ",
-  "moreOptions": "ĺ_More table options___________________ľ"
+  "recordsSelected": "Celkový počet: {{total}} | Výber: {{selected}}",
+  "cancel": "Zrušiť",
+  "moreOptions": "Viac možností tabuľky"
 }

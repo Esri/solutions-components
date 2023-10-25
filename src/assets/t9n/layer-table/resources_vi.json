@@ -12,12 +12,12 @@
   "fetchingData": "Đang tìm nạp Dữ liệu",
   "refresh": "Làm mới",
   "enableEditing": "Tính năng Chỉnh sửa phải được bật trên lớp.",
-  "confirm": "Đ_These features will be permanently removed_______________________ớ.",
-  "deleteFeature": "Đ_Delete feature_______________ớ",
+  "confirm": "Những đối tượng này sẽ bị xóa vĩnh viễn.",
+  "deleteFeature": "Xóa đối tượng",
   "deleteDisabled": "Xóa Mục đã tắt",
   "editMultipleDisabled": "Chỉnh sửa Nhiều Mục đã tắt",
   "showAll": "Hiện tất cả",
-  "recordsSelected": "Đ_Total: {{total}} | Selection: {{selected}}______________________ớ",
-  "cancel": "Đ_Cancel_____________ớ",
-  "moreOptions": "Đ_More table options___________________ớ"
+  "recordsSelected": "Tổng: {{total}} | Lựa chọn: {{selected}}",
+  "cancel": "Hủy",
+  "moreOptions": "Các tùy chọn bảng khác"
 }

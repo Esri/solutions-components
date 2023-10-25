@@ -3,6 +3,6 @@
   "open": "開く",
   "close": "閉じる",
   "information": "情報",
-  "expandPopup": "須_Expand pop-up______________鷗",
-  "collapsePopup": "須_Collapse pop-up________________鷗"
+  "expandPopup": "ポップアップの展開",
+  "collapsePopup": "ポップアップを折りたたむ"
 }

@@ -12,12 +12,12 @@
   "fetchingData": "Tvert datus",
   "refresh": "Atsvaidzināt",
   "enableEditing": "Slānī ir jāiespējo rediģēšana.",
-  "confirm": "ķ_These features will be permanently removed_______________________ū.",
-  "deleteFeature": "ķ_Delete feature_______________ū",
+  "confirm": "Šie elementi tiks neatgriezeniski noņemti.",
+  "deleteFeature": "Dzēst elementu",
   "deleteDisabled": "Dzēst atspējotos",
   "editMultipleDisabled": "Rediģēt vairākus atspējotos",
   "showAll": "Rādīt visu",
-  "recordsSelected": "ķ_Total: {{total}} | Selection: {{selected}}______________________ū",
-  "cancel": "ķ_Cancel_____________ū",
-  "moreOptions": "ķ_More table options___________________ū"
+  "recordsSelected": "Kopā: {{total}} | Izvēle: {{selected}}",
+  "cancel": "Atcelt",
+  "moreOptions": "Citas tabulas opcijas"
 }

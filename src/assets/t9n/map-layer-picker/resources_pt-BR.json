@@ -1,5 +1,5 @@
 {
-  "noLayersFound": "ã_No editable layers found_________________________Ç",
-  "enableEditUpdate": "ã_One or more layers must support editing with the 'Update' capability____________________________________Ç.",
-  "switchLayer": "ã_Switch layer_____________Ç"
+  "noLayersFound": "Nenhuma camada editável encontrada",
+  "enableEditUpdate": "Uma ou mais camadas devem suportar edição com o recurso 'Atualizar'.",
+  "switchLayer": "Trocar camada"
 }

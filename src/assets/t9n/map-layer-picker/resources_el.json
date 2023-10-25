@@ -1,5 +1,5 @@
 {
-  "noLayersFound": "Đ_No editable layers found_________________________ớ",
-  "enableEditUpdate": "Đ_One or more layers must support editing with the 'Update' capability____________________________________ớ.",
-  "switchLayer": "Đ_Switch layer_____________ớ"
+  "noLayersFound": "Δεν βρέθηκαν θεματικά επίπεδα με δυνατότητα επεξεργασίας",
+  "enableEditUpdate": "Ένα ή περισσότερα θεματικά επίπεδα πρέπει να υποστηρίζουν επεξεργασία με τη δυνατότητα \"Ενημέρωση\"",
+  "switchLayer": "Αλλαγή θεματικού επιπέδου"
 }
