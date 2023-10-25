@@ -12,12 +12,12 @@
   "fetchingData": "Отримання даних",
   "refresh": "Оновити",
   "enableEditing": "Для шару має бути активовано редагування.",
-  "confirm": "ґ_These features will be permanently removed_______________________Ї.",
-  "deleteFeature": "ґ_Delete feature_______________Ї",
+  "confirm": "Ці об'єкти будуть вилучені остаточно.",
+  "deleteFeature": "Видалити об'єкт",
   "deleteDisabled": "Видалити вимкнені елементи",
   "editMultipleDisabled": "Редагувати декілька вимкнених елементів",
   "showAll": "Показати всі",
-  "recordsSelected": "ґ_Total: {{total}} | Selection: {{selected}}______________________Ї",
-  "cancel": "ґ_Cancel_____________Ї",
-  "moreOptions": "ґ_More table options___________________Ї"
+  "recordsSelected": "Усього: {{total}} | Вибірка: {{selected}}",
+  "cancel": "Скасувати",
+  "moreOptions": "Інші опції таблиці"
 }

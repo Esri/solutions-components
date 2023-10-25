@@ -12,12 +12,12 @@
   "fetchingData": "กำลังดึงข้อมูล",
   "refresh": "รีเฟรช",
   "enableEditing": "ต้องเปิดใช้งานการแก้ไขบนชั้นข้อมูล",
-  "confirm": "ก้_These features will be permanently removed_______________________ษฺ.",
-  "deleteFeature": "ก้_Delete feature_______________ษฺ",
+  "confirm": "ฟีเจอร์เหล่านี้จะถูกลบออกอย่างถาวร",
+  "deleteFeature": "ลบข้อมูลนี้",
   "deleteDisabled": "การลบถูกปิดใช้งาน",
   "editMultipleDisabled": "การแก้ไขหลายรายการถูกปิดใช้งาน",
   "showAll": "แสดงทั้งหมด",
-  "recordsSelected": "ก้_Total: {{total}} | Selection: {{selected}}______________________ษฺ",
-  "cancel": "ก้_Cancel_____________ษฺ",
-  "moreOptions": "ก้_More table options___________________ษฺ"
+  "recordsSelected": "รวม: {{total}} | ที่เลือก: {{selected}}",
+  "cancel": "ยกเลิก",
+  "moreOptions": "ตัวเลือกตารางเพิ่มเติม"
 }

@@ -1,5 +1,5 @@
 {
-  "noLayersFound": "بيت_No editable layers found_________________________لاحقة",
-  "enableEditUpdate": "بيت_One or more layers must support editing with the 'Update' capability____________________________________لاحقة.",
-  "switchLayer": "بيت_Switch layer_____________لاحقة"
+  "noLayersFound": "لم يتم العثور على طبقات قابلة للتحرير",
+  "enableEditUpdate": "يجب أن تدعم طبقة واحدة أو أكثر التحرير باستخدام إمكانية \"التحديث\".",
+  "switchLayer": "تبديل الطبقة"
 }

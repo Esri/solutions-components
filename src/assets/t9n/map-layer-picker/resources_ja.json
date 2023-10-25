@@ -1,5 +1,5 @@
 {
-  "noLayersFound": "須_No editable layers found_________________________鷗",
-  "enableEditUpdate": "須_One or more layers must support editing with the 'Update' capability____________________________________鷗.",
-  "switchLayer": "須_Switch layer_____________鷗"
+  "noLayersFound": "編集可能なレイヤーが見つかりません",
+  "enableEditUpdate": "1 つ以上のレイヤーが、更新機能のある編集をサポートする必要があります。",
+  "switchLayer": "レイヤーの切り替え"
 }

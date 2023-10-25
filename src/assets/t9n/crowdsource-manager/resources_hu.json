@@ -3,6 +3,6 @@
   "open": "Megnyitás",
   "close": "Bezárás",
   "information": "Információ",
-  "expandPopup": "í_Expand pop-up______________ő",
-  "collapsePopup": "í_Collapse pop-up________________ő"
+  "expandPopup": "Felugró ablak kiterjesztése",
+  "collapsePopup": "Felugró ablak összecsukása"
 }

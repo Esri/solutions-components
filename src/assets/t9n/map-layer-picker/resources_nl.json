@@ -1,5 +1,5 @@
 {
-  "noLayersFound": "Ĳ_No editable layers found_________________________ä",
-  "enableEditUpdate": "Ĳ_One or more layers must support editing with the 'Update' capability____________________________________ä.",
-  "switchLayer": "Ĳ_Switch layer_____________ä"
+  "noLayersFound": "Kan geen bewerkbare lagen vinden",
+  "enableEditUpdate": "Een of meer lagen moeten ondersteuning bieden voor bewerken met de optie 'Updaten'.",
+  "switchLayer": "Van laag wisselen"
 }

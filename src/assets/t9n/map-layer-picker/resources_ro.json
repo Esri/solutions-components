@@ -1,5 +1,5 @@
 {
-  "noLayersFound": "Ă_No editable layers found_________________________ș",
-  "enableEditUpdate": "Ă_One or more layers must support editing with the 'Update' capability____________________________________ș.",
-  "switchLayer": "Ă_Switch layer_____________ș"
+  "noLayersFound": "Nu s-au găsit straturi tematice editabile",
+  "enableEditUpdate": "Unu sau mai multe straturi tematice trebuie să accepte editarea cu capacitatea „Actualizare”.",
+  "switchLayer": "Comutare strat tematic"
 }

@@ -3,6 +3,6 @@
   "open": "Öppna",
   "close": "Stäng",
   "information": "Information",
-  "expandPopup": "Å_Expand pop-up______________ö",
-  "collapsePopup": "Å_Collapse pop-up________________ö"
+  "expandPopup": "Expandera popup-fönster",
+  "collapsePopup": "Dölj popup-fönster"
 }

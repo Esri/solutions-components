@@ -12,12 +12,12 @@
   "fetchingData": "Daten werden abgerufen",
   "refresh": "Aktualisieren",
   "enableEditing": "Die Bearbeitungsfunktion muss für den Layer aktiviert sein.",
-  "confirm": "ä_These features will be permanently removed_______________________Ü.",
-  "deleteFeature": "ä_Delete feature_______________Ü",
+  "confirm": "Diese Features werden dauerhaft entfernt.",
+  "deleteFeature": "Feature löschen",
   "deleteDisabled": "\"Löschen\" ist deaktiviert",
   "editMultipleDisabled": "\"Mehrere bearbeiten\" ist deaktiviert",
   "showAll": "Alle anzeigen",
-  "recordsSelected": "ä_Total: {{total}} | Selection: {{selected}}______________________Ü",
-  "cancel": "ä_Cancel_____________Ü",
-  "moreOptions": "ä_More table options___________________Ü"
+  "recordsSelected": "Gesamt: {{total}} | Auswahl: {{selected}}",
+  "cancel": "Abbrechen",
+  "moreOptions": "Weitere Tabellenoptionen"
 }

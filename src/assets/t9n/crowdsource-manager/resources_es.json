@@ -3,6 +3,6 @@
   "open": "Abrir",
   "close": "Cerrar",
   "information": "Información",
-  "expandPopup": "á_Expand pop-up______________Ó",
-  "collapsePopup": "á_Collapse pop-up________________Ó"
+  "expandPopup": "Expandir elemento emergente",
+  "collapsePopup": "Contraer elemento emergente"
 }

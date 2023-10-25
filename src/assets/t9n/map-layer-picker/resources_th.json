@@ -1,5 +1,5 @@
 {
-  "noLayersFound": "ก้_No editable layers found_________________________ษฺ",
-  "enableEditUpdate": "ก้_One or more layers must support editing with the 'Update' capability____________________________________ษฺ.",
-  "switchLayer": "ก้_Switch layer_____________ษฺ"
+  "noLayersFound": "ไม่พบชั้นข้อมูลที่สามารถแก้ไขได้",
+  "enableEditUpdate": "อย่างน้อยหนึ่งชั้นข้อมูลต้องรองรับการแก้ไข โดยมีความสามารถ 'อัปเดต'",
+  "switchLayer": "สลับชั้นข้อมูล"
 }

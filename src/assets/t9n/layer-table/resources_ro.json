@@ -12,12 +12,12 @@
   "fetchingData": "Extragerea datelor",
   "refresh": "Reîmprospătare",
   "enableEditing": "Editarea trebuie să fie activată în stratul tematic.",
-  "confirm": "Ă_These features will be permanently removed_______________________ș.",
-  "deleteFeature": "Ă_Delete feature_______________ș",
+  "confirm": "Aceste obiecte spațiale vor fi eliminate definitiv.",
+  "deleteFeature": "Ştergere obiect spaţial",
   "deleteDisabled": "Ștergere dezactivată",
   "editMultipleDisabled": "Editare multiplă dezactivată",
   "showAll": "Afișare toate",
-  "recordsSelected": "Ă_Total: {{total}} | Selection: {{selected}}______________________ș",
-  "cancel": "Ă_Cancel_____________ș",
-  "moreOptions": "Ă_More table options___________________ș"
+  "recordsSelected": "Total: {{total}} | Selecție: {{selected}}",
+  "cancel": "Anulare",
+  "moreOptions": "Mai multe opțiuni de tabel"
 }

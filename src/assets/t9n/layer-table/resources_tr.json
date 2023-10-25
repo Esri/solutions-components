@@ -12,12 +12,12 @@
   "fetchingData": "Veriler Getiriliyor",
   "refresh": "Yenile",
   "enableEditing": "Katmanda düzenleme etkinleştirilmelidir.",
-  "confirm": "ı_These features will be permanently removed_______________________İ.",
-  "deleteFeature": "ı_Delete feature_______________İ",
+  "confirm": "Bu detaylar kalıcı olarak kaldırılacak.",
+  "deleteFeature": "Detayı sil",
   "deleteDisabled": "Silme Devre Dışı Bırakıldı",
   "editMultipleDisabled": "Çoklu Düzenleme Devre Dışı Bırakıldı",
   "showAll": "Tümünü göster",
-  "recordsSelected": "ı_Total: {{total}} | Selection: {{selected}}______________________İ",
-  "cancel": "ı_Cancel_____________İ",
-  "moreOptions": "ı_More table options___________________İ"
+  "recordsSelected": "Toplam: {{total}} | Seçim: {{selected}}",
+  "cancel": "İptal",
+  "moreOptions": "Daha fazla tablo seçeneği"
 }

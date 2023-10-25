@@ -12,12 +12,12 @@
   "fetchingData": "Ανάκτηση Δεδομένων",
   "refresh": "Ανανέωση",
   "enableEditing": "Πρέπει να είναι ενεργοποιημένη η δυνατότητα επεξεργασίας σε αυτό το θεματικό επίπεδο.",
-  "confirm": "Đ_These features will be permanently removed_______________________ớ.",
-  "deleteFeature": "Đ_Delete feature_______________ớ",
+  "confirm": "Αυτά τα στοιχεία θα καταργηθούν οριστικά.",
+  "deleteFeature": "Διαγραφή στοιχείου",
   "deleteDisabled": "Διαγραφή Απενεργοποιημένων",
   "editMultipleDisabled": "Επεξεργασία Πολλαπλών Απενεργοποιημένων",
   "showAll": "Εμφάνιση όλων",
-  "recordsSelected": "Đ_Total: {{total}} | Selection: {{selected}}______________________ớ",
-  "cancel": "Đ_Cancel_____________ớ",
-  "moreOptions": "Đ_More table options___________________ớ"
+  "recordsSelected": "Σύνολο: {{total}} | Επιλογή: {{selected}}",
+  "cancel": "Ακύρωση",
+  "moreOptions": "Περισσότερες επιλογές πίνακα"
 }

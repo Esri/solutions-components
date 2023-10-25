@@ -12,12 +12,12 @@
   "fetchingData": "Henter data",
   "refresh": "Opdatér",
   "enableEditing": "Redigering skal være aktiveret på laget",
-  "confirm": "ø_These features will be permanently removed_______________________å.",
-  "deleteFeature": "ø_Delete feature_______________å",
+  "confirm": "Disse objekter vil blive fjernet permanent.",
+  "deleteFeature": "Slet objekt",
   "deleteDisabled": "Sletning deaktiveret",
   "editMultipleDisabled": "Rediger flere deaktiveret",
   "showAll": "Vis alle",
-  "recordsSelected": "ø_Total: {{total}} | Selection: {{selected}}______________________å",
-  "cancel": "ø_Cancel_____________å",
-  "moreOptions": "ø_More table options___________________å"
+  "recordsSelected": "I alt: {{total}} | Markering: {{selected}}",
+  "cancel": "Annuller",
+  "moreOptions": "Flere tabelindstillinger"
 }

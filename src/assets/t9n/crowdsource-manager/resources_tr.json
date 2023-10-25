@@ -3,6 +3,6 @@
   "open": "Aç",
   "close": "Kapat",
   "information": "Bilgi",
-  "expandPopup": "ı_Expand pop-up______________İ",
-  "collapsePopup": "ı_Collapse pop-up________________İ"
+  "expandPopup": "Açılır pencereyi genişlet",
+  "collapsePopup": "Açılır pencereyi daralt"
 }

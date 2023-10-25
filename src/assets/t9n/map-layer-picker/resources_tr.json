@@ -1,5 +1,5 @@
 {
-  "noLayersFound": "ı_No editable layers found_________________________İ",
-  "enableEditUpdate": "ı_One or more layers must support editing with the 'Update' capability____________________________________İ.",
-  "switchLayer": "ı_Switch layer_____________İ"
+  "noLayersFound": "Düzenlenebilir bir katman bulunamadı.",
+  "enableEditUpdate": "Bir veya daha fazla katman \"Güncelleme\" becerisi ile düzenlemeyi destekliyor olmalıdır.",
+  "switchLayer": "Katmanı değiştir"
 }

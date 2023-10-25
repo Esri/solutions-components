@@ -1,5 +1,5 @@
 {
-  "noLayersFound": "ґ_No editable layers found_________________________Ї",
-  "enableEditUpdate": "ґ_One or more layers must support editing with the 'Update' capability____________________________________Ї.",
-  "switchLayer": "ґ_Switch layer_____________Ї"
+  "noLayersFound": "Редаговані шари не знайдено",
+  "enableEditUpdate": "Один або більше шарів повинні підтримувати редагування з можливістю оновлення.",
+  "switchLayer": "Змінити шар"
 }

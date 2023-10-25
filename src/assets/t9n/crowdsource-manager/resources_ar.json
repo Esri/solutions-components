@@ -3,6 +3,6 @@
   "open": "فتح",
   "close": "إغلاق",
   "information": "معلومات",
-  "expandPopup": "بيت_Expand pop-up______________لاحقة",
-  "collapsePopup": "بيت_Collapse pop-up________________لاحقة"
+  "expandPopup": "توسيع النافذة المنبثقة",
+  "collapsePopup": "طي النافذة المنبثقة"
 }

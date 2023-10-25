@@ -12,12 +12,12 @@
   "fetchingData": "Adatok lekérése",
   "refresh": "Frissítés",
   "enableEditing": "A szerkesztésnek engedélyezve kell lennie a rétegen.",
-  "confirm": "í_These features will be permanently removed_______________________ő.",
-  "deleteFeature": "í_Delete feature_______________ő",
+  "confirm": "Ezek a vektoros elemek végleg el lesznek távolítva.",
+  "deleteFeature": "Vektoros elem törlése",
   "deleteDisabled": "Törlés letiltva",
   "editMultipleDisabled": "Több szerkesztése letiltva",
   "showAll": "Összes megjelenítése",
-  "recordsSelected": "í_Total: {{total}} | Selection: {{selected}}______________________ő",
-  "cancel": "í_Cancel_____________ő",
-  "moreOptions": "í_More table options___________________ő"
+  "recordsSelected": "Összesen: {{total}} | Kiválasztva: {{selected}}",
+  "cancel": "Mégse",
+  "moreOptions": "További táblázat beállítások"
 }

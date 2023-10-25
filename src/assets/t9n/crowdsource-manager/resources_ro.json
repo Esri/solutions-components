@@ -3,6 +3,6 @@
   "open": "Deschidere",
   "close": "Închidere",
   "information": "Informaţii",
-  "expandPopup": "Ă_Expand pop-up______________ș",
-  "collapsePopup": "Ă_Collapse pop-up________________ș"
+  "expandPopup": "Extindere pop-up",
+  "collapsePopup": "Restrângere pop-up"
 }

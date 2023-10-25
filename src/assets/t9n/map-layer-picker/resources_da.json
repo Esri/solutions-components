@@ -1,5 +1,5 @@
 {
-  "noLayersFound": "ø_No editable layers found_________________________å",
-  "enableEditUpdate": "ø_One or more layers must support editing with the 'Update' capability____________________________________å.",
-  "switchLayer": "ø_Switch layer_____________å"
+  "noLayersFound": "Der blev ikke fundet nogen redigerbare lag",
+  "enableEditUpdate": "Et eller flere lag skal understøtte redigering med opdateringsfunktionaliteten.",
+  "switchLayer": "Skift lag"
 }

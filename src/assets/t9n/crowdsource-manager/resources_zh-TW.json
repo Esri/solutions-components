@@ -3,6 +3,6 @@
   "open": "開啟",
   "close": "關閉",
   "information": "資訊",
-  "expandPopup": "試_Expand pop-up______________驗",
-  "collapsePopup": "試_Collapse pop-up________________驗"
+  "expandPopup": "展開快顯視窗",
+  "collapsePopup": "折疊快顯視窗"
 }

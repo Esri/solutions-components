@@ -1,5 +1,5 @@
 {
-  "noLayersFound": "Đ_No editable layers found_________________________ớ",
-  "enableEditUpdate": "Đ_One or more layers must support editing with the 'Update' capability____________________________________ớ.",
-  "switchLayer": "Đ_Switch layer_____________ớ"
+  "noLayersFound": "Không tìm thấy lớp có thể chỉnh sửa",
+  "enableEditUpdate": "Một hoặc nhiều lớp phải hỗ trợ chỉnh sửa bằng khả năng 'Cập nhật'.",
+  "switchLayer": "Chuyển đổi lớp"
 }

@@ -1,5 +1,5 @@
 {
-  "noLayersFound": "한_No editable layers found_________________________빠",
-  "enableEditUpdate": "한_One or more layers must support editing with the 'Update' capability____________________________________빠.",
-  "switchLayer": "한_Switch layer_____________빠"
+  "noLayersFound": "편집 가능한 레이어를 찾을 수 없음",
+  "enableEditUpdate": "하나 이상의 레이어가 '업데이트' 기능이 있는 편집을 지원해야 합니다.",
+  "switchLayer": "레이어 전환"
 }

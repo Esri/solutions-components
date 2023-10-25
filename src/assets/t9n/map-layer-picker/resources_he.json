@@ -1,5 +1,5 @@
 {
-  "noLayersFound": "כן_No editable layers found_________________________ש",
-  "enableEditUpdate": "כן_One or more layers must support editing with the 'Update' capability____________________________________ש.",
-  "switchLayer": "כן_Switch layer_____________ש"
+  "noLayersFound": "לא נמצאו שכבות הניתנות לעריכה",
+  "enableEditUpdate": "שכבה אחת או יותר חייבת לתמוך בעריכה באמצעות היכולת 'עדכון'.",
+  "switchLayer": "החלף שכבה"
 }

@@ -12,12 +12,12 @@
   "fetchingData": "A Obter Dados",
   "refresh": "Atualizar",
   "enableEditing": "A edição tem de estar ativada na camada.",
-  "confirm": "ã_These features will be permanently removed_______________________Ç.",
-  "deleteFeature": "ã_Delete feature_______________Ç",
+  "confirm": "Estes elementos serão permanentemente removidos.",
+  "deleteFeature": "Eliminar elemento",
   "deleteDisabled": "Eliminação Desativada",
   "editMultipleDisabled": "Editar Múltiplos Desativada",
   "showAll": "Exibir tudo",
-  "recordsSelected": "ã_Total: {{total}} | Selection: {{selected}}______________________Ç",
-  "cancel": "ã_Cancel_____________Ç",
-  "moreOptions": "ã_More table options___________________Ç"
+  "recordsSelected": "Total: {{total}} | Seleção: {{selected}}",
+  "cancel": "Cancelar",
+  "moreOptions": "Mais opções de tabela"
 }

@@ -1,5 +1,5 @@
 {
-  "noLayersFound": "Š_No editable layers found_________________________ä",
-  "enableEditUpdate": "Š_One or more layers must support editing with the 'Update' capability____________________________________ä.",
-  "switchLayer": "Š_Switch layer_____________ä"
+  "noLayersFound": "Muudetavaid kihte ei leitud",
+  "enableEditUpdate": "Üks või mitu kihti peavad toetama uuendamisfunktsiooni abil muutmist.",
+  "switchLayer": "Vaheta kihti"
 }
