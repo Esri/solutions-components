@@ -72,6 +72,22 @@ export interface ILayerRelationshipQueryHash {
   [relationshipId: string]: ILayerRelationshipQuery;
 }
 
+/**
+ * Related record query request options with new exceededTransferLimit property.
+ */
+export interface IQueryRelatedOptionsOffset extends IQueryRelatedOptions {
+  params: {
+    resultOffset: number;
+  }
+}
+
+/**
+ * Related record response structure with new exceededTransferLimit property.
+ */
+export interface IQueryRelatedResponseOffset extends IQueryRelatedResponse {
+  exceededTransferLimit?: boolean;
+}
+
 // Class RelationshipQuery doesn't appear to work, and so since
 // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html#queryRelatedFeatures
 // says that the relationshipQuery argument is autocast, we'll set up a variant for the class
@@ -468,19 +484,20 @@ export function _getExpressionsFromLabel(
 }
 
 /**
- * Get the related records for a feature service.
+ * Gets the related records for a feature service.
  *
  * @param url Feature service's URL, e.g., layer.url
  * @param layerId Id of layer within a feature service
  * @param relationshipId Id of relationship
  * @param objectIds Objects in the feature service whose related records are sought
+ * @returns Promise resolving to an array of objects and their related records
  */
 export function _getFeatureServiceRelatedRecords(
   url: string,
   layerId: number,
   relationshipId?: number,
   objectIds?: number[]
-): Promise<IQueryRelatedResponse> {
+): Promise<IRelatedRecordGroup[]> {
   // See if the URL points to a service rather than a layer
   const endOfUrl = url.substring(url.lastIndexOf("/") + 1);
   if (isNaN(parseInt(endOfUrl))) {
@@ -488,12 +505,48 @@ export function _getFeatureServiceRelatedRecords(
   }
 
   const options: IQueryRelatedOptions = {
+    httpMethod: "POST",
     url,
     relationshipId,
     objectIds
   }
 
-  return queryRelated(options);
+  return _getFeatureServiceRelatedRecordsTranche(options);
+}
+
+/**
+ * Gets a tranche of related records for a feature service.
+ *
+ * @param options Options for arcgis-rest-js' queryRelated function
+ * @param relationships Array of related records accumulated so far
+ * @param resultOffset Number of records already retrieved
+ * @returns Promise resolving to an array of objects and their related records
+ */
+export function _getFeatureServiceRelatedRecordsTranche(
+  options: IQueryRelatedOptions,
+  relationships: IRelatedRecordGroup[] = [],
+  resultOffset = 0
+): Promise<IRelatedRecordGroup[]> {
+  return queryRelated({
+    ...options,
+    params: {
+      resultOffset
+    }
+  } as IQueryRelatedOptionsOffset)
+  .then(
+    (response: IQueryRelatedResponseOffset) => {
+      relationships.push(...response.relatedRecordGroups);
+
+      // If exceededTransferLimit is true, then there are more records to retrieve and the feature service
+      // supports the resultOffset parameter
+      if (response.exceededTransferLimit) {
+        return _getFeatureServiceRelatedRecordsTranche(
+          options, relationships, resultOffset + response.relatedRecordGroups.length);
+      } else {
+        return Promise.resolve(relationships);
+      }
+    }
+  );
 }
 
 /**
@@ -805,11 +858,12 @@ export async function _prepareLabels(
   let featureSet: __esri.Graphic[] = [];
   if (typeof(labelFormatProps.relationshipId) !== "undefined") {
     // Get the related items for each id
-    const relatedRecResponse = await _getFeatureServiceRelatedRecords(layer.url, layer.layerId, labelFormatProps.relationshipId, ids);
+    const relatedRecordGroups = await _getFeatureServiceRelatedRecords(
+      layer.url, layer.layerId, labelFormatProps.relationshipId, ids);
 
     const objectIdField = layer.objectIdField;
     let relatedFeatureIds: number[] = [];
-    relatedRecResponse.relatedRecordGroups.forEach(
+    relatedRecordGroups.forEach(
       (relatedRecGroup: IRelatedRecordGroup) => {
         relatedFeatureIds = relatedFeatureIds.concat(relatedRecGroup.relatedRecords.map((rec: IFeature) => rec.attributes[objectIdField]));
       }
