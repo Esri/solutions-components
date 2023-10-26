@@ -267,7 +267,13 @@ describe("downloadUtils", () => {
     it("handles a feature layer", () => {
       const url = "https://servicesdev.arcgis.com/D2C14713795/ArcGIS/rest/services/addresses/FeatureServer/0";
       const layerId = 5;
-      const expectedOptions: restFeatureLayer.IQueryRelatedOptions = {
+      const expectedOptions: downloadUtils.IQueryRelatedOptionsOffset = {
+        httpMethod: "POST",
+        objectIds: undefined,
+        relationshipId: undefined,
+        params: {
+          resultOffset: 0
+        },
         url
       };
       const queryResponse: restFeatureLayer.IQueryRelatedResponse = { relatedRecordGroups: [] };
@@ -280,7 +286,13 @@ describe("downloadUtils", () => {
     it("handles a feature service", () => {
       const url = "https://servicesdev.arcgis.com/D2C14713795/ArcGIS/rest/services/addresses/FeatureServer";
       const layerId = 5;
-      const expectedOptions: restFeatureLayer.IQueryRelatedOptions = {
+      const expectedOptions: downloadUtils.IQueryRelatedOptionsOffset = {
+        httpMethod: "POST",
+        objectIds: undefined,
+        relationshipId: undefined,
+        params: {
+          resultOffset: 0
+        },
         url: "https://servicesdev.arcgis.com/D2C14713795/ArcGIS/rest/services/addresses/FeatureServer/5"
       };
       const queryResponse: restFeatureLayer.IQueryRelatedResponse = { relatedRecordGroups: [] };
@@ -295,10 +307,14 @@ describe("downloadUtils", () => {
       const layerId = 5;
       const relationshipId = 3;
       const objectIds = [7, 8, 9];
-      const expectedOptions: restFeatureLayer.IQueryRelatedOptions = {
-        url,
+      const expectedOptions: downloadUtils.IQueryRelatedOptionsOffset = {
+        httpMethod: "POST",
+        objectIds,
         relationshipId,
-        objectIds
+        params: {
+          resultOffset: 0
+        },
+        url
       };
       const queryResponse: restFeatureLayer.IQueryRelatedResponse = { relatedRecordGroups: [] };
       const queryRelatedSpy = jest.spyOn(restFeatureLayer, "queryRelated").mockResolvedValue(queryResponse);
