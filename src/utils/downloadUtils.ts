@@ -88,9 +88,14 @@ import {
   IFeature,
   IQueryRelatedOptions,
   IQueryRelatedResponse,
-  IRelatedRecordGroup,
-  queryRelated
+  IRelatedRecordGroup
 } from "@esri/arcgis-rest-feature-layer";
+
+import {
+  appendCustomParams,
+  cleanUrl,
+  request
+} from "@esri/arcgis-rest-request";
 
 //#endregion
 // ------------------------------------------------------------------------------------------------------------------ //
@@ -487,13 +492,28 @@ export function _getFeatureServiceRelatedRecords(
     url += "/" + layerId.toString();
   }
 
-  const options: IQueryRelatedOptions = {
-    url,
-    relationshipId,
-    objectIds
-  }
+  // Override arcgis-rest-feature-layer\src\queryRelated.ts because we want to use POST instead of GET
+  const options = appendCustomParams<IQueryRelatedOptions>(
+    {
+      url,
+      relationshipId,
+      objectIds
+    },
+    ["objectIds", "relationshipId", "definitionExpression", "outFields"],
+    {
+      httpMethod: "POST",
+      params: {
+        // set default query parameters
+        definitionExpression: "1=1",
+        outFields: "*"
+      }
+    }
+  );
 
-  return queryRelated(options);
+  return request(
+    `${cleanUrl(url)}/queryRelatedRecords`,
+    options
+  );
 }
 
 /**
