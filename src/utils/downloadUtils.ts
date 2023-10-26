@@ -815,6 +815,11 @@ export async function _prepareLabels(
       }
     );
 
+    // Handle the special case where no related records were found for the set of features
+    if (relatedFeatureIds.length === 0) {
+      return Promise.resolve([]);
+    }
+
     // Remove duplicates
     relatedFeatureIds.sort();
     relatedFeatureIds = relatedFeatureIds.filter((id, i) => i === 0 ? true : id !== relatedFeatureIds[i-1]);
