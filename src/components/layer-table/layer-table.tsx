@@ -1235,6 +1235,7 @@ export class LayerTable {
    */
   protected _selectAll(): void {
     const ids = this._allIds;
+    this._table.highlightIds.removeAll();
     this._table.highlightIds.addMany(ids);
     this._selectedIndexes = ids;
   }
