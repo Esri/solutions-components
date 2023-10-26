@@ -44,6 +44,26 @@ export class CrowdsourceManager {
   @Prop() classicGrid = false;
 
   /**
+   * string: Global ID of the feature to
+   */
+  @Prop() defaultGlobalId = "";
+
+  /**
+   * string: Unique ID of the layer in the web map
+   */
+  @Prop() defaultLayer = "";
+
+  /**
+   * string: Object ID of feature to select
+   */
+  @Prop() defaultOid = "";
+
+  /**
+   * string: Item ID of the web map that should be selected by default
+   */
+  @Prop() defaultWebmap = "";
+
+  /**
    * boolean: when true the layer table will auto refresh the data
    */
   @Prop() enableAutoRefresh = false;
@@ -260,6 +280,9 @@ export class CrowdsourceManager {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
+    console.log("CM componentWillLoad")
+    console.log("this.defaultGlobalId")
+    console.log(this.defaultGlobalId)
   }
 
   /**
@@ -288,6 +311,12 @@ export class CrowdsourceManager {
       this._shouldSetMapView = false;
       this._setMapView();
     }
+  }
+
+  async componentDidLoad(): Promise<void> {
+    console.log("CM componentWillLoad")
+    console.log("this.defaultGlobalId")
+    console.log(this.defaultGlobalId)
   }
 
   //--------------------------------------------------------------------------

@@ -88,6 +88,22 @@ export namespace Components {
          */
         "classicGrid": boolean;
         /**
+          * string: Global ID of the feature to
+         */
+        "defaultGlobalId": string;
+        /**
+          * string: Unique ID of the layer in the web map
+         */
+        "defaultLayer": string;
+        /**
+          * string: Object ID of feature to select
+         */
+        "defaultOid": string;
+        /**
+          * string: Item ID of the web map that should be selected by default
+         */
+        "defaultWebmap": string;
+        /**
           * boolean: when true the layer table will auto refresh the data
          */
         "enableAutoRefresh": boolean;
@@ -1363,6 +1379,22 @@ declare namespace LocalJSX {
           * boolean: when true the grid will display like the previous manager app with the table across the top
          */
         "classicGrid"?: boolean;
+        /**
+          * string: Global ID of the feature to
+         */
+        "defaultGlobalId"?: string;
+        /**
+          * string: Unique ID of the layer in the web map
+         */
+        "defaultLayer"?: string;
+        /**
+          * string: Object ID of feature to select
+         */
+        "defaultOid"?: string;
+        /**
+          * string: Item ID of the web map that should be selected by default
+         */
+        "defaultWebmap"?: string;
         /**
           * boolean: when true the layer table will auto refresh the data
          */
