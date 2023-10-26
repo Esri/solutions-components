@@ -539,12 +539,8 @@ export function _getFeatureServiceRelatedRecordsTranche(
 
       // If exceededTransferLimit is true, then there are more records to retrieve and the feature service
       // supports the resultOffset parameter
-      if (response.exceededTransferLimit) {
-        return _getFeatureServiceRelatedRecordsTranche(
-          options, relationships, resultOffset + response.relatedRecordGroups.length);
-      } else {
-        return Promise.resolve(relationships);
-      }
+      return response.exceededTransferLimit ? _getFeatureServiceRelatedRecordsTranche(
+          options, relationships, resultOffset + response.relatedRecordGroups.length) : Promise.resolve(relationships);
     }
   );
 }
