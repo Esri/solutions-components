@@ -319,7 +319,10 @@ export class EditCard {
       const container = document.createElement("div");
       const layers = await getAllLayers(this.mapView)
       const layerInfos = layers.map(layer => {
-        return { layer } as __esri.LayerInfo
+        return {
+          layer,
+          geometryUpdatesEnabled: false
+        } as __esri.LayerInfo
       });
       this._editor = new this.Editor({
         allowedWorkflows: "update",
