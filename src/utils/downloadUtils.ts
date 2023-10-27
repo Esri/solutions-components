@@ -505,10 +505,12 @@ export function _getFeatureServiceRelatedRecords(
   }
 
   const options: IQueryRelatedOptions = {
+    definitionExpression: "1=1",
     httpMethod: "POST",
-    url,
+    objectIds,
+    outFields: "*",
     relationshipId,
-    objectIds
+    url
   }
 
   return _getFeatureServiceRelatedRecordsTranche(options);
