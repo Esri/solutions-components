@@ -1053,10 +1053,11 @@ export async function _prepareLabelsFromPattern(
       */
 
       // Replace non-Arcade fields in this feature
+      const attributeValues = feature.attributes ?? feature;
       attributeNames.forEach(
         (attributeName: string, i: number) => {
           const lowercaseFieldname = attributeName.toLowerCase();
-          const value = _prepareAttributeValue(feature[attributeOrigNames[lowercaseFieldname]],
+          const value = _prepareAttributeValue(attributeValues[attributeOrigNames[lowercaseFieldname]],
             attributeTypes[lowercaseFieldname], attributeDomains[lowercaseFieldname],
             attributeFormats[lowercaseFieldname], intl);
           labelPrep = labelPrep.replace(attributeExpressionMatches[i], value);
