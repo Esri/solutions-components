@@ -42,7 +42,6 @@
     "@types/arcgis-js-api": "^4.27.0",
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.11",
-    "@types/puppeteer": "^7.0.4",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.39.0",
     "autoprefixer": "10.4.4",
