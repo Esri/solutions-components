@@ -879,7 +879,7 @@ export async function _prepareLabels(
     //    }, {
     //      :    :
     //    }]
-    let relatedFeatures: any[] = [];
+    const relatedFeatures: any[] = [];
     relatedRecordGroups.forEach(
       (relatedRecGroup: IRelatedRecordGroup) => {
         relatedRecGroup.relatedRecords.forEach(
