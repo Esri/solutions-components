@@ -636,14 +636,12 @@ export async function _getLabelFormat(
         const relationshipId = layer.popupTemplate.content[0].relationshipId;
 
         // Get related layer
+        const layerRelationship = layer.relationships.find(relationship => relationship.id === relationshipId);
         let webmapLayers = webmap.layers.toArray().concat(webmap.tables.toArray()) as  __esri.FeatureLayer[];
         webmapLayers = webmapLayers.filter(
           (webmapLayer: __esri.FeatureLayer) =>
-            webmapLayer.type === "feature"
-            && webmapLayer.id !== layer.id
-            && webmapLayer.relationships
-            && webmapLayer.relationships.some(relationship => relationship.id === relationshipId)
-          );
+            webmapLayer.type === "feature" && webmapLayer.layerId === layerRelationship.relatedTableId
+        );
 
         if (webmapLayers.length > 0) {
           labelFormatProps = await _getLabelFormat(webmap, webmapLayers[0], formatUsingLayerPopup);
@@ -855,29 +853,63 @@ export async function _prepareLabels(
 
   let featureSet: __esri.Graphic[] = [];
   if (typeof(labelFormatProps.relationshipId) !== "undefined") {
-    // Get the related items for each id
+    // Get the related items for each id; we're asking for the full item
     const relatedRecordGroups = await _getFeatureServiceRelatedRecords(
       layer.url, layer.layerId, labelFormatProps.relationshipId, ids);
 
-    const objectIdField = layer.objectIdField;
-    let relatedFeatureIds: number[] = [];
+    // Extract the attributes from the results and merge them into a single list. relatedRecordGroups has the form
+    //    [{
+    //      "objectId",
+    //      "relatedRecords": [{
+    //        "attributes": {}
+    //      }, {
+    //        "attributes": {}
+    //      }, {
+    //        "attributes": {}
+    //      }]
+    //    }, {
+    //      "objectId",
+    //      "relatedRecords": [{
+    //        "attributes": {}
+    //      }, {
+    //        "attributes": {}
+    //      }, {
+    //        :    :
+    //      }]
+    //    }, {
+    //      :    :
+    //    }]
+    let relatedFeatures: any[] = [];
     relatedRecordGroups.forEach(
       (relatedRecGroup: IRelatedRecordGroup) => {
-        relatedFeatureIds = relatedFeatureIds.concat(relatedRecGroup.relatedRecords.map((rec: IFeature) => rec.attributes[objectIdField]));
+        relatedRecGroup.relatedRecords.forEach(
+          (relatedRec: IFeature) => {
+            relatedFeatures.push(relatedRec.attributes);
+          }
+        );
       }
     );
 
+    // Sort and remove duplicates
+    const objectIdField = layer.objectIdField;
+    relatedFeatures.sort(
+      (a, b) => {
+        if (a[objectIdField] < b[objectIdField]) {
+          return -1;
+        } else if (a[objectIdField] > b[objectIdField]) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+    );
+
+    featureSet = relatedFeatures.filter((feature, i) => i === 0 ? true : feature[objectIdField] !== relatedFeatures[i-1][objectIdField]);
+
     // Handle the special case where no related records were found for the set of features
-    if (relatedFeatureIds.length === 0) {
+    if (featureSet.length === 0) {
       return Promise.resolve([]);
     }
-
-    // Remove duplicates
-    relatedFeatureIds.sort();
-    relatedFeatureIds = relatedFeatureIds.filter((id, i) => i === 0 ? true : id !== relatedFeatureIds[i-1]);
-
-    // Get the full items
-    featureSet = await queryFeaturesByID(relatedFeatureIds, featureLayer, [], false);
 
   } else {
     // Get the features to export
@@ -888,14 +920,25 @@ export async function _prepareLabels(
   const attributeOrigNames: IAttributeOrigNames = {};
   const attributeTypes: IAttributeTypes = {};
   const attributeDomains: IAttributeDomains = {};
-  featureLayer.fields.forEach(
-    field => {
-      const lowercaseFieldname = field.name.toLowerCase();
-      attributeOrigNames[lowercaseFieldname] = field.name;
-      attributeDomains[lowercaseFieldname] = field.domain;
-      attributeTypes[lowercaseFieldname] = field.type;
-    }
-  );
+
+  if (featureLayer.fields) {
+    featureLayer.fields.forEach(
+      field => {
+        const lowercaseFieldname = field.name.toLowerCase();
+        attributeOrigNames[lowercaseFieldname] = field.name;
+        attributeDomains[lowercaseFieldname] = field.domain;
+        attributeTypes[lowercaseFieldname] = field.type;
+      }
+    );
+  } else {
+    // Feature layer is missing fields, so get info from first feature
+    Object.keys(featureSet[0]).forEach(
+      fieldName => {
+        const lowercaseFieldname = fieldName.toLowerCase();
+        attributeOrigNames[lowercaseFieldname] = fieldName;
+      }
+    )
+  }
 
   // Apply the label format
   const labels
@@ -1013,7 +1056,7 @@ export async function _prepareLabelsFromPattern(
       attributeNames.forEach(
         (attributeName: string, i: number) => {
           const lowercaseFieldname = attributeName.toLowerCase();
-          const value = _prepareAttributeValue(feature.attributes[attributeOrigNames[lowercaseFieldname]],
+          const value = _prepareAttributeValue(feature[attributeOrigNames[lowercaseFieldname]],
             attributeTypes[lowercaseFieldname], attributeDomains[lowercaseFieldname],
             attributeFormats[lowercaseFieldname], intl);
           labelPrep = labelPrep.replace(attributeExpressionMatches[i], value);
