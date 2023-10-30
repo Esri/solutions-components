@@ -1008,7 +1008,20 @@ declare global {
         prototype: HTMLBasemapGalleryElement;
         new (): HTMLBasemapGalleryElement;
     };
+    interface HTMLBufferToolsElementEventMap {
+        "bufferComplete": __esri.Polygon | __esri.Polygon[];
+        "distanceChanged": IValueChange;
+        "unitChanged": IValueChange;
+    }
     interface HTMLBufferToolsElement extends Components.BufferTools, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLBufferToolsElementEventMap>(type: K, listener: (this: HTMLBufferToolsElement, ev: BufferToolsCustomEvent<HTMLBufferToolsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLBufferToolsElementEventMap>(type: K, listener: (this: HTMLBufferToolsElement, ev: BufferToolsCustomEvent<HTMLBufferToolsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLBufferToolsElement: {
         prototype: HTMLBufferToolsElement;
@@ -1032,13 +1045,36 @@ declare global {
         prototype: HTMLCrowdsourceReporterElement;
         new (): HTMLCrowdsourceReporterElement;
     };
+    interface HTMLDeductCalculatorElementEventMap {
+        "deductValueComplete": string;
+    }
     interface HTMLDeductCalculatorElement extends Components.DeductCalculator, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDeductCalculatorElementEventMap>(type: K, listener: (this: HTMLDeductCalculatorElement, ev: DeductCalculatorCustomEvent<HTMLDeductCalculatorElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDeductCalculatorElementEventMap>(type: K, listener: (this: HTMLDeductCalculatorElement, ev: DeductCalculatorCustomEvent<HTMLDeductCalculatorElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLDeductCalculatorElement: {
         prototype: HTMLDeductCalculatorElement;
         new (): HTMLDeductCalculatorElement;
     };
+    interface HTMLEditCardElementEventMap {
+        "closeEdit": void;
+        "editsComplete": void;
+    }
     interface HTMLEditCardElement extends Components.EditCard, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLEditCardElementEventMap>(type: K, listener: (this: HTMLEditCardElement, ev: EditCardCustomEvent<HTMLEditCardElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLEditCardElementEventMap>(type: K, listener: (this: HTMLEditCardElement, ev: EditCardCustomEvent<HTMLEditCardElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLEditCardElement: {
         prototype: HTMLEditCardElement;
@@ -1050,7 +1086,18 @@ declare global {
         prototype: HTMLFloorFilterElement;
         new (): HTMLFloorFilterElement;
     };
+    interface HTMLInfoCardElementEventMap {
+        "selectionChanged": __esri.Graphic;
+    }
     interface HTMLInfoCardElement extends Components.InfoCard, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLInfoCardElementEventMap>(type: K, listener: (this: HTMLInfoCardElement, ev: InfoCardCustomEvent<HTMLInfoCardElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLInfoCardElementEventMap>(type: K, listener: (this: HTMLInfoCardElement, ev: InfoCardCustomEvent<HTMLInfoCardElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLInfoCardElement: {
         prototype: HTMLInfoCardElement;
@@ -1062,13 +1109,36 @@ declare global {
         prototype: HTMLJsonEditorElement;
         new (): HTMLJsonEditorElement;
     };
+    interface HTMLLayerTableElementEventMap {
+        "featureSelectionChange": number[];
+        "openFilterOptions": void;
+    }
     interface HTMLLayerTableElement extends Components.LayerTable, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLLayerTableElementEventMap>(type: K, listener: (this: HTMLLayerTableElement, ev: LayerTableCustomEvent<HTMLLayerTableElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLLayerTableElementEventMap>(type: K, listener: (this: HTMLLayerTableElement, ev: LayerTableCustomEvent<HTMLLayerTableElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLLayerTableElement: {
         prototype: HTMLLayerTableElement;
         new (): HTMLLayerTableElement;
     };
+    interface HTMLLayoutManagerElementEventMap {
+        "layoutChanged": ELayoutMode;
+    }
     interface HTMLLayoutManagerElement extends Components.LayoutManager, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLLayoutManagerElementEventMap>(type: K, listener: (this: HTMLLayoutManagerElement, ev: LayoutManagerCustomEvent<HTMLLayoutManagerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLLayoutManagerElementEventMap>(type: K, listener: (this: HTMLLayoutManagerElement, ev: LayoutManagerCustomEvent<HTMLLayoutManagerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLLayoutManagerElement: {
         prototype: HTMLLayoutManagerElement;
@@ -1080,13 +1150,39 @@ declare global {
         prototype: HTMLListItemElement;
         new (): HTMLListItemElement;
     };
+    interface HTMLMapCardElementEventMap {
+        "mapChanged": IMapChange;
+        "beforeMapChanged": void;
+    }
     interface HTMLMapCardElement extends Components.MapCard, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMapCardElementEventMap>(type: K, listener: (this: HTMLMapCardElement, ev: MapCardCustomEvent<HTMLMapCardElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMapCardElementEventMap>(type: K, listener: (this: HTMLMapCardElement, ev: MapCardCustomEvent<HTMLMapCardElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMapCardElement: {
         prototype: HTMLMapCardElement;
         new (): HTMLMapCardElement;
     };
+    interface HTMLMapDrawToolsElementEventMap {
+        "selectionLoadingChange": boolean;
+        "sketchGraphicsChange": ISketchGraphicsChange;
+        "drawUndo": void;
+        "drawRedo": void;
+    }
     interface HTMLMapDrawToolsElement extends Components.MapDrawTools, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMapDrawToolsElementEventMap>(type: K, listener: (this: HTMLMapDrawToolsElement, ev: MapDrawToolsCustomEvent<HTMLMapDrawToolsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMapDrawToolsElementEventMap>(type: K, listener: (this: HTMLMapDrawToolsElement, ev: MapDrawToolsCustomEvent<HTMLMapDrawToolsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMapDrawToolsElement: {
         prototype: HTMLMapDrawToolsElement;
@@ -1098,7 +1194,19 @@ declare global {
         prototype: HTMLMapFullscreenElement;
         new (): HTMLMapFullscreenElement;
     };
+    interface HTMLMapLayerPickerElementEventMap {
+        "noLayersFound": void;
+        "layerSelectionChange": string[];
+    }
     interface HTMLMapLayerPickerElement extends Components.MapLayerPicker, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMapLayerPickerElementEventMap>(type: K, listener: (this: HTMLMapLayerPickerElement, ev: MapLayerPickerCustomEvent<HTMLMapLayerPickerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMapLayerPickerElementEventMap>(type: K, listener: (this: HTMLMapLayerPickerElement, ev: MapLayerPickerCustomEvent<HTMLMapLayerPickerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMapLayerPickerElement: {
         prototype: HTMLMapLayerPickerElement;
@@ -1110,7 +1218,18 @@ declare global {
         prototype: HTMLMapLegendElement;
         new (): HTMLMapLegendElement;
     };
+    interface HTMLMapPickerElementEventMap {
+        "mapInfoChange": IMapInfo;
+    }
     interface HTMLMapPickerElement extends Components.MapPicker, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMapPickerElementEventMap>(type: K, listener: (this: HTMLMapPickerElement, ev: MapPickerCustomEvent<HTMLMapPickerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMapPickerElementEventMap>(type: K, listener: (this: HTMLMapPickerElement, ev: MapPickerCustomEvent<HTMLMapPickerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMapPickerElement: {
         prototype: HTMLMapPickerElement;
@@ -1122,7 +1241,18 @@ declare global {
         prototype: HTMLMapSearchElement;
         new (): HTMLMapSearchElement;
     };
+    interface HTMLMapSelectToolsElementEventMap {
+        "selectionSetChange": number;
+    }
     interface HTMLMapSelectToolsElement extends Components.MapSelectTools, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMapSelectToolsElementEventMap>(type: K, listener: (this: HTMLMapSelectToolsElement, ev: MapSelectToolsCustomEvent<HTMLMapSelectToolsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMapSelectToolsElementEventMap>(type: K, listener: (this: HTMLMapSelectToolsElement, ev: MapSelectToolsCustomEvent<HTMLMapSelectToolsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMapSelectToolsElement: {
         prototype: HTMLMapSelectToolsElement;
@@ -1146,13 +1276,36 @@ declare global {
         prototype: HTMLPdfDownloadElement;
         new (): HTMLPdfDownloadElement;
     };
+    interface HTMLPublicNotificationElementEventMap {
+        "searchConfigurationChange": ISearchConfiguration;
+    }
     interface HTMLPublicNotificationElement extends Components.PublicNotification, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLPublicNotificationElementEventMap>(type: K, listener: (this: HTMLPublicNotificationElement, ev: PublicNotificationCustomEvent<HTMLPublicNotificationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLPublicNotificationElementEventMap>(type: K, listener: (this: HTMLPublicNotificationElement, ev: PublicNotificationCustomEvent<HTMLPublicNotificationElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLPublicNotificationElement: {
         prototype: HTMLPublicNotificationElement;
         new (): HTMLPublicNotificationElement;
     };
+    interface HTMLRefineSelectionElementEventMap {
+        "selectionLoadingChange": boolean;
+        "selectionSetsChanged": ISelectionSet[];
+    }
     interface HTMLRefineSelectionElement extends Components.RefineSelection, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLRefineSelectionElementEventMap>(type: K, listener: (this: HTMLRefineSelectionElement, ev: RefineSelectionCustomEvent<HTMLRefineSelectionElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLRefineSelectionElementEventMap>(type: K, listener: (this: HTMLRefineSelectionElement, ev: RefineSelectionCustomEvent<HTMLRefineSelectionElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLRefineSelectionElement: {
         prototype: HTMLRefineSelectionElement;
@@ -1164,7 +1317,18 @@ declare global {
         prototype: HTMLSolutionConfigurationElement;
         new (): HTMLSolutionConfigurationElement;
     };
+    interface HTMLSolutionContentsElementEventMap {
+        "solutionItemSelected": string;
+    }
     interface HTMLSolutionContentsElement extends Components.SolutionContents, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSolutionContentsElementEventMap>(type: K, listener: (this: HTMLSolutionContentsElement, ev: SolutionContentsCustomEvent<HTMLSolutionContentsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSolutionContentsElementEventMap>(type: K, listener: (this: HTMLSolutionContentsElement, ev: SolutionContentsCustomEvent<HTMLSolutionContentsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLSolutionContentsElement: {
         prototype: HTMLSolutionContentsElement;
@@ -1194,7 +1358,18 @@ declare global {
         prototype: HTMLSolutionItemSharingElement;
         new (): HTMLSolutionItemSharingElement;
     };
+    interface HTMLSolutionOrganizationVariablesElementEventMap {
+        "organizationVariableSelected": { itemId: string, value: string };
+    }
     interface HTMLSolutionOrganizationVariablesElement extends Components.SolutionOrganizationVariables, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSolutionOrganizationVariablesElementEventMap>(type: K, listener: (this: HTMLSolutionOrganizationVariablesElement, ev: SolutionOrganizationVariablesCustomEvent<HTMLSolutionOrganizationVariablesElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSolutionOrganizationVariablesElementEventMap>(type: K, listener: (this: HTMLSolutionOrganizationVariablesElement, ev: SolutionOrganizationVariablesCustomEvent<HTMLSolutionOrganizationVariablesElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLSolutionOrganizationVariablesElement: {
         prototype: HTMLSolutionOrganizationVariablesElement;
@@ -1206,7 +1381,18 @@ declare global {
         prototype: HTMLSolutionResourceItemElement;
         new (): HTMLSolutionResourceItemElement;
     };
+    interface HTMLSolutionSpatialRefElementEventMap {
+        "featureServiceSpatialReferenceChange": { name: string, enabled: boolean };
+    }
     interface HTMLSolutionSpatialRefElement extends Components.SolutionSpatialRef, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSolutionSpatialRefElementEventMap>(type: K, listener: (this: HTMLSolutionSpatialRefElement, ev: SolutionSpatialRefCustomEvent<HTMLSolutionSpatialRefElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSolutionSpatialRefElementEventMap>(type: K, listener: (this: HTMLSolutionSpatialRefElement, ev: SolutionSpatialRefCustomEvent<HTMLSolutionSpatialRefElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLSolutionSpatialRefElement: {
         prototype: HTMLSolutionSpatialRefElement;
@@ -1218,19 +1404,52 @@ declare global {
         prototype: HTMLSolutionTemplateDataElement;
         new (): HTMLSolutionTemplateDataElement;
     };
+    interface HTMLSolutionVariablesElementEventMap {
+        "solutionVariableSelected": { itemId: string, value: string };
+    }
     interface HTMLSolutionVariablesElement extends Components.SolutionVariables, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSolutionVariablesElementEventMap>(type: K, listener: (this: HTMLSolutionVariablesElement, ev: SolutionVariablesCustomEvent<HTMLSolutionVariablesElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSolutionVariablesElementEventMap>(type: K, listener: (this: HTMLSolutionVariablesElement, ev: SolutionVariablesCustomEvent<HTMLSolutionVariablesElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLSolutionVariablesElement: {
         prototype: HTMLSolutionVariablesElement;
         new (): HTMLSolutionVariablesElement;
     };
+    interface HTMLSpatialRefElementEventMap {
+        "spatialReferenceChange": IValueChange;
+    }
     interface HTMLSpatialRefElement extends Components.SpatialRef, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSpatialRefElementEventMap>(type: K, listener: (this: HTMLSpatialRefElement, ev: SpatialRefCustomEvent<HTMLSpatialRefElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSpatialRefElementEventMap>(type: K, listener: (this: HTMLSpatialRefElement, ev: SpatialRefCustomEvent<HTMLSpatialRefElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLSpatialRefElement: {
         prototype: HTMLSpatialRefElement;
         new (): HTMLSpatialRefElement;
     };
+    interface HTMLStoreManagerElementEventMap {
+        "stateLoaded": any;
+    }
     interface HTMLStoreManagerElement extends Components.StoreManager, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLStoreManagerElementEventMap>(type: K, listener: (this: HTMLStoreManagerElement, ev: StoreManagerCustomEvent<HTMLStoreManagerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLStoreManagerElementEventMap>(type: K, listener: (this: HTMLStoreManagerElement, ev: StoreManagerCustomEvent<HTMLStoreManagerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLStoreManagerElement: {
         prototype: HTMLStoreManagerElement;
