@@ -476,6 +476,7 @@ export namespace Components {
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos": IMapInfo[];
+        "setMapByID": (id: string) => Promise<void>;
     }
     interface MapSearch {
         /**
@@ -944,6 +945,10 @@ export namespace Components {
 export interface BufferToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLBufferToolsElement;
+}
+export interface CrowdsourceManagerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCrowdsourceManagerElement;
 }
 export interface DeductCalculatorCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1443,6 +1448,10 @@ declare namespace LocalJSX {
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos"?: IMapInfo[];
+        /**
+          * Emitted on demand when no valid layers are found
+         */
+        "onUrlParamsSet"?: (event: CrowdsourceManagerCustomEvent<any>) => void;
         /**
           * boolean: When true only editable layers that support the update capability will be available
          */

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { ELayoutMode, IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
@@ -234,6 +234,11 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
+   * Emitted if any valid url params are provided
+   */
+  @Event() urlParamsSet: EventEmitter<any>;
+
+  /**
    * Listen for layoutChanged event to be fired so we can adjust the layout
    */
   @Listen("layoutChanged", { target: "window" })
@@ -280,9 +285,6 @@ export class CrowdsourceManager {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
-    console.log("CM componentWillLoad")
-    console.log("this.defaultGlobalId")
-    console.log(this.defaultGlobalId)
   }
 
   /**
@@ -313,10 +315,19 @@ export class CrowdsourceManager {
     }
   }
 
+  /**
+   * Called once after the component is loaded
+   * emit url param defaults here so they will only be emitted once
+   */
   async componentDidLoad(): Promise<void> {
-    console.log("CM componentWillLoad")
-    console.log("this.defaultGlobalId")
-    console.log(this.defaultGlobalId)
+    if (this.defaultWebmap) {
+      this.urlParamsSet.emit({
+        defaultWebmap: this.defaultWebmap,
+        defaultLayer: this.defaultLayer,
+        defaultOid: this.defaultOid,
+        defaultGlobalId: this.defaultGlobalId
+      });
+    }
   }
 
   //--------------------------------------------------------------------------

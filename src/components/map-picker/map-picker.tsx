@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from '@stencil/core';
 import { IMapInfo } from "../../utils/interfaces";
 import MapPicker_T9n from "../../assets/t9n/map-picker/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -115,6 +115,16 @@ export class MapPicker {
   //
   //--------------------------------------------------------------------------
 
+  @Method()
+  async setMapByID(
+    id: string
+  ): Promise<void> {
+    const mapInfos = this.mapInfos?.filter(i => i.id === id);
+    if (id && mapInfos?.length > 0) {
+     this._webMapSelected(mapInfos[0])
+    }
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Events (public)
@@ -151,15 +161,6 @@ export class MapPicker {
         {this._getMapNameList(this._mapListExpanded)}
       </Host>
     );
-  }
-
-  /**
-   * Called after each render
-   */
-  async componentDidRender() {
-    if (this._mapListExpanded) {
-      await this._list.setFocus();
-    }
   }
 
   /**
@@ -257,6 +258,7 @@ export class MapPicker {
           id="mapList"
           ref={(el) => this._list = el}
           selectionAppearance="border"
+          selectionMode="single"
         >
           {this.mapInfos.map(mapInfo => {
             return (
