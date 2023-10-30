@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.6.44] - Oct 30th 2023
+* Improved support for creating address labels from related records
+
 ## [0.6.43] - Oct 26th 2023
 
 ## [0.6.42] - Oct 26th 2023
@@ -310,4 +313,5 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 [0.6.41]: https://github.com/Esri/solution.js/compare/v0.6.40...v0.6.41 "v0.6.41"
 [0.6.42]: https://github.com/Esri/solution.js/compare/v0.6.41...v0.6.42 "v0.6.42"
 [0.6.43]: https://github.com/Esri/solution.js/compare/v0.6.42...v0.6.43 "v0.6.43"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.6.43...HEAD "Unreleased Changes"
+[0.6.44]: https://github.com/Esri/solution.js/compare/v0.6.43...v0.6.44 "v0.6.44"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.6.44...HEAD "Unreleased Changes"
