@@ -268,8 +268,10 @@ describe("downloadUtils", () => {
       const url = "https://servicesdev.arcgis.com/D2C14713795/ArcGIS/rest/services/addresses/FeatureServer/0";
       const layerId = 5;
       const expectedOptions: downloadUtils.IQueryRelatedOptionsOffset = {
+        definitionExpression: "1=1",
         httpMethod: "POST",
         objectIds: undefined,
+        outFields: "*",
         relationshipId: undefined,
         params: {
           resultOffset: 0
@@ -287,8 +289,10 @@ describe("downloadUtils", () => {
       const url = "https://servicesdev.arcgis.com/D2C14713795/ArcGIS/rest/services/addresses/FeatureServer";
       const layerId = 5;
       const expectedOptions: downloadUtils.IQueryRelatedOptionsOffset = {
+        definitionExpression: "1=1",
         httpMethod: "POST",
         objectIds: undefined,
+        outFields: "*",
         relationshipId: undefined,
         params: {
           resultOffset: 0
@@ -308,8 +312,10 @@ describe("downloadUtils", () => {
       const relationshipId = 3;
       const objectIds = [7, 8, 9];
       const expectedOptions: downloadUtils.IQueryRelatedOptionsOffset = {
+        definitionExpression: "1=1",
         httpMethod: "POST",
         objectIds,
+        outFields: "*",
         relationshipId,
         params: {
           resultOffset: 0
