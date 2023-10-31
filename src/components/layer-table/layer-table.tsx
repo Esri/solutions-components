@@ -43,6 +43,11 @@ export class LayerTable {
   //--------------------------------------------------------------------------
 
   /**
+   * string: when provided this layer ID will be used when the app loads
+   */
+  @Prop() defaultLayerId: string;
+
+  /**
    * boolean: when true the layer table will auto refresh the data
    */
   @Prop() enableAutoRefresh: boolean;
@@ -546,6 +551,7 @@ export class LayerTable {
         <div class="border-end" id="solutions-map-layer-picker-container">
           <map-layer-picker
             appearance="transparent"
+            defaultLayerId={this.defaultLayerId}
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
             onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}

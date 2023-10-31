@@ -46,6 +46,11 @@ export class MapCard {
   //--------------------------------------------------------------------------
 
   /**
+   * string: Item ID of the web map that should be selected by default when the app loads
+   */
+  @Prop() defaultWebmapId = "";
+
+  /**
    * boolean: when true the home widget will be available
    */
   @Prop() enableHome: boolean;
@@ -138,11 +143,6 @@ export class MapCard {
   protected WebMap: typeof import("esri/WebMap");
 
   /**
-   * string: Item ID of the web map that should be selected by default
-   */
-  protected _defaultWebmapId = "";
-
-  /**
    * boolean: When true the default map provided via url params has been loaded and should no longer override other maps
    */
   protected _defaultWebmapHonored = false;
@@ -216,16 +216,6 @@ export class MapCard {
     evt: CustomEvent
   ): Promise<void> {
     await this._loadMap(evt.detail);
-  }
-
-  /**
-   * Listen for any params defined via the url
-   */
-  @Listen("urlParamsSet", { target: "window" })
-  async urlParamsSet(
-    evt: CustomEvent
-  ): Promise<void> {
-    this._defaultWebmapId = evt.detail.defaultWebmap;
   }
 
   //--------------------------------------------------------------------------
@@ -303,18 +293,17 @@ export class MapCard {
   protected async _loadMap(
     webMapInfo: IMapInfo
   ): Promise<void> {
-
     // on the first render use the default webmap id if provided otherwise use the first child of the provided mapInfos
-    const loadDefaultMap = !this._defaultWebmapHonored && this._defaultWebmapId !== ""
-    let id = loadDefaultMap ? this._defaultWebmapId : webMapInfo?.id;
-    const defaultMap = this.mapInfos?.filter(i => i.id === this._defaultWebmapId);
+    const loadDefaultMap = !this._defaultWebmapHonored && this.defaultWebmapId;
+    const defaultMap = this.mapInfos?.filter(i => i.id === this.defaultWebmapId);
 
-    this._webMapInfo = (id === "" || !id) && this.mapInfos.length > 0 ?
-      this.mapInfos[0] : loadDefaultMap && defaultMap?.length > 0 ? defaultMap[0] : webMapInfo;
+    this._webMapInfo = loadDefaultMap && defaultMap ? defaultMap[0] :
+      !webMapInfo?.id && this.mapInfos.length > 0 ? this.mapInfos[0] : webMapInfo;
 
-    id = this._webMapInfo.id;
+    const id = this._webMapInfo.id;
+    const isDefaultMap = loadDefaultMap && webMapInfo?.id === this.defaultWebmapId;
 
-    if (this._loadedId !== id && !loadDefaultMap) {
+    if ((this._loadedId !== id && !loadDefaultMap) || isDefaultMap) {
       const webMap = new this.WebMap({
         portalItem: { id }
       });
@@ -333,6 +322,7 @@ export class MapCard {
       await this.mapView.when(() => {
         this._initHome();
         this.mapView.ui.add(this._mapTools, { position: "top-right", index: 0});
+        this._defaultWebmapHonored = isDefaultMap ? true : this._defaultWebmapHonored;
         this.mapChanged.emit({
           id: id,
           mapView: this.mapView

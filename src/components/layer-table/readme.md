@@ -9,6 +9,7 @@
 
 | Property                  | Attribute                     | Description                                                                                                        | Type       | Default     |
 | ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------- | ----------- |
+| `defaultLayerId`          | `default-layer-id`            | string: when provided this layer ID will be used when the app loads                                                | `string`   | `undefined` |
 | `enableAutoRefresh`       | `enable-auto-refresh`         | boolean: when true the layer table will auto refresh the data                                                      | `boolean`  | `undefined` |
 | `enableCSV`               | `enable-c-s-v`                | boolean: when true the export to csv button will be available                                                      | `boolean`  | `undefined` |
 | `enableInlineEdit`        | `enable-inline-edit`          | boolean: when true edits can be applied directly within the table                                                  | `boolean`  | `undefined` |

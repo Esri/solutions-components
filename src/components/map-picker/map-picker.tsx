@@ -121,7 +121,7 @@ export class MapPicker {
   ): Promise<void> {
     const mapInfos = this.mapInfos?.filter(i => i.id === id);
     if (id && mapInfos?.length > 0) {
-     this._webMapSelected(mapInfos[0])
+      this._webMapSelected(mapInfos[0])
     }
   }
 

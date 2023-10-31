@@ -49,7 +49,7 @@ export class CrowdsourceManager {
   @Prop() defaultGlobalId = "";
 
   /**
-   * string: Unique ID of the layer in the web map
+   * string: when provided this layer ID will be used when the app loads
    */
   @Prop() defaultLayer = "";
 
@@ -315,21 +315,6 @@ export class CrowdsourceManager {
     }
   }
 
-  /**
-   * Called once after the component is loaded
-   * emit url param defaults here so they will only be emitted once
-   */
-  async componentDidLoad(): Promise<void> {
-    if (this.defaultWebmap) {
-      this.urlParamsSet.emit({
-        defaultWebmap: this.defaultWebmap,
-        defaultLayer: this.defaultLayer,
-        defaultOid: this.defaultOid,
-        defaultGlobalId: this.defaultGlobalId
-      });
-    }
-  }
-
   //--------------------------------------------------------------------------
   //
   //  Functions (protected)
@@ -513,6 +498,7 @@ export class CrowdsourceManager {
         <map-card
           basemapConfig={this.basemapConfig}
           class="width-full"
+          defaultWebmapId={this.defaultWebmap}
           enableBasemap={this.enableBasemap}
           enableFloorFilter={this.enableFloorFilter}
           enableFullscreen={this.enableFullscreen}
@@ -649,6 +635,7 @@ export class CrowdsourceManager {
         </calcite-action-bar>
         <div class="width-full height-full position-relative">
           <layer-table
+            defaultLayerId={this.defaultLayer}
             enableAutoRefresh={this.enableAutoRefresh}
             enableCSV={this.enableCSV}
             enableInlineEdit={this.enableInlineEdit}

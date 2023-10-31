@@ -19,7 +19,7 @@ import MapLayerPicker_T9n from "../../assets/t9n/map-layer-picker/resources.json
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getMapLayerHash, getMapTableHash } from "../../utils/mapViewUtils";
 import state from "../../utils/publicNotificationStore";
-import { IMapItemHash } from "../../utils/interfaces";
+import { ILayerHashInfo, IMapItemHash } from "../../utils/interfaces";
 
 @Component({
   tag: "map-layer-picker",
@@ -44,6 +44,11 @@ export class MapLayerPicker {
    * "transparent" | "solid": controls the button appearance when using the "dropdown" type
    */
   @Prop() appearance: "transparent" | "solid" = "transparent";
+
+  /**
+   * string: when provided this layer ID will be used when the app loads
+   */
+  @Prop() defaultLayerId = "";
 
   /**
    * string[]: Optional list of enabled layer ids
@@ -126,6 +131,11 @@ export class MapLayerPicker {
   //--------------------------------------------------------------------------
 
   /**
+   * boolean: When true the default layer has been loaded once and should no longer be used
+   */
+  protected defaultLayerHonored = false;
+
+  /**
    * HTMLCalciteSelectElement: The html element for selecting layers
    */
   protected _layerElement: HTMLCalciteSelectElement | HTMLCalciteComboboxElement;
@@ -148,7 +158,6 @@ export class MapLayerPicker {
 
   /**
    * Called each time the mapView prop is changed.
-   *
    */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
@@ -394,16 +403,31 @@ export class MapLayerPicker {
     const item = itemType === "layer" ? this._layerNameHash[id] : this._tableNameHash[id];
     const disabled = this.onlyShowUpdatableLayers ? !item.supportsUpdate : false;
     const name = item.name;
-    return this.type === "combobox" ? (<calcite-combobox-item disabled={disabled} textLabel={name} value={id} />) :
-      this.type === "select" ? (<calcite-option disabled={disabled} label={name} value={id} />) :
-        (
-          <calcite-dropdown-item
-            disabled={disabled}
-            onClick={disabled ? undefined : () => void this._setSelectedLayer(id)}
-          >
-            {name}
-          </calcite-dropdown-item>
-        );
+    const selected = this.selectedIds.indexOf(id) > -1;
+    return this.type === "combobox" ? (
+      <calcite-combobox-item
+        disabled={disabled}
+        selected={selected}
+        textLabel={name}
+        value={id}
+      />
+    ) :
+      this.type === "select" ? (
+        <calcite-option
+          disabled={disabled}
+          label={name}
+          selected={selected}
+          value={id}
+        />
+      ) : (
+        <calcite-dropdown-item
+          disabled={disabled}
+          onClick={disabled ? undefined : () => void this._setSelectedLayer(id)}
+          selected={selected}
+        >
+          {name}
+        </calcite-dropdown-item>
+      );
   }
 
   /**
@@ -412,12 +436,31 @@ export class MapLayerPicker {
   _setSelectedLayer(
     id: string
   ): void {
-    const item = Object.keys(this._layerNameHash).indexOf(id) > -1 ?
-      this._layerNameHash[id] : Object.keys(this._tableNameHash).indexOf(id) > -1 ?
-      this._tableNameHash[id] : undefined;
+    let item;
+    const hasDefaultLayer = this.defaultLayerId && !this.defaultLayerHonored;
+    if (hasDefaultLayer) {
+      item = this._getLayerFromHash(this.defaultLayerId);
+      this.defaultLayerHonored = item !== undefined;
+      id = this.defaultLayerHonored ? this.defaultLayerId : id;
+    }
+    item = item ? item : this._getLayerFromHash(id);
+
     this.selectedName = item?.name;
     this.selectedIds = [id];
     this.layerSelectionChange.emit(this.selectedIds);
+  }
+
+  /**
+   * Fetch layer hash info for the given id
+   *
+   * @returns ILayerHashInfo for the id
+   */
+  protected _getLayerFromHash(
+    id: string
+  ): ILayerHashInfo {
+    return Object.keys(this._layerNameHash).indexOf(id) > -1 ?
+      this._layerNameHash[id] : Object.keys(this._tableNameHash).indexOf(id) > -1 ?
+        this._tableNameHash[id] : undefined;
   }
 
   /**

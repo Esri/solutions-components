@@ -92,7 +92,7 @@ export namespace Components {
          */
         "defaultGlobalId": string;
         /**
-          * string: Unique ID of the layer in the web map
+          * string: when provided this layer ID will be used when the app loads
          */
         "defaultLayer": string;
         /**
@@ -271,6 +271,10 @@ export namespace Components {
     }
     interface LayerTable {
         /**
+          * string: when provided this layer ID will be used when the app loads
+         */
+        "defaultLayerId": string;
+        /**
           * boolean: when true the layer table will auto refresh the data
          */
         "enableAutoRefresh": boolean;
@@ -316,6 +320,10 @@ export namespace Components {
           * IBasemapConfig: List of any basemaps to filter out from the basemap widget
          */
         "basemapConfig": IBasemapConfig;
+        /**
+          * string: Item ID of the web map that should be selected by default when the app loads
+         */
+        "defaultWebmapId": string;
         /**
           * boolean: when true the basemap widget will be available
          */
@@ -424,6 +432,10 @@ export namespace Components {
           * "transparent" | "solid": controls the button appearance when using the "dropdown" type
          */
         "appearance": "transparent" | "solid";
+        /**
+          * string: when provided this layer ID will be used when the app loads
+         */
+        "defaultLayerId": string;
         /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
@@ -1389,7 +1401,7 @@ declare namespace LocalJSX {
          */
         "defaultGlobalId"?: string;
         /**
-          * string: Unique ID of the layer in the web map
+          * string: when provided this layer ID will be used when the app loads
          */
         "defaultLayer"?: string;
         /**
@@ -1449,7 +1461,7 @@ declare namespace LocalJSX {
          */
         "mapInfos"?: IMapInfo[];
         /**
-          * Emitted on demand when no valid layers are found
+          * Emitted if any valid url params are provided
          */
         "onUrlParamsSet"?: (event: CrowdsourceManagerCustomEvent<any>) => void;
         /**
@@ -1563,6 +1575,10 @@ declare namespace LocalJSX {
     }
     interface LayerTable {
         /**
+          * string: when provided this layer ID will be used when the app loads
+         */
+        "defaultLayerId"?: string;
+        /**
           * boolean: when true the layer table will auto refresh the data
          */
         "enableAutoRefresh"?: boolean;
@@ -1620,6 +1636,10 @@ declare namespace LocalJSX {
           * IBasemapConfig: List of any basemaps to filter out from the basemap widget
          */
         "basemapConfig"?: IBasemapConfig;
+        /**
+          * string: Item ID of the web map that should be selected by default when the app loads
+         */
+        "defaultWebmapId"?: string;
         /**
           * boolean: when true the basemap widget will be available
          */
@@ -1742,6 +1762,10 @@ declare namespace LocalJSX {
           * "transparent" | "solid": controls the button appearance when using the "dropdown" type
          */
         "appearance"?: "transparent" | "solid";
+        /**
+          * string: when provided this layer ID will be used when the app loads
+         */
+        "defaultLayerId"?: string;
         /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
