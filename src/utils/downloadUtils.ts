@@ -25,7 +25,6 @@ import * as common from "@esri/solution-common";
 
 export { ILabel } from "./pdfUtils";
 
-/*
 interface IArcadeExecutors {
   [expressionName: string]: __esri.ArcadeExecutor;
 }
@@ -33,7 +32,6 @@ interface IArcadeExecutors {
 interface IArcadeExecutorPromises {
   [expressionName: string]: Promise<__esri.ArcadeExecutor>;
 }
-*/
 
 export interface IAttributeOrigNames {
   [lowercaseName: string]: string;
@@ -381,7 +379,6 @@ export async function _convertPopupArcadeToLabelSpec(
  * @param layer Layer from which to fetch features
  * @return Promise resolving to a set of executors keyed using the expression name
  */
-/*
 async function _createArcadeExecutors(
   labelFormat: string,
   layer: __esri.FeatureLayer
@@ -453,7 +450,6 @@ async function _createArcadeExecutors(
     }
   );
 }
-*/
 
 /**
  * Creates a title from a list of selection set names.
@@ -944,7 +940,7 @@ export async function _prepareLabels(
   const labels
     = labelFormatProps.labelFormat.type === "pattern" ?
     // Export attributes in format
-    await _prepareLabelsFromPattern(/*layer,*/ featureSet, attributeOrigNames, attributeTypes, attributeDomains,
+    await _prepareLabelsFromPattern(layer, featureSet, attributeOrigNames, attributeTypes, attributeDomains,
       labelFormatProps.attributeFormats, labelFormatProps.labelFormat.format as string, includeHeaderNames)
 
     : labelFormatProps.labelFormat.type === "executor" ?
@@ -1015,7 +1011,7 @@ export async function _prepareLabelsFromAll(
  * @returns Promise resolving with list of labels, each of which is a list of label lines
  */
 export async function _prepareLabelsFromPattern(
-  //layer: __esri.FeatureLayer,
+  layer: __esri.FeatureLayer,
   featureSet: __esri.Graphic[],
   attributeOrigNames: IAttributeOrigNames,
   attributeTypes: IAttributeTypes,
@@ -1031,26 +1027,24 @@ export async function _prepareLabelsFromPattern(
   const attributeNames = _getFieldNamesFromFieldExpressions(attributeExpressionMatches);
 
   // Do we need any Arcade executors?
-  //const arcadeExecutors = await _createArcadeExecutors(labelFormat, layer);
-  //const arcadeExpressionRegExp = /\{expression\/\w+\}/g;
+  const arcadeExecutors = await _createArcadeExecutors(labelFormat, layer);
+  const arcadeExpressionRegExp = /\{expression\/\w+\}/g;
 
   // Find the label fields that we need to replace with values
-  //const arcadeExpressionMatches = labelFormat.match(arcadeExpressionRegExp) ?? [];
+  const arcadeExpressionMatches = labelFormat.match(arcadeExpressionRegExp) ?? [];
 
   // Convert feature attributes into an array of labels
   const labels = await Promise.all(featureSet.map(
     async feature => {
       let labelPrep = labelFormat;
 
-      /*
-      // Replace Arcade expressions in this feature
+      //Replace Arcade expressions in this feature
       for (let i = 0; i < arcadeExpressionMatches.length; i++) {
         const match: string = arcadeExpressionMatches[i];
         const expressionName = match.substring(match.indexOf("/") + 1, match.length - 1);
-        const value = await arcadeExecutors[expressionName].executeAsync({"$feature": feature, "$layer", layer});
+        const value = await arcadeExecutors[expressionName].executeAsync({"$feature": feature, "$layer": layer});
         labelPrep = labelPrep.replace(match, value);
       }
-      */
 
       // Replace non-Arcade fields in this feature
       const attributeValues = feature.attributes ?? feature;
