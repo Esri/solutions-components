@@ -275,6 +275,10 @@ export namespace Components {
          */
         "defaultLayerId": string;
         /**
+          * number: when provided this will be used to select a feature in the table by default
+         */
+        "defaultOid": number;
+        /**
           * boolean: when true the layer table will auto refresh the data
          */
         "enableAutoRefresh": boolean;
@@ -1578,6 +1582,10 @@ declare namespace LocalJSX {
           * string: when provided this layer ID will be used when the app loads
          */
         "defaultLayerId"?: string;
+        /**
+          * number: when provided this will be used to select a feature in the table by default
+         */
+        "defaultOid"?: number;
         /**
           * boolean: when true the layer table will auto refresh the data
          */
