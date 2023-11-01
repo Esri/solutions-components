@@ -446,10 +446,9 @@ export class MapSelectTools {
   async componentDidLoad(): Promise<void> {
     await this._init();
     await this._searchWidget.when(() => {
-      this._searchWidget.allPlaceholder = this._translations.placeholder;
-      this._searchWidget.defaultSources.forEach(s => {
-        s.placeholder = this._translations.placeholder;
-      })
+      this._searchWidget.allPlaceholder = this.searchConfiguration?.allPlaceholder &&
+        this.searchConfiguration.allPlaceholder.toLowerCase() !== "find address or place" ?
+        this.searchConfiguration.allPlaceholder : this._translations.placeholder;
     })
   }
 

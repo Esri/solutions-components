@@ -1,7 +1,7 @@
 import autoprefixer from 'autoprefixer';
 import { Config } from '@stencil/core';
 import { sass } from '@stencil/sass';
-import { postcss } from '@stencil/postcss';
+import { postcss } from '@stencil-community/postcss';
 import tailwindcss from 'tailwindcss';
 import tailwindConfig from './tailwind.config';
 import { generatePreactTypes } from './support/preact';

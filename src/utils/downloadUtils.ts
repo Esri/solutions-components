@@ -72,6 +72,22 @@ export interface ILayerRelationshipQueryHash {
   [relationshipId: string]: ILayerRelationshipQuery;
 }
 
+/**
+ * Related record query request options with new exceededTransferLimit property.
+ */
+export interface IQueryRelatedOptionsOffset extends IQueryRelatedOptions {
+  params: {
+    resultOffset: number;
+  }
+}
+
+/**
+ * Related record response structure with new exceededTransferLimit property.
+ */
+export interface IQueryRelatedResponseOffset extends IQueryRelatedResponse {
+  exceededTransferLimit?: boolean;
+}
+
 // Class RelationshipQuery doesn't appear to work, and so since
 // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html#queryRelatedFeatures
 // says that the relationshipQuery argument is autocast, we'll set up a variant for the class
@@ -468,19 +484,20 @@ export function _getExpressionsFromLabel(
 }
 
 /**
- * Get the related records for a feature service.
+ * Gets the related records for a feature service.
  *
  * @param url Feature service's URL, e.g., layer.url
  * @param layerId Id of layer within a feature service
  * @param relationshipId Id of relationship
  * @param objectIds Objects in the feature service whose related records are sought
+ * @returns Promise resolving to an array of objects and their related records
  */
 export function _getFeatureServiceRelatedRecords(
   url: string,
   layerId: number,
   relationshipId?: number,
   objectIds?: number[]
-): Promise<IQueryRelatedResponse> {
+): Promise<IRelatedRecordGroup[]> {
   // See if the URL points to a service rather than a layer
   const endOfUrl = url.substring(url.lastIndexOf("/") + 1);
   if (isNaN(parseInt(endOfUrl))) {
@@ -488,12 +505,46 @@ export function _getFeatureServiceRelatedRecords(
   }
 
   const options: IQueryRelatedOptions = {
-    url,
+    definitionExpression: "1=1",
+    httpMethod: "POST",
+    objectIds,
+    outFields: "*",
     relationshipId,
-    objectIds
+    url
   }
 
-  return queryRelated(options);
+  return _getFeatureServiceRelatedRecordsTranche(options);
+}
+
+/**
+ * Gets a tranche of related records for a feature service.
+ *
+ * @param options Options for arcgis-rest-js' queryRelated function
+ * @param relationships Array of related records accumulated so far
+ * @param resultOffset Number of records already retrieved
+ * @returns Promise resolving to an array of objects and their related records
+ */
+export function _getFeatureServiceRelatedRecordsTranche(
+  options: IQueryRelatedOptions,
+  relationships: IRelatedRecordGroup[] = [],
+  resultOffset = 0
+): Promise<IRelatedRecordGroup[]> {
+  return queryRelated({
+    ...options,
+    params: {
+      resultOffset
+    }
+  } as IQueryRelatedOptionsOffset)
+  .then(
+    (response: IQueryRelatedResponseOffset) => {
+      relationships.push(...response.relatedRecordGroups);
+
+      // If exceededTransferLimit is true, then there are more records to retrieve and the feature service
+      // supports the resultOffset parameter
+      return response.exceededTransferLimit ? _getFeatureServiceRelatedRecordsTranche(
+          options, relationships, resultOffset + response.relatedRecordGroups.length) : Promise.resolve(relationships);
+    }
+  );
 }
 
 /**
@@ -585,14 +636,12 @@ export async function _getLabelFormat(
         const relationshipId = layer.popupTemplate.content[0].relationshipId;
 
         // Get related layer
+        const layerRelationship = layer.relationships.find(relationship => relationship.id === relationshipId);
         let webmapLayers = webmap.layers.toArray().concat(webmap.tables.toArray()) as  __esri.FeatureLayer[];
         webmapLayers = webmapLayers.filter(
           (webmapLayer: __esri.FeatureLayer) =>
-            webmapLayer.type === "feature"
-            && webmapLayer.id !== layer.id
-            && webmapLayer.relationships
-            && webmapLayer.relationships.some(relationship => relationship.id === relationshipId)
-          );
+            webmapLayer.type === "feature" && webmapLayer.layerId === layerRelationship.relatedTableId
+        );
 
         if (webmapLayers.length > 0) {
           labelFormatProps = await _getLabelFormat(webmap, webmapLayers[0], formatUsingLayerPopup);
@@ -804,28 +853,63 @@ export async function _prepareLabels(
 
   let featureSet: __esri.Graphic[] = [];
   if (typeof(labelFormatProps.relationshipId) !== "undefined") {
-    // Get the related items for each id
-    const relatedRecResponse = await _getFeatureServiceRelatedRecords(layer.url, layer.layerId, labelFormatProps.relationshipId, ids);
+    // Get the related items for each id; we're asking for the full item
+    const relatedRecordGroups = await _getFeatureServiceRelatedRecords(
+      layer.url, layer.layerId, labelFormatProps.relationshipId, ids);
 
-    const objectIdField = layer.objectIdField;
-    let relatedFeatureIds: number[] = [];
-    relatedRecResponse.relatedRecordGroups.forEach(
+    // Extract the attributes from the results and merge them into a single list. relatedRecordGroups has the form
+    //    [{
+    //      "objectId",
+    //      "relatedRecords": [{
+    //        "attributes": {}
+    //      }, {
+    //        "attributes": {}
+    //      }, {
+    //        "attributes": {}
+    //      }]
+    //    }, {
+    //      "objectId",
+    //      "relatedRecords": [{
+    //        "attributes": {}
+    //      }, {
+    //        "attributes": {}
+    //      }, {
+    //        :    :
+    //      }]
+    //    }, {
+    //      :    :
+    //    }]
+    const relatedFeatures: any[] = [];
+    relatedRecordGroups.forEach(
       (relatedRecGroup: IRelatedRecordGroup) => {
-        relatedFeatureIds = relatedFeatureIds.concat(relatedRecGroup.relatedRecords.map((rec: IFeature) => rec.attributes[objectIdField]));
+        relatedRecGroup.relatedRecords.forEach(
+          (relatedRec: IFeature) => {
+            relatedFeatures.push(relatedRec.attributes);
+          }
+        );
       }
     );
 
+    // Sort and remove duplicates
+    const objectIdField = layer.objectIdField;
+    relatedFeatures.sort(
+      (a, b) => {
+        if (a[objectIdField] < b[objectIdField]) {
+          return -1;
+        } else if (a[objectIdField] > b[objectIdField]) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+    );
+
+    featureSet = relatedFeatures.filter((feature, i) => i === 0 ? true : feature[objectIdField] !== relatedFeatures[i-1][objectIdField]);
+
     // Handle the special case where no related records were found for the set of features
-    if (relatedFeatureIds.length === 0) {
+    if (featureSet.length === 0) {
       return Promise.resolve([]);
     }
-
-    // Remove duplicates
-    relatedFeatureIds.sort();
-    relatedFeatureIds = relatedFeatureIds.filter((id, i) => i === 0 ? true : id !== relatedFeatureIds[i-1]);
-
-    // Get the full items
-    featureSet = await queryFeaturesByID(relatedFeatureIds, featureLayer, [], false);
 
   } else {
     // Get the features to export
@@ -836,14 +920,25 @@ export async function _prepareLabels(
   const attributeOrigNames: IAttributeOrigNames = {};
   const attributeTypes: IAttributeTypes = {};
   const attributeDomains: IAttributeDomains = {};
-  featureLayer.fields.forEach(
-    field => {
-      const lowercaseFieldname = field.name.toLowerCase();
-      attributeOrigNames[lowercaseFieldname] = field.name;
-      attributeDomains[lowercaseFieldname] = field.domain;
-      attributeTypes[lowercaseFieldname] = field.type;
-    }
-  );
+
+  if (featureLayer.fields) {
+    featureLayer.fields.forEach(
+      field => {
+        const lowercaseFieldname = field.name.toLowerCase();
+        attributeOrigNames[lowercaseFieldname] = field.name;
+        attributeDomains[lowercaseFieldname] = field.domain;
+        attributeTypes[lowercaseFieldname] = field.type;
+      }
+    );
+  } else {
+    // Feature layer is missing fields, so get info from first feature
+    Object.keys(featureSet[0]).forEach(
+      fieldName => {
+        const lowercaseFieldname = fieldName.toLowerCase();
+        attributeOrigNames[lowercaseFieldname] = fieldName;
+      }
+    )
+  }
 
   // Apply the label format
   const labels
@@ -958,10 +1053,11 @@ export async function _prepareLabelsFromPattern(
       */
 
       // Replace non-Arcade fields in this feature
+      const attributeValues = feature.attributes ?? feature;
       attributeNames.forEach(
         (attributeName: string, i: number) => {
           const lowercaseFieldname = attributeName.toLowerCase();
-          const value = _prepareAttributeValue(feature.attributes[attributeOrigNames[lowercaseFieldname]],
+          const value = _prepareAttributeValue(attributeValues[attributeOrigNames[lowercaseFieldname]],
             attributeTypes[lowercaseFieldname], attributeDomains[lowercaseFieldname],
             attributeFormats[lowercaseFieldname], intl);
           labelPrep = labelPrep.replace(attributeExpressionMatches[i], value);
