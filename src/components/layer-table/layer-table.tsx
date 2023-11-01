@@ -48,6 +48,11 @@ export class LayerTable {
   @Prop() defaultLayerId: string;
 
   /**
+   * number: when provided this will be used to select a feature in the table by default
+   */
+  @Prop() defaultOid: number;
+
+  /**
    * boolean: when true the layer table will auto refresh the data
    */
   @Prop() enableAutoRefresh: boolean;
@@ -164,6 +169,11 @@ export class LayerTable {
    * boolean: When false alerts will be shown to indicate that the layer must have editing enabled for edit actions
    */
   protected _editEnabled: boolean;
+
+  /**
+   * boolean: When true the default OID provided via url param has been honored and should now be ignored
+   */
+  protected _defaultOidHonored = false;
 
   /**
    * IToolSizeInfo[]: The default list of tool size info for tools that should display outside of the dropdown
@@ -468,7 +478,7 @@ export class LayerTable {
    * Called once after the component is loaded
    */
   async componentDidLoad(): Promise<void> {
-    this._resizeObserver.observe(this._toolbar)
+    this._resizeObserver.observe(this._toolbar);
   }
 
   /**
@@ -1097,6 +1107,15 @@ export class LayerTable {
     await this._table.when(() => {
       this._table.highlightIds.removeAll();
       this._table.clearSelectionFilter();
+
+      if (!this._defaultOidHonored && this.defaultOid > -1) {
+        this._table.highlightIds.add(this.defaultOid);
+        setTimeout(() => {
+          const i = this._table.viewModel.getObjectIdIndex(this.defaultOid);
+          this._table.scrollToIndex(i);
+        }, 500)
+        this._defaultOidHonored = true
+      }
     });
 
     this._showOnlySelected = false;

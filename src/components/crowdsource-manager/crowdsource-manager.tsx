@@ -610,6 +610,7 @@ export class CrowdsourceManager {
     const toggleSlot = this.classicGrid && layoutMode !== ELayoutMode.VERTICAL ? "footer" :
       this.classicGrid && layoutMode === ELayoutMode.VERTICAL ? "panel-end" :
         layoutMode === ELayoutMode.HORIZONTAL  ? "header" : "panel-start";
+    const hasMapAndLayer = this.defaultWebmap && this.defaultLayer;
     return (
       <calcite-shell class={tableSizeClass + " border-bottom"}>
         <calcite-action-bar
@@ -635,7 +636,8 @@ export class CrowdsourceManager {
         </calcite-action-bar>
         <div class="width-full height-full position-relative">
           <layer-table
-            defaultLayerId={this.defaultLayer}
+            defaultLayerId={hasMapAndLayer ? this.defaultLayer : ""}
+            defaultOid={hasMapAndLayer ? parseInt(this.defaultOid, 10) : 0}
             enableAutoRefresh={this.enableAutoRefresh}
             enableCSV={this.enableCSV}
             enableInlineEdit={this.enableInlineEdit}
