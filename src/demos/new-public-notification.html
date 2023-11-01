@@ -74,13 +74,27 @@
         Legend,
         esriConfig
       ) => {
+        let itemId;
+        var vars = window.location.search.substring(1).split('&');
+        vars.forEach((param) => {
+          let vals = param.split('=');
+          const v = vals[1];
+          switch (vals[0]) {
+            case "id":
+              itemId = v;
+              break;
+            default:
+              break;
+          }
+        });
+
         //esriConfig.portalUrl = "https://solutions.mapsdevext.arcgis.com";
         var webMap = new WebMap({
           portalItem: {
             // solutions
-            id: "3715f4899bea4b2a948347c5c2357e58"
+            id: itemId ? itemId : "3715f4899bea4b2a948347c5c2357e58"
             // InstantApps
-            //id: "863e4f6f2a7840db896cc1b1606d552d"
+            //id: itemId ? itemId : "863e4f6f2a7840db896cc1b1606d552d"
           }
         });
 
