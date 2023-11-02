@@ -173,6 +173,26 @@ export namespace Components {
         "zoomAndScrollToSelected": boolean;
     }
     interface CrowdsourceReporter {
+        /**
+          * string: The text that will display under the title on the landing page
+         */
+        "description": string;
+        /**
+          * string: landing page image
+         */
+        "image": string;
+        /**
+          * string[]: list of layer ids
+         */
+        "layers": string[];
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * string: The text that will display at the top of the landing page
+         */
+        "title": string;
     }
     interface DeductCalculator {
     }
@@ -1705,6 +1725,26 @@ declare namespace LocalJSX {
         "zoomAndScrollToSelected"?: boolean;
     }
     interface CrowdsourceReporter {
+        /**
+          * string: The text that will display under the title on the landing page
+         */
+        "description"?: string;
+        /**
+          * string: landing page image
+         */
+        "image"?: string;
+        /**
+          * string[]: list of layer ids
+         */
+        "layers"?: string[];
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * string: The text that will display at the top of the landing page
+         */
+        "title"?: string;
     }
     interface DeductCalculator {
         /**
