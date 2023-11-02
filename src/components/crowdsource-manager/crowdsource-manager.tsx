@@ -633,7 +633,7 @@ export class CrowdsourceManager {
           <layer-table
             defaultGlobalId={hasMapAndLayer ? this.defaultGlobalId : ""}
             defaultLayerId={hasMapAndLayer ? this.defaultLayer : ""}
-            defaultOid={hasMapAndLayer ? parseInt(this.defaultOid, 10) : -1}
+            defaultOid={hasMapAndLayer && !this.defaultGlobalId ? parseInt(this.defaultOid, 10) : undefined}
             enableAutoRefresh={this.enableAutoRefresh}
             enableCSV={this.enableCSV}
             enableInlineEdit={this.enableInlineEdit}
