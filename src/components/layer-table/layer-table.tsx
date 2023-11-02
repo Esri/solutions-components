@@ -19,7 +19,7 @@ import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
-import { queryAllIds, queryFeaturesByGlobalIDs } from "../../utils/queryUtils";
+import { queryAllIds, queryFeaturesByGlobalID } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { IExportInfos, ILayerInfo, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo } from "../../utils/interfaces";
 
@@ -1124,7 +1124,7 @@ export class LayerTable {
       }
 
       if (!this._defaultGlobalIdHonored && this.defaultGlobalId) {
-        const features = await queryFeaturesByGlobalIDs(this.defaultGlobalId, this._layer);
+        const features = await queryFeaturesByGlobalID(this.defaultGlobalId, this._layer);
         const oid = features?.length > 0 ? features[0].getObjectId() : -1;
         this._selectDefaultFeature(oid);
         this._defaultGlobalIdHonored = true;

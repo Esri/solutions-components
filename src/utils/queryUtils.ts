@@ -162,7 +162,7 @@ export async function queryFeaturesByID(
  *
  * @returns Promise with the featureSet from the layer that match the provided globalId
  */
-export async function queryFeaturesByGlobalIDs(
+export async function queryFeaturesByGlobalID(
   globalId: string,
   layer: __esri.FeatureLayer
 ): Promise<__esri.Graphic[]> {

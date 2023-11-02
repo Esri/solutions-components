@@ -966,10 +966,6 @@ export interface BufferToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLBufferToolsElement;
 }
-export interface CrowdsourceManagerCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLCrowdsourceManagerElement;
-}
 export interface DeductCalculatorCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLDeductCalculatorElement;
@@ -1074,18 +1070,7 @@ declare global {
         prototype: HTMLCardManagerElement;
         new (): HTMLCardManagerElement;
     };
-    interface HTMLCrowdsourceManagerElementEventMap {
-        "urlParamsSet": any;
-    }
     interface HTMLCrowdsourceManagerElement extends Components.CrowdsourceManager, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLCrowdsourceManagerElementEventMap>(type: K, listener: (this: HTMLCrowdsourceManagerElement, ev: CrowdsourceManagerCustomEvent<HTMLCrowdsourceManagerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLCrowdsourceManagerElementEventMap>(type: K, listener: (this: HTMLCrowdsourceManagerElement, ev: CrowdsourceManagerCustomEvent<HTMLCrowdsourceManagerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLCrowdsourceManagerElement: {
         prototype: HTMLCrowdsourceManagerElement;
@@ -1698,10 +1683,6 @@ declare namespace LocalJSX {
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos"?: IMapInfo[];
-        /**
-          * Emitted if any valid url params are provided
-         */
-        "onUrlParamsSet"?: (event: CrowdsourceManagerCustomEvent<any>) => void;
         /**
           * boolean: When true only editable layers that support the update capability will be available
          */

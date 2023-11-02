@@ -34,13 +34,6 @@
 | `zoomAndScrollToSelected` | `zoom-and-scroll-to-selected` | boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table | `boolean`              | `false`     |
 
 
-## Events
-
-| Event          | Description                                  | Type               |
-| -------------- | -------------------------------------------- | ------------------ |
-| `urlParamsSet` | Emitted if any valid url params are provided | `CustomEvent<any>` |
-
-
 ## Dependencies
 
 ### Depends on

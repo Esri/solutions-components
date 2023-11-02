@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
+import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { ELayoutMode, IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
@@ -232,11 +232,6 @@ export class CrowdsourceManager {
   //  Events (public)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Emitted if any valid url params are provided
-   */
-  @Event() urlParamsSet: EventEmitter<any>;
 
   /**
    * Listen for layoutChanged event to be fired so we can adjust the layout
