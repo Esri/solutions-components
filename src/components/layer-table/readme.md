@@ -9,6 +9,7 @@
 
 | Property                  | Attribute                     | Description                                                                                                        | Type       | Default     |
 | ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------- | ----------- |
+| `defaultGlobalId`         | `default-global-id`           | string: Global ID of the feature to select                                                                         | `string`   | `undefined` |
 | `defaultLayerId`          | `default-layer-id`            | string: when provided this layer ID will be used when the app loads                                                | `string`   | `undefined` |
 | `defaultOid`              | `default-oid`                 | number: when provided this will be used to select a feature in the table by default                                | `number`   | `undefined` |
 | `enableAutoRefresh`       | `enable-auto-refresh`         | boolean: when true the layer table will auto refresh the data                                                      | `boolean`  | `undefined` |

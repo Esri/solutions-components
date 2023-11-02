@@ -88,7 +88,7 @@ export namespace Components {
          */
         "classicGrid": boolean;
         /**
-          * string: Global ID of the feature to
+          * string: Global ID of the feature to select
          */
         "defaultGlobalId": string;
         /**
@@ -270,6 +270,10 @@ export namespace Components {
         "value": any;
     }
     interface LayerTable {
+        /**
+          * string: Global ID of the feature to select
+         */
+        "defaultGlobalId": string;
         /**
           * string: when provided this layer ID will be used when the app loads
          */
@@ -1070,7 +1074,18 @@ declare global {
         prototype: HTMLCardManagerElement;
         new (): HTMLCardManagerElement;
     };
+    interface HTMLCrowdsourceManagerElementEventMap {
+        "urlParamsSet": any;
+    }
     interface HTMLCrowdsourceManagerElement extends Components.CrowdsourceManager, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCrowdsourceManagerElementEventMap>(type: K, listener: (this: HTMLCrowdsourceManagerElement, ev: CrowdsourceManagerCustomEvent<HTMLCrowdsourceManagerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCrowdsourceManagerElementEventMap>(type: K, listener: (this: HTMLCrowdsourceManagerElement, ev: CrowdsourceManagerCustomEvent<HTMLCrowdsourceManagerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLCrowdsourceManagerElement: {
         prototype: HTMLCrowdsourceManagerElement;
@@ -1620,7 +1635,7 @@ declare namespace LocalJSX {
          */
         "classicGrid"?: boolean;
         /**
-          * string: Global ID of the feature to
+          * string: Global ID of the feature to select
          */
         "defaultGlobalId"?: string;
         /**
@@ -1797,6 +1812,10 @@ declare namespace LocalJSX {
         "value"?: any;
     }
     interface LayerTable {
+        /**
+          * string: Global ID of the feature to select
+         */
+        "defaultGlobalId"?: string;
         /**
           * string: when provided this layer ID will be used when the app loads
          */

@@ -155,6 +155,32 @@ export async function queryFeaturesByID(
 }
 
 /**
+ * Query the layer for features that have the provided globalId
+ *
+ * @param globalId globalId to be used to query for a feature in a layer
+ * @param layer the layer to retrieve features from
+ *
+ * @returns Promise with the featureSet from the layer that match the provided globalId
+ */
+export async function queryFeaturesByGlobalIDs(
+  globalId: string,
+  layer: __esri.FeatureLayer
+): Promise<__esri.Graphic[]> {
+  const globalIdField = (layer as any).globalIdField;
+  if (!globalIdField) {
+    return [];
+  }
+
+  const q = layer.createQuery();
+  q.returnGeometry = false;
+  q.outFields = [layer.objectIdField]
+  q.where = `${globalIdField} = '${globalId}'`
+
+  const result = await layer.queryFeatures(q);
+  return result.features;
+}
+
+/**
  * Query the layer for features that intersect the provided geometry
  *
  * @param start zero-based index indicating where to begin retrieving features

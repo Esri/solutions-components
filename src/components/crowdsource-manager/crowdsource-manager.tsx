@@ -44,7 +44,7 @@ export class CrowdsourceManager {
   @Prop() classicGrid = false;
 
   /**
-   * string: Global ID of the feature to
+   * string: Global ID of the feature to select
    */
   @Prop() defaultGlobalId = "";
 
@@ -636,8 +636,9 @@ export class CrowdsourceManager {
         </calcite-action-bar>
         <div class="width-full height-full position-relative">
           <layer-table
+            defaultGlobalId={hasMapAndLayer ? this.defaultGlobalId : ""}
             defaultLayerId={hasMapAndLayer ? this.defaultLayer : ""}
-            defaultOid={hasMapAndLayer ? parseInt(this.defaultOid, 10) : 0}
+            defaultOid={hasMapAndLayer ? parseInt(this.defaultOid, 10) : -1}
             enableAutoRefresh={this.enableAutoRefresh}
             enableCSV={this.enableCSV}
             enableInlineEdit={this.enableInlineEdit}

@@ -19,7 +19,7 @@ import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
-import { queryAllIds } from "../../utils/queryUtils";
+import { queryAllIds, queryFeaturesByGlobalIDs } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { IExportInfos, ILayerInfo, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo } from "../../utils/interfaces";
 
@@ -46,6 +46,11 @@ export class LayerTable {
    * string: when provided this layer ID will be used when the app loads
    */
   @Prop() defaultLayerId: string;
+
+  /**
+   * string: Global ID of the feature to select
+   */
+  @Prop() defaultGlobalId: string;
 
   /**
    * number: when provided this will be used to select a feature in the table by default
@@ -169,6 +174,11 @@ export class LayerTable {
    * boolean: When false alerts will be shown to indicate that the layer must have editing enabled for edit actions
    */
   protected _editEnabled: boolean;
+
+  /**
+   * boolean: When true the default global id provided via url param has been honored and should now be ignored
+   */
+  protected _defaultGlobalIdHonored = false;
 
   /**
    * boolean: When true the default OID provided via url param has been honored and should now be ignored
@@ -1104,23 +1114,43 @@ export class LayerTable {
     this._table.editingEnabled = this._editEnabled && this.enableInlineEdit;
     this._initToolInfos();
 
-    await this._table.when(() => {
+    await this._table.when(async () => {
       this._table.highlightIds.removeAll();
       this._table.clearSelectionFilter();
 
       if (!this._defaultOidHonored && this.defaultOid > -1) {
-        this._table.highlightIds.add(this.defaultOid);
-        setTimeout(() => {
-          const i = this._table.viewModel.getObjectIdIndex(this.defaultOid);
-          this._table.scrollToIndex(i);
-        }, 500)
+        this._selectDefaultFeature(this.defaultOid);
         this._defaultOidHonored = true
+      }
+
+      if (!this._defaultGlobalIdHonored && this.defaultGlobalId) {
+        const features = await queryFeaturesByGlobalIDs(this.defaultGlobalId, this._layer);
+        const oid = features?.length > 0 ? features[0].getObjectId() : -1;
+        this._selectDefaultFeature(oid);
+        this._defaultGlobalIdHonored = true;
       }
     });
 
     this._showOnlySelected = false;
     this._sortActive = false;
     await this._sortTable();
+  }
+
+  /**
+   * Select the feature that was specified via url params
+   *
+   * @returns void
+   */
+  protected _selectDefaultFeature(
+    oid: number
+  ): void {
+    if (oid > -1) {
+      this._table.highlightIds.add(oid);
+      setTimeout(() => {
+        const i = this._table.viewModel.getObjectIdIndex(oid);
+        this._table.scrollToIndex(i);
+      }, 500);
+    }
   }
 
   /**

@@ -11,7 +11,7 @@
 | ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------- | ----------- |
 | `basemapConfig`           | --                            | IBasemapConfig: List of any basemaps to filter out from the basemap widget                                         | `IBasemapConfig`       | `undefined` |
 | `classicGrid`             | `classic-grid`                | boolean: when true the grid will display like the previous manager app with the table across the top               | `boolean`              | `false`     |
-| `defaultGlobalId`         | `default-global-id`           | string: Global ID of the feature to                                                                                | `string`               | `""`        |
+| `defaultGlobalId`         | `default-global-id`           | string: Global ID of the feature to select                                                                         | `string`               | `""`        |
 | `defaultLayer`            | `default-layer`               | string: when provided this layer ID will be used when the app loads                                                | `string`               | `""`        |
 | `defaultOid`              | `default-oid`                 | string: Object ID of feature to select                                                                             | `string`               | `""`        |
 | `defaultWebmap`           | `default-webmap`              | string: Item ID of the web map that should be selected by default                                                  | `string`               | `""`        |
