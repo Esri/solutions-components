@@ -815,6 +815,8 @@ export namespace Components {
          */
         "sketchPolygonSymbol": __esri.SimpleFillSymbol;
     }
+    interface ShareItem {
+    }
     interface SolutionConfiguration {
         /**
           * Credentials for requests, which can be a serialized UserSession
@@ -1408,6 +1410,12 @@ declare global {
         prototype: HTMLRefineSelectionElement;
         new (): HTMLRefineSelectionElement;
     };
+    interface HTMLShareItemElement extends Components.ShareItem, HTMLStencilElement {
+    }
+    var HTMLShareItemElement: {
+        prototype: HTMLShareItemElement;
+        new (): HTMLShareItemElement;
+    };
     interface HTMLSolutionConfigurationElement extends Components.SolutionConfiguration, HTMLStencilElement {
     }
     var HTMLSolutionConfigurationElement: {
@@ -1584,6 +1592,7 @@ declare global {
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
         "refine-selection": HTMLRefineSelectionElement;
+        "share-item": HTMLShareItemElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-contents": HTMLSolutionContentsElement;
         "solution-item": HTMLSolutionItemElement;
@@ -2427,6 +2436,8 @@ declare namespace LocalJSX {
          */
         "sketchPolygonSymbol"?: __esri.SimpleFillSymbol;
     }
+    interface ShareItem {
+    }
     interface SolutionConfiguration {
         /**
           * Credentials for requests, which can be a serialized UserSession
@@ -2621,6 +2632,7 @@ declare namespace LocalJSX {
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
         "refine-selection": RefineSelection;
+        "share-item": ShareItem;
         "solution-configuration": SolutionConfiguration;
         "solution-contents": SolutionContents;
         "solution-item": SolutionItem;
@@ -2671,6 +2683,7 @@ declare module "@stencil/core" {
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
             "refine-selection": LocalJSX.RefineSelection & JSXBase.HTMLAttributes<HTMLRefineSelectionElement>;
+            "share-item": LocalJSX.ShareItem & JSXBase.HTMLAttributes<HTMLShareItemElement>;
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;
