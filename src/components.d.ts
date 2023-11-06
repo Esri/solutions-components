@@ -347,6 +347,8 @@ export namespace Components {
     }
     interface ListItem {
     }
+    interface LocationFlowItem {
+    }
     interface MapCard {
         /**
           * IBasemapConfig: List of any basemaps to filter out from the basemap widget
@@ -1223,6 +1225,12 @@ declare global {
         prototype: HTMLListItemElement;
         new (): HTMLListItemElement;
     };
+    interface HTMLLocationFlowItemElement extends Components.LocationFlowItem, HTMLStencilElement {
+    }
+    var HTMLLocationFlowItemElement: {
+        prototype: HTMLLocationFlowItemElement;
+        new (): HTMLLocationFlowItemElement;
+    };
     interface HTMLMapCardElementEventMap {
         "mapChanged": IMapChange;
         "beforeMapChanged": void;
@@ -1544,6 +1552,7 @@ declare global {
         "layout-manager": HTMLLayoutManagerElement;
         "list-flow-item": HTMLListFlowItemElement;
         "list-item": HTMLListItemElement;
+        "location-flow-item": HTMLLocationFlowItemElement;
         "map-card": HTMLMapCardElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-fullscreen": HTMLMapFullscreenElement;
@@ -1919,6 +1928,8 @@ declare namespace LocalJSX {
     interface ListFlowItem {
     }
     interface ListItem {
+    }
+    interface LocationFlowItem {
     }
     interface MapCard {
         /**
@@ -2572,6 +2583,7 @@ declare namespace LocalJSX {
         "layout-manager": LayoutManager;
         "list-flow-item": ListFlowItem;
         "list-item": ListItem;
+        "location-flow-item": LocationFlowItem;
         "map-card": MapCard;
         "map-draw-tools": MapDrawTools;
         "map-fullscreen": MapFullscreen;
@@ -2619,6 +2631,7 @@ declare module "@stencil/core" {
             "layout-manager": LocalJSX.LayoutManager & JSXBase.HTMLAttributes<HTMLLayoutManagerElement>;
             "list-flow-item": LocalJSX.ListFlowItem & JSXBase.HTMLAttributes<HTMLListFlowItemElement>;
             "list-item": LocalJSX.ListItem & JSXBase.HTMLAttributes<HTMLListItemElement>;
+            "location-flow-item": LocalJSX.LocationFlowItem & JSXBase.HTMLAttributes<HTMLLocationFlowItemElement>;
             "map-card": LocalJSX.MapCard & JSXBase.HTMLAttributes<HTMLMapCardElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-fullscreen": LocalJSX.MapFullscreen & JSXBase.HTMLAttributes<HTMLMapFullscreenElement>;
