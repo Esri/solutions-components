@@ -14,53 +14,27 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop } from "@stencil/core";
+import { Component, Element, Host, h } from '@stencil/core';
 
 @Component({
-  tag: "crowdsource-reporter",
-  styleUrl: "crowdsource-reporter.css",
+  tag: 'arcgis-login',
+  styleUrl: 'arcgis-login.css',
   shadow: true,
 })
-export class CrowdsourceReporter {
+export class ArcgisLogin {
   //--------------------------------------------------------------------------
   //
   //  Host element access
   //
   //--------------------------------------------------------------------------
-  @Element() el: HTMLCrowdsourceReporterElement;
+
+  @Element() el: HTMLArcgisLoginElement;
 
   //--------------------------------------------------------------------------
   //
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * string: The text that will display under the title on the landing page
-   */
-  @Prop() description: string;
-
-  /**
-   * string: The text that will display at the top of the landing page
-   */
-  @Prop() loginTitle: string;
-
-  /**
-   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-   */
-  @Prop() mapView: __esri.MapView;
-
-  /**
-   * string: landing page image
-   */
-  @Prop() image: string;
-
-  /**
-   * string[]: list of layer ids
-   */
-  @Prop() layers: string[];
-
-  // TODO think about how we will handle related table comment field
 
   //--------------------------------------------------------------------------
   //
@@ -98,25 +72,10 @@ export class CrowdsourceReporter {
   //
   //--------------------------------------------------------------------------
 
-  /**
-   * StencilJS: Called once just after the component is first connected to the DOM.
-   *
-   * @returns Promise when complete
-   */
-  // async componentWillLoad(): Promise<void> {
-  //   await this._getTranslations();
-  //   await this._initModules();
-  // }
-
-  /**
-   * Renders the component.
-   */
   render() {
     return (
       <Host>
-        <slot>
-          {this.loginTitle + this.description}
-        </slot>
+        <slot/>
       </Host>
     );
   }
@@ -126,35 +85,5 @@ export class CrowdsourceReporter {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Load esri javascript api modules
-   *
-   * @returns Promise resolving when function is done
-   *
-   * @protected
-   */
-  // protected async _initModules(): Promise<void> {
-  //   const [geometryEngine, jsonUtils]: [
-  //     __esri.geometryEngine,
-  //     __esri.symbolsSupportJsonUtils
-  //   ] = await loadModules([
-  //     "esri/geometry/geometryEngine",
-  //     "esri/symbols/support/jsonUtils"
-  //   ]);
-  //   this._geometryEngine = geometryEngine;
-  //   this._jsonUtils = jsonUtils;
-  // }
-
-  /**
-   * Fetches the component's translations
-   *
-   * @returns Promise when complete
-   * @protected
-   */
-  protected async _getTranslations(): Promise<void> {
-    // const messages = await getLocaleComponentStrings(this.el);
-    // this._translations = messages[0] as typeof BufferTools_T9n;
-  }
 
 }

@@ -10,6 +10,8 @@ import { UserSession } from "@esri/solution-common";
 export { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 export { UserSession } from "@esri/solution-common";
 export namespace Components {
+    interface ArcgisLogin {
+    }
     interface BasemapGallery {
         /**
           * IBasemapConfig: List of any basemaps to filter out from the basemap widget
@@ -186,13 +188,13 @@ export namespace Components {
          */
         "layers": string[];
         /**
+          * string: The text that will display at the top of the landing page
+         */
+        "loginTitle": string;
+        /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
-        /**
-          * string: The text that will display at the top of the landing page
-         */
-        "title": string;
     }
     interface DeductCalculator {
     }
@@ -1059,6 +1061,12 @@ export interface StoreManagerCustomEvent<T> extends CustomEvent<T> {
     target: HTMLStoreManagerElement;
 }
 declare global {
+    interface HTMLArcgisLoginElement extends Components.ArcgisLogin, HTMLStencilElement {
+    }
+    var HTMLArcgisLoginElement: {
+        prototype: HTMLArcgisLoginElement;
+        new (): HTMLArcgisLoginElement;
+    };
     interface HTMLBasemapGalleryElement extends Components.BasemapGallery, HTMLStencilElement {
     }
     var HTMLBasemapGalleryElement: {
@@ -1513,6 +1521,7 @@ declare global {
         new (): HTMLStoreManagerElement;
     };
     interface HTMLElementTagNameMap {
+        "arcgis-login": HTMLArcgisLoginElement;
         "basemap-gallery": HTMLBasemapGalleryElement;
         "buffer-tools": HTMLBufferToolsElement;
         "card-manager": HTMLCardManagerElement;
@@ -1555,6 +1564,8 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface ArcgisLogin {
+    }
     interface BasemapGallery {
         /**
           * IBasemapConfig: List of any basemaps to filter out from the basemap widget
@@ -1738,13 +1749,13 @@ declare namespace LocalJSX {
          */
         "layers"?: string[];
         /**
+          * string: The text that will display at the top of the landing page
+         */
+        "loginTitle"?: string;
+        /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
-        /**
-          * string: The text that will display at the top of the landing page
-         */
-        "title"?: string;
     }
     interface DeductCalculator {
         /**
@@ -2535,6 +2546,7 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface IntrinsicElements {
+        "arcgis-login": ArcgisLogin;
         "basemap-gallery": BasemapGallery;
         "buffer-tools": BufferTools;
         "card-manager": CardManager;
@@ -2580,6 +2592,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "arcgis-login": LocalJSX.ArcgisLogin & JSXBase.HTMLAttributes<HTMLArcgisLoginElement>;
             "basemap-gallery": LocalJSX.BasemapGallery & JSXBase.HTMLAttributes<HTMLBasemapGalleryElement>;
             "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
             "card-manager": LocalJSX.CardManager & JSXBase.HTMLAttributes<HTMLCardManagerElement>;
