@@ -216,6 +216,8 @@ export namespace Components {
          */
         "open": boolean;
     }
+    interface FeatureComments {
+    }
     interface FeatureFormFlowItem {
     }
     interface FloorFilter {
@@ -1151,6 +1153,12 @@ declare global {
         prototype: HTMLEditCardElement;
         new (): HTMLEditCardElement;
     };
+    interface HTMLFeatureCommentsElement extends Components.FeatureComments, HTMLStencilElement {
+    }
+    var HTMLFeatureCommentsElement: {
+        prototype: HTMLFeatureCommentsElement;
+        new (): HTMLFeatureCommentsElement;
+    };
     interface HTMLFeatureFormFlowItemElement extends Components.FeatureFormFlowItem, HTMLStencilElement {
     }
     var HTMLFeatureFormFlowItemElement: {
@@ -1553,6 +1561,7 @@ declare global {
         "crowdsource-reporter": HTMLCrowdsourceReporterElement;
         "deduct-calculator": HTMLDeductCalculatorElement;
         "edit-card": HTMLEditCardElement;
+        "feature-comments": HTMLFeatureCommentsElement;
         "feature-form-flow-item": HTMLFeatureFormFlowItemElement;
         "floor-filter": HTMLFloorFilterElement;
         "info-card": HTMLInfoCardElement;
@@ -1815,6 +1824,8 @@ declare namespace LocalJSX {
           * When true the component is displayed
          */
         "open"?: boolean;
+    }
+    interface FeatureComments {
     }
     interface FeatureFormFlowItem {
     }
@@ -2587,6 +2598,7 @@ declare namespace LocalJSX {
         "crowdsource-reporter": CrowdsourceReporter;
         "deduct-calculator": DeductCalculator;
         "edit-card": EditCard;
+        "feature-comments": FeatureComments;
         "feature-form-flow-item": FeatureFormFlowItem;
         "floor-filter": FloorFilter;
         "info-card": InfoCard;
@@ -2636,6 +2648,7 @@ declare module "@stencil/core" {
             "crowdsource-reporter": LocalJSX.CrowdsourceReporter & JSXBase.HTMLAttributes<HTMLCrowdsourceReporterElement>;
             "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;
             "edit-card": LocalJSX.EditCard & JSXBase.HTMLAttributes<HTMLEditCardElement>;
+            "feature-comments": LocalJSX.FeatureComments & JSXBase.HTMLAttributes<HTMLFeatureCommentsElement>;
             "feature-form-flow-item": LocalJSX.FeatureFormFlowItem & JSXBase.HTMLAttributes<HTMLFeatureFormFlowItemElement>;
             "floor-filter": LocalJSX.FloorFilter & JSXBase.HTMLAttributes<HTMLFloorFilterElement>;
             "info-card": LocalJSX.InfoCard & JSXBase.HTMLAttributes<HTMLInfoCardElement>;
