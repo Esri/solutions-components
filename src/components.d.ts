@@ -343,6 +343,8 @@ export namespace Components {
     }
     interface LayoutManager {
     }
+    interface ListFlowItem {
+    }
     interface ListItem {
     }
     interface MapCard {
@@ -1209,6 +1211,12 @@ declare global {
         prototype: HTMLLayoutManagerElement;
         new (): HTMLLayoutManagerElement;
     };
+    interface HTMLListFlowItemElement extends Components.ListFlowItem, HTMLStencilElement {
+    }
+    var HTMLListFlowItemElement: {
+        prototype: HTMLListFlowItemElement;
+        new (): HTMLListFlowItemElement;
+    };
     interface HTMLListItemElement extends Components.ListItem, HTMLStencilElement {
     }
     var HTMLListItemElement: {
@@ -1534,6 +1542,7 @@ declare global {
         "json-editor": HTMLJsonEditorElement;
         "layer-table": HTMLLayerTableElement;
         "layout-manager": HTMLLayoutManagerElement;
+        "list-flow-item": HTMLListFlowItemElement;
         "list-item": HTMLListItemElement;
         "map-card": HTMLMapCardElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
@@ -1906,6 +1915,8 @@ declare namespace LocalJSX {
           * Emitted when the layout should change
          */
         "onLayoutChanged"?: (event: LayoutManagerCustomEvent<ELayoutMode>) => void;
+    }
+    interface ListFlowItem {
     }
     interface ListItem {
     }
@@ -2559,6 +2570,7 @@ declare namespace LocalJSX {
         "json-editor": JsonEditor;
         "layer-table": LayerTable;
         "layout-manager": LayoutManager;
+        "list-flow-item": ListFlowItem;
         "list-item": ListItem;
         "map-card": MapCard;
         "map-draw-tools": MapDrawTools;
@@ -2605,6 +2617,7 @@ declare module "@stencil/core" {
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "layer-table": LocalJSX.LayerTable & JSXBase.HTMLAttributes<HTMLLayerTableElement>;
             "layout-manager": LocalJSX.LayoutManager & JSXBase.HTMLAttributes<HTMLLayoutManagerElement>;
+            "list-flow-item": LocalJSX.ListFlowItem & JSXBase.HTMLAttributes<HTMLListFlowItemElement>;
             "list-item": LocalJSX.ListItem & JSXBase.HTMLAttributes<HTMLListItemElement>;
             "map-card": LocalJSX.MapCard & JSXBase.HTMLAttributes<HTMLMapCardElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
