@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Host, h } from '@stencil/core';
+import { Component, Element, Host, h } from '@stencil/core';
 
 @Component({
   tag: 'list-flow-item',
@@ -28,7 +28,7 @@ export class ListFlowItem {
   //
   //--------------------------------------------------------------------------
 
-  //@Element() el: HTMLArcgisLoginElement;
+  @Element() el: HTMLListFlowItemElement;
 
   //--------------------------------------------------------------------------
   //
