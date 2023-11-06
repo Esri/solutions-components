@@ -216,6 +216,8 @@ export namespace Components {
          */
         "open": boolean;
     }
+    interface FeatureFormFlowItem {
+    }
     interface FloorFilter {
         /**
           * boolean: when true the Floor Filter widget will be available
@@ -1149,6 +1151,12 @@ declare global {
         prototype: HTMLEditCardElement;
         new (): HTMLEditCardElement;
     };
+    interface HTMLFeatureFormFlowItemElement extends Components.FeatureFormFlowItem, HTMLStencilElement {
+    }
+    var HTMLFeatureFormFlowItemElement: {
+        prototype: HTMLFeatureFormFlowItemElement;
+        new (): HTMLFeatureFormFlowItemElement;
+    };
     interface HTMLFloorFilterElement extends Components.FloorFilter, HTMLStencilElement {
     }
     var HTMLFloorFilterElement: {
@@ -1545,6 +1553,7 @@ declare global {
         "crowdsource-reporter": HTMLCrowdsourceReporterElement;
         "deduct-calculator": HTMLDeductCalculatorElement;
         "edit-card": HTMLEditCardElement;
+        "feature-form-flow-item": HTMLFeatureFormFlowItemElement;
         "floor-filter": HTMLFloorFilterElement;
         "info-card": HTMLInfoCardElement;
         "json-editor": HTMLJsonEditorElement;
@@ -1806,6 +1815,8 @@ declare namespace LocalJSX {
           * When true the component is displayed
          */
         "open"?: boolean;
+    }
+    interface FeatureFormFlowItem {
     }
     interface FloorFilter {
         /**
@@ -2576,6 +2587,7 @@ declare namespace LocalJSX {
         "crowdsource-reporter": CrowdsourceReporter;
         "deduct-calculator": DeductCalculator;
         "edit-card": EditCard;
+        "feature-form-flow-item": FeatureFormFlowItem;
         "floor-filter": FloorFilter;
         "info-card": InfoCard;
         "json-editor": JsonEditor;
@@ -2624,6 +2636,7 @@ declare module "@stencil/core" {
             "crowdsource-reporter": LocalJSX.CrowdsourceReporter & JSXBase.HTMLAttributes<HTMLCrowdsourceReporterElement>;
             "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;
             "edit-card": LocalJSX.EditCard & JSXBase.HTMLAttributes<HTMLEditCardElement>;
+            "feature-form-flow-item": LocalJSX.FeatureFormFlowItem & JSXBase.HTMLAttributes<HTMLFeatureFormFlowItemElement>;
             "floor-filter": LocalJSX.FloorFilter & JSXBase.HTMLAttributes<HTMLFloorFilterElement>;
             "info-card": LocalJSX.InfoCard & JSXBase.HTMLAttributes<HTMLInfoCardElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
