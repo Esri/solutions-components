@@ -488,6 +488,7 @@ export interface IToolInfo {
   disabled: boolean;
   isDanger?: boolean;
   isOverflow: boolean;
+  isSublist?: boolean;
 }
 
 export interface IToolSizeInfo {

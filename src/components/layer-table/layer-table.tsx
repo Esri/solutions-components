@@ -124,6 +124,11 @@ export class LayerTable {
   @State() _selectedIndexes: number[] = [];
 
   /**
+   * boolean: When true the show/hide fields list is forced open
+   */
+  @State() _showHideOpen = false;
+
+  /**
    * boolean: When true only selected records will be shown in the table
    */
   @State() _showOnlySelected = false;
@@ -189,6 +194,11 @@ export class LayerTable {
    * HTMLCalciteCheckboxElement: Element to force selection of all records
    */
   protected _selectAllElement: HTMLCalciteCheckboxElement;
+
+  /**
+   * HTMLCalciteDropdownElement: Dropdown the will support show/hide of table columns
+   */
+  protected _showHideDropdown: HTMLCalciteDropdownElement;
 
   /**
    * esri/widgets/FeatureTable: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FeatureTable.html
@@ -572,11 +582,38 @@ export class LayerTable {
         prev.push(
           cur.isDanger ?
             this._getDangerAction(cur.icon, cur.label, cur.func, cur.disabled) :
+            cur.isSublist ? (
+              <calcite-dropdown
+                id={this._getId(cur.icon)}
+                onCalciteDropdownBeforeClose={() => this._forceShowHide()}
+                ref={(el) => this._showHideDropdown = el}
+              >
+                {this._getAction(cur.icon, cur.label, cur.func, cur.disabled, "trigger")}
+                {this._showHideOpen ? this._getFieldlist() : undefined}
+              </calcite-dropdown>
+            ) :
             this._getAction(cur.icon, cur.label, cur.func, cur.disabled)
         )
       }
       return prev;
-    }, [])
+    }, []);
+  }
+
+  _getFieldlist(): VNode {
+    return (
+      <calcite-dropdown-group selection-mode="multiple">
+        <calcite-dropdown-item
+          onClick={(e) => { console.log(e) }}
+        >
+          {"A"}
+        </calcite-dropdown-item>
+        <calcite-dropdown-item
+          onClick={(e) => { console.log(e) }}
+        >
+          {"B"}
+        </calcite-dropdown-item>
+      </calcite-dropdown-group>
+    );
   }
 
   /**
@@ -667,7 +704,14 @@ export class LayerTable {
       label: this._translations.exportCSV,
       disabled: featuresEmpty,
       isOverflow: false
-    } : undefined];
+    } : undefined, {
+      icon: "chevron-right",
+      func: () => this._toggleShowHide(),
+      label: this._translations.showHideColumns,
+      disabled: false,
+      isOverflow: false,
+      isSublist: true
+    }];
 
     this._defaultVisibleToolSizeInfos = undefined;
   }
@@ -773,7 +817,7 @@ export class LayerTable {
       if (skipControls.indexOf(n.id) < 0 && !update) {
         update = this._controlsThatFit.map(c => c.id).indexOf(n.id) < 0;
       }
-    })
+    });
     if (update) {
       this._controlsThatFit = [...controlsThatFit];
     }
@@ -836,11 +880,17 @@ export class LayerTable {
   ): VNode {
     const dropdownItems = this._getDropdownItems();
     return dropdownItems.length > 0 ? (
-      <calcite-dropdown disabled={this._layer === undefined} id="solutions-more">
+      <calcite-dropdown
+        disabled={this._layer === undefined}
+        id="solutions-more"
+        onCalciteDropdownBeforeClose={() => this._forceShowHide()}
+        ref={(el) => this._showHideDropdown = el}
+      >
       <calcite-action
         appearance="solid"
         id={id}
         label=""
+        onClick={() => this._closeShowHide()}
         slot="trigger"
         text=""
       >
@@ -857,7 +907,7 @@ export class LayerTable {
           dropdownItems.map(item => {
             return (
               <calcite-dropdown-item
-                iconStart={item.icon}
+                iconStart={item.isSublist && this._showHideOpen ? "chevron-down" : item.icon}
                 onClick={item.func}
               >
                 {item.label}
@@ -866,6 +916,7 @@ export class LayerTable {
           })
         }
       </calcite-dropdown-group>
+      {this._showHideOpen ? this._getFieldlist() : undefined}
     </calcite-dropdown>
     ) : undefined;
   }
@@ -893,11 +944,12 @@ export class LayerTable {
     icon: string,
     label: string,
     func: any,
-    disabled: boolean
+    disabled: boolean,
+    slot?: string
   ): VNode {
     const _disabled = this._layer === undefined ? true : disabled;
     return (
-      <div class={"display-flex"} id={this._getId(icon)}>
+      <div class={"display-flex"} id={this._getId(icon)} slot={slot}>
         <calcite-action
           appearance="solid"
           disabled={_disabled}
@@ -1124,6 +1176,27 @@ export class LayerTable {
         });
       }
     }
+  }
+
+  /**
+   * Open show/hide dropdown
+   */
+  protected _forceShowHide(): void {
+    this._showHideDropdown.open = this._showHideOpen;
+  }
+
+  /**
+   * Toggle show/hide dropdown
+   */
+  protected _toggleShowHide(): void {
+    this._showHideOpen = !this._showHideOpen;
+  }
+
+  /**
+   * Open show/hide dropdown
+   */
+  protected _closeShowHide(): void {
+    this._showHideOpen = false;
   }
 
   /**
