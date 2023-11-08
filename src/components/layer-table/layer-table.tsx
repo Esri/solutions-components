@@ -206,6 +206,11 @@ export class LayerTable {
   protected _showHideDropdown: HTMLCalciteDropdownElement;
 
   /**
+   * HTMLCalciteDropdownElement: Dropdown the will support overflow tools that won't fit in the current display
+   */
+  protected _moreDropdown: HTMLCalciteDropdownElement;
+
+  /**
    * esri/widgets/FeatureTable: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FeatureTable.html
    */
   protected _table: __esri.FeatureTable;
@@ -478,7 +483,8 @@ export class LayerTable {
    * Called once after the component is loaded
    */
   async componentDidLoad(): Promise<void> {
-    this._resizeObserver.observe(this._toolbar)
+    this._resizeObserver.observe(this._toolbar);
+    document.onclick = (e) => this._handleDocumentClick(e);
   }
 
   /**
@@ -594,7 +600,7 @@ export class LayerTable {
                 onCalciteDropdownBeforeClose={() => this._forceShowHide()}
                 ref={(el) => this._showHideDropdown = el}
               >
-                {this._getAction(cur.icon, cur.label, cur.func, cur.disabled, "trigger")}
+                {this._getAction(this._showHideOpen ? "chevron-down" : cur.icon, cur.label, cur.func, cur.disabled, "trigger")}
                 {this._showHideOpen ? this._getFieldlist() : undefined}
               </calcite-dropdown>
             ) :
@@ -725,7 +731,7 @@ export class LayerTable {
       disabled: featuresEmpty,
       isOverflow: false
     } : undefined, {
-      icon: "chevron-right",
+      icon: this._showHideOpen ? "chevron-down" : "chevron-right",
       func: () => this._toggleShowHide(),
       label: this._translations.showHideColumns,
       disabled: false,
@@ -905,7 +911,7 @@ export class LayerTable {
         disabled={this._layer === undefined}
         id="solutions-more"
         onCalciteDropdownBeforeClose={() => this._forceShowHide()}
-        ref={(el) => this._showHideDropdown = el}
+        ref={(el) => this._moreDropdown = el}
       >
       <calcite-action
         appearance="solid"
@@ -929,6 +935,7 @@ export class LayerTable {
             return (
               <calcite-dropdown-item
                 iconStart={item.isSublist && this._showHideOpen ? "chevron-down" : item.icon}
+                id="solutions-subset-list"
                 onClick={item.func}
               >
                 {item.label}
@@ -1110,10 +1117,7 @@ export class LayerTable {
         } as __esri.FeatureTableProperties);
       });
 
-      this._columnsInfo = this._table.columns.reduce((prev, cur: any) => {
-        prev[cur.name] = !cur.hidden;
-        return prev;
-      }, {});
+      this._initColumnsInfo();
 
       this._checkEditEnabled();
 
@@ -1169,11 +1173,24 @@ export class LayerTable {
     await this._table.when(() => {
       this._table.highlightIds.removeAll();
       this._table.clearSelectionFilter();
+      this._initColumnsInfo();
     });
 
     this._showOnlySelected = false;
     this._sortActive = false;
     await this._sortTable();
+  }
+
+  /**
+   * Store the column names and current hidden status to support show/hide of columns
+   *
+   * @returns void
+   */
+  protected _initColumnsInfo(): void {
+    this._columnsInfo = this._table.columns.reduce((prev, cur: any) => {
+      prev[cur.name] = !cur.hidden;
+      return prev;
+    }, {});
   }
 
   /**
@@ -1208,7 +1225,12 @@ export class LayerTable {
    * Open show/hide dropdown
    */
   protected _forceShowHide(): void {
-    this._showHideDropdown.open = this._showHideOpen;
+    if(this._showHideDropdown) {
+      this._showHideDropdown.open = this._showHideOpen;
+    }
+    if(this._moreDropdown) {
+      this._moreDropdown.open = this._showHideOpen;
+    }
   }
 
   /**
@@ -1223,6 +1245,24 @@ export class LayerTable {
    */
   protected _closeShowHide(): void {
     this._showHideOpen = false;
+  }
+
+  /**
+   * Close show/hide dropdown when the user clicks outside of it
+   */
+  protected _handleDocumentClick(
+    e: MouseEvent
+  ): void {
+    const id = (e.target as any)?.id;
+    if (this._showHideOpen && Object.keys(this._columnsInfo).indexOf(id) < 0 && id !== "solutions-subset-list" && id !== "chevron-right"){
+      this._closeShowHide();
+      if (this._moreDropdown) {
+        this._moreDropdown.open = false;
+      }
+      if (this._showHideDropdown) {
+        this._showHideDropdown.open = false;
+      }
+    }
   }
 
   /**
