@@ -495,3 +495,7 @@ export interface IToolSizeInfo {
   id: string;
   width: number;
 }
+
+export interface IColumnsInfo {
+  [key: string]: boolean;
+}

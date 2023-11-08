@@ -21,7 +21,7 @@ import { getLocaleComponentStrings } from "../../utils/locale";
 import { getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
 import { queryAllIds } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
-import { IExportInfos, ILayerInfo, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo } from "../../utils/interfaces";
+import { IColumnsInfo, IExportInfos, ILayerInfo, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo } from "../../utils/interfaces";
 
 @Component({
   tag: "layer-table",
@@ -159,6 +159,11 @@ export class LayerTable {
    * number[]: A list of all IDs for the current layer
    */
   protected _allIds: number[] = [];
+
+  /**
+   * IColumnsInfo: Key/value pair with fieldname/(visible in table)
+   */
+  protected _columnsInfo: IColumnsInfo;
 
   /**
    * boolean: When false alerts will be shown to indicate that the layer must have editing enabled for edit actions
@@ -584,6 +589,7 @@ export class LayerTable {
             this._getDangerAction(cur.icon, cur.label, cur.func, cur.disabled) :
             cur.isSublist ? (
               <calcite-dropdown
+                closeOnSelectDisabled={true}
                 id={this._getId(cur.icon)}
                 onCalciteDropdownBeforeClose={() => this._forceShowHide()}
                 ref={(el) => this._showHideDropdown = el}
@@ -600,20 +606,34 @@ export class LayerTable {
   }
 
   _getFieldlist(): VNode {
-    return (
-      <calcite-dropdown-group selection-mode="multiple">
-        <calcite-dropdown-item
-          onClick={(e) => { console.log(e) }}
-        >
-          {"A"}
-        </calcite-dropdown-item>
-        <calcite-dropdown-item
-          onClick={(e) => { console.log(e) }}
-        >
-          {"B"}
-        </calcite-dropdown-item>
+    return this._columnsInfo ? (
+      <calcite-dropdown-group
+        selection-mode="multiple"
+      >
+        {
+          Object.keys(this._columnsInfo).map(k => {
+            const selected = this._columnsInfo[k];
+            return (
+              <calcite-dropdown-item
+                id={k}
+                onClick={(e) => {
+                  const target = e.target;
+                  this._columnsInfo[target.id] = target.selected;
+                  if (!target.selected) {
+                    this._table.hideColumn(target.id);
+                  } else {
+                    this._table.showColumn(target.id);
+                  }
+                }}
+                selected={selected}
+              >
+                {k}
+              </calcite-dropdown-item>
+            )
+          })
+        }
       </calcite-dropdown-group>
-    );
+    ) : undefined;
   }
 
   /**
@@ -881,6 +901,7 @@ export class LayerTable {
     const dropdownItems = this._getDropdownItems();
     return dropdownItems.length > 0 ? (
       <calcite-dropdown
+        closeOnSelectDisabled={true}
         disabled={this._layer === undefined}
         id="solutions-more"
         onCalciteDropdownBeforeClose={() => this._forceShowHide()}
@@ -1088,6 +1109,11 @@ export class LayerTable {
           container: node
         } as __esri.FeatureTableProperties);
       });
+
+      this._columnsInfo = this._table.columns.reduce((prev, cur: any) => {
+        prev[cur.name] = !cur.hidden;
+        return prev;
+      }, {});
 
       this._checkEditEnabled();
 
