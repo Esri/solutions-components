@@ -19,7 +19,7 @@ import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
-import { queryAllIds } from "../../utils/queryUtils";
+import { queryAllIds, queryFeaturesByGlobalID } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { IColumnsInfo, IExportInfos, ILayerInfo, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo } from "../../utils/interfaces";
 
@@ -41,6 +41,21 @@ export class LayerTable {
   //  Properties (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * string: when provided this layer ID will be used when the app loads
+   */
+  @Prop() defaultLayerId: string;
+
+  /**
+   * string: Global ID of the feature to select
+   */
+  @Prop() defaultGlobalId: string[];
+
+  /**
+   * number: when provided this will be used to select a feature in the table by default
+   */
+  @Prop() defaultOid: number[];
 
   /**
    * boolean: when true the layer table will auto refresh the data
@@ -169,6 +184,16 @@ export class LayerTable {
    * boolean: When false alerts will be shown to indicate that the layer must have editing enabled for edit actions
    */
   protected _editEnabled: boolean;
+
+  /**
+   * boolean: When true the default global id provided via url param has been honored and should now be ignored
+   */
+  protected _defaultGlobalIdHonored = false;
+
+  /**
+   * boolean: When true the default OID provided via url param has been honored and should now be ignored
+   */
+  protected _defaultOidHonored = false;
 
   /**
    * IToolSizeInfo[]: The default list of tool size info for tools that should display outside of the dropdown
@@ -567,6 +592,7 @@ export class LayerTable {
         <div class="border-end" id="solutions-map-layer-picker-container">
           <map-layer-picker
             appearance="transparent"
+            defaultLayerId={this.defaultLayerId}
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
             onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
@@ -1170,10 +1196,24 @@ export class LayerTable {
     this._table.editingEnabled = this._editEnabled && this.enableInlineEdit;
     this._initToolInfos();
 
-    await this._table.when(() => {
+    await this._table.when(async () => {
       this._table.highlightIds.removeAll();
       this._table.clearSelectionFilter();
       this._initColumnsInfo();
+
+      if (!this._defaultOidHonored && this.defaultOid?.length > 0 && this.defaultOid[0] > -1) {
+        this._selectDefaultFeature(this.defaultOid);
+        this._defaultOidHonored = true
+      }
+
+      if (!this._defaultGlobalIdHonored && this.defaultGlobalId?.length > 0) {
+        const features = await queryFeaturesByGlobalID(this.defaultGlobalId, this._layer);
+        const oids = features?.length > 0 ? features.map(f => f.getObjectId()) : undefined;
+        if (oids) {
+          this._selectDefaultFeature(oids);
+        }
+        this._defaultGlobalIdHonored = true;
+      }
     });
 
     this._showOnlySelected = false;
@@ -1191,6 +1231,23 @@ export class LayerTable {
       prev[cur.name] = !cur.hidden;
       return prev;
     }, {});
+  }
+  
+  /**
+   * Select the feature that was specified via url params
+   *
+   * @returns void
+   */
+  protected _selectDefaultFeature(
+    oids: number[]
+  ): void {
+    if (oids.length > 0) {
+      this._table.highlightIds.addMany(oids);
+      void this._table.when(() => {
+        const i = this._table.viewModel.getObjectIdIndex(oids[0]);
+        this._table.viewModel.scrollToIndex(i);
+      });
+    }
   }
 
   /**

@@ -44,6 +44,26 @@ export class CrowdsourceManager {
   @Prop() classicGrid = false;
 
   /**
+   * string: Global ID of the feature to select
+   */
+  @Prop() defaultGlobalId = "";
+
+  /**
+   * string: when provided this layer ID will be used when the app loads
+   */
+  @Prop() defaultLayer = "";
+
+  /**
+   * string: Object ID of feature to select
+   */
+  @Prop() defaultOid = "";
+
+  /**
+   * string: Item ID of the web map that should be selected by default
+   */
+  @Prop() defaultWebmap = "";
+
+  /**
    * boolean: when true the layer table will auto refresh the data
    */
   @Prop() enableAutoRefresh = false;
@@ -172,6 +192,16 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
+   * string[]: List of global ids that should be selected by default
+   */
+  protected _defaultGlobalId: string[];
+
+  /**
+   * number[]: List of ids that should be selected by default
+   */
+  protected _defaultOid: number[];
+
+  /**
    * IMapChange: The current map change details
    */
   protected _mapChange: IMapChange;
@@ -192,6 +222,24 @@ export class CrowdsourceManager {
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Watch for globalid url param to be set
+   */
+  @Watch("defaultGlobalId")
+  defaultGlobalIdWatchHandler(): void {
+    this._defaultGlobalId = !this.defaultGlobalId ? undefined :
+      this.defaultGlobalId.indexOf(",") > -1 ? this.defaultGlobalId.split(",") : [this.defaultGlobalId];
+  }
+
+  /**
+   * Watch for oid url param to be set
+   */
+  @Watch("defaultOid")
+  defaultOidWatchHandler(): void {
+    this._defaultOid = !this.defaultOid ? undefined :
+      this.defaultOid.indexOf(",") > -1 ? this.defaultOid.split(",").map(o => parseInt(o, 10)) : [parseInt(this.defaultOid, 10)];
+  }
 
   /**
    * When true the map zoom tools will be available
@@ -473,6 +521,7 @@ export class CrowdsourceManager {
         <map-card
           basemapConfig={this.basemapConfig}
           class="width-full"
+          defaultWebmapId={this.defaultWebmap}
           enableBasemap={this.enableBasemap}
           enableFloorFilter={this.enableFloorFilter}
           enableFullscreen={this.enableFullscreen}
@@ -584,6 +633,7 @@ export class CrowdsourceManager {
     const toggleSlot = this.classicGrid && layoutMode !== ELayoutMode.VERTICAL ? "footer" :
       this.classicGrid && layoutMode === ELayoutMode.VERTICAL ? "panel-end" :
         layoutMode === ELayoutMode.HORIZONTAL  ? "header" : "panel-start";
+    const hasMapAndLayer = this.defaultWebmap && this.defaultLayer;
     return (
       <calcite-shell class={tableSizeClass + " border-bottom"}>
         <calcite-action-bar
@@ -609,6 +659,9 @@ export class CrowdsourceManager {
         </calcite-action-bar>
         <div class="width-full height-full position-relative">
           <layer-table
+            defaultGlobalId={hasMapAndLayer ? this._defaultGlobalId : undefined}
+            defaultLayerId={hasMapAndLayer ? this.defaultLayer : ""}
+            defaultOid={hasMapAndLayer && !this.defaultGlobalId ? this._defaultOid : undefined}
             enableAutoRefresh={this.enableAutoRefresh}
             enableCSV={this.enableCSV}
             enableInlineEdit={this.enableInlineEdit}

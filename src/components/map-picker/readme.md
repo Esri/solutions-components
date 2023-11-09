@@ -19,6 +19,19 @@
 | `mapInfoChange` | Emitted when a new map is loaded | `CustomEvent<IMapInfo>` |
 
 
+## Methods
+
+### `setMapByID(id: string) => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Dependencies
 
 ### Used by

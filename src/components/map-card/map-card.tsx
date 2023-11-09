@@ -46,6 +46,11 @@ export class MapCard {
   //--------------------------------------------------------------------------
 
   /**
+   * string: Item ID of the web map that should be selected by default when the app loads
+   */
+  @Prop() defaultWebmapId = "";
+
+  /**
    * boolean: when true the home widget will be available
    */
   @Prop() enableHome: boolean;
@@ -138,6 +143,11 @@ export class MapCard {
   protected WebMap: typeof import("esri/WebMap");
 
   /**
+   * boolean: When true the default map provided via url params has been loaded and should no longer override other maps
+   */
+  protected _defaultWebmapHonored = false;
+
+  /**
    * esri/widgets/Home: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Home.html
    */
   protected _homeWidget: __esri.Home;
@@ -151,6 +161,11 @@ export class MapCard {
    * HTMLDivElement: the container div for the map
    */
   protected _mapDiv: HTMLDivElement;
+
+  /**
+   * HTMLMapPickerElement: map layer picker element
+   */
+  protected _mapPicker: HTMLMapPickerElement;
 
   /**
    * HTMLMapToolsElement: the container div for the map tools
@@ -224,7 +239,7 @@ export class MapCard {
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
       <Host>
-        <map-picker mapInfos={this.mapInfos}/>
+        <map-picker mapInfos={this.mapInfos} ref={(el) => this._mapPicker = el}/>
         <div class={`map-height ${mapClass}`} ref={(el) => (this._mapDiv = el)}/>
         <map-tools
           basemapConfig={this.basemapConfig}
@@ -278,14 +293,17 @@ export class MapCard {
   protected async _loadMap(
     webMapInfo: IMapInfo
   ): Promise<void> {
-    let id = webMapInfo?.id;
-    // on the first render use the first child of the provided mapInfos
-    this._webMapInfo = (id === "" || !id) && this.mapInfos.length > 0 ?
-      this.mapInfos[0] : webMapInfo;
+    // on the first render use the default webmap id if provided otherwise use the first child of the provided mapInfos
+    const loadDefaultMap = !this._defaultWebmapHonored && this.defaultWebmapId;
+    const defaultMap = this.mapInfos?.filter(i => i.id === this.defaultWebmapId);
 
-    id = this._webMapInfo.id;
+    this._webMapInfo = loadDefaultMap && defaultMap ? defaultMap[0] :
+      !webMapInfo?.id && this.mapInfos.length > 0 ? this.mapInfos[0] : webMapInfo;
 
-    if (this._loadedId !== id) {
+    const id = this._webMapInfo.id;
+    const isDefaultMap = loadDefaultMap && webMapInfo?.id === this.defaultWebmapId;
+
+    if ((this._loadedId !== id && !loadDefaultMap) || isDefaultMap) {
       const webMap = new this.WebMap({
         portalItem: { id }
       });
@@ -304,11 +322,15 @@ export class MapCard {
       await this.mapView.when(() => {
         this._initHome();
         this.mapView.ui.add(this._mapTools, { position: "top-right", index: 0});
+        this._defaultWebmapHonored = isDefaultMap ? true : this._defaultWebmapHonored;
         this.mapChanged.emit({
           id: id,
           mapView: this.mapView
         });
       });
+    } else if (loadDefaultMap) {
+      this._defaultWebmapHonored = true;
+      this._mapPicker.setMapByID(id);
     }
   }
 
