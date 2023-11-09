@@ -43,7 +43,7 @@ export class CrowdsourceReporter {
   /**
    * string: The text that will display at the top of the landing page
    */
-  @Prop() title: string;
+  @Prop() loginTitle: string;
 
   /**
    * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -115,7 +115,7 @@ export class CrowdsourceReporter {
     return (
       <Host>
         <slot>
-          {this.title + this.description}
+          {this.loginTitle + this.description}
         </slot>
       </Host>
     );

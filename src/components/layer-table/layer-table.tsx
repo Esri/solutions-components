@@ -50,12 +50,12 @@ export class LayerTable {
   /**
    * string: Global ID of the feature to select
    */
-  @Prop() defaultGlobalId: string;
+  @Prop() defaultGlobalId: string[];
 
   /**
    * number: when provided this will be used to select a feature in the table by default
    */
-  @Prop() defaultOid: number;
+  @Prop() defaultOid: number[];
 
   /**
    * boolean: when true the layer table will auto refresh the data
@@ -1118,15 +1118,17 @@ export class LayerTable {
       this._table.highlightIds.removeAll();
       this._table.clearSelectionFilter();
 
-      if (!this._defaultOidHonored && this.defaultOid > -1) {
+      if (!this._defaultOidHonored && this.defaultOid?.length > 0 && this.defaultOid[0] > -1) {
         this._selectDefaultFeature(this.defaultOid);
         this._defaultOidHonored = true
       }
 
-      if (!this._defaultGlobalIdHonored && this.defaultGlobalId) {
+      if (!this._defaultGlobalIdHonored && this.defaultGlobalId?.length > 0) {
         const features = await queryFeaturesByGlobalID(this.defaultGlobalId, this._layer);
-        const oid = features?.length > 0 ? features[0].getObjectId() : -1;
-        this._selectDefaultFeature(oid);
+        const oids = features?.length > 0 ? features.map(f => f.getObjectId()) : undefined;
+        if (oids) {
+          this._selectDefaultFeature(oids);
+        }
         this._defaultGlobalIdHonored = true;
       }
     });
@@ -1142,14 +1144,14 @@ export class LayerTable {
    * @returns void
    */
   protected _selectDefaultFeature(
-    oid: number
+    oids: number[]
   ): void {
-    if (oid > -1) {
-      this._table.highlightIds.add(oid);
-      setTimeout(() => {
-        const i = this._table.viewModel.getObjectIdIndex(oid);
-        this._table.scrollToIndex(i);
-      }, 500);
+    if (oids.length > 0) {
+      this._table.highlightIds.addMany(oids);
+      void this._table.when(() => {
+        const i = this._table.viewModel.getObjectIdIndex(oids[0]);
+        this._table.viewModel.scrollToIndex(i);
+      });
     }
   }
 

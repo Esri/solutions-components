@@ -192,6 +192,16 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
+   * string[]: List of global ids that should be selected by default
+   */
+  protected _defaultGlobalId: string[];
+
+  /**
+   * number[]: List of ids that should be selected by default
+   */
+  protected _defaultOid: number[];
+
+  /**
    * IMapChange: The current map change details
    */
   protected _mapChange: IMapChange;
@@ -212,6 +222,24 @@ export class CrowdsourceManager {
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Watch for globalid url param to be set
+   */
+  @Watch("defaultGlobalId")
+  defaultGlobalIdWatchHandler(): void {
+    this._defaultGlobalId = !this.defaultGlobalId ? undefined :
+      this.defaultGlobalId.indexOf(",") > -1 ? this.defaultGlobalId.split(",") : [this.defaultGlobalId];
+  }
+
+  /**
+   * Watch for oid url param to be set
+   */
+  @Watch("defaultOid")
+  defaultOidWatchHandler(): void {
+    this._defaultOid = !this.defaultOid ? undefined :
+      this.defaultOid.indexOf(",") > -1 ? this.defaultOid.split(",").map(o => parseInt(o, 10)) : [parseInt(this.defaultOid, 10)];
+  }
 
   /**
    * When true the map zoom tools will be available
@@ -631,9 +659,9 @@ export class CrowdsourceManager {
         </calcite-action-bar>
         <div class="width-full height-full position-relative">
           <layer-table
-            defaultGlobalId={hasMapAndLayer ? this.defaultGlobalId : ""}
+            defaultGlobalId={hasMapAndLayer ? this._defaultGlobalId : undefined}
             defaultLayerId={hasMapAndLayer ? this.defaultLayer : ""}
-            defaultOid={hasMapAndLayer && !this.defaultGlobalId ? parseInt(this.defaultOid, 10) : undefined}
+            defaultOid={hasMapAndLayer && !this.defaultGlobalId ? this._defaultOid : undefined}
             enableAutoRefresh={this.enableAutoRefresh}
             enableCSV={this.enableCSV}
             enableInlineEdit={this.enableInlineEdit}
