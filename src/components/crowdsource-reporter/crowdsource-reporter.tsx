@@ -15,6 +15,7 @@
  */
 
 import { Component, Element, Host, h, Prop } from "@stencil/core";
+import { ISearchConfiguration } from "../../utils/interfaces";
 
 @Component({
   tag: "crowdsource-reporter",
@@ -27,6 +28,7 @@ export class CrowdsourceReporter {
   //  Host element access
   //
   //--------------------------------------------------------------------------
+
   @Element() el: HTMLCrowdsourceReporterElement;
 
   //--------------------------------------------------------------------------
@@ -41,6 +43,36 @@ export class CrowdsourceReporter {
   @Prop() description: string;
 
   /**
+   * boolean: When true the anonymous users will be allowed to submit reports and comments
+   */
+  @Prop() enableAnonymousAccess: boolean;
+
+  /**
+   * boolean: When true the anonymous users will be allowed to submit comments
+   */
+  @Prop() enableAnonymousComments: boolean;
+
+  /**
+   * boolean: When true the user will be allowed to submit comments
+   */
+  @Prop() enableComments: boolean;
+
+  /**
+   * boolean: When true the user will be provided a login page
+   */
+  @Prop() enableLogin: boolean;
+
+  /**
+   * boolean: When true the user will be allowed to submit new reports
+   */
+  @Prop() enableNewReports: boolean;
+
+  /**
+   * string[]: list of layer ids
+   */
+  @Prop() layers: string[];
+
+  /**
    * string: The text that will display at the top of the landing page
    */
   @Prop() loginTitle: string;
@@ -51,16 +83,29 @@ export class CrowdsourceReporter {
   @Prop() mapView: __esri.MapView;
 
   /**
-   * string: landing page image
+   * string: The word(s) to display in the reports submit button
    */
-  @Prop() image: string;
+  @Prop() reportButtonText: string;
 
   /**
-   * string[]: list of layer ids
+   * string: The word(s) to display in the reports header
    */
-  @Prop() layers: string[];
+  @Prop() reportsHeader: string;
 
-  // TODO think about how we will handle related table comment field
+  /**
+   * string: The message to display when the report has been submitted
+   */
+  @Prop() reportSubmittedMessage: string;
+
+  /**
+   * ISearchConfiguration: Configuration details for the Search widget
+   */
+  @Prop() searchConfiguration: ISearchConfiguration;
+
+  /**
+   * boolean: When true the comments from all users will be visible
+   */
+  @Prop() showComments: boolean;
 
   //--------------------------------------------------------------------------
   //

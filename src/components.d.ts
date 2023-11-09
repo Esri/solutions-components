@@ -220,6 +220,8 @@ export namespace Components {
     }
     interface FeatureFormFlowItem {
     }
+    interface FeaturesFlowItem {
+    }
     interface FloorFilter {
         /**
           * boolean: when true the Floor Filter widget will be available
@@ -1167,6 +1169,12 @@ declare global {
         prototype: HTMLFeatureFormFlowItemElement;
         new (): HTMLFeatureFormFlowItemElement;
     };
+    interface HTMLFeaturesFlowItemElement extends Components.FeaturesFlowItem, HTMLStencilElement {
+    }
+    var HTMLFeaturesFlowItemElement: {
+        prototype: HTMLFeaturesFlowItemElement;
+        new (): HTMLFeaturesFlowItemElement;
+    };
     interface HTMLFloorFilterElement extends Components.FloorFilter, HTMLStencilElement {
     }
     var HTMLFloorFilterElement: {
@@ -1571,6 +1579,7 @@ declare global {
         "edit-card": HTMLEditCardElement;
         "feature-comments": HTMLFeatureCommentsElement;
         "feature-form-flow-item": HTMLFeatureFormFlowItemElement;
+        "features-flow-item": HTMLFeaturesFlowItemElement;
         "floor-filter": HTMLFloorFilterElement;
         "info-card": HTMLInfoCardElement;
         "json-editor": HTMLJsonEditorElement;
@@ -1837,6 +1846,8 @@ declare namespace LocalJSX {
     interface FeatureComments {
     }
     interface FeatureFormFlowItem {
+    }
+    interface FeaturesFlowItem {
     }
     interface FloorFilter {
         /**
@@ -2611,6 +2622,7 @@ declare namespace LocalJSX {
         "edit-card": EditCard;
         "feature-comments": FeatureComments;
         "feature-form-flow-item": FeatureFormFlowItem;
+        "features-flow-item": FeaturesFlowItem;
         "floor-filter": FloorFilter;
         "info-card": InfoCard;
         "json-editor": JsonEditor;
@@ -2662,6 +2674,7 @@ declare module "@stencil/core" {
             "edit-card": LocalJSX.EditCard & JSXBase.HTMLAttributes<HTMLEditCardElement>;
             "feature-comments": LocalJSX.FeatureComments & JSXBase.HTMLAttributes<HTMLFeatureCommentsElement>;
             "feature-form-flow-item": LocalJSX.FeatureFormFlowItem & JSXBase.HTMLAttributes<HTMLFeatureFormFlowItemElement>;
+            "features-flow-item": LocalJSX.FeaturesFlowItem & JSXBase.HTMLAttributes<HTMLFeaturesFlowItemElement>;
             "floor-filter": LocalJSX.FloorFilter & JSXBase.HTMLAttributes<HTMLFloorFilterElement>;
             "info-card": LocalJSX.InfoCard & JSXBase.HTMLAttributes<HTMLInfoCardElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
