@@ -88,6 +88,22 @@ export namespace Components {
          */
         "classicGrid": boolean;
         /**
+          * string: Global ID of the feature to select
+         */
+        "defaultGlobalId": string;
+        /**
+          * string: when provided this layer ID will be used when the app loads
+         */
+        "defaultLayer": string;
+        /**
+          * string: Object ID of feature to select
+         */
+        "defaultOid": string;
+        /**
+          * string: Item ID of the web map that should be selected by default
+         */
+        "defaultWebmap": string;
+        /**
           * boolean: when true the layer table will auto refresh the data
          */
         "enableAutoRefresh": boolean;
@@ -157,6 +173,26 @@ export namespace Components {
         "zoomAndScrollToSelected": boolean;
     }
     interface CrowdsourceReporter {
+        /**
+          * string: The text that will display under the title on the landing page
+         */
+        "description": string;
+        /**
+          * string: landing page image
+         */
+        "image": string;
+        /**
+          * string[]: list of layer ids
+         */
+        "layers": string[];
+        /**
+          * string: The text that will display at the top of the landing page
+         */
+        "loginTitle": string;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
     }
     interface DeductCalculator {
     }
@@ -255,6 +291,18 @@ export namespace Components {
     }
     interface LayerTable {
         /**
+          * string: Global ID of the feature to select
+         */
+        "defaultGlobalId": string[];
+        /**
+          * string: when provided this layer ID will be used when the app loads
+         */
+        "defaultLayerId": string;
+        /**
+          * number: when provided this will be used to select a feature in the table by default
+         */
+        "defaultOid": number[];
+        /**
           * boolean: when true the layer table will auto refresh the data
          */
         "enableAutoRefresh": boolean;
@@ -300,6 +348,10 @@ export namespace Components {
           * IBasemapConfig: List of any basemaps to filter out from the basemap widget
          */
         "basemapConfig": IBasemapConfig;
+        /**
+          * string: Item ID of the web map that should be selected by default when the app loads
+         */
+        "defaultWebmapId": string;
         /**
           * boolean: when true the basemap widget will be available
          */
@@ -409,6 +461,10 @@ export namespace Components {
          */
         "appearance": "transparent" | "solid";
         /**
+          * string: when provided this layer ID will be used when the app loads
+         */
+        "defaultLayerId": string;
+        /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
         "enabledLayerIds": string[];
@@ -460,6 +516,7 @@ export namespace Components {
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos": IMapInfo[];
+        "setMapByID": (id: string) => Promise<void>;
     }
     interface MapSearch {
         /**
@@ -1583,6 +1640,22 @@ declare namespace LocalJSX {
          */
         "classicGrid"?: boolean;
         /**
+          * string: Global ID of the feature to select
+         */
+        "defaultGlobalId"?: string;
+        /**
+          * string: when provided this layer ID will be used when the app loads
+         */
+        "defaultLayer"?: string;
+        /**
+          * string: Object ID of feature to select
+         */
+        "defaultOid"?: string;
+        /**
+          * string: Item ID of the web map that should be selected by default
+         */
+        "defaultWebmap"?: string;
+        /**
           * boolean: when true the layer table will auto refresh the data
          */
         "enableAutoRefresh"?: boolean;
@@ -1652,6 +1725,26 @@ declare namespace LocalJSX {
         "zoomAndScrollToSelected"?: boolean;
     }
     interface CrowdsourceReporter {
+        /**
+          * string: The text that will display under the title on the landing page
+         */
+        "description"?: string;
+        /**
+          * string: landing page image
+         */
+        "image"?: string;
+        /**
+          * string[]: list of layer ids
+         */
+        "layers"?: string[];
+        /**
+          * string: The text that will display at the top of the landing page
+         */
+        "loginTitle"?: string;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
     }
     interface DeductCalculator {
         /**
@@ -1741,6 +1834,18 @@ declare namespace LocalJSX {
     }
     interface LayerTable {
         /**
+          * string: Global ID of the feature to select
+         */
+        "defaultGlobalId"?: string[];
+        /**
+          * string: when provided this layer ID will be used when the app loads
+         */
+        "defaultLayerId"?: string;
+        /**
+          * number: when provided this will be used to select a feature in the table by default
+         */
+        "defaultOid"?: number[];
+        /**
           * boolean: when true the layer table will auto refresh the data
          */
         "enableAutoRefresh"?: boolean;
@@ -1798,6 +1903,10 @@ declare namespace LocalJSX {
           * IBasemapConfig: List of any basemaps to filter out from the basemap widget
          */
         "basemapConfig"?: IBasemapConfig;
+        /**
+          * string: Item ID of the web map that should be selected by default when the app loads
+         */
+        "defaultWebmapId"?: string;
         /**
           * boolean: when true the basemap widget will be available
          */
@@ -1920,6 +2029,10 @@ declare namespace LocalJSX {
           * "transparent" | "solid": controls the button appearance when using the "dropdown" type
          */
         "appearance"?: "transparent" | "solid";
+        /**
+          * string: when provided this layer ID will be used when the app loads
+         */
+        "defaultLayerId"?: string;
         /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */

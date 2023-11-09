@@ -10,6 +10,7 @@
 | Property            | Attribute             | Description                                                                                            | Type                | Default     |
 | ------------------- | --------------------- | ------------------------------------------------------------------------------------------------------ | ------------------- | ----------- |
 | `basemapConfig`     | --                    | IBasemapConfig: List of any basemaps to filter out from the basemap widget                             | `IBasemapConfig`    | `undefined` |
+| `defaultWebmapId`   | `default-webmap-id`   | string: Item ID of the web map that should be selected by default when the app loads                   | `string`            | `""`        |
 | `enableBasemap`     | `enable-basemap`      | boolean: when true the basemap widget will be available                                                | `boolean`           | `undefined` |
 | `enableFloorFilter` | `enable-floor-filter` | boolean: when true the floor filter widget will be available                                           | `boolean`           | `undefined` |
 | `enableFullscreen`  | `enable-fullscreen`   | boolean: when true the fullscreen widget will be available                                             | `boolean`           | `undefined` |

@@ -10,6 +10,7 @@
 | Property                  | Attribute                    | Description                                                                                            | Type                                   | Default         |
 | ------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------------- | --------------- |
 | `appearance`              | `appearance`                 | "transparent" \| "solid": controls the button appearance when using the "dropdown" type                | `"solid" \| "transparent"`             | `"transparent"` |
+| `defaultLayerId`          | `default-layer-id`           | string: when provided this layer ID will be used when the app loads                                    | `string`                               | `""`            |
 | `enabledLayerIds`         | --                           | string[]: Optional list of enabled layer ids  If empty all layers will be available                    | `string[]`                             | `[]`            |
 | `enabledTableIds`         | --                           | string[]: Optional list of enabled table ids  If empty all tables will be available                    | `string[]`                             | `[]`            |
 | `mapView`                 | --                           | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                              | `undefined`     |
