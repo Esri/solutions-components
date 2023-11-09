@@ -349,8 +349,6 @@ export namespace Components {
     }
     interface ListFlowItem {
     }
-    interface ListItem {
-    }
     interface LocationFlowItem {
     }
     interface MapCard {
@@ -784,6 +782,8 @@ export namespace Components {
           * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html  A JSON representation of the instance in the ArcGIS format. See the ArcGIS REST API documentation for examples of the structure of various input JSON objects. https://developers.arcgis.com/documentation/common-data-types/symbol-objects.htm
          */
         "sketchPolygonSymbol": __esri.SimpleFillSymbol | any;
+    }
+    interface RefineResultsFlowItem {
     }
     interface RefineSelection {
         /**
@@ -1237,12 +1237,6 @@ declare global {
         prototype: HTMLListFlowItemElement;
         new (): HTMLListFlowItemElement;
     };
-    interface HTMLListItemElement extends Components.ListItem, HTMLStencilElement {
-    }
-    var HTMLListItemElement: {
-        prototype: HTMLListItemElement;
-        new (): HTMLListItemElement;
-    };
     interface HTMLLocationFlowItemElement extends Components.LocationFlowItem, HTMLStencilElement {
     }
     var HTMLLocationFlowItemElement: {
@@ -1391,6 +1385,12 @@ declare global {
     var HTMLPublicNotificationElement: {
         prototype: HTMLPublicNotificationElement;
         new (): HTMLPublicNotificationElement;
+    };
+    interface HTMLRefineResultsFlowItemElement extends Components.RefineResultsFlowItem, HTMLStencilElement {
+    }
+    var HTMLRefineResultsFlowItemElement: {
+        prototype: HTMLRefineResultsFlowItemElement;
+        new (): HTMLRefineResultsFlowItemElement;
     };
     interface HTMLRefineSelectionElementEventMap {
         "selectionLoadingChange": boolean;
@@ -1577,7 +1577,6 @@ declare global {
         "layer-table": HTMLLayerTableElement;
         "layout-manager": HTMLLayoutManagerElement;
         "list-flow-item": HTMLListFlowItemElement;
-        "list-item": HTMLListItemElement;
         "location-flow-item": HTMLLocationFlowItemElement;
         "map-card": HTMLMapCardElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
@@ -1591,6 +1590,7 @@ declare global {
         "pci-calculator": HTMLPciCalculatorElement;
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
+        "refine-results-flow-item": HTMLRefineResultsFlowItemElement;
         "refine-selection": HTMLRefineSelectionElement;
         "share-item": HTMLShareItemElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
@@ -1957,8 +1957,6 @@ declare namespace LocalJSX {
         "onLayoutChanged"?: (event: LayoutManagerCustomEvent<ELayoutMode>) => void;
     }
     interface ListFlowItem {
-    }
-    interface ListItem {
     }
     interface LocationFlowItem {
     }
@@ -2398,6 +2396,8 @@ declare namespace LocalJSX {
          */
         "sketchPolygonSymbol"?: __esri.SimpleFillSymbol | any;
     }
+    interface RefineResultsFlowItem {
+    }
     interface RefineSelection {
         /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
@@ -2617,7 +2617,6 @@ declare namespace LocalJSX {
         "layer-table": LayerTable;
         "layout-manager": LayoutManager;
         "list-flow-item": ListFlowItem;
-        "list-item": ListItem;
         "location-flow-item": LocationFlowItem;
         "map-card": MapCard;
         "map-draw-tools": MapDrawTools;
@@ -2631,6 +2630,7 @@ declare namespace LocalJSX {
         "pci-calculator": PciCalculator;
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
+        "refine-results-flow-item": RefineResultsFlowItem;
         "refine-selection": RefineSelection;
         "share-item": ShareItem;
         "solution-configuration": SolutionConfiguration;
@@ -2668,7 +2668,6 @@ declare module "@stencil/core" {
             "layer-table": LocalJSX.LayerTable & JSXBase.HTMLAttributes<HTMLLayerTableElement>;
             "layout-manager": LocalJSX.LayoutManager & JSXBase.HTMLAttributes<HTMLLayoutManagerElement>;
             "list-flow-item": LocalJSX.ListFlowItem & JSXBase.HTMLAttributes<HTMLListFlowItemElement>;
-            "list-item": LocalJSX.ListItem & JSXBase.HTMLAttributes<HTMLListItemElement>;
             "location-flow-item": LocalJSX.LocationFlowItem & JSXBase.HTMLAttributes<HTMLLocationFlowItemElement>;
             "map-card": LocalJSX.MapCard & JSXBase.HTMLAttributes<HTMLMapCardElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
@@ -2682,6 +2681,7 @@ declare module "@stencil/core" {
             "pci-calculator": LocalJSX.PciCalculator & JSXBase.HTMLAttributes<HTMLPciCalculatorElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
+            "refine-results-flow-item": LocalJSX.RefineResultsFlowItem & JSXBase.HTMLAttributes<HTMLRefineResultsFlowItemElement>;
             "refine-selection": LocalJSX.RefineSelection & JSXBase.HTMLAttributes<HTMLRefineSelectionElement>;
             "share-item": LocalJSX.ShareItem & JSXBase.HTMLAttributes<HTMLShareItemElement>;
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
