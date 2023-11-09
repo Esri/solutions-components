@@ -5,7 +5,7 @@
       name="viewport"
       content="initial-scale=1,maximum-scale=1,user-scalable=no"
     />
-    <title>Crowdsource Reporter</title>
+    <title>New Public Notification</title>
     <!--
     | Copyright 2022 Esri
     |
@@ -23,50 +23,83 @@
     -->
     <style>
       #viewDiv {
-        padding: 0;
-        margin: 0;
-        height: 100%;
-        width: 100%;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 354px;
+      }
+      #viewDiv[dir="rtl"] {
+        right: 354px;
+        left: 0px;
       }
       .over-map {
         position: absolute;
-        right: 0px;
+        left: 0px;
         background-color: var(--calcite-ui-foreground-1);
       }
+      .over-map[dir="rtl"] {
+        right: 0px;
+      }
       .column {
-        min-width: 300px;
+        width: 320px;
         padding: 1rem;
         border: 1px solid var(--calcite-ui-border-2);
         height: -webkit-fill-available;
         height: 100%;
       }
       .column[dir="rtl"] {
-        float: left;
+        float: right;
       }
     </style>
 
     <link
       rel="stylesheet"
-      href="https://js.arcgis.com/4.27/esri/themes/light/main.css"
+      href="https://jsdev.arcgis.com/4.28/esri/themes/light/main.css"
     />
-    <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components@1.0.0-beta.97/dist/calcite/calcite.css" type="text/css" />
+    <!-- <link
+      rel="stylesheet"
+      href="https://jsdev.arcgis.com/4.28/esri/themes/dark/main.css"
+    /> -->
     <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
     <link rel="stylesheet" href="../solutions-components.css" type="text/css">
 
-    <script src="https://js.arcgis.com/4.27/"></script>
+    <script src="https://jsdev.arcgis.com/4.28/"></script>
     <script type="module" src="../solutions-components.esm.js"></script>
 
     <script>
-      require(["esri/WebMap", "esri/views/MapView"], (
+      require(["esri/WebMap", "esri/views/MapView", "esri/widgets/Legend", "esri/config"], (
         WebMap,
-        MapView
+        MapView,
+        Legend,
+        esriConfig
       ) => {
+        let itemId;
+        let portal;
+        var vars = window.location.search.substring(1).split('&');
+        vars.forEach((param) => {
+          let vals = param.split('=');
+          const v = vals[1];
+          switch (vals[0]) {
+            case "id":
+              itemId = v;
+              break;
+            case "portal":
+              portal = v;
+            default:
+              break;
+          }
+        });
+
+        if (portal) {
+          esriConfig.portalUrl = portal;
+        }
         var webMap = new WebMap({
           portalItem: {
             // solutions
-            // id: "3715f4899bea4b2a948347c5c2357e58"
+            id: itemId ? itemId : "3715f4899bea4b2a948347c5c2357e58"
             // InstantApps
-            id: "863e4f6f2a7840db896cc1b1606d552d"
+            //id: itemId ? itemId : "863e4f6f2a7840db896cc1b1606d552d"
           }
         });
 
@@ -75,10 +108,20 @@
           container: "viewDiv",
           map: webMap
         });
+
+        demo.mapView.when(() => {
+          const legend = new Legend({
+            view: demo.mapView
+          });
+          demo.mapView.ui.add(legend, "top-left");
+        });
+
+        demo.loginTitle = "Login Title";
       });
     </script>
   </head>
 
+  <!-- <body class="calcite-mode-dark"> -->
   <body>
     <div id="viewDiv"></div>
     <crowdsource-reporter id="demo" class="over-map column"></crowdsource-reporter>

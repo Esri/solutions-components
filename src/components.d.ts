@@ -180,9 +180,25 @@ export namespace Components {
          */
         "description": string;
         /**
-          * string: landing page image
+          * boolean: When true the anonymous users will be allowed to submit reports and comments
          */
-        "image": string;
+        "enableAnonymousAccess": boolean;
+        /**
+          * boolean: When true the anonymous users will be allowed to submit comments
+         */
+        "enableAnonymousComments": boolean;
+        /**
+          * boolean: When true the user will be allowed to submit comments
+         */
+        "enableComments": boolean;
+        /**
+          * boolean: When true the user will be provided a login page
+         */
+        "enableLogin": boolean;
+        /**
+          * boolean: When true the user will be allowed to submit new reports
+         */
+        "enableNewReports": boolean;
         /**
           * string[]: list of layer ids
          */
@@ -195,6 +211,26 @@ export namespace Components {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * string: The word(s) to display in the reports submit button
+         */
+        "reportButtonText": string;
+        /**
+          * string: The message to display when the report has been submitted
+         */
+        "reportSubmittedMessage": string;
+        /**
+          * string: The word(s) to display in the reports header
+         */
+        "reportsHeader": string;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
+        /**
+          * boolean: When true the comments from all users will be visible
+         */
+        "showComments": boolean;
     }
     interface DeductCalculator {
     }
@@ -1795,9 +1831,25 @@ declare namespace LocalJSX {
          */
         "description"?: string;
         /**
-          * string: landing page image
+          * boolean: When true the anonymous users will be allowed to submit reports and comments
          */
-        "image"?: string;
+        "enableAnonymousAccess"?: boolean;
+        /**
+          * boolean: When true the anonymous users will be allowed to submit comments
+         */
+        "enableAnonymousComments"?: boolean;
+        /**
+          * boolean: When true the user will be allowed to submit comments
+         */
+        "enableComments"?: boolean;
+        /**
+          * boolean: When true the user will be provided a login page
+         */
+        "enableLogin"?: boolean;
+        /**
+          * boolean: When true the user will be allowed to submit new reports
+         */
+        "enableNewReports"?: boolean;
         /**
           * string[]: list of layer ids
          */
@@ -1810,6 +1862,26 @@ declare namespace LocalJSX {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * string: The word(s) to display in the reports submit button
+         */
+        "reportButtonText"?: string;
+        /**
+          * string: The message to display when the report has been submitted
+         */
+        "reportSubmittedMessage"?: string;
+        /**
+          * string: The word(s) to display in the reports header
+         */
+        "reportsHeader"?: string;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
+        /**
+          * boolean: When true the comments from all users will be visible
+         */
+        "showComments"?: boolean;
     }
     interface DeductCalculator {
         /**
