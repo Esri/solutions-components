@@ -163,7 +163,7 @@ export async function queryFeaturesByID(
  * @returns Promise with the featureSet from the layer that match the provided globalId
  */
 export async function queryFeaturesByGlobalID(
-  globalId: string,
+  globalIds: string[],
   layer: __esri.FeatureLayer
 ): Promise<__esri.Graphic[]> {
   const globalIdField = (layer as any).globalIdField;
@@ -173,8 +173,8 @@ export async function queryFeaturesByGlobalID(
 
   const q = layer.createQuery();
   q.returnGeometry = false;
-  q.outFields = [layer.objectIdField]
-  q.where = `${globalIdField} = '${globalId}'`
+  q.outFields = [layer.objectIdField];
+  q.where = globalIds.map(g => `${globalIdField} = '${g}'`).join(" or ");
 
   const result = await layer.queryFeatures(q);
   return result.features;

@@ -9,9 +9,9 @@
 
 | Property                  | Attribute                     | Description                                                                                                        | Type       | Default     |
 | ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------- | ----------- |
-| `defaultGlobalId`         | `default-global-id`           | string: Global ID of the feature to select                                                                         | `string`   | `undefined` |
+| `defaultGlobalId`         | --                            | string: Global ID of the feature to select                                                                         | `string[]` | `undefined` |
 | `defaultLayerId`          | `default-layer-id`            | string: when provided this layer ID will be used when the app loads                                                | `string`   | `undefined` |
-| `defaultOid`              | `default-oid`                 | number: when provided this will be used to select a feature in the table by default                                | `number`   | `undefined` |
+| `defaultOid`              | --                            | number: when provided this will be used to select a feature in the table by default                                | `number[]` | `undefined` |
 | `enableAutoRefresh`       | `enable-auto-refresh`         | boolean: when true the layer table will auto refresh the data                                                      | `boolean`  | `undefined` |
 | `enableCSV`               | `enable-c-s-v`                | boolean: when true the export to csv button will be available                                                      | `boolean`  | `undefined` |
 | `enableInlineEdit`        | `enable-inline-edit`          | boolean: when true edits can be applied directly within the table                                                  | `boolean`  | `undefined` |

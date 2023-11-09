@@ -24,7 +24,6 @@
 | `searchConfiguration`     | --                          | ISearchConfiguration: Configuration details for the Search widget                                         | `ISearchConfiguration` | `undefined` |
 | `showComments`            | `show-comments`             | boolean: When true the comments from all users will be visible                                            | `boolean`              | `undefined` |
 
-
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

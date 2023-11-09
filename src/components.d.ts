@@ -208,10 +208,6 @@ export namespace Components {
          */
         "loginTitle": string;
         /**
-          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView": __esri.MapView;
-        /**
           * string: The word(s) to display in the reports submit button
          */
         "reportButtonText": string;
@@ -231,6 +227,10 @@ export namespace Components {
           * boolean: When true the comments from all users will be visible
          */
         "showComments": boolean;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
     }
     interface DeductCalculator {
     }
@@ -337,7 +337,7 @@ export namespace Components {
         /**
           * string: Global ID of the feature to select
          */
-        "defaultGlobalId": string;
+        "defaultGlobalId": string[];
         /**
           * string: when provided this layer ID will be used when the app loads
          */
@@ -345,7 +345,7 @@ export namespace Components {
         /**
           * number: when provided this will be used to select a feature in the table by default
          */
-        "defaultOid": number;
+        "defaultOid": number[];
         /**
           * boolean: when true the layer table will auto refresh the data
          */
@@ -1859,10 +1859,6 @@ declare namespace LocalJSX {
          */
         "loginTitle"?: string;
         /**
-          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView"?: __esri.MapView;
-        /**
           * string: The word(s) to display in the reports submit button
          */
         "reportButtonText"?: string;
@@ -1882,6 +1878,10 @@ declare namespace LocalJSX {
           * boolean: When true the comments from all users will be visible
          */
         "showComments"?: boolean;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
     }
     interface DeductCalculator {
         /**
@@ -1979,7 +1979,7 @@ declare namespace LocalJSX {
         /**
           * string: Global ID of the feature to select
          */
-        "defaultGlobalId"?: string;
+        "defaultGlobalId"?: string[];
         /**
           * string: when provided this layer ID will be used when the app loads
          */
@@ -1987,7 +1987,7 @@ declare namespace LocalJSX {
         /**
           * number: when provided this will be used to select a feature in the table by default
          */
-        "defaultOid"?: number;
+        "defaultOid"?: number[];
         /**
           * boolean: when true the layer table will auto refresh the data
          */
