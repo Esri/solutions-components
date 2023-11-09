@@ -1,0 +1,9 @@
+{
+  "fetchingData": "Pobieranie danych",
+  "edit": "Edycja",
+  "enableEditing": "Funkcja aktualizacji musi być włączona w warstwie.",
+  "editDisabled": "Edycja wyłączona",
+  "next": "Dalej",
+  "back": "Wstecz",
+  "indexOfTotal": "{{index}} z {{total}}"
+}

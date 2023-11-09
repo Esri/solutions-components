@@ -3,9 +3,21 @@
   "delete": "Delete",
   "editMultiple": "Edit Multiple",
   "exportCSV": "Export to CSV",
+  "filters": "Filters",
   "more": "More",
   "selectAll": "Select all",
   "showSelected": "Show selected",
   "switchSelected": "Switch selected",
-  "zoom": "Zoom"
+  "zoom": "Zoom",
+  "fetchingData": "Fetching Data",
+  "refresh": "Refresh",
+  "enableEditing": "Editing must be enabled on the layer.",
+  "confirm": "These features will be permanently removed.",
+  "deleteFeature": "Delete feature",
+  "deleteDisabled": "Delete Disabled",
+  "editMultipleDisabled": "Edit Multiple Disabled",
+  "showAll": "Show all",
+  "recordsSelected": "Total: {{total}} | Selection: {{selected}}",
+  "cancel": "Cancel",
+  "moreOptions": "More table options"
 }

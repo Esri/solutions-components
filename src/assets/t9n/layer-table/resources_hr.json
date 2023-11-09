@@ -1,0 +1,23 @@
+{
+  "clearSelection": "Očisti odabir",
+  "delete": "Izbriši",
+  "editMultiple": "Uredi više",
+  "exportCSV": "Izvezi u CSV",
+  "filters": "Filtri",
+  "more": "Više",
+  "selectAll": "Odaberi sve",
+  "showSelected": "Prikaži odabrano",
+  "switchSelected": "Zamijeni odabrano",
+  "zoom": "Povećaj",
+  "fetchingData": "Dohvaćanje podataka",
+  "refresh": "Osvježi",
+  "enableEditing": "Uređivanje mora biti omogućeno na sloju.",
+  "confirm": "Ti će geoobjekti biti trajno uklonjeni.",
+  "deleteFeature": "Izbriši geoobjekt",
+  "deleteDisabled": "Izbriši onemogućeno",
+  "editMultipleDisabled": "Uredi više onemogućenih",
+  "showAll": "Prikaži sve",
+  "recordsSelected": "Ukupno: {{total}} | Odabir: {{selected}}",
+  "cancel": "Odustani",
+  "moreOptions": "Više opcija tablice"
+}

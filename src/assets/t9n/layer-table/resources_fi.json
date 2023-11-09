@@ -1,0 +1,23 @@
+{
+  "clearSelection": "Tyhjennä valinnat",
+  "delete": "Poista",
+  "editMultiple": "Muokkaa useaa",
+  "exportCSV": "Vie CSV-tiedostoon",
+  "filters": "Suodattimet",
+  "more": "Enemmän",
+  "selectAll": "Valitse kaikki",
+  "showSelected": "Näytä valitut",
+  "switchSelected": "Vaihda valitut",
+  "zoom": "Tarkenna",
+  "fetchingData": "Noudetaan aineistoa",
+  "refresh": "Päivitä",
+  "enableEditing": "Muokkaus on otettava käyttöön karttatasossa.",
+  "confirm": "Nämä kohteet poistetaan pysyvästi.",
+  "deleteFeature": "Poista kohde",
+  "deleteDisabled": "Poista käytöstä poistetut",
+  "editMultipleDisabled": "Muokkaa useaa käytöstä poistettua",
+  "showAll": "Näytä kaikki",
+  "recordsSelected": "Yhteensä: {{total}} | Valinta: {{selected}}",
+  "cancel": "Peruuta",
+  "moreOptions": "Muut taulun asetukset"
+}

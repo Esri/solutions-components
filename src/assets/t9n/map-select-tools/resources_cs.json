@@ -10,6 +10,7 @@
   "sketchLayer": "Vrstva skici",
   "useLayerFeatures": "Použít prvky vrstvy",
   "inputLayer": "Vstupní vrstva",
-  "useLayerFeaturesTooltip": "Ř_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ů.",
-  "useSearchDistanceTootip": "Ř_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ů."
+  "useLayerFeaturesTooltip": "Zvolte vrstvu a pomocí nástrojů skicování označte prvky, které lze použít jako hranici pro výběr protínajících prvků ze vstupní vrstvy.",
+  "useSearchDistanceTootip": "Definujte vzdálenost pro vyhledávací obalovou zónu, pomocí níž lze vybrat vstupní prvky, které tuto obalovou zónu protínají.",
+  "placeholder": "Najít adresu nebo místo"
 }

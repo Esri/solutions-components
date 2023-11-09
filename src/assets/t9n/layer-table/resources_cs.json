@@ -1,0 +1,23 @@
+{
+  "clearSelection": "Zrušit výběr",
+  "delete": "Smazat",
+  "editMultiple": "Hromadná editace",
+  "exportCSV": "Exportovat do CSV",
+  "filters": "Filtry",
+  "more": "Více",
+  "selectAll": "Vybrat vše",
+  "showSelected": "Zobrazit vybrané",
+  "switchSelected": "Přepnout vybrané",
+  "zoom": "Přiblížení",
+  "fetchingData": "Načítání dat",
+  "refresh": "Obnovit",
+  "enableEditing": "Ve vrstvě musí být povolena editace.",
+  "confirm": "Tyto prvky budou trvale odstraněny.",
+  "deleteFeature": "Odstranit prvek",
+  "deleteDisabled": "Odstranění zakázáno",
+  "editMultipleDisabled": "Hromadná editace zakázána",
+  "showAll": "Zobrazit vše",
+  "recordsSelected": "Celkem: {{total}} | Výběr: {{selected}}",
+  "cancel": "Storno",
+  "moreOptions": "Další možnosti tabulky"
+}

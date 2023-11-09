@@ -1,0 +1,23 @@
+{
+  "clearSelection": "مسح التحديد",
+  "delete": "حذف",
+  "editMultiple": "تحرير متعدد",
+  "exportCSV": "تصدير إلى CSV",
+  "filters": "عوامل تصفية",
+  "more": "المزيد",
+  "selectAll": "تحديد الكل",
+  "showSelected": "عرض المحدد",
+  "switchSelected": "تبديل المحدد",
+  "zoom": "تغيير مقياس الرسم",
+  "fetchingData": "إحضار البيانات",
+  "refresh": "تحديث",
+  "enableEditing": "يجب تمكين التحرير في الطبقة.",
+  "confirm": "ستتم إزالة هذه المعالم بشكل دائم.",
+  "deleteFeature": "حذف المعلم",
+  "deleteDisabled": "تم تعطيل الحذف",
+  "editMultipleDisabled": "تم تعطيل التحرير المتعدد",
+  "showAll": "إظهار الكل",
+  "recordsSelected": "الإجمالي: {{total}} | التحديد: {{selected}}",
+  "cancel": "إلغاء الأمر",
+  "moreOptions": "المزيد من خيارات الجدول"
+}

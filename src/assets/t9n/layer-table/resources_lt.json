@@ -1,0 +1,23 @@
+{
+  "clearSelection": "Valyti išranką",
+  "delete": "Pašalinti",
+  "editMultiple": "Redaguoti kelis",
+  "exportCSV": "Eksportuoti į CSV",
+  "filters": "Filtrai",
+  "more": "Daugiau",
+  "selectAll": "Pasirinkti viską",
+  "showSelected": "Rodyti pasirinktus",
+  "switchSelected": "Pakeisti pasirinktus",
+  "zoom": "Didinti",
+  "fetchingData": "Gaunami duomenys",
+  "refresh": "Atnaujinti",
+  "enableEditing": "Sluoksnyje turi būti įjungtas redagavimas.",
+  "confirm": "Šie elementai bus pašalinti visam laikui.",
+  "deleteFeature": "Ištrinti elementą",
+  "deleteDisabled": "Trinti išjungtus",
+  "editMultipleDisabled": "Redaguoti kelis išjungtus",
+  "showAll": "Rodyti visus",
+  "recordsSelected": "Iš viso: {{total}} | Pasirinkta: {{selected}}",
+  "cancel": "Atšaukti",
+  "moreOptions": "Daugiau lentelės parinkčių"
+}

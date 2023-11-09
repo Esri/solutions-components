@@ -1,0 +1,23 @@
+{
+  "clearSelection": "Kijelölés megszüntetése",
+  "delete": "Törlés",
+  "editMultiple": "Több szerkesztése",
+  "exportCSV": "Exportálás CSV-fájlba",
+  "filters": "Szűrők",
+  "more": "Továbbiak",
+  "selectAll": "Összes kiválasztása",
+  "showSelected": "Kiválasztott elemek megjelenítése",
+  "switchSelected": "Váltás a kiválasztott elemekre",
+  "zoom": "Nagyítás/kicsinyítés",
+  "fetchingData": "Adatok lekérése",
+  "refresh": "Frissítés",
+  "enableEditing": "A szerkesztésnek engedélyezve kell lennie a rétegen.",
+  "confirm": "Ezek a vektoros elemek végleg el lesznek távolítva.",
+  "deleteFeature": "Vektoros elem törlése",
+  "deleteDisabled": "Törlés letiltva",
+  "editMultipleDisabled": "Több szerkesztése letiltva",
+  "showAll": "Összes megjelenítése",
+  "recordsSelected": "Összesen: {{total}} | Kiválasztva: {{selected}}",
+  "cancel": "Mégse",
+  "moreOptions": "További táblázat beállítások"
+}

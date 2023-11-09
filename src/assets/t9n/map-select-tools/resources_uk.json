@@ -10,6 +10,7 @@
   "sketchLayer": "Шар скетчу",
   "useLayerFeatures": "Використовувати об’єкти шару",
   "inputLayer": "Вхідний шар",
-  "useLayerFeaturesTooltip": "ґ_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________Ї.",
-  "useSearchDistanceTootip": "ґ_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________Ї."
+  "useLayerFeaturesTooltip": "Виберіть шар і за допомогою інструментів «Скетч» вкажіть об’єкти, які можна використовувати як кордони для вибору об’єктів, які перетинаються із вхідного шару.",
+  "useSearchDistanceTootip": "Визначте відстань для буфера пошуку, який вибиратиме вхідні об’єкти, які перетинають буфер.",
+  "placeholder": "Знайти адресу або місце"
 }

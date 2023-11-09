@@ -1,0 +1,9 @@
+{
+  "fetchingData": "Отримання даних",
+  "edit": "Редагування",
+  "enableEditing": "У шарі має бути увімкнено функцію оновлення.",
+  "editDisabled": "Редагування вимкнено",
+  "next": "Далі",
+  "back": "Назад",
+  "indexOfTotal": "{{index}} з {{total}}"
+}

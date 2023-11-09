@@ -38,10 +38,58 @@ tr:nth-child(odd) {
   border-bottom: 1px solid var(--calcite-ui-border-1);
 }
 
+.padding-1-2 {
+  padding: 0.5rem;
+}
+
 .padding-top-1-2 {
   padding-top: 0.5rem;
 }
 
 .font-color-3 {
   color: var(--calcite-ui-text-3);
+}
+
+.display-none {
+  display: none !important;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.position-absolute {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+}
+
+.esri-features__footer {
+  display: none !important;
+}
+
+.button-container {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-border {
+  border-top: 1px solid var(--calcite-ui-border-1);
+}
+
+.min-width-100 {
+  min-width: 100px;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.esri-features__container {
+  padding: 0.5rem !important;
+  background-color: var(--calcite-ui-foreground-1) !important;
+  height: 100% !important;
 }

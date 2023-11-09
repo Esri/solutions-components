@@ -1,0 +1,9 @@
+{
+  "fetchingData": "Tvert datus",
+  "edit": "Rediģēt",
+  "enableEditing": "Slānī jābūt iespējotai atjaunināšanas iespējai.",
+  "editDisabled": "Rediģēšana atspējota",
+  "next": "Tālāk",
+  "back": "Atpakaļ",
+  "indexOfTotal": "{{index}} no {{total}}"
+}

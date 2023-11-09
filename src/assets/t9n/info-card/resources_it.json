@@ -1,0 +1,9 @@
+{
+  "fetchingData": "Recupero dei dati",
+  "edit": "Modifica",
+  "enableEditing": "La funzionalità di aggiornamento deve essere abilitata nel layer.",
+  "editDisabled": "Modifica disabilitata",
+  "next": "Avanti",
+  "back": "Indietro",
+  "indexOfTotal": "{{index}} di {{total}}"
+}

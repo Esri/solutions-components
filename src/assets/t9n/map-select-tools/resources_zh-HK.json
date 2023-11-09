@@ -10,6 +10,7 @@
   "sketchLayer": "描繪圖層",
   "useLayerFeatures": "使用圖層圖徵",
   "inputLayer": "輸入圖層",
-  "useLayerFeaturesTooltip": "試_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________驗.",
-  "useSearchDistanceTootip": "試_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________驗."
+  "useLayerFeaturesTooltip": "選擇圖層並使用描繪工具指向可作為邊界的圖徵，以便從輸入圖層中選擇相交圖徵。",
+  "useSearchDistanceTootip": "定義搜尋緩衝區的距離，該距離將選擇與緩衝區相交的輸入圖徵。",
+  "placeholder": "尋找位址或地點"
 }

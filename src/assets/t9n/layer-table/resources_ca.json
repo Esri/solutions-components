@@ -1,0 +1,23 @@
+{
+  "clearSelection": "Esborra la selecció",
+  "delete": "Suprimeix",
+  "editMultiple": "Edició múltiple",
+  "exportCSV": "Exporta a CSV",
+  "filters": "Filtres",
+  "more": "Més",
+  "selectAll": "Selecciona-ho tot",
+  "showSelected": "Mostra els seleccionats",
+  "switchSelected": "Canvia la selecció",
+  "zoom": "Zoom",
+  "fetchingData": "S'estan recuperant les dades",
+  "refresh": "Actualitza",
+  "enableEditing": "Heu de tenir l'edició habilitada a la capa.",
+  "confirm": "Aquestes entitats s'eliminaran permanentment.",
+  "deleteFeature": "Suprimeix l'entitat",
+  "deleteDisabled": "Supressió deshabilitada",
+  "editMultipleDisabled": "Edició múltiple deshabilitada",
+  "showAll": "Mostra-ho tot",
+  "recordsSelected": "Total: {{total}} | Selecció: {{selected}}",
+  "cancel": "Cancel·la",
+  "moreOptions": "Més opcions de taula"
+}

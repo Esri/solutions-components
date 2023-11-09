@@ -165,6 +165,7 @@ export class MapDrawTools {
   @Watch("graphics")
   graphicsWatchHandler(v: any, oldV: any): void {
     if (v && v.length > 0 && JSON.stringify(v) !== JSON.stringify(oldV) && this._sketchGraphicsLayer) {
+      this._updateGraphicsSymbols(v);
       this._sketchGraphicsLayer.removeAll();
       this._sketchGraphicsLayer.addMany(v);
     }
@@ -396,7 +397,7 @@ export class MapDrawTools {
         },
         undoRedoMenu: false,
         settingsMenu: this.drawMode === EDrawMode.SKETCH
-      } as any // temp workaround since we need duplicateButton flag that is not in 4.26 types but will be in the 4.27 modules we get from IA
+      }
     });
 
     this._sketchViewModel = new this.SketchViewModel({
@@ -519,6 +520,29 @@ export class MapDrawTools {
         });
       }
     }, 100);
+  }
+
+  /**
+   * Any time graphics are added update the symbology so they will always be consistent
+   * regardless of where they are from.
+   * https://github.com/Esri/solutions-components/issues/246
+   *
+   * reshape tool only supports a single graphic
+   *
+   * @protected
+   */
+  protected _updateGraphicsSymbols(
+    graphics: __esri.Graphic[]
+  ): void {
+    // graphics will only be of one gemetry type
+    const graphic = graphics[0];
+    const type = graphic.geometry.type;
+    const symbol = type === "point" ? this.pointSymbol :
+      type === "polyline" ? this.polylineSymbol :
+      type === "polygon" ? this.polygonSymbol : undefined;
+    if (symbol) {
+      graphics.forEach(g => g.symbol = symbol);
+    }
   }
 
   /**

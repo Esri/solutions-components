@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
 import BufferTools_T9n from "../../assets/t9n/buffer-tools/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -114,6 +114,11 @@ export class BufferTools {
    */
   protected _unitElement: HTMLCalciteSelectElement;
 
+  /**
+   * Key Value pair: Lookup hash for translated units
+   */
+  protected _units: {[key: string]: string};
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -140,6 +145,21 @@ export class BufferTools {
   //  Methods (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Get the translated unit for display
+   *
+   * @returns Promise resolving with the translated unit
+   */
+  @Method()
+  async getTranslatedUnit(
+    unit: string
+  ): Promise<string> {
+    if (!this._units) {
+      await this._defineTranslations();
+    }
+    return this._units[unit];
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -174,7 +194,7 @@ export class BufferTools {
    * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
-    await this._getTranslations();
+    await this._defineTranslations();
     await this._initModules();
   }
 
@@ -196,6 +216,18 @@ export class BufferTools {
   //--------------------------------------------------------------------------
 
   /**
+   * Loads translations and defines unit names using those translations.
+   *
+   * @returns Promise resolving when function is done
+   *
+   * @protected
+   */
+  protected async _defineTranslations(): Promise<void> {
+    await this._getTranslations();
+    this._initTranslatedUnits();
+  }
+
+  /**
    * Load esri javascript api modules
    *
    * @returns Promise resolving when function is done
@@ -212,6 +244,20 @@ export class BufferTools {
   }
 
   /**
+   * Init the lookup hash for translated units
+   *
+   * @protected
+   */
+  protected _initTranslatedUnits(): void {
+    this._units = {
+      "feet": this._translations.feet,
+      "meters": this._translations.meters,
+      "miles": this._translations.miles,
+      "kilometers": this._translations.kilometers
+    };
+  }
+
+  /**
    * Gets the nodes for each of the possible distance units
    *
    * @returns An array of option nodes
@@ -219,14 +265,8 @@ export class BufferTools {
    * @protected
    */
   protected _getUnits(): VNode[] {
-    const units = {
-      "feet": this._translations.feet,
-      "meters": this._translations.meters,
-      "miles": this._translations.miles,
-      "kilometers": this._translations.kilometers
-    };
-    return Object.keys(units).map(u => {
-      return (<calcite-option label={units[u]} selected={this.unit === u} value={u} />);
+    return Object.keys(this._units).map(u => {
+      return (<calcite-option label={this._units[u]} selected={this.unit === u} value={u} />);
     });
   }
 
@@ -283,14 +323,21 @@ export class BufferTools {
       }
 
       this._bufferTimeout = setTimeout(() => {
-        // needs to be wgs 84 or Web Mercator
         if (this.geometries?.length > 0 && this.unit && this.distance > 0) {
-          const buffer = this._geometryEngine.geodesicBuffer(
-            this.geometries,
-            this.distance,
-            this.unit,
-            this.unionResults
-          );
+          const geom = this.geometries[0];
+          const sr = geom.spatialReference;
+          const buffer = (sr.isWGS84 || sr.isWebMercator) ?
+            this._geometryEngine.geodesicBuffer(
+              this.geometries,
+              this.distance,
+              this.unit,
+              this.unionResults
+            ) : this._geometryEngine.buffer(
+              this.geometries,
+              this.distance,
+              this.unit,
+              this.unionResults
+            );
           this.bufferComplete.emit(buffer);
         }
       }, 400);

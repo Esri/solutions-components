@@ -1,0 +1,23 @@
+{
+  "clearSelection": "Auswahl aufheben",
+  "delete": "Löschen",
+  "editMultiple": "Mehrere bearbeiten",
+  "exportCSV": "In CSV exportieren",
+  "filters": "Filter",
+  "more": "Mehr",
+  "selectAll": "Alle auswählen",
+  "showSelected": "Ausgewählte anzeigen",
+  "switchSelected": "Auswahl umkehren",
+  "zoom": "Zoomen",
+  "fetchingData": "Daten werden abgerufen",
+  "refresh": "Aktualisieren",
+  "enableEditing": "Die Bearbeitungsfunktion muss für den Layer aktiviert sein.",
+  "confirm": "Diese Features werden dauerhaft entfernt.",
+  "deleteFeature": "Feature löschen",
+  "deleteDisabled": "\"Löschen\" ist deaktiviert",
+  "editMultipleDisabled": "\"Mehrere bearbeiten\" ist deaktiviert",
+  "showAll": "Alle anzeigen",
+  "recordsSelected": "Gesamt: {{total}} | Auswahl: {{selected}}",
+  "cancel": "Abbrechen",
+  "moreOptions": "Weitere Tabellenoptionen"
+}

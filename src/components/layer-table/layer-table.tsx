@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { getMapLayerView, goToSelection, getMapLayerIds } from "../../utils/mapViewUtils";
-import { queryAllFeatures } from "../../utils/queryUtils";
+import { getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
+import { queryAllIds } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
-import { IExportInfos } from "../../utils/interfaces";
+import { IExportInfos, ILayerInfo, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo } from "../../utils/interfaces";
 
 @Component({
-  tag: 'layer-table',
-  styleUrl: 'layer-table.css',
+  tag: "layer-table",
+  styleUrl: "layer-table.css",
   shadow: false, // FeatureTable styles don't load in shadow dom
 })
 export class LayerTable {
@@ -43,9 +43,49 @@ export class LayerTable {
   //--------------------------------------------------------------------------
 
   /**
+   * boolean: when true the layer table will auto refresh the data
+   */
+  @Prop() enableAutoRefresh: boolean;
+
+  /**
+   * boolean: when true the export to csv button will be available
+   */
+  @Prop() enableCSV: boolean;
+
+  /**
+   * boolean: when true edits can be applied directly within the table
+   */
+  @Prop() enableInlineEdit: boolean;
+
+  /**
+   * boolean: when true the zoom button will be enabled
+   */
+  @Prop() enableZoom: boolean;
+
+  /**
+   * IMapInfo: key configuration details about the current map
+   */
+  @Prop() mapInfo: IMapInfo;
+
+  /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
+
+  /**
+   * boolean: When true only editable layers that support the update capability will be available
+   */
+  @Prop() onlyShowUpdatableLayers: boolean;
+
+  /**
+   * boolean: when true the table will be sorted by objectid in descending order by default
+   */
+  @Prop() showNewestFirst: boolean;
+
+  /**
+   * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+   */
+  @Prop() zoomAndScrollToSelected: boolean;
 
   //--------------------------------------------------------------------------
   //
@@ -54,14 +94,44 @@ export class LayerTable {
   //--------------------------------------------------------------------------
 
   /**
-   * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
+   * boolean: When true the user will be asked to confirm the delete operation
    */
-  @State() _layerView: __esri.FeatureLayerView;
+  @State() _confirmDelete = false;
 
   /**
-   * A list of indexes that are currently selected
+   * IToolSizeInfo[]: The controls that currently fit based on toolbar size
+   */
+  @State() _controlsThatFit: IToolSizeInfo[];
+
+  /**
+   * boolean: When true a loading indicator will be shown in place of the layer table
+   */
+  @State() _fetchingData = false;
+
+  /**
+   * boolean: When true a loading indicator will be shown in the delete button
+   */
+  @State() _isDeleting = false;
+
+  /**
+   * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+   */
+  @State() _layer: __esri.FeatureLayer;
+
+  /**
+   * number[]: A list of indexes that are currently selected
    */
   @State() _selectedIndexes: number[] = [];
+
+  /**
+   * boolean: When true only selected records will be shown in the table
+   */
+  @State() _showOnlySelected = false;
+
+  /**
+   * boolean: When true the user has defined a sort order that should override the default order
+   */
+  @State() _sortActive = false;
 
   /**
    * Contains the translations for this component.
@@ -81,19 +151,39 @@ export class LayerTable {
   protected FeatureTable: typeof import("esri/widgets/FeatureTable");
 
   /**
-   * HTMLEditRecordModalElement: Modal used to edit multiple records
+   * number[]: A list of all IDs for the current layer
    */
-  protected _editMultipleMpdal: HTMLEditRecordModalElement;
+  protected _allIds: number[] = [];
 
   /**
-   * string[]: List of field names to display
+   * boolean: When false alerts will be shown to indicate that the layer must have editing enabled for edit actions
    */
-  protected _fieldNames: string[] = [];
+  protected _editEnabled: boolean;
 
   /**
-   * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+   * IToolSizeInfo[]: The default list of tool size info for tools that should display outside of the dropdown
    */
-  protected _graphics: __esri.Graphic[] = [];
+  protected _defaultVisibleToolSizeInfos: IToolSizeInfo[];
+
+  /**
+   * boolean: When false alerts will be shown to indicate that the layer must have delete and editing enabled
+   */
+  protected _deleteEnabled: boolean;
+
+  /**
+   * IHandle: The map click handle
+   */
+  protected _mapClickHandle: IHandle;
+
+  /**
+   * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
+   */
+  protected reactiveUtils: typeof import("esri/core/reactiveUtils");
+
+  /**
+   * ResizeObserver: The observer that watches for toolbar size changes
+   */
+  protected _resizeObserver: ResizeObserver;
 
   /**
    * HTMLCalciteCheckboxElement: Element to force selection of all records
@@ -110,16 +200,130 @@ export class LayerTable {
    */
   protected _tableNode: HTMLDivElement;
 
+  /**
+   * bool: When true the table is being sorted
+   */
+  protected _tableSorting = false;
+
+  /**
+   * any: Timeout used to limit redundancy for toolbar resizing
+   */
+  protected _timeout: any;
+
+  /**
+   * HTMLDivElement: The toolbars containing node
+   */
+  protected _toolbar: HTMLDivElement;
+
+  /**
+   * IToolSizeInfo[]: Id and Width for the current tools
+   */
+  protected _toolbarSizeInfos: IToolSizeInfo[];
+
+  /**
+   * IToolInfo[]: Key details used for creating the tools
+   */
+  protected _toolInfos: IToolInfo[];
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Reset the toolInfos when zoom tool is enabled/disabled
+   */
+  @Watch("enableZoom")
+  enableZoomWatchHandler(): void {
+    if (this._toolInfos?.length > 0) {
+      this._initToolInfos();
+    }
+  }
+
+  /**
+   * Reset the toolInfos when export csv is enabled/disabled
+   */
+  @Watch("enableCSV")
+  enableCSVWatchHandler(): void {
+    if (this._toolInfos?.length > 0) {
+      this._initToolInfos();
+    }
+  }
+
+  /**
+   * Update the table when enableInlineEdit is enabled/disabled
+   */
+  @Watch("enableInlineEdit")
+  enableInlineEditWatchHandler(): void {
+    if (this._table) {
+      this._table.editingEnabled = this._editEnabled && this.enableInlineEdit;
+    }
+  }
+
+  /**
+   * watch for changes to the list of controls that will currently fit in the display
+   */
+  @Watch("_controlsThatFit")
+  _controlsThatFitWatchHandler(): void {
+    const ids = this._controlsThatFit ? this._controlsThatFit.reduce((prev, cur) => {
+      prev.push(cur.id)
+      return prev;
+    }, []) : [];
+    this._toolInfos = this._toolInfos.map(ti => {
+      if (ti && this._controlsThatFit) {
+        const id = this._getId(ti.icon);
+        ti.isOverflow = ids.indexOf(id) < 0;
+        return ti;
+      }
+    })
+  }
+
+  /**
+   * watch for changes in map view and get the first layer
+   */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
-    const mapLayerIds = await getMapLayerIds(this.mapView);
-    this._layerView = await getMapLayerView(this.mapView, mapLayerIds[0]);
+    if (this._mapClickHandle) {
+      this._mapClickHandle.remove();
+    }
+    if (this.mapView) {
+      this._mapClickHandle = this.reactiveUtils.on(
+        () => this.mapView,
+        "click",
+        (event) => {
+          void this._mapClicked(event);
+        }
+      );
+    }
+  }
+
+  /**
+   * watch for changes in layer view and verify if it has editing enabled
+   */
+  @Watch("_layer")
+  async _layerWatchHandler(): Promise<void> {
+    this._fetchingData = true;
+    await this._resetTable();
+    this._fetchingData = false;
+  }
+
+  /**
+   * watch for selection changes
+   */
+  @Watch("_selectedIndexes")
+  async _selectedIndexesWatchHandler(): Promise<void> {
+    this._validateEnabledActions();
+  }
+
+  /**
+   * When sortActive is false the user has not defined a sort and we should use the default sort
+   */
+  @Watch("_sortActive")
+  async _sortActiveWatchHandler(): Promise<void> {
+    if (!this._sortActive) {
+      await this._sortTable();
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -133,6 +337,71 @@ export class LayerTable {
   //  Events (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Emitted on demand when a layer is selected
+   */
+  @Event() featureSelectionChange: EventEmitter<number[]>;
+
+  /**
+   * Emitted on demand when the filters button is clicked
+   */
+  @Event({
+    eventName: 'openFilterOptions',
+    composed: true,
+    bubbles: true
+  }) openFilterOptions: EventEmitter<void>;
+
+  /**
+   * Scroll and zoom to the selected feature from the Features widget.
+   *
+   * @param evt CustomEvent the graphic for the current selection
+   */
+  @Listen("selectionChanged", { target: "window" })
+  async selectionChanged(
+    evt: CustomEvent
+  ): Promise<void> {
+    if (this.zoomAndScrollToSelected) {
+      const g: __esri.Graphic = evt.detail;
+      const oid = g.getObjectId();
+      const i: number = this._table.viewModel.getObjectIdIndex(oid);
+
+      this._table.scrollToIndex(i);
+      const layer = g.layer;
+      const layerViews = this.mapView.allLayerViews.toArray();
+      let layerView: __esri.FeatureLayerView;
+      layerViews.some(lv => {
+        if (lv.layer.title === layer.title && lv.layer.type === 'feature') {
+          layerView = lv as __esri.FeatureLayerView;
+          return true;
+        }
+      });
+
+      if (layerView) {
+        await goToSelection([oid], layerView, this.mapView, true);
+      }
+    }
+  }
+
+  /**
+   * Refresh the table when edits are completed
+   *
+   */
+  @Listen("editsComplete", { target: "window" })
+  async editsComplete(): Promise<void> {
+    await this._refresh();
+  }
+
+  /**
+   * Refresh the table when edits are completed
+   *
+   */
+  @Listen("noLayersFound", { target: "window" })
+  noLayersFound(): void {
+    this._layer = undefined;
+    this._allIds = [];
+    this._clearSelection();
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -148,30 +417,60 @@ export class LayerTable {
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
     await this._initModules();
+    this._initToolInfos();
+    this._resizeObserver = new ResizeObserver(() => this._onResize());
   }
 
   /**
    * Renders the component.
    */
   render() {
-    if (!this._layerView) {
-      return null;
-    }
+    const tableNodeClass = this._fetchingData ? "display-none" : "";
+    const loadingClass = this._fetchingData ? "" : "display-none";
+    const total = this._allIds.length.toString();
+    const selected = this._selectedIndexes.length.toString();
     return (
       <Host>
-        {this._getTableControlRow()}
-        <div class="table-div width-full">
-          <calcite-panel class="height-full width-full">
-            <div
-              ref={this.onTableNodeCreate}
-            />
-          </calcite-panel>
-        </div>
-        <edit-record-modal
-          ref={(el) => this._editMultipleMpdal = el}
-        />
+        <calcite-shell>
+          {this._getTableControlRow("header")}
+          <div class="height-full-adjusted width-full">
+            <calcite-panel class="height-full width-full">
+              <calcite-loader
+                class={loadingClass}
+                label={this._translations.fetchingData}
+                scale="l"
+              />
+              <div
+                class={tableNodeClass}
+                ref={this.onTableNodeCreate}
+              />
+            </calcite-panel>
+            <div class="bottom-left text-color height-19">
+              {
+                this._translations.recordsSelected
+                  .replace("{{total}}", total)
+                  .replace("{{selected}}", selected)
+              }
+            </div>
+          </div>
+        </calcite-shell>
+        {this._deleteMessage()}
       </Host>
     );
+  }
+
+  /**
+   * Called once after the component is loaded
+   */
+  async componentDidLoad(): Promise<void> {
+    this._resizeObserver.observe(this._toolbar)
+  }
+
+  /**
+   * Called after the component is rendered
+   */
+  componentDidRender(): void {
+    this._updateToolbar();
   }
 
   //--------------------------------------------------------------------------
@@ -188,146 +487,772 @@ export class LayerTable {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [FeatureTable] = await loadModules([
-      "esri/widgets/FeatureTable"
+    const [FeatureTable, reactiveUtils] = await loadModules([
+      "esri/widgets/FeatureTable",
+      "esri/core/reactiveUtils"
     ]);
     this.FeatureTable = FeatureTable;
+    this.reactiveUtils = reactiveUtils;
+  }
+
+  /**
+   * Update the toolbar when its size changes
+   *
+   * @returns void
+   */
+  protected _onResize(): void {
+    this._updateToolbar()
   }
 
   /**
    * Gets a row of controls that can be used for various interactions with the table
    *
+   * @param slot string optional slot to display the control within
+   *
    * @returns The dom node that contains the controls
    */
-  protected _getTableControlRow(): VNode {
-    const featuresSelected = this._selectedIndexes.length > 0;
-    const multiFeaturesSelected = this._selectedIndexes.length > 1;
+  protected _getTableControlRow(
+    slot?: string
+  ): VNode {
+    const id = "more-table-options";
     return (
-      <div class="display-flex table-border">
-        <map-layer-picker
-          mapView={this.mapView}
-          onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
-        />
-        <div>
-          <calcite-button
-            appearance='transparent'
-            color='neutral'
-            disabled={!featuresSelected}
-            iconStart='magnifying-glass'
-            onClick={() => this._zoom()}
-          >
-            {this._translations.zoom}
-          </calcite-button>
-          <calcite-button
-            appearance='transparent'
-            color='neutral'
-            disabled={!multiFeaturesSelected}
-            iconStart='pencil'
-            onClick={() => this._editMultiple()}
-          >
-            {this._translations.editMultiple}
-          </calcite-button>
-          <calcite-button
-            appearance='transparent'
-            color='neutral'
-            disabled={!featuresSelected}
-            iconStart='trash'
-            onClick={() => this._delete()}
-          >
-            {this._translations.delete}
-          </calcite-button>
-          <calcite-split-button
-            appearance="transparent"
-            color="neutral"
-            primary-text={this._translations.more}
-          >
-            <calcite-dropdown-group selection-mode="none">
-              <calcite-dropdown-item
-                iconStart='list-check-all'
-                onClick={() => this._selectAll(true)}
-              >
-                {this._translations.selectAll}
-              </calcite-dropdown-item>
-              <calcite-dropdown-item
-                iconStart='selected-items-filter'
-                onClick={() => this._showSelected()}
-              >
-                {this._translations.showSelected}
-              </calcite-dropdown-item>
-              <calcite-dropdown-item
-                iconStart='erase'
-                onClick={() => this._clearSelection()}
-              >
-                {this._translations.clearSelection}
-              </calcite-dropdown-item>
-              <calcite-dropdown-item
-                iconStart='refresh'
-                onClick={() => this._switchSelected()}
-              >
-                {this._translations.switchSelected}
-              </calcite-dropdown-item>
-              <calcite-dropdown-item
-                iconStart='export'
-                onClick={() => this._exportToCSV()}
-              >
-                {this._translations.exportCSV}
-              </calcite-dropdown-item>
-            </calcite-dropdown-group>
-          </calcite-split-button>
-        </div>
+      <div
+        class="display-flex border-bottom height-51"
+        ref={(el) => this._toolbar = el}
+        slot={slot}
+      >
+        {this._getActionBar()}
+        {this._getDropdown(id)}
+        {this._getToolTip("", "bottom", id, this._translations.moreOptions)}
       </div>
     );
+  }
+
+  /**
+   * Gets a row of controls that can be used for various interactions with the table
+   *
+   * @param slot string optional slot to display the control within
+   *
+   * @returns The dom node that contains the controls
+   */
+  protected _getActionBar(): VNode {
+    return (
+      <calcite-action-bar
+        expandDisabled={true}
+        expanded={true}
+        id={this._getId("bar")}
+        layout="horizontal"
+      >
+        <div class="border-end" id="solutions-map-layer-picker-container">
+          <map-layer-picker
+            appearance="transparent"
+            mapView={this.mapView}
+            onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
+            onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
+            placeholderIcon="layers"
+            scale="l"
+            showTables={true}
+            type="dropdown"
+          />
+        </div>
+        {this._getActions()}
+      </calcite-action-bar>
+    );
+  }
+
+  /**
+   * Get the actions that are used for various interactions with the table
+   *
+   * @returns VNode[] the action nodes
+   */
+  protected _getActions(): VNode[] {
+    const actions = this._getActionItems();
+    return actions.reduce((prev, cur) => {
+      if (cur && !cur.isOverflow) {
+        prev.push(
+          cur.isDanger ?
+            this._getDangerAction(cur.icon, cur.label, cur.func, cur.disabled) :
+            this._getAction(cur.icon, cur.label, cur.func, cur.disabled)
+        )
+      }
+      return prev;
+    }, [])
+  }
+
+  /**
+   * Update actions enabled prop based on number of selected indexes
+   *
+   * @returns void
+   */
+  _validateEnabledActions(): void {
+    const featuresSelected = this._featuresSelected();
+    const selectionDependant = [
+      "zoom-to-object",
+      "trash",
+      "erase",
+      "selected-items-filter"
+    ];
+    this._toolInfos.forEach(ti => {
+      if (ti && selectionDependant.indexOf(ti.icon) > -1) {
+        ti.disabled = !featuresSelected;
+      }
+    });
+  }
+
+  /**
+   * Get the full list of toolInfos.
+   * Order is important. They should be listed in the order they should display in the UI from
+   * Left to Right for the action bar and Top to Bottom for the dropdown.
+   *
+   * @returns void
+   */
+  protected _initToolInfos(): void {
+    const featuresSelected = this._featuresSelected();
+    const featuresEmpty = this._featuresEmpty();
+    this._toolInfos = [this.enableZoom ? {
+      icon: "zoom-to-object",
+      label: this._translations.zoom,
+      func: () => this._zoom(),
+      disabled: !featuresSelected,
+      isOverflow: false
+    } : undefined,
+    this.mapInfo?.filters ? {
+      icon: "filter",
+      label: this._translations.filters,
+      func: () => this._filter(),
+      disabled: false,
+      isOverflow: false
+    } : undefined,
+    this._deleteEnabled ? {
+      icon: "trash",
+      label: this._translations.delete,
+      func: () => this._delete(),
+      disabled: !featuresSelected,
+      isDanger: true,
+      isOverflow: false
+    } : undefined, {
+      icon: "erase",
+      label: this._translations.clearSelection,
+      func: () => this._clearSelection(),
+      disabled: !featuresSelected,
+      isOverflow: false
+    }, {
+      icon: "selected-items-filter",
+      label: this._showOnlySelected ? this._translations.showAll : this._translations.showSelected,
+      func: () => this._toggleShowSelected(),
+      disabled: !featuresSelected,
+      isOverflow: false
+    }, {
+      icon: "list-check-all",
+      func: () => this._selectAll(),
+      label: this._translations.selectAll,
+      disabled: featuresEmpty,
+      isOverflow: false
+    }, {
+      icon: "compare",
+      func: () => this._switchSelected(),
+      label: this._translations.switchSelected,
+      disabled: featuresEmpty,
+      isOverflow: false
+    }, {
+      icon: "refresh",
+      func: () => this._refresh(),
+      label: this._translations.refresh,
+      disabled: false,
+      isOverflow: false
+    },
+    this.enableCSV ? {
+      icon: "export",
+      func: () => void this._exportToCSV(),
+      label: this._translations.exportCSV,
+      disabled: featuresEmpty,
+      isOverflow: false
+    } : undefined];
+
+    this._defaultVisibleToolSizeInfos = undefined;
+  }
+
+  /**
+   * Returns true when one ore more features are selected
+   *
+   * @returns boolean
+   */
+  protected _featuresSelected(): boolean {
+    return this._selectedIndexes.length > 0;
+  }
+
+  /**
+   * Return true when we have no features
+   *
+   * @returns boolean
+   */
+  protected _featuresEmpty(): boolean {
+    return this._allIds.length === 0;
+  }
+
+  /**
+   * Add/Remove tools from the action bar and dropdown based on available size
+   *
+   * @returns void
+   */
+  protected _updateToolbar(): void {
+    if (this._timeout) {
+      clearTimeout(this._timeout)
+    }
+
+    this._timeout = setTimeout(() => {
+      clearTimeout(this._timeout)
+
+      this._setToolbarSizeInfos();
+
+      const toolbarWidth = this._toolbar.offsetWidth;
+      let controlsWidth = this._toolbarSizeInfos.reduce((prev, cur) => {
+        prev += cur.width;
+        return prev;
+      }, 0);
+
+      const skipControls = ["solutions-more", "solutions-map-layer-picker-container"];
+      if (controlsWidth > toolbarWidth) {
+        if (this._toolbarSizeInfos.length > 0) {
+          const controlsThatFit = [...this._toolbarSizeInfos].reverse().reduce((prev, cur) => {
+            if (skipControls.indexOf(cur.id) < 0) {
+              if (controlsWidth > toolbarWidth) {
+                controlsWidth -= cur.width;
+              } else {
+                prev.push(cur);
+              }
+            }
+            return prev;
+          }, []).reverse();
+
+          this._setControlsThatFit(controlsThatFit, skipControls);
+        }
+      } else {
+        if (this._defaultVisibleToolSizeInfos) {
+          const currentTools = this._toolbarSizeInfos.reduce((prev, cur) => {
+            prev.push(cur.id);
+            return prev;
+          }, []);
+
+          let forceFinish = false;
+          const controlsThatFit = [...this._defaultVisibleToolSizeInfos].reduce((prev, cur) => {
+            if (!forceFinish && skipControls.indexOf(cur.id) < 0 &&
+              (currentTools.indexOf(cur.id) > -1 || (controlsWidth + cur.width) <= toolbarWidth)
+            ) {
+              if (currentTools.indexOf(cur.id) < 0) {
+                controlsWidth += cur.width;
+              }
+              prev.push(cur);
+            } else if (skipControls.indexOf(cur.id) < 0 && (controlsWidth + cur.width) > toolbarWidth) {
+              // exit the first time we evalute this as true...otherwise it will add the next control that will fit
+              // and not preserve the overall order of controls
+              forceFinish = true;
+            }
+            return prev;
+          }, []);
+
+          this._setControlsThatFit(controlsThatFit, skipControls);
+        }
+      }
+    }, 5);
+  }
+
+  /**
+   * Validate if controls that fit the current display has changed or
+   * is different from what is currently displayed
+   *
+   * @returns void
+   */
+  _setControlsThatFit(
+    controlsThatFit: IToolSizeInfo[],
+    skipControls: string[]
+  ): void {
+    let update = JSON.stringify(controlsThatFit) !== JSON.stringify(this._controlsThatFit);
+    const actionbar = document.getElementById("solutions-action-bar");
+    actionbar.childNodes.forEach((n: any) => {
+      if (skipControls.indexOf(n.id) < 0 && !update) {
+        update = this._controlsThatFit.map(c => c.id).indexOf(n.id) < 0;
+      }
+    })
+    if (update) {
+      this._controlsThatFit = [...controlsThatFit];
+    }
+  }
+
+  /**
+   * Get the id and size for the toolbars current items
+   *
+   * @returns void
+   */
+  protected _setToolbarSizeInfos(): void {
+    let hasWidth = false;
+    this._toolbarSizeInfos = [];
+    this._toolbar.childNodes.forEach((c: any, i) => {
+      // handle the action bar
+      if (i === 0) {
+        c.childNodes.forEach((actionbarChild: any) => {
+          this._toolbarSizeInfos.push({
+            id: actionbarChild.id,
+            width: actionbarChild.offsetWidth
+          });
+          if (!hasWidth) {
+            hasWidth = actionbarChild.offsetWidth > 0;
+          }
+        });
+      } else if (!c.referenceElement) {
+        // skip tooltips
+        this._toolbarSizeInfos.push({
+          id: c.id,
+          width: c.offsetWidth
+        });
+        if (!hasWidth) {
+          hasWidth = c.offsetWidth > 0;
+        }
+      }
+    });
+    if (hasWidth && !this._defaultVisibleToolSizeInfos) {
+      this._defaultVisibleToolSizeInfos = [...this._toolbarSizeInfos];
+    }
+  }
+
+  /**
+   * Get a list of toolInfos that should display outside of the dropdown
+   *
+   * @returns IToolInfo[] the list of toolInfos that should not display in the overflow dropdown
+   */
+  protected _getActionItems(): IToolInfo[] {
+    return this._toolInfos.filter(toolInfo => toolInfo && !toolInfo.isOverflow)
+  }
+
+  /**
+   * Get a list of toolInfos that should display in the dropdown
+   *
+   * @param id string the id for the dropdown and its tooltip
+   *
+   * @returns VNode the dropdown node
+   */
+  protected _getDropdown(
+    id: string
+  ): VNode {
+    const dropdownItems = this._getDropdownItems();
+    return dropdownItems.length > 0 ? (
+      <calcite-dropdown disabled={this._layer === undefined} id="solutions-more">
+      <calcite-action
+        appearance="solid"
+        id={id}
+        label=""
+        slot="trigger"
+        text=""
+      >
+        <calcite-button
+          appearance="transparent"
+          iconEnd="chevron-down"
+          kind="neutral"
+        >
+          {this._translations.more}
+        </calcite-button>
+      </calcite-action>
+      <calcite-dropdown-group selection-mode="none">
+        {
+          dropdownItems.map(item => {
+            return (
+              <calcite-dropdown-item
+                iconStart={item.icon}
+                onClick={item.func}
+              >
+                {item.label}
+              </calcite-dropdown-item>
+            )
+          })
+        }
+      </calcite-dropdown-group>
+    </calcite-dropdown>
+    ) : undefined;
+  }
+
+  /**
+   * Get a list of toolInfos that should display in the dropdown
+   *
+   * @returns IToolInfo[] the list of toolInfos that should display in the dropdown
+   */
+  protected _getDropdownItems(): IToolInfo[] {
+    return this._toolInfos.filter(toolInfo => toolInfo && toolInfo.isOverflow)
+  }
+
+  /**
+   * Get an action and tooltip
+   *
+   * @param icon string the name of the icon to display, will also be used as the id
+   * @param label string the text to display and label the action
+   * @param func any the function to execute
+   * @param disabled boolean when true the user will not be able to interact with the action
+   *
+   * @returns VNode The node representing the DOM element that will contain the action
+   */
+  protected _getAction(
+    icon: string,
+    label: string,
+    func: any,
+    disabled: boolean
+  ): VNode {
+    const _disabled = this._layer === undefined ? true : disabled;
+    return (
+      <div class={"display-flex"} id={this._getId(icon)}>
+        <calcite-action
+          appearance="solid"
+          disabled={_disabled}
+          icon={icon}
+          id={icon}
+          label={label}
+          onClick={func}
+          text={label}
+          textEnabled={true}
+        />
+        {this._getToolTip("", "bottom", icon, label)}
+      </div>
+    )
+  }
+
+  /**
+   * Get a tooltip
+   *
+   * @param label string accessible name for the component
+   * @param placement string where the tooltip should display
+   * @param referenceElement string the element the tooltip will be associated with
+   * @param text string the text to display in the tooltip
+   *
+   * @returns VNode The tooltip node
+   */
+  protected _getToolTip(
+    label: string,
+    placement: string,
+    referenceElement: string,
+    text: string
+  ): VNode {
+    return (
+      <calcite-tooltip
+        label={label}
+        placement={placement}
+        reference-element={referenceElement}
+      >
+        <span>{text}</span>
+      </calcite-tooltip>
+    )
+  }
+
+  /**
+   * Get an id with a prefix to the user supplied value
+   *
+   * @param id the unique value for the id
+   *
+   * @returns the new id with the prefix value
+   */
+  protected _getId(
+    id: string
+  ): string {
+    return `solutions-action-${id}`;
+  }
+
+  /**
+   * Get an action with danger color icon and text
+   *
+   * @param icon string the name of the icon to display, will also be used as the id
+   * @param label string the text to display and label the action
+   * @param func any the function to execute
+   * @param disabled boolean when true the user will not be able to interact with the action
+   *
+   * @returns VNode The node representing the DOM element that will contain the action
+   */
+  private _getDangerAction(
+    icon: string,
+    label: string,
+    func: any,
+    disabled: boolean
+  ): VNode {
+    const _disabled = this._layer === undefined ? true : disabled;
+    return (
+      <div class="display-flex" id={this._getId(icon)}>
+        <calcite-action
+          appearance="solid"
+          disabled={_disabled}
+          id={icon}
+          onClick={func}
+          text=""
+        >
+          <calcite-button
+            appearance="transparent"
+            iconStart={icon}
+            kind="danger"
+          >
+            {label}
+          </calcite-button>
+        </calcite-action>
+        {this._getToolTip("", "bottom", icon, label)}
+      </div>
+    )
   }
 
   /**
    * Store a reference to the table node after it's first created
    * and initializes the FeatureTable
    *
+   * @param node HTMLDivElement The node representing the DOM element that will contain the widget.
+   *
    * @returns void
    */
-  private onTableNodeCreate = (node: HTMLDivElement) => {
+  private onTableNodeCreate = (
+    node: HTMLDivElement
+  ) => {
     this._tableNode = node;
-    this._getTable(node);
   }
 
   /**
    * Initialize the FeatureTable
    *
+   * @param node HTMLDivElement The node representing the DOM element that will contain the widget.
+   *
    * @returns void
    */
-  protected _getTable(node: HTMLDivElement): void {
-    if (this._layerView?.layer) {
-      this._table = new this.FeatureTable({
-        layer: this._layerView.layer,
-        view: this.mapView,
-        editingEnabled: true,
-        highlightOnRowSelectEnabled: true,
-        multiSortEnabled: false,
-        visibleElements: {
-          header: false,
-          menu: false
-        },
-        container: node
-      } as __esri.FeatureTableProperties);
+  protected async _getTable(
+    node: HTMLDivElement,
+    columnTemplates?: __esri.FieldColumnTemplate[]
+  ): Promise<void> {
+    if (this._layer) {
+      await this._layer.when(() => {
+        this._table = new this.FeatureTable({
+          autoRefreshEnabled: this.enableAutoRefresh,
+          layer: this._layer,
+          view: this.mapView,
+          editingEnabled: this._editEnabled && this.enableInlineEdit,
+          highlightEnabled: true,
+          multiSortEnabled: false,
+          visibleElements: {
+            header: false,
+            menu: false
+          },
+          tableTemplate: {
+            columnTemplates
+          },
+          container: node
+        } as __esri.FeatureTableProperties);
+      });
+
+      this._checkEditEnabled();
+
+      await this._table.when(() => {
+        this._table.highlightIds.on("change", () => {
+          // https://github.com/Esri/solutions-components/issues/365
+          this._selectedIndexes = this._table.highlightIds.toArray().reverse();
+          if (this._showOnlySelected) {
+            if (this._featuresSelected()) {
+              this._table.filterBySelection();
+            } else {
+              this._toggleShowSelected();
+            }
+          }
+          this.featureSelectionChange.emit(this._selectedIndexes);
+        });
+
+        this.reactiveUtils.watch(
+          () => this._table.activeSortOrders,
+          (sortOrders) => {
+            this._sortActive = this._layer ? (sortOrders.length > 0 && sortOrders[0]?.direction === "asc" || sortOrders[0]?.direction === "desc") ||
+              sortOrders[0]?.direction === null && sortOrders[0]?.fieldName === this._layer.objectIdField : false;
+          });
+      });
     }
+  }
+
+  /**
+   * Reset basic table props
+   *
+   * @returns void
+   */
+  protected async _resetTable(): Promise<void> {
+    this._clearSelection();
+    this._allIds = [];
+    this.featureSelectionChange.emit(this._selectedIndexes);
+
+    const columnTemplates = this._getColumnTemplates(this._layer.id, this._layer?.popupTemplate?.fieldInfos);
+    this._allIds = await queryAllIds(this._layer);
+
+    if (!this._table) {
+      await this._getTable(this._tableNode, columnTemplates);
+    } else if (columnTemplates) {
+      this._table.tableTemplate.columnTemplates = columnTemplates;
+    }
+
+    this._table.layer = this._layer;
+    this._table.view = this.mapView;
+    this._checkEditEnabled();
+    this._table.editingEnabled = this._editEnabled && this.enableInlineEdit;
+    this._initToolInfos();
+
+    await this._table.when(() => {
+      this._table.highlightIds.removeAll();
+      this._table.clearSelectionFilter();
+    });
+
+    this._showOnlySelected = false;
+    this._sortActive = false;
+    await this._sortTable();
+  }
+
+  /**
+   * Verify edit capabilities of the layer
+   *
+   * @returns void
+   */
+  protected _checkEditEnabled(): void {
+    this._editEnabled = this._layer.editingEnabled && this._layer.capabilities.operations.supportsUpdate;
+    this._deleteEnabled = this._layer.editingEnabled && this._layer.capabilities.operations.supportsDelete;
+  }
+
+  /**
+   * Sort the objectid field in descending order
+   *
+   * @returns void
+   */
+  protected async _sortTable(): Promise<void> {
+    if (this._table && this._layer && !this._sortActive) {
+      if (!this._tableSorting && this.showNewestFirst) {
+        this._tableSorting = true;
+        await this._table.when();
+        await this._layer.when(() => {
+          this._table.sortColumn(this._layer.objectIdField, "desc");
+          this._tableSorting = false;
+        });
+      }
+    }
+  }
+
+  /**
+   * Show delete confirmation message
+   *
+   * @returns node to confirm or deny the delete operation
+   */
+  protected _deleteMessage(): VNode {
+    return (
+      <calcite-modal
+        aria-labelledby="modal-title"
+        kind="danger"
+        onCalciteModalClose={() => this._deleteClosed()}
+        open={this._confirmDelete}
+      >
+        <div
+          class="display-flex align-center"
+          id="modal-title"
+          slot="header"
+        >
+          {this._translations.deleteFeature}
+        </div>
+        <div slot="content">
+          {this._translations.confirm}
+        </div>
+        <calcite-button
+          appearance="outline"
+          kind="danger"
+          onClick={() => this._deleteClosed()}
+          slot="secondary"
+          width="full"
+        >
+          {this._translations.cancel}
+        </calcite-button>
+        <calcite-button
+          kind="danger"
+          loading={this._isDeleting}
+          onClick={() => void this._deleteFeatures()}
+          slot="primary" width="full">
+          {this._translations.delete}
+        </calcite-button>
+      </calcite-modal>
+    );
+  }
+
+  /**
+   * Delete the currently selected features
+   *
+   * @returns void
+   */
+  protected async _deleteFeatures(): Promise<void> {
+    this._isDeleting = true;
+    const deleteFeatures = this._table.highlightIds.toArray().map((objectId) => {
+      return {objectId};
+    })
+    await this._layer.applyEdits({
+      deleteFeatures
+    });
+    await this._table.refresh();
+    this._allIds = await queryAllIds(this._layer);
+    this._isDeleting = false;
+    this._deleteClosed();
+  }
+
+  /**
+   * Handle map click events to keep table and map click selection in sync
+   *
+   * @param evt IMapClick map click event details
+   *
+   * @returns void
+   */
+  protected async _mapClicked(
+    evt: IMapClick
+  ): Promise<void> {
+    const opts = {
+      include: this._layer
+    };
+    const hitTestResult = await this.mapView.hitTest(evt.screenPoint, opts);
+    if (hitTestResult.results.length > 0) {
+      hitTestResult.results.forEach((result: any) => {
+        this._clearSelection();
+        const id = (result.graphic as __esri.Graphic).getObjectId();
+        const index = this._table.highlightIds.indexOf(id);
+        if (index > -1) {
+          this._table.highlightIds.removeAt(index);
+        } else {
+          this._table.highlightIds.add(id);
+        }
+      });
+      if (this._showOnlySelected) {
+        this._table.filterBySelection();
+      }
+    }
+  }
+
+  /**
+   * Set the alertOpen member to false when the alert is closed
+   *
+   * @returns void
+   */
+  protected _deleteClosed(): void {
+    this._confirmDelete = false;
   }
 
   /**
    * Select or deselect all rows
    *
-   * @param checked When true all rows will be selected
+   * @returns void
+   */
+  protected _selectAll(): void {
+    const ids = this._allIds;
+    this._table.highlightIds.removeAll();
+    this._table.highlightIds.addMany(ids);
+    this._selectedIndexes = ids;
+  }
+
+  /**
+   * Toggle the show only selected flag
+   *  When showOnly is true only the selected features will be shown in the table
    *
    * @returns void
    */
-  protected _selectAll(
-    checked: boolean
-  ): void {
-    this._selectedIndexes = checked ? this._graphics.map((_g, i) => i) : [];
-  }
-
-  // need to discuss with team
-  protected _showSelected(): void {
-    console.log("_showSelected");
+  protected _toggleShowSelected(): void {
+    this._showOnlySelected = !this._showOnlySelected;
+    if (this._showOnlySelected) {
+      this._table.filterBySelection();
+    } else {
+      this._table.clearSelectionFilter();
+    }
   }
 
   /**
@@ -337,6 +1262,16 @@ export class LayerTable {
    */
   protected _clearSelection(): void {
     this._selectedIndexes = [];
+    this._table?.highlightIds.removeAll();
+  }
+
+  /**
+   * Show the filter options
+   *
+   * @returns void
+   */
+  protected _filter(): void {
+    this.openFilterOptions.emit();
   }
 
   /**
@@ -346,12 +1281,15 @@ export class LayerTable {
    */
   protected _switchSelected(): void {
     const currentIndexes = [...this._selectedIndexes];
-    this._selectedIndexes = this._graphics.reduce((prev, _cur, i) => {
-      if (currentIndexes.indexOf(i) < 0) {
-        prev.push(i);
+    this._table.highlightIds.removeAll();
+    const ids = this._allIds.reduce((prev, _cur) => {
+      if (currentIndexes.indexOf(_cur) < 0) {
+        prev.push(_cur);
       }
       return prev;
-    }, []);
+    }, []).sort((a,b) => a - b);
+    this._table.highlightIds.addMany(ids);
+    this._selectedIndexes = ids;
   }
 
   /**
@@ -359,18 +1297,31 @@ export class LayerTable {
    *
    * @returns a promise that will resolve when the operation is complete
    */
-  protected _exportToCSV(): void {
+  protected async _exportToCSV(): Promise<void> {
     const exportInfos: IExportInfos = {};
-    exportInfos[this._layerView.layer.id] = {
-      selectionSetNames: [],
-      ids: this._getSelectedIds(),
-      layerView: this._layerView
+    const ids = this._table.highlightIds.toArray();
+    exportInfos[this._layer.id] = {
+      selectionSetNames: [this._layer.title],
+      ids,
+      layer: this._layer
     }
     void downloadUtils.downloadCSV(
+      null,//???
       exportInfos,
       false, // formatUsingLayerPopup
+      false, // removeDuplicates
       true, // addColumnTitle
     );
+  }
+
+  /**
+   * Refreshes the table and maintains the curent scroll position
+   *
+   * @returns void
+   */
+  protected async _refresh(): Promise<void> {
+    await this._table.refresh();
+    this.featureSelectionChange.emit(this._selectedIndexes);
   }
 
   /**
@@ -379,86 +1330,77 @@ export class LayerTable {
    * @returns a promise that will resolve when the operation is complete
    */
   protected _zoom(): void {
-    const ids = this._getSelectedIds();
-    void goToSelection(ids, this._layerView, this.mapView, true);
+    this._table.zoomToSelection();
   }
 
   /**
-   * Open the edit multiple modal
-   *
-   * @returns void
-   */
-  protected _editMultiple(): void {
-    this._editMultipleMpdal.open = true;
-  }
-
-  /**
-   * Delete all selected records
+   * Delete all selected records or shows an alert if the layer does not have editing enabled
    *
    * @returns a promise that will resolve when the operation is complete
    */
   protected _delete(): void {
-    console.log("delete")
-  }
-
-  /**
-   * Get the graphics for all selected indexes
-   *
-   * @param indexes the indexes for the graphics to fetch
-   *
-   * @returns An array of selected graphics
-   */
-  protected _getGraphics(
-    indexes: number[]
-  ): __esri.Graphic[] {
-    return this._graphics.filter((_g, i) => indexes.indexOf(i) > -1);
-  }
-
-  /**
-   * Gets the object ids for all selected rows
-   *
-   * @returns An array of object ids
-   */
-  protected _getSelectedIds(): number[] {
-    const graphics = this._getGraphics(this._selectedIndexes);
-    return graphics.map(g => g.getObjectId());
-  }
-
-  /**
-   * Update the selected indexes based on the current row
-   *
-   * @param index the index of the selected row
-   *
-   * @returns void
-   */
-  protected _rowSelected(
-    index: number
-  ): void {
-    const indexOfSelected = this._selectedIndexes.indexOf(index);
-    if (indexOfSelected > -1) {
-      this._selectedIndexes.splice(indexOfSelected, 1);
-      this._selectedIndexes = [...this._selectedIndexes];
-    } else {
-      this._selectedIndexes = [...this._selectedIndexes, index];
-    }
+    this._confirmDelete = true;
   }
 
   /**
    * Handles layer selection change to show new table
+   *
+   * @param evt CustomEvent the id for the current layer
    *
    * @returns a promise that will resolve when the operation is complete
    */
   protected async _layerSelectionChanged(
     evt: CustomEvent
   ): Promise<void> {
-    const layerName: string = evt.detail[0];
-    this._layerView = await getMapLayerView(this.mapView, layerName);
-    // TODO rethink this...when we use later we need to be able to lookup with name
-    this._fieldNames = this._layerView.layer.fields.map(f => f.alias || f.name);
-    this._graphics = await queryAllFeatures(0, this._layerView.layer, []);
-    this._selectedIndexes = [];
-    this._table.layer = this._layerView.layer;
-    this._table.render();
+    const id: string = evt.detail[0];
+    if (id !== this._layer?.id || this._featuresEmpty()) {
+      this._fetchingData = true;
+      const layer = await getLayerOrTable(this.mapView, id);
+      await layer.when(() => {
+        this._layer = layer;
+      });
+    }
+    this._fetchingData = false;
+  }
+
+  /**
+   * Get any columnt templates for the current map
+   *
+   * @param id item ID of the current map
+   *
+   * @returns a list of column templates if they exist
+   */
+  protected _getColumnTemplates(
+    id: string,
+    fieldInfos: __esri.FieldInfo[]
+  ): __esri.FieldColumnTemplate[] {
+    let layerInfo: ILayerInfo;
+    this.mapInfo.layerInfos?.some(li => {
+      if (li.id === id) {
+        layerInfo = li;
+        return true;
+      }
+    });
+
+    let columnTemplates = layerInfo?.columnTemplates;
+    if (fieldInfos) {
+      columnTemplates = columnTemplates ? columnTemplates.map(columnTemplate => {
+        fieldInfos.some(fieldInfo => {
+          if (fieldInfo.fieldName === columnTemplate.fieldName) {
+            columnTemplate.label = fieldInfo.label;
+            return true;
+          }
+        });
+        return columnTemplate;
+      }) : fieldInfos.map(fieldInfo => {
+        return {
+          type: "field",
+          fieldName: fieldInfo.fieldName,
+          label: fieldInfo.label
+        } as __esri.FieldColumnTemplate;
+      })
+    }
+    return columnTemplates;
   }
 
   /**

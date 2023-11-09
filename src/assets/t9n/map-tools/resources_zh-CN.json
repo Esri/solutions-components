@@ -1,0 +1,10 @@
+{
+  "legend": "图例",
+  "search": "搜索",
+  "expand": "展开",
+  "basemap": "底图",
+  "collapse": "折叠",
+  "enterFullscreen": "进入全屏模式",
+  "exitFullscreen": "退出全屏模式",
+  "floorFilter": "楼层过滤器"
+}

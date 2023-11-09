@@ -16,7 +16,7 @@
 
 import { Component, Element, Event, EventEmitter, Host, h, Method, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import { highlightFeatures, getMapLayerView, goToSelection } from "../../utils/mapViewUtils";
+import { highlightFeatures, getFeatureLayerView, goToSelection } from "../../utils/mapViewUtils";
 import { getQueryGeoms, queryFeaturesByGeometry, queryObjectIds } from "../../utils/queryUtils";
 import { DistanceUnit, EWorkflowType, ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration, ISelectionSet } from "../../utils/interfaces";
 import state from "../../utils/publicNotificationStore";
@@ -89,7 +89,7 @@ export class MapSelectTools {
   @Prop() layerViews: __esri.FeatureLayerView[] = [];
 
   /**
-   * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
 
@@ -365,7 +365,7 @@ export class MapSelectTools {
   async getSelection(): Promise<ISelectionSet> {
     // Allow any non whitespace
     if (!/\S+/gm.test(this._selectionLabel)) {
-      this._updateLabel();
+      await this._updateLabel();
     }
     return {
       id: this.isUpdate ? this.selectionSet.id : Date.now(),
@@ -411,18 +411,18 @@ export class MapSelectTools {
    * Handle changes to the buffer distance value
    */
   @Listen("distanceChanged", { target: "window" })
-  distanceChanged(event: CustomEvent): void {
-    this._distanceChanged(event.detail);
+  async distanceChanged(event: CustomEvent): Promise<void> {
+    await this._distanceChanged(event.detail);
   }
 
   /**
    * Handle changes to the buffer unit
    */
   @Listen("unitChanged", { target: "window" })
-  unitChanged(event: CustomEvent): void {
+  async unitChanged(event: CustomEvent): Promise<void> {
     if (event.detail.newValue !== event.detail.oldValue) {
       this._unit = event.detail.newValue;
-      this._updateLabel();
+      await this._updateLabel();
     }
   }
 
@@ -444,7 +444,12 @@ export class MapSelectTools {
    * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
    */
   async componentDidLoad(): Promise<void> {
-    return this._init();
+    await this._init();
+    await this._searchWidget.when(() => {
+      this._searchWidget.allPlaceholder = this.searchConfiguration?.allPlaceholder &&
+        this.searchConfiguration.allPlaceholder.toLowerCase() !== "find address or place" ?
+        this.searchConfiguration.allPlaceholder : this._translations.placeholder;
+    })
   }
 
   /**
@@ -568,8 +573,8 @@ export class MapSelectTools {
             enabledLayerIds={this.selectionLayerIds}
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => { void this._layerSelectionChange(evt) }}
-            selectedLayerIds={this.layerViews.map(l => l.layer.id)}
-            selectionMode={"single"}
+            selectedIds={this.layerViews.map(l => l.layer.id)}
+            showTables={false}
           />
         </div>
       </div>
@@ -644,8 +649,8 @@ export class MapSelectTools {
             enabledLayerIds={this.enabledLayerIds}
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => this._inputLayerSelectionChange(evt)}
-            selectedLayerIds={this.selectLayerView ? [this.selectLayerView.layer.id] : this.selectionSet ? [this.selectionSet.layerView.layer.id] : []}
-            selectionMode={"single"}
+            selectedIds={this.selectLayerView ? [this.selectLayerView.layer.id] : this.selectionSet ? [this.selectionSet.layerView.layer.id] : []}
+            showTables={false}
           />
         </calcite-label>
       </div>
@@ -753,6 +758,7 @@ export class MapSelectTools {
 
       this._searchWidget = new this.Search(searchOptions);
       this._searchWidget.popupEnabled = false;
+      this._searchWidget.resultGraphicEnabled = false;
 
       this._searchWidget.on("search-clear", () => {
         const clearLabel = this._searchClearLabel();
@@ -765,7 +771,7 @@ export class MapSelectTools {
           const useOIDs = searchResults.source?.layer?.id && searchResults.source.layer.id === this.selectLayerView.layer.id;
           const oids = useOIDs ? [searchResults.result.feature.getObjectId()] : undefined;
           this._workflowType = EWorkflowType.SEARCH;
-          this._updateLabel();
+          void this._updateLabel();
 
           const graphics = [searchResults.result.feature];
           this._updateSelection(
@@ -774,7 +780,7 @@ export class MapSelectTools {
             oids
           );
           this._drawTools.graphics = graphics;
-          this._drawTools.updateGraphics();
+          this._searchWidget.resultGraphic.visible = false;
         } else {
           const clearLabel = this._searchClearLabel();
           void this._clearResults(false, clearLabel);
@@ -896,7 +902,7 @@ export class MapSelectTools {
         this._drawTools.updateGraphics();
       }
 
-      this._updateLabel();
+      await this._updateLabel();
       this._clearSearchWidget();
       if (this._useLayerFeaturesEnabled && !forceUpdate) {
         // Will only ever be a single graphic
@@ -1034,7 +1040,7 @@ export class MapSelectTools {
 
     // mock this b/c the tools can store a value that is different than what is shown in the map
     // this occurs when a distance is set but then buffer is disabled
-    this._distanceChanged({
+    await this._distanceChanged({
       oldValue,
       newValue
     });
@@ -1131,7 +1137,7 @@ export class MapSelectTools {
    *
    * @protected
    */
-  protected _updateLabel(): void {
+  protected async _updateLabel(): Promise<void> {
     const hasSketch = this._selectionLabel.indexOf(this._translations.sketch) > -1;
     const hasSelect = this._selectionLabel.indexOf(this._translations.select) > -1;
     const hasSearch = this._selectionLabel.indexOf(this._searchResult?.name) > -1;
@@ -1140,7 +1146,8 @@ export class MapSelectTools {
       this._workflowType === EWorkflowType.SELECT ?
         this._translations.select : this._translations.sketch;
 
-    const unit = !this._unit ? this._bufferTools.unit : this._unit;
+    const _unit = !this._unit ? this._bufferTools.unit : this._unit;
+    const unit = await this._bufferTools.getTranslatedUnit(_unit)
     const distance = isNaN(this._distance) ? this._bufferTools.distance : this._distance;
 
     this._selectionLabel = hasSketch || hasSelect || hasSearch || !this._selectionLabel ?
@@ -1160,7 +1167,7 @@ export class MapSelectTools {
   ): Promise<void> {
     if (Array.isArray(evt.detail) && evt.detail.length > 0) {
       const layerPromises = evt.detail.map(id => {
-        return getMapLayerView(this.mapView, id)
+        return getFeatureLayerView(this.mapView, id)
       });
 
       return Promise.all(layerPromises).then((layerViews) => {
@@ -1192,8 +1199,8 @@ export class MapSelectTools {
   ): Promise<void> {
     const id: string = evt?.detail?.length > 0 ? evt.detail[0] : "";
     if (!this.selectLayerView || id !== this.selectLayerView.layer.id) {
-      this.selectLayerView = await getMapLayerView(this.mapView, id);
-      this._updateLabel();
+      this.selectLayerView = await getFeatureLayerView(this.mapView, id);
+      await this._updateLabel();
 
       this._bufferGeometry ? await this._selectFeatures([this._bufferGeometry]) :
         await this._highlightWithOIDsOrGeoms();
@@ -1203,10 +1210,10 @@ export class MapSelectTools {
   /**
    * Handle changes to the buffer distance value
    */
-  protected _distanceChanged(detail: any): void {
+  protected async _distanceChanged(detail: any): Promise<void> {
     if (detail.newValue !== detail.oldValue) {
       this._distance = detail.newValue;
-      this._updateLabel();
+      await this._updateLabel();
     }
   }
 

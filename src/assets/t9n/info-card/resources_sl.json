@@ -1,0 +1,9 @@
+{
+  "fetchingData": "Pridobivanje podatkov",
+  "edit": "Uredi",
+  "enableEditing": "Zmožnost posodabljanja mora biti omogočena na sloju.",
+  "editDisabled": "Urejanje onemogočenega",
+  "next": "Naprej",
+  "back": "Nazaj",
+  "indexOfTotal": "{{index}} od {{total}}"
+}

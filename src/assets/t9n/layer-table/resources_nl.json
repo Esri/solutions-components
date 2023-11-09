@@ -1,0 +1,23 @@
+{
+  "clearSelection": "Selectie wissen",
+  "delete": "Verwijderen",
+  "editMultiple": "Meerdere bewerken",
+  "exportCSV": "Exporteren naar CSV",
+  "filters": "Filters",
+  "more": "Meer",
+  "selectAll": "Alles selecteren",
+  "showSelected": "Selectie weergeven",
+  "switchSelected": "Selectie wisselen",
+  "zoom": "Zoomen",
+  "fetchingData": "Bezig met ophalen gegevens",
+  "refresh": "Vernieuwen",
+  "enableEditing": "Bewerken moet zijn ingeschakeld voor de laag.",
+  "confirm": "Deze objecten worden permanent verwijderd.",
+  "deleteFeature": "Object verwijderen",
+  "deleteDisabled": "Wissen is uitgeschakeld",
+  "editMultipleDisabled": "Meerdere bewerken is uitgeschakeld",
+  "showAll": "Alles weergeven",
+  "recordsSelected": "Totaal: {{total}} | Selectie: {{selected}}",
+  "cancel": "Annuleren",
+  "moreOptions": "Meer tabelopties"
+}

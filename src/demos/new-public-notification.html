@@ -55,30 +55,46 @@
 
     <link
       rel="stylesheet"
-      href="https://js.arcgis.com/4.27/esri/themes/light/main.css"
+      href="https://jsdev.arcgis.com/4.28/esri/themes/light/main.css"
     />
     <!-- <link
       rel="stylesheet"
-      href="https://js.arcgis.com/4.27/esri/themes/dark/main.css"
+      href="https://jsdev.arcgis.com/4.28/esri/themes/dark/main.css"
     /> -->
     <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
     <link rel="stylesheet" href="../solutions-components.css" type="text/css">
 
-    <script src="https://js.arcgis.com/4.27/"></script>
+    <script src="https://jsdev.arcgis.com/4.28/"></script>
     <script type="module" src="../solutions-components.esm.js"></script>
 
     <script>
-      require(["esri/WebMap", "esri/views/MapView", "esri/widgets/Legend"], (
+      require(["esri/WebMap", "esri/views/MapView", "esri/widgets/Legend", "esri/config"], (
         WebMap,
         MapView,
-        Legend
+        Legend,
+        esriConfig
       ) => {
+        let itemId;
+        var vars = window.location.search.substring(1).split('&');
+        vars.forEach((param) => {
+          let vals = param.split('=');
+          const v = vals[1];
+          switch (vals[0]) {
+            case "id":
+              itemId = v;
+              break;
+            default:
+              break;
+          }
+        });
+
+        //esriConfig.portalUrl = "https://solutions.mapsdevext.arcgis.com";
         var webMap = new WebMap({
           portalItem: {
             // solutions
-            id: "3715f4899bea4b2a948347c5c2357e58"
+            id: itemId ? itemId : "3715f4899bea4b2a948347c5c2357e58"
             // InstantApps
-            //id: "863e4f6f2a7840db896cc1b1606d552d"
+            //id: itemId ? itemId : "863e4f6f2a7840db896cc1b1606d552d"
           }
         });
 

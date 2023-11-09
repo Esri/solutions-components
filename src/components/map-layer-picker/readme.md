@@ -7,19 +7,26 @@
 
 ## Properties
 
-| Property           | Attribute        | Description                                                                                                           | Type                  | Default     |
-| ------------------ | ---------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------- | ----------- |
-| `enabledLayerIds`  | --               | string[]: Optional list of enabled layer ids  If empty all layers will be available                                   | `string[]`            | `[]`        |
-| `mapView`          | --               | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                | `MapView`             | `undefined` |
-| `selectedLayerIds` | --               | string[]: list of layer ids that have been selected by the end user                                                   | `string[]`            | `[]`        |
-| `selectionMode`    | `selection-mode` | SelectionMode: "single" \| "multi"  Should the component support selection against a single layer or multiple layers. | `"multi" \| "single"` | `"single"`  |
+| Property                  | Attribute                    | Description                                                                                            | Type                                   | Default         |
+| ------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------------- | --------------- |
+| `appearance`              | `appearance`                 | "transparent" \| "solid": controls the button appearance when using the "dropdown" type                | `"solid" \| "transparent"`             | `"transparent"` |
+| `enabledLayerIds`         | --                           | string[]: Optional list of enabled layer ids  If empty all layers will be available                    | `string[]`                             | `[]`            |
+| `enabledTableIds`         | --                           | string[]: Optional list of enabled table ids  If empty all tables will be available                    | `string[]`                             | `[]`            |
+| `mapView`                 | --                           | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html | `MapView`                              | `undefined`     |
+| `onlyShowUpdatableLayers` | `only-show-updatable-layers` | boolean: When true only editable layers that support the update capability will be available           | `boolean`                              | `undefined`     |
+| `placeholderIcon`         | `placeholder-icon`           | string: optional placeholder icon used with "combobox" type                                            | `string`                               | `""`            |
+| `scale`                   | `scale`                      | "s" \| "m" \| "l": scale to render the component                                                       | `"l" \| "m" \| "s"`                    | `"m"`           |
+| `selectedIds`             | --                           | string[]: list of layer ids that have been selected by the end user                                    | `string[]`                             | `[]`            |
+| `showTables`              | `show-tables`                | boolean: when true standalone tables will also be available                                            | `boolean`                              | `undefined`     |
+| `type`                    | `type`                       | "select" \| "combobox" \| "dropdown": type of component to leverage                                    | `"combobox" \| "dropdown" \| "select"` | `"select"`      |
 
 
 ## Events
 
-| Event                  | Description                                | Type                    |
-| ---------------------- | ------------------------------------------ | ----------------------- |
-| `layerSelectionChange` | Emitted on demand when a layer is selected | `CustomEvent<string[]>` |
+| Event                  | Description                                      | Type                    |
+| ---------------------- | ------------------------------------------------ | ----------------------- |
+| `layerSelectionChange` | Emitted on demand when a layer is selected       | `CustomEvent<string[]>` |
+| `noLayersFound`        | Emitted on demand when no valid layers are found | `CustomEvent<void>`     |
 
 
 ## Dependencies
@@ -32,23 +39,43 @@
 
 ### Depends on
 
+- calcite-tooltip
+- calcite-notice
 - calcite-select
 - calcite-combobox
+- calcite-dropdown
+- calcite-action
+- calcite-button
+- calcite-dropdown-group
 - calcite-combobox-item
 - calcite-option
+- calcite-dropdown-item
 
 ### Graph
 ```mermaid
 graph TD;
+  map-layer-picker --> calcite-tooltip
+  map-layer-picker --> calcite-notice
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
+  map-layer-picker --> calcite-dropdown
+  map-layer-picker --> calcite-action
+  map-layer-picker --> calcite-button
+  map-layer-picker --> calcite-dropdown-group
   map-layer-picker --> calcite-combobox-item
   map-layer-picker --> calcite-option
+  map-layer-picker --> calcite-dropdown-item
+  calcite-notice --> calcite-icon
   calcite-select --> calcite-icon
   calcite-combobox --> calcite-chip
   calcite-combobox --> calcite-icon
   calcite-chip --> calcite-icon
+  calcite-action --> calcite-loader
+  calcite-action --> calcite-icon
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   calcite-combobox-item --> calcite-icon
+  calcite-dropdown-item --> calcite-icon
   layer-table --> map-layer-picker
   map-select-tools --> map-layer-picker
   refine-selection --> map-layer-picker

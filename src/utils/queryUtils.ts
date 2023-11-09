@@ -49,6 +49,46 @@ export async function queryAllFeatures(
 }
 
 /**
+ * Query the layer for all IDs
+ *
+ * @param layer the layer to retrieve features from
+ *
+ * @returns Promise with the featureSet from the layer that match the provided ids
+ */
+export async function queryAllIds(
+  layer: __esri.FeatureLayer
+): Promise<number[]> {
+  const query = layer.createQuery();
+  query.where = layer.definitionExpression || "1=1";
+  return await layer.queryObjectIds(query);
+}
+
+/**
+ * Query the feature for any image attachments
+ *
+ * @param layer the layer to retrieve attachments from
+ *
+ * @returns Promise with any attachments from the feature
+ */
+export async function queryAttachments(
+  layer: __esri.FeatureLayer,
+  objectIds: number[]
+): Promise<any> {
+  return await layer.queryAttachments({
+    attachmentTypes: [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/jpg",
+      "image/tif",
+      "image/tiff",
+      "image/bmp"
+    ],
+    objectIds
+  });
+}
+
+/**
  * Query the layer for OIDs based on any user drawn geometries or buffers
  *
  * @param geometries Array of geometries used for the selection of ids from the layer
@@ -77,16 +117,41 @@ export async function queryObjectIds(
  *
  * @param ids array of ObjectIDs to be used to query for features in a layer
  * @param layer the layer to retrieve features from
+ * @param graphics the result graphics array
  *
  * @returns Promise with the featureSet from the layer that match the provided ids
  */
- export async function queryFeaturesByID(
+export async function queryFeaturesByID(
   ids: number[],
-  layer: __esri.FeatureLayer
-): Promise<__esri.FeatureSet> {
+  layer: __esri.FeatureLayer,
+  graphics: __esri.Graphic[],
+  returnGeometry: boolean,
+  outSpatialReference?: __esri.SpatialReference
+): Promise<__esri.Graphic[]> {
+  const num = layer.capabilities?.query.maxRecordCount;
+  const start = 0;
+
   const q = layer.createQuery();
-  q.objectIds = ids;
-  return layer.queryFeatures(q);
+  q.start = start;
+  q.returnGeometry = returnGeometry;
+  q.objectIds = ids.slice(start, num);
+  if (num) {
+    q.num = num;
+  }
+  if (outSpatialReference) {
+    q.outSpatialReference = outSpatialReference;
+  }
+
+  const result = await layer.queryFeatures(q);
+
+  graphics = graphics.concat(
+    result.features
+  );
+
+  const remainingIds = ids.slice(num, ids.length);
+  return remainingIds.length > 0 ?
+    queryFeaturesByID(remainingIds, layer, graphics, returnGeometry, outSpatialReference) :
+    Promise.resolve(graphics);
 }
 
 /**

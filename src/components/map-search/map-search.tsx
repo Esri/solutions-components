@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Method, Prop, State, VNode } from "@stencil/core";
+import { Component, Host, h, Prop, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import { ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration, ISearchResult } from "../../utils/interfaces";
-import MapSearch_T9n from "../../assets/t9n/map-search/resources.json";
-import { getLocaleComponentStrings } from "../../utils/locale";
+import { ILayerSourceConfigItem, ILocatorSourceConfigItem, ISearchConfiguration } from "../../utils/interfaces";
 
 @Component({
-  tag: "map-search",
-  styleUrl: "map-search.css",
-  shadow: false,
+  tag: 'map-search',
+  styleUrl: 'map-search.css',
+  shadow: true,
 })
 export class MapSearch {
   //--------------------------------------------------------------------------
@@ -31,7 +29,6 @@ export class MapSearch {
   //  Host element access
   //
   //--------------------------------------------------------------------------
-  @Element() el: HTMLElement;
 
   //--------------------------------------------------------------------------
   //
@@ -40,32 +37,41 @@ export class MapSearch {
   //--------------------------------------------------------------------------
 
   /**
-   * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
 
   /**
+   * boolean: When true the selected feature popup will be shown when serach result is found
+   */
+  @Prop() popupEnabled = false;
+
+  /**
+   * boolean: When true a graphic will be added for the search result
+   */
+  @Prop() resultGraphicEnabled = false;
+
+  /**
    * ISearchConfiguration: Configuration details for the Search widget
    */
-  @Prop({mutable: true}) searchConfiguration: ISearchConfiguration;
+  @Prop() searchConfiguration: ISearchConfiguration;
+
+  /**
+   * string: Text entered by the end user.
+   * Used to search against the locator.
+   */
+  @Prop() searchTerm: string;
+
+  /**
+   * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
+   */
+  @Prop() searchWidget: __esri.widgetsSearch;
 
   //--------------------------------------------------------------------------
   //
   //  State (internal)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * string: Text entered by the end user.
-   * Used to search against the locator.
-   */
-  @State() _searchTerm: string;
-
-  /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
-   */
-  @State() protected _translations: typeof MapSearch_T9n;
 
   //--------------------------------------------------------------------------
   //
@@ -89,11 +95,6 @@ export class MapSearch {
   protected _searchElement: HTMLElement;
 
   /**
-   * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
-   */
-  protected _searchWidget: __esri.widgetsSearch;
-
-  /**
    * An array of objects representing the results of search
    */
   protected _searchResult: any;
@@ -104,33 +105,39 @@ export class MapSearch {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Called each time the searchConfiguration prop is changed.
+   *
+   * @returns Promise when complete
+   */
+  @Watch("searchConfiguration")
+  async watchSearchConfigurationHandler(): Promise<void> {
+    this._initSearchWidget();
+  }
+
+  /**
+   * Called each time the mapView prop is changed.
+   *
+   * @returns Promise when complete
+   */
+  @Watch("mapView")
+  async mapViewWatchHandler(): Promise<void> {
+    await this.mapView.when(() => {
+      this._initSearchWidget();
+    });
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
   //
   //--------------------------------------------------------------------------
 
-  /**
-   * Clears the state of the search widget
-   *
-   * @returns Promise that resolves when the operation is complete
-   */
-  @Method()
-  async clear(): Promise<void> {
-    this._searchWidget.clear();
-  }
-
   //--------------------------------------------------------------------------
   //
   //  Events (public)
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Emitted on demand when the status of the search widget changes
-   *
-   */
-  @Event() searchChange: EventEmitter<ISearchResult>;
 
   //--------------------------------------------------------------------------
   //
@@ -140,25 +147,22 @@ export class MapSearch {
 
   /**
    * StencilJS: Called once just after the component is first connected to the DOM.
-   *
-   * @returns Promise when complete
    */
   async componentWillLoad(): Promise<void> {
-    await this._getTranslations();
     await this._initModules();
   }
 
   /**
    * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
    */
-  componentDidLoad(): void {
-    this._init();
+  async componentDidLoad(): Promise<void> {
+    return this._initSearchWidget();
   }
 
   /**
    * Renders the component.
    */
-  render(): VNode {
+  render() {
     return (
       <Host>
         <div class="search-widget" ref={(el) => { this._searchElement = el }} />
@@ -191,45 +195,30 @@ export class MapSearch {
   /**
    * Initialize the search widget
    *
-   * @returns Promise resolving when function is done
-   */
-  protected _init(): void {
-    this._initSearchWidget();
-  }
-
-  /**
-   * Initialize the search widget and listen to key events
-   *
    * @protected
    */
   protected _initSearchWidget(): void {
-    if (this.mapView && this._searchElement) {
-      const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this.mapView);
+    if (this.mapView && this._searchElement && !this.searchWidget) {
 
-      const searchOptions: __esri.widgetsSearchProperties = {
+      let searchOptions: __esri.widgetsSearchProperties = {
         view: this.mapView,
         container: this._searchElement,
-        searchTerm: this._searchTerm,
-        ...searchConfiguration
+        searchTerm: this.searchTerm
       };
 
-      this._searchWidget = new this.Search(searchOptions);
-
-      this._searchWidget.on("search-clear", () => {
-        this._searchResult = undefined;
-        this.searchChange.emit(this._searchResult);
-      });
-
-      this._searchWidget.on("select-result", (searchResults) => {
-        this._searchResult = undefined;
-        if (searchResults.result) {
-          this._searchResult = searchResults.result;
-          this.searchChange.emit({
-            graphics: [searchResults.result.feature],
-            name: searchResults.result.name || ""
-          });
+      if (this.searchConfiguration) {
+        const searchConfiguration = this._getSearchConfig(this.searchConfiguration, this.mapView);
+        searchOptions = {
+          ...searchConfiguration
         }
-      });
+      }
+      this.searchWidget = new this.Search(searchOptions);
+      this.searchWidget.popupEnabled = this.popupEnabled;
+      this.searchWidget.resultGraphicEnabled = this.resultGraphicEnabled;
+    } else {
+      if (this.searchWidget) {
+        this.searchWidget.view = this.mapView;
+      }
     }
   }
 
@@ -245,41 +234,48 @@ export class MapSearch {
     searchConfiguration: ISearchConfiguration,
     view: __esri.MapView
   ): ISearchConfiguration {
-    const sources = searchConfiguration?.sources;
-    if (sources) {
-      sources.forEach(source => {
+    const INCLUDE_DEFAULT_SOURCES = "includeDefaultSources";
+    const sources = searchConfiguration.sources;
+
+    if (sources?.length > 0) {
+      searchConfiguration[INCLUDE_DEFAULT_SOURCES] = false;
+
+      sources.forEach((source) => {
         const isLayerSource = source.hasOwnProperty("layer");
         if (isLayerSource) {
           const layerSource = source as ILayerSourceConfigItem;
-          const layerFromMap = layerSource.layer?.id
-            ? view.map.findLayerById(layerSource.layer.id)
-            : null;
+          const layerId = layerSource.layer?.id;
+          const layerFromMap = layerId ? view.map.findLayerById(layerId) : null;
+          const layerUrl = layerSource?.layer?.url;
           if (layerFromMap) {
             layerSource.layer = layerFromMap as __esri.FeatureLayer;
-          } else if (layerSource?.layer?.url) {
-            layerSource.layer = new this.FeatureLayer(layerSource?.layer?.url as any);
+          } else if (layerUrl) {
+            layerSource.layer = new this.FeatureLayer(layerUrl as any);
           }
         }
       });
-    }
-    searchConfiguration?.sources?.forEach(source => {
-      const isLocatorSource = source.hasOwnProperty("locator");
-      if (isLocatorSource) {
-        const locatorSource = source as ILocatorSourceConfigItem;
-        locatorSource.url = locatorSource.url;
-        delete locatorSource.url;
+
+      sources?.forEach((source) => {
+        const isLocatorSource = source.hasOwnProperty("locator");
+        if (isLocatorSource) {
+          const locatorSource = (source as ILocatorSourceConfigItem);
+          if (locatorSource?.name === "ArcGIS World Geocoding Service") {
+            const outFields = locatorSource.outFields || ["Addr_type", "Match_addr", "StAddr", "City"];
+            locatorSource.outFields = outFields;
+            locatorSource.singleLineFieldName = "SingleLine";
+          }
+
+          locatorSource.url = locatorSource.url;
+          delete locatorSource.url;
+        }
+      });
+    } else {
+      searchConfiguration = {
+        ...searchConfiguration,
+        includeDefaultSources: true
       }
-    });
+    }
     return searchConfiguration;
   }
 
-  /**
-   * Fetches the component's translations
-   *
-   * @protected
-   */
-  protected async _getTranslations(): Promise<void> {
-    const translations = await getLocaleComponentStrings(this.el);
-    this._translations = translations[0] as typeof MapSearch_T9n;
-  }
 }

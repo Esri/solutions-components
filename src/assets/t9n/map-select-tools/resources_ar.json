@@ -10,6 +10,7 @@
   "sketchLayer": "طبقة المخطط",
   "useLayerFeatures": "استخدام معالم الطبقة",
   "inputLayer": "الطبقة المدخلة",
-  "useLayerFeaturesTooltip": "بيت_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________لاحقة.",
-  "useSearchDistanceTootip": "بيت_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________لاحقة."
+  "useLayerFeaturesTooltip": "اختر طبقة واستخدم أدوات الرسم للإشارة إلى المعالم التي يمكن استخدامها كحدود لتحديد المعالم المتقاطعة من طبقة الإدخال.",
+  "useSearchDistanceTootip": "حدد مسافة لنطاق البحث والتي ستحدد المعالم المدخلة التي تتقاطع مع النطاق.",
+  "placeholder": "العثور على عنوان أو مكان"
 }

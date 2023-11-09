@@ -1,0 +1,23 @@
+{
+  "clearSelection": "清除所選內容",
+  "delete": "刪除",
+  "editMultiple": "編輯多個",
+  "exportCSV": "匯出至 CSV",
+  "filters": "篩選器",
+  "more": "較多",
+  "selectAll": "全選",
+  "showSelected": "顯示所選",
+  "switchSelected": "切換所選",
+  "zoom": "縮放",
+  "fetchingData": "正在擷取資料",
+  "refresh": "重新整理",
+  "enableEditing": "必須在圖層上啟用編輯。",
+  "confirm": "將永久移除這些圖徵。",
+  "deleteFeature": "刪除圖徵",
+  "deleteDisabled": "已停用刪除",
+  "editMultipleDisabled": "已停用編輯多個",
+  "showAll": "顯示全部",
+  "recordsSelected": "總計: {{total}} | 選擇: {{selected}}",
+  "cancel": "取消",
+  "moreOptions": "更多表格選項"
+}

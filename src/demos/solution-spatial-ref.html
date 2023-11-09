@@ -19,44 +19,37 @@
    | See the License for the specific language governing permissions and
    | limitations under the License.
   -->
-
   <link rel="stylesheet" href="https://unpkg.com/@esri/calcite-components@1.0.0-beta.97/dist/calcite/calcite.css" type="text/css" />
   <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
   <link rel="stylesheet" href="../solutions-components.css" type="text/css">
   <style>
-  .full-height {
-    height: 100%;
-  }
+    .content {
+      padding: 20px;
+    }
+    .full-height {
+      height: calc(100% - 40px);
+    }
   </style>
-
   <script type="module" src="https://unpkg.com/@esri/calcite-components@1.0.0-beta.97/dist/calcite/calcite.esm.js"></script>
   <script type="module" src="../solutions-components.esm.js"></script>
 </head>
-
 <body>
   <h1>Demo Solution Spatial Reference</h1>
   <main id="appContainer">
     <div class="content full-height">
       <store-manager id="helper"></store-manager>
-      <solution-spatial-ref id="demo"></solution-spatial-ref>
+      <solution-spatial-ref id="demo"/>
     </div>
   </main>
 
   <script src="./libs/require.js"></script>
   <script src="./libs/setLocale.js"></script>
   <script>
-    require([],
+    require([],  // for loading i18n in setLocale
     function () {
-      // Initialize the configuration content
-      const demo = document.getElementById("demo");
-
-      window.addEventListener("stateLoaded", (r) => {
-        demo.services = r.detail.featureServices.map(fs => fs.name);
-        document.getElementById("appContainer").style.opacity = "1";
-      });
-
       fetch("./data/election-outreach.json").then(result => {
         result.json().then(data => {
+          document.getElementById("appContainer").style.opacity = "1";
           const helper = document.getElementById("helper");
           helper.value = JSON.stringify(data.templates);
         });

@@ -1,0 +1,10 @@
+{
+  "legend": "Legende",
+  "search": "Suchen",
+  "expand": "Einblenden",
+  "basemap": "Grundkarte",
+  "collapse": "Ausblenden",
+  "enterFullscreen": "Vollbildmodus starten",
+  "exitFullscreen": "Vollbildmodus beenden",
+  "floorFilter": "Geschossfilter"
+}

@@ -16,7 +16,7 @@
 
 import * as csvDownload from "../csvDownload";
 import * as csvUtils from "../csvUtils";
-import {expect, jest, test} from "@jest/globals";
+import {expect, jest} from "@jest/globals";
 
 afterEach(() => {
   jest.restoreAllMocks();
@@ -42,9 +42,7 @@ describe("csvUtils", () => {
       ];
 
       const downloadCSVFileMock = jest.spyOn(csvDownload, "downloadCSVFile")
-        .mockImplementation(
-          (fileTitle: string, outputLines: string[]) => {}
-        );
+        .mockImplementation(() => {});
       csvUtils.exportCSV(title, labels);
       expect(downloadCSVFileMock).toBeCalledTimes(1);
       expect(downloadCSVFileMock.mock.calls[0][0]).toEqual(title);

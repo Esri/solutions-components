@@ -14,23 +14,20 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, VNode, Watch } from '@stencil/core';
-import MapCard_T9n from "../../assets/t9n/map-card/resources.json";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, Watch } from "@stencil/core";
 import { loadModules } from "../../utils/loadModules";
-import { getLocaleComponentStrings } from "../../utils/locale";
-import { EExpandType, IMapInfo } from "../../utils/interfaces";
+import { IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
 
 // TODO navigation and accessability isn't right for the map list
 //   tab does not go into the list when it's open
 //   focus is not set when it opens
-// TODO clarify what the Home and List buttons are supposed to do
-// TODO handle zoom in/out
+// TODO clarify what the List button is supposed to do
 // TODO map list button tooltip does not work
 // TODO map list should close if the user clicks something else...hope this will be easy when I figure out how to set focus when it opens
 
 @Component({
-  tag: 'map-card',
-  styleUrl: 'map-card.css',
+  tag: "map-card",
+  styleUrl: "map-card.css",
   shadow: false,
 })
 export class MapCard {
@@ -49,6 +46,46 @@ export class MapCard {
   //--------------------------------------------------------------------------
 
   /**
+   * boolean: when true the home widget will be available
+   */
+  @Prop() enableHome: boolean;
+
+  /**
+   * boolean: when true the legend widget will be available
+   */
+  @Prop() enableLegend: boolean;
+
+  /**
+   * boolean: when true the floor filter widget will be available
+   */
+  @Prop() enableFloorFilter: boolean;
+
+  /**
+   * boolean: when true the fullscreen widget will be available
+   */
+  @Prop() enableFullscreen: boolean;
+
+  /**
+   * boolean: when true the search widget will be available
+   */
+  @Prop() enableSearch: boolean;
+
+  /**
+   * boolean: when true the basemap widget will be available
+   */
+  @Prop() enableBasemap: boolean;
+
+  /**
+   * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+   */
+  @Prop() basemapConfig: IBasemapConfig;
+
+  /**
+   * boolean: When true the map display will be hidden
+   */
+  @Prop() hidden: boolean;
+
+  /**
    * IMapInfo[]: array of map infos (name and id)
    */
   @Prop() mapInfos: IMapInfo[] = [];
@@ -58,6 +95,11 @@ export class MapCard {
    */
   @Prop() mapView: __esri.MapView;
 
+  /**
+   * theme: "light" | "dark" theme to be used
+   */
+  @Prop() theme: theme;
+
   //--------------------------------------------------------------------------
   //
   //  State (internal)
@@ -65,26 +107,25 @@ export class MapCard {
   //--------------------------------------------------------------------------
 
   /**
-   * boolean: controls the state of the map list
+   * ISearchConfiguration: Configuration details for the Search widget
    */
-  @State() _mapListExpanded = false;
+  @State() _searchConfiguration: ISearchConfiguration;
 
   /**
-   * Contains the translations for this component.
-   * All UI strings should be defined here.
+   * IMapInfo: id and name of the map to display
    */
-  @State() _translations: typeof MapCard_T9n;
-
-  /**
-   * string: id of the map to display
-   */
-  @State() _webMapId = "";
+  @State() _webMapInfo: IMapInfo;
 
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * esri/widgets/Home: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Home.html
+   */
+  protected Home: typeof import("esri/widgets/Home");
 
   /**
    * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -97,6 +138,11 @@ export class MapCard {
   protected WebMap: typeof import("esri/WebMap");
 
   /**
+   * esri/widgets/Home: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Home.html
+   */
+  protected _homeWidget: __esri.Home;
+
+  /**
    * string: the id of map currently displayed
    */
   protected _loadedId = "";
@@ -106,6 +152,11 @@ export class MapCard {
    */
   protected _mapDiv: HTMLDivElement;
 
+  /**
+   * HTMLMapToolsElement: the container div for the map tools
+   */
+  protected _mapTools: HTMLMapToolsElement;
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -113,23 +164,11 @@ export class MapCard {
   //--------------------------------------------------------------------------
 
   /**
-   * Called each time the _webMapId prop is changed.
+   * Add/remove home widget
    */
-  @Watch("_webMapId")
-  _webMapIdWatchHandler(v: any, oldV: any): void {
-    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
-      this._loadMap(v);
-    }
-  }
-
-  /**
-   * Called each time the mapInfos prop is changed.
-   */
-  @Watch("mapInfos")
-  mapInfosWatchHandler(v: any, oldV: any): void {
-    if (v && JSON.stringify(v) !== JSON.stringify(oldV)) {
-      this._loadMap(v[0].id);
-    }
+  @Watch("enableHome")
+  enableHomeWatchHandler(): void {
+    this._initHome();
   }
 
   //--------------------------------------------------------------------------
@@ -145,14 +184,24 @@ export class MapCard {
   //--------------------------------------------------------------------------
 
   /**
-   * Emitted when the expand button is clicked
-   */
-  @Event() expandMap: EventEmitter<EExpandType>;
-
-  /**
    * Emitted when a new map is loaded
    */
-  @Event() mapChanged: EventEmitter<__esri.MapView>;
+  @Event() mapChanged: EventEmitter<IMapChange>;
+
+  /**
+   * Emitted before a new map is loaded
+   */
+  @Event() beforeMapChanged: EventEmitter<void>;
+
+  /**
+   * Listen for changes to map info and load the appropriate map
+   */
+  @Listen("mapInfoChange", { target: "window" })
+  async mapInfoChange(
+    evt: CustomEvent
+  ): Promise<void> {
+    await this._loadMap(evt.detail);
+  }
 
   //--------------------------------------------------------------------------
   //
@@ -164,27 +213,31 @@ export class MapCard {
    * StencilJS: Called once just after the component is first connected to the DOM.
    */
   async componentWillLoad(): Promise<void> {
-    await this._getTranslations();
     await this._initModules();
-  }
-
-  /**
-   * StencilJS: Called after every render.
-   */
-  componentDidRender() {
-    // the container node for the map view needs to exist before the view is created
-    this._loadMap(this._webMapId);
   }
 
   /**
    * Renders the component.
    */
   render() {
+    const mapClass = this.hidden ? "visibility-hidden" : "";
+    const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
       <Host>
-        {this._getToolbar()}
-        {this._getMapNameList(this._mapListExpanded)}
-        <div class="map-height" ref={(el) => (this._mapDiv = el)}/>
+        <map-picker mapInfos={this.mapInfos}/>
+        <div class={`map-height ${mapClass}`} ref={(el) => (this._mapDiv = el)}/>
+        <map-tools
+          basemapConfig={this.basemapConfig}
+          class={`box-shadow ${themeClass}`}
+          enableBasemap={this.enableBasemap}
+          enableFloorFilter={this.enableFloorFilter}
+          enableFullscreen={this.enableFullscreen}
+          enableLegend={this.enableLegend}
+          enableSearch={this.enableSearch}
+          mapView={this.mapView}
+          ref={(el) => this._mapTools = el}
+          searchConfiguration={this._searchConfiguration}
+        />
       </Host>
     );
   }
@@ -203,53 +256,35 @@ export class MapCard {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [WebMap, MapView] = await loadModules([
+    const [WebMap, MapView, Home] = await loadModules([
       "esri/WebMap",
-      "esri/views/MapView"
+      "esri/views/MapView",
+      "esri/widgets/Home"
     ]);
     this.WebMap = WebMap;
     this.MapView = MapView;
+    this.Home = Home;
   }
 
   /**
-   * Create the toolbar (controls used for map and app interactions)
+   * Load the webmap for the provided webMapInfo
    *
-   * @returns The dom node with the toolbar
-   *
-   * @protected
-   */
-  protected _getToolbar(): VNode {
-    return (
-      <div class="display-flex">
-        <calcite-action-bar class="border-bottom-1 action-bar-size" expand-disabled layout="horizontal" slot="header">
-          {this._getMapPicker()}
-          {this._getActionGroup("home", false, this._translations.home, () => this._goHome())}
-          {this._getActionGroup("list", false, this._translations.list, () => this._showList())}
-          {this._getActionGroup("magnifying-glass-plus", false, this._translations.search, () => this._search())}
-          {this._getActionGroup("plus", false, this._translations.zoomIn, () => this._zoomIn())}
-          {this._getActionGroup("minus", false, this._translations.zoomOut, () => this._zoomOut())}
-          {this._getActionGroup("expand", false, this._translations.expand, () => this._expand())}
-        </calcite-action-bar>
-      </div>
-    );
-  }
-
-  /**
-   * Load the webmap for the provided id
-   *
-   * @param id the webmap id to load
+   * @param webMapInfo the webmap id and name to load
    *
    * @returns void
    *
    * @protected
    */
-  protected _loadMap(
-    id: string
-  ): void {
+  protected async _loadMap(
+    webMapInfo: IMapInfo
+  ): Promise<void> {
+    let id = webMapInfo?.id;
     // on the first render use the first child of the provided mapInfos
-    if (id === "" && this.mapInfos.length > 0) {
-      id = this.mapInfos[0].id;
-    }
+    this._webMapInfo = (id === "" || !id) && this.mapInfos.length > 0 ?
+      this.mapInfos[0] : webMapInfo;
+
+    id = this._webMapInfo.id;
+
     if (this._loadedId !== id) {
       const webMap = new this.WebMap({
         portalItem: { id }
@@ -258,189 +293,39 @@ export class MapCard {
       this.mapView = new this.MapView({
         container: this._mapDiv,
         map: webMap,
-        // TODO consider this more...seems to cause less overflow issues when the component is resized
         resizeAlign: "top-left"
       });
 
       this._loadedId = id;
-      this.mapChanged.emit(this.mapView);
+      this._searchConfiguration = this._webMapInfo.searchConfiguration;
+
+      this.beforeMapChanged.emit();
+
+      await this.mapView.when(() => {
+        this._initHome();
+        this.mapView.ui.add(this._mapTools, { position: "top-right", index: 0});
+        this.mapChanged.emit({
+          id: id,
+          mapView: this.mapView
+        });
+      });
     }
   }
 
   /**
-   * Get a calcite action group for the current action
-   *
-   * @param icon the icon to display for the current action
-   * @param disabled should the action be disabled
-   * @param tip information tip to display helpful details to end user
-   * @param func the associated onClick function to execute
-   *
-   * @returns the dom node for the action group
+   * Add/remove the home widget base on enableHome prop
    *
    * @protected
    */
-  protected _getActionGroup(
-    icon: string,
-    disabled: boolean,
-    tip: string,
-    func: any
-  ): VNode {
-    return (
-      <calcite-action-group class="action-center width-1-6" layout="horizontal">
-        <calcite-action
-          alignment="center"
-          class="width-full height-full"
-          compact={false}
-          disabled={disabled}
-          icon={icon}
-          id={icon}
-          onClick={func}
-          text=""
-        >
-          <calcite-icon icon={"cheveron-up"} scale="s" slot="icon" />
-        </calcite-action>
-        <calcite-tooltip label="" placement="bottom" reference-element={icon}>
-          <span>{tip}</span>
-        </calcite-tooltip>
-      </calcite-action-group>
-    );
-  }
-
-  /**
-   * Get a calcite action group for the map list
-   * Actions do not support multiple icons so this uses a block
-   *
-   * @returns the dom node for the action group
-   *
-   * @protected
-   */
-  protected _getMapPicker(): VNode {
-    const mapListIcon = this._mapListExpanded ? "chevron-up" : "chevron-down";
-    return (
-      <calcite-action-group class="action-center width-1-6" layout="horizontal">
-        <calcite-block
-          class="action-center block-button width-full height-full display-grid"
-          heading=''
-          onClick={() => this._chooseMap()}
-        >
-          <calcite-icon icon="map" scale="s" slot="icon" />
-          <calcite-icon icon={mapListIcon} scale="s" slot="icon" />
-          <calcite-tooltip label="" placement="bottom">
-            <span>{this._translations.mapName}</span>
-          </calcite-tooltip>
-        </calcite-block>
-      </calcite-action-group>
-    );
-  }
-
-  /**
-   * Get a pick list for all maps in mapInfos
-   *
-   * @param show boolean to indicate if the list should be shown or hidden
-   *
-   * @returns the dom node for the list of maps
-   *
-   * @protected
-   */
-  protected _getMapNameList(
-    show: boolean
-  ): VNode {
-    const listClass = show ? "map-list" : "display-none";
-    return (
-      <div class={listClass}>
-        <calcite-pick-list id="mapList">
-          {this.mapInfos.map(mapInfo => {
-            return (
-              <calcite-pick-list-item
-                label={mapInfo.name}
-                onClick={() => this._webMapSelected(mapInfo.id)}
-                selected={mapInfo.id === this._loadedId}
-                value={mapInfo.id}
-              />
-            )
-          })}
-        </calcite-pick-list>
-      </div>
-    );
-  }
-
-  /**
-   * Fired when the user clicks on the map list
-   *
-   * @param id the web map id selected from the list
-   *
-   * @returns void
-   *
-   * @protected
-   */
-  protected _webMapSelected(
-    id: string
-  ): void {
-    this._mapListExpanded = false;
-    this._webMapId = id;
-  }
-
-  /**
-   * Toggles the open/close state of the map list
-   *
-   * @returns the dom node for the action group
-   *
-   * @protected
-   */
-  protected _chooseMap(): void {
-    this._mapListExpanded = !this._mapListExpanded;
-    if (this._mapListExpanded) {
-      //const mapList = document.getElementById("mapList");
-      // TODO figure out why this doesn't work
-      //await (mapList.children[0] as HTMLCalcitePickListItemElement).setFocus();
+  protected _initHome(): void {
+    if (this.enableHome) {
+      this._homeWidget = new this.Home({
+        view: this.mapView
+      });
+      this.mapView.ui.add(this._homeWidget, { position: "top-left", index: 3 });
+    } else if (this._homeWidget){
+      this.mapView.ui.remove(this._homeWidget);
     }
-  }
-
-  // Need to discuss this with the team
-  protected _goHome(): void {
-    alert("go home")
-  }
-
-  // need to discuss this with the team
-  protected _showList(): void {
-    alert("show list")
-  }
-
-  // Need to discuss this with the team
-  protected _search(): void {
-    alert("search")
-  }
-
-  // Need to explore map fixed zoom in considerations
-  protected _zoomIn(): void {
-    alert("zoom in")
-  }
-
-  // Need to explore map fixed zoom out considerations
-  protected _zoomOut(): void {
-    alert("zoom out")
-  }
-
-  /**
-   * Emit the expand map event
-   *
-   * @returns void
-   *
-   * @protected
-   */
-  protected _expand(): void {
-    this.expandMap.emit(EExpandType.EXPAND);
-  }
-
-  /**
-   * Fetches the component's translations
-   *
-   * @returns Promise when complete
-   * @protected
-   */
-  protected async _getTranslations(): Promise<void> {
-    const messages = await getLocaleComponentStrings(this.el);
-    this._translations = messages[0] as typeof MapCard_T9n;
   }
 
 }

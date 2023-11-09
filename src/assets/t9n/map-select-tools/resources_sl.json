@@ -10,6 +10,7 @@
   "sketchLayer": "Sloj skice",
   "useLayerFeatures": "Uporabi geoobjekte sloja",
   "inputLayer": "Vhodni sloj",
-  "useLayerFeaturesTooltip": "Š_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________č.",
-  "useSearchDistanceTootip": "Š_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________č."
+  "useLayerFeaturesTooltip": "Izberite sloj in uporabite orodja za skiciranje, da določite geoobjekte, ki jih je mogoče uporabiti kot meje za izbor sekajočih geoobjektov za vhodni sloj.",
+  "useSearchDistanceTootip": "Določite razdaljo za iskanje obrisov, ki bo izbral vhodne geoobjekte, ki sekajo obris.",
+  "placeholder": "Najdi naslov ali kraj"
 }

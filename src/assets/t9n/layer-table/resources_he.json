@@ -1,0 +1,23 @@
+{
+  "clearSelection": "נקה בחירה",
+  "delete": "מחיקה",
+  "editMultiple": "ערוך פריטים מרובים",
+  "exportCSV": "יצוא ל-CSV",
+  "filters": "סינונים",
+  "more": "עוד",
+  "selectAll": "בחר הכול",
+  "showSelected": "הצג פריטים שנבחרו",
+  "switchSelected": "החלף פריטים שנבחרו.",
+  "zoom": "זום",
+  "fetchingData": "מאחזר נתונים",
+  "refresh": "רענן",
+  "enableEditing": "יש לאפשר עריכה בשכבה זו.",
+  "confirm": "ישויות אלה יוסרו לצמיתות.",
+  "deleteFeature": "מחק ישות",
+  "deleteDisabled": "המחיקה מושבתת",
+  "editMultipleDisabled": "עריכת פריטים מרובים מושבתת",
+  "showAll": "הצג הכול",
+  "recordsSelected": "(סה\"כ: {{total}} | בחירה: {{selected}})",
+  "cancel": "ביטול",
+  "moreOptions": "אפשרויות טבלה נוספות"
+}

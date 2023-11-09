@@ -10,6 +10,7 @@
   "sketchLayer": "Skizzen-Layer",
   "useLayerFeatures": "Layer-Features verwenden",
   "inputLayer": "Eingabe-Layer",
-  "useLayerFeaturesTooltip": "ä_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________Ü.",
-  "useSearchDistanceTootip": "ä_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________Ü."
+  "useLayerFeaturesTooltip": "Wählen Sie einen Layer aus, und verwenden Sie die Skizzenwerkzeuge, um auf Features zu zeigen, die als Grenze verwendet werden können, um überschneidende Features aus dem Eingabe-Layer auszuwählen.",
+  "useSearchDistanceTootip": "Definieren Sie einen Abstand für einen Suchpuffer zur Auswahl von Eingabe-Features, die den Puffer überschneiden.",
+  "placeholder": "Adresse oder Ort suchen"
 }

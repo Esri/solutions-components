@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import { Component, Element, Host, h, State } from '@stencil/core';
+import { Component, Element, Host, h, Listen, Prop, State } from "@stencil/core";
 import CardManager_T9n from "../../assets/t9n/card-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-
-// TODO maybe just move to the manager component directly
+import { queryFeaturesByID } from "../../utils/queryUtils";
+import { getLayerOrTable } from "../../utils/mapViewUtils";
 
 @Component({
-  tag: 'card-manager',
-  styleUrl: 'card-manager.css',
-  shadow: true,
+  tag: "card-manager",
+  styleUrl: "card-manager.css",
+  shadow: false,
 })
 export class CardManager {
   //--------------------------------------------------------------------------
@@ -39,6 +39,21 @@ export class CardManager {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+   */
+  @Prop() layer: __esri.FeatureLayer;
+
+  /**
+   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   */
+  @Prop() mapView: __esri.MapView;
+
+  /**
+   * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+   */
+  @Prop() zoomAndScrollToSelected: boolean;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -46,20 +61,20 @@ export class CardManager {
   //--------------------------------------------------------------------------
 
   /**
+   * When true a loading indicator will be shown in the current card
+   */
+  @State() _cardLoading = false;
+
+  /**
+   * The current selected graphics
+   */
+  @State() _graphics: __esri.Graphic[];
+
+  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
   @State() _translations: typeof CardManager_T9n;
-
-  protected _showInfoCard;
-
-  protected _showMediaCard;
-
-  protected _showCommentsCard;
-
-  protected _fakeValues;
-
-  protected _fakeInfos;
 
   //--------------------------------------------------------------------------
   //
@@ -79,55 +94,75 @@ export class CardManager {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Query the layer for the provided ids and store the result graphics
+   */
+  @Listen("featureSelectionChange", { target: "window" })
+  async featureSelectionChange(
+    evt: CustomEvent
+  ): Promise<void> {
+    const ids = evt.detail;
+    this._cardLoading = true;
+    // only query if we have some ids...query with no ids will result in all features being returned
+    const featureSet = ids.length > 0 ? await queryFeaturesByID(ids, this.layer, [], false, this.mapView.spatialReference) : [];
+    // https://github.com/Esri/solutions-components/issues/365
+    this._graphics = featureSet.sort((a,b) => ids.indexOf(a.getObjectId()) - ids.indexOf(b.getObjectId()));
+    this._cardLoading = false;
+  }
+
+  /**
+   * Get the layer view for the provided layer id
+   */
+  @Listen("layerSelectionChange", { target: "window" })
+  async layerSelectionChange(
+    evt: CustomEvent
+  ): Promise<void> {
+    const id: string = evt.detail[0];
+    this.layer = await getLayerOrTable(this.mapView, id);
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * StencilJS: Called once just after the component is first connected to the DOM.
+   *
+   * @returns Promise when complete
+   */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
-
-    const href = window.location.href;
-    const url = href.substring(0, href.lastIndexOf('/'));
-    const img = `${url}/data/generic.png`;
-    this._fakeValues = [{
-      name: "Filename.png",
-      description: "This is an example of what a media description looks like.",
-      url: img
-    }, {
-      name: "Filename2.png",
-      description: "Another example of what a media description looks like.",
-      url: img
-    }, {
-      name: "Filename3.png",
-      description: "And another example of a media description.",
-      url: img
-    }];
-    this._fakeInfos = {
-      "Details": "Details info goes here",
-      "Name": "Name here",
-      "Phone": "(000) 000-0000",
-      "Email": "example@gmail.com",
-      "Date": "May 11, 2022"
-    };
   }
 
+  /**
+   * Renders the component.
+   */
   render() {
-    // const mediaCardClass =;
-    // const infoCardClass = "";
+    const featuresClass = this._graphics?.length > 0 ? "" : "display-none";
+    const messageClass = this._graphics?.length > 0 ? "display-none" : "";
+
     return (
       <Host>
-        <div class="display-inline-table">
-          <div class="w-100 display-flex padding-bottom-1">
-            <calcite-button appearance='outline' class="w-1-2">{this._translations.information}</calcite-button>
-            <calcite-button class="w-1-2">{this._translations.media}</calcite-button>
-            {/* <calcite-button>{this._translations.comments}</calcite-button> */}
-          </div>
-          <div>
-            <media-card class="" values={this._fakeValues} />
-            <info-card class="display-none" values={this._fakeInfos} />
-          </div>
+        <div class="overflow-auto height-full">
+          <calcite-shell class={"position-relative " + featuresClass}>
+            <div>
+              <info-card
+                graphics={this._graphics}
+                isLoading={this._cardLoading}
+                mapView={this.mapView}
+                zoomAndScrollToSelected={this.zoomAndScrollToSelected}
+              />
+            </div>
+          </calcite-shell>
+          <calcite-shell class={"position-relative " + messageClass}>
+            <div class={"padding-1"}>
+              <calcite-notice icon="table" open>
+                <div slot="message">{this._translations.selectFeaturesToStart}</div>
+              </calcite-notice>
+            </div>
+          </calcite-shell>
         </div>
       </Host>
     );
@@ -149,5 +184,4 @@ export class CardManager {
     const messages = await getLocaleComponentStrings(this.el);
     this._translations = messages[0] as typeof CardManager_T9n;
   }
-
 }

@@ -1,0 +1,23 @@
+{
+  "clearSelection": "Hapus pilihan",
+  "delete": "Hapus",
+  "editMultiple": "Edit Ganda",
+  "exportCSV": "Ekspor ke CSV",
+  "filters": "Filter",
+  "more": "Lainnya",
+  "selectAll": "Pilih semua",
+  "showSelected": "Tampilkan yang dipilih",
+  "switchSelected": "Alihkan yang dipilih",
+  "zoom": "Perbesar",
+  "fetchingData": "Mengambil data",
+  "refresh": "Muat Ulang",
+  "enableEditing": "Pengeditan harus diaktifkan di layer",
+  "confirm": "Fitur-fitur ini akan dihapus secara permanen.",
+  "deleteFeature": "Hapus fitur",
+  "deleteDisabled": "Hapus yang Dinonaktifkan",
+  "editMultipleDisabled": "Edit Ganda yang Dinonaktifkan",
+  "showAll": "Tampilkan semua",
+  "recordsSelected": "Total: {{total}} | Pilihan: {{selected}}",
+  "cancel": "Batalkan",
+  "moreOptions": "Opsi tabel lainnya"
+}

@@ -28,31 +28,112 @@
       }
     </style>
 
-    <link
-      rel="stylesheet"
-      href="https://js.arcgis.com/4.25/esri/themes/light/main.css"
-    />
+    <link rel="stylesheet" href="https://jsdev.arcgis.com/4.28/esri/themes/light/main.css" />
+    <!-- <link rel="stylesheet" href="https://jsdev.arcgis.com/4.28/esri/themes/dark/main.css" /> -->
+
     <link rel="stylesheet" href="https://webapps-cdn.esri.com/CDN/fonts/v1.4.1/fonts.css" />
     <link rel="stylesheet" href="../solutions-components.css" type="text/css">
 
-    <script src="https://js.arcgis.com/4.25/"></script>
+    <script src="https://jsdev.arcgis.com/4.28/"></script>
     <script type="module" src="../solutions-components.esm.js"></script>
 
     <script>
       function addValues() {
         const demo = document.getElementById("demo");
-        demo.mapInfos = [{
-          id: "863e4f6f2a7840db896cc1b1606d552d",
-          name: "Name of map 1"
-        }, {
-          id: "3715f4899bea4b2a948347c5c2357e58",
-          name: "Name of map 2"
-        }];
+
+        let headerSet = false;
+        let custom = [];
+        var vars = window.location.search.substring(1).split('&');
+        vars.forEach((param) => {
+          let vals = param.split('=');
+          const v = vals[1];
+          switch (vals[0]) {
+            case "id":
+              custom = [{
+                id: v,
+                name: "Map from URL"
+              }];
+              break;
+            // TODO enable when ready for review...have some questions that I need to discuss with the team
+            // case "hideMap":
+            //   demo.hideMap = v.toLocaleLowerCase() === "true";
+            //   break;
+            case "classicGrid":
+              demo.classicGrid = v.toLocaleLowerCase() === "true";
+              break;
+            case "zoomAndScrollToSelected":
+              demo.zoomAndScrollToSelected = v.toLocaleLowerCase() === "true";
+              break;
+            case "hideHeader":
+              demo.hideHeader = v.toLocaleLowerCase() === "true";
+              headerSet = true;
+              break;
+            default:
+              break;
+          }
+        });
+
+        if (!headerSet) {
+          // Want the header to be disabled by default for IA
+          // Want the header to be enabled by default for the demo app
+          demo.hideHeader = false;
+        }
+
+        demo.mapInfos = [
+          ...custom,
+          ...[{
+            id: "ce3dec81bf714d3bb71da9691ab686d1",
+            name: "Popup Configured Map",
+            // filters: {},
+            // layerInfos: [{
+            //   id: "Requests_681",
+            //   columnTemplates: [{
+            //     type: "field",
+            //     fieldName: "ObjectId",
+            //     visible: false
+            //   }, {
+            //     type: "field",
+            //     fieldName: "reqcategory",
+            //     label: "Request ID",
+            //     visible: true
+            //   }]
+            // }, {
+            //   id: "Requets_6608",
+            //   columnTemplates: [{
+            //     type: "field",
+            //     fieldName: "requestglobalid",
+            //     visible: false
+            //   }, {
+            //     type: "field",
+            //     fieldName: "comments",
+            //     label: "Comments",
+            //     visible: true
+            //   }]
+            // }]
+          }, {
+            id: "863e4f6f2a7840db896cc1b1606d552d",
+            name: "IA map"
+          }, {
+            id: "3715f4899bea4b2a948347c5c2357e58",
+            name: "PN Map"
+          }, {
+            id: "4fa949c89bb04ecb8a9f5ad119448333",
+            name: "CS TIL DATA"
+          }, {
+            id: "f5b01c17a09941eaad63e7b4e6c7d880",
+            name: "Attachments Map"
+          }, {
+            id: "b422923b7a4c4958b9788118255f2f0a",
+            name: "Floor aware map"
+          }]
+        ];
       }
     </script>
   </head>
 
+  <!-- <body class="calcite-mode-dark" onload="addValues()"> -->
   <body onload="addValues()">
     <crowdsource-manager id="demo" class="crowdsource"/>
+    <!-- <crowdsource-manager id="demo" class="crowdsource" theme="dark"/> -->
   </body>
 </html>

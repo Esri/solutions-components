@@ -10,6 +10,7 @@
   "sketchLayer": "Visandikiht",
   "useLayerFeatures": "Kasuta kihi objekte",
   "inputLayer": "Sisendkiht",
-  "useLayerFeaturesTooltip": "Š_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________ä.",
-  "useSearchDistanceTootip": "Š_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________ä."
+  "useLayerFeaturesTooltip": "Valige kiht ja kasutage visandustööriistu, et osutada objektidele, mida saab kasutada piirina lõikuvate objektide valimiseks sisendkihilt.",
+  "useSearchDistanceTootip": "Määrake otsingupuhvri kaugus, millega valitakse puhvriga lõikuvad sisendobjektid.",
+  "placeholder": "Otsi aadressi või kohta"
 }

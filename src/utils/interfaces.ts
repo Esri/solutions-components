@@ -19,6 +19,11 @@ import {
   IItemTemplate
 } from '@esri/solution-common';
 
+export enum EImageDisplayType {
+  GRID="GRID",
+  GALLERY="GALLERY"
+}
+
 export enum ELayoutMode {
   GRID = "GRID",
   HORIZONTAL = "HORIZONTAL",
@@ -55,11 +60,6 @@ export enum ESelectionType {
   RECT="RECT"
 }
 
-export enum EExpandType {
-  EXPAND="EXPAND",
-  COLLAPSE="COLLAPSE"
-}
-
 export enum EWorkflowType {
   SEARCH="SEARCH",
   SELECT="SELECT",
@@ -79,11 +79,24 @@ export enum EDrawMode {
 
 /* eslint-enable no-unused-vars */
 
-export type SelectionMode = "single" | "multi";
-
 export type ValidSize = 6|10|14|20|30|60|80;
 
 export type DistanceUnit = "feet"|"meters"|"miles"|"kilometers";
+
+export type theme = "light" | "dark";
+
+export interface IMapClick {
+  mapPoint: __esri.Point,
+  screenPoint: __esri.MapViewScreenPoint,
+  x: number,
+  y: number,
+  button: number,
+  buttons: 0 | 1 | 2,
+  type: string,
+  stopPropagation: any,
+  timestamp: number,
+  native: PointerEvent
+}
 
 export interface IExportOptions {
   csvOptions: ICsvOptions;
@@ -151,10 +164,15 @@ export interface IValueChange {
 }
 
 /**
- * Layer id and title key value pair
+ * Layer or table id and title key value pair
  */
-export interface ILayerHash {
-  [key: string]: string;
+export interface IMapItemHash {
+  [key: string]: ILayerHashInfo;
+}
+
+export interface ILayerHashInfo {
+  name: string;
+  supportsUpdate: boolean;
 }
 
 /**
@@ -421,10 +439,6 @@ export interface IQueryExtentResponse {
   extent: __esri.Extent;
 }
 
-export interface IInfoCardValues {
-  [key: string]: string;
-}
-
 export interface IMediaCardValues {
   name: string;
   description: string;
@@ -434,6 +448,21 @@ export interface IMediaCardValues {
 export interface IMapInfo {
   id: string;
   name: string;
+  searchConfiguration?: ISearchConfiguration;
+  filters?: any[]; // TODO generate an interface for this once we know how it will be passed in
+  layerInfos?: ILayerInfo[];
+  _hasValidLayers?: boolean;
+  visible?: boolean;
+}
+
+export interface ILayerInfo {
+  id: string;
+  columnTemplates: __esri.FieldColumnTemplate[];
+}
+
+export interface IMapChange {
+  id: string;
+  mapView: __esri.MapView;
 }
 
 export interface IExportInfos {
@@ -441,7 +470,27 @@ export interface IExportInfos {
 }
 
 export interface IExportInfo {
-  ids: number[],
-  layerView: __esri.FeatureLayerView
-  selectionSetNames: string[]
+  ids: number[];
+  layer?: __esri.FeatureLayer;
+  layerView?: __esri.FeatureLayerView;
+  selectionSetNames: string[];
+}
+
+export interface IBasemapConfig {
+  basemapIdsToFilter: string[];
+  basemapGroupId: string;
+}
+
+export interface IToolInfo {
+  icon: string;
+  func: any;
+  label: string;
+  disabled: boolean;
+  isDanger?: boolean;
+  isOverflow: boolean;
+}
+
+export interface IToolSizeInfo {
+  id: string;
+  width: number;
 }

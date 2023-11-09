@@ -10,6 +10,7 @@
   "sketchLayer": "Çizim Katmanı",
   "useLayerFeatures": "Katman detaylarını kullan",
   "inputLayer": "Girdi katman",
-  "useLayerFeaturesTooltip": "ı_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________İ.",
-  "useSearchDistanceTootip": "ı_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________İ."
+  "useLayerFeaturesTooltip": "Girdi katmanında kesişen detayları seçmek için bir sınır olarak kullanılabilecek detaylara işaret etmek için bir katman seçin ve taslak çizim araçlarını kullanın.",
+  "useSearchDistanceTootip": "Arabellekle kesişen girdi detaylarını seçecek bir arama arabelleği için bir mesafe tanımlayın.",
+  "placeholder": "Adres veya yer bul"
 }

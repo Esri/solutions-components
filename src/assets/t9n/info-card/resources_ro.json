@@ -1,0 +1,9 @@
+{
+  "fetchingData": "Extragerea datelor",
+  "edit": "Editare",
+  "enableEditing": "Actualizarea capacității trebuie să fie activată pe stratul tematic.",
+  "editDisabled": "Editare dezactivată",
+  "next": "Următorul",
+  "back": "Înapoi",
+  "indexOfTotal": "{{index}} din {{total}}"
+}

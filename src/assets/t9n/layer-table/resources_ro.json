@@ -1,0 +1,23 @@
+{
+  "clearSelection": "Golire selecție",
+  "delete": "Ștergere",
+  "editMultiple": "Editare multiplă",
+  "exportCSV": "Export în CSV",
+  "filters": "Filtre",
+  "more": "Mai mult",
+  "selectAll": "Selectare globală",
+  "showSelected": "Afișare selectate",
+  "switchSelected": "Comutare selectată",
+  "zoom": "Zoom",
+  "fetchingData": "Extragerea datelor",
+  "refresh": "Reîmprospătare",
+  "enableEditing": "Editarea trebuie să fie activată în stratul tematic.",
+  "confirm": "Aceste obiecte spațiale vor fi eliminate definitiv.",
+  "deleteFeature": "Ştergere obiect spaţial",
+  "deleteDisabled": "Ștergere dezactivată",
+  "editMultipleDisabled": "Editare multiplă dezactivată",
+  "showAll": "Afișare toate",
+  "recordsSelected": "Total: {{total}} | Selecție: {{selected}}",
+  "cancel": "Anulare",
+  "moreOptions": "Mai multe opțiuni de tabel"
+}

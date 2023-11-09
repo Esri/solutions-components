@@ -1,9 +1,9 @@
 {
-  "add": "須_Add_______鷗",
-  "remove": "須_Remove_____________鷗",
-  "featuresAdded": "須_Features added: {{n}}______________________鷗",
-  "featuresRemoved": "須_Features removed: {{n}}________________________鷗",
-  "totalSelected": "須_Total selected: {{n}}______________________鷗",
-  "inputLayer": "須_Input layer____________鷗",
-  "inputLayerTip": "須_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________鷗."
+  "add": "追加",
+  "remove": "削除",
+  "featuresAdded": "追加したフィーチャ数: {{n}}",
+  "featuresRemoved": "削除したフィーチャ数: {{n}}",
+  "totalSelected": "選択した総数: {{n}}",
+  "inputLayer": "入力レイヤー",
+  "inputLayerTip": "選択したフィーチャを確認するための入力レイヤーを選択し、一度に 1 つの入力レイヤーから選択したフィーチャを更新します。"
 }

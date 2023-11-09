@@ -43,6 +43,11 @@ export class PdfDownload {
   //--------------------------------------------------------------------------
 
   /**
+   * number: The default number of labels per page to export
+   */
+  @Prop() defaultNumLabelsPerPage: number;
+
+  /**
    * boolean: Controls the enabled/disabled state of download
    */
   @Prop() disabled = false;
@@ -90,6 +95,7 @@ export class PdfDownload {
   /**
    * Downloads csv of mailing labels for the provided list of ids
    *
+   * @param webmap Webmap containing layer
    * @param exportInfos Information about items to be exported
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
    * @param addColumnTitle Indicates if column headings should be included in output
@@ -97,11 +103,13 @@ export class PdfDownload {
    */
   @Method()
   async downloadCSV(
+    webmap: __esri.Map,
     exportInfos: IExportInfos,
     removeDuplicates: boolean,
     addColumnTitle = true
   ): Promise<void> {
-    void downloadUtils.downloadCSV(
+    return downloadUtils.downloadCSV(
+      webmap,
       exportInfos,
       true, // formatUsingLayerPopup
       removeDuplicates,
@@ -112,6 +120,7 @@ export class PdfDownload {
   /**
    * Downloads pdf of mailing labels for the provided list of ids
    *
+   * @param webmap Webmap containing layer
    * @param exportInfos Information about items to be exported
    * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
    * @param title Title for each page
@@ -120,14 +129,16 @@ export class PdfDownload {
    */
   @Method()
   async downloadPDF(
+    webmap: __esri.Map,
     exportInfos: IExportInfos,
     removeDuplicates = false,
     title = "",
     initialImageDataUrl = ""
   ): Promise<void> {
-    void downloadUtils.downloadPDF(
+    return downloadUtils.downloadPDF(
+      webmap,
       exportInfos,
-      this._labelInfoElement.selectedOption.value as downloadUtils.ILabel,
+      this._labelInfoElement.selectedOption?.value as downloadUtils.ILabel,
       removeDuplicates,
       title,
       initialImageDataUrl
@@ -169,7 +180,7 @@ export class PdfDownload {
     );
   }
 
-  componentDidRender(): void {
+  componentDidLoad(): void {
     // Render the options outside of Stencil's rendering so that it doesn't mangle RTL text with embedded LTR
     this._renderOptions();
   }
@@ -234,11 +245,16 @@ export class PdfDownload {
       const _b = parseInt(b.descriptionPDF.labelsPerPageDisplay, 10);
       return _a < _b ? -1 : _a > _b ? 1 : 0
     });
-    sortedPdfIndo.forEach((l) => {
+    sortedPdfIndo.forEach((l, i) => {
       const option = document.createElement("calcite-option");
       option.value = l;
       option.innerHTML = this._getLabelSizeText(l);
       this._labelInfoElement.appendChild(option);
+      if (this.defaultNumLabelsPerPage ? parseInt(l.descriptionPDF.labelsPerPageDisplay, 10) === this.defaultNumLabelsPerPage : i === 0) {
+        // Setting selected wasn't enough to trigger it being the 'selectedOption'
+        option.selected = true;
+        this._labelInfoElement.selectedOption = option;
+      }
     });
   }
 

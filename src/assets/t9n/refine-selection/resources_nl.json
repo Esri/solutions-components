@@ -1,9 +1,9 @@
 {
-  "add": "Ĳ_Add_______ä",
-  "remove": "Ĳ_Remove_____________ä",
-  "featuresAdded": "Ĳ_Features added: {{n}}______________________ä",
-  "featuresRemoved": "Ĳ_Features removed: {{n}}________________________ä",
-  "totalSelected": "Ĳ_Total selected: {{n}}______________________ä",
-  "inputLayer": "Ĳ_Input layer____________ä",
-  "inputLayerTip": "Ĳ_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________ä."
+  "add": "Toevoegen",
+  "remove": "Verwijderen",
+  "featuresAdded": "Toegevoegde objecten: {{n}}",
+  "featuresRemoved": "Verwijderde objecten: {{n}}",
+  "totalSelected": "Totaal geselecteerd: {{n}}",
+  "inputLayer": "Invoerlaag",
+  "inputLayerTip": "Kies een invoerlaag om geselecteerde objecten hieruit door te nemen, werk geselecteerde objecten uit één invoerlaag een voor een bij."
 }

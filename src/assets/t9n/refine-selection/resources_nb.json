@@ -1,9 +1,9 @@
 {
-  "add": "å_Add_______ø",
-  "remove": "å_Remove_____________ø",
-  "featuresAdded": "å_Features added: {{n}}______________________ø",
-  "featuresRemoved": "å_Features removed: {{n}}________________________ø",
-  "totalSelected": "å_Total selected: {{n}}______________________ø",
-  "inputLayer": "å_Input layer____________ø",
-  "inputLayerTip": "å_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________ø."
+  "add": "Legg til",
+  "remove": "Fjern",
+  "featuresAdded": "Geoobjekter som er lagt til: {{n}}",
+  "featuresRemoved": "Geoobjekter som er fjernet: {{n}}",
+  "totalSelected": "Totalt antall valgte: {{n}}",
+  "inputLayer": "Inndatalag",
+  "inputLayerTip": "Velg inndatalag med geoobjekter som skal vurderes. Oppdater valgte geoobjekter fra et inndatalag om gangen."
 }

@@ -1,9 +1,9 @@
 {
-  "add": "æ_Add_______Â",
-  "remove": "æ_Remove_____________Â",
-  "featuresAdded": "æ_Features added: {{n}}______________________Â",
-  "featuresRemoved": "æ_Features removed: {{n}}________________________Â",
-  "totalSelected": "æ_Total selected: {{n}}______________________Â",
-  "inputLayer": "æ_Input layer____________Â",
-  "inputLayerTip": "æ_Choose input layer to review selected features from, update selected features from one input layer at a time________________________________________________________Â."
+  "add": "Ajouter",
+  "remove": "Supprimer",
+  "featuresAdded": "Entités ajoutées : {{n}}",
+  "featuresRemoved": "Entités supprimées : {{n}}",
+  "totalSelected": "Nombre total d’entités sélectionnées : {{n}}",
+  "inputLayer": "Couche en entrée",
+  "inputLayerTip": "Choisissez la couche en entrée dans laquelle examiner les entités sélectionnées. Mettez à jour les entités sélectionnées d’une seule couche en entrée à la fois."
 }

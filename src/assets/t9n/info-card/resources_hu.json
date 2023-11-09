@@ -1,0 +1,9 @@
+{
+  "fetchingData": "Adatok lekérése",
+  "edit": "Szerkesztés",
+  "enableEditing": "A frissítési képességnek engedélyezve kell lennie a rétegen.",
+  "editDisabled": "Szerkesztés letiltva",
+  "next": "Tovább",
+  "back": "Vissza",
+  "indexOfTotal": "{{index}}/{{total}}"
+}

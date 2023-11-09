@@ -1,0 +1,10 @@
+{
+  "legend": "Jelmagyarázat",
+  "search": "Keresés",
+  "expand": "Kibontás",
+  "basemap": "Alaptérkép",
+  "collapse": "Összecsukás",
+  "enterFullscreen": "Belépés a teljes képernyős nézetbe",
+  "exitFullscreen": "Kilépés a teljes képernyős nézetből",
+  "floorFilter": "Emelet szűrő"
+}

@@ -1,0 +1,23 @@
+{
+  "clearSelection": "Limpar seleção",
+  "delete": "Excluir",
+  "editMultiple": "Editar Múltiplos",
+  "exportCSV": "Exportar para CSV",
+  "filters": "Filtros",
+  "more": "Mais",
+  "selectAll": "Selecionar todos",
+  "showSelected": "Mostrar selecionado",
+  "switchSelected": "Trocar selecionado",
+  "zoom": "Zoom",
+  "fetchingData": "Buscar Dados",
+  "refresh": "Atualizar",
+  "enableEditing": "A edição deve estar habilitada na camada.",
+  "confirm": "Estas feições serão permanentemente removidas.",
+  "deleteFeature": "Excluir feição",
+  "deleteDisabled": "Excluir Desabilitado",
+  "editMultipleDisabled": "Editar Múltiplos Desabilitados",
+  "showAll": "Mostrar todos",
+  "recordsSelected": "Total: {{total}} | Seleção: {{selected}}",
+  "cancel": "Cancelar",
+  "moreOptions": "Mais opções da tabela"
+}

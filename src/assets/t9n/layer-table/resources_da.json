@@ -1,0 +1,23 @@
+{
+  "clearSelection": "Ryd markering",
+  "delete": "Slet",
+  "editMultiple": "Rediger flere",
+  "exportCSV": "Eksportér til CSV",
+  "filters": "Filtre",
+  "more": "Mere",
+  "selectAll": "Vælg alle",
+  "showSelected": "Vis valgte",
+  "switchSelected": "Skift valgte",
+  "zoom": "Zoom",
+  "fetchingData": "Henter data",
+  "refresh": "Opdatér",
+  "enableEditing": "Redigering skal være aktiveret på laget",
+  "confirm": "Disse objekter vil blive fjernet permanent.",
+  "deleteFeature": "Slet objekt",
+  "deleteDisabled": "Sletning deaktiveret",
+  "editMultipleDisabled": "Rediger flere deaktiveret",
+  "showAll": "Vis alle",
+  "recordsSelected": "I alt: {{total}} | Markering: {{selected}}",
+  "cancel": "Annuller",
+  "moreOptions": "Flere tabelindstillinger"
+}

@@ -1,0 +1,9 @@
+{
+  "fetchingData": "Henter data",
+  "edit": "Rediger",
+  "enableEditing": "Oppdateringsfunksjon må være aktivert i laget.",
+  "editDisabled": "Redigering deaktivert",
+  "next": "Neste",
+  "back": "Tilbake",
+  "indexOfTotal": "{{index}} av {{total}}"
+}

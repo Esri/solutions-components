@@ -1,0 +1,9 @@
+{
+  "fetchingData": "Fetching data",
+  "edit": "Edit",
+  "enableEditing": "Update capability must be enabled on the layer.",
+  "editDisabled": "Editing Disabled",
+  "next": "Next",
+  "back": "Back",
+  "indexOfTotal": "{{index}} of {{total}}"
+}

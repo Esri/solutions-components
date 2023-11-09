@@ -15,11 +15,7 @@
  */
 
 :host {
-  display: block;
-}
-
-.display-inline-table {
-  display: inline-table;
+  display: block !important;
 }
 
 .display-flex {
@@ -34,10 +30,30 @@
   width: 100%;
 }
 
-.w-1-2 {
-  width: 50%;
-}
-
 .padding-bottom-1 {
   padding-bottom: 1rem;
+}
+
+.padding-1 {
+  padding: 1rem;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.focus-margin {
+  margin: 1px 1px 0px 1px;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.height-full {
+  height: 100%;
+}
+
+card-manager {
+  display: block;
 }

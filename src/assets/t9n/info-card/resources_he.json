@@ -1,0 +1,9 @@
+{
+  "fetchingData": "מאחזר נתונים",
+  "edit": "עריכה",
+  "enableEditing": "יש להפעיל את יכול העדכון בשכבה.",
+  "editDisabled": "עריכה מושבתת",
+  "next": "הבא",
+  "back": "חזור",
+  "indexOfTotal": "{{index}} מתוך {{total}}"
+}

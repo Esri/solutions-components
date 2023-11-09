@@ -1,0 +1,23 @@
+{
+  "clearSelection": "Seçimi temizle",
+  "delete": "Sil",
+  "editMultiple": "Çoklu Düzenle",
+  "exportCSV": "CSV olarak dışa aktar",
+  "filters": "Filtreler",
+  "more": "Daha fazla",
+  "selectAll": "Tümünü seç",
+  "showSelected": "Seçilenleri göster",
+  "switchSelected": "Seçili olanı değiştir",
+  "zoom": "Yakınlaştır",
+  "fetchingData": "Veriler Getiriliyor",
+  "refresh": "Yenile",
+  "enableEditing": "Katmanda düzenleme etkinleştirilmelidir.",
+  "confirm": "Bu detaylar kalıcı olarak kaldırılacak.",
+  "deleteFeature": "Detayı sil",
+  "deleteDisabled": "Silme Devre Dışı Bırakıldı",
+  "editMultipleDisabled": "Çoklu Düzenleme Devre Dışı Bırakıldı",
+  "showAll": "Tümünü göster",
+  "recordsSelected": "Toplam: {{total}} | Seçim: {{selected}}",
+  "cancel": "İptal",
+  "moreOptions": "Daha fazla tablo seçeneği"
+}

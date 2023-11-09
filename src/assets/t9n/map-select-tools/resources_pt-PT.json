@@ -10,6 +10,7 @@
   "sketchLayer": "Camada de Desenho",
   "useLayerFeatures": "Utilizar elementos da camada",
   "inputLayer": "Camada de entrada",
-  "useLayerFeaturesTooltip": "ã_Choose a layer and use the sketch tools to point to features that can be used as a boundary to select intersecting features from the input layer__________________________________________________________________________Ç.",
-  "useSearchDistanceTootip": "ã_Define a distance for a search buffer that will select input features that intersect the buffer_________________________________________________Ç."
+  "useLayerFeaturesTooltip": "Selecione uma camada e utilize as ferramentas de desenho para apontar para elementos que podem ser utilizados como um limite para selecionar elementos de interseção a partir da camada de entrada.",
+  "useSearchDistanceTootip": "Defina uma distância para um buffer de pesquisa que irá selecionar elementos de entrada que intersetam o buffer.",
+  "placeholder": "Encontrar um endereço ou local"
 }

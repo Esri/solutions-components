@@ -5,14 +5,24 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EDrawMode, EExpandType, IExportInfos, IInfoCardValues, IInventoryItem, IMapInfo, IMediaCardValues, ISearchConfiguration, ISearchResult, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, SelectionMode } from "./utils/interfaces";
+import { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
+export { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+export { UserSession } from "@esri/solution-common";
 export namespace Components {
-    interface AddRecordModal {
+    interface BasemapGallery {
         /**
-          * When true the component is displayed
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
          */
-        "open": boolean;
+        "basemapConfig": IBasemapConfig;
+        /**
+          * esri/widgets/BasemapGallery: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-BasemapGallery.html  BasemapGallery instance
+         */
+        "basemapWidget": __esri.BasemapGallery;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
     }
     interface BufferTools {
         /**
@@ -28,6 +38,11 @@ export namespace Components {
           * esri/geometry/Geometry: https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-Geometry.html
          */
         "geometries": __esri.Geometry[];
+        /**
+          * Get the translated unit for display
+          * @returns Promise resolving with the translated unit
+         */
+        "getTranslatedUnit": (unit: string) => Promise<string>;
         /**
           * number: The component's maximum selectable value.
          */
@@ -50,34 +65,155 @@ export namespace Components {
         "unit": DistanceUnit;
     }
     interface CardManager {
-    }
-    interface CommentCard {
+        /**
+          * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+         */
+        "layer": __esri.FeatureLayer;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected": boolean;
     }
     interface CrowdsourceManager {
+        /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig": IBasemapConfig;
+        /**
+          * boolean: when true the grid will display like the previous manager app with the table across the top
+         */
+        "classicGrid": boolean;
+        /**
+          * boolean: when true the layer table will auto refresh the data
+         */
+        "enableAutoRefresh": boolean;
+        /**
+          * boolean: when true the basemap widget will be available
+         */
+        "enableBasemap": boolean;
+        /**
+          * boolean: when true the export to csv button will be available
+         */
+        "enableCSV": boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFloorFilter": boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFullscreen": boolean;
+        /**
+          * boolean: when true the home widget will be available
+         */
+        "enableHome": boolean;
+        /**
+          * boolean: when true edits can be applied directly within the table
+         */
+        "enableInlineEdit": boolean;
+        /**
+          * boolean: when true the legend widget will be available
+         */
+        "enableLegend": boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch": boolean;
+        /**
+          * boolean: when true the zoom widget will be available
+         */
+        "enableZoom": boolean;
+        /**
+          * boolean: when true no map is displayed for the app
+         */
+        "hideMap": boolean;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos": IMapInfo[];
+        /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers": boolean;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
+        /**
+          * boolean: when true the table will be sorted by objectid in descending order by default
+         */
+        "showNewestFirst": boolean;
+        /**
+          * theme: "light" | "dark" theme to be used
+         */
+        "theme": theme;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected": boolean;
     }
     interface CrowdsourceReporter {
     }
     interface DeductCalculator {
     }
-    interface EditRecordModal {
+    interface EditCard {
+        /**
+          * The index of the current graphic
+         */
+        "graphicIndex": number;
+        /**
+          * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "graphics": __esri.Graphic[];
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
         /**
           * When true the component is displayed
          */
         "open": boolean;
     }
+    interface FloorFilter {
+        /**
+          * boolean: when true the Floor Filter widget will be available
+         */
+        "enabled": boolean;
+        /**
+          * esri/widgets/FloorFilter: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FloorFilter.html  FloorFilter instance
+         */
+        "floorFilterWidget": __esri.FloorFilter;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+    }
     interface InfoCard {
         /**
-          * string: the components title
+          * Get the current selected feature from the Features widget
+          * @returns Promise resolving with the current feature
          */
-        "cardTitle": string;
+        "getSelectedFeature": () => Promise<any>;
         /**
-          * IInfoCardValues: key value pairs to show in the components table
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
-        "values": IInfoCardValues;
+        "graphics": __esri.Graphic[];
+        /**
+          * boolean: when true a loading indicator will be shown
+         */
+        "isLoading": boolean;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected": boolean;
     }
     interface JsonEditor {
         /**
@@ -119,13 +255,79 @@ export namespace Components {
     }
     interface LayerTable {
         /**
+          * boolean: when true the layer table will auto refresh the data
+         */
+        "enableAutoRefresh": boolean;
+        /**
+          * boolean: when true the export to csv button will be available
+         */
+        "enableCSV": boolean;
+        /**
+          * boolean: when true edits can be applied directly within the table
+         */
+        "enableInlineEdit": boolean;
+        /**
+          * boolean: when true the zoom button will be enabled
+         */
+        "enableZoom": boolean;
+        /**
+          * IMapInfo: key configuration details about the current map
+         */
+        "mapInfo": IMapInfo;
+        /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers": boolean;
+        /**
+          * boolean: when true the table will be sorted by objectid in descending order by default
+         */
+        "showNewestFirst": boolean;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected": boolean;
+    }
+    interface LayoutManager {
     }
     interface ListItem {
     }
     interface MapCard {
+        /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig": IBasemapConfig;
+        /**
+          * boolean: when true the basemap widget will be available
+         */
+        "enableBasemap": boolean;
+        /**
+          * boolean: when true the floor filter widget will be available
+         */
+        "enableFloorFilter": boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFullscreen": boolean;
+        /**
+          * boolean: when true the home widget will be available
+         */
+        "enableHome": boolean;
+        /**
+          * boolean: when true the legend widget will be available
+         */
+        "enableLegend": boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch": boolean;
+        /**
+          * boolean: When true the map display will be hidden
+         */
+        "hidden": boolean;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */
@@ -134,6 +336,10 @@ export namespace Components {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * theme: "light" | "dark" theme to be used
+         */
+        "theme": theme;
     }
     interface MapDrawTools {
         /**
@@ -187,38 +393,99 @@ export namespace Components {
          */
         "updateGraphics": () => Promise<void>;
     }
+    interface MapFullscreen {
+        /**
+          * esri/widgets/Fullscreen: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Fullscreen.html
+         */
+        "fullscreenWidget": __esri.Fullscreen;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+    }
     interface MapLayerPicker {
+        /**
+          * "transparent" | "solid": controls the button appearance when using the "dropdown" type
+         */
+        "appearance": "transparent" | "solid";
         /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
         "enabledLayerIds": string[];
         /**
+          * string[]: Optional list of enabled table ids  If empty all tables will be available
+         */
+        "enabledTableIds": string[];
+        /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+        /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers": boolean;
+        /**
+          * string: optional placeholder icon used with "combobox" type
+         */
+        "placeholderIcon": string;
+        /**
+          * "s" | "m" | "l": scale to render the component
+         */
+        "scale": "s" | "m" | "l";
         /**
           * string[]: list of layer ids that have been selected by the end user
          */
-        "selectedLayerIds": string[];
+        "selectedIds": string[];
         /**
-          * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
+          * boolean: when true standalone tables will also be available
          */
-        "selectionMode": SelectionMode;
+        "showTables": boolean;
+        /**
+          * "select" | "combobox" | "dropdown": type of component to leverage
+         */
+        "type": "select" | "combobox" | "dropdown";
     }
-    interface MapSearch {
+    interface MapLegend {
         /**
-          * Clears the state of the search widget
-          * @returns Promise that resolves when the operation is complete
+          * esri/widgets/Legend: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Legend.html  Legend instance
          */
-        "clear": () => Promise<void>;
+        "legendWidget": __esri.Legend;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
+    }
+    interface MapPicker {
+        /**
+          * IMapInfo[]: array of map infos (name and id)
+         */
+        "mapInfos": IMapInfo[];
+    }
+    interface MapSearch {
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * boolean: When true the selected feature popup will be shown when serach result is found
+         */
+        "popupEnabled": boolean;
+        /**
+          * boolean: When true a graphic will be added for the search result
+         */
+        "resultGraphicEnabled": boolean;
         /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
         "searchConfiguration": ISearchConfiguration;
+        /**
+          * string: Text entered by the end user. Used to search against the locator.
+         */
+        "searchTerm": string;
+        /**
+          * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
+         */
+        "searchWidget": __esri.widgetsSearch;
     }
     interface MapSelectTools {
         /**
@@ -268,7 +535,7 @@ export namespace Components {
          */
         "layerViews": __esri.FeatureLayerView[];
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
         /**
@@ -304,36 +571,74 @@ export namespace Components {
          */
         "sketchPolygonSymbol": __esri.SimpleFillSymbol;
     }
-    interface MediaCard {
+    interface MapTools {
         /**
-          * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
          */
-        "values": IMediaCardValues[];
+        "basemapConfig": IBasemapConfig;
+        /**
+          * boolean: when true the basemap widget will be available
+         */
+        "enableBasemap": boolean;
+        /**
+          * boolean: when true the floor filter widget will be available
+         */
+        "enableFloorFilter": boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFullscreen": boolean;
+        /**
+          * boolean: when true the legend widget will be available
+         */
+        "enableLegend": boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch": boolean;
+        /**
+          * "horizontal" | "vertical": used to control the orientation of the tools
+         */
+        "layout": "horizontal" | "vertical";
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
     }
     interface PciCalculator {
     }
     interface PdfDownload {
+        /**
+          * number: The default number of labels per page to export
+         */
+        "defaultNumLabelsPerPage": number;
         /**
           * boolean: Controls the enabled/disabled state of download
          */
         "disabled": boolean;
         /**
           * Downloads csv of mailing labels for the provided list of ids
+          * @param webmap Webmap containing layer
           * @param exportInfos Information about items to be exported
           * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
           * @param addColumnTitle Indicates if column headings should be included in output
           * @returns Promise resolving when function is done
          */
-        "downloadCSV": (exportInfos: IExportInfos, removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>;
+        "downloadCSV": (webmap: __esri.Map, exportInfos: IExportInfos, removeDuplicates: boolean, addColumnTitle?: boolean) => Promise<void>;
         /**
           * Downloads pdf of mailing labels for the provided list of ids
+          * @param webmap Webmap containing layer
           * @param exportInfos Information about items to be exported
           * @param removeDuplicates When true a single label is generated when multiple featues have a shared address value
           * @param title Title for each page
           * @param initialImageDataUrl Data URL of image for first page
           * @returns Promise resolving when function is done
          */
-        "downloadPDF": (exportInfos: IExportInfos, removeDuplicates?: boolean, title?: string, initialImageDataUrl?: string) => Promise<void>;
+        "downloadPDF": (webmap: __esri.Map, exportInfos: IExportInfos, removeDuplicates?: boolean, title?: string, initialImageDataUrl?: string) => Promise<void>;
     }
     interface PublicNotification {
         /**
@@ -361,6 +666,14 @@ export namespace Components {
          */
         "defaultBufferUnit": DistanceUnit;
         /**
+          * string: The default value to use for the export title
+         */
+        "defaultExportTitle": string;
+        /**
+          * number: The default number of labels per page to export
+         */
+        "defaultNumLabelsPerPage": number;
+        /**
           * The effect that will be applied when featureHighlightEnabled is true  esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
          */
         "featureEffect": __esri.FeatureEffect;
@@ -369,7 +682,7 @@ export namespace Components {
          */
         "featureHighlightEnabled": boolean;
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
         /**
@@ -415,7 +728,7 @@ export namespace Components {
          */
         "enabledLayerIds": string[];
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
         /**
@@ -526,19 +839,9 @@ export namespace Components {
     }
     interface SolutionSpatialRef {
         /**
-          * Returns the spatial reference description of the supplied value. (Exposes protected method `_createSpatialRefDisplay` for testing.)
-          * @param value WKID or WKT or null for default
-          * @returns If component is using a WKID, description using WKID; otherwise, the WKT; defaults to 102100
-         */
-        "createSpatialRefDisplay": (value: string) => Promise<ISpatialRefRepresentation>;
-        /**
           * The wkid that will be used as the default when no user selection has been made.
          */
         "defaultWkid": number;
-        /**
-          * Returns the current spatial reference description. (Exposes protected variable `spatialRef` for testing.)
-         */
-        "getSpatialRef": () => Promise<ISpatialRefRepresentation>;
         /**
           * When true, all but the main switch are disabled to prevent interaction.
          */
@@ -551,12 +854,6 @@ export namespace Components {
           * Contains the public value for this component, which is a wkid or a wkt.
          */
         "value": string;
-        /**
-          * Converts a WKID into a spatial reference description. (Exposes protected method `_wkidToDisplay` for testing.)
-          * @param wkid WKID to look up
-          * @returns Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
-         */
-        "wkidToDisplay": (wkid: number) => Promise<string>;
     }
     interface SolutionTemplateData {
         /**
@@ -583,6 +880,36 @@ export namespace Components {
          */
         "value": string;
     }
+    interface SpatialRef {
+        /**
+          * Returns the spatial reference description of the supplied value. (Exposes protected method `_createSpatialRefDisplay` for testing.)
+          * @param value WKID or WKT or null for default
+          * @returns If component is using a WKID, description using WKID; otherwise, the WKT; defaults to 102100
+         */
+        "createSpatialRefDisplay": (value: string) => Promise<ISpatialRefRepresentation>;
+        /**
+          * The wkid that will be used as the default when no user selection has been made.
+         */
+        "defaultWkid": number;
+        /**
+          * When true, all are disabled to prevent interaction.
+         */
+        "disabled": boolean;
+        /**
+          * Returns the current spatial reference description. (Exposes protected variable `spatialRef` for testing.)
+         */
+        "getSpatialRef": () => Promise<ISpatialRefRepresentation>;
+        /**
+          * Contains the public value for this component, which is a wkid or a wkt.
+         */
+        "value": string;
+        /**
+          * Converts a WKID into a spatial reference description. (Exposes protected method `_wkidToDisplay` for testing.)
+          * @param wkid WKID to look up
+          * @returns Description, or "WKID &lt;wkid&gt;" if a description doesn't exist for the WKID
+         */
+        "wkidToDisplay": (wkid: number) => Promise<string>;
+    }
     interface StoreManager {
         /**
           * Credentials for requests
@@ -606,6 +933,22 @@ export interface DeductCalculatorCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLDeductCalculatorElement;
 }
+export interface EditCardCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLEditCardElement;
+}
+export interface InfoCardCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLInfoCardElement;
+}
+export interface LayerTableCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLLayerTableElement;
+}
+export interface LayoutManagerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLLayoutManagerElement;
+}
 export interface MapCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapCardElement;
@@ -618,9 +961,9 @@ export interface MapLayerPickerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapLayerPickerElement;
 }
-export interface MapSearchCustomEvent<T> extends CustomEvent<T> {
+export interface MapPickerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
-    target: HTMLMapSearchElement;
+    target: HTMLMapPickerElement;
 }
 export interface MapSelectToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -650,18 +993,35 @@ export interface SolutionVariablesCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLSolutionVariablesElement;
 }
+export interface SpatialRefCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSpatialRefElement;
+}
 export interface StoreManagerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLStoreManagerElement;
 }
 declare global {
-    interface HTMLAddRecordModalElement extends Components.AddRecordModal, HTMLStencilElement {
+    interface HTMLBasemapGalleryElement extends Components.BasemapGallery, HTMLStencilElement {
     }
-    var HTMLAddRecordModalElement: {
-        prototype: HTMLAddRecordModalElement;
-        new (): HTMLAddRecordModalElement;
+    var HTMLBasemapGalleryElement: {
+        prototype: HTMLBasemapGalleryElement;
+        new (): HTMLBasemapGalleryElement;
     };
+    interface HTMLBufferToolsElementEventMap {
+        "bufferComplete": __esri.Polygon | __esri.Polygon[];
+        "distanceChanged": IValueChange;
+        "unitChanged": IValueChange;
+    }
     interface HTMLBufferToolsElement extends Components.BufferTools, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLBufferToolsElementEventMap>(type: K, listener: (this: HTMLBufferToolsElement, ev: BufferToolsCustomEvent<HTMLBufferToolsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLBufferToolsElementEventMap>(type: K, listener: (this: HTMLBufferToolsElement, ev: BufferToolsCustomEvent<HTMLBufferToolsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLBufferToolsElement: {
         prototype: HTMLBufferToolsElement;
@@ -672,12 +1032,6 @@ declare global {
     var HTMLCardManagerElement: {
         prototype: HTMLCardManagerElement;
         new (): HTMLCardManagerElement;
-    };
-    interface HTMLCommentCardElement extends Components.CommentCard, HTMLStencilElement {
-    }
-    var HTMLCommentCardElement: {
-        prototype: HTMLCommentCardElement;
-        new (): HTMLCommentCardElement;
     };
     interface HTMLCrowdsourceManagerElement extends Components.CrowdsourceManager, HTMLStencilElement {
     }
@@ -691,19 +1045,59 @@ declare global {
         prototype: HTMLCrowdsourceReporterElement;
         new (): HTMLCrowdsourceReporterElement;
     };
+    interface HTMLDeductCalculatorElementEventMap {
+        "deductValueComplete": string;
+    }
     interface HTMLDeductCalculatorElement extends Components.DeductCalculator, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDeductCalculatorElementEventMap>(type: K, listener: (this: HTMLDeductCalculatorElement, ev: DeductCalculatorCustomEvent<HTMLDeductCalculatorElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDeductCalculatorElementEventMap>(type: K, listener: (this: HTMLDeductCalculatorElement, ev: DeductCalculatorCustomEvent<HTMLDeductCalculatorElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLDeductCalculatorElement: {
         prototype: HTMLDeductCalculatorElement;
         new (): HTMLDeductCalculatorElement;
     };
-    interface HTMLEditRecordModalElement extends Components.EditRecordModal, HTMLStencilElement {
+    interface HTMLEditCardElementEventMap {
+        "closeEdit": void;
+        "editsComplete": void;
     }
-    var HTMLEditRecordModalElement: {
-        prototype: HTMLEditRecordModalElement;
-        new (): HTMLEditRecordModalElement;
+    interface HTMLEditCardElement extends Components.EditCard, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLEditCardElementEventMap>(type: K, listener: (this: HTMLEditCardElement, ev: EditCardCustomEvent<HTMLEditCardElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLEditCardElementEventMap>(type: K, listener: (this: HTMLEditCardElement, ev: EditCardCustomEvent<HTMLEditCardElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLEditCardElement: {
+        prototype: HTMLEditCardElement;
+        new (): HTMLEditCardElement;
     };
+    interface HTMLFloorFilterElement extends Components.FloorFilter, HTMLStencilElement {
+    }
+    var HTMLFloorFilterElement: {
+        prototype: HTMLFloorFilterElement;
+        new (): HTMLFloorFilterElement;
+    };
+    interface HTMLInfoCardElementEventMap {
+        "selectionChanged": __esri.Graphic;
+    }
     interface HTMLInfoCardElement extends Components.InfoCard, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLInfoCardElementEventMap>(type: K, listener: (this: HTMLInfoCardElement, ev: InfoCardCustomEvent<HTMLInfoCardElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLInfoCardElementEventMap>(type: K, listener: (this: HTMLInfoCardElement, ev: InfoCardCustomEvent<HTMLInfoCardElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLInfoCardElement: {
         prototype: HTMLInfoCardElement;
@@ -715,11 +1109,40 @@ declare global {
         prototype: HTMLJsonEditorElement;
         new (): HTMLJsonEditorElement;
     };
+    interface HTMLLayerTableElementEventMap {
+        "featureSelectionChange": number[];
+        "openFilterOptions": void;
+    }
     interface HTMLLayerTableElement extends Components.LayerTable, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLLayerTableElementEventMap>(type: K, listener: (this: HTMLLayerTableElement, ev: LayerTableCustomEvent<HTMLLayerTableElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLLayerTableElementEventMap>(type: K, listener: (this: HTMLLayerTableElement, ev: LayerTableCustomEvent<HTMLLayerTableElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLLayerTableElement: {
         prototype: HTMLLayerTableElement;
         new (): HTMLLayerTableElement;
+    };
+    interface HTMLLayoutManagerElementEventMap {
+        "layoutChanged": ELayoutMode;
+    }
+    interface HTMLLayoutManagerElement extends Components.LayoutManager, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLLayoutManagerElementEventMap>(type: K, listener: (this: HTMLLayoutManagerElement, ev: LayoutManagerCustomEvent<HTMLLayoutManagerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLLayoutManagerElementEventMap>(type: K, listener: (this: HTMLLayoutManagerElement, ev: LayoutManagerCustomEvent<HTMLLayoutManagerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLLayoutManagerElement: {
+        prototype: HTMLLayoutManagerElement;
+        new (): HTMLLayoutManagerElement;
     };
     interface HTMLListItemElement extends Components.ListItem, HTMLStencilElement {
     }
@@ -727,23 +1150,90 @@ declare global {
         prototype: HTMLListItemElement;
         new (): HTMLListItemElement;
     };
+    interface HTMLMapCardElementEventMap {
+        "mapChanged": IMapChange;
+        "beforeMapChanged": void;
+    }
     interface HTMLMapCardElement extends Components.MapCard, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMapCardElementEventMap>(type: K, listener: (this: HTMLMapCardElement, ev: MapCardCustomEvent<HTMLMapCardElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMapCardElementEventMap>(type: K, listener: (this: HTMLMapCardElement, ev: MapCardCustomEvent<HTMLMapCardElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMapCardElement: {
         prototype: HTMLMapCardElement;
         new (): HTMLMapCardElement;
     };
+    interface HTMLMapDrawToolsElementEventMap {
+        "selectionLoadingChange": boolean;
+        "sketchGraphicsChange": ISketchGraphicsChange;
+        "drawUndo": void;
+        "drawRedo": void;
+    }
     interface HTMLMapDrawToolsElement extends Components.MapDrawTools, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMapDrawToolsElementEventMap>(type: K, listener: (this: HTMLMapDrawToolsElement, ev: MapDrawToolsCustomEvent<HTMLMapDrawToolsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMapDrawToolsElementEventMap>(type: K, listener: (this: HTMLMapDrawToolsElement, ev: MapDrawToolsCustomEvent<HTMLMapDrawToolsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMapDrawToolsElement: {
         prototype: HTMLMapDrawToolsElement;
         new (): HTMLMapDrawToolsElement;
     };
+    interface HTMLMapFullscreenElement extends Components.MapFullscreen, HTMLStencilElement {
+    }
+    var HTMLMapFullscreenElement: {
+        prototype: HTMLMapFullscreenElement;
+        new (): HTMLMapFullscreenElement;
+    };
+    interface HTMLMapLayerPickerElementEventMap {
+        "noLayersFound": void;
+        "layerSelectionChange": string[];
+    }
     interface HTMLMapLayerPickerElement extends Components.MapLayerPicker, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMapLayerPickerElementEventMap>(type: K, listener: (this: HTMLMapLayerPickerElement, ev: MapLayerPickerCustomEvent<HTMLMapLayerPickerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMapLayerPickerElementEventMap>(type: K, listener: (this: HTMLMapLayerPickerElement, ev: MapLayerPickerCustomEvent<HTMLMapLayerPickerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMapLayerPickerElement: {
         prototype: HTMLMapLayerPickerElement;
         new (): HTMLMapLayerPickerElement;
+    };
+    interface HTMLMapLegendElement extends Components.MapLegend, HTMLStencilElement {
+    }
+    var HTMLMapLegendElement: {
+        prototype: HTMLMapLegendElement;
+        new (): HTMLMapLegendElement;
+    };
+    interface HTMLMapPickerElementEventMap {
+        "mapInfoChange": IMapInfo;
+    }
+    interface HTMLMapPickerElement extends Components.MapPicker, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMapPickerElementEventMap>(type: K, listener: (this: HTMLMapPickerElement, ev: MapPickerCustomEvent<HTMLMapPickerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMapPickerElementEventMap>(type: K, listener: (this: HTMLMapPickerElement, ev: MapPickerCustomEvent<HTMLMapPickerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLMapPickerElement: {
+        prototype: HTMLMapPickerElement;
+        new (): HTMLMapPickerElement;
     };
     interface HTMLMapSearchElement extends Components.MapSearch, HTMLStencilElement {
     }
@@ -751,17 +1241,28 @@ declare global {
         prototype: HTMLMapSearchElement;
         new (): HTMLMapSearchElement;
     };
+    interface HTMLMapSelectToolsElementEventMap {
+        "selectionSetChange": number;
+    }
     interface HTMLMapSelectToolsElement extends Components.MapSelectTools, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMapSelectToolsElementEventMap>(type: K, listener: (this: HTMLMapSelectToolsElement, ev: MapSelectToolsCustomEvent<HTMLMapSelectToolsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMapSelectToolsElementEventMap>(type: K, listener: (this: HTMLMapSelectToolsElement, ev: MapSelectToolsCustomEvent<HTMLMapSelectToolsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMapSelectToolsElement: {
         prototype: HTMLMapSelectToolsElement;
         new (): HTMLMapSelectToolsElement;
     };
-    interface HTMLMediaCardElement extends Components.MediaCard, HTMLStencilElement {
+    interface HTMLMapToolsElement extends Components.MapTools, HTMLStencilElement {
     }
-    var HTMLMediaCardElement: {
-        prototype: HTMLMediaCardElement;
-        new (): HTMLMediaCardElement;
+    var HTMLMapToolsElement: {
+        prototype: HTMLMapToolsElement;
+        new (): HTMLMapToolsElement;
     };
     interface HTMLPciCalculatorElement extends Components.PciCalculator, HTMLStencilElement {
     }
@@ -775,13 +1276,36 @@ declare global {
         prototype: HTMLPdfDownloadElement;
         new (): HTMLPdfDownloadElement;
     };
+    interface HTMLPublicNotificationElementEventMap {
+        "searchConfigurationChange": ISearchConfiguration;
+    }
     interface HTMLPublicNotificationElement extends Components.PublicNotification, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLPublicNotificationElementEventMap>(type: K, listener: (this: HTMLPublicNotificationElement, ev: PublicNotificationCustomEvent<HTMLPublicNotificationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLPublicNotificationElementEventMap>(type: K, listener: (this: HTMLPublicNotificationElement, ev: PublicNotificationCustomEvent<HTMLPublicNotificationElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLPublicNotificationElement: {
         prototype: HTMLPublicNotificationElement;
         new (): HTMLPublicNotificationElement;
     };
+    interface HTMLRefineSelectionElementEventMap {
+        "selectionLoadingChange": boolean;
+        "selectionSetsChanged": ISelectionSet[];
+    }
     interface HTMLRefineSelectionElement extends Components.RefineSelection, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLRefineSelectionElementEventMap>(type: K, listener: (this: HTMLRefineSelectionElement, ev: RefineSelectionCustomEvent<HTMLRefineSelectionElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLRefineSelectionElementEventMap>(type: K, listener: (this: HTMLRefineSelectionElement, ev: RefineSelectionCustomEvent<HTMLRefineSelectionElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLRefineSelectionElement: {
         prototype: HTMLRefineSelectionElement;
@@ -793,7 +1317,18 @@ declare global {
         prototype: HTMLSolutionConfigurationElement;
         new (): HTMLSolutionConfigurationElement;
     };
+    interface HTMLSolutionContentsElementEventMap {
+        "solutionItemSelected": string;
+    }
     interface HTMLSolutionContentsElement extends Components.SolutionContents, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSolutionContentsElementEventMap>(type: K, listener: (this: HTMLSolutionContentsElement, ev: SolutionContentsCustomEvent<HTMLSolutionContentsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSolutionContentsElementEventMap>(type: K, listener: (this: HTMLSolutionContentsElement, ev: SolutionContentsCustomEvent<HTMLSolutionContentsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLSolutionContentsElement: {
         prototype: HTMLSolutionContentsElement;
@@ -823,7 +1358,18 @@ declare global {
         prototype: HTMLSolutionItemSharingElement;
         new (): HTMLSolutionItemSharingElement;
     };
+    interface HTMLSolutionOrganizationVariablesElementEventMap {
+        "organizationVariableSelected": { itemId: string, value: string };
+    }
     interface HTMLSolutionOrganizationVariablesElement extends Components.SolutionOrganizationVariables, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSolutionOrganizationVariablesElementEventMap>(type: K, listener: (this: HTMLSolutionOrganizationVariablesElement, ev: SolutionOrganizationVariablesCustomEvent<HTMLSolutionOrganizationVariablesElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSolutionOrganizationVariablesElementEventMap>(type: K, listener: (this: HTMLSolutionOrganizationVariablesElement, ev: SolutionOrganizationVariablesCustomEvent<HTMLSolutionOrganizationVariablesElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLSolutionOrganizationVariablesElement: {
         prototype: HTMLSolutionOrganizationVariablesElement;
@@ -835,7 +1381,18 @@ declare global {
         prototype: HTMLSolutionResourceItemElement;
         new (): HTMLSolutionResourceItemElement;
     };
+    interface HTMLSolutionSpatialRefElementEventMap {
+        "featureServiceSpatialReferenceChange": { name: string, enabled: boolean };
+    }
     interface HTMLSolutionSpatialRefElement extends Components.SolutionSpatialRef, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSolutionSpatialRefElementEventMap>(type: K, listener: (this: HTMLSolutionSpatialRefElement, ev: SolutionSpatialRefCustomEvent<HTMLSolutionSpatialRefElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSolutionSpatialRefElementEventMap>(type: K, listener: (this: HTMLSolutionSpatialRefElement, ev: SolutionSpatialRefCustomEvent<HTMLSolutionSpatialRefElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLSolutionSpatialRefElement: {
         prototype: HTMLSolutionSpatialRefElement;
@@ -847,37 +1404,80 @@ declare global {
         prototype: HTMLSolutionTemplateDataElement;
         new (): HTMLSolutionTemplateDataElement;
     };
+    interface HTMLSolutionVariablesElementEventMap {
+        "solutionVariableSelected": { itemId: string, value: string };
+    }
     interface HTMLSolutionVariablesElement extends Components.SolutionVariables, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSolutionVariablesElementEventMap>(type: K, listener: (this: HTMLSolutionVariablesElement, ev: SolutionVariablesCustomEvent<HTMLSolutionVariablesElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSolutionVariablesElementEventMap>(type: K, listener: (this: HTMLSolutionVariablesElement, ev: SolutionVariablesCustomEvent<HTMLSolutionVariablesElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLSolutionVariablesElement: {
         prototype: HTMLSolutionVariablesElement;
         new (): HTMLSolutionVariablesElement;
     };
+    interface HTMLSpatialRefElementEventMap {
+        "spatialReferenceChange": IValueChange;
+    }
+    interface HTMLSpatialRefElement extends Components.SpatialRef, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSpatialRefElementEventMap>(type: K, listener: (this: HTMLSpatialRefElement, ev: SpatialRefCustomEvent<HTMLSpatialRefElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSpatialRefElementEventMap>(type: K, listener: (this: HTMLSpatialRefElement, ev: SpatialRefCustomEvent<HTMLSpatialRefElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLSpatialRefElement: {
+        prototype: HTMLSpatialRefElement;
+        new (): HTMLSpatialRefElement;
+    };
+    interface HTMLStoreManagerElementEventMap {
+        "stateLoaded": any;
+    }
     interface HTMLStoreManagerElement extends Components.StoreManager, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLStoreManagerElementEventMap>(type: K, listener: (this: HTMLStoreManagerElement, ev: StoreManagerCustomEvent<HTMLStoreManagerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLStoreManagerElementEventMap>(type: K, listener: (this: HTMLStoreManagerElement, ev: StoreManagerCustomEvent<HTMLStoreManagerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLStoreManagerElement: {
         prototype: HTMLStoreManagerElement;
         new (): HTMLStoreManagerElement;
     };
     interface HTMLElementTagNameMap {
-        "add-record-modal": HTMLAddRecordModalElement;
+        "basemap-gallery": HTMLBasemapGalleryElement;
         "buffer-tools": HTMLBufferToolsElement;
         "card-manager": HTMLCardManagerElement;
-        "comment-card": HTMLCommentCardElement;
         "crowdsource-manager": HTMLCrowdsourceManagerElement;
         "crowdsource-reporter": HTMLCrowdsourceReporterElement;
         "deduct-calculator": HTMLDeductCalculatorElement;
-        "edit-record-modal": HTMLEditRecordModalElement;
+        "edit-card": HTMLEditCardElement;
+        "floor-filter": HTMLFloorFilterElement;
         "info-card": HTMLInfoCardElement;
         "json-editor": HTMLJsonEditorElement;
         "layer-table": HTMLLayerTableElement;
+        "layout-manager": HTMLLayoutManagerElement;
         "list-item": HTMLListItemElement;
         "map-card": HTMLMapCardElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
+        "map-fullscreen": HTMLMapFullscreenElement;
         "map-layer-picker": HTMLMapLayerPickerElement;
+        "map-legend": HTMLMapLegendElement;
+        "map-picker": HTMLMapPickerElement;
         "map-search": HTMLMapSearchElement;
         "map-select-tools": HTMLMapSelectToolsElement;
-        "media-card": HTMLMediaCardElement;
+        "map-tools": HTMLMapToolsElement;
         "pci-calculator": HTMLPciCalculatorElement;
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
@@ -893,15 +1493,24 @@ declare global {
         "solution-spatial-ref": HTMLSolutionSpatialRefElement;
         "solution-template-data": HTMLSolutionTemplateDataElement;
         "solution-variables": HTMLSolutionVariablesElement;
+        "spatial-ref": HTMLSpatialRefElement;
         "store-manager": HTMLStoreManagerElement;
     }
 }
 declare namespace LocalJSX {
-    interface AddRecordModal {
+    interface BasemapGallery {
         /**
-          * When true the component is displayed
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
          */
-        "open"?: boolean;
+        "basemapConfig"?: IBasemapConfig;
+        /**
+          * esri/widgets/BasemapGallery: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-BasemapGallery.html  BasemapGallery instance
+         */
+        "basemapWidget"?: __esri.BasemapGallery;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
     }
     interface BufferTools {
         /**
@@ -951,14 +1560,96 @@ declare namespace LocalJSX {
         "unit"?: DistanceUnit;
     }
     interface CardManager {
-    }
-    interface CommentCard {
+        /**
+          * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+         */
+        "layer"?: __esri.FeatureLayer;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected"?: boolean;
     }
     interface CrowdsourceManager {
+        /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig"?: IBasemapConfig;
+        /**
+          * boolean: when true the grid will display like the previous manager app with the table across the top
+         */
+        "classicGrid"?: boolean;
+        /**
+          * boolean: when true the layer table will auto refresh the data
+         */
+        "enableAutoRefresh"?: boolean;
+        /**
+          * boolean: when true the basemap widget will be available
+         */
+        "enableBasemap"?: boolean;
+        /**
+          * boolean: when true the export to csv button will be available
+         */
+        "enableCSV"?: boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFloorFilter"?: boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFullscreen"?: boolean;
+        /**
+          * boolean: when true the home widget will be available
+         */
+        "enableHome"?: boolean;
+        /**
+          * boolean: when true edits can be applied directly within the table
+         */
+        "enableInlineEdit"?: boolean;
+        /**
+          * boolean: when true the legend widget will be available
+         */
+        "enableLegend"?: boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch"?: boolean;
+        /**
+          * boolean: when true the zoom widget will be available
+         */
+        "enableZoom"?: boolean;
+        /**
+          * boolean: when true no map is displayed for the app
+         */
+        "hideMap"?: boolean;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */
         "mapInfos"?: IMapInfo[];
+        /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers"?: boolean;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
+        /**
+          * boolean: when true the table will be sorted by objectid in descending order by default
+         */
+        "showNewestFirst"?: boolean;
+        /**
+          * theme: "light" | "dark" theme to be used
+         */
+        "theme"?: theme;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected"?: boolean;
     }
     interface CrowdsourceReporter {
     }
@@ -968,21 +1659,67 @@ declare namespace LocalJSX {
          */
         "onDeductValueComplete"?: (event: DeductCalculatorCustomEvent<string>) => void;
     }
-    interface EditRecordModal {
+    interface EditCard {
+        /**
+          * The index of the current graphic
+         */
+        "graphicIndex"?: number;
+        /**
+          * esri/Graphic[]: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
+         */
+        "graphics"?: __esri.Graphic[];
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the Editor widget should be closed
+         */
+        "onCloseEdit"?: (event: EditCardCustomEvent<void>) => void;
+        /**
+          * Emitted on demand when edits are completed on current edit layer
+         */
+        "onEditsComplete"?: (event: EditCardCustomEvent<void>) => void;
         /**
           * When true the component is displayed
          */
         "open"?: boolean;
     }
+    interface FloorFilter {
+        /**
+          * boolean: when true the Floor Filter widget will be available
+         */
+        "enabled"?: boolean;
+        /**
+          * esri/widgets/FloorFilter: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FloorFilter.html  FloorFilter instance
+         */
+        "floorFilterWidget"?: __esri.FloorFilter;
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+    }
     interface InfoCard {
         /**
-          * string: the components title
+          * esri/Graphic: https://developers.arcgis.com/javascript/latest/api-reference/esri-Graphic.html
          */
-        "cardTitle"?: string;
+        "graphics"?: __esri.Graphic[];
         /**
-          * IInfoCardValues: key value pairs to show in the components table
+          * boolean: when true a loading indicator will be shown
          */
-        "values"?: IInfoCardValues;
+        "isLoading"?: boolean;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the selected index changes
+         */
+        "onSelectionChanged"?: (event: InfoCardCustomEvent<__esri.Graphic>) => void;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected"?: boolean;
     }
     interface JsonEditor {
         /**
@@ -1004,13 +1741,91 @@ declare namespace LocalJSX {
     }
     interface LayerTable {
         /**
+          * boolean: when true the layer table will auto refresh the data
+         */
+        "enableAutoRefresh"?: boolean;
+        /**
+          * boolean: when true the export to csv button will be available
+         */
+        "enableCSV"?: boolean;
+        /**
+          * boolean: when true edits can be applied directly within the table
+         */
+        "enableInlineEdit"?: boolean;
+        /**
+          * boolean: when true the zoom button will be enabled
+         */
+        "enableZoom"?: boolean;
+        /**
+          * IMapInfo: key configuration details about the current map
+         */
+        "mapInfo"?: IMapInfo;
+        /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when a layer is selected
+         */
+        "onFeatureSelectionChange"?: (event: LayerTableCustomEvent<number[]>) => void;
+        /**
+          * Emitted on demand when the filters button is clicked
+         */
+        "onOpenFilterOptions"?: (event: LayerTableCustomEvent<void>) => void;
+        /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers"?: boolean;
+        /**
+          * boolean: when true the table will be sorted by objectid in descending order by default
+         */
+        "showNewestFirst"?: boolean;
+        /**
+          * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
+         */
+        "zoomAndScrollToSelected"?: boolean;
+    }
+    interface LayoutManager {
+        /**
+          * Emitted when the layout should change
+         */
+        "onLayoutChanged"?: (event: LayoutManagerCustomEvent<ELayoutMode>) => void;
     }
     interface ListItem {
     }
     interface MapCard {
+        /**
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+         */
+        "basemapConfig"?: IBasemapConfig;
+        /**
+          * boolean: when true the basemap widget will be available
+         */
+        "enableBasemap"?: boolean;
+        /**
+          * boolean: when true the floor filter widget will be available
+         */
+        "enableFloorFilter"?: boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFullscreen"?: boolean;
+        /**
+          * boolean: when true the home widget will be available
+         */
+        "enableHome"?: boolean;
+        /**
+          * boolean: when true the legend widget will be available
+         */
+        "enableLegend"?: boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch"?: boolean;
+        /**
+          * boolean: When true the map display will be hidden
+         */
+        "hidden"?: boolean;
         /**
           * IMapInfo[]: array of map infos (name and id)
          */
@@ -1020,13 +1835,17 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
-          * Emitted when the expand button is clicked
+          * Emitted before a new map is loaded
          */
-        "onExpandMap"?: (event: MapCardCustomEvent<EExpandType>) => void;
+        "onBeforeMapChanged"?: (event: MapCardCustomEvent<void>) => void;
         /**
           * Emitted when a new map is loaded
          */
-        "onMapChanged"?: (event: MapCardCustomEvent<__esri.MapView>) => void;
+        "onMapChanged"?: (event: MapCardCustomEvent<IMapChange>) => void;
+        /**
+          * theme: "light" | "dark" theme to be used
+         */
+        "theme"?: theme;
     }
     interface MapDrawTools {
         /**
@@ -1086,11 +1905,29 @@ declare namespace LocalJSX {
          */
         "undoEnabled"?: boolean;
     }
+    interface MapFullscreen {
+        /**
+          * esri/widgets/Fullscreen: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Fullscreen.html
+         */
+        "fullscreenWidget"?: __esri.Fullscreen;
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+    }
     interface MapLayerPicker {
+        /**
+          * "transparent" | "solid": controls the button appearance when using the "dropdown" type
+         */
+        "appearance"?: "transparent" | "solid";
         /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
         "enabledLayerIds"?: string[];
+        /**
+          * string[]: Optional list of enabled table ids  If empty all tables will be available
+         */
+        "enabledTableIds"?: string[];
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -1100,27 +1937,79 @@ declare namespace LocalJSX {
          */
         "onLayerSelectionChange"?: (event: MapLayerPickerCustomEvent<string[]>) => void;
         /**
+          * Emitted on demand when no valid layers are found
+         */
+        "onNoLayersFound"?: (event: MapLayerPickerCustomEvent<void>) => void;
+        /**
+          * boolean: When true only editable layers that support the update capability will be available
+         */
+        "onlyShowUpdatableLayers"?: boolean;
+        /**
+          * string: optional placeholder icon used with "combobox" type
+         */
+        "placeholderIcon"?: string;
+        /**
+          * "s" | "m" | "l": scale to render the component
+         */
+        "scale"?: "s" | "m" | "l";
+        /**
           * string[]: list of layer ids that have been selected by the end user
          */
-        "selectedLayerIds"?: string[];
+        "selectedIds"?: string[];
         /**
-          * SelectionMode: "single" | "multi"  Should the component support selection against a single layer or multiple layers.
+          * boolean: when true standalone tables will also be available
          */
-        "selectionMode"?: SelectionMode;
+        "showTables"?: boolean;
+        /**
+          * "select" | "combobox" | "dropdown": type of component to leverage
+         */
+        "type"?: "select" | "combobox" | "dropdown";
     }
-    interface MapSearch {
+    interface MapLegend {
+        /**
+          * esri/widgets/Legend: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Legend.html  Legend instance
+         */
+        "legendWidget"?: __esri.Legend;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+    }
+    interface MapPicker {
         /**
-          * Emitted on demand when the status of the search widget changes
+          * IMapInfo[]: array of map infos (name and id)
          */
-        "onSearchChange"?: (event: MapSearchCustomEvent<ISearchResult>) => void;
+        "mapInfos"?: IMapInfo[];
+        /**
+          * Emitted when a new map is loaded
+         */
+        "onMapInfoChange"?: (event: MapPickerCustomEvent<IMapInfo>) => void;
+    }
+    interface MapSearch {
+        /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * boolean: When true the selected feature popup will be shown when serach result is found
+         */
+        "popupEnabled"?: boolean;
+        /**
+          * boolean: When true a graphic will be added for the search result
+         */
+        "resultGraphicEnabled"?: boolean;
         /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
         "searchConfiguration"?: ISearchConfiguration;
+        /**
+          * string: Text entered by the end user. Used to search against the locator.
+         */
+        "searchTerm"?: string;
+        /**
+          * esri/widgets/Search: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html
+         */
+        "searchWidget"?: __esri.widgetsSearch;
     }
     interface MapSelectTools {
         /**
@@ -1160,7 +2049,7 @@ declare namespace LocalJSX {
          */
         "layerViews"?: __esri.FeatureLayerView[];
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         /**
@@ -1200,15 +2089,51 @@ declare namespace LocalJSX {
          */
         "sketchPolygonSymbol"?: __esri.SimpleFillSymbol;
     }
-    interface MediaCard {
+    interface MapTools {
         /**
-          * IMediaCardValues[]: Array of objects that contain the name, description, and image to display
+          * IBasemapConfig: List of any basemaps to filter out from the basemap widget
          */
-        "values"?: IMediaCardValues[];
+        "basemapConfig"?: IBasemapConfig;
+        /**
+          * boolean: when true the basemap widget will be available
+         */
+        "enableBasemap"?: boolean;
+        /**
+          * boolean: when true the floor filter widget will be available
+         */
+        "enableFloorFilter"?: boolean;
+        /**
+          * boolean: when true the fullscreen widget will be available
+         */
+        "enableFullscreen"?: boolean;
+        /**
+          * boolean: when true the legend widget will be available
+         */
+        "enableLegend"?: boolean;
+        /**
+          * boolean: when true the search widget will be available
+         */
+        "enableSearch"?: boolean;
+        /**
+          * "horizontal" | "vertical": used to control the orientation of the tools
+         */
+        "layout"?: "horizontal" | "vertical";
+        /**
+          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
     }
     interface PciCalculator {
     }
     interface PdfDownload {
+        /**
+          * number: The default number of labels per page to export
+         */
+        "defaultNumLabelsPerPage"?: number;
         /**
           * boolean: Controls the enabled/disabled state of download
          */
@@ -1240,6 +2165,14 @@ declare namespace LocalJSX {
          */
         "defaultBufferUnit"?: DistanceUnit;
         /**
+          * string: The default value to use for the export title
+         */
+        "defaultExportTitle"?: string;
+        /**
+          * number: The default number of labels per page to export
+         */
+        "defaultNumLabelsPerPage"?: number;
+        /**
           * The effect that will be applied when featureHighlightEnabled is true  esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
          */
         "featureEffect"?: __esri.FeatureEffect;
@@ -1248,7 +2181,7 @@ declare namespace LocalJSX {
          */
         "featureHighlightEnabled"?: boolean;
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         /**
@@ -1298,7 +2231,7 @@ declare namespace LocalJSX {
          */
         "enabledLayerIds"?: string[];
         /**
-          * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         /**
@@ -1458,6 +2391,21 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    interface SpatialRef {
+        /**
+          * The wkid that will be used as the default when no user selection has been made.
+         */
+        "defaultWkid"?: number;
+        /**
+          * When true, all are disabled to prevent interaction.
+         */
+        "disabled"?: boolean;
+        "onSpatialReferenceChange"?: (event: SpatialRefCustomEvent<IValueChange>) => void;
+        /**
+          * Contains the public value for this component, which is a wkid or a wkt.
+         */
+        "value"?: string;
+    }
     interface StoreManager {
         /**
           * Credentials for requests
@@ -1474,24 +2422,28 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface IntrinsicElements {
-        "add-record-modal": AddRecordModal;
+        "basemap-gallery": BasemapGallery;
         "buffer-tools": BufferTools;
         "card-manager": CardManager;
-        "comment-card": CommentCard;
         "crowdsource-manager": CrowdsourceManager;
         "crowdsource-reporter": CrowdsourceReporter;
         "deduct-calculator": DeductCalculator;
-        "edit-record-modal": EditRecordModal;
+        "edit-card": EditCard;
+        "floor-filter": FloorFilter;
         "info-card": InfoCard;
         "json-editor": JsonEditor;
         "layer-table": LayerTable;
+        "layout-manager": LayoutManager;
         "list-item": ListItem;
         "map-card": MapCard;
         "map-draw-tools": MapDrawTools;
+        "map-fullscreen": MapFullscreen;
         "map-layer-picker": MapLayerPicker;
+        "map-legend": MapLegend;
+        "map-picker": MapPicker;
         "map-search": MapSearch;
         "map-select-tools": MapSelectTools;
-        "media-card": MediaCard;
+        "map-tools": MapTools;
         "pci-calculator": PciCalculator;
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
@@ -1507,6 +2459,7 @@ declare namespace LocalJSX {
         "solution-spatial-ref": SolutionSpatialRef;
         "solution-template-data": SolutionTemplateData;
         "solution-variables": SolutionVariables;
+        "spatial-ref": SpatialRef;
         "store-manager": StoreManager;
     }
 }
@@ -1514,24 +2467,28 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "add-record-modal": LocalJSX.AddRecordModal & JSXBase.HTMLAttributes<HTMLAddRecordModalElement>;
+            "basemap-gallery": LocalJSX.BasemapGallery & JSXBase.HTMLAttributes<HTMLBasemapGalleryElement>;
             "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
             "card-manager": LocalJSX.CardManager & JSXBase.HTMLAttributes<HTMLCardManagerElement>;
-            "comment-card": LocalJSX.CommentCard & JSXBase.HTMLAttributes<HTMLCommentCardElement>;
             "crowdsource-manager": LocalJSX.CrowdsourceManager & JSXBase.HTMLAttributes<HTMLCrowdsourceManagerElement>;
             "crowdsource-reporter": LocalJSX.CrowdsourceReporter & JSXBase.HTMLAttributes<HTMLCrowdsourceReporterElement>;
             "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;
-            "edit-record-modal": LocalJSX.EditRecordModal & JSXBase.HTMLAttributes<HTMLEditRecordModalElement>;
+            "edit-card": LocalJSX.EditCard & JSXBase.HTMLAttributes<HTMLEditCardElement>;
+            "floor-filter": LocalJSX.FloorFilter & JSXBase.HTMLAttributes<HTMLFloorFilterElement>;
             "info-card": LocalJSX.InfoCard & JSXBase.HTMLAttributes<HTMLInfoCardElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "layer-table": LocalJSX.LayerTable & JSXBase.HTMLAttributes<HTMLLayerTableElement>;
+            "layout-manager": LocalJSX.LayoutManager & JSXBase.HTMLAttributes<HTMLLayoutManagerElement>;
             "list-item": LocalJSX.ListItem & JSXBase.HTMLAttributes<HTMLListItemElement>;
             "map-card": LocalJSX.MapCard & JSXBase.HTMLAttributes<HTMLMapCardElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
+            "map-fullscreen": LocalJSX.MapFullscreen & JSXBase.HTMLAttributes<HTMLMapFullscreenElement>;
             "map-layer-picker": LocalJSX.MapLayerPicker & JSXBase.HTMLAttributes<HTMLMapLayerPickerElement>;
+            "map-legend": LocalJSX.MapLegend & JSXBase.HTMLAttributes<HTMLMapLegendElement>;
+            "map-picker": LocalJSX.MapPicker & JSXBase.HTMLAttributes<HTMLMapPickerElement>;
             "map-search": LocalJSX.MapSearch & JSXBase.HTMLAttributes<HTMLMapSearchElement>;
             "map-select-tools": LocalJSX.MapSelectTools & JSXBase.HTMLAttributes<HTMLMapSelectToolsElement>;
-            "media-card": LocalJSX.MediaCard & JSXBase.HTMLAttributes<HTMLMediaCardElement>;
+            "map-tools": LocalJSX.MapTools & JSXBase.HTMLAttributes<HTMLMapToolsElement>;
             "pci-calculator": LocalJSX.PciCalculator & JSXBase.HTMLAttributes<HTMLPciCalculatorElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
@@ -1547,6 +2504,7 @@ declare module "@stencil/core" {
             "solution-spatial-ref": LocalJSX.SolutionSpatialRef & JSXBase.HTMLAttributes<HTMLSolutionSpatialRefElement>;
             "solution-template-data": LocalJSX.SolutionTemplateData & JSXBase.HTMLAttributes<HTMLSolutionTemplateDataElement>;
             "solution-variables": LocalJSX.SolutionVariables & JSXBase.HTMLAttributes<HTMLSolutionVariablesElement>;
+            "spatial-ref": LocalJSX.SpatialRef & JSXBase.HTMLAttributes<HTMLSpatialRefElement>;
             "store-manager": LocalJSX.StoreManager & JSXBase.HTMLAttributes<HTMLStoreManagerElement>;
         }
     }

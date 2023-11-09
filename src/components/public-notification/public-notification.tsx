@@ -74,6 +74,16 @@ export class PublicNotification {
   @Prop() defaultBufferUnit: DistanceUnit;
 
   /**
+   * string: The default value to use for the export title
+   */
+  @Prop() defaultExportTitle = "";
+
+  /**
+   * number: The default number of labels per page to export
+   */
+  @Prop() defaultNumLabelsPerPage = 6;
+
+  /**
    * The effect that will be applied when featureHighlightEnabled is true
    *
    * esri/layers/support/FeatureEffect: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureEffect.html
@@ -87,7 +97,7 @@ export class PublicNotification {
   @Prop() featureHighlightEnabled: boolean;
 
   /**
-   * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+   * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
 
@@ -171,6 +181,11 @@ export class PublicNotification {
    * utils/interfaces/EExportType: PDF or CSV
    */
   @State() _exportType: EExportType = EExportType.PDF;
+
+  /**
+   * boolean: Flag that will control a loading indicator on the export button
+   */
+  @State() _fetchingData = false;
 
   /**
    * boolean: When window size is 600px or less this value will be true
@@ -260,9 +275,14 @@ export class PublicNotification {
   protected _mediaQuery: MediaQueryList;
 
   /**
+   * Component that contains the text to be used as the title for PDF pages
+   */
+  protected _titleElement: HTMLCalciteInputTextElement;
+
+  /**
    * Text to be used as title on PDF pages
    */
-  protected _title: HTMLCalciteInputTextElement;
+  protected _titleValue = undefined;
 
   /**
    * number: The number of selected features
@@ -357,11 +377,13 @@ export class PublicNotification {
     this._checkPopups();
 
     if (this.mapView?.popup) {
-      this.mapView.popup.autoOpenEnabled = pageType !== EPageType.LIST ? false : this._popupsEnabled;
+      this.mapView.popupEnabled = pageType !== EPageType.LIST ? false : this._popupsEnabled;
     }
 
     if (pageType === EPageType.EXPORT) {
+      this._fetchingData = true;
       this._numDuplicates = await this._getNumDuplicates();
+      this._fetchingData = false;
     }
 
     this._clearHighlight();
@@ -586,9 +608,9 @@ export class PublicNotification {
     pageType: EPageType,
     tip: string
   ): VNode {
-    const sizeClass = this.showRefineSelection ? " w-1-3" : " w-1-2";
+    const sizeClass = this.showRefineSelection ? "w-1-3" : "w-1-2";
     return (
-      <calcite-action-group class={"action-center" + sizeClass} layout="horizontal">
+      <calcite-action-group class={sizeClass} layout="horizontal">
         <div class="background-override">
           <calcite-action
             active={this._pageType === pageType}
@@ -665,7 +687,7 @@ export class PublicNotification {
     return (
       <calcite-panel>
         {this._getLabel(this._translations.myLists)}
-        {this._getNotice(hasSets ? this._translations.listHasSetsTip : this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1")}
+        {this._getNotice(hasSets ? this._translations.listHasSetsTip : this._translations.selectLayerAndAdd, "padding-sides-1 padding-bottom-1", "word-wrap-anywhere")}
         {hasSets ? this._getSelectionSetList() : (this._getOnboardingImage())}
         <div class="display-flex padding-1">
           <calcite-button onClick={() => { this._setPageType(EPageType.SELECT) }} width="full"><span class="font-weight-500">{this._translations.add}</span></calcite-button>
@@ -779,7 +801,7 @@ export class PublicNotification {
    */
   protected async _getNumDuplicates(): Promise<number> {
     const exportInfos: IExportInfos = this._getExportInfos();
-    const labels = await consolidateLabels(exportInfos);
+    const labels = await consolidateLabels(this.mapView.map, exportInfos);
     const duplicatesRemoved = removeDuplicateLabels(labels);
     return labels.length - duplicatesRemoved.length;
   }
@@ -852,7 +874,7 @@ export class PublicNotification {
     return (
       <calcite-panel>
         {this._getLabel(this._translations.stepTwoFull, true)}
-        {this._getNotice(noticeText)}
+        {this._getNotice(noticeText, "padding-1", "word-wrap-anywhere")}
         <div>
           <map-select-tools
             bufferColor={this.bufferColor}
@@ -972,6 +994,7 @@ export class PublicNotification {
                 <div class="padding-1 display-flex">
                   <calcite-button
                     disabled={!this._downloadActive}
+                    loading={this._fetchingData}
                     onClick={() => void this._export()}
                     width="full"
                   >
@@ -1009,6 +1032,7 @@ export class PublicNotification {
   protected _getExportOptions(): VNode {
     const displayClass = this._exportType === EExportType.PDF ? "display-block" : "display-none";
     const titleOptionsClass = this._addTitle ? "display-block" : "display-none";
+    const title = this._titleValue ? this._titleValue : this.defaultExportTitle ? this.defaultExportTitle : "";
     return (
       <div class={displayClass}>
         {this._getLabel(this._translations.pdfOptions, true)}
@@ -1021,6 +1045,7 @@ export class PublicNotification {
         </div>
         <div class="padding-sides-1">
           <pdf-download
+            defaultNumLabelsPerPage={parseInt(this.defaultNumLabelsPerPage.toString(), 10)}
             disabled={!this._downloadActive}
             ref={(el) => { this._downloadTools = el }}
           />
@@ -1042,8 +1067,10 @@ export class PublicNotification {
           {this._getLabel(this._translations.title, true, "")}
           <calcite-input-text
             class="padding-sides-1"
+            onCalciteInputTextInput={() => this._changeTitle()}
             placeholder={this._translations.titlePlaceholder}
-            ref={(el) => { this._title = el }}
+            ref={(el) => { this._titleElement = el }}
+            value={title}
           />
         </div>
 
@@ -1142,6 +1169,13 @@ export class PublicNotification {
   }
 
   /**
+   * Store the user defined title value
+   */
+  protected _changeTitle(): void {
+    this._titleValue = this._titleElement.value;
+  }
+
+  /**
    * Create an informational notice
    *
    * @param message the message to display in the notice
@@ -1152,11 +1186,12 @@ export class PublicNotification {
    */
   protected _getNotice(
     message: string,
-    noticeClass = "padding-1"
+    noticeClass = "padding-1",
+    messageClass = ""
   ): VNode {
     return (
       <calcite-notice class={noticeClass} icon="lightbulb" kind="success" open={true}>
-        <div slot="message">{message}</div>
+        <div class={messageClass} slot="message">{message}</div>
       </calcite-notice>
     );
   }
@@ -1245,7 +1280,9 @@ export class PublicNotification {
       return ss;
     });
     this._downloadActive = isActive;
+    this._fetchingData = true;
     this._numDuplicates = await this._getNumDuplicates();
+    this._fetchingData = false;
     await this._highlightFeatures();
   }
 
@@ -1265,20 +1302,26 @@ export class PublicNotification {
         initialImageDataUrl = screenshot?.dataUrl;
       }
 
+      this._fetchingData = true;
       // Create the labels for each selection set
-      void this._downloadTools.downloadPDF(
+      await this._downloadTools.downloadPDF(
+        this.mapView.map,
         exportInfos,
         this._removeDuplicates.checked,
-        this._addTitle ? this._title.value : "",
+        this._addTitle ? this._titleElement.value : "",
         initialImageDataUrl
       );
+      this._fetchingData = false;
     }
 
     if (this._exportType === EExportType.CSV) {
-      void this._downloadTools.downloadCSV(
+      this._fetchingData = true;
+      await this._downloadTools.downloadCSV(
+        this.mapView.map,
         exportInfos,
         this._removeDuplicates.checked
       );
+      this._fetchingData = false;
     }
   }
 
@@ -1517,7 +1560,7 @@ export class PublicNotification {
    */
   protected _checkPopups(): void {
     if (typeof this._popupsEnabled !== 'boolean') {
-      this._popupsEnabled = this.mapView?.popup.autoOpenEnabled;
+      this._popupsEnabled = this.mapView?.popupEnabled;
     }
   }
 
