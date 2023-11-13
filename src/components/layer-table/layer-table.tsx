@@ -637,6 +637,12 @@ export class LayerTable {
     }, []);
   }
 
+  /**
+   * Get the list of fields as dropdown items and store the current selected state so
+   * we can show/hide the appropriate fields
+   *
+   * @returns Node with the fields as dropdown items
+   */
   _getFieldlist(): VNode {
     return this._columnsInfo ? (
       <calcite-dropdown-group
@@ -1232,7 +1238,7 @@ export class LayerTable {
       return prev;
     }, {});
   }
-  
+
   /**
    * Select the feature that was specified via url params
    *
