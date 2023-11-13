@@ -69,6 +69,11 @@ export class CrowdsourceManager {
   @Prop() enableAutoRefresh = false;
 
   /**
+   * boolean: when true the layer table will support drag/drop of columns to adjust order
+   */
+  @Prop() enableColumnReorder = true;
+
+  /**
    * boolean: when true the export to csv button will be available
    */
   @Prop() enableCSV = true;
@@ -664,6 +669,7 @@ export class CrowdsourceManager {
             defaultOid={hasMapAndLayer && !this.defaultGlobalId ? this._defaultOid : undefined}
             enableAutoRefresh={this.enableAutoRefresh}
             enableCSV={this.enableCSV}
+            enableColumnReorder={this.enableColumnReorder}
             enableInlineEdit={this.enableInlineEdit}
             enableZoom={this.enableZoom}
             mapInfo={this._mapInfo}

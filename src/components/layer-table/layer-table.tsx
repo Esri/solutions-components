@@ -63,6 +63,11 @@ export class LayerTable {
   @Prop() enableAutoRefresh: boolean;
 
   /**
+   * boolean: when true the layer table will support drag/drop of columns to adjust order
+   */
+  @Prop() enableColumnReorder = true;
+
+  /**
    * boolean: when true the export to csv button will be available
    */
   @Prop() enableCSV: boolean;
@@ -1135,6 +1140,7 @@ export class LayerTable {
           autoRefreshEnabled: this.enableAutoRefresh,
           layer: this._layer,
           view: this.mapView,
+          columnReorderingEnabled: this.enableColumnReorder,
           editingEnabled: this._editEnabled && this.enableInlineEdit,
           highlightEnabled: true,
           multiSortEnabled: false,

@@ -14,6 +14,7 @@
 | `defaultOid`              | --                            | number: when provided this will be used to select a feature in the table by default                                | `number[]` | `undefined` |
 | `enableAutoRefresh`       | `enable-auto-refresh`         | boolean: when true the layer table will auto refresh the data                                                      | `boolean`  | `undefined` |
 | `enableCSV`               | `enable-c-s-v`                | boolean: when true the export to csv button will be available                                                      | `boolean`  | `undefined` |
+| `enableColumnReorder`     | `enable-column-reorder`       | boolean: when true the layer table will support drag/drop of columns to adjust order                               | `boolean`  | `true`      |
 | `enableInlineEdit`        | `enable-inline-edit`          | boolean: when true edits can be applied directly within the table                                                  | `boolean`  | `undefined` |
 | `enableZoom`              | `enable-zoom`                 | boolean: when true the zoom button will be enabled                                                                 | `boolean`  | `undefined` |
 | `mapInfo`                 | --                            | IMapInfo: key configuration details about the current map                                                          | `IMapInfo` | `undefined` |
