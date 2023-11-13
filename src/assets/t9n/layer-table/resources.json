@@ -19,5 +19,6 @@
   "showAll": "Show all",
   "recordsSelected": "Total: {{total}} | Selection: {{selected}}",
   "cancel": "Cancel",
-  "moreOptions": "More table options"
+  "moreOptions": "More table options",
+  "showHideColumns": "Show/hide columns"
 }
