@@ -118,6 +118,10 @@ export namespace Components {
          */
         "enableCSV": boolean;
         /**
+          * boolean: when true the layer table will support drag/drop of columns to adjust order
+         */
+        "enableColumnReorder": boolean;
+        /**
           * boolean: when true the fullscreen widget will be available
          */
         "enableFloorFilter": boolean;
@@ -208,6 +212,10 @@ export namespace Components {
          */
         "loginTitle": string;
         /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView": __esri.MapView;
+        /**
           * string: The word(s) to display in the reports submit button
          */
         "reportButtonText": string;
@@ -227,10 +235,6 @@ export namespace Components {
           * boolean: When true the comments from all users will be visible
          */
         "showComments": boolean;
-        /**
-          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView": __esri.MapView;
     }
     interface DeductCalculator {
     }
@@ -354,6 +358,10 @@ export namespace Components {
           * boolean: when true the export to csv button will be available
          */
         "enableCSV": boolean;
+        /**
+          * boolean: when true the layer table will support drag/drop of columns to adjust order
+         */
+        "enableColumnReorder": boolean;
         /**
           * boolean: when true edits can be applied directly within the table
          */
@@ -1769,6 +1777,10 @@ declare namespace LocalJSX {
          */
         "enableCSV"?: boolean;
         /**
+          * boolean: when true the layer table will support drag/drop of columns to adjust order
+         */
+        "enableColumnReorder"?: boolean;
+        /**
           * boolean: when true the fullscreen widget will be available
          */
         "enableFloorFilter"?: boolean;
@@ -1859,6 +1871,10 @@ declare namespace LocalJSX {
          */
         "loginTitle"?: string;
         /**
+          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
+         */
+        "mapView"?: __esri.MapView;
+        /**
           * string: The word(s) to display in the reports submit button
          */
         "reportButtonText"?: string;
@@ -1878,10 +1894,6 @@ declare namespace LocalJSX {
           * boolean: When true the comments from all users will be visible
          */
         "showComments"?: boolean;
-        /**
-          * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
-         */
-        "mapView"?: __esri.MapView;
     }
     interface DeductCalculator {
         /**
@@ -1996,6 +2008,10 @@ declare namespace LocalJSX {
           * boolean: when true the export to csv button will be available
          */
         "enableCSV"?: boolean;
+        /**
+          * boolean: when true the layer table will support drag/drop of columns to adjust order
+         */
+        "enableColumnReorder"?: boolean;
         /**
           * boolean: when true edits can be applied directly within the table
          */
