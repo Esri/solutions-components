@@ -47,6 +47,7 @@ Promise resolving with the current feature
 - calcite-loader
 - calcite-button
 - calcite-tooltip
+- calcite-action
 - [edit-card](../edit-card)
 - calcite-alert
 
@@ -57,10 +58,13 @@ graph TD;
   info-card --> calcite-loader
   info-card --> calcite-button
   info-card --> calcite-tooltip
+  info-card --> calcite-action
   info-card --> edit-card
   info-card --> calcite-alert
   calcite-button --> calcite-loader
   calcite-button --> calcite-icon
+  calcite-action --> calcite-loader
+  calcite-action --> calcite-icon
   edit-card --> calcite-notice
   edit-card --> calcite-loader
   calcite-notice --> calcite-icon

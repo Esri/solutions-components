@@ -82,6 +82,11 @@ export class InfoCard {
   @State() _editRecordOpen = false;
 
   /**
+   * When true the features list view will be displayed
+   */
+  @State() _showListView = false;
+
+  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
@@ -209,7 +214,7 @@ export class InfoCard {
     const loadingClass = this.isLoading ? "" : "display-none";
     const featureNodeClass = this.isLoading || this._editRecordOpen ? "display-none" : "position-absolute";
     const editClass = !this.isLoading && this._editRecordOpen ? "position-absolute" : "display-none";
-    const editButtonClass = !this.isLoading && this._editRecordOpen ? "display-none" : "";
+    const editButtonClass = (!this.isLoading && this._editRecordOpen) || this._showListView ? "display-none" : "";
     const nextBackDisabled = this._features?.features?.length < 2;
     return (
       <Host>
@@ -253,7 +258,13 @@ export class InfoCard {
                   </calcite-tooltip>
                 </div>
                 <div>
-                  {this._getCount()}
+                  <calcite-action
+                    icon="list"
+                    onClick={() => this._toggleListView()}
+                    scale="s"
+                    text={this._getCount()}
+                    textEnabled={true}
+                  />
                 </div>
                 <div class="min-width-100">
                   <calcite-button
@@ -339,6 +350,14 @@ export class InfoCard {
             heading: true
           }
         });
+        this.reactiveUtils.watch(
+          () => (this._features.viewModel as any).featureMenuOpen,
+          (isOpen) => {
+            if (!isOpen) {
+              this._showListView = isOpen;
+            }
+          });
+
         if (this.zoomAndScrollToSelected) {
           this.reactiveUtils.watch(
             () => this._features.selectedFeatureIndex,
@@ -416,6 +435,19 @@ export class InfoCard {
     return this._translations.indexOfTotal
       .replace("{{index}}", index)
       .replace("{{total}}", total);
+  }
+
+  /**
+   * Toggle the visibility of the features list view
+   */
+  protected _toggleListView(): void {
+    this._showListView = !this._showListView;
+    const i = this._features.selectedFeatureIndex;
+    this._features.open({
+      features: this.graphics,
+      featureMenuOpen: this._showListView
+    });
+    this._features.selectedFeatureIndex = i;
   }
 
   /**

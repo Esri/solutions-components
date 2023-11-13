@@ -108,6 +108,7 @@ graph TD;
   info-card --> calcite-loader
   info-card --> calcite-button
   info-card --> calcite-tooltip
+  info-card --> calcite-action
   info-card --> edit-card
   info-card --> calcite-alert
   edit-card --> calcite-notice
