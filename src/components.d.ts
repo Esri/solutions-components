@@ -10,6 +10,8 @@ import { UserSession } from "@esri/solution-common";
 export { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 export { UserSession } from "@esri/solution-common";
 export namespace Components {
+    interface ArcgisLogin {
+    }
     interface BasemapGallery {
         /**
           * IBasemapConfig: List of any basemaps to filter out from the basemap widget
@@ -178,9 +180,25 @@ export namespace Components {
          */
         "description": string;
         /**
-          * string: landing page image
+          * boolean: When true the anonymous users will be allowed to submit reports and comments
          */
-        "image": string;
+        "enableAnonymousAccess": boolean;
+        /**
+          * boolean: When true the anonymous users will be allowed to submit comments
+         */
+        "enableAnonymousComments": boolean;
+        /**
+          * boolean: When true the user will be allowed to submit comments
+         */
+        "enableComments": boolean;
+        /**
+          * boolean: When true the user will be provided a login page
+         */
+        "enableLogin": boolean;
+        /**
+          * boolean: When true the user will be allowed to submit new reports
+         */
+        "enableNewReports": boolean;
         /**
           * string[]: list of layer ids
          */
@@ -189,6 +207,26 @@ export namespace Components {
           * string: The text that will display at the top of the landing page
          */
         "loginTitle": string;
+        /**
+          * string: The word(s) to display in the reports submit button
+         */
+        "reportButtonText": string;
+        /**
+          * string: The message to display when the report has been submitted
+         */
+        "reportSubmittedMessage": string;
+        /**
+          * string: The word(s) to display in the reports header
+         */
+        "reportsHeader": string;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration": ISearchConfiguration;
+        /**
+          * boolean: When true the comments from all users will be visible
+         */
+        "showComments": boolean;
         /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -213,6 +251,12 @@ export namespace Components {
           * When true the component is displayed
          */
         "open": boolean;
+    }
+    interface FeatureComments {
+    }
+    interface FeatureFormFlowItem {
+    }
+    interface FeaturesFlowItem {
     }
     interface FloorFilter {
         /**
@@ -341,7 +385,9 @@ export namespace Components {
     }
     interface LayoutManager {
     }
-    interface ListItem {
+    interface ListFlowItem {
+    }
+    interface LocationFlowItem {
     }
     interface MapCard {
         /**
@@ -775,6 +821,8 @@ export namespace Components {
          */
         "sketchPolygonSymbol": __esri.SimpleFillSymbol | any;
     }
+    interface RefineResultsFlowItem {
+    }
     interface RefineSelection {
         /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
@@ -804,6 +852,8 @@ export namespace Components {
           * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
          */
         "sketchPolygonSymbol": __esri.SimpleFillSymbol;
+    }
+    interface ShareItem {
     }
     interface SolutionConfiguration {
         /**
@@ -1059,6 +1109,12 @@ export interface StoreManagerCustomEvent<T> extends CustomEvent<T> {
     target: HTMLStoreManagerElement;
 }
 declare global {
+    interface HTMLArcgisLoginElement extends Components.ArcgisLogin, HTMLStencilElement {
+    }
+    var HTMLArcgisLoginElement: {
+        prototype: HTMLArcgisLoginElement;
+        new (): HTMLArcgisLoginElement;
+    };
     interface HTMLBasemapGalleryElement extends Components.BasemapGallery, HTMLStencilElement {
     }
     var HTMLBasemapGalleryElement: {
@@ -1137,6 +1193,24 @@ declare global {
         prototype: HTMLEditCardElement;
         new (): HTMLEditCardElement;
     };
+    interface HTMLFeatureCommentsElement extends Components.FeatureComments, HTMLStencilElement {
+    }
+    var HTMLFeatureCommentsElement: {
+        prototype: HTMLFeatureCommentsElement;
+        new (): HTMLFeatureCommentsElement;
+    };
+    interface HTMLFeatureFormFlowItemElement extends Components.FeatureFormFlowItem, HTMLStencilElement {
+    }
+    var HTMLFeatureFormFlowItemElement: {
+        prototype: HTMLFeatureFormFlowItemElement;
+        new (): HTMLFeatureFormFlowItemElement;
+    };
+    interface HTMLFeaturesFlowItemElement extends Components.FeaturesFlowItem, HTMLStencilElement {
+    }
+    var HTMLFeaturesFlowItemElement: {
+        prototype: HTMLFeaturesFlowItemElement;
+        new (): HTMLFeaturesFlowItemElement;
+    };
     interface HTMLFloorFilterElement extends Components.FloorFilter, HTMLStencilElement {
     }
     var HTMLFloorFilterElement: {
@@ -1201,11 +1275,17 @@ declare global {
         prototype: HTMLLayoutManagerElement;
         new (): HTMLLayoutManagerElement;
     };
-    interface HTMLListItemElement extends Components.ListItem, HTMLStencilElement {
+    interface HTMLListFlowItemElement extends Components.ListFlowItem, HTMLStencilElement {
     }
-    var HTMLListItemElement: {
-        prototype: HTMLListItemElement;
-        new (): HTMLListItemElement;
+    var HTMLListFlowItemElement: {
+        prototype: HTMLListFlowItemElement;
+        new (): HTMLListFlowItemElement;
+    };
+    interface HTMLLocationFlowItemElement extends Components.LocationFlowItem, HTMLStencilElement {
+    }
+    var HTMLLocationFlowItemElement: {
+        prototype: HTMLLocationFlowItemElement;
+        new (): HTMLLocationFlowItemElement;
     };
     interface HTMLMapCardElementEventMap {
         "mapChanged": IMapChange;
@@ -1350,6 +1430,12 @@ declare global {
         prototype: HTMLPublicNotificationElement;
         new (): HTMLPublicNotificationElement;
     };
+    interface HTMLRefineResultsFlowItemElement extends Components.RefineResultsFlowItem, HTMLStencilElement {
+    }
+    var HTMLRefineResultsFlowItemElement: {
+        prototype: HTMLRefineResultsFlowItemElement;
+        new (): HTMLRefineResultsFlowItemElement;
+    };
     interface HTMLRefineSelectionElementEventMap {
         "selectionLoadingChange": boolean;
         "selectionSetsChanged": ISelectionSet[];
@@ -1367,6 +1453,12 @@ declare global {
     var HTMLRefineSelectionElement: {
         prototype: HTMLRefineSelectionElement;
         new (): HTMLRefineSelectionElement;
+    };
+    interface HTMLShareItemElement extends Components.ShareItem, HTMLStencilElement {
+    }
+    var HTMLShareItemElement: {
+        prototype: HTMLShareItemElement;
+        new (): HTMLShareItemElement;
     };
     interface HTMLSolutionConfigurationElement extends Components.SolutionConfiguration, HTMLStencilElement {
     }
@@ -1513,6 +1605,7 @@ declare global {
         new (): HTMLStoreManagerElement;
     };
     interface HTMLElementTagNameMap {
+        "arcgis-login": HTMLArcgisLoginElement;
         "basemap-gallery": HTMLBasemapGalleryElement;
         "buffer-tools": HTMLBufferToolsElement;
         "card-manager": HTMLCardManagerElement;
@@ -1520,12 +1613,16 @@ declare global {
         "crowdsource-reporter": HTMLCrowdsourceReporterElement;
         "deduct-calculator": HTMLDeductCalculatorElement;
         "edit-card": HTMLEditCardElement;
+        "feature-comments": HTMLFeatureCommentsElement;
+        "feature-form-flow-item": HTMLFeatureFormFlowItemElement;
+        "features-flow-item": HTMLFeaturesFlowItemElement;
         "floor-filter": HTMLFloorFilterElement;
         "info-card": HTMLInfoCardElement;
         "json-editor": HTMLJsonEditorElement;
         "layer-table": HTMLLayerTableElement;
         "layout-manager": HTMLLayoutManagerElement;
-        "list-item": HTMLListItemElement;
+        "list-flow-item": HTMLListFlowItemElement;
+        "location-flow-item": HTMLLocationFlowItemElement;
         "map-card": HTMLMapCardElement;
         "map-draw-tools": HTMLMapDrawToolsElement;
         "map-fullscreen": HTMLMapFullscreenElement;
@@ -1538,7 +1635,9 @@ declare global {
         "pci-calculator": HTMLPciCalculatorElement;
         "pdf-download": HTMLPdfDownloadElement;
         "public-notification": HTMLPublicNotificationElement;
+        "refine-results-flow-item": HTMLRefineResultsFlowItemElement;
         "refine-selection": HTMLRefineSelectionElement;
+        "share-item": HTMLShareItemElement;
         "solution-configuration": HTMLSolutionConfigurationElement;
         "solution-contents": HTMLSolutionContentsElement;
         "solution-item": HTMLSolutionItemElement;
@@ -1555,6 +1654,8 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface ArcgisLogin {
+    }
     interface BasemapGallery {
         /**
           * IBasemapConfig: List of any basemaps to filter out from the basemap widget
@@ -1730,9 +1831,25 @@ declare namespace LocalJSX {
          */
         "description"?: string;
         /**
-          * string: landing page image
+          * boolean: When true the anonymous users will be allowed to submit reports and comments
          */
-        "image"?: string;
+        "enableAnonymousAccess"?: boolean;
+        /**
+          * boolean: When true the anonymous users will be allowed to submit comments
+         */
+        "enableAnonymousComments"?: boolean;
+        /**
+          * boolean: When true the user will be allowed to submit comments
+         */
+        "enableComments"?: boolean;
+        /**
+          * boolean: When true the user will be provided a login page
+         */
+        "enableLogin"?: boolean;
+        /**
+          * boolean: When true the user will be allowed to submit new reports
+         */
+        "enableNewReports"?: boolean;
         /**
           * string[]: list of layer ids
          */
@@ -1741,6 +1858,26 @@ declare namespace LocalJSX {
           * string: The text that will display at the top of the landing page
          */
         "loginTitle"?: string;
+        /**
+          * string: The word(s) to display in the reports submit button
+         */
+        "reportButtonText"?: string;
+        /**
+          * string: The message to display when the report has been submitted
+         */
+        "reportSubmittedMessage"?: string;
+        /**
+          * string: The word(s) to display in the reports header
+         */
+        "reportsHeader"?: string;
+        /**
+          * ISearchConfiguration: Configuration details for the Search widget
+         */
+        "searchConfiguration"?: ISearchConfiguration;
+        /**
+          * boolean: When true the comments from all users will be visible
+         */
+        "showComments"?: boolean;
         /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -1777,6 +1914,12 @@ declare namespace LocalJSX {
           * When true the component is displayed
          */
         "open"?: boolean;
+    }
+    interface FeatureComments {
+    }
+    interface FeatureFormFlowItem {
+    }
+    interface FeaturesFlowItem {
     }
     interface FloorFilter {
         /**
@@ -1896,7 +2039,9 @@ declare namespace LocalJSX {
          */
         "onLayoutChanged"?: (event: LayoutManagerCustomEvent<ELayoutMode>) => void;
     }
-    interface ListItem {
+    interface ListFlowItem {
+    }
+    interface LocationFlowItem {
     }
     interface MapCard {
         /**
@@ -2334,6 +2479,8 @@ declare namespace LocalJSX {
          */
         "sketchPolygonSymbol"?: __esri.SimpleFillSymbol | any;
     }
+    interface RefineResultsFlowItem {
+    }
     interface RefineSelection {
         /**
           * esri/views/layers/FeatureLayerView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html
@@ -2371,6 +2518,8 @@ declare namespace LocalJSX {
           * esri/symbols/SimpleFillSymbol | JSON representation: https://developers.arcgis.com/javascript/latest/api-reference/esri-symbols-SimpleFillSymbol.html
          */
         "sketchPolygonSymbol"?: __esri.SimpleFillSymbol;
+    }
+    interface ShareItem {
     }
     interface SolutionConfiguration {
         /**
@@ -2535,6 +2684,7 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface IntrinsicElements {
+        "arcgis-login": ArcgisLogin;
         "basemap-gallery": BasemapGallery;
         "buffer-tools": BufferTools;
         "card-manager": CardManager;
@@ -2542,12 +2692,16 @@ declare namespace LocalJSX {
         "crowdsource-reporter": CrowdsourceReporter;
         "deduct-calculator": DeductCalculator;
         "edit-card": EditCard;
+        "feature-comments": FeatureComments;
+        "feature-form-flow-item": FeatureFormFlowItem;
+        "features-flow-item": FeaturesFlowItem;
         "floor-filter": FloorFilter;
         "info-card": InfoCard;
         "json-editor": JsonEditor;
         "layer-table": LayerTable;
         "layout-manager": LayoutManager;
-        "list-item": ListItem;
+        "list-flow-item": ListFlowItem;
+        "location-flow-item": LocationFlowItem;
         "map-card": MapCard;
         "map-draw-tools": MapDrawTools;
         "map-fullscreen": MapFullscreen;
@@ -2560,7 +2714,9 @@ declare namespace LocalJSX {
         "pci-calculator": PciCalculator;
         "pdf-download": PdfDownload;
         "public-notification": PublicNotification;
+        "refine-results-flow-item": RefineResultsFlowItem;
         "refine-selection": RefineSelection;
+        "share-item": ShareItem;
         "solution-configuration": SolutionConfiguration;
         "solution-contents": SolutionContents;
         "solution-item": SolutionItem;
@@ -2580,6 +2736,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "arcgis-login": LocalJSX.ArcgisLogin & JSXBase.HTMLAttributes<HTMLArcgisLoginElement>;
             "basemap-gallery": LocalJSX.BasemapGallery & JSXBase.HTMLAttributes<HTMLBasemapGalleryElement>;
             "buffer-tools": LocalJSX.BufferTools & JSXBase.HTMLAttributes<HTMLBufferToolsElement>;
             "card-manager": LocalJSX.CardManager & JSXBase.HTMLAttributes<HTMLCardManagerElement>;
@@ -2587,12 +2744,16 @@ declare module "@stencil/core" {
             "crowdsource-reporter": LocalJSX.CrowdsourceReporter & JSXBase.HTMLAttributes<HTMLCrowdsourceReporterElement>;
             "deduct-calculator": LocalJSX.DeductCalculator & JSXBase.HTMLAttributes<HTMLDeductCalculatorElement>;
             "edit-card": LocalJSX.EditCard & JSXBase.HTMLAttributes<HTMLEditCardElement>;
+            "feature-comments": LocalJSX.FeatureComments & JSXBase.HTMLAttributes<HTMLFeatureCommentsElement>;
+            "feature-form-flow-item": LocalJSX.FeatureFormFlowItem & JSXBase.HTMLAttributes<HTMLFeatureFormFlowItemElement>;
+            "features-flow-item": LocalJSX.FeaturesFlowItem & JSXBase.HTMLAttributes<HTMLFeaturesFlowItemElement>;
             "floor-filter": LocalJSX.FloorFilter & JSXBase.HTMLAttributes<HTMLFloorFilterElement>;
             "info-card": LocalJSX.InfoCard & JSXBase.HTMLAttributes<HTMLInfoCardElement>;
             "json-editor": LocalJSX.JsonEditor & JSXBase.HTMLAttributes<HTMLJsonEditorElement>;
             "layer-table": LocalJSX.LayerTable & JSXBase.HTMLAttributes<HTMLLayerTableElement>;
             "layout-manager": LocalJSX.LayoutManager & JSXBase.HTMLAttributes<HTMLLayoutManagerElement>;
-            "list-item": LocalJSX.ListItem & JSXBase.HTMLAttributes<HTMLListItemElement>;
+            "list-flow-item": LocalJSX.ListFlowItem & JSXBase.HTMLAttributes<HTMLListFlowItemElement>;
+            "location-flow-item": LocalJSX.LocationFlowItem & JSXBase.HTMLAttributes<HTMLLocationFlowItemElement>;
             "map-card": LocalJSX.MapCard & JSXBase.HTMLAttributes<HTMLMapCardElement>;
             "map-draw-tools": LocalJSX.MapDrawTools & JSXBase.HTMLAttributes<HTMLMapDrawToolsElement>;
             "map-fullscreen": LocalJSX.MapFullscreen & JSXBase.HTMLAttributes<HTMLMapFullscreenElement>;
@@ -2605,7 +2766,9 @@ declare module "@stencil/core" {
             "pci-calculator": LocalJSX.PciCalculator & JSXBase.HTMLAttributes<HTMLPciCalculatorElement>;
             "pdf-download": LocalJSX.PdfDownload & JSXBase.HTMLAttributes<HTMLPdfDownloadElement>;
             "public-notification": LocalJSX.PublicNotification & JSXBase.HTMLAttributes<HTMLPublicNotificationElement>;
+            "refine-results-flow-item": LocalJSX.RefineResultsFlowItem & JSXBase.HTMLAttributes<HTMLRefineResultsFlowItemElement>;
             "refine-selection": LocalJSX.RefineSelection & JSXBase.HTMLAttributes<HTMLRefineSelectionElement>;
+            "share-item": LocalJSX.ShareItem & JSXBase.HTMLAttributes<HTMLShareItemElement>;
             "solution-configuration": LocalJSX.SolutionConfiguration & JSXBase.HTMLAttributes<HTMLSolutionConfigurationElement>;
             "solution-contents": LocalJSX.SolutionContents & JSXBase.HTMLAttributes<HTMLSolutionContentsElement>;
             "solution-item": LocalJSX.SolutionItem & JSXBase.HTMLAttributes<HTMLSolutionItemElement>;
