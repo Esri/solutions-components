@@ -78,6 +78,11 @@ export class LayerTable {
   @Prop() enableInlineEdit: boolean;
 
   /**
+   * boolean: when true the share widget will be available
+   */
+  @Prop() enableShare: boolean;
+
+  /**
    * boolean: when true the zoom button will be enabled
    */
   @Prop() enableZoom: boolean;
@@ -403,6 +408,11 @@ export class LayerTable {
   }) openFilterOptions: EventEmitter<void>;
 
   /**
+   * Emitted on demand when the share button is clicked
+   */
+  @Event() openShare: EventEmitter<boolean>;
+
+  /**
    * Scroll and zoom to the selected feature from the Features widget.
    *
    * @param evt CustomEvent the graphic for the current selection
@@ -574,7 +584,7 @@ export class LayerTable {
       >
         {this._getActionBar()}
         {this._getDropdown(id)}
-        {this._getToolTip("", "bottom", id, this._translations.moreOptions)}
+        {this.enableShare ? this._getShare("share") : undefined}
       </div>
     );
   }
@@ -818,7 +828,7 @@ export class LayerTable {
         return prev;
       }, 0);
 
-      const skipControls = ["solutions-more", "solutions-map-layer-picker-container"];
+      const skipControls = ["solutions-more", "solutions-map-layer-picker-container", "solutions-action-share"];
       if (controlsWidth > toolbarWidth) {
         if (this._toolbarSizeInfos.length > 0) {
           const controlsThatFit = [...this._toolbarSizeInfos].reverse().reduce((prev, cur) => {
@@ -1026,6 +1036,31 @@ export class LayerTable {
           textEnabled={true}
         />
         {this._getToolTip("", "bottom", icon, label)}
+      </div>
+    )
+  }
+
+  /**
+   * Get an action and tooltip for share
+   *
+   * @param icon string the name of the icon to display, will also be used in its id
+   *
+   * @returns VNode The node representing the DOM element that will contain the action
+   */
+  protected _getShare(
+    icon: string
+  ): VNode {
+    return (
+      <div class={"share-action height-51 border-bottom"} id={this._getId(icon)}>
+        <calcite-action
+          appearance="solid"
+          class="height-51"
+          icon={icon}
+          id={icon}
+          onClick={() => this.openShare.emit(true)}
+          textEnabled={false}
+        />
+        {this._getToolTip("", "bottom", icon, this._translations.share)}
       </div>
     )
   }

@@ -104,6 +104,11 @@ export class CrowdsourceManager {
   @Prop() enableSearch = true;
 
   /**
+   * boolean: when true the share widget will be available
+   */
+  @Prop() enableShare = false;
+
+  /**
    * boolean: when true the home widget will be available
    */
   @Prop() enableHome = true;
@@ -671,6 +676,7 @@ export class CrowdsourceManager {
             enableCSV={this.enableCSV}
             enableColumnReorder={this.enableColumnReorder}
             enableInlineEdit={this.enableInlineEdit}
+            enableShare={this.enableShare}
             enableZoom={this.enableZoom}
             mapInfo={this._mapInfo}
             mapView={this?._mapView}
