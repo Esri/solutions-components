@@ -80,7 +80,7 @@ export class LayerTable {
   /**
    * boolean: when true the share widget will be available
    */
-  @Prop() enableShare = false;
+  @Prop() enableShare: boolean;
 
   /**
    * boolean: when true the zoom button will be enabled
