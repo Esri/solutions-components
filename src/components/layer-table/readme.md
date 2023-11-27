@@ -16,6 +16,7 @@
 | `enableCSV`               | `enable-c-s-v`                | boolean: when true the export to csv button will be available                                                      | `boolean`  | `undefined` |
 | `enableColumnReorder`     | `enable-column-reorder`       | boolean: when true the layer table will support drag/drop of columns to adjust order                               | `boolean`  | `true`      |
 | `enableInlineEdit`        | `enable-inline-edit`          | boolean: when true edits can be applied directly within the table                                                  | `boolean`  | `undefined` |
+| `enableShare`             | `enable-share`                | boolean: when true the share widget will be available                                                              | `boolean`  | `false`     |
 | `enableZoom`              | `enable-zoom`                 | boolean: when true the zoom button will be enabled                                                                 | `boolean`  | `undefined` |
 | `mapInfo`                 | --                            | IMapInfo: key configuration details about the current map                                                          | `IMapInfo` | `undefined` |
 | `mapView`                 | --                            | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html             | `MapView`  | `undefined` |
@@ -30,6 +31,7 @@
 | ------------------------ | ---------------------------------------------------- | ----------------------- |
 | `featureSelectionChange` | Emitted on demand when a layer is selected           | `CustomEvent<number[]>` |
 | `openFilterOptions`      | Emitted on demand when the filters button is clicked | `CustomEvent<void>`     |
+| `openShare`              | Emitted on demand when the share button is clicked   | `CustomEvent<boolean>`  |
 
 
 ## Dependencies

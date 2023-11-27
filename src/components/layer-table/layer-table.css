@@ -100,3 +100,8 @@ vaadin-grid-cell-content {
   padding: var(--lumo-space-xs) var(--lumo-space-m) !important;
   font-size: 14px !important;
 }
+
+.share-action {
+  position: absolute;
+  right: 0;
+}
