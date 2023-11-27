@@ -1051,7 +1051,7 @@ export class LayerTable {
     icon: string
   ): VNode {
     return (
-      <div class={"share-action height-51"} id={this._getId(icon)}>
+      <div class={"share-action height-51 border-bottom"} id={this._getId(icon)}>
         <calcite-action
           appearance="solid"
           class="height-51"

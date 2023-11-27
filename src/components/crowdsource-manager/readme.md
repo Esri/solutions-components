@@ -25,7 +25,7 @@
 | `enableInlineEdit`        | `enable-inline-edit`          | boolean: when true edits can be applied directly within the table                                                  | `boolean`              | `false`     |
 | `enableLegend`            | `enable-legend`               | boolean: when true the legend widget will be available                                                             | `boolean`              | `true`      |
 | `enableSearch`            | `enable-search`               | boolean: when true the search widget will be available                                                             | `boolean`              | `true`      |
-| `enableShare`             | `enable-share`                | boolean: when true the share widget will be available                                                              | `boolean`              | `true`      |
+| `enableShare`             | `enable-share`                | boolean: when true the share widget will be available                                                              | `boolean`              | `false`     |
 | `enableZoom`              | `enable-zoom`                 | boolean: when true the zoom widget will be available                                                               | `boolean`              | `true`      |
 | `hideMap`                 | `hide-map`                    | boolean: when true no map is displayed for the app                                                                 | `boolean`              | `false`     |
 | `mapInfos`                | --                            | IMapInfo[]: array of map infos (name and id)                                                                       | `IMapInfo[]`           | `[]`        |
