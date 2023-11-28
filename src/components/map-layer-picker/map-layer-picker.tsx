@@ -420,13 +420,17 @@ export class MapLayerPicker {
           value={id}
         />
       ) : (
-        <calcite-dropdown-item
-          disabled={disabled}
-          onClick={disabled ? undefined : () => void this._setSelectedLayer(id)}
-          selected={selected}
-        >
-          {name}
-        </calcite-dropdown-item>
+          <calcite-dropdown-group
+            class={disabled ? "disabled" : ""}
+            selectionMode={disabled ? "none" : "single"}
+          >
+            <calcite-dropdown-item
+              onClick={disabled ? undefined : () => void this._setSelectedLayer(id)}
+              selected={selected}
+            >
+              {name}
+            </calcite-dropdown-item>
+          </calcite-dropdown-group>
       );
   }
 

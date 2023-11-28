@@ -278,6 +278,7 @@ export class EditCard {
             />
             <calcite-loader
               class={loadingClass}
+              label=""
               scale="s"
             />
           </div>

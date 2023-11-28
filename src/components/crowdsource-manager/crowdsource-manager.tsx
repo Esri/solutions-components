@@ -575,6 +575,7 @@ export class CrowdsourceManager {
             id={id}
             onClick={() => this._togglePopup()}
             slot="header-actions-end"
+            text=""
           />
           <calcite-tooltip
             class={themeClass}

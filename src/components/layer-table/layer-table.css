@@ -105,3 +105,10 @@ vaadin-grid-cell-content {
   position: absolute;
   right: 1;
 }
+
+.disabled {
+  cursor: default !important;
+  user-select: none;
+  opacity: var(--calcite-ui-opacity-disabled);
+  pointer-events: none;
+}
