@@ -46,3 +46,10 @@
 .height-100 {
   height: 100%;
 }
+
+.disabled {
+  cursor: default !important;
+  user-select: none;
+  opacity: var(--calcite-ui-opacity-disabled);
+  pointer-events: none;
+}

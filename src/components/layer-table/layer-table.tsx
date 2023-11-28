@@ -980,13 +980,18 @@ export class LayerTable {
         {
           dropdownItems.map(item => {
             return (
-              <calcite-dropdown-item
-                iconStart={item.isSublist && this._showHideOpen ? "chevron-down" : item.icon}
-                id="solutions-subset-list"
-                onClick={item.func}
+              <calcite-dropdown-group
+                class={item.disabled ? "disabled" : ""}
+                selectionMode={item.disabled ? "none" : "single"}
               >
-                {item.label}
-              </calcite-dropdown-item>
+                <calcite-dropdown-item
+                  iconStart={item.isSublist && this._showHideOpen ? "chevron-down" : item.icon}
+                  id="solutions-subset-list"
+                  onClick={item.func}
+                >
+                  {item.label}
+                </calcite-dropdown-item>
+              </calcite-dropdown-group>
             )
           })
         }
@@ -1035,7 +1040,7 @@ export class LayerTable {
           text={label}
           textEnabled={true}
         />
-        {this._getToolTip("", "bottom", icon, label)}
+        {this._getToolTip("bottom", icon, label)}
       </div>
     )
   }
@@ -1058,9 +1063,10 @@ export class LayerTable {
           icon={icon}
           id={icon}
           onClick={() => this.openShare.emit(true)}
+          text=""
           textEnabled={false}
         />
-        {this._getToolTip("", "bottom", icon, this._translations.share)}
+        {this._getToolTip("bottom", icon, this._translations.share)}
       </div>
     )
   }
@@ -1076,14 +1082,12 @@ export class LayerTable {
    * @returns VNode The tooltip node
    */
   protected _getToolTip(
-    label: string,
     placement: string,
     referenceElement: string,
     text: string
   ): VNode {
     return (
       <calcite-tooltip
-        label={label}
         placement={placement}
         reference-element={referenceElement}
       >
@@ -1139,7 +1143,7 @@ export class LayerTable {
             {label}
           </calcite-button>
         </calcite-action>
-        {this._getToolTip("", "bottom", icon, label)}
+        {this._getToolTip("bottom", icon, label)}
       </div>
     )
   }
