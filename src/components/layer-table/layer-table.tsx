@@ -410,7 +410,7 @@ export class LayerTable {
   /**
    * Emitted on demand when the share button is clicked
    */
-  @Event() openShare: EventEmitter<boolean>;
+  @Event() openShare: EventEmitter<__esri.MapView>;
 
   /**
    * Scroll and zoom to the selected feature from the Features widget.
@@ -1059,10 +1059,10 @@ export class LayerTable {
       <div class={"share-action height-51 border-bottom"} id={this._getId(icon)}>
         <calcite-action
           appearance="solid"
-          class="height-51"
+          class="height-50"
           icon={icon}
           id={icon}
-          onClick={() => this.openShare.emit(true)}
+          onClick={() => this.openShare.emit(this.mapView)}
           text=""
           textEnabled={false}
         />

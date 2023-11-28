@@ -58,6 +58,10 @@
   height: 51px;
 }
 
+.height-50 {
+  height: 50px;
+}
+
 .bottom-left {
   position: absolute;
   left: 0;
@@ -103,7 +107,12 @@ vaadin-grid-cell-content {
 
 .share-action {
   position: absolute;
-  right: 1;
+  right: 0;
+}
+
+html[dir="rtl"] .share-action {
+  position: absolute;
+  left: 0;
 }
 
 .disabled {
