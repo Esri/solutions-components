@@ -90,6 +90,10 @@ export namespace Components {
          */
         "classicGrid": boolean;
         /**
+          * string: default center point values for the map ; delimited x;y pair
+         */
+        "defaultCenter": string;
+        /**
           * string: Global ID of the feature to select
          */
         "defaultGlobalId": string;
@@ -97,6 +101,10 @@ export namespace Components {
           * string: when provided this layer ID will be used when the app loads
          */
         "defaultLayer": string;
+        /**
+          * string: default zoom level
+         */
+        "defaultLevel": string;
         /**
           * string: Object ID of feature to select
          */
@@ -1757,6 +1765,10 @@ declare namespace LocalJSX {
          */
         "classicGrid"?: boolean;
         /**
+          * string: default center point values for the map ; delimited x;y pair
+         */
+        "defaultCenter"?: string;
+        /**
           * string: Global ID of the feature to select
          */
         "defaultGlobalId"?: string;
@@ -1764,6 +1776,10 @@ declare namespace LocalJSX {
           * string: when provided this layer ID will be used when the app loads
          */
         "defaultLayer"?: string;
+        /**
+          * string: default zoom level
+         */
+        "defaultLevel"?: string;
         /**
           * string: Object ID of feature to select
          */

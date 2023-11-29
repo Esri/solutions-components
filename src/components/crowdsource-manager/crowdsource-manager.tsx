@@ -44,6 +44,12 @@ export class CrowdsourceManager {
   @Prop() classicGrid = false;
 
   /**
+   * string: default center point values for the map
+   * ; delimited x;y pair
+   */
+  @Prop() defaultCenter = "";
+
+  /**
    * string: Global ID of the feature to select
    */
   @Prop() defaultGlobalId = "";
@@ -52,6 +58,11 @@ export class CrowdsourceManager {
    * string: when provided this layer ID will be used when the app loads
    */
   @Prop() defaultLayer = "";
+
+  /**
+   * string: default zoom level
+   */
+  @Prop() defaultLevel = "";
 
   /**
    * string: Object ID of feature to select
@@ -202,9 +213,19 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
+   * number[]: X,Y pair used to center the map
+   */
+  protected _defaultCenter: number[];
+
+  /**
    * string[]: List of global ids that should be selected by default
    */
   protected _defaultGlobalId: string[];
+
+  /**
+   * number: zoom level the map should go to
+   */
+  protected _defaultLevel: number;
 
   /**
    * number[]: List of ids that should be selected by default
@@ -234,6 +255,15 @@ export class CrowdsourceManager {
   //--------------------------------------------------------------------------
 
   /**
+   * Watch for center url param to be set
+   */
+  @Watch("defaultCenter")
+  defaultCenterIdWatchHandler(): void {
+    this._defaultCenter = !this._defaultCenter ? undefined :
+      this.defaultCenter.split(",").map(v => parseFloat(v));
+  }
+
+  /**
    * Watch for globalid url param to be set
    */
   @Watch("defaultGlobalId")
@@ -249,6 +279,14 @@ export class CrowdsourceManager {
   defaultOidWatchHandler(): void {
     this._defaultOid = !this.defaultOid ? undefined :
       this.defaultOid.indexOf(",") > -1 ? this.defaultOid.split(",").map(o => parseInt(o, 10)) : [parseInt(this.defaultOid, 10)];
+  }
+
+  /**
+   * Watch for zoom level param to be set
+   */
+  @Watch("defaultLevel")
+  defaultLevelWatchHandler(): void {
+    this._defaultLevel = !this._defaultLevel ? undefined : parseInt(this.defaultLevel);
   }
 
   /**
@@ -289,8 +327,8 @@ export class CrowdsourceManager {
     evt: CustomEvent
   ): Promise<void> {
     this._mapChange = evt.detail;
-    await this._mapChange.mapView.when(() => {
-      this._setMapView();
+    await this._mapChange.mapView.when(async () => {
+      await this._setMapView();
     });
   }
 
@@ -341,10 +379,10 @@ export class CrowdsourceManager {
    * Called after each render
    * Used to delay the setting of the mapView when the popup is expaneded and obstructs the view
    */
-  componentDidRender() {
+  async componentDidRender() {
     if (this._shouldSetMapView) {
       this._shouldSetMapView = false;
-      this._setMapView();
+      await this._setMapView();
     }
   }
 
@@ -725,11 +763,19 @@ export class CrowdsourceManager {
    *
    * @protected
    */
-  protected _setMapView(): void {
+  protected async _setMapView(): Promise<void> {
     this._mapInfo = this._getMapInfo(this._mapChange.id);
     this._mapView = this._mapChange.mapView;
     this._initMapZoom();
     this._mapView.popupEnabled = false;
+    if (this._defaultCenter && this._defaultLevel) {
+      await this._mapView.goTo({
+        center: this._defaultCenter,
+        zoom: this._defaultLevel
+      });
+      this._defaultCenter = undefined;
+      this._defaultLevel = undefined;
+    }
   }
 
   /**
