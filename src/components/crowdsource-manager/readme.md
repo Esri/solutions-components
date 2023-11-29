@@ -128,6 +128,7 @@ graph TD;
   layer-table --> calcite-dropdown-item
   layer-table --> calcite-action
   layer-table --> calcite-button
+  layer-table --> instant-apps-social-share
   layer-table --> calcite-tooltip
   layer-table --> calcite-modal
   map-layer-picker --> calcite-tooltip
@@ -146,6 +147,9 @@ graph TD;
   calcite-combobox --> calcite-icon
   calcite-combobox-item --> calcite-icon
   calcite-dropdown-item --> calcite-icon
+  instant-apps-social-share --> calcite-popover
+  instant-apps-social-share --> calcite-button
+  instant-apps-social-share --> calcite-icon
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
   style crowdsource-manager fill:#f9f,stroke:#333,stroke-width:4px

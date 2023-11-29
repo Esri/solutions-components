@@ -1259,7 +1259,6 @@ declare global {
     interface HTMLLayerTableElementEventMap {
         "featureSelectionChange": number[];
         "openFilterOptions": void;
-        "openShare": boolean;
     }
     interface HTMLLayerTableElement extends Components.LayerTable, HTMLStencilElement {
         addEventListener<K extends keyof HTMLLayerTableElementEventMap>(type: K, listener: (this: HTMLLayerTableElement, ev: LayerTableCustomEvent<HTMLLayerTableElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2053,10 +2052,6 @@ declare namespace LocalJSX {
           * Emitted on demand when the filters button is clicked
          */
         "onOpenFilterOptions"?: (event: LayerTableCustomEvent<void>) => void;
-        /**
-          * Emitted on demand when the share button is clicked
-         */
-        "onOpenShare"?: (event: LayerTableCustomEvent<boolean>) => void;
         /**
           * boolean: When true only editable layers that support the update capability will be available
          */
