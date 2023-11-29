@@ -259,8 +259,8 @@ export class CrowdsourceManager {
    */
   @Watch("defaultCenter")
   defaultCenterIdWatchHandler(): void {
-    this._defaultCenter = !this._defaultCenter ? undefined :
-      this.defaultCenter.split(",").map(v => parseFloat(v));
+    this._defaultCenter = !this.defaultCenter ? undefined :
+      this.defaultCenter.split(";").map(v => parseFloat(v));
   }
 
   /**
@@ -286,7 +286,7 @@ export class CrowdsourceManager {
    */
   @Watch("defaultLevel")
   defaultLevelWatchHandler(): void {
-    this._defaultLevel = !this._defaultLevel ? undefined : parseInt(this.defaultLevel);
+    this._defaultLevel = !this.defaultLevel ? undefined : parseInt(this.defaultLevel, 10);
   }
 
   /**
