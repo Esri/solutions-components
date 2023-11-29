@@ -27,7 +27,8 @@
     "test:clean": "npm run clean:src && npm run lint:ts:fix && stencil test --spec --e2e --detectOpenHandles",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate",
-    "update-browserslist": "npx browserslist@latest --update-db"
+    "update-browserslist": "npx browserslist@latest --update-db",
+    "copy:instant-app-component-assests": "ncp node_modules/@esri/instant-apps-components/dist/assets src/assets && ncp node_modules/@esri/instant-apps-components/dist/assets src/demos/assets"
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",
@@ -60,6 +61,8 @@
     "gh-release": "^6.0.3",
     "jest": "^29.7.0",
     "jest-cli": "^29.7.0",
+    "mkdirp": "3.0.1",
+    "ncp": "^2.0.0",
     "pify": "^5.0.0",
     "prettier": "2.4.1",
     "puppeteer": "^21.3.1",
@@ -78,6 +81,7 @@
     "@esri/arcgis-rest-service-admin": "^3.4.2",
     "@esri/calcite-components": "1.11.1-next.1",
     "@esri/calcite-design-tokens": "1.1.1-next.2",
+    "@esri/instant-apps-components": "1.0.0-beta.157",
     "@esri/hub-common": "^12.37.1",
     "@esri/hub-initiatives": "^12.4.1",
     "@esri/hub-sites": "^12.6.0",

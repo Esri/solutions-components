@@ -22,6 +22,7 @@ import { getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
 import { queryAllIds, queryFeaturesByGlobalID } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { IColumnsInfo, IExportInfos, ILayerInfo, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo } from "../../utils/interfaces";
+import "@esri/instant-apps-components/dist/components/instant-apps-social-share";
 
 @Component({
   tag: "layer-table",
@@ -236,6 +237,11 @@ export class LayerTable {
   protected _selectAllElement: HTMLCalciteCheckboxElement;
 
   /**
+   * HTMLInstantAppsSocialShareElement: Element to support app sharing to social media
+   */
+  protected _shareNode: HTMLInstantAppsSocialShareElement;
+
+  /**
    * HTMLCalciteDropdownElement: Dropdown the will support show/hide of table columns
    */
   protected _showHideDropdown: HTMLCalciteDropdownElement;
@@ -343,6 +349,7 @@ export class LayerTable {
       this._mapClickHandle.remove();
     }
     if (this.mapView) {
+      this._updateShareUrl();
       this._mapClickHandle = this.reactiveUtils.on(
         () => this.mapView,
         "click",
@@ -360,6 +367,7 @@ export class LayerTable {
   async _layerWatchHandler(): Promise<void> {
     this._fetchingData = true;
     await this._resetTable();
+    this._updateShareUrl();
     this._fetchingData = false;
   }
 
@@ -368,6 +376,7 @@ export class LayerTable {
    */
   @Watch("_selectedIndexes")
   async _selectedIndexesWatchHandler(): Promise<void> {
+    this._updateShareUrl();
     this._validateEnabledActions();
   }
 
@@ -406,11 +415,6 @@ export class LayerTable {
     composed: true,
     bubbles: true
   }) openFilterOptions: EventEmitter<void>;
-
-  /**
-   * Emitted on demand when the share button is clicked
-   */
-  @Event() openShare: EventEmitter<boolean>;
 
   /**
    * Scroll and zoom to the selected feature from the Features widget.
@@ -1056,19 +1060,45 @@ export class LayerTable {
     icon: string
   ): VNode {
     return (
-      <div class={"share-action height-51 border-bottom"} id={this._getId(icon)}>
-        <calcite-action
-          appearance="solid"
-          class="height-51"
-          icon={icon}
-          id={icon}
-          onClick={() => this.openShare.emit(true)}
-          text=""
-          textEnabled={false}
+      <div class="share-action" id={this._getId(icon)}>
+        <instant-apps-social-share
+          autoUpdateShareUrl={false}
+          popoverButtonIconScale="s"
+          ref={el => this._shareNode = el}
+          scale="m"
+          shareButtonColor="neutral"
+          socialMedia={true}
+          view={this.mapView}
         />
         {this._getToolTip("bottom", icon, this._translations.share)}
       </div>
     )
+  }
+
+  /**
+   * Called each time the values that are used for custom url params change
+   */
+  _updateShareUrl(): void {
+    const url = this._shareNode?.shareUrl;
+    if (!url) {
+      return;
+    }
+    const urlObj = new URL(url);
+
+    //set the additional search params
+    if (this.mapInfo?.id) {
+      urlObj.searchParams.set("webmap", this.mapInfo.id);
+    }
+
+    if (this._layer?.id) {
+      urlObj.searchParams.set("layer", this._layer.id);
+    }
+
+    if (this._selectedIndexes?.length > 0) {
+      urlObj.searchParams.set("oid", this._selectedIndexes.join(","));
+    }
+
+    this._shareNode.shareUrl = urlObj.href;
   }
 
   /**

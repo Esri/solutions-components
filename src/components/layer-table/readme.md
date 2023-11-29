@@ -31,7 +31,6 @@
 | ------------------------ | ---------------------------------------------------- | ----------------------- |
 | `featureSelectionChange` | Emitted on demand when a layer is selected           | `CustomEvent<number[]>` |
 | `openFilterOptions`      | Emitted on demand when the filters button is clicked | `CustomEvent<void>`     |
-| `openShare`              | Emitted on demand when the share button is clicked   | `CustomEvent<boolean>`  |
 
 
 ## Dependencies
@@ -52,6 +51,7 @@
 - calcite-dropdown-item
 - calcite-action
 - calcite-button
+- instant-apps-social-share
 - calcite-tooltip
 - calcite-modal
 
@@ -68,6 +68,7 @@ graph TD;
   layer-table --> calcite-dropdown-item
   layer-table --> calcite-action
   layer-table --> calcite-button
+  layer-table --> instant-apps-social-share
   layer-table --> calcite-tooltip
   layer-table --> calcite-modal
   calcite-panel --> calcite-action
@@ -103,6 +104,9 @@ graph TD;
   calcite-button --> calcite-icon
   calcite-combobox-item --> calcite-icon
   calcite-dropdown-item --> calcite-icon
+  instant-apps-social-share --> calcite-popover
+  instant-apps-social-share --> calcite-button
+  instant-apps-social-share --> calcite-icon
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
   crowdsource-manager --> layer-table
