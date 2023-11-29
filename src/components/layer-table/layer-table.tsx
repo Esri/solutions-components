@@ -417,11 +417,6 @@ export class LayerTable {
   }) openFilterOptions: EventEmitter<void>;
 
   /**
-   * Emitted on demand when the share button is clicked
-   */
-  @Event() openShare: EventEmitter<__esri.MapView>;
-
-  /**
    * Scroll and zoom to the selected feature from the Features widget.
    *
    * @param evt CustomEvent the graphic for the current selection
