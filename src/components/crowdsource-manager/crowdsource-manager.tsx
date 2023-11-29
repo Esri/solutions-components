@@ -106,7 +106,7 @@ export class CrowdsourceManager {
   /**
    * boolean: when true the share widget will be available
    */
-  @Prop() enableShare = false;
+  @Prop() enableShare = true;
 
   /**
    * boolean: when true the home widget will be available
