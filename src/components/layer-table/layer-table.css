@@ -113,10 +113,7 @@ vaadin-grid-cell-content {
 }
 
 html[dir="rtl"] .share-action {
-  position: absolute;
   left: 0;
-  margin-top: 9px;
-  margin-inline-end: 4px;
 }
 
 .disabled {
