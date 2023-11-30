@@ -1263,7 +1263,7 @@ export class LayerTable {
     this._allIds = [];
     this.featureSelectionChange.emit(this._selectedIndexes);
 
-    const columnTemplates = this._getColumnTemplates(this._layer.id, this._layer?.popupTemplate?.fieldInfos);
+    const columnTemplates = this._getColumnTemplates(this._layer.id, this._layer?.fields);
     this._allIds = await queryAllIds(this._layer);
 
     if (!this._table) {
@@ -1650,7 +1650,7 @@ export class LayerTable {
    */
   protected _getColumnTemplates(
     id: string,
-    fieldInfos: __esri.FieldInfo[]
+    fieldInfos: __esri.Field[]
   ): __esri.FieldColumnTemplate[] {
     let layerInfo: ILayerInfo;
     this.mapInfo.layerInfos?.some(li => {
@@ -1664,8 +1664,8 @@ export class LayerTable {
     if (fieldInfos) {
       columnTemplates = columnTemplates ? columnTemplates.map(columnTemplate => {
         fieldInfos.some(fieldInfo => {
-          if (fieldInfo.fieldName === columnTemplate.fieldName) {
-            columnTemplate.label = fieldInfo.label;
+          if (fieldInfo.name === columnTemplate.fieldName) {
+            columnTemplate.label = fieldInfo.alias;
             return true;
           }
         });
@@ -1673,8 +1673,8 @@ export class LayerTable {
       }) : fieldInfos.map(fieldInfo => {
         return {
           type: "field",
-          fieldName: fieldInfo.fieldName,
-          label: fieldInfo.label
+          fieldName: fieldInfo.name,
+          label: fieldInfo.alias
         } as __esri.FieldColumnTemplate;
       })
     }
