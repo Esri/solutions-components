@@ -1206,6 +1206,7 @@ declare global {
     interface HTMLEditCardElementEventMap {
         "closeEdit": void;
         "editsComplete": void;
+        "refreshGraphics": __esri.Graphic[];
     }
     interface HTMLEditCardElement extends Components.EditCard, HTMLStencilElement {
         addEventListener<K extends keyof HTMLEditCardElementEventMap>(type: K, listener: (this: HTMLEditCardElement, ev: EditCardCustomEvent<HTMLEditCardElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1965,6 +1966,10 @@ declare namespace LocalJSX {
           * Emitted on demand when edits are completed on current edit layer
          */
         "onEditsComplete"?: (event: EditCardCustomEvent<void>) => void;
+        /**
+          * Emitted on demand when the editor is closed to handle things like attachment updates that don't fire the standard edit update event when complete
+         */
+        "onRefreshGraphics"?: (event: EditCardCustomEvent<__esri.Graphic[]>) => void;
         /**
           * When true the component is displayed
          */

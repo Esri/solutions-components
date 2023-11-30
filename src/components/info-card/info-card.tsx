@@ -191,6 +191,16 @@ export class InfoCard {
     this._editRecordOpen = false;
   }
 
+  /**
+   * Refresh the info-card graphics
+   */
+  @Listen("refreshGraphics", { target: "window" })
+  async refreshGraphics(
+    evt: CustomEvent
+  ): Promise<void> {
+    this.graphics = [...evt.detail];
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Functions (lifecycle)

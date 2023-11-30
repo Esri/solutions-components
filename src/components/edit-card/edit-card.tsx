@@ -203,6 +203,12 @@ export class EditCard {
    */
   @Event() editsComplete: EventEmitter<void>;
 
+  /**
+   * Emitted on demand when the editor is closed to handle
+   * things like attachment updates that don't fire the standard edit update event when complete
+   */
+  @Event() refreshGraphics: EventEmitter<__esri.Graphic[]>;
+
   @Listen("featureSelectionChange", { target: "window" })
   async featureSelectionChange(): Promise<void> {
     await this._closeEdit();
@@ -238,7 +244,7 @@ export class EditCard {
       }
       this._layerEditHandle = this._layer.on("edits", () => {
         this.editsComplete.emit();
-        void this._closeEdit();
+        this.open = false;
       });
     }
   }
@@ -336,8 +342,7 @@ export class EditCard {
         container
       });
 
-      if (this._editHandle && this._attachmentHandle && this._activeWorkflowHandle) {
-        this._editHandle.remove();
+      if (this._attachmentHandle && this._activeWorkflowHandle) {
         this._attachmentHandle.remove();
         this._activeWorkflowHandle.remove();
       }
@@ -351,22 +356,14 @@ export class EditCard {
         }
       );
 
-      this._editHandle = this.reactiveUtils.when(
-        () => this._editor.viewModel.state === "ready",
-        () => {
-          if (this._shouldClose) {
-            void this._closeEdit();
-          } else if (this.graphicIndex > -1 && this.graphics.length > 0 && this.open && !this._shouldClose) {
-            void this._startUpdate();
-          }
-        }
-      );
-
       this._activeWorkflowHandle = this.reactiveUtils.watch(
         () => (this._editor.viewModel.activeWorkflow as any)?.activeWorkflow,
         (activeWorkflow) => {
           if (activeWorkflow?.type === "update-table-record" || activeWorkflow?.type === "create-features") {
             this._shouldClose = false;
+          }
+          if (!activeWorkflow?.type && !activeWorkflow?.hasPendingEdits) {
+            this.open = false;
           }
         }
       );
@@ -386,6 +383,11 @@ export class EditCard {
     if (this._editor?.activeWorkflow) {
       await this._editor?.cancelWorkflow();
     }
+
+    if (this.graphicIndex > -1 && this.graphics?.length > 0) {
+      this.refreshGraphics.emit(this.graphics);
+    }
+
     this._editor?.destroy();
     this._shouldClose = false;
     this.closeEdit.emit();

@@ -17,10 +17,11 @@
 
 ## Events
 
-| Event           | Description                                                      | Type                |
-| --------------- | ---------------------------------------------------------------- | ------------------- |
-| `closeEdit`     | Emitted on demand when the Editor widget should be closed        | `CustomEvent<void>` |
-| `editsComplete` | Emitted on demand when edits are completed on current edit layer | `CustomEvent<void>` |
+| Event             | Description                                                                                                                                       | Type                     |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| `closeEdit`       | Emitted on demand when the Editor widget should be closed                                                                                         | `CustomEvent<void>`      |
+| `editsComplete`   | Emitted on demand when edits are completed on current edit layer                                                                                  | `CustomEvent<void>`      |
+| `refreshGraphics` | Emitted on demand when the editor is closed to handle things like attachment updates that don't fire the standard edit update event when complete | `CustomEvent<Graphic[]>` |
 
 
 ## Dependencies
