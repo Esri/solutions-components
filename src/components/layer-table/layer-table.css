@@ -123,6 +123,7 @@ html[dir="rtl"] .share-action {
   opacity: var(--calcite-ui-opacity-disabled);
   pointer-events: none;
 }
+
 .instant-app-share {
   height: 42px !important;
   display: inline-flex;
