@@ -108,8 +108,9 @@ vaadin-grid-cell-content {
 .share-action {
   position: absolute;
   right: 0;
-  margin-top: 9px;
+  margin-top: 4px;
   margin-inline-end: 4px;
+  margin-bottom: 4px;
 }
 
 html[dir="rtl"] .share-action {
@@ -121,4 +122,9 @@ html[dir="rtl"] .share-action {
   user-select: none;
   opacity: var(--calcite-ui-opacity-disabled);
   pointer-events: none;
+}
+
+.instant-app-share {
+  height: 42px !important;
+  display: inline-flex;
 }

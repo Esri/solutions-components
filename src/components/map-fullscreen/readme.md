@@ -13,6 +13,13 @@
 | `mapView`          | --        | esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html           | `MapView`    | `undefined` |
 
 
+## Events
+
+| Event                   | Description                                                    | Type                  |
+| ----------------------- | -------------------------------------------------------------- | --------------------- |
+| `fullscreenStateChange` | Emitted on demand when the fullscreen widget state has changed | `CustomEvent<string>` |
+
+
 ## Dependencies
 
 ### Used by

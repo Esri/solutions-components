@@ -4,7 +4,7 @@
   "expand": "Expand",
   "basemap": "Basemap",
   "collapse": "Collapse",
-  "enterFullscreen": "Enter fullscreen",
-  "exitFullscreen": "Exit fullscreen",
+  "enterFullscreen": "Enter full screen",
+  "exitFullscreen": "Exit full screen",
   "floorFilter": "Floor filter"
 }
