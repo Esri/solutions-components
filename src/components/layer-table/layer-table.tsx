@@ -1063,6 +1063,7 @@ export class LayerTable {
       <div class="share-action" id={this._getId(icon)}>
         <instant-apps-social-share
           autoUpdateShareUrl={false}
+          class="instant-app-share"
           popoverButtonIconScale="s"
           ref={el => this._shareNode = el}
           scale="m"
