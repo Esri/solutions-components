@@ -258,7 +258,7 @@ export class CrowdsourceManager {
    * Watch for center url param to be set
    */
   @Watch("defaultCenter")
-  defaultCenterIdWatchHandler(): void {
+  defaultCenterWatchHandler(): void {
     this._defaultCenter = !this.defaultCenter ? undefined :
       this.defaultCenter.split(";").map(v => parseFloat(v));
   }
