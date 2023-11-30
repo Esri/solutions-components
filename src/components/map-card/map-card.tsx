@@ -311,7 +311,7 @@ export class MapCard {
       this.mapView = new this.MapView({
         container: this._mapDiv,
         map: webMap,
-        resizeAlign: "top-left"
+        resizeAlign: "center"
       });
 
       this._loadedId = id;
