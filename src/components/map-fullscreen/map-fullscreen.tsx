@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Host, h, Prop, Watch } from '@stencil/core';
+import { Component, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core';
 import { loadModules } from "../../utils/loadModules";
 
 @Component({
@@ -67,6 +67,16 @@ export class MapFullscreen {
    */
   protected _fullscreenElement: HTMLElement;
 
+  /**
+   * esri/core/Accessor: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-Accessor.html#WatchHandle
+   */
+  protected _fullscreenStateChangeHandle: __esri.WatchHandle;
+
+  /**
+   * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
+   */
+  protected reactiveUtils: typeof import("esri/core/reactiveUtils");
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -80,8 +90,8 @@ export class MapFullscreen {
    */
   @Watch("mapView")
   async mapViewWatchHandler(): Promise<void> {
-    await this.mapView.when(() => {
-      this._initFullscreenWidget();
+    await this.mapView.when(async () => {
+      await this._initFullscreenWidget();
     });
   }
 
@@ -96,6 +106,11 @@ export class MapFullscreen {
   //  Events (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Emitted on demand when the fullscreen widget state has changed
+   */
+  @Event() fullscreenStateChange: EventEmitter<string>;
 
   //--------------------------------------------------------------------------
   //
@@ -126,14 +141,14 @@ export class MapFullscreen {
    * It's never called during the first render().
    */
   async componentDidUpdate(): Promise<void> {
-    this._initFullscreenWidget();
+    await this._initFullscreenWidget();
   }
 
   /**
    * StencilJS: Called once just after the component is fully loaded and the first render() occurs.
    */
   async componentDidLoad(): Promise<void> {
-    this._initFullscreenWidget();
+    await this._initFullscreenWidget();
   }
 
   //--------------------------------------------------------------------------
@@ -150,10 +165,12 @@ export class MapFullscreen {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [Fullscreen] = await loadModules([
-      "esri/widgets/Fullscreen"
+    const [Fullscreen, reactiveUtils] = await loadModules([
+      "esri/widgets/Fullscreen",
+      "esri/core/reactiveUtils"
     ]);
     this.Fullscreen = Fullscreen;
+    this.reactiveUtils = reactiveUtils;
   }
 
   /**
@@ -161,11 +178,20 @@ export class MapFullscreen {
    *
    * @protected
    */
-  protected _initFullscreenWidget(): void {
+  protected async _initFullscreenWidget(): Promise<void> {
     if (this.mapView && this._fullscreenElement && !this.fullscreenWidget) {
       this.fullscreenWidget = new this.Fullscreen({
         view: this.mapView
       });
+      await this.fullscreenWidget.when(() => {
+        if (this._fullscreenStateChangeHandle) {
+          this._fullscreenStateChangeHandle.remove();
+        }
+        this._fullscreenStateChangeHandle = this.reactiveUtils.watch(
+          () => this.fullscreenWidget.viewModel.state,
+          (state) => this.fullscreenStateChange.emit(state)
+        );
+      })
     } else if (this.fullscreenWidget) {
       this.fullscreenWidget.view = this.mapView;
     }

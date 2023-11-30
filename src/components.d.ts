@@ -1088,6 +1088,10 @@ export interface MapDrawToolsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapDrawToolsElement;
 }
+export interface MapFullscreenCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMapFullscreenElement;
+}
 export interface MapLayerPickerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMapLayerPickerElement;
@@ -1349,7 +1353,18 @@ declare global {
         prototype: HTMLMapDrawToolsElement;
         new (): HTMLMapDrawToolsElement;
     };
+    interface HTMLMapFullscreenElementEventMap {
+        "fullscreenStateChange": string;
+    }
     interface HTMLMapFullscreenElement extends Components.MapFullscreen, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMapFullscreenElementEventMap>(type: K, listener: (this: HTMLMapFullscreenElement, ev: MapFullscreenCustomEvent<HTMLMapFullscreenElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMapFullscreenElementEventMap>(type: K, listener: (this: HTMLMapFullscreenElement, ev: MapFullscreenCustomEvent<HTMLMapFullscreenElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMapFullscreenElement: {
         prototype: HTMLMapFullscreenElement;
@@ -2216,6 +2231,10 @@ declare namespace LocalJSX {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the fullscreen widget state has changed
+         */
+        "onFullscreenStateChange"?: (event: MapFullscreenCustomEvent<string>) => void;
     }
     interface MapLayerPicker {
         /**

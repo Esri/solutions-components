@@ -222,9 +222,13 @@ export class MapTools {
   ): Promise<void> {
     const fs = this._fullscreenElement.fullscreenWidget;
     if (v) {
-      fs.viewModel.enter();
+      if (fs.viewModel.state === "ready") {
+        fs.viewModel.enter();
+      }
     } else {
-      fs.viewModel.exit();
+      if (fs.viewModel.state === "active") {
+        fs.viewModel.exit();
+      }
     }
   }
 
@@ -357,6 +361,7 @@ export class MapTools {
         <map-fullscreen
           class={fullscreenClass}
           mapView={this.mapView}
+          onFullscreenStateChange={(evt) => this._fullscreenStateChange(evt.detail)}
           ref={(el) => {this._fullscreenElement = el}}
         />
         <floor-filter
@@ -367,6 +372,23 @@ export class MapTools {
         />
       </Host>
     );
+  }
+
+  /**
+   * Respond to fullscreen state change and ensure our state var is in sync
+   *
+   * @param state The fullscreen view model's state.
+   *
+   * @protected
+   */
+  protected _fullscreenStateChange(
+    state: string
+  ): void {
+    if (state === "ready" && this._showFullscreen) {
+      this._showFullscreen = false;
+    } else if (state === "active" && !this._showFullscreen) {
+      this._showFullscreen = true;
+    }
   }
 
   //--------------------------------------------------------------------------
