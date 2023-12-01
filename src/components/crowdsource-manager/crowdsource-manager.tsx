@@ -165,6 +165,16 @@ export class CrowdsourceManager {
   @Prop() searchConfiguration: ISearchConfiguration;
 
   /**
+   * boolean: When true the share options will include embed option
+   */
+  @Prop() shareIncludeEmbed: boolean;
+
+  /**
+   * boolean: When true the share options will include social media sharing
+   */
+  @Prop() shareIncludeSocial: boolean;
+
+  /**
    * theme: "light" | "dark" theme to be used
    */
   @Prop() theme: theme = "light";
@@ -720,6 +730,8 @@ export class CrowdsourceManager {
             mapInfo={this._mapInfo}
             mapView={this?._mapView}
             onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
+            shareIncludeEmbed={this.shareIncludeEmbed}
+            shareIncludeSocial={this.shareIncludeSocial}
             showNewestFirst={this.showNewestFirst}
             zoomAndScrollToSelected={this.zoomAndScrollToSelected}
           />
