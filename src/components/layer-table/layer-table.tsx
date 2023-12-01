@@ -104,6 +104,16 @@ export class LayerTable {
   @Prop() onlyShowUpdatableLayers: boolean;
 
   /**
+   * boolean: When true the share options will include embed option
+   */
+  @Prop() shareIncludeEmbed: boolean;
+
+  /**
+   * boolean: When true the share options will include social media sharing
+   */
+  @Prop() shareIncludeSocial: boolean;
+
+  /**
    * boolean: when true the table will be sorted by objectid in descending order by default
    */
   @Prop() showNewestFirst: boolean;
@@ -1064,11 +1074,12 @@ export class LayerTable {
         <instant-apps-social-share
           autoUpdateShareUrl={false}
           class="instant-app-share"
+          embed={this.shareIncludeEmbed}
           popoverButtonIconScale="s"
           ref={el => this._shareNode = el}
           scale="m"
           shareButtonColor="neutral"
-          socialMedia={true}
+          socialMedia={this.shareIncludeSocial}
           view={this.mapView}
         />
         {this._getToolTip("bottom", icon, this._translations.share)}

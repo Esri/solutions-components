@@ -178,6 +178,14 @@ export namespace Components {
          */
         "searchConfiguration": ISearchConfiguration;
         /**
+          * boolean: When true the share options will include embed option
+         */
+        "shareIncludeEmbed": boolean;
+        /**
+          * boolean: When true the share options will include social media sharing
+         */
+        "shareIncludeSocial": boolean;
+        /**
           * boolean: when true the table will be sorted by objectid in descending order by default
          */
         "showNewestFirst": boolean;
@@ -398,6 +406,14 @@ export namespace Components {
           * boolean: When true only editable layers that support the update capability will be available
          */
         "onlyShowUpdatableLayers": boolean;
+        /**
+          * boolean: When true the share options will include embed option
+         */
+        "shareIncludeEmbed": boolean;
+        /**
+          * boolean: When true the share options will include social media sharing
+         */
+        "shareIncludeSocial": boolean;
         /**
           * boolean: when true the table will be sorted by objectid in descending order by default
          */
@@ -1869,6 +1885,14 @@ declare namespace LocalJSX {
          */
         "searchConfiguration"?: ISearchConfiguration;
         /**
+          * boolean: When true the share options will include embed option
+         */
+        "shareIncludeEmbed"?: boolean;
+        /**
+          * boolean: When true the share options will include social media sharing
+         */
+        "shareIncludeSocial"?: boolean;
+        /**
           * boolean: when true the table will be sorted by objectid in descending order by default
          */
         "showNewestFirst"?: boolean;
@@ -2092,6 +2116,14 @@ declare namespace LocalJSX {
           * boolean: When true only editable layers that support the update capability will be available
          */
         "onlyShowUpdatableLayers"?: boolean;
+        /**
+          * boolean: When true the share options will include embed option
+         */
+        "shareIncludeEmbed"?: boolean;
+        /**
+          * boolean: When true the share options will include social media sharing
+         */
+        "shareIncludeSocial"?: boolean;
         /**
           * boolean: when true the table will be sorted by objectid in descending order by default
          */

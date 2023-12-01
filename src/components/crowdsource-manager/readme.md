@@ -33,6 +33,8 @@
 | `mapInfos`                | --                            | IMapInfo[]: array of map infos (name and id)                                                                       | `IMapInfo[]`           | `[]`        |
 | `onlyShowUpdatableLayers` | `only-show-updatable-layers`  | boolean: When true only editable layers that support the update capability will be available                       | `boolean`              | `true`      |
 | `searchConfiguration`     | --                            | ISearchConfiguration: Configuration details for the Search widget                                                  | `ISearchConfiguration` | `undefined` |
+| `shareIncludeEmbed`       | `share-include-embed`         | boolean: When true the share options will include embed option                                                     | `boolean`              | `undefined` |
+| `shareIncludeSocial`      | `share-include-social`        | boolean: When true the share options will include social media sharing                                             | `boolean`              | `undefined` |
 | `showNewestFirst`         | `show-newest-first`           | boolean: when true the table will be sorted by objectid in descending order by default                             | `boolean`              | `true`      |
 | `theme`                   | `theme`                       | theme: "light" \| "dark" theme to be used                                                                          | `"dark" \| "light"`    | `"light"`   |
 | `zoomAndScrollToSelected` | `zoom-and-scroll-to-selected` | boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table | `boolean`              | `false`     |
