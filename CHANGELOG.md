@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.7.7] - Dec 5th 2023
+* Calcite 2.0.0
+
 ## [0.7.6] - Dec 1st 2023
 
 ## [0.7.5] - Nov 30th 2023
@@ -342,4 +345,5 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 [0.7.4]: https://github.com/Esri/solution.js/compare/v0.7.3...v0.7.4 "v0.7.4"
 [0.7.5]: https://github.com/Esri/solution.js/compare/v0.7.4...v0.7.5 "v0.7.5"
 [0.7.6]: https://github.com/Esri/solution.js/compare/v0.7.5...v0.7.6 "v0.7.6"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.6...HEAD "Unreleased Changes"
+[0.7.7]: https://github.com/Esri/solution.js/compare/v0.7.6...v0.7.7 "v0.7.7"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.7...HEAD "Unreleased Changes"
