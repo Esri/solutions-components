@@ -449,7 +449,7 @@ export interface IMapInfo {
   id: string;
   name: string;
   searchConfiguration?: ISearchConfiguration;
-  filters?: any[]; // TODO generate an interface for this once we know how it will be passed in
+  filterConfig?: IFilterConfig;
   layerInfos?: ILayerInfo[];
   _hasValidLayers?: boolean;
   visible?: boolean;
@@ -498,4 +498,37 @@ export interface IToolSizeInfo {
 
 export interface IColumnsInfo {
   [key: string]: boolean;
+}
+
+export interface IFilterConfig {
+  mapId: string;
+  layerExpressions: ILayerExpression[];
+}
+
+export interface ILayerExpression {
+  id: string;
+  sublayerId: number;
+  title: string;
+  expressions: IExpression[];
+  operator: string;
+}
+
+export type ExpressionField = 'string' | 'number' | 'date' | 'coded-value' | 'range' | 'checkbox';
+
+export interface IExpression {
+  id: number;
+  type?: ExpressionField;
+  active?: boolean;
+  definitionExpression?: string;
+  name: string;
+  field?: string;
+  fields?: string[] | number[];
+  selectedFields?: string[] | number[];
+  codedValues?: { [key: string]: string };
+  placeholder?: string;
+  min?: number | string;
+  max?: number | string;
+  range?: { min: string | number | undefined; max: string | number | undefined };
+  step?: number;
+  numDisplayOption?: "slider" | "drop-down";
 }
