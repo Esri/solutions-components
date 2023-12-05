@@ -1,0 +1,16 @@
+{
+  "andOperator": "Los resultados mostrarán TODOS los filtros coincidentes",
+  "andOperator2": "AND: los resultados mostrarán TODOS los filtros coincidentes",
+  "close": "Cerrar",
+  "maxSlider": "{field}, límite superior",
+  "minSlider": "{field}, límite inferior",
+  "nextMonth": "Mes próximo",
+  "orOperator": "Los resultados mostrarán CUALQUIER filtro coincidente",
+  "orOperator2": "OR: los resultados mostrarán CUALQUIER filtro coincidente",
+  "previousMonth": "Mes anterior",
+  "resetDatePicker": "Restablecer selector de fecha",
+  "resetFilter": "Restablecer filtro",
+  "selectFilter": "Seleccionar filtro",
+  "zoomTo": "Acercar",
+  "zoomToExtent": "Zoom a extensión"
+}

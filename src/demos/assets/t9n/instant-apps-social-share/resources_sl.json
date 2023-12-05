@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Deli"
+  },
+  "embed": {
+    "label": "Vdelaj",
+    "copy": "Kopiraj",
+    "width": "Širina",
+    "height": "Višina"
+  },
+  "info": {
+    "label": "Ali ste vedeli?",
+    "tooltip": "Kopiranje povezave bo ohranilo trenutni kartni pogled, vidne sloje in odprta pojavna okna. Uporabite to možnost, da delite kar vidite v aplikaciji."
+  },
+  "success": {
+    "label": "Uspešno!",
+    "url": "URL aplikacije je kopiran v odložišče.",
+    "embed": "Vdelana koda je kopirana v odložišče."
+  },
+  "options": {
+    "link": {
+      "label": "Kopiraj povezavo",
+      "tooltip": "Kliknite za kopiranje povezave v odložišče"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Kliknite za deljenje na vašem računu Facebook"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Kliknite za deljenje na vašem računu Twitter"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Kliknite za deljenje na vašem računu LinkedIn"
+    }
+  }
+}

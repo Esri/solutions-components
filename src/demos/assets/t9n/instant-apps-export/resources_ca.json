@@ -1,0 +1,11 @@
+{
+  "export": "Exporta",
+  "exportPopover": "Element emergent d'exportació",
+  "includeExtraContent": "Inclou els resultats",
+  "includeHeaderTheme": "Inclou un tema de capçalera",
+  "includeLegend": "Inclou la llegenda",
+  "includeMap": "Inclou un mapa",
+  "includePopup": "Inclou un element emergent",
+  "title": "Títol",
+  "toggleExport": "Activa o desactiva l'exportació"
+}

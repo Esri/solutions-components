@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Paylaş"
+  },
+  "embed": {
+    "label": "Yerleştir",
+    "copy": "Kopyala",
+    "width": "Genişlik",
+    "height": "Yükseklik"
+  },
+  "info": {
+    "label": "Biliyor muydunuz?",
+    "tooltip": "Bağlantıyı kopyala, geçerli harita görünümünü, görünür katmanları ve açık açılır pencereleri koruyacaktır. Uygulamada gördüklerinizi paylaşmak için bu seçeneği kullanın."
+  },
+  "success": {
+    "label": "Başarılı!",
+    "url": "Uygulama URL'si panonuza kopyalandı.",
+    "embed": "Yerleşik kod panoya kopyalandı."
+  },
+  "options": {
+    "link": {
+      "label": "Bağlantıyı kopyala",
+      "tooltip": "Bağlantıyı panoya kopyalamak için tıklayın"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Facebook hesabınızı paylaşmak için tıklayın"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Twitter hesabınızı paylaşmak için tıklayın"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "LinkedIn hesabınızı paylaşmak için tıklayın"
+    }
+  }
+}

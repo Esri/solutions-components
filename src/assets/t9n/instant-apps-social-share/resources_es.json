@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Compartir"
+  },
+  "embed": {
+    "label": "Integrar",
+    "copy": "Copiar",
+    "width": "Ancho",
+    "height": "Altura"
+  },
+  "info": {
+    "label": "¿Lo sabía?",
+    "tooltip": "La opción Copiar vínculo conservará la vista de mapa actual, las capas visibles y los elementos emergentes abiertos. Utilice esta opción para compartir lo que ve en la aplicación."
+  },
+  "success": {
+    "label": "¡Bien!",
+    "url": "La URL de la aplicación se ha copiado en el portapapeles.",
+    "embed": "Inserte el código copiado en el portapapeles."
+  },
+  "options": {
+    "link": {
+      "label": "Copiar vínculo",
+      "tooltip": "Haga clic para copiar el vínculo al portapapeles"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Haga clic para compartir en su cuenta de Facebook"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Haga clic para compartir en su cuenta de Twitter"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Haga clic para compartir en su cuenta de LinkedIn"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Pijltjestoetsen",
+    "nudge": "Verplaats naar links, rechts, boven of beneden",
+    "N": "Zet richting het noorden",
+    "A": "Linksom draaien",
+    "D": "Rechtsom draaien",
+    "plus": "Inzoomen op het midden",
+    "minus": "Uitzoomen op het midden"
+  },
+  "sceneShortcuts": {
+    "P": "Beweeg de camera zodat deze loodrecht op de gegevens op de kaart staat",
+    "N": "Zet de kaart richting het noorden",
+    "W": "Kantel de camera omhoog",
+    "A": "Draai de camera linksom",
+    "D": "Draai de camera rechtsom",
+    "S": "Kantel de camera omlaag",
+    "globalCommands": {
+      "J": "Naar beneden verplaatsen dichter bij de kaart",
+      "U": "Naar boven verplaatsen verder van de kaart"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "Menu sneltoetsen",
+    "shortcut": "Sneltoets",
+    "action": "Actie",
+    "title": "De kaart selecteren",
+    "label": "Sneltoetsen"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "noLegend": "Nav apzīmējumu.",
+  "loading": "Ielādē interaktīvos apzīmējumus",
+  "open": "Atvērt",
+  "close": "Aizvērt",
+  "expand": "Izvērst",
+  "collapse": "Sakļaut",
+  "totalFeatureCount": "Elementu kopskaits",
+  "showAll": "Rādīt visu",
+  "zoomTo": "Tuvināt",
+  "relationship": {
+    "instructionalText": "Noklikšķiniet uz krāsainajiem kvadrātiem, lai filtrētu karti",
+    "notSupported": "Saistību zīmēšanas stils pašlaik netiek atbalstīts."
+  }
+}

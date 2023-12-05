@@ -1,0 +1,15 @@
+{
+  "noLegend": "没有任何图例。",
+  "loading": "正在加载交互式图例",
+  "open": "打开",
+  "close": "关闭",
+  "expand": "展开",
+  "collapse": "折叠",
+  "totalFeatureCount": "要素总计数",
+  "showAll": "显示全部",
+  "zoomTo": "缩放至",
+  "relationship": {
+    "instructionalText": "单击色块以过滤地图",
+    "notSupported": "目前不支持关系绘制样式。"
+  }
+}

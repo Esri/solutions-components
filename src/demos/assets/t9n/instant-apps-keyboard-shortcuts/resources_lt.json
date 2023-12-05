@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Rodyklių mygtukai",
+    "nudge": "Stumtelėti kairėn, dešnėn, aukštyn arba žemyn",
+    "N": "Pakoreguoti, kad būtų nukreipta į šiaurę",
+    "A": "Pasukti prieš laikrodžio rodyklę",
+    "D": "Pasukti pagal laikrodžio rodyklę",
+    "plus": "Pritraukti prie centro",
+    "minus": "Atitraukti nuo centro"
+  },
+  "sceneShortcuts": {
+    "P": "Perkelkite fotoaparatą, kad jis būtų rodomas statmenai žemėlapyje rodomų duomenų atžvilgiu",
+    "N": "Pakoreguoti žemėlapį, kad būtų nukreiptas į šiaurę",
+    "W": "Pakreipti fotoaparatą į viršų",
+    "A": "Pasukti fotoaparatą prieš laikrodžio rodyklę",
+    "D": "Pasukti fotoaparatą pagal laikrodžio rodyklę",
+    "S": "Pakreipti fotoaparatą į apačią",
+    "globalCommands": {
+      "J": "Nuleisti žemyn, arčiau prie žemėlapio",
+      "U": "Pakelti aukštyn, aukščiau nuo žemėlapio"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "sparčiųjų klavišų meniu",
+    "shortcut": "Spartieji klavišai",
+    "action": "Veiksmas",
+    "title": "Pasirinkti žemėlapį",
+    "label": "Spartieji klavišai"
+  }
+}

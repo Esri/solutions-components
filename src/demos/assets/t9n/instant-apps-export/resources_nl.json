@@ -1,0 +1,11 @@
+{
+  "export": "Exporteren",
+  "exportPopover": "Pop-over exporteren",
+  "includeExtraContent": "Resultaten opnemen",
+  "includeHeaderTheme": "Kopthema opnemen",
+  "includeLegend": "Legenda opnemen",
+  "includeMap": "Kaart opnemen",
+  "includePopup": "Pop-up opnemen",
+  "title": "Titel",
+  "toggleExport": "Exporteren in-/uitschakelen"
+}

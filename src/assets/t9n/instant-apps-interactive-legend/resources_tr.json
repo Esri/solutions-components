@@ -1,0 +1,15 @@
+{
+  "noLegend": "Lejant yok.",
+  "loading": "Etkileşimli lejant yükleniyor",
+  "open": "Aç",
+  "close": "Kapat",
+  "expand": "Genişlet",
+  "collapse": "Daralt",
+  "totalFeatureCount": "Toplam detay sayısı",
+  "showAll": "Tümünü göster",
+  "zoomTo": "Yakınlaştır",
+  "relationship": {
+    "instructionalText": "Haritayı filtrelemek için renk karelerine tıklayın",
+    "notSupported": "İlişki çizim stili şu anda desteklenmiyor."
+  }
+}

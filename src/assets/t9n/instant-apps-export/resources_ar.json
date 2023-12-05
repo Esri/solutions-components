@@ -1,0 +1,11 @@
+{
+  "export": "تصدير",
+  "exportPopover": "قائمة التصدير المنبثقة",
+  "includeExtraContent": "تضمين النتائج",
+  "includeHeaderTheme": "تضمين موضوع العنوان",
+  "includeLegend": "تضمين مفتاح الخريطة",
+  "includeMap": "تضمين خريطة",
+  "includePopup": "تضمين نافذة منبثقة",
+  "title": "اللقب",
+  "toggleExport": "تبديل التصدير"
+}

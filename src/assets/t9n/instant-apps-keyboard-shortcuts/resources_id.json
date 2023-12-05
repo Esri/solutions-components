@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Tombol panah",
+    "nudge": "Geser ke kiri, kanan, atas, atau bawah",
+    "N": "Sesuaikan untuk menunjuk arah utara",
+    "A": "Putar berlawanan arah jarum jam",
+    "D": "Putar searah jarum jam",
+    "plus": "Perbesar di pusat",
+    "minus": "Perkecil di pusat"
+  },
+  "sceneShortcuts": {
+    "P": "Gerakkan kamera agar terlihat tegak lurus dengan data yang ditampilkan di peta",
+    "N": "Sesuaikan peta untuk menunjuk arah utara",
+    "W": "Miringkan kamera ke atas",
+    "A": "Putar kamera berlawanan arah jarum jam",
+    "D": "Putar kamera searah jarum jam",
+    "S": "Miringkan kamera ke bawah",
+    "globalCommands": {
+      "J": "Geser lebih dekat ke peta",
+      "U": "Geser lebih tinggi dari peta"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "menu pintasan",
+    "shortcut": "Pintasan",
+    "action": "Tindakan",
+    "title": "Pilih peta",
+    "label": "Pintasan keyboard"
+  }
+}
