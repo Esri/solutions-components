@@ -93,6 +93,12 @@ export class MapLayerPicker {
   @Prop() showTables: boolean;
 
   /**
+   * boolean: when true a map with a single layer will show a label rather than a dropdown
+   * Used in conjunction with _hasMultipleLayers
+   */
+  @Prop() showSingleLayerAsLabel = false;
+
+  /**
    * "select" | "combobox" | "dropdown": type of component to leverage
    */
   @Prop() type: "select" | "combobox" | "dropdown" = "select";
@@ -102,6 +108,12 @@ export class MapLayerPicker {
   //  State (internal)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * boolean: when true the map contains more than one valid layers
+   * Used in conjunction with showSingleLayerAsLabel
+   */
+  @State() _hasMultipleLayers = true;
 
   /**
    * boolean: when true the map contains valid layers and all expected tools will be enabled
@@ -164,6 +176,7 @@ export class MapLayerPicker {
     await this._setLayers();
     if (this.ids.length > 0) {
       this._hasValidLayers = true;
+      this._hasMultipleLayers = this.ids.length > 1;
       this._setSelectedLayer(this.ids[0]);
     } else {
       this._hasValidLayers = false;
@@ -224,7 +237,9 @@ export class MapLayerPicker {
         <div class="map-layer-picker-container">
           <div class="map-layer-picker">
             {
-              !this._hasValidLayers ? this._getInvalidPlaceholder() : this.type === "combobox" ? this._getCombobox(id) :
+              !this._hasValidLayers ? this._getInvalidPlaceholder() :
+                !this._hasMultipleLayers && this.showSingleLayerAsLabel ? this._getSingleLayerPlaceholder() :
+                this.type === "combobox" ? this._getCombobox(id) :
                 this.type === "select" ? this._getSelect(id) : this._getDropdown(id)
             }
             <calcite-tooltip
@@ -286,6 +301,22 @@ export class MapLayerPicker {
         >
           <span>{this._translations.enableEditUpdate}</span>
         </calcite-tooltip>
+      </div>
+    );
+  }
+
+  /**
+   * Show layer name as a label with icon
+   *
+   * @returns Calcite label with the layer name and icon
+   */
+  protected _getSingleLayerPlaceholder(): VNode {
+    return (
+      <div class="layer-picker-label-container">
+        <calcite-icon icon="layers" scale="s"/>
+        <calcite-label class="no-bottom-margin padding-start-1">
+          {this.selectedName}
+        </calcite-label>
       </div>
     );
   }

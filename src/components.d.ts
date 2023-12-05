@@ -579,6 +579,10 @@ export namespace Components {
          */
         "selectedIds": string[];
         /**
+          * boolean: when true a map with a single layer will show a label rather than a dropdown Used in conjunction with _hasMultipleLayers
+         */
+        "showSingleLayerAsLabel": boolean;
+        /**
           * boolean: when true standalone tables will also be available
          */
         "showTables": boolean;
@@ -2313,6 +2317,10 @@ declare namespace LocalJSX {
           * string[]: list of layer ids that have been selected by the end user
          */
         "selectedIds"?: string[];
+        /**
+          * boolean: when true a map with a single layer will show a label rather than a dropdown Used in conjunction with _hasMultipleLayers
+         */
+        "showSingleLayerAsLabel"?: boolean;
         /**
           * boolean: when true standalone tables will also be available
          */

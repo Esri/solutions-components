@@ -605,7 +605,7 @@ export class CrowdsourceManager {
     const id = "expand-popup";
     const tooltip = this._expandPopup ? this._translations.collapsePopup : this._translations.expandPopup;
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
-    const popupNodeClass = !this._expandPopup ? "height-full" : "position-absolute-50";
+    const popupNodeClass = !this._expandPopup ? "height-full" : this.mapInfos?.length === 1 ? "position-absolute-0" : "position-absolute-50";
     return (
       <div class={"calcite-mode-dark " + popupNodeClass}>
         <calcite-panel>

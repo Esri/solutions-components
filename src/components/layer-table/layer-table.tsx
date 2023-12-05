@@ -635,6 +635,7 @@ export class LayerTable {
             onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
             placeholderIcon="layers"
             scale="l"
+            showSingleLayerAsLabel={true}
             showTables={true}
             type="dropdown"
           />
