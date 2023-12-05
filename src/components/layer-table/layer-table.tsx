@@ -1464,10 +1464,7 @@ export class LayerTable {
             autoUpdateUrl={false}
             closeBtn={true}
             closeBtnOnClick={() => this._closeFilter()}
-            //extentSelector={extentSelector}
-            //extentSelectorConfig={extentSelectorConfig}
             layerExpressions={this._layerExpressions}
-            //openFilters={expandFilters}
             ref={(el) => this._filterList = el}
             view={this.mapView}
           />
