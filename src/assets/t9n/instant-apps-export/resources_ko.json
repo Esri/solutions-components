@@ -1,0 +1,11 @@
+{
+  "export": "내보내기",
+  "exportPopover": "팝오버 내보내기",
+  "includeExtraContent": "결과 포함",
+  "includeHeaderTheme": "헤더 테마 포함",
+  "includeLegend": "범례 포함",
+  "includeMap": "맵 포함",
+  "includePopup": "팝업 포함",
+  "title": "제목",
+  "toggleExport": "내보내기 전환"
+}

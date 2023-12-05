@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Podeli"
+  },
+  "embed": {
+    "label": "Ugrađeno",
+    "copy": "Kopiraj",
+    "width": "Širina",
+    "height": "Visina"
+  },
+  "info": {
+    "label": "Da li ste znali?",
+    "tooltip": "Kopiranjem veze sačuvaćete trenutni prikaz mape, vidljive slojeve i druge iskačuće prozore. Upotrebite ovu opciju za deljenje onoga što vidite u aplikaciji."
+  },
+  "success": {
+    "label": "Uspešno!",
+    "url": "Dodaj URL kopiran u ostavu.",
+    "embed": "Ugrađeni kod kopiran u ostavu."
+  },
+  "options": {
+    "link": {
+      "label": "Kopiraj vezu",
+      "tooltip": "Kopiraj vezu u ostavu"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Kliknite da podelite na svoj Facebook nalog"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Kliknite da podelite svoj Twitter nalog"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Kliknite da podelite svoj LinkedIn nalog"
+    }
+  }
+}

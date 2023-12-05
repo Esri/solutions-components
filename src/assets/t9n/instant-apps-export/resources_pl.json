@@ -1,0 +1,11 @@
+{
+  "export": "Eksportuj",
+  "exportPopover": "Eksportuj okno podręczne",
+  "includeExtraContent": "Uwzględnij wyniki",
+  "includeHeaderTheme": "Uwzględnij motyw nagłówka",
+  "includeLegend": "Uwzględnij legendę",
+  "includeMap": "Dołącz mapę",
+  "includePopup": "Dołącz okno podręczne",
+  "title": "Tytuł",
+  "toggleExport": "Przełącz eksport"
+}

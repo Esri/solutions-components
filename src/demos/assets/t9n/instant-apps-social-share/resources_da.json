@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Del"
+  },
+  "embed": {
+    "label": "Integrér",
+    "copy": "Kopiér",
+    "width": "Bredde",
+    "height": "Højde"
+  },
+  "info": {
+    "label": "Vidste du det?",
+    "tooltip": "Kopiering af linket vil bevare den aktuelle kortvisning, synlige lag og åbne pop-up-vinduer. Brug denne indstilling til at dele, hvad du kan se i appen."
+  },
+  "success": {
+    "label": "Færdig!",
+    "url": "App-URL er blevet kopieret til udklipsholderen.",
+    "embed": "Indlejret kode er blevet kopieret til udklipsholderen."
+  },
+  "options": {
+    "link": {
+      "label": "Kopiér link",
+      "tooltip": "Klik for at kopiere link til udklipsholder"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Klik for at dele din Facebook-konto"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Klik for at dele din Twitter-konto"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Klik for at dele din LinkedIn-konto"
+    }
+  }
+}

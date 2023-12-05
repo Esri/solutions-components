@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "共享"
+  },
+  "embed": {
+    "label": "嵌入",
+    "copy": "复制",
+    "width": "宽度",
+    "height": "高度"
+  },
+  "info": {
+    "label": "您知道吗?",
+    "tooltip": "复制链接将保留当前地图视图、可见图层和打开的弹出窗口。 使用此选项共享您在应用程序中查看的内容。"
+  },
+  "success": {
+    "label": "成功!",
+    "url": "已将应用程序 URL 复制到剪贴板。",
+    "embed": "已将嵌入代码复制到剪贴板。"
+  },
+  "options": {
+    "link": {
+      "label": "复制链接",
+      "tooltip": "单击将链接复制到剪贴板"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "单击共享至您的 Facebook 帐户"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "单击共享至您的 Twitter 帐户"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "单击共享至您的 LinkedIn 帐户"
+    }
+  }
+}

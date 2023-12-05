@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Freigeben"
+  },
+  "embed": {
+    "label": "Einbetten",
+    "copy": "Kopieren",
+    "width": "Breite",
+    "height": "Höhe"
+  },
+  "info": {
+    "label": "Wussten Sie schon?",
+    "tooltip": "Bei \"Link kopieren\" werden die aktuelle Kartenansicht, sichtbare Layer und geöffnete Pop-ups beibehalten. Mit dieser Option können Sie die in der App angezeigten Inhalte freigeben."
+  },
+  "success": {
+    "label": "Erfolgreich abgeschlossen.",
+    "url": "App-URL wurde in Zwischenablage kopiert.",
+    "embed": "Einbettungscode wurde in Zwischenablage kopiert."
+  },
+  "options": {
+    "link": {
+      "label": "Link kopieren",
+      "tooltip": "Klicken, um Link in die Zwischenablage zu kopieren"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Klicken, um Inhalt in Ihrem Facebook-Konto freizugeben"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Klicken, um Inhalt in Ihrem Twitter-Konto freizugeben"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Klicken, um Inhalt in Ihrem LinkedIn-Konto freizugeben"
+    }
+  }
+}

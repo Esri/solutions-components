@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Dela"
+  },
+  "embed": {
+    "label": "Bädda in",
+    "copy": "Kopiera",
+    "width": "Bredd",
+    "height": "Höjd"
+  },
+  "info": {
+    "label": "Visste du det här?",
+    "tooltip": "Kopiering av länken bevarar den aktuella kartvyn, synliga lager och öppna popup-fönster. Använd det här alternativet för att dela det du ser i appen."
+  },
+  "success": {
+    "label": "Det lyckades!",
+    "url": "Appens URL kopierades till Urklipp.",
+    "embed": "Inbäddad kod kopierad till urklipp."
+  },
+  "options": {
+    "link": {
+      "label": "Kopiera länk",
+      "tooltip": "Klicka om du vill kopiera länken till Urklipp"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Klicka för att dela till ditt Facebook-konto"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Klicka för att dela till ditt Twitter-konto"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Klicka för att dela till ditt LinkedIn-konto"
+    }
+  }
+}

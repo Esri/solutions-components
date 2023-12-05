@@ -1,0 +1,15 @@
+{
+  "noLegend": "No legend.",
+  "loading": "Loading interactive legend",
+  "open": "Open",
+  "close": "Close",
+  "expand": "Expand",
+  "collapse": "Collapse",
+  "totalFeatureCount": "Total feature count",
+  "showAll": "Show all",
+  "zoomTo": "Zoom to",
+  "relationship": {
+    "instructionalText": "Click color squares to filter map",
+    "notSupported": "Relationship drawing style is currently not supported."
+  }
+}

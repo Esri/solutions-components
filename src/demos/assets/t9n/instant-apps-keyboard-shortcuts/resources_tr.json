@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Ok tuşları",
+    "nudge": "Sola, sağa, yukarı veya aşağı kaydır",
+    "N": "Kuzey noktasına ayarla",
+    "A": "Saat yönünün tersine döndür",
+    "D": "Saat yönünde döndür",
+    "plus": "Merkezde yakınlaştır",
+    "minus": "Merkezde uzaklaştır"
+  },
+  "sceneShortcuts": {
+    "P": "Haritada görüntülenen verilere dikey olarak bakmak için kamerayı hareket ettirin",
+    "N": "Haritayı kuzey noktasına ayarla",
+    "W": "Kamerayı yukarı yatır",
+    "A": "Kamerayı saatin ters yönünde döndür",
+    "D": "Kamerayı saat yönünde döndür",
+    "S": "Kamerayı aşağı yatır",
+    "globalCommands": {
+      "J": "Alçalarak haritaya yaklaş",
+      "U": "Yükselerek haritadan uzaklaş"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "kısayollar menüsü",
+    "shortcut": "Kısayol",
+    "action": "Eylem",
+    "title": "Haritayı seç",
+    "label": "Klavye kısayolları"
+  }
+}

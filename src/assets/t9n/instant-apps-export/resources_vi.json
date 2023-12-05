@@ -1,0 +1,11 @@
+{
+  "export": "Xuất",
+  "exportPopover": "Xuất cửa sổ trợ giúp",
+  "includeExtraContent": "Gồm các kết quả",
+  "includeHeaderTheme": "Bao gồm chủ đề đầu mục",
+  "includeLegend": "Bao gồm chú giải",
+  "includeMap": "Bao gồm bản đồ",
+  "includePopup": "Bao gồm cửa sổ pop-up",
+  "title": "Tiêu đề",
+  "toggleExport": "Bật/Tắt Xuất"
+}

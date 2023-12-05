@@ -1,0 +1,30 @@
+{
+  "mapShortcuts": {
+    "arrowKeys": "Piltangenter",
+    "nudge": "Knuffa åt vänster, höger, uppåt eller nedåt",
+    "N": "Justera så att den pekar norrut",
+    "A": "Rotera moturs",
+    "D": "Rotera medurs",
+    "plus": "Zooma in i mitten",
+    "minus": "Zooma ut i mitten"
+  },
+  "sceneShortcuts": {
+    "P": "Flytta kameran för en vinkelrät vy över data som visas i kartan",
+    "N": "Justera kartan så att den pekar norrut",
+    "W": "Luta kameran uppåt",
+    "A": "Rotera kameran moturs",
+    "D": "Rotera kameran medurs",
+    "S": "Luta kameran nedåt",
+    "globalCommands": {
+      "J": "Flytta ned närmare kartan",
+      "U": "Flytta upp högre än kartan"
+    }
+  },
+  "generalShortcuts": {
+    "menu": "genvägsmeny",
+    "shortcut": "Genväg",
+    "action": "Åtgärd",
+    "title": "Välj kartan",
+    "label": "Kortkommandon"
+  }
+}

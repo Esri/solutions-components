@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Bendrinti"
+  },
+  "embed": {
+    "label": "Įterpti",
+    "copy": "Kopijuoti",
+    "width": "Plotis",
+    "height": "Aukštis"
+  },
+  "info": {
+    "label": "Ar žinojote?",
+    "tooltip": "Parinktis „Kopijuoti nuorodą“ išlaikys esamą žemėlapio peržiūrą, matomus sluoksnius ir atidarytus iškylančius langus. Naudokite šią parinktį norėdami bendrinti tai, ką matote programoje."
+  },
+  "success": {
+    "label": "Pavyko!",
+    "url": "Programos URL nukopijuotas į iškarpinę.",
+    "embed": "Įdėtasis kodas nukopijuotas į iškarpinę."
+  },
+  "options": {
+    "link": {
+      "label": "Kopijuoti nuorodą",
+      "tooltip": "Spustelėkite, jei norite nukopijuoti nuorodą į iškarpinę"
+    },
+    "facebook": {
+      "label": "„Facebook“",
+      "tooltip": "Spustelėkite, jei norite bendrinti savo Facebook paskyroje"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Spustelėkite, jei norite bendrinti savo Twitter paskyroje"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Spustelėkite, jei norite bendrinti savo LinkedIn paskyroje"
+    }
+  }
+}

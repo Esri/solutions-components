@@ -1,0 +1,16 @@
+{
+  "andOperator": "Os resultados irão exibir TODOS os filtros correspondentes",
+  "andOperator2": "E: Os resultados irão exibir TODOS os filtros correspondentes",
+  "close": "Fechar",
+  "maxSlider": "{field}, limite superior",
+  "minSlider": "{field}, limite inferior",
+  "nextMonth": "Próximo mês",
+  "orOperator": "Os resultados irão exibir QUALQUER filtro correspondente",
+  "orOperator2": "OU: Os resultados irão exibir QUALQUER filtro correspondente",
+  "previousMonth": "Mês anterior",
+  "resetDatePicker": "Redefinir seletor de data",
+  "resetFilter": "Repor Filtro",
+  "selectFilter": "Selecionar filtro",
+  "zoomTo": "Fazer zoom a",
+  "zoomToExtent": "Fazer zoom para extensão"
+}

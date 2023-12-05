@@ -1,0 +1,38 @@
+{
+  "share": {
+    "label": "Udostępnij"
+  },
+  "embed": {
+    "label": "Osadź",
+    "copy": "Kopiuj",
+    "width": "Szerokość",
+    "height": "Wysokość"
+  },
+  "info": {
+    "label": "Czy wiesz, że...",
+    "tooltip": "Opcja Kopiuj łącze spowoduje zachowanie bieżącego widoku mapy, widocznych warstw i otwartych okien podręcznych. Użyj tej opcji, aby udostępnić to, co widzisz w aplikacji."
+  },
+  "success": {
+    "label": "Sukces!",
+    "url": "Adres URL aplikacji został skopiowany do schowka.",
+    "embed": "Osadź kod skopiowany do schowka."
+  },
+  "options": {
+    "link": {
+      "label": "Kopiuj łącze",
+      "tooltip": "Kliknij, aby skopiować łącze do schowka"
+    },
+    "facebook": {
+      "label": "Facebook",
+      "tooltip": "Kliknij, aby udostępnić na swoim koncie na Facebooku"
+    },
+    "twitter": {
+      "label": "Twitter",
+      "tooltip": "Kliknij, aby udostępnić na swoim koncie na Twitterze"
+    },
+    "linkedIn": {
+      "label": "LinkedIn",
+      "tooltip": "Kliknij, aby udostępnić na swoim koncie w serwisie LinkedIn"
+    }
+  }
+}
