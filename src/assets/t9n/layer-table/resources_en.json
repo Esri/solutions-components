@@ -1,8 +1,10 @@
 {
   "clearSelection": "Clear selection",
+  "close": "Close",
   "delete": "Delete",
   "editMultiple": "Edit Multiple",
   "exportCSV": "Export to CSV",
+  "filter": "Filter: {{title}}",
   "filters": "Filters",
   "more": "More",
   "selectAll": "Select all",

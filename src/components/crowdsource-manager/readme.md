@@ -135,6 +135,7 @@ graph TD;
   layer-table --> instant-apps-social-share
   layer-table --> calcite-tooltip
   layer-table --> calcite-modal
+  layer-table --> instant-apps-filter-list
   map-layer-picker --> calcite-tooltip
   map-layer-picker --> calcite-notice
   map-layer-picker --> calcite-select
@@ -156,6 +157,31 @@ graph TD;
   instant-apps-social-share --> calcite-icon
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
+  instant-apps-filter-list --> calcite-panel
+  instant-apps-filter-list --> calcite-loader
+  instant-apps-filter-list --> calcite-checkbox
+  instant-apps-filter-list --> calcite-block
+  instant-apps-filter-list --> calcite-combobox
+  instant-apps-filter-list --> calcite-combobox-item
+  instant-apps-filter-list --> calcite-slider
+  instant-apps-filter-list --> calcite-input-date-picker
+  instant-apps-filter-list --> calcite-action
+  instant-apps-filter-list --> calcite-button
+  calcite-block --> calcite-scrim
+  calcite-block --> calcite-loader
+  calcite-block --> calcite-icon
+  calcite-block --> calcite-handle
+  calcite-block --> calcite-action-menu
+  calcite-slider --> calcite-graph
+  calcite-input-date-picker --> calcite-input-text
+  calcite-input-date-picker --> calcite-date-picker
+  calcite-input-date-picker --> calcite-icon
+  calcite-input-text --> calcite-progress
+  calcite-input-text --> calcite-icon
+  calcite-date-picker --> calcite-date-picker-month-header
+  calcite-date-picker --> calcite-date-picker-month
+  calcite-date-picker-month-header --> calcite-icon
+  calcite-date-picker-month --> calcite-date-picker-day
   style crowdsource-manager fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

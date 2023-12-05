@@ -21,7 +21,7 @@ import { getLocaleComponentStrings } from "../../utils/locale";
 import { getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
 import { queryAllIds, queryFeaturesByGlobalID } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
-import { IColumnsInfo, IExportInfos, ILayerInfo, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo } from "../../utils/interfaces";
+import { IColumnsInfo, IExportInfos, ILayerExpression, ILayerInfo, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo } from "../../utils/interfaces";
 import "@esri/instant-apps-components/dist/components/instant-apps-social-share";
 
 @Component({
@@ -145,6 +145,11 @@ export class LayerTable {
   @State() _fetchingData = false;
 
   /**
+   * boolean: When true the filter component will be displayed
+   */
+  @State() _filterOpen = false;
+
+  /**
    * boolean: When true a loading indicator will be shown in the delete button
    */
   @State() _isDeleting = false;
@@ -225,6 +230,16 @@ export class LayerTable {
    * boolean: When false alerts will be shown to indicate that the layer must have delete and editing enabled
    */
   protected _deleteEnabled: boolean;
+
+  /**
+   * HTMLInstantAppsFilterListElement: Component from Instant Apps that supports interacting with the current filter config
+   */
+  protected _filterList: HTMLInstantAppsFilterListElement;
+
+  /**
+   * ILayerExpression[]: All layer expressions from the current filter config for the currently selected layer
+   */
+  protected _layerExpressions: ILayerExpression[];
 
   /**
    * IHandle: The map click handle
@@ -378,6 +393,7 @@ export class LayerTable {
     this._fetchingData = true;
     await this._resetTable();
     this._updateShareUrl();
+    this._initLayerExpressions();
     this._fetchingData = false;
   }
 
@@ -416,15 +432,6 @@ export class LayerTable {
    * Emitted on demand when a layer is selected
    */
   @Event() featureSelectionChange: EventEmitter<number[]>;
-
-  /**
-   * Emitted on demand when the filters button is clicked
-   */
-  @Event({
-    eventName: 'openFilterOptions',
-    composed: true,
-    bubbles: true
-  }) openFilterOptions: EventEmitter<void>;
 
   /**
    * Scroll and zoom to the selected feature from the Features widget.
@@ -529,6 +536,7 @@ export class LayerTable {
           </div>
         </calcite-shell>
         {this._deleteMessage()}
+        {this._filterModal()}
       </Host>
     );
   }
@@ -733,6 +741,7 @@ export class LayerTable {
   protected _initToolInfos(): void {
     const featuresSelected = this._featuresSelected();
     const featuresEmpty = this._featuresEmpty();
+    const hasFilterExpressions = this._hasFilterExpressions();
     this._toolInfos = [this.enableZoom ? {
       icon: "zoom-to-object",
       label: this._translations.zoom,
@@ -740,10 +749,10 @@ export class LayerTable {
       disabled: !featuresSelected,
       isOverflow: false
     } : undefined,
-    this.mapInfo?.filters ? {
+    hasFilterExpressions ? {
       icon: "filter",
       label: this._translations.filters,
-      func: () => this._filter(),
+      func: () => this._toggleFilter(),
       disabled: false,
       isOverflow: false
     } : undefined,
@@ -819,6 +828,20 @@ export class LayerTable {
    */
   protected _featuresEmpty(): boolean {
     return this._allIds.length === 0;
+  }
+
+  /**
+   * Return true when we have at least 1 layer expression for the current layer
+   *
+   * @returns boolean
+   */
+  protected _hasFilterExpressions(): boolean {
+    let layerExpressions;
+    if (this.mapInfo?.filterConfig?.layerExpressions) {
+      layerExpressions = this.mapInfo.filterConfig.layerExpressions.filter(
+        (exp) => exp.id === this._layer.id);
+    }
+    return layerExpressions?.length > 0;
   }
 
   /**
@@ -1416,6 +1439,50 @@ export class LayerTable {
   }
 
   /**
+   * Show filter component in modal
+   *
+   * @returns node to interact with any configured filters for the current layer
+   */
+  protected _filterModal(): VNode {
+    return (
+      <calcite-modal
+        aria-labelledby="modal-title"
+        kind="brand"
+        onCalciteModalClose={() => this._closeFilter()}
+        open={this._filterOpen}
+        widthScale="s"
+      >
+        <div
+          class="display-flex align-center"
+          id="modal-title"
+          slot="header"
+        >
+          {this._translations?.filter?.replace("{{title}}", this._layer?.title)}
+        </div>
+        <div slot="content">
+          <instant-apps-filter-list
+            autoUpdateUrl={false}
+            closeBtn={true}
+            closeBtnOnClick={() => this._closeFilter()}
+            layerExpressions={this._layerExpressions}
+            ref={(el) => this._filterList = el}
+            view={this.mapView}
+          />
+        </div>
+      </calcite-modal>
+    );
+  }
+
+  /**
+   * Close the filter modal
+   *
+   * @returns void
+   */
+  protected _closeFilter(): void {
+    this._filterOpen = false;
+  }
+
+  /**
    * Show delete confirmation message
    *
    * @returns node to confirm or deny the delete operation
@@ -1555,12 +1622,24 @@ export class LayerTable {
   }
 
   /**
-   * Show the filter options
+   * When true the filter modal will be displayed
    *
    * @returns void
    */
-  protected _filter(): void {
-    this.openFilterOptions.emit();
+  protected _toggleFilter(): void {
+    this._filterOpen = !this._filterOpen;
+  }
+
+  /**
+   * Store any filters for the current layer.
+   * Should only occur on layer change
+   *
+   * @returns void
+   */
+  protected _initLayerExpressions(): void {
+    const layerExpressions = this.mapInfo.filterConfig?.layerExpressions;
+    this._layerExpressions = layerExpressions.filter(
+      (exp) => exp.id === this._layer.id);
   }
 
   /**
