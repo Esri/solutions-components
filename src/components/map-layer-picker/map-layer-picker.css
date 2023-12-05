@@ -53,3 +53,19 @@
   opacity: var(--calcite-ui-opacity-disabled);
   pointer-events: none;
 }
+
+.no-bottom-margin {
+  --calcite-label-margin-bottom: 0px;
+}
+
+.layer-picker-label-container {
+  align-items: center;
+  display: inline-flex;
+  height: 100%;
+  padding-inline-start: 1rem;
+  padding-inline-end: 1rem;
+}
+
+.padding-start-1 {
+  padding-inline-start: 1rem;
+}
