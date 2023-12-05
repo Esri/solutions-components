@@ -306,9 +306,9 @@ export class MapLayerPicker {
   }
 
   /**
-   * Show layer name as a label when only one layer is found and showSingleLayerAsLabel is true
+   * Show layer name as a label with icon
    *
-   * @returns Calcite label with the layer name
+   * @returns Calcite label with the layer name and icon
    */
   protected _getSingleLayerPlaceholder(): VNode {
     return (
