@@ -237,10 +237,12 @@ export class MapCard {
   render() {
     const mapClass = this.hidden ? "visibility-hidden" : "";
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
+    const mapPickerClass = this.mapInfos?.length > 1 ? "" : "display-none";
+    const mapHeightClass = this.mapInfos?.length > 1 ? "map-height" : "height-full";
     return (
       <Host>
-        <map-picker mapInfos={this.mapInfos} ref={(el) => this._mapPicker = el}/>
-        <div class={`map-height ${mapClass}`} ref={(el) => (this._mapDiv = el)}/>
+        <map-picker class={mapPickerClass} mapInfos={this.mapInfos} ref={(el) => this._mapPicker = el}/>
+        <div class={`${mapHeightClass} ${mapClass}`} ref={(el) => (this._mapDiv = el)}/>
         <map-tools
           basemapConfig={this.basemapConfig}
           class={`box-shadow ${themeClass}`}

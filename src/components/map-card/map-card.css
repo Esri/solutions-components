@@ -24,10 +24,18 @@
   height: calc(100% - 51px);
 }
 
+.height-full {
+  height: 100%;
+}
+
 .box-shadow {
   box-shadow: none !important;
 }
 
 .visibility-hidden {
   visibility: hidden;
+}
+
+.display-none {
+  display: none;
 }
