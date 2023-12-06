@@ -1103,6 +1103,7 @@ export class LayerTable {
           ref={el => this._shareNode = el}
           scale="m"
           shareButtonColor="neutral"
+          shareButtonType="action"
           socialMedia={this.shareIncludeSocial}
           view={this.mapView}
         />
