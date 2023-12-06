@@ -35,7 +35,7 @@
 }
 
 #feature-form {
-  --calcite-ui-background: none;
+  --calcite-color-background: none;
   padding-top: 0px;
 }
 
@@ -50,11 +50,11 @@
 .esri-editor__prompt--danger {
   position: relative !important;
   width: 100% !important;
-  background-color: var(--calcite-ui-foreground-1) !important;
+  background-color: var(--calcite-color-foreground-1) !important;
 }
 
 .esri-feature__content-node {
-  background-color: var(--calcite-ui-foreground-1) !important;
+  background-color: var(--calcite-color-foreground-1) !important;
 }
 
 .esri-editor__panel-toolbar {

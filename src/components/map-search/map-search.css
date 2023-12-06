@@ -20,5 +20,5 @@
 
 .search-widget {
   width: 100% !important;
-  border: 1px solid var(--calcite-ui-border-input);
+  border: 1px solid var(--calcite-color-border-input);
 }

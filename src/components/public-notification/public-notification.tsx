@@ -993,7 +993,7 @@ export class PublicNotification {
                 </div>
                 <div class="padding-1 display-flex">
                   <calcite-button
-                    disabled={!this._downloadActive}
+                    disabled={!this._downloadActive || this._fetchingData}
                     loading={this._fetchingData}
                     onClick={() => void this._export()}
                     width="full"

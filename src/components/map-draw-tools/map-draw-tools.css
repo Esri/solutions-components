@@ -19,7 +19,7 @@
 }
 
 .border {
-  outline: 1px solid var(--calcite-ui-border-input);
+  outline: 1px solid var(--calcite-color-border-input);
 }
 
 .div-visible {

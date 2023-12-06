@@ -297,9 +297,11 @@
     async function save() {
       const saveBtn = document.getElementById("saveBtn");
       saveBtn.setAttribute("loading", true);
+      saveBtn.setAttribute("disabled", true);
       const demo = document.getElementById("demo");
       demo.save().then(() => {
         saveBtn.removeAttribute("loading");
+        saveBtn.removeAttribute("disabled");
       });
     }
   </script>

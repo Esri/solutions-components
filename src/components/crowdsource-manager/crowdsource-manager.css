@@ -17,7 +17,7 @@
 :host {
   display: block;
   --calcite-label-margin-bottom: 0px;
-  --solutions-theme-foreground-color: var(--calcite-ui-foreground-1);
+  --solutions-theme-foreground-color: var(--calcite-color-foreground-1);
 }
 
 .padding-1-2 {
@@ -78,16 +78,16 @@
 }
 
 .border {
-  border: 1px solid var(--calcite-ui-border-3);
+  border: 1px solid var(--calcite-color-border-3);
 }
 
 .border-bottom {
-  border-bottom: 1px solid var(--calcite-ui-border-3);
+  border-bottom: 1px solid var(--calcite-color-border-3);
 }
 
 .border-sides {
-  border-left: 1px solid var(--calcite-ui-border-3);
-  border-right: 1px solid var(--calcite-ui-border-3);
+  border-left: 1px solid var(--calcite-color-border-3);
+  border-right: 1px solid var(--calcite-color-border-3);
 }
 
 .position-relative {

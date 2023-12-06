@@ -43,7 +43,7 @@
 
 .search-widget {
   width: 100% !important;
-  border: 1px solid var(--calcite-ui-border-input);
+  border: 1px solid var(--calcite-color-border-input);
 }
 
 .w-100 {
@@ -59,7 +59,7 @@
 }
 
 .end-border {
-  border-inline-end: 1px solid var(--calcite-ui-border-2);
+  border-inline-end: 1px solid var(--calcite-color-border-2);
 }
 
 .search-distance {
@@ -72,7 +72,7 @@
 }
 
 .border-bottom {
-  border-bottom: 1px solid var(--calcite-ui-border-2);
+  border-bottom: 1px solid var(--calcite-color-border-2);
 }
 
 .tooltip-container {
@@ -84,11 +84,11 @@
 }
 
 .icon {
-  --calcite-ui-icon-color: var(--calcite-ui-brand);
+  --calcite-color-icon-color: var(--calcite-color-brand);
 }
 
 .tooltip-message {
   padding: 5px 8px;
   font-weight: var(--calcite-font-weight-normal);
-  color: var(--calcite-ui-text-2);
+  color: var(--calcite-color-text-2);
 }
