@@ -1,0 +1,51 @@
+---
+name: Bug report
+about: Create a report to help us improve
+title: ''
+labels: ''
+assignees: ''
+
+---
+
+name: Bug
+description: Report a bug in a product
+labels: ["1-BUG"]
+body:
+  - type: textarea
+    id: describe
+    attributes:
+      label: Describe the bug
+      description: A clear description of the issue (optionally include before/after screenshots/GIFs).
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What you expected instead, and why?
+    validations:
+      required: true
+  - type: textarea
+    id: sample
+    attributes:
+      label: Reproduction Steps & Sample
+      description: |
+        Provide clear, numbered steps to reproduce this bug with a sample app and data if needed. Recordings are also helpful. Make sure that web maps, web scenes, portal items, services and other resources used to reproduce this bug are accessible.
+      placeholder: |
+        Link to web map/app:
+        1. Go to '...'
+        2. Click on '...'
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: relevant
+    attributes:
+      label: Other Relevant Info
+      description: Browser, OS, mobile, stack traces, related issues, suggestions/resources on how to fix, etc.
+      placeholder: |
+        Windows 10, Chrome 97
+        `Uncaught TypeError: Cannot read property of undefined`
+        ...
+    validations:
+      required: false
