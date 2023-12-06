@@ -16,7 +16,7 @@
 
 :host {
   display: block;
-  --solutions-theme-foreground-color: var(--calcite-ui-foreground-1);
+  --solutions-theme-foreground-color: var(--calcite-color-foreground-1);
 }
 
 .width-full {
@@ -35,7 +35,7 @@
   border-width: 0px;
   border-bottom-width: 1px;
   border-style: solid;
-  border-color: var(--calcite-ui-border-3);
+  border-color: var(--calcite-color-border-3);
 }
 
 .action-bar-size {
@@ -49,7 +49,7 @@
   flex-direction: column;
   overflow: hidden;
   animation: calcite-scrim-fade-in var(--calcite-internal-animation-timing-medium) ease-in-out;
-  background-color: var(--calcite-ui-background);
+  background-color: var(--calcite-color-background);
   z-index: 1000;
   width: 100%;
   height: fit-content;

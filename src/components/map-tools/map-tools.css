@@ -41,7 +41,7 @@
 }
 
 .border-bottom {
-  border-bottom: 1px solid var(--calcite-ui-border-3);
+  border-bottom: 1px solid var(--calcite-color-border-3);
 }
 
 .box-shadow {

@@ -35,15 +35,15 @@
 }
 
 .table-border {
-  border: 1px solid var(--calcite-ui-border-2);
+  border: 1px solid var(--calcite-color-border-2);
 }
 
 .border-end {
-  border-inline-end: 1px solid var(--calcite-ui-border-2);
+  border-inline-end: 1px solid var(--calcite-color-border-2);
 }
 
 .border-bottom {
-  border-bottom: 1px solid var(--calcite-ui-border-2);
+  border-bottom: 1px solid var(--calcite-color-border-2);
 }
 
 .padding-5 {
@@ -81,11 +81,11 @@ html[dir="rtl"] .bottom-left {
 }
 
 .background {
-  background-color: var(--calcite-ui-background);
+  background-color: var(--calcite-color-background);
 }
 
 .text-color {
-  color: var(--calcite-ui-text-1);
+  color: var(--calcite-color-text-1);
 }
 
 .align-center {
@@ -93,7 +93,7 @@ html[dir="rtl"] .bottom-left {
 }
 
 .danger-color {
-  color: var(--calcite-ui-danger);
+  color: var(--calcite-color-status-danger);
 }
 
 .esri-feature-table vaadin-grid {
@@ -101,8 +101,8 @@ html[dir="rtl"] .bottom-left {
 }
 
 vaadin-grid-cell-content {
-  padding: var(--lumo-space-xs) var(--lumo-space-m) !important;
   font-size: 14px !important;
+  color: var(--calcite-color-text-3) !important;
 }
 
 .share-action {
@@ -117,7 +117,7 @@ html[dir="rtl"] .share-action {
 .disabled {
   cursor: default !important;
   user-select: none;
-  opacity: var(--calcite-ui-opacity-disabled);
+  opacity: var(--calcite-opacity-disabled);
   pointer-events: none;
 }
 

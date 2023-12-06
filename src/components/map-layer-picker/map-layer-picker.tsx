@@ -312,7 +312,7 @@ export class MapLayerPicker {
    */
   protected _getSingleLayerPlaceholder(): VNode {
     return (
-      <div class="layer-picker-label-container">
+      <div class="layer-picker-label-container cursor-default">
         <calcite-icon icon="layers" scale="s"/>
         <calcite-label class="no-bottom-margin padding-start-1">
           {this.selectedName}
