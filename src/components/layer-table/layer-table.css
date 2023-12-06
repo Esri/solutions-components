@@ -108,9 +108,6 @@ vaadin-grid-cell-content {
 .share-action {
   position: absolute;
   right: 0;
-  margin-top: 4px;
-  margin-inline-end: 4px;
-  margin-bottom: 4px;
 }
 
 html[dir="rtl"] .share-action {
@@ -125,6 +122,6 @@ html[dir="rtl"] .share-action {
 }
 
 .instant-app-share {
-  height: 42px !important;
+  height: 50px !important;
   display: inline-flex;
 }

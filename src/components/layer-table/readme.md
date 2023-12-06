@@ -112,6 +112,7 @@ graph TD;
   instant-apps-social-share --> calcite-popover
   instant-apps-social-share --> calcite-button
   instant-apps-social-share --> calcite-icon
+  instant-apps-social-share --> calcite-action
   calcite-modal --> calcite-scrim
   calcite-modal --> calcite-icon
   instant-apps-filter-list --> calcite-panel
