@@ -238,7 +238,7 @@ export class MapLayerPicker {
    */
   render(): VNode {
     const id = "map-layer-picker";
-    const style = this.height > 0 ? {"height": this.height.toString()} : {};
+    const style = this.height > 0 ? {"height": `${this.height.toString()}px`} : {};
     return (
       <Host>
         <div class="map-layer-picker-container" style={style}>
