@@ -630,6 +630,7 @@ export class LayerTable {
           <map-layer-picker
             appearance="transparent"
             defaultLayerId={this.defaultLayerId}
+            height={50}
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
             onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}

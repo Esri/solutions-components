@@ -63,6 +63,12 @@ export class MapLayerPicker {
   @Prop() enabledTableIds: string[] = [];
 
   /**
+   * number: optional fixed height value for the control.
+   * Specified as pixel height.
+   */
+  @Prop() height: number;
+
+  /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
@@ -232,10 +238,11 @@ export class MapLayerPicker {
    */
   render(): VNode {
     const id = "map-layer-picker";
+    const style = this.height > 0 ? {"height": `${this.height.toString()}px`} : {};
     return (
       <Host>
-        <div class="map-layer-picker-container">
-          <div class="map-layer-picker">
+        <div class="map-layer-picker-container" style={style}>
+          <div class="map-layer-picker" style={style}>
             {
               !this._hasValidLayers ? this._getInvalidPlaceholder() :
                 !this._hasMultipleLayers && this.showSingleLayerAsLabel ? this._getSingleLayerPlaceholder() :

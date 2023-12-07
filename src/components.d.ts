@@ -559,6 +559,10 @@ export namespace Components {
          */
         "enabledTableIds": string[];
         /**
+          * number: optional fixed height value for the control. Specified as pixel height.
+         */
+        "height": number;
+        /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
@@ -2289,6 +2293,10 @@ declare namespace LocalJSX {
           * string[]: Optional list of enabled table ids  If empty all tables will be available
          */
         "enabledTableIds"?: string[];
+        /**
+          * number: optional fixed height value for the control. Specified as pixel height.
+         */
+        "height"?: number;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
