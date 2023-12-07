@@ -1,6 +1,6 @@
 {
   "name": "@esri/solutions-components",
-  "version": "0.7.7",
+  "version": "0.7.8",
   "description": "Web Components for Esri's Solutions Applications",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -81,7 +81,7 @@
     "@esri/arcgis-rest-service-admin": "^3.4.2",
     "@esri/calcite-components": "2.0.0",
     "@esri/calcite-design-tokens": "2.0.0",
-    "@esri/instant-apps-components": "1.0.0-beta.157",
+    "@esri/instant-apps-components": "1.0.0-beta.163",
     "@esri/hub-common": "^12.37.1",
     "@esri/hub-initiatives": "^12.4.1",
     "@esri/hub-sites": "^12.6.0",

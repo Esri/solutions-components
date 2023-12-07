@@ -35,7 +35,7 @@
 }
 
 .icon-color {
-  --calcite-ui-icon-color: var(--calcite-ui-brand);
+  --calcite-color-icon-color: var(--calcite-color-brand);
 }
 
 .icon {
@@ -45,7 +45,7 @@
 .tooltip-message {
   padding: 5px 8px;
   font-weight: var(--calcite-font-weight-normal);
-  color: var(--calcite-ui-text-2);
+  color: var(--calcite-color-text-2);
 }
 
 .header-text {

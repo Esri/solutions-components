@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@import "calcite-web.min";
-
 /*#region Basic Overrides*/
 
 html, body {
@@ -24,6 +22,7 @@ html, body {
     flex
     overflow-y-hidden;
   background-color: $solutions-background-color;
+  margin: 0px;
 }
 
 h1 {

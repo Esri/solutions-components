@@ -27,7 +27,7 @@
   border-width: 0px;
   border-bottom-width: 1px;
   border-style: solid;
-  border-color: var(--calcite-ui-border-3);
+  border-color: var(--calcite-color-border-3);
 }
 
 .action-bar-size {
@@ -88,9 +88,9 @@
 
 .info-blue {
   /* This would be better but not the right color in light theme */
-  /* color: var(--calcite-ui-info); */
+  /* color: var(--calcite-color-info); */
 
-  /* This is --calcite-ui-info value for dark theme*/
+  /* This is --calcite-color-info value for dark theme*/
   color: #00A0FF;
 }
 
@@ -116,7 +116,7 @@
 }
 
 .border-bottom {
-  border-bottom: 1px solid var(--calcite-ui-border-2);
+  border-bottom: 1px solid var(--calcite-color-border-2);
 }
 
 .padding-start-1-2 {
@@ -124,7 +124,7 @@
 }
 
 .list-border {
-  border: 1px solid var(--calcite-ui-border-2);
+  border: 1px solid var(--calcite-color-border-2);
 }
 
 .margin-sides-1 {
@@ -161,7 +161,7 @@
 }
 
 .main-background {
-  background-color: var(--calcite-ui-foreground-2);
+  background-color: var(--calcite-color-foreground-2);
 }
 
 .position-right {
@@ -179,7 +179,7 @@
 }
 
 .list-label {
-  color: var(--calcite-ui-text-1);
+  color: var(--calcite-color-text-1);
 }
 
 .list-label,
@@ -193,7 +193,7 @@
 
 .list-description {
   margin-block-start: 0.125rem;
-  color: var(--calcite-ui-text-3);
+  color: var(--calcite-color-text-3);
 }
 
 .img-container {
@@ -208,9 +208,9 @@
 .background-override {
   height: 100%;
   width: 100%;
-  --calcite-ui-foreground-3: var(--calcite-ui-brand);
-  --calcite-ui-foreground-2: var(--calcite-ui-brand-hover);
-  --calcite-ui-text-1: var(--calcite-ui-text-inverse)
+  --calcite-color-foreground-3: var(--calcite-color-brand);
+  --calcite-color-foreground-2: var(--calcite-color-brand-hover);
+  --calcite-color-text-1: var(--calcite-color-text-inverse)
 }
 
 .word-wrap-anywhere {
