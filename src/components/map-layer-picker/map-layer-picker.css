@@ -20,6 +20,7 @@
 
 .map-layer-picker-container {
   width: 100%;
+  align-items: center;
 }
 
 .map-layer-picker {

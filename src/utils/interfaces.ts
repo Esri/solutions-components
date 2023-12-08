@@ -532,3 +532,8 @@ export interface IExpression {
   step?: number;
   numDisplayOption?: "slider" | "drop-down";
 }
+
+export interface ILayerAndTableIds {
+  layerIds: string[];
+  tableIds: string[];
+}
