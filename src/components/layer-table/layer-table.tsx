@@ -1760,6 +1760,7 @@ export class LayerTable {
         fieldInfos.some(fieldInfo => {
           if (fieldInfo.name === columnTemplate.fieldName) {
             columnTemplate.label = fieldInfo.alias;
+            columnTemplate.menuConfig = this._getMenuConfig(fieldInfo.name);
             return true;
           }
         });
@@ -1768,11 +1769,53 @@ export class LayerTable {
         return {
           type: "field",
           fieldName: fieldInfo.name,
-          label: fieldInfo.alias
+          label: fieldInfo.alias,
+          menuConfig: this._getMenuConfig(fieldInfo.name)
         } as __esri.FieldColumnTemplate;
       })
     }
     return columnTemplates;
+  }
+
+  /**
+   * Get the menu config that adds the ability to hide the current column
+   *
+   * @returns void
+   * @protected
+   */
+  protected _getMenuConfig(
+    name: string
+  ): any {
+    return {
+      items: [
+        {
+          label: this._translations.hideField,
+          iconClass: "esri-icon-non-visible",
+          autoCloseMenu: true,
+          clickFunction: () => {
+            this._handleHideClick(name);
+          }
+        }
+      ]
+    };
+  }
+
+  /**
+   * Hide the table column for the provided name
+   *
+   * @returns void
+   * @protected
+   */
+  protected _handleHideClick(
+    name: string
+  ): void {
+    this._columnsInfo[name] = false;
+    this._table.hideColumn(name);
+    this._table.tableTemplate.columnTemplates.forEach((columnTemplate: __esri.FieldColumnTemplate) => {
+      if (columnTemplate.fieldName === name) {
+        columnTemplate.visible = false;
+      }
+    });
   }
 
   /**
