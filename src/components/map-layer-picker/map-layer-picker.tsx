@@ -50,6 +50,8 @@ export class MapLayerPicker {
    */
   @Prop() defaultLayerId = "";
 
+  @Prop() display: "inline-flex" | "inline-block" = "inline-block";
+
   /**
    * string[]: Optional list of enabled layer ids
    *  If empty all layers will be available
@@ -238,7 +240,8 @@ export class MapLayerPicker {
    */
   render(): VNode {
     const id = "map-layer-picker";
-    const style = this.height > 0 ? {"height": `${this.height.toString()}px`} : {};
+    let style: any = this.height > 0 ? {"height": `${this.height.toString()}px`} : {};
+    style = {...style, "display": this.display}
     return (
       <Host>
         <div class="map-layer-picker-container" style={style}>

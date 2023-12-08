@@ -550,6 +550,7 @@ export namespace Components {
           * string: when provided this layer ID will be used when the app loads
          */
         "defaultLayerId": string;
+        "display": "inline-flex" | "inline-block";
         /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
@@ -2285,6 +2286,7 @@ declare namespace LocalJSX {
           * string: when provided this layer ID will be used when the app loads
          */
         "defaultLayerId"?: string;
+        "display"?: "inline-flex" | "inline-block";
         /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
          */
