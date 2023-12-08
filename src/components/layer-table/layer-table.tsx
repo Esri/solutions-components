@@ -23,6 +23,7 @@ import { queryAllIds, queryFeaturesByGlobalID } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { IColumnsInfo, IExportInfos, ILayerExpression, ILayerInfo, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo } from "../../utils/interfaces";
 import "@esri/instant-apps-components/dist/components/instant-apps-social-share";
+import { queryFeatures } from "../../utils/queryUtils";
 
 @Component({
   tag: "layer-table",
@@ -190,6 +191,11 @@ export class LayerTable {
   //  Properties (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * esri/core/Collection:
+   */
+  protected Collection: typeof import("esri/core/Collection");
 
   /**
    * esri/widgets/FeatureTable: https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-FeatureTable.html
@@ -442,6 +448,7 @@ export class LayerTable {
   async selectionChanged(
     evt: CustomEvent
   ): Promise<void> {
+    console.log("selection changed event handler")
     if (this.zoomAndScrollToSelected) {
       const g: __esri.Graphic = evt.detail;
       const oid = g.getObjectId();
@@ -547,6 +554,8 @@ export class LayerTable {
   async componentDidLoad(): Promise<void> {
     this._resizeObserver.observe(this._toolbar);
     document.onclick = (e) => this._handleDocumentClick(e);
+    document.onkeydown = (e) => this._handleKeyDown(e);
+    document.onkeyup = (e) => this._handleKeyUp(e);
   }
 
   /**
@@ -570,12 +579,14 @@ export class LayerTable {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [FeatureTable, reactiveUtils] = await loadModules([
+    const [FeatureTable, reactiveUtils, Collection] = await loadModules([
       "esri/widgets/FeatureTable",
-      "esri/core/reactiveUtils"
+      "esri/core/reactiveUtils",
+      "esri/core/Collection"
     ]);
     this.FeatureTable = FeatureTable;
     this.reactiveUtils = reactiveUtils;
+    this.Collection = Collection;
   }
 
   /**
@@ -1267,17 +1278,61 @@ export class LayerTable {
       this._checkEditEnabled();
 
       await this._table.when(() => {
-        this._table.highlightIds.on("change", () => {
-          // https://github.com/Esri/solutions-components/issues/365
-          this._selectedIndexes = this._table.highlightIds.toArray().reverse();
-          if (this._showOnlySelected) {
-            if (this._featuresSelected()) {
-              this._table.filterBySelection();
-            } else {
-              this._toggleShowSelected();
+        this._table.highlightIds.on("change", async (evt) => {
+          const ids = [...this._table.highlightIds.toArray()];
+          // console.log("[...this._table.highlightIds.toArray()].reverse()")
+          // console.log([...this._table.highlightIds.toArray()].reverse())
+          // console.log("most recent selection")
+          // console.log([...this._table.highlightIds.toArray()].reverse()[0])
+
+          // console.log('highlightIds.on("change")')
+          console.log(evt)
+          // console.log("this._skipOnChange")
+          // console.log(this._skipOnChange)
+
+          console.log("this._table.activeFilters")
+          console.log(this._table.activeFilters)
+          console.log("this._table.activeSortOrders")
+          console.log(this._table.activeSortOrders)
+
+          if (!this._skipOnChange) {
+            //const ids = this._table.highlightIds.toArray();
+            if (!this._ctrlIsPressed && !this._shiftIsPressed) {
+              if (this._selectedIndexes.length > 0) {
+                this._skipOnChange = true;
+                // find the new index...clear and then set the new index
+                const newIndexes = ids.filter(id => this._selectedIndexes.indexOf(id) < 0);
+                this._clearSelection();
+                this._selectedIndexes = newIndexes;
+                this._table.highlightIds.add(newIndexes[0]);
+              } else {
+                // https://github.com/Esri/solutions-components/issues/365
+                this._selectedIndexes = ids.reverse();
+              }
+            } else if (this._ctrlIsPressed) {
+              this._selectedIndexes = ids.reverse();
+            } else if (this._shiftIsPressed) {
+              this._previousCurrentId = this._currentId;
+              this._currentId = [...this._table.highlightIds.toArray()].reverse()[0];
+              console.log("this._currentId")
+              console.log(this._currentId)
+              console.log("this._previousCurrentId")
+              console.log(this._previousCurrentId)
+              // query the layer based on current sort and filters then grab between the current id and previous id
+              const orderBy = this._table.activeSortOrders.reduce((prev, cur) => {
+                prev.push(`${cur.fieldName} ${cur.direction}`)
+                return prev;
+              },[]);
+
+              const f = await queryFeatures(this._layer, "", orderBy, 0, {})
+              console.log(f)
             }
+            this._finishOnChange();
+          } else {
+            this._skipOnChange = false;
           }
-          this.featureSelectionChange.emit(this._selectedIndexes);
+          this._currentId = [...this._table.highlightIds.toArray()].reverse()[0];
+          console.log(`current id set: ${this._currentId}`)
         });
 
         this.reactiveUtils.watch(
@@ -1288,6 +1343,23 @@ export class LayerTable {
           });
       });
     }
+  }
+
+  protected _previousCurrentId: number;
+
+  protected _currentId: number;
+
+  protected _skipOnChange = false;
+
+  protected _finishOnChange(): void {
+    if (this._showOnlySelected) {
+      if (this._featuresSelected()) {
+        this._table.filterBySelection();
+      } else {
+        this._toggleShowSelected();
+      }
+    }
+    this.featureSelectionChange.emit(this._selectedIndexes);
   }
 
   /**
@@ -1441,6 +1513,24 @@ export class LayerTable {
     }
   }
 
+  protected _ctrlIsPressed = false;
+
+  protected _shiftIsPressed = false;
+
+  protected _handleKeyDown(
+    e: KeyboardEvent
+  ): void {
+    this._ctrlIsPressed = e.ctrlKey;
+    this._shiftIsPressed = e.shiftKey;
+  }
+
+  protected _handleKeyUp(
+    e: KeyboardEvent
+  ): void {
+    this._ctrlIsPressed = e.ctrlKey;
+    this._shiftIsPressed = e.shiftKey;
+  }
+
   /**
    * Show filter component in modal
    *
@@ -1467,6 +1557,11 @@ export class LayerTable {
             autoUpdateUrl={false}
             closeBtn={true}
             closeBtnOnClick={() => this._closeFilter()}
+            filterUpdate={
+              () => {
+                console.log("filter update")
+              }
+            }
             layerExpressions={this._layerExpressions}
             ref={(el) => this._filterList = el}
             view={this.mapView}
@@ -1595,8 +1690,10 @@ export class LayerTable {
   protected _selectAll(): void {
     const ids = this._allIds;
     this._table.highlightIds.removeAll();
+    this._skipOnChange = true;
     this._table.highlightIds.addMany(ids);
     this._selectedIndexes = ids;
+    this._finishOnChange();
   }
 
   /**
@@ -1659,8 +1756,12 @@ export class LayerTable {
       }
       return prev;
     }, []).sort((a,b) => a - b);
+    this._skipOnChange = true;
+    console.log("_switchSelected")
+    console.log(ids)
     this._table.highlightIds.addMany(ids);
     this._selectedIndexes = ids;
+    this._finishOnChange();
   }
 
   /**

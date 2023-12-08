@@ -212,6 +212,32 @@ export async function queryFeaturesByGeometry(
     Promise.resolve(featuresCollection);
 }
 
+export async function queryFeatures(
+  layer: any,
+  where: any,
+  orderBy: any,
+  start: any,
+  featuresCollection: {[key: string]: __esri.Graphic[]}
+): Promise<{[key: string]: __esri.Graphic[]}> {
+  const num = layer.capabilities.query.maxRecordCount;
+  const query = layer.createQuery();
+  query.start = start;
+  query.num = num;
+  query.where = where;
+  //FeatureLayer.capabilities.queryRelated.supportsOrderBy must be true.
+  //query.orderByFields = ["STATE_NAME DESC"];
+  query.orderByFields = orderBy;
+
+  const result = await layer.queryFeatures(query);
+  featuresCollection[layer.id] = featuresCollection[layer.id].concat(
+    result.features
+  );
+
+  return result.exceededTransferLimit ?
+    queryFeatures(layer, where, orderBy, start += num, featuresCollection) :
+    Promise.resolve(featuresCollection);
+}
+
 /**
  * Query the layer for the extent of features with the provided OIDs
  *
