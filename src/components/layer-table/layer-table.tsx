@@ -630,6 +630,7 @@ export class LayerTable {
           <map-layer-picker
             appearance="transparent"
             defaultLayerId={this.defaultLayerId}
+            display="inline-flex"
             height={50}
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
@@ -1640,9 +1641,9 @@ export class LayerTable {
    * @returns void
    */
   protected _initLayerExpressions(): void {
-    const layerExpressions = this.mapInfo.filterConfig?.layerExpressions;
-    this._layerExpressions = layerExpressions.filter(
-      (exp) => exp.id === this._layer.id);
+    const layerExpressions = this.mapInfo?.filterConfig?.layerExpressions;
+    this._layerExpressions = layerExpressions ? layerExpressions.filter(
+      (exp) => exp.id === this._layer.id) : [];
   }
 
   /**

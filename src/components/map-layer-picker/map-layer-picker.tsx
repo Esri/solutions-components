@@ -19,7 +19,7 @@ import MapLayerPicker_T9n from "../../assets/t9n/map-layer-picker/resources.json
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getMapLayerHash, getMapTableHash } from "../../utils/mapViewUtils";
 import state from "../../utils/publicNotificationStore";
-import { ILayerHashInfo, IMapItemHash } from "../../utils/interfaces";
+import { ILayerAndTableIds, ILayerHashInfo, IMapItemHash } from "../../utils/interfaces";
 
 @Component({
   tag: "map-layer-picker",
@@ -49,6 +49,11 @@ export class MapLayerPicker {
    * string: when provided this layer ID will be used when the app loads
    */
   @Prop() defaultLayerId = "";
+
+  /**
+   * "inline-flex" | "inline-block": controls the display style of the dropdown
+   */
+  @Prop() display: "inline-flex" | "inline-block" = "inline-block";
 
   /**
    * string[]: Optional list of enabled layer ids
@@ -206,6 +211,12 @@ export class MapLayerPicker {
    * Emitted on demand when no valid layers are found
    *
    */
+  @Event() idsFound: EventEmitter<ILayerAndTableIds>;
+
+  /**
+   * Emitted on demand when no valid layers are found
+   *
+   */
   @Event() noLayersFound: EventEmitter<void>;
 
   /**
@@ -238,7 +249,8 @@ export class MapLayerPicker {
    */
   render(): VNode {
     const id = "map-layer-picker";
-    const style = this.height > 0 ? {"height": `${this.height.toString()}px`} : {};
+    let style: any = this.height > 0 ? {"height": `${this.height.toString()}px`} : {};
+    style = {...style, "display": this.display}
     return (
       <Host>
         <div class="map-layer-picker-container" style={style}>
@@ -513,14 +525,18 @@ export class MapLayerPicker {
   async _setLayers(): Promise<void> {
     if (this.mapView) {
       await this._initLayerTableHash();
-      const mapLayerIds = this.onlyShowUpdatableLayers ?
+      const layerIds = this.onlyShowUpdatableLayers ?
         this._getEditableIds(this._layerNameHash) : Object.keys(this._layerNameHash);
-      const mapTableIds = this.showTables ? this.onlyShowUpdatableLayers ?
+      const tableIds = this.showTables ? this.onlyShowUpdatableLayers ?
         this._getEditableIds(this._tableNameHash) : Object.keys(this._tableNameHash) : [];
       this.ids = [
-        ...mapLayerIds.reverse().filter(n => this.enabledLayerIds?.length > 0 ? this.enabledLayerIds.reverse().indexOf(n) > -1 : true),
-        ...mapTableIds.reverse().filter(n => this.enabledTableIds?.length > 0 ? this.enabledTableIds.reverse().indexOf(n) > -1 : true),
+        ...layerIds.reverse().filter(n => this.enabledLayerIds?.length > 0 ? this.enabledLayerIds.reverse().indexOf(n) > -1 : true),
+        ...tableIds.reverse().filter(n => this.enabledTableIds?.length > 0 ? this.enabledTableIds.reverse().indexOf(n) > -1 : true),
       ];
+      this.idsFound.emit({
+        layerIds,
+        tableIds
+      });
     }
   }
 
