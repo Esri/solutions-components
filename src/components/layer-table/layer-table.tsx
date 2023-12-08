@@ -1640,9 +1640,9 @@ export class LayerTable {
    * @returns void
    */
   protected _initLayerExpressions(): void {
-    const layerExpressions = this.mapInfo.filterConfig?.layerExpressions;
-    this._layerExpressions = layerExpressions.filter(
-      (exp) => exp.id === this._layer.id);
+    const layerExpressions = this.mapInfo?.filterConfig?.layerExpressions;
+    this._layerExpressions = layerExpressions ? layerExpressions.filter(
+      (exp) => exp.id === this._layer.id) : [];
   }
 
   /**
