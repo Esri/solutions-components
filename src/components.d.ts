@@ -5,9 +5,9 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+import { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 import { UserSession } from "@esri/solution-common";
-export { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
+export { DistanceUnit, EDrawMode, ELayoutMode, IBasemapConfig, IExportInfos, IInventoryItem, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, ISelectionSet, ISketchGraphicsChange, ISolutionSpatialReferenceInfo, ISpatialRefRepresentation, IValueChange, theme } from "./utils/interfaces";
 export { UserSession } from "@esri/solution-common";
 export namespace Components {
     interface ArcgisLogin {
@@ -550,6 +550,9 @@ export namespace Components {
           * string: when provided this layer ID will be used when the app loads
          */
         "defaultLayerId": string;
+        /**
+          * "inline-flex" | "inline-block": controls the display style of the dropdown
+         */
         "display": "inline-flex" | "inline-block";
         /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
@@ -1396,6 +1399,7 @@ declare global {
         new (): HTMLMapFullscreenElement;
     };
     interface HTMLMapLayerPickerElementEventMap {
+        "idsFound": ILayerAndTableIds;
         "noLayersFound": void;
         "layerSelectionChange": string[];
     }
@@ -2286,6 +2290,9 @@ declare namespace LocalJSX {
           * string: when provided this layer ID will be used when the app loads
          */
         "defaultLayerId"?: string;
+        /**
+          * "inline-flex" | "inline-block": controls the display style of the dropdown
+         */
         "display"?: "inline-flex" | "inline-block";
         /**
           * string[]: Optional list of enabled layer ids  If empty all layers will be available
@@ -2303,6 +2310,10 @@ declare namespace LocalJSX {
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when no valid layers are found
+         */
+        "onIdsFound"?: (event: MapLayerPickerCustomEvent<ILayerAndTableIds>) => void;
         /**
           * Emitted on demand when a layer is selected
          */

@@ -11,7 +11,7 @@
 | ------------------------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | ---------------- |
 | `appearance`              | `appearance`                 | "transparent" \| "solid": controls the button appearance when using the "dropdown" type                                           | `"solid" \| "transparent"`             | `"transparent"`  |
 | `defaultLayerId`          | `default-layer-id`           | string: when provided this layer ID will be used when the app loads                                                               | `string`                               | `""`             |
-| `display`                 | `display`                    |                                                                                                                                   | `"inline-block" \| "inline-flex"`      | `"inline-block"` |
+| `display`                 | `display`                    | "inline-flex" \| "inline-block": controls the display style of the dropdown                                                       | `"inline-block" \| "inline-flex"`      | `"inline-block"` |
 | `enabledLayerIds`         | --                           | string[]: Optional list of enabled layer ids  If empty all layers will be available                                               | `string[]`                             | `[]`             |
 | `enabledTableIds`         | --                           | string[]: Optional list of enabled table ids  If empty all tables will be available                                               | `string[]`                             | `[]`             |
 | `height`                  | `height`                     | number: optional fixed height value for the control. Specified as pixel height.                                                   | `number`                               | `undefined`      |
@@ -27,10 +27,11 @@
 
 ## Events
 
-| Event                  | Description                                      | Type                    |
-| ---------------------- | ------------------------------------------------ | ----------------------- |
-| `layerSelectionChange` | Emitted on demand when a layer is selected       | `CustomEvent<string[]>` |
-| `noLayersFound`        | Emitted on demand when no valid layers are found | `CustomEvent<void>`     |
+| Event                  | Description                                      | Type                             |
+| ---------------------- | ------------------------------------------------ | -------------------------------- |
+| `idsFound`             | Emitted on demand when no valid layers are found | `CustomEvent<ILayerAndTableIds>` |
+| `layerSelectionChange` | Emitted on demand when a layer is selected       | `CustomEvent<string[]>`          |
+| `noLayersFound`        | Emitted on demand when no valid layers are found | `CustomEvent<void>`              |
 
 
 ## Dependencies

@@ -17,7 +17,7 @@
 import { Component, Element, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
 import CrowdsourceManager_T9n from "../../assets/t9n/crowdsource-manager/resources.json";
 import { getLocaleComponentStrings } from "../../utils/locale";
-import { ELayoutMode, IBasemapConfig, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
+import { ELayoutMode, IBasemapConfig, ILayerAndTableIds, IMapChange, IMapInfo, ISearchConfiguration, theme } from "../../utils/interfaces";
 
 @Component({
   tag: "crowdsource-manager",
@@ -216,6 +216,11 @@ export class CrowdsourceManager {
    */
   @State() _panelOpen = true;
 
+  /**
+   * When true only editable tables have been found and the map will be hidden
+   */
+  @State() _tableOnly = false;
+
   //--------------------------------------------------------------------------
   //
   //  Properties (protected)
@@ -318,6 +323,20 @@ export class CrowdsourceManager {
   //  Events (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Listen for idsFound event to be fired so we can know that all layer ids have been fetched
+   */
+  @Listen("idsFound", { target: "window" })
+  async idsFound(
+    evt: CustomEvent
+  ): Promise<void> {
+    const ids: ILayerAndTableIds = evt.detail;
+    this._tableOnly = ids.tableIds.length > 0 && ids.layerIds.length === 0;
+    if (this._tableOnly) {
+      this._expandPopup = true;
+    }
+  }
 
   /**
    * Listen for layoutChanged event to be fired so we can adjust the layout
@@ -619,20 +638,21 @@ export class CrowdsourceManager {
             </div>
           </div>
           <calcite-action
+            disabled={this._tableOnly}
             icon={icon}
             id={id}
             onClick={() => this._togglePopup()}
             slot="header-actions-end"
             text=""
           />
-          <calcite-tooltip
+          {!this._tableOnly ? <calcite-tooltip
             class={themeClass}
             label=""
             placement="bottom"
             reference-element={id}
           >
             <span>{tooltip}</span>
-          </calcite-tooltip>
+          </calcite-tooltip> : undefined}
           {this._getCardNode()}
         </calcite-panel>
       </div>
