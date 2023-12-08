@@ -219,6 +219,9 @@ export async function queryFeatures(
   start: any,
   featuresCollection: {[key: string]: __esri.Graphic[]}
 ): Promise<{[key: string]: __esri.Graphic[]}> {
+  const newFC = {};
+  newFC[layer.id] = [];
+  featuresCollection = featuresCollection ? featuresCollection : newFC;
   const num = layer.capabilities.query.maxRecordCount;
   const query = layer.createQuery();
   query.start = start;

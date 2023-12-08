@@ -317,6 +317,12 @@ export class LayerTable {
    */
   protected _toolInfos: IToolInfo[];
 
+  protected TableTemplate: typeof import("esri/widgets/FeatureTable/support/TableTemplate");
+
+  protected ButtonMenu: typeof import("esri/widgets/FeatureTable/Grid/support/ButtonMenu");
+
+  protected ButtonMenuItem: typeof import ("esri/widgets/FeatureTable/Grid/support/ButtonMenuItem");
+
   //--------------------------------------------------------------------------
   //
   //  Watch handlers
@@ -579,14 +585,20 @@ export class LayerTable {
    * @protected
    */
   protected async _initModules(): Promise<void> {
-    const [FeatureTable, reactiveUtils, Collection] = await loadModules([
+    const [FeatureTable, reactiveUtils, Collection, TableTemplate, ButtonMenu, ButtonMenuItem] = await loadModules([
       "esri/widgets/FeatureTable",
       "esri/core/reactiveUtils",
-      "esri/core/Collection"
+      "esri/core/Collection",
+      "esri/widgets/FeatureTable/support/TableTemplate",
+      "esri/widgets/FeatureTable/Grid/support/ButtonMenu",
+      "esri/widgets/FeatureTable/Grid/support/ButtonMenuItem"
     ]);
     this.FeatureTable = FeatureTable;
     this.reactiveUtils = reactiveUtils;
     this.Collection = Collection;
+    this.TableTemplate = TableTemplate;
+    this.ButtonMenu = ButtonMenu;
+    this.ButtonMenuItem = ButtonMenuItem;
   }
 
   /**
@@ -1277,62 +1289,11 @@ export class LayerTable {
 
       this._checkEditEnabled();
 
+      this._buttonTest();
+
       await this._table.when(() => {
-        this._table.highlightIds.on("change", async (evt) => {
-          const ids = [...this._table.highlightIds.toArray()];
-          // console.log("[...this._table.highlightIds.toArray()].reverse()")
-          // console.log([...this._table.highlightIds.toArray()].reverse())
-          // console.log("most recent selection")
-          // console.log([...this._table.highlightIds.toArray()].reverse()[0])
-
-          // console.log('highlightIds.on("change")')
-          console.log(evt)
-          // console.log("this._skipOnChange")
-          // console.log(this._skipOnChange)
-
-          console.log("this._table.activeFilters")
-          console.log(this._table.activeFilters)
-          console.log("this._table.activeSortOrders")
-          console.log(this._table.activeSortOrders)
-
-          if (!this._skipOnChange) {
-            //const ids = this._table.highlightIds.toArray();
-            if (!this._ctrlIsPressed && !this._shiftIsPressed) {
-              if (this._selectedIndexes.length > 0) {
-                this._skipOnChange = true;
-                // find the new index...clear and then set the new index
-                const newIndexes = ids.filter(id => this._selectedIndexes.indexOf(id) < 0);
-                this._clearSelection();
-                this._selectedIndexes = newIndexes;
-                this._table.highlightIds.add(newIndexes[0]);
-              } else {
-                // https://github.com/Esri/solutions-components/issues/365
-                this._selectedIndexes = ids.reverse();
-              }
-            } else if (this._ctrlIsPressed) {
-              this._selectedIndexes = ids.reverse();
-            } else if (this._shiftIsPressed) {
-              this._previousCurrentId = this._currentId;
-              this._currentId = [...this._table.highlightIds.toArray()].reverse()[0];
-              console.log("this._currentId")
-              console.log(this._currentId)
-              console.log("this._previousCurrentId")
-              console.log(this._previousCurrentId)
-              // query the layer based on current sort and filters then grab between the current id and previous id
-              const orderBy = this._table.activeSortOrders.reduce((prev, cur) => {
-                prev.push(`${cur.fieldName} ${cur.direction}`)
-                return prev;
-              },[]);
-
-              const f = await queryFeatures(this._layer, "", orderBy, 0, {})
-              console.log(f)
-            }
-            this._finishOnChange();
-          } else {
-            this._skipOnChange = false;
-          }
-          this._currentId = [...this._table.highlightIds.toArray()].reverse()[0];
-          console.log(`current id set: ${this._currentId}`)
+        this._table.highlightIds.on("change", () => {
+          void this._handleOnChange();
         });
 
         this.reactiveUtils.watch(
@@ -1343,6 +1304,178 @@ export class LayerTable {
           });
       });
     }
+  }
+
+  _buttonTest(): void {
+            // const columnTemplates = [];
+        // this._layer.fields.forEach(field => {
+        //   columnTemplates.push({
+        //     type: "field",
+        //     fieldName: field.name,
+        //     menuConfig: {
+        //       items: [
+        //         {
+        //           label: "custom menu item label",
+        //           iconClass: "Icon font name, if applicable",
+        //           clickFunction: function () {
+        //             // Add custom function to perform on menu item button click
+        //             alert("wahoo")
+        //           }
+        //         }
+        //       ]
+        //     }
+        //   })
+        // });
+
+        // Typical usage for ButtonMenu widget.
+        // const buttonMenu = new this.ButtonMenu ({
+        //   iconClass: "esri-icon-left",
+        //   items: [{
+        //     label: "custom menu item label",
+        //     iconClass: "Icon font name, if applicable",
+        //     clickFunction: function (event) {
+        //        // Add custom function to perform on menu item button click
+        //        console.log(event)
+        //     }
+        //   }]
+        // });
+
+        // Typical usage for ButtonMenuItem
+        const buttonMenuItem1 = new this.ButtonMenuItem({
+          autoCloseMenu: true,
+          label: "Equals",
+          selectionEnabled: true,
+          //iconClass: "Icon font name, if applicable",
+          clickFunction: (event) => {
+            console.log(event)
+            console.log(this)
+            //this.toggleFilterBuilder.emit();
+          }
+        });
+
+        const buttonMenuItem2 = new this.ButtonMenuItem({
+          autoCloseMenu: true,
+          label: "Does not equal",
+          selectionEnabled: true,
+          //iconClass: "Second icon font name, if applicable",
+          // clickFunction: (event) => {
+          //   console.log(event)
+          //   console.log(this)
+          //   this.toggleFilterBuilder.emit();
+
+          // }
+          clickFunction: function (event) {
+            console.log(event)
+            console.log(this)
+            //this.toggleFilterBuilder.emit();
+
+          }
+        });
+
+        // Apply the button menu items above to the button menu
+        // const buttonMenu = new this.ButtonMenu ({
+        //   iconClass: "esri-icon-left",
+        //   items: [buttonMenuItem1, buttonMenuItem2]
+        // });
+
+        const columnTemplates = this._layer.fields.map(field => {
+          return {
+            id: field.name,
+            type: "field",
+            fieldName: field.name,
+            menuConfig: {
+              items: [{
+                label: this._translations.filters,
+                iconClass: "esri-icon-right",
+                fieldName: field.name,
+                id: field.name,
+                //iconClass: "esri-icon-filter",
+                // clickFunction: function (f) {
+                //   console.log(f)
+                //   // Add custom function to perform on menu item button click
+                //   alert("wahoo")
+                // },
+                items: [buttonMenuItem1, buttonMenuItem2]
+              }]
+            }
+          }
+        }) as any;
+
+        this._table.tableTemplate = new this.TableTemplate({
+          columnTemplates
+        });
+  }
+
+  protected async _handleOnChange(): Promise<void> {
+    const ids = [...this._table.highlightIds.toArray()];
+    // console.log("[...this._table.highlightIds.toArray()].reverse()")
+    // console.log([...this._table.highlightIds.toArray()].reverse())
+    // console.log("most recent selection")
+    // console.log([...this._table.highlightIds.toArray()].reverse()[0])
+
+    // console.log('highlightIds.on("change")')
+    // console.log(evt)
+    // console.log("this._skipOnChange")
+    // console.log(this._skipOnChange)
+
+    console.log("this._table.activeFilters")
+    console.log(this._table.activeFilters)
+    console.log("this._table.activeSortOrders")
+    console.log(this._table.activeSortOrders)
+
+    if (!this._skipOnChange) {
+      //const ids = this._table.highlightIds.toArray();
+      if (!this._ctrlIsPressed && !this._shiftIsPressed) {
+        if (this._selectedIndexes.length > 0) {
+          this._skipOnChange = true;
+          // find the new index...clear and then set the new index
+          const newIndexes = ids.filter(id => this._selectedIndexes.indexOf(id) < 0);
+          this._clearSelection();
+          this._selectedIndexes = newIndexes;
+          this._table.highlightIds.add(newIndexes[0]);
+        } else {
+          // https://github.com/Esri/solutions-components/issues/365
+          this._selectedIndexes = ids.reverse();
+        }
+      } else if (this._ctrlIsPressed) {
+        this._selectedIndexes = ids.reverse();
+      } else if (this._shiftIsPressed) {
+        this._skipOnChange = true;
+        this._previousCurrentId = this._currentId;
+        this._currentId = [...this._table.highlightIds.toArray()].reverse()[0];
+        console.log("this._currentId")
+        console.log(this._currentId)
+        console.log("this._previousCurrentId")
+        console.log(this._previousCurrentId)
+        // query the layer based on current sort and filters then grab between the current id and previous id
+        const orderBy = this._table.activeSortOrders.reduce((prev, cur) => {
+          prev.push(`${cur.fieldName} ${cur.direction}`)
+          return prev;
+        },[]);
+
+        const fc = await queryFeatures(this._layer, "", orderBy, 0, undefined)
+        console.log(fc)
+
+        const features = fc[this._layer.id]
+        let isBetween = false;
+        this._selectedIndexes = features.reduce((prev, cur) => {
+          const id = cur.attributes[this._layer.objectIdField];
+          if (id === this._currentId || id === this._previousCurrentId) {
+            isBetween = !isBetween;
+          }
+          if (isBetween) {
+            prev.push(id);
+          }
+          return prev;
+        }, []);
+        this._table.highlightIds.addMany(this._selectedIndexes);
+      }
+      this._finishOnChange();
+    } else {
+      this._skipOnChange = false;
+    }
+    this._currentId = [...this._table.highlightIds.toArray()].reverse()[0];
+    console.log(`current id set: ${this._currentId}`)
   }
 
   protected _previousCurrentId: number;
@@ -1737,9 +1870,9 @@ export class LayerTable {
    * @returns void
    */
   protected _initLayerExpressions(): void {
-    const layerExpressions = this.mapInfo.filterConfig?.layerExpressions;
-    this._layerExpressions = layerExpressions.filter(
-      (exp) => exp.id === this._layer.id);
+    const layerExpressions = this.mapInfo?.filterConfig?.layerExpressions;
+    this._layerExpressions = layerExpressions ? layerExpressions.filter(
+      (exp) => exp.id === this._layer.id) : [];
   }
 
   /**
