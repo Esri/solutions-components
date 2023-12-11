@@ -251,7 +251,7 @@ export class MapPicker {
   protected _getMapNameList(
     show: boolean
   ): VNode {
-    const listClass = show ? "map-list" : "display-none";
+    const listClass = show ? "map-list border-bottom-1" : "display-none";
     return (
       <div class={listClass}>
         <calcite-list
