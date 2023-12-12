@@ -19,7 +19,7 @@ import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
 import { getLayerOrTable, goToSelection } from "../../utils/mapViewUtils";
-import { queryAllIds, queryFeaturesByGlobalID } from "../../utils/queryUtils";
+import { queryAllIds, queryFeatureIds, queryFeaturesByGlobalID } from "../../utils/queryUtils";
 import * as downloadUtils from "../../utils/downloadUtils";
 import { IColumnsInfo, IExportInfos, ILayerExpression, ILayerInfo, IMapClick, IMapInfo, IToolInfo, IToolSizeInfo } from "../../utils/interfaces";
 import "@esri/instant-apps-components/dist/components/instant-apps-social-share";
@@ -207,6 +207,16 @@ export class LayerTable {
   protected _columnsInfo: IColumnsInfo;
 
   /**
+   * boolean: When true the ctrl key is currently pressed
+   */
+  protected _ctrlIsPressed = false;
+
+  /**
+   * number: The id of the most recently selected row from the table
+   */
+  protected _currentId: number;
+
+  /**
    * boolean: When false alerts will be shown to indicate that the layer must have editing enabled for edit actions
    */
   protected _editEnabled: boolean;
@@ -247,6 +257,11 @@ export class LayerTable {
   protected _mapClickHandle: IHandle;
 
   /**
+   * number: The id of the previous current id and is used for multi select
+   */
+  protected _previousCurrentId: number;
+
+  /**
    * esri/core/reactiveUtils: https://developers.arcgis.com/javascript/latest/api-reference/esri-core-reactiveUtils.html
    */
   protected reactiveUtils: typeof import("esri/core/reactiveUtils");
@@ -267,9 +282,19 @@ export class LayerTable {
   protected _shareNode: HTMLInstantAppsSocialShareElement;
 
   /**
+   * boolean: When true the shift key is currently pressed
+   */
+  protected _shiftIsPressed = false;
+
+  /**
    * HTMLCalciteDropdownElement: Dropdown the will support show/hide of table columns
    */
   protected _showHideDropdown: HTMLCalciteDropdownElement;
+
+  /**
+   * boolean: When true any onChange handeling will be skipped
+   */
+  protected _skipOnChange = false;
 
   /**
    * HTMLCalciteDropdownElement: Dropdown the will support overflow tools that won't fit in the current display
@@ -547,6 +572,8 @@ export class LayerTable {
   async componentDidLoad(): Promise<void> {
     this._resizeObserver.observe(this._toolbar);
     document.onclick = (e) => this._handleDocumentClick(e);
+    document.onkeydown = (e) => this._handleKeyDown(e);
+    document.onkeyup = (e) => this._handleKeyUp(e);
   }
 
   /**
@@ -1268,17 +1295,8 @@ export class LayerTable {
       this._checkEditEnabled();
 
       await this._table.when(() => {
-        this._table.highlightIds.on("change", () => {
-          // https://github.com/Esri/solutions-components/issues/365
-          this._selectedIndexes = this._table.highlightIds.toArray().reverse();
-          if (this._showOnlySelected) {
-            if (this._featuresSelected()) {
-              this._table.filterBySelection();
-            } else {
-              this._toggleShowSelected();
-            }
-          }
-          this.featureSelectionChange.emit(this._selectedIndexes);
+        this._table.highlightIds.on("change", (evt) => {
+          void this._handleOnChange(evt);
         });
 
         this.reactiveUtils.watch(
@@ -1289,6 +1307,97 @@ export class LayerTable {
           });
       });
     }
+  }
+
+  protected async _handleOnChange(evt: any): Promise<void> {
+    const ids = [...this._table.highlightIds.toArray()];
+    if (!this._skipOnChange) {
+      if (!this._ctrlIsPressed && !this._shiftIsPressed) {
+        if (this._selectedIndexes.length > 0) {
+          this._skipOnChange = true;
+          // only readd in specific case where we have multiple selected and then click one of the currently selected
+          const reAdd = this._selectedIndexes.length > 1 && evt.removed.length === 1;
+          const newIndexes = reAdd ? evt.removed : ids.filter(id => this._selectedIndexes.indexOf(id) < 0);
+          this._clearSelection();
+          this._selectedIndexes = [...newIndexes];
+          if (newIndexes.length > 0) {
+            this._table.highlightIds.add(newIndexes[0]);
+          }
+        } else {
+          // https://github.com/Esri/solutions-components/issues/365
+          this._selectedIndexes = ids.reverse();
+        }
+      } else if (this._ctrlIsPressed) {
+        this._selectedIndexes = ids.reverse();
+      } else if (this._shiftIsPressed) {
+        this._skipOnChange = true;
+        this._previousCurrentId = this._currentId;
+        this._currentId = [...this._table.highlightIds.toArray()].reverse()[0];
+
+        if (this._previousCurrentId !== this._currentId) {
+          // query the layer based on current sort and filters then grab between the current id and previous id
+          const orderBy = this._table.activeSortOrders.reduce((prev, cur) => {
+            prev.push(`${cur.fieldName} ${cur.direction}`)
+            return prev;
+          }, []);
+
+          const oids = await queryFeatureIds(this._layer, this._layer.definitionExpression, orderBy);
+
+          let isBetween = false;
+          const _start = this._table.viewModel.getObjectIdIndex(this._previousCurrentId);
+          const _end = this._table.viewModel.getObjectIdIndex(this._currentId);
+
+          const startIndex = _start < _end ? _start : _end;
+          const endIndex = _end > _start ? _end : _start;
+
+          this._selectedIndexes = oids.reduce((prev, cur) => {
+            const id = cur;
+            const index = this._table.viewModel.getObjectIdIndex(id);
+            if ((id === this._currentId || id === this._previousCurrentId)) {
+              isBetween = !isBetween;
+              if (prev.indexOf(id) < 0) {
+                prev.push(id);
+              }
+            }
+
+            // The oids are sorted so after we have reached the start or end oid add all ids even if the index is -1.
+            // Index of -1 will occur for features between the start and and oid if
+            // you select a row then scroll faster than the FeatureTable loads the data to select the next id
+            if (isBetween && prev.indexOf(id) < 0) {
+              prev.push(id);
+            }
+
+            // Also add index based check.
+            // In some cases the FeatureTable and Layer query will have differences in how null/undefined field values are sorted
+            if ((this._selectedIndexes.indexOf(id) > -1 || (index >= startIndex && index <= endIndex)) && prev.indexOf(id) < 0 && index > -1) {
+              prev.push(id);
+            }
+            return prev;
+          }, []);
+          this._table.highlightIds.addMany(this._selectedIndexes.filter(i => ids.indexOf(i) < 0));
+        }
+      }
+      this._finishOnChange();
+    } else {
+      this._skipOnChange = false;
+    }
+    this._currentId = [...this._table.highlightIds.toArray()].reverse()[0];
+  }
+
+  /**
+   * Handle any updates after a selection change has occured and emit the results
+   *
+   * @returns void
+   */
+  protected _finishOnChange(): void {
+    if (this._showOnlySelected) {
+      if (this._featuresSelected()) {
+        this._table.filterBySelection();
+      } else {
+        this._toggleShowSelected();
+      }
+    }
+    this.featureSelectionChange.emit(this._selectedIndexes);
   }
 
   /**
@@ -1443,6 +1552,30 @@ export class LayerTable {
   }
 
   /**
+   * Keep track of key down for ctrl and shift
+   *
+   * @returns void
+   */
+  protected _handleKeyDown(
+    e: KeyboardEvent
+  ): void {
+    this._ctrlIsPressed = e.ctrlKey;
+    this._shiftIsPressed = e.shiftKey;
+  }
+
+  /**
+   * Keep track of key up for ctrl and shift
+   *
+   * @returns void
+   */
+  protected _handleKeyUp(
+    e: KeyboardEvent
+  ): void {
+    this._ctrlIsPressed = e.ctrlKey;
+    this._shiftIsPressed = e.shiftKey;
+  }
+
+  /**
    * Show filter component in modal
    *
    * @returns node to interact with any configured filters for the current layer
@@ -1452,7 +1585,7 @@ export class LayerTable {
       <calcite-modal
         aria-labelledby="modal-title"
         kind="brand"
-        onCalciteModalClose={() => this._closeFilter()}
+        onCalciteModalClose={async () => this._closeFilter()}
         open={this._filterOpen}
         widthScale="s"
       >
@@ -1467,7 +1600,7 @@ export class LayerTable {
           <instant-apps-filter-list
             autoUpdateUrl={false}
             closeBtn={true}
-            closeBtnOnClick={() => this._closeFilter()}
+            closeBtnOnClick={async () => this._closeFilter()}
             layerExpressions={this._layerExpressions}
             ref={(el) => this._filterList = el}
             view={this.mapView}
@@ -1482,8 +1615,12 @@ export class LayerTable {
    *
    * @returns void
    */
-  protected _closeFilter(): void {
-    this._filterOpen = false;
+  protected async _closeFilter(): Promise<void> {
+    if (this._filterOpen) {
+      // reset allIds
+      this._allIds = await queryAllIds(this._layer);
+      this._filterOpen = false;
+    }
   }
 
   /**
@@ -1596,8 +1733,10 @@ export class LayerTable {
   protected _selectAll(): void {
     const ids = this._allIds;
     this._table.highlightIds.removeAll();
+    this._skipOnChange = true;
     this._table.highlightIds.addMany(ids);
     this._selectedIndexes = ids;
+    this._finishOnChange();
   }
 
   /**
@@ -1660,8 +1799,10 @@ export class LayerTable {
       }
       return prev;
     }, []).sort((a,b) => a - b);
+    this._skipOnChange = true;
     this._table.highlightIds.addMany(ids);
     this._selectedIndexes = ids;
+    this._finishOnChange();
   }
 
   /**

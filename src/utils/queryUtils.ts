@@ -213,6 +213,27 @@ export async function queryFeaturesByGeometry(
 }
 
 /**
+ * Query the layer for feature ids that match the provided where clause.
+ * If no where clause is provided all features will be returned.
+ *
+ * @param layer the layer to retrieve features from
+ * @param where the where clause for the query
+ * @param orderBy any sort order to apply to the query
+ *
+ * @returns Promise with the ids from the layer that match the where and are sorted as defined by orderBy
+ */
+export async function queryFeatureIds(
+  layer: any,
+  where: any,
+  orderBy: any
+): Promise<number[]> {
+  const query = layer.createQuery();
+  query.where = where ? where : "1=1";
+  query.orderByFields = orderBy;
+  return await layer.queryObjectIds(query);
+}
+
+/**
  * Query the layer for the extent of features with the provided OIDs
  *
  * @param ids array of ObjectIDs to be used to query for features in a layer
