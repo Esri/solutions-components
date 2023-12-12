@@ -1550,6 +1550,11 @@ export class LayerTable {
     }
   }
 
+  /**
+   * Keep track of key down for ctrl and shift
+   *
+   * @returns void
+   */
   protected _handleKeyDown(
     e: KeyboardEvent
   ): void {
@@ -1557,6 +1562,11 @@ export class LayerTable {
     this._shiftIsPressed = e.shiftKey;
   }
 
+  /**
+   * Keep track of key up for ctrl and shift
+   *
+   * @returns void
+   */
   protected _handleKeyUp(
     e: KeyboardEvent
   ): void {
