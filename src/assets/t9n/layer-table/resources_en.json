@@ -6,6 +6,7 @@
   "exportCSV": "Export to CSV",
   "filter": "Filter: {{title}}",
   "filters": "Filters",
+  "hideField": "Hide field",
   "more": "More",
   "selectAll": "Select all",
   "share": "Share",
