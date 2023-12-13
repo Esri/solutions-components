@@ -391,6 +391,16 @@ export class LayerTable {
   }
 
   /**
+   * watch for changes in map info and recheck the tool infos
+   */
+  @Watch("mapInfo")
+  async mapInfoWatchHandler(): Promise<void> {
+    if (this._toolInfos?.length > 0) {
+      this._initToolInfos();
+    }
+  }
+
+  /**
    * watch for changes in map view and get the first layer
    */
   @Watch("mapView")

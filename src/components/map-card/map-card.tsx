@@ -299,6 +299,8 @@ export class MapCard {
     const loadDefaultMap = !this._defaultWebmapHonored && this.defaultWebmapId;
     const defaultMap = this.mapInfos?.filter(i => i.id === this.defaultWebmapId);
 
+    const mapConfigChanged = JSON.stringify(webMapInfo) !== JSON.stringify(this._webMapInfo);
+
     this._webMapInfo = loadDefaultMap && defaultMap ? defaultMap[0] :
       !webMapInfo?.id && this.mapInfos.length > 0 ? this.mapInfos[0] : webMapInfo;
 
@@ -333,6 +335,14 @@ export class MapCard {
     } else if (loadDefaultMap) {
       this._defaultWebmapHonored = true;
       this._mapPicker.setMapByID(id);
+    } else if (mapConfigChanged) {
+      // Map is the same so no need to reload but we need to update for any changes from the config
+      this._searchConfiguration = this._webMapInfo.searchConfiguration;
+      this.beforeMapChanged.emit();
+      this.mapChanged.emit({
+        id: id,
+        mapView: this.mapView
+      });
     }
   }
 
