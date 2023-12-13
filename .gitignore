@@ -16,6 +16,7 @@ log.txt
 .idea/
 .vscode/
 .sass-cache/
+.turbo
 .versions/
 node_modules/
 $RECYCLE.BIN/
