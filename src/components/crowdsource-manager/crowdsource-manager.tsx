@@ -207,6 +207,11 @@ export class CrowdsourceManager {
   @State() _layoutMode: ELayoutMode = ELayoutMode.GRID;
 
   /**
+   * IMapInfo: The current map info stores configuration details
+   */
+  @State() _mapInfo: IMapInfo;
+
+  /**
    * Stores the current map view
    */
   @State() _mapView: __esri.MapView;
@@ -251,11 +256,6 @@ export class CrowdsourceManager {
    * IMapChange: The current map change details
    */
   protected _mapChange: IMapChange;
-
-  /**
-   * IMapInfo: The current map info stores configuration details
-   */
-  protected _mapInfo: IMapInfo;
 
   /**
    * boolean: When true the map view will be set after render due to popup obstructing the view
@@ -787,7 +787,7 @@ export class CrowdsourceManager {
         return true;
       }
     })
-    return mapInfo;
+    return {...mapInfo};
   }
 
   /**
