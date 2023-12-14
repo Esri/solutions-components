@@ -604,10 +604,19 @@ export class CrowdsourceManager {
           enableFullscreen={this.enableFullscreen}
           enableHome={this.enableHome}
           enableLegend={this.enableLegend}
+          enableMapToolsExpand={true}
           enableSearch={this.enableSearch}
           hidden={this._expandPopup}
+          homeZoomIndex={3}
+          homeZoomPoisition={"top-left"}
+          homeZoomToolsSize={"s"}
           mapInfos={this.mapInfos?.filter(mapInfo => mapInfo.visible !== false)}
+          mapWidgetsIndex={0}
+          mapWidgetsPosition={"top-right"}
+          mapWidgetsSize={"m"}
+          stackTools={true}
           theme={this.theme}
+          toolOrder={["legend", "search", "fullscreen", "basemap", "floorfilter"]}
         />
       </div>
     );
