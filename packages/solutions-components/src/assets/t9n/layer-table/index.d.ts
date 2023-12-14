@@ -1,0 +1,28 @@
+export type LayerTableMessages = {
+  clearSelection: string;
+  close: string;
+  delete: string;
+  editMultiple: string;
+  exportCSV: string;
+  filter: string;
+  filters: string;
+  hideField: string;
+  more: string;
+  selectAll: string;
+  share: string;
+  showSelected: string;
+  switchSelected: string;
+  zoom: string;
+  fetchingData: string;
+  refresh: string;
+  enableEditing: string;
+  confirm: string;
+  deleteFeature: string;
+  deleteDisabled: string;
+  editMultipleDisabled: string;
+  showAll: string;
+  recordsSelected: string;
+  cancel: string;
+  moreOptions: string;
+  showHideColumns: string;
+};

@@ -1,0 +1,65 @@
+export type InstantAppsLanguageTranslatorMessages = {
+  close: string;
+  collapseAll: string;
+  expandAll: string;
+  goToSetting: string;
+  header: string;
+  headerTip: string;
+  languages: Languages;
+  noLanguage: NoLanguage;
+  saving: string;
+  searchPlaceholder: string;
+  selectLanguage: string;
+  subHeader: string;
+  translatedLanguage: string;
+  translatedLanguageNames: Languages;
+  writing: string;
+};
+
+export type Languages = {
+  ar: string;
+  bg: string;
+  bs: string;
+  ca: string;
+  cs: string;
+  da: string;
+  de: string;
+  el: string;
+  en: string;
+  es: string;
+  et: string;
+  fi: string;
+  fr: string;
+  he: string;
+  hr: string;
+  hu: string;
+  id: string;
+  it: string;
+  ja: string;
+  ko: string;
+  lt: string;
+  lv: string;
+  nb: string;
+  nl: string;
+  pl: string;
+  "pt-BR": string;
+  "pt-PT": string;
+  ro: string;
+  ru: string;
+  sk: string;
+  sl: string;
+  sr: string;
+  sv: string;
+  th: string;
+  tr: string;
+  uk: string;
+  vi: string;
+  "zh-CN": string;
+  "zh-HK": string;
+  "zh-TW": string;
+};
+
+export type NoLanguage = {
+  message: string;
+  title: string;
+};

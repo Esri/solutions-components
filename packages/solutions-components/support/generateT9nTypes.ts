@@ -7,9 +7,9 @@ import { InputData, jsonInputForTargetLanguage, quicktype } from "quicktype-core
     promises: { readFile, writeFile },
   } = await import("fs");
 
-  const rootBundleFile = "messages.json";
-  const rootBundlePattern = `src/components/**/t9n/${rootBundleFile}`;
-  const rootManifestFilePath = "packages/calcite-components/";
+  const rootBundleFile = "resources.json";
+  const rootBundlePattern = `src/assets/t9n/**/${rootBundleFile}`;
+  const rootManifestFilePath = "packages/solutions-components/";
 
   const rootBundles = await globby.globby([rootBundlePattern]);
   const manifestFilePathSeparator = "\\";
@@ -19,7 +19,7 @@ import { InputData, jsonInputForTargetLanguage, quicktype } from "quicktype-core
   const paths = await Promise.all(
     rootBundles.map(async (bundle) => {
       const splitRootBundlePath = bundle.split("/");
-      const componentName = splitRootBundlePath[2];
+      const componentName = splitRootBundlePath[3];
       const typeName = `${splitRootBundlePath.pop().replace(rootBundleFile, "")}-${componentName}-messages`;
       const jsonContents = await readFile(bundle, { encoding: "utf-8" });
 
@@ -53,9 +53,10 @@ import { InputData, jsonInputForTargetLanguage, quicktype } from "quicktype-core
           filepath: declarationFile,
         })
       );
-      const t9nPath = `${bundle.split("/t9n")[0]}/t9n`;
+
+      const t9nPath = `${bundle.split(rootBundleFile)[0]}`;
       const relativeT9nPath = `${rootManifestFilePath}${t9nPath}`;
-      return relativeT9nPath.replace(/\//g, manifestFilePathSeparator);
+      return relativeT9nPath.replace(/\/$/, "").replace(/\//g, manifestFilePathSeparator);
     })
   );
 
