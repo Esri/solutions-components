@@ -877,7 +877,7 @@ export class LayerTable {
    */
   protected _hasFilterExpressions(): boolean {
     let layerExpressions;
-    if (this.mapInfo?.filterConfig?.layerExpressions) {
+    if (this.mapInfo?.filterConfig?.layerExpressions && this._layer?.id) {
       layerExpressions = this.mapInfo.filterConfig.layerExpressions.filter(
         (exp) => exp.id === this._layer.id);
     }

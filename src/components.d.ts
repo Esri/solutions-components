@@ -459,6 +459,10 @@ export namespace Components {
          */
         "enableLegend": boolean;
         /**
+          * boolean: when true map tools will be displayed within a expand/collapse widget
+         */
+        "enableMapToolsExpand": boolean;
+        /**
           * boolean: when true the search widget will be available
          */
         "enableSearch": boolean;
@@ -466,6 +470,18 @@ export namespace Components {
           * boolean: When true the map display will be hidden
          */
         "hidden": boolean;
+        /**
+          * number: The placement index of the home and zoom components. This index shows where to place the component relative to other components. For example a value of 0 would place it topmost when position is top-*, leftmost for bottom-left and right most for bottom-right.
+         */
+        "homeZoomIndex": number;
+        /**
+          * __esri.UIPosition: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-ui-UI.html#UIPosition The position details for the Home and Zoom tools
+         */
+        "homeZoomPosition": __esri.UIPosition;
+        /**
+          * "s" | "m" | "l": Used for Zoom and Home tools
+         */
+        "homeZoomToolsSize": "s" | "m" | "l";
         /**
           * IMapInfo[]: array of map infos (name and id)
          */
@@ -475,9 +491,29 @@ export namespace Components {
          */
         "mapView": __esri.MapView;
         /**
+          * number: The placement index of the map widgets (legend, basemap, fullscreen etc). This index shows where to place the component relative to other components. For example a value of 0 would place it topmost when position is top-*, leftmost for bottom-left and right most for bottom-right.
+         */
+        "mapWidgetsIndex": number;
+        /**
+          * __esri.UIPosition: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-ui-UI.html#UIPosition The position details for the Home and Zoom tools
+         */
+        "mapWidgetsPosition": __esri.UIPosition;
+        /**
+          * "s" | "m" | "l": Used for optional map tool widget
+         */
+        "mapWidgetsSize": "s" | "m" | "l";
+        /**
+          * boolean: When true the map widget tools will have no margin between them. When false the map widget tools will have a margin between them.
+         */
+        "stackTools": boolean;
+        /**
           * theme: "light" | "dark" theme to be used
          */
         "theme": theme;
+        /**
+          * Valid tools: "legend", "search", "fullscreen", "basemap", "floorfilter"
+         */
+        "toolOrder": string[];
     }
     interface MapDrawTools {
         /**
@@ -748,9 +784,17 @@ export namespace Components {
          */
         "enableLegend": boolean;
         /**
+          * boolean: when true map tools will be displayed within a expand/collapse widget
+         */
+        "enableMapToolsExpand": boolean;
+        /**
           * boolean: when true the search widget will be available
          */
         "enableSearch": boolean;
+        /**
+          * "s" | "m" | "l": Used for Zoom and Home tools
+         */
+        "homeZoomToolsSize": "s" | "m" | "l";
         /**
           * "horizontal" | "vertical": used to control the orientation of the tools
          */
@@ -760,9 +804,21 @@ export namespace Components {
          */
         "mapView": __esri.MapView;
         /**
+          * "s" | "m" | "l": Used for optional map tool widget
+         */
+        "mapWidgetsSize": "s" | "m" | "l";
+        /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
         "searchConfiguration": ISearchConfiguration;
+        /**
+          * boolean: When true the map widget tools will have no margin between them. When false the map widget tools will have a margin between them.
+         */
+        "stackTools": boolean;
+        /**
+          * Valid tools: "legend", "search", "fullscreen", "basemap", "floorfilter"
+         */
+        "toolOrder": string[];
     }
     interface PciCalculator {
     }
@@ -2181,6 +2237,10 @@ declare namespace LocalJSX {
          */
         "enableLegend"?: boolean;
         /**
+          * boolean: when true map tools will be displayed within a expand/collapse widget
+         */
+        "enableMapToolsExpand"?: boolean;
+        /**
           * boolean: when true the search widget will be available
          */
         "enableSearch"?: boolean;
@@ -2188,6 +2248,18 @@ declare namespace LocalJSX {
           * boolean: When true the map display will be hidden
          */
         "hidden"?: boolean;
+        /**
+          * number: The placement index of the home and zoom components. This index shows where to place the component relative to other components. For example a value of 0 would place it topmost when position is top-*, leftmost for bottom-left and right most for bottom-right.
+         */
+        "homeZoomIndex"?: number;
+        /**
+          * __esri.UIPosition: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-ui-UI.html#UIPosition The position details for the Home and Zoom tools
+         */
+        "homeZoomPosition"?: __esri.UIPosition;
+        /**
+          * "s" | "m" | "l": Used for Zoom and Home tools
+         */
+        "homeZoomToolsSize"?: "s" | "m" | "l";
         /**
           * IMapInfo[]: array of map infos (name and id)
          */
@@ -2197,6 +2269,18 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
+          * number: The placement index of the map widgets (legend, basemap, fullscreen etc). This index shows where to place the component relative to other components. For example a value of 0 would place it topmost when position is top-*, leftmost for bottom-left and right most for bottom-right.
+         */
+        "mapWidgetsIndex"?: number;
+        /**
+          * __esri.UIPosition: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-ui-UI.html#UIPosition The position details for the Home and Zoom tools
+         */
+        "mapWidgetsPosition"?: __esri.UIPosition;
+        /**
+          * "s" | "m" | "l": Used for optional map tool widget
+         */
+        "mapWidgetsSize"?: "s" | "m" | "l";
+        /**
           * Emitted before a new map is loaded
          */
         "onBeforeMapChanged"?: (event: MapCardCustomEvent<void>) => void;
@@ -2205,9 +2289,17 @@ declare namespace LocalJSX {
          */
         "onMapChanged"?: (event: MapCardCustomEvent<IMapChange>) => void;
         /**
+          * boolean: When true the map widget tools will have no margin between them. When false the map widget tools will have a margin between them.
+         */
+        "stackTools"?: boolean;
+        /**
           * theme: "light" | "dark" theme to be used
          */
         "theme"?: theme;
+        /**
+          * Valid tools: "legend", "search", "fullscreen", "basemap", "floorfilter"
+         */
+        "toolOrder"?: string[];
     }
     interface MapDrawTools {
         /**
@@ -2497,9 +2589,17 @@ declare namespace LocalJSX {
          */
         "enableLegend"?: boolean;
         /**
+          * boolean: when true map tools will be displayed within a expand/collapse widget
+         */
+        "enableMapToolsExpand"?: boolean;
+        /**
           * boolean: when true the search widget will be available
          */
         "enableSearch"?: boolean;
+        /**
+          * "s" | "m" | "l": Used for Zoom and Home tools
+         */
+        "homeZoomToolsSize"?: "s" | "m" | "l";
         /**
           * "horizontal" | "vertical": used to control the orientation of the tools
          */
@@ -2509,9 +2609,21 @@ declare namespace LocalJSX {
          */
         "mapView"?: __esri.MapView;
         /**
+          * "s" | "m" | "l": Used for optional map tool widget
+         */
+        "mapWidgetsSize"?: "s" | "m" | "l";
+        /**
           * ISearchConfiguration: Configuration details for the Search widget
          */
         "searchConfiguration"?: ISearchConfiguration;
+        /**
+          * boolean: When true the map widget tools will have no margin between them. When false the map widget tools will have a margin between them.
+         */
+        "stackTools"?: boolean;
+        /**
+          * Valid tools: "legend", "search", "fullscreen", "basemap", "floorfilter"
+         */
+        "toolOrder"?: string[];
     }
     interface PciCalculator {
     }

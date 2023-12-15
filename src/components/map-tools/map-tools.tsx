@@ -40,6 +40,11 @@ export class MapTools {
   //--------------------------------------------------------------------------
 
   /**
+   * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+   */
+  @Prop() basemapConfig: IBasemapConfig;
+
+  /**
    * boolean: when true the legend widget will be available
    */
   @Prop() enableLegend: boolean;
@@ -65,9 +70,14 @@ export class MapTools {
   @Prop() enableBasemap: boolean;
 
   /**
-   * IBasemapConfig: List of any basemaps to filter out from the basemap widget
+   * boolean: when true map tools will be displayed within a expand/collapse widget
    */
-  @Prop() basemapConfig: IBasemapConfig;
+  @Prop() enableMapToolsExpand: boolean;
+
+  /**
+   * "s" | "m" | "l": Used for Zoom and Home tools
+   */
+  @Prop() homeZoomToolsSize: "s" | "m" | "l" = "m";
 
   /**
    * "horizontal" | "vertical": used to control the orientation of the tools
@@ -80,9 +90,26 @@ export class MapTools {
   @Prop() mapView: __esri.MapView;
 
   /**
+   * "s" | "m" | "l": Used for optional map tool widget
+   */
+  @Prop() mapWidgetsSize: "s" | "m" | "l" = "m";
+
+  /**
    * ISearchConfiguration: Configuration details for the Search widget
    */
   @Prop() searchConfiguration: ISearchConfiguration;
+
+  /**
+   * boolean: When true the map widget tools will have no margin between them.
+   * When false the map widget tools will have a margin between them.
+   */
+  @Prop() stackTools = true;
+
+  /**
+   *
+   * Valid tools: "legend", "search", "fullscreen", "basemap", "floorfilter"
+   */
+  @Prop() toolOrder: string[];
 
   //--------------------------------------------------------------------------
   //
@@ -295,6 +322,7 @@ export class MapTools {
    * StencilJS: Renders the component.
    */
   render() {
+    this._setZoomToolsSize();
     const toggleIcon = this._showTools ? "chevrons-up" : "chevrons-down";
     const toolsClass = this._showTools ? "" : "display-none";
     const searchClass = this._showSearchWidget ? "" : "display-none";
@@ -302,41 +330,22 @@ export class MapTools {
     const legendClass = this._showLegendWidget ? "" : "display-none";
     const floorFilterClass = this._showFloorFilter ? "" : "display-none";
     const fullscreenClass = this._showFullscreen ? "" : "display-none";
-    const fullscreenIcon = this._showFullscreen ? "full-screen-exit" : "full-screen";
-    const fullscreenTip = this._showFullscreen ? this._translations.exitFullscreen : this._translations.enterFullscreen;
     const expandTip = this._showTools ? this._translations.collapse : this._translations.expand;
     const containerClass = !this.enableBasemap && !this.enableFullscreen && !this.enableLegend && !this.enableSearch ? "display-none" : "";
+    const toolMarginClass = this.enableMapToolsExpand ? "margin-top-1-2" : "";
+    const toolOrder = this.toolOrder ? this.toolOrder : ["legend", "search", "fullscreen", "floorfilter"];
+    const shadowClass = this.stackTools ? "box-shadow" : "";
     return (
       <Host>
         <div class={containerClass}>
-          <div class="box-shadow">
-            {this._getActionGroup(toggleIcon, false, expandTip, () => this._toggleTools())}
-          </div>
-          <div class={`margin-top-1-2 box-shadow ${toolsClass}`}>
+          {this.enableMapToolsExpand ? (
+            <div class="box-shadow">
+              {this._getActionGroup(toggleIcon, false, expandTip, () => this._toggleTools())}
+            </div>
+          ) : undefined}
+          <div class={`${toolMarginClass} ${shadowClass} ${toolsClass}`}>
             {
-              this.enableLegend ?
-                this._getActionGroup("legend", false, this._translations.legend, () => this._showLegend()) :
-                undefined
-            }
-            {
-              this.enableSearch ?
-                this._getActionGroup("magnifying-glass", false, this._translations.search, () => this._search()) :
-                undefined
-            }
-            {
-              this.enableFullscreen ?
-                this._getActionGroup(fullscreenIcon, false, fullscreenTip, () => this._expand()) :
-                undefined
-            }
-            {
-              this.enableBasemap ?
-                this._getActionGroup("basemap", false, this._translations.basemap, () => this._toggleBasemapPicker()) :
-                undefined
-            }
-            {
-              this.enableFloorFilter && this._hasFloorInfo ?
-                this._getActionGroup("urban-model", false, this._translations.floorFilter, () => this._toggleFloorFilter()) :
-                undefined
+              this._getMapWidgets(toolOrder)
             }
           </div>
         </div>
@@ -372,6 +381,61 @@ export class MapTools {
         />
       </Host>
     );
+  }
+
+  /**
+   * Set the size of the zoom tools based on the user defined homeZoomToolsSize variable.
+   *
+   * @protected
+   */
+  protected _setZoomToolsSize(): void {
+    const zoomIn = document.getElementsByClassName("esri-zoom")[0]?.children[0];
+    const zoomOut = document.getElementsByClassName("esri-zoom")[0]?.children[1];
+    if (zoomIn && zoomOut) {
+      const size = this.homeZoomToolsSize === "s" ? "32px" : this.homeZoomToolsSize === "m" ? "40px" : "48px";
+      (zoomIn as HTMLDivElement).style.width = size;
+      (zoomIn as HTMLDivElement).style.height = size;
+      (zoomOut as HTMLDivElement).style.width = size;
+      (zoomOut as HTMLDivElement).style.height = size;
+    }
+  }
+
+  /**
+   * Get the map widgets considering the user defined enabled values and tool order
+   *
+   * @protected
+   */
+  protected _getMapWidgets(
+    toolOrder: string[]
+  ): VNode[] {
+    const fullscreenIcon = this._showFullscreen ? "full-screen-exit" : "full-screen";
+    const fullscreenTip = this._showFullscreen ? this._translations.exitFullscreen : this._translations.enterFullscreen;
+    return toolOrder.map(t => {
+      switch (t) {
+        case "legend":
+          return this.enableLegend ?
+            this._getActionGroup("legend", false, this._translations.legend, () => this._showLegend()) :
+            undefined;
+        case "search":
+          return this.enableSearch ?
+            this._getActionGroup("magnifying-glass", false, this._translations.search, () => this._search()) :
+            undefined;
+        case "fullscreen":
+          return this.enableFullscreen ?
+            this._getActionGroup(fullscreenIcon, false, fullscreenTip, () => this._expand()) :
+            undefined;
+        case "basemap":
+          return this.enableBasemap ?
+            this._getActionGroup("basemap", false, this._translations.basemap, () => this._toggleBasemapPicker()) :
+            undefined;
+        case "floorfilter":
+          return this.enableFloorFilter && this._hasFloorInfo ?
+            this._getActionGroup("urban-model", false, this._translations.floorFilter, () => this._toggleFloorFilter()) :
+            undefined;
+        default:
+          break;
+      }
+    });
   }
 
   /**
@@ -415,11 +479,14 @@ export class MapTools {
     tip: string,
     func: any
   ): VNode {
+    const sizeClass = this.mapWidgetsSize === "s" ? "square-32" : this.mapWidgetsSize === "m" ? "square-40" : "square-48";
+    const stackClass = this.stackTools ? "" : "margin-bottom-1-2";
+    const shadowClass = this.stackTools ? "" : "box-shadow";
     return (
-      <div class="border-bottom">
+      <div>
         <calcite-action
           alignment="center"
-          class="square-40"
+          class={`${sizeClass} ${stackClass} border-bottom ${shadowClass}`}
           compact={false}
           disabled={disabled}
           icon={icon}
