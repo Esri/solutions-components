@@ -18,6 +18,7 @@
 | `enableInlineEdit`        | `enable-inline-edit`          | boolean: when true edits can be applied directly within the table                                                  | `boolean`  | `undefined` |
 | `enableShare`             | `enable-share`                | boolean: when true the share widget will be available                                                              | `boolean`  | `undefined` |
 | `enableZoom`              | `enable-zoom`                 | boolean: when true the zoom button will be enabled                                                                 | `boolean`  | `undefined` |
+| `isMobile`                | `is-mobile`                   | When true the component will render an optimized view for mobile devices                                           | `boolean`  | `undefined` |
 | `mapInfo`                 | --                            | IMapInfo: key configuration details about the current map                                                          | `IMapInfo` | `undefined` |
 | `mapView`                 | --                            | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html             | `MapView`  | `undefined` |
 | `onlyShowUpdatableLayers` | `only-show-updatable-layers`  | boolean: When true only editable layers that support the update capability will be available                       | `boolean`  | `undefined` |
@@ -94,9 +95,9 @@ graph TD;
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown
+  map-layer-picker --> calcite-dropdown-group
   map-layer-picker --> calcite-action
   map-layer-picker --> calcite-button
-  map-layer-picker --> calcite-dropdown-group
   map-layer-picker --> calcite-combobox-item
   map-layer-picker --> calcite-option
   map-layer-picker --> calcite-dropdown-item

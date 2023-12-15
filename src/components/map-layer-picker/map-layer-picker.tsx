@@ -74,6 +74,11 @@ export class MapLayerPicker {
   @Prop() height: number;
 
   /**
+   * When true the component will render an optimized view for mobile devices
+   */
+  @Prop() isMobile: boolean;
+
+  /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
@@ -130,6 +135,11 @@ export class MapLayerPicker {
    * boolean: when true the map contains valid layers and all expected tools will be enabled
    */
   @State() _hasValidLayers = true;
+
+  /**
+   * boolean: when true the layer dropdown is open
+   */
+  @State() _isDropdownOpen: boolean;
 
   /**
    * string[]: list of layer and table (if showTables is true) ids from the map
@@ -402,27 +412,60 @@ export class MapLayerPicker {
     id: string
   ): VNode {
     return (
-      <calcite-dropdown class="layer-picker-dropdown">
-        <calcite-action id={id} slot="trigger" text="">
-          <calcite-button
-            alignment="icon-end-space-between"
-            appearance={this.appearance}
-            class="max-width-350"
-            iconEnd="chevron-down"
-            iconStart="layers"
-            kind="neutral"
-            width="full"
-          >
-            <div>
-              {this.selectedName}
-            </div>
-          </calcite-button>
-        </calcite-action>
+      <calcite-dropdown
+        calciteDropdownOpen={() => alert("open")}
+        class="layer-picker-dropdown"
+        onCalciteDropdownBeforeClose={() => this._isDropdownOpen = false}
+        onCalciteDropdownBeforeOpen={() => this._isDropdownOpen = true}
+      >
+        {this.isMobile ? this._getDropdownButton() : this._getActionDropdownButton(id)}
         <calcite-dropdown-group selection-mode="single">
           {this._getMapLayerOptions()}
         </calcite-dropdown-group>
       </calcite-dropdown>
     );
+  }
+
+  /**
+   * Get the button that will open the dropdown list wrapped in an action
+   *
+   * @returns the node for the action and button
+   */
+  protected _getActionDropdownButton(
+    id: string
+  ): VNode {
+    return (
+      <calcite-action id={id} slot="trigger" text="">
+        {this._getDropdownButton()}
+      </calcite-action>
+    )
+  }
+
+  /**
+   * Get the button that will open the dropdown list
+   *
+   * @returns the node for the button
+   */
+  protected _getDropdownButton(): VNode {
+    const buttonClass = this.isMobile ? "" : "max-width-350";
+    const buttonSlot = this.isMobile ? "trigger" : "";
+    const buttonIcon = this._isDropdownOpen ? "chevron-up" : "chevron-down";
+    return (
+      <calcite-button
+        alignment="icon-end-space-between"
+        appearance={this.appearance}
+        class={buttonClass}
+        iconEnd={buttonIcon}
+        iconStart="layers"
+        kind="neutral"
+        slot={buttonSlot}
+        width="full"
+      >
+        <div>
+          {this.selectedName}
+        </div>
+      </calcite-button>
+    )
   }
 
   /**

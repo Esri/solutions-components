@@ -89,6 +89,11 @@ export class LayerTable {
   @Prop() enableZoom: boolean;
 
   /**
+   * When true the component will render an optimized view for mobile devices
+   */
+  @Prop() isMobile: boolean;
+
+  /**
    * IMapInfo: key configuration details about the current map
    */
   @Prop() mapInfo: IMapInfo;
@@ -545,11 +550,12 @@ export class LayerTable {
     const loadingClass = this._fetchingData ? "" : "display-none";
     const total = this._allIds.length.toString();
     const selected = this._selectedIndexes.length.toString();
+    const tableHeightClass = this.isMobile ? "height-full" : "height-full-adjusted";
     return (
       <Host>
         <calcite-shell>
           {this._getTableControlRow("header")}
-          <div class="height-full-adjusted width-full">
+          <div class={`width-full ${tableHeightClass}`}>
             <calcite-panel class="height-full width-full">
               <calcite-loader
                 class={loadingClass}
@@ -561,13 +567,17 @@ export class LayerTable {
                 ref={this.onTableNodeCreate}
               />
             </calcite-panel>
-            <div class="bottom-left text-color height-19">
-              {
-                this._translations.recordsSelected
-                  .replace("{{total}}", total)
-                  .replace("{{selected}}", selected)
-              }
-            </div>
+            {
+              !this.isMobile ? (
+                <div class="bottom-left text-color height-19">
+                  {
+                    this._translations.recordsSelected
+                      .replace("{{total}}", total)
+                      .replace("{{selected}}", selected)
+                  }
+                </div>
+              ) : undefined
+            }
           </div>
         </calcite-shell>
         {this._deleteMessage()}
@@ -580,7 +590,9 @@ export class LayerTable {
    * Called once after the component is loaded
    */
   async componentDidLoad(): Promise<void> {
-    this._resizeObserver.observe(this._toolbar);
+    if (!this.isMobile) {
+      this._resizeObserver.observe(this._toolbar);
+    }
     document.onclick = (e) => this._handleDocumentClick(e);
     document.onkeydown = (e) => this._handleKeyDown(e);
     document.onkeyup = (e) => this._handleKeyUp(e);
@@ -642,8 +654,8 @@ export class LayerTable {
         slot={slot}
       >
         {this._getActionBar()}
-        {this._getDropdown(id)}
-        {this.enableShare ? this._getShare("share") : undefined}
+        {!this.isMobile ? this._getDropdown(id) : undefined}
+        {this.enableShare && !this.isMobile ? this._getShare("share") : undefined}
       </div>
     );
   }
@@ -656,19 +668,22 @@ export class LayerTable {
    * @returns The dom node that contains the controls
    */
   protected _getActionBar(): VNode {
+    const containerClass = this.isMobile ? "width-full" : "";
     return (
       <calcite-action-bar
+        class={containerClass}
         expandDisabled={true}
         expanded={true}
         id={this._getId("bar")}
         layout="horizontal"
       >
-        <div class="border-end" id="solutions-map-layer-picker-container">
+        <div class={`border-end ${containerClass}`} id="solutions-map-layer-picker-container">
           <map-layer-picker
             appearance="transparent"
             defaultLayerId={this.defaultLayerId}
             display="inline-flex"
             height={50}
+            isMobile={this.isMobile}
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
             onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
@@ -679,7 +694,7 @@ export class LayerTable {
             type="dropdown"
           />
         </div>
-        {this._getActions()}
+        {!this.isMobile ? this._getActions() : undefined}
       </calcite-action-bar>
     );
   }
@@ -779,77 +794,79 @@ export class LayerTable {
    * @returns void
    */
   protected _initToolInfos(): void {
-    const featuresSelected = this._featuresSelected();
-    const featuresEmpty = this._featuresEmpty();
-    const hasFilterExpressions = this._hasFilterExpressions();
-    this._toolInfos = [this.enableZoom ? {
-      icon: "zoom-to-object",
-      label: this._translations.zoom,
-      func: () => this._zoom(),
-      disabled: !featuresSelected,
-      isOverflow: false
-    } : undefined,
-    hasFilterExpressions ? {
-      icon: "filter",
-      label: this._translations.filters,
-      func: () => this._toggleFilter(),
-      disabled: false,
-      isOverflow: false
-    } : undefined,
-    this._deleteEnabled ? {
-      icon: "trash",
-      label: this._translations.delete,
-      func: () => this._delete(),
-      disabled: !featuresSelected,
-      isDanger: true,
-      isOverflow: false
-    } : undefined, {
-      icon: "erase",
-      label: this._translations.clearSelection,
-      func: () => this._clearSelection(),
-      disabled: !featuresSelected,
-      isOverflow: false
-    }, {
-      icon: "selected-items-filter",
-      label: this._showOnlySelected ? this._translations.showAll : this._translations.showSelected,
-      func: () => this._toggleShowSelected(),
-      disabled: !featuresSelected,
-      isOverflow: false
-    }, {
-      icon: "list-check-all",
-      func: () => this._selectAll(),
-      label: this._translations.selectAll,
-      disabled: featuresEmpty,
-      isOverflow: false
-    }, {
-      icon: "compare",
-      func: () => this._switchSelected(),
-      label: this._translations.switchSelected,
-      disabled: featuresEmpty,
-      isOverflow: false
-    }, {
-      icon: "refresh",
-      func: () => this._refresh(),
-      label: this._translations.refresh,
-      disabled: false,
-      isOverflow: false
-    },
-    this.enableCSV ? {
-      icon: "export",
-      func: () => void this._exportToCSV(),
-      label: this._translations.exportCSV,
-      disabled: featuresEmpty,
-      isOverflow: false
-    } : undefined, {
-      icon: this._showHideOpen ? "chevron-down" : "chevron-right",
-      func: () => this._toggleShowHide(),
-      label: this._translations.showHideColumns,
-      disabled: false,
-      isOverflow: false,
-      isSublist: true
-    }];
+    if (!this.isMobile) {
+      const featuresSelected = this._featuresSelected();
+      const featuresEmpty = this._featuresEmpty();
+      const hasFilterExpressions = this._hasFilterExpressions();
+      this._toolInfos = [this.enableZoom ? {
+        icon: "zoom-to-object",
+        label: this._translations.zoom,
+        func: () => this._zoom(),
+        disabled: !featuresSelected,
+        isOverflow: false
+      } : undefined,
+      hasFilterExpressions ? {
+        icon: "filter",
+        label: this._translations.filters,
+        func: () => this._toggleFilter(),
+        disabled: false,
+        isOverflow: false
+      } : undefined,
+      this._deleteEnabled ? {
+        icon: "trash",
+        label: this._translations.delete,
+        func: () => this._delete(),
+        disabled: !featuresSelected,
+        isDanger: true,
+        isOverflow: false
+      } : undefined, {
+        icon: "erase",
+        label: this._translations.clearSelection,
+        func: () => this._clearSelection(),
+        disabled: !featuresSelected,
+        isOverflow: false
+      }, {
+        icon: "selected-items-filter",
+        label: this._showOnlySelected ? this._translations.showAll : this._translations.showSelected,
+        func: () => this._toggleShowSelected(),
+        disabled: !featuresSelected,
+        isOverflow: false
+      }, {
+        icon: "list-check-all",
+        func: () => this._selectAll(),
+        label: this._translations.selectAll,
+        disabled: featuresEmpty,
+        isOverflow: false
+      }, {
+        icon: "compare",
+        func: () => this._switchSelected(),
+        label: this._translations.switchSelected,
+        disabled: featuresEmpty,
+        isOverflow: false
+      }, {
+        icon: "refresh",
+        func: () => this._refresh(),
+        label: this._translations.refresh,
+        disabled: false,
+        isOverflow: false
+      },
+      this.enableCSV ? {
+        icon: "export",
+        func: () => void this._exportToCSV(),
+        label: this._translations.exportCSV,
+        disabled: featuresEmpty,
+        isOverflow: false
+      } : undefined, {
+        icon: this._showHideOpen ? "chevron-down" : "chevron-right",
+        func: () => this._toggleShowHide(),
+        label: this._translations.showHideColumns,
+        disabled: false,
+        isOverflow: false,
+        isSublist: true
+      }];
 
-    this._defaultVisibleToolSizeInfos = undefined;
+      this._defaultVisibleToolSizeInfos = undefined;
+    }
   }
 
   /**
@@ -894,61 +911,63 @@ export class LayerTable {
       clearTimeout(this._timeout)
     }
 
-    this._timeout = setTimeout(() => {
-      clearTimeout(this._timeout)
+    if (!this.isMobile) {
+      this._timeout = setTimeout(() => {
+        clearTimeout(this._timeout)
 
-      this._setToolbarSizeInfos();
+        this._setToolbarSizeInfos();
 
-      const toolbarWidth = this._toolbar.offsetWidth;
-      let controlsWidth = this._toolbarSizeInfos.reduce((prev, cur) => {
-        prev += cur.width;
-        return prev;
-      }, 0);
+        const toolbarWidth = this._toolbar.offsetWidth;
+        let controlsWidth = this._toolbarSizeInfos.reduce((prev, cur) => {
+          prev += cur.width;
+          return prev;
+        }, 0);
 
-      const skipControls = ["solutions-more", "solutions-map-layer-picker-container", "solutions-action-share"];
-      if (controlsWidth > toolbarWidth) {
-        if (this._toolbarSizeInfos.length > 0) {
-          const controlsThatFit = [...this._toolbarSizeInfos].reverse().reduce((prev, cur) => {
-            if (skipControls.indexOf(cur.id) < 0) {
-              if (controlsWidth > toolbarWidth) {
-                controlsWidth -= cur.width;
-              } else {
+        const skipControls = ["solutions-more", "solutions-map-layer-picker-container", "solutions-action-share"];
+        if (controlsWidth > toolbarWidth) {
+          if (this._toolbarSizeInfos.length > 0) {
+            const controlsThatFit = [...this._toolbarSizeInfos].reverse().reduce((prev, cur) => {
+              if (skipControls.indexOf(cur.id) < 0) {
+                if (controlsWidth > toolbarWidth) {
+                  controlsWidth -= cur.width;
+                } else {
+                  prev.push(cur);
+                }
+              }
+              return prev;
+            }, []).reverse();
+
+            this._setControlsThatFit(controlsThatFit, skipControls);
+          }
+        } else {
+          if (this._defaultVisibleToolSizeInfos) {
+            const currentTools = this._toolbarSizeInfos.reduce((prev, cur) => {
+              prev.push(cur.id);
+              return prev;
+            }, []);
+
+            let forceFinish = false;
+            const controlsThatFit = [...this._defaultVisibleToolSizeInfos].reduce((prev, cur) => {
+              if (!forceFinish && skipControls.indexOf(cur.id) < 0 &&
+                (currentTools.indexOf(cur.id) > -1 || (controlsWidth + cur.width) <= toolbarWidth)
+              ) {
+                if (currentTools.indexOf(cur.id) < 0) {
+                  controlsWidth += cur.width;
+                }
                 prev.push(cur);
+              } else if (skipControls.indexOf(cur.id) < 0 && (controlsWidth + cur.width) > toolbarWidth) {
+                // exit the first time we evalute this as true...otherwise it will add the next control that will fit
+                // and not preserve the overall order of controls
+                forceFinish = true;
               }
-            }
-            return prev;
-          }, []).reverse();
+              return prev;
+            }, []);
 
-          this._setControlsThatFit(controlsThatFit, skipControls);
+            this._setControlsThatFit(controlsThatFit, skipControls);
+          }
         }
-      } else {
-        if (this._defaultVisibleToolSizeInfos) {
-          const currentTools = this._toolbarSizeInfos.reduce((prev, cur) => {
-            prev.push(cur.id);
-            return prev;
-          }, []);
-
-          let forceFinish = false;
-          const controlsThatFit = [...this._defaultVisibleToolSizeInfos].reduce((prev, cur) => {
-            if (!forceFinish && skipControls.indexOf(cur.id) < 0 &&
-              (currentTools.indexOf(cur.id) > -1 || (controlsWidth + cur.width) <= toolbarWidth)
-            ) {
-              if (currentTools.indexOf(cur.id) < 0) {
-                controlsWidth += cur.width;
-              }
-              prev.push(cur);
-            } else if (skipControls.indexOf(cur.id) < 0 && (controlsWidth + cur.width) > toolbarWidth) {
-              // exit the first time we evalute this as true...otherwise it will add the next control that will fit
-              // and not preserve the overall order of controls
-              forceFinish = true;
-            }
-            return prev;
-          }, []);
-
-          this._setControlsThatFit(controlsThatFit, skipControls);
-        }
-      }
-    }, 5);
+      }, 5);
+    }
   }
 
   /**

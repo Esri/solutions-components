@@ -196,6 +196,11 @@ export class CrowdsourceManager {
   @State() _expandPopup = false;
 
   /**
+   * When true the component will render an optimized view for mobile devices
+   */
+  @State() _isMobile: boolean;
+
+  /**
    * Contains the translations for this component.
    * All UI strings should be defined here.
    */
@@ -256,6 +261,11 @@ export class CrowdsourceManager {
    * IMapChange: The current map change details
    */
   protected _mapChange: IMapChange;
+
+  /**
+   * ResizeObserver: The observer that watches for screen size changes
+   */
+  protected _resizeObserver: ResizeObserver;
 
   /**
    * boolean: When true the map view will be set after render due to popup obstructing the view
@@ -385,6 +395,7 @@ export class CrowdsourceManager {
    */
   async componentWillLoad(): Promise<void> {
     await this._getTranslations();
+    this._resizeObserver = new ResizeObserver(() => this._onResize());
   }
 
   /**
@@ -413,6 +424,13 @@ export class CrowdsourceManager {
       this._shouldSetMapView = false;
       await this._setMapView();
     }
+  }
+
+  /**
+   * Called once after the component is loaded
+   */
+  async componentDidLoad(): Promise<void> {
+    this._resizeObserver.observe(this.el);
   }
 
   //--------------------------------------------------------------------------
@@ -591,8 +609,9 @@ export class CrowdsourceManager {
     hideMap: boolean
   ): VNode {
     const mapDisplayClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "display-flex height-full width-1-2" :
-      layoutMode === ELayoutMode.GRID && !hideMap ? "" : "display-none";
-    const mapContainerClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "width-full" : "adjusted-height-50";
+      layoutMode === ELayoutMode.HORIZONTAL ? "" : layoutMode === ELayoutMode.GRID && !hideMap ? "" : "display-none";
+    const mapContainerClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "width-full" :
+      this._layoutMode === ELayoutMode.HORIZONTAL ? "" : "adjusted-height-50";
     return (
       <div class={`${mapContainerClass} overflow-hidden ${mapDisplayClass}`} >
         <map-card
@@ -724,27 +743,31 @@ export class CrowdsourceManager {
     const hasMapAndLayer = this.defaultWebmap && this.defaultLayer;
     return (
       <calcite-shell class={tableSizeClass + " border-bottom"}>
-        <calcite-action-bar
-          class="border-sides"
-          expandDisabled={true}
-          layout={toggleLayout}
-          slot={toggleSlot}
-        >
-          <calcite-action
-            class="toggle-node"
-            icon={icon}
-            id={id}
-            onClick={() => this._toggleLayout()}
-            text=""
-          />
-          <calcite-tooltip
-            label={tooltip}
-            placement="bottom"
-            reference-element={id}
-          >
-            <span>{tooltip}</span>
-          </calcite-tooltip>
-        </calcite-action-bar>
+        {
+          !this._isMobile ? (
+            <calcite-action-bar
+              class="border-sides"
+              expandDisabled={true}
+              layout={toggleLayout}
+              slot={toggleSlot}
+            >
+              <calcite-action
+                class="toggle-node"
+                icon={icon}
+                id={id}
+                onClick={() => this._toggleLayout()}
+                text=""
+              />
+              <calcite-tooltip
+                label={tooltip}
+                placement="bottom"
+                reference-element={id}
+              >
+                <span>{tooltip}</span>
+              </calcite-tooltip>
+            </calcite-action-bar>
+          ) : undefined
+        }
         <div class="width-full height-full position-relative">
           <layer-table
             defaultGlobalId={hasMapAndLayer ? this._defaultGlobalId : undefined}
@@ -756,6 +779,7 @@ export class CrowdsourceManager {
             enableInlineEdit={this.enableInlineEdit}
             enableShare={this.enableShare}
             enableZoom={this.enableZoom}
+            isMobile={this._isMobile}
             mapInfo={this._mapInfo}
             mapView={this?._mapView}
             onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
@@ -767,6 +791,17 @@ export class CrowdsourceManager {
         </div>
       </calcite-shell>
     );
+  }
+
+  /**
+   * Update the component layout when its size changes
+   *
+   * @returns void
+   */
+  protected _onResize(): void {
+    this._isMobile = this.el.offsetWidth <= 1024;
+    this._layoutMode = this._isMobile ? ELayoutMode.HORIZONTAL : ELayoutMode.GRID;
+    this._panelOpen = true;
   }
 
   /**

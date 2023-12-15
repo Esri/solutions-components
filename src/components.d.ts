@@ -395,6 +395,10 @@ export namespace Components {
          */
         "enableZoom": boolean;
         /**
+          * When true the component will render an optimized view for mobile devices
+         */
+        "isMobile": boolean;
+        /**
           * IMapInfo: key configuration details about the current map
          */
         "mapInfo": IMapInfo;
@@ -602,6 +606,10 @@ export namespace Components {
           * number: optional fixed height value for the control. Specified as pixel height.
          */
         "height": number;
+        /**
+          * When true the component will render an optimized view for mobile devices
+         */
+        "isMobile": boolean;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -2165,6 +2173,10 @@ declare namespace LocalJSX {
          */
         "enableZoom"?: boolean;
         /**
+          * When true the component will render an optimized view for mobile devices
+         */
+        "isMobile"?: boolean;
+        /**
           * IMapInfo: key configuration details about the current map
          */
         "mapInfo"?: IMapInfo;
@@ -2398,6 +2410,10 @@ declare namespace LocalJSX {
           * number: optional fixed height value for the control. Specified as pixel height.
          */
         "height"?: number;
+        /**
+          * When true the component will render an optimized view for mobile devices
+         */
+        "isMobile"?: boolean;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
