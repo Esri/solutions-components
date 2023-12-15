@@ -477,7 +477,7 @@ export namespace Components {
         /**
           * __esri.UIPosition: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-ui-UI.html#UIPosition The position details for the Home and Zoom tools
          */
-        "homeZoomPoisition": __esri.UIPosition;
+        "homeZoomPosition": __esri.UIPosition;
         /**
           * "s" | "m" | "l": Used for Zoom and Home tools
          */
@@ -2255,7 +2255,7 @@ declare namespace LocalJSX {
         /**
           * __esri.UIPosition: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-ui-UI.html#UIPosition The position details for the Home and Zoom tools
          */
-        "homeZoomPoisition"?: __esri.UIPosition;
+        "homeZoomPosition"?: __esri.UIPosition;
         /**
           * "s" | "m" | "l": Used for Zoom and Home tools
          */

@@ -608,7 +608,7 @@ export class CrowdsourceManager {
           enableSearch={this.enableSearch}
           hidden={this._expandPopup}
           homeZoomIndex={3}
-          homeZoomPoisition={"top-left"}
+          homeZoomPosition={"top-left"}
           homeZoomToolsSize={"s"}
           mapInfos={this.mapInfos?.filter(mapInfo => mapInfo.visible !== false)}
           mapWidgetsIndex={0}

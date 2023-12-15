@@ -105,7 +105,7 @@ export class MapCard {
    * __esri.UIPosition: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-ui-UI.html#UIPosition
    * The position details for the Home and Zoom tools
    */
-  @Prop() homeZoomPoisition: __esri.UIPosition = "top-left";
+  @Prop() homeZoomPosition: __esri.UIPosition = "top-left";
 
   /**
    * "s" | "m" | "l": Used for Zoom and Home tools
@@ -412,7 +412,7 @@ export class MapCard {
       this._homeWidget = new this.Home({
         view: this.mapView
       });
-      this.mapView.ui.add(this._homeWidget, { position: this.homeZoomPoisition, index: this.homeZoomIndex });
+      this.mapView.ui.add(this._homeWidget, { position: this.homeZoomPosition, index: this.homeZoomIndex });
       const size = this.homeZoomToolsSize === "s" ? "32px" : this.homeZoomToolsSize === "m" ? "40px" : "48px";
       (this._homeWidget as any).domNode.style.height = size;
       (this._homeWidget as any).domNode.style.width = size;

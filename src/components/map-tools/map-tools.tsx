@@ -334,6 +334,7 @@ export class MapTools {
     const containerClass = !this.enableBasemap && !this.enableFullscreen && !this.enableLegend && !this.enableSearch ? "display-none" : "";
     const toolMarginClass = this.enableMapToolsExpand ? "margin-top-1-2" : "";
     const toolOrder = this.toolOrder ? this.toolOrder : ["legend", "search", "fullscreen", "floorfilter"];
+    const shadowClass = this.stackTools ? "box-shadow" : "";
     return (
       <Host>
         <div class={containerClass}>
@@ -342,7 +343,7 @@ export class MapTools {
               {this._getActionGroup(toggleIcon, false, expandTip, () => this._toggleTools())}
             </div>
           ) : undefined}
-          <div class={`${toolMarginClass} box-shadow ${toolsClass}`}>
+          <div class={`${toolMarginClass} ${shadowClass} ${toolsClass}`}>
             {
               this._getMapWidgets(toolOrder)
             }
@@ -480,11 +481,12 @@ export class MapTools {
   ): VNode {
     const sizeClass = this.mapWidgetsSize === "s" ? "square-32" : this.mapWidgetsSize === "m" ? "square-40" : "square-48";
     const stackClass = this.stackTools ? "" : "margin-bottom-1-2";
+    const shadowClass = this.stackTools ? "" : "box-shadow";
     return (
-      <div class="border-bottom">
+      <div>
         <calcite-action
           alignment="center"
-          class={`${sizeClass} ${stackClass}`}
+          class={`${sizeClass} ${stackClass} border-bottom ${shadowClass}`}
           compact={false}
           disabled={disabled}
           icon={icon}
