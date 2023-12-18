@@ -3,9 +3,14 @@
 #### Checklist
 
 * \[ \] Stop automatic recompilation software
-* \[ \] Run `npm run publish`
-  * \[ \] Select or enter the new version number (long delay afterwards)
-  * \[ \] Press ENTER to open the npm 2-factor prompt in a browser and enter the one-time password
+* \[ \] Run `npm run release:prepare1` in a bash shell
+* \[ \] Run `npm run release:prepare2` in a Windows shell and pick new version number
+* \[ \] Run `npm run release:review`
+* \[ \] Run `npm run release:publish-git` in a bash shell
+* \[ \] Run `npm run release:publish-npm` in a Windows shell and enter the npm 2-factor code when requested
+* * \[ \] Push published branch to GitHub
+* \[ \] Merge `master` into the `develop` branch and push 
+* \[ \] Create a release from the build's tag in GitHub
 
 ---
 
