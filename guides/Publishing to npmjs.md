@@ -5,7 +5,6 @@
 * \[ \] Stop automatic recompilation software
 * \[ \] Switch to `master` branch
 * \[ \] Merge in--but don't commit--the source branch, e.g., `develop` or the current `release/X.X.X` branch
-* \[ \] Run `npm run clean:src`
 * \[ \] Change the package version number in package.json
 * \[ \] Run `npm install` to update package-lock.json
 * \[ \] Edit CHANGELOG.md

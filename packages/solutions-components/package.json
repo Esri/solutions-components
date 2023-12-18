@@ -53,8 +53,6 @@
     "util:is-working-tree-clean": "[ -z \"$(git status --porcelain=v1)\" ]"
   },
   "devDependencies": {
-    "@esri/calcite-design-tokens": "^2.0.1-next.3",
-    "@esri/calcite-ui-icons": "3.25.2",
     "@esri/eslint-plugin-calcite-components": "^1.0.1-next.1",
     "@stencil-community/eslint-plugin": "0.7.1",
     "@stencil-community/postcss": "2.2.0",
@@ -70,6 +68,8 @@
     "@esri/arcgis-rest-request": "^3.4.2",
     "@esri/arcgis-rest-service-admin": "^3.4.2",
     "@esri/calcite-components": "2.0.0",
+    "@esri/calcite-design-tokens": "^2.0.1-next.3",
+    "@esri/calcite-ui-icons": "3.25.2",
     "@esri/hub-common": "^12.37.1",
     "@esri/hub-initiatives": "^12.4.1",
     "@esri/hub-sites": "^12.6.0",
@@ -83,7 +83,6 @@
     "color": "4.2.3",
     "composed-offset-position": "0.0.4",
     "dayjs": "1.11.10",
-    "focus-trap": "7.2.0",
     "focus-trap": "7.5.4",
     "form-request-submit-polyfill": "2.0.0",
     "jspdf": "^2.5.1",
