@@ -363,6 +363,5 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 [0.7.9]: https://github.com/Esri/solution.js/compare/v0.7.8...v0.7.9 "v0.7.9"
 [0.7.10]: https://github.com/Esri/solution.js/compare/v0.7.9...v0.7.10 "v0.7.10"
 [0.7.11]: https://github.com/Esri/solution.js/compare/v0.7.10...v0.7.11 "v0.7.11"
-[0.7.12-alpha]: https://github.com/Esri/solution.js/compare/v0.7.11...v0.7.12-alpha "v0.7.12-alpha"
-[0.7.12-alpha2]: https://github.com/Esri/solution.js/compare/v0.7.12-alpha...v0.7.12-alpha2 "v0.7.12-alpha2"
-[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.12-alpha2...HEAD "Unreleased Changes"
+[0.7.16]: https://github.com/Esri/solution.js/compare/v0.7.11...v0.7.16 "v0.7.16"
+[Unreleased]: https://github.com/Esri/solution.js/compare/v0.7.16...HEAD "Unreleased Changes"
