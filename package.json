@@ -10,6 +10,7 @@
     "clean": "turbo run clean && rimraf node_modules",
     "lint": "turbo run lint",
     "test": "turbo run test",
+    "release:publish": "npm publish --access public && ts-node ./support/releaseToGitHub.ts",
     "update-browserslist": "npx browserslist@latest --update-db"
   },
   "devDependencies": {
