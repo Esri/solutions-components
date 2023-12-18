@@ -104,5 +104,6 @@
       "email": "mtschudi@esri.com"
     }
   ],
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "gitHead": "086e9d4238ccfbf05903e4483a72656532e147f1"
 }
