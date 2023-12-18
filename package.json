@@ -1,6 +1,6 @@
 {
   "name": "@esri/solutions-components",
-  "version": "0.7.12-alpha",
+  "version": "0.7.12-alpha2",
   "description": "Web Components for Esri's Solutions Applications",
   "workspaces": [
     "packages/*"
@@ -91,6 +91,7 @@
     "stylelint-use-logical-spec": "5.0.0",
     "tailwindcss": "3.3.6",
     "ts-jest": "29.1.1",
+    "ts-node": "^10.9.2",
     "tsx": "4.1.2",
     "turbo": "^1.11.2",
     "type-fest": "3.11.1",
