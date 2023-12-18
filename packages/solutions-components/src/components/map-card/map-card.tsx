@@ -71,6 +71,11 @@ export class MapCard {
   @Prop() enableFullscreen: boolean;
 
   /**
+   * boolean: when true map tools will be displayed within a expand/collapse widget
+   */
+  @Prop() enableMapToolsExpand = true;
+
+  /**
    * boolean: when true the search widget will be available
    */
   @Prop() enableSearch: boolean;
@@ -91,9 +96,43 @@ export class MapCard {
   @Prop() hidden: boolean;
 
   /**
+   * number: The placement index of the home and zoom components. This index shows where to place the component relative to other components.
+   * For example a value of 0 would place it topmost when position is top-*, leftmost for bottom-left and right most for bottom-right.
+   */
+  @Prop() homeZoomIndex = 3;
+
+  /**
+   * __esri.UIPosition: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-ui-UI.html#UIPosition
+   * The position details for the Home and Zoom tools
+   */
+  @Prop() homeZoomPosition: __esri.UIPosition = "top-left";
+
+  /**
+   * "s" | "m" | "l": Used for Zoom and Home tools
+   */
+  @Prop() homeZoomToolsSize: "s" | "m" | "l" = "m";
+
+  /**
    * IMapInfo[]: array of map infos (name and id)
    */
   @Prop() mapInfos: IMapInfo[] = [];
+
+  /**
+   * number: The placement index of the map widgets (legend, basemap, fullscreen etc). This index shows where to place the component relative to other components.
+   * For example a value of 0 would place it topmost when position is top-*, leftmost for bottom-left and right most for bottom-right.
+   */
+  @Prop() mapWidgetsIndex = 0;
+
+  /**
+   * __esri.UIPosition: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-ui-UI.html#UIPosition
+   * The position details for the Home and Zoom tools
+   */
+  @Prop() mapWidgetsPosition: __esri.UIPosition = "top-right";
+
+  /**
+   * "s" | "m" | "l": Used for optional map tool widget
+   */
+  @Prop() mapWidgetsSize: "s" | "m" | "l" = "m";
 
   /**
    * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
@@ -101,9 +140,21 @@ export class MapCard {
   @Prop() mapView: __esri.MapView;
 
   /**
+   * boolean: When true the map widget tools will have no margin between them.
+   * When false the map widget tools will have a margin between them.
+   */
+  @Prop() stackTools = true;
+
+  /**
    * theme: "light" | "dark" theme to be used
    */
   @Prop() theme: theme;
+
+  /**
+   *
+   * Valid tools: "legend", "search", "fullscreen", "basemap", "floorfilter"
+   */
+  @Prop() toolOrder: string[];
 
   //--------------------------------------------------------------------------
   //
@@ -250,10 +301,15 @@ export class MapCard {
           enableFloorFilter={this.enableFloorFilter}
           enableFullscreen={this.enableFullscreen}
           enableLegend={this.enableLegend}
+          enableMapToolsExpand={this.enableMapToolsExpand}
           enableSearch={this.enableSearch}
+          homeZoomToolsSize={this.homeZoomToolsSize}
           mapView={this.mapView}
+          mapWidgetsSize={this.mapWidgetsSize}
           ref={(el) => this._mapTools = el}
           searchConfiguration={this._searchConfiguration}
+          stackTools={this.stackTools}
+          toolOrder={this.toolOrder}
         />
       </Host>
     );
@@ -299,6 +355,8 @@ export class MapCard {
     const loadDefaultMap = !this._defaultWebmapHonored && this.defaultWebmapId;
     const defaultMap = this.mapInfos?.filter(i => i.id === this.defaultWebmapId);
 
+    const mapConfigChanged = JSON.stringify(webMapInfo) !== JSON.stringify(this._webMapInfo);
+
     this._webMapInfo = loadDefaultMap && defaultMap ? defaultMap[0] :
       !webMapInfo?.id && this.mapInfos.length > 0 ? this.mapInfos[0] : webMapInfo;
 
@@ -323,7 +381,7 @@ export class MapCard {
 
       await this.mapView.when(() => {
         this._initHome();
-        this.mapView.ui.add(this._mapTools, { position: "top-right", index: 0});
+        this.mapView.ui.add(this._mapTools, { position: this.mapWidgetsPosition, index: this.mapWidgetsIndex});
         this._defaultWebmapHonored = isDefaultMap ? true : this._defaultWebmapHonored;
         this.mapChanged.emit({
           id: id,
@@ -333,6 +391,14 @@ export class MapCard {
     } else if (loadDefaultMap) {
       this._defaultWebmapHonored = true;
       this._mapPicker.setMapByID(id);
+    } else if (mapConfigChanged) {
+      // Map is the same so no need to reload but we need to update for any changes from the config
+      this._searchConfiguration = this._webMapInfo.searchConfiguration;
+      this.beforeMapChanged.emit();
+      this.mapChanged.emit({
+        id: id,
+        mapView: this.mapView
+      });
     }
   }
 
@@ -346,7 +412,10 @@ export class MapCard {
       this._homeWidget = new this.Home({
         view: this.mapView
       });
-      this.mapView.ui.add(this._homeWidget, { position: "top-left", index: 3 });
+      this.mapView.ui.add(this._homeWidget, { position: this.homeZoomPosition, index: this.homeZoomIndex });
+      const size = this.homeZoomToolsSize === "s" ? "32px" : this.homeZoomToolsSize === "m" ? "40px" : "48px";
+      (this._homeWidget as any).domNode.style.height = size;
+      (this._homeWidget as any).domNode.style.width = size;
     } else if (this._homeWidget){
       this.mapView.ui.remove(this._homeWidget);
     }
