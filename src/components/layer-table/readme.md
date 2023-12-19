@@ -35,6 +35,19 @@
 | `featureSelectionChange` | Emitted on demand when a layer is selected | `CustomEvent<number[]>` |
 
 
+## Methods
+
+### `deleteFeatures() => Promise<void>`
+
+Delete currently selected features
+
+#### Returns
+
+Type: `Promise<void>`
+
+Promise resolving when the process is complete
+
+
 ## Dependencies
 
 ### Used by

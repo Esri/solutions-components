@@ -196,6 +196,11 @@ export class CrowdsourceManager {
   @State() _expandPopup = false;
 
   /**
+   * When true the mobile footer will be hidden
+   */
+  @State() _hideFooter = false;
+
+  /**
    * When true the table will be hidden
    */
   @State() _hideTable = false;
@@ -232,6 +237,11 @@ export class CrowdsourceManager {
   @State() _panelOpen = true;
 
   /**
+   * Number of selected features in the table
+   */
+  @State() _numSelected = 0;
+
+  /**
    * When true only editable tables have been found and the map will be hidden
    */
   @State() _tableOnly = false;
@@ -261,6 +271,11 @@ export class CrowdsourceManager {
    * number[]: List of ids that should be selected by default
    */
   protected _defaultOid: number[];
+
+  /**
+   * HTMLLayerTableElement: The layer table element
+   */
+  protected _layerTable: HTMLLayerTableElement;
 
   /**
    * IMapChange: The current map change details
@@ -356,8 +371,16 @@ export class CrowdsourceManager {
   async featureSelectionChange(
     evt: CustomEvent
   ): Promise<void> {
+    this._numSelected = evt.detail?.length;
+  }
+
+  /**
+   * Listen for when the popup is closed in mobile mode and hide the appropriate UI elements
+   */
+  @Listen("popupClosed", { target: "window" })
+  async popupClosed(): Promise<void> {
     if (this._isMobile) {
-      this.showHideMapPopupAndTable(evt.detail?.length > 0);
+      this.showHideMapPopupAndTable(false);
     }
   }
 
@@ -437,6 +460,7 @@ export class CrowdsourceManager {
           >
             {this._getBody(this._layoutMode, this._panelOpen, this.hideMap, this._hideTable)}
           </calcite-panel>
+          {this._getFooter()}
         </calcite-shell>
       </Host>
     );
@@ -465,6 +489,40 @@ export class CrowdsourceManager {
   //  Functions (protected)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Show View and Delete buttons in the footer when in isMobile is true
+   *
+   * @returns the footer node
+   * @protected
+   */
+  protected _getFooter(): VNode {
+    const hasSelectedFeatures = this._numSelected > 0;
+    return this._isMobile && hasSelectedFeatures && !this._hideFooter ? (
+      <div class={`width-100`} slot="footer">
+        <div class="display-flex padding-1-2">
+          <calcite-button
+            appearance="solid"
+            id="solutions-show"
+            onClick={() => this.showHideMapPopupAndTable(true)}
+            width="full"
+          >
+            {this._translations.view.replace("{{n}}", this._numSelected.toString())}
+          </calcite-button>
+          <calcite-button
+            appearance="outline"
+            class="padding-inline-start-1"
+            id="solutions-delete"
+            kind="danger"
+            onClick={() => this._layerTable.deleteFeatures()}
+            width="full"
+          >
+            {this._translations.delete.replace("{{n}}", this._numSelected.toString())}
+          </calcite-button>
+        </div>
+      </div>
+    ) : undefined;
+  }
 
   /**
    * Get the icon name to use for the divider icon based on the current layout
@@ -819,6 +877,7 @@ export class CrowdsourceManager {
             mapInfo={this._mapInfo}
             mapView={this?._mapView}
             onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
+            ref={(el) => this._layerTable = el}
             shareIncludeEmbed={this.shareIncludeEmbed}
             shareIncludeSocial={this.shareIncludeSocial}
             showNewestFirst={this.showNewestFirst}
@@ -865,6 +924,7 @@ export class CrowdsourceManager {
     this.hideMap = show;
     this._expandPopup = show;
     this._hideTable = show;
+    this._hideFooter = show;
   }
 
   /**

@@ -20,6 +20,7 @@
 
 | Event              | Description                                       | Type                     |
 | ------------------ | ------------------------------------------------- | ------------------------ |
+| `popupClosed`      | Emitted on demand when the popup is closed        | `CustomEvent<void>`      |
 | `selectionChanged` | Emitted on demand when the selected index changes | `CustomEvent<Graphic[]>` |
 
 

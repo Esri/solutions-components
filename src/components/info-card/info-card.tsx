@@ -201,6 +201,11 @@ export class InfoCard {
   //--------------------------------------------------------------------------
 
   /**
+   * Emitted on demand when the popup is closed
+   */
+  @Event() popupClosed: EventEmitter<void>;
+
+  /**
    * Emitted on demand when the selected index changes
    */
   @Event() selectionChanged: EventEmitter<__esri.Graphic[]>;
@@ -287,7 +292,6 @@ export class InfoCard {
             <div class="display-flex top-border padding-1-2">
               <calcite-button
                 appearance="solid"
-                icon-start="pencil"
                 id="solutions-edit"
                 onClick={() => this._openEditRecord()}
                 width="full"
@@ -466,8 +470,7 @@ export class InfoCard {
    * @returns void
    */
   protected _closePopup(): void {
-    this._features?.close();
-    this.selectionChanged.emit([]);
+    this.popupClosed.emit();
   }
 
   /**

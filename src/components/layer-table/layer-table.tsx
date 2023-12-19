@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Method, Prop, State, VNode, Watch } from "@stencil/core";
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -476,6 +476,16 @@ export class LayerTable {
   //  Methods (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Delete currently selected features
+   *
+   * @returns Promise resolving when the process is complete
+   */
+  @Method()
+  async deleteFeatures(): Promise<void> {
+    return this._delete();
+  }
 
   //--------------------------------------------------------------------------
   //

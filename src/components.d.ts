@@ -379,6 +379,11 @@ export namespace Components {
          */
         "defaultOid": number[];
         /**
+          * Delete currently selected features
+          * @returns Promise resolving when the process is complete
+         */
+        "deleteFeatures": () => Promise<void>;
+        /**
           * boolean: when true the layer table will auto refresh the data
          */
         "enableAutoRefresh": boolean;
@@ -1347,6 +1352,7 @@ declare global {
         new (): HTMLFloorFilterElement;
     };
     interface HTMLInfoCardElementEventMap {
+        "popupClosed": void;
         "selectionChanged": __esri.Graphic[];
     }
     interface HTMLInfoCardElement extends Components.InfoCard, HTMLStencilElement {
@@ -2124,6 +2130,10 @@ declare namespace LocalJSX {
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
+        /**
+          * Emitted on demand when the popup is closed
+         */
+        "onPopupClosed"?: (event: InfoCardCustomEvent<void>) => void;
         /**
           * Emitted on demand when the selected index changes
          */

@@ -4,5 +4,7 @@
 	"close": "Close",
 	"information": "Information",
 	"expandPopup": "Expand pop-up",
-	"collapsePopup": "Collapse pop-up"
+	"collapsePopup": "Collapse pop-up",
+	"view": "View ({{n}})",
+	"delete": "Delete ({{n}})"
 }
