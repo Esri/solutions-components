@@ -196,6 +196,11 @@ export class CrowdsourceManager {
   @State() _expandPopup = false;
 
   /**
+   * When true the table will be hidden
+   */
+  @State() _hideTable = false;
+
+  /**
    * When true the component will render an optimized view for mobile devices
    */
   @State() _isMobile: boolean;
@@ -322,6 +327,16 @@ export class CrowdsourceManager {
     this._initMapZoom();
   }
 
+  /**
+   * Show the map, popup, and table if the user switches out of mobile mode
+   */
+  @Watch("_isMobile")
+  async _isMobileWatchHandler(): Promise<void> {
+    if (!this._isMobile) {
+      this.showHideMapPopupAndTable(false);
+    }
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Methods (public)
@@ -333,6 +348,18 @@ export class CrowdsourceManager {
   //  Events (public)
   //
   //--------------------------------------------------------------------------
+
+  /**
+   * Listen for changes in feature selection and show or hide the map, popup, and table
+   */
+  @Listen("featureSelectionChange", { target: "window" })
+  async featureSelectionChange(
+    evt: CustomEvent
+  ): Promise<void> {
+    if (this._isMobile) {
+      this.showHideMapPopupAndTable(evt.detail?.length > 0);
+    }
+  }
 
   /**
    * Listen for idsFound event to be fired so we can know that all layer ids have been fetched
@@ -408,7 +435,7 @@ export class CrowdsourceManager {
           <calcite-panel
             class="width-full height-full"
           >
-            {this._getBody(this._layoutMode, this._panelOpen, this.hideMap)}
+            {this._getBody(this._layoutMode, this._panelOpen, this.hideMap, this._hideTable)}
           </calcite-panel>
         </calcite-shell>
       </Host>
@@ -489,7 +516,7 @@ export class CrowdsourceManager {
     let sizeClass = "";
     switch (layoutMode) {
       case ELayoutMode.HORIZONTAL:
-        sizeClass = `${panelOpen ? "height-1-2" : "height-0"} width-full position-relative`;
+        sizeClass = `${this._isMobile && this._hideTable ? "height-full" : panelOpen ? "height-1-2" : "height-0"} width-full position-relative`;
         break;
       case ELayoutMode.GRID:
         sizeClass = this.classicGrid ? `${panelOpen ? "position-relative" : "position-absolute-53"} height-full width-full display-flex` :
@@ -545,22 +572,23 @@ export class CrowdsourceManager {
   protected _getBody(
     layoutMode: ELayoutMode,
     panelOpen: boolean,
-    hideMap: boolean
+    hideMap: boolean,
+    hideTable: boolean
   ): VNode {
     const contentClass = this.classicGrid && layoutMode === ELayoutMode.GRID && panelOpen ? "display-grid" :
       layoutMode === ELayoutMode.HORIZONTAL ? "" : "display-flex";
     return this.classicGrid ? (
       <calcite-panel class={"width-full height-full"}>
-        <div class={`width-full height-full ${contentClass}`}>
-          {this._getTable(layoutMode, panelOpen)}
+        <div class={`width-full height-full overflow-hidden ${contentClass}`}>
+          {this._getTable(layoutMode, panelOpen, hideTable)}
           {this._getMapAndCard(layoutMode, panelOpen, hideMap)}
         </div>
       </calcite-panel>
     ) : (
       <calcite-panel class={"width-full height-full"}>
-        <div class={`width-full height-full ${contentClass}`}>
+        <div class={`width-full height-full overflow-hidden ${contentClass}`}>
           {this._getMapAndCard(layoutMode, panelOpen, hideMap)}
-          {this._getTable(layoutMode, panelOpen)}
+          {this._getTable(layoutMode, panelOpen, hideTable)}
         </div>
       </calcite-panel>
     );
@@ -609,9 +637,10 @@ export class CrowdsourceManager {
     hideMap: boolean
   ): VNode {
     const mapDisplayClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "display-flex height-full width-1-2" :
-      layoutMode === ELayoutMode.HORIZONTAL ? "" : layoutMode === ELayoutMode.GRID && !hideMap ? "" : "display-none";
+      layoutMode === ELayoutMode.HORIZONTAL && !hideMap ? "" : layoutMode === ELayoutMode.GRID && !hideMap ? "" : "visibility-hidden";
     const mapContainerClass = this.classicGrid && layoutMode === ELayoutMode.GRID ? "width-full" :
-      this._layoutMode === ELayoutMode.HORIZONTAL ? "" : "adjusted-height-50";
+      this._layoutMode === ELayoutMode.HORIZONTAL && !hideMap ? "" :
+      this._layoutMode === ELayoutMode.HORIZONTAL && this._isMobile && this.hideMap ? "height-0" : "adjusted-height-50";
     return (
       <div class={`${mapContainerClass} overflow-hidden ${mapDisplayClass}`} >
         <map-card
@@ -652,20 +681,27 @@ export class CrowdsourceManager {
     const id = "expand-popup";
     const tooltip = this._expandPopup ? this._translations.collapsePopup : this._translations.expandPopup;
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
-    const popupNodeClass = !this._expandPopup ? "height-full" : this.mapInfos?.length === 1 ? "position-absolute-0" : "position-absolute-50";
+    const popupNodeClass = !this._expandPopup ? "height-full" : this.mapInfos?.length === 1 || this._isMobile ? "position-absolute-0" : "position-absolute-50";
+    const headerClass = this._isMobile ? "display-none height-0" : "";
+    const headerTheme = !this._isMobile ? "calcite-mode-dark" : "calcite-mode-light";
     return (
-      <div class={"calcite-mode-dark " + popupNodeClass}>
+      <div class={`${headerTheme} ${popupNodeClass}`}>
         <calcite-panel>
-          <div
-            class="display-flex align-items-center"
-            slot="header-content"
-          >
-            <calcite-icon icon="information" scale="s" />
-            <div class="padding-inline-start-75">
-              {this._translations.information}
-            </div>
-          </div>
+          {
+            !this._isMobile ? (
+              <div
+                class={`display-flex align-items-center ${headerClass}`}
+                slot="header-content"
+              >
+                <calcite-icon icon="information" scale="s" />
+                <div class="padding-inline-start-75">
+                  {this._translations.information}
+                </div>
+              </div>
+            ) : undefined
+          }
           <calcite-action
+            class={headerClass}
             disabled={this._tableOnly}
             icon={icon}
             id={id}
@@ -697,21 +733,19 @@ export class CrowdsourceManager {
   }
 
   /**
-   * Get the card node based for the current layout options
+   * Get the card node
    *
-   * @param layoutMode ELayoutMode the current layout mode
-   * @param hideMap when true no map is displayed
-   *
-   * @returns the map node
+   * @returns the card node
    * @protected
    */
   protected _getCardNode(): VNode {
-    const cardManagerHeight = !this._expandPopup ? "height-50" : "height-full";
+    const cardManagerHeight = !this._expandPopup && !this._isMobile ? "height-50" : "height-full";
     const themeClass = this.theme === "dark" ? "calcite-mode-dark" : "calcite-mode-light";
     return (
       <div class={`width-50 height-full ${themeClass}`}>
         <card-manager
           class={`${cardManagerHeight} width-full`}
+          isMobile={this._isMobile}
           mapView={this?._mapView}
           zoomAndScrollToSelected={this.zoomAndScrollToSelected}
         />
@@ -730,8 +764,10 @@ export class CrowdsourceManager {
    */
   protected _getTable(
     layoutMode: ELayoutMode,
-    panelOpen: boolean
+    panelOpen: boolean,
+    hideTable: boolean
   ): VNode {
+    const tableClass = hideTable ? "visibility-hidden" : "";
     const tableSizeClass = this._getTableSizeClass(layoutMode, panelOpen)
     const icon = this._getDividerIcon(layoutMode, panelOpen);
     const tooltip = panelOpen ? this._translations.close : this._translations.open;
@@ -742,7 +778,7 @@ export class CrowdsourceManager {
         layoutMode === ELayoutMode.HORIZONTAL  ? "header" : "panel-start";
     const hasMapAndLayer = this.defaultWebmap && this.defaultLayer;
     return (
-      <calcite-shell class={tableSizeClass + " border-bottom"}>
+      <calcite-shell class={`${tableSizeClass} ${tableClass} border-bottom`}>
         {
           !this._isMobile ? (
             <calcite-action-bar
@@ -768,7 +804,7 @@ export class CrowdsourceManager {
             </calcite-action-bar>
           ) : undefined
         }
-        <div class="width-full height-full position-relative">
+        <div class={`width-full height-full position-relative`}>
           <layer-table
             defaultGlobalId={hasMapAndLayer ? this._defaultGlobalId : undefined}
             defaultLayerId={hasMapAndLayer ? this.defaultLayer : ""}
@@ -799,7 +835,7 @@ export class CrowdsourceManager {
    * @returns void
    */
   protected _onResize(): void {
-    this._isMobile = this.el.offsetWidth <= 1024;
+    this._isMobile = this.el.offsetWidth < 1024;
     this._layoutMode = this._isMobile ? ELayoutMode.HORIZONTAL : ELayoutMode.GRID;
     this._panelOpen = true;
   }
@@ -813,6 +849,22 @@ export class CrowdsourceManager {
    */
   protected _toggleLayout(): void {
     this._panelOpen = !this._panelOpen;
+  }
+
+  /**
+   * Show/Hide the map, popup, and table
+   *
+   * @param show when true the map, popup, and table will be displayed
+   *
+   * @returns void
+   * @protected
+   */
+  protected showHideMapPopupAndTable(
+    show: boolean
+  ): void {
+    this.hideMap = show;
+    this._expandPopup = show;
+    this._hideTable = show;
   }
 
   /**

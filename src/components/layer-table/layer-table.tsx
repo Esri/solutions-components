@@ -262,6 +262,11 @@ export class LayerTable {
   protected _mapClickHandle: IHandle;
 
   /**
+   * boolean: When true the observer has been set and we don't need to set it again
+   */
+  protected _observerSet = false;
+
+  /**
    * number: The id of the previous current id and is used for multi select
    */
   protected _previousCurrentId: number;
@@ -386,13 +391,23 @@ export class LayerTable {
       prev.push(cur.id)
       return prev;
     }, []) : [];
-    this._toolInfos = this._toolInfos.map(ti => {
+    this._toolInfos = this._toolInfos?.map(ti => {
       if (ti && this._controlsThatFit) {
         const id = this._getId(ti.icon);
         ti.isOverflow = ids.indexOf(id) < 0;
         return ti;
       }
     })
+  }
+
+  /**
+   * When isMobile is false we need to init the tool infos for the dynamic toolbar
+   */
+  @Watch("isMobile")
+  isMobileWatchHandler(): void {
+    if (!this._toolInfos && !this.isMobile) {
+      this._initToolInfos();
+    }
   }
 
   /**
@@ -482,24 +497,30 @@ export class LayerTable {
   async selectionChanged(
     evt: CustomEvent
   ): Promise<void> {
-    if (this.zoomAndScrollToSelected) {
-      const g: __esri.Graphic = evt.detail;
+    if (evt.detail?.length === 0) {
+      // fired in mobile view when we close the popup with a custom back button
+      this._clearSelection();
+    } else {
+      const g: __esri.Graphic = evt.detail[0];
       const oid = g.getObjectId();
-      const i: number = this._table.viewModel.getObjectIdIndex(oid);
+      this.featureSelectionChange.emit(evt.detail.map(g => g.getObjectId()));
 
-      this._table.scrollToIndex(i);
-      const layer = g.layer;
-      const layerViews = this.mapView.allLayerViews.toArray();
-      let layerView: __esri.FeatureLayerView;
-      layerViews.some(lv => {
-        if (lv.layer.title === layer.title && lv.layer.type === 'feature') {
-          layerView = lv as __esri.FeatureLayerView;
-          return true;
+      if (this.zoomAndScrollToSelected) {
+        const i: number = this._table.viewModel.getObjectIdIndex(oid);
+        this._table.scrollToIndex(i);
+        const layer = g.layer;
+        const layerViews = this.mapView.allLayerViews.toArray();
+        let layerView: __esri.FeatureLayerView;
+        layerViews.some(lv => {
+          if (lv.layer.title === layer.title && lv.layer.type === 'feature') {
+            layerView = lv as __esri.FeatureLayerView;
+            return true;
+          }
+        });
+
+        if (layerView) {
+          await goToSelection([oid], layerView, this.mapView, true);
         }
-      });
-
-      if (layerView) {
-        await goToSelection([oid], layerView, this.mapView, true);
       }
     }
   }
@@ -539,7 +560,9 @@ export class LayerTable {
     await this._getTranslations();
     await this._initModules();
     this._initToolInfos();
-    this._resizeObserver = new ResizeObserver(() => this._onResize());
+    if (!this._resizeObserver) {
+      this._resizeObserver = new ResizeObserver(() => this._onResize());
+    }
   }
 
   /**
@@ -590,8 +613,9 @@ export class LayerTable {
    * Called once after the component is loaded
    */
   async componentDidLoad(): Promise<void> {
-    if (!this.isMobile) {
+    if (!this.isMobile && !this._observerSet) {
       this._resizeObserver.observe(this._toolbar);
+      this._observerSet = true;
     }
     document.onclick = (e) => this._handleDocumentClick(e);
     document.onkeydown = (e) => this._handleKeyDown(e);
@@ -669,6 +693,7 @@ export class LayerTable {
    */
   protected _getActionBar(): VNode {
     const containerClass = this.isMobile ? "width-full" : "";
+    const mobileClass = this.isMobile ? "border-top" : "";
     return (
       <calcite-action-bar
         class={containerClass}
@@ -677,7 +702,7 @@ export class LayerTable {
         id={this._getId("bar")}
         layout="horizontal"
       >
-        <div class={`border-end ${containerClass}`} id="solutions-map-layer-picker-container">
+        <div class={`border-end ${containerClass} ${mobileClass}`} id="solutions-map-layer-picker-container">
           <map-layer-picker
             appearance="transparent"
             defaultLayerId={this.defaultLayerId}
@@ -779,7 +804,7 @@ export class LayerTable {
       "erase",
       "selected-items-filter"
     ];
-    this._toolInfos.forEach(ti => {
+    this._toolInfos?.forEach(ti => {
       if (ti && selectionDependant.indexOf(ti.icon) > -1) {
         ti.disabled = !featuresSelected;
       }
@@ -1034,7 +1059,7 @@ export class LayerTable {
    * @returns IToolInfo[] the list of toolInfos that should not display in the overflow dropdown
    */
   protected _getActionItems(): IToolInfo[] {
-    return this._toolInfos.filter(toolInfo => toolInfo && !toolInfo.isOverflow)
+    return this._toolInfos?.filter(toolInfo => toolInfo && !toolInfo.isOverflow)
   }
 
   /**
@@ -1103,7 +1128,7 @@ export class LayerTable {
    * @returns IToolInfo[] the list of toolInfos that should display in the dropdown
    */
   protected _getDropdownItems(): IToolInfo[] {
-    return this._toolInfos.filter(toolInfo => toolInfo && toolInfo.isOverflow)
+    return this._toolInfos?.filter(toolInfo => toolInfo && toolInfo.isOverflow)
   }
 
   /**
@@ -1351,6 +1376,8 @@ export class LayerTable {
           this._selectedIndexes = [...newIndexes];
           if (newIndexes.length > 0) {
             this._table.highlightIds.add(newIndexes[0]);
+          } else {
+            this._skipOnChange = false;
           }
         } else {
           // https://github.com/Esri/solutions-components/issues/365

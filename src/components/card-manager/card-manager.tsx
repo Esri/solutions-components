@@ -40,6 +40,11 @@ export class CardManager {
   //--------------------------------------------------------------------------
 
   /**
+   * When true the component will render an optimized view for mobile devices
+   */
+  @Prop() isMobile: boolean;
+
+  /**
    * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
    */
   @Prop() layer: __esri.FeatureLayer;
@@ -151,6 +156,7 @@ export class CardManager {
               <info-card
                 graphics={this._graphics}
                 isLoading={this._cardLoading}
+                isMobile={this.isMobile}
                 mapView={this.mapView}
                 zoomAndScrollToSelected={this.zoomAndScrollToSelected}
               />

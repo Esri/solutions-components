@@ -170,3 +170,8 @@
   left: 0px;
   right: 0px;
 }
+
+.visibility-hidden {
+  visibility: hidden;
+  height: 0px;
+}

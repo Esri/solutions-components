@@ -50,6 +50,11 @@ export class InfoCard {
   @Prop() isLoading = false;
 
   /**
+   * When true the component will render an optimized view for mobile devices
+   */
+  @Prop() isMobile: boolean;
+
+  /**
    * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
    */
   @Prop() mapView: __esri.MapView;
@@ -80,6 +85,12 @@ export class InfoCard {
    * When true the add record modal will be displayed
    */
   @State() _editRecordOpen = false;
+
+  /**
+   * When isMobile is true we will handle the display of the title so
+   * we can display beside a custom back button
+   */
+  @State() _mobileTitle = "";
 
   /**
    * When true the features list view will be displayed
@@ -147,6 +158,19 @@ export class InfoCard {
   }
 
   /**
+   * Watch for changes to the isMobile prop then init the Features widget
+   * We need to know if the title should be displayed by the widget (non mobile)
+   * or by us (mobile)
+   */
+  @Watch("isMobile")
+  async isMobileWatchHandler(): Promise<void> {
+    await this._initFeaturesWidget();
+    if (this.graphics?.length > 0) {
+      this.selectionChanged.emit(this.graphics)
+    }
+  }
+
+  /**
    * Watch for changes to the mapView and re-init the Feature widget
    */
   @Watch("mapView")
@@ -179,7 +203,7 @@ export class InfoCard {
   /**
    * Emitted on demand when the selected index changes
    */
-  @Event() selectionChanged: EventEmitter<__esri.Graphic>;
+  @Event() selectionChanged: EventEmitter<__esri.Graphic[]>;
 
   /**
    * Respond to and close the edit record display
@@ -222,13 +246,35 @@ export class InfoCard {
    */
   render() {
     const loadingClass = this.isLoading ? "" : "display-none";
-    const featureNodeClass = this.isLoading || this._editRecordOpen ? "display-none" : "position-absolute";
+    const featureNodeClass = this.isLoading || this._editRecordOpen ? "visibility-hidden" : "position-absolute";
     const editClass = !this.isLoading && this._editRecordOpen ? "position-absolute" : "display-none";
     const editButtonClass = (!this.isLoading && this._editRecordOpen) || this._showListView ? "display-none" : "";
     const nextBackDisabled = this._features?.features?.length < 2;
+    const nextBackClass = this.isMobile ? "display-none" : "";
+    const shellClass = this.isMobile && !this._editRecordOpen ? "padding-top-46" : "";
     return (
       <Host>
-        <calcite-shell>
+        {this.isMobile && !this._editRecordOpen ? (
+          <calcite-panel>
+            <calcite-action
+              class="end-border"
+              icon={"chevron-left"}
+              iconFlipRtl={true}
+              onClick={() => this._closePopup()}
+              scale="s"
+              slot="header-actions-start"
+              text=""
+            />
+            <span
+              class="font-bold"
+              slot="header-content"
+            >
+              {this._mobileTitle}
+            </span>
+          </calcite-panel>
+        ) : undefined
+        }
+        <calcite-shell class={shellClass}>
           <calcite-loader
             class={loadingClass}
             label={this._translations.fetchingData}
@@ -238,59 +284,79 @@ export class InfoCard {
             id="features-node"
           />
           <div class={`${editButtonClass} width-100`} slot="footer">
-              <div class="display-flex top-border padding-1-2">
+            <div class="display-flex top-border padding-1-2">
+              <calcite-button
+                appearance="solid"
+                icon-start="pencil"
+                id="solutions-edit"
+                onClick={() => this._openEditRecord()}
+                width="full"
+              >
+                {this._translations.edit}
+              </calcite-button>
+              {
+                this.isMobile ? (
+                  <calcite-button
+                    appearance="outline"
+                    class="padding-inline-start-1"
+                    id="solutions-cancel"
+                    onClick={() => this._closePopup()}
+                    width="full"
+                  >
+                    {this._translations.cancel}
+                  </calcite-button>
+                ) : undefined
+              }
+              <calcite-tooltip label="" placement="bottom" reference-element="solutions-edit">
+                <span>{this._translations.edit}</span>
+              </calcite-tooltip>
+              {
+                this.isMobile ? (
+                  <calcite-tooltip label="" placement="bottom" reference-element="solutions-cancel">
+                    <span>{this._translations.cancel}</span>
+                  </calcite-tooltip>
+                ) : undefined
+              }
+            </div>
+            <div class={`display-flex padding-1-2 button-container top-border ${nextBackClass}`}>
+              <div class="min-width-100">
                 <calcite-button
-                  appearance="solid"
-                  icon-start="pencil"
-                  id="solutions-edit"
-                  onClick={() => this._openEditRecord()}
+                  appearance="outline"
+                  disabled={nextBackDisabled}
+                  id="solutions-back"
+                  onClick={() => this._back()}
                   width="full"
                 >
-                  {this._translations.edit}
+                  {this._translations.back}
                 </calcite-button>
-                <calcite-tooltip label="" placement="bottom" reference-element="solutions-edit">
-                  <span>{this._translations.edit}</span>
+                <calcite-tooltip label="" placement="top" reference-element="solutions-back">
+                  <span>{this._translations.back}</span>
                 </calcite-tooltip>
               </div>
-              <div class="display-flex padding-1-2 button-container top-border">
-                <div class="min-width-100">
-                  <calcite-button
-                    appearance="outline"
-                    disabled={nextBackDisabled}
-                    id="solutions-back"
-                    onClick={() => this._back()}
-                    width="full"
-                  >
-                    {this._translations.back}
-                  </calcite-button>
-                  <calcite-tooltip label="" placement="top" reference-element="solutions-back">
-                    <span>{this._translations.back}</span>
-                  </calcite-tooltip>
-                </div>
-                <div>
-                  <calcite-action
-                    icon="list"
-                    onClick={() => this._toggleListView()}
-                    scale="s"
-                    text={this._getCount()}
-                    textEnabled={true}
-                  />
-                </div>
-                <div class="min-width-100">
-                  <calcite-button
-                    appearance="outline"
-                    disabled={nextBackDisabled}
-                    id="solutions-next"
-                    onClick={() => this._next()}
-                    width="full"
-                  >
-                    {this._translations.next}
-                  </calcite-button>
-                  <calcite-tooltip label="" placement="top" reference-element="solutions-next">
-                    <span>{this._translations.next}</span>
-                  </calcite-tooltip>
-                </div>
+              <div>
+                <calcite-action
+                  icon="list"
+                  onClick={() => this._toggleListView()}
+                  scale="s"
+                  text={this._getCount()}
+                  textEnabled={true}
+                />
               </div>
+              <div class="min-width-100">
+                <calcite-button
+                  appearance="outline"
+                  disabled={nextBackDisabled}
+                  id="solutions-next"
+                  onClick={() => this._next()}
+                  width="full"
+                >
+                  {this._translations.next}
+                </calcite-button>
+                <calcite-tooltip label="" placement="top" reference-element="solutions-next">
+                  <span>{this._translations.next}</span>
+                </calcite-tooltip>
+              </div>
+            </div>
           </div>
           <edit-card
             class={editClass}
@@ -349,7 +415,7 @@ export class InfoCard {
    * @protected
    */
   protected async _initFeaturesWidget(): Promise<void> {
-    return await this.mapView.when(() => {
+    return this.isMobile !== undefined ? await this.mapView?.when(() => {
       if (!this._features) {
         this._features = new this.Features({
           view: this.mapView,
@@ -357,7 +423,7 @@ export class InfoCard {
           visibleElements: {
             actionBar: false,
             closeButton: false,
-            heading: true
+            heading: !this.isMobile
           }
         });
         this.reactiveUtils.watch(
@@ -368,19 +434,40 @@ export class InfoCard {
             }
           });
 
+        this.reactiveUtils.watch(
+          () => this._features.viewModel.title,
+          (title) => {
+            if (this.isMobile) {
+              this._mobileTitle = title;
+            }
+          });
+
         if (this.zoomAndScrollToSelected) {
           this.reactiveUtils.watch(
             () => this._features.selectedFeatureIndex,
             (i) => {
               if (i > -1) {
-                this.selectionChanged.emit(this._features.selectedFeature);
+                this.selectionChanged.emit([this._features.selectedFeature]);
               }
             });
         }
       } else {
         this._features.view = this.mapView;
+        this._features.visibleElements.actionBar = false;
+        this._features.visibleElements.closeButton = false;
+        this._features.visibleElements.heading = !this.isMobile;
       }
-    });
+    }) : Promise.resolve();
+  }
+
+  /**
+   * Close the popup and emit the selected features
+   *
+   * @returns void
+   */
+  protected _closePopup(): void {
+    this._features?.close();
+    this.selectionChanged.emit([]);
   }
 
   /**

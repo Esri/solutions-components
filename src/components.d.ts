@@ -68,6 +68,10 @@ export namespace Components {
     }
     interface CardManager {
         /**
+          * When true the component will render an optimized view for mobile devices
+         */
+        "isMobile": boolean;
+        /**
           * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
          */
         "layer": __esri.FeatureLayer;
@@ -310,6 +314,10 @@ export namespace Components {
           * boolean: when true a loading indicator will be shown
          */
         "isLoading": boolean;
+        /**
+          * When true the component will render an optimized view for mobile devices
+         */
+        "isMobile": boolean;
         /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -1339,7 +1347,7 @@ declare global {
         new (): HTMLFloorFilterElement;
     };
     interface HTMLInfoCardElementEventMap {
-        "selectionChanged": __esri.Graphic;
+        "selectionChanged": __esri.Graphic[];
     }
     interface HTMLInfoCardElement extends Components.InfoCard, HTMLStencilElement {
         addEventListener<K extends keyof HTMLInfoCardElementEventMap>(type: K, listener: (this: HTMLInfoCardElement, ev: InfoCardCustomEvent<HTMLInfoCardElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1851,6 +1859,10 @@ declare namespace LocalJSX {
     }
     interface CardManager {
         /**
+          * When true the component will render an optimized view for mobile devices
+         */
+        "isMobile"?: boolean;
+        /**
           * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
          */
         "layer"?: __esri.FeatureLayer;
@@ -2105,13 +2117,17 @@ declare namespace LocalJSX {
          */
         "isLoading"?: boolean;
         /**
+          * When true the component will render an optimized view for mobile devices
+         */
+        "isMobile"?: boolean;
+        /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         /**
           * Emitted on demand when the selected index changes
          */
-        "onSelectionChanged"?: (event: InfoCardCustomEvent<__esri.Graphic>) => void;
+        "onSelectionChanged"?: (event: InfoCardCustomEvent<__esri.Graphic[]>) => void;
         /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */

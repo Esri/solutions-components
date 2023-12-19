@@ -125,3 +125,7 @@ html[dir="rtl"] .share-action {
   height: 50px !important;
   display: inline-flex;
 }
+
+.border-top {
+  border-top: 1px solid var(--calcite-color-border-2);
+}
