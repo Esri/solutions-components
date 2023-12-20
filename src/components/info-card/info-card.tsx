@@ -438,9 +438,7 @@ export class InfoCard {
         this.reactiveUtils.watch(
           () => this._features.viewModel.title,
           (title) => {
-            if (this.isMobile) {
-              this._mobileTitle = title;
-            }
+            this._mobileTitle = title;
           });
 
         if (this.zoomAndScrollToSelected) {
