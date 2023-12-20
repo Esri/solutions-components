@@ -347,11 +347,8 @@ export class CrowdsourceManager {
    */
   @Watch("_isMobile")
   async _isMobileWatchHandler(): Promise<void> {
-    if (!this._isMobile) {
-      this.showHideMapPopupAndTable(false);
-    } else if (this._numSelected > 0) {
-      this.showHideMapPopupAndTable(true);
-    }
+    const show = !this._isMobile ? false : this._numSelected > 0;
+    this.showHideMapPopupAndTable(show);
   }
 
   //--------------------------------------------------------------------------
@@ -924,7 +921,7 @@ export class CrowdsourceManager {
     show: boolean
   ): void {
     this.hideMap = show;
-    this._expandPopup = show;
+    this._expandPopup = false;
     this._hideTable = show;
     this._hideFooter = show;
   }
