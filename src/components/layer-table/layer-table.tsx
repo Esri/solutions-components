@@ -84,11 +84,6 @@ export class LayerTable {
   @Prop() enableShare: boolean;
 
   /**
-   * boolean: when true the zoom button will be enabled
-   */
-  @Prop() enableZoom: boolean;
-
-  /**
    * When true the component will render an optimized view for mobile devices
    */
   @Prop() isMobile: boolean;
@@ -366,16 +361,6 @@ export class LayerTable {
   //  Watch handlers
   //
   //--------------------------------------------------------------------------
-
-  /**
-   * Reset the toolInfos when zoom tool is enabled/disabled
-   */
-  @Watch("enableZoom")
-  enableZoomWatchHandler(): void {
-    if (this._toolInfos?.length > 0) {
-      this._initToolInfos();
-    }
-  }
 
   /**
    * Reset the toolInfos when export csv is enabled/disabled
@@ -867,7 +852,7 @@ export class LayerTable {
     const featuresSelected = this._featuresSelected();
     const featuresEmpty = this._featuresEmpty();
     const hasFilterExpressions = this._hasFilterExpressions();
-    this._toolInfos = [this.enableZoom ? {
+    this._toolInfos = [{
       active: false,
       icon: "zoom-to-object",
       indicator: false,
@@ -875,7 +860,7 @@ export class LayerTable {
       func: () => this._zoom(),
       disabled: !featuresSelected,
       isOverflow: false
-    } : undefined,
+    },
     hasFilterExpressions ? {
       active: false,
       icon: "filter",
