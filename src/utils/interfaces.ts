@@ -482,6 +482,7 @@ export interface IBasemapConfig {
 }
 
 export interface IToolInfo {
+  active: boolean;
   icon: string;
   func: any;
   label: string;
