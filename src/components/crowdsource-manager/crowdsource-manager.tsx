@@ -349,6 +349,8 @@ export class CrowdsourceManager {
   async _isMobileWatchHandler(): Promise<void> {
     if (!this._isMobile) {
       this.showHideMapPopupAndTable(false);
+    } else if (this._numSelected > 0) {
+      this.showHideMapPopupAndTable(true);
     }
   }
 

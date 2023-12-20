@@ -507,30 +507,23 @@ export class LayerTable {
   async selectionChanged(
     evt: CustomEvent
   ): Promise<void> {
-    if (evt.detail?.length === 0) {
-      // fired in mobile view when we close the popup with a custom back button
-      this._clearSelection();
-    } else {
-      const g: __esri.Graphic = evt.detail[0];
-      const oid = g.getObjectId();
-      this.featureSelectionChange.emit(evt.detail.map(g => g.getObjectId()));
-
-      if (this.zoomAndScrollToSelected) {
-        const i: number = this._table.viewModel.getObjectIdIndex(oid);
-        this._table.scrollToIndex(i);
-        const layer = g.layer;
-        const layerViews = this.mapView.allLayerViews.toArray();
-        let layerView: __esri.FeatureLayerView;
-        layerViews.some(lv => {
-          if (lv.layer.title === layer.title && lv.layer.type === 'feature') {
-            layerView = lv as __esri.FeatureLayerView;
-            return true;
-          }
-        });
-
-        if (layerView) {
-          await goToSelection([oid], layerView, this.mapView, true);
+    const g: __esri.Graphic = evt.detail[0];
+    const oid = g.getObjectId();
+    if (this.zoomAndScrollToSelected) {
+      const i: number = this._table.viewModel.getObjectIdIndex(oid);
+      this._table.scrollToIndex(i);
+      const layer = g.layer;
+      const layerViews = this.mapView.allLayerViews.toArray();
+      let layerView: __esri.FeatureLayerView;
+      layerViews.some(lv => {
+        if (lv.layer.title === layer.title && lv.layer.type === 'feature') {
+          layerView = lv as __esri.FeatureLayerView;
+          return true;
         }
+      });
+
+      if (layerView) {
+        await goToSelection([oid], layerView, this.mapView, true);
       }
     }
   }

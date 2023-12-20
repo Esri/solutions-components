@@ -165,9 +165,6 @@ export class InfoCard {
   @Watch("isMobile")
   async isMobileWatchHandler(): Promise<void> {
     await this._initFeaturesWidget();
-    if (this.graphics?.length > 0) {
-      this.selectionChanged.emit(this.graphics)
-    }
   }
 
   /**
@@ -480,15 +477,6 @@ export class InfoCard {
    */
   protected _alertClosed(): void {
     this._alertOpen = false;
-  }
-
-  /**
-   * Close the edit record
-   *
-   * @returns void
-   */
-  protected _editRecordClosed(): void {
-    this._editRecordOpen = false;
   }
 
   /**
