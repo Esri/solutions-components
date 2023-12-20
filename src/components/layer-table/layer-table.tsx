@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State, VNode, Watch } from "@stencil/core";
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Method, Prop, State, VNode, Watch } from "@stencil/core";
 import LayerTable_T9n from "../../assets/t9n/layer-table/resources.json";
 import { loadModules } from "../../utils/loadModules";
 import { getLocaleComponentStrings } from "../../utils/locale";
@@ -87,6 +87,11 @@ export class LayerTable {
    * boolean: when true the zoom button will be enabled
    */
   @Prop() enableZoom: boolean;
+
+  /**
+   * When true the component will render an optimized view for mobile devices
+   */
+  @Prop() isMobile: boolean;
 
   /**
    * IMapInfo: key configuration details about the current map
@@ -257,6 +262,11 @@ export class LayerTable {
   protected _mapClickHandle: IHandle;
 
   /**
+   * boolean: When true the observer has been set and we don't need to set it again
+   */
+  protected _observerSet = false;
+
+  /**
    * number: The id of the previous current id and is used for multi select
    */
   protected _previousCurrentId: number;
@@ -381,13 +391,23 @@ export class LayerTable {
       prev.push(cur.id)
       return prev;
     }, []) : [];
-    this._toolInfos = this._toolInfos.map(ti => {
+    this._toolInfos = this._toolInfos?.map(ti => {
       if (ti && this._controlsThatFit) {
         const id = this._getId(ti.icon);
         ti.isOverflow = ids.indexOf(id) < 0;
         return ti;
       }
     })
+  }
+
+  /**
+   * When isMobile is false we need to init the tool infos for the dynamic toolbar
+   */
+  @Watch("isMobile")
+  isMobileWatchHandler(): void {
+    if (!this._toolInfos && !this.isMobile) {
+      this._initToolInfos();
+    }
   }
 
   /**
@@ -457,6 +477,16 @@ export class LayerTable {
   //
   //--------------------------------------------------------------------------
 
+  /**
+   * Delete currently selected features
+   *
+   * @returns Promise resolving when the process is complete
+   */
+  @Method()
+  async deleteFeatures(): Promise<void> {
+    return this._delete();
+  }
+
   //--------------------------------------------------------------------------
   //
   //  Events (public)
@@ -477,11 +507,10 @@ export class LayerTable {
   async selectionChanged(
     evt: CustomEvent
   ): Promise<void> {
+    const g: __esri.Graphic = evt.detail[0];
+    const oid = g.getObjectId();
     if (this.zoomAndScrollToSelected) {
-      const g: __esri.Graphic = evt.detail;
-      const oid = g.getObjectId();
       const i: number = this._table.viewModel.getObjectIdIndex(oid);
-
       this._table.scrollToIndex(i);
       const layer = g.layer;
       const layerViews = this.mapView.allLayerViews.toArray();
@@ -534,7 +563,9 @@ export class LayerTable {
     await this._getTranslations();
     await this._initModules();
     this._initToolInfos();
-    this._resizeObserver = new ResizeObserver(() => this._onResize());
+    if (!this._resizeObserver) {
+      this._resizeObserver = new ResizeObserver(() => this._onResize());
+    }
   }
 
   /**
@@ -545,11 +576,12 @@ export class LayerTable {
     const loadingClass = this._fetchingData ? "" : "display-none";
     const total = this._allIds.length.toString();
     const selected = this._selectedIndexes.length.toString();
+    const tableHeightClass = this.isMobile ? "height-full" : "height-full-adjusted";
     return (
       <Host>
         <calcite-shell>
           {this._getTableControlRow("header")}
-          <div class="height-full-adjusted width-full">
+          <div class={`width-full ${tableHeightClass}`}>
             <calcite-panel class="height-full width-full">
               <calcite-loader
                 class={loadingClass}
@@ -561,13 +593,17 @@ export class LayerTable {
                 ref={this.onTableNodeCreate}
               />
             </calcite-panel>
-            <div class="bottom-left text-color height-19">
-              {
-                this._translations.recordsSelected
-                  .replace("{{total}}", total)
-                  .replace("{{selected}}", selected)
-              }
-            </div>
+            {
+              !this.isMobile ? (
+                <div class="bottom-left text-color height-19">
+                  {
+                    this._translations.recordsSelected
+                      .replace("{{total}}", total)
+                      .replace("{{selected}}", selected)
+                  }
+                </div>
+              ) : undefined
+            }
           </div>
         </calcite-shell>
         {this._deleteMessage()}
@@ -580,7 +616,10 @@ export class LayerTable {
    * Called once after the component is loaded
    */
   async componentDidLoad(): Promise<void> {
-    this._resizeObserver.observe(this._toolbar);
+    if (!this.isMobile && !this._observerSet) {
+      this._resizeObserver.observe(this._toolbar);
+      this._observerSet = true;
+    }
     document.onclick = (e) => this._handleDocumentClick(e);
     document.onkeydown = (e) => this._handleKeyDown(e);
     document.onkeyup = (e) => this._handleKeyUp(e);
@@ -617,8 +656,6 @@ export class LayerTable {
 
   /**
    * Update the toolbar when its size changes
-   *
-   * @returns void
    */
   protected _onResize(): void {
     this._updateToolbar()
@@ -642,8 +679,8 @@ export class LayerTable {
         slot={slot}
       >
         {this._getActionBar()}
-        {this._getDropdown(id)}
-        {this.enableShare ? this._getShare("share") : undefined}
+        {!this.isMobile ? this._getDropdown(id) : undefined}
+        {this.enableShare && !this.isMobile ? this._getShare("share") : undefined}
       </div>
     );
   }
@@ -656,19 +693,23 @@ export class LayerTable {
    * @returns The dom node that contains the controls
    */
   protected _getActionBar(): VNode {
+    const containerClass = this.isMobile ? "width-full" : "";
+    const mobileClass = this.isMobile ? "border-top" : "";
     return (
       <calcite-action-bar
+        class={containerClass}
         expandDisabled={true}
         expanded={true}
         id={this._getId("bar")}
         layout="horizontal"
       >
-        <div class="border-end" id="solutions-map-layer-picker-container">
+        <div class={`border-end ${containerClass} ${mobileClass}`} id="solutions-map-layer-picker-container">
           <map-layer-picker
             appearance="transparent"
             defaultLayerId={this.defaultLayerId}
             display="inline-flex"
             height={50}
+            isMobile={this.isMobile}
             mapView={this.mapView}
             onLayerSelectionChange={(evt) => this._layerSelectionChanged(evt)}
             onlyShowUpdatableLayers={this.onlyShowUpdatableLayers}
@@ -679,7 +720,7 @@ export class LayerTable {
             type="dropdown"
           />
         </div>
-        {this._getActions()}
+        {!this.isMobile ? this._getActions() : undefined}
       </calcite-action-bar>
     );
   }
@@ -753,8 +794,6 @@ export class LayerTable {
 
   /**
    * Update actions enabled prop based on number of selected indexes
-   *
-   * @returns void
    */
   _validateEnabledActions(): void {
     const featuresSelected = this._featuresSelected();
@@ -764,7 +803,7 @@ export class LayerTable {
       "erase",
       "selected-items-filter"
     ];
-    this._toolInfos.forEach(ti => {
+    this._toolInfos?.forEach(ti => {
       if (ti && selectionDependant.indexOf(ti.icon) > -1) {
         ti.disabled = !featuresSelected;
       }
@@ -775,81 +814,81 @@ export class LayerTable {
    * Get the full list of toolInfos.
    * Order is important. They should be listed in the order they should display in the UI from
    * Left to Right for the action bar and Top to Bottom for the dropdown.
-   *
-   * @returns void
    */
   protected _initToolInfos(): void {
-    const featuresSelected = this._featuresSelected();
-    const featuresEmpty = this._featuresEmpty();
-    const hasFilterExpressions = this._hasFilterExpressions();
-    this._toolInfos = [this.enableZoom ? {
-      icon: "zoom-to-object",
-      label: this._translations.zoom,
-      func: () => this._zoom(),
-      disabled: !featuresSelected,
-      isOverflow: false
-    } : undefined,
-    hasFilterExpressions ? {
-      icon: "filter",
-      label: this._translations.filters,
-      func: () => this._toggleFilter(),
-      disabled: false,
-      isOverflow: false
-    } : undefined,
-    this._deleteEnabled ? {
-      icon: "trash",
-      label: this._translations.delete,
-      func: () => this._delete(),
-      disabled: !featuresSelected,
-      isDanger: true,
-      isOverflow: false
-    } : undefined, {
-      icon: "erase",
-      label: this._translations.clearSelection,
-      func: () => this._clearSelection(),
-      disabled: !featuresSelected,
-      isOverflow: false
-    }, {
-      icon: "selected-items-filter",
-      label: this._showOnlySelected ? this._translations.showAll : this._translations.showSelected,
-      func: () => this._toggleShowSelected(),
-      disabled: !featuresSelected,
-      isOverflow: false
-    }, {
-      icon: "list-check-all",
-      func: () => this._selectAll(),
-      label: this._translations.selectAll,
-      disabled: featuresEmpty,
-      isOverflow: false
-    }, {
-      icon: "compare",
-      func: () => this._switchSelected(),
-      label: this._translations.switchSelected,
-      disabled: featuresEmpty,
-      isOverflow: false
-    }, {
-      icon: "refresh",
-      func: () => this._refresh(),
-      label: this._translations.refresh,
-      disabled: false,
-      isOverflow: false
-    },
-    this.enableCSV ? {
-      icon: "export",
-      func: () => void this._exportToCSV(),
-      label: this._translations.exportCSV,
-      disabled: featuresEmpty,
-      isOverflow: false
-    } : undefined, {
-      icon: this._showHideOpen ? "chevron-down" : "chevron-right",
-      func: () => this._toggleShowHide(),
-      label: this._translations.showHideColumns,
-      disabled: false,
-      isOverflow: false,
-      isSublist: true
-    }];
+    if (!this.isMobile) {
+      const featuresSelected = this._featuresSelected();
+      const featuresEmpty = this._featuresEmpty();
+      const hasFilterExpressions = this._hasFilterExpressions();
+      this._toolInfos = [this.enableZoom ? {
+        icon: "zoom-to-object",
+        label: this._translations.zoom,
+        func: () => this._zoom(),
+        disabled: !featuresSelected,
+        isOverflow: false
+      } : undefined,
+      hasFilterExpressions ? {
+        icon: "filter",
+        label: this._translations.filters,
+        func: () => this._toggleFilter(),
+        disabled: false,
+        isOverflow: false
+      } : undefined,
+      this._deleteEnabled ? {
+        icon: "trash",
+        label: this._translations.delete,
+        func: () => this._delete(),
+        disabled: !featuresSelected,
+        isDanger: true,
+        isOverflow: false
+      } : undefined, {
+        icon: "erase",
+        label: this._translations.clearSelection,
+        func: () => this._clearSelection(),
+        disabled: !featuresSelected,
+        isOverflow: false
+      }, {
+        icon: "selected-items-filter",
+        label: this._showOnlySelected ? this._translations.showAll : this._translations.showSelected,
+        func: () => this._toggleShowSelected(),
+        disabled: !featuresSelected,
+        isOverflow: false
+      }, {
+        icon: "list-check-all",
+        func: () => this._selectAll(),
+        label: this._translations.selectAll,
+        disabled: featuresEmpty,
+        isOverflow: false
+      }, {
+        icon: "compare",
+        func: () => this._switchSelected(),
+        label: this._translations.switchSelected,
+        disabled: featuresEmpty,
+        isOverflow: false
+      }, {
+        icon: "refresh",
+        func: () => this._refresh(),
+        label: this._translations.refresh,
+        disabled: false,
+        isOverflow: false
+      },
+      this.enableCSV ? {
+        icon: "export",
+        func: () => void this._exportToCSV(),
+        label: this._translations.exportCSV,
+        disabled: featuresEmpty,
+        isOverflow: false
+      } : undefined, {
+        icon: this._showHideOpen ? "chevron-down" : "chevron-right",
+        func: () => this._toggleShowHide(),
+        label: this._translations.showHideColumns,
+        disabled: false,
+        isOverflow: false,
+        isSublist: true
+      }];
 
-    this._defaultVisibleToolSizeInfos = undefined;
+      this._defaultVisibleToolSizeInfos = undefined;
+    }
   }
 
   /**
@@ -886,76 +925,74 @@ export class LayerTable {
 
   /**
    * Add/Remove tools from the action bar and dropdown based on available size
-   *
-   * @returns void
    */
   protected _updateToolbar(): void {
     if (this._timeout) {
       clearTimeout(this._timeout)
     }
 
-    this._timeout = setTimeout(() => {
-      clearTimeout(this._timeout)
+    if (!this.isMobile) {
+      this._timeout = setTimeout(() => {
+        clearTimeout(this._timeout)
 
-      this._setToolbarSizeInfos();
+        this._setToolbarSizeInfos();
 
-      const toolbarWidth = this._toolbar.offsetWidth;
-      let controlsWidth = this._toolbarSizeInfos.reduce((prev, cur) => {
-        prev += cur.width;
-        return prev;
-      }, 0);
+        const toolbarWidth = this._toolbar.offsetWidth;
+        let controlsWidth = this._toolbarSizeInfos.reduce((prev, cur) => {
+          prev += cur.width;
+          return prev;
+        }, 0);
 
-      const skipControls = ["solutions-more", "solutions-map-layer-picker-container", "solutions-action-share"];
-      if (controlsWidth > toolbarWidth) {
-        if (this._toolbarSizeInfos.length > 0) {
-          const controlsThatFit = [...this._toolbarSizeInfos].reverse().reduce((prev, cur) => {
-            if (skipControls.indexOf(cur.id) < 0) {
-              if (controlsWidth > toolbarWidth) {
-                controlsWidth -= cur.width;
-              } else {
+        const skipControls = ["solutions-more", "solutions-map-layer-picker-container", "solutions-action-share"];
+        if (controlsWidth > toolbarWidth) {
+          if (this._toolbarSizeInfos.length > 0) {
+            const controlsThatFit = [...this._toolbarSizeInfos].reverse().reduce((prev, cur) => {
+              if (skipControls.indexOf(cur.id) < 0) {
+                if (controlsWidth > toolbarWidth) {
+                  controlsWidth -= cur.width;
+                } else {
+                  prev.push(cur);
+                }
+              }
+              return prev;
+            }, []).reverse();
+
+            this._setControlsThatFit(controlsThatFit, skipControls);
+          }
+        } else {
+          if (this._defaultVisibleToolSizeInfos) {
+            const currentTools = this._toolbarSizeInfos.reduce((prev, cur) => {
+              prev.push(cur.id);
+              return prev;
+            }, []);
+
+            let forceFinish = false;
+            const controlsThatFit = [...this._defaultVisibleToolSizeInfos].reduce((prev, cur) => {
+              if (!forceFinish && skipControls.indexOf(cur.id) < 0 &&
+                (currentTools.indexOf(cur.id) > -1 || (controlsWidth + cur.width) <= toolbarWidth)
+              ) {
+                if (currentTools.indexOf(cur.id) < 0) {
+                  controlsWidth += cur.width;
+                }
                 prev.push(cur);
+              } else if (skipControls.indexOf(cur.id) < 0 && (controlsWidth + cur.width) > toolbarWidth) {
+                // exit the first time we evalute this as true...otherwise it will add the next control that will fit
+                // and not preserve the overall order of controls
+                forceFinish = true;
               }
-            }
-            return prev;
-          }, []).reverse();
+              return prev;
+            }, []);
 
-          this._setControlsThatFit(controlsThatFit, skipControls);
+            this._setControlsThatFit(controlsThatFit, skipControls);
+          }
         }
-      } else {
-        if (this._defaultVisibleToolSizeInfos) {
-          const currentTools = this._toolbarSizeInfos.reduce((prev, cur) => {
-            prev.push(cur.id);
-            return prev;
-          }, []);
-
-          let forceFinish = false;
-          const controlsThatFit = [...this._defaultVisibleToolSizeInfos].reduce((prev, cur) => {
-            if (!forceFinish && skipControls.indexOf(cur.id) < 0 &&
-              (currentTools.indexOf(cur.id) > -1 || (controlsWidth + cur.width) <= toolbarWidth)
-            ) {
-              if (currentTools.indexOf(cur.id) < 0) {
-                controlsWidth += cur.width;
-              }
-              prev.push(cur);
-            } else if (skipControls.indexOf(cur.id) < 0 && (controlsWidth + cur.width) > toolbarWidth) {
-              // exit the first time we evalute this as true...otherwise it will add the next control that will fit
-              // and not preserve the overall order of controls
-              forceFinish = true;
-            }
-            return prev;
-          }, []);
-
-          this._setControlsThatFit(controlsThatFit, skipControls);
-        }
-      }
-    }, 5);
+      }, 5);
+    }
   }
 
   /**
    * Validate if controls that fit the current display has changed or
    * is different from what is currently displayed
-   *
-   * @returns void
    */
   _setControlsThatFit(
     controlsThatFit: IToolSizeInfo[],
@@ -975,8 +1012,6 @@ export class LayerTable {
 
   /**
    * Get the id and size for the toolbars current items
-   *
-   * @returns void
    */
   protected _setToolbarSizeInfos(): void {
     let hasWidth = false;
@@ -1015,7 +1050,7 @@ export class LayerTable {
    * @returns IToolInfo[] the list of toolInfos that should not display in the overflow dropdown
    */
   protected _getActionItems(): IToolInfo[] {
-    return this._toolInfos.filter(toolInfo => toolInfo && !toolInfo.isOverflow)
+    return this._toolInfos?.filter(toolInfo => toolInfo && !toolInfo.isOverflow)
   }
 
   /**
@@ -1084,7 +1119,7 @@ export class LayerTable {
    * @returns IToolInfo[] the list of toolInfos that should display in the dropdown
    */
   protected _getDropdownItems(): IToolInfo[] {
-    return this._toolInfos.filter(toolInfo => toolInfo && toolInfo.isOverflow)
+    return this._toolInfos?.filter(toolInfo => toolInfo && toolInfo.isOverflow)
   }
 
   /**
@@ -1259,8 +1294,6 @@ export class LayerTable {
    * and initializes the FeatureTable
    *
    * @param node HTMLDivElement The node representing the DOM element that will contain the widget.
-   *
-   * @returns void
    */
   private onTableNodeCreate = (
     node: HTMLDivElement
@@ -1272,8 +1305,6 @@ export class LayerTable {
    * Initialize the FeatureTable
    *
    * @param node HTMLDivElement The node representing the DOM element that will contain the widget.
-   *
-   * @returns void
    */
   protected async _getTable(
     node: HTMLDivElement,
@@ -1332,6 +1363,8 @@ export class LayerTable {
           this._selectedIndexes = [...newIndexes];
           if (newIndexes.length > 0) {
             this._table.highlightIds.add(newIndexes[0]);
+          } else {
+            this._skipOnChange = false;
           }
         } else {
           // https://github.com/Esri/solutions-components/issues/365
@@ -1396,8 +1429,6 @@ export class LayerTable {
 
   /**
    * Handle any updates after a selection change has occured and emit the results
-   *
-   * @returns void
    */
   protected _finishOnChange(): void {
     if (this._showOnlySelected) {
@@ -1412,8 +1443,6 @@ export class LayerTable {
 
   /**
    * Reset basic table props
-   *
-   * @returns void
    */
   protected async _resetTable(): Promise<void> {
     this._clearSelection();
@@ -1462,8 +1491,6 @@ export class LayerTable {
 
   /**
    * Store the column names and current hidden status to support show/hide of columns
-   *
-   * @returns void
    */
   protected _initColumnsInfo(): void {
     this._columnsInfo = this._table.columns.reduce((prev, cur: any) => {
@@ -1474,8 +1501,6 @@ export class LayerTable {
 
   /**
    * Select the feature that was specified via url params
-   *
-   * @returns void
    */
   protected _selectDefaultFeature(
     oids: number[]
@@ -1491,8 +1516,6 @@ export class LayerTable {
 
   /**
    * Verify edit capabilities of the layer
-   *
-   * @returns void
    */
   protected _checkEditEnabled(): void {
     this._editEnabled = this._layer.editingEnabled && this._layer.capabilities.operations.supportsUpdate;
@@ -1501,8 +1524,6 @@ export class LayerTable {
 
   /**
    * Sort the objectid field in descending order
-   *
-   * @returns void
    */
   protected async _sortTable(): Promise<void> {
     if (this._table && this._layer && !this._sortActive) {
@@ -1563,8 +1584,6 @@ export class LayerTable {
 
   /**
    * Keep track of key down for ctrl and shift
-   *
-   * @returns void
    */
   protected _handleKeyDown(
     e: KeyboardEvent
@@ -1575,8 +1594,6 @@ export class LayerTable {
 
   /**
    * Keep track of key up for ctrl and shift
-   *
-   * @returns void
    */
   protected _handleKeyUp(
     e: KeyboardEvent
@@ -1622,8 +1639,6 @@ export class LayerTable {
 
   /**
    * Close the filter modal
-   *
-   * @returns void
    */
   protected async _closeFilter(): Promise<void> {
     if (this._filterOpen) {
@@ -1678,8 +1693,6 @@ export class LayerTable {
 
   /**
    * Delete the currently selected features
-   *
-   * @returns void
    */
   protected async _deleteFeatures(): Promise<void> {
     this._isDeleting = true;
@@ -1699,8 +1712,6 @@ export class LayerTable {
    * Handle map click events to keep table and map click selection in sync
    *
    * @param evt IMapClick map click event details
-   *
-   * @returns void
    */
   protected async _mapClicked(
     evt: IMapClick
@@ -1728,8 +1739,6 @@ export class LayerTable {
 
   /**
    * Set the alertOpen member to false when the alert is closed
-   *
-   * @returns void
    */
   protected _deleteClosed(): void {
     this._confirmDelete = false;
@@ -1737,8 +1746,6 @@ export class LayerTable {
 
   /**
    * Select or deselect all rows
-   *
-   * @returns void
    */
   protected _selectAll(): void {
     const ids = this._allIds;
@@ -1752,8 +1759,6 @@ export class LayerTable {
   /**
    * Toggle the show only selected flag
    *  When showOnly is true only the selected features will be shown in the table
-   *
-   * @returns void
    */
   protected _toggleShowSelected(): void {
     this._showOnlySelected = !this._showOnlySelected;
@@ -1766,8 +1771,6 @@ export class LayerTable {
 
   /**
    * Clears the selected indexes
-   *
-   * @returns void
    */
   protected _clearSelection(): void {
     this._selectedIndexes = [];
@@ -1776,8 +1779,6 @@ export class LayerTable {
 
   /**
    * When true the filter modal will be displayed
-   *
-   * @returns void
    */
   protected _toggleFilter(): void {
     this._filterOpen = !this._filterOpen;
@@ -1786,8 +1787,6 @@ export class LayerTable {
   /**
    * Store any filters for the current layer.
    * Should only occur on layer change
-   *
-   * @returns void
    */
   protected _initLayerExpressions(): void {
     const layerExpressions = this.mapInfo?.filterConfig?.layerExpressions;
@@ -1797,8 +1796,6 @@ export class LayerTable {
 
   /**
    * Select all rows that are not currently selectd
-   *
-   * @returns void
    */
   protected _switchSelected(): void {
     const currentIndexes = [...this._selectedIndexes];
@@ -1839,8 +1836,6 @@ export class LayerTable {
 
   /**
    * Refreshes the table and maintains the curent scroll position
-   *
-   * @returns void
    */
   protected async _refresh(): Promise<void> {
     await this._table.refresh();
@@ -1930,9 +1925,6 @@ export class LayerTable {
 
   /**
    * Get the menu config that adds the ability to hide the current column
-   *
-   * @returns void
-   * @protected
    */
   protected _getMenuConfig(
     name: string
@@ -1953,9 +1945,6 @@ export class LayerTable {
 
   /**
    * Hide the table column for the provided name
-   *
-   * @returns void
-   * @protected
    */
   protected _handleHideClick(
     name: string

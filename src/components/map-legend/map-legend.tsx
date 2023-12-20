@@ -153,10 +153,6 @@ export class MapLegend {
 
   /**
    * Initialize the basemap gallery or reset the current view if it already exists
-   *
-   * @returns void
-   *
-   * @protected
    */
   protected _initLegend(
     view: __esri.MapView

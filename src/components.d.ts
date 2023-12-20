@@ -68,6 +68,10 @@ export namespace Components {
     }
     interface CardManager {
         /**
+          * When true the component will render an optimized view for mobile devices
+         */
+        "isMobile": boolean;
+        /**
           * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
          */
         "layer": __esri.FeatureLayer;
@@ -311,6 +315,10 @@ export namespace Components {
          */
         "isLoading": boolean;
         /**
+          * When true the component will render an optimized view for mobile devices
+         */
+        "isMobile": boolean;
+        /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView": __esri.MapView;
@@ -371,6 +379,11 @@ export namespace Components {
          */
         "defaultOid": number[];
         /**
+          * Delete currently selected features
+          * @returns Promise resolving when the process is complete
+         */
+        "deleteFeatures": () => Promise<void>;
+        /**
           * boolean: when true the layer table will auto refresh the data
          */
         "enableAutoRefresh": boolean;
@@ -394,6 +407,10 @@ export namespace Components {
           * boolean: when true the zoom button will be enabled
          */
         "enableZoom": boolean;
+        /**
+          * When true the component will render an optimized view for mobile devices
+         */
+        "isMobile": boolean;
         /**
           * IMapInfo: key configuration details about the current map
          */
@@ -602,6 +619,10 @@ export namespace Components {
           * number: optional fixed height value for the control. Specified as pixel height.
          */
         "height": number;
+        /**
+          * When true the component will render an optimized view for mobile devices
+         */
+        "isMobile": boolean;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
@@ -1331,7 +1352,8 @@ declare global {
         new (): HTMLFloorFilterElement;
     };
     interface HTMLInfoCardElementEventMap {
-        "selectionChanged": __esri.Graphic;
+        "popupClosed": void;
+        "selectionChanged": __esri.Graphic[];
     }
     interface HTMLInfoCardElement extends Components.InfoCard, HTMLStencilElement {
         addEventListener<K extends keyof HTMLInfoCardElementEventMap>(type: K, listener: (this: HTMLInfoCardElement, ev: InfoCardCustomEvent<HTMLInfoCardElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1843,6 +1865,10 @@ declare namespace LocalJSX {
     }
     interface CardManager {
         /**
+          * When true the component will render an optimized view for mobile devices
+         */
+        "isMobile"?: boolean;
+        /**
           * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
          */
         "layer"?: __esri.FeatureLayer;
@@ -2097,13 +2123,21 @@ declare namespace LocalJSX {
          */
         "isLoading"?: boolean;
         /**
+          * When true the component will render an optimized view for mobile devices
+         */
+        "isMobile"?: boolean;
+        /**
           * esri/views/MapView: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */
         "mapView"?: __esri.MapView;
         /**
+          * Emitted on demand when the popup is closed
+         */
+        "onPopupClosed"?: (event: InfoCardCustomEvent<void>) => void;
+        /**
           * Emitted on demand when the selected index changes
          */
-        "onSelectionChanged"?: (event: InfoCardCustomEvent<__esri.Graphic>) => void;
+        "onSelectionChanged"?: (event: InfoCardCustomEvent<__esri.Graphic[]>) => void;
         /**
           * boolean: When true the selected feature will zoomed to in the map and the row will be scrolled to within the table
          */
@@ -2164,6 +2198,10 @@ declare namespace LocalJSX {
           * boolean: when true the zoom button will be enabled
          */
         "enableZoom"?: boolean;
+        /**
+          * When true the component will render an optimized view for mobile devices
+         */
+        "isMobile"?: boolean;
         /**
           * IMapInfo: key configuration details about the current map
          */
@@ -2398,6 +2436,10 @@ declare namespace LocalJSX {
           * number: optional fixed height value for the control. Specified as pixel height.
          */
         "height"?: number;
+        /**
+          * When true the component will render an optimized view for mobile devices
+         */
+        "isMobile"?: boolean;
         /**
           * esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
          */

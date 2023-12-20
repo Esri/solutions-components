@@ -15,6 +15,7 @@
 | `enabledLayerIds`         | --                           | string[]: Optional list of enabled layer ids  If empty all layers will be available                                               | `string[]`                             | `[]`             |
 | `enabledTableIds`         | --                           | string[]: Optional list of enabled table ids  If empty all tables will be available                                               | `string[]`                             | `[]`             |
 | `height`                  | `height`                     | number: optional fixed height value for the control. Specified as pixel height.                                                   | `number`                               | `undefined`      |
+| `isMobile`                | `is-mobile`                  | When true the component will render an optimized view for mobile devices                                                          | `boolean`                              | `undefined`      |
 | `mapView`                 | --                           | esri/views/View: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html                            | `MapView`                              | `undefined`      |
 | `onlyShowUpdatableLayers` | `only-show-updatable-layers` | boolean: When true only editable layers that support the update capability will be available                                      | `boolean`                              | `undefined`      |
 | `placeholderIcon`         | `placeholder-icon`           | string: optional placeholder icon used with "combobox" type                                                                       | `string`                               | `""`             |
@@ -51,9 +52,9 @@
 - calcite-select
 - calcite-combobox
 - calcite-dropdown
+- calcite-dropdown-group
 - calcite-action
 - calcite-button
-- calcite-dropdown-group
 - calcite-combobox-item
 - calcite-option
 - calcite-dropdown-item
@@ -68,9 +69,9 @@ graph TD;
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown
+  map-layer-picker --> calcite-dropdown-group
   map-layer-picker --> calcite-action
   map-layer-picker --> calcite-button
-  map-layer-picker --> calcite-dropdown-group
   map-layer-picker --> calcite-combobox-item
   map-layer-picker --> calcite-option
   map-layer-picker --> calcite-dropdown-item

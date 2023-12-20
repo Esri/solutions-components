@@ -169,8 +169,6 @@ export class BasemapGallery {
   /**
    * Initialize the basemap gallery or reset the current view if it already exists
    *
-   * @returns void
-   *
    * @protected
    */
   protected async _initBaseMapGallery(

@@ -146,10 +146,6 @@ export class FloorFilter {
 
   /**
    * Initialize the floor filter or reset the current view if it already exists
-   *
-   * @returns void
-   *
-   * @protected
    */
   protected _initFloorFilter(
     view: __esri.MapView

@@ -518,10 +518,6 @@ export class MapTools {
 
   /**
    * Show/Hide the basemap picker
-   *
-   * @returns void
-   *
-   * @protected
    */
   protected _toggleBasemapPicker(): void {
     this._showBasemapWidget = !this._showBasemapWidget;
@@ -530,10 +526,6 @@ export class MapTools {
 
   /**
    * Show/Hide the floor filter
-   *
-   * @returns void
-   *
-   * @protected
    */
   protected _toggleFloorFilter(): void {
     this._showFloorFilter = !this._showFloorFilter;
@@ -542,10 +534,6 @@ export class MapTools {
 
   /**
    * Enter/Exit fullscreen mode
-   *
-   * @returns void
-   *
-   * @protected
    */
   protected _expand(): void {
     this._showFullscreen = !this._showFullscreen;
@@ -553,10 +541,6 @@ export class MapTools {
 
   /**
    * Show/Hide the map tools
-   *
-   * @returns void
-   *
-   * @protected
    */
   protected _toggleTools(): void {
     if (!this._showTools) {

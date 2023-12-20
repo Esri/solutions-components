@@ -66,3 +66,32 @@
   background-color: var(--calcite-color-foreground-1) !important;
   height: 100% !important;
 }
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.height-40 {
+  height: 40px;
+}
+
+.padding-top-46 {
+  padding-top: 46px;
+}
+
+.end-border {
+  border-inline-end: 1px solid var(--calcite-color-border-1);
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.visibility-hidden {
+  visibility: hidden;
+  height: 0px;
+}
+
+.padding-inline-start-1 {
+  padding-inline-start: 1rem;
+}

@@ -46,6 +46,7 @@
 
 - calcite-shell
 - calcite-panel
+- calcite-button
 - [map-card](../map-card)
 - calcite-icon
 - calcite-action
@@ -59,6 +60,7 @@
 graph TD;
   crowdsource-manager --> calcite-shell
   crowdsource-manager --> calcite-panel
+  crowdsource-manager --> calcite-button
   crowdsource-manager --> map-card
   crowdsource-manager --> calcite-icon
   crowdsource-manager --> calcite-action
@@ -76,6 +78,8 @@ graph TD;
   calcite-popover --> calcite-action
   calcite-popover --> calcite-icon
   calcite-scrim --> calcite-loader
+  calcite-button --> calcite-loader
+  calcite-button --> calcite-icon
   map-card --> map-picker
   map-card --> map-tools
   map-picker --> calcite-button
@@ -83,8 +87,6 @@ graph TD;
   map-picker --> calcite-action-bar
   map-picker --> calcite-list
   map-picker --> calcite-list-item
-  calcite-button --> calcite-loader
-  calcite-button --> calcite-icon
   calcite-action-bar --> calcite-action-group
   calcite-action-group --> calcite-action-menu
   calcite-action-group --> calcite-action
@@ -109,11 +111,12 @@ graph TD;
   card-manager --> calcite-shell
   card-manager --> info-card
   card-manager --> calcite-notice
+  info-card --> calcite-panel
+  info-card --> calcite-action
   info-card --> calcite-shell
   info-card --> calcite-loader
   info-card --> calcite-button
   info-card --> calcite-tooltip
-  info-card --> calcite-action
   info-card --> edit-card
   info-card --> calcite-alert
   edit-card --> calcite-notice
@@ -143,9 +146,9 @@ graph TD;
   map-layer-picker --> calcite-select
   map-layer-picker --> calcite-combobox
   map-layer-picker --> calcite-dropdown
+  map-layer-picker --> calcite-dropdown-group
   map-layer-picker --> calcite-action
   map-layer-picker --> calcite-button
-  map-layer-picker --> calcite-dropdown-group
   map-layer-picker --> calcite-combobox-item
   map-layer-picker --> calcite-option
   map-layer-picker --> calcite-dropdown-item

@@ -279,10 +279,6 @@ export class MapPicker {
    * Fired when the user clicks on the map list
    *
    * @param webMapInfo the web map id and name selected from the list
-   *
-   * @returns void
-   *
-   * @protected
    */
   protected _webMapSelected(
     webMapInfo: IMapInfo
