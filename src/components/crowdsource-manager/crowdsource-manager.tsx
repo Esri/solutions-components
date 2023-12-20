@@ -871,7 +871,6 @@ export class CrowdsourceManager {
             enableColumnReorder={this.enableColumnReorder}
             enableInlineEdit={this.enableInlineEdit}
             enableShare={this.enableShare}
-            enableZoom={this.enableZoom}
             isMobile={this._isMobile}
             mapInfo={this._mapInfo}
             mapView={this?._mapView}
