@@ -315,8 +315,6 @@ export class EditCard {
 
   /**
    * Init the Editor widget so we can display the popup content
-   *
-   * @returns void
    */
   protected async _initEditorWidget(): Promise<void> {
     if (this.mapView && this.graphics && this.graphics.length > 0 && this.graphics[0]) {
@@ -375,8 +373,6 @@ export class EditCard {
 
   /**
    * Close the edit widget
-   *
-   * @returns void
    */
   protected async _closeEdit(): Promise<void> {
     this._shouldClose = true;
@@ -395,8 +391,6 @@ export class EditCard {
 
   /**
    * Start the update workflow for the editor widget
-   *
-   * @returns void
    */
   protected async _startUpdate(): Promise<void> {
     await this._editor.startUpdateWorkflowAtFeatureEdit(this.graphics[this.graphicIndex]);

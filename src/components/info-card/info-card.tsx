@@ -461,8 +461,6 @@ export class InfoCard {
 
   /**
    * Close the popup and emit the selected features
-   *
-   * @returns void
    */
   protected _closePopup(): void {
     this.popupClosed.emit();
@@ -470,8 +468,6 @@ export class InfoCard {
 
   /**
    * Set the alertOpen member to false when the alert is closed
-   *
-   * @returns void
    */
   protected _alertClosed(): void {
     this._alertOpen = false;
@@ -479,8 +475,6 @@ export class InfoCard {
 
   /**
    * Open the edit record
-   *
-   * @returns void
    */
   protected _openEditRecord(): void {
     if (this._editEnabled) {
@@ -492,8 +486,6 @@ export class InfoCard {
 
   /**
    * Go to the previous feature in the features widget
-   *
-   * @returns void
    */
   protected _back(): void {
     this._features.previous();
@@ -502,8 +494,6 @@ export class InfoCard {
 
   /**
    * Go to the next feature in the features widget
-   *
-   * @returns void
    */
   protected _next(): void {
     this._features.next();

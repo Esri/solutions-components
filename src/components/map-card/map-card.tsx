@@ -343,10 +343,6 @@ export class MapCard {
    * Load the webmap for the provided webMapInfo
    *
    * @param webMapInfo the webmap id and name to load
-   *
-   * @returns void
-   *
-   * @protected
    */
   protected async _loadMap(
     webMapInfo: IMapInfo

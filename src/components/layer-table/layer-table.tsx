@@ -656,8 +656,6 @@ export class LayerTable {
 
   /**
    * Update the toolbar when its size changes
-   *
-   * @returns void
    */
   protected _onResize(): void {
     this._updateToolbar()
@@ -796,8 +794,6 @@ export class LayerTable {
 
   /**
    * Update actions enabled prop based on number of selected indexes
-   *
-   * @returns void
    */
   _validateEnabledActions(): void {
     const featuresSelected = this._featuresSelected();
@@ -818,8 +814,6 @@ export class LayerTable {
    * Get the full list of toolInfos.
    * Order is important. They should be listed in the order they should display in the UI from
    * Left to Right for the action bar and Top to Bottom for the dropdown.
-   *
-   * @returns void
    */
   protected _initToolInfos(): void {
     if (!this.isMobile) {
@@ -931,8 +925,6 @@ export class LayerTable {
 
   /**
    * Add/Remove tools from the action bar and dropdown based on available size
-   *
-   * @returns void
    */
   protected _updateToolbar(): void {
     if (this._timeout) {
@@ -1001,8 +993,6 @@ export class LayerTable {
   /**
    * Validate if controls that fit the current display has changed or
    * is different from what is currently displayed
-   *
-   * @returns void
    */
   _setControlsThatFit(
     controlsThatFit: IToolSizeInfo[],
@@ -1022,8 +1012,6 @@ export class LayerTable {
 
   /**
    * Get the id and size for the toolbars current items
-   *
-   * @returns void
    */
   protected _setToolbarSizeInfos(): void {
     let hasWidth = false;
@@ -1306,8 +1294,6 @@ export class LayerTable {
    * and initializes the FeatureTable
    *
    * @param node HTMLDivElement The node representing the DOM element that will contain the widget.
-   *
-   * @returns void
    */
   private onTableNodeCreate = (
     node: HTMLDivElement
@@ -1319,8 +1305,6 @@ export class LayerTable {
    * Initialize the FeatureTable
    *
    * @param node HTMLDivElement The node representing the DOM element that will contain the widget.
-   *
-   * @returns void
    */
   protected async _getTable(
     node: HTMLDivElement,
@@ -1445,8 +1429,6 @@ export class LayerTable {
 
   /**
    * Handle any updates after a selection change has occured and emit the results
-   *
-   * @returns void
    */
   protected _finishOnChange(): void {
     if (this._showOnlySelected) {
@@ -1461,8 +1443,6 @@ export class LayerTable {
 
   /**
    * Reset basic table props
-   *
-   * @returns void
    */
   protected async _resetTable(): Promise<void> {
     this._clearSelection();
@@ -1511,8 +1491,6 @@ export class LayerTable {
 
   /**
    * Store the column names and current hidden status to support show/hide of columns
-   *
-   * @returns void
    */
   protected _initColumnsInfo(): void {
     this._columnsInfo = this._table.columns.reduce((prev, cur: any) => {
@@ -1523,8 +1501,6 @@ export class LayerTable {
 
   /**
    * Select the feature that was specified via url params
-   *
-   * @returns void
    */
   protected _selectDefaultFeature(
     oids: number[]
@@ -1540,8 +1516,6 @@ export class LayerTable {
 
   /**
    * Verify edit capabilities of the layer
-   *
-   * @returns void
    */
   protected _checkEditEnabled(): void {
     this._editEnabled = this._layer.editingEnabled && this._layer.capabilities.operations.supportsUpdate;
@@ -1550,8 +1524,6 @@ export class LayerTable {
 
   /**
    * Sort the objectid field in descending order
-   *
-   * @returns void
    */
   protected async _sortTable(): Promise<void> {
     if (this._table && this._layer && !this._sortActive) {
@@ -1612,8 +1584,6 @@ export class LayerTable {
 
   /**
    * Keep track of key down for ctrl and shift
-   *
-   * @returns void
    */
   protected _handleKeyDown(
     e: KeyboardEvent
@@ -1624,8 +1594,6 @@ export class LayerTable {
 
   /**
    * Keep track of key up for ctrl and shift
-   *
-   * @returns void
    */
   protected _handleKeyUp(
     e: KeyboardEvent
@@ -1671,8 +1639,6 @@ export class LayerTable {
 
   /**
    * Close the filter modal
-   *
-   * @returns void
    */
   protected async _closeFilter(): Promise<void> {
     if (this._filterOpen) {
@@ -1727,8 +1693,6 @@ export class LayerTable {
 
   /**
    * Delete the currently selected features
-   *
-   * @returns void
    */
   protected async _deleteFeatures(): Promise<void> {
     this._isDeleting = true;
@@ -1748,8 +1712,6 @@ export class LayerTable {
    * Handle map click events to keep table and map click selection in sync
    *
    * @param evt IMapClick map click event details
-   *
-   * @returns void
    */
   protected async _mapClicked(
     evt: IMapClick
@@ -1777,8 +1739,6 @@ export class LayerTable {
 
   /**
    * Set the alertOpen member to false when the alert is closed
-   *
-   * @returns void
    */
   protected _deleteClosed(): void {
     this._confirmDelete = false;
@@ -1786,8 +1746,6 @@ export class LayerTable {
 
   /**
    * Select or deselect all rows
-   *
-   * @returns void
    */
   protected _selectAll(): void {
     const ids = this._allIds;
@@ -1801,8 +1759,6 @@ export class LayerTable {
   /**
    * Toggle the show only selected flag
    *  When showOnly is true only the selected features will be shown in the table
-   *
-   * @returns void
    */
   protected _toggleShowSelected(): void {
     this._showOnlySelected = !this._showOnlySelected;
@@ -1815,8 +1771,6 @@ export class LayerTable {
 
   /**
    * Clears the selected indexes
-   *
-   * @returns void
    */
   protected _clearSelection(): void {
     this._selectedIndexes = [];
@@ -1825,8 +1779,6 @@ export class LayerTable {
 
   /**
    * When true the filter modal will be displayed
-   *
-   * @returns void
    */
   protected _toggleFilter(): void {
     this._filterOpen = !this._filterOpen;
@@ -1835,8 +1787,6 @@ export class LayerTable {
   /**
    * Store any filters for the current layer.
    * Should only occur on layer change
-   *
-   * @returns void
    */
   protected _initLayerExpressions(): void {
     const layerExpressions = this.mapInfo?.filterConfig?.layerExpressions;
@@ -1846,8 +1796,6 @@ export class LayerTable {
 
   /**
    * Select all rows that are not currently selectd
-   *
-   * @returns void
    */
   protected _switchSelected(): void {
     const currentIndexes = [...this._selectedIndexes];
@@ -1888,8 +1836,6 @@ export class LayerTable {
 
   /**
    * Refreshes the table and maintains the curent scroll position
-   *
-   * @returns void
    */
   protected async _refresh(): Promise<void> {
     await this._table.refresh();
@@ -1979,9 +1925,6 @@ export class LayerTable {
 
   /**
    * Get the menu config that adds the ability to hide the current column
-   *
-   * @returns void
-   * @protected
    */
   protected _getMenuConfig(
     name: string
@@ -2002,9 +1945,6 @@ export class LayerTable {
 
   /**
    * Hide the table column for the provided name
-   *
-   * @returns void
-   * @protected
    */
   protected _handleHideClick(
     name: string

@@ -889,8 +889,6 @@ export class CrowdsourceManager {
 
   /**
    * Update the component layout when its size changes
-   *
-   * @returns void
    */
   protected _onResize(): void {
     this._isMobile = this.el.offsetWidth < 1024;
@@ -901,9 +899,6 @@ export class CrowdsourceManager {
   /**
    * Open/Close the appropriate panel.
    * The panel that is toggled is dependent upon the layout mode and if using classic grid or not
-   *
-   * @returns void
-   * @protected
    */
   protected _toggleLayout(): void {
     this._panelOpen = !this._panelOpen;
@@ -913,9 +908,6 @@ export class CrowdsourceManager {
    * Show/Hide the map, popup, and table
    *
    * @param show when true the map, popup, and table will be displayed
-   *
-   * @returns void
-   * @protected
    */
   protected showHideMapPopupAndTable(
     show: boolean
