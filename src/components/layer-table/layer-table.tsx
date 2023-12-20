@@ -150,6 +150,11 @@ export class LayerTable {
   @State() _fetchingData = false;
 
   /**
+   * boolean: When true an indicator will be shown on the action
+   */
+  @State() _filterActive = false;
+
+  /**
    * boolean: When true the filter component will be displayed
    */
   @State() _filterOpen = false;
@@ -163,6 +168,11 @@ export class LayerTable {
    * esri/views/layers/FeatureLayer: https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
    */
   @State() _layer: __esri.FeatureLayer;
+
+  /**
+   * boolean: When true the select all will be displayed in an active state
+   */
+  @State() _selectAllActive = false;
 
   /**
    * number[]: A list of indexes that are currently selected
@@ -240,6 +250,11 @@ export class LayerTable {
    * IToolSizeInfo[]: The default list of tool size info for tools that should display outside of the dropdown
    */
   protected _defaultVisibleToolSizeInfos: IToolSizeInfo[];
+
+  /**
+   * string: The current layers definition expression
+   */
+  protected _definitionExpression: string;
 
   /**
    * boolean: When false alerts will be shown to indicate that the layer must have delete and editing enabled
@@ -446,6 +461,7 @@ export class LayerTable {
   @Watch("_layer")
   async _layerWatchHandler(): Promise<void> {
     this._fetchingData = true;
+    this._definitionExpression = this._layer.definitionExpression;
     await this._resetTable();
     this._updateShareUrl();
     this._initLayerExpressions();
@@ -459,6 +475,9 @@ export class LayerTable {
   async _selectedIndexesWatchHandler(): Promise<void> {
     this._updateShareUrl();
     this._validateEnabledActions();
+    if (this._selectAllActive && this._selectedIndexes.length !== this._allIds.length) {
+      this._selectAllActive = false;
+    }
   }
 
   /**
@@ -577,6 +596,7 @@ export class LayerTable {
     const total = this._allIds.length.toString();
     const selected = this._selectedIndexes.length.toString();
     const tableHeightClass = this.isMobile ? "height-full" : "height-full-adjusted";
+    this._validateActiveActions();
     return (
       <Host>
         <calcite-shell>
@@ -744,11 +764,19 @@ export class LayerTable {
                 onCalciteDropdownBeforeClose={() => this._forceShowHide()}
                 ref={(el) => this._showHideDropdown = el}
               >
-                {this._getAction(this._showHideOpen ? "chevron-down" : cur.icon, cur.label, cur.func, cur.disabled, "trigger")}
+                {this._getAction(
+                  cur.active,
+                  this._showHideOpen ? "chevron-down" : cur.icon,
+                  cur.indicator,
+                  cur.label,
+                  cur.func,
+                  cur.disabled,
+                  "trigger"
+                )}
                 {this._showHideOpen ? this._getFieldlist() : undefined}
               </calcite-dropdown>
             ) :
-            this._getAction(cur.icon, cur.label, cur.func, cur.disabled)
+            this._getAction(cur.active, cur.icon, cur.indicator, cur.label, cur.func, cur.disabled)
         )
       }
       return prev;
@@ -811,84 +839,122 @@ export class LayerTable {
   }
 
   /**
+   * Update actions active prop based on a stored value
+   */
+  _validateActiveActions(): void {
+    const activeDependant = [
+      "filter",
+      "list-check-all"
+    ];
+    this._toolInfos?.forEach(ti => {
+      if (ti && activeDependant.indexOf(ti.icon) > -1) {
+        if (ti.icon === "filter") {
+          ti.indicator = this._filterActive;
+        }
+        if (ti.icon === "list-check-all") {
+          ti.active = this._selectAllActive;
+        }
+      }
+    });
+  }
+
+  /**
    * Get the full list of toolInfos.
    * Order is important. They should be listed in the order they should display in the UI from
    * Left to Right for the action bar and Top to Bottom for the dropdown.
    */
   protected _initToolInfos(): void {
-    if (!this.isMobile) {
-      const featuresSelected = this._featuresSelected();
-      const featuresEmpty = this._featuresEmpty();
-      const hasFilterExpressions = this._hasFilterExpressions();
-      this._toolInfos = [this.enableZoom ? {
-        icon: "zoom-to-object",
-        label: this._translations.zoom,
-        func: () => this._zoom(),
-        disabled: !featuresSelected,
-        isOverflow: false
-      } : undefined,
-      hasFilterExpressions ? {
-        icon: "filter",
-        label: this._translations.filters,
-        func: () => this._toggleFilter(),
-        disabled: false,
-        isOverflow: false
-      } : undefined,
-      this._deleteEnabled ? {
-        icon: "trash",
-        label: this._translations.delete,
-        func: () => this._delete(),
-        disabled: !featuresSelected,
-        isDanger: true,
-        isOverflow: false
-      } : undefined, {
-        icon: "erase",
-        label: this._translations.clearSelection,
-        func: () => this._clearSelection(),
-        disabled: !featuresSelected,
-        isOverflow: false
-      }, {
-        icon: "selected-items-filter",
-        label: this._showOnlySelected ? this._translations.showAll : this._translations.showSelected,
-        func: () => this._toggleShowSelected(),
-        disabled: !featuresSelected,
-        isOverflow: false
-      }, {
-        icon: "list-check-all",
-        func: () => this._selectAll(),
-        label: this._translations.selectAll,
-        disabled: featuresEmpty,
-        isOverflow: false
-      }, {
-        icon: "compare",
-        func: () => this._switchSelected(),
-        label: this._translations.switchSelected,
-        disabled: featuresEmpty,
-        isOverflow: false
-      }, {
-        icon: "refresh",
-        func: () => this._refresh(),
-        label: this._translations.refresh,
-        disabled: false,
-        isOverflow: false
-      },
-      this.enableCSV ? {
-        icon: "export",
-        func: () => void this._exportToCSV(),
-        label: this._translations.exportCSV,
-        disabled: featuresEmpty,
-        isOverflow: false
-      } : undefined, {
-        icon: this._showHideOpen ? "chevron-down" : "chevron-right",
-        func: () => this._toggleShowHide(),
-        label: this._translations.showHideColumns,
-        disabled: false,
-        isOverflow: false,
-        isSublist: true
-      }];
+    const featuresSelected = this._featuresSelected();
+    const featuresEmpty = this._featuresEmpty();
+    const hasFilterExpressions = this._hasFilterExpressions();
+    this._toolInfos = [this.enableZoom ? {
+      active: false,
+      icon: "zoom-to-object",
+      indicator: false,
+      label: this._translations.zoom,
+      func: () => this._zoom(),
+      disabled: !featuresSelected,
+      isOverflow: false
+    } : undefined,
+    hasFilterExpressions ? {
+      active: false,
+      icon: "filter",
+      indicator: false,
+      label: this._translations.filters,
+      func: () => this._toggleFilter(),
+      disabled: false,
+      isOverflow: false
+    } : undefined,
+    this._deleteEnabled ? {
+      active: false,
+      icon: "trash",
+      indicator: false,
+      label: this._translations.delete,
+      func: () => this._delete(),
+      disabled: !featuresSelected,
+      isDanger: true,
+      isOverflow: false
+    } : undefined, {
+      active: false,
+      icon: "erase",
+      indicator: false,
+      label: this._translations.clearSelection,
+      func: () => this._clearSelection(),
+      disabled: !featuresSelected,
+      isOverflow: false
+    }, {
+      active: false,
+      icon: "selected-items-filter",
+      indicator: false,
+      label: this._showOnlySelected ? this._translations.showAll : this._translations.showSelected,
+      func: () => this._toggleShowSelected(),
+      disabled: !featuresSelected,
+      isOverflow: false
+    }, {
+      active: false,
+      icon: "list-check-all",
+      indicator: false,
+      func: () => this._selectAll(),
+      label: this._translations.selectAll,
+      disabled: featuresEmpty,
+      isOverflow: false
+    }, {
+      active: false,
+      icon: "compare",
+      indicator: false,
+      func: () => this._switchSelected(),
+      label: this._translations.switchSelected,
+      disabled: featuresEmpty,
+      isOverflow: false
+    }, {
+      active: false,
+      icon: "refresh",
+      indicator: false,
+      func: () => this._refresh(),
+      label: this._translations.refresh,
+      disabled: false,
+      isOverflow: false
+    },
+    this.enableCSV ? {
+      active: false,
+      icon: "export",
+      indicator: false,
+      func: () => void this._exportToCSV(),
+      label: this._translations.exportCSV,
+      disabled: featuresEmpty,
+      isOverflow: false
+    } : undefined, {
+      active: false,
+      icon: this._showHideOpen ? "chevron-down" : "chevron-right",
+      indicator: false,
+      func: () => this._toggleShowHide(),
+      label: this._translations.showHideColumns,
+      disabled: false,
+      isOverflow: false,
+      isSublist: true
+    }];
 
-      this._defaultVisibleToolSizeInfos = undefined;
-    }
+    this._defaultVisibleToolSizeInfos = undefined;
   }
 
   /**
@@ -1133,7 +1199,9 @@ export class LayerTable {
    * @returns VNode The node representing the DOM element that will contain the action
    */
   protected _getAction(
+    active: boolean,
     icon: string,
+    indicator: boolean,
     label: string,
     func: any,
     disabled: boolean,
@@ -1143,10 +1211,12 @@ export class LayerTable {
     return (
       <div class={"display-flex"} id={this._getId(icon)} slot={slot}>
         <calcite-action
+          active={active}
           appearance="solid"
           disabled={_disabled}
           icon={icon}
           id={icon}
+          indicator={indicator}
           label={label}
           onClick={func}
           text={label}
@@ -1629,12 +1699,28 @@ export class LayerTable {
             closeBtn={true}
             closeBtnOnClick={async () => this._closeFilter()}
             layerExpressions={this._layerExpressions}
+            onFilterListReset={() => this._handleFilterListReset()}
+            onFilterUpdate={() => this._handleFilterUpdate()}
             ref={(el) => this._filterList = el}
             view={this.mapView}
           />
         </div>
       </calcite-modal>
     );
+  }
+
+  /**
+   * Reset the filter active prop
+   */
+  protected _handleFilterListReset(): void {
+    this._filterActive = false;
+  }
+
+  /**
+   * Check if the layers definitionExpression has been modified
+   */
+  protected _handleFilterUpdate(): void {
+    this._filterActive = this._definitionExpression !== this._layer.definitionExpression;
   }
 
   /**
@@ -1754,6 +1840,7 @@ export class LayerTable {
     this._table.highlightIds.addMany(ids);
     this._selectedIndexes = ids;
     this._finishOnChange();
+    this._selectAllActive = true;
   }
 
   /**
