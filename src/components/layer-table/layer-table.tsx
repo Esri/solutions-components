@@ -170,6 +170,11 @@ export class LayerTable {
   @State() _layer: __esri.FeatureLayer;
 
   /**
+   * boolean: When true the select all will be displayed in an active state
+   */
+  @State() _selectAllActive = false;
+
+  /**
    * number[]: A list of indexes that are currently selected
    */
   @State() _selectedIndexes: number[] = [];
@@ -470,6 +475,9 @@ export class LayerTable {
   async _selectedIndexesWatchHandler(): Promise<void> {
     this._updateShareUrl();
     this._validateEnabledActions();
+    if (this._selectAllActive && this._selectedIndexes.length !== this._allIds.length) {
+      this._selectAllActive = false;
+    }
   }
 
   /**
@@ -756,11 +764,19 @@ export class LayerTable {
                 onCalciteDropdownBeforeClose={() => this._forceShowHide()}
                 ref={(el) => this._showHideDropdown = el}
               >
-                {this._getAction(cur.active, this._showHideOpen ? "chevron-down" : cur.icon, cur.label, cur.func, cur.disabled, "trigger")}
+                {this._getAction(
+                  cur.active,
+                  this._showHideOpen ? "chevron-down" : cur.icon,
+                  cur.indicator,
+                  cur.label,
+                  cur.func,
+                  cur.disabled,
+                  "trigger"
+                )}
                 {this._showHideOpen ? this._getFieldlist() : undefined}
               </calcite-dropdown>
             ) :
-            this._getAction(cur.active, cur.icon, cur.label, cur.func, cur.disabled)
+            this._getAction(cur.active, cur.icon, cur.indicator, cur.label, cur.func, cur.disabled)
         )
       }
       return prev;
@@ -827,12 +843,16 @@ export class LayerTable {
    */
   _validateActiveActions(): void {
     const activeDependant = [
-      "filter"
+      "filter",
+      "list-check-all"
     ];
     this._toolInfos?.forEach(ti => {
       if (ti && activeDependant.indexOf(ti.icon) > -1) {
         if (ti.icon === "filter") {
-          ti.active = this._filterActive
+          ti.indicator = this._filterActive;
+        }
+        if (ti.icon === "list-check-all") {
+          ti.active = this._selectAllActive;
         }
       }
     });
@@ -850,6 +870,7 @@ export class LayerTable {
     this._toolInfos = [this.enableZoom ? {
       active: false,
       icon: "zoom-to-object",
+      indicator: false,
       label: this._translations.zoom,
       func: () => this._zoom(),
       disabled: !featuresSelected,
@@ -858,6 +879,7 @@ export class LayerTable {
     hasFilterExpressions ? {
       active: false,
       icon: "filter",
+      indicator: false,
       label: this._translations.filters,
       func: () => this._toggleFilter(),
       disabled: false,
@@ -866,6 +888,7 @@ export class LayerTable {
     this._deleteEnabled ? {
       active: false,
       icon: "trash",
+      indicator: false,
       label: this._translations.delete,
       func: () => this._delete(),
       disabled: !featuresSelected,
@@ -874,6 +897,7 @@ export class LayerTable {
     } : undefined, {
       active: false,
       icon: "erase",
+      indicator: false,
       label: this._translations.clearSelection,
       func: () => this._clearSelection(),
       disabled: !featuresSelected,
@@ -881,6 +905,7 @@ export class LayerTable {
     }, {
       active: false,
       icon: "selected-items-filter",
+      indicator: false,
       label: this._showOnlySelected ? this._translations.showAll : this._translations.showSelected,
       func: () => this._toggleShowSelected(),
       disabled: !featuresSelected,
@@ -888,6 +913,7 @@ export class LayerTable {
     }, {
       active: false,
       icon: "list-check-all",
+      indicator: false,
       func: () => this._selectAll(),
       label: this._translations.selectAll,
       disabled: featuresEmpty,
@@ -895,6 +921,7 @@ export class LayerTable {
     }, {
       active: false,
       icon: "compare",
+      indicator: false,
       func: () => this._switchSelected(),
       label: this._translations.switchSelected,
       disabled: featuresEmpty,
@@ -902,6 +929,7 @@ export class LayerTable {
     }, {
       active: false,
       icon: "refresh",
+      indicator: false,
       func: () => this._refresh(),
       label: this._translations.refresh,
       disabled: false,
@@ -910,6 +938,7 @@ export class LayerTable {
     this.enableCSV ? {
       active: false,
       icon: "export",
+      indicator: false,
       func: () => void this._exportToCSV(),
       label: this._translations.exportCSV,
       disabled: featuresEmpty,
@@ -917,6 +946,7 @@ export class LayerTable {
     } : undefined, {
       active: false,
       icon: this._showHideOpen ? "chevron-down" : "chevron-right",
+      indicator: false,
       func: () => this._toggleShowHide(),
       label: this._translations.showHideColumns,
       disabled: false,
@@ -1171,6 +1201,7 @@ export class LayerTable {
   protected _getAction(
     active: boolean,
     icon: string,
+    indicator: boolean,
     label: string,
     func: any,
     disabled: boolean,
@@ -1180,11 +1211,12 @@ export class LayerTable {
     return (
       <div class={"display-flex"} id={this._getId(icon)} slot={slot}>
         <calcite-action
+          active={active}
           appearance="solid"
           disabled={_disabled}
           icon={icon}
           id={icon}
-          indicator={active}
+          indicator={indicator}
           label={label}
           onClick={func}
           text={label}
@@ -1808,6 +1840,7 @@ export class LayerTable {
     this._table.highlightIds.addMany(ids);
     this._selectedIndexes = ids;
     this._finishOnChange();
+    this._selectAllActive = true;
   }
 
   /**
