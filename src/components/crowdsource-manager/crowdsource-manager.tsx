@@ -741,7 +741,7 @@ export class CrowdsourceManager {
     const popupNodeClass = !this._expandPopup ? "height-full" : this.mapInfos?.length === 1 || this._isMobile ? "position-absolute-0" : "position-absolute-50";
     const headerClass = this._isMobile ? "display-none height-0" : "";
     const headerTheme = !this._isMobile ? "calcite-mode-dark" : "calcite-mode-light";
-    const containerClass = this._isMobile && this._hideTable && this.hideMap ? "position-fixed" : this._isMobile ? "display-none height-0" : "";
+    const containerClass = this._isMobile && this._hideTable && this.hideMap ? "position-fixed width-full height-full" : this._isMobile ? "display-none height-0" : "";
     return (
       <div class={`${headerTheme} ${popupNodeClass} ${containerClass}`}>
         <calcite-panel>
