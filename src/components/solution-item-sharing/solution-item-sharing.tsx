@@ -163,7 +163,7 @@ export class SolutionItemSharing {
     this.sharing = this.sharing.map((itemShare: IItemShare) => {
       if (itemShare.id === id) {
         // update the item
-        itemShare.shareItem = event.detail.switched;
+        itemShare.shareItem = event.target.checked;
 
         // update the item in the store
         const itemEdit: IItemTemplateEdit = state.getItemInfo(id);
