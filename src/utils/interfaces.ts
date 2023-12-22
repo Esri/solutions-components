@@ -539,3 +539,8 @@ export interface ILayerAndTableIds {
   layerIds: string[];
   tableIds: string[];
 }
+
+export interface IPopupUtils {
+  arcade: typeof import("esri/arcade");
+  getPopupTitle(graphic: __esri.Graphic): Promise<string>;
+}

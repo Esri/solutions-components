@@ -334,8 +334,7 @@ export class EditCard {
         view: this.mapView,
         layerInfos,
         visibleElements: {
-          snappingControls: false,
-          sketchTooltipControls: false
+          snappingControls: false
         },
         container
       });

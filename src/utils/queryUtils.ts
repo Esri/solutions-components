@@ -126,7 +126,8 @@ export async function queryFeaturesByID(
   layer: __esri.FeatureLayer,
   graphics: __esri.Graphic[],
   returnGeometry: boolean,
-  outSpatialReference?: __esri.SpatialReference
+  outSpatialReference?: __esri.SpatialReference,
+  fields?: string[]
 ): Promise<__esri.Graphic[]> {
   const num = layer.capabilities?.query.maxRecordCount;
   const start = 0;
@@ -140,6 +141,9 @@ export async function queryFeaturesByID(
   }
   if (outSpatialReference) {
     q.outSpatialReference = outSpatialReference;
+  }
+  if (fields) {
+    q.outFields = fields;
   }
 
   const result = await layer.queryFeatures(q);

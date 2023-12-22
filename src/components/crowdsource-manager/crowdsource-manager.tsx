@@ -573,7 +573,7 @@ export class CrowdsourceManager {
     let sizeClass = "";
     switch (layoutMode) {
       case ELayoutMode.HORIZONTAL:
-        sizeClass = `${this._isMobile && this._hideTable ? "height-full" : panelOpen ? "height-1-2" : "height-0"} width-full position-relative`;
+        sizeClass = `${this._isMobile && this.hideMap ? "height-0 " : panelOpen ? "height-1-2 display-grid" : "height-0"} width-full position-relative`;
         break;
       case ELayoutMode.GRID:
         sizeClass = this.classicGrid ? `${panelOpen ? "position-relative" : "position-absolute-53"} height-full width-full display-flex` :
@@ -741,8 +741,9 @@ export class CrowdsourceManager {
     const popupNodeClass = !this._expandPopup ? "height-full" : this.mapInfos?.length === 1 || this._isMobile ? "position-absolute-0" : "position-absolute-50";
     const headerClass = this._isMobile ? "display-none height-0" : "";
     const headerTheme = !this._isMobile ? "calcite-mode-dark" : "calcite-mode-light";
+    const containerClass = this._isMobile && this._hideTable && this.hideMap ? "position-fixed width-full height-full" : this._isMobile ? "display-none height-0" : "";
     return (
-      <div class={`${headerTheme} ${popupNodeClass}`}>
+      <div class={`${headerTheme} ${popupNodeClass} ${containerClass}`}>
         <calcite-panel>
           {
             !this._isMobile ? (
